@@ -5,6 +5,7 @@ Users can add exported original sprite PNGs named by the field slug.
 """
 from __future__ import annotations
 import shutil
+import webbrowser
 import time
 import tkinter as tk
 from tkinter import filedialog, ttk
@@ -13,14 +14,17 @@ from pathlib import Path
 from practice.paths import practice_data_dir
 from practice.theme import PALETTE
 from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock
+from practice.hex_edit import parse_hex
 
 SPRITE_DIR = practice_data_dir() / 'sprites'
+SPRITE_SHEET_URL = 'https://www.spriters-resource.com/nintendo_64/mysticalninjastarringgoemon/asset/123088/'
 
 
 class UnlocksMixin:
     def build_unlock_tabs(self, notebook) -> None:
         self.unlock_status = tk.StringVar(value='Connect to US Goemon64Recomp to read and change flags.')
         self.unlock_row_widgets = {}
+        self.unlock_count_inputs = {}
         self.unlock_sprites = {}
         self.unlock_last_poll = 0.0
         self.sprite_gallery_items = {}
@@ -71,6 +75,13 @@ class UnlocksMixin:
                         width=max(10, len(label)+6))
                     button.pack(side='left', padx=(3, 0))
                     controls[value] = button
+                if item.quantity:
+                    entry_var=tk.StringVar(value='00')
+                    entry=ttk.Entry(buttons,textvariable=entry_var,width=5,font=('Consolas',10))
+                    entry.pack(side='left',padx=(8,2))
+                    ttk.Button(buttons,text='Set hex count',
+                               command=lambda field=item, var=entry_var: self.set_unlock_hex(field,var.get())).pack(side='left')
+                    self.unlock_count_inputs[item.address]=entry_var
                 self.unlock_row_widgets[item.address] = (state, controls)
 
         sprite_tab = ttk.Frame(notebook, padding=10)
@@ -86,6 +97,8 @@ class UnlocksMixin:
         ttk.Button(tools, text='Import original PNGs from folder',
                    command=self.import_unlock_sprites, style='Gold.TButton').pack(side='left')
         ttk.Button(tools, text='Refresh sprites', command=self.populate_unlock_sprites).pack(side='left', padx=7)
+        ttk.Button(tools, text='Open original sprite sheet reference',
+                   command=lambda: webbrowser.open(SPRITE_SHEET_URL)).pack(side='left', padx=7)
         self.sprite_status = tk.StringVar(value=f'Looking for artwork in {SPRITE_DIR}')
         ttk.Label(sprite_tab, textvariable=self.sprite_status, style='Muted.TLabel',
                   wraplength=950).pack(anchor='w', pady=(0, 7))
@@ -125,6 +138,16 @@ class UnlocksMixin:
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
             self.unlock_status.set(f'{unlock.label}: write failed — {exc}')
 
+    def set_unlock_hex(self, field: Unlock, text: str) -> None:
+        """Fish counts are actual quantities, not boolean acquired flags."""
+        try:
+            if not field.quantity:
+                raise ValueError('Only count fields support arbitrary 00..FF hex')
+            target=parse_hex(text,1)[0]
+            self.set_unlock(field,target)
+        except ValueError as exc:
+            self.unlock_status.set(f'{field.label}: invalid count — {exc}')
+
     def refresh_unlocks(self, *, force=False) -> None:
         """Refresh from live RAM, including external edits and game changes."""
         now = time.monotonic()
@@ -139,15 +162,21 @@ class UnlocksMixin:
             except (OSError, ValueError):
                 raw = None
             values[field.address] = raw
+            if field.quantity and raw is not None:
+                var=self.unlock_count_inputs.get(field.address)
+                # Refresh the input unless the user is actively typing into it.
+                if var is not None and not (isinstance(self.root.focus_get(),ttk.Entry) and
+                        self.root.focus_get().cget('textvariable')==str(var)):
+                    var.set(f'{raw:02X}')
             state.configure(text='—' if raw is None else f'0x{raw:02X}',
-                            foreground=PALETTE['teal'] if raw in field.values else PALETTE['warning'])
+                            foreground=PALETTE['teal'] if (raw in field.values or (field.quantity and raw is not None)) else PALETTE['warning'])
             for value, button in controls.items():
                 button.configure(style='Gold.TButton' if raw == value else 'TButton')
         for field, (state_label, button) in self.sprite_gallery_items.items():
             raw = values.get(field.address)
             state_label.configure(text='—' if raw is None else f'0x{raw:02X}')
             button.configure(text='Disconnected' if raw is None else
-                ('Set ON' if raw not in field.values or raw == field.values[0] else 'Set OFF'))
+                ('Set to 1' if field.quantity and raw == 0 else ('Set to 0' if field.quantity else ('Set ON' if raw not in field.values or raw == field.values[0] else 'Set OFF'))))
 
     def _sprite_path(self, field: Unlock) -> Path | None:
         file = SPRITE_DIR / f'{field.slug}.png'

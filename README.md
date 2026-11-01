@@ -1,10 +1,23 @@
-# Goemon Speedrun Tools v0.10.0 — branded dashboard and memory tools
+# Goemon Speedrun Tools v0.10.2 — clickable unlocks and sprite gallery
 
 ![Real Tkinter dashboard running in an offline test environment](docs/images/actual-dashboard.webp)
 
 *Real application screenshot, captured in a virtual Linux display without a running game. The live-memory preview is empty until connected to US Goemon64Recomp.*
 
 The original [README concept illustration](docs/images/readme-showcase.webp) inspired this dark gold/red interface. The actual dashboard now combines **connection, position bookmarks, logical checkpoints, route calibration, searchable scene catalog and a real live-memory preview**. Existing deep-dive tabs, including guarded hex editing and native debug-menu calibration, remain available. **Direct scene warp is still disabled**; the mock illustration's imaginary controls, scene names and RetroArch connection are not implemented.
+
+## Live unlocks and item sprites (v0.10.2)
+
+Use the new **Unlocks** tab to click actual memory values for all 26 currently mapped character, weapon, ability, and key flags. Each control immediately reads the one-byte US N64 guest address, writes the selected exact byte (no pop-up confirmation), reads it back, and refreshes the UI. The tab samples live RAM repeatedly, so values changed by the game or other tools are reflected automatically. You must connect to the game first; source `Run.bat` and the packaged executable already opt into hex editing.
+
+- Binary unlocks write `0x00` or `0x01`. The **Chain Pipe** acquired state is **`0x02`** (not `0x01`).
+- Basic weapon upgrades offer three choices (`0x00` normal, `0x01` silver/double, `0x02` gold). This avoids mislabelling multi-level values as booleans.
+- The control grid shows the guest address, raw live hex value, and selected state. `0xFF` or an unexpected value remains visible rather than being interpreted as owned. Clicking does not save a disk snapshot or force the game to redraw inventory instantly.
+- These mappings follow the existing GameShark-derived `practice/inspector.py` list; **some item labels remain provisional until checked in-game**. No game is connected during automated tests, so actual UI behaviour and reload rules still need verification.
+
+The separate **Sprites** tab is a clickable gallery of those same 26 flags. It can display **original-game PNG sprites imported from your own extraction or a legitimately obtained asset set**. Select **Import original PNGs from folder** and provide images named after their snake_case item names (e.g. `chain_pipe.png`, `goemon_pipe_upgrade.png`). Imported images are stored locally in `practice/sprites/` for source runs or `%LOCALAPPDATA%\GoemonSpeedrunTools\sprites/` for the Windows executable. Only recognised filenames are copied.
+
+**Game sprites are not bundled in this public repository.** The tab shows labelled empty image slots until you import PNG exports. It does not pretend that art from another Goemon game is the original N64 sprite. See [sprite-import guide](docs/ORIGINAL_SPRITES.md) for the full naming map. You can use the clickable cards without importing any images.
 
 ## Windows desktop build
 
@@ -24,6 +37,17 @@ The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/tas
 - `assets/goemon_tools_logo_small.png` — high-quality pre-rendered header icon.
 - `docs/images/actual-dashboard.webp` — screenshot of the working application.
 - `docs/images/readme-showcase.webp` — original concept-art reference, not a UI screenshot.
+
+---
+
+## v0.10.2 — Fish counts, missing items and unrestricted memory values
+
+- **Fish counts:** red `0x8015C71B`, yellow `0x8015C71F`, blue `0x8015C723`. Use `Set hex count` to set `00..FF` (e.g. `08` for eight fish); the old 0/1 interpretation was incomplete.
+- **Cucumber:** the byte previously called *Blue Sausage* at `0x8015C717` is now tentatively labelled Cucumber.
+- **Four Miracle Items:** new buttons use `0x8015C85B`, `0x8015C85F`, `0x8015C863`, and `0x8015C866`. Individual icons/names are not yet mapped.
+- **Achilles' Heel / Sasuke battery:** labelled **candidate** slots, not proven item identity; test against in-game status before treating them as definitive.
+- **Live Memory:** enable `UNSAFE` to write any width-appropriate hex value, bypass mapped limits, or explicitly enter a guest N64 address and 1/2/4/8-byte value. The write checks old memory and verifies the result; arbitrary values can crash or corrupt game state. This does not provide a working warp.
+- **Original sprites:** Sprites tab includes a link to the [referenced original sheet](https://www.spriters-resource.com/nintendo_64/mysticalninjastarringgoemon/asset/123088/) and retains the local PNG import workflow. Original copyright art is not committed to the public repository.
 
 ---
 

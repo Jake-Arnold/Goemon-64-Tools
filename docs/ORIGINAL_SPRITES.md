@@ -9,7 +9,7 @@ Game-owned item graphics are not part of this repository. The application can di
 3. In the toolkit open **Sprites → Import original PNGs from folder** and select that directory.
 4. The toolkit copies only recognised names to your local writable sprite directory; these are ignored by Git. It does not upload or bundle the images.
 
-The PNGs are optional. Without them, all 26 cards display labelled placeholders and stay clickable.
+The PNGs are optional. Without them, all mapped cards display labelled placeholders and stay clickable.
 
 ## Recognised sprite filenames
 
@@ -37,10 +37,15 @@ The PNGs are optional. Without them, all 26 cards display labelled placeholders 
 | Magic Mermaid | `magic_mermaid.png` |
 | Triton Shell | `triton_shell.png` |
 | Gold Key | `gold_key.png` |
-| Blue Sausage | `blue_sausage.png` |
-| Pink Fish | `pink_fish.png` |
-| Gold Fish | `gold_fish.png` |
-| Blue Fish | `blue_fish.png` |
+| Cucumber (tentative) | `cucumber_tentative_formerly_blue_sausage.png` |
+| Brown item (Achilles Heel? candidate) | `brown_item_achilles_heel_candidate.png` |
+| Silver Fortune Doll candidate | `silver_fortune_doll_candidate.png` |
+| Sasuke battery candidate | `sasuke_battery_candidate.png` |
+| Round brown item (Achilles Heel? candidate) | `round_brown_item_achilles_heel_candidate.png` |
+| Red fish count | `red_fish_count.png` |
+| Yellow fish count | `yellow_fish_count.png` |
+| Blue fish count | `blue_fish_count.png` |
+| Miracle items 1–4 | `miracle_item_1_unidentified.png` ... `miracle_item_4_unidentified.png` |
 
 ## Notes
 
@@ -48,3 +53,5 @@ The PNGs are optional. Without them, all 26 cards display labelled placeholders 
 - `0x00`/`0x01` are used for binary flags; four weapon upgrades are 0/1/2 and Chain Pipe uses 0/2.
 - Sprites are optional and do not affect memory writes.
 - Keep personal ROM files, copyrighted textures and user state out of this public repository.
+
+Original item art reference supplied by user: https://www.spriters-resource.com/nintendo_64/mysticalninjastarringgoemon/asset/123088/ . The site did not expose a verifiable standalone sprite ZIP to the automated importer, so import PNGs locally.

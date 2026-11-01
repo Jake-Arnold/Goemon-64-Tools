@@ -73,8 +73,19 @@ class InspectorMixin:
         self.filter_text=tk.StringVar()
         ttk.Entry(top,textvariable=self.filter_text,width=25).pack(side='left')
         self.filter_text.trace_add('write',lambda *_:self.draw_watches())
-        ttk.Label(inspector,text='Double-click a HEX cell to edit. Ordinary resources require confirmation; engine/warp/pointer fields are locked by default.').pack(anchor='w')
-        ttk.Checkbutton(inspector,text='UNSAFE: allow editing game-state/transition/pointer fields (not a reliable warp method)',variable=self.hex_advanced).pack(anchor='w')
+        ttk.Label(inspector,text='Double-click a HEX cell to edit. UNSAFE enables unrestricted hex values at the displayed guest address (including mapped bounds override).').pack(anchor='w')
+        ttk.Checkbutton(inspector,text='UNSAFE: enable raw guest-memory hex editing (any 1/2/4/8-byte value and address)',variable=self.hex_advanced).pack(anchor='w')
+        manual=ttk.Frame(inspector);manual.pack(fill='x',pady=(3,7))
+        ttk.Label(manual,text='Raw address:').pack(side='left')
+        self.raw_address=tk.StringVar(value='0x8015C717')
+        ttk.Entry(manual,textvariable=self.raw_address,width=14).pack(side='left',padx=(3,10))
+        ttk.Label(manual,text='Bytes:').pack(side='left')
+        self.raw_width=tk.StringVar(value='1')
+        ttk.Combobox(manual,textvariable=self.raw_width,values=('1','2','4','8'),state='readonly',width=3).pack(side='left',padx=(3,10))
+        ttk.Label(manual,text='Hex:').pack(side='left')
+        self.raw_value=tk.StringVar(value='01')
+        ttk.Entry(manual,textvariable=self.raw_value,width=20).pack(side='left',padx=(3,10))
+        ttk.Button(manual,text='Write raw hex',command=self.write_raw_hex).pack(side='left')
         columns=('address','value','raw','status','source')
         frame=ttk.Frame(inspector);frame.pack(fill='both',expand=True)
         self.watch_tree=ttk.Treeview(frame,columns=columns,show='tree headings',height=22)
@@ -154,6 +165,26 @@ class InspectorMixin:
         self.diff_cp['values']=labels
         if labels and self.diff_cp.current()<0:self.diff_cp.current(len(labels)-1)
 
+    def write_raw_hex(self):
+        """Write explicitly entered guest bytes; unlocked only by UNSAFE toggle."""
+        if not self.mem:
+            self.inspector_status.set('Connect to the game first.')
+            return
+        if not getattr(self.args,'enable_hex_edit',False) or not self.hex_advanced.get():
+            self.inspector_status.set('Raw writes require --enable-hex-edit and the UNSAFE checkbox.')
+            return
+        try:
+            addr=int(self.raw_address.get().strip(),16)
+            width=int(self.raw_width.get())
+            new=parse_hex(self.raw_value.get(),width)
+            before=self.mem.read_guest(addr,width)
+            changed=checked_write(self.mem,addr,before,new,allow_advanced=True,raw_override=True)
+            self.append_event(f'RAW USER WRITE 0x{addr:08X}: 0x{before.hex().upper()} -> 0x{new.hex().upper()}')
+            self.inspector_status.set(f'Raw write verified at 0x{addr:08X}: 0x{new.hex().upper()}'+('' if changed else ' (unchanged)'))
+            self.last_inspect_at=0.0
+        except (ValueError,OSError,RuntimeError,PermissionError) as exc:
+            self.inspector_status.set(f'Raw write failed: {exc}')
+
     def edit_live_hex(self,event):
         """Launch a typed hex editor only for the clicked HEX column."""
         if self.watch_tree.identify_region(event.x,event.y)!='cell':return
@@ -166,38 +197,42 @@ class InspectorMixin:
         watch=next((w for w in self.watch_rows if w.name==row_id),None)
         if watch is None or watch.addr is None:return
         policy=get_policy(watch.addr)
-        if policy is None:
-            messagebox.showwarning('Read-only field',
-                'This field has no verified scalar edit width. Dynamic player positions and unknown fields remain read-only.')
+        unsafe=self.hex_advanced.get()
+        if policy is None and not unsafe:
+            messagebox.showwarning('Read-only field','Enable UNSAFE to edit a field without a declared policy.')
             return
-        if policy.advanced and not self.hex_advanced.get():
-            messagebox.showwarning('Engine-state field locked',
-                'This address controls game-state/scene loading or a menu pointer. '
-                'Enable the UNSAFE engine-state toggle explicitly to edit it.')
+        if policy is not None and policy.advanced and not unsafe:
+            messagebox.showwarning('Engine-state field locked','Enable UNSAFE to edit this field.')
             return
         try:
-            original=self.mem.read_guest(watch.addr,policy.width)
+            # Unknown floats and other raw watches provide their byte width
+            # through the displayed hex data, rather than a guessed policy.
+            raw_text=watch.raw.removeprefix('0x').removeprefix('0X').strip()
+            if policy is not None:
+                width=policy.width
+            elif len(raw_text) in (2,4,8,16) and all(c in '0123456789abcdefABCDEF' for c in raw_text):
+                width=len(raw_text)//2
+            else:
+                raise ValueError('No valid raw width for this watch; use the raw address editor')
+            original=self.mem.read_guest(watch.addr,width)
             original_hex='0x'+original.hex().upper()
             new_string=simpledialog.askstring('Edit N64 guest hex — '+watch.name,
-                f'{watch.name}\n0x{watch.addr:08X} ({policy.width} bytes; N64 big-endian)\n'
-                +('UNSAFE ENGINE FIELD: '+policy.note+'\n' if policy.advanced else policy.note+'\n')
+                f'{watch.name}\n0x{watch.addr:08X} ({width} bytes; N64 big-endian)\n'
+                +('UNSAFE: any raw value of this width is accepted\n' if unsafe else policy.note+'\n')
                 +'\nNew hex value:',initialvalue=original_hex,parent=self.root)
             if new_string is None:return
-            proposed=parse_hex(new_string,policy.width)
+            proposed=parse_hex(new_string,width)
             if proposed==original:return
-            # Validate before showing the final confirmation; no writes yet.
-            value=int.from_bytes(proposed,'big')
-            if policy.max_value is not None and value>policy.max_value:
-                raise ValueError(f'Value {value} exceeds maximum {policy.max_value}')
-            warn=('\n\nDANGER: this is an engine-state field. It can crash, softlock, '
-                  'or exit the game. This DOES NOT trigger a valid warp.' if policy.advanced else '')
-            approved=messagebox.askyesno('Confirm N64 RAM write',
-                f'{watch.name}\n0x{watch.addr:08X} ({policy.width} bytes)\n'
-                f'Before: {original_hex}\nAfter:  0x{proposed.hex().upper()}'
-                f'\n\nWrite exactly these guest bytes?{warn}',parent=self.root,icon='warning')
-            if not approved:return
+            if not unsafe:
+                value=int.from_bytes(proposed,'big')
+                if policy.max_value is not None and value>policy.max_value:
+                    raise ValueError(f'Value {value} exceeds maximum {policy.max_value}')
+                approved=messagebox.askyesno('Confirm N64 RAM write',
+                    f'{watch.name}\nBefore: {original_hex}\nAfter: 0x{proposed.hex().upper()}',
+                    parent=self.root,icon='warning')
+                if not approved:return
             did_write=checked_write(self.mem,watch.addr,original,proposed,
-                                    allow_advanced=self.hex_advanced.get())
+                     allow_advanced=unsafe,raw_override=unsafe)
             if did_write:
                 stamp=datetime.now().strftime('%H:%M:%S')
                 self.append_event(f'{stamp} USER WRITE {watch.name}: {original_hex} -> 0x{proposed.hex().upper()}')

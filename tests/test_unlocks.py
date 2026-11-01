@@ -21,7 +21,7 @@ class FakeRAM:
 class TestUnlocks(unittest.TestCase):
     def test_mappings_match_inspector(self):
         validate_unlocks()
-        self.assertEqual(len(UNLOCKS), 26)
+        self.assertEqual(len(UNLOCKS), 34)
         self.assertEqual(len(set(x.address for x in UNLOCKS)), len(UNLOCKS))
         self.assertEqual({x.group for x in UNLOCKS}, set(GROUPS))
 
@@ -58,6 +58,24 @@ class TestUnlocks(unittest.TestCase):
         with self.assertRaises(ValueError):
             write_unlock(ram, BY_ADDRESS[0x8015C6BF], 1)
         self.assertEqual(ram.writes, [])
+
+    def test_fish_are_counts_not_binary(self):
+        ram=FakeRAM()
+        for address in (0x8015C71B,0x8015C71F,0x8015C723):
+            field=BY_ADDRESS[address]
+            self.assertTrue(field.quantity)
+            self.assertTrue(write_unlock(ram,field,0xFE))
+            self.assertEqual(read_unlock(ram,field),0xFE)
+            self.assertTrue(write_unlock(ram,field,0))
+            with self.assertRaises(ValueError):write_unlock(ram,field,256)
+
+    def test_miracle_flags_and_candidate_item_slots(self):
+        ram=FakeRAM()
+        for address in (0x8015C85B,0x8015C85F,0x8015C863,0x8015C866,
+                        0x8015C703,0x8015C707,0x8015C70B,0x8015C70F):
+            self.assertIn(address,BY_ADDRESS)
+            self.assertTrue(write_unlock(ram,BY_ADDRESS[address],1))
+            self.assertEqual(read_unlock(ram,BY_ADDRESS[address]),1)
 
     def test_transition_blocks_flag_write(self):
         ram = FakeRAM()

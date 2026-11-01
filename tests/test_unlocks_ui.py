@@ -51,6 +51,30 @@ class TestUnlocksUI(unittest.TestCase):
         self.app.toggle_sprite_unlock(field)
         self.assertEqual(self.app.mem.read_guest(field.address, 1), b'\x00')
 
+    def test_fish_count_widget_accepts_hex(self):
+        self.app.mem = FakeRAM()
+        fish = BY_ADDRESS[0x8015C71B]
+        self.assertIn(fish.address,self.app.unlock_count_inputs)
+        self.app.set_unlock_hex(fish,'0x0A')
+        self.assertEqual(self.app.mem.read_guest(fish.address,1), b'\x0a')
+        self.app.set_unlock_hex(fish,'FF')
+        self.assertEqual(self.app.mem.read_guest(fish.address,1), b'\xff')
+        self.app.set_unlock_hex(fish,'1FF')
+        self.assertEqual(self.app.mem.read_guest(fish.address,1), b'\xff')
+
+    def test_unsafe_live_raw_write_any_hex(self):
+        self.app.mem = FakeRAM()
+        self.app.hex_advanced.set(True)
+        self.app.raw_address.set('8015C5E8')
+        self.app.raw_width.set('4')
+        self.app.raw_value.set('DEADBEEF')
+        self.app.write_raw_hex()
+        self.assertEqual(self.app.mem.read_guest(0x8015C5E8,4),bytes.fromhex('DEADBEEF'))
+        self.app.hex_advanced.set(False)
+        self.app.raw_value.set('AABBCCDD')
+        self.app.write_raw_hex()
+        self.assertEqual(self.app.mem.read_guest(0x8015C5E8,4),bytes.fromhex('DEADBEEF'))
+
     def test_disconnected_does_not_write(self):
         self.app.set_unlock(BY_ADDRESS[0x8015C6C7], 1)
         self.assertIn('Disconnected', self.app.unlock_status.get())

@@ -54,14 +54,29 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-01 — v0.10.2 inventory corrections and raw memory editor
+
+- Reinterpreted the three fisherman fish entries as **counts**, rather than boolean unlocks: red `0x8015C71B`, yellow `0x8015C71F`, blue `0x8015C723`. Adds 00–FF hexadecimal count input buttons to Unlocks, with live readback. Based on user-reported in-game observation (01 displays one).
+- Relabelled former **Blue Sausage** entry at `0x8015C717` as **Cucumber (tentative)**; item identity remains to be independently confirmed.
+- Marked Triton Shell `0x8015C6FF`, Gold Key `0x8015C713`, and weapon ownership/upgrades as user-verified mappings. Existing provisional labels on other fields remain.
+- Added original game cheat-list slots at `0x8015C703` (brown item), `0x8015C707` (Silver Fortune Doll?), and `0x8015C70F` (round brown item). The **Achilles' Heel** identity among those is NOT confirmed.
+- Added a **Sasuke battery candidate** at `0x8015C70B`, inferred from neighbouring four-byte inventory record spacing; **not verified**. Do not describe as a confirmed battery mapping.
+- Added four documented **Miracle Items** at `0x8015C85B`, `0x8015C85F`, `0x8015C863`, `0x8015C866`. Exact item/symbol correspondence (star, moon, etc.) is unknown. The last byte is the published `0xC866` address and needs verification on the running US build.
+- The Live Memory **UNSAFE** checkbox now enables unrestricted 1/2/4/8-byte canonical guest hex values, including bypassing ordinary mapped field value limits and editing dynamic/watch addresses. Added a raw address/width/value editor for N64 guest RDRAM `0x80000000..0x807FFFFF`; compares original bytes and verifies readback. No Windows host address writes. This does **not** implement scene loading.
+- Sprites tab now opens the exact Spriters Resource asset reference supplied by the user; original art remains optional, user-imported PNGs and is not committed in this public repository.
+- Tests: see current test command output; Python mock memory and virtual display tests cannot establish in-game semantics or Windows runtime behavior.
+
+**References:** https://gamefaqs.gamespot.com/n64/198022-mystical-ninja-starring-goemon/faqs/3274 ; https://almarsguides.com/retro/walkthroughs/n64/games/mysticalninjastarringgoemon/actionreplay/ ; https://www.spriters-resource.com/nintendo_64/mysticalninjastarringgoemon/asset/123088/ .
+
+
 ### 2026-11-01 — v0.10.1: one-click unlock flags and sprite gallery
 
-- Added `practice/unlocks.py`, a registry of the 26 known one-byte party/upgrade/weapon/ability/item fields from the existing US GameShark-derived inspector mapping. The four base weapon upgrades use 0x00/0x01/0x02 and Chain Pipe specifically uses 0x00/0x02; other listed flags use 0x00/0x01.
-- Added the **Unlocks** tab, where selecting a value writes the exact byte immediately with no confirmation dialog. Writes use the existing before/after readback mechanism; the UI samples actual RAM and shows raw hex even for unrecognised values. No bulk writes or scene-loader changes.
-- Added the **Sprites** tab, also clickable, with a PNG importer, local sprite directory and 26 labelled placeholders. Original copyrighted game textures have not been bundled; users can supply exports from the original N64 game. See `docs/ORIGINAL_SPRITES.md`.
-- Updated `README.md`, `Run.bat`, `.gitignore`, and added `tests/test_unlocks.py` and `tests/test_unlocks_ui.py`.
-- Verification: `xvfb-run -a python3 -m unittest discover -s tests -q`: **102 passed** (includes GUI and fake-RAM tests). The Windows executable and live US Goemon64Recomp write behaviour remain untested.
-- Next: test in-game inventory/menu refresh after changing each flag, confirm provisional item labels, and import actual sprite exports to populate gallery slots.
+- Added `practice/unlocks.py`, using only mapped one-byte GameShark-era unlocks from the live inspector. 26 character, weapon, ability and item flags with grouped controls; values are read directly from N64 guest RAM and written instantly without a confirmation dialog. Corrected interpretation of multi-level weapon upgrades (`0/1/2`) and Chain Pipe acquired state (`0/2`).
+- Added **Unlocks** tab with live hex sampling, direct state-selection buttons, and before/after verification and event logging through the existing compare-before-write memory helper. No bulk guessing of unknown item codes.
+- Added **Sprites** tab with live clickable cards and an import flow for original PNG item graphics. No copyrighted game textures are committed or bundled. Original assets must be provided locally; missing art is explicitly labelled. Added the full naming/attribution workflow in `docs/ORIGINAL_SPRITES.md`.
+- Existing advanced hex editor remains separate. Scene warp remains disabled; no memory write tries to trigger a map load.
+- Tests: all existing automated tests plus new fake-RAM tests for writes, invalid values, adjacent bytes, transitions and Tk graphical click tests. Windows/in-game integration still to verify.
+
 
 ### 2026-11-01 — v0.10.0: implement the README dashboard concept
 

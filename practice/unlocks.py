@@ -17,6 +17,7 @@ class Unlock:
     group: str
     values: tuple[int, ...] = (0, 1)
     levels: tuple[str, ...] = ('Off', 'On')
+    quantity: bool = False
 
     @property
     def slug(self) -> str:
@@ -47,13 +48,21 @@ UNLOCKS = (
     Unlock('Magic Mermaid', 0x8015C6FB, 'Abilities'),
     Unlock('Triton Shell', 0x8015C6FF, 'Items and keys'),
     Unlock('Gold Key', 0x8015C713, 'Items and keys'),
-    Unlock('Blue Sausage', 0x8015C717, 'Items and keys'),
-    Unlock('Pink Fish', 0x8015C71B, 'Items and keys'),
-    Unlock('Gold Fish', 0x8015C71F, 'Items and keys'),
-    Unlock('Blue Fish', 0x8015C723, 'Items and keys'),
+    Unlock('Cucumber (tentative; formerly Blue Sausage)', 0x8015C717, 'Items and keys'),
+    Unlock('Brown item (Achilles Heel? candidate)', 0x8015C703, 'Items and keys'),
+    Unlock('Silver Fortune Doll? (candidate)', 0x8015C707, 'Items and keys'),
+    Unlock('Sasuke battery? (candidate)', 0x8015C70B, 'Items and keys'),
+    Unlock('Round brown item (Achilles Heel? candidate)', 0x8015C70F, 'Items and keys'),
+    Unlock('Red fish count', 0x8015C71B, 'Fish counts', quantity=True),
+    Unlock('Yellow fish count', 0x8015C71F, 'Fish counts', quantity=True),
+    Unlock('Blue fish count', 0x8015C723, 'Fish counts', quantity=True),
+    Unlock('Miracle item 1 (unidentified)', 0x8015C85B, 'Miracle items'),
+    Unlock('Miracle item 2 (unidentified)', 0x8015C85F, 'Miracle items'),
+    Unlock('Miracle item 3 (unidentified)', 0x8015C863, 'Miracle items'),
+    Unlock('Miracle item 4 (unidentified)', 0x8015C866, 'Miracle items'),
 )
 
-GROUPS = ('Party', 'Weapon upgrades', 'Weapons', 'Abilities', 'Items and keys')
+GROUPS = ('Party', 'Weapon upgrades', 'Weapons', 'Abilities', 'Items and keys', 'Fish counts', 'Miracle items')
 BY_ADDRESS = {u.address: u for u in UNLOCKS}
 
 
@@ -66,6 +75,8 @@ def validate_unlocks() -> None:
         assert mapping[unlock.address][0] == 1, f'Not a byte flag: {unlock.label}'
         assert all(0 <= val <= mapping[unlock.address][1] for val in unlock.values)
         assert len(unlock.values) == len(unlock.levels)
+        if unlock.quantity:
+            assert mapping[unlock.address][1] == 255
         assert get_policy(unlock.address) is not None
 
 
@@ -79,7 +90,7 @@ def write_unlock(ram, unlock: Unlock, target: int) -> bool:
     No dialog, no checkpoint and no write to the separate saved-data mirror.
     Do not write via u32: these values live in the last byte of aligned words.
     """
-    if target not in unlock.values:
+    if not (0 <= target <= 255) or (not unlock.quantity and target not in unlock.values):
         raise ValueError(f'Unsupported value 0x{target:02X} for {unlock.label}')
     before = ram.read_guest(unlock.address, 1)
     return checked_write(ram, unlock.address, before, bytes((target,)))

@@ -63,12 +63,28 @@ def get_policy(address: int):
     return POLICIES.get(address)
 
 
-def checked_write(ram, address: int, expected: bytes, new: bytes, *, allow_advanced=False):
+def checked_write(ram, address: int, expected: bytes, new: bytes, *, allow_advanced=False, raw_override=False):
     """Single compare-before-write with post-write verification. No auto retry.
 
     This cannot be atomic relative to the game thread, so never advertise it as
     a replacement for a properly patched loader. Blocks transient state 0..9.
     """
+    if raw_override:
+        if not allow_advanced:
+            raise PermissionError('Raw hex overrides require the UNSAFE toggle')
+        width=len(new)
+        if width not in (1, 2, 4, 8) or len(expected)!=width:
+            raise ValueError('Raw writes must be 1, 2, 4, or 8 bytes')
+        if not (0x80000000 <= address and address+width <= 0x80800000):
+            raise ValueError('Address is outside 8 MiB of N64 guest RDRAM')
+        current=ram.read_guest(address,width)
+        if current!=expected:
+            raise RuntimeError('Memory changed before write; retry')
+        if new==expected:return False
+        ram.write_guest(address,new)
+        if ram.read_guest(address,width)!=new:
+            raise OSError('Raw write readback mismatch')
+        return True
     policy=get_policy(address)
     if policy is None: raise ValueError(f'No approved field at 0x{address:08X}')
     if policy.advanced and not allow_advanced:

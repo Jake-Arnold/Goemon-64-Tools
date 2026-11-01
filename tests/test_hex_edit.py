@@ -32,6 +32,24 @@ class TestHexEdit(unittest.TestCase):
         ram.write_guest(0x800C7A94,b'\x03')
         addr=0x8015C5E8
         with self.assertRaises(RuntimeError):checked_write(ram,addr,ram.read_guest(addr,4),b'\x00\x00\x00\x02')
+    def test_unsafe_raw_override_allows_unrestricted_values(self):
+        _,ram=TestCheckpoint().sample()
+        addr=0x8015C5E8  # ordinary resource has max_value 9999
+        old=ram.read_guest(addr,4)
+        raw=parse_hex('DEADBEEF',4)
+        with self.assertRaises(ValueError):checked_write(ram,addr,old,raw)
+        with self.assertRaises(PermissionError):checked_write(ram,addr,old,raw,raw_override=True)
+        self.assertTrue(checked_write(ram,addr,old,raw,allow_advanced=True,raw_override=True))
+        self.assertEqual(ram.read_guest(addr,4),raw)
+
+    def test_unsafe_raw_override_accepts_unknown_address_and_checks_width(self):
+        _,ram=TestCheckpoint().sample()
+        address=0x8015C70B
+        before=ram.read_guest(address,1)
+        self.assertTrue(checked_write(ram,address,before,b'\xFE',allow_advanced=True,raw_override=True))
+        with self.assertRaises(ValueError):checked_write(ram,0x807FFFFF,b'\x00\x00',b'\x00\x01',allow_advanced=True,raw_override=True)
+        with self.assertRaises(RuntimeError):checked_write(ram,address,before,b'\x44',allow_advanced=True,raw_override=True)
+
     def test_known_field_widths(self):
         self.assertEqual(POLICIES[0x800C7CA0].width,2)
         self.assertEqual(POLICIES[0x800C7E60].width,4)
