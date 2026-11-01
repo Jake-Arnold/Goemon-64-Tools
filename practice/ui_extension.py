@@ -1,0 +1,870 @@
+"""Live inspector, diagnostics and opt-in direct gameplay warp trial (v0.9.7)."""
+from __future__ import annotations
+import json
+import queue
+import threading
+from datetime import datetime, timezone
+from pathlib import Path
+import tkinter as tk
+from tkinter import ttk, messagebox, simpledialog
+from practice.inspector import get_watches, checkpoint_differences
+from practice.hex_edit import get_policy, parse_hex, checked_write
+from practice.scenes import SCENES, scene_label
+from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
+from practice.checkpoints import MAP_ADDR, STATE_ADDR
+from practice.native_character import press_native_debug_accept
+from practice.native_debug_watch import FIELDS as NATIVE_WATCH_FIELDS, read_fields as read_native_watches, changed_fields as changed_native_watches, make_change_event as make_native_change_event, can_mark_state as can_mark_native_state, decode_hover_pointer
+from practice.native_debug_trace import (Observation, Candidate, menu_state, take_menu_snapshot,
+    find_candidates, load_profile, save_profile, calibrated_for_direct_warp,
+    stage_menu_selection, candidate_report, display_candidate_indices)
+
+from practice.native_character_cursor_scan import (
+    ORDER as CHARACTER_CURSOR_ORDER, CHARACTERS as CHARACTER_CURSOR_NAMES,
+    capture_cursor, find_cursor_candidates, make_cursor_report)
+
+DEBUG_PROFILE_PATH = Path(__file__).resolve().parent / "native_debug_fields.json"
+
+class InspectorMixin:
+    def build_inspector_tabs(self, notebook):
+        self.watch_previous={}
+        self.hex_advanced=tk.BooleanVar(value=False)
+        self.watch_rows=[]
+        self.scene_selected=None
+        self.debug_observations=[]
+        self.debug_candidates=[]
+        self.native_watch_previous={}
+        self.native_watch_current={}
+        self.native_watch_events=[]
+        self.native_watch_last_at=0.0
+        self.debug_display_indices=[]
+        self.cursor_captures=[]
+        self.cursor_candidates=[]
+        self.cursor_analysed=False
+        self.cursor_busy=False
+        self.cursor_job_results=queue.Queue()
+        self.debug_profile=load_profile(DEBUG_PROFILE_PATH)
+        self.pending_native_warp=None
+        self.pending_direct_warp=None
+        self.direct_warp_confirmed=False
+        self.transition_trace=None
+        self.native_key_release=None
+        self.native_warp_confirmed=False
+        self.warp_monitor=None
+        self.warp_monitor_after=None
+        self.debug_shortcut_confirmed=False
+        self.diff_previous_key=None
+        self.log_events=[]
+        self.log_changes=tk.BooleanVar(value=False)
+        self.last_inspect_at=0.0
+        self.last_compare_at=0.0
+        self.inspector_status=tk.StringVar(value='Connect to begin inspecting memory. Raw addresses refer to US N64 guest RAM.')
+        self.scene_status=tk.StringVar(value='Direct warp disabled: v0.9.7 exits to title. Double-click does NOT write memory. Capture a normal transition to identify the loader.')
+        self.compare_status=tk.StringVar(value='Capture or select a logical checkpoint to compare.')
+
+        inspector=ttk.Frame(notebook,padding=10)
+        notebook.add(inspector,text='Live memory')
+        ttk.Label(inspector,textvariable=self.inspector_status,wraplength=900).pack(fill='x',pady=3)
+        top=ttk.Frame(inspector);top.pack(fill='x',pady=3)
+        ttk.Checkbutton(top,text='Log changed values',variable=self.log_changes).pack(side='left')
+        ttk.Button(top,text='Export diagnostic JSON',command=self.export_inspector).pack(side='left',padx=9)
+        ttk.Label(top,text='Filter:').pack(side='left',padx=5)
+        self.filter_text=tk.StringVar()
+        ttk.Entry(top,textvariable=self.filter_text,width=25).pack(side='left')
+        self.filter_text.trace_add('write',lambda *_:self.draw_watches())
+        ttk.Label(inspector,text='Double-click a HEX cell to edit. Ordinary resources require confirmation; engine/warp/pointer fields are locked by default.').pack(anchor='w')
+        ttk.Checkbutton(inspector,text='UNSAFE: allow editing game-state/transition/pointer fields (not a reliable warp method)',variable=self.hex_advanced).pack(anchor='w')
+        columns=('address','value','raw','status','source')
+        frame=ttk.Frame(inspector);frame.pack(fill='both',expand=True)
+        self.watch_tree=ttk.Treeview(frame,columns=columns,show='tree headings',height=22)
+        self.watch_tree.heading('#0',text='Field');self.watch_tree.column('#0',width=195,stretch=True)
+        for n,display,w in [('address','N64 address',120),('value','Decoded',340),('raw','Hex',85),('status','Status',75),('source','Source / confidence',235)]:
+            self.watch_tree.heading(n,text=display);self.watch_tree.column(n,width=w,stretch=n in ('value','source'))
+        self.watch_tree.tag_configure('changed',background='#e9f5ff')
+        self.watch_tree.tag_configure('invalid',background='#ffe4de')
+        scroll=ttk.Scrollbar(frame,orient='vertical',command=self.watch_tree.yview)
+        self.watch_tree.configure(yscrollcommand=scroll.set)
+        self.watch_tree.pack(side='left',fill='both',expand=True);scroll.pack(side='right',fill='y')
+        self.watch_tree.bind('<Double-1>',self.edit_live_hex)
+        ttk.Label(inspector,text='Recent raw-field changes (not definitive semantic proof)').pack(anchor='w')
+        self.event_text=tk.Text(inspector,height=6,wrap='none',font=('Consolas',9),state='disabled')
+        self.event_text.pack(fill='x')
+
+        scenes=ttk.Frame(notebook,padding=10)
+        notebook.add(scenes,text='Scene browser')
+        self.scene_live=tk.StringVar(value='Current map: —')
+        ttk.Label(scenes,textvariable=self.scene_live,font=('Consolas',12)).pack(anchor='w',pady=4)
+        ttk.Label(scenes,text='Double-click = select requested scene (READ ONLY). Warp is disabled until the correct game loader path is identified.').pack(anchor='w')
+        character_line=ttk.Frame(scenes);character_line.pack(fill='x',pady=4)
+        ttk.Label(character_line,text='Character (native-menu path only):').pack(side='left')
+        self.scene_character=ttk.Combobox(character_line,state='readonly',width=30,
+               values=('0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
+        self.scene_character.current(0)
+        self.scene_character.pack(side='left',padx=8)
+        ttk.Label(character_line,text='Native debug menu only; direct warp disabled.').pack(side='left')
+        self.scene_filter=tk.StringVar()
+        ttk.Entry(scenes,textvariable=self.scene_filter).pack(fill='x',pady=6)
+        self.scene_filter.trace_add('write',lambda *_:self.draw_scene_list())
+        scene_frame=ttk.Frame(scenes);scene_frame.pack(fill='both',expand=True)
+        self.scene_list=tk.Listbox(scene_frame,font=('Consolas',10),exportselection=False,height=16)
+        self.scene_list.pack(side='left',fill='both',expand=True)
+        sc=ttk.Scrollbar(scene_frame,orient='vertical',command=self.scene_list.yview)
+        sc.pack(side='right',fill='y');self.scene_list.configure(yscrollcommand=sc.set)
+        self.scene_list.bind('<<ListboxSelect>>',self.select_scene)
+        self.scene_list.bind('<Double-Button-1>',self.activate_selected_scene)
+        self.draw_scene_list()
+        ttk.Label(scenes,text='v0.9.7 mistakenly wrote the game EXIT flag and returned to title. This faulty route is permanently blocked in this build.',wraplength=950).pack(anchor='w',pady=3)
+        ttk.Label(scenes,textvariable=self.scene_status,wraplength=950).pack(anchor='w',pady=8)
+        self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.open_debug_for_selected_scene)
+        self.native_debug_btn.pack(fill='x',pady=5)
+        if not self.args.enable_debug_menu:self.native_debug_btn.state(['disabled'])
+        ttk.Label(scenes,text='For reverse-engineering the correct loader, open the Native menu calibration tab and record a normal door transition.',wraplength=950).pack(anchor='w')
+        self.build_debug_calibration_tab(notebook)
+        self.build_character_cursor_tab(notebook)
+        self.root.after(120,self.poll_cursor_jobs)
+
+        diffs=ttk.Frame(notebook,padding=10)
+        notebook.add(diffs,text='Checkpoint compare')
+        line=ttk.Frame(diffs);line.pack(fill='x',pady=5)
+        ttk.Label(line,text='Compare to:').pack(side='left')
+        self.diff_cp=ttk.Combobox(line,state='readonly',width=70)
+        self.diff_cp.pack(side='left',padx=6)
+        self.diff_cp.bind('<<ComboboxSelected>>',lambda _e:self.refresh_checkpoint_diff(force=True))
+        ttk.Button(line,text='Refresh comparison',command=lambda:self.refresh_checkpoint_diff(force=True)).pack(side='left')
+        ttk.Label(diffs,textvariable=self.compare_status,wraplength=950).pack(anchor='w',pady=5)
+        diffcolumns=('n64','offset','saved','current')
+        self.diff_tree=ttk.Treeview(diffs,columns=diffcolumns,show='tree headings',height=23)
+        self.diff_tree.heading('#0',text='Region');self.diff_tree.column('#0',width=115)
+        for n,label,width in [('n64','Original N64 address',170),('offset','Region offset',130),('saved','Checkpoint hex',130),('current','Live hex',130)]:
+            self.diff_tree.heading(n,text=label);self.diff_tree.column(n,width=width)
+        self.diff_tree.pack(fill='both',expand=True)
+        ttk.Label(diffs,text='Compares live stat block, progression buffers and global unlock header; ignores stale save-data mirror at +0x64..+0x93. It does NOT include transient actors/physics or prove that a checkpoint can be safely restored.',wraplength=950).pack(anchor='w',pady=4)
+        self.refresh_checkpoint_options()
+
+    def refresh_checkpoint_options(self):
+        labels=self.checkpoint_labels()
+        self.diff_cp['values']=labels
+        if labels and self.diff_cp.current()<0:self.diff_cp.current(len(labels)-1)
+
+    def edit_live_hex(self,event):
+        """Launch a typed hex editor only for the clicked HEX column."""
+        if self.watch_tree.identify_region(event.x,event.y)!='cell':return
+        if self.watch_tree.identify_column(event.x)!='#3':return
+        row_id=self.watch_tree.identify_row(event.y)
+        if not row_id or not self.mem:return
+        if not getattr(self.args,'enable_hex_edit',False):
+            messagebox.showwarning('Hex editing off','Restart with --enable-hex-edit to opt in to memory writing.')
+            return
+        watch=next((w for w in self.watch_rows if w.name==row_id),None)
+        if watch is None or watch.addr is None:return
+        policy=get_policy(watch.addr)
+        if policy is None:
+            messagebox.showwarning('Read-only field',
+                'This field has no verified scalar edit width. Dynamic player positions and unknown fields remain read-only.')
+            return
+        if policy.advanced and not self.hex_advanced.get():
+            messagebox.showwarning('Engine-state field locked',
+                'This address controls game-state/scene loading or a menu pointer. '
+                'Enable the UNSAFE engine-state toggle explicitly to edit it.')
+            return
+        try:
+            original=self.mem.read_guest(watch.addr,policy.width)
+            original_hex='0x'+original.hex().upper()
+            new_string=simpledialog.askstring('Edit N64 guest hex — '+watch.name,
+                f'{watch.name}\n0x{watch.addr:08X} ({policy.width} bytes; N64 big-endian)\n'
+                +('UNSAFE ENGINE FIELD: '+policy.note+'\n' if policy.advanced else policy.note+'\n')
+                +'\nNew hex value:',initialvalue=original_hex,parent=self.root)
+            if new_string is None:return
+            proposed=parse_hex(new_string,policy.width)
+            if proposed==original:return
+            # Validate before showing the final confirmation; no writes yet.
+            value=int.from_bytes(proposed,'big')
+            if policy.max_value is not None and value>policy.max_value:
+                raise ValueError(f'Value {value} exceeds maximum {policy.max_value}')
+            warn=('\n\nDANGER: this is an engine-state field. It can crash, softlock, '
+                  'or exit the game. This DOES NOT trigger a valid warp.' if policy.advanced else '')
+            approved=messagebox.askyesno('Confirm N64 RAM write',
+                f'{watch.name}\n0x{watch.addr:08X} ({policy.width} bytes)\n'
+                f'Before: {original_hex}\nAfter:  0x{proposed.hex().upper()}'
+                f'\n\nWrite exactly these guest bytes?{warn}',parent=self.root,icon='warning')
+            if not approved:return
+            did_write=checked_write(self.mem,watch.addr,original,proposed,
+                                    allow_advanced=self.hex_advanced.get())
+            if did_write:
+                stamp=datetime.now().strftime('%H:%M:%S')
+                self.append_event(f'{stamp} USER WRITE {watch.name}: {original_hex} -> 0x{proposed.hex().upper()}')
+                self.last_inspect_at=0.0
+                self.refresh_inspector({} if self.mem.u8(0x800C7A94)==10 else (self.current or {}))
+                self.inspector_status.set(f'Verified write: {watch.name} {original_hex} -> 0x{proposed.hex().upper()}')
+        except (ValueError,OSError,RuntimeError,PermissionError) as exc:
+            messagebox.showerror('Hex write blocked / failed',str(exc),parent=self.root)
+
+    def draw_watches(self):
+        filt=self.filter_text.get().lower().strip()
+        chosen=self.watch_tree.selection()
+        self.watch_tree.delete(*self.watch_tree.get_children())
+        for w in self.watch_rows:
+            if filt and filt not in (' '.join((w.name,w.value,w.raw,w.source))).lower():
+                continue
+            mark=(w.name,w.raw)
+            tag = 'invalid' if w.status in ('CHECK','ERROR') else ('changed' if w.name in self.watch_previous and self.watch_previous[w.name]!=w.raw else '')
+            self.watch_tree.insert('', 'end',iid=w.name,text=w.name,
+                    values=(f'0x{w.addr:08X}' if w.addr is not None else '—',w.value,w.raw,w.status,w.source),tags=(tag,))
+        for iid in chosen:
+            if self.watch_tree.exists(iid):self.watch_tree.selection_add(iid)
+
+    def append_event(self,line):
+        self.log_events.append(line)
+        self.log_events=self.log_events[-100:]
+        self.event_text.configure(state='normal')
+        self.event_text.delete('1.0','end')
+        self.event_text.insert('end','\n'.join(self.log_events[-35:]))
+        self.event_text.see('end');self.event_text.configure(state='disabled')
+
+    def refresh_inspector(self, snapshot):
+        if not self.mem:return
+        import time
+        now=time.monotonic()
+        if now-self.last_inspect_at < 0.30:return
+        self.last_inspect_at=now
+        try:
+            live_map=self.mem.u16(MAP_ADDR)
+            self.scene_live.set('Current map: '+scene_label(live_map))
+            watches=get_watches(self.mem,snapshot,SCENES)
+            old=self.watch_previous
+            modified=[]
+            for w in watches:
+                if w.name in old and old[w.name]!=w.raw:
+                    modified.append((w.name,old[w.name],w.raw))
+            self.watch_rows=watches
+            self.draw_watches()
+            self.watch_previous={w.name:w.raw for w in watches}
+            invalid=[w.name for w in watches if w.status in ('CHECK','ERROR')]
+            self.inspector_status.set(f'Map {live_map} ({SCENES.get(live_map,"unmapped")})  |  {len(watches)} fields  |  {len(invalid)} need verification  |  {len(modified)} changed this poll')
+            if self.log_changes and modified:
+                stamp=datetime.now().strftime('%H:%M:%S')
+                for name,before,after in modified[:12]:self.append_event(f'{stamp}  {name}: {before} -> {after}')
+                if len(modified)>12:self.append_event(f'{stamp}  ... +{len(modified)-12} changes')
+        except (OSError,ValueError) as e:
+            self.inspector_status.set(f'Inspector failed: {e}')
+
+    def refresh_checkpoint_diff(self,force=False):
+        import time
+        now=time.monotonic()
+        if not force and now-self.last_compare_at<1.5:return
+        self.last_compare_at=now
+        if not self.mem or not self.checkpoints:return
+        idx=self.diff_cp.current()
+        if idx<0 or idx>=len(self.checkpoints):return
+        try:
+            d=checkpoint_differences(self.mem,self.checkpoints[idx])
+            self.compare_status.set(
+                f'Map: {d["map_live"]} / saved {d["map_saved"]} ({"MATCH" if d["map_matches"] else "DIFFERENT"}); '
+                f'character: {d["character_live"]} / saved {d["character_saved"]} '
+                f'({"MATCH" if d["character_matches"] else "DIFFERENT"}). '
+                f'Changed bytes: live={d["counts"]["live"]}, progression={d["counts"]["gamedata"]}, '
+                f'header={d["counts"]["header"]}; total={d["total"]} (showing {len(d["rows"])}).')
+            self.diff_tree.delete(*self.diff_tree.get_children())
+            for i,(region,n64,off,old,new) in enumerate(d['rows']):
+                self.diff_tree.insert('','end',iid=str(i),text=region,values=(n64,off,old,new))
+        except (OSError,ValueError,TypeError) as e:
+            self.compare_status.set(f'Comparison failed: {e}')
+
+    def draw_scene_list(self):
+        filt=self.scene_filter.get().lower().strip()
+        self.scene_options=[(k,v) for k,v in sorted(SCENES.items()) if filt in f'{k} {k:03X} {v}'.lower()]
+        self.scene_list.delete(0,'end')
+        for k,v in self.scene_options:self.scene_list.insert('end',f'{k:03d} [0x{k:03X}]  {v}')
+
+    def build_debug_calibration_tab(self,notebook):
+        tab=ttk.Frame(notebook,padding=10);notebook.add(tab,text='Native menu calibration')
+        ttk.Label(tab,text='ORIGINAL game debug menu: capture the FINAL scene/character highlight without entering the scene. Scanner now includes original N64 overlay memory (4 MiB). Match the toolkit scene and character, then Record.',wraplength=990).pack(anchor='w',pady=5)
+        ttk.Label(tab,text='Record at least 3 different scenes with the same character and 2 scenes with a second character, plus a different scene category. Each field must match 2+ comparisons before enabling automatic warp.',wraplength=990).pack(anchor='w',pady=5)
+        self.debug_calibration_status=tk.StringVar(value='No native menu observations. Existing calibration: '+('ready' if calibrated_for_direct_warp(self.debug_profile) else 'incomplete'))
+        ttk.Label(tab,textvariable=self.debug_calibration_status,wraplength=950).pack(anchor='w',pady=8)
+        # Fixed-address watch is read-only and lightweight: no 4MB snapshots.
+        watch_box=ttk.LabelFrame(tab,text='LIVE READ-ONLY N64 watch (menu AND gameplay transitions)',padding=6)
+        watch_box.pack(fill='x',pady=4)
+        ttk.Label(watch_box,text='Read-only logging. New 0x800C7E60 character menu pointer matches all eight hover captures, but has not been independently verified and MUST NOT be written. Stage/category selection is observed; warp confirmation is still unverified.',wraplength=970).pack(anchor='w')
+        self.native_watch_status=tk.StringVar(value='Connect, then open original debug menu. Live values will update automatically.')
+        ttk.Label(watch_box,textvariable=self.native_watch_status).pack(anchor='w',pady=(2,3))
+        field_columns=('address','value','hex','previous','confidence')
+        self.native_watch_tree=ttk.Treeview(watch_box,columns=field_columns,show='tree headings',height=len(NATIVE_WATCH_FIELDS))
+        self.native_watch_tree.heading('#0',text='Field');self.native_watch_tree.column('#0',width=205)
+        for c,title,w in [('address','N64 address',116),('value','Decimal',80),('hex','Hex',86),('previous','Previous',100),('confidence','Evidence / caution',325)]:
+            self.native_watch_tree.heading(c,text=title);self.native_watch_tree.column(c,width=w,stretch=c=='confidence')
+        self.native_watch_tree.tag_configure('changed',background='#e9f5ff')
+        for field in NATIVE_WATCH_FIELDS:
+            self.native_watch_tree.insert('','end',iid=field.key,text=field.label,
+                values=(f'0x{field.address:08X}','—','—','—',field.confidence))
+        self.native_watch_tree.pack(fill='x')
+        controls=ttk.Frame(watch_box);controls.pack(fill='x',pady=3)
+        ttk.Label(controls,text='Manual marker:').pack(side='left')
+        self.native_watch_note=tk.StringVar(value='SIRO 90 / Goemon')
+        ttk.Entry(controls,textvariable=self.native_watch_note,width=29).pack(side='left',padx=4)
+        ttk.Button(controls,text='Mark current state',command=self.mark_native_watch).pack(side='left',padx=4)
+        ttk.Button(controls,text='Export LIVE watch log',command=self.export_native_watch).pack(side='left',padx=4)
+        ttk.Button(controls,text='Clear watch history',command=self.clear_native_watch).pack(side='left',padx=4)
+        ttk.Label(watch_box,text='Mark IN-GAME loaded scene while in gameplay (state 13); mark highlighted scene/character BEFORE confirming while in menu (state 10). Automatic changes now include both states and transitions.',wraplength=950).pack(anchor='w')
+        tracebox=ttk.LabelFrame(tab,text='REAL gameplay door transition trace — READ ONLY',padding=6)
+        tracebox.pack(fill='x',pady=4)
+        ttk.Label(tracebox,text='Click Start while in a playable room, then WALK THROUGH A NORMAL DOOR. Captures state, current/previous/pending map, phase, exit and loading ~50 times per second for 30 seconds. No N64 writes.',wraplength=950).pack(anchor='w')
+        self.transition_status=tk.StringVar(value='Not recording.')
+        buttons=ttk.Frame(tracebox);buttons.pack(fill='x',pady=3)
+        ttk.Button(buttons,text='Start 30s transition trace',command=self.start_transition_trace).pack(side='left',padx=4)
+        ttk.Button(buttons,text='Stop trace',command=self.stop_transition_trace).pack(side='left',padx=4)
+        ttk.Button(buttons,text='Export transition JSON',command=self.export_transition_trace).pack(side='left',padx=4)
+        ttk.Label(tracebox,textvariable=self.transition_status,wraplength=930).pack(anchor='w')
+
+        row=ttk.Frame(tab);row.pack(fill='x',pady=7)
+        ttk.Button(row,text='Record highlighted native selection',command=self.record_native_selection).pack(side='left',padx=4)
+        ttk.Button(row,text='Find candidate memory fields',command=self.analyse_debug_selection).pack(side='left',padx=4)
+        ttk.Button(row,text='Use selected field',command=self.use_debug_candidate).pack(side='left',padx=4)
+        ttk.Button(row,text='Export FULL candidate report',command=self.export_debug_candidates).pack(side='left',padx=4)
+        self.debug_sample_list=tk.Listbox(tab,height=4,font=('Consolas',10))
+        self.debug_sample_list.pack(fill='x',pady=5)
+        cols=('role','method','addr','width','pairs','examples')
+        self.debug_candidates_tree=ttk.Treeview(tab,columns=cols,show='headings',height=7)
+        for col,width in (('role',110),('method',125),('addr',150),('width',65),('pairs',75),('examples',215)):
+            self.debug_candidates_tree.heading(col,text=col.capitalize())
+            self.debug_candidates_tree.column(col,width=width)
+        self.debug_candidates_tree.pack(fill='both',expand=True)
+        ttk.Label(tab,text='Candidate addresses are hypotheses, not proven. Select each scene, character (and category, when necessary) field after checking the raw values and repeats. Calibration is stored locally in practice/native_debug_fields.json.',wraplength=990).pack(anchor='w',pady=5)
+
+    def build_character_cursor_tab(self, notebook):
+        tab=ttk.Frame(notebook,padding=12)
+        notebook.add(tab,text='Character cursor scan')
+        ttk.Label(tab,text='READ ONLY: identify the ORIGINAL debug menu character cursor. Do not press A to load a stage. Open the character list and only move its highlight between recordings.',wraplength=980).pack(anchor='w',pady=(2,6))
+        ttk.Label(tab,text='Keep category, stage, loaded character and game state unchanged. Each recording takes two RDRAM snapshots ~300 ms apart in a worker thread. Do not move the highlight until capture finishes.',wraplength=980).pack(anchor='w',pady=3)
+        ttk.Label(tab,text='Order: Goemon > Ebisumaru > Sasuke > Yae > Yae > Sasuke > Ebisumaru > Goemon. Repeat Yae without moving for #5.',wraplength=980).pack(anchor='w',pady=4)
+        self.cursor_status=tk.StringVar(value='No character cursor captures. Open the native debug menu and highlight Goemon.')
+        ttk.Label(tab,textvariable=self.cursor_status,wraplength=950).pack(anchor='w',pady=(6,6))
+        row=ttk.Frame(tab);row.pack(fill='x',pady=3)
+        self.cursor_capture_btn=ttk.Button(row,text='Record #1: Goemon',command=self.record_character_hover)
+        self.cursor_capture_btn.pack(side='left',padx=(0,5))
+        self.cursor_analyse_btn=ttk.Button(row,text='Analyse character cursor',command=self.analyse_character_cursor)
+        self.cursor_analyse_btn.pack(side='left',padx=5)
+        self.cursor_analyse_btn.state(['disabled'])
+        self.cursor_export_btn=ttk.Button(row,text='Export FULL character report',command=self.export_character_cursor)
+        self.cursor_export_btn.pack(side='left',padx=5)
+        self.cursor_export_btn.state(['disabled'])
+        self.cursor_reset_btn=ttk.Button(row,text='Clear cursor captures',command=self.reset_character_cursor)
+        self.cursor_reset_btn.pack(side='left',padx=5)
+        self.cursor_record_list=tk.Listbox(tab,height=8,font=('Consolas',10))
+        self.cursor_record_list.pack(fill='x',pady=(8,7))
+        headings=('addr','width','encoding','goemon','ebi','sasuke','yae')
+        frame=ttk.Frame(tab);frame.pack(fill='both',expand=True)
+        self.cursor_result_tree=ttk.Treeview(frame,columns=headings,show='headings',height=11)
+        for key,caption,width in [('addr','N64 address',145),('width','Bytes',64),('encoding','Pattern',133),('goemon','Goemon',105),('ebi','Ebisumaru',115),('sasuke','Sasuke',105),('yae','Yae',105)]:
+            self.cursor_result_tree.heading(key,text=caption)
+            self.cursor_result_tree.column(key,width=width,stretch=key=='encoding')
+        scroll=ttk.Scrollbar(frame,orient='vertical',command=self.cursor_result_tree.yview)
+        self.cursor_result_tree.configure(yscrollcommand=scroll.set)
+        self.cursor_result_tree.pack(side='left',fill='both',expand=True)
+        scroll.pack(side='right',fill='y')
+        ttk.Label(tab,text='Up to 250 candidates are shown here. The JSON exports ALL matches, including numeric 0..3 / 1..4, other linear encodings and repeated non-linear values. A match is not proof; no cursor memory writes are performed.',wraplength=950).pack(anchor='w',pady=5)
+
+    def _cursor_buttons(self):
+        waiting=self.cursor_busy
+        n=len(self.cursor_captures)
+        if n<len(CHARACTER_CURSOR_ORDER):
+            self.cursor_capture_btn.configure(text=f'Record #{n+1}: {CHARACTER_CURSOR_NAMES[CHARACTER_CURSOR_ORDER[n]]}')
+            self.cursor_capture_btn.state(['disabled'] if waiting else ['!disabled'])
+        else:
+            self.cursor_capture_btn.configure(text='All 8 character highlights recorded')
+            self.cursor_capture_btn.state(['disabled'])
+        self.cursor_analyse_btn.state(['disabled'] if waiting or n!=len(CHARACTER_CURSOR_ORDER) else ['!disabled'])
+        self.cursor_export_btn.state(['disabled'] if waiting or not self.cursor_analysed else ['!disabled'])
+        self.cursor_reset_btn.state(['disabled'] if waiting else ['!disabled'])
+
+    def record_character_hover(self):
+        if self.cursor_busy or len(self.cursor_captures)>=len(CHARACTER_CURSOR_ORDER):
+            return
+        if not self.mem:
+            messagebox.showerror('Not connected','Connect to Goemon64Recomp first')
+            return
+        number=len(self.cursor_captures)
+        character=CHARACTER_CURSOR_ORDER[number]
+        self.cursor_busy=True
+        self._cursor_buttons()
+        self.cursor_status.set(f'Capturing #{number+1}: {CHARACTER_CURSOR_NAMES[character]}. Keep highlight still until complete.')
+        memory=self.mem
+        def work():
+            try:
+                result=capture_cursor(memory,character)
+                self.cursor_job_results.put(('capture',number,result,None))
+            except Exception as exc:
+                self.cursor_job_results.put(('capture',number,None,str(exc)))
+        threading.Thread(target=work,name='goemon-character-hover-capture',daemon=True).start()
+
+    def analyse_character_cursor(self):
+        if self.cursor_busy or len(self.cursor_captures)!=len(CHARACTER_CURSOR_ORDER):
+            return
+        self.cursor_busy=True
+        self.cursor_analysed=False
+        self._cursor_buttons()
+        self.cursor_status.set('Analysing eight stable character highlights in worker thread. The window remains responsive.')
+        copies=tuple(self.cursor_captures)
+        def work():
+            try:
+                results=find_cursor_candidates(copies)
+                self.cursor_job_results.put(('analyse',None,results,None))
+            except Exception as exc:
+                self.cursor_job_results.put(('analyse',None,None,str(exc)))
+        threading.Thread(target=work,name='goemon-character-hover-analyser',daemon=True).start()
+
+    def poll_cursor_jobs(self):
+        try:
+            while True:
+                kind,number,result,error=self.cursor_job_results.get_nowait()
+                self.cursor_busy=False
+                if error:
+                    self.cursor_status.set(f'{kind.capitalize()} failed: {error}')
+                elif kind=='capture':
+                    expected=CHARACTER_CURSOR_ORDER[len(self.cursor_captures)]
+                    if number != len(self.cursor_captures) or result.character != expected:
+                        self.cursor_status.set('Capture discarded: unexpected recording order.')
+                    elif self.cursor_captures and result.context != self.cursor_captures[0].context:
+                        self.cursor_status.set('Capture discarded: stage/category/active character changed. Re-enter the same character menu and repeat this highlight.')
+                    else:
+                        self.cursor_captures.append(result)
+                        self.cursor_candidates=[]
+                        self.cursor_analysed=False
+                        context=result.context
+                        self.cursor_record_list.insert('end',f'#{number+1} {CHARACTER_CURSOR_NAMES[result.character]:10s} | map {context["absolute_map"]} | category {context["category"]} | in-game char {context["active_character"]}')
+                        left=len(CHARACTER_CURSOR_ORDER)-len(self.cursor_captures)
+                        next_text=(f'Next: {CHARACTER_CURSOR_NAMES[CHARACTER_CURSOR_ORDER[len(self.cursor_captures)]]}.' if left else 'Now click Analyse character cursor.')
+                        self.cursor_status.set(f'Recorded #{number+1} successfully; {left} captures remaining. {next_text}')
+                elif kind=='analyse':
+                    self.cursor_candidates=result
+                    self.cursor_analysed=True
+                    self.cursor_result_tree.delete(*self.cursor_result_tree.get_children())
+                    for i,c in enumerate(result[:250]):
+                        self.cursor_result_tree.insert('','end',iid=str(i),values=(c['addr'],c['width'],c['encoding'],*c['values']))
+                    counts={name:sum(c['encoding']==name for c in result) for name in ('zero_based','one_based','linear','lookup')}
+                    self.cursor_status.set(f'{len(result)} stable repeated matches; pattern counts {counts}. Export FULL character report. No writes made.')
+                self._cursor_buttons()
+        except queue.Empty:
+            pass
+        try:
+            self.root.after(120,self.poll_cursor_jobs)
+        except tk.TclError:
+            pass
+
+    def reset_character_cursor(self):
+        if self.cursor_busy:
+            return
+        self.cursor_captures=[]
+        self.cursor_candidates=[]
+        self.cursor_analysed=False
+        self.cursor_record_list.delete(0,'end')
+        self.cursor_result_tree.delete(*self.cursor_result_tree.get_children())
+        self.cursor_status.set('Character captures cleared. Highlight Goemon and begin again.')
+        self._cursor_buttons()
+
+    def export_character_cursor(self):
+        if not self.cursor_analysed or self.cursor_busy:
+            self.cursor_status.set('Record eight highlights and run the analysis first.')
+            return
+        root=Path(__file__).resolve().parent/'diagnostics'
+        root.mkdir(parents=True,exist_ok=True)
+        path=root/('native_character_cursor_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
+        payload=make_cursor_report(self.cursor_captures,self.cursor_candidates)
+        import os
+        temp=path.with_suffix('.json.tmp')
+        try:
+            with temp.open('w',encoding='utf-8') as f:
+                json.dump(payload,f,indent=2)
+                f.write('\n')
+            os.replace(temp,path)
+            self.cursor_status.set(f'Exported ALL {len(self.cursor_candidates)} character cursor candidates: {path}')
+        except OSError as exc:
+            self.cursor_status.set(f'Export failed: {exc}')
+            try:temp.unlink(missing_ok=True)
+            except OSError:pass
+
+    def refresh_native_watch(self, now):
+        """Poll *while native menu is open*; toolkit.tick skips the player UI there."""
+        if not self.mem or now-self.native_watch_last_at < 0.20:
+            return
+        self.native_watch_last_at=now
+        try:
+            live=read_native_watches(self.mem)
+        except (OSError,ValueError) as exc:
+            self.native_watch_status.set(f'Live watch unavailable: {exc}')
+            return
+        previous=self.native_watch_current
+        changes=changed_native_watches(previous,live)
+        for field in NATIVE_WATCH_FIELDS:
+            v=live[field.key]
+            older=previous.get(field.key)
+            prev_disp='—' if older is None else str(older)
+            row=self.native_watch_tree
+            row.item(field.key,values=(f'0x{field.address:08X}',str(v),f'0x{v:0{field.width*2}X}',prev_disp,field.confidence),
+                     tags=('changed',) if field.key in changes else ())
+        self.native_watch_current=live
+        state=live['state']
+        state_label='DEBUG MENU' if state==10 else ('GAMEPLAY' if state==13 else f'TRANSITION/OTHER {state}')
+        hover_name=decode_hover_pointer(live.get('hover_pointer',-1)) if state==10 else None
+        hover_label=(f'  |  Hover candidate: {hover_name}' if hover_name else '')
+        self.native_watch_status.set(f'Game state: {state_label}{hover_label}  |  {len(changes)} fields changed at last poll  |  {len(self.native_watch_events)} events retained')
+        evt=make_native_change_event(previous,live,datetime.now(timezone.utc).isoformat())
+        if evt:
+            self.native_watch_events.append(evt)
+            self.native_watch_events=self.native_watch_events[-1500:]
+
+    def mark_native_watch(self):
+        if not self.mem:
+            messagebox.showerror('Not connected','Connect to the game first')
+            return
+        try:
+            live=read_native_watches(self.mem)
+            if not can_mark_native_state(live['state']):
+                raise ValueError(f'Only stable gameplay (state 13) or original debug menu (state 10) may be marked; observed {live["state"]}')
+            note=self.native_watch_note.get().strip()
+            if not note:
+                raise ValueError('Describe the currently highlighted OR loaded scene and character')
+            self.native_watch_events.append({'utc':datetime.now(timezone.utc).isoformat(),
+                                             'kind':'marker','label':note,'values':live})
+            self.native_watch_events=self.native_watch_events[-1500:]
+            self.native_watch_status.set(f'Marked "{note}" — {len(self.native_watch_events)} retained events')
+        except (OSError,ValueError) as exc:
+            messagebox.showerror('Cannot mark menu selection',str(exc))
+
+    def clear_native_watch(self):
+        self.native_watch_events=[]
+        self.native_watch_previous={}
+        self.native_watch_current={}
+        self.native_watch_status.set('Live watch history cleared. Current values continue updating.')
+
+    def export_native_watch(self):
+        if not self.native_watch_events:
+            messagebox.showerror('No samples','Mark game or debug-menu state before exporting')
+            return
+        root=Path(__file__).resolve().parent/'diagnostics'
+        root.mkdir(parents=True,exist_ok=True)
+        path=root/('native_watch_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
+        payload={'format':'mnsg-usa-original-debug-live-watch-v1',
+                 'note':'Read-only original N64 guest values. v0.9.4 logs BOTH menu and gameplay states. Candidate cursor mapping NOT verified; map-state can change while menu is open; no RAM dumps or game assets.',
+                 'fields':[{'key':x.key,'label':x.label,'address':f'0x{x.address:08X}',
+                            'width':x.width,'confidence':x.confidence} for x in NATIVE_WATCH_FIELDS],
+                 'events':self.native_watch_events}
+        path.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
+        self.native_watch_status.set(f'Exported {len(self.native_watch_events)} watch events to {path}')
+
+    def record_native_selection(self):
+        if not self.mem or not menu_state(self.mem):
+            messagebox.showerror('Debug menu not active','Open the ORIGINAL debug menu, highlight the selected scene and character, and do not press A yet.')
+            return
+        chosen=self.scene_list.curselection()
+        if not chosen:
+            messagebox.showerror('Missing scene','Select the scene highlighted in the game using the Scene browser first.')
+            return
+        map_id=self.scene_options[chosen[0]][0]
+        character=self.scene_character.current()
+        if character<0: return
+        try:
+            first=take_menu_snapshot(self.mem)
+        except Exception as exc:
+            messagebox.showerror('Capture failed',str(exc));return
+        self.debug_calibration_status.set('Capturing second menu snapshot; leave the game selection unchanged...')
+        self.root.after(300,lambda:self._finish_native_observation(map_id,character,first))
+
+    def _finish_native_observation(self,map_id,character,first):
+        try:
+            second=take_menu_snapshot(self.mem)
+            obs=Observation(map_id,character,first,second)
+            self.debug_observations.append(obs)
+            stable=sum(x==y for x,y in zip(first,second))
+            self.debug_sample_list.insert('end',f'#{len(self.debug_observations)} map={map_id} character={character} stable={stable}/{len(first)} bytes')
+            self.debug_calibration_status.set(f'Captured {len(self.debug_observations)} observations. Now change menu selection and record again.')
+        except Exception as exc:
+            self.debug_calibration_status.set(f'Capture refused: {exc}')
+
+    def analyse_debug_selection(self):
+        if len(self.debug_observations)<2:
+            self.debug_calibration_status.set('Capture at least two distinct native menu selections first.')
+            return
+        self.debug_candidates=find_candidates(self.debug_observations)
+        self.debug_candidates_tree.delete(*self.debug_candidates_tree.get_children())
+        self.debug_display_indices=display_candidate_indices(self.debug_candidates)
+        for i, candidate_index in enumerate(self.debug_display_indices):
+            c=self.debug_candidates[candidate_index]
+            self.debug_candidates_tree.insert('','end',iid=str(i),values=(c.role,c.method,f'0x{c.addr:08X}',c.width,c.examples,f'{c.before} -> {c.after}'))
+        self.debug_calibration_status.set(
+            f'{len(self.debug_candidates)} total candidates; displaying {len(self.debug_display_indices)} ' +
+            'across character, scene and category. Require 2+ matching comparisons per field; export contains ALL candidates.')
+
+    def export_debug_candidates(self):
+        if not self.debug_candidates:
+            self.analyse_debug_selection()
+        if not self.debug_candidates:
+            self.debug_calibration_status.set('No candidates to export. Record several contrasting selections.')
+            return
+        root=Path(__file__).resolve().parent/'diagnostics'
+        root.mkdir(parents=True,exist_ok=True)
+        from datetime import datetime,timezone
+        path=root/('native_menu_candidates_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
+        data=candidate_report(self.debug_observations,self.debug_candidates,self.debug_profile)
+        # Write to a temporary path first to avoid leaving a partial JSON report.
+        import os
+        temporary=path.with_suffix('.json.tmp')
+        try:
+            with temporary.open('w',encoding='utf-8') as f:
+                json.dump(data,f,indent=2)
+                f.write('\n')
+            os.replace(temporary,path)
+        except OSError as exc:
+            try:temporary.unlink(missing_ok=True)
+            except OSError:pass
+            messagebox.showerror('Report export failed',str(exc))
+            return
+        self.debug_calibration_status.set(f'Exported ALL {len(self.debug_candidates)} candidates (no RAM dump): {path}')
+
+    def use_debug_candidate(self):
+        chosen=self.debug_candidates_tree.selection()
+        if not chosen:return
+        c=self.debug_candidates[self.debug_display_indices[int(chosen[0])]]
+        if c.examples < 2:
+            messagebox.showerror('Insufficient evidence',f'This candidate matched {c.examples} comparison(s); at least two are required before enabling native-menu memory writes. Capture more contrasting selections, then analyse again.')
+            return
+        if not messagebox.askyesno('Experimental learned N64 field',
+                 f'Use {c.role}: {c.method} at guest 0x{c.addr:08X} ({c.width} byte(s))?\n'
+                 'This is an observation-based hypothesis and can crash the game when used. Use disposable saves.'):
+            return
+        profile=dict(self.debug_profile)
+        profile['fields']=dict(profile.get('fields',{}))
+        profile['fields'][c.role]={'addr':f'0x{c.addr:08X}','width':c.width,'method':c.method,'pairs':c.examples}
+        try:
+            save_profile(DEBUG_PROFILE_PATH,profile)
+            self.debug_profile=profile
+        except Exception as exc:
+            messagebox.showerror('Field incompatible',str(exc));return
+        ready=calibrated_for_direct_warp(profile)
+        self.debug_calibration_status.set(f'Saved {c.role} field. Native one-click menu automation: {"available (experimental)" if ready else "NOT yet calibrated"}.')
+
+    def _save_direct_warp_diagnostics(self, pending):
+        """Capture non-sensitive numeric N64 state; no raw dumps or ROM assets."""
+        out=Path(__file__).resolve().parents[1] / 'practice' / 'diagnostics'
+        out.mkdir(parents=True,exist_ok=True)
+        path=out / ('direct_warp_' + pending['date_code'] + '.json')
+        payload={'format':'goemon-usa-experimental-direct-warp-v1',
+                 'warning':'Unverified transition fields; no claimed native warp success',
+                 'destination':pending['map_id'], 'source_map':pending['from_map'],
+                 'original_character':pending['character'],
+                 'status':pending['status'], 'samples':pending['events']}
+        path.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
+        return str(path)
+
+    def poll_direct_warp(self,now):
+        """Read-only monitoring. Never resend a failed request or force map/char."""
+        pending=self.pending_direct_warp
+        if not pending or not self.mem:return
+        try:
+            assessment=assess_direct_warp(self.mem,pending['map_id'])
+            sample={'seconds':round(now-pending['start_at'],3),**assessment}
+            if not pending['events'] or sample != pending['events'][-1]:
+                pending['events'].append(sample)
+            if assessment['status']=='loaded_and_playable':
+                pending['stable']+=1
+            else:
+                pending['stable']=0
+            if pending['stable']>=3:
+                pending['status']='loaded_observed'
+                path=self._save_direct_warp_diagnostics(pending)
+                self.scene_status.set('DIRECT trial: loaded scene %d and playable gameplay observed. Character %d. Diagnostic: %s' %
+                                      (pending['map_id'],assessment['character'],path))
+                self.pending_direct_warp=None
+            elif now-pending['start_at']>=8.0:
+                pending['status']='not_confirmed_timeout'
+                path=self._save_direct_warp_diagnostics(pending)
+                self.scene_status.set('DIRECT trial NOT CONFIRMED after 8 seconds. No retry or further writes. Diagnostic: '+path)
+                self.pending_direct_warp=None
+            elif int((now-pending['start_at'])*2) != int((now-pending['last_message_at'])*2):
+                pending['last_message_at']=now
+                self.scene_status.set('Direct request sent; waiting for an actual playable map %d. Current game state %d; map %d. No debug menu opened.' %
+                        (pending['map_id'],assessment['state'],assessment['map_id']))
+        except (OSError, ValueError) as exc:
+            pending['status']='monitor_error: '+str(exc)
+            self._save_direct_warp_diagnostics(pending)
+            self.pending_direct_warp=None
+            self.scene_status.set('Direct warp monitoring failed: '+str(exc))
+
+    def request_direct_scene(self,mid,name):
+        """Do not reopen debug menu or stage broken game-exit flag."""
+        self.scene_status.set(
+            f'Direct warp for {mid} ({name}) is DISABLED. v0.9.7 returned to '
+            'the title screen; the correct engine transition is not yet known. '
+            'No memory writes sent. Use Transition trace to capture a real door load.'
+        )
+
+    def start_transition_trace(self):
+        from practice.transition_trace import TransitionTrace
+        if not self.mem:
+            self.transition_status.set('Connect to the game first.')
+            return
+        previous=getattr(self,'transition_trace',None)
+        if previous and previous.thread and previous.thread.is_alive():
+            self.transition_status.set('Trace is already recording.')
+            return
+        self.transition_trace=TransitionTrace(self.mem,duration=30.0,interval=0.02)
+        self.transition_trace.start()
+        self.transition_status.set('Recording 30 seconds at ~50 Hz. Walk through a normal in-game doorway.')
+        self.root.after(250,self.refresh_transition_status)
+
+    def refresh_transition_status(self):
+        trace=getattr(self,'transition_trace',None)
+        if trace is None:return
+        if trace.thread and trace.thread.is_alive():
+            self.transition_status.set('Recording real area transitions: %d samples; %d changes. Normal gameplay only.' %
+                                       (trace.samples,len(trace.events)-1))
+            self.root.after(250,self.refresh_transition_status)
+        else:
+            self.transition_status.set('Trace finished: %d samples, %d changes. Export trace to JSON.' %
+                                       (trace.samples,max(0,len(trace.events)-1)))
+
+    def stop_transition_trace(self):
+        trace=getattr(self,'transition_trace',None)
+        if trace is not None:
+            trace.stop()
+            self.refresh_transition_status()
+
+    def export_transition_trace(self):
+        trace=getattr(self,'transition_trace',None)
+        if trace is None:
+            self.transition_status.set('No trace to export.')
+            return
+        trace.stop()
+        out=Path(__file__).resolve().parent/'diagnostics'
+        out.mkdir(parents=True,exist_ok=True)
+        path=out/('normal_transition_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
+        path.write_text(json.dumps(trace.report(),indent=2)+'\n',encoding='utf-8')
+        self.transition_status.set('Exported READ-ONLY transition trace: '+str(path))
+
+    def poll_native_warp_menu(self,now):
+        pending=self.pending_native_warp
+        if not pending or not self.mem:return
+        from practice.checkpoints import MAP_ADDR
+        if now>pending['deadline']:
+            self.scene_status.set(f'Native warp NOT confirmed: map {pending["map_id"]}, character {pending["character"]}. No additional writes will be made.')
+            self.pending_native_warp=None
+            return
+        state=self.mem.u8(STATE_ADDR)
+        if state==10 and not pending['staged'] and now>=pending['start_at']:
+            try:
+                info=stage_menu_selection(self.mem,self.debug_profile,pending['map_id'],pending['character'])
+                pending['staged']=True
+                pending['confirm_at']=now+0.36
+                self.scene_status.set('Native debug menu selection staged from learned fields. Preparing to confirm using original N64 A input.')
+            except Exception as exc:
+                self.scene_status.set(f'Native selection failed: {exc}; complete manually in the game.')
+                self.pending_native_warp=None
+                return
+        if state==10 and pending['staged'] and not pending['confirmed'] and now>=pending['confirm_at']:
+            try:
+                # If the game rewrites cursor variables each frame, our learned
+                # addresses were only a mirror. Do NOT press A on a stale value.
+                from practice.native_debug_trace import selection_values
+                expected=selection_values(pending['map_id'])
+                for field in self.debug_profile['fields'].values():
+                    address=int(field['addr'],16) if isinstance(field['addr'],str) else field['addr']
+                    correct=(pending['character'] if field['method']=='character_id' else expected[field['method']])
+                    observed=int.from_bytes(self.mem.read_guest(address,field['width']),'big')
+                    if observed!=correct:
+                        raise RuntimeError(f'Original menu rewrote 0x{address:08X} ({observed} != {correct}); automatic A suppressed')
+                release=press_native_debug_accept(self.game_pid)
+                self.native_key_release=release
+                self.root.after(130,self._release_debug_key)
+                pending['confirmed']=True
+                self.scene_status.set('Original debug menu A button sent. Waiting to observe loaded scene. No result assumed.')
+            except Exception as exc:
+                self.scene_status.set(f'Debug selection staged; press A in the game manually: {exc}')
+                pending['confirmed']=True
+        if state==13 and pending['staged']:
+            current_map=self.mem.u16(MAP_ADDR)
+            active_character=self.mem.u32(0x8015C5DC)
+            if current_map==pending['map_id'] and active_character==pending['character']:
+                self.scene_status.set(f'Native debug warp observed: map {current_map} and character {active_character}.')
+                self.pending_native_warp=None
+
+    def _release_debug_key(self):
+        if self.native_key_release:
+            try:self.native_key_release()
+            finally:self.native_key_release=None
+
+    def select_scene(self,event=None):
+        """A single click only selects; never writes guest RAM."""
+        chosen=self.scene_list.curselection()
+        if not chosen:return
+        mid,name=self.scene_options[chosen[0]]
+        self.scene_selected=mid
+        try:
+            target=native_debug_selection(mid,SCENES)
+            self.scene_status.set(
+                f'Selected {mid}: {name}. Native debug index: {target["label"]}. '
+                'Direct warp disabled; double-click will make NO guest memory writes. Separate button opens the original debug menu.')
+        except ValueError as e:
+            self.scene_status.set(str(e))
+
+    def activate_selected_scene(self,event=None):
+        """Double-click requests a direct gameplay scene transition, NO debug menu."""
+        chosen=self.scene_list.curselection()
+        if not chosen:return
+        mid,name=self.scene_options[chosen[0]]
+        self.request_direct_scene(mid,name)
+
+    def open_debug_for_selected_scene(self,event=None):
+        """Separate manual native menu path, intentionally not the double-click path."""
+        chosen=self.scene_list.curselection()
+        if not chosen:return
+        mid,name=self.scene_options[chosen[0]]
+        character=self.scene_character.current()
+        if character<0:return
+        if not self.mem or not self.args.enable_debug_menu:
+            messagebox.showerror('Not connected','Connect via Run.bat first')
+            return
+        ready=calibrated_for_direct_warp(self.debug_profile)
+        if ready and not self.native_warp_confirmed:
+            if not messagebox.askyesno('Experimental native warp',
+                'This uses addresses LEARNED from original debug-menu selections and then sends N64 A.\n'
+                'Calibration is not proof of safety. It can crash/softlock the game. Continue on a disposable save?'):
+                return
+            self.native_warp_confirmed=True
+        if not ready and not self.debug_shortcut_confirmed:
+            if not messagebox.askyesno('Native debug menu needs calibration',
+                'This build cannot safely invent the menu selection addresses.\n'
+                'Open the native debug menu now for manual navigation / calibration?'):
+                return
+            self.debug_shortcut_confirmed=True
+        try:
+            result=open_native_debug_for_scene(self.mem,mid,SCENES)
+            from time import monotonic
+            if ready:
+                now=monotonic()
+                self.pending_native_warp={'map_id':mid,'character':character,'start_at':now+0.85,
+                                          'deadline':now+18,'staged':False,'confirmed':False,'confirm_at':None}
+                self.scene_status.set(f'Opening N64 debug menu; will stage character {character}, scene {mid} using learned menu fields.')
+            else:
+                self.scene_status.set(f'Original debug menu opened. TARGET {result["label"]}; character {character}. '
+                                      'Manual selection required until native menu fields have been learned in calibration tab.')
+        except (OSError,ValueError,RuntimeError) as exc:
+            self.scene_status.set(f'Native debug entry blocked: {exc}')
+            messagebox.showerror('Native debug entry failed',str(exc))
+
+    def enter_debug_menu(self):
+        """Preserve previous call-site compatibility: open with selected hint."""
+        self.activate_selected_scene()
+
+    def export_inspector(self):
+        if not self.mem or not self.watch_rows:
+            messagebox.showerror('No data','Connect and wait for current readings')
+            return
+        out=Path(__file__).resolve().parents[1]/'practice'/'diagnostics'
+        out.mkdir(parents=True,exist_ok=True)
+        path=out/('inspect_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
+        data={'format':'goemon-inspector-usa-v1','captured_utc':datetime.now(timezone.utc).isoformat(),
+              'note':'Observations; reverse-engineered source statuses. No game ROM/assets.',
+              'watches':[{'name':w.name,'n64':(f'0x{w.addr:08X}' if w.addr else None),
+                          'value':w.value,'raw':w.raw,'status':w.status,'source':w.source} for w in self.watch_rows],
+              'changes':self.log_events}
+        path.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8')
+        self.inspector_status.set('Exported diagnostics to '+str(path))

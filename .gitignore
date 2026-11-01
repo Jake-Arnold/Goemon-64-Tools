@@ -1,0 +1,45 @@
+# Python and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Generated local research outputs
+practice/diagnostics/
+*.log
+*.tmp
+
+# Local splits/routes and user state
+route.json
+*.lss
+*.sav
+*.sra
+*.state
+*.st
+
+# Build/test artifacts
+*.exe
+*.o
+*.obj
+*.dll
+*.so
+*.dylib
+portable/test_checkpoint
+portable/test_watch
+
+# Game and copyrighted assets (not part of this repository)
+*.z64
+*.n64
+*.v64
+*.rom
+*.bin
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
