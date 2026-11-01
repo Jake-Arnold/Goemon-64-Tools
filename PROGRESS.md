@@ -54,6 +54,15 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+### 2026-11-01 — v0.10.1: one-click unlock flags and sprite gallery
+
+- Added `practice/unlocks.py`, a registry of the 26 known one-byte party/upgrade/weapon/ability/item fields from the existing US GameShark-derived inspector mapping. The four base weapon upgrades use 0x00/0x01/0x02 and Chain Pipe specifically uses 0x00/0x02; other listed flags use 0x00/0x01.
+- Added the **Unlocks** tab, where selecting a value writes the exact byte immediately with no confirmation dialog. Writes use the existing before/after readback mechanism; the UI samples actual RAM and shows raw hex even for unrecognised values. No bulk writes or scene-loader changes.
+- Added the **Sprites** tab, also clickable, with a PNG importer, local sprite directory and 26 labelled placeholders. Original copyrighted game textures have not been bundled; users can supply exports from the original N64 game. See `docs/ORIGINAL_SPRITES.md`.
+- Updated `README.md`, `Run.bat`, `.gitignore`, and added `tests/test_unlocks.py` and `tests/test_unlocks_ui.py`.
+- Verification: `xvfb-run -a python3 -m unittest discover -s tests -q`: **102 passed** (includes GUI and fake-RAM tests). The Windows executable and live US Goemon64Recomp write behaviour remain untested.
+- Next: test in-game inventory/menu refresh after changing each flag, confirm provisional item labels, and import actual sprite exports to populate gallery slots.
+
 ### 2026-11-01 — v0.10.0: implement the README dashboard concept
 
 - Added `practice/theme.py` with a real themed Tk/ttk dark appearance: charcoal cards, gold headings, deep-red selected tabs/buttons, teal numeric accents and dark tree/listboxes.
