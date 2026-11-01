@@ -54,16 +54,16 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
-### 2026-11-01 — v0.10.0: working dark dashboard based on concept art
+### 2026-11-01 — v0.10.0: implement the README dashboard concept
 
-- Built `practice/theme.py` to style the real Tk/ttk interface with charcoal panels, gold headings, red active tabs and controls, teal memory values and dark tree/list widgets.
-- Reworked the landing tab into a scrollable two-column dashboard with working Goemon64Recomp connection, position bookmarks, logical checkpoint controls and LiveSplit route calibration, alongside a searchable scene catalog and actual live-memory preview.
-- Scene selections on the dashboard synchronise with the existing detailed browser; they do **not** write game memory or trigger the known-broken direct warp. Double-click navigates to the full scene browser.
-- The memory preview shares existing inspector samples and shows no invented readings while disconnected. All editing remains in the established guarded hex editor in the full tab; unsafe transition fields still require separate opt-in.
-- Added actual screenshot `docs/images/actual-dashboard.webp` and kept the original `docs/images/readme-showcase.webp` clearly labelled as concept art. Included a pre-sized header icon in the PyInstaller build assets.
-- Updated launch labels to v0.10.0, leaving historical research notes intact.
-- Tests: `python -m unittest discover -s tests -q` — 92 collected, 89 executed and passed, 3 UI tests skipped without a display. `xvfb-run -a python -m unittest tests.test_dashboard -v` — all 3 graphical integration checks passed. GUI opened and screenshot captured in Linux Xvfb.
-- Remaining: Windows EXE and Goemon64Recomp live-game UI need Windows validation; native direct warp still disabled pending engine loader analysis.
+- Added `practice/theme.py` with a real themed Tk/ttk dark appearance: charcoal cards, gold headings, deep-red selected tabs/buttons, teal numeric accents and dark tree/listboxes.
+- Rebuilt the first tab as a two-column dashboard: live connection/coordinates, functional position and logical checkpoint controls, route calibration, searchable SCENES catalog and *actual* guest-memory preview.
+- Search/scene selection synchronises to the existing full scene browser; the dashboard's scene preview does not write RAM or attempt unsafe direct warps. Double-click opens the existing detailed scene tab, not an unverified loader.
+- The live-memory preview reflects the existing inspector's sampled values when connected and stays empty while disconnected. Guarded hex editing and all diagnostic tools remain in their existing tabs.
+- Added a true application screenshot to `docs/images/actual-dashboard.webp`, retained original concept art separately, and included a pre-sized header logo (and PyInstaller inclusion) for sharp rendering without extra runtime dependencies.
+- Kept direct scene warp disabled, advanced engine-address write opt-in unchanged, and all observed N64 addresses intact. The README does not portray imagined concept-art behaviours as working features.
+- Validation: `python -m unittest discover -s tests -q` passed; a Tk desktop headless smoke test checks startup, read-only preview, scene selection, and navigation. UI run in Linux Xvfb, not yet tested in Windows or with a running US Goemon64Recomp instance.
+- Next: validate Windows executable and actual live connection; refine smaller-screen layout and focus on the legitimate game loader separately.
 
 ### 2026-11-01 — Windows branded executable build and README concept art
 

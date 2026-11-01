@@ -1,0 +1,71 @@
+"""Writable unlock values tested on fake N64 RAM, not a running game."""
+from __future__ import annotations
+import unittest
+from practice.unlocks import UNLOCKS, GROUPS, BY_ADDRESS, read_unlock, write_unlock, validate_unlocks
+
+
+class FakeRAM:
+    def __init__(self):
+        self.bytes = {0x800C7A94: 13}
+        self.writes = []
+    def u8(self, address):
+        return self.read_guest(address, 1)[0]
+    def read_guest(self, address, length):
+        return bytes(self.bytes.get(address + i, 0) for i in range(length))
+    def write_guest(self, address, value):
+        self.writes.append((address, value))
+        for i, b in enumerate(value):
+            self.bytes[address + i] = b
+
+
+class TestUnlocks(unittest.TestCase):
+    def test_mappings_match_inspector(self):
+        validate_unlocks()
+        self.assertEqual(len(UNLOCKS), 26)
+        self.assertEqual(len(set(x.address for x in UNLOCKS)), len(UNLOCKS))
+        self.assertEqual({x.group for x in UNLOCKS}, set(GROUPS))
+
+    def test_binary_toggle_and_neighbor_bytes(self):
+        ram = FakeRAM()
+        ram.bytes[0x8015C6BE] = 0x54
+        ram.bytes[0x8015C6C0] = 0x6A
+        chain = BY_ADDRESS[0x8015C6BF]
+        self.assertEqual(chain.values, (0, 2))
+        self.assertTrue(write_unlock(ram, chain, 2))
+        self.assertEqual(read_unlock(ram, chain), 2)
+        self.assertEqual(ram.read_guest(0x8015C6BE,3), bytes((0x54,2,0x6A)))
+        self.assertTrue(write_unlock(ram, chain, 0))
+        self.assertEqual(read_unlock(ram, chain), 0)
+
+    def test_weapon_level_has_three_stages(self):
+        ram = FakeRAM()
+        upgrade = BY_ADDRESS[0x8015C6AF]
+        self.assertEqual(upgrade.values, (0, 1, 2))
+        self.assertTrue(write_unlock(ram, upgrade, 1))
+        self.assertTrue(write_unlock(ram, upgrade, 2))
+        self.assertEqual(read_unlock(ram, upgrade), 2)
+
+    def test_noop_and_no_extra_write(self):
+        ram = FakeRAM()
+        item = BY_ADDRESS[0x8015C6C3]
+        self.assertFalse(write_unlock(ram, item, 0))
+        self.assertEqual(ram.writes, [])
+
+    def test_invalid_value_never_writes(self):
+        ram = FakeRAM()
+        with self.assertRaises(ValueError):
+            write_unlock(ram, BY_ADDRESS[0x8015C6C3], 2)
+        with self.assertRaises(ValueError):
+            write_unlock(ram, BY_ADDRESS[0x8015C6BF], 1)
+        self.assertEqual(ram.writes, [])
+
+    def test_transition_blocks_flag_write(self):
+        ram = FakeRAM()
+        ram.bytes[0x800C7A94] = 4
+        with self.assertRaises(RuntimeError):
+            write_unlock(ram, BY_ADDRESS[0x8015C6C7], 1)
+        self.assertEqual(ram.writes, [])
+
+
+if __name__ == '__main__':
+    unittest.main()

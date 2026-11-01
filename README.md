@@ -1,16 +1,16 @@
-# Goemon Speedrun Tools v0.10.0 — functional dark dashboard
+# Goemon Speedrun Tools v0.10.0 — branded dashboard and memory tools
 
-![Actual Goemon Speedrun Tools application dashboard, disconnected](docs/images/actual-dashboard.webp)
+![Real Tkinter dashboard running in an offline test environment](docs/images/actual-dashboard.webp)
 
-*Actual Tkinter application screenshot captured in a virtual desktop without a running game. Memory values appear only when connected to US Goemon64Recomp.*
+*Real application screenshot, captured in a virtual Linux display without a running game. The live-memory preview is empty until connected to US Goemon64Recomp.*
 
-The [original design concept](docs/images/readme-showcase.webp) now informs the real desktop UI: charcoal backgrounds, gold headers, deep-red accents, an integrated dashboard and an original app icon. The dashboard has functioning connection, bookmarks, logical checkpoints, route calibration, searchable scene selection and live memory previews. The full Live memory tab retains guarded hex editing. **Direct scene warp remains disabled.** The illustrative concept's imaginary controls, scene names and RetroArch connection are not implemented.
+The original [README concept illustration](docs/images/readme-showcase.webp) inspired this dark gold/red interface. The actual dashboard now combines **connection, position bookmarks, logical checkpoints, route calibration, searchable scene catalog and a real live-memory preview**. Existing deep-dive tabs, including guarded hex editing and native debug-menu calibration, remain available. **Direct scene warp is still disabled**; the mock illustration's imaginary controls, scene names and RetroArch connection are not implemented.
 
 ## Windows desktop build
 
 A single-file branded Windows executable can be built with `build/Build-Windows.cmd` (double-click it on **Windows**, with 64-bit Python 3.11+ installed). The script installs PyInstaller into an isolated `.build-venv` and writes `dist/GoemonSpeedrunTools.exe`. **Windows is required to build the Windows executable; this repository does not include a prebuilt .exe.**
 
-The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/taskbar icon and includes the PNG and ICO resources for Tkinter's window icon. The graphical app is launched with the same opt-in practice flags as `Run.bat`, but **direct scene warp remains disabled**. Use a disposable save.
+The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/taskbar icon and includes the logo resources for Tkinter's window icon. The graphical app is launched with the same opt-in practice flags as `Run.bat`, but **direct scene warp remains disabled**. Use a disposable save.
 
 - Existing source usage remains `Run.bat`; the source-run launcher keeps local state in `practice/`.
 - The packaged executable writes bookmarks, checkpoints, debug-menu profile and exported diagnostics under `%LOCALAPPDATA%\GoemonSpeedrunTools\` to avoid PyInstaller's temporary directory.
@@ -21,9 +21,9 @@ The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/tas
 
 - `assets/goemon_tools_logo.png` — app logo artwork.
 - `assets/goemon_tools_logo.ico` — multi-size Windows icon (embedded in `.exe`).
-- `assets/goemon_tools_logo_small.png` — crisp, pre-sized desktop header icon.
-- `docs/images/actual-dashboard.webp` — real desktop dashboard screenshot.
-- `docs/images/readme-showcase.webp` — original concept-art reference (not a screenshot).
+- `assets/goemon_tools_logo_small.png` — high-quality pre-rendered header icon.
+- `docs/images/actual-dashboard.webp` — screenshot of the working application.
+- `docs/images/readme-showcase.webp` — original concept-art reference, not a UI screenshot.
 
 ---
 

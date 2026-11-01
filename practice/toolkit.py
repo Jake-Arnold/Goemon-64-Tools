@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.10.0 — external Windows UI for US Goemon64Recomp.
+"""Goemon Practice Toolkit v0.10.1 — external Windows UI for US Goemon64Recomp.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -25,6 +25,7 @@ from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.theme import apply_theme, PALETTE
+from practice.unlocks_ui import UnlocksMixin
 from practice.native_character import (
     prepare_character_swap, undo_character_preparation,
     ready_after_native_swap, press_native_c_down, IDLE_ACTIONS,
@@ -74,10 +75,10 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(InspectorMixin):
+class Toolkit(UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.10.0 · USA Recomp")
+        root.title("Goemon Practice Toolkit v0.10.1 · USA Recomp")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -111,7 +112,7 @@ class Toolkit(InspectorMixin):
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.10.0  |  US Goemon64Recomp',
+        ttk.Label(header, text='v0.10.1  |  US Goemon64Recomp',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -252,6 +253,7 @@ class Toolkit(InspectorMixin):
         ttk.Button(preview_footer, text='Open live memory', command=self.open_live_memory_tab).pack(side='right')
         self.draw_quick_scenes()
         self.build_inspector_tabs(notebook)
+        self.build_unlock_tabs(notebook)
         statusbar = ttk.Frame(root, style='Header.TFrame', padding=(16, 5))
         statusbar.pack(fill='x')
         ttk.Label(statusbar, text='EXPERIMENTAL PRACTICE ONLY  •  Never use for submitted runs',
@@ -372,6 +374,7 @@ class Toolkit(InspectorMixin):
                 self.poll_direct_warp(now)
                 if state==10 or (self.pending_native_warp and state!=13):
                     self.refresh_inspector({})
+                    self.refresh_unlocks()
                     self.poll_native_warp_menu(now)
                     self.root.after(170,self.tick)
                     return
@@ -389,12 +392,15 @@ class Toolkit(InspectorMixin):
                 self.misc_text.set(f"Character: {s['character']}    Action: {s['action']}    Loading: {s['loading']}")
                 self.current=s
                 self.refresh_inspector(s)
+                self.refresh_unlocks()
                 self.refresh_checkpoint_diff()
                 self.poll_pending_restore(s, now)
             except (OSError,ValueError) as e:
                 self.status.set(f"Memory read failed: {e}")
                 self.cancel_pending_restore(quiet=True)
                 self.mem=None
+        if not self.mem:
+            self.refresh_unlocks(force=True)
         self.root.after(170,self.tick)
 
     def save_bookmark(self):

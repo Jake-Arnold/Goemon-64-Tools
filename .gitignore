@@ -49,3 +49,6 @@ Thumbs.db
 build-output/
 dist/
 *.spec
+
+# User-extracted original game artwork (do not distribute)
+practice/sprites/
