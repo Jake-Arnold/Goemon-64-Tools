@@ -43,3 +43,9 @@ portable/test_watch
 Thumbs.db
 .vscode/
 .idea/
+
+# Standalone Windows build tooling
+.build-venv/
+build-output/
+dist/
+*.spec

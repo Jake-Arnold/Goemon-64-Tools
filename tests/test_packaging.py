@@ -1,0 +1,49 @@
+"""Packaging contract tests; Windows executable build itself requires Windows."""
+from __future__ import annotations
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+
+from practice import paths
+from goemon_app import DEFAULT_PRACTICE_FLAGS
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class TestWindowsPackaging(unittest.TestCase):
+    def test_assets_available_for_bundling(self):
+        self.assertTrue((ROOT / 'assets/goemon_tools_logo.ico').is_file())
+        self.assertTrue((ROOT / 'assets/goemon_tools_logo.png').is_file())
+        self.assertTrue((ROOT / 'docs/images/readme-showcase.webp').is_file())
+        self.assertGreater((ROOT / 'assets/goemon_tools_logo.ico').stat().st_size, 100)
+
+    def test_source_files_remain_in_old_location(self):
+        self.assertFalse(paths.is_frozen())
+        self.assertEqual(paths.practice_data_dir(), ROOT / 'practice')
+        self.assertEqual(paths.resource_root(), ROOT)
+
+    def test_packaged_paths_use_user_folder_and_temp_resources(self):
+        import sys
+        with tempfile.TemporaryDirectory() as root:
+            with patch.object(sys, 'frozen', True, create=True), patch.object(sys, '_MEIPASS', root, create=True), patch.dict('os.environ', {'LOCALAPPDATA': root}):
+                self.assertEqual(paths.resource_root(), Path(root))
+                self.assertEqual(paths.practice_data_dir(), Path(root) / 'GoemonSpeedrunTools')
+                self.assertEqual(paths.diagnostics_dir(), Path(root) / 'GoemonSpeedrunTools' / 'diagnostics')
+
+    def test_entrypoint_matches_run_bat_flags(self):
+        launcher = (ROOT / 'Run.bat').read_text()
+        for flag in DEFAULT_PRACTICE_FLAGS:
+            self.assertIn(flag, launcher)
+        self.assertNotIn('--enable-scene-warp', DEFAULT_PRACTICE_FLAGS)
+
+    def test_build_script_embeds_icon_and_app_assets(self):
+        script = (ROOT / 'build/Build-Windows.ps1').read_text()
+        self.assertIn('PyInstaller', script)
+        self.assertIn('--onefile --windowed', script)
+        self.assertIn('--icon $Icon', script)
+        self.assertIn('goemon_app.py', script)
+
+
+if __name__ == '__main__':
+    unittest.main()

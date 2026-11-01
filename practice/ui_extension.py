@@ -12,6 +12,7 @@ from practice.hex_edit import get_policy, parse_hex, checked_write
 from practice.scenes import SCENES, scene_label
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
 from practice.checkpoints import MAP_ADDR, STATE_ADDR
+from practice.paths import practice_data_dir, diagnostics_dir
 from practice.native_character import press_native_debug_accept
 from practice.native_debug_watch import FIELDS as NATIVE_WATCH_FIELDS, read_fields as read_native_watches, changed_fields as changed_native_watches, make_change_event as make_native_change_event, can_mark_state as can_mark_native_state, decode_hover_pointer
 from practice.native_debug_trace import (Observation, Candidate, menu_state, take_menu_snapshot,
@@ -22,7 +23,7 @@ from practice.native_character_cursor_scan import (
     ORDER as CHARACTER_CURSOR_ORDER, CHARACTERS as CHARACTER_CURSOR_NAMES,
     capture_cursor, find_cursor_candidates, make_cursor_report)
 
-DEBUG_PROFILE_PATH = Path(__file__).resolve().parent / "native_debug_fields.json"
+DEBUG_PROFILE_PATH = practice_data_dir() / "native_debug_fields.json"
 
 class InspectorMixin:
     def build_inspector_tabs(self, notebook):
@@ -465,7 +466,7 @@ class InspectorMixin:
         if not self.cursor_analysed or self.cursor_busy:
             self.cursor_status.set('Record eight highlights and run the analysis first.')
             return
-        root=Path(__file__).resolve().parent/'diagnostics'
+        root=diagnostics_dir()
         root.mkdir(parents=True,exist_ok=True)
         path=root/('native_character_cursor_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
         payload=make_cursor_report(self.cursor_captures,self.cursor_candidates)
@@ -540,7 +541,7 @@ class InspectorMixin:
         if not self.native_watch_events:
             messagebox.showerror('No samples','Mark game or debug-menu state before exporting')
             return
-        root=Path(__file__).resolve().parent/'diagnostics'
+        root=diagnostics_dir()
         root.mkdir(parents=True,exist_ok=True)
         path=root/('native_watch_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
         payload={'format':'mnsg-usa-original-debug-live-watch-v1',
@@ -600,7 +601,7 @@ class InspectorMixin:
         if not self.debug_candidates:
             self.debug_calibration_status.set('No candidates to export. Record several contrasting selections.')
             return
-        root=Path(__file__).resolve().parent/'diagnostics'
+        root=diagnostics_dir()
         root.mkdir(parents=True,exist_ok=True)
         from datetime import datetime,timezone
         path=root/('native_menu_candidates_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
@@ -644,7 +645,7 @@ class InspectorMixin:
 
     def _save_direct_warp_diagnostics(self, pending):
         """Capture non-sensitive numeric N64 state; no raw dumps or ROM assets."""
-        out=Path(__file__).resolve().parents[1] / 'practice' / 'diagnostics'
+        out=diagnostics_dir()
         out.mkdir(parents=True,exist_ok=True)
         path=out / ('direct_warp_' + pending['date_code'] + '.json')
         payload={'format':'goemon-usa-experimental-direct-warp-v1',
@@ -734,7 +735,7 @@ class InspectorMixin:
             self.transition_status.set('No trace to export.')
             return
         trace.stop()
-        out=Path(__file__).resolve().parent/'diagnostics'
+        out=diagnostics_dir()
         out.mkdir(parents=True,exist_ok=True)
         path=out/('normal_transition_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
         path.write_text(json.dumps(trace.report(),indent=2)+'\n',encoding='utf-8')
@@ -858,7 +859,7 @@ class InspectorMixin:
         if not self.mem or not self.watch_rows:
             messagebox.showerror('No data','Connect and wait for current readings')
             return
-        out=Path(__file__).resolve().parents[1]/'practice'/'diagnostics'
+        out=diagnostics_dir()
         out.mkdir(parents=True,exist_ok=True)
         path=out/('inspect_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
         data={'format':'goemon-inspector-usa-v1','captured_utc':datetime.now(timezone.utc).isoformat(),

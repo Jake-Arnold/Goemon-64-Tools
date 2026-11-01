@@ -1,5 +1,28 @@
 # Goemon Speedrun Tools v0.9.9 — normal transition evidence and Live Memory hex editing
 
+![Goemon Speedrun Tools conceptual interface artwork](docs/images/readme-showcase.webp)
+
+*Concept art for the project, not a screenshot of the current Tkinter interface. Illustrated UI labels, scene names and memory addresses are placeholders; current supported target is US Goemon64Recomp (not RetroArch).*
+
+## Windows desktop build
+
+A single-file branded Windows executable can be built with `build/Build-Windows.cmd` (double-click it on **Windows**, with 64-bit Python 3.11+ installed). The script installs PyInstaller into an isolated `.build-venv` and writes `dist/GoemonSpeedrunTools.exe`. **Windows is required to build the Windows executable; this repository does not include a prebuilt .exe.**
+
+The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/taskbar icon and includes the PNG and ICO resources for Tkinter's window icon. The graphical app is launched with the same opt-in practice flags as `Run.bat`, but **direct scene warp remains disabled**. Use a disposable save.
+
+- Existing source usage remains `Run.bat`; the source-run launcher keeps local state in `practice/`.
+- The packaged executable writes bookmarks, checkpoints, debug-menu profile and exported diagnostics under `%LOCALAPPDATA%\GoemonSpeedrunTools\` to avoid PyInstaller's temporary directory.
+- Existing source-based bookmarks/checkpoints are *not migrated automatically*. Copy any wanted `practice/bookmarks.json`, `practice/checkpoints.json` and `practice/native_debug_fields.json` to the packaged app data directory manually.
+- Only the Python unit tests have been run in this environment; the Windows packaging step and real Windows taskbar icon have not yet been verified on Windows.
+
+## Visual assets
+
+- `assets/goemon_tools_logo.png` — app logo artwork.
+- `assets/goemon_tools_logo.ico` — multi-size Windows icon (embedded in `.exe`).
+- `docs/images/readme-showcase.webp` — concept mock image for this README.
+
+---
+
 ## Verified normal door transition (MACHI 353 → 351)
 
 Observed 307 samples over 9.36 seconds on 2026-11-01. At 2715 ms, the pending destination changed **353 → 351**. At 3112 ms, the current map changed **353 → 351**, previous map changed **465 → 353**, and stage offset changed **3 → 1**. The measured gap was approximately **397 ms**. During all reported observations, top state remained **13**, game phase **1**, exit request **0**, and loading flag **0**. This does not imply those values never change within unobserved frames. A write to pending destination alone has not been established to initiate a valid area transition. Do not use the disabled v0.9.7 exit-bit warp trick.

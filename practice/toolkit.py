@@ -12,6 +12,8 @@ import math
 from pathlib import Path
 import time
 import tkinter as tk
+import platform
+import ctypes
 from tkinter import ttk, messagebox
 import sys
 
@@ -21,14 +23,53 @@ from autosplitter.engine import load_route, save_route
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
 from practice.ui_extension import InspectorMixin
+from practice.paths import resource_root, practice_data_dir
 from practice.native_character import (
     prepare_character_swap, undo_character_preparation,
     ready_after_native_swap, press_native_c_down, IDLE_ACTIONS,
 )
 
-ROOT = Path(__file__).resolve().parents[1]
-BOOKMARKS_FILE = ROOT / "practice" / "bookmarks.json"
-CHECKPOINTS_FILE = ROOT / "practice" / "checkpoints.json"
+ROOT = resource_root()
+BOOKMARKS_FILE = practice_data_dir() / "bookmarks.json"
+CHECKPOINTS_FILE = practice_data_dir() / "checkpoints.json"
+
+
+ASSETS_DIR = ROOT / "assets"
+APP_ICON_ICO = ASSETS_DIR / "goemon_tools_logo.ico"
+APP_ICON_PNG = ASSETS_DIR / "goemon_tools_logo.png"
+
+
+def configure_window_branding(root: tk.Tk) -> None:
+    """Apply a real app identity/icon when available.
+
+    On Windows this improves the taskbar entry so the toolkit shows its own
+    icon rather than a generic Python one when launched from the source tree.
+    The helper is best-effort and silently falls back if the assets or Win32
+    APIs are unavailable.
+    """
+    try:
+        if platform.system() == "Windows":
+            try:
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
+                    "JakeArnold.GoemonSpeedrunTools"
+                )
+            except Exception:
+                pass
+            if APP_ICON_ICO.exists():
+                try:
+                    root.iconbitmap(default=str(APP_ICON_ICO))
+                    return
+                except Exception:
+                    pass
+        if APP_ICON_PNG.exists():
+            try:
+                icon_image = tk.PhotoImage(file=str(APP_ICON_PNG))
+                root._goemon_icon_image = icon_image
+                root.iconphoto(True, icon_image)
+            except Exception:
+                pass
+    except Exception:
+        pass
 
 
 class Toolkit(InspectorMixin):
@@ -36,6 +77,7 @@ class Toolkit(InspectorMixin):
         self.root, self.args = root, args
         root.title("Goemon Practice Toolkit v0.9.9 · USA Recomp")
         root.geometry("1180x770")
+        configure_window_branding(root)
         root.attributes("-topmost", True)
         self.mem, self.process = None, None
         self.game_pid = None
@@ -411,7 +453,7 @@ class Toolkit(InspectorMixin):
             messagebox.showerror("Calibration failed",str(e))
 
 
-def main():
+def main(argv=None):
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid",type=int)
     ap.add_argument("--base",help="RDRAM host base 0x...; bypasses experimental auto-discovery")
@@ -422,7 +464,7 @@ def main():
     ap.add_argument("--enable-debug-menu",action="store_true",help="EXPERIMENTAL: allow entering original game debug menu state 10")
     ap.add_argument("--enable-hex-edit",action="store_true",help="Opt in to confirmed double-click hex edits")
     ap.add_argument("--enable-scene-warp",action="store_true",help="DISABLED: v0.9.7 direct scene writes triggered title screen; never used")
-    args=ap.parse_args()
+    args=ap.parse_args(argv)
     root=tk.Tk(); app=Toolkit(root,args)
     try:
         root.mainloop()
