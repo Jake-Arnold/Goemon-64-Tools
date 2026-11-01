@@ -64,6 +64,7 @@ class InspectorMixin:
 
         inspector=ttk.Frame(notebook,padding=10)
         notebook.add(inspector,text='Live memory')
+        self.live_memory_tab=inspector
         ttk.Label(inspector,textvariable=self.inspector_status,wraplength=900).pack(fill='x',pady=3)
         top=ttk.Frame(inspector);top.pack(fill='x',pady=3)
         ttk.Checkbutton(top,text='Log changed values',variable=self.log_changes).pack(side='left')
@@ -80,18 +81,22 @@ class InspectorMixin:
         self.watch_tree.heading('#0',text='Field');self.watch_tree.column('#0',width=195,stretch=True)
         for n,display,w in [('address','N64 address',120),('value','Decoded',340),('raw','Hex',85),('status','Status',75),('source','Source / confidence',235)]:
             self.watch_tree.heading(n,text=display);self.watch_tree.column(n,width=w,stretch=n in ('value','source'))
-        self.watch_tree.tag_configure('changed',background='#e9f5ff')
-        self.watch_tree.tag_configure('invalid',background='#ffe4de')
+        self.watch_tree.tag_configure('changed',background='#254f49')
+        self.watch_tree.tag_configure('invalid',background='#5d3030')
         scroll=ttk.Scrollbar(frame,orient='vertical',command=self.watch_tree.yview)
         self.watch_tree.configure(yscrollcommand=scroll.set)
         self.watch_tree.pack(side='left',fill='both',expand=True);scroll.pack(side='right',fill='y')
         self.watch_tree.bind('<Double-1>',self.edit_live_hex)
         ttk.Label(inspector,text='Recent raw-field changes (not definitive semantic proof)').pack(anchor='w')
-        self.event_text=tk.Text(inspector,height=6,wrap='none',font=('Consolas',9),state='disabled')
+        self.event_text=tk.Text(inspector,height=6,wrap='none',font=('Consolas',9),state='disabled',
+                                background='#1a1d23', foreground='#f3eee5',
+                                insertbackground='#edbf6b', selectbackground='#8c3030',
+                                relief='flat', borderwidth=0)
         self.event_text.pack(fill='x')
 
         scenes=ttk.Frame(notebook,padding=10)
         notebook.add(scenes,text='Scene browser')
+        self.scene_tab=scenes
         self.scene_live=tk.StringVar(value='Current map: —')
         ttk.Label(scenes,textvariable=self.scene_live,font=('Consolas',12)).pack(anchor='w',pady=4)
         ttk.Label(scenes,text='Double-click = select requested scene (READ ONLY). Warp is disabled until the correct game loader path is identified.').pack(anchor='w')
@@ -106,7 +111,10 @@ class InspectorMixin:
         ttk.Entry(scenes,textvariable=self.scene_filter).pack(fill='x',pady=6)
         self.scene_filter.trace_add('write',lambda *_:self.draw_scene_list())
         scene_frame=ttk.Frame(scenes);scene_frame.pack(fill='both',expand=True)
-        self.scene_list=tk.Listbox(scene_frame,font=('Consolas',10),exportselection=False,height=16)
+        self.scene_list=tk.Listbox(scene_frame,font=('Consolas',10),exportselection=False,height=16,
+                                   background='#1a1d23', foreground='#f3eee5',
+                                   selectbackground='#8c3030',selectforeground='#fff',
+                                   relief='flat',highlightthickness=0)
         self.scene_list.pack(side='left',fill='both',expand=True)
         sc=ttk.Scrollbar(scene_frame,orient='vertical',command=self.scene_list.yview)
         sc.pack(side='right',fill='y');self.scene_list.configure(yscrollcommand=sc.set)
@@ -238,6 +246,7 @@ class InspectorMixin:
                     modified.append((w.name,old[w.name],w.raw))
             self.watch_rows=watches
             self.draw_watches()
+            self.refresh_quick_watch()
             self.watch_previous={w.name:w.raw for w in watches}
             invalid=[w.name for w in watches if w.status in ('CHECK','ERROR')]
             self.inspector_status.set(f'Map {live_map} ({SCENES.get(live_map,"unmapped")})  |  {len(watches)} fields  |  {len(invalid)} need verification  |  {len(modified)} changed this poll')
@@ -293,7 +302,7 @@ class InspectorMixin:
         self.native_watch_tree.heading('#0',text='Field');self.native_watch_tree.column('#0',width=205)
         for c,title,w in [('address','N64 address',116),('value','Decimal',80),('hex','Hex',86),('previous','Previous',100),('confidence','Evidence / caution',325)]:
             self.native_watch_tree.heading(c,text=title);self.native_watch_tree.column(c,width=w,stretch=c=='confidence')
-        self.native_watch_tree.tag_configure('changed',background='#e9f5ff')
+        self.native_watch_tree.tag_configure('changed',background='#254f49')
         for field in NATIVE_WATCH_FIELDS:
             self.native_watch_tree.insert('','end',iid=field.key,text=field.label,
                 values=(f'0x{field.address:08X}','—','—','—',field.confidence))
@@ -321,7 +330,8 @@ class InspectorMixin:
         ttk.Button(row,text='Find candidate memory fields',command=self.analyse_debug_selection).pack(side='left',padx=4)
         ttk.Button(row,text='Use selected field',command=self.use_debug_candidate).pack(side='left',padx=4)
         ttk.Button(row,text='Export FULL candidate report',command=self.export_debug_candidates).pack(side='left',padx=4)
-        self.debug_sample_list=tk.Listbox(tab,height=4,font=('Consolas',10))
+        self.debug_sample_list=tk.Listbox(tab,height=4,font=('Consolas',10),
+                                      background='#1a1d23',foreground='#f3eee5',selectbackground='#8c3030')
         self.debug_sample_list.pack(fill='x',pady=5)
         cols=('role','method','addr','width','pairs','examples')
         self.debug_candidates_tree=ttk.Treeview(tab,columns=cols,show='headings',height=7)
@@ -350,7 +360,8 @@ class InspectorMixin:
         self.cursor_export_btn.state(['disabled'])
         self.cursor_reset_btn=ttk.Button(row,text='Clear cursor captures',command=self.reset_character_cursor)
         self.cursor_reset_btn.pack(side='left',padx=5)
-        self.cursor_record_list=tk.Listbox(tab,height=8,font=('Consolas',10))
+        self.cursor_record_list=tk.Listbox(tab,height=8,font=('Consolas',10),
+                                       background='#1a1d23',foreground='#f3eee5',selectbackground='#8c3030')
         self.cursor_record_list.pack(fill='x',pady=(8,7))
         headings=('addr','width','encoding','goemon','ebi','sasuke','yae')
         frame=ttk.Frame(tab);frame.pack(fill='both',expand=True)

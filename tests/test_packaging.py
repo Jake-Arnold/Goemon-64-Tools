@@ -15,6 +15,8 @@ class TestWindowsPackaging(unittest.TestCase):
     def test_assets_available_for_bundling(self):
         self.assertTrue((ROOT / 'assets/goemon_tools_logo.ico').is_file())
         self.assertTrue((ROOT / 'assets/goemon_tools_logo.png').is_file())
+        self.assertTrue((ROOT / 'assets/goemon_tools_logo_small.png').is_file())
+        self.assertTrue((ROOT / 'docs/images/actual-dashboard.webp').is_file())
         self.assertTrue((ROOT / 'docs/images/readme-showcase.webp').is_file())
         self.assertGreater((ROOT / 'assets/goemon_tools_logo.ico').stat().st_size, 100)
 
@@ -43,6 +45,7 @@ class TestWindowsPackaging(unittest.TestCase):
         self.assertIn('--onefile --windowed', script)
         self.assertIn('--icon $Icon', script)
         self.assertIn('goemon_app.py', script)
+        self.assertIn('goemon_tools_logo_small.png', script)
 
 
 if __name__ == '__main__':

@@ -7,11 +7,12 @@ $Venv = Join-Path $Root '.build-venv'
 $Python = Join-Path $Venv 'Scripts\python.exe'
 $Icon = Join-Path $Root 'assets\goemon_tools_logo.ico'
 $Png = Join-Path $Root 'assets\goemon_tools_logo.png'
+$SmallPng = Join-Path $Root 'assets\goemon_tools_logo_small.png'
 $Entry = Join-Path $Root 'goemon_app.py'
 $Dist = Join-Path $Root 'dist'
 $Work = Join-Path $Root 'build-output'
 
-foreach ($File in @($Icon, $Png, $Entry)) {
+foreach ($File in @($Icon, $Png, $SmallPng, $Entry)) {
     if (-not (Test-Path -LiteralPath $File)) { throw "Missing required file: $File" }
 }
 if (-not (Test-Path -LiteralPath $Python)) {
@@ -29,6 +30,7 @@ try {
         --icon $Icon `
         --add-data "${Icon};assets" `
         --add-data "${Png};assets" `
+        --add-data "${SmallPng};assets" `
         --distpath $Dist --workpath $Work `
         --specpath $Work `
         $Entry

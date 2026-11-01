@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.9.9 — external Windows UI for US Goemon64Recomp.
+"""Goemon Practice Toolkit v0.10.0 — external Windows UI for US Goemon64Recomp.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -24,6 +24,7 @@ from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
+from practice.theme import apply_theme, PALETTE
 from practice.native_character import (
     prepare_character_swap, undo_character_preparation,
     ready_after_native_swap, press_native_c_down, IDLE_ACTIONS,
@@ -37,6 +38,7 @@ CHECKPOINTS_FILE = practice_data_dir() / "checkpoints.json"
 ASSETS_DIR = ROOT / "assets"
 APP_ICON_ICO = ASSETS_DIR / "goemon_tools_logo.ico"
 APP_ICON_PNG = ASSETS_DIR / "goemon_tools_logo.png"
+HEADER_LOGO_PNG = ASSETS_DIR / "goemon_tools_logo_small.png"
 
 
 def configure_window_branding(root: tk.Tk) -> None:
@@ -75,10 +77,12 @@ def configure_window_branding(root: tk.Tk) -> None:
 class Toolkit(InspectorMixin):
     def __init__(self, root, args):
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.9.9 · USA Recomp")
-        root.geometry("1180x770")
+        root.title("Goemon Practice Toolkit v0.10.0 · USA Recomp")
+        root.geometry("1390x900")
+        root.minsize(1100, 730)
+        apply_theme(root)
         configure_window_branding(root)
-        root.attributes("-topmost", True)
+        root.attributes("-topmost", False)
         self.mem, self.process = None, None
         self.game_pid = None
         self.pending_restore = None
@@ -93,55 +97,232 @@ class Toolkit(InspectorMixin):
         self.pos_text = tk.StringVar(value="X: —    Y: —    Z: —")
         self.speed_text = tk.StringVar(value="Speed: —")
         self.misc_text = tk.StringVar(value="Character: —   Action: —   Loading: —")
-        notebook=ttk.Notebook(root)
-        notebook.pack(fill="both",expand=True)
-        frm = ttk.Frame(notebook,padding=12)
-        notebook.add(frm,text="Practice / checkpoints")
-        ttk.Label(frm,textvariable=self.status,wraplength=635).pack(anchor="w")
-        ttk.Button(frm,text="Connect to Goemon64Recomp",command=self.connect).pack(fill="x",pady=8)
-        ttk.Label(frm,textvariable=self.pos_text,font=("Consolas",14)).pack(anchor="w")
-        ttk.Label(frm,textvariable=self.speed_text,font=("Consolas",12)).pack(anchor="w")
-        ttk.Label(frm,textvariable=self.misc_text,font=("Consolas",10)).pack(anchor="w",pady=(0,8))
-        ttk.Separator(frm).pack(fill="x",pady=7)
-        ttk.Label(frm,text="Position bookmarks (practice only)").pack(anchor="w")
-        self.bookmarks_box = ttk.Combobox(frm,state="readonly",values=self.bookmark_labels())
-        self.bookmarks_box.pack(fill="x",pady=3)
-        self.bookmark_name = ttk.Entry(frm)
-        self.bookmark_name.insert(0,"Practice checkpoint")
-        self.bookmark_name.pack(fill="x",pady=3)
-        row = ttk.Frame(frm)
-        row.pack(fill="x",pady=4)
-        ttk.Button(row,text="Save position bookmark",command=self.save_bookmark).pack(side="left",expand=True,fill="x")
-        self.teleport_btn=ttk.Button(row,text="Restore position (unsafe)",command=self.restore_bookmark)
-        self.teleport_btn.pack(side="left",expand=True,fill="x",padx=6)
-        if not args.enable_teleport: self.teleport_btn.state(["disabled"])
-        ttk.Separator(frm).pack(fill="x",pady=6)
-        ttk.Label(frm,text="Logical checkpoints: N64 game flags + resources + position (EXPERIMENTAL)").pack(anchor="w")
-        self.checkpoints_box = ttk.Combobox(frm,state="readonly",values=self.checkpoint_labels())
-        self.checkpoints_box.pack(fill="x",pady=3)
-        state_buttons = ttk.Frame(frm)
-        state_buttons.pack(fill="x",pady=4)
-        ttk.Button(state_buttons,text="Capture logical checkpoint",command=self.capture_full_checkpoint).pack(side="left",expand=True,fill="x")
-        self.restore_state_btn = ttk.Button(state_buttons,text="Restore logical checkpoint (experimental)",command=self.restore_full_checkpoint)
-        self.restore_state_btn.pack(side="left",expand=True,fill="x",padx=6)
-        if not args.enable_state_restore: self.restore_state_btn.state(["disabled"])
-        self.cancel_restore_btn=ttk.Button(frm,text="Cancel pending native-character restore",command=self.cancel_pending_restore)
-        self.cancel_restore_btn.pack(fill="x",pady=(0,3))
-        self.cancel_restore_btn.state(["disabled"])
-        ttk.Separator(frm).pack(fill="x",pady=6)
-        ttk.Label(frm,text="Calibrate the NEXT route segment (enter from outside checkpoint radius)").pack(anchor="w")
-        row = ttk.Frame(frm)
-        row.pack(fill="x",pady=5)
+        # Branded header and first-page dashboard mirror the README concept.
+        header = ttk.Frame(root, style='Header.TFrame', padding=(20, 12))
+        header.pack(fill='x')
+        if HEADER_LOGO_PNG.exists():
+            try:
+                self.header_icon = tk.PhotoImage(file=str(HEADER_LOGO_PNG))
+                tk.Label(header, image=self.header_icon, bg=PALETTE['surface']).pack(side='left', padx=(0, 14))
+            except tk.TclError:
+                pass
+        brand = ttk.Frame(header, style='Header.TFrame')
+        brand.pack(side='left')
+        ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
+        ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
+                  style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
+        ttk.Label(header, text='v0.10.0  |  US Goemon64Recomp',
+                  style='HeaderSub.TLabel').pack(side='right', padx=8)
+
+        self.notebook = notebook = ttk.Notebook(root)
+        notebook.pack(fill='both', expand=True, padx=8, pady=(0, 5))
+        dashboard = ttk.Frame(notebook)
+        notebook.add(dashboard, text='Dashboard')
+        dash_canvas = tk.Canvas(dashboard, background=PALETTE['background'],
+                                borderwidth=0, highlightthickness=0)
+        dash_scroll = ttk.Scrollbar(dashboard, orient='vertical', command=dash_canvas.yview)
+        dash_scroll.pack(side='right', fill='y')
+        dash_canvas.pack(side='left', fill='both', expand=True)
+        dash_canvas.configure(yscrollcommand=dash_scroll.set)
+        frm = ttk.Frame(dash_canvas, padding=12)
+        dash_window = dash_canvas.create_window((0, 0), window=frm, anchor='nw')
+        frm.bind('<Configure>', lambda _e: dash_canvas.configure(scrollregion=dash_canvas.bbox('all')))
+        dash_canvas.bind('<Configure>', lambda e: dash_canvas.itemconfigure(dash_window, width=e.width))
+        frm.columnconfigure(0, weight=4, minsize=395)
+        frm.columnconfigure(1, weight=6, minsize=475)
+        frm.rowconfigure(0, weight=1)
+        left = ttk.Frame(frm)
+        left.grid(row=0, column=0, sticky='nsew', padx=(0, 7))
+        right = ttk.Frame(frm)
+        right.grid(row=0, column=1, sticky='nsew', padx=(7, 0))
+        right.columnconfigure(0, weight=1)
+        right.rowconfigure(0, weight=1)
+        right.rowconfigure(1, weight=1)
+
+        connection = ttk.LabelFrame(left, text=' Connection ', padding=12)
+        connection.pack(fill='x', pady=(0, 10))
+        ttk.Label(connection, textvariable=self.status, style='Card.TLabel',
+                  wraplength=410).pack(anchor='w', pady=(0, 7))
+        ttk.Button(connection, text='Connect to Goemon64Recomp',
+                   style='Accent.TButton', command=self.connect).pack(fill='x', pady=(0, 7))
+        ttk.Label(connection, textvariable=self.pos_text, style='AccentValue.TLabel').pack(anchor='w')
+        ttk.Label(connection, textvariable=self.speed_text, style='CardMuted.TLabel').pack(anchor='w')
+        ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
+                  wraplength=420).pack(anchor='w')
+
+        checkpoints = ttk.LabelFrame(left, text=' Checkpoints and bookmarks ', padding=12)
+        checkpoints.pack(fill='x', pady=(0, 10))
+        ttk.Label(checkpoints, text='Name for the next saved checkpoint',
+                  style='CardMuted.TLabel').pack(anchor='w')
+        self.bookmark_name = ttk.Entry(checkpoints)
+        self.bookmark_name.insert(0, 'Practice checkpoint')
+        self.bookmark_name.pack(fill='x', pady=(4, 8))
+        ttk.Label(checkpoints, text='Position bookmarks', style='Card.TLabel').pack(anchor='w')
+        self.bookmarks_box = ttk.Combobox(checkpoints, state='readonly', values=self.bookmark_labels())
+        self.bookmarks_box.pack(fill='x', pady=4)
+        row = ttk.Frame(checkpoints, style='Card.TFrame')
+        row.pack(fill='x', pady=(2, 8))
+        ttk.Button(row, text='Save position', command=self.save_bookmark,
+                   style='Accent.TButton').pack(side='left', fill='x', expand=True)
+        self.teleport_btn = ttk.Button(row, text='Restore position (unsafe)', command=self.restore_bookmark)
+        self.teleport_btn.pack(side='left', fill='x', expand=True, padx=(8, 0))
+        if not args.enable_teleport:
+            self.teleport_btn.state(['disabled'])
+        ttk.Label(checkpoints, text='Logical checkpoints (experimental)',
+                  style='Card.TLabel').pack(anchor='w', pady=(2, 0))
+        self.checkpoints_box = ttk.Combobox(checkpoints, state='readonly', values=self.checkpoint_labels())
+        self.checkpoints_box.pack(fill='x', pady=4)
+        state_buttons = ttk.Frame(checkpoints, style='Card.TFrame')
+        state_buttons.pack(fill='x', pady=(2, 5))
+        ttk.Button(state_buttons, text='Capture checkpoint', command=self.capture_full_checkpoint,
+                   style='Gold.TButton').pack(side='left', expand=True, fill='x')
+        self.restore_state_btn = ttk.Button(state_buttons, text='Restore (experimental)',
+                                            command=self.restore_full_checkpoint)
+        self.restore_state_btn.pack(side='left', expand=True, fill='x', padx=(8, 0))
+        if not args.enable_state_restore:
+            self.restore_state_btn.state(['disabled'])
+        self.cancel_restore_btn = ttk.Button(checkpoints, text='Cancel pending character restore',
+                                             command=self.cancel_pending_restore)
+        self.cancel_restore_btn.pack(fill='x', pady=(3, 0))
+        self.cancel_restore_btn.state(['disabled'])
+
+        calibration = ttk.LabelFrame(left, text=' LiveSplit route calibration ', padding=12)
+        calibration.pack(fill='x')
+        row = ttk.Frame(calibration, style='Card.TFrame')
+        row.pack(fill='x')
         self.segment_index = tk.IntVar(value=1)
-        self.radius = tk.StringVar(value="45")
-        ttk.Label(row,text="Segment #").pack(side="left")
-        ttk.Entry(row,textvariable=self.segment_index,width=5).pack(side="left",padx=5)
-        ttk.Label(row,text="Radius").pack(side="left",padx=4)
-        ttk.Entry(row,textvariable=self.radius,width=8).pack(side="left",padx=4)
-        ttk.Button(row,text="Capture split trigger here",command=self.capture_trigger).pack(side="left",padx=6)
-        ttk.Label(frm,text="All experimental functions are on when launched via Run.bat. Use disposable saves; never use these tools in competitive runs.",wraplength=640).pack(anchor="w",pady=8)
+        self.radius = tk.StringVar(value='45')
+        ttk.Label(row, text='Split #', style='Card.TLabel').pack(side='left')
+        ttk.Entry(row, textvariable=self.segment_index, width=5).pack(side='left', padx=(5, 12))
+        ttk.Label(row, text='Radius', style='Card.TLabel').pack(side='left')
+        ttk.Entry(row, textvariable=self.radius, width=7).pack(side='left', padx=(5, 12))
+        ttk.Button(calibration, text='Capture next route trigger here',
+                   command=self.capture_trigger).pack(fill='x', pady=(8, 0))
+
+        scene_card = ttk.LabelFrame(right, text=' Scene browser ', padding=10)
+        scene_card.grid(row=0, column=0, sticky='nsew', pady=(0, 6))
+        scene_card.columnconfigure(0, weight=1)
+        scene_card.rowconfigure(1, weight=1)
+        self.quick_scene_filter = tk.StringVar()
+        ttk.Entry(scene_card, textvariable=self.quick_scene_filter).grid(row=0, column=0,
+                                                                sticky='ew', pady=(0, 7))
+        self.quick_scene_filter.trace_add('write', lambda *_: self.draw_quick_scenes())
+        scene_columns = ('map', 'name', 'category')
+        self.quick_scene_tree = ttk.Treeview(scene_card, columns=scene_columns,
+                                             show='headings', height=7, selectmode='browse')
+        for col, label, width in [('map', 'ID', 70), ('name', 'Area / scene', 245),
+                                  ('category', 'Category', 85)]:
+            self.quick_scene_tree.heading(col, text=label)
+            self.quick_scene_tree.column(col, width=width, stretch=(col == 'name'))
+        self.quick_scene_tree.grid(row=1, column=0, sticky='nsew')
+        scene_scroll = ttk.Scrollbar(scene_card, orient='vertical', command=self.quick_scene_tree.yview)
+        scene_scroll.grid(row=1, column=1, sticky='ns')
+        self.quick_scene_tree.configure(yscrollcommand=scene_scroll.set)
+        # Linked to the full scene-browser selection; double click never writes RAM.
+        self.quick_scene_tree.bind('<<TreeviewSelect>>', self.choose_quick_scene)
+        self.quick_scene_tree.bind('<Double-1>', self.open_full_scene_tab)
+        footer = ttk.Frame(scene_card, style='Card.TFrame')
+        footer.grid(row=2, column=0, sticky='ew', pady=(7, 0))
+        ttk.Label(footer, text='Selecting scenes is read-only; direct warp disabled.',
+                  style='CardMuted.TLabel').pack(side='left')
+        ttk.Button(footer, text='Full scene browser', command=self.open_full_scene_tab).pack(side='right')
+
+        memory_card = ttk.LabelFrame(right, text=' Live memory (read-only preview) ', padding=10)
+        memory_card.grid(row=1, column=0, sticky='nsew', pady=(6, 0))
+        memory_card.columnconfigure(0, weight=1)
+        memory_card.rowconfigure(1, weight=1)
+        ttk.Label(memory_card, text='Live values from the original N64 guest RAM',
+                  style='CardMuted.TLabel').grid(row=0, column=0, sticky='w', pady=(0, 6))
+        memory_columns = ('field', 'addr', 'hex')
+        self.quick_watch_tree = ttk.Treeview(memory_card, columns=memory_columns,
+                                            show='headings', height=7)
+        for col, label, width in [('field', 'Field', 185), ('addr', 'N64 address', 112),
+                                  ('hex', 'Hex', 120)]:
+            self.quick_watch_tree.heading(col, text=label)
+            self.quick_watch_tree.column(col, width=width, stretch=(col == 'field'))
+        self.quick_watch_tree.grid(row=1, column=0, sticky='nsew')
+        watch_scroll = ttk.Scrollbar(memory_card, orient='vertical', command=self.quick_watch_tree.yview)
+        watch_scroll.grid(row=1, column=1, sticky='ns')
+        self.quick_watch_tree.configure(yscrollcommand=watch_scroll.set)
+        self.quick_watch_tree.tag_configure('changed', background=PALETTE['changed'])
+        preview_footer = ttk.Frame(memory_card, style='Card.TFrame')
+        preview_footer.grid(row=2, column=0, sticky='ew', pady=(7, 0))
+        ttk.Label(preview_footer, text='Edit guarded fields in the full Live memory tab.',
+                  style='CardMuted.TLabel').pack(side='left')
+        ttk.Button(preview_footer, text='Open live memory', command=self.open_live_memory_tab).pack(side='right')
+        self.draw_quick_scenes()
         self.build_inspector_tabs(notebook)
+        statusbar = ttk.Frame(root, style='Header.TFrame', padding=(16, 5))
+        statusbar.pack(fill='x')
+        ttk.Label(statusbar, text='EXPERIMENTAL PRACTICE ONLY  •  Never use for submitted runs',
+                  style='HeaderSub.TLabel').pack(side='left')
+        ttk.Label(statusbar, text='US Recomp  •  Direct warp disabled',
+                  style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
+
+    def draw_quick_scenes(self):
+        """Keep the dashboard scene catalog searchable, without guest writes."""
+        from practice.scenes import SCENES
+        query = self.quick_scene_filter.get().strip().lower()
+        selected = self.quick_scene_tree.selection()
+        self.quick_scene_tree.delete(*self.quick_scene_tree.get_children())
+        for map_id, name in sorted(SCENES.items()):
+            if query not in f'{map_id} {map_id:03X} {name}'.lower():
+                continue
+            category = 'SIRO' if map_id < 300 else ('DOUCHU' if map_id < 350 else 'MACHI / OTHER')
+            self.quick_scene_tree.insert('', 'end', iid=str(map_id), values=(map_id, name, category))
+        for entry in selected:
+            if self.quick_scene_tree.exists(entry):
+                self.quick_scene_tree.selection_set(entry)
+
+    def choose_quick_scene(self, event=None):
+        """Synchronise dashboard selection to the full browser, never mutate RAM."""
+        selection = self.quick_scene_tree.selection()
+        if not selection or not hasattr(self, 'scene_options'):
+            return
+        map_id = int(selection[0])
+        for index, (candidate, _) in enumerate(self.scene_options):
+            if candidate == map_id:
+                self.scene_list.selection_clear(0, 'end')
+                self.scene_list.selection_set(index)
+                self.scene_list.see(index)
+                self.select_scene()
+                return
+        # The full browser may have its own filter; reset it before synchronising.
+        self.scene_filter.set('')
+        for index, (candidate, _) in enumerate(self.scene_options):
+            if candidate == map_id:
+                self.scene_list.selection_set(index)
+                self.scene_list.see(index)
+                self.select_scene()
+                break
+
+    def open_full_scene_tab(self, event=None):
+        self.choose_quick_scene()
+        self.notebook.select(self.scene_tab)
+
+    def open_live_memory_tab(self):
+        self.notebook.select(self.live_memory_tab)
+
+    def refresh_quick_watch(self):
+        """Reflect real inspector samples; a disconnected session remains empty."""
+        if not self.mem or not self.watch_rows:
+            self.quick_watch_tree.delete(*self.quick_watch_tree.get_children())
+            return
+        priority = ('Map ID', 'Character', 'Current health (units)', 'Ryo',
+                    'Lives', 'Pending destination', 'Exit request (not warp)',
+                    'Native menu entry pointer', 'X', 'Y', 'Z')
+        rows = {row.name: row for row in self.watch_rows}
+        old = {row_id: self.quick_watch_tree.item(row_id, 'values') for row_id
+               in self.quick_watch_tree.get_children()}
+        self.quick_watch_tree.delete(*self.quick_watch_tree.get_children())
+        for name in priority:
+            value = rows.get(name)
+            if not value or value.addr is None:
+                continue
+            fields = (name, f'0x{value.addr:08X}', value.raw)
+            tag = ('changed',) if name in old and tuple(old[name]) != fields else ()
+            self.quick_watch_tree.insert('', 'end', iid=name, values=fields, tags=tag)
 
     def bookmark_labels(self):
         return [f"{i+1}. {x['name']} ({x['x']:.1f}, {x['y']:.1f}, {x['z']:.1f})" for i,x in enumerate(self.bookmarks)]
