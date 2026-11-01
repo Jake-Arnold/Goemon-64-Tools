@@ -1,8 +1,10 @@
-# Goemon Speedrun Tools v0.9.9 — normal transition evidence and Live Memory hex editing
+# Goemon Speedrun Tools v0.10.0 — functional dark dashboard
 
-![Goemon Speedrun Tools conceptual interface artwork](docs/images/readme-showcase.webp)
+![Actual Goemon Speedrun Tools application dashboard, disconnected](docs/images/actual-dashboard.webp)
 
-*Concept art for the project, not a screenshot of the current Tkinter interface. Illustrated UI labels, scene names and memory addresses are placeholders; current supported target is US Goemon64Recomp (not RetroArch).*
+*Actual Tkinter application screenshot captured in a virtual desktop without a running game. Memory values appear only when connected to US Goemon64Recomp.*
+
+The [original design concept](docs/images/readme-showcase.webp) now informs the real desktop UI: charcoal backgrounds, gold headers, deep-red accents, an integrated dashboard and an original app icon. The dashboard has functioning connection, bookmarks, logical checkpoints, route calibration, searchable scene selection and live memory previews. The full Live memory tab retains guarded hex editing. **Direct scene warp remains disabled.** The illustrative concept's imaginary controls, scene names and RetroArch connection are not implemented.
 
 ## Windows desktop build
 
@@ -19,7 +21,9 @@ The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/tas
 
 - `assets/goemon_tools_logo.png` — app logo artwork.
 - `assets/goemon_tools_logo.ico` — multi-size Windows icon (embedded in `.exe`).
-- `docs/images/readme-showcase.webp` — concept mock image for this README.
+- `assets/goemon_tools_logo_small.png` — crisp, pre-sized desktop header icon.
+- `docs/images/actual-dashboard.webp` — real desktop dashboard screenshot.
+- `docs/images/readme-showcase.webp` — original concept-art reference (not a screenshot).
 
 ---
 
