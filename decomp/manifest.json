@@ -224,6 +224,11 @@
           "size": 48
         },
         {
+          "name": "func_8003E4C0_3F0C0",
+          "rom_offset": 258240,
+          "size": 136
+        },
+        {
           "name": "func_8003E548_3F148",
           "rom_offset": 258376,
           "size": 112
@@ -249,6 +254,11 @@
           "size": 44
         },
         {
+          "name": "func_8003E680_3F280",
+          "rom_offset": 258688,
+          "size": 64
+        },
+        {
           "name": "func_8003EA0C_3F60C",
           "rom_offset": 259596,
           "size": 8
@@ -257,6 +267,16 @@
           "name": "func_8003EBA4_3F7A4",
           "rom_offset": 260004,
           "size": 8
+        },
+        {
+          "name": "func_8003F1D8_3FDD8",
+          "rom_offset": 261592,
+          "size": 36
+        },
+        {
+          "name": "func_8003F1FC_3FDFC",
+          "rom_offset": 261628,
+          "size": 64
         },
         {
           "name": "func_8003F43C_4003C",
@@ -277,6 +297,21 @@
           "name": "func_8003F544_40144",
           "rom_offset": 262468,
           "size": 32
+        },
+        {
+          "name": "func_8003F564_40164",
+          "rom_offset": 262500,
+          "size": 48
+        },
+        {
+          "name": "func_8003F594_40194",
+          "rom_offset": 262548,
+          "size": 52
+        },
+        {
+          "name": "func_8003F5C8_401C8",
+          "rom_offset": 262600,
+          "size": 52
         },
         {
           "name": "func_8003F5FC_401FC",
@@ -323,8 +358,6 @@
         "func_8003E1A8_3EDA8",
         "func_8003E234_3EE34",
         "func_8003E3EC_3EFEC",
-        "func_8003E4C0_3F0C0",
-        "func_8003E680_3F280",
         "func_8003E6C0_3F2C0",
         "func_8003E81C_3F41C",
         "func_8003E888_3F488",
@@ -339,16 +372,11 @@
         "func_8003F0FC_3FCFC",
         "func_8003F14C_3FD4C",
         "func_8003F18C_3FD8C",
-        "func_8003F1D8_3FDD8",
-        "func_8003F1FC_3FDFC",
         "func_8003F23C_3FE3C",
         "func_8003F2D4_3FED4",
         "func_8003F350_3FF50",
         "func_8003F37C_3FF7C",
         "func_8003F480_40080",
-        "func_8003F564_40164",
-        "func_8003F594_40194",
-        "func_8003F5C8_401C8",
         "func_8003F6E8_402E8"
       ]
     }

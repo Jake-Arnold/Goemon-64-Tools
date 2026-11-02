@@ -2,6 +2,14 @@
 #define GOEMON_SCRIPT_VM_H
 #include "common.h"
 
+extern s32 D_80077858_78458;
+extern s32 D_8007785C_7845C;
+extern s32 D_801C7770_1C8370;
+extern s32 D_801C7774_1C8374;
+extern u16 D_801C790C_1C850C;
+extern u8 *D_801FC604_5B8514;
+extern u8 *D_801FC608;
+void func_8003E680_3F280(void);
 extern s32 D_801C7740_1C8340;
 extern u16 D_801C7742_1C8342;
 extern s32 D_801C7744_1C8344;
@@ -21,7 +29,7 @@ void func_80037C9C_3889C(s32, s32);
 void func_80037C20_38820(s32, s32, s32);
 
 typedef void (*VmTaskCallback)(void *, void *);
-typedef struct { u8 unknown_00[0x10]; s32 countdown; } VmWork;
+typedef struct { u8 unknown_00[8]; s16 marker; u8 unknown_0a[6]; s32 countdown; } VmWork;
 extern u16 *D_80077550_78150[];
 extern u16 D_8007CCA4_7D8A4[];
 extern void *D_80077860_78460;

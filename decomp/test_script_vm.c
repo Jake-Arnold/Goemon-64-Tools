@@ -24,6 +24,11 @@ static s32 trace[32], trace_count, poll_result, args7[7], argument, state_at_pol
 static void *task_seen;
 static VmTaskCallback callback;
 static s32 memory_rhs;
+s32 D_80077858_78458, D_8007785C_7845C;
+s32 D_801C7770_1C8370, D_801C7774_1C8374;
+u16 D_801C790C_1C850C;
+u8 *D_801FC604_5B8514, *D_801FC608;
+static s32 reset_args[2], cleanup_checks;
 /* Independent scalar argument stubs; guest overlapping big-endian views are
  * validated by native byte matching, not modeled by this host ABI test. */
 s32 D_801C7740_1C8340, D_801C7744_1C8344, D_801C78E8_1C84E8;
@@ -60,10 +65,23 @@ void func_80037C20_38820(s32 a, s32 b, s32 c) {
 static void record(s32 event) { assert(trace_count < 32); trace[trace_count++] = event; }
 s32 func_8003D68C_3E28C(void) { record(RUN); return 0; }
 void func_8003D0B0_3DCB0(void) { record(DRAW); }
-void func_8003D468_3E068(s32 first, s32 second) { assert(first == 0 && second == -1); record(RESET); }
+void func_8003D468_3E068(s32 first, s32 second) {
+    reset_args[0] = first; reset_args[1] = second;
+    if (cleanup_checks) {
+        assert(D_8007785C_7845C == 0x100 && D_801C77E8_1C83E8.marker == -1);
+        assert(D_801C7930_1C8530 == 9);
+    }
+    record(RESET);
+}
 void func_8003521C_35E1C(VmTaskCallback value) { callback = value; task_seen = D_80077860_78460; record(INSTALL); }
 void func_80034B24_35724(VmTaskCallback value, s32 arg) { callback = value; argument = arg; record(CREATE); }
-void func_8000C838_D438(void) { record(CLEANUP); }
+void func_8000C838_D438(void) {
+    if (cleanup_checks) {
+        assert(D_801C77E8_1C83E8.marker == -1 && D_8007785C_7845C == 7);
+        assert(D_801C7930_1C8530 == 9);
+    }
+    record(CLEANUP);
+}
 void func_80035044_35C44(void *task) { assert(task == D_80077860_78460); task_seen = task; record(DESTROY); }
 void func_8000C260_CE60(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g) {
     args7[0] = a; args7[1] = b; args7[2] = c; args7[3] = d;
@@ -72,6 +90,7 @@ void func_8000C260_CE60(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g) {
 void func_8000C3A0_CFA0(s32 arg) { argument = arg; record(HIDE); }
 s32 func_8000C314_CF14(s32 arg) { argument = arg; state_at_poll = D_801C77E0_1C83E0; record(POLL); return poll_result; }
 
+_Static_assert(offsetof(VmWork, marker) == 8, "VM marker offset");
 _Static_assert(offsetof(VmWork, countdown) == 0x10, "VM countdown offset");
 
 static s32 relation(unsigned mode, s32 left, s32 right) {
@@ -130,7 +149,7 @@ static void check_relocation_and_counters(void) {
     func_8003E654_3F254(); assert(D_801C77E8_1C83E8.countdown == 0 && D_801C77E0_1C83E0 == 0);
     D_801C77E0_1C83E0 = 7;
     func_8003E654_3F254(); assert(D_801C77E8_1C83E8.countdown == 0 && D_801C77E0_1C83E0 == 0);
-    for (a = 0; a < 0x10; a++) assert(D_801C77E8_1C83E8.unknown_00[a] == 0xA5);
+    for (a = 0; a < 0x10; a++) assert(((u8 *)&D_801C77E8_1C83E8)[a] == 0xA5);
 }
 
 static void check_callbacks_and_dialogue_states(void) {
@@ -143,6 +162,7 @@ static void check_callbacks_and_dialogue_states(void) {
     func_8003D01C_3DC1C(&task, NULL);
     assert(D_80077860_78460 == &task && task_seen == &task && callback == func_8003CFD0_3DBD0);
     assert(trace_count == 2 && trace[0] == RESET && trace[1] == INSTALL && D_801C7930_1C8530 == 5);
+    assert(reset_args[0] == 0 && reset_args[1] == -1);
     trace_count = 0;
     for (i = 0; i < 5; i++) func_8003CFD0_3DBD0(&task, NULL);
     assert(trace_count == 0 && D_801C7930_1C8530 == 0);
@@ -245,7 +265,7 @@ static void check_operand_callbacks(void) {
         assert(D_801C77E8_1C83E8.countdown == operands[a] && D_801C77E0_1C83E0 == 7);
         func_8003F5FC_401FC(42);
         assert(D_801C77E8_1C83E8.countdown == 42 && D_801C77E0_1C83E0 == 7);
-        for (b = 0; b < 0x10; b++) assert(D_801C77E8_1C83E8.unknown_00[b] == 0xA5);
+        for (b = 0; b < 0x10; b++) assert(((u8 *)&D_801C77E8_1C83E8)[b] == 0xA5);
         func_8003F43C_4003C(); assert(forward_kind == 1 && forwarded[0] == operands[a]);
         func_8003F660_40260();
         assert(forward_kind == 4 && forwarded[0] == (u16)((u32)operands[a] + 0x8000));
@@ -259,8 +279,86 @@ static void check_operand_callbacks(void) {
     assert(forward_kind == 3 && forwarded[0] == 0xFEDC && forwarded[1] == 0xFE && forwarded[2] == 0xDC);
 }
 
+static void check_input_gate_and_cleanup(void) {
+    const u16 inputs[] = {0, 0x4000, 0x8000, 0xC000, 1, 0x4001, 0x8001, 0xC001};
+    const s32 targets[] = {0, 0x100, -1, INT_MIN, INT_MAX};
+    unsigned i, j, busy, active;
+    for (i = 0; i < sizeof(inputs) / sizeof(inputs[0]); i++) {
+        for (j = 0; j < sizeof(targets) / sizeof(targets[0]); j++) {
+            for (busy = 0; busy < 2; busy++) for (active = 0; active < 2; active++) {
+                trace_count = 0; cleanup_checks = 0;
+                D_801C790C_1C850C = inputs[i]; D_801C7770_1C8370 = busy;
+                D_801C7774_1C8374 = targets[j]; D_801C77E0_1C83E0 = 99;
+                D_801C78EC_1C84EC = active ? 0 : -1; D_801C78F0_1C84F0 = 0x40;
+                D_80077858_78458 = 1234; D_8007785C_7845C = 7;
+                memset(&D_801C77E8_1C83E8, 0xA5, sizeof(VmWork));
+                D_801C77E8_1C83E8.countdown = 123456;
+                D_801C77E8_1C83E8.marker = 55; D_801C7930_1C8530 = 9;
+                if (!(inputs[i] & 0x8000) && (inputs[i] & 0x4000) && !busy && !targets[j]) cleanup_checks = 1;
+                func_8003E4C0_3F0C0();
+                if (inputs[i] & 0x8000) {
+                    assert(D_801C77E0_1C83E0 == 1 && trace_count == 0 && D_80077858_78458 == 1234);
+                } else if ((inputs[i] & 0x4000) && !busy) {
+                    assert(D_801C77E0_1C83E0 == 0);
+                    if (targets[j] == 0) {
+                        assert(trace_count == 2 && trace[0] == CLEANUP && trace[1] == RESET);
+                        assert(reset_args[0] == 0 && reset_args[1] == -1);
+                        assert(D_801C7930_1C8530 == 3 && D_801C77E8_1C83E8.marker == -1 && D_8007785C_7845C == 0x100);
+                    } else {
+                        s32 expected = targets[j] < 0 ? targets[j] : (s32)((u32)targets[j] + (active ? 0x40U : 0U));
+                        assert(D_80077858_78458 == expected && trace_count == 0);
+                    }
+                } else assert(D_801C77E0_1C83E0 == 99 && trace_count == 0 && D_80077858_78458 == 1234);
+                assert(D_801C77E8_1C83E8.countdown == 123456);
+                {
+                    unsigned byte;
+                    for (byte = 0; byte < 0x10; byte++) if (byte != 8 && byte != 9)
+                        assert(((u8 *)&D_801C77E8_1C83E8)[byte] == 0xA5);
+                }
+                if (!cleanup_checks) assert(D_801C7930_1C8530 == 9 && D_801C77E8_1C83E8.marker == 55 && D_8007785C_7845C == 7);
+            }
+        }
+    }
+    cleanup_checks = 0;
+}
+
+static void check_control_queries(void) {
+    static s32 next_word = (s32)0x87654321;
+    u8 actor[0x62];
+    const s32 owners[] = {INT_MIN, -1, 0, 1, 2, 0x12345, INT_MAX};
+    const s16 markers[] = {-32768, -1, 0, 1, 32767};
+    unsigned i, j;
+    D_80077858_78458 = 0; assert(func_8003F1D8_3FDD8() == 0);
+    D_80077858_78458 = -1; assert(func_8003F1D8_3FDD8() == 1);
+    for (i = 0; i < sizeof(owners) / sizeof(owners[0]); i++) for (j = 0; j < sizeof(markers) / sizeof(markers[0]); j++) {
+        s32 owner = owners[i] & ~1;
+        D_801C7768_1C8368 = owners[i]; D_801C77E8_1C83E8.marker = markers[j];
+        assert(func_8003F1FC_3FDFC(owner) == markers[j]);
+        assert(func_8003F1FC_3FDFC(owner ^ 1) == -1);
+    }
+    D_80077858_78458 = (s32)(intptr_t)&next_word; D_801C78E8_1C84E8 = 0x12345678; trace_count = 0;
+    assert(func_8003F1D8_3FDD8() == 1);
+    func_8003F564_40164();
+    assert(trace_count == 1 && trace[0] == RESET && reset_args[0] == next_word && reset_args[1] == 0x12345678);
+    D_801FC604_5B8514 = D_801FC608 = NULL;
+    func_8003F594_40194(); assert(D_801C7750_1C8350 == 0xFFFFFFFF);
+    func_8003F5C8_401C8(); assert(D_801C7750_1C8350 == 0xFFFFFFFF);
+    memset(actor, 0xA5, sizeof(actor));
+    for (i = 0; i < 256; i++) {
+        actor[0x60] = (u8)i;
+        D_801FC604_5B8514 = actor; D_801FC608 = NULL;
+        func_8003F594_40194(); assert(D_801C7750_1C8350 == i);
+        func_8003F5C8_401C8(); assert(D_801C7750_1C8350 == 0xFFFFFFFF);
+        D_801FC604_5B8514 = NULL; D_801FC608 = actor;
+        func_8003F5C8_401C8(); assert(D_801C7750_1C8350 == i);
+        func_8003F594_40194(); assert(D_801C7750_1C8350 == 0xFFFFFFFF);
+        for (j = 0; j < sizeof(actor); j++) if (j != 0x60) assert(actor[j] == 0xA5);
+    }
+    D_801FC604_5B8514 = D_801FC608 = NULL;
+}
+
 int main(void) {
-    check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
-    puts("VM operands/resources, comparisons/indirection, callbacks, counters and dialogue states passed.");
+    check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
+    puts("VM inputs/cleanup/queries, operands/resources, callbacks, counters and dialogue states passed.");
     return 0;
 }

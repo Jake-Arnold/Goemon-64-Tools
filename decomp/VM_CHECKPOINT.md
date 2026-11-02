@@ -1,8 +1,8 @@
 # Event/dialogue VM reconstruction checkpoint
 
 Date: 2026-11-02. Pinned mnsg baseline and ROM identity are unchanged.
-**29 matching VM functions / 1,492 function bytes**, bringing the track to
-**54 matching C functions / 3,368 function bytes**. The full 32 MiB baseline and
+**36 matching VM functions / 1,944 function bytes**, bringing the track to
+**61 matching C functions / 3,820 function bytes**. The full 32 MiB baseline and
 candidate both match decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
 Current source hashes, guest addresses and byte-range comparisons are in
 [combined.json](results/combined.json). The previous complete-save checkpoint is
@@ -11,7 +11,7 @@ retained as [save_resources_complete.json](results/save_resources_complete.json)
 ## Selected unit and evidence boundaries
 
 The original `0x3DBA0..0x40320` unit contains 69 functions. `script_vm.c` replaces
-29 functions and retains 40 explicitly declared assembly functions. The main
+36 functions and retains 33 explicitly declared assembly functions. The main
 dispatcher, remaining operand handlers and comparison routine remain
 assembly; the complete VM is not decompiled. A name appears in the matching count
 only when linked guest address, original bytes and absence of its assembly marker
@@ -30,13 +30,18 @@ all pass, alongside the complete ROM identity check.
 | `func_8003DDC4_3E9C4` | Lookup resource base; on failure prepare the current resource and retry; clear base bit 30, subtract the original resource segment byte and add the base |
 | `func_8003DE48_3EA48` | Preserve negative encoded addresses; conditionally relocate nonnegative values using active-context delta |
 | `func_8003DF68_3EB68` | Consume one repeat count only when at least two remain |
+| `func_8003E4C0_3F0C0` | Input bit `8000` takes priority and selects state 1; permitted `4000` clears state and either resets or relocates the pending script |
 | `func_8003E548_3F148`, `func_8003E5B8_3F1B8` | Start external dialogue/render operations, set state 5/6, then poll |
 | `func_8003E5EC_3F1EC`, `func_8003E620_3F220` | Return to state 1 when the external poll reports zero |
 | `func_8003E654_3F254` | Decrement countdown; clamp to zero and clear state when finished |
+| `func_8003E680_3F280` | Clear signed marker, cleanup, set reset word to `100`, reset context, then initialize delay to three |
 | `func_8003EA0C_3F60C`, `func_8003EBA4_3F7A4` | Original no-operation hooks |
+| `func_8003F1D8_3FDD8`, `func_8003F1FC_3FDFC` | Query nonzero pending script; query signed marker only for owner matching masked VM argument |
 | `func_8003F43C_4003C` | Forward a 32-bit VM argument to the task helper |
 | `func_8003F460_40060`, `func_8003F5FC_401FC` | Initialize countdown/state 7; separately set countdown without changing state |
 | `func_8003F524_40124`, `func_8003F544_40144` | Add/subtract argument words into the VM result word with 32-bit wraparound |
+| `func_8003F564_40164` | Reinitialize context using the pending script first word and current resource argument |
+| `func_8003F594_40194`, `func_8003F5C8_401C8` | Read unsigned byte at offset `60` through independent pointers; null returns result word `FFFFFFFF` |
 | `func_8003F608_40208`, `func_8003F62C_4022C` | Forward an unsigned halfword, or halfword plus two unsigned byte arguments |
 | `func_8003F660_40260` | Add `0x8000`, narrow to unsigned 16 bits, then call engine helper |
 | `func_8003F694_40294`, `func_8003F6BC_402BC` | Forward VM argument with fixed `0` or `0, 1` prefixes |
@@ -44,6 +49,38 @@ all pass, alongside the complete ROM identity check.
 Raw engine preconditions are preserved: no new pointer/index/length safety API is
 introduced, and callbacks are not wired into the running companion. This is
 original-ROM C reconstruction, not a new native PC port.
+
+## Input, cleanup and query increment
+
+Seven additional matching functions replace 452 instruction bytes. The signed
+marker at work offset `0x08` is now modeled explicitly, while countdown offset
+`0x10` and the structure extent remain unchanged. The input handler preserves
+`0x8000` priority over `0x4000`, the busy gate, state-before-call ordering and the
+existing relocated-target or cleanup paths. The cleanup helper sets its marker
+before the first external call, the reset word before resetting context, and the
+initial delay afterward. These are recovered original operations, not new live
+companion actions or a safe script/scene-transition API.
+
+The input handler needs a value-preserving signed 32-to-64-to-32 cast to retain
+IDO's original argument move. Its external relocation-helper signature remains
+unchanged. The marker query's conditional expression preserves original signed
+halfword promotion and return instructions. No instruction or data patch is used.
+A locally generated permuter draft with an incorrect external return declaration
+was rejected; the final source preserves the known 32-bit interface and is tested
+with positive and negative targets.
+
+Synthetic tests cover 160 input/gate/target/relocation combinations, call-boundary
+snapshots of cleanup writes, adjacent work fields, pending-script null/nonzero
+queries, 35 owner/marker pairs plus mismatches, first-word context forwarding,
+and all 256 unsigned-byte values through both nullable result pointers. External
+reset/cleanup functions remain stubs; their complete effects are not modeled.
+
+The signed stream reader `func_8003DE80_3EA80` was also investigated using pinned
+m2c and local compiler-form experiments. Its C drafts passed exploratory semantic
+cases but changed register allocation and text length. They remain local, and
+its original assembly is explicitly retained and excluded from the count, as are
+the comparator and central dispatcher. The previous
+[54-function result](results/vm_resources.json) is preserved.
 
 ## Resource and operand increment
 
@@ -111,7 +148,7 @@ sequencing. No zero-score/equivalent-code claim was substituted for exact bytes.
 
 The native candidate retains the original comparator assembly and marker.
 `vm_compare_reference.h` is included **only by host tests**, explicitly excluded
-from the 29/54-function counts. It is a semantic aid for subsequent work, not a
+from the 36/61-function counts. It is a semantic aid for subsequent work, not a
 published matching reconstruction or production evaluator. Retained assembly
 also includes the dispatcher and assignment/operand decoders.
 
@@ -125,7 +162,7 @@ safe to evaluate.
 ## Validation
 
 - Fresh verifier baseline and combined candidate builds both passed the full ROM
-  check; all 54 claimed function ranges/addresses matched without assembly markers.
+  check; all 61 claimed function ranges/addresses matched without assembly markers.
 - **224 Windows Python unittest tests passed**, including declared-assembly exclusion and
   the narrow Splat-label override. The comparator is asserted to remain excluded.
 - Sanitizer-enabled synthetic VM tests passed pointer fallback, five delayed
