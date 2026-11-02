@@ -54,6 +54,18 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-02 — Second Sasuke battery A/B capture, cutscene separate from flag write
+
+**Attached capture:** `state_probe_20261102_014420_169811(1).json` recorded on 2026-11-02 01:44 UTC, A→B 5.921 seconds apart, character 2 **Sasuke**, same map ID 329. User reports A/B before/after *collecting the second battery*; JSON labels inaccurately say "Map displayed". Focused scan, 81 changed bytes; 100 rows including f32 interpretations. `capture_C=null`. Its `reverting_changes=81` is from the old v1 exporter bug: no reversals were observed.
+
+**Crucial negative evidence:** The confirmed first-battery **packed event byte** `0x8015C609` does **not** appear in second battery A→B changes. No bytes in the **persistent first event-flag block** `0x8015C608..0x8015C66B` changed in this comparison. User separately observed this byte later has value **`0x60`** (includes first bit `0x20` and additional bit `0x40`). **Bit `0x40` is a plausible second-battery progression marker, but this particular A/B capture does not show when it was set**. It might have been set before the A capture, at spawning, during another trigger, or after the sampled period. Do not upgrade battery 2 to confirmed from this evidence.
+
+**Cutscene semantics:** User reports that manually setting the byte to `0x60` **did not play the cutscene** normally seen on collecting battery 2. This is consistent with pickup interaction executing a cutscene/script callback independently of persistent completion bits; it does not establish that another flag alone will launch it. Distinguish pickup hidden/unlocked, quest progression, and event playback.
+
+**Other candidate changes (A→B):** `0x8015C562 00→01`, `0x8015CD07 00→01` (game-data scan region but **outside** the `0x8015C608..0x8015C90B` primary save payload), `0x800C7A71 00→01`, and `0x800C7AE2 00→01` (system). Their meaning is unverified and may be transient. `0x8015C86F 13→19` is **very likely elapsed seconds**: the first-battery capture showed `4D→52` (+5) over 5.191 s, and second showed +6 over 5.921 s, so do not interpret it as a quest counter. Movement/animation and player XYZ changed between A/B as well.
+
+**Next in-game controlled test:** On a disposable save with first battery completed and second visibly uncollected, watch `0x8015C609` **before spawning**, **before touching**, **while cutscene runs**, **immediately after**, and **after area reload**. Record whether `0x20 → 0x60` happens and at which step. Separately compare event/script watch over the cutscene at higher frequency. If toggling bit `0x40` from an authentic pre-second state hides pickup and permits third-stage progression after reload, only then confirm its practical gating semantics. Keep the new first-battery masked UI as-is; no second-battery toggle yet.
+
 ## 2026-11-02 — First Sasuke battery CONFIRMED by intervention
 
 User reached the first battery while it was **visible and not collected**, manually wrote `0x20` at guest `0x8015C609` and reloaded the room. Battery disappeared, and the next quest step allowed the **second battery** to spawn. Thus `0x8015C609 & 0x20` is a confirmed first-battery progression bit (gamedata+0x01). Earlier before/after A/B capture also showed `00→20`.

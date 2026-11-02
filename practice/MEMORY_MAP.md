@@ -1,3 +1,12 @@
+## Second Sasuke battery comparison (2026-11-02; unconfirmed)
+
+- Original A/B JSON `state_probe_20261102_014420_169811(1).json`: 01:44:12→01:44:18 UTC, **Sasuke 2**, map 329, A/B only, 81 changed bytes and **no C/reversibility test**.
+- **`0x8015C609` did not change** across A/B and no byte in saved event-flag block `0x8015C608..0x8015C66B` changed. Separately reported value `0x60` includes first confirmed `0x20` plus plausible second `0x40`. Timing/role of `0x40` remains unknown.
+- Writing `0x60` alone did **not** trigger the pickup cutscene. Script execution may be callback-driven rather than a memory flag.
+- Other `00→01` changes: `0x8015C562`, `0x8015CD07`, `0x800C7A71`, `0x800C7AE2`. None identified as a battery-2 flag or cutscene trigger; the first two are outside the primary `gamedata` payload even though the scan labels them game_data.
+- `0x8015C86F` is likely a clock's seconds byte: first battery +5 / 5.19 s and second +6 / 5.92 s. Treat as unrelated to battery.
+- **Do not add a battery-2 unlock toggle until direct causal verification**. Read `0x8015C609` at multiple stages, then test only bit `0x40` in a controlled pre-pickup state.
+
 # New experimental observations (2026-11-02, v0.10.8)
 
 - Reload trial: `0x800C7CA0` (pending destination, u16), then `0x800C7A94 = 0x0C` (game state reload). User saw destination map load but incorrect entrance coordinates. Tool now explicitly offers this exact pair, not the old exit flag; never describes the result as a fully correct warp.

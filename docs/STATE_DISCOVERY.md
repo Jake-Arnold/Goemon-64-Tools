@@ -34,6 +34,14 @@ A/B captured before and after the first Sasuke battery (Ebisumaru, map 330; JSON
 
 Capture C was **not taken** and is generally inappropriate after an irreversible collection. In v1 exports, `reverting_changes` was erroneously incremented without C. That count was fixed: without C, only `observed_changes` has meaning. Keep the full before/after JSON as your private diagnostic (do not commit it to the public repository).
 
+## Sasuke second battery acquisition and cutscene distinction (2026-11-02)
+
+The user supplied second pickup A/B JSON with Sasuke in map 329, 5.921 s between reads. **No primary event-flag bytes changed** (including `0x8015C609`), though the user separately saw `0x8015C609 = 0x60`. Extra bit `0x40` is only a candidate for second-battery progress; its actual write timing was **not captured**. Manually writing `0x60` did not replay the second pickup's cutscene; persistent completion state and one-off pickup script execution should be investigated separately.
+
+Possible transient changes `0x8015C562 00→01`, `0x8015CD07 00→01`, `0x800C7A71 00→01`, `0x800C7AE2 00→01` were seen, but no causal role is established. The probable time byte `0x8015C86F` advanced by 5 over 5.19 s in the first comparison and 6 over 5.92 s in the second. A/B is not a C revert test; ignore older erroneous `reverting_changes=81` metadata when `capture_C=null`.
+
+**Recommended high-resolution test:** Log the confirmed first-byte `0x8015C609` before second battery appears, immediately before contact, during pickup cutscene, after playback and after reload. Confirm whether `0x40` is the second stage gate by writing only that bit into an actual uncollected state; do not assume a state-bit write initiates the cutscene.
+
 ## Capture protocol
 
 1. Connect to **US Goemon64Recomp** and select **State discovery**.
