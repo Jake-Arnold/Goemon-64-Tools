@@ -1,3 +1,13 @@
+## Forwarded Iga/Baron cutscene leads (2026-11-02)
+
+Saved flag 111 decimal (`0x06F`), **`0x8015C615 & 0x80`**, is already labelled
+as meeting Baron in Iga by the existing randomizer dictionary; the ROM index
+has a set-pattern reference in file 101 at `0x7735D8`. Forwarded summary images
+also associate Bank A IDs 1/3/4/9/10/12 with stages of the house-burning/Baron
+sequence. These are context-specific timing leads, not seven proven novel flags.
+Original capture exports were not provided. Bank A IDs are separate from saved
+IDs and some recur across overlay files. See [the evidence/limits](../docs/IGA_CUTSCENE_LEADS.md).
+
 ## Later Benkei dialogue and Kihachi gate — original-ROM follow-up (2026-11-02)
 
 Detailed source search, existing annotations, user observations and exact native/

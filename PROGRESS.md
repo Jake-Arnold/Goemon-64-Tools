@@ -341,6 +341,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: full game remains largely assembly/data; unknown fields/unchecked input preconditions persist. Camera branch is reference/draft material until repaired and individually/full-ROM validated; no unresolved-symbol workaround was applied to the user's checkout. Existing managed worktrees/build evidence preserved; ROMs/generated assembly/tool copies/full logs remain local/ignored. No upstream submission or binary release.
 - Next: continue event-VM handlers and isolate the camera initializer/link/semantic issues before integrating any pre-existing camera functions. No user gameplay action is required yet.
 
+### 2026-11-02 — Cross-check forwarded Iga/Baron flag summary during VM work
+
+- Changed: recorded user-forwarded summary-image timing leads in `docs/IGA_CUTSCENE_LEADS.md` and the memory map, preserving the distinction between reported intervals and verified meanings. Saved ID 111 decimal is `0x06F`, `0x8015C615 & 0x80`, already annotated as meeting Baron in Iga. Bank A IDs 1/3/4/9/10/12 remain context-specific leads, not automatically new permanent story mappings.
+- Why: user asked whether the images were useful while native VM reconstruction was in progress. Embedded assistant interpretations were checked against prior source knowledge rather than adopted as instructions or novelty proof.
+- Tested: checked the pinned randomizer annotation, existing saved-bank set pattern at ROM `0x7735D8`, matching bank-helper layouts and bounded native pattern leads across overlays. Documentation-only diff checked with `git diff --check`; no new runtime capture/write or suite run for this evidence entry. VM C work remains a separate unfinished change until its matching/tests pass.
+- Limitations: attachments are summaries, not raw capture exports; no independent scene timing/reset trace or individual mask intervention. Generic helper examples do not identify callers. Multiple overlays reuse some Bank A IDs; bank/scene/actor context must be retained. No screenshots/raw RAM committed.
+- Next: use the preserved observations to guide native callback/reset tracing without repeating known saved-flag discovery; continue the pending VM matching checkpoint.
+
 ## Mandatory change-log template
 
 ```markdown
