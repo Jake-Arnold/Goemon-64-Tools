@@ -1,3 +1,16 @@
+# Goemon Speedrun Tools v0.11.6 — live story progress
+
+The new **Story progress** tab shows mapped Benkei/Ushiwaka/Kihachi milestones,
+known flag masks, raw values and evidence. It distinguishes training success,
+recorded reward and actual Mini-Ebisu ownership, with advisory flag/inventory
+discrepancies. Raw Bank A/B views retain separate labels and unknown lifecycle.
+Named story watches also appear in Live memory; Unlocks links to the new panel.
+
+215 tests passed, with a successful live read-only recomp sample and visual Tk
+check. [Panel guide and limitations](docs/STORY_PROGRESS.md). Existing unsafe
+defaults are unchanged. Restart from this checkout; existing executables require
+a rebuild to include the new panel.
+
 # Matching C reconstruction
 
 The [decompilation track](decomp/README.md) now includes **42 matching functions**

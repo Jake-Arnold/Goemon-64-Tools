@@ -10,7 +10,7 @@ from practice.hex_edit import parse_hex
 
 class UnlocksMixin:
     def build_unlock_tabs(self, notebook) -> None:
-        self.unlock_status = tk.StringVar(value='Connect to US Goemon64Recomp to read and change flags.')
+        self.unlock_status = tk.StringVar(value='Connect to US Goemon in Recomp or Project64 to read and change flags.')
         self.unlock_row_widgets = {}
         self.unlock_count_inputs = {}
         self.unlock_count_entries = {}
@@ -34,6 +34,7 @@ class UnlocksMixin:
         progress.pack(fill='x',pady=(0,8))
         ttk.Label(progress,textvariable=self.sasuke_second_status,font=('Consolas',10)).pack(anchor='w')
         ttk.Label(progress,textvariable=self.ushiwaka_status,font=('Consolas',10)).pack(anchor='w')
+        ttk.Button(progress,text='Open story progress',command=lambda:notebook.select(self.story_progress_tab)).pack(anchor='w',pady=(4,0))
         ttk.Label(progress,text='These bits record event completion; writes do not replay cutscenes.',style='Muted.TLabel').pack(anchor='w')
 
         shell = ttk.Frame(tab)
@@ -124,15 +125,12 @@ class UnlocksMixin:
         values = {}
         try:
             second=self.mem.read_guest(0x8015C609,1)[0] if self.mem else None
-            ushi=self.mem.read_guest(0x8015C60D,1)[0] if self.mem else None
         except (OSError,ValueError):
-            second=ushi=None
+            second=None
         self.sasuke_second_status.set('Sasuke battery 2 cutscene completed: ' +
             ('—' if second is None else ('YES' if second & 0x40 else 'NO')) +
             '  [0x8015C609 & 0x40]')
-        self.ushiwaka_status.set('Ushiwaka: ' +
-            ('—' if ushi is None else f'started={bool(ushi & 0x10)}, blue fish step={bool(ushi & 0x08)}') +
-            '  [0x8015C60D, CANDIDATES]')
+        self.refresh_story_progress()
         # Tk's 'focus' returns the widget path directly. root.focus_get() calls
         # _nametowidget() and raises KeyError('popdown') for some ttk dropdowns
         # (observed on Python 3.14 / Windows).

@@ -11,6 +11,7 @@ import struct
 import math
 from practice import checkpoints as cp
 from practice.native_menu_categories import native_menu_category, NATIVE_MENU_CATEGORIES
+from practice.story_progress import read_story_state,story_rows
 
 CHARACTERS = ('Goemon', 'Ebisumaru', 'Sasuke', 'Yae')
 
@@ -47,7 +48,7 @@ INVENTORY = [
     ('Unknown brown item (Achilles Heel? candidate)', 0x8015C703, 1, 1, 'item identity NOT confirmed'),
     ('Silver Fortune Doll? (candidate)', 0x8015C707, 1, 1, 'old GameShark item name, unverified'),
     ('Sasuke battery 1 collected', 0x8015C609, 1, 255, 'CONFIRMED: event byte bit 0x20; preserves other flags'),
-    ('Round brown item (Achilles Heel? candidate)', 0x8015C70F, 1, 1, 'item identity NOT confirmed'),
+    ("Achilles' Heel", 0x8015C70F, 1, 1, 'ROM reward script: inventory word 0x8015C70C; user mapping'),
     ('Gold Key', 0x8015C713, 1, 1, 'user verified in-game'),
     ('Cucumber (formerly Blue Sausage)', 0x8015C717, 1, 1, 'item identification tentative, previously Blue Sausage'),
     ('Red fish count', 0x8015C71B, 1, 255, 'count (was Pink Fish); user observed 0x01 displays one'),
@@ -122,6 +123,9 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Sasuke battery 2 cutscene finished (observed)',0x8015C609,1,
         lambda v: 'Yes (bit 0x40)' if v & 0x40 else 'No (bit 0x40)',
         source='observed: second battery cutscene ends with 0x20 -> 0x60; cutscene trigger separate')
+    for row in story_rows(read_story_state(ram)):
+        watches.append(Watch('Story: '+row['name'],row['address'],row['value'],row['raw'],row['status'],
+            row['bank']+'; mask '+row['mask']+'; '+row['source']))
     add('Map overlay state (observed)',0x8015C574,1,
         lambda v: f'{v} ({"visible" if v == 1 else "hidden" if v == 0 else "unusual"})',
         validator=lambda v: v in (0,1),

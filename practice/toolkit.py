@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.5 — external Windows UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.6 — external Windows UI for US Goemon.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -30,6 +30,7 @@ from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
 from practice.event_sessions_ui import EventSessionsMixin
+from practice.story_progress_ui import StoryProgressMixin
 from practice.state_discovery import measured_velocity
 from practice.experimental_controls import stage_reload_trial
 from practice.checkpoints import MAP_ADDR, _ensure_capture_safe, validate_checkpoint
@@ -82,11 +83,11 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.5 · USA N64")
+        root.title("Goemon Practice Toolkit v0.11.6 · USA N64")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -124,7 +125,7 @@ class Toolkit(EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMi
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.5  |  US Goemon · Recomp / Project64',
+        ttk.Label(header, text='v0.11.6  |  US Goemon · Recomp / Project64',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -271,6 +272,7 @@ class Toolkit(EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMi
         self.build_state_discovery_tab(notebook)
         self.build_event_sessions_tab(notebook)
         self.build_unlock_tabs(notebook)
+        self.build_story_progress_tab(notebook)
         # Toolkit-local F1; it does not register a system-wide/game hotkey.
         root.bind_all('<F1>', self._on_f1_open_memory, add='+')
         statusbar = ttk.Frame(root, style='Header.TFrame', padding=(16, 5))

@@ -92,8 +92,7 @@ class TestUnlocksUI(unittest.TestCase):
         self.app.refresh_unlocks(force=True)
         self.assertIn('YES', self.app.sasuke_second_status.get())
         self.assertIn('0x40', self.app.sasuke_second_status.get())
-        self.assertIn('started=True',self.app.ushiwaka_status.get())
-        self.assertIn('blue fish step=True',self.app.ushiwaka_status.get())
+        self.assertIn('Five yellow fish requested',self.app.ushiwaka_status.get())
         self.assertFalse(hasattr(self.app,'set_second_battery'))
 
     def test_disconnected_does_not_write(self):
