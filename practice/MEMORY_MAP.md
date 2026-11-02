@@ -1,4 +1,4 @@
-## Ushiwaka introduction seen — user-identified (2026-11-02)
+## Ushiwaka dialogue progression — user-identified (2026-11-02)
 
 **`0x8015C60D & 0x20`: asked Ushiwaka “Who are you?” before.**
 The user reports byte `00` before asking this for the first time and byte `20`
@@ -7,17 +7,40 @@ interaction. This is distinct from the Benkei encounter prerequisite at
 `0x8015C60C & 0x20` and Benkei's own first-dialogue completion at
 `0x8015C60E & 0x10`.
 
-`0x8015C60D` contains multiple event bits. Interpret the introduction state with
-`(value & 0x20) != 0`, not equality to byte `0x20`: later observations include
-`20→30` on minigame start (additional `0x10`) and `30→38` on blue-fish hand-in
-(additional `0x08`). Those two later bit meanings remain A/B candidates, not
-independently write-confirmed by this introduction finding. Any targeted edit
-must preserve the other bits in the byte.
+The user additionally mapped the following **dialogue stages** in this byte:
 
-Evidence status: user-identified introduction/repeat-dialogue behavior, reported
-while investigating Event sessions. No corresponding local session file was
-provided for this report, and no new assistant-run capture, isolated masked write
-or original-code trace was performed. This is not a general quest-completion bit.
+| Observed byte | Newly set bit relative to previous row | User-reported dialogue state |
+| --- | --- | --- |
+| `00` | — | Introduction not asked yet |
+| `20` | `0x20` | Asked “Who are you?”; repeat introduction option |
+| `30` | `0x10` | Catching the first set of fish dialogue |
+| `38` | `0x08` | Five yellow fish dialogue |
+| `3C` | `0x04` | Eight red fish dialogue |
+| `3E` | `0x02` | Finished dialogue for this sequence |
+
+**Later Ushiwaka dialogue remains unmapped.** “Finished” here does not establish
+all Ushiwaka content, reward delivery or the final Benkei quest gate as complete.
+The yellow/red labels identify the dialogue state reported by the user; they do
+not by themselves prove those fish were collected or handed in.
+
+These values retain the earlier set bits: `20→30→38→3C→3E` is consistent with
+successively setting masks `0x10`, `0x08`, `0x04`, `0x02`. Observing the numeric
+increase does **not** identify the machine-code operation as arithmetic addition
+versus bitwise OR. All those transitions have the same result under either
+operation when the new bit was clear. Read the introduction with
+`(value & 0x20) != 0`, not equality to byte `0x20`; targeted edits must preserve
+other bits rather than overwrite the whole byte or blindly increment it.
+
+Earlier captured evidence observed `30→38` when blue fish inventory at
+`0x8015C723` fell `03→00`. That remains an observation at the blue-fish hand-in;
+the new user report identifies the resulting `38` dialogue stage as five yellow
+fish. Keep transition timing separate from the subsequent dialogue/request.
+
+Evidence status: user-identified introduction/repeat-dialogue and fish-sequence
+states, reported while investigating Event sessions. No corresponding local
+session file was provided for these new reports, and no new assistant-run capture,
+isolated masked write or original-code trace was performed. Individual bit
+semantics remain distinct from the observed full-byte dialogue stages.
 
 ## Benkei first-conversation state — replayed and user-tested (2026-11-02)
 

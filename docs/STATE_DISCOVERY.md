@@ -1,11 +1,18 @@
-## Ushiwaka introduction finding (2026-11-02)
+## Ushiwaka dialogue-stage findings (2026-11-02)
 
-The user identified `0x8015C60D & 0x20` as having asked **“Who are you?”** for
-the first time: observed byte `00` before, `20` afterward, followed by the repeat
-dialogue option. This byte also holds the separate minigame-start (`0x10`) and
-blue-fish hand-in (`0x08`) candidates below. Test the introduction with its mask,
-not `byte == 0x20`, and preserve unrelated bits when editing. This is a
-user-reported gameplay finding, not a new assistant-run write or code-trace test.
+The user mapped full-byte states at `0x8015C60D`: `00` introduction not asked,
+`20` “Who are you?” asked/repeat option, `30` first fish-set dialogue, `38` five
+yellow fish dialogue, `3C` eight red fish dialogue and `3E` this sequence's
+finished dialogue. Later Ushiwaka dialogue remains unmapped. These are dialogue
+stages, not proof of fish hand-in, reward delivery or whole-quest completion.
+
+The sequence successively retains and sets bits `0x20`, `0x10`, `0x08`, `0x04`,
+`0x02`. It supports packed-state interpretation but cannot identify arithmetic
+addition versus bitwise OR in the original code. Preserve unrelated bits when
+editing. These are user-reported gameplay findings, not new assistant-run write
+or code-trace tests. See `practice/MEMORY_MAP.md` for the stage table and evidence
+boundaries. The historical blue-fish hand-in observation below describes entry
+into `38`; the reported yellow-fish dialogue describes the resulting stage.
 
 ## Ushiwaka storyline and character-at-spawn investigation (2026-11-02)
 

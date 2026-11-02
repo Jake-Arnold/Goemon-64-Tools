@@ -260,6 +260,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: new report has no supplied local session file or isolated masked-write evidence. Later progression candidates are not upgraded by this observation. No runtime behavior or unlock controls changed.
 - Next: trace the introduction-state reader/writer separately from the later minigame/reward state readers/writers, preserving bit-level provenance.
 
+### 2026-11-02 — User maps cumulative Ushiwaka fish-dialogue stages
+
+- Changed: expanded the memory map and State discovery guide with user-reported full-byte dialogue stages at `0x8015C60D`: `30` first fish set, `38` five yellow fish, `3C` eight red fish and `3E` finished dialogue for this sequence, following introduction state `20`. Listed added masks separately and retained the earlier blue-fish hand-in observation as transition timing into the yellow-fish dialogue stage. Marked later dialogue unmapped.
+- Why: preserve the new stage mapping without mislabelling requested fish as already collected/handed in, this dialogue sequence as the entire quest, or cumulative values as proof of an arithmetic-add instruction.
+- Tested: reconciled the user's report with existing `20→30` and `30→38` evidence; checked the mask decompositions and documentation with `git diff --check`. No new assistant-run gameplay, write, code trace or Python/C suite run for this documentation-only update.
+- Limitations: new full-byte stage observations have no supplied local session evidence; precise individual bit roles and the original code's update operation remain unverified. Later Ushiwaka dialogue, reward delivery and final Benkei progression are not established by `3E`. No runtime behavior or controls changed.
+- Next: trace the stage readers/writers and map later dialogue independently, preserving this sequence's evidence and the other bits in the byte.
+
 ## Mandatory change-log template
 
 ```markdown
