@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),12)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),15)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
@@ -60,6 +60,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(config.read_bytes(),before)
 
     def test_shared_flag_functions_have_no_assembly_placeholders(self):
-        source=(ROOT/'decomp/event_flags.c').read_text()
-        self.assertNotIn('GLOBAL_ASM',source)
-        self.assertNotIn('__asm__',source)
+        for unit in load_manifest(ROOT/'decomp/manifest.json')['units']:
+            source=(ROOT/'decomp'/unit['source']).read_text()
+            self.assertNotIn('GLOBAL_ASM',source)
+            self.assertNotIn('__asm__',source)

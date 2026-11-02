@@ -314,6 +314,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: only this unit is newly reconstructed; untouched assembly/data remain in the build. Other two bank lifecycles and negative/arbitrary flag IDs are not newly characterized. No complete decompilation percentage, upstream acceptance, executable publication or runtime scene-loading claim. ROMs, generated assembly, binaries, compiler/dependency copies and full logs remain local/ignored. Existing portable C prototypes are unchanged.
 - Next: reconstruct the system initialization/byte-memory unit, keep full-ROM matching as the gate, then expand resource/state and VM coverage using existing actor/script knowledge.
 
+### 2026-11-02 — Matching system initialization and byte-memory unit: 15 functions total
+
+- Changed: reconstructed all three functions in ROM unit `4D70..4E40` as `decomp/system_memory.c`: system initialization, byte zeroing and forward byte copy. Added the unit to the pinned manifest, synthetic system/buffer tests and combined result metadata. Current newly matching total is 15 functions / 1,076 function bytes across two units; all remain separate from live toolkit/portable C behavior.
+- Why: expand from flag helpers into engine initialization and memory primitives while retaining exact binary behavior. Existing upstream system types were reused for renderer field accesses rather than inventing names/layouts.
+- Tested: fresh verifier run built both baseline and combined candidate successfully; whole 32 MiB output SHA-1 remains `6ea0ed71032ce08fc2745f412d84936382197494` and all 15 function ranges/addresses match without assembly markers. `python -m unittest discover -s tests -q` — 201 passed on Windows. Sanitizer-enabled host C test passed zero lengths including null pointers, lengths 1/2/3/63/64/100/255/4096, sentinels/source preservation, exact forward-overlap behavior and full synthetic system initialization. The original 12-function matching result remains retained separately.
+- Limitations: helper lengths are assumed nonnegative; forward copy is not a safe general-purpose memmove. Original prototypes/unknown fields are not all semantically recovered. No live game RAM init/copy calls, rebuilt-ROM launch, upstream merge, whole-game completion or binary release claimed. Failed experiments and compiler-generated files remain local/ignored.
+- Next: reconstruct resource/save-state accessors, then expand event-VM coverage while using existing actor/script research for meanings and the full-ROM hash gate for matching claims.
+
 ## Mandatory change-log template
 
 ```markdown

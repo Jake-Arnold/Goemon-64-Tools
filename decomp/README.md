@@ -4,6 +4,24 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
+Current verified total: **15 functions / 1,076 function bytes across two units**.
+The combined baseline/C-replacement whole-ROM match is recorded in
+[combined result metadata](results/combined.json).
+
+## System initialization and byte-memory unit
+
+`system_memory.c` replaces ROM `0x4D70..0x4E40` with three matching functions:
+system initialization, byte zeroing and forward byte copying. It uses the pinned
+upstream `SYS_W` type and preserves the system-buffer size `0xCF908`, global
+system-pointer assignment, loading-byte reset and initial renderer-field values.
+
+The byte helpers support nonnegative lengths and retain original forward-copy
+behavior; they are **not memmove** and provide no general overlap/negative-length
+safety. Zero-length operations make no accesses. The host test checks length 0,
+1 and other boundaries, guards, source preservation, same/overlapping pointers,
+and initialization against an opaque synthetic system layout with checked offsets.
+No system initialization was executed against live game RAM.
+
 ## First verified unit
 
 `event_flags.c` replaces upstream assembly unit ROM `0x249F0..0x24D60`:
@@ -100,11 +118,20 @@ test. Python tests reject bad manifest bounds, source collisions, changed output
 wrong symbols/reference identity and remaining assembly markers. The existing
 Python application suite is run separately.
 
+The second unit's host check is:
+
+```bash
+gcc -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined \
+  -Idecomp/test_support decomp/system_memory.c decomp/test_system_memory.c \
+  -o practice/diagnostics/test_system_memory
+practice/diagnostics/test_system_memory
+```
+
 ## Next units
 
 Continue with small, well-bounded engine translation units and retain the same
-full-ROM comparison gate. System initialization/byte-memory primitives are the
-next candidate, followed by resource/state accessors and the event VM. Actor and
+full-ROM comparison gate. Resource/state accessors are the next candidate,
+followed by the event VM. Actor and
 script exports from the existing randomizer remain useful semantic context;
 native reconstruction still requires compiler matching and tests. Do not rename
 unknown fields or infer state-transition safety from a matching helper alone.

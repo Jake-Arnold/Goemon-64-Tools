@@ -24,6 +24,18 @@
         {"name": "func_800240DC_24CDC", "rom_offset": 150748, "size": 80},
         {"name": "func_8002412C_24D2C", "rom_offset": 150828, "size": 48}
       ]
+    },
+    {
+      "source": "system_memory.c",
+      "rom_start": 19824,
+      "rom_end": 20032,
+      "splat_original": "[0x4D70, asm]",
+      "splat_replacement": "[0x4D70, c, system_memory]",
+      "functions": [
+        {"name": "func_80004170_4D70", "rom_offset": 19824, "size": 112},
+        {"name": "func_800041E0_4DE0", "rom_offset": 19936, "size": 40},
+        {"name": "func_80004208_4E08", "rom_offset": 19976, "size": 48}
+      ]
     }
   ]
 }

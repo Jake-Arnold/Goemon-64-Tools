@@ -1,7 +1,7 @@
 # Matching C reconstruction
 
-The [decompilation track](decomp/README.md) now includes a reconstructed 12-function
-flag-bank unit. Fresh baseline and C-replacement builds both match the complete
+The [decompilation track](decomp/README.md) now includes **15 matching functions**
+across flag-bank and system/byte-memory units. Fresh baseline and C-replacement builds both match the complete
 original decompressed US ROM byte-for-byte. Reproducible verification, synthetic
 C tests and per-function result metadata are included; game data stays local.
 This is an initial matching increment, not a full decompilation or new release.
