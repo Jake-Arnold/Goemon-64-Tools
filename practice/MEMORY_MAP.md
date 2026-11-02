@@ -79,6 +79,13 @@ While top-level state is `0x0A`, `0x800C7AA4` is the native debug-menu category 
 
 **Velocity status:** dynamic player task f32 fields `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C` fluctuate during NPC conversations despite stationary player position. Their high-byte integer values around 192 (`0xC0`) or 191 (`0xBF`) are not speed measurements. Full f32 interpretation and contrasting movement trials still required.
 
+## Movement-influencing task field: manual writes (2026-11-02)
+
+- Session-specific `0x8016A0F8` = `PlayerTask + 0x68`, a documented **f32-typed field of unknown meaning**.
+- User reports nudging the player by writing raw hexadecimal `192` with width **4 or 8 bytes** during movement. This is evidence of causal movement influence, **not yet a velocity axis**.
+- The editor's `192` is hexadecimal `0x192` (4-byte `00000192`), **not** float 192.0 (`43400000`). Width 8 spans both `+0x68` and `+0x6C`, so does not isolate the field.
+- Retest with dynamically resolved player task address, 4-byte float bits, opposite signs and isolated movement conditions; do not hardcode the session address.
+
 ## Provenance
 
 - Original recomp game types and player object pointers: https://github.com/klorfmorf/Goemon64Recomp/blob/dev/patches/variables.h

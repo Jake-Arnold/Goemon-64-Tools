@@ -38,6 +38,12 @@ In Live Memory, add a custom watch for `0x8015C574` with type `u8` and monitor c
 - `0x800C7A73` oscillates without magic and must be rejected as the magic-active candidate; `0x8014C340` also oscillates independently of weapon selection.
 - Player-task f32 fields at `+0x68`/`+0x70`/`+0x74`/`+0x78`/`+0x7C` vary during NPC conversations while stationary. Reported 192/191 'maxima' likely come from reading leading IEEE-754 bytes as integers (`0xC0` / `0xBF`). Read the entire 4-byte f32 and dynamically resolve player-task addresses; do not treat them as confirmed engine velocity.
 
+### Live movement write at task +0x68 (2026-11-02)
+
+Ebisumaru user test: raw writes to `0x8016A0F8` while moving, at both 4-byte and 8-byte widths, nudged the character. For the earlier captured player-task base `0x8016A090`, this address corresponds to `PlayerTask +0x68`, declared `f32 unknown_68`. That is stronger evidence of movement influence than A/B/C correlation, but is **not proof of actual velocity**.
+
+The **raw hex editor is a bit-pattern writer**, not a float-value input. Entering `192` is hexadecimal `0x192` and writes `00000192` (4-byte) or `0000000000000192` (8-byte). A float *value* of 192.0 would require `43400000` at 4 bytes. The 8-byte case also overwrites neighboring `task+0x6C`. Test `task+0x68` as an isolated 4-byte f32, using actual float encodings and recording change in XYZ motion; re-resolve player-task pointer each new scene/session. Semantics remain unknown.
+
 ## Capture protocol
 
 1. Connect to **US Goemon64Recomp** and select **State discovery**.

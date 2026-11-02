@@ -54,6 +54,14 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-02 — player-task +0x68 causal movement nudge under raw writes
+
+**User live experiment, Ebisumaru (not tool-automated):** modifying original guest address `0x8016A0F8` while moving visibly *nudged the player*, both with 4-byte and 8-byte raw write widths. This supports a causal **movement-influencing** field, but does **not** yet establish a true velocity component or axis. It remains a dynamic task-local address: in the recorded session the player task was at `0x8016A090`, so the field is `PlayerTask + 0x68` (`f32 unknown_68` per recomp `patches/types.h`).
+
+**Interpretation caveat:** the editor parses entered values as **hex integer byte patterns**, not decimal numbers or IEEE-754 floats. Typing `192` writes `0x00000192` at width 4; `0x0000000000000192` at width 8. Those bytes are *not* floating-point 192.0 (`0x43400000`). For width 8, writes starting at `+0x68` also modify adjacent `+0x6C`; effects cannot be attributed solely to `+0x68`. Previously observed decimal 192 in byte view can be raw high byte `0xC0` of a negative float, rather than a speed maximum.
+
+**Follow-up validation:** use a dynamic base pointer and a **4-byte** watch/write at `task + 0x68`; capture original full f32 and test small positive and negative IEEE-754 values with readback and controlled stationary/moving conditions, while recording position delta and camera/facing. Repeat after stage reload to check whether a different base is used. No persistent hardcoded movement toggle is justified yet. No runtime code changes in this documentation update.
+
 ## 2026-11-02 — selected weapon confirmed; map/magic/velocity reclassified
 
 - **Weapon:** user tested `0x8015C607` (u8) on all four characters. `01`/`02`/`03` select normal weapon 1/2/3. Manually writing out-of-range values shows unintended next-character weapons: Goemon -> Ebisumaru hammer, Ebisumaru -> Sasuke kunai, Sasuke -> Yae sword, Yae -> user-described letter `1`. Added built-in watch; values above 3 are displayed with CHECK, not silently clamped. Editing requires UNSAFE.
