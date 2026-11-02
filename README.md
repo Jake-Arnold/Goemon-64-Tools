@@ -1,3 +1,13 @@
+# Goemon Speedrun Tools v0.11.3 — storyline probes and pre-load character experiment
+
+The **Unlocks** tab now exposes **read-only** Sasuke battery 2 post-cutscene completion (`0x8015C609 & 0x40`) near the top, alongside Ushiwaka progression **candidates** (`0x8015C60D & 0x10` start, `& 0x08` blue-fish hand-in). The first Sasuke battery (`& 0x20`) remains the only write-verified battery unlock. Completing Ushiwaka's blue-fish hand-in also reduced blue fish count at `0x8015C723` from 3 to 0. These event bits do not execute a cutscene.
+
+**Scene browser now has NO automatic C-Down presses.** When an experimental 0x0C reload is requested, the selected character ID (`0x8015C5DC`, u32) is staged **before loading**, then the game may spawn its model using its ordinary area-entry loader. Both global and player-task character IDs are checked after loading. **This behaviour is experimental and has not been validated in a running Windows game**; the loader may override the ID, cause an inconsistent actor, or use the wrong entrance coordinates. If verification fails the tool only reports failure and will not attempt to repair the actor through simulated input. The observed native debug-menu pointer `0x800C7E60` is not modified and is only meaningful during highlighted native-menu entries; the user observed it later reading 128.
+
+Local simulated-memory and Linux/Xvfb GUI tests: **171 passed**. Use disposable saves for experimental reloads.
+
+---
+
 # Goemon Speedrun Tools v0.11.2 — post-warp character selection and second battery flag
 
 The Scene browser character dropdown now applies to **experimental 0x0C reloads**: once the map is playable, the toolkit uses ordinary C-Down to request the selected character, if that character is available in the current party, and verifies both global and per-task character IDs. This changes character **after loading**, not through the original debug-menu actor spawn path; the initial spawn and coordinates may still be incorrect. It never writes global character IDs, task pointers, or the observed debug-menu pointer. A failed automatic input allows a manual C-Down, with a bounded timeout and explicit failure reporting.
