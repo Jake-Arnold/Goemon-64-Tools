@@ -54,6 +54,14 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-02 — Second Sasuke battery cutscene timing and character-aware experimental reload
+- **Battery #2:** User observed `0x8015C609` changing `0x20 → 0x60` only **after** second-battery pickup cutscene finishes. `0x40` is an observed post-cutscene completion bit, not the cutscene trigger. Added **read-only** Live Memory decoded watch; no second-battery write control.
+- **Repeated native character scan:** original debug menu state `0x0A`, map 404, cursor Goemon/Ebisumaru/Sasuke/Yae then reverse. Eight stable highlights reveal `0x800C7E60` as a four-byte menu-entry pointer: `0x8007BAD0`, `0x8007BADC`, `0x8007BAE8`, `0x8007BAF4`, stride 12. Overlapping u16/u8 hits are aliases of pointer low bytes; no direct integer 0–3 character cursor found. Do not write the menu pointer outside the menu.
+- **Scene browser:** character dropdown was ignored by EXPERIMENTAL `0x0C` reload. It is now captured at request time and, when the destination becomes playable, automatically requests the chosen character with native C-Down **if already unlocked in the party**. After 3 stable samples, validate both global and per-task character IDs and idle action; at most 4 spaced presses, with manual C-Down fallback and 25s timeout. Locked character, unexpected map and failed input are explicitly reported. Never write raw character IDs, player/task pointers, spawn XYZ, or the debug-menu entry pointer.
+- **Limitation:** This is **post-load character switching, not native debug-menu spawn selection**. Selected character may initially spawn as previous character; locked-character selection unsupported by this path. Incorrect entrance coordinates still unresolved. Synthetic RAM plus Linux/Xvfb tests, **not yet confirmed live on Windows**.
+- **Tests:** 166 Python tests passed, 9 subtests passed under Linux/Xvfb; include selected-character switch after reload, party-locked refusal, correct per-task model ID, and no direct character ID writes.
+- **Next:** Windows gameplay trials, then investigate menu-owned cursor pointer's reader and scene loader to reproduce native debug character selection at spawn.
+
 ### 2026-11-02 — v0.11.1 cross-area checkpoints, nonblocking Connect, storyline research
 - Cross-area restore: request pending stage at 0x800C7CA0 then game state 0x0C; wait for correct map, stable gameplay, idle player, no script, then restore saved XYZ/rotation/progression. Abort timeout, wrong map or failed final write; native character switch if needed. Same-map remains immediate. This is not a native savestate.
 - Connection discovery now runs in a worker thread; Tk only polls completion queue, so the GUI does not freeze on a long memory scan.

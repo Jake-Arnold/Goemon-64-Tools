@@ -1,3 +1,9 @@
+## Second Sasuke battery and native character cursor (2026-11-02)
+
+- Second battery cutscene finishes, then `0x8015C609` changes `0x20 → 0x60`. Thus bit `0x40` is an observed **post-cutscene completion** marker; manually setting completion bits does not invoke pickup cutscene.
+- Native debug character highlights (state `0x0A`, map 404) were repeated eight times in forward/reverse order. Original N64 guest u32 at `0x800C7E60` is `0x8007BAD0 + 12*character`: Goemon `BAD0`, Ebisumaru `BADC`, Sasuke `BAE8`, Yae `BAF4` (all `0x8007....`). This is a **menu-entry pointer**, not a character ID. The u16/u8 candidates are overlapping low bytes of the same pointer.
+- Experimental reload applies the selected character only **after** gameplay resumes, via native C-Down, when the character is in party. It does not implement native debug-menu entry selection, does not change XYZ, and may be unable to choose locked characters.
+
 ## 2026-11-02 — storyline progression and v0.11.1
 
 - User observations: first Benkei conversation changes later dialogue; completing Ushiwaka fish minigame and receiving Achilles Heel advances quest progression. Editing Achilles Heel into inventory does not bypass the story event, whereas editing the required fish allows an immediate legitimate minigame completion.

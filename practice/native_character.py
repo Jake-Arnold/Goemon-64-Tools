@@ -12,11 +12,31 @@ from __future__ import annotations
 from dataclasses import dataclass
 import os
 
-from practice.checkpoints import GAMEDATA_ADDR, MAP_ADDR, validate_checkpoint, _ensure_capture_safe
+from practice.checkpoints import GAMEDATA_ADDR, MAP_ADDR, STATE_ADDR, validate_checkpoint, _ensure_capture_safe
 
 PARTY_OFFSET = 0x94
 IDLE_ACTIONS = frozenset((0, 1, 0x42))
 CHARACTER_TASK_OFFSET = 0x60
+
+
+def scene_character_unlocked(ram, character: int) -> bool:
+    """C-Down cannot select characters missing from the current party."""
+    if type(character) is not int or character not in range(4):
+        raise ValueError('Expected character 0–3')
+    return bool(ram.u32(GAMEDATA_ADDR + PARTY_OFFSET + 4 * character))
+
+
+def ready_for_scene_character(ram, map_id: int, character: int, snapshot=None) -> bool:
+    """Verify global and per-task actor IDs, rather than just a displayed cursor."""
+    if type(character) is not int or character not in range(4):
+        return False
+    if ram.u8(STATE_ADDR) != 13 or ram.u16(MAP_ADDR) != map_id:
+        return False
+    snap = snapshot if snapshot is not None else ram.snapshot()
+    if (snap.get('loading') or snap.get('character') != character
+            or snap.get('action') not in IDLE_ACTIONS or not snap.get('task_ptr')):
+        return False
+    return ram.u8(snap['task_ptr'] + CHARACTER_TASK_OFFSET) == character
 
 @dataclass(frozen=True)
 class PartyPatch:

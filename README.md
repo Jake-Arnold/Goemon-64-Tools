@@ -1,3 +1,15 @@
+# Goemon Speedrun Tools v0.11.2 — character-aware experimental reload
+
+In **Scene browser**, the character dropdown now applies to the experimental map reload. The destination loads first, and the toolkit then requests the selected character through ordinary in-game C-Down, provided that character is already in the party. Successful switching requires stable gameplay plus matching global and player-task character IDs. This is **not** the native debug menu's character-at-spawn operation; entrance coordinates remain uncorrected, and locked characters are not selected by this path.
+
+The repeated original debug-menu cursor scan identifies `0x800C7E60` as a **menu-entry pointer** with values Goemon=`0x8007BAD0`, Ebisumaru=`0x8007BADC`, Sasuke=`0x8007BAE8`, Yae=`0x8007BAF4` (stride `0x0C`). These are observed while the debug menu is open, **not raw character ID values or a safe gameplay write target**.
+
+The second Sasuke battery sets `0x8015C609` bit `0x40` at the **end** of its pickup cutscene (`0x20 → 0x60`). Live Memory displays this flag read-only; setting a completion flag does not invoke the cutscene script.
+
+Automated validation: **166 passed, 9 subtests** in synthetic-memory/Linux-Xvfb tests. In-game Windows switching has not yet been verified.
+
+---
+
 # Goemon Speedrun Tools v0.11.1 — cross-area checkpoints, F1 and storyline research
 
 Cross-area logical checkpoint restore now requests the saved destination with 0x800C7CA0 then state 0x0C. After the game loads the target map and a stable player, the toolkit restores saved XYZ, rotation, resources and progression; same-map restores remain immediate. This is not a native savestate: actors, scripts, physics and camera may differ.

@@ -17,7 +17,7 @@ from practice.paths import practice_data_dir, diagnostics_dir
 from practice.custom_watches import (CustomWatch, FORMATS, make_watch, append_watch,
                                      load_watches, save_watches, read_watch)
 from practice.theme import PALETTE
-from practice.native_character import press_native_debug_accept
+from practice.native_character import press_native_debug_accept, press_native_c_down, ready_for_scene_character, scene_character_unlocked, IDLE_ACTIONS
 from practice.native_debug_watch import FIELDS as NATIVE_WATCH_FIELDS, read_fields as read_native_watches, changed_fields as changed_native_watches, make_change_event as make_native_change_event, can_mark_state as can_mark_native_state, decode_hover_pointer
 from practice.native_debug_trace import (Observation, Candidate, menu_state, take_menu_snapshot,
     find_candidates, load_profile, save_profile, calibrated_for_direct_warp,
@@ -145,12 +145,12 @@ class InspectorMixin:
         ttk.Label(scenes,textvariable=self.scene_live,font=('Consolas',12)).pack(anchor='w',pady=4)
         ttk.Label(scenes,text='Double-click = select requested scene (READ ONLY). Warp is disabled until the correct game loader path is identified.').pack(anchor='w')
         character_line=ttk.Frame(scenes);character_line.pack(fill='x',pady=4)
-        ttk.Label(character_line,text='Character (native-menu path only):').pack(side='left')
+        ttk.Label(character_line,text='Target character:').pack(side='left')
         self.scene_character=ttk.Combobox(character_line,state='readonly',width=30,
                values=('0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
         self.scene_character.current(0)
         self.scene_character.pack(side='left',padx=8)
-        ttk.Label(character_line,text='Native debug menu only; direct warp disabled.').pack(side='left')
+        ttk.Label(character_line,text='Experimental reload switches AFTER loading via native C-Down; not identical to debug-menu entry.').pack(side='left')
         self.scene_filter=tk.StringVar()
         ttk.Entry(scenes,textvariable=self.scene_filter).pack(fill='x',pady=6)
         self.scene_filter.trace_add('write',lambda *_:self.draw_scene_list())
@@ -165,7 +165,7 @@ class InspectorMixin:
         self.scene_list.bind('<<ListboxSelect>>',self.select_scene)
         self.scene_list.bind('<Double-Button-1>',self.activate_selected_scene)
         self.draw_scene_list()
-        ttk.Label(scenes,text='Experimental 0x0C reload: sets the pending destination, then asks the original game to reload. Target room may load at WRONG coordinates. The previous exit-flag path remains disabled.',wraplength=950).pack(anchor='w',pady=3)
+        ttk.Label(scenes,text='Experimental 0x0C reload: stage entry may have WRONG coordinates. After loading, the selected character is requested via native C-Down (only if already unlocked); this does not spawn that character through the native debug menu. The previous exit-flag path remains disabled.',wraplength=950).pack(anchor='w',pady=3)
         self.experimental_warp_btn=ttk.Button(scenes,text='EXPERIMENT: reload into selected stage (wrong spawn possible)',
             command=self.try_reload_warp,style='Gold.TButton')
         self.experimental_warp_btn.pack(fill='x',pady=4)
@@ -814,20 +814,27 @@ class InspectorMixin:
                  'warning':'Unverified transition fields; no claimed native warp success',
                  'destination':pending['map_id'], 'source_map':pending['from_map'],
                  'original_character':pending['character'],
+                 'requested_character':pending.get('selected_character'),
+                 'observed_character':pending.get('observed_character'),
+                 'native_character_attempts':pending.get('attempts',0),
                  'status':pending['status'], 'samples':pending['events']}
         path.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
         return str(path)
 
 
     def try_reload_warp(self):
-        if self.pending_direct_warp:
-            self.scene_status.set('Another reload trial is being monitored.')
+        if self.pending_direct_warp or self.pending_restore or self.pending_native_warp:
+            self.scene_status.set('Another scene or checkpoint transition is pending; finish or cancel it first.')
             return
         chosen=self.scene_list.curselection()
         if not chosen:
             self.scene_status.set('Select a destination first.')
             return
         dest,name=self.scene_options[chosen[0]]
+        target_character=self.scene_character.current()
+        if target_character not in range(4):
+            self.scene_status.set('Choose a target character 0–3 first.')
+            return
         if not self.mem:
             self.scene_status.set('Connect to Goemon64Recomp first.')
             return
@@ -836,28 +843,100 @@ class InspectorMixin:
             return
         if not messagebox.askyesno('EXPERIMENTAL scene reload (wrong spawn)',
             f'Write pending map {dest} ({name}), then state 0x0C?\n\n'
-            'Live testing shows the target map loads, but entrance coordinates can be wrong. '
-            'This can crash or softlock the game. It will NOT modify XYZ or the exit flag.'):
+            f'After loading, request character {target_character} with native C-Down if unlocked.\n'
+            'This is NOT a native debug-menu character spawn. Entry coordinates may be wrong. '
+            'No character ID, player pointer, XYZ or exit flag is directly written.'):
             return
         try:
             info=stage_reload_trial(self.mem,dest,SCENES)
             now=__import__('time').monotonic()
             self.pending_direct_warp={
                 'map_id':dest,'from_map':info['source_map'],'character':info['source_character'],
+                'selected_character':target_character, 'observed_character':None,
+                'phase':'loading', 'attempts':0, 'last_press':0.0, 'manual_only':False,
                 'source_position':info['source_position'], 'start_at':now, 'last_message_at':now,
                 'date_code':datetime.now().strftime('%Y%m%d_%H%M%S_%f'),
                 'events':[], 'status':'requested_0x0C','stable':0,
             }
             self.scene_status.set(f'Experimental reload sent: {info["source_map"]} → {dest}. '
-                'Observing game state and position; entrance is NOT corrected.')
+                f'Character {target_character} will be requested after map load; entrance is NOT corrected.')
         except (OSError,ValueError,RuntimeError) as exc:
             self.scene_status.set(f'Reload trial failed: {exc}')
 
+    def _finish_direct_warp(self, pending, status, summary):
+        pending['status']=status
+        try:
+            path=self._save_direct_warp_diagnostics(pending)
+            summary=f'{summary} Diagnostic: {path}'
+        except OSError as exc:
+            summary=f'{summary} (Could not save diagnostic: {exc})'
+        self.scene_status.set(summary)
+        self.pending_direct_warp=None
+
+    def _poll_direct_warp_character(self, pending, now):
+        """Request native C-Down after the requested room is playable, not during loading."""
+        target=pending['selected_character']
+        if now-pending['switch_started'] > 25:
+            self._finish_direct_warp(pending,'character_switch_timeout',
+                f'Map {pending["map_id"]} loaded but character {target} was not confirmed within 25s.')
+            return
+        state=self.mem.u8(STATE_ADDR)
+        scene=self.mem.u16(MAP_ADDR)
+        if state==13 and scene!=pending['map_id']:
+            self._finish_direct_warp(pending,'map_changed_during_character_switch',
+                f'Map changed to {scene} during character switch; cancelled without writing character state.')
+            return
+        if state!=13:
+            pending['stable']=0
+            return
+        snapshot=self.mem.snapshot()
+        if snapshot.get('loading') or snapshot.get('action') not in IDLE_ACTIONS:
+            pending['stable']=0
+            return
+        if ready_for_scene_character(self.mem,pending['map_id'],target,snapshot):
+            pending['stable']+=1
+            if pending['stable']>=3:
+                pending['observed_character']=target
+                self._finish_direct_warp(pending,'loaded_selected_character_observed',
+                    f'Map {pending["map_id"]} playable as selected character {target}; spawn coordinates unverified.')
+            return
+        pending['stable']=0
+        if not scene_character_unlocked(self.mem,target):
+            self._finish_direct_warp(pending,'character_unavailable',
+                f'Map {pending["map_id"]} loaded, but character {target} is not unlocked. '
+                'C-Down cannot select a locked character; use the ORIGINAL debug menu.')
+            return
+        if pending['manual_only']:
+            self.scene_status.set(f'Map {pending["map_id"]} loaded. Select character {target} manually '
+                                  'using C-Down; awaiting stable task/model verification.')
+            return
+        if pending['attempts']>=4:
+            pending['manual_only']=True
+            self.scene_status.set(f'Native C-Down did not select character {target} in four presses. '
+                                  'Select it manually in-game before timeout.')
+            return
+        if now-pending['last_press']<2.0 or self.native_key_release is not None:
+            return
+        pending['attempts']+=1
+        pending['last_press']=now
+        try:
+            self.native_key_release=press_native_c_down(self.game_pid)
+            self.root.after(180,self._release_debug_key)
+            self.scene_status.set(f'Map {pending["map_id"]} playable; native C-Down '
+                f'{pending["attempts"]}/4 sent for character {target}. Waiting for model/task.')
+        except (OSError,RuntimeError) as exc:
+            pending['manual_only']=True
+            self.scene_status.set(f'Automatic C-Down unavailable ({exc}); select '
+                                  f'character {target} manually within 25 seconds.')
+
     def poll_direct_warp(self,now):
-        """Read-only monitoring. Never resend a failed request or force map/char."""
+        """Observe loading then request an ordinary post-load character switch if needed."""
         pending=self.pending_direct_warp
         if not pending or not self.mem:return
         try:
+            if pending.get('phase')=='character_switch':
+                self._poll_direct_warp_character(pending,now)
+                return
             assessment=assess_direct_warp(self.mem,pending['map_id'])
             sample={'seconds':round(now-pending['start_at'],3),**assessment}
             if assessment['status']=='loaded_and_playable':
@@ -872,25 +951,26 @@ class InspectorMixin:
             else:
                 pending['stable']=0
             if pending['stable']>=3:
-                pending['status']='loaded_observed'
-                path=self._save_direct_warp_diagnostics(pending)
-                self.scene_status.set('RELOAD trial: target scene %d playable; ENTRY/SPAWN NOT VALIDATED. Character %d. Diagnostic: %s' %
-                                      (pending['map_id'],assessment['character'],path))
-                self.pending_direct_warp=None
+                pending['observed_character']=assessment['character']
+                if assessment['character']==pending['selected_character']:
+                    self._finish_direct_warp(pending,'loaded_selected_character_observed',
+                        f'RELOAD trial: map {pending["map_id"]} playable as character {assessment["character"]}; spawn NOT validated.')
+                else:
+                    pending['phase']='character_switch'
+                    pending['switch_started']=now
+                    pending['stable']=0
+                    self.scene_status.set(f'Map {pending["map_id"]} loaded as character {assessment["character"]}; '
+                        f'requesting selected character {pending["selected_character"]} through native C-Down.')
             elif now-pending['start_at']>=8.0:
-                pending['status']='not_confirmed_timeout'
-                path=self._save_direct_warp_diagnostics(pending)
-                self.scene_status.set('DIRECT trial NOT CONFIRMED after 8 seconds. No retry or further writes. Diagnostic: '+path)
-                self.pending_direct_warp=None
+                self._finish_direct_warp(pending,'not_confirmed_timeout',
+                    'DIRECT trial NOT CONFIRMED after 8 seconds. No retry or further writes.')
             elif int((now-pending['start_at'])*2) != int((now-pending['last_message_at'])*2):
                 pending['last_message_at']=now
                 self.scene_status.set('Direct request sent; waiting for an actual playable map %d. Current game state %d; map %d. No debug menu opened.' %
                         (pending['map_id'],assessment['state'],assessment['map_id']))
         except (OSError, ValueError) as exc:
-            pending['status']='monitor_error: '+str(exc)
-            self._save_direct_warp_diagnostics(pending)
-            self.pending_direct_warp=None
-            self.scene_status.set('Direct warp monitoring failed: '+str(exc))
+            self._finish_direct_warp(pending,'monitor_error: '+str(exc),
+                'Direct warp monitoring failed: '+str(exc))
 
     def request_direct_scene(self,mid,name):
         """Double-click is selection-only; experimental writes need a dedicated button."""

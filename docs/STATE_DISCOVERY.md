@@ -1,3 +1,11 @@
+## Repeated native character cursor sweep and second-battery timing (2026-11-02)
+
+The original native debug menu character-scan export `native_character_cursor_20261102_104302.json` used 8 stable highlights: Goemon, Ebisumaru, Sasuke, Yae, Yae, Sasuke, Ebisumaru, Goemon. Menu state 10, category 3, map 404, stage offset 4. There were 63 candidates (3 linear, 60 lookup), but the meaningful linear candidates are overlapping parts of **one u32 pointer at `0x800C7E60`** with values `0x8007BAD0`, `0x8007BADC`, `0x8007BAE8`, `0x8007BAF4`. Entries are 12 bytes apart. This pointer is not a 0–3 ID, nor is it a validated writable actor-selection command. Do not blindly write it from ordinary gameplay.
+
+Second battery pickup sets `0x8015C609` bit `0x40` at the **end of the cutscene**, not immediately on contact. The separate event script is still unknown. Live Memory decodes this completion bit read-only.
+
+**Client update:** experimental map reload now honours the character dropdown by requesting a **post-load native C-Down** switch only for available party characters, with model/task verification, refusal on locked characters, bounded attempts and timeout. It does **not** reproduce native debug-menu spawn selection or fix spawn XYZ.
+
 ## v0.11.1 — Benkei/Ushiwaka storyline A/B protocol
 
 Use Storyline event / quest flag (focused scan). Capture separate A/B pairs: (1) before and after first Benkei conversation; (2) before Ushiwaka fish turn-in and after the reward/cutscene; (3) before and after editing Achilles Heel into inventory alone, without finishing the event; (4) add the required fish directly, then complete Ushiwaka normally. Use disposable checkpoints and avoid changing map/character during each pair.

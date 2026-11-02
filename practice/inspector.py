@@ -116,6 +116,9 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Native menu entry pointer',0x800C7E60,4,
         lambda v:f'0x{v:08X} (menu entry; not a character ID)',
         source='follows debug-menu highlight; may be used on other menu pages')
+    add('Sasuke battery 2 cutscene finished (observed)',0x8015C609,1,
+        lambda v: 'Yes (bit 0x40)' if v & 0x40 else 'No (bit 0x40)',
+        source='observed: second battery cutscene ends with 0x20 -> 0x60; cutscene trigger separate')
     add('Map overlay state (observed)',0x8015C574,1,
         lambda v: f'{v} ({"visible" if v == 1 else "hidden" if v == 0 else "unusual"})',
         validator=lambda v: v in (0,1),
