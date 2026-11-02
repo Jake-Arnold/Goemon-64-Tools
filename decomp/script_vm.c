@@ -76,9 +76,19 @@ void func_8003D45C_3E05C(void) {
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003D9B8_3E5B8.s")
 #endif
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003DB0C_3E70C.s")
-#endif
+u32 *func_8003DB0C_3E70C(u32 *script) {
+    u32 *destination;
+    destination = VM_U32_PTR(func_8003DE48_3EA48(*script++));
+    switch (*script++) {
+        case 0x8009: *destination = *script++; break;
+        case 0x8013: *destination += *script++; break;
+        case 0x8014: *destination -= *script++; break;
+        case 0x8015: *destination = *VM_U32_PTR(func_8003DE48_3EA48(*script)); script++; break;
+        case 0x8016:
+        case 0x8017: *destination = *script++; break;
+    }
+    return script;
+}
 
 #ifndef GOEMON_DECOMP_HOST_TEST
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003DBEC_3E7EC.s")

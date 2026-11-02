@@ -38,9 +38,13 @@ void func_8003D428_3E028(void);
 void func_8003E5EC_3F1EC(void);
 void func_8003E620_3F220(void);
 
+s32 func_8003DE48_3EA48(s32);
+
 #ifdef GOEMON_DECOMP_HOST_TEST
 #define VM_WORD_AT(address) (*(s32 *)(intptr_t)(address))
+#define VM_U32_PTR(address) ((u32 *)(intptr_t)(address))
 #else
 #define VM_WORD_AT(address) (*(s32 *)(address))
+#define VM_U32_PTR(address) ((u32 *)(address))
 #endif
 #endif

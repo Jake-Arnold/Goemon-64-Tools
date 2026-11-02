@@ -1,8 +1,8 @@
-# Initial event/dialogue VM reconstruction checkpoint
+# Event/dialogue VM reconstruction checkpoint
 
 Date: 2026-11-02. Pinned mnsg baseline and ROM identity are unchanged.
-**17 new matching helpers / 768 function bytes**, bringing the track to
-**42 matching C functions / 2,644 function bytes**. The full 32 MiB baseline and
+**18 matching VM functions / 992 function bytes**, bringing the track to
+**43 matching C functions / 2,868 function bytes**. The full 32 MiB baseline and
 candidate both match decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
 Current source hashes, guest addresses and byte-range comparisons are in
 [combined.json](results/combined.json). The previous complete-save checkpoint is
@@ -11,8 +11,8 @@ retained as [save_resources_complete.json](results/save_resources_complete.json)
 ## Selected unit and evidence boundaries
 
 The original `0x3DBA0..0x40320` unit contains 69 functions. `script_vm.c` replaces
-17 helpers and retains 52 explicitly declared assembly functions. The main
-dispatcher, script assignment/operand handlers and comparison routine remain
+18 functions and retains 51 explicitly declared assembly functions. The main
+dispatcher, remaining operand handlers and comparison routine remain
 assembly; the complete VM is not decompiled. A name appears in the matching count
 only when linked guest address, original bytes and absence of its assembly marker
 all pass, alongside the complete ROM identity check.
@@ -26,6 +26,7 @@ all pass, alongside the complete ROM identity check.
 | `func_8003D080_3DC80` | Cleanup, release stored owner, then clear owner pointer |
 | `func_8003D428_3E028` | Reset wrapper passing `0, -1` to the retained initialization routine |
 | `func_8003D44C_3E04C`, `func_8003D45C_3E05C` | Set/clear raw VM pause/gate byte |
+| `func_8003DB0C_3E70C` | Consume destination/opcode operands; immediate stores (`8009/8016/8017`), wrapping add/sub (`8013/8014`), relocated indirect copy (`8015`); unknown modes consume no value |
 | `func_8003DE48_3EA48` | Preserve negative encoded addresses; conditionally relocate nonnegative values using active-context delta |
 | `func_8003DF68_3EB68` | Consume one repeat count only when at least two remain |
 | `func_8003E548_3F148`, `func_8003E5B8_3F1B8` | Start external dialogue/render operations, set state 5/6, then poll |
@@ -36,6 +37,20 @@ all pass, alongside the complete ROM identity check.
 Raw engine preconditions are preserved: no new pointer/index/length safety API is
 introduced, and callbacks are not wired into the running companion. This is
 original-ROM C reconstruction, not a new native PC port.
+
+## Assignment handler increment
+
+`func_8003DB0C_3E70C` replaces another 224 assembly bytes. In indirect-copy
+mode the source operand cursor advances after address resolution and the load;
+that ordering is required for the original IDO code match. The handler preserves
+raw pointer preconditions and is not exposed as a new live-memory operation.
+Synthetic host tests cover literal modes, wrapping arithmetic, indirect and
+self copies, active/inactive relocation, unknown-mode cursor lengths and guards.
+
+Its regenerated 15-word jump table requires the narrowly validated metadata-only
+layout adjustment described in [README.md](README.md#assignment-jump-table-layout).
+Whole-ROM equality includes the table and every retained assembly function/data
+range. The prior [42-function checkpoint](results/vm_helpers.json) remains intact.
 
 ## Jump-table label compatibility
 
@@ -64,7 +79,7 @@ sequencing. No zero-score/equivalent-code claim was substituted for exact bytes.
 
 The native candidate retains the original comparator assembly and marker.
 `vm_compare_reference.h` is included **only by host tests**, explicitly excluded
-from the 17/42-function counts. It is a semantic aid for subsequent work, not a
+from the 18/43-function counts. It is a semantic aid for subsequent work, not a
 published matching reconstruction or production evaluator. Retained assembly
 also includes the dispatcher and assignment/operand decoders.
 
@@ -78,8 +93,8 @@ safe to evaluate.
 ## Validation
 
 - Fresh verifier baseline and combined candidate builds both passed the full ROM
-  check; all 42 claimed function ranges/addresses matched without assembly markers.
-- **205 Windows Python tests passed**, including declared-assembly exclusion and
+  check; all 43 claimed function ranges/addresses matched without assembly markers.
+- **223 Windows Python unittest tests passed**, including declared-assembly exclusion and
   the narrow Splat-label override. The comparator is asserted to remain excluded.
 - Sanitizer-enabled synthetic VM tests passed pointer fallback, five delayed
   callback invocations, step/draw ordering, initialization/cleanup order, gate
@@ -104,8 +119,8 @@ ROM data, generated assembly, full local logs and failed drafts remain ignored.
 
 ## Next work
 
-Resolve the comparator's exact control-flow/return form, then reconstruct operand
-and assignment handlers with their jump-table data/layout retained correctly.
+Resolve the comparator's exact control-flow/return form and reconstruct the
+remaining operand handlers while retaining their table data/layout correctly.
 Only after those primitives pass should the central dispatcher replace assembly.
 Use existing mn64rando opcode definitions and independently traced accesses to
 interpret behavior; do not infer story semantics from helper names alone.

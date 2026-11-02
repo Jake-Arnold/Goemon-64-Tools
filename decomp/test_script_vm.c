@@ -133,8 +133,43 @@ static void check_callbacks_and_dialogue_states(void) {
     func_8003EA0C_3F60C(); func_8003EBA4_3F7A4();
 }
 
+static void check_assignment_operands(void) {
+    static u32 memory[4];
+    static u32 words[4];
+    const u32 literal_ops[] = {0x8009, 0x8016, 0x8017};
+    unsigned i;
+    s32 mode;
+    /* Non-PIE static storage represents encoded 32-bit pointers. */
+    for (mode = -1; mode <= 0; mode++) {
+        D_801C78EC_1C84EC = mode;
+        D_801C78F0_1C84F0 = mode == 0 ? 4 : 0;
+        words[0] = (u32)(uintptr_t)&memory[1] - D_801C78F0_1C84F0;
+        memory[0] = 0xAABBCCDD; memory[2] = 0x11223344; memory[3] = 0xDEADBEEF;
+        for (i = 0; i < sizeof(literal_ops) / sizeof(literal_ops[0]); i++) {
+            words[1] = literal_ops[i]; words[2] = 0x87654321;
+            assert(func_8003DB0C_3E70C(words) == words + 3);
+            assert(memory[1] == words[2]);
+        }
+        words[1] = 0x8013; words[2] = 1; memory[1] = 0xFFFFFFFF;
+        assert(func_8003DB0C_3E70C(words) == words + 3 && memory[1] == 0);
+        words[1] = 0x8014;
+        assert(func_8003DB0C_3E70C(words) == words + 3 && memory[1] == 0xFFFFFFFF);
+        words[1] = 0x8015;
+        words[2] = (u32)(uintptr_t)&memory[2] - D_801C78F0_1C84F0;
+        assert(func_8003DB0C_3E70C(words) == words + 3 && memory[1] == memory[2]);
+        words[2] = words[0];
+        assert(func_8003DB0C_3E70C(words) == words + 3 && memory[1] == memory[2]);
+        for (i = 0x8008; i <= 0x8018; i++) {
+            if (i == 0x8009 || (i >= 0x8013 && i <= 0x8017)) continue;
+            words[1] = i;
+            assert(func_8003DB0C_3E70C(words) == words + 2 && memory[1] == memory[2]);
+        }
+        assert(memory[0] == 0xAABBCCDD && memory[2] == 0x11223344 && memory[3] == 0xDEADBEEF);
+    }
+}
+
 int main(void) {
-    check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
+    check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
     puts("VM comparisons/indirection, relocation, callback ordering, counters and dialogue states passed.");
     return 0;
 }

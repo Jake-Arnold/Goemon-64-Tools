@@ -204,6 +204,11 @@
           "size": 12
         },
         {
+          "name": "func_8003DB0C_3E70C",
+          "rom_offset": 255756,
+          "size": 224
+        },
+        {
           "name": "func_8003DE48_3EA48",
           "rom_offset": 256584,
           "size": 56
@@ -257,7 +262,6 @@
         "func_8003D468_3E068",
         "func_8003D68C_3E28C",
         "func_8003D9B8_3E5B8",
-        "func_8003DB0C_3E70C",
         "func_8003DBEC_3E7EC",
         "func_8003DDC4_3E9C4",
         "func_8003DE80_3EA80",
@@ -312,5 +316,6 @@
   ],
   "splat_options": {
     "asm_jtbl_label_macro": "glabel"
-  }
+  },
+  "vm_assignment_table_layout": true
 }

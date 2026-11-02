@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),42)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),43)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
@@ -107,8 +107,48 @@ class DecompVerificationTests(unittest.TestCase):
     def test_reference_comparator_is_excluded_from_matching_c_count(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
         vm=next(unit for unit in manifest['units'] if unit['source']=='script_vm.c')
-        self.assertEqual(len(vm['functions']),17)
-        self.assertEqual(len(vm['assembly_functions']),52)
+        self.assertEqual(len(vm['functions']),18)
+        self.assertEqual(len(vm['assembly_functions']),51)
         name='func_8003D9B8_3E5B8'
         self.assertIn(name,vm['assembly_functions'])
         self.assertNotIn(name,{fn['name'] for fn in vm['functions']})
+    def test_vm_layout_preset_rejects_other_values_and_missing_handler(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'manifest.json'
+            for value in (False,1,'yes',{}):
+                bad=copy.deepcopy(manifest);bad['vm_assignment_table_layout']=value
+                path.write_text(json.dumps(bad))
+                with self.assertRaisesRegex(ValueError,'layout preset'):load_manifest(path)
+            bad=copy.deepcopy(manifest)
+            vm=next(u for u in bad['units'] if u['source']=='script_vm.c')
+            vm['functions']=[f for f in vm['functions'] if f['name']!='func_8003DB0C_3E70C']
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'pinned assignment'):load_manifest(path)
+
+    def test_vm_layout_changes_only_selected_main_header_and_table(self):
+        with tempfile.TemporaryDirectory() as folder:
+            checkout=Path(folder)/'candidate';(checkout/'config/usa').mkdir(parents=True)
+            (checkout/'src').mkdir();sources=Path(folder)/'sources';sources.mkdir()
+            config=checkout/'config/usa/splat.yaml'
+            original=('    start: 0x1050\n    vram: 0x80000450\n    subalign: 16\n    subsegments:\n'
+                '    - [0x10, asm]\n    - [0x7B6F0, rodata, main_continued]\n'
+                '  - name: other\n    subalign: 16\n')
+            config.write_text(original);(checkout/'Makefile').write_text('all:\n\ttrue\n')
+            (sources/'unit.c').write_text('void function(void) {}\n')
+            manifest={'vm_assignment_table_layout':True,'units':[{'source':'unit.c',
+                'splat_original':'[0x10, asm]','splat_replacement':'[0x10, c, unit]'}]}
+            apply_units(checkout,manifest,sources)
+            updated=config.read_text()
+            self.assertIn('    - [0x7DC2C, .rodata, script_vm]\n    - [0x7DC68, rodata, main_continued_after_vm_store]',updated)
+            self.assertIn('  - name: other\n    subalign: 16',updated)
+            self.assertEqual(updated.count('    subalign: 4'),1)
+            self.assertIn('main_continued.rodata.s.o: ASFLAGS += --no-pad-sections',(checkout/'Makefile').read_text())
+            # An ambiguous anchor must fail without copying a C file or modifying either build file.
+            (checkout/'src/unit.c').unlink()
+            config.write_text(original.replace('    subalign: 16\n    subsegments:', '    subalign: 8\n    subsegments:'))
+            before=config.read_bytes();make_before=(checkout/'Makefile').read_bytes()
+            with self.assertRaisesRegex(ValueError,'subalignment'):apply_units(checkout,manifest,sources)
+            self.assertEqual(config.read_bytes(),before)
+            self.assertEqual((checkout/'Makefile').read_bytes(),make_before)
+            self.assertFalse((checkout/'src/unit.c').exists())

@@ -17,6 +17,11 @@ import re
 import shutil
 import subprocess
 
+try:
+    from .elf_layout import pack_object_file
+except ImportError:
+    from elf_layout import pack_object_file
+
 ROOT = Path(__file__).resolve().parent
 
 
@@ -63,6 +68,13 @@ def load_manifest(path):
         assembly_seen.update(assembly)
     ranges.sort()
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):raise ValueError('Overlapping units')
+    if 'vm_assignment_table_layout' in manifest:
+        if manifest['vm_assignment_table_layout'] is not True:
+            raise ValueError('Unsupported VM table layout preset')
+        vm=[u for u in manifest['units'] if u['source']=='script_vm.c']
+        if (manifest['upstream_commit']!='7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee' or len(vm)!=1 or
+            not any(f==dict(name='func_8003DB0C_3E70C',rom_offset=0x3E70C,size=224) for f in vm[0]['functions'])):
+            raise ValueError('VM table layout requires pinned assignment handler')
     return manifest
 
 
@@ -74,6 +86,22 @@ def apply_units(checkout,manifest,source_dir=ROOT):
     if manifest.get('splat_options'):
         if text.count('options:\n')!=1:raise ValueError('Missing/ambiguous Splat options anchor')
         text=text.replace('options:\n','options:\n  asm_jtbl_label_macro: glabel\n')
+    makefile=None
+    if manifest.get('vm_assignment_table_layout'):
+        replacements={
+            '    - [0x7B6F0, rodata, main_continued]':
+            '    - [0x7B6F0, rodata, main_continued]\n    - [0x7DC2C, .rodata, script_vm]\n    - [0x7DC68, rodata, main_continued_after_vm_store]'}
+        # Restrict subalignment to the pinned main segment only.
+        main_start=text.index('    start: 0x1050')
+        main_end=text.index('    subsegments:',main_start)
+        header=text[main_start:main_end]
+        if header.count('    subalign: 16')!=1:raise ValueError('Missing main subalignment anchor')
+        text=text[:main_start]+header.replace('    subalign: 16','    subalign: 4')+text[main_end:]
+        for before,after in replacements.items():
+            if text.count(before)!=1:raise ValueError('Missing/ambiguous VM layout anchor')
+            text=text.replace(before,after)
+        makefile=(checkout/'Makefile').read_text(encoding='utf-8')
+        makefile+='\n# Preserve the 4-byte-aligned prefix before the migrated VM table.\nbuild/usa/asm/usa/data/main_continued.rodata.s.o: ASFLAGS += --no-pad-sections\n'
     copies=[]
     for name in manifest.get('support_headers',[]):
         source=source_dir/name;destination=checkout/'src'/name
@@ -91,6 +119,7 @@ def apply_units(checkout,manifest,source_dir=ROOT):
         copies.append((source,destination));text=text.replace(anchor,unit['splat_replacement'])
     for source,destination in copies:shutil.copyfile(source,destination)
     config.write_text(text,encoding='utf-8',newline='\n')
+    if makefile is not None:(checkout/'Makefile').write_text(makefile,encoding='utf-8',newline='\n')
 
 
 def parse_symbols(text):
@@ -162,9 +191,18 @@ def run_build(args,manifest,report):
     (candidate/'.venv').symlink_to(baseline/'.venv',target_is_directory=True)
     shutil.copyfile(args.retail_rom,candidate/'config/usa/baserom.z64')
     logged('candidate-setup',['make','setup','UV='+uv],candidate)
+    if manifest.get('vm_assignment_table_layout'):
+        logged('candidate-vm-object',['make','-j'+str(args.jobs),'UV='+uv,
+            'build/usa/src/script_vm.c.o','build/usa/asm/usa/data/main_continued.rodata.s.o'],candidate)
+        report['object_layout']=pack_object_file(candidate/'build/usa/src/script_vm.c.o')
     logged('candidate-build',['make','-j'+str(args.jobs),'UV='+uv],candidate)
     symbols=parse_symbols(capture(['mips-linux-gnu-nm','-n','build/usa/mnsg.elf'],candidate))
     result=compare_images(expected,(candidate/'build/usa/mnsg.z64').read_bytes(),manifest,symbols)
+    if manifest.get('vm_assignment_table_layout'):
+        image=(candidate/'build/usa/mnsg.z64').read_bytes()
+        report['assignment_table']=dict(rom_start='0x7DC2C',size=60,
+            matched=expected[0x7DC2C:0x7DC68]==image[0x7DC2C:0x7DC68],
+            sha256=digest(image[0x7DC2C:0x7DC68],'sha256'))
     report['comparison']=result
     report['retained_assembly_functions']=[name for unit in manifest['units'] for name in unit.get('assembly_functions',[])]
     source_names=[unit['source'] for unit in manifest['units']]+manifest.get('support_headers',[])

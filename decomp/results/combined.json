@@ -1,7 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-02T14:44:54.901182+00:00",
-  "ended_utc": "2026-11-02T14:45:41.195530+00:00",
+  "started_utc": "2026-11-02T15:46:22.199143+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -10,24 +9,35 @@
     "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
     "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125"
   },
+  "stage": "complete",
   "baseline_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "sources_sha256_lf": {
-    "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
-    "system_memory.c": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
-    "save_resources.c": "7962df95eb818079725157fcefe908608f51e112e50b9242a67b1b95c918af7b",
-    "script_vm.c": "3a130ae5e68756dec438c4c3c35c0cde9dfadd44afdb6eee078a396b0ec539bf",
-    "save_resources.h": "ec5a34eca1296a2bac959ae01fdd8fd72eb1ef36fd47ff0002e92e17b40f6bcf",
-    "script_vm.h": "7388bdf8f2472d3f7fee932a8b5f18e548442873fd95c3a5368ba3d9d05a58d1",
-    "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
+  "object_layout": {
+    "kind": "vm_assignment_rodata_metadata_v1",
+    "old_size": 64,
+    "new_size": 60,
+    "old_alignment": 16,
+    "new_alignment": 4,
+    "relocations_retained": 15,
+    "payload_bytes_changed": 0,
+    "input_sha256": "f56e991a3240a575a4dce86b6dfab36ede98e2277c0d911186a2115f57678723",
+    "output_sha256": "6862d6d1939d19a63ac45a09fae0fefeb796d874ccfa50eb8ff5aed67584fe9a",
+    "text_sha256": "46a3fef09c914cfbdb4d20ab08f5f424d8a95e6b92f5a9fac31e001906578fba",
+    "compiled_table_prefix_sha256": "cfb6b1a6dee1e182ccfad56f71ce9eb34d63b82db2afccc81f65ba32d1ad28e5"
+  },
+  "assignment_table": {
+    "rom_start": "0x7DC2C",
+    "size": 60,
+    "matched": true,
+    "sha256": "a8aab7c9de6d8f172f9297107b24bf1b601569eeb83d274c9e758f56ae747363"
   },
   "comparison": {
     "full_rom_match": true,
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 42,
-    "claimed_functions": 42,
-    "matched_function_bytes": 2644,
+    "matched_functions": 43,
+    "claimed_functions": 43,
+    "matched_function_bytes": 2868,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -327,6 +337,15 @@
         "candidate_sha256": "f1f0ed470a4d50166e148aeb8bf7a1b9892fc5828baf122734fad211ed02aeca"
       },
       {
+        "name": "func_8003DB0C_3E70C",
+        "size": 224,
+        "guest_address": "0x8003DB0C",
+        "rom_offset": "0x3E70C",
+        "matched": true,
+        "expected_sha256": "1450de9d6c3659d85557c36b55fa7d529d629a9eb733d781e9b6a869749da823",
+        "candidate_sha256": "1450de9d6c3659d85557c36b55fa7d529d629a9eb733d781e9b6a869749da823"
+      },
+      {
         "name": "func_8003DE48_3EA48",
         "size": 56,
         "guest_address": "0x8003DE48",
@@ -417,7 +436,6 @@
     "func_8003D468_3E068",
     "func_8003D68C_3E28C",
     "func_8003D9B8_3E5B8",
-    "func_8003DB0C_3E70C",
     "func_8003DBEC_3E7EC",
     "func_8003DDC4_3E9C4",
     "func_8003DE80_3EA80",
@@ -462,5 +480,15 @@
     "func_8003F694_40294",
     "func_8003F6BC_402BC",
     "func_8003F6E8_402E8"
-  ]
+  ],
+  "sources_sha256_lf": {
+    "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
+    "system_memory.c": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
+    "save_resources.c": "7962df95eb818079725157fcefe908608f51e112e50b9242a67b1b95c918af7b",
+    "script_vm.c": "5bb0c0ba98ba11e79e0874661f2f2d60d3b36a46f32b03974c9ebdf17c92ee30",
+    "save_resources.h": "ec5a34eca1296a2bac959ae01fdd8fd72eb1ef36fd47ff0002e92e17b40f6bcf",
+    "script_vm.h": "f8b4b0ad9aa09b4f8e046ddfac9bb6d0219adbc4f13f51aecdfe3cfc8718b643",
+    "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
+  },
+  "ended_utc": "2026-11-02T15:47:08.393530+00:00"
 }
