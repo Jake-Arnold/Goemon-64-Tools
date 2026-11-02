@@ -224,6 +224,16 @@
           "size": 48
         },
         {
+          "name": "func_8003E1A8_3EDA8",
+          "rom_offset": 257448,
+          "size": 140
+        },
+        {
+          "name": "func_8003E3EC_3EFEC",
+          "rom_offset": 258028,
+          "size": 212
+        },
+        {
           "name": "func_8003E4C0_3F0C0",
           "rom_offset": 258240,
           "size": 136
@@ -355,9 +365,7 @@
         "func_8003DBEC_3E7EC",
         "func_8003DE80_3EA80",
         "func_8003DF98_3EB98",
-        "func_8003E1A8_3EDA8",
         "func_8003E234_3EE34",
-        "func_8003E3EC_3EFEC",
         "func_8003E6C0_3F2C0",
         "func_8003E81C_3F41C",
         "func_8003E888_3F488",

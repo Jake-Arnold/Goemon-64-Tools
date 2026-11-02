@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-02T16:24:10.127420+00:00",
+  "started_utc": "2026-11-02T16:43:14.481112+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -19,9 +19,9 @@
     "new_alignment": 4,
     "relocations_retained": 15,
     "payload_bytes_changed": 0,
-    "input_sha256": "ebedd1dc093d17c820c9670c43883e31dc2b25ad08b054b5db6709798997d99d",
-    "output_sha256": "3d7f116fc28ec12c91f84e9ce6fab4ed808995e3fb25d6b231ff2eff8a89b486",
-    "text_sha256": "163c3a43582a0218eff1fb36a96202e6b965ee19f437f1bead50686738c2dbfd",
+    "input_sha256": "0088b5942801d84f12e33790a1bada341997cbf937777d4bd20a15c0627c9269",
+    "output_sha256": "939ab595ec0b8c637b20aa1d1c4dbf1926f754d1b559320f1448736f5b86a3fc",
+    "text_sha256": "090e8417f2014b576a3a01df7d87c5613863fb1c03bea2fd4c7242abc7d03acb",
     "compiled_table_prefix_sha256": "cfb6b1a6dee1e182ccfad56f71ce9eb34d63b82db2afccc81f65ba32d1ad28e5"
   },
   "assignment_table": {
@@ -35,9 +35,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 61,
-    "claimed_functions": 61,
-    "matched_function_bytes": 3820,
+    "matched_functions": 63,
+    "claimed_functions": 63,
+    "matched_function_bytes": 4172,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -373,6 +373,24 @@
         "candidate_sha256": "8c58aba330aed7310eb3416a7963e3b57c0c2156c30f6be4b842e1f83d66bb1d"
       },
       {
+        "name": "func_8003E1A8_3EDA8",
+        "size": 140,
+        "guest_address": "0x8003E1A8",
+        "rom_offset": "0x3EDA8",
+        "matched": true,
+        "expected_sha256": "94da19e94ef2860e5d92e7944be367160cbbf21d1d72b6301b4ad1fae16123e3",
+        "candidate_sha256": "94da19e94ef2860e5d92e7944be367160cbbf21d1d72b6301b4ad1fae16123e3"
+      },
+      {
+        "name": "func_8003E3EC_3EFEC",
+        "size": 212,
+        "guest_address": "0x8003E3EC",
+        "rom_offset": "0x3EFEC",
+        "matched": true,
+        "expected_sha256": "609307e2bb2a75c09b43f8f34b377792c3387644bd04933002552c08dab26fe4",
+        "candidate_sha256": "609307e2bb2a75c09b43f8f34b377792c3387644bd04933002552c08dab26fe4"
+      },
+      {
         "name": "func_8003E4C0_3F0C0",
         "size": 136,
         "guest_address": "0x8003E4C0",
@@ -601,9 +619,7 @@
     "func_8003DBEC_3E7EC",
     "func_8003DE80_3EA80",
     "func_8003DF98_3EB98",
-    "func_8003E1A8_3EDA8",
     "func_8003E234_3EE34",
-    "func_8003E3EC_3EFEC",
     "func_8003E6C0_3F2C0",
     "func_8003E81C_3F41C",
     "func_8003E888_3F488",
@@ -629,10 +645,10 @@
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
     "system_memory.c": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
     "save_resources.c": "7962df95eb818079725157fcefe908608f51e112e50b9242a67b1b95c918af7b",
-    "script_vm.c": "221aac10f0ce36df3bcaa42c96411b27d71dd4cff973cac2dead99802d14f433",
+    "script_vm.c": "27e4274326970805093a98121ca7e6097823d4b875999224223c89cbdc020ee6",
     "save_resources.h": "ec5a34eca1296a2bac959ae01fdd8fd72eb1ef36fd47ff0002e92e17b40f6bcf",
-    "script_vm.h": "5f9ff7fa27714cd39944168032c3db9bdb48e9bac990aa261e93453cca3f90aa",
+    "script_vm.h": "7e965eafde53cd772eda069f8cc2fc18d03d3078e2c53e23869df2393fd4ca7b",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-02T16:24:54.951989+00:00"
+  "ended_utc": "2026-11-02T16:43:59.462555+00:00"
 }

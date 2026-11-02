@@ -24,6 +24,12 @@ static s32 trace[32], trace_count, poll_result, args7[7], argument, state_at_pol
 static void *task_seen;
 static VmTaskCallback callback;
 static s32 memory_rhs;
+static VmWindow window0, window1;
+VmWindow *D_80167C48_168848[] = {&window0, &window1};
+VmPrompt D_801C78D8_1C84D8;
+u8 D_80077150_77D50[4];
+static SYS_W system_state;
+SYS_W *D_8015C5C8_15D1C8 = &system_state;
 s32 D_80077858_78458, D_8007785C_7845C;
 s32 D_801C7770_1C8370, D_801C7774_1C8374;
 u16 D_801C790C_1C850C;
@@ -90,6 +96,13 @@ void func_8000C260_CE60(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g) {
 void func_8000C3A0_CFA0(s32 arg) { argument = arg; record(HIDE); }
 s32 func_8000C314_CF14(s32 arg) { argument = arg; state_at_poll = D_801C77E0_1C83E0; record(POLL); return poll_result; }
 
+_Static_assert(offsetof(VmWindow, field32) == 0x32, "window field32 offset");
+_Static_assert(offsetof(VmWindow, field3e) == 0x3E, "window field3e offset");
+_Static_assert(offsetof(VmWindow, field50) == 0x50, "window field50 offset");
+_Static_assert(offsetof(VmWindow, field54) == 0x54, "window field54 offset");
+_Static_assert(sizeof(VmPrompt) == 16, "prompt extent");
+_Static_assert(offsetof(SYS_W, game_loops_count) == 0x3ADCE, "timer offset");
+_Static_assert(offsetof(SYS_W, unk_cf8a0) == 0xCF8A0, "system tail offset preserved");
 _Static_assert(offsetof(VmWork, marker) == 8, "VM marker offset");
 _Static_assert(offsetof(VmWork, countdown) == 0x10, "VM countdown offset");
 
@@ -282,8 +295,9 @@ static void check_operand_callbacks(void) {
 static void check_input_gate_and_cleanup(void) {
     const u16 inputs[] = {0, 0x4000, 0x8000, 0xC000, 1, 0x4001, 0x8001, 0xC001};
     const s32 targets[] = {0, 0x100, -1, INT_MIN, INT_MAX};
-    unsigned i, j, busy, active;
-    for (i = 0; i < sizeof(inputs) / sizeof(inputs[0]); i++) {
+    unsigned i, j, busy, active, handler;
+    static u8 owner[0x60];
+    for (handler = 0; handler < 2; handler++) for (i = 0; i < sizeof(inputs) / sizeof(inputs[0]); i++) {
         for (j = 0; j < sizeof(targets) / sizeof(targets[0]); j++) {
             for (busy = 0; busy < 2; busy++) for (active = 0; active < 2; active++) {
                 trace_count = 0; cleanup_checks = 0;
@@ -295,7 +309,12 @@ static void check_input_gate_and_cleanup(void) {
                 D_801C77E8_1C83E8.countdown = 123456;
                 D_801C77E8_1C83E8.marker = 55; D_801C7930_1C8530 = 9;
                 if (!(inputs[i] & 0x8000) && (inputs[i] & 0x4000) && !busy && !targets[j]) cleanup_checks = 1;
-                func_8003E4C0_3F0C0();
+                D_80077860_78460 = owner; owner[0x5D] = 42;
+                system_state.game_loops_count = 1;
+                D_801C78D8_1C84D8.pattern = 1;
+                if (handler) func_8003E3EC_3EFEC(); else func_8003E4C0_3F0C0();
+                assert(D_801C78D8_1C84D8.pattern == (handler ? 0x80000000 : 1));
+                assert(owner[0x5D] == 42);
                 if (inputs[i] & 0x8000) {
                     assert(D_801C77E0_1C83E0 == 1 && trace_count == 0 && D_80077858_78458 == 1234);
                 } else if ((inputs[i] & 0x4000) && !busy) {
@@ -357,8 +376,52 @@ static void check_control_queries(void) {
     D_801FC604_5B8514 = D_801FC608 = NULL;
 }
 
+static void check_prompt_geometry_and_animation(void) {
+    VmWindow before;
+    static u8 owner[0x60];
+    unsigned i, low;
+    memset(&window0, 0xA5, sizeof(window0));
+    window0.field32 = 50; window0.field3e = 7; window0.field50 = 3;
+    window0.field34 = 60; window0.field40 = 3; window0.field42 = 5; window0.field54 = 8;
+    before = window0; D_801C7754_1C8354 = 0; trace_count = 0;
+    func_8003E1A8_3EDA8();
+    assert(D_801C78D8_1C84D8.x == 40 && D_801C78D8_1C84D8.y == 55);
+    assert(D_801C78D8_1C84D8.texture == (u32)(uintptr_t)D_80077150_77D50);
+    assert(D_801C78D8_1C84D8.pattern == 0xFF00FF && D_801C77E0_1C83E0 == 3);
+    assert(memcmp(&before, &window0, sizeof(window0)) == 0 && trace_count == 0);
+    memset(&window1, 0x5A, sizeof(window1));
+    window1.field32 = -32768; window1.field3e = -32768; window1.field50 = INT_MAX;
+    window1.field34 = -32768; window1.field40 = -32768; window1.field42 = -32768; window1.field54 = INT_MIN;
+    before = window1; D_801C7754_1C8354 = 1;
+    func_8003E1A8_3EDA8();
+    assert((u32)D_801C78D8_1C84D8.x == 0x7FFEFFF3);
+    assert((u32)D_801C78D8_1C84D8.y == 0xBFFF7FF4);
+    assert(memcmp(&before, &window1, sizeof(window1)) == 0);
+    D_801C790C_1C850C = 0; D_801C7770_1C8370 = 1;
+    D_80077860_78460 = owner; system_state.game_loops_count = 1;
+    for (i = 0; i < 32; i++) {
+        D_801C78D8_1C84D8.pattern = 1U << i;
+        func_8003E3EC_3EFEC();
+        assert(D_801C78D8_1C84D8.pattern == (1U << ((i + 31) % 32)));
+    }
+    D_801C78D8_1C84D8.pattern = 0xA5C30001;
+    func_8003E3EC_3EFEC(); assert(D_801C78D8_1C84D8.pattern == 0xD2E18000);
+    for (i = 1; i < 32; i++) func_8003E3EC_3EFEC();
+    assert(D_801C78D8_1C84D8.pattern == 0xA5C30001);
+    for (low = 0; low < 16; low++) for (i = 0; i < 256; i++) {
+        unsigned byte;
+        memset(owner, 0xA5, sizeof(owner)); owner[0x5D] = (u8)i;
+        system_state.game_loops_count = 0xFFF0 | low;
+        func_8003E3EC_3EFEC();
+        assert(owner[0x5D] == (u8)(i + (low == 0)));
+        for (byte = 0; byte < sizeof(owner); byte++) if (byte != 0x5D) assert(owner[byte] == 0xA5);
+    }
+    assert((u32)D_801C78D8_1C84D8.x == 0x7FFEFFF3 && (u32)D_801C78D8_1C84D8.y == 0xBFFF7FF4);
+    assert(D_801C78D8_1C84D8.texture == (u32)(uintptr_t)D_80077150_77D50);
+}
+
 int main(void) {
-    check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
+    check_prompt_geometry_and_animation(); check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
     puts("VM inputs/cleanup/queries, operands/resources, callbacks, counters and dialogue states passed.");
     return 0;
 }

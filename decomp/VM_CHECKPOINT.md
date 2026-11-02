@@ -1,8 +1,8 @@
 # Event/dialogue VM reconstruction checkpoint
 
 Date: 2026-11-02. Pinned mnsg baseline and ROM identity are unchanged.
-**36 matching VM functions / 1,944 function bytes**, bringing the track to
-**61 matching C functions / 3,820 function bytes**. The full 32 MiB baseline and
+**38 matching VM functions / 2,296 function bytes**, bringing the track to
+**63 matching C functions / 4,172 function bytes**. The full 32 MiB baseline and
 candidate both match decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
 Current source hashes, guest addresses and byte-range comparisons are in
 [combined.json](results/combined.json). The previous complete-save checkpoint is
@@ -11,7 +11,7 @@ retained as [save_resources_complete.json](results/save_resources_complete.json)
 ## Selected unit and evidence boundaries
 
 The original `0x3DBA0..0x40320` unit contains 69 functions. `script_vm.c` replaces
-36 functions and retains 33 explicitly declared assembly functions. The main
+38 functions and retains 31 explicitly declared assembly functions. The main
 dispatcher, remaining operand handlers and comparison routine remain
 assembly; the complete VM is not decompiled. A name appears in the matching count
 only when linked guest address, original bytes and absence of its assembly marker
@@ -30,6 +30,8 @@ all pass, alongside the complete ROM identity check.
 | `func_8003DDC4_3E9C4` | Lookup resource base; on failure prepare the current resource and retry; clear base bit 30, subtract the original resource segment byte and add the base |
 | `func_8003DE48_3EA48` | Preserve negative encoded addresses; conditionally relocate nonnegative values using active-context delta |
 | `func_8003DF68_3EB68` | Consume one repeat count only when at least two remain |
+| `func_8003E1A8_3EDA8` | Derive prompt placement from signed window fields; set encoded texture pointer, rotating pattern and state 3 |
+| `func_8003E3EC_3EFEC` | Rotate pattern right; increment owner byte `5D` when the game-loop counter low four bits are zero; process input with original priority/reset behavior |
 | `func_8003E4C0_3F0C0` | Input bit `8000` takes priority and selects state 1; permitted `4000` clears state and either resets or relocates the pending script |
 | `func_8003E548_3F148`, `func_8003E5B8_3F1B8` | Start external dialogue/render operations, set state 5/6, then poll |
 | `func_8003E5EC_3F1EC`, `func_8003E620_3F220` | Return to state 1 when the external poll reports zero |
@@ -49,6 +51,35 @@ all pass, alongside the complete ROM identity check.
 Raw engine preconditions are preserved: no new pointer/index/length safety API is
 introduced, and callbacks are not wired into the running companion. This is
 original-ROM C reconstruction, not a new native PC port.
+
+## Prompt placement and animation increment
+
+Two further functions replace 352 instruction bytes. `func_8003E1A8_3EDA8`
+reads five signed halfwords and two words from an indexed window view to compute
+two placement values, records the original texture symbol address and pattern,
+and sets VM state 3. Names for unknown window fields remain offset-based; their
+complete structure, units and gameplay meaning are not inferred from arithmetic.
+The prompt view retains four 32-bit words, including its encoded texture pointer.
+
+`func_8003E3EC_3EFEC` rotates the pattern right by one, increments owner byte
+`0x5D` modulo 256 when the game-loop count at system offset `0x3ADCE` is divisible
+by 16, then preserves the input handler's priority and cleanup/relocation paths.
+The first whole-ROM attempt detected a two-byte offset error from using the
+adjacent attract-demo timer. Review of pinned upstream `SYS_W` established the
+correct `game_loops_count` field; the final build matches the unsigned halfword
+read at `0x3ADCE`. The explicit unsigned view only controls the low-bit test.
+
+Synthetic tests cover two independent window records (including signed extreme
+values and wrapping results), unchanged source records, field offsets, every
+single-bit rotation, a full 32-step pattern cycle, all 4,096 loop-count-residue /
+owner-byte combinations with neighboring-byte guards, and the complete 160-case
+input matrix against both input routines. Prompt position/texture remain intact
+during animation. Shared synthetic system-layout changes also passed the other
+three host C suites. The previous
+[61-function checkpoint](results/vm_controls.json) is preserved.
+
+The stream reader remains assembly. Its latest failed experiments and next
+matching constraints are recorded in [VM_STREAM_MATCHING.md](VM_STREAM_MATCHING.md).
 
 ## Input, cleanup and query increment
 
@@ -148,7 +179,7 @@ sequencing. No zero-score/equivalent-code claim was substituted for exact bytes.
 
 The native candidate retains the original comparator assembly and marker.
 `vm_compare_reference.h` is included **only by host tests**, explicitly excluded
-from the 36/61-function counts. It is a semantic aid for subsequent work, not a
+from the 38/63-function counts. It is a semantic aid for subsequent work, not a
 published matching reconstruction or production evaluator. Retained assembly
 also includes the dispatcher and assignment/operand decoders.
 
@@ -162,7 +193,7 @@ safe to evaluate.
 ## Validation
 
 - Fresh verifier baseline and combined candidate builds both passed the full ROM
-  check; all 61 claimed function ranges/addresses matched without assembly markers.
+  check; all 63 claimed function ranges/addresses matched without assembly markers.
 - **224 Windows Python unittest tests passed**, including declared-assembly exclusion and
   the narrow Splat-label override. The comparator is asserted to remain excluded.
 - Sanitizer-enabled synthetic VM tests passed pointer fallback, five delayed
@@ -188,7 +219,8 @@ ROM data, generated assembly, full local logs and failed drafts remain ignored.
 
 ## Next work
 
-Resolve the comparator's exact control-flow/return form and reconstruct the
+Resume the [stream-reader matching notes](VM_STREAM_MATCHING.md), resolve the
+comparator's exact control-flow/return form and reconstruct the
 remaining operand handlers while retaining their table data/layout correctly.
 Only after those primitives pass should the central dispatcher replace assembly.
 Use existing mn64rando opcode definitions and independently traced accesses to

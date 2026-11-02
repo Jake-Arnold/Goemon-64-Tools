@@ -28,6 +28,20 @@ void func_80038B98_39798(u16);
 void func_80037C9C_3889C(s32, s32);
 void func_80037C20_38820(s32, s32, s32);
 
+/* Only accessed window fields are characterized; names remain provisional. */
+typedef struct {
+    u8 unknown00[0x32];
+    s16 field32, field34;
+    u8 unknown36[8];
+    s16 field3e, field40, field42;
+    u8 unknown44[12];
+    s32 field50, field54;
+} VmWindow;
+typedef struct { s32 x, y; u32 texture, pattern; } VmPrompt;
+extern VmWindow *D_80167C48_168848[];
+extern VmPrompt D_801C78D8_1C84D8;
+extern u8 D_80077150_77D50[];
+
 typedef void (*VmTaskCallback)(void *, void *);
 typedef struct { u8 unknown_00[8]; s16 marker; u8 unknown_0a[6]; s32 countdown; } VmWork;
 extern u16 *D_80077550_78150[];
@@ -68,9 +82,11 @@ s32 func_8003DE48_3EA48(s32);
 
 #ifdef GOEMON_DECOMP_HOST_TEST
 #define VM_WORD_AT(address) (*(s32 *)(intptr_t)(address))
+#define VM_U32_ADDRESS(pointer) ((u32)(uintptr_t)(pointer))
 #define VM_U32_PTR(address) ((u32 *)(intptr_t)(address))
 #else
 #define VM_WORD_AT(address) (*(s32 *)(address))
+#define VM_U32_ADDRESS(pointer) ((u32)(pointer))
 #define VM_U32_PTR(address) ((u32 *)(address))
 #endif
 #endif

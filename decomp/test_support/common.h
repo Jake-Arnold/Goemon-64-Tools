@@ -16,7 +16,8 @@ typedef struct {
     uint16_t frame_buffer_bits_per_pixel;
     u8 unknown_3ADC4[8];
     u16 retrace_count;
-    u8 unknown_3ADCE[0xCF8A0 - 0x3ADCE];
+    s16 game_loops_count;
+    u8 unknown_3ADD0[0xCF8A0 - 0x3ADD0];
     u8 unk_cf8a0;
     u8 remainder[0xCF908 - 0xCF8A1];
 } SYS_W;

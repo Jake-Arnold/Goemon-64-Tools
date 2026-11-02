@@ -134,17 +134,44 @@ s32 func_8003DF68_3EB68(void) {
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003DF98_3EB98.s")
 #endif
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003E1A8_3EDA8.s")
-#endif
+void func_8003E1A8_3EDA8(void) {
+    VmWindow *window;
+    VmPrompt *prompt;
+    window = D_80167C48_168848[D_801C7754_1C8354];
+    prompt = &D_801C78D8_1C84D8;
+    prompt->x = (u32)window->field32 + (u32)window->field3e - (u32)window->field50 - 14;
+    prompt->y = (u32)window->field34 + (u32)window->field40 * (u32)window->field42 - (u32)window->field54 - 12;
+    prompt->texture = VM_U32_ADDRESS(D_80077150_77D50);
+    prompt->pattern = 0xFF00FF;
+    D_801C77E0_1C83E0 = 3;
+}
 
 #ifndef GOEMON_DECOMP_HOST_TEST
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003E234_3EE34.s")
 #endif
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003E3EC_3EFEC.s")
-#endif
+void func_8003E3EC_3EFEC(void) {
+    VmPrompt *prompt;
+    u32 pattern;
+    s32 target;
+    prompt = &D_801C78D8_1C84D8;
+    pattern = prompt->pattern;
+    prompt->pattern = (pattern >> 1) | (pattern << 31);
+    if (((u16)D_8015C5C8_15D1C8->game_loops_count & 0xF) == 0) {
+        ((u8 *)D_80077860_78460)[0x5D]++;
+    }
+    if (D_801C790C_1C850C & 0x8000) {
+        D_801C77E0_1C83E0 = 1;
+    } else if ((D_801C790C_1C850C & 0x4000) && !D_801C7770_1C8370) {
+        target = D_801C7774_1C8374;
+        D_801C77E0_1C83E0 = 0;
+        if (target == 0) {
+            func_8003E680_3F280();
+        } else {
+            D_80077858_78458 = func_8003DE48_3EA48((s32)(long long)target);
+        }
+    }
+}
 
 void func_8003E4C0_3F0C0(void) {
     s32 target;
