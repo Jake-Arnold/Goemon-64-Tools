@@ -244,6 +244,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: reported interventions cleared whole bytes, not isolated masks; independent masked-write/readback and unrelated-bit preservation remain unverified. The exact script conditions and wider consequences of either flag are unknown. No runtime change or new unlock control.
 - Next: trace original-code readers/writers for the first-dialogue branch and the two writes; use bit-preserving operations in any future targeted validation.
 
+### 2026-11-02 — User identifies Benkei encounter flag as Ushiwaka dialogue prerequisite
+
+- Changed: documented `0x8015C60C & 0x20` as the user-identified Benkei encounter-recorded / Ushiwaka dialogue-prerequisite state. Updated the earlier trigger-entry label while retaining its observed timing. Kept `0x8015C60E & 0x10` separate as Benkei's own first-dialogue completion/gating state. No runtime change.
+- Why: the user identified the cross-NPC purpose and supplied before/after Ushiwaka screenshots: fish-catching complaint versus the dialogue offering “Who are you?” / “Do you know Benkei?”. This adds a gameplay meaning to the previously captured trigger-entry transition.
+- Tested: inspected the supplied screenshots and reconciled the report with prior captured timing/replays and the user's byte-clearing tests. The screenshots establish the visible dialogue difference; the user report establishes its address association. `git diff --check` for the documentation change. No new assistant-run in-game experiment or Python/C suite run.
+- Limitations: exact script readers/branches and isolated masked-write behavior remain unverified. This does not identify Ushiwaka minigame/reward completion or imply quest completion from one edit. Copyrighted screenshots and raw samples are not committed.
+- Next: trace Ushiwaka's reader of the Benkei encounter state, separately from Benkei's own completion reader and the two writes.
+
 ## Mandatory change-log template
 
 ```markdown

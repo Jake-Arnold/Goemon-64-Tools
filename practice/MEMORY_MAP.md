@@ -1,5 +1,29 @@
 ## Benkei first-conversation state — replayed and user-tested (2026-11-02)
 
+### User-identified cross-NPC progression role
+
+**`0x8015C60C & 0x20`: Benkei encounter recorded / Ushiwaka dialogue prerequisite.**
+The user identified this state as the indication that Goemon has spoken to
+Benkei once. It changes Ushiwaka's dialogue from complaining about not catching
+fish in the creek to the conversation with **“Who are you?”** and
+**“Do you know Benkei?”** choices. The two supplied screenshots show those
+different dialogue states; the address association comes from the user's test,
+not from an address displayed in the screenshots.
+
+This gives the earlier trigger-entry observation a progression meaning: the
+Benkei encounter is recorded at cutscene entry, before his first conversation
+finishes, and is used by Ushiwaka's dialogue path. Keep it separate from
+`0x8015C60E & 0x10`, which records Benkei's first-dialogue completion and controls
+whether his own first dialogue repeats. The two states are not interchangeable.
+This finding does not identify the Ushiwaka minigame-start or reward-completion
+bits, prove that changing this state alone completes his quest, or establish
+the exact original-game reader/branch implementation.
+
+Evidence status: **user-identified gameplay effect**, plus the independently
+captured Benkei transitions below. No new assistant-run toggle experiment or
+isolated masked-write test was performed for the Ushiwaka dialogue observation.
+Screenshots remain user-supplied local evidence and are not bundled in Git.
+
 ### User-reported timing and write tests
 
 - **`0x8015C60E`, observed mask `0x10`: first-dialogue completion/gating state.**
@@ -8,7 +32,7 @@
   in-game write evidence for restoring the first-dialogue path, beyond A/B
   correlation. It does not establish general quest completion or that writing
   `10` by itself reproduces every consequence of completing that dialogue.
-- **`0x8015C60C`, observed mask `0x20`: first-encounter trigger-entry marker.**
+- **`0x8015C60C`, observed mask `0x20`: Benkei encounter recorded at trigger entry.**
   The byte becomes `20` **immediately on reaching the cutscene trigger**, before
   the conversation finishes. Clearing it to `00` while `0x8015C60E` remains `10`,
   then returning to Benkei, neither restores the first dialogue nor sets this
@@ -56,9 +80,10 @@ Local evidence session `79b2f960edab424f89d68ed7e0415691`: idle trial
 `4137f3c0e97744358e0ef68d07fe97e6`, repeat-dialogue control
 `55d08ff62b574adf8b28f17dd2dcb6e8`, independent replay
 `3d04720d7f554a448867a8990dfdd22b`. Raw samples and notes stay in ignored local
-diagnostics. Next: trace the dialogue branch, completion write and trigger-entry
-write in original-game code, and verify the corresponding masked operations
-before exposing dedicated write controls.
+diagnostics. Next: trace Ushiwaka's dialogue-prerequisite reader separately from
+Benkei's completion reader, completion write and trigger-entry write in
+original-game code; verify the corresponding masked operations before exposing
+dedicated write controls.
 
 ## Ushiwaka progression and pre-load character hypothesis (2026-11-02)
 
