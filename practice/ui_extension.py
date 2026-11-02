@@ -126,6 +126,8 @@ class InspectorMixin(EntranceMixin):
         self.raw_write_btn=ttk.Button(manual,text='Write raw hex',command=self.write_raw_hex)
         self.raw_write_btn.pack(side='left')
         if not self.args.enable_hex_edit:self.raw_write_btn.state(['disabled'])
+        ttk.Button(manual,text='Freeze raw hex',command=self.freeze_raw_value).pack(side='left',padx=6)
+        ttk.Button(manual,text='Manage freezes / max health',command=lambda:self.notebook.select(self.value_freezes_tab)).pack(side='left')
         columns=('address','value','raw','status','source')
         frame=ttk.Frame(inspector);frame.pack(fill='both',expand=True)
         self.watch_tree=ttk.Treeview(frame,columns=columns,show='tree headings',height=22)

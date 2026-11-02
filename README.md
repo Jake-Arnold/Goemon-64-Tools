@@ -1,4 +1,32 @@
-# Goemon Speedrun Tools v0.11.10 - cross-room event trials
+# Goemon Speedrun Tools v0.11.11 - value freezes and maximum health
+
+## Value freezes
+
+Open **Value freezes** and select **Keep health at current maximum** to replenish
+the live health word from the current maximum every 250 ms during ordinary
+gameplay. It follows maximum-health upgrades without changing the maximum itself.
+This is periodic replenishment, not guaranteed invulnerability.
+
+For other values, enter a guest address in hex, a width of 1/2/4/8 bytes, and the
+exact target hex, then **Freeze raw hex**. Or select a Live memory watch and use
+**Freeze selected Live memory watch at its current value**. Live memory's existing
+raw fields also have a Freeze button and a link to manage locks. The list shows
+all raw targets; use **Stop selected** or **Stop all freezes** to release them.
+Values are N64 big-endian hex; a raw freeze holds every bit in its byte range.
+Raw freezes require the existing UNSAFE toggle. Health freezing requires write
+access; read-only mode blocks all freeze entry points.
+
+Freezes start inactive, stay only in memory for this connection, and stop on
+reconnect/disconnect, revoked permission, invalid data or a write/readback failure.
+They pause during loading, scripts, menus and pause screens. Only changed targets
+are written, with compare-before-write/readback checks; a failure clears all locks
+without retry. Up to 32 non-overlapping raw ranges are supported. Raw actor addresses
+can be reused across rooms; they remain fixed addresses rather than tracked actors.
+No saved configuration can automatically enable a freeze on launch.
+
+Ghost Toys entrance flags are also mapped: `0x8015C63B` mask `04` is the right
+torch, `08` the left torch, and `10` the independent door-unlocked latch. The user's
+decimal sequences and original-code tests agree. [Evidence](docs/GHOST_TOYS_ENTRANCE.md).
 
 [Congo/Lord research follow-up](docs/CONGO_LORD_OBSERVATIONS.md): the original
 Lord-event initializer requires `0x8015C62D & 0x20` set and

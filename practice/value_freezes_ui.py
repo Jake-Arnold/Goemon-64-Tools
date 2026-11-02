@@ -1,0 +1,117 @@
+"""Value-freeze controls; user activation only, no persistent enabled state."""
+import tkinter as tk
+from tkinter import ttk
+
+from practice.checkpoints import _ensure_capture_safe
+from practice.hex_edit import parse_hex, get_policy
+from practice.value_freezes import ValueFreezes
+
+
+class ValueFreezesMixin:
+    def build_value_freezes_tab(self, notebook):
+        self.value_freezes = ValueFreezes()
+        tab = ttk.Frame(notebook, padding=10)
+        notebook.add(tab, text='Value freezes')
+        self.value_freezes_tab = tab
+        ttk.Label(tab, text='Freeze values during gameplay', font=('Segoe UI Semibold',16)).pack(anchor='w')
+        ttk.Label(tab, text='Rechecks every 250 ms; skips menus, loading, pause and scripts. '
+                  'Only writes changed values. Locks are session-only and stop on reconnect or failure. '
+                  'Raw targets are fixed guest addresses; actor addresses can be reused after scene changes.',
+                  wraplength=1050).pack(anchor='w', pady=6)
+        self.freeze_health = tk.BooleanVar(value=False)
+        self.freeze_health_button = ttk.Checkbutton(tab, text='Keep health at current maximum',
+            variable=self.freeze_health, command=self.toggle_freeze_health)
+        self.freeze_health_button.pack(anchor='w', pady=5)
+        row = ttk.Frame(tab); row.pack(fill='x', pady=5)
+        for title, variable, width in [('Guest address (hex)',self.raw_address,14),
+                                       ('Bytes',self.raw_width,3),('Target hex',self.raw_value,20)]:
+            ttk.Label(row, text=title).pack(side='left', padx=4)
+            if variable is self.raw_width:
+                ttk.Combobox(row,textvariable=variable,values=('1','2','4','8'),state='readonly',width=width).pack(side='left')
+            else:ttk.Entry(row,textvariable=variable,width=width).pack(side='left')
+        self.freeze_raw_button = ttk.Button(row,text='Freeze raw hex',command=self.freeze_raw_value)
+        self.freeze_raw_button.pack(side='left',padx=6)
+        ttk.Button(tab,text='Freeze selected Live memory watch at its current value',command=self.freeze_selected_watch).pack(anchor='w')
+        self.freeze_status = tk.StringVar(value='No active freezes.')
+        ttk.Label(tab,textvariable=self.freeze_status,wraplength=1050).pack(anchor='w',pady=6)
+        self.freeze_tree = ttk.Treeview(tab,columns=('address','bytes','target'),show='tree headings',height=12)
+        self.freeze_tree.heading('#0',text='Name')
+        for name,title in [('address','Guest address'),('bytes','Bytes'),('target','Frozen hex')]:
+            self.freeze_tree.heading(name,text=title)
+        self.freeze_tree.pack(fill='both',expand=True)
+        row=ttk.Frame(tab);row.pack(fill='x',pady=6)
+        ttk.Button(row,text='Stop selected',command=self.stop_selected_freeze).pack(side='left')
+        ttk.Button(row,text='Stop all freezes',command=self.stop_all_freezes).pack(side='left',padx=6)
+        if not self.args.enable_hex_edit:
+            self.freeze_health_button.state(['disabled']);self.freeze_raw_button.state(['disabled'])
+        self.root.after(250,self.poll_value_freezes)
+
+    def freeze_token(self):
+        return (self.game_pid,id(self.mem),getattr(self.mem,'base',None),getattr(self.mem,'endian',None))
+
+    def require_freeze_access(self, raw=False):
+        if not self.mem:raise ValueError('Connect to a game first')
+        if getattr(self.args,'read_only',False) or not self.args.enable_hex_edit:
+            raise PermissionError('Value freezing is disabled in read-only mode')
+        if raw and not self.hex_advanced.get():raise PermissionError('Raw freezes require UNSAFE')
+        _ensure_capture_safe(self.mem)
+
+    def toggle_freeze_health(self):
+        try:
+            if self.freeze_health.get():
+                self.require_freeze_access()
+                self.value_freezes.enable_health(self.freeze_token())
+            else:self.value_freezes.keep_health=False
+            self.freeze_status.set('Maximum-health freeze '+('enabled.' if self.freeze_health.get() else 'stopped.'))
+        except (OSError,ValueError,RuntimeError,PermissionError) as exc:
+            self.freeze_health.set(False);self.freeze_status.set(str(exc))
+
+    def freeze_raw_value(self):
+        try:
+            self.require_freeze_access(raw=True)
+            address=int(self.raw_address.get().strip(),16)
+            value=parse_hex(self.raw_value.get(),int(self.raw_width.get()))
+            self.value_freezes.add(self.freeze_token(),address,value)
+            self.draw_value_freezes();self.freeze_status.set('Raw freeze armed; first check within 250 ms.')
+        except (OSError,ValueError,RuntimeError,PermissionError) as exc:self.freeze_status.set(str(exc))
+
+    def freeze_selected_watch(self):
+        try:
+            self.require_freeze_access(raw=True)
+            selected=self.watch_tree.selection()
+            if not selected:raise ValueError('Select a watch in Live memory first')
+            watch=next(w for w in self.watch_rows if w.name==selected[0])
+            if watch.addr is None:raise ValueError('Selected watch has no fixed guest address')
+            spec=next((s for s in self.custom_watches if s.row_name==watch.name),None)
+            policy=get_policy(watch.addr)
+            width=spec.width if spec else policy.width if policy else len(watch.raw.removeprefix('0x').removeprefix('0X'))//2
+            if width not in (1,2,4,8):raise ValueError('No supported scalar width for this watch')
+            value=self.mem.read_guest(watch.addr,width)
+            self.value_freezes.add(self.freeze_token(),watch.addr,value,watch.name)
+            self.draw_value_freezes();self.freeze_status.set('Selected watch freeze armed.')
+        except (StopIteration,OSError,ValueError,RuntimeError,PermissionError) as exc:self.freeze_status.set(str(exc))
+
+    def draw_value_freezes(self):
+        self.freeze_tree.delete(*self.freeze_tree.get_children())
+        for lock in self.value_freezes.locks.values():
+            self.freeze_tree.insert('','end',iid=str(lock.address),text=lock.label,
+                values=(f'0x{lock.address:08X}',len(lock.value),lock.value.hex().upper()))
+
+    def stop_selected_freeze(self):
+        for selected in self.freeze_tree.selection():self.value_freezes.locks.pop(int(selected),None)
+        self.draw_value_freezes();self.freeze_status.set('Selected freezes stopped.')
+
+    def stop_all_freezes(self):
+        self.value_freezes.clear();self.freeze_health.set(False)
+        self.draw_value_freezes();self.freeze_status.set('All freezes stopped.')
+
+    def poll_value_freezes(self):
+        had_active=bool(self.value_freezes.locks or self.value_freezes.keep_health)
+        result=self.value_freezes.poll(self.mem,self.freeze_token(),
+            writable=not getattr(self.args,'read_only',False) and self.args.enable_hex_edit,
+            unsafe=self.hex_advanced.get())
+        if had_active:
+            self.freeze_status.set(result)
+            self.freeze_health.set(self.value_freezes.keep_health)
+            if not self.value_freezes.locks:self.draw_value_freezes()
+        self.root.after(250,self.poll_value_freezes)

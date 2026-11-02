@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.10 — external Windows UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.11 — external Windows UI for US Goemon.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -24,6 +24,7 @@ from autosplitter.memory import WindowsProcess, Rdram, discover_rdram
 from autosplitter.engine import load_route, save_route
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
+from practice.value_freezes_ui import ValueFreezesMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.theme import apply_theme, PALETTE
@@ -84,11 +85,11 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.10 · USA N64")
+        root.title("Goemon Practice Toolkit v0.11.11 · USA N64")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -126,7 +127,7 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.10  |  US Goemon · Recomp / Project64',
+        ttk.Label(header, text='v0.11.11  |  US Goemon · Recomp / Project64',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -270,6 +271,7 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
         ttk.Button(preview_footer, text='Open live memory', command=self.open_live_memory_tab).pack(side='right')
         self.draw_quick_scenes()
         self.build_inspector_tabs(notebook)
+        self.build_value_freezes_tab(notebook)
         self.build_state_discovery_tab(notebook)
         self.build_event_sessions_tab(notebook)
         self.build_unlock_tabs(notebook)
@@ -364,6 +366,7 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
         """
         if self._connecting:
             return
+        self.stop_all_freezes()
         self.cancel_pending_restore(quiet=True)
         self.pending_direct_warp = None
         self.pending_native_warp = None
