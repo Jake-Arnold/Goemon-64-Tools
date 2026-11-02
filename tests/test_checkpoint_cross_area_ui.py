@@ -106,6 +106,18 @@ class CrossAreaRestoreTests(unittest.TestCase):
             self.assertFalse(self.app._connecting)
             self.assertEqual(self.app.game_pid,1234)
 
+    def test_project64_target_passed_to_worker(self):
+        proc=TestCheckpoint().sample()[0]
+        proc.close=lambda:None
+        with (patch('practice.toolkit.find_pid',return_value=1234) as select,
+              patch('practice.toolkit.WindowsProcess',return_value=proc) as opened,
+              patch('practice.toolkit.discover_rdram',return_value=(BASE,'wordswapped'))):
+            self.app._connect_worker((None,None,'auto',False,'project64'))
+        select.assert_called_once_with('project64')
+        opened.assert_called_once_with(1234,writable=False)
+        result=self.app._connect_queue.get_nowait()
+        self.assertEqual(result[0],'ok')
+
 
 if __name__=='__main__':
     unittest.main()

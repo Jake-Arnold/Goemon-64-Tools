@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.3 — external Windows UI for US Goemon64Recomp.
+"""Goemon Practice Toolkit v0.11.3 — external Windows UI for US Goemon.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -84,7 +84,7 @@ def configure_window_branding(root: tk.Tk) -> None:
 class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.2 · USA Recomp")
+        root.title("Goemon Practice Toolkit v0.11.3 · USA N64")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -103,7 +103,8 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         self.route = load_route(str(self.route_path)) if self.route_path and self.route_path.exists() else None
         self.bookmarks = json.loads(BOOKMARKS_FILE.read_text()) if BOOKMARKS_FILE.exists() else []
         self.checkpoints = load_checkpoint_file(CHECKPOINTS_FILE)
-        self.status = tk.StringVar(value="Disconnected. Start US Goemon64Recomp, then Connect.")
+        self.status = tk.StringVar(value="Disconnected. Start US Goemon in Recomp or Project64, then Connect.")
+        self.connection_target = tk.StringVar(value='auto')
         self.pos_text = tk.StringVar(value="X: —    Y: —    Z: —")
         self.speed_text = tk.StringVar(value="Speed: —")
         self.misc_text = tk.StringVar(value="Character: —   Action: —   Loading: —")
@@ -121,7 +122,7 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.2  |  US Goemon64Recomp',
+        ttk.Label(header, text='v0.11.3  |  US Goemon · Recomp / Project64',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -153,7 +154,9 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         connection.pack(fill='x', pady=(0, 10))
         ttk.Label(connection, textvariable=self.status, style='Card.TLabel',
                   wraplength=410).pack(anchor='w', pady=(0, 7))
-        self.connect_button = ttk.Button(connection, text='Connect to Goemon64Recomp',
+        ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
+                     values=('auto', 'recomp', 'project64')).pack(fill='x', pady=(0, 7))
+        self.connect_button = ttk.Button(connection, text='Connect to game',
                    style='Accent.TButton', command=self.connect)
         self.connect_button.pack(fill='x', pady=(0, 7))
         ttk.Label(connection, textvariable=self.pos_text, style='AccentValue.TLabel').pack(anchor='w')
@@ -359,7 +362,7 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         self.pending_direct_warp = None
         self._connecting = True
         self.connect_button.state(['disabled'])
-        self.status.set('Connecting: searching for Goemon64Recomp RAM (interface remains responsive)...')
+        self.status.set('Connecting: searching for Goemon RAM (interface remains responsive)...')
         self.mem = None
         self.current = None
         self.game_pid = None
@@ -374,7 +377,7 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         opts = (self.args.pid, self.args.base, self.args.endian,
                 bool(self.args.enable_teleport or self.args.enable_state_restore or
                      self.args.enable_debug_menu or self.args.enable_scene_warp or
-                     self.args.enable_hex_edit))
+                     self.args.enable_hex_edit), self.connection_target.get())
         thread = threading.Thread(target=self._connect_worker, args=(opts,), daemon=True,
                                   name='GoemonRdramDiscovery')
         thread.start()
@@ -382,10 +385,10 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
 
     def _connect_worker(self, opts):
         """No Tk calls here; even errors are returned through the queue."""
-        pid_hint, base_hint, endian_hint, writable = opts
+        pid_hint, base_hint, endian_hint, writable, target = opts
         process = None
         try:
-            pid = pid_hint or find_pid()
+            pid = pid_hint or find_pid(target)
             process = WindowsProcess(pid, writable=writable)
             if base_hint:
                 base, endian = int(base_hint, 0) if isinstance(base_hint, str) else int(base_hint), (
@@ -531,7 +534,7 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
 
     def capture_full_checkpoint(self):
         if not self.mem or not self.current:
-            messagebox.showerror("Not connected","Connect to Goemon64Recomp first")
+            messagebox.showerror("Not connected","Connect to the game first")
             return
         try:
             cp=capture_checkpoint(self.mem,self.bookmark_name.get())

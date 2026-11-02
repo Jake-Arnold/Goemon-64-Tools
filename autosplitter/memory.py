@@ -1,7 +1,7 @@
-"""Read USA Goemon64Recomp N64 RAM through Windows process memory.
+"""Read USA Goemon N64 RAM through Windows process memory.
 
-N64 symbols are grounded in klorfmorf/Goemon64Recomp source. Live Windows
-base detection has not yet been verified on a user machine.
+N64 symbols are grounded in klorfmorf/Goemon64Recomp source. Read-only Windows
+discovery and live field updates were verified on Project64 3.0.1.5664.
 """
 from __future__ import annotations
 
@@ -214,6 +214,23 @@ class Rdram:
         return state
 
 
+def readable_spans(regions):
+    """Join adjacent readable regions, including Project64's protected code pages.
+
+    Never bridge a gap: guard and inaccessible pages are excluded by regions().
+    """
+    pending = None
+    for start, length in regions:
+        if pending is not None and pending[0] + pending[1] == start:
+            pending = (pending[0], pending[1] + length)
+        else:
+            if pending is not None:
+                yield pending
+            pending = (start, length)
+    if pending is not None:
+        yield pending
+
+
 def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
     """Find and *cross-check* a host RAM base, optionally checking both endians.
 
@@ -230,7 +247,7 @@ def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
     rejected = 0
     candidates = []
     budget = max_scan_mb * 1048576
-    for start, length in process.regions():
+    for start, length in readable_spans(process.regions()):
         if length < 0x180000 or scanned >= budget:
             continue
         previous = b""

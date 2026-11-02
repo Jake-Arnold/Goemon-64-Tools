@@ -188,6 +188,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Remaining: capture game-state comparisons and identify actual addresses, validate stable maps over restarts and test each character's magic activation. Wide capture during very short effects may miss them.
 - Next: record A/B/C JSON for each of the five targets and confirm addresses in-game before exposing persistent unlock toggles or writing candidate velocity values.
 
+### 2026-11-02 — Project64 connection and fragmented RDRAM discovery
+
+- Changed: Dashboard connection selector for auto/recomp/project64; process selection rejects ambiguous instances instead of choosing the first PID. RAM discovery coalesces adjacent readable memory regions before scanning, preserving gaps and the existing pointer/player/endian validation. Corrected stale GUI version/host labels. Existing Python modules, autosplitter logic and portable C core are retained.
+- Why: Project64's live 8 MiB RDRAM buffer was split into regions with different page protections, including small protected-code regions skipped by the previous minimum-region-size filter. The original scanner rejected all candidates despite valid original US addresses.
+- Tested: `python -m unittest discover -s tests -q` — 172 passed on Windows, including Tk tests, fragmented-page scans, a signature across chunk boundaries, inaccessible-gap preservation, process ambiguity and read-only GUI worker selection. `git diff --check` passed. Read-only process scan and actual Tk Live memory connection to Project64 3.0.1.5664 succeeded: system pointer, Goemon ID, player/task pointers, map, HP/resources and coordinates decoded at existing guest addresses. User moved Goemon; successive probes changed map 561/XYZ (90, 0, -80) to map 353/XYZ approximately (-143.67, 0, -122.67). GUI showed map 353/Oedo Town South, Goemon, HP 10, Ryo 100 and lives 3. Test process handle was opened without write permissions. No game memory was written by these validation steps.
+- Limitations: This verifies the sampled fields on one live US configuration, not every address, ROM revision, quest bit or cross-host write behavior. Project64 warps, checkpoint restores and writes remain untested. Discovery still requires an 8 MiB readable range and a loaded player; 4 MiB support is deferred. Portable C was unchanged and not rebuilt for this connection-only change. Existing executables require rebuilding/restarting to include it.
+- Next: Use read-only State discovery on Project64 to collect repeated labelled event captures and compare candidates with existing recomp research; add an evidence registry and repeated-trial filtering before promoting any new flag semantics.
+
 ## Mandatory change-log template
 
 ```markdown

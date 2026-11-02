@@ -1,3 +1,23 @@
+# Project64 connection (2026-11-02)
+
+On Dashboard select `project64`, `recomp`, or `auto`, then **Connect to game**.
+Run the US game in normal gameplay with a visible player. Automatic selection
+requires one matching process; if both hosts are running, select one explicitly.
+Multiple instances of the same host require `--pid`.
+
+Read-only testing on Project64 3.0.1.5664 confirmed the existing guest addresses
+for system/player pointers, character, map, resources and changing XYZ. Its RAM
+is word-swapped and split across readable regions with different protections;
+the scanner now joins adjacent readable regions without crossing inaccessible gaps.
+The host RAM base is discovered each time, not hardcoded. Dynamic player pointers
+can change on scene loads even when the addresses storing those pointers agree.
+
+Project64 writes, warps, checkpoint restores and every quest-bit interpretation
+remain unverified. No new flag semantics are established by a successful connection.
+The original 8 MiB readable-range check remains: 4 MiB configurations are not
+supported by this change. Restart the toolkit from this checkout to use it;
+already-running copies and packaged executables are not updated automatically.
+
 # Goemon Speedrun Tools v0.11.3 — storyline probes and pre-load character experiment
 
 The **Unlocks** tab now exposes **read-only** Sasuke battery 2 post-cutscene completion (`0x8015C609 & 0x40`) near the top, alongside Ushiwaka progression **candidates** (`0x8015C60D & 0x10` start, `& 0x08` blue-fish hand-in). The first Sasuke battery (`& 0x20`) remains the only write-verified battery unlock. Completing Ushiwaka's blue-fish hand-in also reduced blue fish count at `0x8015C723` from 3 to 0. These event bits do not execute a cutscene.

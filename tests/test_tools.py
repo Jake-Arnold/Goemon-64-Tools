@@ -3,6 +3,10 @@ import pathlib
 import struct
 import tempfile
 import unittest
+from unittest.mock import patch
+from types import SimpleNamespace
+from autosplitter.bridge import find_pid
+from autosplitter.memory import readable_spans
 from autosplitter.memory import Rdram, SYS_POINTER_ADDR, SYS_EXPECTED_PTR, PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR, CHARACTER_ID_ADDR, LOADING_FLAG_ADDR, discover_rdram, RDRAM_SIZE
 from autosplitter.engine import SplitEngine, make_route, segment_names, save_route, load_route
 
@@ -55,6 +59,38 @@ class Tests(unittest.TestCase):
         p.write(BASE + (SYS_POINTER_ADDR & 0x1FFFFFFF) - 0x200,
                 struct.pack("<I", SYS_EXPECTED_PTR))
         self.assertEqual(discover_rdram(p, "wordswapped"), (BASE,"wordswapped"))
+
+    def test_project64_split_readable_pages(self):
+        p=self.sample()
+        # All segments are below the old scanner's minimum region size.
+        p.regions=lambda: [(BASE+i,0x1000) for i in range(0,RDRAM_SIZE,0x1000)]
+        self.assertEqual(discover_rdram(p), (BASE,'wordswapped'))
+
+    def test_readable_spans_preserve_inaccessible_gaps(self):
+        regions=[(BASE,0x1000),(BASE+0x1000,0x1000),(BASE+0x3000,0x1000)]
+        self.assertEqual(list(readable_spans(regions)),[(BASE,0x2000),(BASE+0x3000,0x1000)])
+
+    def test_discovery_signature_across_scan_chunk_boundary(self):
+        p=self.sample()
+        # Start scanning two bytes into RAM so the pointer crosses a chunk edge.
+        start=BASE+(SYS_POINTER_ADDR&0xFFFFF)+2
+        p.regions=lambda: [(start, RDRAM_SIZE-(start-BASE))]
+        self.assertEqual(discover_rdram(p), (BASE,'wordswapped'))
+
+    def test_process_selection_requires_unambiguous_target(self):
+        processes=[SimpleNamespace(info={'pid':1,'name':'Goemon64Recompiled.exe'}),
+                   SimpleNamespace(info={'pid':2,'name':'Project64.exe'}),
+                   SimpleNamespace(info={'pid':3,'name':'OtherProject64.exe'})]
+        with patch('psutil.process_iter',return_value=processes):
+            self.assertEqual(find_pid('recomp'),1)
+            self.assertEqual(find_pid('project64'),2)
+            with self.assertRaisesRegex(RuntimeError,'Multiple matching'):
+                find_pid()
+        with patch('psutil.process_iter',return_value=processes[1:]):
+            self.assertEqual(find_pid(),2)
+        with patch('psutil.process_iter',return_value=[]):
+            with self.assertRaisesRegex(RuntimeError,'not found'):
+                find_pid()
 
     def test_character_and_loading_validation(self):
         p=self.sample()
