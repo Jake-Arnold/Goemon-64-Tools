@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from practice.story_progress import FLAGS,SAVED_BASE,BANK_A,BANK_B,read_story_state,story_rows
+from practice.story_progress import FLAGS,CURATED_FLAGS,EXTERNAL_FLAGS,SAVED_BASE,BANK_A,BANK_B,read_story_state,story_rows
 from tests.test_unlocks import FakeRAM
 
 
@@ -84,3 +84,34 @@ class StoryProgressTests(unittest.TestCase):
         state=read_story_state(None)
         self.assertTrue(all(value is None for value in state['values'].values()))
         self.assertTrue(all(r['raw']=='—' for r in story_rows(state)))
+
+    def test_external_entries_have_distinct_ids_and_explicit_evidence_limits(self):
+        self.assertEqual(len(EXTERNAL_FLAGS),37)
+        self.assertFalse({f.flag_id for f in EXTERNAL_FLAGS}&{f.flag_id for f in CURATED_FLAGS})
+        self.assertEqual(len({f.flag_id for f in FLAGS}),len(FLAGS))
+        for flag in EXTERNAL_FLAGS:
+            self.assertTrue(flag.external)
+            self.assertIn('not locally gameplay-verified',flag.evidence)
+            self.assertGreater(flag.reference_count,0)
+            self.assertTrue(flag.reference_example.startswith('0x'))
+        rows={r['key']:r for r in story_rows(read_story_state(self.sample()))}
+        self.assertIn('External annotation',rows['external_koryuta_freed']['source'])
+        self.assertIn('opcode-pattern leads',rows['external_koryuta_freed']['source'])
+
+    def test_external_boss_magic_and_travel_masks_decode_independently(self):
+        ram=self.sample()
+        examples={'external_koryuta_freed':(0x8015C60A,0x10),
+                  'external_dharmanyo_defeated':(0x8015C60B,0x01),
+                  'external_sudden_granted':(0x8015C60B,0x10),
+                  'external_super_jump_granted':(0x8015C60C,0x01),
+                  'external_yae_recruited':(0x8015C60F,0x04),
+                  'external_tsurami_defeated':(0x8015C610,0x01),
+                  'external_super_jump_passed':(0x8015C614,0x02),
+                  'external_outer_space':(0x8015C615,0x08)}
+        specs={f.key:f for f in EXTERNAL_FLAGS}
+        for key,(address,mask) in examples.items():
+            self.assertEqual((specs[key].address,specs[key].mask),(address,mask))
+            ram.bytes[address]=ram.bytes.get(address,0)|mask
+        state=read_story_state(ram)
+        self.assertTrue(all(state['values'][key] for key in examples))
+        self.assertFalse(state['values']['ushi_intro'])

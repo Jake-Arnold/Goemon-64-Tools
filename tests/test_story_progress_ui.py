@@ -2,7 +2,7 @@ import tkinter as tk
 import unittest
 from unittest.mock import patch
 from practice.toolkit import Toolkit,parse_args
-from practice.story_progress import FLAGS,SAVED_BASE
+from practice.story_progress import FLAGS,EXTERNAL_FLAGS,SAVED_BASE
 from tests.test_unlocks import FakeRAM
 
 
@@ -50,3 +50,19 @@ class StoryProgressUITests(unittest.TestCase):
         self.assertIn('saved',app.story_notes.get())
         self.assertEqual(app.story_table.item('ushi_intro','values')[3],'Unavailable')
         self.assertEqual(app.story_table.item('mini','values')[3],'Absent')
+
+    def test_source_filter_refreshes_hidden_rows_and_restores_full_list(self):
+        app=self.app;app.mem=FakeRAM();app.refresh_unlocks(force=True)
+        app.story_filter.set('external')
+        visible=app.story_table.get_children()
+        self.assertEqual(set(visible),{f.key for f in EXTERNAL_FLAGS})
+        self.assertEqual(len(visible),37)
+        self.assertTrue(app.story_table.exists('ushi_intro'))  # Detached, not destroyed.
+        app.mem.bytes[0x8015C60A]=0x10
+        app.refresh_unlocks(force=True)
+        self.assertEqual(app.story_table.item('external_koryuta_freed','values')[3],'Set')
+        self.assertEqual(set(app.story_table.get_children()),set(visible))
+        app.story_filter.set('0x8015C614')
+        self.assertEqual(len(app.story_table.get_children()),3)
+        app.story_filter.set('')
+        self.assertEqual(len(app.story_table.get_children()),len(FLAGS)+4)

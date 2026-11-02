@@ -1,3 +1,15 @@
+# Goemon Speedrun Tools v0.11.7 — externally annotated story flags
+
+Story progress now includes **37 additional mappings from existing mn64rando
+research**, covering boss, recruitment, magic, weapon, priest and travel states.
+Filter **external** to view them; each is explicitly labelled as an external
+annotation with numeric ROM-reference leads, not locally gameplay-verified meaning.
+Current catalog: 58 named flags plus four bank/inventory watches.
+
+218 tests passed, with a live read-only recomp sample and visual filter check.
+[External catalog provenance and examples](docs/EXTERNAL_FLAG_CATALOG.md).
+Existing write/default behavior is unchanged; no executable was rebuilt.
+
 # Goemon Speedrun Tools v0.11.6 — live story progress
 
 The new **Story progress** tab shows mapped Benkei/Ushiwaka/Kihachi milestones,

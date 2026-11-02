@@ -12,6 +12,9 @@ class StoryFlag:
     label: str
     flag_id: int
     evidence: str
+    external: bool = False
+    reference_count: int = 0
+    reference_example: str = ''
 
     @property
     def address(self):return SAVED_BASE+(self.flag_id>>3)
@@ -20,7 +23,7 @@ class StoryFlag:
     def mask(self):return 1<<(self.flag_id&7)
 
 
-FLAGS = (
+CURATED_FLAGS = (
     StoryFlag('benkei_encounter','Benkei encounter recorded',0x025,'ROM script + user tests'),
     StoryFlag('benkei_intro','Benkei first dialogue completed',0x034,'ROM script + user tests'),
     StoryFlag('benkei_defeated','Benkei defeated / crossing permitted',0x033,'ROM script + user report'),
@@ -43,6 +46,51 @@ FLAGS = (
     StoryFlag('snow_recorded','Miracle Snow progression recorded',0x035,'ROM reward reader/writer'),
     StoryFlag('baron','Met Baron in Iga',0x06F,'Existing annotation + ROM set-pattern lead'),
 )
+
+
+EXTERNAL_EVIDENCE = "External annotation: mn64rando; not locally gameplay-verified"
+
+EXTERNAL_FLAGS = (
+    StoryFlag('external_super_pass','Super Pass receipt recorded',0x000,EXTERNAL_EVIDENCE,True,24,'0x748B50'),
+    StoryFlag('external_pass_gate','Super Pass gate opened',0x001,EXTERNAL_EVIDENCE,True,4,'0x756FA0'),
+    StoryFlag('external_omitsu_ufo','Omitsu UFO conversation recorded',0x007,EXTERNAL_EVIDENCE,True,2,'0x758E80'),
+    StoryFlag('external_japan_map','Japan map receipt recorded',0x009,EXTERNAL_EVIDENCE,True,4,'0x77B8E4'),
+    StoryFlag('external_sasuke_recruited','Sasuke recruitment recorded',0x00E,EXTERNAL_EVIDENCE,True,5,'0x77C050'),
+    StoryFlag('external_chain_pipe','Chain Pipe receipt recorded',0x010,EXTERNAL_EVIDENCE,True,9,'0x7579BC'),
+    StoryFlag('external_mokubei_upgrades','Mokubei upgrades available',0x011,EXTERNAL_EVIDENCE,True,6,'0x76D714'),
+    StoryFlag('external_silver_weapons','Silver weapon upgrade recorded',0x012,EXTERNAL_EVIDENCE,True,3,'0x77A624'),
+    StoryFlag('external_fire_ryo','Fire Ryo receipt recorded',0x013,EXTERNAL_EVIDENCE,True,3,'0x77AD8C'),
+    StoryFlag('external_koryuta_freed','Koryuta freed',0x014,EXTERNAL_EVIDENCE,True,3,'0x77B4A8'),
+    StoryFlag('external_wise_man_ghost','Wise Man ghost meeting recorded',0x015,EXTERNAL_EVIDENCE,True,4,'0x76A13C'),
+    StoryFlag('external_witch_unpaid','Witch conversation before payment',0x016,EXTERNAL_EVIDENCE,True,2,'0x77C098'),
+    StoryFlag('external_kyushu_disappeared','Kyushu disappearance recorded',0x017,EXTERNAL_EVIDENCE,True,37,'0x757024'),
+    StoryFlag('external_dharmanyo_defeated','Dharmanyo defeat recorded',0x018,EXTERNAL_EVIDENCE,True,31,'0x74956C'),
+    StoryFlag('external_gold_weapons','Gold weapon upgrade recorded',0x01A,EXTERNAL_EVIDENCE,True,3,'0x782F0C'),
+    StoryFlag('external_sudden_instructions','Sudden Impact instructions viewed',0x01B,EXTERNAL_EVIDENCE,True,3,'0x769C30'),
+    StoryFlag('external_sudden_granted','Sudden Impact grant recorded',0x01C,EXTERNAL_EVIDENCE,True,3,'0x769A78'),
+    StoryFlag('external_mermaid_failed','Mermaid training failure recorded',0x01D,EXTERNAL_EVIDENCE,True,1,'0x76A130'),
+    StoryFlag('external_mermaid_passed','Mermaid training success recorded',0x01E,EXTERNAL_EVIDENCE,True,1,'0x76A124'),
+    StoryFlag('external_mermaid_granted','Mermaid magic grant recorded',0x01F,EXTERNAL_EVIDENCE,True,4,'0x76A674'),
+    StoryFlag('external_super_jump_granted','Super Jump grant recorded',0x020,EXTERNAL_EVIDENCE,True,4,'0x764728'),
+    StoryFlag('external_super_jump_instructions','Super Jump instructions viewed',0x021,EXTERNAL_EVIDENCE,True,3,'0x76AA14'),
+    StoryFlag('external_priest_declined','Priest training offer declined',0x026,EXTERNAL_EVIDENCE,True,2,'0x764740'),
+    StoryFlag('external_priest_key','Priest training-key receipt recorded',0x027,EXTERNAL_EVIDENCE,True,3,'0x764734'),
+    StoryFlag('external_yae_recruited','Yae recruitment recorded',0x03A,EXTERNAL_EVIDENCE,True,2,'0x763A24'),
+    StoryFlag('external_priest_son','Priest son conversation recorded',0x03B,EXTERNAL_EVIDENCE,True,2,'0x765590'),
+    StoryFlag('external_tsurami_defeated','Tsurami defeat recorded',0x040,EXTERNAL_EVIDENCE,True,4,'0x749E00'),
+    StoryFlag('external_sudden_passed','Sudden Impact training success recorded',0x05F,EXTERNAL_EVIDENCE,True,1,'0x769A84'),
+    StoryFlag('external_sudden_failed','Sudden Impact training failure recorded',0x060,EXTERNAL_EVIDENCE,True,2,'0x769A90'),
+    StoryFlag('external_super_jump_passed','Super Jump training success recorded',0x061,EXTERNAL_EVIDENCE,True,1,'0x76A8D4'),
+    StoryFlag('external_super_jump_failed','Super Jump training failure recorded',0x062,EXTERNAL_EVIDENCE,True,2,'0x76A8E0'),
+    StoryFlag('external_outer_space','Outer-space arrival recorded',0x06B,EXTERNAL_EVIDENCE,True,1,'0x77E140'),
+    StoryFlag('external_outer_space_departure','Outer-space departure in progress',0x06C,EXTERNAL_EVIDENCE,True,4,'0x77DDB0'),
+    StoryFlag('external_sudden_jump_start','Sudden Impact / Super Jump start signal',0x079,EXTERNAL_EVIDENCE,True,2,'0x769BE8'),
+    StoryFlag('external_benkei_mermaid_start','Benkei / Mermaid minigame start signal',0x07A,EXTERNAL_EVIDENCE,True,4,'0x76A11C'),
+    StoryFlag('external_mini_start','Mini-Ebisu minigame start signal',0x07D,EXTERNAL_EVIDENCE,True,2,'0x76680C'),
+    StoryFlag('external_dragon_folkypoke','Folkypoke dragon ride recorded',0x07F,EXTERNAL_EVIDENCE,True,3,'0x794EFC'),
+)
+
+FLAGS = CURATED_FLAGS + EXTERNAL_FLAGS
 
 
 def read_story_state(ram):
@@ -105,9 +153,11 @@ def story_rows(state):
     for flag in FLAGS:
         value=state['values'][flag.key]
         raw='—' if saved is None else f'0x{saved[flag.address-SAVED_BASE]:02X}'
+        evidence=f'ID 0x{flag.flag_id:03X}; '+flag.evidence
+        if flag.external:evidence+=f'; {flag.reference_count} opcode-pattern leads; first decompressed ROM {flag.reference_example}'
         rows.append(dict(key=flag.key,name=flag.label,bank='Saved event data',address=flag.address,
             mask=f'0x{flag.mask:02X}',value='Unavailable' if value is None else ('Set' if value else 'Clear'),
-            raw=raw,status='ERROR' if value is None else 'OBSERVED',source=flag.evidence))
+            raw=raw,status='ERROR' if value is None else 'OBSERVED',source=evidence))
     for key,label,address in (('bank_a','Bank A: first 16 bits',BANK_A),('bank_b','Bank B: first 16 bits',BANK_B)):
         data=state['blocks'][key];raw='—' if data is None else '0x'+data.hex().upper()
         rows.append(dict(key=key,name=label,bank=label.split(':')[0],address=address,mask='—',

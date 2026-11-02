@@ -1,8 +1,9 @@
-# Story progress panel (v0.11.6)
+# Story progress panel
 
 Open **Story progress**, next to Unlocks. It refreshes from the connected US game
-on Recomp or Project64 through the existing guest-memory reader. It displays 21
-curated story flags plus two raw bank views and two inventory-word watches.
+on Recomp or Project64 through the existing guest-memory reader. v0.11.7 displays
+21 curated story flags, 37 additional external annotations, two raw bank views
+and two inventory-word watches. See [external source/evidence details](EXTERNAL_FLAG_CATALOG.md).
 These are the mappings already documented by gameplay, original-ROM traces and
 credited existing annotations; the panel does not claim new flag discoveries.
 
@@ -26,8 +27,9 @@ credited existing annotations; the panel does not claim new flag discoveries.
   Unlocks. The stale Achilles' Heel candidate label in Live memory is corrected
   from the original reward-script trace.
 
-The registry is a small code-backed set, not an automatic import of every
-randomizer annotation. Source details and unresolved roles remain in
+The registry is a selected set, not an automatic confirmation of every
+randomizer annotation. Filter **external** to see the 37 added source annotations;
+names, addresses and evidence are searchable too. Source details and unresolved roles remain in
 [the ROM report](ROM_FLAG_TRACE.md), [Benkei/Kihachi tracing](BENKEI_KIHACHI_TRACE.md)
 and [the Iga evidence note](IGA_CUTSCENE_LEADS.md).
 
@@ -53,16 +55,16 @@ scrollbar makes the evidence column accessible on smaller windows.
 
 ## Validation and delivery
 
-215 Windows Python tests passed, including packed stages, mixed pass/fail state,
+218 Windows Python tests passed, including packed stages, mixed pass/fail state,
 branch priority, inventory discrepancies, per-bank isolation, partial reads,
 disconnect handling and read-only GUI operation. Model reads total 28 canonical
 guest bytes per sample and never write memory. Actual read-only sampling on
-running Goemon64Recomp succeeded with all 25 rows and no read errors; it displayed
+running Goemon64Recomp succeeded with all 62 rows and no read errors; it displayed
 Mini-Ebisu ownership present with the grant flag clear. The actual Tk layout was
 visually inspected. Project64 uses the same previously validated connection/
 byte-order adapter but was not rerun live for this panel.
 
-Restart from this task checkout (`Run.bat`) to receive v0.11.6. Existing running
+Restart from this task checkout (`Run.bat`) to receive v0.11.7. Existing running
 copies and packaged executables are not changed automatically; no new executable
 was built. There is no user-data migration, new raw capture file or runtime
 dependency. The portable C and matching-decomp source are unchanged.
