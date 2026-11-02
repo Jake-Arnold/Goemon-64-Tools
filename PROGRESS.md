@@ -220,6 +220,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: no new flag is confirmed. Captures are not atomic; ROM SHA-1 is optional/user-supplied and remains explicitly unverified against the running game. One session covers a single backend/map/character, with stable pointers within a trial; cross-scene events, wide/dynamic session capture and the shared semantic registry are deferred. No packaged executable built, portable C changed or in-game writes exercised. Local event samples/notes must not be committed.
 - Next: user selected Goemon64Recomp and Benkei's first conversation. Prepare a separate recomp session, record an idle pair and two independent same-map conversation pairs from a backed-up pre-event state, then inspect the shortlist before tracing readers/writers.
 
+### 2026-11-02 — Benkei first-conversation evidence and repeat-dialogue control
+
+- Changed: recorded two first-conversation interval candidates in `practice/MEMORY_MAP.md`: `0x8015C60C & 0x20` and `0x8015C60E & 0x10`, including evidence IDs and explicit interpretation limits. No runtime behavior changed.
+- Why: preserve the first actual labelled Event sessions experiment while keeping raw local samples out of Git and observational correlation separate from individual flag semantics.
+- Tested: read-only captures in live Goemon64Recomp on map 369 with Goemon and stable per-trial pointers. Idle pair: no changed event bytes. First conversation: `0x8015C60C` byte `00→20` and `0x8015C60E` byte `00→10`. Repeat dialogue, reported by user as “so you're back again”: no changed event bytes; both bits remain set. Reopened/validated the local session and reran deterministic ranking. Documentation-only diff checked with `git diff --check`; Python/C tests not rerun for this evidence-only update.
+- Limitations: one first-conversation trial, not an independent replay; neither bit's causal role is established. No memory writes, ROM identity proof or reader/writer trace. Raw samples remain in ignored diagnostics, not this commit.
+- Next: obtain an independent replay from the user's backed-up pre-conversation state if available, then trace the two candidate bits separately.
+
 ## Mandatory change-log template
 
 ```markdown

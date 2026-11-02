@@ -1,3 +1,31 @@
+## Benkei first-conversation candidates (2026-11-02)
+
+Read-only Goemon64Recomp experiment on map **369**, Goemon, with stable player
+and task pointers throughout each pair:
+
+| Address / mask | First-conversation A → B | Idle control | Repeat conversation |
+| --- | --- | --- | --- |
+| `0x8015C60C & 0x20` | byte `00 → 20`, bit set | unchanged | unchanged, bit stays set |
+| `0x8015C60E & 0x10` | byte `00 → 10`, bit set | unchanged | unchanged, bit stays set |
+
+The user reported the repeat dialogue as **“so you're back again”**. No other
+bytes changed within the captured 100-byte persistent-event block in either
+control; the first-conversation pair changed only the two bytes above.
+
+These are **first-conversation interval candidates**, not individually proven
+dialogue gates or event triggers. One event pair plus idle/repeat controls does
+not distinguish direct effects from secondary progression. No masked write test,
+reader/writer trace or independent replay from a pre-event save has been done.
+ROM identity remains unverified against the running host. No new unlock control
+is enabled from these observations.
+
+Local evidence session `79b2f960edab424f89d68ed7e0415691`: idle trial
+`c82d73fde48641d6a7440d9791aa70b3`, event trial
+`4137f3c0e97744358e0ef68d07fe97e6`, repeat-dialogue control
+`55d08ff62b574adf8b28f17dd2dcb6e8`. Raw samples and notes stay in ignored local
+diagnostics. Next: independently replay the first conversation from a backed-up
+pre-event state, then trace each candidate's original-game readers/writers.
+
 ## Ushiwaka progression and pre-load character hypothesis (2026-11-02)
 
 - **Ushiwaka minigame start:** `0x8015C60D`, bit `0x10`, observed `0x20 → 0x30`, same character/map 371. A/B only; **not write-confirmed**.
