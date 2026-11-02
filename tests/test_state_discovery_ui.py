@@ -1,0 +1,58 @@
+"""Graphical probe workflow exercised against synthetic original-game bytes."""
+from __future__ import annotations
+from argparse import Namespace
+import tkinter as tk
+import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest.mock import patch
+
+from practice.toolkit import Toolkit
+from tests.test_state_discovery import Memory
+
+
+class ProbeUITests(unittest.TestCase):
+    def setUp(self):
+        try:self.root=tk.Tk()
+        except tk.TclError as exc:self.skipTest(str(exc))
+        self.root.withdraw()
+        self.app=Toolkit(self.root,Namespace(pid=None,base=None,endian='auto',route=None,
+            enable_teleport=True,enable_state_restore=True,enable_debug_menu=True,
+            enable_hex_edit=True,enable_scene_warp=False))
+
+    def tearDown(self):
+        if hasattr(self,'root'):self.root.destroy()
+
+    def test_capture_compare_export_and_clear(self):
+        app=self.app
+        self.assertEqual(app.notebook.tab(app.state_discovery_tab,'text'),'State discovery')
+        mem=Memory()
+        app.mem=mem
+        app.current=mem.snapshot()
+        app.capture_state_probe('A')
+        mem.write(0x8015C7A5,b'\x01')
+        app.capture_state_probe('B')
+        app.compare_state_probes()
+        report=app.state_report
+        self.assertTrue(report)
+        self.assertGreater(report['counts']['candidate_count'],0)
+        with TemporaryDirectory() as tmp,patch('practice.state_discovery_ui.diagnostics_dir',return_value=Path(tmp)):
+            app.export_state_probe()
+            files=list(Path(tmp).glob('*.json'))
+            self.assertEqual(len(files),1)
+            self.assertIn('Exported comparison',app.state_probe_status.get())
+        app.reset_state_probes()
+        self.assertIsNone(app.state_report)
+        self.assertEqual(len(app.state_probe_table.get_children()),0)
+
+    def test_state_discovery_does_not_write_guest(self):
+        class ReadOnlyMemory(Memory):
+            def write_guest(self,*a):raise AssertionError('No write permitted')
+        app=self.app; mem=ReadOnlyMemory();app.mem=mem;app.current=mem.snapshot()
+        app.capture_state_probe('A')
+        app.capture_state_probe('B')
+        app.compare_state_probes()
+        self.assertIn('No candidate',app.state_probe_status.get())
+
+
+if __name__=='__main__':unittest.main()

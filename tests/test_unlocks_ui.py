@@ -25,13 +25,13 @@ class TestUnlocksUI(unittest.TestCase):
         if hasattr(self, 'root'):
             self.root.destroy()
 
-    def test_tabs_and_no_fictional_sprites(self):
+    def test_tabs_and_bundled_sprites(self):
         a = self.app
         self.assertEqual(a.notebook.tab(a.unlock_tab, 'text'), 'Unlocks')
         self.assertEqual(a.notebook.tab(a.sprite_tab, 'text'), 'Sprites')
         self.assertEqual(len(a.unlock_row_widgets), len(UNLOCKS))
         self.assertEqual(len(a.sprite_gallery_items), len(UNLOCKS))
-        self.assertEqual(len(a.sprite_photos), 0)
+        self.assertEqual(len(a.sprite_photos), sum(a._sprite_path(field) is not None for field in UNLOCKS))
 
     def test_button_writes_byte_without_confirmation_dialog(self):
         self.app.mem = FakeRAM()
@@ -51,16 +51,16 @@ class TestUnlocksUI(unittest.TestCase):
         self.app.toggle_sprite_unlock(field)
         self.assertEqual(self.app.mem.read_guest(field.address, 1), b'\x00')
 
-    def test_fish_count_widget_accepts_hex(self):
+    def test_fish_count_widget_accepts_hex_and_clamps_to_minigame_max(self):
         self.app.mem = FakeRAM()
-        fish = BY_ADDRESS[0x8015C71B]
-        self.assertIn(fish.address,self.app.unlock_count_inputs)
-        self.app.set_unlock_hex(fish,'0x0A')
-        self.assertEqual(self.app.mem.read_guest(fish.address,1), b'\x0a')
-        self.app.set_unlock_hex(fish,'FF')
-        self.assertEqual(self.app.mem.read_guest(fish.address,1), b'\xff')
-        self.app.set_unlock_hex(fish,'1FF')
-        self.assertEqual(self.app.mem.read_guest(fish.address,1), b'\xff')
+        caps={0x8015C71B:8,0x8015C723:3,0x8015C71F:5}
+        for address,cap in caps.items():
+            field=BY_ADDRESS[address]
+            self.assertIn(field.address,self.app.unlock_count_inputs)
+            self.app.set_unlock_hex(field,'FF')
+            self.assertEqual(self.app.mem.read_guest(field.address,1),bytes((cap,)))
+            self.app.set_unlock_hex(field,'1FF')
+            self.assertEqual(self.app.mem.read_guest(field.address,1),bytes((cap,)))
 
     def test_unsafe_live_raw_write_any_hex(self):
         self.app.mem = FakeRAM()

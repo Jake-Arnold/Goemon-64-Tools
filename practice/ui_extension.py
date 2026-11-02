@@ -7,12 +7,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
-from practice.inspector import get_watches, checkpoint_differences
+from practice.inspector import get_watches, checkpoint_differences, Watch
 from practice.hex_edit import get_policy, parse_hex, checked_write
 from practice.scenes import SCENES, scene_label
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
 from practice.checkpoints import MAP_ADDR, STATE_ADDR
 from practice.paths import practice_data_dir, diagnostics_dir
+from practice.theme import PALETTE
 from practice.native_character import press_native_debug_accept
 from practice.native_debug_watch import FIELDS as NATIVE_WATCH_FIELDS, read_fields as read_native_watches, changed_fields as changed_native_watches, make_change_event as make_native_change_event, can_mark_state as can_mark_native_state, decode_hover_pointer
 from practice.native_debug_trace import (Observation, Candidate, menu_state, take_menu_snapshot,
@@ -274,6 +275,15 @@ class InspectorMixin:
             live_map=self.mem.u16(MAP_ADDR)
             self.scene_live.set('Current map: '+scene_label(live_map))
             watches=get_watches(self.mem,snapshot,SCENES)
+            observed=getattr(self, 'observed_velocity', None)
+            if observed is not None:
+                import math
+                for name,value in zip(('Observed velocity X','Observed velocity Y','Observed velocity Z'),observed):
+                    watches.append(Watch(name,None,f'{value:.3f} units/s','—','DERIVED',
+                                         'Measured XYZ / elapsed real seconds; not an internal N64 velocity field'))
+                speed=math.sqrt(sum(v*v for v in observed))
+                watches.append(Watch('Observed velocity magnitude',None,f'{speed:.3f} units/s','—','DERIVED',
+                                     'Position-difference estimate; not engine momentum or per-frame speed'))
             old=self.watch_previous
             modified=[]
             for w in watches:
@@ -321,13 +331,30 @@ class InspectorMixin:
         for k,v in self.scene_options:self.scene_list.insert('end',f'{k:03d} [0x{k:03X}]  {v}')
 
     def build_debug_calibration_tab(self,notebook):
-        tab=ttk.Frame(notebook,padding=10);notebook.add(tab,text='Native menu calibration')
-        ttk.Label(tab,text='ORIGINAL game debug menu: capture the FINAL scene/character highlight without entering the scene. Scanner now includes original N64 overlay memory (4 MiB). Match the toolkit scene and character, then Record.',wraplength=990).pack(anchor='w',pady=5)
-        ttk.Label(tab,text='Record at least 3 different scenes with the same character and 2 scenes with a second character, plus a different scene category. Each field must match 2+ comparisons before enabling automatic warp.',wraplength=990).pack(anchor='w',pady=5)
+        tab=ttk.Frame(notebook,padding=0);notebook.add(tab,text='Native menu calibration')
+        shell=ttk.Frame(tab)
+        shell.pack(fill='both',expand=True)
+        canvas=tk.Canvas(shell,bg=PALETTE['background'],highlightthickness=0)
+        scroll=ttk.Scrollbar(shell,orient='vertical',command=canvas.yview)
+        canvas.configure(yscrollcommand=scroll.set)
+        scroll.pack(side='right',fill='y')
+        canvas.pack(side='left',fill='both',expand=True)
+        body=ttk.Frame(canvas,padding=10)
+        window=canvas.create_window((0,0),window=body,anchor='nw')
+        body.bind('<Configure>', lambda _e: canvas.configure(scrollregion=canvas.bbox('all')))
+        canvas.bind('<Configure>', lambda e: canvas.itemconfigure(window, width=e.width))
+        def _wheel(event):
+            delta = -1 if event.delta < 0 else 1
+            canvas.yview_scroll(-delta, 'units')
+        canvas.bind_all('<MouseWheel>', _wheel, add='+')
+        self.debug_calibration_canvas = canvas
+        self.debug_calibration_scrollbar = scroll
+
+        ttk.Label(body,text='ORIGINAL game debug menu: capture the FINAL scene/character highlight without entering the scene. Scanner now includes original N64 overlay memory (4 MiB). Match the toolkit scene and character, then Record.',wraplength=990).pack(anchor='w',pady=5)
+        ttk.Label(body,text='Record at least 3 different scenes with the same character and 2 scenes with a second character, plus a different scene category. Each field must match 2+ comparisons before enabling automatic warp.',wraplength=990).pack(anchor='w',pady=5)
         self.debug_calibration_status=tk.StringVar(value='No native menu observations. Existing calibration: '+('ready' if calibrated_for_direct_warp(self.debug_profile) else 'incomplete'))
-        ttk.Label(tab,textvariable=self.debug_calibration_status,wraplength=950).pack(anchor='w',pady=8)
-        # Fixed-address watch is read-only and lightweight: no 4MB snapshots.
-        watch_box=ttk.LabelFrame(tab,text='LIVE READ-ONLY N64 watch (menu AND gameplay transitions)',padding=6)
+        ttk.Label(body,textvariable=self.debug_calibration_status,wraplength=950).pack(anchor='w',pady=8)
+        watch_box=ttk.LabelFrame(body,text='LIVE READ-ONLY N64 watch (menu AND gameplay transitions)',padding=6)
         watch_box.pack(fill='x',pady=4)
         ttk.Label(watch_box,text='Read-only logging. New 0x800C7E60 character menu pointer matches all eight hover captures, but has not been independently verified and MUST NOT be written. Stage/category selection is observed; warp confirmation is still unverified.',wraplength=970).pack(anchor='w')
         self.native_watch_status=tk.StringVar(value='Connect, then open original debug menu. Live values will update automatically.')
@@ -350,7 +377,7 @@ class InspectorMixin:
         ttk.Button(controls,text='Export LIVE watch log',command=self.export_native_watch).pack(side='left',padx=4)
         ttk.Button(controls,text='Clear watch history',command=self.clear_native_watch).pack(side='left',padx=4)
         ttk.Label(watch_box,text='Mark IN-GAME loaded scene while in gameplay (state 13); mark highlighted scene/character BEFORE confirming while in menu (state 10). Automatic changes now include both states and transitions.',wraplength=950).pack(anchor='w')
-        tracebox=ttk.LabelFrame(tab,text='REAL gameplay door transition trace — READ ONLY',padding=6)
+        tracebox=ttk.LabelFrame(body,text='REAL gameplay door transition trace — READ ONLY',padding=6)
         tracebox.pack(fill='x',pady=4)
         ttk.Label(tracebox,text='Click Start while in a playable room, then WALK THROUGH A NORMAL DOOR. Captures state, current/previous/pending map, phase, exit and loading ~50 times per second for 30 seconds. No N64 writes.',wraplength=950).pack(anchor='w')
         self.transition_status=tk.StringVar(value='Not recording.')
@@ -360,21 +387,21 @@ class InspectorMixin:
         ttk.Button(buttons,text='Export transition JSON',command=self.export_transition_trace).pack(side='left',padx=4)
         ttk.Label(tracebox,textvariable=self.transition_status,wraplength=930).pack(anchor='w')
 
-        row=ttk.Frame(tab);row.pack(fill='x',pady=7)
+        row=ttk.Frame(body);row.pack(fill='x',pady=7)
         ttk.Button(row,text='Record highlighted native selection',command=self.record_native_selection).pack(side='left',padx=4)
         ttk.Button(row,text='Find candidate memory fields',command=self.analyse_debug_selection).pack(side='left',padx=4)
         ttk.Button(row,text='Use selected field',command=self.use_debug_candidate).pack(side='left',padx=4)
         ttk.Button(row,text='Export FULL candidate report',command=self.export_debug_candidates).pack(side='left',padx=4)
-        self.debug_sample_list=tk.Listbox(tab,height=4,font=('Consolas',10),
+        self.debug_sample_list=tk.Listbox(body,height=4,font=('Consolas',10),
                                       background='#1a1d23',foreground='#f3eee5',selectbackground='#8c3030')
         self.debug_sample_list.pack(fill='x',pady=5)
         cols=('role','method','addr','width','pairs','examples')
-        self.debug_candidates_tree=ttk.Treeview(tab,columns=cols,show='headings',height=7)
+        self.debug_candidates_tree=ttk.Treeview(body,columns=cols,show='headings',height=7)
         for col,width in (('role',110),('method',125),('addr',150),('width',65),('pairs',75),('examples',215)):
             self.debug_candidates_tree.heading(col,text=col.capitalize())
             self.debug_candidates_tree.column(col,width=width)
         self.debug_candidates_tree.pack(fill='both',expand=True)
-        ttk.Label(tab,text='Candidate addresses are hypotheses, not proven. Select each scene, character (and category, when necessary) field after checking the raw values and repeats. Calibration is stored locally in practice/native_debug_fields.json.',wraplength=990).pack(anchor='w',pady=5)
+        ttk.Label(body,text='Candidate addresses are hypotheses, not proven. Select each scene, character (and category, when necessary) field after checking the raw values and repeats. Calibration is stored locally in practice/native_debug_fields.json.',wraplength=990).pack(anchor='w',pady=5)
 
     def build_character_cursor_tab(self, notebook):
         tab=ttk.Frame(notebook,padding=12)
@@ -784,8 +811,9 @@ class InspectorMixin:
         out=diagnostics_dir()
         out.mkdir(parents=True,exist_ok=True)
         path=out/('normal_transition_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.json')
-        path.write_text(json.dumps(trace.report(),indent=2)+'\n',encoding='utf-8')
-        self.transition_status.set('Exported READ-ONLY transition trace: '+str(path))
+        report = trace.report()
+        path.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+        self.transition_status.set('Exported READ-ONLY transition trace: %s (%d full samples, %d change events).' % (path, len(report.get('samples_trace', [])), len(report.get('events', []))))
 
     def poll_native_warp_menu(self,now):
         pending=self.pending_native_warp

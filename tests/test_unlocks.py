@@ -61,11 +61,13 @@ class TestUnlocks(unittest.TestCase):
 
     def test_fish_are_counts_not_binary(self):
         ram=FakeRAM()
-        for address in (0x8015C71B,0x8015C71F,0x8015C723):
+        expected_caps={0x8015C71B:8, 0x8015C723:3, 0x8015C71F:5}
+        for address,cap in expected_caps.items():
             field=BY_ADDRESS[address]
             self.assertTrue(field.quantity)
+            self.assertEqual(field.max_value, cap)
             self.assertTrue(write_unlock(ram,field,0xFE))
-            self.assertEqual(read_unlock(ram,field),0xFE)
+            self.assertEqual(read_unlock(ram,field),cap)
             self.assertTrue(write_unlock(ram,field,0))
             with self.assertRaises(ValueError):write_unlock(ram,field,256)
 

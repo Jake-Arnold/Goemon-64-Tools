@@ -52,3 +52,6 @@ dist/
 
 # User-extracted original game artwork (do not distribute)
 practice/sprites/
+
+# Local crops of game HUD sprites supplied by a user; not redistributed on public GitHub
+assets/item_sprites/

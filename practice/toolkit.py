@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.10.1 — external Windows UI for US Goemon64Recomp.
+"""Goemon Practice Toolkit v0.10.4 — external Windows UI for US Goemon64Recomp.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -26,6 +26,8 @@ from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
+from practice.state_discovery_ui import StateDiscoveryMixin
+from practice.state_discovery import measured_velocity
 from practice.native_character import (
     prepare_character_swap, undo_character_preparation,
     ready_after_native_swap, press_native_c_down, IDLE_ACTIONS,
@@ -75,10 +77,10 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(UnlocksMixin, InspectorMixin):
+class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.10.1 · USA Recomp")
+        root.title("Goemon Practice Toolkit v0.10.4 · USA Recomp")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -89,6 +91,7 @@ class Toolkit(UnlocksMixin, InspectorMixin):
         self.pending_restore = None
         self.native_key_release = None
         self.last, self.last_t = None, None
+        self.observed_velocity = None
         self.current = None
         self.route_path = Path(args.route) if args.route else None
         self.route = load_route(str(self.route_path)) if self.route_path and self.route_path.exists() else None
@@ -112,7 +115,7 @@ class Toolkit(UnlocksMixin, InspectorMixin):
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.10.1  |  US Goemon64Recomp',
+        ttk.Label(header, text='v0.10.4  |  US Goemon64Recomp',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -253,6 +256,7 @@ class Toolkit(UnlocksMixin, InspectorMixin):
         ttk.Button(preview_footer, text='Open live memory', command=self.open_live_memory_tab).pack(side='right')
         self.draw_quick_scenes()
         self.build_inspector_tabs(notebook)
+        self.build_state_discovery_tab(notebook)
         self.build_unlock_tabs(notebook)
         statusbar = ttk.Frame(root, style='Header.TFrame', padding=(16, 5))
         statusbar.pack(fill='x')
@@ -381,13 +385,18 @@ class Toolkit(UnlocksMixin, InspectorMixin):
                 self.poll_native_warp_menu(now)
                 s=self.mem.snapshot()
                 now=time.monotonic()
+                self.observed_velocity = None
                 if s["x"] is not None:
                     self.pos_text.set(f"X: {s['x']:10.2f}    Y: {s['y']:10.2f}    Z: {s['z']:10.2f}")
                     if self.last is not None and self.last_t is not None and s["player_ptr"]==self.last["player_ptr"]:
                         dt=now-self.last_t
                         if dt>0:
-                            v=math.sqrt(sum((s[a]-self.last[a])**2 for a in ("x","y","z")))/dt
-                            self.speed_text.set(f"Observed displacement: {v:9.2f} units/s (not internal velocity)")
+                            velocity=measured_velocity(s,self.last,dt)
+                            if velocity is not None:
+                                self.observed_velocity = velocity
+                                vx,vy,vz=velocity
+                                magnitude=math.sqrt(vx*vx+vy*vy+vz*vz)
+                                self.speed_text.set(f"Observed XYZ: ({vx:.1f}, {vy:.1f}, {vz:.1f}) u/s  |  speed: {magnitude:.1f} (derived)")
                     self.last, self.last_t=s,now
                 self.misc_text.set(f"Character: {s['character']}    Action: {s['action']}    Loading: {s['loading']}")
                 self.current=s

@@ -11,12 +11,13 @@ import tkinter as tk
 from tkinter import filedialog, ttk
 from pathlib import Path
 
-from practice.paths import practice_data_dir
+from practice.paths import practice_data_dir, resource_root
 from practice.theme import PALETTE
-from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock
+from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock, normalize_unlock_value
 from practice.hex_edit import parse_hex
 
 SPRITE_DIR = practice_data_dir() / 'sprites'
+BUNDLED_SPRITE_DIR = resource_root() / 'assets' / 'item_sprites'
 SPRITE_SHEET_URL = 'https://www.spriters-resource.com/nintendo_64/mysticalninjastarringgoemon/asset/123088/'
 
 
@@ -89,8 +90,7 @@ class UnlocksMixin:
         self.sprite_tab = sprite_tab
         ttk.Label(sprite_tab, text='Original-game item sprites', font=('Segoe UI Semibold', 16),
                   foreground=PALETTE['gold']).pack(anchor='w')
-        ttk.Label(sprite_tab, text='Loads original PNG exports from your local sprite folder. '
-                  'No copyrighted game graphics are bundled or substituted with artwork from another Goemon title.',
+        ttk.Label(sprite_tab, text='Uses bundled crops from your provided inventory sheet and can also load local PNG overrides from the sprite folder.',
                   style='Muted.TLabel', wraplength=1000).pack(anchor='w', pady=5)
         tools = ttk.Frame(sprite_tab)
         tools.pack(fill='x', pady=(0, 8))
@@ -128,8 +128,10 @@ class UnlocksMixin:
             return
         try:
             old = read_unlock(self.mem, unlock)
-            changed = write_unlock(self.mem, unlock, value)
-            self.unlock_status.set(f'{unlock.label}: 0x{old:02X} → 0x{value:02X}' +
+            actual = normalize_unlock_value(unlock, value)
+            changed = write_unlock(self.mem, unlock, actual)
+            suffix = ' (clamped)' if actual != value else ''
+            self.unlock_status.set(f'{unlock.label}: 0x{old:02X} → 0x{actual:02X}' + suffix +
                                    (' (verified)' if changed else ' (unchanged)'))
             if changed:
                 self.append_event(f'USER FLAG WRITE 0x{unlock.address:08X} {unlock.label}: {old:02X} -> {value:02X}')
@@ -144,7 +146,7 @@ class UnlocksMixin:
             if not field.quantity:
                 raise ValueError('Only count fields support arbitrary 00..FF hex')
             target=parse_hex(text,1)[0]
-            self.set_unlock(field,target)
+            self.set_unlock(field, normalize_unlock_value(field, target))
         except ValueError as exc:
             self.unlock_status.set(f'{field.label}: invalid count — {exc}')
 
@@ -179,8 +181,11 @@ class UnlocksMixin:
                 ('Set to 1' if field.quantity and raw == 0 else ('Set to 0' if field.quantity else ('Set ON' if raw not in field.values or raw == field.values[0] else 'Set OFF'))))
 
     def _sprite_path(self, field: Unlock) -> Path | None:
-        file = SPRITE_DIR / f'{field.slug}.png'
-        return file if file.is_file() else None
+        for base in (SPRITE_DIR, BUNDLED_SPRITE_DIR):
+            file = base / f'{field.slug}.png'
+            if file.is_file():
+                return file
+        return None
 
     def populate_unlock_sprites(self) -> None:
         for child in self.sprite_body.winfo_children():
@@ -219,8 +224,8 @@ class UnlocksMixin:
             button = ttk.Button(card, text='Set ON / OFF', command=lambda u=field: self.toggle_sprite_unlock(u))
             button.pack(fill='x', pady=(5, 0))
             self.sprite_gallery_items[field] = (status, button)
-        self.sprite_status.set(f'{found}/{len(UNLOCKS)} original PNG images loaded from {SPRITE_DIR}. '
-            'Example filename: chain_pipe.png. All entries remain clickable without art.')
+        self.sprite_status.set(f'{found}/{len(UNLOCKS)} sprite images available. '
+            f'Local overrides live in {SPRITE_DIR}; bundled defaults come from {BUNDLED_SPRITE_DIR}.')
         self.refresh_unlocks(force=True)
 
     def toggle_sprite_unlock(self, field: Unlock) -> None:

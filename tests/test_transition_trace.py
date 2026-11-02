@@ -31,5 +31,7 @@ class TestTrace(unittest.TestCase):
         self.assertEqual(data['format'],'mnsg-usa-in-game-transition-trace-v1')
         self.assertGreater(data['samples'],1)
         self.assertEqual(data['events'][0]['values']['current_map'],90)
+        self.assertGreaterEqual(len(data['samples_trace']), len(data['events']))
+        self.assertEqual(data['samples_trace'][0]['values']['current_map'],90)
         self.assertIsNone(data['error'])
 if __name__=='__main__':unittest.main()

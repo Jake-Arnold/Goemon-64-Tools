@@ -115,6 +115,17 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 - v0.9.8–v0.9.9: Direct warp disabled; added real-door tracing and guarded live hex editor.
 - Original version-by-version notes are retained in `README.md` and `docs/ARCHIVE_v0.5_NOTES.md`.
 
+### 2026-11-02 — v0.10.4: targeted live-state discovery
+
+- Added `practice/state_discovery.py` and a separate **State discovery** tab with A/B/C before/after/reverted comparisons, 2 KiB system plus live/save RAM and player-task/object probes, optional 4 MiB wide scan, candidate ranking (including changed-bit masks), candidate copying and JSON export. This provides experiments to identify dragon-travel destination flags, map visibility, equipped item/weapon selection, per-character active magic and native velocity. **No new RAM offsets have been confirmed by these tests** without gameplay samples.
+- Added `practice/state_discovery_ui.py`, documentation in `docs/STATE_DISCOVERY.md` and new synthetic-memory tests. Export contains filtered candidate values and context but no complete RAM dumps.
+- Added derived observed XYZ velocity components and magnitude in the dashboard and Live Memory (position delta / measured wall-clock seconds). This is **not the internal per-frame physics velocity**; the unlabelled PlayerTask f32 members `+0x68..+0xC8` are only float candidates.
+- Source research: official original game instructions establish C-Right (map), C-Left (weapon) and C-Up (magic); `Goemon64Recomp` player-task types do not name velocity or magic fields; Oedo tourist transport unlocks destinations after prior visits. See guide for sources and tests.
+- Tested: `xvfb-run -a python3 -m unittest discover -s tests -q` — **115 tests passed** (including Tk GUI tests); no Windows build or live memory connection was available in this environment.
+- Distribution: game-HUD sprite crops from the user-supplied sheet remain in the downloadable local source package but are excluded from the public repository because the original game art is copyrighted. The existing Sprites importer still works without them.
+- Remaining: capture game-state comparisons and identify actual addresses, validate stable maps over restarts and test each character's magic activation. Wide capture during very short effects may miss them.
+- Next: record A/B/C JSON for each of the five targets and confirm addresses in-game before exposing persistent unlock toggles or writing candidate velocity values.
+
 ## Mandatory change-log template
 
 ```markdown

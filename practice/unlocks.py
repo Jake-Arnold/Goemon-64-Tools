@@ -18,6 +18,7 @@ class Unlock:
     values: tuple[int, ...] = (0, 1)
     levels: tuple[str, ...] = ('Off', 'On')
     quantity: bool = False
+    max_value: int | None = None
 
     @property
     def slug(self) -> str:
@@ -48,18 +49,18 @@ UNLOCKS = (
     Unlock('Magic Mermaid', 0x8015C6FB, 'Abilities'),
     Unlock('Triton Shell', 0x8015C6FF, 'Items and keys'),
     Unlock('Gold Key', 0x8015C713, 'Items and keys'),
-    Unlock('Cucumber (tentative; formerly Blue Sausage)', 0x8015C717, 'Items and keys'),
-    Unlock('Brown item (Achilles Heel? candidate)', 0x8015C703, 'Items and keys'),
-    Unlock('Silver Fortune Doll? (candidate)', 0x8015C707, 'Items and keys'),
-    Unlock('Sasuke battery? (candidate)', 0x8015C70B, 'Items and keys'),
-    Unlock('Round brown item (Achilles Heel? candidate)', 0x8015C70F, 'Items and keys'),
-    Unlock('Red fish count', 0x8015C71B, 'Fish counts', quantity=True),
-    Unlock('Yellow fish count', 0x8015C71F, 'Fish counts', quantity=True),
-    Unlock('Blue fish count', 0x8015C723, 'Fish counts', quantity=True),
-    Unlock('Miracle item 1 (unidentified)', 0x8015C85B, 'Miracle items'),
-    Unlock('Miracle item 2 (unidentified)', 0x8015C85F, 'Miracle items'),
-    Unlock('Miracle item 3 (unidentified)', 0x8015C863, 'Miracle items'),
-    Unlock('Miracle item 4 (unidentified)', 0x8015C866, 'Miracle items'),
+    Unlock('Cucumber', 0x8015C717, 'Items and keys'),
+    Unlock("Lord's Pass", 0x8015C703, 'Items and keys'),
+    Unlock('Silver Fortune Doll 1/4', 0x8015C707, 'Items and keys'),
+    Unlock('Sasuke battery? (unverified candidate)', 0x8015C70B, 'Items and keys'),
+    Unlock("Achilles' Heel", 0x8015C70F, 'Items and keys'),
+    Unlock('Red fish count', 0x8015C71B, 'Fish counts', quantity=True, max_value=8),
+    Unlock('Blue fish count', 0x8015C723, 'Fish counts', quantity=True, max_value=3),
+    Unlock('Yellow fish count', 0x8015C71F, 'Fish counts', quantity=True, max_value=5),
+    Unlock('Star', 0x8015C85B, 'Miracle items'),
+    Unlock('Moon', 0x8015C85F, 'Miracle items'),
+    Unlock('Flower', 0x8015C863, 'Miracle items'),
+    Unlock('Snowflake', 0x8015C866, 'Miracle items'),
 )
 
 GROUPS = ('Party', 'Weapon upgrades', 'Weapons', 'Abilities', 'Items and keys', 'Fish counts', 'Miracle items')
@@ -77,7 +78,21 @@ def validate_unlocks() -> None:
         assert len(unlock.values) == len(unlock.levels)
         if unlock.quantity:
             assert mapping[unlock.address][1] == 255
+            if unlock.max_value is not None:
+                assert 0 <= unlock.max_value <= 255
         assert get_policy(unlock.address) is not None
+
+
+def normalize_unlock_value(unlock: Unlock, target: int) -> int:
+    if not (0 <= target <= 255):
+        raise ValueError(f'Unsupported value 0x{target:02X} for {unlock.label}')
+    if unlock.quantity:
+        if unlock.max_value is not None:
+            return min(target, unlock.max_value)
+        return target
+    if target not in unlock.values:
+        raise ValueError(f'Unsupported value 0x{target:02X} for {unlock.label}')
+    return target
 
 
 def read_unlock(ram, unlock: Unlock) -> int:
@@ -89,9 +104,9 @@ def write_unlock(ram, unlock: Unlock, target: int) -> bool:
 
     No dialog, no checkpoint and no write to the separate saved-data mirror.
     Do not write via u32: these values live in the last byte of aligned words.
+    Quantity-style fields can optionally clamp to a game-validated maximum.
     """
-    if not (0 <= target <= 255) or (not unlock.quantity and target not in unlock.values):
-        raise ValueError(f'Unsupported value 0x{target:02X} for {unlock.label}')
+    target = normalize_unlock_value(unlock, target)
     before = ram.read_guest(unlock.address, 1)
     return checked_write(ram, unlock.address, before, bytes((target,)))
 

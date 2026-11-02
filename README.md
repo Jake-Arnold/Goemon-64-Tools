@@ -6,6 +6,14 @@
 
 The original [README concept illustration](docs/images/readme-showcase.webp) inspired this dark gold/red interface. The actual dashboard now combines **connection, position bookmarks, logical checkpoints, route calibration, searchable scene catalog and a real live-memory preview**. Existing deep-dive tabs, including guarded hex editing and native debug-menu calibration, remain available. **Direct scene warp is still disabled**; the mock illustration's imaginary controls, scene names and RetroArch connection are not implemented.
 
+## State discovery — mapping remaining live flags (v0.10.4)
+
+A new **State discovery** tab captures N64 guest memory at **A: Before**, **B: After** and optionally **C: Reverted**. It ranks changed bytes and one-bit flags for dragon-travel destination unlocks, the map overlay, selected item/weapon, magic-active state for each character, and player-task float candidates for real velocity. No candidate is automatically treated as a verified address. The dashboard and Live Memory also show a separately labelled **derived XYZ displacement velocity**, in game units per real second.
+
+Detailed test sequences, scope limitations and source evidence: [State discovery guide](docs/STATE_DISCOVERY.md). Captures and comparison reports remain local, never in version control.
+
+---
+
 ## Live unlocks and item sprites (v0.10.2)
 
 Use the new **Unlocks** tab to click actual memory values for all 26 currently mapped character, weapon, ability, and key flags. Each control immediately reads the one-byte US N64 guest address, writes the selected exact byte (no pop-up confirmation), reads it back, and refreshes the UI. The tab samples live RAM repeatedly, so values changed by the game or other tools are reflected automatically. You must connect to the game first; source `Run.bat` and the packaged executable already opt into hex editing.
