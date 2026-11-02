@@ -198,3 +198,11 @@ progress now labels it Congo Miracle Moon collected, with user-reported evidence
 and no claim of independent reproduction. `0x8015C62E & 0x04` remains a tentative
 encounter-state hypothesis. Post-fight NPC dialogue can move the player to another
 map and change flags; Event sessions now supports these A/B context transitions.
+
+### Congo defeat and Lord follow-up
+
+[Separate before-Moon and after-Lord captures, native function leads and Lord-event
+activation/completion gates](CONGO_LORD_OBSERVATIONS.md) identify required ID
+`0x12D` set and ID `0x097` clear in `func_08000000_710660`. This extends the
+initial pattern scan with manual control-flow evidence. Actor visibility has not
+been independently replayed.

@@ -135,3 +135,21 @@ class StoryProgressTests(unittest.TestCase):
         state=read_story_state(ram)
         self.assertFalse(state['values']['congo_moon_collected'])
         self.assertTrue(state['values']['congo_state_candidate'])
+
+    def test_lord_event_gate_masks_are_independent_of_adjacent_boss_bits(self):
+        ram=self.sample()
+        ram.write_guest(0x8015C62D,b'\xDF')  # Every bit except the activation gate.
+        ram.write_guest(0x8015C61A,b'\x7F')  # Completion gate clear.
+        state=read_story_state(ram)
+        self.assertFalse(state['values']['lord_event_enabled'])
+        self.assertFalse(state['values']['lord_event_completed'])
+        ram.write_guest(0x8015C62D,b'\xFF')
+        ram.write_guest(0x8015C61A,b'\xFF')
+        rows={r['key']:r for r in story_rows(read_story_state(ram))}
+        self.assertEqual(rows['lord_event_enabled']['address'],0x8015C62D)
+        self.assertEqual(rows['lord_event_enabled']['mask'],'0x20')
+        self.assertEqual(rows['lord_event_enabled']['value'],'Set')
+        self.assertEqual(rows['lord_event_completed']['address'],0x8015C61A)
+        self.assertEqual(rows['lord_event_completed']['mask'],'0x80')
+        self.assertEqual(rows['lord_event_completed']['value'],'Set')
+        self.assertIn('rejects set',rows['lord_event_completed']['source'])

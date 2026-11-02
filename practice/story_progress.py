@@ -47,6 +47,10 @@ CURATED_FLAGS = (
     StoryFlag('baron','Met Baron in Iga',0x06F,'Existing annotation + ROM set-pattern lead'),
     StoryFlag('congo_moon_collected','Congo Miracle Moon collected',0x0A4,
               'User reports mask 0x10 sets when collecting the Miracle Moon after Congo, not at boss defeat; not independently reproduced'),
+    StoryFlag('lord_event_enabled','Lord of Oedo event enabled',0x12D,
+              'Lord-event file initializer func_08000000_710660 requires set; user observed set after Congo before Moon; actor behavior not independently replayed'),
+    StoryFlag('lord_event_completed','Lord of Oedo event completed / suppressed',0x097,
+              'Initializer func_08000000_710660 rejects set; func_08000410_710A70 sets it; user observed Lord absent after chat'),
     StoryFlag('congo_state_candidate','Congo encounter state? (candidate)',0x132,
               'User A/B: mask 0x04 cleared during same event; cutscene/actor/room hypothesis, not confirmed'),
 )

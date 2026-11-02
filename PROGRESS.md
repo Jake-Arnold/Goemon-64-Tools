@@ -2,6 +2,15 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-02 - Congo defeat and Lord-event gates traced
+
+- Changed: recorded the user's eleven before-Moon defeat bit transitions and three after-Lord transitions in docs/CONGO_LORD_OBSERVATIONS.md, linking from the ROM trace and README. Kept interval observations distinct from exact semantics and noted known Super Pass ID 0x000 / unknown shared ID 0x05E.
+- Static evidence: verified-US-ROM GEV/native scan of fourteen screenshot IDs found 32 script patterns and 13 native literal-call leads across Congo/Moon files 0x01D/0x01E. Located native leads within baseline ELF functions, including ID 0x132 set/clear and 0x1A1 set. A further file 0x036 scan found eight Lord-event native patterns. Private reports remain ignored; no ROM, assets, screenshots or disassembly excerpts committed.
+- Manual trace: Lord-event initializer func_08000000_710660 tests ID 0x12D (0x8015C62D & 0x20), taking an early-exit path if clear, and ID 0x097 (0x8015C61A & 0x80), taking an early exit if set. Both checks are missed by the bounded literal-delay-slot scanner. Update func_08000410_710A70 sets 0x097 at ROM 0x7110D0. ID 0x05E is cleared during initialization and consumed in update state logic, so it is not labeled as a permanent Lord-despawn bit.
+- Toolkit: added read-only Lord of Oedo event enabled and event completed / suppressed rows for those two native-code gates. No write/warp behavior or version change. Existing windows need a restart to display the new catalog rows.
+- Reason: identify which screenshot changes actually gate the Lord event instead of naming every boss-phase bit as story progression. Tests: 21 focused Python story model/UI and ROM-trace tests passed; independent masks and neighboring boss bits covered. Address-to-ID conversions and private scan summaries checked; no live game writes, reloads or quest replays.
+- Limitations/next: initializer gates plus user observations establish a strong event-level link, not a fresh visibility test or proof these two bits are sufficient for all actor construction. Continue object-constructor/script tracing and control room-transition effects. No new matching C/full-ROM verified functions claimed.
+
 ## 2026-11-02 - v0.11.10: cross-room event captures and Congo timing correction
 
 - Changed: corrected ID 0x0A4 / 0x8015C61C mask 0x10 to Congo Miracle Moon collected, following the user's observation that it sets upon reward collection after the fight. This remains user-reported evidence, not independent reproduction; 0x8015C62E mask 0x04 remains tentative.

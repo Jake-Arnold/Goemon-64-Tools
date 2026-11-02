@@ -1,5 +1,11 @@
 # Goemon Speedrun Tools v0.11.10 - cross-room event trials
 
+[Congo/Lord research follow-up](docs/CONGO_LORD_OBSERVATIONS.md): the original
+Lord-event initializer requires `0x8015C62D & 0x20` set and
+`0x8015C61A & 0x80` clear. Both gates now appear in Story progress. This combines
+static code evidence with user observations; no new live quest replay or matching-C
+promotion is claimed.
+
 ## v0.11.10: cross-room event comparisons
 
 Event sessions now allows map, character and player/task pointers to differ between A/B/C captures. Capture A before post-boss NPC dialogue, finish the transition, then capture B after normal gameplay resumes. Each individual read must remain stable; reconnecting still requires a fresh A. The UI preserves every capture context and counts context-changing trials. No game writes are involved and existing v1 sessions remain readable. [Capture guide](docs/EVENT_SESSIONS.md).
