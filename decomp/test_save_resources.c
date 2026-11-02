@@ -14,6 +14,11 @@ SYS_W *D_8015C5C8_15D1C8 = &D_8008CCC0_8D8C0;
 u8 D_8015C5D4_15D1D4;
 s32 D_80167C48_168848[3];
 s32 D_80167C54_168854;
+const SpawnRecord D_8005BA30_5C630[] = {
+    {0x0123, 0xFFFE, 0xFFD8, 8, 0x8001, 0x0034},
+    {0x0234, 100, 200, 300, 0x7FFF, 0x0045},
+    {0x0345, 0, 0, 0, 0, 0x0056}
+};
 static s32 calls[3], call_count;
 
 __asm__(".globl D_8015C66C_15D26C\n.set D_8015C66C_15D26C, D_8015C608_15D208 + 100\n"
@@ -113,8 +118,40 @@ static void check_counters(void) {
     assert(call_count == 3 && calls[0] == 0 && calls[1] == 1 && calls[2] == 2);
 }
 
+static void check_spawn_commit(void) {
+    unsigned index;
+    for (index = 0; index < 3; index++) {
+        SaveData expected;
+        ResourceBlock live;
+        const SpawnRecord *record = &D_8005BA30_5C630[index];
+        memset(&D_8015C608_15D208, 0x53, sizeof(SaveData));
+        D_8015C608_15D208.word_200 = (s32)index;
+        memset(&D_8015C5D8_15D1D8, 0x37, sizeof(ResourceBlock));
+        D_8015C5D8_15D1D8.max_health = 30;
+        D_8015C5D8_15D1D8.health = index == 0 ? 2 : (index == 1 ? 10 : 20);
+        D_8015C5D8_15D1D8.lives = index == 0 ? 0 : (index == 1 ? 3 : 9);
+        live = D_8015C5D8_15D1D8;
+        expected = D_8015C608_15D208;
+        expected.half_204 = record->half_00;
+        expected.half_20A = (s16)record->half_02;
+        expected.half_20C = (s16)record->half_04;
+        expected.half_20E = (s16)record->half_06;
+        expected.half_210 = (s16)record->half_08;
+        expected.half_208 = record->half_0A;
+        expected.resources = live;
+        if (expected.resources.lives < 3) expected.resources.lives = 3;
+        if (expected.resources.health < 10) expected.resources.health = 10;
+        func_8000B718_C318();
+        assert(memcmp(&expected, &D_8015C608_15D208, sizeof(expected)) == 0);
+        assert(memcmp(&expected, &D_8015C910_15D510, sizeof(expected)) == 0);
+        /* Minimums apply to the saved mirror; live values are not overwritten. */
+        assert(memcmp(&live, &D_8015C5D8_15D1D8, sizeof(live)) == 0);
+        assert(D_8015C608_15D208.word_200 == (s32)index);
+    }
+}
+
 int main(void) {
-    check_buffer_views(); check_initialization(); check_counters();
-    puts("Save initialization/views, restore order, timer/health thresholds and counters passed.");
+    check_buffer_views(); check_initialization(); check_counters(); check_spawn_commit();
+    puts("Save views/init/restore, spawn mapping/clamps, timer/health thresholds and counters passed.");
     return 0;
 }

@@ -34,9 +34,28 @@ void func_8000B6E0_C2E0(void) {
     func_8000B5D0_C1D0();
 }
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/save_resources/func_8000B718_C318.s")
-#endif
+void func_8000B718_C318(void)
+{
+  const SpawnRecord *record;
+  record = &D_8005BA30_5C630[D_8015C608_15D208.word_200];
+  D_8015C608_15D208.half_204 = (u16) (&D_8005BA30_5C630[D_8015C608_15D208.word_200])->half_00;
+  D_8015C608_15D208.half_20A = (u16) (&D_8005BA30_5C630[D_8015C608_15D208.word_200])->half_02;
+  D_8015C608_15D208.half_20C = (u16) (&D_8005BA30_5C630[D_8015C608_15D208.word_200])->half_04;
+  D_8015C608_15D208.half_20E = (u16) (&D_8005BA30_5C630[D_8015C608_15D208.word_200])->half_06;
+  D_8015C608_15D208.half_210 = (u16) (&D_8005BA30_5C630[D_8015C608_15D208.word_200])->half_08;
+  D_8015C608_15D208.half_208 = (u16) record->half_0A;
+  func_80004208_4E08((u8 *) (&D_8015C5D8_15D1D8), (u8 *) (&D_8015C66C_15D26C), 0x30);
+  if (D_8015C608_15D208.resources.lives < 3)
+  {
+    D_8015C608_15D208.resources.lives = 3;
+  }
+  if (D_8015C608_15D208.resources.health < 10)
+  {
+    D_8015C608_15D208.resources.health = 10;
+  }
+  func_80004208_4E08((u8 *) (&D_8015C608_15D208), (u8 *) (&D_8015C910_15D510), 0x304);
+}
+
 
 void func_8000B7E4_C3E4(void) {
     if (D_800BCCC0_BD8C0.ticks >= 60) {

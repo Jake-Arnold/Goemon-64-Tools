@@ -162,9 +162,9 @@ playthrough, blind unknown-memory writes, bulk RAM restoration, every emulator
 or ROM version, a new UI architecture and a completed full decompilation.
 
 Phase 5 now also has a verified matching-C track in `decomp/`: baseline build and
-24 reconstructed functions / 1,672 function bytes across three units match the
-entire original decompressed ROM. One spawn-copy routine remains assembly and
-is excluded. See decomp/README.md and its result metadata; full game reconstruction
+25 reconstructed functions / 1,876 function bytes across three units match the
+entire original decompressed ROM. The spawn-copy routine is now matching C.
+See decomp/README.md, the local-checkout review and result metadata; full game reconstruction
 and live rebuilt-artifact validation remain incomplete.
 
 Phase 5 has an initial read-only original-ROM/script trace and numeric

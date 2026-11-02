@@ -120,6 +120,11 @@
           "size": 56
         },
         {
+          "name": "func_8000B718_C318",
+          "rom_offset": 49944,
+          "size": 204
+        },
+        {
           "name": "func_8000B7E4_C3E4",
           "rom_offset": 50148,
           "size": 64
@@ -149,9 +154,6 @@
           "rom_offset": 50352,
           "size": 64
         }
-      ],
-      "assembly_functions": [
-        "func_8000B718_C318"
       ]
     }
   ],

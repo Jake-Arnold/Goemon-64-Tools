@@ -4,24 +4,29 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **24 functions / 1,672 function bytes across three units**.
+Current verified total: **25 functions / 1,876 function bytes across three units**.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
 
-## Save/resource unit, with one retained assembly function
+The [local-checkout review](LOCAL_MNSG_REVIEW.md) records useful pre-existing
+tools/builds and camera-branch work, including why the camera draft is not yet
+part of the matching baseline.
 
-`save_resources.c` reconstructs nine routines from ROM `0xC1D0..0xC4F0`:
+## Save/resource unit
+
+`save_resources.c` reconstructs all ten routines from ROM `0xC1D0..0xC4F0`:
 save/live/shadow buffer synchronization, default save initialization, shadow
 restoration, elapsed-time accounting, health upgrades and small counter routines.
 `save_resources.h` gives byte-offset layouts names only where supported; unknown
 fields retain offset-based labels. This is not a complete recovered save schema.
 
-**`func_8000B718_C318` remains original assembly**, via the upstream GLOBAL_ASM
-workflow. Its nonmatching C draft is retained locally and is not shipped/counted
-as reconstructed C. The manifest explicitly declares this placeholder, while
-the verifier rejects undeclared placeholders and forbids assembly markers on
-every function claimed as matching C. The combined report lists the exclusion.
-The mixed unit still rebuilds to the exact original whole-ROM image.
+**`func_8000B718_C318` now matches as C**, after local decomp-permuter assistance,
+full-unit compilation and a fresh whole-ROM check. It copies six selected spawn
+record fields into the saved state, copies live resources into the save mirror,
+applies the original saved health/lives minimums, then copies the complete save
+to its shadow. The index is unchecked; this routine is not a safe scene loader.
+The former 24-function/one-placeholder checkpoint is retained separately for
+provenance. No assembly placeholder remains in these three selected units.
 
 Behavior checks cover saved-view aliases, synchronization order, unchanged fields,
 initial defaults, one-step timer/upgrade thresholds and callback order. The timer
@@ -161,14 +166,17 @@ gcc -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined \
 practice/diagnostics/test_save_resources
 ```
 
-The retained assembly function is excluded from that host test. Matching MIPS
-output, synthetic host behavior and actual in-game tests are separate evidence.
+The host test now includes the spawn-copy routine, three synthetic table records,
+all field destinations, signed coordinate encodings and clamp/copy ordering.
+Matching MIPS output, synthetic host behavior and actual in-game tests remain
+separate evidence.
 
 ## Next units
 
 Continue with small, well-bounded engine translation units and retain the same
-full-ROM comparison gate. Resolve the retained spawn-copy/save-commit routine,
-then reconstruct the event VM and its operand/branch handlers. Actor and
+full-ROM comparison gate. Continue the event VM and its operand/branch handlers,
+and review the pre-existing camera branch without assuming it already matches.
+Actor and
 script exports from the existing randomizer remain useful semantic context;
 native reconstruction still requires compiler matching and tests. Do not rename
 unknown fields or infer state-transition safety from a matching helper alone.
