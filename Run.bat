@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-title Goemon Practice Toolkit v0.10.8
+title Goemon Practice Toolkit v0.11.4
 where py >nul 2>&1
 if errorlevel 1 (
   echo Python launcher not found. Install Python 3.11 or newer from python.org.
@@ -18,10 +18,10 @@ if errorlevel 1 (
     exit /b 1
   )
 )
-echo Goemon Practice Toolkit v0.10.8 - EXPERIMENTAL PRACTICE ONLY.
-echo All experimental tools enabled. Do NOT use for submitted runs.
+echo Goemon Practice Toolkit v0.11.4 - EXPERIMENTAL PRACTICE ONLY.
+echo Unsafe tools enabled by default. Use --read-only to disable game writes and input.
 echo Use a disposable game save.
-py -m practice.toolkit --route route.json --enable-teleport --enable-state-restore --enable-debug-menu --enable-hex-edit
+py -m practice.toolkit --route route.json %*
 if errorlevel 1 (
   echo Toolkit exited with an error.
   pause

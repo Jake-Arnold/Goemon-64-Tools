@@ -35,9 +35,10 @@ class TestWindowsPackaging(unittest.TestCase):
 
     def test_entrypoint_matches_run_bat_flags(self):
         launcher = (ROOT / 'Run.bat').read_text()
-        for flag in DEFAULT_PRACTICE_FLAGS:
-            self.assertIn(flag, launcher)
-        self.assertNotIn('--enable-scene-warp', DEFAULT_PRACTICE_FLAGS)
+        self.assertEqual(DEFAULT_PRACTICE_FLAGS, [])
+        self.assertIn('%*',launcher)  # Run.bat --read-only reaches shared parser.
+        self.assertNotIn('--enable-',launcher)
+        self.assertIn('main(sys.argv[1:])',(ROOT / 'goemon_app.py').read_text())
 
     def test_build_script_embeds_icon_and_app_assets(self):
         script = (ROOT / 'build/Build-Windows.ps1').read_text()

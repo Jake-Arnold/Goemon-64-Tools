@@ -50,6 +50,7 @@ if os.name == "nt":
 
 class WindowsProcess:
     def __init__(self, pid: int, writable: bool = False):
+        self.writable = writable
         if os.name != "nt":
             raise OSError("Process-memory integration runs on Windows; use --demo for tests")
         access = 0x1000 | 0x0010 | (0x0020 | 0x0008 if writable else 0)
@@ -72,6 +73,8 @@ class WindowsProcess:
         return result.raw
 
     def write(self, address: int, data: bytes):
+        if not self.writable:
+            raise PermissionError('Process connection is read-only')
         size = SIZE_T()
         buff = ctypes.create_string_buffer(data)
         ok = kernel32.WriteProcessMemory(self.handle, ctypes.c_void_p(address), buff,

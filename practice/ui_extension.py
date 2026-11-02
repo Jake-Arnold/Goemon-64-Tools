@@ -33,7 +33,7 @@ CUSTOM_WATCHES_PATH = practice_data_dir() / "custom_watches.json"
 class InspectorMixin:
     def build_inspector_tabs(self, notebook):
         self.watch_previous={}
-        self.hex_advanced=tk.BooleanVar(value=False)
+        self.hex_advanced=tk.BooleanVar(value=bool(self.args.enable_hex_edit))
         self.watch_rows=[]
         self.custom_watch_load_error=None
         try:
@@ -107,7 +107,9 @@ class InspectorMixin:
             ttk.Label(watch_tools,text='Existing custom watch file could not be read: '+self.custom_watch_load_error,
                       style='Muted.TLabel').pack(anchor='w')
         ttk.Label(inspector,text='Double-click a HEX cell to edit. UNSAFE enables unrestricted hex values at the displayed guest address (including mapped bounds override).').pack(anchor='w')
-        ttk.Checkbutton(inspector,text='UNSAFE: enable raw guest-memory hex editing (any 1/2/4/8-byte value and address)',variable=self.hex_advanced).pack(anchor='w')
+        self.unsafe_check=ttk.Checkbutton(inspector,text='UNSAFE: enable raw guest-memory hex editing (any 1/2/4/8-byte value and address)',variable=self.hex_advanced)
+        self.unsafe_check.pack(anchor='w')
+        if not self.args.enable_hex_edit:self.unsafe_check.state(['disabled'])
         manual=ttk.Frame(inspector);manual.pack(fill='x',pady=(3,7))
         ttk.Label(manual,text='Raw address:').pack(side='left')
         self.raw_address=tk.StringVar(value='0x8015C717')
@@ -118,7 +120,9 @@ class InspectorMixin:
         ttk.Label(manual,text='Hex:').pack(side='left')
         self.raw_value=tk.StringVar(value='01')
         ttk.Entry(manual,textvariable=self.raw_value,width=20).pack(side='left',padx=(3,10))
-        ttk.Button(manual,text='Write raw hex',command=self.write_raw_hex).pack(side='left')
+        self.raw_write_btn=ttk.Button(manual,text='Write raw hex',command=self.write_raw_hex)
+        self.raw_write_btn.pack(side='left')
+        if not self.args.enable_hex_edit:self.raw_write_btn.state(['disabled'])
         columns=('address','value','raw','status','source')
         frame=ttk.Frame(inspector);frame.pack(fill='both',expand=True)
         self.watch_tree=ttk.Treeview(frame,columns=columns,show='tree headings',height=22)
@@ -169,6 +173,7 @@ class InspectorMixin:
         self.experimental_warp_btn=ttk.Button(scenes,text='EXPERIMENT: reload into selected stage (wrong spawn possible)',
             command=self.try_reload_warp,style='Gold.TButton')
         self.experimental_warp_btn.pack(fill='x',pady=4)
+        if not self.args.enable_hex_edit:self.experimental_warp_btn.state(['disabled'])
         ttk.Label(scenes,textvariable=self.scene_status,wraplength=950).pack(anchor='w',pady=8)
         self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.open_debug_for_selected_scene)
         self.native_debug_btn.pack(fill='x',pady=5)
@@ -966,6 +971,9 @@ class InspectorMixin:
         self.transition_status.set('Exported READ-ONLY transition trace: %s (%d full samples, %d change events).' % (path, len(report.get('samples_trace', [])), len(report.get('events', []))))
 
     def poll_native_warp_menu(self,now):
+        if getattr(self.args, 'read_only', False):
+            self.pending_native_warp=None
+            return
         pending=self.pending_native_warp
         if not pending or not self.mem:return
         from practice.checkpoints import MAP_ADDR

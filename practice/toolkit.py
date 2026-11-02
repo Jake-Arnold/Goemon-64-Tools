@@ -1,8 +1,8 @@
-"""Goemon Practice Toolkit v0.11.3 — external Windows UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.4 — external Windows UI for US Goemon.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
-require --enable-teleport or --enable-state-restore. This is not a savestate
+are enabled by default; --read-only disables writes and game input. This is not a savestate
 and is not an in-game N64 ROM patch.
 """
 from __future__ import annotations
@@ -83,8 +83,9 @@ def configure_window_branding(root: tk.Tk) -> None:
 
 class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
+        args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.3 · USA N64")
+        root.title("Goemon Practice Toolkit v0.11.4 · USA N64")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -122,7 +123,7 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.3  |  US Goemon · Recomp / Project64',
+        ttk.Label(header, text='v0.11.4  |  US Goemon · Recomp / Project64',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -274,7 +275,7 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         statusbar.pack(fill='x')
         ttk.Label(statusbar, text='EXPERIMENTAL PRACTICE ONLY  •  Never use for submitted runs',
                   style='HeaderSub.TLabel').pack(side='left')
-        ttk.Label(statusbar, text='US Recomp  •  Direct warp disabled',
+        ttk.Label(statusbar, text=('READ ONLY' if getattr(args, 'read_only', False) else 'Unsafe tools enabled') + '  •  Direct warp disabled',
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
 
@@ -585,6 +586,8 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
             self.status.set('Checkpoint restore cancelled')
 
     def _request_native_character_swap(self, pending, now):
+        if getattr(self.args, 'read_only', False):
+            return
         # Optional host adapter for the *original game's* C-Down switch. Never
         # modify the global/per-task character ID or bypass its model loader.
         pending['last_press']=now
@@ -776,18 +779,34 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
             messagebox.showerror("Calibration failed",str(e))
 
 
-def main(argv=None):
+PRACTICE_OPTIONS = ('enable_teleport', 'enable_state_restore', 'enable_debug_menu', 'enable_hex_edit')
+
+
+def apply_access_mode(args):
+    """Read-only overrides every legacy opt-in regardless of argument order."""
+    if getattr(args, 'read_only', False):
+        for name in (*PRACTICE_OPTIONS, 'enable_scene_warp'):
+            setattr(args, name, False)
+    return args
+
+
+def parse_args(argv=None):
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid",type=int)
     ap.add_argument("--base",help="RDRAM host base 0x...; bypasses experimental auto-discovery")
     ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
     ap.add_argument("--route",help="route.json from autosplitter import-splits")
-    ap.add_argument("--enable-teleport",action="store_true",help="UNSAFE: opt in to writing game coordinates")
-    ap.add_argument("--enable-state-restore",action="store_true",help="EXPERIMENTAL: opt in to writing original-game progress flags and resources")
-    ap.add_argument("--enable-debug-menu",action="store_true",help="EXPERIMENTAL: allow entering original game debug menu state 10")
-    ap.add_argument("--enable-hex-edit",action="store_true",help="Opt in to confirmed double-click hex edits")
+    ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
+    ap.add_argument("--enable-teleport",action="store_true",default=True,help="Write game coordinates (enabled by default)")
+    ap.add_argument("--enable-state-restore",action="store_true",default=True,help="Restore logical checkpoints (enabled by default)")
+    ap.add_argument("--enable-debug-menu",action="store_true",default=True,help="Allow original debug menu (enabled by default)")
+    ap.add_argument("--enable-hex-edit",action="store_true",default=True,help="Allow raw hex editing (enabled by default)")
     ap.add_argument("--enable-scene-warp",action="store_true",help="DISABLED: v0.9.7 direct scene writes triggered title screen; never used")
-    args=ap.parse_args(argv)
+    return apply_access_mode(ap.parse_args(argv))
+
+
+def main(argv=None):
+    args=parse_args(argv)
     root=tk.Tk(); app=Toolkit(root,args)
     try:
         root.mainloop()

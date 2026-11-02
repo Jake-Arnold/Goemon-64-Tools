@@ -1,7 +1,7 @@
 # Goemon discovery and companion implementation plan
 
-Date: 2026-11-02. Status: proposed implementation sequence; runtime defaults have
-not changed. Continue in the existing `codex/goemon-discovery` task workspace.
+Date: 2026-11-02. Status: phase 1 implemented in source; subsequent phases planned.
+Continue in the existing `codex/goemon-discovery` task workspace.
 Baseline: `91b387853f900a5222c2a9c145d6ac08c9c6cc98`.
 
 ## Outcome and current evidence
@@ -160,5 +160,7 @@ Out of scope for the first milestone: complete flag coverage, automatic game
 playthrough, blind unknown-memory writes, bulk RAM restoration, every emulator
 or ROM version, a new UI architecture and a completed full decompilation.
 
-Immediate next implementation: phase 1 defaults and read-only override, followed
-by a small persistent-event session recorder with repeated-trial analysis.
+Immediate next implementation: a small persistent-event session recorder with
+repeated-trial analysis (phases 2/3). Phase 1 source defaults and read-only override
+are implemented; packaged executable build and available-host checks must be
+reported separately from automated validation.

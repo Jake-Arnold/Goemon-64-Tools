@@ -68,13 +68,16 @@ class UnlocksMixin:
                         command=lambda field=item, v=value: self.set_unlock(field, v),
                         width=max(10, len(label)+6))
                     button.pack(side='left', padx=(3, 0))
+                    if not self.args.enable_hex_edit:button.state(['disabled'])
                     controls[value] = button
                 if item.quantity:
                     entry_var=tk.StringVar(value='00')
                     entry=ttk.Entry(buttons,textvariable=entry_var,width=5,font=('Consolas',10))
                     entry.pack(side='left',padx=(8,2))
-                    ttk.Button(buttons,text='Set hex count',
-                               command=lambda field=item, var=entry_var: self.set_unlock_hex(field,var.get())).pack(side='left')
+                    count_button=ttk.Button(buttons,text='Set hex count',
+                               command=lambda field=item, var=entry_var: self.set_unlock_hex(field,var.get()))
+                    count_button.pack(side='left')
+                    if not self.args.enable_hex_edit:count_button.state(['disabled'])
                     self.unlock_count_inputs[item.address]=entry_var
                     self.unlock_count_entries[item.address]=entry
                 self.unlock_row_widgets[item.address] = (state, controls)

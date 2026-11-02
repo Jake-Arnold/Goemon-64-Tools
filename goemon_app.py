@@ -4,13 +4,9 @@ import sys
 
 from practice.toolkit import main
 
-# Match the source Run.bat's experimental practice opt-ins. The high-risk game
-# state editor still has its separate per-session unlock; direct warp is disabled.
-DEFAULT_PRACTICE_FLAGS = [
-    "--enable-teleport", "--enable-state-restore",
-    "--enable-debug-menu", "--enable-hex-edit",
-]
+# Defaults are owned by practice.toolkit.parse_args for every entry point.
+DEFAULT_PRACTICE_FLAGS = []  # Compatibility for callers importing this symbol.
 
 
 if __name__ == "__main__":
-    main([*DEFAULT_PRACTICE_FLAGS, *sys.argv[1:]])
+    main(sys.argv[1:])

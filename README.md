@@ -1,3 +1,22 @@
+# Goemon Speedrun Tools v0.11.4 — unsafe tools enabled by default
+
+Ordinary startup now enables teleport, logical checkpoint restore, native debug
+menu access, hex editing and the **UNSAFE** checkbox. The existing experimental
+reload is available without a separate UNSAFE unlock. Enabling tools does not
+execute them or write game memory during startup, connection or polling.
+
+`Run.bat`, `python -m practice.toolkit` and the packaged entry point share these
+defaults. Existing `--enable-*` flags remain accepted. Use `Run.bat --read-only`,
+`python -m practice.toolkit --read-only`, or the executable's `--read-only` option
+to disable game writes and automated game input. Read-only takes precedence over
+all enable flags; UNSAFE starts unchecked and the write controls are disabled.
+Read-only sessions still support watches, captures and local report exports.
+
+The legacy direct-warp prototype remains disabled. Existing action confirmations,
+write validation and experimental reload limitations still apply. Project64
+writes and checkpoint restores remain unverified. Existing executables must be
+rebuilt to receive this change.
+
 # Project64 connection (2026-11-02)
 
 On Dashboard select `project64`, `recomp`, or `auto`, then **Connect to game**.

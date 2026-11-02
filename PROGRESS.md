@@ -204,6 +204,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: defaults remain unchanged until phase 1 is implemented. The disabled legacy raw-warp prototype requires native-loader research, not simply an enable flag. Project64 write/restore behavior remains unverified.
 - Next: implement phase 1 with startup/override tests, then persistent-event sessions and repeated-trial filtering. Commit and push each completed increment, verifying the remote SHA.
 
+### 2026-11-02 — v0.11.4: consistent unsafe defaults and explicit read-only mode
+
+- Changed: shared startup parser enables teleport, logical restore, native debug-menu access and hex editing by default. Live Memory UNSAFE starts checked when editing is enabled. Run.bat and the packaged entry point delegate defaults to that parser and forward arguments. Added `--read-only`, which takes precedence over every legacy enable flag, disables write controls, normalizes programmatic Toolkit arguments and opens a read-only process handle. WindowsProcess rejects writes through a read-only connection before native API access; automated character/debug-menu input paths also honor read-only mode. Existing legacy direct-warp code remains disabled. Updated version labels, README and plan status.
+- Why: implement phase 1 of the approved discovery plan and make source/module/packaged-entry startup behavior consistent with the user's requested unsafe defaults.
+- Tested: `python -m unittest discover -s tests -q` — 181 passed on Windows, including Tk, argument-order precedence, enabled/disabled controls, handler write/input rejection, startup without automatic process access, and launcher delegation. `git diff --check` passed. Actual Tk connection/poll checks on running Project64 and Goemon64Recompiled both succeeded in ordinary and read-only modes: default handle writable/UNSAFE true, override handle read-only/UNSAFE false even with `--enable-hex-edit`. Instrumented WindowsProcess.write recorded zero calls in all four live checks. Project64 map 465 and recomp map 361 had valid player coordinates. Only connectivity/default behavior was tested live; no game memory writes or game-input actions were exercised.
+- Limitations: no new Windows executable was built or published; existing packaged copies need rebuilding. Project64 editing/warps/restore behavior is still unverified. Portable C is unchanged and was not rebuilt. Checkpoint semantics, action confirmations and existing address/write validation are retained.
+- Next: implement phase 2/3 repeated persistent-event sessions with idle/control captures and bit-level evidence aggregation, then request labelled gameplay actions from the user.
+
 ## Mandatory change-log template
 
 ```markdown
