@@ -1,0 +1,1606 @@
+{
+  "format": "goemon-batch-report-v1",
+  "baseline": {
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038"
+  },
+  "verified_reference": {
+    "upstream_c": 13,
+    "newly_verified": 74,
+    "identified": 7376,
+    "indexed_asm": 7363
+  },
+  "recipe": "0302e31f6085cd504adbda5c73a02ad910f9663294832a0639434e27645bcfd6",
+  "recipe_evidence": {
+    "context_sha256": "337d5c7aa7e950e5b5c447149b4a87dd3c0f09098230fc7ab5d3b901efd7a424",
+    "source_hashes": {
+      "batch.py": "b08aa174d6b1bcc5bcee157c28ce2aec18df381f9116693fddc2b7e8ed4ffd38",
+      "probe.py": "ad5f232e6bfc3b4cf423b69808702f2efac46b5398c50ccd01abc03133fd9630"
+    },
+    "m2c_pin": "a21c1dcd7255b176c032bb932f521846e98d4372",
+    "python_version": "Python 3.12.16",
+    "seconds": 10.0,
+    "search_seconds": 2.0,
+    "ido_toolchain_sha256": "8ca550d30c1fef7c14b1470a1ef93cc6d415a507c6e18c04a7bfeaf8016a7b89"
+  },
+  "runs": [
+    {
+      "recipe": "0302e31f6085cd504adbda5c73a02ad910f9663294832a0639434e27645bcfd6",
+      "started": "2026-11-02T21:26:16.690245+00:00",
+      "ended": "2026-11-02T21:26:31.673088+00:00",
+      "configuration": {
+        "limit": 100,
+        "max_size": 128,
+        "workers": 2,
+        "seconds": 10.0,
+        "search_seconds": 2.0,
+        "scope": "generated",
+        "region": "main",
+        "retry": false,
+        "max_attempts": 1
+      },
+      "selected": 100,
+      "elapsed": 14.983
+    },
+    {
+      "recipe": "0302e31f6085cd504adbda5c73a02ad910f9663294832a0639434e27645bcfd6",
+      "started": "2026-11-02T22:35:15.331702+00:00",
+      "ended": "2026-11-02T22:35:46.993641+00:00",
+      "configuration": {
+        "limit": 200,
+        "max_size": 256,
+        "workers": 2,
+        "seconds": 10.0,
+        "search_seconds": 2.0,
+        "scope": "generated",
+        "region": "main",
+        "retry": false,
+        "max_attempts": 1
+      },
+      "selected": 200,
+      "elapsed": 31.662
+    }
+  ],
+  "deferred_candidates": [
+    {
+      "name": "func_800012FC_1EFC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80001614_2214",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80001928_2528",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80001980_2580",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800019C0_25C0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80001A00_2600",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80001D68_2968",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80001D94_2994",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80001DC0_29C0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80001FE8_2BE8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80002A98_3698",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80002D94_3994",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80002EFC_3AFC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003328_3F28",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003358_3F58",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003380_3F80",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800033B0_3FB0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800033EC_3FEC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003428_4028",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003478_4078",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800034D0_40D0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003528_4128",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003578_4178",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800035D0_41D0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003628_4228",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003678_4278",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800036D0_42D0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000378C_438C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800037E4_43E4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000383C_443C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003D88_4988",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80003DC0_49C0",
+      "status": "mismatch",
+      "reason": "code_size"
+    },
+    {
+      "name": "func_80004058_4C58",
+      "status": "mismatch",
+      "reason": "code_size"
+    },
+    {
+      "name": "func_800040A8_4CA8",
+      "status": "mismatch",
+      "reason": "mismatch"
+    },
+    {
+      "name": "func_80004240_4E40",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8000427C_4E7C",
+      "status": "compile_failed",
+      "reason": "compile_failed"
+    },
+    {
+      "name": "func_800042AC_4EAC",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800042F4_4EF4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80004910_5510",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80005A20_6620",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80005FDC_6BDC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000607C_6C7C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80006220_6E20",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80006274_6E74",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80006F3C_7B3C",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80007500_8100",
+      "status": "mismatch",
+      "reason": "code_size"
+    },
+    {
+      "name": "func_8000777C_837C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80007970_8570",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80007B3C_873C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80007B5C_875C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80007DA8_89A8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80007E00_8A00",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80007E28_8A28",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80007E5C_8A5C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80007EA0_8AA0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800084F4_90F4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80008650_9250",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80008690_9290",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800086A8_92A8",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800086C4_92C4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800086D8_92D8",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80008798_9398",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000A0F0_ACF0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000A18C_AD8C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000A344_AF44",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000A430_B030",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000A4F8_B0F8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000A5C4_B1C4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000AAE8_B6E8",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8000AB10_B710",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000AB30_B730",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000B4A0_C0A0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000B4DC_C0DC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000B578_C178",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000B5BC_C1BC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C3A0_CFA0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C3EC_CFEC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C430_D030",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C454_D054",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C488_D088",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C4C8_D0C8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C4FC_D0FC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C53C_D13C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C560_D160",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C568_D168",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C570_D170",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C5A4_D1A4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C5E4_D1E4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C60C_D20C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C640_D240",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C680_D280",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C838_D438",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000C8D0_D4D0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000D3B8_DFB8",
+      "status": "mismatch",
+      "reason": "mismatch"
+    },
+    {
+      "name": "func_8000DB38_E738",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000DB78_E778",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000DBC0_E7C0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000DBCC_E7CC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000DBD8_E7D8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000DD04_E904",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8000DDC0_E9C0",
+      "status": "compile_failed",
+      "reason": "compile_failed"
+    },
+    {
+      "name": "func_8000E160_ED60",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000E23C_EE3C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000E9B0_F5B0",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8000E9F4_F5F4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8000EA34_F634",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8000EA74_F674",
+      "status": "mismatch",
+      "reason": "mismatch"
+    },
+    {
+      "name": "func_8000EB08_F708",
+      "status": "mismatch",
+      "reason": "mismatch"
+    },
+    {
+      "name": "func_8000ECB4_F8B4",
+      "status": "mismatch",
+      "reason": "mismatch"
+    },
+    {
+      "name": "func_8000ED5C_F95C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000EDB0_F9B0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000F240_FE40",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000F3D8_FFD8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000F420_10020",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000F6E8_102E8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000FBA8_107A8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000FC54_10854",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8000FDD4_109D4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80010180_10D80",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800102E0_10EE0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80010318_10F18",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80010358_10F58",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800106B0_112B0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800108BC_114BC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800115B8_121B8",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800115E0_121E0",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800115F8_121F8",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80011610_12210",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800116AC_122AC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80011734_12334",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80011908_12508",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80011934_12534",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80011968_12568",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8001198C_1258C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80011B60_12760",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80011BB4_127B4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80011C04_12804",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80011C58_12858",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80012470_13070",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800124A0_130A0",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800124AC_130AC",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80012500_13100",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800125D0_131D0",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800125F0_131F0",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80012764_13364",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800127B8_133B8",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800127E8_133E8",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800127FC_133FC",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80012818_13418",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80012848_13448",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8001285C_1345C",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80012900_13500",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80012938_13538",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800133D4_13FD4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800133E0_13FE0",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80013508_14108",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800166AC_172AC",
+      "status": "compile_failed",
+      "reason": "compile_failed"
+    },
+    {
+      "name": "func_8001965C_1A25C",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800196A4_1A2A4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8001B6A4_1C2A4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8001B918_1C518",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8001C970_1D570",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8001C9BC_1D5BC",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8001C9D8_1D5D8",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8001F914_20514",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8001FA3C_2063C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800206D4_212D4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800206FC_212FC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80020724_21324",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80020964_21564",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800237F0_243F0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80023840_24440",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80023880_24480",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80023D80_24980",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80023DC4_249C4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80024670_25270",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80024848_25448",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80024888_25488",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800273D4_27FD4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8002A718_2B318",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80033D10_34910",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80034710_35310",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034B24_35724",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034C4C_3584C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034C84_35884",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034DD8_359D8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034E08_35A08",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034E38_35A38",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034E68_35A68",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034E98_35A98",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034ED4_35AD4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034EF8_35AF8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80034F20_35B20",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035020_35C20",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035044_35C44",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035064_35C64",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035094_35C94",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035194_35D94",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800351B4_35DB4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035204_35E04",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80035214_35E14",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003521C_35E1C",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003522C_35E2C",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80035234_35E34",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80035244_35E44",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800352AC_35EAC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800352EC_35EEC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035314_35F14",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035344_35F44",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035384_35F84",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80035398_35F98",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800353A4_35FA4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800353B4_35FB4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800353BC_35FBC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800353F8_35FF8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035430_36030",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003546C_3606C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035490_36090",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800354B4_360B4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80035B50_36750",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800362DC_36EDC",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_800363F4_36FF4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003674C_3734C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80036798_37398",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800367E4_373E4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80036840_37440",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80036908_37508",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800369B4_375B4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800369F0_375F0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80036D0C_3790C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80036E2C_37A2C",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_80037090_37C90",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800370B0_37CB0",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800372E8_37EE8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800373DC_37FDC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80037414_38014",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80037448_38048",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80037470_38070",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800374AC_380AC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003767C_3827C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80037B10_38710",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80037B54_38754",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80037C0C_3880C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80037C9C_3889C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_800383C4_38FC4",
+      "status": "mismatch",
+      "reason": "code_size"
+    },
+    {
+      "name": "func_80038588_39188",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80038B98_39798",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80038BC8_397C8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80038BF8_397F8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80038D14_39914",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_80038D3C_3993C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003A1E8_3ADE8",
+      "status": "mismatch",
+      "reason": "code_size"
+    },
+    {
+      "name": "func_8003B2B4_3BEB4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003B304_3BF04",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003B348_3BF48",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003B410_3C010",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003B79C_3C39C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003B7E4_3C3E4",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003B80C_3C40C",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003BCAC_3C8AC",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    },
+    {
+      "name": "func_8003BED4_3CAD4",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003BF08_3CB08",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003C47C_3D07C",
+      "status": "mismatch",
+      "reason": "code_size"
+    },
+    {
+      "name": "func_8003C820_3D420",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003C934_3D534",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003CA30_3D630",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003CB2C_3D72C",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003CB48_3D748",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003CB64_3D764",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003CCCC_3D8CC",
+      "status": "needs_context",
+      "reason": "untyped_structure"
+    },
+    {
+      "name": "func_8003F350_3FF50",
+      "status": "compile_failed",
+      "reason": "compile_failed"
+    },
+    {
+      "name": "func_8003F6E8_402E8",
+      "status": "needs_context",
+      "reason": "unknown_type"
+    }
+  ],
+  "latest_attempts": 300,
+  "statuses": {
+    "needs_context": 257,
+    "mismatch": 11,
+    "compile_failed": 4,
+    "linked_match": 28
+  },
+  "linked_probe_matches": [
+    {
+      "name": "func_8000631C_6F1C",
+      "size": 40,
+      "source_sha256": "3e63d1b6ce67d0b263226284d5ab59335b1325532c578a0513f87ae75a00c878",
+      "code_sha256": "2ac168349e617f76bb5bae2bed7a3718b51633a314ec7414e980c5f144844403"
+    },
+    {
+      "name": "func_80006430_7030",
+      "size": 12,
+      "source_sha256": "e3145d773cf69a8e32946857a595af3bdf2d6ae7782ad4d536001db92565535d",
+      "code_sha256": "f17ff1f662f4c4910e8dcdcd131b4f66d2e3809a132aeab94a8004e8ef6d5cc4"
+    },
+    {
+      "name": "func_80007014_7C14",
+      "size": 8,
+      "source_sha256": "28a5cd11a26c766e9a1487cd1a54e006c3e597d15bbfcbbdc93f8d9b76d01706",
+      "code_sha256": "d82c49368eef6b8ec668ea667cb0a950e97a442870973cd6baf8b3e57bcda040"
+    },
+    {
+      "name": "func_8000701C_7C1C",
+      "size": 8,
+      "source_sha256": "4bd55a8040d7310bd3cd6b9b3e16cceeb1ecc3ebf1ba32554844fd8a839d0cb7",
+      "code_sha256": "ad91db42a1330a1195b62caea28da35e9d8b2534680d6005f6976c1fbf9c52f8"
+    },
+    {
+      "name": "func_80007024_7C24",
+      "size": 8,
+      "source_sha256": "e2b718724336666fd69aaba203f74a31f2e4746ce495f22a5943172907ed0062",
+      "code_sha256": "7f6b66cee6742d91fcff04bbbed4ed0df0f907e0419b675bf74976aeeaf58e68"
+    },
+    {
+      "name": "func_8000E28C_EE8C",
+      "size": 72,
+      "source_sha256": "e02aaa38471e0ee35ab9220ab259d09ee3f0925322a7d559fffa930ad68545d9",
+      "code_sha256": "7845fee09516aead2222a42d43c21fe4a39119052c9586ea60ee0cd1b346c5cf"
+    },
+    {
+      "name": "func_8000EABC_F6BC",
+      "size": 76,
+      "source_sha256": "42760cdd68908eddc8a128ca8d8fb7946dfffefd5a053dbdae2749119707731d",
+      "code_sha256": "2e36ce57a618c59e4db7a2488b31716897d15a226670ae9385e1368d6069d65d"
+    },
+    {
+      "name": "func_8001018C_10D8C",
+      "size": 32,
+      "source_sha256": "bc130414aa44e3ca32cc21eafe4789495d0b5f5a8fdecac8f49ec55e54573434",
+      "code_sha256": "ab5308302557648ef39f94f7e32d8743087658e0b435912bcfadcc6548ede7fd"
+    },
+    {
+      "name": "func_80010980_11580",
+      "size": 36,
+      "source_sha256": "dd7cdced558424dd960560d6ad0581d9b7ff206012adfcf77928b0e19d3435ca",
+      "code_sha256": "ff31889582c04e64507f9ca2e98f80d31137332da2edc166c8275148a41cc530"
+    },
+    {
+      "name": "func_80011B58_12758",
+      "size": 8,
+      "source_sha256": "d1376dc062faf2d746fe0d7adb0f0c2a2d4d5dc5025184d3c0a1237ae8bd4a5e",
+      "code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054"
+    },
+    {
+      "name": "func_80016660_17260",
+      "size": 36,
+      "source_sha256": "b8309b96f8a9571f99af176e0fc24057e5c8e655ff95afc4796f8601391b5685",
+      "code_sha256": "bb71970d086b3a994f2e7f7c27956f75f04cb9f48b9c7ebc15307f7b26d78f50"
+    },
+    {
+      "name": "func_80016684_17284",
+      "size": 40,
+      "source_sha256": "019250a8bad8d686f4275beddabc27e0976f0696530d5fce036dc4c705fbfb69",
+      "code_sha256": "f3cbade457655738682d37b11e2fe997b6ca772ac7b7e1e1c77b84183351614c"
+    },
+    {
+      "name": "func_8001F878_20478",
+      "size": 56,
+      "source_sha256": "5db2d983b1fb06d1e31c12ca33c9471e9e180d0322e3c6271dd97f9dcba4dff7",
+      "code_sha256": "0340c73abc01e154f93a5dd550b73594a000c588f361751713376b59714b2ca6"
+    },
+    {
+      "name": "func_8002338C_23F8C",
+      "size": 8,
+      "source_sha256": "f360c386184cdc173fbdd72a3f23d15fedc3b649ae71d69a9ba6e8390dcb180a",
+      "code_sha256": "87506497337c503078b658b916ef9eb4961eb62b06349fd8ecf2dbe4e451e4e7"
+    },
+    {
+      "name": "func_80029E08_2AA08",
+      "size": 80,
+      "source_sha256": "834cca161ca691b19aa01010ef2be7a3ac7b6ed021dab8087c2eec0604fad5b7",
+      "code_sha256": "30d3a82995b28e5fb10a97f908626d3657bffbbf8ffcf4c5d7f825bf0b97f270"
+    },
+    {
+      "name": "func_80035D84_36984",
+      "size": 8,
+      "source_sha256": "fbfe1edb5fdbb318976ac1f3d972550dea093592bcbf58c1c09c5a2ba21d2737",
+      "code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+    },
+    {
+      "name": "func_80037060_37C60",
+      "size": 16,
+      "source_sha256": "6ab1f84264ad90fdb4b084e3c1b2c36cab9bf38a57b16c594cf412cac84b47b7",
+      "code_sha256": "b87fee1dc2f5b1cf10ef26654aab286149e5dd0d3850eef6ca2b599f6983b017"
+    },
+    {
+      "name": "func_80037070_37C70",
+      "size": 16,
+      "source_sha256": "b1277ea14a4cd7ea81dc010ae0cc0322d593c911192f092755c7de3ad9767152",
+      "code_sha256": "7d733f96e722a9aa8f29ae2c5ccae1f5e467d9b787c46fc6fe12d1aab06a4d15"
+    },
+    {
+      "name": "func_80037080_37C80",
+      "size": 16,
+      "source_sha256": "73f0d6c744974f9d38dfe77985626913091c08528150770e7a964321dbcd9346",
+      "code_sha256": "b1b6bc2d496e58b79de957b4507aa4b891a76abbed72a4bfd4265a78a55c22e5"
+    },
+    {
+      "name": "func_80037DB0_389B0",
+      "size": 8,
+      "source_sha256": "e8dc199cb12c71bed8969b1ba42ddfdee5c7cd004f2bcf30787f40fb84ac26d7",
+      "code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+    },
+    {
+      "name": "func_80038D64_39964",
+      "size": 48,
+      "source_sha256": "42e83b42ec5f60e760903f33e10cf984551d83e1961c701653f3a4f652b69f60",
+      "code_sha256": "97c9e1a8efc431b035a98a3bb4fdaff3720ba50ec6c3ae7fec05b0aec0d60835"
+    },
+    {
+      "name": "func_80039F3C_3AB3C",
+      "size": 36,
+      "source_sha256": "726ab4e0dbb7b7fa6fc8cb479d813acfed0f4f91dfe927226913d6d07310d08f",
+      "code_sha256": "ea57cc05632b3b524c0055195318b4ea1404d606b148f584fbcafd87ed7719e1"
+    },
+    {
+      "name": "func_80039F60_3AB60",
+      "size": 36,
+      "source_sha256": "92451dc7a1487cb94f850485a34e08d7f0696ef2800165bf0787abf5db32a41e",
+      "code_sha256": "d9e32b274b07aa02df8dc36cc2f73e1f053c47464d74e6b1d6a31fae7620ba62"
+    },
+    {
+      "name": "func_8003A1C4_3ADC4",
+      "size": 36,
+      "source_sha256": "b8ea73b828ab0030ee06d38ffdd5193fdcc6750d7f43a15e0f60a114ebf54807",
+      "code_sha256": "7470196fdd2d2d99309e4709c237493c06d732d8357211b00890165915c40691"
+    },
+    {
+      "name": "func_8003A204_3AE04",
+      "size": 36,
+      "source_sha256": "dc873958dc75b6777515e315d4bc62f6f8f9a279fd70a1756226bc8baa0047d1",
+      "code_sha256": "378fa47f6d321e8fd2a46ada1eab3574d32b9858e12b99dd159b9a18aeadca23"
+    },
+    {
+      "name": "func_8003A228_3AE28",
+      "size": 36,
+      "source_sha256": "9592c45cec3e134cc1d39babfa266e79629546be8b41ecda31c2a086a03f85a5",
+      "code_sha256": "36770e11f110679f941a31ed14d8f00924bde37faa6811830d575fc5410b47ec"
+    },
+    {
+      "name": "func_80047850_48450",
+      "size": 8,
+      "source_sha256": "a85d5882d3ed184a06a481fe91ffbd20780d0c169fc2bd8dc717008f98d3d5c2",
+      "code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+    },
+    {
+      "name": "func_80047990_48590",
+      "size": 8,
+      "source_sha256": "686d39a1ed359e2c8c528e4e16278968459377a1d1a1cf27dfd4133ae49de76b",
+      "code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+    }
+  ],
+  "linked_probe_bytes": 828,
+  "newly_verified_full_rom_functions": 0
+}

@@ -207,7 +207,7 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         validation=json.loads((ROOT/'results/batch_validation.json').read_text())
         for name,expected in validation['pipeline_sources_sha256_lf'].items():
             self.assertEqual(hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),expected,name)
-        for name in ('batch_pilot.json','batch_search_pilot.json'):
+        for name in ('batch_pilot.json','batch_search_pilot.json','batch_entrance_followup.json'):
             result=json.loads((ROOT/'results'/name).read_text())
             self.assertEqual(result['newly_verified_full_rom_functions'],0)
             self.assertEqual(sum(result['statuses'].values()),result['latest_attempts'])

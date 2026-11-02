@@ -55,6 +55,15 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 ## Change entries
 
 
+### 2026-11-02 — Continued static decomp batch after entrance-warp tooling
+
+- Changed: resumed the persistent batch recipe for 200 additional eligible main-segment functions up to 256 bytes, using two local workers, ten-second total per-function budgets and two-second bounded searches. Saved sanitized metadata as `decomp/results/batch_entrance_followup.json` and exported the validated local review bundle without committing generated C/assembly/objects. Added explicit ignore entries for per-user bookmarks/checkpoints after copying existing local data non-destructively into the new workspace.
+- Results: 200 new attempts completed in 31.662 seconds. Six additional exact linked probes (372 code bytes) bring this recipe to 28 candidates / 828 bytes across 300 attempts; 257 need context, 11 remain mismatches and four failed compilation. Earlier results and artifacts were retained. Probe matches remain review-only: native verified C stays 74 functions / 5,564 bytes, overall inventory stays 87 matching C entries and 7,289 assembly entries.
+- Tested: each successful candidate passed actual IDO compilation, original-symbol relocation and exact code size/entry/byte comparison. Export revalidated candidate source/ELF hashes and baseline code before producing the 28-file local bundle. Metadata totals/source fingerprints were checked by the published-report regression test. Existing full-ROM gate evidence is unchanged because no native C unit was promoted. No live game writes or runtime warp tests were performed, honoring the user's request.
+- Toolkit launch: launched the updated source v0.11.8 toolkit with its atlas and preserved bookmarks/checkpoints/custom watches; observed a responsive native window with the expected title. It was launched disconnected and did not attach to or write a game process. Existing applications were not closed. No executable package was rebuilt.
+- Limitations/next: the six new probes and shared context gaps still require reviewed original-unit integration, semantic coverage and the whole-ROM gate before they can count as reconstructed C. Continue that integration and special entrance-script analysis; live footing/camera validation remains deferred.
+
+
 ### 2026-11-02 — v0.11.8 entrance-aware scene reload and loaded-player placement
 
 - Workspace: created managed `goemon-entrance-warps` on `codex/goemon-entrance-warps` from fetched main `7127f9af7d4939428c3fd78770c339c67ebd7cf5`, then fast-forwarded required discovery/pipeline prerequisites through `aaa5809058ed827130ec5c1bd587d288c85baa48`. Initial state was clean; existing workspaces, user data and research were preserved.

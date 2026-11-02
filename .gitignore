@@ -65,3 +65,7 @@ decomp/local/
 
 # ROM-derived per-user entrance atlas
 practice/entrances.json
+
+# Per-user position bookmarks and logical checkpoints
+practice/bookmarks.json
+practice/checkpoints.json
