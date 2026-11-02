@@ -63,11 +63,14 @@ class EventSessionTests(unittest.TestCase):
         with patch.object(self.ram,'read_guest',side_effect=partial):
             with self.assertRaisesRegex(OSError,'Incomplete'):capture_event(self.ram)
 
-    def test_context_transition_cutscene_and_changed_trial_are_rejected(self):
+    def test_context_changes_between_captures_allowed_but_mid_capture_and_scripts_rejected(self):
         caps=self.trial(0,1)
         for key in ('map_id','character','player_ptr','task_ptr'):
             changed=copy.deepcopy(caps);changed['B']['context'][key]+=1
-            with self.assertRaises(ValueError):with_trial(new_session('Talk','recomp'),'event','',changed)
+            session=with_trial(new_session('Talk','recomp'),'event','',changed)
+            report=rank_bits(session)
+            self.assertEqual(report['context_changes'][session['trials'][0]['id']],[key])
+            self.assertEqual(report['candidates'][0]['mask'],'01')
         self.ram.write_guest(0x80077858,b'\x01')
         with self.assertRaisesRegex(ValueError,'scripts'):capture_event(self.ram)
         self.ram.write_guest(0x80077858,b'\x00')
@@ -88,7 +91,9 @@ class EventSessionTests(unittest.TestCase):
         self.assertNotEqual(recorded['trials'][0]['captures']['A']['context']['map_id'],99)
         changed=self.trial(0,1)
         for capture in changed.values():capture['context']['map_id']=99
-        with self.assertRaisesRegex(ValueError,'separate session'):with_trial(recorded,'event','',changed)
+        recorded=with_trial(recorded,'event','another source map',changed)
+        self.assertEqual(len(recorded['trials']),2)
+        self.assertEqual(rank_bits(recorded)['candidates'][0]['support'],[t['id'] for t in recorded['trials']])
 
     def test_atomic_roundtrip_unknown_schema_and_failed_save(self):
         session=with_trial(new_session('Talk','project64'),'idle','',self.trial(0,0))
@@ -115,3 +120,16 @@ class EventSessionTests(unittest.TestCase):
             elif mutation=='encoding':bad['trials'][0]['captures']['A']['bytes_hex']='00'
             else:bad['trials'][0]['role']='guess'
             with self.assertRaises(ValueError):validate_session(bad)
+
+    def test_cross_room_trial_context_roundtrip_and_invalid_context_rejection(self):
+        caps=self.trial(0,0x10,0)
+        caps['B']['context'].update(map_id=99,character=1,player_ptr=0x801B0000,task_ptr=0x801B0100)
+        session=with_trial(new_session('Post-boss chat','recomp'),'event','room transition',caps)
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'trial.json';save_session(path,session)
+            self.assertEqual(load_session(path),session)
+        report=rank_bits(session)
+        self.assertEqual(len(report['context_changes'][session['trials'][0]['id']]),4)
+        self.assertEqual(report['candidates'][0]['reverted'],[session['trials'][0]['id']])
+        bad=copy.deepcopy(session);bad['trials'][0]['captures']['B']['context']['player_ptr']=0
+        with self.assertRaisesRegex(ValueError,'player_ptr'):validate_session(bad)

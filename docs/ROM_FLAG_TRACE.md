@@ -189,3 +189,12 @@ Next: name a fresh session for Congo; check the bits before/after the fight and
 after room re-entry/save reload. On a disposable pre-fight state, test each bit
 independently while preserving other bits, observing boss spawn, cutscene,
 room exits and reward separately. No automated game edits were performed.
+
+### Congo timing correction
+
+The user subsequently reports that `0x8015C61C & 0x10` sets on **collecting the
+Miracle Moon after defeating Congo**, rather than at boss defeat itself. Story
+progress now labels it Congo Miracle Moon collected, with user-reported evidence
+and no claim of independent reproduction. `0x8015C62E & 0x04` remains a tentative
+encounter-state hypothesis. Post-fight NPC dialogue can move the player to another
+map and change flags; Event sessions now supports these A/B context transitions.

@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-02 - v0.11.10: cross-room event captures and Congo timing correction
+
+- Changed: corrected ID 0x0A4 / 0x8015C61C mask 0x10 to Congo Miracle Moon collected, following the user's observation that it sets upon reward collection after the fight. This remains user-reported evidence, not independent reproduction; 0x8015C62E mask 0x04 remains tentative.
+- Changed: allow map/character/player/task context differences between A/B/C and repeated trials for the fixed global saved-event bank. Preserve all original context and timestamps; rank reports expose context-changing trial IDs/fields; pending A/B feedback and row evidence show exact stage contexts; summary counts affected trials. No opt-in needed. Existing v1 sessions remain compatible.
+- Reason: post-boss NPC dialogue moves the player to another map while setting progression. Equal context between captures incorrectly prevented recording those changes. Retained stability checks inside each individual capture, script/loading guards, bounded reads, input validation/time ordering, backend/connection identity and fresh-A-on-reconnect rules. Room changes do not filter flag evidence or prove causality.
+- Tests: 29 focused Python event model/UI and story model/UI tests passed. Coverage includes independent map/character/pointer changes, cross-room A/B/C ranking/reversion, file roundtrip, invalid pointers, mid-read transitions, scripts, reconnect rejection and read-only UI capture through changed context. Full Python suite: 289 tests, 286 passed, 3 native-build checks skipped on Windows. No live writes, warps or in-game quest verification.
+- Limitations/next: capture A before the NPC chat and B after destination gameplay stabilizes; use a transition-only control where possible because room changes may set unrelated flags. Keep distinct events in separately named sessions. Existing running windows require the new v0.11.10 instance; unsaved captures must be retained in older windows until recorded/discarded by the user.
+
 ## 2026-11-02 - tentative Congo flags from user event capture
 
 - Changed: added read-only Story progress candidates for Congo defeat (ID 0x0A4, 0x8015C61C mask 0x10 set) and encounter state (ID 0x132, 0x8015C62E mask 0x04 clear). Expanded saved-event sampling from 16 to all 100 bytes so the new offsets decode safely. Labels/evidence explicitly retain uncertainty; no game write behavior changed.

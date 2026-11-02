@@ -7,7 +7,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 
 from practice.event_sessions import (new_session,capture_event,with_trial,save_session,
-                                     load_session,rank_bits)
+                                     load_session,rank_bits,changed_context_fields,describe_contexts)
 from practice.checkpoints import GAMEDATA_ADDR, GAMEDATA_LEN, SHADOW_ADDR, STATE_ADDR
 from practice.paths import diagnostics_dir
 
@@ -23,7 +23,7 @@ class EventSessionsMixin:
         self.event_monitor_started=time.monotonic()
         self.root.bind('<Destroy>',self._event_session_destroyed,add='+')
         ttk.Label(tab,text='Repeated persistent-event experiments',font=('Segoe UI Semibold',16)).pack(anchor='w')
-        ttk.Label(tab,text='Read-only capture of 100 event bytes. Keep each experiment on one map/character. '
+        ttk.Label(tab,text='Read-only capture of 100 saved event bytes. Room/character changes between captures are allowed. '
                   'Use idle/control pairs, then repeat the same event from your own pre-event save. '
                   'Clocks, Bank A/B and shadow bytes are outside this range; use State discovery for wider changes. '
                   'No automatic reset, input or memory writes.',wraplength=1080).pack(anchor='w',pady=6)
@@ -83,7 +83,10 @@ class EventSessionsMixin:
         if not changes:
             detail='The 100 saved event bytes are identical. Repeating an already-completed event may change nothing; use State discovery for temporary flags and clocks.'
         self.event_comparison.set(f'Pending A/B: {len(changes)} changed bytes, {bits} changed bits. '+detail+
-                                  ' Record trial to include this pair in analysis.')
+                                  ' Record trial to include this pair in analysis. '
+                                  + ('Context changed: '+', '.join(changed_context_fields(self.event_pending))+'. '
+                                     if changed_context_fields(self.event_pending) else '')
+                                  + describe_contexts(self.event_pending))
 
     def build_save_buffers_tab(self,notebook):
         tab=ttk.Frame(notebook,padding=10)
@@ -246,7 +249,8 @@ class EventSessionsMixin:
         self.event_generation+=1
         generation=self.event_generation
         counts={role:sum(t['role']==role for t in session['trials']) for role in ('event','idle','control')}
-        summary=f'{session["label"]} | {session["backend"]} | ROM identity unverified | Trials: {counts}'
+        changed=sum(bool(changed_context_fields(t['captures'])) for t in session['trials'])
+        summary=f'{session["label"]} | {session["backend"]} | ROM identity unverified | Trials: {counts} | Context-changing trials: {changed}'
         self.event_trial_summary.set(summary+' | Analysing…')
         self.event_table.delete(*self.event_table.get_children())
         self.set_event_evidence('Select a row for trial IDs. No semantic meaning or write safety is established.')
@@ -280,6 +284,6 @@ class EventSessionsMixin:
         if selected:
             row=self.event_rows[int(selected[0])]
             related=set(row['support']+row['opposite']+row['absent']+row['control_overlap'])
-            descriptions='\n'.join(f'{t["id"]}: {t["role"]} — {t["note"]}'
+            descriptions='\n'.join(f'{t["id"]}: {t["role"]} — {t["note"]} | '+describe_contexts(t['captures'])
                                     for t in self.event_session['trials'] if t['id'] in related)
             self.set_event_evidence(json.dumps(row,sort_keys=True)+'\n'+descriptions)

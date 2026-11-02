@@ -19,7 +19,8 @@ toolkit's other unsafe controls are enabled. `--read-only` can be used for resea
    event, capture **B**, then **Record trial**. Add a short note if useful.
 5. Set role to **event**. From the pre-event state capture **A**, perform only the
    chosen action, wait until dialogue/cutscene finishes, capture **B**, then
-   **Record trial**. Stay on the same map and character throughout that pair.
+   **Record trial**. Room/character/pointer changes between A and B are allowed;
+   wait for stable gameplay at each capture, even if the NPC moves you elsewhere.
 6. Restore the same pre-event state yourself and repeat step 5. A fresh A is
    required for each trial. Two independent event trials plus idle evidence are
    the first useful minimum, not a confirmation threshold.
@@ -33,13 +34,19 @@ Reversion is assessed per bit, including partial reversions within one byte.
 Capturing A starts a new pending pair; recapturing B clears an old C. Discard
 captures cancels the pending trial without deleting recorded trials.
 
-The recorder rejects active loading/scripts, incomplete reads, context changes
-during a capture, changed map/character/player pointers within a trial and
-cross-map/character repeats within a session. Reconnecting requires a fresh A.
-Pointer relocation between independent trials is allowed for these global bytes.
-Captures are not atomic: identical before/after context cannot rule out every
-intervening change. If an event changes rooms, this first recorder cannot cover
-it; capture a suitable same-room event or defer it to expanded context support.
+The recorder rejects active loading/scripts, incomplete reads and context changes
+*during one capture*. It now allows different maps, characters and player/task
+pointers *between* A/B/C captures and between trials because the captured data is
+the fixed, global saved-event bank. Reconnecting still requires a fresh A.
+
+A/B feedback shows the source/destination map, character and pointers; the session
+summary counts context-changing trials. Selecting a ranked row shows exact context
+for its associated captures. These changes are provenance, not extra ranked flags.
+A room transition can change unrelated saved flags, so repeat the same event and
+use a comparable transition-only control where possible. Keep separate events in
+separately named sessions, even though context equality no longer blocks recording.
+Existing v1 same-room sessions remain compatible. Captures are not atomic:
+identical before/after context cannot rule out every intervening change.
 
 ## Reading the shortlist
 

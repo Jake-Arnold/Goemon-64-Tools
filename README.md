@@ -1,4 +1,10 @@
-# Goemon Speedrun Tools v0.11.9 - event feedback and saved/shadow inspector
+# Goemon Speedrun Tools v0.11.10 - cross-room event trials
+
+## v0.11.10: cross-room event comparisons
+
+Event sessions now allows map, character and player/task pointers to differ between A/B/C captures. Capture A before post-boss NPC dialogue, finish the transition, then capture B after normal gameplay resumes. Each individual read must remain stable; reconnecting still requires a fresh A. The UI preserves every capture context and counts context-changing trials. No game writes are involved and existing v1 sessions remain readable. [Capture guide](docs/EVENT_SESSIONS.md).
+
+The Congo `0x8015C61C & 0x10` label now records the user's timing correction: **Miracle Moon collected after Congo**, rather than boss defeated. The `0x8015C62E & 0x04` encounter-state meaning remains tentative.
 
 ## v0.11.9: event capture feedback and room labels
 

@@ -45,8 +45,8 @@ CURATED_FLAGS = (
     StoryFlag('mini_recorded','Mini-Ebisu grant recorded',0x031,'ROM reward reader/writer'),
     StoryFlag('snow_recorded','Miracle Snow progression recorded',0x035,'ROM reward reader/writer'),
     StoryFlag('baron','Met Baron in Iga',0x06F,'Existing annotation + ROM set-pattern lead'),
-    StoryFlag('congo_defeat_candidate','Congo defeated? (candidate)',0x0A4,
-              'User A/B: mask 0x10 set after reported Congo event; one event trial, no controls/reload test; semantics unconfirmed'),
+    StoryFlag('congo_moon_collected','Congo Miracle Moon collected',0x0A4,
+              'User reports mask 0x10 sets when collecting the Miracle Moon after Congo, not at boss defeat; not independently reproduced'),
     StoryFlag('congo_state_candidate','Congo encounter state? (candidate)',0x132,
               'User A/B: mask 0x04 cleared during same event; cutscene/actor/room hypothesis, not confirmed'),
 )

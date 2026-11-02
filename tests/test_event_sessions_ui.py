@@ -123,3 +123,20 @@ class EventSessionUITests(unittest.TestCase):
         app.record_event_trial();self.wait_rank()
         self.assertEqual(app.event_rows,[])
         self.assertIn('Capture A',app.event_comparison.get())
+
+    def test_cross_room_capture_record_and_evidence_preserve_context(self):
+        from practice.checkpoints import MAP_ADDR
+        app=self.app;app.new_event_session();app.capture_event_stage('A')
+        original=app.mem.snapshot
+        app.mem.write_guest(MAP_ADDR,(99).to_bytes(2,'big'))
+        app.mem.write_guest(EVENT_START,b'\x10')
+        state=original();state.update(character=1,player_ptr=0x801B0000,task_ptr=0x801B0100)
+        with patch.object(app.mem,'snapshot',return_value=state),patch.object(self.process,'write',side_effect=AssertionError('No writes')):
+            app.capture_event_stage('B');app.record_event_trial();self.wait_rank()
+        self.assertEqual(len(app.event_session['trials']),1)
+        self.assertIn('Context-changing trials: 1',app.event_trial_summary.get())
+        app.event_table.selection_set('0');app.show_event_evidence()
+        text=app.event_evidence.get('1.0','end')
+        self.assertIn('B: map 99, character 1',text)
+        self.assertIn('player 0x801B0000',text)
+        self.assertIn('task 0x801B0100',text)

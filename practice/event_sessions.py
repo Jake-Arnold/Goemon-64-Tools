@@ -83,7 +83,7 @@ def validate_session(session):
             raise ValueError('Session timestamp requires timezone')
         trials=session['trials']
         if not isinstance(trials,list) or len(trials)>MAX_TRIALS:raise ValueError('Too many/invalid trials')
-        ids=set(); expected=None
+        ids=set()
         for trial in trials:
             if not isinstance(trial,dict) or not re.fullmatch('[0-9a-f]{32}',trial['id']) or trial['id'] in ids:
                 raise ValueError('Invalid/duplicate trial ID')
@@ -93,22 +93,33 @@ def validate_session(session):
             captures=trial['captures']
             if not isinstance(captures,dict) or set(captures) not in ({'A','B'},{'A','B','C'}):
                 raise ValueError('Trials need A/B and optional C')
-            contexts=[]
             for capture in captures.values():
-                _validate_capture(capture); contexts.append(capture['context'])
-            if any(c!=contexts[0] for c in contexts):
-                raise ValueError('Map, character or player pointers differ within trial')
+                _validate_capture(capture)
             ordered=[captures[key] for key in ('A','B','C') if key in captures]
             if any(datetime.fromisoformat(a['ended_utc'])>datetime.fromisoformat(b['started_utc'])
                    for a,b in zip(ordered,ordered[1:])):
                 raise ValueError('Capture stages are out of time order')
-            context=(contexts[0]['map_id'],contexts[0]['character'])
-            if expected is not None and context!=expected:
-                raise ValueError('Use a separate session for another map/character')
-            expected=context
         return session
     except (KeyError,TypeError,AttributeError,OverflowError) as exc:
         raise ValueError('Malformed event session') from exc
+
+
+def changed_context_fields(captures):
+    """Context is provenance for global flags, not a requirement across captures."""
+    contexts=[captures[key]['context'] for key in ('A','B','C') if key in captures]
+    if not contexts:return []
+    return [key for key in ('map_id','character','player_ptr','task_ptr')
+            if any(context[key]!=contexts[0][key] for context in contexts[1:])]
+
+
+def describe_contexts(captures):
+    parts=[]
+    for stage in ('A','B','C'):
+        if stage not in captures:continue
+        ctx=captures[stage]['context']
+        parts.append(f'{stage}: map {ctx["map_id"]}, character {ctx["character"]}, '
+                     f'player 0x{ctx["player_ptr"]:08X}, task 0x{ctx["task_ptr"]:08X}')
+    return '; '.join(parts)
 
 
 def with_trial(session,role,note,captures):
@@ -174,6 +185,10 @@ def rank_bits(session):
                             -len(r['support']),int(r['address'],16),int(r['mask'],16),r['direction']))
     return dict(format='goemon-event-ranking-v1',session_id=session['id'],
                 rom_identity_verified=False,rom_sha1=session['rom_sha1'],candidates=rows,
+                context_changes={t['id']:changed_context_fields(t['captures']) for t in session['trials']
+                                 if changed_context_fields(t['captures'])},
                 notes='Observations only. ROM hash is user-supplied, not verified against the running game. '
                       'Captures are not atomic; matching context cannot detect all in-frame transitions. '
+                      'Room/character/pointer changes between captures are retained as context, not filtered. '
+                      'Room transitions may change unrelated global flags. '
                       'A changed bit is not a proven event trigger or write-safe flag.')

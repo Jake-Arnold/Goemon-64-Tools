@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.9 — external Windows UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.10 — external Windows UI for US Goemon.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -88,7 +88,7 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.9 · USA N64")
+        root.title("Goemon Practice Toolkit v0.11.10 · USA N64")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -126,7 +126,7 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.9  |  US Goemon · Recomp / Project64',
+        ttk.Label(header, text='v0.11.10  |  US Goemon · Recomp / Project64',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
