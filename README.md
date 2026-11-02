@@ -1,4 +1,14 @@
-# Goemon Speedrun Tools v0.11.8 — entrance-aware scene placement
+# Goemon Speedrun Tools v0.11.9 - event feedback and saved/shadow inspector
+
+## v0.11.9: event capture feedback and room labels
+
+The completed Native menu calibration, Character cursor scan and Checkpoint compare tabs have been removed. Existing calibration profiles still support native-menu warps; checkpoints remain available on Dashboard. Older scanner instructions below are historical.
+
+Event sessions now shows a UI clock, time since Capture A, and the native game-loop counter. Capturing B immediately reports raw changed bytes/bits, regardless of trial role. **Record trial** updates the ranked list; idle/control trials supply noise evidence and do not create candidates. Identical A/B values are explicitly reported.
+
+Event sessions deliberately captures only the 100 saved event bytes at `0x8015C608..0x8015C66B`. It excludes clocks, temporary Bank A/B flags and the shadow buffer. Use **State discovery**, focused scope, for the system clock and saved/shadow regions; use wide scope for temporary Bank A/B flags. The new **Saved / shadow** tab displays all 772 bytes at `0x8015C608` and `0x8015C910`, with addresses and XOR differences. It refreshes while selected, clears on disconnect/read failure, and makes no game writes. Its two sequential reads are observations, not an atomic capture or proof of persistence to disk.
+
+The entrance atlas had exposed 153 valid rooms missing from the old name catalog. Another 125 now have descriptive labels from [mn64rando's pinned room index](https://github.com/abyssonym/mn64rando/blob/9c580d03fe89354f79c3c83ba2e1bcf192f32577/tables/room_indexes.txt). Existing names are retained; 28 atlas rooms still show “Unidentified room” with their native menu index. Labels do not establish safe spawn coordinates or make unused rooms playable.
 
 The Scene browser now loads entrance coordinates from your original USA ROM,
 stages XYZ/heading before experimental reloads and checks the loaded player before

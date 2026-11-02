@@ -75,3 +75,51 @@ class EventSessionUITests(unittest.TestCase):
             app.event_generation+=1
             release.set();self.root.update()
         self.assertEqual(app.event_rows,[])
+
+    def test_removed_tabs_and_saved_shadow_visibility(self):
+        app=self.app
+        tabs={app.notebook.tab(tab,'text') for tab in app.notebook.tabs()}
+        self.assertTrue({'Saved / shadow','Event sessions'}<=tabs)
+        self.assertFalse({'Native menu calibration','Checkpoint compare','Character cursor scan'}&tabs)
+        app.refresh_checkpoint_options();app.refresh_checkpoint_diff(force=True)
+        app.refresh_native_watch(time.monotonic())
+        from practice.checkpoints import SHADOW_ADDR,GAMEDATA_LEN
+        app.mem.write_guest(SHADOW_ADDR,bytes(GAMEDATA_LEN))
+        app.mem.write_guest(SHADOW_ADDR+771,b'\x80')
+        with patch.object(self.process,'write',side_effect=AssertionError('No writes')):
+            app.refresh_save_buffers()
+        rows=app.save_buffers_tree.get_children()
+        self.assertEqual(len(rows),49)
+        self.assertEqual(app.save_buffers_tree.item('768','values')[4],'00 00 00 80')
+        app.mem=None;app.refresh_save_buffers()
+        self.assertEqual(app.save_buffers_tree.get_children(),())
+
+    def test_monitor_advances_separately_from_game_and_recovers_after_failure(self):
+        app=self.app
+        app.notebook.select(app.save_buffers_tab)
+        with patch.object(self.process,'write',side_effect=AssertionError('No writes')):
+            app.poll_event_monitor()
+            self.assertIn('Game-loop counter:',app.event_live.get())
+            with patch.object(app.mem,'read_guest',side_effect=OSError('lost connection')):
+                app.poll_event_monitor()
+            self.assertIn('Read unavailable',app.event_live.get())
+            self.assertEqual(app.save_buffers_tree.get_children(),())
+            app.poll_event_monitor()
+            self.assertEqual(len(app.save_buffers_tree.get_children()),49)
+            app.mem=None
+            with patch('practice.event_sessions_ui.time.monotonic',return_value=app.event_monitor_started+12.5):
+                app.poll_event_monitor()
+            self.assertIn('12.5s',app.event_live.get())
+            self.assertIn('Disconnected',app.event_live.get())
+
+    def test_raw_pending_comparison_including_control_and_zero_changes(self):
+        app=self.app;app.new_event_session();app.capture_event_stage('A');app.capture_event_stage('B')
+        self.assertIn('0 changed bytes',app.event_comparison.get())
+        app.event_role.set('control')
+        app.mem.write_guest(EVENT_START,b'\x20')
+        app.capture_event_stage('B')
+        self.assertIn('1 changed bytes, 1 changed bits',app.event_comparison.get())
+        self.assertIn('0x8015C608: 00->20',app.event_comparison.get())
+        app.record_event_trial();self.wait_rank()
+        self.assertEqual(app.event_rows,[])
+        self.assertIn('Capture A',app.event_comparison.get())

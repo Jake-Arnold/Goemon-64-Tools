@@ -2,11 +2,13 @@
 import json
 import queue
 import threading
+import time
 import tkinter as tk
 from tkinter import ttk, filedialog
 
 from practice.event_sessions import (new_session,capture_event,with_trial,save_session,
                                      load_session,rank_bits)
+from practice.checkpoints import GAMEDATA_ADDR, GAMEDATA_LEN, SHADOW_ADDR, STATE_ADDR
 from practice.paths import diagnostics_dir
 
 
@@ -15,13 +17,15 @@ class EventSessionsMixin:
         tab=ttk.Frame(notebook,padding=10)
         notebook.add(tab,text='Event sessions')
         self.event_sessions_tab=tab
-        self.event_session=None;self.event_pending={};self.event_token=None
+        self.event_session=None;self.event_pending={};self.event_token=None;self.event_capture_started=None
         self.event_rows=[]
         self.event_generation=0
+        self.event_monitor_started=time.monotonic()
         self.root.bind('<Destroy>',self._event_session_destroyed,add='+')
         ttk.Label(tab,text='Repeated persistent-event experiments',font=('Segoe UI Semibold',16)).pack(anchor='w')
         ttk.Label(tab,text='Read-only capture of 100 event bytes. Keep each experiment on one map/character. '
                   'Use idle/control pairs, then repeat the same event from your own pre-event save. '
+                  'Clocks, Bank A/B and shadow bytes are outside this range; use State discovery for wider changes. '
                   'No automatic reset, input or memory writes.',wraplength=1080).pack(anchor='w',pady=6)
         row=ttk.Frame(tab);row.pack(fill='x')
         ttk.Label(row,text='Experiment:').pack(side='left')
@@ -45,6 +49,10 @@ class EventSessionsMixin:
         ttk.Button(row,text='Discard captures',command=self.discard_event_captures).pack(side='left',padx=3)
         self.event_status=tk.StringVar(value='Connect to a game, name the experiment, then create a session. A=before, B=after; C=optional reverted.')
         ttk.Label(tab,textvariable=self.event_status,wraplength=1100).pack(anchor='w',pady=6)
+        self.event_comparison=tk.StringVar(value='No pending A/B comparison. Ranked candidates appear after Record trial; only event trials create candidates.')
+        ttk.Label(tab,textvariable=self.event_comparison,wraplength=1100).pack(anchor='w',pady=4)
+        self.event_live=tk.StringVar(value='Starting read-only monitor...')
+        ttk.Label(tab,textvariable=self.event_live,wraplength=1100).pack(anchor='w',pady=4)
         self.event_trial_summary=tk.StringVar(value='No trials')
         ttk.Label(tab,textvariable=self.event_trial_summary,wraplength=1100).pack(anchor='w')
         columns=('address','mask','direction','support','opposite','absent','noise','reverted')
@@ -59,6 +67,97 @@ class EventSessionsMixin:
                                    foreground='#f3eee5',insertbackground='#edbf6b')
         self.set_event_evidence('Select a row for exact trial IDs. Candidates are never automatically confirmed.')
         self.event_evidence.pack(fill='x',pady=6)
+        self.build_save_buffers_tab(notebook)
+        self.root.after(250,self.poll_event_monitor)
+
+    def refresh_pending_event_comparison(self):
+        if not all(key in self.event_pending for key in ('A','B')):
+            self.event_comparison.set('Capture A, perform the event, then capture B. Record trial to update ranked candidates.')
+            return
+        a=bytes.fromhex(self.event_pending['A']['bytes_hex'])
+        b=bytes.fromhex(self.event_pending['B']['bytes_hex'])
+        changes=[(i,x,y) for i,(x,y) in enumerate(zip(a,b)) if x!=y]
+        bits=sum((x^y).bit_count() for _,x,y in changes)
+        detail='; '.join(f'0x{GAMEDATA_ADDR+i:08X}: {x:02X}->{y:02X}' for i,x,y in changes[:8])
+        if len(changes)>8:detail+='; ...'
+        if not changes:
+            detail='The 100 saved event bytes are identical. Repeating an already-completed event may change nothing; use State discovery for temporary flags and clocks.'
+        self.event_comparison.set(f'Pending A/B: {len(changes)} changed bytes, {bits} changed bits. '+detail+
+                                  ' Record trial to include this pair in analysis.')
+
+    def build_save_buffers_tab(self,notebook):
+        tab=ttk.Frame(notebook,padding=10)
+        notebook.add(tab,text='Saved / shadow')
+        self.save_buffers_tab=tab
+        ttk.Label(tab,text='Read-only saved and shadow buffers',font=('Segoe UI Semibold',16)).pack(anchor='w')
+        ttk.Label(tab,text='Saved 0x8015C608 and shadow 0x8015C910, 772 bytes each. '
+                  'Offsets +0x00..+0x63 contain event flags; +0x64..+0x93 are resource mirrors and may be stale. '
+                  'Differences are observations, not confirmed story flags or proof of disk-save persistence.',
+                  wraplength=1080).pack(anchor='w',pady=6)
+        self.save_buffers_status=tk.StringVar(value='Select this tab while connected to inspect both buffers.')
+        ttk.Label(tab,textvariable=self.save_buffers_status,wraplength=1080).pack(anchor='w',pady=4)
+        columns=('offset','saved_address','saved','shadow_address','shadow','xor')
+        self.save_buffers_tree=ttk.Treeview(tab,columns=columns,show='headings',height=24)
+        for key,title,width in zip(columns,('Offset','Saved address','Saved hex','Shadow address','Shadow hex','XOR'),
+                                   (65,110,290,110,290,290)):
+            self.save_buffers_tree.heading(key,text=title)
+            self.save_buffers_tree.column(key,width=width)
+        scroll=ttk.Scrollbar(tab,orient='vertical',command=self.save_buffers_tree.yview)
+        scroll.pack(side='right',fill='y')
+        self.save_buffers_tree.configure(yscrollcommand=scroll.set)
+        self.save_buffers_tree.pack(fill='both',expand=True)
+        self.save_buffers_tree.tag_configure('different',foreground='#edbf6b')
+        self.save_buffers_previous=None
+
+    def refresh_save_buffers(self):
+        if not self.mem:
+            self.save_buffers_tree.delete(*self.save_buffers_tree.get_children())
+            self.save_buffers_previous=None
+            self.save_buffers_status.set('Disconnected; no current saved/shadow values.')
+            return
+        # Two sequential observations, not an atomic snapshot or capture for ranking.
+        saved=self.mem.read_guest(GAMEDATA_ADDR,GAMEDATA_LEN)
+        shadow=self.mem.read_guest(SHADOW_ADDR,GAMEDATA_LEN)
+        if len(saved)!=GAMEDATA_LEN or len(shadow)!=GAMEDATA_LEN:
+            raise ValueError('Incomplete saved/shadow read')
+        pair=(saved,shadow)
+        if pair!=self.save_buffers_previous:
+            for offset in range(0,GAMEDATA_LEN,16):
+                a=saved[offset:offset+16];b=shadow[offset:offset+16]
+                values=(f'+0x{offset:03X}',f'0x{GAMEDATA_ADDR+offset:08X}',a.hex(' ').upper(),
+                        f'0x{SHADOW_ADDR+offset:08X}',b.hex(' ').upper(),
+                        bytes(x^y for x,y in zip(a,b)).hex(' ').upper())
+                key=str(offset);tags=('different',) if a!=b else ()
+                if self.save_buffers_tree.exists(key):self.save_buffers_tree.item(key,values=values,tags=tags)
+                else:self.save_buffers_tree.insert('','end',iid=key,values=values,tags=tags)
+            self.save_buffers_previous=pair
+        differences=sum(a!=b for a,b in zip(saved,shadow))
+        self.save_buffers_status.set(f'Live read: {differences} differing bytes / {GAMEDATA_LEN}. '
+                                     'Rows contain up to 16 bytes; sequential reads can straddle game updates.')
+
+    def poll_event_monitor(self):
+        now=time.monotonic()
+        elapsed=now-self.event_monitor_started
+        since=(f' | Since A: {now-self.event_capture_started:.1f}s'
+               if self.event_capture_started is not None else '')
+        prefix=f'UI clock: {elapsed:.1f}s{since}'
+        try:
+            if self.mem:
+                state=self.mem.u8(STATE_ADDR)
+                # SYS_W.game_loops_count: base 0x8008CCC0 + offset 0x3ADCE.
+                loops=self.mem.u16(0x800C7A8E)
+                self.event_live.set(f'{prefix} | Game-loop counter: {loops} | State: {state}'
+                                    ' | Counter may stop while paused; captures validate gameplay separately.')
+            else:self.event_live.set(prefix+' | Disconnected; connect before capturing.')
+            if self.notebook.select()==str(self.save_buffers_tab) or not self.mem:
+                self.refresh_save_buffers()
+        except (OSError,ValueError,RuntimeError) as exc:
+            self.event_live.set(prefix+f' | Read unavailable: {exc}')
+            self.save_buffers_status.set(f'Read unavailable; displayed values cleared: {exc}')
+            self.save_buffers_tree.delete(*self.save_buffers_tree.get_children())
+            self.save_buffers_previous=None
+        finally:
+            self.root.after(250,self.poll_event_monitor)
 
     def _event_connection(self):
         if not self.mem or not self.game_pid:raise ValueError('Connect to a game first')
@@ -83,7 +182,8 @@ class EventSessionsMixin:
             _,backend=self._event_connection()
             session=new_session(self.event_label.get(),backend,self.event_rom.get())
             save_session(self._event_path(session),session)
-            self.event_session=session;self.event_pending={};self.event_token=None
+            self.event_session=session;self.event_pending={};self.event_token=None;self.event_capture_started=None
+            self.refresh_pending_event_comparison()
             self.refresh_event_session()
             self.event_status.set('Session saved locally. Capture an idle A/B pair before performing the event.')
         except (OSError,ValueError,RuntimeError) as exc:self.event_status.set(f'New session failed: {exc}')
@@ -93,8 +193,9 @@ class EventSessionsMixin:
         if not path:return
         try:
             session=load_session(path)
-            self.event_session=session;self.event_pending={};self.event_token=None
+            self.event_session=session;self.event_pending={};self.event_token=None;self.event_capture_started=None
             self.event_label.set(session['label']);self.event_rom.set(session['rom_sha1'] or '')
+            self.refresh_pending_event_comparison()
             self.refresh_event_session()
             self.event_status.set('Session reopened. New trials save to the local diagnostics directory; capture a fresh A.')
         except (OSError,ValueError) as exc:self.event_status.set(f'Open failed; current session retained: {exc}')
@@ -109,12 +210,16 @@ class EventSessionsMixin:
                 raise ValueError('Connection changed or A missing; capture a fresh A')
             if stage=='C' and 'B' not in self.event_pending:raise ValueError('Capture B before optional C')
             capture=capture_event(self.mem)
-            if stage=='A':self.event_pending={};self.event_token=token
+            if stage=='A':
+                self.event_pending={};self.event_token=token
+                self.event_capture_started=time.monotonic()
             if stage=='B':self.event_pending.pop('C',None)
             self.event_pending[stage]=capture
+            self.refresh_pending_event_comparison()
             self.event_status.set(f'{stage} captured. Pending {", ".join(self.event_pending)}. Finish dialogue before B; record trial when ready.')
         except (OSError,ValueError,RuntimeError) as exc:
-            self.event_pending={};self.event_token=None
+            self.event_pending={};self.event_token=None;self.event_capture_started=None
+            self.refresh_pending_event_comparison()
             self.event_status.set(f'Capture discarded: {exc}')
 
     def record_event_trial(self):
@@ -124,13 +229,15 @@ class EventSessionsMixin:
                 raise ValueError('Connection changed; discard captures and start a fresh A')
             session=with_trial(self.event_session,self.event_role.get(),self.event_note.get(),self.event_pending)
             save_session(self._event_path(session),session)
-            self.event_session=session;self.event_pending={};self.event_token=None
+            self.event_session=session;self.event_pending={};self.event_token=None;self.event_capture_started=None
+            self.refresh_pending_event_comparison()
             self.refresh_event_session()
             self.event_status.set('Trial saved locally. For a repeat, manually restore the same pre-event save, then capture a new A.')
         except (OSError,ValueError,RuntimeError) as exc:self.event_status.set(f'Trial not recorded: {exc}')
 
     def discard_event_captures(self):
-        self.event_pending={};self.event_token=None
+        self.event_pending={};self.event_token=None;self.event_capture_started=None
+        self.refresh_pending_event_comparison()
         self.event_status.set('Pending captures discarded; saved trials retained. No game writes made.')
 
     def refresh_event_session(self):

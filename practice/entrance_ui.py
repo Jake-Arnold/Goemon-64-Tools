@@ -6,7 +6,7 @@ from tkinter import ttk,filedialog
 
 from practice.entrances import extract_atlas,load_atlas,save_atlas,incoming,spawn_from_entry
 from practice.paths import practice_data_dir
-from practice.scenes import SCENES
+from practice.scenes import SCENES,unidentified_scene_name
 
 
 class EntranceMixin:
@@ -20,7 +20,7 @@ class EntranceMixin:
     def scene_catalog(self):
         catalog=dict(SCENES)
         if self.entrance_atlas:
-            for stage in self.entrance_atlas['payload']['rooms']:catalog.setdefault(stage,f'USA stage {stage} (0x{stage:03X})')
+            for stage in self.entrance_atlas['payload']['rooms']:catalog.setdefault(stage,unidentified_scene_name(stage))
         return catalog
 
     def build_entrance_controls(self,parent):

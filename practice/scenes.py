@@ -1,5 +1,6 @@
 """Scene ID catalog from klorfmorf/Goemon64Recomp src/game/scene_table.cpp.
-Only explicitly transcribed IDs are named. Unknown IDs remain numeric.
+Additional factual room labels come from pinned mn64rando room_indexes.txt.
+Existing labels are retained; unresolved rooms show their native menu index.
 This is a reference index, NOT an N64 scene-loading API.
 """
 SCENES_TEXT = '''
@@ -187,5 +188,152 @@ SCENES_TEXT = '''
 SCENES = dict((int(line.split('|',1)[0]), line.split('|',1)[1])
               for line in SCENES_TEXT.strip().splitlines())
 
+# Existing labels above take precedence over external room-name annotations.
+# Source: abyssonym/mn64rando 9c580d03fe89354f79c3c83ba2e1bcf192f32577
+# tables/room_indexes.txt; IDs are hexadecimal warp indices, not file IDs.
+ADDITIONAL_SCENES_TEXT = """
+1|Oedo Castle Tile Room - Unused
+3|Oedo Castle 1F Swatting Robot Silver Key Room
+4|Oedo Castle 1F Gold Dango Room
+5|Oedo Castle 1F Chain Pipe Fork
+7|Oedo Castle 1F Chain Pipe Key Room
+8|Oedo Castle 1F Swatting Robot Gold Key Room
+9|Oedo Castle 1F Turtle Pad Room
+10|Oedo Castle 2F Crusher Key Room
+11|Oedo Castle 2F Silver Cat Room
+13|Oedo Castle 2F Spike Chain Room
+14|Oedo Castle 2F Dango Ninja Room
+15|Oedo Castle 2F Congo's Chest
+16|Oedo Castle 2F Crusher Platforms
+17|Oedo Castle 2F Chain Pipe Moat
+18|Oedo Castle 2F Silver Key Room
+19|Oedo Castle Gold Key Room - Unused
+21|Oedo Castle 2F Blocked Silver Cat Room
+23|Congo Boss Room - Unused
+24|Null
+25|Null
+27|Null
+28|Oedo Castle Final Room - Unused
+29|Null
+30|Null
+31|Null
+32|Null
+33|Null
+34|Null
+35|Null
+36|Null
+37|Null
+38|Null
+39|Null
+41|Null
+51|Ghost Toys 1F Cannon Room
+52|Ghost Toys 1F Spike Cannon Boat Room
+54|Ghost Toys 1F Shogi Cannon Gold Cat Room
+57|Ghost Toys 1F Invisible Ghost Room
+58|Ghost Toys 1F Spike Darumanyo Room
+59|Ghost Toys 1F Invisible Ghost Key Room
+61|Null
+63|Ghost Toys 2F Big Spinning Spike Chain Room
+64|Ghost Toys 2F Invisible Darumanyo Key Room
+65|Ghost Toys 2F Jump Rope Room
+66|Ghost Toys 2F Treasure Room
+67|Ghost Toys 2F False Floor Gold Key Room
+68|Ghost Toys 2F Darumanyo Diamond Lock Room
+70|Ghost Toys 2F Spike Cannon Diamond Key Room
+71|Null
+72|Null
+86|Oedo Castle 1st Elevator Room - Unused
+91|Festival Temple West Gold Cat Dango Room
+92|Festival Temple West Hot Platform Drummer Fox Room
+93|Festival Temple West Hot Platform Samurai Room
+94|Festival Temple West Hot Platform Gold Key Room
+95|Festival Temple West Spike Chain Elly Fant Room
+97|Festival Temple East Chain Pipe Room
+98|Festival Temple East Meatsaw Hammer Room
+99|Festival Temple East Samurai Barrel Arrow Room
+100|Festival Temple East Drum Room
+102|Festival Temple East Bamboo Barrel Bomb Room
+103|Festival Temple East Silver Cat Lock Fork
+105|Festival Temple Central Fox Tank Hallway
+106|Festival Temple Central Samurai Tank Room
+107|Festival Temple Central Accordion Room
+108|Festival Temple Central Ring Key Hallway
+109|Festival Temple Central Samurai Platform Room
+111|Festival Temple North Fish Kite Waterfall Column
+112|Festival Temple North Bamboo Path to Boss
+114|Null
+115|Null
+116|Null
+117|Null
+118|Null
+119|Null
+120|Null
+128|Submarine Bazooka Room - Unused
+131|Gourmet Sub 2F Seahorse / Mini Ebisumaru Crosspath
+132|Submarine Unknown Room - Unused
+134|Gourmet Sub 2F Turret Dango Stockpile Room
+135|Gourmet Sub 2F Ramen Soup Corridor
+136|Submarine Red Ramen Corridor - Unused
+137|Gourmet Sub 2F Underwater Spiny Key & Lock Room
+140|Gourmet Sub 3F Fox Ramen Platforms & Diamond Lock Fork
+142|Gourmet Sub 3F Sword Robot Key Room
+143|Null
+144|Gourmet Sub 3F Blaster Crab Room
+146|Null
+147|Null
+149|Gourmet Sub 3F Chain Pipe Lava Room
+150|Gourmet Sub 3F Chain Pipe Avoidance Room
+151|Gourmet Sub 3F Chain Pipe Ice Kunai Combination Room
+152|Gourmet Sub 2F-3F Ramen Soup Arrow Room
+154|Null
+155|Null
+156|Null
+171|Musical Castle 1 Straight Slicer Room
+174|Musical Castle 1 High Jump Gold Key Waves Room
+175|Musical Castle 1 Drum Jump Waves Room
+177|Musical Castle 1 Waves Turret Connecting Room
+179|Musical Castle 1 B1F Hammer Thrower Room
+180|Musical Castle 1 B1F Rotating Cube Diamond Key Room
+181|Musical Castle 1 Mini Gold Key Big Wave Generator Room
+182|Musical Castle 1 Big Aquarium Room
+185|Musical Castle 2 Beyond Entrance Platforms Room
+186|Musical Castle 2 Left Entrance Treadmill Room
+188|Musical Castle 2 Gold Cat Hallway
+190|Musical Castle 2 Right Entrance Slope Room
+192|Musical Castle 2 B1F Kaleidoscope Room
+343|Mermaid Waterfall - Unused
+346|Kompira Shrine - Unused
+347|Lake Tree - Unused
+372|Null
+384|Zazen Waterway - Unused
+405|Unknown Town Restaurant - Unused
+416|Unknown Town Shop - Unused
+422|Unknown Town Inn - Unused
+427|Unknown Town Plasma - Unused
+428|Unknown Town Plasma - Unused
+431|Null
+434|Awaji Island Coffee Shop - Unused
+439|Null
+442|Unknown Town Guardhouse - Unused
+448|Unknown Town House - Unused
+462|Unknown Training Gym - Unused
+"""
+EXTERNAL_SCENE_NAMES = dict((int(line.split('|',1)[0]), line.split('|',1)[1])
+                            for line in ADDITIONAL_SCENES_TEXT.strip().splitlines())
+SCENES.update((stage,name) for stage,name in EXTERNAL_SCENE_NAMES.items() if stage not in SCENES)
+
+
+def unidentified_scene_name(map_id):
+    if type(map_id) is not int or not 0<=map_id<=0x1E3:
+        return 'Unknown / unlisted'
+    from practice.scene_controls import native_debug_selection
+    try:
+        target=native_debug_selection(map_id,{map_id:'Unidentified'})
+        return f'Unidentified room ({target["label"]})'
+    except ValueError:
+        return 'Unknown / unlisted'
+
+
 def scene_label(map_id):
-    return f'{map_id} (0x{map_id:03X}): {SCENES.get(map_id, "Unknown / unlisted")}'
+    name=SCENES[map_id] if map_id in SCENES else unidentified_scene_name(map_id)
+    return f'{map_id} (0x{map_id:03X}): {name}'

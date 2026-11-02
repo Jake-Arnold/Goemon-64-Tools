@@ -182,30 +182,10 @@ class InspectorMixin(EntranceMixin):
         self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.open_debug_for_selected_scene)
         self.native_debug_btn.pack(fill='x',pady=5)
         if not self.args.enable_debug_menu:self.native_debug_btn.state(['disabled'])
-        ttk.Label(scenes,text='For reverse-engineering the correct loader, open the Native menu calibration tab and record a normal door transition.',wraplength=950).pack(anchor='w')
-        self.build_debug_calibration_tab(notebook)
-        self.build_character_cursor_tab(notebook)
-        self.root.after(120,self.poll_cursor_jobs)
-
-        diffs=ttk.Frame(notebook,padding=10)
-        notebook.add(diffs,text='Checkpoint compare')
-        line=ttk.Frame(diffs);line.pack(fill='x',pady=5)
-        ttk.Label(line,text='Compare to:').pack(side='left')
-        self.diff_cp=ttk.Combobox(line,state='readonly',width=70)
-        self.diff_cp.pack(side='left',padx=6)
-        self.diff_cp.bind('<<ComboboxSelected>>',lambda _e:self.refresh_checkpoint_diff(force=True))
-        ttk.Button(line,text='Refresh comparison',command=lambda:self.refresh_checkpoint_diff(force=True)).pack(side='left')
-        ttk.Label(diffs,textvariable=self.compare_status,wraplength=950).pack(anchor='w',pady=5)
-        diffcolumns=('n64','offset','saved','current')
-        self.diff_tree=ttk.Treeview(diffs,columns=diffcolumns,show='tree headings',height=23)
-        self.diff_tree.heading('#0',text='Region');self.diff_tree.column('#0',width=115)
-        for n,label,width in [('n64','Original N64 address',170),('offset','Region offset',130),('saved','Checkpoint hex',130),('current','Live hex',130)]:
-            self.diff_tree.heading(n,text=label);self.diff_tree.column(n,width=width)
-        self.diff_tree.pack(fill='both',expand=True)
-        ttk.Label(diffs,text='Compares live stat block, progression buffers and global unlock header; ignores stale save-data mirror at +0x64..+0x93. It does NOT include transient actors/physics or prove that a checkpoint can be safely restored.',wraplength=950).pack(anchor='w',pady=4)
-        self.refresh_checkpoint_options()
+        ttk.Label(scenes,text='Warp destinations use the original debug-menu transition and the selected entrance coordinates.',wraplength=950).pack(anchor='w')
 
     def refresh_checkpoint_options(self):
+        if not hasattr(self,'diff_cp'):return
         labels=self.checkpoint_labels()
         self.diff_cp['values']=labels
         if labels and self.diff_cp.current()<0:self.diff_cp.current(len(labels)-1)
@@ -401,6 +381,7 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Inspector failed: {e}')
 
     def refresh_checkpoint_diff(self,force=False):
+        if not hasattr(self,'diff_tree'):return
         import time
         now=time.monotonic()
         if not force and now-self.last_compare_at<1.5:return
@@ -656,7 +637,7 @@ class InspectorMixin(EntranceMixin):
 
     def refresh_native_watch(self, now):
         """Poll *while native menu is open*; toolkit.tick skips the player UI there."""
-        if not self.mem or now-self.native_watch_last_at < 0.20:
+        if not hasattr(self,'native_watch_tree') or not self.mem or now-self.native_watch_last_at < 0.20:
             return
         self.native_watch_last_at=now
         try:

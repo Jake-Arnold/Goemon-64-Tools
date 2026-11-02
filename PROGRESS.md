@@ -2,6 +2,22 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-02 - v0.11.9: room names and event/shadow feedback
+
+- Changed: removed Native menu calibration, Character cursor scan and Checkpoint compare tabs. Retained native warp profiles, checkpoint capture/restore and underlying helpers; stopped obsolete cursor polling and guarded refresh hooks so missing widgets cannot interrupt the main tick.
+- Changed: Event sessions now shows an independent UI clock, time since A, and native game-loop counter at 0x800C7A8E. Capture B immediately reports raw byte/bit changes for every trial role; Record trial updates event ranking. Empty comparisons explain the 100-byte saved-event scope. New Saved / shadow tab displays all 772 bytes at 0x8015C608 and 0x8015C910, addresses and XOR, polling only when selected. Disconnect/read failures clear data and recovery resumes monitoring.
+- Reason/diagnosis: all five trials in the latest local session had identical A/B event bytes; ranking was not hiding changes. Event sessions excludes clocks, temporary Bank A/B flags and shadow bytes. State discovery focused already includes system clock and both save buffers; wide includes Bank A/B. No local captures or private session data were removed or committed.
+- Room names: retained 180 names and added 125 labels from abyssonym/mn64rando room_indexes.txt, pinned 9c580d03fe89354f79c3c83ba2e1bcf192f32577. Of 333 atlas rooms, 28 remain unidentified and show native menu indices. New names do not prove safe room/spawn behavior.
+- Tests: Python 3.13 full suite: 286 tests, 283 passed and 3 native-build tests skipped on Windows. New tests cover removed tabs/retained hooks, full saved/shadow buffers and final short row, disconnected/error recovery, independent clocks, unchanged/changed control A/B pairs, and room names. Live read-only recomp UI probe: state 13, loop counter advanced 38650 to 38660; 49 buffer rows / 25 differing bytes loaded. The process handle was read-only and writes were blocked in the probe. No game writes or warps performed.
+- Limitations: saved/shadow reads are sequential, not atomic, and do not establish meaning or disk persistence. Native counter may stop while paused. Existing capture format and strict gameplay guards unchanged. Existing GUI instances keep their old version until closed; launch v0.11.9 to use this update.
+- Next: capture A before a genuinely new milestone, finish it, capture B and Record trial; use State discovery for broader/temporary changes. Continue type-context work and original-unit decomp integration.
+
+## 2026-11-02 - further static decomp batch
+
+- Changed: processed another 200 eligible main functions (maximum 256 bytes, two workers, ten-second budgets/two-second search) in 30.807 seconds. Added sanitized decomp/results/batch_ui_followup.json and exported local review bundle /root/goemon64-ui-followup-review-v1. No generated game code/assembly, assets or raw dumps committed.
+- Results: three additional linked-code matches: func_8000E630_F230 (92 bytes), func_80015EFC_16AFC (92), func_800216B0_222B0 (144). Recipe totals: 500 attempts; 31 matches / 1,156 bytes; 443 needing context; 17 mismatches; 8 compile failures; 1 generation failure. Export revalidates candidate hashes and linked bytes.
+- Reason: continue decomp work alongside toolkit validation and preserve reproducible evidence. Limitations: isolated linked probes are not full-ROM promotions; verified native replacements remain 74 functions / 5,564 bytes. Next: supply shared type context, integrate original compilation units and run the full-ROM gate before updating verified counts.
+
 ## Current status — 2026-11-01
 
 **Baseline:** v0.9.9 source recovered from the original release ZIP. The deleted conversation was reconstructed separately from 102 screenshots; screenshots and personal conversation transcript are not committed to this public repository.
