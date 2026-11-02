@@ -1,6 +1,7 @@
 # Goemon discovery and companion implementation plan
 
-Date: 2026-11-02. Status: phase 1 implemented in source; subsequent phases planned.
+Date: 2026-11-02. Status: phase 1 and bounded persistent-event phase 2/3 recorder
+implemented in source; actual labelled gameplay experiments and later phases remain.
 Continue in the existing `codex/goemon-discovery` task workspace.
 Baseline: `91b387853f900a5222c2a9c145d6ac08c9c6cc98`.
 
@@ -160,7 +161,10 @@ Out of scope for the first milestone: complete flag coverage, automatic game
 playthrough, blind unknown-memory writes, bulk RAM restoration, every emulator
 or ROM version, a new UI architecture and a completed full decompilation.
 
-Immediate next implementation: a small persistent-event session recorder with
-repeated-trial analysis (phases 2/3). Phase 1 source defaults and read-only override
-are implemented; packaged executable build and available-host checks must be
-reported separately from automated validation.
+Immediate next action: collect idle/control pairs and repeated real event trials
+with the user (see EVENT_SESSIONS.md), then use that evidence for the phase 4
+registry and phase 5 reader/writer tracing. The first phase 2/3 implementation
+captures only 100 global event bytes plus bounded context checks, synchronously;
+analysis runs off Tk. Wide/dynamic captures and automatic ROM verification are
+deferred rather than claimed complete. Packaged executable build and host checks
+must be reported separately from automated validation.

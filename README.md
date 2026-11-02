@@ -1,3 +1,15 @@
+# Goemon Speedrun Tools v0.11.5 — repeated event sessions
+
+**Event sessions** records labelled event, idle and control A/B trials from the
+100-byte persistent event block. Repeat an event from your own pre-event save,
+then compare individual bits with supporting, conflicting and noisy trial evidence.
+Optional C records per-bit reversions. Sessions save locally and can be reopened;
+analysis runs in the background. No candidate is automatically confirmed or written.
+
+Read-only capture/save/reopen smoke tests passed against both running Project64
+and Goemon64Recomp. No new quest flag has been confirmed. See the
+[step-by-step capture guide](docs/EVENT_SESSIONS.md).
+
 # Goemon Speedrun Tools v0.11.4 — unsafe tools enabled by default
 
 Ordinary startup now enables teleport, logical checkpoint restore, native debug
