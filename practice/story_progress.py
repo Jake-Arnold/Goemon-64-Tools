@@ -51,6 +51,12 @@ CURATED_FLAGS = (
               'User-confirmed manual bit test: mask 0x20 enables Lord appearance; initializer func_08000000_710660 requires set'),
     StoryFlag('lord_event_completed','Lord of Oedo respawn suppressed',0x097,
               'User-confirmed manual bit test: byte 0x00 to 0x80 prevents respawning; initializer func_08000000_710660 rejects set; func_08000410_710A70 sets it'),
+    StoryFlag('ghost_torch_04','Ghost Toys entrance right torch lit',0x19A,
+              'Entrance update func_08006490_6F9970 tests this and ID 0x19B before unlocking; sides from user-confirmed decimal sequences; persistence user-reported'),
+    StoryFlag('ghost_torch_08','Ghost Toys entrance left torch lit',0x19B,
+              'Entrance update func_08006490_6F9970 tests this and ID 0x19A before unlocking; sides from user-confirmed decimal sequences; persistence user-reported'),
+    StoryFlag('ghost_entrance_unlocked','Ghost Toys entrance unlocked',0x19C,
+              'Native update sets after both torch bits; initializer reads separately; user reports manual opening without flames and persistence once lit'),
     StoryFlag('congo_state_candidate','Congo encounter state? (candidate)',0x132,
               'User A/B: mask 0x04 cleared during same event; cutscene/actor/room hypothesis, not confirmed'),
 )

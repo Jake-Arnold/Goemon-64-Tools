@@ -207,3 +207,10 @@ activation/completion gates](CONGO_LORD_OBSERVATIONS.md) identify required ID
 initial pattern scan with manual control-flow evidence. The user subsequently confirmed both gate conditions with manual bit tests:
 mask `0x20` enables appearance and mask `0x80` prevents respawning. These tests
 were user-performed; no independent assistant replay is claimed.
+
+### Ghost Toys entrance
+
+[User torch/door observations and original-code trace](GHOST_TOYS_ENTRANCE.md)
+identify IDs `0x19A` and `0x19B` as required conditions for setting entrance latch
+`0x19C`, all in byte `0x8015C63B`. The user confirms decimal input: left is mask `08`, right is `04`, and
+the door latch is `10`; the bit masks also follow from original code.

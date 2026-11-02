@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-02 - Ghost Toys entrance torch and door flags
+
+- Changed: documented user-confirmed decimal sequences at 0x8015C63B: 2 -> 10 -> 30 left-first, 2 -> 6 -> 30 right-first, and manual 16 opens without flames. Added independent Story progress rows: right torch ID 0x19A/mask 04, left torch 0x19B/08, entrance latch 0x19C/10. Persistence once lit is user-reported; initial mask 02 remains unnamed.
+- Native evidence: verified decompressed US ROM and asm/usa/file_43.s show func_08006490_6F9970 tests both torch IDs before setting 0x19C; two entrance initializers separately test that latch. Documented calls, reused-pointer scanner blind spot, subsequent callback and limits in docs/GHOST_TOYS_ENTRANCE.md. Existing randomizer annotations identify torch and barricade actors, not these flag semantics.
+- Tests: 22 focused story model/UI and ROM-trace tests passed, including independent torch/latch states and unrelated bits. No assistant game writes, whole-byte presets, live loading-zone test, or matching-C promotion. Next: trace torch writers and exit/collision setup; user requested a value-freeze feature separately while confirming decimal notation.
+
 ## 2026-11-02 - user confirms Lord appearance and suppression gates
 
 - Changed: promoted the two Lord gate evidence descriptions from interval observations to user-confirmed manual bit tests alongside the original initializer trace. Labels now describe appearance enabled (0x8015C62D mask 0x20 / ID 0x12D) and respawn suppressed (0x8015C61A mask 0x80 / ID 0x097). Updated research notes and README consistently.

@@ -153,3 +153,16 @@ class StoryProgressTests(unittest.TestCase):
         self.assertEqual(rows['lord_event_completed']['mask'],'0x80')
         self.assertEqual(rows['lord_event_completed']['value'],'Set')
         self.assertIn('rejects set',rows['lord_event_completed']['source'])
+
+    def test_ghost_toys_torch_bits_and_door_latch_decode_independently(self):
+        ram=self.sample()
+        keys=('ghost_torch_04','ghost_torch_08','ghost_entrance_unlocked')
+        for value,expected in ((0x02,(False,False,False)),(0x06,(True,False,False)),
+                               (0x0A,(False,True,False)),(0x1E,(True,True,True)),
+                               (0x10,(False,False,True)),(0xE2,(False,False,False))):
+            ram.write_guest(0x8015C63B,bytes([value]))
+            state=read_story_state(ram)
+            self.assertEqual(tuple(state['values'][key] for key in keys),expected)
+        rows={r['key']:r for r in story_rows(state)}
+        self.assertEqual([rows[k]['mask'] for k in keys],['0x04','0x08','0x10'])
+        self.assertTrue(all(rows[k]['address']==0x8015C63B for k in keys))
