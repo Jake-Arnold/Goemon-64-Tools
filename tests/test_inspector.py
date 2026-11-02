@@ -64,6 +64,14 @@ class TestInspector(unittest.TestCase):
                      'Item slot 3 code','Item slot 3 quantity'):
             self.assertTrue(rows[name].source.startswith('confirmed:'), name)
 
+    def test_miracle_shape_labels_match_unlocks(self):
+        _,ram=self.sample()
+        rows={v.name:v for v in get_watches(ram,ram.snapshot(),SCENES)}
+        for name,addr in {'Star':0x8015C85B,'Moon':0x8015C85F,
+                          'Flower':0x8015C863,'Snowflake':0x8015C866}.items():
+            self.assertEqual(rows[name].addr,addr)
+            self.assertTrue(rows[name].source.startswith('confirmed:'))
+
     def test_native_menu_category_main_is_zero(self):
         from practice.native_menu_categories import NATIVE_MENU_CATEGORIES, native_menu_category
         from practice.native_debug_trace import selection_values

@@ -1,3 +1,11 @@
+## v0.11.1 — Benkei/Ushiwaka storyline A/B protocol
+
+Use Storyline event / quest flag (focused scan). Capture separate A/B pairs: (1) before and after first Benkei conversation; (2) before Ushiwaka fish turn-in and after the reward/cutscene; (3) before and after editing Achilles Heel into inventory alone, without finishing the event; (4) add the required fish directly, then complete Ushiwaka normally. Use disposable checkpoints and avoid changing map/character during each pair.
+
+Inspect event_flag_changes for bit transitions in persistent gamedata+0x00..0x63 at 0x8015C608..0x8015C66B. Each change is only a candidate until a controlled masked-write test reproduces the dialogue or quest gate. No C needed for irreversible story actions. Item possession, quest progression, and cutscene execution may require separate code paths.
+
+F1 opens Live Memory while the toolkit is focused. Experimental cross-map checkpoint restore waits until the desired map and stable player are ready before writing saved XYZ.
+
 ## Experimental test harness (v0.10.8)
 
 The app now includes two *deliberately manual* experiments. **Scene browser → EXPERIMENT reload** writes pending destination `0x800C7CA0` followed by game state `0x0C`, logs result and position. Do not infer correct entrance spawn. **Live memory → Experimental movement** resolves `PlayerTask +0x68` dynamically and sends 4-byte f32 values. Press `+4.0`, `-4.0`, or `Speed pulse ×1.5`, compare observed XYZ motion in controlled gameplay. The task field is still unknown; an observed nudge is not proof it is velocity. The app never writes eight adjacent bytes in these controls.

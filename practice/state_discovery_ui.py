@@ -66,7 +66,7 @@ class StateDiscoveryMixin:
         ttk.Button(row,text='Copy selected address',command=self.copy_state_probe_address).pack(side='left')
         ttk.Button(row,text='Watch selected address',command=self.watch_state_probe_candidate,
                    style='Gold.TButton').pack(side='left',padx=(8,0))
-        ttk.Label(row,text='A/B changes alone are hypotheses; C reversing to A makes a result more informative. '
+        ttk.Label(row,text='A/B changes alone are hypotheses. For persistent storyline flags, A/B is sufficient. '
                   'Player-task float values are not proven velocity.',style='Muted.TLabel',
                   wraplength=850).pack(side='left',padx=(15,0))
 
@@ -102,9 +102,11 @@ class StateDiscoveryMixin:
                     row['address'],row['region'],row['before'],row['after'],
                     row['xor_mask'],'yes' if row['reverted'] else '—',row['kind']))
             counts=report['counts']
+            event_count=len(report.get('event_flag_changes',[]))
             self.state_probe_status.set(f"Compared {counts['regions_compared']} regions; "
                 f"{counts['observed_changes']} byte changes; "
-                f"{counts['candidate_count']} candidates (showing {counts['reported_candidates']}). "
+                f"{counts['candidate_count']} candidates (showing {counts['reported_candidates']}); "
+                f"{event_count} changed saved event-flag bytes. "
                 'No candidate has been validated as an actual game flag.')
         except (OSError,ValueError,RuntimeError) as exc:
             self.state_probe_status.set(f'Comparison failed: {exc}')

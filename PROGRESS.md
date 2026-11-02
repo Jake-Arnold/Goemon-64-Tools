@@ -54,6 +54,16 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+### 2026-11-02 — v0.11.1 cross-area checkpoints, nonblocking Connect, storyline research
+- Cross-area restore: request pending stage at 0x800C7CA0 then game state 0x0C; wait for correct map, stable gameplay, idle player, no script, then restore saved XYZ/rotation/progression. Abort timeout, wrong map or failed final write; native character switch if needed. Same-map remains immediate. This is not a native savestate.
+- Connection discovery now runs in a worker thread; Tk only polls completion queue, so the GUI does not freeze on a long memory scan.
+- User observations: first Benkei meeting changes repeated dialogue; Ushiwaka fish turn-in plus Achilles Heel reward advances a quest stage; simply adding Achilles Heel to inventory does not; providing fish by inventory edit satisfies minigame without collecting them manually. Event addresses unknown.
+- State discovery now includes Storyline event / quest flag and Item ownership only actions; A/B report event_flag_changes with bits_set and bits_cleared for saved event-byte range 0x8015C608..0x8015C66B. Changes remain unverified candidates.
+- F1 opens toolkit Live Memory/hex editor while it has focus (not system-wide). Miracle items show Star/Moon/Flower/Snowflake using existing Unlocks shape mapping. No new in-game shape verification.
+- Removed ineffective movement probe/speed pulse buttons after user saw only minor nudges, not reliable speedups. Task+0x68 remains a research watch.
+- Local validation: 163 synthetic-memory Tk/Python Xvfb tests passed; compileall passed. Windows real-game restore, connection and item shapes remain untested in this version.
+- Next: real Windows cross-area restore tests, and isolated Benkei first-dialogue vs Ushiwaka award A/B flags on disposable checkpoints.
+
 ## 2026-11-02 — Second Sasuke battery A/B capture, cutscene separate from flag write
 
 **Attached capture:** `state_probe_20261102_014420_169811(1).json` recorded on 2026-11-02 01:44 UTC, A→B 5.921 seconds apart, character 2 **Sasuke**, same map ID 329. User reports A/B before/after *collecting the second battery*; JSON labels inaccurately say "Map displayed". Focused scan, 81 changed bytes; 100 rows including f32 interpretations. `capture_C=null`. Its `reverting_changes=81` is from the old v1 exporter bug: no reversals were observed.

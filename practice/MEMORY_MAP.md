@@ -1,3 +1,11 @@
+## 2026-11-02 — storyline progression and v0.11.1
+
+- User observations: first Benkei conversation changes later dialogue; completing Ushiwaka fish minigame and receiving Achilles Heel advances quest progression. Editing Achilles Heel into inventory does not bypass the story event, whereas editing the required fish allows an immediate legitimate minigame completion.
+- Probe persistent event flags 0x8015C608..0x8015C66B with separate A/B captures before/after Benkei first dialogue, Ushiwaka reward, and Achilles Heel item-only edit. Report event_flag_changes masks; no quest-bit offset proven yet.
+- Four Miracle shapes: Star 0x8015C85B, Moon 0x8015C85F, Flower 0x8015C863, Snowflake 0x8015C866.
+- Cross-area checkpoint reload: write pending destination 0x800C7CA0 then state 0x0C, wait for stable gameplay/map/player, then write saved XYZ and logical progress. Not a full game savestate.
+- Removed experimental movement speed pulse buttons after no meaningful speed improvement in live testing.
+
 ## Second Sasuke battery comparison (2026-11-02; unconfirmed)
 
 - Original A/B JSON `state_probe_20261102_014420_169811(1).json`: 01:44:12→01:44:18 UTC, **Sasuke 2**, map 329, A/B only, 81 changed bytes and **no C/reversibility test**.

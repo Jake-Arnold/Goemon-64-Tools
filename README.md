@@ -1,3 +1,15 @@
+# Goemon Speedrun Tools v0.11.1 — cross-area checkpoints, F1 and storyline research
+
+Cross-area logical checkpoint restore now requests the saved destination with 0x800C7CA0 then state 0x0C. After the game loads the target map and a stable player, the toolkit restores saved XYZ, rotation, resources and progression; same-map restores remain immediate. This is not a native savestate: actors, scripts, physics and camera may differ.
+
+Connect scans memory on a background thread so Tk stays responsive. F1 opens Live Memory/debug hex when the toolkit is focused; not a global game shortcut.
+
+Live Memory names Star, Moon, Flower, Snowflake consistently with Unlocks. Unreliable movement speed pulses were removed. State discovery can compare Storyline event / quest flag and Item ownership only, including a per-byte saved event-flag change summary. The Benkei first conversation and Ushiwaka minigame completion bits are not yet identified.
+
+Validated with 163 local Linux/Xvfb synthetic-RAM/Tk tests. Live Windows Goemon64Recomp validation is still required.
+
+---
+
 # Goemon Speedrun Tools v0.10.9 — confirmed first Sasuke battery flag
 
 ![Actual Tk dashboard](docs/images/actual-dashboard.webp)

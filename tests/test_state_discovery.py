@@ -21,7 +21,8 @@ class Memory:
 
 class StateDiscoveryTests(unittest.TestCase):
     def test_five_questions_have_actionable_instructions(self):
-        self.assertEqual(len(PROBE_ACTIONS),5)
+        self.assertEqual(len(PROBE_ACTIONS),7)
+        self.assertIn('Benkei',PROBE_ACTIONS['Storyline event / quest flag'])
         self.assertIn('C-Right',PROBE_ACTIONS['Map displayed'])
         self.assertIn('C-Up',PROBE_ACTIONS['Magic active'])
 
@@ -45,6 +46,20 @@ class StateDiscoveryTests(unittest.TestCase):
         restored=compare_captures(a,b,d)
         self.assertTrue(restored['candidates'][0]['reverted'])
         self.assertEqual(restored['counts']['reverting_changes'],1)
+
+    def test_storyline_saved_event_bit_shortlist(self):
+        mem=Memory()
+        a=capture_state(mem,'Storyline event / quest flag A')
+        mem.write(0x8015C609,b'\x20')
+        mem.write(0x8015C700,b'\x20')
+        b=capture_state(mem,'Storyline event / quest flag B')
+        report=compare_captures(a,b)
+        self.assertEqual(report['counts']['reverting_changes'],0)
+        self.assertEqual(report['event_flag_changes'],[
+            {'address':'0x8015C609','before':'00','after':'20',
+             'bits_set':'20','bits_cleared':'00','confirmed':False}])
+        event=next(v for v in report['candidates'] if v['address']=='0x8015C609')
+        self.assertEqual(event['kind'],'saved event flag candidate')
 
     def test_dynamic_float_candidate_and_pointer_changes(self):
         mem=Memory()

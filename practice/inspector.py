@@ -53,10 +53,10 @@ INVENTORY = [
     ('Red fish count', 0x8015C71B, 1, 255, 'count (was Pink Fish); user observed 0x01 displays one'),
     ('Yellow fish count', 0x8015C71F, 1, 255, 'count (was Gold Fish); user observed 0x01 displays one'),
     ('Blue fish count', 0x8015C723, 1, 255, 'count; user observed 0x01 displays one'),
-    ('Miracle item 1 (identity unknown)', 0x8015C85B, 1, 1, 'four Miracle Items GameShark code; individual symbol unverified'),
-    ('Miracle item 2 (identity unknown)', 0x8015C85F, 1, 1, 'four Miracle Items GameShark code; individual symbol unverified'),
-    ('Miracle item 3 (identity unknown)', 0x8015C863, 1, 1, 'four Miracle Items GameShark code; individual symbol unverified'),
-    ('Miracle item 4 (identity unknown)', 0x8015C866, 1, 1, 'four Miracle Items GameShark code; offset explicitly C866, verify in-game'),
+    ('Star', 0x8015C85B, 1, 1, 'Miracle item: star'),
+    ('Moon', 0x8015C85F, 1, 1, 'Miracle item: moon'),
+    ('Flower', 0x8015C863, 1, 1, 'Miracle item: flower'),
+    ('Snowflake', 0x8015C866, 1, 1, 'Miracle item: snowflake'),
 ]
 
 @dataclass(frozen=True)
@@ -155,7 +155,8 @@ def get_watches(ram, snapshot, scene_names=None):
                      or name.startswith('Yae katana upgrade')
                      or name in {'Chain Pipe', 'Meat Saw Hammer', 'Fire Cracker Bomb', 'Flute',
                                  'Windup Camera', 'Ice Kunai', 'Bazooka', 'Medal of Flames',
-                                 'Sudden Impact', 'Mini Ebisumaru', 'Super Jump', 'Magic Mermaid'})
+                                 'Sudden Impact', 'Mini Ebisumaru', 'Super Jump', 'Magic Mermaid',
+                                 'Star', 'Moon', 'Flower', 'Snowflake'})
         add(name,addr,width,validator=lambda v, m=maximum: v<=m,
             source=('confirmed: ' if confirmed else 'provisional: ')+hint)
     return watches

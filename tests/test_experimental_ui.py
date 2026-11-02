@@ -24,12 +24,12 @@ class TestExperimentalGUI(unittest.TestCase):
     def tearDown(self):
         if hasattr(self,'root'):self.root.destroy()
 
-    def test_pulse_button_requires_unsafe(self):
-        self.app.try_motion_pulse()
-        self.assertIn('Enable UNSAFE',self.app.motion_status.get())
-        self.app.hex_advanced.set(True)
-        self.app.try_motion_pulse()
-        self.assertIn('4-byte f32 write',self.app.motion_status.get())
+    def test_f1_opens_memory_and_retires_ineffective_motion_controls(self):
+        self.assertFalse(hasattr(self.app,'try_motion_pulse'))
+        self.app.notebook.select(self.app.scene_tab)
+        self.assertEqual(self.app._on_f1_open_memory(),'break')
+        self.assertEqual(self.app.notebook.select(),str(self.app.live_memory_tab))
+        self.assertTrue(self.root.bind_all('<F1>'))
 
     def test_warp_only_explicit_button_and_confirmation(self):
         self.app.scene_options=[(353,'Test destination')]

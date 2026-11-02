@@ -12,7 +12,7 @@ from practice.hex_edit import get_policy, parse_hex, checked_write
 from practice.scenes import SCENES, scene_label
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
 from practice.checkpoints import MAP_ADDR, STATE_ADDR
-from practice.experimental_controls import stage_reload_trial, task_float_probe
+from practice.experimental_controls import stage_reload_trial
 from practice.paths import practice_data_dir, diagnostics_dir
 from practice.custom_watches import (CustomWatch, FORMATS, make_watch, append_watch,
                                      load_watches, save_watches, read_watch)
@@ -119,15 +119,6 @@ class InspectorMixin:
         self.raw_value=tk.StringVar(value='01')
         ttk.Entry(manual,textvariable=self.raw_value,width=20).pack(side='left',padx=(3,10))
         ttk.Button(manual,text='Write raw hex',command=self.write_raw_hex).pack(side='left')
-        motion=ttk.LabelFrame(inspector,text=' Experimental movement — PlayerTask +0x68 (f32) ',padding=6)
-        motion.pack(fill='x',pady=(1,8))
-        ttk.Label(motion,text='Uses the current player-task pointer. All buttons write exactly 4 bytes. +4 and -4 isolate direction; speed ×1.5 is an unverified movement pulse, NOT a proven speed hack.',
-                  style='Muted.TLabel',wraplength=950).pack(anchor='w')
-        row=ttk.Frame(motion);row.pack(fill='x',pady=3)
-        for title,direction,speedup in (('Probe +4.0',1,False),('Probe -4.0',-1,False),('Speed pulse ×1.5',1,True)):
-            ttk.Button(row,text=title,command=lambda d=direction,sp=speedup:self.try_motion_pulse(d,sp)).pack(side='left',padx=(0,7))
-        self.motion_status=tk.StringVar(value='Needs connection, normal gameplay, --enable-hex-edit, and UNSAFE enabled.')
-        ttk.Label(motion,textvariable=self.motion_status,style='Muted.TLabel',wraplength=950).pack(anchor='w')
         columns=('address','value','raw','status','source')
         frame=ttk.Frame(inspector);frame.pack(fill='both',expand=True)
         self.watch_tree=ttk.Treeview(frame,columns=columns,show='tree headings',height=22)
@@ -140,7 +131,7 @@ class InspectorMixin:
         self.watch_tree.configure(yscrollcommand=scroll.set)
         self.watch_tree.pack(side='left',fill='both',expand=True);scroll.pack(side='right',fill='y')
         self.watch_tree.bind('<Double-1>',self.edit_live_hex)
-        ttk.Label(inspector,text='Recent raw-field changes (not definitive semantic proof)').pack(anchor='w')
+        ttk.Label(inspector,text='Recent raw-field changes (not definitive semantic proof). F1 opens Live Memory').pack(anchor='w')
         self.event_text=tk.Text(inspector,height=6,wrap='none',font=('Consolas',9),state='disabled',
                                 background='#1a1d23', foreground='#f3eee5',
                                 insertbackground='#edbf6b', selectbackground='#8c3030',
@@ -827,21 +818,6 @@ class InspectorMixin:
         path.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
         return str(path)
 
-    def try_motion_pulse(self,direction=1,speedup=False):
-        if not self.mem:
-            self.motion_status.set('Connect to the game first.')
-            return
-        if not getattr(self.args,'enable_hex_edit',False) or not self.hex_advanced.get():
-            self.motion_status.set('Enable UNSAFE and run with --enable-hex-edit.')
-            return
-        try:
-            result=task_float_probe(self.mem,direction=direction,speedup=speedup)
-            self.motion_status.set(f'4-byte f32 write: {result["address"]}, {result["old_f32"]:.5g} → '
-                                   f'{result["new_f32"]:.5g}; bits {result["bytes_written"]}. Check actual XYZ motion.')
-            self.append_event('EXPERIMENTAL MOTION '+str(result))
-            self.last_inspect_at=0.0
-        except (OSError,ValueError,RuntimeError) as exc:
-            self.motion_status.set(f'Motion experiment failed: {exc}')
 
     def try_reload_warp(self):
         if self.pending_direct_warp:
