@@ -25,6 +25,16 @@ class TestInspector(unittest.TestCase):
         self.assertEqual(rows['Map overlay state (observed)'].addr,0x8015C574)
         self.assertEqual(rows['Map ID'].raw,'0x0023')
 
+    def test_sasuke_battery_bit_live_watch(self):
+        _,ram=self.sample()
+        ram.write_guest(0x8015C609,b'\x85')
+        rows={r.name:r for r in get_watches(ram,ram.snapshot(),SCENES)}
+        self.assertEqual(rows['Sasuke battery 1 collected'].value,'No (bit 0x20)')
+        ram.write_guest(0x8015C609,b'\xA5')
+        rows={r.name:r for r in get_watches(ram,ram.snapshot(),SCENES)}
+        self.assertEqual(rows['Sasuke battery 1 collected'].value,'Yes (bit 0x20)')
+        self.assertEqual(rows['Sasuke battery 1 collected'].raw,'0xA5')
+
     def test_weapon_index_and_map_overlay_live_values(self):
         _,ram=self.sample()
         ram.write_guest(0x8015C607,b'\x02')

@@ -19,6 +19,7 @@ class Unlock:
     levels: tuple[str, ...] = ('Off', 'On')
     quantity: bool = False
     max_value: int | None = None
+    bit_mask: int | None = None  # Packed event flag (logical values 0/1).
 
     @property
     def slug(self) -> str:
@@ -52,7 +53,7 @@ UNLOCKS = (
     Unlock('Cucumber', 0x8015C717, 'Items and keys'),
     Unlock("Lord's Pass", 0x8015C703, 'Items and keys'),
     Unlock('Silver Fortune Doll 1/4', 0x8015C707, 'Items and keys'),
-    Unlock('Sasuke battery? (unverified candidate)', 0x8015C70B, 'Items and keys'),
+    Unlock('Sasuke battery 1 collected', 0x8015C609, 'Items and keys', bit_mask=0x20),
     Unlock("Achilles' Heel", 0x8015C70F, 'Items and keys'),
     Unlock('Red fish count', 0x8015C71B, 'Fish counts', quantity=True, max_value=8),
     Unlock('Blue fish count', 0x8015C723, 'Fish counts', quantity=True, max_value=3),
@@ -76,6 +77,9 @@ def validate_unlocks() -> None:
         assert mapping[unlock.address][0] == 1, f'Not a byte flag: {unlock.label}'
         assert all(0 <= val <= mapping[unlock.address][1] for val in unlock.values)
         assert len(unlock.values) == len(unlock.levels)
+        if unlock.bit_mask is not None:
+            assert 0 < unlock.bit_mask <= 255 and unlock.bit_mask.bit_count() == 1
+            assert not unlock.quantity and unlock.values == (0, 1)
         if unlock.quantity:
             assert mapping[unlock.address][1] == 255
             if unlock.max_value is not None:
@@ -96,7 +100,8 @@ def normalize_unlock_value(unlock: Unlock, target: int) -> int:
 
 
 def read_unlock(ram, unlock: Unlock) -> int:
-    return ram.read_guest(unlock.address, 1)[0]
+    raw = ram.read_guest(unlock.address, 1)[0]
+    return int(bool(raw & unlock.bit_mask)) if unlock.bit_mask is not None else raw
 
 
 def write_unlock(ram, unlock: Unlock, target: int) -> bool:
@@ -108,6 +113,9 @@ def write_unlock(ram, unlock: Unlock, target: int) -> bool:
     """
     target = normalize_unlock_value(unlock, target)
     before = ram.read_guest(unlock.address, 1)
+    if unlock.bit_mask is not None:
+        raw = before[0]
+        target = (raw | unlock.bit_mask) if target else (raw & ~unlock.bit_mask)
     return checked_write(ram, unlock.address, before, bytes((target,)))
 
 

@@ -54,6 +54,14 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-02 — First Sasuke battery CONFIRMED by intervention
+
+User reached the first battery while it was **visible and not collected**, manually wrote `0x20` at guest `0x8015C609` and reloaded the room. Battery disappeared, and the next quest step allowed the **second battery** to spawn. Thus `0x8015C609 & 0x20` is a confirmed first-battery progression bit (gamedata+0x01). Earlier before/after A/B capture also showed `00→20`.
+
+Replaced unsupported `0x8015C70B` first-battery guess with a masked bit toggle in Unlocks. Live Memory decodes Yes/No, and writes use read-modify-write, **preserving all unrelated bits** in this packed event byte. Automated unit/UI tests exercise set, clear, no-op and preservation; not yet game-tested via new UI.
+
+**Second battery:** Its flag is still unknown. User mentioned a second before/after comparison, but **no separate second-battery file was attached** in the current message. Do not confuse earlier `state_probe_20261102_013150_717731.json` (first battery) with a second-battery probe.
+
 ## 2026-11-02 — Sasuke battery #1 pickup before/after probe
 
 **User-provided JSON:** `state_probe_20261102_013150_717731.json`. Ebisumaru (`character=1`), same map `330`, capture A `01:31:40 UTC`, B `01:31:45 UTC`; recorded immediately before and after **first Sasuke battery**. The export's labels accidentally read "Map displayed A/B", but user identifies the actual action as first-battery collection. **No C snapshot** (`capture_C=null`), appropriate for a persistent pickup.

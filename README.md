@@ -1,8 +1,10 @@
-# Goemon Speedrun Tools v0.10.8 — experimental reload and movement probes
+# Goemon Speedrun Tools v0.10.9 — confirmed first Sasuke battery flag
 
 ![Actual Tk dashboard](docs/images/actual-dashboard.webp)
 
-The current application has two opt-in, **unverified** controls for live memory experiments.
+**Verified progression:** Unlocks → Sasuke battery 1 collected uses guest `0x8015C609`, bit `0x20`, preserving other event flags. The pickup disappeared and the second battery became available after an in-game pre-pickup flag write. The second-battery flag remains unmapped.
+
+The current application also has two opt-in, **unverified** controls for live memory experiments.
 
 - **Experimental reload:** In Scene browser choose a destination, enable Live Memory **UNSAFE** and click **EXPERIMENT reload**. The app writes pending map `0x800C7CA0` (u16) and game state `0x800C7A94 = 0x0C`, not the old exit flag. A user demonstrated a target-room load with **incorrect entry coordinates**. The new button monitors resulting map, player position and game state, but does not guess spawn coordinates or promise a valid entrance.
 - **Experimental movement:** In Live Memory use **Probe +4.0**, **Probe -4.0**, or **Speed pulse ×1.5** with UNSAFE enabled. These dynamically resolve `PlayerTask +0x68` and write exactly four IEEE-754 float bytes. This is **not a proven velocity field** or speed hack. Raw four-byte float encodings: +1=`3F800000`, +4=`40800000`, -4=`C0800000`. Writing raw hex `192` is not a float value.

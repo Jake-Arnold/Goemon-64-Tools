@@ -73,6 +73,16 @@ class TestUnlocksUI(unittest.TestCase):
         self.app.write_raw_hex()
         self.assertEqual(self.app.mem.read_guest(0x8015C5E8,4),bytes.fromhex('DEADBEEF'))
 
+    def test_first_battery_toggle_preserves_other_event_bits(self):
+        self.app.mem=FakeRAM()
+        addr=0x8015C609
+        self.app.mem.bytes[addr]=0x85
+        item=BY_ADDRESS[addr]
+        self.app.set_unlock(item,1)
+        self.assertEqual(self.app.mem.bytes[addr],0xA5)
+        self.app.set_unlock(item,0)
+        self.assertEqual(self.app.mem.bytes[addr],0x85)
+
     def test_disconnected_does_not_write(self):
         self.app.set_unlock(BY_ADDRESS[0x8015C6C7], 1)
         self.assertIn('Disconnected', self.app.unlock_status.get())

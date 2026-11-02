@@ -2,6 +2,14 @@
 
 The app now includes two *deliberately manual* experiments. **Scene browser → EXPERIMENT reload** writes pending destination `0x800C7CA0` followed by game state `0x0C`, logs result and position. Do not infer correct entrance spawn. **Live memory → Experimental movement** resolves `PlayerTask +0x68` dynamically and sends 4-byte f32 values. Press `+4.0`, `-4.0`, or `Speed pulse ×1.5`, compare observed XYZ motion in controlled gameplay. The task field is still unknown; an observed nudge is not proof it is velocity. The app never writes eight adjacent bytes in these controls.
 
+## Confirmed Sasuke battery 1 flag (2026-11-02)
+
+| Meaning | Address | Encoding | Confirmation |
+| --- | --- | --- | --- |
+| Sasuke battery 1 collected | `0x8015C609` | `u8` bit `0x20` (`gamedata+0x01`) | User wrote bit before pickup, reloaded; battery disappeared and second became spawnable |
+
+Other flags share the byte. Unlocks now set/clear **only mask `0x20`** while preserving every other bit. Old guessed battery address `0x8015C70B` has been removed from the first-battery UI. **Second battery still unmapped** pending its distinct before/after capture.
+
 # Finding remaining original-game state fields
 
 **Status:** These are research targets, not confirmed addresses. The new **State discovery** tab in v0.10.4 captures a before/after pair (and optionally a return-to-before capture), compares the original N64 guest bytes, and exports candidate addresses. Captures do not write game memory and do not imply that changed addresses control a feature. Current known map/character/resource addresses are unchanged.

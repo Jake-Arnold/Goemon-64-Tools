@@ -6,6 +6,14 @@
 
 ---
 
+## Confirmed Sasuke battery 1 flag (2026-11-02)
+
+| Meaning | Address | Encoding | Confirmation |
+| --- | --- | --- | --- |
+| Sasuke battery 1 collected | `0x8015C609` | `u8` bit `0x20` (`gamedata+0x01`) | User wrote bit before pickup, reloaded; battery disappeared and second became spawnable |
+
+Other flags share the byte. Unlocks now set/clear **only mask `0x20`** while preserving every other bit. Old guessed battery address `0x8015C70B` has been removed from the first-battery UI. **Second battery still unmapped** pending its distinct before/after capture.
+
 # Original MNSG (USA) memory-map watch specification
 
 All addresses below are **original guest N64 addresses** (not host-process pointers). The only confirmed working *host* integration at present is the v0.2 PC RAM discovery and XYZ display; live validation for the new fields is still required.

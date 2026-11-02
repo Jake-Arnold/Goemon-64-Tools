@@ -74,10 +74,27 @@ class TestUnlocks(unittest.TestCase):
     def test_miracle_flags_and_candidate_item_slots(self):
         ram=FakeRAM()
         for address in (0x8015C85B,0x8015C85F,0x8015C863,0x8015C866,
-                        0x8015C703,0x8015C707,0x8015C70B,0x8015C70F):
+                        0x8015C703,0x8015C707,0x8015C70F):
             self.assertIn(address,BY_ADDRESS)
             self.assertTrue(write_unlock(ram,BY_ADDRESS[address],1))
             self.assertEqual(read_unlock(ram,BY_ADDRESS[address]),1)
+
+    def test_sasuke_battery_1_preserves_other_event_flags(self):
+        addr=0x8015C609
+        field=BY_ADDRESS[addr]
+        self.assertEqual(field.bit_mask,0x20)
+        self.assertNotIn(0x8015C70B,BY_ADDRESS)
+        ram=FakeRAM()
+        ram.bytes[addr]=0x85
+        self.assertEqual(read_unlock(ram,field),0)
+        self.assertTrue(write_unlock(ram,field,1))
+        self.assertEqual(ram.bytes[addr],0xA5)
+        self.assertEqual(read_unlock(ram,field),1)
+        self.assertFalse(write_unlock(ram,field,1))
+        self.assertTrue(write_unlock(ram,field,0))
+        self.assertEqual(ram.bytes[addr],0x85)
+        self.assertEqual(len(ram.writes),2)
+        with self.assertRaises(ValueError):write_unlock(ram,field,0x20)
 
     def test_transition_blocks_flag_write(self):
         ram = FakeRAM()

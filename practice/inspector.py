@@ -46,7 +46,7 @@ INVENTORY = [
     ('Triton Shell', 0x8015C6FF, 1, 1, 'user verified in-game'),
     ('Unknown brown item (Achilles Heel? candidate)', 0x8015C703, 1, 1, 'item identity NOT confirmed'),
     ('Silver Fortune Doll? (candidate)', 0x8015C707, 1, 1, 'old GameShark item name, unverified'),
-    ('Sasuke battery? (candidate)', 0x8015C70B, 1, 1, 'unverified battery candidate; write effects not established'),
+    ('Sasuke battery 1 collected', 0x8015C609, 1, 255, 'confirmed event byte bit 0x20; preserve neighbouring flags'),
     ('Round brown item (Achilles Heel? candidate)', 0x8015C70F, 1, 1, 'item identity NOT confirmed'),
     ('Gold Key', 0x8015C713, 1, 1, 'user verified in-game'),
     ('Cucumber (formerly Blue Sausage)', 0x8015C717, 1, 1, 'item identification tentative, previously Blue Sausage'),
@@ -145,6 +145,10 @@ def get_watches(ram, snapshot, scene_names=None):
         validator=lambda v: v in (1,2,3),
         source='confirmed in-game across all four characters; out-of-range entries use unintended weapons')
     for name,addr,width,maximum,hint in INVENTORY:
+        if addr == 0x8015C609:
+            add(name,addr,1,lambda v: 'Yes (bit 0x20)' if v & 0x20 else 'No (bit 0x20)',
+                source='confirmed: pickup disappeared and second battery became available after flag write')
+            continue
         confirmed = (name.startswith('Item slot ') or name.startswith('Goemon pipe upgrade')
                      or name.startswith('Ebisumaru hammer upgrade')
                      or name.startswith('Sasuke kunai upgrade')

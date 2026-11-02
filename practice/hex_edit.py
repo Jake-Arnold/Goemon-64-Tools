@@ -26,7 +26,8 @@ POLICIES = {
     0x8015C5EC:HexPolicy(4,max_value=99,note='Lives'),
 }
 for _name,_addr,_width,_max,_hint in INVENTORY:
-    POLICIES[_addr] = HexPolicy(_width,max_value=_max,note='PROVISIONAL inventory/party mapping: '+_hint)
+    POLICIES[_addr] = HexPolicy(_width,max_value=_max,
+        note=('PACKED progression byte: preserve other bits; ' if _addr==0x8015C609 else 'Inventory/party field: ')+_hint)
 
 # Addresses that can desynchronise game state, crash the game, or exit to title.
 ENGINE_FIELDS = {
