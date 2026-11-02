@@ -1,7 +1,8 @@
 # Congo defeat, Miracle Moon and Lord of Oedo observations
 
-Date: 2026-11-02. These are user-reported gameplay intervals and masked-bit
-observations, not independently reproduced causal tests. Screenshots and raw
+Date: 2026-11-02. The two Lord-event gates below are supported by original-code
+tracing and user-confirmed manual bit tests. Other interval changes remain
+observations with unconfirmed semantics. Screenshots and raw
 captures remain local. A changed bit is not automatically a story trigger.
 
 ## Defeat before collecting the Miracle Moon
@@ -115,9 +116,14 @@ functions. Examples: `0x132` set in `func_080083BC_6BB65C`, clear in
 boundaries are verified against the baseline ELF; flag meaning and actor ownership
 still need control-flow tracing. No new matching-C replacements were produced.
 
-The toolkit now names `0x12D` Lord of Oedo event enabled and `0x097` Lord of Oedo
-event completed / suppressed. These labels combine original-code gates with the
-user's observed appearance/departure. They do not claim a fresh live replay.
+The toolkit now names `0x12D` Lord of Oedo appearance enabled and `0x097` Lord of
+Oedo respawn suppressed. The user has confirmed the exact initializer conditions
+and performed manual bit tests: setting `0x8015C62D & 0x20` made the Lord appear;
+changing `0x8015C61A` from `0x00` to `0x80` prevented respawning. This is stronger
+than the earlier interval correlation and agrees with the original-code gates.
+The tests were performed by the user, not independently replayed by the assistant.
+They do not establish the meaning of other bits or that these gates are sufficient
+for actor construction in every game state.
 
 ## Next investigation
 
@@ -125,5 +131,5 @@ Continue tracing the Lord-event object constructors and post-conversation script
 native leads in the Congo/Moon files to their containing functions. Separately
 capture defeat, Moon pickup, Lord conversation and room transition. Any optional
 manual bit test should change one mask while preserving other bits and observe
-appearance, dialogue, reward and exits separately. No game writes or live quest
-replays were performed for this analysis.
+appearance, dialogue, reward and exits separately. No assistant game writes or live quest replays were performed for this analysis;
+the manual memory-edit confirmation above was supplied by the user.

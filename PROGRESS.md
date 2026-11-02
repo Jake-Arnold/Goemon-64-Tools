@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-02 - user confirms Lord appearance and suppression gates
+
+- Changed: promoted the two Lord gate evidence descriptions from interval observations to user-confirmed manual bit tests alongside the original initializer trace. Labels now describe appearance enabled (0x8015C62D mask 0x20 / ID 0x12D) and respawn suppressed (0x8015C61A mask 0x80 / ID 0x097). Updated research notes and README consistently.
+- Evidence/reason: user reports setting mask 0x20 made the Lord appear, changing byte 0x8015C61A from 0x00 to 0x80 stopped respawning, and explicitly confirms the required-set/block-when-set conditions. This corroborates func_08000000_710660's guards and the subsequent completion writer. Preserve attribution to user-performed tests; no assistant game writes or independent replay claimed.
+- Tests: focused story model/UI suites passed. Existing mask decoding and neighboring-bit coverage retained; no write behavior or schema changes. Limitations: other boss-phase bits remain unresolved; gates are not claimed sufficient for actor construction in every game state. Next: continue native actor/script decomp tracing using these established conditions. Restart existing toolkit windows to refresh catalog evidence.
+
 ## 2026-11-02 - Congo defeat and Lord-event gates traced
 
 - Changed: recorded the user's eleven before-Moon defeat bit transitions and three after-Lord transitions in docs/CONGO_LORD_OBSERVATIONS.md, linking from the ROM trace and README. Kept interval observations distinct from exact semantics and noted known Super Pass ID 0x000 / unknown shared ID 0x05E.

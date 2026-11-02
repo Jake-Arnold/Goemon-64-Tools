@@ -204,5 +204,6 @@ map and change flags; Event sessions now supports these A/B context transitions.
 [Separate before-Moon and after-Lord captures, native function leads and Lord-event
 activation/completion gates](CONGO_LORD_OBSERVATIONS.md) identify required ID
 `0x12D` set and ID `0x097` clear in `func_08000000_710660`. This extends the
-initial pattern scan with manual control-flow evidence. Actor visibility has not
-been independently replayed.
+initial pattern scan with manual control-flow evidence. The user subsequently confirmed both gate conditions with manual bit tests:
+mask `0x20` enables appearance and mask `0x80` prevents respawning. These tests
+were user-performed; no independent assistant replay is claimed.

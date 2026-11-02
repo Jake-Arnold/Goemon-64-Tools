@@ -2,9 +2,8 @@
 
 [Congo/Lord research follow-up](docs/CONGO_LORD_OBSERVATIONS.md): the original
 Lord-event initializer requires `0x8015C62D & 0x20` set and
-`0x8015C61A & 0x80` clear. Both gates now appear in Story progress. This combines
-static code evidence with user observations; no new live quest replay or matching-C
-promotion is claimed.
+`0x8015C61A & 0x80` clear. Both gates now appear in Story progress. Both gate conditions are now user-confirmed by manual bit tests, matching the
+static trace. No independent assistant replay or matching-C promotion is claimed.
 
 ## v0.11.10: cross-room event comparisons
 
