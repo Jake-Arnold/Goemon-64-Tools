@@ -62,3 +62,6 @@ custom_watches.json
 
 # Local decomp batch queues, drafts and compiler probes
 decomp/local/
+
+# ROM-derived per-user entrance atlas
+practice/entrances.json

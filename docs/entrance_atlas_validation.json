@@ -1,0 +1,12 @@
+{
+  "format": "goemon-entrance-extraction-validation-v1",
+  "rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "atlas_sha256": "980a9676b364af83f48437c5fa421dc9dc9e64a82ef8954cad52f4a11b0e7a90",
+  "retail_and_decompressed_equal": true,
+  "rooms": 333,
+  "entries": 888,
+  "destination_stages": 266,
+  "stages_without_coordinates": 67,
+  "unsupported_destinations": 0,
+  "live_warp_test": false
+}

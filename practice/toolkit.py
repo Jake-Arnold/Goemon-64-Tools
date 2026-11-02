@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.7 — external Windows UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.8 — external Windows UI for US Goemon.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -33,6 +33,7 @@ from practice.event_sessions_ui import EventSessionsMixin
 from practice.story_progress_ui import StoryProgressMixin
 from practice.state_discovery import measured_velocity
 from practice.experimental_controls import stage_reload_trial
+from practice.entrances import checkpoint_spawn
 from practice.checkpoints import MAP_ADDR, _ensure_capture_safe, validate_checkpoint
 from practice.native_character import (
     prepare_character_swap, undo_character_preparation,
@@ -87,7 +88,7 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.7 · USA N64")
+        root.title("Goemon Practice Toolkit v0.11.8 · USA N64")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -125,7 +126,7 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.7  |  US Goemon · Recomp / Project64',
+        ttk.Label(header, text='v0.11.8  |  US Goemon · Recomp / Project64',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -365,6 +366,7 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
             return
         self.cancel_pending_restore(quiet=True)
         self.pending_direct_warp = None
+        self.pending_native_warp = None
         self._connecting = True
         self.connect_button.state(['disabled'])
         self.status.set('Connecting: searching for Goemon RAM (interface remains responsive)...')
@@ -722,6 +724,9 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
         if self.pending_restore:
             self.status.set('A checkpoint restore is already pending; cancel it first.')
             return
+        if self.pending_direct_warp or self.pending_native_warp:
+            self.status.set('Finish or cancel the scene request before restoring a checkpoint.')
+            return
         cp=self.checkpoints[i]
         p=cp['payload']
         try:
@@ -737,14 +742,14 @@ class Toolkit(StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, Unloc
         if not messagebox.askyesno('EXPERIMENTAL checkpoint restore (practice only)',
              message + '\n\nIf the saved character differs, the toolkit will use native C-Down or wait for manual switching.'
              '\nThis is NOT a native savestate: actors, active scripts, physics and camera are not restored.'
-             '\nThe experimental area reload may use a wrong initial spawn or fail. Use a backup save. Continue?'):
+             '\nSaved entrance coordinates are staged before reload. The transition remains experimental; use a backup save. Continue?'):
             return
         try:
             if cross_area:
                 # The saved map is known to exist because we captured it in
-                # a stable game session. Trigger stage reload but do NOT write
-                # positions until state is 0x0D and the new player is ready.
-                stage_reload_trial(self.mem,p['map_id'],{p['map_id']:'Checkpoint saved map'})
+                # a stable game session. Stage native pending coordinates before
+                # reload; restore exact float XYZ only after the new player is ready.
+                stage_reload_trial(self.mem,p['map_id'],{p['map_id']:'Checkpoint saved map'},spawn=checkpoint_spawn(cp))
                 self.pending_restore=dict(checkpoint=cp, target=p['character'],
                     phase='warp',source_map=current_map,source_player=before['player_ptr'],
                     party_patch=None,started=time.monotonic(),stable=0,stable_player=None)

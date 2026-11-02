@@ -1,3 +1,16 @@
+# Goemon Speedrun Tools v0.11.8 — entrance-aware scene placement
+
+The Scene browser now loads entrance coordinates from your original USA ROM,
+stages XYZ/heading before experimental reloads and checks the loaded player before
+one position correction. Unique source-room routes or native defaults are selected;
+ambiguous entrances require a choice. Checkpoint reloads stage their saved position.
+
+The local atlas contains 888 records for 266 destination stages. Missing points
+block the request instead of using stale/zero coordinates. Read-only and position
+restore settings are respected. [Usage, coverage and native evidence](docs/ENTRANCE_WARPS.md).
+No live warp test was performed; collision/camera/script behavior remains unverified.
+Restart source via Run.bat; no executable was rebuilt.
+
 # Goemon Speedrun Tools v0.11.7 — externally annotated story flags
 
 Story progress now includes **37 additional mappings from existing mn64rando

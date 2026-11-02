@@ -7,6 +7,7 @@ from unittest.mock import patch
 from practice.toolkit import Toolkit
 from practice.checkpoints import STATE_ADDR
 from practice.scene_controls import PENDING_MAP_ADDR
+from practice.entrances import SCHEMA,US_RETAIL_SHA1,digest
 from tests.test_checkpoint import TestCheckpoint
 
 class TestExperimentalGUI(unittest.TestCase):
@@ -20,6 +21,9 @@ class TestExperimentalGUI(unittest.TestCase):
         _,self.ram=TestCheckpoint().sample()
         self.app.mem=self.ram
         self.ram.write_guest(PENDING_MAP_ADDR,(35).to_bytes(2,'big'))
+        payload=dict(format=SCHEMA,rom_sha1=US_RETAIL_SHA1,rooms=[35,353],entries=[dict(id='test',kind='exit',source_map=35,source_file=0x337,definition=0,exit_id=1,destination=353,position=[95,0,-350],heading=0x300,mode=0x10)])
+        self.app.entrance_atlas={'payload':payload,'sha256':digest(payload)}
+        self.app.scene_list.delete(0,'end')
 
     def tearDown(self):
         if hasattr(self,'root'):self.root.destroy()
@@ -54,7 +58,8 @@ class TestExperimentalGUI(unittest.TestCase):
             for dt in (1,1.2,1.4):
                 self.app.poll_direct_warp(pending['start_at']+dt)
         self.assertIsNone(self.app.pending_direct_warp)
-        self.assertIn('global and task ID verified',self.app.scene_status.get())
+        self.assertIn('Character verified',self.app.scene_status.get())
+        self.assertEqual(self.ram.snapshot()['x'],95)
 
     def test_wrong_spawn_character_is_reported_without_postload_input(self):
         from practice.checkpoints import MAP_ADDR
@@ -72,10 +77,11 @@ class TestExperimentalGUI(unittest.TestCase):
         self.ram.write_guest(CHARACTER_ID_ADDR,(0).to_bytes(4,'big'))
         self.ram.write_guest(self.ram.snapshot()['task_ptr']+0x60,b'\x00')
         with patch('practice.native_character.press_native_c_down',side_effect=AssertionError('NO C-Down permitted')):
-            for dt in (1,1.2,1.4):
+            for dt in (1,1.2,1.4,16):
                 self.app.poll_direct_warp(pending['start_at']+dt)
         self.assertIsNone(self.app.pending_direct_warp)
-        self.assertIn('was NOT verified',self.app.scene_status.get())
+        self.assertIn('timed out',self.app.scene_status.get())
+        self.assertAlmostEqual(self.ram.snapshot()['x'],125.25)
         self.assertEqual(self.ram.u32(CHARACTER_ID_ADDR),0)
 
     def test_warp_only_explicit_button_and_confirmation(self):

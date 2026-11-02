@@ -13,6 +13,8 @@ from practice.scenes import SCENES, scene_label
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
 from practice.checkpoints import MAP_ADDR, STATE_ADDR
 from practice.experimental_controls import stage_reload_trial
+from practice.entrance_ui import EntranceMixin
+from practice.scene_placement import SpawnPlacement
 from practice.paths import practice_data_dir, diagnostics_dir
 from practice.custom_watches import (CustomWatch, FORMATS, make_watch, append_watch,
                                      load_watches, save_watches, read_watch)
@@ -30,8 +32,9 @@ from practice.native_character_cursor_scan import (
 DEBUG_PROFILE_PATH = practice_data_dir() / "native_debug_fields.json"
 CUSTOM_WATCHES_PATH = practice_data_dir() / "custom_watches.json"
 
-class InspectorMixin:
+class InspectorMixin(EntranceMixin):
     def build_inspector_tabs(self, notebook):
+        self.init_entrances()
         self.watch_previous={}
         self.hex_advanced=tk.BooleanVar(value=bool(self.args.enable_hex_edit))
         self.watch_rows=[]
@@ -147,7 +150,7 @@ class InspectorMixin:
         self.scene_tab=scenes
         self.scene_live=tk.StringVar(value='Current map: —')
         ttk.Label(scenes,textvariable=self.scene_live,font=('Consolas',12)).pack(anchor='w',pady=4)
-        ttk.Label(scenes,text='Double-click = select requested scene (READ ONLY). Warp is disabled until the correct game loader path is identified.').pack(anchor='w')
+        ttk.Label(scenes,text='Double-click selects a stage without writing memory. Choose an entrance, then use an explicit scene request button.').pack(anchor='w')
         character_line=ttk.Frame(scenes);character_line.pack(fill='x',pady=4)
         ttk.Label(character_line,text='Target character:').pack(side='left')
         self.scene_character=ttk.Combobox(character_line,state='readonly',width=30,
@@ -155,11 +158,12 @@ class InspectorMixin:
         self.scene_character.current(0)
         self.scene_character.pack(side='left',padx=8)
         ttk.Label(character_line,text='Experimental pre-load spawn ID, no C-Down. Native model selection unverified.').pack(side='left')
+        self.build_entrance_controls(scenes)
         self.scene_filter=tk.StringVar()
         ttk.Entry(scenes,textvariable=self.scene_filter).pack(fill='x',pady=6)
         self.scene_filter.trace_add('write',lambda *_:self.draw_scene_list())
         scene_frame=ttk.Frame(scenes);scene_frame.pack(fill='both',expand=True)
-        self.scene_list=tk.Listbox(scene_frame,font=('Consolas',10),exportselection=False,height=16,
+        self.scene_list=tk.Listbox(scene_frame,font=('Consolas',10),exportselection=False,height=6,
                                    background='#1a1d23', foreground='#f3eee5',
                                    selectbackground='#8c3030',selectforeground='#fff',
                                    relief='flat',highlightthickness=0)
@@ -169,8 +173,8 @@ class InspectorMixin:
         self.scene_list.bind('<<ListboxSelect>>',self.select_scene)
         self.scene_list.bind('<Double-Button-1>',self.activate_selected_scene)
         self.draw_scene_list()
-        ttk.Label(scenes,text='Experimental 0x0C reload: stage map and character ID before native loading. NO simulated C-Down. Wrong spawn coordinates or desynchronised actor are possible; loaded task ID is checked. Previous exit-flag route remains disabled.',wraplength=950).pack(anchor='w',pady=3)
-        self.experimental_warp_btn=ttk.Button(scenes,text='EXPERIMENT: reload into selected stage (wrong spawn possible)',
+        ttk.Label(scenes,text='Experimental 0x0C reload: stage the selected ROM entrance XYZ and facing before native loading, then place the loaded player after destination/character checks. Collision, camera and scene scripts still require live validation. The old exit-flag route remains disabled.',wraplength=950).pack(anchor='w',pady=3)
+        self.experimental_warp_btn=ttk.Button(scenes,text='EXPERIMENT: reload at selected entrance',
             command=self.try_reload_warp,style='Gold.TButton')
         self.experimental_warp_btn.pack(fill='x',pady=4)
         if not self.args.enable_hex_edit:self.experimental_warp_btn.state(['disabled'])
@@ -420,7 +424,7 @@ class InspectorMixin:
 
     def draw_scene_list(self):
         filt=self.scene_filter.get().lower().strip()
-        self.scene_options=[(k,v) for k,v in sorted(SCENES.items()) if filt in f'{k} {k:03X} {v}'.lower()]
+        self.scene_options=[(k,v) for k,v in sorted(self.scene_catalog().items()) if filt in f'{k} {k:03X} {v}'.lower()]
         self.scene_list.delete(0,'end')
         for k,v in self.scene_options:self.scene_list.insert('end',f'{k:03d} [0x{k:03X}]  {v}')
 
@@ -822,7 +826,8 @@ class InspectorMixin:
                  'requested_character':pending.get('selected_character'),
                  'observed_character':pending.get('observed_character'),
                  'character_staged':pending.get('character_staged',False),
-                 'status':pending['status'], 'samples':pending['events']}
+                 'status':pending['status'], 'samples':pending['events'],
+                 'entrance':pending.get('entrance'),'placement':pending.get('placement_result')}
         path.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
         return str(path)
 
@@ -843,17 +848,21 @@ class InspectorMixin:
         if not self.mem:
             self.scene_status.set('Connect to Goemon64Recomp first.')
             return
+        if not getattr(self.args,'enable_teleport',False):
+            self.scene_status.set('Position restoration is disabled; entrance reload was not sent.');return
         if not getattr(self.args,'enable_hex_edit',False) or not self.hex_advanced.get():
             self.scene_status.set('Enable Live Memory UNSAFE before experimental reloading.')
             return
-        if not messagebox.askyesno('EXPERIMENTAL scene reload (wrong spawn)',
-            f'Write pending map {dest} ({name}), then state 0x0C?\n\n'
-            f'Test PRE-LOAD character {target_character} by writing global character ID before state 0x0C.\n'
-            'NO C-Down will be pressed. Model/spawn selection can FAIL or crash; the normal '
-            'loader may override the ID. Entry coordinates may be wrong. Use a disposable save.'):
+        try:spawn=self.selected_scene_spawn(dest)
+        except ValueError as exc:
+            self.scene_status.set(str(exc));return
+        if not messagebox.askyesno('Experimental entrance reload',
+            f'Reload {dest} ({name}) at {spawn.label}?\n'
+            f'XYZ {tuple(spawn.position)}, character {target_character}.\n'
+            'The original reload remains experimental; model, collision, camera and scripts may differ from an ordinary door transition.'):
             return
         try:
-            info=stage_reload_trial(self.mem,dest,SCENES,spawn_character=target_character)
+            info=stage_reload_trial(self.mem,dest,self.scene_catalog(),spawn_character=target_character,spawn=spawn)
             now=__import__('time').monotonic()
             self.pending_direct_warp={
                 'map_id':dest,'from_map':info['source_map'],'character':info['source_character'],
@@ -862,9 +871,11 @@ class InspectorMixin:
                 'source_position':info['source_position'], 'start_at':now, 'last_message_at':now,
                 'date_code':datetime.now().strftime('%Y%m%d_%H%M%S_%f'),
                 'events':[], 'status':'requested_0x0C','stable':0,
+                'entrance':dict(id=spawn.entrance_id,label=spawn.label,position=list(spawn.position),heading=spawn.heading,mode=spawn.mode),
+                'placement':SpawnPlacement(self.mem,spawn,target_character,info['source_map'],info['player_ptr'],info['task_ptr'],now,seen_transition=True),
             }
             self.scene_status.set(f'Experimental reload sent: {info["source_map"]} → {dest}. '
-                f'Character {target_character} staged BEFORE reload; no C-Down. Entrance is NOT corrected.')
+                f'Entrance XYZ {tuple(spawn.position)} staged before reload; waiting to check the loaded player.')
         except (OSError,ValueError,RuntimeError) as exc:
             self.scene_status.set(f'Reload trial failed: {exc}')
 
@@ -879,51 +890,29 @@ class InspectorMixin:
         self.pending_direct_warp=None
 
     def poll_direct_warp(self,now):
-        """Observe native reload; NEVER press C-Down or mutate the loaded actor."""
+        """Place only the requested destination player; never repair actor IDs."""
         pending=self.pending_direct_warp
         if not pending or not self.mem:return
+        if getattr(self.args,'read_only',False) or not self.args.enable_teleport or not self.args.enable_hex_edit or not self.hex_advanced.get():
+            self.pending_direct_warp=None;return
         try:
             assessment=assess_direct_warp(self.mem,pending['map_id'])
-            sample={'seconds':round(now-pending['start_at'],3),**assessment}
-            if assessment['status']=='loaded_and_playable':
-                try:
-                    pos=self.mem.snapshot()
-                    sample['observed_position']=[pos.get(k) for k in ('x','y','z')]
-                except (OSError,ValueError):pass
-            if not pending['events'] or sample != pending['events'][-1]:
-                pending['events'].append(sample)
-            if assessment['status']=='loaded_and_playable':
-                pending['stable']+=1
-            else:
-                pending['stable']=0
-            if pending['stable']>=3:
-                pending['observed_character']=assessment['character']
-                expected=pending['selected_character']
-                if ready_for_scene_spawn(self.mem,pending['map_id'],expected):
-                    self._finish_direct_warp(pending,'loaded_selected_character_observed',
-                        f'RELOAD trial: map {pending["map_id"]} playable with character {expected} '
-                        '(global and task ID verified). Model appearance and spawn coordinates remain UNVERIFIED.')
-                else:
-                    self._finish_direct_warp(pending,'loaded_wrong_character_or_task',
-                        f'RELOAD trial: map {pending["map_id"]} loaded, but expected character {expected} '
-                        f'was NOT verified (global ID {assessment["character"]}). '
-                        'No post-load C-Down or unsafe actor repair was attempted.')
-            elif now-pending['start_at']>=8.0:
-                self._finish_direct_warp(pending,'not_confirmed_timeout',
-                    'DIRECT trial NOT CONFIRMED after 8 seconds. No retry or further writes.')
-            elif int((now-pending['start_at'])*2) != int((now-pending['last_message_at'])*2):
-                pending['last_message_at']=now
-                self.scene_status.set('Direct request sent; waiting for an actual playable map %d. Current game state %d; map %d. No debug menu opened.' %
-                        (pending['map_id'],assessment['state'],assessment['map_id']))
-        except (OSError, ValueError) as exc:
-            self._finish_direct_warp(pending,'monitor_error: '+str(exc),
-                'Direct warp monitoring failed: '+str(exc))
+            pending['events'].append({'seconds':round(now-pending['start_at'],3),**assessment})
+            result=pending['placement'].poll(self.mem,now)
+            if result['status']=='placed':
+                pending['placement_result']=result;pending['observed_character']=result['character']
+                self._finish_direct_warp(pending,'entrance_coordinates_applied',
+                    f'Entrance XYZ applied in stage {pending["map_id"]}: {tuple(result["observed"])}. '
+                    'Character verified; confirm footing/camera in-game.')
+            else:self.scene_status.set(f'Reload requested; waiting for entrance placement ({result["reason"]}).')
+        except (OSError,ValueError,RuntimeError) as exc:
+            self._finish_direct_warp(pending,'placement_stopped',f'Entrance placement stopped: {exc}. No further writes.')
 
     def request_direct_scene(self,mid,name):
         """Double-click is selection-only; experimental writes need a dedicated button."""
         self.scene_status.set(
             f'Selected {mid} ({name}); double-click warp DISABLED, no memory writes sent. Use the explicit '
-            'EXPERIMENT 0x0C reload button after enabling UNSAFE; entry coordinates are unverified.'
+            'EXPERIMENT reload button and choose a ROM entrance after enabling UNSAFE.'
         )
 
     def start_transition_trace(self):
@@ -971,7 +960,7 @@ class InspectorMixin:
         self.transition_status.set('Exported READ-ONLY transition trace: %s (%d full samples, %d change events).' % (path, len(report.get('samples_trace', [])), len(report.get('events', []))))
 
     def poll_native_warp_menu(self,now):
-        if getattr(self.args, 'read_only', False):
+        if getattr(self.args, 'read_only', False) or not self.args.enable_teleport:
             self.pending_native_warp=None
             return
         pending=self.pending_native_warp
@@ -982,7 +971,7 @@ class InspectorMixin:
             self.pending_native_warp=None
             return
         state=self.mem.u8(STATE_ADDR)
-        if state==10 and not pending['staged'] and now>=pending['start_at']:
+        if state==10 and not pending.get('manual') and not pending['staged'] and now>=pending['start_at']:
             try:
                 info=stage_menu_selection(self.mem,self.debug_profile,pending['map_id'],pending['character'])
                 pending['staged']=True
@@ -1012,11 +1001,14 @@ class InspectorMixin:
             except Exception as exc:
                 self.scene_status.set(f'Debug selection staged; press A in the game manually: {exc}')
                 pending['confirmed']=True
-        if state==13 and pending['staged']:
-            current_map=self.mem.u16(MAP_ADDR)
-            active_character=self.mem.u32(0x8015C5DC)
-            if current_map==pending['map_id'] and active_character==pending['character']:
-                self.scene_status.set(f'Native debug warp observed: map {current_map} and character {active_character}.')
+        if pending.get('placement'):
+            try:
+                result=pending['placement'].poll(self.mem,now)
+                if result['status']=='placed':
+                    self.scene_status.set(f'Native-menu destination {pending["map_id"]}: entrance XYZ applied {tuple(result["observed"])}; confirm footing in-game.')
+                    self.pending_native_warp=None
+            except (OSError,ValueError,RuntimeError) as exc:
+                self.scene_status.set('Native entrance placement stopped: '+str(exc))
                 self.pending_native_warp=None
 
     def _release_debug_key(self):
@@ -1030,8 +1022,9 @@ class InspectorMixin:
         if not chosen:return
         mid,name=self.scene_options[chosen[0]]
         self.scene_selected=mid
+        self.refresh_entrance_choices(mid)
         try:
-            target=native_debug_selection(mid,SCENES)
+            target=native_debug_selection(mid,self.scene_catalog())
             self.scene_status.set(
                 f'Selected {mid}: {name}. Native debug index: {target["label"]}. '
                 'Direct warp disabled; double-click will make NO guest memory writes. Separate button opens the original debug menu.')
@@ -1055,6 +1048,15 @@ class InspectorMixin:
         if not self.mem or not self.args.enable_debug_menu:
             messagebox.showerror('Not connected','Connect via Run.bat first')
             return
+        if not self.args.enable_teleport:
+            self.scene_status.set('Position restoration is disabled; scene request was not sent.');return
+        if self.pending_direct_warp or self.pending_restore or self.pending_native_warp:
+            self.scene_status.set('Another scene or checkpoint request is pending.');return
+        try:
+            spawn=self.selected_scene_spawn(mid)
+            source=self.mem.snapshot();source_map=self.mem.u16(MAP_ADDR)
+        except (OSError,ValueError) as exc:
+            self.scene_status.set(str(exc));return
         ready=calibrated_for_direct_warp(self.debug_profile)
         if ready and not self.native_warp_confirmed:
             if not messagebox.askyesno('Experimental native warp',
@@ -1069,16 +1071,14 @@ class InspectorMixin:
                 return
             self.debug_shortcut_confirmed=True
         try:
-            result=open_native_debug_for_scene(self.mem,mid,SCENES)
+            result=open_native_debug_for_scene(self.mem,mid,self.scene_catalog())
             from time import monotonic
-            if ready:
-                now=monotonic()
-                self.pending_native_warp={'map_id':mid,'character':character,'start_at':now+0.85,
-                                          'deadline':now+18,'staged':False,'confirmed':False,'confirm_at':None}
-                self.scene_status.set(f'Opening N64 debug menu; will stage character {character}, scene {mid} using learned menu fields.')
-            else:
-                self.scene_status.set(f'Original debug menu opened. TARGET {result["label"]}; character {character}. '
-                                      'Manual selection required until native menu fields have been learned in calibration tab.')
+            now=monotonic();timeout=18 if ready else 90
+            self.pending_native_warp={'map_id':mid,'character':character,'start_at':now+0.85,
+                'deadline':now+timeout,'staged':False,'confirmed':False,'confirm_at':None,'manual':not ready,
+                'placement':SpawnPlacement(self.mem,spawn,character,source_map,source['player_ptr'],source['task_ptr'],now,timeout=timeout)}
+            if ready:self.scene_status.set(f'Opening native menu for stage {mid}; entrance placement is armed.')
+            else:self.scene_status.set(f'Native menu opened. Manually choose {result["label"]}, character {character}; selected entrance XYZ will apply only after that destination loads.')
         except (OSError,ValueError,RuntimeError) as exc:
             self.scene_status.set(f'Native debug entry blocked: {exc}')
             messagebox.showerror('Native debug entry failed',str(exc))

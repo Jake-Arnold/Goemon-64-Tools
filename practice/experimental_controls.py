@@ -7,8 +7,9 @@ from __future__ import annotations
 
 import math
 import struct
-from practice.checkpoints import MAP_ADDR, PHASE_ADDR, STATE_ADDR
+from practice.checkpoints import MAP_ADDR, PHASE_ADDR, STATE_ADDR, _ensure_capture_safe
 from practice.scene_controls import PENDING_MAP_ADDR
+from practice.entrances import Spawn
 
 ACTIVE_CHARACTER_ADDR = 0x8015C5DC  # u32; area-entry actor loader reads this global
 
@@ -28,8 +29,8 @@ def _gameplay(ram):
     return snap
 
 
-def stage_reload_trial(ram, destination: int, scenes: dict, *, spawn_character: int | None = None) -> dict:
-    """Experimental native-style area reload, optionally staging the spawn ID.
+def stage_reload_trial(ram, destination: int, scenes: dict, *, spawn_character: int | None = None, spawn: Spawn | None = None) -> dict:
+    """Experimental area reload with optional native entrance and character staging.
 
     The original area-entry model loader reads the global u32 character ID.
     Unlike ordinary gameplay writes, this one is immediately followed by the
@@ -41,9 +42,15 @@ def stage_reload_trial(ram, destination: int, scenes: dict, *, spawn_character: 
         raise ValueError('Choose a known USA destination')
     if spawn_character is not None and (type(spawn_character) is not int or spawn_character not in range(4)):
         raise ValueError('Selected spawn character must be 0–3')
+    if spawn is not None:
+        if not isinstance(spawn,Spawn) or spawn.destination!=destination:raise ValueError('Spawn does not belong to the destination')
+        spawn.validate()
     snap = _gameplay(ram)
+    if spawn is not None:
+        guarded=_ensure_capture_safe(ram)
+        if (guarded['player_ptr'],guarded['task_ptr'])!=(snap['player_ptr'],snap['task_ptr']):raise RuntimeError('Player changed before spawn staging')
     origin = ram.u16(MAP_ADDR)
-    previous_pending = ram.read_guest(PENDING_MAP_ADDR, 2)
+    previous_pending = ram.read_guest(PENDING_MAP_ADDR, 12 if spawn is not None else 2)
     previous_character = ram.read_guest(ACTIVE_CHARACTER_ADDR, 4)
     current_character = int.from_bytes(previous_character,'big')
     if current_character not in range(4) or snap.get('character') != current_character:
@@ -51,16 +58,16 @@ def stage_reload_trial(ram, destination: int, scenes: dict, *, spawn_character: 
     selected_character = current_character if spawn_character is None else spawn_character
     if ram.u8(STATE_ADDR) != GAMEPLAY_STATE or ram.u16(MAP_ADDR) != origin:
         raise RuntimeError('Game changed while preparing the reload')
-    selected_map = destination.to_bytes(2,'big')
+    selected_map = spawn.pending_bytes() if spawn is not None else destination.to_bytes(2,'big')
     desired_character = selected_character.to_bytes(4,'big')
     wrote_character = False
     wrote_pending = False
     try:
-        # Stage the destination and character BEFORE requesting state 0x0C.
+        # Stage destination/entrance parameters and character BEFORE state 0x0C.
         # Every step is verified while we still have stable gameplay state.
         ram.write_guest(PENDING_MAP_ADDR, selected_map)
         wrote_pending = True
-        if ram.read_guest(PENDING_MAP_ADDR,2) != selected_map:
+        if ram.read_guest(PENDING_MAP_ADDR,len(selected_map)) != selected_map:
             raise OSError('Pending destination did not verify; reload not requested')
         if selected_character != current_character:
             if ram.read_guest(ACTIVE_CHARACTER_ADDR,4) != previous_character:
@@ -84,14 +91,15 @@ def stage_reload_trial(ram, destination: int, scenes: dict, *, spawn_character: 
             if wrote_character and ram.read_guest(ACTIVE_CHARACTER_ADDR,4) == desired_character:
                 try:ram.write_guest(ACTIVE_CHARACTER_ADDR,previous_character)
                 except OSError:pass
-            if wrote_pending and ram.read_guest(PENDING_MAP_ADDR,2) == selected_map:
+            if wrote_pending and ram.read_guest(PENDING_MAP_ADDR,len(selected_map)) == selected_map:
                 try:ram.write_guest(PENDING_MAP_ADDR,previous_pending)
                 except OSError:pass
         raise
     return dict(destination=destination, source_map=origin, source_character=current_character,
                 requested_character=selected_character, character_staged=wrote_character,
                 source_position=[snap[k] for k in ('x','y','z')],
-                task_ptr=snap['task_ptr'], previous_pending=int.from_bytes(previous_pending,'big'),
+                task_ptr=snap['task_ptr'], player_ptr=snap['player_ptr'], previous_pending=int.from_bytes(previous_pending[:2],'big'),
+                staged_spawn=(dict(position=list(spawn.position),heading=spawn.heading,mode=spawn.mode,entrance_id=spawn.entrance_id) if spawn is not None else None),
                 status='reload_requested_character_and_spawn_unverified')
 
 
