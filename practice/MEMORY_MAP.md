@@ -75,6 +75,14 @@ The map address may be involved in UI state and side effects. Do not equate writ
 
 Player-task f32 probes from Ebisumaru are **not proven velocity**: values also vary while stationary during NPC conversations. The `~192` maximum reported from byte watches is the numeric value of `0xC0`, the high byte of some negative f32 encodings, rather than a velocity cap. To inspect these fields, read four bytes as f32 and follow the live dynamic player-task pointer.
 
+### Sasuke battery #1 pickup probe (2026-11-02)
+
+- Same map 330, Ebisumaru; A/B only (no C), immediately before/after collecting the first battery. Label "Map displayed" on JSON is incorrect for actual action.
+- **Best candidate:** `0x8015C609`, `00 → 20`. This is **gamedata+0x01, bit `0x20`** in the saved event-flag bitfield `gamedata+0x00..+0x63`; pickup control still unverified.
+- Secondary `0x8015C86B`, `01 → 02`, might be progression counting but unverified. `0x8015CC30`: `5C → 5D`, `0x8015CC7A`: `01 → 00`.
+- Earlier guessed battery address `0x8015C70B` remained unchanged in the scanned region; **not supported by this pickup**.
+- To verify, modify only bit `0x20` at `0x8015C609` and test stage reload/second battery progression with a disposable save. Do not overwrite other event bits.
+
 ## Provenance
 
 - Original recomp game types and player object pointers: https://github.com/klorfmorf/Goemon64Recomp/blob/dev/patches/variables.h

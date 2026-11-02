@@ -106,7 +106,8 @@ def compare_captures(before: ProbeCapture, after: ProbeCapture,
             returned=(restore is not None and restore.data[i]==a)
             if reverted is not None and not returned:
                 continue
-            totals['reverting_changes']+=1
+            if returned:
+                totals['reverting_changes']+=1
             mask=a^b
             is_bit=mask.bit_count()==1
             binary=a in (0,1) and b in (0,1)

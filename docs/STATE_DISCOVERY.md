@@ -20,6 +20,12 @@ The new Live Memory **Custom watches** controls can monitor the raw byte continu
 - **Secondary weapon candidate rejected:** `0x8014C340` oscillates `0x40`/`0x41` and sometimes `0x00`; it does not identify the selected weapon.
 - **Velocity remains unconfirmed:** session-local player-task f32 offsets `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C` all read zero while still but can vary during an NPC conversation. The reported `~192` maxima came from byte-level watches: `0xC0` (decimal `192`) is merely the most-significant byte of a negative IEEE-754 f32, e.g. `0xC02D9CA2` is about `-2.7127`. Compare **f32** values in running / jumping / stationary / dialogue states; do not assume byte values represent speed. Dynamic absolute player-task addresses may change after room loads.
 
+## Sasuke first battery pickup probe (2026-11-02)
+
+A/B captured before and after the first Sasuke battery (Ebisumaru, map 330; JSON labels incorrectly say "Map displayed"). The key change is **`0x8015C609: 00 → 20`**. This is at `gamedata+0x01`, inside the known persistent event-flag block. It is the strongest **unverified** flag candidate. Other changes `0x8015C86B: 01 → 02`, `0x8015CC30: 5C → 5D`, `0x8015CC7A: 01 → 00` require further tests. Previous hypothesised battery slot `0x8015C70B` was in the scan but did not change.
+
+Capture C was **not taken** and is generally inappropriate after an irreversible collection. In v1 exports, `reverting_changes` was erroneously incremented without C. That count was fixed: without C, only `observed_changes` has meaning. Keep the full before/after JSON as your private diagnostic (do not commit it to the public repository).
+
 ## Capture protocol
 
 1. Connect to **US Goemon64Recomp** and select **State discovery**.

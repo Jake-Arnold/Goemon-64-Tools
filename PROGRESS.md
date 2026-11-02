@@ -54,6 +54,18 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-02 — Sasuke battery #1 pickup before/after probe
+
+**User-provided JSON:** `state_probe_20261102_013150_717731.json`. Ebisumaru (`character=1`), same map `330`, capture A `01:31:40 UTC`, B `01:31:45 UTC`; recorded immediately before and after **first Sasuke battery**. The export's labels accidentally read "Map displayed A/B", but user identifies the actual action as first-battery collection. **No C snapshot** (`capture_C=null`), appropriate for a persistent pickup.
+
+**Strongest candidate:** `0x8015C609`: `00 → 20` (u8 bit `0x20` set). The address is `gamedata+0x01` where saved `gamedata` starts at `0x8015C608`; independent reverse-engineering documents `gamedata +0x00..+0x63` as the persistent event-flag bitfield (https://github.com/ogdanimal/Goemon64Recomp-Android/blob/main/docs/re-notes/goemon_save_re.md). This is consistent with a one-time pickup/event and is a **strong candidate, not confirmed**.
+
+Other changed persistent-looking bytes: `0x8015C86B` `01 → 02` (gamedata+0x263; possible progression counter, unverified), `0x8015CC30` `5C → 5D`, `0x8015CC7A` `01 → 00`. These may be unrelated event, timer or temporary context changes. The former tentative **Sasuke battery candidate** `0x8015C70B` lies inside the scanned game-data range but **did not change**; downgrade it / do not promote it as acquired battery.
+
+**Verification:** using a session/save from before the first pickup, toggle only bit `0x20` of `0x8015C609` (`byte |= 0x20`), reload area and check battery visual/pickup/story behaviour. To reverse, clear only that bit (`byte &= 0xDF`), preserving other progress bits. A/B scans for Sasuke's second battery may independently corroborate first-battery progress semantics. Do not equate this with the inventory item code slots.
+
+**Bug found and corrected:** `compare_captures` previously incremented `reverting_changes` even when `capture_C=null`, so this export misleadingly showed 67 "reverting" changes. The true result is 67 observed changed bytes and **no reversibility test**; new reports count only actual C-matched bytes. Regression test added; no live-memory behaviour altered.
+
 ## 2026-11-02 — v0.10.8 experimental reload and movement probes
 
 - Added dedicated, opt-in scene reload from the observed pending destination (`0x800C7CA0`) → state `0x0C`. No exit-flag, current-map, or XYZ overwrite. Double-click remains read-only. Uses UNSAFE and explicit consent; monitors target scene and position, and does **not** claim correct spawn.

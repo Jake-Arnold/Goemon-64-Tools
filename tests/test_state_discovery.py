@@ -35,13 +35,16 @@ class StateDiscoveryTests(unittest.TestCase):
         report=compare_captures(a,b)
         matches=[r for r in report['candidates'] if r['address']==f'0x{addr:08X}']
         self.assertEqual(len(matches),1)
+        self.assertEqual(report['counts']['reverting_changes'],0)  # No C capture: no verified reversals.
         self.assertEqual(matches[0]['kind'],'boolean')
         self.assertEqual(matches[0]['xor_mask'],'01')
         # A third capture that did not revert must filter out the persistent flag.
         self.assertEqual(compare_captures(a,b,c)['counts']['candidate_count'],0)
         mem.write(addr,b'\x00')
         d=capture_state(mem,'Travel D')
-        self.assertTrue(compare_captures(a,b,d)['candidates'][0]['reverted'])
+        restored=compare_captures(a,b,d)
+        self.assertTrue(restored['candidates'][0]['reverted'])
+        self.assertEqual(restored['counts']['reverting_changes'],1)
 
     def test_dynamic_float_candidate_and_pointer_changes(self):
         mem=Memory()
