@@ -1,5 +1,12 @@
 ## Code-backed follow-up (2026-11-02)
 
+[Later Benkei/Kihachi tracing](BENKEI_KIHACHI_TRACE.md) identifies the referral/
+native initialization gate as `0x8015C60C & 0x08` and the later Benkei dialogue
+condition as `0x8015C60E & 0x04`. Setting the whole latter byte to `2E` also forces
+unrelated reward flags; use isolated masks from a preserved baseline. The report
+includes existing-source coverage so already annotated states need not be
+rediscovered by blind value tests.
+
 [Original-ROM tracing](ROM_FLAG_TRACE.md) now verifies bitwise OR in the event
 set helper and identifies `0x8015C60D & 0x80` as the failed Mini-Ebisu training
 dialogue selector. Passing training (`0x8015C60D & 0x40`) is separate from magic

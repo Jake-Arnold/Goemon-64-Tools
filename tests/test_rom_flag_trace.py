@@ -5,10 +5,32 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from practice.rom_flag_trace import flag_location,file_ranges,scan_candidates,analyze_rom,main
+from practice.rom_flag_trace import flag_location,file_ranges,scan_candidates,scan_indirect_calls,analyze_rom,main
 
 
 class RomFlagTraceTests(unittest.TestCase):
+    def test_indirect_call_literal_and_rejection_of_clobbers_and_branches(self):
+        def sample(middle):
+            words=[(15<<26)|(25<<16)|0x8002,
+                   (9<<26)|(25<<21)|(25<<16)|0x40DC,*middle,
+                   (25<<21)|(31<<11)|9,(9<<26)|(4<<16)|0x23]
+            return struct.pack('>'+str(len(words))+'I',*words)
+        data=sample([(43<<26)|(29<<21)|(31<<16)|0x1C])  # Harmless stack store.
+        hits=scan_indirect_calls(data,[(62,0,len(data))],{62})
+        self.assertEqual(len(hits),1)
+        self.assertEqual((hits[0]['address'],hits[0]['mask'],hits[0]['operation']),('0x8015C60C','0x08','test'))
+        self.assertEqual(scan_indirect_calls(data,[(62,0,len(data))],{61}),[])
+        for middle in ([(9<<26)|(25<<16)|1],[(4<<26)|1]):
+            data=sample(middle)
+            self.assertEqual(scan_indirect_calls(data,[(62,0,len(data))],{62}),[])
+
+    def test_indirect_call_rejects_nonliteral_argument_and_truncation(self):
+        data=struct.pack('>4I',(15<<26)|(2<<16)|0x8002,
+            (9<<26)|(2<<21)|(2<<16)|0x4038,(2<<21)|(31<<11)|9,
+            (9<<26)|(3<<21)|(4<<16)|0x23)
+        self.assertEqual(scan_indirect_calls(data,[(62,0,len(data))],{62}),[])
+        self.assertEqual(scan_indirect_calls(data[:-4],[(62,0,len(data)-4)],{62}),[])
+
     def test_known_bit_ids_and_bounds(self):
         for flag,address,mask in ((0x25,0x8015C60C,0x20),(0x2D,0x8015C60D,0x20),
                                  (0x2F,0x8015C60D,0x80),(0x31,0x8015C60E,2),

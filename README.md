@@ -1,5 +1,9 @@
 # Read-only ROM flag analysis
 
+[The Benkei/Kihachi follow-up](docs/BENKEI_KIHACHI_TRACE.md) locates the later
+dialogue condition and Kihachi's native initialization gate, inventories existing
+research, and explains why whole-byte `0x2E` writes alter unrelated reward flags.
+
 [The ROM tracing report](docs/ROM_FLAG_TRACE.md) documents verified original US
 event-flag helpers, Benkei/Ushiwaka script checks and writes, and separate
 minigame success, failure and ability-granted state. A new read-only

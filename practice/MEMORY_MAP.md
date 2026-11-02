@@ -1,3 +1,32 @@
+## Later Benkei dialogue and Kihachi gate — original-ROM follow-up (2026-11-02)
+
+Detailed source search, existing annotations, user observations and exact native/
+script references: [Benkei/Kihachi trace](../docs/BENKEI_KIHACHI_TRACE.md).
+
+- **`0x8015C60E & 0x04` (flag `0x032`)**: Thaisamba-completed progression;
+  Benkei's original scenario dispatch checks it for the later Miracle Item
+  conversation. This does not make the whole byte a dedicated Benkei stage.
+- **`0x8015C60C & 0x08` (flag `0x023`)**: heard about Kihachi from Benkei.
+  The referral script sets it at decompressed ROM `0x7AD7C0`; subsequent Benkei
+  dialogue changes to the collector-rivalry response. It explains the user's
+  `20→28` observation while preserving the earlier Benkei encounter bit `20`.
+- Kihachi's native initialization in file 62 tests the same flag at ROM
+  `0x72163C` (indirect call to `0x800240DC`, literal flag ID in the delay slot).
+  Clear takes an early exit; set permits the normal initialization path.
+  Immediate mid-room spawning and all remaining scene prerequisites are not proven.
+- **Whole-byte `0x2E` caveat:** it sets `0x20` (Miracle Snow recorded), `0x08`
+  (Benkei defeated), `0x04` (Thaisamba progression), `0x02` (Mini-Ebisu granted),
+  and leaves `0x10` (Benkei introduction) clear. It can select a later dialogue
+  while producing inconsistent reward state. A clean test should set only `0x04`
+  on the baseline; `18→1C` is an example if the baseline is exactly `18`.
+
+Related pre-existing annotations, checked against original script references:
+`0x8015C60C & 0x04` food quest active, `& 0x10` food identity learned;
+`0x8015C60E & 0x80` Kihachi food-hint stage;
+`0x8015C60F & 0x01` repeated hint already given. Their individual runtime
+interventions and all alternative branches remain unverified. The detailed
+report distinguishes stock-ROM logic from the randomizer's Kihachi quest fixes.
+
 ## Original-ROM flag tracing (2026-11-02)
 
 Read-only analysis of the SHA-1-verified US retail/decompressed ROM established

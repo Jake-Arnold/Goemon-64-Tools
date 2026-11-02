@@ -4,6 +4,10 @@ Date: 2026-11-02. Analysis is read-only. No runtime controls changed and no game
 memory writes were performed. This is a binary/script analysis result, not a
 matching decompilation build or proof of every flag's gameplay effects.
 
+Follow-up: [later Benkei/Kihachi trace](BENKEI_KIHACHI_TRACE.md) adds a broader
+existing-source review and the native initialization gate. The scanner now has
+optional bounded native indirect-call matching in addition to the GEV index.
+
 ## Reproducible input and sources
 
 - Supplied retail US ROM SHA-1: `df8083a54296b8c151917c5333e1c85f014a2a66`.
@@ -132,7 +136,10 @@ need Capstone/PyYAML at runtime:
 python -m practice.rom_flag_trace --rom practice/diagnostics/mnsg.decompressed.z64 --output practice/diagnostics/rom-flag-references-v2.json
 ```
 
-Optional repeated `--flag-id 0x02F` arguments restrict the index. The output must
+Optional repeated `--flag-id 0x02F` arguments restrict the index. Repeated
+`--native-file-id 62` arguments additionally scan selected files for bounded
+literal flag-helper `JALR` patterns; those are reported separately and still
+require manual review. The output must
 be a new file; existing output or the input ROM cannot be overwritten.
 
 Actual scan: **892 aligned opcode-pattern candidates across 136 primary-field
@@ -140,7 +147,8 @@ flag IDs**, over 1,084 nonempty file ranges (empty ranges in the file table are
 excluded). These are not 892 confirmed executed
 instructions or 136 individually verified meanings. Pattern matches can be data
 false positives, and the scan does not recover a complete script CFG or indirect
-native writes. The manually traced branches above have stronger evidence than
+native writes. Bounded indirect-call patterns are not a general native dataflow
+analysis. The manually traced branches above have stronger evidence than
 the unreviewed index.
 
 A separate ignored local index joins 136 external primary-field annotations to
