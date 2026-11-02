@@ -1,3 +1,12 @@
+## Ushiwaka introduction finding (2026-11-02)
+
+The user identified `0x8015C60D & 0x20` as having asked **“Who are you?”** for
+the first time: observed byte `00` before, `20` afterward, followed by the repeat
+dialogue option. This byte also holds the separate minigame-start (`0x10`) and
+blue-fish hand-in (`0x08`) candidates below. Test the introduction with its mask,
+not `byte == 0x20`, and preserve unrelated bits when editing. This is a
+user-reported gameplay finding, not a new assistant-run write or code-trace test.
+
 ## Ushiwaka storyline and character-at-spawn investigation (2026-11-02)
 
 Two focused A/B captures taken with Goemon in map 371:

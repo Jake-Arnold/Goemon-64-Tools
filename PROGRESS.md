@@ -252,6 +252,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: exact script readers/branches and isolated masked-write behavior remain unverified. This does not identify Ushiwaka minigame/reward completion or imply quest completion from one edit. Copyrighted screenshots and raw samples are not committed.
 - Next: trace Ushiwaka's reader of the Benkei encounter state, separately from Benkei's own completion reader and the two writes.
 
+### 2026-11-02 — User identifies Ushiwaka introduction-seen bit
+
+- Changed: documented `0x8015C60D & 0x20` as the user-identified state for having asked Ushiwaka “Who are you?” before, with repeat dialogue afterward. Added packed-byte interpretation to the memory map and State discovery guide; kept the `0x10` minigame-start and `0x08` blue-fish-hand-in candidates separate.
+- Why: preserve the user's new Event sessions finding and prevent treating the entire byte as a single 0/0x20 boolean once other progression bits are set.
+- Tested: checked against the user's report and the existing `20→30→38` observations; `git diff --check`. Documentation only; no new assistant-run in-game capture/write/code trace or Python/C suite run.
+- Limitations: new report has no supplied local session file or isolated masked-write evidence. Later progression candidates are not upgraded by this observation. No runtime behavior or unlock controls changed.
+- Next: trace the introduction-state reader/writer separately from the later minigame/reward state readers/writers, preserving bit-level provenance.
+
 ## Mandatory change-log template
 
 ```markdown

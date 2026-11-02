@@ -1,3 +1,24 @@
+## Ushiwaka introduction seen — user-identified (2026-11-02)
+
+**`0x8015C60D & 0x20`: asked Ushiwaka “Who are you?” before.**
+The user reports byte `00` before asking this for the first time and byte `20`
+afterward; the set state selects the repeat-dialogue option on subsequent
+interaction. This is distinct from the Benkei encounter prerequisite at
+`0x8015C60C & 0x20` and Benkei's own first-dialogue completion at
+`0x8015C60E & 0x10`.
+
+`0x8015C60D` contains multiple event bits. Interpret the introduction state with
+`(value & 0x20) != 0`, not equality to byte `0x20`: later observations include
+`20→30` on minigame start (additional `0x10`) and `30→38` on blue-fish hand-in
+(additional `0x08`). Those two later bit meanings remain A/B candidates, not
+independently write-confirmed by this introduction finding. Any targeted edit
+must preserve the other bits in the byte.
+
+Evidence status: user-identified introduction/repeat-dialogue behavior, reported
+while investigating Event sessions. No corresponding local session file was
+provided for this report, and no new assistant-run capture, isolated masked write
+or original-code trace was performed. This is not a general quest-completion bit.
+
 ## Benkei first-conversation state — replayed and user-tested (2026-11-02)
 
 ### User-identified cross-NPC progression role
