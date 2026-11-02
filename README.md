@@ -1,3 +1,19 @@
+# Goemon Speedrun Tools v0.10.8 — experimental reload and movement probes
+
+![Actual Tk dashboard](docs/images/actual-dashboard.webp)
+
+The current application has two opt-in, **unverified** controls for live memory experiments.
+
+- **Experimental reload:** In Scene browser choose a destination, enable Live Memory **UNSAFE** and click **EXPERIMENT reload**. The app writes pending map `0x800C7CA0` (u16) and game state `0x800C7A94 = 0x0C`, not the old exit flag. A user demonstrated a target-room load with **incorrect entry coordinates**. The new button monitors resulting map, player position and game state, but does not guess spawn coordinates or promise a valid entrance.
+- **Experimental movement:** In Live Memory use **Probe +4.0**, **Probe -4.0**, or **Speed pulse ×1.5** with UNSAFE enabled. These dynamically resolve `PlayerTask +0x68` and write exactly four IEEE-754 float bytes. This is **not a proven velocity field** or speed hack. Raw four-byte float encodings: +1=`3F800000`, +4=`40800000`, -4=`C0800000`. Writing raw hex `192` is not a float value.
+- **Known mappings:** selected weapon `0x8015C607` (1/2/3 for every character); map visible state `0x8015C574` reads 0 hidden, 1 shown but manually writing 0 does not close it. True magic activation, travel unlocks and physics velocity remain unknown.
+
+Synthetic-memory and Linux/Xvfb GUI tests: **147 passed, 9 subtests**. In-game Windows controls have not yet been validated. Build with `build/Build-Windows.cmd` on Windows or start from source via `Run.bat`.
+
+---
+
+## Historical release notes (some descriptions are superseded by v0.10.8)
+
 # Goemon Speedrun Tools v0.10.2 — clickable unlocks and sprite gallery
 
 ![Real Tkinter dashboard running in an offline test environment](docs/images/actual-dashboard.webp)

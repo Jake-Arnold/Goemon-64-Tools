@@ -54,6 +54,13 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-02 — v0.10.8 experimental reload and movement probes
+
+- Added dedicated, opt-in scene reload from the observed pending destination (`0x800C7CA0`) → state `0x0C`. No exit-flag, current-map, or XYZ overwrite. Double-click remains read-only. Uses UNSAFE and explicit consent; monitors target scene and position, and does **not** claim correct spawn.
+- Added dynamic player-task `f32` watch at `task_ptr +0x68` and experimental +4/−4/×1.5 four-byte pulses, with the next field `+0x6C` untouched. Speed benefit is a hypothesis, not confirmed.
+- Improved transitional-state polling to retain connection during state `0x0C`; independent GUI, warp and movement synthetic tests **147 passed, 9 subtests** in Linux/Xvfb. Actual US Goemon64Recomp behaviour unverified.
+- Next tests: compare debug-menu correct entrance XYZ to reload result; test +4 vs −4 f32 values at dynamic task+0x68 while measuring XYZ displacement in different movement directions.
+
 ## 2026-11-02 — weapon index confirmed; map, magic and player-task false positives refined
 
 - **Equipped weapon:** `0x8015C607` (one byte) is user-confirmed across Goemon, Ebisumaru, Sasuke and Yae. Normal values `0x01`, `0x02`, `0x03` select the three current-character weapons. Manually writing out-of-range values accesses unintended next-character weapon artwork/behaviour: Goemon -> Ebisumaru hammer; Ebisumaru -> Sasuke kunai; Sasuke -> Yae sword; Yae -> what user described as `letter 1`. Exact out-of-bounds dispatch mechanics not proven. Added built-in live watch, showing unusual values as CHECK, and unsafe-edit policy permitting any single byte.
