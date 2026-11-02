@@ -2,7 +2,7 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
-## Current status — 2026-11-01
+## Current status — 2026-11-02
 
 **Baseline:** v0.9.9 source recovered from the original release ZIP. The deleted conversation was reconstructed separately from 102 screenshots; screenshots and personal conversation transcript are not committed to this public repository.
 
@@ -20,7 +20,7 @@ This file is the running development log. **Update it with every code change, co
 - Logical checkpoint/character state assistance (not a full N64 savestate).
 - Portable C checkpoint/watch prototypes; **not yet installed in a custom N64 ROM**.
 
-**Current blocker:** direct one-click scene warp. The experimental v0.9.7 pending-destination + exit-request write returned to the title screen. v0.9.9 correctly disables this unsafe route. Locate the actual engine scene/door loading routine; do not re-enable direct warp based only on map-ID changes.
+**Current blocker:** complete, correctly positioned one-click scene warp. The v0.9.7 pending-destination + exit-request approach returned to the title screen, but a later live test found **pending destination (`0x800C7CA0`) + top-level state `0x0C`** successfully loads the target stage with incorrect spawn coordinates. The app still has no validated native-equivalent warp. Determine entrance/spawn selection and correct initialization timing before enabling automation.
 
 **Observed normal door sequence (MACHI 353 → 351):**
 - `0x800C7CA0` pending destination changed at ~2715 ms.
@@ -53,6 +53,30 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 5. Keep the autosplitter independent from experimental writes and protect competitive-run integrity.
 
 ## Change entries
+
+## 2026-11-02 — live top-level state survey and confirmed reload-triggered stage transition
+
+**Source:** user manually edited original US Goemon64Recomp guest RAM during live gameplay. These are in-game observations, not independently reproduced automated tests. Address `0x800C7A94` holds the top-level game state (u8).
+
+| Value written | Observed result | Confidence |
+| --- | --- | --- |
+| `0x04` | Game crashes | User-observed |
+| `0x05` | Title screen | User-observed |
+| `0x06` | Title-screen song/music state | User-observed; exact subsystem semantics unresolved |
+| `0x07` | Attract/demo gameplay reached after idling at title | User-observed |
+| `0x08` | Controller Pak: use / do not use prompt | User-observed |
+| `0x09` | Opening cutscene | User-observed |
+| `0x0A` | Original native debug menu | Established earlier |
+| `0x0C` | Re-enters / reloads stage | User-observed |
+| `0x0D` | Gameplay | Established earlier |
+| `0x0E` | Game-over screen | User-observed |
+| `0x0F` | Game crashes | User-observed |
+
+**Important confirmed partial warp:** While in gameplay, the user wrote a different destination map to `0x800C7CA0` (pending destination, u16) and then manually forced top-level state `0x800C7A94 = 0x0C`. The game **successfully transitioned to the requested stage**. However, the character arrived with **incorrect/unexpected stage-entry coordinates**. This is substantially stronger evidence than changing the map field alone and must not be conflated with the earlier failed v0.9.7 `pending destination + exit request` experiment (which returned to title). No claim yet of a complete native-equivalent warp.
+
+**Working hypothesis:** A direct practice warp could set pending destination, invoke state `0x0C` for a valid scene reload, and supply the correct entrance/spawn context. Merely writing player XYZ after the fact may not be fully equivalent to the native debug-menu transition: entrance selector/previous map, facing, camera, active objects, scripts, loading timing and player task construction may also matter.
+
+**Next validation:** Capture the same target stage entered (a) through the original debug menu and (b) through the new `pending destination → 0x0C` method. Compare source map, pending/current/previous map, stage offset, top-level states, spawn XYZ, facing, camera, loading/phase and player task/entrance identifiers at multiple points before and after load. Find the entrance-selection rule and correct application timing before implementing one-click warp. Avoid interpreting `0x04` or `0x0F` as safe states.
 
 ## 2026-11-01 — v0.10.2 inventory corrections and raw memory editor
 

@@ -28,6 +28,26 @@ All addresses below are **original guest N64 addresses** (not host-process point
 
 Health has 2 internal units per visible HUD heart segment; typical starting state is HP 10 / maximum HP 10, ryo 100, lives 3. Live Ryo should not exceed 9999. Room/scene ID is NOT the saved continue-point ID at `gamedata+0x200`.
 
+## Top-level game state: user-verified 2026-11-02 observations
+
+Address: `0x800C7A94`, single guest-RAM byte. Editing this field can force a game state, but some values crash.
+
+| Hex | Observed effect |
+| --- | --- |
+| `04` | Crash |
+| `05` | Title screen |
+| `06` | Title-screen song |
+| `07` | Title idle/demo gameplay |
+| `08` | Controller Pak use / do not use screen |
+| `09` | Opening cutscene |
+| `0A` | Native debug menu (previously established) |
+| `0C` | Stage reload / re-entry |
+| `0D` | Normal gameplay (previously established) |
+| `0E` | Game over |
+| `0F` | Crash |
+
+**Live cross-stage reload demonstrated:** Write target stage ID to pending destination `0x800C7CA0` (u16), then set `0x800C7A94` to `0x0C`. The target stage loads, but the spawn XYZ/entry behavior is wrong. This is **partially working**, not a proven full native debug-menu equivalent. Need trace of entrance selection, spawn, facing, prior map and camera task initialization against original-menu stage entry.
+
 ## Provenance
 
 - Original recomp game types and player object pointers: https://github.com/klorfmorf/Goemon64Recomp/blob/dev/patches/variables.h
