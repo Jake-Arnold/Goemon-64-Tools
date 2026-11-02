@@ -3,16 +3,28 @@
 The user mapped full-byte states at `0x8015C60D`: `00` introduction not asked,
 `20` “Who are you?” asked/repeat option, `30` first fish-set dialogue, `38` five
 yellow fish dialogue, `3C` eight red fish dialogue and `3E` this sequence's
-finished dialogue. Later Ushiwaka dialogue remains unmapped. These are dialogue
-stages, not proof of fish hand-in, reward delivery or whole-quest completion.
+finished dialogue. The user then forced `3F`: Ushiwaka relocated to Golden Temple
+and the Ebisumaru magic-power minigame became available. Completing that minigame
+normally produced `7F`, initially putting Ushiwaka outside the temple. After
+reload the priest was back inside the temple gardens and Ushiwaka was tiny on
+the original-location fence; the user reports the same `7F` dialogue at both
+tested locations and no later Ushiwaka story involvement on this route. Actor
+placement immediately after the event and after reload must be recorded separately.
+Mask `0x80` remains unmapped; setting a progression value does not itself prove
+ability ownership, reward delivery or an exhaustive story/script audit.
 
 The sequence successively retains and sets bits `0x20`, `0x10`, `0x08`, `0x04`,
-`0x02`. It supports packed-state interpretation but cannot identify arithmetic
+`0x02`, `0x01`, then `0x40`. It supports packed-state interpretation but cannot identify arithmetic
 addition versus bitwise OR in the original code. Preserve unrelated bits when
 editing. These are user-reported gameplay findings, not new assistant-run write
 or code-trace tests. See `practice/MEMORY_MAP.md` for the stage table and evidence
 boundaries. The historical blue-fish hand-in observation below describes entry
 into `38`; the reported yellow-fish dialogue describes the resulting stage.
+
+Benkei separately changes `0x8015C60E` to `18` after the fight and says “cross any
+time you wish”, according to the user. This adds `0x08` to the known `10`
+first-dialogue state. A post-fight observation is distinct from proof that a
+direct flag write reproduces the fight or all crossing effects.
 
 ## Ushiwaka storyline and character-at-spawn investigation (2026-11-02)
 

@@ -17,14 +17,36 @@ The user additionally mapped the following **dialogue stages** in this byte:
 | `38` | `0x08` | Five yellow fish dialogue |
 | `3C` | `0x04` | Eight red fish dialogue |
 | `3E` | `0x02` | Finished dialogue for this sequence |
+| `3F` | `0x01` | Ushiwaka relocates to Golden Temple; Ebisumaru magic-power minigame available |
+| `7F` | `0x40` | Post-temple-minigame dialogue/placement state |
 
-**Later Ushiwaka dialogue remains unmapped.** “Finished” here does not establish
-all Ushiwaka content, reward delivery or the final Benkei quest gate as complete.
+The later user test advances the previously unmapped temple portion:
+
+- Setting `0x8015C60D` to **`3F`** removes Ushiwaka from the original location
+  and places him at Golden Temple, allowing the minigame for Ebisumaru's magical
+  power. Relative to `3E`, this adds mask **`0x01`**. This is user-reported
+  intervention evidence for relocation/minigame availability, not proof that
+  setting this value itself grants the ability or runs the minigame's scripts.
+- After **completing that minigame normally**, the user observed the byte become
+  **`7F`**, adding mask **`0x40`** relative to `3F`. Ushiwaka initially appears
+  outside the temple after the minigame.
+- **On reload**, the priest returns inside the temple gardens and Ushiwaka is
+  tiny on the fence at the original location. The user reports the same `7F`
+  dialogue at both tested locations. Preserve the distinction between immediate
+  post-minigame placement and placement rebuilt by loading; the byte alone is
+  not a complete actor-state snapshot.
+- The user reports **no further Ushiwaka story involvement beyond this point**.
+  This is the endpoint of the user's mapped route, not an exhaustive original-
+  code proof that no later conditional dialogue exists. Mask `0x80` is unmapped.
+
+“Finished” at `3E` refers to the earlier fish-dialogue sequence, before the temple
+stage; it does not mean all Ushiwaka content or the final Benkei quest gate.
 The yellow/red labels identify the dialogue state reported by the user; they do
 not by themselves prove those fish were collected or handed in.
 
-These values retain the earlier set bits: `20→30→38→3C→3E` is consistent with
-successively setting masks `0x10`, `0x08`, `0x04`, `0x02`. Observing the numeric
+These values retain the earlier set bits: `20→30→38→3C→3E→3F→7F` is consistent
+with successively setting masks `0x10`, `0x08`, `0x04`, `0x02`, `0x01`, `0x40`.
+Observing the numeric
 increase does **not** identify the machine-code operation as arithmetic addition
 versus bitwise OR. All those transitions have the same result under either
 operation when the new bit was clear. Read the introduction with
@@ -36,13 +58,27 @@ Earlier captured evidence observed `30→38` when blue fish inventory at
 the new user report identifies the resulting `38` dialogue stage as five yellow
 fish. Keep transition timing separate from the subsequent dialogue/request.
 
-Evidence status: user-identified introduction/repeat-dialogue and fish-sequence
-states, reported while investigating Event sessions. No corresponding local
+Evidence status: user-identified introduction/repeat-dialogue, fish-sequence,
+forced temple relocation and observed post-minigame/reload states, reported
+while investigating Event sessions. No corresponding local
 session file was provided for these new reports, and no new assistant-run capture,
 isolated masked write or original-code trace was performed. Individual bit
 semantics remain distinct from the observed full-byte dialogue stages.
 
-## Benkei first-conversation state — replayed and user-tested (2026-11-02)
+## Benkei conversation and fight state — replayed and user-tested (2026-11-02)
+
+### User-reported post-fight crossing permission
+
+After the Benkei fight, the user observed **`0x8015C60E = 0x18`**, and Benkei says
+**“cross any time you wish”**. Relative to the earlier first-dialogue-completed
+state `0x10`, this adds mask **`0x08`** while retaining the introduction bit.
+Record `0x08` as the post-fight/crossing-permission marker in this tested route,
+distinct from `0x10` for his first-dialogue completion. The user observed the
+change after fighting; forcing `0x18` or setting `0x08` alone has not been shown
+to reproduce the fight, its rewards or every crossing-related side effect.
+
+This is user-reported in-game evidence, not a new assistant-run capture or an
+isolated masked-write/code-trace result.
 
 ### User-identified cross-NPC progression role
 

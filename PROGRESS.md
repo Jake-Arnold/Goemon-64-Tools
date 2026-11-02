@@ -268,6 +268,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: new full-byte stage observations have no supplied local session evidence; precise individual bit roles and the original code's update operation remain unverified. Later Ushiwaka dialogue, reward delivery and final Benkei progression are not established by `3E`. No runtime behavior or controls changed.
 - Next: trace the stage readers/writers and map later dialogue independently, preserving this sequence's evidence and the other bits in the byte.
 
+### 2026-11-02 — User maps Benkei post-fight and Ushiwaka temple/post-minigame states
+
+- Changed: expanded memory-map/State discovery evidence for Benkei `0x8015C60E = 18` after fighting, with crossing-permission dialogue (additional `0x08` over intro state `10`). Added Ushiwaka `0x8015C60D = 3F` forced relocation/minigame availability (`0x01` over `3E`) and normal post-minigame transition to `7F` (`0x40` over `3F`). Recorded immediate versus reloaded actor placements, shared dialogue at both tested locations, and the user's reported route endpoint.
+- Why: preserve the user's new progression findings while separating a directly tested relocation value, observed normal completion, actor reconstruction on reload and unverified reward/ability side effects.
+- Tested: checked the report against existing progression states and mask decompositions; `git diff --check`. Documentation-only update: no new assistant-run gameplay/flag writes, code traces or Python/C suite run.
+- Limitations: no new local session files supplied for these reports. Setting `18`/`7F` or isolated masks has not been proven to reproduce fights, rewards or ability ownership. No exhaustive story audit or original-code reader/writer proof; Ushiwaka mask `0x80` remains unmapped. No runtime changes or new controls.
+- Next: trace the mapped branch conditions and writes; verify separate ability ownership/crossing effects before implementing dedicated progression controls. Preserve reload-sensitive actor observations.
+
 ## Mandatory change-log template
 
 ```markdown
