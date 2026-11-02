@@ -236,6 +236,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: semantic roles and causality remain unknown; two correlated bits are not two proven dialogue gates. No write tests, code tracing or live-ROM identity verification. Raw samples remain local/ignored.
 - Next: inspect original-game code readers/writers for each bit and document their distinct roles. No further user gameplay action is needed yet.
 
+### 2026-11-02 — User distinguishes Benkei dialogue completion from trigger entry
+
+- Changed: updated `practice/MEMORY_MAP.md` with user-reported timing and intervention evidence. `0x8015C60E` cleared to `00` restores the first dialogue and becomes `10` at conversation end. `0x8015C60C` becomes `20` immediately at cutscene-trigger entry; clearing it with the other byte still `10` neither restores the first dialogue nor causes it to become `20` again. Marked the apparent path dependency as inference, distinct from captured replay evidence.
+- Why: replace the undifferentiated two-candidate interpretation with the distinct behaviors observed by the user, without overstating bit isolation, script knowledge or general quest-completion semantics.
+- Tested: documentation checked against the user's report and existing independent A/B/idle/control findings; `git diff --check`. No new assistant-run in-game tests, code tracing or Python/C suite run for this documentation-only change.
+- Limitations: reported interventions cleared whole bytes, not isolated masks; independent masked-write/readback and unrelated-bit preservation remain unverified. The exact script conditions and wider consequences of either flag are unknown. No runtime change or new unlock control.
+- Next: trace original-code readers/writers for the first-dialogue branch and the two writes; use bit-preserving operations in any future targeted validation.
+
 ## Mandatory change-log template
 
 ```markdown

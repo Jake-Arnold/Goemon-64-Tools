@@ -1,4 +1,34 @@
-## Benkei first-conversation candidates — independently reproduced (2026-11-02)
+## Benkei first-conversation state — replayed and user-tested (2026-11-02)
+
+### User-reported timing and write tests
+
+- **`0x8015C60E`, observed mask `0x10`: first-dialogue completion/gating state.**
+  Setting this byte to `00` restores the first dialogue on the next conversation.
+  The byte becomes `10` at the **end of the conversation**. This is user-reported
+  in-game write evidence for restoring the first-dialogue path, beyond A/B
+  correlation. It does not establish general quest completion or that writing
+  `10` by itself reproduces every consequence of completing that dialogue.
+- **`0x8015C60C`, observed mask `0x20`: first-encounter trigger-entry marker.**
+  The byte becomes `20` **immediately on reaching the cutscene trigger**, before
+  the conversation finishes. Clearing it to `00` while `0x8015C60E` remains `10`,
+  then returning to Benkei, neither restores the first dialogue nor sets this
+  byte back to `20`. Clearing this marker alone is therefore insufficient to
+  reset the first encounter in the tested state.
+- **Interpretation:** selection of the first-conversation path appears to depend
+  on the completion/gating state at `0x8015C60E`; the trigger-entry update at
+  `0x8015C60C` appears conditional on that path. This is an inference from the
+  reported behavior, not a recovered script condition or proof of a direct
+  dependency between the two fields.
+
+These manual tests were reported by the user, not replayed or traced by the
+assistant. They cleared **whole bytes**. The earlier captured `00/20` and `00/10`
+transitions identify masks for this state, but unrelated-bit preservation and
+isolated masked-write behavior still need verification. Future targeted edits
+should clear only `value & ~0x10` or `value & ~0x20`, respectively, retaining all
+other bits; that operation is a proposed test, not additional observed evidence.
+No new write control is introduced by this documentation update.
+
+### Captured independent trials
 
 Read-only Goemon64Recomp experiment on map **369**, Goemon, with stable player
 and task pointers throughout each pair:
@@ -16,20 +46,19 @@ An independent reset/restart and replay reproduced **both exact byte changes**
 on map 369 with Goemon. Both 100-byte A blocks match, and both 100-byte B blocks
 match. Each bit has event support **2/2**, with no idle or repeat-dialogue changes.
 
-These remain **first-conversation interval candidates**, not individually proven
-dialogue gates or event triggers. Repeated correlation does not distinguish
-direct effects from secondary progression. No masked write test or reader/writer
-trace has been done.
-ROM identity remains unverified against the running host. No new unlock control
-is enabled from these observations.
+These stored trials alone are **first-conversation interval observations**;
+the user-reported tests above add distinct timing and whole-byte intervention
+evidence. No isolated masked-write test or original-code reader/writer trace has
+been done. ROM identity remains unverified against the running host.
 
 Local evidence session `79b2f960edab424f89d68ed7e0415691`: idle trial
 `c82d73fde48641d6a7440d9791aa70b3`, event trial
 `4137f3c0e97744358e0ef68d07fe97e6`, repeat-dialogue control
 `55d08ff62b574adf8b28f17dd2dcb6e8`, independent replay
 `3d04720d7f554a448867a8990dfdd22b`. Raw samples and notes stay in ignored local
-diagnostics. Next: trace each candidate's original-game readers/writers to
-separate dialogue gating from other progression before exposing write controls.
+diagnostics. Next: trace the dialogue branch, completion write and trigger-entry
+write in original-game code, and verify the corresponding masked operations
+before exposing dedicated write controls.
 
 ## Ushiwaka progression and pre-load character hypothesis (2026-11-02)
 
