@@ -232,33 +232,118 @@ void func_8003E680_3F280(void) {
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003E6C0_3F2C0.s")
 #endif
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003E81C_3F41C.s")
-#endif
+void func_8003E81C_3F41C(void) {
+    s32 result;
+    result = func_8003E888_3F488(D_801C7808_1C8408);
+    if (result == 1) {
+        D_80077858_78458 = D_801C7800_1C8400->script;
+        D_801C77E0_1C83E0 = 0;
+        D_801C78D0_1C84D0 = NULL;
+    } else if (result == -1) {
+        D_801C77E0_1C83E0 = 0;
+        D_801C78D0_1C84D0 = NULL;
+    }
+}
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003E888_3F488.s")
-#endif
+s32 func_8003E888_3F488(VmChoice *choices) {
+    s32 direction;
+    s32 (*flag_test)(s32);
+    if (((u16)D_8015C5C8_15D1C8->game_loops_count & 1) == 0) {
+        ((u8 *)D_80077860_78460)[0x5C] += 2;
+    }
+    if (D_801C77E8_1C83E8.choice_state == 0) {
+        func_8003E9E8_3F5E8(choices);
+        return 0;
+    }
+    if (D_801C77E8_1C83E8.choice_state == 1) {
+        direction = func_8003EACC_3F6CC(D_801C7800_1C8400);
+        switch (direction) {
+            case -1:
+                D_801C7800_1C8400 = (VmChoice *)VM_U32_PTR(D_801C7800_1C8400->previous);
+                func_80038B98_39798(0x2B1);
+                break;
+            case 1:
+                D_801C7800_1C8400 = (VmChoice *)VM_U32_PTR(D_801C7800_1C8400->next);
+                func_80038B98_39798(0x2B1);
+                break;
+        }
+        if (D_801C790C_1C850C & 0x8000) {
+            flag_test = func_800240DC_24CDC;
+            D_801C77E8_1C83E8.choice_state = 0;
+            if (flag_test(0x82) == 0) func_80038B98_39798(0x2B0);
+            return 1;
+        }
+        if ((D_801C790C_1C850C & 0x4000) && !D_801C7770_1C8370) {
+            D_80077858_78458 = (u32)D_80077858_78458 + 4;
+            D_801C77E8_1C83E8.choice_state = 0;
+            D_801C78D0_1C84D0 = NULL;
+            return -1;
+        }
+    }
+    return 0;
+}
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003E9E8_3F5E8.s")
-#endif
+void func_8003E9E8_3F5E8(VmChoice *choice) {
+    D_801C7800_1C8400 = choice;
+    D_801C77E8_1C83E8.choice_state = 1;
+    D_801C77E8_1C83E8.repeat_ticks = 0;
+    D_801C77E8_1C83E8.last_direction = 0;
+}
 
 void func_8003EA0C_3F60C(void) {
 
 }
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003EA14_3F614.s")
-#endif
+s32 func_8003EA14_3F614(void) {
+    u16 direction;
+    direction = 0;
+    if (D_801C7908_1C8508.vertical >= 41 || D_801C7908_1C8508.horizontal < -40 ||
+        (D_801C7908_1C8508.buttons & 0xA00)) {
+        direction = 0x800;
+    } else if (D_801C7908_1C8508.vertical < -40 || D_801C7908_1C8508.horizontal >= 41 ||
+               (D_801C7908_1C8508.buttons & 0x500)) {
+        direction = 0x400;
+    }
+    if (D_801C77E8_1C83E8.last_direction == direction) {
+        D_801C77E8_1C83E8.last_direction = direction;
+        if ((s32)D_801C77E8_1C83E8.repeat_ticks >= 10) {
+            D_801C77E8_1C83E8.repeat_ticks = 0;
+        } else {
+            D_801C77E8_1C83E8.repeat_ticks++;
+            direction = 0;
+        }
+    } else {
+        D_801C77E8_1C83E8.last_direction = direction;
+        D_801C77E8_1C83E8.repeat_ticks = 0;
+    }
+    return direction;
+}
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003EACC_3F6CC.s")
-#endif
+s32 func_8003EACC_3F6CC(VmChoice *choice) {
+    u16 direction;
+    direction = func_8003EA14_3F614();
+    if (direction & 0x800) {
+        if (choice->previous != 0) return -1;
+    } else if ((direction & 0x400) && choice->next != 0) {
+        return 1;
+    }
+    return 0;
+}
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003EB34_3F734.s")
-#endif
+void func_8003EB34_3F734(s32 owner, s16 *script) {
+    s16 value;
+    s16 end = -1;
+    while (1) {
+        value = *script;
+        if (value >= 0) {
+            func_8000D060_DC60(owner, value);
+            script++;
+        } else {
+            if (end == value) break;
+            script = func_8003DF98_3EB98(owner, script);
+        }
+    }
+}
 
 void func_8003EBA4_3F7A4(void) {
 

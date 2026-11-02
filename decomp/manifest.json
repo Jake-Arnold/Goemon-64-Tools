@@ -269,9 +269,39 @@
           "size": 64
         },
         {
+          "name": "func_8003E81C_3F41C",
+          "rom_offset": 259100,
+          "size": 108
+        },
+        {
+          "name": "func_8003E888_3F488",
+          "rom_offset": 259208,
+          "size": 352
+        },
+        {
+          "name": "func_8003E9E8_3F5E8",
+          "rom_offset": 259560,
+          "size": 36
+        },
+        {
           "name": "func_8003EA0C_3F60C",
           "rom_offset": 259596,
           "size": 8
+        },
+        {
+          "name": "func_8003EA14_3F614",
+          "rom_offset": 259604,
+          "size": 184
+        },
+        {
+          "name": "func_8003EACC_3F6CC",
+          "rom_offset": 259788,
+          "size": 104
+        },
+        {
+          "name": "func_8003EB34_3F734",
+          "rom_offset": 259892,
+          "size": 112
         },
         {
           "name": "func_8003EBA4_3F7A4",
@@ -367,12 +397,6 @@
         "func_8003DF98_3EB98",
         "func_8003E234_3EE34",
         "func_8003E6C0_3F2C0",
-        "func_8003E81C_3F41C",
-        "func_8003E888_3F488",
-        "func_8003E9E8_3F5E8",
-        "func_8003EA14_3F614",
-        "func_8003EACC_3F6CC",
-        "func_8003EB34_3F734",
         "func_8003EBAC_3F7AC",
         "func_8003ED60_3F960",
         "func_8003EFB0_3FBB0",

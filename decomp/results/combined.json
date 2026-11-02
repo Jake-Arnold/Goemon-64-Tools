@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-02T16:43:14.481112+00:00",
+  "started_utc": "2026-11-02T17:03:06.532261+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -19,9 +19,9 @@
     "new_alignment": 4,
     "relocations_retained": 15,
     "payload_bytes_changed": 0,
-    "input_sha256": "0088b5942801d84f12e33790a1bada341997cbf937777d4bd20a15c0627c9269",
-    "output_sha256": "939ab595ec0b8c637b20aa1d1c4dbf1926f754d1b559320f1448736f5b86a3fc",
-    "text_sha256": "090e8417f2014b576a3a01df7d87c5613863fb1c03bea2fd4c7242abc7d03acb",
+    "input_sha256": "d77c99a25ba8cbae7f51c36845c697bcdcdd56002d26a24ab57328d192d1e829",
+    "output_sha256": "e38d3b4a4c81e85d3594125e575220844a596254b37d2eb73eaa770d90320dfb",
+    "text_sha256": "9d180f9bc00b9ab2a6c05c30943cf68381b024635b0e4b3f5af94915c83128b5",
     "compiled_table_prefix_sha256": "cfb6b1a6dee1e182ccfad56f71ce9eb34d63b82db2afccc81f65ba32d1ad28e5"
   },
   "assignment_table": {
@@ -35,9 +35,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 63,
-    "claimed_functions": 63,
-    "matched_function_bytes": 4172,
+    "matched_functions": 69,
+    "claimed_functions": 69,
+    "matched_function_bytes": 5068,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -454,6 +454,33 @@
         "candidate_sha256": "77a88ee48f3cc98f163b2f94815461463aacba03cddb1a199eb770246acfcbca"
       },
       {
+        "name": "func_8003E81C_3F41C",
+        "size": 108,
+        "guest_address": "0x8003E81C",
+        "rom_offset": "0x3F41C",
+        "matched": true,
+        "expected_sha256": "b60778e685babe27b27cb34437575f1dc8f66eb15443aba8350ed693d0a7fb59",
+        "candidate_sha256": "b60778e685babe27b27cb34437575f1dc8f66eb15443aba8350ed693d0a7fb59"
+      },
+      {
+        "name": "func_8003E888_3F488",
+        "size": 352,
+        "guest_address": "0x8003E888",
+        "rom_offset": "0x3F488",
+        "matched": true,
+        "expected_sha256": "181ee47138c6c55af060c3e517a458aff6330489c708c9312ceb444442eb28e2",
+        "candidate_sha256": "181ee47138c6c55af060c3e517a458aff6330489c708c9312ceb444442eb28e2"
+      },
+      {
+        "name": "func_8003E9E8_3F5E8",
+        "size": 36,
+        "guest_address": "0x8003E9E8",
+        "rom_offset": "0x3F5E8",
+        "matched": true,
+        "expected_sha256": "8ec9fee0115690cd59bf27fa18aeaaa0dbf3452c423f1a241ec992aa13c77b86",
+        "candidate_sha256": "8ec9fee0115690cd59bf27fa18aeaaa0dbf3452c423f1a241ec992aa13c77b86"
+      },
+      {
         "name": "func_8003EA0C_3F60C",
         "size": 8,
         "guest_address": "0x8003EA0C",
@@ -461,6 +488,33 @@
         "matched": true,
         "expected_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378",
         "candidate_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+      },
+      {
+        "name": "func_8003EA14_3F614",
+        "size": 184,
+        "guest_address": "0x8003EA14",
+        "rom_offset": "0x3F614",
+        "matched": true,
+        "expected_sha256": "3ec2f5be0acf507c2c0a1f08add5164fbdbe34928e7f125e855c0f2fe8167240",
+        "candidate_sha256": "3ec2f5be0acf507c2c0a1f08add5164fbdbe34928e7f125e855c0f2fe8167240"
+      },
+      {
+        "name": "func_8003EACC_3F6CC",
+        "size": 104,
+        "guest_address": "0x8003EACC",
+        "rom_offset": "0x3F6CC",
+        "matched": true,
+        "expected_sha256": "73df8e3fd3b174200e41719d50238f7e6ef2e7e43302060ade83471a7bc00ae2",
+        "candidate_sha256": "73df8e3fd3b174200e41719d50238f7e6ef2e7e43302060ade83471a7bc00ae2"
+      },
+      {
+        "name": "func_8003EB34_3F734",
+        "size": 112,
+        "guest_address": "0x8003EB34",
+        "rom_offset": "0x3F734",
+        "matched": true,
+        "expected_sha256": "9a14b0e14cc6d419aba1327b32c650050d24f20f3aab88618108e0db7eeef714",
+        "candidate_sha256": "9a14b0e14cc6d419aba1327b32c650050d24f20f3aab88618108e0db7eeef714"
       },
       {
         "name": "func_8003EBA4_3F7A4",
@@ -621,12 +675,6 @@
     "func_8003DF98_3EB98",
     "func_8003E234_3EE34",
     "func_8003E6C0_3F2C0",
-    "func_8003E81C_3F41C",
-    "func_8003E888_3F488",
-    "func_8003E9E8_3F5E8",
-    "func_8003EA14_3F614",
-    "func_8003EACC_3F6CC",
-    "func_8003EB34_3F734",
     "func_8003EBAC_3F7AC",
     "func_8003ED60_3F960",
     "func_8003EFB0_3FBB0",
@@ -645,10 +693,10 @@
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
     "system_memory.c": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
     "save_resources.c": "7962df95eb818079725157fcefe908608f51e112e50b9242a67b1b95c918af7b",
-    "script_vm.c": "27e4274326970805093a98121ca7e6097823d4b875999224223c89cbdc020ee6",
+    "script_vm.c": "9e9182e39913bb0eb795aed159db395af1a1d6b8bafa4fe88550df6ca456abc2",
     "save_resources.h": "ec5a34eca1296a2bac959ae01fdd8fd72eb1ef36fd47ff0002e92e17b40f6bcf",
-    "script_vm.h": "7e965eafde53cd772eda069f8cc2fc18d03d3078e2c53e23869df2393fd4ca7b",
+    "script_vm.h": "75a41d08578376f82d410ffc99952892a3df899dd8a19c8155ab510b8b6aeefc",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-02T16:43:59.462555+00:00"
+  "ended_utc": "2026-11-02T17:03:50.913435+00:00"
 }

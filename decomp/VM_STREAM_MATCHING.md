@@ -61,3 +61,12 @@ at a time. Run synthetic cases again for any candidate, then require original
 function size, guest symbol, code bytes and full-ROM identity through a fresh
 `verify.py` run before removing the assembly placeholder or increasing totals.
 The comparator and command decoder remain independently unresolved.
+
+## Related matching stream implementation
+
+The separate unpaced reader `func_8003EB34_3F734` now matches C. A typed 16-bit
+end sentinel preserves its original comparison operands; cursor advancement,
+signed token handling and the retained decoder interface have native matching
+evidence and synthetic coverage. It does not use the paced reader's gate,
+repeat-count or marker-update paths and cannot replace it. See the current
+[choice-list checkpoint](VM_CHECKPOINT.md#choice-list-and-unpaced-stream-increment).

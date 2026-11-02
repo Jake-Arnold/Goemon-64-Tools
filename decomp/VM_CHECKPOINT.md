@@ -1,8 +1,8 @@
 # Event/dialogue VM reconstruction checkpoint
 
 Date: 2026-11-02. Pinned mnsg baseline and ROM identity are unchanged.
-**38 matching VM functions / 2,296 function bytes**, bringing the track to
-**63 matching C functions / 4,172 function bytes**. The full 32 MiB baseline and
+**44 matching VM functions / 3,192 function bytes**, bringing the track to
+**69 matching C functions / 5,068 function bytes**. The full 32 MiB baseline and
 candidate both match decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
 Current source hashes, guest addresses and byte-range comparisons are in
 [combined.json](results/combined.json). The previous complete-save checkpoint is
@@ -11,7 +11,7 @@ retained as [save_resources_complete.json](results/save_resources_complete.json)
 ## Selected unit and evidence boundaries
 
 The original `0x3DBA0..0x40320` unit contains 69 functions. `script_vm.c` replaces
-38 functions and retains 31 explicitly declared assembly functions. The main
+44 functions and retains 25 explicitly declared assembly functions. The main
 dispatcher, remaining operand handlers and comparison routine remain
 assembly; the complete VM is not decompiled. A name appears in the matching count
 only when linked guest address, original bytes and absence of its assembly marker
@@ -37,6 +37,10 @@ all pass, alongside the complete ROM identity check.
 | `func_8003E5EC_3F1EC`, `func_8003E620_3F220` | Return to state 1 when the external poll reports zero |
 | `func_8003E654_3F254` | Decrement countdown; clamp to zero and clear state when finished |
 | `func_8003E680_3F280` | Clear signed marker, cleanup, set reset word to `100`, reset context, then initialize delay to three |
+| `func_8003E81C_3F41C`, `func_8003E888_3F488` | Choice state machine, linked selection, confirmation/cancellation and pending-script handoff |
+| `func_8003E9E8_3F5E8` | Select initial choice, set choice state 1, reset last direction and repeat ticks |
+| `func_8003EA14_3F614`, `func_8003EACC_3F6CC` | Direction thresholds/priority and repeat suppression; reject missing previous/next links |
+| `func_8003EB34_3F734` | Unpaced signed-halfword stream rendering; -1 terminates, other negative values delegate to retained decoder |
 | `func_8003EA0C_3F60C`, `func_8003EBA4_3F7A4` | Original no-operation hooks |
 | `func_8003F1D8_3FDD8`, `func_8003F1FC_3FDFC` | Query nonzero pending script; query signed marker only for owner matching masked VM argument |
 | `func_8003F43C_4003C` | Forward a 32-bit VM argument to the task helper |
@@ -51,6 +55,54 @@ all pass, alongside the complete ROM identity check.
 Raw engine preconditions are preserved: no new pointer/index/length safety API is
 introduced, and callbacks are not wired into the running companion. This is
 original-ROM C reconstruction, not a new native PC port.
+
+## Choice-list and unpaced stream increment
+
+Six additional matching functions replace 896 instruction bytes. The VM-work
+view now names direction/repeat halfwords at offsets `4/6` and choice state at
+`0x0C`, retaining the marker and countdown offsets. Choice records contain two
+position words, two encoded guest links and an encoded script pointer, for a
+fixed 20-byte layout. Raw input views retain unknown fields without assigning
+unsupported button-state semantics.
+
+The direction helper gives `0x800` priority when vertical is at least 41,
+horizontal is below -40 or mask `0xA00` is present; otherwise the opposite
+thresholds/mask `0x500` select `0x400`. Changed directions emit immediately. An
+unchanged request suppresses ten updates before another pulse. Missing links
+prevent movement and do not fall through to the other direction. Initialization
+resets only the selection/repeat fields and current pointer.
+
+The selection updater advances owner byte `0x5C` by two on even game-loop counts.
+State zero initializes and yields without processing a held confirmation;
+state one permits navigation before confirmation/cancellation. Confirmation has
+priority over cancellation and is not blocked by the cancellation busy gate.
+It tests saved flag `0x82` through the existing correctly typed helper; a nonzero
+mask suppresses feedback ID `0x2B0` but does not suppress confirmation. Navigation
+uses feedback ID `0x2B1`. This identifies a concrete caller effect, not a complete
+story meaning or new gameplay-verified flag label. No flag catalog was changed.
+Cancellation advances the pending script by four bytes and clears choice state
+and its callback. The outer wrapper copies the selected encoded script only on
+confirmation, then clears the VM state/callback for either completed result.
+
+`func_8003EB34_3F734` is now matching C: it emits nonnegative signed halfwords,
+stops at -1 and resumes from the retained decoder's returned cursor for other
+negative words. It is separate from the still-unmatched paced reader
+`func_8003DE80_3EA80` and does not establish complete control-command semantics.
+
+The direction helper matched with one return path and a 16-bit local result;
+the renderer uses a typed 16-bit end sentinel. Native code and external function
+signatures are preserved. A bounded local permuter search did not resolve the
+register mismatch; the final forms came from reviewed equivalent C structure.
+
+Synthetic tests cover axis/dead-zone boundaries, combined-direction priority,
+repeat timing and counter extremes, unavailable links, state initialization,
+selection-to-script handoff, confirmation/cancellation priority, busy behavior,
+flag-mask feedback behavior, callback-driven input changes, cursor wraparound,
+512 owner-byte/parity pairs and neighboring fields, and mixed/end/control signed
+streams. Host input views that alias on the guest are kept consistent during
+combined-flow tests. External feedback, flag-read and decoder calls are stubs;
+their complete implementation/command semantics are not claimed. The previous
+[63-function checkpoint](results/vm_prompts.json) is preserved.
 
 ## Prompt placement and animation increment
 
@@ -179,7 +231,7 @@ sequencing. No zero-score/equivalent-code claim was substituted for exact bytes.
 
 The native candidate retains the original comparator assembly and marker.
 `vm_compare_reference.h` is included **only by host tests**, explicitly excluded
-from the 38/63-function counts. It is a semantic aid for subsequent work, not a
+from the 44/69-function counts. It is a semantic aid for subsequent work, not a
 published matching reconstruction or production evaluator. Retained assembly
 also includes the dispatcher and assignment/operand decoders.
 
@@ -193,7 +245,7 @@ safe to evaluate.
 ## Validation
 
 - Fresh verifier baseline and combined candidate builds both passed the full ROM
-  check; all 63 claimed function ranges/addresses matched without assembly markers.
+  check; all 69 claimed function ranges/addresses matched without assembly markers.
 - **224 Windows Python unittest tests passed**, including declared-assembly exclusion and
   the narrow Splat-label override. The comparator is asserted to remain excluded.
 - Sanitizer-enabled synthetic VM tests passed pointer fallback, five delayed

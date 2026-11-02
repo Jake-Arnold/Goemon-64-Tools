@@ -43,7 +43,26 @@ extern VmPrompt D_801C78D8_1C84D8;
 extern u8 D_80077150_77D50[];
 
 typedef void (*VmTaskCallback)(void *, void *);
-typedef struct { u8 unknown_00[8]; s16 marker; u8 unknown_0a[6]; s32 countdown; } VmWork;
+typedef struct {
+    u8 unknown_00[4];
+    u16 last_direction, repeat_ticks;
+    s16 marker;
+    u8 unknown_0a[2];
+    s32 choice_state, countdown;
+} VmWork;
+typedef struct { s32 x, y; u32 previous, next, script; } VmChoice;
+typedef struct { u16 unknown00, unknown02, buttons; s16 horizontal, vertical; u16 unknown0a; } VmInput;
+extern VmChoice *D_801C7800_1C8400;
+extern VmChoice D_801C7808_1C8408[];
+extern VmInput D_801C7908_1C8508;
+extern VmTaskCallback D_801C78D0_1C84D0;
+s32 func_8003E888_3F488(VmChoice *);
+void func_8003E9E8_3F5E8(VmChoice *);
+s32 func_8003EA14_3F614(void);
+s32 func_8003EACC_3F6CC(VmChoice *);
+s32 func_800240DC_24CDC(s32);
+void func_8000D060_DC60(s32, s16);
+s16 *func_8003DF98_3EB98(s32, s16 *);
 extern u16 *D_80077550_78150[];
 extern u16 D_8007CCA4_7D8A4[];
 extern void *D_80077860_78460;

@@ -24,6 +24,29 @@ static s32 trace[32], trace_count, poll_result, args7[7], argument, state_at_pol
 static void *task_seen;
 static VmTaskCallback callback;
 static s32 memory_rhs;
+VmChoice D_801C7808_1C8408[3];
+VmChoice *D_801C7800_1C8400;
+VmInput D_801C7908_1C8508;
+VmTaskCallback D_801C78D0_1C84D0;
+static s32 flag_result, flag_calls;
+static s32 emitted[16], emitted_count, emitted_owner;
+static s16 *decoder_input, *decoder_output;
+static s32 decoder_calls, decoder_owner;
+static u16 feedback_ids[8];
+static unsigned feedback_count;
+static int override_buttons;
+static u16 next_buttons;
+void func_8000D060_DC60(s32 owner, s16 value) {
+    assert(emitted_count < 16); emitted[emitted_count++] = value; emitted_owner = owner;
+}
+s16 *func_8003DF98_3EB98(s32 owner, s16 *script) {
+    decoder_calls++; decoder_owner = owner; decoder_input = script;
+    return decoder_output;
+}
+s32 func_800240DC_24CDC(s32 flag) {
+    assert(flag == 0x82 && D_801C77E8_1C83E8.choice_state == 0);
+    flag_calls++; return flag_result;
+}
 static VmWindow window0, window1;
 VmWindow *D_80167C48_168848[] = {&window0, &window1};
 VmPrompt D_801C78D8_1C84D8;
@@ -63,7 +86,14 @@ void func_80038BC8_397C8(u16 a) { forward_kind = 2; forwarded[0] = a; }
 void func_80038C30_39830(u16 a, u8 b, u8 c) {
     forward_kind = 3; forwarded[0] = a; forwarded[1] = b; forwarded[2] = c;
 }
-void func_80038B98_39798(u16 a) { forward_kind = 4; forwarded[0] = a; }
+void func_80038B98_39798(u16 a) {
+    forward_kind = 4; forwarded[0] = a;
+    if (feedback_count < sizeof(feedback_ids) / sizeof(feedback_ids[0])) feedback_ids[feedback_count++] = a;
+    if (override_buttons && a == 0x2B1) {
+        D_801C7908_1C8508.buttons = D_801C790C_1C850C = next_buttons;
+        override_buttons = 0;
+    }
+}
 void func_80037C9C_3889C(s32 a, s32 b) { forward_kind = 5; forwarded[0] = a; forwarded[1] = b; }
 void func_80037C20_38820(s32 a, s32 b, s32 c) {
     forward_kind = 6; forwarded[0] = a; forwarded[1] = b; forwarded[2] = c;
@@ -103,6 +133,11 @@ _Static_assert(offsetof(VmWindow, field54) == 0x54, "window field54 offset");
 _Static_assert(sizeof(VmPrompt) == 16, "prompt extent");
 _Static_assert(offsetof(SYS_W, game_loops_count) == 0x3ADCE, "timer offset");
 _Static_assert(offsetof(SYS_W, unk_cf8a0) == 0xCF8A0, "system tail offset preserved");
+_Static_assert(sizeof(VmChoice) == 20, "choice record extent");
+_Static_assert(offsetof(VmChoice, previous) == 8 && offsetof(VmChoice, next) == 12, "choice links");
+_Static_assert(offsetof(VmChoice, script) == 16, "choice script offset");
+_Static_assert(offsetof(VmInput, buttons) == 4 && offsetof(VmInput, horizontal) == 6 && offsetof(VmInput, vertical) == 8, "input fields");
+_Static_assert(offsetof(VmWork, last_direction) == 4 && offsetof(VmWork, repeat_ticks) == 6 && offsetof(VmWork, choice_state) == 12, "choice work fields");
 _Static_assert(offsetof(VmWork, marker) == 8, "VM marker offset");
 _Static_assert(offsetof(VmWork, countdown) == 0x10, "VM countdown offset");
 
@@ -420,8 +455,149 @@ static void check_prompt_geometry_and_animation(void) {
     assert(D_801C78D8_1C84D8.texture == (u32)(uintptr_t)D_80077150_77D50);
 }
 
+static void check_choice_directions_and_repeat(void) {
+    static const struct { s16 x, y; u16 pressed, expected; } cases[] = {
+        {0, 0, 0, 0}, {-40, 40, 0, 0}, {40, -40, 0, 0},
+        {-41, 0, 0, 0x800}, {0, 41, 0, 0x800}, {41, 0, 0, 0x400}, {0, -41, 0, 0x400},
+        {-32768, 32767, 0, 0x800}, {32767, -32768, 0, 0x400},
+        {41, 41, 0, 0x800}, {-41, -41, 0, 0x800}, {0, 0, 0xF00, 0x800},
+        {0, 0, 0xA00, 0x800}, {0, 0, 0x500, 0x400}, {0, 0, 0xC001, 0}
+    };
+    unsigned i, tick;
+    for (i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
+        memset(&D_801C77E8_1C83E8, 0xA5, sizeof(VmWork));
+        D_801C77E8_1C83E8.last_direction = 0x1234; D_801C77E8_1C83E8.repeat_ticks = 99;
+        D_801C7908_1C8508.horizontal = cases[i].x; D_801C7908_1C8508.vertical = cases[i].y;
+        D_801C7908_1C8508.buttons = cases[i].pressed;
+        assert(func_8003EA14_3F614() == cases[i].expected);
+        assert(D_801C77E8_1C83E8.last_direction == cases[i].expected && D_801C77E8_1C83E8.repeat_ticks == 0);
+        for (tick = 0; tick < 10; tick++) {
+            assert(func_8003EA14_3F614() == 0);
+            assert(D_801C77E8_1C83E8.repeat_ticks == tick + 1);
+        }
+        assert(func_8003EA14_3F614() == cases[i].expected && D_801C77E8_1C83E8.repeat_ticks == 0);
+        D_801C77E8_1C83E8.repeat_ticks = 0xFFFF;
+        assert(func_8003EA14_3F614() == cases[i].expected && D_801C77E8_1C83E8.repeat_ticks == 0);
+        for (tick = 0; tick < sizeof(VmWork); tick++) if (tick < 4 || tick >= 8)
+            assert(((u8 *)&D_801C77E8_1C83E8)[tick] == 0xA5);
+    }
+    D_801C7908_1C8508.horizontal = D_801C7908_1C8508.vertical = 0;
+    D_801C7908_1C8508.buttons = 0x800;
+    D_801C77E8_1C83E8.last_direction = 0;
+    assert(func_8003EA14_3F614() == 0x800);
+    D_801C7908_1C8508.buttons = 0x400;
+    assert(func_8003EA14_3F614() == 0x400 && D_801C77E8_1C83E8.repeat_ticks == 0);
+}
+
+static void set_choice_buttons(u16 buttons) {
+    /* These views alias on the guest; keep synthetic integration inputs consistent. */
+    D_801C7908_1C8508.buttons = D_801C790C_1C850C = buttons;
+}
+
+static void reset_choice_fixture(void) {
+    static u8 owner[0x60];
+    unsigned i;
+    memset(D_801C7808_1C8408, 0, sizeof(D_801C7808_1C8408));
+    for (i = 0; i < 3; i++) {
+        VmChoice *node = &D_801C7808_1C8408[i];
+        node->previous = i ? VM_U32_ADDRESS(node - 1) : 0;
+        node->next = i < 2 ? VM_U32_ADDRESS(node + 1) : 0;
+        node->script = 0x80001000U + i * 0x100;
+    }
+    memset(owner, 0xA5, sizeof(owner)); D_80077860_78460 = owner;
+    system_state.game_loops_count = 1;
+    memset(&D_801C7908_1C8508, 0, sizeof(VmInput));
+    D_801C790C_1C850C = 0; D_801C7770_1C8370 = 0;
+    D_801C77E8_1C83E8.choice_state = 1; D_801C77E8_1C83E8.last_direction = 0;
+    D_801C77E8_1C83E8.repeat_ticks = 0; D_801C77E0_1C83E0 = 2;
+    D_801C7800_1C8400 = &D_801C7808_1C8408[1];
+    D_80077858_78458 = 0x1234; D_801C78D0_1C84D0 = func_8003CFD0_3DBD0;
+    feedback_count = 0; flag_calls = 0; flag_result = 0; override_buttons = 0;
+}
+
+static void check_choice_navigation_and_confirmation(void) {
+    unsigned i, busy, enabled;
+    for (i = 0; i < 3; i++) {
+        reset_choice_fixture(); D_801C7800_1C8400 = &D_801C7808_1C8408[i];
+        set_choice_buttons(0x800);
+        assert(func_8003EACC_3F6CC(D_801C7800_1C8400) == (i ? -1 : 0));
+        D_801C77E8_1C83E8.last_direction = 0;
+        set_choice_buttons(0x400);
+        assert(func_8003E888_3F488(D_801C7808_1C8408) == 0);
+        assert(D_801C7800_1C8400 == &D_801C7808_1C8408[i < 2 ? i + 1 : i]);
+        assert(feedback_count == (unsigned)(i < 2));
+        if (feedback_count) assert(feedback_ids[0] == 0x2B1);
+    }
+    reset_choice_fixture(); set_choice_buttons(0x800);
+    assert(func_8003E888_3F488(D_801C7808_1C8408) == 0 && D_801C7800_1C8400 == &D_801C7808_1C8408[0]);
+    for (busy = 0; busy < 2; busy++) for (enabled = 0; enabled < 2; enabled++) {
+        reset_choice_fixture(); D_801C7770_1C8370 = busy; flag_result = enabled ? 4 : 0;
+        set_choice_buttons(0xC400);
+        func_8003E81C_3F41C();
+        assert(D_801C7800_1C8400 == &D_801C7808_1C8408[2]);
+        assert((u32)D_80077858_78458 == 0x80001200 && D_801C77E0_1C83E0 == 0);
+        assert(D_801C78D0_1C84D0 == NULL && D_801C77E8_1C83E8.choice_state == 0);
+        assert(flag_calls == 1 && feedback_ids[0] == 0x2B1);
+        assert(feedback_count == (enabled ? 1U : 2U));
+        if (!enabled) assert(feedback_ids[1] == 0x2B0);
+    }
+    for (busy = 0; busy < 2; busy++) {
+        reset_choice_fixture(); D_801C7770_1C8370 = busy; set_choice_buttons(0x4000);
+        func_8003E81C_3F41C();
+        assert(D_80077858_78458 == (busy ? 0x1234 : 0x1238));
+        assert(D_801C77E0_1C83E0 == (busy ? 2 : 0) && flag_calls == 0 && feedback_count == 0);
+        assert((D_801C78D0_1C84D0 == NULL) == !busy);
+    }
+    reset_choice_fixture(); set_choice_buttons(0x400);
+    override_buttons = 1; next_buttons = 0x8000;
+    func_8003E81C_3F41C();
+    assert(D_801C7800_1C8400 == &D_801C7808_1C8408[2]);
+    assert((u32)D_80077858_78458 == 0x80001200 && flag_calls == 1 && feedback_count == 2);
+    reset_choice_fixture(); D_80077858_78458 = -1; set_choice_buttons(0x4000);
+    assert(func_8003E888_3F488(D_801C7808_1C8408) == -1 && D_80077858_78458 == 3);
+    reset_choice_fixture(); D_801C77E8_1C83E8.choice_state = 0; set_choice_buttons(0x8000);
+    func_8003E81C_3F41C();
+    assert(D_801C7800_1C8400 == D_801C7808_1C8408 && D_801C77E8_1C83E8.choice_state == 1);
+    assert(D_801C77E8_1C83E8.last_direction == 0 && D_801C77E8_1C83E8.repeat_ticks == 0);
+    assert(D_80077858_78458 == 0x1234 && D_801C77E0_1C83E0 == 2 && flag_calls == 0);
+    reset_choice_fixture(); set_choice_buttons(0xF00);
+    D_801C7800_1C8400 = D_801C7808_1C8408;
+    assert(func_8003EACC_3F6CC(D_801C7800_1C8400) == 0);
+    for (i = 0; i < 512; i++) {
+        unsigned byte;
+        u8 *owner;
+        reset_choice_fixture(); D_801C77E8_1C83E8.choice_state = 2;
+        system_state.game_loops_count = i & 1;
+        owner = D_80077860_78460; owner[0x5C] = (u8)(i / 2);
+        assert(func_8003E888_3F488(D_801C7808_1C8408) == 0);
+        assert(owner[0x5C] == (u8)(i / 2 + ((i & 1) ? 0 : 2)));
+        for (byte = 0; byte < 0x60; byte++) if (byte != 0x5C) assert(owner[byte] == 0xA5);
+        assert(D_801C77E8_1C83E8.choice_state == 2 && flag_calls == 0 && feedback_count == 0);
+    }
+    memset(&D_801C77E8_1C83E8, 0xA5, sizeof(VmWork));
+    func_8003E9E8_3F5E8(NULL);
+    assert(D_801C7800_1C8400 == NULL && D_801C77E8_1C83E8.choice_state == 1);
+    assert(D_801C77E8_1C83E8.last_direction == 0 && D_801C77E8_1C83E8.repeat_ticks == 0);
+    for (i = 0; i < sizeof(VmWork); i++) if (i < 4 || (i >= 8 && i < 12) || i >= 16)
+        assert(((u8 *)&D_801C77E8_1C83E8)[i] == 0xA5);
+}
+
+static void check_choice_stream_rendering(void) {
+    s16 first[] = {0, 0x7FFF, -2, -1};
+    s16 second[] = {42, -1};
+    s16 empty[] = {-1};
+    emitted_count = decoder_calls = 0; decoder_output = second;
+    func_8003EB34_3F734(17, first);
+    assert(emitted_count == 3 && emitted[0] == 0 && emitted[1] == 0x7FFF && emitted[2] == 42 && emitted_owner == 17);
+    assert(decoder_calls == 1 && decoder_owner == 17 && decoder_input == first + 2);
+    emitted_count = decoder_calls = 0;
+    func_8003EB34_3F734(18, empty); assert(emitted_count == 0 && decoder_calls == 0);
+    first[0] = (s16)0x8000; decoder_output = empty;
+    func_8003EB34_3F734(19, first); assert(emitted_count == 0 && decoder_calls == 1 && decoder_input == first);
+}
+
 int main(void) {
-    check_prompt_geometry_and_animation(); check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
-    puts("VM inputs/cleanup/queries, operands/resources, callbacks, counters and dialogue states passed.");
+    check_choice_directions_and_repeat(); check_choice_navigation_and_confirmation(); check_choice_stream_rendering(); check_prompt_geometry_and_animation(); check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
+    puts("VM choices/repeat/streams, inputs, resources, callbacks and dialogue states passed.");
     return 0;
 }
