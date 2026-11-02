@@ -6,6 +6,16 @@
 
 The original [README concept illustration](docs/images/readme-showcase.webp) inspired this dark gold/red interface. The actual dashboard now combines **connection, position bookmarks, logical checkpoints, route calibration, searchable scene catalog and a real live-memory preview**. Existing deep-dive tabs, including guarded hex editing and native debug-menu calibration, remain available. **Direct scene warp is still disabled**; the mock illustration's imaginary controls, scene names and RetroArch connection are not implemented.
 
+## Custom Live Memory watches (v0.10.5)
+
+Live memory now supports user-defined watch rows. Enter a **name**, **guest N64 hex address**, and **type** (`u8`, `u16`, `u32`, signed integer types, `f32`, `f64`, or eight-byte raw hex), then click **Add watch**. The custom field refreshes alongside built-in watches, remains clearly labelled as unverified, and can be removed with **Remove selected watch**. Double-click its **Hex** cell to edit only after enabling **UNSAFE**. Add up to 128 watches; they persist across launches in `practice/custom_watches.json` (source) or `%LOCALAPPDATA%\GoemonSpeedrunTools\custom_watches.json` (packaged executable). They are ignored by Git.
+
+The **State discovery** tab's **Watch selected address** button transfers a selected candidate directly to Live memory. Player task/object addresses can become stale when a game stage or character changes; recapture those dynamic addresses after loading.
+
+**New live finding:** `0x8015C574` is not a verified map-visible binary flag. The user found that writing `00`, `01`, and other values opens the map; writing `00` does not close it. The write itself may be a command/refresh trigger. Use a read-only custom watch to investigate whether the displayed value changes through normal C-Right input.
+
+---
+
 ## State discovery — mapping remaining live flags (v0.10.4)
 
 A new **State discovery** tab captures N64 guest memory at **A: Before**, **B: After** and optionally **C: Reverted**. It ranks changed bytes and one-bit flags for dragon-travel destination unlocks, the map overlay, selected item/weapon, magic-active state for each character, and player-task float candidates for real velocity. No candidate is automatically treated as a verified address. The dashboard and Live Memory also show a separately labelled **derived XYZ displacement velocity**, in game units per real second.

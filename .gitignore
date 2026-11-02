@@ -55,3 +55,7 @@ practice/sprites/
 
 # Local crops of game HUD sprites supplied by a user; not redistributed on public GitHub
 assets/item_sprites/
+
+# User-defined read-only Live Memory watch configuration
+practice/custom_watches.json
+custom_watches.json

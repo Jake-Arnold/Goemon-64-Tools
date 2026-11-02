@@ -13,6 +13,8 @@ from practice.scenes import SCENES, scene_label
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
 from practice.checkpoints import MAP_ADDR, STATE_ADDR
 from practice.paths import practice_data_dir, diagnostics_dir
+from practice.custom_watches import (FORMATS, make_watch, append_watch,
+                                     load_watches, save_watches, read_watch)
 from practice.theme import PALETTE
 from practice.native_character import press_native_debug_accept
 from practice.native_debug_watch import FIELDS as NATIVE_WATCH_FIELDS, read_fields as read_native_watches, changed_fields as changed_native_watches, make_change_event as make_native_change_event, can_mark_state as can_mark_native_state, decode_hover_pointer
@@ -25,12 +27,19 @@ from practice.native_character_cursor_scan import (
     capture_cursor, find_cursor_candidates, make_cursor_report)
 
 DEBUG_PROFILE_PATH = practice_data_dir() / "native_debug_fields.json"
+CUSTOM_WATCHES_PATH = practice_data_dir() / "custom_watches.json"
 
 class InspectorMixin:
     def build_inspector_tabs(self, notebook):
         self.watch_previous={}
         self.hex_advanced=tk.BooleanVar(value=False)
         self.watch_rows=[]
+        self.custom_watch_load_error=None
+        try:
+            self.custom_watches=load_watches(CUSTOM_WATCHES_PATH)
+        except (OSError,ValueError,KeyError,TypeError) as exc:
+            self.custom_watches=[]
+            self.custom_watch_load_error=str(exc)
         self.scene_selected=None
         self.debug_observations=[]
         self.debug_candidates=[]
@@ -74,6 +83,28 @@ class InspectorMixin:
         self.filter_text=tk.StringVar()
         ttk.Entry(top,textvariable=self.filter_text,width=25).pack(side='left')
         self.filter_text.trace_add('write',lambda *_:self.draw_watches())
+        watch_tools=ttk.LabelFrame(inspector,text='Custom memory watches (saved across launches)',padding=6)
+        watch_tools.pack(fill='x',pady=(2,6))
+        custom_row=ttk.Frame(watch_tools);custom_row.pack(fill='x')
+        ttk.Label(custom_row,text='Name:').pack(side='left')
+        self.user_watch_name=tk.StringVar(value='Map write-trigger candidate')
+        ttk.Entry(custom_row,textvariable=self.user_watch_name,width=29).pack(side='left',padx=(3,8))
+        ttk.Label(custom_row,text='Address:').pack(side='left')
+        self.user_watch_address=tk.StringVar(value='0x8015C574')
+        ttk.Entry(custom_row,textvariable=self.user_watch_address,width=14).pack(side='left',padx=(3,8))
+        ttk.Label(custom_row,text='Type:').pack(side='left')
+        self.user_watch_type=tk.StringVar(value='u8')
+        ttk.Combobox(custom_row,textvariable=self.user_watch_type,values=tuple(FORMATS),
+                     state='readonly',width=7).pack(side='left',padx=(3,8))
+        ttk.Button(custom_row,text='Add watch',command=self.add_custom_watch,
+                   style='Gold.TButton').pack(side='left',padx=(0,6))
+        ttk.Button(custom_row,text='Remove selected watch',command=self.remove_custom_watch).pack(side='left')
+        ttk.Label(watch_tools,text='Custom values refresh with the live table. Select the custom row to remove it. '
+                  'Double-click its Hex cell to edit when UNSAFE is enabled.',
+                  style='Muted.TLabel').pack(anchor='w',pady=(4,0))
+        if self.custom_watch_load_error:
+            ttk.Label(watch_tools,text='Existing custom watch file could not be read: '+self.custom_watch_load_error,
+                      style='Muted.TLabel').pack(anchor='w')
         ttk.Label(inspector,text='Double-click a HEX cell to edit. UNSAFE enables unrestricted hex values at the displayed guest address (including mapped bounds override).').pack(anchor='w')
         ttk.Checkbutton(inspector,text='UNSAFE: enable raw guest-memory hex editing (any 1/2/4/8-byte value and address)',variable=self.hex_advanced).pack(anchor='w')
         manual=ttk.Frame(inspector);manual.pack(fill='x',pady=(3,7))
@@ -166,6 +197,51 @@ class InspectorMixin:
         self.diff_cp['values']=labels
         if labels and self.diff_cp.current()<0:self.diff_cp.current(len(labels)-1)
 
+    def add_custom_watch(self):
+        try:
+            spec=make_watch(self.user_watch_name.get(),self.user_watch_address.get(),
+                            self.user_watch_type.get())
+            updated=append_watch(self.custom_watches,spec)
+            save_watches(CUSTOM_WATCHES_PATH,updated)
+            self.custom_watches=updated
+            self.inspector_status.set(f'Added {spec.row_name} at 0x{spec.address:08X} ({spec.kind}).')
+            self.filter_text.set('')
+            if self.mem:
+                self.last_inspect_at=0.0
+                self.refresh_inspector(self.current if isinstance(self.current,dict) else {})
+            else:
+                self.watch_rows=[*self.watch_rows,Watch(spec.row_name,spec.address,
+                    'Connect to read','—','CUSTOM',f'user watch: {spec.kind}; unverified')]
+                self.draw_watches()
+            if self.watch_tree.exists(spec.row_name):
+                self.watch_tree.selection_set(spec.row_name)
+                self.watch_tree.see(spec.row_name)
+        except (ValueError,OSError,TypeError,KeyError) as exc:
+            self.inspector_status.set(f'Add watch failed: {exc}')
+
+    def remove_custom_watch(self):
+        chosen=self.watch_tree.selection()
+        names={spec.row_name for spec in self.custom_watches}
+        selected=next((name for name in chosen if name in names),None)
+        if selected is None:
+            self.inspector_status.set('Select a Custom: row to remove it.')
+            return
+        updated=[spec for spec in self.custom_watches if spec.row_name!=selected]
+        try:
+            save_watches(CUSTOM_WATCHES_PATH,updated)
+        except OSError as exc:
+            self.inspector_status.set(f'Remove watch failed: {exc}')
+            return
+        self.custom_watches=updated
+        self.watch_rows=[w for w in self.watch_rows if w.name!=selected]
+        self.watch_previous.pop(selected,None)
+        if self.mem:
+            self.last_inspect_at=0.0
+            self.refresh_inspector(self.current if isinstance(self.current,dict) else {})
+        else:
+            self.draw_watches()
+        self.inspector_status.set(f'Removed {selected}.')
+
     def write_raw_hex(self):
         """Write explicitly entered guest bytes; unlocked only by UNSAFE toggle."""
         if not self.mem:
@@ -198,7 +274,12 @@ class InspectorMixin:
         watch=next((w for w in self.watch_rows if w.name==row_id),None)
         if watch is None or watch.addr is None:return
         policy=get_policy(watch.addr)
+        spec=next((v for v in self.custom_watches if v.row_name==watch.name),None)
         unsafe=self.hex_advanced.get()
+        if spec is not None and not unsafe:
+            messagebox.showwarning('Custom watch is read-only',
+                                   'Enable UNSAFE to edit a custom guest-RAM watch.')
+            return
         if policy is None and not unsafe:
             messagebox.showwarning('Read-only field','Enable UNSAFE to edit a field without a declared policy.')
             return
@@ -209,7 +290,9 @@ class InspectorMixin:
             # Unknown floats and other raw watches provide their byte width
             # through the displayed hex data, rather than a guessed policy.
             raw_text=watch.raw.removeprefix('0x').removeprefix('0X').strip()
-            if policy is not None:
+            if spec is not None:
+                width=spec.width
+            elif policy is not None:
                 width=policy.width
             elif len(raw_text) in (2,4,8,16) and all(c in '0123456789abcdefABCDEF' for c in raw_text):
                 width=len(raw_text)//2
@@ -248,7 +331,8 @@ class InspectorMixin:
         chosen=self.watch_tree.selection()
         self.watch_tree.delete(*self.watch_tree.get_children())
         for w in self.watch_rows:
-            if filt and filt not in (' '.join((w.name,w.value,w.raw,w.source))).lower():
+            if filt and filt not in (' '.join((w.name,w.value,w.raw,w.source,
+                                   f'0x{w.addr:08X}' if w.addr is not None else ''))).lower():
                 continue
             mark=(w.name,w.raw)
             tag = 'invalid' if w.status in ('CHECK','ERROR') else ('changed' if w.name in self.watch_previous and self.watch_previous[w.name]!=w.raw else '')
@@ -275,6 +359,7 @@ class InspectorMixin:
             live_map=self.mem.u16(MAP_ADDR)
             self.scene_live.set('Current map: '+scene_label(live_map))
             watches=get_watches(self.mem,snapshot,SCENES)
+            watches.extend(read_watch(self.mem,spec) for spec in self.custom_watches)
             observed=getattr(self, 'observed_velocity', None)
             if observed is not None:
                 import math

@@ -54,6 +54,14 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+### 2026-11-02 — v0.10.5: persistent custom Live Memory watches and corrected map candidate
+
+- Added **Custom memory watches** section to Live Memory with name, hexadecimal original N64 guest address, and explicit type (`u8/s8/u16/s16/u32/s32/f32/f64/hex8`), **Add watch** and **Remove selected watch**. Watches refresh with built-in readings, are searchable by name or address, and are explicitly marked **CUSTOM/unverified**. Hex editing of a custom row requires the existing **UNSAFE** switch. User definitions persist in `custom_watches.json` under the existing writable app data directory, not in the public Git repository.
+- Added **Watch selected address** to State discovery so a chosen candidate can be monitored immediately without becoming a claimed built-in mapping.
+- **Corrected hypothesis for `0x8015C574`:** live manual writes of `0x01`, `0x00`, and other values all **opened the map**; writing zero did not close it. This is **not a confirmed map-visible 0/1 boolean**. It could be a write-triggered refresh/command or state with side effects. Do not implement a map-close toggle from this address without further evidence.
+- Local development tests: **127 Python tests passed** via `xvfb-run -a python -m unittest discover -s tests -q`; custom watch parsing, persistence, big-endian decoding, GUI add/remove/refresh and candidate transfer were tested with simulated guest memory. Windows in-game operation remains unverified.
+- Next: inspect `0x8015C574` on ordinary C-Right open/close without writes; compare against additional map UI state candidates. Recheck dynamic player-task addresses after stage reload.
+
 ## 2026-11-02 — Ebisumaru A/B/C probes (map overlay, weapon selection, magic, movement)
 
 User-provided screenshot comparisons plus exported `state_probe_20261102_002851_246683.json`. Original US Goemon64Recomp, **Ebisumaru character ID 1**, focused memory range. All listed candidates returned to the original bytes on C; that is correlation, **not proof of control**. No address here has been independently write-validated.

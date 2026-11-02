@@ -25,6 +25,12 @@ Velocity JSON context: character `1`, map `328`, A/B/C captured ~3 seconds apart
 
 These fields' **types** are documented but their meanings remain unknown. The JSON also reports `0x8016A178` as f32 `0 → 0.84`, but task offset `+0xE8` is **s32**, so that float display is a false interpretation. Do not hardcode any `0x8016A...` address across game loads; recompute from the player-task pointer.
 
+## Map visibility candidate correction and manual watches (2026-11-02)
+
+**`0x8015C574` is not confirmed as a 0/1 visibility flag.** After the initial Ebisumaru A/B/C comparison (`00 → 01`), the user directly wrote `01`, `00` and other values. **Every tested write opened the map, and zero did not close it.** The observed write side effect suggests a command/refresh trigger or more complex map state rather than a persistent on/off boolean. The true map-close state remains unmapped.
+
+In Live Memory, add a custom watch for `0x8015C574` with type `u8` and monitor changes during *normal* C-Right opening/closing **without writing**. The State discovery candidate table now supports **Watch selected address** for any row. Dynamic player-task addresses can change across scenes and need recapture.
+
 ## Capture protocol
 
 1. Connect to **US Goemon64Recomp** and select **State discovery**.

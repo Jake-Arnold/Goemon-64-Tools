@@ -64,6 +64,8 @@ class StateDiscoveryMixin:
         bar.pack(side='right',fill='y')
         row=ttk.Frame(tab);row.pack(fill='x',pady=7)
         ttk.Button(row,text='Copy selected address',command=self.copy_state_probe_address).pack(side='left')
+        ttk.Button(row,text='Watch selected address',command=self.watch_state_probe_candidate,
+                   style='Gold.TButton').pack(side='left',padx=(8,0))
         ttk.Label(row,text='A/B changes alone are hypotheses; C reversing to A makes a result more informative. '
                   'Player-task float values are not proven velocity.',style='Muted.TLabel',
                   wraplength=850).pack(side='left',padx=(15,0))
@@ -127,6 +129,20 @@ class StateDiscoveryMixin:
         self.root.clipboard_clear()
         self.root.clipboard_append(addr)
         self.state_probe_status.set(f'Copied candidate address {addr}; not confirmed or enabled for editing.')
+
+    def watch_state_probe_candidate(self):
+        chosen=self.state_probe_table.selection()
+        if not chosen:
+            self.state_probe_status.set('Select a candidate before adding it to Live Memory.')
+            return
+        row=self.state_probe_table.item(chosen[0],'values')
+        address=row[0]
+        kind='f32' if row[6]=='f32 candidate' else 'u8'
+        self.user_watch_name.set(f'{self.state_probe_kind.get()} {address}')
+        self.user_watch_address.set(address)
+        self.user_watch_type.set(kind)
+        self.add_custom_watch()
+        self.notebook.select(self.live_memory_tab)
 
     def reset_state_probes(self):
         self.state_captures={}
