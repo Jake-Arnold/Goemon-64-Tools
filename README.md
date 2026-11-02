@@ -1,16 +1,3 @@
-## 2026-11-02 — confirmed equipped weapon and corrected state interpretations
-
-- **Selected weapon index:** `0x8015C607` is a u8 slot (01, 02, 03) across all four characters. Live Memory now displays it. Other values are marked unusual and may invoke wrong-character weapon assets; UNSAFE editing permits them.
-- **Map overlay:** `0x8015C574` naturally reads 00 when hidden and 01 when visible, but manually writing any tested value opens the map. It is not a simple on/off write toggle.
-- **Magic:** previous candidate `0x800C7A73` was rejected; it oscillates outside magic. `0x8014C340` also oscillates independently of weapon changes.
-- **Movement:** earlier task float candidates also fluctuate during NPC dialogue; byte readings 191/192 are not velocity limits. See `docs/STATE_DISCOVERY.md`.
-
-## v0.10.6 — Unlocks and native menu corrections
-
-The Windows/Python 3.14 `KeyError('popdown')` in automatic Unlocks refresh is fixed by querying the raw Tcl focus widget path. **The Sprites tab has been removed**; the Unlocks tab remains. The five item-slot code/quantity addresses are verified, and the confirmed weapon/upgrade/ability entries no longer carry provisional labels in Live Memory.
-
-The native debug-menu category byte is `0x800C7AA4`, with `MAIN=0`, `SIRO=1`, `DOUCHU=2`, `MACHI=3`, `SHOP=4` and subsequent displayed rows through `GAMEOVER=13`. The later screenshot contains two unclear labels, kept explicitly tentative in code. The scene-family category-index calculation now accounts for MAIN occupying index zero.
-
 # Goemon Speedrun Tools v0.10.2 — clickable unlocks and sprite gallery
 
 ![Real Tkinter dashboard running in an offline test environment](docs/images/actual-dashboard.webp)
@@ -19,13 +6,15 @@ The native debug-menu category byte is `0x800C7AA4`, with `MAIN=0`, `SIRO=1`, `D
 
 The original [README concept illustration](docs/images/readme-showcase.webp) inspired this dark gold/red interface. The actual dashboard now combines **connection, position bookmarks, logical checkpoints, route calibration, searchable scene catalog and a real live-memory preview**. Existing deep-dive tabs, including guarded hex editing and native debug-menu calibration, remain available. **Direct scene warp is still disabled**; the mock illustration's imaginary controls, scene names and RetroArch connection are not implemented.
 
-## Custom Live Memory watches (v0.10.5)
+## Custom live-memory watches (v0.10.5)
 
-Live memory now supports user-defined watch rows. Enter a **name**, **guest N64 hex address**, and **type** (`u8`, `u16`, `u32`, signed integer types, `f32`, `f64`, or eight-byte raw hex), then click **Add watch**. The custom field refreshes alongside built-in watches, remains clearly labelled as unverified, and can be removed with **Remove selected watch**. Double-click its **Hex** cell to edit only after enabling **UNSAFE**. Add up to 128 watches; they persist across launches in `practice/custom_watches.json` (source) or `%LOCALAPPDATA%\GoemonSpeedrunTools\custom_watches.json` (packaged executable). They are ignored by Git.
+The **Live memory** tab now has **Name**, **Address** and **Type** inputs above the table, plus **Add watch** and **Remove selected watch** buttons. Add any guest address such as `0x8015C574` with `u8`, `u16`, `u32`, signed variants, `f32`, `f64` or raw eight-byte hex. Custom rows refresh with the regular memory table, support filtering by name or address, and are visibly labelled **Custom** rather than misrepresented as confirmed mappings. Double-click their Hex cell to edit after enabling **UNSAFE**. Custom watches are saved to `practice/custom_watches.json` (source) or `%LOCALAPPDATA%\GoemonSpeedrunTools\custom_watches.json` (packaged app), separate from the built-in address map.
 
-The **State discovery** tab's **Watch selected address** button transfers a selected candidate directly to Live memory. Player task/object addresses can become stale when a game stage or character changes; recapture those dynamic addresses after loading.
+The **State discovery** tab also has **Watch selected address**, which adds the selected candidate to Live memory in one click. Dynamic task pointers may change after changing character or stage, so watch addresses inside player tasks can become stale across loads.
 
-**New live finding:** `0x8015C574` is not a verified map-visible binary flag. The user found that writing `00`, `01`, and other values opens the map; writing `00` does not close it. The write itself may be a command/refresh trigger. Use a read-only custom watch to investigate whether the displayed value changes through normal C-Right input.
+**Map test correction (2026-11-02):** `0x8015C574` is **read** as `00` while hidden and `01` while visible, but **writing** `00`, `01` or other tested bytes opens the map rather than closes it. Built-in live watch available; no on/off write toggle is claimed.
+
+**Equipped weapon (confirmed):** `0x8015C607` is a one-byte index, `01`/`02`/`03` across all four characters. The Live Memory tab now watches it; UNSAFE permits arbitrary hex writes. Out-of-range values produce unintended next-character weapon assets. Magic-active and internal player velocity remain unconfirmed.
 
 ---
 
@@ -37,7 +26,7 @@ Detailed test sequences, scope limitations and source evidence: [State discovery
 
 ---
 
-## Live unlocks (v0.10.2)
+## Live unlocks and item sprites (v0.10.2)
 
 Use the new **Unlocks** tab to click actual memory values for all 26 currently mapped character, weapon, ability, and key flags. Each control immediately reads the one-byte US N64 guest address, writes the selected exact byte (no pop-up confirmation), reads it back, and refreshes the UI. The tab samples live RAM repeatedly, so values changed by the game or other tools are reflected automatically. You must connect to the game first; source `Run.bat` and the packaged executable already opt into hex editing.
 
@@ -45,6 +34,10 @@ Use the new **Unlocks** tab to click actual memory values for all 26 currently m
 - Basic weapon upgrades offer three choices (`0x00` normal, `0x01` silver/double, `0x02` gold). This avoids mislabelling multi-level values as booleans.
 - The control grid shows the guest address, raw live hex value, and selected state. `0xFF` or an unexpected value remains visible rather than being interpreted as owned. Clicking does not save a disk snapshot or force the game to redraw inventory instantly.
 - These mappings follow the existing GameShark-derived `practice/inspector.py` list; **some item labels remain provisional until checked in-game**. No game is connected during automated tests, so actual UI behaviour and reload rules still need verification.
+
+The separate **Sprites** tab is a clickable gallery of those same 26 flags. It can display **original-game PNG sprites imported from your own extraction or a legitimately obtained asset set**. Select **Import original PNGs from folder** and provide images named after their snake_case item names (e.g. `chain_pipe.png`, `goemon_pipe_upgrade.png`). Imported images are stored locally in `practice/sprites/` for source runs or `%LOCALAPPDATA%\GoemonSpeedrunTools\sprites/` for the Windows executable. Only recognised filenames are copied.
+
+**Game sprites are not bundled in this public repository.** The tab shows labelled empty image slots until you import PNG exports. It does not pretend that art from another Goemon game is the original N64 sprite. See [sprite-import guide](docs/ORIGINAL_SPRITES.md) for the full naming map. You can use the clickable cards without importing any images.
 
 ## Windows desktop build
 
@@ -74,7 +67,7 @@ The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/tas
 - **Four Miracle Items:** new buttons use `0x8015C85B`, `0x8015C85F`, `0x8015C863`, and `0x8015C866`. Individual icons/names are not yet mapped.
 - **Achilles' Heel / Sasuke battery:** labelled **candidate** slots, not proven item identity; test against in-game status before treating them as definitive.
 - **Live Memory:** enable `UNSAFE` to write any width-appropriate hex value, bypass mapped limits, or explicitly enter a guest N64 address and 1/2/4/8-byte value. The write checks old memory and verifies the result; arbitrary values can crash or corrupt game state. This does not provide a working warp.
-- **Original sprites:** The former Sprites tab was removed in v0.10.6.
+- **Original sprites:** Sprites tab includes a link to the [referenced original sheet](https://www.spriters-resource.com/nintendo_64/mysticalninjastarringgoemon/asset/123088/) and retains the local PNG import workflow. Original copyright art is not committed to the public repository.
 
 ---
 

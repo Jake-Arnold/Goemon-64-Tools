@@ -2,7 +2,7 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
-## Current status — 2026-11-02
+## Current status — 2026-11-01
 
 **Baseline:** v0.9.9 source recovered from the original release ZIP. The deleted conversation was reconstructed separately from 102 screenshots; screenshots and personal conversation transcript are not committed to this public repository.
 
@@ -20,7 +20,7 @@ This file is the running development log. **Update it with every code change, co
 - Logical checkpoint/character state assistance (not a full N64 savestate).
 - Portable C checkpoint/watch prototypes; **not yet installed in a custom N64 ROM**.
 
-**Current blocker:** complete, correctly positioned one-click scene warp. The v0.9.7 pending-destination + exit-request approach returned to the title screen, but a later live test found **pending destination (`0x800C7CA0`) + top-level state `0x0C`** successfully loads the target stage with incorrect spawn coordinates. The app still has no validated native-equivalent warp. Determine entrance/spawn selection and correct initialization timing before enabling automation.
+**Current blocker:** direct one-click scene warp. The experimental v0.9.7 pending-destination + exit-request write returned to the title screen. v0.9.9 correctly disables this unsafe route. Locate the actual engine scene/door loading routine; do not re-enable direct warp based only on map-ID changes.
 
 **Observed normal door sequence (MACHI 353 → 351):**
 - `0x800C7CA0` pending destination changed at ~2715 ms.
@@ -54,84 +54,22 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
-## 2026-11-02 — player-task +0x68 causal movement nudge under raw writes
+## 2026-11-02 — weapon index confirmed; map, magic and player-task false positives refined
 
-**User live experiment, Ebisumaru (not tool-automated):** modifying original guest address `0x8016A0F8` while moving visibly *nudged the player*, both with 4-byte and 8-byte raw write widths. This supports a causal **movement-influencing** field, but does **not** yet establish a true velocity component or axis. It remains a dynamic task-local address: in the recorded session the player task was at `0x8016A090`, so the field is `PlayerTask + 0x68` (`f32 unknown_68` per recomp `patches/types.h`).
+- **Equipped weapon:** `0x8015C607` (one byte) is user-confirmed across Goemon, Ebisumaru, Sasuke and Yae. Normal values `0x01`, `0x02`, `0x03` select the three current-character weapons. Manually writing out-of-range values accesses unintended next-character weapon artwork/behaviour: Goemon -> Ebisumaru hammer; Ebisumaru -> Sasuke kunai; Sasuke -> Yae sword; Yae -> what user described as `letter 1`. Exact out-of-bounds dispatch mechanics not proven. Added built-in live watch, showing unusual values as CHECK, and unsafe-edit policy permitting any single byte.
+- **Map overlay:** `0x8015C574` *reads* `00` while hidden and `01` while displayed (new live user evidence). However manual writes of any tested value open the map, including `00` which does not close it. Separate read behaviour from write behaviour; never implement an `00=close` button from this evidence. Added observed-state live watch.
+- **Rejected magic candidate:** `0x800C7A73` oscillates `00/01` outside magic activation. It is NOT a confirmed magic-active flag; find another source through activation-specific testing.
+- **Rejected weapon candidate:** `0x8014C340` oscillates `0x40`/`0x41` and sometimes `0x00` independently. Not a dedicated selected-weapon field.
+- **Velocity reassessment:** dynamic task float fields `+0x68`/`+0x70`/`+0x74`/`+0x78`/`+0x7C` (observed at `0x8016A0F8`/`0x8016A100`/`0x8016A104`/`0x8016A108`/`0x8016A10C` for one session) read zero while stationary but fluctuate during NPC conversations, weakening their identification as direct locomotion velocity. User reports maximum byte-readings ~192 (and ~191 on `+0x7C`); these are likely first bytes of IEEE-754 floats, e.g. `0xC0=192` is part of `-2.7127` at `+0x68`, **not a 192-unit velocity maximum**. Watch entire four-byte big-endian f32, and always resolve the task pointer dynamically.
+- Automated tests now verify built-in equipped-weapon watch, map observed-state watch and unsafe out-of-range weapon edits. Windows gameplay not reproduced inside test runner.
 
-**Interpretation caveat:** the editor parses entered values as **hex integer byte patterns**, not decimal numbers or IEEE-754 floats. Typing `192` writes `0x00000192` at width 4; `0x0000000000000192` at width 8. Those bytes are *not* floating-point 192.0 (`0x43400000`). For width 8, writes starting at `+0x68` also modify adjacent `+0x6C`; effects cannot be attributed solely to `+0x68`. Previously observed decimal 192 in byte view can be raw high byte `0xC0` of a negative float, rather than a speed maximum.
+### 2026-11-02 — v0.10.5: user-defined Live Memory watches + map write-trigger finding
 
-**Follow-up validation:** use a dynamic base pointer and a **4-byte** watch/write at `task + 0x68`; capture original full f32 and test small positive and negative IEEE-754 values with readback and controlled stationary/moving conditions, while recording position delta and camera/facing. Repeat after stage reload to check whether a different base is used. No persistent hardcoded movement toggle is justified yet. No runtime code changes in this documentation update.
-
-## 2026-11-02 — selected weapon confirmed; map/magic/velocity reclassified
-
-- **Weapon:** user tested `0x8015C607` (u8) on all four characters. `01`/`02`/`03` select normal weapon 1/2/3. Manually writing out-of-range values shows unintended next-character weapons: Goemon -> Ebisumaru hammer, Ebisumaru -> Sasuke kunai, Sasuke -> Yae sword, Yae -> user-described letter `1`. Added built-in watch; values above 3 are displayed with CHECK, not silently clamped. Editing requires UNSAFE.
-- **Map:** `0x8015C574` reads `00` hidden and `01` visible, but writing `00`, `01` or any other tested value opens the map; writing `00` cannot close it. Added a live observed-state watch, not a write-toggle.
-- **Magic false positive:** `0x800C7A73` oscillates `00`/`01` when magic is not being used. Do not treat it as the magic-active flag.
-- **Weapon false positive:** `0x8014C340` oscillates `0x40`/`0x41` and occasionally `00`; it is not the actual weapon selection index.
-- **Velocity:** player-task f32 candidates at offsets `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C` are zero when still yet fluctuate during NPC conversations. Reported maxima 192/191 from byte monitors are consistent with first bytes `0xC0`/`0xBF` of signed big-endian IEEE-754 floating-point values, not velocity caps. Actual engine velocity remains unconfirmed; full f32 and dynamic task pointer required.
-- Source tests and UI tests passed locally. No Windows gameplay run in automated testing.
-
-## 2026-11-02 — v0.10.6: Tk popdown crash fix, confirmed mappings and native category order
-
-- Fixed repeated Windows/Python 3.14 `KeyError('popdown')`: `refresh_unlocks()` now reads the raw Tcl focus widget path instead of calling `root.focus_get()`, which fails to resolve some internal ttk Combobox popdown widgets. Only a focused fish-count entry is exempt from periodic text updates.
-- Removed the **Sprites** tab, importer, gallery and related update paths; Unlocks remains.
-- User-confirmed item slot bytes: slot 1 code `0x8015C5F3`, slot 2 code `0x8015C5F7`, slot 2 quantity `0x8015C5FB`, slot 3 code `0x8015C5FF`, slot 3 quantity `0x8015C603`. These are not the currently selected item pointer.
-- User verified all weapon upgrade and weapon/ability mappings visible in their Live Memory screenshot, including Meat Saw Hammer, Fire Cracker Bomb, Flute, Windup Camera, Ice Kunai, Bazooka, Medal of Flames, Sudden Impact, Mini Ebisumaru, Super Jump and Magic Mermaid. Removed provisional UI-source qualifiers for these confirmed entries. Sasuke battery remains unverified.
-- User's original N64 menu screenshot establishes **MAIN=0, SIRO=1, DOUCHU=2, MACHI=3, SHOP=4**, with subsequent categories in displayed order through GAMEOVER=13. Added names in `practice/native_menu_categories.py` with two hard-to-read labels explicitly uncertain. Fixed former 0-based SIRO scene-family index.
-- Regression tests added for removed Sprites tab, focus exception, inventory values, source confidence, and scene-family categories. Local Tk GUI suite: **129 passed, 9 subtests passed** under Xvfb. Windows/Python 3.14 remains to be verified in the live game.
-
-### 2026-11-02 — v0.10.5: persistent custom Live Memory watches and corrected map candidate
-
-- Added **Custom memory watches** section to Live Memory with name, hexadecimal original N64 guest address, and explicit type (`u8/s8/u16/s16/u32/s32/f32/f64/hex8`), **Add watch** and **Remove selected watch**. Watches refresh with built-in readings, are searchable by name or address, and are explicitly marked **CUSTOM/unverified**. Hex editing of a custom row requires the existing **UNSAFE** switch. User definitions persist in `custom_watches.json` under the existing writable app data directory, not in the public Git repository.
-- Added **Watch selected address** to State discovery so a chosen candidate can be monitored immediately without becoming a claimed built-in mapping.
-- **Corrected hypothesis for `0x8015C574`:** live manual writes of `0x01`, `0x00`, and other values all **opened the map**; writing zero did not close it. This is **not a confirmed map-visible 0/1 boolean**. It could be a write-triggered refresh/command or state with side effects. Do not implement a map-close toggle from this address without further evidence.
-- Local development tests: **127 Python tests passed** via `xvfb-run -a python -m unittest discover -s tests -q`; custom watch parsing, persistence, big-endian decoding, GUI add/remove/refresh and candidate transfer were tested with simulated guest memory. Windows in-game operation remains unverified.
-- Next: inspect `0x8015C574` on ordinary C-Right open/close without writes; compare against additional map UI state candidates. Recheck dynamic player-task addresses after stage reload.
-
-## 2026-11-02 — Ebisumaru A/B/C probes (map overlay, weapon selection, magic, movement)
-
-User-provided screenshot comparisons plus exported `state_probe_20261102_002851_246683.json`. Original US Goemon64Recomp, **Ebisumaru character ID 1**, focused memory range. All listed candidates returned to the original bytes on C; that is correlation, **not proof of control**. No address here has been independently write-validated.
-
-| Action | Candidate address | A → B | Assessment |
-| --- | --- | --- | --- |
-| Map overlay hidden → shown | `0x8015C574` (game_data byte) | `00 → 01` | Top candidate for display flag |
-| Map overlay | `0x8016A165`, `0x8016A166` (player task bytes) | `00 → 01` both | Lower priority; same addresses also change during weapon selection |
-| Weapon/item selection | `0x8015C607` (game_data byte) | `01 → 02` | Top candidate for selected item/weapon index |
-| Weapon/item selection | `0x8014C340` (player object byte) | `40 → 41` | Possible animation/visual state |
-| Weapon/item selection | `0x8016A165`, `0x8016A166` | `03 → 04` both | Likely shared task/input/animation state, not feature-specific |
-| Ebisumaru magic inactive → active | `0x800C7A73` (system byte) | `00 → 01` | Top candidate for activation flag |
-| Ebisumaru magic | `0x8015C5CD` (game data byte) | `0A → 08` | Secondary candidate; may be resource/state change |
-| Ebisumaru magic | `0x800C79C8`, `0x800C79CA` | `08 → 09`, `ED → EC` | Secondary changing system values; ambiguous |
-
-**Movement probe:** A=stationary, B=moving, C=stationary, same character 1 and map ID 328. Export reports 145 changed bytes, 87 returning bytes, and 98 candidates across four regions. Dynamic player-task base inferred for that session as `0x8016A090`. Compared against original recomp's `PlayerTask` struct: `+0x68` (`0x8016A0F8`) is a genuine f32 changing `0 → -2.7127`; `+0x70`/`+0x74`/`+0x78`/`+0x7C` (`0x8016A100`, `0x8016A104`, `0x8016A108`, `0x8016A10C`) are genuine f32 members changing `0 → 0.44024/-0.80182/-0.17552/0.17856`. Also `+0xD0` (`0x8016A160`) f32 `0.3 → 1`. **None is proven velocity**; may be direction/animation/camera. Conversely `+0xE8` (`0x8016A178`) is declared **s32**, and `+0x0C` / `+0x58` are in the generic task header, so f32 decoding there is misleading. Avoid promoting arbitrary subnormal f32 interpretations.
-
-**Next tests:** Repeated open/close map probe with an isolated write to `0x8015C574`; cycle all Ebisumaru weapons and check whether `0x8015C607` advances with the selected slot and restores; repeat magic start/end for other characters to identify shared vs per-character state; check task f32 floats while running forward/backward/strafing and jumping with fixed camera. For task-local pointers, identify base dynamically each run; do not hardcode the live instance addresses.
-
-Source of structural typing: https://github.com/klorfmorf/Goemon64Recomp/blob/dev/patches/types.h . This is a research evidence update only; no runtime code or confirmed toggle mapping changed.
-
-## 2026-11-02 — live top-level state survey and confirmed reload-triggered stage transition
-
-**Source:** user manually edited original US Goemon64Recomp guest RAM during live gameplay. These are in-game observations, not independently reproduced automated tests. Address `0x800C7A94` holds the top-level game state (u8).
-
-| Value written | Observed result | Confidence |
-| --- | --- | --- |
-| `0x04` | Game crashes | User-observed |
-| `0x05` | Title screen | User-observed |
-| `0x06` | Title-screen song/music state | User-observed; exact subsystem semantics unresolved |
-| `0x07` | Attract/demo gameplay reached after idling at title | User-observed |
-| `0x08` | Controller Pak: use / do not use prompt | User-observed |
-| `0x09` | Opening cutscene | User-observed |
-| `0x0A` | Original native debug menu | Established earlier |
-| `0x0C` | Re-enters / reloads stage | User-observed |
-| `0x0D` | Gameplay | Established earlier |
-| `0x0E` | Game-over screen | User-observed |
-| `0x0F` | Game crashes | User-observed |
-
-**Important confirmed partial warp:** While in gameplay, the user wrote a different destination map to `0x800C7CA0` (pending destination, u16) and then manually forced top-level state `0x800C7A94 = 0x0C`. The game **successfully transitioned to the requested stage**. However, the character arrived with **incorrect/unexpected stage-entry coordinates**. This is substantially stronger evidence than changing the map field alone and must not be conflated with the earlier failed v0.9.7 `pending destination + exit request` experiment (which returned to title). No claim yet of a complete native-equivalent warp.
-
-**Working hypothesis:** A direct practice warp could set pending destination, invoke state `0x0C` for a valid scene reload, and supply the correct entrance/spawn context. Merely writing player XYZ after the fact may not be fully equivalent to the native debug-menu transition: entrance selector/previous map, facing, camera, active objects, scripts, loading timing and player task construction may also matter.
-
-**Next validation:** Capture the same target stage entered (a) through the original debug menu and (b) through the new `pending destination → 0x0C` method. Compare source map, pending/current/previous map, stage offset, top-level states, spawn XYZ, facing, camera, loading/phase and player task/entrance identifiers at multiple points before and after load. Find the entrance-selection rule and correct application timing before implementing one-click warp. Avoid interpreting `0x04` or `0x0F` as safe states.
+- Added persistent custom Live memory watchers with names, arbitrary N64 guest addresses, and byte/word/signed/float interpretations. New **Add watch / Remove selected watch** controls; double-click custom Hex cells to edit only when UNSAFE is enabled. Watch definitions are stored in `custom_watches.json` in the existing source/user-data directory, not committed to GitHub.
+- Added **Watch selected address** to the State discovery comparison screen for quick transfer of candidate addresses to Live memory.
+- **New live finding:** the user's controlled manual writes to `0x8015C574` of `0x00`, `0x01` and other values **all caused the map to open**. Writing zero did not close it. Therefore `0x8015C574` is NOT validated as a normal map-visible 0/1 flag; could be a command/refresh trigger or a different state variable with side effects. Preserve candidate status. Do not ship a map-close toggle based on this field.
+- Tests: custom watch parsing/persistence/big-endian decoding, GUI add/remove/live refresh/discovery import, mocked RAM only. No Windows live game session available in this environment.
+- Next: read-only watch the address before/after C-Right without manual writes, then test alternate map closing semantics and identify the actual map visibility or menu state separately.
 
 ## 2026-11-01 — v0.10.2 inventory corrections and raw memory editor
 

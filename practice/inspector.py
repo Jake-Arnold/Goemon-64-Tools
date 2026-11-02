@@ -7,13 +7,16 @@ All offsets are N64 guest addresses, NOT Windows host pointers.
 """
 from __future__ import annotations
 from dataclasses import dataclass
+import struct
+import math
 from practice import checkpoints as cp
 from practice.native_menu_categories import native_menu_category, NATIVE_MENU_CATEGORIES
 
 CHARACTERS = ('Goemon', 'Ebisumaru', 'Sasuke', 'Yae')
 
 # Each tuple (label, guest_address, width in bytes, accepted_max, meaning)
-# Explicitly user-verified mappings are identified as confirmed; uncertain fields remain provisional.
+# Entries explicitly verified by the user in live gameplay are marked confirmed.
+# Unverified fields (e.g., suspected Sasuke battery) remain clearly labelled.
 INVENTORY = [
     ('Item slot 1 code', 0x8015C5F3, 1, 255, 'confirmed item slot 1 code; not necessarily selected item'),
     ('Item slot 2 code', 0x8015C5F7, 1, 255, 'user verified item slot/quantity address'),
@@ -43,7 +46,7 @@ INVENTORY = [
     ('Triton Shell', 0x8015C6FF, 1, 1, 'user verified in-game'),
     ('Unknown brown item (Achilles Heel? candidate)', 0x8015C703, 1, 1, 'item identity NOT confirmed'),
     ('Silver Fortune Doll? (candidate)', 0x8015C707, 1, 1, 'old GameShark item name, unverified'),
-    ('Sasuke battery? (candidate)', 0x8015C70B, 1, 1, 'inferred unused four-byte item slot, NOT confirmed'),
+    ('Sasuke battery? (candidate)', 0x8015C70B, 1, 1, 'unverified battery candidate; write effects not established'),
     ('Round brown item (Achilles Heel? candidate)', 0x8015C70F, 1, 1, 'item identity NOT confirmed'),
     ('Gold Key', 0x8015C713, 1, 1, 'user verified in-game'),
     ('Cucumber (formerly Blue Sausage)', 0x8015C717, 1, 1, 'item identification tentative, previously Blue Sausage'),
@@ -94,7 +97,7 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Ryo', 0x8015C5E8, 4, validator=lambda v: v<=9999)
     add('Lives', 0x8015C5EC, 4, validator=lambda v: v<=99)
     add('Top-level game state', cp.STATE_ADDR, 1,
-        lambda v: f'{v} (normal gameplay=13; debug menu=10)',lambda v:v<18)
+        lambda v: f'{v} (reload=12; gameplay=13; debug menu=10)',lambda v:v<18)
     add('Phase', cp.PHASE_ADDR, 1, validator=lambda v:v<3)
     add('Loading flag', 0x8015C5D4, 4, validator=lambda v:v<=1)
     add('Event/script VM lock', cp.SCRIPT_VM_ADDR, 4)
@@ -103,7 +106,7 @@ def get_watches(ram, snapshot, scene_names=None):
         add('Native menu category',cp.SUBMODE_ADDR,1,
             lambda v: f'{v} — {native_menu_category(v)}',
             lambda v: v < len(NATIVE_MENU_CATEGORIES),
-            source='user-observed native menu order: MAIN=0, SIRO=1, DOUCHU=2, MACHI=3, SHOP=4')
+            source='user-observed native menu row order; 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP')
     else:
         add('Gameplay submode',cp.SUBMODE_ADDR,1,source='same address as menu category; context dependent')
     add('Stage offset',0x800C7AB4,2,source='verified menu stage index; also updates at scene load')
@@ -116,7 +119,7 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Map overlay state (observed)',0x8015C574,1,
         lambda v: f'{v} ({"visible" if v == 1 else "hidden" if v == 0 else "unusual"})',
         validator=lambda v: v in (0,1),
-        source='game toggles 00 hidden/01 visible; manual writes of any tested value open map')
+        source='observed 0/1 when toggled by game; external writes may open the map regardless of value')
     obj=snapshot.get('player_ptr')
     if obj:
         watches.extend([
@@ -124,10 +127,23 @@ def get_watches(ram, snapshot, scene_names=None):
             Watch('Y', obj+0x0C, f'{snapshot["y"]:.3f}', ram.read_guest(obj+0x0C,4).hex().upper(),'OK','player object'),
             Watch('Z', obj+0x10, f'{snapshot["z"]:.3f}', ram.read_guest(obj+0x10,4).hex().upper(),'OK','player object'),
         ])
+    task=snapshot.get('task_ptr')
+    if task:
+        addr=task+0x68
+        try:
+            bits=ram.read_guest(addr,4)
+            value=struct.unpack('>f',bits)[0]
+            watches.append(Watch('Task +0x68 f32 (movement hypothesis)',addr,
+                f'{value:.6g}' if math.isfinite(value) else str(value),
+                '0x'+bits.hex().upper(), 'CHECK',
+                'dynamic player task; manual movement nudge observed, not proven velocity'))
+        except (OSError,ValueError,struct.error) as exc:
+            watches.append(Watch('Task +0x68 f32 (movement hypothesis)',addr,
+                f'READ FAILED: {exc}','—','ERROR','dynamic player task'))
     add('Equipped weapon index',0x8015C607,1,
         lambda v: f'{v} ({"weapon slot" if v in (1,2,3) else "outside normal 1–3; cross-character fallback observed"})',
         validator=lambda v: v in (1,2,3),
-        source='user-confirmed across all four characters; out-of-range values invoke unintended weapons')
+        source='confirmed in-game across all four characters; out-of-range entries use unintended weapons')
     for name,addr,width,maximum,hint in INVENTORY:
         confirmed = (name.startswith('Item slot ') or name.startswith('Goemon pipe upgrade')
                      or name.startswith('Ebisumaru hammer upgrade')

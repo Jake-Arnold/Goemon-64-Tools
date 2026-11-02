@@ -1,3 +1,11 @@
+# New experimental observations (2026-11-02, v0.10.8)
+
+- Reload trial: `0x800C7CA0` (pending destination, u16), then `0x800C7A94 = 0x0C` (game state reload). User saw destination map load but incorrect entrance coordinates. Tool now explicitly offers this exact pair, not the old exit flag; never describes the result as a fully correct warp.
+- Task-relative f32: `PlayerTask +0x68`, an unnamed field declared `f32` in upstream `types.h`. User observed movement nudge on writes; genuine velocity is **not confirmed**. The tool resolves task pointer dynamically, writes exactly 4 IEEE-754 bytes, and provides ±4 and ×1.5 tests; no neighbouring +0x6C changes.
+- Selected weapon: `0x8015C607` (u8, 1–3) confirmed all characters; map visible state `0x8015C574` read 0/1 but manual writes are side-effectful; `0x800C7A73` not magic.
+
+---
+
 # Original MNSG (USA) memory-map watch specification
 
 All addresses below are **original guest N64 addresses** (not host-process pointers). The only confirmed working *host* integration at present is the v0.2 PC RAM discovery and XYZ display; live validation for the new fields is still required.
@@ -24,67 +32,48 @@ All addresses below are **original guest N64 addresses** (not host-process point
 | Live resource block | `0x8015C5D8` + `0x30` | bytes | high |
 | Original-game native debug menu state | `0x800C7A94 = 0x0A` | u8 | code patch shown by ROM randomizer; not yet tested in US PC recomp |
 
-**Equipped weapon index is confirmed at `0x8015C607` (u8: `01`, `02`, `03` for all characters).** Stored item-slot codes are separate; the inventory consumable cursor is not yet mapped.
+**Equipped weapon index is confirmed at `0x8015C607` (u8, values `01`/`02`/`03`).** Carried item slot codes/quantities are distinct from this current-weapon selection. The currently highlighted consumable inventory cursor remains unknown.
 
 Health has 2 internal units per visible HUD heart segment; typical starting state is HP 10 / maximum HP 10, ryo 100, lives 3. Live Ryo should not exceed 9999. Room/scene ID is NOT the saved continue-point ID at `gamedata+0x200`.
 
-## Top-level game state: user-verified 2026-11-02 observations
+## Native debug menu category indices (user-observed 2026-11-02)
 
-Address: `0x800C7A94`, single guest-RAM byte. Editing this field can force a game state, but some values crash.
+`0x800C7AA4` is a `u8` menu category when top-level state is `0x0A`; its gameplay meaning is context-dependent. **MAIN occupies index 0.** The first five categories are:
 
-| Hex | Observed effect |
+| Hex | Native menu row |
 | --- | --- |
-| `04` | Crash |
-| `05` | Title screen |
-| `06` | Title-screen song |
-| `07` | Title idle/demo gameplay |
-| `08` | Controller Pak use / do not use screen |
-| `09` | Opening cutscene |
-| `0A` | Native debug menu (previously established) |
-| `0C` | Stage reload / re-entry |
-| `0D` | Normal gameplay (previously established) |
-| `0E` | Game over |
-| `0F` | Crash |
+| `00` | MAIN |
+| `01` | SIRO |
+| `02` | DOUCHU |
+| `03` | MACHI |
+| `04` | SHOP |
 
-**Live cross-stage reload demonstrated:** Write target stage ID to pending destination `0x800C7CA0` (u16), then set `0x800C7A94` to `0x0C`. The target stage loads, but the spawn XYZ/entry behavior is wrong. This is **partially working**, not a proven full native debug-menu equivalent. Need trace of entrance selection, spawn, facing, prior map and camera task initialization against original-menu stage entry.
+The screenshot continues with OBOMBER, an unclear label, DATMAP, OPENING, GOPENING, BOSS3D.OP, DIARY, another unclear label and GAMEOVER. Last entry is index `0D`. The two unclear spellings remain provisional in `practice/native_menu_categories.py`. This category byte is **not** the top-level game-state byte `0x800C7A94`.
 
-## New A/B/C candidates (Ebisumaru, 2026-11-02)
+## Item slot addresses verified in-game
 
-- Map displayed `0x8015C574`: `00 → 01`, reverted on hide; **candidate**, not confirmed.
-- Selected item/weapon `0x8015C607`: `01 → 02`, reverted on reselect; **candidate**, not confirmed.
-- Magic active `0x800C7A73`: `00 → 01`, reverted at effect end; **candidate**, not confirmed. Secondary `0x8015C5CD`: `0A → 08`.
-- Internal velocity **not mapped**: player task f32 candidates `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C`, `+0xD0`. Full analysis in `docs/STATE_DISCOVERY.md`.
-- No persistent dragon travel unlock mapping yet. 
+- Slot 1 code: `0x8015C5F3` (`u8`)
+- Slot 2 code: `0x8015C5F7` (`u8`)
+- Slot 2 quantity: `0x8015C5FB` (`u8`)
+- Slot 3 code: `0x8015C5FF` (`u8`)
+- Slot 3 quantity: `0x8015C603` (`u8`)
 
-## User-confirmed item slots and native menu category index (2026-11-02)
+All five are user-confirmed. They represent **stored item slots and quantities**, not a proven currently equipped/selected item pointer.
 
-- Slot 1 code `0x8015C5F3` (u8).
-- Slot 2 code `0x8015C5F7` (u8).
-- Slot 2 quantity `0x8015C5FB` (u8).
-- Slot 3 code `0x8015C5FF` (u8).
-- Slot 3 quantity `0x8015C603` (u8).
+## Confirmed weapon selection and clarified map/magic candidates (2026-11-02)
 
-All five addresses were verified by the user in gameplay. They describe stored item contents, **not** confirmed equipped-item selection.
+| Meaning | Guest address | Representation | Evidence |
+| --- | --- | --- | --- |
+| Equipped weapon index | `0x8015C607` | u8: `01`, `02`, `03` normal | User-confirmed for **all four characters** |
+| Map overlay read state | `0x8015C574` | u8: `00` hidden, `01` visible | User-confirmed read behaviour; **manual writes do not act as a close toggle** |
+| Magic-active candidate rejected | `0x800C7A73` | oscillating u8 `00`/`01` | Oscillates when magic is not activated |
+| Selected-weapon candidate rejected | `0x8014C340` | u8 `40`/`41`, occasionally `00` | Oscillates outside weapon changes |
 
-While top-level state is `0x0A`, `0x800C7AA4` is the native debug-menu category byte and the screenshot shows `0x00 MAIN`, `0x01 SIRO`, `0x02 DOUCHU`, `0x03 MACHI`, `0x04 SHOP`, continuing through `0x0D GAMEOVER`. Two lower pixelated names remain uncertain. This is distinct from top-level state `0x800C7A94`.
+`0x8015C607` values outside 1–3 cause unexpected neighbouring-character weapons: Goemon -> Ebisumaru hammer; Ebisumaru -> Sasuke kunai; Sasuke -> Yae sword; Yae -> user-reported `letter 1`. These values must remain inspectable and only editable with the UNSAFE option; they should not silently clamp to three.
 
-## Confirmed weapon index, observed map state and rejected probes (2026-11-02)
+The map address may be involved in UI state and side effects. Do not equate writing `00` with closing the displayed map. The true magic-active flag remains unlocated.
 
-| Address | Current interpretation |
-| --- | --- |
-| `0x8015C607` | **Confirmed u8 equipped weapon slot.** 1/2/3 correspond to each character's three normal weapons. Out-of-range writes invoke unintended next-character weapons (Goemon -> Ebisumaru hammer; Ebisumaru -> Sasuke kunai; Sasuke -> Yae sword; Yae -> user-described letter `1`). |
-| `0x8015C574` | **Observed map read state:** `00` hidden, `01` shown. External write of any tested value opens map; writing `00` does **not** close it. Not a conventional write-toggle. |
-| `0x800C7A73` | **Not a magic flag:** oscillates `00`/`01` outside magic use. |
-| `0x8014C340` | **Not selected weapon:** oscillates `40`/`41`, sometimes `00`. |
-
-**Velocity status:** dynamic player task f32 fields `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C` fluctuate during NPC conversations despite stationary player position. Their high-byte integer values around 192 (`0xC0`) or 191 (`0xBF`) are not speed measurements. Full f32 interpretation and contrasting movement trials still required.
-
-## Movement-influencing task field: manual writes (2026-11-02)
-
-- Session-specific `0x8016A0F8` = `PlayerTask + 0x68`, a documented **f32-typed field of unknown meaning**.
-- User reports nudging the player by writing raw hexadecimal `192` with width **4 or 8 bytes** during movement. This is evidence of causal movement influence, **not yet a velocity axis**.
-- The editor's `192` is hexadecimal `0x192` (4-byte `00000192`), **not** float 192.0 (`43400000`). Width 8 spans both `+0x68` and `+0x6C`, so does not isolate the field.
-- Retest with dynamically resolved player task address, 4-byte float bits, opposite signs and isolated movement conditions; do not hardcode the session address.
+Player-task f32 probes from Ebisumaru are **not proven velocity**: values also vary while stationary during NPC conversations. The `~192` maximum reported from byte watches is the numeric value of `0xC0`, the high byte of some negative f32 encodings, rather than a velocity cap. To inspect these fields, read four bytes as f32 and follow the live dynamic player-task pointer.
 
 ## Provenance
 

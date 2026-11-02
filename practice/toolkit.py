@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.10.5 — external Windows UI for US Goemon64Recomp.
+"""Goemon Practice Toolkit v0.10.8 — external Windows UI for US Goemon64Recomp.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -80,7 +80,7 @@ def configure_window_branding(root: tk.Tk) -> None:
 class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.10.5 · USA Recomp")
+        root.title("Goemon Practice Toolkit v0.10.8 · USA Recomp")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -115,7 +115,7 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.10.5  |  US Goemon64Recomp',
+        ttk.Label(header, text='v0.10.8  |  US Goemon64Recomp',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -370,13 +370,13 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         if self.mem:
             try:
                 now=time.monotonic()
-                # During the ORIGINAL debug menu the player objects may not exist.
-                # Do not disconnect the inspector just because snapshot() cannot
-                # read an active player. The menu itself must remain inspectable.
+                # During scene reload (state 0x0C), debug menus, and other
+                # transitions the player object can be temporarily absent.
+                # Keep the connection and read-only polling alive until gameplay.
                 state=self.mem.u8(0x800C7A94)
                 self.refresh_native_watch(now)
                 self.poll_direct_warp(now)
-                if state==10 or (self.pending_native_warp and state!=13):
+                if state!=13:
                     self.refresh_inspector({})
                     self.refresh_unlocks()
                     self.poll_native_warp_menu(now)

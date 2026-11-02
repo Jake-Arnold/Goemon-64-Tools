@@ -12,8 +12,9 @@ from practice.hex_edit import get_policy, parse_hex, checked_write
 from practice.scenes import SCENES, scene_label
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
 from practice.checkpoints import MAP_ADDR, STATE_ADDR
+from practice.experimental_controls import stage_reload_trial, task_float_probe
 from practice.paths import practice_data_dir, diagnostics_dir
-from practice.custom_watches import (FORMATS, make_watch, append_watch,
+from practice.custom_watches import (CustomWatch, FORMATS, make_watch, append_watch,
                                      load_watches, save_watches, read_watch)
 from practice.theme import PALETTE
 from practice.native_character import press_native_debug_accept
@@ -118,6 +119,15 @@ class InspectorMixin:
         self.raw_value=tk.StringVar(value='01')
         ttk.Entry(manual,textvariable=self.raw_value,width=20).pack(side='left',padx=(3,10))
         ttk.Button(manual,text='Write raw hex',command=self.write_raw_hex).pack(side='left')
+        motion=ttk.LabelFrame(inspector,text=' Experimental movement — PlayerTask +0x68 (f32) ',padding=6)
+        motion.pack(fill='x',pady=(1,8))
+        ttk.Label(motion,text='Uses the current player-task pointer. All buttons write exactly 4 bytes. +4 and -4 isolate direction; speed ×1.5 is an unverified movement pulse, NOT a proven speed hack.',
+                  style='Muted.TLabel',wraplength=950).pack(anchor='w')
+        row=ttk.Frame(motion);row.pack(fill='x',pady=3)
+        for title,direction,speedup in (('Probe +4.0',1,False),('Probe -4.0',-1,False),('Speed pulse ×1.5',1,True)):
+            ttk.Button(row,text=title,command=lambda d=direction,sp=speedup:self.try_motion_pulse(d,sp)).pack(side='left',padx=(0,7))
+        self.motion_status=tk.StringVar(value='Needs connection, normal gameplay, --enable-hex-edit, and UNSAFE enabled.')
+        ttk.Label(motion,textvariable=self.motion_status,style='Muted.TLabel',wraplength=950).pack(anchor='w')
         columns=('address','value','raw','status','source')
         frame=ttk.Frame(inspector);frame.pack(fill='both',expand=True)
         self.watch_tree=ttk.Treeview(frame,columns=columns,show='tree headings',height=22)
@@ -164,7 +174,10 @@ class InspectorMixin:
         self.scene_list.bind('<<ListboxSelect>>',self.select_scene)
         self.scene_list.bind('<Double-Button-1>',self.activate_selected_scene)
         self.draw_scene_list()
-        ttk.Label(scenes,text='v0.9.7 mistakenly wrote the game EXIT flag and returned to title. This faulty route is permanently blocked in this build.',wraplength=950).pack(anchor='w',pady=3)
+        ttk.Label(scenes,text='Experimental 0x0C reload: sets the pending destination, then asks the original game to reload. Target room may load at WRONG coordinates. The previous exit-flag path remains disabled.',wraplength=950).pack(anchor='w',pady=3)
+        self.experimental_warp_btn=ttk.Button(scenes,text='EXPERIMENT: reload into selected stage (wrong spawn possible)',
+            command=self.try_reload_warp,style='Gold.TButton')
+        self.experimental_warp_btn.pack(fill='x',pady=4)
         ttk.Label(scenes,textvariable=self.scene_status,wraplength=950).pack(anchor='w',pady=8)
         self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.open_debug_for_selected_scene)
         self.native_debug_btn.pack(fill='x',pady=5)
@@ -210,8 +223,8 @@ class InspectorMixin:
                 self.last_inspect_at=0.0
                 self.refresh_inspector(self.current if isinstance(self.current,dict) else {})
             else:
-                self.watch_rows=[*self.watch_rows,Watch(spec.row_name,spec.address,
-                    'Connect to read','—','CUSTOM',f'user watch: {spec.kind}; unverified')]
+                self.watch_rows=[*self.watch_rows, Watch(spec.row_name,spec.address,
+                    'Connect to read','—','CUSTOM',f'user watch: {spec.kind}; meaning unverified')]
                 self.draw_watches()
             if self.watch_tree.exists(spec.row_name):
                 self.watch_tree.selection_set(spec.row_name)
@@ -224,7 +237,7 @@ class InspectorMixin:
         names={spec.row_name for spec in self.custom_watches}
         selected=next((name for name in chosen if name in names),None)
         if selected is None:
-            self.inspector_status.set('Select a Custom: row to remove it.')
+            self.inspector_status.set('Select a Custom: row before removing it.')
             return
         updated=[spec for spec in self.custom_watches if spec.row_name!=selected]
         try:
@@ -233,7 +246,7 @@ class InspectorMixin:
             self.inspector_status.set(f'Remove watch failed: {exc}')
             return
         self.custom_watches=updated
-        self.watch_rows=[w for w in self.watch_rows if w.name!=selected]
+        self.watch_rows=[w for w in self.watch_rows if w.name != selected]
         self.watch_previous.pop(selected,None)
         if self.mem:
             self.last_inspect_at=0.0
@@ -278,7 +291,7 @@ class InspectorMixin:
         unsafe=self.hex_advanced.get()
         if spec is not None and not unsafe:
             messagebox.showwarning('Custom watch is read-only',
-                                   'Enable UNSAFE to edit a custom guest-RAM watch.')
+                'Enable UNSAFE to edit a custom guest-RAM watch.')
             return
         if policy is None and not unsafe:
             messagebox.showwarning('Read-only field','Enable UNSAFE to edit a field without a declared policy.')
@@ -814,6 +827,56 @@ class InspectorMixin:
         path.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
         return str(path)
 
+    def try_motion_pulse(self,direction=1,speedup=False):
+        if not self.mem:
+            self.motion_status.set('Connect to the game first.')
+            return
+        if not getattr(self.args,'enable_hex_edit',False) or not self.hex_advanced.get():
+            self.motion_status.set('Enable UNSAFE and run with --enable-hex-edit.')
+            return
+        try:
+            result=task_float_probe(self.mem,direction=direction,speedup=speedup)
+            self.motion_status.set(f'4-byte f32 write: {result["address"]}, {result["old_f32"]:.5g} → '
+                                   f'{result["new_f32"]:.5g}; bits {result["bytes_written"]}. Check actual XYZ motion.')
+            self.append_event('EXPERIMENTAL MOTION '+str(result))
+            self.last_inspect_at=0.0
+        except (OSError,ValueError,RuntimeError) as exc:
+            self.motion_status.set(f'Motion experiment failed: {exc}')
+
+    def try_reload_warp(self):
+        if self.pending_direct_warp:
+            self.scene_status.set('Another reload trial is being monitored.')
+            return
+        chosen=self.scene_list.curselection()
+        if not chosen:
+            self.scene_status.set('Select a destination first.')
+            return
+        dest,name=self.scene_options[chosen[0]]
+        if not self.mem:
+            self.scene_status.set('Connect to Goemon64Recomp first.')
+            return
+        if not getattr(self.args,'enable_hex_edit',False) or not self.hex_advanced.get():
+            self.scene_status.set('Enable Live Memory UNSAFE before experimental reloading.')
+            return
+        if not messagebox.askyesno('EXPERIMENTAL scene reload (wrong spawn)',
+            f'Write pending map {dest} ({name}), then state 0x0C?\n\n'
+            'Live testing shows the target map loads, but entrance coordinates can be wrong. '
+            'This can crash or softlock the game. It will NOT modify XYZ or the exit flag.'):
+            return
+        try:
+            info=stage_reload_trial(self.mem,dest,SCENES)
+            now=__import__('time').monotonic()
+            self.pending_direct_warp={
+                'map_id':dest,'from_map':info['source_map'],'character':info['source_character'],
+                'source_position':info['source_position'], 'start_at':now, 'last_message_at':now,
+                'date_code':datetime.now().strftime('%Y%m%d_%H%M%S_%f'),
+                'events':[], 'status':'requested_0x0C','stable':0,
+            }
+            self.scene_status.set(f'Experimental reload sent: {info["source_map"]} → {dest}. '
+                'Observing game state and position; entrance is NOT corrected.')
+        except (OSError,ValueError,RuntimeError) as exc:
+            self.scene_status.set(f'Reload trial failed: {exc}')
+
     def poll_direct_warp(self,now):
         """Read-only monitoring. Never resend a failed request or force map/char."""
         pending=self.pending_direct_warp
@@ -821,6 +884,11 @@ class InspectorMixin:
         try:
             assessment=assess_direct_warp(self.mem,pending['map_id'])
             sample={'seconds':round(now-pending['start_at'],3),**assessment}
+            if assessment['status']=='loaded_and_playable':
+                try:
+                    pos=self.mem.snapshot()
+                    sample['observed_position']=[pos.get(k) for k in ('x','y','z')]
+                except (OSError,ValueError):pass
             if not pending['events'] or sample != pending['events'][-1]:
                 pending['events'].append(sample)
             if assessment['status']=='loaded_and_playable':
@@ -830,7 +898,7 @@ class InspectorMixin:
             if pending['stable']>=3:
                 pending['status']='loaded_observed'
                 path=self._save_direct_warp_diagnostics(pending)
-                self.scene_status.set('DIRECT trial: loaded scene %d and playable gameplay observed. Character %d. Diagnostic: %s' %
+                self.scene_status.set('RELOAD trial: target scene %d playable; ENTRY/SPAWN NOT VALIDATED. Character %d. Diagnostic: %s' %
                                       (pending['map_id'],assessment['character'],path))
                 self.pending_direct_warp=None
             elif now-pending['start_at']>=8.0:
@@ -849,11 +917,10 @@ class InspectorMixin:
             self.scene_status.set('Direct warp monitoring failed: '+str(exc))
 
     def request_direct_scene(self,mid,name):
-        """Do not reopen debug menu or stage broken game-exit flag."""
+        """Double-click is selection-only; experimental writes need a dedicated button."""
         self.scene_status.set(
-            f'Direct warp for {mid} ({name}) is DISABLED. v0.9.7 returned to '
-            'the title screen; the correct engine transition is not yet known. '
-            'No memory writes sent. Use Transition trace to capture a real door load.'
+            f'Selected {mid} ({name}); double-click warp DISABLED, no memory writes sent. Use the explicit '
+            'EXPERIMENT 0x0C reload button after enabling UNSAFE; entry coordinates are unverified.'
         )
 
     def start_transition_trace(self):
