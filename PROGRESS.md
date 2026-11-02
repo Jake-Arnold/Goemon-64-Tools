@@ -196,6 +196,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: This verifies the sampled fields on one live US configuration, not every address, ROM revision, quest bit or cross-host write behavior. Project64 warps, checkpoint restores and writes remain untested. Discovery still requires an 8 MiB readable range and a loaded player; 4 MiB support is deferred. Portable C was unchanged and not rebuilt for this connection-only change. Existing executables require rebuilding/restarting to include it.
 - Next: Use read-only State discovery on Project64 to collect repeated labelled event captures and compare candidates with existing recomp research; add an evidence registry and repeated-trial filtering before promoting any new flag semantics.
 
+### 2026-11-02 — Discovery automation and unsafe-default implementation plan
+
+- Changed: added `docs/DISCOVERY_PLAN.md` covering consistent unsafe defaults, explicit read-only override, repeated event sessions, noise/control analysis, a versioned evidence registry and a staged function-tracing/decompilation pipeline. Recorded owners, contracts, migration rules, tests, acceptance criteria and non-goals.
+- Why: user requested all unsafe options enabled by default and a concrete next-step plan toward flag mapping, decompilation and a companion spanning Project64/recomp. Current launchers already enable most tools, while direct module launch and the UNSAFE checkbox differ.
+- Tested: inspected current argument parsing, Run.bat, packaged entry point, raw-edit/reload gates, capture/comparison code and storage helpers. Documentation diff/whitespace validation only; no runtime implementation changed and no new in-game testing was performed.
+- Limitations: defaults remain unchanged until phase 1 is implemented. The disabled legacy raw-warp prototype requires native-loader research, not simply an enable flag. Project64 write/restore behavior remains unverified.
+- Next: implement phase 1 with startup/override tests, then persistent-event sessions and repeated-trial filtering. Commit and push each completed increment, verifying the remote SHA.
+
 ## Mandatory change-log template
 
 ```markdown
