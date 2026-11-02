@@ -54,6 +54,15 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-02 — v0.10.6: Tk popdown crash fix, confirmed mappings and native category order
+
+- Fixed repeated Windows/Python 3.14 `KeyError('popdown')`: `refresh_unlocks()` now reads the raw Tcl focus widget path instead of calling `root.focus_get()`, which fails to resolve some internal ttk Combobox popdown widgets. Only a focused fish-count entry is exempt from periodic text updates.
+- Removed the **Sprites** tab, importer, gallery and related update paths; Unlocks remains.
+- User-confirmed item slot bytes: slot 1 code `0x8015C5F3`, slot 2 code `0x8015C5F7`, slot 2 quantity `0x8015C5FB`, slot 3 code `0x8015C5FF`, slot 3 quantity `0x8015C603`. These are not the currently selected item pointer.
+- User verified all weapon upgrade and weapon/ability mappings visible in their Live Memory screenshot, including Meat Saw Hammer, Fire Cracker Bomb, Flute, Windup Camera, Ice Kunai, Bazooka, Medal of Flames, Sudden Impact, Mini Ebisumaru, Super Jump and Magic Mermaid. Removed provisional UI-source qualifiers for these confirmed entries. Sasuke battery remains unverified.
+- User's original N64 menu screenshot establishes **MAIN=0, SIRO=1, DOUCHU=2, MACHI=3, SHOP=4**, with subsequent categories in displayed order through GAMEOVER=13. Added names in `practice/native_menu_categories.py` with two hard-to-read labels explicitly uncertain. Fixed former 0-based SIRO scene-family index.
+- Regression tests added for removed Sprites tab, focus exception, inventory values, source confidence, and scene-family categories. Local Tk GUI suite: **129 passed, 9 subtests passed** under Xvfb. Windows/Python 3.14 remains to be verified in the live game.
+
 ### 2026-11-02 — v0.10.5: persistent custom Live Memory watches and corrected map candidate
 
 - Added **Custom memory watches** section to Live Memory with name, hexadecimal original N64 guest address, and explicit type (`u8/s8/u16/s16/u32/s32/f32/f64/hex8`), **Add watch** and **Remove selected watch**. Watches refresh with built-in readings, are searchable by name or address, and are explicitly marked **CUSTOM/unverified**. Hex editing of a custom row requires the existing **UNSAFE** switch. User definitions persist in `custom_watches.json` under the existing writable app data directory, not in the public Git repository.

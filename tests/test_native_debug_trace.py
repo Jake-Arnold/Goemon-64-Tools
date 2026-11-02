@@ -73,7 +73,7 @@ class TestNativeDebugTrace(unittest.TestCase):
         self.assertTrue(calibrated_for_direct_warp(profile))
         ram=FakeRam();stage_menu_selection(ram,profile,353,3)
         self.assertEqual(ram.read_guest(MENU_SCENE,2),b'\0\x03')
-        self.assertEqual(ram.u8(MENU_CATEGORY),2)
+        self.assertEqual(ram.u8(MENU_CATEGORY),3)
         self.assertEqual(ram.u8(MENU_CHARACTER),3)
 
     def test_rejects_conflicting_fields_and_known_gameplay_addresses(self):

@@ -1,4 +1,4 @@
-"""Graphical unlock/sprites tab tests; run with Xvfb on Linux."""
+"""Graphical unlock tab tests; run with Xvfb on Linux."""
 from __future__ import annotations
 import tkinter as tk
 from argparse import Namespace
@@ -25,13 +25,12 @@ class TestUnlocksUI(unittest.TestCase):
         if hasattr(self, 'root'):
             self.root.destroy()
 
-    def test_tabs_and_bundled_sprites(self):
-        a = self.app
-        self.assertEqual(a.notebook.tab(a.unlock_tab, 'text'), 'Unlocks')
-        self.assertEqual(a.notebook.tab(a.sprite_tab, 'text'), 'Sprites')
-        self.assertEqual(len(a.unlock_row_widgets), len(UNLOCKS))
-        self.assertEqual(len(a.sprite_gallery_items), len(UNLOCKS))
-        self.assertEqual(len(a.sprite_photos), sum(a._sprite_path(field) is not None for field in UNLOCKS))
+    def test_unlock_tab_without_sprites_tab(self):
+        app = self.app
+        self.assertEqual(app.notebook.tab(app.unlock_tab, 'text'), 'Unlocks')
+        self.assertNotIn('Sprites', [app.notebook.tab(tab, 'text') for tab in app.notebook.tabs()])
+        self.assertEqual(len(app.unlock_row_widgets), len(UNLOCKS))
+        self.assertEqual(len(app.unlock_count_entries), 3)
 
     def test_button_writes_byte_without_confirmation_dialog(self):
         self.app.mem = FakeRAM()
@@ -43,13 +42,12 @@ class TestUnlocksUI(unittest.TestCase):
         self.app.set_unlock(unlock, 0)
         self.assertEqual(self.app.mem.read_guest(unlock.address, 1), b'\x00')
 
-    def test_sprite_card_toggle_behaves_correctly(self):
+    def test_refresh_handles_windows_combobox_popdown_focus(self):
         self.app.mem = FakeRAM()
-        field = BY_ADDRESS[0x8015C6C7]
-        self.app.toggle_sprite_unlock(field)
-        self.assertEqual(self.app.mem.read_guest(field.address, 1), b'\x01')
-        self.app.toggle_sprite_unlock(field)
-        self.assertEqual(self.app.mem.read_guest(field.address, 1), b'\x00')
+        with patch.object(self.root, 'focus_get', side_effect=KeyError('popdown')):
+            self.app.refresh_unlocks(force=True)
+        self.assertIn('0x00', [state.cget('text')
+                        for state, _controls in self.app.unlock_row_widgets.values()])
 
     def test_fish_count_widget_accepts_hex_and_clamps_to_minigame_max(self):
         self.app.mem = FakeRAM()

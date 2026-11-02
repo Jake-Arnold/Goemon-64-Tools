@@ -61,7 +61,7 @@ def selection_values(map_id: int) -> dict:
         raise ValueError('Invalid map')
     for index, (threshold, _) in enumerate(NATIVE_DEBUG_CATEGORIES):
         if map_id >= threshold:
-            return {'map_id': map_id, 'stage_index': map_id-threshold, 'category_index': len(NATIVE_DEBUG_CATEGORIES)-1-index}
+            return {'map_id': map_id, 'stage_index': map_id-threshold, 'category_index': len(NATIVE_DEBUG_CATEGORIES)-index}
     raise ValueError('Unrecognized map')
 
 

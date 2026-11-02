@@ -23,6 +23,34 @@ class TestInspector(unittest.TestCase):
         self.assertEqual(rows['Selected item (currently equipped)'].status,'UNKNOWN')
         self.assertEqual(rows['Map ID'].raw,'0x0023')
 
+    def test_confirmed_inventory_slots_and_weapon_sources(self):
+        from practice.inspector import INVENTORY
+        by_name={name:(addr,hint) for name,addr,_w,_max,hint in INVENTORY}
+        self.assertEqual([by_name[name][0] for name in ('Item slot 1 code','Item slot 2 code',
+                'Item slot 2 quantity','Item slot 3 code','Item slot 3 quantity')],
+                [0x8015C5F3,0x8015C5F7,0x8015C5FB,0x8015C5FF,0x8015C603])
+        _,ram=self.sample()
+        rows={w.name:w for w in get_watches(ram,ram.snapshot(),SCENES)}
+        for name in ('Goemon pipe upgrade','Ebisumaru hammer upgrade','Sasuke kunai upgrade',
+                     'Yae katana upgrade','Chain Pipe','Meat Saw Hammer','Fire Cracker Bomb',
+                     'Flute','Windup Camera','Ice Kunai','Bazooka','Medal of Flames',
+                     'Sudden Impact','Mini Ebisumaru','Super Jump','Magic Mermaid',
+                     'Item slot 1 code','Item slot 2 code','Item slot 2 quantity',
+                     'Item slot 3 code','Item slot 3 quantity'):
+            self.assertTrue(rows[name].source.startswith('confirmed:'), name)
+
+    def test_native_menu_category_main_is_zero(self):
+        from practice.native_menu_categories import NATIVE_MENU_CATEGORIES, native_menu_category
+        from practice.native_debug_trace import selection_values
+        self.assertEqual(NATIVE_MENU_CATEGORIES[:5], ('MAIN','SIRO','DOUCHU','MACHI','SHOP'))
+        self.assertEqual(native_menu_category(13), 'GAMEOVER')
+        self.assertEqual([selection_values(x)['category_index'] for x in (90,300,353,465)], [1,2,3,4])
+        _,ram=self.sample()
+        ram.write_guest(0x800C7A94,b'\x0a')
+        ram.write_guest(0x800C7AA4,b'\x00')
+        rows={r.name:r for r in get_watches(ram,ram.snapshot(),SCENES)}
+        self.assertIn('MAIN',rows['Native menu category'].value)
+
     def test_invalid_resource_flags_not_silently_accepted(self):
         _, ram=self.sample()
         ram.write_guest(0x8015C5E8,(12000).to_bytes(4,'big'))

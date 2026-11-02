@@ -12,13 +12,13 @@ All addresses below are **original guest N64 addresses** (not host-process point
 | Current health | `0x8015C5E4` | s32 | high |
 | Ryo | `0x8015C5E8` | s32 | high |
 | Lives | `0x8015C5EC` | s32 | high |
-| Item code slot 1 | `0x8015C5F3` | u8 | provisional (GameFAQs GameShark) |
-| Item code slot 2 | `0x8015C5F7` | u8 | provisional |
-| Item code slot 3 | `0x8015C5FF` | u8 | provisional |
-| Item 2 quantity | `0x8015C5FB` | u8 | provisional |
-| Item 3 quantity | `0x8015C603` | u8 | provisional |
+| Item code slot 1 | `0x8015C5F3` | u8 | confirmed by user in live game |
+| Item code slot 2 | `0x8015C5F7` | u8 | confirmed by user in live game |
+| Item code slot 3 | `0x8015C5FF` | u8 | confirmed by user in live game |
+| Item 2 quantity | `0x8015C5FB` | u8 | confirmed by user in live game |
+| Item 3 quantity | `0x8015C603` | u8 | confirmed by user in live game |
 | Party membership | `0x8015C69F`, `0x8015C6A3`, `0x8015C6A7`, `0x8015C6AB` | u8 | provisional |
-| Weapon upgrades | `0x8015C6AF`, `0x8015C6B3`, `0x8015C6B7`, `0x8015C6BB` | u8 | provisional |
+| Weapon upgrades | `0x8015C6AF`, `0x8015C6B3`, `0x8015C6B7`, `0x8015C6BB` | u8 | confirmed by user in live game |
 | Stage progress / flags | `0x8015C608` + `0x304` | bytes, incompletely decoded | byte layout known, semantics incomplete |
 | Global unlock header | `0x8015CC18` + `0x0C` | bytes | static RE |
 | Live resource block | `0x8015C5D8` + `0x30` | bytes | high |
@@ -55,6 +55,18 @@ Address: `0x800C7A94`, single guest-RAM byte. Editing this field can force a gam
 - Magic active `0x800C7A73`: `00 → 01`, reverted at effect end; **candidate**, not confirmed. Secondary `0x8015C5CD`: `0A → 08`.
 - Internal velocity **not mapped**: player task f32 candidates `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C`, `+0xD0`. Full analysis in `docs/STATE_DISCOVERY.md`.
 - No persistent dragon travel unlock mapping yet. 
+
+## User-confirmed item slots and native menu category index (2026-11-02)
+
+- Slot 1 code `0x8015C5F3` (u8).
+- Slot 2 code `0x8015C5F7` (u8).
+- Slot 2 quantity `0x8015C5FB` (u8).
+- Slot 3 code `0x8015C5FF` (u8).
+- Slot 3 quantity `0x8015C603` (u8).
+
+All five addresses were verified by the user in gameplay. They describe stored item contents, **not** confirmed equipped-item selection.
+
+While top-level state is `0x0A`, `0x800C7AA4` is the native debug-menu category byte and the screenshot shows `0x00 MAIN`, `0x01 SIRO`, `0x02 DOUCHU`, `0x03 MACHI`, `0x04 SHOP`, continuing through `0x0D GAMEOVER`. Two lower pixelated names remain uncertain. This is distinct from top-level state `0x800C7A94`.
 
 ## Provenance
 

@@ -1,3 +1,9 @@
+## v0.10.6 — Unlocks and native menu corrections
+
+The Windows/Python 3.14 `KeyError('popdown')` in automatic Unlocks refresh is fixed by querying the raw Tcl focus widget path. **The Sprites tab has been removed**; the Unlocks tab remains. The five item-slot code/quantity addresses are verified, and the confirmed weapon/upgrade/ability entries no longer carry provisional labels in Live Memory.
+
+The native debug-menu category byte is `0x800C7AA4`, with `MAIN=0`, `SIRO=1`, `DOUCHU=2`, `MACHI=3`, `SHOP=4` and subsequent displayed rows through `GAMEOVER=13`. The later screenshot contains two unclear labels, kept explicitly tentative in code. The scene-family category-index calculation now accounts for MAIN occupying index zero.
+
 # Goemon Speedrun Tools v0.10.2 — clickable unlocks and sprite gallery
 
 ![Real Tkinter dashboard running in an offline test environment](docs/images/actual-dashboard.webp)
@@ -24,7 +30,7 @@ Detailed test sequences, scope limitations and source evidence: [State discovery
 
 ---
 
-## Live unlocks and item sprites (v0.10.2)
+## Live unlocks (v0.10.2)
 
 Use the new **Unlocks** tab to click actual memory values for all 26 currently mapped character, weapon, ability, and key flags. Each control immediately reads the one-byte US N64 guest address, writes the selected exact byte (no pop-up confirmation), reads it back, and refreshes the UI. The tab samples live RAM repeatedly, so values changed by the game or other tools are reflected automatically. You must connect to the game first; source `Run.bat` and the packaged executable already opt into hex editing.
 
@@ -32,10 +38,6 @@ Use the new **Unlocks** tab to click actual memory values for all 26 currently m
 - Basic weapon upgrades offer three choices (`0x00` normal, `0x01` silver/double, `0x02` gold). This avoids mislabelling multi-level values as booleans.
 - The control grid shows the guest address, raw live hex value, and selected state. `0xFF` or an unexpected value remains visible rather than being interpreted as owned. Clicking does not save a disk snapshot or force the game to redraw inventory instantly.
 - These mappings follow the existing GameShark-derived `practice/inspector.py` list; **some item labels remain provisional until checked in-game**. No game is connected during automated tests, so actual UI behaviour and reload rules still need verification.
-
-The separate **Sprites** tab is a clickable gallery of those same 26 flags. It can display **original-game PNG sprites imported from your own extraction or a legitimately obtained asset set**. Select **Import original PNGs from folder** and provide images named after their snake_case item names (e.g. `chain_pipe.png`, `goemon_pipe_upgrade.png`). Imported images are stored locally in `practice/sprites/` for source runs or `%LOCALAPPDATA%\GoemonSpeedrunTools\sprites/` for the Windows executable. Only recognised filenames are copied.
-
-**Game sprites are not bundled in this public repository.** The tab shows labelled empty image slots until you import PNG exports. It does not pretend that art from another Goemon game is the original N64 sprite. See [sprite-import guide](docs/ORIGINAL_SPRITES.md) for the full naming map. You can use the clickable cards without importing any images.
 
 ## Windows desktop build
 
@@ -65,7 +67,7 @@ The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/tas
 - **Four Miracle Items:** new buttons use `0x8015C85B`, `0x8015C85F`, `0x8015C863`, and `0x8015C866`. Individual icons/names are not yet mapped.
 - **Achilles' Heel / Sasuke battery:** labelled **candidate** slots, not proven item identity; test against in-game status before treating them as definitive.
 - **Live Memory:** enable `UNSAFE` to write any width-appropriate hex value, bypass mapped limits, or explicitly enter a guest N64 address and 1/2/4/8-byte value. The write checks old memory and verifies the result; arbitrary values can crash or corrupt game state. This does not provide a working warp.
-- **Original sprites:** Sprites tab includes a link to the [referenced original sheet](https://www.spriters-resource.com/nintendo_64/mysticalninjastarringgoemon/asset/123088/) and retains the local PNG import workflow. Original copyright art is not committed to the public repository.
+- **Original sprites:** The former Sprites tab was removed in v0.10.6.
 
 ---
 

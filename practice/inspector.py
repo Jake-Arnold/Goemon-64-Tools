@@ -8,38 +8,38 @@ All offsets are N64 guest addresses, NOT Windows host pointers.
 from __future__ import annotations
 from dataclasses import dataclass
 from practice import checkpoints as cp
+from practice.native_menu_categories import native_menu_category, NATIVE_MENU_CATEGORIES
 
 CHARACTERS = ('Goemon', 'Ebisumaru', 'Sasuke', 'Yae')
 
 # Each tuple (label, guest_address, width in bytes, accepted_max, meaning)
-# Do not call a code/flag 'owned' merely because its raw byte is nonzero without
-# checking live UI semantics. Mark GameShark-based interpretations provisional.
+# Explicitly user-verified mappings are identified as confirmed; uncertain fields remain provisional.
 INVENTORY = [
-    ('Item slot 1 code', 0x8015C5F3, 1, 255, 'GameShark mapping; not necessarily the selected item'),
-    ('Item slot 2 code', 0x8015C5F7, 1, 255, 'GameShark mapping'),
-    ('Item slot 2 quantity', 0x8015C5FB, 1, 255, 'GameShark mapping'),
-    ('Item slot 3 code', 0x8015C5FF, 1, 255, 'GameShark mapping'),
-    ('Item slot 3 quantity', 0x8015C603, 1, 255, 'GameShark mapping'),
+    ('Item slot 1 code', 0x8015C5F3, 1, 255, 'confirmed item slot 1 code; not necessarily selected item'),
+    ('Item slot 2 code', 0x8015C5F7, 1, 255, 'user verified item slot/quantity address'),
+    ('Item slot 2 quantity', 0x8015C5FB, 1, 255, 'user verified item slot/quantity address'),
+    ('Item slot 3 code', 0x8015C5FF, 1, 255, 'user verified item slot/quantity address'),
+    ('Item slot 3 quantity', 0x8015C603, 1, 255, 'user verified item slot/quantity address'),
     ('Goemon in party', 0x8015C69F, 1, 1, '0=no, 1=yes; community mapping'),
     ('Ebisumaru in party', 0x8015C6A3, 1, 1, '0=no, 1=yes; community mapping'),
     ('Sasuke in party', 0x8015C6A7, 1, 1, '0=no, 1=yes; community mapping'),
     ('Yae in party', 0x8015C6AB, 1, 1, '0=no, 1=yes; community mapping'),
-    ('Goemon pipe upgrade', 0x8015C6AF, 1, 2, '0 normal, 1 silver, 2 gold; provisional'),
-    ('Ebisumaru hammer upgrade', 0x8015C6B3, 1, 2, '0 normal, 1 silver, 2 gold; provisional'),
-    ('Sasuke kunai upgrade', 0x8015C6B7, 1, 2, '0 normal, 1 double, 2 gold; provisional'),
-    ('Yae katana upgrade', 0x8015C6BB, 1, 2, '0 normal, 1 silver, 2 gold; provisional'),
-    ('Chain Pipe', 0x8015C6BF, 1, 2, 'acquired when nonzero; provisional'),
-    ('Meat Saw Hammer', 0x8015C6C3, 1, 1, 'acquired when nonzero; provisional'),
-    ('Fire Cracker Bomb', 0x8015C6C7, 1, 1, 'acquired when nonzero; provisional'),
-    ('Flute', 0x8015C6CB, 1, 1, 'acquired when nonzero; provisional'),
-    ('Windup Camera', 0x8015C6D3, 1, 1, 'acquired when nonzero; provisional'),
-    ('Ice Kunai', 0x8015C6D7, 1, 1, 'acquired when nonzero; provisional'),
-    ('Bazooka', 0x8015C6DB, 1, 1, 'acquired when nonzero; provisional'),
-    ('Medal of Flames', 0x8015C6DF, 1, 1, 'acquired when nonzero; provisional'),
-    ('Sudden Impact', 0x8015C6EF, 1, 1, 'acquired when nonzero; provisional'),
-    ('Mini Ebisumaru', 0x8015C6F3, 1, 1, 'acquired when nonzero; provisional'),
-    ('Super Jump', 0x8015C6F7, 1, 1, 'acquired when nonzero; provisional'),
-    ('Magic Mermaid', 0x8015C6FB, 1, 1, 'acquired when nonzero; provisional'),
+    ('Goemon pipe upgrade', 0x8015C6AF, 1, 2, 'user verified: 0 normal, 1 silver, 2 gold'),
+    ('Ebisumaru hammer upgrade', 0x8015C6B3, 1, 2, 'user verified: 0 normal, 1 silver, 2 gold'),
+    ('Sasuke kunai upgrade', 0x8015C6B7, 1, 2, 'user verified: 0 normal, 1 double, 2 gold'),
+    ('Yae katana upgrade', 0x8015C6BB, 1, 2, 'user verified: 0 normal, 1 silver, 2 gold'),
+    ('Chain Pipe', 0x8015C6BF, 1, 2, 'user verified: acquired when nonzero'),
+    ('Meat Saw Hammer', 0x8015C6C3, 1, 1, 'user verified: acquired when nonzero'),
+    ('Fire Cracker Bomb', 0x8015C6C7, 1, 1, 'user verified: acquired when nonzero'),
+    ('Flute', 0x8015C6CB, 1, 1, 'user verified: acquired when nonzero'),
+    ('Windup Camera', 0x8015C6D3, 1, 1, 'user verified: acquired when nonzero'),
+    ('Ice Kunai', 0x8015C6D7, 1, 1, 'user verified: acquired when nonzero'),
+    ('Bazooka', 0x8015C6DB, 1, 1, 'user verified: acquired when nonzero'),
+    ('Medal of Flames', 0x8015C6DF, 1, 1, 'user verified: acquired when nonzero'),
+    ('Sudden Impact', 0x8015C6EF, 1, 1, 'user verified: acquired when nonzero'),
+    ('Mini Ebisumaru', 0x8015C6F3, 1, 1, 'user verified: acquired when nonzero'),
+    ('Super Jump', 0x8015C6F7, 1, 1, 'user verified: acquired when nonzero'),
+    ('Magic Mermaid', 0x8015C6FB, 1, 1, 'user verified: acquired when nonzero'),
     ('Triton Shell', 0x8015C6FF, 1, 1, 'user verified in-game'),
     ('Unknown brown item (Achilles Heel? candidate)', 0x8015C703, 1, 1, 'item identity NOT confirmed'),
     ('Silver Fortune Doll? (candidate)', 0x8015C707, 1, 1, 'old GameShark item name, unverified'),
@@ -101,8 +101,9 @@ def get_watches(ram, snapshot, scene_names=None):
     state=ram.u8(cp.STATE_ADDR)
     if state==10:
         add('Native menu category',cp.SUBMODE_ADDR,1,
-            lambda v: f'{v} — '+({0:'SIRO',1:'DOUCHU',2:'MACHI',3:'SHOP',4:'BOMBER'}.get(v,'UNKNOWN')),
-            lambda v:v<5,source='confirmed in original native menu only')
+            lambda v: f'{v} — {native_menu_category(v)}',
+            lambda v: v < len(NATIVE_MENU_CATEGORIES),
+            source='user-observed native menu order: MAIN=0, SIRO=1, DOUCHU=2, MACHI=3, SHOP=4')
     else:
         add('Gameplay submode',cp.SUBMODE_ADDR,1,source='same address as menu category; context dependent')
     add('Stage offset',0x800C7AB4,2,source='verified menu stage index; also updates at scene load')
@@ -123,7 +124,15 @@ def get_watches(ram, snapshot, scene_names=None):
     watches.append(Watch('Selected item (currently equipped)',None,'Not mapped yet', '—','UNKNOWN',
                           'Item slots below are not evidence of current selection'))
     for name,addr,width,maximum,hint in INVENTORY:
-        add(name,addr,width,validator=lambda v, m=maximum: v<=m,source='provisional: '+hint)
+        confirmed = (name.startswith('Item slot ') or name.startswith('Goemon pipe upgrade')
+                     or name.startswith('Ebisumaru hammer upgrade')
+                     or name.startswith('Sasuke kunai upgrade')
+                     or name.startswith('Yae katana upgrade')
+                     or name in {'Chain Pipe', 'Meat Saw Hammer', 'Fire Cracker Bomb', 'Flute',
+                                 'Windup Camera', 'Ice Kunai', 'Bazooka', 'Medal of Flames',
+                                 'Sudden Impact', 'Mini Ebisumaru', 'Super Jump', 'Magic Mermaid'})
+        add(name,addr,width,validator=lambda v, m=maximum: v<=m,
+            source=('confirmed: ' if confirmed else 'provisional: ')+hint)
     return watches
 
 

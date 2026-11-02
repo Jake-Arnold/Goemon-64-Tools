@@ -20,7 +20,7 @@ FIELDS = (
     WatchedField('state', 'Original menu state', 0x800C7A94, 1, 'Known: 10 = original debug menu'),
     WatchedField('scene_candidate', 'Stage offset (category)', 0x800C7AB4, 2, 'Verified native menu stage offset in state 10'),
     WatchedField('character_candidate', 'Character-state value (not cursor)', 0x800C7AAC, 2, 'Does not follow character highlights in debug menu'),
-    WatchedField('submode', 'Native debug category', 0x800C7AA4, 1, 'When state 10: 0 SIRO, 1 DOUCHU, 2 MACHI, 3 SHOP, 4 BOMBER'),
+    WatchedField('submode', 'Native debug category', 0x800C7AA4, 1, 'When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed)'),
     WatchedField('live_map', 'Absolute map ID', 0x800C7AB2, 2, 'Menu map ID = category base + stage offset; updates before load'),
     WatchedField('live_character', 'Active character (control)', 0x8015C5DC, 4, 'Loaded character; may differ from menu highlight'),
     WatchedField('phase', 'Game phase', 0x800C7A9E, 1, 'Known: 1 during stable ordinary gameplay'),
