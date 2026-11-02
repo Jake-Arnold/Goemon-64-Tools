@@ -309,6 +309,21 @@
           "size": 8
         },
         {
+          "name": "func_8003F0FC_3FCFC",
+          "rom_offset": 261372,
+          "size": 80
+        },
+        {
+          "name": "func_8003F14C_3FD4C",
+          "rom_offset": 261452,
+          "size": 64
+        },
+        {
+          "name": "func_8003F18C_3FD8C",
+          "rom_offset": 261516,
+          "size": 76
+        },
+        {
           "name": "func_8003F1D8_3FDD8",
           "rom_offset": 261592,
           "size": 36
@@ -317,6 +332,16 @@
           "name": "func_8003F1FC_3FDFC",
           "rom_offset": 261628,
           "size": 64
+        },
+        {
+          "name": "func_8003F23C_3FE3C",
+          "rom_offset": 261692,
+          "size": 152
+        },
+        {
+          "name": "func_8003F2D4_3FED4",
+          "rom_offset": 261844,
+          "size": 124
         },
         {
           "name": "func_8003F43C_4003C",
@@ -401,11 +426,6 @@
         "func_8003ED60_3F960",
         "func_8003EFB0_3FBB0",
         "func_8003F038_3FC38",
-        "func_8003F0FC_3FCFC",
-        "func_8003F14C_3FD4C",
-        "func_8003F18C_3FD8C",
-        "func_8003F23C_3FE3C",
-        "func_8003F2D4_3FED4",
         "func_8003F350_3FF50",
         "func_8003F37C_3FF7C",
         "func_8003F480_40080",

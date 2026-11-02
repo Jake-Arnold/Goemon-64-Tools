@@ -24,7 +24,18 @@ static s32 trace[32], trace_count, poll_result, args7[7], argument, state_at_pol
 static void *task_seen;
 static VmTaskCallback callback;
 static s32 memory_rhs;
-VmChoice D_801C7808_1C8408[3];
+VmControl D_8015CC30_15D830;
+s32 D_801C78F4_1C84F4, D_801C78F8_1C84F8, D_801C77FC_1C83FC;
+static int context_mode;
+static s32 context_events[12], context_ids[12], context_event_count;
+static void resource_event(s32 event, s32 value) {
+    if (context_mode) {
+        assert(context_event_count < 12);
+        context_events[context_event_count] = event;
+        context_ids[context_event_count++] = value;
+    }
+}
+VmChoice D_801C7808_1C8408[10];
 VmChoice *D_801C7800_1C8400;
 VmInput D_801C7908_1C8508;
 VmTaskCallback D_801C78D0_1C84D0;
@@ -64,21 +75,24 @@ s32 D_801C7740_1C8340, D_801C7744_1C8344, D_801C78E8_1C84E8;
 u16 D_801C7742_1C8342, D_801C78EA_1C84EA;
 u8 D_801C7747_1C8347, D_801C774B_1C834B;
 u32 D_801C7750_1C8350;
-static u32 lookup_first, lookup_second;
-static s32 lookup_count, lookup_ids[2], segment_id, segment_result, prepared;
+static u32 lookup_first, lookup_second, lookup_third;
+static s32 lookup_count, lookup_ids[3], segment_id, segment_result, prepared;
 static s32 forwarded[3], forward_kind;
 s32 func_800141C4_14DC4(u32 resource) {
-    assert(lookup_count < 2);
+    assert(lookup_count < 3);
+    resource_event(1, resource);
     lookup_ids[lookup_count++] = resource;
-    return (s32)(lookup_count == 1 ? lookup_first : lookup_second);
+    return (s32)(lookup_count == 1 ? lookup_first : lookup_count == 2 ? lookup_second : lookup_third);
 }
 s32 func_80013B14_14714(s32 resource) {
-    assert(lookup_count == 1 && !prepared); prepared = resource;
+    if (!context_mode) assert(lookup_count == 1 && !prepared);
+    resource_event(2, resource); prepared = resource;
     D_801C78E8_1C84E8 = 2;
     return 0;
 }
 s32 func_80001E50_2A50(u32 resource) {
-    assert(lookup_count == (lookup_first == 0xFFFFFFFF ? 2 : 1));
+    if (!context_mode) assert(lookup_count == (lookup_first == 0xFFFFFFFF ? 2 : 1));
+    resource_event(3, resource);
     segment_id = resource; return segment_result;
 }
 void func_80034EF8_35AF8(s32 a) { forward_kind = 1; forwarded[0] = a; }
@@ -133,6 +147,8 @@ _Static_assert(offsetof(VmWindow, field54) == 0x54, "window field54 offset");
 _Static_assert(sizeof(VmPrompt) == 16, "prompt extent");
 _Static_assert(offsetof(SYS_W, game_loops_count) == 0x3ADCE, "timer offset");
 _Static_assert(offsetof(SYS_W, unk_cf8a0) == 0xCF8A0, "system tail offset preserved");
+_Static_assert(offsetof(VmControl, flags) == 0xD4, "wait flag offset");
+_Static_assert(offsetof(VmWaitOwner, resume) == 0xBC, "saved callback offset");
 _Static_assert(sizeof(VmChoice) == 20, "choice record extent");
 _Static_assert(offsetof(VmChoice, previous) == 8 && offsetof(VmChoice, next) == 12, "choice links");
 _Static_assert(offsetof(VmChoice, script) == 16, "choice script offset");
@@ -596,8 +612,87 @@ static void check_choice_stream_rendering(void) {
     func_8003EB34_3F734(19, first); assert(emitted_count == 0 && decoder_calls == 1 && decoder_input == first);
 }
 
+static void check_choice_index_and_wait_callbacks(void) {
+    const u32 flags[] = {0, 1, 0xFFFFFFFE, 0xFFFFFFFF, 0x80000000};
+    const s32 pending[] = {0, 1, -1, INT_MIN, INT_MAX};
+    static VmWaitOwner owner;
+    unsigned i, j;
+    D_801C77E0_1C83E0 = 2;
+    for (i = 0; i < 10; i++) {
+        D_801C7800_1C8400 = &D_801C7808_1C8408[i];
+        assert(func_8003F0FC_3FCFC() == (s32)i);
+    }
+    D_801C7800_1C8400 = NULL; assert(func_8003F0FC_3FCFC() == 10);
+    for (i = 0; i < 5; i++) {
+        D_801C77E0_1C83E0 = pending[i];
+        assert(func_8003F0FC_3FCFC() == -1);
+    }
+    memset(&owner, 0xA5, sizeof(owner));
+    owner.resume = VM_U32_ADDRESS(func_8003CFD0_3DBD0);
+    D_80077860_78460 = &owner;
+    for (i = 0; i < sizeof(flags) / sizeof(flags[0]); i++) {
+        memset(&D_8015CC30_15D830, 0x5A, sizeof(VmControl));
+        D_8015CC30_15D830.flags = flags[i]; trace_count = 0;
+        func_8003F14C_3FD4C(&owner, NULL);
+        assert(D_8015CC30_15D830.flags == (flags[i] | 1U));
+        assert(trace_count == 1 && trace[0] == INSTALL && callback == func_8003F18C_3FD8C);
+        for (j = 0; j < 0xD4; j++) assert(D_8015CC30_15D830.unknown00[j] == 0x5A);
+        for (j = 0; j < sizeof(pending) / sizeof(pending[0]); j++) {
+            D_80077858_78458 = pending[j]; D_8015CC30_15D830.flags = flags[i];
+            callback = func_8003F18C_3FD8C; trace_count = 0;
+            func_8003F18C_3FD8C(&owner, NULL);
+            if (!pending[j]) {
+                assert(D_8015CC30_15D830.flags == (flags[i] & ~1U));
+                assert(trace_count == 1 && trace[0] == INSTALL && callback == func_8003CFD0_3DBD0);
+            } else assert(D_8015CC30_15D830.flags == flags[i] && trace_count == 0 && callback == func_8003F18C_3FD8C);
+        }
+        for (j = 0; j < 0xBC; j++) assert(owner.unknown00[j] == 0xA5);
+    }
+}
+
+static void setup_context_fixture(u32 first, u32 second, s32 segment) {
+    context_mode = 1; context_event_count = 0; lookup_count = 0; prepared = 0;
+    lookup_first = first; lookup_second = second; lookup_third = 0x80003000;
+    segment_result = segment;
+}
+
+static void check_resource_context_transitions(void) {
+    const s32 addresses[] = {0x02000024, -1, INT_MIN, INT_MAX};
+    unsigned i;
+    for (i = 0; i < sizeof(addresses) / sizeof(addresses[0]); i++) {
+        u32 resolved = (u32)addresses[i] - 0x02000000U + 0x80001000U;
+        s32 expected = addresses[i] < 0 ? addresses[i] : (s32)resolved;
+        D_80077858_78458 = (s32)0x80005000; D_801C78E8_1C84E8 = 7;
+        D_801C7744_1C8344 = 9; D_801C7740_1C8340 = addresses[i];
+        setup_context_fixture(0xC0001000, 0xC0001000, 2);
+        func_8003F23C_3FE3C();
+        assert(D_801C78F4_1C84F4 == (s32)0x80005000 && D_801C78F8_1C84F8 == 7);
+        assert(D_801C78E8_1C84E8 == 9 && (u32)D_801C77FC_1C83FC == 0xC0001000);
+        assert(D_801C78EC_1C84EC == 2 && (u32)D_801C78F0_1C84F0 == 0x7E001000);
+        assert(D_80077858_78458 == expected);
+        assert(context_event_count == 4 && context_events[0] == 1 && context_events[1] == 3 && context_events[2] == 1 && context_events[3] == 3);
+        assert(context_ids[0] == 9 && context_ids[1] == 9 && context_ids[2] == 9 && context_ids[3] == 9);
+        setup_context_fixture(0x80007000, 0x80007000, -1);
+        func_8003F2D4_3FED4();
+        assert(D_801C78E8_1C84E8 == 7 && D_801C78EC_1C84EC == -1);
+        assert((u32)D_801C77FC_1C83FC == 0x80007000 && D_80077858_78458 == (s32)0x80005000);
+        assert(context_event_count == 4 && context_ids[0] == 7 && context_ids[1] == 7 && context_ids[2] == 7 && context_ids[3] == 7);
+        assert(D_801C78F8_1C84F8 == 7 && D_801C78F4_1C84F4 == (s32)0x80005000);
+    }
+    /* Resolver fallback reloads the current resource changed by preparation. */
+    D_80077858_78458 = 1234; D_801C78E8_1C84E8 = 7; D_801C78EA_1C84EA = 0x55;
+    D_801C7744_1C8344 = 9; D_801C7740_1C8340 = 0x02000024;
+    setup_context_fixture(0x80001000, 0xFFFFFFFF, 2);
+    func_8003F23C_3FE3C();
+    assert(context_event_count == 6 && context_events[3] == 2 && context_ids[3] == 0x55);
+    assert(context_ids[4] == 2 && context_ids[5] == 9 && D_801C78E8_1C84E8 == 2);
+    assert(D_80077858_78458 == (s32)0x80003024);
+    assert(D_801C78F4_1C84F4 == 1234 && D_801C78F8_1C84F8 == 7);
+    context_mode = 0;
+}
+
 int main(void) {
-    check_choice_directions_and_repeat(); check_choice_navigation_and_confirmation(); check_choice_stream_rendering(); check_prompt_geometry_and_animation(); check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
+    check_choice_index_and_wait_callbacks(); check_resource_context_transitions(); check_choice_directions_and_repeat(); check_choice_navigation_and_confirmation(); check_choice_stream_rendering(); check_prompt_geometry_and_animation(); check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
     puts("VM choices/repeat/streams, inputs, resources, callbacks and dialogue states passed.");
     return 0;
 }

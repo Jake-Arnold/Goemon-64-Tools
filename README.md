@@ -25,14 +25,17 @@ a rebuild to include the new panel.
 
 # Matching C reconstruction
 
-The [decompilation track](decomp/README.md) now includes **69 matching functions / 5,068 function bytes**
+The [decompilation track](decomp/README.md) now includes **74 matching functions / 5,564 function bytes**
 across flag-bank, system/byte-memory, save/resource and VM helper, assignment, resource and control routines.
-The VM unit intentionally retains 25 unresolved functions as assembly; its host
+The VM unit intentionally retains 20 unresolved functions as assembly; its host
 comparator model is not counted as matching C. Most of the game remains unreconstructed.
 Fresh baseline and C-replacement builds both match the complete
 original decompressed US ROM byte-for-byte. Reproducible verification, synthetic
 C tests and per-function result metadata are included; game data stays local.
-This is an initial matching increment, not a full decompilation or new release.
+The [whole-build inventory](decomp/INVENTORY.md) identifies 7,376 function entries:
+87 matching C entries including 13 already upstream, and 7,289 still in assembly.
+The count includes SDK/runtime code and is not proof of complete function discovery.
+This remains a partial decompilation, not a new release.
 
 # Read-only ROM flag analysis
 

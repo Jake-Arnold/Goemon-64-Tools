@@ -1,8 +1,8 @@
 # Event/dialogue VM reconstruction checkpoint
 
 Date: 2026-11-02. Pinned mnsg baseline and ROM identity are unchanged.
-**44 matching VM functions / 3,192 function bytes**, bringing the track to
-**69 matching C functions / 5,068 function bytes**. The full 32 MiB baseline and
+**49 matching VM functions / 3,688 function bytes**, bringing the track to
+**74 matching C functions / 5,564 function bytes**. The full 32 MiB baseline and
 candidate both match decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
 Current source hashes, guest addresses and byte-range comparisons are in
 [combined.json](results/combined.json). The previous complete-save checkpoint is
@@ -11,7 +11,7 @@ retained as [save_resources_complete.json](results/save_resources_complete.json)
 ## Selected unit and evidence boundaries
 
 The original `0x3DBA0..0x40320` unit contains 69 functions. `script_vm.c` replaces
-44 functions and retains 25 explicitly declared assembly functions. The main
+49 functions and retains 20 explicitly declared assembly functions. The main
 dispatcher, remaining operand handlers and comparison routine remain
 assembly; the complete VM is not decompiled. A name appears in the matching count
 only when linked guest address, original bytes and absence of its assembly marker
@@ -42,6 +42,9 @@ all pass, alongside the complete ROM identity check.
 | `func_8003EA14_3F614`, `func_8003EACC_3F6CC` | Direction thresholds/priority and repeat suppression; reject missing previous/next links |
 | `func_8003EB34_3F734` | Unpaced signed-halfword stream rendering; -1 terminates, other negative values delegate to retained decoder |
 | `func_8003EA0C_3F60C`, `func_8003EBA4_3F7A4` | Original no-operation hooks |
+| `func_8003F0FC_3FCFC` | Query selected index in a ten-record array only while VM state is 2; otherwise -1, unmatched pointer returns 10 |
+| `func_8003F14C_3FD4C`, `func_8003F18C_3FD8C` | Set a raw control bit and install a waiter; clear the bit and restore encoded callback when pending script becomes null |
+| `func_8003F23C_3FE3C`, `func_8003F2D4_3FED4` | Save/restore single-level script/resource context and recompute its base, segment and address delta through existing helpers |
 | `func_8003F1D8_3FDD8`, `func_8003F1FC_3FDFC` | Query nonzero pending script; query signed marker only for owner matching masked VM argument |
 | `func_8003F43C_4003C` | Forward a 32-bit VM argument to the task helper |
 | `func_8003F460_40060`, `func_8003F5FC_401FC` | Initialize countdown/state 7; separately set countdown without changing state |
@@ -55,6 +58,36 @@ all pass, alongside the complete ROM identity check.
 Raw engine preconditions are preserved: no new pointer/index/length safety API is
 introduced, and callbacks are not wired into the running companion. This is
 original-ROM C reconstruction, not a new native PC port.
+
+## Resource context and wait/resume increment
+
+Five additional matching functions replace 496 instruction bytes. Resource-context
+entry records the previous pending script/resource, selects the requested resource,
+looks up its raw base and segment, computes the address delta through the existing
+resolver, then updates the pending script through the relocation helper. Restoration
+selects the saved resource and recomputes those values. This is one saved context,
+not a stack or a new safe scene/resource transition API. Negative encoded addresses
+and resolver callback effects retain their original behavior.
+
+The wait pair sets bit zero in a partial control view at offset `0xD4` and installs
+its callback. While the pending script is nonzero, it leaves that state alone;
+once null, it clears only that bit and restores the encoded callback at owner
+offset `0xBC`. Other owner/control fields remain uncharacterized. The choice query
+returns -1 outside VM state 2, scans ten fixed-size records when active, and returns
+10 if the current pointer is absent. It does not dereference that pointer.
+
+The index query retains paired initialization on one line for IDO's original load
+scheduling. The context-entry helper uses the existing value-preserving width cast
+to preserve an argument register move. No instructions, aliases or callback
+signatures were changed to satisfy the checksum.
+
+Synthetic tests cover all ten indices and unmatched/inactive cases, wait/control
+bit isolation and encoded callback restoration, positive/negative/wrapping resource
+addresses, ordered lookup/segment operations, single-level restoration and a
+resolver fallback that changes the live resource while preserving the original
+segment-query argument. External callback installation/resource calls are stubs;
+no live engine transition was attempted. The previous
+[69-function checkpoint](results/vm_choices.json) is preserved.
 
 ## Choice-list and unpaced stream increment
 
@@ -231,7 +264,7 @@ sequencing. No zero-score/equivalent-code claim was substituted for exact bytes.
 
 The native candidate retains the original comparator assembly and marker.
 `vm_compare_reference.h` is included **only by host tests**, explicitly excluded
-from the 44/69-function counts. It is a semantic aid for subsequent work, not a
+from the 49/74-function counts. It is a semantic aid for subsequent work, not a
 published matching reconstruction or production evaluator. Retained assembly
 also includes the dispatcher and assignment/operand decoders.
 
@@ -245,8 +278,8 @@ safe to evaluate.
 ## Validation
 
 - Fresh verifier baseline and combined candidate builds both passed the full ROM
-  check; all 69 claimed function ranges/addresses matched without assembly markers.
-- **224 Windows Python unittest tests passed**, including declared-assembly exclusion and
+  check; all 74 claimed function ranges/addresses matched without assembly markers.
+- **229 Windows Python unittest tests passed**, including declared-assembly exclusion and
   the narrow Splat-label override. The comparator is asserted to remain excluded.
 - Sanitizer-enabled synthetic VM tests passed pointer fallback, five delayed
   callback invocations, step/draw ordering, initialization/cleanup order, gate

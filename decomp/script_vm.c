@@ -365,17 +365,34 @@ void func_8003EBA4_3F7A4(void) {
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F038_3FC38.s")
 #endif
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F0FC_3FCFC.s")
-#endif
+s32 func_8003F0FC_3FCFC(void) {
+    s32 index;
+    VmChoice *choice;
+    VmChoice *current;
+    index = 0;
+    if (D_801C77E0_1C83E0 != 2) return -1;
+    /* Paired initialization retains IDO's original load scheduling. */
+    choice = D_801C7808_1C8408; current = D_801C7800_1C8400;
+    for (; index != 10; index++, choice++) {
+        if (current == choice) break;
+    }
+    return index;
+}
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F14C_3FD4C.s")
-#endif
+void func_8003F14C_3FD4C(void *owner, void *unused) {
+    (void)owner;
+    (void)unused;
+    D_8015CC30_15D830.flags |= 1;
+    func_8003521C_35E1C(func_8003F18C_3FD8C);
+}
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F18C_3FD8C.s")
-#endif
+void func_8003F18C_3FD8C(void *owner, void *unused) {
+    (void)unused;
+    if (D_80077858_78458 == 0) {
+        D_8015CC30_15D830.flags &= ~1U;
+        func_8003521C_35E1C(VM_CALLBACK(((VmWaitOwner *)owner)->resume));
+    }
+}
 
 s32 func_8003F1D8_3FDD8(void) {
     return D_80077858_78458 == 0 ? 0 : 1;
@@ -385,13 +402,23 @@ s16 func_8003F1FC_3FDFC(s32 owner) {
     return owner == (D_801C7768_1C8368 & ~1) ? D_801C77E8_1C83E8.marker : -1;
 }
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F23C_3FE3C.s")
-#endif
+void func_8003F23C_3FE3C(void) {
+    D_801C78F4_1C84F4 = D_80077858_78458;
+    D_801C78F8_1C84F8 = D_801C78E8_1C84E8;
+    D_801C78E8_1C84E8 = D_801C7744_1C8344;
+    D_801C77FC_1C83FC = func_800141C4_14DC4(D_801C78E8_1C84E8);
+    D_801C78EC_1C84EC = func_80001E50_2A50(D_801C78E8_1C84E8);
+    D_801C78F0_1C84F0 = func_8003DDC4_3E9C4(D_801C7740_1C8340, D_801C78E8_1C84E8) - (u32)D_801C7740_1C8340;
+    D_80077858_78458 = func_8003DE48_3EA48((s32)(long long)D_801C7740_1C8340);
+}
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F2D4_3FED4.s")
-#endif
+void func_8003F2D4_3FED4(void) {
+    D_801C78E8_1C84E8 = D_801C78F8_1C84F8;
+    D_801C77FC_1C83FC = func_800141C4_14DC4(D_801C78E8_1C84E8);
+    D_801C78EC_1C84EC = func_80001E50_2A50(D_801C78E8_1C84E8);
+    D_801C78F0_1C84F0 = func_8003DDC4_3E9C4(D_801C78F4_1C84F4, D_801C78E8_1C84E8) - (u32)D_801C78F4_1C84F4;
+    D_80077858_78458 = func_8003DE48_3EA48(D_801C78F4_1C84F4);
+}
 
 #ifndef GOEMON_DECOMP_HOST_TEST
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F350_3FF50.s")

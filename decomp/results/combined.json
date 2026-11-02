@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-02T17:03:06.532261+00:00",
+  "started_utc": "2026-11-02T17:20:15.116550+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -19,8 +19,8 @@
     "new_alignment": 4,
     "relocations_retained": 15,
     "payload_bytes_changed": 0,
-    "input_sha256": "d77c99a25ba8cbae7f51c36845c697bcdcdd56002d26a24ab57328d192d1e829",
-    "output_sha256": "e38d3b4a4c81e85d3594125e575220844a596254b37d2eb73eaa770d90320dfb",
+    "input_sha256": "9302ddf5df46db6c4f4bd8f9a105b21ed39990e7974e33258dfa995a04d285ca",
+    "output_sha256": "cd99738bfd3ac5d53596d2d3d8047c079cd2df7799b40bc82cd4502347ca40db",
     "text_sha256": "9d180f9bc00b9ab2a6c05c30943cf68381b024635b0e4b3f5af94915c83128b5",
     "compiled_table_prefix_sha256": "cfb6b1a6dee1e182ccfad56f71ce9eb34d63b82db2afccc81f65ba32d1ad28e5"
   },
@@ -35,9 +35,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 69,
-    "claimed_functions": 69,
-    "matched_function_bytes": 5068,
+    "matched_functions": 74,
+    "claimed_functions": 74,
+    "matched_function_bytes": 5564,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -526,6 +526,33 @@
         "candidate_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
       },
       {
+        "name": "func_8003F0FC_3FCFC",
+        "size": 80,
+        "guest_address": "0x8003F0FC",
+        "rom_offset": "0x3FCFC",
+        "matched": true,
+        "expected_sha256": "28fcb8a60c8eaf545b4b3f95a75bc0eaa09375321fc98ac8a1bcdb906c98dcfb",
+        "candidate_sha256": "28fcb8a60c8eaf545b4b3f95a75bc0eaa09375321fc98ac8a1bcdb906c98dcfb"
+      },
+      {
+        "name": "func_8003F14C_3FD4C",
+        "size": 64,
+        "guest_address": "0x8003F14C",
+        "rom_offset": "0x3FD4C",
+        "matched": true,
+        "expected_sha256": "10848091e002566f39c79383e6eff6f4e146c0d6b163026b83bc1d30c86ff741",
+        "candidate_sha256": "10848091e002566f39c79383e6eff6f4e146c0d6b163026b83bc1d30c86ff741"
+      },
+      {
+        "name": "func_8003F18C_3FD8C",
+        "size": 76,
+        "guest_address": "0x8003F18C",
+        "rom_offset": "0x3FD8C",
+        "matched": true,
+        "expected_sha256": "e104b409395f98affb8411e6acd4d7a0bbf35c76ecdf3fe2db320f9f785321c7",
+        "candidate_sha256": "e104b409395f98affb8411e6acd4d7a0bbf35c76ecdf3fe2db320f9f785321c7"
+      },
+      {
         "name": "func_8003F1D8_3FDD8",
         "size": 36,
         "guest_address": "0x8003F1D8",
@@ -542,6 +569,24 @@
         "matched": true,
         "expected_sha256": "4dcd502766dab3672f93c6853e8d48570bae52a11c182185f374bca360f31dcb",
         "candidate_sha256": "4dcd502766dab3672f93c6853e8d48570bae52a11c182185f374bca360f31dcb"
+      },
+      {
+        "name": "func_8003F23C_3FE3C",
+        "size": 152,
+        "guest_address": "0x8003F23C",
+        "rom_offset": "0x3FE3C",
+        "matched": true,
+        "expected_sha256": "d6d44b0af0c2d08a5e80e9a680ab31b9714e774a75a85bb77bcab265bf020692",
+        "candidate_sha256": "d6d44b0af0c2d08a5e80e9a680ab31b9714e774a75a85bb77bcab265bf020692"
+      },
+      {
+        "name": "func_8003F2D4_3FED4",
+        "size": 124,
+        "guest_address": "0x8003F2D4",
+        "rom_offset": "0x3FED4",
+        "matched": true,
+        "expected_sha256": "91bc0fa446b716b14862edfd93ca3c9fa8da196591a49eb05d79c8806b4f67d4",
+        "candidate_sha256": "91bc0fa446b716b14862edfd93ca3c9fa8da196591a49eb05d79c8806b4f67d4"
       },
       {
         "name": "func_8003F43C_4003C",
@@ -679,11 +724,6 @@
     "func_8003ED60_3F960",
     "func_8003EFB0_3FBB0",
     "func_8003F038_3FC38",
-    "func_8003F0FC_3FCFC",
-    "func_8003F14C_3FD4C",
-    "func_8003F18C_3FD8C",
-    "func_8003F23C_3FE3C",
-    "func_8003F2D4_3FED4",
     "func_8003F350_3FF50",
     "func_8003F37C_3FF7C",
     "func_8003F480_40080",
@@ -693,10 +733,10 @@
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
     "system_memory.c": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
     "save_resources.c": "7962df95eb818079725157fcefe908608f51e112e50b9242a67b1b95c918af7b",
-    "script_vm.c": "9e9182e39913bb0eb795aed159db395af1a1d6b8bafa4fe88550df6ca456abc2",
+    "script_vm.c": "3b6535436692ea07542f71593716c3c7b49a191a4831bf5bf6557549b55034b4",
     "save_resources.h": "ec5a34eca1296a2bac959ae01fdd8fd72eb1ef36fd47ff0002e92e17b40f6bcf",
-    "script_vm.h": "75a41d08578376f82d410ffc99952892a3df899dd8a19c8155ab510b8b6aeefc",
+    "script_vm.h": "adb2dd0d893d8b803d430dd37223eff39013321d3d9f7002d5f60496dbd625fb",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-02T17:03:50.913435+00:00"
+  "ended_utc": "2026-11-02T17:20:59.981610+00:00"
 }

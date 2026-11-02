@@ -4,14 +4,18 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **69 functions / 5,068 function bytes across four units**.
+Current verified total: **74 functions / 5,564 function bytes across four units**.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
 
+The [whole-build inventory](INVENTORY.md) identifies **7,376 function entries**:
+**87 matching C entries** (13 upstream plus these 74), leaving **7,289 assembly
+entries**, including SDK/runtime code. Exported jump labels are excluded.
+
 ## Event/dialogue VM helpers
 
-[VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents 44 matching functions in the 69-function
-event/dialogue unit. The remaining 25 functions, including the dispatcher,
+[VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents 49 matching functions in the 69-function
+event/dialogue unit. The remaining 20 functions, including the dispatcher,
 comparator and remaining operand handlers, remain assembly and are excluded.
 The native comparator's host-only semantic model is explicitly not counted.
 The first three reconstructed units below are still complete matching C.
