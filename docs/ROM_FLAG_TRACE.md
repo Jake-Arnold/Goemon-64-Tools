@@ -136,7 +136,8 @@ Optional repeated `--flag-id 0x02F` arguments restrict the index. The output mus
 be a new file; existing output or the input ROM cannot be overwritten.
 
 Actual scan: **892 aligned opcode-pattern candidates across 136 primary-field
-flag IDs**, over 1,311 nonempty file ranges. These are not 892 confirmed executed
+flag IDs**, over 1,084 nonempty file ranges (empty ranges in the file table are
+excluded). These are not 892 confirmed executed
 instructions or 136 individually verified meanings. Pattern matches can be data
 false positives, and the scan does not recover a complete script CFG or indirect
 native writes. The manually traced branches above have stronger evidence than

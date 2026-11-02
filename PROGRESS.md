@@ -286,6 +286,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: pattern indexing is not a complete script CFG/native dataflow scan; external labels are not all verified. Native training-result writers, exhaustive actor reload/placement logic, live-host ROM identity and full decompilation remain unresolved. Original code confirms failure-dialogue selection, not the timing of the native failure writer. No ROMs/assets/raw disassembly or full text dumps committed.
 - Next: from a preserved pre-training state, have the user fail normal Mini-Ebisu training once and read `0x8015C60D`, `0x8015C60E` and ownership `0x8015C6F3` before/after using Live memory; then extend native result-writer tracing and the shared evidence registry.
 
+### 2026-11-02 — Correct ROM scan file-range count
+
+- Changed: corrected the ROM trace report's file-range count to 1,084 nonempty ranges. The previous entry's 1,311 figure counted adjacent file-table entries before excluding empty ranges; it was not the scanner's reported coverage count. Reference count 892 and distinct flag count 136 are unchanged.
+- Why: final inspection of the generated report showed `file_ranges: 1084`; duplicate offsets represent empty entries.
+- Tested: read the generated JSON counts and checked `git diff --check`; documentation only, no test-suite or gameplay rerun.
+- Limitations: all previously documented opcode-pattern/native-tracing limitations remain.
+- Next: focused natural failure test, then native writer tracing and registry work.
+
 ## Mandatory change-log template
 
 ```markdown
