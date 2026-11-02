@@ -20,8 +20,23 @@ class TestInspector(unittest.TestCase):
         self.assertEqual(rows['Lives'].value,'3')
         self.assertEqual(rows['Chain Pipe'].raw,'0x01')
         self.assertEqual(rows['Item slot 1 code'].value,'3')
-        self.assertEqual(rows['Selected item (currently equipped)'].status,'UNKNOWN')
+        self.assertEqual(rows['Equipped weapon index'].addr,0x8015C607)
+        self.assertEqual(rows['Equipped weapon index'].status,'CHECK')
+        self.assertEqual(rows['Map overlay state (observed)'].addr,0x8015C574)
         self.assertEqual(rows['Map ID'].raw,'0x0023')
+
+    def test_weapon_index_and_map_overlay_live_values(self):
+        _,ram=self.sample()
+        ram.write_guest(0x8015C607,b'\x02')
+        ram.write_guest(0x8015C574,b'\x01')
+        watches={r.name:r for r in get_watches(ram,ram.snapshot(),SCENES)}
+        self.assertEqual(watches['Equipped weapon index'].raw,'0x02')
+        self.assertEqual(watches['Equipped weapon index'].status,'OK')
+        self.assertIn('visible',watches['Map overlay state (observed)'].value)
+        ram.write_guest(0x8015C607,b'\x04')
+        watches={r.name:r for r in get_watches(ram,ram.snapshot(),SCENES)}
+        self.assertEqual(watches['Equipped weapon index'].status,'CHECK')
+        self.assertIn('fallback',watches['Equipped weapon index'].value)
 
     def test_confirmed_inventory_slots_and_weapon_sources(self):
         from practice.inspector import INVENTORY

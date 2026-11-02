@@ -31,6 +31,13 @@ These fields' **types** are documented but their meanings remain unknown. The JS
 
 In Live Memory, add a custom watch for `0x8015C574` with type `u8` and monitor changes during *normal* C-Right opening/closing **without writing**. The State discovery candidate table now supports **Watch selected address** for any row. Dynamic player-task addresses can change across scenes and need recapture.
 
+## Manual verification updates (2026-11-02)
+
+- `0x8015C607` is a **confirmed u8 equipped weapon index**, `01`/`02`/`03` across all four characters. Values beyond three force unintended next-character weapons, as documented in `practice/MEMORY_MAP.md`; these remain inspectable with the Live Memory watch and UNSAFE editing.
+- `0x8015C574` is a **reliable observed read value** (`00` hidden, `01` visible) but **not a symmetric write toggle**. Writing `00`, `01` and other bytes opens the map, and zero does not close it.
+- `0x800C7A73` oscillates without magic and must be rejected as the magic-active candidate; `0x8014C340` also oscillates independently of weapon selection.
+- Player-task f32 fields at `+0x68`/`+0x70`/`+0x74`/`+0x78`/`+0x7C` vary during NPC conversations while stationary. Reported 192/191 'maxima' likely come from reading leading IEEE-754 bytes as integers (`0xC0` / `0xBF`). Read the entire 4-byte f32 and dynamically resolve player-task addresses; do not treat them as confirmed engine velocity.
+
 ## Capture protocol
 
 1. Connect to **US Goemon64Recomp** and select **State discovery**.
@@ -50,7 +57,7 @@ The export includes every displayed candidate and metadata, **not full RAM dumps
 |---|---|---|
 | Oedo tourist/dragon-travel destinations | Capture before and after **first arrival/unlock** at a previously unavailable destination. Avoid unrelated collectibles and cutscenes; check save/global progression changes. | Likely persistent flags or packed bitsets; **not mapped**. Not necessarily `0/1` individual bytes. |
 | Map display | In a town/field, press C-Right to show/hide map, capture A/B/C without changing room. | Likely transient UI/global flag, **not mapped**. Be sure not to confuse the pause-map screen with the C-Right overlay. |
-| Selected item/weapon | Capture A/B/C while changing only the selected weapon (C-Left), or the selected inventory cursor in the pause menu. | **Not mapped.** Existing `0x8015C5F3/…` item slots describe carried item codes, not selected state. |
+| Selected item/weapon | Capture A/B/C while changing only the selected weapon (C-Left), or the selected inventory cursor in the pause menu. | **Equipped weapon confirmed at `0x8015C607`, values 1–3.** Selected consumable item cursor still not mapped. |
 | Magic active | For each character in turn, capture A before C-Up, B while the effect is visibly active, and C once it finishes. | **Not mapped.** Each character may use separate task-local and/or global state; distinguish owned/unlocked abilities from *currently active* magic. |
 | Player velocity | Stand still, move/run, jump, then stand still; compare floats in dynamic player task. | Existing `PlayerTask` struct contains **unidentified** f32 members at task offsets `+0x68`…`+0xC8`. These are candidates, **not proven velocity**. Dashboard and Live Memory show **measured XYZ displacement per real second**, not true engine velocity. |
 

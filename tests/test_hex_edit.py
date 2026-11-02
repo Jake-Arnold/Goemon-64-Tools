@@ -22,6 +22,16 @@ class TestHexEdit(unittest.TestCase):
         with self.assertRaises(PermissionError):checked_write(ram,address,before,b'\x01')
         self.assertEqual(ram.read_guest(address,1),before)
         self.assertTrue(get_policy(address).advanced)
+    def test_weapon_index_requires_unsafe_and_accepts_unusual_value(self):
+        _,ram=TestCheckpoint().sample()
+        a=0x8015C607
+        before=ram.read_guest(a,1)
+        self.assertTrue(get_policy(a).advanced)
+        with self.assertRaises(PermissionError):
+            checked_write(ram,a,before,bytes([4]))
+        self.assertTrue(checked_write(ram,a,before,bytes([4]),allow_advanced=True))
+        self.assertEqual(ram.read_guest(a,1),bytes([4]))
+
     def test_wrong_width_and_protected_unknown(self):
         _,ram=TestCheckpoint().sample()
         with self.assertRaises(ValueError):checked_write(ram,0x8015C5E8,b'\x00',b'\x01')

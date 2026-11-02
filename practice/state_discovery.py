@@ -19,7 +19,7 @@ DYNAMIC_RANGES = (('player_task', 'task_ptr', 0xF0), ('player_object', 'player_p
 PROBE_ACTIONS = {
     'Travel destinations': 'Capture A before visiting a never-before-seen dragon travel stop; B after it is unlocked. Expect persistent bits, not necessarily one byte per destination.',
     'Map displayed': 'Hold still in an outdoor area. Capture A with C-Right map hidden; B with map visible; C after hiding again.',
-    'Selected item / weapon': 'Keep the same character, room and equipment. Capture A, press C-Left or select an item, capture B, then restore A and capture C.',
+    'Selected item / weapon': 'Equipped weapon index confirmed at 0x8015C607: 01/02/03 for each character. Compare A/B/C to investigate other item selection and animation fields.',
     'Magic active': 'Capture A before C-Up, B while the magic effect is active, C after it ends. Repeat separately for Goemon, Ebisumaru, Sasuke and Yae.',
     'Player velocity': 'Capture A while stationary, B while moving or jumping and C when stationary again. Player-task float candidates are shown separately; observed XYZ speed is already displayed on Dashboard.',
 }

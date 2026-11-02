@@ -1,3 +1,10 @@
+## 2026-11-02 — confirmed equipped weapon and corrected state interpretations
+
+- **Selected weapon index:** `0x8015C607` is a u8 slot (01, 02, 03) across all four characters. Live Memory now displays it. Other values are marked unusual and may invoke wrong-character weapon assets; UNSAFE editing permits them.
+- **Map overlay:** `0x8015C574` naturally reads 00 when hidden and 01 when visible, but manually writing any tested value opens the map. It is not a simple on/off write toggle.
+- **Magic:** previous candidate `0x800C7A73` was rejected; it oscillates outside magic. `0x8014C340` also oscillates independently of weapon changes.
+- **Movement:** earlier task float candidates also fluctuate during NPC dialogue; byte readings 191/192 are not velocity limits. See `docs/STATE_DISCOVERY.md`.
+
 ## v0.10.6 — Unlocks and native menu corrections
 
 The Windows/Python 3.14 `KeyError('popdown')` in automatic Unlocks refresh is fixed by querying the raw Tcl focus widget path. **The Sprites tab has been removed**; the Unlocks tab remains. The five item-slot code/quantity addresses are verified, and the confirmed weapon/upgrade/ability entries no longer carry provisional labels in Live Memory.

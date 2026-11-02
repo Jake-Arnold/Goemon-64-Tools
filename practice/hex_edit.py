@@ -41,6 +41,7 @@ ENGINE_FIELDS = {
     0x800C7E60:(4,'Menu-entry pointer; arbitrary writes can crash'),
     0x8015C5D4:(4,'Loading flag'),
     0x8015C5DC:(4,'Active character; bypasses model/actor loader'),
+    0x8015C607:(1,'Equipped weapon index: 1–3 normal for every character; other values select unintended assets'),
 }
 for _addr,(_width,_note) in ENGINE_FIELDS.items():
     POLICIES[_addr] = HexPolicy(_width,advanced=True,note=_note)

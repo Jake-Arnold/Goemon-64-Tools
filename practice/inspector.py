@@ -113,6 +113,10 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Native menu entry pointer',0x800C7E60,4,
         lambda v:f'0x{v:08X} (menu entry; not a character ID)',
         source='follows debug-menu highlight; may be used on other menu pages')
+    add('Map overlay state (observed)',0x8015C574,1,
+        lambda v: f'{v} ({"visible" if v == 1 else "hidden" if v == 0 else "unusual"})',
+        validator=lambda v: v in (0,1),
+        source='game toggles 00 hidden/01 visible; manual writes of any tested value open map')
     obj=snapshot.get('player_ptr')
     if obj:
         watches.extend([
@@ -120,9 +124,10 @@ def get_watches(ram, snapshot, scene_names=None):
             Watch('Y', obj+0x0C, f'{snapshot["y"]:.3f}', ram.read_guest(obj+0x0C,4).hex().upper(),'OK','player object'),
             Watch('Z', obj+0x10, f'{snapshot["z"]:.3f}', ram.read_guest(obj+0x10,4).hex().upper(),'OK','player object'),
         ])
-    add('Selected item (currently equipped)', None, 0, source='NOT MAPPED') if False else None
-    watches.append(Watch('Selected item (currently equipped)',None,'Not mapped yet', '—','UNKNOWN',
-                          'Item slots below are not evidence of current selection'))
+    add('Equipped weapon index',0x8015C607,1,
+        lambda v: f'{v} ({"weapon slot" if v in (1,2,3) else "outside normal 1–3; cross-character fallback observed"})',
+        validator=lambda v: v in (1,2,3),
+        source='user-confirmed across all four characters; out-of-range values invoke unintended weapons')
     for name,addr,width,maximum,hint in INVENTORY:
         confirmed = (name.startswith('Item slot ') or name.startswith('Goemon pipe upgrade')
                      or name.startswith('Ebisumaru hammer upgrade')

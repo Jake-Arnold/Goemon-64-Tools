@@ -24,7 +24,7 @@ All addresses below are **original guest N64 addresses** (not host-process point
 | Live resource block | `0x8015C5D8` + `0x30` | bytes | high |
 | Original-game native debug menu state | `0x800C7A94 = 0x0A` | u8 | code patch shown by ROM randomizer; not yet tested in US PC recomp |
 
-**Selected equipped item is unknown.** Item slot fields are not necessarily an equipped/selected item. `UNKNOWN` is deliberately displayed rather than a made-up value.
+**Equipped weapon index is confirmed at `0x8015C607` (u8: `01`, `02`, `03` for all characters).** Stored item-slot codes are separate; the inventory consumable cursor is not yet mapped.
 
 Health has 2 internal units per visible HUD heart segment; typical starting state is HP 10 / maximum HP 10, ryo 100, lives 3. Live Ryo should not exceed 9999. Room/scene ID is NOT the saved continue-point ID at `gamedata+0x200`.
 
@@ -67,6 +67,17 @@ Address: `0x800C7A94`, single guest-RAM byte. Editing this field can force a gam
 All five addresses were verified by the user in gameplay. They describe stored item contents, **not** confirmed equipped-item selection.
 
 While top-level state is `0x0A`, `0x800C7AA4` is the native debug-menu category byte and the screenshot shows `0x00 MAIN`, `0x01 SIRO`, `0x02 DOUCHU`, `0x03 MACHI`, `0x04 SHOP`, continuing through `0x0D GAMEOVER`. Two lower pixelated names remain uncertain. This is distinct from top-level state `0x800C7A94`.
+
+## Confirmed weapon index, observed map state and rejected probes (2026-11-02)
+
+| Address | Current interpretation |
+| --- | --- |
+| `0x8015C607` | **Confirmed u8 equipped weapon slot.** 1/2/3 correspond to each character's three normal weapons. Out-of-range writes invoke unintended next-character weapons (Goemon -> Ebisumaru hammer; Ebisumaru -> Sasuke kunai; Sasuke -> Yae sword; Yae -> user-described letter `1`). |
+| `0x8015C574` | **Observed map read state:** `00` hidden, `01` shown. External write of any tested value opens map; writing `00` does **not** close it. Not a conventional write-toggle. |
+| `0x800C7A73` | **Not a magic flag:** oscillates `00`/`01` outside magic use. |
+| `0x8014C340` | **Not selected weapon:** oscillates `40`/`41`, sometimes `00`. |
+
+**Velocity status:** dynamic player task f32 fields `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C` fluctuate during NPC conversations despite stationary player position. Their high-byte integer values around 192 (`0xC0`) or 191 (`0xBF`) are not speed measurements. Full f32 interpretation and contrasting movement trials still required.
 
 ## Provenance
 

@@ -54,6 +54,15 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-02 — selected weapon confirmed; map/magic/velocity reclassified
+
+- **Weapon:** user tested `0x8015C607` (u8) on all four characters. `01`/`02`/`03` select normal weapon 1/2/3. Manually writing out-of-range values shows unintended next-character weapons: Goemon -> Ebisumaru hammer, Ebisumaru -> Sasuke kunai, Sasuke -> Yae sword, Yae -> user-described letter `1`. Added built-in watch; values above 3 are displayed with CHECK, not silently clamped. Editing requires UNSAFE.
+- **Map:** `0x8015C574` reads `00` hidden and `01` visible, but writing `00`, `01` or any other tested value opens the map; writing `00` cannot close it. Added a live observed-state watch, not a write-toggle.
+- **Magic false positive:** `0x800C7A73` oscillates `00`/`01` when magic is not being used. Do not treat it as the magic-active flag.
+- **Weapon false positive:** `0x8014C340` oscillates `0x40`/`0x41` and occasionally `00`; it is not the actual weapon selection index.
+- **Velocity:** player-task f32 candidates at offsets `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C` are zero when still yet fluctuate during NPC conversations. Reported maxima 192/191 from byte monitors are consistent with first bytes `0xC0`/`0xBF` of signed big-endian IEEE-754 floating-point values, not velocity caps. Actual engine velocity remains unconfirmed; full f32 and dynamic task pointer required.
+- Source tests and UI tests passed locally. No Windows gameplay run in automated testing.
+
 ## 2026-11-02 — v0.10.6: Tk popdown crash fix, confirmed mappings and native category order
 
 - Fixed repeated Windows/Python 3.14 `KeyError('popdown')`: `refresh_unlocks()` now reads the raw Tcl focus widget path instead of calling `root.focus_get()`, which fails to resolve some internal ttk Combobox popdown widgets. Only a focused fish-count entry is exempt from periodic text updates.
