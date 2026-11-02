@@ -48,6 +48,14 @@ Address: `0x800C7A94`, single guest-RAM byte. Editing this field can force a gam
 
 **Live cross-stage reload demonstrated:** Write target stage ID to pending destination `0x800C7CA0` (u16), then set `0x800C7A94` to `0x0C`. The target stage loads, but the spawn XYZ/entry behavior is wrong. This is **partially working**, not a proven full native debug-menu equivalent. Need trace of entrance selection, spawn, facing, prior map and camera task initialization against original-menu stage entry.
 
+## New A/B/C candidates (Ebisumaru, 2026-11-02)
+
+- Map displayed `0x8015C574`: `00 → 01`, reverted on hide; **candidate**, not confirmed.
+- Selected item/weapon `0x8015C607`: `01 → 02`, reverted on reselect; **candidate**, not confirmed.
+- Magic active `0x800C7A73`: `00 → 01`, reverted at effect end; **candidate**, not confirmed. Secondary `0x8015C5CD`: `0A → 08`.
+- Internal velocity **not mapped**: player task f32 candidates `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C`, `+0xD0`. Full analysis in `docs/STATE_DISCOVERY.md`.
+- No persistent dragon travel unlock mapping yet. 
+
 ## Provenance
 
 - Original recomp game types and player object pointers: https://github.com/klorfmorf/Goemon64Recomp/blob/dev/patches/variables.h

@@ -54,6 +54,27 @@ Known debug-menu category bases: SIRO 0, DOUCHU 300, MACHI 350. Additional mappi
 
 ## Change entries
 
+## 2026-11-02 — Ebisumaru A/B/C probes (map overlay, weapon selection, magic, movement)
+
+User-provided screenshot comparisons plus exported `state_probe_20261102_002851_246683.json`. Original US Goemon64Recomp, **Ebisumaru character ID 1**, focused memory range. All listed candidates returned to the original bytes on C; that is correlation, **not proof of control**. No address here has been independently write-validated.
+
+| Action | Candidate address | A → B | Assessment |
+| --- | --- | --- | --- |
+| Map overlay hidden → shown | `0x8015C574` (game_data byte) | `00 → 01` | Top candidate for display flag |
+| Map overlay | `0x8016A165`, `0x8016A166` (player task bytes) | `00 → 01` both | Lower priority; same addresses also change during weapon selection |
+| Weapon/item selection | `0x8015C607` (game_data byte) | `01 → 02` | Top candidate for selected item/weapon index |
+| Weapon/item selection | `0x8014C340` (player object byte) | `40 → 41` | Possible animation/visual state |
+| Weapon/item selection | `0x8016A165`, `0x8016A166` | `03 → 04` both | Likely shared task/input/animation state, not feature-specific |
+| Ebisumaru magic inactive → active | `0x800C7A73` (system byte) | `00 → 01` | Top candidate for activation flag |
+| Ebisumaru magic | `0x8015C5CD` (game data byte) | `0A → 08` | Secondary candidate; may be resource/state change |
+| Ebisumaru magic | `0x800C79C8`, `0x800C79CA` | `08 → 09`, `ED → EC` | Secondary changing system values; ambiguous |
+
+**Movement probe:** A=stationary, B=moving, C=stationary, same character 1 and map ID 328. Export reports 145 changed bytes, 87 returning bytes, and 98 candidates across four regions. Dynamic player-task base inferred for that session as `0x8016A090`. Compared against original recomp's `PlayerTask` struct: `+0x68` (`0x8016A0F8`) is a genuine f32 changing `0 → -2.7127`; `+0x70`/`+0x74`/`+0x78`/`+0x7C` (`0x8016A100`, `0x8016A104`, `0x8016A108`, `0x8016A10C`) are genuine f32 members changing `0 → 0.44024/-0.80182/-0.17552/0.17856`. Also `+0xD0` (`0x8016A160`) f32 `0.3 → 1`. **None is proven velocity**; may be direction/animation/camera. Conversely `+0xE8` (`0x8016A178`) is declared **s32**, and `+0x0C` / `+0x58` are in the generic task header, so f32 decoding there is misleading. Avoid promoting arbitrary subnormal f32 interpretations.
+
+**Next tests:** Repeated open/close map probe with an isolated write to `0x8015C574`; cycle all Ebisumaru weapons and check whether `0x8015C607` advances with the selected slot and restores; repeat magic start/end for other characters to identify shared vs per-character state; check task f32 floats while running forward/backward/strafing and jumping with fixed camera. For task-local pointers, identify base dynamically each run; do not hardcode the live instance addresses.
+
+Source of structural typing: https://github.com/klorfmorf/Goemon64Recomp/blob/dev/patches/types.h . This is a research evidence update only; no runtime code or confirmed toggle mapping changed.
+
 ## 2026-11-02 — live top-level state survey and confirmed reload-triggered stage transition
 
 **Source:** user manually edited original US Goemon64Recomp guest RAM during live gameplay. These are in-game observations, not independently reproduced automated tests. Address `0x800C7A94` holds the top-level game state (u8).

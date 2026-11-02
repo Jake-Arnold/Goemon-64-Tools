@@ -2,6 +2,29 @@
 
 **Status:** These are research targets, not confirmed addresses. The new **State discovery** tab in v0.10.4 captures a before/after pair (and optionally a return-to-before capture), compares the original N64 guest bytes, and exports candidate addresses. Captures do not write game memory and do not imply that changed addresses control a feature. Current known map/character/resource addresses are unchanged.
 
+## Actual Ebisumaru captures (2026-11-02)
+
+Three focused A/B/C probes plus movement JSON have now been received. Each reported byte reverted after the action was undone. Strongest provisional candidates:
+
+| Test | Candidate guest address | A → B | Reason |
+| --- | --- | --- | --- |
+| Map overlay | `0x8015C574` | `00 → 01` | Boolean-like game data |
+| Selected weapon/item | `0x8015C607` | `01 → 02` | Game data index-like byte |
+| Magic activation (Ebisumaru) | `0x800C7A73` | `00 → 01` | Boolean-like system byte |
+| Magic secondary | `0x8015C5CD` | `0A → 08` | Ambiguous transient/resource byte |
+
+`0x8016A165` and `0x8016A166` changed in **both** map and weapon comparisons, so should not be labelled as either feature's dedicated flag. Repeat tests and deliberate manual single-byte writes are required before claiming control.
+
+Velocity JSON context: character `1`, map `328`, A/B/C captured ~3 seconds apart; 145 changed bytes, 87 reversed, 98 candidate rows. Player-task dynamic base was `0x8016A090` in this session. Valid f32 *fields* in the original `PlayerTask` struct:
+- `+0x68` / `0x8016A0F8`: `0 → -2.7127`.
+- `+0x70` / `0x8016A100`: `0 → 0.44024`.
+- `+0x74` / `0x8016A104`: `0 → -0.80182`.
+- `+0x78` / `0x8016A108`: `0 → -0.17552`.
+- `+0x7C` / `0x8016A10C`: `0 → 0.17856`.
+- `+0xD0` / `0x8016A160`: `0.3 → 1`.
+
+These fields' **types** are documented but their meanings remain unknown. The JSON also reports `0x8016A178` as f32 `0 → 0.84`, but task offset `+0xE8` is **s32**, so that float display is a false interpretation. Do not hardcode any `0x8016A...` address across game loads; recompute from the player-task pointer.
+
 ## Capture protocol
 
 1. Connect to **US Goemon64Recomp** and select **State discovery**.
