@@ -209,6 +209,11 @@
           "size": 224
         },
         {
+          "name": "func_8003DDC4_3E9C4",
+          "rom_offset": 256452,
+          "size": 132
+        },
+        {
           "name": "func_8003DE48_3EA48",
           "rom_offset": 256584,
           "size": 56
@@ -252,6 +257,56 @@
           "name": "func_8003EBA4_3F7A4",
           "rom_offset": 260004,
           "size": 8
+        },
+        {
+          "name": "func_8003F43C_4003C",
+          "rom_offset": 262204,
+          "size": 36
+        },
+        {
+          "name": "func_8003F460_40060",
+          "rom_offset": 262240,
+          "size": 32
+        },
+        {
+          "name": "func_8003F524_40124",
+          "rom_offset": 262436,
+          "size": 32
+        },
+        {
+          "name": "func_8003F544_40144",
+          "rom_offset": 262468,
+          "size": 32
+        },
+        {
+          "name": "func_8003F5FC_401FC",
+          "rom_offset": 262652,
+          "size": 12
+        },
+        {
+          "name": "func_8003F608_40208",
+          "rom_offset": 262664,
+          "size": 36
+        },
+        {
+          "name": "func_8003F62C_4022C",
+          "rom_offset": 262700,
+          "size": 52
+        },
+        {
+          "name": "func_8003F660_40260",
+          "rom_offset": 262752,
+          "size": 52
+        },
+        {
+          "name": "func_8003F694_40294",
+          "rom_offset": 262804,
+          "size": 40
+        },
+        {
+          "name": "func_8003F6BC_402BC",
+          "rom_offset": 262844,
+          "size": 44
         }
       ],
       "assembly_functions": [
@@ -263,7 +318,6 @@
         "func_8003D68C_3E28C",
         "func_8003D9B8_3E5B8",
         "func_8003DBEC_3E7EC",
-        "func_8003DDC4_3E9C4",
         "func_8003DE80_3EA80",
         "func_8003DF98_3EB98",
         "func_8003E1A8_3EDA8",
@@ -291,20 +345,10 @@
         "func_8003F2D4_3FED4",
         "func_8003F350_3FF50",
         "func_8003F37C_3FF7C",
-        "func_8003F43C_4003C",
-        "func_8003F460_40060",
         "func_8003F480_40080",
-        "func_8003F524_40124",
-        "func_8003F544_40144",
         "func_8003F564_40164",
         "func_8003F594_40194",
         "func_8003F5C8_401C8",
-        "func_8003F5FC_401FC",
-        "func_8003F608_40208",
-        "func_8003F62C_4022C",
-        "func_8003F660_40260",
-        "func_8003F694_40294",
-        "func_8003F6BC_402BC",
         "func_8003F6E8_402E8"
       ]
     }

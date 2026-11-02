@@ -24,6 +24,39 @@ static s32 trace[32], trace_count, poll_result, args7[7], argument, state_at_pol
 static void *task_seen;
 static VmTaskCallback callback;
 static s32 memory_rhs;
+/* Independent scalar argument stubs; guest overlapping big-endian views are
+ * validated by native byte matching, not modeled by this host ABI test. */
+s32 D_801C7740_1C8340, D_801C7744_1C8344, D_801C78E8_1C84E8;
+u16 D_801C7742_1C8342, D_801C78EA_1C84EA;
+u8 D_801C7747_1C8347, D_801C774B_1C834B;
+u32 D_801C7750_1C8350;
+static u32 lookup_first, lookup_second;
+static s32 lookup_count, lookup_ids[2], segment_id, segment_result, prepared;
+static s32 forwarded[3], forward_kind;
+s32 func_800141C4_14DC4(u32 resource) {
+    assert(lookup_count < 2);
+    lookup_ids[lookup_count++] = resource;
+    return (s32)(lookup_count == 1 ? lookup_first : lookup_second);
+}
+s32 func_80013B14_14714(s32 resource) {
+    assert(lookup_count == 1 && !prepared); prepared = resource;
+    D_801C78E8_1C84E8 = 2;
+    return 0;
+}
+s32 func_80001E50_2A50(u32 resource) {
+    assert(lookup_count == (lookup_first == 0xFFFFFFFF ? 2 : 1));
+    segment_id = resource; return segment_result;
+}
+void func_80034EF8_35AF8(s32 a) { forward_kind = 1; forwarded[0] = a; }
+void func_80038BC8_397C8(u16 a) { forward_kind = 2; forwarded[0] = a; }
+void func_80038C30_39830(u16 a, u8 b, u8 c) {
+    forward_kind = 3; forwarded[0] = a; forwarded[1] = b; forwarded[2] = c;
+}
+void func_80038B98_39798(u16 a) { forward_kind = 4; forwarded[0] = a; }
+void func_80037C9C_3889C(s32 a, s32 b) { forward_kind = 5; forwarded[0] = a; forwarded[1] = b; }
+void func_80037C20_38820(s32 a, s32 b, s32 c) {
+    forward_kind = 6; forwarded[0] = a; forwarded[1] = b; forwarded[2] = c;
+}
 static void record(s32 event) { assert(trace_count < 32); trace[trace_count++] = event; }
 s32 func_8003D68C_3E28C(void) { record(RUN); return 0; }
 void func_8003D0B0_3DCB0(void) { record(DRAW); }
@@ -168,8 +201,66 @@ static void check_assignment_operands(void) {
     }
 }
 
+static void check_resource_address_resolution(void) {
+    const u32 addresses[] = {0, 0x02000024, 0xFFFFFFFF};
+    const u32 bases[] = {0, 0x40001234, 0x80005000, 0xFFFFFFFF};
+    const s32 segments[] = {0, 2, 0x80, -1};
+    unsigned a, b, c;
+    for (a = 0; a < sizeof(addresses) / sizeof(addresses[0]); a++) {
+        for (b = 0; b < sizeof(bases) / sizeof(bases[0]); b++) {
+            for (c = 0; c < sizeof(segments) / sizeof(segments[0]); c++) {
+                u32 expected_base = bases[b] == 0xFFFFFFFF ? 0xC0001000 : bases[b];
+                lookup_count = 0; lookup_first = bases[b]; lookup_second = 0xC0001000;
+                segment_result = segments[c]; prepared = 0; segment_id = 0;
+                D_801C78E8_1C84E8 = 0; D_801C78EA_1C84EA = 0xFEDC;
+                assert(func_8003DDC4_3E9C4(addresses[a], 7) ==
+                    addresses[a] - ((u32)segments[c] << 24) + (expected_base & 0xBFFFFFFF));
+                assert(lookup_ids[0] == 7 && segment_id == 7);
+                if (bases[b] == 0xFFFFFFFF) {
+                    assert(lookup_count == 2 && prepared == 0xFEDC && lookup_ids[1] == 2);
+                } else assert(lookup_count == 1 && prepared == 0);
+            }
+        }
+    }
+    /* A failed fallback lookup also follows the original arithmetic. */
+    lookup_count = 0; lookup_first = lookup_second = 0xFFFFFFFF;
+    segment_result = 0; prepared = 0;
+    assert(func_8003DDC4_3E9C4(0, 7) == 0xBFFFFFFF);
+}
+
+static void check_operand_callbacks(void) {
+    const s32 operands[] = {INT_MIN, -1, 0, 1, 0x7FFF, 0x8000, 0xFFFF, INT_MAX};
+    unsigned a, b;
+    for (a = 0; a < sizeof(operands) / sizeof(operands[0]); a++) {
+        D_801C7740_1C8340 = operands[a];
+        for (b = 0; b < sizeof(operands) / sizeof(operands[0]); b++) {
+            D_801C7744_1C8344 = operands[b];
+            func_8003F524_40124();
+            assert(D_801C7750_1C8350 == (u32)operands[a] + (u32)operands[b]);
+            func_8003F544_40144();
+            assert(D_801C7750_1C8350 == (u32)operands[a] - (u32)operands[b]);
+        }
+        memset(&D_801C77E8_1C83E8, 0xA5, sizeof(VmWork));
+        func_8003F460_40060();
+        assert(D_801C77E8_1C83E8.countdown == operands[a] && D_801C77E0_1C83E0 == 7);
+        func_8003F5FC_401FC(42);
+        assert(D_801C77E8_1C83E8.countdown == 42 && D_801C77E0_1C83E0 == 7);
+        for (b = 0; b < 0x10; b++) assert(D_801C77E8_1C83E8.unknown_00[b] == 0xA5);
+        func_8003F43C_4003C(); assert(forward_kind == 1 && forwarded[0] == operands[a]);
+        func_8003F660_40260();
+        assert(forward_kind == 4 && forwarded[0] == (u16)((u32)operands[a] + 0x8000));
+        func_8003F694_40294(); assert(forward_kind == 5 && forwarded[0] == 0 && forwarded[1] == operands[a]);
+        func_8003F6BC_402BC();
+        assert(forward_kind == 6 && forwarded[0] == 0 && forwarded[1] == 1 && forwarded[2] == operands[a]);
+    }
+    D_801C7742_1C8342 = 0xFEDC; D_801C7747_1C8347 = 0xFE; D_801C774B_1C834B = 0xDC;
+    func_8003F608_40208(); assert(forward_kind == 2 && forwarded[0] == 0xFEDC);
+    func_8003F62C_4022C();
+    assert(forward_kind == 3 && forwarded[0] == 0xFEDC && forwarded[1] == 0xFE && forwarded[2] == 0xDC);
+}
+
 int main(void) {
-    check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
-    puts("VM comparisons/indirection, relocation, callback ordering, counters and dialogue states passed.");
+    check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
+    puts("VM operands/resources, comparisons/indirection, callbacks, counters and dialogue states passed.");
     return 0;
 }

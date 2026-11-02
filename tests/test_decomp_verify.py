@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),43)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),54)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
@@ -107,8 +107,8 @@ class DecompVerificationTests(unittest.TestCase):
     def test_reference_comparator_is_excluded_from_matching_c_count(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
         vm=next(unit for unit in manifest['units'] if unit['source']=='script_vm.c')
-        self.assertEqual(len(vm['functions']),18)
-        self.assertEqual(len(vm['assembly_functions']),51)
+        self.assertEqual(len(vm['functions']),29)
+        self.assertEqual(len(vm['assembly_functions']),40)
         name='func_8003D9B8_3E5B8'
         self.assertIn(name,vm['assembly_functions'])
         self.assertNotIn(name,{fn['name'] for fn in vm['functions']})
@@ -152,3 +152,25 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(config.read_bytes(),before)
             self.assertEqual((checkout/'Makefile').read_bytes(),make_before)
             self.assertFalse((checkout/'src/unit.c').exists())
+    def test_current_sources_and_manifest_have_matching_build_evidence(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        result=json.loads((ROOT/'decomp/results/combined.json').read_text())
+        self.assertEqual(result['status'],'matched')
+        self.assertEqual(result['upstream_commit'],manifest['upstream_commit'])
+        self.assertTrue(result['comparison']['full_rom_match'])
+        expected={f['name']:f for u in manifest['units'] for f in u['functions']}
+        actual={f['name']:f for f in result['comparison']['functions']}
+        self.assertEqual(set(expected),set(actual))
+        self.assertEqual(result['comparison']['matched_function_bytes'],sum(f['size'] for f in expected.values()))
+        for name,fn in actual.items():
+            self.assertTrue(fn['matched'],name)
+            self.assertEqual(fn['size'],expected[name]['size'])
+            self.assertEqual(int(fn['rom_offset'],16),expected[name]['rom_offset'])
+            self.assertEqual(fn['candidate_sha256'],fn['expected_sha256'])
+        sources={u['source'] for u in manifest['units']}|set(manifest['support_headers'])
+        self.assertEqual(set(result['sources_sha256_lf']),sources)
+        for name in sources:
+            data=(ROOT/'decomp'/name).read_bytes().replace(b'\r\n',b'\n')
+            self.assertEqual(hashlib.sha256(data).hexdigest(),result['sources_sha256_lf'][name],name)
+        self.assertEqual(result['object_layout']['payload_bytes_changed'],0)
+        self.assertTrue(result['assignment_table']['matched'])
