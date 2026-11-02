@@ -1,3 +1,13 @@
+## Code-backed follow-up (2026-11-02)
+
+[Original-ROM tracing](ROM_FLAG_TRACE.md) now verifies bitwise OR in the event
+set helper and identifies `0x8015C60D & 0x80` as the failed Mini-Ebisu training
+dialogue selector. Passing training (`0x8015C60D & 0x40`) is separate from magic
+granted/recorded (`0x8015C60E & 0x02`) and ability ownership (`0x8015C6F3`). The
+report supplies script checks/writes and new reference-index tooling; native
+result-writer and actor-placement tracing remain incomplete. The historical
+gameplay reports below remain distinct evidence.
+
 ## Ushiwaka dialogue-stage findings (2026-11-02)
 
 The user mapped full-byte states at `0x8015C60D`: `00` introduction not asked,
@@ -10,12 +20,12 @@ reload the priest was back inside the temple gardens and Ushiwaka was tiny on
 the original-location fence; the user reports the same `7F` dialogue at both
 tested locations and no later Ushiwaka story involvement on this route. Actor
 placement immediately after the event and after reload must be recorded separately.
-Mask `0x80` remains unmapped; setting a progression value does not itself prove
+Subsequent tracing identifies `0x80` as failed-training dialogue; setting a progression value does not itself prove
 ability ownership, reward delivery or an exhaustive story/script audit.
 
 The sequence successively retains and sets bits `0x20`, `0x10`, `0x08`, `0x04`,
-`0x02`, `0x01`, then `0x40`. It supports packed-state interpretation but cannot identify arithmetic
-addition versus bitwise OR in the original code. Preserve unrelated bits when
+`0x02`, `0x01`, then `0x40`. The observations alone did not distinguish addition
+from OR; subsequent ROM tracing verifies OR in the flag-set helper. Preserve unrelated bits when
 editing. These are user-reported gameplay findings, not new assistant-run write
 or code-trace tests. See `practice/MEMORY_MAP.md` for the stage table and evidence
 boundaries. The historical blue-fish hand-in observation below describes entry

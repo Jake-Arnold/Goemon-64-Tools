@@ -1,3 +1,32 @@
+## Original-ROM flag tracing (2026-11-02)
+
+Read-only analysis of the SHA-1-verified US retail/decompressed ROM established
+the event API's bit-ID mapping and **bitwise OR** set operation, and traced the
+Benkei/Ushiwaka script checks and writes. Full offsets, source commits, method,
+limits and reproduction command: [ROM flag trace](../docs/ROM_FLAG_TRACE.md).
+
+New distinctions from original script branches:
+
+| Address / mask | Code-backed interpretation |
+| --- | --- |
+| `0x8015C60D & 0x80` | Mini-Ebisu training failure/retry-dialogue selector |
+| `0x8015C60E & 0x01` | Mini-Ebisu training declined |
+| `0x8015C60E & 0x02` | Mini-Ebisu magic granted/recorded; distinct from passing training |
+| `0x8015C617 & 0x20` | Initial/retry training request flag set by the dialogue script; standalone launch semantics unverified |
+
+The success reward path writes ability-ownership word `0x8015C6F0 = 1` (low byte
+`0x8015C6F3`) before setting the granted flag at `0x8015C60E & 0x02`. The
+Achilles' Heel reward path likewise writes inventory word `0x8015C70C = 1` (low
+byte `0x8015C70F`) separately from setting `0x8015C60D & 0x02`. Benkei checks
+the latter event flag. The bytes are shared progression fields, not exclusively
+one NPC's state: clearing all of `0x8015C60E` also clears Mini-Ebisu dialogue/reward
+flags. No new runtime controls or automatic semantic confirmations were added.
+
+The failure/success **readers** are traced; the native result writers and actor
+placement/reload implementation remain unresolved. An automatic local index
+found 892 opcode-pattern candidates across 136 flag IDs; those unreviewed matches
+are not all proven script instructions or individually validated meanings.
+
 ## Ushiwaka dialogue progression — user-identified (2026-11-02)
 
 **`0x8015C60D & 0x20`: asked Ushiwaka “Who are you?” before.**
@@ -37,7 +66,8 @@ The later user test advances the previously unmapped temple portion:
   not a complete actor-state snapshot.
 - The user reports **no further Ushiwaka story involvement beyond this point**.
   This is the endpoint of the user's mapped route, not an exhaustive original-
-  code proof that no later conditional dialogue exists. Mask `0x80` is unmapped.
+  code proof that no later conditional dialogue exists. Subsequent ROM tracing
+  identifies mask `0x80` as the failed-training/retry-dialogue selector (see above).
 
 “Finished” at `3E` refers to the earlier fish-dialogue sequence, before the temple
 stage; it does not mean all Ushiwaka content or the final Benkei quest gate.
@@ -46,10 +76,8 @@ not by themselves prove those fish were collected or handed in.
 
 These values retain the earlier set bits: `20→30→38→3C→3E→3F→7F` is consistent
 with successively setting masks `0x10`, `0x08`, `0x04`, `0x02`, `0x01`, `0x40`.
-Observing the numeric
-increase does **not** identify the machine-code operation as arithmetic addition
-versus bitwise OR. All those transitions have the same result under either
-operation when the new bit was clear. Read the introduction with
+The numeric increases alone did not distinguish addition from OR; subsequent
+original-ROM tracing verifies **OR in the event-flag set helper**. Read the introduction with
 `(value & 0x20) != 0`, not equality to byte `0x20`; targeted edits must preserve
 other bits rather than overwrite the whole byte or blindly increment it.
 
@@ -61,9 +89,9 @@ fish. Keep transition timing separate from the subsequent dialogue/request.
 Evidence status: user-identified introduction/repeat-dialogue, fish-sequence,
 forced temple relocation and observed post-minigame/reload states, reported
 while investigating Event sessions. No corresponding local
-session file was provided for these new reports, and no new assistant-run capture,
-isolated masked write or original-code trace was performed. Individual bit
-semantics remain distinct from the observed full-byte dialogue stages.
+session file was provided for these new reports. Subsequent static script tracing
+is documented separately above; it does not replace missing runtime captures or
+isolated write tests. Individual bit semantics remain distinct from full-byte stages.
 
 ## Benkei conversation and fight state — replayed and user-tested (2026-11-02)
 
@@ -152,18 +180,19 @@ match. Each bit has event support **2/2**, with no idle or repeat-dialogue chang
 
 These stored trials alone are **first-conversation interval observations**;
 the user-reported tests above add distinct timing and whole-byte intervention
-evidence. No isolated masked-write test or original-code reader/writer trace has
-been done. ROM identity remains unverified against the running host.
+evidence. Subsequent original-ROM script reader/writer tracing is documented at
+the top of this file; isolated masked-write tests remain separate and incomplete.
+The supplied ROM is now hash-verified; identity of the ROM loaded by the running
+host remains unverified.
 
 Local evidence session `79b2f960edab424f89d68ed7e0415691`: idle trial
 `c82d73fde48641d6a7440d9791aa70b3`, event trial
 `4137f3c0e97744358e0ef68d07fe97e6`, repeat-dialogue control
 `55d08ff62b574adf8b28f17dd2dcb6e8`, independent replay
 `3d04720d7f554a448867a8990dfdd22b`. Raw samples and notes stay in ignored local
-diagnostics. Next: trace Ushiwaka's dialogue-prerequisite reader separately from
-Benkei's completion reader, completion write and trigger-entry write in
-original-game code; verify the corresponding masked operations before exposing
-dedicated write controls.
+diagnostics. Those script checks/writes are now located in ROM_FLAG_TRACE.md;
+continue into the unresolved native result writers and actor-loading paths and
+verify corresponding masked operations before exposing dedicated write controls.
 
 ## Ushiwaka progression and pre-load character hypothesis (2026-11-02)
 

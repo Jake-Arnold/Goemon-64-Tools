@@ -161,9 +161,14 @@ Out of scope for the first milestone: complete flag coverage, automatic game
 playthrough, blind unknown-memory writes, bulk RAM restoration, every emulator
 or ROM version, a new UI architecture and a completed full decompilation.
 
-Immediate next action: collect idle/control pairs and repeated real event trials
-with the user (see EVENT_SESSIONS.md), then use that evidence for the phase 4
-registry and phase 5 reader/writer tracing. The first phase 2/3 implementation
+Phase 5 now has an initial read-only original-ROM/script trace and numeric
+reference-index command (see ROM_FLAG_TRACE.md). Known Benkei/Ushiwaka checks and
+script writes are traced; native minigame result writers, actor loading, complete
+CFG reconstruction and a matching decompilation baseline are not complete. A
+local external-label index is a research aid, not the phase 4 shared GUI registry.
+Immediate next action: validate the naturally occurring failed-training state,
+then use the traced evidence to build the registry and expand writer coverage.
+The first phase 2/3 implementation
 captures only 100 global event bytes plus bounded context checks, synchronously;
 analysis runs off Tk. Wide/dynamic captures and automatic ROM verification are
 deferred rather than claimed complete. Packaged executable build and host checks

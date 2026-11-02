@@ -1,3 +1,12 @@
+# Read-only ROM flag analysis
+
+[The ROM tracing report](docs/ROM_FLAG_TRACE.md) documents verified original US
+event-flag helpers, Benkei/Ushiwaka script checks and writes, and separate
+minigame success, failure and ability-granted state. A new read-only
+`python -m practice.rom_flag_trace` command indexes reference candidates from a
+verified local decompressed ROM. It does not bundle game data or change the GUI.
+Unreviewed reference patterns and external labels are not confirmed semantics.
+
 # Goemon Speedrun Tools v0.11.5 — repeated event sessions
 
 **Event sessions** records labelled event, idle and control A/B trials from the
