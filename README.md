@@ -1,52 +1,57 @@
-# Goemon Speedrun Tools v0.11.2 — character-aware experimental reload
+# Goemon Speedrun Tools v0.11.2 — post-warp character selection and second battery flag
 
-In **Scene browser**, the character dropdown now applies to the experimental map reload. The destination loads first, and the toolkit then requests the selected character through ordinary in-game C-Down, provided that character is already in the party. Successful switching requires stable gameplay plus matching global and player-task character IDs. This is **not** the native debug menu's character-at-spawn operation; entrance coordinates remain uncorrected, and locked characters are not selected by this path.
+The Scene browser character dropdown now applies to **experimental 0x0C reloads**: once the map is playable, the toolkit uses ordinary C-Down to request the selected character, if that character is available in the current party, and verifies both global and per-task character IDs. This changes character **after loading**, not through the original debug-menu actor spawn path; the initial spawn and coordinates may still be incorrect. It never writes global character IDs, task pointers, or the observed debug-menu pointer. A failed automatic input allows a manual C-Down, with a bounded timeout and explicit failure reporting.
 
-The repeated original debug-menu cursor scan identifies `0x800C7E60` as a **menu-entry pointer** with values Goemon=`0x8007BAD0`, Ebisumaru=`0x8007BADC`, Sasuke=`0x8007BAE8`, Yae=`0x8007BAF4` (stride `0x0C`). These are observed while the debug menu is open, **not raw character ID values or a safe gameplay write target**.
+**Native cursor scan:** eight forward/reverse highlights match `0x800C7E60 = 0x8007BAD0 + 12*selected_character` while the original debug menu is open. This is a native *menu-entry pointer*, not an ID and not writable for gameplay character switching without further validation.
 
-The second Sasuke battery sets `0x8015C609` bit `0x40` at the **end** of its pickup cutscene (`0x20 → 0x60`). Live Memory displays this flag read-only; setting a completion flag does not invoke the cutscene script.
+**Battery:** The second Sasuke battery event sets `0x8015C609` bit `0x40` **after its cutscene completes**, giving `0x20 -> 0x60`. Live Memory shows this as an *observed cutscene-completed bit*, read-only; the event-script trigger remains unknown.
 
-Automated validation: **166 passed, 9 subtests** in synthetic-memory/Linux-Xvfb tests. In-game Windows switching has not yet been verified.
-
----
-
-# Goemon Speedrun Tools v0.11.1 — cross-area checkpoints, F1 and storyline research
-
-Cross-area logical checkpoint restore now requests the saved destination with 0x800C7CA0 then state 0x0C. After the game loads the target map and a stable player, the toolkit restores saved XYZ, rotation, resources and progression; same-map restores remain immediate. This is not a native savestate: actors, scripts, physics and camera may differ.
-
-Connect scans memory on a background thread so Tk stays responsive. F1 opens Live Memory/debug hex when the toolkit is focused; not a global game shortcut.
-
-Live Memory names Star, Moon, Flower, Snowflake consistently with Unlocks. Unreliable movement speed pulses were removed. State discovery can compare Storyline event / quest flag and Item ownership only, including a per-byte saved event-flag change summary. The Benkei first conversation and Ushiwaka minigame completion bits are not yet identified.
-
-Validated with 163 local Linux/Xvfb synthetic-RAM/Tk tests. Live Windows Goemon64Recomp validation is still required.
+- **F1** selects the **Live Memory** debug/hex editor tab when this toolkit has keyboard focus. It is not a global hotkey over the game.
+- The Live Memory item rows show **Star, Moon, Flower and Snowflake**, consistent with the existing Unlocks controls.
+- **State discovery** includes **Storyline event / quest flag** and **Item ownership only** A/B probes. Comparisons export `event_flag_changes` with per-byte set and cleared bits in the primary persistent event-flag block `0x8015C608..0x8015C66B` to help isolate Benkei's first conversation from Ushiwaka fish completion and Achilles' Heel ownership. These flags are not yet mapped.
+- The experimental movement/speed-pulse **buttons have been removed**: manual testing produced only minor nudges, not a reliable speed effect. The task-relative field remains observed but semantically unverified.
+- Cross-area checkpoint restores still stage-load the checkpoint's map and **then** restore saved XYZ/rotation/progression once gameplay is stable. The **Connect** scan stays on a background worker to avoid freezing Tk. Both features are Windows game-integration experiments, not full native savestates.
+- Validated with **163 Python/Tk synthetic-memory tests** on Linux/Xvfb, not in-game Windows testing.
 
 ---
 
-# Goemon Speedrun Tools v0.10.9 — confirmed first Sasuke battery flag
+# Goemon Speedrun Tools v0.11.0 — cross-area checkpoint restore and responsive Connect
 
-![Actual Tk dashboard](docs/images/actual-dashboard.webp)
+**Checkpoint restore now supports saved positions across areas (experimental).** Capture a checkpoint in stable gameplay as before. Restoring from another room first requests the saved map using the observed `0x800C7CA0` destination / game-state `0x0C` sequence. The toolkit waits for the saved map, normal gameplay, and a stable player before restoring the saved **X/Y/Z, rotation, character, inventory, progression flags and resources**. If the character differs it uses the existing native C-Down character-switch workflow before restoring the checkpoint. Same-map restores remain immediate; Cancel can abort a pending cross-area attempt. **Do not use this as a real savestate:** transient actors, cutscenes, physics and the camera are not captured. The experimental reload may still softlock; gameplay may subsequently reposition the player. Save backups are recommended.
 
-**Verified progression:** Unlocks → Sasuke battery 1 collected uses guest `0x8015C609`, bit `0x20`, preserving other event flags. The pickup disappeared and the second battery became available after an in-game pre-pickup flag write. The second-battery flag remains unmapped.
+**Connect remains responsive:** expensive RAM discovery and process opening now run off Tkinter's UI thread. The button is disabled while connecting; the UI shows a status message and remains interactive. An actual slow scan still takes as long as it takes, but no longer locks the application window.
 
-The current application also has two opt-in, **unverified** controls for live memory experiments.
-
-- **Experimental reload:** In Scene browser choose a destination, enable Live Memory **UNSAFE** and click **EXPERIMENT reload**. The app writes pending map `0x800C7CA0` (u16) and game state `0x800C7A94 = 0x0C`, not the old exit flag. A user demonstrated a target-room load with **incorrect entry coordinates**. The new button monitors resulting map, player position and game state, but does not guess spawn coordinates or promise a valid entrance.
-- **Experimental movement:** In Live Memory use **Probe +4.0**, **Probe -4.0**, or **Speed pulse ×1.5** with UNSAFE enabled. These dynamically resolve `PlayerTask +0x68` and write exactly four IEEE-754 float bytes. This is **not a proven velocity field** or speed hack. Raw four-byte float encodings: +1=`3F800000`, +4=`40800000`, -4=`C0800000`. Writing raw hex `192` is not a float value.
-- **Known mappings:** selected weapon `0x8015C607` (1/2/3 for every character); map visible state `0x8015C574` reads 0 hidden, 1 shown but manually writing 0 does not close it. True magic activation, travel unlocks and physics velocity remain unknown.
-
-Synthetic-memory and Linux/Xvfb GUI tests: **147 passed, 9 subtests**. In-game Windows controls have not yet been validated. Build with `build/Build-Windows.cmd` on Windows or start from source via `Run.bat`.
+**Testing:** 161 synthetic-memory/Python/Tk tests passed with Xvfb; Windows Goemon64Recomp live integration was not run in this environment.
 
 ---
 
-## Historical release notes (some descriptions are superseded by v0.10.8)
+# Goemon Speedrun Tools v0.10.9 — first Sasuke battery confirmed
 
-# Goemon Speedrun Tools v0.10.2 — clickable unlocks and sprite gallery
+**Confirmed:** Unlocks → Sasuke battery 1 collected changes only bit `0x20` at `0x8015C609` and preserves other event bits. Verified in-game: writing this bit before collecting the battery removed the pickup upon reload and unlocked the second part of the chain. The second-battery flag remains unmapped.
 
-![Real Tkinter dashboard running in an offline test environment](docs/images/actual-dashboard.webp)
+---
 
-*Real application screenshot, captured in a virtual Linux display without a running game. The live-memory preview is empty until connected to US Goemon64Recomp.*
+# Goemon Speedrun Tools v0.10.8 — experimental stage reload and movement probes
 
-The original [README concept illustration](docs/images/readme-showcase.webp) inspired this dark gold/red interface. The actual dashboard now combines **connection, position bookmarks, logical checkpoints, route calibration, searchable scene catalog and a real live-memory preview**. Existing deep-dive tabs, including guarded hex editing and native debug-menu calibration, remain available. **Direct scene warp is still disabled**; the mock illustration's imaginary controls, scene names and RetroArch connection are not implemented.
+![Real application dashboard](docs/images/actual-dashboard.webp)
+
+This US Goemon64Recomp desktop toolkit now includes **explicit, experimental** controls for a manually observed stage-reload warp and the suspected PlayerTask movement field. Both operate on live game memory and have **not been verified in this build on Windows**. Existing Live Memory watches, checkpoint tools, inventory unlocks and diagnostics remain available.
+
+## Experimental controls (v0.10.8)
+
+**Experimental warp:** In **Scene browser**, select the target scene, open **Live memory** and tick **UNSAFE**, return to Scene browser and click **EXPERIMENT: reload into selected stage**. Confirm the prompt. The program writes `0x800C7CA0` (pending destination, u16) and then `0x800C7A94 = 0x0C` (top-level reload). It does **not** write the old exit request, overwrite current map or guess target XYZ. An 8-second read-only monitor saves a JSON report with destination, transition state and observed position under local `diagnostics/`. **Wrong spawn, softlock or crash remain possible.** The one-click debug-menu-equivalent spawn loader is not established. Double-clicking a scene remains selection-only.
+
+**Movement offset test:** In **Live memory**, tick **UNSAFE** and use **Probe +4.0**, **Probe -4.0**, or **Speed pulse ×1.5**. Controls resolve the *current* player task pointer and write only a 4-byte IEEE-754 float at `task_ptr + 0x68`. The speed pulse scales the current float by 1.5 (up to ±16); if approximately zero it writes +4.0 as a probe. **This is not a proven speed boost.** Record effects on measured XYZ velocity; a nudge is only evidence of influence.
+
+**Manual 4-byte float test:** `00000000` = 0.0, `3F800000` = +1.0, `40800000` = +4.0, `C0800000` = −4.0. Entering `192` in the hex editor does *not* mean decimal float 192. The absolute pointer found during an earlier capture (`0x8016A0F8`) may change every scene; only the offset `+0x68` is stable by struct definition. Avoid 8-byte writes (which overwrite `+0x6C`).
+
+**Known fields:** Weapon index `0x8015C607` uses 1/2/3 for all characters; `0x8015C574` reports map visibility 00/01 but manual writes open the map instead of closing it. `0x800C7A73` was rejected as a magic flag. Dragon travel unlocks and true internal velocity remain unresolved.
+
+**Testing:** Source and GUI tests pass in Linux/Xvfb with simulated N64 memory; real Windows warp and speedup behaviour are still to be measured. Run `build/Build-Windows.cmd` on Windows for the standalone `.exe` or `Run.bat` to launch from source.
+
+---
+
+## Earlier development notes (historical; superseded where contradicted above)
 
 ## Custom live-memory watches (v0.10.5)
 
@@ -311,7 +316,7 @@ All learned addresses refer to **original N64 guest RAM**, so the semantic knowl
 - It refuses writes to known gameplay map ID, global character/inventory, and live-resource regions.
 - It checks the selected bytes stayed written before sending A, and waits for both map and character to match after the transition.
 - It **does not** provide fully proven scene warp or a true savestate. Game crashes/softlocks are possible in experimental mode.
-- Old checkpoint/LiveSplit/inspector functionality remains, including limitations around cross-map restore.
+- Old checkpoint/LiveSplit/inspector functionality remains, including experimental cross-map restore (not a native savestate).
 
 ## Testing
 

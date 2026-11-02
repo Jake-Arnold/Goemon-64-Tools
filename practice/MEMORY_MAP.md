@@ -1,25 +1,35 @@
-## Second Sasuke battery and native character cursor (2026-11-02)
+## Ushiwaka progression and pre-load character hypothesis (2026-11-02)
 
-- Second battery cutscene finishes, then `0x8015C609` changes `0x20 → 0x60`. Thus bit `0x40` is an observed **post-cutscene completion** marker; manually setting completion bits does not invoke pickup cutscene.
-- Native debug character highlights (state `0x0A`, map 404) were repeated eight times in forward/reverse order. Original N64 guest u32 at `0x800C7E60` is `0x8007BAD0 + 12*character`: Goemon `BAD0`, Ebisumaru `BADC`, Sasuke `BAE8`, Yae `BAF4` (all `0x8007....`). This is a **menu-entry pointer**, not a character ID. The u16/u8 candidates are overlapping low bytes of the same pointer.
-- Experimental reload applies the selected character only **after** gameplay resumes, via native C-Down, when the character is in party. It does not implement native debug-menu entry selection, does not change XYZ, and may be unable to choose locked characters.
+- **Ushiwaka minigame start:** `0x8015C60D`, bit `0x10`, observed `0x20 → 0x30`, same character/map 371. A/B only; **not write-confirmed**.
+- **Blue-fish hand-in:** `0x8015C60D`, bit `0x08`, observed `0x30 → 0x38`, alongside blue fish `0x8015C723` 3 → 0. A/B only; **not write-confirmed**. Does not establish Achilles' Heel or final Benkei story gate.
+- **Sasuke battery 2:** `0x8015C609`, bit `0x40`, becomes set at **end of** pickup cutscene. Never treat bit write as cutscene execution. Visible read-only in Unlocks and Live Memory.
+- **Original debug menu cursor pointer:** `0x800C7E60` repeated pointer sequence is valid during active character highlighting only; user's later 128 value demonstrates nonpersistent interpretation. No writing this pointer for warp.
+- **Experimental initial character load:** user-selected `0x8015C5DC` (u32) is written before `0x800C7A94=0x0C`, to test whether the area-entry actor loader uses the staged character ID. Neither character-at-spawn nor model/entrance correctness is proven. No postload C-Down. Both loaded global and task character must agree.
 
-## 2026-11-02 — storyline progression and v0.11.1
+## Second Sasuke battery conclusion + native character cursor scan (2026-11-02)
 
-- User observations: first Benkei conversation changes later dialogue; completing Ushiwaka fish minigame and receiving Achilles Heel advances quest progression. Editing Achilles Heel into inventory does not bypass the story event, whereas editing the required fish allows an immediate legitimate minigame completion.
-- Probe persistent event flags 0x8015C608..0x8015C66B with separate A/B captures before/after Benkei first dialogue, Ushiwaka reward, and Achilles Heel item-only edit. Report event_flag_changes masks; no quest-bit offset proven yet.
-- Four Miracle shapes: Star 0x8015C85B, Moon 0x8015C85F, Flower 0x8015C863, Snowflake 0x8015C866.
-- Cross-area checkpoint reload: write pending destination 0x800C7CA0 then state 0x0C, wait for stable gameplay/map/player, then write saved XYZ and logical progress. Not a full game savestate.
-- Removed experimental movement speed pulse buttons after no meaningful speed improvement in live testing.
+- Later user experiment isolates **second Sasuke battery bit `0x40`**: confirmed first-battery bit `0x20`, then the second battery cutscene finishes and byte `0x8015C609` becomes `0x60`. This confirms post-cutscene completion correlation; direct writes **do not play cutscenes**. Live Memory exposes bit 0x40 read-only, separate from the first battery bit 0x20.
+- Native character cursor while original debug menu state `0x0A`: `0x800C7E60` **u32 pointer** values Goemon `0x8007BAD0`, Ebisumaru `0x8007BADC`, Sasuke `0x8007BAE8`, Yae `0x8007BAF4`. Eight forward/reverse captures, each stable. Stride = 12; the two byte/halfword hits at +2/+3 are aliases. **Pointer is not a character index**. No external write validation yet.
+- Experimental reload's character dropdown now invokes *post-load ordinary C-Down* when target is in party. It does not reproduce native debug menu's requested entry character or solve wrong spawn.
 
-## Second Sasuke battery comparison (2026-11-02; unconfirmed)
+## Benkei/Ushiwaka storyline flag investigation (2026-11-02)
 
-- Original A/B JSON `state_probe_20261102_014420_169811(1).json`: 01:44:12→01:44:18 UTC, **Sasuke 2**, map 329, A/B only, 81 changed bytes and **no C/reversibility test**.
-- **`0x8015C609` did not change** across A/B and no byte in saved event-flag block `0x8015C608..0x8015C66B` changed. Separately reported value `0x60` includes first confirmed `0x20` plus plausible second `0x40`. Timing/role of `0x40` remains unknown.
-- Writing `0x60` alone did **not** trigger the pickup cutscene. Script execution may be callback-driven rather than a memory flag.
-- Other `00→01` changes: `0x8015C562`, `0x8015CD07`, `0x800C7A71`, `0x800C7AE2`. None identified as a battery-2 flag or cutscene trigger; the first two are outside the primary `gamedata` payload even though the scan labels them game_data.
-- `0x8015C86F` is likely a clock's seconds byte: first battery +5 / 5.19 s and second +6 / 5.92 s. Treat as unrelated to battery.
-- **Do not add a battery-2 unlock toggle until direct causal verification**. Read `0x8015C609` at multiple stages, then test only bit `0x40` in a controlled pre-pickup state.
+- **Gameplay observations (no offsets confirmed):** Benkei's first conversation changes later dialogue. Ushiwaka fish-minigame completion plus Achilles' Heel reward advances another story stage; merely adding Achilles' Heel to inventory does not bypass that gate. Putting the required fish directly in inventory can satisfy the minigame without manually collecting each fish.
+- Investigate quest/event flags in the persistent `gamedata` primary bitfield (`0x8015C608..0x8015C66B`). State discovery A/B exports `event_flag_changes` with XOR split into **bits_set / bits_cleared**. No C for irreversible story completion.
+- Separate experiments: A before first Benkei talk/B afterward; A before fish turn-in/B after Ushiwaka reward dialogue; A before item-only cheat/B immediately after with **no NPC interaction**. Preserve a disposable checkpoint before each event. Inventory equality does not imply same quest state; identify gameplay script readers/writers next.
+- Miracle symbols in Live Memory and Unlocks: Star `0x8015C85B`, Moon `0x8015C85F`, Flower `0x8015C863`, Snowflake `0x8015C866`. User-supplied mapping; avoid claiming a disassembly-level proof.
+- Task+0x68 pulse buttons withdrawn after user observed only movement nudges. Do not treat it as reliable velocity.
+
+## v0.11.0 checkpoint map and position restore (2026-11-02)
+
+- Stage the saved absolute map ID as u16 at `0x800C7CA0`, then write `0x0C` to the top-level game state byte `0x800C7A94`. This experimentally requests the game to load the destination. **Do not** directly overwrite current map `0x800C7AB2` or the exit-request byte.
+- Wait for `0x800C7AB2 == saved_map`, `0x800C7A94 == 0x0D`, a stable player object and no active transition/script, then write captured exact XYZ floats (`player_ptr +0x08/+0x0C/+0x10`) and rotation (`player_ptr +0x14` length 6) through the existing logical restore function. Saved position is the checkpoint's XYZ, **not** a guessed stage entrance.
+- On character mismatch use the original native switch after map loading; do not force raw character IDs or pointers. Actor scripting/scene entrance semantics remain partially unknown. Timeout/cancellation and wrong-map guards leave checkpoint payload unwritten.
+
+## Confirmed first Sasuke battery flag (2026-11-02)
+
+- `0x8015C609 & 0x20` (`gamedata+0x01`): first battery collected/progression complete. Verified by writing it before pickup, then reloading; pickup disappeared and second battery became spawnable.
+- Packed event byte: unlock buttons preserve all other bits. Old guessed `0x8015C70B` removed from battery mapping. Second battery unknown.
 
 # New experimental observations (2026-11-02, v0.10.8)
 
@@ -28,14 +38,6 @@
 - Selected weapon: `0x8015C607` (u8, 1–3) confirmed all characters; map visible state `0x8015C574` read 0/1 but manual writes are side-effectful; `0x800C7A73` not magic.
 
 ---
-
-## Confirmed Sasuke battery 1 flag (2026-11-02)
-
-| Meaning | Address | Encoding | Confirmation |
-| --- | --- | --- | --- |
-| Sasuke battery 1 collected | `0x8015C609` | `u8` bit `0x20` (`gamedata+0x01`) | User wrote bit before pickup, reloaded; battery disappeared and second became spawnable |
-
-Other flags share the byte. Unlocks now set/clear **only mask `0x20`** while preserving every other bit. Old guessed battery address `0x8015C70B` has been removed from the first-battery UI. **Second battery still unmapped** pending its distinct before/after capture.
 
 # Original MNSG (USA) memory-map watch specification
 
@@ -106,14 +108,6 @@ The map address may be involved in UI state and side effects. Do not equate writ
 
 Player-task f32 probes from Ebisumaru are **not proven velocity**: values also vary while stationary during NPC conversations. The `~192` maximum reported from byte watches is the numeric value of `0xC0`, the high byte of some negative f32 encodings, rather than a velocity cap. To inspect these fields, read four bytes as f32 and follow the live dynamic player-task pointer.
 
-### Sasuke battery #1 pickup probe (2026-11-02)
-
-- Same map 330, Ebisumaru; A/B only (no C), immediately before/after collecting the first battery. Label "Map displayed" on JSON is incorrect for actual action.
-- **Best candidate:** `0x8015C609`, `00 → 20`. This is **gamedata+0x01, bit `0x20`** in the saved event-flag bitfield `gamedata+0x00..+0x63`; pickup control still unverified.
-- Secondary `0x8015C86B`, `01 → 02`, might be progression counting but unverified. `0x8015CC30`: `5C → 5D`, `0x8015CC7A`: `01 → 00`.
-- Earlier guessed battery address `0x8015C70B` remained unchanged in the scanned region; **not supported by this pickup**.
-- To verify, modify only bit `0x20` at `0x8015C609` and test stage reload/second battery progression with a disposable save. Do not overwrite other event bits.
-
 ## Provenance
 
 - Original recomp game types and player object pointers: https://github.com/klorfmorf/Goemon64Recomp/blob/dev/patches/variables.h
@@ -127,6 +121,6 @@ Player-task f32 probes from Ebisumaru are **not proven velocity**: values also v
 
 - No writes to guessed inventory offsets or raw scene ID.
 - Original debug menu is the only currently exposed experimental method of entering a scene selector. It changes the top-level game mode, not the map number. Selecting a scene within the debug menu is still manual.
-- Same-map/character checkpoint restoration restrictions remain. A different room must actually be loaded by the original game before restoring its progression data.
+- Cross-map logical checkpoint restoration is now staged: experimental pending-destination/state-0x0C reload into saved map first; only after confirmed stable gameplay does the toolkit restore captured XYZ and game flags. This is not a native savestate or a verified native entrance loader.
 - The memory browser is read-only. The `practice/diagnostics` files contain observations and are suitable for investigating which flags changed across gameplay events.
 - Recomp UI and Windows process APIs are adapters, never required by the portable C core.

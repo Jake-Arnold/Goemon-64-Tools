@@ -26,7 +26,7 @@ FIELDS = (
     WatchedField('phase', 'Game phase', 0x800C7A9E, 1, 'Known: 1 during stable ordinary gameplay'),
     WatchedField('exit_request', 'Exit request', 0x800C7A9F, 1, 'Known transition/exit flag'),
     WatchedField('pending_map', 'Pending scene', 0x800C7CA0, 2, 'Pending scene; does not identify the menu hover'),
-    WatchedField('hover_pointer', 'Character menu entry pointer', 0x800C7E60, 4, 'Candidate: Goemon=0x8007BAD0, +12 bytes per character; READ ONLY'),
+    WatchedField('hover_pointer', 'Character menu entry pointer', 0x800C7E60, 4, 'During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY'),
 )
 
 

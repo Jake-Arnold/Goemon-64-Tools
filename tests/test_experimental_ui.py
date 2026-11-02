@@ -24,14 +24,15 @@ class TestExperimentalGUI(unittest.TestCase):
     def tearDown(self):
         if hasattr(self,'root'):self.root.destroy()
 
-    def test_f1_opens_memory_and_retires_ineffective_motion_controls(self):
-        self.assertFalse(hasattr(self.app,'try_motion_pulse'))
+    def test_removed_ineffective_movement_buttons_and_f1_opens_memory(self):
+        self.assertFalse(hasattr(self.app, 'try_motion_pulse'))
+        tab=self.app.live_memory_tab
         self.app.notebook.select(self.app.scene_tab)
-        self.assertEqual(self.app._on_f1_open_memory(),'break')
-        self.assertEqual(self.app.notebook.select(),str(self.app.live_memory_tab))
+        self.assertEqual(self.app._on_f1_open_memory(), 'break')
+        self.assertEqual(self.app.notebook.select(), str(tab))
         self.assertTrue(self.root.bind_all('<F1>'))
 
-    def test_reload_selected_character_native_swap_after_load(self):
+    def test_character_staged_before_reload_no_c_down_and_verified_on_entry(self):
         from practice.checkpoints import MAP_ADDR
         from autosplitter.memory import CHARACTER_ID_ADDR
         self.app.scene_character.current(2)
@@ -43,28 +44,20 @@ class TestExperimentalGUI(unittest.TestCase):
             self.app.try_reload_warp()
         pending=self.app.pending_direct_warp
         self.assertEqual(pending['selected_character'],2)
-        self.assertEqual(self.ram.u32(CHARACTER_ID_ADDR),0)
+        self.assertTrue(pending['character_staged'])
+        self.assertEqual(self.ram.u32(CHARACTER_ID_ADDR),2)
+        self.assertEqual(self.ram.u8(STATE_ADDR),12)
         self.ram.write_guest(MAP_ADDR,(353).to_bytes(2,'big'))
         self.ram.write_guest(STATE_ADDR,b'\x0d')
-        self.ram.write_guest(self.ram.snapshot()['task_ptr']+0xCC,b'\x00')
-        for dt in (1,1.2,1.4):
-            self.app.poll_direct_warp(pending['start_at']+dt)
-        self.assertEqual(pending['phase'],'character_switch')
-        with patch('practice.ui_extension.press_native_c_down',return_value=lambda:None) as press:
-            self.app.poll_direct_warp(pending['switch_started']+2.2)
-            press.assert_called_once()
-        self.assertEqual(self.ram.u32(CHARACTER_ID_ADDR),0)
-        self.assertEqual(pending['attempts'],1)
-        self.app._release_debug_key()
-        self.ram.write_guest(CHARACTER_ID_ADDR,(2).to_bytes(4,'big'))
         self.ram.write_guest(self.ram.snapshot()['task_ptr']+0x60,b'\x02')
-        for dt in (3,3.2,3.4):
-            self.app.poll_direct_warp(pending['switch_started']+dt)
+        with patch('practice.native_character.press_native_c_down',side_effect=AssertionError('NO C-Down permitted')):
+            for dt in (1,1.2,1.4):
+                self.app.poll_direct_warp(pending['start_at']+dt)
         self.assertIsNone(self.app.pending_direct_warp)
-        self.assertIn('selected character 2',self.app.scene_status.get())
+        self.assertIn('global and task ID verified',self.app.scene_status.get())
 
-    def test_locked_scene_character_never_writes_active_id(self):
-        from practice.checkpoints import MAP_ADDR, GAMEDATA_ADDR
+    def test_wrong_spawn_character_is_reported_without_postload_input(self):
+        from practice.checkpoints import MAP_ADDR
         from autosplitter.memory import CHARACTER_ID_ADDR
         self.app.scene_character.current(3)
         self.app.scene_options=[(353,'Test destination')]
@@ -76,14 +69,13 @@ class TestExperimentalGUI(unittest.TestCase):
         pending=self.app.pending_direct_warp
         self.ram.write_guest(MAP_ADDR,(353).to_bytes(2,'big'))
         self.ram.write_guest(STATE_ADDR,b'\x0d')
-        self.ram.write_guest(self.ram.snapshot()['task_ptr']+0xCC,b'\x00')
-        self.ram.write_guest(GAMEDATA_ADDR+0x94+4*3,b'\x00'*4)
-        for dt in (1,1.2,1.4):
-            self.app.poll_direct_warp(pending['start_at']+dt)
-        with patch('practice.ui_extension.press_native_c_down',side_effect=AssertionError('must not press')):
-            self.app.poll_direct_warp(pending['switch_started']+2)
+        self.ram.write_guest(CHARACTER_ID_ADDR,(0).to_bytes(4,'big'))
+        self.ram.write_guest(self.ram.snapshot()['task_ptr']+0x60,b'\x00')
+        with patch('practice.native_character.press_native_c_down',side_effect=AssertionError('NO C-Down permitted')):
+            for dt in (1,1.2,1.4):
+                self.app.poll_direct_warp(pending['start_at']+dt)
         self.assertIsNone(self.app.pending_direct_warp)
-        self.assertIn('not unlocked',self.app.scene_status.get())
+        self.assertIn('was NOT verified',self.app.scene_status.get())
         self.assertEqual(self.ram.u32(CHARACTER_ID_ADDR),0)
 
     def test_warp_only_explicit_button_and_confirmation(self):

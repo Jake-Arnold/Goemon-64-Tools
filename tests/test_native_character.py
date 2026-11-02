@@ -3,7 +3,7 @@ import unittest
 import tests.test_checkpoint as checkpoint_fixture
 from practice.native_character import (
     prepare_character_swap, undo_character_preparation, ready_after_native_swap,
-    PARTY_OFFSET, CHARACTER_TASK_OFFSET, ready_for_scene_character, scene_character_unlocked,
+    PARTY_OFFSET, CHARACTER_TASK_OFFSET, ready_for_scene_character, ready_for_scene_spawn, scene_character_unlocked,
 )
 from practice.checkpoints import GAMEDATA_ADDR, MAP_ADDR
 from autosplitter.memory import CHARACTER_ID_ADDR
@@ -72,6 +72,14 @@ class TestNativeCharacter(unittest.TestCase):
         ram.write_guest(base+CHARACTER_TASK_OFFSET,b'\x00')
         ram.write_guest(base+0xCC,b'\xBA')
         self.assertFalse(ready_for_scene_character(ram,current_map,0))
+
+    def test_spawn_verification_requires_correct_character_model_and_map(self):
+        ram,_=self.sample()
+        snap=ram.snapshot()
+        character=snap['character']
+        self.assertTrue(ready_for_scene_spawn(ram,ram.u16(MAP_ADDR),character,snap))
+        self.assertFalse(ready_for_scene_spawn(ram,ram.u16(MAP_ADDR)+1,character,snap))
+        self.assertFalse(ready_for_scene_spawn(ram,ram.u16(MAP_ADDR),(character+1)%4,snap))
 
     def test_wrong_map_never_prepares(self):
         ram,cp=self.sample()

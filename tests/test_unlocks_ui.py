@@ -25,12 +25,12 @@ class TestUnlocksUI(unittest.TestCase):
         if hasattr(self, 'root'):
             self.root.destroy()
 
-    def test_unlock_tab_without_sprites_tab(self):
-        app = self.app
-        self.assertEqual(app.notebook.tab(app.unlock_tab, 'text'), 'Unlocks')
-        self.assertNotIn('Sprites', [app.notebook.tab(tab, 'text') for tab in app.notebook.tabs()])
-        self.assertEqual(len(app.unlock_row_widgets), len(UNLOCKS))
-        self.assertEqual(len(app.unlock_count_entries), 3)
+    def test_unlock_tab_present_without_sprites_tab(self):
+        a = self.app
+        self.assertEqual(a.notebook.tab(a.unlock_tab, 'text'), 'Unlocks')
+        self.assertNotIn('Sprites', [a.notebook.tab(tab, 'text') for tab in a.notebook.tabs()])
+        self.assertEqual(len(a.unlock_row_widgets), len(UNLOCKS))
+        self.assertEqual(len(a.unlock_count_entries), 3)
 
     def test_button_writes_byte_without_confirmation_dialog(self):
         self.app.mem = FakeRAM()
@@ -42,8 +42,10 @@ class TestUnlocksUI(unittest.TestCase):
         self.app.set_unlock(unlock, 0)
         self.assertEqual(self.app.mem.read_guest(unlock.address, 1), b'\x00')
 
-    def test_refresh_handles_windows_combobox_popdown_focus(self):
+    def test_refresh_handles_windows_ttk_popdown_focus(self):
         self.app.mem = FakeRAM()
+        # Windows/Python 3.14 combobox popdown is an internal Tcl path; the
+        # previous root.focus_get() raised KeyError('popdown') each polling tick.
         with patch.object(self.root, 'focus_get', side_effect=KeyError('popdown')):
             self.app.refresh_unlocks(force=True)
         self.assertIn('0x00', [state.cget('text')
@@ -73,15 +75,26 @@ class TestUnlocksUI(unittest.TestCase):
         self.app.write_raw_hex()
         self.assertEqual(self.app.mem.read_guest(0x8015C5E8,4),bytes.fromhex('DEADBEEF'))
 
-    def test_first_battery_toggle_preserves_other_event_bits(self):
-        self.app.mem=FakeRAM()
-        addr=0x8015C609
-        self.app.mem.bytes[addr]=0x85
-        item=BY_ADDRESS[addr]
-        self.app.set_unlock(item,1)
-        self.assertEqual(self.app.mem.bytes[addr],0xA5)
-        self.app.set_unlock(item,0)
-        self.assertEqual(self.app.mem.bytes[addr],0x85)
+    def test_first_sasuke_battery_button_preserves_other_progress_flags(self):
+        self.app.mem = FakeRAM()
+        addr = 0x8015C609
+        self.app.mem.bytes[addr] = 0x85
+        battery = BY_ADDRESS[addr]
+        self.app.set_unlock(battery, 1)
+        self.assertEqual(self.app.mem.bytes[addr], 0xA5)
+        self.app.set_unlock(battery, 0)
+        self.assertEqual(self.app.mem.bytes[addr], 0x85)
+
+    def test_readonly_second_battery_and_ushiwaka_statuses(self):
+        self.app.mem = FakeRAM()
+        self.app.mem.bytes[0x8015C609] = 0x60
+        self.app.mem.bytes[0x8015C60D] = 0x38
+        self.app.refresh_unlocks(force=True)
+        self.assertIn('YES', self.app.sasuke_second_status.get())
+        self.assertIn('0x40', self.app.sasuke_second_status.get())
+        self.assertIn('started=True',self.app.ushiwaka_status.get())
+        self.assertIn('blue fish step=True',self.app.ushiwaka_status.get())
+        self.assertFalse(hasattr(self.app,'set_second_battery'))
 
     def test_disconnected_does_not_write(self):
         self.app.set_unlock(BY_ADDRESS[0x8015C6C7], 1)

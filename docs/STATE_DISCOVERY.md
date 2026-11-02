@@ -1,30 +1,48 @@
-## Repeated native character cursor sweep and second-battery timing (2026-11-02)
+## Ushiwaka storyline and character-at-spawn investigation (2026-11-02)
 
-The original native debug menu character-scan export `native_character_cursor_20261102_104302.json` used 8 stable highlights: Goemon, Ebisumaru, Sasuke, Yae, Yae, Sasuke, Ebisumaru, Goemon. Menu state 10, category 3, map 404, stage offset 4. There were 63 candidates (3 linear, 60 lookup), but the meaningful linear candidates are overlapping parts of **one u32 pointer at `0x800C7E60`** with values `0x8007BAD0`, `0x8007BADC`, `0x8007BAE8`, `0x8007BAF4`. Entries are 12 bytes apart. This pointer is not a 0–3 ID, nor is it a validated writable actor-selection command. Do not blindly write it from ordinary gameplay.
+Two focused A/B captures taken with Goemon in map 371:
 
-Second battery pickup sets `0x8015C609` bit `0x40` at the **end of the cutscene**, not immediately on contact. The separate event script is still unknown. Live Memory decodes this completion bit read-only.
+1. **Start Ushiwaka minigame**, `2026-11-02 11:00:51.517→11:01:04.456 UTC`: persistent event byte `0x8015C60D` goes `20→30`, **bit 0x10 set**. This is a strong start-state candidate, not a proven control.
+2. **Complete blue fish step**, `11:02:05.125→11:02:09.012 UTC`: same byte `30→38`, **bit 0x08 set**; blue fish at `0x8015C723` falls `03→00`. This is not necessarily the Achilles' Heel/final quest-completion flag; do not conflate acquisition, fish hand-in, and Benkei dialogue progression.
 
-**Client update:** experimental map reload now honours the character dropdown by requesting a **post-load native C-Down** switch only for available party characters, with model/task verification, refusal on locked characters, bounded attempts and timeout. It does **not** reproduce native debug-menu spawn selection or fix spawn XYZ.
+Sasuke's second battery completes its cutscene **before** setting `0x8015C609 & 0x40`. A read-only indicator is now visible in the Unlocks tab; writing this bit by hand cannot invoke the cutscene.
 
-## v0.11.1 — Benkei/Ushiwaka storyline A/B protocol
+The prior character-select scan at `0x800C7E60` traced 12-byte-spaced pointers while the original character menu was active. The user also observed a persistent value of 128 after visiting the menu, so the address **does not serve as a stable gameplay character selection register**. The experimental scene browser no longer simulates post-load C-Down. It stages the global character ID `0x8015C5DC` immediately before requesting state 0x0C, on the hypothesis that the area-entry model loader reads that ID. **Unverified**: area reset could overwrite it. Tool verifies global and task local ID on the destination and does not repair a mismatch through input injection.
 
-Use Storyline event / quest flag (focused scan). Capture separate A/B pairs: (1) before and after first Benkei conversation; (2) before Ushiwaka fish turn-in and after the reward/cutscene; (3) before and after editing Achilles Heel into inventory alone, without finishing the event; (4) add the required fish directly, then complete Ushiwaka normally. Use disposable checkpoints and avoid changing map/character during each pair.
+## Benkei and Ushiwaka story-event protocol (2026-11-02)
 
-Inspect event_flag_changes for bit transitions in persistent gamedata+0x00..0x63 at 0x8015C608..0x8015C66B. Each change is only a candidate until a controlled masked-write test reproduces the dialogue or quest gate. No C needed for irreversible story actions. Item possession, quest progression, and cutscene execution may require separate code paths.
+Use **State discovery → Storyline event / quest flag**, preferably **focused**, and make separate A/B captures for distinct events; do not use C for one-time story flags. Begin with a disposable checkpoint before each event and avoid moving rooms/characters between A and B. Record the precise stage of the dialogue/cutscene relative to each capture.
 
-F1 opens Live Memory while the toolkit is focused. Experimental cross-map checkpoint restore waits until the desired map and stable player are ready before writing saved XYZ.
+1. **First Benkei dialogue:** A directly before first approach; B once the initial conversation finishes. Then repeat conversation and compare with a new A/B to separate initial encounter from recurring dialogue.
+2. **Ushiwaka fish completion:** A immediately before the fish hand-in; B immediately after the minigame reward and cutscene conclude. Do not assume Achilles' Heel ownership by itself changes this progression bit.
+3. **Item-only control:** from an otherwise identical pre-completion state, A before inserting Achilles' Heel into the inventory, B after inserting it without completing Ushiwaka. Compare with the genuine reward event to distinguish inventory from storyline completion.
+4. **Fish shortcut control:** separately add only the required fish and perform the normal Ushiwaka turn-in. The user found fish inventory is enough to satisfy the minigame without manual fish collection; identify which event flags then change at real completion.
+
+New JSON field **`event_flag_changes`** captures changes only inside original persistent event bitfield `gamedata+0x00..+0x63` (`0x8015C608..0x8015C66B`), reporting **bits_set**, **bits_cleared**. These remain candidates until repeated observation and causal masked write tests. Changes elsewhere, player motions and timer bytes are likely incidental. A/B captures never certify reversibility: `reverting_changes` is zero without C.
+
+**Cutscene note:** a persistent quest flag may suppress a pickup or unlock dialogue without executing the cutscene callback. Identify script execution separately rather than treating a completion bit as an event trigger.
+
+## v0.11.0: staged cross-area checkpoint restore and asynchronous Connect
+
+Restoring an existing logical checkpoint from another map now requests a scene reload using the confirmed experimental sequence, waits for map ID and stable gameplay, and **only then** restores checkpoint XYZ, rotation, progress and resources. This bypasses the prior manually required trip to the saved map but does not reproduce native entrance scripts, enemy state, physics or camera. Native character switching is still required if the character differs. The game must actually reach the saved map; a wrong-map outcome or timeout cancels the checkpoint restore.
+
+Connection discovery runs on a separate worker thread, with results marshalled to Tk's main thread. During memory scanning the app stays responsive.
+
+## First Sasuke battery flag verified (2026-11-02)
+
+`0x8015C609 & 0x20` is confirmed by writing the bit before collecting pickup. On reload pickup was gone and second battery became accessible later. The app now masks writes to preserve other progression flags. Second battery remains unmapped, pending a separate capture.
+
+## Native character cursor scan and battery cutscene timing (2026-11-02)
+
+On second battery pickup, `0x8015C609` changes from `0x20` to `0x60` **only after the cutscene completes**. The added bit `0x40` is a post-cutscene progression marker, not the script trigger itself. It is decoded read-only in Live Memory.
+
+The repeated eight-step native debug menu character cursor scan (menu state 0x0A, map 404) matches a **u32 menu entry pointer** at `0x800C7E60`: Goemon `0x8007BAD0`, Ebisumaru `0x8007BADC`, Sasuke `0x8007BAE8`, Yae `0x8007BAF4`. Values follow 12-byte table entries and repeat in the reverse sweep. The 8-bit/16-bit candidates at +3/+2 are overlapping parts of this pointer; no zero-based 0..3 direct RAM field was found. These are **read-only observations**, and the pointer is not safe to write to change gameplay character.
+
+**Scene browser fix:** the dropdown previously controlled only the separate native menu action; an experimental reload ignored it. Experimental reload now requests the selected character via ordinary post-load C-Down if unlocked, verifying the native model/task. This is **not** a native debug-menu spawn and does not correct entrance coordinates.
 
 ## Experimental test harness (v0.10.8)
 
 The app now includes two *deliberately manual* experiments. **Scene browser → EXPERIMENT reload** writes pending destination `0x800C7CA0` followed by game state `0x0C`, logs result and position. Do not infer correct entrance spawn. **Live memory → Experimental movement** resolves `PlayerTask +0x68` dynamically and sends 4-byte f32 values. Press `+4.0`, `-4.0`, or `Speed pulse ×1.5`, compare observed XYZ motion in controlled gameplay. The task field is still unknown; an observed nudge is not proof it is velocity. The app never writes eight adjacent bytes in these controls.
-
-## Confirmed Sasuke battery 1 flag (2026-11-02)
-
-| Meaning | Address | Encoding | Confirmation |
-| --- | --- | --- | --- |
-| Sasuke battery 1 collected | `0x8015C609` | `u8` bit `0x20` (`gamedata+0x01`) | User wrote bit before pickup, reloaded; battery disappeared and second became spawnable |
-
-Other flags share the byte. Unlocks now set/clear **only mask `0x20`** while preserving every other bit. Old guessed battery address `0x8015C70B` has been removed from the first-battery UI. **Second battery still unmapped** pending its distinct before/after capture.
 
 # Finding remaining original-game state fields
 
@@ -43,20 +61,6 @@ The new Live Memory **Custom watches** controls can monitor the raw byte continu
 - **Magic candidate rejected:** `0x800C7A73` oscillates between `00` and `01` without magic. It cannot be labelled a magic-active flag on current evidence.
 - **Secondary weapon candidate rejected:** `0x8014C340` oscillates `0x40`/`0x41` and sometimes `0x00`; it does not identify the selected weapon.
 - **Velocity remains unconfirmed:** session-local player-task f32 offsets `+0x68`, `+0x70`, `+0x74`, `+0x78`, `+0x7C` all read zero while still but can vary during an NPC conversation. The reported `~192` maxima came from byte-level watches: `0xC0` (decimal `192`) is merely the most-significant byte of a negative IEEE-754 f32, e.g. `0xC02D9CA2` is about `-2.7127`. Compare **f32** values in running / jumping / stationary / dialogue states; do not assume byte values represent speed. Dynamic absolute player-task addresses may change after room loads.
-
-## Sasuke first battery pickup probe (2026-11-02)
-
-A/B captured before and after the first Sasuke battery (Ebisumaru, map 330; JSON labels incorrectly say "Map displayed"). The key change is **`0x8015C609: 00 → 20`**. This is at `gamedata+0x01`, inside the known persistent event-flag block. It is the strongest **unverified** flag candidate. Other changes `0x8015C86B: 01 → 02`, `0x8015CC30: 5C → 5D`, `0x8015CC7A: 01 → 00` require further tests. Previous hypothesised battery slot `0x8015C70B` was in the scan but did not change.
-
-Capture C was **not taken** and is generally inappropriate after an irreversible collection. In v1 exports, `reverting_changes` was erroneously incremented without C. That count was fixed: without C, only `observed_changes` has meaning. Keep the full before/after JSON as your private diagnostic (do not commit it to the public repository).
-
-## Sasuke second battery acquisition and cutscene distinction (2026-11-02)
-
-The user supplied second pickup A/B JSON with Sasuke in map 329, 5.921 s between reads. **No primary event-flag bytes changed** (including `0x8015C609`), though the user separately saw `0x8015C609 = 0x60`. Extra bit `0x40` is only a candidate for second-battery progress; its actual write timing was **not captured**. Manually writing `0x60` did not replay the second pickup's cutscene; persistent completion state and one-off pickup script execution should be investigated separately.
-
-Possible transient changes `0x8015C562 00→01`, `0x8015CD07 00→01`, `0x800C7A71 00→01`, `0x800C7AE2 00→01` were seen, but no causal role is established. The probable time byte `0x8015C86F` advanced by 5 over 5.19 s in the first comparison and 6 over 5.92 s in the second. A/B is not a C revert test; ignore older erroneous `reverting_changes=81` metadata when `capture_C=null`.
-
-**Recommended high-resolution test:** Log the confirmed first-byte `0x8015C609` before second battery appears, immediately before contact, during pickup cutscene, after playback and after reload. Confirm whether `0x40` is the second stage gate by writing only that bit into an actual uncollected state; do not assume a state-bit write initiates the cutscene.
 
 ## Capture protocol
 

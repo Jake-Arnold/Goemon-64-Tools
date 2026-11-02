@@ -38,6 +38,18 @@ def ready_for_scene_character(ram, map_id: int, character: int, snapshot=None) -
         return False
     return ram.u8(snap['task_ptr'] + CHARACTER_TASK_OFFSET) == character
 
+def ready_for_scene_spawn(ram, map_id: int, character: int, snapshot=None) -> bool:
+    """Verify character that actually spawned, without requiring a swap idle state."""
+    if type(character) is not int or character not in range(4):
+        return False
+    if ram.u8(STATE_ADDR) != 13 or ram.u16(MAP_ADDR) != map_id:
+        return False
+    snap = snapshot if snapshot is not None else ram.snapshot()
+    if (snap.get('loading') or snap.get('character') != character
+            or not snap.get('task_ptr') or not snap.get('player_ptr')):
+        return False
+    return ram.u8(snap['task_ptr'] + CHARACTER_TASK_OFFSET) == character
+
 @dataclass(frozen=True)
 class PartyPatch:
     address: int

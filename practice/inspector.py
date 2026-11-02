@@ -46,7 +46,7 @@ INVENTORY = [
     ('Triton Shell', 0x8015C6FF, 1, 1, 'user verified in-game'),
     ('Unknown brown item (Achilles Heel? candidate)', 0x8015C703, 1, 1, 'item identity NOT confirmed'),
     ('Silver Fortune Doll? (candidate)', 0x8015C707, 1, 1, 'old GameShark item name, unverified'),
-    ('Sasuke battery 1 collected', 0x8015C609, 1, 255, 'confirmed event byte bit 0x20; preserve neighbouring flags'),
+    ('Sasuke battery 1 collected', 0x8015C609, 1, 255, 'CONFIRMED: event byte bit 0x20; preserves other flags'),
     ('Round brown item (Achilles Heel? candidate)', 0x8015C70F, 1, 1, 'item identity NOT confirmed'),
     ('Gold Key', 0x8015C713, 1, 1, 'user verified in-game'),
     ('Cucumber (formerly Blue Sausage)', 0x8015C717, 1, 1, 'item identification tentative, previously Blue Sausage'),
@@ -56,7 +56,7 @@ INVENTORY = [
     ('Star', 0x8015C85B, 1, 1, 'Miracle item: star'),
     ('Moon', 0x8015C85F, 1, 1, 'Miracle item: moon'),
     ('Flower', 0x8015C863, 1, 1, 'Miracle item: flower'),
-    ('Snowflake', 0x8015C866, 1, 1, 'Miracle item: snowflake'),
+    ('Snowflake', 0x8015C866, 1, 1, 'Miracle item: snowflake; address ends C866'),
 ]
 
 @dataclass(frozen=True)
@@ -113,9 +113,12 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Previous map',0x800C7ABC,2,source='observed door transition: previous map commits with current map')
     add('Pending destination',0x800C7CA0,2,source='observed door transition: updates before the next map loads')
     add('Exit request (not warp)',0x800C7A9F,1,source='0 in observed door transition; writing 1 exited to title')
-    add('Native menu entry pointer',0x800C7E60,4,
-        lambda v:f'0x{v:08X} (menu entry; not a character ID)',
-        source='follows debug-menu highlight; may be used on other menu pages')
+    add('Native menu entry pointer (state 10 only)',0x800C7E60,4,
+        lambda v: f'0x{v:08X} (' +
+            (('menu entry ' + str((v-0x8007BAD0)//12)) if state==10 and
+             0x8007BAD0<=v<=0x8007BAF4 and (v-0x8007BAD0)%12==0
+             else 'STALE/UNKNOWN; do not use as spawn selector') + ')',
+        source='read-only; character-linked pointer observed ONLY during live native-menu highlights')
     add('Sasuke battery 2 cutscene finished (observed)',0x8015C609,1,
         lambda v: 'Yes (bit 0x40)' if v & 0x40 else 'No (bit 0x40)',
         source='observed: second battery cutscene ends with 0x20 -> 0x60; cutscene trigger separate')
@@ -150,7 +153,7 @@ def get_watches(ram, snapshot, scene_names=None):
     for name,addr,width,maximum,hint in INVENTORY:
         if addr == 0x8015C609:
             add(name,addr,1,lambda v: 'Yes (bit 0x20)' if v & 0x20 else 'No (bit 0x20)',
-                source='confirmed: pickup disappeared and second battery became available after flag write')
+                source='confirmed by live pre-pickup flag write and subsequent stage progression')
             continue
         confirmed = (name.startswith('Item slot ') or name.startswith('Goemon pipe upgrade')
                      or name.startswith('Ebisumaru hammer upgrade')

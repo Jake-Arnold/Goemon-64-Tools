@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.2 — external Windows UI for US Goemon64Recomp.
+"""Goemon Practice Toolkit v0.11.3 — external Windows UI for US Goemon64Recomp.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -265,6 +265,7 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         self.build_inspector_tabs(notebook)
         self.build_state_discovery_tab(notebook)
         self.build_unlock_tabs(notebook)
+        # Toolkit-local F1; it does not register a system-wide/game hotkey.
         root.bind_all('<F1>', self._on_f1_open_memory, add='+')
         statusbar = ttk.Frame(root, style='Header.TFrame', padding=(16, 5))
         statusbar.pack(fill='x')
@@ -319,6 +320,7 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         self.notebook.select(self.live_memory_tab)
 
     def _on_f1_open_memory(self, _event=None):
+        """Jump to the Live Memory / debug hex editor from any toolkit widget."""
         self.open_live_memory_tab()
         return 'break'
 
@@ -346,14 +348,18 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         return [f"{i+1}. {x['name']} ({x['x']:.1f}, {x['y']:.1f}, {x['z']:.1f})" for i,x in enumerate(self.bookmarks)]
 
     def connect(self):
-        """Run process/RDRAM discovery on a worker; keep Tk event loop responsive."""
+        """Start expensive Windows process discovery in a worker, not Tk's event loop.
+
+        Only the UI thread may touch Tk widgets. Workers own the new process
+        handle until the UI takes it from the completion queue.
+        """
         if self._connecting:
             return
         self.cancel_pending_restore(quiet=True)
         self.pending_direct_warp = None
         self._connecting = True
         self.connect_button.state(['disabled'])
-        self.status.set('Connecting: searching for Goemon64Recomp RAM (UI remains responsive)...')
+        self.status.set('Connecting: searching for Goemon64Recomp RAM (interface remains responsive)...')
         self.mem = None
         self.current = None
         self.game_pid = None
@@ -361,26 +367,29 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         previous = self.process
         self.process = None
         if previous is not None:
-            try: previous.close()
-            except OSError: pass
+            try:
+                previous.close()
+            except OSError:
+                pass
         opts = (self.args.pid, self.args.base, self.args.endian,
                 bool(self.args.enable_teleport or self.args.enable_state_restore or
                      self.args.enable_debug_menu or self.args.enable_scene_warp or
                      self.args.enable_hex_edit))
-        threading.Thread(target=self._connect_worker, args=(opts,), daemon=True,
-                         name='GoemonRdramDiscovery').start()
+        thread = threading.Thread(target=self._connect_worker, args=(opts,), daemon=True,
+                                  name='GoemonRdramDiscovery')
+        thread.start()
         self.root.after(50, self._poll_connect_results)
 
     def _connect_worker(self, opts):
-        """Only the Tk main thread touches widgets; transfer results via queue."""
+        """No Tk calls here; even errors are returned through the queue."""
         pid_hint, base_hint, endian_hint, writable = opts
         process = None
         try:
             pid = pid_hint or find_pid()
             process = WindowsProcess(pid, writable=writable)
             if base_hint:
-                base = int(base_hint, 0) if isinstance(base_hint, str) else int(base_hint)
-                endian = 'wordswapped' if endian_hint == 'auto' else endian_hint
+                base, endian = int(base_hint, 0) if isinstance(base_hint, str) else int(base_hint), (
+                    'wordswapped' if endian_hint == 'auto' else endian_hint)
             else:
                 base, endian = discover_rdram(process, endian_hint)
             candidate = Rdram(process, base, endian)
@@ -390,8 +399,10 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
             self._connect_queue.put(('ok', pid, process, candidate, sample, base, endian))
         except Exception as exc:
             if process is not None:
-                try: process.close()
-                except Exception: pass
+                try:
+                    process.close()
+                except Exception:
+                    pass
             self._connect_queue.put(('error', str(exc)))
 
     def _poll_connect_results(self):
@@ -592,57 +603,62 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
         self.restore_state_btn.state(['!disabled'])
 
     def _arm_character_restore(self, checkpoint, now):
+        """After the correct scene is loaded, swap using the native C-Down path."""
         patch = prepare_character_swap(self.mem, checkpoint)
         p = checkpoint['payload']
-        self.pending_restore = dict(checkpoint=checkpoint,target=p['character'],
-            party_patch=patch,phase='character',started=now,
-            last_press=0.0,attempts=0,stable=0,manual_only=False)
+        self.pending_restore = dict(checkpoint=checkpoint, target=p['character'],
+            party_patch=patch, phase='character', started=now,
+            last_press=0.0, attempts=0, stable=0, manual_only=False)
         self.restore_state_btn.state(['disabled'])
         self.cancel_restore_btn.state(['!disabled'])
         self.status.set(f'Saved map loaded; switching natively to character {p["character"]}.')
 
     def _poll_cross_area_restore(self, pending, now):
-        """Never write checkpoint data until the desired map and player have loaded."""
+        """Do not write saved coordinates until target scene has finished loading."""
         p = pending['checkpoint']['payload']
         if now-pending['started'] > 30:
             self.cancel_pending_restore(quiet=True)
             self.status.set('Checkpoint warp timed out. No checkpoint bytes/coordinates restored.')
             return
-        current_map=self.mem.u16(MAP_ADDR)
-        state=self.mem.u8(0x800C7A94)
+        current_map = self.mem.u16(MAP_ADDR)
+        state = self.mem.u8(0x800C7A94)
         if current_map != p['map_id']:
+            # Other map IDs during transition are possible. If ordinary
+            # gameplay has resumed on the wrong map, stop rather than write.
             if now-pending['started'] > 2 and state == 13 and current_map != pending['source_map']:
                 self.cancel_pending_restore(quiet=True)
                 self.status.set(f'Checkpoint warp reached map {current_map}, not saved map {p["map_id"]}; cancelled.')
             return
         if state != 13:
-            pending['stable']=0
+            pending['stable'] = 0
             return
         try:
-            snap=_ensure_capture_safe(self.mem)
-        except (ValueError,OSError):
-            pending['stable']=0
+            snap = _ensure_capture_safe(self.mem)
+        except (ValueError, OSError):
+            pending['stable'] = 0  # Normal while the new map initializes.
             return
         if snap.get('action') not in IDLE_ACTIONS:
-            pending['stable']=0
+            pending['stable'] = 0
             return
         if snap['player_ptr'] != pending.get('stable_player'):
-            pending['stable_player']=snap['player_ptr']
-            pending['stable']=0
-        pending['stable']+=1
-        if now-pending['started'] < .75 or pending['stable'] < 3:
+            pending['stable_player'] = snap['player_ptr']
+            pending['stable'] = 0
+        pending['stable'] += 1
+        # Map ID can be committed before the actor has finished loading.
+        if now - pending['started'] < 0.75 or pending['stable'] < 3:
             return
         try:
             if snap['character'] != p['character']:
-                self._arm_character_restore(pending['checkpoint'],now)
+                self._arm_character_restore(pending['checkpoint'], now)
             else:
                 self._finish_pending_restore(pending['checkpoint'])
         except Exception as exc:
+            # A partial multi-region write is NEVER retried automatically.
             self.cancel_pending_restore(quiet=True)
             self.status.set(f'Cross-area checkpoint write failed: {exc}; no automatic retry.')
 
     def poll_pending_restore(self, snapshot, now=None):
-        """Don't restore into an old avatar while the engine loads another."""
+        """Two-stage cross-area restore; existing native character swap stays intact."""
         pending=self.pending_restore
         if not pending or not self.mem:return
         if now is None:now=time.monotonic()
@@ -679,9 +695,6 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
             if snapshot['action'] not in IDLE_ACTIONS or snapshot['loading']:
                 self.status.set('Waiting for character-swap animation / ordinary gameplay to finish.')
                 return
-            # Once idle again, pulse C-Down if needed to cycle party. No more
-            # than four attempts; if keyboard bindings differ, manual switching
-            # remains available and is observed automatically.
             if (not pending['manual_only'] and pending['attempts']<4 and
                     now-pending['last_press']>=2.0 and self.native_key_release is None):
                 self._request_native_character_swap(pending,now)
@@ -690,8 +703,6 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
                 self.status.set('Could not reach saved character automatically. '
                                 f"Switch to character {pending['target']} in-game; restore is armed.")
         except (OSError,ValueError) as exc:
-            # A brief gameplay gate failure during native swap is normal.
-            # Never force a restore during that window.
             pending['stable']=0
             self.status.set(f'Waiting for safe native character state: {exc}')
 
@@ -720,8 +731,11 @@ class Toolkit(StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
             return
         try:
             if cross_area:
+                # The saved map is known to exist because we captured it in
+                # a stable game session. Trigger stage reload but do NOT write
+                # positions until state is 0x0D and the new player is ready.
                 stage_reload_trial(self.mem,p['map_id'],{p['map_id']:'Checkpoint saved map'})
-                self.pending_restore=dict(checkpoint=cp,target=p['character'],
+                self.pending_restore=dict(checkpoint=cp, target=p['character'],
                     phase='warp',source_map=current_map,source_player=before['player_ptr'],
                     party_patch=None,started=time.monotonic(),stable=0,stable_player=None)
                 self.restore_state_btn.state(['disabled'])

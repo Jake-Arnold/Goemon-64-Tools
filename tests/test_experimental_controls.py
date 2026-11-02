@@ -20,12 +20,51 @@ class TestExperiments(unittest.TestCase):
         before_exit=r.read_guest(EXIT_REQUEST_ADDR,1)
         before_current=r.read_guest(MAP_ADDR,2)
         response=stage_reload_trial(r,353,SCENES)
-        self.assertEqual(response['status'],'reload_requested_spawn_unverified')
+        self.assertEqual(response['status'],'reload_requested_character_and_spawn_unverified')
         self.assertEqual(r.read_guest(PENDING_MAP_ADDR,2),b'\x01\x61')
         self.assertEqual(r.read_guest(STATE_ADDR,1),b'\x0c')
         self.assertEqual(r.read_guest(EXIT_REQUEST_ADDR,1),before_exit)
         self.assertEqual(r.read_guest(MAP_ADDR,2),before_current)
         self.assertEqual(len(response['source_position']),3)
+
+    def test_stage_selected_character_before_state_reload(self):
+        from practice.experimental_controls import ACTIVE_CHARACTER_ADDR
+        r=self.make()
+        self.assertEqual(r.u32(ACTIVE_CHARACTER_ADDR),0)
+        response=stage_reload_trial(r,353,SCENES,spawn_character=2)
+        self.assertEqual(response['source_character'],0)
+        self.assertEqual(response['requested_character'],2)
+        self.assertTrue(response['character_staged'])
+        self.assertEqual(r.u32(ACTIVE_CHARACTER_ADDR),2)
+        self.assertEqual(r.u8(STATE_ADDR),12)
+        self.assertEqual(r.u16(PENDING_MAP_ADDR),353)
+        self.assertEqual(r.snapshot()['character'],2)
+
+    def test_invalid_character_fails_before_any_memory_write(self):
+        from practice.experimental_controls import ACTIVE_CHARACTER_ADDR
+        for character in (-1,4,True,2.0,'2'):
+            r=self.make()
+            before=(r.read_guest(PENDING_MAP_ADDR,2),r.read_guest(ACTIVE_CHARACTER_ADDR,4))
+            with self.assertRaises(ValueError):
+                stage_reload_trial(r,353,SCENES,spawn_character=character)
+            self.assertEqual((r.read_guest(PENDING_MAP_ADDR,2),r.read_guest(ACTIVE_CHARACTER_ADDR,4)),before)
+
+    def test_character_staging_failure_rolls_back_while_still_in_gameplay(self):
+        from practice.experimental_controls import ACTIVE_CHARACTER_ADDR
+        r=self.make()
+        previous_pending=r.read_guest(PENDING_MAP_ADDR,2)
+        previous_character=r.read_guest(ACTIVE_CHARACTER_ADDR,4)
+        original_write=r.write_guest
+        def fail_character(addr,value):
+            if addr==ACTIVE_CHARACTER_ADDR and value==(3).to_bytes(4,'big'):
+                raise OSError('synthetic character write error')
+            original_write(addr,value)
+        r.write_guest=fail_character
+        with self.assertRaisesRegex(OSError,'synthetic'):
+            stage_reload_trial(r,353,SCENES,spawn_character=3)
+        self.assertEqual(r.read_guest(PENDING_MAP_ADDR,2),previous_pending)
+        self.assertEqual(r.read_guest(ACTIVE_CHARACTER_ADDR,4),previous_character)
+        self.assertEqual(r.u8(STATE_ADDR),13)
 
     def test_invalid_destination_does_not_change_any_byte(self):
         for dest in (-1,353.0,True,9876):

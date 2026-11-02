@@ -27,6 +27,14 @@ class UnlocksMixin:
                   'The game may not refresh its inventory until an area or menu reload.',
                   style='Muted.TLabel').pack(anchor='w', pady=(4, 0))
         ttk.Label(tab, textvariable=self.unlock_status).pack(fill='x', pady=(0, 8))
+        self.sasuke_second_status = tk.StringVar(value='Sasuke battery 2: —')
+        self.ushiwaka_status = tk.StringVar(value='Ushiwaka: —')
+        # Read-only event bits; setting these is NOT equivalent to playing scripts.
+        progress=ttk.LabelFrame(tab,text=' Observed storyline progression (read-only) ',padding=(10,7))
+        progress.pack(fill='x',pady=(0,8))
+        ttk.Label(progress,textvariable=self.sasuke_second_status,font=('Consolas',10)).pack(anchor='w')
+        ttk.Label(progress,textvariable=self.ushiwaka_status,font=('Consolas',10)).pack(anchor='w')
+        ttk.Label(progress,text='These bits record event completion; writes do not replay cutscenes.',style='Muted.TLabel').pack(anchor='w')
 
         shell = ttk.Frame(tab)
         shell.pack(fill='both', expand=True)
@@ -111,8 +119,20 @@ class UnlocksMixin:
             return
         self.unlock_last_poll = now
         values = {}
-        # Raw Tcl path avoids tkinter's _nametowidget('popdown') KeyError
-        # when a ttk Combobox internal dropdown owns focus on Windows.
+        try:
+            second=self.mem.read_guest(0x8015C609,1)[0] if self.mem else None
+            ushi=self.mem.read_guest(0x8015C60D,1)[0] if self.mem else None
+        except (OSError,ValueError):
+            second=ushi=None
+        self.sasuke_second_status.set('Sasuke battery 2 cutscene completed: ' +
+            ('—' if second is None else ('YES' if second & 0x40 else 'NO')) +
+            '  [0x8015C609 & 0x40]')
+        self.ushiwaka_status.set('Ushiwaka: ' +
+            ('—' if ushi is None else f'started={bool(ushi & 0x10)}, blue fish step={bool(ushi & 0x08)}') +
+            '  [0x8015C60D, CANDIDATES]')
+        # Tk's 'focus' returns the widget path directly. root.focus_get() calls
+        # _nametowidget() and raises KeyError('popdown') for some ttk dropdowns
+        # (observed on Python 3.14 / Windows).
         try:
             focused_path = str(self.root.tk.call('focus'))
         except tk.TclError:
