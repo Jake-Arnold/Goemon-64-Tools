@@ -154,6 +154,40 @@ def compare_images(expected,candidate,manifest,symbols):
         functions=functions)
 
 
+
+def baseline_identity(checkout, manifest):
+    checkout = Path(checkout)
+    revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=checkout, text=True).strip()
+    dirty = subprocess.check_output(['git', 'diff', '--name-only'], cwd=checkout, text=True).strip()
+    if revision != manifest['upstream_commit'] or dirty:
+        raise ValueError('Baseline cache source identity changed')
+    expected = (checkout/'config/usa/baserom.decompressed.z64').read_bytes()
+    image = (checkout/'build/usa/mnsg.z64').read_bytes()
+    if digest(expected) != manifest['decompressed_sha1'] or image != expected:
+        raise ValueError('Baseline cache ROM identity mismatch')
+    compiler = {p.name: digest(p.read_bytes(), 'sha256') for p in sorted((checkout/'tools/ido-5.3').iterdir()) if p.is_file()}
+    return dict(format='goemon-baseline-cache-v1', upstream_commit=revision,
+                decompressed_sha1=digest(image), elf_sha256=digest((checkout/'build/usa/mnsg.elf').read_bytes(), 'sha256'),
+                compiler_sha256=digest(json.dumps(compiler, sort_keys=True).encode(), 'sha256'),
+                dependency_lock_sha256=digest((checkout/'uv.lock').read_bytes(), 'sha256'))
+
+
+def certify_baseline(checkout, manifest):
+    proof = baseline_identity(checkout, manifest)
+    with (Path(checkout)/'build/goemon-baseline-proof.json').open('x', encoding='utf-8') as output:
+        json.dump(proof, output, indent=2); output.write('\n')
+    return proof
+
+
+def validate_baseline_cache(checkout, manifest):
+    recorded = json.loads((Path(checkout)/'build/goemon-baseline-proof.json').read_text(encoding='utf-8'))
+    if recorded != baseline_identity(checkout, manifest):
+        raise ValueError('Baseline cache provenance changed')
+    if not (Path(checkout)/'.venv/bin/python').is_file():
+        raise ValueError('Baseline cache dependency environment is missing')
+    return recorded
+
+
 def run_build(args,manifest,report):
     if os.name=='nt':raise ValueError('Run the build verifier inside Linux/WSL, not native Windows')
     upstream=args.upstream.resolve();work=args.workdir.resolve()
@@ -167,6 +201,9 @@ def run_build(args,manifest,report):
         if not shutil.which(tool):raise ValueError('Required tool unavailable: '+tool)
     uv=shutil.which(args.uv)
     if uv is None:raise ValueError('uv is unavailable')
+    requested_cache = getattr(args, 'baseline_cache', None)
+    if requested_cache and work.is_relative_to(requested_cache.resolve()):
+        raise ValueError('New work directory must be outside the immutable baseline cache')
     work.mkdir(parents=True)
     report.update(upstream_commit=manifest['upstream_commit'],retail_sha1=manifest['retail_sha1'],
         tool_versions={name:capture(command).splitlines()[0] for name,command in {
@@ -175,19 +212,28 @@ def run_build(args,manifest,report):
         report['stage']=stage
         with (work/(stage+'.log')).open('w',encoding='utf-8') as log:
             subprocess.run(command,cwd=cwd,stdout=log,stderr=subprocess.STDOUT,check=True)
-    baseline=work/'baseline';candidate=work/'candidate'
-    logged('clone-baseline',['git','clone','--no-hardlinks',str(upstream),str(baseline)],work)
-    logged('dependencies',[uv,'sync','--python','3.12','--frozen'],baseline)
-    shutil.copyfile(args.retail_rom,baseline/'config/usa/baserom.z64')
-    logged('baseline-setup',['make','setup','UV='+uv],baseline)
-    logged('baseline-build',['make','-j'+str(args.jobs),'UV='+uv],baseline)
+    cache = getattr(args, 'baseline_cache', None)
+    baseline = cache.resolve() if cache else work/'baseline'
+    candidate = work/'candidate'
+    if cache:
+        if work.is_relative_to(baseline):
+            raise ValueError('New work directory must be outside the immutable baseline cache')
+        proof = validate_baseline_cache(baseline, manifest)
+        report['baseline_cache_used'] = True
+    else:
+        logged('clone-baseline',['git','clone','--no-hardlinks',str(upstream),str(baseline)],work)
+        logged('dependencies',[uv,'sync','--python','3.12','--frozen'],baseline)
+        shutil.copyfile(args.retail_rom,baseline/'config/usa/baserom.z64')
+        logged('baseline-setup',['make','setup','UV='+uv],baseline)
+        logged('baseline-build',['make','-j'+str(args.jobs),'UV='+uv],baseline)
+        proof = certify_baseline(baseline, manifest)
+        report['baseline_cache_used'] = False
     expected=(baseline/'config/usa/baserom.decompressed.z64').read_bytes()
-    baseline_image=(baseline/'build/usa/mnsg.z64').read_bytes()
-    if digest(expected)!=manifest['decompressed_sha1'] or baseline_image!=expected:
-        raise ValueError('Baseline does not rebuild byte-identically')
-    report['baseline_sha1']=digest(baseline_image)
+    report['baseline_sha1']=proof['decompressed_sha1']
+    report['baseline_provenance']=proof
     logged('clone-candidate',['git','clone','--no-hardlinks',str(upstream),str(candidate)],work)
-    apply_units(candidate,manifest)
+    source_dir = getattr(args, 'source_dir', ROOT).resolve()
+    apply_units(candidate,manifest,source_dir)
     (candidate/'.venv').symlink_to(baseline/'.venv',target_is_directory=True)
     shutil.copyfile(args.retail_rom,candidate/'config/usa/baserom.z64')
     logged('candidate-setup',['make','setup','UV='+uv],candidate)
@@ -206,7 +252,7 @@ def run_build(args,manifest,report):
     report['comparison']=result
     report['retained_assembly_functions']=[name for unit in manifest['units'] for name in unit.get('assembly_functions',[])]
     source_names=[unit['source'] for unit in manifest['units']]+manifest.get('support_headers',[])
-    report['sources_sha256_lf']={name:digest((ROOT/name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
+    report['sources_sha256_lf']={name:digest((candidate/'src'/name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
                                for name in source_names}
     mapping=(candidate/'build/usa/mnsg.map').read_text()
     for unit in manifest['units']:
@@ -226,6 +272,9 @@ def main(argv=None):
     parser.add_argument('--report',type=Path,required=True,help='New local/ignored JSON report')
     parser.add_argument('--uv',default='uv')
     parser.add_argument('--jobs',type=int,default=4)
+    parser.add_argument('--baseline-cache',type=Path,help='Immutable baseline from a completed fresh verifier run')
+    parser.add_argument('--manifest',type=Path,default=ROOT/'manifest.json',help='Reviewed matching manifest')
+    parser.add_argument('--source-dir',type=Path,default=ROOT,help='Reviewed source/header bundle')
     args=parser.parse_args(argv)
     if args.jobs<1:parser.error('--jobs must be positive')
     report=dict(format='goemon-matching-build-result-v1',started_utc=datetime.now(timezone.utc).isoformat(),status='failed')
@@ -233,7 +282,7 @@ def main(argv=None):
     try:
         # Reserve before any build changes. An existing report is never replaced.
         with args.report.open('x',encoding='utf-8') as output:
-            try:run_build(args,load_manifest(ROOT/'manifest.json'),report)
+            try:run_build(args,load_manifest(args.manifest),report)
             except (OSError,ValueError,subprocess.SubprocessError) as exc:report['error']=str(exc)
             finally:
                 report['ended_utc']=datetime.now(timezone.utc).isoformat()

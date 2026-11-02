@@ -1,0 +1,45 @@
+{
+  "format": "goemon-batch-validation-v1",
+  "pipeline_sources_sha256_lf": {
+    "batch.py": "b08aa174d6b1bcc5bcee157c28ce2aec18df381f9116693fddc2b7e8ed4ffd38",
+    "probe.py": "ad5f232e6bfc3b4cf423b69808702f2efac46b5398c50ccd01abc03133fd9630",
+    "batch_context.h": "337d5c7aa7e950e5b5c447149b4a87dd3c0f09098230fc7ab5d3b901efd7a424",
+    "verify.py": "2dae7646d95b098b50d93fd81e3bd0cefda11fddd66062b9d2e7e29c68d813c5"
+  },
+  "fresh_gate": {
+    "status": "matched",
+    "full_rom_match": true,
+    "functions": 74,
+    "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "baseline_cache_used": false,
+    "elapsed_seconds": 47.457
+  },
+  "cached_reviewed_bundle_gate": {
+    "status": "matched",
+    "full_rom_match": true,
+    "functions": 74,
+    "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "baseline_cache_used": true,
+    "elapsed_seconds": 24.946
+  },
+  "baseline_provenance": {
+    "format": "goemon-baseline-cache-v1",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "compiler_sha256": "8ca550d30c1fef7c14b1470a1ef93cc6d415a507c6e18c04a7bfeaf8016a7b89",
+    "dependency_lock_sha256": "a8892580fba36495b3de64de202ad5482e14319748019109d9633c1290be2bf9"
+  },
+  "native_sources_sha256_lf": {
+    "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
+    "system_memory.c": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
+    "save_resources.c": "7962df95eb818079725157fcefe908608f51e112e50b9242a67b1b95c918af7b",
+    "script_vm.c": "3b6535436692ea07542f71593716c3c7b49a191a4831bf5bf6557549b55034b4",
+    "save_resources.h": "ec5a34eca1296a2bac959ae01fdd8fd72eb1ef36fd47ff0002e92e17b40f6bcf",
+    "script_vm.h": "adb2dd0d893d8b803d430dd37223eff39013321d3d9f7002d5f60496dbd625fb",
+    "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
+  },
+  "resume_selected": 0,
+  "exported_candidates": 22,
+  "newly_promoted_functions": 0
+}

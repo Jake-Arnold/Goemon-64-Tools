@@ -12,6 +12,15 @@ The [whole-build inventory](INVENTORY.md) identifies **7,376 function entries**:
 **87 matching C entries** (13 upstream plus these 74), leaving **7,289 assembly
 entries**, including SDK/runtime code. Exported jump labels are excluded.
 
+## Batch discovery and matching
+
+The [batch workflow](BATCH_PIPELINE.md) now provides a persistent queue, concurrent
+C generation/compilation, bounded search and relocated function-byte probes.
+Review candidates remain separate from verified matching C. Reports and review
+bundles preserve failed work and identify missing type/data-layout information.
+The whole-ROM verifier can reuse a certified baseline while still creating and
+checking a fresh candidate for each reviewed batch.
+
 ## Event/dialogue VM helpers
 
 [VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents 49 matching functions in the 69-function
@@ -135,7 +144,8 @@ dependencies may be downloaded by uv. On Windows invoke this Python script
 through WSL; it deliberately refuses native Windows builds. No ROM is uploaded.
 
 `manifest.json` selects the exact assembly/C configuration replacement and function
-bounds. The verifier builds baseline first, checks its complete output, then
+bounds. By default the verifier builds baseline first and checks its complete output;
+optional certified-baseline reuse validates the same reference identities. It then
 builds the C replacement, checks symbol identity and per-function bytes, and
 requires another whole-ROM match. Reports are exclusively created; failed builds
 retain logs/workspaces and record failure without claiming success. The verifier

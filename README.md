@@ -35,6 +35,9 @@ C tests and per-function result metadata are included; game data stays local.
 The [whole-build inventory](decomp/INVENTORY.md) identifies 7,376 function entries:
 87 matching C entries including 13 already upstream, and 7,289 still in assembly.
 The count includes SDK/runtime code and is not proof of complete function discovery.
+The [batch pipeline](decomp/BATCH_PIPELINE.md) now automates draft generation,
+parallel byte probes and bounded search, with cached baseline verification for
+reviewed batches. Probe candidates are excluded from the verified count.
 This remains a partial decompilation, not a new release.
 
 # Read-only ROM flag analysis
