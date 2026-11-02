@@ -167,3 +167,25 @@ writer/timing still needs validation. Also note `0x8015C60E` and Mini Ebisumaru
 ownership byte `0x8015C6F3` so failure is not confused with a reward already held.
 Use Live memory/custom watches for this cross-scene check: Event sessions v1
 requires stable pointers within a trial and may reject the scene transition.
+
+## Congo observations (2026-11-02, tentative)
+
+One user-supplied event-session screenshot shows saved flag ID `0x0A4` (164),
+`0x8015C61C & 0x10`, becoming set and ID `0x132` (306),
+`0x8015C62E & 0x04`, becoming clear. The user associates the first with defeating
+Congo (first boss), and suspects the second controls cutscene/actor/room state.
+Only these masked bits were isolated, not either entire byte. The session retained
+the default Benkei experiment label, so that label is not evidence of the event.
+There was one event trial, no idle/control overlap trials and no reverted C capture.
+
+The toolkit displays both as candidates, not proven semantics. Its read-only story
+sample now covers all 100 event bytes, including these offsets beyond the original
+16-byte catalog prefix. A verified decompressed US ROM scan for both IDs found
+zero aligned GEV opcode-pattern references; no native-file indirect scan was
+requested. That limited negative result cannot exclude native direct bit accesses,
+other script encodings or computed IDs. The private scan report remains ignored.
+
+Next: name a fresh session for Congo; check the bits before/after the fight and
+after room re-entry/save reload. On a disposable pre-fight state, test each bit
+independently while preserving other bits, observing boss spawn, cutscene,
+room exits and reward separately. No automated game edits were performed.

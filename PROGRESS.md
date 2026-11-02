@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-02 - tentative Congo flags from user event capture
+
+- Changed: added read-only Story progress candidates for Congo defeat (ID 0x0A4, 0x8015C61C mask 0x10 set) and encounter state (ID 0x132, 0x8015C62E mask 0x04 clear). Expanded saved-event sampling from 16 to all 100 bytes so the new offsets decode safely. Labels/evidence explicitly retain uncertainty; no game write behavior changed.
+- Reason/evidence: user associates these two screenshot transitions with the first boss. One event trial and no control/reverted observations do not establish causal meaning or persistence. Existing default experiment title is not event identity evidence. Verified decompressed US ROM scan returned zero GEV-pattern references for both IDs; this is not a complete native/direct-bit analysis. Documented in docs/ROM_FLAG_TRACE.md; private captures/report remain ignored.
+- Tests: focused Python story progress/GUI/event/ROM scanner suites passed, including independent new masks beyond the former 16-byte prefix and a read-only guard. No live game edits or reload tests performed.
+- Limitations/next: tentative semantics; check persistence on room/save reload, then separately test each masked bit on a disposable pre-fight state. Further native analysis required before promoting to confirmed flags.
+
 ## 2026-11-02 - v0.11.9: room names and event/shadow feedback
 
 - Changed: removed Native menu calibration, Character cursor scan and Checkpoint compare tabs. Retained native warp profiles, checkpoint capture/restore and underlying helpers; stopped obsolete cursor polling and guarded refresh hooks so missing widgets cannot interrupt the main tick.

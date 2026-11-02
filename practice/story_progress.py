@@ -45,6 +45,10 @@ CURATED_FLAGS = (
     StoryFlag('mini_recorded','Mini-Ebisu grant recorded',0x031,'ROM reward reader/writer'),
     StoryFlag('snow_recorded','Miracle Snow progression recorded',0x035,'ROM reward reader/writer'),
     StoryFlag('baron','Met Baron in Iga',0x06F,'Existing annotation + ROM set-pattern lead'),
+    StoryFlag('congo_defeat_candidate','Congo defeated? (candidate)',0x0A4,
+              'User A/B: mask 0x10 set after reported Congo event; one event trial, no controls/reload test; semantics unconfirmed'),
+    StoryFlag('congo_state_candidate','Congo encounter state? (candidate)',0x132,
+              'User A/B: mask 0x04 cleared during same event; cutscene/actor/room hypothesis, not confirmed'),
 )
 
 
@@ -100,7 +104,7 @@ def read_story_state(ram):
     not proof that the game's complete state is valid/invalid.
     """
     errors={};blocks={}
-    for key,address,size in (('saved',SAVED_BASE,16),('bank_a',BANK_A,2),('bank_b',BANK_B,2),
+    for key,address,size in (('saved',SAVED_BASE,0x64),('bank_a',BANK_A,2),('bank_b',BANK_B,2),
                              ('mini',0x8015C6F0,4),('heel',0x8015C70C,4)):
         if ram is None:blocks[key]=None;continue
         try:

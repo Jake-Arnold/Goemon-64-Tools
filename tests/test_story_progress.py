@@ -53,7 +53,7 @@ class StoryProgressTests(unittest.TestCase):
         self.assertEqual(rows['ushi_intro']['address'],0x8015C60D)
         self.assertEqual(rows['ushi_intro']['mask'],'0x20')
         self.assertIn('lifecycle',rows['bank_a']['source'])
-        self.assertTrue(all(f.evidence and SAVED_BASE<=f.address<SAVED_BASE+16 for f in FLAGS))
+        self.assertTrue(all(f.evidence and SAVED_BASE<=f.address<SAVED_BASE+0x64 for f in FLAGS))
         self.assertEqual(len({f.key for f in FLAGS}),len(FLAGS))
 
     def test_partial_failures_are_unknown_without_false_inventory_advisory(self):
@@ -76,7 +76,7 @@ class StoryProgressTests(unittest.TestCase):
             return read(addr,size)
         with patch.object(ram,'read_guest',side_effect=sampled),patch.object(ram,'write_guest',side_effect=AssertionError('Read-only')):
             state=read_story_state(ram);story_rows(state)
-        self.assertEqual(total,28)
+        self.assertEqual(total,112)  # Full 100-byte events plus two banks and inventory words.
         self.assertIn('Five yellow',state['ushiwaka'])
         self.assertIn('bank_a',state['errors'])
 
@@ -115,3 +115,23 @@ class StoryProgressTests(unittest.TestCase):
         state=read_story_state(ram)
         self.assertTrue(all(state['values'][key] for key in examples))
         self.assertFalse(state['values']['ushi_intro'])
+
+    def test_congo_candidates_outside_original_prefix_decode_only_their_bits(self):
+        ram=self.sample()
+        ram.write_guest(0x8015C61C,b'\x90')
+        ram.write_guest(0x8015C62E,b'\xF8')
+        with patch.object(ram,'write_guest',side_effect=AssertionError('Read only')):
+            state=read_story_state(ram)
+            rows={r['key']:r for r in story_rows(state)}
+        self.assertTrue(state['values']['congo_defeat_candidate'])
+        self.assertFalse(state['values']['congo_state_candidate'])
+        self.assertEqual(rows['congo_defeat_candidate']['address'],0x8015C61C)
+        self.assertEqual(rows['congo_defeat_candidate']['mask'],'0x10')
+        self.assertEqual(rows['congo_state_candidate']['address'],0x8015C62E)
+        self.assertEqual(rows['congo_state_candidate']['mask'],'0x04')
+        self.assertIn('not confirmed',rows['congo_state_candidate']['source'])
+        ram.write_guest(0x8015C61C,b'\x80')
+        ram.write_guest(0x8015C62E,b'\xFC')
+        state=read_story_state(ram)
+        self.assertFalse(state['values']['congo_defeat_candidate'])
+        self.assertTrue(state['values']['congo_state_candidate'])
