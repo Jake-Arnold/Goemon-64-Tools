@@ -1,3 +1,11 @@
+# Matching C reconstruction
+
+The [decompilation track](decomp/README.md) now includes a reconstructed 12-function
+flag-bank unit. Fresh baseline and C-replacement builds both match the complete
+original decompressed US ROM byte-for-byte. Reproducible verification, synthetic
+C tests and per-function result metadata are included; game data stays local.
+This is an initial matching increment, not a full decompilation or new release.
+
 # Read-only ROM flag analysis
 
 [The Benkei/Kihachi follow-up](docs/BENKEI_KIHACHI_TRACE.md) locates the later

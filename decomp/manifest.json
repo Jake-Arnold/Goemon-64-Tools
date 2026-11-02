@@ -1,0 +1,29 @@
+{
+  "format": "goemon-matching-decomp-v1",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "units": [
+    {
+      "source": "event_flags.c",
+      "rom_start": 150000,
+      "rom_end": 150880,
+      "splat_original": "[0x249F0, asm]",
+      "splat_replacement": "[0x249F0, c, event_flags]",
+      "functions": [
+        {"name": "func_80023DF0_249F0", "rom_offset": 150000, "size": 80},
+        {"name": "func_80023E40_24A40", "rom_offset": 150080, "size": 84},
+        {"name": "func_80023E94_24A94", "rom_offset": 150164, "size": 80},
+        {"name": "func_80023EE4_24AE4", "rom_offset": 150244, "size": 48},
+        {"name": "func_80023F14_24B14", "rom_offset": 150292, "size": 80},
+        {"name": "func_80023F64_24B64", "rom_offset": 150372, "size": 84},
+        {"name": "func_80023FB8_24BB8", "rom_offset": 150456, "size": 80},
+        {"name": "func_80024008_24C08", "rom_offset": 150536, "size": 48},
+        {"name": "func_80024038_24C38", "rom_offset": 150584, "size": 80},
+        {"name": "func_80024088_24C88", "rom_offset": 150664, "size": 84},
+        {"name": "func_800240DC_24CDC", "rom_offset": 150748, "size": 80},
+        {"name": "func_8002412C_24D2C", "rom_offset": 150828, "size": 48}
+      ]
+    }
+  ]
+}
