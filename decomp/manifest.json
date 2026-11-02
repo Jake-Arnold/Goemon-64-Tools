@@ -155,9 +155,162 @@
           "size": 64
         }
       ]
+    },
+    {
+      "source": "script_vm.c",
+      "rom_start": 252832,
+      "rom_end": 262944,
+      "splat_original": "[0x3DBA0, asm]",
+      "splat_replacement": "[0x3DBA0, c, script_vm]",
+      "functions": [
+        {
+          "name": "func_8003CFA0_3DBA0",
+          "rom_offset": 252832,
+          "size": 48
+        },
+        {
+          "name": "func_8003CFD0_3DBD0",
+          "rom_offset": 252880,
+          "size": 76
+        },
+        {
+          "name": "func_8003D01C_3DC1C",
+          "rom_offset": 252956,
+          "size": 60
+        },
+        {
+          "name": "func_8003D058_3DC58",
+          "rom_offset": 253016,
+          "size": 40
+        },
+        {
+          "name": "func_8003D080_3DC80",
+          "rom_offset": 253056,
+          "size": 48
+        },
+        {
+          "name": "func_8003D428_3E028",
+          "rom_offset": 253992,
+          "size": 36
+        },
+        {
+          "name": "func_8003D44C_3E04C",
+          "rom_offset": 254028,
+          "size": 16
+        },
+        {
+          "name": "func_8003D45C_3E05C",
+          "rom_offset": 254044,
+          "size": 12
+        },
+        {
+          "name": "func_8003DE48_3EA48",
+          "rom_offset": 256584,
+          "size": 56
+        },
+        {
+          "name": "func_8003DF68_3EB68",
+          "rom_offset": 256872,
+          "size": 48
+        },
+        {
+          "name": "func_8003E548_3F148",
+          "rom_offset": 258376,
+          "size": 112
+        },
+        {
+          "name": "func_8003E5B8_3F1B8",
+          "rom_offset": 258488,
+          "size": 52
+        },
+        {
+          "name": "func_8003E5EC_3F1EC",
+          "rom_offset": 258540,
+          "size": 52
+        },
+        {
+          "name": "func_8003E620_3F220",
+          "rom_offset": 258592,
+          "size": 52
+        },
+        {
+          "name": "func_8003E654_3F254",
+          "rom_offset": 258644,
+          "size": 44
+        },
+        {
+          "name": "func_8003EA0C_3F60C",
+          "rom_offset": 259596,
+          "size": 8
+        },
+        {
+          "name": "func_8003EBA4_3F7A4",
+          "rom_offset": 260004,
+          "size": 8
+        }
+      ],
+      "assembly_functions": [
+        "func_8003D0B0_3DCB0",
+        "func_8003D17C_3DD7C",
+        "func_8003D310_3DF10",
+        "func_8003D388_3DF88",
+        "func_8003D468_3E068",
+        "func_8003D68C_3E28C",
+        "func_8003D9B8_3E5B8",
+        "func_8003DB0C_3E70C",
+        "func_8003DBEC_3E7EC",
+        "func_8003DDC4_3E9C4",
+        "func_8003DE80_3EA80",
+        "func_8003DF98_3EB98",
+        "func_8003E1A8_3EDA8",
+        "func_8003E234_3EE34",
+        "func_8003E3EC_3EFEC",
+        "func_8003E4C0_3F0C0",
+        "func_8003E680_3F280",
+        "func_8003E6C0_3F2C0",
+        "func_8003E81C_3F41C",
+        "func_8003E888_3F488",
+        "func_8003E9E8_3F5E8",
+        "func_8003EA14_3F614",
+        "func_8003EACC_3F6CC",
+        "func_8003EB34_3F734",
+        "func_8003EBAC_3F7AC",
+        "func_8003ED60_3F960",
+        "func_8003EFB0_3FBB0",
+        "func_8003F038_3FC38",
+        "func_8003F0FC_3FCFC",
+        "func_8003F14C_3FD4C",
+        "func_8003F18C_3FD8C",
+        "func_8003F1D8_3FDD8",
+        "func_8003F1FC_3FDFC",
+        "func_8003F23C_3FE3C",
+        "func_8003F2D4_3FED4",
+        "func_8003F350_3FF50",
+        "func_8003F37C_3FF7C",
+        "func_8003F43C_4003C",
+        "func_8003F460_40060",
+        "func_8003F480_40080",
+        "func_8003F524_40124",
+        "func_8003F544_40144",
+        "func_8003F564_40164",
+        "func_8003F594_40194",
+        "func_8003F5C8_401C8",
+        "func_8003F5FC_401FC",
+        "func_8003F608_40208",
+        "func_8003F62C_4022C",
+        "func_8003F660_40260",
+        "func_8003F694_40294",
+        "func_8003F6BC_402BC",
+        "func_8003F6E8_402E8"
+      ]
     }
   ],
   "support_headers": [
-    "save_resources.h"
-  ]
+    "save_resources.h",
+    "script_vm.h",
+    "vm_compare_reference.h"
+  ],
+  "splat_options": {
+    "asm_jtbl_label_macro": "glabel"
+  }
 }

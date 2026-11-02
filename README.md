@@ -1,9 +1,9 @@
 # Matching C reconstruction
 
-The [decompilation track](decomp/README.md) now includes **25 matching functions**
-across flag-bank, system/byte-memory and save/resource units. The formerly
-unmatched spawn-copy routine now matches as C; the current selected units have
-no retained assembly placeholders. Most of the game remains unreconstructed.
+The [decompilation track](decomp/README.md) now includes **42 matching functions**
+across flag-bank, system/byte-memory, save/resource and initial VM-helper units.
+The VM unit intentionally retains 52 unresolved functions as assembly; its host
+comparator model is not counted as matching C. Most of the game remains unreconstructed.
 Fresh baseline and C-replacement builds both match the complete
 original decompressed US ROM byte-for-byte. Reproducible verification, synthetic
 C tests and per-function result metadata are included; game data stays local.

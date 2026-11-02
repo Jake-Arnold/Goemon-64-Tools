@@ -31,6 +31,8 @@ def load_manifest(path):
         if not re.fullmatch('[0-9a-f]{'+str(length)+'}',manifest.get(key,'')):raise ValueError('Invalid '+key)
     seen=set();assembly_seen=set();ranges=[]
     if not manifest.get('units'):raise ValueError('No reconstructed units')
+    if manifest.get('splat_options',{}) not in ({},{'asm_jtbl_label_macro':'glabel'}):
+        raise ValueError('Unsupported Splat override')
     headers=manifest.get('support_headers',[])
     if len(headers)!=len(set(headers)) or any(not re.fullmatch('[a-z][a-z0-9_]*[.]h',name) for name in headers):
         raise ValueError('Invalid support header names')
@@ -69,6 +71,9 @@ def apply_units(checkout,manifest,source_dir=ROOT):
     checkout=Path(checkout);source_dir=Path(source_dir)
     config=checkout/'config/usa/splat.yaml'
     text=config.read_text(encoding='utf-8')
+    if manifest.get('splat_options'):
+        if text.count('options:\n')!=1:raise ValueError('Missing/ambiguous Splat options anchor')
+        text=text.replace('options:\n','options:\n  asm_jtbl_label_macro: glabel\n')
     copies=[]
     for name in manifest.get('support_headers',[]):
         source=source_dir/name;destination=checkout/'src'/name

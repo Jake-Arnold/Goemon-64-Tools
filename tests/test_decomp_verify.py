@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),25)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),42)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
@@ -86,3 +86,29 @@ class DecompVerificationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'Undeclared'):apply_units(checkout,manifest,sources)
             self.assertFalse((checkout/'src/unit.c').exists())
             self.assertEqual(config.read_text(),'[0x10, asm]\n')
+
+    def test_jump_label_override_is_narrow_and_candidate_only(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        self.assertEqual(manifest['splat_options'],{'asm_jtbl_label_macro':'glabel'})
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'manifest.json'
+            bad=copy.deepcopy(manifest);bad['splat_options']={'arbitrary':'setting'}
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'Splat'):load_manifest(path)
+            checkout=Path(folder)/'candidate';(checkout/'config/usa').mkdir(parents=True)
+            (checkout/'src').mkdir();sources=Path(folder)/'sources';sources.mkdir()
+            config=checkout/'config/usa/splat.yaml';config.write_text('options:\n  compiler: IDO\n[0x10, asm]\n')
+            (sources/'unit.c').write_text('void function(void) {}\n')
+            small={'splat_options':{'asm_jtbl_label_macro':'glabel'},'units':[{
+                'source':'unit.c','splat_original':'[0x10, asm]','splat_replacement':'[0x10, c, unit]'}]}
+            apply_units(checkout,small,sources)
+            self.assertIn('options:\n  asm_jtbl_label_macro: glabel\n  compiler: IDO',config.read_text())
+
+    def test_reference_comparator_is_excluded_from_matching_c_count(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        vm=next(unit for unit in manifest['units'] if unit['source']=='script_vm.c')
+        self.assertEqual(len(vm['functions']),17)
+        self.assertEqual(len(vm['assembly_functions']),52)
+        name='func_8003D9B8_3E5B8'
+        self.assertIn(name,vm['assembly_functions'])
+        self.assertNotIn(name,{fn['name'] for fn in vm['functions']})

@@ -4,9 +4,17 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **25 functions / 1,876 function bytes across three units**.
+Current verified total: **42 functions / 2,644 function bytes across four units**.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
+
+## Event/dialogue VM helpers
+
+[VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents 17 matching helpers in the 69-function
+event/dialogue unit. The remaining 52 functions, including the dispatcher,
+comparator and assignment/operand handlers, remain assembly and are excluded.
+The native comparator's host-only semantic model is explicitly not counted.
+The first three reconstructed units below are still complete matching C.
 
 The [local-checkout review](LOCAL_MNSG_REVIEW.md) records useful pre-existing
 tools/builds and camera-branch work, including why the camera draft is not yet
@@ -26,7 +34,8 @@ record fields into the saved state, copies live resources into the save mirror,
 applies the original saved health/lives minimums, then copies the complete save
 to its shadow. The index is unchecked; this routine is not a safe scene loader.
 The former 24-function/one-placeholder checkpoint is retained separately for
-provenance. No assembly placeholder remains in these three selected units.
+provenance. No assembly placeholder remains in those first three units; the new
+VM unit is deliberately mixed C/assembly.
 
 Behavior checks cover saved-view aliases, synchronization order, unchanged fields,
 initial defaults, one-step timer/upgrade thresholds and callback order. The timer
@@ -170,6 +179,10 @@ The host test now includes the spawn-copy routine, three synthetic table records
 all field destinations, signed coordinate encodings and clamp/copy ordering.
 Matching MIPS output, synthetic host behavior and actual in-game tests remain
 separate evidence.
+
+The VM host test command and model-versus-native evidence limits are documented
+in [VM_CHECKPOINT.md](VM_CHECKPOINT.md). It requires non-PIE host compilation for
+the original encoded 32-bit indirect operand interface.
 
 ## Next units
 

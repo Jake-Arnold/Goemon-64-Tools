@@ -1,0 +1,257 @@
+{
+  "format": "goemon-matching-build-result-v1",
+  "started_utc": "2026-11-02T14:02:37.141701+00:00",
+  "ended_utc": "2026-11-02T14:03:23.648208+00:00",
+  "status": "matched",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "tool_versions": {
+    "uv": "uv 0.13.6 (x86_64-unknown-linux-gnu)",
+    "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125"
+  },
+  "baseline_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "sources_sha256_lf": {
+    "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
+    "system_memory.c": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
+    "save_resources.c": "7962df95eb818079725157fcefe908608f51e112e50b9242a67b1b95c918af7b",
+    "save_resources.h": "ec5a34eca1296a2bac959ae01fdd8fd72eb1ef36fd47ff0002e92e17b40f6bcf"
+  },
+  "comparison": {
+    "full_rom_match": true,
+    "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "matched_functions": 25,
+    "claimed_functions": 25,
+    "matched_function_bytes": 1876,
+    "functions": [
+      {
+        "name": "func_80023DF0_249F0",
+        "size": 80,
+        "guest_address": "0x80023DF0",
+        "rom_offset": "0x249F0",
+        "matched": true,
+        "expected_sha256": "a675aeb043c0c07a66685fe0df0cc39e0d2f27def427b2d0fbec3019c80340ae",
+        "candidate_sha256": "a675aeb043c0c07a66685fe0df0cc39e0d2f27def427b2d0fbec3019c80340ae"
+      },
+      {
+        "name": "func_80023E40_24A40",
+        "size": 84,
+        "guest_address": "0x80023E40",
+        "rom_offset": "0x24A40",
+        "matched": true,
+        "expected_sha256": "99853a618926cdbecd1404e357ab7e48ef81ad674b644d54ace476b26d33a6bc",
+        "candidate_sha256": "99853a618926cdbecd1404e357ab7e48ef81ad674b644d54ace476b26d33a6bc"
+      },
+      {
+        "name": "func_80023E94_24A94",
+        "size": 80,
+        "guest_address": "0x80023E94",
+        "rom_offset": "0x24A94",
+        "matched": true,
+        "expected_sha256": "a36ac60e9b8a2f100311ad9eba3d4efdc47f7bf1c26b1bdd877d1b56939f67da",
+        "candidate_sha256": "a36ac60e9b8a2f100311ad9eba3d4efdc47f7bf1c26b1bdd877d1b56939f67da"
+      },
+      {
+        "name": "func_80023EE4_24AE4",
+        "size": 48,
+        "guest_address": "0x80023EE4",
+        "rom_offset": "0x24AE4",
+        "matched": true,
+        "expected_sha256": "d208bd591479542f6e97a28c677e05fd844d9f634f588efe34b488d1d157c2ba",
+        "candidate_sha256": "d208bd591479542f6e97a28c677e05fd844d9f634f588efe34b488d1d157c2ba"
+      },
+      {
+        "name": "func_80023F14_24B14",
+        "size": 80,
+        "guest_address": "0x80023F14",
+        "rom_offset": "0x24B14",
+        "matched": true,
+        "expected_sha256": "34947726651c341009efae3102d236e7c5a1c120ebac6d19c041c6844d33e095",
+        "candidate_sha256": "34947726651c341009efae3102d236e7c5a1c120ebac6d19c041c6844d33e095"
+      },
+      {
+        "name": "func_80023F64_24B64",
+        "size": 84,
+        "guest_address": "0x80023F64",
+        "rom_offset": "0x24B64",
+        "matched": true,
+        "expected_sha256": "0daad3c2fe9a71c3b38ceaabb0214381d8bee591c3992a7772f8c220d4c5ed93",
+        "candidate_sha256": "0daad3c2fe9a71c3b38ceaabb0214381d8bee591c3992a7772f8c220d4c5ed93"
+      },
+      {
+        "name": "func_80023FB8_24BB8",
+        "size": 80,
+        "guest_address": "0x80023FB8",
+        "rom_offset": "0x24BB8",
+        "matched": true,
+        "expected_sha256": "9bb012fd2ae0dc2defdafb4fbd774bfe42ac590924a1842424b848e08574e455",
+        "candidate_sha256": "9bb012fd2ae0dc2defdafb4fbd774bfe42ac590924a1842424b848e08574e455"
+      },
+      {
+        "name": "func_80024008_24C08",
+        "size": 48,
+        "guest_address": "0x80024008",
+        "rom_offset": "0x24C08",
+        "matched": true,
+        "expected_sha256": "175f28083b15e26a0e22df79ddcada0db9de23646a119d8cb7176543b68f6a13",
+        "candidate_sha256": "175f28083b15e26a0e22df79ddcada0db9de23646a119d8cb7176543b68f6a13"
+      },
+      {
+        "name": "func_80024038_24C38",
+        "size": 80,
+        "guest_address": "0x80024038",
+        "rom_offset": "0x24C38",
+        "matched": true,
+        "expected_sha256": "983b8152350ca37debcb786596b336b20c7ce7dc7bde36f2adf5c6006455c3b8",
+        "candidate_sha256": "983b8152350ca37debcb786596b336b20c7ce7dc7bde36f2adf5c6006455c3b8"
+      },
+      {
+        "name": "func_80024088_24C88",
+        "size": 84,
+        "guest_address": "0x80024088",
+        "rom_offset": "0x24C88",
+        "matched": true,
+        "expected_sha256": "ffc64b30cf83a787c4a302768661f3512b6cf6cbd553bbac317adc9ac2dd8edb",
+        "candidate_sha256": "ffc64b30cf83a787c4a302768661f3512b6cf6cbd553bbac317adc9ac2dd8edb"
+      },
+      {
+        "name": "func_800240DC_24CDC",
+        "size": 80,
+        "guest_address": "0x800240DC",
+        "rom_offset": "0x24CDC",
+        "matched": true,
+        "expected_sha256": "84809a55140722a6d6efccee41046a6edf8a919b7ba005863938a6d05e0b23f9",
+        "candidate_sha256": "84809a55140722a6d6efccee41046a6edf8a919b7ba005863938a6d05e0b23f9"
+      },
+      {
+        "name": "func_8002412C_24D2C",
+        "size": 48,
+        "guest_address": "0x8002412C",
+        "rom_offset": "0x24D2C",
+        "matched": true,
+        "expected_sha256": "87fe469701f67f326f049108753f33148ba05c0a40e4e5fb5748d11d3e57a685",
+        "candidate_sha256": "87fe469701f67f326f049108753f33148ba05c0a40e4e5fb5748d11d3e57a685"
+      },
+      {
+        "name": "func_80004170_4D70",
+        "size": 112,
+        "guest_address": "0x80004170",
+        "rom_offset": "0x4D70",
+        "matched": true,
+        "expected_sha256": "83d8c352f508df8291fdf9c2f1c2c1357ee57b50d833740d60c8879f30cb27d1",
+        "candidate_sha256": "83d8c352f508df8291fdf9c2f1c2c1357ee57b50d833740d60c8879f30cb27d1"
+      },
+      {
+        "name": "func_800041E0_4DE0",
+        "size": 40,
+        "guest_address": "0x800041E0",
+        "rom_offset": "0x4DE0",
+        "matched": true,
+        "expected_sha256": "b8668f9c588a0b46a8502493019814be377ceb43a3e67c6f17302942235f21a4",
+        "candidate_sha256": "b8668f9c588a0b46a8502493019814be377ceb43a3e67c6f17302942235f21a4"
+      },
+      {
+        "name": "func_80004208_4E08",
+        "size": 48,
+        "guest_address": "0x80004208",
+        "rom_offset": "0x4E08",
+        "matched": true,
+        "expected_sha256": "df747ebdd00d4d4d398d7222fee964e20be88af1bf38029e77ab91718527a949",
+        "candidate_sha256": "df747ebdd00d4d4d398d7222fee964e20be88af1bf38029e77ab91718527a949"
+      },
+      {
+        "name": "func_8000B5D0_C1D0",
+        "size": 112,
+        "guest_address": "0x8000B5D0",
+        "rom_offset": "0xC1D0",
+        "matched": true,
+        "expected_sha256": "f0f76d230836e795cdeae27645360526bbcd68dfe07e0b01b98ae2ebba0148ec",
+        "candidate_sha256": "f0f76d230836e795cdeae27645360526bbcd68dfe07e0b01b98ae2ebba0148ec"
+      },
+      {
+        "name": "func_8000B640_C240",
+        "size": 160,
+        "guest_address": "0x8000B640",
+        "rom_offset": "0xC240",
+        "matched": true,
+        "expected_sha256": "55ca1406a1e3aaf30bdb4aa2610871169cf7c235e1a0aaf3fe26b543c59ecff4",
+        "candidate_sha256": "55ca1406a1e3aaf30bdb4aa2610871169cf7c235e1a0aaf3fe26b543c59ecff4"
+      },
+      {
+        "name": "func_8000B6E0_C2E0",
+        "size": 56,
+        "guest_address": "0x8000B6E0",
+        "rom_offset": "0xC2E0",
+        "matched": true,
+        "expected_sha256": "a39ec2a05fefb7872065840ba06d6c1217444621d3f11691ef22114d9843505c",
+        "candidate_sha256": "a39ec2a05fefb7872065840ba06d6c1217444621d3f11691ef22114d9843505c"
+      },
+      {
+        "name": "func_8000B718_C318",
+        "size": 204,
+        "guest_address": "0x8000B718",
+        "rom_offset": "0xC318",
+        "matched": true,
+        "expected_sha256": "25c33a0b1da14b015dd492e75cdf5460c9f4ef1b84473aa6bb5dd36c555bb703",
+        "candidate_sha256": "25c33a0b1da14b015dd492e75cdf5460c9f4ef1b84473aa6bb5dd36c555bb703"
+      },
+      {
+        "name": "func_8000B7E4_C3E4",
+        "size": 64,
+        "guest_address": "0x8000B7E4",
+        "rom_offset": "0xC3E4",
+        "matched": true,
+        "expected_sha256": "3cf0648f37df25afdde1895858eed84c6984d992d11ac2c911050ef42d15bae8",
+        "candidate_sha256": "3cf0648f37df25afdde1895858eed84c6984d992d11ac2c911050ef42d15bae8"
+      },
+      {
+        "name": "func_8000B824_C424",
+        "size": 64,
+        "guest_address": "0x8000B824",
+        "rom_offset": "0xC424",
+        "matched": true,
+        "expected_sha256": "55964289eb2eb3db1ac89ea212177a582977fe1734a0de3d50b6e19a490203ce",
+        "candidate_sha256": "55964289eb2eb3db1ac89ea212177a582977fe1734a0de3d50b6e19a490203ce"
+      },
+      {
+        "name": "func_8000B864_C464",
+        "size": 28,
+        "guest_address": "0x8000B864",
+        "rom_offset": "0xC464",
+        "matched": true,
+        "expected_sha256": "135ed0d69f0cdca663626c5ddd939260b1d8cbca5e45089eaf9e57c8845898d3",
+        "candidate_sha256": "135ed0d69f0cdca663626c5ddd939260b1d8cbca5e45089eaf9e57c8845898d3"
+      },
+      {
+        "name": "func_8000B880_C480",
+        "size": 36,
+        "guest_address": "0x8000B880",
+        "rom_offset": "0xC480",
+        "matched": true,
+        "expected_sha256": "2e2dd818604802bf18b7d7346769012ab7a93494cb5b15622102096f0d2dda17",
+        "candidate_sha256": "2e2dd818604802bf18b7d7346769012ab7a93494cb5b15622102096f0d2dda17"
+      },
+      {
+        "name": "func_8000B8A4_C4A4",
+        "size": 12,
+        "guest_address": "0x8000B8A4",
+        "rom_offset": "0xC4A4",
+        "matched": true,
+        "expected_sha256": "e0308530afc7cd4c5353a1be7f81a311cf2f60fda9bb0fbeb624a22807908458",
+        "candidate_sha256": "e0308530afc7cd4c5353a1be7f81a311cf2f60fda9bb0fbeb624a22807908458"
+      },
+      {
+        "name": "func_8000B8B0_C4B0",
+        "size": 64,
+        "guest_address": "0x8000B8B0",
+        "rom_offset": "0xC4B0",
+        "matched": true,
+        "expected_sha256": "bfdd223d54f7ab97a10f74ac77b38f1d0337dd00ec6ec6115fed254e7822b881",
+        "candidate_sha256": "bfdd223d54f7ab97a10f74ac77b38f1d0337dd00ec6ec6115fed254e7822b881"
+      }
+    ]
+  },
+  "retained_assembly_functions": []
+}
