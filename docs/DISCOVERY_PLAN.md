@@ -161,10 +161,16 @@ Out of scope for the first milestone: complete flag coverage, automatic game
 playthrough, blind unknown-memory writes, bulk RAM restoration, every emulator
 or ROM version, a new UI architecture and a completed full decompilation.
 
-Phase 5 now has an initial read-only original-ROM/script trace and numeric
+Phase 5 now also has a verified matching-C track in `decomp/`: baseline build and
+24 reconstructed functions / 1,672 function bytes across three units match the
+entire original decompressed ROM. One spawn-copy routine remains assembly and
+is excluded. See decomp/README.md and its result metadata; full game reconstruction
+and live rebuilt-artifact validation remain incomplete.
+
+Phase 5 has an initial read-only original-ROM/script trace and numeric
 reference-index command (see ROM_FLAG_TRACE.md). Known Benkei/Ushiwaka checks and
 script writes are traced; native minigame result writers, actor loading, complete
-CFG reconstruction and a matching decompilation baseline are not complete. A
+CFG reconstruction are not complete. A
 local external-label index is a research aid, not the phase 4 shared GUI registry.
 Immediate next action: validate the naturally occurring failed-training state,
 then use the traced evidence to build the registry and expand writer coverage.

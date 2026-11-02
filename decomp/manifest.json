@@ -11,18 +11,66 @@
       "splat_original": "[0x249F0, asm]",
       "splat_replacement": "[0x249F0, c, event_flags]",
       "functions": [
-        {"name": "func_80023DF0_249F0", "rom_offset": 150000, "size": 80},
-        {"name": "func_80023E40_24A40", "rom_offset": 150080, "size": 84},
-        {"name": "func_80023E94_24A94", "rom_offset": 150164, "size": 80},
-        {"name": "func_80023EE4_24AE4", "rom_offset": 150244, "size": 48},
-        {"name": "func_80023F14_24B14", "rom_offset": 150292, "size": 80},
-        {"name": "func_80023F64_24B64", "rom_offset": 150372, "size": 84},
-        {"name": "func_80023FB8_24BB8", "rom_offset": 150456, "size": 80},
-        {"name": "func_80024008_24C08", "rom_offset": 150536, "size": 48},
-        {"name": "func_80024038_24C38", "rom_offset": 150584, "size": 80},
-        {"name": "func_80024088_24C88", "rom_offset": 150664, "size": 84},
-        {"name": "func_800240DC_24CDC", "rom_offset": 150748, "size": 80},
-        {"name": "func_8002412C_24D2C", "rom_offset": 150828, "size": 48}
+        {
+          "name": "func_80023DF0_249F0",
+          "rom_offset": 150000,
+          "size": 80
+        },
+        {
+          "name": "func_80023E40_24A40",
+          "rom_offset": 150080,
+          "size": 84
+        },
+        {
+          "name": "func_80023E94_24A94",
+          "rom_offset": 150164,
+          "size": 80
+        },
+        {
+          "name": "func_80023EE4_24AE4",
+          "rom_offset": 150244,
+          "size": 48
+        },
+        {
+          "name": "func_80023F14_24B14",
+          "rom_offset": 150292,
+          "size": 80
+        },
+        {
+          "name": "func_80023F64_24B64",
+          "rom_offset": 150372,
+          "size": 84
+        },
+        {
+          "name": "func_80023FB8_24BB8",
+          "rom_offset": 150456,
+          "size": 80
+        },
+        {
+          "name": "func_80024008_24C08",
+          "rom_offset": 150536,
+          "size": 48
+        },
+        {
+          "name": "func_80024038_24C38",
+          "rom_offset": 150584,
+          "size": 80
+        },
+        {
+          "name": "func_80024088_24C88",
+          "rom_offset": 150664,
+          "size": 84
+        },
+        {
+          "name": "func_800240DC_24CDC",
+          "rom_offset": 150748,
+          "size": 80
+        },
+        {
+          "name": "func_8002412C_24D2C",
+          "rom_offset": 150828,
+          "size": 48
+        }
       ]
     },
     {
@@ -32,10 +80,82 @@
       "splat_original": "[0x4D70, asm]",
       "splat_replacement": "[0x4D70, c, system_memory]",
       "functions": [
-        {"name": "func_80004170_4D70", "rom_offset": 19824, "size": 112},
-        {"name": "func_800041E0_4DE0", "rom_offset": 19936, "size": 40},
-        {"name": "func_80004208_4E08", "rom_offset": 19976, "size": 48}
+        {
+          "name": "func_80004170_4D70",
+          "rom_offset": 19824,
+          "size": 112
+        },
+        {
+          "name": "func_800041E0_4DE0",
+          "rom_offset": 19936,
+          "size": 40
+        },
+        {
+          "name": "func_80004208_4E08",
+          "rom_offset": 19976,
+          "size": 48
+        }
+      ]
+    },
+    {
+      "source": "save_resources.c",
+      "rom_start": 49616,
+      "rom_end": 50416,
+      "splat_original": "[0xC1D0, asm]",
+      "splat_replacement": "[0xC1D0, c, save_resources]",
+      "functions": [
+        {
+          "name": "func_8000B5D0_C1D0",
+          "rom_offset": 49616,
+          "size": 112
+        },
+        {
+          "name": "func_8000B640_C240",
+          "rom_offset": 49728,
+          "size": 160
+        },
+        {
+          "name": "func_8000B6E0_C2E0",
+          "rom_offset": 49888,
+          "size": 56
+        },
+        {
+          "name": "func_8000B7E4_C3E4",
+          "rom_offset": 50148,
+          "size": 64
+        },
+        {
+          "name": "func_8000B824_C424",
+          "rom_offset": 50212,
+          "size": 64
+        },
+        {
+          "name": "func_8000B864_C464",
+          "rom_offset": 50276,
+          "size": 28
+        },
+        {
+          "name": "func_8000B880_C480",
+          "rom_offset": 50304,
+          "size": 36
+        },
+        {
+          "name": "func_8000B8A4_C4A4",
+          "rom_offset": 50340,
+          "size": 12
+        },
+        {
+          "name": "func_8000B8B0_C4B0",
+          "rom_offset": 50352,
+          "size": 64
+        }
+      ],
+      "assembly_functions": [
+        "func_8000B718_C318"
       ]
     }
+  ],
+  "support_headers": [
+    "save_resources.h"
   ]
 }

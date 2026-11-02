@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),15)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),24)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
@@ -62,5 +62,27 @@ class DecompVerificationTests(unittest.TestCase):
     def test_shared_flag_functions_have_no_assembly_placeholders(self):
         for unit in load_manifest(ROOT/'decomp/manifest.json')['units']:
             source=(ROOT/'decomp'/unit['source']).read_text()
-            self.assertNotIn('GLOBAL_ASM',source)
+            self.assertEqual(source.count('GLOBAL_ASM'),len(unit.get('assembly_functions',[])))
+            for fn in unit['functions']:
+                self.assertNotIn('/'+fn['name']+'.s',source)
             self.assertNotIn('__asm__',source)
+
+    def test_assembly_retention_cannot_claim_a_reconstructed_function(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'manifest.json'
+            manifest['units'][0]['assembly_functions']=[manifest['units'][0]['functions'][0]['name']]
+            path.write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError,'assembly placeholder'):load_manifest(path)
+
+    def test_undeclared_placeholder_rejected_without_partial_application(self):
+        with tempfile.TemporaryDirectory() as folder:
+            checkout=Path(folder)/'candidate';(checkout/'config/usa').mkdir(parents=True)
+            (checkout/'src').mkdir();sources=Path(folder)/'sources';sources.mkdir()
+            config=checkout/'config/usa/splat.yaml';config.write_text('[0x10, asm]\n')
+            (sources/'unit.c').write_text('#pragma GLOBAL_ASM("asm/func_80000000_0.s")\n')
+            manifest={'units':[{'source':'unit.c','splat_original':'[0x10, asm]',
+                                'splat_replacement':'[0x10, c, unit]'}]}
+            with self.assertRaisesRegex(ValueError,'Undeclared'):apply_units(checkout,manifest,sources)
+            self.assertFalse((checkout/'src/unit.c').exists())
+            self.assertEqual(config.read_text(),'[0x10, asm]\n')

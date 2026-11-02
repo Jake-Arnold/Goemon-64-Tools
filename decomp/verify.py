@@ -29,8 +29,11 @@ def load_manifest(path):
     if manifest.get('format')!='goemon-matching-decomp-v1':raise ValueError('Unsupported manifest format')
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):
         if not re.fullmatch('[0-9a-f]{'+str(length)+'}',manifest.get(key,'')):raise ValueError('Invalid '+key)
-    seen=set();ranges=[]
+    seen=set();assembly_seen=set();ranges=[]
     if not manifest.get('units'):raise ValueError('No reconstructed units')
+    headers=manifest.get('support_headers',[])
+    if len(headers)!=len(set(headers)) or any(not re.fullmatch('[a-z][a-z0-9_]*[.]h',name) for name in headers):
+        raise ValueError('Invalid support header names')
     for unit in manifest['units']:
         if not re.fullmatch('[a-z][a-z0-9_]*[.]c',unit['source']):raise ValueError('Unsafe source name')
         start,end=unit['rom_start'],unit['rom_end']
@@ -38,7 +41,7 @@ def load_manifest(path):
         ranges.append((start,end))
         previous=start
         for fn in unit['functions']:
-            if not re.fullmatch('func_[0-9A-F]{8}_[0-9A-F]+',fn['name']) or fn['name'] in seen:
+            if not re.fullmatch('func_[0-9A-F]{8}_[0-9A-F]+',fn['name']) or fn['name'] in seen or fn['name'] in assembly_seen:
                 raise ValueError('Invalid/duplicate function name')
             seen.add(fn['name']);offset,size=fn['rom_offset'],fn['size']
             if offset<previous or size<=0 or offset%4 or size%4 or offset+size>end:
@@ -46,6 +49,16 @@ def load_manifest(path):
             if int(fn['name'].split('_')[2],16)!=offset:raise ValueError('Function ROM offset disagrees with symbol')
             if int(fn['name'].split('_')[1],16)!=offset+0x7FFFF400:raise ValueError('Function guest address disagrees with main mapping')
             previous=offset+size
+        assembly=unit.get('assembly_functions',[])
+        if len(set(assembly))!=len(assembly) or any(name in seen or name in assembly_seen or not re.fullmatch('func_[0-9A-F]{8}_[0-9A-F]+',name) for name in assembly):
+            raise ValueError('Invalid/claimed assembly placeholder')
+        for name in assembly:
+            offset=int(name.split('_')[2],16)
+            if not start<=offset<end or int(name.split('_')[1],16)!=offset+0x7FFFF400:
+                raise ValueError('Assembly placeholder outside unit/mapping')
+            if any(fn['rom_offset']<=offset<fn['rom_offset']+fn['size'] for fn in unit['functions']):
+                raise ValueError('Assembly placeholder overlaps claimed C')
+        assembly_seen.update(assembly)
     ranges.sort()
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):raise ValueError('Overlapping units')
     return manifest
@@ -57,12 +70,19 @@ def apply_units(checkout,manifest,source_dir=ROOT):
     config=checkout/'config/usa/splat.yaml'
     text=config.read_text(encoding='utf-8')
     copies=[]
+    for name in manifest.get('support_headers',[]):
+        source=source_dir/name;destination=checkout/'src'/name
+        if not source.is_file() or destination.exists():raise ValueError('Missing or existing support header')
+        copies.append((source,destination))
     for unit in manifest['units']:
         anchor=unit['splat_original']
         if text.count(anchor)!=1:raise ValueError('Pinned assembly anchor missing/ambiguous: '+anchor)
         source=source_dir/unit['source'];destination=checkout/'src'/unit['source']
         if not source.is_file() or destination.exists():raise ValueError('Missing source or existing candidate source')
-        if 'GLOBAL_ASM' in source.read_text(encoding='utf-8'):raise ValueError('Claimed C unit includes assembly placeholders')
+        text_source=source.read_text(encoding='utf-8')
+        placeholders=re.findall(r'^#pragma GLOBAL_ASM\("[^"\n]*/(func_[0-9A-F_]+)\.s"\)',text_source,re.MULTILINE)
+        if set(placeholders)!=set(unit.get('assembly_functions',[])) or text_source.count('GLOBAL_ASM')!=len(placeholders):
+            raise ValueError('Undeclared assembly placeholder in C unit')
         copies.append((source,destination));text=text.replace(anchor,unit['splat_replacement'])
     for source,destination in copies:shutil.copyfile(source,destination)
     config.write_text(text,encoding='utf-8',newline='\n')
@@ -141,8 +161,10 @@ def run_build(args,manifest,report):
     symbols=parse_symbols(capture(['mips-linux-gnu-nm','-n','build/usa/mnsg.elf'],candidate))
     result=compare_images(expected,(candidate/'build/usa/mnsg.z64').read_bytes(),manifest,symbols)
     report['comparison']=result
-    report['sources_sha256_lf']={unit['source']:digest((ROOT/unit['source']).read_bytes().replace(b'\r\n',b'\n'),'sha256')
-                               for unit in manifest['units']}
+    report['retained_assembly_functions']=[name for unit in manifest['units'] for name in unit.get('assembly_functions',[])]
+    source_names=[unit['source'] for unit in manifest['units']]+manifest.get('support_headers',[])
+    report['sources_sha256_lf']={name:digest((ROOT/name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
+                               for name in source_names}
     mapping=(candidate/'build/usa/mnsg.map').read_text()
     for unit in manifest['units']:
         object_name='build/usa/src/'+unit['source']+'.o'

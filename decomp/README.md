@@ -4,9 +4,31 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **15 functions / 1,076 function bytes across two units**.
+Current verified total: **24 functions / 1,672 function bytes across three units**.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
+
+## Save/resource unit, with one retained assembly function
+
+`save_resources.c` reconstructs nine routines from ROM `0xC1D0..0xC4F0`:
+save/live/shadow buffer synchronization, default save initialization, shadow
+restoration, elapsed-time accounting, health upgrades and small counter routines.
+`save_resources.h` gives byte-offset layouts names only where supported; unknown
+fields retain offset-based labels. This is not a complete recovered save schema.
+
+**`func_8000B718_C318` remains original assembly**, via the upstream GLOBAL_ASM
+workflow. Its nonmatching C draft is retained locally and is not shipped/counted
+as reconstructed C. The manifest explicitly declares this placeholder, while
+the verifier rejects undeclared placeholders and forbids assembly markers on
+every function claimed as matching C. The combined report lists the exclusion.
+The mixed unit still rebuilds to the exact original whole-ROM image.
+
+Behavior checks cover saved-view aliases, synchronization order, unchanged fields,
+initial defaults, one-step timer/upgrade thresholds and callback order. The timer
+routine consumes at most 60 ticks per invocation, and the health routine handles
+one four-doll upgrade per invocation; neither was rewritten into a bulk loop.
+These routines operate on unchecked engine buffers and are not a new safe-save or
+scene-restoration API. The existing portable checkpoint implementation is unchanged.
 
 ## System initialization and byte-memory unit
 
@@ -100,6 +122,8 @@ builds the C replacement, checks symbol identity and per-function bytes, and
 requires another whole-ROM match. Reports are exclusively created; failed builds
 retain logs/workspaces and record failure without claiming success. The verifier
 does not run the game, merge changes or submit anything to upstream maintainers.
+Explicitly declared retained-assembly functions remain excluded from the C count;
+their presence does not relax byte/address checks on the claimed functions.
 
 ## Semantic and verifier checks
 
@@ -127,11 +151,24 @@ gcc -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined \
 practice/diagnostics/test_system_memory
 ```
 
+The save/resource host check uses GNU symbol aliases to model overlapping views
+inside synthetic save/system buffers, without copying Nintendo's SDK headers:
+
+```bash
+gcc -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined \
+  -Idecomp/test_support decomp/test_save_resources.c decomp/system_memory.c \
+  -o practice/diagnostics/test_save_resources
+practice/diagnostics/test_save_resources
+```
+
+The retained assembly function is excluded from that host test. Matching MIPS
+output, synthetic host behavior and actual in-game tests are separate evidence.
+
 ## Next units
 
 Continue with small, well-bounded engine translation units and retain the same
-full-ROM comparison gate. Resource/state accessors are the next candidate,
-followed by the event VM. Actor and
+full-ROM comparison gate. Resolve the retained spawn-copy/save-commit routine,
+then reconstruct the event VM and its operand/branch handlers. Actor and
 script exports from the existing randomizer remain useful semantic context;
 native reconstruction still requires compiler matching and tests. Do not rename
 unknown fields or infer state-transition safety from a matching helper alone.
