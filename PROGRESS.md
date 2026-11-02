@@ -228,6 +228,14 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: one first-conversation trial, not an independent replay; neither bit's causal role is established. No memory writes, ROM identity proof or reader/writer trace. Raw samples remain in ignored diagnostics, not this commit.
 - Next: obtain an independent replay from the user's backed-up pre-conversation state if available, then trace the two candidate bits separately.
 
+### 2026-11-02 — Independent replay reproduces both Benkei candidate bits
+
+- Changed: updated `practice/MEMORY_MAP.md` with independent replay evidence for both candidate bits and event support 2/2. No runtime changes or new unlock controls.
+- Why: the user reset/restarted Goemon64Recomp, returned to pre-conversation gameplay and repeated the first conversation, allowing independent confirmation of the observed transitions.
+- Tested: verified the toolkit's current PID matched the restarted recomp; fresh A/B captures on map 369, Goemon, passed per-trial context checks. Reopened/validated saved session and reran ranking. Both 100-byte pre-event blocks match each other; both after-event blocks match each other. Each replay changed only `0x8015C60C` byte `00→20` and `0x8015C60E` byte `00→10`. Idle and recurring-dialogue controls changed no event bytes. Documentation diff checked with `git diff --check`; Python/C suites not rerun for this evidence-only update.
+- Limitations: semantic roles and causality remain unknown; two correlated bits are not two proven dialogue gates. No write tests, code tracing or live-ROM identity verification. Raw samples remain local/ignored.
+- Next: inspect original-game code readers/writers for each bit and document their distinct roles. No further user gameplay action is needed yet.
+
 ## Mandatory change-log template
 
 ```markdown

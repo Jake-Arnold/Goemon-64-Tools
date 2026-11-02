@@ -1,4 +1,4 @@
-## Benkei first-conversation candidates (2026-11-02)
+## Benkei first-conversation candidates — independently reproduced (2026-11-02)
 
 Read-only Goemon64Recomp experiment on map **369**, Goemon, with stable player
 and task pointers throughout each pair:
@@ -12,19 +12,24 @@ The user reported the repeat dialogue as **“so you're back again”**. No othe
 bytes changed within the captured 100-byte persistent-event block in either
 control; the first-conversation pair changed only the two bytes above.
 
-These are **first-conversation interval candidates**, not individually proven
-dialogue gates or event triggers. One event pair plus idle/repeat controls does
-not distinguish direct effects from secondary progression. No masked write test,
-reader/writer trace or independent replay from a pre-event save has been done.
+An independent reset/restart and replay reproduced **both exact byte changes**
+on map 369 with Goemon. Both 100-byte A blocks match, and both 100-byte B blocks
+match. Each bit has event support **2/2**, with no idle or repeat-dialogue changes.
+
+These remain **first-conversation interval candidates**, not individually proven
+dialogue gates or event triggers. Repeated correlation does not distinguish
+direct effects from secondary progression. No masked write test or reader/writer
+trace has been done.
 ROM identity remains unverified against the running host. No new unlock control
 is enabled from these observations.
 
 Local evidence session `79b2f960edab424f89d68ed7e0415691`: idle trial
 `c82d73fde48641d6a7440d9791aa70b3`, event trial
 `4137f3c0e97744358e0ef68d07fe97e6`, repeat-dialogue control
-`55d08ff62b574adf8b28f17dd2dcb6e8`. Raw samples and notes stay in ignored local
-diagnostics. Next: independently replay the first conversation from a backed-up
-pre-event state, then trace each candidate's original-game readers/writers.
+`55d08ff62b574adf8b28f17dd2dcb6e8`, independent replay
+`3d04720d7f554a448867a8990dfdd22b`. Raw samples and notes stay in ignored local
+diagnostics. Next: trace each candidate's original-game readers/writers to
+separate dialogue gating from other progression before exposing write controls.
 
 ## Ushiwaka progression and pre-load character hypothesis (2026-11-02)
 
