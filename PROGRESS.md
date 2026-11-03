@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct transition initialization sequence
+
+- Reconstructed func_80003880_4480 (100 bytes), preserving its ordered engine initialization calls, 16-bit value 20 and osViBlack(0). Individual callee effects and room lifecycle are not yet fully understood.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 122 C function bytes/addresses match with original inventory. Synthetic tests check call order and arguments alongside the transition chain; VM/system host tests and 55 focused decomp tests run. No live-game test or writes.
+- Next: trace initializer callees and dispatcher into actual map loading and teardown.
+
 ## 2026-11-03 - reconstruct transition audio-memory initialization
 
 - Reconstructed func_8000383C_443C (68 bytes), calling 80003880 then the upstream audio-memory initializer with system descriptor +0xC7FA4, buffer 0x802F7000 and size 0xA000. The upstream C initializer clears the buffer and sets descriptor fields. This is an audio initialization step, not a complete room loader.

@@ -117,3 +117,8 @@ then calls the already-upstream C `800148C0` with the audio-memory descriptor
 at system `+0xC7FA4`, buffer `0x802F7000`, and size `0xA000`. That upstream
 function clears the buffer and initializes the descriptor. This identifies
 an audio-memory initialization step, not a complete room loader.
+
+`func_80003880_4480` now matches as C (100 bytes). It calls a sequence
+of engine initializers, sets `0x800C7AE4` to 20, calls `80013940`, and calls
+`osViBlack(0)`. Its callees need individual tracing before claiming which
+ones load or unload rooms.
