@@ -919,6 +919,11 @@
           "name": "func_80003728_4328",
           "rom_offset": 17192,
           "size": 100
+        },
+        {
+          "name": "func_8000383C_443C",
+          "rom_offset": 17468,
+          "size": 68
         }
       ],
       "assembly_functions": [
@@ -933,7 +938,6 @@
         "func_800036D0_42D0",
         "func_8000378C_438C",
         "func_800037E4_43E4",
-        "func_8000383C_443C",
         "func_80003880_4480",
         "func_800038E4_44E4",
         "func_8000394C_454C"

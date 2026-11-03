@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct transition audio-memory initialization
+
+- Reconstructed func_8000383C_443C (68 bytes), calling 80003880 then the upstream audio-memory initializer with system descriptor +0xC7FA4, buffer 0x802F7000 and size 0xA000. The upstream C initializer clears the buffer and sets descriptor fields. This is an audio initialization step, not a complete room loader.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 121 C function bytes/addresses match with original inventory. Synthetic host test checks call order and exact descriptor/buffer/size; VM/system host tests and 55 focused decomp tests run. No live-game test or writes.
+- Next: trace 80003880 and map resource creation and teardown; continue matching native functions.
+
 ## 2026-11-03 - reconstruct main-loop transition wrappers
 
 - Reconstructed func_80003328_3F28 and func_80003358_3F58 (48 and 40 bytes). They preserve native call ordering, including state 0x11 and the three-way dispatcher. The initial candidate build failed because C functions were ordered before retained assembly; corrected source order before the successful build.

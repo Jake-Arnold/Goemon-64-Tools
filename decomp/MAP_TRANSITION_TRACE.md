@@ -111,3 +111,9 @@ Two main-loop wrappers now match as C: `80003328_3F28` calls `8000B364`,
 then `8000383C`, then sets main state `0x11`; `80003358_3F58` calls the
 three-way dispatcher `8001F8B0` and then `80034734`. Their external effects
 remain incompletely characterized; neither is asserted to load a room.
+
+`func_8000383C_443C` now matches as C (68 bytes). It calls `80003880`,
+then calls the already-upstream C `800148C0` with the audio-memory descriptor
+at system `+0xC7FA4`, buffer `0x802F7000`, and size `0xA000`. That upstream
+function clears the buffer and initializes the descriptor. This identifies
+an audio-memory initialization step, not a complete room loader.

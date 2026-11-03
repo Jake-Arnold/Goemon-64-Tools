@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T19:54:36.108129+00:00",
+  "started_utc": "2026-11-03T19:55:57.844112+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 120,
-    "claimed_functions": 120,
-    "matched_function_bytes": 8312,
+    "matched_functions": 121,
+    "claimed_functions": 121,
+    "matched_function_bytes": 8380,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1085,6 +1085,15 @@
         "candidate_sha256": "e0d54e2ae835f0d92fcb63d1ef481b0058ef99f129680d73c6be79f56ba4a4a2"
       },
       {
+        "name": "func_8000383C_443C",
+        "size": 68,
+        "guest_address": "0x8000383C",
+        "rom_offset": "0x443C",
+        "matched": true,
+        "expected_sha256": "ed1c638f6bb83e50b4c09e028ad42aca0a13d38708835aed1eb07aac0b32c69a",
+        "candidate_sha256": "ed1c638f6bb83e50b4c09e028ad42aca0a13d38708835aed1eb07aac0b32c69a"
+      },
+      {
         "name": "func_80034EF8_35AF8",
         "size": 40,
         "guest_address": "0x80034EF8",
@@ -1201,7 +1210,6 @@
     "func_800036D0_42D0",
     "func_8000378C_438C",
     "func_800037E4_43E4",
-    "func_8000383C_443C",
     "func_80003880_4480",
     "func_800038E4_44E4",
     "func_8000394C_454C",
@@ -1237,7 +1245,7 @@
     "scheduler_queue.c": "4fc57d559824dc05ce75ed0c997d17bd5b20973ccd8b0cf87e6e64a8b8173312",
     "empty_menu_hook.c": "24e3e52a9b17fbeae1e25c1414196b081274f954ca73aa266af9d54c66a10899",
     "state_predicate.c": "9a6bfa882a1c7f366a602002701f5142ad47c856cd7fdc687be7c4c126b022d3",
-    "transition_state.c": "4881c45c70f6c5e7d2c5cfd65511eb1b51a02e67f5797ed7490b252159dd4dfc",
+    "transition_state.c": "e314824d3ff2d09339d39e119d0aa597774c622d8d48af8087d6b8ca67e24a8f",
     "resource_dispatch.c": "7a0e57acab49067a0239f09f4bf322bcacb88de8ff6cffc20ffbb7ff336b8a9e",
     "resource_forward.c": "2a84b51e305242a08bb1e80a8187fe9658b14579f0c76439c7da07cf56a379d6",
     "resource_callback.c": "30a779ca1f372a887cb9b310966741a1a24242190775508eb9fbb2ac2d683e30",
@@ -1248,5 +1256,5 @@
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900",
     "object_flags.h": "d2cdfb2679db20ef4b642c41cdeef0188e464790333f067cbd8c394b44c7cb94"
   },
-  "ended_utc": "2026-11-03T19:55:04.807587+00:00"
+  "ended_utc": "2026-11-03T19:56:24.115276+00:00"
 }
