@@ -1,0 +1,39 @@
+{
+  "status": "mismatch",
+  "stage": "linked_probe",
+  "comparison": {
+    "expected_size": 140,
+    "actual_size": 140,
+    "byte_differences": 2,
+    "word_differences": 2,
+    "expected_sha256": "c96aa2507f3322508dafcfd47894d90cd26ec626b6ec4b304d0d2252a53d19e0",
+    "actual_sha256": "91548560512fd7e81af7dfed699e27290f1813683f6950e93b52fe70cdaf2287"
+  },
+  "guest_address": "0x08006490",
+  "candidate_sha256": "1b3d52c6f3e73bfb422a83ceff6ad12560fdb13da2fa7d58443d9760003482b0",
+  "linked_elf_sha256": "33b8180cf819d7d31e00f50384b9ac73bcf8a2fc489a72d31f88172d565c925a",
+  "format": "goemon-targeted-candidate-v1",
+  "function": "func_08006490_6F9970",
+  "rom_offset": "0x6F9970",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "full_rom_verified": false,
+  "claimed_verified_functions": 0,
+  "differences": [
+    {
+      "word_offset": "0x18",
+      "expected": "AFA3001C",
+      "candidate": "AFA30018"
+    },
+    {
+      "word_offset": "0x28",
+      "expected": "8FA3001C",
+      "candidate": "8FA30018"
+    }
+  ],
+  "limitations": [
+    "Isolated linked probe only; original overlay unit has not been integrated.",
+    "Symbolic engine entry-point declaration model and stack allocation remain under review.",
+    "No byte patching or relaxation of the exact-match gate."
+  ]
+}

@@ -4,13 +4,36 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **74 functions / 5,564 function bytes across four units**.
+Current verified total: **78 functions / 5,756 function bytes across six units**.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
 
 The [whole-build inventory](INVENTORY.md) identifies **7,376 function entries**:
-**87 matching C entries** (13 upstream plus these 74), leaving **7,289 assembly
+**91 matching C entries** (13 upstream plus these 78), leaving **7,285 assembly
 entries**, including SDK/runtime code. Exported jump labels are excluded.
+
+## Screen-rectangle bounds helper
+
+`viewport_bounds.c` replaces `func_800216B0_222B0` (144 bytes) with C and passes
+the complete original-ROM gate alongside all previous units. It rejects negative
+left/top bounds, right beyond 320, bottom beyond 240, and inverted rectangles
+before updating four stored bounds. Equal bounds are accepted. Host tests cover
+boundary acceptance and rejection without partially changing state:
+
+```bash
+gcc -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined \
+  -Idecomp/test_support decomp/viewport_bounds.c decomp/test_viewport_bounds.c \
+  -o /tmp/goemon-viewport-test
+/tmp/goemon-viewport-test
+```
+
+`warp_state.c` adds three exact 16-byte setters for the byte at `0x800C7A95`,
+writing values 2, 1 and 3. Their original numeric symbols are retained pending
+complete consumer tracing. They are original-engine replacements, not new toolkit
+warp controls; all existing direct-warp restrictions remain in place.
+
+Ghost Toys entrance reconstruction is tracked separately in
+[GHOST_TOYS_CHECKPOINT.md](GHOST_TOYS_CHECKPOINT.md). It is not counted as matching C.
 
 ## Batch discovery and matching
 

@@ -431,6 +431,44 @@
         "func_8003F480_40080",
         "func_8003F6E8_402E8"
       ]
+    },
+    {
+      "source": "viewport_bounds.c",
+      "rom_start": 139952,
+      "rom_end": 140096,
+      "splat_original": "[0x221D0, asm]",
+      "splat_replacement": "[0x221D0, asm]\n    - [0x222B0, c, viewport_bounds]\n    - [0x22340, asm]",
+      "functions": [
+        {
+          "name": "func_800216B0_222B0",
+          "rom_offset": 139952,
+          "size": 144
+        }
+      ]
+    },
+    {
+      "source": "warp_state.c",
+      "rom_start": 228448,
+      "rom_end": 228496,
+      "splat_original": "[0x37C00, asm]",
+      "splat_replacement": "[0x37C00, asm]\n    - [0x37C60, c, warp_state]\n    - [0x37C90, asm]",
+      "functions": [
+        {
+          "name": "func_80037060_37C60",
+          "rom_offset": 228448,
+          "size": 16
+        },
+        {
+          "name": "func_80037070_37C70",
+          "rom_offset": 228464,
+          "size": 16
+        },
+        {
+          "name": "func_80037080_37C80",
+          "rom_offset": 228480,
+          "size": 16
+        }
+      ]
     }
   ],
   "support_headers": [
