@@ -4,12 +4,12 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **78 functions / 5,756 function bytes across six units**.
+Current verified total: **81 functions / 5,820 function bytes across eight units**.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
 
 The [whole-build inventory](INVENTORY.md) identifies **7,376 function entries**:
-**91 matching C entries** (13 upstream plus these 78), leaving **7,285 assembly
+**94 matching C entries** (13 upstream plus these 81), leaving **7,282 assembly
 entries**, including SDK/runtime code. Exported jump labels are excluded.
 
 ## Screen-rectangle bounds helper
@@ -34,6 +34,31 @@ warp controls; all existing direct-warp restrictions remain in place.
 
 Ghost Toys entrance reconstruction is tracked separately in
 [GHOST_TOYS_CHECKPOINT.md](GHOST_TOYS_CHECKPOINT.md). It is not counted as matching C.
+
+## Scheduler/audio slices and collectible parameters
+
+`scheduler_views.c` reconstructs two opaque interior-address helpers at offsets
+`+0x78` and `+0xB0`; no complete scheduler-object layout is inferred.
+`audio_state.c` reconstructs the original byte flag update conditioned on state
+`0xF0`. All three pass the whole-ROM gate. To preserve exact lengths around their
+four-byte-aligned boundaries, the manifest names only the adjoining assembly
+objects for GAS `--no-pad-sections`. This removes assembler-added section tail
+padding, not original instructions; independent MIPS integration tests verify the
+instruction payload is unchanged. The exact image/symbol gates remain mandatory.
+The latest build report records the verifier source hash; older benchmark hashes
+remain historical rather than being rewritten to imply a new benchmark run.
+
+The read-only command:
+
+```bash
+python -m decomp.pickup_placements --rom /path/to/USA.z64 \
+  --report practice/diagnostics/new-pickups.json
+```
+
+extracts only instantiated
+Mr. Elly Fant/Mr. Arrow definition flags. [Static metadata](results/castle_pickup_placements.json)
+covers all ten pickups, corroborates three user observations and adds seven
+placement-derived catalog entries without claiming live collection tests.
 
 ## Batch discovery and matching
 

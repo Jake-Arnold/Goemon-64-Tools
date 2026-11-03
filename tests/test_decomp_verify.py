@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),78)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),81)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
@@ -159,6 +159,8 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(result['status'],'matched')
         self.assertEqual(result['upstream_commit'],manifest['upstream_commit'])
         self.assertTrue(result['comparison']['full_rom_match'])
+        verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
+        self.assertEqual(result['verifier_source_sha256_lf'],hashlib.sha256(verifier).hexdigest())
         expected={f['name']:f for u in manifest['units'] for f in u['functions']}
         actual={f['name']:f for f in result['comparison']['functions']}
         self.assertEqual(set(expected),set(actual))
@@ -175,3 +177,22 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256(data).hexdigest(),result['sources_sha256_lf'][name],name)
         self.assertEqual(result['object_layout']['payload_bytes_changed'],0)
         self.assertTrue(result['assignment_table']['matched'])
+
+    def test_assembly_slice_padding_override_is_narrow_and_preserves_payload(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        with tempfile.TemporaryDirectory() as folder:
+            bad=copy.deepcopy(manifest);bad['units'][0]['asm_no_padding']=['../escape']
+            path=Path(folder)/'bad.json';path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'no-padding'):load_manifest(path)
+            checkout=Path(folder)/'candidate';(checkout/'config/usa').mkdir(parents=True)
+            (checkout/'src').mkdir();(checkout/'Makefile').write_text('original make rules\n')
+            sources=Path(folder)/'sources';sources.mkdir();(sources/'unit.c').write_text('void f(void) {}\n')
+            (checkout/'config/usa/splat.yaml').write_text('[0x1000, asm]\n')
+            payload=checkout/'original.s';payload.write_bytes(b'unchanged assembly')
+            small={'units':[dict(source='unit.c',splat_original='[0x1000, asm]',splat_replacement='[0x1000, c, unit]',asm_no_padding=['1000','1014'])]}
+            apply_units(checkout,small,sources)
+            make=(checkout/'Makefile').read_text()
+            self.assertIn('build/usa/asm/usa/1000.s.o: ASFLAGS += --no-pad-sections',make)
+            self.assertIn('build/usa/asm/usa/1014.s.o: ASFLAGS += --no-pad-sections',make)
+            self.assertTrue(make.startswith('original make rules'))
+            self.assertEqual(payload.read_bytes(),b'unchanged assembly')

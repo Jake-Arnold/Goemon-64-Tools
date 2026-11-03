@@ -69,3 +69,16 @@ class ProbeIntegrationTests(unittest.TestCase):
                 if not state.exists() or state.read_text().split(') ',1)[1].startswith('Z'):break
                 time.sleep(.05)
             else:self.fail('Descendant survived the process-group timeout')
+
+    def test_no_padding_flag_preserves_instruction_payload(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);source=root/'tiny.s'
+            source.write_text('.set noreorder\n.text\n.globl tiny\n.type tiny,@function\ntiny:\njr $ra\nnop\n.size tiny,.-tiny\n')
+            objects=[]
+            for name,extra in [('default',[]),('exact',['--no-pad-sections'])]:
+                obj=root/(name+'.o')
+                subprocess.run(['mips-linux-gnu-as','-EB','-march=vr4300','-mabi=32',*extra,str(source),'-o',str(obj)],check=True,capture_output=True)
+                objects.append(Elf32(obj.read_bytes()))
+            self.assertEqual(objects[0].code(objects[0].function('tiny')),objects[1].code(objects[1].function('tiny')))
+            self.assertEqual(len(objects[1].payload(objects[1].names.index('.text'))),8)
+            self.assertEqual(len(objects[0].payload(objects[0].names.index('.text'))),16)

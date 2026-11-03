@@ -51,3 +51,26 @@ that can reveal more collectible IDs without individually collecting every item.
 Do not infer other castles' flag IDs solely from numerical spacing. Check Arrow
 map visibility and no-respawn behavior after re-entry/reload separately. No game
 writes, freeze activation or save reloads were performed by the assistant.
+
+## Instantiated placements recovered automatically
+
+A complete read-only traversal of the verified USA rooms found ten instantiated
+pickup definitions. Definition bytes 4..5 provide the saved flag ID. It exactly
+reproduces the three user-observed mappings above and supplies seven additional
+placements. These are parsed records, not guesses based on consecutive IDs.
+
+| Castle | Elly Fant map flag | Mr. Arrow boss-location flag |
+| --- | --- | --- |
+| Oedo | `0x0FF`: `0x8015C627 & 80` (stage 9) | `0x104`: `0x8015C628 & 10` (stage 13) |
+| Ghost Toys | `0x100`: `0x8015C628 & 01` (stage 52) | `0x105`: `0x8015C628 & 20` (stage 57) |
+| Festival Temple | `0x101`: `0x8015C628 & 02` (stage 95) | `0x106`: `0x8015C628 & 40` (stage 99) |
+| Gourmet Sub | `0x102`: `0x8015C628 & 04` (stage 145) | `0x107`: `0x8015C628 & 80` (stage 152) |
+| Musical Castle | `0x103`: `0x8015C628 & 08` (stage 174) | `0x108`: `0x8015C629 & 01` (stage 182) |
+
+All table masks are hexadecimal. The three manual observations retain their
+original provenance; the other seven Story progress entries say ROM placement /
+not live-tested. Full factual metadata and the read-only extractor are in
+`decomp/results/castle_pickup_placements.json` and `decomp/pickup_placements.py`.
+The extractor validates the ROM identity, traverses instance groups, deduplicates
+referenced definitions, ignores uninstantiated actors and rejects malformed
+pointers or flags outside the 100-byte bank. No ROM data/assets are bundled.

@@ -83,7 +83,7 @@ EXTERNAL_FLAGS = (
     StoryFlag('external_koryuta_freed','Koryuta freed',0x014,EXTERNAL_EVIDENCE,True,3,'0x77B4A8'),
     StoryFlag('external_wise_man_ghost','Wise Man ghost meeting recorded',0x015,EXTERNAL_EVIDENCE,True,4,'0x76A13C'),
     StoryFlag('external_witch_unpaid','Witch conversation before payment',0x016,EXTERNAL_EVIDENCE,True,2,'0x77C098'),
-    StoryFlag('external_kyushu_disappeared','Kyushu disappearance recorded',0x017,EXTERNAL_EVIDENCE,True,37,'0x757024'),
+    StoryFlag('external_kyushu_disappeared','Kyushu disappearance (Muscle Gym unlock)',0x017,EXTERNAL_EVIDENCE+'; user reports this enables Muscle Gym appearance in Oedo Town',True,37,'0x757024'),
     StoryFlag('external_dharmanyo_defeated','Dharmanyo defeat recorded',0x018,EXTERNAL_EVIDENCE,True,31,'0x74956C'),
     StoryFlag('external_gold_weapons','Gold weapon upgrade recorded',0x01A,EXTERNAL_EVIDENCE,True,3,'0x782F0C'),
     StoryFlag('external_sudden_instructions','Sudden Impact instructions viewed',0x01B,EXTERNAL_EVIDENCE,True,3,'0x769C30'),
@@ -110,7 +110,24 @@ EXTERNAL_FLAGS = (
     StoryFlag('external_dragon_folkypoke','Folkypoke dragon ride recorded',0x07F,EXTERNAL_EVIDENCE,True,3,'0x794EFC'),
 )
 
-FLAGS = CURATED_FLAGS + EXTERNAL_FLAGS
+PLACEMENT_PICKUPS = (
+    StoryFlag('oedo_arrow_placement','Oedo Castle Mr. Arrow collected (boss location)',0x104,
+              'ROM instantiated placement: stage 13, file 0x343, definition 13, actor 0x087; not live-tested'),
+    StoryFlag('ghost_elly_placement','Ghost Toys Mr. Elly Fant collected (map)',0x100,
+              'ROM instantiated placement: stage 52, file 0x367, definition 22, actor 0x086; not live-tested'),
+    StoryFlag('festival_elly_placement','Festival Temple Mr. Elly Fant collected (map)',0x101,
+              'ROM instantiated placement: stage 95, file 0x384, definition 9, actor 0x086; not live-tested'),
+    StoryFlag('festival_arrow_placement','Festival Temple Mr. Arrow collected (boss location)',0x106,
+              'ROM instantiated placement: stage 99, file 0x388, definition 16, actor 0x087; not live-tested'),
+    StoryFlag('gourmet_elly_placement','Gourmet Sub Mr. Elly Fant collected (map)',0x102,
+              'ROM instantiated placement: stage 145, file 0x3AF, definition 23, actor 0x086; not live-tested'),
+    StoryFlag('gourmet_arrow_placement','Gourmet Sub Mr. Arrow collected (boss location)',0x107,
+              'ROM instantiated placement: stage 152, file 0x3B6, definition 9, actor 0x087; not live-tested'),
+    StoryFlag('musical_elly_placement','Musical Castle Mr. Elly Fant collected (map)',0x103,
+              'ROM instantiated placement: stage 174, file 0x3C2, definition 14, actor 0x086; not live-tested'),
+)
+
+FLAGS = CURATED_FLAGS + EXTERNAL_FLAGS + PLACEMENT_PICKUPS
 
 
 def read_story_state(ram):

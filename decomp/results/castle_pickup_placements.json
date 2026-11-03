@@ -1,0 +1,108 @@
+{
+  "format": "goemon-pickup-placements-v1",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "source": "Instantiated room definitions; actor flag at definition bytes 4..5",
+  "live_verified": false,
+  "pickups": [
+    {
+      "stage": 9,
+      "file_id": 831,
+      "definition": 9,
+      "actor_id": 134,
+      "pickup": "Mr. Elly Fant",
+      "flag_id": 255,
+      "address": "0x8015C627",
+      "mask": "0x80"
+    },
+    {
+      "stage": 13,
+      "file_id": 835,
+      "definition": 13,
+      "actor_id": 135,
+      "pickup": "Mr. Arrow",
+      "flag_id": 260,
+      "address": "0x8015C628",
+      "mask": "0x10"
+    },
+    {
+      "stage": 52,
+      "file_id": 871,
+      "definition": 22,
+      "actor_id": 134,
+      "pickup": "Mr. Elly Fant",
+      "flag_id": 256,
+      "address": "0x8015C628",
+      "mask": "0x01"
+    },
+    {
+      "stage": 57,
+      "file_id": 876,
+      "definition": 7,
+      "actor_id": 135,
+      "pickup": "Mr. Arrow",
+      "flag_id": 261,
+      "address": "0x8015C628",
+      "mask": "0x20"
+    },
+    {
+      "stage": 95,
+      "file_id": 900,
+      "definition": 9,
+      "actor_id": 134,
+      "pickup": "Mr. Elly Fant",
+      "flag_id": 257,
+      "address": "0x8015C628",
+      "mask": "0x02"
+    },
+    {
+      "stage": 99,
+      "file_id": 904,
+      "definition": 16,
+      "actor_id": 135,
+      "pickup": "Mr. Arrow",
+      "flag_id": 262,
+      "address": "0x8015C628",
+      "mask": "0x40"
+    },
+    {
+      "stage": 145,
+      "file_id": 943,
+      "definition": 23,
+      "actor_id": 134,
+      "pickup": "Mr. Elly Fant",
+      "flag_id": 258,
+      "address": "0x8015C628",
+      "mask": "0x04"
+    },
+    {
+      "stage": 152,
+      "file_id": 950,
+      "definition": 9,
+      "actor_id": 135,
+      "pickup": "Mr. Arrow",
+      "flag_id": 263,
+      "address": "0x8015C628",
+      "mask": "0x80"
+    },
+    {
+      "stage": 174,
+      "file_id": 962,
+      "definition": 14,
+      "actor_id": 134,
+      "pickup": "Mr. Elly Fant",
+      "flag_id": 259,
+      "address": "0x8015C628",
+      "mask": "0x08"
+    },
+    {
+      "stage": 182,
+      "file_id": 970,
+      "definition": 16,
+      "actor_id": 135,
+      "pickup": "Mr. Arrow",
+      "flag_id": 264,
+      "address": "0x8015C629",
+      "mask": "0x01"
+    }
+  ]
+}

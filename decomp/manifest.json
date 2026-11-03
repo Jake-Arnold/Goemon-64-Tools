@@ -469,6 +469,47 @@
           "size": 16
         }
       ]
+    },
+    {
+      "source": "scheduler_views.c",
+      "rom_start": 31764,
+      "rom_end": 31780,
+      "splat_original": "[0x79F0, asm]",
+      "splat_replacement": "[0x79F0, asm]\n    - [0x7C14, c, scheduler_views]\n    - [0x7C24, asm]",
+      "asm_no_padding": [
+        "79F0",
+        "7C24"
+      ],
+      "functions": [
+        {
+          "name": "func_80007014_7C14",
+          "rom_offset": 31764,
+          "size": 8
+        },
+        {
+          "name": "func_8000701C_7C1C",
+          "rom_offset": 31772,
+          "size": 8
+        }
+      ]
+    },
+    {
+      "source": "audio_state.c",
+      "rom_start": 235876,
+      "rom_end": 235924,
+      "splat_original": "[0x392E0, asm]",
+      "splat_replacement": "[0x392E0, asm]\n    - [0x39964, c, audio_state]\n    - [0x39994, asm]",
+      "asm_no_padding": [
+        "392E0",
+        "39994"
+      ],
+      "functions": [
+        {
+          "name": "func_80038D64_39964",
+          "rom_offset": 235876,
+          "size": 48
+        }
+      ]
     }
   ],
   "support_headers": [

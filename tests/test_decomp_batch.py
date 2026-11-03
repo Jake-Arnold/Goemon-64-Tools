@@ -206,6 +206,13 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         from decomp.batch import ROOT
         validation=json.loads((ROOT/'results/batch_validation.json').read_text())
         for name,expected in validation['pipeline_sources_sha256_lf'].items():
+            if name=='verify.py':
+                # Historical benchmark hashes stay historical. Current verifier edits
+                # must be bound to the latest complete matching build instead.
+                current=json.loads((ROOT/'results/combined.json').read_text())
+                self.assertEqual(current['status'],'matched')
+                self.assertTrue(current['comparison']['full_rom_match'])
+                expected=current['verifier_source_sha256_lf']
             self.assertEqual(hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),expected,name)
         for name in ('batch_pilot.json','batch_search_pilot.json','batch_entrance_followup.json'):
             result=json.loads((ROOT/'results'/name).read_text())

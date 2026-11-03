@@ -1,9 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T00:09:13.410808+00:00",
+  "started_utc": "2026-11-03T00:24:31.678463+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "verifier_source_sha256_lf": "81b2c8a4be5d7f93d98d51c1f430c37d1e76cd4409773817ff3aaf03c555f006",
   "tool_versions": {
     "uv": "uv 0.13.6 (x86_64-unknown-linux-gnu)",
     "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
@@ -44,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 78,
-    "claimed_functions": 78,
-    "matched_function_bytes": 5756,
+    "matched_functions": 81,
+    "claimed_functions": 81,
+    "matched_function_bytes": 5820,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -749,6 +750,33 @@
         "matched": true,
         "expected_sha256": "b1b6bc2d496e58b79de957b4507aa4b891a76abbed72a4bfd4265a78a55c22e5",
         "candidate_sha256": "b1b6bc2d496e58b79de957b4507aa4b891a76abbed72a4bfd4265a78a55c22e5"
+      },
+      {
+        "name": "func_80007014_7C14",
+        "size": 8,
+        "guest_address": "0x80007014",
+        "rom_offset": "0x7C14",
+        "matched": true,
+        "expected_sha256": "d82c49368eef6b8ec668ea667cb0a950e97a442870973cd6baf8b3e57bcda040",
+        "candidate_sha256": "d82c49368eef6b8ec668ea667cb0a950e97a442870973cd6baf8b3e57bcda040"
+      },
+      {
+        "name": "func_8000701C_7C1C",
+        "size": 8,
+        "guest_address": "0x8000701C",
+        "rom_offset": "0x7C1C",
+        "matched": true,
+        "expected_sha256": "ad91db42a1330a1195b62caea28da35e9d8b2534680d6005f6976c1fbf9c52f8",
+        "candidate_sha256": "ad91db42a1330a1195b62caea28da35e9d8b2534680d6005f6976c1fbf9c52f8"
+      },
+      {
+        "name": "func_80038D64_39964",
+        "size": 48,
+        "guest_address": "0x80038D64",
+        "rom_offset": "0x39964",
+        "matched": true,
+        "expected_sha256": "97c9e1a8efc431b035a98a3bb4fdaff3720ba50ec6c3ae7fec05b0aec0d60835",
+        "candidate_sha256": "97c9e1a8efc431b035a98a3bb4fdaff3720ba50ec6c3ae7fec05b0aec0d60835"
       }
     ]
   },
@@ -781,9 +809,11 @@
     "script_vm.c": "3b6535436692ea07542f71593716c3c7b49a191a4831bf5bf6557549b55034b4",
     "viewport_bounds.c": "58e9c72853558f1302402dcc7331866a04e53ff022d17732d1e995a037cce9e5",
     "warp_state.c": "27b0585338b176ee6e0536be3deec4f6688893af686403ac5fd82709662f0955",
+    "scheduler_views.c": "47db47be1c4326d208087fcd390955c1f977ff94ec355d9c497af0a8ac7389e6",
+    "audio_state.c": "8331f0694893a15d477a7d693ce7b010e89623f3fbe62509ece9bb800b72514a",
     "save_resources.h": "ec5a34eca1296a2bac959ae01fdd8fd72eb1ef36fd47ff0002e92e17b40f6bcf",
     "script_vm.h": "adb2dd0d893d8b803d430dd37223eff39013321d3d9f7002d5f60496dbd625fb",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-03T00:09:38.845542+00:00"
+  "ended_utc": "2026-11-03T00:24:57.043086+00:00"
 }

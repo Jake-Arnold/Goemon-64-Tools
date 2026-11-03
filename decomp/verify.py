@@ -46,6 +46,9 @@ def load_manifest(path):
         start,end=unit['rom_start'],unit['rom_end']
         if not 0<=start<end or start%4 or end%4:raise ValueError('Invalid unit bounds')
         ranges.append((start,end))
+        no_padding=unit.get('asm_no_padding',[])
+        if len(no_padding)!=len(set(no_padding)) or any(not re.fullmatch('[0-9A-F]{4,5}',name) for name in no_padding):
+            raise ValueError('Invalid assembly no-padding object name')
         previous=start
         for fn in unit['functions']:
             if not re.fullmatch('func_[0-9A-F]{8}_[0-9A-F]+',fn['name']) or fn['name'] in seen or fn['name'] in assembly_seen:
@@ -102,6 +105,13 @@ def apply_units(checkout,manifest,source_dir=ROOT):
             text=text.replace(before,after)
         makefile=(checkout/'Makefile').read_text(encoding='utf-8')
         makefile+='\n# Preserve the 4-byte-aligned prefix before the migrated VM table.\nbuild/usa/asm/usa/data/main_continued.rodata.s.o: ASFLAGS += --no-pad-sections\n'
+    no_padding=[name for unit in manifest['units'] for name in unit.get('asm_no_padding',[])]
+    if no_padding:
+        if len(no_padding)!=len(set(no_padding)):raise ValueError('Duplicate assembly no-padding object')
+        if makefile is None:makefile=(checkout/'Makefile').read_text(encoding='utf-8')
+        makefile+='\n# Preserve exact lengths of assembly slices adjoining C functions.\n'
+        for name in no_padding:
+            makefile+=f'build/usa/asm/usa/{name}.s.o: ASFLAGS += --no-pad-sections\n'
     copies=[]
     for name in manifest.get('support_headers',[]):
         source=source_dir/name;destination=checkout/'src'/name
@@ -206,6 +216,7 @@ def run_build(args,manifest,report):
         raise ValueError('New work directory must be outside the immutable baseline cache')
     work.mkdir(parents=True)
     report.update(upstream_commit=manifest['upstream_commit'],retail_sha1=manifest['retail_sha1'],
+        verifier_source_sha256_lf=digest(Path(__file__).read_bytes().replace(b'\r\n',b'\n'),'sha256'),
         tool_versions={name:capture(command).splitlines()[0] for name,command in {
             'uv':[uv,'--version'],'gcc':['gcc','--version'],'assembler':['mips-linux-gnu-as','--version']}.items()})
     def logged(stage,command,cwd):

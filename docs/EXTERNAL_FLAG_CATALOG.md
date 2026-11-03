@@ -73,3 +73,15 @@ and cross-byte mask checks plus live filtering/hidden-row refresh. Actual read-o
 Goemon64Recomp sampling returned all 62 rows with no errors; the real Tk panel was
 visually inspected with the external filter active. This does not upgrade those
 37 meanings to locally gameplay-tested status. No new executable or native build.
+
+## Follow-up user note: Muscle Gym and story order
+
+The user reports that the Kyushu disappearance flag (ID `0x017`,
+`0x8015C60A & 0x80`) enables the Muscle Gym to appear in Oedo Town, allowing
+story progression. The tracker now records that association with user-report
+provenance; no new forced-bit or spawn-code validation was performed here.
+
+Requested presentation follow-up: order named story milestones against the
+previously supplied GameFAQs walkthrough (FAQ 3273), retaining alternate branches,
+optional/retry states and evidence distinctions. This remains a follow-up rather
+than assigning an unverified numeric-ID story order during decomp work.
