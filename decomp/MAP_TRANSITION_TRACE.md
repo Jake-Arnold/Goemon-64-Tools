@@ -95,3 +95,8 @@ that function. The caller uses linked-object pointers and callback fields, but
 their relationship to room resources or actors is still unproven. The unused
 second parameter has multiple matching source types; its original type is
 not established.
+
+`func_80035064_35C64` now matches as C (48 bytes). It passes the current
+object to `800362DC`, reloads the global object, and passes the new value to
+`80035044`. Its neighbor `80035094` remains assembly: a first draft compiled
+to the correct length but differed in two instruction words.

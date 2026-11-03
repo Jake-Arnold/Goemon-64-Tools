@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct current-object dispatch wrapper
+
+- Reconstructed func_80035064_35C64 (48 bytes). It calls 800362DC with the current global object, reloads that global, and calls 80035044 with its possibly changed value. Adjacent 80035094 remains assembly after a two-word mismatch.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 117 C function bytes/addresses match with original inventory. Synthetic host test changes the global in the first callback and verifies the second receives the changed value; 55 focused decomp tests run. No live-game tests or writes.
+- Next: match 80035094 and trace linked-object lifetime and transition dispatcher callers; object gameplay semantics remain unconfirmed.
+
 ## 2026-11-03 - reconstruct linked-object callback wrapper
 
 - Reconstructed func_80035194_35D94 (32 bytes), installed by 800350C4 in one path and forwarding its first argument back to that function. The unused second argument has multiple matching types, so its original type is unconfirmed. Linked-object semantics and relationship to map resources remain unresolved.

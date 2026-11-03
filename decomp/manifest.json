@@ -983,6 +983,26 @@
           "size": 32
         }
       ]
+    },
+    {
+      "source": "object_dispatch.c",
+      "rom_start": 220260,
+      "rom_end": 220356,
+      "splat_original": "[0x35C64, asm]",
+      "splat_replacement": "[0x35C64, c, object_dispatch]\n    - [0x35CC4, asm]",
+      "asm_no_padding": [
+        "35CC4"
+      ],
+      "functions": [
+        {
+          "name": "func_80035064_35C64",
+          "rom_offset": 220260,
+          "size": 48
+        }
+      ],
+      "assembly_functions": [
+        "func_80035094_35C94"
+      ]
     }
   ],
   "support_headers": [
