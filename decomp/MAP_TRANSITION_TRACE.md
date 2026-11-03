@@ -106,3 +106,8 @@ list at object offset `+0x18`, sets bit `0x80` in each node's byte at native
 node offset `+4`, and returns null after traversal. The meaning of that flag
 and whether those nodes are map resources remain unknown. Host pointer widths
 differ from the N64; native field layout is established by the ROM match.
+
+Two main-loop wrappers now match as C: `80003328_3F28` calls `8000B364`,
+then `8000383C`, then sets main state `0x11`; `80003358_3F58` calls the
+three-way dispatcher `8001F8B0` and then `80034734`. Their external effects
+remain incompletely characterized; neither is asserted to load a room.

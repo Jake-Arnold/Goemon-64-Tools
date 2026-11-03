@@ -880,11 +880,21 @@
     },
     {
       "source": "transition_state.c",
-      "rom_start": 16256,
+      "rom_start": 15600,
       "rom_end": 17856,
       "splat_original": "[0x2C40, asm]",
-      "splat_replacement": "[0x2C40, asm]\n    - [0x3F80, c, transition_state]",
+      "splat_replacement": "[0x2C40, asm]\n    - [0x3CF0, c, transition_state]",
       "functions": [
+        {
+          "name": "func_80003328_3F28",
+          "rom_offset": 16168,
+          "size": 48
+        },
+        {
+          "name": "func_80003358_3F58",
+          "rom_offset": 16216,
+          "size": 40
+        },
         {
           "name": "func_80003380_3F80",
           "rom_offset": 16256,
@@ -912,6 +922,7 @@
         }
       ],
       "assembly_functions": [
+        "func_800030F0_3CF0",
         "func_800033B0_3FB0",
         "func_800033EC_3FEC",
         "func_80003478_4078",

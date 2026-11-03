@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct main-loop transition wrappers
+
+- Reconstructed func_80003328_3F28 and func_80003358_3F58 (48 and 40 bytes). They preserve native call ordering, including state 0x11 and the three-way dispatcher. The initial candidate build failed because C functions were ordered before retained assembly; corrected source order before the successful build.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 120 C function bytes/addresses match with original inventory. Synthetic host tests check ordering and state effects; VM/system host tests and 55 focused decomp tests run. No live-game test or writes.
+- Next: trace called routines and linked objects to distinguish state changes from actual room load/unload work.
+
 ## 2026-11-03 - reconstruct linked-object flag traversal
 
 - Reconstructed func_800362DC_36EDC (44 bytes). It follows a list at owner+0x18 and sets bit 0x80 in each node's flag byte, returning null after traversal. The node flag meaning and relation to room resources are not established; four surrounding functions remain assembly.

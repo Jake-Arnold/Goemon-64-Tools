@@ -3,6 +3,21 @@ void func_80003380_3F80(u8);
 void func_80003428_4028(u8);
 void func_80003528_4128(u8);
 void func_80003628_4228(u8);
+void func_8000B364_BF64(void);
+void func_8000383C_443C(void);
+void func_80003728_4328(u8);
+void func_8001F8B0_204B0(void);
+void func_80034734_35334(void);
+#pragma GLOBAL_ASM("asm/usa/nonmatchings/transition_state/func_800030F0_3CF0.s")
+void func_80003328_3F28(void) {
+    func_8000B364_BF64();
+    func_8000383C_443C();
+    func_80003728_4328(0x11);
+}
+void func_80003358_3F58(void) {
+    func_8001F8B0_204B0();
+    func_80034734_35334();
+}
 void func_80003380_3F80(u8 arg0) {
     D_8015C5C8_15D1C8->unk_3ade0 = arg0;
     D_8015C5C8_15D1C8->unk_3ade1 = 0;
