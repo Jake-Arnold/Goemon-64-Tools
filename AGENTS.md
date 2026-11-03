@@ -9,3 +9,9 @@ Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C 
 5. Do not commit ROMs, copyrighted game assets, saves, per-user routes, diagnostics containing personal information, credentials, or raw game memory dumps. Respect `.gitignore`.
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
 7. Continue from v0.9.9 as the imported baseline; no claim of a successful direct warp is supported.
+
+## Decomp continuation
+
+For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
+It is the operational runbook; older checkpoints and result reports retain
+historical evidence and must not be treated as current instructions/counts.

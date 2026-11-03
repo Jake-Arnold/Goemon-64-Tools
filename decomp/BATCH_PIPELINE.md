@@ -1,5 +1,10 @@
 # Batch decompilation workflow
 
+**Continuing work? Start with [CONTINUE.md](CONTINUE.md)** for current paths,
+next targets, verification commands and publishing steps. Historical counts below
+describe their named checkpoint; current evidence is `results/combined.json` and
+`results/inventory.json`.
+
 This is a local research pipeline for the pinned US build. It generates C drafts,
 compiles them with the original IDO flags, resolves references at original ELF
 addresses, and compares exact function bytes. Successful probes become **review
@@ -38,8 +43,9 @@ python -m decomp.batch init \
 ```
 
 Initialization verifies the source/tool pins, clean tracked sources and complete
-baseline ROM checksum. It indexes all 7,363 baseline assembly entries and excludes
-74 functions in the published matching reference, leaving 7,289 queued entries.
+baseline ROM checksum. It indexes baseline assembly entries and excludes functions in the current
+published matching reference. Queue counts depend on that reference; the original
+74-function pilot left 7,289 queued entries.
 All baseline assembly functions were located. Already-upstream C is excluded.
 Reinitializing the same baseline preserves attempts and refreshes those exclusions.
 A different baseline needs its own cache.
@@ -168,6 +174,6 @@ and [gate validation](results/batch_validation.json) record actual runs. Observe
 The pilot covers the 100 smallest eligible main-segment functions, so it is not
 representative of the whole game. Many remaining failures need shared type information.
 
-Probe matches do **not** change the 74-function verified reconstruction count or
+Probe matches do **not** change the current verified reconstruction count or
 the [whole-build inventory](INVENTORY.md). Full-ROM acceptance and reviewed unit
 integration remain required. There is no new packaged executable or in-game test.

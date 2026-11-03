@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - consolidated decomp continuation instructions
+
+- Changed: added decomp/CONTINUE.md as the operational handoff, linked from root AGENTS.md and the decomp README/batch/VM documents. Consolidated current evidence sources, actual WSL paths, exact build/inventory/test commands, prioritized unresolved targets, failed-attempt locations, acceptance rules and commit/push steps. Marked historical checkpoint counts explicitly and removed stale current-count language from batch instructions.
+- Reason: make continuation practical for a lower reasoning model without requiring reconstruction of scattered chat history or repeating exhausted scalar-context scans. Detailed research remains in its existing documents; the runbook points to it.
+- Branch audit: fetched origin; current task branch includes origin/main and both older feature-branch tips. Before this documentation commit it was 49 ahead / zero behind main. No branches/worktrees were merged, removed or reset; local artifacts are preserved.
+- Validation: checked relative links and balanced Markdown fences across five instruction documents, Bash syntax for all four runbook command blocks, eleven machine-local tool/build/research paths, current 85-function/7,278-ASM proof references, and git diff whitespace. Documentation-only change; compiler builds, application tests and in-game checks were not rerun. Existing ROM proof remains unchanged.
+- Limitations/next: matching still needs interface/control-flow reasoning; a runbook does not automate unknown layout recovery. Continue with the VM text-loop/choice/loader targets or reviewed overlay support, then apply the documented full-ROM gate before counting new C.
+
 ## 2026-11-03 - controller routine and angle helper verified during autonomous continuation
 
 - Matching C: reconstructed func_8003D17C_3DD7C (404 bytes), using the existing upstream 24-byte CONTROLLER_W rather than a partial 12-byte VM input view. Contexts 1/2 copy full controller records; context 3 ORs status/held/pressed fields, sums and clamps raw axes to [-128,+128], preserving float/padding fields; other contexts leave the snapshot unchanged. Operand order preserves original IDO load scheduling without changing the commutative logic. All earlier VM reader bytes still match after field-name/type characterization.

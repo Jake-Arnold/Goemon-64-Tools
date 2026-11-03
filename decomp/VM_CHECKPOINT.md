@@ -1,5 +1,10 @@
 # Event/dialogue VM reconstruction checkpoint
 
+**Continuing work? Start with [CONTINUE.md](CONTINUE.md)** for current paths,
+next targets, verification commands and publishing steps. Historical counts below
+describe their named checkpoint; current evidence is `results/combined.json` and
+`results/inventory.json`.
+
 Date: 2026-11-03. Pinned mnsg baseline and ROM identity are unchanged.
 **52 matching VM functions / 4,372 function bytes**, bringing the track to
 **85 matching C functions / 6,680 function bytes**. The full 32 MiB baseline and

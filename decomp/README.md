@@ -1,5 +1,10 @@
 # Matching C reconstruction track
 
+**Continuing work? Start with [CONTINUE.md](CONTINUE.md)** for current paths,
+next targets, verification commands and publishing steps. Historical counts below
+describe their named checkpoint; current evidence is `results/combined.json` and
+`results/inventory.json`.
+
 This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
