@@ -635,6 +635,24 @@
       "assembly_functions": [
         "func_800166AC_172AC"
       ]
+    },
+    {
+      "source": "fixed_loop.c",
+      "rom_start": 69004,
+      "rom_end": 69036,
+      "splat_original": "[0x10D80, asm]",
+      "splat_replacement": "[0x10D80, asm]\n    - [0x10D8C, c, fixed_loop]\n    - [0x10DAC, asm]",
+      "asm_no_padding": [
+        "10D80",
+        "10DAC"
+      ],
+      "functions": [
+        {
+          "name": "func_8001018C_10D8C",
+          "rom_offset": 69004,
+          "size": 32
+        }
+      ]
     }
   ],
   "support_headers": [

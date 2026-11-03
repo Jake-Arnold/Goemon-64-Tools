@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T19:09:15.865211+00:00",
+  "started_utc": "2026-11-03T19:15:35.228449+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 94,
-    "claimed_functions": 94,
-    "matched_function_bytes": 7100,
+    "matched_functions": 95,
+    "claimed_functions": 95,
+    "matched_function_bytes": 7132,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -894,6 +894,15 @@
         "matched": true,
         "expected_sha256": "f3cbade457655738682d37b11e2fe997b6ca772ac7b7e1e1c77b84183351614c",
         "candidate_sha256": "f3cbade457655738682d37b11e2fe997b6ca772ac7b7e1e1c77b84183351614c"
+      },
+      {
+        "name": "func_8001018C_10D8C",
+        "size": 32,
+        "guest_address": "0x8001018C",
+        "rom_offset": "0x10D8C",
+        "matched": true,
+        "expected_sha256": "ab5308302557648ef39f94f7e32d8743087658e0b435912bcfadcc6548ede7fd",
+        "candidate_sha256": "ab5308302557648ef39f94f7e32d8743087658e0b435912bcfadcc6548ede7fd"
       }
     ]
   },
@@ -937,9 +946,10 @@
     "engine_state.c": "e9fbe551b8f8b70201358f8a51fb688e5d6ac516121fdee5d30716c722a7b830",
     "math_helpers.c": "bb0cfbe2a81e6e476110f30b9c84333a6549923eb0d2d9e55afdca3453c59c73",
     "bit_array.c": "b74f994915a698a62d242f4d3285e07572e51ad2362c5f34e2c7383500e25bc7",
+    "fixed_loop.c": "9aeeb1b637539acd60bc557550f760f489bd63ba5c03652ded9232f4ed28c0a8",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
     "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-03T19:09:43.216830+00:00"
+  "ended_utc": "2026-11-03T19:16:02.135140+00:00"
 }

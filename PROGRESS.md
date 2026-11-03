@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct fixed loop routine
+
+- Reconstructed func_8001018C_10D8C, a 32-byte fixed loop with no observed external side effect. Its purpose remains unknown; the loop is retained to match native instructions.
+- Validation: full ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and 95 C function bytes/addresses match. Focused decomp tests verify the manifest and integration. No live-game test performed.
+- Limitations/next: adjacent bit getter draft produced a 14-byte mismatch after a second control-flow variant and remains assembly; both attempts are retained privately. Continue recovering functions and improving that match.
+
 ## 2026-11-03 - reconstruct two bit-array mutation helpers
 
 - Reconstructed func_80016660_17260 and func_80016684_17284 (76 bytes), setting and clearing an indexed bit in a caller-provided byte array. Adjacent getter remains original assembly. This identifies a reusable engine primitive; specific callers and gameplay semantics remain uncharacterized.
