@@ -108,7 +108,7 @@ void func_80038B98_39798(u16 a) {
     forward_kind = 4; forwarded[0] = a;
     if (feedback_count < sizeof(feedback_ids) / sizeof(feedback_ids[0])) feedback_ids[feedback_count++] = a;
     if (override_buttons && a == 0x2B1) {
-        D_801C7908_1C8508.buttons = D_801C790C_1C850C = next_buttons;
+        D_801C7908_1C8508.button_pressed = D_801C790C_1C850C = next_buttons;
         override_buttons = 0;
     }
 }
@@ -156,7 +156,7 @@ _Static_assert(offsetof(VmWaitOwner, resume) == 0xBC, "saved callback offset");
 _Static_assert(sizeof(VmChoice) == 20, "choice record extent");
 _Static_assert(offsetof(VmChoice, previous) == 8 && offsetof(VmChoice, next) == 12, "choice links");
 _Static_assert(offsetof(VmChoice, script) == 16, "choice script offset");
-_Static_assert(offsetof(VmInput, buttons) == 4 && offsetof(VmInput, horizontal) == 6 && offsetof(VmInput, vertical) == 8, "input fields");
+_Static_assert(offsetof(VmInput, button_pressed) == 4 && offsetof(VmInput, stick_raw_x) == 6 && offsetof(VmInput, stick_raw_y) == 8, "input fields");
 _Static_assert(offsetof(VmWork, last_direction) == 4 && offsetof(VmWork, repeat_ticks) == 6 && offsetof(VmWork, choice_state) == 12, "choice work fields");
 _Static_assert(offsetof(VmWork, marker) == 8, "VM marker offset");
 _Static_assert(offsetof(VmWork, countdown) == 0x10, "VM countdown offset");
@@ -487,8 +487,8 @@ static void check_choice_directions_and_repeat(void) {
     for (i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
         memset(&D_801C77E8_1C83E8, 0xA5, sizeof(VmWork));
         D_801C77E8_1C83E8.last_direction = 0x1234; D_801C77E8_1C83E8.repeat_ticks = 99;
-        D_801C7908_1C8508.horizontal = cases[i].x; D_801C7908_1C8508.vertical = cases[i].y;
-        D_801C7908_1C8508.buttons = cases[i].pressed;
+        D_801C7908_1C8508.stick_raw_x = cases[i].x; D_801C7908_1C8508.stick_raw_y = cases[i].y;
+        D_801C7908_1C8508.button_pressed = cases[i].pressed;
         assert(func_8003EA14_3F614() == cases[i].expected);
         assert(D_801C77E8_1C83E8.last_direction == cases[i].expected && D_801C77E8_1C83E8.repeat_ticks == 0);
         for (tick = 0; tick < 10; tick++) {
@@ -501,17 +501,17 @@ static void check_choice_directions_and_repeat(void) {
         for (tick = 0; tick < sizeof(VmWork); tick++) if (tick < 4 || tick >= 8)
             assert(((u8 *)&D_801C77E8_1C83E8)[tick] == 0xA5);
     }
-    D_801C7908_1C8508.horizontal = D_801C7908_1C8508.vertical = 0;
-    D_801C7908_1C8508.buttons = 0x800;
+    D_801C7908_1C8508.stick_raw_x = D_801C7908_1C8508.stick_raw_y = 0;
+    D_801C7908_1C8508.button_pressed = 0x800;
     D_801C77E8_1C83E8.last_direction = 0;
     assert(func_8003EA14_3F614() == 0x800);
-    D_801C7908_1C8508.buttons = 0x400;
+    D_801C7908_1C8508.button_pressed = 0x400;
     assert(func_8003EA14_3F614() == 0x400 && D_801C77E8_1C83E8.repeat_ticks == 0);
 }
 
 static void set_choice_buttons(u16 buttons) {
     /* These views alias on the guest; keep synthetic integration inputs consistent. */
-    D_801C7908_1C8508.buttons = D_801C790C_1C850C = buttons;
+    D_801C7908_1C8508.button_pressed = D_801C790C_1C850C = buttons;
 }
 
 static void reset_choice_fixture(void) {
@@ -742,8 +742,47 @@ static void check_context_event_start(void) {
     D_80077858_78458 = 0;
 }
 
+static void check_controller_context_routing(void) {
+    CONTROLLER_W before;
+    CONTROLLER_W *first = &D_8015C5C8_15D1C8->controller[0];
+    CONTROLLER_W *second = &D_8015C5C8_15D1C8->controller[1];
+    _Static_assert(sizeof(CONTROLLER_W) == 24, "controller size");
+    _Static_assert(offsetof(SYS_W, controller) == 0x3B078, "controller system offset");
+    _Static_assert(offsetof(CONTROLLER_W, stick_x) == 0xC, "float axis offset");
+    memset(first, 0, sizeof(*first)); memset(second, 0, sizeof(*second));
+    first->status = 1; first->button_held_down = 0x1000; first->button_pressed = 0x2000;
+    first->stick_raw_x = 100; first->stick_raw_y = -100;
+    first->stick_x = 1.25f; first->stick_y = -2.5f; first->stick_magnitude = 3.75f;
+    second->status = 2; second->button_held_down = 0x0400; second->button_pressed = 0x0080;
+    second->stick_raw_x = 50; second->stick_raw_y = -60;
+    second->stick_x = 4.25f; second->stick_y = -5.5f; second->stick_magnitude = 6.75f;
+    D_801C7900_1C8500 = 1; func_8003D17C_3DD7C();
+    assert(D_801C7908_1C8508.status == 1 && D_801C7908_1C8508.button_pressed == 0x2000);
+    assert(D_801C7908_1C8508.stick_raw_x == 100 && D_801C7908_1C8508.stick_y == -2.5f);
+    D_801C7900_1C8500 = 2; func_8003D17C_3DD7C();
+    assert(D_801C7908_1C8508.status == 2 && D_801C7908_1C8508.button_pressed == 0x0080);
+    assert(D_801C7908_1C8508.stick_raw_y == -60 && D_801C7908_1C8508.stick_magnitude == 6.75f);
+    ((u8 *)&D_801C7908_1C8508)[0xA] = 0xA5;
+    ((u8 *)&D_801C7908_1C8508)[0xB] = 0x5A;
+    D_801C7900_1C8500 = 3; func_8003D17C_3DD7C();
+    assert(D_801C7908_1C8508.status == 3 && D_801C7908_1C8508.button_held_down == 0x1400);
+    assert(D_801C7908_1C8508.button_pressed == 0x2080);
+    assert(D_801C7908_1C8508.stick_raw_x == 128 && D_801C7908_1C8508.stick_raw_y == -128);
+    assert(D_801C7908_1C8508.stick_x == 4.25f && D_801C7908_1C8508.stick_y == -5.5f);
+    assert(((u8 *)&D_801C7908_1C8508)[0xA] == 0xA5 && ((u8 *)&D_801C7908_1C8508)[0xB] == 0x5A);
+    first->stick_raw_x = 40; second->stick_raw_x = -25;
+    first->stick_raw_y = -20; second->stick_raw_y = 30;
+    func_8003D17C_3DD7C();
+    assert(D_801C7908_1C8508.stick_raw_x == 15 && D_801C7908_1C8508.stick_raw_y == 10);
+    memcpy(&before, &D_801C7908_1C8508, sizeof(before));
+    D_801C7900_1C8500 = 0; func_8003D17C_3DD7C();
+    assert(memcmp(&before, &D_801C7908_1C8508, sizeof(before)) == 0);
+    memset(&D_801C7908_1C8508, 0, sizeof(D_801C7908_1C8508));
+    memset(first, 0, sizeof(*first)); memset(second, 0, sizeof(*second));
+}
+
 int main(void) {
-    check_numbered_event_start(); check_context_event_start();
+    check_controller_context_routing(); check_numbered_event_start(); check_context_event_start();
     check_choice_index_and_wait_callbacks(); check_resource_context_transitions(); check_choice_directions_and_repeat(); check_choice_navigation_and_confirmation(); check_choice_stream_rendering(); check_prompt_geometry_and_animation(); check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
     puts("VM choices/repeat/streams, inputs, resources, callbacks and dialogue states passed.");
     return 0;

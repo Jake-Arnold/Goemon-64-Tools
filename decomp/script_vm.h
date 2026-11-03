@@ -57,7 +57,7 @@ typedef struct {
     s32 choice_state, countdown;
 } VmWork;
 typedef struct { s32 x, y; u32 previous, next, script; } VmChoice;
-typedef struct { u16 unknown00, unknown02, buttons; s16 horizontal, vertical; u16 unknown0a; } VmInput;
+typedef CONTROLLER_W VmInput;
 extern VmChoice *D_801C7800_1C8400;
 extern VmChoice D_801C7808_1C8408[];
 extern VmInput D_801C7908_1C8508;

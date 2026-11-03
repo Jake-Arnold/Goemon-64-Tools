@@ -38,9 +38,28 @@ void func_8003D080_3DC80(void) {
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003D0B0_3DCB0.s")
 #endif
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003D17C_3DD7C.s")
-#endif
+/* Copy either controller or combine held/pressed/raw axes for context 3. */
+void func_8003D17C_3DD7C(void) {
+    if (D_801C7900_1C8500 == 1) {
+        D_801C7908_1C8508 = D_8015C5C8_15D1C8->controller[0];
+        return;
+    }
+    if (D_801C7900_1C8500 == 2) {
+        D_801C7908_1C8508 = D_8015C5C8_15D1C8->controller[1];
+        return;
+    }
+    if (D_801C7900_1C8500 == 3) {
+        D_801C7908_1C8508.status = D_8015C5C8_15D1C8->controller[0].status | D_8015C5C8_15D1C8->controller[1].status;
+        D_801C7908_1C8508.button_held_down = D_8015C5C8_15D1C8->controller[0].button_held_down | D_8015C5C8_15D1C8->controller[1].button_held_down;
+        D_801C7908_1C8508.button_pressed = D_8015C5C8_15D1C8->controller[0].button_pressed | D_8015C5C8_15D1C8->controller[1].button_pressed;
+        D_801C7908_1C8508.stick_raw_x = D_8015C5C8_15D1C8->controller[0].stick_raw_x + D_8015C5C8_15D1C8->controller[1].stick_raw_x;
+        D_801C7908_1C8508.stick_raw_y = D_8015C5C8_15D1C8->controller[0].stick_raw_y + D_8015C5C8_15D1C8->controller[1].stick_raw_y;
+        if (D_801C7908_1C8508.stick_raw_x >= 128) D_801C7908_1C8508.stick_raw_x = 128;
+        if (D_801C7908_1C8508.stick_raw_x < -128) D_801C7908_1C8508.stick_raw_x = -128;
+        if (D_801C7908_1C8508.stick_raw_y >= 128) D_801C7908_1C8508.stick_raw_y = 128;
+        if (D_801C7908_1C8508.stick_raw_y < -128) D_801C7908_1C8508.stick_raw_y = -128;
+    }
+}
 
 /* Start a numbered shared event, cleaning up the previous VM if active. */
 void func_8003D310_3DF10(s32 event) {
@@ -314,11 +333,11 @@ void func_8003EA0C_3F60C(void) {
 s32 func_8003EA14_3F614(void) {
     u16 direction;
     direction = 0;
-    if (D_801C7908_1C8508.vertical >= 41 || D_801C7908_1C8508.horizontal < -40 ||
-        (D_801C7908_1C8508.buttons & 0xA00)) {
+    if (D_801C7908_1C8508.stick_raw_y >= 41 || D_801C7908_1C8508.stick_raw_x < -40 ||
+        (D_801C7908_1C8508.button_pressed & 0xA00)) {
         direction = 0x800;
-    } else if (D_801C7908_1C8508.vertical < -40 || D_801C7908_1C8508.horizontal >= 41 ||
-               (D_801C7908_1C8508.buttons & 0x500)) {
+    } else if (D_801C7908_1C8508.stick_raw_y < -40 || D_801C7908_1C8508.stick_raw_x >= 41 ||
+               (D_801C7908_1C8508.button_pressed & 0x500)) {
         direction = 0x400;
     }
     if (D_801C77E8_1C83E8.last_direction == direction) {

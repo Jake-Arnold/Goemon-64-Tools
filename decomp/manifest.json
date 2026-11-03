@@ -189,6 +189,11 @@
           "size": 48
         },
         {
+          "name": "func_8003D17C_3DD7C",
+          "rom_offset": 253308,
+          "size": 404
+        },
+        {
           "name": "func_8003D310_3DF10",
           "rom_offset": 253712,
           "size": 120
@@ -421,7 +426,6 @@
       ],
       "assembly_functions": [
         "func_8003D0B0_3DCB0",
-        "func_8003D17C_3DD7C",
         "func_8003D468_3E068",
         "func_8003D68C_3E28C",
         "func_8003D9B8_3E5B8",
@@ -516,6 +520,24 @@
           "name": "func_80038D64_39964",
           "rom_offset": 235876,
           "size": 48
+        }
+      ]
+    },
+    {
+      "source": "trig_angles.c",
+      "rom_start": 63492,
+      "rom_end": 63668,
+      "splat_original": "[0xE7F0, asm]",
+      "splat_replacement": "[0xE7F0, asm]\n    - [0xF804, c, trig_angles]\n    - [0xF8B4, asm]",
+      "asm_no_padding": [
+        "E7F0",
+        "F8B4"
+      ],
+      "functions": [
+        {
+          "name": "func_8000EC04_F804",
+          "rom_offset": 63492,
+          "size": 176
         }
       ]
     }

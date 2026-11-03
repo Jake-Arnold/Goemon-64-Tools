@@ -7,7 +7,14 @@ typedef uint32_t u32;
 typedef uint16_t u16;
 typedef int16_t s16;
 typedef int32_t s32;
-/* Synthetic host storage model for the fields accessed by system_memory.c.
+typedef float f32;
+/* Characterized controller view; native field offsets, not a complete SDK header. */
+typedef struct {
+    u16 status, button_held_down, button_pressed;
+    s16 stick_raw_x, stick_raw_y;
+    f32 stick_x, stick_y, stick_magnitude;
+} CONTROLLER_W;
+/* Synthetic host storage model for memory helpers and VM controller input.
  * Does not copy the upstream SDK/system header or model other engine fields.
  */
 typedef struct {
@@ -17,7 +24,9 @@ typedef struct {
     u8 unknown_3ADC4[8];
     u16 retrace_count;
     s16 game_loops_count;
-    u8 unknown_3ADD0[0xCF8A0 - 0x3ADD0];
+    u8 unknown_3ADD0[0x3B078 - 0x3ADD0];
+    CONTROLLER_W controller[5];
+    u8 unknown_after_controller[0xCF8A0 - 0x3B078 - 5*sizeof(CONTROLLER_W)];
     u8 unk_cf8a0;
     u8 remainder[0xCF908 - 0xCF8A1];
 } SYS_W;

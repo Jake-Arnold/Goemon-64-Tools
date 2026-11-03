@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T01:32:22.791824+00:00",
+  "started_utc": "2026-11-03T02:01:15.706817+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -29,8 +29,8 @@
     "new_alignment": 4,
     "relocations_retained": 15,
     "payload_bytes_changed": 0,
-    "input_sha256": "e014147c7169bf16038e0a21d1ecefd6382c9dae761c1185a8f6fc4bb8048ab9",
-    "output_sha256": "924860d2f76c8a22553cc5b93f6e653b1a9a75bb6c4de208eccd143784a78fb0",
+    "input_sha256": "58fd01bd4cbe4b63d26bfba5dba3b3533c2a42ecce450b14f4834aef1c49818f",
+    "output_sha256": "e9a82f6c587d2682a6d389eb07d25ef0acf4f5388f7668438c5ee158402a73a4",
     "text_sha256": "9d180f9bc00b9ab2a6c05c30943cf68381b024635b0e4b3f5af94915c83128b5",
     "compiled_table_prefix_sha256": "cfb6b1a6dee1e182ccfad56f71ce9eb34d63b82db2afccc81f65ba32d1ad28e5"
   },
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 83,
-    "claimed_functions": 83,
-    "matched_function_bytes": 6100,
+    "matched_functions": 85,
+    "claimed_functions": 85,
+    "matched_function_bytes": 6680,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -318,6 +318,15 @@
         "matched": true,
         "expected_sha256": "d7d7756dec4de84e383d3057ecf620a4a1f213815383781a84559eea59e3c8ad",
         "candidate_sha256": "d7d7756dec4de84e383d3057ecf620a4a1f213815383781a84559eea59e3c8ad"
+      },
+      {
+        "name": "func_8003D17C_3DD7C",
+        "size": 404,
+        "guest_address": "0x8003D17C",
+        "rom_offset": "0x3DD7C",
+        "matched": true,
+        "expected_sha256": "c3aa2935110f7b58321b0ecf43bbc8200b7c262b34d232024d83c5c2b56baa31",
+        "candidate_sha256": "c3aa2935110f7b58321b0ecf43bbc8200b7c262b34d232024d83c5c2b56baa31"
       },
       {
         "name": "func_8003D310_3DF10",
@@ -795,12 +804,20 @@
         "matched": true,
         "expected_sha256": "97c9e1a8efc431b035a98a3bb4fdaff3720ba50ec6c3ae7fec05b0aec0d60835",
         "candidate_sha256": "97c9e1a8efc431b035a98a3bb4fdaff3720ba50ec6c3ae7fec05b0aec0d60835"
+      },
+      {
+        "name": "func_8000EC04_F804",
+        "size": 176,
+        "guest_address": "0x8000EC04",
+        "rom_offset": "0xF804",
+        "matched": true,
+        "expected_sha256": "8654928b97d2e956a220957e3545cbeaee1fccfbc6739e84cac231bc97479541",
+        "candidate_sha256": "8654928b97d2e956a220957e3545cbeaee1fccfbc6739e84cac231bc97479541"
       }
     ]
   },
   "retained_assembly_functions": [
     "func_8003D0B0_3DCB0",
-    "func_8003D17C_3DD7C",
     "func_8003D468_3E068",
     "func_8003D68C_3E28C",
     "func_8003D9B8_3E5B8",
@@ -822,14 +839,15 @@
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
     "system_memory.c": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
     "save_resources.c": "37d12a4338f60af64c57908f348b63cfde88aa54b66ad2c3f30f1390dc783ce8",
-    "script_vm.c": "a30cd05d7279e10c56895a6923be70c82a2da7177296d75756636ff116645f27",
+    "script_vm.c": "afba3a67767866dfd87b591a83fb8794b1b3c3c895db8a0e85924263a225b82c",
     "viewport_bounds.c": "58e9c72853558f1302402dcc7331866a04e53ff022d17732d1e995a037cce9e5",
     "warp_state.c": "27b0585338b176ee6e0536be3deec4f6688893af686403ac5fd82709662f0955",
     "scheduler_views.c": "47db47be1c4326d208087fcd390955c1f977ff94ec355d9c497af0a8ac7389e6",
     "audio_state.c": "8331f0694893a15d477a7d693ce7b010e89623f3fbe62509ece9bb800b72514a",
+    "trig_angles.c": "d60c70246ef486742ca655aa2b4a0fbb584ac5a755e04221ccc18a128d9dd54e",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
-    "script_vm.h": "4b0c60181d9b88412433f45580ee5a23a310cc23faeae7c8dd2656bd45cfae07",
+    "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-03T01:32:47.592812+00:00"
+  "ended_utc": "2026-11-03T02:01:40.269533+00:00"
 }

@@ -1,8 +1,8 @@
 # Event/dialogue VM reconstruction checkpoint
 
 Date: 2026-11-03. Pinned mnsg baseline and ROM identity are unchanged.
-**51 matching VM functions / 3,968 function bytes**, bringing the track to
-**83 matching C functions / 6,100 function bytes**. The full 32 MiB baseline and
+**52 matching VM functions / 4,372 function bytes**, bringing the track to
+**85 matching C functions / 6,680 function bytes**. The full 32 MiB baseline and
 candidate both match decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
 Current source hashes, guest addresses and byte-range comparisons are in
 [combined.json](results/combined.json). The previous complete-save checkpoint is
@@ -27,10 +27,21 @@ entry. Host tests cover null/non-null owners, unsigned marker 0xE1, context stat
 cleanup order and unchanged owner memory. The original unchecked index behavior
 is retained; this is an engine reconstruction, not a new safe public API.
 
+## Controller-input follow-up
+
+`func_8003D17C_3DD7C` adds 404 verified bytes. Replacing the incomplete input view
+with the existing 24-byte `CONTROLLER_W` type recovered struct-copy semantics for
+controller 1/2 and exact combined-input behavior. Operand ordering preserved the
+original IDO load scheduling without changing the commutative logic. Input fields
+used by earlier matching helpers were renamed to their characterized controller
+members; all previous function bytes still match. Host tests cover full records,
+button unions, positive/negative and cancelling axes, exact +128/-128 limits,
+unchanged combined float/padding fields and inactive contexts.
+
 ## Selected unit and evidence boundaries
 
 The original `0x3DBA0..0x40320` unit contains 69 functions. `script_vm.c` replaces
-51 functions and retains 18 explicitly declared assembly functions. The main
+52 functions and retains 17 explicitly declared assembly functions. The main
 dispatcher, remaining operand handlers and comparison routine remain
 assembly; the complete VM is not decompiled. A name appears in the matching count
 only when linked guest address, original bytes and absence of its assembly marker

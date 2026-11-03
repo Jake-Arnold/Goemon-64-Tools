@@ -4,12 +4,12 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **83 functions / 6,100 function bytes across eight units**.
+Current verified total: **85 functions / 6,680 function bytes across nine units**.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
 
 The [whole-build inventory](INVENTORY.md) identifies **7,376 function entries**:
-**96 matching C entries** (13 upstream plus these 83), leaving **7,280 assembly
+**98 matching C entries** (13 upstream plus these 85), leaving **7,278 assembly
 entries**, including SDK/runtime code. Exported jump labels are excluded.
 
 ## Screen-rectangle bounds helper
@@ -84,6 +84,22 @@ Turtle Rock reward record. The Shishi-odoshi dynamic
 spawn is now traced as well, completing [45 flag records](results/fortune_doll_catalog.json):
 40 silver and five gold. This is room/native-code evidence, not 45 live pickup tests.
 
+## Controller input and two-point angles
+
+`func_8003D17C_3DD7C` now has full-ROM-matching C (404 bytes). It uses the existing
+upstream `CONTROLLER_W` type: context 1/2 copies the corresponding complete pad
+record; context 3 ORs status/held/pressed buttons and sums/clamps raw axes to
+[-128,+128], leaving float/padding fields alone. Other contexts leave the snapshot
+unchanged. Host models verify the real 24-byte controller layout and system offset
+without bundling the complete SDK header. Existing VM input readers now use those
+characterized field names; their machine code remains identical.
+
+`trig_angles.c` adds `func_8000EC04_F804` (176 bytes), from the expanded batch's
+single new linked match. It uses relative XYZ, planar magnitude, the existing
+angle helper, a 10-bit first-angle mask and the unmasked second angle. Host stubs
+verify argument wiring, sign/zero handling and output conventions; the actual
+full native function is checked against the original ROM.
+
 ## Batch discovery and matching
 
 The [batch workflow](BATCH_PIPELINE.md) now provides a persistent queue, concurrent
@@ -95,8 +111,8 @@ checking a fresh candidate for each reviewed batch.
 
 ## Event/dialogue VM helpers
 
-[VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents 51 matching functions in the 69-function
-event/dialogue unit. The remaining 18 functions, including the dispatcher,
+[VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents 52 matching functions in the 69-function
+event/dialogue unit. The remaining 17 functions, including the dispatcher,
 comparator and remaining operand handlers, remain assembly and are excluded.
 The native comparator's host-only semantic model is explicitly not counted.
 The first three reconstructed units below are still complete matching C.

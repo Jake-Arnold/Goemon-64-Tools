@@ -214,7 +214,7 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
                 self.assertTrue(current['comparison']['full_rom_match'])
                 expected=current['verifier_source_sha256_lf']
             self.assertEqual(hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),expected,name)
-        for name in ('batch_pilot.json','batch_search_pilot.json','batch_entrance_followup.json'):
+        for name in ('batch_pilot.json','batch_search_pilot.json','batch_entrance_followup.json','batch_ui_followup.json','batch_autonomous_main_v1.json'):
             result=json.loads((ROOT/'results'/name).read_text())
             self.assertEqual(result['newly_verified_full_rom_functions'],0)
             self.assertEqual(sum(result['statuses'].values()),result['latest_attempts'])
