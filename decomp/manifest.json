@@ -1059,14 +1059,18 @@
       "splat_replacement": "[0x21330, asm]\n    - [0x21B10, c, default_entrance]",
       "functions": [
         {
+          "name": "func_80021444_22044",
+          "rom_offset": 139332,
+          "size": 160
+        },
+        {
           "name": "func_800214E4_220E4",
           "rom_offset": 139492,
           "size": 228
         }
       ],
       "assembly_functions": [
-        "func_80020F10_21B10",
-        "func_80021444_22044"
+        "func_80020F10_21B10"
       ]
     }
   ],

@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct entrance preparation and inspect wide map capture
+
+- Reconstructed func_80021444_22044 (160 bytes), preserving its 0xFF guard, saved intended room/group, active word, default entrance selection and state 0x0B request on both paths. Native state requests are not established safe generic warps.
+- Reviewed user's local wide map off/on/off export. It reports 106,840 A/B changes and 30,443 A/C reversions, retaining 1,200 ranked rows, including known map overlay read byte 0x8015C574. The noise and export cap prevent identifying additional flags without controls. No raw export, snapshots, personal context or trial identifiers committed.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 125 C function bytes/addresses match with original inventory. Synthetic host tests check both guard paths, side effects and callback ordering; VM/system host tests and 55 focused decomp tests run. No live-game test or writes.
+- Next: trace map overlay readers/writers with repeatable focused controls and continue native resource loading/teardown research.
+
 ## 2026-11-03 - reconstruct default entrance selection and record map comparison
 
 - Reconstructed func_800214E4_220E4 (228 bytes), selecting a ten-byte default entry record by intended room ID, copying coordinates/heading/mode when any coordinate is nonzero and otherwise clearing those five saved fields. Original unchecked indexing is preserved. Two preceding routines remain assembly.

@@ -33,7 +33,9 @@ typedef struct {
     u8 unknown_3ADDA[4];
     u8 unk_3adde, unk_3addf;
     u8 unk_3ade0, unk_3ade1;
-    u8 unknown_3ADE2[0x10];
+    u8 unknown_3ADE2[2];
+    u8 intended_room_group;
+    u8 unknown_3ADE5[0xD];
     u16 intended_room_id;
     u8 unknown_3ADF4[0x3B078 - 0x3ADF4];
     CONTROLLER_W controller[5];

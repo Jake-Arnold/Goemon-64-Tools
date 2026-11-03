@@ -152,3 +152,11 @@ changes appeared in player-task bytes; their role is unknown and the displayed
 float candidate overlaps changing bytes, so it is not established as a float.
 This is an event correlation, not a new independent finding of safe write
 behavior; earlier direct-write tests remain relevant.
+
+The user's additional wide A/B/C export compared one 4 MiB region. It reports
+106,840 changed A→B bytes, 30,443 returning to A, and retains the top 1,200
+ranked candidates. The established `0x8015C574` row is among them; the large
+number of simultaneous changes prevents attributing other candidates to the map
+without repeated focused tests or a control. The export does not contain all
+30,443 candidate rows, and no additional flag is confirmed by it. The personal
+raw export remains local and is not part of the repository.
