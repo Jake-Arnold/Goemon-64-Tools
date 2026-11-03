@@ -100,3 +100,9 @@ not established.
 object to `800362DC`, reloads the global object, and passes the new value to
 `80035044`. Its neighbor `80035094` remains assembly: a first draft compiled
 to the correct length but differed in two instruction words.
+
+`func_800362DC_36EDC` now matches as C (44 bytes). It traverses the linked
+list at object offset `+0x18`, sets bit `0x80` in each node's byte at native
+node offset `+4`, and returns null after traversal. The meaning of that flag
+and whether those nodes are map resources remain unknown. Host pointer widths
+differ from the N64; native field layout is established by the ROM match.

@@ -1003,12 +1003,37 @@
       "assembly_functions": [
         "func_80035094_35C94"
       ]
+    },
+    {
+      "source": "object_flags.c",
+      "rom_start": 224988,
+      "rom_end": 225532,
+      "splat_original": "[0x36750, asm]",
+      "splat_replacement": "[0x36750, asm]\n    - [0x36EDC, c, object_flags]\n    - [0x370FC, asm]",
+      "asm_no_padding": [
+        "36750",
+        "370FC"
+      ],
+      "functions": [
+        {
+          "name": "func_800362DC_36EDC",
+          "rom_offset": 224988,
+          "size": 44
+        }
+      ],
+      "assembly_functions": [
+        "func_80036308_36F08",
+        "func_80036388_36F88",
+        "func_800363F4_36FF4",
+        "func_80036448_37048"
+      ]
     }
   ],
   "support_headers": [
     "save_resources.h",
     "script_vm.h",
-    "vm_compare_reference.h"
+    "vm_compare_reference.h",
+    "object_flags.h"
   ],
   "splat_options": {
     "asm_jtbl_label_macro": "glabel"

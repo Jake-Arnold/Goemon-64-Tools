@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct linked-object flag traversal
+
+- Reconstructed func_800362DC_36EDC (44 bytes). It follows a list at owner+0x18 and sets bit 0x80 in each node's flag byte, returning null after traversal. The node flag meaning and relation to room resources are not established; four surrounding functions remain assembly.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 118 C function bytes/addresses match with original inventory. Synthetic host tests cover empty and multi-node lists, retained bits and unchanged links; 55 focused decomp tests run. Host pointers differ from N64 widths; native layout is verified by matching code. No live-game tests or writes.
+- Next: trace writers/readers of the node flag and transition dispatcher to determine its lifecycle role.
+
 ## 2026-11-03 - reconstruct current-object dispatch wrapper
 
 - Reconstructed func_80035064_35C64 (48 bytes). It calls 800362DC with the current global object, reloads that global, and calls 80035044 with its possibly changed value. Adjacent 80035094 remains assembly after a two-word mismatch.
