@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct transition resource wrapper
+
+- Reconstructed func_80034EF8_35AF8 (40 bytes), called by the third transition-dispatch branch. It forwards the same 32-bit argument to 80034F44 then 80035044. Its argument's exact type and those callees' resource effects remain unknown.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 114 C function bytes/addresses match with original inventory. Synthetic host test verifies call order and argument forwarding; 55 focused decomp tests run. No live-game test or writes.
+- Next: trace both called routines and dispatcher state to identify actual resource loading and teardown.
+
 ## 2026-11-03 - reconstruct two transition dispatcher branches
 
 - Resolved the three native targets in the table at ROM 0x6C330 and reconstructed func_8001F914_20514 and func_8001FA3C_2063C (44 and 68 bytes). The middle branch and called resource helpers remain assembly; precise loading/unloading semantics are not yet established.

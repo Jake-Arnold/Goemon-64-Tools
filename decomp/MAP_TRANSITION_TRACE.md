@@ -78,3 +78,7 @@ using system `+0x3ADDE`. The three targets are `8001F914_20514`,
 clears `0x800C7A76`, then calls `80003478`; the third calls `80004240`, passes
 a global word to `80034EF8`, then sets system `+0x3ADDF` to one. The latter
 helpers and actual room loading/unloading effects remain under investigation.
+
+`func_80034EF8_35AF8` now matches as C (40 bytes): it passes its word
+argument to `80034F44_35B44`, then to `80035044_35C44`. The argument's
+underlying type and the called routines' resource effects remain unresolved.

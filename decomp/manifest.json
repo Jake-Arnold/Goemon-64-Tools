@@ -927,6 +927,28 @@
         "func_800038E4_44E4",
         "func_8000394C_454C"
       ]
+    },
+    {
+      "source": "resource_dispatch.c",
+      "rom_start": 219860,
+      "rom_end": 219972,
+      "splat_original": "[0x35280, asm]",
+      "splat_replacement": "[0x35280, asm]\n    - [0x35AD4, c, resource_dispatch]\n    - [0x35B44, asm]",
+      "asm_no_padding": [
+        "35280",
+        "35B44"
+      ],
+      "functions": [
+        {
+          "name": "func_80034EF8_35AF8",
+          "rom_offset": 219896,
+          "size": 40
+        }
+      ],
+      "assembly_functions": [
+        "func_80034ED4_35AD4",
+        "func_80034F20_35B20"
+      ]
     }
   ],
   "support_headers": [
