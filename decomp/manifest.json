@@ -869,6 +869,35 @@
         "func_80006274_6E74",
         "func_80006298_6E98"
       ]
+    },
+    {
+      "source": "transition_state.c",
+      "rom_start": 16592,
+      "rom_end": 17856,
+      "splat_original": "[0x2C40, asm]",
+      "splat_replacement": "[0x2C40, asm]\n    - [0x40D0, c, transition_state]",
+      "functions": [
+        {
+          "name": "func_80003728_4328",
+          "rom_offset": 17192,
+          "size": 100
+        }
+      ],
+      "assembly_functions": [
+        "func_800034D0_40D0",
+        "func_80003528_4128",
+        "func_80003578_4178",
+        "func_800035D0_41D0",
+        "func_80003628_4228",
+        "func_80003678_4278",
+        "func_800036D0_42D0",
+        "func_8000378C_438C",
+        "func_800037E4_43E4",
+        "func_8000383C_443C",
+        "func_80003880_4480",
+        "func_800038E4_44E4",
+        "func_8000394C_454C"
+      ]
     }
   ],
   "support_headers": [

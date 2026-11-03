@@ -21,10 +21,15 @@ typedef struct {
     u8 prefix[0x3ADC0];
     uint16_t fill_color_alpha;
     uint16_t frame_buffer_bits_per_pixel;
-    u8 unknown_3ADC4[8];
+    u8 unknown_3ADC4[6];
+    u8 retraces_per_game_step;
+    u8 unknown_3ADCB;
     u16 retrace_count;
     s16 game_loops_count;
-    u8 unknown_3ADD0[0x3B078 - 0x3ADD0];
+    u8 unknown_3ADD0[4];
+    u8 stepw;
+    u8 stepw_end;
+    u8 unknown_3ADD6[0x3B078 - 0x3ADD6];
     CONTROLLER_W controller[5];
     u8 unknown_after_controller[0xCF8A0 - 0x3B078 - 5*sizeof(CONTROLLER_W)];
     u8 unk_cf8a0;
