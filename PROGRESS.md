@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - Oedo silver key collection versus opened-lock state
+
+- Changed: added three read-only Story progress entries: 1F pickup on map 7 (0x8015C62A/01, ID 0x110), 2F pickup on map 18 (same byte/10, ID 0x114), and map-13-to-14 lock opening (same byte/08, ID 0x113). Collection is explicitly not labeled current inventory/count.
+- Evidence: local saved pairs are 00->01, 01->11 and 11->19 hex; door use sets only 08 and preserves both collection bits. The screenshot's remaining 10 candidate belongs to the previous pickup trial, not a second change during use. Private trial identifiers/pointers and screenshots remain uncommitted.
+- ROM corroboration: verified original-USA room definitions identify key actor 0x193 at stage 7/definition 5 with key_index 0x110 and stage 18/definition 6 with 0x114; map 13 door actor 0x23E/definition 4 has lock_index 0x113 and accepts key 0x114. Also recorded placement-only 1F door 0x10F/accepts 0x110 without claiming a manual lock test. Documented distinct actor type enums and all evidence in docs/OEDO_SILVER_KEYS.md.
+- Tests: focused story model/UI and ROM scanner suites passed, including independent key bits and persistence of recorded collection bits after lock opening. No game writes/freezes/reloads, no inventory consumption trace or matching-C promotion. Next: key/door task-parameter and consumption tracing; keep distinct events named separately in sessions. Existing windows need restart for new catalog rows.
+
 ## 2026-11-03 - Kegon advice condition corroborated by NPC capture
 
 - Changed: added read-only Story progress entry for saved ID 0x044 / 0x8015C610 mask 0x10, labeled Plasma Waterfall of Kegon hint condition. Existing pinned mn64rando annotation already names this advice condition; user NPC interaction corroborates it. Did not name it a waterfall-access unlock.

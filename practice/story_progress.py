@@ -65,6 +65,12 @@ CURATED_FLAGS = (
               'User A/B screenshot: mask 0x01 set at 0x8015C629 on pickup; one event trial, no controls or reversion'),
     StoryFlag('kegon_plasma_hint','Plasma Waterfall of Kegon hint condition',0x044,
               'Existing mn64rando annotation + user Festival Village East NPC capture; ROM branch-pattern lead 0x7A2404; waterfall access not established'),
+    StoryFlag('oedo_silver_key_1f','Oedo Castle 1F silver key collected',0x110,
+              'User map 7 pickup sets mask 0x01; room file 0x33D definition 5 key_index 0x110; collection history, not current key count'),
+    StoryFlag('oedo_silver_key_2f','Oedo Castle 2F silver key collected',0x114,
+              'User map 18 pickup sets mask 0x10; room file 0x348 definition 6 key_index 0x114; collection history, not current key count'),
+    StoryFlag('oedo_silver_lock_2f','Oedo Castle map 13 silver lock opened',0x113,
+              'User map 13 to 14 sets mask 0x08, preserving pickup bits; room 0x343 definition 4 lock_index 0x113 accepts key 0x114'),
     StoryFlag('congo_state_candidate','Congo encounter state? (candidate)',0x132,
               'User A/B: mask 0x04 cleared during same event; cutscene/actor/room hypothesis, not confirmed'),
 )

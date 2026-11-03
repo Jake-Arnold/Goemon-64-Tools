@@ -227,3 +227,9 @@ parameterized task flag ID, explaining why a literal-ID scan can miss these.
 corroborate saved ID `0x044` (`0x8015C610 & 0x10`) as a Plasma Kegon-advice
 condition. Four GEV reference leads are recorded; physical waterfall access is
 not established. The supplied 1/4 support combines different events/maps.
+
+### Oedo silver keys and locks
+
+[User pickups, mixed-session door use and original room-definition fields](OEDO_SILVER_KEYS.md)
+separate saved key-collection IDs `0x110`/`0x114` from map 13's opened-lock ID
+`0x113`. Door use preserves both observed pickup bits; these are not carried-key counts.

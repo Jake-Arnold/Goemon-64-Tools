@@ -198,3 +198,16 @@ class StoryProgressTests(unittest.TestCase):
         self.assertEqual(row['mask'],'0x10')
         self.assertIn('access not established',row['source'])
         self.assertEqual(ram.u8(0x8015C610),0x14)
+
+    def test_oedo_silver_keys_keep_collection_bits_when_lock_opens(self):
+        ram=self.sample()
+        names=('oedo_silver_key_1f','oedo_silver_key_2f','oedo_silver_lock_2f')
+        for value,expected in ((0,(False,False,False)),(1,(True,False,False)),
+                               (0x11,(True,True,False)),(0x19,(True,True,True))):
+            ram.write_guest(0x8015C62A,bytes([value]))
+            state=read_story_state(ram)
+            self.assertEqual(tuple(state['values'][key] for key in names),expected)
+        rows={r['key']:r for r in story_rows(state)}
+        self.assertEqual([rows[k]['mask'] for k in names],['0x01','0x10','0x08'])
+        self.assertTrue(all(rows[k]['address']==0x8015C62A for k in names))
+        self.assertIn('not current key count',rows[names[1]]['source'])
