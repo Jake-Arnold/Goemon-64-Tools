@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - v0.11.13 Story progress state selector
+
+- Added a selected-row dropdown and Apply state action to Story progress. Individual saved flags use Clear/Set; Mini-Ebisu and Achilles Heel ownership words use Absent/Present. Aggregate bank views remain read-only. The dropdown starts with the observed state, retains user choice across periodic refresh, and reports verified writes or failures.
+- Each selected flag edit targets only its bit; other bits are preserved. Inventory words are explicit 0/1 values. Editing requires enabled memory writes, checks the game state and displayed bytes, and verifies readback. It does not update the saved mirror, execute rewards, or run scene transitions. Compare/write is not atomic against the game thread.
+- Validation: focused Story progress model and Windows Tk tests cover masked flags, stale observations, transition state, read-only mode, ownership words and aggregate rows. Full Windows Python suite: 323 tests, 318 passed and five native skips. No live-game flag writes or in-game behavior validation by the assistant.
+- Next: launch the updated source toolkit for the user, preserve existing running instances and sessions, and continue native decomp/speed-control work separately.
+
 ## 2026-11-03 - add continuous virtual-time primitive for speed control
 
 - Added speed/virtual_clock.h, a synchronized deterministic virtual-time primitive with 100–400% speed in 25% steps, epoch rebasing, fractional microsecond retention, deadline conversion and validation of backwards clocks and arithmetic overflow. This supplies a concrete component for a future recomp host speed integration; it does not alter the game or expose a speed control yet.

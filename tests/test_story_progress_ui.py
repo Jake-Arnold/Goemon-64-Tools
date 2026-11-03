@@ -66,3 +66,30 @@ class StoryProgressUITests(unittest.TestCase):
         self.assertEqual(len(app.story_table.get_children()),3)
         app.story_filter.set('')
         self.assertEqual(len(app.story_table.get_children()),len(FLAGS)+4)
+
+    def test_story_dropdown_applies_selected_flag_and_keeps_other_bits(self):
+        app=self.app; app.args.read_only=False; app.args.enable_hex_edit=True
+        app.mem=FakeRAM(); app.mem.bytes[0x8015C60D]=0x85; app.refresh_story_progress()
+        app.story_table.selection_set('ushi_intro'); app.select_story_edit()
+        self.assertEqual(app.story_edit_choice.get(),'Clear')
+        self.assertEqual(tuple(app.story_edit_combo['values']),('Clear','Set'))
+        app.story_edit_choice.set('Set'); app.apply_story_edit()
+        self.assertEqual(app.mem.bytes[0x8015C60D],0xA5)
+        self.assertIn('verified',app.story_edit_status.get())
+        app.story_table.selection_set('mini'); app.select_story_edit()
+        self.assertEqual(tuple(app.story_edit_combo['values']),('Absent','Present'))
+        app.story_edit_choice.set('Present'); app.apply_story_edit()
+        self.assertEqual(app.mem.read_guest(0x8015C6F0,4),b'\x00\x00\x00\x01')
+        app.story_table.selection_set('bank_a'); app.select_story_edit()
+        self.assertIn('disabled',app.story_edit_button.state())
+
+    def test_story_dropdown_refuses_read_only_and_stale_values(self):
+        app=self.app; app.mem=FakeRAM(); app.refresh_story_progress()
+        app.story_table.selection_set('ushi_intro'); app.select_story_edit()
+        self.assertIn('disabled',app.story_edit_button.state())
+        app.story_edit_choice.set('Set'); app.apply_story_edit()
+        self.assertEqual(app.mem.writes,[])
+        app.args.read_only=False; app.args.enable_hex_edit=True; app.select_story_edit()
+        app.story_edit_choice.set('Set'); app.mem.bytes[0x8015C60D]=0x80
+        app.apply_story_edit(); self.assertEqual(app.mem.writes,[])
+        self.assertIn('changed',app.story_edit_status.get())

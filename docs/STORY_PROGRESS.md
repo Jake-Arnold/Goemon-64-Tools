@@ -1,5 +1,14 @@
 # Story progress panel
 
+Select an individual saved flag and choose **Clear** or **Set**, or select an
+ownership word and choose **Absent** or **Present**, then click **Apply state**.
+The selector initially shows the observed state. The write preserves other bits
+in a packed flag byte, checks the displayed raw bytes before writing, and verifies
+readback. A changing game thread can still race the write. Aggregate bank rows
+are read-only. Writes are disabled in `--read-only` mode and during transition
+states; edits do not automatically run rewards, cutscenes or scene transitions.
+The separate saved mirror is not modified.
+
 Open **Story progress**, next to Unlocks. It refreshes from the connected US game
 on Recomp or Project64 through the existing guest-memory reader. v0.11.7 displays
 21 curated story flags, 37 additional external annotations, two raw bank views

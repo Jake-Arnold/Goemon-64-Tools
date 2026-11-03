@@ -1,4 +1,4 @@
-"""Curated US story observations from ROM traces and gameplay; never writes RAM."""
+"""Curated US story observations and explicit, masked editing of known values."""
 from dataclasses import dataclass
 
 SAVED_BASE = 0x8015C608
@@ -314,3 +314,37 @@ def story_rows(state):
             raw=raw,status='ERROR' if value is None else 'OBSERVED' if value in (0,1) else 'CHECK',
             source='ROM reward-script word write; separate from progression flag'))
     return rows
+
+
+# Only these known inventory words and the enumerated saved flags are editable.
+STORY_INVENTORY = {'mini': 0x8015C6F0, 'heel': 0x8015C70C}
+STORY_FLAGS_BY_KEY = {flag.key: flag for flag in FLAGS}
+
+
+def story_edit_options(key):
+    """Return labels in clear/set order; aggregate bank rows have no editor."""
+    if key in STORY_FLAGS_BY_KEY:return ('Clear', 'Set')
+    if key in STORY_INVENTORY:return ('Absent', 'Present')
+    return ()
+
+
+def write_story_value(ram, key, selected, expected):
+    """Apply an explicit edit against the displayed bytes, preserving other bits.
+
+    A game thread may race the compare/write; this is not atomic. No saved
+    mirror, reward, scene, inventory or other story flag is implicitly updated.
+    """
+    from practice.hex_edit import checked_write
+    options = story_edit_options(key)
+    if not options or selected not in options:raise ValueError('Select an editable flag and state')
+    if ram.u8(0x800C7A94) not in (10, 13):raise RuntimeError('Game is transitioning; cannot edit now')
+    if key in STORY_FLAGS_BY_KEY:
+        flag = STORY_FLAGS_BY_KEY[key]; address = flag.address; width = 1
+        if len(expected) != width:raise ValueError('Invalid displayed flag value')
+        value = expected[0] | flag.mask if selected == 'Set' else expected[0] & ~flag.mask
+        new = bytes([value])
+    else:
+        address = STORY_INVENTORY[key]; width = 4
+        if len(expected) != width:raise ValueError('Invalid displayed inventory value')
+        new = (1 if selected == 'Present' else 0).to_bytes(4, 'big')
+    return checked_write(ram, address, expected, new, allow_advanced=True, raw_override=True)

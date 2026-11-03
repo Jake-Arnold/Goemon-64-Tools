@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from practice.story_progress import FLAGS,CURATED_FLAGS,EXTERNAL_FLAGS,SAVED_BASE,BANK_A,BANK_B,read_story_state,story_rows
+from practice.story_progress import FLAGS,CURATED_FLAGS,EXTERNAL_FLAGS,SAVED_BASE,BANK_A,BANK_B,read_story_state,story_rows,story_edit_options,write_story_value
 from tests.test_unlocks import FakeRAM
 
 
@@ -12,6 +12,30 @@ class StoryProgressTests(unittest.TestCase):
         ram.write_guest(0x8015C70C,heel.to_bytes(4,'big'))
         ram.writes.clear()
         return ram
+
+    def test_edit_flags_preserves_other_bits_and_validates_observed_bytes(self):
+        ram=self.sample(d=0x85)
+        self.assertEqual(story_edit_options('ushi_intro'),('Clear','Set'))
+        self.assertTrue(write_story_value(ram,'ushi_intro','Set',b'\x85'))
+        self.assertEqual(ram.bytes[0x8015C60D],0xA5)
+        self.assertTrue(write_story_value(ram,'ushi_intro','Clear',b'\xA5'))
+        self.assertEqual(ram.bytes[0x8015C60D],0x85)
+        writes=len(ram.writes)
+        with self.assertRaises(RuntimeError):write_story_value(ram,'ushi_intro','Set',b'\x00')
+        self.assertEqual(len(ram.writes),writes)
+        ram.bytes[0x800C7A94]=12
+        with self.assertRaises(RuntimeError):write_story_value(ram,'ushi_intro','Set',b'\x85')
+        self.assertEqual(len(ram.writes),writes)
+
+    def test_edit_inventory_words_and_disallow_aggregate_rows(self):
+        ram=self.sample()
+        self.assertEqual(story_edit_options('mini'),('Absent','Present'))
+        self.assertTrue(write_story_value(ram,'mini','Present',b'\x00'*4))
+        self.assertEqual(ram.read_guest(0x8015C6F0,4),b'\x00\x00\x00\x01')
+        self.assertTrue(write_story_value(ram,'mini','Absent',b'\x00\x00\x00\x01'))
+        self.assertEqual(story_edit_options('bank_a'),())
+        with self.assertRaises(ValueError):write_story_value(ram,'bank_a','Set',b'\x00')
+        with self.assertRaises(ValueError):write_story_value(ram,'mini','Set',b'\x00'*4)
 
     def test_masked_stages_with_cumulative_values(self):
         stages={0:'Introduction not recorded',0x20:'Introduction seen',0x30:'Three blue',

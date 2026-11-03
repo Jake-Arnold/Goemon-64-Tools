@@ -1,7 +1,7 @@
-"""Read-only story table; no inferred progression is applied to the game."""
+"""Story observations and explicit edits to individual known values."""
 import tkinter as tk
 from tkinter import ttk
-from practice.story_progress import read_story_state,story_rows
+from practice.story_progress import read_story_state,story_rows,story_edit_options,write_story_value
 
 
 class StoryProgressMixin:
@@ -21,6 +21,7 @@ class StoryProgressMixin:
         ttk.Entry(filter_row,textvariable=self.story_filter,width=42).pack(side='left',padx=6)
         ttk.Label(filter_row,text='Filter “external” for the added source annotations.',style='Muted.TLabel').pack(side='left')
         self._story_row_ids=[]
+        self._story_edit_key=None
         self.story_filter.trace_add('write',lambda *_:self.filter_story_progress())
         columns=('bank','address','mask','value','raw','evidence')
         frame=ttk.Frame(tab);frame.pack(fill='both',expand=True)
@@ -34,6 +35,17 @@ class StoryProgressMixin:
         self.story_table.pack(side='left',fill='both',expand=True);scroll.pack(side='right',fill='y')
         horizontal=ttk.Scrollbar(tab,orient='horizontal',command=self.story_table.xview)
         self.story_table.configure(xscrollcommand=horizontal.set);horizontal.pack(fill='x')
+        editor=ttk.Frame(tab);editor.pack(fill='x',pady=(5,0))
+        self.story_edit_label=tk.StringVar(value='Select an individual flag or ownership word')
+        ttk.Label(editor,textvariable=self.story_edit_label).pack(side='left',padx=(0,8))
+        self.story_edit_choice=tk.StringVar()
+        self.story_edit_combo=ttk.Combobox(editor,textvariable=self.story_edit_choice,values=(),state='disabled',width=12)
+        self.story_edit_combo.pack(side='left',padx=(0,6))
+        self.story_edit_button=ttk.Button(editor,text='Apply state',command=self.apply_story_edit,state='disabled')
+        self.story_edit_button.pack(side='left')
+        self.story_edit_status=tk.StringVar(value='Select a row to edit its state.')
+        ttk.Label(tab,textvariable=self.story_edit_status,wraplength=1100).pack(anchor='w')
+        self.story_table.bind('<<TreeviewSelect>>',self.select_story_edit)
         self.story_notes=tk.StringVar(value='No sample yet.')
         ttk.Label(tab,textvariable=self.story_notes,wraplength=1100).pack(anchor='w',pady=7)
         ttk.Label(tab,text='Bank A/B names identify storage, not permanent story meanings. Saved flags and inventory words are separate. '
@@ -58,6 +70,7 @@ class StoryProgressMixin:
             if state['errors']:messages.append('Some reads are unavailable: '+', '.join(state['errors']))
             notes=' '.join(messages) if messages else 'No tracked flag/inventory discrepancy observed in this sample.'
         self.story_notes.set(notes)
+        if self.mem is None and self._story_edit_key is not None:self.select_story_edit()
         return state
 
     def filter_story_progress(self):
@@ -72,3 +85,44 @@ class StoryProgressMixin:
         for key in current:
             if key not in wanted:self.story_table.detach(key)
         for position,key in enumerate(desired):self.story_table.move(key,'',position)
+
+    def select_story_edit(self, _event=None):
+        selection=self.story_table.selection()
+        key=selection[0] if len(selection)==1 else None
+        self._story_edit_key=key
+        options=story_edit_options(key) if key else ()
+        value=self.story_table.item(key,'values')[3] if options else ''
+        writable=bool(options and value in options and self.mem is not None and
+                      getattr(self.args,'enable_hex_edit',False) and not getattr(self.args,'read_only',False))
+        self.story_edit_combo.configure(values=options,state='readonly' if writable else 'disabled')
+        self.story_edit_choice.set(value if value in options else '')
+        self.story_edit_button.state(['!disabled'] if writable else ['disabled'])
+        self.story_edit_label.set(self.story_table.item(key,'text') if options else 'Select an individual flag or ownership word')
+        if not options:self.story_edit_status.set('Aggregate bank rows are read-only.')
+        elif not writable:self.story_edit_status.set('Connect with memory editing enabled and an available value.')
+        else:self.story_edit_status.set('Choose the desired state, then apply it.')
+
+    def apply_story_edit(self):
+        try:
+            if self.mem is None:raise ValueError('Connect to a game first')
+            if getattr(self.args,'read_only',False) or not getattr(self.args,'enable_hex_edit',False):
+                raise PermissionError('Memory editing is disabled')
+            selection=self.story_table.selection()
+            if len(selection)!=1:raise ValueError('Select one story row')
+            key=selection[0]
+            if key != self._story_edit_key:raise ValueError('Selection changed; select the desired state again')
+            options=story_edit_options(key)
+            if not options:raise ValueError('Select an individual flag or ownership word')
+            values=self.story_table.item(key,'values'); raw=str(values[4])
+            if not raw.startswith('0x'):raise ValueError('The observed value is unavailable; refresh first')
+            expected=bytes.fromhex(raw[2:])
+            target=self.story_edit_choice.get()
+            changed=write_story_value(self.mem,key,target,expected)
+            name=self.story_table.item(key,'text')
+            if changed:
+                self.append_event(f'USER STORY WRITE {name}: {target}')
+                self.last_inspect_at=0.0
+            self.refresh_unlocks(force=True)
+            self.story_edit_status.set(f'{name}: {target}' + (' (verified)' if changed else ' (unchanged)'))
+        except (OSError,ValueError,RuntimeError,PermissionError) as exc:
+            self.story_edit_status.set(f'Story write failed: {exc}')

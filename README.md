@@ -1,4 +1,14 @@
-# Goemon Speedrun Tools v0.11.12 - Fortune Doll progress visibility
+# Goemon Speedrun Tools v0.11.13 - Story progress editing
+
+In **Story progress**, select an individual flag or ownership word, choose its
+desired state from the dropdown, and select **Apply state**. The dropdown starts
+at the observed state. Flag edits preserve other bits in the same byte; inventory
+words have Absent/Present options. Aggregate bank summaries remain read-only.
+Edits compare against the displayed sample and verify readback; the game can
+still change memory concurrently. `--read-only` disables editing. Editing flags
+does not execute associated rewards, dialogues, scene transitions or cutscenes.
+
+## Fortune Doll progress visibility
 
 Live memory now shows the full **Fortune Doll progress (quarters)** word at
 `0x8015C704`, and the separately annotated total at `0x8015C708`. The former
