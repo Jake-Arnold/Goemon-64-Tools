@@ -1,7 +1,17 @@
 #include "common.h"
-void func_80003428_4028(s32);
+void func_80003380_3F80(s32);
+void func_80003428_4028(u8);
 void func_80003528_4128(u8);
 void func_80003628_4228(u8);
+#pragma GLOBAL_ASM("asm/usa/nonmatchings/transition_state/func_80003380_3F80.s")
+#pragma GLOBAL_ASM("asm/usa/nonmatchings/transition_state/func_800033B0_3FB0.s")
+#pragma GLOBAL_ASM("asm/usa/nonmatchings/transition_state/func_800033EC_3FEC.s")
+void func_80003428_4028(u8 arg0) {
+    D_8015C5C8_15D1C8->unk_3adde = arg0;
+    D_8015C5C8_15D1C8->unk_3addf = 0;
+    func_80003380_3F80(0);
+}
+#pragma GLOBAL_ASM("asm/usa/nonmatchings/transition_state/func_80003478_4078.s")
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/transition_state/func_800034D0_40D0.s")
 void func_80003528_4128(u8 arg0) {
     D_8015C5C8_15D1C8->unk_3add8 = arg0;

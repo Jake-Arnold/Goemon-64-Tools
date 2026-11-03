@@ -59,3 +59,8 @@ The called helpers `func_80003628_4228` and `func_80003528_4128` now also
 match as C (80 bytes each). Their combined synthetic test checks the full chain
 through the stubbed `80003428(0)`, including all intermediate byte resets.
 The state bytes and downstream function remain incompletely characterized.
+
+`func_80003428_4028` also matches as C (80 bytes). It sets system
+`+0x3ADDE`, clears `+0x3ADDF`, and calls `80003380(0)`. The combined host
+test now exercises the four matching setters up to a stub of that next call.
+These are state-machine primitives, not identified room unload operations.

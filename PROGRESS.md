@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct fourth nested transition state helper
+
+- Reconstructed func_80003428_4028 (80 bytes), setting system byte +0x3ADDE, clearing +0x3ADDF and calling func_80003380(0). Three preceding and one following native routines remain assembly.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 110 C function bytes/addresses match with original inventory. Synthetic test checks the four-function state write chain up to stubbed 80003380; existing VM/system tests and 55 focused decomp tests run. No live-game test or writes.
+- Next: trace 80003380 and the dispatcher into resource loading, teardown and actor creation. No room unloading routine has been proven.
+
 ## 2026-11-03 - reconstruct two nested transition state helpers
 
 - Reconstructed func_80003628_4228 and func_80003528_4128 (80 bytes each) in the existing transition unit. They set one state byte, clear the next and call the next state helper with zero. Their complete lifecycle meaning is not established.
