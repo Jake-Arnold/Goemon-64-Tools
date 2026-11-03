@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - integrate completed work into main and simplify branch handoff
+
+- Changed: user authorized integration and redundant-branch cleanup. Updated the continuation runbook to use main in the existing task workspace, with detached historical worktrees retained for private artifacts. No implementation or matching counts changed.
+- Preflight: fetched origin, confirmed main is unprotected and no open PRs exist; all local branch tips are ancestors of the completed task tip. Existing main has no divergent commits, so integration uses a fast-forward rather than introducing an unnecessary merge commit. No force push or recursive directory removal is needed.
+- Validation: Windows full suite ran 319 tests, 314 passed and five native checks skipped. Focused WSL decomp/integration/extractor suite passed all 55 tests. Documentation whitespace/link/syntax checks were performed for the runbook cleanup immediately before this integration. No new in-game tests or ROM rebuild claimed; matching source/proof is unchanged.
+- Preservation/next: leave every worktree directory and local research file in place, including untracked bookmarks/checkpoints in the discovery checkout. Detach historical worktrees before removing merged local refs; remove remote feature refs only after main contains their tips. Continue decomp on main using decomp/CONTINUE.md; do not resurrect an old feature branch merely because its directory remains.
+
 ## 2026-11-03 - consolidated decomp continuation instructions
 
 - Changed: added decomp/CONTINUE.md as the operational handoff, linked from root AGENTS.md and the decomp README/batch/VM documents. Consolidated current evidence sources, actual WSL paths, exact build/inventory/test commands, prioritized unresolved targets, failed-attempt locations, acceptance rules and commit/push steps. Marked historical checkpoint counts explicitly and removed stale current-count language from batch instructions.

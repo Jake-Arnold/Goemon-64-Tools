@@ -10,7 +10,7 @@ first. Update this runbook whenever the next targets or machine paths change.
 Continue this ongoing task in its existing workspace:
 
 - Windows: `C:/Users/Jake/.codex/worktrees/goemon-entrance-warps/Goemon Toolkit`
-- Branch: `codex/goemon-entrance-warps`
+- Branch: `main` (the workspace directory retains its original name)
 - WSL cwd: `/mnt/c/Users/Jake/.codex/worktrees/goemon-entrance-warps/Goemon Toolkit`
 - Remote: `Jake-Arnold/Goemon-64-Tools`
 
@@ -19,11 +19,14 @@ Run `git status --short`, `git branch --show-current`, `git rev-parse HEAD` and
 fresh verified-origin/main workspace; a continuation does not. Do not merge or
 delete other branches/worktrees just to tidy the list. Check ancestry first.
 
-Branch check on 2026-11-03: this branch contains `origin/main`,
-`codex/goemon-discovery` and `codex/goemon-batch-pipeline`; it was 49 commits
-ahead of main before this documentation update. No reconciliation merge was
-needed. Recheck ancestry before future integration or cleanup; preserve local
-research artifacts even when a branch tip is already included.
+Integration on 2026-11-03: the completed entrance-warps branch included main
+and both older feature branches. Its history is fast-forwarded into `main`;
+continue on main in this same workspace. Redundant branch refs can be removed
+without deleting worktrees. Older worktrees retain their original commits in
+detached HEAD state; leave their local bookmarks, checkpoints, ROMs and research
+artifacts untouched. The primary checkout is also retained at its original commit.
+Recheck `git branch --show-current`, fetched remote state and worktree status
+before future work; do not use an older detached checkout for new implementation.
 
 Current checkpoint (2026-11-03): 85 newly matching functions / 6,680 bytes in nine
 units. Including 13 upstream C entries: 98 of 7,376 identified entries, leaving
@@ -185,7 +188,7 @@ in-game verification are distinct evidence; report them separately.
   assembly, assets, saves, memory dumps and personal diagnostics/trial IDs.
 - Commit a coherent completed change with a descriptive message; push to the
   connected branch. Compare `git rev-parse HEAD` with
-  `git ls-remote origin refs/heads/codex/goemon-entrance-warps`.
+  `git ls-remote origin refs/heads/main`.
 - Report verified progress and any real blocker. Never claim an unperformed push,
   runtime test, merge, or decompilation promotion.
 
