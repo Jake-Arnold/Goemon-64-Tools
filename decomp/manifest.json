@@ -653,6 +653,26 @@
           "size": 32
         }
       ]
+    },
+    {
+      "source": "state_four.c",
+      "rom_start": 71040,
+      "rom_end": 71520,
+      "splat_original": "[0x10DAC, asm]",
+      "splat_replacement": "[0x10DAC, asm]\n    - [0x11580, c, state_four]\n    - [0x11760, asm]",
+      "asm_no_padding": [
+        "11760"
+      ],
+      "functions": [
+        {
+          "name": "func_80010980_11580",
+          "rom_offset": 71040,
+          "size": 36
+        }
+      ],
+      "assembly_functions": [
+        "func_800109A4_115A4"
+      ]
     }
   ],
   "support_headers": [

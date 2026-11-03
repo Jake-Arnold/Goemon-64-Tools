@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct four-value native state setter
+
+- Reconstructed func_80010980_11580 (36 bytes), storing four arguments in four native globals. The following function remains assembly; the globals' gameplay meaning is not yet established.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 96 function bytes/addresses match. Synthetic host test checks each value and argument order; focused decomp tests verify integration. No live game tests or writes.
+- Next: continue decompiling remaining functions and investigating their meaning through native callers.
+
 ## 2026-11-03 - reconstruct fixed loop routine
 
 - Reconstructed func_8001018C_10D8C, a 32-byte fixed loop with no observed external side effect. Its purpose remains unknown; the loop is retained to match native instructions.
