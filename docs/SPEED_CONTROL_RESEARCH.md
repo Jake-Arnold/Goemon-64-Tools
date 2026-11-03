@@ -46,6 +46,31 @@ result. The user's installed version/settings and live resulting multiplier were
 not checked in this investigation. Relative shortcut presses do not reliably
 establish an absolute 2x/3x target without knowing current speed and settings.
 
+## Implemented timing primitive
+
+`speed/virtual_clock.h` provides a standalone synchronized virtual clock with
+1x–4x multipliers in quarter-speed increments. It rebases the epoch on each
+change, retains fractional microseconds and converts a guest deadline to a host
+deadline. It rejects backwards host timestamps and arithmetic overflow. Callers
+must use a monotonic host source and wake/recalculate existing timer and VI waits
+after changes; the primitive does not do so automatically.
+
+`speed/test_virtual_clock.cpp` covers continuity, multiple speed changes,
+deadline recalculation and rounding, invalid values, overflow, and simultaneous
+access. It is a local timing primitive, not connected to the recomp executable,
+audio, Project64 or the toolkit UI. It cannot yet speed up the game.
+
+```bash
+g++ -std=c++17 -Wall -Wextra -Werror -pthread -fsanitize=address,undefined \
+  -Ispeed speed/test_virtual_clock.cpp -o /tmp/goemon-virtual-clock-test
+/tmp/goemon-virtual-clock-test
+```
+
+The inspected Windows environment did not expose `cmake`, `ninja`, `cl`, or
+`clang` on PATH and did not contain the Visual Studio installer locator. The
+running binary has not been rebuilt or replaced. Toolchain discovery is not a
+conclusive inventory of every compiler installed elsewhere.
+
 ## Implementation path
 
 1. Add a supported host control channel to a locally built recomp runtime; it

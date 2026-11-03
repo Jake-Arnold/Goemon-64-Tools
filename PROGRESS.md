@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - add continuous virtual-time primitive for speed control
+
+- Added speed/virtual_clock.h, a synchronized deterministic virtual-time primitive with 100–400% speed in 25% steps, epoch rebasing, fractional microsecond retention, deadline conversion and validation of backwards clocks and arithmetic overflow. This supplies a concrete component for a future recomp host speed integration; it does not alter the game or expose a speed control yet.
+- Reason: the recomp runtime currently uses fixed-rate guest timers and VI scheduling. A live multiplier needs continuous guest time and recalculated deadlines rather than merely changing a frame or movement value.
+- Validation: compiled and ran strict C++17 pthread tests under GCC ASan/UBSan, covering speed-change continuity, deadline recalculation/rounding, invalid rates, overflow, backwards timestamps, fractional remainder and concurrent access. No recomp runtime build, process writes, audio validation or in-game speed test performed; Windows compiler/tooling was not found on PATH.
+- Limitations/next: integrate the primitive into a rebuilt recomp host with synchronized VI/timer wakeups, capability/readback interface and audio handling, then integrate toolkit controls and validate real gameplay before claiming a multiplier. Project64 remains separate.
+
 ## 2026-11-03 - investigate host game-speed controls
 
 - Investigated the user-requested game-speed multiplier using pinned upstream Goemon64Recomp runtime and Project64 source. The recomp runtime pins a compile-time multiplier of one and uses it for both VI scheduling and virtual counter rate; its source does not expose a live setter. Project64 has speed-step and limiter commands, whose behavior depends on limiter/audio configuration. Existing executable identity and in-game behavior were not verified.
