@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct conditional transition update
+
+- Reconstructed func_800038E4_44E4 (104 bytes). It always runs 80034734; if state byte 0x800C7A95 is nonzero it processes the current object, increments system +0x3ADD6, and invokes 80038BC8(7). The called routines' lifecycle semantics remain unknown.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 123 C function bytes/addresses match with original inventory. Synthetic tests cover both branches, ordering, object argument and increment; VM/system host tests and 55 focused decomp tests run. No live-game tests or writes.
+- Next: trace 800369F0 and 80038BC8 to determine their relationship to map resource loading and unloading.
+
 ## 2026-11-03 - reconstruct transition initialization sequence
 
 - Reconstructed func_80003880_4480 (100 bytes), preserving its ordered engine initialization calls, 16-bit value 20 and osViBlack(0). Individual callee effects and room lifecycle are not yet fully understood.

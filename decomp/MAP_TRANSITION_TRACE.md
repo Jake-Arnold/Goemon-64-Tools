@@ -122,3 +122,8 @@ an audio-memory initialization step, not a complete room loader.
 of engine initializers, sets `0x800C7AE4` to 20, calls `80013940`, and calls
 `osViBlack(0)`. Its callees need individual tracing before claiming which
 ones load or unload rooms.
+
+`func_800038E4_44E4` now matches as C (104 bytes). It always calls
+`80034734`; if the byte at `0x800C7A95` is nonzero, it passes the current
+object to `800369F0`, increments system state byte `+0x3ADD6`, then calls
+`80038BC8(7)`. The external callees and lifecycle meaning remain under study.
