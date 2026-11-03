@@ -1,8 +1,8 @@
 # Event/dialogue VM reconstruction checkpoint
 
 Date: 2026-11-03. Pinned mnsg baseline and ROM identity are unchanged.
-**50 matching VM functions / 3,808 function bytes**, bringing the track to
-**82 matching C functions / 5,940 function bytes**. The full 32 MiB baseline and
+**51 matching VM functions / 3,968 function bytes**, bringing the track to
+**83 matching C functions / 6,100 function bytes**. The full 32 MiB baseline and
 candidate both match decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
 Current source hashes, guest addresses and byte-range comparisons are in
 [combined.json](results/combined.json). The previous complete-save checkpoint is
@@ -18,10 +18,19 @@ and active cleanup order, the silver-doll event entry, and signed -1 file IDs.
 This connects native pickup calls to their reward scripts. Earlier checkpoint
 sections below retain their historical development details.
 
+## Context-owned event startup follow-up
+
+`func_8003D388_3DF88` now also passes the full-ROM gate (160 bytes). It preserves
+idle/active VM cleanup, selects the supplied context's owner, stores the unsigned
+byte at owner+0x60 or -1 for a missing owner, then loads the shared event/file
+entry. Host tests cover null/non-null owners, unsigned marker 0xE1, context state,
+cleanup order and unchanged owner memory. The original unchecked index behavior
+is retained; this is an engine reconstruction, not a new safe public API.
+
 ## Selected unit and evidence boundaries
 
 The original `0x3DBA0..0x40320` unit contains 69 functions. `script_vm.c` replaces
-50 functions and retains 19 explicitly declared assembly functions. The main
+51 functions and retains 18 explicitly declared assembly functions. The main
 dispatcher, remaining operand handlers and comparison routine remain
 assembly; the complete VM is not decompiled. A name appears in the matching count
 only when linked guest address, original bytes and absence of its assembly marker

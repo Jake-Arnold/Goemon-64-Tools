@@ -103,6 +103,7 @@ void func_8003D428_3E028(void);
 extern s32 D_801C7900_1C8500, D_801C7904_1C8504;
 extern s32 D_800779A0_785A0[];
 extern s16 D_80078608_79208[];
+extern u8 *D_801FC600_5B8510[];
 s32 func_8003F1D8_3FDD8(void);
 void func_8003E5EC_3F1EC(void);
 void func_8003E620_3F220(void);

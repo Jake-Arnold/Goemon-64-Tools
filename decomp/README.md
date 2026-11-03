@@ -4,12 +4,12 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **82 functions / 5,940 function bytes across eight units**.
+Current verified total: **83 functions / 6,100 function bytes across eight units**.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
 
 The [whole-build inventory](INVENTORY.md) identifies **7,376 function entries**:
-**95 matching C entries** (13 upstream plus these 82), leaving **7,281 assembly
+**96 matching C entries** (13 upstream plus these 83), leaving **7,280 assembly
 entries**, including SDK/runtime code. Exported jump labels are excluded.
 
 ## Screen-rectangle bounds helper
@@ -80,9 +80,9 @@ starter adds 120 fully verified C bytes; resource fields now have supported name
 `pickup_placements --kind dolls` extracts 44 static placements using 43 distinct
 saved flags, including a shared normal/unused Zazen variant. The catalog adds the
 40 not already user-mapped flags with placement-derived evidence, plus the native
-Turtle Rock reward record. A Shishi-odoshi condition remains a lead rather than a
-completed reward mapping. Static results do not establish all dynamically spawned
-or normally reachable rewards; no complete-doll-catalog claim is made yet.
+Turtle Rock reward record. The Shishi-odoshi dynamic
+spawn is now traced as well, completing [45 flag records](results/fortune_doll_catalog.json):
+40 silver and five gold. This is room/native-code evidence, not 45 live pickup tests.
 
 ## Batch discovery and matching
 
@@ -95,8 +95,8 @@ checking a fresh candidate for each reviewed batch.
 
 ## Event/dialogue VM helpers
 
-[VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents 50 matching functions in the 69-function
-event/dialogue unit. The remaining 19 functions, including the dispatcher,
+[VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents 51 matching functions in the 69-function
+event/dialogue unit. The remaining 18 functions, including the dispatcher,
 comparator and remaining operand handlers, remain assembly and are excluded.
 The native comparator's host-only semantic model is explicitly not counted.
 The first three reconstructed units below are still complete matching C.

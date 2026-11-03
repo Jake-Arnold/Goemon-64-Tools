@@ -83,8 +83,10 @@ CURATED_FLAGS = (
               'User pickup sets 0x8015C623/08 and advances icon to 3/4; room 0x3D8 definition 11 actor 0x088 flag 0x0DB'),
     StoryFlag('strength_gauge_condition','Strength gauge increasing condition (annotated)',0x04E,
               'Existing mn64rando annotation; set during first map-356 doll trial and unchanged during map-381 trial; not the quarter counter'),
-    StoryFlag('turtle_rock_doll_reward','Turtle Rock quarter-heart reward recorded',0x0E0,
+    StoryFlag('turtle_rock_doll_reward','Turtle Rock silver Fortune Doll reward recorded',0x0E0,
               'Native actor file 0x041: event 0x65 jumps to silver reward 0x66, then flag 0x0E0 set; no live reward test'),
+    StoryFlag('shishiodoshi_doll_reward','Shishi-odoshi silver Fortune Doll collected',0x0EE,
+              'Native file 0x03E spawns silver initializer 0x08000514 in module 0x1A; task+D0 word 0x00EE0000 supplies saved flag 0x0EE; not live-tested'),
     StoryFlag('congo_state_candidate','Congo encounter state? (candidate)',0x132,
               'User A/B: mask 0x04 cleared during same event; cutscene/actor/room hypothesis, not confirmed'),
 )

@@ -79,3 +79,20 @@ class PickupPlacementTests(unittest.TestCase):
         self.assertEqual(len(DOLL_PLACEMENT_FLAGS),40)
         self.assertEqual(len({f.label for f in DOLL_PLACEMENT_FLAGS}),40)
         self.assertTrue(all('not live-collected' in f.evidence for f in DOLL_PLACEMENT_FLAGS))
+
+    def test_complete_doll_flag_catalog_distinguishes_native_rewards(self):
+        import json
+        from pathlib import Path
+        r=json.loads((Path(__file__).resolve().parents[1]/'decomp/results/fortune_doll_catalog.json').read_text())
+        entries=r['entries'];flags={x['flag_id'] for x in entries}
+        self.assertEqual(len(entries),45);self.assertEqual(len(flags),45)
+        self.assertEqual(flags,set(range(0xCA,0xF7)))
+        self.assertEqual(sum(x['reward']=='silver' for x in entries),40)
+        self.assertEqual(sum(x['reward']=='gold' for x in entries),5)
+        self.assertEqual(sum(x['source']=='instantiated_room_definition' for x in entries),43)
+        shishi=next(x for x in entries if x['flag_id']==0xEE)
+        self.assertEqual((shishi['address'],shishi['mask']),('0x8015C625','0x40'))
+        self.assertEqual(shishi['task_flag_word'],'0x00EE0000')
+        self.assertEqual(shishi['pickup_callback'],'0x08000514')
+        self.assertTrue(flags<={f.flag_id for f in FLAGS})
+        self.assertTrue(all(not x['live_tested_by_assistant'] for x in entries))

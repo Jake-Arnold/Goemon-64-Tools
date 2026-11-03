@@ -94,15 +94,25 @@ Follow-up native tracing adds:
   helper. This supports an additional code-derived quarter-heart reward record
   at `0x8015C624 & 01`, now named separately in the tracker and not live-tested.
 - Kappa/Shishi-odoshi actor file `0x03E`: initializer `func_0800266C_723C8C`
-  tests ID `0x0EE` at `0x723CA4` and avoids creating its object if already set
-  (or local Bank A ID 2 is set). The corresponding collection writer/reward
-  connection is not yet established; no completed doll label is assigned.
+  tests ID `0x0EE` at `0x723CA4` and avoids object creation if set. The writer
+  connection is now resolved: `func_080027AC_723DCC` creates a task with callback
+  `0x08000514` at `0x723DF0`, assigns pickup module `0x01A` at `0x723E1C..0x723E30`,
+  then writes `0x00EE0000` to the child's word at `+0xD0` (`0x723EB0`). On the
+  big-endian N64, the silver initializer's halfword read at `+0xD0` therefore
+  receives `0x00EE`. The common silver collection path subsequently sets that
+  saved flag and runs the quarter reward. It was missed by the earlier search
+  because the constructor uses an upper-halfword load and whole-word store,
+  not a literal flag-set call. This record is `0x8015C625 & 40`.
 
-A separate total-display/completion routine compares the annotated total with
-45, consistent with additional special rewards, but it is not a substitute for
-finding all writers. This checkpoint therefore maps 43 static individual flags
-plus the Turtle Rock reward, and keeps the Shishi-odoshi connection open rather
-than claiming every possible doll has been solved.
+[The unified catalog](results/fortune_doll_catalog.json) now contains all 45
+identified collection records: 40 silver and five gold. Forty-three flags come
+from static room definitions, with Turtle Rock and Shishi-odoshi supplied by
+traced native reward/spawn paths. The contiguous `0x0CA..0x0F6` range and the
+native total/completion comparison against 45 are cross-checks, not the method
+used to invent the two missing entries. The duplicated unused Zazen placement
+is still one collectible flag, not two. These are parsed/code-traced mappings;
+no claim of 45 independent live collections or every room's normal reachability
+is made. Both special records are now named in Story progress.
 
 No ROM bytes, dialogue, image assets or raw memory captures are bundled. No game
 writes, freeze activation, inputs or save reloads were performed by the assistant.
