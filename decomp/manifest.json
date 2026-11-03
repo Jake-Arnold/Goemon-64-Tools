@@ -583,6 +583,33 @@
         "func_8003A138_3AD38",
         "func_8003A1E8_3ADE8"
       ]
+    },
+    {
+      "source": "math_helpers.c",
+      "rom_start": 61068,
+      "rom_end": 62092,
+      "splat_original": "[0xE7F0, asm]",
+      "splat_replacement": "[0xE7F0, asm]\n    - [0xEE8C, c, math_helpers]\n    - [0xF28C, asm]",
+      "asm_no_padding": [
+        "F28C"
+      ],
+      "functions": [
+        {
+          "name": "func_8000E28C_EE8C",
+          "rom_offset": 61068,
+          "size": 72
+        },
+        {
+          "name": "func_8000E630_F230",
+          "rom_offset": 62000,
+          "size": 92
+        }
+      ],
+      "assembly_functions": [
+        "func_8000E2D4_EED4",
+        "func_8000E39C_EF9C",
+        "func_8000E4E4_F0E4"
+      ]
     }
   ],
   "support_headers": [

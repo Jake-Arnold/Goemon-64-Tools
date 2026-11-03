@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - recover two native math helpers
+
+- Reconstructed func_8000E28C_EE8C and func_8000E630_F230 (164 bytes); three intervening functions remain original assembly. The first calculates an angle from coordinate differences and masks it to ten bits; the second calls two existing trigonometric helpers and scales their results.
+- Validation: complete rebuilt ROM and all 92 C functions match the original SHA-1 6ea0ed71032ce08fc2745f412d84936382197494. Synthetic host tests verify argument order, mask, scaling and helper calls; focused pipeline tests passed. No in-game execution or writes.
+- Limitations/next: helper semantics are constrained by their external math routines. Continue tracing and replacing remaining assembly with full-ROM verification. The first integrated attempt had a prologue scheduling mismatch; preserving the original candidate parameter names resolved it in the second verified build.
+
 ## 2026-11-03 - recover five adjacent engine state routines
 
 - Reconstructed five functions in engine_state.c (180 bytes) using existing linked probe candidates. Four intervening functions remain assembly in the same original unit. Their state variables remain unnamed pending semantic evidence.

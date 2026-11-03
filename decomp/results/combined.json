@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T19:04:59.057215+00:00",
+  "started_utc": "2026-11-03T19:08:01.518858+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 90,
-    "claimed_functions": 90,
-    "matched_function_bytes": 6860,
+    "matched_functions": 92,
+    "claimed_functions": 92,
+    "matched_function_bytes": 7024,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -858,6 +858,24 @@
         "matched": true,
         "expected_sha256": "36770e11f110679f941a31ed14d8f00924bde37faa6811830d575fc5410b47ec",
         "candidate_sha256": "36770e11f110679f941a31ed14d8f00924bde37faa6811830d575fc5410b47ec"
+      },
+      {
+        "name": "func_8000E28C_EE8C",
+        "size": 72,
+        "guest_address": "0x8000E28C",
+        "rom_offset": "0xEE8C",
+        "matched": true,
+        "expected_sha256": "7845fee09516aead2222a42d43c21fe4a39119052c9586ea60ee0cd1b346c5cf",
+        "candidate_sha256": "7845fee09516aead2222a42d43c21fe4a39119052c9586ea60ee0cd1b346c5cf"
+      },
+      {
+        "name": "func_8000E630_F230",
+        "size": 92,
+        "guest_address": "0x8000E630",
+        "rom_offset": "0xF230",
+        "matched": true,
+        "expected_sha256": "83f2d352321b5158a5194809d0f226ac3e9771e5313bd40a06bfa07947962930",
+        "candidate_sha256": "83f2d352321b5158a5194809d0f226ac3e9771e5313bd40a06bfa07947962930"
       }
     ]
   },
@@ -882,7 +900,10 @@
     "func_80039F84_3AB84",
     "func_8003A060_3AC60",
     "func_8003A138_3AD38",
-    "func_8003A1E8_3ADE8"
+    "func_8003A1E8_3ADE8",
+    "func_8000E2D4_EED4",
+    "func_8000E39C_EF9C",
+    "func_8000E4E4_F0E4"
   ],
   "sources_sha256_lf": {
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
@@ -895,9 +916,10 @@
     "audio_state.c": "8331f0694893a15d477a7d693ce7b010e89623f3fbe62509ece9bb800b72514a",
     "trig_angles.c": "d60c70246ef486742ca655aa2b4a0fbb584ac5a755e04221ccc18a128d9dd54e",
     "engine_state.c": "e9fbe551b8f8b70201358f8a51fb688e5d6ac516121fdee5d30716c722a7b830",
+    "math_helpers.c": "bb0cfbe2a81e6e476110f30b9c84333a6549923eb0d2d9e55afdca3453c59c73",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
     "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-03T19:05:26.957389+00:00"
+  "ended_utc": "2026-11-03T19:08:28.489387+00:00"
 }
