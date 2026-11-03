@@ -1,4 +1,4 @@
-"""Read-only castle map collectible flags from instantiated USA room definitions."""
+"""Read-only map and Fortune Doll flags from instantiated USA room definitions."""
 import argparse
 import json
 import math
@@ -7,10 +7,15 @@ import struct
 
 from practice.entrances import RomFiles, MAX_STAGE, ROOM_POINTERS, CODE_RAM
 
-ACTORS = {0x86: 'Mr. Elly Fant', 0x87: 'Mr. Arrow'}
+ACTORS = {0x86: 'Mr. Elly Fant', 0x87: 'Mr. Arrow',
+          0x88: 'Silver Fortune Doll', 0x89: 'Gold Fortune Doll'}
+KINDS = {'maps': frozenset((0x86,0x87)), 'dolls': frozenset((0x88,0x89)),
+         'all': frozenset(ACTORS)}
 
 
-def room_pickups(stage, file_id, room, instance, footer, ending):
+def room_pickups(stage, file_id, room, instance, footer, ending, *, actor_ids=None):
+    actor_ids = KINDS['maps'] if actor_ids is None else frozenset(actor_ids)
+    if not actor_ids or not actor_ids <= set(ACTORS):raise ValueError('Unsupported pickup actor selection')
     if not (0 <= instance <= footer < ending <= len(room)) or instance % 16 or ending-footer != 28:
         raise ValueError('Invalid room layout')
     cells = math.prod(struct.unpack_from('>HHH', room, footer+20))
@@ -45,7 +50,7 @@ def room_pickups(stage, file_id, room, instance, footer, ending):
     for index in sorted(used):
         record = room[index*16:index*16+16]
         actor = int.from_bytes(record[:2], 'big')
-        if actor not in ACTORS:
+        if actor not in actor_ids:
             continue
         flag = int.from_bytes(record[4:6], 'big')
         if not 0 <= flag < 800:
@@ -56,7 +61,8 @@ def room_pickups(stage, file_id, room, instance, footer, ending):
     return rows
 
 
-def extract(data):
+def extract(data, *, kind='maps'):
+    if kind not in KINDS:raise ValueError('Unsupported pickup kind')
     files = RomFiles(data)  # Validates the complete retail/decompressed ROM hash.
     code = files.file(12)
     rows = []
@@ -78,27 +84,28 @@ def extract(data):
         instance = struct.unpack_from('>H', meta, 10)[0]
         footer = struct.unpack_from('>H', meta, 18)[0]
         ending = struct.unpack_from('>H', meta, 14)[0]
-        rows.extend(room_pickups(stage, file_id, files.file(file_id), instance, footer, ending))
+        rows.extend(room_pickups(stage, file_id, files.file(file_id), instance, footer, ending, actor_ids=KINDS[kind]))
     return dict(format='goemon-pickup-placements-v1', rom_sha1=files.sha1,
-                source='Instantiated room definitions; actor flag at definition bytes 4..5',
+                source='Instantiated room definitions; actor flag at definition bytes 4..5', kind=kind,
                 live_verified=False, pickups=rows)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--rom', type=Path, required=True)
+    parser.add_argument('--kind', choices=tuple(KINDS), default='maps')
     parser.add_argument('--report', type=Path, required=True, help='New local metadata report')
     args = parser.parse_args()
     try:
         if args.rom.resolve() == args.report.resolve():
             raise ValueError('Report must differ from ROM')
-        result = extract(args.rom.read_bytes())
+        result = extract(args.rom.read_bytes(),kind=args.kind)
         with args.report.open('x', encoding='utf-8') as output:
             json.dump(result, output, indent=2)
             output.write('\n')
     except (OSError, ValueError, struct.error) as exc:
         parser.exit(1, str(exc)+'\n')
-    print(f'{len(result["pickups"])} instantiated map/boss-location pickups; no live test claimed')
+    print(f'{len(result["pickups"])} instantiated pickups; no live test claimed')
 
 
 if __name__ == '__main__':

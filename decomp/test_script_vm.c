@@ -16,6 +16,9 @@ s32 D_801C7760_1C8360, D_801C7764_1C8364, D_801C7768_1C8368, D_801C776C_1C836C;
 s32 D_801C77A0_1C83A0, D_801C77E0_1C83E0;
 VmWork D_801C77E8_1C83E8;
 s32 D_801C78EC_1C84EC, D_801C78F0_1C84F0;
+s32 D_801C7900_1C8500, D_801C7904_1C8504;
+s32 D_800779A0_785A0[0x6B];
+s16 D_80078608_79208[0x6B];
 s8 D_801C78FC_1C84FC;
 u8 D_801C7930_1C8530;
 
@@ -691,7 +694,30 @@ static void check_resource_context_transitions(void) {
     context_mode = 0;
 }
 
+static void check_numbered_event_start(void) {
+    cleanup_checks = 0;
+    D_800779A0_785A0[0x66] = 0x08001C3C;
+    D_80078608_79208[0x66] = 93;
+    D_80077858_78458 = 0;
+    trace_count = 0;
+    func_8003D310_3DF10(0x66);
+    assert(trace_count == 1 && trace[0] == RESET);
+    assert(reset_args[0] == 0x08001C3C && reset_args[1] == 93);
+    assert(D_801C7900_1C8500 == 3 && D_801C7904_1C8504 == -1);
+
+    D_800779A0_785A0[3] = 0x08001234;
+    D_80078608_79208[3] = -1;
+    D_80077858_78458 = 0x1234;
+    trace_count = 0;
+    func_8003D310_3DF10(3);
+    assert(trace_count == 3 && trace[0] == RESET && trace[1] == CLEANUP && trace[2] == RESET);
+    assert(reset_args[0] == 0x08001234 && reset_args[1] == -1);
+    assert(D_801C7900_1C8500 == 3 && D_801C7904_1C8504 == -1);
+    D_80077858_78458 = 0;
+}
+
 int main(void) {
+    check_numbered_event_start();
     check_choice_index_and_wait_callbacks(); check_resource_context_transitions(); check_choice_directions_and_repeat(); check_choice_navigation_and_confirmation(); check_choice_stream_rendering(); check_prompt_geometry_and_animation(); check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
     puts("VM choices/repeat/streams, inputs, resources, callbacks and dialogue states passed.");
     return 0;

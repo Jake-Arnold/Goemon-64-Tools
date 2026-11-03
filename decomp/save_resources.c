@@ -65,8 +65,8 @@ void func_8000B7E4_C3E4(void) {
 }
 
 void func_8000B824_C424(void) {
-    if (D_8015C608_15D208.word_FC >= 4) {
-        D_8015C608_15D208.word_FC -= 4;
+    if (D_8015C608_15D208.fortune_doll_progress >= 4) {
+        D_8015C608_15D208.fortune_doll_progress -= 4;
         D_8015C5D8_15D1D8.max_health += 2;
         D_8015C5D8_15D1D8.health = D_8015C5D8_15D1D8.max_health;
     }

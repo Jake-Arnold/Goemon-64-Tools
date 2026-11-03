@@ -189,6 +189,11 @@
           "size": 48
         },
         {
+          "name": "func_8003D310_3DF10",
+          "rom_offset": 253712,
+          "size": 120
+        },
+        {
           "name": "func_8003D428_3E028",
           "rom_offset": 253992,
           "size": 36
@@ -412,7 +417,6 @@
       "assembly_functions": [
         "func_8003D0B0_3DCB0",
         "func_8003D17C_3DD7C",
-        "func_8003D310_3DF10",
         "func_8003D388_3DF88",
         "func_8003D468_3E068",
         "func_8003D68C_3E28C",

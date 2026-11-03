@@ -15,8 +15,9 @@ typedef struct {
     u8 unknown_9C[0x28];
     s32 word_C4;
     u8 unknown_C8[0x34];
-    s32 word_FC;
-    u8 unknown_100[0x100];
+    s32 fortune_doll_progress;
+    s32 fortune_dolls_total;
+    u8 unknown_104[0xFC];
     s32 word_200;
     u16 half_204;
     u8 byte_206, byte_207;

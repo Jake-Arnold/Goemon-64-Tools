@@ -48,3 +48,34 @@ class PickupPlacementTests(unittest.TestCase):
         for f in PLACEMENT_PICKUPS:
             self.assertIn('ROM instantiated placement',f.evidence)
             self.assertIn('not live-tested',f.evidence)
+
+    def test_doll_actor_selection_does_not_change_default_map_scope(self):
+        room,instance,footer,ending=room_fixture()
+        struct.pack_into('>H',room,0,0x88)
+        struct.pack_into('>H',room,4,0xDB)
+        struct.pack_into('>H',room,16,0x89)
+        struct.pack_into('>H',room,20,0xF2)
+        self.assertEqual(room_pickups(1,1,room,instance,footer,ending),[])
+        rows=room_pickups(1,1,room,instance,footer,ending,actor_ids={0x88,0x89})
+        self.assertEqual([r['pickup'] for r in rows],['Silver Fortune Doll','Gold Fortune Doll'])
+        self.assertEqual([r['flag_id'] for r in rows],[0xDB,0xF2])
+        with self.assertRaisesRegex(ValueError,'selection'):room_pickups(1,1,room,instance,footer,ending,actor_ids={0x01})
+        with self.assertRaisesRegex(ValueError,'kind'):extract(b'',kind='unknown')
+
+    def test_published_doll_metadata_corroborates_manual_samples_and_shared_flag(self):
+        import json
+        from pathlib import Path
+        from collections import Counter
+        from practice.story_progress import DOLL_PLACEMENT_FLAGS
+        report=json.loads((Path(__file__).resolve().parents[1]/'decomp/results/fortune_doll_placements.json').read_text())
+        rows=report['pickups'];counts=Counter(r['flag_id'] for r in rows)
+        self.assertEqual(len(rows),44);self.assertEqual(len(counts),43)
+        self.assertEqual(sum(r['actor_id']==0x88 for r in rows),39)
+        self.assertEqual(sum(r['actor_id']==0x89 for r in rows),5)
+        self.assertEqual(counts[0xEF],2)
+        self.assertTrue(all(any(r['stage']==stage and r['flag_id']==flag for r in rows) for stage,flag in ((356,0xED),(381,0xF1),(301,0xDB))))
+        named={f.flag_id for f in FLAGS}
+        self.assertTrue(set(counts)<=named)
+        self.assertEqual(len(DOLL_PLACEMENT_FLAGS),40)
+        self.assertEqual(len({f.label for f in DOLL_PLACEMENT_FLAGS}),40)
+        self.assertTrue(all('not live-collected' in f.evidence for f in DOLL_PLACEMENT_FLAGS))

@@ -29,8 +29,8 @@ renders nothing for other values. No image/asset data is copied here.
 A read-only handle to the running recomp independently observed state 13,
 map 381, progress word 2 and annotated total word 2, corroborating the user's
 half-doll display. The third 3/4 observation is user-reported and room-corroborated;
-no separate live read of 3 is claimed. The fourth-pickup reset/heart-award code
-and all counter write paths have not been reconstructed here.
+no separate live read of 3 is claimed. The follow-up reward trace below now identifies the +1 script and connects the
+post-dialogue callback to the already reconstructed four-quarter health helper.
 
 Use Live memory's full-word **Fortune Doll progress (quarters)** watch, or State
 discovery focused captures, to see this counter. Saved / shadow also includes
@@ -49,12 +49,24 @@ permanence or one-time-message meaning is assigned to it.
 
 ## Shared actor code
 
-In `asm/usa/file_26.s`, `func_08000740_6AEF20` tests the collection ID loaded
-from task `+0xD0` at ROM `0x6AEF3C`. A set result selects the already-collected
-suppression path. Update `func_0800083C_6AF01C` detects interaction bit `0x200`,
-requests event `0x6A` at `0x6AF068`, and sets the task-supplied collection flag
-at `0x6AF0A8`, among other callbacks/effects. These are native trace results,
-not new matching-C/full-ROM promotions.
+Correction to the initial callback attribution: the one-quarter/silver path uses
+initializer `func_08000514_6AECF4` and update `func_080005F8_6AEDD8`, not the
+`0x6AEF20`/`0x6AF01C` pair initially cited. The latter starts event `0x6A`, which
+adds four quarters and belongs to the full-heart/gold path. The observed pickup
+flags and item-screen progress-word address were unaffected by this correction.
+
+The silver update sets its task-supplied flag and normally requests event `0x66`;
+a conditional alternative uses `0x312`. Both paths have one-quarter increment
+code. Shared callback `func_080006E0_6AEEC0` waits for the event VM to finish,
+then calls the already matched `func_8000B824_C424`, restores engine state and
+finishes. That health helper subtracts four quarters when progress is at least
+four, increases max health by two native units, and fills current health.
+It processes one upgrade per invocation, retaining any extra quarters.
+
+[Full reward/individual-flag follow-up](../decomp/DOLL_REWARD_TRACE.md) records
+script positions, the callback correction, static placement coverage and the
+special reward leads. Existing health-upgrade code is not counted as a new C
+function; the newly reconstructed event-start routine passes the full-ROM gate.
 
 The original verified decompressed US ROM SHA-1 is
 `6ea0ed71032ce08fc2745f412d84936382197494`. External annotations come from

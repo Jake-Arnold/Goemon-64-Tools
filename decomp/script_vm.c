@@ -42,9 +42,16 @@ void func_8003D080_3DC80(void) {
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003D17C_3DD7C.s")
 #endif
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003D310_3DF10.s")
-#endif
+/* Start a numbered shared event, cleaning up the previous VM if active. */
+void func_8003D310_3DF10(s32 event) {
+    if (func_8003F1D8_3FDD8() != 0) {
+        func_8003D428_3E028();
+        func_8000C838_D438();
+    }
+    D_801C7900_1C8500 = 3;
+    D_801C7904_1C8504 = -1;
+    func_8003D468_3E068(D_800779A0_785A0[event], D_80078608_79208[event]);
+}
 
 #ifndef GOEMON_DECOMP_HOST_TEST
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003D388_3DF88.s")

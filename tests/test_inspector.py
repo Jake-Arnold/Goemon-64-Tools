@@ -132,4 +132,10 @@ class TestInspector(unittest.TestCase):
             if value==2:self.assertEqual(row.value,'2/4 (1/2)')
             self.assertEqual(rows['Fortune Dolls obtained (annotated total)'].value,'12')
 
+    def test_all_builtin_watch_names_are_unique_with_same_room_dolls(self):
+        _,ram=self.sample()
+        rows=get_watches(ram,ram.snapshot(),SCENES)
+        names=[r.name for r in rows]
+        self.assertEqual(len(names),len(set(names)))
+
 if __name__=='__main__':unittest.main()

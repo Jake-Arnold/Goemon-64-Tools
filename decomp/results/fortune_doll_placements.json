@@ -1,0 +1,449 @@
+{
+  "format": "goemon-pickup-placements-v1",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "source": "Instantiated room definitions; actor flag at definition bytes 4..5",
+  "kind": "dolls",
+  "live_verified": false,
+  "pickups": [
+    {
+      "stage": 9,
+      "file_id": 831,
+      "definition": 10,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 202,
+      "address": "0x8015C621",
+      "mask": "0x04"
+    },
+    {
+      "stage": 11,
+      "file_id": 833,
+      "definition": 4,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 203,
+      "address": "0x8015C621",
+      "mask": "0x08"
+    },
+    {
+      "stage": 21,
+      "file_id": 843,
+      "definition": 3,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 204,
+      "address": "0x8015C621",
+      "mask": "0x10"
+    },
+    {
+      "stage": 26,
+      "file_id": 848,
+      "definition": 8,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 205,
+      "address": "0x8015C621",
+      "mask": "0x20"
+    },
+    {
+      "stage": 48,
+      "file_id": 867,
+      "definition": 14,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 206,
+      "address": "0x8015C621",
+      "mask": "0x40"
+    },
+    {
+      "stage": 49,
+      "file_id": 868,
+      "definition": 13,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 207,
+      "address": "0x8015C621",
+      "mask": "0x80"
+    },
+    {
+      "stage": 51,
+      "file_id": 870,
+      "definition": 6,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 208,
+      "address": "0x8015C622",
+      "mask": "0x01"
+    },
+    {
+      "stage": 54,
+      "file_id": 873,
+      "definition": 11,
+      "actor_id": 137,
+      "pickup": "Gold Fortune Doll",
+      "flag_id": 242,
+      "address": "0x8015C626",
+      "mask": "0x04"
+    },
+    {
+      "stage": 63,
+      "file_id": 882,
+      "definition": 14,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 209,
+      "address": "0x8015C622",
+      "mask": "0x02"
+    },
+    {
+      "stage": 91,
+      "file_id": 896,
+      "definition": 10,
+      "actor_id": 137,
+      "pickup": "Gold Fortune Doll",
+      "flag_id": 243,
+      "address": "0x8015C626",
+      "mask": "0x08"
+    },
+    {
+      "stage": 103,
+      "file_id": 908,
+      "definition": 8,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 210,
+      "address": "0x8015C622",
+      "mask": "0x04"
+    },
+    {
+      "stage": 108,
+      "file_id": 913,
+      "definition": 16,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 211,
+      "address": "0x8015C622",
+      "mask": "0x08"
+    },
+    {
+      "stage": 110,
+      "file_id": 915,
+      "definition": 8,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 212,
+      "address": "0x8015C622",
+      "mask": "0x10"
+    },
+    {
+      "stage": 111,
+      "file_id": 916,
+      "definition": 9,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 213,
+      "address": "0x8015C622",
+      "mask": "0x20"
+    },
+    {
+      "stage": 176,
+      "file_id": 964,
+      "definition": 11,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 214,
+      "address": "0x8015C622",
+      "mask": "0x40"
+    },
+    {
+      "stage": 178,
+      "file_id": 966,
+      "definition": 18,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 215,
+      "address": "0x8015C622",
+      "mask": "0x80"
+    },
+    {
+      "stage": 182,
+      "file_id": 970,
+      "definition": 17,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 216,
+      "address": "0x8015C623",
+      "mask": "0x01"
+    },
+    {
+      "stage": 188,
+      "file_id": 976,
+      "definition": 9,
+      "actor_id": 137,
+      "pickup": "Gold Fortune Doll",
+      "flag_id": 244,
+      "address": "0x8015C626",
+      "mask": "0x10"
+    },
+    {
+      "stage": 191,
+      "file_id": 979,
+      "definition": 5,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 217,
+      "address": "0x8015C623",
+      "mask": "0x02"
+    },
+    {
+      "stage": 300,
+      "file_id": 983,
+      "definition": 25,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 218,
+      "address": "0x8015C623",
+      "mask": "0x04"
+    },
+    {
+      "stage": 301,
+      "file_id": 984,
+      "definition": 11,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 219,
+      "address": "0x8015C623",
+      "mask": "0x08"
+    },
+    {
+      "stage": 304,
+      "file_id": 987,
+      "definition": 11,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 220,
+      "address": "0x8015C623",
+      "mask": "0x10"
+    },
+    {
+      "stage": 308,
+      "file_id": 991,
+      "definition": 7,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 221,
+      "address": "0x8015C623",
+      "mask": "0x20"
+    },
+    {
+      "stage": 308,
+      "file_id": 991,
+      "definition": 8,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 222,
+      "address": "0x8015C623",
+      "mask": "0x40"
+    },
+    {
+      "stage": 309,
+      "file_id": 992,
+      "definition": 3,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 223,
+      "address": "0x8015C623",
+      "mask": "0x80"
+    },
+    {
+      "stage": 312,
+      "file_id": 995,
+      "definition": 8,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 225,
+      "address": "0x8015C624",
+      "mask": "0x02"
+    },
+    {
+      "stage": 313,
+      "file_id": 996,
+      "definition": 6,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 226,
+      "address": "0x8015C624",
+      "mask": "0x04"
+    },
+    {
+      "stage": 315,
+      "file_id": 998,
+      "definition": 12,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 227,
+      "address": "0x8015C624",
+      "mask": "0x08"
+    },
+    {
+      "stage": 322,
+      "file_id": 1005,
+      "definition": 12,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 228,
+      "address": "0x8015C624",
+      "mask": "0x10"
+    },
+    {
+      "stage": 323,
+      "file_id": 1006,
+      "definition": 17,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 229,
+      "address": "0x8015C624",
+      "mask": "0x20"
+    },
+    {
+      "stage": 323,
+      "file_id": 1006,
+      "definition": 19,
+      "actor_id": 137,
+      "pickup": "Gold Fortune Doll",
+      "flag_id": 245,
+      "address": "0x8015C626",
+      "mask": "0x20"
+    },
+    {
+      "stage": 324,
+      "file_id": 1007,
+      "definition": 12,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 230,
+      "address": "0x8015C624",
+      "mask": "0x40"
+    },
+    {
+      "stage": 324,
+      "file_id": 1007,
+      "definition": 13,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 231,
+      "address": "0x8015C624",
+      "mask": "0x80"
+    },
+    {
+      "stage": 330,
+      "file_id": 1016,
+      "definition": 6,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 232,
+      "address": "0x8015C625",
+      "mask": "0x01"
+    },
+    {
+      "stage": 334,
+      "file_id": 1020,
+      "definition": 9,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 233,
+      "address": "0x8015C625",
+      "mask": "0x02"
+    },
+    {
+      "stage": 336,
+      "file_id": 1022,
+      "definition": 19,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 234,
+      "address": "0x8015C625",
+      "mask": "0x04"
+    },
+    {
+      "stage": 338,
+      "file_id": 1024,
+      "definition": 16,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 235,
+      "address": "0x8015C625",
+      "mask": "0x08"
+    },
+    {
+      "stage": 340,
+      "file_id": 1026,
+      "definition": 4,
+      "actor_id": 137,
+      "pickup": "Gold Fortune Doll",
+      "flag_id": 246,
+      "address": "0x8015C626",
+      "mask": "0x40"
+    },
+    {
+      "stage": 350,
+      "file_id": 1032,
+      "definition": 12,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 236,
+      "address": "0x8015C625",
+      "mask": "0x10"
+    },
+    {
+      "stage": 356,
+      "file_id": 1038,
+      "definition": 10,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 237,
+      "address": "0x8015C625",
+      "mask": "0x20"
+    },
+    {
+      "stage": 363,
+      "file_id": 1045,
+      "definition": 11,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 239,
+      "address": "0x8015C625",
+      "mask": "0x80"
+    },
+    {
+      "stage": 373,
+      "file_id": 1059,
+      "definition": 12,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 240,
+      "address": "0x8015C626",
+      "mask": "0x01"
+    },
+    {
+      "stage": 381,
+      "file_id": 1067,
+      "definition": 5,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 241,
+      "address": "0x8015C626",
+      "mask": "0x02"
+    },
+    {
+      "stage": 384,
+      "file_id": 1047,
+      "definition": 7,
+      "actor_id": 136,
+      "pickup": "Silver Fortune Doll",
+      "flag_id": 239,
+      "address": "0x8015C625",
+      "mask": "0x80"
+    }
+  ]
+}

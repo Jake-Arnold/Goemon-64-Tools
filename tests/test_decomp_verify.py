@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),81)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),82)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
@@ -107,8 +107,8 @@ class DecompVerificationTests(unittest.TestCase):
     def test_reference_comparator_is_excluded_from_matching_c_count(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
         vm=next(unit for unit in manifest['units'] if unit['source']=='script_vm.c')
-        self.assertEqual(len(vm['functions']),49)
-        self.assertEqual(len(vm['assembly_functions']),20)
+        self.assertEqual(len(vm['functions']),50)
+        self.assertEqual(len(vm['assembly_functions']),19)
         name='func_8003D9B8_3E5B8'
         self.assertIn(name,vm['assembly_functions'])
         self.assertIn('func_8003DE80_3EA80',vm['assembly_functions'])
