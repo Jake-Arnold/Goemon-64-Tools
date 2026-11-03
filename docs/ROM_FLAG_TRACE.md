@@ -214,3 +214,9 @@ were user-performed; no independent assistant replay is claimed.
 identify IDs `0x19A` and `0x19B` as required conditions for setting entrance latch
 `0x19C`, all in byte `0x8015C63B`. The user confirms decimal input: left is mask `08`, right is `04`, and
 the door latch is `10`; the bit masks also follow from original code.
+
+### Castle map pickups
+
+[Oedo Mr. Elly Fant and Ghost Toys/Musical Castle Mr. Arrow observations](CASTLE_MAP_PICKUPS.md)
+add saved IDs `0x0FF`, `0x105` and `0x108`. The native pickup module uses a
+parameterized task flag ID, explaining why a literal-ID scan can miss these.

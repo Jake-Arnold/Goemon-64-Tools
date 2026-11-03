@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - three castle map pickup observations
+
+- Changed: added read-only Story progress rows and docs/CASTLE_MAP_PICKUPS.md for Oedo Mr. Elly Fant (0x8015C627/80, ID 0x0FF), Ghost Toys Mr. Arrow (0x8015C628/20, ID 0x105) and Musical Castle Mr. Arrow (0x8015C629/01, ID 0x108). Preserved user attribution, one-trial evidence limits and the Oedo-only explicit no-respawn report. The Ghost Toys trial kept map 57, character and pointers unchanged; private IDs/pointers and screenshots were not committed.
+- Research: pinned randomizer already names both actors in file 0x01A but does not annotate these saved IDs. Verified-US-ROM literal GEV/native scans found no ID references; manual pickup-module inspection shows helper calls receive a 16-bit ID from task+0xD0, so placement/task-parameter tracing is the next way to discover further collectible IDs. Recorded example tests/setters without asserting untraced actor registration or extrapolating flags numerically.
+- Tests: focused story model/UI and ROM scanner tests passed; new test covers all three address/mask/ID mappings, independent bits and unrelated neighbors. No game writes, freezes, reloads or new full-ROM/matching-C claims. Existing windows need a restart to show the added catalog rows. Next: trace registration/placement parameters and check Arrow persistence/map effects separately.
+
 ## 2026-11-02/03 - four C replacements pass the whole-ROM gate
 
 - Changed: promoted four reviewed isolated candidates into two original main-segment C slices: viewport_bounds.c replaces func_800216B0_222B0 (144 bytes); warp_state.c replaces func_80037060_37C60, func_80037070_37C70 and func_80037080_37C80 (16 bytes each). The bounds helper validates the 320x240 range and ordering before storing any bounds. The three byte setters retain numeric names and values 2/1/3 pending complete state-consumer semantics. These are native decomp replacements, not new practice warp controls.

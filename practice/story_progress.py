@@ -57,6 +57,12 @@ CURATED_FLAGS = (
               'Entrance update func_08006490_6F9970 tests this and ID 0x19A before unlocking; sides from user-confirmed decimal sequences; persistence user-reported'),
     StoryFlag('ghost_entrance_unlocked','Ghost Toys entrance unlocked',0x19C,
               'Native update sets after both torch bits; initializer reads separately; user reports manual opening without flames and persistence once lit'),
+    StoryFlag('oedo_elly_collected','Oedo Castle Mr. Elly Fant collected (map)',0x0FF,
+              'User touch capture: 0x00 to 0x80 at 0x8015C627; user reports pickup no longer respawns; not independently replayed'),
+    StoryFlag('ghost_arrow_collected','Ghost Toys Mr. Arrow collected (boss location)',0x105,
+              'User A/B: mask 0x20 set at 0x8015C628 on pickup, map 57 with unchanged character/pointers; one event trial'),
+    StoryFlag('musical_arrow_collected','Musical Castle Mr. Arrow collected (boss location)',0x108,
+              'User A/B screenshot: mask 0x01 set at 0x8015C629 on pickup; one event trial, no controls or reversion'),
     StoryFlag('congo_state_candidate','Congo encounter state? (candidate)',0x132,
               'User A/B: mask 0x04 cleared during same event; cutscene/actor/room hypothesis, not confirmed'),
 )

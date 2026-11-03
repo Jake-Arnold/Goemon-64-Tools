@@ -166,3 +166,23 @@ class StoryProgressTests(unittest.TestCase):
         rows={r['key']:r for r in story_rows(state)}
         self.assertEqual([rows[k]['mask'] for k in keys],['0x04','0x08','0x10'])
         self.assertTrue(all(rows[k]['address']==0x8015C63B for k in keys))
+
+    def test_castle_map_pickups_are_separate_masked_flags(self):
+        ram=self.sample()
+        cases=(('oedo_elly_collected',0x8015C627,0x80,0x0FF),
+               ('ghost_arrow_collected',0x8015C628,0x20,0x105),
+               ('musical_arrow_collected',0x8015C629,0x01,0x108))
+        specs={f.key:f for f in FLAGS}
+        for key,address,mask,flag_id in cases:
+            self.assertEqual(specs[key].flag_id,flag_id)
+            ram.write_guest(address,bytes([255^mask]))
+        state=read_story_state(ram)
+        self.assertTrue(all(state['values'][key] is False for key,_,_,_ in cases))
+        for key,address,mask,_ in cases:
+            ram.write_guest(address,b'\xFF')
+        state=read_story_state(ram);rows={r['key']:r for r in story_rows(state)}
+        for key,address,mask,_ in cases:
+            self.assertTrue(state['values'][key])
+            self.assertEqual(rows[key]['address'],address)
+            self.assertEqual(rows[key]['mask'],f'0x{mask:02X}')
+            self.assertIn('User',rows[key]['source'])
