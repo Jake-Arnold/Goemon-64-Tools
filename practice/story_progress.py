@@ -24,6 +24,10 @@ class StoryFlag:
 
 
 CURATED_FLAGS = (
+    StoryFlag('oedo_old_man_dialogue_cycle','Oedo old man dialogue cycle (observed)',0x002,
+              'User map 353 A/B/C: bit set then reverted while dialogue alternated; ROM file 96 has branch/set/clear patterns; exact causality not isolated'),
+    StoryFlag('oedo_coffee_man_dialogue_cycle','Oedo coffee-shop man dialogue cycle (observed)',0x008,
+              'User map 432 A/B/C: bit set then reverted while dialogue alternated; ROM file 96 has branch/set/clear patterns; exact causality not isolated'),
     StoryFlag('benkei_encounter','Benkei encounter recorded',0x025,'ROM script + user tests'),
     StoryFlag('benkei_intro','Benkei first dialogue completed',0x034,'ROM script + user tests'),
     StoryFlag('benkei_defeated','Benkei defeated / crossing permitted',0x033,'ROM script + user report'),
@@ -97,7 +101,8 @@ EXTERNAL_EVIDENCE = "External annotation: mn64rando; not locally gameplay-verifi
 EXTERNAL_FLAGS = (
     StoryFlag('external_super_pass','Super Pass receipt recorded',0x000,EXTERNAL_EVIDENCE,True,24,'0x748B50'),
     StoryFlag('external_pass_gate','Super Pass gate opened',0x001,EXTERNAL_EVIDENCE,True,4,'0x756FA0'),
-    StoryFlag('external_omitsu_ufo','Omitsu UFO conversation recorded',0x007,EXTERNAL_EVIDENCE,True,2,'0x758E80'),
+    StoryFlag('external_omitsu_ufo','Omitsu UFO conversation recorded',0x007,
+              'External annotation: mn64rando; UFO detail not locally gameplay-verified; user map 432 A/B: first Omitsu coffee-shop conversation sets the bit and later dialogue changes; persistence across reload untested',True,2,'0x758E80'),
     StoryFlag('external_japan_map','Japan map receipt recorded',0x009,EXTERNAL_EVIDENCE,True,4,'0x77B8E4'),
     StoryFlag('external_sasuke_recruited','Sasuke recruitment recorded',0x00E,EXTERNAL_EVIDENCE,True,5,'0x77C050'),
     StoryFlag('external_chain_pipe','Chain Pipe receipt recorded',0x010,EXTERNAL_EVIDENCE,True,9,'0x7579BC'),

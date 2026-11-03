@@ -1,4 +1,11 @@
-# Goemon Speedrun Tools v0.11.15 - Live recomp speed control
+# Goemon Speedrun Tools v0.11.16 - Oedo dialogue observations
+
+Story progress includes the two observed alternating-dialogue bits for the
+map 353 old man and the map 432 coffee-shop man. The existing Omitsu flag
+entry now includes the user’s first-conversation observation. See
+[Oedo dialogue observations](docs/OEDO_DIALOGUE_FLAGS.md).
+
+## Live recomp speed control
 
 The Dashboard has a **Game speed (recomp)** control. Click **Launch speed-enabled
 recomp**, then **Connect to game** using the filled PID. Select **Speed up** and

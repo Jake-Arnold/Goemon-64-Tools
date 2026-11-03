@@ -37,6 +37,19 @@ class StoryProgressTests(unittest.TestCase):
         with self.assertRaises(ValueError):write_story_value(ram,'bank_a','Set',b'\x00')
         with self.assertRaises(ValueError):write_story_value(ram,'mini','Set',b'\x00'*4)
 
+    def test_oedo_dialogue_cycle_flags_and_existing_omitsu_annotation(self):
+        ram=self.sample();ram.bytes[0x8015C608]=0x84;ram.bytes[0x8015C609]=0x01
+        rows={r['key']:r for r in story_rows(read_story_state(ram))}
+        for key in ('oedo_old_man_dialogue_cycle','external_omitsu_ufo','oedo_coffee_man_dialogue_cycle'):
+            self.assertEqual(rows[key]['value'],'Set')
+        self.assertIn('map 432',rows['external_omitsu_ufo']['source'])
+        self.assertTrue(write_story_value(ram,'oedo_old_man_dialogue_cycle','Clear',b'\x84'))
+        self.assertEqual(ram.bytes[0x8015C608],0x80)
+        self.assertEqual(ram.bytes[0x8015C609],0x01)
+        self.assertTrue(write_story_value(ram,'oedo_coffee_man_dialogue_cycle','Clear',b'\x01'))
+        self.assertEqual(ram.bytes[0x8015C608],0x80)
+        self.assertEqual(ram.bytes[0x8015C609],0x00)
+
     def test_masked_stages_with_cumulative_values(self):
         stages={0:'Introduction not recorded',0x20:'Introduction seen',0x30:'Three blue',
                 0x38:'Five yellow',0x3C:'Eight red',0x3E:'Fish-sequence',0x3F:'Golden Temple',

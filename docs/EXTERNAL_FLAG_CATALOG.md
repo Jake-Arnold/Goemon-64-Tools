@@ -85,3 +85,8 @@ Requested presentation follow-up: order named story milestones against the
 previously supplied GameFAQs walkthrough (FAQ 3273), retaining alternate branches,
 optional/retry states and evidence distinctions. This remains a follow-up rather
 than assigning an unverified numeric-ID story order during decomp work.
+
+User follow-up: Omitsu's `0x007` bit was observed setting during the first
+coffee-shop conversation in map 432, with a reported change in subsequent
+dialogue. The external UFO wording and save/reload persistence were not
+independently verified by that capture. See [Oedo dialogue observations](OEDO_DIALOGUE_FLAGS.md).

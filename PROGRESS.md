@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - v0.11.16 record Oedo alternating dialogue observations
+
+- Added user-observed dialogue cycle bits 0x002 (map 353 old man) and 0x008 (map 432 coffee-shop man) to Story progress. Both have one A/B/C trial with a set and reversion; no idle control or causal bit manipulation is claimed. Updated the existing external Omitsu 0x007 annotation with the user's map 432 first-conversation observation and reported later dialogue change; UFO wording and reload persistence remain unverified by that capture.
+- A bounded scan of the verified US decompressed ROM found branch/set/clear opcode patterns for 0x002 and 0x008 and branch/set patterns for 0x007, all in file 96. Pattern hits are not proof of reachable call sites, exact NPC linkage or absence of other writers. Detailed offsets and evidence limits are in docs/OEDO_DIALOGUE_FLAGS.md.
+- Validation: focused Story progress and ROM-flag trace tests cover the new rows, existing external annotation, bit preservation and no unintended flag changes; full Windows suite: 350 tests, 345 passed and five native skips. No live game writes or in-game test performed by assistant. No personal trial identifiers, pointers, saves or ROM data committed.
+- Next: compare controlled repeats or bit manipulation to establish causality, and continue native decompilation and map lifecycle work.
+
 ## 2026-11-03 - v0.11.15 live recomp speed toggle
 
 - Added Dashboard launch control, explicit PID entry, and live speed checkbox with 2x/3x/4x choices for a compatible rebuilt recomp. The host uses a versioned, PID-scoped Windows shared-memory channel; requests and applied rates are distinguished, unsupported stock recomp/Project64 remain unavailable, and read-only mode blocks changes. The existing stock game is not modified or closed.
