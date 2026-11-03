@@ -848,6 +848,25 @@
         "func_80011BB4_127B4",
         "func_80011C04_12804"
       ]
+    },
+    {
+      "source": "state_predicate.c",
+      "rom_start": 28192,
+      "rom_end": 28496,
+      "splat_original": "[0x6790, asm]",
+      "splat_replacement": "[0x6790, asm]\n    - [0x6E20, c, state_predicate]",
+      "functions": [
+        {
+          "name": "func_8000631C_6F1C",
+          "rom_offset": 28444,
+          "size": 40
+        }
+      ],
+      "assembly_functions": [
+        "func_80006220_6E20",
+        "func_80006274_6E74",
+        "func_80006298_6E98"
+      ]
     }
   ],
   "support_headers": [

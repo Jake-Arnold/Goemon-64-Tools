@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct state equality predicate
+
+- Reconstructed func_8000631C_6F1C (40 bytes), returning one when a native 16-bit state equals two. Three preceding functions remain assembly. The state variable's broader meaning is unknown.
+- Resolved prior inventory issue: extending the mixed unit to the next real section boundary retains the original 12 bytes of compiler padding and avoids the spurious symbol at 0x6F44.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 105 C function bytes/addresses match, with original function inventory. Host tests cover matching and nonmatching values; 55 focused decomp tests passed. No in-game tests or writes.
+- Next: continue matching other native functions and trace state consumers.
+
 ## 2026-11-03 - reconstruct empty native menu hook
 
 - Reconstructed func_80011B58_12758 (8 bytes), an empty function taking one unused argument. Three surrounding functions remain assembly; the hook's callers and purpose are uncharacterized.

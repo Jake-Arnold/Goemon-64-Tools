@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T19:27:03.321160+00:00",
+  "started_utc": "2026-11-03T19:27:58.166639+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 104,
-    "claimed_functions": 104,
-    "matched_function_bytes": 7436,
+    "matched_functions": 105,
+    "claimed_functions": 105,
+    "matched_function_bytes": 7476,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -984,6 +984,15 @@
         "matched": true,
         "expected_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
         "candidate_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054"
+      },
+      {
+        "name": "func_8000631C_6F1C",
+        "size": 40,
+        "guest_address": "0x8000631C",
+        "rom_offset": "0x6F1C",
+        "matched": true,
+        "expected_sha256": "2ac168349e617f76bb5bae2bed7a3718b51633a314ec7414e980c5f144844403",
+        "candidate_sha256": "2ac168349e617f76bb5bae2bed7a3718b51633a314ec7414e980c5f144844403"
       }
     ]
   },
@@ -1045,7 +1054,10 @@
     "func_80007160_7D60",
     "func_80011B60_12760",
     "func_80011BB4_127B4",
-    "func_80011C04_12804"
+    "func_80011C04_12804",
+    "func_80006220_6E20",
+    "func_80006274_6E74",
+    "func_80006298_6E98"
   ],
   "sources_sha256_lf": {
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
@@ -1070,9 +1082,10 @@
     "rotation_angles.c": "80b39f9dc2ef98e5d8a7e341f3fcbf40f5258a3627bbe4da12f43710dc89f166",
     "scheduler_queue.c": "4fc57d559824dc05ce75ed0c997d17bd5b20973ccd8b0cf87e6e64a8b8173312",
     "empty_menu_hook.c": "24e3e52a9b17fbeae1e25c1414196b081274f954ca73aa266af9d54c66a10899",
+    "state_predicate.c": "9a6bfa882a1c7f366a602002701f5142ad47c856cd7fdc687be7c4c126b022d3",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
     "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-03T19:27:30.103534+00:00"
+  "ended_utc": "2026-11-03T19:28:24.651454+00:00"
 }
