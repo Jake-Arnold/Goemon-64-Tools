@@ -630,10 +630,12 @@
           "name": "func_80016684_17284",
           "rom_offset": 94852,
           "size": 40
+        },
+        {
+          "name": "func_800166AC_172AC",
+          "rom_offset": 94892,
+          "size": 52
         }
-      ],
-      "assembly_functions": [
-        "func_800166AC_172AC"
       ]
     },
     {

@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct indexed bit test helper
+
+- Reconstructed func_800166AC_172AC (52 bytes), completing the set/clear/test bit-array unit. It returns normalized zero or one for an indexed bit. Eight bounded control-flow variants identified the exact return register scheduling; explicit assignments in both branches match native output.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 106 C function bytes/addresses match with original function inventory. Synthetic bit-array test covers clear/set/test across 32 bit positions and 55 focused decomp tests passed. No in-game test or writes.
+- Limitations/next: as with set/clear, caller pointers and signed indices are unchecked; tests use valid nonnegative indices. Continue matching and tracing callers.
+
 ## 2026-11-03 - reconstruct state equality predicate
 
 - Reconstructed func_8000631C_6F1C (40 bytes), returning one when a native 16-bit state equals two. Three preceding functions remain assembly. The state variable's broader meaning is unknown.
