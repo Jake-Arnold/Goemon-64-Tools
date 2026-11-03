@@ -81,6 +81,7 @@ Next targets, in useful order:
 | VM text loop `func_8003DBEC_3E7EC` | Original 472 bytes; draft 480, with 101 differing words. Resolve cursor/halfword input fields and control flow before register tuning. Private draft: `/root/goemon64-text-loop-v1`. |
 | Choice edge `func_8003D0B0_3DCB0` | Original 204 bytes; drafts 200/208. Final conditional/unreachable-store shape unresolved; volatile variants failed. Private attempts: `/root/goemon64-choice-edge-v1`. |
 | VM loader `func_8003D468_3E068` | Needs resource-prefix interfaces. Derive fields/calls from actual loads and upstream declarations. |
+| Collision gate `func_80029E08_2AA08` | `candidates/collision_gate.c` matches 80 bytes in an isolated linked probe with corrected float third argument. It replaces a pragma in upstream C `src/27FE0.c`; verifier needs an explicit, narrowly checked source-patch integration before full-ROM promotion. |
 | Key initializer `func_080001BC_6F369C` | Public `candidates/key_spawn_gate.c` matches 96 bytes in an isolated linked probe. Promotion requires reviewed overlay mapping/layout support in verifier, then complete-ROM proof. |
 
 Other known limits:

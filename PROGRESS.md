@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - trace and reconstruct collision gate candidate
+
+- Reconstructed func_80029E08_2AA08 as an 80-byte isolated linked match. Unlike the automatic draft, the third argument is float, consistent with the existing upstream func_8002A168_2AD68 definition; it is passed through unchanged after a 0x7FFF early-exit check.
+- Validation: original-linked probe has zero byte or word differences at original guest address; synthetic host tests cover sentinel bypass, argument order and return propagation. Full-ROM integration is not yet supported because the original function is a pragma within existing upstream src/27FE0.c. The candidate is not in the matching manifest or count. No in-game tests or writes.
+- Next: add narrowly validated support for patching an existing upstream C source, then require complete ROM/inventory proof before promotion. VM choice-state variations still failed to match; bounded attempts are preserved privately.
+
 ## 2026-11-03 - reconstruct indexed bit test helper
 
 - Reconstructed func_800166AC_172AC (52 bytes), completing the set/clear/test bit-array unit. It returns normalized zero or one for an indexed bit. Eight bounded control-flow variants identified the exact return register scheduling; explicit assignments in both branches match native output.
