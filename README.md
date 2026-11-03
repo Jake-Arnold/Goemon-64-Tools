@@ -1,4 +1,13 @@
-# Goemon Speedrun Tools v0.11.13 - Story progress editing
+# Goemon Speedrun Tools v0.11.14 - Connect without a player
+
+The toolkit can connect when the game RAM is initialized but no player object
+or task is available, including title screens. Discovery still validates the
+system pointer, readable RAM and plausible engine state; ambiguous no-player
+candidates are rejected. Live memory and Story progress remain available, while
+player-dependent features wait for a player. The no-player path has been checked
+read-only on the recomp title screen; Project64 has synthetic coverage only.
+
+## Story progress editing
 
 In **Story progress**, select an individual flag or ownership word, choose its
 desired state from the dropdown, and select **Apply state**. The dropdown starts

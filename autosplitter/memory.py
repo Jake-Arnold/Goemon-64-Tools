@@ -191,14 +191,17 @@ class Rdram:
         if system != SYS_EXPECTED_PTR:
             raise ValueError(f"Invalid system pointer 0x{system:08X}; wrong RAM base or ROM variant")
         char_id = self.u32(CHARACTER_ID_ADDR)
-        # Four playable characters, numbered 0-3 in the US recomp.
-        if not 0 <= char_id <= 3:
-            raise ValueError(f"Invalid character ID {char_id}; RAM base is not validated")
         loading = self.u8(LOADING_FLAG_ADDR)
         if loading not in (0, 1):
             raise ValueError(f"Invalid loading flag {loading}; RAM base is not validated")
         task = self.u32(PLAYER_TASK_PTR_ADDR)
         obj = self.u32(PLAYER_OBJECT_PTR_ADDR)
+        # Some screens have no player and may not have a meaningful character ID.
+        # Never interpret an unknown ID as a playable character when a player exists.
+        if char_id > 3:
+            if obj or task:
+                raise ValueError(f"Invalid character ID {char_id}; player identity is not validated")
+            char_id = None
         for title, ptr, size in (("player object", obj, OBJECT_POSITION_OFFSET + 12),
                                  ("player task", task, PLAYER_ACTION_OFFSET + 1)):
             if ptr and not self.is_ram_pointer(ptr, size):
@@ -237,9 +240,9 @@ def readable_spans(regions):
 def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
     """Find and *cross-check* a host RAM base, optionally checking both endians.
 
-    Return (base, endian). A live player is required for discovery so that
-    collision with a copied pointer constant cannot look like success in a menu.
-    No process-memory writes are performed.
+    Return (base, endian). Prefer a validated player when present; without one,
+    accept only a unique RAM candidate with plausible state, phase and map.
+    Ambiguous no-player candidates fail closed. No process-memory writes occur.
     """
     if mode not in ("auto", "wordswapped", "big"):
         raise ValueError("mode must be auto, wordswapped or big")
@@ -249,6 +252,7 @@ def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
     scanned = 0
     rejected = 0
     candidates = []
+    no_player_candidates = []
     budget = max_scan_mb * 1048576
     for start, length in readable_spans(process.regions()):
         if length < 0x180000 or scanned >= budget:
@@ -275,12 +279,20 @@ def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
                         try:
                             ram = Rdram(process, base, endian)
                             state = ram.snapshot()
+                            # Check both ends of the full guest mapping.
+                            process.read(base, 4)
+                            process.read(base + RDRAM_SIZE - 4, 4)
                             if (state["player_ptr"] and state["task_ptr"] and
-                                    state["x"] is not None and
-                                    state["action"] is not None):
-                                # Ensure the end of the 8MB range is present.
-                                process.read(base + RDRAM_SIZE - 4, 4)
+                                    state["x"] is not None and state["action"] is not None):
                                 candidates.append((base, endian))
+                            elif not state["player_ptr"] or not state["task_ptr"]:
+                                # Independently check non-player engine fields; do not
+                                # infer a player, and never silently choose among copies.
+                                top_state = ram.u8(0x800C7A94)
+                                phase = ram.u8(0x800C7A9E)
+                                map_id = ram.u16(0x800C7AB2)
+                                if top_state < 18 and phase < 3 and map_id < 0x800:
+                                    no_player_candidates.append((base, endian))
                         except (OSError, ValueError):
                             rejected += 1
                     else:
@@ -300,9 +312,14 @@ def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
             return candidates[0]
         summary = ", ".join(f"0x{b:X}/{e}" for b,e in candidates[:10])
         raise RuntimeError(f"Ambiguous RAM bases ({len(candidates)}): {summary}; use --base")
+    no_player_candidates = sorted(set(no_player_candidates))
+    if len(no_player_candidates) == 1:
+        return no_player_candidates[0]
+    if len(no_player_candidates) > 1:
+        raise RuntimeError(f"Ambiguous RAM bases ({len(no_player_candidates)}) without a player; use --base")
     raise RuntimeError(
-        f"No validated player RAM found ({rejected} rejected matches). "
-        "Enter gameplay with a visible player and retry. "
+        f"No validated game RAM found ({rejected} rejected matches). "
+        "Start the game and retry. "
         "Unsupported game version or memory layout is also possible."
     )
 

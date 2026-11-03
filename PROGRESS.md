@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - v0.11.14 connect without a loaded player
+
+- Changed RDRAM discovery to accept a unique no-player or partially loaded player candidate after checking the system pointer, full readable guest range and plausible engine state/phase/map. Ambiguous no-player candidates remain rejected. Snapshot shows unavailable character only when both player pointers are absent; invalid nonzero pointers remain rejected.
+- Removed the toolkit worker's player-position requirement and clear stale player coordinates/current state outside ordinary gameplay. Fixed-address watches and story tracking remain available; player-dependent features retain their existing guards.
+- Validation: real read-only connection to the running recomp at title-screen state 6 with no player object or task succeeded, and Story progress displayed. Synthetic tests cover no-player, unknown character, partial player, ambiguity and Tk connection/clearing. No live writes; Project64 title-screen behavior not live tested. Full Windows Python suite ran 334 tests: 329 passed, five native skips.
+- Next: implement live speed toggle using the separate speed-enabled recomp host; validate clocks and audio before claiming reliable live speed switching.
+
 ## 2026-11-03 - prepare fixed-startup recomp speed integration
 
 - Added a pinned-source runtime preparation script and startup multiplier header: an isolated clean N64ModernRuntime checkout can use GOEMON_SPEED_MULTIPLIER=1,2,3,4 once built. The rate is fixed at process start so existing VI and virtual-timer calculations share a single constant process rate. Invalid input falls back to 1x. Added a launcher that passes the chosen rate to a separately built recomp without changing the parent environment; it reports a request and does not claim the executable supports it.

@@ -106,6 +106,21 @@ class CrossAreaRestoreTests(unittest.TestCase):
             self.assertFalse(self.app._connecting)
             self.assertEqual(self.app.game_pid,1234)
 
+    def test_connect_without_player_and_clear_stale_position(self):
+        proc=TestCheckpoint().sample()[0];proc.close=lambda:None
+        write_u32(proc,0x801FC60C,0);write_u32(proc,0x801FC604,0);write_u8(proc,STATE_ADDR,6)
+        with (patch('practice.toolkit.find_pid',return_value=1234),
+              patch('practice.toolkit.WindowsProcess',return_value=proc),
+              patch('practice.toolkit.discover_rdram',return_value=(BASE,'wordswapped'))):
+            self.app._connect_worker((None,None,'auto',False,'recomp'))
+        result=self.app._connect_queue.get_nowait()
+        self.assertEqual(result[0],'ok');self.assertIsNone(result[4]['x'])
+        self.app._connecting=True;self.app._connect_queue.put(result);self.app._poll_connect_results()
+        self.assertIn('player unavailable',self.app.status.get())
+        self.app.pos_text.set('stale');self.app.tick()
+        self.assertIn('—',self.app.pos_text.get());self.assertIsNone(self.app.current)
+        self.assertIsNotNone(self.app.mem)
+
     def test_project64_target_passed_to_worker(self):
         proc=TestCheckpoint().sample()[0]
         proc.close=lambda:None

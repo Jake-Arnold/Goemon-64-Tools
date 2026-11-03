@@ -60,6 +60,38 @@ class Tests(unittest.TestCase):
                 struct.pack("<I", SYS_EXPECTED_PTR))
         self.assertEqual(discover_rdram(p, "wordswapped"), (BASE,"wordswapped"))
 
+    def test_discovery_accepts_unique_title_screen_without_player(self):
+        p=self.sample()
+        write_u32(p,PLAYER_OBJECT_PTR_ADDR,0)
+        write_u32(p,PLAYER_TASK_PTR_ADDR,0)
+        write_u8(p,0x800C7A94,6)
+        base,endian=discover_rdram(p)
+        self.assertEqual((base,endian),(BASE,'wordswapped'))
+        state=Rdram(p,base,endian).snapshot()
+        self.assertIsNone(state['x']); self.assertIsNone(state['action'])
+        self.assertEqual(state['player_ptr'],0); self.assertEqual(state['task_ptr'],0)
+
+    def test_discovery_accepts_partially_loaded_player(self):
+        for missing in (PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR):
+            with self.subTest(missing=missing):
+                p=self.sample();write_u32(p,missing,0)
+                self.assertEqual(discover_rdram(p),(BASE,'wordswapped'))
+
+    def test_unknown_character_without_player_is_unavailable(self):
+        p=self.sample()
+        write_u32(p,PLAYER_OBJECT_PTR_ADDR,0);write_u32(p,PLAYER_TASK_PTR_ADDR,0)
+        write_u32(p,CHARACTER_ID_ADDR,0xFFFFFFFF);write_u8(p,0x800C7A94,6)
+        self.assertIsNone(Rdram(p,BASE).snapshot()['character'])
+        self.assertEqual(discover_rdram(p),(BASE,'wordswapped'))
+
+    def test_no_player_discovery_rejects_ambiguous_candidates(self):
+        p=FakeProcess();p.mem=bytearray(2*RDRAM_SIZE)
+        p.regions=lambda:[(BASE,2*RDRAM_SIZE)]
+        for base in (BASE,BASE+RDRAM_SIZE):
+            p.write(base+(SYS_POINTER_ADDR&0x1FFFFFFF),struct.pack('<I',SYS_EXPECTED_PTR))
+        with self.assertRaisesRegex(RuntimeError,'Ambiguous RAM bases'):
+            discover_rdram(p,'wordswapped')
+
     def test_project64_split_readable_pages(self):
         p=self.sample()
         # All segments are below the old scanner's minimum region size.

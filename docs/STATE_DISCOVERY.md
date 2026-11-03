@@ -160,3 +160,16 @@ number of simultaneous changes prevents attributing other candidates to the map
 without repeated focused tests or a control. The export does not contain all
 30,443 candidate rows, and no additional flag is confirmed by it. The personal
 raw export remains local and is not part of the repository.
+
+## Connecting without a player (v0.11.14)
+
+The companion can discover a unique initialized RDRAM mapping when the player
+object or task is absent. It checks the system pointer, both ends of the RDRAM
+mapping and plausible state, phase and map values; multiple plausible no-player
+candidates are rejected rather than guessed. A missing player gives no position
+or action, and title/other non-gameplay states clear stale position display.
+Fixed-address watches and story values remain available. A character ID outside
+0–3 is shown unavailable only when both player pointers are absent; invalid
+nonzero player pointers still fail validation. This weaker no-player discovery
+has a read-only live check on the recomp title screen and synthetic coverage for
+Project64-style layouts, not a live Project64 title-screen test.

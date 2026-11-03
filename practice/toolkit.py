@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.13 — external Windows UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.14 — external Windows UI for US Goemon.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -89,7 +89,7 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.13 · USA N64")
+        root.title("Goemon Practice Toolkit v0.11.14 · USA N64")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -127,7 +127,7 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.13  |  US Goemon · Recomp / Project64',
+        ttk.Label(header, text='v0.11.14  |  US Goemon · Recomp / Project64',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -407,8 +407,6 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
                 base, endian = discover_rdram(process, endian_hint)
             candidate = Rdram(process, base, endian)
             sample = candidate.snapshot()
-            if sample['x'] is None or sample['action'] is None:
-                raise ValueError('Player not loaded; enter gameplay and reconnect')
             self._connect_queue.put(('ok', pid, process, candidate, sample, base, endian))
         except Exception as exc:
             if process is not None:
@@ -431,7 +429,9 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
         if result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
             self.process, self.mem, self.game_pid, self.current = process, candidate, pid, sample
-            self.status.set(f'Validated PID {pid}, RAM 0x{base:X}, format {endian}. Move to verify updates.')
+            if sample['x'] is None or sample['action'] is None:
+                self.status.set(f'Connected PID {pid}, RAM 0x{base:X}, format {endian}; player unavailable. Memory watches remain available.')
+            else:self.status.set(f'Validated PID {pid}, RAM 0x{base:X}, format {endian}. Move to verify updates.')
         else:
             self.process = self.mem = self.current = None
             self.game_pid = None
@@ -453,6 +453,12 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
                 if self.pending_restore and self.pending_restore.get('phase') == 'warp':
                     self.poll_pending_restore(None, now)
                 if state!=13:
+                    self.current=None
+                    self.last=self.last_t=None
+                    self.observed_velocity=None
+                    self.pos_text.set('X: —    Y: —    Z: —')
+                    self.speed_text.set('Speed: —')
+                    self.misc_text.set('Player unavailable in this scene')
                     self.refresh_inspector({})
                     self.refresh_unlocks()
                     self.poll_native_warp_menu(now)
@@ -474,6 +480,10 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
                                 magnitude=math.sqrt(vx*vx+vy*vy+vz*vz)
                                 self.speed_text.set(f"Observed XYZ: ({vx:.1f}, {vy:.1f}, {vz:.1f}) u/s  |  speed: {magnitude:.1f} (derived)")
                     self.last, self.last_t=s,now
+                else:
+                    self.last=self.last_t=None
+                    self.pos_text.set('X: —    Y: —    Z: —')
+                    self.speed_text.set('Speed: —')
                 self.misc_text.set(f"Character: {s['character']}    Action: {s['action']}    Loading: {s['loading']}")
                 self.current=s
                 self.refresh_inspector(s)
