@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - investigate host game-speed controls
+
+- Investigated the user-requested game-speed multiplier using pinned upstream Goemon64Recomp runtime and Project64 source. The recomp runtime pins a compile-time multiplier of one and uses it for both VI scheduling and virtual counter rate; its source does not expose a live setter. Project64 has speed-step and limiter commands, whose behavior depends on limiter/audio configuration. Existing executable identity and in-game behavior were not verified.
+- Identified the native retraces-per-game-step byte as a useful pacing research lead, but the game writes it during transitions and it is not an established arbitrary multiplier or audio/timer solution. Recorded a concrete host-side implementation and validation path in docs/SPEED_CONTROL_RESEARCH.md rather than adding a control that claims unverified speed.
+- Validation: inspected pinned source, game-loop assembly, existing matched transition helper and relevant toolkit controls; checked documentation links and git diff. No game writes, process manipulation, live speed test or executable rebuild. No speed control implemented yet.
+- Next: implement a synchronized runtime speed control and toolkit interface with multiplier readback and continuity tests; validate both host builds, actual loop rate and audio before claiming speedup. Continue native map load/unload decompilation.
+
 ## 2026-11-03 - reconstruct native file-table lookup
 
 - Traced transition dispatcher 800030F0 to data-loading entry 80001C00 with file ID 0x0F and destination 801CB460 on one branch. Reconstructed nearby func_80001D68_2968 (44 bytes), which indexes a file-table word using a 16-bit argument and masks its high bit. The complete loader and high-bit semantics remain unresolved.
