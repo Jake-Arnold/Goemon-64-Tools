@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),111)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),113)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'

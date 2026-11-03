@@ -798,13 +798,21 @@
           "name": "func_8001F878_20478",
           "rom_offset": 132216,
           "size": 56
+        },
+        {
+          "name": "func_8001F914_20514",
+          "rom_offset": 132372,
+          "size": 44
+        },
+        {
+          "name": "func_8001FA3C_2063C",
+          "rom_offset": 132668,
+          "size": 68
         }
       ],
       "assembly_functions": [
         "func_8001F8B0_204B0",
-        "func_8001F914_20514",
         "func_8001F940_20540",
-        "func_8001FA3C_2063C",
         "func_8001FA80_20680"
       ]
     },

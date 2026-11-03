@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct two transition dispatcher branches
+
+- Resolved the three native targets in the table at ROM 0x6C330 and reconstructed func_8001F914_20514 and func_8001FA3C_2063C (44 and 68 bytes). The middle branch and called resource helpers remain assembly; precise loading/unloading semantics are not yet established.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 113 C function bytes/addresses match with original inventory. Synthetic tests verify call sequence, global clearing and completion byte; 55 focused decomp tests run. No live-game test or writes.
+- Next: trace 80020440, 80034EF8 and the remaining dispatcher branch to identify actual resource operations and room lifecycle.
+
 ## 2026-11-03 - clean transition test whitespace
 
 - Removed trailing whitespace introduced in the previous transition-chain test edit so `git diff --check` is clean.

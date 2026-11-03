@@ -68,3 +68,13 @@ These are state-machine primitives, not identified room unload operations.
 `func_80003380_3F80` now matches as C (48 bytes), setting system
 `+0x3ADE0` and clearing `+0x3ADE1`. This completes the characterized
 five-helper state reset chain; it does not identify the room loader/unloader.
+
+## Next-level dispatcher
+
+`func_8001F8B0_204B0` copies three addresses from ROM `0x6C330` and dispatches
+using system `+0x3ADDE`. The three targets are `8001F914_20514`,
+`8001F940_20540`, and `8001FA3C_2063C`. The first and third now match as C
+(44 and 68 bytes); the middle remains assembly. The first calls `80020440`,
+clears `0x800C7A76`, then calls `80003478`; the third calls `80004240`, passes
+a global word to `80034EF8`, then sets system `+0x3ADDF` to one. The latter
+helpers and actual room loading/unloading effects remain under investigation.

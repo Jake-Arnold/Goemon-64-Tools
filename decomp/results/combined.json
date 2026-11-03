@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T19:44:46.903296+00:00",
+  "started_utc": "2026-11-03T19:46:17.878623+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 111,
-    "claimed_functions": 111,
-    "matched_function_bytes": 7916,
+    "matched_functions": 113,
+    "claimed_functions": 113,
+    "matched_function_bytes": 8028,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -977,6 +977,24 @@
         "candidate_sha256": "0340c73abc01e154f93a5dd550b73594a000c588f361751713376b59714b2ca6"
       },
       {
+        "name": "func_8001F914_20514",
+        "size": 44,
+        "guest_address": "0x8001F914",
+        "rom_offset": "0x20514",
+        "matched": true,
+        "expected_sha256": "246e2a939cb0147a3ffeece60b6a0ff31e949381c7ecfb74bf5b8b521e557f13",
+        "candidate_sha256": "246e2a939cb0147a3ffeece60b6a0ff31e949381c7ecfb74bf5b8b521e557f13"
+      },
+      {
+        "name": "func_8001FA3C_2063C",
+        "size": 68,
+        "guest_address": "0x8001FA3C",
+        "rom_offset": "0x2063C",
+        "matched": true,
+        "expected_sha256": "d454d358b63af0c95044646d72678980751ca9b2b39e6a4d4815a9fb66e967b7",
+        "candidate_sha256": "d454d358b63af0c95044646d72678980751ca9b2b39e6a4d4815a9fb66e967b7"
+      },
+      {
         "name": "func_80007024_7C24",
         "size": 8,
         "guest_address": "0x80007024",
@@ -1099,9 +1117,7 @@
     "func_80006B44_7744",
     "func_80006BF8_77F8",
     "func_8001F8B0_204B0",
-    "func_8001F914_20514",
     "func_8001F940_20540",
-    "func_8001FA3C_2063C",
     "func_8001FA80_20680",
     "func_8000702C_7C2C",
     "func_80007160_7D60",
@@ -1146,7 +1162,7 @@
     "return_zero.c": "b1fa7647b5bcab949b6d3fb476c8daabb3aa14b93d3be35e33a15cc0f9e45cb0",
     "empty_hook.c": "f6355fac5b091bcfdec761496296b6ea0d11c8a8e255651d8e933a3975fd17d5",
     "float_state.c": "2ac652d7af8475af82c8b71b26209c012d0f3056c3847325932f9c66d6b4a42b",
-    "rotation_angles.c": "80b39f9dc2ef98e5d8a7e341f3fcbf40f5258a3627bbe4da12f43710dc89f166",
+    "rotation_angles.c": "80357db43c81ae9d794f95da4e2e836dd9f729f083b3204c5e46d8d641fb947e",
     "scheduler_queue.c": "4fc57d559824dc05ce75ed0c997d17bd5b20973ccd8b0cf87e6e64a8b8173312",
     "empty_menu_hook.c": "24e3e52a9b17fbeae1e25c1414196b081274f954ca73aa266af9d54c66a10899",
     "state_predicate.c": "9a6bfa882a1c7f366a602002701f5142ad47c856cd7fdc687be7c4c126b022d3",
@@ -1155,5 +1171,5 @@
     "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-03T19:45:13.254100+00:00"
+  "ended_utc": "2026-11-03T19:46:44.368279+00:00"
 }
