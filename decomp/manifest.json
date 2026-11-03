@@ -826,6 +826,28 @@
         "func_8000702C_7C2C",
         "func_80007160_7D60"
       ]
+    },
+    {
+      "source": "empty_menu_hook.c",
+      "rom_start": 75608,
+      "rom_end": 75864,
+      "splat_original": "[0x11760, asm] # Menu Graphics (.rodata: 80080670)\n    - [0x12760, asm] # dracam (.rodata: 800809F0)",
+      "splat_replacement": "[0x11760, asm] # Menu Graphics (.rodata: 80080670)\n    - [0x12758, c, empty_menu_hook]\n    - [0x12858, asm] # dracam (.rodata: 800809F0)",
+      "asm_no_padding": [
+        "12858"
+      ],
+      "functions": [
+        {
+          "name": "func_80011B58_12758",
+          "rom_offset": 75608,
+          "size": 8
+        }
+      ],
+      "assembly_functions": [
+        "func_80011B60_12760",
+        "func_80011BB4_127B4",
+        "func_80011C04_12804"
+      ]
     }
   ],
   "support_headers": [

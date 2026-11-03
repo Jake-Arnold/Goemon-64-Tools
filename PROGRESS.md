@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct empty native menu hook
+
+- Reconstructed func_80011B58_12758 (8 bytes), an empty function taking one unused argument. Three surrounding functions remain assembly; the hook's callers and purpose are uncharacterized.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 104 C function bytes/addresses match with original function inventory. All 55 focused decomp tests passed; no live-game testing or writes.
+- Next: continue matching remaining native functions and trace the hook's callers when useful.
+
 ## 2026-11-03 - reconstruct scheduler interior-address helper
 
 - Reconstructed func_80007024_7C24 (8 bytes), returning the supplied address-like integer plus 0x40; two adjacent scheduler functions remain assembly. Its caller's complete object layout remains unknown.
