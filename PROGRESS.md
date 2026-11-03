@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct variable-length helper loop
+
+- Reconstructed func_80015EFC_16AFC (92 bytes), which repeatedly calls an existing helper with argument one, then combines a helper result with a power of two. The helper's complete semantics and unchecked shift bounds remain uncharacterized; adjacent routine remains assembly.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 97 C function bytes/addresses match. Synthetic host test checks zero and repeated nonzero helper returns, call order and arithmetic; 55 focused decomp tests passed. No live-game test or writes.
+- Next: trace the external helper and continue matching remaining native functions.
+
 ## 2026-11-03 - reconstruct four-value native state setter
 
 - Reconstructed func_80010980_11580 (36 bytes), storing four arguments in four native globals. The following function remains assembly; the globals' gameplay meaning is not yet established.

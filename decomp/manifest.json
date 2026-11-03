@@ -673,6 +673,26 @@
       "assembly_functions": [
         "func_800109A4_115A4"
       ]
+    },
+    {
+      "source": "decode_loop.c",
+      "rom_start": 92924,
+      "rom_end": 93148,
+      "splat_original": "[0x15970, asm]",
+      "splat_replacement": "[0x15970, asm]\n    - [0x16AFC, c, decode_loop]\n    - [0x16BDC, asm]",
+      "asm_no_padding": [
+        "16BDC"
+      ],
+      "functions": [
+        {
+          "name": "func_80015EFC_16AFC",
+          "rom_offset": 92924,
+          "size": 92
+        }
+      ],
+      "assembly_functions": [
+        "func_80015F58_16B58"
+      ]
     }
   ],
   "support_headers": [
