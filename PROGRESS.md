@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct three-angle transformation
+
+- Reconstructed func_8001F878_20478 (56 bytes), transforming three 16-bit angles with 0x200 offsets and 10-bit masks. Five neighboring functions remain assembly. The helper's callers and gameplay purpose remain uncharacterized.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 102 C function bytes/addresses match, with original function inventory. Synthetic host tests check wrapping and aliased pointers; 55 focused decomp tests passed. No in-game test or writes.
+- Next: continue matching native functions and tracing their actual use.
+
 ## 2026-11-03 - reconstruct floating-point state setter
 
 - Reconstructed func_80006430_7030 (12 bytes), storing a float argument in an existing native global. Five surrounding functions remain assembly; the state variable's meaning has not been established.

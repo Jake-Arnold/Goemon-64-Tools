@@ -780,6 +780,31 @@
         "func_80006B44_7744",
         "func_80006BF8_77F8"
       ]
+    },
+    {
+      "source": "rotation_angles.c",
+      "rom_start": 132216,
+      "rom_end": 134920,
+      "splat_original": "[0x1D570, asm] # (.rodata: 80081280)\n    - [0x204B0, asm] # Overworld (.rodata: 80081320)",
+      "splat_replacement": "[0x1D570, asm] # (.rodata: 80081280)\n    - [0x20478, c, rotation_angles]\n    - [0x20F08, asm] # Overworld (.rodata: 80081320)",
+      "asm_no_padding": [
+        "1D570",
+        "20F08"
+      ],
+      "functions": [
+        {
+          "name": "func_8001F878_20478",
+          "rom_offset": 132216,
+          "size": 56
+        }
+      ],
+      "assembly_functions": [
+        "func_8001F8B0_204B0",
+        "func_8001F914_20514",
+        "func_8001F940_20540",
+        "func_8001FA3C_2063C",
+        "func_8001FA80_20680"
+      ]
     }
   ],
   "support_headers": [
