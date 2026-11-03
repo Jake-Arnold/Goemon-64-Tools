@@ -28,9 +28,9 @@ artifacts untouched. The primary checkout is also retained at its original commi
 Recheck `git branch --show-current`, fetched remote state and worktree status
 before future work; do not use an older detached checkout for new implementation.
 
-Current checkpoint (2026-11-03): 85 newly matching functions / 6,680 bytes in nine
-units. Including 13 upstream C entries: 98 of 7,376 identified entries, leaving
-7,278 ASM entries (including SDK/runtime). VM: 52 C / 17 ASM.
+Current checkpoint (2026-11-03): 90 newly matching functions / 6,860 bytes in nine
+units. Including 13 upstream C entries: 103 of 7,376 identified entries, leaving
+7,273 ASM entries (including SDK/runtime). VM: 52 C / 17 ASM.
 
 Treat these as a dated snapshot. For current claims, read:
 

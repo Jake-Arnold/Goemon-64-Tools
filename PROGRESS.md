@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - recover five adjacent engine state routines
+
+- Reconstructed five functions in engine_state.c (180 bytes) using existing linked probe candidates. Four intervening functions remain assembly in the same original unit. Their state variables remain unnamed pending semantic evidence.
+- Reason: group the contiguous mixed unit at its original boundaries so code and assembly preserve native placement; this advances matching decompilation without guessing remaining implementations.
+- Validation: full candidate rebuild matched all 90 C functions and the entire original ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494. Inventory now identifies 103 total matching C entries and 7,273 assembly entries. Synthetic host tests cover threshold and unchanged-field branches; 55 focused WSL tests passed and the Windows suite passed 314 tests with five skips. No live-game testing or game writes.
+- Limitations/next: state meanings and four intervening routines remain unresolved. Continue recovering native functions and require full-ROM matching before promoting them.
+
 ## 2026-11-03 - integrate completed work into main and simplify branch handoff
 
 - Changed: user authorized integration and redundant-branch cleanup. Updated the continuation runbook to use main in the existing task workspace, with detached historical worktrees retained for private artifacts. No implementation or matching counts changed.

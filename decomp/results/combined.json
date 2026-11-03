@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T02:01:15.706817+00:00",
+  "started_utc": "2026-11-03T19:04:59.057215+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 85,
-    "claimed_functions": 85,
-    "matched_function_bytes": 6680,
+    "matched_functions": 90,
+    "claimed_functions": 90,
+    "matched_function_bytes": 6860,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -813,6 +813,51 @@
         "matched": true,
         "expected_sha256": "8654928b97d2e956a220957e3545cbeaee1fccfbc6739e84cac231bc97479541",
         "candidate_sha256": "8654928b97d2e956a220957e3545cbeaee1fccfbc6739e84cac231bc97479541"
+      },
+      {
+        "name": "func_80039F3C_3AB3C",
+        "size": 36,
+        "guest_address": "0x80039F3C",
+        "rom_offset": "0x3AB3C",
+        "matched": true,
+        "expected_sha256": "ea57cc05632b3b524c0055195318b4ea1404d606b148f584fbcafd87ed7719e1",
+        "candidate_sha256": "ea57cc05632b3b524c0055195318b4ea1404d606b148f584fbcafd87ed7719e1"
+      },
+      {
+        "name": "func_80039F60_3AB60",
+        "size": 36,
+        "guest_address": "0x80039F60",
+        "rom_offset": "0x3AB60",
+        "matched": true,
+        "expected_sha256": "d9e32b274b07aa02df8dc36cc2f73e1f053c47464d74e6b1d6a31fae7620ba62",
+        "candidate_sha256": "d9e32b274b07aa02df8dc36cc2f73e1f053c47464d74e6b1d6a31fae7620ba62"
+      },
+      {
+        "name": "func_8003A1C4_3ADC4",
+        "size": 36,
+        "guest_address": "0x8003A1C4",
+        "rom_offset": "0x3ADC4",
+        "matched": true,
+        "expected_sha256": "7470196fdd2d2d99309e4709c237493c06d732d8357211b00890165915c40691",
+        "candidate_sha256": "7470196fdd2d2d99309e4709c237493c06d732d8357211b00890165915c40691"
+      },
+      {
+        "name": "func_8003A204_3AE04",
+        "size": 36,
+        "guest_address": "0x8003A204",
+        "rom_offset": "0x3AE04",
+        "matched": true,
+        "expected_sha256": "378fa47f6d321e8fd2a46ada1eab3574d32b9858e12b99dd159b9a18aeadca23",
+        "candidate_sha256": "378fa47f6d321e8fd2a46ada1eab3574d32b9858e12b99dd159b9a18aeadca23"
+      },
+      {
+        "name": "func_8003A228_3AE28",
+        "size": 36,
+        "guest_address": "0x8003A228",
+        "rom_offset": "0x3AE28",
+        "matched": true,
+        "expected_sha256": "36770e11f110679f941a31ed14d8f00924bde37faa6811830d575fc5410b47ec",
+        "candidate_sha256": "36770e11f110679f941a31ed14d8f00924bde37faa6811830d575fc5410b47ec"
       }
     ]
   },
@@ -833,7 +878,11 @@
     "func_8003F350_3FF50",
     "func_8003F37C_3FF7C",
     "func_8003F480_40080",
-    "func_8003F6E8_402E8"
+    "func_8003F6E8_402E8",
+    "func_80039F84_3AB84",
+    "func_8003A060_3AC60",
+    "func_8003A138_3AD38",
+    "func_8003A1E8_3ADE8"
   ],
   "sources_sha256_lf": {
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
@@ -845,9 +894,10 @@
     "scheduler_views.c": "47db47be1c4326d208087fcd390955c1f977ff94ec355d9c497af0a8ac7389e6",
     "audio_state.c": "8331f0694893a15d477a7d693ce7b010e89623f3fbe62509ece9bb800b72514a",
     "trig_angles.c": "d60c70246ef486742ca655aa2b4a0fbb584ac5a755e04221ccc18a128d9dd54e",
+    "engine_state.c": "e9fbe551b8f8b70201358f8a51fb688e5d6ac516121fdee5d30716c722a7b830",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
     "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-03T02:01:40.269533+00:00"
+  "ended_utc": "2026-11-03T19:05:26.957389+00:00"
 }

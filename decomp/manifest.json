@@ -540,6 +540,49 @@
           "size": 176
         }
       ]
+    },
+    {
+      "source": "engine_state.c",
+      "rom_start": 240444,
+      "rom_end": 241228,
+      "splat_original": "[0x39994, asm]",
+      "splat_replacement": "[0x39994, asm]\n    - [0x3AB3C, c, engine_state]\n    - [0x3AE4C, asm]",
+      "asm_no_padding": [
+        "3AE4C"
+      ],
+      "functions": [
+        {
+          "name": "func_80039F3C_3AB3C",
+          "rom_offset": 240444,
+          "size": 36
+        },
+        {
+          "name": "func_80039F60_3AB60",
+          "rom_offset": 240480,
+          "size": 36
+        },
+        {
+          "name": "func_8003A1C4_3ADC4",
+          "rom_offset": 241092,
+          "size": 36
+        },
+        {
+          "name": "func_8003A204_3AE04",
+          "rom_offset": 241156,
+          "size": 36
+        },
+        {
+          "name": "func_8003A228_3AE28",
+          "rom_offset": 241192,
+          "size": 36
+        }
+      ],
+      "assembly_functions": [
+        "func_80039F84_3AB84",
+        "func_8003A060_3AC60",
+        "func_8003A138_3AD38",
+        "func_8003A1E8_3ADE8"
+      ]
     }
   ],
   "support_headers": [
