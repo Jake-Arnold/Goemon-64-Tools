@@ -82,3 +82,9 @@ helpers and actual room loading/unloading effects remain under investigation.
 `func_80034EF8_35AF8` now matches as C (40 bytes): it passes its word
 argument to `80034F44_35B44`, then to `80035044_35C44`. The argument's
 underlying type and the called routines' resource effects remain unresolved.
+
+`func_80035044_35C44` now matches as C (32 bytes): it forwards its argument
+to `800350C4_35CC4`. The first callee `80034F44_35B44` dereferences the
+shared argument and traverses linked objects, so it is pointer-like in this
+path; the specific structure and resource semantics remain unknown. The
+matching wrappers use an opaque 32-bit value pending interface recovery.

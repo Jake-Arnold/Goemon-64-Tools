@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T19:47:27.635012+00:00",
+  "started_utc": "2026-11-03T19:48:28.859537+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 114,
-    "claimed_functions": 114,
-    "matched_function_bytes": 8068,
+    "matched_functions": 115,
+    "claimed_functions": 115,
+    "matched_function_bytes": 8100,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1074,6 +1074,15 @@
         "matched": true,
         "expected_sha256": "fae0e2e87ddd776f87a9ec625afc54f43f59d28bff15c7e2c917425ac065e22a",
         "candidate_sha256": "fae0e2e87ddd776f87a9ec625afc54f43f59d28bff15c7e2c917425ac065e22a"
+      },
+      {
+        "name": "func_80035044_35C44",
+        "size": 32,
+        "guest_address": "0x80035044",
+        "rom_offset": "0x35C44",
+        "matched": true,
+        "expected_sha256": "527f15a0268bbaa99f952ccdf5effa7bb5f1bce4c6f60492889f0becc7fb1fe6",
+        "candidate_sha256": "527f15a0268bbaa99f952ccdf5effa7bb5f1bce4c6f60492889f0becc7fb1fe6"
       }
     ]
   },
@@ -1179,9 +1188,10 @@
     "state_predicate.c": "9a6bfa882a1c7f366a602002701f5142ad47c856cd7fdc687be7c4c126b022d3",
     "transition_state.c": "d47a194ff2dd9624fd9d6bbd2a3e8ccade42e41934ad7e598b8cb775bd0d0dc6",
     "resource_dispatch.c": "7a0e57acab49067a0239f09f4bf322bcacb88de8ff6cffc20ffbb7ff336b8a9e",
+    "resource_forward.c": "2a84b51e305242a08bb1e80a8187fe9658b14579f0c76439c7da07cf56a379d6",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
     "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-03T19:47:53.954501+00:00"
+  "ended_utc": "2026-11-03T19:48:55.087147+00:00"
 }

@@ -949,6 +949,23 @@
         "func_80034ED4_35AD4",
         "func_80034F20_35B20"
       ]
+    },
+    {
+      "source": "resource_forward.c",
+      "rom_start": 220228,
+      "rom_end": 220260,
+      "splat_original": "[0x35B44, asm]",
+      "splat_replacement": "[0x35B44, asm]\n    - [0x35C44, c, resource_forward]\n    - [0x35C64, asm]",
+      "asm_no_padding": [
+        "35C64"
+      ],
+      "functions": [
+        {
+          "name": "func_80035044_35C44",
+          "rom_offset": 220228,
+          "size": 32
+        }
+      ]
     }
   ],
   "support_headers": [
