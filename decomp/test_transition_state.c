@@ -22,4 +22,23 @@ void func_8001F8B0_204B0(void) { assert(stage==10); stage=11; }
 void func_80034734_35334(void) { if (stage==11) stage=12; else { assert(stage==12 || stage==13); stage++; } }
 void func_80003328_3F28(void); void func_80003358_3F58(void);
 void func_80003728_4328(u8);
-int main(void) { _Static_assert(offsetof(SYS_W,stepw)==0x3ADD4,"stepw offset"); _Static_assert(offsetof(SYS_W,stepw_end)==0x3ADD5,"stepw_end offset"); _Static_assert(offsetof(SYS_W,retraces_per_game_step)==0x3ADCA,"retrace offset"); sys.stepw=4;sys.stepw_end=9;sys.retraces_per_game_step=7;sys.unk_3add6=5;sys.unk_3add7=6;sys.unk_3add8=7;sys.unk_3add9=8;sys.unk_3adde=9;sys.unk_3addf=10;sys.unk_3ade0=11;sys.unk_3ade1=12; func_80003728_4328(11); assert(sys.stepw==11 && sys.stepw_end==0 && sys.retraces_per_game_step==2); assert(sys.unk_3add6==0 && sys.unk_3add7==0 && sys.unk_3add8==0 && sys.unk_3add9==0 && sys.unk_3adde==0 && sys.unk_3addf==0 && sys.unk_3ade0==0 && sys.unk_3ade1==0); func_80003328_3F28(); assert(stage==10 && sys.stepw==0x11); func_80003358_3F58(); assert(stage==12); D_800C7A95_C8695=0; func_800038E4_44E4(); assert(stage==13 && sys.unk_3add6==0); D_800C7A95_C8695=1; D_8006D328_6DF28=33; func_800038E4_44E4(); assert(stage==16); return 0; }
+void func_800033B0_3FB0(void); void func_800033EC_3FEC(void);
+void func_80003478_4078(void); void func_800034D0_40D0(void);
+void func_80003578_4178(void); void func_800035D0_41D0(void);
+void func_80003678_4278(void); void func_800036D0_42D0(void);
+void func_8000378C_438C(void); void func_800037E4_43E4(void);
+static void check_steps(void) {
+    void (*inc[])(void)={func_800033B0_3FB0,func_80003478_4078,func_80003578_4178,func_80003678_4278,func_8000378C_438C};
+    void (*dec[])(void)={func_800033EC_3FEC,func_800034D0_40D0,func_800035D0_41D0,func_800036D0_42D0,func_800037E4_43E4};
+    u8 *values[]={&sys.unk_3ade0,&sys.unk_3adde,&sys.unk_3add8,&sys.unk_3add6,&sys.stepw};
+    u8 *ends[]={&sys.unk_3ade1,&sys.unk_3addf,&sys.unk_3add9,&sys.unk_3add7,&sys.stepw_end};
+    for (int i=0;i<5;i++) {
+        for (int j=0;j<i;j++) { *values[j]=7; *ends[j]=9; }
+        *values[i]=255; *ends[i]=7; inc[i](); assert(*values[i]==0 && *ends[i]==0);
+        for (int j=0;j<i;j++) assert(*values[j]==0 && *ends[j]==0);
+        for (int j=0;j<i;j++) { *values[j]=7; *ends[j]=9; }
+        *values[i]=0; *ends[i]=7; dec[i](); assert(*values[i]==255 && *ends[i]==0);
+        for (int j=0;j<i;j++) assert(*values[j]==0 && *ends[j]==0);
+    }
+}
+int main(void) { _Static_assert(offsetof(SYS_W,stepw)==0x3ADD4,"stepw offset"); _Static_assert(offsetof(SYS_W,stepw_end)==0x3ADD5,"stepw_end offset"); _Static_assert(offsetof(SYS_W,retraces_per_game_step)==0x3ADCA,"retrace offset"); sys.stepw=4;sys.stepw_end=9;sys.retraces_per_game_step=7;sys.unk_3add6=5;sys.unk_3add7=6;sys.unk_3add8=7;sys.unk_3add9=8;sys.unk_3adde=9;sys.unk_3addf=10;sys.unk_3ade0=11;sys.unk_3ade1=12; func_80003728_4328(11); assert(sys.stepw==11 && sys.stepw_end==0 && sys.retraces_per_game_step==2); assert(sys.unk_3add6==0 && sys.unk_3add7==0 && sys.unk_3add8==0 && sys.unk_3add9==0 && sys.unk_3adde==0 && sys.unk_3addf==0 && sys.unk_3ade0==0 && sys.unk_3ade1==0); func_80003328_3F28(); assert(stage==10 && sys.stepw==0x11); func_80003358_3F58(); assert(stage==12); D_800C7A95_C8695=0; func_800038E4_44E4(); assert(stage==13 && sys.unk_3add6==0); D_800C7A95_C8695=1; D_8006D328_6DF28=33; func_800038E4_44E4(); assert(stage==16); check_steps(); return 0; }

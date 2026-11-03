@@ -138,3 +138,8 @@ selection primitive, not a complete transition or safe generic warp.
 from `0xFF` it records intended room/group, updates the active word, selects
 the default entrance and calls `8000B864`. Both guard paths request state
 `0x0B`. A matching state request is not proof of a complete safe map transition.
+
+Ten neighboring state helpers now match as C (824 bytes total). They increment
+or decrement one of five byte-sized state levels, clear its associated end byte,
+and, except for the innermost pair, reset the next nested level. The byte
+arithmetic wraps; these primitives do not themselves establish room loading.

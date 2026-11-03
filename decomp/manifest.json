@@ -901,9 +901,29 @@
           "size": 48
         },
         {
+          "name": "func_800033B0_3FB0",
+          "rom_offset": 16304,
+          "size": 60
+        },
+        {
+          "name": "func_800033EC_3FEC",
+          "rom_offset": 16364,
+          "size": 60
+        },
+        {
           "name": "func_80003428_4028",
           "rom_offset": 16424,
           "size": 80
+        },
+        {
+          "name": "func_80003478_4078",
+          "rom_offset": 16504,
+          "size": 88
+        },
+        {
+          "name": "func_800034D0_40D0",
+          "rom_offset": 16592,
+          "size": 88
         },
         {
           "name": "func_80003528_4128",
@@ -911,14 +931,44 @@
           "size": 80
         },
         {
+          "name": "func_80003578_4178",
+          "rom_offset": 16760,
+          "size": 88
+        },
+        {
+          "name": "func_800035D0_41D0",
+          "rom_offset": 16848,
+          "size": 88
+        },
+        {
           "name": "func_80003628_4228",
           "rom_offset": 16936,
           "size": 80
         },
         {
+          "name": "func_80003678_4278",
+          "rom_offset": 17016,
+          "size": 88
+        },
+        {
+          "name": "func_800036D0_42D0",
+          "rom_offset": 17104,
+          "size": 88
+        },
+        {
           "name": "func_80003728_4328",
           "rom_offset": 17192,
           "size": 100
+        },
+        {
+          "name": "func_8000378C_438C",
+          "rom_offset": 17292,
+          "size": 88
+        },
+        {
+          "name": "func_800037E4_43E4",
+          "rom_offset": 17380,
+          "size": 88
         },
         {
           "name": "func_8000383C_443C",
@@ -938,16 +988,6 @@
       ],
       "assembly_functions": [
         "func_800030F0_3CF0",
-        "func_800033B0_3FB0",
-        "func_800033EC_3FEC",
-        "func_80003478_4078",
-        "func_800034D0_40D0",
-        "func_80003578_4178",
-        "func_800035D0_41D0",
-        "func_80003678_4278",
-        "func_800036D0_42D0",
-        "func_8000378C_438C",
-        "func_800037E4_43E4",
         "func_8000394C_454C"
       ]
     },

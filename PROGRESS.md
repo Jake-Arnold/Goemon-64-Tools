@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct ten transition state increment/decrement helpers
+
+- Reconstructed ten native helpers (824 bytes) in the transition unit. Each increments or decrements one byte-sized state level, clears its corresponding end byte and, except for the innermost pair, resets the next nested level. This characterizes a reusable state-machine pattern without claiming these primitives load a room.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 135 C function bytes/addresses match with original inventory. Synthetic host tests exercise increment and decrement for all five levels, byte wraparound and end-byte resets; VM/system host tests and 55 focused decomp tests run. No live-game test or writes.
+- Next: trace the dispatchers and object/resource lifecycle into actual map loading and teardown, while using characterized state patterns for further reconstruction.
+
 ## 2026-11-03 - reconstruct entrance preparation and inspect wide map capture
 
 - Reconstructed func_80021444_22044 (160 bytes), preserving its 0xFF guard, saved intended room/group, active word, default entrance selection and state 0x0B request on both paths. Native state requests are not established safe generic warps.
