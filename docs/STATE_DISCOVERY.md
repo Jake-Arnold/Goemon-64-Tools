@@ -143,3 +143,12 @@ The export includes every displayed candidate and metadata, **not full RAM dumps
 - Byte-level differences can show individual bits inside a larger field. More than one byte may change as a secondary effect; a displayed match is not proof of causality.
 - Cross-map transitions change many unrelated state fields, and some character/magic effects are short-lived.
 - The derived observed velocity is affected by sampling cadence, frame-rate changes, collisions and temporary game freezes. It cannot replace native engine speed for frame-perfect autosplitting.
+
+## Additional C-Right map comparison (2026-11-03)
+
+The user captured map off → on → off using C-Right. `0x8015C574` changed
+`00 → 01 → 00`, consistent with the previously observed read state. Other
+changes appeared in player-task bytes; their role is unknown and the displayed
+float candidate overlaps changing bytes, so it is not established as a float.
+This is an event correlation, not a new independent finding of safe write
+behavior; earlier direct-write tests remain relevant.

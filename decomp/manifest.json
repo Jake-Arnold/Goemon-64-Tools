@@ -1050,13 +1050,32 @@
         "func_800363F4_36FF4",
         "func_80036448_37048"
       ]
+    },
+    {
+      "source": "default_entrance.c",
+      "rom_start": 138000,
+      "rom_end": 139728,
+      "splat_original": "[0x21330, asm]",
+      "splat_replacement": "[0x21330, asm]\n    - [0x21B10, c, default_entrance]",
+      "functions": [
+        {
+          "name": "func_800214E4_220E4",
+          "rom_offset": 139492,
+          "size": 228
+        }
+      ],
+      "assembly_functions": [
+        "func_80020F10_21B10",
+        "func_80021444_22044"
+      ]
     }
   ],
   "support_headers": [
     "save_resources.h",
     "script_vm.h",
     "vm_compare_reference.h",
-    "object_flags.h"
+    "object_flags.h",
+    "default_entrance.h"
   ],
   "splat_options": {
     "asm_jtbl_label_macro": "glabel"

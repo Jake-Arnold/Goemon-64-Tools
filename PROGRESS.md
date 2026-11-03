@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct default entrance selection and record map comparison
+
+- Reconstructed func_800214E4_220E4 (228 bytes), selecting a ten-byte default entry record by intended room ID, copying coordinates/heading/mode when any coordinate is nonzero and otherwise clearing those five saved fields. Original unchecked indexing is preserved. Two preceding routines remain assembly.
+- Recorded the user's C-Right map off/on/off comparison: 0x8015C574 changed 00/01/00, confirming prior read observation. Player-task changes are not independently identified, and overlapping byte/float results do not establish a float. Earlier direct-write behavior remains unresolved.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 124 C function bytes/addresses match with original inventory. Synthetic host tests cover signed coordinates, record selection, nonzero mode with all-zero coordinates, and adjacent field preservation; VM/system host tests and 55 focused decomp tests run. No live-game testing or writes by assistant.
+- Next: continue tracing actual map loading and teardown; this matched entrance helper is not a complete safe warp.
+
 ## 2026-11-03 - reconstruct conditional transition update
 
 - Reconstructed func_800038E4_44E4 (104 bytes). It always runs 80034734; if state byte 0x800C7A95 is nonzero it processes the current object, increments system +0x3ADD6, and invokes 80038BC8(7). The called routines' lifecycle semantics remain unknown.

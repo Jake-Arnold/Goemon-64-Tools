@@ -11,7 +11,7 @@ been established as the complete scene loader or unload routine.
 | Function | ROM offset / size | Evidence | Status |
 | --- | --- | --- | --- |
 | `func_80215330_5D0800` | `0x5D0800` / `0x1C0` | Exit actor path reads its packed fields, writes destination/entry parameters through the system pointer, and can alter a special destination based on saved flag `0x17`. Called at `0x5D07B8` and `0x5D07DC`. See [entrance trace](../docs/ENTRANCE_WARPS.md). | ASM; scene/overlay context matters. |
-| `func_800214E4_220E4` | `0x220E4` / `0xE4` | Reads 10-byte default entry records at ROM `0x6C380`; copies coordinate and mode fields to saved entry fields, or zeros them if all three coordinates are zero. Called at `0x220AC` and `0xBFB0`. | ASM; immediate reconstruction target. |
+| `func_800214E4_220E4` | `0x220E4` / `0xE4` | Reads 10-byte default entry records at ROM `0x6C380`; copies coordinate and mode fields to saved entry fields, or zeros them if all three coordinates are zero. Called at `0x220AC` and `0xBFB0`. | Matching C in `default_entrance.c`; the original unchecked table index remains. |
 | `func_80021444_22044` | `0x22044` / `0xA0` | When a guard is not `0xFF`, copies map/entry context, calls `800214E4`, then `8000B864`; all paths call `80003728(0x0B)`. | ASM; exact branch and effects visible, broader state meaning needs tracing. |
 | `func_80003728_4328` | `0x4328` / `0x64` | Stores its argument to system offset `0x3ADD4`, zeros `0x3ADD5`, sets `0x3ADCA` to 2, then calls `80003628(0)`. Static initial system base `0x8008CCC0` makes the first two bytes `0x800C7A94` and `0x800C7A95`. | Matching C in `transition_state.c`; state setter, not a complete loader. |
 | `func_80003628_4228` | `0x4228` / `0x50` | Writes its argument to system `+0x3ADD6`, zeros `+0x3ADD7`, and calls `80003528(0)`. `80003528` similarly writes `+0x3ADD8`, clears `+0x3ADD9`, calls `80003428(0)`. | Both matching C in `transition_state.c`; do not assume these are room cleanup. |
@@ -127,3 +127,9 @@ ones load or unload rooms.
 `80034734`; if the byte at `0x800C7A95` is nonzero, it passes the current
 object to `800369F0`, increments system state byte `+0x3ADD6`, then calls
 `80038BC8(7)`. The external callees and lifecycle meaning remain under study.
+
+`func_800214E4_220E4` now matches as C (228 bytes). Its intended-room ID
+indexes 10-byte records. Any nonzero coordinate causes coordinates, heading
+and mode to be copied; an all-zero coordinate triplet zeros all five saved
+fields even when the record's heading or mode is nonzero. This is an entrance
+selection primitive, not a complete transition or safe generic warp.
