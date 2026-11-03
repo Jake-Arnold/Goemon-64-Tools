@@ -759,6 +759,27 @@
           "size": 8
         }
       ]
+    },
+    {
+      "source": "float_state.c",
+      "rom_start": 28720,
+      "rom_end": 31216,
+      "splat_original": "[0x6F50, asm]",
+      "splat_replacement": "[0x6F50, asm]\n    - [0x7030, c, float_state]",
+      "functions": [
+        {
+          "name": "func_80006430_7030",
+          "rom_offset": 28720,
+          "size": 12
+        }
+      ],
+      "assembly_functions": [
+        "func_8000643C_703C",
+        "func_80006568_7168",
+        "func_8000693C_753C",
+        "func_80006B44_7744",
+        "func_80006BF8_77F8"
+      ]
     }
   ],
   "support_headers": [

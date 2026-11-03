@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct floating-point state setter
+
+- Reconstructed func_80006430_7030 (12 bytes), storing a float argument in an existing native global. Five surrounding functions remain assembly; the state variable's meaning has not been established.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 101 C function bytes/addresses match, with original function inventory. Host test checks negative and zero values; 55 focused decomp tests passed. No in-game test or writes.
+- Next: continue matching native routines and trace callers to characterize the stored value.
+
 ## 2026-11-03 - reconstruct empty native hook
 
 - Reconstructed func_80037DB0_389B0 (8 bytes), an empty routine with unknown callers and purpose; original section padding is preserved.
