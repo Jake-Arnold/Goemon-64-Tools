@@ -64,3 +64,7 @@ The state bytes and downstream function remain incompletely characterized.
 `+0x3ADDE`, clears `+0x3ADDF`, and calls `80003380(0)`. The combined host
 test now exercises the four matching setters up to a stub of that next call.
 These are state-machine primitives, not identified room unload operations.
+
+`func_80003380_3F80` now matches as C (48 bytes), setting system
+`+0x3ADE0` and clearing `+0x3ADE1`. This completes the characterized
+five-helper state reset chain; it does not identify the room loader/unloader.

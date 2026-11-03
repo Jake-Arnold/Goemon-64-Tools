@@ -878,6 +878,11 @@
       "splat_replacement": "[0x2C40, asm]\n    - [0x3F80, c, transition_state]",
       "functions": [
         {
+          "name": "func_80003380_3F80",
+          "rom_offset": 16256,
+          "size": 48
+        },
+        {
           "name": "func_80003428_4028",
           "rom_offset": 16424,
           "size": 80
@@ -899,7 +904,6 @@
         }
       ],
       "assembly_functions": [
-        "func_80003380_3F80",
         "func_800033B0_3FB0",
         "func_800033EC_3FEC",
         "func_80003478_4078",

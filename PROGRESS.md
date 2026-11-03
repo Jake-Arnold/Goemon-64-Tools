@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct final nested transition state setter
+
+- Reconstructed func_80003380_3F80 (48 bytes), setting system byte +0x3ADE0 and clearing +0x3ADE1. This completes the five-function state reset chain; its wider transition and room lifecycle remains uncharacterized.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 111 C function bytes/addresses match with original inventory. Synthetic tests check the five-function state write chain; VM/system host tests and 55 focused decomp tests run. No live-game tests or writes.
+- Next: trace the state dispatcher through resource loading, teardown and actor creation; no room unloading routine has been proven.
+
 ## 2026-11-03 - reconstruct fourth nested transition state helper
 
 - Reconstructed func_80003428_4028 (80 bytes), setting system byte +0x3ADDE, clearing +0x3ADDF and calling func_80003380(0). Three preceding and one following native routines remain assembly.

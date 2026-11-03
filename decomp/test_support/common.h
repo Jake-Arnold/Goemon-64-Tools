@@ -32,7 +32,8 @@ typedef struct {
     u8 unk_3add6, unk_3add7, unk_3add8, unk_3add9;
     u8 unknown_3ADDA[4];
     u8 unk_3adde, unk_3addf;
-    u8 unknown_3ADE0[0x3B078 - 0x3ADE0];
+    u8 unk_3ade0, unk_3ade1;
+    u8 unknown_3ADE2[0x3B078 - 0x3ADE2];
     CONTROLLER_W controller[5];
     u8 unknown_after_controller[0xCF8A0 - 0x3B078 - 5*sizeof(CONTROLLER_W)];
     u8 unk_cf8a0;
