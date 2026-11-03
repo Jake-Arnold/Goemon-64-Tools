@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct native zero return routine
+
+- Reconstructed func_8002338C_23F8C (8 bytes), a routine returning zero. Its callers and gameplay meaning remain unknown; 13 surrounding functions remain original assembly.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 99 C function bytes/addresses match. Focused decomp tests validate integration; no live-game test or writes. The routine has no input or other observable effect.
+- Next: continue matching remaining native functions and investigate callers where meaning is unclear.
+
 ## 2026-11-03 - reconstruct alternate angle helper
 
 - Reconstructed func_8000EABC_F6BC (76 bytes). It passes coordinate differences to an existing angle helper, subtracts the result from 0x400 and masks to ten bits; three surrounding functions remain assembly.

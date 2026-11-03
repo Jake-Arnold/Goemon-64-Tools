@@ -712,6 +712,39 @@
         "func_8000EB08_F708",
         "func_8000EB50_F750"
       ]
+    },
+    {
+      "source": "return_zero.c",
+      "rom_start": 147340,
+      "rom_end": 149020,
+      "splat_original": "[0x23DE0, asm]",
+      "splat_replacement": "[0x23DE0, asm]\n    - [0x23F8C, c, return_zero]\n    - [0x2461C, asm]",
+      "asm_no_padding": [
+        "23DE0",
+        "2461C"
+      ],
+      "functions": [
+        {
+          "name": "func_8002338C_23F8C",
+          "rom_offset": 147340,
+          "size": 8
+        }
+      ],
+      "assembly_functions": [
+        "func_80023394_23F94",
+        "func_80023410_24010",
+        "func_80023480_24080",
+        "func_800234D8_240D8",
+        "func_80023560_24160",
+        "func_80023610_24210",
+        "func_80023698_24298",
+        "func_80023788_24388",
+        "func_800237F0_243F0",
+        "func_80023840_24440",
+        "func_80023880_24480",
+        "func_800238D0_244D0",
+        "func_800239B8_245B8"
+      ]
     }
   ],
   "support_headers": [

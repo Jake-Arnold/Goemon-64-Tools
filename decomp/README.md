@@ -9,12 +9,12 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **98 functions / 7,336 function bytes across sixteen units**.
+Current verified total: **99 functions / 7,344 function bytes across seventeen units**.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
 
 The [whole-build inventory](INVENTORY.md) identifies **7,376 function entries**:
-**111 matching C entries** (13 upstream plus these 98), leaving **7,265 assembly
+**112 matching C entries** (13 upstream plus these 99), leaving **7,264 assembly
 entries**, including SDK/runtime code. Exported jump labels are excluded.
 
 ## Screen-rectangle bounds helper
