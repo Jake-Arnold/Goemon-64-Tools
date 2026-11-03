@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T19:17:27.280119+00:00",
+  "started_utc": "2026-11-03T19:19:10.580282+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 97,
-    "claimed_functions": 97,
-    "matched_function_bytes": 7260,
+    "matched_functions": 98,
+    "claimed_functions": 98,
+    "matched_function_bytes": 7336,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -921,6 +921,15 @@
         "matched": true,
         "expected_sha256": "be4caec9401b3ea9d4df71caaf5ef8d0b3783eebb4975a73201caa0b31244467",
         "candidate_sha256": "be4caec9401b3ea9d4df71caaf5ef8d0b3783eebb4975a73201caa0b31244467"
+      },
+      {
+        "name": "func_8000EABC_F6BC",
+        "size": 76,
+        "guest_address": "0x8000EABC",
+        "rom_offset": "0xF6BC",
+        "matched": true,
+        "expected_sha256": "2e36ce57a618c59e4db7a2488b31716897d15a226670ae9385e1368d6069d65d",
+        "candidate_sha256": "2e36ce57a618c59e4db7a2488b31716897d15a226670ae9385e1368d6069d65d"
       }
     ]
   },
@@ -951,7 +960,10 @@
     "func_8000E4E4_F0E4",
     "func_800166AC_172AC",
     "func_800109A4_115A4",
-    "func_80015F58_16B58"
+    "func_80015F58_16B58",
+    "func_8000EA74_F674",
+    "func_8000EB08_F708",
+    "func_8000EB50_F750"
   ],
   "sources_sha256_lf": {
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
@@ -969,9 +981,10 @@
     "fixed_loop.c": "9aeeb1b637539acd60bc557550f760f489bd63ba5c03652ded9232f4ed28c0a8",
     "state_four.c": "f87ff9e6f9d5d898e5b880989bbc5237a5454cb9c502cc7d0ad5909d3c1f27ce",
     "decode_loop.c": "3141f9c38455c5eb50851170bc0de054166fba5895ff39ef78b31e94398b8fb4",
+    "angle_variant.c": "d7974e947a572bf7b5fd7f2fa483d592216c4bcfc0780959df61f85fa181fc0b",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
     "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900"
   },
-  "ended_utc": "2026-11-03T19:17:54.854734+00:00"
+  "ended_utc": "2026-11-03T19:19:37.765420+00:00"
 }

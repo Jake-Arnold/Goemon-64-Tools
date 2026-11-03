@@ -7,7 +7,7 @@ describe their named checkpoint; current evidence is `results/combined.json` and
 
 Date: 2026-11-03. Pinned mnsg baseline and ROM identity are unchanged.
 **52 matching VM functions / 4,372 function bytes**, bringing the track to
-**97 matching C functions / 7,260 function bytes**. The full 32 MiB baseline and
+**98 matching C functions / 7,336 function bytes**. The full 32 MiB baseline and
 candidate both match decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
 Current source hashes, guest addresses and byte-range comparisons are in
 [combined.json](results/combined.json). The previous complete-save checkpoint is

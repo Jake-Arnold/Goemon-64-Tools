@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct alternate angle helper
+
+- Reconstructed func_8000EABC_F6BC (76 bytes). It passes coordinate differences to an existing angle helper, subtracts the result from 0x400 and masks to ten bits; three surrounding functions remain assembly.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 98 C function bytes/addresses match. Synthetic host tests check argument order and wrapping; 55 focused decomp tests passed. No live-game test or writes.
+- Next: continue matching other functions; the helper's broader gameplay context remains uncharacterized.
+
 ## 2026-11-03 - reconstruct variable-length helper loop
 
 - Reconstructed func_80015EFC_16AFC (92 bytes), which repeatedly calls an existing helper with argument one, then combines a helper result with a power of two. The helper's complete semantics and unchecked shift bounds remain uncharacterized; adjacent routine remains assembly.
