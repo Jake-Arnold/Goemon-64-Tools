@@ -220,3 +220,10 @@ the door latch is `10`; the bit masks also follow from original code.
 [Oedo Mr. Elly Fant and Ghost Toys/Musical Castle Mr. Arrow observations](CASTLE_MAP_PICKUPS.md)
 add saved IDs `0x0FF`, `0x105` and `0x108`. The native pickup module uses a
 parameterized task flag ID, explaining why a literal-ID scan can miss these.
+
+### Waterfall of Kegon advice condition
+
+[Festival Village East NPC capture and existing annotation](KEGON_HINT_FLAG.md)
+corroborate saved ID `0x044` (`0x8015C610 & 0x10`) as a Plasma Kegon-advice
+condition. Four GEV reference leads are recorded; physical waterfall access is
+not established. The supplied 1/4 support combines different events/maps.

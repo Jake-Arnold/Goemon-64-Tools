@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - Kegon advice condition corroborated by NPC capture
+
+- Changed: added read-only Story progress entry for saved ID 0x044 / 0x8015C610 mask 0x10, labeled Plasma Waterfall of Kegon hint condition. Existing pinned mn64rando annotation already names this advice condition; user NPC interaction corroborates it. Did not name it a waterfall-access unlock.
+- Evidence: supplied supporting capture changes byte 04 to 14 hex on map 378. The other three unchanged trials concern different map contexts and have this bit clear before/after, so 1/4 is mixed-session evidence rather than four controlled repeats. Private IDs, pointers and raw captures were not committed. Verified-US-ROM scanner found three set patterns and one branch-if-set lead, documented with file/ROM positions in docs/KEGON_HINT_FLAG.md; no complete reader trace or native scan claimed.
+- Tests: focused story model/UI and ROM scanner suites passed, including adjacent-bit preservation and explicit unproven-access evidence. No game writes, freezes, reloads or new matching-C claims. Existing windows require restart to display the new catalog entry. Next: trace Plasma's advice branch, use separately named repeat experiments and retain physical-access uncertainty.
+
 ## 2026-11-03 - three more verified C functions and seven placement-derived pickup flags
 
 - Changed: integrated scheduler_views.c (func_80007014_7C14 and func_8000701C_7C1C, eight bytes each) and audio_state.c (func_80038D64_39964, 48 bytes). The first two return opaque interior addresses +0x78/+0xB0; no complete scheduler type is inferred. The audio routine sets its byte flag iff the state equals 0xF0. All original numeric symbols are retained.

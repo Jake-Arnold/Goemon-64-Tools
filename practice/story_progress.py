@@ -63,6 +63,8 @@ CURATED_FLAGS = (
               'User A/B: mask 0x20 set at 0x8015C628 on pickup, map 57 with unchanged character/pointers; one event trial'),
     StoryFlag('musical_arrow_collected','Musical Castle Mr. Arrow collected (boss location)',0x108,
               'User A/B screenshot: mask 0x01 set at 0x8015C629 on pickup; one event trial, no controls or reversion'),
+    StoryFlag('kegon_plasma_hint','Plasma Waterfall of Kegon hint condition',0x044,
+              'Existing mn64rando annotation + user Festival Village East NPC capture; ROM branch-pattern lead 0x7A2404; waterfall access not established'),
     StoryFlag('congo_state_candidate','Congo encounter state? (candidate)',0x132,
               'User A/B: mask 0x04 cleared during same event; cutscene/actor/room hypothesis, not confirmed'),
 )

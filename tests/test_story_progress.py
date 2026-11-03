@@ -186,3 +186,15 @@ class StoryProgressTests(unittest.TestCase):
             self.assertEqual(rows[key]['address'],address)
             self.assertEqual(rows[key]['mask'],f'0x{mask:02X}')
             self.assertIn('User',rows[key]['source'])
+
+    def test_kegon_hint_mask_preserves_adjacent_story_bits(self):
+        ram=self.sample()
+        ram.write_guest(0x8015C610,b'\x04')
+        self.assertFalse(read_story_state(ram)['values']['kegon_plasma_hint'])
+        ram.write_guest(0x8015C610,b'\x14')
+        state=read_story_state(ram);row=next(r for r in story_rows(state) if r['key']=='kegon_plasma_hint')
+        self.assertTrue(state['values']['kegon_plasma_hint'])
+        self.assertEqual(row['address'],0x8015C610)
+        self.assertEqual(row['mask'],'0x10')
+        self.assertIn('access not established',row['source'])
+        self.assertEqual(ram.u8(0x8015C610),0x14)
