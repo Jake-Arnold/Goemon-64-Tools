@@ -226,3 +226,12 @@ class StoryProgressTests(unittest.TestCase):
         row=next(r for r in story_rows(state) if r['key']=='oedo_silver_lock_1f')
         self.assertEqual((row['address'],row['mask']),(0x8015C629,'0x80'))
         self.assertIn('1 to 0',row['source'])
+
+    def test_gourmet_key_is_separate_from_bazooka_room_event(self):
+        ram=self.sample();ram.write_guest(0x8015C63C,b'\x20')
+        self.assertFalse(read_story_state(ram)['values']['gourmet_silver_key_129'])
+        ram.write_guest(0x8015C637,b'\x08')
+        state=read_story_state(ram);row=next(r for r in story_rows(state) if r['key']=='gourmet_silver_key_129')
+        self.assertTrue(state['values']['gourmet_silver_key_129'])
+        self.assertEqual((row['address'],row['mask']),(0x8015C637,'0x08'))
+        self.assertEqual(ram.u8(0x8015C63C),0x20)

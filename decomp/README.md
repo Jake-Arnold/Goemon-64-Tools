@@ -60,6 +60,15 @@ Mr. Elly Fant/Mr. Arrow definition flags. [Static metadata](results/castle_picku
 covers all ten pickups, corroborates three user observations and adds seven
 placement-derived catalog entries without claiming live collection tests.
 
+## Key spawn candidate
+
+[Key/lock code trace](../docs/KEY_LOCK_CODE_TRACE.md) identifies the permanent
+pickup flag as the key's no-respawn condition. `candidates/key_spawn_gate.c`
+matches all 96 original instruction bytes in an isolated linked probe and has
+host control-flow tests. It is excluded from the matching manifest/count until
+original-overlay integration passes the full-ROM gate. The carried-key count's
+storage/computation remains unconfirmed.
+
 ## Batch discovery and matching
 
 The [batch workflow](BATCH_PIPELINE.md) now provides a persistent queue, concurrent

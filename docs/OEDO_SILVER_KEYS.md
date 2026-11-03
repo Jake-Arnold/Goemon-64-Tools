@@ -62,3 +62,9 @@ not add a matching-C replacement.
 Next: trace key/lock actor initialization and inventory consumption, then automate
 instantiated key/door parameter extraction as with the map pickups. No assistant
 game writes, freezes, reloads or independent quest replays were performed.
+
+## Native code follow-up
+
+[Shared key/lock trace and isolated matching C initializer](KEY_LOCK_CODE_TRACE.md)
+now establishes that the collection flag itself prevents respawning. The actual
+carried-count storage/calculation remains untraced; a separate flag need not exist.

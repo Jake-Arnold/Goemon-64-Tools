@@ -69,6 +69,8 @@ CURATED_FLAGS = (
               'User map 7 pickup sets mask 0x01; room file 0x33D definition 5 key_index 0x110; collection history, not current key count'),
     StoryFlag('oedo_silver_key_2f','Oedo Castle 2F silver key collected',0x114,
               'User map 18 pickup sets mask 0x10; room file 0x348 definition 6 key_index 0x114; collection history, not current key count'),
+    StoryFlag('gourmet_silver_key_129','Gourmet Sub map 129 silver key collected',0x17B,
+              'User key-before/after trial sets 0x8015C637/08; room 0x39F definition 3 is silver key 0x193 with key_index 0x17B; separate from bazooka-room event'),
     StoryFlag('oedo_silver_lock_1f','Oedo Castle 1F silver lock opened (to map 9)',0x10F,
               'User key count 1 to 0; saved map 7 to 9 sets 0x8015C629/0x80, preserves collection byte 0x19; room 0x33D definition 4 lock_index 0x10F'),
     StoryFlag('oedo_silver_lock_2f','Oedo Castle map 13 silver lock opened',0x113,
