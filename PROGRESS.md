@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - clean transition test whitespace
+
+- Removed trailing whitespace introduced in the previous transition-chain test edit so `git diff --check` is clean.
+- Validation: whitespace-only change; prior 55 focused tests and transition host tests remain applicable. No ROM or runtime change.
+- Next: continue tracing the state dispatcher and room resource lifecycle.
+
 ## 2026-11-03 - reconstruct final nested transition state setter
 
 - Reconstructed func_80003380_3F80 (48 bytes), setting system byte +0x3ADE0 and clearing +0x3ADE1. This completes the five-function state reset chain; its wider transition and room lifecycle remains uncharacterized.
