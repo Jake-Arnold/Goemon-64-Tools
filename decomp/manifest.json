@@ -805,6 +805,27 @@
         "func_8001FA3C_2063C",
         "func_8001FA80_20680"
       ]
+    },
+    {
+      "source": "scheduler_queue.c",
+      "rom_start": 31780,
+      "rom_end": 32260,
+      "splat_original": "[0x7C24, asm]",
+      "splat_replacement": "[0x7C24, c, scheduler_queue]\n    - [0x7E04, asm]",
+      "asm_no_padding": [
+        "7E04"
+      ],
+      "functions": [
+        {
+          "name": "func_80007024_7C24",
+          "rom_offset": 31780,
+          "size": 8
+        }
+      ],
+      "assembly_functions": [
+        "func_8000702C_7C2C",
+        "func_80007160_7D60"
+      ]
     }
   ],
   "support_headers": [

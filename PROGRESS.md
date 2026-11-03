@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct scheduler interior-address helper
+
+- Reconstructed func_80007024_7C24 (8 bytes), returning the supplied address-like integer plus 0x40; two adjacent scheduler functions remain assembly. Its caller's complete object layout remains unknown.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 103 C function bytes/addresses match, with original function inventory. Host tests cover ordinary integer offsets; 55 focused decomp tests passed. No live-game test or writes.
+- Limitations/next: unchecked arithmetic is native behavior; overflow cases are outside host semantic coverage. Continue matching remaining routines.
+
 ## 2026-11-03 - reconstruct three-angle transformation
 
 - Reconstructed func_8001F878_20478 (56 bytes), transforming three 16-bit angles with 0x200 offsets and 10-bit masks. Five neighboring functions remain assembly. The helper's callers and gameplay purpose remain uncharacterized.
