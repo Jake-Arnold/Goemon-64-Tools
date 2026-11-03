@@ -38,7 +38,7 @@ class RegionData:
 class ProbeCapture:
     label: str
     utc: str
-    character: int
+    character: int | None
     map_id: int
     regions: tuple[RegionData, ...]
     scope: str
@@ -53,7 +53,9 @@ def capture_state(ram, label: str, *, scope: str = 'focused', snapshot: dict | N
     current_map = ram.u16(0x800C7AB2)
     character = ram.u32(0x8015C5DC)
     if character > 3:
-        raise ValueError('Invalid current character')
+        if snapshot.get('player_ptr') or snapshot.get('task_ptr'):
+            raise ValueError('Invalid current character while player pointers are present')
+        character = None
     regions=[]
     for name, addr, size in (FOCUSED_RANGES if scope == 'focused' else (WIDE_RANGE,)):
         data = ram.read_guest(addr, size)

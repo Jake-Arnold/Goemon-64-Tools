@@ -82,7 +82,7 @@ class StateDiscoveryMixin:
             self.state_captures[stage]=capture
             self.state_report=None
             regions=', '.join(r.name for r in capture.regions)
-            self.state_probe_status.set(f'{stage} captured for character {capture.character}, '
+            self.state_probe_status.set(f'{stage} captured for character {capture.character if capture.character is not None else "unavailable"}, '
                                         f'map {capture.map_id}; {regions}. '
                                         f'A/B/C captured: {", ".join(sorted(self.state_captures))}')
         except (OSError,ValueError,RuntimeError) as exc:

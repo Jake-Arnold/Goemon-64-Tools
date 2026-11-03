@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - v0.11.15 live recomp speed toggle
+
+- Added Dashboard launch control, explicit PID entry, and live speed checkbox with 2x/3x/4x choices for a compatible rebuilt recomp. The host uses a versioned, PID-scoped Windows shared-memory channel; requests and applied rates are distinguished, unsupported stock recomp/Project64 remain unavailable, and read-only mode blocks changes. The existing stock game is not modified or closed.
+- Integrated one continuous, synchronized virtual clock into the pinned runtime's VI and guest timer paths. A speed change wakes pending timer waits, and early deadlines caused by slowing down are recalculated. Added reproducible guarded runtime/title preparation scripts. A separate Windows recomp was built from pinned sources with local LLVM 23, Visual Studio Build Tools, GNU Make and WSL MIPS compiler; two local SDL header guards were adapted for LLVM 23. ROM, executable and saves remain local and are not committed.
+- Created a separate portable build with a stable copy of the user's on-disk saves; originals were not modified and portable progress does not sync back. A 2x title displayed correctly; the rebuilt live host acknowledged 1x/2x/3x/4x/1x and its diagnostic clock measured approximately 0.99/1.99/3.04/3.95/0.99. Tk UI-to-host 1x/2x/3x/4x control smoke tests passed. These were isolated frontend tests, not gameplay or audio validation.
+- Validation: focused UI/channel/source preparation tests, C++ virtual/live-clock sanitizer tests, read-only live title-screen connection and full Windows Python suite (349 tests: 344 passed, five native skips). State discovery accepts an unavailable character only when both player pointers are absent, and avoids fabricating dynamic captures. No writes to the existing stock game. Actual in-game movement, audio, cutscenes and saves at faster rates remain unverified.
+- Next: user can launch the separate speed-enabled recomp from Dashboard, connect using its filled PID and verify gameplay/audio. Continue map lifecycle decompilation and test Project64 separately; Project64 speed control is not implemented.
+
 ## 2026-11-03 - v0.11.14 connect without a loaded player
 
 - Changed RDRAM discovery to accept a unique no-player or partially loaded player candidate after checking the system pointer, full readable guest range and plausible engine state/phase/map. Ambiguous no-player candidates remain rejected. Snapshot shows unavailable character only when both player pointers are absent; invalid nonzero pointers remain rejected.

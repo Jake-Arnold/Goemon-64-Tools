@@ -1,4 +1,14 @@
-# Goemon Speedrun Tools v0.11.14 - Connect without a player
+# Goemon Speedrun Tools v0.11.15 - Live recomp speed control
+
+The Dashboard has a **Game speed (recomp)** control. Click **Launch speed-enabled
+recomp**, then **Connect to game** using the filled PID. Select **Speed up** and
+choose 2×, 3× or 4×; clear the checkbox for 1×. The host reports its applied
+rate in the panel. The ordinary
+stock recomp and Project64 do not expose this control and remain unaffected.
+The local speed build uses separate portable saves. Host-clock switching has
+been tested, but gameplay and audio at higher rates remain experimental.
+
+## Connect without a player
 
 The toolkit can connect when the game RAM is initialized but no player object
 or task is available, including title screens. Discovery still validates the

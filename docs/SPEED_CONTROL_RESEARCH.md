@@ -1,7 +1,9 @@
 # Game speed control research
 
-Date: 2026-11-03. This is an investigation and implementation plan; it does not
-claim that the toolkit currently controls a game-speed multiplier.
+Date: 2026-11-03. The toolkit has an experimental live multiplier for a separately
+built compatible recomp. The stock recomp and Project64 are not changed.
+Host-clock and UI/channel checks passed; actual gameplay, audio and cutscene
+behavior at increased speed still require in-game validation.
 
 ## What is already useful
 
@@ -12,6 +14,41 @@ reconstructs nested state changes used during transition. `decomp/bit_array.c`
 provides verified bit-array operations, and the individual Fortune Doll flags
 and counter are already surfaced in the toolkit. Do not use a state setter alone
 to claim a safe warp.
+
+## Live speed control
+
+The Dashboard **Game speed (recomp)** panel can launch a compatible local build,
+then request 1x–4x at runtime. **Speed up** enables the selected 2x/3x/4x rate;
+clearing it returns to 1x. The host acknowledges the applied multiplier via a
+process-scoped Windows shared-memory channel; the UI shows the selected PID and
+applied value. The channel has a version/magic/PID check and uses the process
+security descriptor. A normal stock recomp or Project64 has no compatible
+channel, so the control is unavailable rather than claiming to have changed speed.
+Read-only mode blocks launches and speed requests.
+
+The local compatible executable was built separately under the user's
+`g64-speed-build/build-speed` directory. It is in portable mode, with a separate
+copy of the user's on-disk save files taken after two matching reads. Existing
+saves and the running stock process were not modified. Portable changes do not
+sync back automatically. The user-supplied ROM and local executable/saves are
+not committed to Git. Controls/configuration are also separate.
+
+`speed/prepare_runtime.py`, `speed/prepare_live_runtime.py` and
+`speed/prepare_recomp_title.py` reproduce the source modifications against the
+pinned commits. The live runtime uses one continuous virtual clock for guest
+timers and VI scheduling, wakes pending timer waits on speed changes, and checks
+for premature deadlines after a slowdown. VI waits can respond after the current
+host sleep. A live mapping exposes requested/applied rates and a diagnostic guest
+clock. In isolated frontend testing, GUI requests 1x–4x were acknowledged and
+the clock advanced at approximately 0.99x, 1.99x, 3.04x, 3.95x, then 0.99x;
+this does not establish gameplay, cutscene, renderer or audio behavior.
+
+The Windows build used local LLVM 23.1.4, Visual Studio Build Tools, a local GNU
+Make and WSL Clang/LLD for MIPS patches. Two local SDL 2.26.3 header guards were
+adjusted for Clang 23's `_m_prefetch` builtin; these are build-checkout changes,
+not committed upstream patches. The build also used the user's verified ROM
+locally. The prepared runtime files match the built source and the title-label
+edit matches `prepare_recomp_title.py`. Existing source and saves are preserved.
 
 ## Recomp timing
 
@@ -46,7 +83,7 @@ result. The user's installed version/settings and live resulting multiplier were
 not checked in this investigation. Relative shortcut presses do not reliably
 establish an absolute 2x/3x target without knowing current speed and settings.
 
-## Prepared fixed-startup integration
+## Earlier fixed-startup prototype
 
 `speed/prepare_runtime.py` can prepare a clean, isolated N64ModernRuntime checkout
 at the exact pinned commit. It adds a small header and changes the runtime's
@@ -74,7 +111,7 @@ py -3.13 -m speed.launch_recomp "C:\path\to\speed-enabled\Goemon64Recompiled.exe
 The launcher sets the child process environment, starts the chosen executable in
 its own folder and reports the requested rate. It cannot tell whether that binary
 actually contains the patch, so the stock executable may ignore the setting.
-There is no in-toolkit speed selector or runtime speed readback yet. A full game
+At this earlier stage there was no in-toolkit selector or readback. A full game
 build requires the upstream build dependencies, generated recompiler output and
 submodules; see the pinned Goemon64Recomp `BUILDING.md`. Changing speed requires
 restarting this startup-only build. Do not replace or stop the currently running
@@ -87,12 +124,13 @@ game or its saves while preparing a separate build.
 change, retains fractional microseconds and converts a guest deadline to a host
 deadline. It rejects backwards host timestamps and arithmetic overflow. Callers
 must use a monotonic host source and wake/recalculate existing timer and VI waits
-after changes; the primitive does not do so automatically.
+after changes; the primitive does not do so automatically. The live runtime
+integration implements these responsibilities as described above.
 
 `speed/test_virtual_clock.cpp` covers continuity, multiple speed changes,
 deadline recalculation and rounding, invalid values, overflow, and simultaneous
-access. It is a local timing primitive, not connected to the recomp executable,
-audio, Project64 or the toolkit UI. It cannot yet speed up the game.
+access. It is now used by the experimental rebuilt recomp runtime. The standalone
+test itself does not validate gameplay or audio, and Project64 is separate.
 
 ```bash
 g++ -std=c++17 -Wall -Wextra -Werror -pthread -fsanitize=address,undefined \
@@ -100,30 +138,22 @@ g++ -std=c++17 -Wall -Wextra -Werror -pthread -fsanitize=address,undefined \
 /tmp/goemon-virtual-clock-test
 ```
 
-The inspected Windows environment did not expose `cmake`, `ninja`, `cl`, or
-`clang` on PATH and did not contain the Visual Studio installer locator. The
-running binary has not been rebuilt or replaced. Toolchain discovery is not a
-conclusive inventory of every compiler installed elsewhere.
+An initial PATH-only search did not find the Windows C++ tools. A later search
+found Visual Studio Build Tools and CMake outside PATH; a local Clang toolchain
+was added for the separate build described above. The stock executable remains
+unchanged.
 
-## Implementation path
+## Remaining work
 
-1. Build and validate the fixed-startup runtime path above. For live changes, add
-   a supported host control channel with multiplier readback and a bounded setter.
-   Keep normal speed as the default, and make reconnect/restart behavior explicit.
-2. Replace the compile-time assumption with a synchronized, continuous clock:
-   rebase the virtual-time epoch at each change so elapsed guest time and pending
-   timer deadlines do not jump. Update VI scheduling and N64 timer conversions
-   consistently; do not merely change rendered FPS or the native movement byte.
-3. Define audio behavior at higher speed, and test pauses, loading, save timing,
-   state transitions, frame pacing and changing speed while timers are active.
-4. Add toolkit backend capability detection and controls only after the host can
-   report and apply a multiplier. Integrate Project64 separately using a verified
-   version-specific interface, with actual speed readback and audio sync accounted
-   for. Treat unsupported hosts as unsupported rather than displaying a false 2x.
-5. Verify with monotonic wall-clock measurements against guest loop/retrace rates
-   at 1x and selected faster settings, then validate actual gameplay and audio on
-   a disposable save. Synthetic tests and a checksum-identical ROM alone cannot
-   establish speed or real-time behavior.
+1. Verify actual gameplay, audio, cutscenes, scene transitions and save behavior at
+   1x and higher rates. Frontend host-clock measurements alone do not prove this.
+2. Exercise timer deadline changes under real game load, including pauses and
+   repeated changes. The standalone clock and source preparation tests do not
+   replace that integration evidence.
+3. Investigate a separate Project64 speed interface with readback and audio sync;
+   the recomp channel does not apply to Project64.
+4. Continue tracing the native room loader and unloader; speed control is a host
+   timing feature and does not validate scene-warp behavior.
 
 Source: [Goemon64Recomp](https://github.com/klorfmorf/Goemon64Recomp/tree/6661abc439327b9ed9e235c391720f9034f61a78),
 [N64ModernRuntime timer](https://github.com/klorfmorf/N64ModernRuntime/blob/fc4592a31414daf0040c19907e0b1976b2e48a67/ultramodern/src/timer.cpp),

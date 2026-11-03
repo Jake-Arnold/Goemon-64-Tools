@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.14 — external Windows UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.15 — external Windows UI for US Goemon.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -25,6 +25,7 @@ from autosplitter.engine import load_route, save_route
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
 from practice.value_freezes_ui import ValueFreezesMixin
+from practice.live_speed_ui import LiveSpeedMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.theme import apply_theme, PALETTE
@@ -85,11 +86,11 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.14 · USA N64")
+        root.title("Goemon Practice Toolkit v0.11.15 · USA N64")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -110,6 +111,7 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
         self.checkpoints = load_checkpoint_file(CHECKPOINTS_FILE)
         self.status = tk.StringVar(value="Disconnected. Start US Goemon in Recomp or Project64, then Connect.")
         self.connection_target = tk.StringVar(value='auto')
+        self.pid_text = tk.StringVar(value=str(args.pid) if args.pid else '')
         self.pos_text = tk.StringVar(value="X: —    Y: —    Z: —")
         self.speed_text = tk.StringVar(value="Speed: —")
         self.misc_text = tk.StringVar(value="Character: —   Action: —   Loading: —")
@@ -127,7 +129,7 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.14  |  US Goemon · Recomp / Project64',
+        ttk.Label(header, text='v0.11.15  |  US Goemon · Recomp / Project64',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -161,6 +163,9 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
                   wraplength=410).pack(anchor='w', pady=(0, 7))
         ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
                      values=('auto', 'recomp', 'project64')).pack(fill='x', pady=(0, 7))
+        pid_row=ttk.Frame(connection);pid_row.pack(fill='x',pady=(0,7))
+        ttk.Label(pid_row,text='PID (optional)').pack(side='left')
+        ttk.Entry(pid_row,textvariable=self.pid_text,width=14).pack(side='left',padx=6)
         self.connect_button = ttk.Button(connection, text='Connect to game',
                    style='Accent.TButton', command=self.connect)
         self.connect_button.pack(fill='x', pady=(0, 7))
@@ -168,6 +173,8 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
         ttk.Label(connection, textvariable=self.speed_text, style='CardMuted.TLabel').pack(anchor='w')
         ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
                   wraplength=420).pack(anchor='w')
+
+        self.build_live_speed_controls(left)
 
         checkpoints = ttk.LabelFrame(left, text=' Checkpoints and bookmarks ', padding=12)
         checkpoints.pack(fill='x', pady=(0, 10))
@@ -366,6 +373,12 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
         """
         if self._connecting:
             return
+        try:
+            pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
+            if pid_hint is not None and pid_hint <= 0:raise ValueError()
+        except ValueError:
+            self.status.set('Enter a valid positive PID, or leave it blank for automatic selection.')
+            return
         self.stop_all_freezes()
         self.cancel_pending_restore(quiet=True)
         self.pending_direct_warp = None
@@ -384,7 +397,7 @@ class Toolkit(ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDi
                 previous.close()
             except OSError:
                 pass
-        opts = (self.args.pid, self.args.base, self.args.endian,
+        opts = (pid_hint, self.args.base, self.args.endian,
                 bool(self.args.enable_teleport or self.args.enable_state_restore or
                      self.args.enable_debug_menu or self.args.enable_scene_warp or
                      self.args.enable_hex_edit), self.connection_target.get())

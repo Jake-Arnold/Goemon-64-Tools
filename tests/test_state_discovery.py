@@ -83,6 +83,19 @@ class StateDiscoveryTests(unittest.TestCase):
         b=capture_state(mem,'b',snapshot={'player_ptr':0x80145000,'task_ptr':0x801450C0})
         self.assertEqual(compare_captures(a,b)['counts']['candidate_count'],0)
 
+    def test_capture_without_player_and_unknown_character(self):
+        mem=Memory()
+        mem.write(0x8015C5DC,(0xFFFFFFFF).to_bytes(4,'big'))
+        snap={'player_ptr':0,'task_ptr':0}
+        a=capture_state(mem,'title A',snapshot=snap)
+        self.assertIsNone(a.character)
+        self.assertEqual({r.name for r in a.regions},{'system','game_data'})
+        mem.write(0x8015C5DC,(0).to_bytes(4,'big'))
+        b=capture_state(mem,'title B',snapshot=snap)
+        self.assertIsNone(compare_captures(a,b)['capture_A']['character'])
+        mem.write(0x8015C5DC,(0xFFFFFFFF).to_bytes(4,'big'))
+        with self.assertRaises(ValueError):capture_state(mem,'invalid',snapshot={'player_ptr':0x80100000,'task_ptr':0})
+
     def test_measured_velocity_only_same_valid_player_and_dt(self):
         a=dict(player_ptr=0x80100000,character=0,loading=0,x=1.,y=2.,z=5.)
         b=dict(player_ptr=0x80100000,character=0,loading=0,x=3.,y=2.,z=4.)

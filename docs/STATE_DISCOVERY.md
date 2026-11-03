@@ -173,3 +173,7 @@ Fixed-address watches and story values remain available. A character ID outside
 nonzero player pointers still fail validation. This weaker no-player discovery
 has a read-only live check on the recomp title screen and synthetic coverage for
 Project64-style layouts, not a live Project64 title-screen test.
+
+When a no-player snapshot also has no valid character ID, State discovery
+captures fixed memory regions with the character recorded as unavailable.
+It does not fabricate player-task or object captures.
