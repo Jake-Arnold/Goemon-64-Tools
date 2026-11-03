@@ -46,6 +46,40 @@ result. The user's installed version/settings and live resulting multiplier were
 not checked in this investigation. Relative shortcut presses do not reliably
 establish an absolute 2x/3x target without knowing current speed and settings.
 
+## Prepared fixed-startup integration
+
+`speed/prepare_runtime.py` can prepare a clean, isolated N64ModernRuntime checkout
+at the exact pinned commit. It adds a small header and changes the runtime's
+compile-time multiplier to a process-start value from `GOEMON_SPEED_MULTIPLIER`.
+Only whole-number values `1`, `2`, `3`, `4` are accepted; missing or invalid
+values fall back to 1x. The value remains fixed for the process lifetime, so the
+existing VI and guest-timer calculations continue using one consistent rate.
+The script rejects a dirty or wrong-revision checkout and an existing target
+header; it atomically publishes the modified timer source. It does not build,
+install or launch the recomp, and does not alter an existing executable.
+
+The prepared runtime was checked against a fresh local checkout of the exact
+pinned source. The startup parser was compiled and tested at 1x, 2x, 4x and
+invalid input, and unit tests cover source preparation/refusal and launch
+arguments. **This is source-level integration, not a built or live-tested game.**
+Audio, high-speed playback, runtime performance and game behavior are unverified.
+
+After building a separate Goemon64Recomp executable against the prepared runtime,
+request a fixed rate at launch with:
+
+```powershell
+py -3.13 -m speed.launch_recomp "C:\path\to\speed-enabled\Goemon64Recompiled.exe" --multiplier 2
+```
+
+The launcher sets the child process environment, starts the chosen executable in
+its own folder and reports the requested rate. It cannot tell whether that binary
+actually contains the patch, so the stock executable may ignore the setting.
+There is no in-toolkit speed selector or runtime speed readback yet. A full game
+build requires the upstream build dependencies, generated recompiler output and
+submodules; see the pinned Goemon64Recomp `BUILDING.md`. Changing speed requires
+restarting this startup-only build. Do not replace or stop the currently running
+game or its saves while preparing a separate build.
+
 ## Implemented timing primitive
 
 `speed/virtual_clock.h` provides a standalone synchronized virtual clock with
@@ -73,9 +107,9 @@ conclusive inventory of every compiler installed elsewhere.
 
 ## Implementation path
 
-1. Add a supported host control channel to a locally built recomp runtime; it
-   must expose current multiplier and explicitly set a bounded value. Keep normal
-   speed as the default, and make disconnect/restart behavior explicit.
+1. Build and validate the fixed-startup runtime path above. For live changes, add
+   a supported host control channel with multiplier readback and a bounded setter.
+   Keep normal speed as the default, and make reconnect/restart behavior explicit.
 2. Replace the compile-time assumption with a synchronized, continuous clock:
    rebase the virtual-time epoch at each change so elapsed guest time and pending
    timer deadlines do not jump. Update VI scheduling and N64 timer conversions

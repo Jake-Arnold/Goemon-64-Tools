@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - prepare fixed-startup recomp speed integration
+
+- Added a pinned-source runtime preparation script and startup multiplier header: an isolated clean N64ModernRuntime checkout can use GOEMON_SPEED_MULTIPLIER=1,2,3,4 once built. The rate is fixed at process start so existing VI and virtual-timer calculations share a single constant process rate. Invalid input falls back to 1x. Added a launcher that passes the chosen rate to a separately built recomp without changing the parent environment; it reports a request and does not claim the executable supports it.
+- Reason: advance the speed-mode work using the runtime's existing multiplier path while avoiding mid-session clock discontinuities. The user's existing executable is unchanged. This is not yet a working toolkit speed selector or a built speed-enabled game.
+- Validation: prepared a fresh clean checkout at runtime commit fc4592a31414daf0040c19907e0b1976b2e48a67 and checked its exact source changes; unit tests cover wrong/dirty revisions, existing files, unknown layout and atomic write failure, launcher path/rate validation and environment isolation. C++ sanitizer tests cover parsing and real environment selection for 1x, 2x, 4x and invalid input; the full Windows Python suite ran 329 tests, 324 passed and five native skips. No full recomp build, live timing, audio or game testing; Windows C++ build tools were not found on PATH.
+- Next: build a separate recomp against the prepared runtime, validate timing/audio/gameplay at 1x and faster rates, establish build capability/readback, then expose a toolkit selector. Dynamic changes require a synchronized clock and wakeable VI/timer deadlines.
+
 ## 2026-11-03 - v0.11.13 Story progress state selector
 
 - Added a selected-row dropdown and Apply state action to Story progress. Individual saved flags use Clear/Set; Mini-Ebisu and Achilles Heel ownership words use Absent/Present. Aggregate bank views remain read-only. The dropdown starts with the observed state, retains user choice across periodic refresh, and reports verified writes or failures.
