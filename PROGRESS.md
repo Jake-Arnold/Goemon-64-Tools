@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - first Oedo silver lock corroborated, key-count sequence clarified
+
+- Changed: added read-only 1F silver lock opened entry at 0x8015C629/80 (ID 0x10F), corresponding to source map 7 and destination map 9. User confirms carried-key counts: prior map-13-to-14 use 2->1, current use 1->0. Updated both evidence descriptions and docs/OEDO_SILVER_KEYS.md.
+- Evidence: saved pair is map 7->9 with lock byte 00->80; key collection/history byte stays 19. This corroborates the previously recorded room 0x33D definition 4 lock_index 0x10F/accept_key 0x110. Map 9's own locked-door definition instead names IDs 0x10B/0x10C, so avoided misattributing the destination to a different lock. Actual inventory/count storage or derivation remains untraced.
+- Tests: focused story model/UI and ROM scanner suites passed, including the first lock mask alongside unchanged key history, the second lock and the neighboring Musical Castle Arrow bit. No game writes, key-consumption implementation, private dumps/IDs or new matching-C claims. Next: native inventory/count and other key/lock parameter tracing. Existing windows require restart for the new row.
+
 ## 2026-11-03 - Oedo silver key collection versus opened-lock state
 
 - Changed: added three read-only Story progress entries: 1F pickup on map 7 (0x8015C62A/01, ID 0x110), 2F pickup on map 18 (same byte/10, ID 0x114), and map-13-to-14 lock opening (same byte/08, ID 0x113). Collection is explicitly not labeled current inventory/count.

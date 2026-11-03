@@ -211,3 +211,18 @@ class StoryProgressTests(unittest.TestCase):
         self.assertEqual([rows[k]['mask'] for k in names],['0x01','0x10','0x08'])
         self.assertTrue(all(rows[k]['address']==0x8015C62A for k in names))
         self.assertIn('not current key count',rows[names[1]]['source'])
+
+    def test_oedo_first_lock_keeps_pickup_history_and_separate_arrow_bit(self):
+        ram=self.sample();ram.write_guest(0x8015C62A,b'\x19')
+        ram.write_guest(0x8015C629,b'\x01')
+        self.assertFalse(read_story_state(ram)['values']['oedo_silver_lock_1f'])
+        ram.write_guest(0x8015C629,b'\x81')
+        state=read_story_state(ram)
+        self.assertTrue(state['values']['oedo_silver_lock_1f'])
+        self.assertTrue(state['values']['musical_arrow_collected'])
+        self.assertTrue(state['values']['oedo_silver_key_1f'])
+        self.assertTrue(state['values']['oedo_silver_key_2f'])
+        self.assertTrue(state['values']['oedo_silver_lock_2f'])
+        row=next(r for r in story_rows(state) if r['key']=='oedo_silver_lock_1f')
+        self.assertEqual((row['address'],row['mask']),(0x8015C629,'0x80'))
+        self.assertIn('1 to 0',row['source'])

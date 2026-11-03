@@ -69,8 +69,10 @@ CURATED_FLAGS = (
               'User map 7 pickup sets mask 0x01; room file 0x33D definition 5 key_index 0x110; collection history, not current key count'),
     StoryFlag('oedo_silver_key_2f','Oedo Castle 2F silver key collected',0x114,
               'User map 18 pickup sets mask 0x10; room file 0x348 definition 6 key_index 0x114; collection history, not current key count'),
+    StoryFlag('oedo_silver_lock_1f','Oedo Castle 1F silver lock opened (to map 9)',0x10F,
+              'User key count 1 to 0; saved map 7 to 9 sets 0x8015C629/0x80, preserves collection byte 0x19; room 0x33D definition 4 lock_index 0x10F'),
     StoryFlag('oedo_silver_lock_2f','Oedo Castle map 13 silver lock opened',0x113,
-              'User map 13 to 14 sets mask 0x08, preserving pickup bits; room 0x343 definition 4 lock_index 0x113 accepts key 0x114'),
+              'User key count 2 to 1; map 13 to 14 sets mask 0x08, preserving pickup bits; room 0x343 definition 4 lock_index 0x113 accepts key 0x114'),
     StoryFlag('congo_state_candidate','Congo encounter state? (candidate)',0x132,
               'User A/B: mask 0x04 cleared during same event; cutscene/actor/room hypothesis, not confirmed'),
 )
