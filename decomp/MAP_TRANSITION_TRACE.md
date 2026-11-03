@@ -143,3 +143,11 @@ Ten neighboring state helpers now match as C (824 bytes total). They increment
 or decrement one of five byte-sized state levels, clear its associated end byte,
 and, except for the innermost pair, reset the next nested level. The byte
 arithmetic wraps; these primitives do not themselves establish room loading.
+
+The transition dispatcher `800030F0_3CF0` calls `80001C00_2800` on one path
+with file ID `0x0F` and destination `801CB460`. `80001C00` is in the native
+data-loading section and processes file-table records; complete loader and
+decompression behavior remains assembly. Nearby `80001D68_2968` now matches
+as C (44 bytes), indexing a table with an unsigned 16-bit index and masking
+the top bit. Its index is unchecked; the high bit's full meaning is not yet
+proven by this helper alone.

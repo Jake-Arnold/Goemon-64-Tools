@@ -1112,6 +1112,31 @@
       "assembly_functions": [
         "func_80020F10_21B10"
       ]
+    },
+    {
+      "source": "file_table.c",
+      "rom_start": 10600,
+      "rom_end": 11240,
+      "splat_original": "[0x2800, asm]",
+      "splat_replacement": "[0x2800, asm]\n    - [0x2968, c, file_table]\n    - [0x2BE8, asm]",
+      "asm_no_padding": [
+        "2800",
+        "2BE8"
+      ],
+      "functions": [
+        {
+          "name": "func_80001D68_2968",
+          "rom_offset": 10600,
+          "size": 44
+        }
+      ],
+      "assembly_functions": [
+        "func_80001D94_2994",
+        "func_80001DC0_29C0",
+        "func_80001DF4_29F4",
+        "func_80001E50_2A50",
+        "func_80001EB0_2AB0"
+      ]
     }
   ],
   "support_headers": [

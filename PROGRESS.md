@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct native file-table lookup
+
+- Traced transition dispatcher 800030F0 to data-loading entry 80001C00 with file ID 0x0F and destination 801CB460 on one branch. Reconstructed nearby func_80001D68_2968 (44 bytes), which indexes a file-table word using a 16-bit argument and masks its high bit. The complete loader and high-bit semantics remain unresolved.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 136 C function bytes/addresses match with original inventory. Synthetic host tests cover table indexing, high-bit masking and source preservation; 55 focused decomp tests run. No live-game tests or writes.
+- Next: reconstruct additional file-table primitives and trace 80001C00 through data transfer, decompression and overlay loading.
+
 ## 2026-11-03 - reconstruct ten transition state increment/decrement helpers
 
 - Reconstructed ten native helpers (824 bytes) in the transition unit. Each increments or decrements one byte-sized state level, clears its corresponding end byte and, except for the innermost pair, resets the next nested level. This characterizes a reusable state-machine pattern without claiming these primitives load a room.

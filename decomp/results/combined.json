@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-03T20:04:24.405465+00:00",
+  "started_utc": "2026-11-03T20:11:23.939488+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -45,9 +45,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 135,
-    "claimed_functions": 135,
-    "matched_function_bytes": 9796,
+    "matched_functions": 136,
+    "claimed_functions": 136,
+    "matched_function_bytes": 9840,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1263,6 +1263,15 @@
         "matched": true,
         "expected_sha256": "3970c1005a22c92113172424d9c23a1251fe6314a6ab77c09fda95416e66f240",
         "candidate_sha256": "3970c1005a22c92113172424d9c23a1251fe6314a6ab77c09fda95416e66f240"
+      },
+      {
+        "name": "func_80001D68_2968",
+        "size": 44,
+        "guest_address": "0x80001D68",
+        "rom_offset": "0x2968",
+        "matched": true,
+        "expected_sha256": "9a0d424a5f5b4667d02f9d406da9fc34437eb825b30a0523caf8a2eb88c0658b",
+        "candidate_sha256": "9a0d424a5f5b4667d02f9d406da9fc34437eb825b30a0523caf8a2eb88c0658b"
       }
     ]
   },
@@ -1334,7 +1343,12 @@
     "func_80036388_36F88",
     "func_800363F4_36FF4",
     "func_80036448_37048",
-    "func_80020F10_21B10"
+    "func_80020F10_21B10",
+    "func_80001D94_2994",
+    "func_80001DC0_29C0",
+    "func_80001DF4_29F4",
+    "func_80001E50_2A50",
+    "func_80001EB0_2AB0"
   ],
   "sources_sha256_lf": {
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
@@ -1367,11 +1381,12 @@
     "object_dispatch.c": "1fd7177d664057435538ccd6596525f32b2e95419f28ac59e1ecbda6f21804f1",
     "object_flags.c": "4cf3a5657c15ea6cb3ec07e4e5006ddc60b3f1d3a4c5482111fdafa9768115d0",
     "default_entrance.c": "38df36c1c09deda054d5879c4dd610a110e445bc1874302dff75a39dffaf2eb0",
+    "file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
     "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900",
     "object_flags.h": "d2cdfb2679db20ef4b642c41cdeef0188e464790333f067cbd8c394b44c7cb94",
     "default_entrance.h": "3d82c004281d4a33d8ddb39a39031f24899d0b39323c3a4904e4169429440568"
   },
-  "ended_utc": "2026-11-03T20:04:52.001364+00:00"
+  "ended_utc": "2026-11-03T20:11:50.903052+00:00"
 }
