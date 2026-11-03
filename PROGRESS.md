@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct linked-object callback wrapper
+
+- Reconstructed func_80035194_35D94 (32 bytes), installed by 800350C4 in one path and forwarding its first argument back to that function. The unused second argument has multiple matching types, so its original type is unconfirmed. Linked-object semantics and relationship to map resources remain unresolved.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 116 C function bytes/addresses match with original inventory. Synthetic host test checks first-argument forwarding; 55 focused decomp tests run. No live-game test or writes.
+- Next: trace 800350C4's linked-list changes, callback installation and object lifetime to determine whether this is map, actor or unrelated machinery.
+
 ## 2026-11-03 - reconstruct downstream transition call wrapper
 
 - Reconstructed func_80035044_35C44 (32 bytes), forwarding its word argument to 800350C4. Assembly inspection shows the other 80034EF8 callee dereferences that argument and traverses linked objects, so it is pointer-like in this path; the structure and resource operation remain unknown.

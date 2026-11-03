@@ -966,6 +966,23 @@
           "size": 32
         }
       ]
+    },
+    {
+      "source": "resource_callback.c",
+      "rom_start": 220564,
+      "rom_end": 220596,
+      "splat_original": "[0x35C64, asm]",
+      "splat_replacement": "[0x35C64, asm]\n    - [0x35D94, c, resource_callback]\n    - [0x35DB4, asm]",
+      "asm_no_padding": [
+        "35DB4"
+      ],
+      "functions": [
+        {
+          "name": "func_80035194_35D94",
+          "rom_offset": 220564,
+          "size": 32
+        }
+      ]
     }
   ],
   "support_headers": [

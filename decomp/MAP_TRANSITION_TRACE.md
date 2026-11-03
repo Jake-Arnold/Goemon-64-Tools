@@ -88,3 +88,10 @@ to `800350C4_35CC4`. The first callee `80034F44_35B44` dereferences the
 shared argument and traverses linked objects, so it is pointer-like in this
 path; the specific structure and resource semantics remain unknown. The
 matching wrappers use an opaque 32-bit value pending interface recovery.
+
+`func_80035194_35D94` now matches as C (32 bytes). It is installed as a
+callback by `800350C4` on one branch and forwards its first argument back to
+that function. The caller uses linked-object pointers and callback fields, but
+their relationship to room resources or actors is still unproven. The unused
+second parameter has multiple matching source types; its original type is
+not established.
