@@ -1,4 +1,11 @@
-# Goemon Speedrun Tools v0.11.11 - value freezes and maximum health
+# Goemon Speedrun Tools v0.11.12 - Fortune Doll progress visibility
+
+Live memory now shows the full **Fortune Doll progress (quarters)** word at
+`0x8015C704`, and the separately annotated total at `0x8015C708`. The former
+boolean 1/4 control now supports quarter states. Individual world-pickup flags
+remain separate in Story progress. Event sessions only captures the 100-byte
+saved-event bank; use Live memory or State discovery focused captures for these
+outside-bank counters. [Three pickups and code evidence](docs/SILVER_FORTUNE_DOLLS.md).
 
 ## Value freezes
 

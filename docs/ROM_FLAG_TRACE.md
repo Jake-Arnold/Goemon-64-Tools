@@ -233,3 +233,10 @@ not established. The supplied 1/4 support combines different events/maps.
 [User pickups, mixed-session door use and original room-definition fields](OEDO_SILVER_KEYS.md)
 separate saved key-collection IDs `0x110`/`0x114` from map 13's opened-lock ID
 `0x113`. Door use preserves both observed pickup bits; these are not carried-key counts.
+
+### Silver Fortune Dolls and the counter outside Event sessions
+
+[Three individual pickups and the native quarter-icon reader](SILVER_FORTUNE_DOLLS.md)
+separate IDs `0x0ED`, `0x0F1`, `0x0DB` from the 32-bit progress word at
+`0x8015C704`. The live word 2 matched the user's half icon. ID `0x04E` is a
+separate annotated strength-gauge condition; it is not a quarter counter.

@@ -117,4 +117,19 @@ class TestInspector(unittest.TestCase):
         self.assertEqual(SCENES[465],"South Oedo - Goemon's House")
         self.assertIn('Unknown',scene_label(0x777))
 
+
+
+    def test_fortune_doll_progress_is_a_word_outside_event_bank(self):
+        _,ram=self.sample()
+        for value in (0,1,2,3,4,5):
+            ram.write_guest(0x8015C704,value.to_bytes(4,'big'))
+            ram.write_guest(0x8015C708,(12).to_bytes(4,'big'))
+            rows={r.name:r for r in get_watches(ram,ram.snapshot(),SCENES)}
+            row=rows['Fortune Doll progress (quarters)']
+            self.assertEqual(row.addr,0x8015C704)
+            self.assertEqual(row.raw,f'0x{value:08X}')
+            self.assertEqual(row.status,'OK' if value<=4 else 'CHECK')
+            if value==2:self.assertEqual(row.value,'2/4 (1/2)')
+            self.assertEqual(rows['Fortune Dolls obtained (annotated total)'].value,'12')
+
 if __name__=='__main__':unittest.main()

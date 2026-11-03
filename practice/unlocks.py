@@ -52,7 +52,7 @@ UNLOCKS = (
     Unlock('Gold Key', 0x8015C713, 'Items and keys'),
     Unlock('Cucumber', 0x8015C717, 'Items and keys'),
     Unlock("Lord's Pass", 0x8015C703, 'Items and keys'),
-    Unlock('Silver Fortune Doll 1/4', 0x8015C707, 'Items and keys'),
+    Unlock('Silver Fortune Doll progress', 0x8015C707, 'Items and keys', (0,1,2,3,4), ('0/4','1/4','1/2','3/4','4/4 (display)')),
     Unlock('Sasuke battery 1 collected', 0x8015C609, 'Items and keys', bit_mask=0x20),
     Unlock("Achilles' Heel", 0x8015C70F, 'Items and keys'),
     Unlock('Red fish count', 0x8015C71B, 'Fish counts', quantity=True, max_value=8),

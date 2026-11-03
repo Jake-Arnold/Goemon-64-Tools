@@ -46,7 +46,7 @@ INVENTORY = [
     ('Magic Mermaid', 0x8015C6FB, 1, 1, 'user verified: acquired when nonzero'),
     ('Triton Shell', 0x8015C6FF, 1, 1, 'user verified in-game'),
     ('Unknown brown item (Achilles Heel? candidate)', 0x8015C703, 1, 1, 'item identity NOT confirmed'),
-    ('Silver Fortune Doll? (candidate)', 0x8015C707, 1, 1, 'old GameShark item name, unverified'),
+    ('Fortune Doll progress (low byte)', 0x8015C707, 1, 4, 'low byte of 32-bit progress word 0x8015C704; native item renderer handles 1..4, not a boolean'),
     ('Sasuke battery 1 collected', 0x8015C609, 1, 255, 'CONFIRMED: event byte bit 0x20; preserves other flags'),
     ("Achilles' Heel", 0x8015C70F, 1, 1, 'ROM reward script: inventory word 0x8015C70C; user mapping'),
     ('Gold Key', 0x8015C713, 1, 1, 'user verified in-game'),
@@ -154,6 +154,11 @@ def get_watches(ram, snapshot, scene_names=None):
         lambda v: f'{v} ({"weapon slot" if v in (1,2,3) else "outside normal 1–3; cross-character fallback observed"})',
         validator=lambda v: v in (1,2,3),
         source='confirmed in-game across all four characters; out-of-range entries use unintended weapons')
+    add('Fortune Doll progress (quarters)',0x8015C704,4,
+        lambda v: ('2/4 (1/2)' if v==2 else f'{v}/4') if v<=4 else f'Unexpected ({v})',
+        validator=lambda v:v<=4,source='native item-screen reads saved data +0xFC; renderer handles 1..4; live word 2 matched half icon')
+    add('Fortune Dolls obtained (annotated total)',0x8015C708,4,
+        source='mn64rando word annotation; live value 2 alongside half icon; full reset/award rules not traced')
     for name,addr,width,maximum,hint in INVENTORY:
         if addr == 0x8015C609:
             add(name,addr,1,lambda v: 'Yes (bit 0x20)' if v & 0x20 else 'No (bit 0x20)',
@@ -166,7 +171,7 @@ def get_watches(ram, snapshot, scene_names=None):
                      or name in {'Chain Pipe', 'Meat Saw Hammer', 'Fire Cracker Bomb', 'Flute',
                                  'Windup Camera', 'Ice Kunai', 'Bazooka', 'Medal of Flames',
                                  'Sudden Impact', 'Mini Ebisumaru', 'Super Jump', 'Magic Mermaid',
-                                 'Star', 'Moon', 'Flower', 'Snowflake'})
+                                 'Star', 'Moon', 'Flower', 'Snowflake', 'Fortune Doll progress (low byte)'})
         add(name,addr,width,validator=lambda v, m=maximum: v<=m,
             source=('confirmed: ' if confirmed else 'provisional: ')+hint)
     return watches

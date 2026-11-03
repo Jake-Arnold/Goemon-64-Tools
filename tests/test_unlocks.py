@@ -104,5 +104,15 @@ class TestUnlocks(unittest.TestCase):
         self.assertEqual(ram.writes, [])
 
 
+
+    def test_doll_progress_control_keeps_all_quarter_states(self):
+        field=BY_ADDRESS[0x8015C707];ram=FakeRAM()
+        self.assertEqual(field.values,(0,1,2,3,4))
+        for value in field.values:
+            write_unlock(ram,field,value)
+            self.assertEqual(read_unlock(ram,field),value)
+        self.assertEqual(field.levels[2],'1/2')
+        self.assertEqual(field.levels[3],'3/4')
+
 if __name__ == '__main__':
     unittest.main()

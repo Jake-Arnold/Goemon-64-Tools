@@ -235,3 +235,14 @@ class StoryProgressTests(unittest.TestCase):
         self.assertTrue(state['values']['gourmet_silver_key_129'])
         self.assertEqual((row['address'],row['mask']),(0x8015C637,'0x08'))
         self.assertEqual(ram.u8(0x8015C63C),0x20)
+
+    def test_silver_doll_instance_flags_are_separate_from_strength_flag(self):
+        ram=self.sample();ram.write_guest(0x8015C611,b'\x40')
+        keys=(('silver_doll_356',0x8015C625,0x20),('silver_doll_381',0x8015C626,0x02),('silver_doll_fuji',0x8015C623,0x08))
+        self.assertTrue(read_story_state(ram)['values']['strength_gauge_condition'])
+        for key,addr,mask in keys:
+            self.assertFalse(read_story_state(ram)['values'][key])
+            ram.write_guest(addr,bytes([mask]))
+        state=read_story_state(ram)
+        self.assertTrue(all(state['values'][k] for k,_,_ in keys))
+        self.assertTrue(state['values']['strength_gauge_condition'])
