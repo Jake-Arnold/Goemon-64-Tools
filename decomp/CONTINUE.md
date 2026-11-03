@@ -74,6 +74,8 @@ eligible main-segment functions up to 512 bytes. Repeating that unchanged recipe
 will not resolve missing types. Improve a reviewed declaration/layout or choose
 a concrete target first. Prefer actual upstream types over guessed structures.
 
+For map load/unload research, start with [MAP_TRANSITION_TRACE.md](MAP_TRANSITION_TRACE.md); it lists the native state and entrance candidates, evidence and failed probes.
+
 Next targets, in useful order:
 
 | Target | Existing evidence / next action |

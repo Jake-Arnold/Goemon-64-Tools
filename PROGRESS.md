@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - isolate native map transition research targets
+
+- Traced original exit staging, default-entry lookup, a caller that stages context and requests state 0x0B, and the nested native state-setting helpers. Recorded addresses, call sites, field offsets and evidence boundaries in decomp/MAP_TRANSITION_TRACE.md; linked it from the continuation runbook.
+- Reason: identify concrete decompilation targets for the requested map-loading/unloading research without guessing that a state setter performs full scene teardown.
+- Validation: reviewed original pinned assembly and existing ROM entrance documentation; attempted 13 bounded 80003728 drafts plus a corrected one-argument call form. Closest tested compilation was 88 versus 100 native bytes; none was promoted. Documentation and link/whitespace checks were run; existing ROM proof and 106-function count are unchanged. No live-game testing or writes.
+- Next: recover actual SYS_W field context to match 80003728 and trace resource/actor teardown and loading through the state dispatcher. No safe generic loader or unload function is established yet.
+
 ## 2026-11-03 - trace and reconstruct collision gate candidate
 
 - Reconstructed func_80029E08_2AA08 as an 80-byte isolated linked match. Unlike the automatic draft, the third argument is float, consistent with the existing upstream func_8002A168_2AD68 definition; it is passed through unchanged after a 0x7FFF early-exit check.
