@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct two nested transition state helpers
+
+- Reconstructed func_80003628_4228 and func_80003528_4128 (80 bytes each) in the existing transition unit. They set one state byte, clear the next and call the next state helper with zero. Their complete lifecycle meaning is not established.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 109 C function bytes/addresses match with original inventory. Synthetic test checks all state writes and complete call order to stubbed 80003428; existing VM/system host tests and 55 focused decomp tests run. No live-game test or writes.
+- Next: trace 80003428 and the transition dispatcher into resource loading, teardown and actor creation; do not treat these state writes as a safe warp.
+
 ## 2026-11-03 - reconstruct native transition state setter
 
 - Reconstructed func_80003728_4328 (100 bytes) using existing SYS_W field declarations. It sets stepw, clears stepw_end, sets retraces_per_game_step to two, then calls func_80003628(0). Both u8 and u16 source arguments match, so the original width is not uniquely proven; implementation uses u8 for its byte destination. Adjacent state-machine functions remain assembly.
