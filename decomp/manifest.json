@@ -610,6 +610,31 @@
         "func_8000E39C_EF9C",
         "func_8000E4E4_F0E4"
       ]
+    },
+    {
+      "source": "bit_array.c",
+      "rom_start": 94816,
+      "rom_end": 94944,
+      "splat_original": "[0x15970, asm]",
+      "splat_replacement": "[0x15970, asm]\n    - [0x17260, c, bit_array]\n    - [0x172E0, asm]",
+      "asm_no_padding": [
+        "15970"
+      ],
+      "functions": [
+        {
+          "name": "func_80016660_17260",
+          "rom_offset": 94816,
+          "size": 36
+        },
+        {
+          "name": "func_80016684_17284",
+          "rom_offset": 94852,
+          "size": 40
+        }
+      ],
+      "assembly_functions": [
+        "func_800166AC_172AC"
+      ]
     }
   ],
   "support_headers": [

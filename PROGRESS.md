@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct two bit-array mutation helpers
+
+- Reconstructed func_80016660_17260 and func_80016684_17284 (76 bytes), setting and clearing an indexed bit in a caller-provided byte array. Adjacent getter remains original assembly. This identifies a reusable engine primitive; specific callers and gameplay semantics remain uncharacterized.
+- Validation: full ROM and all 94 C functions match original SHA-1 6ea0ed71032ce08fc2745f412d84936382197494. Synthetic tests cover all 32 positions in a four-byte array, idempotence, byte boundaries and preserving neighboring bits. All 55 focused decomp tests passed. No game writes or live testing.
+- Limitations/next: the native signed index and pointer are unchecked; test coverage is for valid nonnegative indices. Continue with remaining functions and complete-ROM verification.
+
 ## 2026-11-03 - recover two native math helpers
 
 - Reconstructed func_8000E28C_EE8C and func_8000E630_F230 (164 bytes); three intervening functions remain original assembly. The first calculates an angle from coordinate differences and masks it to ten bits; the second calls two existing trigonometric helpers and scales their results.
