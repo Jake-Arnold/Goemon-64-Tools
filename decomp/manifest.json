@@ -745,6 +745,20 @@
         "func_800238D0_244D0",
         "func_800239B8_245B8"
       ]
+    },
+    {
+      "source": "empty_hook.c",
+      "rom_start": 231856,
+      "rom_end": 231872,
+      "splat_original": "[0x389B0, asm]",
+      "splat_replacement": "[0x389B0, c, empty_hook]",
+      "functions": [
+        {
+          "name": "func_80037DB0_389B0",
+          "rom_offset": 231856,
+          "size": 8
+        }
+      ]
     }
   ],
   "support_headers": [

@@ -28,9 +28,9 @@ artifacts untouched. The primary checkout is also retained at its original commi
 Recheck `git branch --show-current`, fetched remote state and worktree status
 before future work; do not use an older detached checkout for new implementation.
 
-Current checkpoint (2026-11-03): 99 newly matching functions / 7,344 bytes in seventeen
-units. Including 13 upstream C entries: 112 of 7,376 identified entries, leaving
-7,264 ASM entries (including SDK/runtime). VM: 52 C / 17 ASM.
+Current checkpoint (2026-11-03): 100 newly matching functions / 7,352 bytes in eighteen
+units. Including 13 upstream C entries: 113 of 7,376 identified entries, leaving
+7,263 ASM entries (including SDK/runtime). VM: 52 C / 17 ASM.
 
 Treat these as a dated snapshot. For current claims, read:
 
@@ -54,7 +54,7 @@ Machine-local paths (verify existence before use; never commit their contents):
 | --- | --- |
 | Pinned clean upstream | `/root/goemon64-verified-vm-context-v2/baseline` |
 | Certified immutable baseline | `/root/goemon64-batch-gate-fresh-v1/baseline` |
-| Latest verified candidate | `/root/goemon64-return-zero-v2/candidate` |
+| Latest verified candidate | `/root/goemon64-empty-hook-v1/candidate` |
 | Batch cache | `/root/goemon64-batch-pipeline-v1` |
 | m2c | `/root/goemon64-batch-tools/m2c` |
 | decomp-permuter | `/root/goemon64-batch-tools/decomp-permuter` |

@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-03 - reconstruct empty native hook
+
+- Reconstructed func_80037DB0_389B0 (8 bytes), an empty routine with unknown callers and purpose; original section padding is preserved.
+- Validation: complete ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and all 100 C function bytes/addresses match, with function inventory unchanged. All 55 focused decomp tests passed. No in-game test or writes.
+- Limitations/next: a separate func_8000631C_6F1C draft matched the full ROM but splitting at padding created a spurious positive-sized ELF symbol func_80006344_6F44; it remains unpromoted pending an inventory-preserving layout. Continue with other candidates.
+
 ## 2026-11-03 - reconstruct native zero return routine
 
 - Reconstructed func_8002338C_23F8C (8 bytes), a routine returning zero. Its callers and gameplay meaning remain unknown; 13 surrounding functions remain original assembly.
