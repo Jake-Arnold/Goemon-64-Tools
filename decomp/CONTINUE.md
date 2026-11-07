@@ -119,6 +119,27 @@ Do not ask the user to solve compiler/interface questions. Ask only for genuinel
 missing user input, such as an explicitly needed live observation. Decomp work
 itself requires no game writes or live testing.
 
+### Local whole-ROM mismatch diagnostics (new; no change to verified counts)
+
+When a candidate build exists but fails the exact matching gate, compare the
+**local** pinned decompressed reference with the locally rebuilt image:
+
+
+~~~bash
+python -m decomp.rom_diff \
+  --reference /path/to/baserom.decompressed.z64 \
+  --candidate /path/to/candidate/build/usa/mnsg.z64 \
+  --report /path/to/NEW-local-rom-diff.json
+~~~
+
+The tool checks the reference SHA-1 against `manifest.json`, compares **actual
+bytes**, and reports the changed byte/32-bit-word counts and first changed words
+with ROM offsets and claimed matching-C function names where applicable.
+Exit status 0 means identical bytes; 1 means differences. Reports must stay
+in ignored/local research directories. Do not commit original ROM bytes or
+the resulting local diagnostics. No comparison here promotes a function
+to matching C; the normal complete-ROM verifier remains mandatory.
+
 ## 5. Exact verification commands
 
 Choose a NEW tag for each attempt. The verifier and inventory refuse existing

@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-07 - chatgptweb/decomp read-only whole-ROM mismatch diagnostics
+
+- Added decomp/rom_diff.py to compare actual whole-ROM bytes in candidate builds, count changed bytes/MIPS words, and report bounded first mismatch offsets with claimed C-function attribution. The reference must match the manifest-pinned decompressed US SHA-1; reports are exclusive-create and remain local. Original game data is never committed by the tool.
+- Added six synthetic Python tests for exact matches, mismatched instructions, short/long outputs, range boundaries, invalid input, mismatch limits and report protection. Local tests: six passed; compiled Python sources; synthetic 32 MiB comparison exercised both identical inputs and a final-word mismatch.
+- Did not modify the matching manifest, existing verification script or historical proof hashes. **No new matching-C functions are claimed.** The pinned US ROM and IDO/MIPS toolchain were not available in this session, so no ROM rebuild or new matching candidate could be verified.
+- Next: run the native WSL build gate in the user's pinned workspace, then use this tool on any failed candidate output to pinpoint exact differences; continue VM/entrance candidates using the existing runbook and full-ROM byte-identity acceptance gate.
+
 ## 2026-11-03 - v0.11.16 record Oedo alternating dialogue observations
 
 - Added user-observed dialogue cycle bits 0x002 (map 353 old man) and 0x008 (map 432 coffee-shop man) to Story progress. Both have one A/B/C trial with a set and reversion; no idle control or causal bit manipulation is claimed. Updated the existing external Omitsu 0x007 annotation with the user's map 432 first-conversation observation and reported later dialogue change; UFO wording and reload persistence remain unverified by that capture.
