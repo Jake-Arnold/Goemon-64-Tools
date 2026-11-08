@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - unblock collision-gate staging against the pinned upstream C file
+
+- Corrected the collision-gate source guard to accept precisely one compatible, later `s32 func_8002A168_2AD68(f32, f32, f32)` definition in the original C translation unit while still rejecting conflicting/duplicated declarations, signatures and definitions before the gate. The other callee remains strictly guarded.
+- Reason: exercising the preparatory patch against the real pinned upstream `src/27FE0.c` revealed that the former guard rejected its existing later C definition. The earlier synthetic fixtures did not represent that layout.
+- Validation: 46 Python tests passed, four additional integration tests skipped because GNU MIPS binutils are unavailable here; Python compilation succeeded. The patched source was staged successfully against the pinned upstream commit, then compiled to a genuine ELF32 big-endian MIPS relocatable object using the user-supplied IDO 5.3 compiler. The new function has the original 80-byte extent and 18/20 identical original instruction words; the two remaining `JAL` words are unresolved R_MIPS_26 relocations to the expected callees. Independently checked both archived 32 MiB prior ROM images against the pinned decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494` and the user's successful 136-function report.
+- Limits: no complete new ROM build or original-address linking was executed; this is **not** a verified 137th reconstructed function. The archived workspace had a ZIP CRC failure in one generated assembly file, and this environment lacks GNU MIPS binutils and the pinned Python 3.12 dependency runtime. Current totals remain 149/7,376 identified entries: 136 newly matched C functions (9,840 bytes), 13 upstream, 7,227 assembly remaining. Matching manifest and proof/inventory files unchanged.
+- Next: use the user's working Ubuntu build environment to run the staged collision translation unit through the original-address linker and full-ROM gate, then promote only if byte identity is proven.
+
 ## 2026-11-08 - add exclusive, byte-preserving collision-gate staging CLI
 
 - Added `decomp/collision_stage.py`, a source-only CLI that invokes the existing reviewed collision-gate patch guard and writes a separate staged C file with exclusive creation. It rejects output paths aliasing either input, decodes UTF-8 strictly and preserves LF/CRLF bytes rather than applying text-mode newline conversion.

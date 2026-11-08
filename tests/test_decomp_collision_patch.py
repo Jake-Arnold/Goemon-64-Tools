@@ -14,6 +14,32 @@ class CollisionPatchTests(unittest.TestCase):
         self.assertNotIn('#pragma GLOBAL_ASM', out)
         self.assertEqual(out.count('#include "common.h"'), 1)
 
+    def test_compatible_later_definition_matches_pinned_source_layout(self):
+        extra = """
+s32 func_8002A168_2AD68(f32 origin_x, f32 origin_y, f32 origin_z) {
+    return 17;
+}
+"""
+        result = prepare_collision_gate(UPSTREAM + extra, CANDIDATE)
+        self.assertEqual(result.count('s32 func_8002A168_2AD68('), 2)
+        self.assertTrue(result.endswith(extra))
+
+    def test_conflicting_later_definition_or_prototype_rejected(self):
+        variants = (
+            's32 func_8002A168_2AD68(f32 first, s32 second, f32 third) { return 0; }\n',
+            's32 func_8002A168_2AD68(f32, f32, f32);\n',
+            's32 func_8002A168_2AD68(f32 x, f32 y, f32 z) { return 0; }\n'
+            's32 func_8002A168_2AD68(f32 x, f32 y, f32 z) { return 1; }\n',
+        )
+        for added in variants:
+            with self.subTest(added=added), self.assertRaisesRegex(ValueError, 'interface review'):
+                prepare_collision_gate(UPSTREAM + added, CANDIDATE)
+
+    def test_callee_defined_before_gate_rejected(self):
+        early = 's32 func_8002A168_2AD68(f32 x, f32 y, f32 z) { return 0; }\n'
+        with self.assertRaisesRegex(ValueError, 'interface review'):
+            prepare_collision_gate(early + UPSTREAM, CANDIDATE)
+
     def test_missing_duplicate_or_ambiguous_anchor_rejected(self):
         for source in (UPSTREAM.replace('#pragma GLOBAL_ASM', '// #pragma GLOBAL_ASM'),
                        UPSTREAM.replace('s32 func_80029E58_2AA58', 's32 other'),

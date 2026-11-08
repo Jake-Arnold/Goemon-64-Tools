@@ -40,7 +40,20 @@ def prepare_collision_gate(upstream_source: str, candidate_source: str) -> str:
     candidate_body = candidate_source[candidate_source.index('s32 ' + FUNCTION + '('):].strip()
     declarations = ('s32 func_8002A168_2AD68(f32, f32, f32);\n'
                     's32 func_8003266C_3326C(f32, f32);\n')
-    for name in ('func_8002A168_2AD68', 'func_8003266C_3326C'):
-        if re.search(r'\b' + name + r'\s*\(', upstream_source):
-            raise ValueError('Existing callee declaration requires manual interface review: ' + name)
+    # The pinned 27FE0.c *defines* the first callee below this gate. A
+    # compatible later definition requires a forward prototype, not rejection.
+    # Reject any other mention or signature rather than guessing the ABI.
+    later_definition = re.compile(
+        r'(?m)^s32[ \t]+func_8002A168_2AD68[ \t]*\('
+        r'[ \t]*f32[ \t]+[A-Za-z_]\w*[ \t]*,'
+        r'[ \t]*f32[ \t]+[A-Za-z_]\w*[ \t]*,'
+        r'[ \t]*f32[ \t]+[A-Za-z_]\w*[ \t]*\)[ \t]*\{')
+    mentions = list(re.finditer(r'\bfunc_8002A168_2AD68\s*\(', upstream_source))
+    definitions = list(later_definition.finditer(upstream_source))
+    if mentions and (len(mentions) != 1 or len(definitions) != 1 or
+                     definitions[0].start() <= match.end() or
+                     mentions[0].start() != upstream_source.index('func_8002A168_2AD68', definitions[0].start())):
+        raise ValueError('Existing callee declaration requires manual interface review: func_8002A168_2AD68')
+    if re.search(r'\bfunc_8003266C_3326C\s*\(', upstream_source):
+        raise ValueError('Existing callee declaration requires manual interface review: func_8003266C_3326C')
     return upstream_source[:match.start()] + declarations + '\n' + candidate_body + upstream_source[match.end():]
