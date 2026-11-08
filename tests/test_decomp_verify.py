@@ -13,8 +13,8 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),136)
-        self.assertEqual(len(claimed_functions(manifest)),137)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),137)
+        self.assertEqual(len(claimed_functions(manifest)),138)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
@@ -23,6 +23,29 @@ class DecompVerificationTests(unittest.TestCase):
             bad=copy.deepcopy(manifest);bad['units'][0]['functions'][0]['rom_offset']+=4
             path.write_text(json.dumps(bad))
             with self.assertRaises(ValueError):load_manifest(path)
+
+    def test_heap_noop_layout_manifest_is_fail_closed(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        self.assertTrue(manifest['heap_noop_text_layout'])
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'manifest.json'
+            bad=copy.deepcopy(manifest)
+            bad['heap_noop_text_layout']=False
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'layout preset'):
+                load_manifest(path)
+            bad=copy.deepcopy(manifest)
+            unit=next(u for u in bad['units'] if u['source']=='heap_noop.c')
+            unit['asm_no_padding']=[]
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'split mismatch'):
+                load_manifest(path)
+            bad=copy.deepcopy(manifest)
+            unit=next(u for u in bad['units'] if u['source']=='heap_noop.c')
+            unit['splat_replacement']=unit['splat_replacement'].replace('0x3698C','0x36990')
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'split mismatch'):
+                load_manifest(path)
 
     def test_collision_source_patch_manifest_is_fail_closed(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')

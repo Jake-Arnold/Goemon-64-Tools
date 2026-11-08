@@ -1,10 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-08T14:57:22.641273+00:00",
+  "started_utc": "2026-11-08T15:23:08.085985+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "1eefd08770fd9b3b460aeb4aaf9d36deee4b044e462d50608c3eddad4d4aa038",
+  "verifier_source_sha256_lf": "3daf0c2ac58f5409684795923e6210e0c1767c24d0a50032cb4eb2de64db948d",
   "tool_versions": {
     "uv": "uv 0.10.0",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
@@ -34,6 +34,17 @@
     "text_sha256": "9d180f9bc00b9ab2a6c05c30943cf68381b024635b0e4b3f5af94915c83128b5",
     "compiled_table_prefix_sha256": "cfb6b1a6dee1e182ccfad56f71ce9eb34d63b82db2afccc81f65ba32d1ad28e5"
   },
+  "heap_noop_layout": {
+    "kind": "heap_noop_text_metadata_v1",
+    "old_size": 16,
+    "new_size": 8,
+    "old_alignment": 16,
+    "new_alignment": 4,
+    "payload_bytes_changed": 0,
+    "input_sha256": "9d79b593118692522214df079bad74e6374e7763911e46d55f96820d0a941128",
+    "output_sha256": "dcc01b194feca2fc24258d3458574855c653e95345c9c07c4075cacd4e7eae15",
+    "function_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+  },
   "assignment_table": {
     "rom_start": "0x7DC2C",
     "size": 60,
@@ -45,9 +56,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 137,
-    "claimed_functions": 137,
-    "matched_function_bytes": 9920,
+    "matched_functions": 138,
+    "claimed_functions": 138,
+    "matched_function_bytes": 9928,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1274,6 +1285,15 @@
         "candidate_sha256": "9a0d424a5f5b4667d02f9d406da9fc34437eb825b30a0523caf8a2eb88c0658b"
       },
       {
+        "name": "func_80035D84_36984",
+        "size": 8,
+        "guest_address": "0x80035D84",
+        "rom_offset": "0x36984",
+        "matched": true,
+        "expected_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378",
+        "candidate_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+      },
+      {
         "name": "func_80029E08_2AA08",
         "size": 80,
         "guest_address": "0x80029E08",
@@ -1391,6 +1411,7 @@
     "object_flags.c": "4cf3a5657c15ea6cb3ec07e4e5006ddc60b3f1d3a4c5482111fdafa9768115d0",
     "default_entrance.c": "38df36c1c09deda054d5879c4dd610a110e445bc1874302dff75a39dffaf2eb0",
     "file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
+    "heap_noop.c": "d87c403e7874f70695d94ea545e8767b6698fe901694f77fdaf77bf6a6bdb401",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
     "script_vm.h": "716455479e5e38b7ce9af16aa5bee4f112baf87e15393cd3787a1ce8334f9043",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900",
@@ -1398,5 +1419,5 @@
     "default_entrance.h": "3d82c004281d4a33d8ddb39a39031f24899d0b39323c3a4904e4169429440568",
     "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63"
   },
-  "ended_utc": "2026-11-08T14:57:56.173038+00:00"
+  "ended_utc": "2026-11-08T15:23:40.063998+00:00"
 }

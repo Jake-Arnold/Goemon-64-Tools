@@ -80,3 +80,71 @@ def pack_object_file(path):
     with backup.open('xb') as output:output.write(original)
     path.write_bytes(packed)
     return evidence
+
+def pack_heap_noop_text(original):
+    """Shrink ONLY the zero-padded .text metadata of the 8-byte MIPS no-op.
+
+    IDO allocates sixteen bytes for an eight-byte return-only function in an
+    isolated translation unit. Splat's preserved linker order requires eight.
+    The original two instruction words, relocations and all other ELF bytes
+    must remain unchanged. This is a pinned, fail-closed layout adjustment.
+    """
+    from .probe import Elf32
+
+    elf = Elf32(original)
+    if elf.kind != 1:
+        raise ValueError('Requires relocatable MIPS ELF')
+    indices = [i for i, label in enumerate(elf.names) if label == '.text']
+    if len(indices) != 1:
+        raise ValueError('Expected unique .text section')
+    index = indices[0]
+    section = elf.sections[index]
+    if (section[1], section[2], section[5], section[8]) != (1, 6, 16, 16):
+        raise ValueError('Unexpected empty-function section layout')
+    payload = elf.payload(index)
+    if payload != bytes.fromhex('03E0000800000000') + bytes(8):
+        raise ValueError('Unexpected MIPS function or nonzero padding')
+    if any(s[1] in (4, 9) for s in elf.sections):
+        raise ValueError('Unexpected relocations in empty-function object')
+    functions = [s for s in elf.symbols if s.kind == 2 and s.section != 0]
+    if len(functions) != 1 or (functions[0].name, functions[0].value,
+                               functions[0].size, functions[0].section,
+                               functions[0].binding) != (
+                               'func_80035D84_36984', 0, 8, index, 1):
+        raise ValueError('Unexpected empty-function symbol layout')
+    if any(s.section == index and s.kind not in (2, 3) for s in elf.symbols):
+        raise ValueError('Unexpected additional symbol in .text')
+    if any(s.section == index and s.kind == 3 and (s.value, s.size) != (0, 16)
+           for s in elf.symbols):
+        raise ValueError('Unexpected .text section symbol')
+    for i, s in enumerate(elf.sections):
+        if i != index and s[2] & 2 and s[5] and elf.names[i] not in ('.reginfo',):
+            raise ValueError('Unexpected additional allocated data')
+    header_offset = struct.unpack_from('>I', original, 32)[0]
+    entry_width = struct.unpack_from('>H', original, 46)[0]
+    patched = bytearray(original)
+    struct.pack_into('>I', patched, header_offset + index * entry_width + 20, 8)
+    struct.pack_into('>I', patched, header_offset + index * entry_width + 32, 4)
+    permitted = (set(range(header_offset + index * entry_width + 20,
+                          header_offset + index * entry_width + 24)) |
+                 set(range(header_offset + index * entry_width + 32,
+                           header_offset + index * entry_width + 36)))
+    if any(a != b and i not in permitted for i, (a, b) in enumerate(zip(original, patched))):
+        raise AssertionError('Changed bytes outside approved ELF metadata')
+    return bytes(patched), dict(kind='heap_noop_text_metadata_v1', old_size=16,
+        new_size=8, old_alignment=16, new_alignment=4,
+        payload_bytes_changed=0,
+        input_sha256=hashlib.sha256(original).hexdigest(),
+        output_sha256=hashlib.sha256(patched).hexdigest(),
+        function_sha256=hashlib.sha256(payload[:8]).hexdigest())
+
+
+def pack_heap_noop_file(path):
+    path = Path(path)
+    original = path.read_bytes()
+    packed, evidence = pack_heap_noop_text(original)
+    backup = path.with_name(path.name + '.before-heap-noop-layout')
+    with backup.open('xb') as output:
+        output.write(original)
+    path.write_bytes(packed)
+    return evidence

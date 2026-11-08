@@ -1137,6 +1137,23 @@
         "func_80001E50_2A50",
         "func_80001EB0_2AB0"
       ]
+    },
+    {
+      "source": "heap_noop.c",
+      "rom_start": 223620,
+      "rom_end": 223628,
+      "splat_original": "[0x36750, asm]",
+      "splat_replacement": "[0x36750, asm]\n    - [0x36984, c, heap_noop]\n    - [0x3698C, asm]",
+      "asm_no_padding": [
+        "3698C"
+      ],
+      "functions": [
+        {
+          "name": "func_80035D84_36984",
+          "rom_offset": 223620,
+          "size": 8
+        }
+      ]
     }
   ],
   "support_headers": [
@@ -1161,5 +1178,6 @@
         "size": 80
       }
     }
-  ]
+  ],
+  "heap_noop_text_layout": true
 }

@@ -18,10 +18,10 @@ import shutil
 import subprocess
 
 try:
-    from .elf_layout import pack_object_file
+    from .elf_layout import pack_object_file, pack_heap_noop_file
     from .collision_patch import prepare_collision_gate
 except ImportError:
-    from elf_layout import pack_object_file
+    from elf_layout import pack_object_file, pack_heap_noop_file
     from collision_patch import prepare_collision_gate
 
 ROOT = Path(__file__).resolve().parent
@@ -101,6 +101,17 @@ def load_manifest(path):
             raise ValueError('Existing-source patch overlaps migrated unit')
     ranges.sort()
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):raise ValueError('Overlapping units')
+    if 'heap_noop_text_layout' in manifest:
+        if manifest['heap_noop_text_layout'] is not True or manifest['upstream_commit'] != '7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee':
+            raise ValueError('Unsupported empty-function layout preset')
+        targets=[u for u in manifest['units'] if u['source']=='heap_noop.c']
+        if len(targets)!=1 or targets[0] != dict(
+            source='heap_noop.c', rom_start=0x36984, rom_end=0x3698C,
+            splat_original='[0x36750, asm]',
+            splat_replacement='[0x36750, asm]\n    - [0x36984, c, heap_noop]\n    - [0x3698C, asm]',
+            asm_no_padding=['3698C'],
+            functions=[dict(name='func_80035D84_36984',rom_offset=0x36984,size=8)]):
+            raise ValueError('Pinned empty-function split mismatch')
     if 'vm_assignment_table_layout' in manifest:
         if manifest['vm_assignment_table_layout'] is not True:
             raise ValueError('Unsupported VM table layout preset')
@@ -297,6 +308,10 @@ def run_build(args,manifest,report):
         logged('candidate-vm-object',['make','-j'+str(args.jobs),'UV='+uv,
             'build/usa/src/script_vm.c.o','build/usa/asm/usa/data/main_continued.rodata.s.o'],candidate)
         report['object_layout']=pack_object_file(candidate/'build/usa/src/script_vm.c.o')
+    if manifest.get('heap_noop_text_layout'):
+        logged('candidate-heap-noop-object',['make','-j'+str(args.jobs),'UV='+uv,
+            'build/usa/src/heap_noop.c.o','build/usa/asm/usa/3698C.s.o'],candidate)
+        report['heap_noop_layout']=pack_heap_noop_file(candidate/'build/usa/src/heap_noop.c.o')
     logged('candidate-build',['make','-j'+str(args.jobs),'UV='+uv],candidate)
     symbols=parse_symbols(capture(['mips-linux-gnu-nm','-n','build/usa/mnsg.elf'],candidate))
     result=compare_images(expected,(candidate/'build/usa/mnsg.z64').read_bytes(),manifest,symbols)
