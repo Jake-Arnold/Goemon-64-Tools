@@ -13,7 +13,7 @@ u16 D_8007CCA4_7D8A4[] = {0xFFFF};
 void *D_80077860_78460;
 s32 D_801C7754_1C8354, D_801C7758_1C8358, D_801C775C_1C835C;
 s32 D_801C7760_1C8360, D_801C7764_1C8364, D_801C7768_1C8368, D_801C776C_1C836C;
-s32 D_801C77A0_1C83A0, D_801C77E0_1C83E0;
+s32 D_801C77A0_1C83A0, D_801C77E0_1C83E0, D_801C77F4_1C83F4;
 VmWork D_801C77E8_1C83E8;
 s32 D_801C78EC_1C84EC, D_801C78F0_1C84F0;
 s32 D_801C7900_1C8500, D_801C7904_1C8504;
@@ -117,6 +117,15 @@ void func_80037C20_38820(s32 a, s32 b, s32 c) {
     forward_kind = 6; forwarded[0] = a; forwarded[1] = b; forwarded[2] = c;
 }
 static void record(s32 event) { assert(trace_count < 32); trace[trace_count++] = event; }
+static s32 dispatch_choice_calls, dispatch_prompt_calls, dispatch_tick_calls;
+static s32 dispatch_last_x, dispatch_last_y;
+void func_8003EBAC_3F7AC(s32 x, s32 y) {
+    dispatch_choice_calls++;
+    dispatch_last_x=x; dispatch_last_y=y;
+}
+void func_8003E234_3EE34(void) { dispatch_prompt_calls++; }
+void func_8003ED60_3F960(void) { dispatch_tick_calls++; }
+
 s32 func_8003D68C_3E28C(void) { record(RUN); return 0; }
 void func_8003D0B0_3DCB0(void) { record(DRAW); }
 void func_8003D468_3E068(s32 first, s32 second) {
@@ -128,7 +137,7 @@ void func_8003D468_3E068(s32 first, s32 second) {
     record(RESET);
 }
 void func_8003521C_35E1C(VmTaskCallback value) { callback = value; task_seen = D_80077860_78460; record(INSTALL); }
-void func_80034B24_35724(VmTaskCallback value, s32 arg) { callback = value; argument = arg; record(CREATE); }
+s32 func_80034B24_35724(VmTaskCallback value, s32 arg) { callback = value; argument = arg; record(CREATE); return 0x1234; }
 void func_8000C838_D438(void) {
     if (cleanup_checks) {
         assert(D_801C77E8_1C83E8.marker == -1 && D_8007785C_7845C == 7);
@@ -781,8 +790,40 @@ static void check_controller_context_routing(void) {
     memset(first, 0, sizeof(*first)); memset(second, 0, sizeof(*second));
 }
 
+static void check_new_vm_dispatch_and_callback(void) {
+    VmChoice c={123,-42,0,0,0};
+    s32 state, cond, status;
+    D_801C7800_1C8400=&c;
+    for (state=0;state<5;state++) {
+        for (cond=0;cond<3;cond++) {
+            for (status=0;status<2;status++) {
+                D_801C77E0_1C83E0=state;
+                D_801C77F4_1C83F4=cond;
+                D_8007785C_7845C=status ? 0x100 : 7;
+                dispatch_choice_calls=dispatch_prompt_calls=dispatch_tick_calls=0;
+                func_8003EFB0_3FBB0();
+                assert(dispatch_choice_calls==(state==2 && cond==1));
+                assert(dispatch_prompt_calls==(state==3));
+                assert(dispatch_tick_calls==(!status));
+                if (dispatch_choice_calls) assert(dispatch_last_x==123 && dispatch_last_y==-42);
+            }
+        }
+    }
+    D_801C7740_1C8340=0;
+    D_801C7750_1C8350=0;
+    trace_count=0;
+    func_8003F350_3FF50();
+    assert(trace_count==1 && trace[0]==CREATE);
+    assert(argument==0 && D_801C7750_1C8350==0x1234);
+    D_801C7740_1C8340=0x123456;
+    trace_count=0;
+    func_8003F350_3FF50();
+    assert(trace_count==1 && trace[0]==CREATE);
+    assert((uintptr_t)callback==0x123456 && D_801C7750_1C8350==0x1234);
+}
+
 int main(void) {
-    check_controller_context_routing(); check_numbered_event_start(); check_context_event_start();
+    check_new_vm_dispatch_and_callback(); check_controller_context_routing(); check_numbered_event_start(); check_context_event_start();
     check_choice_index_and_wait_callbacks(); check_resource_context_transitions(); check_choice_directions_and_repeat(); check_choice_navigation_and_confirmation(); check_choice_stream_rendering(); check_prompt_geometry_and_animation(); check_input_gate_and_cleanup(); check_control_queries(); check_resource_address_resolution(); check_operand_callbacks(); check_assignment_operands(); check_comparisons(); check_relocation_and_counters(); check_callbacks_and_dialogue_states();
     puts("VM choices/repeat/streams, inputs, resources, callbacks and dialogue states passed.");
     return 0;

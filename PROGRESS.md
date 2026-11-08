@@ -2,6 +2,15 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - promote two original-address VM matches (140 reconstructed C)
+
+- Replaced retained assembly for `func_8003EFB0_3FBB0` (136 bytes; 34/34 original instruction words) and `func_8003F350_3FF50` (44 bytes; 11/11 original instruction words). The latter stores the callback-registration handle and requires the corrected `s32` return declaration of `func_80034B24_35724`. VM now has 54 C functions and 15 ASM functions.
+- **Verification:** a fresh independent 2,331-object Linux build against pinned upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, with pinned IDO 5.3 and recovered GNU MIPS binutils. Every one of the 140 claimed functions retained original entry addresses and exact instruction bytes. The full 33,554,432-byte ROM matched byte-for-byte (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). The pinned collision-gate source hash and two guarded ELF metadata transformations remained valid without changing payload bytes.
+- **Inventory:** direct comparison of the freshly linked and pinned baseline ELFs confirmed 7,376 identified entries, 140 matching-C functions / 10,108 bytes, 13 upstream C functions (153 combined C), and 7,223 ASM entries. The function-entry identity digest remained unchanged.
+- **Host tests:** the VM test executable passed using GCC `-Wall -Wextra -Werror` and address/undefined sanitizers, including 30 dispatcher-state combinations and callback forwarding/handle checks. The native resource test executable passed. The archived toolkit Python suite previously reported 66 passed, four skipped, 42 passing subtests; a provisional older Python checkout reported 49 passes, four skips, six stale-source/proof failures. Those results do not establish a clean run of the current post-promotion complete Python suite.
+- **Limitations:** the single uninterrupted formal verifier process stopped on its execution timeout during full compilation; the same clean checkout was then rebuilt to completion, checked independently with the original-address comparator and full ROM reference, and independently inventoried. Published metadata explicitly sets `formal_verifier_run_completed=false`. This is not a claim that the interrupted formal runner succeeded. No in-game test took place. The local ROM, copyrighted assets, private paths, diagnostics, and toolchain binaries are not committed.
+- **Next:** rerun the complete uninterrupted formal verification command on the current 140-function branch, refresh provenance, and pursue the remaining VM text loop, loader and choice edge.
+
 ## 2026-11-08 - isolate and whole-ROM-probe 44-byte VM callback registration
 
 - Added an isolated C candidate for `func_8003F350_3FF50` (USA entry `0x8003F350`, ROM offset `0x3FF50`, 44 original bytes) and a host regression suite covering callback forwarding, zero flags, stored registration handle, and repeat calls.

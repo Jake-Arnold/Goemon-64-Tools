@@ -393,9 +393,16 @@ void func_8003EBA4_3F7A4(void) {
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003ED60_3F960.s")
 #endif
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003EFB0_3FBB0.s")
-#endif
+/* Conditional dialogue-choice dispatch and VM tick. */
+void func_8003EFB0_3FBB0(void) {
+    if (D_801C77E0_1C83E0 == 2) {
+        if (D_801C77F4_1C83F4 == 1) {
+            func_8003EBAC_3F7AC(D_801C7800_1C8400->x, D_801C7800_1C8400->y);
+        }
+    }
+    if (D_801C77E0_1C83E0 == 3) func_8003E234_3EE34();
+    if (D_8007785C_7845C != 0x100) func_8003ED60_3F960();
+}
 
 #ifndef GOEMON_DECOMP_HOST_TEST
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F038_3FC38.s")
@@ -456,9 +463,14 @@ void func_8003F2D4_3FED4(void) {
     D_80077858_78458 = func_8003DE48_3EA48(D_801C78F4_1C84F4);
 }
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F350_3FF50.s")
+/* Register the pending dialogue callback and retain its handle. */
+void func_8003F350_3FF50(void) {
+#ifdef GOEMON_DECOMP_HOST_TEST
+    D_801C7750_1C8350 = func_80034B24_35724((VmTaskCallback)(unsigned long)(u32)D_801C7740_1C8340, 0);
+#else
+    D_801C7750_1C8350 = func_80034B24_35724((VmTaskCallback)D_801C7740_1C8340, 0);
 #endif
+}
 
 #ifndef GOEMON_DECOMP_HOST_TEST
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003F37C_3FF7C.s")

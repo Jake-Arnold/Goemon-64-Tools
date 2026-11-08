@@ -30,14 +30,20 @@ artifacts untouched. The primary checkout is also retained at its original commi
 Recheck `git branch --show-current`, fetched remote state and worktree status
 before future work; do not use an older detached checkout for new implementation.
 
-Current checkpoint (2026-11-08): 138 newly matching functions / 9,928 bytes:
-137 functions in thirty-two migrated units (including the new 8-byte heap no-op),
+Current checkpoint (2026-11-08): 140 newly matching functions / 10,108 bytes:
+139 functions in thirty-two migrated units (including the new 8-byte heap no-op),
 plus the 80-byte collision gate integrated into an existing upstream C unit.
-Including 13 upstream C entries: 151 of 7,376 identified entries, leaving 7,225
-ASM entries (including SDK/runtime). VM: 52 C / 17 ASM. Both newest candidates
+Including 13 upstream C entries: 153 of 7,376 identified entries, leaving 7,223
+ASM entries (including SDK/runtime). VM: 54 C / 15 ASM. Both newest candidates
 passed independent original-address/full-ROM verification. The collision gate
 uses a pinned source hash; the heap no-op uses a narrowly validated ELF .text
 metadata layout correction that preserves its two instruction words.
+
+The new 44-byte VM callback registration and 136-byte choice dispatcher have now
+passed a fresh 2331-object Linux build and original-address/full-ROM identity
+checks. The formal verifier timed out before report emission; its resumed build
+was checked independently using the same comparison and inventory routines.
+The proof record explicitly distinguishes those methods; no in-game test occurred.
 
 Treat these as a dated snapshot. For current claims, read:
 

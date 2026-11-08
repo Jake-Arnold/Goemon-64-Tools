@@ -10,13 +10,13 @@ ELF hashes, tool hash and original entry-map identity.
 | --- | ---: |
 | Identified function entries across the configured ROM | 7,376 |
 | Matching C already in pinned upstream | 13 |
-| Newly matching C in this toolkit's decomp track | 138 |
-| Matching C combined | 151 |
-| Still marked as assembly | **7,225** |
+| Newly matching C in this toolkit's decomp track | 140 |
+| Matching C combined | 153 |
+| Still marked as assembly | **7,223** |
 
-The VM unit is a smaller subset: 52 of its 69 functions are matching C, with
-17 retained assembly functions. Its remaining count is not the whole-game count.
-The toolkit's headline 138-function count deliberately excludes the 13 routines
+The VM unit is a smaller subset: 54 of its 69 functions are matching C, with
+15 retained assembly functions. Its remaining count is not the whole-game count.
+The toolkit's headline 140-function count deliberately excludes the 13 routines
 already present as matching upstream C. The report lists those names explicitly;
 existing source definitions were checked in the pinned upstream C units.
 
