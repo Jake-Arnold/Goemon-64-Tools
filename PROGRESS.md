@@ -2,6 +2,17 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - original-MIPS/host-C text loop differential regression (unpromoted)
+
+- Added a reproducible **local ROM-gated** differential harness for `func_8003DBEC_3E7EC`: `decomp/test_vm_text_loop_differential.py` interprets the original 472-byte MIPS function directly from the pinned decompressed USA image (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`), including branch-likely annulment and delay slots, and compares observable VM state and synthetic callback effects against the standalone unpromoted C candidate through a local host shared library. `decomp/test_vm_text_loop_differential_stubs.c` supplies deterministic call hooks and globals; no original instruction bytes, game ROM, assembly, objects, toolchain or user filesystem paths were committed.
+- **Executed:** native GCC C11 `-O1 -fPIC -shared -Wall -Wextra -Werror` host build; Python differential replay passed **2,500 seeded cases at 0x1D8** and **2,500 further cases at 0xDEADBEEF**, with zero mismatches. Original 32MiB decompressed ROM input SHA and 16MiB retail input SHA were checked; the harness refuses the compressed retail input. The prior 15-scenario standalone C host test was rebuilt with `-fsanitize=address,undefined` and passed.
+- **Negative control:** changed just the first retry threshold from `< 3` to `< 2` in a *temporary private* C copy. The same differential harness detected the induced mismatch at deterministic case 6 and exited nonzero. The mutation was not committed.
+- **Limited IDO exploration:** original 472-byte symbol still has 44/95 equal non-relocation word positions in the best current 472-byte symbol probe; isolated alternatives using work pointer aliases, reversed comparisons, cached handler value or typed controller pointers did not improve that number. No original-address exact matching, 141-function uninterrupted formal run, new full-ROM build or live/in-game test was performed; **141 matching C / 10,312 bytes** remains unchanged.
+- To reproduce differential evidence on Linux with the locally supplied verified **decompressed** ROM:
+  `gcc -std=c11 -O1 -Wall -Wextra -Werror -fPIC -shared decomp/candidates/vm_text_loop.c decomp/test_vm_text_loop_differential_stubs.c -o /tmp/vm_text_loop_host.so`;
+  `python3 decomp/test_vm_text_loop_differential.py --decompressed-rom /path/to/pinned/baserom.decompressed.z64 --host-library /tmp/vm_text_loop_host.so --cases 2500 --seed 0x1d8`.
+- **Next:** use original-address relocations, stack frame (original 0x48 vs candidate 0x50) and `$s1/$s2/$s3` lifetimes to recover exact IDO register scheduling. Formal verifier remains outstanding; this synthetic VM subset does not establish game runtime or whole-ROM identity.
+
 ## 2026-11-08 - VM text loop typed-field and immediate-retry candidate (not promoted)
 
 - Inspected original assembly for `func_8003DBEC_3E7EC` (0x8003DBEC, 472 original bytes) and existing `VmWork` layout. Confirmed `sh/lhu +0xA($s1)` access global state `D_801C77E8` at 0x801C77F2; `$s1` is the **address of the global work record**, not the pointed-to script. Previous scratch notes treating +0xA as the script pointee were incorrect. No existing deployed VM interface was changed.
