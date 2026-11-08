@@ -5,6 +5,9 @@
  * The halfword at +0xA is a member of global VmWork at 0x801C77E8;
  * it is NOT a field of the separate script pointer stored at offset zero.
  * An immediate retry bypasses the outer iteration bound/count update.
+ * A terminal-state switch improves the isolated IDO instruction comparison
+ * from 44/95 to 47/95 nonrelocation original-word positions; this remains
+ * an unpromoted size-only match pending exact original-address/ROM identity.
  * This standalone declaration is for isolated codegen/host test only.
  */
 typedef signed int s32;
@@ -40,9 +43,11 @@ void func_8003DBEC_3E7EC(void) {
 retry:
         D_801C77E8_1C83E8.script_word = func_8003DE80_3EA80(D_801C7754_1C8354, work->script_word);
         state = D_801C77E0_1C83E0;
-        if (state == 3 || state == 4 || state == 5 || state == 6) {
-            D_801C77E8_1C83E8.gate_halfword = 0;
-            break;
+        switch (state) {
+            case 3: case 4: case 5: case 6:
+                D_801C77E8_1C83E8.gate_halfword = 0;
+                return;
+            default: break;
         }
         D_801C77E0_1C83E0 = 1;
         if (D_801C77E8_1C83E8.script_word == 0) {

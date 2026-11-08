@@ -99,7 +99,7 @@ Next targets, in useful order:
 
 | Target | Existing evidence / next action |
 | --- | --- |
-| VM text loop `func_8003DBEC_3E7EC` | Original 472 bytes; draft 480, with 101 differing words. Resolve cursor/halfword input fields and control flow before register tuning. Private draft: `/root/goemon64-text-loop-v1`. |
+| VM text loop `func_8003DBEC_3E7EC` | Latest standalone candidate compiles to original 472-byte symbol, but is unpromoted: 47/95 equal non-relocation instruction positions without original-address relocation, 0x50 vs original 0x48 stack frame. 10,000 MIPS/C synthetic differential cases passed. Recover register lifetimes and branch scheduling; do not change proof counts. |
 | Choice edge `func_8003D0B0_3DCB0` (COMPLETED) | Promoted 204-byte exact C at original address. Fresh 2,331-object compile with regenerated Splat sources gave 33,554,432/33,554,432 matching bytes, all 141 function proofs and unchanged 7,376-entry inventory. 100 host cases passed. Uninterrupted formal verifier still pending. |
 | VM loader `func_8003D468_3E068` | Needs resource-prefix interfaces. Derive fields/calls from actual loads and upstream declarations. |
 | Key initializer `func_080001BC_6F369C` | Public `candidates/key_spawn_gate.c` matches 96 bytes in an isolated linked probe. Promotion requires reviewed overlay mapping/layout support in verifier, then complete-ROM proof. |
