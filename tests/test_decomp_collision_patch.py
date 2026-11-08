@@ -30,4 +30,20 @@ class CollisionPatchTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'LF-only'):
             prepare_collision_gate(UPSTREAM.replace('\n', '\r\n'), CANDIDATE)
 
+
+    def test_anchor_before_pragma_rejected(self):
+        moved = UPSTREAM.replace('s32 func_80029E58_2AA58(void) { return 7; }\n', '')
+        moved = 's32 func_80029E58_2AA58(void) { return 7; }\n' + moved
+        with self.assertRaisesRegex(ValueError, 'following upstream'):
+            prepare_collision_gate(moved, CANDIDATE)
+
+    def test_duplicate_following_anchor_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'Unique following'):
+            prepare_collision_gate(UPSTREAM + 's32 func_80029E58_2AA58(void);\n', CANDIDATE)
+
+    def test_intervening_assembly_rejected(self):
+        modified = UPSTREAM.replace('s32 func_80029E58', '#pragma GLOBAL_ASM("asm/other.s")\ns32 func_80029E58')
+        with self.assertRaisesRegex(ValueError, 'Unexpected assembly'):
+            prepare_collision_gate(modified, CANDIDATE)
+
 if __name__ == '__main__': unittest.main()

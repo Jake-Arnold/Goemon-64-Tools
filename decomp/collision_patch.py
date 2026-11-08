@@ -28,8 +28,13 @@ def prepare_collision_gate(upstream_source: str, candidate_source: str) -> str:
         raise ValueError('Collision function already declared/defined in upstream source')
     if not re.search(r'\bs32\s+' + FUNCTION + r'\(f32 arg0, f32 arg1, f32 arg2\)\s*\{', candidate_source):
         raise ValueError('Candidate signature differs from reviewed probe')
-    if upstream_source.count('func_80029E58_2AA58') == 0:
-        raise ValueError('Adjacent upstream C function anchor missing')
+    match = matches[0]
+    following = upstream_source[match.end():]
+    adjacent = re.search(r'(?m)^[ \t]*s32[ \t]+func_80029E58_2AA58[ \t]*\(', following)
+    if adjacent is None or len(re.findall(r'(?m)^[ \t]*s32[ \t]+func_80029E58_2AA58[ \t]*\(', upstream_source)) != 1:
+        raise ValueError('Unique following upstream C function anchor missing')
+    if re.search(r'(?m)^#pragma GLOBAL_ASM\(', following[:adjacent.start()]):
+        raise ValueError('Unexpected assembly function between collision gate and next C function')
     # Keep the upstream common.h and declarations; add only the two callees and
     # the function body, avoiding an extra include or edits to adjacent functions.
     candidate_body = candidate_source[candidate_source.index('s32 ' + FUNCTION + '('):].strip()
@@ -38,5 +43,4 @@ def prepare_collision_gate(upstream_source: str, candidate_source: str) -> str:
     for name in ('func_8002A168_2AD68', 'func_8003266C_3326C'):
         if re.search(r'\b' + name + r'\s*\(', upstream_source):
             raise ValueError('Existing callee declaration requires manual interface review: ' + name)
-    match = matches[0]
     return upstream_source[:match.start()] + declarations + '\n' + candidate_body + upstream_source[match.end():]

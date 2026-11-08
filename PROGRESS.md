@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - reject misplaced collision-gate integration anchors
+
+- Hardened the preparatory collision-gate source replacement: require exactly one following C-function declaration anchor and reject intervening assembly pragmas. The previous mere name-presence check could accept an anchor before the target or unrelated later assembly, masking an unsafe translation-unit boundary.
+- Reason: preserve the reviewed 80-byte candidate's intended source ordering without guessing at missing functions or altering any compiled game bytes.
+- Validation: six synthetic Python tests passed (three existing plus three new), and the changed Python module and tests passed bytecode compilation. These were run against the exact local source patch and synthetic upstream fixtures, not the pinned upstream game source. No MIPS/IDO build or complete-ROM comparison occurred.
+- Limits: collision gate remains isolated-only, not promoted; manifest and proof files unchanged. Verified baseline remains 149/7,376 identified entries (136 reconstructed functions, 9,840 bytes, and 13 upstream C). Pinned build/compiler workspace is unavailable.
+- Next: inspect the pinned original translation unit and run guarded source integration plus original-address and full-ROM acceptance checks before promotion.
+
 ## 2026-11-08 - stage narrowly checked collision-gate source replacement
 
 - Added `decomp/collision_patch.py`, a pure, read-only preparatory transform for the 80-byte isolated collision-gate candidate. It checks the candidate's recorded SHA-256, requires exactly one original assembly pragma and an adjacent C-function anchor, rejects pre-existing callee declarations or a duplicate definition, and preserves the surrounding upstream source. It does not modify the verifier, manifest or upstream checkout.
