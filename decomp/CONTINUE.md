@@ -98,7 +98,7 @@ Next targets, in useful order:
 | Target | Existing evidence / next action |
 | --- | --- |
 | VM text loop `func_8003DBEC_3E7EC` | Original 472 bytes; draft 480, with 101 differing words. Resolve cursor/halfword input fields and control flow before register tuning. Private draft: `/root/goemon64-text-loop-v1`. |
-| Choice edge `func_8003D0B0_3DCB0` | **New 204-byte original-address isolated match: 51/51 MIPS instruction words.** Candidate: `candidates/vm_choice_edge.c` (host tests: 100 cases). Compiled `.text` contains four additional zero pad bytes beyond the correctly sized function symbol; determine integration/layout treatment and pass a fresh complete-ROM gate before promotion. Earlier 200/208-byte draft assessments are superseded by this linked result. |
+| Choice edge `func_8003D0B0_3DCB0` | **Exact 204-byte/51-word original-address isolated match.** In the archived 136-function checkout, recompiling the VM translation unit and applying the *existing guarded* 60-byte/align-4 VM `.rodata` metadata correction yielded a full 33,554,432-byte byte-identical ROM. The other archived objects were cached and this checkout predates the current 140-function branch: **do not promote** until the current 140+1 candidate independently rebuilds and passes the formal whole-ROM/inventory gate. 100 sanitized host cases pass. |
 | VM loader `func_8003D468_3E068` | Needs resource-prefix interfaces. Derive fields/calls from actual loads and upstream declarations. |
 | Key initializer `func_080001BC_6F369C` | Public `candidates/key_spawn_gate.c` matches 96 bytes in an isolated linked probe. Promotion requires reviewed overlay mapping/layout support in verifier, then complete-ROM proof. |
 
