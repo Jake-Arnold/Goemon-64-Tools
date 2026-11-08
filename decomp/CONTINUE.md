@@ -7,10 +7,12 @@ first. Update this runbook whenever the next targets or machine paths change.
 
 ## 1. Establish the current state
 
-Continue this ongoing task in its existing workspace:
+Automated continuation must commit and push **only** to `chatgptweb/decomp`, never `main`. The workspace and main-branch history below describe the earlier local workflow, not the authorized target for this automated continuation. Verify the branch head before writing; do not force-push.
+
+Historical workspace:
 
 - Windows: `C:/Users/Jake/.codex/worktrees/goemon-entrance-warps/Goemon Toolkit`
-- Branch: `main` (the workspace directory retains its original name)
+- Historical branch: `main` (not the authorized automated target)
 - WSL cwd: `/mnt/c/Users/Jake/.codex/worktrees/goemon-entrance-warps/Goemon Toolkit`
 - Remote: `Jake-Arnold/Goemon-64-Tools`
 
@@ -21,7 +23,7 @@ delete other branches/worktrees just to tidy the list. Check ancestry first.
 
 Integration on 2026-11-03: the completed entrance-warps branch included main
 and both older feature branches. Its history is fast-forwarded into `main`;
-continue on main in this same workspace. Redundant branch refs can be removed
+the historical workflow continued on main; automated continuation remains on `chatgptweb/decomp`. Redundant branch refs can be removed
 without deleting worktrees. Older worktrees retain their original commits in
 detached HEAD state; leave their local bookmarks, checkpoints, ROMs and research
 artifacts untouched. The primary checkout is also retained at its original commit.
@@ -212,7 +214,7 @@ in-game verification are distinct evidence; report them separately.
   assembly, assets, saves, memory dumps and personal diagnostics/trial IDs.
 - Commit a coherent completed change with a descriptive message; push to the
   connected branch. Compare `git rev-parse HEAD` with
-  `git ls-remote origin refs/heads/main`.
+  `git ls-remote origin refs/heads/chatgptweb/decomp`.
 - Report verified progress and any real blocker. Never claim an unperformed push,
   runtime test, merge, or decompilation promotion.
 

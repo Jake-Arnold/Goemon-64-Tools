@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - restrict automated decomp writes to dedicated branch
+
+- Corrected the continuation runbook's inherited main-branch instructions: the historical workspace is contextual, while automated writes and remote verification target only `chatgptweb/decomp` without force-pushing.
+- Reason: conflicting main-branch directions risked publishing decomp work to an unauthorized branch.
+- Validation: documentation substitution checks; no code or ROM tests executed. No manifests, counts or proof files modified.
+- Limits: pinned US ROM, IDO/MIPS compiler and native WSL workspace inaccessible in this environment. Baseline remains 149/7,376 entries (136 newly matching, 9,840 bytes; 13 upstream). Next: resume native candidate verification when the pinned environment is accessible.
+
 ## 2026-11-07 - chatgptweb/decomp read-only whole-ROM mismatch diagnostics
 
 - Added decomp/rom_diff.py to compare actual whole-ROM bytes in candidate builds, count changed bytes/MIPS words, and report bounded first mismatch offsets with claimed C-function attribution. The reference must match the manifest-pinned decompressed US SHA-1; reports are exclusive-create and remain local. Original game data is never committed by the tool.
