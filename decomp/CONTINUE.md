@@ -7,7 +7,7 @@ first. Update this runbook whenever the next targets or machine paths change.
 
 ## 0. Cross-conversation handoff
 
-Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM, overlay, native-warp and story-flag backlog from parallel Goemon conversations. Historical chat totals may lag the latest manifest/proof; this runbook and the live branch remain authoritative. Do not repeat already promoted functions.
+Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and overlay matching-C backlog; historical main-branch warp/story tasks have been superseded from parallel Goemon conversations. Historical chat totals may lag the latest manifest/proof; this runbook and the live branch remain authoritative. Do not repeat already promoted functions.
 
 ## 1. Establish the current state
 
@@ -98,7 +98,7 @@ Next targets, in useful order:
 | Target | Existing evidence / next action |
 | --- | --- |
 | VM text loop `func_8003DBEC_3E7EC` | Original 472 bytes; draft 480, with 101 differing words. Resolve cursor/halfword input fields and control flow before register tuning. Private draft: `/root/goemon64-text-loop-v1`. |
-| Choice edge `func_8003D0B0_3DCB0` | Original 204 bytes; drafts 200/208. Final conditional/unreachable-store shape unresolved; volatile variants failed. Private attempts: `/root/goemon64-choice-edge-v1`. |
+| Choice edge `func_8003D0B0_3DCB0` | **New 204-byte original-address isolated match: 51/51 MIPS instruction words.** Candidate: `candidates/vm_choice_edge.c` (host tests: 100 cases). Compiled `.text` contains four additional zero pad bytes beyond the correctly sized function symbol; determine integration/layout treatment and pass a fresh complete-ROM gate before promotion. Earlier 200/208-byte draft assessments are superseded by this linked result. |
 | VM loader `func_8003D468_3E068` | Needs resource-prefix interfaces. Derive fields/calls from actual loads and upstream declarations. |
 | Key initializer `func_080001BC_6F369C` | Public `candidates/key_spawn_gate.c` matches 96 bytes in an isolated linked probe. Promotion requires reviewed overlay mapping/layout support in verifier, then complete-ROM proof. |
 
@@ -202,6 +202,16 @@ python3 -m unittest tests.test_decomp_verify tests.test_decomp_batch \
 Run affected native host tests; these commands cover the current VM/resource/angle
 units. VM needs non-PIE because encoded guest pointers use 32 bits. The VM and
 resource tests include their implementation; do not compile it twice.
+
+Isolated candidate semantic test (not complete-ROM proof):
+
+```bash
+gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie \\
+  -fsanitize=address,undefined decomp/test_vm_choice_edge.c \\
+  -o /tmp/goemon-choice-edge-host-test
+/tmp/goemon-choice-edge-host-test
+```
+
 
 ```bash
 gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie \

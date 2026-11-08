@@ -2,6 +2,15 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - isolate exact 204-byte VM choice-edge candidate, retain unpromoted
+
+- Reconstructed `func_8003D0B0_3DCB0` with a nested assignment/condition and explicit intermediate flag branch, rather than the previously attempted 200/208-byte drafts. Added `decomp/candidates/vm_choice_edge.c` and a 100-case host regression `decomp/test_vm_choice_edge.c`.
+- **New isolated machine-code proof:** the restored user-supplied IDO 5.3 compiler produced a 204-byte function symbol. GNU MIPS binutils relocated it at original guest address `0x8003D0B0` with the four globals and callee at verified original addresses; **51/51 original instruction words matched exactly (204/204 bytes)**. Both standalone instruction-byte SHA-256 values are `7a3c723bffe43e3b044e60c385b9a6577a34eab380ebcc1eb3f8a38ab3c93fe8`. The compiled ELF `.text` section is 208 bytes because of an additional four zero padding bytes **outside** the symbol. These were not deleted, substituted, or counted as instructions.
+- **Host tests:** `gcc -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-pie -no-pie` compiled the candidate with its test harness; **100 state combinations passed**, checking callback invocation, active/previous choice state, result preservation and edge flags.
+- **Limitations:** This is isolated compile-and-link evidence, not current-branch unit integration, full-ROM validation or in-game testing. A fresh 140-plus-one-function 33,554,432-byte build is still required. Do **not** update `manifest.json`, `results/combined.json`, `results/inventory.json` or the 140-function total until the full-ROM gate proves exact identity and correct section layout.
+- The user confirmed that earlier native-warp and story-flag tasks had already been completed on `main`. Removed that superseded early-chat backlog from the active decomp queue; no `main` changes were made.
+- Next: integrate the 204-byte C function into the latest 140-function `script_vm.c` unit using an independently rebuilt whole-ROM comparison, resolving the extra four-byte `.text` alignment only through reviewed layout rules and without changing instruction payloads. Then pursue the VM text loop and loader.
+
 ## 2026-11-08 - reconcile parallel Goemon work and archive/test evidence
 
 - Created `decomp/MASTER_WORK_QUEUE.md` as a single evidence-bound handoff for earlier parallel Goemon chats: 140-function committed proof, the unresolved formal uninterrupted verifier, VM/overlay candidates, and the separate native-warp/story-flag toolkit research. Linked it from the operational runbook to prevent repeated already-promoted candidates or cross-track proof confusion.

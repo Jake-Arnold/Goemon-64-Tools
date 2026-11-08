@@ -15,9 +15,9 @@ This is the repository's cross-conversation handoff for the Goemon toolkit and m
 | Priority | Target | Precise unresolved condition |
 | --- | --- | --- |
 | P0 | Uninterrupted 140-function formal verifier | Restore exact latest branch/toolchain/baseline and execute `decomp.verify` to completion. Refresh proof provenance only if independently rebuilt output is exact. |
-| P1 | VM text loop `func_8003DBEC_3E7EC` | 472 original bytes; earlier 480-byte draft differs in 101 words. Separate pointer/cursor and two unsigned input halfwords, account for six branch-likely delay slots, two counters, dynamically reloaded outer bound, and callback early-return path. This is **static analysis, not a verified match**. |
-| P2 | VM loader `func_8003D468_3E068` | Approximately 548-byte original; an old candidate matched 118/137 instruction positions only. Resolve real resource-prefix declarations, address loads, and register allocation. |
-| P3 | Choice edge `func_8003D0B0_3DCB0` | 204 original bytes; prior 200/208-byte drafts failed. Resolve final conditional/unreachable-store shape, not just volatile tuning. |
+| P2 | VM text loop `func_8003DBEC_3E7EC` | 472 original bytes; earlier 480-byte draft differs in 101 words. Separate pointer/cursor and two unsigned input halfwords, account for six branch-likely delay slots, two counters, dynamically reloaded outer bound, and callback early-return path. This is **static analysis, not a verified match**. |
+| P3 | VM loader `func_8003D468_3E068` | Approximately 548-byte original; an old candidate matched 118/137 instruction positions only. Resolve real resource-prefix declarations, address loads, and register allocation. |
+| P1 (promotion) | Choice edge `func_8003D0B0_3DCB0` | **New isolated linked match**: IDO 5.3 generated a 204-byte function symbol; all 51 MIPS words matched at 0x8003D0B0 after original-address relocation (SHA-256 `7a3c723bffe43e3b044e60c385b9a6577a34eab380ebcc1eb3f8a38ab3c93fe8`); `.text` carries four additional zero bytes beyond symbol extent. Candidate is `candidates/vm_choice_edge.c`; 100 sanitized host cases pass. **Do not promote without correctly accounting for alignment and independently rebuilt whole-ROM identity.** |
 | P4 | VM wrapper `func_8003F6E8_402E8` | Original extent 48 bytes; natural C reproduced first 40 bytes (10 words) but not the unreachable eight-byte return tail. Do not promote a 40/48 prefix. |
 | P5 | VM comparator `func_8003D9B8_3E5B8` | Remains ASM. `vm_compare_reference.h` is host-only semantics, not exact C proof. |
 | P5 | Overlay key initializer `func_080001BC_6F369C` | 96-byte isolated linked probe matched; main-segment manifest verifier cannot yet prove overlay ROM/VMA/section layout. |
@@ -25,14 +25,9 @@ This is the repository's cross-conversation handoff for the Goemon toolkit and m
 
 Do not rerun the unchanged 762-function scalar sweep. After a failed candidate, preserve the mismatch, improve a concrete typed declaration or code shape, and move to another target. Promotion requires the exact original-address MIPS bytes **and** independent full decompressed-ROM byte identity.
 
-## Separate practice toolkit / scene-transition backlog
+## Main-branch toolkit status (superseded historical backlog)
 
-The toolkit and decompilation tracks share evidence but must not share proof claims.
-
-1. Determine the **native** scene-loader and original entrance/spawn-coordinate path before enabling cross-area shortcut warps. Start at `decomp/MAP_TRANSITION_TRACE.md`; known candidates include `func_80215330_5D0800`, `func_800214E4_220E4`, `func_801CB5D0_5874E0`, `func_80035964_36564`. Correlate the `0x800C7CA0`–`0x800C7CAB` parameters with actual transitions.
-2. Confirm that a requested character is selected **before** spawning, as the native debug menu does. Never manufacture a C-Down press or claim that staging `0x8015C5DC` establishes native equivalence without in-game evidence. Previous v0.11.3 warp experiments are **not** direct-warp verification.
-3. Causally validate story progression bits at `0x8015C609` (masks `0x20`/`0x40`) and `0x8015C60D` (masks `0x10`/`0x08`), and finish Benkei/Achilles flag identification. Observe default gameplay transitions; do not assume bit meaning from correlations.
-4. Complete live Windows/toolkit integration checks where real Project64/game state is required. Host tests are not in-game tests. Keep separate `main` toolkit history intact; do not merge or push to `main` under automated decomp authorization.
+The user confirmed on 2026-11-08 that the earlier native-warp and story-flag investigation is **already working on `main`**. The former unsolved warp/spawn/Benkei/story-flag checklist in this queue was from early conversations and is no longer an active task. `main` remains the source of truth for that toolkit work; do not revive stale experiments or change `main` under the decomp-only authorization. Continue solely on exact matching-C, original-address/compiler/ROM proof, and relevant safe tests.
 
 ## Library, toolchain, and reproducibility notes
 
