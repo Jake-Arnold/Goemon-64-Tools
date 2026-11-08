@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - add exclusive, byte-preserving collision-gate staging CLI
+
+- Added `decomp/collision_stage.py`, a source-only CLI that invokes the existing reviewed collision-gate patch guard and writes a separate staged C file with exclusive creation. It rejects output paths aliasing either input, decodes UTF-8 strictly and preserves LF/CRLF bytes rather than applying text-mode newline conversion.
+- Reason: the isolated collision-gate candidate now has a reproducible, fail-closed staging step suitable for a separate candidate checkout without modifying the original pinned translation unit or silently overwriting prior experiments.
+- Validation: three synthetic Python tests passed (output preservation, no-overwrite and invalid-source failures, and CRLF preservation); Python bytecode compilation succeeded. Tests mock the already-tested source patch guard and do not exercise the real upstream source. No IDO compilation or complete-ROM gate was run.
+- Limits: the staging CLI is not connected to the verifier, does not integrate or promote a matching-C routine, and has not been tested with the pinned original translation unit. Verified totals remain 149/7,376 identified entries, including 136 reconstructed functions (9,840 bytes) and 13 upstream C entries. The pinned build/compiler workspace remains inaccessible.
+- Next: run the staging CLI on a separately checked-out pinned `src/27FE0.c`, review the staged translation unit, and perform the original-address/full-ROM gate before any promotion.
+
 ## 2026-11-08 - reject misplaced collision-gate integration anchors
 
 - Hardened the preparatory collision-gate source replacement: require exactly one following C-function declaration anchor and reject intervening assembly pragmas. The previous mere name-presence check could accept an anchor before the target or unrelated later assembly, masking an unsafe translation-unit boundary.
