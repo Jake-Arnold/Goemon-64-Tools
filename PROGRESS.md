@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - VM text-loop global-addressing correction and assembly guard (unpromoted)
+
+- Audited the **actual original USA assembly** of `func_8003DBEC_3E7EC` at VMA `0x8003DBEC`. Confirmed `$s1` is constructed by `lui/addiu` from the **address of global `D_801C77E8`**, not the script pointer held in that global. `lw/sw 0($s1)` read/write the pointer value, whereas `lhu/sh 0xA($s1)` access a **different global halfword at 0x801C77F2**. A prior private control-flow note incorrectly called the latter a field of the script pointer's pointee; the current typed candidate already models the correct global storage layout. Controller `+2` and `+4` remain distinct unsigned halfwords.
+- Added `decomp/test_vm_text_loop_addressing.py`, an original-address assembly parsing guard with nine assertions covering the `$s1` global base, pointer loads/stores, halfword accesses, and controller offsets. It accepts the original assembly path as an argument and does **not** commit or embed original game assembly.
+- **Tests executed:** `python decomp/test_vm_text_loop_addressing.py <original-USA-assembly>` passed all nine addressing guards; existing 15-group synthetic C host test compiled with `gcc -std=c11 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-pie -no-pie` and passed. Retail SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66` confirmed. No new IDO compile, original-address matching link, full-ROM build, formal verifier or in-game run in this unit.
+- **Next:** preserve the global-storage vs pointer-value distinction while searching IDO codegen/register lifetime; run uninterrupted 141-function formal verifier when reproducible build environment is available. Verified totals unchanged: 141 matching-C functions, 10,312 bytes, 7,222 ASM entries.
+
 ## 2026-11-08 - VM text-loop terminal-state codegen probe (unpromoted)
 
 - Replaced the standalone text-loop draft's four-way `if` with an explicit `switch` for terminal VM states 3, 4, 5, and 6. It clears the VM work halfword and returns; the previous `break` only exited the outer loop and immediately returned at end of function. **No production VM code, manifest or matching proof was changed.**
