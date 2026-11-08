@@ -1,6 +1,6 @@
 # Whole-build function inventory
 
-Date: 2026-11-02. Pinned upstream:
+Date: 2026-11-08. Pinned upstream:
 `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. Baseline and current candidate
 both reproduce decompressed ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
 The current [metadata report](results/inventory.json) records the measurement,
@@ -10,13 +10,13 @@ ELF hashes, tool hash and original entry-map identity.
 | --- | ---: |
 | Identified function entries across the configured ROM | 7,376 |
 | Matching C already in pinned upstream | 13 |
-| Newly matching C in this toolkit's decomp track | 136 |
-| Matching C combined | 149 |
-| Still marked as assembly | **7,227** |
+| Newly matching C in this toolkit's decomp track | 137 |
+| Matching C combined | 150 |
+| Still marked as assembly | **7,226** |
 
 The VM unit is a smaller subset: 52 of its 69 functions are matching C, with
 17 retained assembly functions. Its remaining count is not the whole-game count.
-The toolkit's headline 136-function count deliberately excludes the 13 routines
+The toolkit's headline 137-function count deliberately excludes the 13 routines
 already present as matching upstream C. The report lists those names explicitly;
 existing source definitions were checked in the pinned upstream C units.
 

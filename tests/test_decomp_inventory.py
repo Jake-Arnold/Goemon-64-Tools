@@ -2,7 +2,7 @@ import unittest
 import hashlib
 import json
 from pathlib import Path
-from decomp.verify import load_manifest
+from decomp.verify import load_manifest, claimed_functions
 from decomp.inventory import parse_inventory_symbols, summarize_inventory
 
 
@@ -68,7 +68,7 @@ class FunctionInventoryTests(unittest.TestCase):
         manifest = load_manifest(root / 'manifest.json')
         report = json.loads((root / 'results/inventory.json').read_text())
         summary = report['summary']
-        claimed = {fn['name'] for unit in manifest['units'] for fn in unit['functions']}
+        claimed = {fn['name'] for fn in claimed_functions(manifest)}
         self.assertEqual(report['upstream_commit'], manifest['upstream_commit'])
         self.assertEqual(report['decompressed_sha1'], manifest['decompressed_sha1'])
         self.assertEqual(summary['newly_matching_c'], len(claimed))

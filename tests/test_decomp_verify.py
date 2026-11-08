@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from decomp.verify import load_manifest,apply_units,parse_symbols,compare_images
+from decomp.verify import load_manifest,apply_units,parse_symbols,compare_images,claimed_functions,COLLISION_GATE_PATCH
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -14,6 +14,7 @@ class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
         self.assertEqual(sum(len(u['functions']) for u in manifest['units']),136)
+        self.assertEqual(len(claimed_functions(manifest)),137)
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
@@ -22,6 +23,47 @@ class DecompVerificationTests(unittest.TestCase):
             bad=copy.deepcopy(manifest);bad['units'][0]['functions'][0]['rom_offset']+=4
             path.write_text(json.dumps(bad))
             with self.assertRaises(ValueError):load_manifest(path)
+
+    def test_collision_source_patch_manifest_is_fail_closed(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        self.assertEqual(manifest['existing_source_patches'],[COLLISION_GATE_PATCH])
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'manifest.json'
+            bad=copy.deepcopy(manifest)
+            bad['existing_source_patches'][0]['function']['rom_offset']+=4
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'source patch'):load_manifest(path)
+            bad=copy.deepcopy(manifest)
+            bad['existing_source_patches'][0]['patched_sha256_lf']='0'*64
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'source patch'):load_manifest(path)
+            bad=copy.deepcopy(manifest)
+            bad['units'][0]['functions'].append(dict(COLLISION_GATE_PATCH['function']))
+            path.write_text(json.dumps(bad))
+            with self.assertRaises(ValueError):load_manifest(path)
+
+    def test_collision_source_patch_preflight_is_non_destructive(self):
+        from decomp.collision_patch import prepare_collision_gate
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);checkout=root/'candidate';(checkout/'config/usa').mkdir(parents=True)
+            (checkout/'src').mkdir();source=root/'sources';source.mkdir()
+            (checkout/'config/usa/splat.yaml').write_text('[0x10, asm]\n')
+            (source/'unit.c').write_text('int tested(void) { return 1; }\n')
+            (checkout/'src/27FE0.c').write_text('#pragma GLOBAL_ASM("asm/nonmatchings/27FE0/func_80029E08_2AA08.s")\n'
+                                                    's32 func_80029E58_2AA58(f32 x) { return 0; }\n'
+                                                    's32 func_8002A168_2AD68(f32 x,f32 y,f32 z) { return 1; }\n')
+            (source/'candidates').mkdir()
+            (source/'candidates/collision_gate.c').write_bytes((ROOT/'decomp/candidates/collision_gate.c').read_bytes())
+            current=(checkout/'src/27FE0.c').read_bytes()
+            patch=dict(COLLISION_GATE_PATCH)
+            patch['patched_sha256_lf']='0'*64
+            manifest={'units':[dict(source='unit.c',splat_original='[0x10, asm]',splat_replacement='[0x10, c, unit]')],
+                      'existing_source_patches':[patch]}
+            with self.assertRaisesRegex(ValueError,'patch hash mismatch'):
+                apply_units(checkout,manifest,source)
+            self.assertEqual((checkout/'src/27FE0.c').read_bytes(),current)
+            self.assertFalse((checkout/'src/unit.c').exists())
+            self.assertEqual((checkout/'config/usa/splat.yaml').read_text(),'[0x10, asm]\n')
 
     def test_symbol_parsing_and_tampered_matching_evidence(self):
         data=b'\x11'*16
@@ -161,7 +203,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertTrue(result['comparison']['full_rom_match'])
         verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
         self.assertEqual(result['verifier_source_sha256_lf'],hashlib.sha256(verifier).hexdigest())
-        expected={f['name']:f for u in manifest['units'] for f in u['functions']}
+        expected={f['name']:f for f in claimed_functions(manifest)}
         actual={f['name']:f for f in result['comparison']['functions']}
         self.assertEqual(set(expected),set(actual))
         self.assertEqual(result['comparison']['matched_function_bytes'],sum(f['size'] for f in expected.values()))
@@ -170,11 +212,15 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(fn['size'],expected[name]['size'])
             self.assertEqual(int(fn['rom_offset'],16),expected[name]['rom_offset'])
             self.assertEqual(fn['candidate_sha256'],fn['expected_sha256'])
-        sources={u['source'] for u in manifest['units']}|set(manifest['support_headers'])
+        sources={u['source'] for u in manifest['units']}|set(manifest['support_headers'])|{p['source'] for p in manifest.get('existing_source_patches', [])}
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
-            data=(ROOT/'decomp'/name).read_bytes().replace(b'\r\n',b'\n')
-            self.assertEqual(hashlib.sha256(data).hexdigest(),result['sources_sha256_lf'][name],name)
+            patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]
+            if patches:
+                self.assertEqual(result['sources_sha256_lf'][name],patches[0]['patched_sha256_lf'])
+            else:
+                data=(ROOT/'decomp'/name).read_bytes().replace(b'\r\n',b'\n')
+                self.assertEqual(hashlib.sha256(data).hexdigest(),result['sources_sha256_lf'][name],name)
         self.assertEqual(result['object_layout']['payload_bytes_changed'],0)
         self.assertTrue(result['assignment_table']['matched'])
 

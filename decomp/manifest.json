@@ -1149,5 +1149,17 @@
   "splat_options": {
     "asm_jtbl_label_macro": "glabel"
   },
-  "vm_assignment_table_layout": true
+  "vm_assignment_table_layout": true,
+  "existing_source_patches": [
+    {
+      "source": "27FE0.c",
+      "candidate_source": "candidates/collision_gate.c",
+      "patched_sha256_lf": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63",
+      "function": {
+        "name": "func_80029E08_2AA08",
+        "rom_offset": 174600,
+        "size": 80
+      }
+    }
+  ]
 }

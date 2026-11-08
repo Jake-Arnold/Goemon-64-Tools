@@ -19,10 +19,29 @@ import subprocess
 
 try:
     from .elf_layout import pack_object_file
+    from .collision_patch import prepare_collision_gate
 except ImportError:
     from elf_layout import pack_object_file
+    from collision_patch import prepare_collision_gate
 
 ROOT = Path(__file__).resolve().parent
+
+# The only accepted patch of an upstream-owned C translation unit. The staged
+# source hash is from the reviewed LF-only integration; changed upstream context
+# must be reviewed explicitly rather than relying on an ambiguous pragma match.
+COLLISION_GATE_PATCH = {
+    'source': '27FE0.c',
+    'candidate_source': 'candidates/collision_gate.c',
+    'patched_sha256_lf': 'b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63',
+    'function': {'name': 'func_80029E08_2AA08', 'rom_offset': 0x2AA08, 'size': 80},
+}
+
+
+def claimed_functions(manifest):
+    """All original-address verified C claims, including patched upstream C."""
+    return [f for unit in manifest['units'] for f in unit['functions']] + [
+        entry['function'] for entry in manifest.get('existing_source_patches', [])]
+
 
 
 def digest(data,algorithm='sha1'):
@@ -69,6 +88,17 @@ def load_manifest(path):
             if any(fn['rom_offset']<=offset<fn['rom_offset']+fn['size'] for fn in unit['functions']):
                 raise ValueError('Assembly placeholder overlaps claimed C')
         assembly_seen.update(assembly)
+    patches = manifest.get('existing_source_patches', [])
+    if patches not in ([], [COLLISION_GATE_PATCH]):
+        raise ValueError('Unsupported existing-source patch; manual layout review required')
+    if patches:
+        if manifest['upstream_commit'] != '7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee':
+            raise ValueError('Existing-source patch requires pinned upstream commit')
+        fn = COLLISION_GATE_PATCH['function']
+        if fn['name'] in seen or fn['name'] in assembly_seen:
+            raise ValueError('Existing-source patch function already claimed')
+        if any(start < fn['rom_offset']+fn['size'] and fn['rom_offset'] < end for start,end in ranges):
+            raise ValueError('Existing-source patch overlaps migrated unit')
     ranges.sort()
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):raise ValueError('Overlapping units')
     if 'vm_assignment_table_layout' in manifest:
@@ -127,7 +157,20 @@ def apply_units(checkout,manifest,source_dir=ROOT):
         if set(placeholders)!=set(unit.get('assembly_functions',[])) or text_source.count('GLOBAL_ASM')!=len(placeholders):
             raise ValueError('Undeclared assembly placeholder in C unit')
         copies.append((source,destination));text=text.replace(anchor,unit['splat_replacement'])
+    staged_patches=[]
+    for entry in manifest.get('existing_source_patches', []):
+        destination=checkout/'src'/entry['source']
+        candidate=source_dir/entry['candidate_source']
+        if not destination.is_file() or not candidate.is_file():
+            raise ValueError('Existing C source or reviewed candidate missing')
+        staged=prepare_collision_gate(destination.read_text(encoding='utf-8'),
+                                      candidate.read_text(encoding='utf-8'))
+        if digest(staged.encode('utf-8'), 'sha256') != entry['patched_sha256_lf']:
+            raise ValueError('Pinned collision source patch hash mismatch')
+        staged_patches.append((destination,staged))
     for source,destination in copies:shutil.copyfile(source,destination)
+    for destination,staged in staged_patches:
+        destination.write_text(staged,encoding='utf-8',newline='\n')
     config.write_text(text,encoding='utf-8',newline='\n')
     if makefile is not None:(checkout/'Makefile').write_text(makefile,encoding='utf-8',newline='\n')
 
@@ -145,18 +188,20 @@ def compare_images(expected,candidate,manifest,symbols):
     functions=[]
     for unit in manifest['units']:
         if unit['rom_end']>len(expected):raise ValueError('Unit extends outside reference ROM')
-        for fn in unit['functions']:
-            offset,size=fn['rom_offset'],fn['size']
-            expected_address=int(fn['name'].split('_')[1],16)
-            address=symbols.get(fn['name'])
-            actual_offset=(address-0x7FFFF400) if address is not None else -1
-            actual=candidate[actual_offset:actual_offset+size] if actual_offset>=0 else b''
-            matched=(address==expected_address and len(actual)==size and
-                     expected[offset:offset+size]==actual and fn['name']+'.NON_MATCHING' not in symbols)
-            functions.append(dict(name=fn['name'],size=size,guest_address=f'0x{expected_address:08X}',
-                rom_offset=f'0x{offset:X}',matched=matched,
-                expected_sha256=digest(expected[offset:offset+size],'sha256'),
-                candidate_sha256=digest(actual,'sha256')))
+    for fn in claimed_functions(manifest):
+        if fn['rom_offset'] + fn['size'] > len(expected):
+            raise ValueError('Claimed function extends outside reference ROM')
+        offset,size=fn['rom_offset'],fn['size']
+        expected_address=int(fn['name'].split('_')[1],16)
+        address=symbols.get(fn['name'])
+        actual_offset=(address-0x7FFFF400) if address is not None else -1
+        actual=candidate[actual_offset:actual_offset+size] if actual_offset>=0 else b''
+        matched=(address==expected_address and len(actual)==size and
+                 expected[offset:offset+size]==actual and fn['name']+'.NON_MATCHING' not in symbols)
+        functions.append(dict(name=fn['name'],size=size,guest_address=f'0x{expected_address:08X}',
+            rom_offset=f'0x{offset:X}',matched=matched,
+            expected_sha256=digest(expected[offset:offset+size],'sha256'),
+            candidate_sha256=digest(actual,'sha256')))
     full_match=len(expected)==len(candidate) and digest(candidate)==manifest['decompressed_sha1']
     return dict(full_rom_match=full_match,expected_sha1=digest(expected),candidate_sha1=digest(candidate),
         rom_size=len(candidate),matched_functions=sum(f['matched'] for f in functions),
@@ -262,7 +307,7 @@ def run_build(args,manifest,report):
             sha256=digest(image[0x7DC2C:0x7DC68],'sha256'))
     report['comparison']=result
     report['retained_assembly_functions']=[name for unit in manifest['units'] for name in unit.get('assembly_functions',[])]
-    source_names=[unit['source'] for unit in manifest['units']]+manifest.get('support_headers',[])
+    source_names=[unit['source'] for unit in manifest['units']]+manifest.get('support_headers',[])+[p['source'] for p in manifest.get('existing_source_patches',[])]
     report['sources_sha256_lf']={name:digest((candidate/'src'/name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
                                for name in source_names}
     mapping=(candidate/'build/usa/mnsg.map').read_text()

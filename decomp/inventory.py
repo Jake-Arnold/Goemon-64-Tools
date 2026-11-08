@@ -13,7 +13,7 @@ from pathlib import Path
 import shutil
 import subprocess
 
-from .verify import load_manifest
+from .verify import load_manifest, claimed_functions
 
 
 def parse_inventory_symbols(text):
@@ -98,7 +98,7 @@ def collect_inventory(baseline, candidate, manifest):
         symbol_text.append(subprocess.check_output([readelf, '-Ws', str(elf)], text=True))
     if images[0] != images[1]:
         raise ValueError('Baseline and candidate images differ')
-    claimed = [fn['name'] for unit in manifest['units'] for fn in unit['functions']]
+    claimed = [fn['name'] for fn in claimed_functions(manifest)]
     result = summarize_inventory(*symbol_text, claimed)
     return dict(format='goemon-function-inventory-v1', upstream_commit=manifest['upstream_commit'],
                 decompressed_sha1=manifest['decompressed_sha1'], baseline_elf_sha256=elfs[0],

@@ -12,13 +12,13 @@ import hashlib
 import json
 from pathlib import Path
 
-from .verify import load_manifest
+from .verify import load_manifest, claimed_functions
 
 
 def function_regions(manifest):
     """Sorted original-ROM ranges claimed as matching C in the manifest."""
     regions = sorted((f['rom_offset'], f['rom_offset'] + f['size'], f['name'])
-                     for unit in manifest['units'] for f in unit['functions'])
+                     for f in claimed_functions(manifest))
     if any(left[1] > right[0] for left, right in zip(regions, regions[1:])):
         raise ValueError('Overlapping claimed function ranges')
     return regions

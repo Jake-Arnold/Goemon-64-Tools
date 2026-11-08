@@ -30,9 +30,13 @@ artifacts untouched. The primary checkout is also retained at its original commi
 Recheck `git branch --show-current`, fetched remote state and worktree status
 before future work; do not use an older detached checkout for new implementation.
 
-Current checkpoint (2026-11-03): 136 newly matching functions / 9,840 bytes in thirty-one
-units. Including 13 upstream C entries: 149 of 7,376 identified entries, leaving
-7,227 ASM entries (including SDK/runtime). VM: 52 C / 17 ASM.
+Current checkpoint (2026-11-08): 137 newly matching functions / 9,920 bytes: 136
+functions in thirty-one migrated units, plus the 80-byte collision gate
+integrated into an existing upstream C unit. Including 13 upstream C entries:
+150 of 7,376 identified entries, leaving 7,226 ASM entries (including SDK/runtime).
+VM: 52 C / 17 ASM. The collision gate is now proven by an independent full-ROM
+build with original symbol address and matching function bytes; its patched source
+is guarded by a strict SHA-256 and source layout check in the verifier.
 
 Treat these as a dated snapshot. For current claims, read:
 
@@ -85,7 +89,6 @@ Next targets, in useful order:
 | VM text loop `func_8003DBEC_3E7EC` | Original 472 bytes; draft 480, with 101 differing words. Resolve cursor/halfword input fields and control flow before register tuning. Private draft: `/root/goemon64-text-loop-v1`. |
 | Choice edge `func_8003D0B0_3DCB0` | Original 204 bytes; drafts 200/208. Final conditional/unreachable-store shape unresolved; volatile variants failed. Private attempts: `/root/goemon64-choice-edge-v1`. |
 | VM loader `func_8003D468_3E068` | Needs resource-prefix interfaces. Derive fields/calls from actual loads and upstream declarations. |
-| Collision gate `func_80029E08_2AA08` | `candidates/collision_gate.c` matches 80 bytes in an isolated linked probe with corrected float third argument. It replaces a pragma in upstream C `src/27FE0.c`; verifier needs an explicit, narrowly checked source-patch integration before full-ROM promotion. |
 | Key initializer `func_080001BC_6F369C` | Public `candidates/key_spawn_gate.c` matches 96 bytes in an isolated linked probe. Promotion requires reviewed overlay mapping/layout support in verifier, then complete-ROM proof. |
 
 Other known limits:
@@ -141,6 +144,9 @@ Exit status 0 means identical bytes; 1 means differences. Reports must stay
 in ignored/local research directories. Do not commit original ROM bytes or
 the resulting local diagnostics. No comparison here promotes a function
 to matching C; the normal complete-ROM verifier remains mandatory.
+The manifest also tracks a narrowly accepted upstream-owned C source patch for
+the 80-byte collision gate, verified at its original guest address with a full-ROM
+identity match. Do not treat arbitrary existing-source edits as supported patches.
 
 ## 5. Exact verification commands
 
