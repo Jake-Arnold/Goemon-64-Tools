@@ -2,6 +2,15 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - isolate and whole-ROM-probe 44-byte VM callback registration
+
+- Added an isolated C candidate for `func_8003F350_3FF50` (USA entry `0x8003F350`, ROM offset `0x3FF50`, 44 original bytes) and a host regression suite covering callback forwarding, zero flags, stored registration handle, and repeat calls.
+- Reason: the unresolved VM function uses the return value of the callback-registration helper. The VM header currently declares that helper `void`; its return type requires a reviewed correction when integrating this candidate into `script_vm.c`.
+- **Local evidence:** IDO 5.3 produced all 11 original MIPS instruction words in order with an ELF function symbol size of 44 bytes; the isolated object allocated four additional zero padding bytes. A trial source integration into the archived 136-function reconstruction was compiled and linked at the original address. After the existing independently guarded 15-entry VM jump-table metadata correction, the full 33,554,432-byte output was identical to the original baseline (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). This was a fresh compilation, not a cached ROM-only comparison.
+- Tests: 28 focused Python tests passed, with 23 additional passing subtests, including four new host callback cases. No in-game test was performed.
+- **Limit:** the local snapshot predates two subsequently verified functions on remote `chatgptweb/decomp`. The **current branch's combined 139-function build has not been independently rebuilt**, so this candidate is deliberately unpromoted: `manifest.json`, proof/inventory and the verified **138-function** count remain unchanged. No ROM, compiler, generated assembly, object file or local diagnostic is included in Git.
+- Next: reconstitute the latest 138-function branch build in Linux, update the callback helper's return declaration, replace the single retained VM assembly function, prove original-address instruction bytes and a fresh byte-identical 139-function complete ROM, then update manifest/proof/inventory in one verified promotion commit.
+
 ## 2026-11-08 - unblock collision-gate staging against the pinned upstream C file
 
 - Corrected the collision-gate source guard to accept precisely one compatible, later `s32 func_8002A168_2AD68(f32, f32, f32)` definition in the original C translation unit while still rejecting conflicting/duplicated declarations, signatures and definitions before the gate. The other callee remains strictly guarded.
