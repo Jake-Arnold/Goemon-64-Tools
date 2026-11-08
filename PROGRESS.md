@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - stage narrowly checked collision-gate source replacement
+
+- Added `decomp/collision_patch.py`, a pure, read-only preparatory transform for the 80-byte isolated collision-gate candidate. It checks the candidate's recorded SHA-256, requires exactly one original assembly pragma and an adjacent C-function anchor, rejects pre-existing callee declarations or a duplicate definition, and preserves the surrounding upstream source. It does not modify the verifier, manifest or upstream checkout.
+- Reason: the isolated match cannot be promoted until its original C translation unit is integrated without accidentally replacing other assembly or adjacent C. The helper makes that boundary explicit and fail-closed.
+- Validation: three synthetic Python tests passed, covering preservation, ambiguous/missing anchors, changed candidate, pre-existing declarations and CRLF rejection. No original upstream translation unit was available to exercise the transform; no IDO compilation or complete-ROM gate was run.
+- Limits: this is only a preparation primitive, not a verified source integration or a matching-C promotion. Existing totals remain 149/7,376 identified entries (136 newly reconstructed functions, 9,840 bytes, plus 13 upstream). The pinned original build/compiler workspace remains unavailable.
+- Next: review the actual pinned `src/27FE0.c` declarations, integrate the transformed source in a separate candidate checkout, compile/link at 0x80029E08 and require the unchanged full-ROM identity gate before changing counts or proof files.
+
 ## 2026-11-08 - expose all affected matching-C function regions in ROM diffs
 
 - Enhanced `decomp/rom_diff.py` with per-claimed-function changed byte/word counts and first changed ROM offset, plus claimed/unclaimed totals. These additive summaries remain available even when the detailed word examples are capped or disabled; rejecting unaligned MIPS function ranges prevents ambiguous word ownership.
