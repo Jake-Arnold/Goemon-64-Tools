@@ -28,8 +28,10 @@ def compare_rom_bytes(reference: bytes, candidate: bytes, regions=(), limit=16):
     """Compare actual bytes, including size changes; hashes are informational.
 
     A mismatch is grouped by a 4-byte MIPS instruction word (not by differing
-    byte). Counts include differing or missing trailing bytes. No bytes from
-    unmodified regions are included in the returned diagnostic examples.
+    byte). Counts include differing or missing trailing bytes. Changed claimed
+    functions are summarized even when they fall beyond the example limit.
+    MIPS function ranges must be word-aligned. No bytes from unmodified regions
+    are included in the returned diagnostic examples.
     """
     if not 0 <= limit <= 256:
         raise ValueError('Mismatch example limit must be between 0 and 256')
@@ -38,23 +40,40 @@ def compare_rom_bytes(reference: bytes, candidate: bytes, regions=(), limit=16):
         raise ValueError('Invalid function range')
     if any(a[1] > b[0] for a, b in zip(regions, regions[1:])):
         raise ValueError('Overlapping function ranges')
+    if any(start % 4 or end % 4 for start, end, _ in regions):
+        raise ValueError('MIPS function ranges must be word-aligned')
     starts = [start for start, _, _ in regions]
     examples = []
     changed_bytes = 0
     changed_words = 0
+    changes_by_region = {}
+    claimed_changed_bytes = 0
+    claimed_changed_words = 0
     for offset in range(0, max(len(reference), len(candidate)), 4):
         before = reference[offset:offset + 4]
         after = candidate[offset:offset + 4]
         if before == after:
             continue
         changed_words += 1
-        changed_bytes += sum(a != b for a, b in zip(before, after)) + abs(len(before) - len(after))
-        if len(examples) >= limit:
-            continue
+        byte_count = sum(a != b for a, b in zip(before, after)) + abs(len(before) - len(after))
+        changed_bytes += byte_count
         index = bisect_right(starts, offset) - 1
-        function = regions[index][2] if index >= 0 and offset < regions[index][1] else None
-        examples.append(dict(rom_offset=f'0x{offset:X}', function=function,
-                             reference_word=before.hex().upper(), candidate_word=after.hex().upper()))
+        in_function = index >= 0 and offset < regions[index][1]
+        if in_function:
+            claimed_changed_bytes += byte_count
+            claimed_changed_words += 1
+            if index not in changes_by_region:
+                start, end, name = regions[index]
+                changes_by_region[index] = dict(
+                    name=name, rom_offset=f'0x{start:X}', size=end - start,
+                    first_mismatch_offset=f'0x{offset:X}',
+                    different_bytes=0, different_words=0)
+            changes_by_region[index]['different_bytes'] += byte_count
+            changes_by_region[index]['different_words'] += 1
+        if len(examples) < limit:
+            examples.append(dict(rom_offset=f'0x{offset:X}',
+                                 function=regions[index][2] if in_function else None,
+                                 reference_word=before.hex().upper(), candidate_word=after.hex().upper()))
     return dict(format='goemon-whole-rom-byte-diff-v1',
                 exact_match=reference == candidate,
                 reference_size=len(reference), candidate_size=len(candidate),
@@ -63,6 +82,11 @@ def compare_rom_bytes(reference: bytes, candidate: bytes, regions=(), limit=16):
                 reference_sha256=hashlib.sha256(reference).hexdigest(),
                 candidate_sha256=hashlib.sha256(candidate).hexdigest(),
                 different_bytes=changed_bytes, different_words=changed_words,
+                claimed_different_bytes=claimed_changed_bytes,
+                claimed_different_words=claimed_changed_words,
+                unclaimed_different_bytes=changed_bytes - claimed_changed_bytes,
+                unclaimed_different_words=changed_words - claimed_changed_words,
+                changed_functions=[changes_by_region[i] for i in sorted(changes_by_region)],
                 first_differences=examples)
 
 

@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - expose all affected matching-C function regions in ROM diffs
+
+- Enhanced `decomp/rom_diff.py` with per-claimed-function changed byte/word counts and first changed ROM offset, plus claimed/unclaimed totals. These additive summaries remain available even when the detailed word examples are capped or disabled; rejecting unaligned MIPS function ranges prevents ambiguous word ownership.
+- Reason: a whole-ROM candidate can differ in a late claimed function even when the first 16 example words are unrelated. A complete per-function summary makes later mismatch triage deterministic without changing actual ROM bytes or accepting a candidate.
+- Validation: nine synthetic Python unit tests passed (six existing and three new), Python compilation succeeded, all 136 claimed manifest ranges were word-aligned, and a synthetic 1 MiB comparison attributed its changed word correctly. A locally supplied 16 MiB US retail ROM matched SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`. No decompressed whole-ROM build or IDO compilation was run.
+- Limits: the pinned build/compiler workspace is still unavailable here; no additional matching functions, source manifest updates, or proof/inventory rewrites. Baseline remains 149/7,376 identified entries (136 newly reconstructed, 9,840 bytes, plus 13 upstream).
+- Next: apply the expanded diagnostics to a failed, locally compiled candidate whole-ROM build; resume original-address matching-C promotion only after full byte-identity verification.
+
 ## 2026-11-08 - restrict automated decomp writes to dedicated branch
 
 - Corrected the continuation runbook's inherited main-branch instructions: the historical workspace is contextual, while automated writes and remote verification target only `chatgptweb/decomp` without force-pushing.
