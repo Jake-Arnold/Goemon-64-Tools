@@ -9,12 +9,12 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **140 functions / 10,108 function bytes**: 139 functions across thirty-two migrated units, plus the reviewed collision gate restored within an upstream-owned translation unit.
+Current verified total: **141 functions / 10,312 function bytes**: 140 functions across thirty-two migrated units, plus the reviewed collision gate restored within an upstream-owned translation unit.
 The combined baseline/C-replacement whole-ROM match is recorded in
 [combined result metadata](results/combined.json).
 
 The [whole-build inventory](INVENTORY.md) identifies **7,376 function entries**:
-**153 matching C entries** (13 upstream plus these 140), leaving **7,223 assembly
+**154 matching C entries** (13 upstream plus these 140), leaving **7,222 assembly
 entries**, including SDK/runtime code. Exported jump labels are excluded.
 
 ## Screen-rectangle bounds helper
@@ -116,8 +116,8 @@ checking a fresh candidate for each reviewed batch.
 
 ## Event/dialogue VM helpers
 
-[VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents earlier work. The current VM has 54 matching functions in the 69-function
-event/dialogue unit. The remaining 15 functions, including the dispatcher,
+[VM_CHECKPOINT.md](VM_CHECKPOINT.md) documents earlier work. The current VM has 55 matching functions in the 69-function
+event/dialogue unit. The remaining 14 functions, including the text loop,
 comparator and remaining operand handlers, remain assembly and are excluded.
 The native comparator's host-only semantic model is explicitly not counted.
 The first three reconstructed units below are still complete matching C.

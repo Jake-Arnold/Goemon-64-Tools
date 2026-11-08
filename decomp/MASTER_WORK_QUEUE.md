@@ -4,20 +4,20 @@ This is the repository's cross-conversation handoff for the Goemon toolkit and m
 
 ## Verified checkpoint; do not repeat
 
-- Matching-C branch promotion checkpoint: `869771dc92872a8b4e05f77c7adebe2e7cef260e`. At this checkpoint: **140 reconstructed matching-C functions, 10,108 bytes; 13 upstream C entries; 153 combined C entries; 7,223 assembly entries of 7,376 identified**. VM: 54 C / 15 ASM.
+- Matching-C branch promotion checkpoint: `869771dc92872a8b4e05f77c7adebe2e7cef260e`. At this checkpoint: **141 reconstructed matching-C functions, 10,312 bytes; 13 upstream C entries; 154 combined C entries; 7,222 assembly entries of 7,376 identified**. VM: 55 C / 14 ASM.
 - The **136-byte** `func_8003EFB0_3FBB0` and **44-byte** `func_8003F350_3FF50` have both been promoted. The callback's corrected signed return declaration is integrated. Do not redo the earlier provisional 138/139-function work.
 - `decomp/results/combined.json` records exact original-address matches and byte-identical independent assembly/linking of the full **33,554,432-byte** decompressed image, expected SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; the retail input SHA-1 is `df8083a54296b8c151917c5333e1c85f014a2a66`.
-- The single uninterrupted formal verification runner timed out; its resumed clean build passed independent full-ROM and inventory comparisons. **An uninterrupted formal verifier run remains outstanding**. Never mislabel the interrupted formal run as successful.
-- The earlier collision gate (80 bytes) and heap no-op (8 bytes) are already included in the 140. Their pinned source/layout guards must remain enforced.
+- The single uninterrupted formal verification runner timed out; its resumed clean build passed independent full-ROM and inventory comparisons. **An uninterrupted formal verifier run remains outstanding**. Separately, a regenerated full 2,331-object 141-function build has passed independent complete-ROM, original-address, and symbol-inventory comparisons. Never mislabel the interrupted formal run as successful.
+- The earlier collision gate (80 bytes), heap no-op (8 bytes), and choice edge (204 bytes) are already included in the 141. Their pinned source/layout guards must remain enforced.
 
 ## Open matching-C work (ordered)
 
 | Priority | Target | Precise unresolved condition |
 | --- | --- | --- |
-| P0 | Uninterrupted 140-function formal verifier | Restore exact latest branch/toolchain/baseline and execute `decomp.verify` to completion. Refresh proof provenance only if independently rebuilt output is exact. |
+| P0 | Uninterrupted 141-function formal verifier | Restore exact latest branch/toolchain/baseline and execute `decomp.verify` to completion. Refresh proof provenance only if independently rebuilt output is exact. |
 | P2 | VM text loop `func_8003DBEC_3E7EC` | 472 original bytes; earlier 480-byte draft differs in 101 words. Separate pointer/cursor and two unsigned input halfwords, account for six branch-likely delay slots, two counters, dynamically reloaded outer bound, and callback early-return path. This is **static analysis, not a verified match**. |
 | P3 | VM loader `func_8003D468_3E068` | Approximately 548-byte original; an old candidate matched 118/137 instruction positions only. Resolve real resource-prefix declarations, address loads, and register allocation. |
-| P1 (promotion) | Choice edge `func_8003D0B0_3DCB0` | **Exact 204-byte/51-instruction original-address C probe** (SHA-256 `7a3c723bffe43e3b044e60c385b9a6577a34eab380ebcc1eb3f8a38ab3c93fe8`), 100 sanitized host combinations. **Further integration evidence**: inserted in archived 136-function checkout, recompiled `script_vm.c`, relocated and relinked with cached other objects. An initial 33,554,448-byte ROM mismatch was wholly resolved by the already-guarded VM assignment `.rodata` metadata correction (64→60, alignment 16→4; no payload change). The resulting **33,554,432 bytes matched the archived baseline exactly** (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). Integrated `.text` size was unchanged. **Unpromoted** until independently rebuilding complete current **140+1** branch and verifying every function/inventory. |
+| Completed | Choice edge `func_8003D0B0_3DCB0` | Promoted 204 original MIPS bytes at `0x8003D0B0`; fresh regenerated 2,331-object build produced exactly matching 32 MiB ROM and a 141-function/7,376-entry verified inventory. 100 host cases passed; uninterrupted formal verifier remains pending. |
 | P4 | VM wrapper `func_8003F6E8_402E8` | Original extent 48 bytes; natural C reproduced first 40 bytes (10 words) but not the unreachable eight-byte return tail. Do not promote a 40/48 prefix. |
 | P5 | VM comparator `func_8003D9B8_3E5B8` | Remains ASM. `vm_compare_reference.h` is host-only semantics, not exact C proof. |
 | P5 | Overlay key initializer `func_080001BC_6F369C` | 96-byte isolated linked probe matched; main-segment manifest verifier cannot yet prove overlay ROM/VMA/section layout. |

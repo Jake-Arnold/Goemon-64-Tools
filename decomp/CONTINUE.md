@@ -34,11 +34,11 @@ artifacts untouched. The primary checkout is also retained at its original commi
 Recheck `git branch --show-current`, fetched remote state and worktree status
 before future work; do not use an older detached checkout for new implementation.
 
-Current checkpoint (2026-11-08): 140 newly matching functions / 10,108 bytes:
-139 functions in thirty-two migrated units (including the new 8-byte heap no-op),
+Current checkpoint (2026-11-08): 141 newly matching functions / 10,312 bytes:
+140 functions in thirty-two migrated units (including the 8-byte heap no-op),
 plus the 80-byte collision gate integrated into an existing upstream C unit.
-Including 13 upstream C entries: 153 of 7,376 identified entries, leaving 7,223
-ASM entries (including SDK/runtime). VM: 54 C / 15 ASM. Both newest candidates
+Including 13 upstream C entries: 154 of 7,376 identified entries, leaving 7,222
+ASM entries (including SDK/runtime). VM: 55 C / 14 ASM. Both newest candidates
 passed independent original-address/full-ROM verification. The collision gate
 uses a pinned source hash; the heap no-op uses a narrowly validated ELF .text
 metadata layout correction that preserves its two instruction words.
@@ -48,6 +48,8 @@ passed a fresh 2331-object Linux build and original-address/full-ROM identity
 checks. The formal verifier timed out before report emission; its resumed build
 was checked independently using the same comparison and inventory routines.
 The proof record explicitly distinguishes those methods; no in-game test occurred.
+
+The 204-byte VM choice edge has since been integrated into a separate full source rebuild at the current 140-function code state. The complete ROM and all 141 claimed functions match exactly after Splat regenerated the CRC-damaged archive assembly. This independent proof is not a completed uninterrupted `decomp.verify` run.
 
 Treat these as a dated snapshot. For current claims, read:
 
@@ -98,7 +100,7 @@ Next targets, in useful order:
 | Target | Existing evidence / next action |
 | --- | --- |
 | VM text loop `func_8003DBEC_3E7EC` | Original 472 bytes; draft 480, with 101 differing words. Resolve cursor/halfword input fields and control flow before register tuning. Private draft: `/root/goemon64-text-loop-v1`. |
-| Choice edge `func_8003D0B0_3DCB0` | **Exact 204-byte/51-word original-address isolated match.** In the archived 136-function checkout, recompiling the VM translation unit and applying the *existing guarded* 60-byte/align-4 VM `.rodata` metadata correction yielded a full 33,554,432-byte byte-identical ROM. The other archived objects were cached and this checkout predates the current 140-function branch: **do not promote** until the current 140+1 candidate independently rebuilds and passes the formal whole-ROM/inventory gate. 100 sanitized host cases pass. |
+| Choice edge `func_8003D0B0_3DCB0` (COMPLETED) | Promoted 204-byte exact C at original address. Fresh 2,331-object compile with regenerated Splat sources gave 33,554,432/33,554,432 matching bytes, all 141 function proofs and unchanged 7,376-entry inventory. 100 host cases passed. Uninterrupted formal verifier still pending. |
 | VM loader `func_8003D468_3E068` | Needs resource-prefix interfaces. Derive fields/calls from actual loads and upstream declarations. |
 | Key initializer `func_080001BC_6F369C` | Public `candidates/key_spawn_gate.c` matches 96 bytes in an isolated linked probe. Promotion requires reviewed overlay mapping/layout support in verifier, then complete-ROM proof. |
 

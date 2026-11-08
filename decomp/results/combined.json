@@ -28,8 +28,8 @@
     "new_alignment": 4,
     "relocations_retained": 15,
     "payload_bytes_changed": 0,
-    "input_sha256": "82b34d67222da1d684566c9173a8ee6fb346521dc25b2e77373cd16843840a20",
-    "output_sha256": "2c04e90e86aaf96f78ba2ccc587fbd84305ca35d0ed74e662f6ad37f23a418b5",
+    "input_sha256": "fe7ca82dd7cbf7dd25a9b56d8efc31768004fc0fa6b47eb224f5520d0954f781",
+    "output_sha256": "b125a414f8736617c75f2fbea7db899de082374b5a6a9f9c4fd2a1c71df547ac",
     "text_sha256": "9d180f9bc00b9ab2a6c05c30943cf68381b024635b0e4b3f5af94915c83128b5",
     "compiled_table_prefix_sha256": "cfb6b1a6dee1e182ccfad56f71ce9eb34d63b82db2afccc81f65ba32d1ad28e5"
   },
@@ -55,9 +55,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 140,
-    "claimed_functions": 140,
-    "matched_function_bytes": 10108,
+    "matched_functions": 141,
+    "claimed_functions": 141,
+    "matched_function_bytes": 10312,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -328,6 +328,15 @@
         "matched": true,
         "expected_sha256": "d7d7756dec4de84e383d3057ecf620a4a1f213815383781a84559eea59e3c8ad",
         "candidate_sha256": "d7d7756dec4de84e383d3057ecf620a4a1f213815383781a84559eea59e3c8ad"
+      },
+      {
+        "name": "func_8003D0B0_3DCB0",
+        "size": 204,
+        "guest_address": "0x8003D0B0",
+        "rom_offset": "0x3DCB0",
+        "matched": true,
+        "expected_sha256": "7a3c723bffe43e3b044e60c385b9a6577a34eab380ebcc1eb3f8a38ab3c93fe8",
+        "candidate_sha256": "7a3c723bffe43e3b044e60c385b9a6577a34eab380ebcc1eb3f8a38ab3c93fe8"
       },
       {
         "name": "func_8003D17C_3DD7C",
@@ -1322,7 +1331,6 @@
     ]
   },
   "retained_assembly_functions": [
-    "func_8003D0B0_3DCB0",
     "func_8003D468_3E068",
     "func_8003D68C_3E28C",
     "func_8003D9B8_3E5B8",
@@ -1398,7 +1406,7 @@
     "event_flags.c": "e53d2dce39cbbafcb92343532e0e24edb6fe56c351e7d3cff9798ce8d351df28",
     "system_memory.c": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
     "save_resources.c": "37d12a4338f60af64c57908f348b63cfde88aa54b66ad2c3f30f1390dc783ce8",
-    "script_vm.c": "a46136cbd79faa04cbb7d74ca3cffcf8ee190878cd2f75c03baf1f5c1bb70a94",
+    "script_vm.c": "e0db129cd87e6cff0c7403afeddfd12abae0354bd443a6e5110c063c27bf9e9b",
     "viewport_bounds.c": "58e9c72853558f1302402dcc7331866a04e53ff022d17732d1e995a037cce9e5",
     "warp_state.c": "27b0585338b176ee6e0536be3deec4f6688893af686403ac5fd82709662f0955",
     "scheduler_views.c": "47db47be1c4326d208087fcd390955c1f977ff94ec355d9c497af0a8ac7389e6",
@@ -1435,7 +1443,17 @@
     "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63"
   },
   "verification_date_utc": "2026-11-08",
-  "verification_method": "fresh 2331-object Linux build, resumed after interrupted formal verifier; direct compare_images and collect_inventory on pinned original-address ELFs",
+  "verification_method": "Fresh complete 2,331-object IDO 5.3/GNU MIPS build after Splat 0.36.3 regeneration from verified retail ROM, preserving guarded ELF section metadata. Reconstructed 140-function branch sources from pinned archive and hash-checked current branch deltas; directly compared 32MiB ROM bytes, all 141 function entries/instructions and 7,376-entry readelf inventory. Not an uninterrupted formal verifier invocation.",
   "formal_verifier_run_completed": false,
-  "candidate_elf_sha256": "d786f0b6025cc63f6807fa4b2cf3834f8285009cb9b024cdd16a63ec8ac7c48d"
+  "candidate_elf_sha256": "419ed27f16b272fb959fd2aafd725a9ef858b49242b0f259fe25e95dd9df1f41",
+  "rebuild_details": {
+    "objects_compiled": 2331,
+    "generated_assembly_regenerated": true,
+    "crc_damaged_assembly_reused": false,
+    "full_rom_byte_differences": 0,
+    "payload_bytes_changed_by_metadata_packing": 0,
+    "baseline_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "candidate_elf_sha256": "419ed27f16b272fb959fd2aafd725a9ef858b49242b0f259fe25e95dd9df1f41",
+    "formal_verifier_completed": false
+  }
 }

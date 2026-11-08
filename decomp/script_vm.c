@@ -34,9 +34,24 @@ void func_8003D080_3DC80(void) {
     D_80077860_78460 = 0;
 }
 
-#ifndef GOEMON_DECOMP_HOST_TEST
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003D0B0_3DCB0.s")
-#endif
+extern s32 D_801C7920_1C8520, D_801C7924_1C8524, D_801C7928_1C8528, D_801C792C_1C852C;
+s32 func_8003F0FC_3FCFC(void);
+void func_8003D0B0_3DCB0(void) {
+    if ((D_801C792C_1C852C = func_8003F0FC_3FCFC()) == -1) {
+        if (D_801C7924_1C8524 == 1) D_801C7928_1C8528 = 1; else D_801C7928_1C8528 = 0;
+        D_801C7924_1C8524 = D_801C7920_1C8520;
+        D_801C7920_1C8520 = 0;
+    } else {
+        D_801C7928_1C8528 = 0;
+        D_801C7924_1C8524 = D_801C7920_1C8520;
+        D_801C7920_1C8520 = 1;
+    }
+    if (D_801C7920_1C8520 == 0 && D_801C7924_1C8524 == 1)
+        D_801C7928_1C8528 = 1;
+    else
+        D_801C7928_1C8528 = 0;
+}
+
 
 /* Copy either controller or combine held/pressed/raw axes for context 3. */
 void func_8003D17C_3DD7C(void) {

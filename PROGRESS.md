@@ -2,6 +2,17 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - full-ROM-promote 204-byte VM choice edge (141 reconstructed C)
+
+- Replaced original assembly `func_8003D0B0_3DCB0` at guest address `0x8003D0B0`, ROM offset `0x3DCB0`, with the 204-byte exact C candidate in `script_vm.c`. All 51 original MIPS instruction words match; SHA-256 `7a3c723bffe43e3b044e60c385b9a6577a34eab380ebcc1eb3f8a38ab3c93fe8`.
+- Restored the user-supplied pinned upstream checkout and recovered IDO 5.3 / GNU MIPS tools. Reconstituted current 140-function sources; the C integration and manifest were checked against exact local Git blob hashes. Source hash `e0db129cd87e6cff0c7403afeddfd12abae0354bd443a6e5110c063c27bf9e9b` (VM C). The upstream collision source retained pinned SHA-256 `b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63`.
+- Recreated all Splat assembly outputs (Splat 0.36.3), including the single CRC-damaged archived `file_72.s`, from the user-supplied ROM with verified retail SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`. Did not reuse incomplete archive bytes.
+- **Fresh Linux build:** rebuilt all **2,331 objects**, using only existing guarded ELF metadata corrections for the VM jump table (64→60 bytes, alignment 16→4; 15 relocations) and the 8-byte heap no-op (16→8 bytes, alignment 16→4), changing **zero** instruction/data payload bytes. Original VM code-section SHA-256 and heap object metadata guards passed.
+- **Proof:** independent byte comparison found **zero differences over 33,554,432 bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. The original-address comparator verified **141/141 functions and 10,312 instruction bytes**. The readelf inventory verified **7,376 identified entries, 13 upstream C, 141 reconstructed C, 154 combined C, 7,222 assembly**, with unchanged function-entry identity digest `01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787`. Fresh ELF SHA-256 `419ed27f16b272fb959fd2aafd725a9ef858b49242b0f259fe25e95dd9df1f41`.
+- **Host test:** 100 choice-edge input combinations passed GCC C11 with `-Wall -Wextra -Werror -fsanitize=address,undefined -fno-pie -no-pie`. Synthetic test only; no in-game test occurred.
+- **Limitation:** this was a fresh build from an independently restored pinned upstream plus hash-checked branch deltas rather than a conventional fresh Git clone, because GitHub DNS failed inside the container. The uninterrupted `python -m decomp.verify` run **was not executed**, so `formal_verifier_run_completed=false` is retained. The complete ROM, function addresses/bytes and inventory were verified independently. No ROMs, objects, assembly, assets, toolchains or private diagnostics are published.
+- Next: run the uninterrupted formal verifier on the updated 141-function branch and continue matching the VM text loop `func_8003DBEC_3E7EC`, loader, comparator and other remaining assembly.
+
 ## 2026-11-08 - archived incremental full-image probe confirms 204-byte VM choice-edge integration
 
 - Followed up on the unpromoted exact isolated C candidate `func_8003D0B0_3DCB0` (204 bytes / 51 instructions, original guest address `0x8003D0B0`). The `decomp/candidates/vm_choice_edge.c` source and 100-case sanitized host test are unchanged.
