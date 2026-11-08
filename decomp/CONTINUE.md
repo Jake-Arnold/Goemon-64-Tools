@@ -99,6 +99,7 @@ Next targets, in useful order:
 
 | Target | Existing evidence / next action |
 | --- | --- |
+| VM comparator `func_8003D9B8_3E5B8` | Exact 340/340 instruction bytes isolated IDO 5.3; full 32MiB identity in archived 136-function cached incremental relink with existing guarded VM rodata section packing; 1,134 host cases. **Unpromoted** until latest 141+1 full build/inventory/formal gate. |
 | VM text loop `func_8003DBEC_3E7EC` | Latest standalone candidate compiles to original 472-byte symbol, but is unpromoted: 47/95 equal non-relocation instruction positions without original-address relocation, 0x50 vs original 0x48 stack frame. 10,000 MIPS/C synthetic differential cases passed. Recover register lifetimes and branch scheduling; do not change proof counts. |
 | Choice edge `func_8003D0B0_3DCB0` (COMPLETED) | Promoted 204-byte exact C at original address. Fresh 2,331-object compile with regenerated Splat sources gave 33,554,432/33,554,432 matching bytes, all 141 function proofs and unchanged 7,376-entry inventory. 100 host cases passed. Uninterrupted formal verifier still pending. |
 | VM loader `func_8003D468_3E068` | Needs resource-prefix interfaces. Derive fields/calls from actual loads and upstream declarations. |

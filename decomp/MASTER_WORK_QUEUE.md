@@ -19,7 +19,7 @@ This is the repository's cross-conversation handoff for the Goemon toolkit and m
 | P3 | VM loader `func_8003D468_3E068` | Approximately 548-byte original; an old candidate matched 118/137 instruction positions only. Resolve real resource-prefix declarations, address loads, and register allocation. |
 | Completed | Choice edge `func_8003D0B0_3DCB0` | Promoted 204 original MIPS bytes at `0x8003D0B0`; fresh regenerated 2,331-object build produced exactly matching 32 MiB ROM and a 141-function/7,376-entry verified inventory. 100 host cases passed; uninterrupted formal verifier remains pending. |
 | P4 | VM wrapper `func_8003F6E8_402E8` | Original extent 48 bytes; natural C reproduced first 40 bytes (10 words) but not the unreachable eight-byte return tail. Do not promote a 40/48 prefix. |
-| P5 | VM comparator `func_8003D9B8_3E5B8` | Remains ASM. `vm_compare_reference.h` is host-only semantics, not exact C proof. |
+| P1 | VM comparator `func_8003D9B8_3E5B8` | Exact isolated 340/340 original MIPS bytes from IDO 5.3; archived older 136-function cached full-image match after guarded VM table correction; 1,134 synthetic host cases. **UNPROMOTED** pending current 141+1 complete-ROM gate. Candidate: `candidates/vm_comparator_exact.c`. |
 | P5 | Overlay key initializer `func_080001BC_6F369C` | 96-byte isolated linked probe matched; main-segment manifest verifier cannot yet prove overlay ROM/VMA/section layout. |
 | P5 | Ghost Toys entrance | Historical 140-byte draft retains two incorrect stack offsets; `decomp/GHOST_TOYS_CHECKPOINT.md` documents them. |
 
