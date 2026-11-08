@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-08 - reconcile parallel Goemon work and archive/test evidence
+
+- Created `decomp/MASTER_WORK_QUEUE.md` as a single evidence-bound handoff for earlier parallel Goemon chats: 140-function committed proof, the unresolved formal uninterrupted verifier, VM/overlay candidates, and the separate native-warp/story-flag toolkit research. Linked it from the operational runbook to prevent repeated already-promoted candidates or cross-track proof confusion.
+- Read live `chatgptweb/decomp` proof and inventory before writing: 140 matching-C functions / 10,108 bytes, 13 upstream C, 7,223 remaining ASM; full-ROM SHA-1 remains `6ea0ed71032ce08fc2745f412d84936382197494`. This entry does **not** claim a new function, a new full-ROM build, a successful formal verifier run, or an in-game validation.
+- Tested the recovered **archived** toolkit checkout (`261ac0badc4cf23ffa0813f44bc5d21097565bad`): `xvfb-run -a python -m unittest discover -s tests -q` ran **365 tests, 4 skipped, 0 failures**. An earlier direct headless run had 15 Tk display errors; Xvfb resolved them. The restored historical archive is not identical to the current 140-function branch.
+- Verified the user-owned retail ROM SHA-1, listed the reassembled MIPS toolchain/Python 3.12 tarballs, and isolated a single ZIP CRC mismatch in archived generated `candidate/asm/usa/file_72.s`. No damaged bytes were substituted. A completely fresh 140-function build was **not** run.
+- Next: reconstitute the exact latest branch and pinned build tools; complete uninterrupted formal verification; then work VM text loop, loader, choice edge, wrapper and overlay issues under the normal full-ROM promotion gate. Keep native warp/flag research separate and do not merge to `main`.
+
 ## 2026-11-08 - promote two original-address VM matches (140 reconstructed C)
 
 - Replaced retained assembly for `func_8003EFB0_3FBB0` (136 bytes; 34/34 original instruction words) and `func_8003F350_3FF50` (44 bytes; 11/11 original instruction words). The latter stores the callback-registration handle and requires the corrected `s32` return declaration of `func_80034B24_35724`. VM now has 54 C functions and 15 ASM functions.

@@ -5,6 +5,10 @@ README.md explains the recovered units, BATCH_PIPELINE.md describes the tools,
 and checkpoint documents retain technical research/history. Read root AGENTS.md
 first. Update this runbook whenever the next targets or machine paths change.
 
+## 0. Cross-conversation handoff
+
+Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM, overlay, native-warp and story-flag backlog from parallel Goemon conversations. Historical chat totals may lag the latest manifest/proof; this runbook and the live branch remain authoritative. Do not repeat already promoted functions.
+
 ## 1. Establish the current state
 
 Automated continuation must commit and push **only** to `chatgptweb/decomp`, never `main`. The workspace and main-branch history below describe the earlier local workflow, not the authorized target for this automated continuation. Verify the branch head before writing; do not force-push.
