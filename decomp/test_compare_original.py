@@ -25,6 +25,19 @@ class ComparisonSafety(unittest.TestCase):
         self.assertEqual(off, OFF)
         self.assertEqual(rows, [(0x27bdffd8,None),(0x3c02801c,'HI16'),(0x0c004000,'26')])
 
+    def test_function_scope_ignores_neighbor_functions(self):
+        before = 'glabel other\\n/* 3EA7C 8003DE7C 00000000 */ nop\\nendlabel other\\n'
+        after = 'glabel next\\n/* 3EA84 8003DE84 00000000 */ nop\\nendlabel next\\n'
+        off, rows = mod.original_rows(before + asm([(0x27bdffd8, 'addiu $sp, $sp, -0x28')]) + after, NAME)
+        self.assertEqual((off, rows), (OFF, [(0x27bdffd8, None)]))
+
+    def test_nested_or_duplicate_labels_rejected(self):
+        body = asm([(0x27bdffd8, 'addiu $sp, $sp, -0x28')])
+        with self.assertRaisesRegex(ValueError, 'ambiguous duplicate'):
+            mod.original_rows(body + body, NAME)
+        with self.assertRaisesRegex(ValueError, 'nested or overlapping'):
+            mod.original_rows(body.replace('endlabel '+NAME, 'glabel next\\nendlabel next\\nendlabel '+NAME), NAME)
+
     def test_duplicate_and_gapped_address_rejected(self):
         line = f'/* {OFF:X} {VMA:08X} 00000000 */ nop'
         with self.assertRaisesRegex(ValueError, 'noncontiguous'):

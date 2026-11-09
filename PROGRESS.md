@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-09 - Isolated MIPS comparator function-boundary correction (no promotion)
+
+- Rechecked live branch HEAD, `AGENTS.md`, continuation/work queue, manifest and both proof JSONs: still 142 matching-C / 10,652 bytes; 155 combined C; 7,221 remaining ASM; full-ROM identity recorded; uninterrupted formal verifier still false.
+- Identified a fail-closed but materially incorrect parser assumption in `decomp/compare_original.py`: `original_rows()` previously collected every annotated instruction in the entire input assembly file, not only those between the selected `glabel` and `endlabel`. A valid multi-function Splat file therefore failed with a false noncontiguous-ROM error. Fixed function-scoped extraction, duplicate/missing boundary rejection, and nested/overlapping-label rejection while preserving exact ROM SHA/word validation and relocation checks.
+- Added two regression tests for a target surrounded by other functions and for duplicate/nested labels. **Actual local tests:** Python `unittest` **12/12 passed** and `py_compile` passed. Retail USA SHA-1 independently checked as `df8083a54296b8c151917c5333e1c85f014a2a66`; the private 32 MiB decompressed reference SHA-1 checked as `6ea0ed71032ce08fc2745f412d84936382197494`; the split MIPS archive passed `gzip -t`. No full-ROM rebuild or original-MIPS differential run was performed in this change.
+- The older archived `file_72.s` remains corrupt and was not used. No candidate was promoted; manifest, inventory, proof counts and `formal_verifier_run_completed=false` remain unchanged. `main` untouched.
+- **Next:** regenerate the private original assembly from the verified ROM, rerun the guarded comparator against the command walker, and continue original-register/branch scheduling probes; independently run the uninterrupted formal verifier when the full pinned build is restored.
+
 ## 2026-11-09 - ROM-gated isolated MIPS comparison tool and 232-byte VM command walker (UNPROMOTED)
 
 - After inspecting the live `chatgptweb/decomp` manifest/proof/inventory (142 matching C; 10,652 original bytes; 7,221 ASM; `formal_verifier_run_completed=false`), recovered the USA retail ROM SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`, independently extracted the 33,554,432-byte baseline ROM with SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, and restored pinned IDO 5.3 with curated GNU MIPS Binutils `2.45.90.20260125`. The original archived generated `file_72.s` was not used or committed.
