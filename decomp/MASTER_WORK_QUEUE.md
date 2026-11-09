@@ -18,6 +18,10 @@ Follow [NEXT_TEN_FUNCTIONS.md](NEXT_TEN_FUNCTIONS.md) for the prioritized **ten 
 
 **Next-ten execution checkpoint (2026-11-09):** all ten selected functions have now been investigated; **zero promoted**. Best new isolated codegen result is resource lookup `func_8003F038_3FC38`, original/native 196 bytes with **25/42** directly comparable positions after a single `volatile s32 half` declaration. Wrapper original span corrected to **48 bytes / 12 words**, not 56. See `NEXT_TEN_FUNCTIONS.md` and `results/vm_next_ten_batch4.json`. The independent 142-function ROM identity and pending uninterrupted formal verifier remain unchanged.
 
+## Next five work packages (2026-11-09)
+
+The next technical work order is [NEXT_FIVE_ACTIONS.md](NEXT_FIVE_ACTIONS.md): **formal 142-function verification → VM halfword lookup native-ID0 match → overlay ROM/VMA/layout verifier → key overlay initializer → Ghost Toys overlay entrance**. Tasks #4 and #5 depend on strict overlay verification from #3. This does not supersede historical completed-ten evidence and does not increase the 142-function count.
+
 ## Open matching-C work (ordered)
 
 **2026-11-09 plan execution:** targets **#1–#5** have research-only candidates and synthetic tests, but none match exact original MIPS. #4 VM choice/setup `func_8003E6C0_3F2C0` compiles to 400 B versus 348 B original, with 400 passing host scenarios and 12 private-original guards. See `NEXT_TEN_FUNCTIONS.md` status, `results/vm_next_ten_batch1.json`, `results/vm_next_ten_batch2.json`. **#5:** fourteen isolated command-walker trials (seven host-tested) did not reproduce its original 232-byte instruction layout; see `results/vm_next_ten_batch3.json`. **Next #6 `func_8003DBEC_3E7EC`.** 142-function full-ROM proof and formal flag unchanged.
