@@ -1,0 +1,50 @@
+{
+  "format": "vm_text_loop_alias_codegen_probe_v1",
+  "status": "research_only_unpromoted",
+  "date_utc": "2026-11-09",
+  "symbol": "func_8003DBEC_3E7EC",
+  "original_vma": "0x8003DBEC",
+  "original_rom_offset": "0x3E7EC",
+  "original_size": 472,
+  "compiler": "IDO 5.3",
+  "flags": [
+    "-c",
+    "-O2",
+    "-mips2",
+    "-G",
+    "0",
+    "-non_shared"
+  ],
+  "canonical_source": "decomp/candidates/vm_text_loop.c",
+  "candidate_source": "decomp/candidates/vm_text_loop_alias_probe.c",
+  "baseline": {
+    "candidate_function_size": 472,
+    "matching_nonrelocation_words": 47,
+    "compared_nonrelocation_words": 95,
+    "frame_bytes": 80
+  },
+  "alias_probe": {
+    "candidate_function_size": 472,
+    "matching_nonrelocation_words": 53,
+    "compared_nonrelocation_words": 95,
+    "frame_bytes": 80,
+    "relocation_positions": 23,
+    "original_size_matches": true,
+    "original_instructions_match": false
+  },
+  "diagnostic": "Original MIPS bytes read from SHA-1-pinned local decompressed USA ROM or corresponding archived Splat original ASM. Relocation positions excluded; not original-address ELF or ROM proof.",
+  "synthetic_validation": {
+    "direct_original_mips_interpreter_vs_host_c_cases": 10000,
+    "seeds": [
+      "0x1d8",
+      "0xbeef"
+    ],
+    "cases_per_seed": 5000,
+    "result": "all matched",
+    "host_build": "gcc -std=c11 -shared -fPIC -O1 -Wall -Wextra -Werror -fsanitize=undefined -fno-sanitize-recover=undefined"
+  },
+  "structural_guard_tests": {
+    "passed": 3
+  },
+  "limitations": "No new function promotion, no complete ROM link or uninterrupted formal verifier for this research candidate. Byte-match count and full image reports remain at 142 matching C / 10,652 bytes."
+}

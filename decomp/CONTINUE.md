@@ -11,6 +11,9 @@ Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and over
 
 ## 1. Establish the current state
 
+**Unpromoted text-loop experiment (2026-11-09):** separate `candidates/vm_text_loop_alias_probe.c` retains the exact 472-byte IDO symbol size, improving 47/95→53/95 comparable nonrelocation instruction positions using a volatile VM-work pointer and explicit script-argument reload. It passed 10,000 original-MIPS/host-C synthetic differential cases and three structural tests, but its 0x50-byte frame differs from the original 0x48 and it is NOT a matching-C promotion. See `results/vm_text_loop_alias_probe.json`. Keep 142 matching C unchanged.
+
+
 **Latest independent matching-C promotion (2026-11-09):** 142 functions / 10,652 bytes, 155 combined C, 7,221 ASM entries. The 340-byte comparator `func_8003D9B8_3E5B8` was promoted after complete 2,331-object IDO/Splat integration, original-address 142/142 instruction verification, 32 MiB exact ROM identity, 7,376-entry inventory, and 1,134 synthetic host cases. The uninterrupted formal `decomp.verify` run is **still pending**; previous 141-function prose below is historical.
 
 
