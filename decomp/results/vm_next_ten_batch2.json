@@ -1,0 +1,51 @@
+{
+  "format": "goemon-next-ten-isolated-research-v1",
+  "batch": 2,
+  "base_commit": "796ac7662eb96a1c9e232baa59be7559a8e5c0b1",
+  "targets_completed_in_plan": 4,
+  "targets_promoted": 0,
+  "verified_base": {
+    "matching_c": 142,
+    "matching_mips_bytes": 10652,
+    "combined_c": 155,
+    "remaining_asm": 7221,
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "formal_verifier_run_completed": false
+  },
+  "target": {
+    "name": "func_8003E6C0_3F2C0",
+    "original_vma": "0x8003E6C0",
+    "rom_offset": "0x3F2C0",
+    "original_size_bytes": 348,
+    "original_instruction_words": 87,
+    "original_sha256": "d6ae27372e4ffc75fa81863c4a10b5ccd308d594f46d67de4573560a02c27413",
+    "candidate": "decomp/candidates/vm_callback_setup_e6c0.c",
+    "candidate_compiled_size_bytes": 400,
+    "original_stack_frame_bytes": 56,
+    "candidate_stack_frame_bytes": 64,
+    "direct_instruction_matches": 0,
+    "direct_comparable_positions": 52,
+    "relocation_shape_matches": 0,
+    "relocation_comparable_positions": 1,
+    "relocation_layout_differences": 34,
+    "exact_match": false
+  },
+  "tools": {
+    "compiler": "IDO 5.3 -O2 -mips2 -G 0 -non_shared",
+    "assembler": "GNU MIPS Binutils 2.45.90.20260125"
+  },
+  "tests": {
+    "synthetic_host_asan_ubsan": {
+      "cases": 400,
+      "passed": 400
+    },
+    "first_four_original_instruction_words_verified": 354,
+    "first_four_original_guard_instructions": 32,
+    "python_negative_parser_tests": {
+      "passed": 4,
+      "total": 4
+    }
+  },
+  "limits": "Research-only isolated C; mock callback behaviour, not MIPS differential or game; no full-ROM build or uninterrupted formal verifier",
+  "next": "func_8003DE80_3EA80"
+}

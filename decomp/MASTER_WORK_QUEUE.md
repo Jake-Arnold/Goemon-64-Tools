@@ -18,7 +18,7 @@ Follow [NEXT_TEN_FUNCTIONS.md](NEXT_TEN_FUNCTIONS.md) for the prioritized **ten 
 
 ## Open matching-C work (ordered)
 
-**2026-11-09 plan execution:** targets #1–#3 have research-only candidates and tests, but none match exact original MIPS; see `NEXT_TEN_FUNCTIONS.md` execution status and `results/vm_next_ten_batch1.json`. Next target is VM setup `func_8003E6C0_3F2C0` (348 B). The 142-function full-ROM proof and formal verification status are unchanged.
+**2026-11-09 plan execution:** targets **#1–#4** have research-only candidates and synthetic tests, but none match exact original MIPS. #4 VM choice/setup `func_8003E6C0_3F2C0` compiles to 400 B versus 348 B original, with 400 passing host scenarios and 12 private-original guards. See `NEXT_TEN_FUNCTIONS.md` status, `results/vm_next_ten_batch1.json`, `results/vm_next_ten_batch2.json`. **Next #5 `func_8003DE80_3EA80`.** 142-function full-ROM proof and formal flag unchanged.
 
 | Priority | Target | Precise unresolved condition |
 | --- | --- | --- |

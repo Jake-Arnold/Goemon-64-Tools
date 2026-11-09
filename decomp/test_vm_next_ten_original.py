@@ -15,6 +15,7 @@ SPECS = {
     'func_8003E234_3EE34': (0x8003E234, 0x3EE34, 110, 'acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336'),
     'func_8003EBAC_3F7AC': (0x8003EBAC, 0x3F7AC, 109, '67f4730f98adcd92a28b506c7631437629ffa8bd08101f2594011ce982201539'),
     'func_8003F37C_3FF7C': (0x8003F37C, 0x3FF7C, 48, '74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0'),
+    'func_8003E6C0_3F2C0': (0x8003E6C0, 0x3F2C0, 87, 'd6ae27372e4ffc75fa81863c4a10b5ccd308d594f46d67de4573560a02c27413'),
 }
 ANCHORS = {
     'func_8003E234_3EE34': {
@@ -31,6 +32,20 @@ ANCHORS = {
         0x8003ED18: r'lbu\s+\$a3,\s*0x5C\(\$t8\)',
         0x8003ED58: r'jr\s+\$ra',
         0x8003ED5C: r'sw\s+\$t9,\s*0x4\(\$v0\)',
+    },
+    'func_8003E6C0_3F2C0': {
+        0x8003E6C0: r'addiu\s+\$sp,\s*\$sp,\s*-0x38',
+        0x8003E6F0: r'beqz\s+\$a2,\s*\.L8003E704_3F304',
+        0x8003E728: r'beq\s+\$s7,\s*\$t8,\s*\.L8003E7BC_3F3BC',
+        0x8003E748: r'lh\s+\$t9,\s*0x32\(\$s1\)',
+        0x8003E784: r'jal\s+func_8003DE48_3EA48',
+        0x8003E790: r'jal\s+func_8003EB34_3F734',
+        0x8003E7B4: r'bne\s+\$s7,\s*\$t9,\s*\.L8003E748_3F348',
+        0x8003E7B8: r'addiu\s+\$s2,\s*\$s2,\s*0x8',
+        0x8003E7D8: r'jal\s+func_8003E9E8_3F5E8',
+        0x8003E810: r'sw\s+\$t2,\s*%lo\(D_801C77E0_1C83E0\)\(\$at\)',
+        0x8003E814: r'jr\s+\$ra',
+        0x8003E818: r'addiu\s+\$sp,\s*\$sp,\s*0x38',
     },
     'func_8003F37C_3FF7C': {
         0x8003F37C: r'addiu\s+\$sp,\s*\$sp,\s*-0x50',
@@ -89,9 +104,9 @@ class ParserNegativeControls(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'noncontiguous'):
             verify(f'glabel {name}\n/* 3FF80 8003F37C 00000000 */ nop\nendlabel {name}',name)
     def test_unique_targets_and_guards(self):
-        self.assertEqual(len(SPECS),3)
-        self.assertEqual(sum(row[2] for row in SPECS.values()),267)
-        self.assertEqual(sum(map(len,ANCHORS.values())),20)
+        self.assertEqual(len(SPECS),4)
+        self.assertEqual(sum(row[2] for row in SPECS.values()),354)
+        self.assertEqual(sum(map(len,ANCHORS.values())),32)
 
 if __name__=='__main__':
     ap=argparse.ArgumentParser(description=__doc__)
