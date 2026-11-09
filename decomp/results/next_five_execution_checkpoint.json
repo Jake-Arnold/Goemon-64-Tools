@@ -1,0 +1,101 @@
+{
+  "format": "goemon-next-five-execution-checkpoint-v1",
+  "date_utc": "2026-11-09",
+  "branch": "chatgptweb/decomp",
+  "base_commit": "9fa52a3c554be97be67ddf3e11446e9daaad2cd8",
+  "status": "partial_execution_not_promotion",
+  "authority": {
+    "matched_c": 142,
+    "matched_bytes": 10652,
+    "combined_c": 155,
+    "remaining_assembly": 7221,
+    "formal_verifier_run_completed": false
+  },
+  "work": [
+    {
+      "task": 1,
+      "status": "blocked_full_formal_run_not_executed",
+      "archived_source_function_claims": 136,
+      "current_git_branch_claims": 142,
+      "action": "Verified pinned retail ROM SHA-1, archive contents and formal verifier CLI; 136-source archive cannot validate 142-source current HEAD.",
+      "next": "Restore current 142 source checkout with the private pinned build and run uninterrupted python -m decomp.verify."
+    },
+    {
+      "task": 2,
+      "status": "unpromoted_codegen_research",
+      "name": "func_8003F038_3FC38",
+      "original_bytes": 196,
+      "best_compiled_bytes": 196,
+      "best_direct": "25/42",
+      "additional_targeted_native_ido_variants": 6,
+      "improved_this_run": false,
+      "variants": "Spill half index after lookup or before callback, aliased pointer, explicit volatile half access; no variant exceeded 25/42."
+    },
+    {
+      "task": 3,
+      "status": "original_layout_guard_implemented_not_linker_integration",
+      "original_splat_segment": "file_43",
+      "rom_start": "0x6F34E0",
+      "rom_text_end": "0x6F9CE0",
+      "rom_end": "0x6FB200",
+      "vma_start": "0x08000000",
+      "functions_verified": [
+        {
+          "name": "func_080001BC_6F369C",
+          "bytes": 96
+        },
+        {
+          "name": "func_08006490_6F9970",
+          "bytes": 140
+        }
+      ],
+      "private_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "synthetic_overlay_guard_tests": 19,
+      "limitations": "New reference integrity/layout guard is not an integration of overlays into the existing decomp.verify C/ELF provenance gate."
+    },
+    {
+      "task": 4,
+      "status": "isolated_match_unpromoted",
+      "name": "func_080001BC_6F369C",
+      "original_bytes": 96,
+      "original_function_sha256": "21679e650f47538d001cc7ede7f84feaede2715ce8a016b5fb81bce7b10e2484",
+      "existing_isolated_linked_match": true,
+      "host_key_flag_ids": 3,
+      "host_key_paths_each": 2,
+      "host_tests_passed": 6,
+      "blocked_by": "Overlay C-source ownership, linker integration and whole-ROM proof remain unverified."
+    },
+    {
+      "task": 5,
+      "status": "new_research_candidate_unpromoted",
+      "name": "func_08006490_6F9970",
+      "original_bytes": 140,
+      "original_function_sha256": "c96aa2507f3322508dafcfd47894d90cd26ec626b6ec4b304d0d2252a53d19e0",
+      "native_ido_variants": 5,
+      "new_candidate_compiled_bytes": 140,
+      "comparable_instruction_positions": "14/23 direct",
+      "synthetic_host_cases_passed": 800,
+      "historical_best_candidate_diff_bytes": 2,
+      "historical_best_mismatch": "sp+0x18 in candidate versus sp+0x1C original",
+      "limitations": "Fresh research draft matches size but not code. Original stronger two-byte-near-match source was not published and is not replaced."
+    }
+  ],
+  "tests": {
+    "overlay_parser_synthetic": "19/19 passed",
+    "private_splat_and_original_rom": "file_43 segment, code/rodata SHA and both original function hashes passed",
+    "ghost_mock": "800/800 passed",
+    "key_mock": "6/6 passed",
+    "python_syntax": "passed",
+    "original_mips_to_rom": "two original overlay functions verified",
+    "in_game": false,
+    "complete_rom_rebuilt": false
+  },
+  "changes": [
+    "decomp/overlay_file43.py",
+    "decomp/test_overlay_file43.py",
+    "decomp/candidates/ghost_probe.c",
+    "decomp/test_ghost_probe.c"
+  ],
+  "no_rom_or_assets_committed": true,
+  "next": "Restore current 142-function build inputs; add original-address linked ELF overlay C-source provenance and run complete-ROM acceptance; continue 196-byte resource lookup only with evidence-based register/stack changes."
+}

@@ -20,6 +20,8 @@ Follow [NEXT_TEN_FUNCTIONS.md](NEXT_TEN_FUNCTIONS.md) for the prioritized **ten 
 
 ## Next five work packages (2026-11-09)
 
+**Execution checkpoint (2026-11-09):** all five tasks visited; no new promotion. Formal run needs the full current 142-function source rather than the 136-function archive. Overlay `file_43` original mapping/hash reference gate added with 19 tests and both original functions verified. Key gate still isolated-only; Ghost entrance 140-byte new draft is unpromoted and does not supersede the historical two-byte mismatch. See `results/next_five_execution_checkpoint.json` and `NEXT_FIVE_ACTIONS.md`. 
+
 The next technical work order is [NEXT_FIVE_ACTIONS.md](NEXT_FIVE_ACTIONS.md): **formal 142-function verification → VM halfword lookup native-ID0 match → overlay ROM/VMA/layout verifier → key overlay initializer → Ghost Toys overlay entrance**. Tasks #4 and #5 depend on strict overlay verification from #3. This does not supersede historical completed-ten evidence and does not increase the 142-function count.
 
 ## Open matching-C work (ordered)

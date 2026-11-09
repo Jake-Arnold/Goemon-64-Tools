@@ -1,6 +1,14 @@
 # Next five decomp work packages — 2026-11-09
 
-This is a **five-step technical work plan, not five pre-verified C promotions**. Use live `chatgptweb/decomp` plus `AGENTS.md`, `CONTINUE.md`, `MASTER_WORK_QUEUE.md`, `manifest.json`, `results/combined.json`, and `results/inventory.json` as the authority on every run.
+This is a **five-step technical work plan, not five pre-verified C promotions**.
+
+## Execution checkpoint — 2026-11-09
+
+**The five tasks have been worked through, but none meets every completion gate.** Task 1 is blocked by the locally available archived source containing 136 claims versus 142 on the live branch; no uninterrupted formal verifier run. Task 2's six native IDO lookup experiments did not improve the existing 196-byte/25-of-42 candidate. Task 3 now has a fail-closed private-ROM reference validator for overlay `file_43` (**19 tests passed**, both planned original functions' full bytes verified), **not yet integrated linked-ELF C provenance**. Task 4's 96-byte key initializer retained isolated-linked match and six host mock cases passed, but it is unpromoted. Task 5's new 140-byte Ghost Toys C research draft passed 800 mock scenarios but differs from MIPS and does not supersede the earlier two-byte-near-match. Detailed evidence: `results/next_five_execution_checkpoint.json` and `PROGRESS.md`.
+
+**Authority unchanged:** 142 exact C / 10,652 MIPS bytes / 7,221 ASM. Formal verifier still pending; no overlay promotion or new whole-ROM reconstruction. Next prerequisite is a full current-source checkout and safe linked-overlay proof.
+
+ Use live `chatgptweb/decomp` plus `AGENTS.md`, `CONTINUE.md`, `MASTER_WORK_QUEUE.md`, `manifest.json`, `results/combined.json`, and `results/inventory.json` as the authority on every run.
 
 **Live checkpoint on plan creation:** 142 matching-C functions / 10,652 original MIPS bytes; 13 upstream C; 155 combined C; 7,221 remaining ASM out of 7,376 identified. The existing independent 2,331-object ROM rebuild proved a **33,554,432-byte** exact image, decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; `formal_verifier_run_completed=false`. The just-completed ten-function investigation yielded **zero new promotions**, but established the candidates described below.
 
