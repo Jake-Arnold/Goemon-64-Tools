@@ -1,6 +1,6 @@
 {
   "format": "goemon-vm-comparator-unpromoted-v1",
-  "status": "unpromoted_pending_current_141_plus_1_full_rom",
+  "status": "historical_isolated_probe_superseded_by_verified_full_142_image",
   "function": "func_8003D9B8_3E5B8",
   "vma": "0x8003D9B8",
   "rom_offset": "0x3E5B8",
@@ -28,7 +28,17 @@
       "payload_bytes_changed": 0
     }
   },
-  "current_complete_142_function_build_done": false,
+  "current_complete_142_function_build_done": true,
   "formal_verifier_run_completed": false,
-  "promoted": false
+  "promoted": true,
+  "promotion": {
+    "date_utc": "2026-11-09",
+    "source": "decomp/script_vm.c",
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "function_sha256": "bfa8ec5494880607e6b7d822dc952b22da49d7617ab50d59c6e920cbc45983a0",
+    "verified_original_instruction_bytes": 340,
+    "inventory_matched_functions": 142,
+    "independent_full_rom_bytes": 33554432,
+    "formal_verifier_run_completed": false
+  }
 }

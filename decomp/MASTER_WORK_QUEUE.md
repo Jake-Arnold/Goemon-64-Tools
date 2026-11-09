@@ -4,6 +4,8 @@ This is the repository's cross-conversation handoff for the Goemon toolkit and m
 
 ## Verified checkpoint; do not repeat
 
+- **Latest 2026-11-09 independent complete-ROM checkpoint:** **142 matching-C / 10,652 MIPS bytes**, 13 upstream C / 155 combined C / 7,221 remaining ASM of 7,376 identified. `func_8003D9B8_3E5B8` has been promoted following 340/340 exact original bytes, complete 2,331-object Splat/IDO link, full 33,554,432-byte ROM identity, readelf inventory and 1,134 sanitizer-tested host cases. The uninterrupted formal verifier is **still pending**. The 141-function checkpoint below is historical.
+
 - Matching-C branch promotion checkpoint: `869771dc92872a8b4e05f77c7adebe2e7cef260e`. At this checkpoint: **141 reconstructed matching-C functions, 10,312 bytes; 13 upstream C entries; 154 combined C entries; 7,222 assembly entries of 7,376 identified**. VM: 55 C / 14 ASM.
 - The **136-byte** `func_8003EFB0_3FBB0` and **44-byte** `func_8003F350_3FF50` have both been promoted. The callback's corrected signed return declaration is integrated. Do not redo the earlier provisional 138/139-function work.
 - `decomp/results/combined.json` records exact original-address matches and byte-identical independent assembly/linking of the full **33,554,432-byte** decompressed image, expected SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; the retail input SHA-1 is `df8083a54296b8c151917c5333e1c85f014a2a66`.
@@ -19,7 +21,7 @@ This is the repository's cross-conversation handoff for the Goemon toolkit and m
 | P3 | VM loader `func_8003D468_3E068` | Approximately 548-byte original; an old candidate matched 118/137 instruction positions only. Resolve real resource-prefix declarations, address loads, and register allocation. |
 | Completed | Choice edge `func_8003D0B0_3DCB0` | Promoted 204 original MIPS bytes at `0x8003D0B0`; fresh regenerated 2,331-object build produced exactly matching 32 MiB ROM and a 141-function/7,376-entry verified inventory. 100 host cases passed; uninterrupted formal verifier remains pending. |
 | P4 | VM wrapper `func_8003F6E8_402E8` | Original extent 48 bytes; natural C reproduced first 40 bytes (10 words) but not the unreachable eight-byte return tail. Do not promote a 40/48 prefix. |
-| P1 | VM comparator `func_8003D9B8_3E5B8` | Exact isolated 340/340 original MIPS bytes from IDO 5.3; archived older 136-function cached full-image match after guarded VM table correction; 1,134 synthetic host cases. **UNPROMOTED** pending current 141+1 complete-ROM gate. Candidate: `candidates/vm_comparator_exact.c`. |
+| Completed | VM comparator `func_8003D9B8_3E5B8` | Promoted in latest 142-function, 10,652-byte complete-ROM proof; 340 original MIPS bytes exact, 2,331 linked objects, ROM and readelf inventory exact, 1,134 sanitizer host cases. Uninterrupted formal verifier pending. |
 | P5 | Overlay key initializer `func_080001BC_6F369C` | 96-byte isolated linked probe matched; main-segment manifest verifier cannot yet prove overlay ROM/VMA/section layout. |
 | P5 | Ghost Toys entrance | Historical 140-byte draft retains two incorrect stack offsets; `decomp/GHOST_TOYS_CHECKPOINT.md` documents them. |
 

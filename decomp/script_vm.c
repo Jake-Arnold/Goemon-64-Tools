@@ -124,7 +124,27 @@ void func_8003D45C_3E05C(void) {
 #ifdef GOEMON_DECOMP_HOST_TEST
 #include "vm_compare_reference.h"
 #else
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/script_vm/func_8003D9B8_3E5B8.s")
+s32 func_8003D9B8_3E5B8(s32 opcode, s32 left, s32 right) {
+    s32 result = 0;
+    if (opcode == 0x8002) { if (left == right) { result = 1; goto done; } } else
+    if (opcode == 0x8003) { if (left != right) { result = 1; goto done; } } else
+    if (opcode == 0x800C) { if (left < right) { result = 1; goto done; } } else
+    if (opcode == 0x800D) { if (left > right) { result = 1; goto done; } } else
+    if (opcode == 0x800E) { if (left <= right) { result = 1; goto done; } } else
+    if (opcode == 0x800F) { if (left >= right) { result = 1; goto done; } } else
+    {
+        right = *(s32 *)(long)right;
+        if (opcode == 0x8030) { if (left == right) { result = 1; goto done; } } else
+        if (opcode == 0x8031) { if (left != right) { result = 1; goto done; } } else
+        if (opcode == 0x8032) { if (left < right) { result = 1; goto done; } } else
+        if (opcode == 0x8033) { if (left > right) { result = 1; goto done; } } else
+        if (opcode == 0x8034) { if (left <= right) { result = 1; goto done; } } else
+        if (opcode == 0x8035) { if (left >= right) { result = 1; goto done; } } else
+        { }
+    }
+done:
+    return result;
+}
 #endif
 
 u32 *func_8003DB0C_3E70C(u32 *script) {
