@@ -18,6 +18,8 @@ Follow [NEXT_TEN_FUNCTIONS.md](NEXT_TEN_FUNCTIONS.md) for the prioritized **ten 
 
 ## Open matching-C work (ordered)
 
+**2026-11-09 plan execution:** targets #1–#3 have research-only candidates and tests, but none match exact original MIPS; see `NEXT_TEN_FUNCTIONS.md` execution status and `results/vm_next_ten_batch1.json`. Next target is VM setup `func_8003E6C0_3F2C0` (348 B). The 142-function full-ROM proof and formal verification status are unchanged.
+
 | Priority | Target | Precise unresolved condition |
 | --- | --- | --- |
 | P0 | Uninterrupted 142-function formal verifier | Restore exact latest branch/toolchain/baseline and execute `decomp.verify` to completion. Refresh proof provenance only if independently rebuilt output is exact. |

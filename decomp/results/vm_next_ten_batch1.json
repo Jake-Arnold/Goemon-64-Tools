@@ -1,0 +1,90 @@
+{
+  "format": "goemon-next-ten-isolated-research-v1",
+  "branch_base_sha": "03e3d7ec7d58f129fdc374f06e9b8433e531f3a1",
+  "toolchain": {
+    "ido": "5.3",
+    "flags": "-O2 -mips2 -G 0 -non_shared",
+    "assembler": "GNU MIPS Binutils 2.45.90.20260125"
+  },
+  "original": {
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_size": 33554432,
+    "decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "original_verified_words": 267,
+    "original_instruction_guards": 20
+  },
+  "functions": [
+    {
+      "name": "func_8003E234_3EE34",
+      "original_bytes": 440,
+      "original_instruction_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+      "candidate": "candidates/vm_display_e234.c",
+      "candidate_bytes": 516,
+      "comparison": {
+        "direct_matches": 1,
+        "direct_comparable": 56,
+        "relocated_shape_matches": 0,
+        "relocated_shape_comparable": 8,
+        "relocation_layout_differences": 46
+      },
+      "volatile_cursor_research": {
+        "bytes": 480,
+        "direct_matches": 0,
+        "direct_comparable": 68
+      },
+      "host_cases_per_variant": 1000,
+      "variants_host_tested": 2,
+      "promoted": false
+    },
+    {
+      "name": "func_8003EBAC_3F7AC",
+      "original_bytes": 436,
+      "original_instruction_sha256": "67f4730f98adcd92a28b506c7631437629ffa8bd08101f2594011ce982201539",
+      "candidate": "candidates/vm_display_ebac.c",
+      "candidate_bytes": 500,
+      "comparison": {
+        "direct_matches": 1,
+        "direct_comparable": 60,
+        "relocated_shape_matches": 0,
+        "relocated_shape_comparable": 4,
+        "relocation_layout_differences": 45
+      },
+      "volatile_cursor_research": {
+        "bytes": 464,
+        "direct_matches": 0,
+        "direct_comparable": 75
+      },
+      "host_cases_per_variant": 1000,
+      "variants_host_tested": 2,
+      "promoted": false
+    },
+    {
+      "name": "func_8003F37C_3FF7C",
+      "original_bytes": 192,
+      "original_instruction_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate": "candidates/vm_setup_f37c.c",
+      "candidate_bytes": 192,
+      "comparison": {
+        "direct_matches": 5,
+        "direct_comparable": 18,
+        "relocated_shape_matches": 1,
+        "relocated_shape_comparable": 1,
+        "relocation_layout_differences": 29
+      },
+      "stack_frame_bytes": 80,
+      "host_cases": 300,
+      "promoted": false
+    }
+  ],
+  "tests": {
+    "gcc_sanitizers": "-O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all",
+    "mock_game_cases": 4300,
+    "parser_negative_tests": 4,
+    "private_original_word_checks": 267
+  },
+  "next": "func_8003E6C0_3F2C0",
+  "no_full_rom_build_for_this_batch": true,
+  "formal_verifier_run_completed": false,
+  "promotions": 0,
+  "limits": "ROM-verification covers original words only. Host tests are mock C, not original-MIPS differential or in-game. Relocatable-object positions are diagnostics, not production integration."
+}
