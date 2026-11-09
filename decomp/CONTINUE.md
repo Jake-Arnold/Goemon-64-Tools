@@ -11,6 +11,8 @@ Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and over
 
 ## 1. Establish the current state
 
+**VM loader host endian correction (2026-11-09):** original `lhu +2` reads the numerical *low* half of the big-endian resource ID. Research candidate `vm_loader_storage_probe.c` now has a host-only low-half accessor; 400/400 synthetic host cases pass and the previous host model fails the corrected assertion. Pinned IDO/MIPS recompilation proved the original and revised candidate `.text` both equal the same **560-byte** payload. The original is **548 bytes**, so there is **no C promotion** and the 142-function proof is unchanged. Volatile pointer qualifiers do not restore the original `$s0/$s1` saves. See `PROGRESS.md`.
+
 **Unpromoted text-loop experiment (2026-11-09):** separate `candidates/vm_text_loop_alias_probe.c` retains the exact 472-byte IDO symbol size, improving 47/95→53/95 comparable nonrelocation instruction positions using a volatile VM-work pointer and explicit script-argument reload. It passed 10,000 original-MIPS/host-C synthetic differential cases and three structural tests, but its 0x50-byte frame differs from the original 0x48 and it is NOT a matching-C promotion. See `results/vm_text_loop_alias_probe.json`. Keep 142 matching C unchanged.
 
 

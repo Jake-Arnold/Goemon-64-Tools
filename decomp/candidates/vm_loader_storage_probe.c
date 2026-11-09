@@ -34,6 +34,17 @@ extern s32 func_8003DDC4_3E9C4(s32,s32);
 extern s32 func_8003DE48_3EA48(s32);
 extern void func_80024088_24C88(s32);
 
+/* The game reads the resource ID's LOW halfword at offset +2 of its
+ * big-endian 32-bit word. On a little-endian host that same union member
+ * represents the HIGH halfword. Keep the target's lhu +2 codegen intact;
+ * use the numeric low half during portable host-only simulations instead.
+ */
+#ifdef GOEMON_DECOMP_HOST_TEST
+#define VM_LOADER_LOW_ID(record) ((u16)(record)->id.word)
+#else
+#define VM_LOADER_LOW_ID(record) ((record)->id.half.lower)
+#endif
+
 s32 func_8003D468_3E068(s32 start, s32 resource_id) {
     VmResource *resource;
     VmWorkLoader *work;
@@ -46,7 +57,7 @@ s32 func_8003D468_3E068(s32 start, s32 resource_id) {
         result = func_800141C4_14DC4(resource_id);
         work->loaded = result;
         if (result == -1) {
-            func_80013B14_14714(resource->id.half.lower);
+            func_80013B14_14714(VM_LOADER_LOW_ID(resource));
             func_8003CFA0_3DBA0(resource->id.word);
             result = func_800141C4_14DC4(resource->id.word);
             work->loaded = result;

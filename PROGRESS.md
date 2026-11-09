@@ -2,6 +2,16 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-09 - corrected VM loader host-resource-ID endianness (UNPROMOTED)
+
+- Inspected original USA loader assembly at `0x8003D4CC`: `lhu $a0, +2($s1)` reads the low 16 bits of the big-endian 32-bit resource ID. Identified a **false-positive host test**: the existing union's `.half.lower` at offset +2 gives the **high** 16 bits on little-endian x86, and the existing assertion compared against that wrong value.
+- Updated the research-only VM loader with a host-only `GOEMON_DECOMP_HOST_TEST` resource-ID accessor that obtains the numeric low 16 bits. Preserved the target MIPS `lhu +2` union access under normal IDO compilation. Updated the mock-game test to define the host flag and vary high and low resource-ID halfwords independently over 100 iterations.
+- **Executed:** GCC C11 `-Wall -Wextra -Werror -O1 -g -fno-strict-aliasing -fsanitize=undefined -fno-sanitize-recover=undefined` compiled and passed **400/400 deterministic mock-game paths** (100 each no owner, normal load, recovery/retry, clear). The previous source paired with the new assertions failed as intended (assertion `recovered_halfword == (u16)resource_id`, exit 134), confirming that the new check catches the old incorrect model. A padded/little-endian host is not used as evidence of game behaviour outside these synthetic scenarios.
+- **Pinned target-code regression:** IDO 5.3 `-O2 -mips2 -G 0 -non_shared` compiled the revised research C; GNU MIPS Binutils `2.45.90.20260125` assembled both old/new variants with `-G 0 -mips2`. Their complete **560-byte .text payloads are byte-identical** (SHA-256 `4c4353a1fbc87c5cf7c5350b60037ecc999f4aa782542f1dfcf6851a5346523d`). The original is **548 bytes** with saved `$s0/$s1`; this revision makes **no instruction-match progress**.
+- Additional isolated compiler probes for `register` pointers, volatile pointers/pointees, pointer-casts, declaration position and inverted/goto null-owner branches did not reproduce the saved-register codegen. Volatile pointer qualifiers alone produced a 32-byte frame but still did **not** save `$s0/$s1`; frame size alone is not matching-C evidence.
+- **Limits:** no new ROM rebuild, no complete uninterrupted formal `decomp.verify`, no in-game testing, no change to manifest, production VM source, result reports or claimed counts. Remain at **142 exact functions / 10,652 bytes, 155 combined C, 7,221 ASM**.
+- **Next:** continue original-register-lifetime and delay-slot analysis; any new loader C must pass original MIPS bytes and complete-ROM identity independently before promotion.
+
 ## 2026-11-09 - VM loader storage/halfword probe and 400 mock-game cases (UNPROMOTED)
 
 - Recovered and SHA-1 checked the retail USA ROM (`df8083a54296b8c151917c5333e1c85f014a2a66`) and inspected its archived, original-address 548-byte VM loader assembly; confirmed separate resource record at `D_801C78E8` and VM work at `D_801C77E8`, with resource ID halfword `+2`, work marker `+8`, gate `+0xA`, loaded address `+0x14`, and a byte reset on each owner lookup after the final callback.

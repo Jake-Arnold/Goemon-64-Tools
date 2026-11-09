@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#define GOEMON_DECOMP_HOST_TEST 1
 #include "candidates/vm_loader_storage_probe.c"
 void *D_80077860_78460;
 s32 D_8007785C_7845C, D_80077858_78458;
@@ -43,20 +44,24 @@ static void check_common(void){
 int main(void){
  u8 owner[0x60];
  for(int i=1;i<=100;i++){
+  const s32 resource_id = (s32)(((u32)(0x1200+i)<<16) | (u32)(0x5600+(i%13)));
   memset(owner,0x55,sizeof(owner));reset_mocks();D_80077860_78460=0;
   D_801C78E8_1C84E8.id.word=0x12345;D_801C77E8_1C83E8.loaded=123456;
   assert(func_8003D468_3E068(i,i)==0);assert(D_801C77E8_1C83E8.loaded==123456);assert(load_calls==0 && init_calls==0);
   reset_mocks();D_80077860_78460=owner;final_return=(s32)0xC0003400u;
-  assert(func_8003D468_3E068(i,0x12345678)==1);
+  assert(func_8003D468_3E068(i,resource_id)==1);
   assert(D_801C77E8_1C83E8.loaded==(s32)0x80003400u);
-  assert(D_801C78E8_1C84E8.unk4==(0x12345678^0x31415) && D_801C78E8_1C84E8.unk8==0x2a);
+  assert(D_801C78E8_1C84E8.unk4==(resource_id^0x31415) && D_801C78E8_1C84E8.unk8==0x2a);
   assert(D_80077858_78458==i+123 && init_arg==i && delta_arg==i);
   assert(load_calls==1 && restore_calls==0 && reset_calls==0 && size_calls==1 && delta_calls==1 && init_calls==1);
   assert(owner[0x5c]==0 && owner[0x5d]==0);check_common();
   reset_mocks();memset(owner,0x55,sizeof(owner));final_return=(s32)0xC0004500u;retry=1;
-  assert(func_8003D468_3E068(i,0x12345678)==1);
+  assert(func_8003D468_3E068(i,resource_id)==1);
   assert(load_calls==2 && restore_calls==1 && reset_calls==1);
-  assert(recovered_halfword==D_801C78E8_1C84E8.id.half.lower);
+  assert(recovered_halfword==(u16)resource_id);
+#if defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+  assert(D_801C78E8_1C84E8.id.half.lower != (u16)resource_id); /* Host-only negative control. */
+#endif
   assert(D_801C77E8_1C83E8.loaded==(s32)0x80004500u);check_common();
   reset_mocks();memset(owner,0x55,sizeof(owner));
   D_801C7900_1C8500=0;D_801C7904_1C8504=0;
