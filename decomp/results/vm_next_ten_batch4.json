@@ -1,0 +1,153 @@
+{
+  "format": "goemon-next-ten-batch4-ido-native-research-v1",
+  "date_utc": "2026-11-09",
+  "branch": "chatgptweb/decomp",
+  "source_head": "916de293a9ebda0156fa2433ff44c994130adbad",
+  "status": "four_targets_investigated_zero_promoted",
+  "verification": {
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "decompressed_rom_bytes": 33554432,
+    "original_MIPS_rom_positions_verified": 239,
+    "all_original_word_bytes_equal_rom": true,
+    "compiler": "pinned IDO 5.3 native -c -O2 -mips2 -G 0 -non_shared",
+    "gnu_mips_binutils_version": "2.45.90.20260125",
+    "codegen_variants_compiled": 42,
+    "baseline_compilations": 4,
+    "host_mock_cases_executed": 7400,
+    "host_breakdown": {
+      "vm_loader": 400,
+      "resource_canonical": 3000,
+      "resource_volatile_probe": 3000,
+      "digit_formatter": 1000
+    },
+    "python_parser_and_structural_tests": 18,
+    "private_wrapper_rom_extent_check": "12/12 original instructions / 48 bytes and two return instructions",
+    "in_game_runs": 0,
+    "full_rom_rebuild_performed": false,
+    "uninterrupted_formal_verifier_completed": false
+  },
+  "targets": [
+    {
+      "priority": 7,
+      "name": "func_8003D468_3E068",
+      "original_vma": "0x8003D468",
+      "rom_offset": "0x3E068",
+      "original_bytes": 548,
+      "original_sha256": "ece95b38f4dbaf5268d308e09aea54a02d32d1615664137de03ecd46a0c262d7",
+      "baseline_source_blob": "7fd202b03e36559675ce6030fd261f462b85039f",
+      "baseline_ido_native": {
+        "size": 556,
+        "matching_direct": 1,
+        "comparable_direct": 26,
+        "matching_reloc_shapes": 46,
+        "comparable_reloc_shapes": 58,
+        "relocation_layout_differences": 53
+      },
+      "variations": 10,
+      "diagnostic_best_by_direct": {
+        "name": "entry_id_reload_pre_first_callback",
+        "size": 564,
+        "matching_direct": 7,
+        "comparable_direct": 25
+      },
+      "result": "unpromoted",
+      "reason": "Original 32-byte frame with saved s0/s1 and callback-dependent resource-ID live ranges not reproduced; compile-only shape variants were not host tested."
+    },
+    {
+      "priority": 8,
+      "name": "func_8003F038_3FC38",
+      "original_vma": "0x8003F038",
+      "rom_offset": "0x3FC38",
+      "original_bytes": 196,
+      "original_sha256": "7a258b9eae36120d3971f1997070c2a988fb9636cbd4c96f1f52ea888e7b9719",
+      "canonical_blob": "061ef6c582e0e9d0ccfd2cb9ac9e5227a720fbda",
+      "improved_blob": "c227b09be6e832edc2691f735025781932b268d0",
+      "baseline_ido_native": {
+        "size": 192,
+        "matching_direct": 11,
+        "comparable_direct": 40,
+        "matching_reloc_shapes": 0,
+        "comparable_reloc_shapes": 2,
+        "relocation_layout_differences": 6
+      },
+      "improved_ido_native": {
+        "size": 196,
+        "matching_direct": 25,
+        "comparable_direct": 42,
+        "matching_reloc_shapes": 3,
+        "comparable_reloc_shapes": 3,
+        "relocation_layout_differences": 4,
+        "object_sha256": "0ea0e1dbc04a20b658a1d85e11143c67fff95dea80da0cb1ce7b7d2353775737"
+      },
+      "source_shape": "Only s32 half -> volatile s32 half; no other executable C change",
+      "variations": 15,
+      "host_cases_for_each": 3000,
+      "result": "unpromoted",
+      "reason": "25/42 positional nonrelocation words and 3/3 relocation opcode shapes, but four relocation-layout differences, register/stack assignment mismatches and original-address/full-ROM proof absent."
+    },
+    {
+      "priority": 9,
+      "name": "func_8003F480_40080",
+      "original_vma": "0x8003F480",
+      "rom_offset": "0x40080",
+      "original_bytes": 164,
+      "original_sha256": "39be635c405c186b22571333c4eb409b1adaf5d9a6dc7c286688597dae3e6bd6",
+      "canonical_blob": "2430b56df4a980b4faa24689c90f325c85967527",
+      "baseline_ido_native": {
+        "size": 160,
+        "matching_direct": 2,
+        "comparable_direct": 15,
+        "matching_reloc_shapes": 3,
+        "comparable_reloc_shapes": 10,
+        "relocation_layout_differences": 15
+      },
+      "variants": 15,
+      "diagnostic_best_direct": {
+        "size": 156,
+        "matching_direct": 3,
+        "comparable_direct": 13
+      },
+      "host_cases": 1000,
+      "result": "unpromoted",
+      "reason": "Still lacks original bnel delay-slot scheduling; native -c size differs from older GNU-reassembled 164-byte measurement."
+    },
+    {
+      "priority": 10,
+      "name": "func_8003F6E8_402E8",
+      "original_vma": "0x8003F6E8",
+      "rom_offset": "0x402E8",
+      "original_bytes": 48,
+      "original_sha256": "fd5b89364249c531ad5a2eaed23b97dccf062444ac92c1ddd250fb9f1ca097dd",
+      "archived_asm_instruction_rows": 12,
+      "inventory_baseline_size": 48,
+      "inventory_candidate_size": 56,
+      "baseline_natural_c_size": 40,
+      "baseline_prefix_matching_direct": 9,
+      "baseline_prefix_comparable_direct": 9,
+      "baseline_prefix_matching_reloc_shapes": 1,
+      "baseline_prefix_comparable_reloc_shapes": 1,
+      "variants": 2,
+      "all_variants_compiled_size": 40,
+      "unreachable_original_extra_words": [
+        {
+          "vma": "0x8003F710",
+          "instruction": "jr $ra"
+        },
+        {
+          "vma": "0x8003F714",
+          "instruction": "nop"
+        }
+      ],
+      "result": "unpromoted",
+      "correction": "An earlier plan incorrectly called the original archived span 56 bytes; the original is 48, while 56 belongs to an inventory candidate annotation. An original function size difference cannot be ignored."
+    }
+  ],
+  "authoritative_counts_unchanged": {
+    "new_matching_c": 142,
+    "matching_mips_bytes": 10652,
+    "combined_c": 155,
+    "remaining_assembly": 7221
+  },
+  "limitations": "All four are isolated nonmatching C research. Native object relocation comparison is not final original-address MIPS identity; no full-ROM rebuild, in-game validation, uninterrupted formal verifier or function promotion."
+}

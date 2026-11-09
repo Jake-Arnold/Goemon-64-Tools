@@ -2,7 +2,10 @@
  * This is NOT an original-MIPS interpreter or game execution.
  */
 #define VM_F038_HOST_TEST 1
-#include "candidates/vm_resource_halfword_probe.c"
+#ifndef GOEMON_VM_RESOURCE_SOURCE
+#define GOEMON_VM_RESOURCE_SOURCE "candidates/vm_resource_halfword_probe.c"
+#endif
+#include GOEMON_VM_RESOURCE_SOURCE
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
