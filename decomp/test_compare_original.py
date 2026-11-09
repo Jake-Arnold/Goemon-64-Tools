@@ -4,7 +4,10 @@ import tempfile
 from pathlib import Path
 import unittest
 from unittest.mock import patch
-import compare_original as mod
+if __package__:
+    from . import compare_original as mod
+else:
+    import compare_original as mod
 
 NAME = "func_8003DE80_3EA80"
 VMA = 0x8003DE80
@@ -25,9 +28,19 @@ class ComparisonSafety(unittest.TestCase):
         self.assertEqual(off, OFF)
         self.assertEqual(rows, [(0x27bdffd8,None),(0x3c02801c,'HI16'),(0x0c004000,'26')])
 
+    def test_jump_relocation_recognition_uses_actual_mnemonics(self):
+        off, rows = mod.original_rows(asm([
+            (0x0c000000, 'jal func_800141C4_14DC4'),
+            (0x08000000, 'j .L8003DEB0_3EAB0'),
+            (0x0320f809, 'jalr $ra, $t9'),
+            (0x10000000, 'beq $zero, $zero, .L8003DEB0_3EAB0'),
+        ]), NAME)
+        self.assertEqual(off, OFF)
+        self.assertEqual([kind for _, kind in rows], ['26', '26', None, None])
+
     def test_function_scope_ignores_neighbor_functions(self):
-        before = 'glabel other\\n/* 3EA7C 8003DE7C 00000000 */ nop\\nendlabel other\\n'
-        after = 'glabel next\\n/* 3EA84 8003DE84 00000000 */ nop\\nendlabel next\\n'
+        before = 'glabel other\n/* 3EA7C 8003DE7C 00000000 */ nop\nendlabel other\n'
+        after = 'glabel next\n/* 3EA84 8003DE84 00000000 */ nop\nendlabel next\n'
         off, rows = mod.original_rows(before + asm([(0x27bdffd8, 'addiu $sp, $sp, -0x28')]) + after, NAME)
         self.assertEqual((off, rows), (OFF, [(0x27bdffd8, None)]))
 
@@ -36,7 +49,7 @@ class ComparisonSafety(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'ambiguous duplicate'):
             mod.original_rows(body + body, NAME)
         with self.assertRaisesRegex(ValueError, 'nested or overlapping'):
-            mod.original_rows(body.replace('endlabel '+NAME, 'glabel next\\nendlabel next\\nendlabel '+NAME), NAME)
+            mod.original_rows(body.replace('endlabel '+NAME, 'glabel next\nendlabel next\nendlabel '+NAME), NAME)
 
     def test_duplicate_and_gapped_address_rejected(self):
         line = f'/* {OFF:X} {VMA:08X} 00000000 */ nop'

@@ -30,16 +30,16 @@ def original_rows(source, function):
         raise ValueError("function ROM/VMA mapping differs")
     lines = source.splitlines()
     starts = [i for i, line in enumerate(lines)
-              if re.fullmatch(r"glabel\\s+" + re.escape(function) + r"\\s*", line)]
+              if re.fullmatch(r"glabel\s+" + re.escape(function) + r"\s*", line)]
     if len(starts) != 1:
         raise ValueError("missing original function label (or ambiguous duplicate)")
     begin = starts[0]
     ends = [i for i in range(begin + 1, len(lines))
-            if re.fullmatch(r"endlabel\\s+" + re.escape(function) + r"\\s*", lines[i])]
+            if re.fullmatch(r"endlabel\s+" + re.escape(function) + r"\s*", lines[i])]
     if len(ends) != 1:
         raise ValueError("missing or ambiguous original endlabel")
     end = ends[0]
-    if any(re.match(r"(?:glabel|endlabel)\\s+", line) for line in lines[begin+1:end]):
+    if any(re.match(r"(?:glabel|endlabel)\s+", line) for line in lines[begin+1:end]):
         raise ValueError("nested or overlapping original function labels")
     rows = []
     for line in lines[begin+1:end]:
@@ -50,7 +50,7 @@ def original_rows(source, function):
         if off != offset + 4 * len(rows) or address != vma + 4 * len(rows):
             raise ValueError(f"noncontiguous original ROM/VMA at {address:#x}")
         asm = match.group(4).strip()
-        reloc = "26" if re.search(r"\\b(?:jal|j)\\s+\\S+", asm) else (
+        reloc = "26" if re.search(r"\b(?:jal|j)\s+\S+", asm) else (
             "HI16" if "%hi(" in asm else "LO16" if "%lo(" in asm else None)
         rows.append((word, reloc))
     if not rows:

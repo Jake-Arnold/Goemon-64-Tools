@@ -13,8 +13,14 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),139)
-        self.assertEqual(len(claimed_functions(manifest)),140)
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),141)
+        self.assertEqual(len(claimed_functions(manifest)),142)
+        # The accepted checkpoint has 141 new units plus one reviewed source patch.
+        # Require its published proof and inventory to agree with the live claims.
+        proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
+        inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
+        self.assertEqual(proof['comparison']['matched_functions'],len(claimed_functions(manifest)))
+        self.assertEqual(inventory['summary']['newly_matching_c'],len(claimed_functions(manifest)))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'
