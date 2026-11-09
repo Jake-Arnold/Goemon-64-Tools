@@ -6,6 +6,10 @@ a different Linux host. This tool makes a small private symlink directory with
 only the needed Binutils DSOs and verifies assembler/linker/objcopy readiness.
 It does not install software or modify a repository checkout.
 
+The formal verifier now uses this module directly when --binutils-root (or
+GOEMON_MIPS_BINUTILS_ROOT) identifies an extracted archive. Normal verification
+requires no manual eval or LD_LIBRARY_PATH modification.
+
 Usage (execute shell exports in the caller's shell):
   eval "$(python decomp/prepare_mips_binutils.py --root /path/to/extracted \
          --runtime-dir /tmp/goemon-binutils-libs)"
@@ -28,7 +32,7 @@ BINUTILS_LIBRARIES = (
     "libctf-nobfd-mips.so.0",
     "libsframe.so.3",
 )
-TOOLS = ("as", "ld", "objcopy", "objdump")
+TOOLS = ("as", "ld", "objcopy", "objdump", "nm")
 VERSION = "2.45.90.20260125"
 
 

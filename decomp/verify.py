@@ -20,11 +20,24 @@ import subprocess
 try:
     from .elf_layout import pack_object_file, pack_heap_noop_file
     from .collision_patch import prepare_collision_gate
+    from .prepare_mips_binutils import configure as configure_binutils
 except ImportError:
     from elf_layout import pack_object_file, pack_heap_noop_file
     from collision_patch import prepare_collision_gate
+    from prepare_mips_binutils import configure as configure_binutils
 
 ROOT = Path(__file__).resolve().parent
+
+
+def build_tool_environment(binutils_root, runtime_dir):
+    """Isolate pinned cross-binutils DSOs for child build commands only.
+
+    Never load an extracted archive libc into the verifier process itself.
+    No persistent system installation, LD_LIBRARY_PATH export or shell eval.
+    """
+    if binutils_root is None:
+        return os.environ.copy()
+    return configure_binutils(Path(binutils_root), Path(runtime_dir))
 
 # The only accepted patch of an upstream-owned C translation unit. The staged
 # source hash is from the reviewed LF-only integration; changed upstream context
@@ -259,18 +272,24 @@ def run_build(args,manifest,report):
     upstream=args.upstream.resolve();work=args.workdir.resolve()
     if work.exists():raise ValueError('Work directory already exists; choose a new path')
     if digest(args.retail_rom.read_bytes())!=manifest['retail_sha1']:raise ValueError('Retail ROM identity mismatch')
+    tool_env=os.environ.copy()
     def capture(command,cwd=None):
-        return subprocess.check_output(command,cwd=cwd,text=True,stderr=subprocess.STDOUT).strip()
+        return subprocess.check_output(command,cwd=cwd,text=True,stderr=subprocess.STDOUT,env=tool_env).strip()
     if capture(['git','rev-parse','HEAD'],upstream)!=manifest['upstream_commit']:
         raise ValueError('Upstream checkout is not the pinned commit')
+    binutils_root=getattr(args,'binutils_root',None)
+    if binutils_root is not None:
+        work.mkdir(parents=True)
+        tool_env=build_tool_environment(binutils_root,work/'.binutils-runtime')
+        report['binutils_runtime']='pinned_curated'
     for tool in ('git','make','gcc','mips-linux-gnu-as','mips-linux-gnu-ld','mips-linux-gnu-objcopy','mips-linux-gnu-nm'):
-        if not shutil.which(tool):raise ValueError('Required tool unavailable: '+tool)
-    uv=shutil.which(args.uv)
+        if not shutil.which(tool,path=tool_env.get('PATH')):raise ValueError('Required tool unavailable: '+tool)
+    uv=shutil.which(args.uv,path=tool_env.get('PATH'))
     if uv is None:raise ValueError('uv is unavailable')
     requested_cache = getattr(args, 'baseline_cache', None)
     if requested_cache and work.is_relative_to(requested_cache.resolve()):
         raise ValueError('New work directory must be outside the immutable baseline cache')
-    work.mkdir(parents=True)
+    work.mkdir(parents=True,exist_ok=binutils_root is not None)
     report.update(upstream_commit=manifest['upstream_commit'],retail_sha1=manifest['retail_sha1'],
         verifier_source_sha256_lf=digest(Path(__file__).read_bytes().replace(b'\r\n',b'\n'),'sha256'),
         tool_versions={name:capture(command).splitlines()[0] for name,command in {
@@ -278,7 +297,7 @@ def run_build(args,manifest,report):
     def logged(stage,command,cwd):
         report['stage']=stage
         with (work/(stage+'.log')).open('w',encoding='utf-8') as log:
-            subprocess.run(command,cwd=cwd,stdout=log,stderr=subprocess.STDOUT,check=True)
+            subprocess.run(command,cwd=cwd,stdout=log,stderr=subprocess.STDOUT,check=True,env=tool_env)
     cache = getattr(args, 'baseline_cache', None)
     baseline = cache.resolve() if cache else work/'baseline'
     candidate = work/'candidate'
@@ -342,6 +361,10 @@ def main(argv=None):
     parser.add_argument('--retail-rom',type=Path,required=True)
     parser.add_argument('--report',type=Path,required=True,help='New local/ignored JSON report')
     parser.add_argument('--uv',default='uv')
+    parser.add_argument('--binutils-root',type=Path,
+        default=(Path(os.environ['GOEMON_MIPS_BINUTILS_ROOT'])
+                 if os.environ.get('GOEMON_MIPS_BINUTILS_ROOT') else None),
+        help='Root of extracted pinned cross-binutils archive; auto-reads GOEMON_MIPS_BINUTILS_ROOT')
     parser.add_argument('--jobs',type=int,default=4)
     parser.add_argument('--baseline-cache',type=Path,help='Immutable baseline from a completed fresh verifier run')
     parser.add_argument('--manifest',type=Path,default=ROOT/'manifest.json',help='Reviewed matching manifest')
@@ -354,7 +377,7 @@ def main(argv=None):
         # Reserve before any build changes. An existing report is never replaced.
         with args.report.open('x',encoding='utf-8') as output:
             try:run_build(args,load_manifest(args.manifest),report)
-            except (OSError,ValueError,subprocess.SubprocessError) as exc:report['error']=str(exc)
+            except (OSError,ValueError,RuntimeError,subprocess.SubprocessError) as exc:report['error']=str(exc)
             finally:
                 report['ended_utc']=datetime.now(timezone.utc).isoformat()
                 json.dump(report,output,indent=2);output.write('\n')

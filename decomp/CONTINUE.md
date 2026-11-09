@@ -63,6 +63,36 @@ count as a full-ROM-verified function.
 
 ## 2. Use the existing Linux tools
 
+### Automatic isolated MIPS binutils environment (Linux / WSL)
+
+The recovered cross-binutils archive bundles an incompatible `libc.so.6`; adding its
+entire `usr/lib/x86_64-linux-gnu` directory to `LD_LIBRARY_PATH` can crash
+`mips-linux-gnu-ld`. **Do not export that full library directory.**
+
+The formal `decomp.verify` runner now automatically invokes
+`prepare_mips_binutils.configure` when given the extracted archive root.
+It stages only the five pinned Binutils DSOs in a **new private runtime directory
+inside the new verifier workdir**, checks version strings of assembler, linker,
+objcopy, objdump and nm, and passes the curated PATH/library environment to
+every build subprocess. No system install, persistent shell exports, modifications
+to the pinned toolchain, or manual `eval` are needed.
+
+Supply either `--binutils-root /path/to/extracted-archive-root` on the normal
+`python -m decomp.verify ...` command, or set
+`GOEMON_MIPS_BINUTILS_ROOT=/path/to/extracted-archive-root` in the environment
+used to launch the verifier. The root must contain
+`usr/bin/mips-linux-gnu-ld` and `usr/lib/x86_64-linux-gnu/`.
+The verifier creates `<new-workdir>/.binutils-runtime` itself and rejects
+unexpected libraries, missing tools and incompatible versions. Without a root
+setting it retains the standard system-toolchain behavior. The extracted archive
+and ROM remain local; this setup is recreated in every ephemeral environment.
+
+Run the focused tests:
+`python -m unittest discover -s decomp -p 'test_prepare_mips_binutils.py'`
+and
+`python -m unittest discover -s decomp -p 'test_verify_binutils.py'`.
+
+
 All commands below run in Ubuntu WSL, from the toolkit cwd above. From PowerShell,
 enter with `wsl -d Ubuntu`, then `cd` to that quoted WSL path. Compiler inputs must
 use LF line endings; do not build from a CRLF-converted mnsg checkout.
