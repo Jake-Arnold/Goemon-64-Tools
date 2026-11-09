@@ -1,0 +1,94 @@
+{
+  "format": "vm_text_loop_native_ido_codegen_v1",
+  "date": "2026-11-09",
+  "status": "research_only_unpromoted",
+  "function": "func_8003DBEC_3E7EC",
+  "original_offset": "0x3E7EC",
+  "original_vma": "0x8003DBEC",
+  "original_bytes": 472,
+  "original_sha256": "4ee117dd31f6b8f3ab30ca864c202eb7c974c28cc8236d233a94228b36a0a764",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "source": "decomp/candidates/vm_text_loop_alias_probe.c",
+  "source_git_blob": "fdb04764593e6cc2a6abe79079d3946a2d0e135a",
+  "compiler": "IDO 5.3 -O2 -mips2 -G 0 -non_shared -c",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "canonical_object_sha256": "8851b3490b90f21eefb80e202e199a083b735bcfd3079c633643318565403072",
+  "variants": [
+    {
+      "name": "canonical_alias_native",
+      "compiled_bytes": 472,
+      "matching_nonreloc": 53,
+      "comparable_nonreloc": 88,
+      "reloc_layout_differences": 17
+    },
+    {
+      "name": "gate_through_work",
+      "compiled_bytes": 480,
+      "matching_nonreloc": 18,
+      "comparable_nonreloc": 79,
+      "reloc_layout_differences": 28
+    },
+    {
+      "name": "script_through_work",
+      "compiled_bytes": 472,
+      "matching_nonreloc": 53,
+      "comparable_nonreloc": 86,
+      "reloc_layout_differences": 19
+    },
+    {
+      "name": "outer_counter_volatile",
+      "compiled_bytes": 476,
+      "matching_nonreloc": 33,
+      "comparable_nonreloc": 88,
+      "reloc_layout_differences": 17
+    },
+    {
+      "name": "retry_counter_volatile",
+      "compiled_bytes": 496,
+      "matching_nonreloc": 4,
+      "comparable_nonreloc": 86,
+      "reloc_layout_differences": 22
+    },
+    {
+      "name": "nonvolatile_work",
+      "compiled_bytes": 476,
+      "matching_nonreloc": 18,
+      "comparable_nonreloc": 87,
+      "reloc_layout_differences": 21
+    },
+    {
+      "name": "state_before_store",
+      "compiled_bytes": 468,
+      "matching_nonreloc": 31,
+      "comparable_nonreloc": 88,
+      "reloc_layout_differences": 17
+    },
+    {
+      "name": "volatile_state",
+      "compiled_bytes": 472,
+      "matching_nonreloc": 53,
+      "comparable_nonreloc": 88,
+      "reloc_layout_differences": 17
+    },
+    {
+      "name": "pointer_cast_state",
+      "compiled_bytes": 472,
+      "matching_nonreloc": 53,
+      "comparable_nonreloc": 88,
+      "reloc_layout_differences": 17
+    },
+    {
+      "name": "global_store_after_state",
+      "compiled_bytes": 468,
+      "matching_nonreloc": 33,
+      "comparable_nonreloc": 90,
+      "reloc_layout_differences": 14
+    }
+  ],
+  "reassembly_caution": "GNU MIPS reassembly of the IDO emitted .s produced 480 bytes instead of 472 native IDO -c bytes; compare native-compiled object only.",
+  "tests": "10 pinned native IDO compilations with ROM-checked positional diagnostics. Historical 10000 synthetic original-MIPS/host differential cases were not rerun.",
+  "formal_verifier_run_completed": false,
+  "promoted": false,
+  "full_rom_rebuilt_this_run": false,
+  "next": "Plan #7 VM loader func_8003D468_3E068"
+}

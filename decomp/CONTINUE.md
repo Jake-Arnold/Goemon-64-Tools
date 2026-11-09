@@ -11,6 +11,8 @@ Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and over
 
 ## 1. Establish the current state
 
+**Next-ten #6 complete as research (2026-11-09):** exact current VM text-loop alias candidate reproduces the historical 472-byte pinned IDO native `-c` output and 53 directly comparable nonrelocation words. Ten native codegen variations gave no improvement; GNU MIPS reassembly of IDO `.s` differs (480 bytes). See `results/vm_text_loop_native_codegen_probe.json`. Move to plan #7 `func_8003D468_3E068`; no C promotion or new formal verifier result.
+
 **Next-ten target #5 (2026-11-09):** 14 pinned IDO/MIPS codegen variants of the original 232-byte VM command walker `func_8003DE80_3EA80` were measured against the hash-verified original. Seven passed 8,400 total synthetic mock-C scenarios. No variant reproduced original `bltzl` or saved-register layout; a 232-byte size-only variant was specifically rejected. Baseline remains 228 bytes / 8 of 35 direct words. See `results/vm_next_ten_batch3.json`. **Next #6: text loop `func_8003DBEC_3E7EC`**. Exact 142-function promotion count and formal flag remain unchanged.
 
 **Next-ten target #4 (2026-11-09):** `func_8003E6C0_3F2C0` has a research-only 400-byte IDO source against 348-byte original, with **0/52 directly comparable instruction-position matches**, and 400 synthetic host cases passed. Verified 87 original words and 12 guards; expanded cumulative first-four guards to 354 words/32 anchors. See `candidates/vm_callback_setup_e6c0.c` and `results/vm_next_ten_batch2.json`. No promotion or formal-verifier completion. **Next #5 `func_8003DE80_3EA80`**.

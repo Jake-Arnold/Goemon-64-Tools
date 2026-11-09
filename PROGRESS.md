@@ -2,6 +2,15 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-09 - Next-ten #6: VM text-loop native IDO codegen and ten bounded probes (UNPROMOTED)
+
+- Read live branch, AGENTS.md, CONTINUE.md, MASTER_WORK_QUEUE.md, NEXT_TEN_FUNCTIONS.md, manifest and both proof JSONs. Recorded proof remains 142 matching-C / 10,652 bytes / 7,221 ASM, uninterrupted formal verifier incomplete.
+- Matched the exact current research C source Git blob `fdb04764593e6cc2a6abe79079d3946a2d0e135a`. The original 118 instruction words at USA ROM 0x3E7EC matched the privately verified 33,554,432-byte decompressed image (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`); original function SHA-256 `4ee117dd31f6b8f3ab30ca864c202eb7c974c28cc8236d233a94228b36a0a764`.
+- Important reproduction finding: pinned IDO 5.3 `-O2 -mips2 -G 0 -non_shared -c` compiled the canonical alias source to **472 bytes** (object SHA-256 `8851b3490b90f21eefb80e202e199a083b735bcfd3079c633643318565403072`) and **53/88** directly comparable nonrelocation instruction words. Compiling IDO output to `.s` and reassembling with GNU MIPS instead produced **480 bytes** due to assembler scheduling. Do not use the reassembled form in native IDO comparisons. The historical 53/95 metric used a different relocation exclusion denominator; no improvement is claimed from denominator changes.
+- Executed ten native IDO compile and ROM-validated isolated object comparisons: canonical 472 B 53/88; gate via work 480 B 18/79; script via work 472 B 53/86; outer counter volatile 476 B 33/88; retry counter volatile 496 B 4/86; nonvolatile work 476 B 18/87; state load before callback result store 468 B 31/88; volatile state load 472 B 53/88; cast-pointer state load 472 B 53/88; global store after state load 468 B 33/90. No variant improved canonical 53 matching direct positions or resolved the original 0x48 frame / branch-likely delays.
+- Added research-only diagnostic `decomp/results/vm_text_loop_native_codegen_probe.json`. No new synthetic host tests were executed; existing 10,000-case differential evidence belongs to the unchanged earlier alias candidate. No complete-ROM build, formal verifier or in-game run performed.
+- No promotion; production C, manifest, combined proof and inventory unchanged. **Next target #7:** VM loader `func_8003D468_3E068`, with callback-mutated resource global and original saved `$s0/$s1` register lifetimes.
+
 ## 2026-11-09 - Next-ten function #5: targeted VM command-walker codegen variants (UNPROMOTED)
 
 - Re-inspected live branch and verified the existing 142-function, 10,652-byte complete-ROM proof is unchanged. Independently checked original USA `func_8003DE80_3EA80` against the SHA-pinned private decompressed ROM at `0x3EA80`: **232/232 original bytes** equal, SHA-256 `011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1`.
