@@ -1,0 +1,182 @@
+{
+  "format": "goemon-next-ten-isolated-research-v1",
+  "batch": 3,
+  "date_utc": "2026-11-09",
+  "base_commit": "7f8f6e6ac53dc853260911df2a647bc30b106390",
+  "targets_investigated_in_plan": 5,
+  "targets_promoted_in_plan": 0,
+  "function": "func_8003DE80_3EA80",
+  "original": {
+    "vma": "0x8003DE80",
+    "rom_offset": "0x3EA80",
+    "size_bytes": 232,
+    "instruction_sha256": "011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "original_bytes_checked_against_rom": true
+  },
+  "pinned_compiler": "IDO 5.3 -O2 -mips2 -G 0 -non_shared",
+  "assembler": "GNU MIPS Binutils 2.45.90.20260125",
+  "comparator": "private original ROM + original Splat assembly vs isolated ELF32 MIPS object; relocations separately tagged",
+  "columns": [
+    "variant",
+    "compiled_function_size_bytes",
+    "matching_direct_words",
+    "comparable_direct_words",
+    "matching_same_kind_relocated_shapes",
+    "comparable_same_kind_relocated_shapes",
+    "relocation_layout_differences",
+    "tested_1200_host_cases"
+  ],
+  "measurements": [
+    [
+      "out_of_line_negative_baseline",
+      228,
+      8,
+      35,
+      2,
+      3,
+      19,
+      true
+    ],
+    [
+      "explicit_work_pointer_only",
+      232,
+      4,
+      28,
+      1,
+      1,
+      29,
+      true
+    ],
+    [
+      "explicit_status_pointer_only",
+      224,
+      1,
+      28,
+      0,
+      2,
+      26,
+      true
+    ],
+    [
+      "shared_return_block",
+      224,
+      5,
+      35,
+      1,
+      3,
+      18,
+      true
+    ],
+    [
+      "negative_common_mark_block",
+      220,
+      4,
+      34,
+      1,
+      4,
+      17,
+      true
+    ],
+    [
+      "positive_arm_label",
+      228,
+      3,
+      33,
+      1,
+      3,
+      21,
+      true
+    ],
+    [
+      "direct_token_reload_without_local",
+      236,
+      9,
+      35,
+      1,
+      2,
+      21,
+      true
+    ],
+    [
+      "both_status_work_pointers",
+      228,
+      2,
+      25,
+      1,
+      2,
+      30,
+      false
+    ],
+    [
+      "increment_before_marker_store",
+      228,
+      8,
+      35,
+      1,
+      3,
+      19,
+      false
+    ],
+    [
+      "explicit_nonzero_flag_test",
+      228,
+      8,
+      35,
+      2,
+      3,
+      19,
+      false
+    ],
+    [
+      "explicit_s32_negative_cast",
+      228,
+      8,
+      35,
+      2,
+      3,
+      19,
+      false
+    ],
+    [
+      "negative_result_pointer",
+      228,
+      8,
+      35,
+      2,
+      3,
+      19,
+      false
+    ],
+    [
+      "negative_arm_inline",
+      228,
+      3,
+      33,
+      1,
+      3,
+      21,
+      false
+    ],
+    [
+      "split_negative_minus_one_fast_path",
+      244,
+      1,
+      31,
+      1,
+      1,
+      26,
+      false
+    ]
+  ],
+  "host_tests": {
+    "variants_tested": 7,
+    "cases_per_variant": 1200,
+    "passing_cases": 8400,
+    "toolchain": "GCC C11 -Wall -Wextra -Werror -O1 -fsanitize=address,undefined",
+    "nature": "synthetic mock callbacks, not original MIPS/in-game"
+  },
+  "finding": "One explicit work-pointer variant matches the 232-byte size but does not preserve the original four saved s registers or instruction layout; direct token reloading reaches 9/35 compared words but grows to 236 bytes. The prior out-of-line negative baseline remains strongest overall at 228 bytes and 8/35 direct words. No variant emits the required original bltzl/delay-slot schedule.",
+  "limits": "All locally generated alternate C files stayed private. No production source changes, no new full-ROM link, no formal verifier completion, no matching-C promotion.",
+  "next": "func_8003DBEC_3E7EC (472-byte VM text loop), existing canonical 53/95 nonrelocation research result; resolve exact pinned compiler source/provenance before revising that measurement."
+}
