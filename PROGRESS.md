@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-09 - reject overlapping comparator ELF hexdump evidence (unpromoted)
+
+- Hardened the local-ROM-gated VM comparator proof parser: `readelf -x .text` rows with repeated or overlapping offsets now raise `ValueError` rather than silently replacing earlier instruction words. Added two negative controls for identical duplicate rows and partially overlapping rows. This prevents ambiguous ELF evidence from being treated as a unique instruction sequence; it does not change reconstructed game code.
+- **Executed tests:** five focused Python 3.13 parser cases in a local isolated harness (normal, duplicate, overlapping, gap, empty) passed. The committed repository tests reflect the two negative controls, but the full repository suite, pinned IDO compilation, 142-function full-ROM gate, uninterrupted formal verifier and in-game tests were **not executed** during this run. No new function promoted; counts remain **141 matching-C / 10,312 bytes**.
+- Next: complete current-branch full-ROM integration of the already isolated-exact 340-byte VM comparator. Keep the 141-function verifier status unchanged until its formal invocation completes.
+
 ## 2026-11-09 - fail-closed comparator ELF symbol identity guard (unpromoted)
 
 - Audited the ROM-gated isolated comparator checker and found that its ELF FUNC parser previously accepted an undefined symbol or the first of multiple matching symbols. Tightened it to require **exactly one defined section-indexed FUNC** before interpreting object offsets; otherwise it raises a validation error rather than potentially reporting misleading isolated matching-C proof. Added two negative-control tests for undefined and duplicate symbols. No ROM, toolchain, generated assembly or private path committed.

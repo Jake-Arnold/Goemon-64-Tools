@@ -45,6 +45,8 @@ def read_text_words(dump: str) -> bytes:
             continue
         addr = int(m.group(1), 16)
         for chunk in m.group(2).split():
+            if addr in words:
+                raise ValueError(f'Duplicate ELF .text word at {addr:#x}')
             words[addr] = bytes.fromhex(chunk)
             addr += 4
     if not words:

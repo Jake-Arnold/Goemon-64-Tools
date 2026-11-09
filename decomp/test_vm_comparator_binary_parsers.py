@@ -28,6 +28,16 @@ class ComparatorGateParsing(unittest.TestCase):
         self.assertEqual(read_text_words(text), bytes.fromhex(
             '34018002148100050000182514a6004f0000000003e000082402000134018003'))
 
+    def test_text_dump_duplicate_line_rejected(self):
+        text = '  0x00000000 34018002\n  0x00000000 34018002\n'
+        with self.assertRaisesRegex(ValueError, 'Duplicate'):
+            read_text_words(text)
+
+    def test_text_dump_overlapping_line_rejected(self):
+        text = '  0x00000000 34018002 14810005\n  0x00000004 14810005\n'
+        with self.assertRaisesRegex(ValueError, 'Duplicate'):
+            read_text_words(text)
+
     def test_text_dump_gap_rejected(self):
         text = '  0x00000000 34018002\n  0x00000008 00000000\n'
         with self.assertRaisesRegex(ValueError, 'Discontinuous'):
