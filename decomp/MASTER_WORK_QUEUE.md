@@ -12,6 +12,10 @@ This is the repository's cross-conversation handoff for the Goemon toolkit and m
 - The single uninterrupted formal verification runner timed out; its resumed clean build passed independent full-ROM and inventory comparisons. **An uninterrupted formal verifier run remains outstanding**. Separately, a regenerated full 2,331-object 141-function build has passed independent complete-ROM, original-address, and symbol-inventory comparisons. Never mislabel the interrupted formal run as successful.
 - The earlier collision gate (80 bytes), heap no-op (8 bytes), and choice edge (204 bytes) are already included in the 141. Their pinned source/layout guards must remain enforced.
 
+## Next-ten execution plan (2026-11-09)
+
+Follow [NEXT_TEN_FUNCTIONS.md](NEXT_TEN_FUNCTIONS.md) for the prioritized **ten distinct unpromoted** VM function targets, precise acceptance gates, and deliberately deferred high-cost routines. This is a bounded research sequence, not ten pre-verified promotions; the 142 matching-C proof and pending uninterrupted formal verifier remain authoritative.
+
 ## Open matching-C work (ordered)
 
 | Priority | Target | Precise unresolved condition |

@@ -1,0 +1,48 @@
+# Next ten matching-C functions — evidence-ranked execution plan
+
+Authoritative starting checkpoint (2026-11-09): **142 newly matching C / 10,652 exact MIPS bytes; 13 upstream C; 155 combined C; 7,221 ASM** of 7,376 identified. The latest live proof is an independently recreated 2,331-object, 33,554,432-byte exact decompressed ROM build (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). **Uninterrupted `decomp.verify` remains pending (`formal_verifier_run_completed=false`).** Verify current branch HEAD, `AGENTS.md`, `CONTINUE.md`, `MASTER_WORK_QUEUE.md`, `manifest.json`, `results/combined.json` and `results/inventory.json` on *each run*; replace these dated totals with newer repository proof when it exists.
+
+## First: verification prerequisite (not a function)
+
+Restore a clean pinned build environment using the user's private retail USA ROM (SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`), pinned upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, IDO 5.3, Splat 0.36.3 and pinned GNU MIPS Binutils `2.45.90.20260125`. Regenerate the archive's known CRC-damaged generated `candidate/asm/usa/file_72.s` using Splat from the verified ROM; never invent its bytes. Attempt one uninterrupted `python -m decomp.verify` against the **current 142-function source**, following `CONTINUE.md`. If incomplete, leave its completion flag false and retain independent proof as independent proof. Do not block bounded C research if the formal runner remains unavailable.
+
+## Selected ten functions, in order
+
+The ten names below are **13 current VM ASM placeholders minus three deliberately deferred high-cost functions**. Each function was cross-checked as unpromoted in the live manifest. The original function words in the recovered private archive were independently checked against the SHA-verified decompressed USA ROM. Sizes below are original instruction extents except for the symbol-boundary uncertainty described in #10.
+
+| Priority | Function | Original bytes | Technical approach and measurable target |
+|---|---|---:|---|
+| 1 | `func_8003E234_3EE34` | 440 | **Display-list emitter**, no calls. Recover the exact ordered two-word graphics-command stores, pointer increments, array indexing, register reuse and return delay slot; test a mock display-list buffer and first/last emitted words. |
+| 2 | `func_8003EBAC_3F7AC` | 436 | **Related display-list emitter**, no calls. Reuse only the *confirmed* buffer/command structure from #1; preserve different resource pointers, opcode constants, store order and exit delay slot. Build independently; do not mass-convert with untested macros. |
+| 3 | `func_8003F37C_3FF7C` | 192 | **VM setup/callback registration** with three calls, one return and floating-point stores. Establish actual float/value widths, 0x50-byte stack frame, call arguments and callback pointer values, then use exact isolated codegen comparison. |
+| 4 | `func_8003E6C0_3F2C0` | 348 | **VM callback/setup path**, four calls, three conditional branches. Derive typed VM structures and callback sequencing from original loads/stores; host-test both sides of each branch and callback-modified globals. |
+| 5 | `func_8003DE80_3EA80` | 232 | **Command walker**. Start from the out-of-line negative-arm research C in `candidates/vm_command_walker_goto_probe.c` (228 compiled bytes; 8/35 directly comparable positions). Match the original `bltzl` conditional delay slot and `$s0/$s1/$s2/$s3` lifetimes, without changing semantic exit paths. Retain the 1,200-case mock harness. |
+| 6 | `func_8003DBEC_3E7EC` | 472 | **Text loop**. Start from `candidates/vm_text_loop_alias_probe.c` (original symbol size, 53/95 comparable nonrelocation positions). Resolve its six branch-likely slots, original 0x48 versus compiled 0x50 frame, callback reloads, +0xA VM-work halfword, controller unsigned +2/+4, retry vs outer counters. Preserve its 10,000-case differential harness. |
+| 7 | `func_8003D468_3E068` | 548 | **Resource loader**. Preserve two distinct global resource-ID reloads after callbacks and the saved *entry* ID used by `func_8003DDC4_3E9C4`; reproduce the original 32-byte frame with saved `$s0/$s1`. Existing typed research draft is 560 bytes; use the 400-case and 1,024-case mutation harnesses, not the obsolete 118/137 positional claim alone. |
+| 8 | `func_8003F038_3FC38` | 196 | **Signed halfword resource lookup**. Reconstruct `arg==0x100` bypass, negative division-by-two truncation, two resource calls, optional recovery, and wrapped shifted offset. Current research compiles to 204 bytes; retain 3,000 host cases and original-address control-flow guards. |
+| 9 | `func_8003F480_40080` | 164 | **Number-to-halfword formatter**. Restore the original `sprintf` argument registers and `bnel` next-character delay slot. Current size-only C is 164 bytes but matches only 3/19 directly comparable nonrelocation positions; retain the 1,000-case sanitizer harness and 15 original-assembly guards. |
+| 10 | `func_8003F6E8_402E8` | **48 baseline*** | **Choice wrapper and unreachable tail**. First reconcile baseline readelf's **48-byte** function annotation against the **56-byte** private archived assembly span (14 words). The earlier natural C reproduced only a 40/48 prefix. Require exact full claimed original address range and layout proof; never promote a prefix or pad with manufactured instructions. |
+
+* #10 is a **symbol extent/layout investigation before C promotion**. Count only verified original function bytes. The provisional sum of the ten baseline extents is **3,076 bytes**. An archive span must not silently redefine a baseline function boundary.
+
+## Deferred after these ten
+
+- `func_8003D68C_3E28C`: 812-byte VM routine; 22 calls, seven branch/jump sites and three branch-likely instructions. Defer until supporting interface types stabilize.
+- `func_8003DF98_3EB98`: 528-byte VM routine with 21 calls; defer until callback/lookup declarations from the smaller functions are validated.
+- `func_8003ED60_3F960`: 592-byte command/graphics path with two calls into `func_8003F038_3FC38`, and two branch-likely instructions. Revisit after #8.
+- The separate 96-byte overlay initializer `func_080001BC_6F369C` retains its isolated-linked match but requires explicit overlay ROM/VMA/section-layout proof, not the main-segment manifest shortcut.
+
+These are *not* abandoned. They are deferred to avoid losing runs to high-call-count and layout-blocked targets before shared semantics are established.
+
+## Unit-of-work rules for each of the ten
+
+1. **Evidence:** Recheck current remote HEAD and proof/manifest. Recover private original instructions from the SHA-pinned ROM, verify exact ROM offset/VMA and symbol boundaries, and inventory each read, write, callback, return and delay slot. Never trust an older chat count over the repository.
+2. **One change at a time:** Write a separate research C candidate or adjust one evidence-based code shape, declaration, alias assumption or register lifetime. Compile with **pinned IDO 5.3** flags `-O2 -mips2 -G 0 -non_shared`, then GNU MIPS Binutils. Compare via `decomp/compare_original.py` with relocation-aware diagnostics. A matching function *size* or masked relocation shape is **not** an exact match.
+3. **Bounded exploration:** Spend a substantive unit identifying the strongest mismatch cluster, then run a few targeted variations (typically up to four) and measure both instructions and behaviour. If none improve a grounded condition, write the specific blocker and move on instead of rerunning generic no-op/permuter sweeps. Never regress a previously verified integration.
+4. **Behaviour:** Add targeted host unit tests, ASan/UBSan when supported, and negative controls for pointer/sign/callback edge cases. Original-MIPS differential checks when feasible are stronger than mocks, but neither is an in-game test.
+5. **Promotion gate:** Claim the function only after exact original-address/code bytes **and** an independent, complete **33,554,432/33,554,432-byte** decompressed ROM comparison with SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; verify all formerly claimed functions, the 2,331-object build, readelf inventory and ELF metadata/source guards. Do not alter `results/combined.json` or the counts for a failed isolated candidate.
+6. **Record/push:** In the same commit as each change, update root `PROGRESS.md` with date, actual commands/tests, limitations and next target; update `CONTINUE.md`/work queue when priorities change. Push **only** `chatgptweb/decomp` after a remote-SHA race check, never force-push. Keep ROM, game assets, original/generated assembly, binaries, toolchains, save data, private paths and diagnostics off GitHub. Do not touch `main`, native warps or story flags.
+
+## Expected milestone (conditional, not a current claim)
+
+If **all ten** selected functions become independently ROM-verified at their baseline sizes: **152 newly matching-C functions; 13,728 exact newly matched bytes; 165 combined C entries; 7,211 ASM entries**. This is an objective, **not** a forecast or automatic counter increase. If fewer than ten meet full acceptance, report only the functions genuinely promoted and move to the deferred queue or broader inventory for the next bounded target.
