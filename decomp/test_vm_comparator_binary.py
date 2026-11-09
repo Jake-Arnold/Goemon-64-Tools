@@ -24,11 +24,16 @@ EXPECTED_SHA256 = 'bfa8ec5494880607e6b7d822dc952b22da49d7617ab50d59c6e920cbc4598
 
 
 def read_symbol(table: str) -> tuple[int, int]:
+    matches = []
     for row in table.splitlines():
         parts = row.split()
         if len(parts) >= 8 and parts[3] == 'FUNC' and parts[-1] == SYMBOL:
-            return int(parts[1], 16), int(parts[2])
-    raise ValueError('Missing required ELF FUNC symbol')
+            if not parts[6].isdigit() or int(parts[6]) <= 0:
+                raise ValueError('Comparator must be defined in an ELF section')
+            matches.append((int(parts[1], 16), int(parts[2])))
+    if len(matches) != 1:
+        raise ValueError(f'Expected exactly one defined comparator ELF FUNC, got {len(matches)}')
+    return matches[0]
 
 
 def read_text_words(dump: str) -> bytes:

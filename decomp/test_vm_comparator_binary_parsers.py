@@ -11,6 +11,16 @@ class ComparatorGateParsing(unittest.TestCase):
         with self.assertRaises(ValueError):
             read_symbol(row.replace('FUNC', 'NOTYPE'))
 
+    def test_undefined_symbol_rejected(self):
+        row = '  2: 00000000   340 FUNC    GLOBAL DEFAULT  UND func_8003D9B8_3E5B8'
+        with self.assertRaisesRegex(ValueError, 'defined in an ELF section'):
+            read_symbol(row)
+
+    def test_duplicate_symbol_rejected(self):
+        row = '  2: 00000000   340 FUNC    GLOBAL DEFAULT    4 func_8003D9B8_3E5B8'
+        with self.assertRaisesRegex(ValueError, 'exactly one'):
+            read_symbol(row + '\n' + row)
+
     def test_text_dump_discard_ascii(self):
         text = ('Hex dump of section .text:\n'
                 '  0x00000000 34018002 14810005 00001825 14a6004f 4..........%...O\n'

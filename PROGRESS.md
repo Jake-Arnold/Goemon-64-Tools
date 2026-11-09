@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-09 - fail-closed comparator ELF symbol identity guard (unpromoted)
+
+- Audited the ROM-gated isolated comparator checker and found that its ELF FUNC parser previously accepted an undefined symbol or the first of multiple matching symbols. Tightened it to require **exactly one defined section-indexed FUNC** before interpreting object offsets; otherwise it raises a validation error rather than potentially reporting misleading isolated matching-C proof. Added two negative-control tests for undefined and duplicate symbols. No ROM, toolchain, generated assembly or private path committed.
+- **Executed tests:** five focused parser scenarios in a local Python 3.13 harness (defined, undefined, duplicate, wrong type, missing) passed. The full repository unit suite, IDO compilation, current 142-function full-ROM build, uninterrupted formal verifier, and in-game tests were **not executed** in this run. The repository test additions mirror the tested cases; no promotion or proof count changes.
+- Next: recover the pinned full-build environment, regenerate the CRC-damaged assembly from the verified ROM, and run the current 141+1 full-ROM gate for the exact 340-byte VM comparator. Counts remain **141 matching-C / 10,312 bytes**.
+
 ## 2026-11-08 - independent isolated 340-byte VM comparator regression gate (unpromoted)
 
 - Recompiled the already reconstructed `func_8003D9B8_3E5B8` using the user-supplied pinned IDO 5.3 (`-c -O2 -mips2 -G 0 -non_shared`). Verified the exact candidate source SHA-256 `4fbac8b9091796efdce8ba34abaf2aad2aeae189d1e360e35b6fd75584669010`, original 32 MiB decompressed USA SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, 340-byte function symbol, **zero object relocations**, and **85/85 identical original MIPS words**. Original function SHA-256 `bfa8ec5494880607e6b7d822dc952b22da49d7617ab50d59c6e920cbc45983a0`.
