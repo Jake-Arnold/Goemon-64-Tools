@@ -3,7 +3,10 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "candidates/vm_command_walker_probe.c"
+#ifndef GOEMON_VM_WALKER_SOURCE
+#define GOEMON_VM_WALKER_SOURCE "candidates/vm_command_walker_probe.c"
+#endif
+#include GOEMON_VM_WALKER_SOURCE
 
 s32 D_801C7798_1C8398, D_801C77A0_1C83A0;
 VmWork D_801C77E8_1C83E8;

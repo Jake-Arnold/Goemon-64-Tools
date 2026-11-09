@@ -1,0 +1,40 @@
+{
+  "format": "goemon-isolated-codegen-research-v1",
+  "function": "func_8003DE80_3EA80",
+  "original_rom_offset": "0x3EA80",
+  "original_vma": "0x8003DE80",
+  "original_size_bytes": 232,
+  "original_instruction_sha256": "011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1",
+  "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "candidate_file": "candidates/vm_command_walker_goto_probe.c",
+  "candidate_size_bytes": 228,
+  "candidate_text_sha256": "72ae3681db95cbdb538c1c7a861a04420ef9d33382af7adc1bb5a2e14fb49139",
+  "compiler": "IDO 5.3",
+  "compiler_options": [
+    "-O2",
+    "-mips2",
+    "-G",
+    "0",
+    "-non_shared"
+  ],
+  "assembler": "GNU MIPS Binutils 2.45.90.20260125",
+  "comparison": {
+    "direct_matching": 8,
+    "direct_comparable": 35,
+    "relocated_shapes_matching": 2,
+    "relocated_shapes_comparable": 3,
+    "relocation_layout_differences": 19,
+    "baseline_prior_direct_matching": 3,
+    "baseline_prior_direct_comparable": 33,
+    "isolated_structural_match_only": false
+  },
+  "host_validation": {
+    "cases": 1200,
+    "pass": 1200,
+    "toolchain": "GCC C11 ASan/UBSan mock game; tested old and goto sources separately"
+  },
+  "formal_verifier_run_completed": false,
+  "independent_full_rom_test_for_this_candidate": false,
+  "promoted": false,
+  "limitations": "Position-based isolated relocatable-object results, NOT exact original-address instruction identity or full-ROM proof; bltzl delay scheduling and saved register placement still differ."
+}
