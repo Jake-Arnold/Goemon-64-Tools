@@ -8,6 +8,12 @@
 
 **Next:** integrate #3, #4 and #7 only when the full latest checkout can be independently rebuilt, and continue menu-state #8–#10 as separate bounded research. See `results/next_ten_main_wave1.json` and dated `PROGRESS.md`.
 
+## Final next-ten investigation checkpoint — 2026-11-10
+
+**All 10/10 functions investigated; SIX exactly matching in isolated linked source builds; ZERO promoted.** The three formerly unpromoted resource/object wrappers (36+36+48 = 120 B) plus the three new menu routines (84+80+84 = 248 B) total **368 original MIPS bytes** reproduced by pinned native IDO 5.3 and independently linked with `ld.lld` at their original addresses, comparing all code bytes against the SHA-pinned ROM. See `results/next_ten_main_wave1.json` and `results/next_ten_main_wave2.json` and the associated standalone C/proof/host tests. Behaviour: 30,000 wrapper synthetic cases and 90,000 menu synthetic cases passed; seven shared proof negative tests passed.
+
+This is a **codegen/link-layout research milestone, not a matching-C promotion**: candidate C is still outside production units, the complete 2,331-object project build has not been rerun with it, and the manifest/verification counts must stay at **142 verified functions / 10,652 exact MIPS bytes / 155 combined C / 7,221 ASM**. The previous contributor's formal 142-function verifier result remains completed. Next work is full integration with exact unchanged 32 MiB image and readelf inventory, then promotion; **never** treat these 368 research bytes as a new verified ROM count.
+
 ## Starting proof and independent original-byte checks
 
 At branch planning HEAD `edea9d606eaf4de0c8f181f73e5ad0e6ff169d28`: **141 newly reconstructed unit functions + 1 reviewed upstream C source patch = 142 verified matching-C claims / 10,652 original MIPS bytes**, plus 13 upstream C = 155 combined C and **7,221 remaining ASM** of 7,376 identified. The previously recorded 2,331-object independent full-ROM identity is for **33,554,432 bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; **uninterrupted formal `decomp.verify` remains pending**.

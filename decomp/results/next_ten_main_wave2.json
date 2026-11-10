@@ -1,0 +1,71 @@
+{
+  "format": "goemon-next-ten-main-wave2-menu-codegen-v1",
+  "date_utc": "2026-11-10",
+  "base_commit": "b0fee1f89ad3982b76038dc3c808f10356fdba90",
+  "branch": "chatgptweb/decomp",
+  "status": "three_more_isolated_exact_no_promotions",
+  "original_decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_decompressed_rom_length": 33554432,
+  "compiler": "Pinned IDO 5.3 native -c -O2 -mips2 -G 0 -non_shared",
+  "linker": "ld.lld -m elf32btsmip, individual original VMA placements and symbol definitions; NOT upstream 2,331-object complete-ROM link",
+  "checked_original_bytes": 248,
+  "original_byte_match": true,
+  "menu_functions": [
+    {
+      "function": "func_80011B60_12760",
+      "rom_offset": "0x12760",
+      "vma": "0x80011B60",
+      "bytes": 84,
+      "sha256": "5573013c23b198d920562b122776d0d45e5e9d999bd2bce92cf2051493652ec6",
+      "source": "decomp/candidates/menu_enable_b60.c",
+      "git_blob": "dd4f2ada440677f32bc7aa566e18854f240a63f3"
+    },
+    {
+      "function": "func_80011BB4_127B4",
+      "rom_offset": "0x127B4",
+      "vma": "0x80011BB4",
+      "bytes": 80,
+      "sha256": "e001c012b652a5dadd7923706e8728b51a3bce9203c0f0a2130114b831524a52",
+      "source": "decomp/candidates/menu_disable_bb4.c",
+      "git_blob": "9fa0d96b96674ab9b901b2a13b9d3a8ff12d023f"
+    },
+    {
+      "function": "func_80011C04_12804",
+      "rom_offset": "0x12804",
+      "vma": "0x80011C04",
+      "bytes": 84,
+      "sha256": "72715c034f10313d627651394040a836581fed4a3fdda8241556bd38268055bb",
+      "source": "decomp/candidates/menu_nested_c04.c",
+      "git_blob": "b6197b7b2188be4d38b04a24024718ede206fe46"
+    }
+  ],
+  "codegen_discoveries": [
+    "The disable function needed an explicit 0xFF7F mask; semantically equivalent (u8)~0x80 generated a different 16-bit andi immediate.",
+    "The enable routine naturally reproduced all 84 original MIPS bytes with the typed +0x22/+0x64/+0x4 fields.",
+    "The nested updater used original a0/a1 register allocation only after removing a redundant C local pointer; relocation-aware direct matches rose from 8/19 to 19/19 with same 84-byte symbol size."
+  ],
+  "tests": {
+    "isolated_full_rom_reference_SHA1_check": true,
+    "isolated_original_address_linked_byte_match": "3/3 functions, 248/248 bytes",
+    "gcc_c11_host_sanitizers": "-std=c11 -O1 -g -Wall -Wextra -Werror -fno-strict-aliasing -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all",
+    "host_cases": "90,000/90,000 passed: 80,000 direct enable/disable plus 10,000 nested-ptr",
+    "prior_reusable_byte_guard_negative_tests": "7/7 passed in prior wave; shared helper reused",
+    "python_syntax": "passed",
+    "in_game": false
+  },
+  "combined_next_ten_research": {
+    "functions_investigated": 10,
+    "isolated_exact_functions": 6,
+    "isolated_exact_original_mips_bytes": 368,
+    "official_new_promotions": 0
+  },
+  "authoritative_proof": {
+    "matching_c": 142,
+    "matching_mips_bytes": 10652,
+    "combined_c": 155,
+    "remaining_asm": 7221,
+    "formal_verifier_run_completed": true,
+    "formal_run_was_performed_by_another_contributor": true
+  },
+  "limitations": "Research-only C candidates remain separate from original production unit and manifest; original addresses are populated with a minimal ld.lld script, not the full 2,331-object Splat build. No newly integrated complete-ROM link this run. No current ROM bytecount claims advanced."
+}
