@@ -34,6 +34,10 @@ Follow [NEXT_TEN_MAIN_SEGMENT.md](NEXT_TEN_MAIN_SEGMENT.md) for **ten fresh, sti
 
 **2026-11-10 second-wave outcome:** entire new ten-function batch was investigated. The three menu-state functions `func_80011B60_12760`, `func_80011BB4_127B4`, `func_80011C04_12804` are now **exact standalone IDO-linked original MIPS matches (248/248 bytes)** and passed 90,000 synthetic sanitizer-tested cases. With prior wave there are **6/10 exact isolated matches, 368 bytes**, but **ZERO promoted** pending a complete new 2,331-object ROM integration. Authoritative existing formal proof unchanged: 142 matching-C / 10,652 bytes. See `results/next_ten_main_wave2.json`; next task is the full build/inventory promotion gate.
 
+## Active exact-ROM promotion work plan — 20 gated steps (2026-11-10)
+
+[NEXT_TWENTY_STEPS.md](NEXT_TWENTY_STEPS.md) is the **current execution order**. First reproduce the complete **142-function** formal verifier and six original-address isolated links. Next integrate resource wrappers `func_80034ED4_35AD4`/`func_80034F20_35B20`, object dispatcher `func_80035094_35C94`, and menu trio `func_80011B60_12760`/`func_80011BB4_127B4`/`func_80011C04_12804` under original-unit compilation and full 32 MiB ROM proof. Then retry four nonmatching 28/36/44/52-byte routines. **No promotion is implied by the plan**; existing verified 142/10,652/7,221 remains authoritative.
+
 ## Open matching-C work (ordered)
 
 **2026-11-09 plan execution:** targets **#1–#5** have research-only candidates and synthetic tests, but none match exact original MIPS. #4 VM choice/setup `func_8003E6C0_3F2C0` compiles to 400 B versus 348 B original, with 400 passing host scenarios and 12 private-original guards. See `NEXT_TEN_FUNCTIONS.md` status, `results/vm_next_ten_batch1.json`, `results/vm_next_ten_batch2.json`. **#5:** fourteen isolated command-walker trials (seven host-tested) did not reproduce its original 232-byte instruction layout; see `results/vm_next_ten_batch3.json`. **Next #6 `func_8003DBEC_3E7EC`.** 142-function full-ROM proof and formal flag unchanged.
