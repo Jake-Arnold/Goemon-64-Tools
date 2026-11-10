@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-10 - decomp branch integration handoff and test repairs
+
+- Reviewed branch head 877312c against main 12e7699. Recorded actual full-ROM evidence limitations, source hash mismatch, merge conflicts, concrete verification commands via the existing runbook, and integration sequence in decomp/INTEGRATION_HANDOFF.md.
+- Updated the obsolete VM comparator test to check the promoted function is owned exactly once and the walker remains assembly; converted the callback host test from pytest to standard unittest while retaining four compiled cases. This avoids hard-coded inventory counts and an undeclared test dependency.
+- Validation: completed the current formal verifier with 142/142 functions and 33,554,432 ROM bytes matching the pinned decompressed SHA-1; refreshed sanitized proof and inventory (155 total C, 7,221 ASM). Preserved the previous independent proof. WSL focused callback/comparator tests passed including all four compiled cases, and the WSL decomp suite passed 81 tests. Windows suite passed 378 tests with six skips; WSL focused pipeline suite passed 37 tests. No in-game test or new C promotion.
+- Next: rerun all suites with the fresh proof, then reconcile main's Plasma docs and branch instructions before integration.
+
 ## 2026-11-10 - next ten fresh main-segment matching-C functions selected (planning only)
 
 - Re-read live `chatgptweb/decomp` HEAD, `AGENTS.md`, continuation/work queue, two previous plans, manifest and combined/inventory proof. Current authority remains **142 matching C / 10,652 matched bytes / 155 combined C / 7,221 ASM**, previously byte-identical 33,554,432-byte ROM; `formal_verifier_run_completed=false`. The fixed verifier-count/regex tests must be used on the complete current checkout before accepting any new promotion.

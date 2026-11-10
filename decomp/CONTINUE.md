@@ -7,9 +7,13 @@ first. Update this runbook whenever the next targets or machine paths change.
 
 ## 0. Cross-conversation handoff
 
+For the reviewed integration blockers and reproducible next steps, see [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).
+
 Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and overlay matching-C backlog; historical main-branch warp/story tasks have been superseded from parallel Goemon conversations. Historical chat totals may lag the latest manifest/proof; this runbook and the live branch remain authoritative. Do not repeat already promoted functions.
 
 ## 1. Establish the current state
+
+**Fresh formal gate (2026-11-10):** The current 142 claimed functions / 10,652 bytes passed the uninterrupted current `decomp.verify` run and complete 32 MiB ROM identity; a fresh inventory confirms 155 total C / 7,221 ASM. `results/combined.json` and `results/inventory.json` contain fresh evidence. References below to a pending formal run are historical and superseded. No additional function was promoted. See [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).
 
 **Next ten fresh main-segment C targets (2026-11-10):** [NEXT_TEN_MAIN_SEGMENT.md](NEXT_TEN_MAIN_SEGMENT.md) supersedes the *active function-reconstruction target order* from the previous ten-target VM research batch, not its proof or backlog. Ten distinct live-manifest ASM functions totaling **528 original bytes / 132 words** were individually checked against the SHA-pinned 32 MiB ROM. Prioritize short engine-state writer, state-predicate writer, paired resource wrappers, file-table helpers, object dispatcher, and three menu-state flag handlers. **Current source formal verifier and repaired tests remain prerequisite verification debt**; no new matching C claims. See dated root PROGRESS.md.
 

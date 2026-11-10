@@ -175,15 +175,15 @@ class DecompVerificationTests(unittest.TestCase):
             apply_units(checkout,small,sources)
             self.assertIn('options:\n  asm_jtbl_label_macro: glabel\n  compiler: IDO',config.read_text())
 
-    def test_reference_comparator_is_excluded_from_matching_c_count(self):
+    def test_promoted_comparator_has_single_manifest_owner(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
         vm=next(unit for unit in manifest['units'] if unit['source']=='script_vm.c')
-        self.assertEqual(len(vm['functions']),54)
-        self.assertEqual(len(vm['assembly_functions']),15)
         name='func_8003D9B8_3E5B8'
-        self.assertIn(name,vm['assembly_functions'])
+        self.assertEqual(sum(fn['name']==name for fn in vm['functions']),1)
+        self.assertNotIn(name,vm['assembly_functions'])
         self.assertIn('func_8003DE80_3EA80',vm['assembly_functions'])
-        self.assertNotIn(name,{fn['name'] for fn in vm['functions']})
+        self.assertIn('#include "vm_compare_reference.h"', (ROOT/'decomp/script_vm.c').read_text())
+
     def test_vm_layout_preset_rejects_other_values_and_missing_handler(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
         with tempfile.TemporaryDirectory() as folder:
