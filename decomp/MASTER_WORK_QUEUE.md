@@ -26,6 +26,10 @@ The next technical work order is [NEXT_FIVE_ACTIONS.md](NEXT_FIVE_ACTIONS.md): *
 
 **Test reliability correction (2026-11-09):** fixed stale `tests/test_decomp_verify.py` 139/140 expectations to live 141/142 manifest claims, plus repaired malformed `compare_original.py` label/jump regexes and synthetic newline fixtures. Old comparator test suite actually failed 4/12; repaired suite passed 13/13 and two private original-ROM/IDO nonmatch checks. **Do not treat stale isolated metrics as verified without recomparison.** The uninterrupted formal 142-function verifier is still the highest verification priority. No count change.
 
+## New active ten-function list (2026-11-10)
+
+Follow [NEXT_TEN_MAIN_SEGMENT.md](NEXT_TEN_MAIN_SEGMENT.md) for **ten fresh, still-ASM main-segment functions (528 bytes)** selected after the prior VM ten-function investigation stalled without promotions. The whole-ROM identity proof remains 142 exact-C functions / 10,652 bytes; current-source formal verifier pending. **First two:** `func_8003A1E8_3ADE8` (28 B) and `func_80006274_6E74` (36 B). Original 132/132 private ROM instruction words have been verified. Older VM, overlay and Ghost Toys entries below remain open but are not the new execution order.
+
 ## Open matching-C work (ordered)
 
 **2026-11-09 plan execution:** targets **#1–#5** have research-only candidates and synthetic tests, but none match exact original MIPS. #4 VM choice/setup `func_8003E6C0_3F2C0` compiles to 400 B versus 348 B original, with 400 passing host scenarios and 12 private-original guards. See `NEXT_TEN_FUNCTIONS.md` status, `results/vm_next_ten_batch1.json`, `results/vm_next_ten_batch2.json`. **#5:** fourteen isolated command-walker trials (seven host-tested) did not reproduce its original 232-byte instruction layout; see `results/vm_next_ten_batch3.json`. **Next #6 `func_8003DBEC_3E7EC`.** 142-function full-ROM proof and formal flag unchanged.
