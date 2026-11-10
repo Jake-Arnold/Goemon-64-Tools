@@ -1,0 +1,104 @@
+{
+  "format": "goemon-next-ten-main-wave1-isolated-link-v1",
+  "date_utc": "2026-11-10",
+  "branch": "chatgptweb/decomp",
+  "base_commit": "0bf997e4382901a6b6575cbfcbf208895244957f",
+  "authoritative_prior_verification": {
+    "claimed_matching_c": 142,
+    "matched_mips_bytes": 10652,
+    "combined_c": 155,
+    "remaining_asm": 7221,
+    "formal_verifier_run_completed": true,
+    "previous_formal_run_was_by_other_contributor": true,
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "research_results": {
+    "first_seven_targets_investigated": true,
+    "unpromoted": 7,
+    "isolated_fully_linked_matches": 3,
+    "isolated_exact_bytes_sum": 120,
+    "all_three_bytes_match_against_sha1_pinned_original_rom": true,
+    "functions": [
+      {
+        "function": "func_80034ED4_35AD4",
+        "source": "decomp/candidates/resource_wrapper_ed4.c",
+        "source_git_sha": "080cb5aa3ee14972017d3769bd43d53fe601f4ae",
+        "rom_offset": "0x35AD4",
+        "vma": "0x80034ED4",
+        "size_bytes": 36,
+        "sha256": "b6e4ba1efa16865b5ae60da5cb79335e06098a2e2771be5b53cc99252d21531a"
+      },
+      {
+        "function": "func_80034F20_35B20",
+        "source": "decomp/candidates/resource_wrapper_f20.c",
+        "source_git_sha": "72b07d4d928bc0bb2850eb046abba416ea23e0b0",
+        "rom_offset": "0x35B20",
+        "vma": "0x80034F20",
+        "size_bytes": 36,
+        "sha256": "e014867b2e08c89e528e37e0545ac991cd13ce8c105395bffee9be375c9e555e"
+      },
+      {
+        "function": "func_80035094_35C94",
+        "source": "decomp/candidates/object_dispatch_c94.c",
+        "source_git_sha": "16e69e5f871726041edf2e38c3eadd6aee479114",
+        "rom_offset": "0x35C94",
+        "vma": "0x80035094",
+        "size_bytes": 48,
+        "sha256": "7f8f2a83dbc5179d76609db3b186ea481e9aa78bd0b1e6f46ceb798637fe0c36"
+      }
+    ]
+  },
+  "evidence_type": "Each standalone research C file compiled with pinned native IDO 5.3 -c -O2 -mips2 -G 0 -non_shared, linked individually by ld.lld at its original VMA with original absolute MIPS callee/global addresses and 4-byte input section subalignment; only linked original symbol bytes were compared to separately SHA-1-verified 32 MiB USA reference. Real package full-link and neighboring section/padding layout were not reconstructed.",
+  "other_attempts": [
+    {
+      "n": 1,
+      "function": "func_8003A1E8_3ADE8",
+      "original_bytes": 28,
+      "attempts": "multiple C storage/pointer and volatile variants plus O0/O1/O2/O3 compiler trials",
+      "best": "size-only volatile dual-pointer shape gave 28 bytes with incorrect register allocation/ordering; natural C was 20 bytes",
+      "promoted": false
+    },
+    {
+      "n": 2,
+      "function": "func_80006274_6E74",
+      "original_bytes": 36,
+      "attempts": "C source with three typed base+offset stores",
+      "best": "native IDO 28 bytes, missing original argument-home spill and register schedule",
+      "promoted": false
+    },
+    {
+      "n": 5,
+      "function": "func_80001D94_2994",
+      "original_bytes": 44,
+      "attempts": "low-halfword index to u32 table plus bit mask",
+      "best": "native IDO 44-byte symbol with different load register and missing repeated original AND",
+      "promoted": false
+    },
+    {
+      "n": 6,
+      "function": "func_80001DC0_29C0",
+      "original_bytes": 52,
+      "attempts": "zero-or-difference of adjacent 8-byte table pair",
+      "best": "native IDO 52-byte symbol but bnez/early-return shape instead of original beqz/late zero branch",
+      "promoted": false
+    }
+  ],
+  "tests": {
+    "reproducible_original_link_script": "decomp/prove_three_wrappers.py",
+    "script_negative_controls": "7/7 Python tests",
+    "gcc_flags": "-std=c11 -Wall -Wextra -Werror -O1 -g -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all",
+    "synthetic_mock_cases": "30,000/30,000 passed; 10,000 each of 2 resource wrapper functions and object dispatcher; global callback mutation and saved actor argument checked",
+    "ido_rom_comparisons": "3/3 isolated linked function extents exactly equal",
+    "full_2331_object_build_performed_this_turn": false,
+    "full_rom_link_after_integration": false,
+    "in_game_tests": false
+  },
+  "promotion": {
+    "new_promotions": 0,
+    "manifest_modified": false,
+    "combined_proof_modified": false,
+    "inventory_modified": false,
+    "reason": "New C is separate from production units; isolated linker script does not prove complete original upstream section/relocation/padding/full-ROM identity."
+  },
+  "next": "Use current formally verified 142-function checkout to stage only proven wrapper C in resource_dispatch.c and object_dispatch.c, rebuild full 2,331-object ROM with original Splat and inventory checks. Move to menu-state functions #8-#10 if integration is not available."
+}

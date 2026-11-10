@@ -2,6 +2,12 @@
 
 **Plan, not promotion.** This replaces the *active investigation order* after the previous ten-target list was fully investigated without new matching functions. Keep the earlier evidence in `NEXT_TEN_FUNCTIONS.md` and `NEXT_FIVE_ACTIONS.md`. This new sequence selects **ten distinct, previously unpromoted main-segment assembly functions** from the latest `chatgptweb/decomp` manifest, none from the previous ten-target batch. The plan deliberately favors small functions with concrete ABI/alias conditions instead of another generic scalar sweep.
 
+## Implementation checkpoint — 2026-11-10
+
+**Seven of ten investigated; three exact in isolated original-address links; zero newly promoted.** The refreshed branch's formal verifier now reports **142/142 original-address functions and 33,554,432-byte ROM identity** (`formal_verifier_run_completed=true`), superseding the historical *pending* note below. #1 engine reset and #2 state writer have nonmatching IDO codegen drafts. **#3 and #4** resource wrappers natively compile and separately link to **36/36 exact original bytes each**. #5 and #6 file-table helpers are correct-size in preliminary native IDO C but instruction registers/branches differ. **#7** object dispatcher natively links to **48/48 exact original bytes**. The exact three-function source and fail-closed proof script are under `candidates/` and `prove_three_wrappers.py`; their host mock suite passed **30,000/30,000** and seven proof negative controls passed. These functions are **NOT** part of the production manifest or new complete ROM proof; do not count them as matching-C until an independently rebuilt 2,331-object full-ROM link and inventory pass after integrating them into their original production units.
+
+**Next:** integrate #3, #4 and #7 only when the full latest checkout can be independently rebuilt, and continue menu-state #8–#10 as separate bounded research. See `results/next_ten_main_wave1.json` and dated `PROGRESS.md`.
+
 ## Starting proof and independent original-byte checks
 
 At branch planning HEAD `edea9d606eaf4de0c8f181f73e5ad0e6ff169d28`: **141 newly reconstructed unit functions + 1 reviewed upstream C source patch = 142 verified matching-C claims / 10,652 original MIPS bytes**, plus 13 upstream C = 155 combined C and **7,221 remaining ASM** of 7,376 identified. The previously recorded 2,331-object independent full-ROM identity is for **33,554,432 bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; **uninterrupted formal `decomp.verify` remains pending**.
