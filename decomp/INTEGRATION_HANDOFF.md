@@ -11,7 +11,7 @@ Reviewed branch head: `877312c991cdcf1d43db3a7403ceeaf04be9fb51`; main at review
 
 ## Verification completed on 2026-11-10
 
-The previously mismatched verifier hash was resolved by running the documented formal verifier, not by editing the old evidence. It reported **142/142 original-address functions matched**, 10,652 function bytes and a full **33,554,432-byte** match to SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. The fresh inventory reports 7,376 identified entries, 155 total C and 7,221 assembly entries. Windows toolkit suite: 378 tests passed, six skipped; WSL decomp suite: 81 passed; WSL focused pipeline tests: 37 passed. No new function is promoted by this run. Sanitized fresh results are in `results/combined.json` and `results/inventory.json`; the previous independent-build record is retained as `results/independent_142_historical.json`.
+The previously mismatched verifier hash was resolved by running the documented formal verifier, not by editing the old evidence. It reported **142/142 original-address functions matched**, 10,652 function bytes and a full **33,554,432-byte** match to SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. The fresh inventory reports 7,376 identified entries, 155 total C and 7,221 assembly entries. Windows toolkit suite: 378 tests run, 372 passed and six skipped; WSL decomp suite: 81 passed; WSL focused pipeline tests: 37 passed. No new function is promoted by this run. Sanitized fresh results are in `results/combined.json` and `results/inventory.json`; the previous independent-build record is retained as `results/independent_142_historical.json`.
 
 ## Remaining integration steps
 
