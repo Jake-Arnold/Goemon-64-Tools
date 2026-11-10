@@ -1,0 +1,245 @@
+{
+  "format": "goemon-next-twenty-execution-20261110-v1",
+  "date_utc": "2026-11-10",
+  "branch": "chatgptweb/decomp",
+  "base_commit": "139c42b4530e260f4e5c9fd0c02ae24439172371",
+  "reference": {
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "decompressed_length": 33554432,
+    "reference_from_user_supplied_private_archive": true
+  },
+  "tools": {
+    "compiler": "Native archived pinned IDO 5.3: cc -c -O2 -mips2 -G 0 -non_shared",
+    "linker": "ld.lld -m elf32btsmip",
+    "assembler": "archived mips-linux-gnu-as; binutils 2.45.90.20260125",
+    "objcopy": "llvm-objcopy",
+    "note": "No GitHub checkout available in local container; original translation-unit text was independently fetched from live branch, reproduced as research-only standalone unit source; archived 2026-11-08 original decompressed ROM used. Not the current full project."
+  },
+  "results": [
+    {
+      "unit": "resource_dispatch",
+      "rom_offset": "0x35AD4",
+      "vma": "0x80034ED4",
+      "size": 112,
+      "expected_sha256": "112211df4914a811c3f7327164b35372f8e0fd3976e267179aec446b22fb3674",
+      "actual_size": 112,
+      "linked_unit_exact": true,
+      "functions": [
+        {
+          "name": "func_80034ED4_35AD4",
+          "size": 36,
+          "exact": true
+        },
+        {
+          "name": "func_80034EF8_35AF8",
+          "size": 40,
+          "exact": true
+        },
+        {
+          "name": "func_80034F20_35B20",
+          "size": 36,
+          "exact": true
+        }
+      ]
+    },
+    {
+      "unit": "object_dispatch",
+      "rom_offset": "0x35C64",
+      "vma": "0x80035064",
+      "size": 96,
+      "expected_sha256": "519d1d7cf498a599e461bc9f99d1eb3df338d661641f7ce1b8d68bd36e8ad17c",
+      "actual_size": 96,
+      "linked_unit_exact": false,
+      "mismatched_byte_count": 8,
+      "mismatched_original_rom_offsets": [
+        "0x35C9C",
+        "0x35CA0"
+      ],
+      "cause": "Original second function saves $ra to stack before LUI $a0; IDO combined translation unit schedules LUI before $ra store. Eight bytes differ across two swapped 4-byte instructions. This was not visible in the standalone function link.",
+      "functions": [
+        {
+          "name": "func_80035064_35C64",
+          "size": 48,
+          "exact": true
+        },
+        {
+          "name": "func_80035094_35C94",
+          "size": 48,
+          "exact": false
+        }
+      ],
+      "variants_attempted": [
+        "baseline",
+        "local",
+        "local_volatile",
+        "volatile_ptr",
+        "pointer",
+        "actor_temp",
+        "actor_volatile",
+        "block",
+        "comma",
+        "arg_pointer",
+        "zero"
+      ],
+      "variants_exact": 0
+    },
+    {
+      "unit": "empty_menu_hook",
+      "rom_offset": "0x12758",
+      "vma": "0x80011B58",
+      "size": 256,
+      "expected_sha256": "7206359946bbffa08fd481c09f6218dd2c86ebb8115e97aad6dc82b13894dcc2",
+      "actual_size": 256,
+      "linked_unit_exact": true,
+      "functions": [
+        {
+          "name": "func_80011B58_12758",
+          "size": 8,
+          "exact": true
+        },
+        {
+          "name": "func_80011B60_12760",
+          "size": 84,
+          "exact": true
+        },
+        {
+          "name": "func_80011BB4_127B4",
+          "size": 80,
+          "exact": true
+        },
+        {
+          "name": "func_80011C04_12804",
+          "size": 84,
+          "exact": true
+        }
+      ]
+    }
+  ],
+  "proof_reproducer": "decomp/prove_integrated_units.py",
+  "test_file": "decomp/test_prove_integrated_units.py",
+  "test_provenance": "Compiled local equivalents of research fixtures with archived IDO; byte comparisons against pinned decompressed ROM. New committed proof script is a reproducible implementation, not yet independently run from a current GitHub checkout.",
+  "execution_ledger": [
+    {
+      "step": 1,
+      "status": "completed",
+      "detail": "Checked live GitHub HEAD, manifest, formal 142-function record and all six ASM placeholders."
+    },
+    {
+      "step": 2,
+      "status": "partial",
+      "detail": "Retail and decompressed ROM SHA-1 verified, archived IDO 5.3 and GNU MIPS assembler recovered; current 142-source complete toolchain not materialized."
+    },
+    {
+      "step": 3,
+      "status": "blocked",
+      "detail": "Current branch full source and pinned 2,331-object full project pipeline unavailable in isolated container; prior formal 142 proof remains recorded, not rerun."
+    },
+    {
+      "step": 4,
+      "status": "partial",
+      "detail": "Previous standalone six exact proof records checked; new integrated-unit native codegen executed; focused host suites not rerun."
+    },
+    {
+      "step": 5,
+      "status": "completed",
+      "detail": "Reviewed current original resource/object/menu production source, order and manifest splits."
+    },
+    {
+      "step": 6,
+      "status": "research_only",
+      "detail": "Integrated ED4 into resource unit research fixture; native 36/36 exact."
+    },
+    {
+      "step": 7,
+      "status": "research_only",
+      "detail": "Integrated F20 with intervening EF8 function; full 112/112 resource unit exact."
+    },
+    {
+      "step": 8,
+      "status": "blocked",
+      "detail": "Full current 2,331-object ROM gate unavailable. No resource promotions."
+    },
+    {
+      "step": 9,
+      "status": "blocked",
+      "detail": "Actual object source context emits 8 differing bytes at original 0x35C9C/0x35CA0; 11 source variants did not match. Existing first function remains exact."
+    },
+    {
+      "step": 10,
+      "status": "blocked",
+      "detail": "Object function fails native combined-unit original-address bytes; no full ROM or promotion."
+    },
+    {
+      "step": 11,
+      "status": "research_only",
+      "detail": "Constructed shared menu structs/offsets and original source order in research fixture."
+    },
+    {
+      "step": 12,
+      "status": "research_only",
+      "detail": "Menu enable 84/84 exact in full menu unit."
+    },
+    {
+      "step": 13,
+      "status": "research_only",
+      "detail": "Menu disable 80/80 exact, preserving 0xFF7F mask."
+    },
+    {
+      "step": 14,
+      "status": "research_only",
+      "detail": "Nested updater 84/84 exact; existing 8-byte hook unchanged."
+    },
+    {
+      "step": 15,
+      "status": "blocked",
+      "detail": "Full menu translation unit 256/256 exact; current project full-ROM gate unavailable, so no promotion."
+    },
+    {
+      "step": 16,
+      "status": "not_started",
+      "detail": "No production C/manifest edits; record research proof only."
+    },
+    {
+      "step": 17,
+      "status": "not_started",
+      "detail": "28-byte engine reset retry deferred until full-ROM pipeline."
+    },
+    {
+      "step": 18,
+      "status": "not_started",
+      "detail": "36-byte state writer retry deferred."
+    },
+    {
+      "step": 19,
+      "status": "not_started",
+      "detail": "44-byte file-table lookup retry deferred."
+    },
+    {
+      "step": 20,
+      "status": "not_started",
+      "detail": "52-byte file-size function retry deferred."
+    }
+  ],
+  "overall": {
+    "unit_original_bytes_checked": 464,
+    "unit_original_bytes_exact": 368,
+    "exact_units": 2,
+    "nonmatching_units": 1,
+    "isolated_candidates_now_confirmed_exact_in_actual_translation_unit": 5,
+    "isolated_candidate_blocked_by_combined_codegen": 1,
+    "new_promotions": 0,
+    "official_matching_c": 142,
+    "official_exact_mips_bytes": 10652,
+    "official_combined_c": 155,
+    "official_asm_remaining": 7221,
+    "formal_142_proof_rerun_this_turn": false,
+    "complete_rom_rebuilt_this_turn": false
+  },
+  "next_actions": [
+    "Run decomp/prove_integrated_units.py with pinned private 32 MiB ROM and compiler on the current checkout. Expect nonzero exit until object mismatch fixed.",
+    "Investigate IDO register scheduling in object dispatcher while retaining existing 48-byte sibling and exact symbol placement.",
+    "Stage resource and menu source units in a complete current 142-function checkout, rebuild all 2,331 objects and run decomp.verify+inventory before promoting.",
+    "Resume steps 17-20 only after preserving full-ROM verification capability."
+  ]
+}

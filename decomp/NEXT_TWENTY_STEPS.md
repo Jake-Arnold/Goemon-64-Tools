@@ -2,6 +2,10 @@
 
 **Execution plan, not a completion claim.** Prepared from the live `chatgptweb/decomp` branch at `b1a519e01e3fb4184ae0ce441202883a60b1230a`, after both isolated matching-research waves. This is the active runbook for the next stretch of Goemon-64 matching-C work, while `NEXT_TEN_MAIN_SEGMENT.md`, the two wave research JSON files and `PROGRESS.md` remain historical evidence.
 
+## Execution checkpoint — 2026-11-10
+
+See `results/next_twenty_execution_20261110.json` for a 20-step status ledger. The resource and menu research translation units reproduce **112/112** and **256/256** original ROM bytes when compiled with pinned native IDO 5.3 and linked at their original addresses. The object translation unit does **not**: the second 48-byte function swaps `lui` and saved-`ra` instructions at ROM `0x35C9C`/`0x35CA0`, producing eight different bytes. Eleven source variants failed to restore the original schedule. The full current project build is not available in this execution environment. No production C or manifest changed and no new full-ROM promotions occurred. Continue the plan with the full-ROM gate and object codegen investigation; do not infer a six-function promotion from isolated results.
+
 ## Starting state and nonnegotiable proof boundaries
 
 - **Live verified:** 142 reconstructed matching-C function claims (141 new C plus one reviewed upstream patch); 10,652 exact original MIPS bytes, 155 combined upstream+reconstructed C, 7,221 ASM out of 7,376 identified. Current `results/combined.json` records **142/142 exact original-address checks, 33,554,432/33,554,432 original decompressed ROM bytes identical and `formal_verifier_run_completed=true`**. This applies to the already integrated 142 functions, not to the next six candidates.
