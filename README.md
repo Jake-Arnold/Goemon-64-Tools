@@ -1,4 +1,12 @@
-# Goemon Speedrun Tools v0.11.16 - Oedo dialogue observations
+# Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
+
+The four normal Plasma locations share one advice event. Story progress now
+includes all 39 bits checked or set by its traced advice path. Your two forced
+bit tests confirm the first two checks are priority ordered. See
+[Plasma advice conditions](docs/PLASMA_TRIGGERS.md) for the ordered path,
+provenance, and limits. Later conditions remain unverified in gameplay.
+
+## Oedo dialogue observations
 
 Story progress includes the two observed alternating-dialogue bits for the
 map 353 old man and the map 432 coffee-shop man. The existing Omitsu flag

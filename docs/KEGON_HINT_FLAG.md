@@ -52,3 +52,8 @@ actual repetition. No recording/ranking rules were changed here.
 Next: trace the reader's dialogue branch and compare Plasma's advice with the
 bit clear/set before assigning any physical-access meaning. No assistant game
 writes, freezes, save reloads or independent live reproduction were performed.
+
+Follow-up: the common Plasma event's own ocean-advice path can also set
+`0x044`; when that later check is reached with the earlier priority conditions
+satisfied, it routes to the Kegon sign advice. See the full
+[ordered Plasma conditions](PLASMA_TRIGGERS.md).

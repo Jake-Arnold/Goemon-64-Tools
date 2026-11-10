@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-10 - v0.11.17 map common Plasma advice conditions
+
+- Traced instantiated Plasma actors in all four normal rooms to event 0x288 and scenario file 0x70. Its bounded advice path has 40 branch checks on 37 distinct flags and 11 set operations; 39 distinct bits are checked or set. Added a text-free, ROM-validated extractor and metadata; retail and decompressed US inputs produced identical results.
+- User force-tested 0x8015C60A/01 and 0x8015C608/01: the first bit gates the second check, including the case where only the second bit is set. Documented priority order, all advice branches, nested checks and flag effects in docs/PLASMA_TRIGGERS.md. The existing 0x044 Kegon bit can also be set by Plasma's preceding ocean advice.
+- Added 13 previously unlisted conditions to Story progress so all 39 checked/set bits are inspectable and editable. Attribute existing condition meanings to the pinned mn64rando annotation; aside from the user's specified observations these are not independently gameplay-verified. A separate bounded GEV scan records 69 possible set/clear sites for these bits; no native-code completeness or script reachability is claimed.
+- Validation: retail/decompressed metadata equality, extraction boundary/actor/opcode regression tests, user-confirmed mask and priority evidence, and Story progress/UI tests; full Windows suite: 356 tests, 351 passed and five native skips. No assistant live game writes, ROM assets, dialogue text or personal session data committed.
+- Next: controlled in-game tests for later Plasma stages; trace GEV writer candidates to specific NPC/event paths and continue native decompilation.
+
 ## 2026-11-03 - v0.11.16 record Oedo alternating dialogue observations
 
 - Added user-observed dialogue cycle bits 0x002 (map 353 old man) and 0x008 (map 432 coffee-shop man) to Story progress. Both have one A/B/C trial with a set and reversion; no idle control or causal bit manipulation is claimed. Updated the existing external Omitsu 0x007 annotation with the user's map 432 first-conversation observation and reported later dialogue change; UFO wording and reload persistence remain unverified by that capture.
