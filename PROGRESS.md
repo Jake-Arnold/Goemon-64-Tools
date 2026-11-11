@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-037 ED60 original trace and structural ledger checks (RESEARCH_ONLY)
+
+- **Reason and branch:** fetched `origin/chatgptweb/decomp` before continuing; the local `codex/decomp-100-task-plan` and remote target both pointed to `03dd670b0a2d4fab53e27dcd6e067478f885b4fc`, with a clean tracked worktree. Reviewed `EXECUTION_STRATEGY_V2.md`: G64-037 requires original-ROM evidence before semantics and allows one bounded native probe. The stored proof remains 148/148 functions / 11,020 bytes.
+- **Trace:** pinned `func_8003ED60_3F960` to VMA `0x8003ED60..0x8003EFB0`, ROM offset `0x3F960`, 592 bytes / 148 words. Verified one aligned direct JAL in the ROM at VMA `0x8003F020`, called from `func_8003EFB0_3FBB0` only when `D_8007785C != 0x100`. Recorded the no-argument `void` signature, two `F038` calls, null/state exits, branch-likely delay slots, raw global widths, and twelve 8-byte cursor updates in `decomp/VM_ED60_TRACE.md`; `test_vm_ed60_original.py` pins the complete function hash and key original words.
+- **Native probe:** one trace-derived candidate compiled with pinned IDO 5.3 and linked at the original VMA with `F038` resolved at `0x8003F038`. Its symbol is 584 bytes against the 592-byte original and 136/146 compared words differ; first mismatch is `0x8003ED68` (`lui $a0` original versus `lui $t6` candidate). No second shape or unsupported behavior model was added. `script_vm.c`/`.h` and manifest ownership remain unchanged; G64-037 is `RESEARCH_ONLY`.
+- **Task-ledger feedback:** replaced the brittle “current task/next task” test with structural validation of sequential task IDs and ordinals, unique backward dependencies, allowed statuses, evidence requirements, and a current-status report for tasks with recorded execution evidence. Historical reports can keep their earlier status. The plan README now gets the current first-planned task from `skill_context --status` rather than hard-coding it.
+- **Tests:** pinned-ROM ED60 guard passed (592 bytes, 37 anchors, 12 cursor updates, two helper calls, one direct caller); focused ED60 and skill-context tests passed **17/17**; full decomp Python suite passed **151/151**; `tests.test_decomp_verify` passed **17/17**; `python3 -m decomp.skill_context --validate` reported consistent stored reports; `git diff --check` passed.
+- **Limitations:** no production C promotion, fresh full-ROM rebuild, inventory rebuild, or in-game verification. The existing 148-function proof remains the stored baseline. ROM, IDO artifacts, and the research candidate stay under ignored local diagnostics.
+- **Next:** G64-038, resolve the `func_8003F6E8_402E8` original extent. Keep the live task position dynamic in tests and tools.
+
 ## 2026-11-11 — architect v2 review and remaining-task reprioritization (PLAN ONLY)
 
 - Reviewed live branch at `2833f6e0cb569f0be6be083e24c71e9b4751d1c4` and complete-ROM stored proof (**148 C / 11,020 bytes; 161 combined C / 7,215 ASM / 7,376 entries**). G64-001–014 yielded six G2 promotions. G64-021–034 gave fourteen valuable VM research-only tasks but no further production C promotions.

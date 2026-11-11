@@ -1467,7 +1467,7 @@
       "ordinal": 37,
       "phase": 4,
       "title": "Characterize 8003ED60 handler",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-021"
       ],

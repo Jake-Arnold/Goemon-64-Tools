@@ -8,6 +8,10 @@ import re
 
 ROOT = Path(__file__).resolve().parent
 TASK_RE = re.compile(r"G64-(\d{3})\Z")
+TASK_STATUSES = {
+    "PLANNED", "RESEARCH_ONLY", "FAILED_NATIVE", "PASSED_G2",
+    "DOC_ONLY", "SKIPPED_ALREADY_COMPLETE",
+}
 
 
 def load(root=ROOT):
@@ -16,6 +20,15 @@ def load(root=ROOT):
     result = read(root / "results" / "combined.json")
     summary = read(root / "results" / "inventory.json")["summary"]
     c = result["comparison"]
+    execution_records = []
+    for path in sorted((root / "plans" / "execution").glob("*.json")):
+        record = read(path)
+        if isinstance(record, dict) and "task_id" in record:
+            execution_records.append({
+                "task_id": record["task_id"],
+                "status": record.get("status"),
+                "path": str(path.relative_to(root)),
+            })
     return {"tasks": tasks, "proof": {
         "status": result.get("status"), "full_rom_match": c.get("full_rom_match"),
         "matched": c.get("matched_functions"), "claimed": c.get("claimed_functions"),
@@ -24,7 +37,7 @@ def load(root=ROOT):
         "asm_total": summary.get("remaining_assembly_entries"),
         "identified": summary.get("identified_function_entries"),
         "new_c": summary.get("newly_matching_c"),
-    }}
+    }, "execution_records": execution_records}
 
 
 def validate(data):
@@ -34,10 +47,51 @@ def validate(data):
     if ids != [f"G64-{i:03}" for i in range(1, 101)]:
         errors.append("Task IDs must be exactly G64-001..G64-100")
     for i, task in enumerate(tasks, 1):
-        for dep in task.get("depends_on", []):
+        if task.get("ordinal") != i:
+            errors.append("Task ordinal does not match its position: " + str(task.get("id")))
+        status = task.get("status")
+        if not isinstance(status, str) or status not in TASK_STATUSES:
+            errors.append("Invalid task status for " + str(task.get("id")))
+        requirements = task.get("evidence_requirements")
+        if (not isinstance(requirements, list) or not requirements
+                or any(not isinstance(item, str) or not item.strip() for item in requirements)):
+            errors.append("Missing or malformed evidence requirements for " + str(task.get("id")))
+        dependencies = task.get("depends_on", [])
+        if (not isinstance(dependencies, list)
+                or any(not isinstance(dep, str) for dep in dependencies)):
+            errors.append("Malformed or duplicate dependencies for " + str(task.get("id")))
+            continue
+        if len(dependencies) != len(set(dependencies)):
+            errors.append("Malformed or duplicate dependencies for " + str(task.get("id")))
+            continue
+        for dep in dependencies:
             match = TASK_RE.fullmatch(dep)
             if dep not in ids or not match or int(match.group(1)) >= i:
                 errors.append("Invalid dependency " + str(dep))
+    by_id = {task.get("id"): task for task in tasks
+             if isinstance(task.get("id"), str)}
+    execution_records = data.get("execution_records", [])
+    if not isinstance(execution_records, list):
+        errors.append("Execution evidence records must be a list")
+        execution_records = []
+    reports_by_task = {}
+    for record in execution_records:
+        if not isinstance(record, dict):
+            errors.append("Malformed execution evidence record")
+            continue
+        task_id = record.get("task_id")
+        task = by_id.get(task_id)
+        if task is None:
+            errors.append("Execution evidence references unknown task " + str(task_id))
+            continue
+        status = record.get("status")
+        if not isinstance(status, str) or status not in TASK_STATUSES:
+            errors.append("Invalid execution evidence status for " + str(task_id))
+        else:
+            reports_by_task.setdefault(task_id, []).append(status)
+    for task_id, statuses in reports_by_task.items():
+        if by_id[task_id].get("status") not in statuses:
+            errors.append("Execution evidence has no report for current task status " + task_id)
     p = data["proof"]
     if p["status"] != "matched" or p["full_rom_match"] is not True:
         errors.append("Recorded ROM proof is not matched")

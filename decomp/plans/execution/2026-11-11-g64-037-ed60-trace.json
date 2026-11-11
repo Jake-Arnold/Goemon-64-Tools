@@ -1,0 +1,117 @@
+{
+  "format": "goemon-g64-execution-evidence-v1",
+  "task_id": "G64-037",
+  "title": "Characterize 8003ED60 handler",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "strategy": {
+    "document": "decomp/plans/EXECUTION_STRATEGY_V2.md",
+    "wave": "A",
+    "decision": "Completed a ROM-backed trace and one justified native probe; retained GLOBAL_ASM after the probe failed exact matching.",
+    "stop_rule": "No second C shape was justified because the probe did not move a prior mismatch and no new compiler hypothesis was established."
+  },
+  "starting_state": {
+    "workspace_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "03dd670b0a2d4fab53e27dcd6e067478f885b4fc",
+    "fetched_remote_head": "03dd670b0a2d4fab53e27dcd6e067478f885b4fc",
+    "worktree_clean_before_task": true,
+    "pinned_mnsg_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "mnsg_checkout_note": "Pinned checkout has pre-existing modified IDO/runtime files; the cc binary used here matches its recorded SHA-256. No changes were made to that checkout during this task."
+  },
+  "tracked_input_hashes": {
+    "decomp/manifest.json": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "decomp/script_vm.c": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "decomp/script_vm.h": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5"
+  },
+  "original_function": {
+    "name": "func_8003ED60_3F960",
+    "vma_start": "0x8003ED60",
+    "vma_end_exclusive": "0x8003EFB0",
+    "rom_offset": "0x3F960",
+    "size_bytes": 592,
+    "word_count": 148,
+    "sha256": "18db53295f30fa73a9808f3bed402aa085e97de238dfa36d25455f19dac8d89b",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size_bytes": 33554432,
+    "next_function": "func_8003EFB0_3FBB0",
+    "source_owner": "script_vm.c / assembly_functions / GLOBAL_ASM",
+    "narrow_signature": "void func_8003ED60_3F960(void)",
+    "caller": {
+      "name": "func_8003EFB0_3FBB0",
+      "vma_start": "0x8003EFB0",
+      "size_bytes": 136,
+      "sha256": "2a21c3f52af4661feadecea27ee0a84f09d5d3533527f8abadae972ee9499d8a",
+      "jal_vma": "0x8003F020",
+      "jal_rom_offset": "0x3FC20",
+      "caller_condition": "D_8007785C != 0x100",
+      "aligned_direct_jal_hits_in_rom": ["0x3FC20"]
+    },
+    "callees": [
+      {
+        "name": "func_8003F038_3FC38",
+        "count": 2,
+        "arguments_observed": ["$a0 = freshly loaded D_8007785C", "$a1 = 0"],
+        "return_use": ["first call: zero/nonzero gate", "second call: stored as pair 3 second word"],
+        "callee_semantics": "unknown"
+      }
+    ],
+    "cfg_and_memory_contract": "decomp/VM_ED60_TRACE.md"
+  },
+  "rom_guard": {
+    "command": "python3 -m decomp.test_vm_ed60_original --rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+    "exit_status": 0,
+    "result": "592-byte extent/hash, 37 handler anchors, 12 cursor increments, two helper calls, caller branch and one direct JAL passed",
+    "guard_file": "decomp/test_vm_ed60_original.py"
+  },
+  "native_probe": {
+    "classification": "isolated nonmatch; research only",
+    "source_location": "ignored practice/diagnostics/decomp-100-inputs/g64-037/ed60-probe.c",
+    "source_sha256": "00f2e890deacc5f839416da4707482ed148322c85ddb3f11cb50d50cd5749e3e",
+    "compiler": "pinned IDO 5.3 cc",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "compile_flags": ["-O2", "-mips2", "-G", "0", "-non_shared"],
+    "compile_command": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/tools/ido-5.3/cc -c -O2 -mips2 -G 0 -non_shared -o practice/diagnostics/decomp-100-inputs/g64-037/ed60-probe.o practice/diagnostics/decomp-100-inputs/g64-037/ed60-probe.c",
+    "compile_exit_status": 0,
+    "linker": "GNU MIPS binutils 2.45.90.20260125",
+    "link_command": "mips-linux-gnu-ld -EB -m elf32btsmip -T practice/diagnostics/decomp-100-inputs/g64-037/ed60-link.ld -o practice/diagnostics/decomp-100-inputs/g64-037/ed60-probe.elf practice/diagnostics/decomp-100-inputs/g64-037/ed60-probe.o",
+    "link_exit_status": 0,
+    "helper_resolution": "func_8003F038_3FC38 linked at 0x8003F038",
+    "original_vma": "0x8003ED60",
+    "candidate_symbol_size_bytes": 584,
+    "candidate_text_section_size_bytes": 592,
+    "candidate_text_sha256": "002a8f233c61db8c5d3ecda3fce568c67302c13f450a59ec48285ddf7d89d519",
+    "compared_symbol_words": 146,
+    "differing_words": 136,
+    "first_mismatch": {
+      "vma": "0x8003ED68",
+      "original_word": "0x3C048007",
+      "candidate_word": "0x3C0E8007",
+      "description": "original loads the global base into $a0; candidate loads it into $t6"
+    },
+    "additional_observation": "Candidate branch at ED78 targets EF98 rather than original EFA0; the function symbol is eight bytes short. The remaining eight linked .text bytes are section padding outside the function symbol."
+  },
+  "task_ledger_test_improvement": {
+    "summary": "Replaced execution-position assertions with structural checks for sequential IDs/ordinals, backward unique dependencies, allowed statuses, required evidence fields, and at least one report matching the current task status while allowing historical reports.",
+    "files": ["decomp/skill_context.py", "decomp/test_skill_context.py", "decomp/plans/README.md"]
+  },
+  "validation": {
+    "rom_guard": "passed: 592-byte extent, 37 anchors, 12 cursor updates, two helper calls, one direct caller",
+    "focused_tests": "17 passed across decomp.test_vm_ed60_original and decomp.test_skill_context",
+    "decomp_python_suite": "151 passed",
+    "verifier_tests": "17 passed",
+    "skill_context_validate": "consistent stored reports",
+    "git_diff_check": "passed"
+  },
+  "decision": {
+    "task_status": "RESEARCH_ONLY",
+    "production_source_changed": false,
+    "manifest_ownership_changed": false,
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "stored_proof": "148/148 functions, 11020 bytes; full 33554432-byte ROM proof remains the stored baseline",
+    "fresh_full_rom": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "next_task": "G64-038"
+  }
+}

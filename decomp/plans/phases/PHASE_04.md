@@ -242,7 +242,7 @@ were needed; production ownership and proof are unchanged. See
 
 ### G64-037 — Characterize 8003ED60 handler
 
-**Status:** PLANNED. **Dependencies:** G64-021.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-021.
 **Focus files:** `decomp/script_vm.c`; `decomp/script_vm.h`.
 
 **Architectural intent:** Map currently retained-ASM func_8003ED60_3F960, identifying interpreter inputs, memory writes, callees and genuine CFG boundaries.
@@ -260,6 +260,13 @@ were needed; production ownership and proof are unchanged. See
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
 **Explicit acceptance:** Reviewable original instruction map and narrow C signature precede a bounded exact-IDO candidate; no role inferred from address alone.
+
+**Outcome (2026-11-11):** The pinned 592-byte ROM extent, unique direct caller,
+no-argument `void` signature, global widths, exit gates and twelve output-pair
+cursor updates are mapped in [`../VM_ED60_TRACE.md`](../VM_ED60_TRACE.md).
+One trace-derived IDO probe differs first at `0x8003ED68`; production remains
+assembly-owned. The ROM guard passed. See
+[`../execution/2026-11-11-g64-037-ed60-trace.json`](../execution/2026-11-11-g64-037-ed60-trace.json).
 
 **Required negative control:** Do not accept a correct length with mismatched delay slots, wrong 0x48 frame, incorrect control-flow exits or fabricated unreachable return instructions.
 

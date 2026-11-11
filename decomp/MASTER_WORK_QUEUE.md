@@ -36,9 +36,14 @@ current pinned IDO result to a 220-byte symbol with a first mismatch at
 `0x8003DE84`. G64-035 tested four bounded shapes; the best first mismatch was
 `0x8003DE88`, while a size-equal 232-byte function had the wrong frame. G64-036
 closed from its eleven existing semantic cases and ROM guard without inventing
-gate-helper effects. Continue with G64-037.
-All private ROM and compiler files remain local under the ignored diagnostics
-input directory.
+gate-helper effects. G64-037 traced `func_8003ED60_3F960` from its 592-byte
+original extent, pinned its caller and no-argument ABI, guarded twelve
+output-cursor updates, and tried one trace-derived IDO candidate. The first
+mismatch is `0x8003ED68`; the function remains `GLOBAL_ASM`. See
+`VM_ED60_TRACE.md` and
+`plans/execution/2026-11-11-g64-037-ed60-trace.json`. Next: G64-038. All private
+ROM and compiler files remain local under the ignored diagnostics input
+directory.
 
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.
 

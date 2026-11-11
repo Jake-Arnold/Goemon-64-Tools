@@ -273,3 +273,17 @@ written for this task.
 The original-bound guard passed 132/132 decoder words and 54 exact instruction
 anchors spanning the decoder and callers, plus the 40-token dispatch table.
 See `plans/execution/2026-11-11-g64-028-control-decoder-trace.json`.
+
+### G64-037 ED60 handler contract
+
+`func_8003ED60_3F960` is a retained 592-byte ASM function with a no-argument
+`void` signature. Its one direct caller is gated by
+`D_8007785C != 0x100`. After a nonzero helper result and two pointer/state
+checks, it advances the 32-bit cursor slot at `0x8016C5CC` twelve times and
+writes twelve raw two-word pairs; one pair contains a second `F038` return and
+another uses masked arithmetic from `D_801C7758`/`D_801C775C`. Exact gates,
+delay slots, access widths, pair words and unknowns are in
+[`VM_ED60_TRACE.md`](VM_ED60_TRACE.md). The original-ROM guard passes; one
+trace-derived IDO probe differs at `0x8003ED68`, so no C model or production
+ownership change was made. See
+`plans/execution/2026-11-11-g64-037-ed60-trace.json`.
