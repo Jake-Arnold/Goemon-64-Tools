@@ -26,7 +26,9 @@ the typed resource interface matrix in `VM_RESOURCE_CALLGRAPH.md`. DDC4 and its
 matched context save/restore siblings remain exact; no new resource candidate
 passed G2. Keep D468, D68C, DF98 and F038 as ASM. G64-031 traced DBEC's
 472-byte CFG and six branch-likely slots in `VM_TEXT_LOOP_TRACE.md`; its
-original assembly ownership is unchanged. Continue with G64-032.
+original assembly ownership is unchanged. G64-032 recorded the 0x50 versus
+0x48 frame and five nonmatching native source-shape trials in
+`VM_TEXT_LOOP_FRAME.md`. Continue with G64-033.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 

@@ -137,5 +137,12 @@ matching-C claim. Its original assembly ownership remains.
   inventory build, or in-game test was performed. The candidate and
   `GLOBAL_ASM`/manifest ownership remain unchanged.
 
-**Next:** G64-032, isolate the 0x48 versus 0x50 frame and original saved-register
-lifetimes without changing callback order or branch behavior.
+## G64-032 frame investigation
+
+The native frame, saved-register offsets, unused eight-byte tail, candidate
+branch-likely positions, and six source-lifetime trial results are recorded in
+[`VM_TEXT_LOOP_FRAME.md`](VM_TEXT_LOOP_FRAME.md). All trials still compile with
+a 0x50-byte frame; the production function remains `GLOBAL_ASM`.
+
+**Next:** G64-033, strengthen the deterministic original-MIPS versus host-C
+differential model and its targeted negative controls.

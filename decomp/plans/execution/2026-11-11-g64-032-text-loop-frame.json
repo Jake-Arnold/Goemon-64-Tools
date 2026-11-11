@@ -1,0 +1,373 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-032",
+  "title": "Resolve text-loop 0x48 frame",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "selected_repo_skills": [
+    "goemon-task-brief",
+    "goemon-ido-codegen"
+  ],
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "c2df6222a1384982345ea6d41c81a6d75cddda67",
+    "target_head_at_task_start": "c2df6222a1384982345ea6d41c81a6d75cddda67",
+    "upstream_skills_commit_fetched_during_task": "9078d8d9757dcb69aebd8903a785cbdb4fbcf3f5",
+    "worktree_fast_forwarded_to_skills_commit": true,
+    "g64_032_changes_stashed_and_restored": true,
+    "conflict_resolution": "Preserved both the incoming skills progress entry and the G64-032 progress entry.",
+    "pinned_mnsg_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "local_private_inputs": {
+    "decompressed_rom": "practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+    "rom_size_bytes": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "mips_objdump": "mips-linux-gnu-objdump",
+    "rom_and_compiler_published": false
+  },
+  "original_function": {
+    "name": "func_8003DBEC_3E7EC",
+    "manifest_ownership": "GLOBAL_ASM in script_vm.c",
+    "vma": "0x8003DBEC",
+    "rom_offset": "0x3E7EC",
+    "size_bytes": 472,
+    "sha256": "4ee117dd31f6b8f3ab30ca864c202eb7c974c28cc8236d233a94228b36a0a764",
+    "frame_bytes": 72,
+    "saved_register_offsets": {
+      "s0": "0x18",
+      "s1": "0x1C",
+      "s2": "0x20",
+      "s3": "0x24",
+      "s4": "0x28",
+      "s5": "0x2C",
+      "s6": "0x30",
+      "s7": "0x34",
+      "s8/fp": "0x38",
+      "ra": "0x3C"
+    },
+    "outer_counter_slot": "sp+0x44"
+  },
+  "candidate_baseline": {
+    "path": "decomp/candidates/vm_text_loop_alias_probe.c",
+    "sha256": "f6232806226db464882a2ea444d6f42e48edf3113e8e45c441ec87f7807ec4c5",
+    "symbol_bytes": 472,
+    "frame_bytes": 80,
+    "saved_register_offsets_match_original": true,
+    "outer_counter_slot": "sp+0x44",
+    "stack_accesses_in_sp_0x48_to_0x4f": false,
+    "frame_only_differences": [
+      {
+        "vma": "0x8003DBEC",
+        "original": "addiu $sp,$sp,-0x48",
+        "candidate": "addiu $sp,$sp,-0x50"
+      },
+      {
+        "vma": "0x8003DDC0",
+        "original": "addiu $sp,$sp,0x48",
+        "candidate": "addiu $sp,$sp,0x50"
+      }
+    ],
+    "raw_ido_probe": {
+      "excluded_candidate_relocation_words": 23,
+      "equal_words": 53,
+      "compared_nonrelocation_words": 95
+    },
+    "stored_relocation_layout_report": {
+      "equal_words": 53,
+      "comparable_nonrelocation_words": 88,
+      "relocation_layout_differences": 17,
+      "note": "Different denominator/comparison rule from the raw isolated-object probe."
+    },
+    "raw_nonrelocation_mismatch_count": 42,
+    "raw_nonrelocation_mismatch_vmas": [
+      "0x8003DBEC",
+      "0x8003DC70",
+      "0x8003DC78",
+      "0x8003DC7C",
+      "0x8003DC80",
+      "0x8003DC84",
+      "0x8003DC88",
+      "0x8003DC8C",
+      "0x8003DC90",
+      "0x8003DC94",
+      "0x8003DC98",
+      "0x8003DC9C",
+      "0x8003DCA0",
+      "0x8003DCA4",
+      "0x8003DCA8",
+      "0x8003DCAC",
+      "0x8003DCB0",
+      "0x8003DCB4",
+      "0x8003DCB8",
+      "0x8003DCBC",
+      "0x8003DCC4",
+      "0x8003DCC8",
+      "0x8003DCCC",
+      "0x8003DCD4",
+      "0x8003DCD8",
+      "0x8003DCDC",
+      "0x8003DCE0",
+      "0x8003DCE8",
+      "0x8003DCF4",
+      "0x8003DCF8",
+      "0x8003DCFC",
+      "0x8003DD04",
+      "0x8003DD10",
+      "0x8003DD4C",
+      "0x8003DD50",
+      "0x8003DD54",
+      "0x8003DD58",
+      "0x8003DD5C",
+      "0x8003DD60",
+      "0x8003DD64",
+      "0x8003DD68",
+      "0x8003DDC0"
+    ]
+  },
+  "original_vs_baseline_branch_likely_pcs": [
+    {
+      "original": "0x8003DC8C",
+      "candidate": "0x8003DC90",
+      "byte_offset_delta": 4
+    },
+    {
+      "original": "0x8003DCC0",
+      "candidate": "0x8003DCC4",
+      "byte_offset_delta": 4
+    },
+    {
+      "original": "0x8003DCD0",
+      "candidate": "0x8003DCD8",
+      "byte_offset_delta": 8
+    },
+    {
+      "original": "0x8003DD14",
+      "candidate": "0x8003DD14",
+      "byte_offset_delta": 0
+    },
+    {
+      "original": "0x8003DD50",
+      "candidate": "0x8003DD58",
+      "byte_offset_delta": 8
+    },
+    {
+      "original": "0x8003DD8C",
+      "candidate": "0x8003DD8C",
+      "byte_offset_delta": 0
+    }
+  ],
+  "source_lifetime_trials": [
+    {
+      "name": "alias_baseline",
+      "source_sha256": "f6232806226db464882a2ea444d6f42e48edf3113e8e45c441ec87f7807ec4c5",
+      "symbol_bytes": 472,
+      "frame_bytes": 80,
+      "raw_equal_nonreloc_words": 53,
+      "raw_comparable_nonreloc_words": 95,
+      "branch_likely_pcs": [
+        "0x8003DC90",
+        "0x8003DCC4",
+        "0x8003DCD8",
+        "0x8003DD14",
+        "0x8003DD58",
+        "0x8003DD8C"
+      ],
+      "host_differential": "PASS; 2,500 cases per seed 0x1D8 and 0xDEADBEEF"
+    },
+    {
+      "name": "inline_script_argument",
+      "source_sha256": "7f528550ce05ce820246535b794389815c4e0b2a77bccc407416d7d901024b16",
+      "symbol_bytes": 472,
+      "frame_bytes": 80,
+      "raw_equal_nonreloc_words": 49,
+      "raw_comparable_nonreloc_words": 95,
+      "branch_likely_pcs": [
+        "0x8003DC90",
+        "0x8003DCC4",
+        "0x8003DCD8",
+        "0x8003DD14",
+        "0x8003DD58",
+        "0x8003DD8C"
+      ],
+      "host_differential": "PASS; 2,500 cases per seed 0x1D8 and 0xDEADBEEF"
+    },
+    {
+      "name": "reload_state_before_volatile_store",
+      "source_sha256": "aceff8ec553df42cead1f2c449a57ed3c26004b5c4932237283b0c6e4bb08ec9",
+      "symbol_bytes": 468,
+      "frame_bytes": 80,
+      "raw_equal_nonreloc_words": 29,
+      "raw_comparable_nonreloc_words": 94,
+      "branch_likely_pcs": [
+        "0x8003DC8C",
+        "0x8003DCC0",
+        "0x8003DCD4",
+        "0x8003DD10",
+        "0x8003DD54",
+        "0x8003DD88"
+      ],
+      "host_differential": "PASS; 2,500 cases per seed 0x1D8 and 0xDEADBEEF"
+    },
+    {
+      "name": "outer_register_hint",
+      "source_sha256": "bd8bb1b5488c7bda447458cfddecbb87581d8901b1d11d79aa97e7b015049e9f",
+      "symbol_bytes": 472,
+      "frame_bytes": 80,
+      "raw_equal_nonreloc_words": 53,
+      "raw_comparable_nonreloc_words": 95,
+      "branch_likely_pcs": [
+        "0x8003DC90",
+        "0x8003DCC4",
+        "0x8003DCD8",
+        "0x8003DD14",
+        "0x8003DD58",
+        "0x8003DD8C"
+      ],
+      "host_differential": "PASS; 2,500 cases per seed 0x1D8 and 0xDEADBEEF"
+    },
+    {
+      "name": "terminal_state_range",
+      "source_sha256": "1fa59d9587428c64ec8e1ca6f3f4993110f0265f8213108e1a0c8ff57932fef4",
+      "symbol_bytes": 456,
+      "frame_bytes": 80,
+      "raw_equal_nonreloc_words": 15,
+      "raw_comparable_nonreloc_words": 91,
+      "branch_likely_pcs": [
+        "0x8003DC8C",
+        "0x8003DCA4",
+        "0x8003DCBC",
+        "0x8003DCCC",
+        "0x8003DD04",
+        "0x8003DD48",
+        "0x8003DD7C"
+      ],
+      "host_differential": "PASS; 2,500 cases per seed 0x1D8 and 0xDEADBEEF"
+    },
+    {
+      "name": "nonvolatile_work_pointer",
+      "source_sha256": "cebfd861004298d7d23655b47841d00d1dcf183e7629efb05bf0138648089747",
+      "symbol_bytes": 476,
+      "frame_bytes": 80,
+      "raw_equal_nonreloc_words": 18,
+      "raw_comparable_nonreloc_words": 93,
+      "branch_likely_pcs": [
+        "0x8003DC94",
+        "0x8003DCC8",
+        "0x8003DCDC",
+        "0x8003DD18",
+        "0x8003DD5C"
+      ],
+      "host_differential": "PASS; 2,500 cases per seed 0x1D8 and 0xDEADBEEF"
+    }
+  ],
+  "local_trial_artifacts": {
+    "directory": "practice/diagnostics/decomp-100-inputs/g64-032/",
+    "summary_path": "practice/diagnostics/decomp-100-inputs/g64-032/experiment_summary.json",
+    "summary_sha256": "e73908b7d8e55ca701e0af499ffb72e47f565f14de472f63f40991ac5e8a2ae6",
+    "git_ignored": true,
+    "includes_rom_or_binary_in_git": false
+  },
+  "repo_skill_context": {
+    "status_command": "PASS; stored proof 148/148 and first planned task G64-033",
+    "task_command": "PASS; G64-032 brief matches phase/task plan",
+    "validate_command": "PASS; 100 task records; stored reports consistent",
+    "skill_tests": "PASS; 7 tests",
+    "full_decomp_suite": "PASS; 135 tests after fixing test_skill_context import for documented discovery",
+    "verifier_suite": "PASS; 17 tests; stored proof only, no new verifier build"
+  },
+  "validation": {
+    "focused_vm_tests": "PASS; 6 tests",
+    "native_ido_probe": "PASS; exact candidate source emitted 472-byte isolated symbol, 0x50 frame",
+    "all_six_sources_host_differential": "PASS; 5,000 deterministic scenarios per source; 30,000 total across two seeds",
+    "json_and_diff_check": "PASS",
+    "native_original_translation_unit_link": "NOT_RUN",
+    "new_full_rom_build": "NOT_RUN",
+    "new_inventory_build": "NOT_RUN",
+    "in_game": false
+  },
+  "commands": [
+    {
+      "command": "python3 -m decomp.skill_context --status",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -m decomp.skill_context --task G64-032",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -m decomp.skill_context --validate",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -v",
+      "exit_code": 0,
+      "result": "7 tests"
+    },
+    {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 1,
+      "expected_failure": true,
+      "reason": "New test_skill_context relative import failed under the documented discovery mode; changed it to an absolute decomp import and reran successfully."
+    },
+    {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 0,
+      "result": "135 tests after import fix"
+    },
+    {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "exit_code": 0,
+      "result": "17 tests"
+    },
+    {
+      "command": "PYTHONPATH=decomp python3 -m unittest decomp.test_vm_text_loop_alias_probe decomp.test_vm_text_loop_codegen -q",
+      "exit_code": 0,
+      "result": "6 tests"
+    },
+    {
+      "command": "python3 decomp/probe_vm_text_loop_codegen.py --decompressed-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --candidate-source decomp/candidates/vm_text_loop_alias_probe.c --ido-cc practice/diagnostics/decomp-100-inputs/mnsg-pinned/tools/ido-5.3/cc",
+      "exit_code": 0,
+      "result": "472-byte symbol; 53/95 raw comparable nonrelocation words; frame 80"
+    },
+    {
+      "command": "IDO_CC -c -O2 -mips2 -G 0 -non_shared VARIANT.c -o VARIANT.o; mips-linux-gnu-objdump -dr VARIANT.o",
+      "exit_code": 0,
+      "result": "Baseline and five local source variants; details and hashes in ignored experiment summary."
+    },
+    {
+      "command": "gcc -std=c11 -O1 -Wall -Wextra -Werror -fPIC -shared VARIANT.c decomp/test_vm_text_loop_differential_stubs.c -o VARIANT-host.so; python3 decomp/test_vm_text_loop_differential.py --decompressed-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --host-library VARIANT-host.so --cases 2500 --seed 0x1d8; repeat with --seed 0xdeadbeef",
+      "exit_code": 0,
+      "result": "Each of six sources passed both seeds."
+    },
+    {
+      "command": "git diff --check && python3 -m json.tool decomp/plans/TASKS_100.json >/dev/null",
+      "exit_code": 0
+    }
+  ],
+  "source_state": {
+    "research_candidate_comment_updated": true,
+    "test_skill_context_import_fixed": true,
+    "production_script_vm_c_changed": false,
+    "manifest_changed": false,
+    "proof_report_changed": false,
+    "inventory_report_changed": false,
+    "function_ownership_changed": false,
+    "matching_claim_count_changed": false
+  },
+  "limitations": [
+    "No variant emitted the original 0x48 frame; the eight unused candidate bytes remain unexplained.",
+    "No variant matched the complete original branch-likely layout or function code.",
+    "The source trial host results are synthetic model evidence and do not prove retail callback effects.",
+    "No candidate was compiled and linked within the production script_vm.c unit at the original VMA.",
+    "No new full-ROM/inventory proof or in-game verification was performed; stored proof remains authoritative."
+  ],
+  "next": "Execute G64-033: strengthen the differential harness for unsigned controller halves, mutable callbacks, stale-bound and pointer-aliasing negative controls.",
+  "tool_versions": {
+    "python": "3.14.4",
+    "gcc": "15.2.0",
+    "mips_binutils_objdump": "2.45.90.20260125",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0"
+  }
+}

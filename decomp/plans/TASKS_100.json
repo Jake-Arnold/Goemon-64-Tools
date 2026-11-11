@@ -1261,7 +1261,7 @@
       "ordinal": 32,
       "phase": 4,
       "title": "Resolve text-loop 0x48 frame",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-031"
       ],

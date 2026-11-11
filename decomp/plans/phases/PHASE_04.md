@@ -52,7 +52,7 @@ ownership remains.
 
 ### G64-032 — Resolve text-loop 0x48 frame
 
-**Status:** PLANNED. **Dependencies:** G64-031.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-031.
 **Focus files:** `decomp/candidates/vm_text_loop_alias_probe.c`; `decomp/probe_vm_text_loop_codegen.py`.
 
 **Architectural intent:** Investigate why research candidate has 0x50 frame despite 472-byte symbol; isolate saved-register, volatile global and script argument lifetimes.
@@ -76,6 +76,13 @@ ownership remains.
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome:** The candidate saves the same ten registers and uses the same
+`sp+0x44` outer-counter slot as the original, but IDO emits a 0x50-byte frame
+with an unused eight-byte tail. Five controlled source-lifetime variants did
+not reduce the frame; none matched the complete branch layout. All six
+variants passed 5,000 synthetic differential cases. See
+[`../VM_TEXT_LOOP_FRAME.md`](../VM_TEXT_LOOP_FRAME.md).
 
 ### G64-033 — Strengthen text-loop differential model
 

@@ -1,6 +1,7 @@
 /* Unpromoted VM text loop: volatile work-record aliasing experiment.
  * Pinned IDO 5.3: 472 bytes, 53/95 nonrelocation words equal (baseline 47/95).
- * Not exact original instructions, not full-ROM verified.
+ * Its native frame is 0x50 versus the original 0x48; not an exact match or
+ * full-ROM verified. See VM_TEXT_LOOP_FRAME.md for comparison details.
  */
 typedef signed int s32;
 typedef unsigned int u32;

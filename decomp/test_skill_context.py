@@ -1,6 +1,6 @@
 """No-ROM regression for compact task context and proof consistency."""
 import unittest
-from . import skill_context as sc
+from decomp import skill_context as sc
 
 
 class TaskBriefTests(unittest.TestCase):
