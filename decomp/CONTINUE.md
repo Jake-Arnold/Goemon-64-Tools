@@ -61,7 +61,12 @@ G64-025's callback-mutation model and endian accessors pass, but its loader
 candidate remains nonmatching native research. G64-026 added 36 guards for the
 original D468 32-byte frame, saved-register lifetimes, entry-ID spill, and
 return sequence. The isolated candidate still has a 24-byte frame and first
-mismatches at `+0x8`; production ASM remains. Continue with G64-027–030.
+mismatches at `+0x8`; production ASM remains. G64-027 traced D68C's 203
+original instruction words, 7 state cases, 31 token entries, and 0/1/2 return
+paths; its 44-anchor ROM-bound guard and 119-test decomp suite pass. It added a
+future host-model matrix without writing C. See
+[`VM_MAIN_STEP_TRACE.md`](VM_MAIN_STEP_TRACE.md) and the evidence packet.
+Continue with G64-028–030.
 See `plans/execution/` for task-specific evidence ledgers.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.

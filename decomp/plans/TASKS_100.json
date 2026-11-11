@@ -1059,7 +1059,7 @@
       "ordinal": 27,
       "phase": 3,
       "title": "Trace VM main-step 8003D68C",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-021"
       ],

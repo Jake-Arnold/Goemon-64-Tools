@@ -33,7 +33,7 @@
 ## Default execution order
 1. G64-001–014 have recorded outcomes: the resource wrappers, menu trio and object dispatcher passed G2; G64-003 was already complete.
 2. G64-015–018 were retried and marked `FAILED_NATIVE`; no production ASM ownership changed. G64-019 is `RESEARCH_ONLY`, and G64-020 documents the hard stops.
-3. G64-021 is `DOC_ONLY`; G64-022–026 are `RESEARCH_ONLY`: G64-023 reproduced the F038 baseline, G64-024's three variants did not improve it, G64-025's callback mutation model passed, and G64-026 pinned the loader frame while its candidate remained nonmatching. Continue with G64-027–030 in dependency order, following original evidence rather than assuming every target will promote.
+3. G64-021 is `DOC_ONLY`; G64-022–027 are `RESEARCH_ONLY`: G64-023 reproduced the F038 baseline, G64-024's three variants did not improve it, G64-025's callback mutation model passed, G64-026 pinned the loader frame while its candidate remained nonmatching, and G64-027 traced D68C with a ROM-bound control-flow guard but no C candidate. Continue with G64-028–030 in dependency order, following original evidence rather than assuming every target will promote.
 4. At every phase boundary run G64-099 rebaseline. Live manifest/results override this plan's historical numeric assumptions.
 5. When a phase is blocked, update the task ledger with exact failure evidence and proceed to an independent work unit; leave ASM intact.
 

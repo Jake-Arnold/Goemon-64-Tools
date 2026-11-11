@@ -12,8 +12,10 @@ G64-024's three new variants did not improve that baseline and remain
 `RESEARCH_ONLY`; G64-025's mutation model passed but its native candidate
 remains unpromoted. G64-026 pinned the D468 32-byte frame and saved-register
 lifetimes with 36 original-address guards; its 556-byte candidate still differs
-from the 548-byte original, so it remains `RESEARCH_ONLY`. Continue with
-G64-027–030 in dependency order.
+from the 548-byte original, so it remains `RESEARCH_ONLY`. G64-027's D68C
+control-flow trace is complete and remains `RESEARCH_ONLY`: both dispatch
+tables, state returns and callback cursor reloads are tied to the pinned ROM,
+with no C candidate. Continue with G64-028–030 in dependency order.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 

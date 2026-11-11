@@ -36,8 +36,14 @@ accessor tests pass; native loader codegen remains nonmatching. G64-026 added
 36 original-address guards for D468's 32-byte frame, saved `$s0/$s1/$ra`,
 entry-ID spill and epilogue. Its 556-byte candidate still differs at `+0x8`
 and uses a 24-byte frame, so production ASM remains. See
-`plans/execution/2026-11-11-g64-026-loader-frame.json`. Next: G64-027, trace
-the main VM step at `0x8003D68C`.
+`plans/execution/2026-11-11-g64-026-loader-frame.json`. G64-027 traced the
+812-byte main-step CFG and both dispatch tables against the pinned ROM: state
+1–7 dispatch, all 31 token entries, return values 0/1/2, callback cursor
+reloads, and branch-likely slots are recorded in
+[`VM_MAIN_STEP_TRACE.md`](VM_MAIN_STEP_TRACE.md). Its 203-word/44-anchor guard,
+5 parser tests, full 119-test decomp suite, and 17 verifier tests passed. No C
+model was written; the test matrix is a future acceptance spec. Next: G64-028,
+trace the control decoder at `0x8003DF98`.
 
 ## Numbered event startup follow-up (2026-11-03)
 

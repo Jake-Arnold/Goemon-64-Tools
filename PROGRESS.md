@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-027 trace VM main-step control flow (RESEARCH_ONLY)
+
+- Continued from pushed commit `510e580b378e4eb9fab58164de36a7366e1d1129` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed it matched. The pinned `mnsg` checkout remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.
+- Traced `func_8003D68C_3E28C` at VMA `0x8003D68C` / ROM `0x3E28C`: **812 bytes / 203 words**, original extent SHA-256 `e49ad551d97f2f8cac887ee126e99dfdb29924901a4ff69f0792898207bf3da5`. Verified the exact function words against the SHA-1 checked 33,554,432-byte image. Recorded the no-argument global contract and returns 0/1/2; null/pause/controller gates; all seven state targets; all 31 token targets; compare-token operand/cursor behavior; indirect callback cursor reload; and branch-likely delay slots. Unknown helper and callback effects stay explicitly unknown. The `0x8010` path stores the relocated value to `D_801C77E8` in the `jal DBEC` delay slot, before the call; it does not store DBEC's return value.
+- Added `decomp/VM_MAIN_STEP_TRACE.md` with the address-ordered flow, full dispatch tables, input/output contract, callback boundaries and a future host-model test matrix. Added `decomp/test_vm_main_step_original.py`; it verifies the full extent, all **203** Splat words, **44** instruction anchors, the seven state-table entries and 31 token-table entries against the private ROM.
+- **Executed:** original-ROM guard passed (203 words / 44 anchors / 7+31 table entries); parser tests **5/5**; full decomp Python suite **119/119**; verifier tests **17/17**; `py_compile` passed. `script_vm.c`, `script_vm.h`, manifest, proof report and assembly ownership did not change. The host-model matrix is documented but **not executed** because no C model was written. No native candidate, full-ROM candidate gate, inventory or in-game verification was run.
+- **Reason / limits:** G64-027 requires a complete original control-flow map before any C. The explicit unknowns and test matrix support a later model without presenting opcode guesses as verified behavior. The dispatcher remains `GLOBAL_ASM`; authoritative counts and proof are unchanged.
+- **Next:** G64-028, trace control decoder `func_8003DF98_3EB98`, preserving signed token and callback ordering details.
+
 ## 2026-11-11 — G64-026 loader ABI and frame (RESEARCH_ONLY)
 
 - Continued in `codex/decomp-100-task-plan` from `fc508a1187a98478106e6f594ac5561ef3de7941`; fetched `origin/chatgptweb/decomp` and confirmed its SHA matched before work. The pinned upstream `mnsg` checkout remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`; the private retail/decompressed ROM hashes still match the tracked setup guide.

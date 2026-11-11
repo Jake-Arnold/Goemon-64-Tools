@@ -1,0 +1,85 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-027",
+  "title": "Trace VM main-step 8003D68C",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "510e580b378e4eb9fab58164de36a7366e1d1129",
+    "target_remote_head_before_work": "510e580b378e4eb9fab58164de36a7366e1d1129",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "original_function": {
+    "name": "func_8003D68C_3E28C",
+    "rom_offset": "0x3E28C",
+    "vma": "0x8003D68C",
+    "original_bytes": 812,
+    "instruction_words": 203,
+    "original_sha256": "e49ad551d97f2f8cac887ee126e99dfdb29924901a4ff69f0792898207bf3da5",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "source_state": {
+    "production_ownership": "unchanged; func_8003D68C_3E28C remains GLOBAL_ASM",
+    "script_vm_c_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "script_vm_h_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "combined_proof_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129"
+  },
+  "research_artifacts": {
+    "trace": {
+      "path": "decomp/VM_MAIN_STEP_TRACE.md",
+      "sha256": "4f3e6526fb1fca03be974a9d32ee0bf5902d403d4177113c3988d20fde63100f"
+    },
+    "rom_bound_guard": {
+      "path": "decomp/test_vm_main_step_original.py",
+      "sha256": "88e8fda624624322fe7312b4a7a4fd4058f7940db594c47a18866605f760d9bf",
+      "verified_instruction_words": 203,
+      "instruction_anchors": 44,
+      "state_table_entries": 7,
+      "token_table_entries": 31
+    },
+    "input_output_contract": "No register arguments; reads cursor, pause byte and VM state globals; returns 0 for null cursor, 2 when paused, and 1 on handler yield or token 0x8008.",
+    "host_model_matrix": "Documented for a later C attempt; not executed because no C model was written.",
+    "delay_slot_finding": "Token 0x8010's sw of the relocated DE48 result executes in the jal DBEC delay slot before DBEC runs; it does not store DBEC's return value.",
+    "unknowns_preserved": [
+      "Indirect callback signature and side effects",
+      "E6C0 and 24038/24088/240DC helper semantics beyond observed arguments, return use and cursor effects",
+      "Whether any external helper mutates resource globals"
+    ]
+  },
+  "validation": {
+    "original_rom_guard": "PASS; exact 32 MiB ROM SHA-1, 812-byte extent SHA-256, all 203 Splat words and both dispatch tables",
+    "parser_tests": "PASS; 5 tests",
+    "decomp_python_suite": "PASS; 119 tests",
+    "verifier_python_suite": "PASS; 17 tests",
+    "py_compile": "PASS",
+    "native_candidate": "NOT_CREATED; no native comparison or mismatch applies",
+    "full_rom_candidate_gate": "NOT_RUN; production ownership unchanged",
+    "inventory": "NOT_RUN",
+    "in_game": false
+  },
+  "commands": [
+    "git fetch origin chatgptweb/decomp",
+    "python3 decomp/test_vm_main_step_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+    "python3 decomp/test_vm_main_step_original.py",
+    "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+    "python3 -m unittest tests.test_decomp_verify -q",
+    "python3 -m py_compile decomp/test_vm_main_step_original.py"
+  ],
+  "official_claims": {
+    "proof_report": "decomp/results/combined.json",
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_functions": 148,
+    "matched_bytes": 11020,
+    "promotions": 0
+  },
+  "limitations": [
+    "The host-model matrix is a future specification, not an executed differential model.",
+    "No C candidate was produced, so native codegen and complete-ROM candidate gates do not apply to this task.",
+    "Opaque helper and callback effects remain unknown; no gameplay semantics were inferred from token names or one call site."
+  ],
+  "next": "Execute G64-028: trace the original control decoder func_8003DF98_3EB98 and preserve its signed-token and callback ordering."
+}

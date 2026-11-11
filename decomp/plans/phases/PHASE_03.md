@@ -244,8 +244,22 @@ was run; the production ASM placeholder and all claims remain unchanged. See
 
 ### G64-027 — Trace VM main-step 8003D68C
 
-**Status:** PLANNED. **Dependencies:** G64-021.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-021.
 **Focus files:** `decomp/script_vm.c`; `decomp/VM_CHECKPOINT.md`.
+
+**Outcome (2026-11-11):** Traced the full 812-byte/203-word original at
+`0x8003D68C` from the pinned USA image. Recorded the no-argument global input
+and `0/1/2` return contract, null/pause/controller gates, 1–7 state table, all
+31 token targets, comparison and callback cursor behavior, delay-slot effects,
+and explicit unknowns for external callbacks/helpers. Added
+`VM_MAIN_STEP_TRACE.md` with a complete address-ordered map and a future
+host-model matrix. Added a guard that verifies the full original extent against
+the 32 MiB ROM, all 203 Splat words, 44 instruction anchors, seven state-table
+entries and 31 token-table entries. The guard passed; five parser tests, 119
+decomp tests and 17 verifier tests passed. No C model, native candidate,
+full-ROM candidate gate, inventory, or in-game test was run. The existing
+`GLOBAL_ASM`, manifest and claims are unchanged. See
+`plans/execution/2026-11-11-g64-027-main-step-trace.json`.
 
 **Architectural intent:** Recover CFG, live state and authoritative declarations for unresolved func_8003D68C_3E28C before writing C; identify callbacks and exit paths.
 
