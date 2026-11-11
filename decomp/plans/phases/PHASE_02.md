@@ -127,7 +127,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-015 — Revisit engine reset
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** FAILED_NATIVE. **Dependencies:** G64-002.
 **Focus files:** `decomp/engine_state.c`; `decomp/test_engine_state.c`.
 
 **Architectural intent:** Investigate func_8003A1E8_3ADE8 (28 bytes) and original u16/s8 adjacent globals, two stores, address construction and delay slot.
@@ -154,7 +154,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-016 — Revisit state writer
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** FAILED_NATIVE. **Dependencies:** G64-002.
 **Focus files:** `decomp/state_predicate.c`; `decomp/test_state_predicate.c`.
 
 **Architectural intent:** Investigate func_80006274_6E74 (36 bytes), original halfword/word writes, base adjustment and stack/argument spill.
@@ -181,7 +181,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-017 — Revisit file-table second lookup
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** FAILED_NATIVE. **Dependencies:** G64-002.
 **Focus files:** `decomp/file_table.c`; `decomp/test_file_table.c`.
 
 **Architectural intent:** Investigate func_80001D94_2994 (44 bytes) adjacent to matching 80001D68, preserving different table base and 0x7FFFFFFF masks.
@@ -208,7 +208,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-018 — Revisit file-size reader
 
-**Status:** PLANNED. **Dependencies:** G64-017.
+**Status:** FAILED_NATIVE. **Dependencies:** G64-017.
 **Focus files:** `decomp/file_table.c`; `decomp/test_file_table.c`.
 
 **Architectural intent:** Investigate func_80001DC0_29C0 (52 bytes), unsigned entry subtraction, zero-input branch, delayed return scheduling.
@@ -235,7 +235,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-019 — Integrate independently passing short functions
 
-**Status:** PLANNED. **Dependencies:** G64-015, G64-016, G64-017, G64-018.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-015, G64-016, G64-017, G64-018.
 **Focus files:** `decomp/engine_state.c`; `decomp/state_predicate.c`; `decomp/file_table.c`; `decomp/manifest.json`.
 
 **Architectural intent:** Batch compatible source neighbors without mixing unrelated ASM; allow partial integration if only a subset matches.
@@ -262,7 +262,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-020 — Record hard-stop decisions
 
-**Status:** PLANNED. **Dependencies:** G64-014, G64-019.
+**Status:** DOC_ONLY. **Dependencies:** G64-014, G64-019.
 **Focus files:** `decomp/results/next_twenty_execution_20261110.json`; `PROGRESS.md`.
 
 **Architectural intent:** Publish per-target disposition: promoted, exact isolated but unpromoted, mismatch, or blocked by proof; retain comparison diffs privately.

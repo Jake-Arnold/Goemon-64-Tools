@@ -553,7 +553,7 @@
       "ordinal": 15,
       "phase": 2,
       "title": "Revisit engine reset",
-      "status": "PLANNED",
+      "status": "FAILED_NATIVE",
       "depends_on": [
         "G64-002"
       ],
@@ -590,7 +590,7 @@
       "ordinal": 16,
       "phase": 2,
       "title": "Revisit state writer",
-      "status": "PLANNED",
+      "status": "FAILED_NATIVE",
       "depends_on": [
         "G64-002"
       ],
@@ -627,7 +627,7 @@
       "ordinal": 17,
       "phase": 2,
       "title": "Revisit file-table second lookup",
-      "status": "PLANNED",
+      "status": "FAILED_NATIVE",
       "depends_on": [
         "G64-002"
       ],
@@ -664,7 +664,7 @@
       "ordinal": 18,
       "phase": 2,
       "title": "Revisit file-size reader",
-      "status": "PLANNED",
+      "status": "FAILED_NATIVE",
       "depends_on": [
         "G64-017"
       ],
@@ -701,7 +701,7 @@
       "ordinal": 19,
       "phase": 2,
       "title": "Integrate independently passing short functions",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-015",
         "G64-016",
@@ -743,7 +743,7 @@
       "ordinal": 20,
       "phase": 2,
       "title": "Record hard-stop decisions",
-      "status": "PLANNED",
+      "status": "DOC_ONLY",
       "depends_on": [
         "G64-014",
         "G64-019"

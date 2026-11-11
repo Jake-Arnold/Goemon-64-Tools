@@ -40,10 +40,13 @@ and full-ROM result.
 G64-001–014 have recorded outcomes: G64-001, 002 and 004–014 passed G2; G64-003
 was skipped as already complete under the existing G0–G3 proof contract. G64-051
 has a tested explicit overlay metadata schema, classified `DOC_ONLY` because it
-is not connected to the production verifier. The next live targets are
-G64-015–018 (engine reset, state writer and two file-table routines); preserve
-each ASM placeholder until its actual original-unit and full-ROM checks pass.
-See `plans/execution/` for task-specific evidence ledgers.
+is not connected to the production verifier. G64-015–018 were retried with the
+private ROM/compiler available; every host semantic harness passed, but no
+candidate matched its full original C unit under native IDO. Each failed
+whole-ROM build was rejected before inventory, and all four production ASM
+placeholders remain in place. G64-019 is `RESEARCH_ONLY`; G64-020 is `DOC_ONLY`.
+The next live targets are independent VM resource tasks G64-021–030. See
+`plans/execution/` for task-specific evidence ledgers.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
 

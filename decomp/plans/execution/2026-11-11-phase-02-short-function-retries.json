@@ -1,0 +1,114 @@
+{
+  "format": "goemon-task-execution-v1",
+  "plan": "decomp/plans/TASKS_100.json",
+  "task_ids": [
+    "G64-015",
+    "G64-016",
+    "G64-017",
+    "G64-018",
+    "G64-019",
+    "G64-020"
+  ],
+  "target_branch": "chatgptweb/decomp",
+  "workspace_branch": "codex/decomp-100-task-plan",
+  "starting_sha": "1c69c6310a3a1784149551e647b90cbb33ccf68f",
+  "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "private_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "official_count_before_and_after": {
+    "matching_functions": 148,
+    "matched_function_bytes": 11020,
+    "combined_c": 161,
+    "assembly": 7215,
+    "identified_entries": 7376,
+    "reason_unchanged": "None of the four retry candidates matched the native original unit and whole-ROM gates. All production ASM and manifest ownership were restored."
+  },
+  "candidate_retries": [
+    {
+      "task_id": "G64-015",
+      "function": "func_8003A1E8_3ADE8",
+      "rom_offset": "0x3ADE8",
+      "vma": "0x8003A1E8",
+      "original_bytes": 28,
+      "original_sha256": "67a34a9f05ad07e9b774a39beb484f80f3207f0287120a29b3357af426608838",
+      "status": "FAILED_NATIVE",
+      "candidate_research": [
+        "Separate global assignments compiled to 20 bytes; native target used direct LUI+SH forms and delayed return NOP rather than the original address temporary.",
+        "Best two-pointer 28-byte unit variant used t6/t7 temporaries and placed the second byte store in the JR delay slot; the original uses v0/at and a NOP delay slot."
+      ],
+      "full_rom_candidate_sha1": "d02d25a568299f20c99e9d63e9147195848c81ef",
+      "full_rom_gate": "FAILED_ROM; verifier stopped at candidate image SHA-1 check. No inventory was run.",
+      "host_test": "PASS under AddressSanitizer and UndefinedBehaviorSanitizer; adjacent-byte sentinel preserved.",
+      "research_source": "decomp/candidates/engine_reset_3ade8.c"
+    },
+    {
+      "task_id": "G64-016",
+      "function": "func_80006274_6E74",
+      "rom_offset": "0x6E74",
+      "vma": "0x80006274",
+      "original_bytes": 36,
+      "original_sha256": "0fe46b7b771a77a3a4c6e4354902ef27f6211fae3a1ce22839657fa8cdaf1102",
+      "status": "FAILED_NATIVE",
+      "candidate_research": [
+        "The typed base+offset source with a volatile parameter home compiled to 40 bytes, including an 8-byte stack frame and a home store at sp+4; the original has no frame and stores a0 at sp+0.",
+        "Taking the parameter address explicitly also compiled to 40 bytes with redundant pointer store/load instructions."
+      ],
+      "full_rom_candidate_sha1": "b7c5b54f94f671d13b61925d92516e4469edafb3",
+      "full_rom_gate": "FAILED_ROM; verifier stopped at candidate image SHA-1 check. No inventory was run.",
+      "host_test": "PASS under AddressSanitizer and UndefinedBehaviorSanitizer; halfword/word widths, unsigned values and boundary sentinels checked.",
+      "research_source": "decomp/candidates/state_writer_6e74.c"
+    },
+    {
+      "task_id": "G64-017",
+      "function": "func_80001D94_2994",
+      "rom_offset": "0x2994",
+      "vma": "0x80001D94",
+      "original_bytes": 44,
+      "original_sha256": "1708e270ec47ebaa4b84177baef1a38736e0c8accb9ce6705d32b7ce4234f05b",
+      "status": "FAILED_NATIVE",
+      "candidate_research": [
+        "The integrated candidate emitted 44 bytes and two 0x7FFFFFFF AND operations, but its address/mask registers differed from the original and the final AND occupied the JR delay slot instead of the original a0 home store.",
+        "A nested-expression unit variant matched the original t8/t9/v1/v0 register sequence through the first AND; it still scheduled the home store before JR and the final AND in the delay slot."
+      ],
+      "full_rom_candidate_sha1": "7272eecc824c3b4ceb323d5ccf7fb20fa385b9c7",
+      "full_rom_gate": "FAILED_ROM; verifier stopped at candidate image SHA-1 check. No inventory was run.",
+      "host_test": "PASS under AddressSanitizer and UndefinedBehaviorSanitizer; low-index and mask boundaries checked.",
+      "research_source": "decomp/candidates/file_table_lookup_2994.c"
+    },
+    {
+      "task_id": "G64-018",
+      "function": "func_80001DC0_29C0",
+      "rom_offset": "0x29C0",
+      "vma": "0x80001DC0",
+      "original_bytes": 52,
+      "original_sha256": "7bd81c0b44f1e99efbea292e7ebb54379950980f869c9531fce274baabff9ebd",
+      "status": "FAILED_NATIVE",
+      "candidate_research": [
+        "The production candidate built a 48-byte function by folding the -8 address adjustment into negative load offsets; original has a separate addiu and positive load offsets.",
+        "A separate original-unit compile produced a 52-byte function with the required beqz, sll delay slot, addiu -8, load order and subtract delay slot, but register allocation differed (for example t6 instead of t7 for the shift, and a1/a2 instead of t0/t1 for loads)."
+      ],
+      "full_rom_candidate_sha1": "efa51198e1f92d1d519c0f57ece96f80de2c6181",
+      "full_rom_gate": "FAILED_ROM for the 48-byte candidate. No full-ROM build was attempted for the 52-byte unit variant after native mismatch; no inventory was run.",
+      "host_test": "PASS under AddressSanitizer and UndefinedBehaviorSanitizer; zero index, normal sizes, unsigned wrap and adjacent sentinel checked.",
+      "research_source": "decomp/candidates/file_size_29c0.c"
+    }
+  ],
+  "task_results": [
+    {"id": "G64-015", "status": "FAILED_NATIVE", "detail": "Bounded native hypotheses remain nonmatching; production ASM retained."},
+    {"id": "G64-016", "status": "FAILED_NATIVE", "detail": "Bounded argument-home hypotheses remain nonmatching; production ASM retained."},
+    {"id": "G64-017", "status": "FAILED_NATIVE", "detail": "Correct size and semantics but register/delay-slot codegen differs; production ASM retained."},
+    {"id": "G64-018", "status": "FAILED_NATIVE", "detail": "A 52-byte source-unit candidate still has register mismatches; production ASM retained."},
+    {"id": "G64-019", "status": "RESEARCH_ONLY", "detail": "No candidate passed native exactness; no new C was eligible for production integration."},
+    {"id": "G64-020", "status": "DOC_ONLY", "detail": "Hard-stop decisions, exact extents and unchanged official totals are recorded here and in PROGRESS.md/CONTINUE.md."}
+  ],
+  "validation": {
+    "asan_ubsan_host_harnesses": "PASS: four candidate test files",
+    "manifest_regressions": "PASS: python3 -m unittest tests.test_decomp_verify -q (17 tests)",
+    "full_decomp_suite": "PASS: python3 -m unittest discover -s decomp -p 'test_*.py' -q (114 tests)",
+    "verifier_pipeline_batch": "PASS: 60 tests after fixing the /proc status polling race in test_timeout_kills_descendant_process_group; the isolated test also passed",
+    "official_full_rom_status": "The last successful proof remains decomp/results/combined.json at 148 claims; failed candidate images were not promoted.",
+    "inventory_after_failed_verifiers": "NOT_RUN by the executor protocol",
+    "in_game": false
+  },
+  "promotions": 0,
+  "next": "Continue with independent VM resource tasks G64-021–030; retry these functions only with a new, evidence-based native scheduling hypothesis."
+}

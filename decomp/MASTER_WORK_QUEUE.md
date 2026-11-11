@@ -4,7 +4,8 @@
 queue below are historical. Current authority is `decomp/CONTINUE.md` and the
 live proof reports: **148 matching C / 11,020 bytes / 161 combined C / 7,215
 ASM**. The resource, menu and object candidates from that older queue have
-passed full-ROM verification. Continue with 100-task plan items G64-015–018;
+passed full-ROM verification. G64-015–018 were retried and remain
+`FAILED_NATIVE`; continue with independent 100-task items G64-021–030;
 all private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 

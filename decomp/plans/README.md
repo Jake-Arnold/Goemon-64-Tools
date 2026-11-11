@@ -31,12 +31,12 @@
 **Major compatibility warning:** pinned Goemon builds use `-mips2`, while REA's documented Ghidra ELF-MIPS admission does not include MIPS-II. Real Goemon `.elf` flags remain uninspected here. No REA analysis on a proprietary target has been run. A read-only direct-Ghidra investigation is the fallback only when the target mapping is independently verified; m2c/IDO + complete-ROM verification are unchanged. Optional research must never block the existing five near-ready promotions.
 
 ## Default execution order
-1. First complete independent near-ready resource wrappers and menu trio (G64-001–010). Their full-unit research match is known, but G2 whole-ROM proof is not.
-2. Object dispatcher G64-011–014 is blocked by native full-unit scheduling. Do not delay unrelated work indefinitely.
-3. Select next function by evidence/dependencies, not numeric order. VM resources and overlay verification are independent lanes after baseline safety.
+1. G64-001–014 have recorded outcomes: the resource wrappers, menu trio and object dispatcher passed G2; G64-003 was already complete.
+2. G64-015–018 were retried and marked `FAILED_NATIVE`; no production ASM ownership changed. G64-019 is `RESEARCH_ONLY`, and G64-020 documents the hard stops.
+3. Continue with the independent VM resource lane G64-021–030, then follow dependencies and original evidence rather than assuming every target will promote.
 4. At every phase boundary run G64-099 rebaseline. Live manifest/results override this plan's historical numeric assumptions.
 5. When a phase is blocked, update the task ledger with exact failure evidence and proceed to an independent work unit; leave ASM intact.
 
-**Current authoritative published matching claim (2026-11-11):** 148 reconstructed C / 11,020 matched bytes, 161 total C, 7,215 ASM / 7,376 identified entries. The six resource, menu and object functions passed integrated native-unit and full-ROM gates; `results/combined.json` records the exact 33,554,432-byte image comparison. The four short additional functions remain unpromoted until their own original-unit and full-ROM evidence is published. Neither a host test, isolated match, correct function size, nor plan status can increase the counts.
+**Current authoritative published matching claim (2026-11-11):** 148 reconstructed C / 11,020 matched bytes, 161 total C, 7,215 ASM / 7,376 identified entries. The six resource, menu and object functions passed integrated native-unit and full-ROM gates; `results/combined.json` records the exact 33,554,432-byte image comparison. The four short additional functions remain unpromoted after bounded native retries. Neither a host test, isolated match, correct function size, nor plan status can increase the counts.
 
 **Publication boundary:** No proprietary ROM, asset, generated assembly, binary, private memory, or user-specific path enters this branch. No changes to main, no force-push.

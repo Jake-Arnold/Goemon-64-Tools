@@ -66,7 +66,11 @@ class ProbeIntegrationTests(unittest.TestCase):
             child=int(pidfile.read_text())
             for _ in range(20):
                 state=Path(f'/proc/{child}/stat')
-                if not state.exists() or state.read_text().split(') ',1)[1].startswith('Z'):break
+                try:
+                    status=state.read_text().split(') ',1)[1]
+                except (FileNotFoundError, ProcessLookupError):
+                    break
+                if status.startswith('Z'):break
                 time.sleep(.05)
             else:self.fail('Descendant survived the process-group timeout')
 

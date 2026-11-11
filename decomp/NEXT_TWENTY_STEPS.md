@@ -1,11 +1,11 @@
 # Next 20 steps — verified matching-C integration and remaining four functions
 
-**Status reconciled 2026-11-11:** this historical plan's first 16 actions have
-been superseded by the G64-001–014 execution ledgers. The resource, menu, and
-object code passed complete-ROM verification at 148 functions / 11,020 bytes.
-The four short routines in actions 17–20 remain the active next targets; follow
-`decomp/CONTINUE.md` and `decomp/plans/EXECUTOR_PROTOCOL.md` for live proof and
-branch rules. Historical descriptions below must not be used as current counts.
+**Status reconciled 2026-11-11:** the resource, menu and object actions passed
+complete-ROM verification at 148 functions / 11,020 bytes. The four short
+routine retries in actions 17–20 are complete and remain native mismatches; see
+`plans/execution/2026-11-11-phase-02-short-function-retries.json`. Continue with
+G64-021–030 using `decomp/CONTINUE.md` and `decomp/plans/EXECUTOR_PROTOCOL.md`.
+Historical descriptions below must not be used as current counts.
 
 **Execution plan, not a completion claim.** Prepared from the live `chatgptweb/decomp` branch at `b1a519e01e3fb4184ae0ce441202883a60b1230a`, after both isolated matching-research waves. This is the active runbook for the next stretch of Goemon-64 matching-C work, while `NEXT_TEN_MAIN_SEGMENT.md`, the two wave research JSON files and `PROGRESS.md` remain historical evidence.
 

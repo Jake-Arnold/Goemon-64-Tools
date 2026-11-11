@@ -1,16 +1,21 @@
 #include <assert.h>
-#include "common.h"
-s8 D_801C09CE_1C15CE, D_801C09DA_1C15DA, D_801C09DB_1C15DB;
-u8 D_801C09CF_1C15CF, D_801C09DC_1C15DC;
-u16 D_801C09D8_1C15D8;
-void func_80039F3C_3AB3C(void); void func_80039F60_3AB60(void);
-void func_8003A1C4_3ADC4(void); void func_8003A204_3AE04(void); void func_8003A228_3AE28(void);
+#include <stdint.h>
+
+uint8_t engine_reset_fixture[4] = {0x34, 0x12, 0x56, 0x78};
+
+__asm__(
+    ".globl D_801C09D8_1C15D8\n"
+    ".set D_801C09D8_1C15D8, engine_reset_fixture\n"
+    ".globl D_801C09DA_1C15DA\n"
+    ".set D_801C09DA_1C15DA, engine_reset_fixture+2\n");
+
+void func_8003A1E8_3ADE8(void);
+
 int main(void) {
- D_801C09CE_1C15CE=7; D_801C09CF_1C15CF=0xA0; func_80039F3C_3AB3C(); assert(D_801C09CE_1C15CE==7);
- D_801C09CF_1C15CF=0; func_80039F3C_3AB3C(); assert(D_801C09CE_1C15CE==-1); func_80039F60_3AB60(); assert(D_801C09CE_1C15CE==-1);
- D_801C09CF_1C15CF=1; func_80039F60_3AB60(); assert(D_801C09CE_1C15CE==1);
- D_801C09DA_1C15DA=7; D_801C09D8_1C15D8=256; func_8003A1C4_3ADC4(); assert(D_801C09DA_1C15DA==7);
- D_801C09D8_1C15D8=255; func_8003A1C4_3ADC4(); assert(D_801C09DA_1C15DA==12);
- D_801C09DB_1C15DB=7; D_801C09DC_1C15DC=0; func_8003A228_3AE28(); assert(D_801C09DB_1C15DB==7); func_8003A204_3AE04(); assert(D_801C09DB_1C15DB==-1);
- D_801C09DC_1C15DC=1; func_8003A204_3AE04(); assert(D_801C09DB_1C15DB==-1); func_8003A228_3AE28(); assert(D_801C09DB_1C15DB==1); return 0;
+    func_8003A1E8_3ADE8();
+    assert(engine_reset_fixture[0] == 0);
+    assert(engine_reset_fixture[1] == 0);
+    assert(engine_reset_fixture[2] == 0);
+    assert(engine_reset_fixture[3] == 0x78);
+    return 0;
 }
