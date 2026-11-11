@@ -1096,7 +1096,7 @@
       "ordinal": 28,
       "phase": 3,
       "title": "Trace VM control decoder 8003DF98",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-027"
       ],

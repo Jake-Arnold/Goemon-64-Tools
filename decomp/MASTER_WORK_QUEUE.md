@@ -15,7 +15,10 @@ lifetimes with 36 original-address guards; its 556-byte candidate still differs
 from the 548-byte original, so it remains `RESEARCH_ONLY`. G64-027's D68C
 control-flow trace is complete and remains `RESEARCH_ONLY`: both dispatch
 tables, state returns and callback cursor reloads are tied to the pinned ROM,
-with no C candidate. Continue with G64-028–030 in dependency order.
+with no C candidate. G64-028 traced DF98's signed-token range, 40-entry table,
+caller sentinel checks, and paced/unpaced marker, repeat and cursor ordering.
+It remains `RESEARCH_ONLY` with no C model. Continue with G64-029–030 in
+dependency order.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 

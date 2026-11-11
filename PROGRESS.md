@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-028 trace signed VM control decoder (RESEARCH_ONLY)
+
+- Continued from pushed commit `c43b04392ecb3f206e40622f0ef0c30e9eabd629` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed it matched. Pinned `mnsg` source remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.
+- Traced `func_8003DF98_3EB98` at VMA `0x8003DF98` / ROM `0x3EB98`: **528 bytes / 132 words**, original SHA-256 `76285ca92a7f611916d867d9938f93fcb3df32ebfa2962120083f2471a501631`. Its signed halfword range is `-71..-32` (`0xFFB9..0xFFE0`) and selects a ROM-verified 40-entry command table: 20 mapped call bodies and 20 one-halfword fallback entries. Recorded helper targets/arguments, `-1` caller sentinel handling, two-call context reloads, and the saved input cursor+2 return without assigning unsupported game meaning.
+- Documented paced `DE80` and unpaced `EB34` obligations in `decomp/VM_STREAM_MATCHING.md`: sentinel checks precede decoder calls; paced output reloads token and repeat setting after its callback, clears marker before negative decode, then reloads the repeat setting after decode; unpaced output uses the pre-call token and advances its local cursor after callback. Recorded that `D_801C7754` is reloaded between both helper pairs, while the decoder's saved script pointer is not re-read. External helper effects remain unknown.
+- Added `decomp/test_vm_control_decoder_original.py`; it checks the pinned 32 MiB ROM hash, all **132** decoder words, the **40** table entries, and **54** instruction anchors across the decoder and its callers. **Executed:** original ROM guard passed (132 words / 54 anchors / 40 entries); parser tests **5/5**; full decomp suite **124/124**; verifier tests **17/17**; `py_compile` passed.
+- **Limits:** no C model was written, so the documented host-model matrix is not executed; no native candidate, full-ROM candidate gate, inventory or in-game test was run. `script_vm.c`, header, manifest, proof and `GLOBAL_ASM` ownership remain unchanged. No speculative helper semantics or resource-ID mutation were claimed.
+- **Next:** G64-029, add regression coverage for the already matching DDC4 resource resolver and current-versus-entry resource-ID behavior.
+
 ## 2026-11-11 — G64-027 trace VM main-step control flow (RESEARCH_ONLY)
 
 - Continued from pushed commit `510e580b378e4eb9fab58164de36a7366e1d1129` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed it matched. The pinned `mnsg` checkout remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.

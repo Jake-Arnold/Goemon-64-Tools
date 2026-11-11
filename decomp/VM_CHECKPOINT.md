@@ -42,8 +42,14 @@ and uses a 24-byte frame, so production ASM remains. See
 reloads, and branch-likely slots are recorded in
 [`VM_MAIN_STEP_TRACE.md`](VM_MAIN_STEP_TRACE.md). Its 203-word/44-anchor guard,
 5 parser tests, full 119-test decomp suite, and 17 verifier tests passed. No C
-model was written; the test matrix is a future acceptance spec. Next: G64-028,
-trace the control decoder at `0x8003DF98`.
+model was written; the test matrix is a future acceptance spec. G64-028 traced
+the control decoder at `0x8003DF98` and its signed halfword
+dispatch and the paced/unpaced callers: tokens `-71..-32` index a 40-entry
+table; `-1` is intercepted by both callers; cursor, marker, repeat setting and
+context reload order are recorded in [VM_STREAM_MATCHING.md](VM_STREAM_MATCHING.md).
+The 132-word original guard, 54 instruction anchors, 40 table entries, 124
+decomp tests and 17 verifier tests passed. No host C model was executed. Next:
+G64-029, guard the already matching resource decoder.
 
 ## Numbered event startup follow-up (2026-11-03)
 

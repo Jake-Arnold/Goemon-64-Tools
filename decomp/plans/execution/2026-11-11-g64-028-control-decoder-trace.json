@@ -1,0 +1,97 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-028",
+  "title": "Trace VM control decoder 8003DF98",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "c43b04392ecb3f206e40622f0ef0c30e9eabd629",
+    "target_remote_head_before_work": "c43b04392ecb3f206e40622f0ef0c30e9eabd629",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "original_function": {
+    "name": "func_8003DF98_3EB98",
+    "rom_offset": "0x3EB98",
+    "vma": "0x8003DF98",
+    "original_bytes": 528,
+    "instruction_words": 132,
+    "original_sha256": "76285ca92a7f611916d867d9938f93fcb3df32ebfa2962120083f2471a501631",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "source_state": {
+    "production_ownership": "unchanged; func_8003DF98_3EB98 remains GLOBAL_ASM",
+    "script_vm_c_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "script_vm_h_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "combined_proof_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129"
+  },
+  "research_artifacts": {
+    "updated_stream_matching_note": {
+      "path": "decomp/VM_STREAM_MATCHING.md",
+      "sha256": "037e2f1f98dc87db8785fe135bc4d334067dad791370dadba999aad522645f9d"
+    },
+    "rom_bound_guard": {
+      "path": "decomp/test_vm_control_decoder_original.py",
+      "sha256": "78236a3df460e74dc3abdf905255a4db3b7eb3cc1bf867bc107b934b58a78bf1",
+      "decoder_instruction_words": 132,
+      "instruction_anchors_total": 54,
+      "decoder_anchors": 27,
+      "caller_anchors": 27,
+      "token_dispatch_entries": 40,
+      "mapped_command_entries": 20,
+      "fallback_entries": 20
+    },
+    "signed_input_contract": "Read signed s16 at a1; token range -71..-32 maps the 40-entry table; every decoder path returns saved input cursor+2.",
+    "caller_sentinels": {
+      "paced_DE80": "-1 clears marker and returns null without decoder call or repeat-setting copy",
+      "unpaced_EB34": "-1 is the end sentinel and returns without decoder call"
+    },
+    "callback_order": {
+      "paced_positive": "After output callback, reload repeat setting D_801C7798 and token halfword before marker store.",
+      "paced_negative": "Clear marker before decoder; reload repeat setting after decoder returns.",
+      "unpaced_positive": "Use token loaded before callback; advance local cursor afterward without rereading the same halfword.",
+      "decoder_double_call_tokens": "FFC8 and FFCA reload D_801C7754 between helper callbacks; saved script cursor is not reloaded."
+    },
+    "host_model_matrix": "Documented for a later C attempt; not executed because no semantic C model was written.",
+    "unknowns_preserved": [
+      "External command-helper game semantics and side effects beyond directly observed arguments/call order",
+      "Indirect mutation effects on resource-ID globals",
+      "Behavior for null, truncated, or misaligned halfword pointers is unsafe and not promised"
+    ]
+  },
+  "validation": {
+    "original_rom_guard": "PASS; exact 32 MiB ROM SHA-1, decoder extent SHA-256, all 132 decoder words, caller anchors and all 40 dispatch entries",
+    "parser_tests": "PASS; 5 tests",
+    "decomp_python_suite": "PASS; 124 tests",
+    "verifier_python_suite": "PASS; 17 tests",
+    "py_compile": "PASS",
+    "native_candidate": "NOT_CREATED; no native comparison or mismatch applies",
+    "full_rom_candidate_gate": "NOT_RUN; production ownership unchanged",
+    "inventory": "NOT_RUN",
+    "in_game": false
+  },
+  "commands": [
+    "git fetch origin chatgptweb/decomp",
+    "python3 decomp/test_vm_control_decoder_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+    "python3 decomp/test_vm_control_decoder_original.py",
+    "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+    "python3 -m unittest tests.test_decomp_verify -q",
+    "python3 -m py_compile decomp/test_vm_control_decoder_original.py"
+  ],
+  "official_claims": {
+    "proof_report": "decomp/results/combined.json",
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_functions": 148,
+    "matched_bytes": 11020,
+    "promotions": 0
+  },
+  "limitations": [
+    "The host-model matrix is a future test specification, not an executed differential model.",
+    "No C candidate was produced, so native codegen and complete-ROM candidate gates do not apply.",
+    "Helper effects were not inferred from names; callback mutation tests remain bounded to the existing D468 model."
+  ],
+  "next": "Execute G64-029: add regression coverage for the matching DDC4 resolver and entry/current resource-ID mutation behavior."
+}

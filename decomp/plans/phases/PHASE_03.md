@@ -285,8 +285,24 @@ full-ROM candidate gate, inventory, or in-game test was run. The existing
 
 ### G64-028 — Trace VM control decoder 8003DF98
 
-**Status:** PLANNED. **Dependencies:** G64-027.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-027.
 **Focus files:** `decomp/script_vm.c`; `decomp/VM_STREAM_MATCHING.md`.
+
+**Outcome (2026-11-11):** Traced the 528-byte/132-word DF98 decoder and both
+callers. The signed range is `-71..-32`, selecting a verified 40-entry table;
+all 20 mapped command bodies and 20 fallback entries are recorded by direct
+call/argument/cursor behavior without assigning unsupported command meaning.
+Recorded that callers intercept `-1`, DF98 returns its saved input cursor+2,
+and two-call commands reload `D_801C7754` between callbacks. Paced DE80
+re-reads token/repeat state after output callbacks, clears the marker before
+negative-token decoding, then reloads the repeat setting after decoder return.
+Unpaced EB34 uses its pre-call token and advances its local pointer after the
+callback. Added 54 ROM-bound instruction anchors (27 decoder and 27 caller),
+full 132-word/40-table verification, and a future host-model matrix. The guard,
+five parser tests, 124 decomp tests and 17 verifier tests passed. No model,
+native candidate, full-ROM gate, inventory or in-game test was run; production
+assembly and claims are unchanged. See
+`plans/execution/2026-11-11-g64-028-control-decoder-trace.json`.
 
 **Architectural intent:** Recover command delegation and cursor rules for func_8003DF98_3EB98, as called by existing stream walker.
 
