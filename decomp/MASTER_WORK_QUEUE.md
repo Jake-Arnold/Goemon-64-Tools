@@ -24,7 +24,9 @@ unchanged. G64-030 reconciled the live 148-function proof and 7,376-entry
 inventory, recorded the current `script_vm.c` split as 43 C / 13 ASM, and added
 the typed resource interface matrix in `VM_RESOURCE_CALLGRAPH.md`. DDC4 and its
 matched context save/restore siblings remain exact; no new resource candidate
-passed G2. Keep D468, D68C, DF98 and F038 as ASM. Continue with G64-031.
+passed G2. Keep D468, D68C, DF98 and F038 as ASM. G64-031 traced DBEC's
+472-byte CFG and six branch-likely slots in `VM_TEXT_LOOP_TRACE.md`; its
+original assembly ownership is unchanged. Continue with G64-032.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 

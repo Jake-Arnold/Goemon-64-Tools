@@ -1,0 +1,152 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-031",
+  "title": "Construct text-loop control-flow graph",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "0ad2059f6540502b3d81ae22bc593dcd4aed24bd",
+    "target_remote_head_before_work": "0ad2059f6540502b3d81ae22bc593dcd4aed24bd",
+    "initial_working_tree_clean": true,
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "local_private_input": {
+    "decompressed_rom": "practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+    "size_bytes": 33554432,
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "published": false
+  },
+  "original_function": {
+    "name": "func_8003DBEC_3E7EC",
+    "ownership": "GLOBAL_ASM in script_vm.c",
+    "vma": "0x8003DBEC",
+    "rom_offset": "0x3E7EC",
+    "end_exclusive_vma": "0x8003DDC4",
+    "size_bytes": 472,
+    "instruction_words": 118,
+    "sha256": "4ee117dd31f6b8f3ab30ca864c202eb7c974c28cc8236d233a94228b36a0a764"
+  },
+  "trace": {
+    "path": "decomp/VM_TEXT_LOOP_TRACE.md",
+    "sha256": "37b12147fe9d37ecc8fa1c625c9e7995c0ea862706d7cdad98a2589f4a9b50e6",
+    "basic_blocks": 14,
+    "control_transfers_and_delay_slots": 26,
+    "branch_likely_pcs": [
+      "0x8003DC8C",
+      "0x8003DCC0",
+      "0x8003DCD0",
+      "0x8003DD14",
+      "0x8003DD50",
+      "0x8003DD8C"
+    ],
+    "covers": [
+      "all transfer/delay instruction pairs",
+      "branch-likely annul behavior",
+      "cursor storage versus pointee",
+      "separate global halfword at +0xA",
+      "two counters",
+      "controller unsigned halfwords",
+      "callback-visible reloads",
+      "early exits"
+    ]
+  },
+  "source_state": {
+    "address_guard": "decomp/test_vm_text_loop_addressing.py",
+    "address_guard_sha256": "99b00dc57ab272a375f950d2448a1d90d6e291d549e40e854ed39785bdc5cfa4",
+    "research_candidate": "decomp/candidates/vm_text_loop_alias_probe.c",
+    "research_candidate_sha256": "2f6b69c765dcfeba47a3e75c57215420b06f4f08467feb6136ba850aff8625a7",
+    "historical_native_probe_json_sha256": "8ad5f67bd3b21e2e084d0aa05a7e10ab73b5961ed1223aa4e85794d8a83c258c",
+    "script_vm_c_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "script_vm_h_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "combined_report_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "inventory_report_sha256": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a",
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "assembly_ownership_changed": false
+  },
+  "candidate_status": {
+    "canonical_native_bytes": 472,
+    "matching_comparable_nonreloc_words": 53,
+    "comparable_nonreloc_words": 88,
+    "relocation_layout_differences": 17,
+    "candidate_frame_bytes": 80,
+    "original_frame_bytes": 72,
+    "promoted": false,
+    "native_compile_this_task": "NOT_RUN"
+  },
+  "validation": {
+    "tool_versions": {
+      "python": "3.14.4",
+      "gcc": "15.2.0"
+    },
+    "rom_bound_original_guard": "PASS; 472 bytes / 118 words, ten storage/controller anchors, six branch-likely slots",
+    "focused_python_suite": "PASS; 10 tests",
+    "host_asan_ubsan_harness": "PASS; 15 synthetic scenario groups",
+    "original_mips_vs_host_c_differential": "PASS; 2,500 cases at seed 0x1D8 and 2,500 at seed 0xDEADBEEF; locally verified ROM and synthetic callbacks",
+    "full_decomp_python_suite": "PASS; 128 tests",
+    "decomp_verifier_suite": "PASS; 17 tests",
+    "json_and_diff_checks": "PASS",
+    "new_full_rom_build": "NOT_RUN",
+    "new_inventory_build": "NOT_RUN",
+    "in_game": false
+  },
+  "commands": [
+    {
+      "command": "python3 decomp/test_vm_text_loop_addressing.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONPATH=decomp python3 -m unittest decomp.test_vm_text_loop_addressing decomp.test_vm_text_loop_alias_probe decomp.test_vm_text_loop_codegen -q",
+      "exit_code": 0,
+      "result": "10 tests"
+    },
+    {
+      "command": "python3 -m unittest decomp.test_vm_text_loop_addressing decomp.test_vm_text_loop_alias_probe decomp.test_vm_text_loop_codegen -q",
+      "exit_code": 1,
+      "expected_failure": true,
+      "reason": "Existing codegen test imports probe_vm_text_loop_codegen as a top-level module; rerun with PYTHONPATH=decomp passed."
+    },
+    {
+      "command": "gcc -std=c11 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-pie -no-pie -Idecomp decomp/test_vm_text_loop.c -o /tmp/g64-031-text-loop-host && /tmp/g64-031-text-loop-host",
+      "exit_code": 0,
+      "result": "15 scenario groups"
+    },
+    {
+      "command": "python3 decomp/test_vm_text_loop_differential.py --decompressed-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --host-library /tmp/g64-031-text-loop.so --cases 2500 --seed 0x1d8 && python3 decomp/test_vm_text_loop_differential.py --decompressed-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --host-library /tmp/g64-031-text-loop.so --cases 2500 --seed 0xdeadbeef",
+      "exit_code": 0,
+      "result": "2,500 matched scenarios per seed"
+    },
+    {
+      "command": "python3 decomp/test_vm_text_loop_differential.py --rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --library /tmp/g64-031-text-loop.so --cases 2500 --seed 0x1d8",
+      "exit_code": 2,
+      "expected_failure": true,
+      "reason": "Stale option names; argparse exited before running tests. Correct current options passed."
+    },
+    {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 0,
+      "result": "128 tests"
+    },
+    {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "exit_code": 0,
+      "result": "17 tests"
+    },
+    {
+      "command": "git diff --check && python3 -m json.tool decomp/plans/TASKS_100.json >/dev/null",
+      "exit_code": 0
+    }
+  ],
+  "limitations": [
+    "The graph is tied to original MIPS instructions and private ROM identity; it is not a matching-C or in-game claim.",
+    "Callback implementation effects remain outside the traced direct state reloads and control flow.",
+    "The native text-loop candidate remains 0x50-frame versus the original 0x48-frame and has 17 relocation-layout differences; source and GLOBAL_ASM ownership were left unchanged.",
+    "No new complete-ROM or inventory run was performed; checked-in 148-claim proof and inventory remain unchanged.",
+    "Initial focused-test import path and first differential CLI option invocation failed before running their tests; corrected invocations passed."
+  ],
+  "next": "Execute G64-032: isolate the text-loop candidate's 0x48 versus 0x50 frame and saved-register lifetimes without changing callback order or branch behavior."
+}

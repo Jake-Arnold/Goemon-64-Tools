@@ -18,7 +18,7 @@ Do not accept a correct length with mismatched delay slots, wrong 0x48 frame, in
 
 ### G64-031 — Construct text-loop control-flow graph
 
-**Status:** PLANNED. **Dependencies:** G64-021.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-021.
 **Focus files:** `decomp/candidates/vm_text_loop_alias_probe.c`; `decomp/test_vm_text_loop_addressing.py`.
 
 **Architectural intent:** Decompose func_8003DBEC_3E7EC's outer/inner counters, six branch-likely delay slots, callbacks and script-pointer aliases.
@@ -42,6 +42,13 @@ Do not accept a correct length with mismatched delay slots, wrong 0x48 frame, in
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome:** `VM_TEXT_LOOP_TRACE.md` records all 26 original control transfers,
+their delay instructions, the six branch-likely annul slots, block successors,
+and global/register liveness for the ROM-verified 472-byte function. The
+ROM-bound guard verifies all 118 words, ten addressing/controller anchors, and
+the six exact likely slots. C promotion was not attempted; original assembly
+ownership remains.
 
 ### G64-032 — Resolve text-loop 0x48 frame
 

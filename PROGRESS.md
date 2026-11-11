@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-031 construct VM text-loop CFG (RESEARCH_ONLY)
+
+- Continued from `0ad2059f6540502b3d81ae22bc593dcd4aed24bd` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed the target head matched. The local pinned `mnsg` source remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.
+- Traced `func_8003DBEC_3E7EC` at VMA `0x8003DBEC` / ROM `0x3E7EC`: the original is 472 bytes / 118 MIPS words with SHA-256 `4ee117dd31f6b8f3ab30ca864c202eb7c974c28cc8236d233a94228b36a0a764`. Added [`decomp/VM_TEXT_LOOP_TRACE.md`](decomp/VM_TEXT_LOOP_TRACE.md), covering all 26 control transfers and delay instructions, six branch-likely annul slots, block graph, outer/retry counters, global aliases, controller halfword reads, and early exits.
+- Expanded `decomp/test_vm_text_loop_addressing.py` into a private-ROM-bound guard. It checks the 32 MiB decompressed ROM SHA-1, all 118 words and their Splat offsets, function SHA-256, ten global/controller anchors, and all six branch-likely instructions and slots. The ROM-bound invocation passed.
+- **Executed:** focused parser/alias/codegen suite passed **10** tests with `PYTHONPATH=decomp`; GCC ASan/UBSan host harness passed **15** scenario groups; original-MIPS/host-C differential passed **2,500** cases each at seeds `0x1D8` and `0xDEADBEEF` (**5,000** total); full decomp Python suite passed **128** tests; verifier suite passed **17** tests. The first focused invocation from repository root exposed an import-path issue; rerunning with `PYTHONPATH=decomp` passed. The differential run used the locally pinned 32 MiB ROM.
+- Current isolated IDO evidence still reports the 472-byte candidate at **53/88** comparable non-relocation positions with **17** relocation-layout differences and a **0x50** frame versus original **0x48**. No native compile, new full-ROM build, inventory build, or in-game test was performed for this task. `script_vm.c`, manifest, proof reports and `GLOBAL_ASM` ownership remain unchanged. Evidence: `decomp/plans/execution/2026-11-11-g64-031-text-loop-cfg.json`.
+- **Reason / limit:** anchor the next source-shape investigation to the verified original CFG; this graph and host differential are not matching-C proof. The candidate remains research-only.
+- **Next:** G64-032, isolate the candidate's frame and saved-register lifetimes while preserving the observed callback and branch behavior.
+
 ## 2026-11-11 — G64-030 reconcile VM resource checkpoint (RESEARCH_ONLY)
 
 - Continued from pushed commit `5b9f74b52581b177ea3d7be7344f44c07047e948` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed it matched. Pinned `mnsg` remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.

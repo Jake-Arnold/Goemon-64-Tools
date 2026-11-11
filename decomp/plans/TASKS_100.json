@@ -1215,7 +1215,7 @@
       "ordinal": 31,
       "phase": 4,
       "title": "Construct text-loop control-flow graph",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-021"
       ],
