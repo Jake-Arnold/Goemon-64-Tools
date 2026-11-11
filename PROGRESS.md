@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-090 return-zero name audit (RESEARCH_ONLY)
+
+- **Reason and strategy:** refreshed `origin/chatgptweb/decomp`; it remained at `8244c2fe7ede22ebd23dbcedbc899b5a92f54e52`. Architect v2 keeps G64-090 as the audit before the G64-071–080 file/object/scheduler wave. The label `return_zero.c` is not evidence that all 13 assembly entries return zero.
+- **Findings:** the pinned `mnsg` source at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` and SHA-1-verified 32 MiB decompressed USA ROM identify 13 distinct Memory Pak/PFS functions spanning 64–240 bytes (1,672 bytes total). Every assembly span matches its ROM bytes; all functions perform device calls, status/output writes, CRC/cache operations, state scanning or device queries. The shortest is a 64-byte `osPfsIsPlug` query. The neighboring 8-byte C function is the actual constant-zero function. No candidate qualified for G2; all 13 remain `GLOBAL_ASM`.
+- **Changes:** added a ROM-bound per-function audit and caller-site record at [`decomp/plans/execution/2026-11-11-g64-090-return-zero-audit.json`](decomp/plans/execution/2026-11-11-g64-090-return-zero-audit.json), with a focused test that can verify the private assembly spans without printing instruction data. Recorded G64-090 as `RESEARCH_ONLY`, updated phase/handoff/strategy, and set G64-071 as the next v2 task. Also made the task-ledger status progression test select a task dynamically and update its status/evidence together, rather than pinning a historical task ID or active position.
+- **Tests:** the private assembly/ROM crosscheck passed **13/13** extents; focused audit tests passed **4/4**; task-context and skill tests passed **17/17**; `python3 -m unittest discover -s decomp -p 'test_*.py' -q` passed **157/157**; `python3 -m unittest tests.test_decomp_verify -q` passed **17/17**; `python3 -m decomp.skill_context --validate`, `py_compile`, and `git diff --check` passed.
+- **Limitations:** no candidate was compiled and no fresh full-ROM G2 or inventory rebuild was run (`NOT_RUN`); production C, manifest ownership and stored proof remain unchanged at **148 functions / 11,020 bytes**, 161 combined C / 7,215 ASM / 7,376 identified entries. No in-game verification was performed. Private ROM/compiler inputs remain ignored and local.
+- **Next:** execute G64-071–080 under Architect v2, beginning with the independent file-table reader investigation.
+
 ## 2026-11-11 — G64-091 candidate evidence ledger (RESEARCH_ONLY)
 
 - **Reason and starting point:** fetched `origin/chatgptweb/decomp`; local `codex/decomp-100-task-plan` and target both matched `3bc4c4a25d1fce8564f2de09efe098cbfe988899`. Architect v2 moves G64-091 ahead of the numeric status output to prevent duplicate failed probes and keep candidate evidence separate from G2.

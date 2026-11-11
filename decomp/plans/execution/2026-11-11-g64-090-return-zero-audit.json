@@ -1,0 +1,674 @@
+{
+  "task_id": "G64-090",
+  "title": "Audit misleading trivial-function names",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "8244c2fe7ede22ebd23dbcedbc899b5a92f54e52",
+    "remote_head_at_start": "8244c2fe7ede22ebd23dbcedbc899b5a92f54e52",
+    "matching_c": 148,
+    "matching_bytes": 11020
+  },
+  "unit": {
+    "name": "return_zero.c",
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "source_sha256": "b1fa7647b5bcab949b6d3fb476c8daabb3aa14b93d3be35e33a15cc0f9e45cb0",
+    "assembly_placeholder_count": 13,
+    "total_original_bytes": 1672,
+    "source_ownership": "Memory Pak segment; original disassembly 23DE0.s; split high-level unit owns the accepted 8-byte function and 13 separate GLOBAL_ASM routines"
+  },
+  "original_source": {
+    "upstream_repository": "klorfmorf/mnsg",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "asm_file": "asm/usa/23DE0.s",
+    "asm_sha256": "50946ee5c868394a087e29bebce11ac457d146260929420b05c17c8a83c8cfad",
+    "disassembler_banner": "spimdisasm 1.39.0",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "all_function_spans_verified_against_rom": true
+  },
+  "existing_constant_return": {
+    "name": "func_8002338C_23F8C",
+    "vma": "0x8002338C",
+    "rom_offset": "0x23F8C",
+    "size_bytes": 8,
+    "sha256": "87506497337c503078b658b916ef9eb4961eb62b06349fd8ecf2dbe4e451e4e7",
+    "source": "decomp/return_zero.c",
+    "source_classification": "existing constant-zero C function; not one of the 13 assembly placeholders"
+  },
+  "functions": [
+    {
+      "name": "func_80023394_23F94",
+      "vma": "0x80023394",
+      "rom_offset": "0x23F94",
+      "size_bytes": 124,
+      "sha256": "9840cc504948b0a3f8b641aea0b05b96be24445a4d1eda409cbc8e6af7cf8c03",
+      "instruction_count": 31,
+      "callees": [
+        "osPfsAllocateFile",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "beqz",
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CDEF0_660DA0",
+          "pc": "0x801CDEFC"
+        }
+      ],
+      "direct_caller_count": 1,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "calls osPfsAllocateFile",
+        "maps OS error through func_80023ADC_246DC",
+        "stores result at PFS context +0x3FC"
+      ],
+      "cfg_classification": "conditional error path; status mapping and store",
+      "return_behavior": "returns mapped operation status; not constant",
+      "operation": "allocate PFS file"
+    },
+    {
+      "name": "func_80023410_24010",
+      "vma": "0x80023410",
+      "rom_offset": "0x24010",
+      "size_bytes": 112,
+      "sha256": "dbd5da1c19d76de4d21c106e17863da29d7e1cf47763be7bff2d48ed9a7eb626",
+      "instruction_count": 28,
+      "callees": [
+        "osPfsFindFile",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/main.s",
+          "caller": "func_80000580_1180",
+          "pc": "0x800007D8"
+        },
+        {
+          "file": "asm/usa/5C8770.s",
+          "caller": "func_80214D58_5D0228",
+          "pc": "0x80214D70"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CE1F0_6610A0",
+          "pc": "0x801CE284"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CF2E0_662190",
+          "pc": "0x801CF374"
+        },
+        {
+          "file": "asm/usa/2C40.s",
+          "caller": "func_80002138_2D38",
+          "pc": "0x800022D4"
+        }
+      ],
+      "direct_caller_count": 5,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "calls osPfsFindFile",
+        "maps/stores operation status in PFS context"
+      ],
+      "cfg_classification": "straight-line call/status sequence",
+      "return_behavior": "returns operation status; not constant",
+      "operation": "find PFS file"
+    },
+    {
+      "name": "func_80023480_24080",
+      "vma": "0x80023480",
+      "rom_offset": "0x24080",
+      "size_bytes": 88,
+      "sha256": "d87a469efdc5b7afec43c17dc044c42ce2940aa8f8fbcfb131ec048960fd8bb2",
+      "instruction_count": 22,
+      "callees": [
+        "osPfsFileState",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/main.s",
+          "caller": "func_80000580_1180",
+          "pc": "0x800007E8"
+        },
+        {
+          "file": "asm/usa/5C8770.s",
+          "caller": "func_80214D58_5D0228",
+          "pc": "0x80214D80"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CE1F0_6610A0",
+          "pc": "0x801CE2B0"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CF2E0_662190",
+          "pc": "0x801CF37C"
+        },
+        {
+          "file": "asm/usa/2C40.s",
+          "caller": "func_80002138_2D38",
+          "pc": "0x800022E4"
+        }
+      ],
+      "direct_caller_count": 5,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "calls osPfsFileState",
+        "stores operation status in PFS context"
+      ],
+      "cfg_classification": "straight-line call/status sequence",
+      "return_behavior": "returns operation status; not constant",
+      "operation": "query PFS file state"
+    },
+    {
+      "name": "func_800234D8_240D8",
+      "vma": "0x800234D8",
+      "rom_offset": "0x240D8",
+      "size_bytes": 136,
+      "sha256": "ed53bafbc0fe81fbfef9b06e34dacb055419a8648f622b89209376aecffcf03b",
+      "instruction_count": 34,
+      "callees": [
+        "osPfsReadWriteFile",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/5C8770.s",
+          "caller": "func_80214D58_5D0228",
+          "pc": "0x80214E68"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CF2E0_662190",
+          "pc": "0x801CF398"
+        },
+        {
+          "file": "asm/usa/23DE0.s",
+          "caller": "func_80023B60_24760",
+          "pc": "0x80023BA4"
+        }
+      ],
+      "direct_caller_count": 3,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "stores incoming a0/a1 in PFS context",
+        "calls osPfsReadWriteFile",
+        "stores operation status"
+      ],
+      "cfg_classification": "straight-line setup/call/status sequence",
+      "return_behavior": "returns operation status; not constant",
+      "operation": "read/write PFS file block"
+    },
+    {
+      "name": "func_80023560_24160",
+      "vma": "0x80023560",
+      "rom_offset": "0x24160",
+      "size_bytes": 176,
+      "sha256": "46324768b34ad89d0e46b1382eace48d7faa0103e99d05f76d23f85da3fad61d",
+      "instruction_count": 44,
+      "callees": [
+        "osPfsReadWriteFile",
+        "func_80023A1C_2461C",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "b",
+        "beql",
+        "bnez",
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/main.s",
+          "caller": "func_80000580_1180",
+          "pc": "0x800007F8"
+        },
+        {
+          "file": "asm/usa/23DE0.s",
+          "caller": "func_80023698_24298",
+          "pc": "0x8002370C"
+        },
+        {
+          "file": "asm/usa/2C40.s",
+          "caller": "func_80002138_2D38",
+          "pc": "0x800022F4"
+        }
+      ],
+      "direct_caller_count": 3,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "reads a 0x100-byte PFS block",
+        "calls func_80023A1C_2461C for 0x0c-byte CRC",
+        "copies verified data or follows CRC-error path",
+        "stores operation status"
+      ],
+      "cfg_classification": "success/error conditional around CRC and copy",
+      "return_behavior": "returns success/error status; not constant",
+      "operation": "read and CRC-check PFS data"
+    },
+    {
+      "name": "func_80023610_24210",
+      "vma": "0x80023610",
+      "rom_offset": "0x24210",
+      "size_bytes": 136,
+      "sha256": "ea7ebfc7c5f743312967327ba387b0db01ba6133a35d8f40bb9ab4d7413189ed",
+      "instruction_count": 34,
+      "callees": [
+        "osPfsReadWriteFile",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/5C8770.s",
+          "caller": "func_80214D58_5D0228",
+          "pc": "0x80214E48"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CDEF0_660DA0",
+          "pc": "0x801CE01C"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CDEF0_660DA0",
+          "pc": "0x801CE02C"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CDEF0_660DA0",
+          "pc": "0x801CE03C"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CE588_661438",
+          "pc": "0x801CE6B8"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CE87C_66172C",
+          "pc": "0x801CEAE0"
+        },
+        {
+          "file": "asm/usa/23DE0.s",
+          "caller": "func_80023C14_24814",
+          "pc": "0x80023C94"
+        },
+        {
+          "file": "asm/usa/23DE0.s",
+          "caller": "func_80023CC8_248C8",
+          "pc": "0x80023D4C"
+        }
+      ],
+      "direct_caller_count": 8,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "stores incoming a0/a1 in PFS context",
+        "calls osPfsReadWriteFile in write mode",
+        "stores operation status"
+      ],
+      "cfg_classification": "straight-line setup/call/status sequence",
+      "return_behavior": "returns operation status; not constant",
+      "operation": "write PFS file block"
+    },
+    {
+      "name": "func_80023698_24298",
+      "vma": "0x80023698",
+      "rom_offset": "0x24298",
+      "size_bytes": 240,
+      "sha256": "f2e20da2607ab29202b417493eafc060845cbb8832b035a95c04edd12e68e0f4",
+      "instruction_count": 60,
+      "callees": [
+        "func_80023A1C_2461C",
+        "osWritebackDCache",
+        "osPfsReadWriteFile",
+        "func_80023560_24160",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "b",
+        "beq",
+        "bnel",
+        "bnez",
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/5C8770.s",
+          "caller": "func_80214D58_5D0228",
+          "pc": "0x80214EBC"
+        }
+      ],
+      "direct_caller_count": 1,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "copies 0x0c-byte metadata",
+        "computes CRC",
+        "writes back data-cache range",
+        "writes a 0x100-byte PFS block",
+        "reads it back through func_80023560_24160",
+        "compares 12 bytes and stores status"
+      ],
+      "cfg_classification": "write/readback flow with 12-iteration compare loop and conditional error exit",
+      "return_behavior": "returns operation/verification status; not constant",
+      "operation": "write and verify PFS metadata"
+    },
+    {
+      "name": "func_80023788_24388",
+      "vma": "0x80023788",
+      "rom_offset": "0x24388",
+      "size_bytes": 104,
+      "sha256": "94ca59c0fc7d7e3c7b78afc905be8f20f49d4a1338cd822de5ac82dd5b819318",
+      "instruction_count": 26,
+      "callees": [
+        "osPfsFreeBlocks",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "bgez",
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CE1F0_6610A0",
+          "pc": "0x801CE308"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801D0EBC_663D6C",
+          "pc": "0x801D0F40"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801D12B8_664168",
+          "pc": "0x801D13BC"
+        }
+      ],
+      "direct_caller_count": 3,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "calls osPfsFreeBlocks",
+        "applies signed correction and 256-unit scaling",
+        "stores free-block count at context +0x408",
+        "stores status"
+      ],
+      "cfg_classification": "straight-line call, signed correction/scale, and stores",
+      "return_behavior": "returns operation status; not constant",
+      "operation": "query free PFS blocks"
+    },
+    {
+      "name": "func_800237F0_243F0",
+      "vma": "0x800237F0",
+      "rom_offset": "0x243F0",
+      "size_bytes": 80,
+      "sha256": "2c1c11f214d2cacbb1586e1150bd8607eba84b604da2e3f1e492466ef0e8e9dd",
+      "instruction_count": 20,
+      "callees": [
+        "osPfsNumFiles",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CE1F0_6610A0",
+          "pc": "0x801CE2CC"
+        }
+      ],
+      "direct_caller_count": 1,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "calls osPfsNumFiles",
+        "writes count outputs at context +0x400 and +0x404",
+        "stores status"
+      ],
+      "cfg_classification": "straight-line call and output/status stores",
+      "return_behavior": "returns operation status; not constant",
+      "operation": "query PFS file counts"
+    },
+    {
+      "name": "func_80023840_24440",
+      "vma": "0x80023840",
+      "rom_offset": "0x24440",
+      "size_bytes": 64,
+      "sha256": "7c2d2790b2acecfe2157d2468af0443ce8fa94c1cc6526f24010e41b7ed71809",
+      "instruction_count": 16,
+      "callees": [
+        "osPfsIsPlug"
+      ],
+      "control_instructions": [
+        "b",
+        "bne",
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CE3B4_661264",
+          "pc": "0x801CE498"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CF174_662024",
+          "pc": "0x801CF1A8"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801CF2E0_662190",
+          "pc": "0x801CF324"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801D01C4_663074",
+          "pc": "0x801D0218"
+        }
+      ],
+      "direct_caller_count": 4,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "calls osPfsIsPlug",
+        "returns device query result bit on success or -1 on error"
+      ],
+      "cfg_classification": "error conditional followed by result-bit return",
+      "return_behavior": "returns -1 or plug-state bit; not constant",
+      "operation": "query PFS connection state"
+    },
+    {
+      "name": "func_80023880_24480",
+      "vma": "0x80023880",
+      "rom_offset": "0x24480",
+      "size_bytes": 80,
+      "sha256": "a5cf4fe765ef2bb439c72b9a608479a96af233146f02adec51251a146bbf14d0",
+      "instruction_count": 20,
+      "callees": [
+        "osPfsRepairId",
+        "osPfsInitPak"
+      ],
+      "control_instructions": [
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801D1580_664430",
+          "pc": "0x801D1864"
+        }
+      ],
+      "direct_caller_count": 1,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "calls osPfsRepairId",
+        "calls osPfsInitPak",
+        "stores initialization status"
+      ],
+      "cfg_classification": "sequential repair/initialize calls and status store",
+      "return_behavior": "returns initialization status; not constant",
+      "operation": "repair and initialize PFS"
+    },
+    {
+      "name": "func_800238D0_244D0",
+      "vma": "0x800238D0",
+      "rom_offset": "0x244D0",
+      "size_bytes": 232,
+      "sha256": "2f318b6111eca5177f367c7818b876819feeadd22329f728c1386dc71a77ec14",
+      "instruction_count": 58,
+      "callees": [
+        "osPfsFileState"
+      ],
+      "control_instructions": [
+        "b",
+        "beql",
+        "bne",
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801D0EBC_663D6C",
+          "pc": "0x801D0F24"
+        },
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801D12B8_664168",
+          "pc": "0x801D13A0"
+        },
+        {
+          "file": "asm/usa/23DE0.s",
+          "caller": "func_80023D80_24980",
+          "pc": "0x80023D88"
+        }
+      ],
+      "direct_caller_count": 3,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "loops over 16 osPfsFileState queries",
+        "stores each state byte at context +0x3B0+i",
+        "stops on states 4, 2, or 3; otherwise stores zero after scan"
+      ],
+      "cfg_classification": "16-entry loop with state-dependent early exit",
+      "return_behavior": "returns/stores scan status; not constant",
+      "operation": "scan PFS file states"
+    },
+    {
+      "name": "func_800239B8_245B8",
+      "vma": "0x800239B8",
+      "rom_offset": "0x245B8",
+      "size_bytes": 100,
+      "sha256": "822f12ee92482980af03ddfec0eb355483b62c67d58c20ac4c8a7ac8efd5eee3",
+      "instruction_count": 25,
+      "callees": [
+        "osPfsDeleteFile",
+        "func_80023ADC_246DC"
+      ],
+      "control_instructions": [
+        "jal",
+        "jr"
+      ],
+      "caller_sites": [
+        {
+          "file": "asm/usa/65E310.s",
+          "caller": "func_801D0EBC_663D6C",
+          "pc": "0x801D0F08"
+        },
+        {
+          "file": "asm/usa/23DE0.s",
+          "caller": "func_80023DC4_249C4",
+          "pc": "0x80023DD0"
+        }
+      ],
+      "direct_caller_count": 2,
+      "disposition": "RETAIN GLOBAL_ASM: original OS/PFS behavior is nontrivial; no G2 candidate selected",
+      "constant_zero": false,
+      "side_effects": [
+        "accepts file index in a0",
+        "loads a 0x20-byte record",
+        "calls osPfsDeleteFile",
+        "maps/stores operation status"
+      ],
+      "cfg_classification": "record lookup followed by delete/status path",
+      "return_behavior": "returns mapped operation status; not constant",
+      "operation": "delete PFS file"
+    }
+  ],
+  "decision": {
+    "candidate_count": 0,
+    "g2_candidates": [],
+    "matching_c_delta": 0,
+    "classification": "RESEARCH_ONLY",
+    "reason": "All 13 separately bounded functions implement Memory Pak/PFS calls, output/status writes, CRC checks, data-cache work, state scans, or device queries. None has a constant-zero behavior. The shortest is a 64-byte osPfsIsPlug query and is still nontrivial. The adjacent accepted 8-byte function is the actual return-zero function.",
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "stored_proof_context": {
+      "matching_c": 148,
+      "matching_bytes": 11020,
+      "full_rom_match": true,
+      "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "combined_c": 161,
+      "assembly": 7215,
+      "identified": 7376
+    },
+    "reason_g2_not_run": "No production candidate or verifier input changed; all 13 retain GLOBAL_ASM."
+  },
+  "tests": {
+    "private_assembly_and_rom_crosscheck": "PASS; 13/13 per-function Splat spans match the SHA-verified decompressed USA ROM",
+    "focused_audit_tests": "PASS; python3 -m unittest decomp.test_return_zero_audit -q (4 tests)",
+    "task_context_and_skill_tests": "PASS; python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q (17 tests)",
+    "decomp_suite": "PASS; python3 -m unittest discover -s decomp -p 'test_*.py' -q (157 tests)",
+    "verifier_tests": "PASS; python3 -m unittest tests.test_decomp_verify -q (17 tests)",
+    "skill_context_validation": "PASS; python3 -m decomp.skill_context --validate",
+    "syntax_and_diff": "PASS; py_compile for changed Python modules and git diff --check",
+    "full_rom_g2": "NOT_RUN; no candidate or production/verifier input changed",
+    "inventory_rebuild": "NOT_RUN; no candidate or production/verifier input changed"
+  },
+  "next": "Execute G64-071–080 under Architect v2, starting with the independently unlocked file_table.c readers."
+}

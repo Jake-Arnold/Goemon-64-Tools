@@ -56,9 +56,14 @@ class TaskBriefTests(unittest.TestCase):
         # of pinning whichever task happened to be active when tests were written.
         tasks = [dict(task) for task in self.data["tasks"]]
         records = [dict(record) for record in self.data["execution_records"]]
-        task_id = "G64-035"
-        next(task for task in tasks if task["id"] == task_id)["status"] = "PLANNED"
-        next(record for record in records if record["task_id"] == task_id)["status"] = "PLANNED"
+        task_id = records[0]["task_id"]
+        current = next(task for task in tasks if task["id"] == task_id)["status"]
+        changed = next(status for status in sorted(sc.TASK_STATUSES)
+                       if status != current)
+        next(task for task in tasks if task["id"] == task_id)["status"] = changed
+        for record in records:
+            if record["task_id"] == task_id:
+                record["status"] = changed
         self.assertEqual(sc.validate({**self.data, "tasks": tasks,
                                       "execution_records": records}), [])
 

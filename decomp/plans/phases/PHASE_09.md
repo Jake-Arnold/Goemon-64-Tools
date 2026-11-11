@@ -261,7 +261,7 @@ No invented float tolerance for byte-identity, no compiler reassociation, no unp
 
 ### G64-090 — Audit misleading trivial-function names
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-002.
 **Focus files:** `decomp/return_zero.c`; `decomp/manifest.json`.
 
 **Architectural intent:** Review return_zero.c's 13 ASM entries individually; do not infer they all return zero from unit name.
@@ -285,3 +285,5 @@ No invented float tolerance for byte-identity, no compiler reassociation, no unp
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-11):** all 13 placeholders are separately bounded Memory Pak/PFS routines (64–240 bytes; 1,672 bytes total), with device calls, status/output stores, CRC/cache work, or state-query control flow. The shortest is a 64-byte `osPfsIsPlug` query. The adjacent 8-byte C function is the actual constant-zero routine. No G2 candidate was eligible; retain all 13 as `GLOBAL_ASM`. ROM-bound spans and caller sites are recorded in `plans/execution/2026-11-11-g64-090-return-zero-audit.json`. Next v2 work is G64-071–080.

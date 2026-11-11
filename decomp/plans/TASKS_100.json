@@ -3874,7 +3874,7 @@
       "ordinal": 90,
       "phase": 9,
       "title": "Audit misleading trivial-function names",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-002"
       ],
