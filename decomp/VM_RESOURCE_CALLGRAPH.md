@@ -99,7 +99,8 @@ G64-022 records the observed ID word and offset-only +4/+8 words in
 `vm_resource_types.h`; the entry resource argument remains separate from the
 mutable global word. Its loader candidate did not match native IDO and remains
 unpromoted. G64-023 reproduced the 196-byte F038 baseline; G64-024 tested
-three additional source hypotheses without improvement. G64-025/026 own loader
-mutation and frame work. G64-027/028 own
+three additional source hypotheses without improvement. G64-025 confirmed the
+entry-ID/current-ID distinction under synthetic mutation; G64-026 owns the
+loader frame investigation. G64-027/028 own
 D68C/DF98 control flow. No function in this graph is newly promoted by this
 note.

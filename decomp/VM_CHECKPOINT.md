@@ -31,7 +31,9 @@ IDO, so no production ownership changed. A fresh full-ROM gate retained the
 bytes with 25/42 direct matches, 3/3 call relocation shapes, and four table
 relocation-layout differences. It remains research-only. G64-024's three new
 declaration/type variants did not improve its native comparison; see its
-evidence ledger. Next: G64-025, test loader entry-versus-current ID mutation.
+evidence ledger. G64-025's 1,024-case callback mutation model and low-half
+accessor tests pass; native loader codegen remains nonmatching. Next: G64-026,
+resolve the loader ABI and frame.
 
 ## Numbered event startup follow-up (2026-11-03)
 

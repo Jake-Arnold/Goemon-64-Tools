@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-025 loader entry/current ID model (RESEARCH_ONLY)
+
+- Continued from published commit `eb2ca02ec6d47be4b41c98cc40c3e049d87290ef` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed the remote SHA matched.
+- Re-ran `decomp/test_vm_loader_resource_mutation.c` under GCC ASan/UBSan: **1,024/1,024** cases passed. The harness mutates the resource global in each callback independently, checks the second retry/size reads use the second value, checks the final DDC4 delta call retains the entry argument, and verifies the recovered low half. `test_vm_resource_types.c` and the older loader regression passed their endian/layout checks; D468 original-address guards passed **26**. The decomp Python suite passed **114**, and verifier tests passed **17**.
+- Recompiled the candidate with pinned IDO 5.3. It remains **556 bytes** versus the **548-byte** original; ROM-validated comparison returned expected nonmatch: **1/26** direct words, **46/58** relocation shapes, **53** relocation-layout differences, first mismatch **+0x8**. The mutation harness is a conservative model, not evidence the retail `13B14` callback changes the global.
+- No candidate integration, production source change, proof refresh, inventory run, or in-game test occurred. Existing proof remains 148 matching claims; keep the function `GLOBAL_ASM`. Evidence: `decomp/plans/execution/2026-11-11-g64-025-loader-id-mutation.json`.
+- **Next:** G64-026, inspect the loader's original `$s0/$s1` lifetimes and 32-byte frame against the 556-byte candidate.
+
 ## 2026-11-11 — G64-024 bounded F038 codegen refinement (RESEARCH_ONLY)
 
 - Continued from published commit `51df401ba4be13756f9679cb15bf63e778cf2143` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed the remote SHA matched. Read prior 15-variant evidence to avoid repeating those trials.

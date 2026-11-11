@@ -1,0 +1,87 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-025",
+  "title": "Model loader entry-versus-current ID",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "eb2ca02ec6d47be4b41c98cc40c3e049d87290ef",
+    "target_remote_head_before_work": "eb2ca02ec6d47be4b41c98cc40c3e049d87290ef",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "original_function": {
+    "name": "func_8003D468_3E068",
+    "rom_offset": "0x3E068",
+    "vma": "0x8003D468",
+    "original_bytes": 548,
+    "original_sha256": "ece95b38f4dbaf5268d308e09aea54a02d32d1615664137de03ecd46a0c262d7",
+    "private_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "tested_sources": {
+    "loader_candidate": {
+      "path": "decomp/candidates/vm_loader_storage_probe.c",
+      "sha256": "a8371332983b3f785381657043356683119afa39431c73ab226dcbb252fca9e3"
+    },
+    "mutation_harness": {
+      "path": "decomp/test_vm_loader_resource_mutation.c",
+      "sha256": "3ec73890e076718c5d243a20fc5487ed9b41941770be3a2a896b4dee8f2ea4e0"
+    },
+    "resource_types_header_sha256": "e11f328368d76de2ababeff78ff6bbe28550e190a13e4ae0b299b0199d1ccf6a",
+    "resource_types_test_sha256": "90c4061d8c15327155c77aff82ecaac9c814c513dc7b7764659b06a34846bf64"
+  },
+  "mutation_model": {
+    "cases": 1024,
+    "result": "PASS under GCC ASan/UBSan",
+    "callback_13B14_mutation": "Current ID changes from entry ID to first_remap; low-half argument observed as (u16)entry.",
+    "callback_3CFA0_mutation": "Current ID changes from first_remap to second_remap; retry lookup and size query observe second_remap.",
+    "entry_argument_preserved": "DDC4 is called with original entry ID, not either callback replacement.",
+    "stale_read_negative_control": "Second load and size observations must equal second_remap, while delta must equal entry ID.",
+    "retail_side_effect_limit": "The callbacks are deliberately modeled as mutating. This does not prove the retail 13B14 assembly callback changes the global."
+  },
+  "additional_validation": {
+    "resource_width_and_endian_test": "PASS under GCC ASan/UBSan; four boundary words and N64 low-half offset +2",
+    "legacy_loader_regression": "PASS under GCC ASan/UBSan",
+    "original_address_guards": "PASS; 26 D468 guards from private Splat assembly",
+    "decomp_python_suite": "PASS; 114 tests",
+    "verify_python_tests": "PASS; 17 tests",
+    "native_ido_candidate": {
+      "compiler": "Pinned IDO 5.3, -O2 -mips2 -G 0 -non_shared -c",
+      "object_sha256": "13f347ba9f469245fd3590ae5cc7c1e58e950ea5d30e2e150f6ce72b30cfb0dd",
+      "candidate_bytes": 556,
+      "comparison_exit_code": 1,
+      "matching_nonrelocation_words": "1/26",
+      "matching_relocated_shapes": "46/58",
+      "relocation_layout_differences": 53,
+      "first_mismatch": "+0x8",
+      "proof_level": "ROM-validated original plus isolated relocatable object; no linked candidate or full-ROM promotion"
+    },
+    "full_rom_candidate_gate": "NOT_RUN; production ownership unchanged",
+    "inventory": "NOT_RUN",
+    "in_game": false
+  },
+  "commands": [
+    "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_loader_resource_mutation.c -o /tmp/g64-025-loader-mutation && /tmp/g64-025-loader-mutation",
+    "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_resource_types.c -o /tmp/g64-025-resource-types && /tmp/g64-025-resource-types",
+    "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_loader_storage_probe.c -o /tmp/g64-025-loader-probe && /tmp/g64-025-loader-probe",
+    "python3 decomp/test_vm_loader_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+    "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+    "python3 -m unittest tests.test_decomp_verify -q",
+    "practice/diagnostics/decomp-100-inputs/mnsg-pinned/tools/ido-5.3/cc -c -G 0 -non_shared -Xfullwarn -Xcpluscomm -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned/include -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned/libultra/include -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned/libultra/include/PR -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned/src -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -O2 -mips2 -o /tmp/g64-025-loader.o decomp/candidates/vm_loader_storage_probe.c",
+    "python3 -m decomp.compare_original --rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --original practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s --object /tmp/g64-025-loader.o --function func_8003D468_3E068 --objdump /usr/bin/mips-linux-gnu-objdump"
+  ],
+  "official_claims": {
+    "proof_report": "decomp/results/combined.json",
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_functions": 148,
+    "matched_bytes": 11020,
+    "promotions": 0
+  },
+  "limitations": [
+    "The loader candidate remains eight bytes larger than the original and has extensive instruction/relocation-layout differences.",
+    "Mutation behavior is synthetic and does not establish the retail callback's side effects.",
+    "No full-ROM verifier/inventory gate or in-game verification was run for this research candidate."
+  ],
+  "next": "Execute G64-026: inspect D468 saved-register lifetimes and its 32-byte original frame; retain ASM unless exact."
+}

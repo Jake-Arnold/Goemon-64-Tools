@@ -165,8 +165,19 @@ justified by this evidence; retain the production ASM. See
 
 ### G64-025 — Model loader entry-versus-current ID
 
-**Status:** PLANNED. **Dependencies:** G64-021, G64-022.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-021, G64-022.
 **Focus files:** `decomp/candidates/vm_loader_storage_probe.c`; `decomp/test_vm_loader_resource_mutation.c`.
+
+**Outcome (2026-11-11):** The 1,024-case ASan/UBSan mutation harness passed.
+The two synthetic callbacks independently replace the current ID; retry and
+size reads use the second replacement, while the final DDC4 argument remains
+the entry ID. Low-half accessor/boundary tests, the older loader harness, 26
+original-address guards, 114 decomp tests and 17 verifier tests passed. The
+candidate still compiles to 556 bytes versus the 548-byte original, with 1/26
+direct words, 46/58 relocation shapes, 53 relocation-layout differences and
+first mismatch +0x8. This is a conservative host model, not evidence that the
+retail callbacks mutate the global. Keep `GLOBAL_ASM`; no claim was promoted.
+See `plans/execution/2026-11-11-g64-025-loader-id-mutation.json`.
 
 **Architectural intent:** For 8003D468_3E068 preserve entry ID sent to 8003DDC4, while resource globals may mutate on two callbacks.
 

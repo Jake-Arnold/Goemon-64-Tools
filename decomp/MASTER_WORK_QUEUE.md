@@ -9,7 +9,8 @@ passed full-ROM verification. G64-015–018 were retried and remain
 `VM_RESOURCE_CALLGRAPH.md`; G64-022 is `RESEARCH_ONLY` with no promotion;
 G64-023 reproduced the nonmatching F038 baseline and remains `RESEARCH_ONLY`;
 G64-024's three new variants did not improve that baseline and remain
-`RESEARCH_ONLY`; continue with G64-025–030 in dependency order.
+`RESEARCH_ONLY`; G64-025's mutation model passed but its native candidate
+remains unpromoted. Continue with G64-026–030 in dependency order.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 
