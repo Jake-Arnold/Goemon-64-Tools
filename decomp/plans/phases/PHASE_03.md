@@ -127,8 +127,19 @@ integrated; production ASM and the 148-claim proof remain unchanged. See
 
 ### G64-024 — Refine lookup code generation
 
-**Status:** PLANNED. **Dependencies:** G64-023.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-023.
 **Focus files:** `decomp/candidates/vm_resource_halfword_volatile_probe.c`; `decomp/compare_original.py`.
+
+**Outcome (2026-11-11):** Three fresh, semantics-preserving variants were
+tested from the 25/42 baseline: adding `register` to the volatile half-index,
+reordering local declarations, and narrowing the table entry local from `s32`
+to the source table's `s16`. Each passed 3,000/3,000 ASan/UBSan host cases and
+compiled to a 196-byte symbol, but each repeated 25/42 direct words, 3/3 call
+relocation shapes, four table relocation-layout differences, and first
+mismatch +0x28. Earlier bounded variants are recorded in
+`results/vm_next_ten_batch4.json`. No further source edit or promotion is
+justified by this evidence; retain the production ASM. See
+`plans/execution/2026-11-11-g64-024-f038-refinement.json`.
 
 **Architectural intent:** Focus original $v1 index, stack slot, signed truncation, 0x100 bypass, callback recovery and shift/wrap effects; vary one factor per attempt.
 

@@ -29,8 +29,9 @@ resource types and host endian tests; its candidate loader did not match native
 IDO, so no production ownership changed. A fresh full-ROM gate retained the
 148 existing claims. G64-023 reproduced the volatile F038 candidate at 196
 bytes with 25/42 direct matches, 3/3 call relocation shapes, and four table
-relocation-layout differences. It remains research-only. Next: G64-024,
-bounded lookup codegen trials.
+relocation-layout differences. It remains research-only. G64-024's three new
+declaration/type variants did not improve its native comparison; see its
+evidence ledger. Next: G64-025, test loader entry-versus-current ID mutation.
 
 ## Numbered event startup follow-up (2026-11-03)
 

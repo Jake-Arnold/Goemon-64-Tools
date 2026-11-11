@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-024 bounded F038 codegen refinement (RESEARCH_ONLY)
+
+- Continued from published commit `51df401ba4be13756f9679cb15bf63e778cf2143` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed the remote SHA matched. Read prior 15-variant evidence to avoid repeating those trials.
+- Created three isolated, ignored variants based on the unchanged 25/42 candidate: (1) add the `register` hint to `volatile s32 half`; (2) reorder local declarations; (3) type the signed table entry as `s16` instead of `s32`, matching the observed table element width. Each candidate passed **3,000/3,000** GCC ASan/UBSan mock cases before native compilation.
+- Pinned IDO 5.3 compiled each variant to a **196-byte function**. All three ROM-validated object comparisons repeated **25/42** direct nonrelocation matches, **3/3** same-kind call relocation shapes, **four** table HI16/LO16 layout differences, and first mismatch **+0x28**. No variant improved the original `$v1` versus candidate `$t6` index allocation, spills or final adjustment temporaries. Their sources/objects remain in ignored `practice/diagnostics/decomp-100-inputs/g64-024/`; hashes and metrics are in `decomp/plans/execution/2026-11-11-g64-024-f038-refinement.json`.
+- **Limits:** no candidate was linked/integrated at original VMA, no full-ROM candidate or inventory run occurred, no matching claim changed, and no in-game verification was performed. The existing checked-in proof remains the authority for 148 claims. Stopped after three nonimproving new hypotheses plus the 15 prior trials; keep production ASM.
+- **Next:** G64-025, verify entry-ID preservation under independent callback mutations in the loader harness.
+
 ## 2026-11-11 — G64-023 reproduce F038 native baseline (RESEARCH_ONLY)
 
 - Continued in `codex/decomp-100-task-plan` from commit `5bedba7a019df984d67bad96d02ec6ced715ef73`; fetched and confirmed `origin/chatgptweb/decomp` matched it. Pinned inputs remained at the documented ROM hashes and `mnsg` commit.

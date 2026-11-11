@@ -1,0 +1,88 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-024",
+  "title": "Refine lookup code generation",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "51df401ba4be13756f9679cb15bf63e778cf2143",
+    "target_remote_head_before_work": "51df401ba4be13756f9679cb15bf63e778cf2143",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "baseline": {
+    "function": "func_8003F038_3FC38",
+    "rom_offset": "0x3FC38",
+    "vma": "0x8003F038",
+    "original_bytes": 196,
+    "original_sha256": "7a258b9eae36120d3971f1997070c2a988fb9636cbd4c96f1f52ea888e7b9719",
+    "candidate_source_sha256": "c53a8ff7c8dd5d1a33b39130271b18926d70af0dff6c5aee0708ef825a453cab",
+    "candidate_object_sha256": "9d1e9bdc4d6c553c63bcf83609394897c616f7b5ee3518890319cfcfec855f42",
+    "native_result": "196 bytes; 25/42 direct words; 3/3 call relocation shapes; four table HI16/LO16 relocation-layout differences; first mismatch +0x28"
+  },
+  "new_variants": [
+    {
+      "id": "register_volatile_half",
+      "single_change": "Add register storage-class hint to volatile s32 half.",
+      "source_path": "practice/diagnostics/decomp-100-inputs/g64-024/f038-register-volatile.c",
+      "source_sha256": "7b3e692273e6429524c21c25c24023837356facc307c043b6d9f023bd1556533",
+      "object_sha256": "9f3cb233fc5d35332e85653bcb8b1b724ea8fa65e591e878971291ffbc51d8dc",
+      "host_cases": "PASS; 3000/3000 ASan/UBSan",
+      "native_function_bytes": 196,
+      "matching_direct_words": "25/42",
+      "matching_call_relocations": "3/3",
+      "table_relocation_layout_differences": 4,
+      "first_mismatch": "+0x28",
+      "decision": "No improvement; register hint did not change the measured native mismatch profile."
+    },
+    {
+      "id": "local_declaration_order",
+      "single_change": "Move the volatile half-index declaration after out and entry locals.",
+      "source_path": "practice/diagnostics/decomp-100-inputs/g64-024/f038-decl-order.c",
+      "source_sha256": "ff4e08a016e576673285a67ca79d9596f465b238412f0ceaee6c96d38d692665",
+      "object_sha256": "d7afb3278ac2d28327ea7f94788596cba433608cfc1da77ebbc48398d69905dc",
+      "host_cases": "PASS; 3000/3000 ASan/UBSan",
+      "native_function_bytes": 196,
+      "matching_direct_words": "25/42",
+      "matching_call_relocations": "3/3",
+      "table_relocation_layout_differences": 4,
+      "first_mismatch": "+0x28",
+      "decision": "No improvement; declaration order did not change the measured native mismatch profile."
+    },
+    {
+      "id": "signed_halfword_entry",
+      "single_change": "Use s16 for the table entry local, matching the observed signed-halfword load source.",
+      "source_path": "practice/diagnostics/decomp-100-inputs/g64-024/f038-s16-entry.c",
+      "source_sha256": "e5d563c17ef1b45a9fda1df78a0e033192a9dfcbfc0fba6fcec6227b3a562e3a",
+      "object_sha256": "eec603bfdff4a953468d651a81cde9c5a2f156672b732c85b6ac8069918f6615",
+      "host_cases": "PASS; 3000/3000 ASan/UBSan",
+      "native_function_bytes": 196,
+      "matching_direct_words": "25/42",
+      "matching_call_relocations": "3/3",
+      "table_relocation_layout_differences": 4,
+      "first_mismatch": "+0x28",
+      "decision": "No improvement; signed table-entry narrowing did not change the measured native mismatch profile."
+    }
+  ],
+  "prior_bounded_variants": {
+    "report": "decomp/results/vm_next_ten_batch4.json",
+    "count": 15,
+    "best_result": "25/42 direct words; no exact candidate"
+  },
+  "validation": {
+    "comparison_method": "Native IDO relocatable objects compared against ROM-validated Splat rows; no GNU-reassembled IDO listing used.",
+    "candidate_full_rom_gate": "NOT_RUN; no candidate was integrated",
+    "inventory": "NOT_RUN",
+    "production_source_changed": false,
+    "manifest_or_claim_changed": false,
+    "official_proof": "decomp/results/combined.json remains 148 exact claims / 11020 bytes / full ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494",
+    "in_game": false
+  },
+  "limitations": [
+    "All three new variants retain the same relocation, register and stack mismatch profile.",
+    "The probes are local and ignored; they are not linked at original VMA or production-integrated.",
+    "An initial local host invocation used a source path relative to the repository root; after correcting it to be relative to decomp/, all three 3000-case runs passed."
+  ],
+  "next": "Execute G64-025: validate separate entry ID and callback-mutated current IDs in the loader model."
+}

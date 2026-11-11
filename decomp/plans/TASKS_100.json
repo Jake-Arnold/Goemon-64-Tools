@@ -920,7 +920,7 @@
       "ordinal": 24,
       "phase": 3,
       "title": "Refine lookup code generation",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-023"
       ],

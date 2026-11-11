@@ -55,8 +55,9 @@ candidate does not match the 548-byte original, so production ASM remains. A
 fresh full-ROM proof refreshed the existing 148 claims without promotion.
 G64-023 is `RESEARCH_ONLY`: the volatile F038 candidate reproduces 25/42 direct
 words and 3/3 call relocation shapes but still has 17 direct-word and four
-table-relocation-layout differences. Continue with G64-024–030 in dependency
-order.
+table-relocation-layout differences. G64-024 is also `RESEARCH_ONLY`: three
+new semantics-preserving IDO variants retained the same mismatch profile.
+Continue with G64-025–030.
 See `plans/execution/` for task-specific evidence ledgers.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
