@@ -300,3 +300,26 @@ host harness asserts callback order as well as owner, value and decoder input.
 The decoder and output/helper stubs stay synthetic and do not claim unknown
 retail side effects. No random batch was repeated, no production function or
 manifest owner changed, and the 148-function proof remains unchanged.
+
+## G64-040 — VM parser production gate
+
+The current manifest unit `script_vm.c` contains 56 C-owned functions and 13
+`GLOBAL_ASM` functions. Of the parser targets reviewed for this gate,
+`func_8003EB34_3F734` is already matching C at 112 bytes and already covered by
+the stored full-ROM proof. The remaining target ownership is unchanged:
+
+| Target | Current ownership | Recorded evidence | Gate result |
+| --- | --- | --- | --- |
+| DBEC `func_8003DBEC_3E7EC` | `GLOBAL_ASM` | 472-byte original; current research candidate differs in codegen and uses a `0x50` frame versus original `0x48`. | Not source-unit exact. |
+| DE80 `func_8003DE80_3EA80` | `GLOBAL_ASM` | 232-byte original; best bounded layout still has a first mismatch at `0x8003DE88` and 38/56 differing positions. | Not source-unit exact. |
+| DF98 `func_8003DF98_3EB98` | `GLOBAL_ASM` | 528-byte original; ROM-bound dispatch/cursor evidence exists, with no matching C candidate. | No promotion candidate. |
+| ED60 `func_8003ED60_3F960` | `GLOBAL_ASM` | 592-byte original; one isolated IDO probe is 584 bytes and differs at `0x8003ED68`. | Not source-unit exact. |
+| F6E8 `func_8003F6E8_402E8` | `GLOBAL_ASM` | Exact original extent is 48 bytes / 12 words; prior C prefix and candidate annotation do not establish a complete body. | No promotion candidate. |
+
+No new source-unit-exact candidate qualified. The production file, manifest and
+verifier inputs are unchanged, so no translation-unit build, full 32 MiB G2
+build, or inventory rebuild was run. The existing stored proof remains
+148/148 functions and 11,020 bytes with complete image identity. G64-040 closes
+`RESEARCH_ONLY`; the next v2 task is G64-091, the attempt-evidence ledger.
+Details are in
+[`plans/execution/2026-11-11-g64-040-parser-production-gate.json`](plans/execution/2026-11-11-g64-040-parser-production-gate.json).

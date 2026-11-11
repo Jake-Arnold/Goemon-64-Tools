@@ -50,9 +50,13 @@ fixed MIPS traces for DBEC and emit/decode callback-order assertions for EB34,
 then cross-references existing DE80, DF98, ED60 and F6E8 evidence. All stubs
 remain bounded synthetic hooks; no unknown decoder effects are modeled. No C
 ownership or stored proof changed. See `VM_PARSER_BEHAVIOR_MATRIX.md` and
-`plans/execution/2026-11-11-g64-039-parser-matrix.json`. Next: G64-040. Private
-ROM and compiler files remain local under the ignored diagnostics input
-directory.
+`plans/execution/2026-11-11-g64-039-parser-matrix.json`. G64-040 found no new
+source-unit-exact candidate: EB34 is already matching C, while DBEC, DE80,
+DF98, ED60 and F6E8 remain ASM-owned. Production and verifier inputs were
+unchanged, so the stored 148-function full-ROM proof was retained without a
+new build. See `plans/execution/2026-11-11-g64-040-parser-production-gate.json`.
+Next v2 task: G64-091. Private ROM and compiler files remain local under the
+ignored diagnostics input directory.
 
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.
 

@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-040 VM parser production gate (RESEARCH_ONLY)
+
+- **Reason and branch:** started from pushed and fetched `4b26fd1f346567d6df3ddd5cca9ee73163a78a66`. Architect v2 says to run G2 only when a candidate is source-unit exact or verifier inputs changed.
+- **Audit:** the current `script_vm.c` manifest unit has 56 C functions and 13 `GLOBAL_ASM` functions. `func_8003EB34_3F734` is already matching C and part of the stored proof. DBEC, DE80, DF98, ED60 and F6E8 remain assembly-owned; their current evidence is nonmatching codegen, original tracing, or extent-only work. No new unit-exact candidate is eligible.
+- **Changes:** recorded the source-unit candidate audit in [`decomp/VM_STREAM_MATCHING.md`](decomp/VM_STREAM_MATCHING.md) and the execution packet [`decomp/plans/execution/2026-11-11-g64-040-parser-production-gate.json`](decomp/plans/execution/2026-11-11-g64-040-parser-production-gate.json). Updated phase/task statuses and the next-step handoff. No production file, manifest or verifier input changed.
+- **Tests:** relevant verifier, inventory, batch and probe-integration suites passed **47/47**. Task-ledger validation and `git diff --check` are recorded in the execution packet. No source-unit compile was run because none of the recorded candidates is eligible for it.
+- **Limitations:** per Architect v2, no fresh 32 MiB G2 build or inventory rebuild was run because inputs are unchanged and there is no candidate to promote. The stored proof remains **148 functions / 11,020 bytes**, 161 combined C / 7,215 ASM / 7,376 entries. No in-game verification.
+- **Next:** G64-091, add immutable attempt signatures to the candidate evidence ledger, then continue the v2 wave-B order.
+
 ## 2026-11-11 — G64-039 VM parser behavior matrix (RESEARCH_ONLY)
 
 - **Reason and branch:** fetched `origin/chatgptweb/decomp` before work; local `codex/decomp-100-task-plan` and remote both matched `66491ed95b0c6e07c629cb247df1bd832ccbc8ed`. Architect v2 calls for a concise crosswalk over existing DBEC/DE80 evidence and explicitly discourages another large random batch.

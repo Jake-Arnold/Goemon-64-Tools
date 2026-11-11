@@ -1596,7 +1596,7 @@
       "ordinal": 40,
       "phase": 4,
       "title": "VM parser production gate",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-032",
         "G64-033",

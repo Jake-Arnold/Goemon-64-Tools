@@ -339,7 +339,7 @@ function remains `GLOBAL_ASM`; no C candidate was accepted. See
 
 ### G64-040 — VM parser production gate
 
-**Status:** PLANNED. **Dependencies:** G64-032, G64-033, G64-034, G64-035, G64-036, G64-037, G64-038, G64-039.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-032, G64-033, G64-034, G64-035, G64-036, G64-037, G64-038, G64-039.
 **Focus files:** `decomp/script_vm.c`; `decomp/manifest.json`.
 
 **Architectural intent:** Integrate only fully matching text/parser/wrapper units using current translation-unit source with separate verified checkpoints.
@@ -363,6 +363,8 @@ function remains `GLOBAL_ASM`; no C candidate was accepted. See
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome:** Audited the current `script_vm.c` manifest unit (56 C functions, 13 ASM owners). EB34 is already a matching C function included in the stored 148-function proof. DBEC, DE80, DF98, ED60 and F6E8 remain ASM; their recorded work contains nonmatching candidates, original-trace evidence, or extent-only evidence. There is no new source-unit-exact candidate and no production, manifest or verifier input changed, so the v2 stop rule skips IDO/unit rebuild, full-ROM G2 and inventory rebuild. Stored proof remains 148 functions / 11,020 bytes / complete 32 MiB identity. See [`../execution/2026-11-11-g64-040-parser-production-gate.json`](../execution/2026-11-11-g64-040-parser-production-gate.json) and [`../VM_STREAM_MATCHING.md#G64-040--vm-parser-production-gate`](../VM_STREAM_MATCHING.md#G64-040--vm-parser-production-gate). Next v2 task: G64-091.
 
 ## Optional read-only REA research lane for this phase
 

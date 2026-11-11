@@ -1,0 +1,124 @@
+{
+  "format": "goemon-g64-execution-evidence-v1",
+  "task_id": "G64-040",
+  "title": "VM parser production gate",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "strategy": {
+    "document": "decomp/plans/EXECUTION_STRATEGY_V2.md",
+    "wave": "A",
+    "directive": "Close the VM phase with a source-unit-eligible candidate list. Run full G2 only if a candidate is UNIT_EXACT or verifier inputs changed.",
+    "decision": "No new source-unit-exact candidate exists. Retain the current 148-function proof and move to G64-091."
+  },
+  "starting_state": {
+    "workspace_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "4b26fd1f346567d6df3ddd5cca9ee73163a78a66",
+    "fetched_remote_head": "4b26fd1f346567d6df3ddd5cca9ee73163a78a66",
+    "fetched_before_work": true,
+    "worktree_clean_before_task": true,
+    "agents_md_confirmed": true
+  },
+  "source_unit": {
+    "name": "script_vm.c",
+    "manifest_c_functions": 56,
+    "manifest_assembly_functions": 13,
+    "total_function_entries": 69,
+    "eligible_new_candidate_count": 0,
+    "candidate_audit": [
+      {
+        "symbol": "func_8003EB34_3F734",
+        "owner": "matching C",
+        "size_bytes": 112,
+        "state": "already included in the stored 148-function proof; no new source change"
+      },
+      {
+        "symbol": "func_8003DBEC_3E7EC",
+        "owner": "GLOBAL_ASM",
+        "original_bytes": 472,
+        "state": "research candidate remains nonmatching; compiled frame is 0x50 versus original 0x48",
+        "evidence": "plans/execution/2026-11-11-g64-032-text-loop-frame.json and plans/execution/2026-11-11-g64-033-text-loop-differential.json"
+      },
+      {
+        "symbol": "func_8003DE80_3EA80",
+        "owner": "GLOBAL_ASM",
+        "original_bytes": 232,
+        "state": "best bounded isolated layout first differs at 0x8003DE88; 38/56 available instruction positions differ",
+        "evidence": "plans/execution/2026-11-11-g64-035-delay-slots.json"
+      },
+      {
+        "symbol": "func_8003DF98_3EB98",
+        "owner": "GLOBAL_ASM",
+        "original_bytes": 528,
+        "state": "ROM-bound decoder and caller evidence only; no matching C candidate",
+        "evidence": "plans/execution/2026-11-11-g64-028-control-decoder-trace.json"
+      },
+      {
+        "symbol": "func_8003ED60_3F960",
+        "owner": "GLOBAL_ASM",
+        "original_bytes": 592,
+        "state": "one isolated candidate is 584 bytes, differs at 136/146 positions; first mismatch 0x8003ED68",
+        "evidence": "plans/execution/2026-11-11-g64-037-ed60-trace.json"
+      },
+      {
+        "symbol": "func_8003F6E8_402E8",
+        "owner": "GLOBAL_ASM",
+        "original_bytes": 48,
+        "state": "extent-only result; no complete matching C body, 40-byte prefix rejected",
+        "evidence": "plans/execution/2026-11-11-g64-038-wrapper-extent.json"
+      }
+    ]
+  },
+  "decision": {
+    "task_status": "RESEARCH_ONLY",
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "source_unit_compile": "NOT_RUN; no new candidate is eligible for whole-unit comparison",
+    "full_rom_g2": "NOT_RUN; production and verifier inputs are unchanged",
+    "inventory_rebuild": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "stored_proof": {
+      "functions": 148,
+      "bytes": 11020,
+      "rom_size": 33554432,
+      "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "combined_c": 161,
+      "assembly": 7215,
+      "identified_entries": 7376
+    },
+    "next_task": "G64-091"
+  },
+  "validation": {
+    "manifest_and_task_ledger_tests": {
+      "command": "python3 -m unittest tests.test_decomp_verify tests.test_decomp_inventory tests.test_decomp_batch tests.test_decomp_probe_integration -q",
+      "tests": 47,
+      "exit_code": 0
+    },
+    "task_context_tests": {
+      "command": "python3 -m unittest decomp.test_skill_context -q",
+      "tests": 13,
+      "exit_code": 0
+    },
+    "skill_context_validate": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "result": "CONSISTENT_STORED_REPORTS; task_count=100",
+      "exit_code": 0
+    },
+    "task_status": {
+      "command": "python3 -m decomp.skill_context --status",
+      "lowest_numbered_planned": "G64-041",
+      "next_v2_execution_task": "G64-091",
+      "exit_code": 0
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  },
+  "source_hashes": {
+    "decomp/script_vm.c": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "decomp/manifest.json": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "decomp/results/combined.json": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "decomp/results/inventory.json": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a"
+  }
+}
