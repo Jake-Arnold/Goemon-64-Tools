@@ -53,8 +53,11 @@ added a host regression around the already matching DDC4 resolver: recovery
 retry reloads the mutable current ID while the later segment lookup retains the
 entry ID; a cached-global mutant is rejected. The existing 132-byte proof
 extent and source hash are unchanged, and synthetic mutation does not establish
-retail callback effects. Next: G64-030, reconcile the VM resource checkpoint
-against live proof and interface evidence.
+retail callback effects. G64-030 reconciled the current proof and inventory,
+recorded 56 unit entries (43 C / 13 ASM), and added the evidence-graded typed
+interface matrix to [VM_RESOURCE_CALLGRAPH.md](VM_RESOURCE_CALLGRAPH.md).
+DDC4, F23C and F2D4 remain exact G2-matched C; D468, D68C, DF98 and F038
+remain ASM. No candidate was newly promoted. Continue with G64-031.
 
 ## Numbered event startup follow-up (2026-11-03)
 
@@ -88,8 +91,9 @@ unchanged combined float/padding fields and inactive contexts.
 
 ## Selected unit and evidence boundaries
 
-The original `0x3DBA0..0x40320` unit contains 69 functions. `script_vm.c` replaces
-52 functions and retains 17 explicitly declared assembly functions. The main
+The current manifest lists 56 functions in the `0x3DBA0..0x40320` unit:
+43 C functions and 13 retained assembly functions. Older 69/52/17 totals in
+dated checkpoint records are historical. The main
 dispatcher, remaining operand handlers and comparison routine remain
 assembly; the complete VM is not decompiled. A name appears in the matching count
 only when linked guest address, original bytes and absence of its assembly marker

@@ -1,23 +1,24 @@
 # Whole-build function inventory
 
-Date: 2026-11-08. Pinned upstream:
+Current proof snapshot: 2026-11-11. Pinned upstream:
 `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. Baseline and current candidate
 both reproduce decompressed ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
-The current [metadata report](results/inventory.json) records the measurement,
-ELF hashes, tool hash and original entry-map identity.
+The [current metadata report](results/inventory.json) records the measurement,
+ELF hashes, tool hash and original entry-map identity. The matching proof in
+`results/combined.json` records a byte-identical 33,554,432-byte image.
 
 | Inventory | Entries |
 | --- | ---: |
 | Identified function entries across the configured ROM | 7,376 |
 | Matching C already in pinned upstream | 13 |
-| Newly matching C in this toolkit's decomp track | 141 |
-| Matching C combined | 154 |
-| Still marked as assembly | **7,222** |
+| Newly matching C in this toolkit's decomp track | 148 |
+| Matching C combined | 161 |
+| Still marked as assembly | **7,215** |
 
-The VM unit is a smaller subset: 55 of its 69 functions are matching C, with
-14 retained assembly functions. Its remaining count is not the whole-game count.
-The toolkit's headline 141-function count deliberately excludes the 13 routines
-already present as matching upstream C. The report lists those names explicitly;
+The current `script_vm.c` manifest unit has 56 function entries: 43 C and 13
+retained assembly. Its subset count is not the whole-game count. The toolkit's
+headline 148-function count deliberately excludes the 13 routines already
+present as matching upstream C. The report lists those names explicitly;
 existing source definitions were checked in the pinned upstream C units.
 
 ## What is counted

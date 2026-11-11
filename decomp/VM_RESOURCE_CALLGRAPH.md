@@ -32,6 +32,62 @@ helpers are marked **inferred** or **unknown**. It is not a matching-C claim.
 | `func_8003DF98_3EB98` | `0x3EB98` | `0x8003DF98` | 528 | `76285ca92a7f611916d867d9938f93fcb3df32ebfa2962120083f2471a501631` |
 | `func_8003F038_3FC38` | `0x3FC38` | `0x8003F038` | 196 | `7a258b9eae36120d3971f1997070c2a988fb9636cbd4c96f1f52ea888e7b9719` |
 
+## Typed VM resource interface matrix (G64-030)
+
+**Checkpoint:** current branch commit before this documentation update is
+`5b9f74b52581b177ea3d7be7344f44c07047e948`. The live
+`results/combined.json` records an exact 33,554,432-byte ROM match and 148/148
+claimed functions / 11,020 bytes; `results/inventory.json` records 7,376
+identified entries, 161 combined C entries and 7,215 remaining ASM. The
+`script_vm.c` manifest unit spans `0x3DBA0..0x40320` and currently lists 56
+functions: 43 C and 13 assembly. This supersedes older VM-unit totals elsewhere
+in dated historical notes.
+
+Evidence labels used below:
+
+- **ROM-OBSERVED:** argument, access, control-flow, or original address/extent
+  checked against the pinned USA ROM and Splat listing. This does not prove a C
+  translation.
+- **G2-MATCHED:** the live combined proof records original and candidate bytes
+  equal at the function's original address, and the full image matches.
+- **HOST-LAYOUT:** compile-time layout/endian assertions passed on the host;
+  this does not establish callback or in-game behavior.
+- **INFERRED:** a useful semantic name supported by call sites, but not an
+  engine-level declaration.
+- **UNKNOWN:** evidence does not establish a stable type or behavior.
+
+### Function interfaces and current ownership
+
+| Function / address | Word-level ABI and contract | Current source ownership | Evidence and exactness |
+| --- | --- | --- | --- |
+| `D468` — VMA `0x8003D468`, ROM `0x3E068`, 548 bytes | Two 32-bit inputs: `$a0` script/address and `$a1` resource ID. Original returns a 32-bit 0/1 setup status; `script_vm.h` still declares `void`, and observed C callers ignore the result. The original spills `$a0` at `sp+0x20` (`0x8003D484`) and the entry resource ID at `sp+0x24` (`0x8003D4AC`). | `GLOBAL_ASM`; the 556-byte C probe remains nonmatching. | **ROM-OBSERVED:** extent SHA in the table and 36 address guards. Probe first differs at `+0x8`; no C promotion. |
+| `D68C` — VMA `0x8003D68C`, ROM `0x3E28C`, 812 bytes | No explicit argument reads; returns 32-bit status values 0, 1, or 2. Reads the script cursor, pause byte and VM state; calls stream/state helpers and an indirect callback. | `GLOBAL_ASM`. | **ROM-OBSERVED:** all 203 words, 44 anchors and both dispatch tables are guarded. No C model was written. |
+| `DDC4` — VMA `0x8003DDC4`, ROM `0x3E9C4`, 132 bytes | `u32(u32 address, s32 entry_resource_id)`. Resolves against the entry ID; on miss, reloads the current global for recovery lookup/retry; final segment query still receives the entry ID. Clears bit 30 from the base and applies the segment/address adjustment. | Matching C in `script_vm.c`. | **G2-MATCHED:** function SHA-256 `f7dab493df8553cae7eb55ce5bbaec5a2cd576e0454dc557dbbadad74a7a101a` matches; current full-image proof passes. G64-029 host test and cached-ID negative control pass, but callback mutation is synthetic. |
+| `DF98` — VMA `0x8003DF98`, ROM `0x3EB98`, 528 bytes | Word `$a0` plus signed-halfword cursor `$a1`; returns a cursor pointer. The cursor token is read as `s16`, and values `-71..-32` select the 40-entry dispatch table. Some helper paths forward `$a0`; others load `D_801C7754`. | `GLOBAL_ASM`; header prototype is `s16 *(s32, s16 *)`. | **ROM-OBSERVED:** all 132 words, 54 decoder/caller anchors and 40 table entries are guarded. `$a0` semantic meaning remains **UNKNOWN**. |
+| `F038` — VMA `0x8003F038`, ROM `0x3FC38`, 196 bytes | `$a0` is a signed 32-bit lookup index; `$a1` is stored in the caller home area but not read later. Returns a 32-bit zero or resolved value. The routine reads signed halfwords from `D_80077894`; index `0x100` returns zero. | `GLOBAL_ASM`; no C prototype is currently published. | **ROM-OBSERVED:** extent SHA in the table and 49 original-address words / 16 anchors are guarded. The 196-byte native probe is not exact (25/42 direct words and four relocation-layout differences); no C promotion. |
+| `F23C` — VMA `0x8003F23C`, ROM `0x3FE3C`, 152 bytes; `F2D4` — VMA `0x8003F2D4`, ROM `0x3FED4`, 124 bytes | Both are no-argument context save/restore paths. They refresh the resource lookup/segment fields and compute the DDC4 start-relative relocation value. | Matching C in `script_vm.c`. | **G2-MATCHED:** proof hashes are respectively `d6d44b0af0c2d08a5e80e9a680ab31b9714e774a75a85bb77bcab265bf020692` and `91bc0fa446b716b14862edfd93ca3c9fa8da196591a49eb05d79c8806b4f67d4`; both remain exact in the live report. |
+
+### Resource-context and shared-global fields
+
+| Field / symbol | Storage type and address | Observed use | Evidence level |
+| --- | --- | --- | --- |
+| `current_id.word` / `D_801C78E8_1C84E8` | 32-bit word at RAM `0x801C78E8`, context offset `+0`. `script_vm.h` currently exposes the global as `s32`; `VmResourceId.word` is `u32`. | D468 stores the incoming ID. DDC4 reads it afresh after recovery and before retry. Calling it the **current resource ID** is an interpretation of those uses. | **ROM-OBSERVED** access and **G2-MATCHED** DDC4 behavior; storage width is **HOST-LAYOUT**. Signed-vs-unsigned declaration is a source-level distinction to preserve unless separately tested. |
+| `n64_be.low_half` / `D_801C78EA_1C84EA` | `u16` at RAM `0x801C78EA`, context offset `+2`. | The original loads this halfword for the recovery call; it is the low numeric half of the big-endian word at `+0`. | **ROM-OBSERVED** load/call and **HOST-LAYOUT** offset/endian assertions. The recovery callback's effects remain **UNKNOWN**. |
+| `unknown_04` | `s32` at context offset `+4`, RAM `0x801C78EC`. | Written from the `s32` result of `01E50` in the resource setup/restart paths. “Segment” is a useful call-site label, not a recovered helper contract. | Offset/width **HOST-LAYOUT**; call-site assignment **ROM-OBSERVED** and **G2-MATCHED** for F23C/F2D4; helper meaning partly **INFERRED**. |
+| `unknown_08` | `s32` at context offset `+8`, RAM `0x801C78F0`. | Stores the start-relative DDC4 result (`resolved_address - start`) in the matched setup/restart paths. | Offset/width **HOST-LAYOUT**; assignments **G2-MATCHED** for F23C/F2D4. Keep the field name offset-based. |
+| `D_80077858_78458` — script cursor | `s32` at RAM `0x80077858`. | D468 stores the initial cursor; D68C and stream readers consume/update it. | Access/call order **ROM-OBSERVED**; name “script cursor” is **INFERRED** from use. |
+| `D_801C77E0_1C83E0` — VM state | `s32` at RAM `0x801C77E0`. | D68C reads it to select state paths. | Access **ROM-OBSERVED**; semantic “state” is **INFERRED** from dispatch behavior. |
+| `D_801C78FC_1C84FC` — pause byte | `s8` at RAM `0x801C78FC`. | D68C reads the byte on its paused/active path. | Width/access **ROM-OBSERVED** and header-declared; “pause” label is **INFERRED** from control flow. |
+| `D_801C7754_1C8354` — decoder context word | `s32` at RAM `0x801C7754`. | DF98 helper-call paths load this word, and the two-call paths reload it between callbacks. | Reload/order **ROM-OBSERVED**; meaning **UNKNOWN**. |
+| `D_80077894_78494` — F038 halfword table | Signed 16-bit elements read from ROM-visible RAM address `0x80077894`. | F038 derives a signed halfword index from `$a0` and loads the selected `s16`; resource lookup/retry follows. | Element width, address and access **ROM-OBSERVED**; table schema/meaning **UNKNOWN**. |
+
+The host resource-type test asserts `sizeof(VmResourceId)==4`, low-half offset
+`+2`, `sizeof(VmResourceContext)==12`, and word fields at `+0/+4/+8`. These
+checks establish C layout only. The current matching C fields and DDC4 machine
+code remain protected by the live full-ROM proof; the unresolved D468, D68C,
+DF98 and F038 helpers remain assembly. G64-030 selects no new candidate for
+promotion.
+
 ## Observed edges
 
 ```mermaid
@@ -110,7 +166,7 @@ The probe remains research-only and the production function remains assembly.
   retail callback writes `D_801C78E8`. Preserve the original reloads until the
   callee effects are established.
 
-## Next narrow work
+## Earlier bounded work through G64-028
 
 G64-022 records the observed ID word and offset-only +4/+8 words in
 `vm_resource_types.h`; the entry resource argument remains separate from the
@@ -123,3 +179,9 @@ candidate still differs. G64-027 added a ROM-bound D68C control-flow map and
 host-model test matrix; no C candidate was written. G64-028 traced the signed
 DF98 decoder and its paced/unpaced caller ordering; no C candidate was written.
 No function in this graph is newly promoted by this note.
+
+G64-029 subsequently added a production-body host regression for DDC4 retry
+reload and original entry-ID retention; a temporary cached-global mutant is
+rejected. G64-030 reconciled the live proof/inventory and added the typed
+interface matrix above. No new resource candidate passed G2, and no function
+claim or ASM ownership changed. Continue with G64-031, the DBEC text-loop CFG.

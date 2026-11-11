@@ -368,8 +368,22 @@ gate, inventory or in-game test was run. See
 
 ### G64-030 — VM resource checkpoint
 
-**Status:** PLANNED. **Dependencies:** G64-024, G64-026, G64-027, G64-028, G64-029.
-**Focus files:** `decomp/MASTER_WORK_QUEUE.md`; `decomp/results/combined.json`.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-024, G64-026, G64-027, G64-028, G64-029.
+**Focus files:** `decomp/MASTER_WORK_QUEUE.md`; `decomp/results/combined.json`; `decomp/results/inventory.json`; `decomp/VM_RESOURCE_CALLGRAPH.md`.
+
+**Outcome (2026-11-11):** Reconciled the current manifest and proof instead of
+promoting a research candidate. The live combined report remains 148/148
+matching functions / 11,020 bytes with the exact 32 MiB ROM SHA; inventory is
+7,376 entries, 161 combined C and 7,215 ASM. The `script_vm.c` unit has 56
+entries: 43 C and 13 ASM. Added a typed interface/evidence matrix for the
+resource context and five original VM functions in `VM_RESOURCE_CALLGRAPH.md`.
+DDC4 and matched context save/restore siblings remain exact. D468, D68C, DF98
+and F038 remain ASM because no new candidate passed the full G2 gate. ROM-bound
+guards for D468/D68C/DF98/F038, the DDC4/loader/type host tests, 124 decomp
+tests and 17 verifier tests passed. F038's guard requires extracting its
+single-function extent from the segment listing. No production code, manifest,
+or proof report changed; no new verifier/inventory run or in-game test was
+needed. Evidence: `plans/execution/2026-11-11-g64-030-vm-resource-checkpoint.json`.
 
 **Architectural intent:** Stage only exact candidates in the original script_vm.c context; leave unresolved VM helpers as ASM.
 

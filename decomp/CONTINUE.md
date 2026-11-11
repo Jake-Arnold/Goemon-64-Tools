@@ -72,7 +72,11 @@ pass; no C model was written. See [`VM_MAIN_STEP_TRACE.md`](VM_MAIN_STEP_TRACE.m
 `VM_STREAM_MATCHING.md` and the execution ledger. G64-029 added a host guard
 for DDC4 retry-time global reload and entry-ID preservation; the cached-global
 negative control fails as expected, while production source and the proof hash
-remain unchanged. Continue with G64-030.
+remain unchanged. G64-030 reconciled the live manifest, proof and inventory;
+the `script_vm.c` unit currently has 43 C and 13 ASM entries. The typed
+resource/stream interface matrix is in [`VM_RESOURCE_CALLGRAPH.md`](VM_RESOURCE_CALLGRAPH.md).
+DDC4 and the context save/restore siblings remain exact; no new candidate met
+the G2 gate, so D468, D68C, DF98 and F038 remain ASM. Continue with G64-031.
 See `plans/execution/` for task-specific evidence ledgers.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.

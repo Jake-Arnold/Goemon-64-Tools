@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-030 reconcile VM resource checkpoint (RESEARCH_ONLY)
+
+- Continued from pushed commit `5b9f74b52581b177ea3d7be7344f44c07047e948` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed it matched. Pinned `mnsg` remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.
+- Re-read the live manifest, combined proof and inventory. The proof is still an exact **33,554,432-byte** ROM match with **148/148** claims / **11,020** bytes; inventory remains **7,376** entries, **161** combined C and **7,215** ASM. The proof's `script_vm.c` and header source fingerprints match the current files. Its unit has **56** manifest functions: **43 C / 13 ASM**.
+- Added an evidence-graded typed interface matrix to `decomp/VM_RESOURCE_CALLGRAPH.md` and refreshed `decomp/INVENTORY.md` / VM checkpoints. Current exact resource functions include DDC4 (132 B), F23C (152 B) and F2D4 (124 B). D468 (548 B), D68C (812 B), DF98 (528 B) and F038 (196 B) remain assembly; no new candidate passed G2, so none was integrated. The matrix keeps offset-only names for unresolved +4/+8 fields, records the D468 header/ROM return discrepancy, and leaves the `13B14` effects unknown.
+- **Executed:** D468 original guard **36**, D68C **203 words / 44 anchors / 7+31 table entries**, DF98 **132 words / 54 anchors / 40 table entries**, and F038 **49 words / 16 guards** passed. F038's full-segment invocation was rejected because the guard accepts a single function extent; extracting that extent and rerunning passed. DDC4, 1,024-case loader mutation and resource layout/endian C harnesses passed under ASan/UBSan. Full decomp suite passed **124 tests**; verifier suite passed **17**. Manifest/proof/inventory consistency assertions passed.
+- No production C, manifest or proof changed; the checked-in G2 proof and inventory are the basis for this checkpoint, not a new full-ROM/inventory run. No native candidate or in-game test was performed. Evidence: `decomp/plans/execution/2026-11-11-g64-030-vm-resource-checkpoint.json`.
+- **Reason / limit:** keep exact matching C siblings staged and documented while preserving original assembly ownership for unresolved helpers. Host layout and synthetic callback tests do not establish retail helper effects or semantics for unknown fields.
+- **Next:** G64-031, trace the original DBEC text-loop control flow and pointer/counter behavior before any C candidate.
+
 ## 2026-11-11 — G64-029 guard matching DDC4 resource resolver (RESEARCH_ONLY)
 
 - Continued from pushed commit `54fba7d1f8da3307b21c94967cf441995b32c838` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed it matched. The pinned `mnsg` checkout remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.

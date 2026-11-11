@@ -20,7 +20,11 @@ caller sentinel checks, and paced/unpaced marker, repeat and cursor ordering.
 It remains `RESEARCH_ONLY` with no C model. G64-029 added a DDC4 host
 regression for callback mutation and entry-ID preservation; its synthetic
 cached-global negative control fails, and the production proof remains
-unchanged. Continue with G64-030 in dependency order.
+unchanged. G64-030 reconciled the live 148-function proof and 7,376-entry
+inventory, recorded the current `script_vm.c` split as 43 C / 13 ASM, and added
+the typed resource interface matrix in `VM_RESOURCE_CALLGRAPH.md`. DDC4 and its
+matched context save/restore siblings remain exact; no new resource candidate
+passed G2. Keep D468, D68C, DF98 and F038 as ASM. Continue with G64-031.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 

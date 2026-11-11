@@ -1,0 +1,184 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-030",
+  "title": "VM resource checkpoint",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "5b9f74b52581b177ea3d7be7344f44c07047e948",
+    "target_remote_head_before_work": "5b9f74b52581b177ea3d7be7344f44c07047e948",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "current_proof_snapshot": {
+    "combined_report": "decomp/results/combined.json",
+    "combined_report_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "inventory_report": "decomp/results/inventory.json",
+    "inventory_report_sha256": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a",
+    "proof_status": "matched",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "full_rom_size": 33554432,
+    "full_rom_match": true,
+    "matching_claims": 148,
+    "matched_function_bytes": 11020,
+    "identified_function_entries": 7376,
+    "combined_c_entries": 161,
+    "remaining_assembly_entries": 7215,
+    "script_vm_unit": {
+      "rom_start": "0x3DBA0",
+      "rom_end": "0x40320",
+      "manifest_function_entries": 56,
+      "c_entries": 43,
+      "assembly_entries": 13
+    }
+  },
+  "phase_boundary_rebaseline": {
+    "phase": 3,
+    "performed": true,
+    "compared_live_branch_manifest_proof_inventory": true,
+    "result": "No completed exact candidate was duplicated; existing full-ROM proof and current inventory remain authoritative; unresolved resource targets remain ASM.",
+    "G64_099_cumulative_task": "Remains PLANNED until its later phase-end dependencies are complete; this phase-03 rebaseline was recorded as part of G64-030."
+  },
+  "source_state": {
+    "script_vm_c_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "script_vm_h_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "production_code_changed": false,
+    "manifest_changed": false,
+    "combined_proof_changed": false,
+    "inventory_report_changed": false
+  },
+  "resource_function_audit": {
+    "existing_exact_c": [
+      {
+        "name": "func_8003DDC4_3E9C4",
+        "vma": "0x8003DDC4",
+        "rom_offset": "0x3E9C4",
+        "bytes": 132,
+        "sha256": "f7dab493df8553cae7eb55ce5bbaec5a2cd576e0454dc557dbbadad74a7a101a"
+      },
+      {
+        "name": "func_8003F23C_3FE3C",
+        "vma": "0x8003F23C",
+        "rom_offset": "0x3FE3C",
+        "bytes": 152,
+        "sha256": "d6d44b0af0c2d08a5e80e9a680ab31b9714e774a75a85bb77bcab265bf020692"
+      },
+      {
+        "name": "func_8003F2D4_3FED4",
+        "vma": "0x8003F2D4",
+        "rom_offset": "0x3FED4",
+        "bytes": 124,
+        "sha256": "91bc0fa446b716b14862edfd93ca3c9fa8da196591a49eb05d79c8806b4f67d4"
+      }
+    ],
+    "retained_assembly": [
+      "func_8003D468_3E068",
+      "func_8003D68C_3E28C",
+      "func_8003DF98_3EB98",
+      "func_8003F038_3FC38"
+    ],
+    "new_candidates_selected_for_g2": [],
+    "new_promotions": 0
+  },
+  "typed_interface_matrix": {
+    "path": "decomp/VM_RESOURCE_CALLGRAPH.md",
+    "sha256": "c6d6add80dec653defe0672474c6c81973e41466e28a402a14f4ca74f9e6f087",
+    "evidence_levels": [
+      "ROM-OBSERVED",
+      "G2-MATCHED",
+      "HOST-LAYOUT",
+      "INFERRED",
+      "UNKNOWN"
+    ],
+    "resource_context_layout": {
+      "size_bytes": 12,
+      "current_id_word_offset": 0,
+      "numeric_low_half_offset": 2,
+      "offset_04_word": "s32, semantic name unknown",
+      "offset_08_word": "s32, start-relative DDC4 result"
+    }
+  },
+  "validation": {
+    "tool_versions": {
+      "gcc": "15.2.0",
+      "python": "3.14.4"
+    },
+    "D468_original_guard": "PASS; 36 address guards",
+    "D68C_original_ROM_guard": "PASS; 203 words, 44 anchors, 7 state and 31 token cases",
+    "DF98_original_ROM_guard": "PASS; 132 words, 54 anchors, 40 dispatch entries",
+    "F038_original_guard": "PASS after extracting the single-function extent; 49 words and 16 anchors",
+    "F038_input_shape_note": "Directly passing the full 3DBA0.s segment returned exit 1 because this guard requires one function extent; extracted extent rerun passed.",
+    "DDC4_host_regression": "PASS under GCC ASan/UBSan",
+    "loader_mutation_harness": "PASS under GCC ASan/UBSan; 1,024 cases",
+    "resource_type_harness": "PASS under GCC ASan/UBSan; width/offset/endian assertions",
+    "decomp_python_suite": "PASS; 124 tests",
+    "verifier_python_suite": "PASS; 17 tests",
+    "live_manifest_proof_inventory_consistency": "PASS; current source SHA-256 values match proof fingerprints and exact-ROM/count assertions pass",
+    "new_full_rom_build": "NOT_RUN; no production source or ownership changed",
+    "new_inventory_build": "NOT_RUN; current checked-in report re-read and reconciled",
+    "in_game": false
+  },
+  "commands": [
+    {
+      "command": "python3 decomp/test_vm_loader_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+      "exit_code": 0,
+      "result": "36 original-address guards"
+    },
+    {
+      "command": "python3 decomp/test_vm_main_step_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+      "exit_code": 0,
+      "result": "203 words; 44 anchors; 7 state cases; 31 token cases"
+    },
+    {
+      "command": "python3 decomp/test_vm_control_decoder_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+      "exit_code": 0,
+      "result": "132 words; 54 anchors; 40 table entries"
+    },
+    {
+      "command": "python3 decomp/test_vm_resource_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+      "exit_code": 1,
+      "expected_failure": true,
+      "reason": "This original-address guard accepts a single-function extent, not the entire segment listing."
+    },
+    {
+      "command": "awk '/^glabel func_8003F038_3FC38$/{p=1} p{print} /^endlabel func_8003F038_3FC38$/{p=0}' practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s > /tmp/g64-030-f038-original.s && python3 decomp/test_vm_resource_original.py /tmp/g64-030-f038-original.s",
+      "exit_code": 0,
+      "result": "49 original-address words; 16 control-flow guards"
+    },
+    {
+      "command": "gcc -std=c11 -Wall -Wextra -Werror -O1 -g -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all -ffunction-sections -fdata-sections -Idecomp/test_support -Idecomp -Wl,--gc-sections decomp/test_vm_ddc4_resolver.c -o /tmp/g64-030-ddc4-resolver && /tmp/g64-030-ddc4-resolver",
+      "exit_code": 0
+    },
+    {
+      "command": "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_loader_resource_mutation.c -o /tmp/g64-030-loader-mutation && /tmp/g64-030-loader-mutation",
+      "exit_code": 0
+    },
+    {
+      "command": "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_resource_types.c -o /tmp/g64-030-resource-types && /tmp/g64-030-resource-types",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 0,
+      "result": "124 tests"
+    },
+    {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "exit_code": 0,
+      "result": "17 tests"
+    },
+    {
+      "command": "Inline Python assertions over current source hashes, manifest ownership, combined full-ROM proof, and inventory counts",
+      "exit_code": 0
+    }
+  ],
+  "limitations": [
+    "This is a proof and interface checkpoint, not a new matching-C claim or complete-ROM rebuild.",
+    "D468, D68C, DF98 and F038 remain assembly; the loader and F038 C probes remain nonmatching or incomplete research.",
+    "The D468 header still declares void despite the original 0/1 return; observed callers ignore it, so this checkpoint records the discrepancy without changing the declaration.",
+    "The meaning and side effects of 13B14 and semantic names for context offsets +4/+8 remain unproven beyond the direct call/data-flow evidence described in the matrix."
+  ],
+  "next": "Execute G64-031: trace func_8003DBEC_3E7EC text-loop control flow, counters, pointer aliases, callbacks, and branch-likely delay slots before writing C."
+}

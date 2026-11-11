@@ -1172,7 +1172,7 @@
       "ordinal": 30,
       "phase": 3,
       "title": "VM resource checkpoint",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-024",
         "G64-026",
@@ -1182,7 +1182,9 @@
       ],
       "focus_files": [
         "decomp/MASTER_WORK_QUEUE.md",
-        "decomp/results/combined.json"
+        "decomp/results/combined.json",
+        "decomp/results/inventory.json",
+        "decomp/VM_RESOURCE_CALLGRAPH.md"
       ],
       "architecture_design": "Stage only exact candidates in the original script_vm.c context; leave unresolved VM helpers as ASM.",
       "explicit_acceptance": "Each selected function passes original guest address, full-ROM identity and inventory; otherwise close as research-only with precise next blocker.",
