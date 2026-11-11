@@ -33,7 +33,7 @@
 ## Default execution order
 1. G64-001–014 have recorded outcomes: the resource wrappers, menu trio and object dispatcher passed G2; G64-003 was already complete.
 2. G64-015–018 were retried and marked `FAILED_NATIVE`; no production ASM ownership changed. G64-019 is `RESEARCH_ONLY`, and G64-020 documents the hard stops.
-3. Continue with the independent VM resource lane G64-021–030, then follow dependencies and original evidence rather than assuming every target will promote.
+3. G64-021 is `DOC_ONLY`; continue with G64-022–030 in dependency order, following original evidence rather than assuming every target will promote.
 4. At every phase boundary run G64-099 rebaseline. Live manifest/results override this plan's historical numeric assumptions.
 5. When a phase is blocked, update the task ledger with exact failure evidence and proceed to an independent work unit; leave ASM intact.
 

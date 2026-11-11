@@ -781,7 +781,7 @@
       "ordinal": 21,
       "phase": 3,
       "title": "Map resource call graph",
-      "status": "PLANNED",
+      "status": "DOC_ONLY",
       "depends_on": [
         "G64-002"
       ],

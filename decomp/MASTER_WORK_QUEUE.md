@@ -5,8 +5,9 @@ queue below are historical. Current authority is `decomp/CONTINUE.md` and the
 live proof reports: **148 matching C / 11,020 bytes / 161 combined C / 7,215
 ASM**. The resource, menu and object candidates from that older queue have
 passed full-ROM verification. G64-015–018 were retried and remain
-`FAILED_NATIVE`; continue with independent 100-task items G64-021–030;
-all private ROM and compiler files remain local under the ignored diagnostics
+`FAILED_NATIVE`; G64-021 is `DOC_ONLY` with its call graph in
+`VM_RESOURCE_CALLGRAPH.md`; continue with G64-022–030 in dependency order.
+All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.

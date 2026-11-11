@@ -1,6 +1,6 @@
 # Phase 03 — VM resource path
 
-**Scope:** G64-021–G64-030; branch `chatgptweb/decomp`; current source checkpoint `a68881da4b10e2553e7a89b7129d09d64b427435` (refresh before execution).
+**Scope:** G64-021–G64-030; branch `chatgptweb/decomp`; phase execution began at `907e86bc04e3abccb902c742813eb2e5406b2cd9` (refresh before each task).
 
 Read [EXECUTOR_PROTOCOL.md](../EXECUTOR_PROTOCOL.md) before starting. Follow individual dependency IDs, not simply numeric order. Tests listed are to be executed, not claimed as already passing. Never increase matching counts from research-only evidence.
 
@@ -19,7 +19,7 @@ Callbacks may mutate the current global resource ID. Tests must distinguish it f
 
 ### G64-021 — Map resource call graph
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** DOC_ONLY. **Dependencies:** G64-002.
 **Focus files:** `decomp/script_vm.c`; `decomp/script_vm.h`; `decomp/VM_CHECKPOINT.md`.
 
 **Architectural intent:** Trace script_vm.c unresolved 8003D468, 8003D68C, 8003F038 and matched 8003DDC4, plus resource table callees and callback side effects.
@@ -37,6 +37,8 @@ Callbacks may mutate the current global resource ID. Tests must distinguish it f
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
 **Explicit acceptance:** A call graph labels verified vs inferred signatures, global reads, side effects, and private ROM evidence links.
+
+**Outcome:** Accepted as `DOC_ONLY`; see [VM_RESOURCE_CALLGRAPH.md](../../VM_RESOURCE_CALLGRAPH.md) and `plans/execution/2026-11-11-g64-021-resource-callgraph.json`. The ROM-derived listing records five exact function extents and hashes, all checked against the private decompressed image. The unknown `13B14` callback effects remain explicitly unclaimed.
 
 **Required negative control:** Callbacks may mutate the current global resource ID. Tests must distinguish it from the entry ID, reject signedness/halfword mistakes, and keep existing matching siblings byte-identical.
 

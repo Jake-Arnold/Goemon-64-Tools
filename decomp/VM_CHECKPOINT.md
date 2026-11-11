@@ -13,6 +13,20 @@ Current source hashes, guest addresses and byte-range comparisons are in
 [combined.json](results/combined.json). The previous complete-save checkpoint is
 retained as [save_resources_complete.json](results/save_resources_complete.json).
 
+## 2026-11-11 VM resource call-graph preflight (G64-021)
+
+The ROM-derived call/argument map for VM initialization (`func_8003D468_3E068`),
+main-step (`func_8003D68C_3E28C`), resource resolver (`func_8003DDC4_3E9C4`),
+resource halfword lookup (`func_8003F038_3FC38`) and stream decoder
+(`func_8003DF98_3EB98`) is recorded in [VM_RESOURCE_CALLGRAPH.md](VM_RESOURCE_CALLGRAPH.md).
+The five original extents were extracted from the pinned USA ROM and checked
+word-for-word against its decompressed image. This is **DOC_ONLY**: the direct
+callee `func_80013B14_14714` remains assembly, so its indirect side effects are
+unknown. The recovery mutation tests are conservative negative controls, not
+evidence that the retail callback changes the current resource ID. No function
+claim or production assembly ownership changed. Next: G64-022 narrow resource
+types.
+
 ## Numbered event startup follow-up (2026-11-03)
 
 `func_8003D310_3DF10` is now reconstructed and full-ROM verified (120 bytes).

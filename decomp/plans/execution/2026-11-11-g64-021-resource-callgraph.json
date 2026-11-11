@@ -1,0 +1,85 @@
+{
+  "format": "goemon-task-execution-v1",
+  "task_id": "G64-021",
+  "plan": "decomp/plans/TASKS_100.json",
+  "target_branch": "chatgptweb/decomp",
+  "workspace_branch": "codex/decomp-100-task-plan",
+  "starting_sha": "907e86bc04e3abccb902c742813eb2e5406b2cd9",
+  "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "private_reference": {
+    "path": "practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "bytes": 33554432,
+    "published": false
+  },
+  "source_hashes_sha256": {
+    "decomp/script_vm.c": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "decomp/script_vm.h": "ae05c23c2977ac809a14273ef570499555484dcdf527d5df1a9174ae826e3e99",
+    "decomp/VM_CHECKPOINT.md": "4c23b4c0d6b4e70c6ac57b216503f0b2d0454f54f9ab09790baabe0c695584c9"
+  },
+  "extraction": {
+    "tool": "Splat 0.36.3 / spimdisasm 1.39.0",
+    "command": "uv run splat split config/usa/splat.yaml --modes code --disassemble-all",
+    "output": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+    "comparison": "All Splat word comments in each target extent matched the corresponding big-endian bytes from the private ROM at VMA - 0x7FFFF400."
+  },
+  "functions": [
+    {
+      "name": "func_8003D468_3E068",
+      "rom_offset": "0x3E068",
+      "vma": "0x8003D468",
+      "bytes": 548,
+      "original_sha256": "ece95b38f4dbaf5268d308e09aea54a02d32d1615664137de03ecd46a0c262d7",
+      "observed_abi": "Two word inputs; returns 0 if D_80077860_78460 is null, otherwise 1 after setup. Callers ignore the result; current header says void.",
+      "direct_edges": ["func_800141C4_14DC4", "func_80013B14_14714", "func_8003CFA0_3DBA0", "func_80001E50_2A50", "func_8003DDC4_3E9C4", "func_8003DE48_3EA48", "func_80024088_24CDC"]
+    },
+    {
+      "name": "func_8003D68C_3E28C",
+      "rom_offset": "0x3E28C",
+      "vma": "0x8003D68C",
+      "bytes": 812,
+      "original_sha256": "e49ad551d97f2f8cac887ee126e99dfdb29924901a4ff69f0792898207bf3da5",
+      "observed_abi": "No explicit input arguments; small status values 0/1/2 at observed exits. Includes an indirect jalr callback.",
+      "direct_edges": ["func_8003D17C_3DD7C", "func_8003DBEC_3E7EC", "func_8003E81C_3F41C", "func_8003E3EC_3EFEC", "func_8003E4C0_3F0C0", "func_8003E5EC_3F1EC", "func_8003E620_3F220", "func_8003E654_3F254", "func_8003DB0C_3E70C", "func_8003DE48_3EA48", "func_8003D9B8_3E5B8", "func_8003D428_3E028", "func_8003E6C0_3F2C0", "func_80024038_24C38", "func_80024088_24CDC", "func_800240DC_24CDC"]
+    },
+    {
+      "name": "func_8003DDC4_3E9C4",
+      "rom_offset": "0x3E9C4",
+      "vma": "0x8003DDC4",
+      "bytes": 132,
+      "original_sha256": "f7dab493df8553cae7eb55ce5bbaec5a2cd576e0454dc557dbbadad74a7a101a",
+      "observed_abi": "Address and entry resource ID as two word inputs; resolved address returned in v0.",
+      "direct_edges": ["func_800141C4_14DC4", "func_80013B14_14714", "func_8003CFA0_3DBA0", "func_80001E50_2A50"]
+    },
+    {
+      "name": "func_8003DF98_3EB98",
+      "rom_offset": "0x3EB98",
+      "vma": "0x8003DF98",
+      "bytes": 528,
+      "original_sha256": "76285ca92a7f611916d867d9938f93fcb3df32ebfa2962120083f2471a501631",
+      "observed_abi": "Opaque first word and signed-halfword stream cursor; v0 is consumed as the next cursor by DE80 and EB34 callers.",
+      "direct_edges": ["func_8000C3EC_CFEC", "func_8003E1A8_3EDA8", "func_8000D2C0_DEC0", "func_8003E548_3F148", "func_8003E5B8_3F1B8", "func_8000C53C_D13C", "func_8000C454_D054", "func_8000C488_D088", "func_8000C430_D030", "func_8000C570_D170", "func_8000C568_D168", "func_8000C5A4_D1A4", "func_8000C5E4_D1E4", "func_8000C60C_D20C", "func_8000C640_D240"]
+    },
+    {
+      "name": "func_8003F038_3FC38",
+      "rom_offset": "0x3FC38",
+      "vma": "0x8003F038",
+      "bytes": 196,
+      "original_sha256": "7a258b9eae36120d3971f1997070c2a988fb9636cbd4c96f1f52ea888e7b9719",
+      "observed_abi": "Signed word input; caller uses 32-bit result as a zero/nonzero value and display-list word. Both callers pass a1=0; body does not read it after its home-slot store.",
+      "direct_edges": ["func_800141C4_14DC4", "func_80013B14_14714"]
+    }
+  ],
+  "validation": {
+    "loader_mutation_host": "PASS: decomp/test_vm_loader_resource_mutation.c, GCC ASan/UBSan",
+    "resource_lookup_host": "PASS: volatile F038 candidate through decomp/test_vm_resource_halfword_probe.c, GCC ASan/UBSan, 3000/3000 cases",
+    "focused_python": "PASS: PYTHONPATH=decomp python3 -m unittest test_vm_loader_original_parser test_vm_resource_halfword_volatile_probe -q (7 tests)",
+    "original_address_guards": "PASS: D468/loader 26 guards; F038 49 rows and 16 control-flow guards against generated Splat extent",
+    "full_rom": "NOT_RUN; this task changes documentation and task status only",
+    "inventory": "NOT_RUN",
+    "in_game": false
+  },
+  "status": "DOC_ONLY",
+  "promotions": 0,
+  "next": "Execute G64-022 narrow VM resource types; retain unknown callback side effects and separate entry ID from current global ID."
+}

@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-021 VM resource call graph (DOC_ONLY)
+
+- Fetched `chatgptweb/decomp` and started this phase at pushed commit `907e86bc04e3abccb902c742813eb2e5406b2cd9`. Added [decomp/VM_RESOURCE_CALLGRAPH.md](decomp/VM_RESOURCE_CALLGRAPH.md) and linked it from the VM checkpoint and continuation docs. It records observed callers, argument/result behavior, globals, lookup/recovery order, and explicit unknowns before any shared VM type changes.
+- Ran pinned Splat 0.36.3 / spimdisasm 1.39.0 against the private decompressed ROM using `uv run splat split config/usa/splat.yaml --modes code --disassemble-all`. Verified every word in the five target extents directly against the corresponding ROM slice: D468 548 bytes, D68C 812, DDC4 132, DF98 528, and F038 196. Original SHA-256 values and private-input provenance are in the graph and `decomp/plans/execution/2026-11-11-g64-021-resource-callgraph.json`.
+- Key interface finding: the D468 ROM returns 0/1, while `script_vm.h` currently declares `void`; its callers ignore the result. DDC4 retains the entry resource ID for the final segment lookup while reloading the current global ID on its retry path. The `13B14` recovery routine remains assembly and its indirect effects are unknown; mutation tests are conservative controls, not proof of a retail global write.
+- Validation: loader mutation C harness passed under ASan/UBSan; volatile F038 lookup harness passed **3,000/3,000** synthetic cases; focused Python parser tests passed **7**; D468 original-address guards passed **26**, and the extracted F038 original extent passed **49 address rows / 16 control-flow guards**. No native C candidate was built, no full-ROM verifier/inventory gate was run, no production source or claim changed, and no in-game verification occurred.
+- Next: G64-022, type only confirmed VM resource widths and offsets; preserve the unresolved callback behavior as unknown.
+
 ## 2026-11-11 - 100-task phase 02: bounded short-function retries and hard stops
 
 - Re-fetched `chatgptweb/decomp` before the phase and continued from pushed commit `1c69c6310a3a1784149551e647b90cbb33ccf68f` in the same isolated worktree. The local ignored inputs still match the USA retail/decompressed ROMs and pinned upstream/toolchain fingerprints recorded below.
