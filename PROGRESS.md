@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-11 - REA preflight module invocation test correction (NO PROMOTIONS)
+
+- Corrected `decomp/test_rea_pilot_preflight.py` import resolution for repository-root `python3 -m unittest decomp.test_rea_pilot_preflight -v`, preserving direct file execution. Locally reran `python3 -m unittest rea_pilot.test_rea_pilot_preflight -q` from the parent directory: **12/12 synthetic tests passed**, and both scripts compiled with Python `py_compile` (no original Goemon binaries involved). The mirrored local package layout matches the committed `decomp` package import scheme.
+- Previous commit `7cd870ef285a1cf7be0e06007b05c1dc0b6c0610` contains the import fix; this entry records it in the project log. No changes to decomp function claims or full-ROM evidence. Next step remains real ELF header admission R01 in user-owned environment.
+
+
 ## 2026-11-11 - REA feasibility architecture and conservative ELF admission preflight (NO FUNCTION PROMOTIONS)
 
 - Audited `morluto/rea` at commit `69630c03624c5c79860087db69f5a7bfd05a1b00`, especially `docs/providers/ghidra-mips.md`, `docs/providers/raw-binary.md` and native CLI/admission documentation. Compared it with pinned upstream `mnsg` Makefile: C `MIPSISA := -mips2`; assembler `-EB -mtune=vr4300 -march=vr4300 -mabi=32`. REA documents ELF32 MIPS32r2 and limited legacy MIPS-I/MIPS32/MIPS32r2; **not** ordinary MIPS-II/MIPS-III, and its raw-binary lane excludes MIPS. A Goemon ELF's actual flags were **not inspected** in this turn; no definitive provider compatibility claim.
