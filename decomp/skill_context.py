@@ -63,7 +63,9 @@ def task_brief(data, task_id, detail=False):
                "intent": t.get("architecture_design"),
                "acceptance": t.get("explicit_acceptance"),
                "phase_file": f"decomp/plans/phases/PHASE_{t['phase']:02}.md",
-               "stored_proof": data["proof"]}
+               "stored_proof": data["proof"],
+               "strategy": "decomp/plans/EXECUTION_STRATEGY_V2.md",
+               "architect_override_v2": t.get("architect_override_v2")}
     if detail:
         payload.update(steps=t.get("implementation_sequence", []),
                        tests=t.get("focused_testing"),
@@ -112,6 +114,11 @@ def main(argv=None):
         print("Files: " + ", ".join(result["focus_files"]))
         print("Do: " + str(result["intent"]))
         print("Accept: " + str(result["acceptance"]))
+        if result.get("architect_override_v2"):
+            note = result["architect_override_v2"]
+            print("Architect v2 wave:", note["wave"])
+            print("Directive:", note["directive"])
+            print("Stop:", note["stop_rule"])
         p = result["stored_proof"]
         print(f"STORED proof: {p['matched']}/{p['claimed']} C, {p['bytes']} bytes; C/ASM={p['c_total']}/{p['asm_total']}")
         if args.detail:

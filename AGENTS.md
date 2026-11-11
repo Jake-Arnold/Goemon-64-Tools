@@ -19,3 +19,7 @@ historical evidence and must not be treated as current instructions/counts.
 ## Codex project skills
 
 Use narrow repo-local skills in [.agents/skills/](.agents/skills/README.md). Start a G64 task with `python3 -m decomp.skill_context --task G64-NNN`, or check `--status`; request `--detail` only when needed. The helper reads checked-in results but never builds a ROM.
+
+## Decomp architect v2 (current)
+
+Use [decomp/plans/EXECUTION_STRATEGY_V2.md](decomp/plans/EXECUTION_STRATEGY_V2.md) and each pending G64 task's `architect_override_v2` for priority, finite codegen budgets and task-specific stop rules. Do not restart the plan, repeat completed promotions, or relax any full-ROM verification. Task briefs include the new override.

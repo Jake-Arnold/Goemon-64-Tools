@@ -2,7 +2,7 @@
 
 **Document type:** executor-grade implementation specification; no implementation claimed. **Target branch:** `chatgptweb/decomp`. Baseline reviewed at `a68881da4b10e2553e7a89b7129d09d64b427435` on 2026-11-11. Refresh live HEAD/manifest before executing any work.
 
-**Read in this order:** root `AGENTS.md`; `decomp/CONTINUE.md`; [EXECUTOR_PROTOCOL.md](EXECUTOR_PROTOCOL.md); [ARCHITECTURE_100.md](ARCHITECTURE_100.md); the chosen phase; then the targeted source files. A weaker model must not infer missing information: use explicit BLOCKED_INPUT or RESEARCH_ONLY outcomes.
+**Read in this order:** root `AGENTS.md`; [EXECUTION_STRATEGY_V2.md](EXECUTION_STRATEGY_V2.md); [EXECUTOR_PROTOCOL.md](EXECUTOR_PROTOCOL.md); live proof/CONTINUE, then a compact task brief and **only its phase/focus files**. The full architecture is reference, not an every-task preamble.
 
 ## Phase packets
 - [01 — Baseline and near-ready promotions](phases/PHASE_01.md) (G64-001–G64-010)
@@ -34,7 +34,11 @@
 
 20 targeted skills are indexed at [`.agents/skills/`](../../.agents/skills/README.md). `python3 -m decomp.skill_context --status` and `--task G64-NNN` load compact current task summaries, not the full ~340 KB plan. Validate with `python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -v`. Read only the needed skill; the G2 proof gate is unchanged.
 
-## Default execution order
+## Architect v2 — revised execution priority
+
+The [current strategy](EXECUTION_STRATEGY_V2.md) supersedes strictly numeric execution. Each pending machine-readable task has an `architect_override_v2` returned by `decomp.skill_context --task`. **Next G64-035**, followed by bounded VM closeout, then **G64-091, G64-090, G64-071–080** for reusable evidence and independent promotion prospects. Preserve task IDs, completed statuses and exact G2. The original numeric notes below are historical, not a fresh result.
+
+## Historical numeric progression
 1. G64-001–014 have recorded outcomes: the resource wrappers, menu trio and object dispatcher passed G2; G64-003 was already complete.
 2. G64-015–018 were retried and marked `FAILED_NATIVE`; no production ASM ownership changed. G64-019 is `RESEARCH_ONLY`, and G64-020 documents the hard stops.
 3. G64-021 is `DOC_ONLY`; G64-022–030 are `RESEARCH_ONLY`: G64-023 reproduced the F038 baseline, G64-024's three variants did not improve it, G64-025's callback mutation model passed, G64-026 pinned the loader frame while its candidate remained nonmatching, G64-027 traced D68C with a ROM-bound guard, G64-028 traced DF98 and its callers with a ROM-bound dispatch guard, G64-029 added a passing DDC4 retry/entry-ID guard with a cached-global negative control, and G64-030 reconciled the live VM proof and inventory and added a typed interface matrix. G64-031 added a ROM-bound DBEC text-loop CFG and addressing guard; G64-032 compared the 0x48/0x50 frame and five source-lifetime variants without a match; G64-033 expanded its MIPS/host differential harness, passed 20,000 seeded cases and killed four targeted mutants; G64-034 recovered DE80's signed token/control-flow graph, added ROM and callback-mutation guards, and found that its older 228-byte IDO probe result does not reproduce with the pinned compiler. No new C candidate passed G2; keep unresolved helpers as ASM. Continue with G64-035 in dependency order, following original evidence rather than assuming every target will promote.

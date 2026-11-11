@@ -17,6 +17,18 @@ class TaskBriefTests(unittest.TestCase):
         self.assertNotIn("steps", result)
         self.assertIn("focus_files", result)
 
+    def test_architect_v2_is_visible_without_full_task_packet(self):
+        b = sc.task_brief(self.data, "G64-035")
+        self.assertEqual(b["architect_override_v2"]["wave"], "A")
+        self.assertIn("220B", b["architect_override_v2"]["directive"])
+        self.assertEqual(sc.task_brief(self.data, "G64-071")["architect_override_v2"]["wave"], "B")
+
+    def test_past_status_and_dependency_ids_preserved(self):
+        tasks = sc.load()["tasks"]
+        self.assertEqual(tasks[33]["status"], "RESEARCH_ONLY")
+        self.assertEqual(tasks[34]["status"], "PLANNED")
+        self.assertNotIn("architect_override_v2", tasks[33])
+
     def test_detailed_packet_is_opt_in(self):
         self.assertTrue(sc.task_brief(self.data, "G64-031", True)["steps"])
 

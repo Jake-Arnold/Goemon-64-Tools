@@ -1412,7 +1412,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "A",
+        "directive": "Investigate original command walker 232B vs freshly rebuilt IDO 220B (older 228B report is stale). The FIRST mismatch is saved-register scheduling at 0x8003DE84; resolve that before spending variants on later bltzl delay slots.",
+        "stop_rule": "At most 5 coherent native source variants after baseline; stop if first mismatch and relocation shape do not improve."
+      }
     },
     {
       "id": "G64-036",
@@ -1450,7 +1455,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "A",
+        "directive": "Reuse G64-034's eleven fixed walker host cases, 1,100 sanitizer cases and stale-token mutant; add only a new original-observed behavior distinction.",
+        "stop_rule": "If no new behavior obligation exists, close with existing evidence, not duplicated fuzz."
+      }
     },
     {
       "id": "G64-037",
@@ -1487,7 +1497,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "A",
+        "directive": "Pin 0x8003ED60 original function extent, callers, global widths and code path from original ROM before naming semantics.",
+        "stop_rule": "One bounded trace plus justified native probe; keep ASM on unresolved semantics."
+      }
     },
     {
       "id": "G64-038",
@@ -1524,7 +1539,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "A",
+        "directive": "Resolve F6E8 exact 48-byte original function extent; reject candidate's historical 56-byte and matching-prefix artifacts.",
+        "stop_rule": "Do not accept 40B prefix, size-only equality, shifted symbol or adjusted comparison masks."
+      }
     },
     {
       "id": "G64-039",
@@ -1564,7 +1584,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "A",
+        "directive": "Build a concise VM behavior matrix referring to existing DBEC/DE80 regression evidence; no new giant random runs unless they detect a new behavioral risk.",
+        "stop_rule": "Unobserved callback effects remain unknown; host model is not native C match."
+      }
     },
     {
       "id": "G64-040",
@@ -1608,7 +1633,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "A",
+        "directive": "Close VM phase with source-unit-eligible candidate list. Run full 32 MiB G2 only if one candidate is UNIT_EXACT or verifier inputs actually changed.",
+        "stop_rule": "With no eligible C, leave 148 counts unchanged; publish truthful research checkpoint and move to wave B."
+      }
     },
     {
       "id": "G64-041",
@@ -1654,6 +1684,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      },
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "E234 display emitter: derive original two-word command write order and native symbol boundary before expanding host tests.",
+        "stop_rule": "If first native layout cannot improve in a bounded trial, retain ASM."
       }
     },
     {
@@ -1700,6 +1735,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "Execute test first emitter memory model with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
       }
     },
     {
@@ -1746,6 +1786,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      },
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "EBAC second emitter: reuse only proven E234 buffer fields, verify its distinct original command order.",
+        "stop_rule": "Do not assume the two emitters share the same register or callback schedule."
       }
     },
     {
@@ -1784,7 +1829,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "Classify E234/EBAC first native mismatch, section and relocation before further C variants.",
+        "stop_rule": "Do not treat host-equivalent buffer contents as matching MIPS."
+      }
     },
     {
       "id": "G64-045",
@@ -1821,7 +1871,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "Execute recover vm setup callback abi with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-046",
@@ -1867,6 +1922,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "Execute recover callback setup path with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
       }
     },
     {
@@ -1904,7 +1964,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "Execute resolve number formatter with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-048",
@@ -1948,7 +2013,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "Check whole VM graphics unit boundaries and matching siblings; prefer one independently exact candidate.",
+        "stop_rule": "No new full-ROM build solely for an unchanged research source."
+      }
     },
     {
       "id": "G64-049",
@@ -1990,7 +2060,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "Promote each unit-exact VM graphics candidate independently through fresh full-ROM and inventory gates.",
+        "stop_rule": "If any sibling shifts, restore its ASM and do not publish count."
+      }
     },
     {
       "id": "G64-050",
@@ -2029,7 +2104,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "D",
+        "directive": "Freeze failed VM signatures once, list re-usable ABI lessons, exact remaining ASM and next unblock condition.",
+        "stop_rule": "No retroactive promotion for extra tests or detailed CFGs."
+      }
     },
     {
       "id": "G64-051",
@@ -2122,6 +2202,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "E",
+        "directive": "Use already completed G64-051 overlay schema; validate private file_43 original extent and hash as tool input.",
+        "stop_rule": "Do not publish ROM/ELF/assembly bytes."
       }
     },
     {
@@ -2170,6 +2255,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "E",
+        "directive": "Prove file_43 linked ELF and overlay ROM/VMA mapping separately from main segment; add provenance negative control.",
+        "stop_rule": "A copied main-segment offset formula is not valid overlay mapping."
       }
     },
     {
@@ -2208,7 +2298,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "E",
+        "directive": "Add fail-closed overlay tests for shifted rodata, wrong ID/section, symbol extent and references.",
+        "stop_rule": "Do not inflate positive-only test count without new failure detection."
+      }
     },
     {
       "id": "G64-055",
@@ -2247,7 +2342,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "E",
+        "directive": "Connect linked-overlay provenance to production verifier before staging any overlay C.",
+        "stop_rule": "The verifier must still require byte-identical full ROM and inventory."
+      }
     },
     {
       "id": "G64-056",
@@ -2284,7 +2384,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "E",
+        "directive": "Key initializer 96B candidate had isolated research; attempt real overlay unit exactness only after G64-055.",
+        "stop_rule": "Standalone original-address match never qualifies as production G2."
+      }
     },
     {
       "id": "G64-057",
@@ -2321,7 +2426,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "E",
+        "directive": "Execute prove key initializer semantics with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-058",
@@ -2367,6 +2477,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      },
+      "architect_override_v2": {
+        "wave": "E",
+        "directive": "Ghost Toys candidate: focus on original/candidate sp+0x1C vs sp+0x18 pair and caller ABI.",
+        "stop_rule": "Stop after small mismatch-driven native variants if stack spill remains wrong."
       }
     },
     {
@@ -2404,7 +2519,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "E",
+        "directive": "Execute prove ghost event logic with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-060",
@@ -2446,7 +2566,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "E",
+        "directive": "Attempt exact overlay C promotions by independent source unit, with full G2 proof.",
+        "stop_rule": "Metadata and host tests never alter matching-C totals."
+      }
     },
     {
       "id": "G64-061",
@@ -2492,6 +2617,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      },
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute draw native transition state graph with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
       }
     },
     {
@@ -2539,6 +2669,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute trace file/resource loading boundary with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
       }
     },
     {
@@ -2576,7 +2711,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute analyze middle transition dispatcher with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-064",
@@ -2615,7 +2755,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute analyze transition loop 8000394c with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-065",
@@ -2652,7 +2797,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute revisit engine state 80039f84 with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-066",
@@ -2689,7 +2839,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute revisit engine state 8003a060 with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-067",
@@ -2726,7 +2881,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute revisit engine state 8003a138 with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-068",
@@ -2766,7 +2926,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute review default entrance 80020f10 with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-069",
@@ -2810,7 +2975,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute architect transition safety assertions with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-070",
@@ -2854,7 +3024,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "F",
+        "directive": "Execute gate transition slice with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-071",
@@ -2901,6 +3076,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      },
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "File-table 80001DF4: examine original index width/bit31 against known matching 80001D68 sibling; G64-017/018 failed recipes are not dependencies for a match.",
+        "stop_rule": "A failure in old shorter file reader does not block new reader investigation."
       }
     },
     {
@@ -2938,7 +3118,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "File-table 80001E50: distinct table arithmetic, return ABI and complete sibling unit.",
+        "stop_rule": "No scalar clone without original instruction evidence."
+      }
     },
     {
       "id": "G64-073",
@@ -2975,7 +3160,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "File-table 80001EB0: original table reference and symbol extent; preserve full-unit source order.",
+        "stop_rule": "Stop at first persistent relocation or ABI blocker."
+      }
     },
     {
       "id": "G64-074",
@@ -3022,6 +3212,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      },
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "Object list 80036308: use already-matching object_flags.c neighbors to establish list mutation contract.",
+        "stop_rule": "Do not assume list termination/aliasing from C name alone."
       }
     },
     {
@@ -3060,7 +3255,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "Object list 80036388: test empty/singleton and callback-mutated pointers if original MIPS shows them.",
+        "stop_rule": "Host semantic pass is not native G2."
+      }
     },
     {
       "id": "G64-076",
@@ -3098,7 +3298,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "Object list 800363F4: recover original load/store widths and list-link order.",
+        "stop_rule": "If first mismatch is unchanged after bounded codegen, stop."
+      }
     },
     {
       "id": "G64-077",
@@ -3136,7 +3341,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "Object list 80036448: compare whole neighboring unit, not just isolated function.",
+        "stop_rule": "No promotion if any accepted sibling changes MIPS."
+      }
     },
     {
       "id": "G64-078",
@@ -3173,7 +3383,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "Scheduler 8000702C: inspect original list linkage, side effects and exact neighboring C unit.",
+        "stop_rule": "Do not rewrite scheduling behavior for prettier C."
+      }
     },
     {
       "id": "G64-079",
@@ -3210,7 +3425,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "Scheduler 80007160: verify actual original argument widths and saved registers; reuse 078 only if proven.",
+        "stop_rule": "Native original-unit then full-ROM required."
+      }
     },
     {
       "id": "G64-080",
@@ -3257,7 +3477,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "Promote only independently unit-exact file/object/scheduler candidates; report per-unit verified func/byte delta.",
+        "stop_rule": "One failed subfunction must not block unrelated exact unit."
+      }
     },
     {
       "id": "G64-081",
@@ -3294,7 +3519,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "C",
+        "directive": "Math 8000E2D4: use neighboring matching C as FPU ABI starting evidence; preserve precision and original helper calls.",
+        "stop_rule": "No tolerance-based codegen or source reassociation accepted."
+      }
     },
     {
       "id": "G64-082",
@@ -3331,7 +3561,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "C",
+        "directive": "Execute analyze math helper 8000e39c with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-083",
@@ -3368,7 +3603,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "C",
+        "directive": "Execute analyze math helper 8000e4e4 with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-084",
@@ -3405,7 +3645,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "C",
+        "directive": "Angle 8000EA74: compare original 10-bit wrapping against already matched angle idioms.",
+        "stop_rule": "Stop if FPU/register layout does not converge."
+      }
     },
     {
       "id": "G64-085",
@@ -3442,7 +3687,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "C",
+        "directive": "Execute analyze angle variant 8000eb08 with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-086",
@@ -3479,7 +3729,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "C",
+        "directive": "Execute analyze angle variant 8000eb50 with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-087",
@@ -3518,7 +3773,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "G",
+        "directive": "Execute analyze dispatcher 8001f8b0 with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-088",
@@ -3555,7 +3815,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "G",
+        "directive": "Execute analyze 8001fa80 adjacent routine with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
+      }
     },
     {
       "id": "G64-089",
@@ -3597,7 +3862,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "C",
+        "directive": "Select bounded float-state candidates with known ABI, not speculative float rewrites.",
+        "stop_rule": "Zero float promotions is acceptable with strong mismatch evidence."
+      }
     },
     {
       "id": "G64-090",
@@ -3634,7 +3904,12 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "Early audit return_zero.c's thirteen ASM placeholders by original instruction effects and symbol size; only then choose promising short functions.",
+        "stop_rule": "The filename is not evidence that each function returns zero; no forced promotion."
+      }
     },
     {
       "id": "G64-091",
@@ -3683,6 +3958,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "B",
+        "directive": "Run early after phase 04: add immutable attempt signature (target original hash, unit/compiler/source/context hash, first mismatch, proof tier) to prevent rerunning failed probes.",
+        "stop_rule": "Do not build a second incompatible ledger or claim research as G2."
       }
     },
     {
@@ -3731,6 +4011,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "H",
+        "directive": "Rank remaining targets by original bounds, known callers, accepted C neighbors, first mismatch and per-unit effort, not bytes alone.",
+        "stop_rule": "Reject promoted names and unchanged failed recipe hashes by default."
       }
     },
     {
@@ -3780,6 +4065,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "H",
+        "directive": "Execute reuse typed c context safely with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
       }
     },
     {
@@ -3830,6 +4120,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "H",
+        "directive": "Use real F038 relocation, DBEC frame, walker saved-register differences and fixed object dispatcher as test fixtures.",
+        "stop_rule": "Reject shifted VMA, altered masks and false improved-match metrics."
       }
     },
     {
@@ -3882,6 +4177,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "H",
+        "directive": "Separate CI-safe negative/host verification from private full-ROM gate and sensitive artifacts.",
+        "stop_rule": "No ROM, original machine bytes or private compiler in CI."
       }
     },
     {
@@ -3928,6 +4228,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      },
+      "architect_override_v2": {
+        "wave": "H",
+        "directive": "Execute inventory upstream camera research with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
       }
     },
     {
@@ -3974,6 +4279,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      },
+      "architect_override_v2": {
+        "wave": "H",
+        "directive": "Execute resolve camera initializer c mismatch with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
       }
     },
     {
@@ -4022,6 +4332,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "H",
+        "directive": "Execute design camera subset promotion process with one original-address, falsifiable hypothesis and existing confirmed neighbor types; prefer independent exact-unit promotions over broad rewrites.",
+        "stop_rule": "Stop after v2 hypothesis budget or absence of new evidence; retain ASM and record first mismatch, never auto-promote."
       }
     },
     {
@@ -4078,6 +4393,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "H",
+        "directive": "At each wave boundary compare stored proof source hashes, manifest/inventory; run fresh 32 MiB verifier only for changed production inputs or documented recheck.",
+        "stop_rule": "Do not mark final G64-099 PASSED until its own prerequisites are met."
       }
     },
     {
@@ -4133,6 +4453,11 @@
         "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
         "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
         "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      },
+      "architect_override_v2": {
+        "wave": "H",
+        "directive": "Publish ranked post-100 verified-yield reconstruction queue and blocked-native signatures for thousands of remaining ASM entries.",
+        "stop_rule": "Future exact-G2 throughput and reusable tooling matter more than 100 completed IDs."
       }
     }
   ],
@@ -4142,5 +4467,135 @@
     "state": "STATIC_HEADER_PREFLIGHT_ONLY",
     "risk": "Goemon -mips2 vs REA standard MIPS ELF restrictions",
     "core_task_count_unchanged": 100
+  },
+  "architect_revision_v2": {
+    "id": "goemon-architect-v2-20261111",
+    "source": "decomp/plans/EXECUTION_STRATEGY_V2.md",
+    "note": "Original 100 IDs, statuses, dependencies and strict G2 proof unchanged. Per-task override supersedes stale instructions. Execute in waves when prerequisites allow.",
+    "waves": [
+      {
+        "id": "A",
+        "name": "Close VM parser without unbounded native experiments",
+        "tasks": [
+          "G64-035",
+          "G64-036",
+          "G64-037",
+          "G64-038",
+          "G64-039",
+          "G64-040"
+        ]
+      },
+      {
+        "id": "B",
+        "name": "Bring forward attempt deduplication, return_zero inventory, file/object/scheduler",
+        "tasks": [
+          "G64-091",
+          "G64-090",
+          "G64-071",
+          "G64-072",
+          "G64-073",
+          "G64-074",
+          "G64-075",
+          "G64-076",
+          "G64-077",
+          "G64-078",
+          "G64-079",
+          "G64-080"
+        ]
+      },
+      {
+        "id": "C",
+        "name": "Math and angle functions whose dependencies are already satisfied",
+        "tasks": [
+          "G64-081",
+          "G64-082",
+          "G64-083",
+          "G64-084",
+          "G64-085",
+          "G64-086",
+          "G64-089"
+        ]
+      },
+      {
+        "id": "D",
+        "name": "VM graphics and integration",
+        "tasks": [
+          "G64-041",
+          "G64-042",
+          "G64-043",
+          "G64-044",
+          "G64-045",
+          "G64-046",
+          "G64-047",
+          "G64-048",
+          "G64-049",
+          "G64-050"
+        ]
+      },
+      {
+        "id": "E",
+        "name": "Overlay metadata, linked-ELF proof, bounded key/Ghost trials",
+        "tasks": [
+          "G64-052",
+          "G64-053",
+          "G64-054",
+          "G64-055",
+          "G64-056",
+          "G64-057",
+          "G64-058",
+          "G64-059",
+          "G64-060"
+        ]
+      },
+      {
+        "id": "F",
+        "name": "Native scene state, not new gameplay warps",
+        "tasks": [
+          "G64-061",
+          "G64-062",
+          "G64-063",
+          "G64-064",
+          "G64-065",
+          "G64-066",
+          "G64-067",
+          "G64-068",
+          "G64-069",
+          "G64-070"
+        ]
+      },
+      {
+        "id": "G",
+        "name": "Transition-dependent rotation analysis",
+        "tasks": [
+          "G64-087",
+          "G64-088"
+        ]
+      },
+      {
+        "id": "H",
+        "name": "Final ranking, proof automation, camera, rebaseline, handoff",
+        "tasks": [
+          "G64-092",
+          "G64-093",
+          "G64-094",
+          "G64-095",
+          "G64-096",
+          "G64-097",
+          "G64-098",
+          "G64-099",
+          "G64-100"
+        ]
+      }
+    ],
+    "historical_baseline": "Initial 142 C / 10652B; reviewed stored proof 148 C / 11020B. Never copy old counts to new claims.",
+    "native_variant_budget": {
+      "original_0_to_128_bytes": 3,
+      "original_129_to_512_bytes": 5,
+      "original_over_512_bytes": 2,
+      "extension": "Only +2 if actual first mismatch advances; record why"
+    },
+    "full_rom_policy": "Only for new source-unit-exact candidate, changed production/verifier input, or explicit provenance audit. Research-only source unchanged => NOT_RUN.",
+    "dependencies": "A FAILED_NATIVE/RESEARCH_ONLY task's findings may unlock independent research, but cannot satisfy exact-C or G2 evidence.",
+    "success_metrics": "Verified new C functions and bytes; reusable tool/test/ABI gains; blocker reuse; truthful zero-delta permitted."
   }
 }

@@ -6,7 +6,11 @@
 
 **Architectural objective:** Increase faithfully reconstructed original C while retaining bit-for-bit identity of the 32 MiB decompressed USA ROM. Preserve legacy toolkit features and main-branch history; work only on matching C and safe research within the development branch.
 
-## Snapshot and constraints
+## Updated architect review (2026-11-11)
+
+The early 142/10,652 figures and six unpromoted candidate descriptions below are the **historical baseline only**. The stored full-ROM proof now records **148 / 11,020**, and G64-034 has been completed RESEARCH_ONLY. For current execution, bounded native budgets, priority waves and next tasks see [EXECUTION_STRATEGY_V2.md](EXECUTION_STRATEGY_V2.md). Preserve the original 100 IDs and proof gates.
+
+## Historical snapshot and constraints
 
 - Verified: **142** newly matching functions, **10,652** function bytes; **155** combined C entries (includes 13 upstream), **7,221** ASM entries of 7,376 identified. `decomp/results/combined.json` reports `formal_verifier_run_completed=true` and 33,554,432-byte whole-ROM identity. Existing proof is not evidence for any subsequent candidate.
 - Starting research: two resource wrappers (36+36 B) and three menu functions (84+80+84 B) produce exact combined research translation units; object dispatch (48 B) matched alone but has a swapped `lui` / `$ra` spill in the combined unit at ROM `0x35C9C` and `0x35CA0`. All six remain ASM in the live manifest.

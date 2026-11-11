@@ -1,12 +1,12 @@
 # Executor protocol — Goemon 64 matching-C (mandatory for every task)
 
-This document is designed for a comparatively weak, stateless code-execution model. It is an algorithm, not prose encouragement. Perform only the numbered task currently assigned; use the actual branch and files, never reconstructed assumptions from chat history.
+The current execution policy is [EXECUTION_STRATEGY_V2.md](EXECUTION_STRATEGY_V2.md) and each task's `architect_override_v2`. This algorithm preserves original function and whole-ROM proof but runs independently unlocked tasks in evidence-prioritized waves rather than strictly by number.
 
 ## Source authority, truth and branch
 1. Work only on `Jake-Arnold/Goemon-64-Tools` branch `chatgptweb/decomp`. Do not merge, reset or change `main`. Never force-push. Preserve unrelated working trees.
-2. Read root `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, this protocol, the assigned phase, and the task's exact focus files.
+2. At session start read root `AGENTS.md`, live `decomp/CONTINUE.md`, manifest/proof/inventory, this protocol and v2 strategy. Per task use `python3 -m decomp.skill_context --task G64-NNN` and only relevant phase/focus files; load `--detail` on demand. Do not repeatedly read the full 361 KB JSON.
 3. Check live `git fetch origin`, `git status --short`, `git branch --show-current`, `git rev-parse HEAD`, and remote ref before each implementation. Verify fresh proof if current HEAD has moved; do not substitute an older 136-function archive.
-4. The starting recorded baseline is **142 newly matching functions, 10,652 original MIPS bytes, 155 total C, 7,221 ASM**, and a recorded `formal_verifier_run_completed=true` ROM proof. Recompute if the branch moves.
+4. Historical initial plan baseline: **142 / 10,652 bytes**. Current reviewed stored G2 (2026-11-11): **148 / 11,020 bytes, 161 combined C, 7,215 ASM / 7,376 entries**, complete 33,554,432-byte identity. Always re-read live proof and source fingerprints; no historical count is an acceptance criterion.
 5. Confidential input stays local: retail USA ROM SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`; decompressed exact 33,554,432-byte ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Do not download or commit ROMs, generated ASM, binaries, saves, user diagnostics, passwords, memory dumps or toolchain archives.
 6. Upstream `klorfmorf/mnsg` pin is `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`; tools include the pinned native IDO 5.3, Splat 0.36.3 and MIPS cross-binutils. Do not replace native IDO by host GCC for MIPS proof. Compare original code at its true VMA and verify relocations.
 
@@ -20,14 +20,18 @@ A task may remain `BLOCKED` or `RESEARCH_ONLY`. States are NOT interchangeable:
 - `PUBLISHED`: committed status and verification metadata, `PROGRESS.md` updated, remote SHA checked.
 Never update official count, manifest ownership, `results/combined.json` or inventory from any lesser evidence.
 
+## Revised scheduler
+
+The original IDs are a catalogue, not a mandatory serial order. Use v2 waves and true data dependencies. A prior FAILED_NATIVE/RESEARCH_ONLY investigation can supply evidence for a new task but never a passing native result. Verify source hashes at phase boundaries and record verified C/byte delta, including zero.
+
 ## Always execute in this order
 1. **Identify task and prerequisites.** Look at the task ID, dependencies and all relevant live files. If an earlier task is blocked but not a true prerequisite, continue with a separate independent unit. If a target is already accepted, report `SKIPPED_ALREADY_COMPLETE`.
 2. **Establish original boundary.** From pinned ROM and assembly determine function name, actual ROM offset, actual VMA, original length/hash, and enclosing source translation unit. Preserve original instruction order and branch-delay slots. For an overlay, use its own mapping (not main-segment formula).
 3. **Recover interfaces.** Read actual caller(s), callee(s), global widths/offsets, assembly loads/stores and source sibling declarations. Use an opaque type and offset when uncertain; don't invent ABI or meaning.
-4. **Write one minimal hypothesis.** Prefer fixing field width/signedness/aliasing/branch order over a full rewrite. Keep unknown functions as `GLOBAL_ASM`. Never patch raw instructions or weaken verifiers.
-5. **Execute semantic tests.** Make positive and negative cases, include callback mutation, null and boundary paths when applicable. Use ASan/UBSan as appropriate. Record exact command and tested source digest. `test passed` is not `MIPS matched`.
-6. **Compile native original unit.** Use pinned original flags, compare original instruction bytes and relocations at original address; include all neighboring functions. Exact size alone is insufficient. `decomp/prove_integrated_units.py` is *expected to fail* on the known object dispatcher until that codegen discrepancy is fixed.
-7. **Run complete-ROM gate.** Use fresh workdir + report, all objects/Splat/IDO, previous accepted functions, symbols and inventory. The previous baseline comprised 2,331 objects; verify current counts rather than hard-coding that number as a pass condition.
+4. **Write one minimal falsifiable hypothesis and apply v2 budget:** <=128 original bytes: <=3 native source variants after baseline; 129–512: <=5; >512: <=2. At most two more only for measured first-mismatch improvement. Preserve `GLOBAL_ASM` when the budget fails. Never patch raw instructions or weaken verifiers.
+5. **Execute targeted semantic tests** for new original behavior or regression risk. Include callback mutation, null and boundaries when relevant; ASan/UBSan where appropriate. Do not multiply randomized test counts without a new behavior obligation. Record actual command/digest. `test passed` is not `MIPS matched`.
+6. **Compile native original unit for a changed or newly eligible hypothesis.** Use pinned original flags, compare original instruction bytes and relocations at original address; include all neighbors. Exact size alone is insufficient. G64-014 has already resolved the former object-dispatch problem; do not repeat its historical failure recipe.
+7. **Run complete-ROM gate only for staged UNIT_EXACT C, changed verifier/build inputs, or a justified provenance recheck.** Use fresh workdir/report and all symbols/inventory. If research source is unchanged, record NOT_RUN; do not rebuild identical ROM as filler.
 8. **Decide.** All comparisons exact: candidate can be promoted and evidence updated. Any mismatch, absent private ROM, failed compiler or interrupted verifier: no promotion. Keep current ASM and record first mismatching word/register/relocation along with bounded next hypothesis. Do not alter a previously approved result to claim success.
 9. **Publish only coherent work.** Review `git diff --check`, `git status --short`, staged paths, new proof hashes; update root `PROGRESS.md` with date, reason, commands actually run, measured outcome, limitations, next action. Push only branch, check remote commit SHA. Do not invent a push.
 10. **Leave a handoff.** Update the task ledger with `PASSED_G2`, `RESEARCH_ONLY`, `BLOCKED_INPUT`, `FAILED_NATIVE`, `FAILED_ROM`, `SKIPPED_ALREADY_COMPLETE` or `DOC_ONLY`, never generic "done". State exact next candidate.
@@ -69,7 +73,7 @@ python3 -m decomp.prove_three_wrappers --rom "$GOEMON_DECOMPRESSED" --ido "$GOEM
 python3 -m decomp.prove_three_menu_flags --rom "$GOEMON_DECOMPRESSED" --ido "$GOEMON_IDO"
 python3 -m decomp.prove_integrated_units --rom "$GOEMON_DECOMPRESSED" --ido "$GOEMON_IDO"
 ```
-The last command intentionally exits nonzero with the current object unit; never redefine success to suppress it. Read each script's `--help` to supply actual linker/objcopy/readelf paths if defaults are absent. Follow `CONTINUE.md` if the toolchain requires a curated `--binutils-root`.
+An old isolated object-unit script failure predates G64-014's production fix. Never assume its current outcome. Read each script's `--help` before invocation and follow `CONTINUE.md` for binutils.
 
 ## Strict evidence record (one per attempted task, sanitized JSON)
 ```json
@@ -90,12 +94,12 @@ The last command intentionally exits nonzero with the current object unit; never
 ```
 All placeholders above must be replaced with facts or explicit null/NOT_RUN. Do not fabricate test counts, sha, versions or evidence. Store private original bytes/objdump locally and publish only safe hashes and summary metadata.
 
-## Known exact baseline blockers and tricks
-- Five *whole-research-unit* matching functions: resource wrappers at `0x35AD4` and `0x35B20` (36 each); menu B60/BB4/C04 (84/80/84). They still require G2 full-ROM production proof.
-- Object dispatcher `0x35C94` (48) matched standalone but mismatches eight bytes in the combined 96-byte source unit: original `sw $ra` before `lui`; candidate reversed at ROM `0x35C9C/0x35CA0`. Eleven variants already failed; keep ASM.
+## Historical baseline blockers and tricks (not current ownership)
+- Two resource wrappers, three menu functions and object dispatcher already passed production G2 on 2026-11-11. Do not stage or count them twice.
+- Historical object-dispatch `sw $ra` versus `lui` scheduling mismatch at `0x35C9C/0x35CA0` was solved in G64-014 and verified in the full ROM. No longer a live blocker.
 - Menu disable needs literal `0xFF7F` source mask for native ANDI schedule. Nested menu helper's extra cached local changed registers and was removed in matching research.
-- VM resource half-index 196 bytes is only `25/42` directly comparable non-relocation positions; loader original 548 bytes versus 560 in old candidate. Callback can mutate global resource ID.
-- Text loop original stack frame is `0x48` versus candidate `0x50`; preserve branch-likely slots. Stream walker is 232 original versus 228 research; branch-likely `bltzl` differs.
+- VM resource F038 196B has only `25/42` comparable direct words; D468 loader original 548B versus latest reported 556B IDO candidate. Callback may alter current global ID.
+- Text loop original stack frame `0x48` versus candidate `0x50`; command walker DE80 original **232B versus freshly rebuilt 220B** (older 228B report is superseded), first mismatch at `0x8003DE84` saved-register scheduling. Preserve `bltzl` delay behavior.
 - VM wrapper F6E8 original is **48** bytes, not a 56-byte candidate inventory annotation; an apparently matching 40-byte prefix is insufficient.
 - Overlay `file_43` uses ROM `0x6F34E0..0x6FB200`, VMA `0x08000000` and distinct rodata boundary. Key initializer 96 bytes isolated, Ghost 140-byte probe has `sp+0x18` versus original `sp+0x1C` twice; neither is promoted.
 - Upstream `camera` branch was research-only and had a source-generated `memset` linker mismatch. Do not import wholesale or create synthetic linker alias.

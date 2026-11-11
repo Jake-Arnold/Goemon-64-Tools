@@ -1,5 +1,16 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — architect v2 review and remaining-task reprioritization (PLAN ONLY)
+
+- Reviewed live branch at `2833f6e0cb569f0be6be083e24c71e9b4751d1c4` and complete-ROM stored proof (**148 C / 11,020 bytes; 161 combined C / 7,215 ASM / 7,376 entries**). G64-001–014 yielded six G2 promotions. G64-021–034 gave fourteen valuable VM research-only tasks but no further production C promotions.
+- G64-034 resolved the command-walker discrepancy: original 232B, freshly rebuilt IDO 220B rather than obsolete 228B; first mismatch at `0x8003DE84`. It remains `GLOBAL_ASM`. The next task is G64-035.
+- Added `decomp/plans/EXECUTION_STRATEGY_V2.md` and machine-readable `architect_revision_v2`; all **65 PLANNED task IDs** now have a compact per-task `architect_override_v2`. Execution waves A–H pull early G64-091/090 and G64-071–080 ahead of further high-effort VM graphics research, without weakening original dependencies or G2.
+- Added bounded IDO hypotheses (3/5/2 by original byte extent, +2 only if measured improvement), clear research stop rules, candidate-yield lane, and no repeated whole-ROM build when production source remains unchanged. Updated `decomp.skill_context` and its tests to expose architect overrides in compact briefs.
+- Corrected stale `EXECUTOR_PROTOCOL.md` assumptions that still called the six G2-promoted functions research-only, and changed its expected-fail object-unit script guidance to a historical note.
+- **Validation in connected planning environment:** checked 100 preserved IDs/statuses/dependencies, 65/65 pending tasks in exactly one wave, unchanged stored full-ROM proof/inventory, and architect override/readme integration assertions. Added two Python test methods; the repository-integrated Python suite and private ROM/compiler were **not run** by this planning-only commit.
+- No production C, `manifest.json`, stored verifier result or inventory changed. **Zero new matching C claims** from this revision.
+
+
 ## 2026-11-11 — G64-034 recover paced command-walker CFG (RESEARCH_ONLY)
 
 - Fetched `origin/chatgptweb/decomp` and continued on `codex/decomp-100-task-plan` from matching local/remote SHA `60ee3af67994e5356a377744dffc03afa0469c48`. The verified ROM, pinned `mnsg` checkout and IDO compiler remain local and ignored.

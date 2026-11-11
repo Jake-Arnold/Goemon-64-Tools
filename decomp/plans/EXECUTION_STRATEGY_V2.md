@@ -1,0 +1,58 @@
+# Architect v2: evidence-led execution of the remaining 100-task Goemon plan
+
+**Reviewed 2026-11-11 on `chatgptweb/decomp`.** Binding for the still-PLANNED G64 tasks. Do not restart the plan, renumber tasks, alter completed statuses, weaken exact-ROM proof, or touch `main`. Read the compact `python3 -m decomp.skill_context --task G64-NNN` output for the relevant per-task override instead of loading the 361 KB JSON.
+
+## What the work has actually achieved
+
+The stored verified proof at review is **148 reconstructed matching C functions / 11,020 MIPS bytes**, **161 combined C / 7,215 ASM / 7,376 identified entries**, and a complete **33,554,432-byte ROM match** (reference SHA1 `6ea0ed71032ce08fc2745f412d84936382197494`). Initial plan arithmetic of 142/10,652 is historical. G64-001–014 integrated **six** new functions, including the formerly blocked object dispatcher. G64-015–018 failed native byte matching (retain ASM). G64-021–034 made **fourteen consecutive research-only** VM investigations without adding a verified matching C function. They did produce valuable ROM-backed CFGs, ABI constraints and host tests. Record that as research, not production yield.
+
+Most recent evidence: G64-034 established original command walker DE80 at **232 bytes**, while its freshly rebuilt isolated IDO candidate was **220 bytes**, not older **228**. First mismatch at `0x8003DE84` (saved-register scheduling); 36/56 available raw instruction positions differ. It has 11 explicit host cases and a killed stale-token mutant. G64-034 is complete `RESEARCH_ONLY`. **Next is G64-035.**
+
+## Priority schedule (all 65 remaining task IDs exactly once)
+
+| Wave | IDs | Purpose |
+|---|---|---|
+| A | 035–040 | Close VM parser with bounded source experiments, preserving unresolved ASM |
+| B | 091; 090; 071–080 | Implement attempt deduplication, audit truly small functions, then file/object/scheduler candidates with matching-C siblings |
+| C | 081–086; 089 | Independently ready math/angle functions, with strict float/FPU identity |
+| D | 041–050 | VM display-list, setup, formatter and integration |
+| E | 052–060 | Overlay linked-ELF mapping, proof adapter, then eligible key/Ghost work (051 already DOC_ONLY) |
+| F | 061–070 | Scene transitions and engine state, without unverified gameplay changes |
+| G | 087–088 | Rotation functions after phase-07 prerequisites |
+| H | 092–100 | Candidate ranking, typed contexts, regression proof, camera, rebase and post-100 handoff |
+
+**Why this reorder:** phase 08 is independently accessible from completed tasks and contains file-table, object-list and scheduler functions adjacent to already matching C. It is a better prospect for near-term production yield than indefinite VM compiler searches. This is a hypothesis to test, **not a promise that those functions will match**. A previous FAILED_NATIVE result counts as completed research evidence for an independent follow-on, not as a passed native build. Respect real data prerequisites even when executing out of numerical order.
+
+## Strict research budget and decision point
+
+For every unpromoted function, check the live manifest for duplicate ownership, original exact ROM/VMA/size, pinned source/toolchain, caller ABI, first mismatch and prior attempt hash. **Only one falsifiable hypothesis at a time.**
+
+- Original function <=128 bytes: at most **3** distinct native source variants beyond the baseline.
+- 129–512 bytes: at most **5**.
+- >512 bytes: at most **2**.
+- Additional **2 maximum** only if the first mismatching instruction genuinely moves forward (or relocation/whole-unit evidence improves) and the new hypothesis is documented.
+- Pure trace tasks: finish one complete ROM-backed CFG/contract and explicit unknowns without generating compiler variants merely to look busy.
+- Focused tests: add a case only when an original behavior path or plausible negative mutant is not already covered. Do not run thousands more randomized cases just to increase the test count.
+
+When the budget fails, **freeze the blocker** (function, source SHA, compiler flags, first native mismatch, tried hypotheses, concrete next required evidence), retain `GLOBAL_ASM`, mark `RESEARCH_ONLY` or `FAILED_NATIVE`, and proceed. A bounded unresolved function is a legitimate completion. Do not repeat the old 762-target scalar sweep.
+
+## Verified-yield lane and gates
+
+At each wave boundary, inspect **up to two** independently unlocked and bounded short candidate opportunities, choosing by original ROM extent, clear o32 ABI, nearby accepted C, and likely complete translation-unit fit. The early candidates are G64-090's *audit* of 13 `return_zero.c` ASM placeholders, the G64-071–073 `file_table.c` readers, G64-074–077 `object_flags.c` list functions, and G64-078–079 schedulers. Names such as return_zero are not evidence of trivial functionality.
+
+Promote an eligible unit **as soon as** exact pinned native IDO original-unit, neighboring sibling instructions and relocations all match, followed by a **fresh** complete 33,554,432-byte image and original-symbol inventory gate. Never wait for all other functions in a batch to match. Host, REA/Ghidra, isolated function matching, preserved size, or increased test count cannot alter the verified count.
+
+## Verification economy
+
+Run focused host/ROM-anchor tests when a research file changes and broad Python/sanitizer suites at substantive phase or integration checkpoints. Run native IDO if the candidate/source hypothesis changed or conflicting evidence needs reproduction. Do not repeatedly run the expensive 32 MiB verifier for documentation-only changes or an unchanged production source; report `fresh_full_rom=NOT_RUN`. Run it for a staged UNIT_EXACT candidate, changed verifier/build input or explicit reproducibility check. Never reuse an old result as proof of a new candidate.
+
+## Wave-end artifact
+
+Publish one compact record per wave: first/last HEAD, new **G2 function and byte delta**, unit-exact opportunities, reusable compiler/tool/testing lessons, frozen mismatch signatures, tests actually run, private full-ROM gate run/NOT_RUN, and next independently unlocked wave. **Zero new G2 in a wave triggers an efficiency review**, not speculative count inflation. Keep G64-099 formally PLANNED until its later prerequisites complete even though interim rebaselines occur.
+
+## Immediate commands to the executor
+
+1. **G64-035**: start from the *new* DE80 232B-vs-220B first mismatch `0x8003DE84`, not the stale 228B research. Investigate saved registers before later `bltzl` delay slots. Apply <=5 targeted source variants; only extend for measurable improvement.
+2. Complete G64-036–040 with distinct new evidence. G64-040 runs G2 only for actual whole-unit exact C, otherwise records a no-promotion checkpoint with existing 148 proof unchanged.
+3. Bring G64-091 and G64-090 forward; execute G64-071–080, promoting independently exact source units through full G2 as soon as they qualify.
+4. Continue waves C–H in dependency order, use the per-task `architect_override_v2`, and prepare the ranked post-100 yield programme.
