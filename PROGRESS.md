@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-091 candidate evidence ledger (RESEARCH_ONLY)
+
+- **Reason and starting point:** fetched `origin/chatgptweb/decomp`; local `codex/decomp-100-task-plan` and target both matched `3bc4c4a25d1fce8564f2de09efe098cbfe988899`. Architect v2 moves G64-091 ahead of the numeric status output to prevent duplicate failed probes and keep candidate evidence separate from G2.
+- **Changes:** added `decomp/attempt_ledger.py` and integrated signed per-function records into the existing SQLite batch queue and report. Records bind original ROM/ELF and function provenance, VMA/size, byte hashes, original assembly source/hash, candidate hash, compiler/source/context hashes, attempt and recipe IDs, proof tier, `NOT_RUN` test status, first mismatch, failed word offsets, and blocker. ROM offsets are accepted only when the named offset's bytes agree with the pinned image. SQLite migration adds nullable fields, preserving old rows unsigned.
+- **Deduplication/import:** new stable input signatures skip unchanged completed failures across recipe IDs; the total process budget is omitted, while a changed bounded-search budget creates a new signature. Timeouts/interruption/process failures remain retryable, and explicit `--retry` bypasses deduplication. Added a read-only importer for v1 batch reports; linked candidates remain unsigned with `INCOMPLETE` original provenance. Historical hash checks now validate the hash recorded by each run rather than requiring old runs to match today's source. The task-context regression checks structural task/evidence consistency without pinning current execution position.
+- **Tests:** `python3 -m unittest discover -s decomp -p 'test_*.py' -q` passed **153/153**. The focused ledger/verifier/batch/probe/inventory suite passed **58/58**; task-context tests passed **15/15**. `py_compile`, `python3 -m decomp.skill_context --validate`, and `git diff --check` passed. Read-only import of `decomp/results/batch_pilot.json` returned **21** unsigned/incomplete summaries and **0** full-ROM promotions.
+- **Limitations:** no native candidate was generated for this tooling task; no new full-ROM build, inventory rebuild, or in-game verification was run. Current source and manifest ownership remain unchanged; stored proof remains **148 functions / 11,020 bytes**, 161 combined C / 7,215 ASM / 7,376 entries.
+- **Next:** G64-090, inspect all `return_zero.c` assembly placeholders from their original instruction effects and symbol extents; do not assume their names describe behavior.
+
 ## 2026-11-11 — G64-040 VM parser production gate (RESEARCH_ONLY)
 
 - **Reason and branch:** started from pushed and fetched `4b26fd1f346567d6df3ddd5cca9ee73163a78a66`. Architect v2 says to run G2 only when a candidate is source-unit exact or verifier inputs changed.

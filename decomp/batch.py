@@ -22,6 +22,8 @@ import sys
 import time
 
 from .probe import Elf32, compare_code, linker_script
+from .attempt_ledger import (LEDGER_FORMAT, input_signature as ledger_input_signature,
+                            make_attempt_record, validate_attempt_record, validate_ledger)
 from .verify import load_manifest
 
 ROOT = Path(__file__).resolve().parent
@@ -80,14 +82,25 @@ class Queue:
             CREATE TABLE IF NOT EXISTS functions(
                 name TEXT PRIMARY KEY, address INTEGER NOT NULL, size INTEGER NOT NULL,
                 section TEXT NOT NULL, source TEXT NOT NULL, asm TEXT NOT NULL,
-                expected BLOB NOT NULL, verified INTEGER NOT NULL);
+                expected BLOB NOT NULL, verified INTEGER NOT NULL, rom_offset INTEGER);
             CREATE TABLE IF NOT EXISTS runs(id INTEGER PRIMARY KEY, recipe TEXT NOT NULL, started TEXT NOT NULL, ended TEXT, configuration TEXT NOT NULL, selected INTEGER NOT NULL, elapsed REAL);
             CREATE TABLE IF NOT EXISTS attempts(
                 id INTEGER PRIMARY KEY, name TEXT NOT NULL REFERENCES functions(name),
                 recipe TEXT NOT NULL, ordinal INTEGER NOT NULL, status TEXT NOT NULL,
-                started TEXT NOT NULL, ended TEXT, result TEXT,
+                started TEXT NOT NULL, ended TEXT, result TEXT, input_signature TEXT, run_id INTEGER,
                 UNIQUE(name, recipe, ordinal));
         ''')
+        # Existing local caches predate the ledger. Add nullable columns so their
+        # attempt history remains untouched and is never retroactively signed.
+        function_columns = {row['name'] for row in self.db.execute('PRAGMA table_info(functions)')}
+        if 'rom_offset' not in function_columns:
+            self.db.execute('ALTER TABLE functions ADD COLUMN rom_offset INTEGER')
+        attempt_columns = {row['name'] for row in self.db.execute('PRAGMA table_info(attempts)')}
+        if 'input_signature' not in attempt_columns:
+            self.db.execute('ALTER TABLE attempts ADD COLUMN input_signature TEXT')
+        if 'run_id' not in attempt_columns:
+            self.db.execute('ALTER TABLE attempts ADD COLUMN run_id INTEGER')
+        self.db.execute('CREATE INDEX IF NOT EXISTS attempts_input_signature ON attempts(input_signature,status)')
 
     def close(self):
         self.db.close()
@@ -104,15 +117,21 @@ class Queue:
             raise ValueError('Cache baseline identity differs; use a new cache')
         with self.db:
             for fn in functions:
+                fn.setdefault('rom_offset', None)
                 if not re.fullmatch(r'[A-Za-z_.$][A-Za-z0-9_.$]*', fn['name']) or fn['size'] <= 0 or len(fn['expected']) != fn['size']:
                     raise ValueError('Invalid queued function')
                 old = self.db.execute('SELECT * FROM functions WHERE name=?', (fn['name'],)).fetchone()
                 if old and any(old[key] != fn[key] for key in ('address', 'size', 'section', 'source', 'asm', 'expected')):
                     raise ValueError('Baseline function contents changed: ' + fn['name'])
+                if old and old['rom_offset'] is not None and fn['rom_offset'] != old['rom_offset']:
+                    raise ValueError('Baseline function ROM offset changed: ' + fn['name'])
                 if old:
-                    self.db.execute('UPDATE functions SET verified=? WHERE name=?', (fn['verified'], fn['name']))
+                    self.db.execute('UPDATE functions SET verified=?,rom_offset=COALESCE(rom_offset,?) WHERE name=?',
+                                    (fn['verified'], fn['rom_offset'], fn['name']))
                 else:
-                    self.db.execute('INSERT INTO functions VALUES (:name,:address,:size,:section,:source,:asm,:expected,:verified)', fn)
+                    self.db.execute('''INSERT INTO functions
+                        (name,address,size,section,source,asm,expected,verified,rom_offset)
+                        VALUES (:name,:address,:size,:section,:source,:asm,:expected,:verified,:rom_offset)''', fn)
             self.db.execute('INSERT OR REPLACE INTO meta VALUES (?, ?)', ('identity', json.dumps(identity)))
 
     def recover(self):
@@ -121,13 +140,26 @@ class Queue:
             self.db.execute("UPDATE attempts SET status='interrupted', ended=? WHERE status='running'", (now(),))
             self.db.execute('UPDATE runs SET ended=? WHERE ended IS NULL', (now(),))
 
-    def select(self, recipe, limit, maximum, scope='generated', region='all', retry=False, max_attempts=1):
+    def select(self, recipe, limit, maximum, scope='generated', region='all', retry=False, max_attempts=1,
+               input_signatures=None):
         rows = self.db.execute('''
             SELECT f.*, (SELECT COUNT(*) FROM attempts a WHERE a.name=f.name AND a.recipe=?) AS used,
             (SELECT status FROM attempts a WHERE a.name=f.name AND a.recipe=? ORDER BY id DESC LIMIT 1) AS last
             FROM functions f WHERE verified=0 AND size<=? ORDER BY size, name
         ''', (recipe, recipe, maximum))
         selected = []
+        input_signatures = input_signatures or {}
+        terminal = ('mismatch', 'linked_match', 'needs_context', 'needs_layout', 'unresolved_symbols',
+                    'compile_failed', 'link_failed', 'generation_failed', 'unsupported', 'needs_source')
+        signatures = sorted({value for value in input_signatures.values() if value})
+        completed_inputs = set()
+        status_marks = ','.join('?' for _ in terminal)
+        for start in range(0, len(signatures), 500):
+            batch = signatures[start:start + 500]
+            input_marks = ','.join('?' for _ in batch)
+            completed_inputs.update(row['input_signature'] for row in self.db.execute(
+                'SELECT DISTINCT input_signature FROM attempts WHERE input_signature IN ('+input_marks+
+                ') AND status IN ('+status_marks+')', (*batch, *terminal)))
         for row in rows:
             if scope == 'generated' and not row['name'].startswith('func_'):
                 continue
@@ -135,19 +167,37 @@ class Queue:
                 continue
             if row['used'] >= max_attempts or row['last'] == 'linked_match' or (row['used'] and not retry):
                 continue
+            signature = input_signatures.get(row['name'])
+            if signature in completed_inputs and not retry:
+                continue
             selected.append(dict(row))
             if len(selected) == limit:
                 break
         return selected
 
-    def claim(self, name, recipe):
+    def claim(self, name, recipe, input_sig=None, run_id=None):
         with self.db:
             ordinal = self.db.execute('SELECT COUNT(*) FROM attempts WHERE name=? AND recipe=?', (name, recipe)).fetchone()[0] + 1
-            row = self.db.execute('INSERT INTO attempts(name,recipe,ordinal,status,started) VALUES (?,?,?,?,?)',
-                                  (name, recipe, ordinal, 'running', now()))
+            row = self.db.execute('INSERT INTO attempts(name,recipe,ordinal,status,started,input_signature,run_id) VALUES (?,?,?,?,?,?,?)',
+                                  (name, recipe, ordinal, 'running', now(), input_sig, run_id))
             return row.lastrowid
 
-    def finish(self, attempt, result):
+    def finish(self, attempt, result, attempt_record=None):
+        if attempt_record is not None:
+            row = self.db.execute('SELECT name,input_signature,status,recipe,run_id FROM attempts WHERE id=?', (attempt,)).fetchone()
+            if row is None or row['status'] != 'running':
+                raise ValueError('Attempt is not running')
+            if attempt_record.get('function') != row['name'] or attempt_record.get('input_signature') != row['input_signature']:
+                raise ValueError('Attempt record does not match its queued input')
+            if (attempt_record.get('proof_run', {}).get('recipe_id') != row['recipe']
+                    or attempt_record.get('proof_run', {}).get('run_id') != row['run_id']):
+                raise ValueError('Attempt record does not match its proof run')
+            if attempt_record.get('comparison', {}).get('status') != result.get('status'):
+                raise ValueError('Attempt record status does not match its result')
+            record_errors = validate_attempt_record(attempt_record)
+            if record_errors:
+                raise ValueError('Attempt record validation failed: ' + '; '.join(record_errors))
+            result = dict(result, attempt_record=attempt_record)
         with self.db:
             changed = self.db.execute('UPDATE attempts SET status=?, ended=?, result=? WHERE id=? AND status=?',
                                       (result['status'], now(), json.dumps(result), attempt, 'running'))
@@ -167,6 +217,19 @@ class Queue:
             SELECT MAX(b.id) FROM attempts b WHERE b.recipe=a.recipe AND b.name=a.name) ORDER BY name''', (recipe,))
         return [dict(row) for row in rows]
 
+    def attempt_records(self, recipe):
+        rows = self.db.execute('SELECT result FROM attempts WHERE recipe=? AND result IS NOT NULL ORDER BY id', (recipe,))
+        records = []
+        legacy = 0
+        for row in rows:
+            value = json.loads(row['result'])
+            record = value.get('attempt_record')
+            if record is None:
+                legacy += 1
+            else:
+                records.append(record)
+        return records, legacy
+
 
 def assembly_index(baseline, names):
     result = {}
@@ -185,6 +248,17 @@ def assembly_index(baseline, names):
                 raise ValueError('Ambiguous assembly source: ' + name)
             result[name] = (str(path.relative_to(baseline)), body)
     return result
+
+
+def verified_rom_offset(name, expected, image):
+    """Return an encoded ROM offset only when the pinned image confirms bytes."""
+    match = re.search(r'_([0-9A-Fa-f]+)\Z', name)
+    if not match:
+        return None
+    offset = int(match[1], 16)
+    if image[offset:offset + len(expected)] != expected:
+        return None
+    return offset
 
 
 def initialize(cache, baseline, m2c, python, context=None, permuter=None):
@@ -219,9 +293,12 @@ def initialize(cache, baseline, m2c, python, context=None, permuter=None):
     for name in sorted(candidates):
         symbol = native[name]
         source, asm = index.get(name, ('', ''))
+        expected = elf.code(symbol)
         functions.append(dict(name=name, address=symbol.value, size=symbol.size, section=elf.names[symbol.section],
-                              source=source, asm=asm, expected=elf.code(symbol), verified=int(name in verified)))
-    identity = dict(upstream_commit=manifest['upstream_commit'], rom_sha1=manifest['decompressed_sha1'], elf_sha256=sha(elf_data))
+                              source=source, asm=asm, expected=expected, verified=int(name in verified),
+                              rom_offset=verified_rom_offset(name, expected, image)))
+    identity = dict(upstream_commit=manifest['upstream_commit'],
+                    rom_sha1=manifest['decompressed_sha1'], elf_sha256=sha(elf_data))
     config = dict(baseline=str(baseline), m2c=str(m2c), python=str(Path(python).absolute()),
                   context=str(Path(context).resolve()) if context else str(ROOT / 'batch_context.h'),
                   permuter=str(Path(permuter).resolve()) if permuter else None)
@@ -278,7 +355,8 @@ def recipe_snapshot(cache, config, seconds, search_seconds, context=None):
                   python_sha256=sha(Path(config['python']).read_bytes()),
                   dependency_lock_sha256=sha((baseline/'uv.lock').read_bytes()),
                   m2c_pin=capture(['git', 'rev-parse', 'HEAD'], config['m2c']), flags=FLAGS,
-                  source_hashes={name: sha((ROOT/name).read_bytes().replace(b'\r\n', b'\n')) for name in ('batch.py', 'probe.py')},
+                  source_hashes={name: sha((ROOT/name).read_bytes().replace(b'\r\n', b'\n'))
+                                 for name in ('batch.py', 'probe.py', 'attempt_ledger.py')},
                   seconds=seconds, search_seconds=search_seconds)
     if recipe['m2c_pin'] != M2C_PIN or capture(['git', 'status', '--porcelain', '--untracked-files=no'], config['m2c']):
         raise ValueError('m2c identity changed')
@@ -301,29 +379,31 @@ def recipe_snapshot(cache, config, seconds, search_seconds, context=None):
 
 
 def compile_probe(source, name, address, expected, baseline, globals_map, directory, deadline, tag='probe'):
+    candidate_sha256 = sha(source.read_bytes())
     obj = directory / (tag + '.o')
     code = bounded([str(baseline/'tools/ido-5.3/cc'), *FLAGS, str(source), '-o', str(obj)], baseline,
                    directory/(tag+'-compile.log'), deadline, stage='compile')
     if code:
-        return dict(status='compile_failed', stage='compile', exit_code=code)
+        return dict(status='compile_failed', stage='compile', exit_code=code, candidate_sha256=candidate_sha256)
     image = Elf32(obj.read_bytes())
     reason = image.layout_reason(name)
     if reason:
-        return dict(status='needs_layout', stage='object', reason=reason)
+        return dict(status='needs_layout', stage='object', reason=reason, candidate_sha256=candidate_sha256)
     function = image.function(name)
     if function.size != len(expected):
-        return dict(status='mismatch', stage='object', reason='code_size', expected_size=len(expected), actual_size=function.size)
+        return dict(status='mismatch', stage='object', reason='code_size', expected_size=len(expected),
+                    actual_size=function.size, candidate_sha256=candidate_sha256)
     try:
         script = linker_script(name, address, image.undefined(), globals_map)
     except ValueError as exc:
-        return dict(status='unresolved_symbols', stage='link', reason=str(exc))
+        return dict(status='unresolved_symbols', stage='link', reason=str(exc), candidate_sha256=candidate_sha256)
     link = directory/(tag+'.ld')
     link.write_text(script, encoding='utf-8')
     executable = directory/(tag+'.elf')
     code = bounded(['mips-linux-gnu-ld', '-T', str(link), '-o', str(executable), str(obj)], baseline,
                    directory/(tag+'-link.log'), deadline, stage='link')
     if code:
-        return dict(status='link_failed', stage='link', exit_code=code)
+        return dict(status='link_failed', stage='link', exit_code=code, candidate_sha256=candidate_sha256)
     linked = Elf32(executable.read_bytes())
     symbol = linked.function(name)
     actual = linked.code(symbol)
@@ -452,9 +532,16 @@ def run(cache, limit=100, maximum=128, workers=2, seconds=20, search_seconds=0, 
                 raise ValueError('Baseline source identity changed')
             queue.recover()
             recipe, recipe_dir, context_text = recipe_snapshot(cache, config, seconds, search_seconds, context)
+            recipe_data = json.loads((recipe_dir/'recipe.json').read_text())
+            attempt_recipe = dict(recipe_data)
+            attempt_recipe['ido_toolchain_sha256'] = sha(json.dumps(recipe_data['ido_files'], sort_keys=True).encode())
             baseline_elf = Elf32((baseline/'build/usa/mnsg.elf').read_bytes())
             globals_map = baseline_elf.globals()
-            selected = queue.select(recipe, limit, maximum, scope, region, retry, max_attempts)
+            input_signatures = {}
+            for row in queue.db.execute('SELECT * FROM functions WHERE verified=0 AND size<=?', (maximum,)):
+                function = dict(row)
+                input_signatures[function['name']] = ledger_input_signature(function, identity, attempt_recipe)
+            selected = queue.select(recipe, limit, maximum, scope, region, retry, max_attempts, input_signatures)
             for fn in selected:
                 symbol = baseline_elf.function(fn['name'])
                 if symbol.value != fn['address'] or baseline_elf.code(symbol) != fn['expected']:
@@ -463,12 +550,14 @@ def run(cache, limit=100, maximum=128, workers=2, seconds=20, search_seconds=0, 
             queue.meta('run_started', now())
             run_started = time.monotonic()
             run_id = queue.start_run(recipe, dict(limit=limit, max_size=maximum, workers=workers, seconds=seconds, search_seconds=search_seconds, scope=scope, region=region, retry=retry, max_attempts=max_attempts), len(selected))
-            queue.meta('recipe:'+recipe, json.loads((recipe_dir/'recipe.json').read_text()))
+            queue.meta('recipe:'+recipe, recipe_data)
             if selected:
                 # Populate the m2c context cache before launching concurrent readers.
-                fn = selected.pop(0); ident = queue.claim(fn['name'], recipe)
+                fn = selected.pop(0); input_sig = input_signatures[fn['name']]
+                ident = queue.claim(fn['name'], recipe, input_sig, run_id)
                 result = attempt(fn, ident, cache, config, recipe_dir, context_text, globals_map, seconds, search_seconds, True)
-                queue.finish(ident, result)
+                record = make_attempt_record(fn, identity, attempt_recipe, result, input_sig, run_id, recipe)
+                queue.finish(ident, result, record)
                 print(json.dumps(dict(done=1, **result)), flush=True)
                 has_cache = Path(str(recipe_dir/'context.c')+'.m2c').exists()
                 with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -477,15 +566,18 @@ def run(cache, limit=100, maximum=128, workers=2, seconds=20, search_seconds=0, 
                     def schedule():
                         fn = next(waiting, None)
                         if fn is None: return
-                        ident = queue.claim(fn['name'], recipe)
+                        input_sig = input_signatures[fn['name']]
+                        ident = queue.claim(fn['name'], recipe, input_sig, run_id)
                         future = pool.submit(attempt, fn, ident, cache, config, recipe_dir, context_text, globals_map, seconds, search_seconds, has_cache)
-                        mapping[future] = ident
+                        mapping[future] = (ident, fn, input_sig)
                     for _ in range(workers): schedule()
                     done = 1
                     while mapping:
                         future = next(as_completed(mapping))
                         result = future.result()
-                        queue.finish(mapping.pop(future), result)
+                        ident, fn, input_sig = mapping.pop(future)
+                        record = make_attempt_record(fn, identity, attempt_recipe, result, input_sig, run_id, recipe)
+                        queue.finish(ident, result, record)
                         done += 1
                         print(json.dumps(dict(done=done, **result)), flush=True)
                         schedule()
@@ -517,9 +609,16 @@ def report_cache(queue, recipe=None):
         reason = result.get('reason', '')
         if not re.fullmatch(r'[a-z_]+(?::[.a-z_]+)?', reason): reason = row['status']
         deferred.append(dict(name=row['name'],status=row['status'],reason=reason))
+    records, legacy_attempts = queue.attempt_records(recipe) if recipe else ([], 0)
+    attempt_ledger = dict(format=LEDGER_FORMAT, records=records, legacy_imports=[],
+                          legacy_unstructured_attempts=legacy_attempts)
+    ledger_errors = validate_ledger(attempt_ledger)
+    if ledger_errors:
+        raise ValueError('Attempt ledger validation failed: ' + '; '.join(ledger_errors))
     return dict(format='goemon-batch-report-v1', baseline=queue.meta('identity'), verified_reference=queue.meta('reference'),
                 recipe=recipe, recipe_evidence=recipe_evidence, runs=runs, deferred_candidates=deferred, latest_attempts=len(rows), statuses=dict(statuses), linked_probe_matches=candidates,
-                linked_probe_bytes=sum(row['size'] for row in candidates), newly_verified_full_rom_functions=0)
+                linked_probe_bytes=sum(row['size'] for row in candidates), newly_verified_full_rom_functions=0,
+                attempt_ledger=attempt_ledger)
 
 
 def export_matches(cache, destination, recipe=None):

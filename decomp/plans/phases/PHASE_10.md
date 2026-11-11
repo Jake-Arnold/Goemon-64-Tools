@@ -20,7 +20,7 @@ Evidence automation may only surface claims, never automatically promote candida
 
 ### G64-091 — Define candidate evidence ledger
 
-**Status:** PLANNED. **Dependencies:** G64-003, G64-020.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-003, G64-020.
 **Focus files:** `decomp/manifest.json`; `decomp/results/combined.json`; `decomp/results/inventory.json`; `decomp/batch.py`.
 
 **Architectural intent:** Standardize per-function entries: unit, original size/VMA/ROM, candidate hash, exactness tier, tests, failed words, blocker, proof run.
@@ -44,6 +44,21 @@ Evidence automation may only surface claims, never automatically promote candida
 **Stop/recovery:** Documentation, static analysis and tool work never change the matching-C count. Add negative tests before making validation policy changes. Record any unrun private-ROM test as NOT_RUN, never PASS.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome:** implemented `decomp/attempt_ledger.py` and integrated it into the
+existing SQLite batch queue/report. New records carry original ROM/ELF/function
+provenance, verified ROM offset when the encoded offset agrees with the ROM
+bytes, source/compiler/context hashes, candidate hashes, exactness and proof-run
+tiers, test status, first mismatch and failed word offsets, blocker, and an
+immutable content signature. Additive cache migration leaves prior rows
+unsigned. Cross-recipe input signatures suppress unchanged completed probes;
+explicit `--retry` bypasses that suppression. The read-only v1 importer labels
+historical candidate summaries as provenance-incomplete and unsigned. Historical
+benchmark hash tests now validate their recorded hashes without requiring old
+runs to match current pipeline files; the current proof's verifier hash remains
+bound to its current source. Focused ledger/batch/verifier/probe/inventory tests
+passed; no candidate or whole-ROM claim was added. See
+`../execution/2026-11-11-g64-091-attempt-ledger.json`.
 
 ### G64-092 — Rank research by evidence not byte size
 

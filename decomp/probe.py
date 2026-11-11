@@ -117,8 +117,11 @@ def linker_script(name, address, undefined, globals_map):
 
 def compare_code(expected, actual):
     import hashlib
+    offsets = [i for i in range(0, max(len(expected), len(actual)), 4)
+               if expected[i:i+4] != actual[i:i+4]]
     return dict(expected_size=len(expected), actual_size=len(actual),
                 byte_differences=sum(a != b for a, b in zip(expected, actual)) + abs(len(expected) - len(actual)),
-                word_differences=sum(expected[i:i+4] != actual[i:i+4] for i in range(0, max(len(expected), len(actual)), 4)),
+                word_differences=len(offsets), word_mismatch_offsets=offsets,
+                first_mismatch_offset=offsets[0] if offsets else None,
                 expected_sha256=hashlib.sha256(expected).hexdigest(),
                 actual_sha256=hashlib.sha256(actual).hexdigest())

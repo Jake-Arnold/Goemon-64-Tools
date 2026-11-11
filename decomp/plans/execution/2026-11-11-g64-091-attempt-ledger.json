@@ -1,0 +1,105 @@
+{
+  "format": "goemon-g64-execution-evidence-v1",
+  "task_id": "G64-091",
+  "title": "Define candidate evidence ledger",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "strategy": {
+    "document": "decomp/plans/EXECUTION_STRATEGY_V2.md",
+    "wave": "B",
+    "directive": "Add immutable attempt signatures over original target, source/unit, compiler/context and mismatch/proof evidence; prevent unchanged failed probes from being repeated.",
+    "decision": "Use the existing SQLite batch pipeline with additive migration. Keep legacy reports unsigned/incomplete, and make isolated matches structurally unable to claim full-ROM proof."
+  },
+  "starting_state": {
+    "workspace_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "3bc4c4a25d1fce8564f2de09efe098cbfe988899",
+    "fetched_remote_head": "3bc4c4a25d1fce8564f2de09efe098cbfe988899",
+    "fetched_before_work": true,
+    "worktree_clean_before_task": true,
+    "agents_md_confirmed": true
+  },
+  "implementation": {
+    "ledger": "decomp/attempt_ledger.py",
+    "queue": "decomp/batch.py",
+    "comparison": "decomp/probe.py",
+    "schema_format": "goemon-function-attempt-v1",
+    "report_format": "goemon-batch-report-v1 with attempt_ledger extension",
+    "exactness_tiers": [
+      "none",
+      "object",
+      "isolated_function",
+      "unit",
+      "full_rom"
+    ],
+    "legacy_import": "goemon-batch-report-v1 summaries remain unsigned and original_provenance=INCOMPLETE",
+    "cross_recipe_dedup": "input signature includes ROM/ELF and original function hashes/address/size, ASM hash, compiler/tool/pipeline/context hashes, and bounded-search budget; omits only total process wall-clock budget; explicit retry bypasses"
+  },
+  "decision": {
+    "task_status": "RESEARCH_ONLY",
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "native_candidate": "NOT_RUN; tooling and proof bookkeeping only",
+    "full_rom_g2": "NOT_RUN; no matching-C candidate or verifier/build input changed",
+    "inventory_rebuild": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "stored_proof": {
+      "functions": 148,
+      "bytes": 11020,
+      "rom_size": 33554432,
+      "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "combined_c": 161,
+      "assembly": 7215,
+      "identified_entries": 7376
+    },
+    "next_task": "G64-090"
+  },
+  "validation": {
+    "focused_tests": {
+      "command": "python3 -m unittest tests.test_decomp_attempt_ledger tests.test_decomp_verify tests.test_decomp_batch tests.test_decomp_probe_integration tests.test_decomp_inventory -q",
+      "tests": 58,
+      "exit_code": 0
+    },
+    "task_context_tests": {
+      "command": "python3 -m unittest decomp.test_skill_context -q",
+      "tests": 15,
+      "exit_code": 0
+    },
+    "legacy_import": {
+      "command": "python3 -m decomp.attempt_ledger import-legacy --report decomp/results/batch_pilot.json | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d[\"source_format\"], d[\"original_provenance\"], len(d[\"candidate_summaries\"]), d[\"newly_verified_full_rom_functions\"])'",
+      "result": "21 candidate summaries; original_provenance=INCOMPLETE; newly_verified_full_rom_functions=0; source report unchanged",
+      "exit_code": 0
+    },
+    "skill_context_validate": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "result": "CONSISTENT_STORED_REPORTS; task_count=100",
+      "exit_code": 0
+    },
+    "full_decomp_suite": {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "tests": 153,
+      "exit_code": 0
+    },
+    "py_compile": {
+      "command": "python3 -m py_compile decomp/attempt_ledger.py decomp/batch.py decomp/probe.py decomp/skill_context.py",
+      "exit_code": 0
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  },
+  "source_hashes_lf": {
+    "decomp/attempt_ledger.py": "af99a0c20f9186e05f5891b5d979d77be24b904b52a2ba53988035ca4a76a3b3",
+    "decomp/batch.py": "0ab9da7fb245f2a2b7e53b4ffd936eb8895b37de660c095a9cce6e2d99b21372",
+    "decomp/probe.py": "2a1cdb7835ff7cdbd17456c398a385fd1a8269800db189a0c9c6516de05694a9",
+    "decomp/test_skill_context.py": "064f035558018aeefae9ef26f8c5cca025c99cc6759ba4a23bc7cf503c2cbae4",
+    "tests/test_decomp_attempt_ledger.py": "0f37972e8f19c3b11bc78c5cb5ab2532cf429abf9b925265ae4c97b7fb2ffe42",
+    "tests/test_decomp_batch.py": "b9e20570c8b7a1b0190545e9d6cc34907f34f3d2cab37f4f9ba4c74139686655"
+  },
+  "reference_hashes": {
+    "decomp/manifest.json": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "decomp/results/combined.json": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "decomp/results/inventory.json": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a"
+  }
+}

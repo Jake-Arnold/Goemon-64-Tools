@@ -120,9 +120,15 @@ DF98, ED60 and F6E8 have no new source-unit-exact candidate. Production source,
 manifest and verifier inputs are unchanged, so no new full-ROM or inventory
 run was performed. See [`VM_STREAM_MATCHING.md`](VM_STREAM_MATCHING.md#G64-040--vm-parser-production-gate)
 and `plans/execution/2026-11-11-g64-040-parser-production-gate.json`. The next
-v2 task is G64-091 (attempt evidence ledger). `python3 -m decomp.skill_context
---status` still reports the lowest-numbered planned task, G64-041; this is not
-the revised execution priority. Request `--task G64-091` for the next v2 brief.
+v2 task G64-091 is now `RESEARCH_ONLY`: the batch queue records signed
+per-function attempts and skips unchanged completed probes across recipes; old
+reports import as unsigned provenance-incomplete summaries. The current matching
+count and stored proof are unchanged. See
+`plans/execution/2026-11-11-g64-091-attempt-ledger.json`. Continue next with
+G64-090 (audit, do not assume, the `return_zero.c` assembly placeholders), then
+G64-071–080 per Architect v2. `python3 -m decomp.skill_context --status` still
+reports the lowest-numbered planned task, G64-041; this is not the revised
+execution priority. Request `--task G64-090` for the next v2 brief.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
 

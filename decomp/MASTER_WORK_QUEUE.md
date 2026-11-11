@@ -55,8 +55,12 @@ source-unit-exact candidate: EB34 is already matching C, while DBEC, DE80,
 DF98, ED60 and F6E8 remain ASM-owned. Production and verifier inputs were
 unchanged, so the stored 148-function full-ROM proof was retained without a
 new build. See `plans/execution/2026-11-11-g64-040-parser-production-gate.json`.
-Next v2 task: G64-091. Private ROM and compiler files remain local under the
-ignored diagnostics input directory.
+G64-091 then added signed per-function attempt records, legacy report import and
+cross-recipe suppression of unchanged completed probes without changing
+matching-C ownership. See
+`plans/execution/2026-11-11-g64-091-attempt-ledger.json`. Next v2 task: G64-090,
+the evidence-led audit of `return_zero.c` placeholders. Private ROM and compiler
+files remain local under the ignored diagnostics input directory.
 
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.
 

@@ -3916,7 +3916,7 @@
       "ordinal": 91,
       "phase": 10,
       "title": "Define candidate evidence ledger",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-003",
         "G64-020"

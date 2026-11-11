@@ -51,6 +51,22 @@ class TaskBriefTests(unittest.TestCase):
         self.assertTrue(any("no report for current task status" in error
                             for error in sc.validate({**self.data, "execution_records": records})))
 
+    def test_status_progress_is_valid_when_evidence_tracks_it(self):
+        # Validation follows the ledger's status/evidence relationship instead
+        # of pinning whichever task happened to be active when tests were written.
+        tasks = [dict(task) for task in self.data["tasks"]]
+        records = [dict(record) for record in self.data["execution_records"]]
+        task_id = "G64-035"
+        next(task for task in tasks if task["id"] == task_id)["status"] = "PLANNED"
+        next(record for record in records if record["task_id"] == task_id)["status"] = "PLANNED"
+        self.assertEqual(sc.validate({**self.data, "tasks": tasks,
+                                      "execution_records": records}), [])
+
+    def test_duplicate_task_id_is_rejected(self):
+        tasks = [dict(task) for task in self.data["tasks"]]
+        tasks[1]["id"] = tasks[0]["id"]
+        self.assertTrue(sc.validate({**self.data, "tasks": tasks}))
+
     def test_task_dependency_must_point_to_an_earlier_task(self):
         tasks = [dict(task) for task in self.data["tasks"]]
         tasks[1]["depends_on"] = [tasks[1]["id"]]

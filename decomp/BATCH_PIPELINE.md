@@ -72,6 +72,37 @@ on resume; `--retry --max-attempts 2` explicitly permits another attempt per rec
 Interrupted attempts count against that budget. New context/tool/recipe identities
 create a separate attempt history instead of overwriting previous results.
 
+New attempts also receive a content-addressed per-function record in the existing
+queue and report. It binds the original ROM/ELF identity, function VMA and size,
+original-byte hash, source ownership, candidate source/code hashes, compiler and
+pipeline hashes, first differing address, failed word offsets, blocker, tests
+(`NOT_RUN` unless a separate test run is attached), and proof tier. An isolated
+linked match is recorded as `isolated_function` with `full_rom_match: false`;
+the batch pipeline cannot mint `unit` or `full_rom` proof. Reports retain the
+historical v1 envelope and add an `attempt_ledger` section. Existing local cache
+rows are left unsigned when the additive SQLite migration adds the signature
+column.
+
+The stable input signature uses the original function bytes/address, assembly
+input, toolchain, pipeline source, context and bounded-search time budget. It
+omits the total process wall-clock budget, so an unchanged completed failed
+probe is skipped across recipe IDs; increasing a bounded-search budget creates
+a new input signature. Timeouts, interruptions and process failures remain
+eligible for recovery. Explicit `--retry` overrides this deduplication.
+
+Historical reports can be projected into an unsigned import summary without
+editing their source file:
+
+```bash
+python -m decomp.attempt_ledger import-legacy \
+  --report /root/goemon-batch/old-report.json \
+  --output /root/goemon-batch/old-report-import.json
+```
+
+The importer preserves the source report hash and labels candidate summaries
+`INCOMPLETE` for original function provenance. It never invents a per-function
+attempt signature or a full-ROM result from v1 batch metadata.
+
 ## Context and bounded search
 
 The default context supplies MIPS scalar types only. Missing parameter/structure
