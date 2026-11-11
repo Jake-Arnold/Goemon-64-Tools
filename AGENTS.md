@@ -15,3 +15,7 @@ Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C 
 For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
 It is the operational runbook; older checkpoints and result reports retain
 historical evidence and must not be treated as current instructions/counts.
+
+## Codex project skills
+
+Use narrow repo-local skills in [.agents/skills/](.agents/skills/README.md). Start a G64 task with `python3 -m decomp.skill_context --task G64-NNN`, or check `--status`; request `--detail` only when needed. The helper reads checked-in results but never builds a ROM.

@@ -30,6 +30,10 @@
 
 **Major compatibility warning:** pinned Goemon builds use `-mips2`, while REA's documented Ghidra ELF-MIPS admission does not include MIPS-II. Real Goemon `.elf` flags remain uninspected here. No REA analysis on a proprietary target has been run. A read-only direct-Ghidra investigation is the fallback only when the target mapping is independently verified; m2c/IDO + complete-ROM verification are unchanged. Optional research must never block the existing five near-ready promotions.
 
+## Low-token Codex skills
+
+20 targeted skills are indexed at [`.agents/skills/`](../../.agents/skills/README.md). `python3 -m decomp.skill_context --status` and `--task G64-NNN` load compact current task summaries, not the full ~340 KB plan. Validate with `python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -v`. Read only the needed skill; the G2 proof gate is unchanged.
+
 ## Default execution order
 1. G64-001–014 have recorded outcomes: the resource wrappers, menu trio and object dispatcher passed G2; G64-003 was already complete.
 2. G64-015–018 were retried and marked `FAILED_NATIVE`; no production ASM ownership changed. G64-019 is `RESEARCH_ONLY`, and G64-020 documents the hard stops.

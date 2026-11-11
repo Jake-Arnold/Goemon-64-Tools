@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 - 20 low-token Codex skills and task context helper (NO PROMOTIONS)
+
+- Added 20 distinct, small, repository-local Codex skill manifests at `.agents/skills/<name>/SKILL.md` with narrow discovery triggers. They cover task selection/briefing, original MIPS and ABI, IDO mismatch, native integration, complete ROM/inventory verification, negative testing, three script-VM lanes, overlays, scene state, REA, upstream reference, bounded batches, evidence and private input reproduction.
+- Added `decomp/skill_context.py` for selected `--task` / `--phase` / `--status` / `--detail` / `--validate` summaries. It rejects inconsistent stored manifest/task/proof counts and explicitly does not perform a new ROM build. Added no-ROM unit tests and a skill frontmatter validation test, plus minimal navigation pointers in root AGENTS and plan README.
+- **Tests executed this turn:** a synthetic local Python task-context prototype passed task-ID/dependency/count/first-mismatch checks and a corrupted-count rejection; remote generated skill metadata was validated before Git object creation. The final repository-integrated `python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -v` has not been run in the private repository from this environment, and is intentionally a required local verification step. No ROM/IDO/compiler/full project build was executed or claimed.
+- No production matching-C code, manifest ownership, proof result, inventory or source-level function count was modified. Use live results rather than historical snapshots when executing the next G64 task.
+
+
 ## 2026-11-11 — G64-031 construct VM text-loop CFG (RESEARCH_ONLY)
 
 - Continued from `0ad2059f6540502b3d81ae22bc593dcd4aed24bd` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed the target head matched. The local pinned `mnsg` source remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.
