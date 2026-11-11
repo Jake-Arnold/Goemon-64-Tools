@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 - begin 100-task executor plan, phase 01 evidence and ownership guards
+
+- Refetched `chatgptweb/decomp` at `7ec434d10ab921657515d5de22a4bdc6483ba79d` and started from that clean snapshot. Captured current `AGENTS.md`, continuation runbook, plan, manifest, proof and inventory digests in `decomp/plans/execution/2026-11-11-phase-01.json`. Checked-in proof metadata still records 142 matching functions / 10,652 bytes, 155 combined C / 7,221 ASM and full 32 MiB identity. The fresh ROM build was not run because the private USA ROM, pinned mnsg source checkout and IDO 5.3 are unavailable in this environment. No matching function was promoted.
+- Added manifest negative fixtures for duplicate C claims, overlapping unit ranges and missing retained `GLOBAL_ASM` markers. Existing cases continue to cover changed collision-patch hashes and rejecting function-only evidence when the full image differs. Reviewed the existing G0–G3 proof tiers and evidence-state progression, so G64-003 needed no duplicate documentation.
+- Validation: full decomp Python suite passed 106 tests; prescribed decomp verifier batch passed 58; focused integrated-unit and wrapper proof tests passed 13; updated verifier tests passed 17. GCC C11 ASan/UBSan host harnesses passed 30,000 resource/object dispatch cases and 90,000 menu cases. These are synthetic host tests; no native IDO build or in-game test occurred. `git diff --check` passed.
+- Next: acquire the missing private inputs to rerun the baseline and G2 promotion gates. Until then, continue only tasks whose source and evidence requirements can be met from the checkout, keep candidates unpromoted, and record blocked tasks explicitly.
+
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
 ## 2026-11-11 - REA preflight module invocation test correction (NO PROMOTIONS)

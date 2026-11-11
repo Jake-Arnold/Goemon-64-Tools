@@ -1,0 +1,55 @@
+{
+  "format": "goemon-task-execution-v1",
+  "plan": "decomp/plans/TASKS_100.json",
+  "task_ids": ["G64-001", "G64-002", "G64-003", "G64-004", "G64-005", "G64-006", "G64-007", "G64-008", "G64-009", "G64-010"],
+  "target_branch": "chatgptweb/decomp",
+  "base_sha": "7ec434d10ab921657515d5de22a4bdc6483ba79d",
+  "base_checkout": {
+    "path": "/home/jake/.codex/worktrees/check-chatgptweb-branch/Goemon-64-Tools",
+    "local_branch": "codex/decomp-100-plan",
+    "initial_state": "clean"
+  },
+  "live_inputs": {
+    "retail_rom": "MISSING",
+    "decompressed_rom": "MISSING",
+    "pinned_upstream_checkout": "MISSING",
+    "ido_5_3": "MISSING",
+    "system_mips_binutils": "GNU Binutils 2.45.90.20260125 present; pinned archive root missing"
+  },
+  "published_baseline_metadata": {
+    "manifest_sha256": "abaf1499631a218389a33465fd88ca513adb16c320acc035b3c14b98e6655764",
+    "combined_sha256": "9420a558a07edbfa6088430951fc5d5b51d1f84e88abfd92b4d8acf01428ec51",
+    "inventory_sha256": "37263b3f3ed279f51807cfe31a51d4ab8af71f93cc236103b5650db61949de2c",
+    "recorded_matching_c": 142,
+    "recorded_matching_bytes": 10652,
+    "recorded_combined_c": 155,
+    "recorded_remaining_asm": 7221,
+    "recorded_rom_bytes": 33554432,
+    "recorded_formal_verifier_run_completed": true,
+    "fresh_full_rom_verification": "NOT_RUN_BLOCKED_INPUT"
+  },
+  "task_results": [
+    {"id": "G64-001", "status": "BLOCKED_INPUT", "detail": "Live authority and hashes captured. Six candidates remain ASM. Fresh source-to-ROM baseline could not run without private ROM and pinned upstream/toolchain."},
+    {"id": "G64-002", "status": "RESEARCH_ONLY", "detail": "Added negative fixtures for duplicate claims, overlapping units and missing retained assembly markers. Existing checks cover changed patch hashes and function-only versus full-image evidence."},
+    {"id": "G64-003", "status": "SKIPPED_ALREADY_COMPLETE", "detail": "Architecture and executor protocol already define G0-G3 gates and the evidence-state progression. Reviewed against current proof code and recorded metadata."},
+    {"id": "G64-004", "status": "RESEARCH_ONLY", "detail": "Reviewed original resource unit and isolated wrapper candidates. Prior full-unit evidence remains historical and was not replayed without ROM/IDO."},
+    {"id": "G64-005", "status": "RESEARCH_ONLY", "detail": "Host callback/argument regression passed; no native original-unit compile or full-ROM gate."},
+    {"id": "G64-006", "status": "RESEARCH_ONLY", "detail": "Host callback mutation/dispatch regression passed; no native original-unit compile or full-ROM gate."},
+    {"id": "G64-007", "status": "BLOCKED_INPUT", "detail": "No complete current-source ROM build or inventory gate without private ROM, pinned upstream and IDO."},
+    {"id": "G64-008", "status": "RESEARCH_ONLY", "detail": "Reviewed menu research candidates and synthetic data layouts. No new native compile."},
+    {"id": "G64-009", "status": "RESEARCH_ONLY", "detail": "Menu host harness passed 90,000 synthetic cases. Prior unit-byte report was not replayed."},
+    {"id": "G64-010", "status": "BLOCKED_INPUT", "detail": "No five-function full-ROM promotion gate; published function count remains 142."}
+  ],
+  "commands": [
+    {"command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q", "result": "PASS: 106 tests"},
+    {"command": "python3 -m unittest tests.test_decomp_verify tests.test_decomp_batch tests.test_decomp_probe_integration tests.test_decomp_elf_layout tests.test_decomp_inventory tests.test_decomp_baseline_cache tests.test_pickup_placements -q", "result": "PASS: 58 tests"},
+    {"command": "python3 -m unittest decomp.test_prove_integrated_units decomp.test_prove_three_wrappers -q", "result": "PASS: 13 tests"},
+    {"command": "python3 -m unittest tests.test_decomp_verify -q", "result": "PASS: 17 tests after ownership regressions were added"},
+    {"command": "GCC C11 ASan/UBSan dispatch candidate harness", "result": "PASS: 30000 synthetic cases"},
+    {"command": "GCC C11 ASan/UBSan menu candidate harness", "result": "PASS: 80000 direct and 10000 nested synthetic cases"},
+    {"command": "git diff --check", "result": "PASS"}
+  ],
+  "promotions": 0,
+  "full_rom_proof": "NOT_RUN",
+  "remote_commit_sha": null
+}

@@ -146,6 +146,55 @@ class DecompVerificationTests(unittest.TestCase):
             path.write_text(json.dumps(manifest))
             with self.assertRaisesRegex(ValueError,'assembly placeholder'):load_manifest(path)
 
+    def test_manifest_ownership_rejects_duplicate_claims_and_overlapping_units(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'manifest.json'
+            duplicate=copy.deepcopy(manifest)
+            duplicate['units'][0]['functions'].append(
+                copy.deepcopy(duplicate['units'][0]['functions'][0]))
+            path.write_text(json.dumps(duplicate))
+            with self.assertRaisesRegex(ValueError,'duplicate function name'):
+                load_manifest(path)
+
+            overlapping=copy.deepcopy(manifest)
+            original=overlapping['units'][0]
+            overlapping['units'].append({
+                'source':'other.c',
+                'rom_start':original['rom_start']+4,
+                'rom_end':original['rom_end']+4,
+                'splat_original':'[0x10, asm]',
+                'splat_replacement':'[0x10, c, other]',
+                'functions':[],
+                'assembly_functions':[],
+            })
+            path.write_text(json.dumps(overlapping))
+            with self.assertRaisesRegex(ValueError,'Overlapping units'):
+                load_manifest(path)
+
+    def test_missing_retained_assembly_marker_is_rejected_before_staging(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            checkout=root/'candidate'
+            (checkout/'config/usa').mkdir(parents=True)
+            (checkout/'src').mkdir()
+            sources=root/'sources'
+            sources.mkdir()
+            config=checkout/'config/usa/splat.yaml'
+            config.write_text('[0x10, asm]\n')
+            name='func_80000010_10'
+            (sources/'unit.c').write_text('void function(void) {}\n')
+            manifest={'units':[{
+                'source':'unit.c',
+                'splat_original':'[0x10, asm]',
+                'splat_replacement':'[0x10, c, unit]',
+                'assembly_functions':[name],
+            }]}
+            with self.assertRaisesRegex(ValueError,'Undeclared assembly placeholder'):
+                apply_units(checkout,manifest,sources)
+            self.assertFalse((checkout/'src/unit.c').exists())
+            self.assertEqual(config.read_text(),'[0x10, asm]\n')
+
     def test_undeclared_placeholder_rejected_without_partial_application(self):
         with tempfile.TemporaryDirectory() as folder:
             checkout=Path(folder)/'candidate';(checkout/'config/usa').mkdir(parents=True)
