@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-034 recover paced command-walker CFG (RESEARCH_ONLY)
+
+- Fetched `origin/chatgptweb/decomp` and continued on `codex/decomp-100-task-plan` from matching local/remote SHA `60ee3af67994e5356a377744dffc03afa0469c48`. The verified ROM, pinned `mnsg` checkout and IDO compiler remain local and ignored.
+- Traced original `func_8003DE80_3EA80` from the pinned USA ROM: 232 bytes / 58 words at VMA `0x8003DE80` / ROM `0x3EA80`, SHA-256 `011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1`. Added a ROM-bound extent/word guard and documented the `bltzl` delay slot, signed `-1` sentinel, other-negative `DF98` delegation, nonnegative suppression/output loop, callback reread, dynamic repeat reloads, both return paths, and unreachable `0x8003DF10`.
+- Expanded the host contract to 11 explicit cases. The prior candidate and GOTO probe each passed 1,100 GCC ASan/UBSan cases. A deliberate stale-token mutant failed the callback-mutated-current-word assertion as intended.
+- Rebuilt the isolated candidate with pinned IDO 5.3 and the recorded `-O2 -mips2 -G 0 -non_shared` flags, then linked its object at `0x8003DE80` with the observed original helper/global addresses. Current function symbol is **220 bytes** (`.text` 224 bytes), not the older reported 228. The first linked mismatch is at `0x8003DE84` (saved-register scheduling); 36/56 available raw positions differ. The earlier report is retained as historical and is not reproduced by this build.
+- Validation: original extent guard passed 58 words and 24 control/callback anchors; the linked-text comparator reported 36/56 available words differing with the first mismatch at `0x8003DE84`; the focused original-MIPS test module passed 9 tests, the full decomp suite passed 139, and verifier tests passed 17. The task helper validates the 100-task stored ledger; it did not run a new ROM verifier. Full commands are in [`decomp/plans/execution/2026-11-11-g64-034-command-walker-cfg.json`](decomp/plans/execution/2026-11-11-g64-034-command-walker-cfg.json).
+- **Limits:** `func_8003DE80_3EA80` remains `GLOBAL_ASM`; only the isolated candidate was compiled. No real translation-unit integration, new complete-ROM build, inventory build, or in-game run occurred. The host mock exercises wrapper ordering and callback mutations, not retail helper semantics. ROM/compiler/object and mutant artifacts remain ignored.
+- **Next:** G64-035, compare bounded C layouts against the original `bltzl` delay slot and `$s0..$s3` lifetimes. Retain assembly ownership unless the native unit and complete-ROM gates pass.
+
 ## 2026-11-11 — G64-033 strengthen VM text-loop differential model (RESEARCH_ONLY)
 
 - Fetched `origin/chatgptweb/decomp` and continued on `codex/decomp-100-task-plan` from matching local/remote SHA `2b904009ef17df85b5422a32bdf7599a6b055ed1`. The verified decompressed USA ROM and compiler inputs remain local and ignored.

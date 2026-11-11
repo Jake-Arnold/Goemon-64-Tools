@@ -1,7 +1,13 @@
 /* Research-only negative-tail VM command walker layout probe.
- * Original USA func_8003DE80_3EA80 is 232 bytes. Isolated pinned IDO 5.3
- * produces 228 bytes, 8/35 directly comparable original word positions.
- * This is NOT an exact MIPS or full-ROM match. Do not integrate into script_vm.
+ * Original USA func_8003DE80_3EA80 is 232 bytes. An older probe report records
+ * a 228-byte candidate; the G64-034 rebuild with the recorded pinned IDO 5.3
+ * flags emits a 220-byte FUNC symbol (224-byte .text including tail padding).
+ * Its original-VMA replay first differs at 0x8003DE84. This is NOT an exact
+ * MIPS or full-ROM match. Do not integrate into script_vm.
+ * Preserve the signed -1 sentinel, delegation of every other negative token,
+ * suppression as a separate unchanged-cursor return, and the post-output
+ * reread of the current halfword before marker storage/cursor advancement.
+ * See VM_STREAM_MATCHING.md for the original-address CFG and limits.
  */
 typedef signed int s32; typedef signed short s16;
 extern s32 D_801C7798_1C8398, D_801C77A0_1C83A0;

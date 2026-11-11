@@ -124,7 +124,7 @@ made. See [`../execution/2026-11-11-g64-033-text-loop-differential.json`](../exe
 
 ### G64-034 — Recover command-walker CFG
 
-**Status:** PLANNED. **Dependencies:** G64-028.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-028.
 **Focus files:** `decomp/VM_STREAM_MATCHING.md`; `decomp/candidates/vm_command_walker_goto_probe.c`.
 
 **Architectural intent:** For 8003DE80_3EA80 retain signed halfword behavior and post-callback reread, negative-token handling and repeat suppression.
@@ -148,6 +148,19 @@ made. See [`../execution/2026-11-11-g64-033-text-loop-differential.json`](../exe
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-11):** Added the exact 232-byte ROM extent and 24 control /
+callback word guards to the existing original-MIPS checker. The paced-reader
+CFG now distinguishes signed `-1`, every other negative token, suppression,
+ordinary nonnegative output, callback mutation of the current halfword, and
+the repeat-setting reloads. Baseline and GOTO probe each passed 1,100
+ASan/UBSan host cases across 11 explicit scenarios; a cached-token mutant was
+rejected by the callback-reread case. A fresh pinned IDO compile emitted a
+220-byte function symbol / 224-byte `.text`; linked at the original VMA, its
+first difference is `0x8003DE84` and 36/56 available positional words differ.
+The older 228-byte result was not reproduced. The target remains `GLOBAL_ASM`;
+no full-unit integration or fresh whole-ROM/inventory run occurred. See
+[`../execution/2026-11-11-g64-034-command-walker-cfg.json`](../execution/2026-11-11-g64-034-command-walker-cfg.json).
 
 ### G64-035 — Fix command-walker delay slots
 

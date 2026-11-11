@@ -52,15 +52,60 @@ those exit loads. Preserve these observations while examining basic-block layout
 and temporary lifetimes; do not solve register differences with fabricated symbol
 aliases, changed external signatures or instruction patches.
 
+## G64-034 — paced-reader original CFG
+
+The pinned USA function occupies ROM `0x3EA80..0x3EB68`, VMA
+`0x8003DE80..0x8003DF68`, 232 bytes / 58 words. Its SHA-256 is
+`011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1` and the
+decompressed ROM SHA-1 is `6ea0ed71032ce08fc2745f412d84936382197494`. The
+manifest retains it as `GLOBAL_ASM` in `script_vm.c`. The direct caller is the
+DBEC call at `0x8003DC60`; DBEC stores the returned cursor at `0x8003DC6C`.
+The native frame is `0x28`, saving `$s0..$s3` and `$ra`. The pinned isolated
+IDO reference is `-O2 -mips2 -G 0 -non_shared`. An older probe ledger records
+228 compiled bytes / 8 of 35 direct positions; G64-034 could not reproduce
+that size with the same pinned compiler and tracked candidate. The fresh
+build emitted a 220-byte `FUNC` symbol in a 224-byte `.text` section, linked at
+the original VMA with the observed helper/global addresses. The first raw
+instruction mismatch is `0x8003DE84` (`sw $s3,0x20($sp)` original versus
+`sw $s2,0x1C($sp)` candidate). The positionally linked comparison differs at
+36 of 56 available words. See the execution ledger; no exact match is claimed.
+Re-run the private-ROM check and linked-text comparison with
+`python3 decomp/test_vm_control_decoder_original.py --paced-rom ROM_PATH --paced-candidate-text LINKED_TEXT_BIN`.
+
+| Block | Original VMA | Observed operations and edges |
+| --- | --- | --- |
+| Entry | `0x8003DE80..0x8003DEAC` | Reserve 0x28 bytes, save `$s0..$s3/$ra`, keep the cursor in `$s0`, owner argument in `$s1`, work-record base in `$s3`, and repeat-setting base in `$s2`. |
+| Token classify | `0x8003DEB0..0x8003DEB8` | `lh` sign-extends `*cursor`; `bltzl` branches to `DF14` for any negative value. Its delay slot sets `$v1=-1` only on the taken edge; for nonnegative input that slot is annulled. |
+| Repeat suppression | `0x8003DEBC..0x8003DEE4` | Call `DF68`. A nonzero result clears marker `+8`, reloads `D_801C7798`, copies it to `D_801C77A0`, and returns the unchanged cursor. A zero result falls into output. |
+| Output and post-call reload | `0x8003DEE8..0x8003DF00` | `D060` receives the owner and the signed halfword loaded in the call delay slot. After the callback, reload `D_801C7798`, reread `*cursor`, advance cursor by 2, then store the reread halfword to marker `+8` in the `beqz` delay slot. If the reloaded repeat value is zero, loop to `DEB0`; otherwise return the advanced cursor after copying the value to `D_801C77A0`. |
+| Negative split | `0x8003DF14..0x8003DF18` | Compare the original signed token with `-1`; the `move a0,$s1` delay slot executes on both edges. `-1` continues to the sentinel return; every other negative value delegates to `DF98`. |
+| `-1` sentinel exit | `0x8003DF1C..0x8003DF24` | Clear marker `+8`, set return value to null in the branch delay slot, and return without calling `DF98` or copying the repeat setting. |
+| Other negative exit | `0x8003DF28..0x8003DF48` | Clear marker before calling `DF98` with owner and original cursor. After return, reload `D_801C7798`, preserve the delegated cursor in `$s0`, copy the setting to `D_801C77A0`, and return the delegated cursor, which may be null. |
+| Shared epilogues | `0x8003DF48..0x8003DF64` | Return the cursor in `$s0`; the sentinel path instead reaches `DF4C` with `$v0=0`. Restore saved registers and frame. |
+
+`0x8003DF10` is a `li $v1,-1` with no reachable predecessor in this function:
+the immediately preceding `b DF48` at `DF08` is unconditional and its delay
+slot is `DF0C`; the likely negative branch targets `DF14`. No behavior is
+assigned to this dead instruction.
+
+`test_vm_command_walker_probe.c` now exercises `-1`, several other negative
+values (including signed boundaries and a decoder-null result), nonnegative
+zero/maximum values, suppression, repeat-driven looping, decoder mutation of
+the repeat global, and output-callback mutation of the current command word.
+These mock callbacks establish wrapper ordering only; they do not assign
+meaning to helper commands or replace a MIPS match. The original function
+remains assembly. See
+[`plans/execution/2026-11-11-g64-034-command-walker-cfg.json`](plans/execution/2026-11-11-g64-034-command-walker-cfg.json)
+for the ROM-bound disassembly, tests and unchanged ownership evidence.
+
 ## Next bounded experiment
 
-Use the correct-length do-while draft and explicitly compare block ordering,
-saved-register allocation and the two exit reloads in the full translation unit.
-Preserve known signatures and callback ordering while changing one C structure
-at a time. Run synthetic cases again for any candidate, then require original
-function size, guest symbol, code bytes and full-ROM identity through a fresh
-`verify.py` run before removing the assembly placeholder or increasing totals.
-The comparator and command decoder remain independently unresolved.
+G64-035 compares bounded C shapes against the original `bltzl` delay-slot and
+`$s0..$s3` lifetimes. Preserve the 232-byte original extent, callback order and
+all independent exits; do not accept a size-only match. Any later promotion
+still requires the real translation unit, exact original-address instructions,
+and a fresh complete-ROM/inventory gate. The comparator and command decoder
+remain independently unresolved.
 
 ## Related matching stream implementation
 

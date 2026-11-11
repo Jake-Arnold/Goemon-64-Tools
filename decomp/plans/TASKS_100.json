@@ -1336,7 +1336,7 @@
       "ordinal": 34,
       "phase": 4,
       "title": "Recover command-walker CFG",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-028"
       ],

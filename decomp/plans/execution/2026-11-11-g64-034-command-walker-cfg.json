@@ -1,0 +1,202 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-034",
+  "title": "Recover command-walker CFG",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "selected_repo_skills": [
+    "goemon-task-brief",
+    "goemon-vm-stream",
+    "goemon-original-mips"
+  ],
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "60ee3af67994e5356a377744dffc03afa0469c48",
+    "target_head_at_task_start": "60ee3af67994e5356a377744dffc03afa0469c48",
+    "fetched_before_work": true,
+    "worktree_clean_at_start": true,
+    "current_agents_md_confirmed": true
+  },
+  "local_private_inputs": {
+    "decompressed_rom": "practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+    "rom_size_bytes": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "pinned_mnsg_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "original_extent_and_build_artifacts": "ignored practice/diagnostics/decomp-100-inputs/g64-034/",
+    "private_inputs_published": false
+  },
+  "original_function": {
+    "name": "func_8003DE80_3EA80",
+    "manifest_ownership": "GLOBAL_ASM in decomp/script_vm.c",
+    "direct_caller": "func_8003DBEC_3E7EC at 0x8003DC60; returned cursor stored at 0x8003DC6C",
+    "vma": "0x8003DE80",
+    "rom_offset": "0x3EA80",
+    "end_exclusive_vma": "0x8003DF68",
+    "size_bytes": 232,
+    "words": 58,
+    "frame_bytes": 40,
+    "saved_registers": ["s0", "s1", "s2", "s3", "ra"],
+    "sha256": "011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1",
+    "native_compile_flags": ["-O2", "-mips2", "-G", "0", "-non_shared"],
+    "entry_instruction": "lh signed 16-bit token at cursor",
+    "negative_split": "bltzl at 0x8003DEB4; delay slot 0x8003DEB8 initializes -1 only on the taken edge",
+    "post_callback_reread": "D060 call at 0x8003DEE8; current halfword reloaded at 0x8003DEF4, cursor advanced at 0x8003DEF8, marker stored in branch delay slot 0x8003DF00",
+    "sentinel_and_delegate": "-1 clears marker and returns null without repeat copy; all other negative signed halfwords clear marker, call DF98, reload repeat setting and return DF98's pointer"
+  },
+  "implementation": {
+    "candidate_source": "decomp/candidates/vm_command_walker_goto_probe.c",
+    "candidate_source_sha256": "420c8926215ea45bb72028a9f322fa46f87c040a4f85bbb6dc86b27e57659d59",
+    "host_test_source": "decomp/test_vm_command_walker_probe.c",
+    "host_test_sha256": "b233b05d6937ff1bb37a1716987b6a0643cf3405cea8427573e01ef0dfa66da5",
+    "rom_guard_source": "decomp/test_vm_control_decoder_original.py",
+    "rom_guard_sha256": "e9ae5c073ef190d0a3c8455b543c55aa05abd0841d9fade8ac01fcb808c16ac3",
+    "cfg_notes": [
+      "-1 sentinel is an independent null return and does not update repeat count",
+      "Other negative values delegate to DF98; wrapper does not assign command meaning",
+      "Nonnegative values call suppression gate before output; suppression returns unchanged cursor",
+      "Output argument is loaded before D060; the current halfword is reloaded after the callback for marker storage",
+      "Repeat setting is reloaded after D060 and after DF98",
+      "0x8003DF10 is unreachable: unconditional branch at 0x8003DF08 skips it and negative likely branch targets 0x8003DF14"
+    ],
+    "host_scenarios": [
+      "-1 sentinel before suppression; repeat count preserved",
+      "-2 delegated to DF98",
+      "-71 recognized negative boundary delegated opaquely",
+      "-72 unrecognized negative delegated",
+      "-32768 signed high-bit word delegated as negative",
+      "-32 delegated decoder may return null and mutate repeat setting",
+      "nonnegative suppression returns the unchanged cursor",
+      "zero and 32767 take the nonnegative output path",
+      "D060 callback mutates the current halfword before marker reread",
+      "ordinary words continue until callback sets repeat",
+      "DF98 callback changes the repeat setting before wrapper reload"
+    ],
+    "host_runs": {
+      "baseline_source_cases": 1100,
+      "goto_probe_cases": 1100,
+      "scenarios_per_source": 11,
+      "sanitizers": ["AddressSanitizer", "UndefinedBehaviorSanitizer"]
+    },
+    "negative_control": {
+      "mutant": "cache token before D060 and store cached token instead of rereading command memory",
+      "target_scenario": "output callback mutates current halfword before marker reread",
+      "rejected": true,
+      "expected_nonzero_exit_code": 134,
+      "observed_failure": "scenario output callback mutates current halfword before marker reread failed at marker assertion"
+    }
+  },
+  "isolated_native_rebuild": {
+    "compiler": "pinned IDO 5.3",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "compile_command": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/tools/ido-5.3/cc -c -O2 -mips2 -G 0 -non_shared -o practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.o decomp/candidates/vm_command_walker_goto_probe.c",
+    "object_sha256": "430a30b8989061e87e581c19a375ddf02dc12c89d597d8c08aa862d5a2fef3d7",
+    "function_symbol_size_bytes": 220,
+    "object_text_section_size_bytes": 224,
+    "original_function_size_bytes": 232,
+    "gnu_linker": "GNU MIPS Binutils 2.45.90.20260125",
+    "linked_at_original_vma": true,
+    "link_command": "mips-linux-gnu-ld --build-id=none -Ttext=0x8003de80 -e func_8003DE80_3EA80 --defsym=func_8003DF68_3EB68=0x8003DF68 --defsym=func_8000D060_DC60=0x8000D060 --defsym=func_8003DF98_3EB98=0x8003DF98 --defsym=D_801C77E8_1C83E8=0x801C77E8 --defsym=D_801C7798_1C8398=0x801C7798 --defsym=D_801C77A0_1C83A0=0x801C77A0 -o practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.elf practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.o",
+    "objcopy_command": "mips-linux-gnu-objcopy -O binary --only-section=.text practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.elf practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.text.bin",
+    "resolved_symbol_addresses": {
+      "func_8003DF68_3EB68": "0x8003DF68",
+      "func_8000D060_DC60": "0x8000D060",
+      "func_8003DF98_3EB98": "0x8003DF98",
+      "D_801C77E8_1C83E8": "0x801C77E8",
+      "D_801C7798_1C8398": "0x801C7798",
+      "D_801C77A0_1C83A0": "0x801C77A0"
+    },
+    "linked_text_sha256": "04225928c9b9c0ef363691a5635e831aaf70507fe083bbe4504ade2a23336cc9",
+    "position_comparison": {
+      "available_words": 56,
+      "mismatches": 36,
+      "first_mismatch_vma": "0x8003DE84",
+      "original": "0xAFB30020 sw $s3,0x20($sp)",
+      "candidate": "0xAFB2001C sw $s2,0x1C($sp)",
+      "classification": "saved-register scheduling/codegen mismatch; isolated object differs in extent and branch layout"
+    },
+    "prior_result_discrepancy": "results/vm_command_walker_goto_probe.json records 228 bytes / 8 of 35 positions; this rebuild with the recorded compiler and flags emits 220-byte FUNC / 224-byte .text. Keep the older report as historical; do not use its size without reproducing its original artifact."
+  },
+  "validation": [
+    {
+      "command": "python3 decomp/test_vm_control_decoder_original.py --paced-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --paced-candidate-text practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.text.bin",
+      "exit_code": 0,
+      "result": "58 ROM words, 24 exact control/callback anchors passed; 36/56 linked words differ, first at 0x8003DE84"
+    },
+    {
+      "command": "python3 -m unittest decomp.test_vm_control_decoder_original -q",
+      "exit_code": 0,
+      "tests": 9
+    },
+    {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 0,
+      "tests": 139
+    },
+    {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "exit_code": 0,
+      "tests": 17
+    },
+    {
+      "command": "python3 -m decomp.skill_context --validate",
+      "exit_code": 0,
+      "result": "CONSISTENT_STORED_REPORTS; task_count=100; no new verifier run"
+    },
+    {
+      "command": "cc -std=c11 -O1 -Wall -Wextra -Werror -fno-omit-frame-pointer -fsanitize=address,undefined decomp/test_vm_command_walker_probe.c -o practice/diagnostics/decomp-100-inputs/g64-034/vm_walker_baseline_asan",
+      "exit_code": 0
+    },
+    {
+      "command": "ASAN_OPTIONS=detect_leaks=0 practice/diagnostics/decomp-100-inputs/g64-034/vm_walker_baseline_asan",
+      "exit_code": 0,
+      "result": "1100 cases across 11 explicit scenarios passed"
+    },
+    {
+      "command": "cc -std=c11 -O1 -Wall -Wextra -Werror -fno-omit-frame-pointer -fsanitize=address,undefined -DGOEMON_VM_WALKER_SOURCE='\"candidates/vm_command_walker_goto_probe.c\"' decomp/test_vm_command_walker_probe.c -o practice/diagnostics/decomp-100-inputs/g64-034/vm_walker_goto_asan",
+      "exit_code": 0
+    },
+    {
+      "command": "ASAN_OPTIONS=detect_leaks=0 practice/diagnostics/decomp-100-inputs/g64-034/vm_walker_goto_asan",
+      "exit_code": 0,
+      "result": "1100 cases across 11 explicit scenarios passed"
+    },
+    {
+      "command": "cc -std=c11 -O1 -Wall -Wextra -Werror -fno-omit-frame-pointer -fsanitize=address,undefined -DGOEMON_VM_WALKER_SOURCE='\"/home/jake/.codex/worktrees/decomp-100-fresh/Goemon-64-Tools/practice/diagnostics/decomp-100-inputs/g64-034/vm_walker_stale_token_mutant.c\"' decomp/test_vm_command_walker_probe.c -o practice/diagnostics/decomp-100-inputs/g64-034/vm_walker_stale_token_mutant_asan",
+      "exit_code": 0
+    },
+    {
+      "command": "ASAN_OPTIONS=detect_leaks=0 practice/diagnostics/decomp-100-inputs/g64-034/vm_walker_stale_token_mutant_asan",
+      "exit_code": 134,
+      "result": "expected failure at the callback-mutated current-word marker assertion; mutant rejected"
+    },
+    {
+      "command": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/tools/ido-5.3/cc -c -O2 -mips2 -G 0 -non_shared -o practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.o decomp/candidates/vm_command_walker_goto_probe.c",
+      "exit_code": 0,
+      "result": "220-byte FUNC symbol"
+    },
+    {
+      "command": "mips-linux-gnu-ld --build-id=none -Ttext=0x8003de80 -e func_8003DE80_3EA80 --defsym=func_8003DF68_3EB68=0x8003DF68 --defsym=func_8000D060_DC60=0x8000D060 --defsym=func_8003DF98_3EB98=0x8003DF98 --defsym=D_801C77E8_1C83E8=0x801C77E8 --defsym=D_801C7798_1C8398=0x801C7798 --defsym=D_801C77A0_1C83A0=0x801C77A0 -o practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.elf practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.o",
+      "exit_code": 0
+    },
+    {
+      "command": "mips-linux-gnu-objcopy -O binary --only-section=.text practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.elf practice/diagnostics/decomp-100-inputs/g64-034/vm_command_walker_goto_final.text.bin",
+      "exit_code": 0,
+      "result": "224-byte linked .text; SHA-256 04225928c9b9c0ef363691a5635e831aaf70507fe083bbe4504ade2a23336cc9"
+    }
+  ],
+  "proof_and_limits": {
+    "stored_full_rom_proof": "148/148 claims, 11020 matched bytes, 161 combined C, 7215 ASM, 7376 identified entries; read from existing stored report",
+    "fresh_original_rom_build": "NOT_RUN",
+    "fresh_inventory_build": "NOT_RUN",
+    "real_translation_unit_integration": "NOT_RUN; only the isolated candidate was compiled and linked",
+    "in_game_verification": "NOT_RUN",
+    "manifest_sha256_unchanged": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "script_vm_c_sha256_unchanged": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "production_candidate_semantics_changed": false,
+    "matching_c_promotion": false,
+    "task_classification": "RESEARCH_ONLY"
+  },
+  "next": "Execute G64-035: compare bounded command-walker C shapes with the original bltzl delay slot and saved-register lifetimes."
+}

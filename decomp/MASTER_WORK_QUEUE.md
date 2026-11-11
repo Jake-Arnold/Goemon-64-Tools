@@ -30,8 +30,10 @@ original assembly ownership is unchanged. G64-032 recorded the 0x50 versus
 0x48 frame and five nonmatching native source-shape trials in
 `VM_TEXT_LOOP_FRAME.md`. G64-033 expanded the MIPS/host differential model to
 ten fixed edge cases plus 10,000 seeded cases and killed four targeted
-signedness, bound and alias mutants; it made no C promotion. Continue with
-G64-034.
+signedness, bound and alias mutants; it made no C promotion. G64-034 recovered
+the DE80 signed-token CFG, expanded ROM-bound and host tests, and corrected the
+current pinned IDO result to a 220-byte symbol with a first mismatch at
+`0x8003DE84`. Continue with G64-035.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 
@@ -84,7 +86,7 @@ Follow [NEXT_TEN_MAIN_SEGMENT.md](NEXT_TEN_MAIN_SEGMENT.md) for **ten fresh, sti
 | P0 | Uninterrupted 142-function formal verifier | Restore exact latest branch/toolchain/baseline and execute `decomp.verify` to completion. Refresh proof provenance only if independently rebuilt output is exact. |
 | P2 | VM text loop `func_8003DBEC_3E7EC` | Separate volatile-work/explicit-script-argument research variant now compiles to the original 472-byte symbol with 53/95 comparable nonrelocation instruction positions equal (up from the terminal-state switch draft at 47/95); both variants remain unpromoted, and the new version passed 10,000 synthetic original-MIPS/host-C cases; original-MIPS/host-C differential harness passes 10,000 synthetic cases over two seeds (not an exact instruction match); see candidate and synthetic tests. Earlier 480-byte draft differs in 101 words. Preserve the confirmed distinction between global pointer storage at 0x801C77E8 (with independent halfword at global +0xA) and the script pointer *value* in its first word; also preserve two unsigned controller halfwords, account for six branch-likely delay slots, two counters, dynamically reloaded outer bound, and callback early-return path. This is **static analysis, not a verified match**. |
 | P3 | VM loader `func_8003D468_3E068` | Approximately 548-byte original; an old candidate matched 118/137 instruction positions only. Resolve real resource-prefix declarations, address loads, and register allocation. |
-| P3 | VM command walker `func_8003DE80_3EA80` | Original 232 bytes; research-only out-of-line negative-token variant compiles 228 bytes, improving directly comparable positions **3/33 → 8/35** without matching the original `bltzl` delay or `$s1/$s2/$s3` lifetimes. Two 1,200-case synthetic host runs passed; no promotion. See `candidates/vm_command_walker_goto_probe.c` and `results/vm_command_walker_goto_probe.json`. |
+| P3 | VM command walker `func_8003DE80_3EA80` | Original 232 bytes; the older GOTO-probe ledger reports 228 bytes / 8 of 35 direct positions, but G64-034's rebuild with the pinned IDO emits a 220-byte symbol / 224-byte `.text`; at the original VMA it first differs at `0x8003DE84` and has 36/56 raw positional word differences. Baseline and probe pass 1,100 ASan/UBSan host cases each across 11 explicit scenarios; a stale-token mutant is rejected. No promotion; see `VM_STREAM_MATCHING.md` and the G64-034 execution ledger. |
 | P2 | VM resource halfword lookup `func_8003F038_3FC38` | Research-only **196-byte original / 196-byte native IDO** `volatile s32 half` variant, improves to **25/42 direct comparable MIPS positions**, 3/3 matching relocation shapes, 4 relocation-layout differences; 3,000 sanitizer-tested host cases passed. Still UNPROMOTED; resolve original `$v1` index vs candidate `$t6` and stack slot allocation. |
 | P3 | VM digit formatter `func_8003F480_40080` | **NEW research-only 164-byte C draft**, original 41 words; 9/41 relocation-masked positional words, only 3/19 directly comparable non-relocation words; 1,000 host cases and 15 original-assembly guards passed. Need reproduce `bnel` delay-slot and `sprintf` argument-load scheduling. **Unpromoted**. |
 | Completed | Choice edge `func_8003D0B0_3DCB0` | Promoted 204 original MIPS bytes at `0x8003D0B0`; fresh regenerated 2,331-object build produced exactly matching 32 MiB ROM and a 141-function/7,376-entry verified inventory. 100 host cases passed; uninterrupted formal verifier remains pending. |
