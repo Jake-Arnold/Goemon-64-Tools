@@ -867,12 +867,22 @@
           "name": "func_80011B58_12758",
           "rom_offset": 75608,
           "size": 8
+        },
+        {
+          "name": "func_80011B60_12760",
+          "rom_offset": 75616,
+          "size": 84
+        },
+        {
+          "name": "func_80011BB4_127B4",
+          "rom_offset": 75700,
+          "size": 80
+        },
+        {
+          "name": "func_80011C04_12804",
+          "rom_offset": 75780,
+          "size": 84
         }
-      ],
-      "assembly_functions": [
-        "func_80011B60_12760",
-        "func_80011BB4_127B4",
-        "func_80011C04_12804"
       ]
     },
     {
@@ -1019,14 +1029,20 @@
       ],
       "functions": [
         {
+          "name": "func_80034ED4_35AD4",
+          "rom_offset": 219860,
+          "size": 36
+        },
+        {
           "name": "func_80034EF8_35AF8",
           "rom_offset": 219896,
           "size": 40
+        },
+        {
+          "name": "func_80034F20_35B20",
+          "rom_offset": 219936,
+          "size": 36
         }
-      ],
-      "assembly_functions": [
-        "func_80034ED4_35AD4",
-        "func_80034F20_35B20"
       ]
     },
     {
@@ -1077,10 +1093,12 @@
           "name": "func_80035064_35C64",
           "rom_offset": 220260,
           "size": 48
+        },
+        {
+          "name": "func_80035094_35C94",
+          "rom_offset": 220308,
+          "size": 48
         }
-      ],
-      "assembly_functions": [
-        "func_80035094_35C94"
       ]
     },
     {

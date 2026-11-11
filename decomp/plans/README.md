@@ -37,6 +37,6 @@
 4. At every phase boundary run G64-099 rebaseline. Live manifest/results override this plan's historical numeric assumptions.
 5. When a phase is blocked, update the task ledger with exact failure evidence and proceed to an independent work unit; leave ASM intact.
 
-**Current authoritative published matching claim:** 142 reconstructed C / 10,652 bytes, 155 total C, 7,221 ASM / 7,376 identified. Conditional initial milestones: resource pair 144/10,724; menu trio 147/10,972; object 148/11,020; four short additional functions 152/11,180. These are not current claims. Neither a successful host test, isolated match, a correct function size, nor a published plan can increase the counts.
+**Current authoritative published matching claim (2026-11-11):** 148 reconstructed C / 11,020 matched bytes, 161 total C, 7,215 ASM / 7,376 identified entries. The six resource, menu and object functions passed integrated native-unit and full-ROM gates; `results/combined.json` records the exact 33,554,432-byte image comparison. The four short additional functions remain unpromoted until their own original-unit and full-ROM evidence is published. Neither a host test, isolated match, correct function size, nor plan status can increase the counts.
 
 **Publication boundary:** No proprietary ROM, asset, generated assembly, binary, private memory, or user-specific path enters this branch. No changes to main, no force-push.

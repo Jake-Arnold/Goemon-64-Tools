@@ -1,0 +1,82 @@
+{
+  "format": "goemon-task-execution-v1",
+  "plan": "decomp/plans/TASKS_100.json",
+  "task_ids": [
+    "G64-001",
+    "G64-002",
+    "G64-003",
+    "G64-004",
+    "G64-005",
+    "G64-006",
+    "G64-007",
+    "G64-008",
+    "G64-009",
+    "G64-010"
+  ],
+  "target_branch": "chatgptweb/decomp",
+  "workspace_branch": "codex/decomp-100-task-plan",
+  "starting_sha": "3b1f56aef7a2e634cc80d3cdd332c47d6368082c",
+  "initial_worktree_state": "clean",
+  "private_inputs": {
+    "worktree_relative_root": "practice/diagnostics/decomp-100-inputs/",
+    "git_ignored": true,
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "ido_5_3_directory_sha256": "8ca550d30c1fef7c14b1470a1ef93cc6d415a507c6e18c04a7bfeaf8016a7b89",
+    "mips_binutils": "system GNU Binutils 2.45.90.20260125"
+  },
+  "baseline_replay": {
+    "status": "PASSED_G2",
+    "matching_functions": 142,
+    "matched_function_bytes": 10652,
+    "full_rom_bytes": 33554432,
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "inventory": {
+      "combined_c": 155,
+      "assembly": 7221,
+      "identified_entries": 7376
+    }
+  },
+  "milestone_proofs": [
+    {
+      "unit": "resource_dispatch",
+      "unit_bytes": "112/112",
+      "matching_functions": 144,
+      "matched_function_bytes": 10724,
+      "full_rom_match": true,
+      "inventory": {"combined_c": 157, "assembly": 7219, "identified_entries": 7376}
+    },
+    {
+      "unit": "empty_menu_hook",
+      "unit_bytes": "256/256",
+      "matching_functions": 147,
+      "matched_function_bytes": 10972,
+      "full_rom_match": true,
+      "inventory": {"combined_c": 160, "assembly": 7216, "identified_entries": 7376}
+    }
+  ],
+  "task_results": [
+    {"id": "G64-001", "status": "PASSED_G2", "detail": "Fresh 142-function baseline reproduced, followed by current full-ROM proofs; private inputs are present under the ignored worktree-relative directory."},
+    {"id": "G64-002", "status": "PASSED_G2", "detail": "Manifest claim ownership negative cases cover duplicate claims, overlaps, retained assembly markers and hash-pinned existing-source patches; verifier tests passed."},
+    {"id": "G64-003", "status": "SKIPPED_ALREADY_COMPLETE", "detail": "Existing G0-G3 proof tiers and state progression were reviewed and retained."},
+    {"id": "G64-004", "status": "PASSED_G2", "detail": "Original resource ABI and current resource translation-unit boundaries reviewed; both wrapper candidates pass integrated IDO and G2 proof."},
+    {"id": "G64-005", "status": "PASSED_G2", "detail": "func_80034ED4_35AD4 is promoted at 36 exact original bytes."},
+    {"id": "G64-006", "status": "PASSED_G2", "detail": "func_80034F20_35B20 is promoted at 36 exact original bytes; the 40-byte sibling remains unchanged."},
+    {"id": "G64-007", "status": "PASSED_G2", "detail": "The complete 112-byte resource translation unit and full ROM passed; inventory now reports 144 matching functions."},
+    {"id": "G64-008", "status": "PASSED_G2", "detail": "Menu global widths, offsets, pointer guards and nested pointer reads were verified against original-address IDO output."},
+    {"id": "G64-009", "status": "PASSED_G2", "detail": "Three menu replacements are integrated in original source order; the complete 256-byte unit passed."},
+    {"id": "G64-010", "status": "PASSED_G2", "detail": "Complete ROM and inventory passed after menu integration; inventory reports 147 matching functions and 160 combined C entries."}
+  ],
+  "validation": {
+    "decomp_python_tests": "PASS: 114 tests",
+    "verifier_inventory_batch": "PASS: 60 tests",
+    "verifier_focused_tests": "PASS: 17 tests",
+    "focused_integrated_wrapper_overlay_tests": "PASS: 32 tests",
+    "overlay_manifest_tests": "PASS: 8 tests",
+    "host_and_in_game": "Host regression tests are synthetic; no in-game testing"
+  },
+  "promotions": 5,
+  "full_rom_proof": "PASSED_G2",
+  "next": "Continue G64-015 through G64-018; preserve each original ASM placeholder unless its actual source unit and full-ROM proof pass."
+}

@@ -1,12 +1,12 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-10T15:17:22.888987+00:00",
+  "started_utc": "2026-11-11T15:06:12.655783+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
   "verifier_source_sha256_lf": "d84f22751fe74d1006399a466752f3805c1764f6b547b63fe82ffba9d62b5174",
   "tool_versions": {
-    "uv": "uv 0.13.6 (x86_64-unknown-linux-gnu)",
+    "uv": "uv 0.13.7 (x86_64-unknown-linux-gnu)",
     "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
     "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125"
   },
@@ -56,9 +56,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 142,
-    "claimed_functions": 142,
-    "matched_function_bytes": 10652,
+    "matched_functions": 148,
+    "claimed_functions": 148,
+    "matched_function_bytes": 11020,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1060,6 +1060,33 @@
         "candidate_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054"
       },
       {
+        "name": "func_80011B60_12760",
+        "size": 84,
+        "guest_address": "0x80011B60",
+        "rom_offset": "0x12760",
+        "matched": true,
+        "expected_sha256": "5573013c23b198d920562b122776d0d45e5e9d999bd2bce92cf2051493652ec6",
+        "candidate_sha256": "5573013c23b198d920562b122776d0d45e5e9d999bd2bce92cf2051493652ec6"
+      },
+      {
+        "name": "func_80011BB4_127B4",
+        "size": 80,
+        "guest_address": "0x80011BB4",
+        "rom_offset": "0x127B4",
+        "matched": true,
+        "expected_sha256": "e001c012b652a5dadd7923706e8728b51a3bce9203c0f0a2130114b831524a52",
+        "candidate_sha256": "e001c012b652a5dadd7923706e8728b51a3bce9203c0f0a2130114b831524a52"
+      },
+      {
+        "name": "func_80011C04_12804",
+        "size": 84,
+        "guest_address": "0x80011C04",
+        "rom_offset": "0x12804",
+        "matched": true,
+        "expected_sha256": "72715c034f10313d627651394040a836581fed4a3fdda8241556bd38268055bb",
+        "candidate_sha256": "72715c034f10313d627651394040a836581fed4a3fdda8241556bd38268055bb"
+      },
+      {
         "name": "func_8000631C_6F1C",
         "size": 40,
         "guest_address": "0x8000631C",
@@ -1249,6 +1276,15 @@
         "candidate_sha256": "6a781e81128fd20b509be95d0f3065a75d6080d4ac430412e742a5a1cc09311e"
       },
       {
+        "name": "func_80034ED4_35AD4",
+        "size": 36,
+        "guest_address": "0x80034ED4",
+        "rom_offset": "0x35AD4",
+        "matched": true,
+        "expected_sha256": "b6e4ba1efa16865b5ae60da5cb79335e06098a2e2771be5b53cc99252d21531a",
+        "candidate_sha256": "b6e4ba1efa16865b5ae60da5cb79335e06098a2e2771be5b53cc99252d21531a"
+      },
+      {
         "name": "func_80034EF8_35AF8",
         "size": 40,
         "guest_address": "0x80034EF8",
@@ -1256,6 +1292,15 @@
         "matched": true,
         "expected_sha256": "fae0e2e87ddd776f87a9ec625afc54f43f59d28bff15c7e2c917425ac065e22a",
         "candidate_sha256": "fae0e2e87ddd776f87a9ec625afc54f43f59d28bff15c7e2c917425ac065e22a"
+      },
+      {
+        "name": "func_80034F20_35B20",
+        "size": 36,
+        "guest_address": "0x80034F20",
+        "rom_offset": "0x35B20",
+        "matched": true,
+        "expected_sha256": "e014867b2e08c89e528e37e0545ac991cd13ce8c105395bffee9be375c9e555e",
+        "candidate_sha256": "e014867b2e08c89e528e37e0545ac991cd13ce8c105395bffee9be375c9e555e"
       },
       {
         "name": "func_80035044_35C44",
@@ -1283,6 +1328,15 @@
         "matched": true,
         "expected_sha256": "0af637973797a32cd3f497a475d0402b64582558a3a909b7f6f77e3f737a78ab",
         "candidate_sha256": "0af637973797a32cd3f497a475d0402b64582558a3a909b7f6f77e3f737a78ab"
+      },
+      {
+        "name": "func_80035094_35C94",
+        "size": 48,
+        "guest_address": "0x80035094",
+        "rom_offset": "0x35C94",
+        "matched": true,
+        "expected_sha256": "7f8f2a83dbc5179d76609db3b186ea481e9aa78bd0b1e6f46ceb798637fe0c36",
+        "candidate_sha256": "7f8f2a83dbc5179d76609db3b186ea481e9aa78bd0b1e6f46ceb798637fe0c36"
       },
       {
         "name": "func_800362DC_36EDC",
@@ -1389,17 +1443,11 @@
     "func_8001FA80_20680",
     "func_8000702C_7C2C",
     "func_80007160_7D60",
-    "func_80011B60_12760",
-    "func_80011BB4_127B4",
-    "func_80011C04_12804",
     "func_80006220_6E20",
     "func_80006274_6E74",
     "func_80006298_6E98",
     "func_800030F0_3CF0",
     "func_8000394C_454C",
-    "func_80034ED4_35AD4",
-    "func_80034F20_35B20",
-    "func_80035094_35C94",
     "func_80036308_36F08",
     "func_80036388_36F88",
     "func_800363F4_36FF4",
@@ -1433,13 +1481,13 @@
     "float_state.c": "2ac652d7af8475af82c8b71b26209c012d0f3056c3847325932f9c66d6b4a42b",
     "rotation_angles.c": "80357db43c81ae9d794f95da4e2e836dd9f729f083b3204c5e46d8d641fb947e",
     "scheduler_queue.c": "4fc57d559824dc05ce75ed0c997d17bd5b20973ccd8b0cf87e6e64a8b8173312",
-    "empty_menu_hook.c": "24e3e52a9b17fbeae1e25c1414196b081274f954ca73aa266af9d54c66a10899",
+    "empty_menu_hook.c": "fb57ddb8fce78ac1fd6ee4998593bc4e93b8e5ad58ff8d51f6ce322bd1ec38b5",
     "state_predicate.c": "9a6bfa882a1c7f366a602002701f5142ad47c856cd7fdc687be7c4c126b022d3",
     "transition_state.c": "87cfc2d37719940f71e20dd747ac3d098477590d442dcd6f8df6d58cc2611006",
-    "resource_dispatch.c": "7a0e57acab49067a0239f09f4bf322bcacb88de8ff6cffc20ffbb7ff336b8a9e",
+    "resource_dispatch.c": "449928828c8253d9a6b1e68c35195ec2d67518c8c1e78cce069dc7e61fd19a19",
     "resource_forward.c": "2a84b51e305242a08bb1e80a8187fe9658b14579f0c76439c7da07cf56a379d6",
     "resource_callback.c": "30a779ca1f372a887cb9b310966741a1a24242190775508eb9fbb2ac2d683e30",
-    "object_dispatch.c": "1fd7177d664057435538ccd6596525f32b2e95419f28ac59e1ecbda6f21804f1",
+    "object_dispatch.c": "e2d6db8cde2068eb725e28bdbfade9a3a49bc581d8694ffa3fb961692dec9c39",
     "object_flags.c": "4cf3a5657c15ea6cb3ec07e4e5006ddc60b3f1d3a4c5482111fdafa9768115d0",
     "default_entrance.c": "38df36c1c09deda054d5879c4dd610a110e445bc1874302dff75a39dffaf2eb0",
     "file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
@@ -1451,6 +1499,6 @@
     "default_entrance.h": "3d82c004281d4a33d8ddb39a39031f24899d0b39323c3a4904e4169429440568",
     "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63"
   },
-  "ended_utc": "2026-11-10T15:17:52.567935+00:00",
+  "ended_utc": "2026-11-11T15:06:41.199099+00:00",
   "formal_verifier_run_completed": true
 }

@@ -19,7 +19,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-011 — Classify object mismatch
 
-**Status:** PLANNED. **Dependencies:** G64-001, G64-003.
+**Status:** PASSED_G2. **Dependencies:** G64-001, G64-003.
 **Focus files:** `decomp/object_dispatch.c`; `decomp/candidates/integrated_object_dispatch_probe.c`; `decomp/results/next_twenty_execution_20261110.json`.
 
 **Architectural intent:** Compare original object_dispatch.c pair with integrated_object_dispatch_probe.c; annotate exact swapped instructions at 0x35C9C/0x35CA0.
@@ -46,7 +46,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-012 — Recover object ABI and liveness
 
-**Status:** PLANNED. **Dependencies:** G64-011.
+**Status:** PASSED_G2. **Dependencies:** G64-011.
 **Focus files:** `decomp/object_dispatch.c`; `decomp/candidates/object_dispatch_c94.c`; `decomp/test_three_dispatch_wrappers.c`.
 
 **Architectural intent:** Trace func_80035094_35C94 parameter retention across first call, global reload and call to func_800350C4_35CC4; review signed/pointer types.
@@ -73,7 +73,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-013 — Bound IDO variants for object dispatch
 
-**Status:** PLANNED. **Dependencies:** G64-012.
+**Status:** PASSED_G2. **Dependencies:** G64-012.
 **Focus files:** `decomp/candidates/integrated_object_dispatch_probe.c`; `decomp/prove_integrated_units.py`.
 
 **Architectural intent:** Try one supported C-expression/alias/lifetime variation per native IDO build, not opcode patching; retain all failed candidates and diffs.
@@ -100,7 +100,7 @@ Reject equal-size but different-register codegen, changed adjacent C functions, 
 
 ### G64-014 — Gate object promotion
 
-**Status:** PLANNED. **Dependencies:** G64-010, G64-013.
+**Status:** PASSED_G2. **Dependencies:** G64-010, G64-013.
 **Focus files:** `decomp/object_dispatch.c`; `decomp/manifest.json`; `decomp/verify.py`.
 
 **Architectural intent:** Stage object C only if true combined-unit matching; then full verifier, relocations, symbol inventory and host callback cases.

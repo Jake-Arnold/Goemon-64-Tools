@@ -1,5 +1,12 @@
 # Next ten new main-segment matching-C targets — 2026-11-10
 
+**Historical research report, reconciled 2026-11-11:** the six resource, menu,
+and object functions documented here have since passed native unit and complete
+ROM gates. The remaining four short candidates are still unpromoted and are now
+G64-015–018. Use `decomp/CONTINUE.md`, `decomp/manifest.json`, and the current
+result reports for live counts; the original isolated-research records below
+remain unchanged as historical evidence.
+
 **Current execution sequence:** [NEXT_TWENTY_STEPS.md](NEXT_TWENTY_STEPS.md) (20 gated integration/research steps, 2026-11-10). This file preserves the ten-target inventory and historical isolated codegen findings. **Plan, not promotion.** This replaces the *active investigation order* after the previous ten-target list was fully investigated without new matching functions. Keep the earlier evidence in `NEXT_TEN_FUNCTIONS.md` and `NEXT_FIVE_ACTIONS.md`. This new sequence selects **ten distinct, previously unpromoted main-segment assembly functions** from the latest `chatgptweb/decomp` manifest, none from the previous ten-target batch. The plan deliberately favors small functions with concrete ABI/alias conditions instead of another generic scalar sweep.
 
 ## Implementation checkpoint — 2026-11-10

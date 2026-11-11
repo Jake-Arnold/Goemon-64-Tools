@@ -17,7 +17,7 @@
       "ordinal": 1,
       "phase": 1,
       "title": "Freeze live authority",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [],
       "focus_files": [
         "AGENTS.md",
@@ -55,7 +55,7 @@
       "ordinal": 2,
       "phase": 1,
       "title": "Validate claim ownership",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-001"
       ],
@@ -93,7 +93,7 @@
       "ordinal": 3,
       "phase": 1,
       "title": "Specify proof tiers",
-      "status": "PLANNED",
+      "status": "SKIPPED_ALREADY_COMPLETE",
       "depends_on": [
         "G64-001",
         "G64-002"
@@ -133,7 +133,7 @@
       "ordinal": 4,
       "phase": 1,
       "title": "Review resource ABI",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-002"
       ],
@@ -171,7 +171,7 @@
       "ordinal": 5,
       "phase": 1,
       "title": "Design resource ED4 replacement",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-004"
       ],
@@ -208,7 +208,7 @@
       "ordinal": 6,
       "phase": 1,
       "title": "Design resource F20 replacement",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-005"
       ],
@@ -245,7 +245,7 @@
       "ordinal": 7,
       "phase": 1,
       "title": "Gate resource promotion",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-003",
         "G64-006"
@@ -285,7 +285,7 @@
       "ordinal": 8,
       "phase": 1,
       "title": "Review menu ABI model",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-002"
       ],
@@ -324,7 +324,7 @@
       "ordinal": 9,
       "phase": 1,
       "title": "Design all three menu replacements",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-008"
       ],
@@ -361,7 +361,7 @@
       "ordinal": 10,
       "phase": 1,
       "title": "Gate menu promotion",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-007",
         "G64-009"
@@ -400,7 +400,7 @@
       "ordinal": 11,
       "phase": 2,
       "title": "Classify object mismatch",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-001",
         "G64-003"
@@ -439,7 +439,7 @@
       "ordinal": 12,
       "phase": 2,
       "title": "Recover object ABI and liveness",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-011"
       ],
@@ -477,7 +477,7 @@
       "ordinal": 13,
       "phase": 2,
       "title": "Bound IDO variants for object dispatch",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-012"
       ],
@@ -514,7 +514,7 @@
       "ordinal": 14,
       "phase": 2,
       "title": "Gate object promotion",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-010",
         "G64-013"
@@ -2033,7 +2033,7 @@
       "ordinal": 51,
       "phase": 6,
       "title": "Specify overlay manifest schema",
-      "status": "PLANNED",
+      "status": "DOC_ONLY",
       "depends_on": [
         "G64-003"
       ],

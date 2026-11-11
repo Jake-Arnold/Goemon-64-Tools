@@ -13,9 +13,9 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),141)
-        self.assertEqual(len(claimed_functions(manifest)),142)
-        # The accepted checkpoint has 141 new units plus one reviewed source patch.
+        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),147)
+        self.assertEqual(len(claimed_functions(manifest)),148)
+        # The accepted checkpoint has 147 unit functions plus one reviewed source patch.
         # Require its published proof and inventory to agree with the live claims.
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())

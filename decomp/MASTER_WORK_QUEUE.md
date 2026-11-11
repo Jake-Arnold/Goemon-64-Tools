@@ -1,5 +1,13 @@
 # Consolidated Goemon work queue (2026-11-08)
 
+**Reconciled on 2026-11-11:** The old 142-function checkpoint and ten-function
+queue below are historical. Current authority is `decomp/CONTINUE.md` and the
+live proof reports: **148 matching C / 11,020 bytes / 161 combined C / 7,215
+ASM**. The resource, menu and object candidates from that older queue have
+passed full-ROM verification. Continue with 100-task plan items G64-015–018;
+all private ROM and compiler files remain local under the ignored diagnostics
+input directory.
+
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.
 
 ## Verified checkpoint; do not repeat

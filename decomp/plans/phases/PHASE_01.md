@@ -22,7 +22,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-001 — Freeze live authority
 
-**Status:** PLANNED. **Dependencies:** baseline live branch verification.
+**Status:** PASSED_G2. **Dependencies:** baseline live branch verification.
 **Focus files:** `AGENTS.md`; `decomp/CONTINUE.md`; `decomp/manifest.json`; `decomp/results/combined.json`; `decomp/results/inventory.json`.
 
 **Architectural intent:** Record chatgptweb/decomp HEAD, AGENTS.md, CONTINUE.md, manifest, combined/inventory hashes and six ASM placeholder identities; segregate dated historical notes.
@@ -49,7 +49,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-002 — Validate claim ownership
 
-**Status:** PLANNED. **Dependencies:** G64-001.
+**Status:** PASSED_G2. **Dependencies:** G64-001.
 **Focus files:** `decomp/manifest.json`; `decomp/verify.py`; `tests/test_decomp_verify.py`.
 
 **Architectural intent:** Define one-to-one mapping of ROM offset/VMA, function name, translation unit, C owner or retained ASM; guard existing-source patch and no-padding exceptions.
@@ -76,7 +76,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-003 — Specify proof tiers
 
-**Status:** PLANNED. **Dependencies:** G64-001, G64-002.
+**Status:** SKIPPED_ALREADY_COMPLETE. **Dependencies:** G64-001, G64-002.
 **Focus files:** `decomp/verify.py`; `decomp/inventory.py`; `decomp/compare_original.py`; `decomp/prove_integrated_units.py`.
 
 **Architectural intent:** Document G0 source/ROM provenance, G1 semantic + isolated codegen, G2 full translation-unit and complete-ROM verification, G3 inventory/regression/publication.
@@ -103,7 +103,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-004 — Review resource ABI
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** PASSED_G2. **Dependencies:** G64-002.
 **Focus files:** `decomp/resource_dispatch.c`; `decomp/candidates/resource_wrapper_ed4.c`; `decomp/candidates/resource_wrapper_f20.c`.
 
 **Architectural intent:** Inspect resource_dispatch.c, two candidate wrappers, called symbols 80034EF8/80034F44/80035044 and actual original ABI; preserve function order.
@@ -130,7 +130,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-005 — Design resource ED4 replacement
 
-**Status:** PLANNED. **Dependencies:** G64-004.
+**Status:** PASSED_G2. **Dependencies:** G64-004.
 **Focus files:** `decomp/resource_dispatch.c`; `decomp/candidates/resource_wrapper_ed4.c`.
 
 **Architectural intent:** Replace only func_80034ED4_35AD4 pragma in a staging checkout; preserve already matching func_80034EF8_35AF8 and C unit layout.
@@ -157,7 +157,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-006 — Design resource F20 replacement
 
-**Status:** PLANNED. **Dependencies:** G64-005.
+**Status:** PASSED_G2. **Dependencies:** G64-005.
 **Focus files:** `decomp/resource_dispatch.c`; `decomp/candidates/resource_wrapper_f20.c`.
 
 **Architectural intent:** Replace func_80034F20_35B20 pragma in the same translation unit; retain distinct callee and original source order.
@@ -184,7 +184,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-007 — Gate resource promotion
 
-**Status:** PLANNED. **Dependencies:** G64-003, G64-006.
+**Status:** PASSED_G2. **Dependencies:** G64-003, G64-006.
 **Focus files:** `decomp/resource_dispatch.c`; `decomp/manifest.json`; `decomp/verify.py`; `decomp/inventory.py`.
 
 **Architectural intent:** Update staging manifest ownership for ED4/F20 and run the standard 2,331-object full-ROM gate plus inventory and resource host tests.
@@ -211,7 +211,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-008 — Review menu ABI model
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** PASSED_G2. **Dependencies:** G64-002.
 **Focus files:** `decomp/empty_menu_hook.c`; `decomp/candidates/menu_enable_b60.c`; `decomp/candidates/menu_disable_bb4.c`; `decomp/candidates/menu_nested_c04.c`.
 
 **Architectural intent:** Derive shared MenuPanel/MenuOptions/MenuBit layout from empty_menu_hook.c, menu candidates and original +0x22/+0x64/+4/+0x18 accesses.
@@ -238,7 +238,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-009 — Design all three menu replacements
 
-**Status:** PLANNED. **Dependencies:** G64-008.
+**Status:** PASSED_G2. **Dependencies:** G64-008.
 **Focus files:** `decomp/empty_menu_hook.c`; `decomp/test_three_menu_flags.c`.
 
 **Architectural intent:** In original unit order replace 80011B60, 80011BB4, 80011C04; retain explicit 0xFF7F AND mask and non-cached nested dereference shape.
@@ -265,7 +265,7 @@ Do not treat a research fixture's exact byte span as a complete-ROM promotion. F
 
 ### G64-010 — Gate menu promotion
 
-**Status:** PLANNED. **Dependencies:** G64-007, G64-009.
+**Status:** PASSED_G2. **Dependencies:** G64-007, G64-009.
 **Focus files:** `decomp/empty_menu_hook.c`; `decomp/manifest.json`; `decomp/verify.py`.
 
 **Architectural intent:** Verify menu changes in an actual project link; capture source hashes and before/after inventory, then update evidence atomically.

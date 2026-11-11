@@ -1,0 +1,21 @@
+{
+  "format": "goemon-task-execution-v1",
+  "plan": "decomp/plans/TASKS_100.json",
+  "task_ids": ["G64-051"],
+  "target_branch": "chatgptweb/decomp",
+  "workspace_branch": "codex/decomp-100-task-plan",
+  "status": "DOC_ONLY",
+  "files": [
+    "decomp/overlay_manifest.py",
+    "decomp/test_overlay_manifest.py",
+    "decomp/OVERLAY_MANIFEST_SCHEMA.md"
+  ],
+  "result": "Added an explicit overlay metadata validator and schema contract. ROM/VMA formulas for the main segment are rejected; ROM and VMA overlaps are independently rejected; file-backed sections and VMA-only BSS are represented separately; function provenance fields are required.",
+  "tests": "python3 -m unittest decomp.test_overlay_manifest -v — PASS: 8 synthetic tests",
+  "limitations": [
+    "The schema is not wired into decomp.verify.",
+    "The validator checks metadata structure and hash syntax, not the referenced ROM/ELF bytes or relocation semantics.",
+    "No overlay function was promoted and no main-segment behavior changed."
+  ],
+  "next": "G64-052 through G64-055 must bind actual file_43 layout, section hashes, symbols and relocations before a production adapter is considered."
+}

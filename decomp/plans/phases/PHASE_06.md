@@ -19,7 +19,7 @@ Do not use the main-segment ROM/VMA formula for overlays; reject section aliasin
 
 ### G64-051 — Specify overlay manifest schema
 
-**Status:** PLANNED. **Dependencies:** G64-003.
+**Status:** DOC_ONLY. **Dependencies:** G64-003.
 **Focus files:** `decomp/manifest.json`; `decomp/verify.py`; `tests/test_decomp_verify.py`.
 
 **Architectural intent:** Model segment ID, ROM ranges, VMA, text/rodata boundaries, relocation provenance and source ownership distinct from main-segment linear map.

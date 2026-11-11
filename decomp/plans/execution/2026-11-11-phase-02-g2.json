@@ -1,0 +1,61 @@
+{
+  "format": "goemon-task-execution-v1",
+  "plan": "decomp/plans/TASKS_100.json",
+  "task_ids": [
+    "G64-011",
+    "G64-012",
+    "G64-013",
+    "G64-014"
+  ],
+  "target_branch": "chatgptweb/decomp",
+  "workspace_branch": "codex/decomp-100-task-plan",
+  "starting_sha": "3b1f56aef7a2e634cc80d3cdd332c47d6368082c",
+  "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_function": {
+    "name": "func_80035094_35C94",
+    "rom_offset": "0x35C94",
+    "vma": "0x80035094",
+    "bytes": 48,
+    "source_unit": "object_dispatch",
+    "unit_bytes": "96/96",
+    "instruction_sha256": "7f8f2a83dbc5179d76609db3b186ea481e9aa78bd0b1e6f46ceb798637fe0c36"
+  },
+  "resolution": {
+    "previous_historical_observation": "The 2026-11-10 research unit had an 8-byte mismatch at ROM 0x35C9C/0x35CA0.",
+    "current_native_result": "The pinned IDO 5.3 production source unit is exact at all 96 bytes; the actor argument remains saved across the first callback.",
+    "hypotheses": "The earlier C variant caused a liveness-driven instruction schedule; the current minimal source shape reproduces it without inline assembly or fixed opcodes."
+  },
+  "full_rom_proof": {
+    "status": "PASSED_G2",
+    "formal_verifier_run_completed": true,
+    "baseline_cache_provenance_validated": true,
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "whole_rom_bytes": 33554432,
+    "expected_and_candidate_sha1_equal": true,
+    "matching_functions": 148,
+    "matched_function_bytes": 11020,
+    "inventory": {
+      "combined_c": 161,
+      "assembly": 7215,
+      "identified_entries": 7376
+    },
+    "proof_report": "decomp/results/combined.json",
+    "inventory_report": "decomp/results/inventory.json"
+  },
+  "task_results": [
+    {"id": "G64-011", "status": "PASSED_G2", "detail": "The historical swapped-instruction observation was classified and superseded by a fresh exact production-unit replay; see decomp/OBJECT_DISPATCH_TRACE.md."},
+    {"id": "G64-012", "status": "PASSED_G2", "detail": "Argument width, callback order, mutable resource global, saved actor spill and original callee were verified from the original instructions."},
+    {"id": "G64-013", "status": "PASSED_G2", "detail": "The minimal source form passes native IDO as part of the true 96-byte unit; no code bytes were patched."},
+    {"id": "G64-014", "status": "PASSED_G2", "detail": "The complete 33,554,432-byte image and all 148 claims pass; object dispatcher is promoted."}
+  ],
+  "validation": {
+    "decomp_python_tests": "PASS: 114 tests",
+    "verifier_inventory_batch": "PASS: 60 tests",
+    "verifier_focused_tests": "PASS: 17 tests",
+    "object_callback_host_cases": "PASS: 10,000 synthetic cases",
+    "in_game": false
+  },
+  "promotions": 1,
+  "next": "Execute G64-015 through G64-018 in original translation-unit context; current official total is 148 until any additional G2 proof passes."
+}
