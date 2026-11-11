@@ -32,8 +32,12 @@ bytes with 25/42 direct matches, 3/3 call relocation shapes, and four table
 relocation-layout differences. It remains research-only. G64-024's three new
 declaration/type variants did not improve its native comparison; see its
 evidence ledger. G64-025's 1,024-case callback mutation model and low-half
-accessor tests pass; native loader codegen remains nonmatching. Next: G64-026,
-resolve the loader ABI and frame.
+accessor tests pass; native loader codegen remains nonmatching. G64-026 added
+36 original-address guards for D468's 32-byte frame, saved `$s0/$s1/$ra`,
+entry-ID spill and epilogue. Its 556-byte candidate still differs at `+0x8`
+and uses a 24-byte frame, so production ASM remains. See
+`plans/execution/2026-11-11-g64-026-loader-frame.json`. Next: G64-027, trace
+the main VM step at `0x8003D68C`.
 
 ## Numbered event startup follow-up (2026-11-03)
 

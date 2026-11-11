@@ -1,0 +1,122 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-026",
+  "title": "Resolve loader ABI and frame",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "fc508a1187a98478106e6f594ac5561ef3de7941",
+    "target_remote_head_before_work": "fc508a1187a98478106e6f594ac5561ef3de7941",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "original_function": {
+    "name": "func_8003D468_3E068",
+    "rom_offset": "0x3E068",
+    "vma": "0x8003D468",
+    "original_bytes": 548,
+    "original_sha256": "ece95b38f4dbaf5268d308e09aea54a02d32d1615664137de03ecd46a0c262d7",
+    "private_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66"
+  },
+  "original_abi_and_frame": {
+    "frame_bytes": 32,
+    "prologue": {
+      "0x8003D470": "addiu sp,sp,-0x20",
+      "0x8003D474": "sw ra,0x1C(sp)",
+      "0x8003D478": "sw s1,0x18(sp)",
+      "0x8003D47C": "sw s0,0x14(sp)",
+      "0x8003D484": "sw a0,0x20(sp) (branch delay slot)"
+    },
+    "argument_spills": {
+      "0x8003D4AC": "entry resource ID a1 stored at sp+0x24 for the later DDC4 call",
+      "0x8003D510": "entry resource ID reloaded into a1 for DDC4"
+    },
+    "saved_register_lifetimes": {
+      "s1": "resource-context base, constructed at 0x8003D490/494; survives calls and reset tail",
+      "s0": "VM-work base, constructed at 0x8003D4B0/4B4 on normal path or 0x8003D538/53C on clear path; survives calls and reset tail"
+    },
+    "epilogue": {
+      "0x8003D678": "lw ra,0x1C(sp)",
+      "0x8003D67C": "lw s0,0x14(sp)",
+      "0x8003D680": "lw s1,0x18(sp)",
+      "0x8003D684": "jr ra",
+      "0x8003D688": "addiu sp,sp,0x20 (return delay slot)"
+    }
+  },
+  "tested_sources": {
+    "loader_candidate": {
+      "path": "decomp/candidates/vm_loader_storage_probe.c",
+      "sha256": "a8371332983b3f785381657043356683119afa39431c73ab226dcbb252fca9e3",
+      "changed_for_task": false
+    },
+    "original_guard": {
+      "path": "decomp/test_vm_loader_original.py",
+      "sha256": "bbd20637a54eb923230d01ea05515199782bcf12d29510f48a45839f51b68fe4",
+      "original_address_guards": 36
+    },
+    "guard_parser_tests": {
+      "path": "decomp/test_vm_loader_original_parser.py",
+      "sha256": "44bd58afa84634ae0b217cb8807176f75de6a7254730a4eb1f24a32c642a234f",
+      "tests": 4
+    },
+    "production_ownership": "unchanged; func_8003D468_3E068 remains GLOBAL_ASM"
+  },
+  "validation": {
+    "host_c_harnesses": {
+      "resource_types": "PASS; GCC ASan/UBSan; exit 0",
+      "loader_storage_paths": "PASS; GCC ASan/UBSan; exit 0",
+      "loader_callback_mutations": "PASS; 1,024 synthetic cases; GCC ASan/UBSan; exit 0"
+    },
+    "python": {
+      "original_address_guard": "PASS; 36 original-address instructions",
+      "parser_tests": "PASS; 4 tests",
+      "decomp_suite": "PASS; 114 tests",
+      "verifier_suite": "PASS; 17 tests"
+    },
+    "native_ido_candidate": {
+      "compiler": "Pinned IDO 5.3, -O2 -mips2 -G 0 -non_shared -c",
+      "compile_exit_code": 0,
+      "object_sha256": "13f347ba9f469245fd3590ae5cc7c1e58e950ea5d30e2e150f6ce72b30cfb0dd",
+      "function_bytes": 556,
+      "candidate_frame_bytes": 24,
+      "candidate_saved_registers": ["ra"],
+      "comparison_exit_code": 1,
+      "comparison_exit_code_meaning": "Expected nonmatch; candidate fails exact-original acceptance.",
+      "matching_nonrelocation_words": "1/26",
+      "matching_relocated_shapes": "46/58",
+      "relocation_layout_differences": 53,
+      "first_mismatch": "+0x8",
+      "rom_sha1_checked_by_comparator": "6ea0ed71032ce08fc2745f412d84936382197494"
+    },
+    "full_rom_candidate_gate": "NOT_RUN; no production integration or ownership change",
+    "inventory": "NOT_RUN",
+    "in_game": false
+  },
+  "commands": [
+    "git fetch origin chatgptweb/decomp",
+    "python3 decomp/test_vm_loader_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+    "python3 -m unittest discover -s decomp -p 'test_vm_loader_original_parser.py' -q",
+    "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+    "python3 -m unittest tests.test_decomp_verify -q",
+    "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_resource_types.c -o /tmp/g64-026-resource-types && /tmp/g64-026-resource-types",
+    "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_loader_storage_probe.c -o /tmp/g64-026-loader-probe && /tmp/g64-026-loader-probe",
+    "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_loader_resource_mutation.c -o /tmp/g64-026-loader-mutation && /tmp/g64-026-loader-mutation",
+    "Pinned IDO 5.3 -O2 -mips2 -G 0 -non_shared -c decomp/candidates/vm_loader_storage_probe.c -o /tmp/g64-026-loader.o",
+    "python3 -m decomp.compare_original --rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --original practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s --object /tmp/g64-026-loader.o --function func_8003D468_3E068 --objdump /usr/bin/mips-linux-gnu-objdump"
+  ],
+  "official_claims": {
+    "proof_report": "decomp/results/combined.json",
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_functions": 148,
+    "matched_bytes": 11020,
+    "promotions": 0
+  },
+  "limitations": [
+    "The C candidate still has a 24-byte frame and saves only ra; the original requires a 32-byte frame preserving ra, s0 and s1.",
+    "The callback mutation tests are synthetic and do not establish retail callback side effects.",
+    "No full-ROM candidate gate, inventory run, or in-game verification was performed for this research task."
+  ],
+  "next": "Execute G64-027: trace the original control flow and state mutations of func_8003D68C_3E28C."
+}

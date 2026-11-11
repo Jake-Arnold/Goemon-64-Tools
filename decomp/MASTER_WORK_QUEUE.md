@@ -10,7 +10,10 @@ passed full-ROM verification. G64-015–018 were retried and remain
 G64-023 reproduced the nonmatching F038 baseline and remains `RESEARCH_ONLY`;
 G64-024's three new variants did not improve that baseline and remain
 `RESEARCH_ONLY`; G64-025's mutation model passed but its native candidate
-remains unpromoted. Continue with G64-026–030 in dependency order.
+remains unpromoted. G64-026 pinned the D468 32-byte frame and saved-register
+lifetimes with 36 original-address guards; its 556-byte candidate still differs
+from the 548-byte original, so it remains `RESEARCH_ONLY`. Continue with
+G64-027–030 in dependency order.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 

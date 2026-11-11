@@ -73,6 +73,23 @@ that the external recovery routine mutates the VM resource ID.
 | `F038` halfword-table lookup | `$a0` supplies the signed index/value; its 32-bit result is used by `ED60` as a zero/nonzero test and then as a display-list word. `0x100` returns zero immediately. Otherwise it forms a signed half-index with negative values rounded toward zero, reads a signed halfword from `D_80077894_78494`, and calls `141C4`. On `-1`, it calls `13B14` with the low 16 bits of the saved table value and retries using that saved value. A second miss returns zero; successful values below index 4 receive the computed address adjustment. | Both observed call sites pass `$a1=0`; the body writes that value to the caller home area but does not read it afterward. Do not infer a meaningful second parameter or rename the table without further evidence. The function remains `GLOBAL_ASM`. |
 | `DF98` stream control decoder | Two word arguments are passed by callers: a VM owner/value in `$a0` and a signed-halfword stream cursor in `$a1`; `$v0` is consumed as the next cursor by both callers (`DE80` and `EB34`). | The current header declares `s16 *DF98(s32,s16 *)`. Opcode families and cursor rules remain for G64-028. |
 
+### D468 stack frame and saved-register lifetimes (G64-026)
+
+The original prologue subtracts `0x20` from `$sp`, then saves `$ra` at
+`sp+0x1C`, `$s1` at `sp+0x18`, and `$s0` at `sp+0x14`. The delay slot at
+`0x8003D484` stores incoming `$a0` at `sp+0x20`; the entry resource ID is
+stored at `sp+0x24` at `0x8003D4AC` for the later `DDC4` call. `$s1` is formed
+as the resource-context address at `0x8003D490/494` and `$s0` as the VM-work
+address at `0x8003D4B0/4B4` on the normal path or `0x8003D538/53C` on the
+clear path. These saved base pointers remain live across nested calls and the
+shared reset tail. The epilogue restores `$ra`, `$s0`, and `$s1` from those
+slots, returns, and releases the 32-byte frame in the return delay slot.
+`test_vm_loader_original.py` now guards the prologue, argument spill, base
+construction, saved-register restores, and return sequence (36 original-address
+guards total). The 556-byte isolated C probe instead allocates 24 bytes and
+saves only `$ra`; its first difference is the frame-size instruction at `+0x8`.
+The probe remains research-only and the production function remains assembly.
+
 ### Resource lookup and recovery boundary
 
 - At the pinned source, `func_800141C4_14DC4(unsigned int)` is C in
@@ -100,7 +117,7 @@ G64-022 records the observed ID word and offset-only +4/+8 words in
 mutable global word. Its loader candidate did not match native IDO and remains
 unpromoted. G64-023 reproduced the 196-byte F038 baseline; G64-024 tested
 three additional source hypotheses without improvement. G64-025 confirmed the
-entry-ID/current-ID distinction under synthetic mutation; G64-026 owns the
-loader frame investigation. G64-027/028 own
-D68C/DF98 control flow. No function in this graph is newly promoted by this
-note.
+entry-ID/current-ID distinction under synthetic mutation. G64-026 pinned the
+original 32-byte loader frame and saved-register lifetimes, but the 24-byte
+candidate still differs. G64-027/028 own D68C/DF98 control flow. No function in
+this graph is newly promoted by this note.

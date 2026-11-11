@@ -1013,7 +1013,7 @@
       "ordinal": 26,
       "phase": 3,
       "title": "Resolve loader ABI and frame",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-025"
       ],

@@ -10,10 +10,15 @@ from pathlib import Path
 
 # Addresses are USA game VMAs, never assembled bytes.
 EXPECTED = {
+    0x8003D470: r'addiu\s+\$sp,\s*\$sp,\s*-0x20',
+    0x8003D474: r'sw\s+\$ra,\s*0x1C\(\$sp\)',
+    0x8003D478: r'sw\s+\$s1,\s*0x18\(\$sp\)',
+    0x8003D47C: r'sw\s+\$s0,\s*0x14\(\$sp\)',
     0x8003D480: r'bnez\s+\$t6,\s*\.L8003D490_3E090',
     0x8003D484: r'sw\s+\$a0,\s*0x20\(\$sp\)',
     0x8003D49C: r'beq\s+\$a1,\s*\$a2,\s*\.L8003D538_3E138',
     0x8003D4A0: r'sw\s+\$a1,\s*0x0\(\$s1\)',
+    0x8003D4AC: r'sw\s+\$a1,\s*0x24\(\$sp\)',
     0x8003D4BC: r'sw\s+\$v0,\s*0x14\(\$s0\)',
     0x8003D4C0: r'bne\s+\$v0,\s*\$at,\s*\.L8003D4E8_3E0E8',
     0x8003D4CC: r'lhu\s+\$a0,\s*0x2\(\$s1\)',
@@ -32,6 +37,11 @@ EXPECTED = {
     0x8003D64C: r'addiu\s+\$a0,\s*\$zero,\s*0x82',
     0x8003D668: r'sb\s+\$zero,\s*0x5C\(\$t2\)',
     0x8003D674: r'sb\s+\$zero,\s*0x5D\(\$t3\)',
+    0x8003D678: r'lw\s+\$ra,\s*0x1C\(\$sp\)',
+    0x8003D67C: r'lw\s+\$s0,\s*0x14\(\$sp\)',
+    0x8003D680: r'lw\s+\$s1,\s*0x18\(\$sp\)',
+    0x8003D684: r'jr\s+\$ra',
+    0x8003D688: r'addiu\s+\$sp,\s*\$sp,\s*0x20',
 }
 
 
@@ -62,6 +72,8 @@ def check(asm: str) -> None:
     }.items():
         if address not in rows or re.fullmatch(regex, rows[address]) is None:
             raise AssertionError(f'global base construction mismatch {address:#x}')
+    # The 32-byte frame saves the callee-saved $s0/$s1 and $ra, while the
+    # original entry ID remains available at sp+0x24 for the late call.
     # Resource +2 halfword is not a script pointee field or work-record member.
     # VM work +0x14 is separate from the +0x0 script pointer.
     print(f'VM loader: {len(EXPECTED) + 4} original-address guards passed')

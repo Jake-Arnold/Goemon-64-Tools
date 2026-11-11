@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-026 loader ABI and frame (RESEARCH_ONLY)
+
+- Continued in `codex/decomp-100-task-plan` from `fc508a1187a98478106e6f594ac5561ef3de7941`; fetched `origin/chatgptweb/decomp` and confirmed its SHA matched before work. The pinned upstream `mnsg` checkout remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`; the private retail/decompressed ROM hashes still match the tracked setup guide.
+- Recovered original D468's **32-byte** frame from pinned Splat/ROM instructions: `$ra` at `sp+0x1C`, `$s1` at `sp+0x18`, `$s0` at `sp+0x14`; incoming `$a0` at `sp+0x20`; entry resource ID at `sp+0x24` for the late DDC4 call. `$s1` retains the resource-context base and `$s0` the VM-work base across nested calls and the common reset tail. Added address guards for these prologue/epilogue details; the original-address guard now checks **36 instructions**.
+- Recompiled the unchanged loader C probe with pinned IDO 5.3. The function remains **556 bytes** versus the 548-byte original; its 24-byte frame saves only `$ra`, rather than the original `$ra/$s1/$s0`. ROM-validated isolated comparison returned expected nonmatch (exit 1): **1/26** nonrelocation words, **46/58** relocation shapes, **53** relocation-layout differences, first mismatch **+0x8**.
+- Validation: the original-address guard and **4** parser tests passed; decomp Python suite **114**, verifier suite **17**, and the resource-type, loader-path and callback-mutation C harnesses all exited 0 under ASan/UBSan. Native compile exited 0. No complete-ROM candidate gate or inventory was run because production ownership did not change; no in-game test. The original `GLOBAL_ASM`, 148-function claim, proof files, and manifest remain unchanged. See `decomp/plans/execution/2026-11-11-g64-026-loader-frame.json`.
+- **Reason / limit:** frame, saved-register lifetimes, and exact argument spills are now guarded, but native C still fails the explicit instruction acceptance. This is research-only, not a promotion.
+- **Next:** G64-027, map the main VM step at `0x8003D68C` from original control flow before writing a C model.
+
 ## 2026-11-11 — G64-025 loader entry/current ID model (RESEARCH_ONLY)
 
 - Continued from published commit `eb2ca02ec6d47be4b41c98cc40c3e049d87290ef` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed the remote SHA matched.

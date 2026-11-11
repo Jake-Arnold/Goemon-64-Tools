@@ -203,8 +203,22 @@ See `plans/execution/2026-11-11-g64-025-loader-id-mutation.json`.
 
 ### G64-026 — Resolve loader ABI and frame
 
-**Status:** PLANNED. **Dependencies:** G64-025.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-025.
 **Focus files:** `decomp/candidates/vm_loader_storage_probe.c`; `decomp/test_vm_loader_original.py`.
+
+**Outcome (2026-11-11):** Added original-address guards for the 32-byte
+prologue/epilogue, `$ra/$s1/$s0` save and restore slots, the incoming-argument
+spill, and the existing resource/work-base construction; the D468 guard now
+checks 36 instructions. Confirmed `$s1` holds the resource context and `$s0`
+the VM work record across nested calls and the reset tail. The original spills
+the entry ID at `sp+0x24` for DDC4. Type/endian, loader-path and callback
+mutation host checks passed; 36 assembly guards, four parser tests, 114 decomp
+tests and 17 verifier tests passed. Pinned IDO reproduces the 556-byte probe,
+not the 548-byte original: only 1/26 nonrelocation words and 46/58 relocation
+shapes match, with 53 relocation-layout differences and first mismatch +0x8
+(24-byte frame vs 32-byte original). No full-ROM candidate or inventory gate
+was run; the production ASM placeholder and all claims remain unchanged. See
+`plans/execution/2026-11-11-g64-026-loader-frame.json`.
 
 **Architectural intent:** Recover original 548-byte 8003D468 stack layout ($s0/$s1) and 32-byte frame; test typed prefix and aliased global loads.
 
