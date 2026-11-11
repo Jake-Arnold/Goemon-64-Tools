@@ -1,0 +1,104 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-029",
+  "title": "Guard already matching DDC4 resource resolver",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "54fba7d1f8da3307b21c94967cf441995b32c838",
+    "target_remote_head_before_work": "54fba7d1f8da3307b21c94967cf441995b32c838",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "original_function": {
+    "name": "func_8003DDC4_3E9C4",
+    "rom_offset": "0x3E9C4",
+    "vma": "0x8003DDC4",
+    "original_bytes": 132,
+    "original_sha256": "f7dab493df8553cae7eb55ce5bbaec5a2cd576e0454dc557dbbadad74a7a101a",
+    "candidate_sha256": "f7dab493df8553cae7eb55ce5bbaec5a2cd576e0454dc557dbbadad74a7a101a",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "source_state": {
+    "production_ownership": "existing matched C in script_vm.c; unchanged",
+    "script_vm_c_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "script_vm_h_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "combined_proof_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "changed_production_files": [],
+    "new_host_regression": {
+      "path": "decomp/test_vm_ddc4_resolver.c",
+      "sha256": "b19800341b29e5cb47b875a05e3a851714b6a945d30609f71745d749459610ea",
+      "covers": [
+        "first lookup success without recovery",
+        "recovery retry reads current ID after a synthetic callback mutates it",
+        "final segment lookup retains the original entry ID",
+        "base mask and address/segment arithmetic"
+      ]
+    }
+  },
+  "validation": {
+    "tool_versions": {
+      "gcc": "15.2.0",
+      "python": "3.14.4"
+    },
+    "ddc4_host_regression": "PASS; first-hit and callback-mutation cases",
+    "cached_global_negative_control": "PASS; temporary mutant reusing the entry-time current ID failed the regression assertion",
+    "loader_mutation_harness": "PASS; existing 1,024 synthetic cases",
+    "resource_types_harness": "PASS; existing endian/layout assertions",
+    "decomp_python_suite": "PASS; 124 tests",
+    "verifier_python_suite": "PASS; 17 tests",
+    "native_candidate": "NOT_CREATED; no production candidate was changed",
+    "full_rom_candidate_gate": "NOT_RUN; production source and ownership unchanged",
+    "inventory": "NOT_RUN",
+    "in_game": false
+  },
+  "commands": [
+    {
+      "command": "gcc -std=c11 -Wall -Wextra -Werror -O1 -g -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all -ffunction-sections -fdata-sections -Idecomp/test_support -Idecomp -Wl,--gc-sections decomp/test_vm_ddc4_resolver.c -o /tmp/g64-029-ddc4-resolver && /tmp/g64-029-ddc4-resolver",
+      "exit_code": 0
+    },
+    {
+      "command": "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_loader_resource_mutation.c -o /tmp/g64-029-loader-mutation && /tmp/g64-029-loader-mutation",
+      "exit_code": 0
+    },
+    {
+      "command": "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -Idecomp/test_support -Idecomp -fsanitize=address,undefined decomp/test_vm_resource_types.c -o /tmp/g64-029-resource-types && /tmp/g64-029-resource-types",
+      "exit_code": 0
+    },
+    {
+      "command": "Temporary cached-global mutant: copy the harness and script_vm.c to /tmp; add a local cached_current initialized from D_801C78E8_1C84E8 on function entry; replace the recovery retry's global read with cached_current; compile with the DDC4 host-regression flags and run.",
+      "exit_code": 134,
+      "expected_failure": true
+    },
+    {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 0,
+      "result": "124 tests"
+    },
+    {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "exit_code": 0,
+      "result": "17 tests"
+    },
+    {
+      "command": "git fetch origin chatgptweb/decomp",
+      "exit_code": 0
+    }
+  ],
+  "official_claims": {
+    "proof_report": "decomp/results/combined.json",
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_functions": 148,
+    "matched_bytes": 11020,
+    "promotions": 0
+  },
+  "limitations": [
+    "The synthetic recovery callback mutation is a negative control and does not prove that the retail 13B14 assembly callback mutates the global.",
+    "No native candidate, new full-ROM verifier run, inventory run, or in-game verification was performed because production C and ownership did not change.",
+    "The existing 148-function proof and DDC4 extent hash are recorded unchanged; this task adds host regression coverage, not a new matching-C claim."
+  ],
+  "next": "Execute G64-030: reconcile the VM resource checkpoint against the live proof and typed interface evidence; leave unresolved helpers as ASM."
+}

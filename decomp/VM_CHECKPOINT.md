@@ -48,8 +48,13 @@ dispatch and the paced/unpaced callers: tokens `-71..-32` index a 40-entry
 table; `-1` is intercepted by both callers; cursor, marker, repeat setting and
 context reload order are recorded in [VM_STREAM_MATCHING.md](VM_STREAM_MATCHING.md).
 The 132-word original guard, 54 instruction anchors, 40 table entries, 124
-decomp tests and 17 verifier tests passed. No host C model was executed. Next:
-G64-029, guard the already matching resource decoder.
+decomp tests and 17 verifier tests passed. No host C model was executed. G64-029
+added a host regression around the already matching DDC4 resolver: recovery
+retry reloads the mutable current ID while the later segment lookup retains the
+entry ID; a cached-global mutant is rejected. The existing 132-byte proof
+extent and source hash are unchanged, and synthetic mutation does not establish
+retail callback effects. Next: G64-030, reconcile the VM resource checkpoint
+against live proof and interface evidence.
 
 ## Numbered event startup follow-up (2026-11-03)
 

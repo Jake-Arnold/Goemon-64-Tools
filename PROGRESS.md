@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-029 guard matching DDC4 resource resolver (RESEARCH_ONLY)
+
+- Continued from pushed commit `54fba7d1f8da3307b21c94967cf441995b32c838` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed it matched. The pinned `mnsg` checkout remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.
+- Added `decomp/test_vm_ddc4_resolver.c`, a host regression that includes and calls the production `func_8003DDC4_3E9C4` body. It checks first-lookup success and the recovery retry when a synthetic `13B14` callback mutates the current resource ID. The retry lookup observes the changed global, while the later segment/size lookup retains the original entry ID. This callback mutation is a negative control, not a claim about retail callback side effects.
+- **Executed:** DDC4 regression passed under GCC ASan/UBSan; a temporary mutant that cached the current ID at function entry was rejected by the harness. Existing 1,024-case loader mutation and resource-type C harnesses passed under ASan/UBSan. The full decomp Python suite passed **124 tests**; verifier tests passed **17**.
+- The existing proof still records the 132-byte DDC4 extent at VMA `0x8003DDC4` / ROM `0x3E9C4` with matching original/candidate SHA-256 `f7dab493df8553cae7eb55ce5bbaec5a2cd576e0454dc557dbbadad74a7a101a`. `script_vm.c`, `script_vm.h`, manifest and proof report stayed unchanged; source SHA-256 remains `ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422`. No native candidate, full-ROM candidate gate, inventory or in-game test was run because production code and ownership did not change. Evidence: `decomp/plans/execution/2026-11-11-g64-029-ddc4-mutation-guard.json`.
+- **Reason / limit:** the resolver is already a matching C sibling, so this task adds a regression invariant around entry-ID preservation and retry-time global reload without claiming new machine-code proof or retail callback behavior.
+- **Next:** G64-030, reconcile the VM resource checkpoint against current proof and typed interface evidence; leave unresolved helpers as ASM.
+
 ## 2026-11-11 — G64-028 trace signed VM control decoder (RESEARCH_ONLY)
 
 - Continued from pushed commit `c43b04392ecb3f206e40622f0ef0c30e9eabd629` in `codex/decomp-100-task-plan`; fetched `origin/chatgptweb/decomp` and confirmed it matched. Pinned `mnsg` source remains at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.

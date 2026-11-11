@@ -328,8 +328,21 @@ assembly and claims are unchanged. See
 
 ### G64-029 — Guard already matching resource decoder
 
-**Status:** PLANNED. **Dependencies:** G64-025, G64-028.
-**Focus files:** `decomp/script_vm.c`; `decomp/test_vm_loader_resource_mutation.c`.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-025, G64-028.
+**Focus files:** `decomp/script_vm.c`; `decomp/test_vm_loader_resource_mutation.c`; `decomp/test_vm_ddc4_resolver.c`.
+
+**Outcome (2026-11-11):** Added `test_vm_ddc4_resolver.c`, which includes the
+production DDC4 body and verifies first-hit behavior plus the retry path after
+a synthetic recovery callback changes the current resource ID. The retry load
+uses the changed global; the subsequent segment lookup still uses the original
+entry ID. A temporary cached-global mutant fails the regression. The new test,
+the existing 1,024-case loader mutation harness and resource-type harness pass
+under GCC ASan/UBSan; the full decomp suite passes 124 tests and verifier tests
+pass 17. The DDC4 proof extent remains 132 bytes with unchanged exact SHA-256;
+`script_vm.c`, manifest and proof are unchanged. This does not establish that
+the retail recovery callback mutates the global. No native candidate, full-ROM
+gate, inventory or in-game test was run. See
+`plans/execution/2026-11-11-g64-029-ddc4-mutation-guard.json`.
 
 **Architectural intent:** Add regression coverage for 8003DDC4_3E9C4's retry behavior and resource-ID mutation before changing shared types.
 

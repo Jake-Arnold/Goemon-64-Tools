@@ -1133,14 +1133,15 @@
       "ordinal": 29,
       "phase": 3,
       "title": "Guard already matching resource decoder",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-025",
         "G64-028"
       ],
       "focus_files": [
         "decomp/script_vm.c",
-        "decomp/test_vm_loader_resource_mutation.c"
+        "decomp/test_vm_loader_resource_mutation.c",
+        "decomp/test_vm_ddc4_resolver.c"
       ],
       "architecture_design": "Add regression coverage for 8003DDC4_3E9C4's retry behavior and resource-ID mutation before changing shared types.",
       "explicit_acceptance": "Existing matching machine code/hash unchanged; mutation tests intentionally fail when global ID is incorrectly cached.",

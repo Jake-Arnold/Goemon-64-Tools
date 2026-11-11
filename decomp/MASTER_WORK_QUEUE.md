@@ -17,8 +17,10 @@ control-flow trace is complete and remains `RESEARCH_ONLY`: both dispatch
 tables, state returns and callback cursor reloads are tied to the pinned ROM,
 with no C candidate. G64-028 traced DF98's signed-token range, 40-entry table,
 caller sentinel checks, and paced/unpaced marker, repeat and cursor ordering.
-It remains `RESEARCH_ONLY` with no C model. Continue with G64-029–030 in
-dependency order.
+It remains `RESEARCH_ONLY` with no C model. G64-029 added a DDC4 host
+regression for callback mutation and entry-ID preservation; its synthetic
+cached-global negative control fails, and the production proof remains
+unchanged. Continue with G64-030 in dependency order.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 
