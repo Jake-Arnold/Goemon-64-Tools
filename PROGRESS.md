@@ -19,6 +19,15 @@
 - **Limits:** `func_8003DE80_3EA80` remains `GLOBAL_ASM`. Variants, ROM, IDO objects and linked text remain ignored local diagnostics. Production candidate, `script_vm.c`, manifest, stored proof and inventory are unchanged. No real translation-unit integration, in-game verification, or new complete-ROM proof occurred. Full details and hashes are in [`decomp/plans/execution/2026-11-11-g64-035-delay-slots.json`](decomp/plans/execution/2026-11-11-g64-035-delay-slots.json).
 - **Next:** G64-036. Reuse the existing 11-scenario/1,100-case harness and add coverage only if the original MIPS establishes a new behavior distinction.
 
+## 2026-11-11 — G64-036 reuse command-walker semantics evidence (RESEARCH_ONLY)
+
+- Started from pushed `1530f252bdf756b91e5ab042fd5aa370f102991a` after fetching the target branch; `func_8003DE80_3EA80` remains in the `script_vm.c` assembly-owned manifest entry.
+- Cross-mapped all 11 existing scenarios to the original signed-token CFG: `-1` sentinel; other negative tokens including decoder-null; suppression with unchanged cursor; zero/maximum nonnegative output; post-callback token reread; repeat-setting mutation after output/decoder; and one-halfword cursor advancement. The original ROM guard ties those behaviors to the 58-word extent and 24 control/callback anchors.
+- Inspected the called gate's current C implementation: `func_8003DF68_3EB68` decrements `D_801C77A0` when it is at least 2 and returns suppression; it does not write `D_801C7798`. A proposed gate-mutation test for `D_801C7798` would invent an unobserved effect, so no new host scenario or mutant was added. Reused G64-034's baseline/GOTO sanitizer runs and stale-token negative control under the v2 instruction.
+- Updated the task-status regression test and evidence crosswalk. Current status validation selects G64-037 next; the stored proof remains 148/148 and 11,020 bytes. No fresh G2 build or inventory was run because the function remains assembly-owned.
+- **Limits:** no new C behavior model, IDO variant, full-unit integration, in-game run, or complete-ROM proof. Existing host stubs select wrapper branches and do not claim to emulate all gate-helper state effects. Details are in [`decomp/plans/execution/2026-11-11-g64-036-command-walker-semantics.json`](decomp/plans/execution/2026-11-11-g64-036-command-walker-semantics.json).
+- **Next:** G64-037, pin and trace the `0x8003ED60` handler from the original ROM before assigning semantics.
+
 
 ## 2026-11-11 — G64-034 recover paced command-walker CFG (RESEARCH_ONLY)
 

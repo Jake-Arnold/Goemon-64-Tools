@@ -95,9 +95,12 @@ the best moved the first mismatch to `0x8003DE88`, while a 232-byte symbol had
 the wrong `0x30` frame. No source-unit match was found, and `script_vm.c`
 remains assembly. Details are in
 `plans/execution/2026-11-11-g64-034-command-walker-cfg.json` and
-`plans/execution/2026-11-11-g64-035-delay-slots.json`. **Next: G64-036**, which
-reuses existing semantic coverage unless original instructions require a new
-behavior case.
+`plans/execution/2026-11-11-g64-035-delay-slots.json`. G64-036 reused all
+eleven semantic scenarios and the original guard. The gate helper
+is known to update the repeat count, not the repeat setting, so no unsupported
+callback-mutation case was added. See
+`plans/execution/2026-11-11-g64-036-command-walker-semantics.json`. **Next:
+G64-037**, characterize the `0x8003ED60` handler from original ROM evidence.
 See `plans/execution/` for task-specific evidence ledgers.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.

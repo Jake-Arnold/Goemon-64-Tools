@@ -1,0 +1,158 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-036",
+  "title": "Prove command-walker semantics",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "1530f252bdf756b91e5ab042fd5aa370f102991a",
+    "target_head_at_start": "1530f252bdf756b91e5ab042fd5aa370f102991a",
+    "fetched_before_review": true,
+    "worktree_clean_at_start": true
+  },
+  "original_function": {
+    "name": "func_8003DE80_3EA80",
+    "ownership": "GLOBAL_ASM in decomp/script_vm.c",
+    "vma": "0x8003DE80",
+    "rom_offset": "0x3EA80",
+    "size_bytes": 232,
+    "words": 58,
+    "sha256": "011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1",
+    "guard": "test_vm_control_decoder_original.py: exact extent plus 24 control/callback anchors"
+  },
+  "reused_evidence": {
+    "source_ledger": "decomp/plans/execution/2026-11-11-g64-034-command-walker-cfg.json",
+    "host_test_source": "decomp/test_vm_command_walker_probe.c",
+    "host_test_source_sha256": "b233b05d6937ff1bb37a1716987b6a0643cf3405cea8427573e01ef0dfa66da5",
+    "original_guard_source": "decomp/test_vm_control_decoder_original.py",
+    "original_guard_source_sha256": "e9ae5c073ef190d0a3c8455b543c55aa05abd0841d9fade8ac01fcb808c16ac3",
+    "scenarios": 11,
+    "cases_per_source": 1100,
+    "sanitizers": [
+      "AddressSanitizer",
+      "UndefinedBehaviorSanitizer"
+    ],
+    "runs": {
+      "baseline_probe": {
+        "cases": 1100,
+        "result": "passed"
+      },
+      "goto_probe": {
+        "cases": 1100,
+        "result": "passed"
+      },
+      "stale_token_mutant": {
+        "result": "rejected at callback-mutated marker assertion"
+      }
+    },
+    "test_run_policy": "Reused G64-034's existing host results under Architect v2; no duplicate C harness run or additional random cases in this task."
+  },
+  "coverage_crosswalk": [
+    {
+      "behavior": "signed -1 sentinel precedes suppression, clears marker, returns null, preserves prior repeat count",
+      "scenario": "-1 sentinel precedes suppression and preserves repeat count",
+      "original_evidence": "DEB4/DEB8 signed branch-likely; DF1C marker store and DF24 null return"
+    },
+    {
+      "behavior": "other negative tokens delegate and return decoder cursor, including null; repeat setting is reloaded after decoder",
+      "scenarios": [
+        "-2 delegates and reloads repeat setting",
+        "recognized negative boundary -71 delegates opaquely",
+        "unrecognized negative -72 delegates",
+        "signed high-bit word -32768 is negative",
+        "delegated -32 may return null"
+      ],
+      "original_evidence": "DF14 negative split; DF28 DF98 call; DF38 repeat reload"
+    },
+    {
+      "behavior": "suppression returns unchanged cursor, clears marker, copies current repeat setting",
+      "scenario": "repeat suppression returns the unchanged cursor",
+      "original_evidence": "DEBC DF68 call; DECC/DED0 marker store; DED8 repeat-setting load"
+    },
+    {
+      "behavior": "nonnegative zero and maximum values use output path",
+      "scenarios": [
+        "zero is a nonnegative command",
+        "signed maximum 32767 is nonnegative"
+      ],
+      "original_evidence": "DEB0 signed halfword load; DEB4 negative branch-likely"
+    },
+    {
+      "behavior": "output callback may change current command before marker reread; cursor advances by one halfword",
+      "scenario": "output callback mutates current halfword before marker reread",
+      "original_evidence": "DEE8 D060 call; DEF4 halfword reread; DEF8 cursor += 2; DF00 marker store"
+    },
+    {
+      "behavior": "repeat setting is reloaded after output and controls repeat versus return",
+      "scenarios": [
+        "zero is a nonnegative command",
+        "ordinary words continue until callback enables repeat"
+      ],
+      "original_evidence": "DEF0 repeat load; DEFC loop branch; DF04/DF0C repeat exit"
+    }
+  ],
+  "helper_effect_boundary": {
+    "gate": "func_8003DF68_3EB68 in decomp/script_vm.c",
+    "observed_source": "If D_801C77A0 >= 2, decrement D_801C77A0 and return 1; otherwise return 0.",
+    "writes_repeat_setting_D_801C7798": false,
+    "test_stub_scope": "The harness stubs the gate's return to reach both wrapper branches; it does not emulate the gate's internal counter transition.",
+    "rejected_unsupported_case": "A mock gate mutation of D_801C7798 was not added because the original helper source does not perform it."
+  },
+  "decision": {
+    "new_behavior_obligation_found": false,
+    "new_host_scenarios": 0,
+    "classification": "RESEARCH_ONLY",
+    "reason": "Every modeled wrapper branch in the existing harness maps to original-ROM control/callback evidence; no further behavior distinction is supported by the source.",
+    "production_candidate_changed": false,
+    "matching_c_delta": 0,
+    "byte_delta": 0
+  },
+  "validation": {
+    "new_c_harness_run": "NOT_RUN; prior G64-034 results reused per v2 stop rule",
+    "full_decomp_suite": {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 0,
+      "tests": 141
+    },
+    "verifier_suite": {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "exit_code": 0,
+      "tests": 17
+    },
+    "skill_context_tests": {
+      "command": "python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q",
+      "exit_code": 0,
+      "tests": 9
+    },
+    "helper_validate": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "exit_code": 0,
+      "result": "CONSISTENT_STORED_REPORTS; task_count=100; first_planned=G64-037; no new verifier run"
+    },
+    "full_rom_build": "NOT_RUN; no candidate is source-unit exact",
+    "inventory": "NOT_RUN",
+    "in_game": "NOT_RUN",
+    "git_diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  },
+  "stored_proof": {
+    "report": "decomp/results/combined.json",
+    "report_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "inventory_sha256": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a",
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "script_vm_c_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "status": "148/148 exact claims, 11,020 bytes, 33,554,432-byte identity; 161 combined C, 7,215 ASM, 7,376 entries"
+  },
+  "next": "G64-037: pin the original 0x8003ED60 function extent, callers, global widths and code path before assigning semantics.",
+  "task_status_test": {
+    "source": "decomp/test_skill_context.py",
+    "source_sha256": "cc7c9c3bbdb9ec684efa7f1a09f8aaf051e8b814ae08bc52df916d82552bf6df",
+    "assertions": "G64-035 and G64-036 are RESEARCH_ONLY; G64-037 is PLANNED with G64-021 dependency",
+    "result": "passed in the 9-test focused skill-context run and 141-test full suite"
+  }
+}

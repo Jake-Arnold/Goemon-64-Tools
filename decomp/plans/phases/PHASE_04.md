@@ -204,7 +204,7 @@ pass. See [`../execution/2026-11-11-g64-035-delay-slots.json`](../execution/2026
 
 ### G64-036 — Prove command-walker semantics
 
-**Status:** PLANNED. **Dependencies:** G64-034, G64-035.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-034, G64-035.
 **Focus files:** `decomp/test_vm_command_walker_probe.c`; `decomp/VM_STREAM_MATCHING.md`.
 
 **Architectural intent:** Run sentinels for state marker, output suppression, changed cursor/word after external calls and zero/nonzero repetition.
@@ -228,6 +228,17 @@ pass. See [`../execution/2026-11-11-g64-035-delay-slots.json`](../execution/2026
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-11):** Reused G64-034's eleven-scenario host matrix,
+1,100 sanitizer cases per source and stale-token mutant. Mapped the sentinel,
+delegated negatives (including null), suppression, output callback mutation,
+repeat reloads and halfword cursor step to original ROM instructions and the
+58-word / 24-anchor guard. The gate at `DF68` is known C: it decrements
+`D_801C77A0` when applicable and does not mutate `D_801C7798`; no unsupported
+gate-mutation case was added. Existing host stubs select wrapper branches and
+do not claim full helper-state simulation. No new C scenarios or MIPS model
+were needed; production ownership and proof are unchanged. See
+[`../execution/2026-11-11-g64-036-command-walker-semantics.json`](../execution/2026-11-11-g64-036-command-walker-semantics.json).
 
 ### G64-037 — Characterize 8003ED60 handler
 

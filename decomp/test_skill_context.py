@@ -23,14 +23,16 @@ class TaskBriefTests(unittest.TestCase):
         self.assertIn("220B", b["architect_override_v2"]["directive"])
         self.assertEqual(sc.task_brief(self.data, "G64-071")["architect_override_v2"]["wave"], "B")
 
-    def test_current_task_status_and_dependency_ids_preserved(self):
+    def test_current_task_status_and_next_task_dependencies(self):
         tasks = sc.load()["tasks"]
         self.assertEqual(tasks[33]["status"], "RESEARCH_ONLY")
         self.assertEqual(tasks[34]["id"], "G64-035")
         self.assertEqual(tasks[34]["status"], "RESEARCH_ONLY")
         self.assertEqual(tasks[35]["id"], "G64-036")
-        self.assertEqual(tasks[35]["status"], "PLANNED")
-        self.assertEqual(tasks[35]["depends_on"], ["G64-034", "G64-035"])
+        self.assertEqual(tasks[35]["status"], "RESEARCH_ONLY")
+        self.assertEqual(tasks[36]["id"], "G64-037")
+        self.assertEqual(tasks[36]["status"], "PLANNED")
+        self.assertEqual(tasks[36]["depends_on"], ["G64-021"])
         self.assertNotIn("architect_override_v2", tasks[33])
 
     def test_detailed_packet_is_opt_in(self):

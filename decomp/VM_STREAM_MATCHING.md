@@ -121,13 +121,38 @@ The closest source shape still assigns the long-lived values differently.
 The tracked candidate, manifest and 148-function proof remain unchanged;
 `func_8003DE80_3EA80` stays `GLOBAL_ASM`.
 
+## G64-036 — semantics coverage crosswalk
+
+G64-034 already supplies the accepted bounded evidence for the wrapper paths:
+the original-ROM guard checks all 58 words and 24 exact control/callback
+anchors, while the host harness runs 11 explicit scenarios (1,100 actor cases
+per source) and rejects a stale-token mutant. The cases map as follows:
+
+| Original behavior | Existing host case |
+| --- | --- |
+| Signed `-1` sentinel returns null before the gate and preserves repeat count | `-1 sentinel precedes suppression and preserves repeat count` |
+| Other negative tokens delegate; decoder can mutate repeat setting and return null | `-2`, `-71`, `-72`, `-32768`, and `-32` with null decoder result |
+| Suppression returns the unchanged cursor, clears marker and copies the current repeat setting | `repeat suppression returns the unchanged cursor` |
+| Nonnegative zero and signed maximum take output path | `zero is a nonnegative command`; `signed maximum 32767 is nonnegative` |
+| Output callback changes current command before marker reread | `output callback mutates current halfword before marker reread` |
+| Output callback changes repeat setting; loop continues or exits at next check | `zero is a nonnegative command`; `ordinary words continue until callback enables repeat` |
+| Cursor advances exactly one halfword | output cases expect `commands + 1`; original `0x8003DEF8` adds 2 bytes |
+
+`func_8003DF68_3EB68` is not an unknown effect: its current C body checks
+`D_801C77A0 >= 2`, decrements that repeat count and returns 1. It does not
+write `D_801C7798`. The host harness stubs the gate return to cover both walker
+arms; it does not claim to model the gate's internal counter transition. A
+mock that changes `D_801C7798` during the gate would add behavior unsupported by
+the original helper, so no case was added. G64-036 closes from the existing
+evidence; see
+[`plans/execution/2026-11-11-g64-036-command-walker-semantics.json`](plans/execution/2026-11-11-g64-036-command-walker-semantics.json).
+
 ## Next bounded experiment
 
-G64-036 reuses the eleven explicit walker scenarios and stale-token negative
-control from G64-034. Add a case only if original-MIPS evidence exposes a new
-behavior obligation. The comparator and command decoder remain independently
-unresolved; any later matching-C claim still requires a real translation-unit
-instruction match and a fresh complete-ROM/inventory gate.
+G64-037 pins and traces the `0x8003ED60` handler from the original ROM before
+assigning semantics. The command walker and decoder remain assembly; any later
+matching-C claim still requires a real translation-unit instruction match and
+a fresh complete-ROM/inventory gate.
 
 ## Related matching stream implementation
 

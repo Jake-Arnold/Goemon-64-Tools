@@ -34,8 +34,9 @@ signedness, bound and alias mutants; it made no C promotion. G64-034 recovered
 the DE80 signed-token CFG, expanded ROM-bound and host tests, and corrected the
 current pinned IDO result to a 220-byte symbol with a first mismatch at
 `0x8003DE84`. G64-035 tested four bounded shapes; the best first mismatch was
-`0x8003DE88`, while a size-equal 232-byte function had the wrong frame. Continue
-with G64-036 using existing semantic coverage.
+`0x8003DE88`, while a size-equal 232-byte function had the wrong frame. G64-036
+closed from its eleven existing semantic cases and ROM guard without inventing
+gate-helper effects. Continue with G64-037.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 
