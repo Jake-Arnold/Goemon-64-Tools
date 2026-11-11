@@ -86,7 +86,7 @@ variants passed 5,000 synthetic differential cases. See
 
 ### G64-033 — Strengthen text-loop differential model
 
-**Status:** PLANNED. **Dependencies:** G64-031, G64-032.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-031, G64-032.
 **Focus files:** `decomp/test_vm_text_loop_differential.py`; `decomp/test_vm_text_loop_differential_stubs.c`.
 
 **Architectural intent:** Retain original-MIPS versus host-C test harness for controller halfwords, +0xA work value, dynamic bounds and early return.
@@ -110,6 +110,17 @@ variants passed 5,000 synthetic differential cases. See
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-11):** The MIPS/host differential runner now executes ten
+named edge cases before each seeded batch and defaults to 10,000 deterministic
+random cases. Both required seeds pass 10,000 cases each. Negative controls
+kill signed held and pressed high-bit checks, a cached outer bound, and the
+script-pointee/work-record alias. The ASan/UBSan host harness passes all 15
+groups; focused text-loop Python tests pass 10, the decomp suite passes 135,
+and verifier tests pass 17. This remains host/static research: candidate source,
+manifest ownership and the stored 148-function proof are unchanged; no IDO
+translation-unit build, new whole-ROM proof, inventory build or in-game run was
+made. See [`../execution/2026-11-11-g64-033-text-loop-differential.json`](../execution/2026-11-11-g64-033-text-loop-differential.json).
 
 ### G64-034 — Recover command-walker CFG
 

@@ -82,7 +82,11 @@ the G2 gate, so D468, D68C, DF98 and F038 remain ASM. G64-031 traced DBEC's
 ownership unchanged. G64-032's saved-register/frame comparison and five
 native source-shape trials are in
 [`VM_TEXT_LOOP_FRAME.md`](VM_TEXT_LOOP_FRAME.md); none matched the 0x48 frame
-or complete branch layout. Continue with G64-033.
+or complete branch layout. G64-033 added ten fixed MIPS/host edge cases,
+10,000-case defaults, 20,000 two-seed passing scenarios, and four killed
+signedness, stale-bound and cursor-alias mutants. The VM function remains
+`GLOBAL_ASM`; see `plans/execution/2026-11-11-g64-033-text-loop-differential.json`.
+Continue with G64-034.
 See `plans/execution/` for task-specific evidence ledgers.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
@@ -253,7 +257,7 @@ Next targets, in useful order:
 | Target | Existing evidence / next action |
 | --- | --- |
 | VM comparator `func_8003D9B8_3E5B8` (COMPLETED) | Promoted in the current 142-function complete-ROM reconstruction: 340 exact original bytes, full 32 MiB identical image, 142/142 original-address checks, 7,376-entry readelf inventory, 1,134 sanitizer host cases. Formal uninterrupted verifier still pending. |
-| VM text loop `func_8003DBEC_3E7EC` | Latest standalone candidate compiles to original 472-byte symbol, but is unpromoted: 47/95 equal non-relocation instruction positions without original-address relocation, 0x50 vs original 0x48 stack frame. 10,000 MIPS/C synthetic differential cases passed. Recover register lifetimes and branch scheduling; do not change proof counts. |
+| VM text loop `func_8003DBEC_3E7EC` | Latest standalone candidate compiles to original 472-byte symbol, but is unpromoted: 53/95 nonrelocation words in the raw isolated probe (or 53/88 under the separate relocation-layout report), 0x50 vs original 0x48 stack frame. G64-033 now passes ten fixed edges plus 10,000 MIPS/C synthetic cases over two seeds and kills four targeted mutants. Recover register lifetimes and branch scheduling; do not change proof counts. |
 | Choice edge `func_8003D0B0_3DCB0` (COMPLETED) | Promoted 204-byte exact C at original address. Fresh 2,331-object compile with regenerated Splat sources gave 33,554,432/33,554,432 matching bytes, all 141 function proofs and unchanged 7,376-entry inventory. 100 host cases passed. Uninterrupted formal verifier still pending. |
 | VM loader `func_8003D468_3E068` | Needs resource-prefix interfaces. Derive fields/calls from actual loads and upstream declarations. |
 | Key initializer `func_080001BC_6F369C` | Public `candidates/key_spawn_gate.c` matches 96 bytes in an isolated linked probe. Promotion requires reviewed overlay mapping/layout support in verifier, then complete-ROM proof. |

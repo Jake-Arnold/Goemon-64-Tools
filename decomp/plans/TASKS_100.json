@@ -1298,7 +1298,7 @@
       "ordinal": 33,
       "phase": 4,
       "title": "Strengthen text-loop differential model",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-031",
         "G64-032"

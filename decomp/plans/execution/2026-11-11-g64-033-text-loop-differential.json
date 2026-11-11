@@ -1,0 +1,149 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-033",
+  "title": "Strengthen text-loop differential model",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "selected_repo_skills": [
+    "goemon-task-brief",
+    "goemon-host-regression"
+  ],
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "2b904009ef17df85b5422a32bdf7599a6b055ed1",
+    "target_head_at_task_start": "2b904009ef17df85b5422a32bdf7599a6b055ed1",
+    "fetched_before_work": true,
+    "worktree_clean_at_start": true,
+    "current_agents_md_confirmed": true
+  },
+  "local_private_inputs": {
+    "decompressed_rom": "practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+    "rom_size_bytes": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "pinned_mnsg_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "rom_committed": false,
+    "mutant_sources_and_libraries": "temporary directory or ignored practice/diagnostics/decomp-100-inputs/g64-033/",
+    "private_inputs_published": false
+  },
+  "original_function": {
+    "name": "func_8003DBEC_3E7EC",
+    "manifest_ownership": "GLOBAL_ASM in decomp/script_vm.c",
+    "vma": "0x8003DBEC",
+    "rom_offset": "0x3E7EC",
+    "end_exclusive_vma": "0x8003DDC4",
+    "size_bytes": 472,
+    "words": 118,
+    "sha256": "4ee117dd31f6b8f3ab30ca864c202eb7c974c28cc8236d233a94228b36a0a764",
+    "call_sites": [
+      "0x8003D714",
+      "0x8003D8B8"
+    ],
+    "original_native_compiler_reference": "IDO 5.3 -O2 -mips2 -G 0 -non_shared -c (prior isolated candidate probe; not rerun for this test-only task)",
+    "candidate_source_sha256_unchanged": "9eb0f08e7d1b2abd2831ac2eb4a60f5e6027bf1c6bf8b15a9b376418f391875e"
+  },
+  "implementation": {
+    "harness_source": "decomp/test_vm_text_loop_differential.py",
+    "harness_sha256": "69860345efc4bb95974fc6431bb0f092e80c89c68a489b82fa8baf39d997d4b3",
+    "stub_source": "decomp/test_vm_text_loop_differential_stubs.c",
+    "stub_sha256": "3de811b0ec3962a7c15a9c4f99675871d7470da6e3ade3b88961183c9c323438",
+    "fixed_edge_cases": [
+      "nonpositive-bound",
+      "held-0x8000-retries-with-latch",
+      "pressed-0x8000-sets-latch",
+      "pressed-0x4000-restart-resets-state",
+      "pressed-0x4000-zero-handler-returns",
+      "callback-lowers-bound",
+      "callback-raises-bound",
+      "callback-null-return-clears-state",
+      "callback-terminal-state-clears-work-latch",
+      "cursor-pointee-plus-a-is-independent"
+    ],
+    "random_cases_per_seed": 10000,
+    "seeds": [
+      "0x1D8",
+      "0xDEADBEEF"
+    ],
+    "mutants_killed": [
+      {
+        "mutant": "signed-held-high-bit",
+        "case": "held-0x8000-retries-with-latch"
+      },
+      {
+        "mutant": "signed-pressed-high-bit",
+        "case": "pressed-0x8000-sets-latch"
+      },
+      {
+        "mutant": "stale-outer-bound",
+        "case": "callback-lowers-bound"
+      },
+      {
+        "mutant": "cursor-pointee-alias",
+        "case": "cursor-pointee-plus-a-is-independent"
+      }
+    ]
+  },
+  "validation": [
+    {
+      "command": "python3 -m py_compile decomp/test_vm_text_loop_differential.py",
+      "exit_code": 0
+    },
+    {
+      "command": "cc -std=c99 -shared -fPIC -O2 decomp/candidates/vm_text_loop.c decomp/test_vm_text_loop_differential_stubs.c -o practice/diagnostics/decomp-100-inputs/g64-033/libvm_text_loop_baseline.so",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 decomp/test_vm_text_loop_differential.py --decompressed-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --host-library practice/diagnostics/decomp-100-inputs/g64-033/libvm_text_loop_baseline.so --cases 10000 --seed 0x1D8",
+      "exit_code": 0,
+      "result": "10 fixed cases and 10000 deterministic synthetic MIPS/C cases matched"
+    },
+    {
+      "command": "python3 decomp/test_vm_text_loop_differential.py --decompressed-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --host-library practice/diagnostics/decomp-100-inputs/g64-033/libvm_text_loop_baseline.so --cases 10000 --seed 0xDEADBEEF",
+      "exit_code": 0,
+      "result": "10 fixed cases and 10000 deterministic synthetic MIPS/C cases matched"
+    },
+    {
+      "command": "python3 decomp/test_vm_text_loop_differential.py --decompressed-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --host-library practice/diagnostics/decomp-100-inputs/g64-033/libvm_text_loop_baseline.so --cases 1 --seed 0x1D8 --check-mutants",
+      "exit_code": 0,
+      "result": "all four targeted mutants were rejected by their named fixed edge case"
+    },
+    {
+      "command": "cc -std=c11 -O1 -Wall -Wextra -Werror -fno-omit-frame-pointer -fsanitize=address,undefined decomp/test_vm_text_loop.c -o practice/diagnostics/decomp-100-inputs/g64-033/vm_text_loop_asan",
+      "exit_code": 0
+    },
+    {
+      "command": "ASAN_OPTIONS=detect_leaks=0 practice/diagnostics/decomp-100-inputs/g64-033/vm_text_loop_asan",
+      "exit_code": 0,
+      "result": "15 synthetic host scenario groups passed"
+    },
+    {
+      "command": "python3 -m unittest discover -s decomp -p 'test_vm_text_loop*.py' -q",
+      "exit_code": 0,
+      "tests": 10
+    },
+    {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 0,
+      "tests": 135
+    },
+    {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "exit_code": 0,
+      "tests": 17
+    }
+  ],
+  "proof_and_limits": {
+    "stored_full_rom_proof": "148/148 claims, 11020 matched bytes, 161 combined C, 7215 ASM, 7376 identified entries; read from the existing stored report",
+    "fresh_original_rom_build": "NOT_RUN",
+    "fresh_inventory_build": "NOT_RUN",
+    "native_ido_translation_unit_compare": "NOT_RUN; no matching-C claim was attempted",
+    "in_game_verification": "NOT_RUN",
+    "manifest_sha256_unchanged": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "script_vm_c_sha256_unchanged": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "candidate_source_changed": false,
+    "matching_c_promotion": false,
+    "task_classification": "RESEARCH_ONLY"
+  },
+  "next": "Execute G64-034: recover the VM command-walker CFG from its original MIPS and caller evidence."
+}

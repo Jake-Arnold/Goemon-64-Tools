@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-033 strengthen VM text-loop differential model (RESEARCH_ONLY)
+
+- Fetched `origin/chatgptweb/decomp` and continued on `codex/decomp-100-task-plan` from matching local/remote SHA `2b904009ef17df85b5422a32bdf7599a6b055ed1`. The verified decompressed USA ROM and compiler inputs remain local and ignored.
+- Expanded `decomp/test_vm_text_loop_differential.py` with ten named original-MIPS edge cases for unsigned held/pressed `0x8000`, pressed `0x4000` restart/early return, callback state reset, null return, lower/raised dynamic bounds, and distinct global-work `+0xA` versus script-pointee `+0xA`. Default random batch is now 10,000. Updated stubs with an independent synthetic pointee sentinel.
+- Both seeds passed all ten fixed cases plus 10,000 deterministic randomized cases: `0x1D8` and `0xDEADBEEF` (20,000 random cases total). Four targeted negative controls were killed: signed held high bit, signed pressed high bit, stale cached bound after callback mutation, and aliasing the cursor pointee as the global work latch.
+- Validation: 15 synthetic C host groups passed under ASan/UBSan; the focused text-loop Python group passed 10, the full decomp suite passed 135, and `tests.test_decomp_verify` passed 17. Commands and source hashes are in [`decomp/plans/execution/2026-11-11-g64-033-text-loop-differential.json`](decomp/plans/execution/2026-11-11-g64-033-text-loop-differential.json).
+- **Limits:** the original 472-byte function at VMA `0x8003DBEC` / ROM offset `0x3E7EC` remains `GLOBAL_ASM` in `script_vm.c`. The candidate, manifest, stored 148-function proof and inventory were not changed. No IDO translation-unit comparison, fresh whole-ROM build, inventory build, or in-game verification was performed; these are synthetic host/MIPS-interpreter results only. The ROM, shared libraries and test binaries remain ignored.
+- **Next:** G64-034, recover the VM command-walker CFG from pinned original MIPS/caller evidence. Keep candidate ASM ownership unchanged until all native and whole-ROM gates pass.
+
 ## 2026-11-11 - 20 low-token Codex skills and task context helper (NO PROMOTIONS)
 
 - Added 20 distinct, small, repository-local Codex skill manifests at `.agents/skills/<name>/SKILL.md` with narrow discovery triggers. They cover task selection/briefing, original MIPS and ABI, IDO mismatch, native integration, complete ROM/inventory verification, negative testing, three script-VM lanes, overlays, scene state, REA, upstream reference, bounded batches, evidence and private input reproduction.
