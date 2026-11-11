@@ -4,11 +4,11 @@
 
 ## What the work has actually achieved
 
-The stored verified proof at review is **148 reconstructed matching C functions / 11,020 MIPS bytes**, **161 combined C / 7,215 ASM / 7,376 identified entries**, and a complete **33,554,432-byte ROM match** (reference SHA1 `6ea0ed71032ce08fc2745f412d84936382197494`). Initial plan arithmetic of 142/10,652 is historical. G64-001–014 integrated **six** new functions, including the formerly blocked object dispatcher. G64-015–018 failed native byte matching (retain ASM). G64-021–034 made **fourteen consecutive research-only** VM investigations without adding a verified matching C function. They did produce valuable ROM-backed CFGs, ABI constraints and host tests. Record that as research, not production yield.
+The stored verified proof at review is **148 reconstructed matching C functions / 11,020 MIPS bytes**, **161 combined C / 7,215 ASM / 7,376 identified entries**, and a complete **33,554,432-byte ROM match** (reference SHA1 `6ea0ed71032ce08fc2745f412d84936382197494`). Initial plan arithmetic of 142/10,652 is historical. G64-001–014 integrated **six** new functions, including the formerly blocked object dispatcher. G64-015–018 failed native byte matching (retain ASM). G64-021–035 produced **fifteen consecutive VM investigations** without adding a verified matching C function. They did produce valuable ROM-backed CFGs, ABI constraints and host tests. Record that as research, not production yield.
 
-Most recent evidence: G64-034 established original command walker DE80 at **232 bytes**, while its freshly rebuilt isolated IDO candidate was **220 bytes**, not older **228**. First mismatch at `0x8003DE84` (saved-register scheduling); 36/56 available raw instruction positions differ. It has 11 explicit host cases and a killed stale-token mutant. G64-034 is complete `RESEARCH_ONLY`. **Next is G64-035.**
+Most recent evidence: G64-034 established original command walker DE80 at **232 bytes**, while its freshly rebuilt isolated IDO candidate was **220 bytes**, not older **228**. G64-035 tried four local C shapes under the v2 budget. The best moved the first mismatch to `0x8003DE88`; a 232-byte function with a wrong `0x30` frame was rejected. The best branch-likely candidate still targets four bytes late and differs at 38/56 raw positions. It remains `GLOBAL_ASM`, classified `RESEARCH_ONLY`; the 148-function proof is unchanged. **Next is G64-036**, which should reuse existing semantics tests unless original evidence identifies a new behavior obligation.
 
-## Priority schedule (all 65 remaining task IDs exactly once)
+## Priority schedule (the 65 task IDs pending at this review, each exactly once)
 
 | Wave | IDs | Purpose |
 |---|---|---|
@@ -52,7 +52,7 @@ Publish one compact record per wave: first/last HEAD, new **G2 function and byte
 
 ## Immediate commands to the executor
 
-1. **G64-035**: start from the *new* DE80 232B-vs-220B first mismatch `0x8003DE84`, not the stale 228B research. Investigate saved registers before later `bltzl` delay slots. Apply <=5 targeted source variants; only extend for measurable improvement.
-2. Complete G64-036–040 with distinct new evidence. G64-040 runs G2 only for actual whole-unit exact C, otherwise records a no-promotion checkpoint with existing 148 proof unchanged.
+1. **G64-035 complete:** four bounded source shapes moved the best first mismatch only to `0x8003DE88`; stop after the next register-lifetime hypothesis regressed. Keep the original assembly.
+2. Complete G64-036–040 with distinct new evidence. G64-036 reuses the 11 existing walker scenarios and adds a case only for a new original-observed behavior. G64-040 runs G2 only for actual whole-unit exact C, otherwise records a no-promotion checkpoint with existing 148 proof unchanged.
 3. Bring G64-091 and G64-090 forward; execute G64-071–080, promoting independently exact source units through full G2 as soon as they qualify.
 4. Continue waves C–H in dependency order, use the per-task `architect_override_v2`, and prepare the ranked post-100 yield programme.

@@ -98,14 +98,36 @@ remains assembly. See
 [`plans/execution/2026-11-11-g64-034-command-walker-cfg.json`](plans/execution/2026-11-11-g64-034-command-walker-cfg.json)
 for the ROM-bound disassembly, tests and unchanged ownership evidence.
 
+## G64-035 — bounded command-walker codegen
+
+After the G64-034 220-byte baseline first differed at `0x8003DE84`, four local
+source shapes were built with pinned IDO 5.3. The exact results and private
+source hashes are in
+[`plans/execution/2026-11-11-g64-035-delay-slots.json`](plans/execution/2026-11-11-g64-035-delay-slots.json).
+
+| Shape | IDO symbol / text | Frame | First linked difference | Outcome |
+| --- | ---: | ---: | --- | --- |
+| Negative arm inline | 216 / 224 B | `0x28` | `0x8003DE88`, 45/56 words differ | Saved-register order improves one word; uses `bgez`, not original `bltzl`. |
+| Sentinel split first | 232 / 240 B | `0x30` | `0x8003DE80`, 54/58 differ | Rejected: size equality hides the wrong frame and extra `$s4`. |
+| Positive arm first | 220 / 224 B | `0x28` | `0x8003DE88`, 38/56 differ | Best positional result; `bltzl`/`li -1` delay word are present at `DEB4/DEB8`, but branch target is `DF18`, four bytes after original `DF14`. `$s1..$s3` lifetimes still differ. |
+| Ordered local lifetimes | 212 / 224 B | `0x20` | `0x8003DE80`, 56/56 differ | Regressed; no further variant under v2 stop rule. |
+
+Every variant passed the existing 11-scenario GCC ASan/UBSan harness (1,100
+actor cases each). The pinned original-ROM comparator verified the 58-word
+extent and 24 control/callback anchors for every linked text. These are host
+and isolated-function checks only; no candidate is exact. Original saves are
+`$s0` cursor, `$s1` owner, `$s2` repeat-setting base and `$s3` work-record base.
+The closest source shape still assigns the long-lived values differently.
+The tracked candidate, manifest and 148-function proof remain unchanged;
+`func_8003DE80_3EA80` stays `GLOBAL_ASM`.
+
 ## Next bounded experiment
 
-G64-035 compares bounded C shapes against the original `bltzl` delay-slot and
-`$s0..$s3` lifetimes. Preserve the 232-byte original extent, callback order and
-all independent exits; do not accept a size-only match. Any later promotion
-still requires the real translation unit, exact original-address instructions,
-and a fresh complete-ROM/inventory gate. The comparator and command decoder
-remain independently unresolved.
+G64-036 reuses the eleven explicit walker scenarios and stale-token negative
+control from G64-034. Add a case only if original-MIPS evidence exposes a new
+behavior obligation. The comparator and command decoder remain independently
+unresolved; any later matching-C claim still requires a real translation-unit
+instruction match and a fresh complete-ROM/inventory gate.
 
 ## Related matching stream implementation
 

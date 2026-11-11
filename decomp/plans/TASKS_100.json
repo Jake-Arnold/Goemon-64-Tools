@@ -1382,7 +1382,7 @@
       "ordinal": 35,
       "phase": 4,
       "title": "Fix command-walker delay slots",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-034"
       ],

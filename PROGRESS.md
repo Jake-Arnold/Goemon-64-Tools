@@ -10,6 +10,15 @@
 - **Validation in connected planning environment:** checked 100 preserved IDs/statuses/dependencies, 65/65 pending tasks in exactly one wave, unchanged stored full-ROM proof/inventory, and architect override/readme integration assertions. Added two Python test methods; the repository-integrated Python suite and private ROM/compiler were **not run** by this planning-only commit.
 - No production C, `manifest.json`, stored verifier result or inventory changed. **Zero new matching C claims** from this revision.
 
+## 2026-11-11 — G64-035 stop bounded command-walker codegen (RESEARCH_ONLY)
+
+- Fetched `origin/chatgptweb/decomp` after G64-034 was pushed; remote had advanced from `2833f6e0cb569f0be6be083e24c71e9b4751d1c4` to planning revision `a68c44b96c225a275862734087690a9e4cbeba5a`. Fast-forwarded the clean local branch and applied Architect v2's five-variant ceiling and first-mismatch stop rule. The target's tracked source was unchanged by that planning commit.
+- Compared the 220-byte G64-034 baseline with four local IDO variants against the 232-byte original. A negative-inline shape moved the first mismatch from `0x8003DE84` to `0x8003DE88`; positive-arm-first also first differed at `DE88` but still had 38/56 raw word positions different. The explicit sentinel split emitted a 232-byte function but used a wrong `0x30` frame; ordered local lifetimes used a `0x20` frame and regressed at `DE80`. Stopped without a fifth variant under v2.
+- All four variants passed 1,100 GCC ASan/UBSan mock cases across the existing 11 scenarios. Pinned original-ROM extent/anchor checks passed for all four linked texts (58 words / 24 anchors); none matched. Best branch-likely shape retained a `bltzl` at `0x8003DEB4` and its `li -1` delay word, but branched to `0x8003DF18` instead of `0x8003DF14`; its function was 220 bytes and its `$s1..$s3` lifetimes still differed from original.
+- The first full-suite run after the task status update exposed a stale v2 test assertion that still expected G64-035 to be `PLANNED`. Updated it to assert G64-035=`RESEARCH_ONLY`, G64-036=`PLANNED`, and the dependency IDs. The rerun passed: focused original-MIPS tests **9/9**, full decomp Python suite **141/141**, verifier tests **17/17**, and skill-context/skill metadata tests **9/9**. The stored report remains 148/148 claims and 11,020 bytes; no fresh G2 build or inventory was run because no source-unit-exact candidate qualified.
+- **Limits:** `func_8003DE80_3EA80` remains `GLOBAL_ASM`. Variants, ROM, IDO objects and linked text remain ignored local diagnostics. Production candidate, `script_vm.c`, manifest, stored proof and inventory are unchanged. No real translation-unit integration, in-game verification, or new complete-ROM proof occurred. Full details and hashes are in [`decomp/plans/execution/2026-11-11-g64-035-delay-slots.json`](decomp/plans/execution/2026-11-11-g64-035-delay-slots.json).
+- **Next:** G64-036. Reuse the existing 11-scenario/1,100-case harness and add coverage only if the original MIPS establishes a new behavior distinction.
+
 
 ## 2026-11-11 — G64-034 recover paced command-walker CFG (RESEARCH_ONLY)
 

@@ -164,7 +164,7 @@ no full-unit integration or fresh whole-ROM/inventory run occurred. See
 
 ### G64-035 — Fix command-walker delay slots
 
-**Status:** PLANNED. **Dependencies:** G64-034.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-034.
 **Focus files:** `decomp/candidates/vm_command_walker_goto_probe.c`; `decomp/test_vm_command_walker_probe.c`.
 
 **Architectural intent:** Use original 232-byte native codegen target, bltzl delay slot and $s0-$s3 allocation; compare bounded C control-flow shapes.
@@ -188,6 +188,19 @@ no full-unit integration or fresh whole-ROM/inventory run occurred. See
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-11):** Applied the updated Architect v2 budget after pulling
+`a68c44b`. Four local C shapes were tested against pinned IDO 5.3 after the
+G64-034 baseline. The best first-mismatch movement was from `0x8003DE84` to
+`0x8003DE88`; the best-positioned variant still differs at 38/56 available
+words and its `bltzl` target is four bytes late. A 232-byte symbol was rejected
+because it used a `0x30` stack frame; another shape regressed to a `0x20` frame
+and mismatch at `DE80`. All four passed the existing 1,100-case ASan/UBSan mock
+harness. No fifth trial was run after the first-mismatch experiment regressed.
+The function remains `GLOBAL_ASM`; no source-unit or full-ROM gate was run.
+Updated the compact task-context regression to reflect G64-035's research-only
+status and G64-036's pending dependency; the full decomp and verifier suites
+pass. See [`../execution/2026-11-11-g64-035-delay-slots.json`](../execution/2026-11-11-g64-035-delay-slots.json).
 
 ### G64-036 — Prove command-walker semantics
 

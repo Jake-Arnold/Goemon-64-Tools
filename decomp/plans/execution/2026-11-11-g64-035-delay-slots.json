@@ -1,0 +1,236 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-035",
+  "title": "Fix command-walker delay slots",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head_before_strategy_update": "2833f6e0cb569f0be6be083e24c71e9b4751d1c4",
+    "strategy_revision_pulled": "a68c44b96c225a275862734087690a9e4cbeba5a",
+    "base_head_after_fast_forward": "a68c44b96c225a275862734087690a9e4cbeba5a",
+    "working_tree_clean_before_task": true,
+    "private_inputs_local_and_ignored": true
+  },
+  "original_function": {
+    "name": "func_8003DE80_3EA80",
+    "manifest_ownership": "GLOBAL_ASM in decomp/script_vm.c",
+    "vma": "0x8003DE80",
+    "rom_offset": "0x3EA80",
+    "end_exclusive_vma": "0x8003DF68",
+    "size_bytes": 232,
+    "words": 58,
+    "sha256": "011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1",
+    "frame_bytes": 40,
+    "saved_register_lifetimes": {
+      "s0": "input cursor",
+      "s1": "owner/actor argument",
+      "s2": "repeat-setting base",
+      "s3": "work-record base"
+    },
+    "original_branch": {
+      "address": "0x8003DEB4",
+      "instruction": "bltzl v0,0x8003DF14",
+      "delay_word": "0x2403ffff (li v1,-1; executed only on taken edge)"
+    }
+  },
+  "inputs_and_tools": {
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "pinned_mnsg_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "ido_flags": [
+      "-c",
+      "-O2",
+      "-mips2",
+      "-G",
+      "0",
+      "-non_shared"
+    ],
+    "gnu_binutils": "2.45.90.20260125",
+    "comparison": "linked isolated .text at the original VMA against the 58-word ROM-verified extent"
+  },
+  "native_build": {
+    "compile_command_template": "$IDO -c -O2 -mips2 -G 0 -non_shared -o $DIAG_DIR/<variant>.o $DIAG_DIR/<variant>.c",
+    "link_command_template": "mips-linux-gnu-ld --build-id=none -Ttext=0x8003de80 -e func_8003DE80_3EA80 --defsym=func_8003DF68_3EB68=0x8003DF68 --defsym=func_8000D060_DC60=0x8000D060 --defsym=func_8003DF98_3EB98=0x8003DF98 --defsym=D_801C77E8_1C83E8=0x801C77E8 --defsym=D_801C7798_1C8398=0x801C7798 --defsym=D_801C77A0_1C83A0=0x801C77A0 -o $DIAG_DIR/<variant>.elf $DIAG_DIR/<variant>.o",
+    "extract_text_command_template": "mips-linux-gnu-objcopy -O binary --only-section=.text $DIAG_DIR/<variant>.elf $DIAG_DIR/<variant>.text.bin",
+    "compile_link_extract_exit_code_per_variant": 0,
+    "host_test_command_template": "cc -std=c11 -O1 -Wall -Wextra -Werror -fno-omit-frame-pointer -fsanitize=address,undefined -DGOEMON_VM_WALKER_SOURCE=\\\"$DIAG_DIR/<variant>.c\\\" decomp/test_vm_command_walker_probe.c -o $DIAG_DIR/<variant>_host_asan; ASAN_OPTIONS=detect_leaks=0 $DIAG_DIR/<variant>_host_asan",
+    "host_test_exit_code_per_variant": 0
+  },
+  "baseline": {
+    "source": "decomp/candidates/vm_command_walker_goto_probe.c",
+    "source_sha256": "420c8926215ea45bb72028a9f322fa46f87c040a4f85bbb6dc86b27e57659d59",
+    "function_symbol_bytes": 220,
+    "text_bytes": 224,
+    "frame_bytes": 40,
+    "first_mismatch_vma": "0x8003DE84",
+    "original": "sw s3,0x20(sp)",
+    "candidate": "sw s2,0x1c(sp)",
+    "positional_word_mismatches": 36,
+    "available_words": 56,
+    "branch": {
+      "address": "0x8003DEB4",
+      "candidate": "bltzl v0,0x8003DF18",
+      "delay_word_matches_original": true,
+      "target_matches_original": false
+    }
+  },
+  "variant_budget": {
+    "architect_v2_limit_after_baseline": 5,
+    "variants_attempted": 4,
+    "fifth_variant_run": false,
+    "stop_reason": "The fourth variant regressed to a first mismatch at 0x8003DE80 with a 0x20 frame; no further source shape was justified after first-mismatch evidence failed to improve."
+  },
+  "variants": [
+    {
+      "name": "negative_inline",
+      "source_sha256": "15ffa8fee751165e28381f574a9a9267b825ff6f54c0696af283666b9bac3742",
+      "linked_text_sha256": "abf9ada3c38c69e3209780580143e2b448e4dbf689d80b6d29a47bbec9fef6ce",
+      "function_symbol_bytes": 216,
+      "text_bytes": 224,
+      "frame_bytes": 40,
+      "first_mismatch_vma": "0x8003DE88",
+      "positional_word_mismatches": 45,
+      "available_words": 56,
+      "branch": "bgez at 0x8003DEB4; delay word li v1,-1; branch-likely schedule not reproduced",
+      "host_sanitizer_cases": 1100,
+      "result": "first mismatch moved one word; saved-register assignment and branch kind still differ"
+    },
+    {
+      "name": "sentinel_split",
+      "source_sha256": "aaed0c17cc81d769a362e03150e9858a47472921fe7ce48e1c19b02ccf60c4cb",
+      "linked_text_sha256": "894b374ff57cc2712ebf50c902944a7e99cb30418e4f7c4bb03664731353f7cb",
+      "function_symbol_bytes": 232,
+      "text_bytes": 240,
+      "frame_bytes": 48,
+      "first_mismatch_vma": "0x8003DE80",
+      "positional_word_mismatches": 54,
+      "available_words": 58,
+      "branch": "bgez at 0x8003DED0; no original bltzl placement",
+      "host_sanitizer_cases": 1100,
+      "result": "size-equal false positive; wrong 0x30 frame and additional saved s4"
+    },
+    {
+      "name": "positive_arm_first",
+      "source_sha256": "2a05401f657b5ce588e7ec6d0aa287cae75d712edcf0921c66c6aacdc748d4dd",
+      "linked_text_sha256": "59df92534e93338a6156b3e8ca8b7b29f7c99d58e8a6f81d3dee34367df3d2af",
+      "function_symbol_bytes": 220,
+      "text_bytes": 224,
+      "frame_bytes": 40,
+      "first_mismatch_vma": "0x8003DE88",
+      "positional_word_mismatches": 38,
+      "available_words": 56,
+      "branch": {
+        "address": "0x8003DEB4",
+        "candidate": "bltzl v0,0x8003DF18",
+        "delay_word": "0x2403ffff (li v1,-1)",
+        "target_matches_original": false
+      },
+      "host_sanitizer_cases": 1100,
+      "result": "best positional result; first mismatch advanced but native function remains nonexact"
+    },
+    {
+      "name": "ordered_local_lifetimes",
+      "source_sha256": "70167ab0cb2b0893e7625e59b5ec7dba664819e00af73ba5088909759375d1aa",
+      "linked_text_sha256": "0c1ab66c1d43368e13c60e25070c4290611ade8e6dcebdc55f2bc91d7144e740",
+      "function_symbol_bytes": 212,
+      "text_bytes": 224,
+      "frame_bytes": 32,
+      "first_mismatch_vma": "0x8003DE80",
+      "positional_word_mismatches": 56,
+      "available_words": 56,
+      "branch": "bgez at 0x8003DE9C",
+      "host_sanitizer_cases": 1100,
+      "result": "register-lifetime hypothesis rejected; first instruction/frame regressed"
+    }
+  ],
+  "semantic_tests": {
+    "source": "decomp/test_vm_command_walker_probe.c",
+    "source_sha256": "b233b05d6937ff1bb37a1716987b6a0643cf3405cea8427573e01ef0dfa66da5",
+    "scenarios": 11,
+    "actor_inputs_per_scenario": 100,
+    "cases_per_variant": 1100,
+    "sanitizers": [
+      "AddressSanitizer",
+      "UndefinedBehaviorSanitizer"
+    ],
+    "scenario_set": "the 11 fixed cases already established by G64-034; no new fuzz batch",
+    "nature": "host mock callbacks; not game execution"
+  },
+  "original_rom_checks": {
+    "guard_source_sha256": "e9ae5c073ef190d0a3c8455b543c55aa05abd0841d9fade8ac01fcb808c16ac3",
+    "per_variant_command": "python3 decomp/test_vm_control_decoder_original.py --paced-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --paced-candidate-text practice/diagnostics/decomp-100-inputs/g64-035/<variant>.text.bin",
+    "per_variant_exit_code": 0,
+    "per_variant_result": "58 original ROM words and 24 exact control/callback anchors passed; linked comparator reported a nonmatch"
+  },
+  "validation": [
+    {
+      "command": "python3 -m unittest decomp.test_vm_control_decoder_original -q",
+      "exit_code": 0,
+      "tests": 9
+    },
+    {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 0,
+      "tests": 141
+    },
+    {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "exit_code": 0,
+      "tests": 17
+    },
+    {
+      "command": "python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q",
+      "exit_code": 0,
+      "tests": 9
+    },
+    {
+      "command": "python3 -m decomp.skill_context --validate",
+      "exit_code": 0,
+      "result": "CONSISTENT_STORED_REPORTS; no fresh verifier run"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "tooling_note": "One attempted unittest import included decomp.test_vm_command_walker_probe, which is a C file rather than a Python module and exited with ModuleNotFoundError. The same C harness was correctly compiled and run directly under ASan/UBSan for all four variants.",
+  "production_and_proof": {
+    "manifest_sha256_unchanged": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "script_vm_c_sha256_unchanged": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "combined_report_sha256_unchanged": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "inventory_report_sha256_unchanged": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a",
+    "stored_full_rom_proof": "148/148 claims; 11,020 bytes; 33,554,432-byte image identity; 161 combined C, 7,215 ASM, 7,376 entries",
+    "fresh_complete_rom_build": "NOT_RUN; no candidate reached source-unit exact eligibility",
+    "fresh_inventory_build": "NOT_RUN",
+    "real_translation_unit_integration": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "production_candidate_changed": false,
+    "matching_c_delta": 0,
+    "byte_delta": 0
+  },
+  "remote_publication": {
+    "target_branch": "chatgptweb/decomp",
+    "commit_sha": null
+  },
+  "next": "G64-036: reuse the existing 11-scenario, 1,100-case harness and stale-token mutant; add only a new original-observed behavior distinction.",
+  "plan_status_test": {
+    "source": "decomp/test_skill_context.py",
+    "source_sha256": "56cab45f16c3c0b6deadec45ccf9ac010834fbbfe6774cde440bd65f628a60f7",
+    "assertions": "G64-035=RESEARCH_ONLY; G64-036=PLANNED; dependencies G64-034 and G64-035",
+    "initial_result_after_task_status_change": "failed because the v2 test still expected G64-035 to be PLANNED",
+    "corrected_result": "passed in the final 9-test skill-context/metadata run and 141-test full decomp suite"
+  },
+  "superseded_validation_failure": {
+    "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+    "exit_code": 1,
+    "cause": "stale plan-status expectation in decomp/test_skill_context.py, corrected in this task commit",
+    "additional_command": {
+      "command": "python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -v",
+      "exit_code": 1,
+      "cause": "same stale G64-035 PLANNED assertion before correction"
+    }
+  }
+}
