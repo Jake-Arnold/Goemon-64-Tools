@@ -1,0 +1,189 @@
+{
+  "task_id": "G64-071",
+  "title": "Inspect file-table reader 80001DF4",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "0f57fd3c4f778fa2b45b24d43df4522bce969f76",
+    "remote_head_at_start": "0f57fd3c4f778fa2b45b24d43df4522bce969f76",
+    "dependencies": {
+      "G64-017": "FAILED_NATIVE",
+      "G64-018": "FAILED_NATIVE"
+    },
+    "matching_c": 148,
+    "matching_bytes": 11020,
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "production_source_sha256": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
+    "stored_proof_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "inventory_sha256": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a"
+  },
+  "original_source": {
+    "upstream_repository": "klorfmorf/mnsg",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "asm_file": "asm/usa/2800.s",
+    "asm_sha256": "de37c0fb9d9d7dc6c5e10740e5ef44d0b0e4f65d6dad66aca652e30ab9ee3f06",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "original_span_matches_rom": true
+  },
+  "target": {
+    "name": "func_80001DF4_29F4",
+    "vma": "0x80001DF4",
+    "rom_offset": "0x29F4",
+    "size_bytes": 92,
+    "sha256": "473fb38eff509e62825ece5edadc989c5a9f4ce861b35af8257cda91a2852d37",
+    "manifest_ownership": "assembly_functions in file_table.c; no accepted C definition"
+  },
+  "behavior": {
+    "input_width": "The function uses all 32 bits of a0 for the zero test and left-shift-by-3 table offset; there is no low-16-bit mask. Two of three observed callers explicitly pass their source index masked to 16 bits; the adjacent file-table caller passes its incoming a0 unchanged.",
+    "table_reference": {
+      "symbol": "D_80054AC4_556C4",
+      "vma": "0x80054AC4",
+      "record_stride_bytes": 8,
+      "loaded_word_offset": 0,
+      "load_width_bits": 32,
+      "bounds_check": false,
+      "extent_or_element_type": "Not established by the pinned per-unit assembly labels; do not infer table length from the synthetic test allocation."
+    },
+    "gate_helper": {
+      "name": "func_80001E50_2A50",
+      "vma": "0x80001E50",
+      "size_bytes": 96,
+      "sha256": "8e41cf0dd7288f559d5535debdc7f807389d7dd517b7ece2bedf4e1573931c17",
+      "use": "Called before the zero-index check. Exact result 0x11 returns flag 0x40000000; otherwise index zero returns zero, and a nonzero index reads the table."
+    },
+    "mask_and_return": "Returns 0 or 0x40000000 from the loaded word mask (bit 30); it does not return a boolean 1. Caller sites use the result as a zero/nonzero condition.",
+    "abi": "0x18-byte frame; saves ra at sp+0x14; stores incoming a0 to the outgoing argument home at sp+0x18 in the helper jal delay slot; restores ra before return.",
+    "caller_sites": [
+      {
+        "caller": "func_80001EB0_2AB0",
+        "pc": "0x80001EEC",
+        "argument": "incoming a0 is passed unchanged",
+        "result_use": "zero/nonzero branch"
+      },
+      {
+        "caller": "func_80013B14_14714",
+        "pc": "0x80013B94",
+        "argument": "a2 masked with 0xFFFF before call",
+        "result_use": "zero/nonzero branch"
+      },
+      {
+        "caller": "func_80013C90_14890",
+        "pc": "0x80013DF0",
+        "argument": "halfword from D_80168150 masked with 0xFFFF before call",
+        "result_use": "zero/nonzero branch"
+      }
+    ]
+  },
+  "comparison_with_sibling": {
+    "name": "func_80001D68_2968",
+    "vma": "0x80001D68",
+    "rom_offset": "0x2968",
+    "size_bytes": 44,
+    "sha256": "9a0d424a5f5b4667d02f9d406da9fc34437eb825b30a0523caf8a2eb88c0658b",
+    "behavior": "Masks input to low 16 bits, uses a 4-byte stride into D_800573D4_57FD4, clears bit 31 with 0x7FFFFFFF, and returns the remaining word. It is not semantically interchangeable with 80001DF4."
+  },
+  "plan_correction": "The prior G64-071 wording incorrectly referred to bit 31 for 80001DF4. Original ROM evidence shows bit 30 (0x40000000) in 80001DF4; bit 31 is cleared by sibling 80001D68. TASKS_100.json and PHASE_08.md now state the distinction.",
+  "candidate_trials": [
+    {
+      "variant": "baseline if/return shape",
+      "candidate_source_sha256": "c0c61de9e28790d5d1ea3ec9a4a3d586a21ce3f3331e007b276cedde30aa49bb",
+      "ido_symbol_bytes": 92,
+      "linked_symbol_vma": "0x80001DF4",
+      "linked_symbol_bytes": 92,
+      "exact_original_bytes": false,
+      "first_mismatch_instruction": "+0x24",
+      "relocatable_comparison": {
+        "matching_nonreloc_words": 13,
+        "comparable_nonreloc_words": 18,
+        "matching_relocated_shapes": 1,
+        "comparable_relocated_shapes": 1,
+        "relocation_layout_differences": 4
+      },
+      "mismatch": "First mismatch is branch direction/layout: IDO branches nonzero indices to the table block, while the original branches zero to the return path and falls through to the table lookup."
+    },
+    {
+      "variant": "explicit goto zero block",
+      "hypothesis": "Keep the original zero-input branch as a forward zero-result block and table lookup as fallthrough.",
+      "candidate_source_sha256": "7b6ebd711d01042b863839060cc44b044db69477cd91fd28fd0448c048b37de8",
+      "ido_symbol_bytes": 96,
+      "linked_symbol_vma": "0x80001DF4",
+      "linked_symbol_bytes": 96,
+      "exact_original_bytes": false,
+      "first_mismatch_instruction": "+0x1C",
+      "first_mismatch_byte": "+0x1F",
+      "relocatable_comparison": {
+        "matching_nonreloc_words": 7,
+        "comparable_nonreloc_words": 18,
+        "matching_relocated_shapes": 1,
+        "comparable_relocated_shapes": 1,
+        "relocation_layout_differences": 4
+      },
+      "decision": "Regressed from the baseline first mismatch and grew by four bytes. Stop under the bounded v2 budget; do not try more source shapes."
+    }
+  ],
+  "toolchain": {
+    "ido": "Pinned IDO 5.3",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "native_flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "linker": "GNU mips-linux-gnu-ld 2.45.90.20260125; original VMA linker script used SUBALIGN(4)",
+    "host_compiler": "GCC 15.2.0 with AddressSanitizer and UndefinedBehaviorSanitizer"
+  },
+  "decision": {
+    "candidate_count": 0,
+    "matching_c_delta": 0,
+    "classification": "RESEARCH_ONLY",
+    "production_candidate_integrated": false,
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "reason": "The ROM-backed behavioral contract and host cases are complete. Both native candidates remain nonmatching; the alternate branch-layout hypothesis regressed. Retain GLOBAL_ASM.",
+    "native_variants_tested": 2,
+    "candidate_sources_stored_locally": true
+  },
+  "tests": {
+    "rom_bound_original_span": "PASS; 23/23 original instruction words matched the SHA-verified 32 MiB USA ROM",
+    "portable_c_reference_model": "PASS; GCC 15.2 ASan/UBSan build of decomp/test_file_table.c; 8 G64-071 model cases plus existing file-table lookup cases",
+    "private_candidate_host_harness": "PASS; GCC 15.2 ASan/UBSan mock-helper/table cases run for both bounded source shapes; host semantics only",
+    "native_baseline": "MISMATCH as expected; 92-byte symbol linked at original VMA, first mismatching instruction +0x24; diagnostic comparison exit 1",
+    "native_alternate": "MISMATCH as expected; 96-byte symbol linked at original VMA, first mismatching instruction +0x1C (first differing byte +0x1F); diagnostic comparison exit 1",
+    "decomp_suite": "PASS; python3 -m unittest discover -s decomp -p 'test_*.py' -q (157 tests)",
+    "verifier_tests": "PASS; python3 -m unittest tests.test_decomp_verify -q (17 tests)",
+    "task_context_and_skill_tests": "PASS; python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q (17 tests)",
+    "skill_context_validation": "PASS; python3 -m decomp.skill_context --validate reports CONSISTENT_STORED_REPORTS",
+    "syntax_and_diff": "PASS; py_compile for touched Python modules and git diff --check",
+    "full_rom_g2": "NOT_RUN; no source-unit-exact production candidate",
+    "inventory_rebuild": "NOT_RUN; no source-unit-exact production candidate"
+  },
+  "next": "Continue with G64-072, inspecting helper func_80001E50_2A50 using the confirmed caller/index/bit contracts. This trace does not imply a native exact result.",
+  "test_source_sha256": "cf04eca14394280279664eb61c7661bbdee31361666fa7f67bab79c9d494cbee",
+  "source_hashes": {
+    "decomp/file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
+    "decomp/test_file_table.c": "cf04eca14394280279664eb61c7661bbdee31361666fa7f67bab79c9d494cbee",
+    "decomp/manifest.json": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "decomp/results/combined.json": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "decomp/results/inventory.json": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a"
+  }
+}

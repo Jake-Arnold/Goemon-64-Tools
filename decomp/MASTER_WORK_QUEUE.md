@@ -61,9 +61,12 @@ matching-C ownership. See
 `plans/execution/2026-11-11-g64-091-attempt-ledger.json`. G64-090 audited all 13
 `return_zero.c` placeholders against the pinned Memory Pak disassembly and
 decompressed ROM; all are nontrivial PFS routines and remain `GLOBAL_ASM`. See
-`plans/execution/2026-11-11-g64-090-return-zero-audit.json`. Next under v2:
-G64-071–080. Private ROM and compiler files remain local under the ignored
-diagnostics input directory.
+`plans/execution/2026-11-11-g64-090-return-zero-audit.json`. G64-071 traced
+`func_80001DF4_29F4` as a full-width 8-byte-stride lookup with a bit-30 result;
+two bounded native candidates failed exact matching, so it remains `GLOBAL_ASM`.
+See `plans/execution/2026-11-11-g64-071-file-table-reader.json`. Next under v2:
+G64-072–080, beginning with the `80001E50` helper trace. Private ROM and
+compiler files remain local under the ignored diagnostics input directory.
 
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.
 

@@ -3036,7 +3036,7 @@
       "ordinal": 71,
       "phase": 8,
       "title": "Inspect file-table reader 80001DF4",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-017",
         "G64-018"
@@ -3051,7 +3051,7 @@
         "Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.",
         "Read the exact focus files: decomp/file_table.c, decomp/test_file_table.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.",
         "Implement the bounded design: Map function's table base, index widths, mask and downstream callers without assuming identical semantics to adjacent 80001D68.",
-        "Trace next file reader 80001DF4 index-width, table base and bit-31 behaviour; compare sibling 80001D68.",
+        "Trace 80001DF4 full-width index, 8-byte table stride and bit-30 (0x40000000) return mask; distinguish these from sibling 80001D68 low-16-bit index and bit-31 clearing.",
         "Record original word loads, branch structure and expected return type before writing candidate.",
         "Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.",
         "For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.",
@@ -3079,7 +3079,7 @@
       },
       "architect_override_v2": {
         "wave": "B",
-        "directive": "File-table 80001DF4: examine original index width/bit31 against known matching 80001D68 sibling; G64-017/018 failed recipes are not dependencies for a match.",
+        "directive": "File-table 80001DF4: confirm the original full-width index and bit-30 (0x40000000) mask against ROM; distinguish the sibling’s low-16-bit index and bit-31 clear. G64-017/018 failures do not block this reader.",
         "stop_rule": "A failure in old shorter file reader does not block new reader investigation."
       }
     },

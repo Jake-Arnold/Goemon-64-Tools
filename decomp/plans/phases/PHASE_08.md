@@ -18,7 +18,7 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 
 ### G64-071 — Inspect file-table reader 80001DF4
 
-**Status:** PLANNED. **Dependencies:** G64-017, G64-018.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-017, G64-018.
 **Focus files:** `decomp/file_table.c`; `decomp/test_file_table.c`.
 
 **Architectural intent:** Map function's table base, index widths, mask and downstream callers without assuming identical semantics to adjacent 80001D68.
@@ -27,7 +27,7 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
 2. Read the exact focus files: decomp/file_table.c, decomp/test_file_table.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
 3. Implement the bounded design: Map function's table base, index widths, mask and downstream callers without assuming identical semantics to adjacent 80001D68.
-4. Trace next file reader 80001DF4 index-width, table base and bit-31 behaviour; compare sibling 80001D68.
+4. Trace `80001DF4`'s full-width index, 8-byte table stride and bit-30 (`0x40000000`) return mask; distinguish these from sibling `80001D68`'s low-16-bit index and bit-31 clearing.
 5. Record original word loads, branch structure and expected return type before writing candidate.
 6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
 7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
@@ -42,6 +42,8 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-11):** the 92-byte reader uses the full-width input in an 8-byte-stride lookup and returns only bit 30 (`0x40000000`); its 96-byte helper is called first and may provide the same flag for type `0x11`. Three caller sites show two low-16-bit inputs and one unchanged input. The adjacent matched reader instead truncates to 16 bits, uses a 4-byte stride, and clears bit 31. A 92-byte IDO candidate first differed at `+0x24`; the explicit-goto variant grew to 96 bytes and regressed to `+0x1C`. Retain `GLOBAL_ASM`; G2 was not run. Full trace and hashes: `plans/execution/2026-11-11-g64-071-file-table-reader.json`.
 
 ### G64-072 — Inspect file-table reader 80001E50
 
