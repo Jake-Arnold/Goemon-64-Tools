@@ -105,8 +105,12 @@ and sole direct caller, added a ROM-bound CFG guard, and ran one trace-derived
 IDO probe. It remains `GLOBAL_ASM` after a first mismatch at `0x8003ED68`; no
 function count changed. Full details are in
 [`VM_ED60_TRACE.md`](VM_ED60_TRACE.md) and
-`plans/execution/2026-11-11-g64-037-ed60-trace.json`. **Next: G64-038**, resolve
-the adjacent VM wrapper extent. `python3 -m decomp.skill_context --status`
+`plans/execution/2026-11-11-g64-037-ed60-trace.json`. G64-038 verified
+`func_8003F6E8_402E8` as exactly 48 bytes / 12 words at ROM offset `0x402E8`,
+ending in two `jr $ra; nop` pairs. It rejects the 40-byte C prefix and 56-byte
+candidate annotation as original extents; the function remains `GLOBAL_ASM`.
+See `plans/execution/2026-11-11-g64-038-wrapper-extent.json`. **Next: G64-039**,
+build the parser behavioral matrix. `python3 -m decomp.skill_context --status`
 reports the current first planned task from the live task ledger.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
@@ -287,8 +291,9 @@ Other known limits:
 - `/root/goemon64-vm-target-context-v1` retains the earlier VM context scan.
   Controller D17C from that scan is now solved; do not redo its old failed draft.
 - Comparator D9B8 remains ASM. `vm_compare_reference.h` is host-only semantics.
-- Wrapper F6E8 has a boundary/unreachable-return discrepancy; natural 40-byte C
-  does not establish the original function extent. See inventory size annotations.
+- Wrapper F6E8 is confirmed as a 48-byte original with two trailing `jr $ra; nop`
+  pairs. The 40-byte C prefix and 56-byte candidate annotation are not original
+  function extents; it remains assembly-owned. See `test_vm_wrapper_extent.py`.
 - Ghost Toys entrance: GHOST_TOYS_CHECKPOINT.md; 140-byte draft still differs in
   two stack offsets. It is not matching C.
 - Current manifest verifier supports the main-segment mapping only. Overlay

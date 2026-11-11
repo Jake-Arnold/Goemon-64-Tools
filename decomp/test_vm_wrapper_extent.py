@@ -4,7 +4,8 @@ The original private Splat assembly has 12 instructions / 48 bytes, not 56.
 The independent readelf inventory historically reports candidate_size=56,
 which is a candidate layout problem, NOT the archived original extent.
 
-Run with private --asm and --rom to verify all original bytes. Neither file is
+Run with private --rom to verify the pinned extent directly, or provide both
+private --asm and --rom to compare the listing to the image. Neither file is
 checked into Git. Synthetic parser tests are always runnable without a ROM.
 """
 from __future__ import annotations
@@ -20,6 +21,8 @@ FUNCTION = 'func_8003F6E8_402E8'
 VMA = 0x8003F6E8
 OFFSET = 0x402E8
 WORDS = 12
+SIZE = WORDS * 4
+VMA_BIAS = 0x7FFFF400
 SHA256 = 'fd5b89364249c531ad5a2eaed23b97dccf062444ac92c1ddd250fb9f1ca097dd'
 ROM_SHA1 = '6ea0ed71032ce08fc2745f412d84936382197494'
 ROM_SIZE = 33554432
@@ -59,15 +62,28 @@ def original_rows(source: str) -> list[tuple[int, str]]:
     return parsed
 
 
+def verify_rom_extent(rom: bytes) -> bytes:
+    if len(rom) != ROM_SIZE or hashlib.sha1(rom).hexdigest() != ROM_SHA1:
+        raise ValueError('reference ROM size or SHA-1 mismatch')
+    data = rom[OFFSET:OFFSET + SIZE]
+    if len(data) != SIZE or hashlib.sha256(data).hexdigest() != SHA256:
+        raise ValueError('original 48-byte function SHA-256 mismatch')
+    if OFFSET != VMA - VMA_BIAS:
+        raise ValueError('original VMA/ROM mapping differs')
+    expected_tail = (0x03E00008, 0x00000000, 0x03E00008, 0x00000000)
+    tail = tuple(word[0] for word in struct.iter_unpack('>I', data[-16:]))
+    if tail != expected_tail:
+        raise ValueError('original wrapper must end in two jr $ra/nop pairs')
+    return data
+
+
 def verify_private_rom(asm_text: str, rom_path: Path) -> None:
     rows = original_rows(asm_text)
     data = b''.join(struct.pack('>I', word) for word, _ in rows)
     if hashlib.sha256(data).hexdigest() != SHA256:
         raise ValueError('original 48-byte function SHA-256 mismatch')
-    rom = rom_path.read_bytes()
-    if len(rom) != ROM_SIZE or hashlib.sha1(rom).hexdigest() != ROM_SHA1:
-        raise ValueError('reference ROM size or SHA-1 mismatch')
-    if rom[OFFSET:OFFSET + 48] != data:
+    rom_data = verify_rom_extent(rom_path.read_bytes())
+    if rom_data != data:
         raise ValueError('original instruction bytes not found at original ROM offset')
 
 
@@ -82,6 +98,8 @@ class WrapperExtentTests(unittest.TestCase):
 
     def test_twelve_word_extent_and_double_return_shape(self):
         self.assertEqual(len(original_rows(self.synthetic())), 12)
+        self.assertEqual(SIZE, 48)
+        self.assertEqual(OFFSET, VMA - VMA_BIAS)
 
     def test_56_byte_annotation_does_not_redefine_original_extent(self):
         with self.assertRaisesRegex(ValueError, '12 words'):
@@ -112,10 +130,13 @@ if __name__ == '__main__':
     parser.add_argument('--asm', type=Path)
     parser.add_argument('--rom', type=Path)
     args = parser.parse_args()
-    if bool(args.asm) != bool(args.rom):
-        parser.error('--asm and --rom are required together')
-    if args.asm:
+    if args.asm and not args.rom:
+        parser.error('--asm requires --rom')
+    if args.rom and args.asm:
         verify_private_rom(args.asm.read_text(encoding='utf-8'), args.rom)
         print('VM wrapper: 12/12 original words, exact 48-byte ROM extent and two returns passed')
+    elif args.rom:
+        verify_rom_extent(args.rom.read_bytes())
+        print('VM wrapper: exact 48-byte original ROM extent and two jr $ra/nop tails passed')
     else:
         unittest.main(argv=['test_vm_wrapper_extent'], exit=False)

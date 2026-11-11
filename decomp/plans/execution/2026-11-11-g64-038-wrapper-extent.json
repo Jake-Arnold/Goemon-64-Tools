@@ -1,0 +1,71 @@
+{
+  "format": "goemon-g64-execution-evidence-v1",
+  "task_id": "G64-038",
+  "title": "Resolve 8003F6E8 extent",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "strategy": {
+    "document": "decomp/plans/EXECUTION_STRATEGY_V2.md",
+    "wave": "A",
+    "directive": "Resolve the exact 48-byte F6E8 original extent; reject the 40-byte prefix and historical 56-byte candidate annotation.",
+    "decision": "Pinned the actual ROM slice and both terminal return pairs. No C source was accepted and no size-only candidate was created."
+  },
+  "starting_state": {
+    "workspace_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "feec851ca4fb9c715ae5da4197302b84e516a88b",
+    "fetched_remote_head": "feec851ca4fb9c715ae5da4197302b84e516a88b",
+    "worktree_clean_before_task": true,
+    "stored_proof": "148/148 functions, 11020 bytes, 33554432-byte image identity"
+  },
+  "original_function": {
+    "name": "func_8003F6E8_402E8",
+    "vma_start": "0x8003F6E8",
+    "vma_end_exclusive": "0x8003F718",
+    "rom_offset": "0x402E8",
+    "size_bytes": 48,
+    "word_count": 12,
+    "sha256": "fd5b89364249c531ad5a2eaed23b97dccf062444ac92c1ddd250fb9f1ca097dd",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size_bytes": 33554432,
+    "source_owner": "script_vm.c / assembly_functions / GLOBAL_ASM",
+    "ending_words": ["0x03E00008", "0x00000000", "0x03E00008", "0x00000000"],
+    "extent_resolution": {
+      "40_byte_prefix": "candidate prefix only; excludes the second jr $ra/nop pair",
+      "48_byte_extent": "exact pinned original function slice",
+      "56_byte_annotation": "historical candidate inventory annotation, not original code"
+    },
+    "local_splat_assembly": "not present in the pinned checkout; the ROM-only mode verifies the pinned full image and exact function hash"
+  },
+  "source_hashes": {
+    "decomp/test_vm_wrapper_extent.py": "d7a93a986ac44f31afdf115373ad606d58ef914e5bf89e77b3d7fcc9ac758a11",
+    "decomp/script_vm.c": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "decomp/manifest.json": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d"
+  },
+  "implementation": {
+    "file": "decomp/test_vm_wrapper_extent.py",
+    "change": "Added verify_rom_extent and --rom-only mode. The existing --asm/--rom listing comparison reuses the direct ROM check; synthetic parser checks still reject 10-word and 14-word extents and require both jr/nop pairs.",
+    "production_source_changed": false,
+    "manifest_ownership_changed": false,
+    "native_candidate": "NOT_RUN; this task resolves the original extent and contains no accepted C body. No synthetic unreachable return was created to force a 48-byte size."
+  },
+  "validation": {
+    "rom_command": "python3 -m decomp.test_vm_wrapper_extent --rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64",
+    "rom_command_exit_status": 0,
+    "rom_result": "exact 48-byte slice/hash, VMA/ROM mapping, and two terminal jr $ra/nop pairs passed",
+    "focused_command": "python3 -m unittest decomp.test_vm_wrapper_extent -q",
+    "focused_result": "6 tests passed",
+    "decomp_python_suite": "151 tests passed",
+    "verifier_tests": "17 tests passed",
+    "skill_context_validate": "consistent stored reports; first planned task G64-039",
+    "git_diff_check": "passed",
+    "fresh_full_rom": "NOT_RUN",
+    "in_game_verification": "NOT_RUN"
+  },
+  "decision": {
+    "task_status": "RESEARCH_ONLY",
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "next_task": "G64-039"
+  }
+}

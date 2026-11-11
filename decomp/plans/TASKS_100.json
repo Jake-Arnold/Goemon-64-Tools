@@ -1509,7 +1509,7 @@
       "ordinal": 38,
       "phase": 4,
       "title": "Resolve 8003F6E8 extent",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-002"
       ],

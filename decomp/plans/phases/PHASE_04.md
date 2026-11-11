@@ -276,7 +276,7 @@ assembly-owned. The ROM guard passed. See
 
 ### G64-038 — Resolve 8003F6E8 extent
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-002.
 **Focus files:** `decomp/test_vm_wrapper_extent.py`; `decomp/script_vm.c`.
 
 **Architectural intent:** For func_8003F6E8_402E8 preserve original 48-byte extent, including trailing jr $ra/nop absent from 40-byte natural C prefix.
@@ -294,6 +294,13 @@ assembly-owned. The ROM guard passed. See
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
 **Explicit acceptance:** Original-function extent tests reject 40/56-byte confusion; full 48-byte codegen is required before G2.
+
+**Outcome (2026-11-11):** Direct SHA-pinned ROM verification confirms the
+original extent is 48 bytes / 12 words at `0x8003F6E8` / ROM `0x402E8`, ending
+with two `jr $ra; nop` pairs. The C-owned 40-byte prefix and historical
+56-byte candidate annotation are both rejected as original boundaries. The
+function remains `GLOBAL_ASM`; no C candidate was accepted. See
+[`../execution/2026-11-11-g64-038-wrapper-extent.json`](../execution/2026-11-11-g64-038-wrapper-extent.json).
 
 **Required negative control:** Do not accept a correct length with mismatched delay slots, wrong 0x48 frame, incorrect control-flow exits or fabricated unreachable return instructions.
 

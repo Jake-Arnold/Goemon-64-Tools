@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-038 pin VM wrapper original extent (RESEARCH_ONLY)
+
+- **Reason and branch:** continued after G64-037 was pushed and remote-verified at `feec851ca4fb9c715ae5da4197302b84e516a88b`. Architect v2 requires the original `func_8003F6E8_402E8` extent to be distinguished from its natural C prefix and a historical candidate-size annotation.
+- **Original evidence:** pinned ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494` confirms VMA `0x8003F6E8..0x8003F718`, ROM offset `0x402E8`, 48 bytes / 12 words, SHA-256 `fd5b89364249c531ad5a2eaed23b97dccf062444ac92c1ddd250fb9f1ca097dd`. The final 16 bytes are two `jr $ra; nop` pairs. The 40-byte C prefix omits one pair; the 56-byte value is a candidate annotation, not original code extent.
+- **Change:** extended `decomp/test_vm_wrapper_extent.py` with a ROM-only verification mode. It validates the complete ROM identity, exact original slice hash, VMA/ROM mapping and final return words, without requiring a local Splat listing. The existing `--asm --rom` comparison path and synthetic rejection tests remain available. The production pragma and manifest ownership remain assembly.
+- **Tests:** private-ROM command passed (`python3 -m decomp.test_vm_wrapper_extent --rom ...`); focused parser suite passed **6/6**; full decomp suite passed **151/151**; `tests.test_decomp_verify` passed **17/17**; `python3 -m decomp.skill_context --validate` reported consistent stored reports and selected G64-039. No native C candidate or G2 build was run because this task resolves original extent and has no accepted C source.
+- **Limitations:** no matching-C promotion, full-ROM rebuild, inventory rebuild, or in-game verification. Stored proof remains 148/148 functions / 11,020 bytes. No Splat `.s` file was present in the pinned checkout; ROM-only verification used the pinned full-image and function hashes.
+- **Next:** G64-039, build the bounded VM parser behavioral matrix from the completed parser and wrapper evidence.
+
 ## 2026-11-11 — G64-037 ED60 original trace and structural ledger checks (RESEARCH_ONLY)
 
 - **Reason and branch:** fetched `origin/chatgptweb/decomp` before continuing; the local `codex/decomp-100-task-plan` and remote target both pointed to `03dd670b0a2d4fab53e27dcd6e067478f885b4fc`, with a clean tracked worktree. Reviewed `EXECUTION_STRATEGY_V2.md`: G64-037 requires original-ROM evidence before semantics and allows one bounded native probe. The stored proof remains 148/148 functions / 11,020 bytes.
