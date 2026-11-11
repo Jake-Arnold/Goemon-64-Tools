@@ -6,7 +6,8 @@ live proof reports: **148 matching C / 11,020 bytes / 161 combined C / 7,215
 ASM**. The resource, menu and object candidates from that older queue have
 passed full-ROM verification. G64-015–018 were retried and remain
 `FAILED_NATIVE`; G64-021 is `DOC_ONLY` with its call graph in
-`VM_RESOURCE_CALLGRAPH.md`; continue with G64-022–030 in dependency order.
+`VM_RESOURCE_CALLGRAPH.md`; G64-022 is `RESEARCH_ONLY` with no promotion;
+continue with G64-023–030 in dependency order.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 

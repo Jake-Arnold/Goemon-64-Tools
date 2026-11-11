@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-11T15:06:12.655783+00:00",
+  "started_utc": "2026-11-11T16:29:13.778713+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -10,7 +10,8 @@
     "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
     "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125"
   },
-  "baseline_cache_used": true,
+  "stage": "complete",
+  "baseline_cache_used": false,
   "baseline_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
   "baseline_provenance": {
     "format": "goemon-baseline-cache-v1",
@@ -20,7 +21,6 @@
     "compiler_sha256": "8ca550d30c1fef7c14b1470a1ef93cc6d415a507c6e18c04a7bfeaf8016a7b89",
     "dependency_lock_sha256": "a8892580fba36495b3de64de202ad5482e14319748019109d9633c1290be2bf9"
   },
-  "stage": "complete",
   "object_layout": {
     "kind": "vm_assignment_rodata_metadata_v1",
     "old_size": 64,
@@ -1493,12 +1493,12 @@
     "file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
     "heap_noop.c": "d87c403e7874f70695d94ea545e8767b6698fe901694f77fdaf77bf6a6bdb401",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
-    "script_vm.h": "ae05c23c2977ac809a14273ef570499555484dcdf527d5df1a9174ae826e3e99",
+    "script_vm.h": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "vm_resource_types.h": "e11f328368d76de2ababeff78ff6bbe28550e190a13e4ae0b299b0199d1ccf6a",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900",
     "object_flags.h": "d2cdfb2679db20ef4b642c41cdeef0188e464790333f067cbd8c394b44c7cb94",
     "default_entrance.h": "3d82c004281d4a33d8ddb39a39031f24899d0b39323c3a4904e4169429440568",
     "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63"
   },
-  "ended_utc": "2026-11-11T15:06:41.199099+00:00",
-  "formal_verifier_run_completed": true
+  "ended_utc": "2026-11-11T16:30:08.993164+00:00"
 }

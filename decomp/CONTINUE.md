@@ -19,15 +19,15 @@ Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and over
 **Authoritative continuation checkpoint — 2026-11-11; supersedes the dated
 142-function and 20-step checkpoints below.** Work continues in the fresh
 Codex worktree `codex/decomp-100-task-plan`, initially based on target-branch
-commit `3b1f56aef7a2e634cc80d3cdd332c47d6368082c`; completed task checkpoints
-are pushed through `907e86bc04e3abccb902c742813eb2e5406b2cd9`. `main` was not
-changed. The private
-USA retail/decompressed ROMs, pinned `mnsg` source at
+commit `3b1f56aef7a2e634cc80d3cdd332c47d6368082c`; G64-022 started from the
+published target-branch commit `f29cf3660af196c6fce72a6d6df251e19f109ae5`.
+`main` was not changed. The private USA retail/decompressed ROMs, pinned `mnsg` source at
 `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, and IDO 5.3 compiler are copied
 under ignored `practice/diagnostics/decomp-100-inputs/`, so the prior external
 path is not needed in this worktree. Their verified SHA-1/fingerprint values
 are recorded at the top of root `PROGRESS.md`. The local input folder is not
-published to Git.
+published to Git. [INPUTS.md](INPUTS.md) gives the pinned checkout, local ROM
+and compiler locations, checksums, and fresh proof commands for recreating it.
 
 The fresh pinned-source baseline reproduced 142 prior claims. Then the resource
 dispatch, menu hook and object dispatch production translation units were
@@ -49,7 +49,11 @@ whole-ROM build was rejected before inventory, and all four production ASM
 placeholders remain in place. G64-019 is `RESEARCH_ONLY`; G64-020 is `DOC_ONLY`.
 G64-021 is `DOC_ONLY`: [VM_RESOURCE_CALLGRAPH.md](VM_RESOURCE_CALLGRAPH.md)
 records original-address call edges, observed ABI facts, direct global effects
-and unknown callback behavior. Continue with G64-022–030 in dependency order.
+and unknown callback behavior. G64-022 is `RESEARCH_ONLY`: offset-annotated
+resource types and host endian checks are in place; the 556-byte IDO loader
+candidate does not match the 548-byte original, so production ASM remains. A
+fresh full-ROM proof refreshed the existing 148 claims without promotion.
+Continue with G64-023–030 in dependency order.
 See `plans/execution/` for task-specific evidence ledgers.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.

@@ -95,8 +95,10 @@ that the external recovery routine mutates the VM resource ID.
 
 ## Next narrow work
 
-G64-022 may type only widths and offsets supported by these loads/stores; keep
-the entry resource argument separate from the mutable global word. G64-023/024
-own the 196-byte F038 baseline and code-generation retries. G64-025/026 own
-loader mutation and frame work. G64-027/028 own D68C/DF98 control flow. No
-function in this graph is newly promoted by this note.
+G64-022 records the observed ID word and offset-only +4/+8 words in
+`vm_resource_types.h`; the entry resource argument remains separate from the
+mutable global word. Its loader candidate did not match native IDO and remains
+unpromoted. G64-023/024 own the 196-byte F038 baseline and code-generation
+retries. G64-025/026 own loader mutation and frame work. G64-027/028 own
+D68C/DF98 control flow. No function in this graph is newly promoted by this
+note.

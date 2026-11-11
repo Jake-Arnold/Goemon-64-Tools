@@ -48,8 +48,19 @@ Callbacks may mutate the current global resource ID. Tests must distinguish it f
 
 ### G64-022 — Define narrow VM resource types
 
-**Status:** PLANNED. **Dependencies:** G64-021.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-021.
 **Focus files:** `decomp/script_vm.h`; `decomp/candidates/vm_loader_storage_probe.c`.
+
+**Outcome (2026-11-11):** Added `VmResourceId` and `VmResourceContext` with
+only observed widths/offsets; the +4/+8 words remain offset-annotated because
+their meanings are not established. Host endian/static assertions, both loader
+harnesses, and all 114 decomp Python tests passed. Pinned IDO produced a
+556-byte isolated candidate against the 548-byte original; comparison had
+1/26 matching nonrelocation positions, 46/58 matching relocation shapes, 53
+relocation-layout differences, and first mismatch at +0x8. Keep the production
+function as `GLOBAL_ASM`. A fresh verifier still matched all 148 existing
+claims and the complete ROM; no claim was promoted. See
+`plans/execution/2026-11-11-g64-022-resource-types.json`.
 
 **Architectural intent:** Propose confirmed-only structures and scalar widths in script_vm.h/support context; encode low-half big-endian resource-ID semantics.
 

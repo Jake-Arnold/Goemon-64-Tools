@@ -1,6 +1,7 @@
 #ifndef GOEMON_SCRIPT_VM_H
 #define GOEMON_SCRIPT_VM_H
 #include "common.h"
+#include "vm_resource_types.h"
 
 extern s32 D_80077858_78458;
 extern s32 D_8007785C_7845C;

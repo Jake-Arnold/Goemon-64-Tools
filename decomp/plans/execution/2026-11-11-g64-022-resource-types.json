@@ -1,0 +1,92 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-022",
+  "title": "Define narrow VM resource types",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "f29cf3660af196c6fce72a6d6df251e19f109ae5",
+    "target_remote_head_before_work": "f29cf3660af196c6fce72a6d6df251e19f109ae5",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "implementation": {
+    "shared_header": "decomp/vm_resource_types.h",
+    "support_header_hash_sha256": "e11f328368d76de2ababeff78ff6bbe28550e190a13e4ae0b299b0199d1ccf6a",
+    "script_vm_header_hash_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "candidate_source": "decomp/candidates/vm_loader_storage_probe.c",
+    "candidate_source_hash_sha256": "a8371332983b3f785381657043356683119afa39431c73ab226dcbb252fca9e3",
+    "host_type_test_hash_sha256": "90c4061d8c15327155c77aff82ecaac9c814c513dc7b7764659b06a34846bf64",
+    "callback_test_hash_sha256": "3ec73890e076718c5d243a20fc5487ed9b41941770be3a2a896b4dee8f2ea4e0",
+    "confirmed_layout": {
+      "resource_id_word_bytes": 4,
+      "n64_low_halfword_offset": 2,
+      "context_size_bytes": 12,
+      "current_id_offset": 0,
+      "unknown_word_offsets": [4, 8],
+      "entry_id_distinct_from_mutable_global": true
+    },
+    "production_function_ownership_changed": false,
+    "matching_claim_promotions": 0
+  },
+  "original_function": {
+    "name": "func_8003D468_3E068",
+    "rom_offset": "0x3E068",
+    "vma": "0x8003D468",
+    "original_bytes": 548,
+    "original_sha256": "ece95b38f4dbaf5268d308e09aea54a02d32d1615664137de03ecd46a0c262d7",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "validation": {
+    "resource_types_host_asan_ubsan": "PASS",
+    "callback_mutation_host_asan_ubsan": "PASS; 1024 cases distinguish entry ID from callback-mutated current ID",
+    "legacy_loader_host_asan_ubsan": "PASS",
+    "decomp_python_suite": "PASS; 114 tests",
+    "verify_python_tests": "PASS; 17 tests",
+    "original_address_guards": "PASS; 26 loader guards",
+    "native_ido_candidate": {
+      "compiler": "Pinned IDO 5.3 with -O2 -mips2 -G 0 -non_shared",
+      "object_sha256": "13f347ba9f469245fd3590ae5cc7c1e58e950ea5d30e2e150f6ce72b30cfb0dd",
+      "candidate_bytes": 556,
+      "comparison_exit_code": 1,
+      "matching_nonrelocation_words": "1/26",
+      "matching_relocated_shapes": "46/58",
+      "relocation_layout_differences": 53,
+      "first_mismatch": "+0x8",
+      "proof_level": "ROM-validated original plus isolated relocatable object; no full-ROM candidate promotion"
+    },
+    "fresh_current_source_full_rom": {
+      "status": "PASS; existing production claims only, no candidate promotion",
+      "report": "decomp/results/combined.json",
+      "inventory": "decomp/results/inventory.json",
+      "baseline_cache_used": false,
+      "full_rom_bytes": 33554432,
+      "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "matching_functions": 148,
+      "matching_function_bytes": 11020,
+      "combined_c": 161,
+      "assembly": 7215,
+      "identified_entries": 7376
+    }
+  },
+  "commands": [
+    "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+    "python3 -m unittest tests.test_decomp_verify -q",
+    "python3 decomp/test_vm_loader_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+    "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --workdir /tmp/g64-022-final-20261111-build --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --report practice/diagnostics/g64-022-final-20261111-verify.json --uv \"$(command -v uv)\" --jobs 2",
+    "python3 -m decomp.inventory --baseline /tmp/g64-022-final-20261111-build/baseline --candidate /tmp/g64-022-final-20261111-build/candidate --report practice/diagnostics/g64-022-final-20261111-inventory.json"
+  ],
+  "reproducibility": {
+    "input_instructions": "decomp/INPUTS.md",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "private_rom_and_ido_committed": false
+  },
+  "limitations": [
+    "The IDO loader candidate differs from the original and was not integrated into the production translation unit.",
+    "The complete-ROM pass verifies the current 148 existing claims and source fingerprints; it does not establish a matching-C claim for the isolated loader candidate.",
+    "No in-game verification was performed."
+  ],
+  "next": "Execute G64-023: reproduce the F038 resource lookup candidate baseline without changing production ASM ownership."
+}

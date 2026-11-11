@@ -828,7 +828,7 @@
       "ordinal": 22,
       "phase": 3,
       "title": "Define narrow VM resource types",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-021"
       ],

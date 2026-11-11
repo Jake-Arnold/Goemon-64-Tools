@@ -24,8 +24,10 @@ word-for-word against its decompressed image. This is **DOC_ONLY**: the direct
 callee `func_80013B14_14714` remains assembly, so its indirect side effects are
 unknown. The recovery mutation tests are conservative negative controls, not
 evidence that the retail callback changes the current resource ID. No function
-claim or production assembly ownership changed. Next: G64-022 narrow resource
-types.
+claim or production assembly ownership changed. G64-022 added offset-annotated
+resource types and host endian tests; its candidate loader did not match native
+IDO, so no production ownership changed. A fresh full-ROM gate retained the
+148 existing claims. Next: G64-023 reproduce the resource lookup candidate.
 
 ## Numbered event startup follow-up (2026-11-03)
 

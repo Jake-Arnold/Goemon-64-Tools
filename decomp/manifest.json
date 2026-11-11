@@ -1193,6 +1193,7 @@
   "support_headers": [
     "save_resources.h",
     "script_vm.h",
+    "vm_resource_types.h",
     "vm_compare_reference.h",
     "object_flags.h",
     "default_entrance.h"

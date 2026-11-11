@@ -10,7 +10,7 @@
 
 void *D_80077860_78460;
 s32 D_8007785C_7845C, D_80077858_78458;
-VmResource D_801C78E8_1C84E8;
+VmResourceContext D_801C78E8_1C84E8;
 VmWorkLoader D_801C77E8_1C83E8;
 s32 D_801C7900_1C8500, D_801C7904_1C8504;
 s32 D_801C7740_1C8340,D_801C7744_1C8344,D_801C7748_1C8348,D_801C774C_1C834C;
@@ -33,12 +33,12 @@ s32 func_800141C4_14DC4(s32 id) {
 void func_80013B14_14714(u16 id) {
     restore_count++;
     recovered_low = id;
-    D_801C78E8_1C84E8.id.word = first_remap;
+    D_801C78E8_1C84E8.current_id.word = first_remap;
 }
 void func_8003CFA0_3DBA0(s32 id) {
     reset_count++;
     seen_reset = id;
-    D_801C78E8_1C84E8.id.word = second_remap;
+    D_801C78E8_1C84E8.current_id.word = second_remap;
 }
 s32 func_80001E50_2A50(s32 id) { size_count++; seen_size = id; return id ^ 0x51A55A1; }
 s32 func_8003DDC4_3E9C4(s32 start, s32 id) {
@@ -63,9 +63,9 @@ static void one_case(s32 entry, s32 first, s32 second, s32 start) {
     assert(size_count == 1 && seen_size == second);
     assert(delta_count == 1 && seen_delta == entry);
     assert(init_count == 1 && state_count == 1);
-    assert(D_801C78E8_1C84E8.id.word == second);
-    assert(D_801C78E8_1C84E8.unk4 == (second ^ 0x51A55A1));
-    assert(D_801C78E8_1C84E8.unk8 == 0x34);
+    assert((s32)D_801C78E8_1C84E8.current_id.word == second);
+    assert(D_801C78E8_1C84E8.unknown_04 == (second ^ 0x51A55A1));
+    assert(D_801C78E8_1C84E8.unknown_08 == 0x34);
     assert(D_801C77E8_1C83E8.loaded == (s32)0x80001234u);
     assert(D_80077858_78458 == start + 5);
     assert(D_801C77E8_1C83E8.marker == -1 && D_801C77E8_1C83E8.gate == 0);

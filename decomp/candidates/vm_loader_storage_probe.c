@@ -1,22 +1,24 @@
 /* Research-only USA VM resource loader, original 0x8003D468 / 0x3E068.
  * This draft deliberately keeps the resource record and VM work separate.
- * Initial IDO 5.3 -O2 -mips2 -G 0 -non_shared output assembled to 560 bytes
+ * Pinned IDO 5.3 -O2 -mips2 -G 0 -non_shared output assembles to 556 bytes
  * versus 548 original; 24-byte stack frame versus original 32. UNPROMOTED.
  * No matching-C claim until an independent full ROM proves identity.
  */
-typedef signed int s32;
-typedef unsigned int u32;
-typedef unsigned short u16;
-typedef signed short s16;
-typedef unsigned char u8;
+#include "../vm_resource_types.h"
 
-typedef struct {s32 value; s32 unk4; s16 marker; u16 gate; s32 unkC; s32 unk10; s32 loaded;} VmWorkLoader;
-typedef union {s32 word; struct {u16 upper, lower;} half;} VmResourceId;
-typedef struct {VmResourceId id; s32 unk4; s32 unk8;} VmResource;
+typedef struct {
+    s32 value;       /* +0: cleared by the initializer */
+    s32 unknown_04;  /* +4: width observed; meaning unknown */
+    s16 marker;      /* +8: halfword initialized to -1 */
+    u16 gate;        /* +0xA: halfword cleared */
+    s32 unknown_0C;  /* +0xC: word cleared */
+    s32 unknown_10;  /* +0x10: width observed; meaning unknown */
+    s32 loaded;      /* +0x14: resource base/result word */
+} VmWorkLoader;
 extern void *D_80077860_78460;
 extern s32 D_8007785C_7845C;
 extern s32 D_80077858_78458;
-extern VmResource D_801C78E8_1C84E8;
+extern VmResourceContext D_801C78E8_1C84E8;
 extern VmWorkLoader D_801C77E8_1C83E8;
 extern s32 D_801C7900_1C8500,D_801C7904_1C8504;
 extern s32 D_801C7740_1C8340,D_801C7744_1C8344,D_801C7748_1C8348,D_801C774C_1C834C;
@@ -34,43 +36,32 @@ extern s32 func_8003DDC4_3E9C4(s32,s32);
 extern s32 func_8003DE48_3EA48(s32);
 extern void func_80024088_24C88(s32);
 
-/* The game reads the resource ID's LOW halfword at offset +2 of its
- * big-endian 32-bit word. On a little-endian host that same union member
- * represents the HIGH halfword. Keep the target's lhu +2 codegen intact;
- * use the numeric low half during portable host-only simulations instead.
- */
-#ifdef GOEMON_DECOMP_HOST_TEST
-#define VM_LOADER_LOW_ID(record) ((u16)(record)->id.word)
-#else
-#define VM_LOADER_LOW_ID(record) ((record)->id.half.lower)
-#endif
-
-s32 func_8003D468_3E068(s32 start, s32 resource_id) {
-    VmResource *resource;
+s32 func_8003D468_3E068(s32 start, s32 entry_resource_id) {
+    VmResourceContext *resource;
     VmWorkLoader *work;
     s32 result;
     if (D_80077860_78460 == 0) return 0;
     resource = &D_801C78E8_1C84E8;
-    resource->id.word = resource_id;
-    if (resource_id != -1) {
+    resource->current_id.word = entry_resource_id;
+    if (entry_resource_id != -1) {
         work = &D_801C77E8_1C83E8;
-        result = func_800141C4_14DC4(resource_id);
+        result = func_800141C4_14DC4(entry_resource_id);
         work->loaded = result;
         if (result == -1) {
-            func_80013B14_14714(VM_LOADER_LOW_ID(resource));
-            func_8003CFA0_3DBA0(resource->id.word);
-            result = func_800141C4_14DC4(resource->id.word);
+            func_80013B14_14714(VM_RESOURCE_ID_LOW_HALF(resource->current_id));
+            func_8003CFA0_3DBA0(resource->current_id.word);
+            result = func_800141C4_14DC4(resource->current_id.word);
             work->loaded = result;
         }
         work->loaded = result & 0xBFFFFFFF;
-        resource->unk4 = func_80001E50_2A50(resource->id.word);
-        resource->unk8 = func_8003DDC4_3E9C4(start, resource_id) - start;
+        resource->unknown_04 = func_80001E50_2A50(resource->current_id.word);
+        resource->unknown_08 = func_8003DDC4_3E9C4(start, entry_resource_id) - start;
         D_80077858_78458 = func_8003DE48_3EA48(start);
     } else {
         work = &D_801C77E8_1C83E8;
         work->loaded = 0;
-        resource->unk4 = 0;
-        resource->unk8 = 0;
+        resource->unknown_04 = 0;
+        resource->unknown_08 = 0;
         D_80077858_78458 = 0;
         D_801C7900_1C8500 = 3;
         D_801C7904_1C8504 = -1;
@@ -96,7 +87,7 @@ s32 func_8003D468_3E068(s32 start, s32 resource_id) {
     work->value = 0;
     work->marker = -1;
     D_801C78D0_1C84D0 = 0;
-    work->unkC = 0;
+    work->unknown_0C = 0;
     *(u8 *)&D_801C78FC_1C84FC = 0;
     work->gate = 0;
     D_801C7920_1C8520 = 0;
