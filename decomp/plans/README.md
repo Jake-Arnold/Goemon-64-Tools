@@ -20,6 +20,16 @@
 - [TASKS_100.json](TASKS_100.json): 100 structured packets, exact files, dependencies, procedure, negative controls, acceptance, evidence and stop conditions. Task state defaults PLANNED and does not assert execution.
 - [ARCHITECTURE_100.md](ARCHITECTURE_100.md): original comprehensive architecture, branch baseline, gates, dependency graph, risk register and compact 100-task overview.
 
+
+## Optional REA / Ghidra pilot (not a prerequisite for any of the 100 tasks)
+
+- [REA_PILOT.md](REA_PILOT.md): four gated experiments, source-backed MIPS compatibility audit, exact commands, ten-function control benchmark, VM lookup study, GO/NO_GO decision.
+- [REA_PILOT_CONTROLS.json](REA_PILOT_CONTROLS.json): ten independently accepted C functions with manifest-derived original offsets, guest addresses and extents.
+- [REA_PILOT_TASKS.json](REA_PILOT_TASKS.json): machine-readable R01–R04 experiments and acceptance/stop conditions.
+- `python3 -m unittest decomp.test_rea_pilot_preflight -v` checks the conservative local ELF admission helper with synthetic inputs.
+
+**Major compatibility warning:** pinned Goemon builds use `-mips2`, while REA's documented Ghidra ELF-MIPS admission does not include MIPS-II. Real Goemon `.elf` flags remain uninspected here. No REA analysis on a proprietary target has been run. A read-only direct-Ghidra investigation is the fallback only when the target mapping is independently verified; m2c/IDO + complete-ROM verification are unchanged. Optional research must never block the existing five near-ready promotions.
+
 ## Default execution order
 1. First complete independent near-ready resource wrappers and menu trio (G64-001–010). Their full-unit research match is known, but G2 whole-ROM proof is not.
 2. Object dispatcher G64-011–014 is blocked by native full-unit scheduling. Do not delay unrelated work indefinitely.

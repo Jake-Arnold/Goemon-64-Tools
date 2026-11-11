@@ -675,3 +675,9 @@ Failure: retain ASM, record first mismatching word and next hypothesis; move on
 - `decomp/LOCAL_MNSG_REVIEW.md`, `BATCH_PIPELINE.md`, `NEXT_TEN_FUNCTIONS.md`: upstream camera research and bounded candidate-generation history.
 
 **End state:** A falsifiable, maintainable decompilation process with candidate-by-candidate proof. There is no guaranteed promotion count or target date beyond the conditional checkpoints above.
+
+## 2026-11-11 addendum — REA feasibility before automation adoption
+
+REA's current Ghidra-MIPS provider has an ISA admission boundary at **ELF32 MIPS32r2 or narrowly defined legacy MIPS-I/MIPS32/MIPS32r2 executables**, not generic Nintendo 64 binaries. The pinned original Goemon Makefile builds `-mips2` and assembles for VR4300 big-endian o32. Actual linked ELF header and ABI records have not been inspected, so **REA Goemon compatibility is unknown and likely constrained, not verified**. Direct raw Z64 admission for MIPS is not documented. Read [REA_PILOT.md](REA_PILOT.md) before allowing any REA task.
+
+This is an **optional four-gate research lane** R01 ISA/provider admission; R02 ten currently accepted-function control comparisons; R03 one unresolved 196-byte VM lookup; R04 evidence-based GO/NO_GO and fallback. It **does not increase the 100 numbered G64 tasks**, does not delay early resource/menu integration, and changes no C/ASM promotion policy. Twenty-eight G64 tasks carry optional research assistance metadata in `TASKS_100.json`. The supporting synthetic-only preflight tests were run (12/12); no Goemon ROM or ELF was analyzed by REA. A direct Ghidra read-only workflow may be considered separately if REA refuses.

@@ -812,7 +812,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-022",
@@ -849,7 +858,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-023",
@@ -886,7 +904,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-024",
@@ -923,7 +950,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-025",
@@ -961,7 +997,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-026",
@@ -998,7 +1043,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-027",
@@ -1188,7 +1242,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-032",
@@ -1300,7 +1363,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-035",
@@ -1570,7 +1642,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-042",
@@ -1607,7 +1688,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-043",
@@ -1644,7 +1734,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-044",
@@ -1756,7 +1855,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-047",
@@ -1956,7 +2064,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-052",
@@ -1993,7 +2110,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-053",
@@ -2032,7 +2158,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-054",
@@ -2220,7 +2355,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-059",
@@ -2336,7 +2480,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-062",
@@ -2374,7 +2527,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-063",
@@ -2727,7 +2889,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-072",
@@ -2839,7 +3010,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-075",
@@ -3491,7 +3671,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-092",
@@ -3530,7 +3719,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-093",
@@ -3570,7 +3768,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-094",
@@ -3611,7 +3818,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-095",
@@ -3654,7 +3870,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-096",
@@ -3691,7 +3916,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-097",
@@ -3728,7 +3962,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Use read-only xref/caller/callee/field-layout Evidence to form one bounded original-MIPS hypothesis; verify against known control functions and actual original address."
+      }
     },
     {
       "id": "G64-098",
@@ -3767,7 +4010,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-099",
@@ -3814,7 +4066,16 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     },
     {
       "id": "G64-100",
@@ -3860,7 +4121,23 @@
         "first mismatch and bounded next hypothesis if failure",
         "whole-ROM and inventory report only if actually executed",
         "PROGRESS.md in every source/doc commit"
-      ]
+      ],
+      "optional_reverse_engineering_assist": {
+        "pilot": "decomp/plans/REA_PILOT.md",
+        "admission_gate": "REA-01",
+        "required_for_task": false,
+        "allowed_status": "REA_ADMITTED_AND_VALIDATED_ONLY",
+        "fallback": "Continue with original assembly/m2c/direct Ghidra (when appropriately validated) and pinned IDO; do not block the G64 task",
+        "exactness": "REA pseudocode, instruction analysis, or native function matching is research-only; G2 complete-ROM verification is mandatory for C promotion",
+        "use": "Record source-backed type/section/provenance evidence only; never substitute provider admission for exact native build proof."
+      }
     }
-  ]
+  ],
+  "optional_pilot": {
+    "id": "REA-01..REA-04",
+    "file": "decomp/plans/REA_PILOT.md",
+    "state": "STATIC_HEADER_PREFLIGHT_ONLY",
+    "risk": "Goemon -mips2 vs REA standard MIPS ELF restrictions",
+    "core_task_count_unchanged": 100
+  }
 }

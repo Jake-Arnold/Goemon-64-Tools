@@ -1,0 +1,87 @@
+{
+  "schema": "goemon-rea-feasibility-v1",
+  "status": "STATIC_REVIEW_AND_12_SYNTHETIC_TESTS_ONLY",
+  "source": {
+    "repo": "morluto/rea",
+    "sha": "69630c03624c5c79860087db69f5a7bfd05a1b00",
+    "goemon_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "goemon_makefile_mipsisa": "-mips2"
+  },
+  "source_level_compatibility": "REA documented ELF MIPS admission excludes MIPS-II/III. Goemon actual ELF e_flags not inspected. Raw MIPS ROM admission not documented.",
+  "core_task_count": 100,
+  "nonblocking": true,
+  "pilot_tasks": [
+    {
+      "id": "REA-01",
+      "title": "Admission and true ELF header",
+      "state": "SOURCE_AUDIT_COMPLETE_TARGET_UNTESTED",
+      "prerequisites": [
+        "user-owned pinned ELF",
+        "readelf",
+        "preflight script"
+      ],
+      "procedure": [
+        "Verify pinned upstream and original ROM identity locally.",
+        "Run readelf -hW on actual build ELF and record MIPS e_flags, type, class and ABI records.",
+        "Run decomp.rea_pilot_preflight --strict; treat known MIPS-II/III as refusal.",
+        "Only on potentially eligible header, start local pinned REA/Ghidra and capture explicit admission/refusal and language."
+      ],
+      "acceptance": "REA official target admits unmodified ELF; else produce explicit compatibility refusal without trying to bypass support."
+    },
+    {
+      "id": "REA-02",
+      "title": "Ten verified-function controls",
+      "state": "PLANNED_DEPENDS_ON_REA_01_SUCCESS",
+      "prerequisites": [
+        "REA-01 actual official admission",
+        "decomp/plans/REA_PILOT_CONTROLS.json",
+        "private reference original image"
+      ],
+      "procedure": [
+        "Cross-check control list against live manifest.",
+        "Extract provider function and instruction evidence for each exact original VMA.",
+        "Independently verify address/size and known call/reference/field semantics.",
+        "Record all ten scores and any contradictory pseudocode."
+      ],
+      "acceptance": "10/10 exact addresses and extents, >=6 substantive independently supported xref or field facts, no invented ABI."
+    },
+    {
+      "id": "REA-03",
+      "title": "196-byte VM lookup experiment",
+      "state": "PLANNED_DEPENDS_ON_REA_01_AND_02",
+      "prerequisites": [
+        "REA-01 and REA-02 official success",
+        "private original VM code and pinned IDO"
+      ],
+      "procedure": [
+        "Record baseline 196-byte candidate's current 25/42 instruction match and first differences.",
+        "Use only admitted REA function/caller/reference evidence to form one typed source hypothesis.",
+        "Compare fresh native IDO -c at original VMA, run existing synthetic tests.",
+        "If better, retain as research; no promotion without G2 full-ROM verification."
+      ],
+      "acceptance": "At least one novel corroborated type/call fact and a measurably improved source-level compiler hypothesis; else NO_ADDED_VALUE."
+    },
+    {
+      "id": "REA-04",
+      "title": "ROI decision and executor handoff",
+      "state": "PLANNED",
+      "prerequisites": [
+        "REA-01 result",
+        "REA-02 and REA-03 if admitted"
+      ],
+      "procedure": [
+        "Compile actual admission, control and target evidence statuses.",
+        "Record native analyses actually executed versus proposed.",
+        "Adopt REA only on all positive gates; otherwise pin fallback to direct Ghidra or existing m2c/IDO tools.",
+        "If adopting, update affected G64 task packet with optional invocation and proof boundary."
+      ],
+      "acceptance": "Explicit GO/NO_GO with reproducible limited scope, no false function promotions, all G64 core tasks executable without REA."
+    }
+  ],
+  "stop_conditions": [
+    "Reject spoofed ISA/ABI flags",
+    "Do not run ten controls after official refusal",
+    "Never count REA pseudocode as native instruction match",
+    "Never commit private ROM/ELF/analysis database"
+  ]
+}

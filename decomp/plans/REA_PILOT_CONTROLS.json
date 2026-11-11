@@ -1,0 +1,178 @@
+{
+  "schema": "goemon-rea-control-benchmark-v1",
+  "status": "NOT_RUN_REA",
+  "manifest_sha256_reference": "computed from live branch by executor",
+  "reference_original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "coverage_target": 10,
+  "source_branch": "chatgptweb/decomp",
+  "controls": [
+    {
+      "ordinal": 1,
+      "function": "func_80011B58_12758",
+      "production_unit": "empty_menu_hook.c",
+      "rom_offset": "0x12758",
+      "vma": "0x80011b58",
+      "size_bytes": 8,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    },
+    {
+      "ordinal": 2,
+      "function": "func_80034EF8_35AF8",
+      "production_unit": "resource_dispatch.c",
+      "rom_offset": "0x35af8",
+      "vma": "0x80034ef8",
+      "size_bytes": 40,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    },
+    {
+      "ordinal": 3,
+      "function": "func_80035064_35C64",
+      "production_unit": "object_dispatch.c",
+      "rom_offset": "0x35c64",
+      "vma": "0x80035064",
+      "size_bytes": 48,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    },
+    {
+      "ordinal": 4,
+      "function": "func_8000631C_6F1C",
+      "production_unit": "state_predicate.c",
+      "rom_offset": "0x6f1c",
+      "vma": "0x8000631c",
+      "size_bytes": 40,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    },
+    {
+      "ordinal": 5,
+      "function": "func_80001D68_2968",
+      "production_unit": "file_table.c",
+      "rom_offset": "0x2968",
+      "vma": "0x80001d68",
+      "size_bytes": 44,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    },
+    {
+      "ordinal": 6,
+      "function": "func_8003D9B8_3E5B8",
+      "production_unit": "script_vm.c",
+      "rom_offset": "0x3e5b8",
+      "vma": "0x8003d9b8",
+      "size_bytes": 340,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    },
+    {
+      "ordinal": 7,
+      "function": "func_8003D17C_3DD7C",
+      "production_unit": "script_vm.c",
+      "rom_offset": "0x3dd7c",
+      "vma": "0x8003d17c",
+      "size_bytes": 404,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    },
+    {
+      "ordinal": 8,
+      "function": "func_8003DE48_3EA48",
+      "production_unit": "script_vm.c",
+      "rom_offset": "0x3ea48",
+      "vma": "0x8003de48",
+      "size_bytes": 56,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    },
+    {
+      "ordinal": 9,
+      "function": "func_800214E4_220E4",
+      "production_unit": "default_entrance.c",
+      "rom_offset": "0x220e4",
+      "vma": "0x800214e4",
+      "size_bytes": 228,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    },
+    {
+      "ordinal": 10,
+      "function": "func_800362DC_36EDC",
+      "production_unit": "object_flags.c",
+      "rom_offset": "0x36edc",
+      "vma": "0x800362dc",
+      "size_bytes": 44,
+      "source_of_truth": "live decomp/manifest.json plus private SHA-verified original ROM",
+      "requires": [
+        "exact VMA",
+        "exact original length/word extent",
+        "original instruction data corroboration",
+        "calls and memory access review"
+      ],
+      "status": "NOT_RUN_REA"
+    }
+  ],
+  "acceptance": {
+    "exact_addresses_and_extents": "10/10",
+    "independent_cross_checks": "at least 6 supported field/call facts",
+    "no_invented_types": true,
+    "admission": "Only after official REA session admits actual unchanged ELF",
+    "private_binary_artifact_export": false
+  },
+  "result": null
+}
