@@ -4,7 +4,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from rea_pilot_preflight import classify_header, inspect
+if __package__:
+    from .rea_pilot_preflight import classify_header, inspect
+else:
+    from rea_pilot_preflight import classify_header, inspect
 
 
 def elf(arch: int, *, e_type: int = 2, e_machine: int = 8, endian: str = "big") -> bytes:
