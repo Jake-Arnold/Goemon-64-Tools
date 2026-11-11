@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-039 VM parser behavior matrix (RESEARCH_ONLY)
+
+- **Reason and branch:** fetched `origin/chatgptweb/decomp` before work; local `codex/decomp-100-task-plan` and remote both matched `66491ed95b0c6e07c629cb247df1bd832ccbc8ed`. Architect v2 calls for a concise crosswalk over existing DBEC/DE80 evidence and explicitly discourages another large random batch.
+- **Changes:** added [`decomp/VM_PARSER_BEHAVIOR_MATRIX.md`](decomp/VM_PARSER_BEHAVIOR_MATRIX.md) to connect DBEC, DE80, DF98, EB34, ED60 and F6E8 ROM/host evidence and make each mock boundary explicit. The DBEC differential runner now pins expected output-cursor, state, bound, work-latch and callback-count traces for all ten named scenarios. The EB34 test now checks emit/decode event order and exact owner/value/input-cursor arguments for ordinary, sentinel and signed-negative paths.
+- **Harness correction:** the sanitizer build exposed a stale `func_8003D0B0_3DCB0` test stub that redefined the matching C implementation already included from `script_vm.c`. Removed the duplicate and used a controlled preceding callback to seed state for the real helper, making the order assertion meaningful.
+- **Tests:** DBEC runner checked the complete local ROM identity and passed **10 fixed expected traces plus 1** deterministic MIPS/C case; all four signedness/bound/alias mutants were rejected. GCC ASan/UBSan `test_script_vm.c` harness passed. Focused original guard suites passed **15/15**, full decomp suite **151/151**, verifier suite **17/17**, `py_compile`, and `git diff --check` passed. Exact commands/results are in [`decomp/plans/execution/2026-11-11-g64-039-parser-matrix.json`](decomp/plans/execution/2026-11-11-g64-039-parser-matrix.json).
+- **Limitations:** no full-ROM build or inventory rebuild was run because production C and manifest inputs are unchanged; no native IDO candidate or in-game run. Mocks configure helper outcomes and do not claim retail DF98 token effects or complete output-callback behavior. Stored proof remains **148 functions / 11,020 bytes**, 161 combined C / 7,215 ASM / 7,376 identified entries.
+- **Next:** G64-040, close the VM parser production gate; promote only a whole-unit-exact candidate that passes the complete ROM and inventory checks.
+
 ## 2026-11-11 — G64-038 pin VM wrapper original extent (RESEARCH_ONLY)
 
 - **Reason and branch:** continued after G64-037 was pushed and remote-verified at `feec851ca4fb9c715ae5da4197302b84e516a88b`. Architect v2 requires the original `func_8003F6E8_402E8` extent to be distinguished from its natural C prefix and a historical candidate-size annotation.

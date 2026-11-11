@@ -168,6 +168,25 @@ def fixed_scenarios():
        script_pointee_gate_halfword=1),
  ]
 
+# Expected original-MIPS interpreter traces for the named fixed cases. Fields
+# are returned cursor, VM state, loop bound, work latch, independent script
+# pointee halfword, DE80 calls, DE48 calls and E680 calls. Callbacks are
+# synthetic hooks; these are harness contracts, not live-game observations.
+TRACE_FIELDS = ('result', 'state', 'bound', 'gate', 'script_pointee_gate',
+                'steps', 'handled', 'resets')
+EXPECTED_FIXED_TRACES = {
+ 'nonpositive-bound': (-1, 1, 0, 0, 23130, 0, 0, 0),
+ 'held-0x8000-retries-with-latch': (-1, 1, 5, 1, 23130, 4, 0, 0),
+ 'pressed-0x8000-sets-latch': (-1, 1, 1, 0, 23130, 2, 0, 0),
+ 'pressed-0x4000-restart-resets-state': (130, 0, 3, 0, 23130, 3, 3, 0),
+ 'pressed-0x4000-zero-handler-returns': (-1, 1, 3, 0, 23130, 1, 0, 1),
+ 'callback-lowers-bound': (-1, 1, 1, 0, 23130, 1, 0, 0),
+ 'callback-raises-bound': (-1, 1, 3, 0, 23130, 3, 0, 0),
+ 'callback-null-return-clears-state': (-1, 0, 3, 0, 23130, 1, 0, 0),
+ 'callback-terminal-state-clears-work-latch': (-1, 4, 3, 0, 23130, 1, 0, 0),
+ 'cursor-pointee-plus-a-is-independent': (-1, 1, 3, 0, 1, 3, 0, 0),
+}
+
 def replace_once(source, old, new, label):
  if source.count(old)!=1:
   raise ValueError(f'{label}: expected one source anchor, found {source.count(old)}')
@@ -239,8 +258,16 @@ def main():
  words={BASE+4*i:struct.unpack('>I',code[4*i:4*i+4])[0]
         for i in range(FUNCTION_SIZE//4)}
  bind_library(args.host_library)
- for name,p in fixed_scenarios():
+ fixed = fixed_scenarios()
+ if {name for name, _ in fixed} != set(EXPECTED_FIXED_TRACES):
+  raise AssertionError('fixed scenario names and expected trace fixtures differ')
+ for name,p in fixed:
   actual=Machine(p).run(p)
+  actual_trace=tuple(actual[k] for k in TRACE_FIELDS)
+  if actual_trace != EXPECTED_FIXED_TRACES[name]:
+   print('MISMATCH fixed MIPS trace',name,'expected',EXPECTED_FIXED_TRACES[name],
+         'actual',actual_trace)
+   return 1
   candidate=host(p)
   if actual!=candidate:
    print('MISMATCH fixed case',name,'params',p,'original',actual,'candidate',candidate)

@@ -287,3 +287,16 @@ delay slots, access widths, pair words and unknowns are in
 trace-derived IDO probe differs at `0x8003ED68`, so no C model or production
 ownership change was made. See
 `plans/execution/2026-11-11-g64-037-ed60-trace.json`.
+
+## G64-039 — parser behavior matrix
+
+The concise stream/parser crosswalk is in
+[`VM_PARSER_BEHAVIOR_MATRIX.md`](VM_PARSER_BEHAVIOR_MATRIX.md). It combines
+the ten DBEC fixed MIPS/host traces, DE80's existing 11-case wrapper coverage,
+DF98's ROM-bound token/cursor guard, EB34's emit/decode/resume cases, and the
+F6E8 extent check. Fixed DBEC cases now assert expected cursor, state, bound,
+latch and callback-count tuples before comparing the host candidate. EB34's
+host harness asserts callback order as well as owner, value and decoder input.
+The decoder and output/helper stubs stay synthetic and do not claim unknown
+retail side effects. No random batch was repeated, no production function or
+manifest owner changed, and the 148-function proof remains unchanged.

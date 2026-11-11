@@ -1,0 +1,186 @@
+{
+  "format": "goemon-g64-execution-evidence-v1",
+  "task_id": "G64-039",
+  "title": "Build VM parser behavioral matrix",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "strategy": {
+    "document": "decomp/plans/EXECUTION_STRATEGY_V2.md",
+    "wave": "A",
+    "directive": "Compose a concise parser matrix from existing DBEC/DE80 evidence; avoid repeated large random runs.",
+    "decision": "Added fixed DBEC trace expectations and EB34 callback-order assertions, then cross-referenced existing DE80, DF98, ED60 and F6E8 evidence. No matching-C candidate was eligible."
+  },
+  "starting_state": {
+    "workspace_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "66491ed95b0c6e07c629cb247df1bd832ccbc8ed",
+    "fetched_remote_head": "66491ed95b0c6e07c629cb247df1bd832ccbc8ed",
+    "fetched_before_work": true,
+    "worktree_clean_before_task": true,
+    "agents_md_confirmed": true,
+    "stored_proof": "148 matching C functions / 11,020 bytes; full 33,554,432-byte ROM identity"
+  },
+  "original_boundaries": [
+    {
+      "symbol": "func_8003DBEC_3E7EC",
+      "vma": "0x8003DBEC",
+      "rom_offset": "0x3E7EC",
+      "bytes": 472,
+      "words": 118,
+      "sha256": "4ee117dd31f6b8f3ab30ca864c202eb7c974c28cc8236d233a94228b36a0a764",
+      "owner": "GLOBAL_ASM"
+    },
+    {
+      "symbol": "func_8003DE80_3EA80",
+      "vma": "0x8003DE80",
+      "rom_offset": "0x3EA80",
+      "bytes": 232,
+      "words": 58,
+      "sha256": "011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1",
+      "owner": "GLOBAL_ASM"
+    },
+    {
+      "symbol": "func_8003DF98_3EB98",
+      "vma": "0x8003DF98",
+      "rom_offset": "0x3EB98",
+      "bytes": 528,
+      "words": 132,
+      "sha256": "76285ca92a7f611916d867d9938f93fcb3df32ebfa2962120083f2471a501631",
+      "owner": "GLOBAL_ASM"
+    },
+    {
+      "symbol": "func_8003EB34_3F734",
+      "vma": "0x8003EB34",
+      "rom_offset": "0x3EB34",
+      "bytes": 112,
+      "words": 28,
+      "owner": "matching C"
+    },
+    {
+      "symbol": "func_8003ED60_3F960",
+      "vma": "0x8003ED60",
+      "rom_offset": "0x3F960",
+      "bytes": 592,
+      "words": 148,
+      "owner": "GLOBAL_ASM"
+    },
+    {
+      "symbol": "func_8003F6E8_402E8",
+      "vma": "0x8003F6E8",
+      "rom_offset": "0x402E8",
+      "bytes": 48,
+      "words": 12,
+      "owner": "GLOBAL_ASM"
+    }
+  ],
+  "implementation": {
+    "matrix": "decomp/VM_PARSER_BEHAVIOR_MATRIX.md",
+    "dbec_test": "decomp/test_vm_text_loop_differential.py",
+    "dbec_expected_trace_fields": [
+      "returned cursor",
+      "VM state",
+      "bound",
+      "work latch",
+      "independent script-pointee halfword",
+      "DE80 calls",
+      "DE48 calls",
+      "E680 calls"
+    ],
+    "dbec_fixed_scenarios": 10,
+    "eb34_test": "decomp/test_script_vm.c::check_choice_stream_rendering",
+    "eb34_callback_order": [
+      "emit 0",
+      "emit 0x7fff",
+      "decode at first+2",
+      "emit 42"
+    ],
+    "additional_eb34_cases": [
+      "-1 sentinel produces no callback",
+      "signed 0x8000 delegates from the original cursor"
+    ],
+    "stale_mock_correction": "Removed the test double that redefined the already implemented func_8003D0B0_3DCB0. The real helper is now exercised; the preceding mocked step changes choice state so its subsequent selection result also checks order.",
+    "production_script_vm_changed": false,
+    "manifest_changed": false,
+    "native_candidate": "NOT_RUN"
+  },
+  "validation": {
+    "rom_identity": {
+      "size_bytes": 33554432,
+      "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "verified_by": "differential runner read and checked the complete local ROM"
+    },
+    "dbec_command": "python3 decomp/test_vm_text_loop_differential.py --decompressed-rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --host-library practice/diagnostics/decomp-100-inputs/g64-039/libvm_text_loop.so --cases 1 --seed 0x1D8 --check-mutants",
+    "dbec_result": "10 named fixed expected MIPS traces and 1 deterministic synthetic MIPS/C case matched; all four targeted mutants were killed",
+    "dbec_exit_code": 0,
+    "dbec_mutants_killed": [
+      "signed-held-high-bit",
+      "signed-pressed-high-bit",
+      "stale-outer-bound",
+      "cursor-pointee-alias"
+    ],
+    "host_library_build": {
+      "command": "cc -std=c99 -shared -fPIC -O2 decomp/candidates/vm_text_loop.c decomp/test_vm_text_loop_differential_stubs.c -o practice/diagnostics/decomp-100-inputs/g64-039/libvm_text_loop.so",
+      "exit_code": 0,
+      "artifact_ignored": true
+    },
+    "sanitizer_command": "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -fsanitize=address,undefined -Idecomp/test_support decomp/test_script_vm.c -o /tmp/goemon-vm-g64-039 && /tmp/goemon-vm-g64-039",
+    "sanitizer_result": "VM choices/repeat/streams, inputs, resources, callbacks and dialogue states passed",
+    "sanitizer_exit_code": 0,
+    "focused_original_guard_tests": {
+      "command": "python3 -m unittest decomp.test_vm_control_decoder_original decomp.test_vm_wrapper_extent -q",
+      "tests": 15,
+      "exit_code": 0
+    },
+    "full_decomp_suite": {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "tests": 151,
+      "exit_code": 0
+    },
+    "verifier_suite": {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "tests": 17,
+      "exit_code": 0
+    },
+    "python_compile_and_diff_check": {
+      "command": "python3 -m py_compile decomp/test_vm_text_loop_differential.py && git diff --check",
+      "exit_code": 0
+    },
+    "first_sanitizer_build_attempt": "Exposed the stale duplicate func_8003D0B0 test mock; test was corrected to call the real function and define its missing synthetic globals. Final sanitizer command above passed."
+  },
+  "source_hashes": {
+    "decomp/test_script_vm.c": "b43d701863e00380c2f18fb11dda5299f0a8aa31880fe1d6ce679b4d79791609",
+    "decomp/test_vm_text_loop_differential.py": "c61288c3e5dbd7850af3bbc59ee45d29918356c1728c03eae7c3903e53730993",
+    "decomp/VM_PARSER_BEHAVIOR_MATRIX.md": "c5e847ee66e902f9ec8a688dbf17ae7c3cdb9813dfcd7cc17e3e331ece7bbf73",
+    "decomp/script_vm.c_unchanged": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "decomp/manifest.json_unchanged": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d"
+  },
+  "stored_proof": {
+    "report": "decomp/results/combined.json",
+    "report_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "inventory_sha256": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a",
+    "status": "matched",
+    "full_rom_match": true,
+    "matched_functions": 148,
+    "matched_function_bytes": 11020,
+    "combined_c": 161,
+    "assembly": 7215,
+    "identified_entries": 7376
+  },
+  "decision": {
+    "task_status": "RESEARCH_ONLY",
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "new_random_cases": 1,
+    "candidate_native_build": "NOT_RUN; no candidate or production source changed",
+    "full_rom_build": "NOT_RUN; documentation and host-test changes only",
+    "inventory_rebuild": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "unknown_effects_preserved": [
+      "DF98 decoder command effects",
+      "D060 retail output side effects",
+      "ED60 output contents",
+      "synthetic DE80 gate/helper effects"
+    ],
+    "next_task": "G64-040"
+  }
+}

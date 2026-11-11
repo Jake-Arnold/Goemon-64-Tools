@@ -310,7 +310,7 @@ function remains `GLOBAL_ASM`; no C candidate was accepted. See
 
 ### G64-039 — Build VM parser behavioral matrix
 
-**Status:** PLANNED. **Dependencies:** G64-033, G64-036, G64-037, G64-038.
+**Status:** RESEARCH_ONLY (completed 2026-11-11). **Dependencies:** G64-033, G64-036, G64-037, G64-038.
 **Focus files:** `decomp/test_script_vm.c`; `decomp/test_vm_text_loop_differential.py`.
 
 **Architectural intent:** Compose semantic tests for parser loop, decoder and wrapper interactions without claiming a playable VM emulator.
@@ -334,6 +334,8 @@ function remains `GLOBAL_ASM`; no C candidate was accepted. See
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome:** Added the compact [`VM_PARSER_BEHAVIOR_MATRIX.md`](../../VM_PARSER_BEHAVIOR_MATRIX.md). The ten named DBEC scenarios now pin expected MIPS-interpreter cursor, state, bound, latch and callback-count traces before differential comparison. The EB34 host test records emit/decode event order and checks owner, value and decoder input for ordinary, sentinel and signed-negative paths. Existing DE80 scenarios, DF98 ROM anchors, ED60 caller evidence and F6E8 extent evidence are cross-referenced with mock/unknown boundaries explicit. No giant random rerun or IDO variant was warranted. See [`../execution/2026-11-11-g64-039-parser-matrix.json`](../execution/2026-11-11-g64-039-parser-matrix.json).
 
 ### G64-040 — VM parser production gate
 

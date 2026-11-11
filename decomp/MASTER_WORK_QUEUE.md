@@ -45,9 +45,14 @@ mismatch is `0x8003ED68`; the function remains `GLOBAL_ASM`. See
 48-byte `func_8003F6E8_402E8` ROM extent and both trailing return pairs; its
 40-byte C prefix and 56-byte candidate annotation are not original extents.
 The function remains `GLOBAL_ASM`. See
-`plans/execution/2026-11-11-g64-038-wrapper-extent.json`. Next: G64-039. All
-private ROM and compiler files remain local under the ignored diagnostics
-input directory.
+`plans/execution/2026-11-11-g64-038-wrapper-extent.json`. G64-039 adds expected
+fixed MIPS traces for DBEC and emit/decode callback-order assertions for EB34,
+then cross-references existing DE80, DF98, ED60 and F6E8 evidence. All stubs
+remain bounded synthetic hooks; no unknown decoder effects are modeled. No C
+ownership or stored proof changed. See `VM_PARSER_BEHAVIOR_MATRIX.md` and
+`plans/execution/2026-11-11-g64-039-parser-matrix.json`. Next: G64-040. Private
+ROM and compiler files remain local under the ignored diagnostics input
+directory.
 
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.
 

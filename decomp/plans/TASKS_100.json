@@ -1551,7 +1551,7 @@
       "ordinal": 39,
       "phase": 4,
       "title": "Build VM parser behavioral matrix",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-033",
         "G64-036",

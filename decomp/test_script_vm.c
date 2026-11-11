@@ -14,6 +14,7 @@ void *D_80077860_78460;
 s32 D_801C7754_1C8354, D_801C7758_1C8358, D_801C775C_1C835C;
 s32 D_801C7760_1C8360, D_801C7764_1C8364, D_801C7768_1C8368, D_801C776C_1C836C;
 s32 D_801C77A0_1C83A0, D_801C77E0_1C83E0, D_801C77F4_1C83F4;
+s32 D_801C7920_1C8520, D_801C7924_1C8524, D_801C7928_1C8528, D_801C792C_1C852C;
 VmWork D_801C77E8_1C83E8;
 s32 D_801C78EC_1C84EC, D_801C78F0_1C84F0;
 s32 D_801C7900_1C8500, D_801C7904_1C8504;
@@ -23,8 +24,9 @@ u8 *D_801FC600_5B8510[3];
 s8 D_801C78FC_1C84FC;
 u8 D_801C7930_1C8530;
 
-enum { RUN = 1, DRAW, RESET, INSTALL, CREATE, CLEANUP, DESTROY, SHOW, HIDE, POLL };
+enum { RUN = 1, RESET, INSTALL, CREATE, CLEANUP, DESTROY, SHOW, HIDE, POLL };
 static s32 trace[32], trace_count, poll_result, args7[7], argument, state_at_poll;
+static int update_choice_on_run;
 static void *task_seen;
 static VmTaskCallback callback;
 static s32 memory_rhs;
@@ -47,14 +49,27 @@ static s32 flag_result, flag_calls;
 static s32 emitted[16], emitted_count, emitted_owner;
 static s16 *decoder_input, *decoder_output;
 static s32 decoder_calls, decoder_owner;
+enum { STREAM_EMIT = 1, STREAM_DECODE };
+typedef struct { int kind; s32 owner; s16 value; s16 *script; } StreamEvent;
+static StreamEvent stream_trace[16];
+static unsigned stream_trace_count;
+static int capture_stream_trace;
 static u16 feedback_ids[8];
 static unsigned feedback_count;
 static int override_buttons;
 static u16 next_buttons;
+static void record_stream_event(int kind, s32 owner, s16 value, s16 *script) {
+    if (!capture_stream_trace) return;
+    assert(stream_trace_count < sizeof(stream_trace) / sizeof(stream_trace[0]));
+    stream_trace[stream_trace_count++] = (StreamEvent){kind, owner, value, script};
+}
 void func_8000D060_DC60(s32 owner, s16 value) {
+    record_stream_event(STREAM_EMIT, owner, value, NULL);
     assert(emitted_count < 16); emitted[emitted_count++] = value; emitted_owner = owner;
 }
+/* The mock returns a test-selected cursor; it does not model token effects. */
 s16 *func_8003DF98_3EB98(s32 owner, s16 *script) {
+    record_stream_event(STREAM_DECODE, owner, 0, script);
     decoder_calls++; decoder_owner = owner; decoder_input = script;
     return decoder_output;
 }
@@ -126,8 +141,14 @@ void func_8003EBAC_3F7AC(s32 x, s32 y) {
 void func_8003E234_3EE34(void) { dispatch_prompt_calls++; }
 void func_8003ED60_3F960(void) { dispatch_tick_calls++; }
 
-s32 func_8003D68C_3E28C(void) { record(RUN); return 0; }
-void func_8003D0B0_3DCB0(void) { record(DRAW); }
+s32 func_8003D68C_3E28C(void) {
+    record(RUN);
+    if (update_choice_on_run) {
+        D_801C77E0_1C83E0 = 2;
+        D_801C7800_1C8400 = &D_801C7808_1C8408[3];
+    }
+    return 0;
+}
 void func_8003D468_3E068(s32 first, s32 second) {
     reset_args[0] = first; reset_args[1] = second;
     if (cleanup_checks) {
@@ -243,8 +264,15 @@ static void check_callbacks_and_dialogue_states(void) {
     trace_count = 0;
     for (i = 0; i < 5; i++) func_8003CFD0_3DBD0(&task, NULL);
     assert(trace_count == 0 && D_801C7930_1C8530 == 0);
+    D_801C77E0_1C83E0 = 0;
+    D_801C7800_1C8400 = NULL;
+    D_801C7920_1C8520 = D_801C7924_1C8524 = D_801C7928_1C8528 = 0;
+    D_801C792C_1C852C = -2;
+    update_choice_on_run = 1;
     func_8003CFD0_3DBD0(&task, NULL);
-    assert(trace_count == 2 && trace[0] == RUN && trace[1] == DRAW);
+    update_choice_on_run = 0;
+    assert(trace_count == 1 && trace[0] == RUN);
+    assert(D_801C792C_1C852C == 3 && D_801C7920_1C8520 == 1);
     trace_count = 0; func_8003D058_3DC58();
     assert(trace_count == 1 && trace[0] == CREATE && argument == 0 && callback == func_8003D01C_3DC1C);
     trace_count = 0; func_8003D080_3DC80();
@@ -616,13 +644,28 @@ static void check_choice_stream_rendering(void) {
     s16 second[] = {42, -1};
     s16 empty[] = {-1};
     emitted_count = decoder_calls = 0; decoder_output = second;
+    stream_trace_count = 0; capture_stream_trace = 1;
     func_8003EB34_3F734(17, first);
+    capture_stream_trace = 0;
     assert(emitted_count == 3 && emitted[0] == 0 && emitted[1] == 0x7FFF && emitted[2] == 42 && emitted_owner == 17);
     assert(decoder_calls == 1 && decoder_owner == 17 && decoder_input == first + 2);
-    emitted_count = decoder_calls = 0;
+    assert(stream_trace_count == 4);
+    assert(stream_trace[0].kind == STREAM_EMIT && stream_trace[0].owner == 17 && stream_trace[0].value == 0);
+    assert(stream_trace[1].kind == STREAM_EMIT && stream_trace[1].owner == 17 && stream_trace[1].value == 0x7FFF);
+    assert(stream_trace[2].kind == STREAM_DECODE && stream_trace[2].owner == 17 && stream_trace[2].script == first + 2);
+    assert(stream_trace[3].kind == STREAM_EMIT && stream_trace[3].owner == 17 && stream_trace[3].value == 42);
+
+    emitted_count = decoder_calls = 0; stream_trace_count = 0; capture_stream_trace = 1;
     func_8003EB34_3F734(18, empty); assert(emitted_count == 0 && decoder_calls == 0);
+    capture_stream_trace = 0;
+    assert(stream_trace_count == 0);
+
     first[0] = (s16)0x8000; decoder_output = empty;
+    stream_trace_count = 0; capture_stream_trace = 1;
     func_8003EB34_3F734(19, first); assert(emitted_count == 0 && decoder_calls == 1 && decoder_input == first);
+    capture_stream_trace = 0;
+    assert(stream_trace_count == 1 && stream_trace[0].kind == STREAM_DECODE);
+    assert(stream_trace[0].owner == 19 && stream_trace[0].script == first);
 }
 
 static void check_choice_index_and_wait_callbacks(void) {
