@@ -874,7 +874,7 @@
       "ordinal": 23,
       "phase": 3,
       "title": "Reproduce lookup candidate baseline",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-022"
       ],

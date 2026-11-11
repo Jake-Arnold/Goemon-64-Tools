@@ -7,7 +7,8 @@ ASM**. The resource, menu and object candidates from that older queue have
 passed full-ROM verification. G64-015–018 were retried and remain
 `FAILED_NATIVE`; G64-021 is `DOC_ONLY` with its call graph in
 `VM_RESOURCE_CALLGRAPH.md`; G64-022 is `RESEARCH_ONLY` with no promotion;
-continue with G64-023–030 in dependency order.
+G64-023 reproduced the nonmatching F038 baseline and remains `RESEARCH_ONLY`;
+continue with G64-024–030 in dependency order.
 All private ROM and compiler files remain local under the ignored diagnostics
 input directory.
 

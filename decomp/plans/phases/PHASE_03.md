@@ -86,8 +86,22 @@ claims and the complete ROM; no claim was promoted. See
 
 ### G64-023 — Reproduce lookup candidate baseline
 
-**Status:** PLANNED. **Dependencies:** G64-022.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-022.
 **Focus files:** `decomp/candidates/vm_resource_halfword_volatile_probe.c`; `decomp/test_vm_resource_halfword_volatile_probe.py`.
+
+**Outcome (2026-11-11):** Reproduced the pinned IDO object and ROM comparison:
+the function symbol is 196 bytes (the `.text` section is 208 bytes with 12
+bytes of trailing alignment), with 25/42 direct words and 3/3 same-kind
+relocations matching. The four relocation-layout differences are the global
+table HI16/LO16 pair moving from +0x38/+0x40 to +0x3C/+0x4C. Seventeen direct
+word differences remain: the signed-half index uses `$t6` instead of `$v1`,
+the table load and spill order differs, entry/recovery values use different
+stack slots, and the final adjustment uses different temporary registers.
+First mismatch is +0x28. Host tests passed 3,000/3,000 cases; the three
+structural tests, five original-parser tests, 114 decomp tests, 17 verifier
+tests, and 49 original words / 16 control-flow guards passed. No candidate was
+integrated; production ASM and the 148-claim proof remain unchanged. See
+`plans/execution/2026-11-11-g64-023-f038-baseline.json`.
 
 **Architectural intent:** Replay volatile signed-half-index 8003F038_3FC38 (196 bytes, historically 25/42 comparable positions); identify register and relocation mismatches.
 

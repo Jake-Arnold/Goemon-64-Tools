@@ -27,7 +27,10 @@ evidence that the retail callback changes the current resource ID. No function
 claim or production assembly ownership changed. G64-022 added offset-annotated
 resource types and host endian tests; its candidate loader did not match native
 IDO, so no production ownership changed. A fresh full-ROM gate retained the
-148 existing claims. Next: G64-023 reproduce the resource lookup candidate.
+148 existing claims. G64-023 reproduced the volatile F038 candidate at 196
+bytes with 25/42 direct matches, 3/3 call relocation shapes, and four table
+relocation-layout differences. It remains research-only. Next: G64-024,
+bounded lookup codegen trials.
 
 ## Numbered event startup follow-up (2026-11-03)
 

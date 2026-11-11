@@ -1,0 +1,90 @@
+{
+  "format": "goemon-decomp-task-evidence-v1",
+  "task_id": "G64-023",
+  "title": "Reproduce lookup candidate baseline",
+  "date": "2026-11-11",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "starting_head": "5bedba7a019df984d67bad96d02ec6ced715ef73",
+    "target_remote_head_before_work": "5bedba7a019df984d67bad96d02ec6ced715ef73",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "original_function": {
+    "name": "func_8003F038_3FC38",
+    "rom_offset": "0x3FC38",
+    "vma": "0x8003F038",
+    "bytes": 196,
+    "sha256": "7a258b9eae36120d3971f1997070c2a988fb9636cbd4c96f1f52ea888e7b9719",
+    "private_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "splat_source": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+    "splat_file_sha256": "8926b42c28518fc93ccd74f8f2635a25a9d1d54fbe40d0b936e398f2299cfc17",
+    "extent_validation": "49/49 original-address words and all 16 control-flow guards passed after extracting this function from the full segment listing"
+  },
+  "candidate": {
+    "source": "decomp/candidates/vm_resource_halfword_volatile_probe.c",
+    "source_sha256": "c53a8ff7c8dd5d1a33b39130271b18926d70af0dff6c5aee0708ef825a453cab",
+    "native_compiler": "Pinned IDO 5.3, -O2 -mips2 -G 0 -non_shared -c",
+    "object_sha256": "9d1e9bdc4d6c553c63bcf83609394897c616f7b5ee3518890319cfcfec855f42",
+    "symbol_bytes": 196,
+    "text_section_bytes": 208,
+    "text_alignment_bytes_after_symbol": 12,
+    "production_manifest_or_source_changed": false
+  },
+  "comparison": {
+    "tool": "decomp.compare_original.py; ROM-validated Splat rows vs native IDO relocatable object",
+    "exit_code": 1,
+    "matching_nonrelocation_words": "25/42",
+    "matching_relocated_shapes": "3/3",
+    "relocation_layout_differences": 4,
+    "first_mismatch": "+0x28",
+    "direct_mismatch_offsets": [
+      "+0x28", "+0x30", "+0x34", "+0x44", "+0x48", "+0x54", "+0x68",
+      "+0x70", "+0x88", "+0x8C", "+0x90", "+0x98", "+0x9C", "+0xA0",
+      "+0xA4", "+0xA8", "+0xAC"
+    ],
+    "mismatch_classification": {
+      "signed_half_index_register": "+0x28/+0x30: original writes $v1; candidate writes $t6",
+      "table_load_and_index_spill_schedule": "+0x34/+0x44/+0x48: candidate spills and reloads the index before the table load; original computes the byte offset in $t6 and retains the index in $v1",
+      "table_global_relocations": "+0x38/+0x40 original HI16/LO16; candidate relocations at +0x3C/+0x4C, producing four position-wise relocation-layout differences",
+      "entry_and_recovery_stack_slots": "+0x54/+0x68/+0x70: candidate saves/reloads the entry at sp+0x1C and low half at sp+0x1E; original uses sp+0x18 and sp+0x1A",
+      "final_index_and_adjustment_temporaries": "+0x88/+0x8C/+0x90/+0x98/+0x9C/+0xA0/+0xA4/+0xA8/+0xAC: candidate reloads index in $t9 and uses $t0/$t1/$t2 where original uses $t7/$t8/$t9/$t0"
+    },
+    "relocation_note": "The three JAL relocations at +0x50, +0x64 and +0x6C match by kind and position. No candidate was linked at original VMA or integrated."
+  },
+  "tests": {
+    "host_semantics": "PASS; 3000/3000 deterministic GCC ASan/UBSan cases",
+    "candidate_structural_tests": "PASS; 3 tests",
+    "original_assembly_parser_tests": "PASS; 5 tests",
+    "decomp_python_suite": "PASS; 114 tests",
+    "verify_tests": "PASS; 17 tests",
+    "original_address_guards": "PASS; 49 rows / 16 anchors",
+    "full_rom_candidate_gate": "NOT_RUN; candidate not integrated and no production source changed",
+    "inventory": "NOT_RUN",
+    "in_game": false
+  },
+  "commands": [
+    "practice/diagnostics/decomp-100-inputs/mnsg-pinned/tools/ido-5.3/cc -c -G 0 -non_shared -Xfullwarn -Xcpluscomm -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned/include -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned/libultra/include -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned/libultra/include/PR -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned/src -Ipractice/diagnostics/decomp-100-inputs/mnsg-pinned -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -O2 -mips2 -o /tmp/g64-023-f038-volatile.o decomp/candidates/vm_resource_halfword_volatile_probe.c",
+    "Extract the labeled func_8003F038_3FC38 extent from the full private Splat 3DBA0.s file to /tmp/g64-023-f038-original.s, then run python3 decomp/test_vm_resource_original.py /tmp/g64-023-f038-original.s",
+    "python3 -m unittest decomp.test_vm_resource_halfword_volatile_probe -q",
+    "python3 -m unittest decomp.test_vm_resource_original -q",
+    "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+    "python3 -m unittest tests.test_decomp_verify -q",
+    "gcc -std=c11 -Wall -Wextra -Werror -fno-pie -no-pie -O1 -g -Idecomp/test_support -Idecomp -fsanitize=address,undefined -fno-sanitize-recover=all -DGOEMON_VM_RESOURCE_SOURCE='\"candidates/vm_resource_halfword_volatile_probe.c\"' decomp/test_vm_resource_halfword_probe.c -o /tmp/g64-023-f038-host && /tmp/g64-023-f038-host",
+    "python3 -m decomp.compare_original --rom practice/diagnostics/decomp-100-inputs/usa-decompressed.z64 --original practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s --object /tmp/g64-023-f038-volatile.o --function func_8003F038_3FC38 --objdump /usr/bin/mips-linux-gnu-objdump"
+  ],
+  "official_claims": {
+    "proof_report": "decomp/results/combined.json",
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_functions": 148,
+    "matched_bytes": 11020,
+    "promotions": 0
+  },
+  "limitations": [
+    "Candidate codegen differs from the original despite equal 196-byte symbol size.",
+    "Relocatable-object comparison is research evidence, not linked original-address or whole-ROM proof.",
+    "The original-address guard CLI consumes one function extent; full-listing input must first be reduced to the target labels."
+  ],
+  "next": "Execute G64-024 bounded F038 code-generation hypotheses, one source/lifetime change per attempt."
+}

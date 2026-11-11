@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-11 — G64-023 reproduce F038 native baseline (RESEARCH_ONLY)
+
+- Continued in `codex/decomp-100-task-plan` from commit `5bedba7a019df984d67bad96d02ec6ced715ef73`; fetched and confirmed `origin/chatgptweb/decomp` matched it. Pinned inputs remained at the documented ROM hashes and `mnsg` commit.
+- Recompiled `decomp/candidates/vm_resource_halfword_volatile_probe.c` with pinned IDO 5.3 `-O2 -mips2 -G 0 -non_shared`. The defined function symbol is **196 bytes**; its `.text` section is 208 bytes because of 12 trailing alignment bytes. Candidate object SHA-256: `9d1e9bdc4d6c553c63bcf83609394897c616f7b5ee3518890319cfcfec855f42`. The original function is 196 bytes at VMA `0x8003F038` / ROM `0x3FC38`, SHA-256 `7a258b9eae36120d3971f1997070c2a988fb9636cbd4c96f1f52ea888e7b9719`, extracted from Splat `3DBA0.s` and validated against the decompressed ROM SHA-1.
+- `compare_original.py` reproduced **25/42** matching nonrelocation positions, **3/3** same-kind call relocation shapes, and **4** relocation-layout differences; expected nonmatch exit 1. The four layout differences move the table HI16/LO16 pair from +0x38/+0x40 to +0x3C/+0x4C. Seventeen direct mismatches are register and stack scheduling: `$v1` vs `$t6` signed-half-index results (+0x28/+0x30), changed table load/spill order (+0x34/+0x44/+0x48), entry/recovery stack slots (+0x54/+0x68/+0x70), and final index/adjustment temporaries (+0x88/+0x8C/+0x90/+0x98 through +0xAC). First mismatch: +0x28.
+- Validation: volatile-probe structural tests **3/3**, deterministic GCC ASan/UBSan host cases **3,000/3,000**, full decomp Python suite **114**, verifier tests **17**, original parser tests **5**, and original extent guards **49 words / 16 control-flow anchors** passed. The address guard consumes a single-function extent, so the function was extracted from the full Splat listing before running it. No production source, manifest claim, or full-ROM output changed; no G2 run or in-game verification was needed.
+- Evidence: `decomp/plans/execution/2026-11-11-g64-023-f038-baseline.json`. **Next:** G64-024, vary one evidence-supported source/lifetime hypothesis per IDO compile; retain ASM unless exact original words are reproduced.
+
 ## 2026-11-11 — G64-022 VM resource types (RESEARCH_ONLY)
 
 - Continued in the isolated `codex/decomp-100-task-plan` worktree from published target-branch commit `f29cf3660af196c6fce72a6d6df251e19f109ae5`. The remote target branch matched that commit before work began. The ROM and compiler inputs remain available locally under ignored `practice/diagnostics/decomp-100-inputs/`; their retail/decompressed hashes and pinned `mnsg` commit match the documented inputs.
