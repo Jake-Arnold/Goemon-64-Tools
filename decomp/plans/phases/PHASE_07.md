@@ -1,0 +1,288 @@
+# Phase 07 — State transitions
+
+**Scope:** G64-061–G64-070; branch `chatgptweb/decomp`; current source checkpoint `a68881da4b10e2553e7a89b7129d09d64b427435` (refresh before execution).
+
+Read [EXECUTOR_PROTOCOL.md](../EXECUTOR_PROTOCOL.md) before starting. Follow individual dependency IDs, not simply numeric order. Tests listed are to be executed, not claimed as already passing. Never increase matching counts from research-only evidence.
+
+## Mandatory phase inputs
+- `decomp/transition_state.c`
+- `decomp/rotation_angles.c`
+- `decomp/engine_state.c`
+- `decomp/default_entrance.c`
+- `decomp/MAP_TRANSITION_TRACE.md`
+- `docs/KEY_LOCK_CODE_TRACE.md`
+
+## Known phase risks and negative controls
+A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+## Task work packages
+
+### G64-061 — Draw native transition state graph
+
+**Status:** PLANNED. **Dependencies:** G64-002.
+**Focus files:** `decomp/transition_state.c`; `decomp/MAP_TRANSITION_TRACE.md`.
+
+**Architectural intent:** Connect matching 80003728/80003628/80003528/80003428/80003380 helpers to dispatcher 8001F8B0 and pending 800030F0.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/transition_state.c, decomp/MAP_TRANSITION_TRACE.md. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Connect matching 80003728/80003628/80003528/80003428/80003380 helpers to dispatcher 8001F8B0 and pending 800030F0.
+4. Create caller/callee graph of 800030F0, 8001F8B0, the nested reset chain and scene-init routines.
+5. Distinguish requested scene state from actual resource teardown/loading and actor instantiation.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+
+**Explicit acceptance:** Graph labels observed function effects separately from unproven room loading/unloading semantics.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+### G64-062 — Trace file/resource loading boundary
+
+**Status:** PLANNED. **Dependencies:** G64-061.
+**Focus files:** `decomp/transition_state.c`; `decomp/file_table.c`; `decomp/MAP_TRANSITION_TRACE.md`.
+
+**Architectural intent:** Follow 80001C00_2800 and table paths toward resource allocation, room scene activation and releases without changing runtime features.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/transition_state.c, decomp/file_table.c, decomp/MAP_TRANSITION_TRACE.md. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Follow 80001C00_2800 and table paths toward resource allocation, room scene activation and releases without changing runtime features.
+4. Trace file ID 0x0F load to 0x801CB460 and relevant file table readers.
+5. Record where decompression, allocation and freeing occur; do not assume scene transition from a state-byte write.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+
+**Explicit acceptance:** Call-edge table identifies which data are files, RAM pointers, overlays or object lists and what remains unknown.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+### G64-063 — Analyze middle transition dispatcher
+
+**Status:** PLANNED. **Dependencies:** G64-061.
+**Focus files:** `decomp/rotation_angles.c`; `decomp/MAP_TRANSITION_TRACE.md`.
+
+**Architectural intent:** Recover func_8001F940_20540 between already matched 8001F914 and 8001FA3C; inspect all global changes/calls.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/rotation_angles.c, decomp/MAP_TRANSITION_TRACE.md. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Recover func_8001F940_20540 between already matched 8001F914 and 8001FA3C; inspect all global changes/calls.
+4. Inspect unresolved middle dispatcher 8001F940 with its siblings 8001F914 and 8001FA3C.
+5. Recover actual order of calls, system field writes and possible resource side effects.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+
+**Explicit acceptance:** CFG and typed signature have original evidence; host test distinguishes state branches before G1/G2.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+### G64-064 — Analyze transition loop 8000394C
+
+**Status:** PLANNED. **Dependencies:** G64-061, G64-062, G64-063.
+**Focus files:** `decomp/transition_state.c`; `decomp/test_transition_state.c`.
+
+**Architectural intent:** Map func_8000394C_454C original stack, step dispatch and state byte updates inside transition_state.c.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/transition_state.c, decomp/test_transition_state.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Map func_8000394C_454C original stack, step dispatch and state byte updates inside transition_state.c.
+4. Inspect 8000394C main-loop branch conditions and input/state changes.
+5. Create an ordered state-transition table, then host-test self-transitions and exit conditions.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+
+**Explicit acceptance:** All branches accounted for and sentinel state tests pass; no claim that this alone implements safe scene transition.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+### G64-065 — Revisit engine state 80039F84
+
+**Status:** PLANNED. **Dependencies:** G64-061.
+**Focus files:** `decomp/engine_state.c`; `decomp/test_engine_state.c`.
+
+**Architectural intent:** Study earliest unresolved engine_state.c function and interactions with D_801C09CE/CF and nearby matched helpers.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/engine_state.c, decomp/test_engine_state.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Study earliest unresolved engine_state.c function and interactions with D_801C09CE/CF and nearby matched helpers.
+4. Characterize engine_state 80039F84 from original assembly, fields and known adjacent matching writers.
+5. Use typed read/write evidence, not names; derive corner-case behaviour before compiler variation.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+
+**Explicit acceptance:** Original C-call/field-width contract plus host state-table tests precedes native compiler matching.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+### G64-066 — Revisit engine state 8003A060
+
+**Status:** PLANNED. **Dependencies:** G64-065.
+**Focus files:** `decomp/engine_state.c`; `decomp/test_engine_state.c`.
+
+**Architectural intent:** Study next retained-ASM engine_state.c function; identify frame, globals, conditional writes and call effects.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/engine_state.c, decomp/test_engine_state.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Study next retained-ASM engine_state.c function; identify frame, globals, conditional writes and call effects.
+4. Characterize 8003A060 preserving original shared global aliasing and conditional order.
+5. Compare original ABI/register map in complete unit with neighboring C.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+
+**Explicit acceptance:** Static CFG is complete and exact G1 codegen achieved or bounded mismatch logged.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+### G64-067 — Revisit engine state 8003A138
+
+**Status:** PLANNED. **Dependencies:** G64-066.
+**Focus files:** `decomp/engine_state.c`; `decomp/test_engine_state.c`.
+
+**Architectural intent:** Recover adjacent 8003A138_3AD38 and compare with existing 8003A1C4 / 8003A204 / 8003A228 semantics.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/engine_state.c, decomp/test_engine_state.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Recover adjacent 8003A138_3AD38 and compare with existing 8003A1C4 / 8003A204 / 8003A228 semantics.
+4. Characterize 8003A138 including all callback and conditional side effects.
+5. Verify unchanged 8003A1C4 and 8003A204/8003A228 code when staging.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+
+**Explicit acceptance:** No accidental adjacent-global aliasing; signedness/byte-write regression and production-codegen proof when eligible.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+### G64-068 — Review default entrance 80020F10
+
+**Status:** PLANNED. **Dependencies:** G64-061, G64-062, G64-063, G64-064.
+**Focus files:** `decomp/default_entrance.c`; `decomp/test_default_entrance.c`.
+
+**Architectural intent:** Model func_80020F10_21B10 adjacent to matching 80021444/214E4; separate entrance record selection from load requests.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/default_entrance.c, decomp/test_default_entrance.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Model func_80020F10_21B10 adjacent to matching 80021444/214E4; separate entrance record selection from load requests.
+4. Trace 80020F10 native entrance lookup against already matching 80021444/800214E4.
+5. Test all-zero coordinates and original unchecked indexes without authoring new warp APIs.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+
+**Explicit acceptance:** Test all-zero triplet semantics and room indices against original data accesses; do not expose a generic warp API.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+### G64-069 — Architect transition safety assertions
+
+**Status:** PLANNED. **Dependencies:** G64-061, G64-062, G64-063, G64-064, G64-065, G64-066, G64-067, G64-068.
+**Focus files:** `decomp/MAP_TRANSITION_TRACE.md`; `decomp/test_transition_state.c`.
+
+**Architectural intent:** Add static/synthetic checks for correct state sequencing, resource pointer validity assumptions and absence of toolkit writes.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/MAP_TRANSITION_TRACE.md, decomp/test_transition_state.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Add static/synthetic checks for correct state sequencing, resource pointer validity assumptions and absence of toolkit writes.
+4. Write explicit assertion that state request, room resource loading and safe gameplay transition are three distinct properties.
+5. Host tests can check known state updates; they cannot claim in-game transition safety without observed runtime proof.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+
+**Explicit acceptance:** Tests fail on invalid inferred scene unload shortcuts; documented evidence clearly separates native behavior from controllable API.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+### G64-070 — Gate transition slice
+
+**Status:** PLANNED. **Dependencies:** G64-063, G64-064, G64-065, G64-066, G64-067, G64-068, G64-069.
+**Focus files:** `decomp/transition_state.c`; `decomp/rotation_angles.c`; `decomp/manifest.json`.
+
+**Architectural intent:** Integrate only exact transition/engine/default-entrance C functions after original-unit and full-image verification.
+
+**Numbered implementation recipe:**
+1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
+2. Read the exact focus files: decomp/transition_state.c, decomp/rotation_angles.c, decomp/manifest.json. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
+3. Implement the bounded design: Integrate only exact transition/engine/default-entrance C functions after original-unit and full-image verification.
+4. Build the entire transitioned slice with original C+ASM adjacency, full-ROM verifier and inventory.
+5. Promote independently exact native matches only; leave unsupported graph nodes in assembly.
+6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
+7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
+8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+
+**Focused tests:** `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes. Then run the complete `python3 -m decomp.verify` and `python3 -m decomp.inventory` gates using the new paths described in EXECUTOR_PROTOCOL.md.
+
+**Explicit acceptance:** Any promotion preserves the ROM and current host tests; speculative state-machine findings stay documentation-only.
+
+**Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
+
+**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.

@@ -1,6 +1,7 @@
 # Decomp continuation runbook
 
 Start here when continuing the matching-C work. This is the operational handoff;
+For the executor-grade 100-task architecture and mandatory verification/stop rules, start at [plans/README.md](plans/README.md) and [plans/EXECUTOR_PROTOCOL.md](plans/EXECUTOR_PROTOCOL.md). These are planning documents only; live manifest/proof remain authoritative.
 README.md explains the recovered units, BATCH_PIPELINE.md describes the tools,
 and checkpoint documents retain technical research/history. Read root AGENTS.md
 first. Update this runbook whenever the next targets or machine paths change.
