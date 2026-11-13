@@ -284,7 +284,7 @@
           "w1": "((u32)(*(u8 *)(D_80077860_78460 + 0x5D) & 1) << 25)"
         },
         "word_store_order": [
-          "w0 at +0x17C from $t7",
+          "w0 at +0x178 from $t7",
           "w1 at +0x194 from $t9"
         ],
         "cursor_store_precedes_word_stores": true,
@@ -374,7 +374,7 @@
           "+0x160"
         ],
         [
-          "+0x17C",
+          "+0x178",
           "+0x194"
         ],
         [
@@ -384,12 +384,12 @@
       ],
       "dynamic_rectangle_source_loads": [
         "+0x104",
-        "+0x114",
+        "+0x118",
         "+0x13C",
         "+0x148"
       ],
       "dynamic_vertex_flag_loads": [
-        "+0x178",
+        "+0x17C",
         "+0x180"
       ],
       "return_and_delay_slot": [

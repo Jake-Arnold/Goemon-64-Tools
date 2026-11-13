@@ -1,0 +1,274 @@
+{
+  "task_id": "G64-043",
+  "title": "Recover second display-list emitter",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "base_head": "fa359f251859a37c22dee1968afcfd93e8428e6e",
+    "fetched_remote_head_at_start": "fa359f251859a37c22dee1968afcfd93e8428e6e",
+    "worktree_at_start": "clean",
+    "dependency": "G64-041=RESEARCH_ONLY; G64-042=RESEARCH_ONLY"
+  },
+  "target": {
+    "symbol": "func_8003EBAC_3F7AC",
+    "vma_start": "0x8003EBAC",
+    "vma_end_exclusive": "0x8003ED60",
+    "rom_start": "0x3F7AC",
+    "rom_end_exclusive": "0x3F960",
+    "original_size_bytes": 436,
+    "original_word_count": 109,
+    "original_instruction_sha256": "67f4730f98adcd92a28b506c7631437629ffa8bd08101f2594011ce982201539",
+    "word_evidence": "All 109 pinned assembly annotation words matched the exact 436-byte slice in the local decompressed USA ROM; report contains no raw opcodes or ROM bytes.",
+    "decompressed_rom_size": 33554432,
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "assembly_source": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+    "production_source_unit": "decomp/script_vm.c",
+    "manifest_owner": "GLOBAL_ASM",
+    "candidate_source": "decomp/candidates/vm_display_ebac.c",
+    "candidate_source_unchanged": true,
+    "production_source_unchanged": true,
+    "manifest_unchanged": true,
+    "proof_reports_unchanged": true
+  },
+  "caller_abi": {
+    "confirmed_direct_caller": "func_8003EFB0_3FBB0",
+    "caller_scan_scope": "One direct JAL site was confirmed in the pinned source; this does not rule out indirect callers.",
+    "call_vma": "0x8003EFE8",
+    "call_rom": "0x3FBE8",
+    "gate": "The caller enters the EBAC path only when the VM state word is 2 and the secondary flag is 1.",
+    "arguments": {
+      "$a0": "VmChoice.s32 x at field offset +0",
+      "$a1": "VmChoice.s32 y at field offset +4; its load is in the JAL delay slot"
+    },
+    "return": "No return value is consumed; the production declaration is void(s32, s32)."
+  },
+  "command_trace": {
+    "cursor_global": "D_8015C5CC_15D1CC",
+    "cursor_update_count": 11,
+    "cursor_increment_bytes": 8,
+    "cursor_load_offsets": [
+      "+0x008", "+0x028", "+0x048", "+0x064", "+0x080", "+0x09C",
+      "+0x0B8", "+0x0D4", "+0x0F0", "+0x150", "+0x18C"
+    ],
+    "cursor_advance_and_global_store_offsets": [
+      "+0x018", "+0x038", "+0x058", "+0x074", "+0x090", "+0x0AC",
+      "+0x0C8", "+0x0E4", "+0x100", "+0x160", "+0x19C"
+    ],
+    "cursor_store_order": "Each command's advanced cursor is stored before either output word is written.",
+    "pack_expression": "(((x << 2) & 0xFFF) << 12) | ((y << 2) & 0xFFF)",
+    "packets": [
+      {
+        "index": 1,
+        "cursor_load": "+0x008",
+        "cursor_store": "+0x018",
+        "w0": "0x06000000",
+        "w1": "address of D_800777F0_783F0",
+        "word_store_order": ["w0 +0x020", "w1 +0x024"]
+      },
+      {
+        "index": 2,
+        "cursor_load": "+0x028",
+        "cursor_store": "+0x038",
+        "w0": "0xFD100000",
+        "w1": "address of D_80076148_76D48",
+        "word_store_order": ["w0 +0x040", "w1 +0x044"]
+      },
+      {
+        "index": 3,
+        "cursor_load": "+0x048",
+        "cursor_store": "+0x058",
+        "w0": "0xF5100000",
+        "w1": "0x07000000",
+        "word_store_order": ["w1 +0x05C", "w0 +0x060"]
+      },
+      {
+        "index": 4,
+        "cursor_load": "+0x064",
+        "cursor_store": "+0x074",
+        "w0": "0xE6000000",
+        "w1": "0",
+        "word_store_order": ["w1 +0x078", "w0 +0x07C"]
+      },
+      {
+        "index": 5,
+        "cursor_load": "+0x080",
+        "cursor_store": "+0x090",
+        "w0": "0xF3000000",
+        "w1": "0x077FF100",
+        "word_store_order": ["w1 +0x094", "w0 +0x098"]
+      },
+      {
+        "index": 6,
+        "cursor_load": "+0x09C",
+        "cursor_store": "+0x0AC",
+        "w0": "0xE7000000",
+        "w1": "0",
+        "word_store_order": ["w1 +0x0B0", "w0 +0x0B4"]
+      },
+      {
+        "index": 7,
+        "cursor_load": "+0x0B8",
+        "cursor_store": "+0x0C8",
+        "w0": "0xF5101000",
+        "w1": "0",
+        "word_store_order": ["w1 +0x0CC", "w0 +0x0D0"]
+      },
+      {
+        "index": 8,
+        "cursor_load": "+0x0D4",
+        "cursor_store": "+0x0E4",
+        "w0": "0xF2000000",
+        "w1": "0x0007C0FC",
+        "word_store_order": ["w1 +0x0E8", "w0 +0x0EC"]
+      },
+      {
+        "index": 9,
+        "cursor_load": "+0x0F0",
+        "cursor_store": "+0x100",
+        "w0": "0xE4000000 | pack(x + 15, y - 2 + 15)",
+        "w1": "pack(x, y - 2)",
+        "word_store_order": ["w0 +0x138", "w1 +0x14C"]
+      },
+      {
+        "index": 10,
+        "cursor_load": "+0x150",
+        "cursor_store": "+0x160",
+        "w0": "0xB4000000",
+        "w1": "((owner[0x5C] & 3) << 9) | ((owner[0x5C] & 4) << 23)",
+        "owner_pointer_load": "+0x168",
+        "owner_unsigned_byte_load": "+0x16C",
+        "word_store_order": ["w0 +0x164", "w1 +0x188"]
+      },
+      {
+        "index": 11,
+        "cursor_load": "+0x18C",
+        "cursor_store": "+0x19C",
+        "w0": "0xB3000000",
+        "w1": "0x10000400",
+        "word_store_order": ["w0 +0x1A8", "w1 +0x1B0"]
+      }
+    ],
+    "return": "jr $ra at +0x1AC; the final w1 store is in its delay slot at +0x1B0.",
+    "internal_calls_or_branches": "None."
+  },
+  "differences_from_e234": [
+    "Packet 2 points at D_80076148_76D48 rather than D_80077150_77D50.",
+    "Packet 5 w1 is 0x077FF100 rather than 0x071FF100.",
+    "Packet 8 w1 is 0x0007C0FC rather than 0x0007C03C.",
+    "Packet 9 uses caller arguments and subtracts 2 from y before packing the rectangle coordinates.",
+    "Packet 10 reads owner byte +0x5C and packs bits 0–2 into the B400 word; E234 reads +0x5D and uses bit 0 at bit 25.",
+    "The last packet stores w0 before w1, with w1 in the return delay slot; E234 stores w1 before w0, with w0 in its return delay slot."
+  ],
+  "historical_native_comparison": {
+    "source_report": "decomp/results/vm_next_ten_batch1.json",
+    "ordinary_candidate": {
+      "historical_size_bytes": 500,
+      "direct_matches": "1/60",
+      "relocated_shape_matches": "0/4",
+      "relocation_layout_differences": 45
+    },
+    "volatile_cursor_candidate": {
+      "historical_size_bytes": 464,
+      "direct_matches": "0/75"
+    },
+    "first_mismatch": "UNAVAILABLE; the tracked summary contains sizes and aggregate comparison counts, while no matching historical candidate object/disassembly or attempt record was retained locally.",
+    "fresh_native_comparison": "NOT_RUN",
+    "reason": "Recompiling the historical isolated candidates in the current production unit would not reproduce their original compilation context. G64-044 owns the fresh first/second layout comparison."
+  },
+  "g41_evidence_correction": {
+    "source": "Pinned 3DBA0.s offsets and the original-word guard",
+    "corrections": [
+      "E234 rectangle y load is +0x118, not +0x114.",
+      "E234 B400 w0 store is +0x178, not +0x17C.",
+      "E234 owner pointer load is +0x17C."
+    ],
+    "corrected_report": "decomp/plans/execution/2026-11-13-g64-041-display-emitter-trace.json"
+  },
+  "host_test": {
+    "test_file": "decomp/test_vm_display_emitters.c",
+    "candidate_source_unchanged": true,
+    "ebac_mode": "GOEMON_VM_DISPLAY_SECOND compiles the second candidate independently; the G42-only zero and alias cases are excluded from this mode.",
+    "semantics": "Mock command values, cursor advancement, and guard regions only; output equality does not prove native store order."
+  },
+  "decision": {
+    "classification": "RESEARCH_ONLY",
+    "native_variants": 0,
+    "native_unit_comparison": "NOT_RUN",
+    "historical_first_mismatch": "UNAVAILABLE",
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "production_source_changed": false,
+    "candidate_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "matching_c_delta_functions": 0,
+    "matching_c_delta_bytes": 0,
+    "reason": "The ROM-backed trace establishes the second emitter's command and store-order contract. No current native unit match was produced; retain GLOBAL_ASM."
+  },
+  "tests": {
+    "original_word_guard": {
+      "command": "python3 decomp/test_vm_next_ten_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+      "exit_code": 0,
+      "result": "EBAC: 109 original ROM/VMA words and 6 guards passed; other phase guard targets also passed."
+    },
+    "trace_offset_audit": {
+      "command": "Inline Python parser compared the trace's cursor loads/updates, 22 output stores, owner loads, and return delay slot to the 109 pinned Splat rows.",
+      "exit_code": 0,
+      "result": "All reported EBAC offsets and word lanes matched the assembly rows."
+    },
+    "original_parser_tests": {
+      "command": "python3 -m unittest decomp.test_vm_next_ten_original -q",
+      "exit_code": 0,
+      "result": "4 tests passed."
+    },
+    "host_sanitizer_ebac": {
+      "compile_command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -Idecomp -DGOEMON_VM_DISPLAY_SECOND -DGOEMON_VM_DISPLAY_SOURCE='\"candidates/vm_display_ebac.c\"' decomp/test_vm_display_emitters.c -o /tmp/g64-043-vm-display-ebac",
+      "run_command": "ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/g64-043-vm-display-ebac",
+      "exit_code": 0,
+      "result": "1,000 seeded EBAC host cases passed."
+    },
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "result": "ROM-free gate passed: 162 decomp tests, 92 verifier/ledger tests, task/evidence validation, and E234 ASan/UBSan host test."
+    },
+    "task_context_validation": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "exit_code": 0,
+      "result": "CONSISTENT_STORED_REPORTS."
+    },
+    "json_and_diff": {
+      "commands": [
+        "python3 -m json.tool decomp/plans/execution/2026-11-13-g64-043-display-emitter-trace.json",
+        "git diff --check"
+      ],
+      "exit_code": 0
+    },
+    "in_game": "NOT_RUN"
+  },
+  "proof_checkpoint": {
+    "stored_matching_c_functions": 153,
+    "stored_matching_mips_bytes": 11800,
+    "stored_combined_c": 166,
+    "stored_asm": 7210,
+    "inventory_entries": 7376,
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "combined_report_sha256": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "inventory_report_sha256": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694",
+    "status": "Unchanged; no G2 or inventory rebuild was needed for this trace-and-host-test task.",
+    "yield_delta_functions": 0,
+    "yield_delta_bytes": 0
+  },
+  "source_hashes": {
+    "host_test": "d1db2f9897d2fc05fb9ee5007851f4db7af80142bef67a1b66516c1f2027e83c",
+    "candidate": "d316a6ef5d85fd9311acc53940d161de17fdb83a461e1e83679145dcb63bfe19",
+    "production_header": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "combined_report": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "inventory_report": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694"
+  },
+  "next": "G64-044 is now dependency-ready; use its bounded source-level hypothesis and native original-unit comparison to report first instruction/relocation differences. No further G64-043 native variants are authorized by this trace task."
+}

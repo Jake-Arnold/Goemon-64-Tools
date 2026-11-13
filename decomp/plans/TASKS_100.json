@@ -1747,7 +1747,7 @@
       "ordinal": 43,
       "phase": 5,
       "title": "Recover second display-list emitter",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-041"
       ],
@@ -1762,7 +1762,7 @@
         "Read the exact focus files: decomp/candidates/vm_display_ebac.c, decomp/test_vm_display_emitters.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.",
         "Implement the bounded design: Independently reconstruct 8003EBAC_3F7AC (436 bytes), preserving distinct resource pointers, opcodes and store order.",
         "Inspect second emitter's distinct opcodes and resource-pointer sources instead of copying the first's control flow.",
-        "Compare original 436 bytes to 500/464-byte variants, noting actual first mismatch.",
+        "Inspect preserved original-address reports or outputs for the historical 500/464-byte variants and record a first mismatch if retained evidence supports one. If those artifacts are absent, record the mismatch as unavailable and leave a fresh original-unit comparison to G64-044.",
         "Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.",
         "For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.",
         "Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries."

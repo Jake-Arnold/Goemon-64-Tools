@@ -85,6 +85,7 @@ static void check(unsigned idx, unsigned *seed){
   D_80077860_78460 = owner;
 }
 
+#ifndef GOEMON_VM_DISPLAY_SECOND
 static void check_zero_case(void) {
   u32 memory[32];
   u32 expect[22];
@@ -177,12 +178,17 @@ static void check_owner_byte_alias(void) {
   D_8015C5CC_15D1CC = NULL;
   D_80077860_78460 = owner;
 }
+#endif
 
 int main(void) {
   unsigned seed = 0xCE11AB1E;
   for (unsigned i = 0; i < 1000; i++) check(i, &seed);
+#ifdef GOEMON_VM_DISPLAY_SECOND
+  puts("VM graphics writer: 1000 synthetic EBAC host cases passed");
+#else
   check_zero_case();
   check_owner_byte_alias();
   puts("VM graphics writer: 1000 synthetic cases plus zero and owner-alias cases passed");
+#endif
   return 0;
 }

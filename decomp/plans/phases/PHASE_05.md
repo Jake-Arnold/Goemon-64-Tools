@@ -79,11 +79,11 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 
 **Outcome (2026-11-13):** Added valid zero-input and aliased-owner cases to the first-emitter host harness. All 22 modeled command words, cursor advancement, first/last words, and guard regions are checked. The aligned fixture places owner[0x5D] over the B400 w0 slot, seeds the byte to one, and verifies that emitting w0 clears it before w1 reads it. A temporary pre-read-order mutant failed at the expected B400 w1 assertion. The test restores stack-backed global pointers before each helper returns. Null cursor and owner are invalid preconditions because the modeled original path dereferences them directly; no null behavior is claimed. ASan/UBSan passed 1,000 seeded cases plus zero and alias cases. This is mock memory semantics, not original-MIPS identity. Production source, candidate, manifest, and proof reports remain unchanged; native comparison, G2, and inventory were not run. See plans/execution/2026-11-13-g64-042-display-memory-model.json.
 
-**Next:** G64-043 remains PLANNED and dependency-ready; G64-044 waits for G64-042 and G64-043.
+**Next:** G64-043 has since completed RESEARCH_ONLY. G64-044 is now dependency-ready.
 
 ### G64-043 — Recover second display-list emitter
 
-**Status:** PLANNED. **Dependencies:** G64-041.
+**Status:** RESEARCH_ONLY (completed 2026-11-13). **Dependencies:** G64-041.
 **Focus files:** `decomp/candidates/vm_display_ebac.c`; `decomp/test_vm_display_emitters.c`.
 
 **Architectural intent:** Independently reconstruct 8003EBAC_3F7AC (436 bytes), preserving distinct resource pointers, opcodes and store order.
@@ -93,7 +93,7 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 2. Read the exact focus files: decomp/candidates/vm_display_ebac.c, decomp/test_vm_display_emitters.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
 3. Implement the bounded design: Independently reconstruct 8003EBAC_3F7AC (436 bytes), preserving distinct resource pointers, opcodes and store order.
 4. Inspect second emitter's distinct opcodes and resource-pointer sources instead of copying the first's control flow.
-5. Compare original 436 bytes to 500/464-byte variants, noting actual first mismatch.
+5. Inspect preserved original-address reports or outputs for the historical 500/464-byte variants and record a first mismatch if retained evidence supports one. If those artifacts are absent, record the mismatch as unavailable and leave a fresh original-unit comparison to G64-044.
 6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
 7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
 8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
@@ -107,6 +107,10 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Verified all 109 EBAC words against the pinned ROM slice and traced all eleven cursor updates and command pairs independently of E234. EBAC uses resource D_80076148, distinct F300/F200 constants, caller-supplied x/y with a y-2 rectangle adjustment, and owner byte +0x5C. Its final B300 pair stores w0 before w1, with w1 in the jr delay slot; E234 stores w1 before w0. The host harness now builds EBAC mode separately and passed 1,000 synthetic cases. Historical summaries show 500- and 464-byte nonmatching candidates, but their native outputs/disassembly and first mismatch were not retained; no fresh native comparison was run. G64-041's E400 y-load, B400 w0, and owner-pointer offsets were corrected against the pinned source. Production code, candidate C, manifest and proof remain unchanged; G2 and inventory were not run. See plans/execution/2026-11-13-g64-043-display-emitter-trace.json.
+
+**Next:** G64-044 is dependency-ready for the fresh first/second emitter native-layout comparison.
 
 ### G64-044 — Compare first/second compiler layouts
 

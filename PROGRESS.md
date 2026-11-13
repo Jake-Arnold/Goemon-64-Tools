@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — G64-043 second display-list emitter (RESEARCH_ONLY)
+
+- **Changed:** recorded an independent ROM-backed trace for func_8003EBAC_3F7AC, added an EBAC build mode to the existing host harness, marked G64-043 RESEARCH_ONLY, and updated Phase 05 and continuation handoffs. Corrected the E400 rectangle y-load and B400 word-store/owner-pointer offsets in the G64-041 evidence JSON. Production source, both candidates, manifest, and stored proof remain unchanged.
+- **Why:** establish the second emitter's own resources, caller ABI, command words, cursor updates, and return delay-slot order instead of carrying assumptions over from E234.
+- **Evidence:** the 436-byte function at VMA 0x8003EBAC / ROM 0x3F7AC has 109 words matching the pinned assembly annotations and local decompressed ROM slice. Its caller supplies signed VmChoice fields in a0/a1. EBAC's final B300 w0 precedes w1, which is in the jr delay slot; E234 reverses those stores. The E400 y-load and B400 store/pointer offsets in G41's trace now match the pinned source.
+- **Tests:** the original ROM-word guard passed EBAC 109/109 words and six anchors; its four parser tests passed. The EBAC ASan/UBSan host mode passed 1,000 synthetic cases. The ROM-free local gate passed 162 decomp tests, 92 verifier/ledger tests, stored-ledger validation, and the E234 ASan/UBSan host test. JSON/context validation and git diff --check passed. Host output does not establish MIPS store order.
+- **Limitations/next:** the historical 500/464-byte candidate summaries lack retained outputs or a first-mismatch record; these artifacts were not rebuilt in a different current compilation context. Native comparison, G2, inventory, and in-game verification were not run; matching-C delta is zero and GLOBAL_ASM remains. G64-044 is next for a bounded first/second native layout comparison.
+
 ### 2026-11-13 — Native local decomp CI command (ROM-free)
 
 - **Changed:** added `decomp/local_ci.py` and `decomp/test_local_ci.py`; documented `python3 -m decomp.local_ci` in `AGENTS.md` and `decomp/CONTINUE.md`. No `.github/workflows` files were introduced.
