@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — G64-083 math helper 8000E4E4 (RESEARCH_ONLY)
+
+- **Changed:** recorded two native attempts and the Sol mismatch review in [`decomp/plans/execution/2026-11-13-g64-083-math-helper.json`](decomp/plans/execution/2026-11-13-g64-083-math-helper.json); updated the task ledger, Phase 09 and current handoffs. Production C, host-test source, manifest and proof reports remain unchanged; the target remains `GLOBAL_ASM`.
+- **Why:** map the three output-pointer ABI and preserve G64-082's verified float order while using only distinct, evidence-backed IDO hypotheses.
+- **Evidence:** the 332-byte function at VMA `0x8000E4E4` / ROM `0xF0E4` was compiled inside the original 1,024-byte math-helper unit. V1 mismatched 12 words at local stack homes; the first difference was `+0x5C` (`swc1 $f10,0x20($sp)` versus `swc1 $f10,0x1C($sp)`). Sol approved naming the existing first sum `xy_squared`; V2 regressed to a `0x50` frame versus `0x48` and 22 mismatches from entry. Four neighboring functions and all 13 relocations stayed exact. The historical compile-failed recipe was counted once; two fresh variants used three of five task slots total. Two signed local attempt records validated.
+- **Tests:** Luna reported the temporary GCC ASan/UBSan host harness passed aliasing, sign/zero, zero-length and binary32 cases; its exact command was not retained and the temporary harness was restored. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` — 157 passed; `python3 -m unittest tests.test_decomp_verify -q` — 17 passed; `python3 -m decomp.skill_context --validate` — consistent; `git diff --check` — passed. Local CI was not run because `.github/workflows` is absent. No in-game verification.
+- **Limitations/next:** no candidate was whole-unit exact, so fresh full-ROM G2 and inventory were not run; the stored proof remains 153/153 functions and 11,800 bytes. Sol selected G64-089 next. Begin with `8000643C` beside the matched setter, then rank all five float-state functions; `80006B44` is only a provisional size leader because it emits display-list commands.
+
 ### 2026-11-13 — G64-086 angle variant 8000EB50 (PASSED_G2)
 
 - **Changed:** replaced EB50's `GLOBAL_ASM` claim with matching C in `angle_variant.c`, added host cases for the position fields, call order, signed zero and halfword behavior, and updated the manifest plus proof/inventory results. Added signed G64-091 attempt records for two source variants.

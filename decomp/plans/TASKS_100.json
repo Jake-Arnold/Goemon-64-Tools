@@ -3572,7 +3572,7 @@
       "ordinal": 83,
       "phase": 9,
       "title": "Analyze math helper 8000E4E4",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-082"
       ],

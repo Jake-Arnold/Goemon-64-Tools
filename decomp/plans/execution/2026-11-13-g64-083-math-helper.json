@@ -1,0 +1,286 @@
+{
+  "task_id": "G64-083",
+  "title": "Analyze math helper 8000E4E4",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "Architect v2 Wave C; Sol reviewed the first mismatch and approved one distinct spill-allocation hypothesis; Luna executed two bounded native variants and host semantics checks.",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "fccefdcf9fdd3e68d67d245e3814a874f61a8429",
+    "fetched_remote_head": "fccefdcf9fdd3e68d67d245e3814a874f61a8429",
+    "worktree_clean_before_task": true,
+    "dependency": "G64-082=PASSED_G2",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "target": {
+    "symbol": "func_8000E4E4_F0E4",
+    "vma": "0x8000E4E4",
+    "rom_offset": "0xF0E4",
+    "size_bytes": 332,
+    "word_count": 83,
+    "original_span_sha256": "b96bb9921bb3b7a5ea372af8aad697d80c168b743bb04fc87d71523c9cc5625c",
+    "original_assembly_source": "asm/usa/E7F0.s",
+    "original_assembly_source_sha256": "ef3683e8173b4ebd3249ebcd17fa6ec19802b8cb64cdbd75d7f18557b0bf461b",
+    "original_function_assembly_sha256": "fd26c25a3fd92db1f7d7ce6a9d41f0b50ab960c93a2c5cbd10047d9ad3cdf838",
+    "source_unit": "decomp/math_helpers.c",
+    "source_unit_rom_span": "[0xEE8C, 0xF28C)",
+    "source_unit_bytes": 1024,
+    "original_unit_sha256": "2d46d822474c3bdfc40ad8fd855d47a5c7508af1fa814db33ccb5d7359632577",
+    "production_source_sha256": "fc9e4473a5be0754429ed8020a2b089e4a503a1d6419658c86edf428214d755c",
+    "test_source_sha256": "f14aa966d52c3020ad5272ae3e43580e1ab4b4e6fbd884831a09c8a568d5b52c",
+    "manifest_sha256_unchanged": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "manifest_owner_before": "GLOBAL_ASM",
+    "manifest_owner_after": "GLOBAL_ASM"
+  },
+  "abi_and_behavior": {
+    "direct_call_sites": 35,
+    "distinct_callers": 27,
+    "caller_assembly": "asm/usa/5F6840.s",
+    "arguments": {
+      "$f12": "scale",
+      "$f14": "x",
+      "$a2": "y float bits",
+      "$a3": "z float bits",
+      "caller_stack+0x10": "out_x pointer",
+      "caller_stack+0x14": "out_y pointer",
+      "caller_stack+0x18": "out_z pointer"
+    },
+    "callee_stack_homes_after_prologue": {
+      "out_x": "sp+0x58",
+      "out_y": "sp+0x5C",
+      "out_z": "sp+0x60"
+    },
+    "operation_order": [
+      "Read all three pointed-to floats before the first output store.",
+      "Compute dx/dy/dz and their squares in order.",
+      "Compute scale_squared, then length_squared=(dx_squared+dy_squared)+dz_squared.",
+      "For X, Y, Z in order, call _nsqrtf((delta_squared*scale_squared)/length_squared), apply strict delta<0.0f sign correction, and store through the corresponding output pointer.",
+      "Return 1."
+    ],
+    "nsqrtf_call_offsets": [
+      "+0x7C",
+      "+0xC4",
+      "+0x104"
+    ],
+    "uncertainty": "Caller review supports the three pointer arguments and output order; no broader behavior claim is made."
+  },
+  "model_review": {
+    "sol_6_1_high": {
+      "v1_diagnosis": "All 12 V1 differing words are stack-home displacements for four locals, each shifted by one word. Original/candidate homes: dy^2 +0x28/+0x24, dz^2 +0x24/+0x20, scale^2 +0x20/+0x1C, length^2 +0x1C/+0x18. Arithmetic registers, branches, calls, frame size, and neighbors already match.",
+      "v2_approval": "Name the existing first sum as f32 xy_squared and use it for length_squared, preserving the same two single-precision additions and all I/O/order.",
+      "stop_rule": "If V2 normalizes to V1 or regresses, freeze the unused +0x18 hole and stop absent new compiler evidence."
+    },
+    "luna_max": "V1 and V2 compiled and linked as the actual 1 KiB math_helpers unit at the original VMA. Both failed exact codegen; host ASan/UBSan harness passed and was restored after the research run.",
+    "post_task_selection": "Sol selected G64-089 as the next dependency-ready Wave C task after G83 closure. G64-087 remains gated by G64-061/062/063."
+  },
+  "variant_budget": {
+    "task_limit": 5,
+    "historical_distinct_variants": 1,
+    "historical_recipe_signature": "0302e31f6085cd504adbda5c73a02ad910f9663294832a0639434e27645bcfd6",
+    "historical_status": "compile_failed; repeated across four batch reports with no native mismatch or signed attempt; counted once and not replayed.",
+    "new_distinct_variants_run": 2,
+    "counted_task_total": 3,
+    "unused_task_slots": 2,
+    "stop_reason": "V2 enlarged the stack frame and regressed; Sol approved no further hypothesis without new evidence."
+  },
+  "native_candidates": [
+    {
+      "ordinal": 1,
+      "hypothesis": "Start from G64-082 arithmetic and definition order; replace object field I/O with cached values from all three float pointers and sequential output stores.",
+      "source_sha256": "367206b18fff879025094fbfa89a62d36f03792a824f4e69bdbbea7c1b4069c6",
+      "linked_elf_sha256": "418f724a13431f465a92947cce94cdca093f2ab61b1be9bb92ad6c4281f07e58",
+      "linked_unit_sha256": "e892954c70f2130aee6643078279c7d575e1f7df6a8610a5d05da9d5f0ae5b6c",
+      "candidate_target_sha256": "010a68bd5409524c2aa7f639e2ee2b7b06039eb006fef3165625bfaecfb249e5",
+      "target_size_bytes": 332,
+      "target_byte_mismatches": 12,
+      "target_word_mismatches": 12,
+      "unit_word_mismatches": 12,
+      "all_mismatches_confined_to_target": true,
+      "first_mismatch": {
+        "target_offset": "+0x5C",
+        "vma": "0x8000E540",
+        "rom_offset": "0xF140",
+        "expected_word": "0xE7AA0020",
+        "candidate_word": "0xE7AA001C",
+        "expected_instruction": "swc1 $f10,0x20($sp)",
+        "candidate_instruction": "swc1 $f10,0x1C($sp)",
+        "category": "FRAME / local spill-home placement"
+      },
+      "whole_unit_exact": false,
+      "siblings_exact": [
+        "func_8000E28C_EE8C",
+        "func_8000E2D4_EED4",
+        "func_8000E39C_EF9C",
+        "func_8000E630_F230"
+      ],
+      "relocation_count": 13,
+      "relocations_match_between_v1_and_v2": true,
+      "comparison_report_sha256": "5f790889edff87adb7a56efb5979f9441ab36deaf127a6e4c66263c1bcbbd9ef",
+      "attempt_ledger": {
+        "run_id": 10,
+        "attempt_id": 10,
+        "input_signature": "f540ba77e70f51845655378675386f57facded019a773221c693e4f688b8d1b8",
+        "attempt_signature": "28639c8320a6dac60360566869d7b88d173b58800ea4825e6d72a00502ff3536",
+        "record_status": "mismatch",
+        "record_valid": true
+      }
+    },
+    {
+      "ordinal": 2,
+      "hypothesis": "Sol-approved distinct discriminator: name the existing first sum as f32 xy_squared, keeping I/O, arithmetic values, qualifiers, and evaluation order otherwise unchanged.",
+      "source_sha256": "e16cc3ea235c1301b81905d2d750e2e06da6e2c613bbb541bb9c7e72a5f4f148",
+      "linked_elf_sha256": "692f1f7ab3d29040fac32296a5e6f11ad67defb09b735da15cd9cf6808e4c668",
+      "linked_unit_sha256": "8c8bfa21861e059de5334499a3f2e6b238ff5b3af1a3e57c34538a57f2a1e099",
+      "candidate_target_sha256": "53aeb9e539b2964c4bef33d5c6edb6531d8a7cbabf25615188e33f4e2273fedc",
+      "target_size_bytes": 332,
+      "target_byte_mismatches": 22,
+      "target_word_mismatches": 22,
+      "unit_word_mismatches": 22,
+      "all_mismatches_confined_to_target": true,
+      "first_mismatch": {
+        "target_offset": "+0x0",
+        "vma": "0x8000E4E4",
+        "rom_offset": "0xF0E4",
+        "expected_word": "0x27BDFFB8",
+        "candidate_word": "0x27BDFFB0",
+        "expected_instruction": "addiu $sp,$sp,-0x48",
+        "candidate_instruction": "addiu $sp,$sp,-0x50",
+        "category": "FRAME / larger stack frame"
+      },
+      "whole_unit_exact": false,
+      "siblings_exact": [
+        "func_8000E28C_EE8C",
+        "func_8000E2D4_EED4",
+        "func_8000E39C_EF9C",
+        "func_8000E630_F230"
+      ],
+      "relocation_count": 13,
+      "relocations_match_between_v1_and_v2": true,
+      "comparison_report_sha256": "dbadbb1ef31686e22c04a23064bf91a5f31237b954b6e9496da18cfe624caf1e",
+      "attempt_ledger": {
+        "run_id": 11,
+        "attempt_id": 11,
+        "input_signature": "c5274369d094ae59048ed1ec72d364ca8dd110282ac25bd88926070e4fe5c340",
+        "attempt_signature": "3b715f77c1c604302647cbb6dc0507d8d705d40caa2f1b5be5fc3c17b14fe055",
+        "record_status": "mismatch",
+        "record_valid": true
+      }
+    }
+  ],
+  "native_unit_proof": {
+    "compiler": {
+      "name": "IDO 5.3",
+      "sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+      "compile_command": "make -B build/usa/src/math_helpers.c.o (in the isolated pinned candidate checkout)",
+      "compile_exit_status": 0,
+      "text_bytes": "0x400"
+    },
+    "linker": "LLD 21.1.8 at original VMA 0x8000E28C",
+    "translation_unit_bytes": 1024,
+    "original_unit_sha256": "2d46d822474c3bdfc40ad8fd855d47a5c7508af1fa814db33ccb5d7359632577",
+    "candidate_unit_sha256s": [
+      "e892954c70f2130aee6643078279c7d575e1f7df6a8610a5d05da9d5f0ae5b6c",
+      "8c8bfa21861e059de5334499a3f2e6b238ff5b3af1a3e57c34538a57f2a1e099"
+    ],
+    "target_symbols": {
+      "func_8000E28C_EE8C": 72,
+      "func_8000E2D4_EED4": 200,
+      "func_8000E39C_EF9C": 328,
+      "func_8000E4E4_F0E4": 332,
+      "func_8000E630_F230": 92
+    },
+    "relocation_count": 13,
+    "relocations_match_between_candidates": true,
+    "whole_unit_exact": false,
+    "first_difference_category": "FRAME / stack-local placement",
+    "comparison_reports_private": "practice/diagnostics/decomp-100-inputs/g64-083/unit-v*-comparison.json"
+  },
+  "host_semantics": {
+    "status": "PASS_REPORTED_BY_EXECUTOR",
+    "sanitizers": [
+      "AddressSanitizer",
+      "UndefinedBehaviorSanitizer"
+    ],
+    "coverage": [
+      "normalized output values",
+      "strict negative and negative-zero behavior",
+      "zero length",
+      "binary32 rounding",
+      "X/Y output pointer aliasing",
+      "all three input pointees read before stores"
+    ],
+    "command": "Exact argv was not retained; the temporary host harness was restored after testing.",
+    "production_test_file_changed": false
+  },
+  "attempt_ledger": {
+    "status": "PASS; two new mismatch records validated",
+    "database": "practice/diagnostics/decomp-100-inputs/g64-082/attempts.sqlite",
+    "database_sha256_after_append": "edc512c828b37be24dd6dbacff7296e334009a9cf3284567edf51a279a47ccaa",
+    "records": [
+      {
+        "variant": 1,
+        "run_id": 10,
+        "attempt_id": 10,
+        "input_signature": "f540ba77e70f51845655378675386f57facded019a773221c693e4f688b8d1b8",
+        "attempt_signature": "28639c8320a6dac60360566869d7b88d173b58800ea4825e6d72a00502ff3536"
+      },
+      {
+        "variant": 2,
+        "run_id": 11,
+        "attempt_id": 11,
+        "input_signature": "c5274369d094ae59048ed1ec72d364ca8dd110282ac25bd88926070e4fe5c340",
+        "attempt_signature": "3b715f77c1c604302647cbb6dc0507d8d705d40caa2f1b5be5fc3c17b14fe055"
+      }
+    ],
+    "local_comparison_summary_sha256": "ca8ebafc4c0c7ec700f63916f59d11971eb195ecba30f184e73d860da5be27e7",
+    "note": "ROM, candidate checkout, compiler, linked ELF/binaries, comparison artifacts, and SQLite database remain ignored local evidence."
+  },
+  "proof": {
+    "fresh_full_rom_g2": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "reason": "Neither candidate was source-unit exact; production remains GLOBAL_ASM.",
+    "stored_proof_unchanged": {
+      "claimed_functions": 153,
+      "matched_functions": 153,
+      "matched_bytes": 11800,
+      "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+    },
+    "function_delta": 0,
+    "byte_delta": 0,
+    "in_game_verification": "NOT_RUN"
+  },
+  "repository_checks": {
+    "python_decomp_suite": {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "exit_code": 0,
+      "result": "PASS; 157 tests"
+    },
+    "verifier_tests": {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "exit_code": 0,
+      "result": "PASS; 17 tests"
+    },
+    "skill_context_validate": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "result": "CONSISTENT_STORED_REPORTS; no new verifier run"
+    },
+    "task_context": {
+      "command": "python3 -m decomp.skill_context --task G64-089",
+      "result": "PLANNED; all listed dependencies satisfied, including G64-083=RESEARCH_ONLY"
+    },
+    "git_diff_check": {
+      "command": "git diff --check",
+      "result": "PASS"
+    },
+    "local_ci": "NOT_RUN; no .github/workflows directory exists"
+  },
+  "next_task": {
+    "task_id": "G64-089",
+    "selection": "Sol selected it after G83 closure; it is the Wave C float-state batch.",
+    "initial_review": "Inspect 0x8000643C beside the accepted setter, then rank all five retained ASM functions. 0x80006B44 is the size leader at 180 bytes but emits display-list command pairs; confirm caller ABI, store order, cursor advance, and loop-global reload before any probe.",
+    "blocked_tasks": "G64-087/088 remain gated by G64-061/062/063/087."
+  }
+}

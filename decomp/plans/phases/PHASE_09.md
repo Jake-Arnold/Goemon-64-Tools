@@ -86,7 +86,7 @@ See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13
 
 ### G64-083 — Analyze math helper 8000E4E4
 
-**Status:** PLANNED. **Dependencies:** G64-082.
+**Status:** RESEARCH_ONLY (completed 2026-11-13). **Dependencies:** G64-082.
 **Focus files:** `decomp/math_helpers.c`; `decomp/test_math_helpers.c`.
 
 **Architectural intent:** Map 8000E4E4_F0E4 and reuse only type declarations demonstrated by preceding original MIPS.
@@ -110,6 +110,12 @@ See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** `func_8000E4E4_F0E4` is 332 bytes at VMA `0x8000E4E4`, ROM `0xF0E4`, original span SHA-256 `b96bb9921bb3b7a5ea372af8aad697d80c168b743bb04fc87d71523c9cc5625c`. Its 35 direct call sites in 27 caller functions pass scale/X in `$f12/$f14`, Y/Z float bits in `$a2/$a3`, and three output pointers at caller stack `+0x10/+0x14/+0x18`. The target reads all pointed-to floats before storing outputs, computes squared deltas and `(dx²+dy²)+dz²`, calls `_nsqrtf` three times, applies strict negative checks and returns 1.
+
+Two bounded native candidates compiled in the full 1,024-byte `math_helpers.c` unit at original VMA `0x8000E28C`. V1 was 332 bytes with a `0x48` frame, but 12 target words differed; the first at `+0x5C` moved a scale² spill from `sp+0x20` to `sp+0x1C`. Sol classified all four live spill homes as shifted by one word and approved one named `xy_squared` intermediate. V2 diverged at entry with a `0x50` frame and 22 differing target words. Both candidates preserved the four neighboring functions and all 13 unit relocations. Stop at V2; the unused `sp+0x18` hole is frozen absent new evidence. The historical `0302e31f6085cd504adbda5c73a02ad910f9663294832a0639434e27645bcfd6` compile-failed recipe repeated in four batch reports and counts once; two new variants bring task usage to 3/5. The target remains `GLOBAL_ASM`; fresh G2 and inventory were not run. See [`../execution/2026-11-13-g64-083-math-helper.json`](../execution/2026-11-13-g64-083-math-helper.json). No in-game verification was performed.
+
+**Next:** Sol selected G64-089. Inspect `8000643C` beside the accepted setter, then rank the five float-state ASM functions. `80006B44` is a provisional 180-byte size leader; its display-list writes, signed global gate, cursor updates and loop-global reload need caller-backed ABI confirmation before any probe.
 
 ### G64-084 — Analyze angle variant 8000EA74
 
@@ -202,7 +208,7 @@ See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13
 
 **Outcome (2026-11-13):** `func_8000EB50_F750` (180 bytes at VMA `0x8000EB50`, ROM `0xF750`, original SHA-256 `ba59dad46351a30ab57dbafe9afc1d18869fc55e14a8ff2e10f8a06d3ab64760`) passed after two distinct bounded variants. V1 first differed at `+0x58` (`nop` vs `mov.s $f14,$f0`) from branch-delay scheduling; Sol approved an explicit two-way magnitude `if/else` based on G2-matched `func_8000EC04_F804`. V2 matched the complete 400-byte `angle_variant.c` unit at original VMA `0x8000EA74`, including all four functions and six relocations. Fresh uncached G2 matched 153/153 functions, 11,800 bytes and the complete 32 MiB ROM; inventory passed with 7,376 entries, 153 matching C, 7,210 ASM, zero extra aliases and unchanged function-entry identity. See [`../execution/2026-11-13-g64-086-angle-variant.json`](../execution/2026-11-13-g64-086-angle-variant.json). No in-game verification was performed.
 
-**Next:** Sol selected G64-083 at 87/100 as the only remaining dependency-ready Wave C candidate. G64-089 remains gated on G64-083; G64-087 remains gated on G64-061/062/063.
+**Next:** G64-083 completed as `RESEARCH_ONLY` with `GLOBAL_ASM` retained and no G2 promotion. Sol selected G64-089 as the next Wave C task; G64-087 remains gated on G64-061/062/063.
 
 ### G64-087 — Analyze dispatcher 8001F8B0
 
