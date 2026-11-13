@@ -1,0 +1,139 @@
+{
+  "task_id": "G64-045",
+  "title": "Recover VM setup callback ABI",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "170702224dc30ff312871e6df4c81ceefd1c7e22",
+    "fetched_remote_head_at_start": "170702224dc30ff312871e6df4c81ceefd1c7e22",
+    "worktree_at_start": "clean",
+    "dependency": "G64-021=DOC_ONLY"
+  },
+  "model_roles": {
+    "strategy_review": "Sol role: read-only ABI and hypothesis review",
+    "native_execution": "Luna role: one full-unit native trial and host evidence"
+  },
+  "production_context": {
+    "source_unit": "decomp/script_vm.c",
+    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "script_vm_source_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "script_vm_header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest_owner": "func_8003F37C_3FF7C remains GLOBAL_ASM",
+    "unit_rom_start": "0x3DBA0",
+    "unit_vma_start": "0x8003CFA0",
+    "unit_text_bytes": 10112
+  },
+  "inputs": {
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "decompressed_rom_bytes": 33554432,
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "mips_binutils": "GNU Binutils for Ubuntu 2.45.90.20260125"
+  },
+  "target": {
+    "symbol": "func_8003F37C_3FF7C",
+    "vma": "0x8003F37C",
+    "rom_offset": "0x3FF7C",
+    "original_bytes": 192,
+    "original_words": 48,
+    "original_instruction_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+    "candidate_source_sha256": "39bf7d2549dbdeb954148db49a094fa1703e8c2fbaa57d9b5f1c2363d44f190d",
+    "host_test_source_sha256": "14f18762a7183907ee5ab7ba2b750e1ddfc8ae5f7080e5a2a6df1a3e115930d8",
+    "related_host_suite_sha256": "b43d701863e00380c2f18fb11dda5299f0a8aa31880fe1d6ce679b4d79791609"
+  },
+  "abi_findings": [
+    "The original reads a 32-bit word from D_8015CC30_15D830+0x8C and reads/writes an 8-bit field at +0xD8; existing flags remain at +0xD4.",
+    "The callee func_80035690_36290 uses six LHU instructions for allocator argument positions 7-9 and 13-15; the research prototype now declares those as u16.",
+    "F37C calls the allocator at +0x60 with the final zero-float store in its delay slot at +0x64, publishes the returned pointer, then calls the two registration setters in order.",
+    "No direct external JAL reference to F37C was found in the pinned USA assembly; broader dynamic reachability remains unknown."
+  ],
+  "variant_accounting": {
+    "historical_native_source_variants": 1,
+    "historical_evidence": "vm_next_ten_batch1.json reports one isolated 192-byte candidate with 5/18 direct matches, 1 relocation-shape match and 29 relocation-layout differences; no original object or first mismatch was retained.",
+    "new_full_unit_variants": 1,
+    "ordinary_cap_for_192_byte_target": 5,
+    "stop_reason": "The predicted float-register discriminator failed, and no measured historical first mismatch is available to demonstrate improvement. No second variant was justified."
+  },
+  "trial": {
+    "hypothesis": "Use one named positive float zero for allocator arguments 4-6, retain one loaded scale for args 10-12, and type allocator integer stack slots as u16, while preserving production global declarations and the observed owner offsets.",
+    "scratch_source_sha256": "84e340e0b3c96aa20d465d38779ab90e94c459c5c160ccaad3a9de45e346e06d",
+    "compile_command": "make -j2 UV=uv build/usa/src/script_vm.c.o",
+    "link_command": "make -j2 UV=uv build/usa/mnsg.elf (after unique object layout pack)",
+    "unpacked_object_sha256": "f41fae0059cf0373440ff56ddaa9c99ed25995e985551fcccd388ca413b44086",
+    "packed_object_sha256": "5084112eea0c44d322ca4fa73831427d4ca61cd0ca1d2ad7aefaf82bc7b74630",
+    "linked_elf_sha256": "300f77d1584a13aab4406ca9790dfb2707010117631dd70bbc49e767c889f92f",
+    "target_bytes": 192,
+    "full_unit_bytes": 10112,
+    "baseline_against_rom": "10112/10112 bytes exact",
+    "candidate_against_rom": "115 byte mismatches / 36 words in the unit; all 36 word mismatches are within F37C",
+    "first_mismatch": {
+      "vma": "0x8003F384",
+      "rom_offset": "0x3FF84",
+      "function_offset": "+0x08",
+      "original": "lwc1 $f2 from scale global",
+      "candidate": "mtc1 $zero,$f2"
+    },
+    "next_difference": "At +0x0C the candidate loads scale into $f0, where the original moves zero into $f0.",
+    "relocations": {
+      "original_count": 19,
+      "candidate_count": 23,
+      "scale_lo16_original": "+0x08",
+      "scale_lo16_candidate": "+0x0C",
+      "allocator_call_original": "+0x60",
+      "allocator_call_candidate": "+0x5C"
+    },
+    "layout_pack": {
+      "text_bytes": 10112,
+      "rodata_before": 64,
+      "rodata_after": 60,
+      "table_relocations_retained": 15,
+      "payload_bytes_changed": 0
+    },
+    "compile_result": "IDO compile succeeded without warnings; link succeeded with the inherited ELF RWX segment warning."
+  },
+  "tests": {
+    "focused_host_command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -fno-pie -no-pie -Idecomp/test_support -Idecomp decomp/test_vm_setup_f37c.c -o /tmp/goemon-g64-045-host; ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-045-host",
+    "focused_host_result": "PASS 300/300 synthetic cases; bitwise float checks include positive/negative zero, infinities, a NaN payload, subnormal and deterministic arbitrary patterns; slot wrap, call order, pointer storage and untouched bytes checked.",
+    "negative_control": "A temporary mutant passed scale instead of positive zero for the first allocator float argument; ASan/UBSan test rejected it at the expected float-bit assertion.",
+    "related_vm_host_command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -fno-pie -no-pie -Idecomp/test_support -Idecomp decomp/test_script_vm.c -o /tmp/goemon-g64-045-script-vm; ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-045-script-vm",
+    "related_vm_host_result": "PASS: existing VM choices/repeat/streams, inputs, resources, callbacks and dialogue-state harness passed; no shared-header or existing test-source changes were retained.",
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "status": "PASS",
+      "decomp_python_tests": 162,
+      "verifier_ledger_tests": 92,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "local_ci_initial_failure": {
+      "status": "RESOLVED",
+      "cause": "A temporary shared script_vm.h layout edit invalidated the stored source fingerprint.",
+      "resolution": "Reverted the shared-header edit and kept the observed F37C layout in its research candidate/test fixture; the original header hash and stored proof fingerprint agree again."
+    }
+  },
+  "proof_checkpoint": {
+    "stored_matching_c_functions": 153,
+    "stored_matching_c_bytes": 11800,
+    "stored_inventory": "166 combined C / 7,210 ASM / 7,376 identified entries",
+    "production_script_vm_source_changed": false,
+    "shared_script_vm_header_changed": false,
+    "manifest_changed": false,
+    "stored_proof_changed": false
+  },
+  "decision": {
+    "status": "RESEARCH_ONLY",
+    "production_ownership": "Retain GLOBAL_ASM for F37C",
+    "full_rom_g2": "NOT_RUN: the candidate full translation unit is not byte-exact",
+    "inventory": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "next": "G64-046 — Recover callback setup path"
+  },
+  "scratch_evidence": {
+    "directory": "practice/diagnostics/decomp-100-inputs/g64-045/research-v1/",
+    "report_sha256": "9f0c39e8a50f21c394a140360bc8fcf6363948dbbd29b8d13c00ff7bd5ce6466",
+    "committed_artifacts": false
+  }
+}

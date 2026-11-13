@@ -1841,7 +1841,7 @@
       "ordinal": 45,
       "phase": 5,
       "title": "Recover VM setup callback ABI",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-021"
       ],

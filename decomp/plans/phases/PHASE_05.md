@@ -145,7 +145,7 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 
 ### G64-045 — Recover VM setup callback ABI
 
-**Status:** PLANNED. **Dependencies:** G64-021.
+**Status:** RESEARCH_ONLY (completed 2026-11-13). **Dependencies:** G64-021.
 **Focus files:** `decomp/candidates/vm_setup_f37c.c`; `decomp/test_vm_setup_f37c.c`.
 
 **Architectural intent:** Analyze 8003F37C_3FF7C's 192 bytes, float argument staging, 0x50 stack frame, three calls and callback values.
@@ -169,6 +169,10 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Confirmed F37C's 192-byte extent at VMA `0x8003F37C` / ROM `0x3FF7C`, verified all six allocator integer stack slots are halfword reads, and corrected the research prototype to use `u16` for those arguments. The original reads a 32-bit owner word at `+0x8C` and a byte at `+0xD8`; the known flags field at `+0xD4` is retained in the F37C-local test layout. The shared header remains unchanged. The baseline 10,112-byte `script_vm.c` unit matched the original slice. One Sol-approved full-unit candidate compiled and linked to the original VMA at 10,112 bytes, but it differed in 36 words (115 bytes), all inside F37C. The first mismatch is `+0x08`: IDO emits `mtc1 $zero,$f2` where the original loads the scale into `$f2`; at `+0x0C` those values are reversed. Candidate relocations are 23 versus 19 original; the scale LO16 and allocator call each move four bytes. The host test passed 300/300 ASan/UBSan scenarios and rejected a float-zero mutant; the existing VM host suite passed. No second variant, G2, inventory or in-game check was run. Production `script_vm.c` still owns F37C as `GLOBAL_ASM`; manifest and stored proof are unchanged. See `plans/execution/2026-11-13-g64-045-vm-setup-abi.json`.
+
+**Next:** G64-046 is dependency-ready for the callback setup path investigation.
 
 ### G64-046 — Recover callback setup path
 
