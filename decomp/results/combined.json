@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-11T16:29:13.778713+00:00",
+  "started_utc": "2026-11-13T10:13:46.052372+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -56,9 +56,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 148,
-    "claimed_functions": 148,
-    "matched_function_bytes": 11020,
+    "matched_functions": 149,
+    "claimed_functions": 149,
+    "matched_function_bytes": 11148,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1348,6 +1348,15 @@
         "candidate_sha256": "07839208eb20f88a0b3095eadc691356f2d329b7075ca5b9ba001916dc0d409c"
       },
       {
+        "name": "func_80036308_36F08",
+        "size": 128,
+        "guest_address": "0x80036308",
+        "rom_offset": "0x36F08",
+        "matched": true,
+        "expected_sha256": "9111b1246e8888b7caf8a8b43bd5595a4a9ae6fbf13c9820c26626a6920cb85c",
+        "candidate_sha256": "9111b1246e8888b7caf8a8b43bd5595a4a9ae6fbf13c9820c26626a6920cb85c"
+      },
+      {
         "name": "func_80021444_22044",
         "size": 160,
         "guest_address": "0x80021444",
@@ -1448,7 +1457,6 @@
     "func_80006298_6E98",
     "func_800030F0_3CF0",
     "func_8000394C_454C",
-    "func_80036308_36F08",
     "func_80036388_36F88",
     "func_800363F4_36FF4",
     "func_80036448_37048",
@@ -1488,7 +1496,7 @@
     "resource_forward.c": "2a84b51e305242a08bb1e80a8187fe9658b14579f0c76439c7da07cf56a379d6",
     "resource_callback.c": "30a779ca1f372a887cb9b310966741a1a24242190775508eb9fbb2ac2d683e30",
     "object_dispatch.c": "e2d6db8cde2068eb725e28bdbfade9a3a49bc581d8694ffa3fb961692dec9c39",
-    "object_flags.c": "4cf3a5657c15ea6cb3ec07e4e5006ddc60b3f1d3a4c5482111fdafa9768115d0",
+    "object_flags.c": "b27ee6ef258cc2e49a2e4c11c0810d2cde8b12259206d32a6b06f843418fcd12",
     "default_entrance.c": "38df36c1c09deda054d5879c4dd610a110e445bc1874302dff75a39dffaf2eb0",
     "file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
     "heap_noop.c": "d87c403e7874f70695d94ea545e8767b6698fe901694f77fdaf77bf6a6bdb401",
@@ -1496,9 +1504,9 @@
     "script_vm.h": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "vm_resource_types.h": "e11f328368d76de2ababeff78ff6bbe28550e190a13e4ae0b299b0199d1ccf6a",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900",
-    "object_flags.h": "d2cdfb2679db20ef4b642c41cdeef0188e464790333f067cbd8c394b44c7cb94",
+    "object_flags.h": "a1ae2142a30df3f47807b974a0641e5d0569bca8be95c497eb2bb48ba2e23616",
     "default_entrance.h": "3d82c004281d4a33d8ddb39a39031f24899d0b39323c3a4904e4169429440568",
     "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63"
   },
-  "ended_utc": "2026-11-11T16:30:08.993164+00:00"
+  "ended_utc": "2026-11-13T10:15:06.018425+00:00"
 }

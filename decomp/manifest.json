@@ -1116,10 +1116,14 @@
           "name": "func_800362DC_36EDC",
           "rom_offset": 224988,
           "size": 44
+        },
+        {
+          "name": "func_80036308_36F08",
+          "rom_offset": 225032,
+          "size": 128
         }
       ],
       "assembly_functions": [
-        "func_80036308_36F08",
         "func_80036388_36F88",
         "func_800363F4_36FF4",
         "func_80036448_37048"

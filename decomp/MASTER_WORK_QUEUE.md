@@ -1,8 +1,8 @@
 # Consolidated Goemon work queue (2026-11-08)
 
-**Reconciled on 2026-11-11:** The old 142-function checkpoint and ten-function
+**Reconciled on 2026-11-13:** The old 142-function checkpoint and ten-function
 queue below are historical. Current authority is `decomp/CONTINUE.md` and the
-live proof reports: **148 matching C / 11,020 bytes / 161 combined C / 7,215
+live proof reports: **149 matching C / 11,148 bytes / 162 combined C / 7,214
 ASM**. The resource, menu and object candidates from that older queue have
 passed full-ROM verification. G64-015–018 were retried and remain
 `FAILED_NATIVE`; G64-021 is `DOC_ONLY` with its call graph in
@@ -71,8 +71,9 @@ See `plans/execution/2026-11-11-g64-071-file-table-reader.json`. G64-072 traced
 G64-073 traced `80001EB0` as a gated inclusive page mapper; two IDO candidates
 both differed at `+0x04`, so it remains `GLOBAL_ASM`. Its `D_80054ACC` table
 extent is not declared in the pinned source. See
-`plans/execution/2026-11-13-g64-073-file-table-mapper.json`. Continue with
-G64-074–080, starting at object-list `80036308`. Private ROM and compiler files
+`plans/execution/2026-11-13-g64-073-file-table-mapper.json`. G64-074 passed G2: `80036308` is a per-node dispatcher and adds 128 exact matching bytes. Continue with
+G64-075–080, starting at object routine `80036388`. See
+`plans/execution/2026-11-13-g64-074-object-flags.json`. Private ROM and compiler files
 remain local under the ignored diagnostics input directory.
 
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.

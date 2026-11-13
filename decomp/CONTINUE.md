@@ -16,7 +16,7 @@ Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and over
 
 ## 1. Establish the current state
 
-**Authoritative continuation checkpoint — 2026-11-11; supersedes the dated
+**Authoritative continuation checkpoint — 2026-11-13; supersedes the dated
 142-function and 20-step checkpoints below.** Work continues in the fresh
 Codex worktree `codex/decomp-100-task-plan`, initially based on target-branch
 commit `3b1f56aef7a2e634cc80d3cdd332c47d6368082c`; G64-022 started from the
@@ -32,10 +32,10 @@ and compiler locations, checksums, and fresh proof commands for recreating it.
 The fresh pinned-source baseline reproduced 142 prior claims. Then the resource
 dispatch, menu hook and object dispatch production translation units were
 integrated and independently gated. Current `manifest.json`, `results/combined.json`
-and `results/inventory.json` report **148/148 claims, 11,020 matching MIPS
+and `results/inventory.json` report **149/149 claims, 11,148 matching MIPS
 bytes, an exact 33,554,432-byte ROM match** (SHA-1
-`6ea0ed71032ce08fc2745f412d84936382197494`), **161 combined C, 7,215 ASM, and
-7,376 identified entries**. The old object-dispatch eight-byte mismatch is
+`6ea0ed71032ce08fc2745f412d84936382197494`), **162 combined C, 7,214 ASM, and
+7,376 identified entries**. G64-074 added the 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list walker. See `plans/execution/2026-11-13-g64-074-object-flags.json`. The old object-dispatch eight-byte mismatch is
 historical; `OBJECT_DISPATCH_TRACE.md` records the exact current 96-byte unit
 and full-ROM result.
 
@@ -140,11 +140,11 @@ eight-byte records. The known constant caller passes index 60, selecting row
 unknown. Two IDO shapes linked at the original VMA but both differed at `+0x04`
 in prologue scheduling; the function remains `GLOBAL_ASM`. G2 was not run. See
 `plans/execution/2026-11-13-g64-073-file-table-mapper.json`.
-Continue with G64-074–080 per Architect v2, starting with object-list
-`80036308`.
+G64-074 passed G2; continue with G64-075–080 per Architect v2, starting with object routine
+`80036388`.
 `python3 -m decomp.skill_context --status` reports the lowest-numbered planned
 task, G64-041; this is not the revised execution priority. Request
-`--task G64-074` for the next v2 brief.
+`--task G64-075` for the next v2 brief.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
 

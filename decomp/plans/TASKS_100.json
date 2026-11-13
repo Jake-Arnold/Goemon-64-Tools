@@ -3171,8 +3171,8 @@
       "id": "G64-074",
       "ordinal": 74,
       "phase": 8,
-      "title": "Characterize object list 80036308",
-      "status": "PLANNED",
+      "title": "Characterize object dispatcher 80036308",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-012"
       ],
@@ -3181,8 +3181,8 @@
         "decomp/object_flags.h",
         "decomp/test_object_flags.c"
       ],
-      "architecture_design": "Use matched 800362DC and object_flags.h to derive next function's pointer iteration and flag updates.",
-      "explicit_acceptance": "A host linked-list test exercises empty/single/multiple nodes and keeps byte flags outside selected field unchanged.",
+      "architecture_design": "Use the neighboring 800362DC list walker and pinned MIPS to distinguish the per-node dispatcher at 80036308 from list traversal.",
+      "explicit_acceptance": "The per-node dispatch order, low-seven-bit flag selection, default paths and null behavior are tested; return-register behavior is recorded from MIPS and direct callers ignore it. The adjacent list walker separately covers empty/single/multiple nodes.",
       "implementation_sequence": [
         "Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.",
         "Read the exact focus files: decomp/object_flags.c, decomp/object_flags.h, decomp/test_object_flags.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.",
@@ -3215,7 +3215,7 @@
       },
       "architect_override_v2": {
         "wave": "B",
-        "directive": "Object list 80036308: use already-matching object_flags.c neighbors to establish list mutation contract.",
+        "directive": "Object dispatcher 80036308: preserve pinned single-node dispatch behavior; list traversal belongs to 800362DC.",
         "stop_rule": "Do not assume list termination/aliasing from C name alone."
       }
     },

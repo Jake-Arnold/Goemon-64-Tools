@@ -1,5 +1,16 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-13 — G64-074 object dispatcher promotion (PASSED_G2)
+
+- **Reason and starting point:** continued the v2 file/object/scheduler wave on `codex/decomp-100-task-plan`, starting from clean commit `eac9afb415e23bdea76c2a1bacd735036c967f78`; `origin/chatgptweb/decomp` matched. G64-012 was already `PASSED_G2`.
+- **Original evidence:** pinned `mnsg` commit `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` places `func_80036308_36F08` at VMA `0x80036308`, ROM offset `0x36F08`, size 128 bytes / 32 words, SHA-256 `9111b1246e8888b7caf8a8b43bd5595a4a9ae6fbf13c9820c26626a6920cb85c`. All words match the SHA-1-verified decompressed USA ROM. It is a per-node dispatcher on `flags & 0x7F`, not a list walker: kinds 1, 2 and 3 call the observed helpers in order; kind 4/default and null use their observed no-helper paths. Nine direct callers ignore its return value. The neighboring accepted `func_800362DC_36EDC` is the linked-list walker.
+- **Changes:** promoted the exact 128-byte function in `decomp/object_flags.c`, declared it in the header, and added it to the object_flags C ownership partition. Host tests exercise the actual production dispatch with trace stubs and compare it to the ROM-derived reference; the neighboring list walker is covered for empty, one-node and three-node lists. `tests/test_decomp_verify.py` now checks manifest, proof and inventory counts structurally instead of pinning current totals. Added [`decomp/plans/execution/2026-11-13-g64-074-object-flags.json`](decomp/plans/execution/2026-11-13-g64-074-object-flags.json).
+- **Native/full-ROM proof:** one pinned IDO 5.3 candidate linked at the original VMA and matched all 128 bytes in the production translation unit; its four helper relocations resolved. A fresh verifier run matched all 33,554,432 ROM bytes, 149/149 claimed functions and 11,148 MIPS bytes. Fresh inventory reports 149 matching C, 162 total C, 7,214 ASM and 7,376 entries.
+- **Tests:** GCC 15.2 ASan/UBSan host dispatch/list tests passed; the `0x7F`→`0xFF` mask mutant was rejected. The decomp Python suite passed **157/157**, verifier suite **17/17**, skill/task-context suites **17/17**; `decomp.skill_context --validate`, the G64-075 brief, JSON parsing and `git diff --check` passed. Local CI was attempted but is unavailable because this branch has no `.github/workflows` directory (exit 1).
+- **Limitations:** the helper stubs record calls only and do not assert helper side effects or in-game engine behavior. No in-game verification occurred. Local CI could not run without a workflow directory.
+- **Next:** continue with G64-075, characterizing object routine `80036388`; keep every unverified function under its current ownership.
+
+
 ## 2026-11-13 — G64-073 file-table mapper trace (RESEARCH_ONLY)
 
 - **Reason and branch:** continued Architect v2 after G64-072 in the existing fresh worktree. Local and remote `chatgptweb/decomp` both began at `3bb5c9408e275defff70d458eab4a35477336301`; the initial worktree was clean.

@@ -103,12 +103,12 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
 
-### G64-074 — Characterize object list 80036308
+### G64-074 — Characterize object dispatcher 80036308
 
-**Status:** PLANNED. **Dependencies:** G64-012.
+**Status:** PASSED_G2. **Dependencies:** G64-012.
 **Focus files:** `decomp/object_flags.c`; `decomp/object_flags.h`; `decomp/test_object_flags.c`.
 
-**Architectural intent:** Use matched 800362DC and object_flags.h to derive next function's pointer iteration and flag updates.
+**Architectural intent:** Use the matched 800362DC neighbor and pinned MIPS to distinguish this per-node dispatcher from list traversal.
 
 **Numbered implementation recipe:**
 1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
@@ -122,11 +122,13 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
-**Explicit acceptance:** A host linked-list test exercises empty/single/multiple nodes and keeps byte flags outside selected field unchanged.
+**Explicit acceptance:** Test the dispatcher's original single-node flag selection, helper order, default paths and null behavior; document return-register behavior from MIPS, where all direct callers ignore it. The adjacent 800362DC separately covers empty/single/multiple-node traversal.
 
 **Required negative control:** Preserve actual list termination, mutation order, signed/unsigned table arithmetic and atomicity; do not introduce a safety check that changes original native code.
 
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Outcome (2026-11-13):** Pinned MIPS shows `func_80036308_36F08` is a 128-byte per-node dispatcher, not a list walker. It loads node byte `+4`, selects on `flags & 0x7F`, and dispatches kinds 1–3 to four helpers in the observed order; kind 4/default and null follow their original return paths. All nine direct callers ignore the result. Host tests cover the dispatch table and null/default behavior; the neighboring `func_800362DC_36EDC` keeps the empty/single/multiple linked-list coverage. One pinned IDO candidate matched all 128 bytes in the integrated source unit. Fresh full-ROM G2 matched 149/149 claims and all 33,554,432 bytes; inventory now records 149 matching C and 7,214 remaining ASM entries. See `plans/execution/2026-11-13-g64-074-object-flags.json`.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
 

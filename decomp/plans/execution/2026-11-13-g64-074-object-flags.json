@@ -1,0 +1,151 @@
+{
+  "task_id": "G64-074",
+  "title": "Characterize object dispatcher 80036308",
+  "date": "2026-11-13",
+  "status": "PASSED_G2",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "eac9afb415e23bdea76c2a1bacd735036c967f78",
+    "remote_head_at_start": "eac9afb415e23bdea76c2a1bacd735036c967f78",
+    "initial_worktree": "clean",
+    "dependencies": {
+      "G64-012": "PASSED_G2"
+    },
+    "matching_c": 148,
+    "matching_bytes": 11020,
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "stored_proof_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "inventory_sha256": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a"
+  },
+  "original_source": {
+    "upstream_repository": "klorfmorf/mnsg",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "asm_file": "asm/usa/36750.s",
+    "asm_sha256": "b3a386915def9810e277e378b995fa493d81bb44891d369fe97cb77c3b86a14f",
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "original_span_matches_rom": true,
+    "matched_words": 32,
+    "total_words": 32
+  },
+  "source_unit": {
+    "manifest_source": "object_flags.c",
+    "rom_start": "0x36EDC",
+    "rom_end": "0x370FC",
+    "original_splat": "[0x36750, asm]",
+    "replacement_partition": "[0x36750, asm]; [0x36EDC, C object_flags]; [0x370FC, asm]",
+    "accepted_c_sibling": "func_800362DC_36EDC (44 bytes; list walker)",
+    "target_ownership": "added func_80036308_36F08 (128 bytes) as matching C; later functions remain GLOBAL_ASM"
+  },
+  "target": {
+    "name": "func_80036308_36F08",
+    "vma": "0x80036308",
+    "rom_offset": "0x36F08",
+    "size_bytes": 128,
+    "size_words": 32,
+    "sha256": "9111b1246e8888b7caf8a8b43bd5595a4a9ae6fbf13c9820c26626a6920cb85c"
+  },
+  "behavior": {
+    "function_role": "per-node dispatcher; it does not walk the linked list",
+    "input": "a0 points to one ObjectFlagNode; null exits without a helper call",
+    "dispatch": "loads the byte at node+4 and switches on flags & 0x7F: kind 1 calls 80007C90 then 8000A228; kind 2 calls 8000A5C4; kind 3 calls 8000A394; kind 4 and all other kinds call no helper",
+    "writes": "the dispatcher itself does not write node flags or next pointer; direct helper side effects are opaque and not modeled",
+    "callers": "nine direct caller sites in asm/usa/36750.s; each ignores the return register",
+    "return_register": "null retains entry v0; kind 4/default leaves the loaded flag byte in v0; helper cases leave helper return values; all observed callers ignore v0"
+  },
+  "host_tests": {
+    "test_file": "decomp/test_object_flags.c",
+    "coverage": [
+      "neighboring 800362DC empty/single/three-node traversal",
+      "actual production 80036308 helper order and arguments",
+      "dispatch kinds 1-4 and default",
+      "high flag bit masking",
+      "null node",
+      "flag and next-pointer preservation with side-effect-free helper stubs"
+    ],
+    "negative_control": "changing the production mask from 0x7F to 0xFF is rejected by the actual-dispatch/reference trace comparison",
+    "limitations": "host helper stubs record dispatch only; they do not represent helper semantics, engine behavior, or in-game side effects"
+  },
+  "candidate_trials": [
+    {
+      "variant": "single low-seven-bit switch with ordered helper calls",
+      "hypothesis": "Express the ROM-observed per-node dispatch cases directly in C and test in the real object_flags translation unit.",
+      "candidate_source_sha256": "b704daac2cc727f8e7560e8558712e12dd988cb5a6df49a8d3eaef12c4f2c5c8",
+      "linked_symbol_vma": "0x80036308",
+      "linked_symbol_bytes": 128,
+      "exact_original_bytes": true,
+      "equal_instruction_words": 32,
+      "first_mismatch_instruction": null,
+      "relocations": "All four helper calls resolved in the production source-unit link."
+    }
+  ],
+  "toolchain": {
+    "ido": "Pinned IDO 5.3",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "linker": "GNU ld (GNU Binutils for Ubuntu) 2.45.90.20260125",
+    "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0"
+  },
+  "full_rom": {
+    "status": "PASS",
+    "report": "decomp/results/combined.json",
+    "fresh_run_started_utc": "2026-11-13T10:13:46.052372+00:00",
+    "fresh_run_ended_utc": "2026-11-13T10:15:06.018425+00:00",
+    "full_rom_match": true,
+    "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "matched_functions": 149,
+    "claimed_functions": 149,
+    "matched_function_bytes": 11148,
+    "target_matched": true
+  },
+  "inventory": {
+    "status": "PASS",
+    "report": "decomp/results/inventory.json",
+    "identified_function_entries": 7376,
+    "newly_matching_c": 149,
+    "remaining_assembly_entries": 7214,
+    "current_unmarked_entries": 162,
+    "extra_positive_alias_entries": 0,
+    "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  },
+  "decision": {
+    "classification": "PASSED_G2",
+    "native_variants_tested": 1,
+    "production_candidate_integrated": true,
+    "production_source_changed": true,
+    "manifest_changed": true,
+    "proof_changed": true,
+    "full_rom_g2": "PASS",
+    "inventory_rebuild": "PASS",
+    "matching_c_delta": 1,
+    "matching_byte_delta": 128,
+    "reason": "The 128-byte candidate matched exactly at its original VMA in the object_flags source unit, and the fresh complete-ROM and symbol-inventory gates passed."
+  },
+  "tests": {
+    "production_host_dispatch": "PASS; GCC ASan/UBSan harness compared the actual dispatcher helper traces against the ROM-derived reference.",
+    "negative_control": "PASS; replacing the low-seven-bit mask with an 8-bit mask was rejected (mutant exit -6).",
+    "full_decomp_suite": "PASS; python3 -m unittest discover -s decomp -p 'test_*.py' -q, 157/157.",
+    "verifier_suite": "PASS; python3 -m unittest tests.test_decomp_verify -q, 17/17; manifest/proof/inventory counts are checked structurally.",
+    "skill_context_suite": "PASS; python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q, 17/17.",
+    "task_ledger": "PASS; python3 -m decomp.skill_context --validate reported CONSISTENT_STORED_REPORTS.",
+    "next_task_brief": "PASS; G64-075 selected with G64-074=PASSED_G2 and stored proof 149/149.",
+    "json_and_diff": "PASS; changed JSON files parsed and git diff --check exited 0.",
+    "local_ci": "UNAVAILABLE; npx run-local-ci run --all --pause-on-failure --json exited 1 because this branch has no .github/workflows directory.",
+    "initial_host_link_attempt": "FAILED, then resolved by adding side-effect-free stubs for the four external helpers and comparing actual production dispatch against the reference model."
+  },
+  "next": "Continue with G64-075, characterizing object routine 80036388; G64-074 is complete and the matching-C total is 149 functions / 11148 bytes.",
+  "source_hashes": {
+    "decomp/object_flags.c": "b27ee6ef258cc2e49a2e4c11c0810d2cde8b12259206d32a6b06f843418fcd12",
+    "decomp/object_flags.h": "a1ae2142a30df3f47807b974a0641e5d0569bca8be95c497eb2bb48ba2e23616",
+    "decomp/test_object_flags.c": "cf59efbc0ade69b722f0f2de060a083672cf865e860e68eab0a321904b98281d",
+    "decomp/manifest.json": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "decomp/results/combined.json": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "decomp/results/inventory.json": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6",
+    "tests/test_decomp_verify.py": "970fd6c2b03e10e7ed8e291613ead9af6176d65e4c6e95ffd514879efcc7c73b",
+    "decomp/plans/TASKS_100.json": "e88c5c2aea9a17edffce9494265dad45b5867275f2b7a5d1d816bbb3d07953de"
+  }
+}

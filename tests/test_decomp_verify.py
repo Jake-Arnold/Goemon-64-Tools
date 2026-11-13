@@ -13,14 +13,16 @@ ROOT=Path(__file__).resolve().parents[1]
 class DecompVerificationTests(unittest.TestCase):
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        self.assertEqual(sum(len(u['functions']) for u in manifest['units']),147)
-        self.assertEqual(len(claimed_functions(manifest)),148)
-        # The accepted checkpoint has 147 unit functions plus one reviewed source patch.
-        # Require its published proof and inventory to agree with the live claims.
+        unit_functions=sum(len(u['functions']) for u in manifest['units'])
+        claims=claimed_functions(manifest)
+        # Source patches are part of the public claim set but live outside units.
+        # Check structural agreement so promotions do not require pinning counts here.
+        self.assertEqual(len(claims),unit_functions+len(manifest.get('existing_source_patches',[])))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
-        self.assertEqual(proof['comparison']['matched_functions'],len(claimed_functions(manifest)))
-        self.assertEqual(inventory['summary']['newly_matching_c'],len(claimed_functions(manifest)))
+        self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
+        self.assertEqual(proof['comparison']['matched_functions'],len(claims))
+        self.assertEqual(inventory['summary']['newly_matching_c'],len(claims))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'bad.json'
             bad=copy.deepcopy(manifest);bad['units'][0]['source']='../other.c'

@@ -36,7 +36,7 @@
 
 ## Architect v2 — revised execution priority
 
-The [current strategy](EXECUTION_STRATEGY_V2.md) supersedes strictly numeric execution. Each pending machine-readable task has an `architect_override_v2` returned by `decomp.skill_context --task`. G64-035 through G64-040, G64-071–073, G64-091 and G64-090 are `RESEARCH_ONLY`; `decomp.skill_context --status` reports the lowest-numbered PLANNED ID (G64-041), while the reviewed v2 execution order proceeds to G64-074–080 after the completed G64-090 audit and G64-071–073 file-table investigations. Preserve task IDs, completed statuses and exact G2. The original numeric notes below are historical, not a fresh result.
+The [current strategy](EXECUTION_STRATEGY_V2.md) supersedes strictly numeric execution. Each pending machine-readable task has an `architect_override_v2` returned by `decomp.skill_context --task`. G64-035 through G64-040, G64-071–073, G64-091 and G64-090 are `RESEARCH_ONLY`; G64-074 is `PASSED_G2`; `decomp.skill_context --status` reports the lowest-numbered PLANNED ID (G64-041), while the reviewed v2 execution order proceeds to G64-075–080 after the completed G64-090 audit, G64-071–073 file-table investigations, and G64-074 object-dispatch promotion. Preserve task IDs, completed statuses and exact G2. The original numeric notes below are historical, not a fresh result.
 
 ## Historical numeric progression
 1. G64-001–014 have recorded outcomes: the resource wrappers, menu trio and object dispatcher passed G2; G64-003 was already complete.
@@ -45,6 +45,6 @@ The [current strategy](EXECUTION_STRATEGY_V2.md) supersedes strictly numeric exe
 4. At every phase boundary run G64-099 rebaseline. Live manifest/results override this plan's historical numeric assumptions.
 5. When a phase is blocked, update the task ledger with exact failure evidence and proceed to an independent work unit; leave ASM intact.
 
-**Current authoritative published matching claim (2026-11-11):** 148 reconstructed C / 11,020 matched bytes, 161 total C, 7,215 ASM / 7,376 identified entries. The six resource, menu and object functions passed integrated native-unit and full-ROM gates; `results/combined.json` records the exact 33,554,432-byte image comparison. The four short additional functions remain unpromoted after bounded native retries. Neither a host test, isolated match, correct function size, nor plan status can increase the counts.
+**Current authoritative published matching claim (2026-11-13):** 149 reconstructed C / 11,148 matched bytes, 162 total C, 7,214 ASM / 7,376 identified entries. G64-074 added `func_80036308_36F08` after an exact integrated IDO unit match and fresh full-ROM/inventory gate; `results/combined.json` records the exact 33,554,432-byte image comparison. The four short additional functions remain unpromoted after bounded native retries. Neither a host test, isolated match, correct function size, nor plan status can increase the counts.
 
 **Publication boundary:** No proprietary ROM, asset, generated assembly, binary, private memory, or user-specific path enters this branch. No changes to main, no force-push.
