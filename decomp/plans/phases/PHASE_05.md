@@ -48,11 +48,11 @@ Do not equate host-compatible graphics output with original instruction order, f
 
 Historical E234 candidates remain nonmatches: the ordinary layout compiled to 516 bytes and the volatile-cursor layout to 480 bytes versus 440 original bytes. Their host output is mock semantics and does not establish original MIPS scheduling or ownership. G41 made no candidate, production, or manifest changes. The stored proof remains 153 functions / 11,800 bytes and inventory remains 7,376 entries. See plans/execution/2026-11-13-g64-041-display-emitter-trace.json.
 
-**Next:** G64-042 and G64-043 are dependency-ready after this trace; neither was started in this task.
+**Next:** G64-042 has since completed RESEARCH_ONLY. G64-043 remains PLANNED and dependency-ready; G64-044 waits for both tasks.
 
 ### G64-042 — Test first emitter memory model
 
-**Status:** PLANNED. **Dependencies:** G64-041.
+**Status:** RESEARCH_ONLY (completed 2026-11-13). **Dependencies:** G64-041.
 **Focus files:** `decomp/test_vm_display_emitters.c`; `decomp/script_vm.h`.
 
 **Architectural intent:** Host-test mock destination capacity, first/last graphics words, cursor advancement, aliasing and unchanged guard regions.
@@ -61,7 +61,7 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
 2. Read the exact focus files: decomp/test_vm_display_emitters.c, decomp/script_vm.h. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
 3. Implement the bounded design: Host-test mock destination capacity, first/last graphics words, cursor advancement, aliasing and unchanged guard regions.
-4. Use sentinel-guarded host graphics buffer to assert exact write order, first/last words, null/zero paths and unchanged padding.
+4. Use sentinel-guarded host graphics buffer to assert exact write order, first/last words, valid zero-input behavior and unchanged padding. Treat null cursor and owner pointers as invalid preconditions because the original path dereferences them directly.
 5. Keep all encoded command constants at supported widths and forbid accidental out-of-bounds behavior in tested valid inputs.
 6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
 7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
@@ -76,6 +76,10 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Added valid zero-input and aliased-owner cases to the first-emitter host harness. All 22 modeled command words, cursor advancement, first/last words, and guard regions are checked. The aligned fixture places owner[0x5D] over the B400 w0 slot, seeds the byte to one, and verifies that emitting w0 clears it before w1 reads it. A temporary pre-read-order mutant failed at the expected B400 w1 assertion. The test restores stack-backed global pointers before each helper returns. Null cursor and owner are invalid preconditions because the modeled original path dereferences them directly; no null behavior is claimed. ASan/UBSan passed 1,000 seeded cases plus zero and alias cases. This is mock memory semantics, not original-MIPS identity. Production source, candidate, manifest, and proof reports remain unchanged; native comparison, G2, and inventory were not run. See plans/execution/2026-11-13-g64-042-display-memory-model.json.
+
+**Next:** G64-043 remains PLANNED and dependency-ready; G64-044 waits for G64-042 and G64-043.
 
 ### G64-043 — Recover second display-list emitter
 

@@ -1696,7 +1696,7 @@
       "ordinal": 42,
       "phase": 5,
       "title": "Test first emitter memory model",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-041"
       ],
@@ -1710,7 +1710,7 @@
         "Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.",
         "Read the exact focus files: decomp/test_vm_display_emitters.c, decomp/script_vm.h. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.",
         "Implement the bounded design: Host-test mock destination capacity, first/last graphics words, cursor advancement, aliasing and unchanged guard regions.",
-        "Use sentinel-guarded host graphics buffer to assert exact write order, first/last words, null/zero paths and unchanged padding.",
+        "Use sentinel-guarded host graphics buffer to assert exact write order, first/last words, valid zero-input behavior and unchanged padding. Treat null cursor and owner pointers as invalid preconditions because the original path dereferences them directly.",
         "Keep all encoded command constants at supported widths and forbid accidental out-of-bounds behavior in tested valid inputs.",
         "Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.",
         "For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.",

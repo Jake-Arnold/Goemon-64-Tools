@@ -81,5 +81,108 @@ static void check(unsigned idx, unsigned *seed){
   for(unsigned j=0;j<22;j++) {
      if(memory[j+2]!=expect[j]) {fprintf(stderr,"case %u command word %u: %08X expected %08X\n",idx,j,memory[j+2],expect[j]);abort();}
   }
+  D_8015C5CC_15D1CC = NULL;
+  D_80077860_78460 = owner;
 }
-int main(void){ unsigned seed=0xCE11AB1E;for(unsigned i=0;i<1000;i++)check(i,&seed);puts("VM graphics writer: 1000/1000 synthetic host cases passed");return 0;}
+
+static void check_zero_case(void) {
+  u32 memory[32];
+  u32 expect[22];
+
+  for (unsigned j = 0; j < 32; j++) memory[j] = 0xC0DE0000U + j;
+  D_8015C5CC_15D1CC = memory + 8;
+  D_801C78D8_1C84D8 = 0;
+  D_801C78DC_1C84DC = 0;
+  D_80077860_78460 = owner;
+  memset(owner, 0, sizeof(owner));
+
+  expect[0] = 0x06000000; expect[1] = VM_ADDR(D_800777F0_783F0);
+  expect[2] = 0xFD100000; expect[3] = VM_ADDR(D_80077150_77D50);
+  expect[4] = 0xF5100000; expect[5] = 0x07000000;
+  expect[6] = 0xE6000000; expect[7] = 0;
+  expect[8] = 0xF3000000; expect[9] = 0x071FF100;
+  expect[10] = 0xE7000000; expect[11] = 0;
+  expect[12] = 0xF5101000; expect[13] = 0;
+  expect[14] = 0xF2000000; expect[15] = 0x0007C03C;
+  expect[16] = 0xE403C03C; expect[17] = 0;
+  expect[18] = 0xB4000000; expect[19] = 0;
+  expect[20] = 0xB3000000; expect[21] = 0x10000400;
+
+  func_8003E234_3EE34();
+
+  assert(D_8015C5CC_15D1CC == memory + 30);
+  for (unsigned j = 0; j < 8; j++) assert(memory[j] == 0xC0DE0000U + j);
+  assert(memory[30] == 0xC0DE001EU && memory[31] == 0xC0DE001FU);
+  assert(memory[8] == 0x06000000);
+  assert(memory[29] == 0x10000400);
+  for (unsigned j = 0; j < 22; j++) {
+    if (memory[j + 8] != expect[j]) {
+      fprintf(stderr, "zero case command word %u: %08X expected %08X\n",
+              j, memory[j + 8], expect[j]);
+      abort();
+    }
+  }
+  D_8015C5CC_15D1CC = NULL;
+  D_80077860_78460 = owner;
+}
+
+static void check_owner_byte_alias(void) {
+  u32 memory[32];
+  u32 expect[22];
+  u32 x = 5;
+  u32 y = 9;
+  u8 *alias_owner;
+
+  for (unsigned j = 0; j < 32; j++) memory[j] = 0xC0DE0000U + j;
+  D_8015C5CC_15D1CC = memory + 8;
+  D_801C78D8_1C84D8 = x;
+  D_801C78DC_1C84DC = y;
+  alias_owner = (u8 *)memory + 26 * sizeof(u32) - 0x5D;
+  D_80077860_78460 = alias_owner;
+  alias_owner[0x5D] = 1;
+  assert(alias_owner[0x5D] == 1);
+
+  expect[0] = 0x06000000; expect[1] = VM_ADDR(D_800777F0_783F0);
+  expect[2] = 0xFD100000; expect[3] = VM_ADDR(D_80077150_77D50);
+  expect[4] = 0xF5100000; expect[5] = 0x07000000;
+  expect[6] = 0xE6000000; expect[7] = 0;
+  expect[8] = 0xF3000000; expect[9] = 0x071FF100;
+  expect[10] = 0xE7000000; expect[11] = 0;
+  expect[12] = 0xF5101000; expect[13] = 0;
+  expect[14] = 0xF2000000; expect[15] = 0x0007C03C;
+  expect[16] = 0xE4000000 | (((((x + 15) * 4) & 0xFFF) << 12)) |
+               (((y + 15) * 4) & 0xFFF);
+  expect[17] = (((x * 4) & 0xFFF) << 12) | ((y * 4) & 0xFFF);
+  expect[18] = 0xB4000000;
+  expect[19] = 0; /* B400 w0 overwrites the aliased odd owner byte first. */
+  expect[20] = 0xB3000000; expect[21] = 0x10000400;
+
+  func_8003E234_3EE34();
+
+  assert(D_8015C5CC_15D1CC == memory + 30);
+  for (unsigned j = 0; j < 8; j++) assert(memory[j] == 0xC0DE0000U + j);
+  assert(memory[30] == 0xC0DE001EU && memory[31] == 0xC0DE001FU);
+  assert(memory[8] == 0x06000000);
+  assert(memory[29] == 0x10000400);
+  assert(memory[26] == 0xB4000000);
+  assert(memory[27] == 0);
+  assert((alias_owner[0x5D] & 1) == 0);
+  for (unsigned j = 0; j < 22; j++) {
+    if (memory[j + 8] != expect[j]) {
+      fprintf(stderr, "alias case command word %u: %08X expected %08X\n",
+              j, memory[j + 8], expect[j]);
+      abort();
+    }
+  }
+  D_8015C5CC_15D1CC = NULL;
+  D_80077860_78460 = owner;
+}
+
+int main(void) {
+  unsigned seed = 0xCE11AB1E;
+  for (unsigned i = 0; i < 1000; i++) check(i, &seed);
+  check_zero_case();
+  check_owner_byte_alias();
+  puts("VM graphics writer: 1000 synthetic cases plus zero and owner-alias cases passed");
+  return 0;
+}

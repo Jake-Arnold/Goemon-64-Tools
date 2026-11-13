@@ -1,0 +1,109 @@
+{
+  "task_id": "G64-042",
+  "title": "Test first emitter memory model",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "base_head": "da9a101d2ec4dbfb1981fd3f590aaefc0d98a072",
+    "fetched_remote_head_at_start": "da9a101d2ec4dbfb1981fd3f590aaefc0d98a072",
+    "worktree_at_start": "clean",
+    "dependency": "G64-041=RESEARCH_ONLY"
+  },
+  "target": {
+    "symbol": "func_8003E234_3EE34",
+    "vma": "0x8003E234",
+    "rom_offset": "0x3EE34",
+    "original_size_bytes": 440,
+    "original_word_count": 110,
+    "original_word_evidence": "The G64-041 report records that all 110 local ROM words matched the pinned assembly annotations. This report contains no raw opcodes or ROM data; the ROM comparison was not repeated for G64-042.",
+    "production_source_unit": "decomp/script_vm.c",
+    "manifest_owner": "GLOBAL_ASM",
+    "candidate_source": "decomp/candidates/vm_display_e234.c",
+    "candidate_source_unchanged": true,
+    "production_source_unchanged": true,
+    "manifest_unchanged": true,
+    "proof_reports_unchanged": true
+  },
+  "host_model": {
+    "test_file": "decomp/test_vm_display_emitters.c",
+    "host_only": true,
+    "semantics": "Mock memory behavior and expected command words; not original-MIPS emulation, instruction scheduling proof, or matching-C evidence.",
+    "coverage": [
+      "1,000 seeded synthetic cases check all 22 output words, cursor advancement, and unchanged buffer guards.",
+      "Zero X/Y and zero owner flags check valid zero-input behavior across the same 22 output words.",
+      "An aligned u32 memory[32] with cursor memory+8 checks an aliased owner byte and surrounding guard regions.",
+      "The alias pointer is (u8 *)memory + 26*sizeof(u32) - 0x5D, so owner[0x5D] aliases memory[26], the B400 command w0 slot.",
+      "The alias case seeds that byte to one, asserts one before the call, then checks that B400 w0 clears it before B400 w1 is observed as zero.",
+      "Stack-backed cursor and owner pointers are restored before the test helpers return."
+    ],
+    "invalid_preconditions": "Null cursor and null owner pointers are invalid preconditions: the modeled original path directly dereferences them and has no null guard. No null behavior is asserted.",
+    "assertions": [
+      "All 22 modeled command words are asserted in order.",
+      "The output cursor advances by 22 words from memory+8 to memory+30 in the two boundary cases.",
+      "First and last command words and all prefix/suffix sentinels are checked."
+    ],
+    "order_mutant": {
+      "description": "A temporary mutant reads owner[0x5D] before emitting the B400 w0 word.",
+      "result": "Rejected at the alias assertion memory[27] == 0 because the mutant writes the seeded flag bit into B400 w1.",
+      "exit_code": 134,
+      "temporary_artifact": "Mutant source and executable remained under /tmp and are not tracked."
+    }
+  },
+  "decision": {
+    "classification": "RESEARCH_ONLY",
+    "native_variants": 0,
+    "native_unit_comparison": "NOT_RUN",
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "reason": "The host fixture checks modeled write order and valid memory boundaries, but does not prove original MIPS identity. Preserve the production GLOBAL_ASM ownership."
+  },
+  "tests": {
+    "focused_asan_ubsan": {
+      "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -Idecomp decomp/test_vm_display_emitters.c -o /tmp/g64-042-vm-display-host && ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/g64-042-vm-display-host",
+      "exit_code": 0,
+      "result": "1000 synthetic cases plus zero and owner-alias cases passed."
+    },
+    "order_mutant": {
+      "compile_command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -Idecomp -DGOEMON_VM_DISPLAY_SOURCE='\"/tmp/g64-042-order-mutant.c\"' decomp/test_vm_display_emitters.c -o /tmp/g64-042-vm-display-mutant",
+      "run_command": "ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/g64-042-vm-display-mutant",
+      "exit_code": 134,
+      "expected_failure": "Assertion memory[27] == 0 in check_owner_byte_alias."
+    },
+    "local_ci": "UNAVAILABLE; the repository has no .github/workflows directory, so there are no GitHub Actions workflows for Local CI to run.",
+    "skill_context_validation": "PASS; python3 -m decomp.skill_context --validate returned CONSISTENT_STORED_REPORTS for 100 tasks.",
+    "focused_context_unit_tests": "PASS; python3 -m unittest decomp.test_skill_context -q ran 15 tests.",
+    "broad_python_suites": "NOT_RUN; no Python implementation changed, and the focused task-context tests passed.",
+    "json_validation": "PASS; task ledger and execution JSON parsed and reported the intended RESEARCH_ONLY state.",
+    "git_diff_check": "PASS; git diff --check exited 0.",
+    "in_game": "NOT_RUN"
+  },
+  "proof_checkpoint": {
+    "stored_matching_c_functions": 153,
+    "stored_matching_mips_bytes": 11800,
+    "stored_combined_c": 166,
+    "stored_asm": 7210,
+    "inventory_entries": 7376,
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "combined_report_sha256": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "inventory_report_sha256": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694",
+    "status": "Unchanged; no G2 or inventory rebuild was needed for this host-only research task.",
+    "yield_delta_functions": 0,
+    "yield_delta_bytes": 0
+  },
+  "source_hashes": {
+    "host_test": "9b66299ba38a5ab1fa2ba060adc3c79ed6f50f4c2aac707498150e664434288e",
+    "candidate": "5b9cd11a45650b20c9f24b0fb1bedc82d2bef72fb90803f25221bed4e7bc38c6",
+    "production_header": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "combined_report": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "inventory_report": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694"
+  },
+  "next": "G64-043 remains PLANNED and dependency-ready. G64-044 remains dependent on both G64-042 and G64-043. No G64-043 work was started."
+}
