@@ -1,0 +1,182 @@
+{
+  "task_id": "G64-073",
+  "title": "Inspect file-table reader 80001EB0",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "3bb5c9408e275defff70d458eab4a35477336301",
+    "remote_head_at_start": "3bb5c9408e275defff70d458eab4a35477336301",
+    "initial_worktree": "clean",
+    "dependencies": {
+      "G64-072": "RESEARCH_ONLY"
+    },
+    "matching_c": 148,
+    "matching_bytes": 11020,
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "stored_proof_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "inventory_sha256": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a"
+  },
+  "original_source": {
+    "upstream_repository": "klorfmorf/mnsg",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "asm_file": "asm/usa/2800.s",
+    "asm_sha256": "de37c0fb9d9d7dc6c5e10740e5ef44d0b0e4f65d6dad66aca652e30ab9ee3f06",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "original_span_matches_rom": true,
+    "matched_words": 78,
+    "total_words": 78
+  },
+  "source_unit": {
+    "manifest_source": "file_table.c",
+    "rom_start": "0x2968",
+    "rom_end": "0x2BE8",
+    "original_splat": "[0x2800, asm]",
+    "replacement_partition": "[0x2800, asm]; [0x2968, C file_table]; [0x2BE8, asm]",
+    "accepted_c_sibling": "func_80001D68_2968 (44 bytes)",
+    "target_ownership": "assembly_functions in file_table.c; no accepted C definition",
+    "shared_data": {
+      "D_80054ACC_556CC": "Referenced by functions in asm/usa/2800.s, including the 8-byte-stride 80001DC0 reader and this target. No declaration or total extent was found in the pinned source; its two words are described only by their observed loads and arithmetic, not assigned start/end semantics.",
+      "D_8015C5C8_15D1C8": "Declared as SYS_W* in include/common.h. The target loads this pointer and accesses a 32-bit mapping slot at pointer + 0xC8000 + page*4 + 0x780C. No slot-array extent is declared here."
+    }
+  },
+  "target": {
+    "name": "func_80001EB0_2AB0",
+    "vma": "0x80001EB0",
+    "rom_offset": "0x2AB0",
+    "size_bytes": 312,
+    "size_words": 78,
+    "sha256": "8361ccfbf9f476c692c4b0afdd2a35740f47f05b5042bc7c43c952694a792599"
+  },
+  "behavior": {
+    "abi": {
+      "input_a0": "Consumed as a full-width register value and passed unchanged to func_80001DF4_29F4. The C declaration in src/wave_uty.c uses unsigned short for its task-field caller; the other direct caller passes constant 0x3C.",
+      "input_a1": "Masked with 0x3FFFFFFF in the delay slot of the DF4 call; the result is the base added to each 0x2000 destination step.",
+      "return": "Returns word zero on both the DF4-zero path and the common exit. Both direct callers ignore it.",
+      "callee_saved": "The original uses a 0x40-byte frame, saves/restores $ra and $s0-$s7, and restores the incoming stack pointer."
+    },
+    "gate_and_index_zero": "Calls func_80001DF4_29F4 first. A zero result takes a branch-likely exit. The target's index-zero fallback sets source 0x07000000 and page count 31, but G64-071 established DF4(0)=0, so that fallback is unreachable through the current helper.",
+    "record_arithmetic": "For nonzero index, computes byte offset index*8-8 from D_80054ACC_556CC, loads 32-bit words at offsets 0 and 4, subtracts word0 from word1 with unsigned wrap, and shifts right logically by 13 to produce page_count. No count, sentinel, or bounds check appears in this target.",
+    "mapping_loop": "Starts at page 0 and loops inclusively while page <= page_count. Source and destination offsets advance by 0x2000 per page. It reads the mapping slot at the address derived from the loaded D_8015C5C8 pointer plus 0xC8000 + page*4 + 0x780C. If the slot already equals destination_base+offset, it skips osMapTLB; otherwise it writes that value and calls osMapTLB(page, 0, source_base+offset, reloaded_slot_value, reloaded_slot_value+0x1000, -1). The prototype observed in PR/os.h returns void and accepts six arguments.",
+    "sign_check": "The bltz test follows a logical right shift by 13 (or the constant 31), so its negative exit is unreachable for the values produced by these paths.",
+    "callers": [
+      {
+        "caller": "func_8001198C_1258C",
+        "pc": "0x800119A8",
+        "arguments": "a0=0x3C; a1 is the value returned by the preceding func_800141C4_14DC4 call.",
+        "result_use": "Ignored before the caller makes an indirect call."
+      },
+      {
+        "caller": "func_8001481C_1541C",
+        "pc": "0x80014828",
+        "arguments": "a1 is task->wave.data from +0x2C; the jal delay slot loads a0 as an unsigned halfword from task->wave.wave_no at +0x28.",
+        "result_use": "Ignored by the void caller. The pinned C declaration is int func_80001EB0_2AB0(unsigned short, int)."
+      }
+    ],
+    "characterized_table_index": "The assembly caller's constant index 60 selects row 59 (byte offset 0x1D8, then words at +0 and +4) when the DF4 gate is nonzero. A synthetic 60-row host fixture with guard words covers this arithmetic. The pinned source does not establish the actual table's total extent; the dynamic halfword caller's valid domain remains unknown."
+  },
+  "host_model": {
+    "test_file": "decomp/test_file_table.c",
+    "new_cases": 4,
+    "cases": [
+      "DF4-zero gate returns without reading or changing mapping slots, including index zero.",
+      "A three-page inclusive range maps pages 0 and 2 while skipping page 1 whose slot already matches; the source/destination arguments and 0x1000 extent argument are checked.",
+      "Repeating the same request skips all already-correct slots.",
+      "The constant caller's index 60 selects row 59 without touching fixture guard words."
+    ],
+    "negative_control": "Changing page <= page_count to page < page_count causes the expected call-count assertion to fail.",
+    "limitations": "Synthetic host reference only; no real TLB or in-game behavior is exercised. The host fixture does not assert the undeclared global table extent."
+  },
+  "candidate_trials": [
+    {
+      "variant": "full-width arguments and direct offset loop",
+      "hypothesis": "Express the observed 32-bit index, mask, record pair, inclusive page loop and mapping writes directly in C.",
+      "candidate_source_sha256": "443ff51cfb221dc73f76e36be4e29c67ea6350c53109abbd07de6052e885f189",
+      "linked_symbol_vma": "0x80001EB0",
+      "linked_symbol_bytes": 304,
+      "exact_original_bytes": false,
+      "equal_instruction_words": 3,
+      "first_mismatch_instruction": "+0x04",
+      "original_word": "3c013fff",
+      "candidate_word": "afbf003c",
+      "relocations": "Six linked relocations resolved: DF4 call, D_80054ACC HI16/LO16, D_8015C5C8 HI16/LO16, and osMapTLB call."
+    },
+    {
+      "variant": "caller-declared argument types",
+      "hypothesis": "Use unsigned short index and int destination as declared in the pinned wave_uty.c caller, retaining the same loop and record access.",
+      "candidate_source_sha256": "09932508483a879ee1a29d6e3718382dbaad5dd49b134098f1157d10fc6b1398",
+      "linked_symbol_vma": "0x80001EB0",
+      "linked_symbol_bytes": 320,
+      "exact_original_bytes": false,
+      "equal_instruction_words": 11,
+      "first_mismatch_instruction": "+0x04",
+      "original_word": "3c013fff",
+      "candidate_word": "afb0001c",
+      "relocations": "Six linked relocations resolved: DF4 call, D_80054ACC HI16/LO16, D_8015C5C8 HI16/LO16, and osMapTLB call."
+    }
+  ],
+  "toolchain": {
+    "ido": "Pinned IDO 5.3",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "linker": "GNU ld (GNU Binutils for Ubuntu) 2.45.90.20260125",
+    "native_flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0"
+  },
+  "decision": {
+    "classification": "RESEARCH_ONLY",
+    "native_variants_tested": 2,
+    "production_candidate_integrated": false,
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "matching_c_delta": 0,
+    "reason": "Both bounded candidates linked at the original VMA with resolved relocations, but both retained a first mismatch at +0x04. The original begins materializing the destination mask before its saved-register stores; IDO instead schedules a saved-register store there. The second caller-type hypothesis did not move the first mismatch. Stop the native search and retain GLOBAL_ASM. The global table extent remains undeclared, and no source-unit-exact candidate qualified for G2.",
+    "unit_exact_build": "NOT_RUN because neither isolated candidate matched the target",
+    "local_ci": "UNAVAILABLE; this branch has no .github/workflows directory"
+  },
+  "tests": {
+    "rom_bound_original_span": "PASS; private decompressed ROM comparison matched all 78/78 words at 0x2AB0..0x2BE8.",
+    "portable_c_reference_model": "PASS; GCC 15.2 ASan/UBSan host run covers the G64-071/072/073 reference cases, including four G64-073 scenarios.",
+    "negative_control": "PASS; exclusive-end page loop mutant failed at the G64-073 inclusive call-count assertion.",
+    "native_candidates": "MISMATCH as expected; two pinned IDO 5.3 objects linked at 0x80001EB0 (304 and 320 bytes versus 312); both first differed at +0x04. Six relocations resolved in each candidate.",
+    "source_unit_exact": "NOT_RUN; no isolated candidate matched.",
+    "full_rom_g2": "NOT_RUN; no source-unit-exact candidate.",
+    "inventory_rebuild": "NOT_RUN; no source-unit-exact candidate.",
+    "repository_suites": "PASS; decomp Python suite 157/157, verifier tests 17/17, and skill-context/metadata tests 17/17.",
+    "task_context_validation": "PASS; python3 -m decomp.skill_context --validate reported CONSISTENT_STORED_REPORTS; the G64-074 brief selected the next planned v2 task.",
+    "json_and_diff": "PASS; python3 -m json.tool and git diff --check exited 0.",
+    "local_ci": "UNAVAILABLE; npx run-local-ci run --all --pause-on-failure --json exited 1 because no .github/workflows directory exists on this branch."
+  },
+  "next": "Continue with G64-074, characterizing object list 80036308; keep func_80001EB0_2AB0 as GLOBAL_ASM.",
+  "source_hashes": {
+    "decomp/file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
+    "decomp/test_file_table.c": "ec6725e24f4a2fbad3bf69584f943655222888374c629fb9452363837031a477",
+    "decomp/manifest.json": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "decomp/results/combined.json": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "decomp/results/inventory.json": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a",
+    "pinned_src/wave_uty.c": "b48d1efed7f22d9f51c9e0eea63f47eb1e50039ee6b7642d2b499ddc63c6a260",
+    "pinned_include/common.h": "b8c4e5d995fe27a72b278e9d6319f841468e500976a0f8d059599cea7c966496"
+  }
+}

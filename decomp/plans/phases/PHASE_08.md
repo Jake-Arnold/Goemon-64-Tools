@@ -76,7 +76,7 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 
 ### G64-073 — Inspect file-table reader 80001EB0
 
-**Status:** PLANNED. **Dependencies:** G64-072.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-072=RESEARCH_ONLY.
 **Focus files:** `decomp/file_table.c`; `decomp/test_file_table.c`.
 
 **Architectural intent:** Recover final retained-ASM function in file_table.c and any shared data declaration constraints.
@@ -98,6 +98,8 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 **Required negative control:** Preserve actual list termination, mutation order, signed/unsigned table arithmetic and atomicity; do not introduce a safety check that changes original native code.
 
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Outcome (2026-11-13):** `func_80001EB0_2AB0` is 312 bytes / 78 words at VMA `0x80001EB0` and ROM offset `0x2AB0`; the full span matches the pinned USA ROM. It calls `80001DF4` as a zero/nonzero gate, then uses an eight-byte pair at `D_80054ACC_556CC` to derive an inclusive `0x2000` page range. Each mapping slot is checked and updated before the six-argument `osMapTLB` call. Both callers ignore the zero return. The direct caller's constant index 60 selects row 59; the dynamic caller supplies a halfword index. The table extent is undeclared in the pinned source, and no bound check appears in the target. Two IDO candidates linked at the original VMA but both first differed at `+0x04` in saved-register/argument-mask scheduling (304 and 320 bytes versus 312); calls and global relocations resolved. Keep `GLOBAL_ASM`; whole-unit G2 and inventory were not run. See `plans/execution/2026-11-13-g64-073-file-table-mapper.json`.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
 

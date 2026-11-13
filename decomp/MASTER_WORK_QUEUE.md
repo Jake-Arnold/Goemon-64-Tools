@@ -68,8 +68,12 @@ See `plans/execution/2026-11-11-g64-071-file-table-reader.json`. G64-072 traced
 `80001E50` as a four-byte sentinel lookup; three bounded IDO candidates stayed
 112 bytes and differed from the original at `+0x04`. See
 `plans/execution/2026-11-13-g64-072-file-table-helper.json`. Next under v2:
-G64-073–080, beginning with `80001EB0`. Private ROM and compiler files remain
-local under the ignored diagnostics input directory.
+G64-073 traced `80001EB0` as a gated inclusive page mapper; two IDO candidates
+both differed at `+0x04`, so it remains `GLOBAL_ASM`. Its `D_80054ACC` table
+extent is not declared in the pinned source. See
+`plans/execution/2026-11-13-g64-073-file-table-mapper.json`. Continue with
+G64-074–080, starting at object-list `80036308`. Private ROM and compiler files
+remain local under the ignored diagnostics input directory.
 
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.
 
