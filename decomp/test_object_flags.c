@@ -214,10 +214,103 @@ static void test_null_preserves_entry_v0(void) {
     assert(trace.call_count == 0);
 }
 
+typedef struct ObjectListEntryReference {
+    struct ObjectListEntryReference *next;
+    uint32_t lookup_key;
+} ObjectListEntryReference;
+
+typedef struct {
+    ObjectListEntryReference *head;
+} ObjectListOwnerReference;
+
+/* The original caller scans from head->next and checks null before calling 80036388. */
+static ObjectListEntryReference *find_non_head_reference(ObjectListOwnerReference *owner,
+                                                          uint32_t lookup_key) {
+    ObjectListEntryReference *entry;
+
+    if (owner == 0 || owner->head == 0) {
+        return 0;
+    }
+    entry = owner->head->next;
+    while (entry != 0) {
+        if ((entry->lookup_key & 0x8FFFFFFEu) == (lookup_key & 0x8FFFFFFFu)) {
+            return entry;
+        }
+        entry = entry->next;
+    }
+    return 0;
+}
+
+/* Only call for a non-head entry found in the list, matching the caller precondition. */
+static uint32_t move_to_front_reference(ObjectListOwnerReference *owner,
+                                        ObjectListEntryReference *target) {
+    ObjectListEntryReference *previous;
+    ObjectListEntryReference *entry;
+
+    if (owner == 0 || target == 0) {
+        return 0;
+    }
+    previous = owner->head;
+    entry = previous->next;
+    while (entry != target) {
+        previous = entry;
+        entry = entry->next;
+    }
+    if (entry != 0) {
+        previous->next = target->next;
+        target->next = owner->head;
+        owner->head = target;
+        return 1;
+    }
+    return 0;
+}
+
+static void test_move_caller_empty_singleton_and_no_match(void) {
+    ObjectListEntryReference singleton = {0, 0x80000020u};
+    ObjectListOwnerReference empty = {0};
+    ObjectListOwnerReference one = {&singleton};
+
+    assert(find_non_head_reference(&empty, 0x80000020u) == 0);
+    assert(find_non_head_reference(&one, 0x80000020u) == 0);
+    assert(find_non_head_reference(0, 0x80000020u) == 0);
+    assert(move_to_front_reference(0, &singleton) == 0);
+    assert(move_to_front_reference(&one, 0) == 0);
+    assert(singleton.next == 0 && singleton.lookup_key == 0x80000020u);
+}
+
+static void test_move_to_front_preserves_other_fields(void) {
+    ObjectListEntryReference tail = {0, 0x80000030u};
+    ObjectListEntryReference middle = {&tail, 0x80000020u};
+    ObjectListEntryReference head = {&middle, 0x80000010u};
+    ObjectListOwnerReference owner = {&head};
+    ObjectListEntryReference *found;
+
+    assert(find_non_head_reference(&owner, 0x80000030u) == &tail);
+    assert(move_to_front_reference(&owner, &tail) == 1);
+    assert(owner.head == &tail);
+    assert(tail.next == &head && head.next == &middle && middle.next == 0);
+    assert(head.lookup_key == 0x80000010u);
+    assert(middle.lookup_key == 0x80000020u);
+    assert(tail.lookup_key == 0x80000030u);
+
+    assert(find_non_head_reference(&owner, 0x80000010u) == &head);
+    assert(find_non_head_reference(&owner, 0x80000020u) == &middle);
+    assert(find_non_head_reference(&owner, 0x8FFFFFF0u) == 0);
+    found = find_non_head_reference(&owner, 0x80000020u);
+    assert(found == &middle);
+    assert(move_to_front_reference(&owner, found) == 1);
+    assert(owner.head == &middle && middle.next == &tail && tail.next == &head && head.next == 0);
+    assert(head.lookup_key == 0x80000010u);
+    assert(middle.lookup_key == 0x80000020u);
+    assert(tail.lookup_key == 0x80000030u);
+}
+
 int main(void) {
     test_list_flag_helper();
     test_single_node_dispatch();
     test_dispatch_kinds_and_unmatched_flags();
     test_null_preserves_entry_v0();
+    test_move_caller_empty_singleton_and_no_match();
+    test_move_to_front_preserves_other_fields();
     return 0;
 }

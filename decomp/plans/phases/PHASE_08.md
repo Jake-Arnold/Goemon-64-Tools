@@ -134,28 +134,30 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 
 ### G64-075 — Characterize object list 80036388
 
-**Status:** PLANNED. **Dependencies:** G64-074.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-074.
 **Focus files:** `decomp/object_flags.c`; `decomp/object_flags.h`; `decomp/test_object_flags.c`.
 
-**Architectural intent:** Recover subsequent object_flags.c function and compare call/loop structure without assuming it is a flag setter.
+**Architectural intent:** Recover the move-to-front operation and its caller-established non-head membership precondition from pinned MIPS.
 
 **Numbered implementation recipe:**
 1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
 2. Read the exact focus files: decomp/object_flags.c, decomp/object_flags.h, decomp/test_object_flags.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
-3. Implement the bounded design: Recover subsequent object_flags.c function and compare call/loop structure without assuming it is a flag setter.
-4. Trace 80036388 branch predicates, link traversal and target flags without assuming identical semantics to 80036308.
-5. Host-test preservation of unrelated bitfields and no-loop termination.
+3. Recover the existing-entry search and move-to-head operation without inferring a flag setter.
+4. Trace the owner head at +0x78, entry link at +0x74, null guards, caller membership condition and relink order.
+5. Host-test null arguments, empty/singleton caller gates, valid two/three-node moves and lookup-key preservation; do not call the function with an absent entry.
 6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
 7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
 8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
 
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
-**Explicit acceptance:** Observed behavior and pointer traversal proven from original instructions; test invalid-pointer assumptions are excluded.
+**Explicit acceptance:** Prove observed pointer traversal and relink order; test only caller-valid list members, with empty/singleton caller paths terminating before this function and invalid membership excluded.
 
-**Required negative control:** Preserve actual list termination, mutation order, signed/unsigned table arithmetic and atomicity; do not introduce a safety check that changes original native code.
+**Required negative control:** Reject a broken predecessor relink or changed move-to-front order; do not invent absent-entry safety or test pointers outside the caller-established membership contract.
 
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Outcome (2026-11-13):** `func_80036388_36F88` is 108 bytes / 27 words at VMA `0x80036388`, ROM offset `0x36F88`; all words match the pinned USA ROM. It reads the list head at owner `+0x78` and link pointers at entry `+0x74`. Its sole caller (`func_80018F3C_19B3C`) checks the head separately, scans from `head->next` with a null terminator, and calls this function only after finding a matching non-head entry. The target removes that entry from its prior position, places it at the head and returns 1; null owner/entry return 0. It has no callback. Host reference cases cover empty/singleton caller gates, nulls, valid two/three-node moves, relink order and key preservation; absent-entry calls are excluded. Three IDO candidates linked at the original VMA at 112, 96 and 104 bytes; all first differed at `+0x00`, where guard polarity/scheduling remained different. Stop at the three-variant limit and retain `GLOBAL_ASM`. No source-unit exact build, full-ROM G2 or inventory was run; stored proof remains 149/149 functions / 11,148 bytes. See `plans/execution/2026-11-13-g64-075-object-list-move-to-front.json`.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
 

@@ -1,0 +1,185 @@
+{
+  "task_id": "G64-075",
+  "title": "Characterize object list 80036388",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "452249c1d00fd839561ffd4cfe2f464868fb8f52",
+    "remote_head_at_start": "452249c1d00fd839561ffd4cfe2f464868fb8f52",
+    "initial_worktree": "clean",
+    "dependencies": {
+      "G64-074": "PASSED_G2"
+    },
+    "matching_c": 149,
+    "matching_bytes": 11148,
+    "manifest_sha256": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "stored_proof_sha256": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "inventory_sha256": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6"
+  },
+  "original_source": {
+    "upstream_repository": "klorfmorf/mnsg",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "asm_file": "asm/usa/36750.s",
+    "asm_sha256": "b3a386915def9810e277e378b995fa493d81bb44891d369fe97cb77c3b86a14f",
+    "caller_asm_file": "asm/usa/17550.s",
+    "caller_asm_sha256": "92cdecf8c7cda93608f03922b3f3b6fdb27bdac3d909c80fc08ed88a5e616531",
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "original_span_matches_rom": true,
+    "matched_words": 27,
+    "total_words": 27
+  },
+  "source_unit": {
+    "manifest_source": "object_flags.c",
+    "rom_start": "0x36EDC",
+    "rom_end": "0x370FC",
+    "original_splat": "[0x36750, asm]",
+    "current_replacement_partition": "[0x36750, asm]; [0x36EDC, C object_flags]; [0x370FC, asm]",
+    "accepted_c_siblings": [
+      "func_800362DC_36EDC (44 bytes)",
+      "func_80036308_36F08 (128 bytes)"
+    ],
+    "target_ownership": "func_80036388_36F88 remains GLOBAL_ASM"
+  },
+  "target": {
+    "name": "func_80036388_36F88",
+    "vma": "0x80036388",
+    "rom_offset": "0x36F88",
+    "size_bytes": 108,
+    "size_words": 27,
+    "sha256": "91af9998f3e5eb201321cb3dc2b800c79155b0328a8a4dc147d4526e42982dfd"
+  },
+  "behavior": {
+    "role": "move a found non-head list entry to the owner head",
+    "arguments": {
+      "a0": "owner object; head link is loaded from +0x78",
+      "a1": "target entry; its next link is at +0x74"
+    },
+    "null_paths": "null a0 or a1 returns zero without mutation",
+    "search": "starts from owner.head->next and follows +0x74 links until current==target; caller evidence establishes target is a reachable non-head entry",
+    "mutation_order": "previous->next = target->next; target->next = owner.head; owner->head = target; return 1",
+    "caller": {
+      "name": "func_80018F3C_19B3C",
+      "call_pc": "0x80018FE4",
+      "call_contract": "checks the owner head separately, scans from head->next, stops at null, and invokes 80036388 only after a matching non-head entry is found; caller saves that entry across the call and ignores v0",
+      "search_key": "caller compares the entry field at +0x2C using masks 0x8FFFFFFF and 0x8FFFFFFE"
+    },
+    "callbacks": "none observed in target or this call path",
+    "unknowns": "behavior for a non-null target that is absent from the list is not a safe test domain; the caller establishes membership before calling"
+  },
+  "host_model": {
+    "test_file": "decomp/test_object_flags.c",
+    "new_cases": [
+      "caller search on empty list",
+      "caller search on singleton list",
+      "bounded no-match caller scan",
+      "null owner/target returns",
+      "two-node move-to-front",
+      "three-node tail move-to-front",
+      "second valid move-to-front",
+      "lookup-key preservation"
+    ],
+    "negative_control": "replacing predecessor relink previous->next=target->next with previous->next=target is rejected by the expected post-move link assertions",
+    "limitations": "G64-075 tests a ROM-derived host reference model because the native candidate remained nonmatching; it does not claim production C behavior or invalid-pointer safety"
+  },
+  "candidate_trials": [
+    {
+      "variant": "separate null guards with cached head local",
+      "hypothesis": "Translate the observed link search and move while keeping the owner head live across traversal.",
+      "candidate_source_sha256": "72e94ba9d83fe94566e2fa3f0e1c15b1224934c25d3c9693e3c87d57540d977b",
+      "linked_symbol_vma": "0x80036388",
+      "linked_symbol_bytes": 112,
+      "exact_original_bytes": false,
+      "word_differences": 23,
+      "first_mismatch_instruction": "+0x00",
+      "mismatch": "original BEQZ owner guard; candidate BNEZ guard with a duplicated zero-return block",
+      "undefined_symbols": 0
+    },
+    {
+      "variant": "combined owner/entry guard with cached head local",
+      "hypothesis": "Share the zero return path through a combined non-null guard.",
+      "candidate_source_sha256": "31f4bf01e71909531a5d11a43ebc8cd5dd69449b0812eae7a157b6735fb7c20b",
+      "linked_symbol_vma": "0x80036388",
+      "linked_symbol_bytes": 96,
+      "exact_original_bytes": false,
+      "word_differences": 27,
+      "first_mismatch_instruction": "+0x00",
+      "mismatch": "candidate uses branch-likely null checks to a shared exit with v0 zeroed in delay slots; original begins with a non-likely BEQZ and uses the a1 branch delay slot to load the head",
+      "undefined_symbols": 0
+    },
+    {
+      "variant": "nested entry-present block and owner-head reload",
+      "hypothesis": "Avoid caching owner.head across the link write so IDO can use the original previous/current registers and reload head for target->next.",
+      "candidate_source_sha256": "055c411e76be96c249f878c7cf30488934966bfaed778c3a04d4547b1a436b09",
+      "linked_symbol_vma": "0x80036388",
+      "linked_symbol_bytes": 104,
+      "exact_original_bytes": false,
+      "word_differences": 24,
+      "first_mismatch_instruction": "+0x00",
+      "mismatch": "candidate retains the inverted BNEZ owner guard; the first mismatch did not move from entry",
+      "undefined_symbols": 0
+    }
+  ],
+  "toolchain": {
+    "ido": "Pinned IDO 5.3",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "linker": "GNU ld 2.45.90.20260125",
+    "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "link_method": "compiled single-function objects; linked with probe.py SUBALIGN(4) script at the original VMA using fresh G64-074 baseline ELF globals; extracted linked symbol compared against ROM bytes"
+  },
+  "decision": {
+    "classification": "RESEARCH_ONLY",
+    "native_variants_tested": 3,
+    "production_candidate_integrated": false,
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "reason": "All three allowed IDO variants linked at the original VMA but remained nonmatching and first differed at +0x00. The 108-byte target limit is three variants; no first-mismatch improvement occurred, so stop and retain GLOBAL_ASM. No full-ROM or inventory build qualified."
+  },
+  "tests": {
+    "original_rom_span": "PASS; pinned source bytes matched all 27/27 words at ROM offset 0x36F88.",
+    "host_reference": "PASS; GCC 15.2 ASan/UBSan harness covers valid non-head members, null arguments, caller empty/singleton gates, pointer mutation order and lookup-key preservation.",
+    "negative_control": "PASS; broken predecessor relink mutant rejected (exit -6).",
+    "native_trials": "MISMATCH as expected; three pinned IDO objects linked at 0x80036388 (112, 96 and 104 bytes versus 108); first mismatch +0x00 in every variant.",
+    "source_unit_exact": "NOT_RUN; no isolated candidate matched.",
+    "full_rom_g2": "NOT_RUN; no source-unit-exact candidate.",
+    "inventory_rebuild": "NOT_RUN; no source-unit-exact candidate.",
+    "repository_suites": "PASS; decomp Python suite 157/157, verifier tests 17/17, skill-context/metadata tests 17/17.",
+    "task_context_validation": "PASS; task ledger consistent and G64-076 selected as next planned v2 task.",
+    "json_and_diff": "PASS; execution/plan JSON parsed and git diff --check exited 0.",
+    "local_ci": "UNAVAILABLE; npx run-local-ci run --all --pause-on-failure --json exited 1 because no .github/workflows directory exists."
+  },
+  "current_stored_proof": {
+    "status": "unchanged; remains valid because production C, headers, manifest and verifier inputs were not changed",
+    "matching_c": 149,
+    "matching_bytes": 11148,
+    "full_rom_match": true,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "next": "Continue with G64-076, characterizing object routine 800363F4; preserve both G64-074 accepted C functions and keep 80036388 GLOBAL_ASM.",
+  "source_hashes": {
+    "decomp/object_flags.c": "b27ee6ef258cc2e49a2e4c11c0810d2cde8b12259206d32a6b06f843418fcd12",
+    "decomp/object_flags.h": "a1ae2142a30df3f47807b974a0641e5d0569bca8be95c497eb2bb48ba2e23616",
+    "decomp/test_object_flags.c": "36e381f712e237954f4834d6c40d4a7a9fb8883332b061d64a6f704d0a855285",
+    "decomp/manifest.json": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "decomp/results/combined.json": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "decomp/results/inventory.json": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6",
+    "tests/test_decomp_verify.py": "970fd6c2b03e10e7ed8e291613ead9af6176d65e4c6e95ffd514879efcc7c73b",
+    "decomp/plans/TASKS_100.json": "a9f0db40d288851d05c4b3da8ef0bfcf934e1f2de7795f332c0e64c21a8cdde9",
+    "decomp/plans/phases/PHASE_08.md": "fe41406084d93a1df03f40425067fe2c533fc39b15cec17446176203dbe020f8",
+    "decomp/plans/EXECUTOR_PROTOCOL.md": "7cd0ad3e59cdfbcf5dc844b744e7b45232bf166c560abd755e4478844451283c",
+    "decomp/plans/EXECUTION_STRATEGY_V2.md": "bcc6ddfae8306bbf410fb7f6f46403825ebb2bc3d8a00152ede1d2e5becb5d4e",
+    "decomp/CONTINUE.md": "c8acde023052bd12693a53e33d51ca6275a47a790835efb5912372f4146db056",
+    "decomp/MASTER_WORK_QUEUE.md": "29ec43e457b10c00ecc2f65c592a598f2212d869acc13a33535b683d26ea0882",
+    "PROGRESS.md": "7d0ae911f0a6ed703de3eb6fbe9b6c89c26be30c2a7dad6172aca65ba9926637",
+    "decomp/plans/README.md": "6001f16df4e69f8567fddfc07cc9f6b47e2328f8eaab5a8abf25411d0f500f45"
+  }
+}

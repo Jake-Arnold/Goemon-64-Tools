@@ -1,5 +1,16 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-13 — G64-075 object-list move-to-front trace (RESEARCH_ONLY)
+
+- **Reason and branch:** continued the v2 object wave after G64-074 was pushed and remote-verified at `452249c1d00fd839561ffd4cfe2f464868fb8f52`. This task started from that clean commit with G64-074=`PASSED_G2`.
+- **Original evidence:** pinned `mnsg` commit `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` places `func_80036388_36F88` at VMA `0x80036388`, ROM offset `0x36F88`, 108 bytes / 27 words, SHA-256 `91af9998f3e5eb201321cb3dc2b800c79155b0328a8a4dc147d4526e42982dfd`. All 27 words match the SHA-1-verified USA ROM. The routine follows the owner head at `+0x78`, searches links at entry `+0x74`, unlinks a found non-head entry, moves it to the head and returns 1. Its sole caller `func_80018F3C_19B3C` checks the head separately and calls only after finding a non-head member; the caller stops at a null link. Null arguments return 0. No callback occurs.
+- **Changes:** added a ROM-derived host reference model to `decomp/test_object_flags.c` for empty/singleton caller gates, null arguments, valid two/three-node moves, pointer relink order and lookup-key preservation. Absent-entry calls are excluded because the original caller establishes membership. Updated the G64-075 task/phase evidence, execution strategy, protocol, continuation and queue handoffs. Production `object_flags.c`, its header, manifest and stored proof remain unchanged; `80036388` stays `GLOBAL_ASM`.
+- **Bounded native trials:** three pinned IDO 5.3 candidates linked at the original VMA and produced 112, 96 and 104 bytes versus 108. Each first differed at `+0x00` in the owner null-guard branch schedule. The first-mismatch address did not improve, so the 108-byte target's three-variant budget is exhausted. No source-unit-exact candidate qualified; G2 and inventory were not run.
+- **Tests:** GCC 15.2 ASan/UBSan host suite passed; a broken predecessor-relink mutant was rejected. The decomp Python suite passed **157/157**, verifier suite **17/17**, skill/task-context suites **17/17**; `decomp.skill_context --validate`, the G64-076 brief, JSON parsing and `git diff --check` passed. Local CI was attempted but is unavailable because this branch has no `.github/workflows` directory (exit 1).
+- **Limitations:** tests use a ROM-derived reference model and do not claim production C behavior for this target. Invalid non-member pointers are outside the caller contract. No in-game verification occurred. The stored proof remains **149/149 functions / 11,148 bytes**, 162 combined C / 7,214 ASM / 7,376 entries.
+- **Next:** continue with G64-076, characterizing object routine `800363F4`; preserve `80036388` as `GLOBAL_ASM`.
+
+
 ## 2026-11-13 — G64-074 object dispatcher promotion (PASSED_G2)
 
 - **Reason and starting point:** continued the v2 file/object/scheduler wave on `codex/decomp-100-task-plan`, starting from clean commit `eac9afb415e23bdea76c2a1bacd735036c967f78`; `origin/chatgptweb/decomp` matched. G64-012 was already `PASSED_G2`.

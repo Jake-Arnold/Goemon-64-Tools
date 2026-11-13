@@ -3224,7 +3224,7 @@
       "ordinal": 75,
       "phase": 8,
       "title": "Characterize object list 80036388",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-074"
       ],
@@ -3233,20 +3233,20 @@
         "decomp/object_flags.h",
         "decomp/test_object_flags.c"
       ],
-      "architecture_design": "Recover subsequent object_flags.c function and compare call/loop structure without assuming it is a flag setter.",
-      "explicit_acceptance": "Observed behavior and pointer traversal proven from original instructions; test invalid-pointer assumptions are excluded.",
+      "architecture_design": "Recover the 80036388 move-to-front operation and its caller-established non-head membership precondition from pinned MIPS.",
+      "explicit_acceptance": "Prove the observed pointer traversal and relink order; test only caller-valid list members, with empty/singleton caller paths terminating before this function and invalid membership excluded.",
       "implementation_sequence": [
         "Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.",
         "Read the exact focus files: decomp/object_flags.c, decomp/object_flags.h, decomp/test_object_flags.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.",
-        "Implement the bounded design: Recover subsequent object_flags.c function and compare call/loop structure without assuming it is a flag setter.",
-        "Trace 80036388 branch predicates, link traversal and target flags without assuming identical semantics to 80036308.",
-        "Host-test preservation of unrelated bitfields and no-loop termination.",
+        "Implement the bounded design: recover the existing-entry search and move-to-head operation without inferring a flag setter.",
+        "Trace the owner head at +0x78, entry link at +0x74, null guards, caller membership condition and relink order.",
+        "Host-test null arguments, empty/singleton caller gates, valid two/three-node moves and lookup-key preservation; do not call the function with an absent entry.",
         "Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.",
         "For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.",
         "Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries."
       ],
       "focused_testing": "Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.",
-      "negative_control": "Preserve actual list termination, mutation order, signed/unsigned table arithmetic and atomicity; do not introduce a safety check that changes original native code.",
+      "negative_control": "Reject a broken predecessor relink or changed move-to-front order; do not invent an absent-entry membership guard or test invalid pointers beyond the caller contract.",
       "stop_or_recovery": "If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.",
       "evidence_requirements": [
         "current branch head and manifest/source hashes",
@@ -3258,8 +3258,8 @@
       ],
       "architect_override_v2": {
         "wave": "B",
-        "directive": "Object list 80036388: test empty/singleton and callback-mutated pointers if original MIPS shows them.",
-        "stop_rule": "Host semantic pass is not native G2."
+        "directive": "Object list 80036388: owner head is +0x78 and entry link is +0x74; caller passes a found non-head entry. No callback is present.",
+        "stop_rule": "Target is 108 bytes: stop after three IDO variants unless a first mismatch moves forward. Never infer absent-entry safety from host tests."
       }
     },
     {

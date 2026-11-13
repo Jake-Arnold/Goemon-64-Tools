@@ -140,11 +140,11 @@ eight-byte records. The known constant caller passes index 60, selecting row
 unknown. Two IDO shapes linked at the original VMA but both differed at `+0x04`
 in prologue scheduling; the function remains `GLOBAL_ASM`. G2 was not run. See
 `plans/execution/2026-11-13-g64-073-file-table-mapper.json`.
-G64-074 passed G2; continue with G64-075–080 per Architect v2, starting with object routine
-`80036388`.
+G64-074 passed G2. G64-075 traced `80036388` as a move-to-front list operation and stopped after three IDO candidates all first differed at `+0x00`; it remains `GLOBAL_ASM`. Continue with G64-076–080 per Architect v2, starting with object routine
+`800363F4`. See `plans/execution/2026-11-13-g64-075-object-list-move-to-front.json`.
 `python3 -m decomp.skill_context --status` reports the lowest-numbered planned
 task, G64-041; this is not the revised execution priority. Request
-`--task G64-075` for the next v2 brief.
+`--task G64-076` for the next v2 brief.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
 
