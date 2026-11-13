@@ -4,6 +4,11 @@
 **Scope:** Resolve the meaning of `0x80077858`, connect the active resource ID to its loaded bytes, and distinguish script execution from text emission.
 **Evidence basis:** Pinned USA disassembly/source at `mnsg` commit `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`; local decompressed ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; runtime observations in the consolidated handoff supplied 2026-11-13.
 
+The [dedicated architecture investigation](VM_ARCHITECTURE_RESEARCH.md)
+extends this snapshot with the recovered glyph mapping, window lifecycle for
+states 5 and 6, resource call sites for state 7, and candidate bases for the
+recorded interactions.
+
 ## Result
 
 The value stored at **`0x80077858` is the relocated VM program counter**: it points into the active resource's 32-bit command/operand stream. It is not the cursor that advances through text tokens or through visible characters. The VM has a separate halfword stream cursor at **`0x801C77E8`** (the first word of the context there). The text walker reads signed 16-bit values through that pointer and returns its updated value to the context. A nonnegative value is passed to a renderer path; negative values are control tokens or the `-1` end marker.
@@ -32,27 +37,15 @@ included in this decompilation change.
 
 The main PC writers are consistent with this interpretation: `D468` installs the initial resolved address; `D68C` advances and branches through the program stream; the input handlers `E3EC`/`E4C0` can install a relocated restart address; `E81C` installs the chosen branch address from the selected choice record; and the context restart helpers `F23C`/`F2D4` rebuild and store it. `D68C` reads the value before dispatch and reloads it after callbacks. These are program-flow operations, not per-character increments.
 
-## Resource IDs 96 and 97: what maps, and what remains missing
+## Resource IDs 96 and 97
 
-The loader proves these IDs select one-based file-table rows: `func_80001C00` bounds-checks the ID, uses `id - 1`, reads the source interval and output extent, then transfers the file to the supplied destination. `func_80013B14` passes the same low-16-bit ID into this loader and registers the destination in the resource cache; `func_800141C4` returns the cached `.data` pointer for a matching ID.
-
-| Runtime resource ID | Table row | Source-bound words | ROM source interval | File-table virtual range (size) |
-| --- | ---: | --- | --- | --- |
-| 96 (`0x60`) | 95 | `0x58154 / 0x58158` | `[0x74ECE0, 0x759DF0)` | `[0x08000000, 0x0800B110)` (`0xB110`; bounds at `0x559C4/0x559C8`) |
-| 97 (`0x61`) | 96 | `0x58158 / 0x5815C` | `[0x759DF0, 0x767640)` | `[0x08000000, 0x0800D850)` (`0xD850`; bounds at `0x559CC/0x559D0`) |
-
-The source-bound words are read from `D_800573C8 + (id - 1) * 4 + 0x10/+0x14`; the virtual bounds come from `D_80054ACC + (id - 1) * 8`. For both rows, source and output sizes match. The table's source-start values are positive, so the original loader takes its DMA path; `func_80001640` passes the ROM source offset, destination, and length to `osPiStartDma`. These two resources are copied directly from those ROM intervals, so once the runtime data base `B` is captured, the mapping is:
-
-```text
-resource_offset = cursor_value - (D_801C77FC & 0xBFFFFFFF)
-ROM_offset      = resource_ROM_start + resource_offset
-```
-
-Accept this result only when `0 <= resource_offset <` the row's declared size.
-
-Use the base from the **same sample** as the cursor. The user-supplied old-man examples (`0x803AB4F4`, `0x803AB51C`, resource 96) and Zazen Gate examples (`0x803AED90`, `0x803AEDA8`, resource 97) do not include `0x801C77FC`; their exact resource-relative and ROM offsets therefore cannot yet be stated. A previous proposed resource-96 base, `0x803A289C`, was derived by subtracting a candidate offset from one of the same cursor observations. That is circular and is **not** accepted as a verified base.
-
-The resource/file relationship is verified; the missing fact is the dynamic RAM base for each recorded interaction. A capture of `0x80077858`, `0x801C78E8`, `0x801C77FC`, `0x801C78EC`, and `0x801C78F0` at the same instant will map a sample PC to its exact resource and ROM offset. Capturing the bytes at the mapped address will then show whether that location contains a command, an operand, or another record.
+The loader uses one-based resource IDs. The address intervals originally read
+for this report, `[0x74ECE0,0x759DF0)` and `[0x759DF0,0x767640)`, apply to the
+decompressed USA image. On the retail image, both rows set the compression
+flag and the native loader decompresses their source blocks. For same-resource
+RAM cursors, subtract the bit-30-cleared loaded base and add the resulting
+in-bounds offset to the **decompressed** image start. See the [retail table
+comparison and verified examples](VM_ARCHITECTURE_RESEARCH.md#retail-source-and-loaded-offsets).
 
 ## Text emission is a separate path
 

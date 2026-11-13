@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — Independent Script VM architecture research
+
+- **Changed:** added the [architecture report](decomp/VM_ARCHITECTURE_RESEARCH.md) and a bounded decoder for one text record at a time from the SHA-1-pinned decompressed USA image. Corrected the earlier resource note's use of decompressed addresses as retail offsets.
+- **Why:** make the original script, text, state and map dispatch evidence usable in future static extraction and runtime captures.
+- **Evidence:** retail LZKN64 blocks for resources 93, 96 and 97 reproduced the corresponding decompressed bytes. Traced the window-open and window-close waits, indirect state-7 callback, glyph selection, and map-ID submode classifier in the original MIPS. Decoded resource 97 command `+0x9608` to a 23-token text record and correlated the Zazen, old-man and castle-title cursor sequences.
+- **Tests:** five decoder unit tests and the pinned ROM reproduction passed. The full ROM-free decomp gate passed with Clang (167 decomp tests, 92 verifier/ledger tests, ledger validation and ASan/UBSan). The targeted monitoring and State Discovery suites passed (37 test executions, including shared memory tests and Tk synthetic captures).
+- **Limits and next step:** live resource bases and Impact A/B/C recovery still need confirmation. Use the bounded read-only trace specification to capture both cursors, base, segment and delta at the same guest boundary. No matching-C trials or promotions were part of this investigation.
+
+
 ### 2026-11-13 — Allow State Discovery A/B/C without a valid ordinary player
 
 - **Changed:** read-only State Discovery uses tolerant memory monitoring when no snapshot is supplied, records unknown character IDs without aborting, and skips optional dynamic player regions when pointer validity/readability fails. Global focused/system and game-data reads remain mandatory. Clarified A/B/C UI wording and expanded synthetic State Discovery and Tk tests. Updated the runtime evidence note.
@@ -20,7 +29,7 @@
 
 - **Changed:** added `decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md`, linked it from `decomp/CONTINUE.md`, and clarified cursor terminology in the VM main-step, resource-callgraph, text-loop, and stream-control traces. Recorded the attached runtime note's separate gameplay-submode field without importing changes from its toolkit branch. Existing G64-046 candidate/test edits remain untouched.
 - **Why:** establish whether `0x80077858` points at VM commands, text tokens, or character progress; connect resource IDs 96/97 to the original loader; and preserve the new state-7 cross-context and state-6 observations as bounded evidence.
-- **Evidence:** original MIPS proves `0x80077858` is the relocated 32-bit VM program cursor and `0x801C77E8` word 0 is a separate signed-halfword text-stream cursor. The loader maps IDs 96/97 to one-based rows 95/96 and direct DMA source intervals `0x74ECE0..0x759DF0` / `0x759DF0..0x767640`. The text walker emits through D060/D180 while separate per-context fields advance. State 7's writer/countdown and state 5/6 command/poll paths are documented without assigning unsupported scene meanings.
+- **Evidence:** original MIPS proves `0x80077858` is the relocated 32-bit VM program cursor and `0x801C77E8` word 0 is a separate signed-halfword text-stream cursor. The loader maps IDs 96/97 to one-based rows 95/96 and decompressed-image intervals `0x74ECE0..0x759DF0` / `0x759DF0..0x767640`. The later architecture investigation verified that the retail rows are compressed. The text walker emits through D060/D180 while separate per-context fields advance. State 7's writer/countdown and state 5/6 command/poll paths are documented without assigning unsupported scene meanings.
 - **Tests:** `git diff --check` passed. `python3 -m decomp.local_ci` passed: 162 decomp tests, 92 verifier/ledger tests, task/evidence validation, and the display-emitter ASan/UBSan fixture (1,000 synthetic cases plus zero and owner-alias cases). A read-only table extraction matched the decompressed ROM SHA-1 and the resource 96/97 table values. No native IDO build or full-ROM proof was run.
 - **Limitations/next:** video samples lack same-frame `0x801C77FC`, `0x801C78EC`/`0x801C78F0`, text-stream pointer, and bytes, so their exact cursor-to-ROM offsets and visible-text token decoding remain unresolved. State 6's exact runtime pairing, `F460`'s indirect caller, and `C260`/`C3A0`/`C314` semantics need deeper trace evidence. Next capture those fields with bounded write-triggered logging; do not spend more compiler trials on this question.
 
