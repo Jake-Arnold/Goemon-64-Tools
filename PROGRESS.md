@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-13 — Architect v3 compiler-guided pilot plan (PLAN_ONLY)
+
+- **Purpose:** respond to low production matching-C yield and early IDO branch/stack/register mismatches without replacing Architect v2.
+- **Changes:** added `decomp/plans/ARCHITECT_V3_PILOT.md`, linked it in `decomp/plans/README.md` and `decomp/CONTINUE.md`, assigned architecture/hypothesis/ranking review to Sol 6.1 High and bounded compiler execution/evidence to Luna Max.
+- **Scope and gates:** documentation only; task ledger, manifest, accepted production C, proof and inventory unchanged. No G64-092/G64-094 completion claimed. Existing G2 snapshot remains 149 matching functions, 11,148 bytes, 7,214 ASM.
+- **Checks:** read current branch/proof/inventory through GitHub connector and verified documentation insertion preconditions. No code tests, IDO compilation, complete-ROM verifier, inventory build or in-game testing executed for this change.
+- **Limitations/next:** pilot not executed; refresh live state before selecting up to three eligible targets and running at most 12 native variants under v2 caps.
+
+
 ## 2026-11-13 — G64-081 math helper 8000E2D4 (RESEARCH_ONLY)
 
 - **Reason and branch:** continued the v2 math wave in the same worktree, branch `codex/decomp-100-task-plan`, from clean commit `63685e4fb24a4cb055f43bb1fc899a6025edac13`; after fetching `origin/chatgptweb/decomp`, the remote matched. G64-002 remains `PASSED_G2`.

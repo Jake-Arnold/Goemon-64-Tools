@@ -4,6 +4,8 @@
 
 **Read in this order:** root `AGENTS.md`; [EXECUTION_STRATEGY_V2.md](EXECUTION_STRATEGY_V2.md); [EXECUTOR_PROTOCOL.md](EXECUTOR_PROTOCOL.md); live proof/CONTINUE, then a compact task brief and **only its phase/focus files**. The full architecture is reference, not an every-task preamble.
 
+**Optional compiler-guided yield pilot:** [ARCHITECT_V3_PILOT.md](ARCHITECT_V3_PILOT.md) specifies Sol 6.1 High / Luna Max roles, a three-function/12-variant trial and mismatch diagnostics. Architect v2 and all existing task/G2 gates remain binding.
+
 ## Phase packets
 - [01 — Baseline and near-ready promotions](phases/PHASE_01.md) (G64-001–G64-010)
 - [02 — Object scheduling and short routines](phases/PHASE_02.md) (G64-011–G64-020)

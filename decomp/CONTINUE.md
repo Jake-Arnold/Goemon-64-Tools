@@ -6,6 +6,8 @@ README.md explains the recovered units, BATCH_PIPELINE.md describes the tools,
 and checkpoint documents retain technical research/history. Read root AGENTS.md
 first. Update this runbook whenever the next targets or machine paths change.
 
+Optional planning refinement: [plans/ARCHITECT_V3_PILOT.md](plans/ARCHITECT_V3_PILOT.md) defines a bounded compiler-guided selection pilot and model responsibility split. It does not supersede Architect v2's mandatory protocol, tasks or proof gates.
+
 Optional research: [plans/REA_PILOT.md](plans/REA_PILOT.md) tests REA/Ghidra compatibility; Goemon's pinned `-mips2` ISA is not in REA's currently documented standard MIPS lane. The pilot is **not a dependency** for the 100 tasks or a source of matching-C proof.
 
 ## 0. Cross-conversation handoff
