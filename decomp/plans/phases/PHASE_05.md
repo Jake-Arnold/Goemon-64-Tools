@@ -114,7 +114,7 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 
 ### G64-044 — Compare first/second compiler layouts
 
-**Status:** PLANNED. **Dependencies:** G64-042, G64-043.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-042, G64-043.
 **Focus files:** `decomp/candidates/vm_display_e234.c`; `decomp/candidates/vm_display_ebac.c`.
 
 **Architectural intent:** Revisit previous 516/500-byte candidates and volatile cursor variants; isolate exact register/pointer declarations.
@@ -138,6 +138,10 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Sol identified the production context as the manifest's full `script_vm.c` unit (10,112 text bytes at VMA `0x8003CFA0`), not isolated candidate files. The pinned source/ROM, compiler, and MIPS binutils matched their recorded inputs. Two historical variants per emitter were counted; a screening V1 was semantically invalid (all packet writes normalized to w0→w1, and EBAC read owner flags before the B400 w0 store). Corrected V2 encoded the traced per-packet ordering and passed the EBAC alias-order control. V2 E234 is 444/440 bytes; V2 EBAC is 428/436. Both retain the entry cursor-base register mismatch (`$v0` vs `$v1`), with first target relocation-symbol difference at `+0x0C`. After the approved assignment-table pack and original-VMA link, both full units first differ at `+0x118` / `0x8003D0B8`, where a forward-call relocation changes because `func_8003F0FC_3FCFC` moves. The E234 unit grows to 10,128 text bytes and shifts `func_8003E3EC_3EFEC` by +4; the EBAC unit remains 10,112 bytes after section rounding but shifts `func_8003ED60_3F960` by -8. The packed `.rodata` is 60 bytes with all 15 table relocations retained and payload unchanged. Four of five distinct variants per target are counted; V2 did not improve the first mismatch, so no V3 was run. Production C/manifest/proof are unchanged, `GLOBAL_ASM` remains, and G2/inventory were not run. See `plans/execution/2026-11-13-g64-044-compiler-layouts.json`.
+
+**Next:** G64-045 is dependency-ready for the VM setup callback ABI investigation.
 
 ### G64-045 — Recover VM setup callback ABI
 

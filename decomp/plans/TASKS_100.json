@@ -1798,7 +1798,7 @@
       "ordinal": 44,
       "phase": 5,
       "title": "Compare first/second compiler layouts",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-042",
         "G64-043"

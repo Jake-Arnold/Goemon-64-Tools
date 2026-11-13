@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — G64-044 native emitter layouts (RESEARCH_ONLY)
+
+- **Changed:** recorded the first/second emitter native-layout comparison, marked G64-044 RESEARCH_ONLY, and updated Phase 05 and the continuation handoff. Production `script_vm.c`, both standalone candidates, manifest, proof, inventory, and `GLOBAL_ASM` ownership remain unchanged.
+- **Why:** classify the first instruction, relocation, and full-unit layout mismatch in the actual `script_vm.c` compile context before allowing more IDO variants.
+- **Evidence:** using the pinned IDO 5.3 toolchain and full 10,112-byte unit at VMA `0x8003CFA0`, corrected V2 E234 is 444 bytes versus 440, and EBAC is 428 versus 436. Both target functions still differ at entry in cursor-base register selection; their first target relocation-sequence mismatch is `+0x0C`. Both linked units first differ at `0x8003D0B8`, where a forward-call relocation changes because the candidate shifts a later symbol. E234 shifts `func_8003E3EC_3EFEC` by +4; EBAC shifts `func_8003ED60_3F960` by -8. The required assignment-table pack retained all 15 relocations and 60 payload bytes. Full details: `decomp/plans/execution/2026-11-13-g64-044-compiler-layouts.json`.
+- **Tests:** `python3 -m decomp.local_ci` passed: 162 decomp tests, 92 verifier/ledger tests, task/evidence validation, and E234 ASan/UBSan host regression. E234 host tests passed 1,000 synthetic cases plus zero and alias cases; EBAC passed 1,000 synthetic cases and a scratch alias-order control under ASan/UBSan. The EBAC pre-read mutant was rejected. Original-word guards passed for E234 (110 words/5 anchors), EBAC (109/6), F37C (48/9), and E6C0 (87/12). These host/ROM guards do not establish matching MIPS.
+- **Limitations/next:** historical plus new screening and corrected shapes used 4/5 variants per emitter; V2 did not improve the first target mismatch, so no V3 was run. Neither target is unit-exact; full-ROM G2 and inventory were not run. `GLOBAL_ASM` remains. Continue with G64-045.
+
 ### 2026-11-13 — G64-043 second display-list emitter (RESEARCH_ONLY)
 
 - **Changed:** recorded an independent ROM-backed trace for func_8003EBAC_3F7AC, added an EBAC build mode to the existing host harness, marked G64-043 RESEARCH_ONLY, and updated Phase 05 and continuation handoffs. Corrected the E400 rectangle y-load and B400 word-store/owner-pointer offsets in the G64-041 evidence JSON. Production source, both candidates, manifest, and stored proof remain unchanged.
