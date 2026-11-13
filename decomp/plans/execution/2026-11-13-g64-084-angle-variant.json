@@ -20,6 +20,12 @@
     "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
     "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
   },
+  "publication": {
+    "commit_sha": "47ff9a31bcb55dce1017ae110a61e79e62170ef9",
+    "remote_ref": "refs/heads/chatgptweb/decomp",
+    "remote_verification_sha": "47ff9a31bcb55dce1017ae110a61e79e62170ef9",
+    "verification": "Pushed without force, then fetched and confirmed local HEAD, FETCH_HEAD, and git ls-remote matched."
+  },
   "target": {
     "symbol": "func_8000EA74_F674",
     "vma": "0x8000EA74",
