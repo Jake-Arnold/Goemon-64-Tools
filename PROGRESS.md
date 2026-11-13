@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — Promote dialogue window helpers from conversation research
+
+- **Changed:** promoted `8000C314`, `8000C3A0`, `8000C3EC`, and `8000C53C` in the original dialogue graphics unit. Updated the matching manifest, full-ROM proof and ELF inventory on the independent VM research branch.
+- **Why:** the recovered conversation controls identify the window phase, close, line-break and presentation routines and supply behavior fixtures.
+- **Tests:** the 6,928-byte unit and full 33,554,432-byte ROM matched after a fresh candidate build against a validated baseline cache. All 157 claims / 12,120 bytes matched. The 7,376-entry function identity was preserved. The full ROM-free local gate passed with Clang (167 decomp tests, 92 verifier/ledger tests and ASan/UBSan). The dedicated ASan/UBSan harness passed all 65,536 signed window phase cases and the slot, flag and line-layout checks.
+- **Limits and next step:** `8000D2C0` remains assembly-owned after its three follow-up variants retained a first-instruction scheduling mismatch. The generated `D3B8` symbol annotation includes eight original padding bytes. The four new callback leads use overlay addresses and require overlay-aware proof. See [the target report](decomp/VM_CONVERSATION_TARGETS.md). No new live-game run.
+
+
 ### 2026-11-13 — Locate native targets from conversation PC traces
 
 - **Changed:** documented the Chain Pipe and Oedo Castle bridge script candidates and five native dialogue graphics matching-C targets.
