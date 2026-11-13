@@ -1,6 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
-### 2026-11-13 — Allow State Discovery A/B/C without a valid ordinary player
+### 2026-11-13 — Add read-only boss value search (Impact oil, Ryo, HP)
+
+- **Changed:** added a dedicated **Value search** Tk tab and read-only 8 MiB RDRAM numeric scanning engine. Supports exact initial searches, unknown initial values, exact/increased/decreased/changed/unchanged narrowing, u8/s8/u16/s16/u32/s32/f32 interpretation, optional unaligned addresses, 200-row bounded preview, background worker threads, live preview refresh, and promotion of selected candidates to existing Custom Watches. Added operating notes in docs/VALUE_SEARCH.md and synthetic model/Tk tests. No guest-memory write API is called.
+- **Why:** Impact oil/Ryo and enemy HP are not covered by ordinary player fields. Numeric candidate discovery must continue to work when an Impact actor makes 0x801FC60C an invalid normal-player pointer; differences alone in State Discovery cannot progressively narrow numeric candidates.
+- **Tests:** xvfb-run -a python3 -m unittest -v tests.test_value_search tests.test_value_search_ui passed **11 synthetic tests** in an isolated code harness (9 engine cases + 2 Tk interface cases). New Python modules compiled successfully. Full repository tests, exact Linux memory integration, game performance and live Impact verification were **not run**.
+- **Limits:** scans are not atomic, numeric values may be scaled/encoded, candidate addresses may be dynamic, and default natural alignment may omit packed fields. Global snapshot reads can race with game updates; the search is read-only and makes no claim to identify real HP/oil addresses without live evidence. Live auto-refresh reads at most 200 displayed candidate values.
+- **Next:** on a fresh Ubuntu checkout run xvfb-run -a python3 -m unittest tests.test_value_search tests.test_value_search_ui tests.test_monitoring_snapshot tests.test_state_discovery tests.test_state_discovery_ui -v; verify oil then Impact HP during an actual fight and cross-check candidate writer instructions.
+
+## 2026-11-13 — Allow State Discovery A/B/C without a valid ordinary player
 
 - **Changed:** read-only State Discovery uses tolerant memory monitoring when no snapshot is supplied, records unknown character IDs without aborting, and skips optional dynamic player regions when pointer validity/readability fails. Global focused/system and game-data reads remain mandatory. Clarified A/B/C UI wording and expanded synthetic State Discovery and Tk tests. Updated the runtime evidence note.
 - **Why:** Impact videos and user follow-up show normal player pointer `0xA4600014` becoming invalid; the existing A/B/C capture fell back to the strict normal-player snapshot and failed even though global RAM remained accessible.

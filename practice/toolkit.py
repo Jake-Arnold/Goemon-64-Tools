@@ -33,6 +33,7 @@ from practice.paths import resource_root, practice_data_dir
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
+from practice.value_search_ui import ValueSearchMixin
 from practice.event_sessions_ui import EventSessionsMixin
 from practice.story_progress_ui import StoryProgressMixin
 from practice.state_discovery import measured_velocity
@@ -88,7 +89,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -284,6 +285,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         self.draw_quick_scenes()
         self.build_inspector_tabs(notebook)
         self.build_value_freezes_tab(notebook)
+        self.build_value_search_tab(notebook)
         self.build_state_discovery_tab(notebook)
         self.build_event_sessions_tab(notebook)
         self.build_unlock_tabs(notebook)
