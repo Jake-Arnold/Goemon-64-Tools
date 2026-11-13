@@ -1,0 +1,114 @@
+{
+  "task_id": "G64-048",
+  "title": "Test VM graphics integration boundary",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "a1b32fbfc5487f7dd8c99e48e5f03979a7fc3150",
+    "fetched_remote_head_at_start": "a1b32fbfc5487f7dd8c99e48e5f03979a7fc3150",
+    "worktree_at_start": "clean",
+    "dependencies": "G64-041 through G64-047 are recorded as RESEARCH_ONLY"
+  },
+  "production_context": {
+    "source_unit": "decomp/script_vm.c",
+    "source_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "header": "decomp/script_vm.h",
+    "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "verifier_sha256": "d84f22751fe74d1006399a466752f3805c1764f6b547b63fe82ffba9d62b5174",
+    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "unit_rom_range": "0x3DBA0..0x40320",
+    "unit_vma_start": "0x8003CFA0",
+    "unit_text_bytes": 10112,
+    "manifest_owner": "E234, EBAC, E6C0, F37C, and F480 all remain GLOBAL_ASM; existing C siblings and unit boundaries are unchanged"
+  },
+  "target_boundaries": [
+    {"symbol":"func_8003E234_3EE34","vma":"0x8003E234","rom_offset":"0x3EE34","original_bytes":440,"owner":"GLOBAL_ASM"},
+    {"symbol":"func_8003EBAC_3F7AC","vma":"0x8003EBAC","rom_offset":"0x3F7AC","original_bytes":436,"owner":"GLOBAL_ASM"},
+    {"symbol":"func_8003E6C0_3F2C0","vma":"0x8003E6C0","rom_offset":"0x3F2C0","original_bytes":348,"owner":"GLOBAL_ASM"},
+    {"symbol":"func_8003F37C_3FF7C","vma":"0x8003F37C","rom_offset":"0x3FF7C","original_bytes":192,"owner":"GLOBAL_ASM"},
+    {"symbol":"func_8003F480_40080","vma":"0x8003F480","rom_offset":"0x40080","original_bytes":164,"owner":"GLOBAL_ASM"}
+  ],
+  "layout_review": {
+    "same_translation_unit": true,
+    "unit_and_manifest_ranges_overlap": false,
+    "production_source_header_manifest_verify_changed": false,
+    "existing_candidate_layout_findings": [
+      "G64-044 E234 V2 is 444/440 bytes and moves a later symbol; EBAC V2 is 428/436 bytes and shifts a neighbor despite section rounding.",
+      "G64-045 F37C's 192-byte full-unit candidate has 36 differing words; equal size is not equality.",
+      "G64-046 E6C0's full-unit candidate is 356/348 bytes and shifts a forward-call relocation.",
+      "G64-047's historical IDO variants are 160 and 156 bytes versus 164; the full unit was not rebuilt."
+    ],
+    "rodata_or_padding_edits": "None in this task. Existing G64-044 evidence retains its 60-byte packed table payload and 15 relocations; no manifest boundary change is justified by these candidates."
+  },
+  "sandbox_test_matrix": [
+    {
+      "component":"E234 display-list emitter",
+      "command":"cc -std=c11 -O1 -g -Wall -Wextra -Werror -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp decomp/test_vm_display_emitters.c -o /tmp/goemon-g64-048-e234; ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-048-e234",
+      "result":"PASS: 1,000 synthetic traces plus zero-input and owner-alias cases; exact 22-word mock output and pre/post guard words checked."
+    },
+    {
+      "component":"EBAC display-list emitter",
+      "command":"cc -std=c11 -O1 -g -Wall -Wextra -Werror -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp -DGOEMON_VM_DISPLAY_SECOND -DGOEMON_VM_DISPLAY_SOURCE=\\\"candidates/vm_display_ebac.c\\\" decomp/test_vm_display_emitters.c -o /tmp/goemon-g64-048-ebac; ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-048-ebac",
+      "result":"PASS: 1,000 synthetic traces; exact 22-word mock output and pre/post guard words checked."
+    },
+    {
+      "component":"F37C setup",
+      "command":"cc -std=c11 -O1 -g -Wall -Wextra -Werror -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/test_vm_setup_f37c.c -o /tmp/goemon-g64-048-f37c; ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-048-f37c",
+      "result":"PASS: 300 synthetic calls; allocator and callback order, owner byte/word preservation, and untouched object/control bytes checked."
+    },
+    {
+      "component":"E6C0 callback/setup",
+      "command":"cc -std=c11 -O1 -g -Wall -Wextra -Werror -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp decomp/test_vm_callback_setup_e6c0.c -o /tmp/goemon-g64-048-e6c0; ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-048-e6c0",
+      "result":"PASS: 400 synthetic cases; callback mutation/order, empty/multiple streams, returned cursor, choice links, and guard words checked."
+    },
+    {
+      "component":"F480 number formatter",
+      "command":"cc -std=c11 -O1 -g -Wall -Wextra -Werror -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp decomp/test_vm_digits_format_probe.c -o /tmp/goemon-g64-048-digits; ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-048-digits",
+      "result":"PASS: 1,000 deterministic cases; digit halfwords, -1 sentinel, destination pointers, callback count, and guard slot checked."
+    },
+    {
+      "component":"existing VM host regression",
+      "command":"cc -std=c11 -O1 -g -Wall -Wextra -Werror -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/test_script_vm.c -o /tmp/goemon-g64-048-script-vm; ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-048-script-vm",
+      "result":"PASS: VM choices/repeat/streams, inputs, resources, callbacks, and dialogue-state harness."
+    }
+  ],
+  "evidence_limits": [
+    "These are separate deterministic host fixtures with mock callbacks and guard regions; they do not compose an actual MIPS execution or emulate one shared in-game frame.",
+    "Host output is not evidence of IDO instruction identity, full-unit equality, complete-ROM equality, or in-game behavior."
+  ],
+  "tests": {
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 162,
+      "verifier_ledger_tests": 92,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "task_and_evidence_validation": "CONSISTENT_STORED_REPORTS",
+    "diff_check": "git diff --check — PASS",
+    "full_unit_native_build": "NOT_RUN: no production source change and no candidate met the preceding exact-unit gates.",
+    "full_rom_g2": "NOT_RUN per v2 stop rule for unchanged research sources.",
+    "inventory": "NOT_RUN",
+    "in_game_verification": "NOT_RUN"
+  },
+  "proof_checkpoint": {
+    "stored_matching_c_functions": 153,
+    "stored_matching_c_bytes": 11800,
+    "stored_combined_sha256": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "stored_inventory": "166 combined C / 7,210 ASM / 7,376 identified entries",
+    "stored_inventory_sha256": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694",
+    "manifest_changed": false,
+    "proof_changed": false,
+    "matching_c_delta": 0
+  },
+  "decision": {
+    "status": "RESEARCH_ONLY",
+    "reason": "The bounded semantic and memory-boundary suite passes, but all five investigated functions remain ASM-owned and their candidates lack exact full-unit proof. No production or verifier change is justified.",
+    "next": "G64-049 — Stage qualifying VM graphics routines"
+  }
+}

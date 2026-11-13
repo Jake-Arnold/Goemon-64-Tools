@@ -48,6 +48,14 @@
 - **Tests:** the GCC ASan/UBSan host harness passed 1,000/1,000 deterministic boundary/random cases. The original-span check passed 41/41 words, the 15-anchor original guard passed, and four parser/negative-control tests passed. `python3 -m decomp.local_ci` exited 0: 162 decomp tests, 92 verifier/ledger tests, task/evidence validation and the display-emitter sanitizer fixture passed. `git diff --check` passed.
 - **Limitations/next:** no fresh native trial was justified; historical native comparisons were isolated and do not prove the current source unit. Full-unit native comparison, G2, inventory and in-game verification were not run. Keep F480 `GLOBAL_ASM`; continue with G64-048.
 
+### 2026-11-13 — G64-048 VM graphics integration boundary (RESEARCH_ONLY)
+
+- **Changed:** recorded the shared-unit boundary review and existing sanitizer fixture results; marked G64-048 `RESEARCH_ONLY` and advanced Phase 05 and the continuation handoff to G64-049. No production code, test source, verifier, manifest, or proof was changed.
+- **Why:** check whether E234/EBAC display-list emitters and F37C/E6C0/F480 setup paths preserve their command, callback, VM-state, and neighboring-buffer boundaries before any unit staging.
+- **Evidence:** the five functions share the 10,112-byte `script_vm.c` unit at ROM `0x3DBA0..0x40320`, but remain `GLOBAL_ASM`. Earlier native reports show size/relocation differences for E234, EBAC, E6C0 and F480; F37C's size-equal candidate still differs in 36 words. No manifest split, padding or rodata change is justified. The execution report records source fingerprints and each sandbox result.
+- **Tests:** E234 passed 1,000 ASan/UBSan traces plus zero-input and owner-alias guards; EBAC passed 1,000; F37C passed 300; E6C0 passed 400; F480 passed 1,000; the broader VM host regression passed. `python3 -m decomp.local_ci` exited 0: 162 decomp tests, 92 verifier/ledger tests, task/evidence validation and the display-emitter sanitizer fixture passed. `git diff --check` passed.
+- **Limitations/next:** these are separate mock host fixtures, not one combined game frame, original-MIPS equivalence or in-game proof. No native full-unit build or new G2 was run under the v2 stop rule. Continue with G64-049; keep all five targets assembly-owned.
+
 ### 2026-11-13 — G64-044 native emitter layouts (RESEARCH_ONLY)
 
 - **Changed:** recorded the first/second emitter native-layout comparison, marked G64-044 RESEARCH_ONLY, and updated Phase 05 and the continuation handoff. Production `script_vm.c`, both standalone candidates, manifest, proof, inventory, and `GLOBAL_ASM` ownership remain unchanged.

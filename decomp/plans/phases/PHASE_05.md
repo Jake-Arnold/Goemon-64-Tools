@@ -238,7 +238,7 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 
 ### G64-048 — Test VM graphics integration boundary
 
-**Status:** PLANNED. **Dependencies:** G64-041, G64-042, G64-043, G64-044, G64-045, G64-046, G64-047.
+**Status:** RESEARCH_ONLY (completed 2026-11-13). **Dependencies:** G64-041, G64-042, G64-043, G64-044, G64-045, G64-046, G64-047.
 **Focus files:** `decomp/script_vm.c`; `decomp/script_vm.h`; `decomp/verify.py`.
 
 **Architectural intent:** Compose sandbox tests confirming display-list emitters and setup code do not corrupt VM state or neighboring buffers.
@@ -262,6 +262,10 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Ran the existing ASan/UBSan memory-boundary harnesses for E234 and EBAC (1,000 traces each; E234 also covered zero input and owner alias), F37C (300), E6C0 (400), F480 (1,000), and the broader VM regression. All passed. Their fixtures guard display-list words, owner/control fields, choice arrays, formatter sentinel slots, callbacks, and VM state. The fixtures are independent mocks, not combined MIPS or in-game execution. Reviewed the shared `script_vm.c`/header/manifest/proof unit: the five functions remain ASM-owned, and preceding candidate size/relocation evidence gives no safe boundary or rodata edit. No production source, header, verifier, manifest, proof, or inventory change; no new full-ROM build under the v2 stop rule. See `plans/execution/2026-11-13-g64-048-vm-graphics-boundaries.json`.
+
+**Next:** G64-049 is dependency-ready for the qualifying VM graphics routines gate.
 
 ### G64-049 — Stage qualifying VM graphics routines
 

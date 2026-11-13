@@ -1976,7 +1976,7 @@
       "ordinal": 48,
       "phase": 5,
       "title": "Test VM graphics integration boundary",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-041",
         "G64-042",
