@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-13 — Read-only value search for Impact oil, Ryo and boss HP
+
+- **Changed:** added a Value search Tk tab and read-only 8 MiB numeric RDRAM scanner with exact/unknown initial searches, exact/increased/decreased/changed/unchanged filtering, u8/s8/u16/s16/u32/s32/f32, optional unaligned addresses, bounded 200-row results, background scanning, live previews, and transfer to Custom Watches. Added docs/VALUE_SEARCH.md, nine engine tests, and two synthetic graphical UI tests.
+- **Why:** Impact boss HP/oil/Ryo may not share normal-player object structures. The scanner requires only readable game RAM and works without a valid ordinary player pointer.
+- **Tested:** all 11 new tests passed with xvfb-run in an isolated local harness using the exact Git blob contents; Python modules compiled. Existing full-repository tests, matching-C full-ROM proofs and live Impact gameplay have not been run for this change.
+- **Limitations:** real variable locations and encodings remain unknown, scans are not atomic, the game may use dynamic actor structures, and heavy initial scans may take time. The scanner is read-only; no guest RAM writes or data dumps are introduced.
+- **Next:** run xvfb-run -a python3 -m unittest tests.test_value_search tests.test_value_search_ui tests.test_monitoring_snapshot tests.test_state_discovery tests.test_state_discovery_ui -v in the complete checkout; live-verify oil and Ryo before attempting unknown boss HP.
+
 ### 2026-11-13 — Allow State Discovery A/B/C without a valid ordinary player
 
 - **Changed:** read-only State Discovery uses tolerant memory monitoring when no snapshot is supplied, records unknown character IDs without aborting, and skips optional dynamic player regions when pointer validity/readability fails. Global focused/system and game-data reads remain mandatory. Clarified A/B/C UI wording and expanded synthetic State Discovery and Tk tests. Updated the runtime evidence note.
