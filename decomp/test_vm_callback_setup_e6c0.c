@@ -9,7 +9,7 @@
 
 void *D_801C78D0_1C84D0;
 s32 D_801C7754_1C8354;
-VmWindow *D_80167C48_168848[4];
+void *D_80167C48_168848[4];
 VmChoice *vm_e6c0_choice_base;
 u8 D_801C77F4_1C83F4[20*16];
 u8 D_801C781C_1C841C[20*16];
@@ -20,6 +20,9 @@ static u32 script_words[4*16+1];
 static unsigned callbacks, resources, expected_records;
 static s32 expected_window;
 static unsigned early_has_callback;
+static unsigned saw_callback_taken, saw_callback_skipped;
+static unsigned saw_empty_stream, saw_nonempty_stream;
+static unsigned saw_single_record_exit, saw_loop_continue;
 _Static_assert(offsetof(VmWindow, x)==0x32,"window x");
 _Static_assert(offsetof(VmWindow, y)==0x34,"window y");
 _Static_assert(offsetof(VmWindow, addx)==0x50,"window addx");
@@ -40,10 +43,10 @@ s32 func_8003DE48_3EA48(s32 source) {
   D_801C7754_1C8354 = (s32)(resources%3+1); /* Global may change during callback. */
   return (s32)((u32)source ^ 0x539AB123u);
 }
-void func_8003EB34_3F734(s32 idx,s32 output) {
+void func_8003EB34_3F734(s32 idx,s16 *output) {
   assert(idx==D_801C7754_1C8354);
   assert(idx==(s32)(resources%3+1));
-  assert((u32)output==(script_words[(resources-1)*4+1] ^ 0x539AB123u));
+  assert((u32)(uintptr_t)output==(script_words[(resources-1)*4+1] ^ 0x539AB123u));
   callbacks++;
 }
 void func_8003E9E8_3F5E8(VmChoice *p){
@@ -57,6 +60,10 @@ static void check(u32 *seed,unsigned ncase) {
   expected_records=next(seed)%12;
   expected_window=(s32)(1+(next(seed)%3));
   early_has_callback=(next(seed)&1);
+  if(early_has_callback)saw_callback_taken++;else saw_callback_skipped++;
+  if(expected_records==0)saw_empty_stream++;else saw_nonempty_stream++;
+  if(expected_records==1)saw_single_record_exit++;
+  if(expected_records>1)saw_loop_continue++;
   D_801C7754_1C8354=early_has_callback ? 0 : expected_window;
   D_801C78D0_1C84D0=early_has_callback ? (void *)&script_words[16] : 0;
   for(int j=0;j<4;j++){
@@ -89,16 +96,24 @@ static void check(u32 *seed,unsigned ncase) {
      VmChoice *p=vm_e6c0_choice_base+j;
      assert(p->x==(u32)((u32)(s32)w->x+(u32)(s32)w->offx+(u32)w->addx));
      assert(p->y==(u32)((u32)(s32)w->y+(u32)(s32)w->offy+(u32)w->addy));
-     if(j==0)assert(p->prev==0);
-     else assert(p->prev==(u32)(uintptr_t)(D_801C77F4_1C83F4+20*j));
+     if(j==0)assert(p->previous==0);
+     else assert(p->previous==(u32)(uintptr_t)(D_801C77F4_1C83F4+20*j));
      if(j+1<expected_records)assert(p->next==(u32)(uintptr_t)(D_801C781C_1C841C+20*j));
      else assert(p->next==0);
      assert(p->script==(u32)(uintptr_t)(script_words+4*j+2));
   }
-  assert(vm_e6c0_choice_base[0].prev==0);
+  assert(vm_e6c0_choice_base[0].previous==0);
   if(expected_records==0) assert(choice_storage[0]==0);
   assert(choice_storage[1]==0xDEADBEEFu);
   assert(choice_storage[2+5*expected_records]==0xDEADBEEFu);
   (void)ncase;
 }
-int main(void){u32 seed=0x6C023F2Cu;for(unsigned i=0;i<400;i++)check(&seed,i);puts("VM callback E6C0: 400/400 synthetic host scenarios passed");return 0;}
+int main(void){
+  u32 seed=0x6C023F2Cu;
+  for(unsigned i=0;i<400;i++)check(&seed,i);
+  assert(saw_callback_taken&&saw_callback_skipped);
+  assert(saw_empty_stream&&saw_nonempty_stream);
+  assert(saw_single_record_exit&&saw_loop_continue);
+  puts("VM callback E6C0: 400/400 synthetic host scenarios passed; all callback/loop branches covered");
+  return 0;
+}

@@ -1,0 +1,133 @@
+{
+  "task_id": "G64-046",
+  "title": "Recover callback setup path",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "7e3fb2b0e1c38fcb6280eef425533cf37e6cf93d",
+    "fetched_remote_head_at_start": "7e3fb2b0e1c38fcb6280eef425533cf37e6cf93d",
+    "worktree_at_start": "dirty only in the pre-existing G64-046 candidate and host-test files; both were reviewed and retained",
+    "dependency": "G64-045=RESEARCH_ONLY"
+  },
+  "production_context": {
+    "source_unit": "decomp/script_vm.c",
+    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "script_vm_source_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "script_vm_header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest_owner": "func_8003E6C0_3F2C0 remains GLOBAL_ASM",
+    "unit_rom_start": "0x3DBA0",
+    "unit_vma_start": "0x8003CFA0",
+    "unit_text_bytes": 10112
+  },
+  "inputs": {
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "decompressed_rom_bytes": 33554432,
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "ido": "IDO 5.3 -O2 -mips2 -G 0 -non_shared",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "mips_binutils": "GNU Binutils for Ubuntu 2.45.90.20260125"
+  },
+  "target": {
+    "symbol": "func_8003E6C0_3F2C0",
+    "vma": "0x8003E6C0",
+    "rom_offset": "0x3F2C0",
+    "original_bytes": 348,
+    "original_words": 87,
+    "original_instruction_sha256": "d6ae27372e4ffc75fa81863c4a10b5ccd308d594f46d67de4573560a02c27413",
+    "original_unit_sha256": "bd1d848e6dbba2f9cda19dac82238822fa54eaa2ca277d6bbcb28994692e8303",
+    "candidate_source": "decomp/candidates/vm_callback_setup_e6c0.c",
+    "candidate_source_sha256": "badf1b30059e59d400a8c20b87d048e73966291393d5d10eac27a8cf0b13d63a",
+    "host_test_source": "decomp/test_vm_callback_setup_e6c0.c",
+    "host_test_source_sha256": "cca3f0aa4a173ef1fd0f2eb04d08fca7decdd0b53215a071954f3ab43601d9af"
+  },
+  "original_mips_findings": [
+    "The function allocates a 0x38-byte frame and saves $s0-$s7 plus $ra. It conditionally calls func_80034B24_35724(handler, 0) when D_801C78D0_1C84D0 is non-null, then reloads D_801C7754_1C8354 and selects a window through D_80167C48_168848.",
+    "If the incoming stream word is not 0x8012, each 20-byte VmChoice receives x/y sums from window offsets 0x32/0x6E/0x50 and 0x34/0x74/0x54, plus previous/next cursor pointers.",
+    "For each record, the VM cursor advances to a resource operand and calls func_8003DE48_3EA48. It reloads D_801C7754_1C8354 after that callback and passes the live index plus the decoded pointer to func_8003EB34_3F734. It stores the subsequent script pointer, checks the next record's 0x8012 sentinel, and advances by eight bytes in the loop branch delay slot.",
+    "At exit it clears the first choice's previous link and the final choice's next link (count*20-8 from the choice base), calls func_8003E9E8_3F5E8, writes VM state 2, and returns the updated script cursor. The zero-record path also writes at choice_base-8, which the host fixture guards with a prefix word."
+  ],
+  "variant_accounting": {
+    "historical_isolated_probe": "decomp/results/vm_next_ten_batch2.json records an earlier 400-byte candidate with a 64-byte frame and no exact MIPS match; its 400 host scenarios were synthetic and it was not a full-unit proof.",
+    "new_full_unit_variants": 1,
+    "v2_stop_reason": "The pointer-lifetime hypothesis did not produce the original saved-register layout or size. No second source change had a new falsifiable instruction prediction, so work stopped with GLOBAL_ASM retained."
+  },
+  "trial": {
+    "hypothesis": "Keep choice, previous-cursor, and next-cursor pointers explicit across resource/text callbacks so IDO reuses the original saved-register roles and preserves the 348-byte layout.",
+    "artifact_directory": "practice/diagnostics/decomp-100-inputs/g64-046/research-v1/",
+    "linked_elf_sha256": "0eeb47d78cced760ddf9bdef6d6315e786684a4c08cee90aa9536881675bceb5",
+    "compiled_object_sha256": "ce2b6ba871c22e372bb15835fe16df92c7291b95f6608b683660077c195ffc71",
+    "compile_command": "The native artifact was inherited from the existing G64-046 research-v1 trial; its exact compile invocation was not retained in the scratch directory and was not replayed during closeout.",
+    "candidate_target_bytes": 356,
+    "candidate_stack_frame_bytes": 56,
+    "candidate_unit_text_bytes": 10128,
+    "target_direct_comparison": "45/87 words differ across the original 348-byte extent; first mismatch at +0x0C / 0x8003E6CC: original sw $s2,0x1C($sp), candidate sw $s5,0x28($sp).",
+    "linked_unit_first_mismatch": {
+      "unit_offset": "+0x118",
+      "vma": "0x8003D0B8",
+      "original": "jal 0x8003F0FC (func_8003F0FC_3FCFC)",
+      "candidate": "jal 0x8003F104",
+      "cause": "The candidate E6C0 symbol is eight bytes too long, shifting the later callee and changing this forward-call relocation."
+    },
+    "symbol_layout": "Candidate func_8003E6C0_3F2C0 is 0x164 bytes rather than 0x15C; the following func_8003E81C_3F41C moves from 0x8003E81C to 0x8003E824. Linked .text is 16 bytes larger than the original unit."
+  },
+  "tests": {
+    "focused_host_command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -fno-pie -no-pie -Idecomp decomp/test_vm_callback_setup_e6c0.c -o /tmp/goemon-g64-046-host; ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-046-host",
+    "focused_host_result": "PASS 400/400 synthetic cases under ASan/UBSan; callback-taken/skipped, callback mutation of the active window index, empty/nonempty streams, single/multiple records, cursor return, choice links, and guard words were checked.",
+    "target_rom_compare": "Extracted the linked .text with mips-linux-gnu-objcopy and compared 87 big-endian words at .text+0x1720 against the pinned decompressed ROM at 0x3F2C0; first difference is +0x0C as recorded above.",
+    "original_word_guard_command": "python3 -m unittest decomp.test_vm_next_ten_original -q",
+    "original_word_guard_result": "PASS 4 tests; the guard includes E6C0's 87 original words and 12 instruction anchors.",
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 162,
+      "verifier_ledger_tests": 92,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "post_rebase_application_validation": {
+      "integrated_remote_head": "84cf79834f8160953c19e537e66a2950a94dc505",
+      "targeted_commands": [
+        "python3 -m unittest discover -s tests -p 'test_linux_*.py' -q",
+        "python3 -m unittest discover -s tests -p 'test_inspector.py' -q",
+        "python3 -m unittest discover -s tests -p 'test_live_speed_ui.py' -q",
+        "python3 -m unittest discover -s tests -p 'test_monitoring_snapshot.py' -q",
+        "python3 -m unittest discover -s tests -p 'test_state_discovery.py' -q",
+        "python3 -m unittest discover -s tests -p 'test_state_discovery_ui.py' -q"
+      ],
+      "targeted_result": "PASS 71/71 tests",
+      "full_suite_command": "python3 -m unittest discover -s tests -q",
+      "full_suite_result": "No summary after about two minutes; stopped with SIGTERM (exit 143). The full suite result is unverified."
+    },
+    "diff_check": "git diff --check — PASS",
+    "full_rom_g2": "NOT_RUN: target and complete candidate unit are nonmatching.",
+    "inventory": "NOT_RUN: no production ownership change was made.",
+    "in_game_verification": "NOT_RUN"
+  },
+  "proof_checkpoint": {
+    "stored_matching_c_functions": 153,
+    "stored_matching_c_bytes": 11800,
+    "stored_inventory": "166 combined C / 7,210 ASM / 7,376 identified entries",
+    "production_script_vm_source_changed": false,
+    "shared_script_vm_header_changed": false,
+    "manifest_changed": false,
+    "stored_proof_changed": false
+  },
+  "decision": {
+    "status": "RESEARCH_ONLY",
+    "production_ownership": "Retain GLOBAL_ASM for func_8003E6C0_3F2C0",
+    "full_rom_g2": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "matching_c_delta": 0,
+    "next": "G64-047 — Resolve number formatter"
+  },
+  "scratch_evidence": {
+    "directory": "practice/diagnostics/decomp-100-inputs/g64-046/research-v1/",
+    "report_sha256": null,
+    "committed_artifacts": false
+  }
+}

@@ -1883,7 +1883,7 @@
       "ordinal": 46,
       "phase": 5,
       "title": "Recover callback setup path",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-045"
       ],

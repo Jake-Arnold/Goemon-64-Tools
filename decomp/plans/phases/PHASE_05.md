@@ -176,7 +176,7 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 
 ### G64-046 — Recover callback setup path
 
-**Status:** PLANNED. **Dependencies:** G64-045.
+**Status:** RESEARCH_ONLY (completed 2026-11-13). **Dependencies:** G64-045.
 **Focus files:** `decomp/candidates/vm_callback_setup_e6c0.c`; `decomp/test_vm_callback_setup_e6c0.c`.
 
 **Architectural intent:** Analyze 8003E6C0_3F2C0 (348 bytes) against 400-byte research candidate, its branches and callback-modified globals.
@@ -200,6 +200,10 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Original MIPS confirms a 0x38-byte frame, conditional cleanup callback, callback-sensitive window-index reloads, 20-byte choice records, a 0x8012 stream sentinel, final-link clearing, state 2 publication, and return of the updated cursor. The explicit pointer-lifetime candidate passed 400/400 ASan/UBSan host cases but compiled to 356 bytes versus the original 348. Its target first differs at +0x0C / 0x8003E6CC (`sw $s2,0x1C($sp)` versus `sw $s5,0x28($sp)`); the extra eight bytes shift a later call target and the following function. Production `GLOBAL_ASM`, manifest, source, and stored proof remain unchanged. Full-ROM G2 and inventory were not run. See `plans/execution/2026-11-13-g64-046-callback-setup.json`.
+
+**Next:** G64-047 is dependency-ready for the number formatter investigation.
 
 ### G64-047 — Resolve number formatter
 
