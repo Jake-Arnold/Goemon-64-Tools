@@ -1,6 +1,6 @@
 # Phase 09 — Math and adjacent units
 
-**Scope:** G64-081–G64-090; branch `chatgptweb/decomp`; current source checkpoint `a68881da4b10e2553e7a89b7129d09d64b427435` (refresh before execution).
+**Scope:** G64-081–G64-090; branch `chatgptweb/decomp`; current source checkpoint `6f1f3b1eb40f74acb3c29fcab145a3c36915d229` before G64-082 (refresh before the next task).
 
 Read [EXECUTOR_PROTOCOL.md](../EXECUTOR_PROTOCOL.md) before starting. Follow individual dependency IDs, not simply numeric order. Tests listed are to be executed, not claimed as already passing. Never increase matching counts from research-only evidence.
 
@@ -47,11 +47,11 @@ No invented float tolerance for byte-identity, no compiler reassociation, no unp
 
 Seven host-reference calls passed ASan/UBSan across cardinal axes, negative scale, negative zero, angle wrap and exact rounding bits. A reassociated-product mutant failed the expected `+0x70` bit pattern. Three correctly typed pinned-IDO target-only variants linked at the original VMA; best was 180 bytes versus 200 and first differed at `+0x08` (`sw $ra,0x1C($sp)` versus original `sw $a1,0x24($sp)`). The compiler kept the live scale in `$f20`, changed the frame/register schedule and generated 20 fewer bytes. The sign-after-call variant regressed to `+0x00`; the direct-expression variant also differed at `+0x00`. Stop with no first-mismatch improvement and retain `GLOBAL_ASM`. The complete source-unit comparison, full-ROM G2 and inventory were not run because no isolated exact candidate qualified.
 
-**Next:** G64-082, analyze `8000E39C` while preserving its observed float conversions and call order.
+**Next:** G64-084, analyze `8000EA74` under the Architect v3 rank-1 candidate selection; G64-083 is now dependency-eligible but remains lower priority.
 
 ### G64-082 — Analyze math helper 8000E39C
 
-**Status:** PLANNED. **Dependencies:** G64-081.
+**Status:** PASSED_G2 (completed 2026-11-13). **Dependencies:** G64-081.
 **Focus files:** `decomp/math_helpers.c`; `decomp/test_math_helpers.c`.
 
 **Architectural intent:** Map 8000E39C_EF9C source operands and intermediate float conversion, preserving original call order.
@@ -75,6 +75,14 @@ Seven host-reference calls passed ASan/UBSan across cardinal axes, negative scal
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** `func_8000E39C_EF9C` is 328 bytes / 82 words at VMA `0x8000E39C`, ROM `0xEF9C`, original span SHA-256 `3538f84b01e28177cb1fe7e7727afc8382acd083fc114a95ae11d26d12d16765`. The ROM-backed trace established `$f12` scale, `$f14` X, `$a2/$a3` Y/Z bit patterns and a fifth object pointer from caller stack `+0x10`; the nested position pointer is object `+0x18`, coordinates are nested `+0x08/+0x0C/+0x10`, and outputs are object `+0x70/+0x74/+0x78`. It computes `(dx² + dy²) + dz²`, then passes each `(delta² * scale²) / length²` through `_nsqrtf`, negating only when the delta is strictly `< 0`, and returns 1. Negative scale is squared; negative-zero comparison is false; NaN and zero-length behavior follow the observed FPU path.
+
+Seven host-reference calls passed GCC ASan/UBSan with `-ffp-contract=off`; coverage includes object/nested offsets, output order, negative scale, signed zero, NaN, zero length, and two fixed binary32 rounding cases. A target-only division-reassociation mutant was rejected by the exact sqrt-input bit comparison. Five bounded pinned-IDO variants used the 328-byte task budget. V1 first differed at `+0x00` with a `0x50` frame; v2 moved the mismatch to `+0x24` but used incorrect nested offsets; v3 had the right `0x48` frame but nine spill-home differences beginning at `+0x58`; v4 produced the same linked output as v3; v5 moved `scale_squared` assignment after `dz_squared` and exactly matched all 328 bytes. The final source SHA-256 is `fc9e4473a5be0754429ed8020a2b089e4a503a1d6419658c86edf428214d755c`; the three `_nsqrtf` relocations resolve at the original target.
+
+The candidate was staged in a copied production source bundle and a fresh G2 build matched all 33,554,432 ROM bytes, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, 150/150 claimed functions and 11,476 bytes. The fresh inventory reports 150 matching C targets, 163 combined C, 7,213 ASM and 7,376 identified entries; the function-entry identity hash is unchanged. Both accepted math siblings remain exact. Updated `decomp/results/combined.json`, `decomp/results/inventory.json`, the production manifest and this evidence record from those verified artifacts. No in-game verification was performed.
+
+See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13-g64-082-math-helper.json).
 
 ### G64-083 — Analyze math helper 8000E4E4
 

@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <math.h>
 #include <stddef.h>
 #include "common.h"
 typedef struct {
@@ -15,6 +16,8 @@ static u8 trig_kinds[4];
 static unsigned sine_calls, cosine_calls, trig_calls;
 static int use_trig_fixture;
 static int use_table_fixture;
+static f32 sqrt_inputs[3];
+static unsigned sqrt_calls;
 s32 func_800040A8_4CA8(f32 a,f32 b) { x=a; y=b; return -1; }
 static void record_trig(u8 kind, u16 angle) {
     if (trig_calls < 4) {
@@ -59,8 +62,14 @@ f32 func_80003E10_4A10(u16 n) {
     result = sine_results[sine_calls++];
     return result;
 }
+f32 _nsqrtf(f32 value) {
+    if (sqrt_calls < 3) sqrt_inputs[sqrt_calls] = value;
+    sqrt_calls++;
+    return sqrtf(value);
+}
 s32 func_8000E28C_EE8C(f32,f32,f32,f32);
 s32 func_8000E630_F230(f32,u16,f32 *,f32 *);
+s32 func_8000E39C_EF9C(f32,f32,f32,f32,u8 *);
 /* Test-only reference from the ROM trace; the production target stays GLOBAL_ASM. */
 static s32 reference_E2D4(f32 scale, u16 angle_a, u16 angle_b, u8 *out) {
     f32 first_scale;
@@ -85,10 +94,75 @@ static s32 reference_E2D4(f32 scale, u16 angle_a, u16 angle_b, u8 *out) {
     *(f32 *)(out + 0x78) = func_80003EA0_4AA0(angle_b) * second_scale;
     return 1;
 }
+typedef struct {
+    u8 prefix[0x08];
+    f32 x;
+    f32 y;
+    f32 z;
+} TestPosition;
+typedef struct {
+    u8 prefix[0x18];
+    const TestPosition *position;
+    u8 gap[0x70 - 0x18 - sizeof(const f32 *)];
+    f32 at_70;
+    f32 at_74;
+    f32 at_78;
+} TestTransform;
+/* Test-only reference from the ROM trace; compared with checked production C below. */
+static s32 reference_E39C(f32 scale, f32 x, f32 y, f32 z, u8 *object) {
+    const TestPosition *position = *(const TestPosition **)(object + 0x18);
+    volatile f32 dx = x - position->x;
+    volatile f32 dy = y - position->y;
+    volatile f32 dz = z - position->z;
+    volatile f32 dx_squared = dx * dx;
+    volatile f32 scale_squared = scale * scale;
+    volatile f32 dy_squared = dy * dy;
+    volatile f32 dz_squared = dz * dz;
+    volatile f32 xy_squared = dx_squared + dy_squared;
+    volatile f32 length_squared = xy_squared + dz_squared;
+    f32 result;
+
+    result = _nsqrtf((dx_squared * scale_squared) / length_squared);
+    if (dx < 0.0f) result = -result;
+    *(f32 *)(object + 0x70) = result;
+
+    result = _nsqrtf((dy_squared * scale_squared) / length_squared);
+    if (dy < 0.0f) result = -result;
+    *(f32 *)(object + 0x74) = result;
+
+    result = _nsqrtf((dz_squared * scale_squared) / length_squared);
+    if (dz < 0.0f) result = -result;
+    *(f32 *)(object + 0x78) = result;
+    return 1;
+}
 static unsigned float_bits(f32 value) {
     union { f32 f; unsigned u; } bits;
     bits.f = value;
     return bits.u;
+}
+static s32 check_E39C(f32 scale, f32 x, f32 y, f32 z, u8 *object) {
+    TestTransform expected = *(TestTransform *)object;
+    f32 expected_sqrt_inputs[3];
+    s32 expected_return;
+    s32 actual_return;
+    unsigned i;
+
+    sqrt_calls = 0;
+    expected_return = reference_E39C(scale, x, y, z, (u8 *)&expected);
+    assert(sqrt_calls == 3);
+    for (i = 0; i < 3; i++) expected_sqrt_inputs[i] = sqrt_inputs[i];
+
+    sqrt_calls = 0;
+    actual_return = func_8000E39C_EF9C(scale, x, y, z, object);
+    assert(actual_return == expected_return);
+    assert(sqrt_calls == 3);
+    assert(float_bits(*(f32 *)(object + 0x70)) == float_bits(expected.at_70));
+    assert(float_bits(*(f32 *)(object + 0x74)) == float_bits(expected.at_74));
+    assert(float_bits(*(f32 *)(object + 0x78)) == float_bits(expected.at_78));
+    for (i = 0; i < 3; i++) {
+        assert(float_bits(sqrt_inputs[i]) == float_bits(expected_sqrt_inputs[i]));
+    }
+    return actual_return;
 }
 static void set_trig_fixture(f32 sine_a, f32 cosine_a, f32 sine_b, f32 cosine_b) {
     sine_results[0] = sine_a;
@@ -166,6 +240,71 @@ static void test_single_precision_multiply_order(void) {
     assert(float_bits(out.at_78) == 0x40853437U);
     assert_trig_order(17, 29);
 }
+static void test_E39C_float_arguments_and_normalized_output(void) {
+    TestTransform target;
+    TestPosition position = { { 0 }, 2.5f, -6.25f, 88.0f };
+    unsigned char *bytes = (unsigned char *)&target;
+    unsigned i;
+
+    assert(offsetof(TestPosition, x) == 0x08);
+    assert(offsetof(TestPosition, y) == 0x0C);
+    assert(offsetof(TestPosition, z) == 0x10);
+    assert(offsetof(TestTransform, position) == 0x18);
+    assert(offsetof(TestTransform, at_70) == 0x70);
+    assert(offsetof(TestTransform, at_74) == 0x74);
+    assert(offsetof(TestTransform, at_78) == 0x78);
+    for (i = 0; i < sizeof(target); i++) bytes[i] = 0xA5;
+    target.position = &position;
+    sqrt_calls = 0;
+    assert(check_E39C(26.0f, 5.5f, -2.25f, 100.0f, bytes) == 1);
+    assert(target.at_70 == 6.0f && target.at_74 == 8.0f && target.at_78 == 24.0f);
+    assert(sqrt_calls == 3);
+    assert(float_bits(sqrt_inputs[0]) == float_bits(36.0f));
+    assert(float_bits(sqrt_inputs[1]) == float_bits(64.0f));
+    assert(float_bits(sqrt_inputs[2]) == float_bits(576.0f));
+    for (i = 0; i < 0x70; i++) {
+        if (i < 0x18 || i >= 0x18 + sizeof(target.position)) assert(bytes[i] == 0xA5);
+    }
+}
+static void test_E39C_sign_and_signed_zero(void) {
+    TestTransform target;
+    TestPosition position = { { 0 }, 0.0f, 0.0f, 0.0f };
+    target.position = &position;
+    sqrt_calls = 0;
+    assert(check_E39C(-13.0f, -3.0f, -4.0f, -12.0f, (u8 *)&target) == 1);
+    assert(target.at_70 == -3.0f && target.at_74 == -4.0f && target.at_78 == -12.0f);
+
+    sqrt_calls = 0;
+    assert(check_E39C(5.0f, -0.0f, 3.0f, 4.0f, (u8 *)&target) == 1);
+    assert(float_bits(target.at_70) == 0x00000000U);
+    assert(target.at_74 == 3.0f && target.at_78 == 4.0f);
+}
+static void test_E39C_nan_and_zero_length(void) {
+    TestTransform target;
+    TestPosition position = { { 0 }, 0.0f, 0.0f, 0.0f };
+    target.position = &position;
+    sqrt_calls = 0;
+    assert(check_E39C(1.0f, NAN, 1.0f, 2.0f, (u8 *)&target) == 1);
+    assert(sqrt_calls == 3);
+    assert(isnan(target.at_70) && isnan(target.at_74) && isnan(target.at_78));
+
+    sqrt_calls = 0;
+    assert(check_E39C(1.0f, 0.0f, 0.0f, 0.0f, (u8 *)&target) == 1);
+    assert(sqrt_calls == 3);
+    assert(isnan(target.at_70) && isnan(target.at_74) && isnan(target.at_78));
+}
+static void test_E39C_single_precision_rounding_order(void) {
+    TestTransform target;
+    TestPosition position = { { 0 }, 0.0f, 0.0f, 0.0f };
+    target.position = &position;
+    sqrt_calls = 0;
+    assert(check_E39C(0.1f, 0.3f, 0.7f, 1.1f, (u8 *)&target) == 1);
+    assert(float_bits(target.at_70) == 0x3CB7B08DU);
+    assert(sqrt_calls == 3);
+
+    assert(check_E39C(3.7f, -0.7f, 1.3f, 2.9f, (u8 *)&target) == 1);
+    assert(float_bits(target.at_70) == 0xBF4BBF4BU);
+}
 int main(void) {
     f32 a=0,b=0;
     assert(offsetof(TestOutput, at_70) == 0x70);
@@ -179,6 +318,10 @@ int main(void) {
     test_scale_sign_and_signed_zero();
     test_helper_owned_angle_wrap();
     test_single_precision_multiply_order();
+    test_E39C_float_arguments_and_normalized_output();
+    test_E39C_sign_and_signed_zero();
+    test_E39C_nan_and_zero_length();
+    test_E39C_single_precision_rounding_order();
     use_trig_fixture = 0;
     use_table_fixture = 0;
     assert(func_8000E630_F230(4,123,&a,&b)==1);

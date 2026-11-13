@@ -1,0 +1,325 @@
+{
+  "task_id": "G64-082",
+  "title": "Analyze math helper 8000E39C",
+  "date": "2026-11-13",
+  "status": "PASSED_G2",
+  "strategy": "Architect v2 wave C, supplemented by Architect v3 ranked candidate selection, Sol mismatch review, Luna proof audit, and the unchanged exact full-ROM G2 gate.",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "e70bfb1e9d095d2f97f6c489082af800585ba03f",
+    "plan_fast_forward_head": "6f1f3b1eb40f74acb3c29fcab145a3c36915d229",
+    "remote_head_before_task": "e70bfb1e9d095d2f97f6c489082af800585ba03f",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "target": {
+    "symbol": "func_8000E39C_EF9C",
+    "vma": "0x8000E39C",
+    "rom_offset": "0xEF9C",
+    "size_bytes": 328,
+    "word_count": 82,
+    "original_span_sha256": "3538f84b01e28177cb1fe7e7727afc8382acd083fc114a95ae11d26d12d16765",
+    "original_assembly": "asm/usa/E7F0.s",
+    "original_assembly_sha256": "ef3683e8173b4ebd3249ebcd17fa6ec19802b8cb64cdbd75d7f18557b0bf461b",
+    "source_unit": "decomp/math_helpers.c",
+    "source_unit_rom_span": "[0xEE8C, 0xF28C)",
+    "manifest_ownership_after_g2": "matching C",
+    "rom_anchor_check": "PASS; all 82 original words agree with the SHA-1-verified decompressed USA ROM"
+  },
+  "abi_and_behavior": {
+    "direct_call_sites": 43,
+    "distinct_callers": 38,
+    "sample_caller": "func_801D9940_604D20",
+    "sample_call_pc": "0x801D9A00",
+    "caller_assembly": "asm/usa/5F6840.s",
+    "arguments": {
+      "$f12": "scale float",
+      "$f14": "X float",
+      "$a2": "Y float bit pattern",
+      "$a3": "Z float bit pattern",
+      "caller_stack+0x10": "object pointer"
+    },
+    "object_layout": {
+      "+0x18": "nested position pointer",
+      "nested+0x08": "X coordinate",
+      "nested+0x0C": "Y coordinate",
+      "nested+0x10": "Z coordinate",
+      "+0x70/+0x74/+0x78": "X/Y/Z result outputs"
+    },
+    "operation_order": [
+      "compute dx, dy, dz and their squares",
+      "compute scale_squared",
+      "compute length_squared as (dx_squared + dy_squared) + dz_squared",
+      "call _nsqrtf on (dx_squared * scale_squared) / length_squared, then strict-negative sign correction and store +0x70",
+      "call _nsqrtf on (dy_squared * scale_squared) / length_squared, then strict-negative sign correction and store +0x74",
+      "call _nsqrtf on (dz_squared * scale_squared) / length_squared, then strict-negative sign correction and store +0x78",
+      "return 1"
+    ],
+    "identity_constraints": [
+      "negative scale is squared and does not reverse output signs",
+      "negative zero is not less than zero in the sign test",
+      "NaN comparison behavior and binary32 FPU order are observable",
+      "all three _nsqrtf relocations resolve at the original helper address"
+    ]
+  },
+  "model_review": {
+    "sol_6_1_high": {
+      "g82_diagnosis": "FRAME mismatch; fifth hypothesis should move scale_squared definition after dz_squared to target spill homes",
+      "candidate_scores": [
+        {
+          "task_id": "G64-084",
+          "score": 87,
+          "rank": 1
+        },
+        {
+          "task_id": "G64-082",
+          "score": 83,
+          "rank": 2
+        }
+      ]
+    },
+    "luna_max": {
+      "g2_audit": "PASS; staged C source, manifest, full-ROM report, source fingerprints and inventory agree"
+    }
+  },
+  "host_reference": {
+    "production_c_added": true,
+    "test_model": "test-only reference_E39C compared directly against func_8000E39C_EF9C",
+    "calls": 7,
+    "coverage": [
+      "nested pointer and coordinate offsets",
+      "output offsets and X/Y/Z order",
+      "negative finite scale",
+      "negative zero delta",
+      "NaN coordinate",
+      "zero length",
+      "two fixed single-precision rounding cases"
+    ],
+    "command": "gcc -std=c11 -O1 -g -ffp-contract=off -fsanitize=address,undefined -fno-omit-frame-pointer -Idecomp/test_support decomp/math_helpers.c decomp/test_math_helpers.c -lm -o /tmp/g64-082-math-reference-final && /tmp/g64-082-math-reference-final",
+    "result": "PASS; exit 0; ASan and UBSan; seven target reference calls",
+    "negative_control": {
+      "mutation": "reassociate each (delta_squared * scale_squared) / length_squared as (delta_squared / length_squared) * scale_squared in a temporary production-source copy",
+      "result": "REJECTED; mutant exited -6 at exact sqrt-input float-bit comparison in check_E39C",
+      "scope": "test-only mutation; no mutant source is tracked"
+    }
+  },
+  "native_candidates": {
+    "compiler": {
+      "version": "IDO 5.3",
+      "sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+      "linker": "GNU mips-linux-gnu-ld 2.45.90",
+      "linker_sha256": "665c22b6b7c6543a9cdd9373c0e6f6a575db3ece870b133c6dae367706e3848b",
+      "flags": [
+        "-c",
+        "-G",
+        "0",
+        "-non_shared",
+        "-Xfullwarn",
+        "-Xcpluscomm",
+        "-Iinclude",
+        "-Ilibultra/include",
+        "-Ilibultra/include/PR",
+        "-Isrc",
+        "-I.",
+        "-Wab,-r4300_mul",
+        "-woff",
+        "649,838,712",
+        "-D_LANGUAGE_C",
+        "-D_FINALROM",
+        "-DF3DEX_GBI",
+        "-D__sgi",
+        "-DNDEBUG",
+        "-O2",
+        "-mips2"
+      ]
+    },
+    "trial_limit": 5,
+    "counted_variants": 5,
+    "variants": [
+      {
+        "ordinal": 1,
+        "linked_size_bytes": 328,
+        "first_mismatch_offset": "+0x00",
+        "classification": "FRAME",
+        "observation": "0x50 frame versus original 0x48",
+        "source_sha256": "3f07e93f10325355a6989e4e4fdf0a340b9032b0f5b57e6481f45df1809d431d"
+      },
+      {
+        "ordinal": 2,
+        "linked_size_bytes": 328,
+        "first_mismatch_offset": "+0x24",
+        "classification": "BODY",
+        "observation": "nested position offsets were 0/4/8 instead of 8/0xC/0x10",
+        "source_sha256": "374ba1c25230606808b1835992e4d3db5e55939e34b219d0e4f7abce8c2e3ffb"
+      },
+      {
+        "ordinal": 3,
+        "linked_size_bytes": 328,
+        "first_mismatch_offset": "+0x58",
+        "classification": "FRAME",
+        "observation": "correct 0x48 frame; nine spill-slot displacements differed",
+        "source_sha256": "cfad808eb174cf5328cdd5421fc7d0f7dda52bce453bc3efb52243e7e45d1695",
+        "mechanism_hypothesis": "REGISTER_LIFETIME"
+      },
+      {
+        "ordinal": 4,
+        "linked_size_bytes": 328,
+        "first_mismatch_offset": "+0x58",
+        "classification": "FRAME",
+        "observation": "linked output was byte-identical to variant 3",
+        "source_sha256": "fb436e33ccdeab0d7856d2d236dd807748e246c57e6a4167544b39fd5ca437b4",
+        "mechanism_hypothesis": "REGISTER_LIFETIME"
+      },
+      {
+        "ordinal": 5,
+        "linked_size_bytes": 328,
+        "first_mismatch_offset": null,
+        "classification": "EXACT",
+        "hypothesis": "move scale_squared assignment immediately after dz_squared and before length_squared",
+        "matched_bytes": 328,
+        "source_sha256": "1f017a748f3a45d461cb1885bf0af7060392b06543f31ee5770b2b758318f6fe"
+      }
+    ],
+    "final_candidate_source_sha256": "1f017a748f3a45d461cb1885bf0af7060392b06543f31ee5770b2b758318f6fe",
+    "production_translation_unit_sha256": "fc9e4473a5be0754429ed8020a2b089e4a503a1d6419658c86edf428214d755c",
+    "stop_reason": "V5 exactly matched the original and passed fresh G2. Five-variant v2 limit was exhausted; no additional G82 variants are permitted."
+  },
+  "g64_091_attempt_ledger": {
+    "status": "PASS; five records satisfy the existing signed attempt-ledger schema",
+    "artifact": "practice/diagnostics/decomp-100-inputs/g64-082/attempt-signatures.json",
+    "artifact_sha256": "e6e6de8b8d1394fe6df932b669d8edd32433aeec44585a83ebdbae680807a6b4",
+    "database": "practice/diagnostics/decomp-100-inputs/g64-082/attempts.sqlite",
+    "database_sha256_before_import": "54c6d2c1e678e1949938a4bd76f11ba5d91024fe4f797bacc12e05a3f480ff72",
+    "database_sha256_after_import": "469e6af1dd71e181f1e4988213cbf8b71b07eb5ad68de886976769832e452b29",
+    "database_rows_added": {
+      "run_rows": 5,
+      "attempt_rows": 5
+    },
+    "record_count": 5,
+    "unique_input_signatures": 5,
+    "unique_attempt_signatures": 5,
+    "statuses": {
+      "mismatch": 4,
+      "linked_match": 1
+    },
+    "exactness_tiers": {
+      "none": 4,
+      "isolated_function": 1
+    },
+    "import_note": "Rows were normalized from preserved target_only/target_v2..v5 source and linked ELF artifacts. The queue run configurations explicitly state compiler_executed_during_import=false; no IDO work was rerun and these records do not claim full-ROM proof.",
+    "run_context": "Each generated run and attempt row is an ingestion record for preserved historical evidence; imported run configurations set compiler_executed_during_import=false. The five attempt records pass the existing schema validator."
+  },
+  "proof": {
+    "full_rom_g2": "PASS",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "claimed_functions": 150,
+    "matched_functions": 150,
+    "matched_bytes": 11476,
+    "target_expected_sha256": "3538f84b01e28177cb1fe7e7727afc8382acd083fc114a95ae11d26d12d16765",
+    "target_candidate_sha256": "3538f84b01e28177cb1fe7e7727afc8382acd083fc114a95ae11d26d12d16765",
+    "g2_started_utc": "2026-11-13T13:31:40.710128+00:00",
+    "g2_ended_utc": "2026-11-13T13:33:02.014405+00:00",
+    "combined_report_sha256": "328be129fe1c39aa31e41a7b37472741a7b0ac968d67a3f17f7489e86ff4ed14",
+    "source_sha256_lf_math_helpers_c": "fc9e4473a5be0754429ed8020a2b089e4a503a1d6419658c86edf428214d755c",
+    "staged_manifest_sha256": "2d1c8da35919a7d37a7cf65525b986bf2c73c5d3cd1db3f4910c2008cb24d21e",
+    "g2_report_path": "practice/diagnostics/decomp-100-inputs/g64-082/g2-report-2026-11-13.json",
+    "verifier_command": "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --workdir practice/diagnostics/decomp-100-inputs/g64-082/g2-run-2026-11-13 --report practice/diagnostics/decomp-100-inputs/g64-082/g2-report-2026-11-13.json --uv \"$(command -v uv)\" --jobs 2 --manifest practice/diagnostics/decomp-100-inputs/g64-082/g2-source/manifest.json --source-dir practice/diagnostics/decomp-100-inputs/g64-082/g2-source",
+    "tool_versions": {
+      "uv": "uv 0.13.7 (x86_64-unknown-linux-gnu)",
+      "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125",
+      "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0"
+    }
+  },
+  "inventory": {
+    "status": "PASS",
+    "newly_matching_c": 150,
+    "combined_c": 163,
+    "remaining_assembly": 7213,
+    "identified_entries": 7376,
+    "entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
+    "retained_size_annotation_difference": {
+      "symbol": "func_8003F6E8_402E8",
+      "baseline_bytes": 48,
+      "candidate_bytes": 56
+    },
+    "report_sha256": "16497366ac28e7aa5cb9d905985ae980acb09d97c97ed832f414bf6a31c6c943",
+    "local_report_path": "practice/diagnostics/decomp-100-inputs/g64-082/g2-inventory-verified-2026-11-13.json",
+    "command": "python3 -m decomp.inventory --baseline practice/diagnostics/decomp-100-inputs/g64-082/g2-run-2026-11-13/baseline --candidate practice/diagnostics/decomp-100-inputs/g64-082/g2-run-2026-11-13/candidate --report practice/diagnostics/decomp-100-inputs/g64-082/g2-inventory-verified-2026-11-13.json"
+  },
+  "fixture_replay": {
+    "command": "python3 -m unittest decomp.test_compare_original tests.test_decomp_probe_integration -q",
+    "result": "PASS; 17/17",
+    "actual_candidate_controls": [
+      {
+        "kind": "positive",
+        "task": "G64-074",
+        "length": 128,
+        "result": "exact ROM match"
+      },
+      {
+        "kind": "negative",
+        "task": "G64-072",
+        "candidate_bytes": 104,
+        "original_bytes": 96,
+        "first_mismatch": "+0x04"
+      },
+      {
+        "kind": "negative",
+        "target": "8003DE80",
+        "candidate_bytes": 220,
+        "original_bytes": 232,
+        "first_mismatch": "+0x04"
+      },
+      {
+        "kind": "negative",
+        "task": "G64-081",
+        "candidate_bytes": 180,
+        "original_bytes": 200,
+        "first_mismatch": "+0x08"
+      }
+    ],
+    "synthetic_controls_note": "The DBEC/F038 comparator negatives in the unittest suite are synthetic comparator fixtures where no historical linked candidate artifact was available."
+  },
+  "repository_tests": {
+    "decomp_suite": "PASS; 157 tests; python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+    "verifier_suite": "PASS; 17 tests; python3 -m unittest tests.test_decomp_verify -q",
+    "skill_task_suite": "PASS; 17 tests; python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q",
+    "fixture_replay_suite": "PASS; 17 tests; python3 -m unittest decomp.test_compare_original tests.test_decomp_probe_integration -q",
+    "skill_context_validation": "PASS; python3 -m decomp.skill_context --validate -> CONSISTENT_STORED_REPORTS",
+    "next_task_brief": "PASS; G64-084 selected with G64-081 dependency satisfied and current stored proof of 150/150",
+    "diff_check": "PASS; git diff --check",
+    "local_ci": "UNAVAILABLE; `npx run-local-ci run --quiet --all --pause-on-failure` exited 1: no .github/workflows directory in this repository",
+    "in_game": "NOT_RUN",
+    "task_position_regression": "PASS; compact task-context tests validate dynamic task/status/evidence consistency and do not hard-code the current active task."
+  },
+  "decision": {
+    "classification": "PASSED_G2",
+    "production_candidate_integrated": true,
+    "manifest_changed": true,
+    "source_unit_exact": true,
+    "fresh_full_rom_g2": true,
+    "fresh_inventory": true,
+    "matching_c_delta": {
+      "functions": 1,
+      "bytes": 328
+    },
+    "next": "G64-084: study func_8000EA74_F674 under the v3 Sol rank-1 selection; Luna owns <=3 bounded post-baseline variants and evidence publication."
+  },
+  "publication": {
+    "branch_head_at_start": "6f1f3b1eb40f74acb3c29fcab145a3c36915d229",
+    "published_commit": null,
+    "remote_head_verified": null
+  },
+  "source_hashes": {
+    "math_helpers.c": "fc9e4473a5be0754429ed8020a2b089e4a503a1d6419658c86edf428214d755c",
+    "manifest.json": "2d1c8da35919a7d37a7cf65525b986bf2c73c5d3cd1db3f4910c2008cb24d21e",
+    "test_math_helpers.c": "f14aa966d52c3020ad5272ae3e43580e1ab4b4e6fbd884831a09a8c568d5b52c",
+    "TASKS_100.json": "2c98beb36660b47f6fcc985bf6db2e2a1b4474d6904939506eba970965510779"
+  },
+  "attempt_signature_note": "Five source/context inputs and five attempt records now have unique recomputable signatures validated by decomp.attempt_ledger.validate_ledger.",
+  "model_owner_next": "Luna Max (native candidates, proof and publication); Sol 6.1 High (diagnosis/selection review as triggered by v3 escalation criteria)."
+}

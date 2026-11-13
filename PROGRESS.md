@@ -1,13 +1,25 @@
 # Goemon 64 Tools — Development Progress
 
-## 2026-11-13 — Architect v3 compiler-guided pilot plan (PLAN_ONLY)
+## 2026-11-13 — Architect v3 compiler-guided pilot (ACTIVE)
 
 - **Purpose:** respond to low production matching-C yield and early IDO branch/stack/register mismatches without replacing Architect v2.
 - **Changes:** added `decomp/plans/ARCHITECT_V3_PILOT.md`, linked it in `decomp/plans/README.md` and `decomp/CONTINUE.md`, assigned architecture/hypothesis/ranking review to Sol 6.1 High and bounded compiler execution/evidence to Luna Max.
-- **Scope and gates:** documentation only; task ledger, manifest, accepted production C, proof and inventory unchanged. No G64-092/G64-094 completion claimed. Existing G2 snapshot remains 149 matching functions, 11,148 bytes, 7,214 ASM.
-- **Checks:** read current branch/proof/inventory through GitHub connector and verified documentation insertion preconditions. No code tests, IDO compilation, complete-ROM verifier, inventory build or in-game testing executed for this change.
-- **Limitations/next:** pilot not executed; refresh live state before selecting up to three eligible targets and running at most 12 native variants under v2 caps.
+- **Scope and gates:** the first selected task, G64-082, passed the unchanged exact G2 gate: 150 matching functions, 11,476 bytes, 163 combined C, 7,213 ASM. No G64-092/G64-094 completion claimed.
+- **Checks:** see the G64-082 execution record below for the fresh IDO, host, whole-ROM and inventory evidence. The pilot still has a 12-variant overall cap and v2 per-task limits.
+- **Limitations/next:** G64-082 used five variants; Sol ranked G64-084 first at 87/100. Continue with G64-084; no in-game result is claimed.
 
+
+
+## 2026-11-13 — G64-082 math helper 8000E39C (PASSED_G2)
+
+- **Reason and branch:** resumed the active 100-task run in the same worktree, `codex/decomp-100-task-plan`. G64-082 began at `e70bfb1e9d095d2f97f6c489082af800585ba03f`; the remote advanced during the task with Architect v3 commit `6f1f3b1eb40f74acb3c29fcab145a3c36915d229`, which was fast-forwarded before publication. At execution handoff, the worktree held only G64-082 source/test/manifest changes.
+- **Original/ABI evidence:** `func_8000E39C_EF9C` is 328 bytes at VMA `0x8000E39C`, ROM `0xEF9C`, span SHA-256 `3538f84b01e28177cb1fe7e7727afc8382acd083fc114a95ae11d26d12d16765`. The trace covered 43 direct call sites from 38 callers. Caller `0x801D9A00` passes scale in `$f12`, X in `$f14`, Y/Z float bits in `$a2/$a3`, and object via caller stack `+0x10`; nested position is object `+0x18`, coordinates are `+0x08/+0x0C/+0x10`, and results are at object `+0x70/+0x74/+0x78`.
+- **Behavior:** computes `dx/dy/dz`, squares, `(dx² + dy²) + dz²`, and `scale²`; calls `_nsqrtf` on each `(delta² * scale²) / length²`, negates only on strict delta `< 0`, then returns 1. Negative scale is squared; signed-zero and NaN behavior follow the observed comparisons and FPU path.
+- **Native trials:** five distinct pinned IDO 5.3 variants used the full <=512-byte v2 budget. V1 was 328 bytes with a `0x50` frame and first mismatch `+0x00`; v2 improved to `+0x24` but used incorrect position offsets; v3 used the original `0x48` frame but nine spill homes differed starting `+0x58`; v4 linked identically to v3; v5 moved the `scale_squared` definition after `dz_squared` and exactly matched all 328 bytes. Final source SHA-256 `fc9e4473a5be0754429ed8020a2b089e4a503a1d6419658c86edf428214d755c`. IDO SHA-256 `76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0`; GNU MIPS ld SHA-256 `665c22b6b7c6543a9cdd9373c0e6f6a575db3ece870b133c6dae367706e3848b`.
+- **Tests/proof:** seven host reference cases passed with ASan/UBSan and `-ffp-contract=off`; a target-only division-reassociation mutant was rejected at the exact sqrt-input bit comparison. Fresh G2 matched all 33,554,432 ROM bytes (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`), all 150/150 claims and 11,476 bytes. Inventory passed: 163 C, 7,213 ASM, 7,376 entries, unchanged entry identity. `combined.json` SHA-256 `328be129fe1c39aa31e41a7b37472741a7b0ac968d67a3f17f7489e86ff4ed14`; `inventory.json` SHA-256 `16497366ac28e7aa5cb9d905985ae980acb09d97c97ed832f414bf6a31c6c943`. Five G64-091 input/attempt signatures were imported from preserved sources and ELFs and passed the existing ledger validator; the recorded queue runs explicitly state that no compiler was executed during import.
+- **Changes:** promoted only the G2-proven `8000E39C` candidate, added direct production/reference semantic checks, updated the matching manifest and authoritative reports, task ledger, Phase 09, v2/v3 handoffs and execution evidence. G64-083 remains PLANNED; G64-084 is the selected next candidate.
+- **Limitations:** no in-game verification. The G2 build verifies the checked candidate/source bundle against the whole ROM; it does not establish runtime gameplay beyond byte identity. Local CI and repository suites are recorded in the evidence JSON after publication checks complete.
+- **Next:** G64-084 `func_8000EA74_F674`, selected by Sol at 87/100; apply Luna's <=3 post-baseline variant ceiling and retain exact FPU/register/relocation checks.
 
 ## 2026-11-13 — G64-081 math helper 8000E2D4 (RESEARCH_ONLY)
 

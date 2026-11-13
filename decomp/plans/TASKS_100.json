@@ -3530,7 +3530,7 @@
       "ordinal": 82,
       "phase": 9,
       "title": "Analyze math helper 8000E39C",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-081"
       ],

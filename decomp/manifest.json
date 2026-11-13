@@ -616,6 +616,11 @@
           "size": 72
         },
         {
+          "name": "func_8000E39C_EF9C",
+          "rom_offset": 61340,
+          "size": 328
+        },
+        {
           "name": "func_8000E630_F230",
           "rom_offset": 62000,
           "size": 92
@@ -623,7 +628,6 @@
       ],
       "assembly_functions": [
         "func_8000E2D4_EED4",
-        "func_8000E39C_EF9C",
         "func_8000E4E4_F0E4"
       ]
     },

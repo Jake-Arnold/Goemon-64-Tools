@@ -1,6 +1,6 @@
 # Architect v3: bounded compiler-guided yield pilot
 
-**Status:** Plan only; not implemented. **Date:** 2026-11-13. **Target:** `Jake-Arnold/Goemon-64-Tools`, `chatgptweb/decomp`.
+**Status:** Active; G64-082 was the first selected candidate and passed G2 on 2026-11-13. **Date:** 2026-11-13. **Target:** `Jake-Arnold/Goemon-64-Tools`, `chatgptweb/decomp`.
 
 This optional pilot **supplements but does not replace** [Architect v2](EXECUTION_STRATEGY_V2.md), [executor protocol](EXECUTOR_PROTOCOL.md), or the existing `architect_override_v2` task packets. Preserve their task IDs, dependency graph, strict trial ceilings, evidence ledger, complete-ROM promotion gate, and branch/main boundaries. This document is not a claim of new compiler matches or executed tests.
 
@@ -77,3 +77,9 @@ Neither Sol nor Luna may modify `main`, force-push, invent verification, reclass
 ## Per-target handoff fields
 
 `branch_head`, `task_id`, `symbol`, `source_unit`, `original_vma`, `original_rom_offset`, `original_size/hash`, `ido_hash/flags`, `source/context_hash`, `eligibility/ranking_score`, `hypothesis`, `attempt_signature`, `variants_used/limit`, `semantic_test_status`, `first_mismatch_word/category`, `isolated/unit/full_rom/inventory_tiers`, `verified_function_delta`, `verified_byte_delta`, `decision`, `next_owner`.
+
+## Execution checkpoint — G64-082
+
+The plan's Sol/Luna division was used for the G64-082 stop hypothesis and candidate review: Sol recommended the fifth, spill-home-focused source shape and ranked G64-084 first at 87/100 (G64-082 scored 83/100); the Luna read-only G2 audit confirmed the staged source, manifest, report and inventory are consistent. G64-082 consumed five distinct native source variants (the v2 limit for 129–512-byte targets), then passed original-unit and fresh full-ROM/inventory proof with one new function and 328 bytes. The proof now reports 150/150 functions and 11,476 bytes. The comparator fixture replay passed 17 tests, including positive and negative controls. Five distinct G64-091 input/attempt signatures were validated from preserved source/ELF evidence; the queue import records explicitly say no compiler ran during import. The five variants are the complete budget for G64-082; no retry budget remains.
+
+**Next candidate:** G64-084 `func_8000EA74_F674` (72 bytes), Sol rank 1. Luna should run its <=3 post-baseline variants under the v2 cap, record attempt signatures and stop on mismatch or exactness. G64-083 is now dependency-eligible after G64-082 but remains below the selected G64-084 priority. The pilot has used 5 of 12 overall variant slots; the G64-084 task budget is stricter than the remaining global budget.
