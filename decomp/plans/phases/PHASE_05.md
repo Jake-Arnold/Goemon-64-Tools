@@ -207,7 +207,7 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 
 ### G64-047 — Resolve number formatter
 
-**Status:** PLANNED. **Dependencies:** G64-021.
+**Status:** RESEARCH_ONLY (completed 2026-11-13). **Dependencies:** G64-021.
 **Focus files:** `decomp/candidates/vm_digits_format_probe.c`; `decomp/test_vm_digits_format_probe.c`.
 
 **Architectural intent:** Analyze func_8003F480_40080 (164 bytes), sprintf argument preparation, destination halfword stream and bnel delay slot.
@@ -231,6 +231,10 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Rechecked the original 164-byte/41-word span against the pinned decompressed ROM; all words match, and the format string at ROM 0x7DB60 is `%d`. Original MIPS uses the `$a0` delay slot for the `sprintf` destination and a `bnel` delay slot to preload the next signed-halfword digit. The 1,000-case ASan/UBSan host harness passes. Historical isolated IDO evidence covers 15 variants; the best recorded shape has only 3/13 comparable direct positions and none reproduce the `bnel` schedule. Because those trials already cover argument-source, pointer, loop and preloaded-character variants, no new native hypothesis was justified under v2. The function remains `GLOBAL_ASM`; no new full-unit build, G2, or inventory was run. See `plans/execution/2026-11-13-g64-047-number-formatter.json`.
+
+**Next:** G64-048 is dependency-ready for the VM graphics integration boundary.
 
 ### G64-048 — Test VM graphics integration boundary
 

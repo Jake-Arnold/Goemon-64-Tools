@@ -183,7 +183,13 @@ sanitized synthetic cases but compiles to 356 bytes versus the original 348.
 The target first differs at `0x8003E6CC` in the saved-register spill; its extra
 eight bytes shift a later call target. `GLOBAL_ASM` remains, and G2/inventory
 were not run. See
-`plans/execution/2026-11-13-g64-046-callback-setup.json`. G64-047 is next;
+`plans/execution/2026-11-13-g64-046-callback-setup.json`.
+G64-047 completed RESEARCH_ONLY: the pinned 164-byte target and `%d` string
+were verified, and its host harness passed 1,000 cases. Historical evidence
+already covers 15 IDO variants; none reproduce the `bnel` delay slot, and the
+best remains 3/13 comparable direct words. No new source hypothesis justified
+another trial. `GLOBAL_ASM` remains; no full-unit build or G2 was run. See
+`plans/execution/2026-11-13-g64-047-number-formatter.json`. G64-048 is next;
 G64-087 remains gated on G64-061/062/063.
 G64-085 passed G2 as pilot candidate 3 of 3. Sol closed the pilot at 3/3 candidates and 7/12 variants; no extra global budget carries forward. G64-086 then passed ordinary Architect v2 with two of five variants, adding 180 bytes; the stored proof remains 153 matching-C functions / 11,800 bytes. G64-083 closed as `RESEARCH_ONLY` with `GLOBAL_ASM` retained. G64-089 then ranked the five float-state functions and tested two bounded candidates for `80006B44`: V1 had 38 differing target words; Sol diagnosed register lifetime/scheduling and approved one induction-lifetime variant. V2 reduced the mismatch to 36 words but retained the first `$v1`/`$v0` mismatch and missed the predicted `$a2` loop roles. The target remains `GLOBAL_ASM`; G2 and inventory were not run. See [`plans/execution/2026-11-13-g64-089-float-state.json`](plans/execution/2026-11-13-g64-089-float-state.json). G64-041 then completed RESEARCH_ONLY with all 110 words verified locally and the sanitized 11-command store contract; its execution report is plans/execution/2026-11-13-g64-041-display-emitter-trace.json. G64-087 remains gated on G64-061/062/063. Keep concrete predicted instruction deltas as a hypothesis-scoring refinement.
 

@@ -1934,7 +1934,7 @@
       "ordinal": 47,
       "phase": 5,
       "title": "Resolve number formatter",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-021"
       ],

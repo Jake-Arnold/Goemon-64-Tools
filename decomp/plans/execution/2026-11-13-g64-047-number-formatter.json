@@ -1,0 +1,125 @@
+{
+  "task_id": "G64-047",
+  "title": "Resolve number formatter",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "585e8079a320ccd4ad6ed7a88519629830a1a2bf",
+    "fetched_remote_head_at_start": "585e8079a320ccd4ad6ed7a88519629830a1a2bf",
+    "worktree_at_start": "clean",
+    "dependency": "G64-021=DOC_ONLY"
+  },
+  "production_context": {
+    "source_unit": "decomp/script_vm.c",
+    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "script_vm_source_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "script_vm_header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest_owner": "func_8003F480_40080 remains GLOBAL_ASM",
+    "unit_rom_start": "0x3DBA0",
+    "unit_vma_start": "0x8003CFA0",
+    "unit_text_bytes": 10112
+  },
+  "inputs": {
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_bytes": 33554432,
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "ido": "IDO 5.3 -O2 -mips2 -G 0 -non_shared",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "mips_binutils": "GNU Binutils for Ubuntu 2.45.90.20260125"
+  },
+  "target": {
+    "symbol": "func_8003F480_40080",
+    "vma": "0x8003F480",
+    "rom_offset": "0x40080",
+    "original_bytes": 164,
+    "original_words": 41,
+    "original_instruction_sha256": "39be635c405c186b22571333c4eb409b1adaf5d9a6dc7c286688597dae3e6bd6",
+    "original_assembly_sha256": "6308b845914d2a014a9ccc89953056b8193f644f8cd07975baa81b5ea6fc1764",
+    "candidate_source": "decomp/candidates/vm_digits_format_probe.c",
+    "candidate_source_sha256": "17654efaf43f9c7c598021a320295f0b913c5c419474c313014ceee6ac0612d4",
+    "host_test_source": "decomp/test_vm_digits_format_probe.c",
+    "host_test_source_sha256": "5611bf6d4598ab9a3b0264d773a4bb34133e363dd6ce37e14829c43eb404bd18"
+  },
+  "original_mips_findings": [
+    "The 0x18-byte-frame function calls sprintf with D_801C7780_1C8380 as the destination, D_8007CF60_7DB60 as the format, and D_801C7740_1C8340 in $a2. The format bytes at ROM 0x7DB60 are `%d`; the destination low address is installed in the sprintf jal delay slot.",
+    "It first publishes the temporary buffer pointer in D_801C779C_1C839C. A nonzero first byte enters the digit loop; each ASCII byte is converted to a signed halfword by subtracting 0x30.",
+    "The loop loads the next byte, advances the two pointers, and uses `bnel $v1,$zero,loop` with `addiu $t8,$v1,-0x30` in the branch-likely delay slot. The final NUL does not emit a token because the delay slot is annulled when the branch is not taken.",
+    "The function writes a -1 halfword sentinel, publishes the sentinel pointer in D_801C77DC_1C83DC, calls func_8003EB34_3F734 with D_801C7754_1C8354 loaded in the jal delay slot, and returns void. A minus sign is converted by the same subtraction to -3."
+  ],
+  "prior_native_evidence": {
+    "source": "decomp/results/vm_next_ten_batch4.json and the 2026-11-09 formatter entries in PROGRESS.md",
+    "historical_native_variants": 15,
+    "baseline_isolated_ido": {
+      "size_bytes": 160,
+      "direct_matches": 2,
+      "direct_comparable": 15,
+      "relocation_shape_matches": 3,
+      "relocation_shape_comparable": 10,
+      "relocation_layout_differences": 15
+    },
+    "best_diagnostic_variant": {
+      "size_bytes": 156,
+      "direct_matches": 3,
+      "direct_comparable": 13
+    },
+    "other_recorded_comparator": "A separate later isolated report recorded 9/41 relocation-masked positions, including 3/19 directly comparable positions. It used a distinct output/comparison path; neither report is a full-unit proof.",
+    "explored_hypotheses": [
+      "sprintf argument sources",
+      "pointer qualification",
+      "loop forms and control-flow shapes",
+      "preloading the next character"
+    ],
+    "stopping_evidence": "None reproduced the original bnel delay-slot schedule. The historical object comparison did not retain a reliable first original-address mismatch word."
+  },
+  "variant_accounting": {
+    "new_native_variants": 0,
+    "new_source_changes": 0,
+    "v2_stop_reason": "The previous 15 native variants already covered the supported sprintf, pointer, loop, and next-character hypotheses. No distinct instruction-level prediction remained; the v2 stop rule forbids another unsupported shape trial."
+  },
+  "tests": {
+    "focused_host_command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fno-pie -no-pie -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp decomp/test_vm_digits_format_probe.c -o /tmp/goemon-g64-047-host; ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/goemon-g64-047-host",
+    "focused_host_result": "PASS 1,000/1,000 deterministic synthetic cases under ASan/UBSan, including zero, signed decimal boundaries, INT_MIN/INT_MAX, negative values, halfword sentinel, pointer destinations, guard slot, and callback count.",
+    "original_span_check": "PASS: decompressed ROM identity matched the pinned SHA-1; all 41 assembly words equal ROM words at 0x40080; function span SHA-256 matches the recorded original hash; format string at 0x7DB60 is `%d`.",
+    "original_guard_command": "python3 decomp/test_vm_digits_original.py <private-original-assembly>; python3 -m unittest decomp.test_vm_digits_original -q",
+    "original_guard_result": "PASS: 41 original instruction addresses and 15 anchors verified; four parser/negative-control tests passed.",
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 162,
+      "verifier_ledger_tests": 92,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "diff_check": "git diff --check — PASS",
+    "full_unit_native_match": "NOT_RUN in this task; historical evidence is isolated -c comparison only.",
+    "full_rom_g2": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "in_game_verification": "NOT_RUN"
+  },
+  "proof_checkpoint": {
+    "stored_matching_c_functions": 153,
+    "stored_matching_c_bytes": 11800,
+    "stored_combined_sha256": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "stored_inventory": "166 combined C / 7,210 ASM / 7,376 identified entries",
+    "stored_inventory_sha256": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694",
+    "production_script_vm_source_changed": false,
+    "shared_script_vm_header_changed": false,
+    "manifest_changed": false,
+    "stored_proof_changed": false
+  },
+  "decision": {
+    "status": "RESEARCH_ONLY",
+    "production_ownership": "Retain GLOBAL_ASM for func_8003F480_40080",
+    "full_unit_native_proof": "NOT_RUN",
+    "full_rom_g2": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "matching_c_delta": 0,
+    "next": "G64-048 — Test VM graphics integration boundary"
+  }
+}
