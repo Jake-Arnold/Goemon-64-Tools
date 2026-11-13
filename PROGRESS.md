@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — Verify two file_12 conversation callbacks in isolated IDO links
+
+- **Changed:** added C research candidates for the 20-byte `80222034` global copy and 36-byte `80222168` signed-byte call, a read-only original-VMA probe with negative layout tests, and a scoped evidence record. Production assembly, manifest, stored full-ROM proof, and inventory remain at 157 claims / 12,120 bytes.
+- **Why:** the conversation scan found these small callbacks, but their actual Splat owner is `file_12` at ROM `0x5C8770` / VMA `0x8020D2A0`, distinct from the already guarded `file_43` overlay.
+- **Tests:** the pinned upstream SHA and private retail/decompressed ROM SHA-1 values matched their documented pins. The private original-VMA IDO 5.3 probe passed both exact function-symbol/byte comparisons (56 of 56 function bytes); 12 trailing zero alignment bytes per isolated link were excluded. Five synthetic layout negative tests passed. `python3 -m decomp.local_ci` passed 172 decomp tests, 92 verifier/ledger tests, task validation, and the display-emitter ASan/UBSan host fixture. `git diff --check` passed. No in-game run.
+- **Limitations:** **RESEARCH_ONLY**, zero C promotions. The current production manifest accepts only main-segment VMA mapping; `file_12` linked original-unit section/symbol/relocation ownership and staging are absent. Whole-unit, fresh full-ROM G2 and inventory were not run because no unit-exact staged candidate exists.
+- **Next:** implement fail-closed `file_12` overlay provenance and staging, then verify each candidate in its real unit and require fresh full-ROM and inventory proof before changing assembly ownership. See [the research report](decomp/VM_CONVERSATION_TARGETS.md) and [evidence](decomp/results/file12_dialogue_callbacks_research.json).
+
 ### 2026-11-13 — Promote dialogue window helpers from conversation research
 
 - **Changed:** promoted `8000C314`, `8000C3A0`, `8000C3EC`, and `8000C53C` in the original dialogue graphics unit. Updated the matching manifest, full-ROM proof and ELF inventory on the independent VM research branch.
