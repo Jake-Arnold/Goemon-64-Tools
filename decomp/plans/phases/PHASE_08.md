@@ -191,30 +191,22 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 
 ### G64-077 — Characterize object list 80036448
 
-**Status:** PLANNED. **Dependencies:** G64-076.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-076 (`RESEARCH_ONLY`).
 **Focus files:** `decomp/object_flags.c`; `decomp/object_flags.h`; `decomp/test_object_flags.c`.
 
-**Architectural intent:** Complete this known four-function assembly neighborhood and check shared header field aliasing.
+**Architectural intent:** Trace `func_80036448_37048` as a 180-byte object-acquisition gate. Preserve the existing list-walker, dispatcher, and move-to-front ownership boundaries; do not infer a shared structure layout from this allocator path.
 
-**Numbered implementation recipe:**
-1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
-2. Read the exact focus files: decomp/object_flags.c, decomp/object_flags.h, decomp/test_object_flags.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.
-3. Implement the bounded design: Complete this known four-function assembly neighborhood and check shared header field aliasing.
-4. Trace 80036448 and determine whether it frees, clears or marks list nodes; no inferred ownership without evidence.
-5. Assert null/sentinel path and original external call sequence.
-6. Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.
-7. For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.
-8. Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries.
+**Execution and outcome (2026-11-13):** the pinned `mnsg` source and USA ROM identify the target at VMA `0x80036448`, ROM offset `0x37048`, size 180 bytes / 45 words, SHA-256 `54a075261ddb38df97c92ca30b45182ac43776d0233e39e712723269dfe19b3f`. The pinned assembly's 45 words match the SHA-1-verified decompressed ROM. Four callers are present: `func_80018B28_19728` at `0x80018B44` and `0x80018B98`, `func_80018F3C_19B3C` at `0x8001900C`, and `func_8001904C_19C4C` at `0x8001911C`; callers initialize the returned node and link it into the owner list.
 
-**Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
+The routine increments `D_8016DAB0` as a halfword before every gate and updates `D_8016DAB2` only when the incremented unsigned count exceeds its previous high-water value. If `D_8006D320` is nonzero it calls `func_80036058_36C58(pointer, 1)`; both helper-return branches converge on allocation. Otherwise it computes unsigned `D_8006D354 - signed D_8016DADC` and allocates only when the signed difference is positive. It returns `func_80035D8C_3698C(2)`, including null allocator results. Counts are not rolled back. The owner argument is homed at `0x18(sp)` but not dereferenced. The target does not free, clear, mark or link list nodes.
 
-**Explicit acceptance:** If functions match, all four pass same-unit IDO and full-ROM gate; otherwise preserve each separately as ASM.
+Four IDO variants produced 152, 144, 152 and 152 bytes versus 180. The second moved the first mismatch from `+0x00` to `+0x04`; the third reproduced the first variant's exact linked code and the fourth returned to an entry mismatch. The accepted C siblings `func_800362DC_36EDC` (44 bytes) and `func_80036308_36F08` (128 bytes) remain exact in the compiled source unit. A 544-byte composition including the unchanged `80036388`/`800363F4` ASM spans still differs only in the target candidate span, where the candidate is short. Keep `func_80036448_37048` as `GLOBAL_ASM`; complete-ROM G2 and inventory were not run.
 
-**Required negative control:** Preserve actual list termination, mutation order, signed/unsigned table arithmetic and atomicity; do not introduce a safety check that changes original native code.
+**Host reference and negative control:** `decomp/test_object_flags.c` now checks zero helper return followed by allocation, helper/allocator order and arguments, signed-used capacity behavior, count/high-water updates and wrap, capacity rejection, null owner sentinel and null allocation return. GCC ASan/UBSan passed; a mutant that incorrectly gates allocation on helper return zero failed its expected assertion.
 
-**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+**Limitations:** the host tests exercise a ROM-derived reference model, not production C for this target. The helper's internal effects remain opaque. No production source/header/manifest change, G2 rebuild, inventory rebuild or in-game verification occurred. Stored proof remains 149/149 functions / 11,148 bytes. See `plans/execution/2026-11-13-g64-077-object-allocation-gate.json`.
 
-**Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+**Next:** G64-078, inspect scheduler routine `8000702C` and compare its queue behavior with adjacent matching helper `80007024`.
 
 ### G64-078 — Analyze scheduler 8000702C
 

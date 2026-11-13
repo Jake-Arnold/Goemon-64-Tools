@@ -3309,7 +3309,7 @@
       "ordinal": 77,
       "phase": 8,
       "title": "Characterize object list 80036448",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-076"
       ],
@@ -3318,21 +3318,21 @@
         "decomp/object_flags.h",
         "decomp/test_object_flags.c"
       ],
-      "architecture_design": "Complete this known four-function assembly neighborhood and check shared header field aliasing.",
-      "explicit_acceptance": "If functions match, all four pass same-unit IDO and full-ROM gate; otherwise preserve each separately as ASM.",
+      "architecture_design": "Trace func_80036448_37048 as a 180-byte object-acquisition gate. Recover its halfword counters, signed capacity test, optional helper/allocator sequence, and preserve neighboring list-function ownership.",
+      "explicit_acceptance": "Promote only if all 180 original bytes match at VMA 0x80036448 in the real source unit, accepted C siblings and intervening ASM remain exact, and a fresh complete G2 ROM/inventory gate passes; otherwise retain this symbol as GLOBAL_ASM.",
       "implementation_sequence": [
-        "Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.",
-        "Read the exact focus files: decomp/object_flags.c, decomp/object_flags.h, decomp/test_object_flags.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.",
-        "Implement the bounded design: Complete this known four-function assembly neighborhood and check shared header field aliasing.",
-        "Trace 80036448 and determine whether it frees, clears or marks list nodes; no inferred ownership without evidence.",
-        "Assert null/sentinel path and original external call sequence.",
-        "Run focused host/static tests first and classify failures by wrong behaviour, ABI, codegen, relocation, symbol or section. Keep attempted variants in ignored/local research storage.",
-        "For any matching-C claim, compile the function in its real original translation unit, verify native IDO linked instructions at the actual VMA, and then run G2's entire ROM/inventory gate. If any gate fails, restore/reretain its ASM ownership.",
-        "Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries."
+        "Fetch chatgptweb/decomp; confirm the branch, HEAD, current AGENTS.md, dependency state and manifest ownership.",
+        "Pin the exact 180-byte original at VMA 0x80036448 / ROM 0x37048 from the pinned mnsg assembly and verified decompressed ROM; inspect all four caller sites before assigning behavior.",
+        "Trace 16-bit current/high-water counters, update timing, helper call arguments and return convergence, signed capacity arithmetic, allocator argument and null returns.",
+        "Confirm the owner argument is homed but not dereferenced and the target does not free, clear, mark or link list nodes; do not change shared header aliases without evidence.",
+        "Add a host-only reference model for helper-before-allocator order, zero helper return, signed capacity boundary, 16-bit counter wrap, persistent count updates, null owner and null allocation results.",
+        "Run four distinct pinned IDO 5.3 hypotheses under the measured v2 budget; compare linked target code at its actual VMA and compare both accepted C siblings plus unchanged ASM spans in a 544-byte unit composition.",
+        "Because no candidate is exact, retain GLOBAL_ASM and do not run G2 or rebuild inventory; record RESEARCH_ONLY and leave the stored proof untouched.",
+        "Update the evidence report, PROGRESS.md and G64-078 handoffs; commit only public source/docs and verify the remote SHA."
       ],
-      "focused_testing": "Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.",
-      "negative_control": "Preserve actual list termination, mutation order, signed/unsigned table arithmetic and atomicity; do not introduce a safety check that changes original native code.",
-      "stop_or_recovery": "If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.",
+      "focused_testing": "GCC ASan/UBSan host reference; deliberate helper-return-gate negative mutant; compare pinned assembly and all 45 target words with the SHA-1-verified ROM; four pinned IDO linked candidates at 0x80036448; accepted-sibling and composed-unit comparisons; decomp Python suite, verifier suite, task/skill suites, task-context validation and diff checks. Run complete G2/inventory only after source-unit exactness.",
+      "negative_control": "Reject gating allocation on a zero helper return (both helper-return paths allocate), unsigned treatment of the signed used halfword, rolling back the pre-gate counter increment, or changing helper-before-allocator order. The helper-return mutant failed the host assertion as expected.",
+      "stop_or_recovery": "Four total native variants were used: the second moved the first mismatch from +0x00 to +0x04, permitting two additional targeted variants; the third emitted the first variant’s identical code, and the fourth regressed to +0x00. Stop at four, retain GLOBAL_ASM, and do not run G2/inventory because the target and composed unit are nonexact.",
       "evidence_requirements": [
         "current branch head and manifest/source hashes",
         "original function VMA/ROM extent plus correct source ownership",
@@ -3343,8 +3343,8 @@
       ],
       "architect_override_v2": {
         "wave": "B",
-        "directive": "Object list 80036448: compare whole neighboring unit, not just isolated function.",
-        "stop_rule": "No promotion if any accepted sibling changes MIPS."
+        "directive": "Object allocation gate 80036448: compare the candidate with the accepted object_flags siblings and both intervening ASM functions as one 544-byte composed unit.",
+        "stop_rule": "The 180-byte target allows five total variants, with at most two additional after a measured first-mismatch improvement. Four were tested; stop after the third repeated v1 output and fourth regressed."
       }
     },
     {

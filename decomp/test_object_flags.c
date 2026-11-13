@@ -319,6 +319,97 @@ static void test_adjacent_owner_head_link_move_reference(void) {
     assert(entry.lookup_key == 0x80000020u && head.lookup_key == 0x80000010u);
 }
 
+typedef struct ObjectAcquireReference {
+    uint16_t current_count;
+    uint16_t high_water;
+    uint32_t side_effect_owner;
+    uint16_t limit;
+    int16_t used;
+    uint32_t side_effect_result;
+    ObjectFlagNode *allocation_result;
+    uint32_t calls[2];
+    uint32_t call_count;
+    uint32_t side_effect_arg0;
+    uint32_t side_effect_arg1;
+    uint32_t allocation_arg;
+    uint16_t count_at_side_effect;
+    uint16_t count_at_allocator;
+} ObjectAcquireReference;
+
+enum {
+    OBJECT_ACQUIRE_SIDE_EFFECT = 1,
+    OBJECT_ACQUIRE_POOL_ALLOC = 2
+};
+
+/* Host reference for 80036448; helper and pool effects are observed by trace only. */
+static ObjectFlagNode *func_80036448_reference(ObjectAcquireReference *state,
+                                                ObjectFlagNode *unused_owner) {
+    uint16_t next_count;
+
+    (void)unused_owner;
+    next_count = (uint16_t)(state->current_count + 1u);
+    state->current_count = next_count;
+    if (next_count > state->high_water) {
+        state->high_water = next_count;
+    }
+
+    if (state->side_effect_owner != 0) {
+        assert(state->call_count < 2);
+        state->calls[state->call_count++] = OBJECT_ACQUIRE_SIDE_EFFECT;
+        state->side_effect_arg0 = state->side_effect_owner;
+        state->side_effect_arg1 = 1;
+        state->count_at_side_effect = state->current_count;
+        /* The original branches to allocation for either helper return value. */
+        (void)state->side_effect_result;
+    } else if ((int32_t)state->limit - (int32_t)state->used <= 0) {
+        return 0;
+    }
+
+    assert(state->call_count < 2);
+    state->calls[state->call_count++] = OBJECT_ACQUIRE_POOL_ALLOC;
+    state->allocation_arg = 2;
+    state->count_at_allocator = state->current_count;
+    return state->allocation_result;
+}
+
+static void test_acquire_side_effect_then_pool_allocation(void) {
+    ObjectFlagNode allocated = {0, 0};
+    ObjectAcquireReference state = {7, 5, 0x12345678u, 0, 0, 0, &allocated,
+                                    {0, 0}, 0, 0, 0, 0, 0, 0};
+    ObjectFlagNode *result;
+
+    result = func_80036448_reference(&state, &allocated);
+    assert(result == &allocated);
+    assert(state.current_count == 8 && state.high_water == 8);
+    assert(state.call_count == 2);
+    assert(state.calls[0] == OBJECT_ACQUIRE_SIDE_EFFECT);
+    assert(state.calls[1] == OBJECT_ACQUIRE_POOL_ALLOC);
+    assert(state.side_effect_arg0 == 0x12345678u && state.side_effect_arg1 == 1);
+    assert(state.allocation_arg == 2);
+    assert(state.count_at_side_effect == 8 && state.count_at_allocator == 8);
+}
+
+static void test_acquire_capacity_gate_and_signed_used_count(void) {
+    ObjectFlagNode allocated = {0, 0};
+    ObjectAcquireReference full = {4, 9, 0, 8, 8, 0, &allocated,
+                                   {0, 0}, 0, 0, 0, 0, 0, 0};
+    ObjectAcquireReference signed_boundary = {0xFFFFu, 0xFFFFu, 0, 0, -1, 0, 0,
+                                              {0, 0}, 0, 0, 0, 0, 0, 0};
+
+    assert(func_80036448_reference(&full, &allocated) == 0);
+    assert(full.current_count == 5 && full.high_water == 9);
+    assert(full.call_count == 0);
+
+    /* The homed owner argument is not read; a null sentinel has the same result. */
+    assert(func_80036448_reference(&signed_boundary, 0) == 0);
+    assert(signed_boundary.current_count == 0);
+    assert(signed_boundary.high_water == 0xFFFFu);
+    assert(signed_boundary.call_count == 1);
+    assert(signed_boundary.calls[0] == OBJECT_ACQUIRE_POOL_ALLOC);
+    assert(signed_boundary.allocation_arg == 2);
+    assert(signed_boundary.count_at_allocator == 0);
+}
+
 int main(void) {
     test_list_flag_helper();
     test_single_node_dispatch();
@@ -327,5 +418,7 @@ int main(void) {
     test_move_caller_empty_singleton_and_no_match();
     test_move_to_front_preserves_other_fields();
     test_adjacent_owner_head_link_move_reference();
+    test_acquire_side_effect_then_pool_allocation();
+    test_acquire_capacity_gate_and_signed_used_count();
     return 0;
 }

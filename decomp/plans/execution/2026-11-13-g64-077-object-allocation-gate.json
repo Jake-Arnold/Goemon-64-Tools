@@ -1,0 +1,237 @@
+{
+  "task_id": "G64-077",
+  "title": "Characterize object list 80036448",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "4d619f1dd806ca224ee1ec2b89975f3fb1e2a45c",
+    "remote_head_at_start": "4d619f1dd806ca224ee1ec2b89975f3fb1e2a45c",
+    "initial_worktree": "G64-077 in progress; only the host reference test was modified when this continuation resumed",
+    "dependencies": {
+      "G64-076": "RESEARCH_ONLY"
+    },
+    "matching_c": 149,
+    "matching_bytes": 11148,
+    "manifest_sha256": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "stored_proof_sha256": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "inventory_sha256": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6"
+  },
+  "original_source": {
+    "upstream_repository": "klorfmorf/mnsg",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "asm_file": "asm/usa/36750.s",
+    "asm_sha256": "b3a386915def9810e277e378b995fa493d81bb44891d369fe97cb77c3b86a14f",
+    "caller_asm_file": "asm/usa/17550.s",
+    "caller_asm_sha256": "92cdecf8c7cda93608f03922b3f3b6fdb27bdac3d909c80fc08ed88a5e616531",
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "original_span_matches_rom": true,
+    "matched_words": 45,
+    "total_words": 45
+  },
+  "source_unit": {
+    "manifest_source": "object_flags.c",
+    "rom_start": "0x36EDC",
+    "rom_end": "0x370FC",
+    "expected_bytes": 544,
+    "accepted_c_siblings": [
+      "func_800362DC_36EDC (44 bytes)",
+      "func_80036308_36F08 (128 bytes)"
+    ],
+    "intervening_asm": [
+      "func_80036388_36F88 (108 bytes)",
+      "func_800363F4_36FF4 (84 bytes)"
+    ],
+    "target_ownership": "func_80036448_37048 remains GLOBAL_ASM",
+    "accepted_sibling_comparisons": "Both exact at original VMAs in each candidate source-unit link; 44/44 and 128/128 bytes.",
+    "composition_method": "Compare the two candidate-unit C siblings, unchanged 192 ROM bytes for intervening ASM, and the isolated candidate linked at the target VMA against ROM [0x36EDC,0x370FC). The candidate target is short, so this is a failing composition, not a UNIT_EXACT claim."
+  },
+  "target": {
+    "name": "func_80036448_37048",
+    "vma": "0x80036448",
+    "rom_offset": "0x37048",
+    "size_bytes": 180,
+    "size_words": 45,
+    "sha256": "54a075261ddb38df97c92ca30b45182ac43776d0233e39e712723269dfe19b3f"
+  },
+  "behavior": {
+    "role": "increment object acquisition counters, select an optional side-effect helper or capacity gate, then return a size-2 pool allocation",
+    "arguments": {
+      "a0": "homed to 0x18(sp), not dereferenced by the target; null and non-null owner values have no target-side effect"
+    },
+    "counter_updates": "lhu D_8016DAB0; increment with 16-bit wrap; store with sh before all gate/allocator paths. Compare incremented value with lhu D_8016DAB2 and update high-water with sh only when the new value is greater. Do not roll the increment back on failure.",
+    "helper_path": "If lw D_8006D320 is nonzero, call func_80036058_36C58(pointer,1). The helper zero/nonzero result branches both reconverge at allocation; helper result does not gate allocation.",
+    "capacity_path": "If D_8006D320 is zero, compute unsigned lhu D_8006D354 minus signed lh D_8016DADC and allocate only when the 32-bit signed difference is positive; otherwise return null.",
+    "allocator": "Call func_80035D8C_3698C(2), return its result including null.",
+    "callers": [
+      {
+        "function": "func_80018B28_19728",
+        "call_pcs": [
+          "0x80018B44",
+          "0x80018B98"
+        ]
+      },
+      {
+        "function": "func_80018F3C_19B3C",
+        "call_pcs": [
+          "0x8001900C"
+        ]
+      },
+      {
+        "function": "func_8001904C_19C4C",
+        "call_pcs": [
+          "0x8001911C"
+        ]
+      }
+    ],
+    "caller_effect": "Callers initialize the returned object and link it into owner +0x78; callers do not establish null safety before using returned objects.",
+    "callbacks": "One optional call to func_80036058_36C58(pointer,1); allocator call follows if capacity/helper path permits.",
+    "list_mutation": "None: target does not free, clear, mark, initialize or link list nodes."
+  },
+  "host_model": {
+    "test_file": "decomp/test_object_flags.c",
+    "new_cases": [
+      "side-effect helper returns zero but allocation still occurs",
+      "helper then allocator call order and arguments",
+      "capacity rejection after counter increment",
+      "signed used halfword boundary including capacity 0 / used -1",
+      "16-bit counter wrap and high-water behavior",
+      "null owner sentinel and null allocator result"
+    ],
+    "negative_control": "An intentionally incorrect host model that returned null when the helper returned zero was rejected by the expected allocation-result assertion.",
+    "limitations": "The host test is a ROM-derived reference model, not production C for 80036448; helper internals and live game state are not modeled."
+  },
+  "candidate_trials": [
+    {
+      "variant": "v1 direct counter pointers",
+      "hypothesis": "Materialize counter and high-water addresses through explicit local pointers and keep the helper/allocator sequence direct.",
+      "candidate_source_sha256": "bd5689e864191bcc1756254b324f6e65c5e75b5605cebbc97b744e0fc31b53db",
+      "unit_source_sha256": "e837021a593a2393ce48134ba9fb38b455f2194402439d60fefa9cacc34d53a4",
+      "linked_symbol_vma": "0x80036448",
+      "linked_symbol_bytes": 152,
+      "word_differences": 38,
+      "first_mismatch_offset": "+0x00",
+      "mismatch": "Original begins addiu $sp,$sp,-0x18 (0x27BDFFE8); candidate begins lui $a2,0x8017 (0x3C068017).",
+      "linked_code_sha256": "75149d5a948f6c4f9fd9e6e48efd24d6ac42e1bdff3e234c026feb7aeac4098f",
+      "unit_composition_bytes": 516,
+      "unit_composition_word_differences": 38,
+      "unit_composition_first_mismatch": "ROM 0x37048 / candidate target +0x00"
+    },
+    {
+      "variant": "v2 volatile globals and direct counter values",
+      "hypothesis": "Use volatile global reads and reordered locals to keep the stack prologue first while varying counter/high-water lifetime.",
+      "candidate_source_sha256": "168701023a0657a54ffe55868529b9e4c168ec33c7ec305ad7b113f86ec8261c",
+      "unit_source_sha256": "24bbda0f9d7a03c6b731a7d3c3dfb5a0bd51db98bcb0e7bdf27ae7fa84f9c136",
+      "linked_symbol_vma": "0x80036448",
+      "linked_symbol_bytes": 144,
+      "word_differences": 39,
+      "first_mismatch_offset": "+0x04",
+      "mismatch": "Original +0x04 is lui $v0,0x8017; candidate +0x04 stores $a0 at 0x18($sp).",
+      "linked_code_sha256": "af0c0a7e665323f1741321b485bb66e7f62bfabe60265ea908395e26e9126e3c",
+      "unit_composition_bytes": 508,
+      "unit_composition_word_differences": 39,
+      "unit_composition_first_mismatch": "ROM 0x3704C / candidate target +0x04"
+    },
+    {
+      "variant": "v3 pointer aliases plus cached helper owner",
+      "hypothesis": "Test whether aliasing counter addresses and caching the optional helper owner changes global-load and stack-home ordering.",
+      "candidate_source_sha256": "ef9deaed3e34057e27db0b638612501410ee6475f82daa792183ceeffc84c253",
+      "unit_source_sha256": "8c24c7552f830fbc884592999905f5ecd2e01bc7003ab08c7737684ebcb8dcf7",
+      "linked_symbol_vma": "0x80036448",
+      "linked_symbol_bytes": 152,
+      "word_differences": 38,
+      "first_mismatch_offset": "+0x00",
+      "mismatch": "Same first mismatch and exact linked bytes as v1; original starts with stack adjustment while candidate starts with counter-address lui.",
+      "linked_code_sha256": "75149d5a948f6c4f9fd9e6e48efd24d6ac42e1bdff3e234c026feb7aeac4098f",
+      "unit_composition_bytes": 516,
+      "unit_composition_word_differences": 38,
+      "unit_composition_first_mismatch": "ROM 0x37048 / candidate target +0x00"
+    },
+    {
+      "variant": "v4 volatile globals and explicit count snapshots",
+      "hypothesis": "Combine volatile globals with explicit current/high-water snapshots to influence saved-register lifetime and update ordering.",
+      "candidate_source_sha256": "f0cbf7f36ba5d15b3d405a4d6546a81f86966091e0a2c28fbb3e9257045f35e6",
+      "unit_source_sha256": "7d68d1e6217f253d6663117e88217aab4d7196092a2f17f422915e901fb29875",
+      "linked_symbol_vma": "0x80036448",
+      "linked_symbol_bytes": 152,
+      "word_differences": 43,
+      "first_mismatch_offset": "+0x00",
+      "mismatch": "Original begins with stack adjustment; candidate begins with counter-address lui before its frame adjustment.",
+      "linked_code_sha256": "dee0cfd83ff73305543c1133f931d6d8f7bff64e16a01e2e34e4f62ff64cfffb",
+      "unit_composition_bytes": 516,
+      "unit_composition_word_differences": 43,
+      "unit_composition_first_mismatch": "ROM 0x37048 / candidate target +0x00"
+    }
+  ],
+  "toolchain": {
+    "ido": "Pinned IDO 5.3",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "linker": "GNU ld 2.45.90.20260125",
+    "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "compile_flags": "-c -G 0 -non_shared -Xfullwarn -Xcpluscomm -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -O2 -mips2",
+    "include_flags": "-I pinned-mnsg/include -I pinned-mnsg/libultra/include -I decomp",
+    "link_method": "Each standalone IDO candidate linked at 0x80036448; candidate unit compiled with accepted object_flags.c siblings and linked from VMA 0x800362DC. Link references were resolved against the G64-074 baseline ELF globals."
+  },
+  "decision": {
+    "classification": "RESEARCH_ONLY",
+    "native_variants_tested": 4,
+    "production_candidate_integrated": false,
+    "production_source_changed": false,
+    "header_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "reason": "No IDO candidate matched the 180-byte original. v2 moved the first mismatch only to +0x04; v3 reproduced v1\u2019s linked bytes; v4 regressed. Accepted C siblings remained exact, but the candidate unit composition was short and nonexact. Keep GLOBAL_ASM; do not run a full-ROM build or inventory without a unit-exact candidate."
+  },
+  "tests": {
+    "original_rom_span": "PASS; parsed pinned assembly and verified all 45/45 words at ROM offset 0x37048 against decompressed ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494. Original bytes SHA-256 54a075261ddb38df97c92ca30b45182ac43776d0233e39e712723269dfe19b3f.",
+    "host_reference": "PASS; GCC 15.2 ASan/UBSan host test command completed with exit 0.",
+    "negative_control": "PASS; deliberate helper-return gate mutant exited nonzero at the assertion that allocation should return the supplied node.",
+    "native_trials": "MISMATCH; four pinned IDO variants linked at 0x80036448; sizes 152/144/152/152, first mismatches +0x00/+0x04/+0x00/+0x00.",
+    "accepted_siblings": "PASS; 800362DC 44/44 bytes and 80036308 128/128 bytes in all four candidate source-unit links.",
+    "source_unit_composition": "MISMATCH; compositions are 516/508/516/516 bytes against 544, with 38/39/38/43 differing words; intervening ASM bytes remained unchanged.",
+    "full_rom_g2": "NOT_RUN; no source-unit-exact candidate.",
+    "inventory_rebuild": "NOT_RUN; no source-unit-exact candidate.",
+    "repository_suites": "PASS; decomp Python 157/157, verifier 17/17, skill/task-context 17/17.",
+    "task_context_validation": "PASS; python3 -m decomp.skill_context --validate returned CONSISTENT_STORED_REPORTS, and --task G64-078 returned the expected next v2 brief.",
+    "json_and_diff": "PASS; changed JSON files parse, all 14 recorded source hashes match, and git diff --check exits 0.",
+    "local_ci": "UNAVAILABLE; npx run-local-ci run --quiet --all --pause-on-failure --json exited 1 because no .github/workflows directory exists.",
+    "host_reference_command": "gcc -DGOEMON_HOST_TEST -std=c11 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Idecomp decomp/object_flags.c decomp/test_object_flags.c -o /tmp/g64-077-object-flags-host && /tmp/g64-077-object-flags-host",
+    "original_rom_span_method": "Parsed 45 pinned Splat instruction comments from asm/usa/36750.s; compared to usa-decompressed.z64[0x37048:0x370FC].",
+    "candidate_comparison": "decomp.probe.Elf32/compare_code using the pinned IDO objects, original VMAs, and private decompressed USA ROM."
+  },
+  "current_stored_proof": {
+    "status": "unchanged; production source, header, manifest and verifier inputs were not changed",
+    "matching_c": 149,
+    "matching_bytes": 11148,
+    "full_rom_match": true,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "combined_c": 162,
+    "asm": 7214,
+    "identified_entries": 7376
+  },
+  "next": "Continue with G64-078, scheduler routine 8000702C; preserve 80036448 as GLOBAL_ASM.",
+  "source_hashes": {
+    "decomp/object_flags.c": "b27ee6ef258cc2e49a2e4c11c0810d2cde8b12259206d32a6b06f843418fcd12",
+    "decomp/object_flags.h": "a1ae2142a30df3f47807b974a0641e5d0569bca8be95c497eb2bb48ba2e23616",
+    "decomp/test_object_flags.c": "ba5d77f683b2f0f6727fd9b1bc42feb0bdec76994a395001723c13135bc5d00f",
+    "decomp/manifest.json": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "decomp/results/combined.json": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "decomp/results/inventory.json": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6",
+    "decomp/plans/TASKS_100.json": "ddaecb94c90d92c9c9f4bfb05ee907787d54e7c647f6adcbb5dbfd5ed091544a",
+    "decomp/plans/phases/PHASE_08.md": "d4801e44dd03475a3e6dfedde547012047e42e692b2108fc7a3d9c8534a64a2a",
+    "decomp/plans/EXECUTOR_PROTOCOL.md": "d7cce445be87b371bf8e69a1bdaf575eb48d02d86e6589aa6ede72c7ee38eef8",
+    "decomp/plans/EXECUTION_STRATEGY_V2.md": "d4aa85568b24dcc33adf9f4c258de55cd90307b0e2562c15683e6291697579f2",
+    "decomp/plans/README.md": "80599411494572554d52862f139a30418ee0eff67f38dd23c7e8bfee7b4239f8",
+    "decomp/CONTINUE.md": "0cef9dd5e2e49febb73fa3ca629349605364ba7807aaeacae8dca0cf3a0f4bea",
+    "decomp/MASTER_WORK_QUEUE.md": "95542123b29f608cfbbf6e42da1c5757bafa669f95ee29241692f26f74ac0cfb",
+    "PROGRESS.md": "d8b05d17eee1f6965a6156a4183f66389020cc6f24d6d1fe499c7cdbb906742d"
+  }
+}
