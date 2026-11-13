@@ -18,7 +18,7 @@ No invented float tolerance for byte-identity, no compiler reassociation, no unp
 
 ### G64-081 — Analyze math helper 8000E2D4
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-002.
 **Focus files:** `decomp/math_helpers.c`; `decomp/test_math_helpers.c`.
 
 **Architectural intent:** Recover float parameters, trig/helper calls and 10-bit angle masking adjacent to matched 8000E28C.
@@ -42,6 +42,12 @@ No invented float tolerance for byte-identity, no compiler reassociation, no unp
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Pinned `func_8000E2D4_EED4` is 200 bytes / 50 words at VMA `0x8000E2D4`, ROM `0xEED4`; all 50 words match the SHA-verified USA ROM, with original span SHA-256 `7de0d22ff6b2f44d8c4b0e8955d2e59a2cb03410398f2b9fc2d65b0426902f30`. Its direct caller `func_80204C5C_63003C` at `0x80204CFC` passes scale 8.0, unsigned halfword angles from `+0x14/+0x16`, and output pointer `$s1`; return is unused. The target calls sine(angle A), writes `sin(A)*magnitude` at `+0x74`, calls cosine(angle A), then writes `sin(B)*(cos(A)*magnitude)` at `+0x70` and `cos(B)*(cos(A)*magnitude)` at `+0x78`, returning 1. The angle helpers own the 10-bit mask; this target passes the raw halfwords. The strict `< 0` path preserves negative zero and the multiplication order produces observable binary32 rounding.
+
+Seven host-reference calls passed ASan/UBSan across cardinal axes, negative scale, negative zero, angle wrap and exact rounding bits. A reassociated-product mutant failed the expected `+0x70` bit pattern. Three correctly typed pinned-IDO target-only variants linked at the original VMA; best was 180 bytes versus 200 and first differed at `+0x08` (`sw $ra,0x1C($sp)` versus original `sw $a1,0x24($sp)`). The compiler kept the live scale in `$f20`, changed the frame/register schedule and generated 20 fewer bytes. The sign-after-call variant regressed to `+0x00`; the direct-expression variant also differed at `+0x00`. Stop with no first-mismatch improvement and retain `GLOBAL_ASM`. The complete source-unit comparison, full-ROM G2 and inventory were not run because no isolated exact candidate qualified.
+
+**Next:** G64-082, analyze `8000E39C` while preserving its observed float conversions and call order.
 
 ### G64-082 — Analyze math helper 8000E39C
 

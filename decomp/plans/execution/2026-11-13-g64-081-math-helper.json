@@ -1,0 +1,195 @@
+{
+  "task_id": "G64-081",
+  "title": "Analyze math helper 8000E2D4",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "Architect v2 wave C: recover the ROM-backed trig-helper behavior and test one evidence-led IDO hypothesis within a bounded source-variant budget; preserve exact FPU identity requirements.",
+  "starting_state": {
+    "worktree": "/home/jake/.codex/worktrees/decomp-100-fresh/Goemon-64-Tools",
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "63685e4fb24a4cb055f43bb1fc899a6025edac13",
+    "remote_head_at_start": "63685e4fb24a4cb055f43bb1fc899a6025edac13",
+    "initial_worktree": "only G64-081 test/ledger/phase/progress edits; production math_helpers.c clean",
+    "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66"
+  },
+  "target": {
+    "symbol": "func_8000E2D4_EED4",
+    "vma": "0x8000E2D4",
+    "rom_offset": "0xEED4",
+    "size_bytes": 200,
+    "word_count": 50,
+    "original_span_sha256": "7de0d22ff6b2f44d8c4b0e8955d2e59a2cb03410398f2b9fc2d65b0426902f30",
+    "rom_anchor_check": "PASS; all 50 original words agree with the pinned decompressed USA ROM",
+    "source_unit": "decomp/math_helpers.c",
+    "source_unit_rom_span": "[0xEE8C, 0xF28C)",
+    "assembly_owner_retained": true
+  },
+  "abi_and_behavior": {
+    "direct_caller": "func_80204C5C_63003C",
+    "direct_call_pc": "0x80204CFC",
+    "caller_assembly_file": "asm/usa/5F6840.s",
+    "caller_arguments": {
+      "$f12": "scale 8.0f",
+      "$a1": "raw halfword angle from caller state +0x14",
+      "$a2": "raw halfword angle from caller state +0x16",
+      "$a3": "output pointer from $s1"
+    },
+    "return_value": "1; ignored by the direct caller",
+    "operation_order": [
+      "call sine helper 0x80003E10 with angle A; multiply by signed magnitude and store output +0x74",
+      "call cosine helper 0x80003EA0 with angle A; multiply by signed magnitude to form an intermediate",
+      "call sine helper 0x80003E10 with angle B; multiply by the intermediate and store output +0x70",
+      "call cosine helper 0x80003EA0 with angle B; multiply by the intermediate and store output +0x78"
+    ],
+    "identity_constraints": [
+      "The helper routines mask the angle to 10 bits; the target forwards raw halfwords.",
+      "The strict scale < 0.0f path preserves negative zero; do not replace it with fabsf semantics.",
+      "The binary32 multiplication order is observable and must not be reassociated."
+    ]
+  },
+  "host_reference": {
+    "production_c_added": false,
+    "test_model": "test-only reference_E2D4 in decomp/test_math_helpers.c",
+    "calls": 7,
+    "coverage": [
+      "zero and quadrant axes",
+      "negative finite scale",
+      "negative zero",
+      "10-bit angle-wrap delegation",
+      "fixed single-precision result bits",
+      "output offsets +0x70/+0x74/+0x78",
+      "helper call order and angle values"
+    ],
+    "command": "gcc -std=c11 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Idecomp/test_support decomp/math_helpers.c decomp/test_math_helpers.c -o /tmp/g64-081-math-reference && /tmp/g64-081-math-reference",
+    "result": "PASS; ASan and UBSan; seven test-only target reference calls",
+    "negative_control": "A test-only reassociated-product mutant was rejected at the exact single-precision +0x70 rounding-bit assertion (expected 0xBF053437). This is an expected mutation kill, not a repository-suite failure."
+  },
+  "native_candidates": {
+    "compiler": {
+      "path": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/tools/ido-5.3/cc",
+      "version": "IDO 5.3",
+      "sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+      "flags": [
+        "-c",
+        "-G",
+        "0",
+        "-non_shared",
+        "-Xfullwarn",
+        "-Xcpluscomm",
+        "-Iinclude",
+        "-Ilibultra/include",
+        "-Ilibultra/include/PR",
+        "-Isrc",
+        "-I.",
+        "-Wab,-r4300_mul",
+        "-woff",
+        "649,838,712",
+        "-D_LANGUAGE_C",
+        "-D_FINALROM",
+        "-DF3DEX_GBI",
+        "-D__sgi",
+        "-DNDEBUG",
+        "-O2",
+        "-mips2"
+      ],
+      "linker": "GNU mips-linux-gnu-ld 2.45.90",
+      "linker_sha256": "665c22b6b7c6543a9cdd9373c0e6f6a575db3ece870b133c6dae367706e3848b",
+      "link_address": "0x8000E2D4",
+      "result_validation": "candidate objects had target/helper types; helpers resolved at original addresses"
+    },
+    "trial_limit": 5,
+    "counted_variants": 3,
+    "discarded_unscored_scratch": "One preliminary scratch compile lacked helper prototypes and was discarded before candidate scoring.",
+    "variants": [
+      {
+        "source": "practice/diagnostics/decomp-100-inputs/g64-081/target_only.c",
+        "source_sha256": "5db59a5b1be5361023b6eac1374607898f18382d90404d930aaa450e8bc22e0f",
+        "hypothesis": "Separate explicit sign/magnitude conditionals and locals could recover the original saved-register lifetime.",
+        "linked_size_bytes": 180,
+        "first_mismatch_offset": "+0x08",
+        "original_at_mismatch": "0xAFA50024 (sw $a1,0x24($sp))",
+        "candidate_at_mismatch": "0xAFBF001C (sw $ra,0x1C($sp))",
+        "additional_observation": "IDO kept the live scale in $f20 and stored it at sp+0x10; frame/register schedule differs from the original."
+      },
+      {
+        "source": "practice/diagnostics/decomp-100-inputs/g64-081/target_v2.c",
+        "source_sha256": "2772ab67553a9ed2892c2e7147e2f3b8c230e5d79a79e29f1798c225580d2da1",
+        "hypothesis": "Move initial sign/magnitude evaluation after the sine call to alter value liveness.",
+        "linked_size_bytes": 184,
+        "first_mismatch_offset": "+0x00"
+      },
+      {
+        "source": "practice/diagnostics/decomp-100-inputs/g64-081/target_v3.c",
+        "source_sha256": "891840d4bf7840c1e38ffe69e017ef9519c925ddd871e2293e82d13364d56241",
+        "hypothesis": "Use direct ternary expressions to change IDO register allocation and scheduling.",
+        "linked_size_bytes": 228,
+        "first_mismatch_offset": "+0x00"
+      }
+    ],
+    "stop_reason": "No first-mismatch improvement after three distinct valid variants; two variants regressed to +0x00. Stop under the v2 budget rather than consume the remaining two variants without a new concrete hypothesis."
+  },
+  "decision": {
+    "classification": "RESEARCH_ONLY",
+    "production_candidate_integrated": false,
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "matching_c_delta": {
+      "functions": 0,
+      "bytes": 0
+    },
+    "source_unit_comparison": "NOT_RUN; no isolated candidate matched",
+    "full_rom_g2": "NOT_RUN; no candidate qualified and no production/proof input changed",
+    "inventory_rebuild": "NOT_RUN; no manifest change",
+    "reason": "The ROM-backed contract and semantic hazards are now explicit, but none of the bounded target-only IDO variants is byte-exact. Keep the target assembly-owned and do not promote the host model."
+  },
+  "stored_proof": {
+    "status": "unchanged from the G64-074 full-ROM G2 run",
+    "combined_report_sha256": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "inventory_report_sha256": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6",
+    "manifest_sha256": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_c_functions": 149,
+    "matching_c_bytes": 11148,
+    "combined_c": 162,
+    "remaining_assembly": 7214,
+    "identified_entries": 7376
+  },
+  "tests": {
+    "host_reference": "PASS; GCC AddressSanitizer/UndefinedBehaviorSanitizer host-reference executable returned 0.",
+    "decomp_suite": "PASS; python3 -m unittest discover -s decomp -p 'test_*.py' -q; 157/157.",
+    "verifier_suite": "PASS; python3 -m unittest tests.test_decomp_verify -q; 17/17.",
+    "skill_task_suite": "PASS; python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q; 17/17.",
+    "next_task_brief": "PASS; python3 -m decomp.skill_context --task G64-082 selected the expected dependent math helper.",
+    "json_and_diff_checks": "PASS; G64-081 report and TASKS_100.json parsed; python3 -m decomp.skill_context --validate returned CONSISTENT_STORED_REPORTS; git diff --check passed.",
+    "local_ci": "UNAVAILABLE; npx run-local-ci run --quiet --all --pause-on-failure exited 1 because the repository has no .github/workflows directory.",
+    "full_rom_g2": "NOT_RUN; no source-unit-exact candidate and no G2 input changed.",
+    "inventory_rebuild": "NOT_RUN; no source-unit-exact candidate and no manifest change."
+  },
+  "next": "G64-082: analyze math helper 8000E39C, preserving its observed float conversions and call order.",
+  "source_hashes": {
+    "PROGRESS.md": "dd7ab6e060eca27b3a3ce356c9fc577f07fc1bc2e3dac914a924445de1526450",
+    "decomp/CONTINUE.md": "549b9d2b123cc64b9dbd174f1fbede831bfe3c31bfab89bf4008d35b1425996f",
+    "decomp/MASTER_WORK_QUEUE.md": "9db5cf91f2f57c0ebe84d8f7a2ae85234e3eecf372693052431469b7f30c0c85",
+    "decomp/plans/EXECUTION_STRATEGY_V2.md": "52c2118fcdbcadf91a10ad0bca557a4fcc79ee273c4e06480ab2cf0d2e0625bd",
+    "decomp/plans/EXECUTOR_PROTOCOL.md": "5bf8bd768840182fcf7a66f970358c4abb0c01ec63ed4df6e257b00bd27f8153",
+    "decomp/plans/README.md": "feeef4f93fab7d0cc8e401355ed6b9263d5a27181840af40d45616047a21a7e0",
+    "decomp/plans/TASKS_100.json": "0443501e8636dfd3491c6612027b8e76ceb1af27bbdd0a0e1866bfafd78f1cbe",
+    "decomp/plans/phases/PHASE_09.md": "fbea39bba11c9add8afce61a862942595c7a9819195a91a4541fcd2613ea79d8",
+    "decomp/math_helpers.c": "bb0cfbe2a81e6e476110f30b9c84333a6549923eb0d2d9e55afdca3453c59c73",
+    "decomp/test_math_helpers.c": "1e3aaa1dc9f047989890b527e2779734883d0e5af246af3e7d6b135adc2a28d3",
+    "decomp/manifest.json": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "decomp/results/combined.json": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "decomp/results/inventory.json": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6"
+  },
+  "pinned_assembly_hashes": {
+    "asm/usa/E7F0.s": "ef3683e8173b4ebd3249ebcd17fa6ec19802b8cb64cdbd75d7f18557b0bf461b",
+    "asm/usa/45C0.s": "237d02de027b4cb011e06259d16a54375f8aefd1c9082c510c880b29f7c1dbba",
+    "asm/usa/5F6840.s": "598179692a2d008b86d0dd3e722bd8911bc989fcab9987055d3ba6845cf20ece"
+  }
+}
