@@ -1,6 +1,6 @@
 # Architect v3: bounded compiler-guided yield pilot
 
-**Status:** Active; G64-082 was the first selected candidate and passed G2 on 2026-11-13. **Date:** 2026-11-13. **Target:** `Jake-Arnold/Goemon-64-Tools`, `chatgptweb/decomp`.
+**Status:** Active; selected candidates G64-082 and G64-084 passed G2 on 2026-11-13. **Date:** 2026-11-13. **Target:** `Jake-Arnold/Goemon-64-Tools`, `chatgptweb/decomp`.
 
 This optional pilot **supplements but does not replace** [Architect v2](EXECUTION_STRATEGY_V2.md), [executor protocol](EXECUTOR_PROTOCOL.md), or the existing `architect_override_v2` task packets. Preserve their task IDs, dependency graph, strict trial ceilings, evidence ledger, complete-ROM promotion gate, and branch/main boundaries. This document is not a claim of new compiler matches or executed tests.
 
@@ -82,4 +82,8 @@ Neither Sol nor Luna may modify `main`, force-push, invent verification, reclass
 
 The plan's Sol/Luna division was used for the G64-082 stop hypothesis and candidate review: Sol recommended the fifth, spill-home-focused source shape and ranked G64-084 first at 87/100 (G64-082 scored 83/100); the Luna read-only G2 audit confirmed the staged source, manifest, report and inventory are consistent. G64-082 consumed five distinct native source variants (the v2 limit for 129–512-byte targets), then passed original-unit and fresh full-ROM/inventory proof with one new function and 328 bytes. The proof now reports 150/150 functions and 11,476 bytes. The comparator fixture replay passed 17 tests, including positive and negative controls. Five distinct G64-091 input/attempt signatures were validated from preserved source/ELF evidence; the queue import records explicitly say no compiler ran during import. The five variants are the complete budget for G64-082; no retry budget remains.
 
-**Next candidate:** G64-084 `func_8000EA74_F674` (72 bytes), Sol rank 1. Luna should run its <=3 post-baseline variants under the v2 cap, record attempt signatures and stop on mismatch or exactness. G64-083 is now dependency-eligible after G64-082 but remains below the selected G64-084 priority. The pilot has used 5 of 12 overall variant slots; the G64-084 task budget is stricter than the remaining global budget.
+## Execution checkpoint — G64-084
+
+G64-084 `func_8000EA74_F674` (72 bytes) passed after one new native IDO source hypothesis. The distinct historical recipe `0302e31f...` was counted once after deduplicating three repeated mismatch rows; therefore G64-084 used two of its three allowed distinct variants, with no additional candidate needed. The exact E28C body transplant matched the full 400-byte `angle_variant.c` unit at original VMA `0x8000EA74`, including EABC and retained EB08/EB50 siblings. Six relocation records matched the pinned baseline by VMA/type/target, and all resolved call words matched. Fresh uncached G2 and inventory passed: 151 functions / 11,548 bytes, 164 combined C, 7,212 ASM, 7,376 identified entries. The G64-091 record is full-ROM signed; the historical failure remains unsigned/incomplete. See `plans/execution/2026-11-13-g64-084-angle-variant.json`.
+
+**Next selection:** Sol selected G64-085 at 96/100 over G64-083 at 87/100. G64-085 is candidate 3 of 3 and becomes eligible with this G2; start it after G64-084 is published. Sol review is required before any fourth candidate. The global pilot has used six of twelve new variants (G64-082 used five; G64-084 used one; its historical signature counts only against the per-task ceiling).

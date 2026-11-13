@@ -1,0 +1,365 @@
+{
+  "task_id": "G64-084",
+  "title": "Analyze angle variant 8000EA74",
+  "date": "2026-11-13",
+  "status": "PASSED_G2",
+  "strategy": {
+    "document": "decomp/plans/ARCHITECT_V3_PILOT.md",
+    "v2_wave": "C",
+    "v3_rank": 1,
+    "v3_score": 87,
+    "decision": "One distinct new source hypothesis exactly matched the original 400-byte translation unit; fresh G2 and inventory passed."
+  },
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "5ac7d116f839f5305218b35380dca6c65d97cd32",
+    "remote_head_before_task": "5ac7d116f839f5305218b35380dca6c65d97cd32",
+    "worktree_clean_before_task": true,
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "target": {
+    "symbol": "func_8000EA74_F674",
+    "vma": "0x8000EA74",
+    "rom_offset": "0xF674",
+    "size_bytes": 72,
+    "word_count": 18,
+    "original_span_sha256": "7845fee09516aead2222a42d43c21fe4a39119052c9586ea60ee0cd1b346c5cf",
+    "original_assembly_source": "asm/usa/E7F0.s",
+    "source_unit": "decomp/angle_variant.c",
+    "manifest_owner_before": "GLOBAL_ASM",
+    "manifest_owner_after": "matching C",
+    "related_siblings": [
+      {
+        "name": "func_8000EABC_F6BC",
+        "size_bytes": 76,
+        "owner": "matching C",
+        "result": "unchanged and exact"
+      },
+      {
+        "name": "func_8000EB08_F708",
+        "size_bytes": 72,
+        "owner": "GLOBAL_ASM",
+        "result": "unchanged and retained"
+      },
+      {
+        "name": "func_8000EB50_F750",
+        "size_bytes": 180,
+        "owner": "GLOBAL_ASM",
+        "result": "unchanged and retained"
+      }
+    ],
+    "observed_behavior": {
+      "helper": "func_800040A8_4CA8",
+      "helper_first_argument": "arg1 - arg3, passed in $f12",
+      "helper_second_argument": "arg0 - arg2, passed in $f14",
+      "call_delay_slot": "sub.s $f12,$f16,$f8",
+      "return": "helper return masked with 0x3FF",
+      "eabc_difference": "EABC reverses helper argument order and returns (0x400 - helper_result) & 0x3FF"
+    },
+    "caller_evidence": {
+      "direct_symbolic_callers_found": 0,
+      "eabc_direct_caller": "asm/usa/5F6840.s:9694 calls func_8000EABC_F6BC",
+      "uncertainty": "Indirect or otherwise unindexed EA74 callers are not excluded."
+    }
+  },
+  "model_review": {
+    "sol_6_1_high": "Rank 1, 87/100; exact E28C body is a unique falsifiable hypothesis for EA74, with EABC behavior kept distinct.",
+    "luna_max": "The original unit, relocation records, fresh full-ROM match and inventory were mechanically verified."
+  },
+  "host_reference": {
+    "semantic_test": "PASS; GCC C11 with AddressSanitizer and UndefinedBehaviorSanitizer.",
+    "cases": [
+      "EA74 (7,2,3,5) sends helper inputs (-3,4) in the original order.",
+      "EA74 helper returns 0x400, 0x401 and -1 produce 0, 1 and 0x3FF after masking.",
+      "Existing EABC tests remain and prove its opposite argument order and 0x400-minus-result path."
+    ],
+    "command": "gcc -std=c11 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Wno-unknown-pragmas -Idecomp/test_support decomp/angle_variant.c decomp/test_angle_variant.c -o /tmp/g64-084-angle-final && /tmp/g64-084-angle-final",
+    "exit_code": 0
+  },
+  "native_candidates": {
+    "compiler": {
+      "version": "IDO 5.3",
+      "path": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/tools/ido-5.3/cc",
+      "sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+      "flags": [
+        "-c",
+        "-G",
+        "0",
+        "-non_shared",
+        "-Xfullwarn",
+        "-Xcpluscomm",
+        "-Iinclude",
+        "-Ilibultra/include",
+        "-Ilibultra/include/PR",
+        "-Isrc",
+        "-I.",
+        "-Wab,-r4300_mul",
+        "-woff",
+        "649,838,712",
+        "-D_LANGUAGE_C",
+        "-D_FINALROM",
+        "-DF3DEX_GBI",
+        "-D__sgi",
+        "-DNDEBUG",
+        "-O2",
+        "-mips2"
+      ],
+      "compile_command": "make build/usa/src/angle_variant.c.o",
+      "candidate_source_sha256": "2799764f26b5cbf25c69143f8437d42706651988fdc4412b44c4fe514764e721",
+      "candidate_object_sha256": "892282b77a160001b97f41a75e8daadb9bb372bd51230f903bc421d5c1cb13f8"
+    },
+    "variant_budget": {
+      "task_limit": 3,
+      "deduplicated_historical_distinct_variants": 1,
+      "new_distinct_variants_run": 1,
+      "counted_total": 2,
+      "unused_task_slots": 1,
+      "pilot_global_variants_used": 6,
+      "pilot_global_limit": 12,
+      "pilot_global_accounting_note": "Global v3 total counts new source variants: G64-082 used five and G64-084 used one. The deduplicated historical G64-084 signature counts once against its per-task v2 ceiling only."
+    },
+    "variants": [
+      {
+        "ordinal": "historical-1",
+        "recipe_sha256": "0302e31f6085cd504adbda5c73a02ad910f9663294832a0639434e27645bcfd6",
+        "status": "mismatch",
+        "first_mismatch": "not preserved in legacy summary",
+        "duplicate_report_rows_collapsed": 3,
+        "import_status": "unsigned / INCOMPLETE provenance / not replayed"
+      },
+      {
+        "ordinal": 1,
+        "hypothesis": "Copy func_8000E28C_EE8C body exactly, preserving EA74 helper argument order and the 10-bit return mask.",
+        "candidate_source_sha256": "2799764f26b5cbf25c69143f8437d42706651988fdc4412b44c4fe514764e721",
+        "status": "EXACT",
+        "first_mismatch": null,
+        "candidate_sha256": "6448d849f7eb0f36197ef63b950d526e6d146b94f549a251a1463e8a4fa9bb39",
+        "bytes": 400
+      }
+    ],
+    "unit_comparison": {
+      "status": "UNIT_EXACT",
+      "vma": "0x8000EA74",
+      "rom_offset": "0xF674",
+      "size_bytes": 400,
+      "linked_sha256": "6448d849f7eb0f36197ef63b950d526e6d146b94f549a251a1463e8a4fa9bb39",
+      "rom_unit_sha256": "6448d849f7eb0f36197ef63b950d526e6d146b94f549a251a1463e8a4fa9bb39",
+      "byte_mismatches": 0,
+      "linker": "LLD 21.1.8, using the existing prove_integrated_units.py original-VMA SUBALIGN(4) pattern",
+      "imported_externals_only": {
+        "func_800040A8_4CA8": "0x800040A8",
+        "_nsqrtf": "0x800417E0"
+      },
+      "candidate_defined_function_symbols": {
+        "func_8000EA74_F674": {
+          "offset": "0x0",
+          "size": 72,
+          "section_index": "4"
+        },
+        "func_8000EABC_F6BC": {
+          "offset": "0x48",
+          "size": 76,
+          "section_index": "4"
+        },
+        "func_8000EB08_F708": {
+          "offset": "0x94",
+          "size": 72,
+          "section_index": "4"
+        },
+        "func_8000EB50_F750": {
+          "offset": "0xdc",
+          "size": 180,
+          "section_index": "4"
+        }
+      },
+      "linked_function_symbols": {
+        "func_8000EA74_F674": {
+          "vma": "0x8000ea74",
+          "size": 72,
+          "section_index": "2"
+        },
+        "func_8000EABC_F6BC": {
+          "vma": "0x8000eabc",
+          "size": 76,
+          "section_index": "2"
+        },
+        "func_8000EB08_F708": {
+          "vma": "0x8000eb08",
+          "size": 72,
+          "section_index": "2"
+        },
+        "func_8000EB50_F750": {
+          "vma": "0x8000eb50",
+          "size": 180,
+          "section_index": "2"
+        }
+      },
+      "relocations": [
+        {
+          "vma": "0x8000eaa0",
+          "type": "R_MIPS_26",
+          "target": "func_800040A8_4CA8",
+          "target_vma": "0x800040a8",
+          "raw_object_addend": 0
+        },
+        {
+          "vma": "0x8000eae8",
+          "type": "R_MIPS_26",
+          "target": "func_800040A8_4CA8",
+          "target_vma": "0x800040a8",
+          "raw_object_addend": 0
+        },
+        {
+          "vma": "0x8000eb34",
+          "type": "R_MIPS_26",
+          "target": "func_800040A8_4CA8",
+          "target_vma": "0x800040a8",
+          "raw_object_addend": 0
+        },
+        {
+          "vma": "0x8000eb9c",
+          "type": "R_MIPS_26",
+          "target": "_nsqrtf",
+          "target_vma": "0x800417e0",
+          "raw_object_addend": 0
+        },
+        {
+          "vma": "0x8000ebc8",
+          "type": "R_MIPS_26",
+          "target": "func_800040A8_4CA8",
+          "target_vma": "0x800040a8",
+          "raw_object_addend": 0
+        },
+        {
+          "vma": "0x8000ebe4",
+          "type": "R_MIPS_26",
+          "target": "func_800040A8_4CA8",
+          "target_vma": "0x800040a8",
+          "raw_object_addend": 0
+        }
+      ],
+      "relocations_match_baseline": true,
+      "discarded_preliminary_link": "The earlier wrong-VMA scratch ELF is not evidence for this result; only the correct 0x8000EA74 link is counted.",
+      "gnu_ld_note": "An isolated GNU ld.bfd attempt reported file-truncated. The correct-VMA LLD full-unit link matched, and the fresh production G2 build passed using the pinned production build chain."
+    }
+  },
+  "g64_091_attempt_ledger": {
+    "status": "PASS; one G84 signed record validates under the existing G64-091 schema.",
+    "artifact": "practice/diagnostics/decomp-100-inputs/g64-084/attempt-signatures.json",
+    "artifact_sha256": "d9ac243786daa9f5d5393a5b0c47041f4b53b528d29f0fa61113394fa0613e04",
+    "database": "practice/diagnostics/decomp-100-inputs/g64-082/attempts.sqlite",
+    "database_sha256_before_append": "469e6af1dd71e181f1e4988213cbf8b71b07eb5ad68de886976769832e452b29",
+    "database_sha256_after_append": "e283a40f0e378eb2c52b85d786c905bafa31bbaec3a96fb318f6298e22b1cfea",
+    "database_rows_added": {
+      "functions": 1,
+      "run_rows": 1,
+      "attempt_rows": 1
+    },
+    "record_count": 1,
+    "input_signature": "3522a958d99784419a0de13e348be7b1ed46272d0125d238f037cee55996e879",
+    "attempt_signature": "d6a9dbc2c452c632e7598af0ef8e7216be80eb6fc546be3de9c961c1320dd206",
+    "exactness_tier": "full_rom",
+    "legacy_imports": {
+      "distinct_failed_signature_count": 1,
+      "report_rows_collapsed": 3,
+      "signature": "0302e31f6085cd504adbda5c73a02ad910f9663294832a0639434e27645bcfd6",
+      "status": "unsigned and original_provenance=INCOMPLETE; no IDO rerun attributed to import"
+    }
+  },
+  "proof": {
+    "full_rom_g2": "PASS",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "claimed_functions": 151,
+    "matched_functions": 151,
+    "matched_bytes": 11548,
+    "function_delta": 1,
+    "byte_delta": 72,
+    "target_expected_sha256": "7845fee09516aead2222a42d43c21fe4a39119052c9586ea60ee0cd1b346c5cf",
+    "target_candidate_sha256": "7845fee09516aead2222a42d43c21fe4a39119052c9586ea60ee0cd1b346c5cf",
+    "source_sha256_lf_angle_variant_c": "2799764f26b5cbf25c69143f8437d42706651988fdc4412b44c4fe514764e721",
+    "manifest_sha256": "780ff1c50944142337b3528461748c2ecfb2d2f4a2338fdf66a5ba27ad870394",
+    "fresh_g2_report_path": "practice/diagnostics/decomp-100-inputs/g64-084/g2-report-2026-11-13.json",
+    "fresh_g2_report_sha256": "1ae6bfd5a653c4fb794ed770ff4bed8ee4ceeb48b1a28c50769a6922b09f025f",
+    "combined_report_sha256": "1ae6bfd5a653c4fb794ed770ff4bed8ee4ceeb48b1a28c50769a6922b09f025f",
+    "inventory_report_path": "practice/diagnostics/decomp-100-inputs/g64-084/inventory-report-2026-11-13.json",
+    "inventory_report_sha256": "8b019972f95790e4d4d8033a8fb1d8d9f6f97c7606dd9335dcfc1c482c118367",
+    "tracked_inventory_sha256": "8b019972f95790e4d4d8033a8fb1d8d9f6f97c7606dd9335dcfc1c482c118367",
+    "g2_started_utc": "2026-11-13T14:43:09.104888+00:00",
+    "g2_ended_utc": "2026-11-13T14:44:28.895998+00:00",
+    "baseline_cache_used": false,
+    "inventory": {
+      "identified_entries": 7376,
+      "matching_c": 151,
+      "combined_c": 164,
+      "assembly": 7212,
+      "extra_positive_alias_entries": 0,
+      "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
+      "unrelated_size_annotation_difference": [
+        {
+          "name": "func_8003F6E8_402E8",
+          "baseline_size": 48,
+          "candidate_size": 56
+        }
+      ]
+    }
+  },
+  "validation": {
+    "focus_host_test": {
+      "command": "gcc -std=c11 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Wno-unknown-pragmas -Idecomp/test_support decomp/angle_variant.c decomp/test_angle_variant.c -o /tmp/g64-084-angle-final && /tmp/g64-084-angle-final",
+      "exit_code": 0
+    },
+    "verify_tests": {
+      "command": "python3 -m unittest tests.test_decomp_verify -q",
+      "tests": 17,
+      "exit_code": 0
+    },
+    "decomp_suite": {
+      "command": "python3 -m unittest discover -s decomp -p 'test_*.py' -q",
+      "tests": 157,
+      "exit_code": 0
+    },
+    "skill_context_validate": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "result": "CONSISTENT_STORED_REPORTS",
+      "exit_code": 0
+    },
+    "local_ci": {
+      "result": "NOT_RUN",
+      "reason": "No .github/workflows directory is present in this repository; no relevant GitHub Actions workflow was available."
+    },
+    "in_game_verification": "NOT_RUN"
+  },
+  "decision": {
+    "status": "PASSED_G2",
+    "production_manifest": "updated after original-unit exactness and fresh G2/inventory passed",
+    "siblings": "EABC remains matching C; EB08 and EB50 remain GLOBAL_ASM",
+    "next_owner": "Luna Max after G64-084 publication; execute the Sol-selected G64-085 next.",
+    "next_eligible_tasks": [
+      "G64-085",
+      "G64-083"
+    ],
+    "note": "G64-083 is also dependency-eligible after G64-082; Sol selected G64-085 at 96/100 over G64-083 at 87/100. G64-085 is candidate 3 of 3; Sol review is required before any fourth candidate.",
+    "next_selection": {
+      "task_id": "G64-085",
+      "rank": 1,
+      "score": 96,
+      "runner_up": {
+        "task_id": "G64-083",
+        "score": 87
+      },
+      "pilot_candidate_ordinal": "3 of 3",
+      "start_condition": "After G64-084 commit is pushed and remote SHA is verified.",
+      "review_gate": "Sol reviews pilot outcomes before any fourth candidate."
+    }
+  },
+  "limitations": [
+    "No in-game verification was performed; the proof establishes byte identity only.",
+    "No direct symbolic EA74 caller was found; indirect/unindexed callers remain uncertain.",
+    "The legacy mismatch summaries do not preserve candidate source bytes or first-mismatch positions; they remain unsigned and incomplete."
+  ]
+}

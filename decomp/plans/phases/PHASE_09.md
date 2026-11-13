@@ -1,6 +1,6 @@
 # Phase 09 — Math and adjacent units
 
-**Scope:** G64-081–G64-090; branch `chatgptweb/decomp`; current source checkpoint `6f1f3b1eb40f74acb3c29fcab145a3c36915d229` before G64-082 (refresh before the next task).
+**Scope:** G64-081–G64-090; branch `chatgptweb/decomp`; G64-084 task-start checkpoint `5ac7d116f839f5305218b35380dca6c65d97cd32` (refresh after publication).
 
 Read [EXECUTOR_PROTOCOL.md](../EXECUTOR_PROTOCOL.md) before starting. Follow individual dependency IDs, not simply numeric order. Tests listed are to be executed, not claimed as already passing. Never increase matching counts from research-only evidence.
 
@@ -47,7 +47,7 @@ No invented float tolerance for byte-identity, no compiler reassociation, no unp
 
 Seven host-reference calls passed ASan/UBSan across cardinal axes, negative scale, negative zero, angle wrap and exact rounding bits. A reassociated-product mutant failed the expected `+0x70` bit pattern. Three correctly typed pinned-IDO target-only variants linked at the original VMA; best was 180 bytes versus 200 and first differed at `+0x08` (`sw $ra,0x1C($sp)` versus original `sw $a1,0x24($sp)`). The compiler kept the live scale in `$f20`, changed the frame/register schedule and generated 20 fewer bytes. The sign-after-call variant regressed to `+0x00`; the direct-expression variant also differed at `+0x00`. Stop with no first-mismatch improvement and retain `GLOBAL_ASM`. The complete source-unit comparison, full-ROM G2 and inventory were not run because no isolated exact candidate qualified.
 
-**Next:** G64-084, analyze `8000EA74` under the Architect v3 rank-1 candidate selection; G64-083 is now dependency-eligible but remains lower priority.
+**Next at that checkpoint:** G64-084, analyze `8000EA74` under the Architect v3 rank-1 candidate selection; G64-083 was dependency-eligible but lower priority. G64-084 has since passed G2; see its outcome below. Sol selected G64-085 next at 96/100.
 
 ### G64-082 — Analyze math helper 8000E39C
 
@@ -113,7 +113,7 @@ See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13
 
 ### G64-084 — Analyze angle variant 8000EA74
 
-**Status:** PLANNED. **Dependencies:** G64-081.
+**Status:** PASSED_G2 (completed 2026-11-13). **Dependencies:** G64-081.
 **Focus files:** `decomp/angle_variant.c`; `decomp/test_angle_variant.c`.
 
 **Architectural intent:** Study 8000EA74_F674 near matching 8000EABC, including sign/order of helper arguments and mask width.
@@ -137,6 +137,10 @@ See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** `func_8000EA74_F674` (72 bytes at VMA `0x8000EA74`, ROM `0xF674`, original span SHA-256 `7845fee09516aead2222a42d43c21fe4a39119052c9586ea60ee0cd1b346c5cf`) exactly matches after one new source variant. A deduplicated historical mismatch signature was counted once against the three-variant task ceiling; no equivalent recipe was rerun. The full 400-byte source unit linked at the original VMA with all six relocations matching; EABC remains matching C and EB08/EB50 remain `GLOBAL_ASM`. Fresh uncached G2 matched 151/151 functions, 11,548 bytes and the full 32 MiB ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Inventory passed with 7,376 entries, 151 matching C, 7,212 ASM, zero extra aliases and unchanged function-entry identity. See `../execution/2026-11-13-g64-084-angle-variant.json`. No in-game verification was performed.
+
+**Next:** Sol selected G64-085 at 96/100 over G64-083 at 87/100. G64-085 is candidate 3 of 3 and becomes dependency-eligible after this G2; start only after G64-084 publication, then request Sol review before a fourth candidate.
 
 ### G64-085 — Analyze angle variant 8000EB08
 

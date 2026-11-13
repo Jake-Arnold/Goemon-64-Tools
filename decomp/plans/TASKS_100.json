@@ -3614,7 +3614,7 @@
       "ordinal": 84,
       "phase": 9,
       "title": "Analyze angle variant 8000EA74",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-081"
       ],

@@ -723,6 +723,11 @@
       "splat_original": "[0xF28C, asm]",
       "splat_replacement": "[0xF28C, asm]\n    - [0xF674, c, angle_variant]",
       "functions": [
+      {
+        "name": "func_8000EA74_F674",
+        "rom_offset": 63092,
+        "size": 72
+      },
         {
           "name": "func_8000EABC_F6BC",
           "rom_offset": 63164,
@@ -730,7 +735,6 @@
         }
       ],
       "assembly_functions": [
-        "func_8000EA74_F674",
         "func_8000EB08_F708",
         "func_8000EB50_F750"
       ]
