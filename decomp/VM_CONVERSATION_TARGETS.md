@@ -29,7 +29,7 @@ All three have a clear-glyph command immediately after the first page wait and u
 
 ## Matching-C candidates
 
-`DF98` ties the text tokens directly to the following candidates. They are assembly-owned in the pinned upstream `asm/usa/C4F0.s` dialogue graphics unit and absent from the matching-C manifest. The function extents below were compared word-for-word against the pinned original ROM.
+`DF98` ties the text tokens directly to the following candidates. They start out assembly-owned in the pinned upstream `asm/usa/C4F0.s` dialogue graphics unit and were absent from the matching-C manifest at the start of this investigation. The function extents below were compared word-for-word against the pinned original ROM.
 
 | Priority | Guest VMA / ROM offset / size | Observed contract and focused test |
 | ---: | --- | --- |
@@ -48,3 +48,50 @@ The same unit also contains `8000D060 / DC60 / 288 B` and `8000D180 / DD80 / 160
 3. Follow token dispatch through `DF98` or follow the native callback operand of `0x800B`. Deduplicate by native VMA and compare to the manifest. Use the source unit's original symbol extents to check candidate size and ownership.
 
 With a 256-halfword bound, resources 93, 96 and 97 yielded 353, 1,060 and 1,200 candidate `0x8010` references, respectively. Resource 96 alone yielded 400 references to records containing the line-break control and 173 to records containing the glyph-clear control. These are static references that converge on shared helpers. The same scan can identify distinct native callbacks and give reusable dialogue fixtures to test each helper.
+
+## Promotion results
+
+The pinned native IDO 5.3 build promoted `8000C53C`, `8000C3EC`,
+`8000C3A0`, and `8000C314` in the original dialogue graphics unit.
+`C53C` and `C3EC` matched with direct field access. `C314` needed the
+ordered equality tests and reuse of the argument register for the phase.
+`C3A0` needed a 64-bit flag field. Under the original MIPS II flags the
+compound update preserves both original word stores and their ordering.
+
+`8000D2C0` remains assembly-owned. The baseline and the three loop/alias
+variants all emitted stack allocation at offset zero, where the original
+starts calculating the window slot. The callback and four layout stores
+were reconstructed. The entry scheduling discrepancy persisted with
+postincrement, a distinct layout alias, and volatile layout stores.
+
+The complete 6,928-byte unit at `[0xC4F0,0xE000)` and the full 32 MiB image
+are byte-identical. All 157 claims (12,120 bytes) passed original-address
+verification. The inventory retains the same 7,376 function identities.
+The generated ELF reports 72 bytes for the retained `D3B8` symbol where
+the baseline reports 64, covering two original trailing padding words.
+The linked bytes and function entry are identical. The focused host
+ASan/UBSan harness covered all signed halfword phases, absent slots,
+flag preservation, line wrapping and repeated selector updates.
+
+## Native callback leads
+
+An aligned `0x800B` scan of resources 93, 96 and 97 found 203 main-segment
+references to five distinct callbacks already covered by the manifest.
+Extending the scan to 756 nonempty resources with virtual base
+`0x08000000` and restricting operands to identified native function
+entries found 1,043 references to 11 distinct targets. Four still have
+assembly ownership, all in the unit beginning at decompressed image offset
+`0x5C8770`. Treat these as static call-site candidates until reachability and
+overlay identity are confirmed.
+
+| Guest VMA / decompressed offset / size | References | First observed native effect |
+| --- | ---: | --- |
+| `80222034 / 5DD504 / 20 B` | 11 | Copies a global word to `801C7750`. |
+| `80222168 / 5DD638 / 36 B` | 31 | Calls `801DCD48` with the sign-extended byte at `801C7743`. |
+| `80221FD4 / 5DD4A4 / 96 B` | 81 | Reads a signed script halfword, adds it to a global word and checks limits. |
+| `80214D58 / 5D0228 / 456 B` | 12 | Calls native predicates before branching. Resource 96 contains a candidate reference. |
+
+The 20- and 36-byte callbacks are the first overlay candidates to try.
+The current matching manifest and verifier require the main-segment
+ROM/VMA relation. These callbacks use a different relation and need
+overlay-aware symbol, section and full-ROM verification before promotion.
