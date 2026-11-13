@@ -1,0 +1,468 @@
+{
+  "task_id": "G64-041",
+  "title": "Recover first display-list emitter",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "base_head": "bce04f1fe5125d6e28b3843cb619b6aee74b26f1",
+    "fetched_remote_head": "bce04f1fe5125d6e28b3843cb619b6aee74b26f1",
+    "worktree_tracked_changes_before_task": [
+      "decomp/CONTINUE.md (existing G89 handoff wording cleanup; preserved)"
+    ],
+    "dependency": "G64-002=PASSED_G2",
+    "decompressed_rom_size": 33554432,
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "pinned_assembly_file": "asm/usa/3DBA0.s",
+    "pinned_assembly_file_sha256": "8926b42c28518fc93ccd74f8f2635a25a9d1d54fbe40d0b936e398f2299cfc17"
+  },
+  "target": {
+    "symbol": "func_8003E234_3EE34",
+    "vma": "0x8003E234",
+    "rom_offset": "0x3EE34",
+    "size_bytes": 440,
+    "word_count": 110,
+    "original_instruction_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+    "source_unit": "decomp/script_vm.c",
+    "manifest_owner": "GLOBAL_ASM",
+    "candidate_source": "decomp/candidates/vm_display_e234.c",
+    "candidate_unchanged": true,
+    "production_source_unchanged": true,
+    "candidate_sha256": "5b9cd11a45650b20c9f24b0fb1bedc82d2bef72fb90803f25221bed4e7bc38c6",
+    "host_test_sha256": "e8833fa05acfab8b16ecd9d0fff49c0a2306ea20521353c07b4ab8a6c42e22fc"
+  },
+  "caller": {
+    "symbol": "func_8003EFB0_3FBB0",
+    "call_site_vma": "0x8003F004",
+    "call_site_rom_offset": "0x3FC04",
+    "call": "jal func_8003E234_3EE34",
+    "effective_gate": "After the optional EBAC path, caller reloads D_801C77E0_1C83E0 and calls the emitter only when it equals 3.",
+    "arguments": "None; target reads global state and returns through $ra."
+  },
+  "register_contract": {
+    "cursor_global": "D_8015C5CC_15D1CC, addressed through preserved $v1; each loaded command pointer is $v0.",
+    "cursor_updates": [
+      {
+        "command": 1,
+        "load_offset": "+0x008",
+        "advance_instruction_offset": "+0x018",
+        "store_offset": "+0x018",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 2,
+        "load_offset": "+0x028",
+        "advance_instruction_offset": "+0x038",
+        "store_offset": "+0x038",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 3,
+        "load_offset": "+0x048",
+        "advance_instruction_offset": "+0x058",
+        "store_offset": "+0x058",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 4,
+        "load_offset": "+0x064",
+        "advance_instruction_offset": "+0x074",
+        "store_offset": "+0x074",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 5,
+        "load_offset": "+0x080",
+        "advance_instruction_offset": "+0x090",
+        "store_offset": "+0x090",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 6,
+        "load_offset": "+0x09C",
+        "advance_instruction_offset": "+0x0AC",
+        "store_offset": "+0x0AC",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 7,
+        "load_offset": "+0x0B8",
+        "advance_instruction_offset": "+0x0C8",
+        "store_offset": "+0x0C8",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 8,
+        "load_offset": "+0x0D4",
+        "advance_instruction_offset": "+0x0E4",
+        "store_offset": "+0x0E4",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 9,
+        "load_offset": "+0x0F0",
+        "advance_instruction_offset": "+0x100",
+        "store_offset": "+0x100",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 10,
+        "load_offset": "+0x164",
+        "advance_instruction_offset": "+0x174",
+        "store_offset": "+0x174",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      },
+      {
+        "command": 11,
+        "load_offset": "+0x198",
+        "advance_instruction_offset": "+0x1A8",
+        "store_offset": "+0x1A8",
+        "increment_bytes": 8,
+        "loaded_pointer_register": "$v0"
+      }
+    ],
+    "cursor_update_count": 11,
+    "cursor_increment_bytes": 8,
+    "global_cursor_store_order": "For every command, store current+8 to 0($v1) before the two output word stores.",
+    "output_word_registers": "Each command is written at 0($v0) and 4($v0), using 32-bit sw.",
+    "output_word_store_count": 22,
+    "command_writes": [
+      {
+        "index": 1,
+        "name": "G_TEXTURE_IMAGE",
+        "cursor_read_offset": "+0x008",
+        "cursor_advance_offset": "+0x018",
+        "words": {
+          "w0": "0x06000000",
+          "w1": "address of D_800777F0_783F0"
+        },
+        "word_store_order": [
+          "w0 at +0x020 from $t7",
+          "w1 at +0x024 from $t8"
+        ],
+        "cursor_store_precedes_word_stores": true
+      },
+      {
+        "index": 2,
+        "name": "FD10_IMAGE",
+        "cursor_read_offset": "+0x028",
+        "cursor_advance_offset": "+0x038",
+        "words": {
+          "w0": "0xFD100000",
+          "w1": "address of D_80077150_77D50"
+        },
+        "word_store_order": [
+          "w0 at +0x040 from $t6",
+          "w1 at +0x044 from $t7"
+        ],
+        "cursor_store_precedes_word_stores": true
+      },
+      {
+        "index": 3,
+        "name": "F510_TILE",
+        "cursor_read_offset": "+0x048",
+        "cursor_advance_offset": "+0x058",
+        "words": {
+          "w0": "0xF5100000",
+          "w1": "0x07000000"
+        },
+        "word_store_order": [
+          "w1 at +0x05C from $t6",
+          "w0 at +0x060 from $t9"
+        ],
+        "cursor_store_precedes_word_stores": true
+      },
+      {
+        "index": 4,
+        "name": "E600_SYNC",
+        "cursor_read_offset": "+0x064",
+        "cursor_advance_offset": "+0x074",
+        "words": {
+          "w0": "0xE6000000",
+          "w1": "0"
+        },
+        "word_store_order": [
+          "w1 at +0x078 from $zero",
+          "w0 at +0x07C from $t8"
+        ],
+        "cursor_store_precedes_word_stores": true
+      },
+      {
+        "index": 5,
+        "name": "F300_TILE_SIZE",
+        "cursor_read_offset": "+0x080",
+        "cursor_advance_offset": "+0x090",
+        "words": {
+          "w0": "0xF3000000",
+          "w1": "0x071FF100"
+        },
+        "word_store_order": [
+          "w1 at +0x094 from $t7",
+          "w0 at +0x098 from $t6"
+        ],
+        "cursor_store_precedes_word_stores": true
+      },
+      {
+        "index": 6,
+        "name": "E700_PIPE_SYNC",
+        "cursor_read_offset": "+0x09C",
+        "cursor_advance_offset": "+0x0AC",
+        "words": {
+          "w0": "0xE7000000",
+          "w1": "0"
+        },
+        "word_store_order": [
+          "w1 at +0x0B0 from $zero",
+          "w0 at +0x0B4 from $t9"
+        ],
+        "cursor_store_precedes_word_stores": true
+      },
+      {
+        "index": 7,
+        "name": "F510_LOAD_TILE",
+        "cursor_read_offset": "+0x0B8",
+        "cursor_advance_offset": "+0x0C8",
+        "words": {
+          "w0": "0xF5101000",
+          "w1": "0"
+        },
+        "word_store_order": [
+          "w1 at +0x0CC from $zero",
+          "w0 at +0x0D0 from $t7"
+        ],
+        "cursor_store_precedes_word_stores": true
+      },
+      {
+        "index": 8,
+        "name": "F200_SET_TILE",
+        "cursor_read_offset": "+0x0D4",
+        "cursor_advance_offset": "+0x0E4",
+        "words": {
+          "w0": "0xF2000000",
+          "w1": "0x0007C03C"
+        },
+        "word_store_order": [
+          "w1 at +0x0E8 from $t6",
+          "w0 at +0x0EC from $t9"
+        ],
+        "cursor_store_precedes_word_stores": true
+      },
+      {
+        "index": 9,
+        "name": "E400_TEXTURE_RECTANGLE",
+        "cursor_read_offset": "+0x0F0",
+        "cursor_advance_offset": "+0x100",
+        "words": {
+          "w0": "0xE4000000 | ((((D_801C78D8_1C84D8 + 15) << 2) & 0xFFF) << 12) | (((D_801C78DC_1C84DC + 15) << 2) & 0xFFF)",
+          "w1": "((((D_801C78D8_1C84D8 << 2) & 0xFFF) << 12) | ((D_801C78DC_1C84DC << 2) & 0xFFF))"
+        },
+        "word_store_order": [
+          "w0 at +0x138 from $t7",
+          "w1 at +0x160 from $t8"
+        ],
+        "cursor_store_precedes_word_stores": true,
+        "register_dataflow": "Load D_801C78D8 and D_801C78DC; form high-coordinate fields using each value + 15, shift by two and mask 0xFFF; form low-coordinate fields from each value shifted by two and masked 0xFFF. The MIPS code reloads both globals for the second word."
+      },
+      {
+        "index": 10,
+        "name": "B400_VERTEX",
+        "cursor_read_offset": "+0x164",
+        "cursor_advance_offset": "+0x174",
+        "words": {
+          "w0": "0xB4000000",
+          "w1": "((u32)(*(u8 *)(D_80077860_78460 + 0x5D) & 1) << 25)"
+        },
+        "word_store_order": [
+          "w0 at +0x17C from $t7",
+          "w1 at +0x194 from $t9"
+        ],
+        "cursor_store_precedes_word_stores": true,
+        "register_dataflow": "The B400 word is stored before loading the pointer at D_80077860_78460 and byte offset 0x5D; lbu zero-extends, andi retains bit 0, then sll by 25 forms w1."
+      },
+      {
+        "index": 11,
+        "name": "B300_HALF1",
+        "cursor_read_offset": "+0x198",
+        "cursor_advance_offset": "+0x1A8",
+        "words": {
+          "w0": "0xB3000000",
+          "w1": "0x10000400"
+        },
+        "word_store_order": [
+          "w1 at +0x1AC from $t8",
+          "w0 at +0x1B4 from $t6 in jr $ra delay slot"
+        ],
+        "cursor_store_precedes_word_stores": true,
+        "register_dataflow": "The final w0 store is the return delay-slot instruction; jr $ra itself is at +0x1B0."
+      }
+    ],
+    "return": "jr $ra at +0x1B0; delay slot stores final command w0 (0xB3000000) at +0x1B4.",
+    "calls_or_branches": "No calls and no conditional branches within the target.",
+    "instruction_offsets": {
+      "cursor_pointer_loads": [
+        "+0x008",
+        "+0x028",
+        "+0x048",
+        "+0x064",
+        "+0x080",
+        "+0x09C",
+        "+0x0B8",
+        "+0x0D4",
+        "+0x0F0",
+        "+0x164",
+        "+0x198"
+      ],
+      "cursor_increment_and_store": [
+        "+0x018",
+        "+0x038",
+        "+0x058",
+        "+0x074",
+        "+0x090",
+        "+0x0AC",
+        "+0x0C8",
+        "+0x0E4",
+        "+0x100",
+        "+0x174",
+        "+0x1A8"
+      ],
+      "output_word_stores": [
+        [
+          "+0x020",
+          "+0x024"
+        ],
+        [
+          "+0x040",
+          "+0x044"
+        ],
+        [
+          "+0x05C",
+          "+0x060"
+        ],
+        [
+          "+0x078",
+          "+0x07C"
+        ],
+        [
+          "+0x094",
+          "+0x098"
+        ],
+        [
+          "+0x0B0",
+          "+0x0B4"
+        ],
+        [
+          "+0x0CC",
+          "+0x0D0"
+        ],
+        [
+          "+0x0E8",
+          "+0x0EC"
+        ],
+        [
+          "+0x138",
+          "+0x160"
+        ],
+        [
+          "+0x17C",
+          "+0x194"
+        ],
+        [
+          "+0x1AC",
+          "+0x1B4"
+        ]
+      ],
+      "dynamic_rectangle_source_loads": [
+        "+0x104",
+        "+0x114",
+        "+0x13C",
+        "+0x148"
+      ],
+      "dynamic_vertex_flag_loads": [
+        "+0x178",
+        "+0x180"
+      ],
+      "return_and_delay_slot": [
+        "jr $ra at +0x1B0",
+        "final w0 store at +0x1B4"
+      ]
+    },
+    "source_type_evidence": "The recovered contract is an 8-byte two-word command cursor. No source-level Gfx type or volatility qualifier is proven."
+  },
+  "historical_native_research": {
+    "status": "Historical only; no candidate was built or changed for G64-041.",
+    "normal_cursor_candidate_bytes": 516,
+    "volatile_cursor_candidate_bytes": 480,
+    "original_bytes": 440,
+    "comparison": "Both old E234 layouts are known nonmatches. The 516-byte result had 1/56 directly comparable words and 0/8 relocation-shape matches; the 480-byte volatile-cursor layout had 0/68 direct comparable words.",
+    "host_warning": "The existing C candidate producing equivalent mock output does not establish original MIPS instruction order, register usage, relocation layout or matching-C ownership."
+  },
+  "checks": {
+    "decompressed_rom": "PASS; 33,554,432 bytes and expected SHA-1.",
+    "rom_slice": "PASS; all 110 big-endian ROM words equal the pinned assembly annotations and SHA-256 matches the expected digest.",
+    "existing_original_word_guard": "PASS; G41 E234: 110 original ROM/VMA words and five guards; whole command also checked other phase targets.",
+    "focused_host_sanitizer": "PASS; 1,000 synthetic host cases under ASan/UBSan. This is mock semantics, not original MIPS identity.",
+    "native_variants": "NOT_RUN; task acceptance was trace/contract recovery before any new source variant.",
+    "fresh_g2": "NOT_RUN; no candidate source unit was made exact.",
+    "fresh_inventory": "NOT_RUN; manifest and production source remain unchanged.",
+    "in_game": "NOT_RUN.",
+    "parser_negative_tests": "PASS; 4 unittest parser/negative tests.",
+    "local_ci": "NOT_RUN; .github/workflows is absent.",
+    "skill_context_validation": "PASS; python3 -m decomp.skill_context --validate reported CONSISTENT_STORED_REPORTS for 100 tasks.",
+    "git_diff_check": "PASS; git diff --check exit 0."
+  },
+  "proof_checkpoint": {
+    "stored_functions": 153,
+    "stored_matching_bytes": 11800,
+    "inventory_entries": 7376,
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "combined_report_sha256": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "inventory_report_sha256": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694",
+    "yield_delta_functions": 0,
+    "yield_delta_bytes": 0
+  },
+  "next": "G64-042 and G64-043 become dependency-ready after this trace; neither was started in this task.",
+  "commands": {
+    "rom_identity_and_slice": "Inline Python check of the 33,554,432-byte decompressed image SHA-1, exact 440-byte slice SHA-256, and equality of 110 big-endian ROM words to pinned assembly comment words; exit 0.",
+    "original_word_guard": {
+      "command": "python3 decomp/test_vm_next_ten_original.py practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/3DBA0.s",
+      "exit_code": 0,
+      "result": "E234: 110 original ROM/VMA words and 5 guards passed; other phase guard targets also passed."
+    },
+    "parser_negative_tests": {
+      "command": "python3 -m unittest decomp.test_vm_next_ten_original -q",
+      "exit_code": 0,
+      "result": "4 tests passed."
+    },
+    "host_compile": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -Idecomp decomp/test_vm_display_emitters.c -o /tmp/g64-041-vm-display-host",
+    "host_run": {
+      "command": "ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/g64-041-vm-display-host",
+      "exit_code": 0,
+      "result": "VM graphics writer: 1000/1000 synthetic host cases passed."
+    }
+  },
+  "original_word_evidence": {
+    "word_count": 110,
+    "byte_count": 440,
+    "rom_offset_start": "0x3EE34",
+    "rom_offset_end_exclusive": "0x3EFEC",
+    "vma_start": "0x8003E234",
+    "vma_end_exclusive": "0x8003E3EC",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "expected_rom_slice_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+    "pinned_assembly_source": "asm/usa/3DBA0.s",
+    "pinned_assembly_source_sha256": "8926b42c28518fc93ccd74f8f2635a25a9d1d54fbe40d0b936e398f2299cfc17",
+    "local_comparison": "All 110 big-endian ROM words were compared against pinned assembly annotations and matched.",
+    "tracked_dump": "Raw instruction words and full disassembly are not included in this artifact."
+  }
+}

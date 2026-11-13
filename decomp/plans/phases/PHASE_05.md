@@ -19,7 +19,7 @@ Do not equate host-compatible graphics output with original instruction order, f
 
 ### G64-041 — Recover first display-list emitter
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-002.
 **Focus files:** `decomp/candidates/vm_display_e234.c`; `decomp/test_vm_display_emitters.c`.
 
 **Architectural intent:** Inspect 8003E234_3EE34's 440 original bytes and 11 graphics-command emissions; type cursor, source arrays and ordered word stores.
@@ -43,6 +43,12 @@ Do not equate host-compatible graphics output with original instruction order, f
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome:** Pinned ROM and assembly agree on all 110 original words at ROM 0x3EE34 / VMA 0x8003E234; the 440-byte instruction SHA-256 is acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336. The tracked report keeps provenance and SHA-256 evidence instead of raw opcodes, and records all eleven cursor reads and +8 updates, all 22 output word stores, exact w0/w1 expressions, and store order. In particular, the cursor global is advanced before each pair; the final w1 is stored before jr ra and the final w0 is written in its delay slot. The caller at 0x8003F004 invokes the no-argument function only when the effective D_801C77E0_1C83E0 value is 3. The trace establishes an 8-byte two-word cursor contract; a C-level Gfx type and volatile qualifier remain unproven.
+
+Historical E234 candidates remain nonmatches: the ordinary layout compiled to 516 bytes and the volatile-cursor layout to 480 bytes versus 440 original bytes. Their host output is mock semantics and does not establish original MIPS scheduling or ownership. G41 made no candidate, production, or manifest changes. The stored proof remains 153 functions / 11,800 bytes and inventory remains 7,376 entries. See plans/execution/2026-11-13-g64-041-display-emitter-trace.json.
+
+**Next:** G64-042 and G64-043 are dependency-ready after this trace; neither was started in this task.
 
 ### G64-042 — Test first emitter memory model
 

@@ -115,7 +115,7 @@ See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13
 
 Two bounded native candidates compiled in the full 1,024-byte `math_helpers.c` unit at original VMA `0x8000E28C`. V1 was 332 bytes with a `0x48` frame, but 12 target words differed; the first at `+0x5C` moved a scale² spill from `sp+0x20` to `sp+0x1C`. Sol classified all four live spill homes as shifted by one word and approved one named `xy_squared` intermediate. V2 diverged at entry with a `0x50` frame and 22 differing target words. Both candidates preserved the four neighboring functions and all 13 unit relocations. Stop at V2; the unused `sp+0x18` hole is frozen absent new evidence. The historical `0302e31f6085cd504adbda5c73a02ad910f9663294832a0639434e27645bcfd6` compile-failed recipe repeated in four batch reports and counts once; two new variants bring task usage to 3/5. The target remains `GLOBAL_ASM`; fresh G2 and inventory were not run. See [`../execution/2026-11-13-g64-083-math-helper.json`](../execution/2026-11-13-g64-083-math-helper.json). No in-game verification was performed.
 
-**Next:** G64-089 completed as `RESEARCH_ONLY`; `func_80006B44_7744` remains `GLOBAL_ASM`. Sol selected G64-041 as Wave D's first task, rank 1 at 84/100. G64-087 remains gated on G64-061/062/063.
+**Next:** G64-089 completed as `RESEARCH_ONLY`; `func_80006B44_7744` remains `GLOBAL_ASM`. G64-041 later completed RESEARCH_ONLY with its 110-word trace; G64-042/043 are dependency-ready. G64-087 remains gated on G64-061/062/063.
 
 ### G64-084 — Analyze angle variant 8000EA74
 
@@ -293,7 +293,7 @@ Two bounded native candidates compiled in the full 1,024-byte `math_helpers.c` u
 
 **Outcome (2026-11-13):** Sol ranked the five retained float-state targets and selected `func_80006B44_7744` (180 bytes at VMA `0x80006B44`, ROM `0x7744`, original span SHA-256 `f3c812c09c4c4edd635eb3d47e081fe7ab07be3d0461bf4b2cfdddcd712b25fa`). Its sole direct caller at `0x80006B10` supplies the display-list cursor in `$a0` and `f32` step bits in `$a1`. Two distinct candidates compiled in the complete 2,496-byte `float_state.c` unit at VMA `0x80006430`. V1 differed in 38 target words (94 bytes); Sol classified the first mismatch as register-lifetime/scheduling and approved initializing the induction value before the gate. V2 reduced the target difference to 36 words (79 bytes), but retained the first `$v1` versus `$v0` load mismatch and failed the predicted `$a2` loop-register discriminator. All five neighboring functions stayed exact and the target's two `D_8005B230_5BE30` relocation offsets remained `+0x20`/`+0x34`. Two signed attempt records validated; the ASan/UBSan host harness passed six semantic cases and the strict-gate negative control failed as expected. The target remains `GLOBAL_ASM`; fresh G2 and inventory were not run because the unit was not exact. Stored proof remains 153/153 functions and 11,800 bytes. See [`../execution/2026-11-13-g64-089-float-state.json`](../execution/2026-11-13-g64-089-float-state.json). No in-game verification was performed.
 
-**Next:** Sol selected G64-041 as Wave D's first task, rank 1 at 84/100; trace `func_8003E234_3EE34` before its dependent G64-042 and G64-043 tasks.
+**Next:** G64-041 has since completed RESEARCH_ONLY after the 110-word local equality check and sanitized offset map; G64-042 and G64-043 are now dependency-ready.
 
 ### G64-090 — Audit misleading trivial-function names
 

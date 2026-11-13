@@ -1645,7 +1645,7 @@
       "ordinal": 41,
       "phase": 5,
       "title": "Recover first display-list emitter",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-002"
       ],
