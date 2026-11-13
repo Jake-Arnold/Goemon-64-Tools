@@ -197,6 +197,10 @@ not combined MIPS or in-game execution. All five targets remain `GLOBAL_ASM`;
 source, header, verifier, manifest and stored proof are unchanged, so no new
 full-ROM build was run. See
 `plans/execution/2026-11-13-g64-048-vm-graphics-boundaries.json`. G64-049 is
+complete as RESEARCH_ONLY: the live manifest confirms none of the five
+graphics/setup candidates has source-unit exact proof, so all five retain
+`GLOBAL_ASM`; no source-unit or G2 build was warranted. See
+`plans/execution/2026-11-13-g64-049-vm-graphics-staging.json`. G64-050 is
 next; G64-087 remains gated on G64-061/062/063.
 G64-085 passed G2 as pilot candidate 3 of 3. Sol closed the pilot at 3/3 candidates and 7/12 variants; no extra global budget carries forward. G64-086 then passed ordinary Architect v2 with two of five variants, adding 180 bytes; the stored proof remains 153 matching-C functions / 11,800 bytes. G64-083 closed as `RESEARCH_ONLY` with `GLOBAL_ASM` retained. G64-089 then ranked the five float-state functions and tested two bounded candidates for `80006B44`: V1 had 38 differing target words; Sol diagnosed register lifetime/scheduling and approved one induction-lifetime variant. V2 reduced the mismatch to 36 words but retained the first `$v1`/`$v0` mismatch and missed the predicted `$a2` loop roles. The target remains `GLOBAL_ASM`; G2 and inventory were not run. See [`plans/execution/2026-11-13-g64-089-float-state.json`](plans/execution/2026-11-13-g64-089-float-state.json). G64-041 then completed RESEARCH_ONLY with all 110 words verified locally and the sanitized 11-command store contract; its execution report is plans/execution/2026-11-13-g64-041-display-emitter-trace.json. G64-087 remains gated on G64-061/062/063. Keep concrete predicted instruction deltas as a hypothesis-scoring refinement.
 

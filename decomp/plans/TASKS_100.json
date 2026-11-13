@@ -2025,7 +2025,7 @@
       "ordinal": 49,
       "phase": 5,
       "title": "Stage qualifying VM graphics routines",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-044",
         "G64-045",

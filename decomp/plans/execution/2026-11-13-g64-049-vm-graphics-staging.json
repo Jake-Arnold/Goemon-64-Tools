@@ -1,0 +1,131 @@
+{
+  "task_id": "G64-049",
+  "title": "Stage qualifying VM graphics routines",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "7440ebf55f3698c3d91f6cdbf46fd395790be304",
+    "fetched_remote_head_at_start": "7440ebf55f3698c3d91f6cdbf46fd395790be304",
+    "worktree_at_start": "clean",
+    "dependencies": "G64-044 through G64-048 are recorded as RESEARCH_ONLY"
+  },
+  "production_context": {
+    "source_unit": "decomp/script_vm.c",
+    "source_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "header": "decomp/script_vm.h",
+    "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "verifier": "decomp/verify.py",
+    "verifier_sha256": "d84f22751fe74d1006399a466752f3805c1764f6b547b63fe82ffba9d62b5174",
+    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "manifest_owner": "All five dependency targets remain GLOBAL_ASM; script_vm.c manifest and unit boundaries unchanged",
+    "unit_rom_range": "0x3DBA0..0x40320",
+    "unit_vma_start": "0x8003CFA0",
+    "unit_text_bytes": 10112
+  },
+  "eligibility_review": {
+    "candidate_functions": [
+      {
+        "symbol": "func_8003E234_3EE34",
+        "vma": "0x8003E234",
+        "rom_offset": "0x3EE34",
+        "original_bytes": 440,
+        "manifest_owner": "GLOBAL_ASM",
+        "unit_exact": false,
+        "blocker": "G64-044 corrected candidate is 444 bytes and moves a later sibling; full-unit mismatch at 0x8003D0B8"
+      },
+      {
+        "symbol": "func_8003EBAC_3F7AC",
+        "vma": "0x8003EBAC",
+        "rom_offset": "0x3F7AC",
+        "original_bytes": 436,
+        "manifest_owner": "GLOBAL_ASM",
+        "unit_exact": false,
+        "blocker": "G64-044 corrected candidate is 428 bytes and shifts a neighboring symbol; full-unit mismatch at 0x8003D0B8"
+      },
+      {
+        "symbol": "func_8003E6C0_3F2C0",
+        "vma": "0x8003E6C0",
+        "rom_offset": "0x3F2C0",
+        "original_bytes": 348,
+        "manifest_owner": "GLOBAL_ASM",
+        "unit_exact": false,
+        "blocker": "G64-046 full-unit candidate is 356 bytes, first target mismatch at 0x8003E6CC, and shifts a forward-call relocation"
+      },
+      {
+        "symbol": "func_8003F37C_3FF7C",
+        "vma": "0x8003F37C",
+        "rom_offset": "0x3FF7C",
+        "original_bytes": 192,
+        "manifest_owner": "GLOBAL_ASM",
+        "unit_exact": false,
+        "blocker": "G64-045 size-equal candidate differs in 36 words; first mismatch at +0x08 in FPU register scheduling"
+      },
+      {
+        "symbol": "func_8003F480_40080",
+        "vma": "0x8003F480",
+        "rom_offset": "0x40080",
+        "original_bytes": 164,
+        "manifest_owner": "GLOBAL_ASM",
+        "unit_exact": false,
+        "blocker": "G64-047's 15 isolated variants are 160/156 bytes at best; no current full-unit proof"
+      }
+    ],
+    "unit_exact_candidates": [],
+    "unit_boundary": "Original 10,112-byte script_vm.c unit spans ROM 0x3DBA0..0x40320 at VMA 0x8003CFA0; no boundary, padding, or rodata change is supported by the dependency evidence.",
+    "decision_basis": "G64-048 reviewed the complete candidate boundary and all five targets. Its host fixtures passed, but none established source-unit identity. G64-044 through G64-047 contain the relevant native mismatch evidence. No new code hypothesis is available to justify staging."
+  },
+  "evidence_refs": [
+    "decomp/plans/execution/2026-11-13-g64-044-compiler-layouts.json",
+    "decomp/plans/execution/2026-11-13-g64-045-vm-setup-abi.json",
+    "decomp/plans/execution/2026-11-13-g64-046-callback-setup.json",
+    "decomp/plans/execution/2026-11-13-g64-047-number-formatter.json",
+    "decomp/plans/execution/2026-11-13-g64-048-vm-graphics-boundaries.json"
+  ],
+  "tests": {
+    "manifest_and_source_review": "PASS: checked live manifest ownership, unit extent and source/header/verifier hashes; no target is C-owned.",
+    "inherited_focused_host_evidence": "G64-048 reports six separate ASan/UBSan fixtures passing, including all five candidate functions and the existing VM host regression; these remain mock-host evidence.",
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 162,
+      "verifier_ledger_tests": 92,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "git_diff_check": "PASS: git diff --check",
+    "native_unit_build": "NOT_RUN: no candidate met the exact-unit eligibility gate.",
+    "full_rom_g2": "NOT_RUN per v2 stop rule; no source/manifest/verifier input changed and no unit-exact candidate was staged.",
+    "inventory": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "tool_versions": {
+      "python": "3.14.4",
+      "host_cc": "Ubuntu GCC 15.2.0"
+    }
+  },
+  "proof_checkpoint": {
+    "stored_matching_c_functions": 153,
+    "stored_matching_c_bytes": 11800,
+    "stored_combined_sha256": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "stored_inventory": "166 combined C / 7,210 ASM / 7,376 identified entries",
+    "stored_inventory_sha256": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694",
+    "manifest_changed": false,
+    "production_source_changed": false,
+    "proof_changed": false,
+    "matching_c_delta": 0
+  },
+  "decision": {
+    "status": "RESEARCH_ONLY",
+    "reason": "No dependency candidate reached source-unit exactness. Staging a host-tested or isolated candidate would shift siblings or leave instruction differences, violating the V2 and G2 acceptance gates.",
+    "production_ownership": "Retain GLOBAL_ASM for all five reviewed targets.",
+    "full_unit_native_proof": "NOT_RUN",
+    "full_rom_g2": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "in_game_verification": "NOT_RUN",
+    "matching_c_delta": 0,
+    "next": "G64-050 \u2014 Close VM candidate inventory"
+  }
+}

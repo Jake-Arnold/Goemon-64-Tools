@@ -64,6 +64,14 @@
 - **Tests:** E234 passed 1,000 ASan/UBSan traces plus zero-input and owner-alias guards; EBAC passed 1,000; F37C passed 300; E6C0 passed 400; F480 passed 1,000; the broader VM host regression passed. `python3 -m decomp.local_ci` exited 0: 162 decomp tests, 92 verifier/ledger tests, task/evidence validation and the display-emitter sanitizer fixture passed. `git diff --check` passed.
 - **Limitations/next:** these are separate mock host fixtures, not one combined game frame, original-MIPS equivalence or in-game proof. No native full-unit build or new G2 was run under the v2 stop rule. Continue with G64-049; keep all five targets assembly-owned.
 
+### 2026-11-13 — G64-049 VM graphics staging gate (RESEARCH_ONLY)
+
+- **Changed:** recorded the live manifest/source-unit eligibility review, marked G64-049 `RESEARCH_ONLY`, and advanced Phase 05 and `CONTINUE.md` to G64-050. Production C, header, verifier, manifest, proof, and all five `GLOBAL_ASM` claims are unchanged.
+- **Why:** stage only a dependency candidate with exact source-unit evidence before spending a complete-ROM build; the prior five candidate reports did not meet that gate.
+- **Evidence:** the `script_vm.c` unit remains 10,112 bytes at VMA `0x8003CFA0` (ROM `0x3DBA0..0x40320`). E234, EBAC, E6C0, F37C and F480 remain ASM-owned. Prior full-unit reports show size/sibling-relocation mismatches for the emitters and E6C0, 36 differing F37C words despite size equality, and no full-unit F480 result. The stored proof remains 153 functions / 11,800 bytes; matching-C delta is zero. Details are in `decomp/plans/execution/2026-11-13-g64-049-vm-graphics-staging.json`.
+- **Tests:** G64-048's six focused ASan/UBSan mock fixtures are inherited dependency evidence, not re-run or MIPS proof. No new target test or source-unit build was warranted because no candidate qualified. The ROM-free `python3 -m decomp.local_ci` and final `git diff --check` results are recorded in the execution report.
+- **Limitations/next:** no complete-ROM G2, inventory rebuild, or in-game check was run; production ownership remains unchanged. Continue with G64-050 to reconcile all 13 residual VM entries.
+
 ### 2026-11-13 — G64-044 native emitter layouts (RESEARCH_ONLY)
 
 - **Changed:** recorded the first/second emitter native-layout comparison, marked G64-044 RESEARCH_ONLY, and updated Phase 05 and the continuation handoff. Production `script_vm.c`, both standalone candidates, manifest, proof, inventory, and `GLOBAL_ASM` ownership remain unchanged.

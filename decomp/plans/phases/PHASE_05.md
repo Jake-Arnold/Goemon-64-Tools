@@ -269,7 +269,7 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 
 ### G64-049 — Stage qualifying VM graphics routines
 
-**Status:** PLANNED. **Dependencies:** G64-044, G64-045, G64-046, G64-047, G64-048.
+**Status:** RESEARCH_ONLY (completed 2026-11-13). **Dependencies:** G64-044, G64-045, G64-046, G64-047, G64-048.
 **Focus files:** `decomp/script_vm.c`; `decomp/manifest.json`; `decomp/verify.py`.
 
 **Architectural intent:** Replace only G1-exact functions in original script_vm.c order, retaining assembly for other large VM targets.
@@ -293,6 +293,10 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** The live manifest confirms all five dependency candidates remain `GLOBAL_ASM`: E234 (440 bytes), EBAC (436), E6C0 (348), F37C (192), and F480 (164). None has source-unit exact evidence. The emitter candidates have size and sibling-relocation differences; F37C remains 36 words different despite matching size; E6C0 grows to 356 bytes and shifts a forward relocation; F480's best historical isolated result is 156 bytes and no full-unit proof exists. The production `script_vm.c` unit remains 10,112 bytes at VMA `0x8003CFA0`, ROM `0x3DBA0..0x40320`. No boundary, padding, rodata, manifest, or verifier change is justified. Retain all five ASM owners; matching-C delta is zero. See `plans/execution/2026-11-13-g64-049-vm-graphics-staging.json`.
+
+**Next:** G64-050 closes the VM candidate inventory.
 
 ### G64-050 — Close VM candidate inventory
 
