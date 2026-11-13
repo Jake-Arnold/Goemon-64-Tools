@@ -305,6 +305,20 @@ static void test_move_to_front_preserves_other_fields(void) {
     assert(tail.lookup_key == 0x80000030u);
 }
 
+/* Reference case for 800363F4's non-head move-to-front relink contract. */
+static void test_adjacent_owner_head_link_move_reference(void) {
+    ObjectListEntryReference entry = {0, 0x80000020u};
+    ObjectListEntryReference head = {&entry, 0x80000010u};
+    ObjectListOwnerReference owner = {&head};
+    ObjectListEntryReference *found;
+
+    found = find_non_head_reference(&owner, 0x80000020u);
+    assert(found == &entry);
+    assert(move_to_front_reference(&owner, found) == 1);
+    assert(owner.head == &entry && entry.next == &head && head.next == 0);
+    assert(entry.lookup_key == 0x80000020u && head.lookup_key == 0x80000010u);
+}
+
 int main(void) {
     test_list_flag_helper();
     test_single_node_dispatch();
@@ -312,5 +326,6 @@ int main(void) {
     test_null_preserves_entry_v0();
     test_move_caller_empty_singleton_and_no_match();
     test_move_to_front_preserves_other_fields();
+    test_adjacent_owner_head_link_move_reference();
     return 0;
 }

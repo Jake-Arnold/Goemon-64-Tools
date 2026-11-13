@@ -71,9 +71,8 @@ See `plans/execution/2026-11-11-g64-071-file-table-reader.json`. G64-072 traced
 G64-073 traced `80001EB0` as a gated inclusive page mapper; two IDO candidates
 both differed at `+0x04`, so it remains `GLOBAL_ASM`. Its `D_80054ACC` table
 extent is not declared in the pinned source. See
-`plans/execution/2026-11-13-g64-073-file-table-mapper.json`. G64-074 passed G2: `80036308` is a per-node dispatcher and adds 128 exact matching bytes. G64-075 traced `80036388` as a move-to-front operation, then stopped after three candidates all first differed at `+0x00`; it remains `GLOBAL_ASM`. Continue with
-G64-076–080, starting at object routine `800363F4`. See
-`plans/execution/2026-11-13-g64-074-object-flags.json` and `plans/execution/2026-11-13-g64-075-object-list-move-to-front.json`. Private ROM and compiler files
+`plans/execution/2026-11-13-g64-073-file-table-mapper.json`. G64-074 passed G2: `80036308` is a per-node dispatcher and adds 128 exact matching bytes. G64-075 traced `80036388` as a move-to-front operation, then stopped after three candidates all first differed at `+0x00`; it remains `GLOBAL_ASM`. G64-076 traced `800363F4` as a caller-gated non-head move-to-front operation; two candidates both first differed at `+0x00`, so it also remains `GLOBAL_ASM`. Continue with G64-077–080, starting at object routine `80036448`. See
+`plans/execution/2026-11-13-g64-074-object-flags.json`, `plans/execution/2026-11-13-g64-075-object-list-move-to-front.json` and `plans/execution/2026-11-13-g64-076-object-list-move-to-front.json`. Private ROM and compiler files
 remain local under the ignored diagnostics input directory.
 
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.
