@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — Locate native targets from conversation PC traces
+
+- **Changed:** documented the Chain Pipe and Oedo Castle bridge script candidates and five native dialogue graphics matching-C targets.
+- **Why:** use observed cursor changes, decoded text and state tokens to locate script commands and prioritize original functions with reusable behavior fixtures.
+- **Checks:** rescanned three resources in the SHA-1-pinned decompressed USA image, verified ten native function extents against the original ROM, and checked the target list against the matching-C manifest. Git whitespace checks passed.
+- **Limits and next step:** the Chain Pipe base is inferred and multiple bridge scripts fit the sampled sequence. Capture a coherent resource base or matching text pointer to resolve the bridge. Start bounded matching-C work in the dialogue graphics unit with the selector and line-break helpers.
+
+
 ### 2026-11-13 — Independent Script VM architecture research
 
 - **Changed:** added the [architecture report](decomp/VM_ARCHITECTURE_RESEARCH.md) and a bounded decoder for one text record at a time from the SHA-1-pinned decompressed USA image. Corrected the earlier resource note's use of decompressed addresses as retail offsets.
