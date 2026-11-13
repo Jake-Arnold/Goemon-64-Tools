@@ -737,10 +737,12 @@
           "name": "func_8000EB08_F708",
           "rom_offset": 63240,
           "size": 72
+        },
+        {
+          "name": "func_8000EB50_F750",
+          "rom_offset": 63312,
+          "size": 180
         }
-      ],
-      "assembly_functions": [
-        "func_8000EB50_F750"
       ]
     },
     {

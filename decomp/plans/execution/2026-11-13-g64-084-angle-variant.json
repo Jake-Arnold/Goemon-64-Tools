@@ -349,7 +349,7 @@
       "G64-085",
       "G64-083"
     ],
-    "note": "G64-083 is also dependency-eligible after G64-082; Sol selected G64-085 at 96/100 over G64-083 at 87/100. G64-085 is candidate 3 of 3; Sol review is required before any fourth candidate.",
+    "note": "G64-083 is also dependency-eligible after G64-082; Sol selected G64-085 at 96/100 over G64-083 at 87/100. G64-085 was candidate 3 of 3. Sol later closed the pilot after review; G64-086 passed under ordinary v2. Sol selected G64-083 as the next dependency-ready Wave C task.",
     "next_selection": {
       "task_id": "G64-085",
       "rank": 1,

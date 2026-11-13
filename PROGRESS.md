@@ -1,12 +1,20 @@
 # Goemon 64 Tools — Development Progress
 
-## 2026-11-13 — Architect v3 compiler-guided pilot (REVIEW PENDING)
+### 2026-11-13 — G64-086 angle variant 8000EB50 (PASSED_G2)
+
+- **Changed:** replaced EB50's `GLOBAL_ASM` claim with matching C in `angle_variant.c`, added host cases for the position fields, call order, signed zero and halfword behavior, and updated the manifest plus proof/inventory results. Added signed G64-091 attempt records for two source variants.
+- **Why:** recover the final retained helper in `angle_variant.c` from pinned assembly, callers and observed struct offsets while requiring exact code generation in the original 400-byte unit.
+- **Evidence:** V1 first differed at EB50 `+0x58` (`nop` vs `mov.s $f14,$f0`); Sol tied this to branch-delay scheduling and approved a distinct explicit two-way magnitude `if/else` based on the G2-matched adjacent helper. V2 exactly matched all 400 bytes and six relocations. Fresh uncached G2 matched 153/153 functions, 11,800 bytes and the complete 33,554,432-byte ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Inventory reports 7,376 entries, 153 matching C, 7,210 ASM, zero extra aliases and unchanged function-entry identity.
+- **Tests:** GCC ASan/UBSan angle harness passed (33 assertions); `python3 -m unittest discover -s decomp -p 'test_*.py' -q` — 157 passed; focused verifier/inventory/ledger/batch/probe/layout/cache suites — 65 passed; `python3 -m decomp.skill_context --validate` — consistent; `git diff --check` passed. Local CI was not run because `.github/workflows` is absent. No in-game verification.
+- **Limitations/next:** two of five v2 variants used; the unresolved historical `needs_context` row was not counted. Sol selected G64-083 at 87/100 as the only remaining dependency-ready Wave C task; G64-089 remains gated on it, and G64-087 remains gated on G64-061/062/063.
+
+## 2026-11-13 — Architect v3 compiler-guided pilot (CLOSED)
 
 - **Purpose:** respond to low production matching-C yield and early IDO branch/stack/register mismatches without replacing Architect v2.
 - **Changes:** added `decomp/plans/ARCHITECT_V3_PILOT.md`, linked it in `decomp/plans/README.md` and `decomp/CONTINUE.md`, assigned architecture/hypothesis/ranking review to Sol 6.1 High and bounded compiler execution/evidence to Luna Max.
 - **Scope and gates:** G64-082, G64-084 and G64-085 passed the unchanged exact G2 gate. The live proof now has 152 matching functions / 11,620 bytes; inventory reports 165 combined C, 7,211 ASM and 7,376 identified entries. These three promotions add 3 functions / 472 bytes. No G64-092/G64-094 completion claimed.
 - **Checks:** G64-082, G64-084 and G64-085 execution records contain native IDO, host, whole-ROM and inventory evidence. The pilot used seven of its twelve new-variant allowance; per-task v2 limits remain binding.
-- **Limitations/next:** G64-082 used five variants, G64-084 one, and G64-085 one. G64-084 and G64-085 each had one deduplicated historical failure signature, counted only against the respective per-task ceilings and not the pilot total. G64-085 was candidate 3 of 3. Sol review is required before any fourth candidate. No in-game result is claimed.
+- **Limitations/next:** G64-082 used five variants, G64-084 one, and G64-085 one. Their deduplicated historical signatures count only against the respective per-task ceilings. Sol closed v3 at 3/3 candidates and 7/12 new variants; no extra global budget carries forward. G64-086 then passed under ordinary v2. No in-game result is claimed.
 
 ## 2026-11-13 — G64-085 angle variant 8000EB08 (PASSED_G2)
 
@@ -15,7 +23,7 @@
 - **Native and budget:** one new pinned IDO 5.3 hypothesis reused E74's local unsigned-short assignment and mask while preserving EB08's helper argument order. It matched the complete 400-byte angle_variant.c unit at original VMA 0x8000EA74, including E74 and EABC; all six relocation records matched the fresh baseline. Unit SHA-256 is 6448d849f7eb0f36197ef63b950d526e6d146b94f549a251a1463e8a4fa9bb39. Three repeated historical rows with recipe signature 0302e31f... were deduplicated as one task-level failure and not replayed. G64-085 used two of its three allowed distinct variants (one historical, one new); pilot global usage is seven of twelve new variants.
 - **Tests/proof:** the GCC ASan/UBSan host harness passed 10 assertions, preserving E74/EABC checks and adding EB08 argument-order, sign-change, and 0/0x3FF wrap checks. The decomp suite passed 157 tests; verifier/inventory/ledger/batch suites passed 65. Fresh uncached G2 matched 152/152 functions, 11,620 bytes and the full 33,554,432-byte ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494. Inventory passed with 7,376 entries, 152 matching C, 7,211 ASM, zero extra aliases and unchanged function-entry identity. Stored combined.json and inventory.json hashes are 0678cf2d7926b4d71eaa6252bb7a5ed0b689ac4838e9ad05bb8370d5a1020662 and a15e92b89b79f65aab4a08b3f894ba752a1c08b96526826bd8bf8d5707816ca5.
 - **Ledger/changes:** appended and validated G64-091 full-ROM attempt signature 7987d267f39ff693e9aa9fd779cb72709ec191136e80c51a8934f44227a0c7ff. The legacy failure remains unsigned and provenance-incomplete. Updated production source, host tests, manifest, official result reports, task/phase status and the execution/handoff records. The G85 production delta is +1 function / +72 bytes.
-- **Limitations/next:** no in-game verification. No .github/workflows directory exists, so local CI had no workflow to run. G64-086 is dependency-unlocked; wait for Sol's review before starting any fourth native candidate.
+- **Limitations/next:** no in-game verification. No .github/workflows directory exists, so local CI had no workflow to run. G64-086 passed under ordinary v2; Sol selected G64-083 at 87/100 as the next dependency-ready Wave C task.
 
 
 

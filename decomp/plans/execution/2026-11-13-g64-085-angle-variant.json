@@ -234,8 +234,8 @@
   "decision": {
     "status": "PASSED_G2",
     "production_owner": "matching C",
-    "next_native_candidate": "Do not start a fourth Architect v3 pilot candidate before Sol reviews the three-candidate outcomes.",
-    "next_phase_task": "G64-086 is dependency-unlocked; wait for Sol pilot review before native probing."
+    "next_native_candidate": "Sol completed the pilot review; G64-086 passed under ordinary v2. G64-083 is the next selected dependency-ready Wave C task.",
+    "next_phase_task": "G64-086 passed G2 under ordinary v2; Sol selected G64-083 as the next dependency-ready Wave C candidate."
   },
   "limitations": [
     "No in-game verification was performed; evidence establishes source-unit and full-ROM byte identity.",

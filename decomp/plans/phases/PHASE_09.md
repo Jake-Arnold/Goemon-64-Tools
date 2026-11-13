@@ -140,7 +140,7 @@ See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13
 
 **Outcome (2026-11-13):** `func_8000EA74_F674` (72 bytes at VMA `0x8000EA74`, ROM `0xF674`, original span SHA-256 `7845fee09516aead2222a42d43c21fe4a39119052c9586ea60ee0cd1b346c5cf`) exactly matches after one new source variant. A deduplicated historical mismatch signature was counted once against the three-variant task ceiling; no equivalent recipe was rerun. The full 400-byte source unit linked at the original VMA with all six relocations matching; EABC remains matching C and EB08/EB50 remain `GLOBAL_ASM`. Fresh uncached G2 matched 151/151 functions, 11,548 bytes and the full 32 MiB ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Inventory passed with 7,376 entries, 151 matching C, 7,212 ASM, zero extra aliases and unchanged function-entry identity. See `../execution/2026-11-13-g64-084-angle-variant.json`. No in-game verification was performed.
 
-**Next:** G64-085 has since passed G2 as candidate 3 of 3. G64-086 is next by phase dependency, but wait for Sol's pilot outcome review before any fourth native candidate.
+**Next:** G64-085 passed G2 as pilot candidate 3 of 3. Sol later closed the pilot after outcome review; G64-086 passed under ordinary v2, and G64-083 is now the next selected Wave C task.
 
 ### G64-085 — Analyze angle variant 8000EB08
 
@@ -171,11 +171,11 @@ See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13
 
 **Outcome (2026-11-13):** func_8000EB08_F708 (72 bytes at VMA 0x8000EB08, ROM 0xF708, original SHA-256 c2489007d9a10c741e79de88d21869fc7e0f5996a1a984aeef4058dc73232e1c) exactly matches with the E74 scalar/mask shape and EB08's observed (arg0-arg2, arg1-arg3) helper order. The complete 400-byte angle_variant.c unit linked at 0x8000EA74 matched, all six relocations matched the fresh baseline, and E74/EABC remained exact while EB50 stayed GLOBAL_ASM. The one historical failure recipe was deduplicated across three rows and not replayed. Fresh uncached G2 matched 152/152 functions, 11,620 bytes and the full 32 MiB ROM; inventory passed with 7,376 entries, 152 matching C, 7,211 ASM, zero extra aliases and unchanged function-entry identity. See ../execution/2026-11-13-g64-085-angle-variant.json. No in-game verification was performed.
 
-**Next:** G64-086 is dependency-unlocked. Sol review of all three Architect v3 pilot candidates is required before any fourth native candidate.
+**Next:** G64-086 passed under ordinary v2 after two of five variants. Sol selected G64-083 at 87/100 as the only remaining dependency-ready Wave C candidate.
 
 ### G64-086 — Analyze angle variant 8000EB50
 
-**Status:** PLANNED. **Dependencies:** G64-085.
+**Status:** PASSED_G2. **Dependencies:** G64-085.
 **Focus files:** `decomp/angle_variant.c`; `decomp/test_angle_variant.c`.
 
 **Architectural intent:** Recover last angle_variant.c retained-ASM helper, compare shared call signatures and downstream consumers.
@@ -199,6 +199,10 @@ See [`../execution/2026-11-13-g64-082-math-helper.json`](../execution/2026-11-13
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** `func_8000EB50_F750` (180 bytes at VMA `0x8000EB50`, ROM `0xF750`, original SHA-256 `ba59dad46351a30ab57dbafe9afc1d18869fc55e14a8ff2e10f8a06d3ab64760`) passed after two distinct bounded variants. V1 first differed at `+0x58` (`nop` vs `mov.s $f14,$f0`) from branch-delay scheduling; Sol approved an explicit two-way magnitude `if/else` based on G2-matched `func_8000EC04_F804`. V2 matched the complete 400-byte `angle_variant.c` unit at original VMA `0x8000EA74`, including all four functions and six relocations. Fresh uncached G2 matched 153/153 functions, 11,800 bytes and the complete 32 MiB ROM; inventory passed with 7,376 entries, 153 matching C, 7,210 ASM, zero extra aliases and unchanged function-entry identity. See [`../execution/2026-11-13-g64-086-angle-variant.json`](../execution/2026-11-13-g64-086-angle-variant.json). No in-game verification was performed.
+
+**Next:** Sol selected G64-083 at 87/100 as the only remaining dependency-ready Wave C candidate. G64-089 remains gated on G64-083; G64-087 remains gated on G64-061/062/063.
 
 ### G64-087 — Analyze dispatcher 8001F8B0
 
