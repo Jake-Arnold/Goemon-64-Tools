@@ -2214,7 +2214,7 @@
       "ordinal": 53,
       "phase": 6,
       "title": "Add overlay linked-ELF provenance",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-051",
         "G64-052"

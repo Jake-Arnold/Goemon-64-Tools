@@ -1,8 +1,8 @@
-"""Fail-closed original-ROM layout guard for USA overlay file_43.
+"""Fail-closed reference and linked-ELF guard for USA overlay file_43.
 
-This verifies *reference layout and bytes*, NOT linker provenance, C ownership,
-reconstructed functions, or a successful decomp.verify promotion. The main
-segment's ROM/VMA rule must never be used for this overlay.
+This verifies pinned reference layout/bytes and optional overlay ELF provenance,
+NOT candidate source ownership or a successful decomp.verify promotion. The
+main segment's ROM/VMA rule must never be used for this overlay.
 
 Inputs (including the USA Splat config and decompressed ROM) stay private.
 """
@@ -12,6 +12,11 @@ import argparse
 import hashlib
 from pathlib import Path
 import re
+
+try:
+    from .probe import Elf32
+except ImportError:
+    from probe import Elf32
 
 ROM_BYTES = 33_554_432
 ROM_SHA1 = "6ea0ed71032ce08fc2745f412d84936382197494"
@@ -23,6 +28,10 @@ ROM_END = 0x6FB200
 VMA_START = 0x08000000
 TEXT_SHA256 = "77fa512adb309eac78ad05109746bdc0541a92995446929b1d9b7bf4a10c2b07"
 RODATA_SHA256 = "6d5a1d659e1432a882d5c492ae7fc9dbc03cdfc9a284d5c95483dc429f50afb8"
+# SHA-256 from the pinned-source baseline ELF recorded by G2 on 2026-11-13.
+# Its report pins upstream 7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee and the
+# same decompressed USA ROM identity checked above.
+REFERENCE_ELF_SHA256 = "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038"
 
 # All extents/hash values are from the independently SHA-verified 32 MiB USA ROM.
 # The key initializer's isolated linked match is NOT whole-ROM C proof.
@@ -127,6 +136,169 @@ def validate_reference_inputs(splat_yaml: str, reference_rom: bytes,
     }
 
 
+def _linked_file43(elf_bytes: bytes, label: str):
+    """Read one linked Splat file_43 output section and its relocation table."""
+    elf = Elf32(elf_bytes)
+    if elf.kind != 2:
+        raise ValueError(f"{label} must be a linked MIPS executable ELF")
+    indices = [i for i, name in enumerate(elf.names) if name == ".file_43"]
+    if len(indices) != 1:
+        raise ValueError(f"{label} must contain one .file_43 output section")
+    index = indices[0]
+    section = elf.sections[index]
+    expected_size = ROM_END - ROM_START
+    if (section[1] != 1 or section[2] != 0x7 or section[3] != VMA_START or
+            section[5] != expected_size or section[8] != 16):
+        raise ValueError(f"{label} .file_43 VMA, flags, type, size or alignment differs")
+    payload = elf.payload(index)
+
+    relocation_indices = [
+        i for i, section_header in enumerate(elf.sections)
+        if section_header[1] in (4, 9) and section_header[7] == index
+    ]
+    if (len(relocation_indices) != 1 or elf.sections[relocation_indices[0]][1] != 9 or
+            elf.names[relocation_indices[0]] != ".rel.file_43"):
+        raise ValueError(f"{label} must contain one .rel.file_43 relocation table")
+    relocations = elf.relocations(index)
+    for relocation in relocations:
+        if (not section[3] <= relocation.offset < section[3] + section[5] or
+                relocation.offset & 3):
+            raise ValueError(f"{label} has a relocation outside aligned .file_43")
+    return elf, index, section, payload, relocations
+
+
+def _relocation_signature(elf: Elf32, section: tuple, relocation) -> tuple:
+    symbol = relocation.symbol
+    if symbol.section < len(elf.names):
+        symbol_section = elf.names[symbol.section]
+    else:
+        symbol_section = f"SHN_{symbol.section:04X}"
+    return (relocation.offset - section[3], relocation.relocation_type,
+            symbol.name, symbol.value, symbol_section, symbol.kind,
+            symbol.binding, relocation.addend is not None,
+            relocation.addend if relocation.addend is not None else 0)
+
+
+def _function_relocations(elf: Elf32, section: tuple, relocations: tuple,
+                          symbol) -> tuple:
+    end = symbol.value + symbol.size
+    return tuple(sorted(
+        _relocation_signature(elf, section, relocation)
+        for relocation in relocations
+        if symbol.value <= relocation.offset < end
+    ))
+
+
+def validate_linked_elf_provenance(splat_yaml: str, reference_rom: bytes,
+                                   reference_elf: bytes, candidate_elf: bytes,
+                                   function_names: tuple[str, ...]) -> dict:
+    """Bind requested file_43 functions to original/candidate linked ELF data.
+
+    This is a provenance and exact-function check only. It does not prove
+    source ownership, a complete candidate ROM, or matching-C promotion.
+    """
+    result = validate_reference_inputs(splat_yaml, reference_rom, function_names)
+    reference_sha = hashlib.sha256(reference_elf).hexdigest()
+    if reference_sha != REFERENCE_ELF_SHA256:
+        raise ValueError("reference linked ELF identity mismatch")
+    original, original_index, original_section, original_payload, original_relocations = (
+        _linked_file43(reference_elf, "reference ELF")
+    )
+    candidate, candidate_index, candidate_section, candidate_payload, candidate_relocations = (
+        _linked_file43(candidate_elf, "candidate ELF")
+    )
+    expected_overlay = reference_rom[ROM_START:ROM_END]
+    if original_payload != expected_overlay:
+        raise ValueError("reference ELF .file_43 bytes differ from mapped original ROM")
+
+    function_results = []
+    for name in function_names:
+        vma, rom_offset, size, expected_sha = FUNCTIONS[name]
+        label = re.fullmatch(r"func_([0-9A-F]{8})_([0-9A-F]+)", name)
+        if (label is None or int(label.group(1), 16) != vma or
+                int(label.group(2), 16) != rom_offset):
+            raise ValueError(f"overlay function name disagrees with VMA/ROM mapping: {name}")
+        original_symbol = original.function(name)
+        candidate_symbol = candidate.function(name)
+        expected_symbol = (vma, size)
+        if (original_symbol.section != original_index or
+                (original_symbol.value, original_symbol.size) != expected_symbol or
+                original_symbol.binding not in (1, 2)):
+            raise ValueError(f"reference ELF symbol/section differs for {name}")
+        if (candidate_symbol.section != candidate_index or
+                (candidate_symbol.value, candidate_symbol.size) != expected_symbol or
+                candidate_symbol.binding not in (1, 2)):
+            raise ValueError(f"candidate ELF symbol/section differs for {name}")
+
+        expected_code = reference_rom[rom_offset:rom_offset + size]
+        original_code = original.code(original_symbol)
+        candidate_code = candidate.code(candidate_symbol)
+        if hashlib.sha256(original_code).hexdigest() != expected_sha:
+            raise ValueError(f"reference ELF function bytes differ for {name}")
+        if candidate_code != expected_code:
+            raise ValueError(f"candidate ELF function bytes differ for {name}")
+
+        original_relocs = _function_relocations(
+            original, original_section, original_relocations, original_symbol
+        )
+        candidate_relocs = _function_relocations(
+            candidate, candidate_section, candidate_relocations, candidate_symbol
+        )
+        if original_relocs != candidate_relocs:
+            raise ValueError(f"candidate relocation target differs for {name}")
+        function_results.append({
+            "name": name,
+            "section": ".file_43",
+            "vma": f"0x{vma:08X}",
+            "rom_offset": f"0x{rom_offset:X}",
+            "bytes": size,
+            "original_sha256": hashlib.sha256(original_code).hexdigest(),
+            "candidate_sha256": hashlib.sha256(candidate_code).hexdigest(),
+            "candidate_code_matches_original": True,
+            "candidate_relocations_match_reference": True,
+            "relocation_count": len(candidate_relocs),
+            "relocations": [
+                {
+                    "section_offset": f"0x{item[0]:X}",
+                    "type": item[1],
+                    "symbol": item[2],
+                    "symbol_vma": f"0x{item[3]:08X}",
+                    "symbol_section": item[4],
+                    "symbol_kind": item[5],
+                    "symbol_binding": item[6],
+                    "addend": item[8] if item[7] else None,
+                }
+                for item in candidate_relocs
+            ],
+        })
+
+    result["linked_elf_provenance"] = {
+        "format": "goemon-file43-linked-elf-provenance-v1",
+        "reference_elf_sha256": reference_sha,
+        "candidate_elf_sha256": hashlib.sha256(candidate_elf).hexdigest(),
+        "reference_section": {
+            "name": ".file_43",
+            "vma_start": f"0x{original_section[3]:08X}",
+            "elf_file_offset": f"0x{original_section[4]:X}",
+            "size": original_section[5],
+            "sha256": hashlib.sha256(original_payload).hexdigest(),
+            "relocation_count": len(original_relocations),
+        },
+        "candidate_section": {
+            "name": ".file_43",
+            "vma_start": f"0x{candidate_section[3]:08X}",
+            "elf_file_offset": f"0x{candidate_section[4]:X}",
+            "size": candidate_section[5],
+            "sha256": hashlib.sha256(candidate_payload).hexdigest(),
+            "relocation_count": len(candidate_relocations),
+        },
+        "functions": function_results,
+        "promoted_matching_c": False,
+        "proof_level": "linked overlay symbol, section, function bytes and relocation targets only",
+    }
+    return result
+
+
 def compare_full_rom(reference_rom: bytes, candidate_rom: bytes) -> None:
     """An additional whole-ROM byte gate; this alone cannot prove source was C."""
     if len(candidate_rom) != ROM_BYTES or candidate_rom != reference_rom:
@@ -137,13 +309,22 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--splat", type=Path, required=True)
     parser.add_argument("--reference", type=Path, required=True)
+    parser.add_argument("--reference-elf", type=Path)
+    parser.add_argument("--candidate-elf", type=Path)
     parser.add_argument("--candidate", type=Path)
     parser.add_argument("--function", choices=tuple(FUNCTIONS), action="append", required=True)
     args = parser.parse_args()
     original = args.reference.read_bytes()
-    result = validate_reference_inputs(
-        args.splat.read_text(encoding="utf-8"), original, tuple(args.function)
-    )
+    if bool(args.reference_elf) != bool(args.candidate_elf):
+        parser.error("--reference-elf and --candidate-elf must be supplied together")
+    splat_yaml = args.splat.read_text(encoding="utf-8")
+    if args.reference_elf:
+        result = validate_linked_elf_provenance(
+            splat_yaml, original, args.reference_elf.read_bytes(),
+            args.candidate_elf.read_bytes(), tuple(args.function)
+        )
+    else:
+        result = validate_reference_inputs(splat_yaml, original, tuple(args.function))
     if args.candidate:
         compare_full_rom(original, args.candidate.read_bytes())
         result["complete_rom_bytes_equal"] = True

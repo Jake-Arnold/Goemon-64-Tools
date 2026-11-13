@@ -1,0 +1,137 @@
+{
+  "task_id": "G64-053",
+  "title": "Add overlay linked-ELF provenance",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "e128fec10c917566498dba532fc95c23b24a1039",
+    "fetched_remote_head_at_start": "e128fec10c917566498dba532fc95c23b24a1039",
+    "worktree_at_start": "clean",
+    "dependencies": "G64-051=DOC_ONLY; G64-052=RESEARCH_ONLY"
+  },
+  "implementation": {
+    "files": [
+      "decomp/probe.py",
+      "decomp/overlay_file43.py",
+      "decomp/test_overlay_file43.py",
+      "decomp/plans/TASKS_100.json",
+      "decomp/plans/phases/PHASE_06.md",
+      "decomp/CONTINUE.md",
+      "PROGRESS.md"
+    ],
+    "design": "The separate file_43 checker validates the combined G64-052 input contract, pins the original linked ELF SHA-256, verifies the original .file_43 payload equals the explicit ROM range, and checks candidate section VMA/flags/alignment/size. It requires each requested symbol in .file_43 at its explicit VMA and size, compares candidate function bytes to the reference ROM, and compares function-local REL/RELA target signatures. The main-segment verifier mapping remains untouched pending G64-055.",
+    "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "reference_elf_source": {
+      "prior_report_sha256": "328be129fe1c39aa31e41a7b37472741a7b0ac968d67a3f17f7489e86ff4ed14",
+      "prior_report_status": "matched",
+      "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "historical_full_rom_match": true,
+      "historical_claims": 150,
+      "fresh_g2_run_for_this_task": false
+    }
+  },
+  "observed_linked_elf_layout": {
+    "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "candidate_elf_sha256": "494885dc5bebe06d7982c0ca0f4c7febbc2fc840e044d41613a8b492002301dc",
+    "section": ".file_43",
+    "vma_start": "0x08000000",
+    "rom_start": "0x6F34E0",
+    "rom_end": "0x6FB200",
+    "size": 32032,
+    "flags": "0x7",
+    "alignment": 16,
+    "elf_file_offset": "0x880000",
+    "elf_file_offset_is_rom_offset": false,
+    "reference_section_sha256": "5139b21f811295f9fa395a9eaa07a98f67ba736f4dcd68d8cd9e0df67a7d97cb",
+    "candidate_section_sha256": "5139b21f811295f9fa395a9eaa07a98f67ba736f4dcd68d8cd9e0df67a7d97cb",
+    "reference_section_equals_reference_rom_range": true,
+    "reference_relocations": 1593,
+    "candidate_relocations": 1593,
+    "functions": [
+      {
+        "name": "func_080001BC_6F369C",
+        "vma": "0x080001BC",
+        "rom_offset": "0x6F369C",
+        "bytes": 96,
+        "candidate_code_matches_original": true,
+        "candidate_relocations_match_reference": true,
+        "function_relocations": 8
+      },
+      {
+        "name": "func_08006490_6F9970",
+        "vma": "0x08006490",
+        "rom_offset": "0x6F9970",
+        "bytes": 140,
+        "candidate_code_matches_original": true,
+        "candidate_relocations_match_reference": true,
+        "function_relocations": 10
+      }
+    ]
+  },
+  "tests": {
+    "focused_and_compatibility": {
+      "command": "python3 -m unittest decomp.test_overlay_file43 tests.test_decomp_verify tests.test_decomp_elf_layout -q",
+      "exit_code": 0,
+      "status": "PASS",
+      "tests": 54
+    },
+    "overlay_focused_tests": {
+      "command": "python3 -m unittest decomp.test_overlay_file43 -q",
+      "exit_code": 0,
+      "status": "PASS",
+      "tests": 34
+    },
+    "private_linked_elf_cli": {
+      "exit_code": 0,
+      "status": "PASS",
+      "input": "Pinned USA Splat/ROM and retained G64-082 baseline/candidate linked ELFs",
+      "promotion_claim": false
+    },
+    "py_compile": {
+      "command": "python3 -m py_compile decomp/probe.py decomp/overlay_file43.py decomp/test_overlay_file43.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "task_evidence_validation": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "project_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 182,
+      "verifier_ledger_tests": 92,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "status": "PASS"
+    }
+  },
+  "production_context": {
+    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "overlay_file43_source_sha256": "ed672579198c4e9621edf4a68090902a6554b37287c26ace0f3e17a85c74e742",
+    "elf_reader_source_sha256": "a4879768655b8670ee667fdbc280891185c3fa9e94b2d3b1e27584e97edc3590",
+    "overlay_test_sha256": "bc6793100c84c5fa3501846ec7e631ef9e82ed7d0b8c0f9cfe8caecfcf3cf367",
+    "verify_source_sha256": "d84f22751fe74d1006399a466752f3805c1764f6b547b63fe82ffba9d62b5174",
+    "elf_layout_source_sha256": "c74a406574549f6fa1d1cb87f3408519dfaf57eb138ba7c90925ff0c5cd2e61d",
+    "manifest_changed": false,
+    "verify_py_changed": false,
+    "elf_layout_py_changed": false,
+    "stored_proof_changed": false,
+    "matching_c_delta": 0,
+    "full_rom_g2": "NOT_RUN for this task; the cited prior G2 artifact remains historical"
+  },
+  "decision": {
+    "status": "RESEARCH_ONLY",
+    "reason": "The checker validates linked file_43 section/symbol/function bytes and relocation targets but does not establish current candidate source ownership or the production verifier/inventory integration required for a C promotion.",
+    "next": "G64-054 — Expand fail-closed overlay tests"
+  }
+}

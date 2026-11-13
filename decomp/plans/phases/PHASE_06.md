@@ -85,7 +85,7 @@ there is no C promotion. See
 
 ### G64-053 — Add overlay linked-ELF provenance
 
-**Status:** PLANNED. **Dependencies:** G64-051, G64-052.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-051, G64-052.
 **Focus files:** `decomp/overlay_file43.py`; `decomp/verify.py`; `decomp/elf_layout.py`.
 
 **Architectural intent:** Design section/symbol extraction from original and candidate overlay ELF, explicitly binding each function to ROM and original load address.
@@ -103,6 +103,20 @@ there is no C promotion. See
 **Focused tests:** `python3 -m unittest decomp.test_overlay_file43 -q`; for any section/ELF adapter changes run `python3 -m unittest tests.test_decomp_verify tests.test_decomp_elf_layout -q`. Both original section hashes and full-ROM equality must hold for promotion.
 
 **Explicit acceptance:** A shifted VMA, mismatched relocation target, missing symbol or wrong section size fails before any function claim.
+
+**Outcome (2026-11-13):** added a separate linked-ELF provenance check for
+`file_43`. It pins the reference ELF to the prior G2 baseline report for the
+pinned upstream and USA ROM, verifies the linked `.file_43` section's VMA,
+flags, alignment, exact 32,032-byte size and mapped bytes, then binds requested
+symbols to that section, explicit function VMAs/ROM offsets, original
+instruction hashes and per-function relocation targets. Synthetic controls
+reject a shifted VMA, section-size change, missing symbol, changed relocation
+target and wrong reference ELF identity. The retained G64-082 baseline and
+candidate ELFs passed: both target functions match their original bytes and
+their 8/10 relocation records. A changed target instruction also fails before
+function output. No current manifest, `verify.py` main-segment mapping, or
+matching-C claim changed. This is provenance-only, not a fresh G2 or integration proof. See
+`../execution/2026-11-13-g64-053-overlay-elf-provenance.json`.
 
 **Required negative control:** Do not use the main-segment ROM/VMA formula for overlays; reject section aliasing, overlap, hash mismatch and isolated byte matches as promotions.
 

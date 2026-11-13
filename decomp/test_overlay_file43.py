@@ -1,12 +1,72 @@
 """Synthetic fail-closed layout guards; no private ROM or generated ASM needed."""
 import hashlib
 from pathlib import Path
+import struct
 from unittest import TestCase, main, mock
 
 try:
     from . import overlay_file43 as mod
 except ImportError:
     import overlay_file43 as mod
+
+
+def linked_overlay_elf(data, *, section_vma=0x08000000, section_size=48,
+                       include_function=True, function_vma=0x08000004,
+                       relocation_target=2):
+    """Build a small linked MIPS ELF carrying a file_43 section and REL table."""
+    shnames = b'\0.file_43\0.rel.file_43\0.symtab\0.strtab\0.shstrtab\0'
+    names = b'\0func_08000004_0004\0target\0target2\0'
+    string_offsets = {name: names.index(name + b'\0') for name in (
+        b'func_08000004_0004', b'target', b'target2')}
+    content = bytearray(52)
+
+    def append(payload, alignment=4):
+        content.extend(bytes((-len(content)) % alignment))
+        offset = len(content)
+        content.extend(payload)
+        return offset
+
+    sections = [(0,) * 10]
+    section_offset = append(data[:section_size], 16)
+    sections.append((shnames.index(b'.file_43\0'), 1, 7, section_vma,
+                     section_offset, section_size, 0, 0, 16, 0))
+    relocation_offset = append(struct.pack('>II', function_vma,
+                                           (relocation_target << 8) | 2))
+    sections.append((shnames.index(b'.rel.file_43\0'), 9, 0x40, 0,
+                     relocation_offset, 8, 3, 1, 4, 8))
+
+    symbols = [bytes(16)]
+    if include_function:
+        symbols.append(struct.pack('>IIIBBH', string_offsets[b'func_08000004_0004'],
+                                   function_vma, 8, 0x12, 0, 1))
+    target_index = len(symbols)
+    symbols.append(struct.pack('>IIIBBH', string_offsets[b'target'],
+                               0x08000030, 4, 0x12, 0, 1))
+    second_target_index = len(symbols)
+    symbols.append(struct.pack('>IIIBBH', string_offsets[b'target2'],
+                               0x08000034, 4, 0x12, 0, 1))
+    if relocation_target == 2 and target_index != relocation_target:
+        relocation_target = target_index
+    elif relocation_target == 3 and second_target_index != relocation_target:
+        relocation_target = second_target_index
+    struct.pack_into('>I', content, relocation_offset + 4,
+                     (relocation_target << 8) | 2)
+
+    symtab_offset = append(b''.join(symbols), 4)
+    sections.append((shnames.index(b'.symtab\0'), 2, 0, 0, symtab_offset,
+                     16 * len(symbols), 4, 1, 4, 16))
+    strtab_offset = append(names, 1)
+    sections.append((shnames.index(b'.strtab\0'), 3, 0, 0, strtab_offset,
+                     len(names), 0, 0, 1, 0))
+    shstrtab_offset = append(shnames, 1)
+    sections.append((shnames.index(b'.shstrtab\0'), 3, 0, 0, shstrtab_offset,
+                     len(shnames), 0, 0, 1, 0))
+    section_headers = append(b''.join(struct.pack('>10I', *section)
+                                      for section in sections), 4)
+    content[:16] = b'\x7fELF\x01\x02\x01' + bytes(9)
+    struct.pack_into('>HHIIIIIHHHHHH', content, 16, 2, 8, 1, 0, 0,
+                     section_headers, 0, 52, 0, 0, 40, len(sections), 5)
+    return bytes(content)
 
 
 class OverlayFile43Tests(TestCase):
@@ -27,7 +87,7 @@ class OverlayFile43Tests(TestCase):
     def setUp(self):
         self.data = bytes(range(64))
         self.h = hashlib.sha256
-        self.name = 'func_080001BC_6F369C'
+        self.name = 'func_08000004_0004'
         changes = dict(ROM_BYTES=len(self.data),
                        ROM_SHA1=hashlib.sha1(self.data).hexdigest(),
                        ROM_START=0, ROM_TEXT_END=32, ROM_END=48,
@@ -101,6 +161,83 @@ class OverlayFile43Tests(TestCase):
         changed = self.data[:-1] + bytes([self.data[-1] ^ 1])
         with self.assertRaisesRegex(ValueError, 'size or SHA-1'):
             mod.validate_reference_inputs(self.config(), changed, (self.name,))
+
+    def test_linked_elf_provenance_accepts_exact_overlay_symbols_and_relocations(self):
+        reference_elf = linked_overlay_elf(self.data)
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            result = mod.validate_linked_elf_provenance(
+                self.config(), self.data, reference_elf, reference_elf, (self.name,)
+            )
+        proof = result['linked_elf_provenance']
+        self.assertEqual(proof['reference_section']['vma_start'], '0x08000000')
+        self.assertEqual(proof['reference_section']['size'], 48)
+        self.assertEqual(proof['functions'][0]['section'], '.file_43')
+        self.assertTrue(proof['functions'][0]['candidate_code_matches_original'])
+        self.assertTrue(proof['functions'][0]['candidate_relocations_match_reference'])
+        self.assertEqual(proof['functions'][0]['relocation_count'], 1)
+        self.assertEqual(proof['functions'][0]['relocations'][0]['symbol'], 'target')
+        self.assertFalse(proof['promoted_matching_c'])
+
+    def test_linked_elf_rejects_unpinned_reference_elf_identity(self):
+        reference_elf = linked_overlay_elf(self.data)
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256', 'f' * 64):
+            with self.assertRaisesRegex(ValueError, 'reference linked ELF identity'):
+                mod.validate_linked_elf_provenance(
+                    self.config(), self.data, reference_elf, reference_elf, (self.name,)
+                )
+
+    def test_linked_elf_rejects_shifted_overlay_vma(self):
+        reference_elf = linked_overlay_elf(self.data)
+        candidate_elf = linked_overlay_elf(self.data, section_vma=0x08000004)
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            with self.assertRaisesRegex(ValueError, 'VMA, flags'):
+                mod.validate_linked_elf_provenance(
+                    self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                )
+
+    def test_linked_elf_rejects_wrong_overlay_section_size(self):
+        reference_elf = linked_overlay_elf(self.data)
+        candidate_elf = linked_overlay_elf(self.data, section_size=44)
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            with self.assertRaisesRegex(ValueError, 'VMA, flags'):
+                mod.validate_linked_elf_provenance(
+                    self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                )
+
+    def test_linked_elf_rejects_missing_function_symbol(self):
+        reference_elf = linked_overlay_elf(self.data)
+        candidate_elf = linked_overlay_elf(self.data, include_function=False)
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            with self.assertRaisesRegex(ValueError, 'Missing/ambiguous function'):
+                mod.validate_linked_elf_provenance(
+                    self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                )
+
+    def test_linked_elf_rejects_changed_relocation_target(self):
+        reference_elf = linked_overlay_elf(self.data)
+        candidate_elf = linked_overlay_elf(self.data, relocation_target=3)
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            with self.assertRaisesRegex(ValueError, 'relocation target differs'):
+                mod.validate_linked_elf_provenance(
+                    self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                )
+
+    def test_linked_elf_rejects_changed_function_bytes(self):
+        reference_elf = linked_overlay_elf(self.data)
+        changed = bytearray(self.data)
+        changed[4] ^= 1
+        candidate_elf = linked_overlay_elf(bytes(changed))
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            with self.assertRaisesRegex(ValueError, 'function bytes differ'):
+                mod.validate_linked_elf_provenance(
+                    self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                )
 
     def test_splat_reference_sha_rejected(self):
         with self.assertRaisesRegex(ValueError,'SHA-1'):

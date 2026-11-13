@@ -15,6 +15,15 @@ class Symbol:
     section: int
 
 
+@dataclass(frozen=True)
+class Relocation:
+    offset: int
+    relocation_type: int
+    symbol_index: int
+    symbol: Symbol
+    addend: int | None = None
+
+
 class Elf32:
     def __init__(self, data):
         self.data = bytes(data)
@@ -31,16 +40,21 @@ class Elf32:
         table = self.payload(names)
         self.names = [self.string(table, s[0]) for s in self.sections]
         self.symbols = []
-        for section in self.sections:
+        self.symbol_tables = {}
+        for table_index, section in enumerate(self.sections):
             if section[1] != 2:
                 continue
             if section[9] != 16 or section[5] % 16 or section[6] >= count:
                 raise ValueError('Invalid ELF symbol table')
             strings = self.payload(section[6])
             content = self.slice(section[4], section[5])
+            symbols = []
             for start in range(0, len(content), 16):
                 name, value, size, info, _, target = struct.unpack_from('>IIIBBH', content, start)
-                self.symbols.append(Symbol(self.string(strings, name), value, size, info & 15, info >> 4, target))
+                symbols.append(Symbol(self.string(strings, name), value, size,
+                                      info & 15, info >> 4, target))
+            self.symbol_tables[table_index] = tuple(symbols)
+            self.symbols.extend(symbols)
 
     @staticmethod
     def string(table, start):
@@ -65,6 +79,32 @@ class Elf32:
         if len(matches) != 1:
             raise ValueError('Missing/ambiguous function: ' + name)
         return matches[0]
+
+    def relocations(self, target_section):
+        """Return REL/RELA entries attached to one section, preserving symbols."""
+        if type(target_section) is not int or not 0 <= target_section < len(self.sections):
+            raise ValueError('Invalid relocation target section')
+        result = []
+        for section_index, section in enumerate(self.sections):
+            if section[1] not in (4, 9) or section[7] != target_section:
+                continue
+            rela = section[1] == 4
+            width = 12 if rela else 8
+            if section[9] != width or section[5] % width:
+                raise ValueError('Invalid ELF relocation table')
+            symbols = self.symbol_tables.get(section[6])
+            if symbols is None:
+                raise ValueError('Relocation table does not link to a symbol table')
+            content = self.payload(section_index)
+            for start in range(0, len(content), width):
+                offset, info = struct.unpack_from('>II', content, start)
+                addend = struct.unpack_from('>i', content, start + 8)[0] if rela else None
+                symbol_index = info >> 8
+                if symbol_index >= len(symbols):
+                    raise ValueError('Relocation references an invalid symbol')
+                result.append(Relocation(offset, info & 0xFF, symbol_index,
+                                         symbols[symbol_index], addend))
+        return tuple(result)
 
     def code(self, symbol):
         section = self.sections[symbol.section]
