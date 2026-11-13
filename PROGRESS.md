@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — Native local decomp CI command (ROM-free)
+
+- **Changed:** added `decomp/local_ci.py` and `decomp/test_local_ci.py`; documented `python3 -m decomp.local_ci` in `AGENTS.md` and `decomp/CONTINUE.md`. No `.github/workflows` files were introduced.
+- **Reason:** the workflow-dependent Local CI runner repeatedly reported that GitHub Actions workflows were missing, although the project needs locally executable, ROM-free tests rather than GitHub-hosted CI.
+- **Checks:** five synthetic runner tests passed in a separate sandbox using mocked subprocess calls; Python syntax was compiled successfully. The GitHub connector was used to confirm the existing host test and Python suites. The complete project runner and sanitizer tests were **not executed in this tool environment** (private full checkout unavailable).
+- **Scope/limitations:** local gate includes decomp Python tests, verifier/ledger tests, plan validation, and the existing display emitter ASan/UBSan host regression. It is not a complete-ROM proof, original-IDO match, or in-game test. No G64 task status, matching-C claim, manifest, or stored G2 result was changed.
+- **Next:** run `python3 -m decomp.local_ci` inside the actual Codex worktree and record its exit status before publishing the next G64 task; continue task-specific tests and the separate full-ROM gate when a candidate qualifies.
+
+
 ### 2026-11-13 — G64-042 first emitter memory model (RESEARCH_ONLY)
 
 - **Changed:** added valid zero-input and aliased-owner cases to the first-emitter host regression, recorded G42 evidence, marked G64-042 RESEARCH_ONLY, and refreshed Phase 05 and CONTINUE. Production source, candidate C, manifest, and stored proof remain unchanged.
