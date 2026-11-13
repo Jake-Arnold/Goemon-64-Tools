@@ -210,7 +210,7 @@ Four IDO variants produced 152, 144, 152 and 152 bytes versus 180. The second mo
 
 ### G64-078 — Analyze scheduler 8000702C
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-002 (`PASSED_G2`).
 **Focus files:** `decomp/scheduler_queue.c`; `decomp/test_scheduler_queue.c`.
 
 **Architectural intent:** Inspect func_8000702C_7C2C adjacent to matching pointer-offset helper 80007024 and characterize queue layout.
@@ -234,6 +234,14 @@ Four IDO variants produced 152, 144, 152 and 152 bytes versus 180. The second mo
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Pinned assembly and the SHA-1-verified USA ROM agree on all 77 words of `func_8000702C_7C2C` (VMA `0x8000702C`, ROM `0x7C2C`, 308 bytes; SHA-256 `31dfb3b32e85f2273a5418d4177fd9d8e8d0cf1a8707f93b6dedf4029aa2d2f1`). The adjacent `func_80007024_7C24` is an exact 8-byte `owner + 0x40` helper. The worker blocks in `osRecvMesg(owner + 0x40, &message, 1)`, routes `0x29A`, `0x29B`, and `0x29C` to `80007204`, `80007324`, and `80007478` with the owner argument, routes other messages to `80007160`, ignores callback returns, and loops. For `0x29D`, it traverses the head at owner `+0x298`: each node's `+4` destination queue receives the message pointer owner `+0x20` with flag 0. The current node's queue is read before `osSendMesg`; its `+0` next pointer is reloaded after the send returns. The insertion helper independently stores the destination queue at node `+4` and links through `+0`. The worker is created by `func_80006DF0_79F0`; no callback/send mutation is asserted as real behavior.
+
+**Host reference and negative control:** `decomp/test_scheduler_queue.c` covers empty blocking receive, single and ordered multiple dispatch, empty/single/multiple notification lists, exact 32-bit guest offsets, callback-boundary head replacement and send-boundary live-link/payload reload. GCC 15.2 ASan/UBSan passed. A mutant that cached `node->next` before the send was rejected by the reload assertion. The injected mutations test when values are loaded; they do not claim that a particular callback or `osSendMesg` mutates the list.
+
+**Disposition and limitations:** no candidate C or IDO trial was warranted by the trace-only override. Keep `8000702C` and `80007160` as `GLOBAL_ASM`; no source-unit comparison, G2, inventory rebuild, or in-game verification occurred. Production source, manifest, proof, and inventory are unchanged; stored proof remains 149/149 matching functions / 11,148 bytes. See `plans/execution/2026-11-13-g64-078-scheduler-queue.json`.
+
+**Next:** G64-079, trace `func_80007160_7D60` (164 bytes) and its queue/interrupt assumptions.
 
 ### G64-079 — Analyze scheduler 80007160
 

@@ -1,0 +1,156 @@
+{
+  "task_id": "G64-078",
+  "title": "Analyze scheduler 8000702C",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "33745d1de5f8fb115fceb685fa9f3954e388d80b",
+    "remote_head_at_start": "33745d1de5f8fb115fceb685fa9f3954e388d80b",
+    "initial_worktree": "G64-078 in progress; only decomp/test_scheduler_queue.c was modified",
+    "dependencies": {
+      "G64-002": "PASSED_G2"
+    },
+    "matching_c": 149,
+    "matching_bytes": 11148,
+    "manifest_sha256": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "stored_proof_sha256": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "inventory_sha256": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6"
+  },
+  "original_source": {
+    "upstream_repository": "klorfmorf/mnsg",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "asm_file": "asm/usa/79F0.s",
+    "asm_sha256": "8319b858fe8791de62fe3982194703dad25842c0673e608eb803b493c378875e",
+    "related_asm_sources": {
+      "asm/usa/main.s": "5364fddf6c30a237717271449cebbb4079c61f1982754c1d5c73130d75290836",
+      "asm/usa/389C0.s": "a22df7c70ea581dfe84089b8f8f651476af757b88e16d73779c402ac46a1e1f8"
+    },
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "original_span_matches_rom": true,
+    "matched_words": 77,
+    "total_words": 77,
+    "span_method": "Parsed the pinned Splat instruction comments and compared all 77 words at ROM offset 0x7C2C with the SHA-1-verified decompressed USA ROM."
+  },
+  "source_unit": {
+    "manifest_source": "scheduler_queue.c",
+    "rom_start": "0x7C24",
+    "rom_end": "0x7E04",
+    "expected_bytes": 480,
+    "members": [
+      "func_80007024_7C24 (8 bytes, matching C owner+0x40 helper)",
+      "func_8000702C_7C2C (308 bytes, GLOBAL_ASM target)",
+      "func_80007160_7D60 (164 bytes, GLOBAL_ASM successor)"
+    ],
+    "unit_comparison": "NOT_RUN; no candidate C was created and production source was unchanged."
+  },
+  "target": {
+    "name": "func_8000702C_7C2C",
+    "vma": "0x8000702C",
+    "rom_offset": "0x7C2C",
+    "size_bytes": 308,
+    "size_words": 77,
+    "sha256": "31dfb3b32e85f2273a5418d4177fd9d8e8d0cf1a8707f93b6dedf4029aa2d2f1",
+    "frame_bytes": 88,
+    "message_local_offset": "0x54"
+  },
+  "behavior": {
+    "role": "thread entry that blocks on its input queue, dispatches messages, and notifies registered destination queues for message 0x29D",
+    "queue": "OSMesgQueue at owner+0x40; osRecvMesg receives into sp+0x54 with flag 1; receive return is not checked before dispatch.",
+    "dispatch": {
+      "0x29A": "func_80007204_7E04(owner); return ignored; loop to receive",
+      "0x29B": "func_80007324_7F24(owner); return ignored; loop to receive",
+      "0x29C": "func_80007478_8078(owner); return ignored; loop to receive",
+      "0x29D": "walk list head owner+0x298 and send owner+0x20 to each node destination queue",
+      "other": "func_80007160_7D60(owner); return ignored; loop to receive"
+    },
+    "list_node": {
+      "next_pointer": "+0, loaded after osSendMesg returns",
+      "destination_OSMesgQueue_pointer": "+4, loaded before osSendMesg",
+      "send_arguments": "osSendMesg(*(node+4), owner+0x20, 0)",
+      "interrupt_masking": "none around worker list traversal; separate insertion helper uses interrupt masking"
+    },
+    "registration": "func_80006DF0_79F0 creates/starts the thread with entry 8000702C and owner argument; func_80006F3C_7B3C independently confirms node +4 destination and +0 next fields."
+  },
+  "host_model": {
+    "test_file": "decomp/test_scheduler_queue.c",
+    "test_groups": [
+      "32-bit guest offset calculations including wraparound and helper behavior",
+      "empty input queue blocks without dispatch",
+      "single and ordered multiple-message dispatch including default handler",
+      "empty, single-node and multiple-node notification list",
+      "injected callback-boundary head replacement for next event",
+      "injected send-boundary link/payload mutation to verify reload timing"
+    ],
+    "negative_control": "Generated a temporary mutant that cached node->next before osSendMesg; it exited 134 at the expected assertion in test_send_boundary_reloads_live_next_and_payload.",
+    "limitations": "This is a ROM-derived host reference model, not production C or IDO evidence. Injected callback/send mutations test the original load boundary and do not assert that an opaque callback or osSendMesg actually mutates the list."
+  },
+  "toolchain": {
+    "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "sanitizers": "AddressSanitizer and UndefinedBehaviorSanitizer",
+    "ido": "NOT_RUN; task override is a trace-only scheduler investigation and no candidate C was created."
+  },
+  "decision": {
+    "classification": "RESEARCH_ONLY",
+    "native_variants_tested": 0,
+    "production_candidate_integrated": false,
+    "production_source_changed": false,
+    "header_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "reason": "The v2 directive required recovering original scheduler linkage and side effects without rewriting scheduling behavior. The ROM-backed trace and host reference passed, but no candidate C or complete source-unit match exists. Preserve both scheduler targets as GLOBAL_ASM."
+  },
+  "tests": {
+    "original_rom_span": "PASS; 77/77 words from pinned asm/usa/79F0.s match the decompressed ROM at 0x7C2C.",
+    "host_reference": "PASS; GCC ASan/UBSan command exited 0.",
+    "negative_control": "PASS; cached-next mutant exited 134 on the intended reload-order assertion.",
+    "decomp_suite": "PASS; python3 -m unittest discover -s decomp -p 'test_*.py' -q; 157/157.",
+    "verifier_suite": "PASS; python3 -m unittest tests.test_decomp_verify -q; 17/17.",
+    "skill_task_suite": "PASS; python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q; 17/17.",
+    "task_context": "PASS; python3 -m decomp.skill_context --validate returned CONSISTENT_STORED_REPORTS; --task G64-079 returned its expected brief.",
+    "local_ci": "UNAVAILABLE; npx run-local-ci run --quiet --all --pause-on-failure exited 1 because this branch has no .github/workflows directory.",
+    "full_rom_g2": "NOT_RUN; no source-unit-exact candidate.",
+    "inventory_rebuild": "NOT_RUN; no source-unit-exact candidate.",
+    "in_game": "NOT_RUN; this was a static/host research task.",
+    "host_reference_command": "gcc -std=c11 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Idecomp/test_support decomp/scheduler_queue.c decomp/test_scheduler_queue.c -o /tmp/g64-078-scheduler-queue-host && /tmp/g64-078-scheduler-queue-host"
+  },
+  "current_stored_proof": {
+    "status": "unchanged; production source, manifest, verifier inputs and inventory were not changed",
+    "matching_c": 149,
+    "matching_bytes": 11148,
+    "full_rom_match": true,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "combined_c": 162,
+    "asm": 7214,
+    "identified_entries": 7376
+  },
+  "next": "Continue with G64-079, trace func_80007160_7D60; preserve both scheduler targets as GLOBAL_ASM.",
+  "source_hashes": {
+    "PROGRESS.md": "4ca353401f36c3a97d700ed223d06106bccba5146f5f784a0a4c8fa471edac6e",
+    "decomp/CONTINUE.md": "240585c53bed549c072170871db4a6a12bf56dab79f535e392c808c20f37a4bc",
+    "decomp/MASTER_WORK_QUEUE.md": "eccb8431969612c9eb5ecb2a4ac8175fca9de1e1945760973a7d12ab91188a0e",
+    "decomp/plans/EXECUTION_STRATEGY_V2.md": "080d8c9418bcecbbbaab2c35229187f8ac599e91019d9c3b6107d8c8cb2f134a",
+    "decomp/plans/EXECUTOR_PROTOCOL.md": "e26c4fe036fc381d8b8e85641ba0df569db0f234af98182bfa8f8a2c954b68ab",
+    "decomp/plans/README.md": "cdf38264bc731a589db3bdb8280cd70a11fe75264dc65063dcd568998fefeb1c",
+    "decomp/plans/TASKS_100.json": "7468d394e868fc2bdea2c3dec545fe07e5cbef7f456a6d891e3198690046cf48",
+    "decomp/plans/phases/PHASE_08.md": "ec1f664b7af07c71eee664b03d7a638d8eedd994efde45f0ec4908a87bb4ef85",
+    "decomp/scheduler_queue.c": "4fc57d559824dc05ce75ed0c997d17bd5b20973ccd8b0cf87e6e64a8b8173312",
+    "decomp/test_scheduler_queue.c": "29d1ddc42464038ce3c0926f7a77dd7102e618ae280b1ec6832057e8b151be2c",
+    "decomp/manifest.json": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "decomp/results/combined.json": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "decomp/results/inventory.json": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6"
+  },
+  "pinned_assembly_hashes": {
+    "asm/usa/79F0.s": "8319b858fe8791de62fe3982194703dad25842c0673e608eb803b493c378875e",
+    "asm/usa/main.s": "5364fddf6c30a237717271449cebbb4079c61f1982754c1d5c73130d75290836",
+    "asm/usa/389C0.s": "a22df7c70ea581dfe84089b8f8f651476af757b88e16d73779c402ac46a1e1f8"
+  }
+}
