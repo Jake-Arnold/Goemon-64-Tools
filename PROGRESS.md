@@ -1,6 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
-### 2026-11-13 — Selective native Linux toolkit integration into decomp baseline
+### 2026-11-13 — Allow State Discovery A/B/C without a valid ordinary player
+
+- **Changed:** read-only State Discovery uses tolerant memory monitoring when no snapshot is supplied, records unknown character IDs without aborting, and skips optional dynamic player regions when pointer validity/readability fails. Global focused/system and game-data reads remain mandatory. Clarified A/B/C UI wording and expanded synthetic State Discovery and Tk tests. Updated the runtime evidence note.
+- **Why:** Impact videos and user follow-up show normal player pointer `0xA4600014` becoming invalid; the existing A/B/C capture fell back to the strict normal-player snapshot and failed even though global RAM remained accessible.
+- **Tests:** added mocked invalid Impact pointer, partial task read, invalid character and A/B comparison cases. Test execution in connected GitHub environment is still pending; no live Impact replay verified.
+- **Limitations:** dynamic actor regions can be omitted from comparisons; multiple map/mode changes will include unrelated changing global bytes. No modification to safety gates for any memory writes, checkpoint restoration or native game control.
+- **Next:** execute `python3 -m unittest tests.test_state_discovery tests.test_state_discovery_ui tests.test_monitoring_snapshot -v` locally and verify A/B during Impact mode 4 with the running game.
+
+## 2026-11-13 — Selective native Linux toolkit integration into decomp baseline
 
 - **Changed:** staged exact toolkit file blobs from `chatgptweb/toolkit-linux-native` on an integration branch based on decomp commit `7e3fb2b0e1c38fcb6280eef425533cf37e6cf93d`. Included native Linux process memory adapter, connection/VM inspection improvements, PID-verified input, optional patched-host speed IPC, documentation and dedicated tests. Preserved all decomp source, plans, candidate files, ROM proofs, and previous `PROGRESS.md` history; intentionally excluded the unrelated Plasma branch changes.
 - **Why:** provide Sol and the decomp executor a unified code surface without importing a divergent branch's unrelated six-commit history or rewriting active matching-C files.

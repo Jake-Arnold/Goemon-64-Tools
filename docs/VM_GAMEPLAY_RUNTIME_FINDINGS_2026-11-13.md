@@ -76,3 +76,9 @@ The toolkit's **read-only monitor** now uses `snapshot_for_monitoring()`. It kee
 ## Live Memory UI labelling (toolkit feature branch)
 
 The inspector now displays **qualified user-observed hints** for VM states 0–7 and gameplay submodes 0, 1, 2, 3, 4 and 7. It keeps the raw hexadecimal values visible. State 6 remains explicitly unknown; other submodes remain unmapped. When the top-level state is not gameplay (13), it explicitly avoids interpreting the byte as a gameplay mode. The top-level native debug menu still decodes its own independent category enum. None of these hints constitute original MIPS proof.
+
+## Impact State Discovery A/B/C (read-only) follow-up
+
+The user reported that Capture A and Capture B fail with an invalid normal player object pointer during Impact encounters. A/B/C compared global RAM blocks; the initial implementation called strict `ram.snapshot()` when `Toolkit.current` was cleared by special-mode monitoring, making those comparisons fail even while the RDRAM link and global watches were valid.
+
+The integration branch uses `snapshot_for_monitoring()` for read-only state captures, treats the current character as unknown when the normal ID is out of range, and skips optional player task/object regions when their pointers are invalid, unreadable or absent. Focused global regions remain mandatory and can be compared across Impact/title/normal scenes. This does not make player-dependent writes, checkpoint restoration, or dynamic pointer interpretations safe.

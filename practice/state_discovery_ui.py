@@ -37,8 +37,9 @@ class StateDiscoveryMixin:
         selector.bind('<<ComboboxSelected>>',lambda _e:self.state_probe_instruction.set(PROBE_ACTIONS[self.state_probe_kind.get()]))
         ttk.Label(tab,textvariable=self.state_probe_instruction,style='Muted.TLabel',
                   wraplength=1100).pack(anchor='w',pady=(0,6))
-        ttk.Label(tab,text='Focused: nearby game globals + player task/object. Wide: original 4 MiB N64 RAM; '
-                  'takes longer and captures some unrelated changing bytes. Use the same range for A/B/C.',
+        ttk.Label(tab,text='Focused: nearby game globals + player task/object when available; works without a player '
+                  '(title/Impact). Wide: original 4 MiB N64 RAM; slower and includes unrelated changing bytes. '
+                  'Use the same range for A/B/C.',
                   style='Muted.TLabel',wraplength=1080).pack(anchor='w',pady=(0,8))
         row=ttk.Frame(tab);row.pack(fill='x',pady=(0,9))
         for stage,caption in (('A','Capture A: Before'),('B','Capture B: After'),('C','Capture C: Reverted')):
