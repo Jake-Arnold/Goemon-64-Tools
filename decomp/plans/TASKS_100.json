@@ -2163,7 +2163,7 @@
       "ordinal": 52,
       "phase": 6,
       "title": "Promote file_43 reference guard to input contract",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-051"
       ],

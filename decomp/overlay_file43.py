@@ -98,6 +98,35 @@ def verify_reference(reference_rom: bytes, function_names: tuple[str, ...]) -> d
             "proof_level": "original reference mapping and original bytes only"}
 
 
+def validate_reference_inputs(splat_yaml: str, reference_rom: bytes,
+                              function_names: tuple[str, ...]) -> dict:
+    """Validate the exact Splat/ROM pair required before overlay ELF checks.
+
+    This binds segment order and address layout to the Splat source SHA-1,
+    then binds original function claims to the 32 MiB ROM and both section
+    fingerprints. A candidate ELF or full-ROM comparison must not run before
+    this input contract succeeds.
+    """
+    layout = validate_layout(splat_yaml)
+    reference = verify_reference(reference_rom, function_names)
+    return {
+        "input_contract": {
+            "format": "goemon-overlay-reference-input-v1",
+            "overlay": OVERLAY_NAME,
+            "splat_source_sha1": ROM_SHA1,
+            "reference_rom_bytes": ROM_BYTES,
+            "reference_rom_sha1": ROM_SHA1,
+            "layout": layout,
+            "text_sha256": TEXT_SHA256,
+            "rodata_sha256": RODATA_SHA256,
+            "function_instruction_sha256": {
+                name: FUNCTIONS[name][3] for name in function_names
+            },
+        },
+        "reference_validation": reference,
+    }
+
+
 def compare_full_rom(reference_rom: bytes, candidate_rom: bytes) -> None:
     """An additional whole-ROM byte gate; this alone cannot prove source was C."""
     if len(candidate_rom) != ROM_BYTES or candidate_rom != reference_rom:
@@ -111,9 +140,10 @@ def main() -> None:
     parser.add_argument("--candidate", type=Path)
     parser.add_argument("--function", choices=tuple(FUNCTIONS), action="append", required=True)
     args = parser.parse_args()
-    validate_layout(args.splat.read_text(encoding="utf-8"))
     original = args.reference.read_bytes()
-    result = verify_reference(original, tuple(args.function))
+    result = validate_reference_inputs(
+        args.splat.read_text(encoding="utf-8"), original, tuple(args.function)
+    )
     if args.candidate:
         compare_full_rom(original, args.candidate.read_bytes())
         result["complete_rom_bytes_equal"] = True

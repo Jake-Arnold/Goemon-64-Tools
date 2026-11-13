@@ -80,6 +80,14 @@
 - **Tests:** `python3 -m unittest decomp.test_vm_residual_inventory -v` passed 5 tests, including original ROM slice checks in this workspace. The complete `python3 -m decomp.local_ci`, evidence validation, and `git diff --check` outcomes are recorded in the execution report.
 - **Limitations/next:** no source-unit candidate was exact, so no new native unit or G2 build was run; matching-C delta remains zero. G64-051 is already `DOC_ONLY`; continue with G64-052, the file_43 reference-input contract.
 
+### 2026-11-13 — G64-052 file_43 reference-input contract (RESEARCH_ONLY)
+
+- **Changed:** added `validate_reference_inputs()` to require a single validated contract for the pinned Splat source SHA-1, `file_43` segment order/layout/VMA, exact decompressed-ROM length and SHA-1, text/rodata SHA-256 fingerprints, and each requested original function span/hash. The CLI now validates this combined contract before any candidate full-ROM check. Added eight contract tests and marked G64-052 `RESEARCH_ONLY`; Phase 06 and `CONTINUE.md` now point to G64-053.
+- **Why:** ensure later overlay ELF/provenance checks cannot start from a Splat configuration or reference image with changed identity, section boundaries, or function mappings.
+- **Evidence:** the private 33,554,432-byte decompressed USA reference passed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; `file_43` text and rodata spans passed their pinned SHA-256 checks. Original function extents verified: 96 bytes at VMA `0x080001BC` / ROM `0x6F369C`, and 140 bytes at `0x08006490` / ROM `0x6F9970`. No ROM/ELF/assembly bytes or private file paths are recorded in the committed report.
+- **Tests:** `python3 -m unittest decomp.test_overlay_file43 -v` — 27/27 passed. Private-input CLI check passed. `python3 -m decomp.local_ci` exited 0: 175 decomp tests, 92 verifier/ledger tests, task/evidence validation, and the display-emitter ASan/UBSan fixture passed. The generic `npx run-local-ci run --quiet --all --pause-on-failure` could not run because this repository intentionally has no `.github/workflows`; the project ROM-free local gate passed. `git diff --check` passed. No native IDO, linked overlay ELF, candidate G2/full-ROM, inventory rebuild, or in-game test was run.
+- **Limitations/next:** this validates only original reference inputs and original function bytes; it does not establish candidate ELF section ownership, relocations, native matching C, or promotion. Manifest, stored proof, production ownership and matching-C count remain unchanged. Continue with G64-053, add overlay linked-ELF provenance before any promotion claim.
+
 ### 2026-11-13 — G64-044 native emitter layouts (RESEARCH_ONLY)
 
 - **Changed:** recorded the first/second emitter native-layout comparison, marked G64-044 RESEARCH_ONLY, and updated Phase 05 and the continuation handoff. Production `script_vm.c`, both standalone candidates, manifest, proof, inventory, and `GLOBAL_ASM` ownership remain unchanged.

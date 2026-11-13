@@ -49,6 +49,59 @@ class OverlayFile43Tests(TestCase):
         self.assertEqual(result['overlay'], 'file_43')
         self.assertEqual(result['rom_start'], 0)
 
+    def test_reference_input_contract_binds_splat_rom_and_sections(self):
+        result = mod.validate_reference_inputs(self.config(), self.data, (self.name,))
+        contract = result['input_contract']
+        self.assertEqual(contract['format'], 'goemon-overlay-reference-input-v1')
+        self.assertEqual(contract['overlay'], 'file_43')
+        self.assertEqual(contract['splat_source_sha1'], mod.ROM_SHA1)
+        self.assertEqual(contract['reference_rom_sha1'], mod.ROM_SHA1)
+        self.assertEqual(contract['reference_rom_bytes'], len(self.data))
+        self.assertEqual(contract['layout']['vma_start'], 0x08000000)
+        self.assertEqual(contract['text_sha256'], self.h(self.data[:32]).hexdigest())
+        self.assertEqual(contract['rodata_sha256'], self.h(self.data[32:48]).hexdigest())
+        self.assertEqual(contract['function_instruction_sha256'][self.name],
+                         mod.FUNCTIONS[self.name][3])
+        self.assertEqual(result['reference_validation']['verified_original_functions'][0]['bytes'], 8)
+        self.assertFalse(result['reference_validation']['promoted_matching_c'])
+
+    def test_reference_input_contract_rejects_changed_segment_order(self):
+        config = self.config()
+        file43 = config.index('  - name: file_43')
+        file44 = config.index('  - name: file_44')
+        reordered = config[:file43] + config[file44:] + config[file43:file44]
+        with self.assertRaisesRegex(ValueError, 'neighboring file_44|section layout'):
+            mod.validate_reference_inputs(reordered, self.data, (self.name,))
+
+    def test_reference_input_contract_rejects_wrong_vma(self):
+        changed = self.config().replace('vram: 0x8000000', 'vram: 0x8000004')
+        with self.assertRaisesRegex(ValueError, 'section layout'):
+            mod.validate_reference_inputs(changed, self.data, (self.name,))
+
+    def test_reference_input_contract_rejects_wrong_source_sha1(self):
+        changed = self.config().replace(mod.ROM_SHA1, '0' * 40)
+        with self.assertRaisesRegex(ValueError, 'SHA-1'):
+            mod.validate_reference_inputs(changed, self.data, (self.name,))
+
+    def test_reference_input_contract_rejects_wrong_rom_length(self):
+        with self.assertRaisesRegex(ValueError, 'size or SHA-1'):
+            mod.validate_reference_inputs(self.config(), self.data[:-1], (self.name,))
+
+    def test_reference_input_contract_rejects_wrong_text_hash(self):
+        with mock.patch.object(mod, 'TEXT_SHA256', 'a' * 64):
+            with self.assertRaisesRegex(ValueError, 'text/rodata'):
+                mod.validate_reference_inputs(self.config(), self.data, (self.name,))
+
+    def test_reference_input_contract_rejects_wrong_rodata_hash(self):
+        with mock.patch.object(mod, 'RODATA_SHA256', 'b' * 64):
+            with self.assertRaisesRegex(ValueError, 'text/rodata'):
+                mod.validate_reference_inputs(self.config(), self.data, (self.name,))
+
+    def test_reference_input_contract_rejects_wrong_reference_sha1(self):
+        changed = self.data[:-1] + bytes([self.data[-1] ^ 1])
+        with self.assertRaisesRegex(ValueError, 'size or SHA-1'):
+            mod.validate_reference_inputs(self.config(), changed, (self.name,))
+
     def test_splat_reference_sha_rejected(self):
         with self.assertRaisesRegex(ValueError,'SHA-1'):
             mod.validate_layout(self.config().replace(mod.ROM_SHA1, '0'*40))

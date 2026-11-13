@@ -46,7 +46,7 @@ Do not use the main-segment ROM/VMA formula for overlays; reject section aliasin
 
 ### G64-052 — Promote file_43 reference guard to input contract
 
-**Status:** PLANNED. **Dependencies:** G64-051.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-051.
 **Focus files:** `decomp/overlay_file43.py`; `decomp/test_overlay_file43.py`.
 
 **Architectural intent:** Reuse overlay_file43.py's pinned 0x6F34E0..0x6FB200 layout and original section SHA-256 evidence.
@@ -70,6 +70,18 @@ Do not use the main-segment ROM/VMA formula for overlays; reject section aliasin
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** implemented `validate_reference_inputs()` to bind the
+pinned Splat source SHA-1 and `file_43` segment order/VMA/section layout to the
+SHA-verified 32 MiB decompressed ROM, text/rodata fingerprints, and requested
+original function hashes before downstream candidate proof. Added contract
+acceptance plus negative tests for segment order, VMA, both section hashes,
+source SHA-1, ROM identity and length. All 27 focused tests and the project
+ROM-free local gate passed; private CLI validation checked both original spans
+(96 bytes at `0x080001BC` / `0x6F369C`, 140 bytes at `0x08006490` /
+`0x6F9970`). No linked ELF, candidate, G2, inventory or in-game check was run;
+there is no C promotion. See
+`../execution/2026-11-13-g64-052-file43-reference-contract.json`.
 
 ### G64-053 — Add overlay linked-ELF provenance
 

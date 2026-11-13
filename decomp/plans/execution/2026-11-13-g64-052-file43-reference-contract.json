@@ -1,0 +1,136 @@
+{
+  "task_id": "G64-052",
+  "title": "Promote file_43 reference guard to input contract",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "5b935838bdc2438143d327a22ffdba9fd42db035",
+    "fetched_remote_head_at_start": "5b935838bdc2438143d327a22ffdba9fd42db035",
+    "worktree_at_start": "clean",
+    "dependencies": "G64-051=DOC_ONLY; G64-050=RESEARCH_ONLY"
+  },
+  "implementation": {
+    "files": [
+      "decomp/overlay_file43.py",
+      "decomp/test_overlay_file43.py",
+      "decomp/plans/TASKS_100.json",
+      "decomp/plans/phases/PHASE_06.md",
+      "decomp/CONTINUE.md",
+      "PROGRESS.md"
+    ],
+    "contract": "validate_reference_inputs() validates the pinned Splat configuration and exact file_43 section order/VMA/layout, then requires the exact decompressed-ROM byte count and SHA-1, text and rodata SHA-256 fingerprints, and each requested original function span/hash. The CLI evaluates this complete input contract before optional candidate-ROM comparison.",
+    "negative_tests": [
+      "changed file_43/file_44 segment order",
+      "changed 0x08000000 VMA",
+      "wrong text section SHA-256",
+      "wrong rodata section SHA-256",
+      "wrong Splat source SHA-1",
+      "wrong reference ROM SHA-1",
+      "wrong reference ROM length"
+    ]
+  },
+  "reference_validation": {
+    "private_inputs_present": true,
+    "input_paths_committed": false,
+    "splat_config_sha256": "b157a150f40dcfcf7859851bee77cd1275400618dc9e28536556648424c6a2d9",
+    "splat_source_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "reference_rom_bytes": 33554432,
+    "reference_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "overlay": "file_43",
+    "rom_layout": {
+      "start": "0x6F34E0",
+      "text_end": "0x6F9CE0",
+      "end": "0x6FB200",
+      "vma_start": "0x08000000",
+      "text_bytes": 26624,
+      "rodata_bytes": 5408
+    },
+    "text_sha256": "77fa512adb309eac78ad05109746bdc0541a92995446929b1d9b7bf4a10c2b07",
+    "rodata_sha256": "6d5a1d659e1432a882d5c492ae7fc9dbc03cdfc9a284d5c95483dc429f50afb8",
+    "original_function_spans": [
+      {
+        "name": "func_080001BC_6F369C",
+        "vma": "0x080001BC",
+        "rom_offset": "0x6F369C",
+        "bytes": 96,
+        "sha256": "21679e650f47538d001cc7ede7f84feaede2715ce8a016b5fb81bce7b10e2484"
+      },
+      {
+        "name": "func_08006490_6F9970",
+        "vma": "0x08006490",
+        "rom_offset": "0x6F9970",
+        "bytes": 140,
+        "sha256": "c96aa2507f3322508dafcfd47894d90cd26ec626b6ec4b304d0d2252a53d19e0"
+      }
+    ],
+    "private_cli": {
+      "command": "python3 -m decomp.overlay_file43 --splat <private-USA-splat.yaml> --reference <private-decompressed-USA-ROM> --function func_080001BC_6F369C --function func_08006490_6F9970",
+      "exit_code": 0,
+      "result": "PASS: both spans and the combined Splat/reference input contract validated; promoted_matching_c=false"
+    }
+  },
+  "production_context": {
+    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "manifest_changed": false,
+    "stored_proof_changed": false,
+    "production_matching_c_changed": false,
+    "source_sha256": "f78e3b10f9d3b38d8fd9c51c2f8ddc8d785cd586460fda0d8790c5abd549a8f3",
+    "test_sha256": "7d10ff3f5af3df4f07b66cc3040dac98dfb0fe3b82f37a39bf01f1ed61eaf6a3"
+  },
+  "tests": {
+    "focused": {
+      "command": "python3 -m unittest decomp.test_overlay_file43 -v",
+      "exit_code": 0,
+      "status": "PASS",
+      "tests": 27
+    },
+    "private_input_cli": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "local_ci_workflow_launcher": {
+      "command": "npx run-local-ci run --quiet --all --pause-on-failure",
+      "exit_code": 1,
+      "status": "UNAVAILABLE",
+      "reason": "This repository intentionally has no .github/workflows directory."
+    },
+    "project_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 175,
+      "verifier_ledger_tests": 92,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "status": "PASS"
+    },
+    "tool_versions": {
+      "python": "3.14.4",
+      "host_cc": "Ubuntu GCC 15.2.0"
+    }
+  },
+  "proof_checkpoint": {
+    "stored_matching_c_functions": 153,
+    "stored_matching_c_bytes": 11800,
+    "stored_full_rom_match": true,
+    "stored_proof_is_historical": true,
+    "linked_overlay_elf": "NOT_RUN",
+    "native_ido_comparison": "NOT_RUN",
+    "full_rom_g2": "NOT_RUN: no candidate C or linked overlay ELF was staged",
+    "inventory_rebuild": "NOT_RUN",
+    "in_game": "NOT_RUN",
+    "matching_c_delta": 0
+  },
+  "decision": {
+    "status": "RESEARCH_ONLY",
+    "reason": "The new tool contract validates the pinned original Splat/ROM/layout/function evidence and rejects configured drift. It does not establish candidate ELF ownership, relocation correctness, native matching C, or a full-ROM promotion.",
+    "production_ownership": "unchanged",
+    "next": "G64-053 — Add overlay linked-ELF provenance"
+  }
+}
