@@ -1,0 +1,236 @@
+{
+  "task_id": "G64-072",
+  "title": "Inspect file-table reader 80001E50",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "72c5c3cb2df9594a58e8c01c394eb98df41083fb",
+    "remote_head_at_start": "72c5c3cb2df9594a58e8c01c394eb98df41083fb",
+    "initial_worktree": "clean",
+    "dependencies": {
+      "G64-071": "RESEARCH_ONLY"
+    },
+    "matching_c": 148,
+    "matching_bytes": 11020,
+    "manifest_sha256": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "production_source_sha256": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
+    "stored_proof_sha256": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "inventory_sha256": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a"
+  },
+  "original_source": {
+    "upstream_repository": "klorfmorf/mnsg",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "asm_file": "asm/usa/2800.s",
+    "asm_sha256": "de37c0fb9d9d7dc6c5e10740e5ef44d0b0e4f65d6dad66aca652e30ab9ee3f06",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "original_span_matches_rom": true,
+    "matched_words": 24,
+    "total_words": 24
+  },
+  "source_unit": {
+    "manifest_source": "file_table.c",
+    "rom_start": "0x2968",
+    "rom_end": "0x2BE8",
+    "original_splat": "[0x2800, asm]",
+    "replacement_partition": "[0x2800, asm]; [0x2968, C file_table]; [0x2BE8, asm]",
+    "accepted_c_sibling": "func_80001D68_2968 (44 bytes)",
+    "assembly_functions": [
+      "func_80001D94_2994",
+      "func_80001DC0_29C0",
+      "func_80001DF4_29F4",
+      "func_80001E50_2A50",
+      "func_80001EB0_2AB0"
+    ],
+    "target_ownership": "assembly_functions in file_table.c; no accepted C definition"
+  },
+  "target": {
+    "name": "func_80001E50_2A50",
+    "vma": "0x80001E50",
+    "rom_offset": "0x2A50",
+    "size_bytes": 96,
+    "sha256": "8e41cf0dd7288f559d5535debdc7f807389d7dd517b7ece2bedf4e1573931c17"
+  },
+  "behavior": {
+    "input": "a0 is consumed as a full-width 32-bit value. Zero returns 0 immediately. Boundary comparison is unsigned (`sltu a0,boundary`), with a zero-extended 16-bit boundary.",
+    "record_layout_observed_by_target": {
+      "stride_bytes": 4,
+      "boundary_offset": 0,
+      "boundary_width_bits": 16,
+      "returned_value_offset": 3,
+      "returned_value_width_bits": 8,
+      "offset_2": "Not interpreted by this helper."
+    },
+    "lookup": "For nonzero input, return the byte at record offset +3 for the first record whose unsigned boundary at +0 is strictly greater than the input. Equality advances to the next four-byte record.",
+    "termination": "A zero boundary in the first record means empty and returns 0xFF. A zero boundary reached after advancing is the sentinel and returns 0xFF. No independent table count or bounds check is present.",
+    "return_abi": "Word return: zero for input zero; otherwise either the zero-extended byte at record +3 or 0x000000FF.",
+    "caller_sites": [
+      {
+        "caller": "func_8003D468_3E068",
+        "pc": "0x8003D4F8",
+        "argument": "32-bit word loaded from 0($s1)",
+        "result_use": "stored as a 32-bit value to D_801C78EC"
+      },
+      {
+        "caller": "func_8003DDC4_3E9C4",
+        "pc": "0x8003DE14",
+        "argument": "32-bit word loaded from stack +0x24",
+        "result_use": "shifted left 24 and used in returned address/size arithmetic"
+      },
+      {
+        "caller": "func_8003F23C_3FE3C",
+        "pc": "0x8003F284",
+        "argument": "32-bit D_801C78E8 value",
+        "result_use": "stored to D_801C78EC"
+      },
+      {
+        "caller": "func_8003F2D4_3FED4",
+        "pc": "0x8003F300",
+        "argument": "32-bit D_801C78E8 value",
+        "result_use": "stored to D_801C78EC"
+      },
+      {
+        "caller": "func_80006298_6E98",
+        "pc": "0x800062D4",
+        "argument": "halfword loaded from D_800C7AFA",
+        "result_use": "saved then shifted left 24 in address arithmetic"
+      },
+      {
+        "caller": "func_80001DF4_29F4",
+        "pc": "0x80001DFC",
+        "argument": "incoming a0 saved and passed unchanged",
+        "result_use": "compared exactly with 0x11"
+      },
+      {
+        "caller": "func_80014218_14E18",
+        "pc": "0x80014258",
+        "argument": "halfword at 0x34($s0)",
+        "result_use": "compared with loop index +8"
+      },
+      {
+        "caller": "func_80014218_14E18",
+        "pc": "0x80014284",
+        "argument": "halfword at 0x34($s0)",
+        "result_use": "return not consumed in the visible path; jal delay slot sets $s2 to -1"
+      },
+      {
+        "caller": "func_80009548_A148",
+        "pc": "0x800095D0",
+        "argument": "halfword at 0x0C($s0)",
+        "result_use": "saved then shifted left 24 in address arithmetic"
+      },
+      {
+        "caller": "func_80014840_15440",
+        "pc": "0x8001488C",
+        "argument": "32-bit wave_no parameter",
+        "result_use": "shifted left 24 in the returned address calculation"
+      }
+    ]
+  },
+  "candidate_trials": [
+    {
+      "variant": "record-pointer with early empty return",
+      "hypothesis": "Model the four-byte record directly and return on zero boundary.",
+      "candidate_source_sha256": "161fc7b235dac07f1d4f02884914edbc992836266c6ed03f409305d4e76a1911",
+      "linked_symbol_vma": "0x80001E50",
+      "linked_symbol_bytes": 112,
+      "exact_original_bytes": false,
+      "first_mismatch_instruction": "+0x04",
+      "original_word": "00001025",
+      "candidate_word": "3c028005",
+      "mismatch": "Original zeroes v0 in the branch delay slot; candidate schedules the table-address lui there."
+    },
+    {
+      "variant": "halfword cursor with boundary local",
+      "hypothesis": "Use the observed 16-bit boundary and four-byte advancement as a halfword cursor, keeping a local boundary for the loop.",
+      "candidate_source_sha256": "db28fbd07f447c425fb2f93e2ecc37e60813f67f2adf515d73d510af92de1b4a",
+      "linked_symbol_vma": "0x80001E50",
+      "linked_symbol_bytes": 112,
+      "exact_original_bytes": false,
+      "first_mismatch_instruction": "+0x04",
+      "original_word": "00001025",
+      "candidate_word": "3c068005",
+      "mismatch": "Same initial delay-slot scheduling mismatch; candidate remains 16 bytes larger."
+    },
+    {
+      "variant": "zero cursor with positive nonempty branch",
+      "hypothesis": "Keep the zero cursor live and make the nonempty-table path the positive branch, matching the original shared 0xFF exit shape.",
+      "candidate_source_sha256": "7eab3fb5ce759f8789422974cdd254c7dcfa5bccedf582f2bb27d9c3aa4813aa",
+      "linked_symbol_vma": "0x80001E50",
+      "linked_symbol_bytes": 112,
+      "exact_original_bytes": false,
+      "first_mismatch_instruction": "+0x04",
+      "original_word": "00001025",
+      "candidate_word": "3c028005",
+      "mismatch": "Same initial delay-slot scheduling mismatch; later register and branch layout also differs."
+    }
+  ],
+  "toolchain": {
+    "ido": "Pinned IDO 5.3",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "native_flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "linker": "GNU ld (GNU Binutils for Ubuntu) 2.45.90.20260125",
+    "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0"
+  },
+  "decision": {
+    "candidate_count": 0,
+    "matching_c_delta": 0,
+    "classification": "RESEARCH_ONLY",
+    "production_candidate_integrated": false,
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "reason": "The ROM-backed contract and host fixtures are complete. All three native candidates are 112 bytes and have the same first mismatch at +0x04. The 96-byte target has exhausted its three-variant budget; retain GLOBAL_ASM.",
+    "native_variants_tested": 3,
+    "candidate_sources_stored_locally": true,
+    "unit_exact_build": "NOT_RUN because no isolated native candidate matched",
+    "local_ci": "UNAVAILABLE; no workflows directory on the selected decomp branch"
+  },
+  "tests": {
+    "rom_bound_original_span": "PASS; a byte/word comparison of asm/usa/2800.s against the SHA-verified 32 MiB decompressed ROM matched 24/24 words; comparison script exit 0",
+    "portable_c_reference_model": "PASS; GCC 15.2.0 ASan/UBSan compile exit 0 and test exit 0 for decomp/test_file_table.c, using a test-only host definition of the existing 1D94 sibling; new cases cover empty, first/final entry, equality, high bits and sentinel adjacency",
+    "private_candidate_host_harness": "PASS; GCC 15.2.0 ASan/UBSan compile exit 0 and test exit 0; v3 candidate matched reference semantics for 19 boundary/sentinel inputs",
+    "native_candidates": "MISMATCH as expected; all three pinned IDO 5.3 compile, original-VMA link and text-extract commands exited 0; Python byte comparison reported 112/96 bytes and first mismatch +0x04",
+    "full_rom_g2": "NOT_RUN; no source-unit-exact candidate",
+    "inventory_rebuild": "NOT_RUN; no source-unit-exact candidate",
+    "candidate_linked_symbol_addresses": "PASS; mips-linux-gnu-nm -n reported func_80001E50_2A50 at 0x80001E50 in all three linked ELFs",
+    "decomp_suite": "PASS; python3 -m unittest discover -s decomp -p 'test_*.py' -q (157 tests)",
+    "verifier_tests": "PASS; python3 -m unittest tests.test_decomp_verify -q (17 tests)",
+    "task_context_and_skill_tests": "PASS; python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q (17 tests)",
+    "skill_context_validation": "PASS; python3 -m decomp.skill_context --validate reported CONSISTENT_STORED_REPORTS",
+    "next_task_brief": "PASS; python3 -m decomp.skill_context --task G64-073 --detail selected the next planned target",
+    "json_and_diff": "PASS; python3 -m json.tool and git diff --check",
+    "local_ci": "UNAVAILABLE; npx run-local-ci run --all --pause-on-failure --json exited 1 because the branch has no .github/workflows directory; the earlier quiet attempt did not return an observable job result"
+  },
+  "next": "Continue with G64-073, inspecting func_80001EB0_2AB0; keep func_80001E50_2A50 as GLOBAL_ASM.",
+  "test_source_sha256": "92f64a5061f5b9cb10d7a0d1bb2445194403c19cdd6e694c8a149bbd01507143",
+  "source_hashes": {
+    "decomp/file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
+    "decomp/test_file_table.c": "92f64a5061f5b9cb10d7a0d1bb2445194403c19cdd6e694c8a149bbd01507143",
+    "decomp/manifest.json": "c07587263946b8e70a1cd71f9e2252a2056231beb7fe4a9002fb6ea000e2662d",
+    "decomp/results/combined.json": "3f61142fcf1e96a08867fb40d0446b2903a693051805b74f026cb48ebaed2129",
+    "decomp/results/inventory.json": "e881197860b99003cfa6f6c4c6b53b9b3f1a2a66902b4cc53609e4faafbe361a"
+  }
+}

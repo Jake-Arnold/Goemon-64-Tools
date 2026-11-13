@@ -47,7 +47,7 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 
 ### G64-072 — Inspect file-table reader 80001E50
 
-**Status:** PLANNED. **Dependencies:** G64-071.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-071.
 **Focus files:** `decomp/file_table.c`; `decomp/test_file_table.c`.
 
 **Architectural intent:** Recover segment record access, branch structure and return semantics for 80001E50_2A50.
@@ -69,6 +69,8 @@ Preserve actual list termination, mutation order, signed/unsigned table arithmet
 **Required negative control:** Preserve actual list termination, mutation order, signed/unsigned table arithmetic and atomicity; do not introduce a safety check that changes original native code.
 
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+
+**Outcome (2026-11-13):** the 96-byte helper uses an unsigned 32-bit input, returns zero for input zero, returns `0xFF` for an empty table or at the zero-boundary sentinel, and otherwise returns byte `+3` from the first four-byte record whose unsigned halfword boundary at `+0` exceeds the input. Equality advances to the next record; the routine has no independent count or bounds check. All ten direct callers were inspected. Three bounded IDO candidates linked at the original VMA were 112 bytes and first differed at `+0x04` in the zero-input branch delay slot. Retain `GLOBAL_ASM`; G2 was not run. Full evidence: `plans/execution/2026-11-13-g64-072-file-table-helper.json`.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
 

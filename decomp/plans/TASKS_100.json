@@ -3088,7 +3088,7 @@
       "ordinal": 72,
       "phase": 8,
       "title": "Inspect file-table reader 80001E50",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-071"
       ],

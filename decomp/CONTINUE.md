@@ -130,11 +130,14 @@ ROM; all are nontrivial PFS routines, and all remain `GLOBAL_ASM`. See
 `plans/execution/2026-11-11-g64-090-return-zero-audit.json`. G64-071 traced
 `func_80001DF4_29F4` as a full-width, 8-byte-stride lookup returning bit 30;
 two bounded native shapes remained nonmatching, so it stays `GLOBAL_ASM`. See
-`plans/execution/2026-11-11-g64-071-file-table-reader.json`. Continue with
-G64-072–080 per Architect v2, starting with the `80001E50` helper trace.
+`plans/execution/2026-11-11-g64-071-file-table-reader.json`. G64-072 traced
+`80001E50` as a four-byte sentinel table lookup. Three bounded IDO candidates
+remained 112 bytes and first differed at `+0x04`; keep the helper as
+`GLOBAL_ASM`. See `plans/execution/2026-11-13-g64-072-file-table-helper.json`.
+Continue with G64-073–080 per Architect v2, starting with `80001EB0`.
 `python3 -m decomp.skill_context --status` reports the lowest-numbered planned
 task, G64-041; this is not the revised execution priority. Request
-`--task G64-072` for the next v2 brief.
+`--task G64-073` for the next v2 brief.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
 
