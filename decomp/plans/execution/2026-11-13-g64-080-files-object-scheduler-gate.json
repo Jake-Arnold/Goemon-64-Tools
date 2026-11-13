@@ -1,0 +1,128 @@
+{
+  "task_id": "G64-080",
+  "title": "Gate files/object/scheduler batch",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "Architect v2 wave B: promote only independently unit-exact file/object/scheduler candidates and report each unit's verified function/byte delta.",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "c6d0ed06ddcc50e0dce639fae395a6d7a3064ba2",
+    "remote_head_at_start": "c6d0ed06ddcc50e0dce639fae395a6d7a3064ba2",
+    "initial_worktree": "clean",
+    "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "unit_review": [
+    {
+      "source": "decomp/file_table.c",
+      "rom_span": "[0x2968, 0x2BE8)",
+      "accepted_c_before_and_after": ["func_80001D68_2968 (44 bytes)"],
+      "assembly_owned": ["func_80001D94_2994", "func_80001DC0_29C0", "func_80001DF4_29F4", "func_80001E50_2A50", "func_80001EB0_2AB0"],
+      "prior_candidate_trials": {"G64-071": 2, "G64-072": 3, "G64-073": 2},
+      "eligible_unit_exact_candidate": false,
+      "g80_delta": {"functions": 0, "bytes": 0},
+      "notes": "G64-071, G64-072 and G64-073 remain research-only after native mismatches. G64-073 also leaves the referenced global table extent undeclared."
+    },
+    {
+      "source": "decomp/object_flags.c",
+      "rom_span": "[0x36EDC, 0x370FC)",
+      "accepted_c_before_and_after": ["func_800362DC_36EDC (44 bytes)", "func_80036308_36F08 (128 bytes)"],
+      "assembly_owned": ["func_80036388_36F88", "func_800363F4_36FF4", "func_80036448_37048"],
+      "prior_candidate_trials": {"G64-074": 1, "G64-075": 3, "G64-076": 2, "G64-077": 4},
+      "eligible_unit_exact_candidate": false,
+      "g80_delta": {"functions": 0, "bytes": 0},
+      "notes": "G64-074's 128-byte dispatcher is already accepted and covered by the stored G2 result. G64-075/076/077 remain GLOBAL_ASM after bounded nonmatches."
+    },
+    {
+      "source": "decomp/scheduler_queue.c",
+      "rom_span": "[0x7C24, 0x7E04)",
+      "accepted_c_before_and_after": ["func_80007024_7C24 (8 bytes)"],
+      "assembly_owned": ["func_8000702C_7C2C", "func_80007160_7D60"],
+      "prior_candidate_trials": {"G64-078": 0, "G64-079": 0},
+      "eligible_unit_exact_candidate": false,
+      "g80_delta": {"functions": 0, "bytes": 0},
+      "notes": "G64-078/079 provide ROM-backed behavior/ABI traces and host references; neither produced C candidates."
+    }
+  ],
+  "caller_graph": {
+    "static_references_recorded": {
+      "func_80001DF4_29F4": {"direct_call_sites": 3, "callers": ["func_80001EB0_2AB0", "func_80013B14_14714", "func_80013C90_14890"]},
+      "func_80001E50_2A50": {"direct_call_sites": 10},
+      "func_80001EB0_2AB0": {"direct_call_sites": 2},
+      "func_80036308_36F08": {"direct_call_sites": 9},
+      "func_80036388_36F88": {"direct_call_sites": 1, "caller": "func_80018F3C_19B3C", "call_pc": "0x80018FE4"},
+      "func_800363F4_36FF4": {"direct_call_sites": 1, "caller": "func_8001904C_19C4C", "call_pc": "0x800190F4"},
+      "func_80036448_37048": {"direct_call_sites": 4, "caller_functions": ["func_80018B28_19728", "func_80018F3C_19B3C", "func_8001904C_19C4C"]},
+      "func_80007160_7D60": {"direct_call_sites": 1, "caller": "func_8000702C_7C2C", "call_pc": "0x80007114"}
+    },
+    "indirect_thread_entry": {"function": "func_8000702C_7C2C", "installer": "func_80006DF0_79F0", "os_create_thread_argument_setup_pcs": ["0x80006F00", "0x80006F04"]},
+    "gaps": [
+      "Static references do not close all dynamic scheduler message producers/enqueue paths or runtime thread registration paths.",
+      "The file-table report does not establish the extent of D_80054ACC_556CC.",
+      "Caller references alone do not establish all caller-of-caller state or runtime side effects of opaque helpers."
+    ],
+    "evidence_source": "Prior task reports G64-071 through G64-079; no new whole-program call-graph sweep was performed for this gate."
+  },
+  "decision": {
+    "classification": "RESEARCH_ONLY",
+    "production_candidate_integrated": false,
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "g80_matching_c_delta": {"functions": 0, "bytes": 0},
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "reason": "No new independent candidate reached whole-source-unit exactness. The existing G64-074 promotion is already covered by the stored proof. No production, manifest, verifier, or inventory input changed, so this gate does not create a new G2 claim."
+  },
+  "stored_proof": {
+    "status": "unchanged from the G64-074 full-ROM G2 run",
+    "combined_report_sha256": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "inventory_report_sha256": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_c_functions": 149,
+    "matching_c_bytes": 11148,
+    "combined_c": 162,
+    "remaining_assembly": 7214,
+    "identified_entries": 7376,
+    "manifest_sha256": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62"
+  },
+  "tests": {
+    "decomp_suite": "PASS; python3 -m unittest discover -s decomp -p 'test_*.py' -q; 157/157.",
+    "verifier_suite": "PASS; python3 -m unittest tests.test_decomp_verify -q; 17/17.",
+    "skill_task_suite": "PASS; python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q; 17/17.",
+    "next_task_brief": "PASS; python3 -m decomp.skill_context --task G64-081 selected the expected next task.",
+    "json_and_diff_checks": "PASS; G80 execution report and TASKS_100.json parsed; python3 -m decomp.skill_context --validate returned CONSISTENT_STORED_REPORTS; git diff --check passed.",
+    "local_ci": "UNAVAILABLE; npx run-local-ci run --quiet --all --pause-on-failure exited 1 because .github/workflows is absent.",
+    "full_rom_g2": "NOT_RUN; no new source-unit-exact candidate and no G2 input changed.",
+    "inventory_rebuild": "NOT_RUN; no source-unit-exact candidate and no manifest change."
+  },
+  "next": "G64-081: analyze math helper 8000E2D4; preserve observed float precision, FPU register classes, call order and exact native instructions.",
+  "source_hashes": {
+    "PROGRESS.md": "6bb123aa5a47853226b68121191eac2e2916c261ce7f0618eabfcc559efc1b11",
+    "decomp/CONTINUE.md": "e9b07bdeca1dc8ce97fee21214dc2930100d9eb4af302ea92629e03376674297",
+    "decomp/MASTER_WORK_QUEUE.md": "50a01daab9dfaf49b24432cefe5c9d94864068c9dbb51dc7e7848b830e332875",
+    "decomp/plans/EXECUTION_STRATEGY_V2.md": "d1af3f1746c9e36f60815cc8317ce20cb155a6702f1036deca9b84b3da4dad0f",
+    "decomp/plans/EXECUTOR_PROTOCOL.md": "9e4eee1cc7769ccef9210fc28c3f6611eb54b583360f952a826379c29bebb19d",
+    "decomp/plans/README.md": "cdeccd9466cdff9578b5d567512e3abd3d5701620f47830fa2545b37b307ae3e",
+    "decomp/plans/TASKS_100.json": "d9a0fc00624a9ecb639f6c3aeaa9a744d4a0d5c75d48e54ec6ff83b4af0c0063",
+    "decomp/plans/phases/PHASE_08.md": "440b52474527aa08b39fb10aa5524e74add2fc6f18036b652ef75aa3baabbd93",
+    "decomp/file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
+    "decomp/object_flags.c": "b27ee6ef258cc2e49a2e4c11c0810d2cde8b12259206d32a6b06f843418fcd12",
+    "decomp/scheduler_queue.c": "4fc57d559824dc05ce75ed0c997d17bd5b20973ccd8b0cf87e6e64a8b8173312",
+    "decomp/test_file_table.c": "ec6725e24f4a2fbad3bf69584f943655222888374c629fb9452363837031a477",
+    "decomp/test_object_flags.c": "ba5d77f683b2f0f6727fd9b1bc42feb0bdec76994a395001723c13135bc5d00f",
+    "decomp/test_scheduler_queue.c": "734e8074423bcd5900d42de0a4c8398d5f446e709c1053a1c7b803170409aa97",
+    "decomp/manifest.json": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "decomp/results/combined.json": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "decomp/results/inventory.json": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6"
+  },
+  "pinned_assembly_hashes": {
+    "asm/usa/2800.s": "de37c0fb9d9d7dc6c5e10740e5ef44d0b0e4f65d6dad66aca652e30ab9ee3f06",
+    "asm/usa/36750.s": "b3a386915def9810e277e378b995fa493d81bb44891d369fe97cb77c3b86a14f",
+    "asm/usa/79F0.s": "8319b858fe8791de62fe3982194703dad25842c0673e608eb803b493c378875e",
+    "asm/usa/main.s": "5364fddf6c30a237717271449cebbb4079c61f1982754c1d5c73130d75290836"
+  }
+}

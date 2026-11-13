@@ -281,7 +281,7 @@ Four IDO variants produced 152, 144, 152 and 152 bytes versus 180. The second mo
 
 ### G64-080 — Gate files/object/scheduler batch
 
-**Status:** PLANNED. **Dependencies:** G64-071, G64-072, G64-073, G64-074, G64-075, G64-076, G64-077, G64-078, G64-079.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-071, G64-072, G64-073, G64-074, G64-075, G64-076, G64-077, G64-078, G64-079.
 **Focus files:** `decomp/file_table.c`; `decomp/object_flags.c`; `decomp/scheduler_queue.c`; `decomp/manifest.json`.
 
 **Architectural intent:** Avoid combining independent failures in one manifest commit; integrate verified subsets with separate proofs.
@@ -305,6 +305,12 @@ Four IDO variants produced 152, 144, 152 and 152 bytes versus 180. The second mo
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** The gate found no new independently unit-exact candidate. `file_table.c` retains its original 44-byte accepted C function and five assembly-owned functions; G64-071/072/073 remain research-only after 2/3/2 bounded IDO candidates respectively. `object_flags.c` retains the G64-074 dispatcher promotion (128 bytes, already included in the stored G2 proof); G64-075/076/077 remain assembly-owned after 3/2/4 nonmatching candidates. `scheduler_queue.c` retains its 8-byte accepted helper and two assembly-owned functions; G64-078/079 supplied ROM-backed traces and host references, with no C candidates. G64-080 delta is **0 functions / 0 bytes**; the stored proof remains 149 functions / 11,148 bytes and was not rebuilt here.
+
+Caller references recorded by the preceding task reports cover three direct sites to `80001DF4`, ten to `80001E50`, two to `80001EB0`, nine to `80036308`, one each to `80036388` and `800363F4`, four to `80036448`, and the `80007114` call from the scheduler worker to its handler. The worker itself is installed as a thread entry by `func_80006DF0` (`0x80006F00/0x80006F04`). The remaining caller-graph gap is closure over dynamic scheduler-message producers/enqueue sites and runtime registration paths; the static references do not establish every producer or runtime state. The file-table report also leaves the referenced table extent undeclared. See `plans/execution/2026-11-13-g64-080-files-object-scheduler-gate.json`.
+
+**Next:** G64-081, analyze math helper `8000E2D4` under the phase 09 FPU-identity stop rule.
 
 ## Optional read-only REA research lane for this phase
 

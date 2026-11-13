@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-13 — G64-080 files/object/scheduler batch gate (RESEARCH_ONLY)
+
+- **Reason and branch:** closed the G64-071–079 integration wave in the same worktree, branch `codex/decomp-100-task-plan`, from clean commit `c6d0ed06ddcc50e0dce639fae395a6d7a3064ba2`; after fetching `origin/chatgptweb/decomp`, the remote matched. G64-074 is the only promoted candidate in these source units.
+- **Unit decisions:** `file_table.c` has no new exact candidate after G64-071/072/073 (2/3/2 native trials; 0 new functions/bytes). `object_flags.c` retains the already G2-verified G64-074 `func_80036308_36F08` (128 bytes); G64-075/076/077 remain ASM after 3/2/4 nonmatching candidates (0 new functions/bytes). `scheduler_queue.c` retains the 8-byte helper and two ASM-owned functions; G64-078/079 supplied traces and host references but no C candidate (0 new functions/bytes). This gate's total delta is **0 functions / 0 bytes**.
+- **Caller graph:** prior ROM-backed reports enumerate three direct callers for `80001DF4`, ten call sites for `80001E50`, two for `80001EB0`, nine for `80036308`, one each for `80036388` and `800363F4`, four for `80036448`, and the scheduler worker-to-handler call at `0x80007114`. `func_8000702C` is installed as a thread entry at `0x80006F00/0x80006F04` by `func_80006DF0`. Dynamic scheduler message producers/enqueue paths and runtime registration are not closed by these static references; the file-table extent also remains undeclared.
+- **Changes:** recorded the gate as `RESEARCH_ONLY` in the task ledger and Phase 08; updated the v2 schedule and handoffs to G64-081; added `decomp/plans/execution/2026-11-13-g64-080-files-object-scheduler-gate.json`. Production C, manifest, stored proof and inventory are unchanged.
+- **Tests:** repository suites and plan validation recorded in the execution report. Local CI was attempted; this branch has no `.github/workflows` directory. No full-ROM G2 or inventory rebuild was run because no new source-unit-exact candidate or proof input changed.
+- **Limitations:** stored G2 remains the G64-074 result: **149/149 functions / 11,148 bytes**, full 33,554,432-byte ROM identity; 162 combined C / 7,214 ASM / 7,376 entries. This task did not create a fresh whole-ROM proof, establish dynamic scheduler producer closure, or perform in-game verification.
+- **Next:** G64-081, analyze `8000E2D4` while preserving the original FPU sequence and helper calls.
+
 ## 2026-11-13 — G64-079 scheduler task-message handler (RESEARCH_ONLY)
 
 - **Reason and branch:** continued the v2 scheduler wave in the same worktree, branch `codex/decomp-100-task-plan`, from clean commit `8a089cd7748641fbab51e1e8520b875a39f24e60`; after fetch, `origin/chatgptweb/decomp` matched. G64-078 is the completed dependency. This trace also clarified that G64-078's worker passes both owner and received `OSMesg`; its host trace already retained the message in the second argument slot, and the handoff/report now state that ABI explicitly.

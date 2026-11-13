@@ -3436,7 +3436,7 @@
       "ordinal": 80,
       "phase": 8,
       "title": "Gate files/object/scheduler batch",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-071",
         "G64-072",
