@@ -1,0 +1,106 @@
+{
+  "task_id": "G64-050",
+  "title": "Close VM candidate inventory",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "4e3677f52d1b1bd4765ea9b642ae291b6588e7ab",
+    "fetched_remote_head_at_start": "4e3677f52d1b1bd4765ea9b642ae291b6588e7ab",
+    "worktree_at_start": "clean",
+    "dependencies": "G64-030=RESEARCH_ONLY, G64-040=RESEARCH_ONLY, G64-049=RESEARCH_ONLY; G64-051 is already DOC_ONLY"
+  },
+  "production_context": {
+    "unit": "decomp/script_vm.c",
+    "source_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "verifier_sha256": "d84f22751fe74d1006399a466752f3805c1764f6b547b63fe82ffba9d62b5174",
+    "manifest_assembly_entries": 13,
+    "unit_vma_start": "0x8003CFA0",
+    "unit_rom_range": "0x3DBA0..0x40320",
+    "unit_text_bytes": 10112,
+    "owner_for_all_residuals": "GLOBAL_ASM"
+  },
+  "inventory_review": {
+    "canonical_machine_readable_list": "decomp/results/vm_residual_inventory.json",
+    "source_of_membership": "Live manifest units[source=script_vm.c].assembly_functions",
+    "membership_result": "PASS: all 13 symbols represented once and in source order.",
+    "original_extent_result": "PASS: every VMA, ROM offset, byte count, and function SHA-256 checked against the pinned 33,554,432-byte decompressed USA ROM.",
+    "whole_project_inventory": "decomp/results/inventory.json is preserved as the generated whole-project ELF inventory. Its 13 upstream_unmarked_names are not the same as the 13 residual script_vm ASM functions.",
+    "candidate_classification": "6 isolated native nonmatches; 4 source-unit native nonmatches; 2 traced functions without a C candidate; 1 exact-extent-only function without a complete C body.",
+    "related_separate_overlay_research": {
+      "branch": "codex/goemon-vm-overlay-followup",
+      "commit": "6b5d0d8958bd87fb850c05008acb29650579bf30",
+      "finding": "Two distinct file_12 overlay callback candidates match 20/20 and 36/36 isolated instruction bytes. They remain unpromoted pending an overlay unit/relocation adapter and full-ROM/inventory proof; they are not members of the 13-function main-segment list."
+    }
+  },
+  "reusable_abi_lessons": [
+    "The VM program cursor at 0x80077858 is distinct from the signed-halfword text cursor in 0x801C77E8.",
+    "Callbacks can mutate the globals being traversed; match original reload points instead of caching values across calls.",
+    "Branch-likely delay slots, register allocation, and original spill/frame layout are observable; equal size or host semantics is not exactness.",
+    "Resource ID, loaded resource base, relocation delta, and relocated program address are distinct values.",
+    "A complete 10,112-byte translation-unit comparison is necessary because a target change can move siblings and forward-call relocations.",
+    "Overlay VMAs require file/section mapping separate from the main-segment VMA-to-ROM formula."
+  ],
+  "tests": {
+    "rom_identity_and_extent_check": "PASS: 32 MiB decompressed SHA-1 and all 13 function-span hashes verified.",
+    "focused_inventory_test": {
+      "command": "python3 -m unittest decomp.test_vm_residual_inventory -v",
+      "status": "PASS",
+      "tests": 5
+    },
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 167,
+      "verifier_ledger_tests": 92,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "skill_context_validation": "PASS: python3 -m decomp.skill_context --validate; CONSISTENT_STORED_REPORTS, 100 tasks.",
+    "diff_check": "PASS: git diff --check",
+    "native_candidate_compile": "NOT_RUN: reconciliation only; no new source hypothesis or eligible candidate.",
+    "full_unit_native": "NOT_RUN",
+    "full_rom_g2": "NOT_RUN: production source, manifest, and verifier are unchanged; no unit-exact C was staged.",
+    "inventory_rebuild": "NOT_RUN: generated whole-project inventory unchanged.",
+    "in_game": "NOT_RUN",
+    "tool_versions": {
+      "python": "3.14.4",
+      "host_cc": "Ubuntu GCC 15.2.0"
+    }
+  },
+  "proof_checkpoint": {
+    "combined_report_sha256": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "inventory_report_sha256": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694",
+    "matching_c_functions": 153,
+    "matching_c_bytes": 11800,
+    "combined_c_entries": 166,
+    "asm_entries": 7210,
+    "identified_entries": 7376,
+    "rom_size": 33554432,
+    "full_rom_match": true,
+    "production_source_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "matching_c_delta": 0
+  },
+  "decision": {
+    "status": "RESEARCH_ONLY",
+    "reason": "All 13 original unpromoted script_vm ASM functions now have an evidence-backed residual classification. None has source-unit exact C, and no new G2 is justified.",
+    "production_ownership": "Retain GLOBAL_ASM for all 13 functions.",
+    "matching_c_delta": 0,
+    "full_rom_g2": "NOT_RUN",
+    "next": "G64-052 \u2014 Promote file_43 reference guard to input contract; G64-051 is already DOC_ONLY."
+  },
+  "deliverable_hashes": {
+    "decomp/MASTER_WORK_QUEUE.md": "8b03daccfdee4bdb8813851bf3a78733c5e4e4322218ed8239326f3c7ed5a440",
+    "decomp/results/vm_residual_inventory.json": "5c5e770d7d20adb27866803d9c5758ad4a08d8bf468a9552c0ac7d40616185c5",
+    "decomp/test_vm_residual_inventory.py": "9ca6e61afa9521751536bd03216ac5c79ac2ffee6005e1511e4b267dcc1862c0",
+    "decomp/plans/phases/PHASE_05.md": "9fafd62b57e7d3bb08d5006c53c23b2d0b56ce57974a2e0708ce4b7fd7d5e995",
+    "decomp/CONTINUE.md": "62b438c592550df1e727e489af8213d72d04169d233724efe30f57b4092f972b"
+  }
+}

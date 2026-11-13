@@ -2072,7 +2072,7 @@
       "ordinal": 50,
       "phase": 5,
       "title": "Close VM candidate inventory",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-030",
         "G64-040",

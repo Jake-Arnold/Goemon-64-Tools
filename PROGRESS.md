@@ -72,6 +72,14 @@
 - **Tests:** G64-048's six focused ASan/UBSan mock fixtures are inherited dependency evidence, not re-run or MIPS proof. No new target test or source-unit build was warranted because no candidate qualified. The ROM-free `python3 -m decomp.local_ci` and final `git diff --check` results are recorded in the execution report.
 - **Limitations/next:** no complete-ROM G2, inventory rebuild, or in-game check was run; production ownership remains unchanged. Continue with G64-050 to reconcile all 13 residual VM entries.
 
+### 2026-11-13 — G64-050 VM residual inventory (RESEARCH_ONLY)
+
+- **Changed:** added the canonical `decomp/results/vm_residual_inventory.json`, a schema/source/proof/optional-ROM regression test, and an evidence-ranked summary in `decomp/MASTER_WORK_QUEUE.md`; marked G64-050 `RESEARCH_ONLY` and updated Phase 05 and `CONTINUE.md`. The generated whole-project `results/inventory.json`, production source, manifest, and proof remain unchanged.
+- **Why:** close the 13-entry VM queue against the live ownership manifest and pinned original evidence without inventing progress percentages or confusing the whole-project inventory's 13 unrelated upstream C labels with 13 VM ASM functions.
+- **Evidence:** all 13 `script_vm.c` `GLOBAL_ASM` functions appear once in manifest order, with original VMA/ROM offset/extent/function hash, source/proof fingerprints, exactness class, concrete blocker, and next supported unblock condition. The private decompressed ROM identity and all 13 original byte spans were verified. Six entries have isolated native nonmatches, four have full-unit nonmatches, two have no C candidate, and F6E8 has only an exact-extent guard. The separate Sol overlay follow-up found exact isolated 20/36-byte `file_12` callbacks; those remain unpromoted and outside this list.
+- **Tests:** `python3 -m unittest decomp.test_vm_residual_inventory -v` passed 5 tests, including original ROM slice checks in this workspace. The complete `python3 -m decomp.local_ci`, evidence validation, and `git diff --check` outcomes are recorded in the execution report.
+- **Limitations/next:** no source-unit candidate was exact, so no new native unit or G2 build was run; matching-C delta remains zero. G64-051 is already `DOC_ONLY`; continue with G64-052, the file_43 reference-input contract.
+
 ### 2026-11-13 — G64-044 native emitter layouts (RESEARCH_ONLY)
 
 - **Changed:** recorded the first/second emitter native-layout comparison, marked G64-044 RESEARCH_ONLY, and updated Phase 05 and the continuation handoff. Production `script_vm.c`, both standalone candidates, manifest, proof, inventory, and `GLOBAL_ASM` ownership remain unchanged.

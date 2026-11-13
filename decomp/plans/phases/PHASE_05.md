@@ -300,7 +300,7 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 
 ### G64-050 — Close VM candidate inventory
 
-**Status:** PLANNED. **Dependencies:** G64-030, G64-040, G64-049.
+**Status:** RESEARCH_ONLY (completed 2026-11-13). **Dependencies:** G64-030, G64-040, G64-049.
 **Focus files:** `decomp/MASTER_WORK_QUEUE.md`; `decomp/results/inventory.json`.
 
 **Architectural intent:** Reconcile all 13 original unpromoted VM entries against current manifest and new proofs; label every blocked function.
@@ -324,6 +324,10 @@ Historical E234 candidates remain nonmatches: the ordinary layout compiled to 51
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-13):** Added `decomp/results/vm_residual_inventory.json` as the canonical VM-only residual list and replaced the stale partial queue in `MASTER_WORK_QUEUE.md` with its evidence-ranked overview. The list exactly matches the live `script_vm.c` manifest's 13 `GLOBAL_ASM` symbols in source order; each entry records original VMA/ROM offset/extent/SHA-256, production source fingerprint, strongest native result, a concrete blocker, and a supported unblock condition. The original function spans were rehashed from the SHA-verified pinned USA image. Classification: six isolated native nonmatches, four full-unit nonmatches, two traces without C candidates, and one extent-only function without a complete C body. The generated whole-project `results/inventory.json` remains untouched and is clearly distinguished from this VM residual ledger. Added a five-case inventory regression, including optional private-ROM span checks. A separate Sol follow-up found two exact isolated `file_12` overlay callbacks (20 and 36 bytes); these are not in the 13 and remain unpromoted because overlay unit/relocation and full-ROM proof are unavailable. See the execution report and the separate branch reference in the residual ledger.
+
+**Next:** G64-051 is already `DOC_ONLY`; continue with G64-052, the file_43 reference-input contract.
 
 ## Optional read-only REA research lane for this phase
 

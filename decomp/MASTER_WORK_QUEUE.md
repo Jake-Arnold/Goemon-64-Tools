@@ -74,6 +74,10 @@ extent is not declared in the pinned source. See
 `plans/execution/2026-11-13-g64-073-file-table-mapper.json`. G64-074 passed G2: `80036308` is a per-node dispatcher and adds 128 exact matching bytes. G64-075 traced `80036388` as a move-to-front operation, then stopped after three candidates all first differed at `+0x00`; it remains `GLOBAL_ASM`. G64-076 traced `800363F4` as a caller-gated non-head move-to-front operation; two candidates both first differed at `+0x00`, so it also remains `GLOBAL_ASM`. G64-077 traced `80036448` as a 180-byte allocation gate. Four native variants failed exact codegen; both accepted C siblings remain byte-exact, but the target stays `GLOBAL_ASM`. G64-078 traced the 308-byte `8000702C` worker: it receives on owner `+0x40`; message `0x29D` sends owner `+0x20` through each node `+4` destination queue before reloading the `+0` link. The sanitizer-tested host reference rejected a cached-next mutant; production stays `GLOBAL_ASM`. G64-079 traced `80007160` as the 164-byte default task-message handler: the worker passes owner in `$a0` and the 32-bit task `OSMesg` in `$a1`; the handler increments owner `+0x2B4` before its duplicate guard and conditionally calls the queue/task helpers. Its mock reference rejected an increment-after-guard mutant; production remains `GLOBAL_ASM`. G64-080 closed the files/object/scheduler batch gate with zero new functions or bytes; G64-074 remains the only promoted candidate in those units. G64-081 analyzed `8000E2D4` with a test-only reference and three bounded IDO shapes; no candidate matched, so production remains `GLOBAL_ASM`. See `plans/execution/2026-11-13-g64-081-math-helper.json`. G64-082, G64-084, and G64-085 passed fresh G2, adding exact 328-, 72-, and 72-byte matches. The v3 pilot added 3 functions / 472 bytes and closed at 3/3 candidates using 7/12 new variants. G64-086 then passed ordinary v2 with two of five variants, adding 180 exact bytes; the current proof is 153 functions / 11,800 bytes. G64-083 closed `RESEARCH_ONLY` after two new variants: V1 first differed at `+0x5C` in stack-local placement, V2 enlarged the frame to `0x50` and differed at entry. It remains ASM-owned and G2 was not run. G64-089 ranked the five float-state functions and tried two bounded candidates for 80006B44; V1 differed in 38 target words, while Sol-approved V2 reduced that to 36 but retained the first saved-register mismatch. It remains GLOBAL_ASM; G2 and inventory were not run. See plans/execution/2026-11-13-g64-089-float-state.json. G64-041 completed RESEARCH_ONLY after verifying all 110 original words locally and recording the sanitized 11-command store contract; see plans/execution/2026-11-13-g64-041-display-emitter-trace.json. G64-042/043 are dependency-ready and remain unstarted; G64-087 remains gated on G64-061/062/063. See `plans/execution/2026-11-13-g64-074-object-flags.json`, `plans/execution/2026-11-13-g64-075-object-list-move-to-front.json`, `plans/execution/2026-11-13-g64-076-object-list-move-to-front.json`, `plans/execution/2026-11-13-g64-077-object-allocation-gate.json`, `plans/execution/2026-11-13-g64-078-scheduler-queue.json` and `plans/execution/2026-11-13-g64-079-scheduler-queue-handler.json`. Private ROM and compiler files
 remain local under the ignored diagnostics input directory.
 
+Date-stamped work lists below are historical unless labeled as the current VM
+residual inventory. For execution order, use `decomp/CONTINUE.md`,
+`EXECUTION_STRATEGY_V2.md`, and the first dependency-ready task brief.
+
 This is the repository's cross-conversation handoff for the Goemon toolkit and matching-C projects. Prior ChatGPT conversations named “Goemon” or “Goemon Decomp Continuation” contain useful research but **are not independent sources of current function counts or proof**. Always read `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, and the live `chatgptweb/decomp` HEAD first. This file records an evidence-bound snapshot, not a claim that old attempts were freshly re-run.
 
 ## Verified checkpoint; do not repeat
@@ -100,7 +104,7 @@ The next technical work order is [NEXT_FIVE_ACTIONS.md](NEXT_FIVE_ACTIONS.md): *
 
 **Test reliability correction (2026-11-09):** fixed stale `tests/test_decomp_verify.py` 139/140 expectations to live 141/142 manifest claims, plus repaired malformed `compare_original.py` label/jump regexes and synthetic newline fixtures. Old comparator test suite actually failed 4/12; repaired suite passed 13/13 and two private original-ROM/IDO nonmatch checks. **Do not treat stale isolated metrics as verified without recomparison.** The uninterrupted formal 142-function verifier is still the highest verification priority. No count change.
 
-## New active ten-function list (2026-11-10)
+## Historical ten-function list (2026-11-10; superseded)
 
 Follow [NEXT_TEN_MAIN_SEGMENT.md](NEXT_TEN_MAIN_SEGMENT.md) for **ten fresh, still-ASM main-segment functions (528 bytes)** selected after the prior VM ten-function investigation stalled without promotions. The whole-ROM identity proof remains 142 exact-C functions / 10,652 bytes; current-source formal verifier pending. **First two:** `func_8003A1E8_3ADE8` (28 B) and `func_80006274_6E74` (36 B). Original 132/132 private ROM instruction words have been verified. Older VM, overlay and Ghost Toys entries below remain open but are not the new execution order.
 
@@ -108,31 +112,74 @@ Follow [NEXT_TEN_MAIN_SEGMENT.md](NEXT_TEN_MAIN_SEGMENT.md) for **ten fresh, sti
 
 **2026-11-10 second-wave outcome:** entire new ten-function batch was investigated. The three menu-state functions `func_80011B60_12760`, `func_80011BB4_127B4`, `func_80011C04_12804` are now **exact standalone IDO-linked original MIPS matches (248/248 bytes)** and passed 90,000 synthetic sanitizer-tested cases. With prior wave there are **6/10 exact isolated matches, 368 bytes**, but **ZERO promoted** pending a complete new 2,331-object ROM integration. Authoritative existing formal proof unchanged: 142 matching-C / 10,652 bytes. See `results/next_ten_main_wave2.json`; next task is the full build/inventory promotion gate.
 
-## Active exact-ROM promotion work plan — 20 gated steps (2026-11-10)
+## Historical exact-ROM promotion checkpoint — 20 gated steps (2026-11-10; superseded)
 
 [NEXT_TWENTY_STEPS.md](NEXT_TWENTY_STEPS.md) is the **current execution order**. First reproduce the complete **142-function** formal verifier and six original-address isolated links. Next integrate resource wrappers `func_80034ED4_35AD4`/`func_80034F20_35B20`, object dispatcher `func_80035094_35C94`, and menu trio `func_80011B60_12760`/`func_80011BB4_127B4`/`func_80011C04_12804` under original-unit compilation and full 32 MiB ROM proof. Then retry four nonmatching 28/36/44/52-byte routines. **No promotion is implied by the plan**; existing verified 142/10,652/7,221 remains authoritative.
 
 **Execution status, 2026-11-10:** full-unit research verified resource **112/112** and menu **256/256** bytes; object unit **fails** with two swapped 4-byte instructions at `0x35C9C/0x35CA0`. `results/next_twenty_execution_20261110.json` has the per-step ledger. Prior isolated six matches cannot be blindly promoted: the object compiler changes when compiled beside its already matching sibling. Full current 2,331-object ROM build remains a required blocker; official 142 matching functions unchanged.
 
-## Open matching-C work (ordered)
+## Current VM residual inventory (G64-050; reconciled 2026-11-13)
 
-**2026-11-09 plan execution:** targets **#1–#5** have research-only candidates and synthetic tests, but none match exact original MIPS. #4 VM choice/setup `func_8003E6C0_3F2C0` compiles to 400 B versus 348 B original, with 400 passing host scenarios and 12 private-original guards. See `NEXT_TEN_FUNCTIONS.md` status, `results/vm_next_ten_batch1.json`, `results/vm_next_ten_batch2.json`. **#5:** fourteen isolated command-walker trials (seven host-tested) did not reproduce its original 232-byte instruction layout; see `results/vm_next_ten_batch3.json`. **Next #6 `func_8003DBEC_3E7EC`.** 142-function full-ROM proof and formal flag unchanged.
+The canonical machine-readable inventory is
+[`results/vm_residual_inventory.json`](results/vm_residual_inventory.json). It
+is checked against the live `script_vm.c` manifest ownership and fingerprints,
+the pinned upstream source, and the decompressed USA ROM. There are exactly 13
+remaining `GLOBAL_ASM` functions in source order. The ordinary generated
+[`results/inventory.json`](results/inventory.json) remains unchanged: it is the
+whole-project symbol inventory, and its 13 `upstream_unmarked_names` are a
+different set of upstream C entries. The residual ledger records each VM
+function's original extent/hash, candidate source hash where one exists,
+strongest native exactness result, concrete blocker, and next unblock condition.
 
-| Priority | Target | Precise unresolved condition |
-| --- | --- | --- |
-| P0 | Uninterrupted 142-function formal verifier | Restore exact latest branch/toolchain/baseline and execute `decomp.verify` to completion. Refresh proof provenance only if independently rebuilt output is exact. |
-| P2 | VM text loop `func_8003DBEC_3E7EC` | Separate volatile-work/explicit-script-argument research variant now compiles to the original 472-byte symbol with 53/95 comparable nonrelocation instruction positions equal (up from the terminal-state switch draft at 47/95); both variants remain unpromoted, and the new version passed 10,000 synthetic original-MIPS/host-C cases; original-MIPS/host-C differential harness passes 10,000 synthetic cases over two seeds (not an exact instruction match); see candidate and synthetic tests. Earlier 480-byte draft differs in 101 words. Preserve the confirmed distinction between global pointer storage at 0x801C77E8 (with independent halfword at global +0xA) and the script pointer *value* in its first word; also preserve two unsigned controller halfwords, account for six branch-likely delay slots, two counters, dynamically reloaded outer bound, and callback early-return path. This is **static analysis, not a verified match**. |
-| P3 | VM loader `func_8003D468_3E068` | Approximately 548-byte original; an old candidate matched 118/137 instruction positions only. Resolve real resource-prefix declarations, address loads, and register allocation. |
-| P3 | VM command walker `func_8003DE80_3EA80` | Original 232 bytes; current GOTO baseline is a 220-byte symbol / 224-byte `.text`, first differing at `0x8003DE84` (36/56 words). G64-035 tried four bounded shapes; best first difference `0x8003DE88` but 38/56 words differ and `bltzl` target is 4 bytes late. A size-equal 232-byte candidate has the wrong `0x30` frame. The 11-scenario ASan/UBSan harness remains 1,100 cases per source. No promotion; see `VM_STREAM_MATCHING.md` and G64-035 evidence. |
-| P2 | VM resource halfword lookup `func_8003F038_3FC38` | Research-only **196-byte original / 196-byte native IDO** `volatile s32 half` variant, improves to **25/42 direct comparable MIPS positions**, 3/3 matching relocation shapes, 4 relocation-layout differences; 3,000 sanitizer-tested host cases passed. Still UNPROMOTED; resolve original `$v1` index vs candidate `$t6` and stack slot allocation. |
-| P3 | VM digit formatter `func_8003F480_40080` | **NEW research-only 164-byte C draft**, original 41 words; 9/41 relocation-masked positional words, only 3/19 directly comparable non-relocation words; 1,000 host cases and 15 original-assembly guards passed. Need reproduce `bnel` delay-slot and `sprintf` argument-load scheduling. **Unpromoted**. |
-| Completed | Choice edge `func_8003D0B0_3DCB0` | Promoted 204 original MIPS bytes at `0x8003D0B0`; fresh regenerated 2,331-object build produced exactly matching 32 MiB ROM and a 141-function/7,376-entry verified inventory. 100 host cases passed; uninterrupted formal verifier remains pending. |
-| P4 | VM wrapper `func_8003F6E8_402E8` | Verified original archived extent **48 bytes / 12 words**, plus missing final **8-byte `jr $ra; nop`** after the natural 40-byte C prefix. The prior **56-byte** number is a candidate inventory annotation, not an archived original extent. `test_vm_wrapper_extent.py` guards this; do not promote prefix. |
-| Completed | VM comparator `func_8003D9B8_3E5B8` | Promoted in latest 142-function, 10,652-byte complete-ROM proof; 340 original MIPS bytes exact, 2,331 linked objects, ROM and readelf inventory exact, 1,134 sanitizer host cases. Uninterrupted formal verifier pending. |
-| P5 | Overlay key initializer `func_080001BC_6F369C` | 96-byte isolated linked probe matched; main-segment manifest verifier cannot yet prove overlay ROM/VMA/section layout. |
-| P5 | Ghost Toys entrance | Historical 140-byte draft retains two incorrect stack offsets; `decomp/GHOST_TOYS_CHECKPOINT.md` documents them. |
+| Target | Original VMA / ROM / bytes | Strongest exactness evidence | Concrete blocker |
+| --- | --- | --- | --- |
+| D468 `func_8003D468_3E068` | `8003D468 / 3E068 / 548` | Candidate 556 B; 1/26 direct words, first mismatch `+0x08`. | Candidate frame is 24 B versus original 32 B; current prototype also omits the observed 32-bit return. |
+| D68C `func_8003D68C_3E28C` | `8003D68C / 3E28C / 812` | ROM CFG traced and guarded; no C candidate. | Callback effects and source-level dispatch shape remain unresolved. |
+| DBEC `func_8003DBEC_3E7EC` | `8003DBEC / 3E7EC / 472` | 472 B native symbol, 53/95 raw comparable nonrelocation words. | Candidate frame is 0x50 versus original 0x48; 17 relocation-layout differences. |
+| DE80 `func_8003DE80_3EA80` | `8003DE80 / 3EA80 / 232` | Best bounded candidate: 38/56 differing words, mismatch moved to `+0x08`. | `bltzl` target remains four bytes late; the four source shapes are closed. |
+| DF98 `func_8003DF98_3EB98` | `8003DF98 / 3EB98 / 528` | ROM-bound signed-token trace and 40-entry table; no C candidate. | Helper effects remain opaque; no native mismatch exists yet. |
+| E234 `func_8003E234_3EE34` | `8003E234 / 3EE34 / 440` | Full-unit candidate 444 B; first target register differs at entry. | `$v0` replaces original `$v1`; later forward-call relocation shifts at unit `+0x118`. |
+| E6C0 `func_8003E6C0_3F2C0` | `8003E6C0 / 3F2C0 / 348` | Full-unit candidate 356 B; 45/87 words differ. | First mismatch is saved-register spill at `+0x0C`; growth shifts a forward relocation. |
+| EBAC `func_8003EBAC_3F7AC` | `8003EBAC / 3F7AC / 436` | Full-unit candidate 428 B; first target register differs at entry. | `$v0` replaces original `$v1`; a later sibling moves despite section rounding. |
+| ED60 `func_8003ED60_3F960` | `8003ED60 / 3F960 / 592` | One isolated probe 584 B; first mismatch at `0x8003ED68`. | 136/146 positions differ; the two F038 call effects remain unresolved. |
+| F038 `func_8003F038_3FC38` | `8003F038 / 3FC38 / 196` | Equal-size probe; 25/42 direct words and 3/3 relocation shapes. | Four relocation-layout differences remain; first mismatch `+0x28`; three refinements repeated it. |
+| F37C `func_8003F37C_3FF7C` | `8003F37C / 3FF7C / 192` | Equal-size full-unit candidate; all siblings exact. | 36 target words differ; first mismatch `+0x08` swaps float-register scheduling. |
+| F480 `func_8003F480_40080` | `8003F480 / 40080 / 164` | Best isolated candidate 156 B, 3/13 direct words. | 15 variants did not reproduce the original `bnel` delay-slot schedule. |
+| F6E8 `func_8003F6E8_402E8` | `8003F6E8 / 402E8 / 48` | Exact original extent guarded; no complete C body. | A 40 B prefix omits the second `jr $ra; nop`; the 56 B note is not an original extent. |
 
-Use `compare_original.py` with a SHA-verified decompressed reference and private original assembly for reproducible, relocation-aware isolated codegen diagnostics. A structurally matching isolated object is never a complete-ROM promotion. Ten parser/negative-control tests passed; see current PROGRESS.md. Do not rerun the unchanged 762-function scalar sweep. After a failed candidate, preserve the mismatch, improve a concrete typed declaration or code shape, and move to another target. Promotion requires the exact original-address MIPS bytes **and** independent full decompressed-ROM byte identity.
+Reusable constraints: keep the program cursor separate from the halfword text
+cursor; reload mutable globals after callbacks where the original does; preserve
+branch-likely delay slots and original spill/frame layouts; distinguish resource
+ID, loaded base, relocation delta, and relocated PC; and compare every candidate
+inside the full 10,112-byte unit because isolated matches can still move
+siblings and forward relocations. The 13 remain ASM-owned; no new G2 or
+inventory build was run. Full evidence, including hashes and unblock conditions,
+is in the canonical JSON above.
+
+### Separate dialogue-overlay candidates (not part of the 13)
+
+A Sol medium follow-up on branch
+`codex/goemon-vm-overlay-followup` at commit
+`6b5d0d8958bd87fb850c05008acb29650579bf30` found two isolated exact `file_12`
+callbacks: `0x80222034` (20 B) and `0x80222168` (36 B). Both match pinned IDO
+bytes at their original overlay VMAs. They remain research-only because the
+production manifest lacks the `file_12` unit, section/relocation adapter, and
+fresh full-ROM/inventory proof. This branch is separate from
+`chatgptweb/decomp`; these candidates are not promoted or included in the 13.
+The evidence is in that branch's `decomp/VM_CONVERSATION_TARGETS.md` and
+`decomp/results/file12_dialogue_callbacks_research.json`.
+
+### Other non-VM leads
+
+- Overlay key initializer `func_080001BC_6F369C`: a 96-byte isolated probe
+  matched, but production overlay ROM/VMA/section proof remains the blocker.
+- Ghost Toys entrance: the historical 140-byte draft still has two incorrect
+  stack offsets; use `decomp/GHOST_TOYS_CHECKPOINT.md` before any restart.
+
+Use `compare_original.py` with a SHA-verified decompressed reference and private
+original assembly for reproducible, relocation-aware diagnostics. Isolated
+identity never proves a production-unit or complete-ROM promotion. Do not repeat
+exhausted variants without a concrete instruction prediction.
 
 ## Main-branch toolkit status (superseded historical backlog)
 
