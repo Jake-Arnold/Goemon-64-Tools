@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-13T14:43:09.104888+00:00",
+  "started_utc": "2026-11-13T15:20:07.497657+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -56,9 +56,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 151,
-    "claimed_functions": 151,
-    "matched_function_bytes": 11548,
+    "matched_functions": 152,
+    "claimed_functions": 152,
+    "matched_function_bytes": 11620,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1006,6 +1006,15 @@
         "candidate_sha256": "2e36ce57a618c59e4db7a2488b31716897d15a226670ae9385e1368d6069d65d"
       },
       {
+        "name": "func_8000EB08_F708",
+        "size": 72,
+        "guest_address": "0x8000EB08",
+        "rom_offset": "0xF708",
+        "matched": true,
+        "expected_sha256": "c2489007d9a10c741e79de88d21869fc7e0f5996a1a984aeef4058dc73232e1c",
+        "candidate_sha256": "c2489007d9a10c741e79de88d21869fc7e0f5996a1a984aeef4058dc73232e1c"
+      },
+      {
         "name": "func_8002338C_23F8C",
         "size": 8,
         "guest_address": "0x8002338C",
@@ -1443,7 +1452,6 @@
     "func_8000E4E4_F0E4",
     "func_800109A4_115A4",
     "func_80015F58_16B58",
-    "func_8000EB08_F708",
     "func_8000EB50_F750",
     "func_80023394_23F94",
     "func_80023410_24010",
@@ -1499,7 +1507,7 @@
     "fixed_loop.c": "9aeeb1b637539acd60bc557550f760f489bd63ba5c03652ded9232f4ed28c0a8",
     "state_four.c": "f87ff9e6f9d5d898e5b880989bbc5237a5454cb9c502cc7d0ad5909d3c1f27ce",
     "decode_loop.c": "3141f9c38455c5eb50851170bc0de054166fba5895ff39ef78b31e94398b8fb4",
-    "angle_variant.c": "2799764f26b5cbf25c69143f8437d42706651988fdc4412b44c4fe514764e721",
+    "angle_variant.c": "1b1ca621250b85e3b4bd6068ac340a9005631d4179300fe4cfaaabba2459e40c",
     "return_zero.c": "b1fa7647b5bcab949b6d3fb476c8daabb3aa14b93d3be35e33a15cc0f9e45cb0",
     "empty_hook.c": "f6355fac5b091bcfdec761496296b6ea0d11c8a8e255651d8e933a3975fd17d5",
     "float_state.c": "2ac652d7af8475af82c8b71b26209c012d0f3056c3847325932f9c66d6b4a42b",
@@ -1524,5 +1532,5 @@
     "default_entrance.h": "3d82c004281d4a33d8ddb39a39031f24899d0b39323c3a4904e4169429440568",
     "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63"
   },
-  "ended_utc": "2026-11-13T14:44:28.895998+00:00"
+  "ended_utc": "2026-11-13T15:21:27.186444+00:00"
 }

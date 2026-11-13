@@ -1,12 +1,21 @@
 # Goemon 64 Tools — Development Progress
 
-## 2026-11-13 — Architect v3 compiler-guided pilot (ACTIVE)
+## 2026-11-13 — Architect v3 compiler-guided pilot (REVIEW PENDING)
 
 - **Purpose:** respond to low production matching-C yield and early IDO branch/stack/register mismatches without replacing Architect v2.
 - **Changes:** added `decomp/plans/ARCHITECT_V3_PILOT.md`, linked it in `decomp/plans/README.md` and `decomp/CONTINUE.md`, assigned architecture/hypothesis/ranking review to Sol 6.1 High and bounded compiler execution/evidence to Luna Max.
-- **Scope and gates:** G64-082 and G64-084 passed the unchanged exact G2 gate. The live proof now has 151 matching functions / 11,548 bytes; inventory reports 164 combined C, 7,212 ASM and 7,376 identified entries. No G64-092/G64-094 completion claimed.
-- **Checks:** see the G64-082 and G64-084 execution records for native IDO, host, whole-ROM and inventory evidence. The pilot still has a 12-variant overall cap and v2 per-task limits.
-- **Limitations/next:** G64-082 used five variants; G64-084 used one new variant plus one deduplicated historical failure. Sol selected G64-085 (96/100) over G64-083 (87/100); it is candidate 3 of 3 and should start after G64-084 publication. Sol review is required before a fourth candidate. No in-game result is claimed.
+- **Scope and gates:** G64-082, G64-084 and G64-085 passed the unchanged exact G2 gate. The live proof now has 152 matching functions / 11,620 bytes; inventory reports 165 combined C, 7,211 ASM and 7,376 identified entries. These three promotions add 3 functions / 472 bytes. No G64-092/G64-094 completion claimed.
+- **Checks:** G64-082, G64-084 and G64-085 execution records contain native IDO, host, whole-ROM and inventory evidence. The pilot used seven of its twelve new-variant allowance; per-task v2 limits remain binding.
+- **Limitations/next:** G64-082 used five variants, G64-084 one, and G64-085 one. G64-084 and G64-085 each had one deduplicated historical failure signature, counted only against the respective per-task ceilings and not the pilot total. G64-085 was candidate 3 of 3. Sol review is required before any fourth candidate. No in-game result is claimed.
+
+## 2026-11-13 — G64-085 angle variant 8000EB08 (PASSED_G2)
+
+- **Reason and branch:** executed Sol's third Architect v3 selection on codex/decomp-100-task-plan, starting from clean commit 78cf80f793cda857a45c7f4df10d40caaaa60a3c; the fetched origin/chatgptweb/decomp ref matched. G64-084 was already PASSED_G2.
+- **Original/ABI evidence:** func_8000EB08_F708 is 72 bytes at VMA 0x8000EB08, ROM 0xF708, with original span SHA-256 c2489007d9a10c741e79de88d21869fc7e0f5996a1a984aeef4058dc73232e1c. It passes arg0-arg2 in $f12, arg1-arg3 in $f14 in the call delay slot, then masks the helper result with 0x3FF. Nine direct call sites appear in pinned asm/usa/5F6840.s.
+- **Native and budget:** one new pinned IDO 5.3 hypothesis reused E74's local unsigned-short assignment and mask while preserving EB08's helper argument order. It matched the complete 400-byte angle_variant.c unit at original VMA 0x8000EA74, including E74 and EABC; all six relocation records matched the fresh baseline. Unit SHA-256 is 6448d849f7eb0f36197ef63b950d526e6d146b94f549a251a1463e8a4fa9bb39. Three repeated historical rows with recipe signature 0302e31f... were deduplicated as one task-level failure and not replayed. G64-085 used two of its three allowed distinct variants (one historical, one new); pilot global usage is seven of twelve new variants.
+- **Tests/proof:** the GCC ASan/UBSan host harness passed 10 assertions, preserving E74/EABC checks and adding EB08 argument-order, sign-change, and 0/0x3FF wrap checks. The decomp suite passed 157 tests; verifier/inventory/ledger/batch suites passed 65. Fresh uncached G2 matched 152/152 functions, 11,620 bytes and the full 33,554,432-byte ROM SHA-1 6ea0ed71032ce08fc2745f412d84936382197494. Inventory passed with 7,376 entries, 152 matching C, 7,211 ASM, zero extra aliases and unchanged function-entry identity. Stored combined.json and inventory.json hashes are 0678cf2d7926b4d71eaa6252bb7a5ed0b689ac4838e9ad05bb8370d5a1020662 and a15e92b89b79f65aab4a08b3f894ba752a1c08b96526826bd8bf8d5707816ca5.
+- **Ledger/changes:** appended and validated G64-091 full-ROM attempt signature 7987d267f39ff693e9aa9fd779cb72709ec191136e80c51a8934f44227a0c7ff. The legacy failure remains unsigned and provenance-incomplete. Updated production source, host tests, manifest, official result reports, task/phase status and the execution/handoff records. The G85 production delta is +1 function / +72 bytes.
+- **Limitations/next:** no in-game verification. No .github/workflows directory exists, so local CI had no workflow to run. G64-086 is dependency-unlocked; wait for Sol's review before starting any fourth native candidate.
 
 
 
@@ -19,7 +28,7 @@
 - **Ledger/changes:** appended one recomputable G64-091 `full_rom` record to the existing ignored SQLite ledger and wrote a sanitized ignored G64-084 artifact; the repeated historical recipe remains unsigned and provenance-incomplete, and ledger persistence did not rerun IDO. Promoted only after the full-unit, G2 and inventory gates. Updated `angle_variant.c`, host tests, manifest, official results, task/phase status and execution evidence. The new function delta is +1 / +72 bytes.
 - **Publication:** G64-084 proof/docs commit `47ff9a31bcb55dce1017ae110a61e79e62170ef9` was pushed to `origin/chatgptweb/decomp`; after fetch, local HEAD, FETCH_HEAD and the remote ref all matched this SHA.
 - **Limitations:** no in-game verification. The standalone original-VMA link used LLD 21.1.8 because an isolated GNU ld.bfd link attempt reported a truncated output; the fresh production G2 build used the pinned production build and passed. No direct symbolic EA74 caller was found.
-- **Next:** Sol selected G64-085 at 96/100 over G64-083 at 87/100. It is candidate 3 of 3; start after G64-084 publication and require Sol review before any fourth candidate.
+- **Next:** G64-085 has since passed G2 as candidate 3 of 3. Wait for Sol's pilot outcome review before starting G64-086 or any fourth native candidate.
 
 ## 2026-11-13 — G64-082 math helper 8000E39C (PASSED_G2)
 
