@@ -9,6 +9,13 @@
 - **Publication:** committed as `3062843c95768b898d9430ecfea03ed7e8b8896d` and pushed without force. Fetch and `git ls-remote` both confirmed the `chatgptweb/decomp` SHA.
 - **Limitations/next:** byte-identical ROM and linked-ELF provenance do not constitute live-game verification. G64-055 and G64-056 are `PASSED_G2`; next, review the four dialogue-helper promotions on the Sol-reviewed `codex/goemon-vm-research` branch for safe integration into this target branch, then continue with G64-057.
 
+## 2026-11-13 — Locate native targets from conversation PC traces
+
+- **Changed:** documented the Chain Pipe and Oedo Castle bridge script candidates and five native dialogue-graphics matching-C targets.
+- **Why:** use observed cursor changes, decoded text, and state tokens to locate script commands and prioritize original functions with reusable behavior fixtures.
+- **Checks:** rescanned three resources in the SHA-1-pinned decompressed USA image, verified ten native function extents against the original ROM, and checked the target list against the matching-C manifest. Git whitespace checks passed on the research branch.
+- **Limitations/next:** the Chain Pipe base is inferred and multiple bridge scripts fit the sampled sequence. The four smaller helpers have since passed on the research branch; this target branch still needs a fresh integrated build and proof.
+
 ## 2026-11-13 — Independent Script VM architecture research
 
 - **Changed:** added the architecture report and a bounded decoder for one text record at a time from the SHA-1-pinned decompressed USA image. Corrected the earlier resource note's use of decompressed addresses as retail offsets.
