@@ -10,6 +10,12 @@ Optional planning refinement: [plans/ARCHITECT_V3_PILOT.md](plans/ARCHITECT_V3_P
 
 Optional research: [plans/REA_PILOT.md](plans/REA_PILOT.md) tests REA/Ghidra compatibility; Goemon's pinned `-mips2` ISA is not in REA's currently documented standard MIPS lane. The pilot is **not a dependency** for the 100 tasks or a source of matching-C proof.
 
+The current Script VM runtime cursor/resource/text findings are in
+[VM_RUNTIME_CURSOR_FIELD_REPORT.md](VM_RUNTIME_CURSOR_FIELD_REPORT.md). It
+disambiguates `0x80077858` as the VM program cursor from the separate
+text-token cursor at `0x801C77E8`; it does not change the matching-C task queue
+or any proof gate.
+
 ## Local decomp CI (no GitHub Actions)
 
 Run `python3 -m decomp.local_ci` for the standard ROM-free local test gate (decomp Python regressions, verifier/ledger tests, task evidence validation, and a sanitizer host fixture). For Python-only debugging use `python3 -m decomp.local_ci --quick`, reporting skipped sanitizer coverage. This is intentionally **not** an Actions workflow: absence of `.github/workflows` is not a Local CI blocker. Do not run a workflow-dependent `local-ci` skill or `act` here. Task-specific host tests and the original-VMA native IDO/32 MiB full-ROM G2 gates remain distinct and must be reported separately.

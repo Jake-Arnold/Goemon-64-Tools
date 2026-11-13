@@ -27,7 +27,7 @@ ROM/listing and all compiler artifacts remain local.
 
 | Register or address | Original use | Evidence and limit |
 | --- | --- | --- |
-| `$s1` | Holds the address of global storage `D_801C77E8_1C83E8` (`0x801C77E8`). `lw 0($s1)` loads the current 32-bit script cursor/address value passed as `$a1`; after `DE80`, `sw $v0,0($s1)` stores the returned cursor value. | Direct `lui/addiu`, load and store at `0x8003DC38..0x8003DC6C`. `$s1` is the global's address; DBEC does not dereference the script cursor's pointee. |
+| `$s1` | Holds the address of global storage `D_801C77E8_1C83E8` (`0x801C77E8`). `lw 0($s1)` loads the current text-token stream pointer passed as `$a1`; after `DE80`, `sw $v0,0($s1)` stores the returned pointer. | Direct `lui/addiu`, load and store at `0x8003DC38..0x8003DC6C`. `$s1` is the global's address; DBEC passes the text cursor value to `DE80`, which dereferences it. |
 | `0xA($s1)` | Separate halfword at global address `0x801C77F2`; cleared on terminal state or button paths, read as a gate, and set to one for a pressed-button retry. | Direct `sh/lhu` at `0x8003DC98`, `0x8003DCD4`, `0x8003DD58`. It is not memory at cursor-value-plus-`0xA`. “Retry latch” is a behavior label, not a recovered field name. |
 | `$s2` | Address of VM state global `D_801C77E0_1C83E0`. State is reloaded after each `DE80` call; the function writes state 1 during ordinary processing and zero after the restart handler. | Direct global-base construction at `0x8003DC34/40`, state load at `0x8003DC68`, and stores at `0x8003DCA4`, `0x8003DCB8`, `0x8003DCFC`. |
 | `$s3` | Address of controller global `D_801C7908_1C8508`. The routine reads unsigned halfwords at `+2` and `+4`, not a signed word. | `CONTROLLER_W` declares `button_held_down` at `+2` and `button_pressed` at `+4`; original `lhu` instructions are at `0x8003DCC8`, `0x8003DD1C`, and `0x8003DD48`. |
@@ -40,8 +40,8 @@ ROM/listing and all compiler artifacts remain local.
 
 The initial outer bound is read from `D_801C77D8_1C83D8` before the early
 `blez`; it is read again at `0x8003DD74` after loop work. Both the state and
-the bound therefore have callback-visible reloads. The script cursor and the
-global storage address remain separate values throughout the trace.
+the bound therefore have callback-visible reloads. The text-token cursor value
+and the global storage address remain distinct throughout the trace.
 
 ## Basic-block graph
 
@@ -89,11 +89,11 @@ not a compiler hint.
 | **`0x8003DD14`** | **`beql $t2,$zero` → `0x8003DD4C` when latch is clear** | **`0x8003DD18 lhu $t5,0x4($s3)` reads pressed input only on the taken edge; a set latch annuls it and tests held input instead.** |
 | `0x8003DD28` | `beqz $t4` → `0x8003DD40` when held `0x8000` is clear | `0x8003DD2C nop`. |
 | `0x8003DD30` | `beqz $v0` → `0x8003DD6C` when retry count is not below 3 | `0x8003DD34 addiu $s0,$s0,1` increments on either edge. |
-| `0x8003DD38` | `b` → `0x8003DC60` for immediate retry | `0x8003DD3C lw $a1,0($s1)` reloads the current script cursor. |
+| `0x8003DD38` | `b` → `0x8003DC60` for immediate retry | `0x8003DD3C lw $a1,0($s1)` reloads the current text-token cursor. |
 | `0x8003DD40` | `b` → `0x8003DD6C` after held input release | `0x8003DD44 sh $zero,0xA($s1)` clears latch. |
 | **`0x8003DD50`** | **`beql $t6,$zero` → `0x8003DD70` when pressed `0x8000` is clear** | **`0x8003DD54 lw $t8,0x44($sp)` reads outer count only on the taken edge; pressed input annuls it before latch set.** |
 | `0x8003DD5C` | `beqz $v0` → `0x8003DD6C` when retry count is not below 3 | `0x8003DD60 addiu $s0,$s0,1` increments on either edge. |
-| `0x8003DD64` | `b` → `0x8003DC60` for immediate retry | `0x8003DD68 lw $a1,0($s1)` reloads the current script cursor. |
+| `0x8003DD64` | `b` → `0x8003DC60` for immediate retry | `0x8003DD68 lw $a1,0($s1)` reloads the current text-token cursor. |
 | `0x8003DD84` | `beqz $at` → `0x8003DD94` when updated outer count reaches bound | `0x8003DD88 slti $at,$s0,3` computes retry condition on either edge. |
 | **`0x8003DD8C`** | **`bnel $at,$zero` → `0x8003DC60` when outer bound allows and `$s0<3`** | **`0x8003DD90 lw $a1,0($s1)` reloads cursor only for the taken retry; otherwise the slot is annulled and the function returns.** |
 | `0x8003DDBC` | `jr $ra` | `0x8003DDC0 addiu $sp,$sp,0x48` restores frame size in the return delay slot. |

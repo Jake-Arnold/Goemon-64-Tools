@@ -217,13 +217,13 @@ entry.
   a freshly loaded `D_801C7754` before calling a helper. Keep the declared
   two-argument interface and do not rename the first argument from these facts
   alone.
-- `$s0` preserves the input script cursor across helper calls. The decoder
+- `$s0` preserves the input signed-halfword stream cursor across helper calls. The decoder
   reads the token before dispatch, does not reread that token after a helper,
   and increments the local cursor only after the helper call(s). It returns
   that cursor; it does not directly update `D_80077858`.
 - The two-call commands `FFC8` and `FFCA` load `D_801C7754` again after the
   first helper returns. A callback changing that global is visible to the
-  second helper. The script cursor remains the saved `$s0` value.
+  second helper. The control-stream cursor remains the saved `$s0` value.
 - In paced reader `DE80`, the initial signed token is read before the repeat
   gate. A nonnegative token is loaded again in the output-call delay slot; after
   the output callback, DE80 reloads both the repeat setting `D_801C7798` and
@@ -260,7 +260,7 @@ written for this task.
 | Signed range edges | `-72`, `-71`, `-32`, `-31`, `-1`, 0, and positive halfwords. | Only `-71..-32` enter the 40-entry table; others advance by two if directly passed to DF98. |
 | Full dispatch | Every token `FFB9..FFE0`. | Target/call sequence matches the ROM table, including the 20 one-halfword fallback entries. |
 | Incoming `$a0` forwarding | Exercise `FFB9`, `FFBA`, `FFC4` with distinct owner values. | Calls that do not reload `$a0` receive the incoming value; context-based commands load `D_801C7754`. |
-| Context mutation between helpers | For `FFC8` or `FFCA`, first helper changes `D_801C7754`. | Second helper receives the newly loaded context; script cursor still returns as original pointer+2. |
+| Context mutation between helpers | For `FFC8` or `FFCA`, first helper changes `D_801C7754`. | Second helper receives the newly loaded context; control-stream cursor still returns as original pointer+2. |
 | Token memory mutation | Helper changes the halfword at decoder input. | DF98 itself still returns the saved input pointer+2 without rereading the token. |
 | Paced positive callback | Output callback mutates current halfword and `D_801C7798`. | DE80 marker records the updated token; post-callback repeat-setting load observes the updated setting. |
 | Paced repeat suppression | Gate helper suppresses a nonnegative token. | No output callback; marker becomes `-1`; cursor remains at the original token; repeat interval is copied as observed. |

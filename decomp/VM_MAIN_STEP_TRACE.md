@@ -22,7 +22,7 @@ trace, not a C reconstruction or matching-C claim. The function remains
 
 ## Input/output contract
 
-The routine takes no register arguments. It reads the global script cursor
+The routine takes no register arguments. It reads the global VM program cursor
 `D_80077858_78458`, pause byte `D_801C78FC_1C84FC`, and VM state word
 `D_801C77E0_1C83E0`; it calls `func_8003D17C_3DD7C` to update controller state
 when it proceeds past the initial gates. It returns:

@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — Script VM runtime cursor and resource mapping (RESEARCH_ONLY)
+
+- **Changed:** added `decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md`, linked it from `decomp/CONTINUE.md`, and clarified cursor terminology in the VM main-step, resource-callgraph, text-loop, and stream-control traces. Recorded the attached runtime note's separate gameplay-submode field without importing changes from its toolkit branch. Existing G64-046 candidate/test edits remain untouched.
+- **Why:** establish whether `0x80077858` points at VM commands, text tokens, or character progress; connect resource IDs 96/97 to the original loader; and preserve the new state-7 cross-context and state-6 observations as bounded evidence.
+- **Evidence:** original MIPS proves `0x80077858` is the relocated 32-bit VM program cursor and `0x801C77E8` word 0 is a separate signed-halfword text-stream cursor. The loader maps IDs 96/97 to one-based rows 95/96 and direct DMA source intervals `0x74ECE0..0x759DF0` / `0x759DF0..0x767640`. The text walker emits through D060/D180 while separate per-context fields advance. State 7's writer/countdown and state 5/6 command/poll paths are documented without assigning unsupported scene meanings.
+- **Tests:** `git diff --check` passed. `python3 -m decomp.local_ci` passed: 162 decomp tests, 92 verifier/ledger tests, task/evidence validation, and the display-emitter ASan/UBSan fixture (1,000 synthetic cases plus zero and owner-alias cases). A read-only table extraction matched the decompressed ROM SHA-1 and the resource 96/97 table values. No native IDO build or full-ROM proof was run.
+- **Limitations/next:** video samples lack same-frame `0x801C77FC`, `0x801C78EC`/`0x801C78F0`, text-stream pointer, and bytes, so their exact cursor-to-ROM offsets and visible-text token decoding remain unresolved. State 6's exact runtime pairing, `F460`'s indirect caller, and `C260`/`C3A0`/`C314` semantics need deeper trace evidence. Next capture those fields with bounded write-triggered logging; do not spend more compiler trials on this question.
+
 ### 2026-11-13 — G64-045 VM setup callback ABI (RESEARCH_ONLY)
 
 - **Changed:** recorded the observed owner offsets in an F37C-local research layout and updated its host harness for allocator halfword arguments, exact float bits, callback order, slot wrap and untouched bytes. Marked G64-045 `RESEARCH_ONLY`, added its execution report, and advanced the handoff to G64-046. Shared `script_vm.h`, production `script_vm.c`, manifest ownership, stored proof and inventory remain unchanged.
