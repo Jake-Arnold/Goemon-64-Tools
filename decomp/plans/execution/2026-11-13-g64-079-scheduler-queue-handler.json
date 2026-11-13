@@ -1,0 +1,157 @@
+{
+  "task_id": "G64-079",
+  "title": "Analyze scheduler 80007160",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2-20261111",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "head": "8a089cd7748641fbab51e1e8520b875a39f24e60",
+    "remote_head_at_start": "8a089cd7748641fbab51e1e8520b875a39f24e60",
+    "initial_worktree": "clean after G64-078 commit and remote verification",
+    "dependencies": {
+      "G64-078": "RESEARCH_ONLY"
+    },
+    "matching_c": 149,
+    "matching_bytes": 11148,
+    "manifest_sha256": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "stored_proof_sha256": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "inventory_sha256": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6"
+  },
+  "original_source": {
+    "upstream_repository": "klorfmorf/mnsg",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "asm_file": "asm/usa/79F0.s",
+    "asm_sha256": "8319b858fe8791de62fe3982194703dad25842c0673e608eb803b493c378875e",
+    "osmesg_declaration": "libultra/include/PR/os.h: OSMesg is void* (32-bit in the pinned o32 target)",
+    "rom_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "rom_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rom_size": 33554432,
+    "original_span_matches_rom": true,
+    "matched_words": 41,
+    "total_words": 41,
+    "span_method": "Parsed all 41 Splat words between the target label and endlabel and compared bytes to usa-decompressed.z64[0x7D60:0x7E04]."
+  },
+  "source_unit": {
+    "manifest_source": "scheduler_queue.c",
+    "rom_start": "0x7C24",
+    "rom_end": "0x7E04",
+    "expected_bytes": 480,
+    "members": [
+      "func_80007024_7C24 (8 bytes, matching C helper)",
+      "func_8000702C_7C2C (308 bytes, GLOBAL_ASM)",
+      "func_80007160_7D60 (164 bytes, GLOBAL_ASM target)"
+    ],
+    "unit_comparison": "NOT_RUN; no production C candidate or source-unit change."
+  },
+  "target": {
+    "name": "func_80007160_7D60",
+    "vma": "0x80007160",
+    "rom_offset": "0x7D60",
+    "size_bytes": 164,
+    "size_words": 41,
+    "sha256": "7aa677204c6a77ba9160f9b0cea482ceecb46376f6178d59e0a3e977a006bc0a",
+    "frame_bytes": 56,
+    "saved_registers": {
+      "ra": "word at sp+0x14",
+      "s_registers": "none"
+    },
+    "owner_save": "sw a0 at callee sp+0x38 (the caller outgoing argument-home word) across helper calls"
+  },
+  "callers": [
+    {
+      "function": "func_8000702C_7C2C",
+      "call_pc": "0x80007114",
+      "argument_setup": "Immediately before default dispatch, lw a1,0x54(sp) loads received OSMesg; jal delay slot sets a0=owner. No intervening call changes a1.",
+      "return_use": "ignored; worker loops back to osRecvMesg"
+    }
+  ],
+  "behavior": {
+    "arguments": {
+      "a0": "32-bit owner pointer",
+      "a1": "32-bit OSMesg/task pointer for the default-message path"
+    },
+    "duplicate_and_counter": "lw/addiu/sw owner+0x2B4 increments a 32-bit word before comparing a1 with global word D_80167854. Equal values return after the increment. Otherwise store a1 to the global before calling helpers. Initialization in func_80006DF0 zeros owner+0x2B4 and D_80167854.",
+    "task_enqueue": "Call func_80007634(owner,message). Its first load reads message+0x10. Type 2 appends through owner+0x29C/+0x2A4 and sets owner+0x2B8; other types append through owner+0x2A0/+0x2A8. It clears message+0 and stores (message+8 & 3) at message+4. This helper does not mask interrupts and does not change owner+0x2AC/+0x2B0.",
+    "flags_and_probe": "Read owner+0x2AC and +0x2B0 as 32-bit words. a3 bit 1 is set iff +0x2AC is zero; bit 0 iff +0x2B0 is zero. Call func_800077B8(owner,&stack_24,&stack_20,flags). If v0 equals flags, return. Helper internals beyond observed loads/stores/outputs are not inferred.",
+    "gate_and_start": "Otherwise lbu D_80167858; nonzero returns. Zero calls func_8000769C(owner,stack_24,stack_20). The byte is initialized to zero by func_80006DF0, set in one func_8000769C path, and reset by func_80007324.",
+    "interrupts_and_aliasing": "No osSetIntMask occurs in this target. Its duplicate global compare/store is unsynchronized in the observed body; do not claim general thread/interrupt atomicity. The owner is reloaded from stack after helpers rather than kept in a saved register."
+  },
+  "host_model": {
+    "test_file": "decomp/test_scheduler_queue.c",
+    "new_cases": [
+      "equal zero initial sentinel still increments the 32-bit owner counter, including wrap from 0xFFFFFFFF to zero, and skips helper calls",
+      "new 32-bit task pointer is stored before the first mock helper and forwarded in a1",
+      "all four flag combinations from owner+0x2AC/+0x2B0 zero/nonzero states",
+      "exact owner and guest stack-local argument addresses for 077B8",
+      "077B8 return equal to flags skips the final helper",
+      "nonzero gate byte skips the final helper; zero gate byte forwards both mock outputs to 0769C"
+    ],
+    "negative_control": "Temporary mutant returned on duplicate before incrementing owner+0x2B4; it exited 134 at the expected counter assertion.",
+    "limitations": "Helpers are explicit call/output mocks. The host model does not reproduce queue arbitration, task scheduling, interrupt behavior or in-game state."
+  },
+  "toolchain": {
+    "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "sanitizers": "AddressSanitizer and UndefinedBehaviorSanitizer",
+    "ido": "NOT_RUN; no matching-C candidate was prepared."
+  },
+  "decision": {
+    "classification": "RESEARCH_ONLY",
+    "native_variants_tested": 0,
+    "production_candidate_integrated": false,
+    "production_source_changed": false,
+    "header_changed": false,
+    "manifest_changed": false,
+    "proof_changed": false,
+    "full_rom_g2": "NOT_RUN",
+    "inventory_rebuild": "NOT_RUN",
+    "matching_c_delta": 0,
+    "matching_byte_delta": 0,
+    "reason": "The target is an event/task handler whose queue helper semantics remain assembly-owned. The ROM-backed control-flow/ABI trace and mocked host tests passed; no candidate C or source-unit match exists, so preserve GLOBAL_ASM."
+  },
+  "tests": {
+    "original_rom_span": "PASS; 41/41 words match at ROM 0x7D60.",
+    "host_reference": "PASS; GCC 15.2 ASan/UBSan command exited 0.",
+    "negative_control": "PASS; increment-after-duplicate mutant exited 134 at the expected assertion.",
+    "decomp_suite": "PASS; python3 -m unittest discover -s decomp -p 'test_*.py' -q; 157/157.",
+    "verifier_suite": "PASS; python3 -m unittest tests.test_decomp_verify -q; 17/17.",
+    "skill_task_suite": "PASS; python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -q; 17/17.",
+    "task_context": "PASS; python3 -m decomp.skill_context --validate returned CONSISTENT_STORED_REPORTS; --task G64-080 returned the expected brief.",
+    "local_ci": "UNAVAILABLE; npx run-local-ci run --quiet --all --pause-on-failure exited 1 because .github/workflows is absent.",
+    "full_rom_g2": "NOT_RUN; no source-unit-exact candidate.",
+    "inventory_rebuild": "NOT_RUN; no source-unit-exact candidate.",
+    "in_game": "NOT_RUN; static/host research only.",
+    "host_reference_command": "gcc -std=c11 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Idecomp/test_support decomp/scheduler_queue.c decomp/test_scheduler_queue.c -o /tmp/g64-079-scheduler-queue-host && /tmp/g64-079-scheduler-queue-host"
+  },
+  "current_stored_proof": {
+    "status": "unchanged; production source, manifest, verifier inputs and inventory were not changed",
+    "matching_c": 149,
+    "matching_bytes": 11148,
+    "full_rom_match": true,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "combined_c": 162,
+    "asm": 7214,
+    "identified_entries": 7376
+  },
+  "next": "Continue with G64-080, the files/object/scheduler batch gate; retain assembly for all non-exact units.",
+  "source_hashes": {
+    "PROGRESS.md": "9f259d701d83a8415dd53bdca2722a312ed67e9bb9177e12ba07bb792eed4b78",
+    "decomp/CONTINUE.md": "c7c8a471eeb849984f72bb07fdaa6bda93d83dde0598e48eca5f84bf95fd0c17",
+    "decomp/MASTER_WORK_QUEUE.md": "2a71637b0e025924bc8d6aa15f0b3245721d4f9e46e96c94ed8e24fa1125bcdd",
+    "decomp/plans/EXECUTION_STRATEGY_V2.md": "943c8a0523f92e56904b333550d98d52d297c60cc856e9ae2d697da02768fed5",
+    "decomp/plans/EXECUTOR_PROTOCOL.md": "0475e9bba7f3142ff74f22f5aab8dcc83c6dd269da8be7b71ee5d8d850275c8e",
+    "decomp/plans/README.md": "5906370dadbad61c3c66ca4d259b6286438c9eb6a53aee00ca6fd6466d28bd4d",
+    "decomp/plans/TASKS_100.json": "f5b166fec2ac339118d9ca565ace96d1cad80ef528f59e98f0a9edeed067193c",
+    "decomp/plans/phases/PHASE_08.md": "a08aa072f845c2bf01c2954acc6d9a1e797fbe5408a19e009f6739373c79aa17",
+    "decomp/scheduler_queue.c": "4fc57d559824dc05ce75ed0c997d17bd5b20973ccd8b0cf87e6e64a8b8173312",
+    "decomp/test_scheduler_queue.c": "734e8074423bcd5900d42de0a4c8398d5f446e709c1053a1c7b803170409aa97",
+    "decomp/manifest.json": "b1eb0eded6f5ae8507cd3a24be4ae2614e134c13e3e64f6d2d4996933d345e62",
+    "decomp/results/combined.json": "47d36be2f30d2d8e1f2c3be68d536986a66d2bc17080e2bed539261d30099ee7",
+    "decomp/results/inventory.json": "47a7a2afab85ef4d7d94e27809baf5764076bc135e76cea57c53dc26720db9c6",
+    "decomp/plans/execution/2026-11-13-g64-078-scheduler-queue.json": "a222865fd5182b1df5b545608c9705d9455aefcf21121cffa3449e78bac4a813"
+  },
+  "pinned_assembly_hashes": {
+    "asm/usa/79F0.s": "8319b858fe8791de62fe3982194703dad25842c0673e608eb803b493c378875e"
+  }
+}

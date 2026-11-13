@@ -37,8 +37,8 @@ typedef enum {
 typedef struct {
     SchedulerTraceKind kind;
     uint32_t arg0; /* queue or callback address */
-    uint32_t arg1; /* message or owner argument */
-    uint32_t arg2; /* osSendMesg flags or received message */
+    uint32_t arg1; /* first traced argument, queue message, or owner */
+    uint32_t arg2; /* flags, received message, or second callback argument */
 } SchedulerTraceEvent;
 
 typedef struct SchedulerQueueReference SchedulerQueueReference;
@@ -114,6 +114,7 @@ static void scheduler_dispatch_reference(SchedulerQueueReference *state,
         return;
     }
     default:
+        /* Trace 07160's actual call tuple: a0=owner, a1=received message. */
         scheduler_trace(state, SCHEDULER_TRACE_DEFAULT_HANDLER,
                         SCHEDULER_FUNC_07160, state->owner_address, message);
         if (state->event_hook != 0) {
@@ -221,7 +222,7 @@ static void test_single_and_multiple_message_dispatch_order(void) {
     const uint32_t many[] = {
         SCHEDULER_MESSAGE_29B,
         SCHEDULER_MESSAGE_29C,
-        0x299,
+        0x80300024u,
     };
 
     scheduler_init(&single, 0x80020000u);
@@ -245,7 +246,189 @@ static void test_single_and_multiple_message_dispatch_order(void) {
     assert(multiple.trace[4].kind == SCHEDULER_TRACE_RECEIVE);
     assert(multiple.trace[5].kind == SCHEDULER_TRACE_DEFAULT_HANDLER);
     assert(multiple.trace[5].arg0 == SCHEDULER_FUNC_07160);
-    assert(multiple.trace[5].arg2 == 0x299);
+    assert(multiple.trace[5].arg1 == 0x80030000u);
+    assert(multiple.trace[5].arg2 == 0x80300024u);
+}
+
+enum {
+    SCHEDULER_FUNC_07634 = 0x80007634u,
+    SCHEDULER_FUNC_077B8 = 0x800077B8u,
+    SCHEDULER_FUNC_0769C = 0x8000769Cu,
+    SCHEDULER_EVENT_CALL_CAPACITY = 3
+};
+
+typedef struct {
+    uint32_t function;
+    uint32_t a0;
+    uint32_t a1;
+    uint32_t a2;
+    uint32_t a3;
+} SchedulerEventCall;
+
+typedef struct {
+    uint32_t guest_address;
+    uint32_t count_2b4;
+    uint32_t state_2ac;
+    uint32_t state_2b0;
+} SchedulerEventOwner;
+
+/* Helpers are recorded/mocked; these controls do not assert their native effects. */
+typedef struct {
+    SchedulerEventOwner owner;
+    uint32_t last_message;
+    uint8_t global_gate_byte;
+    uint32_t check_result;
+    uint32_t check_output_1;
+    uint32_t check_output_2;
+    uint32_t frame_sp;
+    uint32_t prepare_seen_count;
+    uint32_t prepare_seen_message;
+    SchedulerEventCall calls[SCHEDULER_EVENT_CALL_CAPACITY];
+    uint32_t call_count;
+} SchedulerEventReference;
+
+static void scheduler_record_event_call(SchedulerEventReference *state,
+                                        uint32_t function,
+                                        uint32_t a0,
+                                        uint32_t a1,
+                                        uint32_t a2,
+                                        uint32_t a3) {
+    SchedulerEventCall *call;
+
+    assert(state->call_count < SCHEDULER_EVENT_CALL_CAPACITY);
+    call = &state->calls[state->call_count++];
+    call->function = function;
+    call->a0 = a0;
+    call->a1 = a1;
+    call->a2 = a2;
+    call->a3 = a3;
+}
+
+/* One default-message path from 07160; outputs/return are the 077B8 mock. */
+static void scheduler_default_message_reference(SchedulerEventReference *state,
+                                                uint32_t message) {
+    uint32_t flags;
+
+    state->owner.count_2b4++;
+    if (message == state->last_message) {
+        return;
+    }
+    state->last_message = message;
+
+    scheduler_record_event_call(state, SCHEDULER_FUNC_07634,
+                                state->owner.guest_address, message, 0, 0);
+    state->prepare_seen_count = state->owner.count_2b4;
+    state->prepare_seen_message = state->last_message;
+
+    /* MIPS tests bit 1 when +0x2AC is zero and bit 0 when +0x2B0 is zero. */
+    flags = (state->owner.state_2ac == 0 ? 2u : 0u) |
+            (state->owner.state_2b0 == 0 ? 1u : 0u);
+    scheduler_record_event_call(state, SCHEDULER_FUNC_077B8,
+                                state->owner.guest_address,
+                                scheduler_guest_add(state->frame_sp, 0x24),
+                                scheduler_guest_add(state->frame_sp, 0x20),
+                                flags);
+
+    if (state->check_result == flags || state->global_gate_byte != 0) {
+        return;
+    }
+
+    scheduler_record_event_call(state, SCHEDULER_FUNC_0769C,
+                                state->owner.guest_address,
+                                state->check_output_1,
+                                state->check_output_2, 0);
+}
+
+static void scheduler_event_reference_init(SchedulerEventReference *state,
+                                           uint32_t owner_address) {
+    memset(state, 0, sizeof(*state));
+    state->owner.guest_address = owner_address;
+    state->frame_sp = 0x7FFFE000u;
+}
+
+static void test_default_message_duplicate_still_increments_word_counter(void) {
+    SchedulerEventReference state;
+    const uint32_t message = 0;
+
+    scheduler_event_reference_init(&state, 0x80080000u);
+    state.owner.count_2b4 = 0xFFFFFFFFu;
+    state.last_message = message;
+    scheduler_default_message_reference(&state, message);
+
+    assert(state.owner.count_2b4 == 0);
+    assert(state.last_message == message);
+    assert(state.call_count == 0);
+}
+
+static void test_default_message_flags_call_order_and_32_bit_argument(void) {
+    uint32_t state_a2ac_zero;
+    uint32_t state_b2b0_zero;
+
+    for (state_a2ac_zero = 0; state_a2ac_zero <= 1; state_a2ac_zero++) {
+        for (state_b2b0_zero = 0; state_b2b0_zero <= 1; state_b2b0_zero++) {
+            SchedulerEventReference state;
+            const uint32_t message = 0x80100020u +
+                (state_a2ac_zero << 1) + state_b2b0_zero;
+            const uint32_t expected_flags =
+                (state_a2ac_zero ? 2u : 0u) |
+                (state_b2b0_zero ? 1u : 0u);
+
+            scheduler_event_reference_init(&state, 0x80081000u);
+            state.owner.count_2b4 = 7;
+            state.owner.state_2ac = state_a2ac_zero ? 0 : 1;
+            state.owner.state_2b0 = state_b2b0_zero ? 0 : 1;
+            state.last_message = 0;
+            state.check_result = expected_flags;
+            scheduler_default_message_reference(&state, message);
+
+            assert(state.owner.count_2b4 == 8);
+            assert(state.prepare_seen_count == 8);
+            assert(state.prepare_seen_message == message);
+            assert(state.last_message == message);
+            assert(state.call_count == 2);
+            assert(state.calls[0].function == SCHEDULER_FUNC_07634);
+            assert(state.calls[0].a0 == 0x80081000u);
+            assert(state.calls[0].a1 == message);
+            assert(state.calls[1].function == SCHEDULER_FUNC_077B8);
+            assert(state.calls[1].a0 == 0x80081000u);
+            assert(state.calls[1].a1 == 0x7FFFE024u);
+            assert(state.calls[1].a2 == 0x7FFFE020u);
+            assert(state.calls[1].a3 == expected_flags);
+        }
+    }
+}
+
+static void test_default_message_gate_and_conditional_start_call(void) {
+    SchedulerEventReference gated;
+    SchedulerEventReference start;
+    const uint32_t message = 0x80345678u;
+
+    scheduler_event_reference_init(&gated, 0x80082000u);
+    gated.owner.state_2ac = 0;
+    gated.owner.state_2b0 = 0;
+    gated.last_message = 0;
+    gated.check_result = 0;
+    gated.global_gate_byte = 1;
+    scheduler_default_message_reference(&gated, message);
+    assert(gated.call_count == 2);
+    assert(gated.calls[1].a3 == 3);
+
+    scheduler_event_reference_init(&start, 0x80083000u);
+    start.owner.state_2ac = 0;
+    start.owner.state_2b0 = 0;
+    start.last_message = 0;
+    start.check_result = 0;
+    start.global_gate_byte = 0;
+    start.check_output_1 = 0x81000024u;
+    start.check_output_2 = 0x82000020u;
+    scheduler_default_message_reference(&start, message);
+    assert(start.call_count == 3);
+    assert(start.calls[0].function == SCHEDULER_FUNC_07634);
+    assert(start.calls[1].function == SCHEDULER_FUNC_077B8);
+    assert(start.calls[2].function == SCHEDULER_FUNC_0769C);
+    assert(start.calls[2].a0 == 0x80083000u);
+    assert(start.calls[2].a1 == 0x81000024u);
+    assert(start.calls[2].a2 == 0x82000020u);
 }
 
 static void test_notification_sends_single_and_multiple_nodes(void) {
@@ -340,5 +523,8 @@ int main(void) {
     test_notification_sends_single_and_multiple_nodes();
     test_callback_head_mutation_is_observed_by_next_event();
     test_send_boundary_reloads_live_next_and_payload();
+    test_default_message_duplicate_still_increments_word_counter();
+    test_default_message_flags_call_order_and_32_bit_argument();
+    test_default_message_gate_and_conditional_start_call();
     return 0;
 }

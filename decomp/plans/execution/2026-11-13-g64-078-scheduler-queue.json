@@ -66,7 +66,7 @@
       "0x29B": "func_80007324_7F24(owner); return ignored; loop to receive",
       "0x29C": "func_80007478_8078(owner); return ignored; loop to receive",
       "0x29D": "walk list head owner+0x298 and send owner+0x20 to each node destination queue",
-      "other": "func_80007160_7D60(owner); return ignored; loop to receive"
+      "other": "func_80007160_7D60(owner, received_message); a0=owner and a1=the 32-bit OS message loaded from the worker's sp+0x54 local; return ignored; loop to receive"
     },
     "list_node": {
       "next_pointer": "+0, loaded after osSendMesg returns",
@@ -152,5 +152,6 @@
     "asm/usa/79F0.s": "8319b858fe8791de62fe3982194703dad25842c0673e608eb803b493c378875e",
     "asm/usa/main.s": "5364fddf6c30a237717271449cebbb4079c61f1982754c1d5c73130d75290836",
     "asm/usa/389C0.s": "a22df7c70ea581dfe84089b8f8f651476af757b88e16d73779c402ac46a1e1f8"
-  }
+  },
+  "post_publication_correction": "G64-079 confirmed the worker calls func_80007160_7D60 with owner in a0 and the received 32-bit OSMesg/task pointer in a1. The original G64-078 host trace stored owner and message in arg1/arg2 respectively; this correction clarifies that dispatch contract without changing the G64-078 test result or its recorded source hashes."
 }

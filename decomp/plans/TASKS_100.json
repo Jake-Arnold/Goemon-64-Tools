@@ -3360,7 +3360,7 @@
         "decomp/scheduler_queue.c",
         "decomp/test_scheduler_queue.c"
       ],
-      "architecture_design": "Trace the 308-byte worker func_8000702C_7C2C beside the exact 8-byte owner+0x40 helper. The worker blocks on the input queue, dispatches messages 0x29A–0x29C to owner callbacks, routes other messages to 80007160, and for 0x29D sends owner+0x20 through each node's destination queue at +4 before reloading next at +0. Keep the target GLOBAL_ASM; do not rewrite scheduling behavior for prettier C.",
+      "architecture_design": "Trace the 308-byte worker func_8000702C_7C2C beside the exact 8-byte owner+0x40 helper. The worker blocks on the input queue, dispatches messages 0x29A–0x29C to owner callbacks, routes other messages to 80007160 with owner in a0 and the received 32-bit OS message in a1, and for 0x29D sends owner+0x20 through each node's destination queue at +4 before reloading next at +0. Keep the target GLOBAL_ASM; do not rewrite scheduling behavior for prettier C.",
       "explicit_acceptance": "Verify the pinned 77-word original span and model empty/single/multiple receives, notification-list traversal, callback order, callback-boundary mutation, and 32-bit guest offsets in a sanitized host reference test. Host evidence does not qualify for matching-C promotion.",
       "implementation_sequence": [
         "Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.",
@@ -3394,7 +3394,7 @@
       "ordinal": 79,
       "phase": 8,
       "title": "Analyze scheduler 80007160",
-      "status": "PLANNED",
+    "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-078"
       ],
@@ -3402,8 +3402,8 @@
         "decomp/scheduler_queue.c",
         "decomp/test_scheduler_queue.c"
       ],
-      "architecture_design": "Recover second scheduler_queue.c ASM function; assess ordering, interrupt/state assumptions and alias relationships.",
-      "explicit_acceptance": "Static and mocked call-order checks cover actual branches; G1 then G2 needed before promotion.",
+    "architecture_design": "Trace func_80007160_7D60 as the worker's default task-message handler. Verify the 32-bit owner/message arguments and saved state, the owner+0x2B4 increment before the duplicate-message guard, D_80167854 update, zero-state flag construction from owner+0x2AC/+0x2B0, and conditional queue/task helper order. Preserve GLOBAL_ASM and keep unresolved helper behavior opaque.",
+    "explicit_acceptance": "Verify all 41 original words and test the duplicate/null path, counter wrap and ordering, all four zero-state flag combinations, exact 32-bit helper arguments, and return/gate-dependent helper call order with mocks. Host tests do not qualify for promotion; a candidate would still need original-unit G1 and full-ROM G2.",
       "implementation_sequence": [
         "Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.",
         "Read the exact focus files: decomp/scheduler_queue.c, decomp/test_scheduler_queue.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.",
@@ -3415,8 +3415,8 @@
         "Update only truthful evidence and `PROGRESS.md`; commit scoped work to `chatgptweb/decomp` and verify remote SHA. Never force-push, modify `main`, or commit ROMs/binaries."
       ],
       "focused_testing": "Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.",
-      "negative_control": "Preserve actual list termination, mutation order, signed/unsigned table arithmetic and atomicity; do not introduce a safety check that changes original native code.",
-      "stop_or_recovery": "If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.",
+    "negative_control": "Reject a mutant that performs the duplicate-message return before incrementing owner+0x2B4; original MIPS increments the 32-bit word first, including when the incoming message equals the saved global word.",
+    "stop_or_recovery": "This is a ROM-backed trace with mocked helper calls; no candidate C or IDO variants are warranted while queue-helper semantics remain unresolved. Record RESEARCH_ONLY and retain GLOBAL_ASM. Do not run G1/G2 without a source-unit-exact candidate; never edit compiled instructions or comparison masks.",
       "evidence_requirements": [
         "current branch head and manifest/source hashes",
         "original function VMA/ROM extent plus correct source ownership",

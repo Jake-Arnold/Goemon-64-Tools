@@ -235,7 +235,7 @@ Four IDO variants produced 152, 144, 152 and 152 bytes versus 180. The second mo
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
 
-**Outcome (2026-11-13):** Pinned assembly and the SHA-1-verified USA ROM agree on all 77 words of `func_8000702C_7C2C` (VMA `0x8000702C`, ROM `0x7C2C`, 308 bytes; SHA-256 `31dfb3b32e85f2273a5418d4177fd9d8e8d0cf1a8707f93b6dedf4029aa2d2f1`). The adjacent `func_80007024_7C24` is an exact 8-byte `owner + 0x40` helper. The worker blocks in `osRecvMesg(owner + 0x40, &message, 1)`, routes `0x29A`, `0x29B`, and `0x29C` to `80007204`, `80007324`, and `80007478` with the owner argument, routes other messages to `80007160`, ignores callback returns, and loops. For `0x29D`, it traverses the head at owner `+0x298`: each node's `+4` destination queue receives the message pointer owner `+0x20` with flag 0. The current node's queue is read before `osSendMesg`; its `+0` next pointer is reloaded after the send returns. The insertion helper independently stores the destination queue at node `+4` and links through `+0`. The worker is created by `func_80006DF0_79F0`; no callback/send mutation is asserted as real behavior.
+**Outcome (2026-11-13):** Pinned assembly and the SHA-1-verified USA ROM agree on all 77 words of `func_8000702C_7C2C` (VMA `0x8000702C`, ROM `0x7C2C`, 308 bytes; SHA-256 `31dfb3b32e85f2273a5418d4177fd9d8e8d0cf1a8707f93b6dedf4029aa2d2f1`). The adjacent `func_80007024_7C24` is an exact 8-byte `owner + 0x40` helper. The worker blocks in `osRecvMesg(owner + 0x40, &message, 1)`, routes `0x29A`, `0x29B`, and `0x29C` to `80007204`, `80007324`, and `80007478` with the owner argument, and routes other messages to `80007160` with owner in `$a0` and the received 32-bit OS message in `$a1` (loaded from the worker's `sp+0x54` local). It ignores handler returns and loops. For `0x29D`, it traverses the head at owner `+0x298`: each node's `+4` destination queue receives the message pointer owner `+0x20` with flag 0. The current node's queue is read before `osSendMesg`; its `+0` next pointer is reloaded after the send returns. The insertion helper independently stores the destination queue at node `+4` and links through `+0`. The worker is created by `func_80006DF0_79F0`; no callback/send mutation is asserted as real behavior.
 
 **Host reference and negative control:** `decomp/test_scheduler_queue.c` covers empty blocking receive, single and ordered multiple dispatch, empty/single/multiple notification lists, exact 32-bit guest offsets, callback-boundary head replacement and send-boundary live-link/payload reload. GCC 15.2 ASan/UBSan passed. A mutant that cached `node->next` before the send was rejected by the reload assertion. The injected mutations test when values are loaded; they do not claim that a particular callback or `osSendMesg` mutates the list.
 
@@ -245,10 +245,10 @@ Four IDO variants produced 152, 144, 152 and 152 bytes versus 180. The second mo
 
 ### G64-079 — Analyze scheduler 80007160
 
-**Status:** PLANNED. **Dependencies:** G64-078.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-078 (`RESEARCH_ONLY`).
 **Focus files:** `decomp/scheduler_queue.c`; `decomp/test_scheduler_queue.c`.
 
-**Architectural intent:** Recover second scheduler_queue.c ASM function; assess ordering, interrupt/state assumptions and alias relationships.
+**Architectural intent:** Trace the 164-byte default handler invoked by the G64-078 worker. Confirm both argument words, saved state, duplicate-message handling, owner state flags, and conditional helper call order. Keep helper side effects bounded to instructions actually examined.
 
 **Numbered implementation recipe:**
 1. Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.
@@ -262,13 +262,22 @@ Four IDO variants produced 152, 144, 152 and 152 bytes versus 180. The second mo
 
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
-**Explicit acceptance:** Static and mocked call-order checks cover actual branches; G1 then G2 needed before promotion.
+**Explicit acceptance:** Verify all 41 original words and test the equal-message path including the zero initial sentinel, 32-bit counter wrap/order, all four zero-state flag combinations, exact 32-bit helper arguments, and conditional helper order through mocks. Host evidence does not qualify for promotion; any candidate still needs original-unit G1 and full-ROM G2.
 
-**Required negative control:** Preserve actual list termination, mutation order, signed/unsigned table arithmetic and atomicity; do not introduce a safety check that changes original native code.
+**Required negative control:** Reject a mutant that performs the duplicate-message return before incrementing owner `+0x2B4`; original MIPS increments the 32-bit word first, including when the incoming message equals the saved global word.
 
-**Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
+**Stop/recovery:** This is a ROM-backed trace with mocked helper calls; no candidate C or IDO variants are warranted while queue-helper semantics remain ASM-owned. Record RESEARCH_ONLY and retain `GLOBAL_ASM`. Do not run G1/G2 without a source-unit-exact candidate; never edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+
+**Outcome (2026-11-13):** Pinned assembly and the SHA-1-verified USA ROM agree on all 41 words of `func_80007160_7D60` at VMA `0x80007160`, ROM `0x7D60`, size 164 bytes; SHA-256 `7aa677204c6a77ba9160f9b0cea482ceecb46376f6178d59e0a3e977a006bc0a`. Its only caller is the G64-078 worker at `0x80007114`, which passes owner in `$a0` and the just-loaded 32-bit `OSMesg` in `$a1`; for non-reserved messages the value is expected to be a task pointer, as the first helper reads `message+0x10`. The handler increments owner `+0x2B4` as a 32-bit word before comparing `$a1` with global word `D_80167854`; equal values return after the increment, while new values are stored before further calls. It then calls `80007634(owner, message)`, derives bits 1 and 0 from whether owner words `+0x2AC` and `+0x2B0` are zero, and calls `800077B8(owner, &local_24, &local_20, flags)`. If the helper result equals `flags`, it returns. Otherwise it reads `D_80167858` as an unsigned byte; a nonzero value returns, while zero calls `8000769C(owner, local_24, local_20)`. The first helper links the message task into owner-managed lists at `+0x29C/+0x2A4` or `+0x2A0/+0x2A8` based on the task's word at `+0x10`, initializes its `+0/+4` link/flags, and sets owner `+0x2B8` on the first category. It does not mask interrupts or update `+0x2AC/+0x2B0`; helper 077B8's internal arbitration and caller-specific task meanings remain opaque. The handler saves `$ra` at `sp+0x14`, keeps owner in the caller argument-home word at `sp+0x38`, and saves no `$s` registers. It does not mask interrupts; its return value is ignored by the worker.
+
+**Host reference and negative control:** `decomp/test_scheduler_queue.c` models the equal-message path including the zero initial sentinel, 32-bit counter wrap and increment-before-guard order, all four zero-state flag combinations, 32-bit pointer arguments, the 077B8-equal early return, the nonzero-byte gate, and the conditional 0769C call with mock output words. Helpers are explicit mocks; their other state changes are not inferred by the model. GCC 15.2 ASan/UBSan passed. A mutant that returns on duplicate before incrementing the owner word was rejected at the expected counter assertion.
+
+**Disposition and limitations:** no candidate C or IDO trial was warranted while the original helper/state behavior remains ASM-owned. Keep `80007160` as `GLOBAL_ASM`; no source-unit comparison, G1/G2, inventory rebuild, or in-game verification occurred. Production source, manifest, proof and inventory remain unchanged at 149/149 functions / 11,148 bytes. See `plans/execution/2026-11-13-g64-079-scheduler-queue-handler.json`.
+
+**Next:** G64-080, gate the files/object/scheduler batch without changing accepted ownership unless a fresh full-ROM proof qualifies.
 
 ### G64-080 — Gate files/object/scheduler batch
 
