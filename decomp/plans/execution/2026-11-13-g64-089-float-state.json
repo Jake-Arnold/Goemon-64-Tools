@@ -1,0 +1,277 @@
+{
+  "task_id": "G64-089",
+  "title": "Select first float-state batch",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "Architect v2 Wave C. Sol ranked the five retained float-state targets and diagnosed V1; Luna compiled two bounded hypotheses in the original unit and stopped at Sol's discriminator.",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "0f912433cb1103df8293ac03f845cf8260f9ac93",
+    "fetched_remote_head": "0f912433cb1103df8293ac03f845cf8260f9ac93",
+    "worktree_clean_before_task": true,
+    "dependencies": {
+      "G64-081": "RESEARCH_ONLY",
+      "G64-082": "PASSED_G2",
+      "G64-083": "RESEARCH_ONLY",
+      "G64-084": "PASSED_G2",
+      "G64-085": "PASSED_G2",
+      "G64-086": "PASSED_G2"
+    },
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "ranking": [
+    {
+      "rank": 1,
+      "symbol": "func_80006B44_7744",
+      "vma": "0x80006B44",
+      "rom_offset": "0x7744",
+      "size_bytes": 180,
+      "evidence": "One confirmed direct caller at 0x80006B10 supplies a Gfx cursor in $a0 and f32 step bits in $a1; small typed leaf with recoverable command writes and loop behavior."
+    },
+    {
+      "rank": 2,
+      "symbol": "func_8000643C_703C",
+      "vma": "0x8000643C",
+      "rom_offset": "0x703C",
+      "size_bytes": 300,
+      "evidence": "Clears twelve timing slots and ten float globals; no direct incoming reference found."
+    },
+    {
+      "rank": 3,
+      "symbol": "func_80006BF8_77F8",
+      "vma": "0x80006BF8",
+      "rom_offset": "0x77F8",
+      "size_bytes": 504,
+      "evidence": "Four direct calls from 0x8000693C reveal a cursor, color, float operands and row argument; several command paths and FPU rounding increase risk."
+    },
+    {
+      "rank": 4,
+      "symbol": "func_8000693C_753C",
+      "vma": "0x8000693C",
+      "rom_offset": "0x753C",
+      "size_bytes": 520,
+      "evidence": "Initializes display-list state and calls 0x80006BF8 four times and 0x80006B44 once; no direct incoming reference found."
+    },
+    {
+      "rank": 5,
+      "symbol": "func_80006568_7168",
+      "vma": "0x80006568",
+      "rom_offset": "0x7168",
+      "size_bytes": 980,
+      "evidence": "Fourteen-entry timing dispatcher with 64-bit conversions; no direct incoming reference found."
+    }
+  ],
+  "target": {
+    "symbol": "func_80006B44_7744",
+    "vma": "0x80006B44",
+    "rom_offset": "0x7744",
+    "size_bytes": 180,
+    "original_span_sha256": "f3c812c09c4c4edd635eb3d47e081fe7ab07be3d0461bf4b2cfdddcd712b25fa",
+    "original_assembly_source": "asm/usa/6F50.s",
+    "original_assembly_source_sha256": "8350694c04af6b4514ac598318e5dae9ee78cdd0682a776e8a313c9d11ec4ee4",
+    "source_unit": "decomp/float_state.c",
+    "source_unit_rom_span": "[0x7030, 0x79F0)",
+    "source_unit_vma": "0x80006430",
+    "source_unit_bytes": 2496,
+    "original_unit_sha256": "b8662908fbb1c3a326d86b7a8e47c3594634274a60005672d396dab6964e9ee9",
+    "production_source_sha256_unchanged": "2ac652d7af8475af82c8b71b26209c012d0f3056c3847325932f9c66d6b4a42b",
+    "production_test_sha256_unchanged": "da78365b5fa1102297e48fe48023081161375b1bc63167d5155073be09660944",
+    "manifest_sha256_unchanged": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "manifest_owner_before": "GLOBAL_ASM",
+    "manifest_owner_after": "GLOBAL_ASM"
+  },
+  "abi_and_behavior": {
+    "confirmed_direct_call_sites": 1,
+    "caller": "func_8000693C_753C",
+    "caller_site": "0x80006B10",
+    "arguments": {
+      "$a0": "Gfx cursor pointer",
+      "$a1": "f32 step bits, moved from $f20 after signed divide-to-f32"
+    },
+    "observed_behavior": [
+      "Advance the display-list cursor and emit the E700 pair in w1-then-w0 store order, then emit the F700 pair in w0-then-w1 order.",
+      "Read signed global D_8005B230_5BE30; a negative value returns after the two initial command pairs.",
+      "For a nonnegative bound, truncate the f32 step once and emit inclusive indexed F6 pairs using the low ten coordinate bits.",
+      "Reload D_8005B230_5BE30 at the loop tail; preserve cursor advancement and the original per-command word order."
+    ],
+    "uncertainty": "Caller and ROM instruction evidence close the input ABI and command path. The host buffer tests validate semantics but do not prove native store order or global reloads."
+  },
+  "model_review": {
+    "sol_6_1_high_ranking": "Selected 0x80006B44 as the only native candidate: shortest target with one caller that closes the cursor and f32 argument types. Larger functions had unresolved incoming-call evidence or materially more FPU/dispatch complexity.",
+    "v1_diagnosis": "REGISTER_LIFETIME and scheduling mismatch, not ABI or relocation. Original keeps packet pointer in $v1, truncated step in $a1 and loop index in $a2; V1 uses $v0, $v1 and $a1. Differences span prologue, guard/conversion, body and loop tail.",
+    "v2_approval": "Initialize i=0 before the signed gate and use that same induction value in the guard, preserving do/while, volatile reads, conversion placement, command stores and loop body. Predicted move $a2,$zero before bltz, mfc1 $a1 after trunc.w.s, multu $a1,$a2 and a tail compare using $a2.",
+    "v2_result": "Mismatch count improved from 38 to 36 words, but first mismatch remained lw $v1,0($a0) versus lw $v0,0($a0). The predicted move became move $v1,$zero; mfc1 $a1 was at +0x60 rather than +0x5C, and multiply/tail comparison used $v1 rather than $a2.",
+    "stop_rule": "Freeze after this Sol-approved V2. No unrelated syntax or qualifier variants."
+  },
+  "variant_budget": {
+    "task_limit": 5,
+    "historical_measured_distinct_variants": 0,
+    "historical_needs_context_excluded": "An older needs_context/untyped_structure row had no source variant or measured native mismatch and was not replayed or counted.",
+    "new_distinct_variants_run": 2,
+    "counted_task_total": 2,
+    "unused_task_slots": 3,
+    "stop_reason": "Sol's V2 discriminator failed: first saved-register mismatch persisted and predicted loop-register roles did not appear."
+  },
+  "native_candidates": [
+    {
+      "ordinal": 1,
+      "hypothesis": "Emit observed command words through Gfx fields, use a signed volatile global gate, truncate the float once, and loop while reloading the gate after each F6 pair.",
+      "source_sha256": "80fbe73bf8452f504723217ae352bedaa0aee92d80d77c25b36b526147b9d2fb",
+      "object_sha256": "b5dba8dffe3f4e6600bf3f1fee4deb0fbe52c179b2d45ad6a1221ab46d00f0f5",
+      "linked_elf_sha256": "17557cb16e40bc06506f15bf241cce5501e045d644973df481ad4057abb2b7ef",
+      "linked_target_sha256": "1c2438158a6ef2a753c820c0cd5cbac8cb31421dc672665c33843e8b086802fd",
+      "linked_unit_sha256": "fc83a8c8b0fbd95cea2c8b7550eea9ac9c728633bdcbf9c83e898dc6a1e7b70a",
+      "unit_report_sha256": "249d64da19ca8da5fb63d623a23ef058247c9fdfdc4f0d3afbdaa4e2f2691760",
+      "target_bytes": 180,
+      "target_byte_mismatches": 94,
+      "target_word_mismatches": 38,
+      "first_mismatch": {
+        "target_offset": "+0x00",
+        "vma": "0x80006B44",
+        "expected": "lw $v1,0($a0) (0x8C830000)",
+        "candidate": "lw $v0,0($a0) (0x8C820000)",
+        "category": "REGISTER_LIFETIME / instruction scheduling"
+      },
+      "all_mismatches_confined_to_target": true,
+      "whole_unit_exact": false,
+      "siblings_exact": [
+        "func_80006430_7030",
+        "func_8000643C_703C",
+        "func_80006568_7168",
+        "func_8000693C_753C",
+        "func_80006BF8_77F8"
+      ],
+      "target_global_relocations": [
+        "+0x20 R_MIPS_HI16 D_8005B230_5BE30",
+        "+0x34 R_MIPS_LO16 D_8005B230_5BE30"
+      ],
+      "attempt_ledger": {
+        "run_id": 12,
+        "attempt_id": 12,
+        "input_signature": "b506fcf3121779e0b4e9211ef69030743315b5155b0abbd1e3c5b84ee476c0ad",
+        "attempt_signature": "2554dd1879e08e12a65cb0b53f685b2ce3ea66cd43a871a420c59eaef4b4c4e6",
+        "record_status": "mismatch",
+        "record_valid": true
+      }
+    },
+    {
+      "ordinal": 2,
+      "hypothesis": "Sol-approved: initialize i before the signed gate and use the same value in the guard, retaining the original conversion, volatile reads, stores and do/while loop.",
+      "source_sha256": "39b20b154fe98a6db7b4700c0487701fd63fd55fc818188db8e3d1297e790925",
+      "object_sha256": "470a46b766d1ddd094f7bd141acbf11c543861b8b4bb093dd010908a4f2aa529",
+      "linked_elf_sha256": "4bf6196f79443b8a4ab8e103cd960be4ddc001f300340fe1c05a356e70dd8942",
+      "linked_target_sha256": "67fc7290cdb20b06f4f47b04be7b846b46d5e244a3672cb42f1f2927c6935a3a",
+      "linked_unit_sha256": "e1e53543c686b11cb111fe37ea7a85ac6d8a8692e9828c8dfcf019bf970de395",
+      "unit_report_sha256": "a79a3743452eed985bb58d25930546efe8b7907faa356a3b29fd0a843f381102",
+      "target_bytes": 180,
+      "target_byte_mismatches": 79,
+      "target_word_mismatches": 36,
+      "first_mismatch": {
+        "target_offset": "+0x00",
+        "vma": "0x80006B44",
+        "expected": "lw $v1,0($a0) (0x8C830000)",
+        "candidate": "lw $v0,0($a0) (0x8C820000)",
+        "category": "REGISTER_LIFETIME / instruction scheduling"
+      },
+      "all_mismatches_confined_to_target": true,
+      "whole_unit_exact": false,
+      "siblings_exact": [
+        "func_80006430_7030",
+        "func_8000643C_703C",
+        "func_80006568_7168",
+        "func_8000693C_753C",
+        "func_80006BF8_77F8"
+      ],
+      "target_global_relocations": [
+        "+0x20 R_MIPS_HI16 D_8005B230_5BE30",
+        "+0x34 R_MIPS_LO16 D_8005B230_5BE30"
+      ],
+      "attempt_ledger": {
+        "run_id": 13,
+        "attempt_id": 13,
+        "input_signature": "13c68f8a720fc04542a2a9727f1d411c06882a196aa7f0f1e96a406b7314b9f8",
+        "attempt_signature": "3c322bd1f9d5d3abf0d3d4bc8803b69b8305e614a08b2320453508d94758eaef",
+        "record_status": "mismatch",
+        "record_valid": true
+      }
+    }
+  ],
+  "native_unit_proof": {
+    "compiler": {
+      "name": "IDO 5.3",
+      "sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+      "compile_command": "make -B build/usa/src/float_state.c.o (in the ignored pinned candidate checkout)",
+      "compile_exit_status": 0,
+      "text_bytes": "0x9C0",
+      "linker": "LLD 21.1.8 at original VMA 0x80006430",
+      "m2c_pin": "a21c1dcd7255b176c032bb932f521846e98d4372",
+      "python_version": "3.14.4"
+    },
+    "translation_unit_bytes": 2496,
+    "original_unit_sha256": "b8662908fbb1c3a326d86b7a8e47c3594634274a60005672d396dab6964e9ee9",
+    "object_relocation_count": 209,
+    "whole_unit_exact": false,
+    "all_five_siblings_exact": true,
+    "comparison_reports_private": "practice/diagnostics/decomp-100-inputs/g64-089/unit-v*-report.json"
+  },
+  "host_semantics": {
+    "status": "PASS",
+    "sanitizers": [
+      "AddressSanitizer",
+      "UndefinedBehaviorSanitizer"
+    ],
+    "coverage": [
+      "negative/zero/positive signed global gates and command counts",
+      "positive and negative fractional steps with truncation toward zero",
+      "ten-bit coordinate wrap",
+      "cursor advancement and command word contents/order",
+      "signed zero"
+    ],
+    "command": "gcc -std=c11 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -ffp-contract=off -Ihost_include host_candidate.c host_test.c -o host-test && ./host-test",
+    "exit_status": 0,
+    "negative_control": "Changing the strict signed gate from <0 to <=0 was rejected by the gate-zero cursor-count assertion."
+  },
+  "attempt_ledger": {
+    "status": "PASS; two signed mismatch records validated",
+    "database": "practice/diagnostics/decomp-100-inputs/g64-082/attempts.sqlite",
+    "database_sha256_after_append": "08cdf0dccde60f510f32b194b284c84f4faf16c269eb95f72fa229f32e506e4b",
+    "records": [
+      {
+        "variant": 1,
+        "run_id": 12,
+        "attempt_id": 12,
+        "input_signature": "b506fcf3121779e0b4e9211ef69030743315b5155b0abbd1e3c5b84ee476c0ad",
+        "attempt_signature": "2554dd1879e08e12a65cb0b53f685b2ce3ea66cd43a871a420c59eaef4b4c4e6"
+      },
+      {
+        "variant": 2,
+        "run_id": 13,
+        "attempt_id": 13,
+        "input_signature": "13c68f8a720fc04542a2a9727f1d411c06882a196aa7f0f1e96a406b7314b9f8",
+        "attempt_signature": "3c322bd1f9d5d3abf0d3d4bc8803b69b8305e614a08b2320453508d94758eaef"
+      }
+    ]
+  },
+  "source_and_proof": {
+    "production_c_changed": false,
+    "production_tests_changed": false,
+    "manifest_sha256_unchanged": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "stored_results_combined_sha256_unchanged": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "stored_results_inventory_sha256_unchanged": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694",
+    "stored_proof": {
+      "matched_functions": 153,
+      "matched_bytes": 11800,
+      "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+    },
+    "fresh_full_rom_g2": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "reason": "Neither source variant reproduced the complete original float_state.c unit; target remains GLOBAL_ASM."
+  },
+  "post_task_selection": {
+    "sol_selection": "G64-041 is the first Wave D task, rank 1/84; it traces the 440-byte display-list cursor writer at 0x8003E234 before G64-042 and G64-043. G64-045 is eligible runner-up at 80/100; G64-047 is deferred for lack of a fresh native hypothesis.",
+    "next_task": "G64-041"
+  }
+}

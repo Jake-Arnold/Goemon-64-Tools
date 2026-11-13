@@ -3826,7 +3826,7 @@
       "ordinal": 89,
       "phase": 9,
       "title": "Select first float-state batch",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-081",
         "G64-082",

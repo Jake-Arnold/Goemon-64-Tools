@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-13 — G64-089 first float-state batch (RESEARCH_ONLY)
+
+- **Changed:** recorded Sol's five-target ranking, two bounded native attempts and mismatch review in [`decomp/plans/execution/2026-11-13-g64-089-float-state.json`](decomp/plans/execution/2026-11-13-g64-089-float-state.json); updated the task ledger, Phase 09 and current handoffs. Production C, host-test source, manifest and stored proof are unchanged; `func_80006B44_7744` remains `GLOBAL_ASM`.
+- **Why:** select the smallest float-state target with caller-confirmed ABI, then stop when the Sol-approved loop-lifetime discriminator failed to move code generation toward the original.
+- **Evidence:** the 180-byte function at VMA `0x80006B44` / ROM `0x7744` has one direct caller at `0x80006B10`, passing a `Gfx` cursor in `$a0` and `f32` step bits in `$a1`. IDO 5.3 compiled the candidate inside the complete 2,496-byte `float_state.c` unit at its original VMA. V1 differed in 38 target words; the first was `lw $v1,0($a0)` versus `$v0`. Sol approved initializing the loop index before the guard; V2 reduced the mismatch to 36 words but retained the first difference and used `$v1` instead of the predicted `$a2` for loop roles. All five siblings and the target's two global relocation offsets remained exact. Two signed attempt records validate.
+- **Tests:** the GCC ASan/UBSan host harness passed six original-derived cases; a strict-gate mutant failed at the expected gate-zero cursor assertion. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` — 157 passed; `python3 -m unittest tests.test_decomp_verify -q` — 17 passed; `python3 -m decomp.skill_context --validate` — consistent stored reports; G64-041 task brief — correct. JSON parsing, attempt-record validation and `git diff --check` passed. Local CI was not run because `.github/workflows` is absent. No in-game verification.
+- **Limitations/next:** the full source unit was not exact, so fresh G2 and inventory were not run; the stored proof remains 153/153 functions and 11,800 bytes. Sol selected G64-041 as Wave D's first task, rank 1 at 84/100; trace its eleven command writes and per-command word order before any new native variant.
+
 ### 2026-11-13 — G64-083 math helper 8000E4E4 (RESEARCH_ONLY)
 
 - **Changed:** recorded two native attempts and the Sol mismatch review in [`decomp/plans/execution/2026-11-13-g64-083-math-helper.json`](decomp/plans/execution/2026-11-13-g64-083-math-helper.json); updated the task ledger, Phase 09 and current handoffs. Production C, host-test source, manifest and proof reports remain unchanged; the target remains `GLOBAL_ASM`.
