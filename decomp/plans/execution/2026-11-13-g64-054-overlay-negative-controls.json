@@ -1,0 +1,149 @@
+{
+  "task_id": "G64-054",
+  "title": "Expand fail-closed overlay tests",
+  "date": "2026-11-13",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "base_head": "ecd60e7da90171c7a6f0f3eddfb4c140ff79f9d8",
+    "fetched_remote_head_at_start": "ecd60e7da90171c7a6f0f3eddfb4c140ff79f9d8",
+    "worktree_at_start": "dirty with resumed G64-054 edits in the three focus files",
+    "dependencies": "G64-052=RESEARCH_ONLY; G64-053=RESEARCH_ONLY"
+  },
+  "implementation": {
+    "files": [
+      "decomp/overlay_file43.py",
+      "decomp/test_overlay_file43.py",
+      "tests/test_decomp_elf_layout.py",
+      "decomp/plans/TASKS_100.json",
+      "decomp/plans/phases/PHASE_06.md",
+      "decomp/CONTINUE.md",
+      "PROGRESS.md"
+    ],
+    "design": "Linked file_43 validation rejects unrelated allocated sections whose VMA overlaps the output section, even if their names are unrelated, while allowing distinct .file_N overlays that intentionally reuse the same RAM VMA. Synthetic fixtures cover named aliases, wrong section ID, wrong section extent, overlapping function aliases, symbol-size lies, defined-to-undefined relocation changes, and text/rodata bytes outside the requested function. Whole-section ROM equality is checked after function-level comparisons so target byte failures retain their specific diagnostic. REL-reader tests cover symbol/target-section retention and out-of-range symbol indexes.",
+    "overlay_mapping": {
+      "rom_start": "0x6F34E0",
+      "rom_end": "0x6FB200",
+      "vma_start": "0x08000000",
+      "bytes": 32032
+    },
+    "original_function_context": [
+      {
+        "name": "func_080001BC_6F369C",
+        "vma": "0x080001BC",
+        "rom_offset": "0x6F369C",
+        "bytes": 96,
+        "candidate_source": "decomp/candidates/key_spawn_gate.c",
+        "production_owner": "not integrated in the main manifest; unpromoted"
+      },
+      {
+        "name": "func_08006490_6F9970",
+        "vma": "0x08006490",
+        "rom_offset": "0x6F9970",
+        "bytes": 140,
+        "candidate_source": "decomp/candidates/ghost_probe.c",
+        "production_owner": "not integrated in the main manifest; unpromoted"
+      }
+    ],
+    "negative_controls": [
+      "unexpected allocated non-overlay section overlap at file_43 VMA",
+      "named .file_43 alias",
+      "wrong output section identifier",
+      "oversized output section",
+      "overlapping function symbol bounds",
+      "candidate function symbol-size lie",
+      "relocation target changed from defined to undefined",
+      "changed unclaimed text-tail and rodata bytes",
+      "changed target function instructions retain a function-specific failure"
+    ]
+  },
+  "tests": {
+    "focused_all": {
+      "command": "python3 -W error -m unittest decomp.test_overlay_file43 decomp.test_overlay_manifest tests.test_decomp_verify tests.test_decomp_elf_layout -q",
+      "exit_code": 0,
+      "status": "PASS",
+      "tests": 70
+    },
+    "overlay_focused": {
+      "command": "python3 -m unittest decomp.test_overlay_file43 -q",
+      "exit_code": 0,
+      "status": "PASS",
+      "tests": 40
+    },
+    "main_verifier_and_elf_regression": {
+      "command": "python3 -m unittest tests.test_decomp_verify tests.test_decomp_elf_layout -q",
+      "exit_code": 0,
+      "status": "PASS",
+      "tests": 22
+    },
+    "project_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 188,
+      "verifier_ledger_tests": 94,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "py_compile": {
+      "command": "python3 -m py_compile decomp/overlay_file43.py decomp/test_overlay_file43.py tests/test_decomp_elf_layout.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "status": "PASS"
+    },
+    "python_version": "3.14.4",
+    "retained_linked_elf_cli": {
+      "command": "python3 -m decomp.overlay_file43 --splat <private-USA-splat.yaml> --reference <decompressed-USA-ROM> --reference-elf <retained-G64-082-baseline-ELF> --candidate-elf <retained-G64-082-candidate-ELF> --function func_080001BC_6F369C --function func_08006490_6F9970",
+      "exit_code": 0,
+      "status": "PASS",
+      "input": "Private decompressed-USA reference and retained G64-082 baseline/candidate ELFs; no rebuild",
+      "section_relocations": 1593,
+      "functions": [
+        {
+          "name": "func_080001BC_6F369C",
+          "bytes": 96,
+          "relocations": 8,
+          "code_matches_original": true,
+          "relocations_match_reference": true
+        },
+        {
+          "name": "func_08006490_6F9970",
+          "bytes": 140,
+          "relocations": 10,
+          "code_matches_original": true,
+          "relocations_match_reference": true
+        }
+      ],
+      "promotion_claim": false
+    }
+  },
+  "production_context": {
+    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "overlay_file43_source_sha256": "57c3df5ef6d584ae7e112448c831b3b44dc26ff23ecb25eb09acea60a461b3cc",
+    "overlay_test_sha256": "1210f07d0bf85d8a1eeaff5853aea697e6bd10ac60a19e0de0a4992468e915fb",
+    "elf_layout_test_sha256": "304922f1c20fa766f2fa01677f4e421136ac400eb8d66aa26250988388c1e32b",
+    "verify_source_sha256": "d84f22751fe74d1006399a466752f3805c1764f6b547b63fe82ffba9d62b5174",
+    "elf_layout_source_sha256": "c74a406574549f6fa1d1cb87f3408519dfaf57eb138ba7c90925ff0c5cd2e61d",
+    "combined_proof_sha256": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
+    "manifest_changed": false,
+    "verify_py_changed": false,
+    "elf_layout_py_changed": false,
+    "stored_proof_changed": false,
+    "matching_c_delta": 0,
+    "fresh_native_ido_unit": "NOT_RUN",
+    "fresh_full_rom_g2": "NOT_RUN",
+    "fresh_inventory": "NOT_RUN",
+    "private_rom_or_elf_used_for_this_task": true,
+    "retained_g2_inputs_used_as_read_only_positive_control": true
+  },
+  "decision": {
+    "status": "RESEARCH_ONLY",
+    "reason": "Synthetic negative controls strengthen the overlay checker and confirm the existing main-segment regression suite, but do not establish real candidate source ownership, linked native output, or production overlay integration.",
+    "next": "G64-055 \u2014 Define the guarded overlay integration adapter"
+  }
+}

@@ -4,6 +4,7 @@ import struct
 import tempfile
 import unittest
 from decomp.elf_layout import pack_vm_assignment_rodata, pack_object_file
+from decomp.probe import Elf32
 
 
 def fixture():
@@ -27,6 +28,24 @@ def fixture():
 
 
 class ElfLayoutTests(unittest.TestCase):
+    def test_rel_reader_preserves_target_section_and_symbol(self):
+        original, _, _ = fixture()
+        elf = Elf32(original)
+        relocations = elf.relocations(2)
+        self.assertEqual(len(relocations), 15)
+        self.assertEqual(relocations[0].offset, 0)
+        self.assertEqual(relocations[0].relocation_type, 2)
+        self.assertEqual(relocations[0].symbol.section, 1)
+        self.assertEqual(elf.names[relocations[0].symbol.section], '.text')
+
+    def test_rel_reader_rejects_undefined_symbol_index_out_of_bounds(self):
+        original, sections, _ = fixture()
+        changed = bytearray(original)
+        struct.pack_into('>I', changed, sections[3][4] + 4, 0x202)
+        elf = Elf32(changed)
+        with self.assertRaisesRegex(ValueError, 'invalid symbol'):
+            elf.relocations(2)
+
     def test_only_two_section_metadata_fields_change(self):
         original,sections,shoff=fixture()
         packed,evidence=pack_vm_assignment_rodata(original)

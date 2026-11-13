@@ -144,12 +144,28 @@ def _linked_file43(elf_bytes: bytes, label: str):
     indices = [i for i, name in enumerate(elf.names) if name == ".file_43"]
     if len(indices) != 1:
         raise ValueError(f"{label} must contain one .file_43 output section")
+    aliases = [name for name in elf.names
+               if name.startswith(".file_43_") and name != ".file_43_bss"]
+    if aliases:
+        raise ValueError(f"{label} contains file_43 section aliases: {aliases}")
     index = indices[0]
     section = elf.sections[index]
     expected_size = ROM_END - ROM_START
     if (section[1] != 1 or section[2] != 0x7 or section[3] != VMA_START or
             section[5] != expected_size or section[8] != 16):
         raise ValueError(f"{label} .file_43 VMA, flags, type, size or alignment differs")
+    section_end = section[3] + section[5]
+    for other_index, other in enumerate(elf.sections):
+        if (other_index == index or not (other[2] & 0x2) or other[5] == 0):
+            continue
+        other_name = elf.names[other_index]
+        other_overlay = re.fullmatch(r"\.file_(\d+)(?:_bss)?", other_name)
+        if other_overlay and other_overlay.group(1) != "43":
+            # Distinct Splat overlays intentionally reuse the same RAM VMA.
+            continue
+        other_end = other[3] + other[5]
+        if other[3] < section_end and section[3] < other_end:
+            raise ValueError(f"{label} has an allocated section overlapping .file_43")
     payload = elf.payload(index)
 
     relocation_indices = [
@@ -211,6 +227,18 @@ def validate_linked_elf_provenance(splat_yaml: str, reference_rom: bytes,
     if original_payload != expected_overlay:
         raise ValueError("reference ELF .file_43 bytes differ from mapped original ROM")
 
+    def reject_function_aliases(elf: Elf32, section_index: int, symbol,
+                                label: str) -> None:
+        start, end = symbol.value, symbol.value + symbol.size
+        for other in elf.symbols:
+            if (other.name == symbol.name or other.kind != 2 or
+                    other.section != section_index):
+                continue
+            overlaps = (other.value < end and start < other.value + other.size
+                        if other.size else start <= other.value < end)
+            if overlaps:
+                raise ValueError(f"{label} has overlapping function alias for {symbol.name}")
+
     function_results = []
     for name in function_names:
         vma, rom_offset, size, expected_sha = FUNCTIONS[name]
@@ -229,6 +257,8 @@ def validate_linked_elf_provenance(splat_yaml: str, reference_rom: bytes,
                 (candidate_symbol.value, candidate_symbol.size) != expected_symbol or
                 candidate_symbol.binding not in (1, 2)):
             raise ValueError(f"candidate ELF symbol/section differs for {name}")
+        reject_function_aliases(original, original_index, original_symbol, "reference ELF")
+        reject_function_aliases(candidate, candidate_index, candidate_symbol, "candidate ELF")
 
         expected_code = reference_rom[rom_offset:rom_offset + size]
         original_code = original.code(original_symbol)
@@ -271,6 +301,12 @@ def validate_linked_elf_provenance(splat_yaml: str, reference_rom: bytes,
                 for item in candidate_relocs
             ],
         })
+
+    # Check the complete output section after function extents so code changes
+    # retain their specific diagnostic while unclaimed text/rodata bytes and
+    # padding remain bound to the original ROM as well.
+    if candidate_payload != expected_overlay:
+        raise ValueError("candidate ELF .file_43 bytes differ from mapped original ROM")
 
     result["linked_elf_provenance"] = {
         "format": "goemon-file43-linked-elf-provenance-v1",

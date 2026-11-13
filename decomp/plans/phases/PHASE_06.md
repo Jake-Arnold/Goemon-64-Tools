@@ -126,7 +126,7 @@ matching-C claim changed. This is provenance-only, not a fresh G2 or integration
 
 ### G64-054 — Expand fail-closed overlay tests
 
-**Status:** PLANNED. **Dependencies:** G64-052, G64-053.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-052, G64-053.
 **Focus files:** `decomp/test_overlay_file43.py`; `tests/test_decomp_elf_layout.py`.
 
 **Architectural intent:** Create mutation fixtures for text/rodata padding, aliases, duplicate function bounds, symbol-size lies and altered undefined relocations.
@@ -144,6 +144,24 @@ matching-C claim changed. This is provenance-only, not a fresh G2 or integration
 **Focused tests:** `python3 -m unittest decomp.test_overlay_file43 -q`; for any section/ELF adapter changes run `python3 -m unittest tests.test_decomp_verify tests.test_decomp_elf_layout -q`. Both original section hashes and full-ROM equality must hold for promotion.
 
 **Explicit acceptance:** Each intentionally corrupted fixture fails, while untouched main-segment verifier continues passing its existing regression suite.
+
+**Outcome (2026-11-13):** expanded the linked-ELF fixtures to reject an
+unexpected allocated VMA overlap even when the section has an unrelated name,
+while allowing distinct `.file_N` overlays that intentionally share the same
+RAM VMA. Named `.file_43_*` aliases, wrong output-section IDs and extra section
+extent also fail closed. Added controls for overlapping function bounds, a
+lying function size, changed defined-to-undefined relocation targets, and
+changed unclaimed bytes in both text and rodata. Function-code mutations retain
+their specific error, while section-tail mutations are caught by the
+full-section ROM binding. REL-reader tests verify target section/symbol
+preservation and reject an out-of-range symbol index. The 40 overlay tests and
+22 main verifier / ELF-layout regressions passed. The 188-test decomp suite,
+94-test verifier / ledger suite, task/evidence validation, and host sanitizer
+gate passed. The retained G64-082 baseline/candidate ELF pair also passed the
+checker against the private reference input: 1,593 section relocations and
+both functions' 8/10 relocation records matched. No fresh native build, G2,
+inventory rebuild or promotion was performed. See
+`../execution/2026-11-13-g64-054-overlay-negative-controls.json`.
 
 **Required negative control:** Do not use the main-segment ROM/VMA formula for overlays; reject section aliasing, overlap, hash mismatch and isolated byte matches as promotions.
 

@@ -10,14 +10,19 @@ except ImportError:
     import overlay_file43 as mod
 
 
-def linked_overlay_elf(data, *, section_vma=0x08000000, section_size=48,
-                       include_function=True, function_vma=0x08000004,
-                       relocation_target=2):
+def linked_overlay_elf(data, *, section_name='.file_43', section_vma=0x08000000,
+                       section_size=48, section_alias=False, include_function=True,
+                       function_vma=0x08000004, function_size=8,
+                       function_alias=False, relocation_target=2,
+                       relocation_target_section=1, overlap_section=False,
+                       sibling_overlay=False):
     """Build a small linked MIPS ELF carrying a file_43 section and REL table."""
-    shnames = b'\0.file_43\0.rel.file_43\0.symtab\0.strtab\0.shstrtab\0'
-    names = b'\0func_08000004_0004\0target\0target2\0'
+    shnames = (b'\0' + section_name.encode() +
+               b'\0.rel.file_43\0.file_43_alias\0.file_44\0.unexpected_overlap\0'
+               b'.symtab\0.strtab\0.shstrtab\0')
+    names = b'\0func_08000004_0004\0func_alias\0target\0target2\0'
     string_offsets = {name: names.index(name + b'\0') for name in (
-        b'func_08000004_0004', b'target', b'target2')}
+        b'func_08000004_0004', b'func_alias', b'target', b'target2')}
     content = bytearray(52)
 
     def append(payload, alignment=4):
@@ -28,44 +33,73 @@ def linked_overlay_elf(data, *, section_vma=0x08000000, section_size=48,
 
     sections = [(0,) * 10]
     section_offset = append(data[:section_size], 16)
-    sections.append((shnames.index(b'.file_43\0'), 1, 7, section_vma,
+    sections.append((shnames.index(section_name.encode() + b'\0'), 1, 7, section_vma,
                      section_offset, section_size, 0, 0, 16, 0))
+    if sibling_overlay:
+        sibling_offset = append(data[12:16], 4)
+        sections.append((shnames.index(b'.file_44\0'), 1, 7, section_vma,
+                         sibling_offset, 4, 0, 0, 4, 0))
     relocation_offset = append(struct.pack('>II', function_vma,
                                            (relocation_target << 8) | 2))
+    relocation_section_index = len(sections)
     sections.append((shnames.index(b'.rel.file_43\0'), 9, 0x40, 0,
-                     relocation_offset, 8, 3, 1, 4, 8))
+                     relocation_offset, 8, 0, 1, 4, 8))
+    if section_alias:
+        alias_offset = append(data[4:8], 4)
+        sections.append((shnames.index(b'.file_43_alias\0'), 1, 7,
+                         section_vma + 4, alias_offset, 4, 0, 0, 4, 0))
+    if overlap_section:
+        overlap_offset = append(data[8:12], 4)
+        sections.append((shnames.index(b'.unexpected_overlap\0'), 1, 7,
+                         section_vma + 8, overlap_offset, 4, 0, 0, 4, 0))
 
     symbols = [bytes(16)]
     if include_function:
         symbols.append(struct.pack('>IIIBBH', string_offsets[b'func_08000004_0004'],
-                                   function_vma, 8, 0x12, 0, 1))
+                                   function_vma, function_size, 0x12, 0, 1))
+        if function_alias:
+            symbols.append(struct.pack('>IIIBBH', string_offsets[b'func_alias'],
+                                       function_vma, function_size, 0x12, 0, 1))
     target_index = len(symbols)
     symbols.append(struct.pack('>IIIBBH', string_offsets[b'target'],
-                               0x08000030, 4, 0x12, 0, 1))
+                               0x08000030 if relocation_target_section else 0,
+                               4, 0x12, 0, relocation_target_section))
     second_target_index = len(symbols)
     symbols.append(struct.pack('>IIIBBH', string_offsets[b'target2'],
                                0x08000034, 4, 0x12, 0, 1))
-    if relocation_target == 2 and target_index != relocation_target:
-        relocation_target = target_index
-    elif relocation_target == 3 and second_target_index != relocation_target:
-        relocation_target = second_target_index
+    relocation_symbol_index = target_index if relocation_target == 2 else (
+        second_target_index if relocation_target == 3 else relocation_target)
     struct.pack_into('>I', content, relocation_offset + 4,
-                     (relocation_target << 8) | 2)
+                     (relocation_symbol_index << 8) | 2)
 
+    symtab_index = len(sections)
     symtab_offset = append(b''.join(symbols), 4)
     sections.append((shnames.index(b'.symtab\0'), 2, 0, 0, symtab_offset,
-                     16 * len(symbols), 4, 1, 4, 16))
+                     16 * len(symbols), 0, 1, 4, 16))
+    sections[relocation_section_index] = (
+        sections[relocation_section_index][0], sections[relocation_section_index][1],
+        sections[relocation_section_index][2], sections[relocation_section_index][3],
+        sections[relocation_section_index][4], sections[relocation_section_index][5],
+        symtab_index, sections[relocation_section_index][7],
+        sections[relocation_section_index][8], sections[relocation_section_index][9])
     strtab_offset = append(names, 1)
     sections.append((shnames.index(b'.strtab\0'), 3, 0, 0, strtab_offset,
                      len(names), 0, 0, 1, 0))
+    strtab_index = len(sections) - 1
+    sections[symtab_index] = (sections[symtab_index][0], sections[symtab_index][1],
+                              sections[symtab_index][2], sections[symtab_index][3],
+                              sections[symtab_index][4], sections[symtab_index][5],
+                              strtab_index, sections[symtab_index][7],
+                              sections[symtab_index][8], sections[symtab_index][9])
     shstrtab_offset = append(shnames, 1)
     sections.append((shnames.index(b'.shstrtab\0'), 3, 0, 0, shstrtab_offset,
                      len(shnames), 0, 0, 1, 0))
+    shstrtab_index = len(sections) - 1
     section_headers = append(b''.join(struct.pack('>10I', *section)
                                       for section in sections), 4)
     content[:16] = b'\x7fELF\x01\x02\x01' + bytes(9)
     struct.pack_into('>HHIIIIIHHHHHH', content, 16, 2, 8, 1, 0, 0,
-                     section_headers, 0, 52, 0, 0, 40, len(sections), 5)
+                     section_headers, 0, 52, 0, 0, 40, len(sections), shstrtab_index)
     return bytes(content)
 
 
@@ -138,6 +172,20 @@ class OverlayFile43Tests(TestCase):
         with self.assertRaisesRegex(ValueError, 'section layout'):
             mod.validate_reference_inputs(changed, self.data, (self.name,))
 
+    def test_reference_input_contract_rejects_wrong_id_rodata_shift_and_padding(self):
+        configs = (
+            self.config().replace('  - name: file_43', '  - name: file_34'),
+            self.config().replace('0x6F9CE0, rodata', '0x6F9CE4, rodata'),
+            self.config().replace('subalign: 16', 'subalign: 8'),
+            self.config().replace(
+                '  - name: file_44',
+                '  - name: file_43_alias\n    type: code\n    start: 0x6FB200\n'
+                '  - name: file_44'),
+        )
+        for changed in configs:
+            with self.subTest(config=changed), self.assertRaises(ValueError):
+                mod.validate_reference_inputs(changed, self.data, (self.name,))
+
     def test_reference_input_contract_rejects_wrong_source_sha1(self):
         changed = self.config().replace(mod.ROM_SHA1, '0' * 40)
         with self.assertRaisesRegex(ValueError, 'SHA-1'):
@@ -163,7 +211,7 @@ class OverlayFile43Tests(TestCase):
             mod.validate_reference_inputs(self.config(), changed, (self.name,))
 
     def test_linked_elf_provenance_accepts_exact_overlay_symbols_and_relocations(self):
-        reference_elf = linked_overlay_elf(self.data)
+        reference_elf = linked_overlay_elf(self.data, sibling_overlay=True)
         with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
                                hashlib.sha256(reference_elf).hexdigest()):
             result = mod.validate_linked_elf_provenance(
@@ -207,6 +255,42 @@ class OverlayFile43Tests(TestCase):
                     self.config(), self.data, reference_elf, candidate_elf, (self.name,)
                 )
 
+    def test_linked_elf_rejects_file43_id_alias_and_overlay_padding(self):
+        reference_elf = linked_overlay_elf(self.data)
+        candidates = (
+            (linked_overlay_elf(self.data, section_name='.file_34'),
+             'one .file_43 output section'),
+            (linked_overlay_elf(self.data, section_alias=True),
+             'section aliases'),
+            (linked_overlay_elf(self.data, overlap_section=True),
+             'allocated section overlapping'),
+            (linked_overlay_elf(self.data, section_size=52),
+             'VMA, flags'),
+        )
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            for candidate_elf, message in candidates:
+                with self.subTest(message=message), self.assertRaisesRegex(ValueError, message):
+                    mod.validate_linked_elf_provenance(
+                        self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                    )
+
+    def test_linked_elf_rejects_changed_unclaimed_text_or_rodata_bytes(self):
+        reference_elf = linked_overlay_elf(self.data)
+        # Exercise bytes outside the requested function at both section tails:
+        # the text tail (offset 31) and a rodata byte (offset 40).
+        for offset in (31, 40):
+            changed = bytearray(self.data)
+            changed[offset] ^= 1
+            candidate_elf = linked_overlay_elf(bytes(changed))
+            with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                                   hashlib.sha256(reference_elf).hexdigest()):
+                with self.subTest(offset=offset), self.assertRaisesRegex(
+                        ValueError, r'candidate ELF \.file_43 bytes differ'):
+                    mod.validate_linked_elf_provenance(
+                        self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                    )
+
     def test_linked_elf_rejects_missing_function_symbol(self):
         reference_elf = linked_overlay_elf(self.data)
         candidate_elf = linked_overlay_elf(self.data, include_function=False)
@@ -227,6 +311,36 @@ class OverlayFile43Tests(TestCase):
                     self.config(), self.data, reference_elf, candidate_elf, (self.name,)
                 )
 
+    def test_linked_elf_rejects_changed_undefined_relocation(self):
+        reference_elf = linked_overlay_elf(self.data)
+        candidate_elf = linked_overlay_elf(self.data, relocation_target_section=0)
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            with self.assertRaisesRegex(ValueError, 'relocation target differs'):
+                mod.validate_linked_elf_provenance(
+                    self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                )
+
+    def test_linked_elf_rejects_duplicate_function_bounds(self):
+        reference_elf = linked_overlay_elf(self.data)
+        candidate_elf = linked_overlay_elf(self.data, function_alias=True)
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            with self.assertRaisesRegex(ValueError, 'overlapping function alias'):
+                mod.validate_linked_elf_provenance(
+                    self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                )
+
+    def test_linked_elf_rejects_function_symbol_size_lie(self):
+        reference_elf = linked_overlay_elf(self.data)
+        candidate_elf = linked_overlay_elf(self.data, function_size=4)
+        with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
+                               hashlib.sha256(reference_elf).hexdigest()):
+            with self.assertRaisesRegex(ValueError, 'symbol/section differs'):
+                mod.validate_linked_elf_provenance(
+                    self.config(), self.data, reference_elf, candidate_elf, (self.name,)
+                )
+
     def test_linked_elf_rejects_changed_function_bytes(self):
         reference_elf = linked_overlay_elf(self.data)
         changed = bytearray(self.data)
@@ -234,7 +348,7 @@ class OverlayFile43Tests(TestCase):
         candidate_elf = linked_overlay_elf(bytes(changed))
         with mock.patch.object(mod, 'REFERENCE_ELF_SHA256',
                                hashlib.sha256(reference_elf).hexdigest()):
-            with self.assertRaisesRegex(ValueError, 'function bytes differ'):
+            with self.assertRaisesRegex(ValueError, 'candidate ELF function bytes differ'):
                 mod.validate_linked_elf_provenance(
                     self.config(), self.data, reference_elf, candidate_elf, (self.name,)
                 )

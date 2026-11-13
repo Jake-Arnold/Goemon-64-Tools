@@ -2267,7 +2267,7 @@
       "ordinal": 54,
       "phase": 6,
       "title": "Expand fail-closed overlay tests",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-052",
         "G64-053"
