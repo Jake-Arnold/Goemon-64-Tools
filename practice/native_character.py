@@ -11,6 +11,7 @@ Research: ogdanimal/Goemon64Recomp-Android,
 from __future__ import annotations
 from dataclasses import dataclass
 import os
+import sys
 
 from practice.checkpoints import GAMEDATA_ADDR, MAP_ADDR, STATE_ADDR, validate_checkpoint, _ensure_capture_safe
 
@@ -156,8 +157,11 @@ def press_native_c_down(pid: int):
     an optional Windows input adapter, NOT the implementation of the game swap.
     Custom keyboard/controller mappings may require manual in-game C-Down.
     """
+    if sys.platform == 'linux':
+        from practice.linux_input import press_key
+        return press_key(pid, "Down")
     if os.name != 'nt':
-        raise OSError('Automatic key press is only supported on Windows; use in-game C-Down')
+        raise OSError('Automatic key press is unsupported on this platform; use in-game C-Down')
     from ctypes import wintypes
     import ctypes
     u, hwnd = _game_window(pid)
@@ -189,8 +193,11 @@ def press_native_debug_accept(pid: int):
     This only confirms a native menu selection already staged by the game.
     The release callback must always run. Rebinds require manual confirmation.
     """
+    if sys.platform == 'linux':
+        from practice.linux_input import press_key
+        return press_key(pid, "space")
     if os.name != 'nt':
-        raise OSError('Native debug keyboard shortcut requires Windows')
+        raise OSError('Native debug keyboard shortcut is unsupported on this platform')
     import ctypes
     from ctypes import wintypes
     u,hwnd=_game_window(pid)

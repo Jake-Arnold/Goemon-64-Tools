@@ -13,7 +13,7 @@ import time
 
 from .engine import load_route, make_route, save_route, segment_names, SplitEngine
 from .livesplit import LiveSplit
-from .memory import Rdram, WindowsProcess, discover_rdram
+from .memory import Rdram, HostProcess, discover_rdram
 
 
 def find_pid(target="auto"):
@@ -39,7 +39,7 @@ def find_pid(target="auto"):
 def monitor(args):
     route = load_route(args.route)
     pid = args.pid or find_pid()
-    proc = WindowsProcess(pid)
+    proc = HostProcess(pid)
     try:
         if args.base:
             base, endian = int(args.base, 0), ("wordswapped" if args.endian=="auto" else args.endian)

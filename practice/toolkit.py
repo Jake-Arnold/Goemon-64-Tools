@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.16 — external Windows UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.17 — host UI for US Goemon.
 
 Observes original-game RDRAM state and manages position bookmarks, route
 calibration, and experimental logical progression checkpoints. Memory writes
@@ -9,18 +9,20 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 from pathlib import Path
+import subprocess
 import time
 import tkinter as tk
 import platform
 import ctypes
 import queue
 import threading
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 import sys
 
 from autosplitter.bridge import find_pid
-from autosplitter.memory import WindowsProcess, Rdram, discover_rdram
+from autosplitter.memory import HostProcess, Rdram, discover_rdram
 from autosplitter.engine import load_route, save_route
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
@@ -90,7 +92,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.16 · USA N64")
+        root.title("Goemon Practice Toolkit v0.11.17 · USA N64")
         root.geometry("1390x900")
         root.minsize(1100, 730)
         apply_theme(root)
@@ -129,7 +131,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.16  |  US Goemon · Recomp / Project64',
+        ttk.Label(header, text='v0.11.17  |  US Goemon · Recomp / Project64',
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -169,6 +171,9 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         self.connect_button = ttk.Button(connection, text='Connect to game',
                    style='Accent.TButton', command=self.connect)
         self.connect_button.pack(fill='x', pady=(0, 7))
+        if sys.platform == 'linux':
+            ttk.Button(connection, text='Launch native Linux recomp',
+                       command=self.launch_linux_recomp).pack(fill='x', pady=(0, 7))
         ttk.Label(connection, textvariable=self.pos_text, style='AccentValue.TLabel').pack(anchor='w')
         ttk.Label(connection, textvariable=self.speed_text, style='CardMuted.TLabel').pack(anchor='w')
         ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
@@ -365,8 +370,32 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
     def bookmark_labels(self):
         return [f"{i+1}. {x['name']} ({x['x']:.1f}, {x['y']:.1f}, {x['z']:.1f})" for i,x in enumerate(self.bookmarks)]
 
+    def launch_linux_recomp(self):
+        """Launch a user-selected native Linux build as our child for ptrace access.
+
+        Selecting an executable does not modify game memory and is available in
+        read-only mode. Flatpak sandbox boundaries may block memory access.
+        """
+        if sys.platform != 'linux':
+            return
+        selected = filedialog.askopenfilename(
+            title='Select native Linux Goemon64Recompiled executable')
+        if not selected:
+            return
+        try:
+            binary = Path(selected).resolve(strict=True)
+            if not binary.is_file() or not os.access(binary, os.X_OK):
+                raise ValueError('Select a locally executable native Linux game binary')
+            process = subprocess.Popen([str(binary)], cwd=str(binary.parent))
+            self._linux_game_process = process
+            self.pid_text.set(str(process.pid))
+            self.connection_target.set('recomp')
+            self.status.set(f'Launched native Linux game PID {process.pid}; connect once started.')
+        except (OSError, ValueError) as exc:
+            self.status.set(f'Linux recomp launch failed: {exc}')
+
     def connect(self):
-        """Start expensive Windows process discovery in a worker, not Tk's event loop.
+        """Start expensive process discovery in a worker, not Tk's event loop.
 
         Only the UI thread may touch Tk widgets. Workers own the new process
         handle until the UI takes it from the completion queue.
@@ -412,14 +441,14 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         process = None
         try:
             pid = pid_hint or find_pid(target)
-            process = WindowsProcess(pid, writable=writable)
+            process = HostProcess(pid, writable=writable)
             if base_hint:
                 base, endian = int(base_hint, 0) if isinstance(base_hint, str) else int(base_hint), (
                     'wordswapped' if endian_hint == 'auto' else endian_hint)
             else:
                 base, endian = discover_rdram(process, endian_hint)
             candidate = Rdram(process, base, endian)
-            sample = candidate.snapshot()
+            sample = candidate.snapshot_for_monitoring()
             self._connect_queue.put(('ok', pid, process, candidate, sample, base, endian))
         except Exception as exc:
             if process is not None:
@@ -478,7 +507,29 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
                     self.root.after(170,self.tick)
                     return
                 self.poll_native_warp_menu(now)
-                s=self.mem.snapshot()
+                s=self.mem.snapshot_for_monitoring()
+                if s.get("player_unavailable_reason"):
+                    # Impact and title/transition scenes need not expose the
+                    # ordinary character, task, position, or action fields.
+                    # Keep the same validated RDRAM handle for global watches.
+                    self.current = None
+                    self.last = self.last_t = None
+                    self.observed_velocity = None
+                    self.pos_text.set('X: —    Y: —    Z: —')
+                    self.speed_text.set('Speed: —')
+                    self.misc_text.set('Normal player unavailable; global memory is still connected')
+                    self.status.set(
+                        f'Connected PID {self.game_pid}; normal player unavailable: '
+                        f'{s["player_unavailable_reason"]}')
+                    self.cancel_pending_restore(quiet=True)
+                    self.pending_direct_warp = None
+                    self.pending_native_warp = None
+                    self.refresh_inspector({})
+                    self.refresh_unlocks()
+                    self.root.after(170, self.tick)
+                    return
+                if self.status.get().startswith(f'Connected PID {self.game_pid}; normal player unavailable:'):
+                    self.status.set(f'Connected PID {self.game_pid}; normal player restored.')
                 now=time.monotonic()
                 self.observed_velocity = None
                 if s["x"] is not None:
@@ -818,7 +869,9 @@ PRACTICE_OPTIONS = ('enable_teleport', 'enable_state_restore', 'enable_debug_men
 
 
 def apply_access_mode(args):
-    """Read-only overrides every legacy opt-in regardless of argument order."""
+    """Read-only overrides legacy writes; Linux defaults to no game writes."""
+    if sys.platform == 'linux' and not getattr(args, 'linux_enable_writes', False):
+        args.read_only = True
     if getattr(args, 'read_only', False):
         for name in (*PRACTICE_OPTIONS, 'enable_scene_warp'):
             setattr(args, name, False)
@@ -832,6 +885,8 @@ def parse_args(argv=None):
     ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
     ap.add_argument("--route",help="route.json from autosplitter import-splits")
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
+    ap.add_argument("--linux-enable-writes",action="store_true",
+                    help="EXPERIMENTAL: opt in to Linux game-memory writes; native key injection and speed controls are unsupported")
     ap.add_argument("--enable-teleport",action="store_true",default=True,help="Write game coordinates (enabled by default)")
     ap.add_argument("--enable-state-restore",action="store_true",default=True,help="Restore logical checkpoints (enabled by default)")
     ap.add_argument("--enable-debug-menu",action="store_true",default=True,help="Allow original debug menu (enabled by default)")

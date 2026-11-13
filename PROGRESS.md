@@ -1,6 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
-### 2026-11-13 — Script VM runtime cursor and resource mapping (RESEARCH_ONLY)
+### 2026-11-13 — Selective native Linux toolkit integration into decomp baseline
+
+- **Changed:** staged exact toolkit file blobs from `chatgptweb/toolkit-linux-native` on an integration branch based on decomp commit `7e3fb2b0e1c38fcb6280eef425533cf37e6cf93d`. Included native Linux process memory adapter, connection/VM inspection improvements, PID-verified input, optional patched-host speed IPC, documentation and dedicated tests. Preserved all decomp source, plans, candidate files, ROM proofs, and previous `PROGRESS.md` history; intentionally excluded the unrelated Plasma branch changes.
+- **Why:** provide Sol and the decomp executor a unified code surface without importing a divergent branch's unrelated six-commit history or rewriting active matching-C files.
+- **Tests:** compared both branches to common ancestor `5ff51ec0`: decomp branch did not alter any transplanted toolkit file, only `PROGRESS.md`. Reviewed exact source-blob SHAs and file scope. Full Python and MIPS proof gates **not executed** from this connector-only environment; do not count this as live-game verification.
+- **Limitations:** no claims that Impact recovery or patched Linux speed control have been reproduced in the live game; matching-C behavior is unchanged. Actual merge into `chatgptweb/decomp` must be guarded against concurrent executor changes.
+- **Next:** run toolkit tests (`python3 -m unittest tests.test_linux_process tests.test_linux_input tests.test_linux_speed_channel tests.test_monitoring_snapshot tests.test_inspector tests.test_live_speed_ui -v`), then existing decomp gates; merge only after review and passing checks.
+
+## 2026-11-13 — Script VM runtime cursor and resource mapping (RESEARCH_ONLY)
 
 - **Changed:** added `decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md`, linked it from `decomp/CONTINUE.md`, and clarified cursor terminology in the VM main-step, resource-callgraph, text-loop, and stream-control traces. Recorded the attached runtime note's separate gameplay-submode field without importing changes from its toolkit branch. Existing G64-046 candidate/test edits remain untouched.
 - **Why:** establish whether `0x80077858` points at VM commands, text tokens, or character progress; connect resource IDs 96/97 to the original loader; and preserve the new state-7 cross-context and state-6 observations as bounded evidence.

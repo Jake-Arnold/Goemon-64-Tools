@@ -25,6 +25,56 @@ class TestInspector(unittest.TestCase):
         self.assertEqual(rows['Map overlay state (observed)'].addr,0x8015C574)
         self.assertEqual(rows['Map ID'].raw,'0x0023')
 
+    def test_rom_grounded_vm_watches_are_read_only_and_distinct(self):
+        _, ram = self.sample()
+        ram.write_guest(0x80077858, (0x8003D000).to_bytes(4, 'big'))
+        ram.write_guest(0x801C77E0, (5).to_bytes(4, 'big'))
+        ram.write_guest(0x801C78E8, (1234).to_bytes(4, 'big'))
+        ram.write_guest(0x801C78FC, b'\xff')
+        rows = {r.name: r for r in get_watches(ram, ram.snapshot(), SCENES)}
+        self.assertNotIn('Event/script VM lock', rows)
+        self.assertEqual(rows['Script cursor (VM)'].raw, '0x8003D000')
+        self.assertEqual(rows['Script VM state'].raw, '0x00000005')
+        self.assertEqual(rows['Script resource ID'].addr, 0x801C78E8)
+        self.assertEqual(rows['Script VM pause byte'].value, '-1')
+        self.assertIn('inferred', rows['Script cursor (VM)'].source)
+
+
+    def test_vm_state_and_gameplay_submode_labels_are_qualified(self):
+        _, ram = self.sample()
+        ram.write_guest(0x801C77E0, (2).to_bytes(4, 'big'))
+        ram.write_guest(0x800C7AA4, b'\x04')
+        rows = {r.name: r for r in get_watches(ram, ram.snapshot(), SCENES)}
+        self.assertIn('interactive selection observed', rows['Script VM state'].value)
+        self.assertIn('Impact gameplay observed', rows['Gameplay submode'].value)
+        self.assertIn('observations', rows['Script VM state'].source)
+        # Evidence-backed map-category labels, not verified original enum names.
+        for submode, expected in (
+            (0, 'dungeon areas observed'),
+            (1, 'overworld areas observed'),
+            (2, 'towns / villages observed'),
+            (3, 'building interiors observed'),
+            (4, 'Impact gameplay observed'),
+            (7, 'Impact introduction observed'),
+        ):
+            with self.subTest(submode=submode):
+                ram.write_guest(0x800C7AA4, bytes([submode]))
+                observed = {r.name: r for r in get_watches(ram, ram.snapshot(), SCENES)}
+                self.assertIn(expected, observed['Gameplay submode'].value)
+                self.assertEqual(observed['Gameplay submode'].raw, f'0x{submode:02X}')
+        ram.write_guest(0x800C7AA4, b'\x04')
+
+        ram.write_guest(0x801C77E0, (7).to_bytes(4, 'big'))
+        rows = {r.name: r for r in get_watches(ram, ram.snapshot(), SCENES)}
+        self.assertIn('scripted dialogue', rows['Script VM state'].value)
+        ram.write_guest(0x801C77E0, (6).to_bytes(4, 'big'))
+        rows = {r.name: r for r in get_watches(ram, ram.snapshot(), SCENES)}
+        self.assertIn('meaning unknown', rows['Script VM state'].value)
+
+        ram.write_guest(0x800C7A94, b'\x06')
+        rows = {r.name: r for r in get_watches(ram, ram.snapshot(), SCENES)}
+        self.assertIn('outside ordinary gameplay', rows['Gameplay submode'].value)
+
     def test_sasuke_battery_bit_live_watch(self):
         _,ram=self.sample()
         ram.write_guest(0x8015C609,b'\x85')

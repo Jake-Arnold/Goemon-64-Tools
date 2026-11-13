@@ -1,4 +1,4 @@
-"""Prepare the pinned, startup-patched runtime for a live Windows speed toggle.
+"""Prepare the pinned, startup-patched runtime for Windows/Linux live speed toggles.
 
 Use only an isolated checkout; this does not build or replace an executable.
 """

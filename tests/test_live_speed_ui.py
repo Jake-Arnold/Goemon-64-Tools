@@ -1,3 +1,4 @@
+import sys
 import tkinter as tk
 import unittest
 from types import SimpleNamespace
@@ -10,7 +11,11 @@ class LiveSpeedUITests(unittest.TestCase):
     def setUp(self):
         try:self.root=tk.Tk()
         except tk.TclError as exc:self.skipTest(str(exc))
-        self.root.withdraw();self.app=Toolkit(self.root,parse_args([]))
+        self.root.withdraw()
+        # Mocked Windows speed controls remain testable when Linux UI defaults
+        # to read-only; do not relax the production Linux default.
+        flags = ['--linux-enable-writes'] if sys.platform == 'linux' else []
+        self.app = Toolkit(self.root, parse_args(flags))
     def tearDown(self):self.root.destroy()
 
     def test_dashboard_has_one_speed_control(self):
