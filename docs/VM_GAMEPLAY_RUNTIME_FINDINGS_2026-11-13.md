@@ -125,3 +125,20 @@ The screenshots show this value changing alongside the charging mechanic. Its ex
 Observed offsets from the stable resource block base `0x802F7060`: enemy HP +0x0, Ryo +0x4, oil +0x8, special-attack charge byte +0xF. These are address relationships, not yet a verified C struct. Existing normal-character pointer validation remains independent; the toolkit's special-mode monitoring must not treat these addresses as ordinary player objects.
 
 **Next research focus:** find original MIPS reads/writes of this 16-byte region, confirm field widths/charge reset, and distinguish fixed globals from a consistently allocated battle struct. Do not imply that a charge maximum of 100 or any particular threshold has been confirmed.
+
+### Full-width special-charge field validation (14 Nov 2026)
+
+The user added a 32-bit unsigned watch at **`0x802F706C`** and compared it directly with the original 8-bit watch at **`0x802F706F`**. Both showed **79** at the same time (`u32 0x0000004F` and `u8 0x4F`), and the user reports the two readings remain identical throughout repeated charging and discharge. Consequently, the value at `0x802F706F` is consistent with the low byte of a **fourth aligned 32-bit value**. This is a strong runtime-supported 32-bit representation, not yet MIPS proof of the native instruction width.
+
+The user additionally verified the special charge has an observed gameplay range **0 through 100**. Firing one Ryo shot increases the *special-attack charge counter* by exactly **1**; other game actions also increase or decrease it. Executing the charged special attack resets the value to **0**. The exact other actions and thresholds remain to be enumerated; this refers to charge, not an increase in the Ryo currency balance.
+
+The now-observed contiguous 16-byte resource region is:
+
+| Offset | N64 guest address | Read type | User-validated field |
+| --- | --- | --- | --- |
+| `+0x00` | `0x802F7060` | `u32` | Current enemy boss HP |
+| `+0x04` | `0x802F7064` | `u32` | Impact Ryo balance |
+| `+0x08` | `0x802F7068` | `u32` | Impact oil / health |
+| `+0x0C` | `0x802F706C` | `u32` | Special-attack charge (0–100 observed) |
+
+The first three addresses have been confirmed by the user across all Impact bosses tested and after game restart. A similar multi-boss/restart test of the **fourth** aligned field has not been separately established. For all four, actual native access widths, precise struct ownership, reset semantics across modes and original code-level writers/readers remain to be traced. This section supersedes the earlier statement that the 100 maximum and fourth-width hypothesis were unverified.

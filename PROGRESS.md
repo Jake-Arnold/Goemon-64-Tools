@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Verify 32-bit Impact special charge and 0–100 behaviour
+
+- **Observed:** `u32 0x802F706C` and the previously discovered `u8 0x802F706F` show the same charge reading (79 in one screenshot). User reports consistent equality through charge cycles, 0–100 range, +1 special-charge unit for each Ryo shot, other charging/discharging effects and return to 0 after using a special attack.
+- **Result:** a four-value 16-byte Impact resource block is supported by live readings: enemy HP `0x802F7060`, Ryo `0x802F7064`, oil `0x802F7068`, special-attack charge `0x802F706C`, all monitored as `u32`. Updated the runtime evidence document.
+- **Limitations:** the screenshots and user's tests establish observed 32-bit representations, not original MIPS access-width instructions, struct ownership or the fourth field's cross-restart stability. No toolkit code or memory-editing behaviour changed.
+- **Tests:** user-reported live tests and screenshot; no new automated tests or independent live reproduction. Next reverse-engineering step is to identify original code readers/writers and the effect of special-attack charge events.
+
 ### 2026-11-14 — Verify stable Impact resources and special-attack charge byte
 
 - **Observed across fights/restart:** user confirms enemy HP `u32 0x802F7060`, Ryo `u32 0x802F7064`, and oil `u32 0x802F7068` retain their addresses across every Impact boss they tested and after a game restart.
