@@ -52,3 +52,30 @@ Existing unlock/ownership field `0x8015C6F3` means **Mini Ebisumaru ability acqu
 ## Confidence and next engineering step
 
 These are **high-value runtime candidates**, not confirmed ROM symbols, native flag semantics, transformation multipliers or safe editing targets. Prefer narrowing the original MIPS controller/actor update path over adding unconditional controls or production writes to the toolkit. The toolkit's `Value Search` can maintain live previews while no game-memory modification occurs.
+
+## 11:05:26 follow-up: settled states and manual countdown (14 November 2026)
+
+New evidence: the user's 24.24-second follow-up video `Screencast From 2026-11-14 11-05-26.mp4` and two still screenshots, plus the user's explicit report of a controlled manual memory edit. The video shows the N64 game and custom Live Memory watches; samples below are asynchronous toolkit/video observations, not instruction-atomic readings. No media or raw RAM dumps are stored in the repository.
+
+| Approx. video time | Visible state | `u8 0x8020C8E6` | `u8 0x8020C8E7` | `u16 0x8020C8E6` | `u8 0x801C159A` |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 0 s | Normal | 0 | 0 | 0 (`0x0000`) | 52 (`0x34`) |
+| 6–12 s | Miniature | 255 | 255 | 65535 (`0xFFFF`), `s16 = -1` | 28 (`0x1C`), except transient frames |
+| 13–16 s | Normal | 0 | 0 | 0 (`0x0000`) | 52 |
+| 17–21 s | Miniature | 255 | 255 | 65535 (`0xFFFF`) | 28 |
+| ~22 s | Transforming/transition | 255 | 255 | 65535 | **52**: changes before the combined field |
+| 23 s | Normal | 0 | 0 | 0 | 52 |
+
+The upper half of the `u32` word at `0x8020C8E4` changes during motion while its lower half is `0xFFFF` or `0x0000`. This is evidence **against** treating the entire 32-bit word as a single transformation timer; it supports inspecting the aligned big-endian halfword at `0x8020C8E6` separately. `0x801C159A` tracks settled size but is not a synchronous duplicate or established controller flag. The unrelated `0x801671A0` watch changes during movement but no velocity semantics are established.
+
+### Controlled write observation — strong 16-bit countdown hypothesis
+
+The user reports that when Ebisumaru is normal (both bytes `00`), manually writing `255 / 0xFF` **only to byte `0x8020C8E6`** causes the byte to drop to 254 while `0x8020C8E7` jumps to 255, then the low byte counts down; every underflow is accompanied by the high byte decrementing. This exactly matches a big-endian 16-bit decrement sequence:
+
+- Initial `0x0000`; manual high-byte write: `0xFF00`.
+- On first decrement: `0xFEFF` (`E6=254,E7=255`).
+- Subsequent decrements: `0xFEFE`, `0xFEFD`, ... `0xFE00`, `0xFDFF`.
+
+This arithmetic substantially strengthens the conclusion that these **two bytes together form one 16-bit counter**, with stable sentinel endpoints `0x0000` (normal) and `0xFFFF` (miniature). The user also reports transformation input is rejected if the two values are not both zero or both 255. A guard requiring one of two terminal values is plausible; original MIPS branching and exact update cadence remain unverified. This user write observation is additional evidence beyond the video, which does not clearly capture the intermediate countdown at individual decrement resolution. Avoid extrapolating duration from an unverified update frequency.
+
+**Next original MIPS investigation:** trace reads/writes of halfword `0x8020C8E6` or a pointer-relative offset to it, especially `lh/lhu/sh`, decrement/borrow, comparisons to zero and -1, and the gating path for transformation input. Independently determine what `0x801C159A` controls (animation, size/state, or a downstream transform output). Only promote confirmed original semantics to the toolkit. Avoid further unsafe writes to unknown transition fields without a restore path.

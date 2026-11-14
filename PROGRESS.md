@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Strong 16-bit Mini Ebisumaru countdown evidence
+
+- **Observed:** user follow-up video shows `0x8020C8E6/E7` = `00/00` normal and `FF/FF` miniature; `u16` reads 0 or 65535 (`s16` 0 or −1). `0x801C159A` reads 52 normal / 28 mini but can switch before the two-byte field; the upper half of `u32 0x8020C8E4` varies independently.
+- **Manual-write observation:** user set just E6 to 255 from a normal state; E6 became 254 while E7 became 255 and counted down with borrow. This is precisely the big-endian `0xFF00 → 0xFEFF → 0xFEFE ...` decrement sequence. User reports transformation only works at all-0 or all-255 endpoints.
+- **Changed:** added controlled-write evidence, sample timeline, arithmetic, confidence levels and original MIPS follow-up to `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md`. Documentation-only change; no toolkit writes or controls added.
+- **Tests:** frame inspection and user runtime report; no assistant-run native live test, MIPS writer identification or automated test required for documentation.
+- **Limits:** countdown cadence, specific MIPS width, update ownership, and interpretation of downstream `0x801C159A` remain unknown. Do not extrapolate timer duration.
+- **Next:** trace read/write/guard paths for the E6 halfword and identify `0x801C159A`'s role.
+
 ### 2026-11-14 — Capture Mini Ebisumaru active-size RAM candidates
 
 - **Evidence:** inspected 33.185-second user video with repeated miniature/normal Ebisumaru transitions; `u8 0x8020C8E6` and `u8 0x8020C8E7` settle at `0xFF` miniature vs `0x00` normal; `u8 0x801C159A` correlates as 28 vs 52. Transitional frames contain short mismatches, so these are not yet confirmed control flags.
