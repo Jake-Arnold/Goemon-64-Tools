@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-087 state dispatcher (RESEARCH_ONLY)
+
+- **Changed:** Added a ROM-backed trace of `func_8001F8B0_204B0` and a sanitized host reference for its three valid callback choices and invalid-selector address boundary. Kept the dispatcher `GLOBAL_ASM` after two bounded native candidates failed.
+- **Why:** The dispatcher selects one of three callback pointers using `SYS_W+0x3ADDE`. The original has no range check or default path, so out-of-range selectors must not be turned into a safe behavior claim.
+- **Evidence:** The 100-byte function at VMA `0x8001F8B0` / ROM `[0x204B0,0x20514)` matches both USA images, SHA-256 `ae5cfb9862bed41b69be6c133a0473858409b317f0aed7f7075006a7346e542d`. V1 linked as 96 bytes and first differed at `+0x00`; v2 did not compile because IDO rejected dynamic values in a local aggregate initializer. The v1 full-image check failed at candidate build; no inventory was run. Details are in `decomp/plans/execution/2026-11-14-g64-087-state-dispatcher.json`.
+- **Tests:** The ASan/UBSan rotation-angle host fixture passed. `python3 -m decomp.local_ci` passed: 207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and the 1,000-case display-emitter ASan/UBSan fixture. `python3 -m decomp.skill_context --validate`, JSON parsing and `git diff --check` passed.
+- **Limitations/next:** No new C ownership or full-ROM exact result. Invalid-selector runtime effects are unknown; the host fixture calculates addresses without dereferencing. G64-088 remains first PLANNED; pause here as requested and do not start it until resumed.
+
 ### 2026-11-14 — G64-070 transition-slice gate (RESEARCH_ONLY)
 
 - **Changed:** Completed a fresh full-ROM verification and inventory for the current transition slice; recorded that no new C candidate was justified and kept all transition dispatchers assembly-owned.

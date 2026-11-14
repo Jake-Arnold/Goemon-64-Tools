@@ -3740,7 +3740,7 @@
       "ordinal": 87,
       "phase": 9,
       "title": "Analyze dispatcher 8001F8B0",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-061",
         "G64-062",
@@ -3751,7 +3751,7 @@
         "decomp/test_rotation_angles.c"
       ],
       "architecture_design": "Study three-entry state dispatcher and ROM 0x6C330 address table, preserving ordered pointer reads and indirect calls.",
-      "explicit_acceptance": "Mock dispatch covers all three state choices and default behavior; original codegen/linking validated.",
+      "explicit_acceptance": "Mock dispatch covers all three valid state choices. Since the original has no default branch, invalid selectors are covered only by calculating the unchecked address without dereferencing it. Original codegen/linking is required for promotion.",
       "implementation_sequence": [
         "Fetch `chatgptweb/decomp`; confirm `git branch --show-current`, HEAD and current `AGENTS.md`. Stop and replan if current manifest already owns this target as accepted C.",
         "Read the exact focus files: decomp/rotation_angles.c, decomp/test_rotation_angles.c. Determine real symbols, original function bounds, compile flags, callers and section ownership from the pinned original rather than guessing.",

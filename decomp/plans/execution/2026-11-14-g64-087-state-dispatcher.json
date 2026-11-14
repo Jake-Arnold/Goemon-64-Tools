@@ -1,0 +1,121 @@
+{
+  "format": "goemon-task-execution-v1",
+  "date": "2026-11-14",
+  "task_id": "G64-087",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "worktree_path": "/home/jake/.codex/worktrees/vm-dialogue-overlay/Goemon-64-Tools",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "78bcde0f11b49010bd2b9a244b5d47533c226dc9",
+    "remote_head_before_task": "78bcde0f11b49010bd2b9a244b5d47533c226dc9",
+    "initial_worktree": "clean",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "independent_review": "Sol Medium read-only review confirmed the three ordered table copies, unsigned selector load, unchecked jalr, and that invalid selectors must be classified without a host dereference or invented default."
+  },
+  "source_snapshot": {
+    "rotation_angles_c_sha256_unchanged": "80357db43c81ae9d794f95da4e2e836dd9f729f083b3204c5e46d8d641fb947e",
+    "test_rotation_angles_c_sha256": "4474c33c3e69d0e108eb85992fb7122b51341074e6a441f66ce041a1340652d3",
+    "manifest_sha256_unchanged": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "map_transition_trace_sha256": "021bdb71e6036f5d1f7274e70bb5cacfe5129f4b9576a0c606d3faa2315068b8",
+    "combined_proof_sha256_unchanged": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "inventory_sha256_unchanged": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051",
+    "production_source_or_manifest_delta": "None; both attempted candidates were removed after native failure. Only the host reference test and evidence documentation remain changed."
+  },
+  "original_mips_evidence": {
+    "target": "func_8001F8B0_204B0",
+    "target_vma": "0x8001F8B0",
+    "target_rom_extent": "[0x204B0,0x20514)",
+    "target_size_bytes": 100,
+    "target_raw_slice_sha256": "ae5cfb9862bed41b69be6c133a0473858409b317f0aed7f7075006a7346e542d",
+    "raw_slice_equal_in": [
+      "USA retail image",
+      "decompressed USA reference image"
+    ],
+    "assembly_source": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/204B0.s",
+    "table_rom_offset": "0x6C330",
+    "table_symbol": "D_8006B730_6C330",
+    "table_entries": [
+      "0x8001F914",
+      "0x8001F940",
+      "0x8001FA3C"
+    ],
+    "stack_table_offsets": [
+      "0x1C",
+      "0x20",
+      "0x24"
+    ],
+    "selector": "unsigned byte at SYS_W+0x3ADDE, loaded after all three table words are copied to the local stack table",
+    "dispatch": "Shift selector left by two, load local table word, jalr with no argument setup; callback return is ignored.",
+    "invalid_selector": "No guard/default. Selector 3 computes target sp+0x28, outside the 0x28-byte local frame and at the incoming caller SP. Contents and indirect-call behavior are unknown; host fixture never dereferences it.",
+    "direct_callers": [
+      "func_80002EFC_3AFC",
+      "func_80003358_3F58"
+    ]
+  },
+  "host_reference": {
+    "file": "decomp/test_rotation_angles.c",
+    "source_sha256": "4474c33c3e69d0e108eb85992fb7122b51341074e6a441f66ce041a1340652d3",
+    "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/rotation_angles.c decomp/test_rotation_angles.c -o /tmp/g64-087-rotation-host && /tmp/g64-087-rotation-host",
+    "compiler": "GCC 15.2.0",
+    "result": "PASS; compile and execution exited 0 under ASan/UBSan.",
+    "coverage": "MIPS-derived host reference dispatches each of three valid table choices exactly once; checks selector 3 and 255 effective local-table addresses without reading/calling them; retains existing F878 aliasing and F914/FA3C neighbor sequencing checks.",
+    "scope": "Host reference only. It does not execute original MIPS or prove native codegen, and invalid selectors are not invoked."
+  },
+  "native_probes": [
+    {
+      "variant": 1,
+      "source_hypothesis": "Explicitly copy the three external ROM callback pointers into a local three-entry function-pointer array, then dispatch with the unsigned SYS_W byte.",
+      "candidate_source_sha256": "dc783afea134247aa9d8b81b8a396a6d474612a9a325452d2d6c922fdef37ad8",
+      "compiler": "Pinned IDO 5.3 in full rotation_angles.c production unit; -G 0 -non_shared -Xfullwarn -Xcpluscomm -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -O2 -mips2.",
+      "linked_target_size_bytes": 96,
+      "candidate_target_slice_sha256": "7405069773b09fa23ddb73bc7996237a76cdc025bdc1f5c589daa7e505c3ac9e",
+      "first_mismatch": {
+        "offset": "+0x00",
+        "vma": "0x8001F8B0",
+        "original_word": "0x27BDFFD8",
+        "candidate_word": "0x3C028007"
+      },
+      "classification": "IDO hoisted table and system-pointer loads ahead of stack-frame setup, then indexed through sp with a fixed displacement instead of preserving the original local-table base register. The function is 96 rather than 100 bytes, shifting following source-unit symbols by four bytes.",
+      "full_candidate_rom_sha1": "344162d224328fac34c835fe71103e53ffc90f9b",
+      "full_candidate_rom_sha256": "f948cf9ba65276b5d266d24d4130e69ac2a2666021dd0b5d35bf63d5ce26a450",
+      "verifier_report": "practice/diagnostics/g64-087-78bcde0-verify.json",
+      "verifier_report_sha256": "a923fcf06f5bc5595232da7f13a71da4275171c78e2f7fb9ab1ecd14fc86bae3",
+      "verifier_result": "FAILED; exit 1 at candidate-build ROM SHA check. A 32 MiB candidate image was produced but did not match the expected identity; no function comparison or inventory result was published."
+    },
+    {
+      "variant": 2,
+      "source_hypothesis": "Use an aggregate initializer to make the compiler keep a local three-entry pointer table and possibly preserve the original stack-table base lifetime.",
+      "candidate_source_sha256": "ab8a770bbdf2795e1c33c050ef76faf5a9fa367b0ff54ae0e8bc45144b0a4d3e",
+      "compiler": "Pinned IDO 5.3 in full rotation_angles.c production unit with original source-unit flags.",
+      "result": "COMPILE_FAILED; IDO reported Invalid constant expression for the three D_8006B730_6C330[index] initializers. No ELF, candidate ROM, native mismatch, or inventory was produced.",
+      "verifier_report": "practice/diagnostics/g64-087-v2-78bcde0-verify.json",
+      "verifier_report_sha256": "3e77c40ad7893e4885fb04b82dd36720526094538f9330a98418d1ca6287296b"
+    }
+  ],
+  "tests": {
+    "rotation_angles_host": "PASS under ASan/UBSan; command and coverage recorded above.",
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "result": "PASS; exit 0. 207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and the display-emitter ASan/UBSan fixture (1,000 synthetic cases) passed."
+    },
+    "task_evidence_validation": "PASS; python3 -m decomp.skill_context --validate reported CONSISTENT_STORED_REPORTS as part of local CI.",
+    "json_parse": "PASS; python3 -m json.tool parsed TASKS_100.json and this execution report.",
+    "diff_check": "PASS; git diff --check exited 0.",
+    "inventory": "NOT_RUN; both native candidate gates failed before a matching full-image proof.",
+    "live_game_verification": "NOT_RUN"
+  },
+  "stored_proof_unchanged": {
+    "matched_functions": 160,
+    "claimed_functions": 160,
+    "matched_function_bytes": 12272,
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "decision": "Record G64-087 as RESEARCH_ONLY. Retain func_8001F8B0_204B0 as GLOBAL_ASM; the host contract and native candidate are not matching-C proof. Do not infer a safe/default invalid-selector path.",
+  "next": "G64-088 Analyze 8001FA80 adjacent routine remains PLANNED; pause here as requested and do not start it until resumed."
+}

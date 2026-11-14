@@ -140,8 +140,12 @@ found no new exact C candidate, and all five transition dispatch/loop targets
 remain GLOBAL_ASM. A fresh uncached full-ROM verifier and inventory confirmed
 the current 160-function / 12,272-byte proof and the 32 MiB ROM identity; no
 production source or stored proof changed. See
-plans/execution/2026-11-14-g64-070-transition-slice-gate.json. Continue at
-G64-087 (the first PLANNED task; G64-071–G64-086 are already complete).
+plans/execution/2026-11-14-g64-070-transition-slice-gate.json. G64-087 then
+closed RESEARCH_ONLY: the three-way dispatch trace is verified, but two
+bounded native candidates did not match; keep `8001F8B0` GLOBAL_ASM. G64-071–
+G64-086 are already complete, so G64-088 is the first PLANNED task. Pause here
+as requested; do not start G64-088 until resumed. See
+plans/execution/2026-11-14-g64-087-state-dispatcher.json.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list

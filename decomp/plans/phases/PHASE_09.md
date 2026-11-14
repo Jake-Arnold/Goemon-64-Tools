@@ -1,6 +1,6 @@
 # Phase 09 — Math and adjacent units
 
-**Scope:** G64-081–G64-090; branch `chatgptweb/decomp`; G64-084 task-start checkpoint `5ac7d116f839f5305218b35380dca6c65d97cd32` (refresh after publication).
+**Scope:** G64-081–G64-090; branch `chatgptweb/decomp`; G64-087 task-start checkpoint `78bcde0f11b49010bd2b9a244b5d47533c226dc9` (verified against origin before execution).
 
 Read [EXECUTOR_PROTOCOL.md](../EXECUTOR_PROTOCOL.md) before starting. Follow individual dependency IDs, not simply numeric order. Tests listed are to be executed, not claimed as already passing. Never increase matching counts from research-only evidence.
 
@@ -212,7 +212,7 @@ Two bounded native candidates compiled in the full 1,024-byte `math_helpers.c` u
 
 ### G64-087 — Analyze dispatcher 8001F8B0
 
-**Status:** PLANNED. **Dependencies:** G64-061, G64-062, G64-063.
+**Status:** RESEARCH_ONLY (2026-11-14). **Dependencies:** G64-061, G64-062, G64-063.
 **Focus files:** `decomp/rotation_angles.c`; `decomp/test_rotation_angles.c`.
 
 **Architectural intent:** Study three-entry state dispatcher and ROM 0x6C330 address table, preserving ordered pointer reads and indirect calls.
@@ -229,13 +229,34 @@ Two bounded native candidates compiled in the full 1,024-byte `math_helpers.c` u
 
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
-**Explicit acceptance:** Mock dispatch covers all three state choices and default behavior; original codegen/linking validated.
+**Explicit acceptance:** Mock dispatch covers all three valid state choices. Since the original has no default branch, an invalid selector is covered only by calculating its unchecked address without dereferencing it. Original codegen/linking is still required for promotion.
 
 **Required negative control:** No invented float tolerance for byte-identity, no compiler reassociation, no unproven trivial return/body matching from filename alone.
 
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-14):** The 100-byte target at VMA `0x8001F8B0`, ROM
+`[0x204B0,0x20514)`, matches both USA images (SHA-256
+`ae5cfb9862bed41b69be6c133a0473858409b317f0aed7f7075006a7346e542d`). ROM
+`0x6C330` contains `8001F914`, `8001F940`, and `8001FA3C`. The dispatcher
+copies those words in order to `sp+0x1C/+0x20/+0x24`, then reads unsigned
+`SYS_W+0x3ADDE` and calls the indexed local word; there is no guard or default.
+Selector 3 reaches `sp+0x28`, outside its frame, so the host fixture calculates
+that address without reading or calling it. The ASan/UBSan fixture passed all
+three valid dispatches and invalid-address checks.
+
+Two native source variants were attempted in the full `rotation_angles.c`
+unit. V1 linked a 96-byte symbol and first differed at `+0x00` (`0x27BDFFD8`
+original, `0x3C028007` candidate): IDO hoisted table loads before frame setup
+and omitted the original local-table base register. The candidate ROM SHA-1
+failed the full-image check; no inventory ran. V2 failed IDO compilation with
+`Invalid constant expression` for dynamic table values in a local aggregate
+initializer. Under the v2 stop rule, retain `GLOBAL_ASM`; production source,
+manifest, combined proof, and inventory are unchanged. See
+`../execution/2026-11-14-g64-087-state-dispatcher.json`. G64-088 remains the
+first PLANNED task; pause here as requested and do not start it until resumed.
 
 ### G64-088 — Analyze 8001FA80 adjacent routine
 

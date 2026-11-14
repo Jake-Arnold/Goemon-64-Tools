@@ -79,6 +79,19 @@ clears `0x800C7A76`, then calls `80003478`; the third calls `80004240`, passes
 a global word to `80034EF8`, then sets system `+0x3ADDF` to one. The latter
 helpers and actual room loading/unloading effects remain under investigation.
 
+G64-087 verified `func_8001F8B0_204B0` as 100 bytes at VMA `0x8001F8B0`,
+ROM `[0x204B0,0x20514)`, with raw slice SHA-256
+`ae5cfb9862bed41b69be6c133a0473858409b317f0aed7f7075006a7346e542d` in both
+USA images. It allocates a `0x28`-byte frame, copies the three table words in
+order to stack offsets `+0x1C`, `+0x20`, and `+0x24`, then reads the unsigned
+byte `SYS_W+0x3ADDE`, scales it by four, and calls the selected word through
+`jalr`; no argument is set up and the callback return is ignored. There is no
+default branch or range check. Selector 3 computes an address at `sp+0x28`,
+outside the function's frame and equal to its incoming stack pointer. The
+resulting memory contents and indirect call are not established as valid
+runtime behavior. The host fixture checks only this address calculation for
+invalid selectors; it never performs an out-of-bounds read or call.
+
 `func_80034EF8_35AF8` now matches as C (40 bytes): it passes its word
 argument to `80034F44_35B44`, then to `80035044_35C44`. The argument's
 underlying type and the called routines' resource effects remain unresolved.
