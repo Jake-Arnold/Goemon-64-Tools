@@ -35,6 +35,7 @@ from practice.emulator_savestates import find_emulator_pid, verified_emulator_pi
 from practice.japanese_mupen_attach import (
     verified_japan_probes, discover_japanese_mupen_rdram, AmbiguousJapaneseRdram,
 )
+from practice.japanese_fields_ui import JapaneseFieldsUi
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
@@ -95,7 +96,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -263,6 +264,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         # Japan mode intentionally has no USA-specific field interpretation.
         # This raw guest-RAM reader is always read-only, even in write-enabled mode.
         jp_card = ttk.LabelFrame(right, text=' Japan Mupen64Plus RDRAM (read-only) ', padding=10)
+        self.jp_card = jp_card
         jp_card.pack(fill='x', pady=(0, 6))
         ttk.Label(jp_card, text='Verify the exact Japanese ROM, select mupen64plus, '
                   'then Connect. Only raw N64 bytes are exposed; USA pointers, '
@@ -326,6 +328,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         self.build_state_discovery_tab(self.event_sections)
         self.build_unlock_tabs(notebook)
         self.build_story_progress_tab(notebook)
+        self.build_japanese_fields_tab(notebook)
         self._apply_game_version_ui()
         # Toolkit-local F1; it does not register a system-wide/game hotkey.
         root.bind_all('<F1>', self._on_f1_open_memory, add='+')
@@ -333,7 +336,12 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         statusbar.pack(fill='x')
         ttk.Label(statusbar, text='EXPERIMENTAL PRACTICE ONLY  •  Never use for submitted runs',
                   style='HeaderSub.TLabel').pack(side='left')
-        ttk.Label(statusbar, text=('READ ONLY' if getattr(args, 'read_only', False) else 'Memory writes enabled') + '  •  Experimental entrance reload',
+        self.access_footer = tk.StringVar(
+            value=('JAPAN RAM READ ONLY  •  Emulator savestates are separate'
+                   if self.active_version.key == 'japan'
+                   else ('READ ONLY' if getattr(args, 'read_only', False)
+                         else 'USA memory writes enabled  •  Experimental entrance reload')))
+        ttk.Label(statusbar, textvariable=self.access_footer,
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
 
@@ -343,10 +351,23 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         self.root.title(f"Goemon Practice Toolkit v0.11.17 · {version.label}")
         self.version_heading.set(f"v0.11.17  |  {version.label}")
         enabled = version.live_memory_supported
-        if not enabled:
+        if not enabled or (version.key != 'japan' and
+                           self.notebook.select() == str(self.jp_fields_tab)):
             self.notebook.select(self.notebook.tabs()[0])
         for tab in self.notebook.tabs()[1:]:
-            self.notebook.tab(tab, state='normal' if enabled else 'disabled')
+            japan_tab = tab == str(self.jp_fields_tab)
+            tab_enabled = (version.key == 'japan') if japan_tab else enabled
+            self.notebook.tab(tab, state='normal' if tab_enabled else 'disabled')
+        if version.key == 'japan':
+            self.jp_card.pack(fill='x', pady=(0, 6))
+        else:
+            self.jp_card.pack_forget()
+        if hasattr(self, 'access_footer'):
+            self.access_footer.set(
+                'JAPAN RAM READ ONLY  •  Emulator savestates are separate'
+                if version.key == 'japan' else
+                ('READ ONLY' if getattr(self.args, 'read_only', False) else
+                 'USA memory writes enabled  •  Experimental entrance reload'))
         # Japan raw-memory mode has no USA-specific field interpretation.
         if version.key == 'japan':
             self.jp_base_row.pack(fill='x', before=self.connect_button, pady=(0, 7))
@@ -394,6 +415,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         self.pos_text.set('X: —    Y: —    Z: —')
         self.speed_text.set('Speed: —')
         self.misc_text.set('Character: —    Action: —    Loading: —')
+        self.clear_japan_field_values()
         if getattr(self, 'jp_read_button', None):
             self.jp_read_button.state(['disabled'])
             self.jp_read_result.set('Japanese guest RAM is not connected.')
@@ -818,6 +840,8 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
                 self.mem = self.current = None
             self.jp_read_button.state(['!disabled'])
             self.jp_read_result.set(f'Japan-0 main-code probes matched RDRAM at 0x{base:X}; {endian}.')
+            self.refresh_japan_fields(force=True)
+            self.notebook.select(self.jp_fields_tab)
             self.status.set(f'Attached read-only to Japanese-code Mupen64Plus PID {pid}, '
                             f'RAM 0x{base:X}, {endian}. USA field controls remain disabled.')
         elif result[0] == 'ok':
@@ -838,6 +862,8 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.status.set(f'Connection failed: {result[1]}')
 
     def tick(self):
+        if self.jp_rdram is not None:
+            self.refresh_japan_fields()
         if self.mem:
             try:
                 now=time.monotonic()

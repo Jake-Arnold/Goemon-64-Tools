@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Japanese Mupen live fields (read-only)
+
+- **Build on real PID attach:** User's Linux Mupen64Plus Japan-0 connection reached code-verified RDRAM at host base `0x7AA843EC0000` (wordswapped) and read valid Japanese startup MIPS bytes at guest `0x80000450`. Existing attachment remains separate from USA `self.mem`.
+- **Code:** `practice/japanese_fields.py` defines **58 Japanese read-only field leads**, each grounded in the Japanese GameHacking.org cheats or TCRF's Japanese debug-menu code: HP, Ryo, lives, supplies, party, four weapon levels, four each sub/super weapons and Jutsu, fish, inventory, treasures, world-map stops, modes, raw time counter and debug state. Repeated targets use the published GameShark repeat stride, not guessed USA-region translation.
+- **UI:** `practice/japanese_fields_ui.py` adds a dedicated `Japan Live (read-only)` tab, groups fields, displays numeric values and raw big-endian guest bytes, annotates unlikely flags and read errors, and automatically refreshes every 0.75 s. Reconnect and savestate load clear stale values. USA field tabs and all writes remain disabled for Japan. Footer explicitly states Japan RAM is read-only; USA dashboard no longer shows the Japanese raw-RAM card.
+- **Tests:** 9 field decoder tests and 3 actual Tk tab smoke tests passed locally under Xvfb (12/12). Source blobs match locally tested files by Git blob SHA-1. Real emulator field-value changes, UI connection with Mupen PID and Japanese variable semantics have not yet been live validated after this feature patch.
+- **Provenance/limitations:** The cheat addresses are externally reported, not promoted to confirmed gameplay values; four-slot cheats do not identify each item; game timer remains raw. Japanese coordinates, task pointers, scene IDs and script VM still need independent mapping. No blanket `+0x57F0` offset was applied.
+- **USA research handoff:** Keep the separate draft PR #12 `chatgptweb/usa-external-memory-leads` and its `research/usa_external_memory_leads.json` for the next USA decomp session; do not promote unverified cheat values into live writers. See `docs/JAPAN_LIVE_GAMEPLAY_FIELDS.md`.
+
 ### 2026-11-14 — Japan-0 Mupen64Plus RDRAM duplicate/ROM-copy ambiguity fix
 
 - **Root cause:** A PID may contain multiple code-matching host buffers. The earlier scanner had no way to distinguish a full cartridge-ROM copy masquerading as N64 RDRAM and returned a non-actionable ambiguity even with explicit emulator PID.
