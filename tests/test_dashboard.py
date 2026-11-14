@@ -4,6 +4,8 @@ from __future__ import annotations
 import tkinter as tk
 import unittest
 from argparse import Namespace
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from practice.inspector import Watch
 from practice.theme import PALETTE
@@ -43,6 +45,24 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.notebook.select(), str(app.scene_tab))
         app.open_live_memory_tab()
         self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
+
+    def test_dashboard_double_click_requests_reload_without_opening_scene_browser(self):
+        app = self.toolkit
+        app.quick_scene_filter.set('Festival Temple')
+        scene_id = app.quick_scene_tree.get_children()[0]
+        app.scene_filter.set('not a real destination')
+        app.quick_scene_tree.selection_clear()
+        app.notebook.select(app.notebook.tabs()[0])
+        with patch.object(app, 'try_reload_warp') as reload_request:
+            with patch.object(app.quick_scene_tree, 'identify_row', return_value=scene_id):
+                self.assertEqual(app.activate_quick_scene(SimpleNamespace(y=5)), 'break')
+            reload_request.assert_called_once_with()
+        self.assertEqual(app.scene_selected, int(scene_id))
+        self.assertEqual(app.notebook.select(), app.notebook.tabs()[0])
+        with patch.object(app, 'try_reload_warp') as reload_request:
+            with patch.object(app.quick_scene_tree, 'identify_row', return_value=''):
+                self.assertEqual(app.activate_quick_scene(SimpleNamespace(y=9999)), 'break')
+            reload_request.assert_not_called()
 
     def test_disconnected_memory_preview_remains_empty(self):
         app = self.toolkit

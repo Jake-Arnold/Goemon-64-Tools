@@ -22,15 +22,19 @@ class TestGameplayDirectWarp(unittest.TestCase):
             write_guest.assert_not_called()
         self.assertEqual(before,[ram.read_guest(a,n) for a,n in addresses])
 
-    def test_ui_double_click_does_not_write(self):
+    def test_ui_double_click_dispatches_only_the_guarded_reload(self):
         ram=TestWarp().make()
         addresses=[(PENDING_MAP_ADDR,2),(EXIT_REQUEST_ADDR,1),(MAP_ADDR,2),(STATE_ADDR,1)]
         before=[ram.read_guest(a,n) for a,n in addresses]
-        ui=SimpleNamespace(mem=ram,scene_status=Display())
+        dispatched=[]
+        class Selection:
+            def curselection(self):return (0,)
+        ui=SimpleNamespace(mem=ram,scene_status=Display(),scene_list=Selection(),
+                           scene_options=[(465,'House')],try_reload_warp=lambda:dispatched.append('reload'))
         with patch.object(ram, 'write_guest', wraps=ram.write_guest) as write_guest:
             InspectorMixin.request_direct_scene(ui,465,'House')
             write_guest.assert_not_called()
-        self.assertIn('DISABLED',ui.scene_status.text)
+        self.assertEqual(dispatched,['reload'])
         self.assertEqual(before,[ram.read_guest(a,n) for a,n in addresses])
 
 if __name__=='__main__':unittest.main()

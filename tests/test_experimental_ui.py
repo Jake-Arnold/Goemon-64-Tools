@@ -44,7 +44,7 @@ class TestExperimentalGUI(unittest.TestCase):
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
         self.app.hex_advanced.set(True)
-        with patch('practice.ui_extension.messagebox.askyesno',return_value=True):
+        with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):
             self.app.try_reload_warp()
         pending=self.app.pending_direct_warp
         self.assertEqual(pending['selected_character'],2)
@@ -69,7 +69,7 @@ class TestExperimentalGUI(unittest.TestCase):
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
         self.app.hex_advanced.set(True)
-        with patch('practice.ui_extension.messagebox.askyesno',return_value=True):
+        with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):
             self.app.try_reload_warp()
         pending=self.app.pending_direct_warp
         self.ram.write_guest(MAP_ADDR,(353).to_bytes(2,'big'))
@@ -84,20 +84,34 @@ class TestExperimentalGUI(unittest.TestCase):
         self.assertAlmostEqual(self.ram.snapshot()['x'],125.25)
         self.assertEqual(self.ram.u32(CHARACTER_ID_ADDR),0)
 
-    def test_warp_only_explicit_button_and_confirmation(self):
+    def test_double_click_reloads_without_confirmation(self):
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
-        self.app.request_direct_scene(353,'Test destination')
-        self.assertEqual(self.ram.u8(STATE_ADDR),13)
         self.app.hex_advanced.set(True)
-        with patch('practice.ui_extension.messagebox.askyesno',return_value=False):
-            self.app.try_reload_warp()
-        self.assertEqual(self.ram.u8(STATE_ADDR),13)
-        with patch('practice.ui_extension.messagebox.askyesno',return_value=True):
-            self.app.try_reload_warp()
+        with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):
+            self.assertEqual(self.app.activate_selected_scene(), 'break')
         self.assertEqual(self.ram.u8(STATE_ADDR),12)
         self.assertEqual(self.ram.u16(PENDING_MAP_ADDR),353)
         self.assertIsNotNone(self.app.pending_direct_warp)
+
+    def test_enter_debug_menu_routes_to_manual_menu_not_reload(self):
+        with patch.object(self.app, 'open_debug_for_selected_scene') as native, \
+             patch.object(self.app, 'try_reload_warp') as reload_request:
+            self.app.enter_debug_menu()
+        native.assert_called_once_with()
+        reload_request.assert_not_called()
+
+    def test_read_only_blocks_both_scene_routes(self):
+        self.app.scene_options=[(353,'Test destination')]
+        self.app.scene_list.insert('end','Test destination')
+        self.app.scene_list.selection_set(0)
+        self.app.args.read_only=True
+        with patch.object(self.ram, 'write_guest', side_effect=AssertionError('No guest writes')):
+            self.app.activate_selected_scene()
+            self.app.open_debug_for_selected_scene()
+        self.assertIsNone(self.app.pending_direct_warp)
+        self.assertIsNone(self.app.pending_native_warp)
+        self.assertEqual(self.ram.u8(STATE_ADDR),13)
 
 if __name__=='__main__':unittest.main()

@@ -5,8 +5,24 @@
 - **Evidence:** USA file 13 allocates the controller from the arena at `0x802F7000`. Its HUD constructor creates seven models from the 192-entry, `0x98`-stride engine pool. Constructor order explains the recorded slot permutation.
 - **Changed:** added [Impact battle memory trace](docs/IMPACT_BATTLE_MEMORY_TRACE.md) with original MIPS sites, a controller layout, resource and teardown paths, a bounded read-only trace design and five follow-up experiments. The report identifies word-width counters, a halfword HUD mode and two camera angles plus a derived vector component.
 - **Tests:** matched file 13 directly to USA retail and checked annotated MIPS against the pinned decompressed ROM. Four recording samples reproduce the original camera calculation. Repository local CI passed 207 Python tests, 116 verifier/ledger tests, the task evidence check and the display-emitter sanitizer fixture. The Linux process, state-discovery and inspector suites passed 32 tests.
-- **Limitations:** original-ROM analysis and recording inspection only. Exact auxiliary mesh identities, the frame-specific HUD reaction branch and the Game Over reuse writer still need live tracing.
+- **Limitations:** original-ROM analysis and recording inspection only. This research branch is now synchronized with upstream through 2f79043. Exact auxiliary mesh identities, the frame-specific HUD reaction branch and the Game Over reuse writer still need live tracing.
 - **Next:** run the bounded trace through one hit, special activation, a win and a Game Over, checking arena membership and overlay ownership before following any model pointers.
+
+### 2026-11-14 — Capture Mini Ebisumaru active-size RAM candidates
+
+- **Evidence:** inspected 33.185-second user video with repeated miniature/normal Ebisumaru transitions; `u8 0x8020C8E6` and `u8 0x8020C8E7` settle at `0xFF` miniature vs `0x00` normal; `u8 0x801C159A` correlates as 28 vs 52. Transitional frames contain short mismatches, so these are not yet confirmed control flags.
+- **Changed:** added `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md`, separating active transformation from already-verified ownership flag `0x8015C6F3` and outlining read-only 16/32-bit width and motion-control tests. No toolkit code or safety gates changed.
+- **Tests:** manual video-frame inspection; no automated code change/tests or independent live-game reproduction. Underlying MIPS field widths and writers/readers remain unknown.
+- **Next:** watch `u16/s16 0x8020C8E6`, `u32 0x8020C8E4` and `u8 0x801C159A` during settled toggles and movements without toggles, then trace original MIPS owners.
+
+### 2026-11-14 — Double-click entrance reload from dashboard and scene browser
+
+- **Changed:** dashboard area double-click synchronises the selected stage and directly invokes the guarded experimental entrance reload, without switching tabs; the Scene Browser area double-click uses the same path. Blank-row double-clicks do nothing. Both explicit reload and original native-debug-menu buttons act without confirmation prompts. The dashboard now shows scene-request results and status directly.
+- **Reason:** remove repeated confirmation and intermediate Scene Browser navigation for deliberate area double-clicks; retain a separate manual native debug-menu route.
+- **Compatibility:** the existing `enter_debug_menu()` entry point explicitly invokes the original debug-menu handler, never the new double-click reload handler.
+- **Guards retained:** no writes in read-only mode, no overlap with an active transition/checkpoint restore, a connected game, enabled experimental memory controls, a resolved entrance from the original USA ROM, valid character choice and native gameplay safety checks. An ambiguous or unavailable entrance blocks the automatic reload; legacy direct exit-flag warp remains disabled.
+- **Tests:** updated Tk and mock-RAM unit tests for routing, no-prompt behaviour, guarded writes and read-only blocking. Tests were not executable in the connector-only editing environment; runtime verification on Goemon64Recomp remains outstanding.
+- **Next:** run `python3 -m unittest tests.test_dashboard tests.test_entrance_ui tests.test_experimental_ui tests.test_direct_gameplay_warp` with a Tk display, then verify one safe entrance in live Goemon64Recomp and observe placement/camera before relying on repeated use.
 
 ### 2026-11-14 — Observe dialogue selection index candidate 0x801C792C
 

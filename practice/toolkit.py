@@ -250,12 +250,12 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         scene_scroll = ttk.Scrollbar(scene_card, orient='vertical', command=self.quick_scene_tree.yview)
         scene_scroll.grid(row=1, column=1, sticky='ns')
         self.quick_scene_tree.configure(yscrollcommand=scene_scroll.set)
-        # Linked to the full scene-browser selection; double click never writes RAM.
+        # Single-click selects; double-click uses the same guarded reload as the full browser.
         self.quick_scene_tree.bind('<<TreeviewSelect>>', self.choose_quick_scene)
-        self.quick_scene_tree.bind('<Double-1>', self.open_full_scene_tab)
+        self.quick_scene_tree.bind('<Double-1>', self.activate_quick_scene)
         footer = ttk.Frame(scene_card, style='Card.TFrame')
         footer.grid(row=2, column=0, sticky='ew', pady=(7, 0))
-        ttk.Label(footer, text='Selecting scenes is read-only; direct warp disabled.',
+        ttk.Label(footer, text='Double-click an area to reload (experimental).',
                   style='CardMuted.TLabel').pack(side='left')
         ttk.Button(footer, text='Full scene browser', command=self.open_full_scene_tab).pack(side='right')
 
@@ -284,6 +284,10 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         ttk.Button(preview_footer, text='Open live memory', command=self.open_live_memory_tab).pack(side='right')
         self.draw_quick_scenes()
         self.build_inspector_tabs(notebook)
+        # Show blocked requests and reload progress without opening the Scene Browser tab.
+        ttk.Label(scene_card, textvariable=self.scene_status, wraplength=420,
+                  style='CardMuted.TLabel').grid(row=3, column=0, columnspan=2,
+                                                  sticky='ew', pady=(4, 0))
         self.build_value_freezes_tab(notebook)
         self.build_value_search_tab(notebook)
         self.build_state_discovery_tab(notebook)
@@ -296,7 +300,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         statusbar.pack(fill='x')
         ttk.Label(statusbar, text='EXPERIMENTAL PRACTICE ONLY  •  Never use for submitted runs',
                   style='HeaderSub.TLabel').pack(side='left')
-        ttk.Label(statusbar, text=('READ ONLY' if getattr(args, 'read_only', False) else 'Unsafe tools enabled') + '  •  Direct warp disabled',
+        ttk.Label(statusbar, text=('READ ONLY' if getattr(args, 'read_only', False) else 'Unsafe tools enabled') + '  •  Experimental entrance reload',
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
 
@@ -336,6 +340,25 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
                 self.scene_list.see(index)
                 self.select_scene()
                 break
+
+    def activate_quick_scene(self, event=None):
+        """Double-click the clicked dashboard row and reload without changing tabs."""
+        if event is not None:
+            row = self.quick_scene_tree.identify_row(event.y)
+            if not row:
+                return 'break'
+            self.quick_scene_tree.selection_set(row)
+        selection = self.quick_scene_tree.selection()
+        if not selection:
+            return 'break'
+        target = int(selection[0])
+        self.choose_quick_scene()
+        chosen = self.scene_list.curselection()
+        if not chosen or self.scene_options[chosen[0]][0] != target:
+            self.scene_status.set(f'Could not select stage {target} in the Scene Browser.')
+            return 'break'
+        self.activate_selected_scene()
+        return 'break'
 
     def open_full_scene_tab(self, event=None):
         self.choose_quick_scene()
