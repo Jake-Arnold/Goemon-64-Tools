@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-14 — file_12 96-byte Ryo callback (RESEARCH_ONLY)
+
+- **Changed:** recorded the pinned MIPS behavior and four bounded source variants for `func_80221FD4_5DD4A4`; preserved each C source and the exact first-mismatch evidence. Updated the conversation callback report and added a standalone execution record. The function remains `GLOBAL_ASM`; production manifest and stored proof are unchanged.
+- **Why:** Sol Medium ranked this short, call-free callback ahead of the 456-byte save/Pak routine. Its script references include purchase-flow candidates, but no direct `jal` caller or live runtime execution was established.
+- **Evidence:** original VMA `0x80221FD4`, decompressed-reference offset `0x5DD4A4`, 96 bytes, ten relocations and instruction SHA-256 `3f85f005f3bd5505923bd8340e4ad8c19941e8e71e05fe4a860925b77502adea`. Four isolated IDO 5.3 variants retained size and target relocations; V2 moved the first mismatch from `+0x30` to `+0x38` and matched relocation offsets, but four register words still differ. V3 repeated V1's code; V4 repeated V2's code, so probing stopped. See `decomp/plans/execution/2026-11-14-vm-file12-ryo-clamp.json`.
+- **Tests:** isolated native IDO 5.3 compilation and original-VMA linking for all four variants; function bytes and relocation targets compared against the pinned reference. The repository ROM-free gate passed: 207 decomp tests, 116 verifier/ledger tests, task evidence validation, and the display-emitter ASan/UBSan fixture (1,000 synthetic cases). `python3 -m decomp.skill_context --validate` reported `CONSISTENT_STORED_REPORTS`; `git diff --check` passed. No whole-unit or fresh G2 was run for the nonmatching candidate.
+- **Limitations/next:** no full-ROM proof for this candidate and no in-game verification. The 456-byte callback remains a lower-priority research lead. Resume the plan at G64-062.
+
 ## 2026-11-14 — file_12 dialogue-call callback follow-up (PASSED_G2)
 
 - **Changed:** added the C candidate for `func_80222168_5DD638` and extended the `file_12` staging/proof path to hold both the existing 20-byte callback and this 36-byte sibling in original overlay order. Refreshed the combined proof, symbol inventory, VM residual-ledger fingerprints, conversation target report, execution strategy, continuation handoff and a standalone execution evidence record.

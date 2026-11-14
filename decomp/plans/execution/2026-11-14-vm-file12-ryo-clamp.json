@@ -1,0 +1,126 @@
+{
+  "format": "goemon-dialogue-callback-followup-v1",
+  "date": "2026-11-14",
+  "status": "RESEARCH_ONLY",
+  "scope": "Bounded native-codegen research for the remaining 96-byte file_12 callback; this is not a G64 task and does not change the 100-task queue.",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "360ce82bd351da2a8d8e07baedd399095a31ae9e",
+    "remote_head_before_task": "360ce82bd351da2a8d8e07baedd399095a31ae9e",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038"
+  },
+  "original_mips": {
+    "function": "func_80221FD4_5DD4A4",
+    "section": ".file_12",
+    "vma": "0x80221FD4",
+    "decompressed_reference_rom_offset": "0x5DD4A4",
+    "size_bytes": 96,
+    "instruction_sha256": "3f85f005f3bd5505923bd8340e4ad8c19941e8e71e05fe4a860925b77502adea",
+    "linked_symbol_extent_verified": true,
+    "verified_contract": [
+      "Loads signed halfword D_801C7742_1C8342 and adds it to the signed word D_8015C5D8_15D1D8+0x10 (the ryo field).",
+      "For a negative sum, writes status 1 to D_801C7750_1C8350 and leaves ryo unchanged.",
+      "For a nonnegative sum, stores the sum first. A sum below 10000 writes status 0; a sum of at least 10000 writes status 2 and then clamps ryo to 9999."
+    ],
+    "relocations": [
+      {"offset": "0x00", "type": "R_MIPS_HI16", "symbol": "D_8015C5D8_15D1D8", "resolved_vma": "0x8015C5D8"},
+      {"offset": "0x04", "type": "R_MIPS_LO16", "symbol": "D_8015C5D8_15D1D8", "resolved_vma": "0x8015C5D8"},
+      {"offset": "0x08", "type": "R_MIPS_HI16", "symbol": "D_801C7742_1C8342", "resolved_vma": "0x801C7742"},
+      {"offset": "0x0C", "type": "R_MIPS_LO16", "symbol": "D_801C7742_1C8342", "resolved_vma": "0x801C7742"},
+      {"offset": "0x24", "type": "R_MIPS_HI16", "symbol": "D_801C7750_1C8350", "resolved_vma": "0x801C7750"},
+      {"offset": "0x2C", "type": "R_MIPS_LO16", "symbol": "D_801C7750_1C8350", "resolved_vma": "0x801C7750"},
+      {"offset": "0x3C", "type": "R_MIPS_HI16", "symbol": "D_801C7750_1C8350", "resolved_vma": "0x801C7750"},
+      {"offset": "0x40", "type": "R_MIPS_LO16", "symbol": "D_801C7750_1C8350", "resolved_vma": "0x801C7750"},
+      {"offset": "0x50", "type": "R_MIPS_HI16", "symbol": "D_801C7750_1C8350", "resolved_vma": "0x801C7750"},
+      {"offset": "0x54", "type": "R_MIPS_LO16", "symbol": "D_801C7750_1C8350", "resolved_vma": "0x801C7750"}
+    ],
+    "direct_jal_callers": 0,
+    "callback_operand_references": 81,
+    "reference_limit": "Static resource operands do not prove runtime reachability or execution in a recorded dialogue."
+  },
+  "resource_evidence": {
+    "static_0x800B_operand_hits": {
+      "resources": [97, 100, 102, 106, 107, 108, 109, 110, 111, 112],
+      "count": 81
+    },
+    "examples": [
+      {"resource": 97, "offset": "0xB9DC", "context": "follows cucumber-purchase dialogue; callback execution is not observed"},
+      {"resource": 100, "count": 3, "context": "gift-shop command candidates; callback execution is not observed"}
+    ],
+    "dialogue_relation": "Purchase-flow association is plausible from adjacent decoded records, but not confirmed by a live callback trace."
+  },
+  "native_probe": {
+    "compiler": "Pinned IDO 5.3 from mnsg-pinned tools/ido-5.3/cc",
+    "compile_flags": ["-c", "-G", "0", "-non_shared", "-Xfullwarn", "-Xcpluscomm", "-Wab,-r4300_mul", "-woff", "649,838,712", "-D_LANGUAGE_C", "-D_FINALROM", "-DF3DEX_GBI", "-D__sgi", "-DNDEBUG", "-O2", "-mips2"],
+    "linker": "mips-linux-gnu-ld -m elf32btsmip",
+    "original_vma_linked": true,
+    "original_size_bytes": 96,
+    "variant_budget": {"base_limit": 3, "extra_limit_after_forward_mismatch_movement": 2, "variants_attempted": 4},
+    "variants": [
+      {
+        "id": "V1",
+        "source": "decomp/candidates/file12_ryo_clamp_v1.c",
+        "source_sha256": "6155ff5925f1541db140510e226f9df6ad8b4793eb22f477d8655b73b85285c6",
+        "object_sha256": "6db8c998cd8f5b88cedca16772cc0878aa84d82a92728b97afcf5b741c6d9ba9",
+        "hypothesis": "Separate the negative-result early return, write a nonnegative sum, then handle the below-limit status path before the clamp path.",
+        "candidate_instruction_sha256": "512a06d9715996a9a26cdfde291e8ded93f025714d512c0cf5441ffd8a0b092b",
+        "first_mismatch": "+0x30",
+        "mismatching_word_offsets": ["+0x30", "+0x38", "+0x3C", "+0x40", "+0x44", "+0x48", "+0x4C", "+0x50", "+0x54"],
+        "relocation_offsets_match": false
+      },
+      {
+        "id": "V2",
+        "source": "decomp/candidates/file12_ryo_clamp_v2.c",
+        "source_sha256": "fadf5c39d99f00d68486a89265d25c59a8dab1025876189992b60547b698def2",
+        "object_sha256": "6fe961c317d20d7e9e138fb75d17c1bcee520bccf16401f14f446632cf28a741",
+        "hypothesis": "Move the over-limit branch ahead of the final status-0 return while retaining the original sum store in the branch delay slot.",
+        "candidate_instruction_sha256": "642110d245c19d706500dec2179848f9239c9d7b651ae9282e8c79284056f1da",
+        "first_mismatch": "+0x38",
+        "mismatching_word_offsets": ["+0x38", "+0x40", "+0x44", "+0x4C"],
+        "relocation_offsets_match": true,
+        "remaining_difference": "The status-2 constant uses $t9 instead of original $t0; the clamp constant uses $t0 instead of original $t1."
+      },
+      {
+        "id": "V3",
+        "source": "decomp/candidates/file12_ryo_clamp_v3.c",
+        "source_sha256": "33817da3b0977d085d7e64403a1882608e012cf279c232edfedd35520a147589",
+        "object_sha256": "4dcb50f068de67ccb29b49506f762efd4668f004a8cff63ba6d5559520afe662",
+        "hypothesis": "Replace the nested early returns with an explicit nested if/else structure.",
+        "candidate_instruction_sha256": "512a06d9715996a9a26cdfde291e8ded93f025714d512c0cf5441ffd8a0b092b",
+        "first_mismatch": "+0x30",
+        "mismatching_word_offsets": ["+0x30", "+0x38", "+0x3C", "+0x40", "+0x44", "+0x48", "+0x4C", "+0x50", "+0x54"],
+        "repeated_instruction_bytes": "V1"
+      },
+      {
+        "id": "V4",
+        "source": "decomp/candidates/file12_ryo_clamp_v4.c",
+        "source_sha256": "81e0107972d16e3b94e3e388b49a4bb4dcf28be3d1b72f1cd6b31529318c7fc5",
+        "object_sha256": "15ca47ac8fbcdf0483217f8bf0ca34befde11417fe4bd8a6838ddec2a0127fac",
+        "hypothesis": "Keep explicit branch-local status-2 and clamp-value locals to test whether IDO changes the two remaining temporary-register assignments.",
+        "candidate_instruction_sha256": "642110d245c19d706500dec2179848f9239c9d7b651ae9282e8c79284056f1da",
+        "first_mismatch": "+0x38",
+        "mismatching_word_offsets": ["+0x38", "+0x40", "+0x44", "+0x4C"],
+        "repeated_instruction_bytes": "V2",
+        "decision": "No improvement; stop under the bounded-probe rule."
+      }
+    ]
+  },
+  "proof_state": {
+    "production_owner": "GLOBAL_ASM retained",
+    "whole_source_unit_match": "NOT_RUN: isolated candidate did not match the 96-byte original function.",
+    "fresh_full_rom_g2": "NOT_RUN: candidate was not staged; prior checked-in proof remains the 160-function result from the 36-byte callback promotion.",
+    "checked_in_combined_report_sha256": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "checked_in_inventory_report_sha256": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051"
+  },
+  "decision": "Retain func_80221FD4_5DD4A4 as assembly-owned after four bounded variants; the best candidate still differs in four target words at +0x38, +0x40, +0x44 and +0x4C.",
+  "limitations": [
+    "No live-game runtime verification was performed.",
+    "The purchase-dialogue association is inferred from neighboring decoded script records and static callback operands.",
+    "The 456-byte save/Pak helper remains a lower-priority unattempted native candidate."
+  ],
+  "next": "Continue from G64-062 in the 100-task plan; reassess the 456-byte file_12 lead only after that priority checkpoint."
+}

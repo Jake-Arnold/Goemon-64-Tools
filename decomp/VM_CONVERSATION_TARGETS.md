@@ -111,11 +111,35 @@ the linked overlay ELF and complete ROM.
 | --- | ---: | --- | --- |
 | `80222034 / 5DD504 / 20 B` | 11 | Copies a global word to `801C7750`. | Exact C, passed G2 |
 | `80222168 / 5DD638 / 36 B` | 31 | Loads signed byte `801C7743` in the `jal` delay slot and calls `801DCD48`. | Exact C, passed G2 |
-| `80221FD4 / 5DD4A4 / 96 B` | 81 | Reads a signed script halfword, adds it to a global word and checks limits. | Assembly |
-| `80214D58 / 5D0228 / 456 B` | 12 | Calls native predicates before branching. Resource 96 contains a candidate reference. | Assembly |
+| `80221FD4 / 5DD4A4 / 96 B` | 81 | Adds a signed script halfword to the Ryo word, clamps at 9,999 and writes result status. | Assembly; four bounded IDO variants, best first mismatch `+0x38` |
+| `80214D58 / 5D0228 / 456 B` | 12 | Runs Memory Pak checks and save-state comparison. Resource 96 has a static save-prompt reference. | Assembly |
 
 The 36-byte C body uses an `int` call argument sourced from the original
 signed-byte load. Its full original function extent and all three linked
-relocation targets match. The 96- and 456-byte leads remain research candidates;
-their static references need runtime/reachability context before drawing
-dialogue-specific conclusions.
+relocation targets match.
+
+The original MIPS contract for the 96-byte function is now verified. It adds
+the signed halfword at `0x801C7742` to `D_8015C5D8_15D1D8.ryo` (`+0x10`). A
+negative sum writes status `1` to `0x801C7750` and leaves Ryo unchanged. A
+nonnegative sum is stored first; values below 10,000 write status `0`, while
+larger values write status `2` and then clamp Ryo to 9,999. Its ten global
+relocations and the 96-byte extent are confirmed against the pinned linked
+ELF. There is no direct `jal` caller; 81 aligned callback-operand hits appear
+across resources 97, 100, 102, and 106–112. Resource 97 has one at `+0xB9DC`
+after cucumber-purchase dialogue, and resource 100 has three gift-shop hits.
+These are static cross-references, not proof of runtime execution.
+
+Four pinned-IDO source variants preserved the 96-byte size. V1 first differed
+at `+0x30`; V2 moved the first mismatch to `+0x38` and matched all ten
+relocation offsets and targets, with four register-selection word differences
+remaining. V3 repeated V1's instruction bytes; V4 repeated V2's. The bounded
+search stopped after V4 because it did not improve the moved mismatch. The
+function remains assembly-owned; per-variant hashes and exact word offsets are
+in `plans/execution/2026-11-14-vm-file12-ryo-clamp.json`.
+
+The 456-byte target has a save/Pak-check contract and a static reference after
+the Adventure Diary save prompt in resource 96 (`+0xAD88`); resource 102 has
+two more save-dialogue references. Its indirect reachability and dialogue
+association remain unverified. Its larger call graph, temporary allocation,
+copy and comparison make it a lower-priority native candidate; no IDO variant
+has been run for it.
