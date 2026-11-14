@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Record Impact Ryo and oil/health RAM observations
+
+- **Changed:** recorded user-verified Impact resource display matches in `docs/VM_GAMEPLAY_RUNTIME_FINDINGS_2026-11-13.md`: Ryo `u16 0x802F7066` (196 and 400) and oil/health `u16 0x802F706A` (40 and 600).
+- **Why:** the addresses are four bytes apart, and their `+2` alignment raises a specific unverified hypothesis of adjacent full 32-bit values at `0x802F7064` and `0x802F7068`.
+- **Tested:** screenshots and user-reported verification of displayed decimal values; documentation-only change, no automated tests or separate live reproduction by the assistant.
+- **Limitations:** fixed-address stability across fights, actual storage width, actor ownership, boss-HP relation and other modes are not established. Kept them as observations rather than unconditional built-in watches.
+- **Next:** use `u32` read-only watches at the preceding aligned addresses, compare change sequences and restart the fight to test allocation stability.
+
 ### 2026-11-14 — Read-only scene context in State Discovery
 
 - Added a user-facing **Scene / boss investigation** panel with one-click reads of map ID, VM program cursor, VM state, resource ID and signed pause byte.

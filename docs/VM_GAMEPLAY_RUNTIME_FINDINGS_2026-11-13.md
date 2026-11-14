@@ -82,3 +82,16 @@ The inspector now displays **qualified user-observed hints** for VM states 0–7
 The user reported that Capture A and Capture B fail with an invalid normal player object pointer during Impact encounters. A/B/C compared global RAM blocks; the initial implementation called strict `ram.snapshot()` when `Toolkit.current` was cleared by special-mode monitoring, making those comparisons fail even while the RDRAM link and global watches were valid.
 
 The integration branch uses `snapshot_for_monitoring()` for read-only state captures, treats the current character as unknown when the normal ID is out of range, and skips optional player task/object regions when their pointers are invalid, unreadable or absent. Focused global regions remain mandatory and can be compared across Impact/title/normal scenes. This does not make player-dependent writes, checkpoint restoration, or dynamic pointer interpretations safe.
+
+## Impact boss resource-value observations (14 Nov 2026)
+
+The user reports verifying the following values during an Impact boss encounter with the toolkit's read-only custom watches:
+
+| Displayed resource | Guest address | Read width | Live examples | Evidence confidence |
+| --- | --- | --- | --- | --- |
+| Impact Ryo | `0x802F7066` | unsigned 16-bit | 196 (`0x00C4`), later 400 (`0x0190`) | User-verified matching displayed Ryo within a fight |
+| Impact oil / health | `0x802F706A` | unsigned 16-bit | 40 (`0x0028`), later 600 (`0x0258`) | User-verified matching displayed oil within a fight |
+
+The offsets are four bytes apart. **Storage-width hypothesis:** since these guest addresses both have offset `+2` inside four-byte-aligned words, the user may have found the low halves of two adjacent unsigned 32-bit resource counters at `0x802F7064` (Ryo) and `0x802F7068` (oil). In big-endian memory, `u32 600` appears as `00 00 02 58`, and `u16` read at byte offset 2 returns 600. This is an unverified structural inference; adjacent fields could have other widths or layouts.
+
+**Next validation:** make additional **read-only** `u32` watches at `0x802F7064` and `0x802F7068` during Impact, confirm changing amounts alongside their corresponding `u16` watches, then repeat in a freshly started fight and another boss. Do not promote fixed addresses to general-purpose global resource mappings until allocation/scene scope is understood. These discoveries do **not** yet identify enemy HP. Existing normal-player pointer limitations remain separate.
