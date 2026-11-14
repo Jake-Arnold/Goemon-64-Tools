@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Fix removed Ushiwaka status widget crash on Linux
+
+- **Changed:** Removed the obsolete `ushiwaka_status` assignment in Story Progress; the live `ushiwaka_story` field already receives the value. Updated the conflicting UI test and added a disconnected-Tk-tick regression covering the reported AttributeError.
+- **Why:** The redundant Unlocks progression panel was removed, but a stale refresh line remained; `Toolkit.tick()` calls `refresh_unlocks(force=True)` when disconnected, reaching the removed widget.
+- **Verification:** Reviewed the matching remote source and branch state. The new and updated GUI tests are committed but could not be run against the user's graphical Linux game session from this connector; no live-game verification claimed.
+- **Branch context:** `chatgptweb/toolkit-linux-native` remains six commits ahead and more than 170 commits behind `chatgptweb/decomp`; its historical commits have not been mechanically merged. Current Linux feature equivalents exist in the integration branch. No old branch was deleted or rewritten.
+- **Next:** Run `python3 -m unittest tests.test_story_progress_ui tests.test_unlocks_ui -v` on the Linux desktop and confirm clean periodic polling in gameplay and at the title screen.
+
 ### 2026-11-14 — Automatic damage-event capture and single-branch toolkit workflow
 
 - **Changed:** Added a read-only Automatic events tab with a best-effort 25 Hz player-focused RAM recorder, rolling 30-sample pre-hit history, health-loss trigger at 0x8015C5E4, 3.5-second post-hit window, repeated-event candidate ranking, transient-value timelines, JSON evidence export and one-click Live Memory watches.

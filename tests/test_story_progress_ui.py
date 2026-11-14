@@ -29,8 +29,19 @@ class StoryProgressUITests(unittest.TestCase):
         app.story_table.selection_set('training_passed')
         ram.bytes[0x8015C60D]=0x38;app.refresh_unlocks(force=True)
         self.assertEqual(app.story_table.selection(),('training_passed',))
-        self.assertIn('Five yellow',app.ushiwaka_status.get())
+        self.assertFalse(hasattr(app, 'ushiwaka_status'))
+        self.assertIn('Five yellow',app.ushiwaka_story.get())
         self.assertIn('disabled',app.raw_write_btn.state())
+
+    def test_disconnected_tick_without_legacy_ushiwaka_widget(self):
+        # Regression: an old Unlocks label was removed, but the periodic
+        # disconnected refresh path still attempted to update it.
+        app = self.app
+        self.assertFalse(hasattr(app, 'ushiwaka_status'))
+        app.mem = None
+        with patch.object(self.root, 'after', return_value=None):
+            app.tick()
+        self.assertIn('Unavailable', app.ushiwaka_story.get())
 
     def test_disconnect_clears_previous_story_values(self):
         app=self.app;app.mem=FakeRAM();app.mem.bytes[0x8015C60C]=0x28

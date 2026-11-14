@@ -55,7 +55,6 @@ class StoryProgressMixin:
         state=read_story_state(self.mem)
         self.benkei_story.set('Benkei: '+state['benkei'])
         self.ushiwaka_story.set('Ushiwaka: '+state['ushiwaka'])
-        self.ushiwaka_status.set('Ushiwaka: '+state['ushiwaka'])
         # Update existing rows, retaining selection and scroll position.
         rows=story_rows(state)
         for row in rows:
