@@ -26,6 +26,7 @@ from autosplitter.memory import HostProcess, Rdram, discover_rdram
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
 from practice.value_freezes_ui import ValueFreezesMixin
+from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.live_speed_ui import LiveSpeedMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
@@ -89,7 +90,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(DamageEventCaptureMixin, LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -293,6 +294,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         self.build_value_freezes_tab(notebook)
         self.build_value_search_tab(notebook)
         self.build_state_discovery_tab(notebook)
+        self.build_damage_event_capture_tab(notebook)
         self.build_event_sessions_tab(notebook)
         self.build_unlock_tabs(notebook)
         self.build_story_progress_tab(notebook)
@@ -505,6 +507,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         except ValueError:
             self.status.set('Enter a valid positive PID, or leave it blank for automatic selection.')
             return
+        self.stop_damage_capture(quiet=True)
         # Complete all old-session freeze writes before closing the RAM handle.
         with self.value_freezes.guard:
             self.stop_all_freezes()
@@ -677,6 +680,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
                 if self.pending_restore and self.pending_restore.get('phase') != 'warp':
                     self.poll_pending_restore(s, now)
             except (OSError,ValueError) as e:
+                self.stop_damage_capture(quiet=True)
                 self.status.set(f"Memory read failed: {e}")
                 self.cancel_pending_restore(quiet=True)
                 self.mem=None
@@ -998,6 +1002,7 @@ def main(argv=None):
     try:
         root.mainloop()
     finally:
+        app.stop_damage_capture(quiet=True)
         app._stop_freeze_worker()
         app.stop_transition_trace()
         app.cancel_pending_restore(quiet=True)

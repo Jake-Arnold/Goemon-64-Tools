@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Automatic damage-event capture and single-branch toolkit workflow
+
+- **Changed:** Added a read-only Automatic events tab with a best-effort 25 Hz player-focused RAM recorder, rolling 30-sample pre-hit history, health-loss trigger at 0x8015C5E4, 3.5-second post-hit window, repeated-event candidate ranking, transient-value timelines, JSON evidence export and one-click Live Memory watches.
+- **Why:** Brief post-damage enemy-contact immunity is difficult to investigate with manual Value Search or A/B/C snapshots. Continuous short-range collection keeps the game UI usable and avoids broad 8 MiB polls.
+- **Safety:** Capture is read-only, bounded to eight hits and the current map/character/task/object pointer context; a load, invalid pointer or process reconnection stops recording. Stops complete before the previous process handle is closed. Captures are not treated as verified collision semantics.
+- **Tests:** Five synthetic damage-recorder tests passed in isolated local Python execution, covering repeatability, pointer/loading rejection, context changes, partial captures and bounded recording. A sixth character/pointer-change test is included in the committed test module; full repository GUI/in-game integration and local decomp CI were not run in this connector-backed session.
+- **Branch policy:** chatgptweb/decomp is the current consolidated toolkit integration branch. No new feature branch was made. See docs/BRANCH_WORKFLOW.md. The existing right-click freeze, 100 Hz freeze worker and Linux PID improvements are preserved unchanged.
+- **Limitations/next:** Sampling is best-effort and does not guarantee capture of sub-frame flags. Real Goemon64Recomp/Project64 collision and temporary invulnerability behaviour remains unverified; reproduce several damage events and inspect candidate timelines before identifying any writable field.
+
 ### 2026-11-14 — Close the 100-task decomp execution plan
 
 - **Changed:** Marked the execution handoff and Architect v2 strategy closed after G64-087. Remaining `PLANNED` entries are retained as unexecuted history; no task was marked complete by this closeout.

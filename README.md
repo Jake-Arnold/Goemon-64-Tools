@@ -1,5 +1,11 @@
 # Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
 
+## Active development branch and damage-event recorder
+
+Use `chatgptweb/decomp` as the current consolidated integration branch for new toolkit work. The `main` branch is not the newest toolkit baseline. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
+
+The **Automatic events** tab captures read-only memory samples around health-loss events, ranks transient candidate fields and exports JSON evidence. It is designed to investigate damage immunity and collision handling; candidate addresses are not yet verified collision controls. Recording stops on map, character, pointer or connection changes.
+
 ## Linux existing PID and write-enabled controls
 
 Enter the PID of an already-running native Linux game, then choose **Connect to
@@ -339,7 +345,7 @@ A single-file branded Windows executable can be built with `build/Build-Windows.
 The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/taskbar icon and includes the logo resources for Tkinter's window icon. The graphical app is launched with the same opt-in practice flags as `Run.bat`, but **direct scene warp remains disabled**. Use a disposable save.
 
 - Existing source usage remains `Run.bat`; the source-run launcher keeps local state in `practice/`.
-- The packaged executable writes bookmarks, checkpoints, debug-menu profile and exported diagnostics under `%LOCALAPPDATA%\GoemonSpeedrunTools\` to avoid PyInstaller's temporary directory.
+- The packaged executable writes bookmarks, checkpoints, debug-menu profile and exported diagnostics under `%LOCALAPPDATA%\GoemonSpeedrunTools` to avoid PyInstaller's temporary directory.
 - Existing source-based bookmarks/checkpoints are *not migrated automatically*. Copy any wanted `practice/bookmarks.json`, `practice/checkpoints.json` and `practice/native_debug_fields.json` to the packaged app data directory manually.
 - Only the Python unit tests have been run in this environment; the Windows packaging step and real Windows taskbar icon have not yet been verified on Windows.
 
