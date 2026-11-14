@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Full Japan overlay call-target scan and exact audio patch audit
+
+- **ROM integration:** Verified both 32 MiB retail-derived decompressed SHA-1s and scanned 69 matched executable sections using authoritative USA/Japan Splat section boundaries.
+- **Results:** 15,919 USA JAL instructions, 2,550 distinct section-local call targets, **1,922 unique Japanese 16-instruction structural anchors** (633 main; 1,289 other overlays). No duplicate Japanese target within a section; 577 absent/ambiguous, 42 uninformative, nine near executable end.
+- **Code:** Added `decomp/japan_overlay_entrypoints.py` with PC-nibble-aware direct JAL decoding and section-qualified candidate JSON. Added `decomp/japan_patch_audit.py` for a unique full-function structural comparison before emitting a non-applied regional patch manifest.
+- **Audio patch:** Original USA `func_80038210_38E10` is 436 bytes; Japanese equivalent `0x80037E80` structurally matches all 109 instructions (90 identical). USA patch instruction `0x80038290` translates to JP `0x80037F00`; both original words are `0x00E3082B`; proposed `0x00E3082A` remains an unapplied candidate.
+- **Tests:** Four new overlay scanner tests and five new patch audit tests; combined 26 Python unit tests passed locally. Real verified ROMs passed the 69-section report and 109-instruction patch audit. No Japanese native build or gameplay executed.
+- **Scope/safety:** Reported entries are **candidate starts, not full matching functions**. No recomp branch was forked or Japanese gameplay enabled; original USA code unchanged. No Nintendo ROM/assets committed.
+- **Next:** Reconcile the remaining candidates with all 7,376 USA N64Recomp symbols, derive Japanese symbol/relocation tables and build isolated Japanese N64Recomp output. See `docs/JAPAN_OVERLAY_JAL_SCAN.md`.
+
 ### 2026-11-14 — Region-aware upstream Goemon64Recomp ROM loader preparation
 
 - **Code:** Added `decomp/prepare_recomp_region_loader.py`, a fail-closed isolated-upstream source patcher. It replaces the USA-only decompression file-table/CRC constants and header checks with verified USA/Japan-0 variants while retaining the USA entrypoint and source logic.
