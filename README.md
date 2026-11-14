@@ -1,8 +1,20 @@
 # Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
 
+## Linux existing PID and write-enabled controls
+
+Enter the PID of an already-running native Linux game, then choose **Connect to
+game**. Where Linux Yama permissions block it, the Connection panel offers an
+explicit polkit authorization to temporarily permit normal same-user external-PID
+memory access; this **weakens system-wide same-user process isolation** until
+restored. See [Linux access guidance](docs/LINUX_TOOLKIT.md).
+
+Memory editing, scene reload and Live Memory context-menu freezing are available
+without an additional unlock checkbox. Practice writes default on in Linux and
+Windows; launch with `--read-only` to disable game writes and automated input.
+
 ## Experimental native Linux toolkit
 
-The Python/Tk toolkit has an experimental native Linux process-memory backend, a native-game launch control, read-only-by-default access, original-ROM-researched script diagnostics, **X11-only verified-target key injection**, and a **Linux speed channel for separately rebuilt patched hosts**. See [Linux setup and limitations](docs/LINUX_TOOLKIT.md). This is not a claim of Wayland input support, stock-recomp speed control or live gameplay verification.
+The Python/Tk toolkit has an experimental native Linux process-memory backend, a native-game launch control, existing-PID connection with optional OS authorization, write-enabled practice controls by default, original-ROM-researched script diagnostics, **X11-only verified-target key injection**, and a **Linux speed channel for separately rebuilt patched hosts**. See [Linux setup and limitations](docs/LINUX_TOOLKIT.md). This is not a claim of Wayland input support, stock-recomp speed control or live gameplay verification.
 
 The four normal Plasma locations share one advice event. Story progress now
 includes all 39 bits checked or set by its traced advice path. Your two forced
@@ -68,8 +80,8 @@ exact target hex, then **Freeze raw hex**. Or select a Live memory watch and use
 raw fields also have a Freeze button and a link to manage locks. The list shows
 all raw targets; use **Stop selected** or **Stop all freezes** to release them.
 Values are N64 big-endian hex; a raw freeze holds every bit in its byte range.
-Raw freezes require the existing UNSAFE toggle. Health freezing requires write
-access; read-only mode blocks all freeze entry points.
+Raw and health freezes are available in writable sessions without an unlock checkbox.
+Explicit `--read-only` mode blocks all freeze entry points.
 
 Freezes start inactive, stay only in memory for this connection, and stop on
 reconnect/disconnect, revoked permission, invalid data or a write/readback failure.

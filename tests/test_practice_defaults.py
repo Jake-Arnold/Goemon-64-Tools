@@ -44,8 +44,9 @@ class TestAccessGUI(unittest.TestCase):
     def test_default_controls_enabled_without_startup_writes(self):
         with patch.object(WindowsProcess,'__init__',side_effect=AssertionError('Startup must not open a process')):
             app=Toolkit(self.root,parse_args([]))
-        self.assertTrue(app.hex_advanced.get())
-        for button in (app.unsafe_check,app.raw_write_btn,app.experimental_warp_btn,
+        self.assertFalse(hasattr(app,'hex_advanced'))
+        self.assertFalse(hasattr(app,'unsafe_check'))
+        for button in (app.raw_write_btn,app.experimental_warp_btn,
                        app.native_debug_btn,app.restore_state_btn):
             self.assertNotIn('disabled',button.state())
         self.assertIsNone(app.mem)
@@ -55,8 +56,9 @@ class TestAccessGUI(unittest.TestCase):
         # Even programmatic construction with conflicting opt-ins is normalized.
         args.enable_hex_edit=True
         app=Toolkit(self.root,args)
-        self.assertFalse(app.hex_advanced.get())
-        for button in (app.unsafe_check,app.raw_write_btn,app.experimental_warp_btn,
+        self.assertFalse(hasattr(app,'hex_advanced'))
+        self.assertFalse(hasattr(app,'unsafe_check'))
+        for button in (app.raw_write_btn,app.experimental_warp_btn,
                        app.native_debug_btn,app.restore_state_btn):
             self.assertIn('disabled',button.state())
         for _label,controls in app.unlock_row_widgets.values():
@@ -66,7 +68,6 @@ class TestAccessGUI(unittest.TestCase):
         with (patch.object(process,'write',side_effect=AssertionError('No game writes')),
               patch('practice.toolkit.press_native_c_down',side_effect=AssertionError('No game input')),
               patch('practice.ui_extension.press_native_debug_accept',side_effect=AssertionError('No game input'))):
-            app.hex_advanced.set(True)  # Checkbox manipulation cannot override mode.
             app.write_raw_hex()
             app.set_unlock(UNLOCKS[0],1)
             app.restore_full_checkpoint()

@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Regression tests and current documentation for default-write UI
+
+- **Changed:** replaced startup, Linux and freeze tests that depended on the removed write-unlock state. Confirmed that the legacy Linux enable-writes flag remains accepted while `--read-only` takes precedence. Updated the active README and native Linux setup instructions with direct existing-PID connection, OS permission implications and write-enabled defaults.
+- **Limitations:** these are source changes and synthetic tests; no local Tk/Xvfb test command or live Linux game was run via the connector.
+- **Next:** execute targeted Tk and portable tests and exercise OS permission controls against an externally launched game.
+
+
 ### 2026-11-14 — No additional memory-write unlock; Linux writes enabled by default
 
 - **Changed:** removed the Live Memory write-unlock checkbox and all corresponding editor, freeze, and scene-reload gates. Linux now uses the same write-enabled defaults as Windows; the old `--linux-enable-writes` flag is accepted as a no-op for compatibility.

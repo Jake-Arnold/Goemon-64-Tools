@@ -43,7 +43,6 @@ class TestExperimentalGUI(unittest.TestCase):
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
-        self.app.hex_advanced.set(True)
         with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):
             self.app.try_reload_warp()
         pending=self.app.pending_direct_warp
@@ -68,7 +67,6 @@ class TestExperimentalGUI(unittest.TestCase):
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
-        self.app.hex_advanced.set(True)
         with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):
             self.app.try_reload_warp()
         pending=self.app.pending_direct_warp
@@ -88,7 +86,6 @@ class TestExperimentalGUI(unittest.TestCase):
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
-        self.app.hex_advanced.set(True)
         with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):
             self.assertEqual(self.app.activate_selected_scene(), 'break')
         self.assertEqual(self.ram.u8(STATE_ADDR),12)

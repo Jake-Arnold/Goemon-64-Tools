@@ -11,7 +11,7 @@ class ValueFreezeTests(unittest.TestCase):
         self.freezes=ValueFreezes();self.token=(123,456)
 
     def poll(self,**kw):
-        return self.freezes.poll(self.ram,self.token,writable=kw.get('writable',True),unsafe=kw.get('unsafe',True))
+        return self.freezes.poll(self.ram,self.token,writable=kw.get('writable',True))
 
     def test_raw_reasserts_changed_value_skips_unchanged_and_preserves_neighbors(self):
         addr=0x8015C63B
@@ -43,13 +43,12 @@ class ValueFreezeTests(unittest.TestCase):
         self.poll();self.assertEqual(self.ram.u8(0x8015C63B),16)
 
     def test_disconnect_reconnect_permissions_and_failure_stop_without_retry(self):
-        for reason in ('disconnect','token','read_only','unsafe','failure'):
+        for reason in ('disconnect','token','read_only','failure'):
             self.freezes.add(self.token,0x8015C63B,b'\x10')
             with patch.object(self.process,'write',side_effect=OSError('write denied')):
-                if reason=='disconnect':result=self.freezes.poll(None,self.token,writable=True,unsafe=True)
-                elif reason=='token':result=self.freezes.poll(self.ram,(999,456),writable=True,unsafe=True)
+                if reason=='disconnect':result=self.freezes.poll(None,self.token,writable=True)
+                elif reason=='token':result=self.freezes.poll(self.ram,(999,456),writable=True)
                 elif reason=='read_only':result=self.poll(writable=False)
-                elif reason=='unsafe':result=self.poll(unsafe=False)
                 else:result=self.poll()
             self.assertIn('stopped',result);self.assertEqual(self.freezes.locks,{})
             with patch.object(self.process,'write',side_effect=AssertionError('No retry')):self.poll()

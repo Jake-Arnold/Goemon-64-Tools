@@ -56,12 +56,16 @@ time.sleep(30)
             child.stdout.close()
 
     @unittest.skipUnless(sys.platform == "linux", "Linux-only")
-    def test_toolkit_default_is_read_only(self):
+    def test_toolkit_writes_default_and_explicit_read_only(self):
         from practice.toolkit import parse_args
-        self.assertTrue(parse_args([]).read_only)
-        self.assertFalse(parse_args([]).enable_hex_edit)
+        normal=parse_args([])
+        self.assertFalse(normal.read_only)
+        self.assertTrue(normal.enable_hex_edit)
+        self.assertTrue(normal.enable_teleport)
         self.assertFalse(parse_args(["--linux-enable-writes"]).read_only)
-        self.assertTrue(parse_args(["--linux-enable-writes", "--read-only"]).read_only)
+        limited=parse_args(["--linux-enable-writes","--read-only"])
+        self.assertTrue(limited.read_only)
+        self.assertFalse(limited.enable_hex_edit)
 
 
 if __name__ == "__main__":

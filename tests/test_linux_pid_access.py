@@ -13,7 +13,7 @@ class LinuxPIDAccessTests(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             setting=Path(tmp)/'scope'
             self.assertIsNone(ptrace_scope(setting))
-            setting.write_text('1\\n')
+            setting.write_text('1\n')
             self.assertEqual(ptrace_scope(setting),1)
             self.assertIn('ptrace_scope=1',external_pid_hint(123,scope=1))
             self.assertIn('same-user',external_pid_hint(123,scope=0))
@@ -25,7 +25,7 @@ class LinuxPIDAccessTests(unittest.TestCase):
              patch('practice.linux_pid_access.ptrace_scope',return_value=0):
             self.assertEqual(change_ptrace_scope(0),0)
         cmd=run.call_args.args[0]
-        self.assertEqual(cmd[:2],['/usr/bin/pkexec','/usr/sbin/sysctl'])
+        self.assertEqual(cmd[:2],[str(Path('/usr/bin/pkexec').resolve()),str(Path('/usr/sbin/sysctl').resolve())])
         self.assertEqual(cmd[-2:],['-w','kernel.yama.ptrace_scope=0'])
         self.assertEqual(run.call_count,1)
 
