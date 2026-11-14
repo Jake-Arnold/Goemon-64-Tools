@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Double-click entrance reload from dashboard and scene browser
+
+- **Changed:** dashboard area double-click synchronises the selected stage and directly invokes the guarded experimental entrance reload, without switching tabs; the Scene Browser area double-click uses the same path. Blank-row double-clicks do nothing. Both explicit reload and original native-debug-menu buttons act without confirmation prompts. The dashboard now shows scene-request results and status directly.
+- **Reason:** remove repeated confirmation and intermediate Scene Browser navigation for deliberate area double-clicks; retain a separate manual native debug-menu route.
+- **Guards retained:** no writes in read-only mode, no overlap with an active transition/checkpoint restore, a connected game, enabled experimental memory controls, a resolved entrance from the original USA ROM, valid character choice and native gameplay safety checks. An ambiguous or unavailable entrance blocks the automatic reload; legacy direct exit-flag warp remains disabled.
+- **Tests:** updated Tk and mock-RAM unit tests for routing, no-prompt behaviour, guarded writes and read-only blocking. Tests were not executable in the connector-only editing environment; runtime verification on Goemon64Recomp remains outstanding.
+- **Next:** run `python3 -m unittest tests.test_dashboard tests.test_entrance_ui tests.test_experimental_ui tests.test_direct_gameplay_warp` with a Tk display, then verify one safe entrance in live Goemon64Recomp and observe placement/camera before relying on repeated use.
+
 ### 2026-11-14 — Observe dialogue selection index candidate 0x801C792C
 
 - **Evidence:** inspected two user videos: inn selection `u32 0x801C792C` consistently follows options `0 Spend the night`, `1 Adventure Diary`, `2 Nothing`; `0xFFFFFFFF` appears before/after choice. General Store shows `0/1/2` during plain introductory text and `0xFFFFFFFF` in some apparently interactive frames, so an unqualified universal-menu claim is unsafe.

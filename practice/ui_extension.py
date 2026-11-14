@@ -73,7 +73,7 @@ class InspectorMixin(EntranceMixin):
         self.last_inspect_at=0.0
         self.last_compare_at=0.0
         self.inspector_status=tk.StringVar(value='Connect to begin inspecting memory. Raw addresses refer to US N64 guest RAM.')
-        self.scene_status=tk.StringVar(value='Direct warp disabled: v0.9.7 exits to title. Double-click does NOT write memory. Capture a normal transition to identify the loader.')
+        self.scene_status=tk.StringVar(value='Double-click an area to request an experimental entrance reload. Requires a connected game, a resolved ROM entrance and UNSAFE memory access.')
         self.compare_status=tk.StringVar(value='Capture or select a logical checkpoint to compare.')
 
         inspector=ttk.Frame(notebook,padding=10)
@@ -152,7 +152,7 @@ class InspectorMixin(EntranceMixin):
         self.scene_tab=scenes
         self.scene_live=tk.StringVar(value='Current map: —')
         ttk.Label(scenes,textvariable=self.scene_live,font=('Consolas',12)).pack(anchor='w',pady=4)
-        ttk.Label(scenes,text='Double-click selects a stage without writing memory. Choose an entrance, then use an explicit scene request button.').pack(anchor='w')
+        ttk.Label(scenes,text='Single-click selects; double-click immediately requests the selected entrance reload (experimental). The manual debug-menu button remains available.').pack(anchor='w')
         character_line=ttk.Frame(scenes);character_line.pack(fill='x',pady=4)
         ttk.Label(character_line,text='Target character:').pack(side='left')
         self.scene_character=ttk.Combobox(character_line,state='readonly',width=30,
@@ -816,6 +816,9 @@ class InspectorMixin(EntranceMixin):
 
 
     def try_reload_warp(self):
+        if getattr(self.args,'read_only',False):
+            self.scene_status.set('Read-only mode: scene requests are disabled.')
+            return
         if self.pending_direct_warp or self.pending_restore or self.pending_native_warp:
             self.scene_status.set('Another scene or checkpoint transition is pending; finish or cancel it first.')
             return
@@ -839,11 +842,6 @@ class InspectorMixin(EntranceMixin):
         try:spawn=self.selected_scene_spawn(dest)
         except ValueError as exc:
             self.scene_status.set(str(exc));return
-        if not messagebox.askyesno('Experimental entrance reload',
-            f'Reload {dest} ({name}) at {spawn.label}?\n'
-            f'XYZ {tuple(spawn.position)}, character {target_character}.\n'
-            'The original reload remains experimental; model, collision, camera and scripts may differ from an ordinary door transition.'):
-            return
         try:
             info=stage_reload_trial(self.mem,dest,self.scene_catalog(),spawn_character=target_character,spawn=spawn)
             now=__import__('time').monotonic()
@@ -892,11 +890,12 @@ class InspectorMixin(EntranceMixin):
             self._finish_direct_warp(pending,'placement_stopped',f'Entrance placement stopped: {exc}. No further writes.')
 
     def request_direct_scene(self,mid,name):
-        """Double-click is selection-only; experimental writes need a dedicated button."""
-        self.scene_status.set(
-            f'Selected {mid} ({name}); double-click warp DISABLED, no memory writes sent. Use the explicit '
-            'EXPERIMENT reload button and choose a ROM entrance after enabling UNSAFE.'
-        )
+        """Keep the historical entry point; use the validated entrance-reload path."""
+        chosen=self.scene_list.curselection()
+        if not chosen or self.scene_options[chosen[0]][0]!=mid:
+            self.scene_status.set('Scene selection changed; reload was not sent.')
+            return
+        self.try_reload_warp()
 
     def start_transition_trace(self):
         from practice.transition_trace import TransitionTrace
@@ -1010,19 +1009,32 @@ class InspectorMixin(EntranceMixin):
             target=native_debug_selection(mid,self.scene_catalog())
             self.scene_status.set(
                 f'Selected {mid}: {name}. Native debug index: {target["label"]}. '
-                'Direct warp disabled; double-click will make NO guest memory writes. Separate button opens the original debug menu.')
+                'Double-click requests the guarded experimental entrance reload; the manual debug menu is a separate button.')
         except ValueError as e:
             self.scene_status.set(str(e))
 
     def activate_selected_scene(self,event=None):
-        """Double-click requests a direct gameplay scene transition, NO debug menu."""
+        """Request a guarded reload for the row actually double-clicked."""
+        if event is not None:
+            index=self.scene_list.nearest(event.y)
+            bounds=self.scene_list.bbox(index)
+            if bounds is None or not (bounds[1] <= event.y < bounds[1]+bounds[3]):
+                return 'break'
+            self.scene_list.selection_clear(0,'end')
+            self.scene_list.selection_set(index)
+            self.scene_list.activate(index)
+            self.select_scene()
         chosen=self.scene_list.curselection()
-        if not chosen:return
+        if not chosen:return 'break'
         mid,name=self.scene_options[chosen[0]]
         self.request_direct_scene(mid,name)
+        return 'break'
 
     def open_debug_for_selected_scene(self,event=None):
-        """Separate manual native menu path, intentionally not the double-click path."""
+        """Open the native menu immediately, using original selection guards."""
+        if getattr(self.args,'read_only',False):
+            self.scene_status.set('Read-only mode: debug-menu requests are disabled.')
+            return
         chosen=self.scene_list.curselection()
         if not chosen:return
         mid,name=self.scene_options[chosen[0]]
@@ -1041,18 +1053,6 @@ class InspectorMixin(EntranceMixin):
         except (OSError,ValueError) as exc:
             self.scene_status.set(str(exc));return
         ready=calibrated_for_direct_warp(self.debug_profile)
-        if ready and not self.native_warp_confirmed:
-            if not messagebox.askyesno('Experimental native warp',
-                'This uses addresses LEARNED from original debug-menu selections and then sends N64 A.\n'
-                'Calibration is not proof of safety. It can crash/softlock the game. Continue on a disposable save?'):
-                return
-            self.native_warp_confirmed=True
-        if not ready and not self.debug_shortcut_confirmed:
-            if not messagebox.askyesno('Native debug menu needs calibration',
-                'This build cannot safely invent the menu selection addresses.\n'
-                'Open the native debug menu now for manual navigation / calibration?'):
-                return
-            self.debug_shortcut_confirmed=True
         try:
             result=open_native_debug_for_scene(self.mem,mid,self.scene_catalog())
             from time import monotonic

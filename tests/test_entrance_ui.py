@@ -32,7 +32,7 @@ class EntranceUITests(unittest.TestCase):
 
     def test_unique_origin_entry_is_selected_and_request_stages_xyz(self):
         self.assertEqual(self.app.entrance_choice.current(),0)
-        with patch('practice.ui_extension.messagebox.askyesno',return_value=True):self.app.try_reload_warp()
+        with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):self.app.try_reload_warp()
         self.assertEqual(self.app.mem.u8(STATE_ADDR),12)
         self.assertEqual(self.app.mem.read_guest(0x800C7CA4,6),b'\xff\xf6\x00\x14\x00\x1e')
         pending=self.app.pending_direct_warp
@@ -64,7 +64,8 @@ class EntranceUITests(unittest.TestCase):
 
     def test_native_manual_request_also_places_after_actual_load(self):
         self.app.debug_shortcut_confirmed=True
-        with patch('practice.ui_extension.calibrated_for_direct_warp',return_value=False):
+        with patch('practice.ui_extension.calibrated_for_direct_warp',return_value=False), \
+             patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):
             self.app.open_debug_for_selected_scene()
         self.assertEqual(self.app.mem.u8(STATE_ADDR),10)
         pending=self.app.pending_native_warp;self.assertTrue(pending['manual'])
@@ -75,7 +76,7 @@ class EntranceUITests(unittest.TestCase):
         self.assertEqual(self.app.mem.snapshot()['x'],-10)
 
     def test_cancel_and_read_only_pending_requests_cannot_place(self):
-        with patch('practice.ui_extension.messagebox.askyesno',return_value=True):self.app.try_reload_warp()
+        with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):self.app.try_reload_warp()
         self.app.cancel_scene_request();self.assertIsNone(self.app.pending_direct_warp)
         self.assertIsNone(self.app.pending_native_warp)
         self.app.args.read_only=True
@@ -102,7 +103,7 @@ class EntranceUITests(unittest.TestCase):
         from practice.checkpoints import capture_checkpoint
         checkpoint=capture_checkpoint(self.app.mem,'Before reload')
         self.app.checkpoints=[checkpoint];self.app.checkpoints_box['values']=['Before reload'];self.app.checkpoints_box.current(0)
-        with patch('practice.ui_extension.messagebox.askyesno',return_value=True):self.app.try_reload_warp()
+        with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):self.app.try_reload_warp()
         with patch.object(self.process,'write',side_effect=AssertionError('No second transition')):
             self.app.restore_full_checkpoint()
         self.assertIn('scene request',self.app.status.get())
