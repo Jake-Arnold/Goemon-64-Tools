@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-14 — Dual-region ROM comparison foundation (experimental)
+
+- **Changed:** Added `decomp/region_compare.py` to hash-verify the exact USA/Japanese retail ROMs, normalise .z64/.n64/.v64, and export only unambiguously anchored byte-identical ROM spans. Added five synthetic tests and `docs/DUAL_REGION_SUPPORT.md` with recomp/toolkit integration and validation gates.
+- **Why:** Region-specific executable code, memory layout and ROM offsets must be mapped before the Japanese game can be recompiled or safely controlled by the toolkit. This initial change does not alter the existing USA runtime.
+- **Tests:** Five ROM-free unit tests passed; both supplied retail images verified; 707 disjoint spans, 6,641,072 exact equal bytes (39.6% of each 16 MiB ROM).
+- **Limitations:** Exact ROM spans do not translate guest RAM addresses. Neither the Japanese recomp nor Japanese live toolkit support is implemented or gameplay-tested.
+- **Next:** Investigate Japanese decomp section/overlay and symbol layouts, then derive and validate read-only regional runtime profiles before enabling writes.
+
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
 ## 2026-11-10 - v0.11.17 map common Plasma advice conditions
