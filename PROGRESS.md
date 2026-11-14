@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Japanese Impact full-function reconciliation with original N64Recomp symbols
+
+- **Implemented:** Added `decomp/japan_symbol_reconciliation.py`, a strict whole-function audit of candidate USA→JP direct-JAL anchors against original USA N64Recomp function starts and sizes. Checks exact ROM hashes and Splat section identities, validates both ROM and VRAM candidate addresses, re-confirms unique 16-word anchors and only reports full normalized function-structure matches.
+- **Sources:** Original upstream `klorfmorf/Goemon64RecompSyms/mnsg.syms.toml` has 7,376 function entries (72 sections); added a 227-function source-provenance `.file_13` subset in `decomp/data/impact_usa_227_symbols.toml`, with original names/addresses/lengths, no ROM bytes.
+- **Real-ROM result:** All 227 Impact JAL candidates matched original function starts. 177 functions (59,036 bytes) have complete normalized code-structure matches; 50 were under 16 instructions and explicitly withheld. Among 177 matches, 11 functions are byte-identical and 13,686/14,759 instruction words exactly match.
+- **Testing:** Eight new synthetic fail-closed cases passed. Existing 26 research Python tests passed, total 34. Complete `.file_13` subset integration against SHA1-verified 32 MiB USA and Japan-0 ROMs passed.
+- **Limits:** This cannot establish Japanese runtime equivalence: MIPS immediates and branch/JAL targets are masked, and original USA function sizes still require Japanese-boundary corroboration. A full original symbol corpus run, N64Recomp Japanese build, game boot and Goemon64Recomp savestates remain incomplete.
+- **Next:** Run the new validator over all 7,376 upstream USA functions with the 1,922-candidate JSON; triage orphan, too-short and changed functions; derive independent Japanese function boundaries, then produce distinct Japanese overlay/patch symbol files and compile.
+- **Documentation:** `docs/JAPAN_SYMBOL_RECONCILIATION.md`.
+
 ### 2026-11-14 — Full Japan overlay call-target scan and exact audio patch audit
 
 - **ROM integration:** Verified both 32 MiB retail-derived decompressed SHA-1s and scanned 69 matched executable sections using authoritative USA/Japan Splat section boundaries.
