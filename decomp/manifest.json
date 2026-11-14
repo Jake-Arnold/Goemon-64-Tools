@@ -1229,6 +1229,11 @@
           "rom_offset": 53228,
           "size": 68
         },
+    {
+      "name": "func_8000C430_D030",
+      "rom_offset": 53296,
+      "size": 36
+    },
         {
           "name": "func_8000C53C_D13C",
           "rom_offset": 53564,
@@ -1238,7 +1243,6 @@
       "assembly_functions": [
         "func_8000B8F0_C4F0",
         "func_8000C260_CE60",
-        "func_8000C430_D030",
         "func_8000C454_D054",
         "func_8000C488_D088",
         "func_8000C4C8_D0C8",
@@ -1271,7 +1275,8 @@
     "vm_resource_types.h",
     "vm_compare_reference.h",
     "object_flags.h",
-    "default_entrance.h"
+    "default_entrance.h",
+    "impact_controller.h"
   ],
   "splat_options": {
     "asm_jtbl_label_macro": "glabel"
@@ -1317,6 +1322,19 @@
       }
     }
   ],
+  "overlay_file13_stage": {
+    "format": "goemon-file13-c-stage-v1",
+    "source": "impact_hp_clamp.c",
+    "source_sha256": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99",
+    "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+    "object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+    "function": {
+      "name": "func_801D3954_5FED34",
+      "rom_offset": 6286644,
+      "vma": 2149398868,
+      "size": 40
+    }
+  },
   "vm_assignment_table_layout": true,
   "existing_source_patches": [
     {

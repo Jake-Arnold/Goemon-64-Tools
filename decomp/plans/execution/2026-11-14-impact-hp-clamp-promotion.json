@@ -1,0 +1,128 @@
+{
+  "format": "goemon-impact-overlay-promotion-v1",
+  "date": "2026-11-14",
+  "status": "PASSED_G2",
+  "scope": "Independent Impact file_13 matching-C promotion; no G64 task status changed.",
+  "starting_state": {
+    "worktree_branch": "codex/goemon-impact-research",
+    "worktree_path": "/home/jake/.codex/worktrees/goemon-impact-research/Goemon-64-Tools",
+    "task_start_head": "3179cbcb7f32e3d46e3460d9677e9ab4273df938",
+    "initial_worktree": "clean",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "original_mips": {
+    "function": "func_801D3954_5FED34",
+    "section": ".file_13",
+    "vma": "0x801D3954",
+    "decompressed_reference_rom_offset": "0x5FED34",
+    "size_bytes": 40,
+    "instruction_sha256": "0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf",
+    "verified_contract": "Loads the Impact controller pointer; subtracts the signed argument from the signed HP word at controller +0x60; stores and returns the result when positive, otherwise stores and returns zero.",
+    "reference_relocations": 2
+  },
+  "candidate": {
+    "source": "decomp/impact_hp_clamp.c",
+    "source_sha256": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99",
+    "abi_header": "decomp/impact_controller.h",
+    "abi_header_sha256": "7334c2c70ca857950d2abbb5cffdc6aafba2761ecad514f8461bdb9164082dbd",
+    "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+    "staged_object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+    "linked_function_sha256": "0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf",
+    "relocations": [
+      {
+        "section_offset": "0x0",
+        "type": "R_MIPS_HI16",
+        "symbol": "D_8020EED0_63A2B0",
+        "resolved_vma": "0x8020EED0"
+      },
+      {
+        "section_offset": "0x4",
+        "type": "R_MIPS_LO16",
+        "symbol": "D_8020EED0_63A2B0",
+        "resolved_vma": "0x8020EED0"
+      }
+    ]
+  },
+  "overlay_proof": {
+    "section": ".file_13",
+    "vma_start": "0x801CB460",
+    "decompressed_reference_rom_range": [
+      "0x5F6840",
+      "0x63A2B0"
+    ],
+    "size_bytes": 277104,
+    "reference_and_candidate_section_sha256": "f3116027c76aad9c68dac460bfb58f4af059d0e9c6f6aff8a7e6091f19c6bd85",
+    "section_bytes_match_original": true,
+    "semantic_relocations_match": 9589,
+    "raw_relocation_metadata_identical": false,
+    "approved_symbol_kind_upgrades": {
+      "D_8015C5C8_15D1C8_NOTYPE_TO_OBJECT": 268,
+      "D_8020EED0_63A2B0_NOTYPE_TO_OBJECT": 1068,
+      "D_8015C5D8_15D1D8_NOTYPE_TO_OBJECT": 6,
+      "D_8015C608_15D208_NOTYPE_TO_OBJECT": 18,
+      ".L0800AD60_6BE000_NOTYPE_TO_FUNC": 2
+    },
+    "relocation_sites_and_targets_unchanged": true
+  },
+  "full_rom_g2": {
+    "command": "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --workdir /tmp/goemon-impact-hp-g2-run5-20261114 --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --baseline-cache /tmp/goemon-impact-hp-g2-20261114/baseline --report practice/diagnostics/impact/file13-hp-verify-run5.json --uv /home/jake/.local/bin/uv --jobs 2",
+    "result": "PASS; exit 0; build independently reproduced all function bytes and complete ROM identity.",
+    "started_utc": "2026-11-14T12:14:25.853799+00:00",
+    "ended_utc": "2026-11-14T12:15:09.141372+00:00",
+    "report_sha256": "c8755d26309a301d9d813b4027974e59ca36e131874dd9244635a89bf826f68a",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_functions": 161,
+    "claimed_functions": 161,
+    "matched_function_bytes": 12312,
+    "baseline_cache_used": true,
+    "verifier_source_sha256": "40f6acd42070ae6717c17d431c8260ac44730fa0c65de147a5c7d88533b9bb05",
+    "superseded_current_report_note": "This 161-function result was the checked-in combined proof at the time of this promotion; the current 162-function report is recorded in 2026-11-14-dialogue-window-c430-promotion.json."
+  },
+  "inventory": {
+    "command": "python3 -m decomp.inventory --baseline /tmp/goemon-impact-hp-g2-20261114/baseline --candidate /tmp/goemon-impact-hp-g2-run5-20261114/candidate --report practice/diagnostics/impact/file13-hp-inventory-run5.json",
+    "result": "PASS; exit 0.",
+    "report_sha256": "76e470d9eaa3812b258998feb4de6509a26ef430d27c9b84547620c35891474b",
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 161,
+    "combined_c_entries": 174,
+    "remaining_assembly_entries": 7202,
+    "identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
+    "superseded_current_report_note": "This 161-function inventory was current at the time of this promotion; the current 162-function inventory is recorded in 2026-11-14-dialogue-window-c430-promotion.json."
+  },
+  "tests": {
+    "impact_hp_clamp_host": {
+      "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_headers/impact -Idecomp decomp/impact_hp_clamp.c decomp/test_impact_hp_clamp.c -o /tmp/impact-hp-clamp-host-final-20261114 && /tmp/impact-hp-clamp-host-final-20261114",
+      "result": "PASS; ASan/UBSan host mock covers positive subtraction, exact-zero clamp, below-zero clamp, and negative subtraction increasing HP."
+    },
+    "focused_verifier_and_overlay_tests": {
+      "command": "python3 -m unittest tests.test_decomp_verify decomp.test_overlay_file13 decomp.test_overlay_file12 -q",
+      "result": "PASS; 53 tests."
+    },
+    "focused_overlay_tests": {
+      "command": "python3 -m unittest decomp.test_overlay_file13 decomp.test_overlay_file12 -q",
+      "result": "PASS; 14 tests."
+    },
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "result": "PASS; exit 0; 212 decomp tests, 117 verifier/ledger tests, 100-task evidence validation, and display-emitter ASan/UBSan host fixture."
+    }
+  },
+  "verification_history": [
+    "The initial verifier draft duplicated file_13 source-copy and no-padding Makefile-rule entries; both redundancies were removed.",
+    "An intermediate full-proof run produced exact ROM bytes but failed the whole-overlay relocation metadata comparison because candidate C symbols had more specific ELF symbol kinds.",
+    "The final verifier permits only the reviewed symbol-name-to-kind map; all relocation sites and targets remain unchanged. Final run 5 full-ROM G2 and inventory passed."
+  ],
+  "decision": "Promote only func_801D3954_5FED34 into the file_13 C stage. Its original-address code and relocation targets match; complete linked overlay bytes, relocation sites/targets, full ROM, and function inventory pass.",
+  "limitations": [
+    "No live-game test was performed; host cases use a synthetic controller object.",
+    "Only the evidenced index-3 enemy-hit caller path is documented; encounter-specific runtime reachability was not newly tested.",
+    "Raw ELF relocation metadata differs because reviewed symbol kinds are more specific in the candidate ELF; the verifier permits only the five explicit symbol-kind upgrades above.",
+    "Signed overflow extremes and null controller behavior were not added to the host fixture."
+  ],
+  "next": "G64-088 remains the first PLANNED queue task; this independent Impact overlay promotion does not change its task status."
+}

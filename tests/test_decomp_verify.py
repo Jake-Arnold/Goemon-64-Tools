@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from decomp import overlay_file43, overlay_file12
+from decomp import overlay_file43, overlay_file12, overlay_file13
 from decomp.verify import (
     load_manifest, apply_units, parse_symbols, compare_images, claimed_functions,
     main_claimed_functions, validate_file43_stage_definition, validate_file43_stage,
@@ -21,6 +21,7 @@ from decomp.verify import (
     lower_file12_text_alignment, prepare_file12_stage_objects,
     verify_file12_ownership, verify_file12_stage_build,
     append_file12_function_comparison, require_file12_full_rom_match,
+    validate_file13_stage_definition,
     COLLISION_GATE_PATCH,
 )
 from decomp.test_overlay_file12 import relocatable_file12_callback
@@ -48,6 +49,20 @@ def file12_stage(*, name='func_80222034_5DD504',
     vma, offset, size, _ = overlay_file12.FUNCTIONS[name]
     return {
         'format': 'goemon-file12-c-stage-v1',
+        'source': source,
+        'source_sha256': source_sha256,
+        'compiler_object_sha256': compiler_object_sha256,
+        'object_sha256': object_sha256,
+        'function': {'name': name, 'rom_offset': offset, 'vma': vma, 'size': size},
+    }
+
+
+def file13_stage(*, source='impact_hp_clamp.c', source_sha256='a'*64,
+                 compiler_object_sha256='c'*64, object_sha256='b'*64):
+    name='func_801D3954_5FED34'
+    vma, offset, size, _ = overlay_file13.FUNCTIONS[name]
+    return {
+        'format': 'goemon-file13-c-stage-v1',
         'source': source,
         'source_sha256': source_sha256,
         'compiler_object_sha256': compiler_object_sha256,
@@ -109,7 +124,8 @@ class DecompVerificationTests(unittest.TestCase):
         disabled=copy.deepcopy(manifest);disabled['overlay_file43_stage']=None
         self.assertEqual(len(claimed_functions(disabled)),
                          len(main_claimed_functions(disabled))+
-                         len(manifest_file12_stages(disabled)))
+                         len(manifest_file12_stages(disabled))+
+                         (disabled.get('overlay_file13_stage') is not None))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
         staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
@@ -120,7 +136,8 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertIn(stage['function'],claimed_functions(loaded))
             self.assertEqual(len(claimed_functions(loaded)),
                              len(main_claimed_functions(loaded))+
-                             1+len(manifest_file12_stages(loaded)))
+                             1+len(manifest_file12_stages(loaded))+
+                             (loaded.get('overlay_file13_stage') is not None))
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
             path.write_text(json.dumps(bad))
@@ -151,7 +168,8 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(validate_file12_stage_definition(stages[1]).as_posix(),
                          'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
-                         len(main_claimed_functions(manifest))+1+len(stages))
+                         len(main_claimed_functions(manifest))+1+len(stages)+
+                         (manifest.get('overlay_file13_stage') is not None))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             bad=copy.deepcopy(manifest)
@@ -179,6 +197,33 @@ class DecompVerificationTests(unittest.TestCase):
             path.write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError,'only one file_12 stage'):
                 load_manifest(path)
+
+    def test_file13_stage_definition_is_explicit_and_fail_closed(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        stage=manifest['overlay_file13_stage']
+        self.assertEqual(stage['function']['name'],'func_801D3954_5FED34')
+        self.assertIn(stage['function'],claimed_functions(manifest))
+        self.assertEqual(validate_file13_stage_definition(stage).as_posix(),
+                         'impact_hp_clamp.c')
+        self.assertEqual(len(claimed_functions(manifest)),
+                         len(main_claimed_functions(manifest))+
+                         (manifest.get('overlay_file43_stage') is not None)+
+                         len(manifest_file12_stages(manifest))+1)
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'manifest.json'
+            for field,value,pattern in (
+                ('vma',stage['function']['vma']+4,'pinned extent'),
+                ('source','../escape.c','Unsafe file_13'),
+                ('object_sha256','not-a-hash','object_sha256'),
+            ):
+                bad=copy.deepcopy(manifest)
+                if field=='vma':
+                    bad['overlay_file13_stage']['function'][field]=value
+                else:
+                    bad['overlay_file13_stage'][field]=value
+                path.write_text(json.dumps(bad))
+                with self.subTest(field=field),self.assertRaisesRegex(ValueError,pattern):
+                    load_manifest(path)
 
     def test_file12_splat_split_preserves_data_and_neighbor(self):
         original=(
@@ -806,7 +851,8 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claims),unit_functions+
                          len(manifest.get('existing_source_patches',[]))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         len(manifest_file12_stages(manifest)))
+                         len(manifest_file12_stages(manifest))+
+                         (manifest.get('overlay_file13_stage') is not None))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
@@ -1085,6 +1131,8 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('overlay_file43_stage') is not None:
             sources.add(manifest['overlay_file43_stage']['source'])
         sources.update(stage['source'] for stage in manifest_file12_stages(manifest))
+        if manifest.get('overlay_file13_stage') is not None:
+            sources.add(manifest['overlay_file13_stage']['source'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

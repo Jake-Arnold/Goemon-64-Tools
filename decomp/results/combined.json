@@ -1,10 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-14T03:27:27.269181+00:00",
+  "started_utc": "2026-11-14T12:33:56.823157+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "3ff0c04a3b713603c81c35e281bd07b540a0ec5411d9da92b94eb8462f879be5",
+  "verifier_source_sha256_lf": "40f6acd42070ae6717c17d431c8260ac44730fa0c65de147a5c7d88533b9bb05",
   "tool_versions": {
     "uv": "uv 0.13.7 (x86_64-unknown-linux-gnu)",
     "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
@@ -42,7 +42,7 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "dff771d5265b2fbfea030e1a920cb1ae7afdac384309921365ebbdb8931a50b9"
+    "linker_script_sha256": "83e14db1c5e5deb552f4542a561484080cea28dad3228e02649d57abcb2422d1"
   },
   "overlay_file12_tail_alias": {
     "rom_offset": "0x5E3C8C",
@@ -116,7 +116,34 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "dff771d5265b2fbfea030e1a920cb1ae7afdac384309921365ebbdb8931a50b9"
+    "linker_script_sha256": "83e14db1c5e5deb552f4542a561484080cea28dad3228e02649d57abcb2422d1"
+  },
+  "overlay_file13_object_layout": {
+    "compiler_object": "build/usa/src/impact_hp_clamp.c.o",
+    "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+    "staged_object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+    "callback_layout": {
+      "kind": "file13_hp_clamp_text_metadata_v1",
+      "old_size": 48,
+      "new_size": 40,
+      "old_alignment": 16,
+      "new_alignment": 4,
+      "zero_padding_bytes": 8,
+      "relocations_retained": 2,
+      "payload_bytes_changed": 0,
+      "input_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+      "output_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+      "function_object_sha256": "3584862d38be7cde90b035b70242789dfc8611a0bc2d8d68ac59db1494e93e75"
+    },
+    "adjusted_text_alignment": {
+      "from": 16,
+      "to": 4
+    },
+    "suffix_object": "build/usa/asm/usa/file_13_after_5FED5C.s.o",
+    "suffix_object_sha256_before": "f7abf0226f72ecea7f5bb4dfa39adbbd4a0f165bd762cd5ee433a67169afbea4",
+    "suffix_object_sha256_after": "73e744652b870eb48be73af11af2060d7282c550b50b43b524d81da6698c50c9",
+    "preserved_prefix_text_alignment": 16,
+    "linker_script_sha256": "83e14db1c5e5deb552f4542a561484080cea28dad3228e02649d57abcb2422d1"
   },
   "object_layout": {
     "kind": "vm_assignment_rodata_metadata_v1",
@@ -153,9 +180,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 160,
-    "claimed_functions": 160,
-    "matched_function_bytes": 12272,
+    "matched_functions": 162,
+    "claimed_functions": 162,
+    "matched_function_bytes": 12348,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1553,6 +1580,15 @@
         "candidate_sha256": "78f0f81a6a0ede624ac3a8d32ea97703b2865116623ce46545ef62ca9363d4d1"
       },
       {
+        "name": "func_8000C430_D030",
+        "size": 36,
+        "guest_address": "0x8000C430",
+        "rom_offset": "0xD030",
+        "matched": true,
+        "expected_sha256": "439b2ab187d935f02dc7f2d26e66c116ba4807868f076f0d08841509ce3c5d28",
+        "candidate_sha256": "439b2ab187d935f02dc7f2d26e66c116ba4807868f076f0d08841509ce3c5d28"
+      },
+      {
         "name": "func_8000C53C_D13C",
         "size": 36,
         "guest_address": "0x8000C53C",
@@ -1599,6 +1635,17 @@
         "expected_sha256": "2fc27981dfd6f3b7bec3855adf32d1969e5efe4a62e235c6abda6c1cfdd38c98",
         "candidate_sha256": "2fc27981dfd6f3b7bec3855adf32d1969e5efe4a62e235c6abda6c1cfdd38c98",
         "relocation_count": 3
+      },
+      {
+        "name": "func_801D3954_5FED34",
+        "size": 40,
+        "guest_address": "0x801D3954",
+        "rom_offset": "0x5FED34",
+        "matched": true,
+        "expected_sha256": "0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf",
+        "candidate_sha256": "0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf",
+        "relocation_count": 2,
+        "overlay": "file_13"
       }
     ]
   },
@@ -1663,7 +1710,6 @@
     "func_80001EB0_2AB0",
     "func_8000B8F0_C4F0",
     "func_8000C260_CE60",
-    "func_8000C430_D030",
     "func_8000C454_D054",
     "func_8000C488_D088",
     "func_8000C4C8_D0C8",
@@ -1721,17 +1767,19 @@
     "default_entrance.c": "38df36c1c09deda054d5879c4dd610a110e445bc1874302dff75a39dffaf2eb0",
     "file_table.c": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
     "heap_noop.c": "d87c403e7874f70695d94ea545e8767b6698fe901694f77fdaf77bf6a6bdb401",
-    "dialogue_window.c": "225e3a5e4f854dca58e5137e6863c469c5fe767fb8b5a0024760258676dcd5f9",
+    "dialogue_window.c": "e631f386b8b6f0500e8e80c4b0f900cdb628eaa8c8f2ea39b41c5dfe120f82c0",
     "save_resources.h": "6d8626d977a8898232b0b1c176e65e4cb7a8ad33a9287c0a45a87e8987859ef4",
     "script_vm.h": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "vm_resource_types.h": "e11f328368d76de2ababeff78ff6bbe28550e190a13e4ae0b299b0199d1ccf6a",
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900",
     "object_flags.h": "a1ae2142a30df3f47807b974a0641e5d0569bca8be95c497eb2bb48ba2e23616",
     "default_entrance.h": "3d82c004281d4a33d8ddb39a39031f24899d0b39323c3a4904e4169429440568",
+    "impact_controller.h": "7334c2c70ca857950d2abbb5cffdc6aafba2761ecad514f8461bdb9164082dbd",
     "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63",
     "candidates/key_spawn_gate.c": "39a1c21e090a1c6aa00b74e9142c28963b0a00ee2ead6242c90d147290a855ef",
     "candidates/file12_dialogue_copy.c": "bce7049e5438f50b9cb5bd7cea430fb2101067dcfdab760003ecaef3c2527fd2",
-    "candidates/file12_dialogue_call.c": "2fff2f49dbeb427200ef469596a8a229c9763db6f70bee93e662a1b1016ef6d1"
+    "candidates/file12_dialogue_call.c": "2fff2f49dbeb427200ef469596a8a229c9763db6f70bee93e662a1b1016ef6d1",
+    "impact_hp_clamp.c": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99"
   },
   "overlay_file43_stage": {
     "ownership": {
@@ -1752,7 +1800,7 @@
     "linked_elf_provenance": {
       "format": "goemon-file43-linked-elf-provenance-v1",
       "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
-      "candidate_elf_sha256": "c3efb0d84e7eee588b3c22b9af4e5c8dac25f678954b05fc11497edfe1699ae3",
+      "candidate_elf_sha256": "bb765c9fac7d450d63fec917e4a9d891869308ed6c19c503cbc04ec0a6b28bb9",
       "reference_section": {
         "name": ".file_43",
         "vma_start": "0x08000000",
@@ -1902,7 +1950,7 @@
     "linked_elf_provenance": {
       "format": "goemon-file12-linked-elf-provenance-v1",
       "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
-      "candidate_elf_sha256": "c3efb0d84e7eee588b3c22b9af4e5c8dac25f678954b05fc11497edfe1699ae3",
+      "candidate_elf_sha256": "bb765c9fac7d450d63fec917e4a9d891869308ed6c19c503cbc04ec0a6b28bb9",
       "reference_section": {
         "name": ".file_12",
         "vma_start": "0x8020D2A0",
@@ -2023,7 +2071,7 @@
       "full_section_relocations_semantically_match": true,
       "raw_relocation_section_bytes_identical": false,
       "reference_raw_relocation_sha256": "48c95b35cdbd659707e557eead6b8e65d7fe389d3ff1bb2a9240719527087933",
-      "candidate_raw_relocation_sha256": "1931514ec7f6a204cbace54a707a87ecbd47b0f99e0ab3d64f3d75048d0a4c6c",
+      "candidate_raw_relocation_sha256": "593bb84c5608f5f58e177a153f04218a5a9510d823f2aa44ac2d9fed85a017a7",
       "relocation_symbol_metadata_normalizations": {
         "notype_to_object_data_symbols": 296,
         "absolute_to_overlay_tail_alias": 4,
@@ -2033,5 +2081,54 @@
       "proof_level": "linked overlay symbol, whole section bytes, function bytes and semantic relocation targets; raw symbol-index section bytes are reported separately"
     }
   },
-  "ended_utc": "2026-11-14T03:28:09.285660+00:00"
+  "overlay_file13_stage": {
+    "source": "impact_hp_clamp.c",
+    "source_sha256": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99",
+    "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+    "staged_object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+    "assembly_objects": [
+      "build/usa/asm/usa/file_13_before_5FED34.s.o",
+      "build/usa/asm/usa/file_13_after_5FED5C.s.o"
+    ],
+    "splat_block_matches": true,
+    "link_map_objects_in_order": true,
+    "link_map_original_extents": true,
+    "linked_elf_provenance": {
+      "format": "goemon-file13-linked-elf-v1",
+      "overlay": "file_13",
+      "section": ".file_13",
+      "section_vma": "0x801CB460",
+      "section_bytes": 277104,
+      "section_sha256": "f3116027c76aad9c68dac460bfb58f4af059d0e9c6f6aff8a7e6091f19c6bd85",
+      "section_bytes_match_original": true,
+      "relocation_count": 9589,
+      "relocation_sites_and_targets_match_baseline": true,
+      "raw_relocation_metadata_identical": false,
+      "relocation_metadata_normalizations": {
+        "symbol_kind_upgrades": {
+          "D_8015C5C8_15D1C8": 268,
+          "D_8020EED0_63A2B0": 1068,
+          "D_8015C5D8_15D1D8": 6,
+          "D_8015C608_15D208": 18,
+          ".L0800AD60_6BE000": 2
+        },
+        "relocation_sites_and_targets_unchanged": true
+      },
+      "functions": [
+        {
+          "name": "func_801D3954_5FED34",
+          "section": ".file_13",
+          "vma": "0x801D3954",
+          "rom_offset": "0x5FED34",
+          "bytes": 40,
+          "original_sha256": "0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf",
+          "candidate_sha256": "0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf",
+          "candidate_code_matches_original": true,
+          "candidate_relocations_match_reference": true,
+          "relocation_count": 2
+        }
+      ]
+    }
+  },
+  "ended_utc": "2026-11-14T12:34:40.562577+00:00"
 }

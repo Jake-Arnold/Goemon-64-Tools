@@ -45,12 +45,17 @@ and compiler locations, checksums, and fresh proof commands for recreating it.
 
 The fresh pinned-source baseline reproduced 142 prior claims. Then the resource
 dispatch, menu hook and object dispatch production translation units were
-integrated and independently gated. Current `manifest.json`, `results/combined.json`
-and `results/inventory.json` report **160/160 matching-C claims, 12,272 matching
-MIPS bytes, and an exact 33,554,432-byte ROM match** (SHA-1
-`6ea0ed71032ce08fc2745f412d84936382197494`). Inventory reports **7,376
-identified entries, 173 current unmarked entries, and 7,203 remaining ASM
-entries**. G64-060 added the exact 20-byte `file_12` callback
+integrated and independently gated. Later follow-ups promoted the 40-byte
+`func_801D3954_5FED34` HP subtraction/clamp helper in `file_13` and the
+36-byte `func_8000C430_D030` dialogue-window slot setter. The complete overlay,
+linked unit, and full-ROM proofs passed. Current `manifest.json`,
+`results/combined.json` and `results/inventory.json` report **162/162
+matching-C claims, 12,348 matching MIPS bytes, and an exact 33,554,432-byte ROM
+match** (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). Inventory reports
+**7,376 identified entries, 175 combined C entries, and 7,201 remaining ASM
+entries**. See `plans/execution/2026-11-14-impact-hp-clamp-promotion.json` and
+`plans/execution/2026-11-14-dialogue-window-c430-promotion.json`.
+G64-060 added the exact 20-byte `file_12` callback
 `func_80222034_5DD504` at VMA `0x80222034` / ROM `0x5DD504`; the full
 188,624-byte overlay and semantic relocation set match. Its 36-byte sibling
 `func_80222168_5DD638` now also passes linked-overlay and full-ROM proof; see
@@ -138,13 +143,14 @@ plans/execution/2026-11-14-g64-069-transition-safety-assertions.json.
 G64-070 also completed as RESEARCH_ONLY: the transition source/manifest review
 found no new exact C candidate, and all five transition dispatch/loop targets
 remain GLOBAL_ASM. A fresh uncached full-ROM verifier and inventory confirmed
-the current 160-function / 12,272-byte proof and the 32 MiB ROM identity; no
+the then-current 160-function / 12,272-byte proof and the 32 MiB ROM identity; no
 production source or stored proof changed. See
 plans/execution/2026-11-14-g64-070-transition-slice-gate.json. G64-087 then
 closed RESEARCH_ONLY: the three-way dispatch trace is verified, but two
 bounded native candidates did not match; keep `8001F8B0` GLOBAL_ASM. G64-071–
-G64-086 are already complete, so G64-088 is the first PLANNED task. Pause here
-as requested; do not start G64-088 until resumed. See
+G64-086 are already complete, so G64-088 remains the first PLANNED task. The
+Impact HP helper promotion is an independent overlay follow-up and does not
+change that queue status. See
 plans/execution/2026-11-14-g64-087-state-dispatcher.json.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
@@ -338,9 +344,12 @@ matched byte for byte. The four dialogue helpers from the Sol-reviewed
 `codex/goemon-vm-research` branch have since passed a fresh integrated G2;
 G64-057's host-semantics checks also passed. No in-game verification was
 performed. That older G64-058/G64-087 continuation marker is superseded:
-G64-061/062/063 and G64-071–086 are now recorded complete, and G64-087 is the
-first PLANNED task in the live ledger.
-G64-085 passed G2 as pilot candidate 3 of 3. Sol closed the pilot at 3/3 candidates and 7/12 variants; no extra global budget carries forward. G64-086 then passed ordinary Architect v2 with two of five variants, adding 180 bytes; the stored proof remains 153 matching-C functions / 11,800 bytes. G64-083 closed as `RESEARCH_ONLY` with `GLOBAL_ASM` retained. G64-089 then ranked the five float-state functions and tested two bounded candidates for `80006B44`: V1 had 38 differing target words; Sol diagnosed register lifetime/scheduling and approved one induction-lifetime variant. V2 reduced the mismatch to 36 words but retained the first `$v1`/`$v0` mismatch and missed the predicted `$a2` loop roles. The target remains `GLOBAL_ASM`; G2 and inventory were not run. See [`plans/execution/2026-11-13-g64-089-float-state.json`](plans/execution/2026-11-13-g64-089-float-state.json). G64-041 then completed RESEARCH_ONLY with all 110 words verified locally and the sanitized 11-command store contract; its execution report is plans/execution/2026-11-13-g64-041-display-emitter-trace.json. G64-087 remains gated on G64-061/062/063. Keep concrete predicted instruction deltas as a hypothesis-scoring refinement.
+G64-061/062/063 and G64-071–086 are recorded complete, G64-087 is
+`RESEARCH_ONLY` after two bounded native candidates failed, and G64-088 is the
+first PLANNED task. Later independent follow-ups promoted `func_801D3954_5FED34` (40 bytes) and
+`func_8000C430_D030` (36 bytes), bringing the proof to 162 functions / 12,348
+bytes. See the two 2026-11-14 promotion records above.
+G64-085 passed G2 as pilot candidate 3 of 3. Sol closed the pilot at 3/3 candidates and 7/12 variants; no extra global budget carries forward. G64-086 then passed ordinary Architect v2 with two of five variants, adding 180 bytes; the then-current proof at that checkpoint was 153 matching-C functions / 11,800 bytes. G64-083 closed as `RESEARCH_ONLY` with `GLOBAL_ASM` retained. G64-089 then ranked the five float-state functions and tested two bounded candidates for `80006B44`: V1 had 38 differing target words; Sol diagnosed register lifetime/scheduling and approved one induction-lifetime variant. V2 reduced the mismatch to 36 words but retained the first `$v1`/`$v0` mismatch and missed the predicted `$a2` loop roles. The target remains `GLOBAL_ASM`; G2 and inventory were not run. See [`plans/execution/2026-11-13-g64-089-float-state.json`](plans/execution/2026-11-13-g64-089-float-state.json). G64-041 then completed RESEARCH_ONLY with all 110 words verified locally and the sanitized 11-command store contract; its execution report is plans/execution/2026-11-13-g64-041-display-emitter-trace.json. G64-087 later closed RESEARCH_ONLY after two bounded native candidates failed, and G64-088 is now first PLANNED. Keep concrete predicted instruction deltas as a hypothesis-scoring refinement.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
 

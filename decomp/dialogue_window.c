@@ -64,7 +64,12 @@ void func_8000C3EC_CFEC(s32 slot) {
     }
 }
 
-#pragma GLOBAL_ASM("asm/usa/nonmatchings/dialogue_window/func_8000C430_D030.s")
+void func_8000C430_D030(s32 slot, s32 value) {
+    DialogueWindow *window = D_80167C48_168848[slot];
+    if (window != NULL) {
+        window->pad70 = value;
+    }
+}
 
 #pragma GLOBAL_ASM("asm/usa/nonmatchings/dialogue_window/func_8000C454_D054.s")
 

@@ -79,6 +79,23 @@
 - **Tests:** The ASan/UBSan rotation-angle host fixture passed. `python3 -m decomp.local_ci` passed: 207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and the 1,000-case display-emitter ASan/UBSan fixture. `python3 -m decomp.skill_context --validate`, JSON parsing and `git diff --check` passed.
 - **Limitations/next:** No new C ownership or full-ROM exact result. Invalid-selector runtime effects are unknown; the host fixture calculates addresses without dereferencing. G64-088 remains first PLANNED; pause here as requested and do not start it until resumed.
 
+### 2026-11-14 — Promote Impact enemy HP subtraction/clamp helper
+
+- **Changed:** Added `func_801D3954_5FED34` as C in the `file_13` overlay stage, with its controller `+0x60` signed HP field layout and host fixture. Added a fail-closed overlay adapter and exact function/section/relocation checks; updated the manifest, combined proof, inventory, VM residual evidence fingerprints, and Impact call-graph documentation.
+- **Why:** The index-3 enemy-hit path calls this short helper to subtract damage and floor HP at zero. Exact pinned IDO output made it a safe production C candidate and advances the Impact battle memory reconstruction.
+- **Evidence:** Function VMA `0x801D3954`, decompressed ROM offset `0x5FED34`, size 40 bytes; function SHA-256 `0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf`. Fresh G2 matched 161/161 C claims / 12,312 bytes and the complete 33,554,432-byte ROM (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). The complete 277,104-byte `.file_13` section matched; all 9,589 relocation sites and targets remained unchanged. Five exact symbol-kind metadata upgrades were allowed by the adapter, as detailed in `decomp/plans/execution/2026-11-14-impact-hp-clamp-promotion.json`. Inventory now reports 174 combined C entries / 7,202 ASM entries.
+- **Tests:** Impact C host fixture passed under ASan/UBSan for positive subtraction, exact zero, below-zero clamp, and negative damage; 14 file_12/file_13 adapter tests passed. `python3 -m decomp.local_ci` passed: 212 decomp tests, 117 verifier/ledger tests, 100-task evidence validation, and display-emitter ASan/UBSan host fixture.
+- **Limitations/next:** No live-game test; the host fixture uses synthetic RAM. Signed overflow extremes and null controller behavior are not tested. G64-088 remains first PLANNED in the 100-task queue; this independent promotion does not change its status.
+
+### 2026-11-14 — Promote dialogue-window slot setter
+
+- **Changed:** Replaced the `GLOBAL_ASM` claim for `func_8000C430_D030` with C in the existing `dialogue_window.c` unit, added a host fixture, and updated the manifest and VM text-command trace.
+- **Why:** Fifteen existing C units still contain assembly-owned entries. This 36-byte helper had a direct caller, a known dialogue-window structure, and a short exact IDO candidate.
+- **Evidence:** The function at VMA `0x8000C430` / ROM `0xD030` uses the current `D_801C7754` slot and stores the caller's value at window `+0x70` when the pointer is non-null. Two command arms call it with value 9. Fresh G2 matched 162/162 claims / 12,348 bytes and the complete 32 MiB ROM (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). Inventory reports 175 combined C entries / 7,201 ASM entries. See `decomp/plans/execution/2026-11-14-dialogue-window-c430-promotion.json`.
+- **Candidate triage:** Two volatile-parameter shapes emitted 20-byte bodies for each adjacent 8-byte D160/D168 helper; D168's empty-float shape emitted 12 bytes. Neither reached exact codegen, so both remain ASM-owned.
+- **Tests:** Dialogue-window host fixture passed ASan/UBSan; 53 focused verifier/overlay tests passed; `python3 -m decomp.local_ci` passed with 212 decomp tests, 117 verifier/ledger tests, task evidence validation, and the display-emitter ASan/UBSan fixture.
+- **Limitations/next:** No live-game test; host coverage uses synthetic windows. The `+0x70` field remains opaque and slot bounds remain unchecked. G64-088 remains first PLANNED in the 100-task queue.
+
 ### 2026-11-14 — G64-070 transition-slice gate (RESEARCH_ONLY)
 
 - **Changed:** Completed a fresh full-ROM verification and inventory for the current transition slice; recorded that no new C candidate was justified and kept all transition dispatchers assembly-owned.
