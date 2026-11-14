@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Game-version selector with strict Japanese ROM-only mode
+
+- **UI:** Added USA/Japan version selection and offline ROM verification to the compact dashboard Connection card, with the existing USA live toolkit as default.
+- **Safety:** Japanese mode disables live-process attachment, Linux game launcher, memory/scene/action tabs, checkpoint operations and any active freeze/restore on version change. No Japanese RAM address is invented or inherited from USA.
+- **ROM identification:** Exact 16 MiB NTSC-U NG5E and Japan NG5J SHA-1/revision checks after N64 byte-order conversion; input data are not bundled or written.
+- **Tests:** Five ROM-free region-identity tests passed in a local synthetic harness; both supplied USA/Japanese images verified. Added Tk dashboard behaviour tests, not run in the connected GitHub environment.
+- **Limitations:** Japanese recompilation, in-game Japanese RAM probing, file-table compatibility and gameplay writes are not supported yet. A ROM selected in the GUI does not identify the running process.
+- **Next:** Verify Japanese guest structures and recomp outputs before enabling live Japanese toolkit functions. See `docs/TOOLKIT_GAME_VERSIONS.md`.
+
 ### 2026-11-14 — Dashboard fit at default window dimensions
 
 - **UI:** Arranged Connection and Logical checkpoints in side-by-side columns at the default 1220×790 opening window; removed the redundant tab-navigation footer and shortened two Linux PID button labels. Existing connection and checkpoint actions are unchanged.

@@ -10,6 +10,7 @@ from unittest.mock import patch
 from practice.inspector import Watch
 from practice.theme import PALETTE
 from practice.toolkit import Toolkit
+from practice.game_versions import VERSIONS
 
 
 class DashboardSmokeTests(unittest.TestCase):
@@ -100,6 +101,35 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertIn('POSITION ONLY',labels[1]);self.assertIn('no inventory',labels[1])
         self.assertIn('map unknown',labels[2])
         self.assertFalse(hasattr(app,'save_bookmark'))
+
+    def test_game_version_selector_disables_unsupported_japanese_runtime(self):
+        app = self.toolkit
+        self.assertEqual(app.active_version.key, 'usa')
+        self.assertEqual(app.version_selector.get(), VERSIONS['usa'].label)
+        app.game_version_choice.set(VERSIONS['japan'].label)
+        app.on_game_version_changed()
+        self.assertEqual(app.active_version.key, 'japan')
+        self.assertIn('Japanese RAM', app.status.get())
+        self.assertIn('disabled', app.connect_button.state())
+        self.assertEqual(app.notebook.tab(app.scene_tab, 'state'), 'disabled')
+        app.connect()  # Even a direct method call must not attach to USA memory.
+        self.assertIsNone(app.mem)
+        self.assertIn('not supported', app.status.get())
+        app.game_version_choice.set(VERSIONS['usa'].label)
+        app.on_game_version_changed()
+        self.assertNotIn('disabled', app.connect_button.state())
+        self.assertEqual(app.notebook.tab(app.scene_tab, 'state'), 'normal')
+
+    def test_japan_verification_is_offline_only(self):
+        app = self.toolkit
+        app.game_version_choice.set(VERSIONS['japan'].label)
+        app.on_game_version_changed()
+        with patch('practice.toolkit.filedialog.askopenfilename', return_value='test.n64'), \
+             patch('practice.toolkit.verify_selected_rom', return_value=VERSIONS['japan']) as verify:
+            app.verify_rom_for_version()
+        verify.assert_called_once_with('test.n64', 'japan')
+        self.assertIn('Verified Japan', app.status.get())
+        self.assertIsNone(app.mem)
 
     def test_dark_theme_and_no_unsafe_warp_activation(self):
         self.assertEqual(self.root.cget('background'), PALETTE['background'])

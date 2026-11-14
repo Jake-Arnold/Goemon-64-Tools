@@ -30,6 +30,7 @@ from practice.value_freezes_ui import ValueFreezesMixin
 from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
+from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
@@ -94,7 +95,10 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.17 · USA N64")
+        self.active_version = selected_version(getattr(args, 'game_version', 'usa'))
+        self.game_version_choice = tk.StringVar(value=self.active_version.label)
+        self.verified_rom_path = None
+        root.title(f"Goemon Practice Toolkit v0.11.17 · {self.active_version.label}")
         root.geometry("1220x790")
         root.minsize(960, 640)
         apply_theme(root)
@@ -116,7 +120,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         # never misrepresented or rewritten as full progression checkpoints.
         self.legacy_bookmarks = json.loads(BOOKMARKS_FILE.read_text()) if BOOKMARKS_FILE.exists() else []
         self.checkpoints = load_checkpoint_file(CHECKPOINTS_FILE)
-        self.status = tk.StringVar(value="Disconnected. Start US Goemon in Recomp or Project64, then Connect.")
+        self.status = tk.StringVar(value="Disconnected. Start USA Goemon in Recomp or Project64, then Connect.")
         self.connection_target = tk.StringVar(value='auto')
         self.pid_text = tk.StringVar(value=str(args.pid) if args.pid else '')
         self.pos_text = tk.StringVar(value="X: —    Y: —    Z: —")
@@ -136,7 +140,8 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.17  |  US Goemon · Recomp / Project64',
+        self.version_heading = tk.StringVar(value=f'v0.11.17  |  {self.active_version.label}')
+        ttk.Label(header, textvariable=self.version_heading,
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -171,6 +176,17 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         connection.pack(fill='x', pady=(0, 6))
         ttk.Label(connection, textvariable=self.status, style='Card.TLabel',
                   wraplength=410).pack(anchor='w', pady=(0, 7))
+        version_row = ttk.Frame(connection)
+        version_row.pack(fill='x', pady=(0, 7))
+        ttk.Label(version_row, text='Game version').pack(side='left', padx=(0, 8))
+        self.version_selector = ttk.Combobox(
+            version_row, textvariable=self.game_version_choice, state='readonly',
+            values=tuple(version.label for version in VERSIONS.values()), width=23)
+        self.version_selector.pack(side='left', fill='x', expand=True)
+        self.version_selector.bind('<<ComboboxSelected>>', self.on_game_version_changed)
+        self.verify_rom_button = ttk.Button(
+            version_row, text='Verify ROM', command=self.verify_rom_for_version)
+        self.verify_rom_button.pack(side='left', padx=(7, 0))
         ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
                      values=('auto', 'recomp', 'project64')).pack(fill='x', pady=(0, 7))
         pid_row=ttk.Frame(connection);pid_row.pack(fill='x',pady=(0,7))
@@ -180,8 +196,10 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
                    style='Accent.TButton', command=self.connect)
         self.connect_button.pack(fill='x', pady=(0, 7))
         if sys.platform == 'linux':
-            ttk.Button(connection, text='Launch native Linux recomp',
-                       command=self.launch_linux_recomp).pack(fill='x', pady=(0, 7))
+            self.launch_recomp_button = ttk.Button(
+                connection, text='Launch native Linux recomp',
+                command=self.launch_linux_recomp)
+            self.launch_recomp_button.pack(fill='x', pady=(0, 7))
             linux_access=ttk.Frame(connection)
             linux_access.pack(fill='x',pady=(0,7))
             self.linux_attach_btn=ttk.Button(
@@ -240,6 +258,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         self.build_state_discovery_tab(self.event_sections)
         self.build_unlock_tabs(notebook)
         self.build_story_progress_tab(notebook)
+        self._apply_game_version_ui()
         # Toolkit-local F1; it does not register a system-wide/game hotkey.
         root.bind_all('<F1>', self._on_f1_open_memory, add='+')
         statusbar = ttk.Frame(root, style='Header.TFrame', padding=(16, 5))
@@ -249,6 +268,88 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         ttk.Label(statusbar, text=('READ ONLY' if getattr(args, 'read_only', False) else 'Memory writes enabled') + '  •  Experimental entrance reload',
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
+
+    def _apply_game_version_ui(self):
+        """Expose the selected version without implying a mapped Japanese RDRAM."""
+        version = self.active_version
+        self.root.title(f"Goemon Practice Toolkit v0.11.17 · {version.label}")
+        self.version_heading.set(f"v0.11.17  |  {version.label}")
+        enabled = version.live_memory_supported
+        if not enabled:
+            self.notebook.select(self.notebook.tabs()[0])
+        for tab in self.notebook.tabs()[1:]:
+            self.notebook.tab(tab, state='normal' if enabled else 'disabled')
+        self.connect_button.state(['!disabled'] if enabled else ['disabled'])
+        if hasattr(self, 'launch_recomp_button'):
+            self.launch_recomp_button.state(['!disabled'] if enabled else ['disabled'])
+        self.capture_state_btn.state(['!disabled'] if enabled else ['disabled'])
+        self.restore_state_btn.state(
+            ['!disabled'] if enabled and (self.args.enable_state_restore or
+                                        self.args.enable_teleport) else ['disabled'])
+        if enabled:
+            self.status.set('USA selected. Connect to the USA game in Recomp or Project64.')
+        else:
+            self.status.set('Japan selected. ROM verification works; Japanese RAM, '
+                            'checkpoints and recompiled gameplay are not yet supported.')
+
+    def _disconnect_for_version_change(self):
+        """Stop write workers and detach before switching region interpretations."""
+        self.stop_damage_capture(quiet=True)
+        with self.value_freezes.guard:
+            self.stop_all_freezes()
+            self.cancel_pending_restore(quiet=True)
+            self.pending_direct_warp = None
+            self.pending_native_warp = None
+            previous = self.process
+            self.process = self.mem = self.current = None
+            self.game_pid = None
+            self.last = self.last_t = None
+            self.observed_velocity = None
+        if previous is not None:
+            try:
+                previous.close()
+            except OSError:
+                pass
+        self.pos_text.set('X: —    Y: —    Z: —')
+        self.speed_text.set('Speed: —')
+        self.misc_text.set('Character: —    Action: —    Loading: —')
+
+    def on_game_version_changed(self, _event=None):
+        """A version selection never remaps the existing USA RDRAM handle."""
+        if self._connecting:
+            self.game_version_choice.set(self.active_version.label)
+            self.status.set('Complete the existing connection attempt before changing versions.')
+            return
+        version = next((item for item in VERSIONS.values()
+                        if item.label == self.game_version_choice.get()), None)
+        if version is None:
+            self.game_version_choice.set(self.active_version.label)
+            return
+        if version == self.active_version:
+            return
+        self._disconnect_for_version_change()
+        self.active_version = version
+        self.verified_rom_path = None
+        self._apply_game_version_ui()
+
+    def verify_rom_for_version(self):
+        """Offline-only retail ROM verification; never attaches to a game process."""
+        selected = filedialog.askopenfilename(
+            title=f'Verify {self.active_version.label} ROM',
+            filetypes=(('Nintendo 64 ROMs', '*.z64 *.n64 *.v64'),
+                       ('All files', '*.*')))
+        if not selected:
+            return
+        try:
+            version = verify_selected_rom(selected, self.active_version.key)
+        except (OSError, ValueError) as exc:
+            self.verified_rom_path = None
+            self.status.set(f'ROM verification failed: {exc}')
+            return
+        self.verified_rom_path = Path(selected)
+        capability = ('USA live toolkit supported' if version.live_memory_supported
+                      else 'Japanese ROM identified; live toolkit not mapped yet')
+        self.status.set(f'Verified {version.label} (revision 0). {capability}.')
 
     def _arrange_dashboard(self, width):
         """Place both cards above the fold at default size; stack on narrow screens."""
@@ -266,10 +367,12 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         )
 
     def open_full_scene_tab(self, event=None):
-        self.notebook.select(self.scene_tab)
+        if self.active_version.live_memory_supported:
+            self.notebook.select(self.scene_tab)
 
     def open_live_memory_tab(self):
-        self.notebook.select(self.live_memory_tab)
+        if self.active_version.live_memory_supported:
+            self.notebook.select(self.live_memory_tab)
 
     def _on_f1_open_memory(self, _event=None):
         """Toolkit-local shortcut for the complete Live Memory tab."""
@@ -283,6 +386,9 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         read-only mode. Flatpak sandbox boundaries may block memory access.
         """
         if sys.platform != 'linux':
+            return
+        if not self.active_version.live_memory_supported:
+            self.status.set('Japanese recompilation is not supported; USA build only.')
             return
         selected = filedialog.askopenfilename(
             title='Select native Linux Goemon64Recompiled executable')
@@ -378,6 +484,9 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         """
         if self._connecting:
             return
+        if not self.active_version.live_memory_supported:
+            self.status.set('Japanese live memory is not supported: verify the ROM offline instead.')
+            return
         try:
             pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
             if pid_hint is not None and pid_hint <= 0:raise ValueError()
@@ -393,6 +502,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.pending_native_warp = None
             self._connecting = True
             self.connect_button.state(['disabled'])
+            self.version_selector.state(['disabled'])
             self.status.set('Connecting to '+(f'PID {pid_hint}' if pid_hint else 'detected game')+
                             ': discovering Goemon RAM...')
             self.mem = None
@@ -466,7 +576,9 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.root.after(50, self._poll_connect_results)
             return
         self._connecting = False
-        self.connect_button.state(['!disabled'])
+        self.version_selector.state(['!disabled', 'readonly'])
+        self.connect_button.state(['!disabled'] if self.active_version.live_memory_supported
+                                  else ['disabled'])
         if result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
             with self.value_freezes.guard:
@@ -892,6 +1004,8 @@ def parse_args(argv=None):
     ap.add_argument("--pid",type=int)
     ap.add_argument("--base",help="RDRAM host base 0x...; bypasses experimental auto-discovery")
     ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
+    ap.add_argument("--game-version", choices=tuple(VERSIONS), default="usa",
+                    help="USA live toolkit (default) or Japanese ROM verification only")
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
     ap.add_argument("--linux-enable-writes",action="store_true",
                     help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled
