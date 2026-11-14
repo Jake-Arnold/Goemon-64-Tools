@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Confirm Impact enemy HP, Ryo and oil as adjacent 32-bit values
+
+- **Evidence:** four user screenshots during Thaisamba 2 show three neighbouring `u32` custom watches: boss HP `0x802F7060` (2000 → 1995), Impact Ryo `0x802F7064` (200 → 186), oil/health `0x802F7068` (400 → 320 → 250), agreeing with the HUD. Previous `u16` hits at +2 are the lower halves of these words. User reports live value edits also change the corresponding game variables.
+- **Changed:** updated the Impact runtime evidence document with the full-width mapping and superseded the earlier two-field hypothesis; documentation only.
+- **Unverified:** original MIPS access widths, code ownership, allocation lifetime, reuse by other Impact bosses or new sessions. No automatic global watches or game-memory write changes.
+- **Tests:** user-provided in-game observations; no new automated tests or independent live reproduction by the assistant.
+- **Next:** check a second boss and fresh game launch for address stability, then trace MIPS readers/writers of the three field addresses or their common base.
+
 ### 2026-11-14 — Record Impact Ryo and oil/health RAM observations
 
 - **Changed:** recorded user-verified Impact resource display matches in `docs/VM_GAMEPLAY_RUNTIME_FINDINGS_2026-11-13.md`: Ryo `u16 0x802F7066` (196 and 400) and oil/health `u16 0x802F706A` (40 and 600).

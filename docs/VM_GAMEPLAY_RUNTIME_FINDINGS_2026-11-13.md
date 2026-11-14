@@ -95,3 +95,17 @@ The user reports verifying the following values during an Impact boss encounter 
 The offsets are four bytes apart. **Storage-width hypothesis:** since these guest addresses both have offset `+2` inside four-byte-aligned words, the user may have found the low halves of two adjacent unsigned 32-bit resource counters at `0x802F7064` (Ryo) and `0x802F7068` (oil). In big-endian memory, `u32 600` appears as `00 00 02 58`, and `u16` read at byte offset 2 returns 600. This is an unverified structural inference; adjacent fields could have other widths or layouts.
 
 **Next validation:** make additional **read-only** `u32` watches at `0x802F7064` and `0x802F7068` during Impact, confirm changing amounts alongside their corresponding `u16` watches, then repeat in a freshly started fight and another boss. Do not promote fixed addresses to general-purpose global resource mappings until allocation/scene scope is understood. These discoveries do **not** yet identify enemy HP. Existing normal-player pointer limitations remain separate.
+
+### Full-width Impact resource validation (14 Nov 2026)
+
+Four further screenshots of the Thaisamba 2 Impact boss battle show that the earlier `u16` watches were reads of the **low 16 bits of three consecutive 32-bit big-endian fields**. Full-word `u32` custom watches at the preceding aligned addresses match the game HUD:
+
+| Field | Verified `u32` watch address | Evidence samples | Prior low-half `u16` watch |
+| --- | --- | --- | --- |
+| Enemy boss HP | `0x802F7060` | 2000 → 1995, matching displayed enemy 2000 → 1995 | `0x802F7062` |
+| Impact Ryo | `0x802F7064` | 200 → 186, matching displayed Ryo 200 → 186 | `0x802F7066` |
+| Impact oil / health | `0x802F7068` | 400 → 320 → 250, matching displayed oil 320 → 250 and earlier 400 | `0x802F706A` |
+
+**Confirmed for this fight:** the `u32` values correlate with and match their corresponding HUD counters. The user separately reports that editing these runtime resource values also changes the corresponding in-game variables, further supporting their functional identity. The boss HP decrease by 5 is visible in the final screenshots. This upgrades the former two-field `u32` hypothesis to a three-field observed layout with 4-byte spacing, 12 bytes total.
+
+**Not yet established:** the actual original MIPS access width (reads at `+2` may still be intentional), whether this is a globally fixed structure or a dynamically allocated instance, which original instructions read/write it, stability across restarting the game and across boss encounters, or whether every Impact boss uses exactly the same layout. Until independently verified, keep addresses as **Impact battle / screenshot-verified observations**, not unconditional universal game globals. The older `u16` hits remain valid low-half representations but should not be described as evidence that the native fields are only 16 bits wide.
