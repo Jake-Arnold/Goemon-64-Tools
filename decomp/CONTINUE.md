@@ -112,7 +112,15 @@ nonzero D0 returns without writes or calls. One full-unit IDO hypothesis was
 212 bytes and first diverged at `+0x0C` in the prologue, so the original ASM
 remains. No G2 was run and the stored proof is unchanged. See
 `plans/execution/2026-11-14-g64-066-fixed-pan-sweep.json`.
-Continue at G64-067.
+G64-067 completed as `RESEARCH_ONLY`: the 140-byte `8003A138` helper routes
+full-word modes 7–10 through a biased byte lookup, conditional byte latches,
+and two distinct output-byte pairs. Host tests pass, including a high-word
+truncation mutant. One full-unit IDO hypothesis matched all neighboring
+functions but changed the first branch delay slot at `+0x10`; production ASM
+and the stored proof remain unchanged. See
+`ENGINE_STATE_TRACE.md` and
+`plans/execution/2026-11-14-g64-067-engine-state-mode-map.json`.
+Continue at G64-068.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list

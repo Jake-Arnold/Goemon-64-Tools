@@ -1,0 +1,107 @@
+{
+  "format": "goemon-task-execution-v1",
+  "date": "2026-11-14",
+  "task_id": "G64-067",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "ba1cfd756221ac0134ea3ba07230e2c204ea9dca",
+    "remote_head_before_task": "ba1cfd756221ac0134ea3ba07230e2c204ea9dca",
+    "initial_worktree": "clean",
+    "independent_review": "Sol Medium independently confirmed the 140-byte extent, full-word queue field, dispatcher entries 7–10, biased byte-table values, and the separate latch/output-byte paths.",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "source_snapshot": {
+    "target": "func_8003A138_3AD38",
+    "target_vma": "0x8003A138",
+    "target_rom_extent": "[0x3AD38,0x3ADC4)",
+    "target_size": 140,
+    "target_raw_slice_sha256": "031705fa6374a1c63de6e57a830755039d9d568c17aaf2fa864d78bef32014c5",
+    "assembly_source": "mnsg-pinned/asm/usa/392E0.s",
+    "dispatch_table_rom_address": "0x6F1CC",
+    "dispatch_indices": [7, 8, 9, 10],
+    "dispatch_targets": ["0x8003A138", "0x8003A138", "0x8003A138", "0x8003A138"],
+    "lookup_symbol_rom_address": "0x6F201",
+    "actual_four_byte_table_rom_extent": "[0x6F208,0x6F20C)",
+    "mode_7_to_10_table_values": [1, 2, 8, 8],
+    "production_ownership": "GLOBAL_ASM",
+    "engine_state_source_sha256_unchanged": "e9fbe551b8f8b70201358f8a51fb688e5d6ac516121fdee5d30716c722a7b830",
+    "host_reference_sha256": "06addff297be2365b275cea850c04496f8c6c081fe332122bf31322be487c173",
+    "manifest_sha256_unchanged": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "combined_proof_sha256_unchanged": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "inventory_sha256_unchanged": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051"
+  },
+  "original_mips_evidence": {
+    "raw_validation": "Parsed all 35 target instructions from pinned assembly comments. The exact 0x8C-byte slice matches both SHA-verified USA ROM images; raw-slice SHA-256 is recorded in source_snapshot.",
+    "entry_and_dispatch": "The 32-bit queue word is stored to D_801C0A20 before the dispatcher masks its low halfword for table selection. Table indices 7–10 at ROM 0x6F1E8..0x6F1F4 all target 0x8003A138. The direct caller at 0x80039008 stores mode 10 in the jal delay slot. The target itself reloads the full word with lw.",
+    "lookup": "The target adds the full D_801C0A20 word to byte-table label D_8006E601_6F201, with no mask or bounds check. The label is seven bytes before the actual four-byte table. Modes 7–10 read bytes at ROM 0x6F208..0x6F20B with values 1, 2, 8, 8. The instructions do not distinguish signed from unsigned C declarations for the word.",
+    "branch_matrix": [
+      "Mode != 10 reads D_801C09D3 with lbu; zero writes byte 0xFF. It then reads the indexed table byte and stores it to D_801C09D1 and D_801C09D2; the D2 byte store occupies the jr delay slot.",
+      "Mode == 10 reads D_801C09D6 with lbu; zero writes byte 0xFF. It then reads the same full-word-indexed table and stores the byte to D_801C09D4 and D_801C09D5 before jr.",
+      "Nonzero latch bytes are preserved. The target has no stack frame or calls and does not touch D7, the D8 halfword, DA, DB, or DC."
+    ],
+    "neighbor_contract": "The matched 8003A1C4 helper reads D8 as an unsigned halfword and conditionally writes byte DA; matched 8003A204/8003A228 read byte DC and conditionally write byte DB; 8003A1E8 clears halfword D8 and byte DA. These widths and addresses remain separate from G64-067's D1–D6 byte accesses.",
+    "unknown": [
+      "The semantic names of D3 and D6 latches are not established.",
+      "Beyond the demonstrated dispatcher modes 7–10, the range and producers of D_801C0A20 are not established; the target has no range check.",
+      "No in-game capture links these state writes to an observed user-visible action."
+    ]
+  },
+  "host_reference": {
+    "file": "decomp/test_engine_state.c",
+    "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/engine_state.c decomp/candidates/engine_reset_3ade8.c decomp/test_engine_state.c -o /tmp/g64-067-engine-state-host && /tmp/g64-067-engine-state-host",
+    "result": "PASS, exit 0",
+    "coverage": "Modes 7–10 and mapped values 1, 2, 8, 8; zero and nonzero branch latches; separate D1/D2 versus D4/D5 writes; distinct D1–D7 sentinels; D8–DC neighbor sentinels; synthetic full-word mode 0x100 proving the index is not truncated to one byte.",
+    "negative_controls": [
+      {
+        "mutation": "Cast the full mode word to uint8_t before the lookup.",
+        "result": "Rejected by the synthetic 0x100 case (temporary mutant exited -6)."
+      }
+    ],
+    "scope": "MIPS-derived host reference only. The 0x100 mode is a synthetic truncation guard, not a claim about normal runtime input. GCC ignores GLOBAL_ASM; the pre-existing engine-reset candidate remains only for its existing semantic fixture. This is not original-MIPS execution, native IDO equality, full-ROM proof, or in-game verification."
+  },
+  "native_codegen_trial": {
+    "hypothesis": "A 32-bit mode local, unsigned-byte latches, one indexed byte-table load per branch, and separate output-byte stores reproduce the original source-unit code and return delay slots.",
+    "variant_count": 1,
+    "candidate_source_sha256": "05410e6f1349d034e901b14a6cd39dd0a642c8af6e8962d5fe1424a137de99d6",
+    "candidate_manifest_sha256": "3822f8968dfe84d36fd39b8e3b211fd670bbb36302a32ab5b817f0db19fd189a",
+    "toolchain": "Pinned mnsg IDO 5.3, Makefile -G 0 -non_shared -Xfullwarn -Xcpluscomm -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -O2 -mips2; pinned upstream commit 7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee.",
+    "commands": [
+      "make setup UV=/home/jake/.local/bin/uv (passed after copying the private retail ROM into the fresh candidate checkout; the initial attempt only lacked config/usa/baserom.z64)",
+      "make -j2 UV=/home/jake/.local/bin/uv build/usa/src/engine_state.c.o",
+      "mips-linux-gnu-ld -T unit-original-vma.ld -o unit-original-vma.elf build/usa/src/engine_state.c.o",
+      "mips-linux-gnu-objcopy -O binary --only-section=.text unit-original-vma.elf unit-original-vma.text.bin"
+    ],
+    "source_unit_compile": "PASS; complete engine_state.c unit compiled with adjacent C functions and retained ASM placeholders. Object size 3328 bytes; SHA-256 3cc0b7a437bde87c1f0ef08d478270fa51a90384c643753ac3aa415246d31d8a.",
+    "original_vma_link": "PASS; the linked .text is 784 bytes at VMA 0x80039F3C. The target symbol is 140 bytes at 0x8003A138. All eight neighboring C/ASM functions match their original instruction bytes; the candidate unit text SHA-256 is b98b5e5111109ca6ec15cb478dde415149e4ce688bafc2dcc094e5ac8d5954f9 versus original unit SHA-256 5d633c415057c87ef3044003db5672fa25712344a093200097262e0242dcd27f.",
+    "linked_elf_sha256": "425bb477b5a619bd16767e61f3725e9b6b3c4f0ee3fae35492f9d220605913ac",
+    "candidate_function_sha256": "03e9506a0503327af58d760cbe05e59d456112a0942c1a8182dcbfdaaa87cae7",
+    "first_mismatch": {
+      "instruction_offset": "+0x10",
+      "address": "0x8003A148",
+      "first_differing_byte_offset": "+0x13",
+      "first_differing_byte_address": "0x8003A14B",
+      "next_delay_slot_offset": "+0x14",
+      "classification": "Branch-layout and delay-slot scheduling. IDO moves the mode-10 D6 latch-address calculation into the branch delay slot, then calculates the D3 address in the fallthrough body; the original delay slot calculates D3. The target remains 140 bytes, but 28 of 35 instruction words differ."
+    },
+    "stop_reason": "The single v2 source hypothesis failed exact target codegen at the first branch; all neighboring functions stayed exact. No second shape was justified under the one-hypothesis budget. Retain GLOBAL_ASM."
+  },
+  "tests": {
+    "target_raw_slice": "PASS against both SHA-verified USA ROM images; dispatch entries 7–10 and table values checked.",
+    "host_reference": "PASS under AddressSanitizer and UndefinedBehaviorSanitizer; command and matrix above.",
+    "native_original_unit_codegen": "MISMATCH recorded at 0x8003A148; full-unit result and neighbor equality are in native_codegen_trial.",
+    "repository_local_ci": "PASS; python3 -m decomp.local_ci exited 0: 207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and the 1,000-case ASan/UBSan display-emitter fixture. Negative-path diagnostics appeared inside expected test fixtures.",
+    "task_evidence_validation": "PASS; python3 -m decomp.skill_context --validate reported CONSISTENT_STORED_REPORTS for all 100 tasks.",
+    "diff_check": "PASS; git diff --check exited 0.",
+    "execution_json_parse": "PASS; python3 -m json.tool parsed this record successfully.",
+    "fresh_full_rom_g2": "NOT_RUN because the original-address source-unit comparison failed; production source, manifest, build inputs, and stored proof are unchanged.",
+    "live_game_verification": "NOT_RUN"
+  },
+  "stored_proof_unchanged": true,
+  "decision": "Record G64-067 as RESEARCH_ONLY, retain func_8003A138 as GLOBAL_ASM, and avoid assigning semantic names to the latch bytes or lookup modes beyond their observed control flow.",
+  "next": "G64-068 Review default entrance 80020F10."
+}

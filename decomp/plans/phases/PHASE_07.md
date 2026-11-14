@@ -257,7 +257,7 @@ rule retain `GLOBAL_ASM`; no G2 or live-game test was run. See
 
 ### G64-067 — Revisit engine state 8003A138
 
-**Status:** PLANNED. **Dependencies:** G64-066.
+**Status:** RESEARCH_ONLY (2026-11-14). **Dependencies:** G64-066.
 **Focus files:** `decomp/engine_state.c`; `decomp/test_engine_state.c`.
 
 **Architectural intent:** Recover adjacent 8003A138_3AD38 and compare with existing 8003A1C4 / 8003A204 / 8003A228 semantics.
@@ -275,6 +275,23 @@ rule retain `GLOBAL_ASM`; no G2 or live-game test was run. See
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
 **Explicit acceptance:** No accidental adjacent-global aliasing; signedness/byte-write regression and production-codegen proof when eligible.
+
+The verified 140-byte leaf reads the full `D_801C0A20` word, branches on
+equality with 10, uses that same word as a byte-table index, and conditionally
+sets either `D3` or `D6` to `0xFF` before copying one unsigned table byte to
+`D1/D2` or `D4/D5`. Dispatcher entries 7–10 all point here; the direct caller
+also has a delay-slot store that selects mode 10. The biased table produces
+`{1, 2, 8, 8}` for those indices. ASan/UBSan host cases cover each mode,
+latch preservation, neighboring sentinels and a synthetic full-word index.
+The low-byte-truncation mutant fails.
+
+One full-unit IDO candidate had the correct 140-byte extent and kept every
+neighboring function exact, but its first target mismatch is the branch at
+`+0x10`; IDO scheduled the `D6` address into the delay slot instead of forming
+the original `D3` fallthrough address. Stop under the one-hypothesis v2 rule,
+retain `GLOBAL_ASM`, and do not run G2. Details: `../../ENGINE_STATE_TRACE.md`
+and `../execution/2026-11-14-g64-067-engine-state-mode-map.json`. G64-068 is
+next.
 
 **Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
 

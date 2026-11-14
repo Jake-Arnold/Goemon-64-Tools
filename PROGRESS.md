@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-067 engine-state mode and byte mapping (RESEARCH_ONLY)
+
+- **Changed:** traced `func_8003A138_3AD38`, added MIPS-derived host cases for its mode table and byte latches, and recorded one complete-unit IDO probe. Marked G64-067 `RESEARCH_ONLY`; production remains `GLOBAL_ASM`.
+- **Why:** establish the full-width lookup input, separate D1/D2 and D4/D5 byte writes, and ensure the helper does not alias neighboring D8–DC fields before considering a C promotion.
+- **Evidence:** the 140-byte target at VMA `0x8003A138`, ROM `[0x3AD38,0x3ADC4)`, matches both verified USA images; slice SHA-256 `031705fa6374a1c63de6e57a830755039d9d568c17aaf2fa864d78bef32014c5`. Dispatcher entries 7–10 point to it; the direct caller sets mode 10 in its call delay slot. Those modes read `{1, 2, 8, 8}` from the biased table. Sol Medium independently confirmed the full-word store/load, dispatch entries, and byte-field effects.
+- **Tests:** the ASan/UBSan host reference passed modes 7–10, both latch outcomes, adjacent-field sentinels and a synthetic `0x100` full-word index; a low-byte-truncation mutant was rejected. One pinned IDO 5.3 full-unit candidate linked at the original VMA with the correct target size and all neighboring functions exact, but the first target word mismatch was the branch at `+0x10` (`0x8003A148`), with different delay-slot scheduling. `python3 -m decomp.local_ci` exited 0: 207 decomp tests, 116 verifier/ledger tests, evidence validation and the 1,000-case ASan/UBSan fixture; `skill_context --validate` and `git diff --check` passed.
+- **Limitations/next:** mode-word signedness and runtime values beyond demonstrated dispatch modes remain unknown; no fresh full-ROM G2 or live-game verification was run. Continue with G64-068.
+
 ### 2026-11-14 — G64-066 fixed-pan engine-state sweep (RESEARCH_ONLY)
 
 - **Changed:** traced `func_8003A060_3AC60`; extended the engine-state host reference; recorded one native original-unit codegen attempt and its first mismatch. Marked G64-066 `RESEARCH_ONLY`; production remains `GLOBAL_ASM`.

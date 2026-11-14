@@ -4,7 +4,10 @@
 #include <string.h>
 
 uint8_t engine_reset_fixture[5] = {0x34, 0x12, 0x56, 0x78, 0x9A};
-uint8_t engine_flags_fixture[4] = {0x22, 0xA0, 0x00, 0xB5};
+uint8_t engine_flags_fixture[10] = {
+    0x22, 0xA0, 0x00, 0xB5, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7};
+uint32_t engine_mode_fixture;
+uint8_t engine_value_map_fixture[512];
 
 __asm__(
     ".globl D_801C09D8_1C15D8\n"
@@ -22,13 +25,40 @@ __asm__(
     ".globl D_801C09D0_1C15D0\n"
     ".set D_801C09D0_1C15D0, engine_flags_fixture+2\n"
     ".globl D_801C09D1_1C15D1\n"
-    ".set D_801C09D1_1C15D1, engine_flags_fixture+3\n");
+    ".set D_801C09D1_1C15D1, engine_flags_fixture+3\n"
+    ".globl D_801C09D2_1C15D2\n"
+    ".set D_801C09D2_1C15D2, engine_flags_fixture+4\n"
+    ".globl D_801C09D3_1C15D3\n"
+    ".set D_801C09D3_1C15D3, engine_flags_fixture+5\n"
+    ".globl D_801C09D4_1C15D4\n"
+    ".set D_801C09D4_1C15D4, engine_flags_fixture+6\n"
+    ".globl D_801C09D5_1C15D5\n"
+    ".set D_801C09D5_1C15D5, engine_flags_fixture+7\n"
+    ".globl D_801C09D6_1C15D6\n"
+    ".set D_801C09D6_1C15D6, engine_flags_fixture+8\n"
+    ".globl D_801C09D7_1C15D7\n"
+    ".set D_801C09D7_1C15D7, engine_flags_fixture+9\n"
+    ".globl D_801C0A20_1C1620\n"
+    ".set D_801C0A20_1C1620, engine_mode_fixture\n"
+    ".globl D_8006E601_6F201\n"
+    ".set D_8006E601_6F201, engine_value_map_fixture\n");
+
+extern uint8_t D_801C09D1_1C15D1, D_801C09D2_1C15D2, D_801C09D3_1C15D3;
+extern uint8_t D_801C09D4_1C15D4, D_801C09D5_1C15D5, D_801C09D6_1C15D6;
+extern uint32_t D_801C0A20_1C1620;
+extern const uint8_t D_8006E601_6F201[];
 
 enum {
     FLAG_CE = 0,
     FLAG_CF = 1,
     FLAG_D0 = 2,
     FLAG_D1 = 3,
+    FLAG_D2 = 4,
+    FLAG_D3 = 5,
+    FLAG_D4 = 6,
+    FLAG_D5 = 7,
+    FLAG_D6 = 8,
+    FLAG_D7 = 9,
     PAN_ENTRY_COUNT = 16,
     PAN_ENTRY_STRIDE = 0xB0,
     PAN_TARGET_STRIDE = 0x1C
@@ -158,6 +188,28 @@ static void reference_func_8003A060(void) {
                          (PanTarget *)pan_target,
                          0x40);
     }
+}
+
+static void reference_func_8003A138(void) {
+    uint32_t mode = D_801C0A20_1C1620;
+    uint8_t value;
+
+    if (mode != 10) {
+        if (D_801C09D3_1C15D3 == 0) {
+            D_801C09D3_1C15D3 = 0xFF;
+        }
+        value = D_8006E601_6F201[mode];
+        D_801C09D1_1C15D1 = value;
+        D_801C09D2_1C15D2 = value;
+        return;
+    }
+
+    if (D_801C09D6_1C15D6 == 0) {
+        D_801C09D6_1C15D6 = 0xFF;
+    }
+    value = D_8006E601_6F201[mode];
+    D_801C09D4_1C15D4 = value;
+    D_801C09D5_1C15D5 = value;
 }
 
 static void reset_pan_fixture(void) {
@@ -376,6 +428,86 @@ static void test_fixed_pan_active_entries(void) {
     assert(pan_sweep.entries[14].flags == 0x55);
 }
 
+static void test_mode_byte_mapping_and_adjacent_fields(void) {
+    static const uint32_t modes[] = {7, 8, 9, 10};
+    static const uint8_t mapped_values[] = {1, 2, 8, 8};
+    size_t i;
+
+    for (i = 0; i < sizeof(modes) / sizeof(modes[0]); i++) {
+        uint8_t expected_flags[sizeof(engine_flags_fixture)];
+        uint8_t reset_before[sizeof(engine_reset_fixture)];
+        size_t byte;
+
+        for (byte = 0; byte < sizeof(engine_flags_fixture); byte++) {
+            engine_flags_fixture[byte] = (uint8_t)(0xA0 + byte);
+        }
+        for (byte = 0; byte < sizeof(engine_reset_fixture); byte++) {
+            engine_reset_fixture[byte] = (uint8_t)(0xB0 + byte);
+        }
+        memset(engine_value_map_fixture, 0xEE, sizeof(engine_value_map_fixture));
+        engine_mode_fixture = modes[i];
+        engine_value_map_fixture[modes[i]] = mapped_values[i];
+
+        if (modes[i] == 10) {
+            engine_flags_fixture[FLAG_D3] = 0x93;
+            engine_flags_fixture[FLAG_D6] = 0;
+        } else {
+            engine_flags_fixture[FLAG_D3] = (modes[i] == 8) ? 0x83 : 0;
+            engine_flags_fixture[FLAG_D6] = 0x86;
+        }
+
+        memcpy(expected_flags, engine_flags_fixture, sizeof(expected_flags));
+        memcpy(reset_before, engine_reset_fixture, sizeof(reset_before));
+        if (modes[i] == 10) {
+            if (expected_flags[FLAG_D6] == 0) {
+                expected_flags[FLAG_D6] = 0xFF;
+            }
+            expected_flags[FLAG_D4] = mapped_values[i];
+            expected_flags[FLAG_D5] = mapped_values[i];
+        } else {
+            if (expected_flags[FLAG_D3] == 0) {
+                expected_flags[FLAG_D3] = 0xFF;
+            }
+            expected_flags[FLAG_D1] = mapped_values[i];
+            expected_flags[FLAG_D2] = mapped_values[i];
+        }
+
+        reference_func_8003A138();
+
+        assert(memcmp(expected_flags, engine_flags_fixture, sizeof(expected_flags)) == 0);
+        assert(memcmp(reset_before, engine_reset_fixture, sizeof(reset_before)) == 0);
+    }
+
+    /* The target indexes with the full stored word; the low byte is not enough. */
+    {
+        uint8_t expected_flags[sizeof(engine_flags_fixture)];
+        uint8_t reset_before[sizeof(engine_reset_fixture)];
+        size_t byte;
+
+        for (byte = 0; byte < sizeof(engine_flags_fixture); byte++) {
+            engine_flags_fixture[byte] = (uint8_t)(0xC0 + byte);
+        }
+        for (byte = 0; byte < sizeof(engine_reset_fixture); byte++) {
+            engine_reset_fixture[byte] = (uint8_t)(0xD0 + byte);
+        }
+        memset(engine_value_map_fixture, 0x11, sizeof(engine_value_map_fixture));
+        engine_value_map_fixture[0x100] = 0xE7;
+        engine_mode_fixture = 0x100;
+        engine_flags_fixture[FLAG_D3] = 0;
+        engine_flags_fixture[FLAG_D6] = 0x96;
+        memcpy(expected_flags, engine_flags_fixture, sizeof(expected_flags));
+        memcpy(reset_before, engine_reset_fixture, sizeof(reset_before));
+        expected_flags[FLAG_D3] = 0xFF;
+        expected_flags[FLAG_D1] = 0xE7;
+        expected_flags[FLAG_D2] = 0xE7;
+
+        reference_func_8003A138();
+
+        assert(memcmp(expected_flags, engine_flags_fixture, sizeof(expected_flags)) == 0);
+        assert(memcmp(reset_before, engine_reset_fixture, sizeof(reset_before)) == 0);
+    }
+}
+
 int main(void) {
     func_8003A1E8_3ADE8();
     assert(engine_reset_fixture[0] == 0);
@@ -391,5 +523,6 @@ int main(void) {
     test_fixed_pan_nonzero_latch_is_noop();
     test_fixed_pan_zero_latch_with_empty_entries();
     test_fixed_pan_active_entries();
+    test_mode_byte_mapping_and_adjacent_fields();
     return 0;
 }
