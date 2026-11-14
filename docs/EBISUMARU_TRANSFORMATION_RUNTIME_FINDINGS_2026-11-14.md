@@ -79,3 +79,35 @@ The user reports that when Ebisumaru is normal (both bytes `00`), manually writi
 This arithmetic substantially strengthens the conclusion that these **two bytes together form one 16-bit counter**, with stable sentinel endpoints `0x0000` (normal) and `0xFFFF` (miniature). The user also reports transformation input is rejected if the two values are not both zero or both 255. A guard requiring one of two terminal values is plausible; original MIPS branching and exact update cadence remain unverified. This user write observation is additional evidence beyond the video, which does not clearly capture the intermediate countdown at individual decrement resolution. Avoid extrapolating duration from an unverified update frequency.
 
 **Next original MIPS investigation:** trace reads/writes of halfword `0x8020C8E6` or a pointer-relative offset to it, especially `lh/lhu/sh`, decrement/borrow, comparisons to zero and -1, and the gating path for transformation input. Independently determine what `0x801C159A` controls (animation, size/state, or a downstream transform output). Only promote confirmed original semantics to the toolkit. Avoid further unsafe writes to unknown transition fields without a restore path.
+
+## Controlled endpoint mismatch and cross-character miniature appearance (14 November 2026)
+
+The user independently reports three **controlled memory-edit experiments** performed in the running game after the previous 16-bit countdown work. No new video is claimed for these three experiments; interpretations below are grounded in the user's descriptions.
+
+| Initial visible size | Manually forced `s16 0x8020C8E6` | Action | Visible result | Final observed halfword |
+| --- | --- | --- | --- | --- |
+| Ebisumaru normal | `-1` / `0xFFFF` (normally the miniature endpoint) | Activate Mini Ebisumaru | Begins to shrink, then returns to normal | `0` / `0x0000` |
+| Ebisumaru miniature | `0` / `0x0000` (normally the normal-size endpoint) | Activate power again | Begins to grow, then shrinks back to miniature | `-1` / `0xFFFF` |
+| Ebisumaru miniature | `0` / `0x0000` | Switch to another playable character | Other characters also **appear miniature** | Value following switch not separately reported |
+
+### Interpretation
+
+1. **Causal dissociation:** changing this halfword alone does not instantly or reliably force the visible model to the associated size. The character can remain small while the word is 0, or remain large while it is −1.
+2. **Endpoint mismatch correction:** pressing the power button from a deliberately mismatched state visibly initiates a transformation, but the final appearance and halfword return to the original state together. This supersedes any overly literal interpretation that checking only 0/−1 is *sufficient* to produce a stable size toggle. A separate state, cached appearance, animation task or size parameter appears necessary.
+3. **Cross-character effect:** a mismatched miniature state can propagate to a subsequently selected character, suggesting shared player transformation/scale state or reuse/copying of a character actor field. This does **not** prove the other characters support Ebisumaru's power, that this halfword is a universal scale variable, or that the effect persists across maps.
+4. **16-bit arithmetic remains relevant:** earlier single-byte edits produced a `0xFF00 → 0xFEFF` decrement-and-borrow pattern. The current experiments add reconciliation/character-switch behavior; they do not establish whether that decrement is a frame timer, interpolation state or another native transition variable.
+5. `0x801C159A` remains a **distinct, size-correlated field** (observed 52 normal / 28 mini) that can change earlier than the E6 halfword. It is a high-value comparison during the reported mismatch, but has not been observed simultaneously with all three new interventions.
+
+### High-value original MIPS questions
+
+- Which function reads/writes signed or unsigned halfword `0x8020C8E6`, including pointer-relative loads/stores rather than direct absolute-address references?
+- Which branches initialise, decrement and compare it against 0 / −1? How are attempted transformations accepted and committed/cancelled?
+- What field controls the **rendered scale/size** independently of the halfword? Trace writes to `0x801C159A` and any actor/model scale fields, determining whether this byte is an output, state, animation parameter or incidental correlation.
+- What data is retained, copied or reused across the character-change path so that a different character can inherit a miniature appearance?
+- Where are per-character ability ownership and current visual transformation separated? The acquired-power field `0x8015C6F3` is not a substitute for active size state.
+
+### Next low-risk observations
+
+Use **read-only watches** for `s16 0x8020C8E6`, `u8 0x801C159A`, active character ID, and any independently verified actor scale fields during normal/small idle, button press, animation completion and character switch. Capture whether the halfword or `0x801C159A` resets on character change and on map load. Avoid additional forced writes/freeze of transition fields, particularly in states inconsistent with visible size, without a reproducible recovery route.
+
+**Confidence:** user-reported causal interventions strongly support a halfword/visual-size distinction and cross-character effect. The original native code, exact state-machine structure, renderer scale storage and update ordering remain unknown.

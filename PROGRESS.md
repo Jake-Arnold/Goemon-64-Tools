@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Separate Mini Ebisumaru halfword from visible size and character-switch state
+
+- **Evidence:** user forced `s16 0x8020C8E6 = -1` while Ebisumaru remained normal; activating the power briefly shrank him, then restored normal size and `0`. Conversely, forcing `0` while miniature briefly grew him, then returned to miniature and `-1`. Forcing `0` while miniature before switching characters made other playable characters appear miniature.
+- **Interpretation:** the halfword is not alone sufficient to define visible model scale. The new causal observations suggest separate transformation/visual state and possible shared or reused player properties at character switch; mechanism and exact original instruction paths remain unverified.
+- **Changed:** appended a controlled-write matrix, qualifications, and MIPS/character-switch investigation plan to `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md`. Documentation-only change; no toolkit memory-write features added.
+- **Tests:** user-reported runtime interventions; no new source code tests or independent gameplay reproduction.
+- **Limitations:** native instruction access width, animation commit/cancel logic, scale field ownership and persistence across maps/characters remain unknown. Further destructive writes are not recommended.
+- **Next:** trace original reads/writes of `0x8020C8E6` and `0x801C159A`, then examine actor creation/selection paths for copied size state.
+
 ### 2026-11-14 — Strong 16-bit Mini Ebisumaru countdown evidence
 
 - **Observed:** user follow-up video shows `0x8020C8E6/E7` = `00/00` normal and `FF/FF` miniature; `u16` reads 0 or 65535 (`s16` 0 or −1). `0x801C159A` reads 52 normal / 28 mini but can switch before the two-byte field; the upper half of `u32 0x8020C8E4` varies independently.
