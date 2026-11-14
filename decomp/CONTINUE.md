@@ -57,7 +57,10 @@ follow-up added four exact dialogue helpers (320 bytes) in the existing
 `dialogue_window.c` unit. `func_8000D2C0_DEC0` remains assembly-owned. See
 `VM_CONVERSATION_TARGETS.md`,
 `plans/execution/2026-11-14-dialogue-helper-integration.json`, and the current
-combined proof. G64-074 added the
+combined proof. G64-057 then validated the key initializer's collected and
+uncollected host paths against the original overlay instructions, using the
+current full-ROM proof without rerunning an unchanged production build. See
+`plans/execution/2026-11-14-g64-057-key-semantics.json`. G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list
 walker. See `plans/execution/2026-11-13-g64-074-object-flags.json`. The old object-dispatch eight-byte mismatch is
@@ -247,7 +250,8 @@ and G64-056 then passed G2: the adapter keeps the 16-byte `.file_43` output
 alignment while placing the C candidate at its pinned VMA and the whole ROM
 matched byte for byte. The four dialogue helpers from the Sol-reviewed
 `codex/goemon-vm-research` branch have since passed a fresh integrated G2;
-no in-game verification was performed. Continue with G64-057. G64-087 remains gated on
+G64-057's host-semantics checks also passed. No in-game verification was
+performed. Continue with G64-058. G64-087 remains gated on
 G64-061/062/063.
 G64-085 passed G2 as pilot candidate 3 of 3. Sol closed the pilot at 3/3 candidates and 7/12 variants; no extra global budget carries forward. G64-086 then passed ordinary Architect v2 with two of five variants, adding 180 bytes; the stored proof remains 153 matching-C functions / 11,800 bytes. G64-083 closed as `RESEARCH_ONLY` with `GLOBAL_ASM` retained. G64-089 then ranked the five float-state functions and tested two bounded candidates for `80006B44`: V1 had 38 differing target words; Sol diagnosed register lifetime/scheduling and approved one induction-lifetime variant. V2 reduced the mismatch to 36 words but retained the first `$v1`/`$v0` mismatch and missed the predicted `$a2` loop roles. The target remains `GLOBAL_ASM`; G2 and inventory were not run. See [`plans/execution/2026-11-13-g64-089-float-state.json`](plans/execution/2026-11-13-g64-089-float-state.json). G64-041 then completed RESEARCH_ONLY with all 110 words verified locally and the sanitized 11-command store contract; its execution report is plans/execution/2026-11-13-g64-041-display-emitter-trace.json. G64-087 remains gated on G64-061/062/063. Keep concrete predicted instruction deltas as a hypothesis-scoring refinement.
 

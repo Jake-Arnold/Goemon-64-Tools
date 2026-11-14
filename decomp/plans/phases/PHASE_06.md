@@ -229,7 +229,7 @@ inventory rebuild or promotion was performed. See
 
 ### G64-057 — Prove key initializer semantics
 
-**Status:** PLANNED. **Dependencies:** G64-056.
+**Status:** PASSED_G2. **Dependencies:** G64-056.
 **Focus files:** `decomp/test_key_spawn_gate.c`; `decomp/overlay_file43.py`.
 
 **Architectural intent:** Test key-collected and not-collected host callback flow, task-state update and unchanged sentinel fields.
@@ -253,6 +253,21 @@ inventory rebuild or promotion was performed. See
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-14):** extended the host fixture to model the confirmed
+32-bit callback word at current scheduler task `+0x0C`, guard it with sentinel
+bytes, and assert the key-task input remains unchanged. Original file_43
+instructions at `0x080001BC` load the key halfword from task `+0xD4`, finish
+the task for any nonzero flag result, and otherwise install callback
+`0x0800021C`. The 16-byte `func_8003521C_35E1C` setter stores its callback at
+global current-task `+0x0C`. Three flag IDs passed both branches; an `0x10`
+noncanonical true value rejects an `== 1` mutant. ASan/UBSan host test,
+40 overlay tests and local CI passed. Production C and manifest were
+unchanged, so this task reused the current-target full-ROM report rather than
+running a duplicate G2; it proves 96/96 overlay bytes and 158/158 claims at
+the same 32 MiB SHA-1. No game feature or memory write was added, and engine
+completion internals were not modeled. See
+`../execution/2026-11-14-g64-057-key-semantics.json`. Continue with G64-058.
 
 ### G64-058 — Resolve Ghost Toys entrance spill
 

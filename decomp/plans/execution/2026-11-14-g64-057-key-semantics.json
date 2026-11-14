@@ -1,0 +1,106 @@
+{
+  "date": "2026-11-14",
+  "task_id": "G64-057",
+  "title": "Prove key initializer semantics",
+  "status": "PASSED_G2",
+  "strategy": "architect-v2-wave-e; host-semantics-only-follow-up",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "0bc58f807c35fc1eee97134f79aa77244f0638c1",
+    "remote_head_before_task": "0bc58f807c35fc1eee97134f79aa77244f0638c1",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "stored_proof_at_start": "158 claims / 12,216 bytes; complete 33,554,432-byte ROM identity"
+  },
+  "target": {
+    "symbol": "func_080001BC_6F369C",
+    "vma": "0x080001BC",
+    "rom_offset": "0x6F369C",
+    "size_bytes": 96,
+    "original_instruction_sha256": "21679e650f47538d001cc7ede7f84feaede2715ce8a016b5fb81bce7b10e2484",
+    "candidate_source": "decomp/candidates/key_spawn_gate.c",
+    "candidate_source_sha256": "39a1c21e090a1c6aa00b74e9142c28963b0a00ee2ead6242c90d147290a855ef",
+    "candidate_source_changed": false,
+    "manifest_changed": false,
+    "host_test_source_sha256": "8159845f5d62f44f6b8110b708fa1a54d111c2c5ab86ea186555978d68d5f061"
+  },
+  "original_mips_evidence": {
+    "source": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/file_43.s",
+    "function_extent": "file_43 VMA 0x080001BC / ROM 0x6F369C, 96 bytes",
+    "key_load": "At VMA 0x080001D8 / ROM 0x6F36B8, the jalr delay slot loads an unsigned halfword from task +0xD4 into $a0.",
+    "branch": "At VMA 0x080001DC, beqz $v0 selects callback installation for a zero flag result; any nonzero result calls func_80034ED4_35AD4.",
+    "callback_install": "The zero-result path calls func_8003521C_35E1C with guest callback address 0x0800021C in its jalr delay slot.",
+    "setter_store": "At VMA 0x8003521C, func_8003521C_35E1C loads D_8016DAB4 and stores $a0 at current-task +0x0C in the jr delay slot.",
+    "input_task_effect": "The 96-byte initializer reads task +0xD4 and does not directly store to the supplied task object.",
+    "finish_boundary": "The host fixture verifies the initializer invokes the no-argument finish helper on nonzero; it does not model the helper's scheduler queue mutations."
+  },
+  "host_fixture": {
+    "design": "The fixture models only the confirmed 32-bit callback slot at current-task +0x0C, with prefix/suffix sentinel bytes; it also snapshots the 0xD4 key-task view and passes a sentinel unused argument.",
+    "flag_ids": ["0x110", "0x114", "0x17B"],
+    "results_per_id": ["0", "0x10"],
+    "invocations": 6,
+    "assertions": [
+      "Zero flag result installs exactly callback guest address 0x0800021C and does not finish.",
+      "Nonzero flag result invokes finish once and does not invoke the callback setter.",
+      "Key-task bytes remain unchanged on both branches.",
+      "Current-task prefix/suffix sentinels remain unchanged; callback word changes only on the zero-result path."
+    ],
+    "negative_control": "A temporary predicate mutant changed TEST_FLAG(...) != 0 to == 1; the fixture rejected it on the 0x10 result (assertion failure, nonzero exit)."
+  },
+  "current_full_rom_proof": {
+    "fresh_g2_run_for_this_task": false,
+    "reuse_reason": "Only the host fixture changed. Production C, overlay staging, manifest and build inputs are unchanged; the current-target G2 already includes this exact overlay function.",
+    "tracked_report": "decomp/results/combined.json",
+    "tracked_report_sha256": "738214ca8a97c2f3580191db670a4c1354874356b92b0574e93ee8f55e47f21b",
+    "ignored_fresh_report": "practice/diagnostics/decomp-100-inputs/g64-dialogue/20261114-current-target-verify-01.json",
+    "ignored_fresh_report_sha256": "738214ca8a97c2f3580191db670a4c1354874356b92b0574e93ee8f55e47f21b",
+    "function_bytes_match": true,
+    "overlay_relocations_match": true,
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_functions": 158,
+    "claimed_functions": 158,
+    "matched_function_bytes": 12216
+  },
+  "tests": {
+    "sanitized_key_host_test": {
+      "command": "gcc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -Idecomp/test_support decomp/test_key_spawn_gate.c -o /tmp/g64-057-key-semantics && /tmp/g64-057-key-semantics",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "overlay_python_tests": {
+      "command": "python3 -m unittest decomp.test_overlay_file43 -q",
+      "tests": 40,
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "mutant_rejection": {
+      "command": "Temporary equality-to-one predicate mutant compile/run; fixture expected a nonzero assertion exit.",
+      "mutant_program_exit_code": -6,
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 193,
+      "verifier_ledger_tests": 105,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "limitations": [
+    "No new G2 build was run for this host-only task; the current stored full-ROM proof was reused because production sources and manifest did not change.",
+    "The host fixture models the callback setter's single original 32-bit store and the finish-call boundary, not scheduler completion internals.",
+    "No game-memory write, key-spawn toolkit feature or in-game verification was performed."
+  ],
+  "next": "Continue with G64-058, resolving the Ghost Toys entrance stack-spill mismatch within its task-specific stop rule."
+}

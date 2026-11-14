@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-14 — G64-057 key initializer semantics (PASSED_G2)
+
+- **Changed:** strengthened `decomp/test_key_spawn_gate.c` to assert the callback installation updates the modeled current-task callback word at `+0x0C`, preserves surrounding task-state sentinels, and leaves the key task unchanged.
+- **Why:** original overlay instructions show the callback setter writes one 32-bit callback word to the global current task; the prior fixture checked only that the setter was called.
+- **Evidence:** at file_43 VMA `0x080001BC` / ROM `0x6F369C`, original code reads a halfword from task `+0xD4`, calls the flag accessor, invokes task finish for any nonzero result, and otherwise installs callback `0x0800021C`. The setter at `0x8003521C` stores `$a0` at `D_8016DAB4 + 0x0C`. Candidate C and manifest hashes are unchanged. The current-target proof still establishes the exact 96-byte overlay function and 158/158 functions across the full 32 MiB image; no duplicate G2 was run because only the host fixture changed. See `decomp/plans/execution/2026-11-14-g64-057-key-semantics.json`.
+- **Tests:** sanitized host fixture passed for three flag IDs and both branches; its `0x10` case rejected an `== 1` predicate mutant. `python3 -m unittest decomp.test_overlay_file43 -q` — 40 passed. `python3 -m decomp.local_ci` exited 0: 193 decomp tests, 105 verifier/ledger tests, task/evidence validation and the display-emitter sanitizer passed. `git diff --check` passed.
+- **Limitations/next:** the test models the setter's callback-word store and checks the finish call boundary; it does not emulate scheduler queue completion internals or perform in-game verification. No key-spawn feature or game-memory change was added. Continue with G64-058.
+
 ## 2026-11-14 — G64-055/056 overlay integration and key initializer (PASSED_G2)
 
 - **Changed:** connected the guarded `file_43` C staging adapter to the production verifier and staged `func_080001BC_6F369C` at VMA `0x080001BC` / ROM `0x6F369C`. The adapter pins both raw IDO and staged-object hashes, verifies generated assembly ownership and map placement, and keeps overlay mapping separate from the main segment.
