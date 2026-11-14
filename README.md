@@ -8,7 +8,7 @@ The older `bookmarks.json` is **read-only legacy input**, not silently converted
 
 ## Current simplified toolkit layout
 
-Dashboard contains connection status, player position and a unified logical-checkpoint panel only. The compact single-column layout remains scrollable at smaller window sizes. Scene Browser and Live Memory are separate dedicated tabs; the dashboard no longer duplicates their tables.
+Dashboard contains **Connection** and **Logical checkpoints** side by side at its default 1220×790 window size, keeping both panels visible without scrolling. At narrower widths, the cards stack vertically and the scrollbar remains available. Scene Browser and Live Memory are separate dedicated tabs; the dashboard no longer duplicates their tables.
 
 The rebuilt-recomp **Game speed** UI has been removed. Standalone speed research and preparation code remains in the repository but is not part of the toolkit interface.
 

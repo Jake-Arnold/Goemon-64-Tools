@@ -48,11 +48,41 @@ class DashboardSmokeTests(unittest.TestCase):
         app.open_live_memory_tab()
         self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
 
-    def test_dashboard_scrollable_at_compact_window_size(self):
+    def test_dashboard_uses_two_columns_at_opening_size(self):
+        app = self.toolkit
+        # The setUp root is withdrawn; expose it to measure real Tk geometry.
+        self.root.deiconify()
+        self.root.update()
+        app._arrange_dashboard(app.dashboard_canvas.winfo_width())
+        self.root.update_idletasks()
+        self.assertTrue(app.dashboard_wide)
+        self.assertEqual(int(app.dashboard_connection_column.grid_info()['row']), 0)
+        self.assertEqual(int(app.dashboard_connection_column.grid_info()['column']), 0)
+        self.assertEqual(int(app.dashboard_checkpoints_column.grid_info()['row']), 0)
+        self.assertEqual(int(app.dashboard_checkpoints_column.grid_info()['column']), 1)
+        self.assertLessEqual(
+            app.dashboard_checkpoints_column.winfo_y() +
+            app.dashboard_checkpoints_column.winfo_height(),
+            app.dashboard_canvas.winfo_height(),
+        )
+        self.assertLessEqual(
+            app.dashboard_connection_column.winfo_y() +
+            app.dashboard_connection_column.winfo_height(),
+            app.dashboard_canvas.winfo_height(),
+        )
+        self.assertTrue(app.checkpoints_box.winfo_exists())
+
+    def test_dashboard_stacks_when_narrow_and_recovers_on_resize(self):
         app = self.toolkit
         self.root.geometry('960x640')
-        self.root.update_idletasks()
-        self.assertEqual(app.notebook.tab(app.notebook.tabs()[0], 'text'),'Dashboard')
+        app._arrange_dashboard(900)
+        self.assertFalse(app.dashboard_wide)
+        self.assertEqual(int(app.dashboard_checkpoints_column.grid_info()['row']), 1)
+        self.assertEqual(int(app.dashboard_checkpoints_column.grid_info()['column']), 0)
+        app._arrange_dashboard(1200)
+        self.assertTrue(app.dashboard_wide)
+        self.assertEqual(int(app.dashboard_checkpoints_column.grid_info()['row']), 0)
+        self.assertEqual(int(app.dashboard_checkpoints_column.grid_info()['column']), 1)
         self.assertTrue(app.checkpoints_box.winfo_exists())
 
     def test_combined_selector_labels_full_and_legacy_position_without_misrepresentation(self):

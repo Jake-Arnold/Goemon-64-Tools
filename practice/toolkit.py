@@ -152,13 +152,23 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         frm = ttk.Frame(dash_canvas, padding=12)
         dash_window = dash_canvas.create_window((0, 0), window=frm, anchor='nw')
         frm.bind('<Configure>', lambda _e: dash_canvas.configure(scrollregion=dash_canvas.bbox('all')))
-        dash_canvas.bind('<Configure>', lambda e: dash_canvas.itemconfigure(dash_window, width=e.width))
+        def resize_dashboard(event):
+            dash_canvas.itemconfigure(dash_window, width=event.width)
+            self._arrange_dashboard(event.width)
+        dash_canvas.bind('<Configure>', resize_dashboard)
+        self.dashboard_canvas = dash_canvas
+        self.dashboard_frame = frm
+        self.dashboard_wide = None
         frm.columnconfigure(0, weight=1)
         left = ttk.Frame(frm)
         left.grid(row=0, column=0, sticky='new', padx=(6, 6))
+        right = ttk.Frame(frm)
+        right.grid(row=0, column=1, sticky='new', padx=(6, 6))
+        self.dashboard_connection_column = left
+        self.dashboard_checkpoints_column = right
 
-        connection = ttk.LabelFrame(left, text=' Connection ', padding=12)
-        connection.pack(fill='x', pady=(0, 10))
+        connection = ttk.LabelFrame(left, text=' Connection ', padding=10)
+        connection.pack(fill='x', pady=(0, 6))
         ttk.Label(connection, textvariable=self.status, style='Card.TLabel',
                   wraplength=410).pack(anchor='w', pady=(0, 7))
         ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
@@ -175,11 +185,11 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             linux_access=ttk.Frame(connection)
             linux_access.pack(fill='x',pady=(0,7))
             self.linux_attach_btn=ttk.Button(
-                linux_access,text='Permit connection to existing Linux PID',
+                linux_access,text='Permit existing Linux PID',
                 command=self.enable_linux_external_pid)
             self.linux_attach_btn.pack(side='left')
             self.linux_restore_btn=ttk.Button(
-                linux_access,text='Restore original PID protection',
+                linux_access,text='Restore PID protection',
                 command=self.restore_linux_pid_protection)
             self.linux_restore_btn.pack(side='left',padx=7)
             self.linux_restore_btn.state(['disabled'])
@@ -191,10 +201,10 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
                   wraplength=420).pack(anchor='w')
 
-        checkpoints = ttk.LabelFrame(left, text=' Logical checkpoints ', padding=12)
-        checkpoints.pack(fill='x', pady=(0, 10))
+        checkpoints = ttk.LabelFrame(right, text=' Logical checkpoints ', padding=10)
+        checkpoints.pack(fill='x', pady=(0, 6))
         ttk.Label(checkpoints, text='Includes saved position, orientation, health, lives, Ryo, items and progression.',
-                  style='CardMuted.TLabel',wraplength=900).pack(anchor='w',pady=(0,7))
+                  style='CardMuted.TLabel',wraplength=430).pack(anchor='w',pady=(0,7))
         ttk.Label(checkpoints, text='Name for new checkpoint',style='CardMuted.TLabel').pack(anchor='w')
         self.checkpoint_name = ttk.Entry(checkpoints)
         self.checkpoint_name.insert(0, 'Practice checkpoint')
@@ -218,10 +228,10 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         self.cancel_restore_btn.state(['disabled'])
         ttk.Label(checkpoints,text='Older position bookmarks appear here as position-only; '
                   'they cannot restore health, items or progression.',style='CardMuted.TLabel',
-                  wraplength=900).pack(anchor='w',pady=(6,0))
+                  wraplength=430).pack(anchor='w',pady=(6,0))
 
-        ttk.Label(left, text='Scene Browser, Live Memory, Unlocks and Event Sessions each have their own tabs.',
-                  style='CardMuted.TLabel', wraplength=850).pack(anchor='w', pady=(2, 8))
+        # The dedicated tabs are visible directly above; no duplicate footer is needed.
+        self._arrange_dashboard(1220)
         self.build_inspector_tabs(notebook)
         self.build_value_freezes_tab(notebook)
         self.build_value_search_tab(notebook)
@@ -239,6 +249,21 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         ttk.Label(statusbar, text=('READ ONLY' if getattr(args, 'read_only', False) else 'Memory writes enabled') + '  •  Experimental entrance reload',
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
+
+    def _arrange_dashboard(self, width):
+        """Place both cards above the fold at default size; stack on narrow screens."""
+        wide = width >= 1080
+        if self.dashboard_wide == wide:
+            return
+        self.dashboard_wide = wide
+        self.dashboard_frame.columnconfigure(1, weight=1 if wide else 0)
+        self.dashboard_checkpoints_column.grid_configure(
+            row=0 if wide else 1,
+            column=1 if wide else 0,
+            sticky='new',
+            padx=(6, 6),
+            pady=(0, 0 if wide else 6),
+        )
 
     def open_full_scene_tab(self, event=None):
         self.notebook.select(self.scene_tab)

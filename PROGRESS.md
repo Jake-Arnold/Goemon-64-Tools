@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Dashboard fit at default window dimensions
+
+- **UI:** Arranged Connection and Logical checkpoints in side-by-side columns at the default 1220×790 opening window; removed the redundant tab-navigation footer and shortened two Linux PID button labels. Existing connection and checkpoint actions are unchanged.
+- **Responsiveness:** Canvas Configure events now switch to a stacked, scrollable layout below 1080 px and restore the side-by-side layout when widened; the canvas window continues to match viewport width, and the scrollregion tracks content changes.
+- **Tests:** Updated dashboard Tk smoke tests to inspect card geometry at opening width and to exercise narrow/wide transitions. These tests have not been executed in the GitHub connector environment; real Linux/Tk visual confirmation remains outstanding.
+- **Next:** Run dashboard and checkpoint UI smoke tests locally and verify the full checkpoint controls remain visible at standard desktop display scaling.
+
 ### 2026-11-14 — Unify position bookmarks and logical checkpoints
 
 - **Dashboard:** Removed redundant Position bookmarks dropdown and Save position/Restore position buttons. The single Logical checkpoints panel now has one name field, one combined selector, Capture logical checkpoint, Restore selected checkpoint and Cancel pending restore.
