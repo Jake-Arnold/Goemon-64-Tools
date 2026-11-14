@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-14 — G64-055/056 overlay integration and key initializer (PASSED_G2)
+
+- **Changed:** connected the guarded `file_43` C staging adapter to the production verifier and staged `func_080001BC_6F369C` at VMA `0x080001BC` / ROM `0x6F369C`. The adapter pins both raw IDO and staged-object hashes, verifies generated assembly ownership and map placement, and keeps overlay mapping separate from the main segment.
+- **Why:** the first fresh build exposed a Splat `SUBALIGN(4)` output-section alignment of 4 instead of the original `.file_43` alignment of 16. The corrected layout removes forced subalignment, preserves the assembly prefix's 16-byte alignment, and changes only the `.text` section alignment metadata for the C and suffix objects from 16 to 4.
+- **Evidence:** raw IDO object SHA-256 `773cae8801a5eac2b61cf1229ed11fe961fad5918675c4e9703854bb087b25ef`; staged C object SHA-256 `d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214`. The linked function matched all 96 bytes and all 8 relocations at its original overlay VMA. Candidate and reference `.file_43` section hashes both equal `5139b21f811295f9fa395a9eaa07a98f67ba736f4dcd68d8cd9e0df67a7d97cb` across the original 32,032-byte extent. Fresh G2 matched all 154 claims / 11,896 bytes and the complete 33,554,432-byte ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Inventory reports 167 combined C, 7,209 ASM, and 7,376 entries. Reports are in `practice/diagnostics/decomp-100-inputs/g64-056/20261114-layout-fix-{verify,inventory}.json` (local/ignored).
+- **Tests:** 48 focused overlay, verifier-adapter, and key host-regression tests passed. The key control-flow harness passed under ASan/UBSan. `python3 -m decomp.local_ci` exited 0: 188 decomp tests, 105 verifier/ledger tests, task/evidence validation, and the display-emitter sanitizer fixture passed.
+- **Limitations/next:** byte-identical ROM and linked-ELF provenance do not constitute live-game verification. G64-055 and G64-056 are `PASSED_G2`; next, review the four dialogue-helper promotions on the Sol-reviewed `codex/goemon-vm-research` branch for safe integration into this target branch, then continue with G64-057.
+
 ## 2026-11-13 — Read-only value search for Impact oil, Ryo and boss HP
 
 - **Changed:** added a Value search Tk tab and read-only 8 MiB numeric RDRAM scanner with exact/unknown initial searches, exact/increased/decreased/changed/unchanged filtering, u8/s8/u16/s16/u32/s32/f32, optional unaligned addresses, bounded 200-row results, background scanning, live previews, and transfer to Custom Watches. Added docs/VALUE_SEARCH.md, nine engine tests, and two synthetic graphical UI tests.

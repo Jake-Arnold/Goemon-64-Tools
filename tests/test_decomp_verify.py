@@ -2,22 +2,357 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import struct
 import tempfile
 import unittest
+from unittest import mock
 
-from decomp.verify import load_manifest,apply_units,parse_symbols,compare_images,claimed_functions,COLLISION_GATE_PATCH
+from decomp import overlay_file43
+from decomp.verify import (
+    load_manifest, apply_units, parse_symbols, compare_images, claimed_functions,
+    main_claimed_functions, validate_file43_stage_definition, validate_file43_stage,
+    stage_file43_splat, verify_file43_ownership, append_file43_function_comparison,
+    verify_file43_stage_build, require_file43_full_rom_match,
+    lower_file43_text_alignment, prepare_file43_stage_objects,
+    COLLISION_GATE_PATCH,
+)
 
 ROOT=Path(__file__).resolve().parents[1]
 
 
+def file43_stage(*, source='candidates/key_spawn_gate.c', source_sha256='a'*64,
+                 compiler_object_sha256='c'*64, object_sha256='b'*64):
+    name='func_080001BC_6F369C'
+    vma, offset, size, _ = overlay_file43.FUNCTIONS[name]
+    return {
+        'format': 'goemon-file43-c-stage-v1',
+        'source': source,
+        'source_sha256': source_sha256,
+        'compiler_object_sha256': compiler_object_sha256,
+        'object_sha256': object_sha256,
+        'function': {'name': name, 'rom_offset': offset, 'vma': vma, 'size': size},
+    }
+
+
+def relocatable_function_object(functions=(), *, text_alignment=4):
+    """Small ELF32 MIPS object fixture with one executable .text section."""
+    symbol_names = [name.encode() for name, _ in functions]
+    strtab = b'\0' + b'\0'.join(symbol_names) + (b'\0' if symbol_names else b'')
+    sym_offsets = {}
+    for name in symbol_names:
+        sym_offsets[name] = strtab.index(name + b'\0')
+    shnames = b'\0.text\0.symtab\0.strtab\0.shstrtab\0'
+    content = bytearray(52)
+
+    def append(payload, alignment=4):
+        content.extend(bytes((-len(content)) % alignment))
+        offset = len(content)
+        content.extend(payload)
+        return offset
+
+    text_bytes = b''.join(code for _, code in functions) or bytes(4)
+    text_offset = append(text_bytes, 4)
+    symbols = [bytes(16)]
+    value = 0
+    for name, code in functions:
+        symbols.append(struct.pack('>IIIBBH', sym_offsets[name.encode()], value,
+                                   len(code), 0x12, 0, 1))
+        value += len(code)
+    symtab_offset = append(b''.join(symbols), 4)
+    strtab_offset = append(strtab, 1)
+    shstrtab_offset = append(shnames, 1)
+    sections = [
+        (0,) * 10,
+        (shnames.index(b'.text\0'), 1, 6, 0, text_offset, len(text_bytes), 0, 0, text_alignment, 0),
+        (shnames.index(b'.symtab\0'), 2, 0, 0, symtab_offset,
+         16 * len(symbols), 3, 1, 4, 16),
+        (shnames.index(b'.strtab\0'), 3, 0, 0, strtab_offset, len(strtab), 0, 0, 1, 0),
+        (shnames.index(b'.shstrtab\0'), 3, 0, 0, shstrtab_offset,
+         len(shnames), 0, 0, 1, 0),
+    ]
+    section_headers = append(b''.join(struct.pack('>10I', *section)
+                                      for section in sections), 4)
+    content[:16] = b'\x7fELF\x01\x02\x01' + bytes(9)
+    struct.pack_into('>HHIIIIIHHHHHH', content, 16, 1, 8, 1, 0, 0,
+                     section_headers, 0, 52, 0, 0, 40, len(sections), 4)
+    return bytes(content)
+
+
 class DecompVerificationTests(unittest.TestCase):
+    def test_file43_stage_definition_is_explicit_and_fail_closed(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        stage=manifest['overlay_file43_stage']
+        self.assertEqual(stage['function']['name'],'func_080001BC_6F369C')
+        self.assertIn(stage['function'],claimed_functions(manifest))
+        disabled=copy.deepcopy(manifest);disabled['overlay_file43_stage']=None
+        self.assertEqual(len(claimed_functions(disabled)),len(main_claimed_functions(disabled)))
+        self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
+                         'candidates/key_spawn_gate.c')
+        staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'manifest.json'
+            path.write_text(json.dumps(staged))
+            loaded=load_manifest(path)
+            self.assertEqual(claimed_functions(loaded)[-1],stage['function'])
+            self.assertEqual(len(claimed_functions(loaded)),len(main_claimed_functions(loaded))+1)
+            bad=copy.deepcopy(staged)
+            bad['overlay_file43_stage']['function']['vma']+=4
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'pinned extent'):
+                load_manifest(path)
+            bad=copy.deepcopy(staged)
+            bad['overlay_file43_stage']['source']='../escape.c'
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'source path'):
+                load_manifest(path)
+            bad=copy.deepcopy(staged)
+            bad['overlay_file43_stage']['object_sha256']='not-a-hash'
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'object_sha256'):
+                load_manifest(path)
+
+    def test_file43_splat_split_is_local_and_preserves_rodata_boundary(self):
+        original=(
+            'sha1: ' + overlay_file43.ROM_SHA1 + '\nsegments:\n'
+            '  - name: file_43\n'
+            '    type: code\n    start: 0x6F34E0\n    vram: 0x8000000\n'
+            '    subalign: 16\n    overlay: yes\n'
+            '    exclusive_ram_id: tlb_overlay\n    subsegments:\n'
+            '    - [0x6F34E0, asm, file_43]\n'
+            '    - [0x6F9CE0, rodata, file_43]\n'
+            '  - name: file_44\n    start: 0x6FB200\n')
+        updated,before,after=stage_file43_splat(original,file43_stage())
+        self.assertEqual((before,after),('file_43_before_6F369C','file_43_after_6F36FC'))
+        self.assertIn('    subalign: null\n',updated)
+        self.assertIn('    - [0x6F34E0, asm, file_43_before_6F369C]\n'
+                      '    - [0x6F369C, c, key_spawn_gate]\n'
+                      '    - [0x6F36FC, asm, file_43_after_6F36FC]\n'
+                      '    - [0x6F9CE0, rodata, file_43]\n',updated)
+        self.assertEqual(updated.split('  - name: file_44\n',1)[1],
+                         original.split('  - name: file_44\n',1)[1])
+        with self.assertRaisesRegex(ValueError,'Pinned file_43 Splat split anchor'):
+            stage_file43_splat(original.replace('0x6F9CE0','0x6F9CE4'),file43_stage())
+
+    def test_file43_alignment_patch_changes_only_one_section_header_word(self):
+        original=relocatable_function_object(
+            [('func_080001BC_6F369C',bytes(96))],text_alignment=16)
+        staged=lower_file43_text_alignment(original)
+        differences=[offset for offset,(before,after) in enumerate(zip(original,staged))
+                     if before!=after]
+        self.assertEqual(len(differences),1)
+        self.assertEqual(staged[differences[0]-3:differences[0]+1],b'\0\0\0\x04')
+        self.assertEqual(original[differences[0]-3:differences[0]+1],b'\0\0\0\x10')
+        with self.assertRaisesRegex(ValueError,'alignment or flags'):
+            lower_file43_text_alignment(relocatable_function_object(
+                [('func_080001BC_6F369C',bytes(96))],text_alignment=4))
+        with self.assertRaisesRegex(ValueError,'Invalid file_43 .text alignment'):
+            lower_file43_text_alignment(original,new_alignment=3)
+
+    def test_file43_object_preparation_pins_hashes_and_preserves_prefix(self):
+        name='func_080001BC_6F369C';size=96
+        original_c=relocatable_function_object([(name,bytes(size))],text_alignment=16)
+        staged_c=lower_file43_text_alignment(original_c)
+        with tempfile.TemporaryDirectory() as folder:
+            checkout=Path(folder)
+            c_path=checkout/'build/usa/src/key_spawn_gate.c.o';c_path.parent.mkdir(parents=True)
+            before,after,_=__import__('decomp.verify',fromlist=['_file43_stage_segments'])._file43_stage_segments(
+                file43_stage())
+            before_path=checkout/'build/usa/asm/usa'/f'{before}.s.o';before_path.parent.mkdir(parents=True)
+            before_bytes=relocatable_function_object(text_alignment=16)
+            before_path.write_bytes(before_bytes)
+            after_path=checkout/'build/usa/asm/usa'/f'{after}.s.o'
+            after_bytes=relocatable_function_object(text_alignment=16)
+            after_path.write_bytes(after_bytes)
+            (checkout/'.splat/usa').mkdir(parents=True)
+            (checkout/'.splat/usa/mnsg.ld').write_text(
+                '.file_43 0x8000000 : AT(file_43_ROM_START) { *(.file_43*) }\n')
+            stage=file43_stage(
+                compiler_object_sha256=hashlib.sha256(original_c).hexdigest(),
+                object_sha256=hashlib.sha256(staged_c).hexdigest())
+            c_path.write_bytes(original_c)
+            report=prepare_file43_stage_objects(checkout,stage)
+            self.assertEqual(c_path.read_bytes(),staged_c)
+            self.assertEqual(before_path.read_bytes(),before_bytes)
+            self.assertEqual(hashlib.sha256(after_path.read_bytes()).hexdigest(),
+                             report['adjusted_objects'][1]['sha256_after'])
+            self.assertEqual(report['preserved_prefix_text_alignment'],16)
+            self.assertEqual(report['adjusted_text_alignment'],{'from':16,'to':4})
+
+            c_path.write_bytes(original_c);after_path.write_bytes(after_bytes)
+            bad=copy.deepcopy(stage);bad['object_sha256']='0'*64
+            with self.assertRaisesRegex(ValueError,'staged C object hash mismatch'):
+                prepare_file43_stage_objects(checkout,bad)
+            self.assertEqual(c_path.read_bytes(),original_c)
+            self.assertEqual(after_path.read_bytes(),after_bytes)
+
+    def test_file43_stage_binds_source_and_original_reference_contract(self):
+        source=b'void func_080001BC_6F369C(void) { }\n'
+        stage=file43_stage(source_sha256=hashlib.sha256(source).hexdigest())
+        with tempfile.TemporaryDirectory() as folder:
+            source_root=Path(folder);(source_root/'candidates').mkdir()
+            (source_root/'candidates/key_spawn_gate.c').write_bytes(source)
+            with mock.patch.object(overlay_file43,'validate_reference_inputs') as validate:
+                path=validate_file43_stage(stage,'pinned Splat',b'ROM',source_root)
+            self.assertEqual(path,source_root/'candidates/key_spawn_gate.c')
+            validate.assert_called_once_with('pinned Splat',b'ROM',('func_080001BC_6F369C',))
+            stale=copy.deepcopy(stage);stale['source_sha256']='0'*64
+            with self.assertRaisesRegex(ValueError,'source hash mismatch'):
+                validate_file43_stage(stale,'pinned Splat',b'ROM',source_root)
+            (source_root/'candidates/key_spawn_gate.c').write_bytes(b'GLOBAL_ASM("x")\n')
+            source_hash=hashlib.sha256(b'GLOBAL_ASM("x")\n').hexdigest()
+            hidden_asm=file43_stage(source_sha256=source_hash)
+            with self.assertRaisesRegex(ValueError,'hide assembly ownership'):
+                validate_file43_stage(hidden_asm,'pinned Splat',b'ROM',source_root)
+
+    def test_file43_apply_stages_source_and_no_padding_slices_atomically(self):
+        source=b'void func_080001BC_6F369C(void) { }\n'
+        stage=file43_stage(source_sha256=hashlib.sha256(source).hexdigest())
+        original=(
+            'sha1: ' + overlay_file43.ROM_SHA1 + '\n'
+            '  - name: file_43\n    type: code\n    start: 0x6F34E0\n'
+            '    vram: 0x8000000\n    subalign: 16\n    overlay: yes\n'
+            '    exclusive_ram_id: tlb_overlay\n    subsegments:\n'
+            '    - [0x6F34E0, asm, file_43]\n'
+            '    - [0x6F9CE0, rodata, file_43]\n'
+            '  - name: file_44\n    start: 0x6FB200\n')
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);checkout=root/'candidate';(checkout/'config/usa').mkdir(parents=True)
+            (checkout/'src').mkdir();(checkout/'Makefile').write_text('build rules\n')
+            sources=root/'sources';(sources/'candidates').mkdir(parents=True)
+            (sources/'candidates/key_spawn_gate.c').write_bytes(source)
+            config=checkout/'config/usa/splat.yaml';config.write_text(original)
+            manifest={'units':[],'overlay_file43_stage':stage}
+            with mock.patch.object(overlay_file43,'validate_reference_inputs'):
+                apply_units(checkout,manifest,sources,b'ROM')
+            self.assertEqual((checkout/'src/key_spawn_gate.c').read_bytes(),source)
+            updated=config.read_text()
+            self.assertIn('    - [0x6F369C, c, key_spawn_gate]',updated)
+            make=(checkout/'Makefile').read_text()
+            self.assertIn('file_43_before_6F369C.s.o: ASFLAGS += --no-pad-sections',make)
+            self.assertIn('file_43_after_6F36FC.s.o: ASFLAGS += --no-pad-sections',make)
+            self.assertNotIn('file_44',updated.split('  - name: file_44\n',1)[1])
+
+            (checkout/'src/key_spawn_gate.c').unlink()
+            config.write_text(original);make_before=(checkout/'Makefile').read_bytes()
+            bad=copy.deepcopy(manifest);bad['overlay_file43_stage']['source_sha256']='0'*64
+            with mock.patch.object(overlay_file43,'validate_reference_inputs'):
+                with self.assertRaisesRegex(ValueError,'source hash mismatch'):
+                    apply_units(checkout,bad,sources,b'ROM')
+            self.assertEqual(config.read_text(),original)
+            self.assertEqual((checkout/'Makefile').read_bytes(),make_before)
+            self.assertFalse((checkout/'src/key_spawn_gate.c').exists())
+
+    def test_file43_ownership_requires_used_c_object_and_assembly_relinquishment(self):
+        stage=file43_stage(source_sha256=hashlib.sha256(b'candidate C').hexdigest())
+        name=stage['function']['name'];size=stage['function']['size']
+        before,after,_=__import__('decomp.verify',fromlist=['_file43_stage_segments'])._file43_stage_segments(stage)
+        c_object_name='build/usa/src/key_spawn_gate.c.o'
+        with tempfile.TemporaryDirectory() as folder:
+            checkout=Path(folder);source=checkout/'src/key_spawn_gate.c';source.parent.mkdir(parents=True)
+            source.write_bytes(b'candidate C')
+            c_object=checkout/c_object_name;c_object.parent.mkdir(parents=True)
+            c_object.write_bytes(relocatable_function_object([(name,bytes(size))],text_alignment=4))
+            stage['object_sha256']=hashlib.sha256(c_object.read_bytes()).hexdigest()
+            for segment in (before,after):
+                path=checkout/'build/usa/asm/usa'/f'{segment}.s.o';path.parent.mkdir(parents=True,exist_ok=True)
+                path.write_bytes(relocatable_function_object(
+                    text_alignment=16 if segment==before else 4))
+            mapping=(
+                '.file_43 0x08000000 0x7d20 load address 0x006f34e0\n'
+                f' build/usa/asm/usa/{before}.s.o(.text)\n'
+                f' {c_object_name}(.text)\n'
+                f' 0x080001bc {name}\n'
+                f' build/usa/asm/usa/{after}.s.o(.text)\n'
+                '.file_43_bss 0x08007d20 0x0 load address 0x006fb200\n')
+            (checkout/'build/usa/mnsg.map').write_text(mapping)
+            proof=verify_file43_ownership(checkout,stage)
+            self.assertEqual(proof['function_vma'],'0x080001BC')
+            self.assertEqual(proof['object_sha256'],stage['object_sha256'])
+
+            (checkout/'build/usa/mnsg.map').write_text(mapping.replace(f' {c_object_name}(.text)\n',''))
+            with self.assertRaisesRegex(ValueError,'does not place the expected'):
+                verify_file43_ownership(checkout,stage)
+            (checkout/'build/usa/mnsg.map').write_text(mapping)
+            asm_path=checkout/'build/usa/asm/usa'/f'{before}.s.o'
+            asm_path.write_bytes(relocatable_function_object(
+                [(name,bytes(size))],text_alignment=16))
+            with self.assertRaisesRegex(ValueError,'assembly still owns'):
+                verify_file43_ownership(checkout,stage)
+            asm_path.write_bytes(relocatable_function_object())
+            wrong_hash=copy.deepcopy(stage);wrong_hash['object_sha256']='0'*64
+            with self.assertRaisesRegex(ValueError,'object hash mismatch'):
+                verify_file43_ownership(checkout,wrong_hash)
+
+    def test_file43_overlay_claim_uses_explicit_mapping_and_cannot_hide_rom_mismatch(self):
+        stage=file43_stage()
+        expected=bytes(32)
+        manifest={'decompressed_sha1':hashlib.sha1(expected).hexdigest(),
+                  'units':[],'overlay_file43_stage':stage}
+        self.assertEqual(main_claimed_functions(manifest),[])
+        self.assertEqual(claimed_functions(manifest),[stage['function']])
+        comparison={'full_rom_match':False,'claimed_functions':0,'matched_functions':0,
+                    'matched_function_bytes':0,'functions':[]}
+        linked={'functions':[{'name':stage['function']['name'],
+            'section':'.file_43','vma':'0x080001BC','rom_offset':'0x6F369C','bytes':96,
+            'candidate_code_matches_original':True,
+            'candidate_relocations_match_reference':True,
+            'original_sha256':overlay_file43.FUNCTIONS[stage['function']['name']][3],
+            'candidate_sha256':overlay_file43.FUNCTIONS[stage['function']['name']][3],
+            'relocation_count':8}]}
+        append_file43_function_comparison(comparison,stage,linked)
+        self.assertEqual(comparison['functions'][0]['rom_offset'],'0x6F369C')
+        self.assertEqual(comparison['functions'][0]['guest_address'],'0x080001BC')
+        self.assertEqual(comparison['matched_function_bytes'],96)
+        self.assertFalse(comparison['full_rom_match'])
+        linked['functions'][0]['candidate_relocations_match_reference']=False
+        with self.assertRaisesRegex(ValueError,'failed linked provenance'):
+            append_file43_function_comparison(comparison,stage,linked)
+
+    def test_file43_stage_proof_cannot_bypass_full_rom_gate(self):
+        comparison={'full_rom_match':False,'claimed_functions':1,'matched_functions':1}
+        with self.assertRaisesRegex(ValueError,'complete-ROM comparison'):
+            require_file43_full_rom_match(comparison)
+        comparison['full_rom_match']=True
+        require_file43_full_rom_match(comparison)
+
+    def test_file43_link_proof_uses_original_splat_and_explicit_reference(self):
+        stage=file43_stage()
+        original=(
+            'sha1: ' + overlay_file43.ROM_SHA1 + '\n'
+            '  - name: file_43\n    type: code\n    start: 0x6F34E0\n'
+            '    vram: 0x8000000\n    subalign: 16\n    overlay: yes\n'
+            '    exclusive_ram_id: tlb_overlay\n    subsegments:\n'
+            '    - [0x6F34E0, asm, file_43]\n'
+            '    - [0x6F9CE0, rodata, file_43]\n'
+            '  - name: file_44\n    start: 0x6FB200\n')
+        expected_splat,_,_=stage_file43_splat(original,stage)
+        linked={'linked_elf_provenance':{'functions':[{'name':stage['function']['name']}]}}
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);baseline=root/'baseline';candidate=root/'candidate'
+            for checkout in (baseline,candidate):
+                (checkout/'config/usa').mkdir(parents=True)
+                (checkout/'build/usa').mkdir(parents=True)
+                (checkout/'build/usa/mnsg.elf').write_bytes(relocatable_function_object())
+            (baseline/'config/usa/splat.yaml').write_text(original)
+            (candidate/'config/usa/splat.yaml').write_text(expected_splat)
+            with mock.patch('decomp.verify.verify_file43_ownership',return_value={'owner':'C'}), \
+                 mock.patch.object(overlay_file43,'validate_linked_elf_provenance',return_value=linked) as validate:
+                result=verify_file43_stage_build(baseline,candidate,stage,b'reference ROM')
+            self.assertEqual(result['ownership'],{'owner':'C'})
+            self.assertEqual(result['linked_elf_provenance'],linked['linked_elf_provenance'])
+            validate.assert_called_once_with(original,b'reference ROM',
+                (baseline/'build/usa/mnsg.elf').read_bytes(),
+                (candidate/'build/usa/mnsg.elf').read_bytes(),(stage['function']['name'],))
+
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
         unit_functions=sum(len(u['functions']) for u in manifest['units'])
         claims=claimed_functions(manifest)
-        # Source patches are part of the public claim set but live outside units.
+        # Source patches and staged overlays live outside main translation units.
         # Check structural agreement so promotions do not require pinning counts here.
-        self.assertEqual(len(claims),unit_functions+len(manifest.get('existing_source_patches',[])))
+        self.assertEqual(len(claims),unit_functions+
+                         len(manifest.get('existing_source_patches',[]))+
+                         (manifest.get('overlay_file43_stage') is not None))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
@@ -293,6 +628,8 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(int(fn['rom_offset'],16),expected[name]['rom_offset'])
             self.assertEqual(fn['candidate_sha256'],fn['expected_sha256'])
         sources={u['source'] for u in manifest['units']}|set(manifest['support_headers'])|{p['source'] for p in manifest.get('existing_source_patches', [])}
+        if manifest.get('overlay_file43_stage') is not None:
+            sources.add(manifest['overlay_file43_stage']['source'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

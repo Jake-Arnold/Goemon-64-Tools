@@ -28,11 +28,11 @@ Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and over
 
 ## 1. Establish the current state
 
-**Authoritative continuation checkpoint — 2026-11-13; supersedes the dated
+**Authoritative continuation checkpoint — 2026-11-14; supersedes the dated
 142-function and 20-step checkpoints below.** Work continues in the fresh
-Codex worktree `codex/decomp-100-task-plan`, initially based on target-branch
-commit `3b1f56aef7a2e634cc80d3cdd332c47d6368082c`; G64-022 started from the
-published target-branch commit `f29cf3660af196c6fce72a6d6df251e19f109ae5`.
+Codex worktree `codex/decomp-100-task-plan`, based on target-branch commit
+`a78c29fa385a02ee9a6a49cc3386497693923786` before G64-055/056. G64-022 and
+earlier milestones are retained as historical checkpoints.
 `main` was not changed. The private USA retail/decompressed ROMs, pinned `mnsg` source at
 `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, and IDO 5.3 compiler are copied
 under ignored `practice/diagnostics/decomp-100-inputs/`, so the prior external
@@ -44,10 +44,17 @@ and compiler locations, checksums, and fresh proof commands for recreating it.
 The fresh pinned-source baseline reproduced 142 prior claims. Then the resource
 dispatch, menu hook and object dispatch production translation units were
 integrated and independently gated. Current `manifest.json`, `results/combined.json`
-and `results/inventory.json` report **153/153 claims, 11,800 matching MIPS
+and `results/inventory.json` report **154/154 claims, 11,896 matching MIPS
 bytes, an exact 33,554,432-byte ROM match** (SHA-1
-`6ea0ed71032ce08fc2745f412d84936382197494`), **166 combined C, 7,210 ASM, and
-7,376 identified entries**. G64-074 added the 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list walker. See `plans/execution/2026-11-13-g64-074-object-flags.json`. The old object-dispatch eight-byte mismatch is
+`6ea0ed71032ce08fc2745f412d84936382197494`), **167 combined C, 7,209 ASM, and
+7,376 identified entries**. G64-056 added the exact 96-byte overlay initializer
+`func_080001BC_6F369C` through the G64-055 file_43 adapter. Its original and
+candidate overlay sections and all eight target relocations match; see
+`plans/execution/2026-11-14-g64-055-file43-key.json` and
+`plans/execution/2026-11-14-g64-056-file43-key.json`. G64-074 added the
+128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
+and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list
+walker. See `plans/execution/2026-11-13-g64-074-object-flags.json`. The old object-dispatch eight-byte mismatch is
 historical; `OBJECT_DISPATCH_TRACE.md` records the exact current 96-byte unit
 and full-ROM result.
 
@@ -229,8 +236,12 @@ bytes, duplicate function bounds, symbol-size lies, and altered undefined
 relocation targets. The existing main-segment verifier regressions pass, and
 the retained G64-082 baseline/candidate ELF pair still passes the checker. No
 new native build or G2 promotion was run. See
-`plans/execution/2026-11-13-g64-054-overlay-negative-controls.json`. Next is
-G64-055, the guarded overlay integration adapter. G64-087 remains gated on
+`plans/execution/2026-11-13-g64-054-overlay-negative-controls.json`. G64-055
+and G64-056 then passed G2: the adapter keeps the 16-byte `.file_43` output
+alignment while placing the C candidate at its pinned VMA and the whole ROM
+matched byte for byte. No in-game verification was performed. Next, review the
+four dialogue helpers from the Sol-reviewed `codex/goemon-vm-research` branch
+for safe integration; then continue G64-057. G64-087 remains gated on
 G64-061/062/063.
 G64-085 passed G2 as pilot candidate 3 of 3. Sol closed the pilot at 3/3 candidates and 7/12 variants; no extra global budget carries forward. G64-086 then passed ordinary Architect v2 with two of five variants, adding 180 bytes; the stored proof remains 153 matching-C functions / 11,800 bytes. G64-083 closed as `RESEARCH_ONLY` with `GLOBAL_ASM` retained. G64-089 then ranked the five float-state functions and tested two bounded candidates for `80006B44`: V1 had 38 differing target words; Sol diagnosed register lifetime/scheduling and approved one induction-lifetime variant. V2 reduced the mismatch to 36 words but retained the first `$v1`/`$v0` mismatch and missed the predicted `$a2` loop roles. The target remains `GLOBAL_ASM`; G2 and inventory were not run. See [`plans/execution/2026-11-13-g64-089-float-state.json`](plans/execution/2026-11-13-g64-089-float-state.json). G64-041 then completed RESEARCH_ONLY with all 110 words verified locally and the sanitized 11-command store contract; its execution report is plans/execution/2026-11-13-g64-041-display-emitter-trace.json. G64-087 remains gated on G64-061/062/063. Keep concrete predicted instruction deltas as a hypothesis-scoring refinement.
 

@@ -2310,7 +2310,7 @@
       "ordinal": 55,
       "phase": 6,
       "title": "Define overlay integration adapter",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-053",
         "G64-054"
@@ -2354,7 +2354,7 @@
       "ordinal": 56,
       "phase": 6,
       "title": "Prepare key initializer replacement",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-055"
       ],

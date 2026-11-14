@@ -1,0 +1,264 @@
+{
+  "date": "2026-11-14",
+  "status": "PASSED_G2",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "a78c29fa385a02ee9a6a49cc3386497693923786",
+    "remote_head_before_task": "a78c29fa385a02ee9a6a49cc3386497693923786",
+    "worktree_at_resume": "resumed with in-progress G64-055/056 changes from the preceding turn",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "overlay_adapter": {
+    "manifest_format": "goemon-file43-c-stage-v1",
+    "source": "decomp/candidates/key_spawn_gate.c",
+    "source_sha256_lf": "39a1c21e090a1c6aa00b74e9142c28963b0a00ee2ead6242c90d147290a855ef",
+    "compiler_object_sha256": "773cae8801a5eac2b61cf1229ed11fe961fad5918675c4e9703854bb087b25ef",
+    "staged_object_sha256": "d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214",
+    "text_alignment_adjustment": {
+      "from": 16,
+      "to": 4
+    },
+    "adjusted_objects": [
+      {
+        "path": "build/usa/src/key_spawn_gate.c.o",
+        "sha256_before": "773cae8801a5eac2b61cf1229ed11fe961fad5918675c4e9703854bb087b25ef",
+        "sha256_after": "d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214"
+      },
+      {
+        "path": "build/usa/asm/usa/file_43_after_6F36FC.s.o",
+        "sha256_before": "ee4d15910654311617694e59e5a1a01a01d90c7f5a317a3aee9c29ad772d5b29",
+        "sha256_after": "050927c72a023e654eec63897561c8d7f0ef78e04d4200be73fd09940f7a7c6d"
+      }
+    ],
+    "prefix_text_alignment": 16,
+    "linker_script_sha256": "b6bfb2acc9a77cf7551a39f01f25b19828c581ea05fa2019deaaf75ceca6f3c9",
+    "negative_control": "A first full-ROM-equal candidate with .file_43 sh_addralign=4 was rejected by linked-ELF provenance; corrected build preserves 16-byte output alignment.",
+    "initial_failure_report": {
+      "path": "practice/diagnostics/decomp-100-inputs/g64-056/20261114T000206-verify.json",
+      "sha256": "555da03f9997ff79414d2476573b7cf7cbbcb6635def3c13d432efdb22c0d638",
+      "error": "candidate ELF .file_43 VMA, flags, type, size or alignment differs",
+      "candidate_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "full_rom_match": true
+    }
+  },
+  "fresh_g2": {
+    "command": "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --workdir /tmp/20261114T110000-g64-055-056-layout-fix --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --report practice/diagnostics/decomp-100-inputs/g64-056/20261114-layout-fix-verify.json --uv \"$(command -v uv)\" --jobs 2 --baseline-cache /tmp/20261114T000206-g64-055-056-build/baseline",
+    "exit_code": 0,
+    "report": "practice/diagnostics/decomp-100-inputs/g64-056/20261114-layout-fix-verify.json",
+    "report_sha256": "d734f5b096f27dec93f92610ba2e8e2c78954fa3ae4e5b97f07b59cd3f2a062d",
+    "baseline_cache_used": true,
+    "baseline_provenance": {
+      "format": "goemon-baseline-cache-v1",
+      "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+      "compiler_sha256": "8ca550d30c1fef7c14b1470a1ef93cc6d415a507c6e18c04a7bfeaf8016a7b89",
+      "dependency_lock_sha256": "a8892580fba36495b3de64de202ad5482e14319748019109d9633c1290be2bf9"
+    },
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_functions": 154,
+    "claimed_functions": 154,
+    "matched_function_bytes": 11896,
+    "verifier_source_sha256_lf": "a9aceac2148f64a009782066d5109d69197e1d99d16bafbac6b6b9a67a178ebd",
+    "overlay_section": {
+      "name": ".file_43",
+      "vma_start": "0x08000000",
+      "elf_file_offset": "0x880000",
+      "size": 32032,
+      "sha256": "5139b21f811295f9fa395a9eaa07a98f67ba736f4dcd68d8cd9e0df67a7d97cb",
+      "relocation_count": 1593
+    },
+    "reference_overlay_section_sha256": "5139b21f811295f9fa395a9eaa07a98f67ba736f4dcd68d8cd9e0df67a7d97cb",
+    "overlay_function": {
+      "name": "func_080001BC_6F369C",
+      "section": ".file_43",
+      "vma": "0x080001BC",
+      "rom_offset": "0x6F369C",
+      "bytes": 96,
+      "original_sha256": "21679e650f47538d001cc7ede7f84feaede2715ce8a016b5fb81bce7b10e2484",
+      "candidate_sha256": "21679e650f47538d001cc7ede7f84feaede2715ce8a016b5fb81bce7b10e2484",
+      "candidate_code_matches_original": true,
+      "candidate_relocations_match_reference": true,
+      "relocation_count": 8,
+      "relocations": [
+        {
+          "section_offset": "0x1C0",
+          "type": 5,
+          "symbol": "func_800240DC_24CDC",
+          "symbol_vma": "0x800240DC",
+          "symbol_section": ".main",
+          "symbol_kind": 2,
+          "symbol_binding": 1,
+          "addend": null
+        },
+        {
+          "section_offset": "0x1D0",
+          "type": 6,
+          "symbol": "func_800240DC_24CDC",
+          "symbol_vma": "0x800240DC",
+          "symbol_section": ".main",
+          "symbol_kind": 2,
+          "symbol_binding": 1,
+          "addend": null
+        },
+        {
+          "section_offset": "0x1E0",
+          "type": 5,
+          "symbol": "func_0800021C_6F36FC",
+          "symbol_vma": "0x0800021C",
+          "symbol_section": ".file_43",
+          "symbol_kind": 2,
+          "symbol_binding": 1,
+          "addend": null
+        },
+        {
+          "section_offset": "0x1E4",
+          "type": 5,
+          "symbol": "func_80034ED4_35AD4",
+          "symbol_vma": "0x80034ED4",
+          "symbol_section": ".main",
+          "symbol_kind": 2,
+          "symbol_binding": 1,
+          "addend": null
+        },
+        {
+          "section_offset": "0x1E8",
+          "type": 6,
+          "symbol": "func_80034ED4_35AD4",
+          "symbol_vma": "0x80034ED4",
+          "symbol_section": ".main",
+          "symbol_kind": 2,
+          "symbol_binding": 1,
+          "addend": null
+        },
+        {
+          "section_offset": "0x1FC",
+          "type": 5,
+          "symbol": "func_8003521C_35E1C",
+          "symbol_vma": "0x8003521C",
+          "symbol_section": ".main",
+          "symbol_kind": 2,
+          "symbol_binding": 1,
+          "addend": null
+        },
+        {
+          "section_offset": "0x200",
+          "type": 6,
+          "symbol": "func_8003521C_35E1C",
+          "symbol_vma": "0x8003521C",
+          "symbol_section": ".main",
+          "symbol_kind": 2,
+          "symbol_binding": 1,
+          "addend": null
+        },
+        {
+          "section_offset": "0x208",
+          "type": 6,
+          "symbol": "func_0800021C_6F36FC",
+          "symbol_vma": "0x0800021C",
+          "symbol_section": ".file_43",
+          "symbol_kind": 2,
+          "symbol_binding": 1,
+          "addend": null
+        }
+      ]
+    },
+    "ownership": {
+      "source": "candidates/key_spawn_gate.c",
+      "source_sha256": "39a1c21e090a1c6aa00b74e9142c28963b0a00ee2ead6242c90d147290a855ef",
+      "c_object": "build/usa/src/key_spawn_gate.c.o",
+      "object_sha256": "d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214",
+      "assembly_objects": [
+        "build/usa/asm/usa/file_43_before_6F369C.s.o",
+        "build/usa/asm/usa/file_43_after_6F36FC.s.o"
+      ],
+      "file_43_vma": "0x08000000",
+      "file_43_size": 32032,
+      "function": "func_080001BC_6F369C",
+      "function_vma": "0x080001BC",
+      "function_size": 96
+    }
+  },
+  "inventory": {
+    "command": "python3 -m decomp.inventory --baseline /tmp/20261114T000206-g64-055-056-build/baseline --candidate /tmp/20261114T110000-g64-055-056-layout-fix/candidate --report practice/diagnostics/decomp-100-inputs/g64-056/20261114-layout-fix-inventory.json",
+    "exit_code": 0,
+    "report": "practice/diagnostics/decomp-100-inputs/g64-056/20261114-layout-fix-inventory.json",
+    "report_sha256": "dcd02396ca9c0aeab3516c90010fcc22a9ac81c6681896f2194bcd4e5e7d29c8",
+    "summary": {
+      "identified_function_entries": 7376,
+      "upstream_unmarked_entries": 13,
+      "newly_matching_c": 154,
+      "current_unmarked_entries": 167,
+      "remaining_assembly_entries": 7209,
+      "baseline_zero_sized_function_labels_ignored": 0,
+      "candidate_zero_sized_function_labels_ignored": 850,
+      "extra_positive_alias_entries": 0,
+      "upstream_unmarked_names": [
+        "func_8000A480_B080",
+        "func_80013940_14540",
+        "func_80013AC4_146C4",
+        "func_80013C0C_1480C",
+        "func_80013C70_14870",
+        "func_800141C4_14DC4",
+        "func_8001481C_1541C",
+        "func_80014840_15440",
+        "func_800148C0_154C0",
+        "func_80014C00_15800",
+        "func_80014C20_15820",
+        "func_80029E58_2AA58",
+        "func_8002A168_2AD68"
+      ],
+      "size_annotation_differences": [
+        {
+          "name": "func_8003F6E8_402E8",
+          "baseline_size": 48,
+          "candidate_size": 56
+        }
+      ],
+      "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+    }
+  },
+  "tests": {
+    "focused_adapter_overlay_host": {
+      "command": "Focused file_43 adapter/split/ownership/provenance/gate tests, all decomp.test_overlay_file43 tests, and the key host control-flow test.",
+      "tests": 48,
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "key_host_sanitizer": {
+      "command": "gcc -std=c11 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -Idecomp/test_support decomp/test_key_spawn_gate.c -o /tmp/g64-056-key-gate-sanitized && /tmp/g64-056-key-gate-sanitized",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 188,
+      "verifier_ledger_tests": 105,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "limitations": [
+    "No in-game verification was performed; the evidence establishes source/ELF provenance and byte identity for the pinned USA build."
+  ],
+  "next": "Review the four dialogue helper promotions from codex/goemon-vm-research for conflicts and safe integration, then continue with G64-057.",
+  "publication": {
+    "status": "pending commit and remote verification"
+  },
+  "task_id": "G64-055",
+  "title": "Define overlay integration adapter",
+  "architectural_result": "Production verifier stages file_43 C without using the main-segment mapping; linker map and linked ELF prove exact owner, original VMA, function bytes and relocations; full-ROM gate remains mandatory."
+}

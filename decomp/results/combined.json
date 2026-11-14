@@ -1,17 +1,16 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-13T16:05:03.023982+00:00",
+  "started_utc": "2026-11-14T00:21:31.629574+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "d84f22751fe74d1006399a466752f3805c1764f6b547b63fe82ffba9d62b5174",
+  "verifier_source_sha256_lf": "a9aceac2148f64a009782066d5109d69197e1d99d16bafbac6b6b9a67a178ebd",
   "tool_versions": {
     "uv": "uv 0.13.7 (x86_64-unknown-linux-gnu)",
     "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
     "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125"
   },
-  "stage": "complete",
-  "baseline_cache_used": false,
+  "baseline_cache_used": true,
   "baseline_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
   "baseline_provenance": {
     "format": "goemon-baseline-cache-v1",
@@ -20,6 +19,30 @@
     "elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
     "compiler_sha256": "8ca550d30c1fef7c14b1470a1ef93cc6d415a507c6e18c04a7bfeaf8016a7b89",
     "dependency_lock_sha256": "a8892580fba36495b3de64de202ad5482e14319748019109d9633c1290be2bf9"
+  },
+  "stage": "complete",
+  "overlay_file43_object_layout": {
+    "compiler_object": "build/usa/src/key_spawn_gate.c.o",
+    "compiler_object_sha256": "773cae8801a5eac2b61cf1229ed11fe961fad5918675c4e9703854bb087b25ef",
+    "staged_object_sha256": "d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214",
+    "adjusted_text_alignment": {
+      "from": 16,
+      "to": 4
+    },
+    "adjusted_objects": [
+      {
+        "path": "build/usa/src/key_spawn_gate.c.o",
+        "sha256_before": "773cae8801a5eac2b61cf1229ed11fe961fad5918675c4e9703854bb087b25ef",
+        "sha256_after": "d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214"
+      },
+      {
+        "path": "build/usa/asm/usa/file_43_after_6F36FC.s.o",
+        "sha256_before": "ee4d15910654311617694e59e5a1a01a01d90c7f5a317a3aee9c29ad772d5b29",
+        "sha256_after": "050927c72a023e654eec63897561c8d7f0ef78e04d4200be73fd09940f7a7c6d"
+      }
+    ],
+    "preserved_prefix_text_alignment": 16,
+    "linker_script_sha256": "b6bfb2acc9a77cf7551a39f01f25b19828c581ea05fa2019deaaf75ceca6f3c9"
   },
   "object_layout": {
     "kind": "vm_assignment_rodata_metadata_v1",
@@ -56,9 +79,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 153,
-    "claimed_functions": 153,
-    "matched_function_bytes": 11800,
+    "matched_functions": 154,
+    "claimed_functions": 154,
+    "matched_function_bytes": 11896,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1436,6 +1459,16 @@
         "matched": true,
         "expected_sha256": "30d3a82995b28e5fb10a97f908626d3657bffbbf8ffcf4c5d7f825bf0b97f270",
         "candidate_sha256": "30d3a82995b28e5fb10a97f908626d3657bffbbf8ffcf4c5d7f825bf0b97f270"
+      },
+      {
+        "name": "func_080001BC_6F369C",
+        "size": 96,
+        "guest_address": "0x080001BC",
+        "rom_offset": "0x6F369C",
+        "matched": true,
+        "expected_sha256": "21679e650f47538d001cc7ede7f84feaede2715ce8a016b5fb81bce7b10e2484",
+        "candidate_sha256": "21679e650f47538d001cc7ede7f84feaede2715ce8a016b5fb81bce7b10e2484",
+        "relocation_count": 8
       }
     ]
   },
@@ -1538,7 +1571,144 @@
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900",
     "object_flags.h": "a1ae2142a30df3f47807b974a0641e5d0569bca8be95c497eb2bb48ba2e23616",
     "default_entrance.h": "3d82c004281d4a33d8ddb39a39031f24899d0b39323c3a4904e4169429440568",
-    "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63"
+    "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63",
+    "candidates/key_spawn_gate.c": "39a1c21e090a1c6aa00b74e9142c28963b0a00ee2ead6242c90d147290a855ef"
   },
-  "ended_utc": "2026-11-13T16:06:22.370738+00:00"
+  "overlay_file43_stage": {
+    "ownership": {
+      "source": "candidates/key_spawn_gate.c",
+      "source_sha256": "39a1c21e090a1c6aa00b74e9142c28963b0a00ee2ead6242c90d147290a855ef",
+      "c_object": "build/usa/src/key_spawn_gate.c.o",
+      "object_sha256": "d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214",
+      "assembly_objects": [
+        "build/usa/asm/usa/file_43_before_6F369C.s.o",
+        "build/usa/asm/usa/file_43_after_6F36FC.s.o"
+      ],
+      "file_43_vma": "0x08000000",
+      "file_43_size": 32032,
+      "function": "func_080001BC_6F369C",
+      "function_vma": "0x080001BC",
+      "function_size": 96
+    },
+    "linked_elf_provenance": {
+      "format": "goemon-file43-linked-elf-provenance-v1",
+      "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+      "candidate_elf_sha256": "7bfa6831433851c2637a9dbb5882918b96cdd35eae3b60be4f4f2bd04e100ac9",
+      "reference_section": {
+        "name": ".file_43",
+        "vma_start": "0x08000000",
+        "elf_file_offset": "0x880000",
+        "size": 32032,
+        "sha256": "5139b21f811295f9fa395a9eaa07a98f67ba736f4dcd68d8cd9e0df67a7d97cb",
+        "relocation_count": 1593
+      },
+      "candidate_section": {
+        "name": ".file_43",
+        "vma_start": "0x08000000",
+        "elf_file_offset": "0x880000",
+        "size": 32032,
+        "sha256": "5139b21f811295f9fa395a9eaa07a98f67ba736f4dcd68d8cd9e0df67a7d97cb",
+        "relocation_count": 1593
+      },
+      "functions": [
+        {
+          "name": "func_080001BC_6F369C",
+          "section": ".file_43",
+          "vma": "0x080001BC",
+          "rom_offset": "0x6F369C",
+          "bytes": 96,
+          "original_sha256": "21679e650f47538d001cc7ede7f84feaede2715ce8a016b5fb81bce7b10e2484",
+          "candidate_sha256": "21679e650f47538d001cc7ede7f84feaede2715ce8a016b5fb81bce7b10e2484",
+          "candidate_code_matches_original": true,
+          "candidate_relocations_match_reference": true,
+          "relocation_count": 8,
+          "relocations": [
+            {
+              "section_offset": "0x1C0",
+              "type": 5,
+              "symbol": "func_800240DC_24CDC",
+              "symbol_vma": "0x800240DC",
+              "symbol_section": ".main",
+              "symbol_kind": 2,
+              "symbol_binding": 1,
+              "addend": null
+            },
+            {
+              "section_offset": "0x1D0",
+              "type": 6,
+              "symbol": "func_800240DC_24CDC",
+              "symbol_vma": "0x800240DC",
+              "symbol_section": ".main",
+              "symbol_kind": 2,
+              "symbol_binding": 1,
+              "addend": null
+            },
+            {
+              "section_offset": "0x1E0",
+              "type": 5,
+              "symbol": "func_0800021C_6F36FC",
+              "symbol_vma": "0x0800021C",
+              "symbol_section": ".file_43",
+              "symbol_kind": 2,
+              "symbol_binding": 1,
+              "addend": null
+            },
+            {
+              "section_offset": "0x1E4",
+              "type": 5,
+              "symbol": "func_80034ED4_35AD4",
+              "symbol_vma": "0x80034ED4",
+              "symbol_section": ".main",
+              "symbol_kind": 2,
+              "symbol_binding": 1,
+              "addend": null
+            },
+            {
+              "section_offset": "0x1E8",
+              "type": 6,
+              "symbol": "func_80034ED4_35AD4",
+              "symbol_vma": "0x80034ED4",
+              "symbol_section": ".main",
+              "symbol_kind": 2,
+              "symbol_binding": 1,
+              "addend": null
+            },
+            {
+              "section_offset": "0x1FC",
+              "type": 5,
+              "symbol": "func_8003521C_35E1C",
+              "symbol_vma": "0x8003521C",
+              "symbol_section": ".main",
+              "symbol_kind": 2,
+              "symbol_binding": 1,
+              "addend": null
+            },
+            {
+              "section_offset": "0x200",
+              "type": 6,
+              "symbol": "func_8003521C_35E1C",
+              "symbol_vma": "0x8003521C",
+              "symbol_section": ".main",
+              "symbol_kind": 2,
+              "symbol_binding": 1,
+              "addend": null
+            },
+            {
+              "section_offset": "0x208",
+              "type": 6,
+              "symbol": "func_0800021C_6F36FC",
+              "symbol_vma": "0x0800021C",
+              "symbol_section": ".file_43",
+              "symbol_kind": 2,
+              "symbol_binding": 1,
+              "addend": null
+            }
+          ]
+        }
+      ],
+      "promoted_matching_c": false,
+      "proof_level": "linked overlay symbol, section, function bytes and relocation targets only"
+    }
+  },
+  "ended_utc": "2026-11-14T00:22:12.887518+00:00"
 }

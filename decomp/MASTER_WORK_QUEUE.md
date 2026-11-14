@@ -1,8 +1,8 @@
 # Consolidated Goemon work queue (2026-11-08)
 
-**Reconciled on 2026-11-13:** The old 142-function checkpoint and ten-function
+**Reconciled on 2026-11-14:** The old 142-function checkpoint and ten-function
 queue below are historical. Current authority is `decomp/CONTINUE.md` and the
-live proof reports: **153 matching C / 11,800 bytes / 166 combined C / 7,210
+live proof reports: **154 matching C / 11,896 bytes / 167 combined C / 7,209
 ASM**. The resource, menu and object candidates from that older queue have
 passed full-ROM verification. G64-015–018 were retried and remain
 `FAILED_NATIVE`; G64-021 is `DOC_ONLY` with its call graph in

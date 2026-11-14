@@ -25,22 +25,23 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "543270f4368defb0adcd46c3bbbe2e6afff9d9d31d62cdc3717185c6353ed02b",
+    "manifest_sha256": "a3b077e9baf4b01949df70bb52e389bd69d02bc3fcd55be9a3e7eb53b6021bda",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "d84f22751fe74d1006399a466752f3805c1764f6b547b63fe82ffba9d62b5174"
+    "verifier_sha256": "a9aceac2148f64a009782066d5109d69197e1d99d16bafbac6b6b9a67a178ebd"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "c5e33b3f1f51f6810df4420b2b60e59a6b89469589f2656e284bd639551f1694",
+    "report_sha256": "dcd02396ca9c0aeab3516c90010fcc22a9ac81c6681896f2194bcd4e5e7d29c8",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "05c0522c6e9dd2405dc20beacca5386eb4f34af640636d5b43fe906e05498280",
-    "matching_c_functions": 153,
-    "matching_c_bytes": 11800,
-    "combined_c_entries": 166,
-    "asm_entries": 7210,
+    "combined_proof_sha256": "d734f5b096f27dec93f92610ba2e8e2c78954fa3ae4e5b97f07b59cd3f2a062d",
+    "matching_c_functions": 154,
+    "matching_c_bytes": 11896,
+    "combined_c_entries": 167,
+    "asm_entries": 7209,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "The generated inventory.json is preserved as the whole-project symbol inventory. Its 13 upstream_unmarked_names are unrelated upstream C entries; they are not these 13 script_vm GLOBAL_ASM functions."
+    "note": "The generated inventory.json is preserved as the whole-project symbol inventory. Its 13 upstream_unmarked_names are unrelated upstream C entries; they are not these 13 script_vm GLOBAL_ASM functions.",
+    "reconciled_date": "2026-11-14"
   },
   "residual_functions": [
     {

@@ -1219,6 +1219,19 @@
   "splat_options": {
     "asm_jtbl_label_macro": "glabel"
   },
+  "overlay_file43_stage": {
+    "format": "goemon-file43-c-stage-v1",
+    "source": "candidates/key_spawn_gate.c",
+    "source_sha256": "39a1c21e090a1c6aa00b74e9142c28963b0a00ee2ead6242c90d147290a855ef",
+    "compiler_object_sha256": "773cae8801a5eac2b61cf1229ed11fe961fad5918675c4e9703854bb087b25ef",
+    "object_sha256": "d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214",
+    "function": {
+      "name": "func_080001BC_6F369C",
+      "rom_offset": 7288476,
+      "vma": 134218172,
+      "size": 96
+    }
+  },
   "vm_assignment_table_layout": true,
   "existing_source_patches": [
     {
