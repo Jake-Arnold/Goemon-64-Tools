@@ -1,0 +1,93 @@
+{
+  "format": "goemon-task-execution-v1",
+  "date": "2026-11-14",
+  "task_id": "G64-065",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "ca05ff195784e055aa74edf90ed2874f4354439a",
+    "remote_head_before_task": "ca05ff195784e055aa74edf90ed2874f4354439a",
+    "initial_worktree": "clean",
+    "independent_review": "Sol Medium independently reviewed the raw target, indirect table entry, callback path, neighboring D0 consumers, and unknowns; the signed-SLTI bounds caveat was checked against the original dispatcher instructions.",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "source_snapshot": {
+    "target": "func_80039F84_3AB84",
+    "target_vma": "0x80039F84",
+    "target_rom_extent": "[0x3AB84,0x3AC60)",
+    "target_size": 220,
+    "target_raw_slice_sha256": "c555231e249081308f3a83e55b705ad0f37ef49725d5e9c20ce5e40b0ec9a1f6",
+    "assembly_source": "mnsg-pinned/asm/usa/392E0.s",
+    "command_table_rom_address": "0x6F1CC",
+    "command_index_5_rom_address": "0x6F1E0",
+    "command_index_5_value": "0x80039F84",
+    "production_ownership": "GLOBAL_ASM",
+    "engine_state_source_sha256_unchanged": "e9fbe551b8f8b70201358f8a51fb688e5d6ac516121fdee5d30716c722a7b830",
+    "host_reference_sha256": "e5164009ea621aff656cfa22d71c0a6603cf87837a2d39ac56f6c2fc0b7a53c4",
+    "manifest_sha256_unchanged": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "combined_proof_sha256_unchanged": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "inventory_sha256_unchanged": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051"
+  },
+  "original_mips_evidence": {
+    "raw_validation": "Parsed all 55 target instruction words from the pinned assembly's ROM/VMA comments. The exact 0xDC-byte slice matches both SHA-verified ROM images.",
+    "frame_and_entry": "Subtracts 0x38 from sp and saves ra plus s0-s6. It reads no incoming argument. One verified indirect entry is command-table index 5; the inferred caller-facing signature is void(void) because the dispatcher reloads its queue count into v0 after the jalr call.",
+    "indirect_dispatch": "func_80038938_39538 calls func_80038F68_39B68 when D_801C09C9 is zero. The dispatcher takes the queued word's low halfword and uses D_8006E5CC at ROM 0x6F1CC; raw entry 5 at 0x6F1E0 equals 0x80039F84 in both images. Its bounds use signed slti: values 0-15 index the corresponding entries; values 0x8000-0xFFFF also compare negative and reach the table-address calculation without an unsigned range guard. No normal-play occurrence of such values is claimed.",
+    "field_contract": [
+      "lbu D_801C09D0; zero returns without a target-owned write or call.",
+      "For nonzero D0, sb zero clears the byte once before a fixed 16-entry scan.",
+      "Entry records start at 0x801C0C28 with stride 0xB0. Each iteration first stores the current pointer to D_801C1728, then lw reads the full 32-bit word at entry+0.",
+      "A zero word skips active-entry work; a nonzero word loads the byte at +6, ORs bit 0, and stores it back, preserving other bits.",
+      "For active entries, lhu reads +0x58 and the function passes (value >> 8) & 0x7F as ALPan. It reloads the word at D_8007A230 into a0 and calls alSynSetPan with target 0x801C0A68 + index*0x1C in a1.",
+      "The D_801C1728 slot ends at entry 15. D0 is not read or cleared again, so a callback-written value survives this function."
+    ],
+    "related_state": [
+      "func_8003889C_3949C clears D_801C09CE, D_801C09CF, and D_801C09D0, then registers func_80038938_39538 through alSynAddPlayer.",
+      "Matched funcs 80039F3C and 80039F60 use D_801C09CF as a byte gate and conditionally write signed byte D_801C09CE; 80039F84 does not access CE or CF.",
+      "func_8003A060_3AC60 returns if D0 is nonzero; otherwise sets it to 1 and pans active entries to constant 0x40.",
+      "func_8003BCFC_3C8FC uses fixed pan 0x40 when D0 is nonzero and otherwise reads the current entry's +0x58 value."
+    ],
+    "unknown": [
+      "The semantic name and runtime trigger for D_801C09D0 are not established. func_8003A060_3AC60 statically sets it and func_8003889C_3949C clears it; the live event that reaches those writes is unknown.",
+      "No live-game capture establishes the audible outcome or normal runtime values of the queued command halfword.",
+      "The source-level declaration and exact C types of the entry and pan-target records are not recovered; the documented widths/strides are instruction-derived."
+    ]
+  },
+  "host_reference": {
+    "file": "decomp/test_engine_state.c",
+    "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/engine_state.c decomp/candidates/engine_reset_3ade8.c decomp/test_engine_state.c -o /tmp/g64-065-engine-state-host && /tmp/g64-065-engine-state-host",
+    "result": "PASS, exit 0",
+    "coverage": "Zero latch is a no-op; nonzero latch clears once; all-empty and active records; active indices 0, 5, 10 and 15; high-bit-only nonzero object word; pan inputs 0000, 7F00, 8000 and FF00; flag OR preserving other bits; callback order and arguments; pointer slot written for each of 16 entries; CE/CF/D1 sentinels; synthetic callback re-arming D0; existing 3A1E8 reset fixture.",
+    "negative_controls": [
+      {"mutation": "Remove the 0x7F mask from the derived pan value.", "result": "Rejected by the 0x8000/0xFF00 pan boundary assertions (temporary mutant exited -6)."},
+      {"mutation": "Treat the full object word as a signed nonpositive/positive discriminator.", "result": "Rejected by the 0x80000000 active-entry case (temporary mutant exited -6)."}
+    ],
+    "scope": "MIPS-derived host reference only. GCC ignores the GLOBAL_ASM pragma; the existing engine_reset_3ade8 candidate is linked only to preserve its pre-existing semantic fixture. This is not native IDO equality, original MIPS execution, full-ROM proof, or in-game verification."
+  },
+  "compiler_trials": "NOT_RUN; after the behavior contract and host matrix, no source-level register-allocation hypothesis was supported by additional evidence. This research-only task does not add a candidate to production.",
+  "tests": {
+    "target_raw_slice": "PASS against both SHA-verified ROM images; dispatch index 5 checked at ROM 0x6F1E0.",
+    "host_reference": "PASS under AddressSanitizer and UndefinedBehaviorSanitizer; command above.",
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "result": "207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and display-emitter ASan/UBSan fixture (1,000 synthetic cases) passed. Expected diagnostics from test cases that exercise verifier/compiler failure paths appeared in the log; the final runner result was PASS."
+    },
+    "task_evidence_validation": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "status": "PASS",
+      "result": "CONSISTENT_STORED_REPORTS; 100 tasks validated. --status selects G64-066 as first planned."
+    },
+    "diff_check": {"command": "git diff --check", "status": "PASS"},
+    "execution_json_parse": {"command": "python3 -m json.tool decomp/plans/execution/2026-11-14-g64-065-engine-pan-sweep.json", "status": "PASS"},
+    "fresh_full_rom_g2": "NOT_RUN; production source, manifest, build inputs, and stored proof are unchanged.",
+    "live_game_verification": "NOT_RUN"
+  },
+  "stored_proof_unchanged": true,
+  "decision": "Record G64-065 as RESEARCH_ONLY, retain func_80039F84 as GLOBAL_ASM, and make no claim that D0 has one semantic use or that the sweep has a verified live audio effect.",
+  "next": "G64-066 Revisit engine state 8003A060."
+}

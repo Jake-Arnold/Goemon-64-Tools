@@ -420,3 +420,85 @@ transition completed. Production `transition_state.c` keeps the target as
 `GLOBAL_ASM`; no compiler variant or fresh full-ROM G2 was run because this
 was a pure trace/host-reference task and no new C hypothesis was justified.
 See [`plans/execution/2026-11-14-g64-064-transition-loop-gate.json`](plans/execution/2026-11-14-g64-064-transition-loop-gate.json).
+
+## G64-065 — Engine-state pan sweep at `80039F84`
+
+The target is `func_80039F84_3AB84`, 55 words / 220 bytes at VMA
+`0x80039F84`, ROM `[0x3AB84,0x3AC60)`. The pinned `392E0.s` words match both
+the SHA-verified USA retail image and decompressed reference exactly; the
+instruction-slice SHA-256 is
+`c555231e249081308f3a83e55b705ad0f37ef49725d5e9c20ce5e40b0ec9a1f6`. The
+function reserves `0x38` stack bytes and saves `$ra` plus `$s0`–`$s6`. It does
+not read incoming arguments. One verified indirect entry is command-table
+index 5; a caller-facing `void func_80039F84(void)` is inferred because the
+dispatcher does not consume the return value, not recovered source typing.
+
+### Indirect dispatch path
+
+`func_8003889C_3949C` clears bytes `D_801C09CE`, `D_801C09CF` and
+`D_801C09D0`, then registers `func_80038938_39538` through
+`alSynAddPlayer`. The callback calls `func_80038F68_39B68` when
+`D_801C09C9` is zero. The dispatcher reads queued words from
+`D_801C0A00`, takes each low halfword, and computes its table address from
+`D_8006E5CC` at ROM `0x6F1CC`. The word at ROM `0x6F1E0` (table index 5) is
+`0x80039F84` in both ROM images. It reaches the entry through `jalr`; no direct
+`jal func_80039F84` caller was found. The dispatcher reloads its queue count
+into `$v0` immediately after the call, so the target's return register is not
+used.
+
+One bounds detail is easy to miss: the dispatcher's checks use signed `slti`
+after zero-extending the queued low halfword. Values 0–15 reach their
+same-numbered table entries. Values 16–`0x7FFF` take other command paths, but
+values `0x8000`–`0xFFFF` compare as negative and also reach the table-address
+calculation. The table access has no unsigned range guard for that range. This
+records instruction behavior only; no claim is made that such queued values
+occur in normal play.
+
+### Target memory and call contract
+
+At entry, the function loads `D_801C09D0` with `lbu`. Zero returns without any
+target-owned store or `alSynSetPan` call. A nonzero value is cleared once with
+`sb zero`; the function then scans exactly 16 records beginning at
+`0x801C0C28`, advancing by `0xB0` bytes. On every iteration it first stores the
+current record pointer to `D_801C1728`, then loads the full 32-bit word at
+record `+0`. A zero word skips the remaining work for that record. A nonzero
+word causes the byte at `+6` to be loaded, ORed with bit 0, and stored back,
+preserving its other bits.
+
+For each nonzero record, the function loads the halfword at `+0x58`, computes
+`(value >> 8) & 0x7F`, reloads the word at `D_8007A230`, and calls
+`alSynSetPan(context, target, pan)`. The target pointer is
+`0x801C0A68 + index * 0x1C`. Pinned `libaudio.h` declares the arguments as
+`ALSynth *`, `ALVoice *`, and `ALPan`; `ALPan` is `u8`. The raw field widths
+above come from the target's `lw`, `lbu`/`sb`, and `lhu` instructions, not from
+guessed structure names. The pointer slot remains set to record 15 after the
+loop. Because the latch is not read or cleared again, a callback that
+synthetically sets `D_801C09D0` during the sweep leaves that new value intact.
+
+### Neighboring state and limits
+
+The already-matched `func_80039F3C_3AB3C` and `func_80039F60_3AB60` use
+`D_801C09CF` to conditionally write signed byte `D_801C09CE`; the target above
+does not access either byte. `func_8003A060_3AC60` reads the same `D_801C09D0`
+byte, returns if it is nonzero, and otherwise sets it to 1 before sweeping the
+same records/targets with a constant pan of `0x40`. `func_8003BCFC_3C8FC` also
+uses nonzero `D_801C09D0` to select pan `0x40`; when zero it reads the current
+record pointer and its `+0x58` halfword. These distinct uses do not establish
+one semantic name or a single runtime purpose for the byte. `8003A060` is a
+static writer and `8003889C` clears it, but the runtime event that reaches
+those writes and the live audio outcome remain unknown.
+
+The host fixture in `test_engine_state.c` models only this recorded contract.
+It covers zero/nonzero latch cases, all-empty records, active records at both
+ends and interior indices, a nonzero high-bit-only object word, pan values
+`0000`, `7F00`, `8000`, and `FF00`, flag-bit preservation, call order, pointer
+slot order, and CE/CF/D1 sentinels. A synthetic callback re-arms D0 to verify
+the single clear. Two temporary negative controls (omitting the `0x7F` mask
+and treating the full object word as signed) were rejected by the fixture.
+This is a host-only reference, not execution of the original MIPS function.
+
+No source-level register-allocation hypothesis was justified after the trace,
+so native IDO trials were not run. Production `engine_state.c` retains
+`GLOBAL_ASM`; the matching manifest, stored proof and inventory are unchanged.
+No fresh full-ROM G2 or live-game verification was run. See
+[`plans/execution/2026-11-14-g64-065-engine-pan-sweep.json`](plans/execution/2026-11-14-g64-065-engine-pan-sweep.json).

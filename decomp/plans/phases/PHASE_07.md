@@ -167,7 +167,7 @@ G64-065 is next.
 
 ### G64-065 — Revisit engine state 80039F84
 
-**Status:** PLANNED. **Dependencies:** G64-061.
+**Status:** RESEARCH_ONLY (2026-11-14). **Dependencies:** G64-061.
 **Focus files:** `decomp/engine_state.c`; `decomp/test_engine_state.c`.
 
 **Architectural intent:** Study earliest unresolved engine_state.c function and interactions with D_801C09CE/CF and nearby matched helpers.
@@ -185,6 +185,25 @@ G64-065 is next.
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
 **Explicit acceptance:** Original C-call/field-width contract plus host state-table tests precedes native compiler matching.
+
+The pinned 220-byte target is dispatched indirectly by low-halfword command
+index 5 through `D_8006E5CC`. It consumes `D_801C09D0` as an unsigned-byte
+one-shot gate, then writes the current entry pointer for each of 16 records
+before checking each full word. Nonzero records have flag bit 0 set and call
+`alSynSetPan` with `(lhu(+0x58) >> 8) & 0x7F`, the global audio-context word,
+and a target at stride `0x1C`. The matching CE/CF helpers remain independent;
+the target does not access them. Its pan sweep is established from the call
+and argument data. `8003A060` is a static D0 writer and `8003889C` clears it;
+the runtime event, semantic name and live purpose remain unknown.
+
+The ASan/UBSan host reference passes the latch, empty/active-record, signedness,
+pan-boundary, pointer-order and adjacent-byte sentinel cases. Negative controls
+without the `0x7F` pan mask and with a signed object-word predicate both fail as
+expected. No native compiler variant was justified by the trace; production
+keeps `GLOBAL_ASM`, with no manifest/proof/inventory change and no fresh G2 or
+in-game check. See
+`../execution/2026-11-14-g64-065-engine-pan-sweep.json` and
+`../../MAP_TRANSITION_TRACE.md`. G64-066 is next.
 
 **Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
 

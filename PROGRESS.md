@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-065 engine-state pan sweep (RESEARCH_ONLY)
+
+- **Changed:** traced `func_80039F84_3AB84` and its indirect table dispatch; added a MIPS-derived host reference and boundary tests in `decomp/test_engine_state.c`; recorded the trace and execution evidence. Marked G64-065 `RESEARCH_ONLY`; the production target remains `GLOBAL_ASM`.
+- **Why:** establish the exact D0 gate, record widths/strides, `alSynSetPan` call arguments, and relationship to the adjacent CE/CF helpers before any C reconstruction.
+- **Evidence:** all 55 words at VMA `0x80039F84`, ROM `[0x3AB84,0x3AC60)`, match both pinned USA ROM images; instruction-slice SHA-256 `c555231e249081308f3a83e55b705ad0f37ef49725d5e9c20ce5e40b0ec9a1f6`. Table index 5 at ROM `0x6F1E0` points to the target. Sol Medium independently reviewed the dispatch, field accesses and unknowns.
+- **Tests:** ASan/UBSan host reference passed zero/nonzero latch, 16 empty/active entries, byte/halfword/word boundaries, call ordering and adjacent-field sentinels. Negative controls omitting the `0x7F` pan mask and using a signed object-word test were rejected. Repository Local CI and stored-evidence validation are recorded in `decomp/plans/execution/2026-11-14-g64-065-engine-pan-sweep.json`. No native IDO trials, fresh full-ROM G2 or live-game verification were run.
+- **Limitations/next:** `8003A060` is one static D0 writer and `8003889C` clears it, but the runtime trigger, semantic name and live audio effect remain unknown; adjacent helpers demonstrate multiple uses. Continue with G64-066.
+
 ### 2026-11-14 — G64-064 transition loop gate (RESEARCH_ONLY)
 
 - **Changed:** recorded the 116-byte original-MIPS branch contract and the `80036908` gate behavior in `decomp/MAP_TRANSITION_TRACE.md`; extended `decomp/test_transition_state.c` with a MIPS-derived host reference for both target paths. Marked G64-064 `RESEARCH_ONLY`; production code and stored proof remain unchanged.

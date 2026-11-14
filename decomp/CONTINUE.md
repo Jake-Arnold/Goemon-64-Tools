@@ -100,7 +100,13 @@ on `80036908`, updates two raw fields only on its zero path, then increments
 `SYS_W+0x3ADD6` through a reloaded pointer. Its callers ignore the return; the
 helper calls do not establish scene teardown or activation. See
 `plans/execution/2026-11-14-g64-064-transition-loop-gate.json`.
-G64-065 is next.
+G64-065 completed as `RESEARCH_ONLY`: command-table entry 5 reaches the
+220-byte `80039F84` callback, which clears D0 once and applies per-entry pan
+to active records in a 16-entry sweep. Its CE/CF neighbors are untouched;
+the runtime trigger and meaning of D0 remain unknown. Host boundary tests pass,
+while production ASM and stored proof remain unchanged. See
+`plans/execution/2026-11-14-g64-065-engine-pan-sweep.json`.
+Continue at G64-066.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list
