@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Region-aware upstream Goemon64Recomp ROM loader preparation
+
+- **Code:** Added `decomp/prepare_recomp_region_loader.py`, a fail-closed isolated-upstream source patcher. It replaces the USA-only decompression file-table/CRC constants and header checks with verified USA/Japan-0 variants while retaining the USA entrypoint and source logic.
+- **Evidence:** Read both supplied original ROMs and expanded images: original CRC1/CRC2 USA `FCBCCB21/72903C6B`, JP `832C168B/56A2CDAE`; file tables `0x57FD8` and `0x58258`; expanded CRC1/CRC2 USA `9CC11F4B/ABAA8538`, JP `673A3EDC/2491ADFC`.
+- **Safety:** Patch only a clean matching upstream `src/game/rom_decompression.cpp`; dry-run, unexpected-source checks, no double patching, atomic output. No Japanese GameEntry or unverified recompiled code is registered, and no ROM data committed.
+- **Tests:** Three synthetic source-renderer tests passed; combined ROM-input, main/overlay mapping and loader tests: 17 passed locally. Actual integrated C++ recomp build and gameplay remain untested.
+- **Limitations:** This is a prepared decompressor variant and does not make Japanese Goemon64Recomp playable or implement complete runtime savestates. GitHub fork creation is unavailable through the connected tool.
+- **Next:** Generate Japanese N64Recomp symbols/overlays and patch exports; integrate a separate Japanese GameEntry and compile/validate a Japanese runtime in a writable fork. See docs/JAPAN_RECOMP_LOADER.md.
+
 ### 2026-11-14 — Japanese main/overlay MIPS structural function mapping
 
 - **Code:** Added `decomp/japan_function_map.py` and `decomp/japan_overlay_map.py` for verified USA/JP expanded ROMs, unique 16-instruction MIPS structural signatures, exact USA N64Recomp function bounds, Splat-derived separate overlay code regions, and JSON candidate mappings.
