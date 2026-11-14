@@ -1,6 +1,6 @@
 # Phase 07 — State transitions
 
-**Scope:** G64-061–G64-070; branch `chatgptweb/decomp`; current source checkpoint `a68881da4b10e2553e7a89b7129d09d64b427435` (refresh before execution).
+**Scope:** G64-061–G64-070; branch `chatgptweb/decomp`; G64-070 task-start source checkpoint `1e5dfdee53efa86adac662beedc960de66c2f677` (verified against origin before execution).
 
 Read [EXECUTOR_PROTOCOL.md](../EXECUTOR_PROTOCOL.md) before starting. Follow individual dependency IDs, not simply numeric order. Tests listed are to be executed, not claimed as already passing. Never increase matching counts from research-only evidence.
 
@@ -368,7 +368,7 @@ fresh G2 was run and the stored proof is unchanged. See
 
 ### G64-070 — Gate transition slice
 
-**Status:** PLANNED. **Dependencies:** G64-063, G64-064, G64-065, G64-066, G64-067, G64-068, G64-069.
+**Status:** RESEARCH_ONLY (2026-11-14). **Dependencies:** G64-063, G64-064, G64-065, G64-066, G64-067, G64-068, G64-069.
 **Focus files:** `decomp/transition_state.c`; `decomp/rotation_angles.c`; `decomp/manifest.json`.
 
 **Architectural intent:** Integrate only exact transition/engine/default-entrance C functions after original-unit and full-image verification.
@@ -392,6 +392,21 @@ fresh G2 was run and the stored proof is unchanged. See
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-14):** Current source and manifest review found no new
+transition candidate that met the v2 stop rule. `func_800030F0_3CF0`,
+`func_8000394C_454C`, `func_8001F8B0_204B0`, `func_8001F940_20540`, and
+`func_8001FA80_20680` remain `GLOBAL_ASM`; no C source, manifest ownership,
+combined proof, or stored inventory changed. A fresh verifier run from an
+uncached baseline passed 160/160 claims / 12,272 bytes and the exact
+33,554,432-byte ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
+Inventory reported 7,376 identified entries, 173 current unmarked entries,
+and 7,203 remaining assembly entries. The transition-state ASan/UBSan host
+fixture, 12 focused scene-warp tests, and repository local CI passed. Reports,
+source hashes, commands, and exit statuses are in
+`../execution/2026-11-14-g64-070-transition-slice-gate.json`; raw diagnostics
+remain ignored under `practice/diagnostics/`. No in-game verification was
+performed. Continue with G64-087; G64-071–G64-086 are already recorded complete.
 
 ## Optional read-only REA research lane for this phase
 

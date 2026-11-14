@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-070 transition-slice gate (RESEARCH_ONLY)
+
+- **Changed:** Completed a fresh full-ROM verification and inventory for the current transition slice; recorded that no new C candidate was justified and kept all transition dispatchers assembly-owned.
+- **Why:** The current source and manifest contain no newly exact transition candidate. G64-070 requires original-unit and whole-image proof before integration, and transition-state evidence must remain separate from claims of safe scene activation.
+- **Evidence:** The verifier passed from a fresh baseline with 160/160 C claims, 12,272 matching bytes, and exact 32 MiB SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Inventory reports 7,376 identified entries and 7,203 remaining assembly entries. The ignored local reports are recorded in `decomp/plans/execution/2026-11-14-g64-070-transition-slice-gate.json`.
+- **Tests:** `python3 -m decomp.local_ci` passed (207 decomp tests, 116 verifier/ledger tests, task evidence validation, and the 1,000-case ASan/UBSan display-emitter fixture); the transition-state ASan/UBSan host fixture passed; 12 focused scene-warp tests passed; `skill_context --validate` and `git diff --check` passed.
+- **Limitations/next:** No native C variant or live-game verification was performed. Overlay activation, teardown, and a safe playable transition remain unproven. Continue with G64-087; G64-071–G64-086 are already recorded complete.
+
 ### 2026-11-14 — G64-069 transition safety assertions (RESEARCH_ONLY)
 
 - **Changed:** Added an evidence matrix separating state updates, a gated file-15 load request, and a safe gameplay transition. Added state/room sentinels and a static file-15 destination-window assertion; strengthened disabled direct-warp tests with write-call spies.

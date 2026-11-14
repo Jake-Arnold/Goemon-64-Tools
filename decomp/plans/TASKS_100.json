@@ -2987,7 +2987,7 @@
       "ordinal": 70,
       "phase": 7,
       "title": "Gate transition slice",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-063",
         "G64-064",

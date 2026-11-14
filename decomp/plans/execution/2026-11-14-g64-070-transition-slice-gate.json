@@ -1,0 +1,108 @@
+{
+  "format": "goemon-task-execution-v1",
+  "date": "2026-11-14",
+  "task_id": "G64-070",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "worktree_path": "/home/jake/.codex/worktrees/vm-dialogue-overlay/Goemon-64-Tools",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "1e5dfdee53efa86adac662beedc960de66c2f677",
+    "remote_head_before_task": "1e5dfdee53efa86adac662beedc960de66c2f677",
+    "initial_worktree": "clean",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "independent_review": "The existing Sol Medium review found the attached dialogue handoff historical relative to the current branch; its promoted dialogue helpers are already reflected in the active proof. G64-070 followed the live transition-slice queue."
+  },
+  "source_snapshot": {
+    "transition_state_c_sha256": "87cfc2d37719940f71e20dd747ac3d098477590d442dcd6f8df6d58cc2611006",
+    "rotation_angles_c_sha256": "80357db43c81ae9d794f95da4e2e836dd9f729f083b3204c5e46d8d641fb947e",
+    "manifest_sha256_unchanged": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "combined_proof_sha256_unchanged": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "stored_inventory_sha256_unchanged": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051",
+    "source_or_ownership_changes": "None; production source, manifest, combined proof, and stored inventory were not modified."
+  },
+  "ownership_review": {
+    "focus_files": [
+      "decomp/transition_state.c",
+      "decomp/rotation_angles.c",
+      "decomp/manifest.json"
+    ],
+    "retained_assembly_functions": [
+      "func_800030F0_3CF0",
+      "func_8000394C_454C",
+      "func_8001F8B0_204B0",
+      "func_8001F940_20540",
+      "func_8001FA80_20680"
+    ],
+    "result": "The manifest and source retain the five unresolved transition/dispatcher entries as GLOBAL_ASM. Existing accepted C neighbors remain unchanged. Prior tasks have no new candidate with exact production-unit codegen; no new falsifiable C hypothesis was justified for this gate.",
+    "native_codegen_trial": {
+      "variant_count": 0,
+      "first_mismatch": "NOT_APPLICABLE",
+      "reason": "No new candidate or changed source hypothesis. The v2 stop rule says to stop on absence of new evidence; all unresolved entries retain assembly ownership."
+    }
+  },
+  "full_rom_g2": {
+    "command": "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --workdir /tmp/20261114T070215-g64-070-build --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --report practice/diagnostics/20261114T070215-g64-070-verify.json --uv /home/jake/.local/bin/uv --jobs 2",
+    "result": "PASS; exit 0; fresh uncached baseline/candidate builds matched the entire ROM.",
+    "started_utc": "2026-11-14T07:02:35.956806+00:00",
+    "ended_utc": "2026-11-14T07:03:57.236448+00:00",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "tool_versions": {
+      "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125",
+      "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+      "uv": "uv 0.13.7 (x86_64-unknown-linux-gnu)"
+    },
+    "report_sha256": "041899ffa3b6ed7bffb9e859945f8f7603a9c50a224a0c4c5e88e9aaf1bb6604",
+    "metrics": {
+      "full_rom_match": true,
+      "rom_size": 33554432,
+      "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "matched_functions": 160,
+      "claimed_functions": 160,
+      "matched_function_bytes": 12272,
+      "baseline_cache_used": false
+    }
+  },
+  "inventory": {
+    "command": "python3 -m decomp.inventory --baseline /tmp/20261114T070215-g64-070-build/baseline --candidate /tmp/20261114T070215-g64-070-build/candidate --report practice/diagnostics/20261114T070215-g64-070-inventory.json",
+    "result": "PASS; exit 0.",
+    "report_sha256": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051",
+    "baseline_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "candidate_elf_sha256": "c3efb0d84e7eee588b3c22b9af4e5c8dac25f678954b05fc11497edfe1699ae3",
+    "summary": {
+      "identified_function_entries": 7376,
+      "upstream_unmarked_entries": 13,
+      "newly_matching_c": 160,
+      "current_unmarked_entries": 173,
+      "remaining_assembly_entries": 7203,
+      "extra_positive_alias_entries": 0,
+      "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+    }
+  },
+  "tests": {
+    "transition_state_host": {
+      "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/transition_state.c decomp/test_transition_state.c -o /tmp/g64-070-transition-state-host; /tmp/g64-070-transition-state-host",
+      "result": "PASS; compilation and execution exited 0 under ASan/UBSan."
+    },
+    "focused_scene_warp_python": {
+      "command": "python3 -m unittest tests.test_scene_warp tests.test_direct_gameplay_warp -q",
+      "result": "PASS; 12 tests, exit 0."
+    },
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "result": "PASS; exit 0. Ran 207 decomp tests, 116 verifier/ledger tests, 100-task evidence validation, and the 1,000-case ASan/UBSan display-emitter fixture."
+    },
+    "task_evidence_validation": "PASS; `python3 -m decomp.skill_context --validate` reported CONSISTENT_STORED_REPORTS for all 100 tasks after the execution record and status update.",
+    "diff_check": "PASS; `git diff --check` exited 0.",
+    "execution_json_parse": "PASS; `python3 -m json.tool` parsed the execution record and task ledger with exit 0.",
+    "live_game_verification": "NOT_RUN"
+  },
+  "decision": "Record G64-070 as RESEARCH_ONLY. No new C function was promoted; retain all five transition targets as GLOBAL_ASM and preserve the established distinction between requested state, resource load, and safe playable transition.",
+  "next": "G64-087 Analyze dispatcher 8001F8B0."
+}

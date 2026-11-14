@@ -133,9 +133,15 @@ state request, a gated file-15 load request, and a safe playable transition.
 The host fixture protects intended-room sentinels and the static file-15
 destination window. Disabled direct-warp and scene-list tests now spy on
 write_guest, so a write followed by restoration is caught. Production controls,
-the manifest, and stored proof are unchanged; no fresh G2 was run. See
+the manifest, and stored proof are unchanged. See
 plans/execution/2026-11-14-g64-069-transition-safety-assertions.json.
-Continue at G64-070.
+G64-070 also completed as RESEARCH_ONLY: the transition source/manifest review
+found no new exact C candidate, and all five transition dispatch/loop targets
+remain GLOBAL_ASM. A fresh uncached full-ROM verifier and inventory confirmed
+the current 160-function / 12,272-byte proof and the 32 MiB ROM identity; no
+production source or stored proof changed. See
+plans/execution/2026-11-14-g64-070-transition-slice-gate.json. Continue at
+G64-087 (the first PLANNED task; G64-071–G64-086 are already complete).
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list
@@ -327,8 +333,9 @@ alignment while placing the C candidate at its pinned VMA and the whole ROM
 matched byte for byte. The four dialogue helpers from the Sol-reviewed
 `codex/goemon-vm-research` branch have since passed a fresh integrated G2;
 G64-057's host-semantics checks also passed. No in-game verification was
-performed. Continue with G64-058. G64-087 remains gated on
-G64-061/062/063.
+performed. That older G64-058/G64-087 continuation marker is superseded:
+G64-061/062/063 and G64-071–086 are now recorded complete, and G64-087 is the
+first PLANNED task in the live ledger.
 G64-085 passed G2 as pilot candidate 3 of 3. Sol closed the pilot at 3/3 candidates and 7/12 variants; no extra global budget carries forward. G64-086 then passed ordinary Architect v2 with two of five variants, adding 180 bytes; the stored proof remains 153 matching-C functions / 11,800 bytes. G64-083 closed as `RESEARCH_ONLY` with `GLOBAL_ASM` retained. G64-089 then ranked the five float-state functions and tested two bounded candidates for `80006B44`: V1 had 38 differing target words; Sol diagnosed register lifetime/scheduling and approved one induction-lifetime variant. V2 reduced the mismatch to 36 words but retained the first `$v1`/`$v0` mismatch and missed the predicted `$a2` loop roles. The target remains `GLOBAL_ASM`; G2 and inventory were not run. See [`plans/execution/2026-11-13-g64-089-float-state.json`](plans/execution/2026-11-13-g64-089-float-state.json). G64-041 then completed RESEARCH_ONLY with all 110 words verified locally and the sanitized 11-command store contract; its execution report is plans/execution/2026-11-13-g64-041-display-emitter-trace.json. G64-087 remains gated on G64-061/062/063. Keep concrete predicted instruction deltas as a hypothesis-scoring refinement.
 
 **2026-11-10 execution checkpoint:** `results/next_twenty_execution_20261110.json` records live 142-function branch review and native IDO 5.3 compilation of complete *research* equivalents of three real translation units. Resource dispatch **112/112 bytes exact** (including both 36-byte wrappers and existing middle function); menu hook **256/256 exact** (including existing 8-byte hook and three menu functions). **Object dispatch fails** full-unit comparison: 8 bytes differ at original `0x35C9C`/`0x35CA0` from `lui`/RA-spill scheduling despite earlier standalone 48-byte success. Eleven source variants did not fix it. Research-only `prove_integrated_units.py` is a fail-closed reproducer. **ZERO promoted**; the 2,331-object full-ROM gate was not available on this isolated container, and the prior 142-function formal proof remains authoritative. Resume full current-source build before production integration; do not count isolated matches as promotions.
