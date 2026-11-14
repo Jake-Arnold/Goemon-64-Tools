@@ -342,7 +342,7 @@ new native compile, or full-ROM build was run. See
 
 ### G64-060 — Gate overlay promotions
 
-**Status:** PLANNED. **Dependencies:** G64-055, G64-056, G64-057, G64-058, G64-059.
+**Status:** PASSED_G2. **Dependencies:** G64-055, G64-056, G64-057, G64-058, G64-059.
 **Focus files:** `decomp/manifest.json`; `decomp/verify.py`; `decomp/inventory.py`.
 
 **Architectural intent:** Rebuild complete ROM with individual or combined overlay C candidates; compare original-address bytes, full image and total symbol inventory.
@@ -366,6 +366,17 @@ new native compile, or full-ROM build was run. See
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-14):** `PASSED_G2` for one staged callback. The 20-byte
+`func_80222034_5DD504` at VMA `0x80222034` / ROM `0x5DD504` matches at its
+original address with four relocations. The complete 188,624-byte `.file_12`
+section, 32 MiB ROM and 7,376-entry inventory pass. Only this callback was
+promoted; the separate 36-byte helper remains unclaimed. Raw relocation-section
+bytes differ because symbol-table encoding changed; all 7,051 relocation
+records are semantically identical under 282 pinned NOTYPE/OBJECT data-symbol
+normalizations and four encodings of the pinned zero-size tail alias. See
+`../execution/2026-11-14-g64-060-file12-dialogue-copy.json`. G64-061 is the
+next eligible task.
 
 ## Optional read-only REA research lane for this phase
 

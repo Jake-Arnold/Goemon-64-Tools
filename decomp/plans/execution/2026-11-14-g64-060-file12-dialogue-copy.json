@@ -1,0 +1,119 @@
+{
+  "date": "2026-11-14",
+  "task_id": "G64-060",
+  "status": "PASSED_G2",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "760f1af37df3b38a6d43e419fa4dfa5524b71c06",
+    "remote_head_before_task": "760f1af37df3b38a6d43e419fa4dfa5524b71c06",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "candidate": {
+    "function": "func_80222034_5DD504",
+    "vma": "0x80222034",
+    "rom_offset": "0x5DD504",
+    "size_bytes": 20,
+    "relocation_count": 4,
+    "original_and_candidate_instruction_sha256": "5ccb72181f417c5c752ed603f23e956d5824dbb8d53935fe46132f2c4dd7d9db",
+    "source": "decomp/candidates/file12_dialogue_copy.c",
+    "source_sha256": "bce7049e5438f50b9cb5bd7cea430fb2101067dcfdab760003ecaef3c2527fd2",
+    "ido_object_sha256": "0d91354ac69cf05f78154675170f45faddf1d97665b83d1db7ced32db115afaf",
+    "staged_object_sha256": "a8a7db2bc82ea6aec60a41215dc87a6fe112630e9439c066bec79942cdcc0b6d"
+  },
+  "overlay_proof": {
+    "section": ".file_12",
+    "vma_start": "0x8020D2A0",
+    "size_bytes": 188624,
+    "reference_and_candidate_section_sha256": "1fe5547a5899a34c0cb94c3ca56576d88509c4cff9f7682202627e0df0eddc4e",
+    "relocation_count": 7051,
+    "raw_relocation_section_bytes_identical": false,
+    "reference_raw_relocation_sha256": "48c95b35cdbd659707e557eead6b8e65d7fe389d3ff1bb2a9240719527087933",
+    "candidate_raw_relocation_sha256": "a4ff3c34ba1d9965154d0f7200e3028364da84ccead89b4a51ecba607817a6bb",
+    "semantic_relocations_identical": true,
+    "approved_normalizations": {
+      "same_data_symbol_notype_to_object": 282,
+      "pinned_zero_size_tail_alias_section_representation": 4,
+      "preserved_fields": [
+        "relocation offset",
+        "relocation type",
+        "symbol name",
+        "resolved VMA",
+        "binding",
+        "addend"
+      ]
+    },
+    "tail_alias": {
+      "rom_offset": "0x5E3C8C",
+      "vma": "0x802287BC",
+      "generated_symbol_restored_to": "D_802287BC_5E3C8C",
+      "prefix_references_rewritten": 4,
+      "instruction_bytes_changed": false
+    },
+    "object_layout": {
+      "zero_padding_bytes_removed_from_metadata": 12,
+      "callback_text_alignment": "16 to 4",
+      "preserved_prefix_text_alignment": 16,
+      "payload_bytes_changed": 0
+    }
+  },
+  "fresh_g2": {
+    "command": "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --workdir practice/diagnostics/decomp-100-inputs/g64-060/file12-copy-2026-11-14e --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --baseline-cache practice/diagnostics/decomp-100-inputs/g64-082/g2-run-2026-11-13/baseline --report practice/diagnostics/decomp-100-inputs/g64-060/file12-copy-2026-11-14e-report.json --uv \"$(command -v uv)\" --jobs 2",
+    "exit_code": 0,
+    "report": "decomp/results/combined.json",
+    "report_sha256": "3f06b5ed5c15805ccc8959c5ada08790ce291ce18dcf2a10d04d529ab89bb3b1",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_functions": 159,
+    "claimed_functions": 159,
+    "matched_function_bytes": 12236
+  },
+  "inventory": {
+    "command": "python3 -m decomp.inventory --baseline practice/diagnostics/decomp-100-inputs/g64-082/g2-run-2026-11-13/baseline --candidate practice/diagnostics/decomp-100-inputs/g64-060/file12-copy-2026-11-14e/candidate --report practice/diagnostics/decomp-100-inputs/g64-060/file12-copy-2026-11-14e-inventory.json",
+    "exit_code": 0,
+    "report": "decomp/results/inventory.json",
+    "report_sha256": "a32657b785eaf5391a3b5aa53bdbb082fa1d1bc017163da9c141447ba1cc17af",
+    "identified_function_entries": 7376,
+    "newly_matching_c": 159,
+    "remaining_assembly_entries": 7204,
+    "unmarked_entries": 172,
+    "identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  },
+  "tests": {
+    "focused_overlay_command": "python3 -m unittest decomp.test_overlay_file12 -v",
+    "focused_overlay_exit_code": 0,
+    "focused_overlay_tests": 8,
+    "verifier_command": "python3 -m unittest tests.test_decomp_verify -q",
+    "verifier_exit_code": 0,
+    "verifier_tests": 35,
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "decomp_python_tests": 201,
+      "verifier_ledger_tests": 113,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_asan_ubsan": "PASS, 1,000 synthetic cases"
+    },
+    "initial_validation_findings_resolved": [
+      "escaped the command field in this execution record as valid JSON",
+      "refreshed the VM residual inventory fingerprints after the manifest and stored proof changed"
+    ],
+    "relocation_normalization_negative_controls": [
+      "reject resolved-address change",
+      "reject relocation-type change",
+      "reject symbol-name change",
+      "reject binding change",
+      "reject unrelated section change"
+    ]
+  },
+  "decision": "Promote only func_80222034_5DD504. The separate 36-byte file_12 callback was not attempted in this G64-060 gate.",
+  "limitations": [
+    "Raw .rel.file_12 bytes differ because symbol-table entries are encoded differently; all 7,051 relocation records match semantically under the pinned and unit-tested normalizations.",
+    "No in-game verification was performed."
+  ],
+  "next": "G64-061 Draw native transition state graph"
+}

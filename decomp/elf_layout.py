@@ -139,6 +139,95 @@ def pack_heap_noop_text(original):
         function_sha256=hashlib.sha256(payload[:8]).hexdigest())
 
 
+def pack_file12_callback_text(original, function_name, function_size,
+                              expected_relocations):
+    """Trim IDO's 12 zero tail bytes for one pinned file_12 callback object.
+
+    The pinned object must contain one global function at .text offset zero,
+    followed by exactly twelve zero bytes. All relocation sites and symbols
+    must belong to the function. Only .text size/alignment metadata changes.
+    """
+    from .probe import Elf32
+
+    elf = Elf32(original)
+    if elf.kind != 1:
+        raise ValueError('Requires relocatable MIPS object')
+    indices = [index for index, name in enumerate(elf.names) if name == '.text']
+    if len(indices) != 1:
+        raise ValueError('Expected unique .text section')
+    index = indices[0]
+    section = elf.sections[index]
+    old_size = function_size + 12
+    if (section[1], section[2], section[5], section[8]) != (1, 6, old_size, 16):
+        raise ValueError('Unexpected file_12 callback .text section layout')
+    payload = elf.payload(index)
+    prefix = payload[:function_size]
+    padding = payload[function_size:]
+    if len(padding) != 12 or padding != bytes(12):
+        raise ValueError('Unexpected file_12 callback padding')
+
+    functions = [symbol for symbol in elf.symbols
+                 if symbol.kind == 2 and symbol.size > 0 and
+                 0 < symbol.section < len(elf.sections)]
+    if len(functions) != 1 or (
+            functions[0].name, functions[0].value, functions[0].size,
+            functions[0].section, functions[0].binding) != (
+            function_name, 0, function_size, index, 1):
+        raise ValueError('Unexpected file_12 callback function symbol')
+    section_symbols = [symbol for symbol in elf.symbols
+                       if symbol.section == index and symbol.kind == 3]
+    if (len(section_symbols) != 1 or
+            (section_symbols[0].name, section_symbols[0].value,
+             section_symbols[0].size, section_symbols[0].binding) !=
+            ('.text', 0, old_size, 0)):
+        raise ValueError('Unexpected file_12 callback .text section symbol')
+    if any(symbol.section == index and symbol.kind not in (2, 3)
+           for symbol in elf.symbols):
+        raise ValueError('Unexpected file_12 callback symbol in .text')
+    if any(section_index != index and section_header[2] & 2 and section_header[5]
+           and elf.names[section_index] != '.reginfo'
+           for section_index, section_header in enumerate(elf.sections)):
+        raise ValueError('Unexpected allocated data in file_12 callback object')
+
+    relocations = elf.relocations(index)
+    observed = tuple((item.offset, item.relocation_type, item.symbol.name)
+                     for item in relocations)
+    if observed != tuple(expected_relocations):
+        raise ValueError('Unexpected file_12 callback relocation signatures')
+    if any(item.offset < 0 or item.offset >= function_size or item.offset & 3
+           for item in relocations):
+        raise ValueError('file_12 callback relocation points outside function')
+    if any(item.symbol.section != 0 or item.symbol.binding != 1 or
+           item.symbol.kind != 1 or item.symbol.size != 4
+           for item in relocations):
+        raise ValueError('Unexpected file_12 callback relocation symbol')
+
+    header_offset = struct.unpack_from('>I', original, 32)[0]
+    entry_width = struct.unpack_from('>H', original, 46)[0]
+    patched = bytearray(original)
+    struct.pack_into('>I', patched, header_offset + index * entry_width + 20,
+                     function_size)
+    struct.pack_into('>I', patched, header_offset + index * entry_width + 32, 4)
+    permitted = (set(range(header_offset + index * entry_width + 20,
+                           header_offset + index * entry_width + 24)) |
+                 set(range(header_offset + index * entry_width + 32,
+                           header_offset + index * entry_width + 36)))
+    if any(before != after and offset not in permitted
+           for offset, (before, after) in enumerate(zip(original, patched))):
+        raise AssertionError('Changed bytes outside approved file_12 ELF metadata')
+    packed = bytes(patched)
+    return packed, dict(
+        kind='file12_callback_text_metadata_v1',
+        old_size=old_size, new_size=function_size,
+        old_alignment=16, new_alignment=4,
+        zero_padding_bytes=len(padding),
+        relocations_retained=len(relocations), payload_bytes_changed=0,
+        input_sha256=hashlib.sha256(original).hexdigest(),
+        output_sha256=hashlib.sha256(packed).hexdigest(),
+        function_object_sha256=hashlib.sha256(prefix).hexdigest(),
+    )
+
+
 def pack_heap_noop_file(path):
     path = Path(path)
     original = path.read_bytes()

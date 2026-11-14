@@ -30,8 +30,8 @@ Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and over
 
 **Authoritative continuation checkpoint — 2026-11-14; supersedes the dated
 142-function and 20-step checkpoints below.** Work continues in the fresh
-Codex worktree `codex/decomp-100-task-plan`, based on target-branch commit
-`a78c29fa385a02ee9a6a49cc3386497693923786` before G64-055/056. G64-022 and
+Codex worktree `codex/decomp-100-task-plan`, on target branch history through
+`760f1af37df3b38a6d43e419fa4dfa5524b71c06` at G64-060 start. G64-022 and
 earlier milestones are retained as historical checkpoints. The completed
 G64-055/056 overlay integration is published at `3062843c95768b898d9430ecfea03ed7e8b8896d`.
 `main` was not changed. The private USA retail/decompressed ROMs, pinned `mnsg` source at
@@ -45,10 +45,13 @@ and compiler locations, checksums, and fresh proof commands for recreating it.
 The fresh pinned-source baseline reproduced 142 prior claims. Then the resource
 dispatch, menu hook and object dispatch production translation units were
 integrated and independently gated. Current `manifest.json`, `results/combined.json`
-and `results/inventory.json` report **158/158 claims, 12,216 matching MIPS
+and `results/inventory.json` report **159/159 claims, 12,236 matching MIPS
 bytes, an exact 33,554,432-byte ROM match** (SHA-1
 `6ea0ed71032ce08fc2745f412d84936382197494`), **171 combined C, 7,205 ASM, and
-7,376 identified entries**. G64-056 added the exact 96-byte overlay initializer
+7,376 identified entries** (172 combined C, 7,204 ASM). G64-060 added the exact 20-byte `file_12` callback
+`func_80222034_5DD504` at VMA `0x80222034` / ROM `0x5DD504`; the full
+188,624-byte overlay and semantic relocation set match. G64-056 added the exact
+96-byte overlay initializer
 `func_080001BC_6F369C` through the G64-055 file_43 adapter. Its original and
 candidate overlay sections and all eight target relocations match; see
 `plans/execution/2026-11-14-g64-055-file43-key.json` and
@@ -65,7 +68,11 @@ current full-ROM proof without rerunning an unchanged production build. See
 historical two-word spill report, and its bounded native trials are exhausted.
 G64-059's sanitized event fixture passes 800/800 cases, including flag-store
 timing and callback order; the function remains assembly-owned. See the dated
-G64-058/059 execution records. G64-060 is the next overlay promotion gate.
+G64-058/059 execution records. The G64-060 file_12 adapter also records why raw
+relocation-section bytes differ: symbol metadata and the zero-size tail alias
+use different ELF encodings, while all 7,051 relocation records match after
+the explicitly tested narrow normalizations. G64-061 is now the next eligible
+task. See `plans/execution/2026-11-14-g64-060-file12-dialogue-copy.json`.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list

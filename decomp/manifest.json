@@ -1289,6 +1289,19 @@
       "size": 96
     }
   },
+  "overlay_file12_stage": {
+    "format": "goemon-file12-c-stage-v1",
+    "source": "candidates/file12_dialogue_copy.c",
+    "source_sha256": "bce7049e5438f50b9cb5bd7cea430fb2101067dcfdab760003ecaef3c2527fd2",
+    "compiler_object_sha256": "0d91354ac69cf05f78154675170f45faddf1d97665b83d1db7ced32db115afaf",
+    "object_sha256": "a8a7db2bc82ea6aec60a41215dc87a6fe112630e9439c066bec79942cdcc0b6d",
+    "function": {
+      "name": "func_80222034_5DD504",
+      "rom_offset": 6149380,
+      "vma": 2149720116,
+      "size": 20
+    }
+  },
   "vm_assignment_table_layout": true,
   "existing_source_patches": [
     {

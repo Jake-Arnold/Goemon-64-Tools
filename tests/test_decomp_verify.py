@@ -7,15 +7,21 @@ import tempfile
 import unittest
 from unittest import mock
 
-from decomp import overlay_file43
+from decomp import overlay_file43, overlay_file12
 from decomp.verify import (
     load_manifest, apply_units, parse_symbols, compare_images, claimed_functions,
     main_claimed_functions, validate_file43_stage_definition, validate_file43_stage,
     stage_file43_splat, verify_file43_ownership, append_file43_function_comparison,
     verify_file43_stage_build, require_file43_full_rom_match,
     lower_file43_text_alignment, prepare_file43_stage_objects,
+    validate_file12_stage_definition, validate_file12_stage, stage_file12_splat,
+    patch_file12_tail_alias_sources,
+    lower_file12_text_alignment, prepare_file12_stage_objects,
+    verify_file12_ownership, verify_file12_stage_build,
+    append_file12_function_comparison, require_file12_full_rom_match,
     COLLISION_GATE_PATCH,
 )
+from decomp.test_overlay_file12 import relocatable_file12_callback
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -26,6 +32,20 @@ def file43_stage(*, source='candidates/key_spawn_gate.c', source_sha256='a'*64,
     vma, offset, size, _ = overlay_file43.FUNCTIONS[name]
     return {
         'format': 'goemon-file43-c-stage-v1',
+        'source': source,
+        'source_sha256': source_sha256,
+        'compiler_object_sha256': compiler_object_sha256,
+        'object_sha256': object_sha256,
+        'function': {'name': name, 'rom_offset': offset, 'vma': vma, 'size': size},
+    }
+
+
+def file12_stage(*, source='candidates/file12_dialogue_copy.c', source_sha256='a'*64,
+                 compiler_object_sha256='c'*64, object_sha256='b'*64):
+    name='func_80222034_5DD504'
+    vma, offset, size, _ = overlay_file12.FUNCTIONS[name]
+    return {
+        'format': 'goemon-file12-c-stage-v1',
         'source': source,
         'source_sha256': source_sha256,
         'compiler_object_sha256': compiler_object_sha256,
@@ -85,7 +105,9 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(stage['function']['name'],'func_080001BC_6F369C')
         self.assertIn(stage['function'],claimed_functions(manifest))
         disabled=copy.deepcopy(manifest);disabled['overlay_file43_stage']=None
-        self.assertEqual(len(claimed_functions(disabled)),len(main_claimed_functions(disabled)))
+        self.assertEqual(len(claimed_functions(disabled)),
+                         len(main_claimed_functions(disabled))+
+                         (disabled.get('overlay_file12_stage') is not None))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
         staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
@@ -93,8 +115,9 @@ class DecompVerificationTests(unittest.TestCase):
             path=Path(folder)/'manifest.json'
             path.write_text(json.dumps(staged))
             loaded=load_manifest(path)
-            self.assertEqual(claimed_functions(loaded)[-1],stage['function'])
-            self.assertEqual(len(claimed_functions(loaded)),len(main_claimed_functions(loaded))+1)
+            self.assertIn(stage['function'],claimed_functions(loaded))
+            self.assertEqual(len(claimed_functions(loaded)),
+                             len(main_claimed_functions(loaded))+2)
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
             path.write_text(json.dumps(bad))
@@ -110,6 +133,239 @@ class DecompVerificationTests(unittest.TestCase):
             path.write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError,'object_sha256'):
                 load_manifest(path)
+
+    def test_file12_stage_definition_is_explicit_and_fail_closed(self):
+        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        stage=manifest['overlay_file12_stage']
+        self.assertEqual(stage['function']['name'],'func_80222034_5DD504')
+        self.assertIn(stage['function'],claimed_functions(manifest))
+        self.assertEqual(validate_file12_stage_definition(stage).as_posix(),
+                         'candidates/file12_dialogue_copy.c')
+        self.assertEqual(len(claimed_functions(manifest)),
+                         len(main_claimed_functions(manifest))+2)
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'manifest.json'
+            bad=copy.deepcopy(manifest)
+            bad['overlay_file12_stage']['function']['vma']+=4
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'pinned extent'):
+                load_manifest(path)
+            bad=copy.deepcopy(manifest)
+            bad['overlay_file12_stage']['source']='../escape.c'
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'source path'):
+                load_manifest(path)
+            bad=copy.deepcopy(manifest)
+            bad['overlay_file12_stage']['object_sha256']='not-a-hash'
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'object_sha256'):
+                load_manifest(path)
+
+    def test_file12_splat_split_preserves_data_and_neighbor(self):
+        original=(
+            'sha1: '+overlay_file12.ROM_SHA1+'\nsegments:\n'
+            '  - name: file_12\n'
+            '    type: code\n    start: 0x5C8770\n    vram: 0x8020D2A0\n'
+            '    bss_size: 0xE0\n    subalign: 16\n    overlay: yes\n'
+            '    exclusive_ram_id: static_overlay_2\n    subsegments:\n'
+            '    - [0x5C8770, asm]\n    - [0x5E3C90, data]\n'
+            '  - name: file_13\n    start: 0x5F6840\n')
+        updated,before,after=stage_file12_splat(original,file12_stage())
+        self.assertEqual((before,after),
+                         ('file_12_before_5DD504','file_12_after_5DD518'))
+        self.assertIn('    subalign: null\n',updated)
+        self.assertIn('    - [0x5C8770, asm, file_12_before_5DD504]\n'
+                      '    - [0x5DD504, c, file12_dialogue_copy]\n'
+                      '    - [0x5DD518, asm, file_12_after_5DD518]\n'
+                      '    - [0x5E3C90, data, file_12]\n',updated)
+        self.assertEqual(updated.split('  - name: file_13\n',1)[1],
+                         original.split('  - name: file_13\n',1)[1])
+        with self.assertRaisesRegex(ValueError,'VMA, ROM, overlay ID'):
+            stage_file12_splat(original.replace('0x5E3C90','0x5E3C94'),file12_stage())
+
+    def test_file12_stage_binds_source_hash_and_reference(self):
+        source=b'void func_80222034_5DD504(void) {}\n'
+        stage=file12_stage(source_sha256=hashlib.sha256(source).hexdigest())
+        with tempfile.TemporaryDirectory() as folder:
+            source_root=Path(folder);(source_root/'candidates').mkdir()
+            path=source_root/'candidates/file12_dialogue_copy.c'
+            path.write_bytes(source)
+            with mock.patch.object(overlay_file12,'validate_reference_inputs') as validate:
+                result=validate_file12_stage(stage,'pinned Splat',b'ROM',source_root)
+            self.assertEqual(result,path)
+            validate.assert_called_once_with('pinned Splat',b'ROM',
+                                             ('func_80222034_5DD504',))
+            stale=copy.deepcopy(stage);stale['source_sha256']='0'*64
+            with self.assertRaisesRegex(ValueError,'source hash mismatch'):
+                validate_file12_stage(stale,'pinned Splat',b'ROM',source_root)
+            path.write_bytes(b'GLOBAL_ASM("hidden")\n')
+            hidden=file12_stage(source_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+            with self.assertRaisesRegex(ValueError,'hide assembly ownership'):
+                validate_file12_stage(hidden,'pinned Splat',b'ROM',source_root)
+
+    def test_file12_tail_alias_patch_is_local_and_fail_closed(self):
+        rom_offset,vma,alias_name,function_name,word=overlay_file12.TEXT_END_ALIAS
+        comment=f'    /* {rom_offset:06X} {vma:08X} {word} */  nop\n'
+        old=(f'nonmatching {function_name}, 0x4\n\n'
+             f'glabel {function_name}\n{comment}endlabel {function_name}\n')
+        new=f'  alabel {alias_name}\n{comment}'
+        stage=file12_stage()
+        with tempfile.TemporaryDirectory() as folder:
+            checkout=Path(folder);asm=checkout/'asm/usa';asm.mkdir(parents=True)
+            before=asm/'file_12_before_5DD504.s'
+            after=asm/'file_12_after_5DD518.s'
+            before.write_text(('lui %hi('+function_name+')\n')*4)
+            after.write_text('start\n'+old+'tail\n')
+            report=patch_file12_tail_alias_sources(checkout,stage)
+            self.assertEqual(report['prefix_reference_rewrites'],4)
+            self.assertTrue(report['instruction_bytes_changed'] is False)
+            self.assertEqual(before.read_text().count(alias_name),4)
+            self.assertNotIn(function_name,before.read_text())
+            self.assertIn(new,after.read_text())
+            self.assertNotIn(function_name,after.read_text())
+
+            before.write_text(('lui %hi('+function_name+')\n')*4)
+            original_before=before.read_bytes()
+            after.write_text('start\n'+old.replace('nop','break')+'tail\n')
+            with self.assertRaisesRegex(ValueError,'suffix tail-alias block'):
+                patch_file12_tail_alias_sources(checkout,stage)
+            self.assertEqual(before.read_bytes(),original_before)
+
+    def test_file12_alignment_and_object_preparation_are_metadata_only(self):
+        assembly=relocatable_function_object(text_alignment=16)
+        lowered=lower_file12_text_alignment(assembly)
+        differences=[offset for offset,(before,after) in enumerate(zip(assembly,lowered))
+                     if before!=after]
+        self.assertEqual(len(differences),1)
+        with self.assertRaisesRegex(ValueError,'alignment or flags'):
+            lower_file12_text_alignment(relocatable_function_object(text_alignment=4))
+
+        source=b'void func_80222034_5DD504(void) {}\n'
+        raw,text_offset=relocatable_file12_callback(bytes(range(20)))
+        relocs=((0,5,'D_8015C5E8'),(4,6,'D_8015C5E8'),
+                (8,5,'D_801C7750_1C8350'),(16,6,'D_801C7750_1C8350'))
+        from decomp.elf_layout import pack_file12_callback_text
+        packed,_=pack_file12_callback_text(raw,'func_80222034_5DD504',20,relocs)
+        stage=file12_stage(source_sha256=hashlib.sha256(source).hexdigest(),
+            compiler_object_sha256=hashlib.sha256(raw).hexdigest(),
+            object_sha256=hashlib.sha256(packed).hexdigest())
+        before,after,_=__import__('decomp.verify',fromlist=['_file12_stage_segments'])._file12_stage_segments(stage)
+        with tempfile.TemporaryDirectory() as folder:
+            checkout=Path(folder)
+            c_path=checkout/'build/usa/src/file12_dialogue_copy.c.o';c_path.parent.mkdir(parents=True)
+            c_path.write_bytes(raw)
+            before_path=checkout/'build/usa/asm/usa'/f'{before}.s.o';before_path.parent.mkdir(parents=True)
+            before_bytes=relocatable_function_object(text_alignment=16)
+            before_path.write_bytes(before_bytes)
+            after_path=checkout/'build/usa/asm/usa'/f'{after}.s.o'
+            after_bytes=relocatable_function_object(text_alignment=16)
+            after_path.write_bytes(after_bytes)
+            (checkout/'.splat/usa').mkdir(parents=True)
+            (checkout/'.splat/usa/mnsg.ld').write_text(
+                '.file_12 0x8020d2a0 : AT(file_12_ROM_START) { *(.file_12*) }\n')
+            report=prepare_file12_stage_objects(checkout,stage)
+            self.assertEqual(c_path.read_bytes(),packed)
+            self.assertEqual(before_path.read_bytes(),before_bytes)
+            self.assertEqual(hashlib.sha256(after_path.read_bytes()).hexdigest(),
+                             report['adjusted_objects'][0]['sha256_after'])
+            self.assertEqual(report['callback_layout']['payload_bytes_changed'],0)
+            self.assertEqual(report['preserved_prefix_text_alignment'],16)
+            self.assertEqual(after_path.read_bytes(),lower_file12_text_alignment(after_bytes))
+            changed=bytearray(raw);changed[text_offset+20]=1;c_path.write_bytes(bytes(changed))
+            with self.assertRaisesRegex(ValueError,'compiler object hash mismatch'):
+                prepare_file12_stage_objects(checkout,stage)
+
+    def test_file12_apply_stages_only_named_callback_and_exact_slices(self):
+        source=b'void func_80222034_5DD504(void) {}\n'
+        stage=file12_stage(source_sha256=hashlib.sha256(source).hexdigest())
+        original=(
+            'sha1: '+overlay_file12.ROM_SHA1+'\n'
+            '  - name: file_12\n    type: code\n    start: 0x5C8770\n'
+            '    vram: 0x8020D2A0\n    bss_size: 0xE0\n    subalign: 16\n'
+            '    overlay: yes\n    exclusive_ram_id: static_overlay_2\n'
+            '    subsegments:\n    - [0x5C8770, asm]\n    - [0x5E3C90, data]\n'
+            '  - name: file_13\n    start: 0x5F6840\n')
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);checkout=root/'candidate'
+            (checkout/'config/usa').mkdir(parents=True);(checkout/'src').mkdir()
+            (checkout/'Makefile').write_text('build rules\n')
+            sources=root/'sources';(sources/'candidates').mkdir(parents=True)
+            (sources/'candidates/file12_dialogue_copy.c').write_bytes(source)
+            config=checkout/'config/usa/splat.yaml';config.write_text(original)
+            manifest={'units':[],'overlay_file12_stage':stage}
+            with mock.patch.object(overlay_file12,'validate_reference_inputs'):
+                apply_units(checkout,manifest,sources,b'ROM')
+            updated=config.read_text()
+            self.assertIn('    - [0x5DD504, c, file12_dialogue_copy]',updated)
+            self.assertEqual((checkout/'src/file12_dialogue_copy.c').read_bytes(),source)
+            make=(checkout/'Makefile').read_text()
+            self.assertIn('file_12_before_5DD504.s.o: ASFLAGS += --no-pad-sections',make)
+            self.assertIn('file_12_after_5DD518.s.o: ASFLAGS += --no-pad-sections',make)
+            self.assertNotIn('file_12',updated.split('  - name: file_13\n',1)[1])
+
+    def test_file12_ownership_requires_c_object_and_exact_map_placement(self):
+        name='func_80222034_5DD504';size=20
+        source=b'candidate callback source'
+        raw,_=relocatable_file12_callback(bytes(range(size)))
+        relocs=((0,5,'D_8015C5E8'),(4,6,'D_8015C5E8'),
+                (8,5,'D_801C7750_1C8350'),(16,6,'D_801C7750_1C8350'))
+        from decomp.elf_layout import pack_file12_callback_text
+        packed,_=pack_file12_callback_text(raw,name,size,relocs)
+        stage=file12_stage(source_sha256=hashlib.sha256(source).hexdigest(),
+            compiler_object_sha256=hashlib.sha256(raw).hexdigest(),
+            object_sha256=hashlib.sha256(packed).hexdigest())
+        before,after,_=__import__('decomp.verify',fromlist=['_file12_stage_segments'])._file12_stage_segments(stage)
+        c_name='build/usa/src/file12_dialogue_copy.c.o'
+        with tempfile.TemporaryDirectory() as folder:
+            checkout=Path(folder);(checkout/'src').mkdir()
+            (checkout/'src/file12_dialogue_copy.c').write_bytes(source)
+            c_path=checkout/c_name;c_path.parent.mkdir(parents=True)
+            c_path.write_bytes(packed)
+            before_name=f'build/usa/asm/usa/{before}.s.o'
+            after_name=f'build/usa/asm/usa/{after}.s.o'
+            before_path=checkout/before_name;before_path.parent.mkdir(parents=True)
+            before_path.write_bytes(relocatable_function_object(text_alignment=16))
+            after_path=checkout/after_name
+            after_path.write_bytes(lower_file12_text_alignment(
+                relocatable_function_object(text_alignment=16)))
+            mapping=(
+                '.file_12 0x8020d2a0 0x2e0d0 load address 0x005c8770\n'
+                f' {before_name}(.text)\n'
+                f' .text 0x8020d2a0 0x4 {before_name}\n'
+                f' {c_name}(.text)\n'
+                f' .text 0x80222034 0x14 {c_name}\n'
+                f' 0x80222034 {name}\n'
+                f' {after_name}(.text)\n'
+                f' .text 0x80222048 0x4 {after_name}\n'
+                '.file_12_bss 0x8023b370 0x0 load address 0x005f6840\n')
+            (checkout/'build/usa/mnsg.map').write_text(mapping)
+            proof=verify_file12_ownership(checkout,stage)
+            self.assertEqual(proof['function_vma'],'0x80222034')
+            self.assertEqual(proof['file_12_size'],0x2e0d0)
+            (checkout/'build/usa/mnsg.map').write_text(mapping.replace(
+                f' {c_name}(.text)\n',''))
+            with self.assertRaisesRegex(ValueError,'does not place expected'):
+                verify_file12_ownership(checkout,stage)
+
+    def test_file12_claim_append_requires_exact_link_proof_and_full_rom(self):
+        stage=file12_stage();name=stage['function']['name']
+        expected=overlay_file12.FUNCTIONS[name][3]
+        comparison={'full_rom_match':False,'claimed_functions':0,'matched_functions':0,
+                    'matched_function_bytes':0,'functions':[]}
+        linked={'functions':[{'name':name,'section':'.file_12','vma':'0x80222034',
+            'rom_offset':'0x5DD504','bytes':20,'candidate_code_matches_original':True,
+            'candidate_relocations_match_reference':True,'original_sha256':expected,
+            'candidate_sha256':expected,'relocation_count':4}]}
+        append_file12_function_comparison(comparison,stage,linked)
+        self.assertEqual(comparison['functions'][0]['guest_address'],'0x80222034')
+        self.assertEqual(comparison['matched_function_bytes'],20)
+        with self.assertRaisesRegex(ValueError,'complete-ROM comparison'):
+            require_file12_full_rom_match(comparison)
+        comparison['full_rom_match']=True
+        require_file12_full_rom_match(comparison)
+        linked['functions'][0]['candidate_relocations_match_reference']=False
+        with self.assertRaisesRegex(ValueError,'failed linked provenance'):
+            append_file12_function_comparison(comparison,stage,linked)
 
     def test_file43_splat_split_is_local_and_preserves_rodata_boundary(self):
         original=(
@@ -352,7 +608,8 @@ class DecompVerificationTests(unittest.TestCase):
         # Check structural agreement so promotions do not require pinning counts here.
         self.assertEqual(len(claims),unit_functions+
                          len(manifest.get('existing_source_patches',[]))+
-                         (manifest.get('overlay_file43_stage') is not None))
+                         (manifest.get('overlay_file43_stage') is not None)+
+                         (manifest.get('overlay_file12_stage') is not None))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
@@ -630,6 +887,8 @@ class DecompVerificationTests(unittest.TestCase):
         sources={u['source'] for u in manifest['units']}|set(manifest['support_headers'])|{p['source'] for p in manifest.get('existing_source_patches', [])}
         if manifest.get('overlay_file43_stage') is not None:
             sources.add(manifest['overlay_file43_stage']['source'])
+        if manifest.get('overlay_file12_stage') is not None:
+            sources.add(manifest['overlay_file12_stage']['source'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

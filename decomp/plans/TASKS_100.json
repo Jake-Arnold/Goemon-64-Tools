@@ -2531,7 +2531,7 @@
       "ordinal": 60,
       "phase": 6,
       "title": "Gate overlay promotions",
-      "status": "PLANNED",
+      "status": "PASSED_G2",
       "depends_on": [
         "G64-055",
         "G64-056",
