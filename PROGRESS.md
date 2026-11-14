@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Japan-0 Mupen64Plus RDRAM duplicate/ROM-copy ambiguity fix
+
+- **Root cause:** A PID may contain multiple code-matching host buffers. The earlier scanner had no way to distinguish a full cartridge-ROM copy masquerading as N64 RDRAM and returned a non-actionable ambiguity even with explicit emulator PID.
+- **Scanner:** The verified ROM now supplies both three separated Japanese main-code fingerprints and its original 64-byte N64 cartridge header. A candidate with that header at host base minus 0xC00 is a cartridge-ROM-buffer decoy and is excluded; manual hints cannot override that protection.
+- **UI:** Ambiguity now returns exact base+endian choices to a new Japanese RAM base selector on Dashboard. User-selected candidates must be rechecked against all three probes and the same PID. No auto-guessing between two remaining genuine RDRAM-looking regions. Japanese memory remains strictly read-only.
+- **Tests:** All nine existing local Japanese attachment tests pass plus three new synthetic ROM/RDRAM duplicate tests (12/12). Separately, a synthetic 32 MiB Linux host mapping using the user's SHA-1-verified Japanese ROM passed real-code readback and correctly rejected an embedded 16 MiB cartridge ROM copy.
+- **Limitations:** This has not been retested against the user's actual live Mupen PID or in a graphical Tk session. Two surviving copies may need comparing dynamic data. The Japanese Goemon64Recomp runtime is still not implemented. See `docs/JAPAN_MUPEN_AMBIGUITY.md`.
+
 ### 2026-11-14 — Read-only Japanese Mupen64Plus live PID attachment
 
 - **Implemented:** Added `practice/japanese_mupen_attach.py` to locate a running Japan-0 Mupen64Plus RDRAM mapping by three separated 64-byte main-code signatures derived from an exact user-verified retail ROM; validates word-swapped and big-endian mappings, 8 MiB extent and all signatures. Ambiguous/mismatched candidates fail closed; manual host bases do not bypass validation.
