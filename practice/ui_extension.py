@@ -39,7 +39,6 @@ class InspectorMixin(EntranceMixin):
     def build_inspector_tabs(self, notebook):
         self.init_entrances()
         self.watch_previous={}
-        self.hex_advanced=tk.BooleanVar(value=bool(self.args.enable_hex_edit))
         self.watch_rows=[]
         self.custom_watch_load_error=None
         try:
@@ -82,7 +81,7 @@ class InspectorMixin(EntranceMixin):
         self.last_inspect_at=0.0
         self.last_compare_at=0.0
         self.inspector_status=tk.StringVar(value='Connect to begin inspecting memory. Raw addresses refer to US N64 guest RAM.')
-        self.scene_status=tk.StringVar(value='Double-click an area to request an experimental entrance reload. Requires a connected game, a resolved ROM entrance and UNSAFE memory access.')
+        self.scene_status=tk.StringVar(value='Double-click an area to request an experimental entrance reload. Requires a connected game, a resolved ROM entrance and write access.')
         self.compare_status=tk.StringVar(value='Capture or select a logical checkpoint to compare.')
 
         inspector=ttk.Frame(notebook,padding=10)
@@ -113,7 +112,7 @@ class InspectorMixin(EntranceMixin):
                    style='Gold.TButton').pack(side='left',padx=(0,6))
         ttk.Button(custom_row,text='Remove selected watch',command=self.remove_custom_watch).pack(side='left')
         ttk.Label(watch_tools,text='Custom values refresh with the live table. Select the custom row to remove it. '
-                  'Double-click its Hex cell to edit when UNSAFE is enabled.',
+                  'Double-click its Hex cell to edit.',
                   style='Muted.TLabel').pack(anchor='w',pady=(4,0))
         if self.custom_watch_load_error:
             ttk.Label(watch_tools,text='Existing custom watch file could not be read: '+self.custom_watch_load_error,
@@ -121,10 +120,7 @@ class InspectorMixin(EntranceMixin):
         if self.watch_alias_load_error:
             ttk.Label(watch_tools,text='Saved field names could not be read: '+self.watch_alias_load_error,
                       style='Muted.TLabel').pack(anchor='w')
-        ttk.Label(inspector,text='Right-click any Live memory row to freeze/unfreeze its current value or rename the field. Names persist; freezes do not. Double-click a HEX cell to edit. UNSAFE is required for raw writes and freezes.').pack(anchor='w')
-        self.unsafe_check=ttk.Checkbutton(inspector,text='UNSAFE: enable raw guest-memory hex editing (any 1/2/4/8-byte value and address)',variable=self.hex_advanced)
-        self.unsafe_check.pack(anchor='w')
-        if not self.args.enable_hex_edit:self.unsafe_check.state(['disabled'])
+        ttk.Label(inspector,text='Right-click a Live memory row to freeze/unfreeze its current value or rename the field. Names persist; freezes do not. Double-click the Hex cell to edit. Writes are enabled unless launched with --read-only.').pack(anchor='w')
         manual=ttk.Frame(inspector);manual.pack(fill='x',pady=(3,7))
         ttk.Label(manual,text='Raw address:').pack(side='left')
         self.raw_address=tk.StringVar(value='0x8015C717')
@@ -268,7 +264,7 @@ class InspectorMixin(EntranceMixin):
         menu.delete(0,'end')
         active=(watch.addr is not None and watch.addr in self.value_freezes.locks)
         menu.add_command(label='Unfreeze value' if active else 'Freeze value',
-                         state='normal' if watch.addr is not None else 'disabled',
+                         state='normal' if watch.addr is not None and not getattr(self.args,'read_only',False) else 'disabled',
                          command=lambda row_id=row_id:self.toggle_live_watch_freeze(row_id))
         menu.add_command(label='Rename field…',
                          command=lambda row_id=row_id:self.rename_live_watch(row_id))
@@ -347,12 +343,12 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Rename failed: {exc}')
 
     def write_raw_hex(self):
-        """Write explicitly entered guest bytes; unlocked only by UNSAFE toggle."""
+        """Write explicitly entered guest bytes on a writable connection."""
         if not self.mem:
             self.inspector_status.set('Connect to the game first.')
             return
-        if not getattr(self.args,'enable_hex_edit',False) or not self.hex_advanced.get():
-            self.inspector_status.set('Raw writes require --enable-hex-edit and the UNSAFE checkbox.')
+        if getattr(self.args,'read_only',False) or not getattr(self.args,'enable_hex_edit',False):
+            self.inspector_status.set('Memory writes are disabled in read-only mode.')
             return
         try:
             addr=int(self.raw_address.get().strip(),16)
@@ -372,24 +368,13 @@ class InspectorMixin(EntranceMixin):
         if self.watch_tree.identify_column(event.x)!='#3':return
         row_id=self.watch_tree.identify_row(event.y)
         if not row_id or not self.mem:return
-        if not getattr(self.args,'enable_hex_edit',False):
-            messagebox.showwarning('Hex editing off','Restart with --enable-hex-edit to opt in to memory writing.')
+        if getattr(self.args,'read_only',False) or not getattr(self.args,'enable_hex_edit',False):
+            messagebox.showwarning('Read-only mode','Memory editing is disabled by --read-only.')
             return
         watch=next((w for w in self.watch_rows if w.name==row_id),None)
         if watch is None or watch.addr is None:return
         policy=get_policy(watch.addr)
         spec=next((v for v in self.custom_watches if v.row_name==watch.name),None)
-        unsafe=self.hex_advanced.get()
-        if spec is not None and not unsafe:
-            messagebox.showwarning('Custom watch is read-only',
-                'Enable UNSAFE to edit a custom guest-RAM watch.')
-            return
-        if policy is None and not unsafe:
-            messagebox.showwarning('Read-only field','Enable UNSAFE to edit a field without a declared policy.')
-            return
-        if policy is not None and policy.advanced and not unsafe:
-            messagebox.showwarning('Engine-state field locked','Enable UNSAFE to edit this field.')
-            return
         try:
             # Unknown floats and other raw watches provide their byte width
             # through the displayed hex data, rather than a guessed policy.
@@ -406,21 +391,13 @@ class InspectorMixin(EntranceMixin):
             original_hex='0x'+original.hex().upper()
             new_string=simpledialog.askstring('Edit N64 guest hex — '+watch.name,
                 f'{watch.name}\n0x{watch.addr:08X} ({width} bytes; N64 big-endian)\n'
-                +('UNSAFE: any raw value of this width is accepted\n' if unsafe else policy.note+'\n')
+                +'\nRaw memory write (game values can change concurrently).'
                 +'\nNew hex value:',initialvalue=original_hex,parent=self.root)
             if new_string is None:return
             proposed=parse_hex(new_string,width)
             if proposed==original:return
-            if not unsafe:
-                value=int.from_bytes(proposed,'big')
-                if policy.max_value is not None and value>policy.max_value:
-                    raise ValueError(f'Value {value} exceeds maximum {policy.max_value}')
-                approved=messagebox.askyesno('Confirm N64 RAM write',
-                    f'{watch.name}\nBefore: {original_hex}\nAfter: 0x{proposed.hex().upper()}',
-                    parent=self.root,icon='warning')
-                if not approved:return
             did_write=checked_write(self.mem,watch.addr,original,proposed,
-                     allow_advanced=unsafe,raw_override=unsafe)
+                     allow_advanced=True,raw_override=True)
             if did_write:
                 stamp=datetime.now().strftime('%H:%M:%S')
                 self.append_event(f'{stamp} USER WRITE {watch.name}: {original_hex} -> 0x{proposed.hex().upper()}')
@@ -946,8 +923,8 @@ class InspectorMixin(EntranceMixin):
             return
         if not getattr(self.args,'enable_teleport',False):
             self.scene_status.set('Position restoration is disabled; entrance reload was not sent.');return
-        if not getattr(self.args,'enable_hex_edit',False) or not self.hex_advanced.get():
-            self.scene_status.set('Enable Live Memory UNSAFE before experimental reloading.')
+        if not getattr(self.args,'enable_hex_edit',False):
+            self.scene_status.set('Memory writes disabled; scene reload was not sent.')
             return
         try:spawn=self.selected_scene_spawn(dest)
         except ValueError as exc:
@@ -984,7 +961,7 @@ class InspectorMixin(EntranceMixin):
         """Place only the requested destination player; never repair actor IDs."""
         pending=self.pending_direct_warp
         if not pending or not self.mem:return
-        if getattr(self.args,'read_only',False) or not self.args.enable_teleport or not self.args.enable_hex_edit or not self.hex_advanced.get():
+        if getattr(self.args,'read_only',False) or not self.args.enable_teleport or not self.args.enable_hex_edit:
             self.pending_direct_warp=None;return
         try:
             assessment=assess_direct_warp(self.mem,pending['map_id'])

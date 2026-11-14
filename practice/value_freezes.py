@@ -54,10 +54,10 @@ class ValueFreezes:
             raise ValueError('Remove the overlapping health freeze first')
         self.keep_health = True
 
-    def poll(self, ram, token, *, writable, unsafe):
+    def poll(self, ram, token, *, writable):
         if not self.locks and not self.keep_health:
             return 'No active freezes.'
-        if ram is None or token != self.token or not writable or (self.locks and not unsafe):
+        if ram is None or token != self.token or not writable:
             self.clear()
             return 'Freezes stopped: disconnected, connection changed, or write permission disabled.'
         try:
@@ -76,7 +76,7 @@ class ValueFreezes:
                 _ensure_capture_safe(ram)
                 old = ram.read_guest(lock.address, len(lock.value))
                 checked_write(ram, lock.address, old, lock.value,
-                              allow_advanced=unsafe, raw_override=lock.raw)
+                              allow_advanced=True, raw_override=lock.raw)
             return f'Active: {len(self.locks)} value freezes; maximum health {"on" if self.keep_health else "off"}.'
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
             self.clear()

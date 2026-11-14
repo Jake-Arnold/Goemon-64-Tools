@@ -214,7 +214,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         row.pack(fill='x', pady=(2, 8))
         ttk.Button(row, text='Save position', command=self.save_bookmark,
                    style='Accent.TButton').pack(side='left', fill='x', expand=True)
-        self.teleport_btn = ttk.Button(row, text='Restore position (unsafe)', command=self.restore_bookmark)
+        self.teleport_btn = ttk.Button(row, text='Restore position', command=self.restore_bookmark)
         self.teleport_btn.pack(side='left', fill='x', expand=True, padx=(8, 0))
         if not args.enable_teleport:
             self.teleport_btn.state(['disabled'])
@@ -318,7 +318,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         statusbar.pack(fill='x')
         ttk.Label(statusbar, text='EXPERIMENTAL PRACTICE ONLY  •  Never use for submitted runs',
                   style='HeaderSub.TLabel').pack(side='left')
-        ttk.Label(statusbar, text=('READ ONLY' if getattr(args, 'read_only', False) else 'Unsafe tools enabled') + '  •  Experimental entrance reload',
+        ttk.Label(statusbar, text=('READ ONLY' if getattr(args, 'read_only', False) else 'Memory writes enabled') + '  •  Experimental entrance reload',
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
 
@@ -714,7 +714,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         if self.mem.u16(0x800C7AB2)!=b["map_id"]:
             messagebox.showerror("Blocked","Bookmark map differs. Use the original debug menu to reach that map first.")
             return
-        if not messagebox.askyesno("Unsafe practice teleport",
+        if not messagebox.askyesno("Practice teleport",
                 "This writes N64 object coordinates and can softlock, crash, or corrupt game state. "
                 "It does not restore the full scene or physics state. Use only within the same room. Continue?"):
             return
@@ -988,9 +988,7 @@ PRACTICE_OPTIONS = ('enable_teleport', 'enable_state_restore', 'enable_debug_men
 
 
 def apply_access_mode(args):
-    """Read-only overrides legacy writes; Linux defaults to no game writes."""
-    if sys.platform == 'linux' and not getattr(args, 'linux_enable_writes', False):
-        args.read_only = True
+    """Practice controls are write-enabled unless explicitly read-only."""
     if getattr(args, 'read_only', False):
         for name in (*PRACTICE_OPTIONS, 'enable_scene_warp'):
             setattr(args, name, False)
@@ -1005,7 +1003,7 @@ def parse_args(argv=None):
     ap.add_argument("--route",help="route.json from autosplitter import-splits")
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
     ap.add_argument("--linux-enable-writes",action="store_true",
-                    help="EXPERIMENTAL: opt in to Linux game-memory writes; native key injection and speed controls are unsupported")
+                    help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled
     ap.add_argument("--enable-teleport",action="store_true",default=True,help="Write game coordinates (enabled by default)")
     ap.add_argument("--enable-state-restore",action="store_true",default=True,help="Restore logical checkpoints (enabled by default)")
     ap.add_argument("--enable-debug-menu",action="store_true",default=True,help="Allow original debug menu (enabled by default)")

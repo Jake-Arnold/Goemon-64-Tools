@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — No additional memory-write unlock; Linux writes enabled by default
+
+- **Changed:** removed the Live Memory write-unlock checkbox and all corresponding editor, freeze, and scene-reload gates. Linux now uses the same write-enabled defaults as Windows; the old `--linux-enable-writes` flag is accepted as a no-op for compatibility.
+- **Preserved:** `--read-only` disables writes and game input. Address bounds, gameplay checks, freeze overlap rules, compare-before-write, and readback verification remain enforced. No automatic writes occur when connecting.
+- **Tests:** corresponding startup, Linux and freeze tests updated in the follow-up test/docs commit. Automated and live game tests were not run in the connector environment.
+- **Next:** run Python/Tk tests under Linux, then validate attachment and writes on a disposable save.
+
+
 ### 2026-11-14 — Attach to existing Linux game PID with explicit OS permission support
 
 - **Changed:** the Connection panel supports direct, explicitly selected PID attachment independently of the game launcher. Added a Linux-only permission control that, with explicit warning and polkit authentication, applies a temporary `kernel.yama.ptrace_scope=0` system setting, plus a control restoring the previous scope recorded in the toolkit session. Permission changes run in a worker; the Tk interface remains responsive.

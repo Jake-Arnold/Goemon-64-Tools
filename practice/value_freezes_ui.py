@@ -53,7 +53,6 @@ class ValueFreezesMixin:
         if not self.mem:raise ValueError('Connect to a game first')
         if getattr(self.args,'read_only',False) or not self.args.enable_hex_edit:
             raise PermissionError('Value freezing is disabled in read-only mode')
-        if raw and not self.hex_advanced.get():raise PermissionError('Raw freezes require UNSAFE')
         _ensure_capture_safe(self.mem)
 
     def toggle_freeze_health(self):
@@ -127,8 +126,7 @@ class ValueFreezesMixin:
     def poll_value_freezes(self):
         had_active=bool(self.value_freezes.locks or self.value_freezes.keep_health)
         result=self.value_freezes.poll(self.mem,self.freeze_token(),
-            writable=not getattr(self.args,'read_only',False) and self.args.enable_hex_edit,
-            unsafe=self.hex_advanced.get())
+            writable=not getattr(self.args,'read_only',False) and self.args.enable_hex_edit)
         if had_active:
             self.freeze_status.set(result)
             self.freeze_health.set(self.value_freezes.keep_health)
