@@ -160,9 +160,15 @@ class ValueFreezesMixin:
                 last=self._freeze_worker_messages.get_nowait()
             except queue.Empty:
                 break
-        if last is not None:
+        active=self.value_freezes.active()
+        # Discard stale status messages queued before a manual stop or new lock.
+        if last is not None and not (
+                (last.startswith('Active:') and not active) or
+                (last.startswith('Freezes stopped') and active)):
             self.freeze_status.set(last)
-            if not self.value_freezes.active():
-                self.draw_value_freezes()
+        # Also reconcile tables when a test/connection clears locks without
+        # passing through the background worker's message queue.
+        if not active and self.freeze_tree.get_children():
+            self.draw_value_freezes()
         self.freeze_health.set(self.value_freezes.keep_health)
         self.root.after(150,self.poll_value_freezes)

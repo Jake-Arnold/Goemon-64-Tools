@@ -27,6 +27,8 @@ class FastFreezeTests(unittest.TestCase):
             while self.ram.u8(addr)!=16 and time.monotonic()<deadline:
                 time.sleep(0.005)
             self.assertEqual(self.ram.u8(addr),16)
+            while messages.empty() and time.monotonic()<deadline:
+                time.sleep(0.005)
             self.assertFalse(messages.empty())
         finally:
             worker.stop()

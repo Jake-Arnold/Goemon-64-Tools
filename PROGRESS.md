@@ -1,5 +1,11 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Reconcile fast-freeze UI with manual lock changes
+
+- **Changed:** UI status polling ignores stale 'active' messages after locks have been stopped (and stale stop messages after new locks have been armed), and clears outdated list rows when any connection/test path removes locks.
+- **Tests:** removed a thread-scheduling race in the worker status regression test. Automated tests still require local execution.
+
+
 ### 2026-11-14 — Freeze UI regression coverage and README cleanup
 
 - **Tests:** adapted GUI freeze tests to use explicit synchronous checks under the new freeze guard, while separately asserting that the Tk status callback performs no memory writes. The independent 10 ms worker has separate unit tests.
