@@ -154,5 +154,11 @@
     "The 124-byte glyph-clear loop func_8000D2C0_DEC0 remains GLOBAL_ASM after bounded native IDO variants.",
     "Inventory notes an 8-byte symbol-size annotation difference for func_8000D3B8_DFB8 covering two trailing padding words; function bytes and full ROM match."
   ],
+  "publication": {
+    "evidence_commit_sha": "6d1ea7e717906fcf6ab2c649c00c1910d4d7332d",
+    "remote_ref": "refs/heads/chatgptweb/decomp",
+    "remote_head_when_verified": "6d1ea7e717906fcf6ab2c649c00c1910d4d7332d",
+    "verification": "Research and evidence commits were pushed sequentially without force; git ls-remote confirmed this evidence commit."
+  },
   "next": "Proceed with G64-057 under the current execution strategy."
 }
