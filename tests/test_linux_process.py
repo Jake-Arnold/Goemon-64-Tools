@@ -55,6 +55,59 @@ time.sleep(30)
             child.wait(timeout=5)
             child.stdout.close()
 
+    def test_explicit_pid_is_used_without_game_launcher_or_auto_discovery(self):
+        import queue
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        from practice.toolkit import Toolkit
+
+        class StubProcess:
+            def __init__(self):
+                self.closed=False
+            def regions(self):
+                return [(0x1000,0x1000)]
+            def read(self, address, length):
+                return b'\\x00'*length
+            def close(self):
+                self.closed=True
+
+        process=StubProcess()
+        candidate=SimpleNamespace(snapshot_for_monitoring=lambda: {'x':None})
+        app=SimpleNamespace(_connect_queue=queue.SimpleQueue())
+        opts=(24680,None,'auto',True,'recomp')
+        with patch('practice.toolkit.HostProcess',return_value=process) as host, \
+             patch('practice.toolkit.find_pid',side_effect=AssertionError('PID discovery must not run')), \
+             patch('practice.toolkit.discover_rdram',return_value=(0x100000,'big')), \
+             patch('practice.toolkit.Rdram',return_value=candidate):
+            Toolkit._connect_worker(app,opts)
+        host.assert_called_once_with(24680,writable=True)
+        result=app._connect_queue.get_nowait()
+        self.assertEqual(result[0],'ok')
+        self.assertEqual(result[1],24680)
+        self.assertIs(result[2],process)
+
+    def test_linux_denied_memory_read_reports_existing_pid_permission_problem(self):
+        import errno
+        import queue
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        from practice.toolkit import Toolkit
+
+        class Denied:
+            def regions(self):return [(0x1000,0x1000)]
+            def read(self,*a):raise PermissionError(errno.EPERM,'denied')
+            def close(self):pass
+
+        app=SimpleNamespace(_connect_queue=queue.SimpleQueue())
+        with patch('practice.toolkit.HostProcess',return_value=Denied()), \
+             patch('practice.toolkit.discover_rdram',
+                   side_effect=AssertionError('Must fail before scanning')):
+            Toolkit._connect_worker(app,(24680,None,'auto',True,'recomp'))
+        result=app._connect_queue.get_nowait()
+        self.assertEqual(result[0],'error')
+        self.assertIn('24680',result[1])
+        self.assertIn('PID',result[1])
+
     @unittest.skipUnless(sys.platform == "linux", "Linux-only")
     def test_toolkit_writes_default_and_explicit_read_only(self):
         from practice.toolkit import parse_args

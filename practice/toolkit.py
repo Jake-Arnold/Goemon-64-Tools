@@ -556,6 +556,20 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         try:
             pid = pid_hint or find_pid(target)
             process = HostProcess(pid, writable=writable)
+            if sys.platform == 'linux':
+                # Fail immediately for a correct PID blocked by Linux Yama.
+                # Discovery otherwise scans large readable-map ranges before
+                # reporting that every process_vm_readv was denied.
+                for start, size in process.regions():
+                    if size < 1:
+                        continue
+                    try:
+                        process.read(start, 1)
+                    except PermissionError:
+                        raise
+                    except OSError:
+                        continue  # Some readable maps cannot be copied by readv.
+                    break
             if base_hint:
                 base, endian = int(base_hint, 0) if isinstance(base_hint, str) else int(base_hint), (
                     'wordswapped' if endian_hint == 'auto' else endian_hint)

@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Linux existing-PID memory permission preflight
+
+- **Changed:** Linux Connect now attempts a one-byte read from a readable process mapping before the full RDRAM scan, allowing an explicit external PID to fail promptly with Yama permission guidance rather than scanning gigabytes of unreadable memory. Some special mappings are not copyable, so ordinary memory errors skip to another mapping without conflating them with permission denial.
+- **Tests:** added mocked worker regression checks proving the entered PID bypasses process discovery/game launching and that permission denial occurs before RAM scanning. Local test execution and live Linux validation remain outstanding.
+- **Next:** verify attaching to the actual independently launched game on Ubuntu with Yama access explicitly granted.
+
+
 ### 2026-11-14 — Regression tests and current documentation for default-write UI
 
 - **Changed:** replaced startup, Linux and freeze tests that depended on the removed write-unlock state. Confirmed that the legacy Linux enable-writes flag remains accepted while `--read-only` takes precedence. Updated the active README and native Linux setup instructions with direct existing-PID connection, OS permission implications and write-enabled defaults.
