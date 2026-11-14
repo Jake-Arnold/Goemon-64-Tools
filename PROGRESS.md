@@ -7,22 +7,22 @@
 - **Evidence:** raw IDO object SHA-256 `773cae8801a5eac2b61cf1229ed11fe961fad5918675c4e9703854bb087b25ef`; staged C object SHA-256 `d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214`. The linked function matched all 96 bytes and all 8 relocations at its original overlay VMA. Candidate and reference `.file_43` section hashes both equal `5139b21f811295f9fa395a9eaa07a98f67ba736f4dcd68d8cd9e0df67a7d97cb` across the original 32,032-byte extent. Fresh G2 matched all 154 claims / 11,896 bytes and the complete 33,554,432-byte ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Inventory reports 167 combined C, 7,209 ASM, and 7,376 entries. Reports are in `practice/diagnostics/decomp-100-inputs/g64-056/20261114-layout-fix-{verify,inventory}.json` (local/ignored).
 - **Tests:** 48 focused overlay, verifier-adapter, and key host-regression tests passed. The key control-flow harness passed under ASan/UBSan. `python3 -m decomp.local_ci` exited 0: 188 decomp tests, 105 verifier/ledger tests, task/evidence validation, and the display-emitter sanitizer fixture passed.
 - **Publication:** committed as `3062843c95768b898d9430ecfea03ed7e8b8896d` and pushed without force. Fetch and `git ls-remote` both confirmed the `chatgptweb/decomp` SHA.
-- **Limitations/next:** byte-identical ROM and linked-ELF provenance do not constitute live-game verification. G64-055 and G64-056 are `PASSED_G2`; the four dialogue helpers are now being staged from the Sol-reviewed `codex/goemon-vm-research` branch and require a fresh G2 on this updated target before promotion.
+- **Limitations/next:** byte-identical ROM and linked-ELF provenance do not constitute live-game verification. G64-055 and G64-056 are `PASSED_G2`; the four dialogue helpers have since passed a fresh current-target G2, recorded below. G64-057 is the next planned task.
 
 ## 2026-11-13 — Locate native targets from conversation PC traces
 
 - **Changed:** documented the Chain Pipe and Oedo Castle bridge script candidates and five native dialogue-graphics matching-C targets.
 - **Why:** use observed cursor changes, decoded text, and state tokens to locate script commands and prioritize original functions with reusable behavior fixtures.
 - **Checks:** rescanned three resources in the SHA-1-pinned decompressed USA image, verified ten native function extents against the original ROM, and checked the target list against the matching-C manifest. Git whitespace checks passed on the research branch.
-- **Limitations/next:** the Chain Pipe base is inferred and multiple bridge scripts fit the sampled sequence. The four smaller helpers have since passed on the research branch; this target branch still needs a fresh integrated build and proof.
+- **Limitations/next:** the Chain Pipe base is inferred and multiple bridge scripts fit the sampled sequence. At the time of this entry, the target branch still needed an integrated proof; that proof is recorded in the 2026-11-14 dialogue-helper entry below.
 
-## 2026-11-14 — Stage four dialogue window helpers (G2 pending)
+## 2026-11-14 — Integrate dialogue cursor findings and four helpers (PASSED_G2)
 
-- **Changed:** integrated the dialogue graphics source unit, four C candidates, their focused host fixture, and the conversation target/VM decoder research from `codex/goemon-vm-research` commits `7fee48f`, `02c0acc`, and `0ee5a1c`.
-- **Why:** the resource cursor traces identify the script controls that reach window polling, closing, line-break, and text-presentation helpers.
-- **Prior evidence:** the research branch reports exact matching for 4 functions / 320 bytes in the original 6,928-byte dialogue unit and a complete 32 MiB image match. That branch predates the target's verified key overlay claim, so this is not yet current-target proof.
-- **Tests/next:** run the dialogue host harness and rebuild the current target with the existing overlay stage; replace the stored proof and inventory only after both G2 gates pass.
-- **Limitations:** `func_8000D2C0_DEC0` remains assembly-owned after the bounded compiler trials; the four-callback overlay leads remain separate work.
+- **Changed:** integrated the dialogue graphics unit and four helpers from Sol-reviewed `codex/goemon-vm-research` commits `7fee48f`, `02c0acc`, and `0ee5a1c`; added the bounded VM record decoder and conversation target notes. Refreshed the combined proof and inventory on top of the current overlay-key target.
+- **Why:** resource cursor traces identify script controls reaching window polling, closing, line-break, and text-presentation helpers, connecting the runtime findings to native MIPS behavior.
+- **Evidence:** fresh current-target verification matched 158/158 claims / 12,216 bytes and the complete 33,554,432-byte USA image (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). The four exact function extents total 320 bytes: `func_8000C314_CF14` 140 B, `func_8000C3A0_CFA0` 76 B, `func_8000C3EC_CFEC` 68 B, and `func_8000C53C_D13C` 36 B. Inventory retains all 7,376 function identities, with 171 combined C and 7,205 ASM entries. The fresh ignored verifier/inventory reports and checksums are summarized in `decomp/plans/execution/2026-11-14-dialogue-helper-integration.json`.
+- **Tests:** `python3 -m unittest decomp.test_vm_dialogue -q` — 5 passed; dialogue C fixture passed under ASan/UBSan, including all 65,536 signed phase values. `python3 -m decomp.local_ci` exited 0: 193 decomp tests, 105 verifier/ledger tests, evidence validation, and display-emitter sanitizer passed. `python3 -m decomp.skill_context --validate` and `git diff --check` passed.
+- **Limitations/next:** no in-game verification was performed. `func_8000D2C0_DEC0` remains assembly-owned after the bounded IDO trials. Inventory records an 8-byte symbol-size annotation difference at `func_8000D3B8_DFB8` covering two trailing padding words; bytes and full image match. Continue with G64-057.
 
 ## 2026-11-13 — Independent Script VM architecture research
 

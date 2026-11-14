@@ -2,9 +2,10 @@
 
 **Reconciled on 2026-11-14:** The old 142-function checkpoint and ten-function
 queue below are historical. Current authority is `decomp/CONTINUE.md` and the
-live proof reports: **154 matching C / 11,896 bytes / 167 combined C / 7,209
-ASM**. The resource, menu and object candidates from that older queue have
-passed full-ROM verification. G64-015–018 were retried and remain
+live proof reports: **158 matching C / 12,216 bytes / 171 combined C / 7,205
+ASM**. The resource, menu, object, overlay-key and dialogue-window candidates
+have passed full-ROM verification. The resource, menu and object candidates
+from the older queue have passed full-ROM verification. G64-015–018 were retried and remain
 `FAILED_NATIVE`; G64-021 is `DOC_ONLY` with its call graph in
 `VM_RESOURCE_CALLGRAPH.md`; G64-022 is `RESEARCH_ONLY` with no promotion;
 G64-023 reproduced the nonmatching F038 baseline and remains `RESEARCH_ONLY`;

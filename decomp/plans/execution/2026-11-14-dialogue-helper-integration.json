@@ -1,0 +1,158 @@
+{
+  "date": "2026-11-14",
+  "work_item": "dialogue-helper-integration",
+  "status": "PASSED_G2",
+  "strategy": "research-branch-review-and-current-target-proof",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "bb255685a77c7ad2fda118b269923d1cc36a2ecb",
+    "remote_head_before_task": "bb255685a77c7ad2fda118b269923d1cc36a2ecb",
+    "research_source_branch": "codex/goemon-vm-research",
+    "research_source_head": "0ee5a1cb89f40963067c8c8f4771ca0225371cb5",
+    "integrated_commits": [
+      "7fee48f",
+      "02c0acc",
+      "0ee5a1c"
+    ],
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "source_hashes_sha256": {
+    "decomp/dialogue_window.c": "225e3a5e4f854dca58e5137e6863c469c5fe767fb8b5a0024760258676dcd5f9",
+    "decomp/test_dialogue_window.c": "a439760bd064c0b982859a34b021da4ac35b679a99366a3bb6dc9a26bd11d139",
+    "decomp/vm_dialogue.py": "7bec5e867b0eb724ca6421338c04f1dc44f8fd10a8aa190a326eefaa8752a62e",
+    "decomp/test_vm_dialogue.py": "6875b75fa112e62f824aa6a3d011299b906c0d3b618e6e181c1f5e00fc54dbe9",
+    "decomp/manifest.json": "0e18dfd4eea94274b0708b06005eefa711c001521ebf8ad3a8e1e90d00e5a131",
+    "decomp/results/combined.json": "738214ca8a97c2f3580191db670a4c1354874356b92b0574e93ee8f55e47f21b",
+    "decomp/results/inventory.json": "0e6a721c8e3f4a1044243a059004d18a5a145224c9840396ce20bcc594b8f128",
+    "decomp/results/vm_residual_inventory.json": "438bc601f5e1bdfa2026c1155c0f760638eb9ca73fe0fecb33d7575fe7743585"
+  },
+  "dialogue_unit": {
+    "original_unit": "asm/usa/C4F0.s",
+    "rom_start": "0xC4F0",
+    "rom_end_exclusive": "0xE000",
+    "size_bytes": 6928,
+    "new_matching_functions": 4,
+    "matching_bytes_added": 320,
+    "functions": [
+      {
+        "name": "func_8000C314_CF14",
+        "vma": "0x8000C314",
+        "rom_offset": "0xCF14",
+        "size_bytes": 140,
+        "original_sha256": "8d4974bc398021278f4cb87fb8cdd092faff4ddd86958cbfa4bd2c60312db634",
+        "candidate_sha256": "8d4974bc398021278f4cb87fb8cdd092faff4ddd86958cbfa4bd2c60312db634"
+      },
+      {
+        "name": "func_8000C3A0_CFA0",
+        "vma": "0x8000C3A0",
+        "rom_offset": "0xCFA0",
+        "size_bytes": 76,
+        "original_sha256": "6c16e40fb99680675e51ba449039b8c86f1c6b83347487604e7414fbc93aaa03",
+        "candidate_sha256": "6c16e40fb99680675e51ba449039b8c86f1c6b83347487604e7414fbc93aaa03"
+      },
+      {
+        "name": "func_8000C3EC_CFEC",
+        "vma": "0x8000C3EC",
+        "rom_offset": "0xCFEC",
+        "size_bytes": 68,
+        "original_sha256": "78f0f81a6a0ede624ac3a8d32ea97703b2865116623ce46545ef62ca9363d4d1",
+        "candidate_sha256": "78f0f81a6a0ede624ac3a8d32ea97703b2865116623ce46545ef62ca9363d4d1"
+      },
+      {
+        "name": "func_8000C53C_D13C",
+        "vma": "0x8000C53C",
+        "rom_offset": "0xD13C",
+        "size_bytes": 36,
+        "original_sha256": "e8aad687348f0234653cbfb6096b782bb0fc7fc516f2ba4ec78cd33c82397935",
+        "candidate_sha256": "e8aad687348f0234653cbfb6096b782bb0fc7fc516f2ba4ec78cd33c82397935"
+      }
+    ],
+    "first_mismatch": null,
+    "retained_assembly_function": {
+      "name": "func_8000D2C0_DEC0",
+      "size_bytes": 124,
+      "result": "GLOBAL_ASM retained after bounded IDO variants; first entry scheduling still allocates a frame before the original slot calculation"
+    }
+  },
+  "fresh_g2": {
+    "command": "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --workdir /tmp/20261114-g64-dialogue-key-merge-01 --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --report practice/diagnostics/decomp-100-inputs/g64-dialogue/20261114-current-target-verify-01.json --uv \"$(command -v uv)\" --jobs 2 --baseline-cache /tmp/20261114T000206-g64-055-056-build/baseline",
+    "exit_code": 0,
+    "report": "practice/diagnostics/decomp-100-inputs/g64-dialogue/20261114-current-target-verify-01.json",
+    "report_sha256": "738214ca8a97c2f3580191db670a4c1354874356b92b0574e93ee8f55e47f21b",
+    "baseline_cache_used": true,
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_functions": 158,
+    "claimed_functions": 158,
+    "matched_function_bytes": 12216,
+    "verifier_source_sha256_lf": "a9aceac2148f64a009782066d5109d69197e1d99d16bafbac6b6b9a67a178ebd"
+  },
+  "inventory": {
+    "command": "python3 -m decomp.inventory --baseline /tmp/20261114T000206-g64-055-056-build/baseline --candidate /tmp/20261114-g64-dialogue-key-merge-01/candidate --report practice/diagnostics/decomp-100-inputs/g64-dialogue/20261114-current-target-inventory-01.json",
+    "exit_code": 0,
+    "report": "practice/diagnostics/decomp-100-inputs/g64-dialogue/20261114-current-target-inventory-01.json",
+    "report_sha256": "0e6a721c8e3f4a1044243a059004d18a5a145224c9840396ce20bcc594b8f128",
+    "summary": {
+      "identified_function_entries": 7376,
+      "newly_matching_c": 158,
+      "combined_c": 171,
+      "remaining_assembly_entries": 7205,
+      "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
+      "size_annotation_differences": [
+        {
+          "name": "func_8000D3B8_DFB8",
+          "baseline_size": 64,
+          "candidate_size": 72,
+          "explanation": "two trailing padding words; linked function entry and bytes match"
+        },
+        {
+          "name": "func_8003F6E8_402E8",
+          "baseline_size": 48,
+          "candidate_size": 56
+        }
+      ]
+    }
+  },
+  "tests": {
+    "dialogue_vm_unit_tests": {
+      "command": "python3 -m unittest decomp.test_vm_dialogue -q",
+      "tests": 5,
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "dialogue_host_sanitizer": {
+      "command": "gcc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -Idecomp/test_support decomp/test_dialogue_window.c -o /tmp/g64-dialogue-window-sanitized && /tmp/g64-dialogue-window-sanitized",
+      "tested_cases": "all 65,536 signed phase values plus absent-slot, flag-preservation, line-layout, and repeated selector cases",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 193,
+      "verifier_ledger_tests": 105,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "skill_context_validation": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "limitations": [
+    "No in-game verification was performed; the evidence establishes original-address function equality and complete USA ROM identity only.",
+    "The 124-byte glyph-clear loop func_8000D2C0_DEC0 remains GLOBAL_ASM after bounded native IDO variants.",
+    "Inventory notes an 8-byte symbol-size annotation difference for func_8000D3B8_DFB8 covering two trailing padding words; function bytes and full ROM match."
+  ],
+  "next": "Proceed with G64-057 under the current execution strategy."
+}

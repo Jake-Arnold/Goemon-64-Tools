@@ -64,9 +64,17 @@ starts calculating the window slot. The callback and four layout stores
 were reconstructed. The entry scheduling discrepancy persisted with
 postincrement, a distinct layout alias, and volatile layout stores.
 
-The complete 6,928-byte unit at `[0xC4F0,0xE000)` and the full 32 MiB image
-are byte-identical. All 157 claims (12,120 bytes) passed original-address
-verification. The inventory retains the same 7,376 function identities.
+The research-branch build matched the complete 6,928-byte unit at
+`[0xC4F0,0xE000)` and its full 32 MiB image, with 157 claims / 12,120 bytes.
+The four helpers were then integrated with the target branch's verified
+file_43 key initializer. The fresh target build matched all 158 claims /
+12,216 bytes and the complete 32 MiB image at SHA-1
+`6ea0ed71032ce08fc2745f412d84936382197494`. Inventory retains the same 7,376
+function identities: 171 combined C and 7,205 ASM entries. The current proof
+is `decomp/results/combined.json`; the ignored fresh verifier report is
+`practice/diagnostics/decomp-100-inputs/g64-dialogue/20261114-current-target-verify-01.json`.
+The sanitized evidence summary is
+`decomp/plans/execution/2026-11-14-dialogue-helper-integration.json`.
 The generated ELF reports 72 bytes for the retained `D3B8` symbol where
 the baseline reports 64, covering two original trailing padding words.
 The linked bytes and function entry are identical. The focused host
