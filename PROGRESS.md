@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Experimental read-only Japanese Mupen64Plus RDRAM probe
+
+- **Implementation:** Added `practice/japan_mupen_rdram.py`, a standalone CLI using the existing Linux HostProcess and Rdram to inspect an existing Mupen64Plus PID without injecting input or enabling USA gameplay-memory controls.
+- **Version safety:** Requires exact Japanese rev0 `NG5J` retail or decompressed ROM SHA-1, an actual Mupen64Plus process, and unique Japanese executable code fingerprints at four separate RAM offsets. Supports big/wordswapped host layouts and rejects possible ROM-memory decoys and ambiguous bases.
+- **Validation:** Six ROM-free synthetic tests passed locally (correct endians, version verification, partial/duplicate/decoy fingerprint rejection and bounded scanning). Real verified 32 MiB Japanese ROM successfully validated synthetic big/wordswapped RAM mappings.
+- **Limit:** No actual independently running Mupen64Plus PID was available for live-process testing. This is CLI-only, not GUI integrated; Japanese player positions, flags, freezes and warps remain deliberately disabled. Ubuntu ptrace permissions may block access without explicit user authorisation.
+- **Next:** Run this read-only probe against a real Japanese Mupen PID, verify memory after savestate load, then integrate a Japanese-specific read-only RAM pane and discover region-correct gameplay fields. See `docs/JAPAN_MUPEN_ATTACH.md`.
+
 ### 2026-11-14 — Japanese Impact full-function reconciliation with original N64Recomp symbols
 
 - **Implemented:** Added `decomp/japan_symbol_reconciliation.py`, a strict whole-function audit of candidate USA→JP direct-JAL anchors against original USA N64Recomp function starts and sizes. Checks exact ROM hashes and Splat section identities, validates both ROM and VRAM candidate addresses, re-confirms unique 16-word anchors and only reports full normalized function-structure matches.
