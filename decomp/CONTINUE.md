@@ -32,7 +32,8 @@ Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and over
 142-function and 20-step checkpoints below.** Work continues in the fresh
 Codex worktree `codex/decomp-100-task-plan`, based on target-branch commit
 `a78c29fa385a02ee9a6a49cc3386497693923786` before G64-055/056. G64-022 and
-earlier milestones are retained as historical checkpoints.
+earlier milestones are retained as historical checkpoints. The completed
+G64-055/056 overlay integration is published at `3062843c95768b898d9430ecfea03ed7e8b8896d`.
 `main` was not changed. The private USA retail/decompressed ROMs, pinned `mnsg` source at
 `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, and IDO 5.3 compiler are copied
 under ignored `practice/diagnostics/decomp-100-inputs/`, so the prior external

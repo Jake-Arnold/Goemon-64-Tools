@@ -256,7 +256,10 @@
   ],
   "next": "Review the four dialogue helper promotions from codex/goemon-vm-research for conflicts and safe integration, then continue with G64-057.",
   "publication": {
-    "status": "pending commit and remote verification"
+    "commit_sha": "3062843c95768b898d9430ecfea03ed7e8b8896d",
+    "remote_ref": "refs/heads/chatgptweb/decomp",
+    "remote_verification_sha": "3062843c95768b898d9430ecfea03ed7e8b8896d",
+    "verification": "Pushed without force; git fetch and git ls-remote both confirmed the remote SHA."
   },
   "task_id": "G64-056",
   "title": "Prepare key initializer replacement",

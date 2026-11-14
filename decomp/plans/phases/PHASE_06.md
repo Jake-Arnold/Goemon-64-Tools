@@ -196,7 +196,7 @@ inventory rebuild or promotion was performed. See
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
 
-**Outcome (2026-11-14):** connected the overlay stage to the production verifier and manifest. The adapter validates source/IDO/staged-object hashes, exact Splat split, object ownership and linker-map placement, original linked-ELF code/relocation provenance, then requires the complete ROM to match before adding an overlay claim. The initial G2 run identified that Splat's `SUBALIGN(4)` lowered output-section alignment to 4. The corrected split removes forced subalignment, preserves the prefix object's 16-byte `.text` alignment, and lowers only the C and suffix object's `.text` metadata to 4. The linked section retained its original 16-byte alignment and exact full extent. Focused verifier/overlay tests and G2/inventory passed. See `../execution/2026-11-14-g64-055-file43-key.json`.
+**Outcome (2026-11-14):** connected the overlay stage to the production verifier and manifest. The adapter validates source/IDO/staged-object hashes, exact Splat split, object ownership and linker-map placement, original linked-ELF code/relocation provenance, then requires the complete ROM to match before adding an overlay claim. The initial G2 run identified that Splat's `SUBALIGN(4)` lowered output-section alignment to 4. The corrected split removes forced subalignment, preserves the prefix object's 16-byte `.text` alignment, and lowers only the C and suffix object's `.text` metadata to 4. The linked section retained its original 16-byte alignment and exact full extent. Focused verifier/overlay tests and G2/inventory passed. Published in `3062843c95768b898d9430ecfea03ed7e8b8896d`; see `../execution/2026-11-14-g64-055-file43-key.json`.
 
 ### G64-056 — Prepare key initializer replacement
 
@@ -225,7 +225,7 @@ inventory rebuild or promotion was performed. See
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
 
-**Outcome (2026-11-14):** `func_080001BC_6F369C` reproduced as 96 exact bytes at VMA `0x080001BC` / ROM `0x6F369C` with all 8 relocation targets matching the pinned overlay. The original and candidate `.file_43` sections have the same 32,032-byte SHA-256, and the fresh complete-ROM proof matched all 154 claims / 11,896 bytes with ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Inventory reports 167 combined C, 7,209 ASM and 7,376 entries. No in-game verification was run. See `../execution/2026-11-14-g64-056-file43-key.json`.
+**Outcome (2026-11-14):** `func_080001BC_6F369C` reproduced as 96 exact bytes at VMA `0x080001BC` / ROM `0x6F369C` with all 8 relocation targets matching the pinned overlay. The original and candidate `.file_43` sections have the same 32,032-byte SHA-256, and the fresh complete-ROM proof matched all 154 claims / 11,896 bytes with ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Inventory reports 167 combined C, 7,209 ASM and 7,376 entries. No in-game verification was run. Published in `3062843c95768b898d9430ecfea03ed7e8b8896d`. See `../execution/2026-11-14-g64-056-file43-key.json`.
 
 ### G64-057 — Prove key initializer semantics
 
