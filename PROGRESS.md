@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Thread-safe fast freeze engine at 100 Hz
+
+- **Changed:** added a 10 ms independent background worker for active freeze locks, instead of relying on Tk's slower callback scheduling. Worker reads/writes game RAM only, never touches Tk. It sleeps longer when idle.
+- **Efficiency:** compares each locked range first and skips matching values before additional gameplay checks/verified write. Maintains state checks immediately before changed writes, overlap limits, fixed big-endian bytes, readback and failure-stop semantics.
+- **Concurrency:** added an RLock around freeze changes, polling and snapshots, with explicit APIs for removal and label changes. Connection swaps must acquire the same guard.
+- **Limitation:** rapid or every-frame game overwrites can still become visible between checks; a truly frame-atomic lock requires modification of the game/runtime, not an out-of-process poller.
+- **Tests:** added background-correction, stop/remove, session token and interval regression tests; these were authored but not executed against a live game in this connector environment.
+
+
 ### 2026-11-14 — Remove obsolete Unlocks panel and LiveSplit integration
 
 - Removed the duplicate read-only Sasuke battery/Ushiwaka progression box from Unlocks; standalone Story progress remains available and continues to refresh.
