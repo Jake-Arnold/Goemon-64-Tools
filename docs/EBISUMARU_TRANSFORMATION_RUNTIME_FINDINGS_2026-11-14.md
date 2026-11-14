@@ -145,3 +145,223 @@ The user clarified that with Mini Ebisumaru power active and `s16 0x8020C8E6 = -
 **Revised investigation priority:** Recover the game's **maximum movement speed parameter/limit or equivalent computed speed cap**, rather than merely the position-derived velocity magnitude or any instantaneous velocity component. Determine whether speed is limited by an actor-field value, a constant selected by mode, separate acceleration curves, a vector clamp, or frame-dependent movement routine. Trace the exact decision path causing approximately 32 in legitimate miniature/−1 and approximately 98 in normal/0 and miniature/forced-0. Report the original function/PC, field address or offset (if stored), original instruction and data width, source constant(s), and verification. If there is no stored max-speed variable, report the control-flow and calculation instead of inventing one. Native velocity storage is a secondary follow-up, not the primary deliverable.
 
 **Evidence scope:** user-reported runtime interventions; no original MIPS reader/writer or precise speed ceiling proven. No toolkit memory-writing behaviour changed.
+
+## USA ROM/MIPS trace: movement limit and action gates (14 November 2026)
+
+### Source identity and method
+
+The original USA Rev. 00 retail image was checked against SHA-1
+`df8083a54296b8c151917c5333e1c85f014a2a66`. Using the pinned USA `mnsg` layout,
+the decompressed image matched SHA-1
+`6ea0ed71032ce08fc2745f412d84936382197494` (33,554,432 bytes). The layout was
+split with Splat from pinned source commit
+`7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`; the matching-C repository does not
+contain the player movement implementation, so the findings below are from
+original USA MIPS and its mapped data. No ROM or generated disassembly was
+added to Git.
+
+### A. Maximum movement limit: ROM/MIPS verified
+
+The user supplied a live task pointer of `0x80169FA0`; its `f32 +0xE4` is
+`0x8016A084`, and `f32 +0x74` is `0x8016A014`. The supplied runtime readings are
+`+0xE4 = 2.8` in ordinary Ebisumaru mode and `1.12` in miniature mode. The
+pointer value itself was not read by me from a running game.
+
+The MIPS trace explains the `+0xE4` field directly:
+
+1. `func_801E1C90_59DBA0` (`VMA 0x801E1C90`, ROM `0x59DBA0`) calls
+   `func_801E7DE8_5A3CF8` at `0x801E1CF4`.
+2. `func_801E7DE8_5A3CF8` checks task `+0x60` for `1` at `0x801E7DE8`. It loads
+   task `+0x5C` at `0x801E7DFC`, performs `lhu 0x86(pointer)` at `0x801E7E04`,
+   and returns true only when that halfword equals `0xFFFF` (`xor` at
+   `0x801E7E08`, boolean reduction at `0x801E7E0C`). For the user-supplied
+   task/context mapping, this is `u16 0x8020C8E6 == 0xFFFF`.
+3. At `0x801E1CFC`, `func_801E1C90` branches on that predicate. The true branch
+   builds `1.12f` (`0x3F8F5C29`) at `0x801E1D04–0x801E1D10`; the false branch
+   builds `2.8f` (`0x40333333`) at `0x801E1D24–0x801E1D30`. Both call
+   `func_801E3DE0_59FCF0` (`VMA 0x801E3DE0`, ROM `0x59FCF0`) with the same
+   `0.3f` transition parameter. That helper writes a single precision value to
+   task `+0xE4` with `swc1` at `0x801E3E88` and clamps its result to the selected
+   target at `0x801E3E94`.
+4. The player update path loads task `+0xE4` as a 32-bit word at
+   `0x801CBF2C`, passes it through `func_801CC4C0_5883D0`, and reaches
+   `func_801CD310_589220` (`VMA 0x801CD310`, ROM `0x589220`). The latter stores
+   the scalar at `0x801CD31C` and computes the magnitude of its three movement
+   components. At `0x801CDCB8` it compares that magnitude with the scalar; when
+   the vector is larger, it divides the limit by the magnitude and scales all three
+   components before continuing movement.
+
+In the USA Splat map, `file_11` is loaded at `0x801CB460`; its BSS starts at
+`0x8020C860` and ends at `0x8020D2A0`, so the halfword is exactly context `+0x86`.
+The player-task initializer stores this BSS base through task `+0x5C`. This
+interpretation is overlay-specific: other mutually exclusive overlays reuse
+part of the same RAM range for ROM-backed data. The active overlay for the
+user's live experiments was not independently inspected.
+
+The linked task base `0x80169FA0` is the user's runtime value, not a ROM-fixed
+address. If it is the current object stored by the overlay, its word at `+0x5C`
+should resolve to `0x8020C860`; that exact live pointer read was not made here.
+
+This is a stored, dynamic `f32` movement-vector limit, not an instantaneous
+velocity component. The native limit ratio is `1.12 / 2.8 = 0.4`, a 60%
+reduction. The earlier toolkit-derived displacement maxima (~32 versus ~98,
+ratio ~0.327) are different measurements and do not equal this native scalar
+ratio; the extra difference is not explained by the MIPS chain traced so far.
+The user also reports transient `+0xE4` values of `2.0` on stopping normally,
+`0.8` on stopping while miniature, and `1.0` during a normal-size hurt
+animation, before returning to the steady mode limit. These runtime reports
+show that other movement/action states can adjust the same field. The stop
+values retain the same ratio (`0.8 / 2.0 = 0.4`), supporting a mode factor that
+also applies during deceleration; the exact transient writers were not fully
+mapped here.
+
+The movement routine has another branch that substitutes `4.0f` when a
+separate context flag is set. No evidence shows that branch was active in the
+reported normal/miniature A/B tests.
+
+| Function | VMA / ROM start (size) | Relevant MIPS evidence | Meaning and confidence |
+| --- | --- | --- | --- |
+| `func_801CB5D0_5874E0` | `0x801CB5D0` / `0x5874E0` (`0x1D8`) | Builds `D_8020C860`, stores it at task `+0x5C` (`0x801CB678–0x801CB684`) | Context pointer assignment, ROM/MIPS verified |
+| `func_801E7DE8_5A3CF8` | `0x801E7DE8` / `0x5A3CF8` (`0x30`) | `lbu +0x60`; `lhu +0x86`; compares against `0xFFFF` | Mini-mode predicate, ROM/MIPS verified |
+| `func_801E1C90_59DBA0` | `0x801E1C90` / `0x59DBA0` (`0x180`) | Calls the predicate; selects `0x3F8F5C29` or `0x40333333` | Mode-dependent target, ROM/MIPS verified |
+| `func_801E3DE0_59FCF0` | `0x801E3DE0` / `0x59FCF0` (`0xDC`) | `swc1` to task `+0xE4`, with target clamp | Speed-limit writer/smoother, ROM/MIPS verified |
+| `func_801CD310_589220` | `0x801CD310` / `0x589220` (`0x10E0`) | `sqrt.s` of movement vector, compares to supplied cap, scales vector if needed | Movement-vector clamp, ROM/MIPS verified |
+| `func_801D6B80_592A90` | `0x801D6B80` / `0x592A90` (`0x4D8`) | Selects `f32` profile data and writes task `+0x74` | Separate current/profile speed state; exact character mapping unverified |
+
+Other same-offset accesses in this overlay include `lhu` in
+`func_801CBD88_587C98` (`0x801CBE60`), `func_801CBF0C_587E1C`
+(`0x801CBF80`, `0x801CBFA4`), `func_801D90D8_594FE8` (`0x801D916C`),
+`func_801DA758_596668` (`0x801DA77C`), `func_801DC120_598030` (`0x801DC1C8`),
+`func_801E0158_59C068` (`0x801E0184`), `func_801E3834_59F744`
+(`0x801E397C`), `func_801E572C_5A163C` (`0x801E5754`), and the four small
+predicates `func_801E7DC0_5A3CD0`, `func_801E7DE8_5A3CF8`,
+`func_801E7E40_5A3D50`, and `func_801E7E90_5A3DA0`. Additional
+`lhu/sh` accesses occur in the action/reset callbacks listed below. No `lh`
+access to this field was found. No immediate absolute load/store of
+`0x8020C8E6` appears in the traced routines; they reach it through task `+0x5C`.
+
+The `f32 +0x74` field is updated separately from the `+0xE4` clamp. Original
+MIPS selects `+0x74` from a profile table at `0x801FC91C`, indexed by a profile
+byte and a movement-mode byte. The first four decoded profile groups contain
+values `40/70/100`, `50/80/120`, `40/50/70`, and `40/50/60`; the selector accepts
+more than four internal profile IDs, so these groups do not prove a one-to-one
+mapping to Goemon, Ebisumaru, Sasuke, and Yae. Their relationship to the
+`+0xE4` limit is not yet established.
+
+### B. Action restrictions: ROM/MIPS verified with runtime mapping
+
+`func_801DCE10_598D20` (`VMA 0x801DCE10`, ROM `0x598D20`) reads the per-player
+input record and dispatches three internal action cases. The case sourced from
+input mask `0x8` calls `func_801DCFB0_598EC0`; on success it enters the
+per-character action handler `func_801E75D4_5A34E4`. For task character index
+`1`, `func_801DCFB0` reads `u16 task[+0x5C]+0x86` at `0x801DD068` and its
+character-specific success path requires zero. With `0xFFFF`, that ordinary
+action path is bypassed. `func_801DD114_599024` is a separate fallback
+predicate and can route a different state action through
+`func_801E77E4_5A36F4`.
+
+The user identifies the blocked input as ordinary attack. The MIPS verifies a
+separate Ebisumaru input gate tied to the same halfword; the mapping from the
+internal `0x8` input mask and action handler name to the human-facing attack
+button is runtime-informed rather than a symbol label in the ROM.
+
+Character switching is clearer. The internal case sourced from input mask
+`0x4` in `func_801DCE10` calls `func_801DD3C4_5992D4` before
+`func_801DD50C_59941C`. In `func_801DD3C4`, when task character index is `1`,
+`lhu 0x86(task+0x5C) == 0xFFFF` returns false at `0x801DD430–0x801DD440`; the
+dispatcher then skips the character-cycle function. `func_801DD50C` advances
+the character index through available entries and `func_801DD5C0_5994D0`
+resets the `+0x86` halfword to zero. This matches the user's attack and
+character-switch experiments and shows the restrictions are in separate
+input predicates.
+
+Walking and jumping use the movement update path and remain available in the
+user's runtime tests. No universal “disable input” branch was found in the
+movement clamp. NPC/sign interactions were not separately traced in MIPS; their
+continued availability is user-runtime evidence.
+
+### C. Transformation state and ownership boundaries
+
+`func_801E78DC_5A37EC` (`VMA 0x801E78DC`, ROM `0x5A37EC`) implements the
+reported 16-bit decrement. It loads `u16 +0x86` with `lhu` at `0x801E78EC`,
+returns unchanged for `0` and `0xFFFF`, otherwise subtracts one and stores with
+`sh` at `0x801E7900`. A second `lhu` at `0x801E7908` detects reaching zero. This
+exactly explains the user's `0xFF00 → 0xFEFF → 0xFEFE …` high-byte write
+sequence. Although the toolkit monitor may display this as signed `s16`, the
+identified native reads are unsigned `lhu` operations.
+
+When that decrement reaches zero, the routine sets context byte `+0x84` to `2`,
+calls `func_801DD498_5993A8`, then clears `+0x84`—but only on its task-character
+index `0` path. That conditional side effect does not by itself identify
+Ebisumaru's rendered-size completion. The user-reported rule that transformation
+input is rejected for intermediate halfwords is consistent with endpoint
+predicates, but the complete Ebisumaru input/animation commit path remains
+unresolved.
+
+Other original writers show that the halfword is a broader task state/timer:
+
+- `func_801E77A4_5A36B4` writes a table value to `+0x86` (`sh` at
+  `0x801E77E0`); the four halfwords are `0x0384, 0xFFFF, 0xFFFF, 0xFFFF`.
+- `func_801F6FB4_5B2EC4` calls a reset helper, then stores `0xFFFF` at
+  `0x801F6FD4`.
+- `func_801E50C0_5A0FD0`, `func_801F7034_5B2F44`, and the character-change
+  reset `func_801DD5C0_5994D0` store zero. `func_801E50C0` does so after its
+  separate `+0x30` counter reaches `0x3C`. Other zero stores are in
+  `func_801E5208_5A1118` (`0x801E5260`), `func_801EDCE0_5A9BF0`
+  (`0x801EDDDC`), `func_801F56EC_5B15FC` (`0x801F5720`), and
+  `func_801F5F4C_5B1E5C` (`0x801F5FC8`, `0x801F600C`).
+
+The exact visible-scale state and the user's `u8 0x801C159A` candidate remain
+unresolved. No literal reference to `0x801C159A` was found in the USA Splat
+disassembly, and no renderer/collision scale field was proven. The user's
+mismatched-size and cross-character experiments therefore remain runtime
+evidence that visible size is partly separate from `+0x86`; they do not yet
+identify the scale owner or corrective animation routine. The known ability
+ownership byte `0x8015C6F3` remains a separate acquired-power flag; it is not the
+active mode predicate used by the speed selector above.
+
+The character-cycle MIPS updates the current character index on the existing
+task and clears `+0x86`, but it does not establish why a different character
+retains a miniature-looking model after the user's forced-zero experiment.
+Reused/shared visual state is a strong inference; copied renderer scale and
+collision size are unverified.
+
+### D. Consolidated memory/function map
+
+| Address / offset | Width | Meaning | Original MIPS owner/readers/writers | Evidence |
+| --- | --- | --- | --- | --- |
+| `task +0x5C` | 32-bit pointer | Player-task context pointer | `func_801CB5D0_5874E0` stores `D_8020C860` here | ROM/MIPS verified; runtime task base supplied by user |
+| `0x8020C860` | BSS base | `file_11` task-context block | `file_11` BSS starts here; `func_801CB5D0` zeros its first word | ROM/layout verified; structure remains opaque |
+| `0x8020C8E6` = context `+0x86` | 16-bit | Mini/action/countdown state; endpoints `0`, `0xFFFF` | `lhu/sh` in `func_801E7DE8`, `func_801E1C90`, `func_801E78DC`, `func_801DCFB0`, `func_801DD114`, `func_801DD3C4`, and other task callbacks | MIPS plus user runtime; native reads are unsigned |
+| `task +0x60` | `u8` | Current task character index | `func_801E7DE8`, `func_801DCE10`, `func_801DD50C` | MIPS verified; index `1` is the Ebisumaru case used by the speed predicate |
+| `task +0x74` | `f32` | Current/profile speed state | `func_801D896C_59487C`, `func_801D6B80_592A90` | MIPS field accesses; user labels it current speed |
+| `task +0xE4` (`0x8016A084` for supplied base `0x80169FA0`) | `f32` | Movement-vector limit supplied to `func_801CD310` | `func_801E3DE0` writes it; `func_801CBF0C` loads it; `func_801CD310` clamps movement vector to it | MIPS verified; specific live base/value reported by user |
+| `0x801C159A` | `u8` | Size-correlated candidate (`52` normal / `28` miniature) | No literal MIPS reference identified; pointer-relative owner unresolved | Runtime correlation only |
+| `0x8015C6F3` | `u8` | Mini ability acquired/owned | Existing toolkit/research mapping; not part of the verified active-mode speed branch | Separate ownership evidence |
+
+### E. Toolkit integration recommendations
+
+- A read-only task view can show current `f32 +0xE4` limit, `f32 +0x74`
+  current/profile speed, and the `u16 +0x86` mode/countdown together. Resolve the
+  live task pointer per session/overlay; the user-supplied `0x80169FA0` has not
+  been independently validated across scene transitions.
+- Show `0` and `0xFFFF` as the two verified endpoints and other values as
+  intermediate. Do not label `0x801C159A` as model scale until its owner is
+  established.
+- Keep ability ownership `0x8015C6F3` separate from the active miniature mode.
+- Do not add a production write/freeze for `+0x86` or `+0xE4`; this investigation
+  verified read paths and engine-selected values, not a safe write workflow.
+
+### Remaining gaps
+
+- The direct MIPS cap is 40% of normal (`1.12/2.8`); the earlier displacement
+  maxima ratio (~0.327) is approximate and its remaining difference is
+  unresolved.
+- The `+0x74` profile table varies by internal profile, but profile-to-character
+  mapping is not established.
+- The user's transient hurt/stopping values (`1.0`, `2.0`, `0.8`) are confirmed
+  runtime observations; the exact state writers were not fully traced.
+- Visible model scale, collision dimensions, `0x801C159A`, and the miniature
+  appearance carried to another character remain unresolved.
+- No assistant-run live game or emulator validation was performed; runtime
+  values above were supplied by the user.
