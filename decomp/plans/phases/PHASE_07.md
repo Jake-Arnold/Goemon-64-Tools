@@ -52,7 +52,7 @@ requests file ID 15 at its pinned overlay VMA only when `D_800548D8` is zero;
 the file maps to `file_15`, not generic room content. The flag's meaning and
 the routines' complete teardown/activation effects remain unproven. No C was
 promoted and no fresh G2 was run. `800030F0` and `8001F8B0` remain ASM-owned;
-G64-063 completed as `RESEARCH_ONLY`; G64-064 is next.
+G64-064 completed as `RESEARCH_ONLY`; G64-065 is next.
 
 ### G64-062 — Trace file/resource loading boundary
 
@@ -87,7 +87,7 @@ G64-063 completed as `RESEARCH_ONLY`; G64-064 is next.
 `static_overlay_1` window at `0x801CB460`; the loader fills `0x14CA0` BSS bytes
 and returns `0x801E9980`. Allocation/free are caller-owned. No activation,
 prior-overlay release or room teardown edge was established. See the execution
-record and loader call-edge table in `MAP_TRANSITION_TRACE.md`. G64-064 is next.
+record and loader call-edge table in `MAP_TRANSITION_TRACE.md`. G64-065 is next.
 
 ### G64-063 — Analyze middle transition dispatcher
 
@@ -125,11 +125,11 @@ IDO variants linked at the original VMA but both first differed at `+0x10`,
 so codegen stopped and `rotation_angles.c` retains `GLOBAL_ASM`. No fresh G2 was
 run; manifest, proof, and inventory are unchanged. See
 `../execution/2026-11-14-g64-063-middle-transition-dispatch.json`.
-G64-064 is next.
+G64-065 is next.
 
 ### G64-064 — Analyze transition loop 8000394C
 
-**Status:** PLANNED. **Dependencies:** G64-061, G64-062, G64-063.
+**Status:** RESEARCH_ONLY (2026-11-14). **Dependencies:** G64-061, G64-062, G64-063.
 **Focus files:** `decomp/transition_state.c`; `decomp/test_transition_state.c`.
 
 **Architectural intent:** Map func_8000394C_454C original stack, step dispatch and state byte updates inside transition_state.c.
@@ -147,6 +147,17 @@ G64-064 is next.
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
 **Explicit acceptance:** All branches accounted for and sentinel state tests pass; no claim that this alone implements safe scene transition.
+
+**Outcome (2026-11-14):** `RESEARCH_ONLY`; the pinned 116-byte routine has one
+conditional gate, and its five callers ignore the return. Its zero-result path
+writes byte `5` at `0x800C7CDD`, stores halfword `1` at `0x800C7A76` in the
+`80003880` call delay slot, then reloads the current system pointer and
+increments `SYS_W+0x3ADD6`. The ASan/UBSan host reference covers both branch
+outcomes, store/call order, pointer reload, sentinels and byte wrap. The
+function itself has no internal loop; scene teardown/activation remains
+unproved. Production retains `GLOBAL_ASM`; no native candidate or fresh G2
+was run. See `../execution/2026-11-14-g64-064-transition-loop-gate.json`.
+G64-065 is next.
 
 **Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
 

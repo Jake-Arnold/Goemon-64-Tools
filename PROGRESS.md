@@ -1,12 +1,20 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-064 transition loop gate (RESEARCH_ONLY)
+
+- **Changed:** recorded the 116-byte original-MIPS branch contract and the `80036908` gate behavior in `decomp/MAP_TRANSITION_TRACE.md`; extended `decomp/test_transition_state.c` with a MIPS-derived host reference for both target paths. Marked G64-064 `RESEARCH_ONLY`; production code and stored proof remain unchanged.
+- **Why:** clarify when the transition helper writes its two raw globals, how the post-call `SYS_W+0x3ADD6` increment uses a reloaded pointer, and what the gate's zero/nonzero results mean without inferring safe scene loading.
+- **Evidence:** pinned target bytes at VMA `0x8000394C`, ROM `[0x454C,0x45C0)`, match both USA retail and the 32 MiB reference (SHA-256 `1cc9c4dd44c8e502915ab8c38af2bf9b79e7c79401a30749d73d8d447f638109`). Five callers ignore its result. The gate advances a byte by 16 and returns nonzero until the byte is `0xFF`; null or already-`0xFF` returns zero. The target itself has one branch and no loop back edge.
+- **Tests:** the ASan/UBSan host reference passed both gate branches, store-before-helper order, synthetic pointer rebinding, neighboring-field sentinels and 8-bit wrap. Negative controls for moving stores after the helper and caching the system pointer were rejected. Repository local CI, task-evidence validation and diff checks are recorded in the execution JSON. No native compiler variant, fresh full-ROM G2 or in-game verification was run.
+- **Limitations/next:** `80034734` callback effects and the reset helper's broader transition effects remain outside this task; no status-field names or safe scene semantics are claimed. Continue with G64-065.
+
 ### 2026-11-14 — G64-063 middle transition dispatcher (RESEARCH_ONLY)
 
 - **Changed:** documented the original-MIPS branch order, caller-inferred signature, VM cursor predicate, and successful store/call order in `decomp/MAP_TRANSITION_TRACE.md`; added a portable host reference and execution record. Marked G64-063 `RESEARCH_ONLY`; production source, manifest, combined proof and inventory remain unchanged.
 - **Why:** establish the dispatcher's exact guards and relationship to `0x80077858` before deciding whether any C candidate is justified. The original helper only returns whether the VM program cursor is nonzero; neither helper nor dispatcher advances it.
 - **Evidence:** target `func_8001F940_20540` is 252 bytes at VMA `0x8001F940`, ROM `[0x20540,0x2063C)`, and matches pinned retail/reference bytes. The inferred signature is `void func_8001F940(void)` from its caller, not an original declaration. Two isolated IDO variants linked at the original VMA but both first differed at `+0x10`; V1 was 236 bytes and V2 was 264 bytes. The v2 stop rule ended compiler trials, leaving `GLOBAL_ASM` intact.
 - **Tests:** the ASan/UBSan host reference passed; removing the second `0x800C7AE9` read caused its negative-control mutant to abort as expected. Repository local CI, task-evidence validation and diff checks are recorded in the execution JSON. No fresh full-ROM G2 or live-game verification was run.
-- **Limitations/next:** effects in delegated `8001FA80` and downstream `80038C30` remain untraced; host mutation only tests read ordering, not observed retail behavior. Continue with G64-064, the transition loop at `8000394C`.
+- **Limitations/next:** effects in delegated `8001FA80` and downstream `80038C30` remain untraced; host mutation only tests read ordering, not observed retail behavior. G64-064 is complete; continue with G64-065.
 
 ### 2026-11-14 — G64-062 file/resource loader boundary (RESEARCH_ONLY)
 

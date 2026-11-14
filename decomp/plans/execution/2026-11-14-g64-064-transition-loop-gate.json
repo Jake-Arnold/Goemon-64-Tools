@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-14",
+  "task_id": "G64-064",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "b326c3f85ef2ab1770f5d63941bb5ebc834e5c79",
+    "remote_head_before_task": "b326c3f85ef2ab1770f5d63941bb5ebc834e5c79",
+    "initial_worktree": "clean",
+    "independent_review": "Sol Medium independently reviewed the target's raw MIPS branch order, pointer reload, call sites, and host matrix; review found no conflict with Architect v2.",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "source_snapshot": {
+    "target": "func_8000394C_454C",
+    "target_vma": "0x8000394C",
+    "target_rom_extent": "[0x454C,0x45C0)",
+    "target_size": 116,
+    "target_raw_slice_sha256": "1cc9c4dd44c8e502915ab8c38af2bf9b79e7c79401a30749d73d8d447f638109",
+    "assembly_source": "mnsg-pinned/asm/usa/2C40.s",
+    "test_reference_sha256": "d380843cd3f229f505f8cd398a7503390cf135adde7991ee8c041dd739212d74",
+    "transition_state_source_sha256_unchanged": "87cfc2d37719940f71e20dd747ac3d098477590d442dcd6f8df6d58cc2611006",
+    "manifest_sha256_unchanged": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "combined_proof_sha256_unchanged": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "inventory_sha256_unchanged": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051"
+  },
+  "original_mips_evidence": {
+    "raw_validation": "Parsed all 29 target words by ROM/VMA comments; exact bytes match both SHA-verified private retail USA and decompressed reference slices.",
+    "stack_and_signature": "Subtracts 0x18 from sp and saves ra at sp+0x14. No incoming argument is read. Five callers invoke with jal/nop and discard v0; void func_8000394C(void) is inferred from these call sites, not recovered original source typing.",
+    "callers": ["0x800026A8", "0x80002850", "0x80002A3C", "0x80002D58", "0x80003060"],
+    "branch_matrix": [
+      "Call 80034734 unconditionally.",
+      "Call 80036908 with the word D_8006D328 loaded into a0 in the jal delay slot.",
+      "A nonzero v0 branches to the epilogue; the branch delay slot materializes byte value 5, but no target stores use it on this path.",
+      "A zero v0 stores byte 5 at 0x800C7CDD, calls 80003880 with halfword 1 stored at 0x800C7A76 in the jal delay slot, then reloads D_8015C5C8 and increments byte SYS_W+0x3ADD6.",
+      "The target has no internal loop/back edge and does not directly write SYS_W stepw at +0x3ADD4 or stepw_end at +0x3ADD5."
+    ],
+    "gate_contract": {
+      "wrapper": "80036908 is 32 bytes at ROM [0x37508,0x37528), SHA-256 d4226b9def13a7c5a0685558384696478a1aa2e86e11f22dd401a722c6c9aa73; it calls 80036928 with a1=0x10.",
+      "body": "80036928 is 140 bytes at ROM [0x37528,0x375B4), SHA-256 f0c062df83ce9007ca3e6d180663f774f2db2193fe6f8a85f8e30bb496e6905d. It reads a pointer at SYS_W+0x3B014. Null returns zero. Otherwise it reads pointee byte +0x10: 0xFF calls osViBlack(1) and returns zero; values below 0xEF advance by 16 and return one; values 0xEF..0xFE saturate to 0xFF, call osViBlack(1), and return one.",
+      "argument_note": "The target passes D_8006D328 in a0. The helper stores incoming a0 in its argument area but does not reload it in the 140-byte body; no effect from that argument was established."
+    },
+    "other_helper_slices": [
+      {"symbol": "func_80003880_4480", "rom_extent": "[0x4480,0x44E4)", "size": 100, "sha256": "3d22ba1f09cee4cd961ee5bbead51f75cdf9e49f8aac85f4acb8330c3b259144"},
+      {"symbol": "func_80034734_35334", "rom_extent": "[0x35334,0x3548C)", "size": 344, "sha256": "26d9ebaf78121c7b1eabff08fc2d6d94330afb6e76e688c01498a856c0ba0777"}
+    ],
+    "unproven": [
+      "Meaning of raw fields at 0x800C7CDD and 0x800C7A76.",
+      "Whether callbacks reached by 80034734 or the broader 80003880 helper chain activate, unload, or tear down a scene.",
+      "Whether the current system-state pointer changes during 80003880 in retail; the test rebind is a synthetic reload-order probe only."
+    ]
+  },
+  "host_reference": {
+    "file": "decomp/test_transition_state.c",
+    "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/transition_state.c decomp/test_transition_state.c -o /tmp/g64-064-transition-state-host && /tmp/g64-064-transition-state-host",
+    "result": "PASS",
+    "coverage": "Both helper-return branches; first-helper/gate/helper call order; both raw stores visible before transition-helper entry; post-helper global pointer reload; sentinels for stepw, stepw_end and adjacent state bytes; SYS_W+0x3ADD6 byte increments at 0x00 and 0xFF boundaries.",
+    "negative_controls": [
+      {"mutation": "Move both raw stores to after the transition-helper call.", "result": "Rejected by the helper-entry assertions (temporary mutant exited -6)."},
+      {"mutation": "Cache the system pointer before the transition-helper call and increment the cached object after it.", "result": "Rejected when the synthetic helper rebinds the global pointer (temporary mutant exited -6)."}
+    ],
+    "scope": "MIPS-derived mock/reference only. GCC ignores the GLOBAL_ASM pragma in the production unit; this test is not native IDO equality, full-ROM proof, or in-game verification."
+  },
+  "compiler_trials": "NOT_RUN; pure trace task and no new C hypothesis was justified by the verified branch matrix.",
+  "tests": {
+    "target_raw_slice": "PASS against retail and decompressed reference.",
+    "host_reference": "PASS; command above.",
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "result": "207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and the display-emitter ASan/UBSan fixture (1,000 synthetic cases) passed. Expected negative-path diagnostics appeared in test logs; final runner result was PASS."
+    },
+    "task_evidence_validation": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "status": "PASS",
+      "result": "CONSISTENT_STORED_REPORTS; 100 tasks validated. --status selects G64-065 as first planned."
+    },
+    "diff_check": {"command": "git diff --check", "status": "PASS"},
+    "execution_json_parse": {"command": "python3 -m json.tool decomp/plans/execution/2026-11-14-g64-064-transition-loop-gate.json", "status": "PASS"},
+    "fresh_full_rom_g2": "NOT_RUN; no production source, manifest claim, build input, or stored proof changed.",
+    "live_game_verification": "NOT_RUN"
+  },
+  "stored_proof_unchanged": true,
+  "decision": "All target branches and direct writes are accounted for and host sentinel cases pass. Keep func_8000394C as GLOBAL_ASM, classify G64-064 RESEARCH_ONLY, and make no claim of safe scene activation or teardown.",
+  "next": "G64-065 Revisit engine state 80039F84."
+}

@@ -95,7 +95,12 @@ program cursor only through the nonzero predicate at `8003F1D8`, does not
 advance it, and retains `GLOBAL_ASM` after two native candidates first
 diverged at `+0x10`. No fresh G2 was run; the stored proof is unchanged. See
 `plans/execution/2026-11-14-g64-063-middle-transition-dispatch.json`.
-G64-064 is next.
+G64-064 completed as `RESEARCH_ONLY`: the 116-byte transition helper branches
+on `80036908`, updates two raw fields only on its zero path, then increments
+`SYS_W+0x3ADD6` through a reloaded pointer. Its callers ignore the return; the
+helper calls do not establish scene teardown or activation. See
+`plans/execution/2026-11-14-g64-064-transition-loop-gate.json`.
+G64-065 is next.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list

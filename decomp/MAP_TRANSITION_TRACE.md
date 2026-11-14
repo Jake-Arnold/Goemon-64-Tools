@@ -365,3 +365,58 @@ register `a0` in V1 and `t6` in V2. V1 emitted a 236-byte symbol; V2 emitted
 candidate was integrated. No fresh full-ROM G2 was run; the manifest and
 stored proof remain unchanged. See
 [`plans/execution/2026-11-14-g64-063-middle-transition-dispatch.json`](plans/execution/2026-11-14-g64-063-middle-transition-dispatch.json).
+
+## G64-064 — Transition loop gate at `8000394C`
+
+Pinned `func_8000394C_454C` is 29 words (116 bytes) at VMA
+`0x8000394C`, ROM `[0x454C,0x45C0)`. Its disassembly is in
+`mnsg-pinned/asm/usa/2C40.s`; raw bytes equal both pinned USA retail and
+decompressed-reference slices. The slice SHA-256 is
+`1cc9c4dd44c8e502915ab8c38af2bf9b79e7c79401a30749d73d8d447f638109`. The
+function allocates `0x18` stack bytes and saves `$ra` at `sp+0x14`. It reads no
+incoming argument. Five call sites in the same original assembly unit use
+`jal` with a `nop` delay slot and discard the return, so `void
+func_8000394C(void)` is an inferred caller-facing signature rather than a
+recovered original declaration. Despite the task name, this function has no
+internal loop or back edge; it is invoked from five transition call sites.
+
+### Verified call and branch order
+
+| Order | Original action | Result |
+| --- | --- | --- |
+| 1 | Call `80034734` | Unconditional. This routine walks callback-bearing entries; its broader callback effects are outside this target. |
+| 2 | Call `80036908` with word `D_8006D328` loaded into `$a0` in the `jal` delay slot | The call's `$v0` controls the sole branch. |
+| 3a | If `$v0 != 0`, branch to the epilogue | No direct writes to `0x800C7CDD`, `0x800C7A76`, or `SYS_W+0x3ADD6` occur in this path. |
+| 3b | If `$v0 == 0`, store byte `5` at `0x800C7CDD` | The branch delay slot sets the value to 5. |
+| 4 | Call `80003880` | Its `jal` delay slot first stores halfword `1` at `0x800C7A76`. The wrapper calls the existing reset/initialization chain; this edge alone does not prove scene teardown or activation. |
+| 5 | Reload `D_8015C5C8`, read byte at offset `0x3ADD6`, add one, and store it back | This is an 8-bit increment of `SYS_W.unk_3add6` after the helper call; it wraps modulo 256. `stepw` at `+0x3ADD4` and `stepw_end` at `+0x3ADD5` are not directly written here. |
+
+The two raw transition stores are based on `D_800BCCC0 + 0x7FFF`; effective
+addresses were calculated from the original `lui`/`addiu` sequences. No field
+names are assigned to `0x800C7CDD` or `0x800C7A76` without separate evidence.
+
+The called gate is a 32-byte wrapper at `80036908` that calls the 140-byte
+`80036928` with `$a1=0x10`. `80036928` reads the pointer at
+`SYS_W+0x3B014`. A null pointer returns zero. Otherwise it reads the byte at
+pointer `+0x10`: byte `0xFF` calls `osViBlack(1)` and returns zero; other values
+advance by 16, saturating to `0xFF` (and calling `osViBlack(1)` when
+saturating), then return one. Thus the target's zero branch is reachable when
+that pointer is null or its byte is already `0xFF`; it returns early while the
+byte is still advancing. The target passes `D_8006D328`, but the helper only
+stores `$a0` in its stack argument area and does not reload it in this body;
+no effect from that argument is established here.
+
+The target's only condition is the helper's nonzero test. On the zero path,
+the host reference checks that both raw stores precede `80003880`, then checks
+the post-call pointer reload by rebinding the synthetic `D_8015C5C8` pointer
+inside the helper stub. That rebinding is an artificial alias/order probe, not
+a claim that retail `80003880` changes this pointer. Sentinels cover `stepw`,
+`stepw_end`, neighboring state bytes and the counter's `0xFF -> 0` wrap.
+
+The helper calls may have their own callback or system side effects. The
+`8000394C` body itself has no direct file-load, free, overlay activation or
+room-warp call, and this call chain is not evidence that a safe scene
+transition completed. Production `transition_state.c` keeps the target as
+`GLOBAL_ASM`; no compiler variant or fresh full-ROM G2 was run because this
+was a pure trace/host-reference task and no new C hypothesis was justified.
+See [`plans/execution/2026-11-14-g64-064-transition-loop-gate.json`](plans/execution/2026-11-14-g64-064-transition-loop-gate.json).
