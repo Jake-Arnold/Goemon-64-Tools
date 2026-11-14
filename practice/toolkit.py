@@ -1,4 +1,4 @@
-"""Goemon Practice Toolkit v0.11.17 — host UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.17 — USA practice and Japan-0 raw RAM attach.
 
 Observes original-game RDRAM state and manages gameplay diagnostics and
 experimental logical checkpoints (including saved position and orientation). Memory writes
@@ -1186,10 +1186,10 @@ def apply_access_mode(args):
 def parse_args(argv=None):
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid",type=int)
-    ap.add_argument("--base",help="RDRAM host base 0x...; bypasses experimental auto-discovery")
+    ap.add_argument("--base",help="RDRAM host base 0x...; Japan always validates three ROM code probes")
     ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
     ap.add_argument("--game-version", choices=tuple(VERSIONS), default="usa",
-                    help="USA live toolkit (default) or Japanese ROM verification only")
+                    help="USA live toolkit (default) or Japanese Mupen read-only raw RAM")
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
     ap.add_argument("--linux-enable-writes",action="store_true",
                     help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled
