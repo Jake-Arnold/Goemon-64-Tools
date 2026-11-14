@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-066 fixed-pan engine-state sweep (RESEARCH_ONLY)
+
+- **Changed:** traced `func_8003A060_3AC60`; extended the engine-state host reference; recorded one native original-unit codegen attempt and its first mismatch. Marked G64-066 `RESEARCH_ONLY`; production remains `GLOBAL_ASM`.
+- **Why:** establish the D0 gate, fixed pan, entry/target strides, write order, and how this function relates to the per-entry pan path before deciding whether a C promotion is justified.
+- **Evidence:** all 54 target words at VMA `0x8003A060`, ROM `[0x3AC60,0x3AD38)`, match both pinned ROM images; slice SHA-256 `90c5b12bcf073596e9ca25b9c5e9d25e2f1750228fa6972669ba0e928cf8f6ef`. Table index 6 at ROM `0x6F1E4` points to the target. Sol Medium independently reviewed the call path and field contract.
+- **Tests:** the ASan/UBSan host matrix passed zero/nonzero latches, active/empty records, fixed pan, high-bit object words, flag/order/context checks and adjacent sentinels; a per-entry-pan mutant was rejected. One native IDO 5.3 full-unit candidate linked at the original VMA but emitted 212 bytes instead of 216 and first diverged at `+0x0C` in the prologue. `python3 -m decomp.local_ci` exited 0: 207 decomp tests, 116 verifier/ledger tests, evidence validation and the 1,000-case ASan/UBSan fixture; `skill_context --validate` and `git diff --check` passed.
+- **Limitations/next:** D0's runtime trigger and audible effect remain unknown; no full-ROM G2 or live-game verification was run. Continue with G64-067.
+
 ### 2026-11-14 — G64-065 engine-state pan sweep (RESEARCH_ONLY)
 
 - **Changed:** traced `func_80039F84_3AB84` and its indirect table dispatch; added a MIPS-derived host reference and boundary tests in `decomp/test_engine_state.c`; recorded the trace and execution evidence. Marked G64-065 `RESEARCH_ONLY`; the production target remains `GLOBAL_ASM`.

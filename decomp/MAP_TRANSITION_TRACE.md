@@ -502,3 +502,57 @@ so native IDO trials were not run. Production `engine_state.c` retains
 `GLOBAL_ASM`; the matching manifest, stored proof and inventory are unchanged.
 No fresh full-ROM G2 or live-game verification was run. See
 [`plans/execution/2026-11-14-g64-065-engine-pan-sweep.json`](plans/execution/2026-11-14-g64-065-engine-pan-sweep.json).
+
+## G64-066 — Fixed-pan engine-state sweep at `8003A060`
+
+`func_8003A060_3AC60` is 54 words / 216 bytes at VMA `0x8003A060`, ROM
+`[0x3AC60,0x3AD38)`. The pinned `392E0.s` words match both SHA-verified USA
+ROM images; instruction-slice SHA-256 is
+`90c5b12bcf073596e9ca25b9c5e9d25e2f1750228fa6972669ba0e928cf8f6ef`. The
+verified indirect dispatcher entry is table index 6 at ROM `0x6F1E4`, whose
+word is `0x8003A060`; no direct `jal` caller was found. The dispatcher reloads
+its queue count after `jalr`, so the inferred `void func_8003A060(void)` return
+is unused, not an original declaration.
+
+The function reserves `0x38` stack bytes and saves `$ra` plus `$s0`–`$s6`. It
+loads `D_801C09D0` with `lbu`. A nonzero byte returns without a target-owned
+write, pointer-slot update, flag change, or audio call. If D0 is zero, the
+function stores byte 1 to D0 before looping. It scans exactly 16 entries from
+`0x801C0C28`, advancing by `0xB0`; each iteration first stores its current
+entry pointer in `D_801C1728`, then loads the full 32-bit word at entry `+0`.
+Zero skips entry processing. Nonzero sets bit 0 of the byte at `+6` while
+preserving its other bits, then calls
+`alSynSetPan(D_8007A230, 0x801C0A68 + index * 0x1C, 0x40)`. The global audio
+context word is reloaded for each active entry. Unlike `80039F84`, this helper
+does not read entry `+0x58`; it passes fixed pan `0x40` (`ALPan` is `u8`). The
+pointer slot ends at entry 15. D0 is not read or written again by this
+function, so any synthetic callback mutation survives.
+
+### Relationship and limits
+
+The static code forms a complementary pair: `80039F84` runs when D0 is
+nonzero, clears it, and uses each entry's pan field; `8003A060` runs when D0 is
+zero, sets it to 1, and uses pan `0x40`. `8003BCFC` also chooses fixed pan
+`0x40` when D0 is nonzero, otherwise using the current entry pointer's
+`+0x58` value. `8003889C` initializes D0 to zero. These are verified static
+reads/writes, but no observed caller trace proves the runtime order, toggle
+cycle, semantic name of D0, or audible effect.
+
+The host reference in `test_engine_state.c` covers nonzero D0 values 1 and
+`0xFF` as no-op paths, zero D0 with all entries inactive, mixed active entries
+including a high-bit-only word, flag preservation, fixed pan despite distinct
+entry pan fields, call order, pointer-slot order, CE/CF/D1 sentinels, and a
+synthetic callback that changes both D0 and the context global between calls.
+A mutant that used each entry's pan field instead of constant `0x40` failed.
+This is a host behavior model, not original-MIPS execution.
+
+One native IDO 5.3 source-unit hypothesis used typed `0xB0` entry records, a
+persistent entry pointer, an index for the `0x1C` pan-target stride, and the
+confirmed `alSynSetPan` prototype. The full `engine_state.c` unit compiled with
+its C siblings and retained ASM placeholders, then linked at the original unit
+base so this symbol landed at VMA `0x8003A060`. Candidate size was 212 bytes
+versus 216 original. First mismatch was `+0x0C` (`0x8003A06C`): original saves
+`$ra` (`0xAFBF0034`), while the candidate loads D0 (`0x904E0000`) before its
+save sequence. Stop after this bounded mismatch; production remains
+`GLOBAL_ASM` and no fresh full-ROM G2 was run. See
+[`plans/execution/2026-11-14-g64-066-fixed-pan-sweep.json`](plans/execution/2026-11-14-g64-066-fixed-pan-sweep.json).

@@ -2809,7 +2809,7 @@
       "ordinal": 66,
       "phase": 7,
       "title": "Revisit engine state 8003A060",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-065"
       ],

@@ -213,7 +213,7 @@ in-game check. See
 
 ### G64-066 — Revisit engine state 8003A060
 
-**Status:** PLANNED. **Dependencies:** G64-065.
+**Status:** RESEARCH_ONLY (2026-11-14). **Dependencies:** G64-065.
 **Focus files:** `decomp/engine_state.c`; `decomp/test_engine_state.c`.
 
 **Architectural intent:** Study next retained-ASM engine_state.c function; identify frame, globals, conditional writes and call effects.
@@ -231,6 +231,23 @@ in-game check. See
 **Focused tests:** Run the focused test files named in this task and the phase inventory; compile native candidate with pinned IDO and compare at original VMA. `python3 -m unittest discover -s decomp -p 'test_*.py' -q` and `python3 -m unittest tests.test_decomp_verify -q` for relevant Python changes.
 
 **Explicit acceptance:** Static CFG is complete and exact G1 codegen achieved or bounded mismatch logged.
+
+Original MIPS confirms this as the complementary fixed-pan sweep: nonzero D0
+returns untouched; zero D0 is set to 1, then 16 records at stride `0xB0` are
+checked and active entries receive flag bit 0 plus `alSynSetPan(..., 0x40)`
+with target stride `0x1C`. The active-entry context is reloaded each call and
+CE/CF are untouched. Sol Medium independently confirmed dispatch index 6 and
+the shared state contract.
+
+The ASan/UBSan host matrix passes both latch states, empty and mixed records,
+high-bit-only words, flag and adjacent-byte sentinels, fixed-pan behavior,
+pointer/call order, and synthetic D0/context mutation. A per-entry-pan mutant
+fails as expected. One full native source-unit hypothesis linked the target at
+its original VMA but emitted 212 bytes versus 216; first mismatch is `+0x0C`
+where the candidate loads D0 before the original RA save. Under the v2 stop
+rule retain `GLOBAL_ASM`; no G2 or live-game test was run. See
+`../execution/2026-11-14-g64-066-fixed-pan-sweep.json` and
+`../../MAP_TRANSITION_TRACE.md`. G64-067 is next.
 
 **Required negative control:** A matching state setter is not proof of a safe room warp, unload, map reset or successful live game transition; never add companion game-memory writes.
 

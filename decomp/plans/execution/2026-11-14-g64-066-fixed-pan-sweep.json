@@ -1,0 +1,107 @@
+{
+  "format": "goemon-task-execution-v1",
+  "date": "2026-11-14",
+  "task_id": "G64-066",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "b2130f044660dfda3d7bb122dc03f461b65f3614",
+    "remote_head_before_task": "b2130f044660dfda3d7bb122dc03f461b65f3614",
+    "initial_worktree": "clean",
+    "independent_review": "Sol Medium independently reviewed the 8003A060 raw branch order, table index 6, shared strides, callback arguments, and unknown runtime trigger.",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "source_snapshot": {
+    "target": "func_8003A060_3AC60",
+    "target_vma": "0x8003A060",
+    "target_rom_extent": "[0x3AC60,0x3AD38)",
+    "target_size": 216,
+    "target_raw_slice_sha256": "90c5b12bcf073596e9ca25b9c5e9d25e2f1750228fa6972669ba0e928cf8f6ef",
+    "assembly_source": "mnsg-pinned/asm/usa/392E0.s",
+    "command_table_rom_address": "0x6F1CC",
+    "command_index_6_rom_address": "0x6F1E4",
+    "command_index_6_value": "0x8003A060",
+    "production_ownership": "GLOBAL_ASM",
+    "engine_state_source_sha256_unchanged": "e9fbe551b8f8b70201358f8a51fb688e5d6ac516121fdee5d30716c722a7b830",
+    "host_reference_sha256": "f3c2fecc203b18f711e0beb440ea52e418c35e505195b86c939566225527a457",
+    "manifest_sha256_unchanged": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "combined_proof_sha256_unchanged": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "inventory_sha256_unchanged": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051"
+  },
+  "original_mips_evidence": {
+    "raw_validation": "Parsed all 54 target words from the pinned assembly's ROM/VMA comments. The exact 0xD8-byte slice matches both SHA-verified ROM images.",
+    "frame_and_entry": "Subtracts 0x38 from sp and saves ra plus s0-s6. It reads no incoming argument. One verified indirect entry is command-table index 6; the inferred caller-facing signature is void(void) because the dispatcher reloads its queue count into v0 after jalr.",
+    "branch_matrix": [
+      "lbu reads D_801C09D0. Any nonzero value branches to the epilogue without a target-owned memory store, pointer-slot update, flag change, or alSynSetPan call.",
+      "When D0 is zero, the function stores byte 1 to D0 once before a fixed 16-entry loop.",
+      "Each loop iteration first stores the entry pointer to D_801C1728, then lw reads the full word at entry+0. A zero word takes beql and increments the index in its delay slot; a nonzero word enters the active path.",
+      "The active path ORs bit 0 into the byte at entry+6 and preserves other bits. It loads the word at D_8007A230, calculates target 0x801C0A68 + index*0x1C, and calls alSynSetPan with constant 0x40.",
+      "Entry base is 0x801C0C28 with stride 0xB0. The loop advances the entry pointer in the bne delay slot and visits exactly 16 entries; D_801C1728 remains entry 15.",
+      "D0 is not read or written again inside this function; a value written by a callback during the sweep survives."
+    ],
+    "dispatcher": "func_80038938_39538 calls func_80038F68_39B68 when D_801C09C9 is zero. Raw D_8006E5CC entry 6 is 0x8003A060. The low-halfword comparisons use signed slti; the high-bit halfword caveat documented for G64-065 also applies. No ordinary-runtime command producer was verified.",
+    "related_state": [
+      "func_8003889C_3949C clears D_801C09CE, D_801C09CF, and D_801C09D0, then registers func_80038938_39538 through alSynAddPlayer.",
+      "func_80039F84_3AB84 is the complementary static branch: nonzero D0 is cleared and active entries use (lhu(entry+0x58)>>8)&0x7F.",
+      "func_8003BCFC_3C8FC uses pan 0x40 when D0 is nonzero and the current entry's +0x58 halfword when D0 is zero.",
+      "The target does not read/write D_801C09CE or D_801C09CF."
+    ],
+    "unknown": [
+      "The runtime event that reaches command-table index 6, the sequencing between the two pan sweeps, and D0's semantic name are unknown.",
+      "No live-game observation establishes audible effect or callback timing.",
+      "Exact original C declarations for the entry and target records are not recovered; widths and strides are instruction-derived."
+    ]
+  },
+  "host_reference": {
+    "file": "decomp/test_engine_state.c",
+    "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/engine_state.c decomp/candidates/engine_reset_3ade8.c decomp/test_engine_state.c -o /tmp/g64-066-engine-state-host && /tmp/g64-066-engine-state-host",
+    "result": "PASS, exit 0",
+    "coverage": "D0 values 1 and 0xFF are no-op paths; zero D0 sets to 1; empty and mixed entries; active indices 0, 5 and 15; high-bit-only object word; fixed 0x40 pan despite distinct entry pan values; flag preservation; call and pointer order; CE/CF/D1 sentinels; synthetic callback mutation of D0 and audio context; existing 3A1E8 reset fixture.",
+    "negative_controls": [
+      {"mutation": "Use entry+0x58 pan instead of constant 0x40.", "result": "Rejected by fixed-pan assertions (temporary mutant exited -6)."}
+    ],
+    "scope": "MIPS-derived host reference only. GCC ignores GLOBAL_ASM; the existing engine_reset_3ade8 candidate is linked only for its pre-existing semantic fixture. This is not original-MIPS execution, native IDO equality, full-ROM proof, or in-game verification."
+  },
+  "native_codegen_trial": {
+    "hypothesis": "A typed 0xB0-byte entry record, persistent record pointer, explicit 16-iteration index, and indexed 0x1C-byte target array reproduce the original unit scheduling and fixed AL_PAN_CENTER call.",
+    "variant_count": 1,
+    "candidate_source_sha256": "2dfa5f914c240f3d2fb5d5d2f848f97e07e4816cc4776c7e92aff6356d43b6b1",
+    "candidate_manifest_sha256": "ac849bee680d20adc23bf56f93b714a6caa7cc44d305a1065c4c7fac260c7efa",
+    "toolchain": "Pinned mnsg IDO 5.3, Makefile -G 0 -non_shared -Xfullwarn -Xcpluscomm -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -O2 -mips2; pinned upstream commit 7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee.",
+    "commands": [
+      "make setup UV=/home/jake/.local/bin/uv",
+      "make -j2 UV=/home/jake/.local/bin/uv build/usa/src/engine_state.c.o",
+      "mips-linux-gnu-ld -T unit-original-vma.ld -o unit-original-vma.elf build/usa/src/engine_state.c.o"
+    ],
+    "source_unit_compile": "PASS; the full engine_state.c translation unit compiled with adjacent C functions and remaining GLOBAL_ASM placeholders. Object SHA-256 ef1d3c9403417eb5f95c87423a0e69b4dc63efedadd06caeed6184c57ed6898b.",
+    "original_vma_link": "PASS; linked the complete unit .text from 0x80039F3C so func_8003A060_3AC60 begins at 0x8003A060 using baseline ELF global addresses. Candidate symbol size 212 bytes; original size 216 bytes.",
+    "linked_elf_sha256": "e30d4beb087a2357af4f48ebdc6bef910a3d40319e1167cf50f9d7c64b857177",
+    "candidate_function_sha256": "0c5773466594f67ee99a0d65c9cbba26cf3588512b16b5df9693e67559a3580e",
+    "first_mismatch": {
+      "offset": "+0x0C",
+      "address": "0x8003A06C",
+      "original_word": "0xAFBF0034",
+      "candidate_word": "0x904E0000",
+      "classification": "Prologue/codegen scheduling: original saves ra, candidate loads D0 before its save sequence."
+    },
+    "stop_reason": "One task-specific source hypothesis produced an early first mismatch and a four-byte size deficit. No second source shape was justified under the one-hypothesis v2 override; retain GLOBAL_ASM."
+  },
+  "tests": {
+    "target_raw_slice": "PASS against both SHA-verified ROM images; dispatch index 6 checked at ROM 0x6F1E4.",
+    "host_reference": "PASS under AddressSanitizer and UndefinedBehaviorSanitizer; command above.",
+    "native_original_unit_codegen": "MISMATCH recorded at 0x8003A06C; see native_codegen_trial.",
+    "repository_local_ci": "PASS; python3 -m decomp.local_ci exited 0: 207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and the 1,000-case ASan/UBSan display-emitter fixture. Negative-path diagnostics appeared inside expected test fixtures.",
+    "task_evidence_validation": "PASS; python3 -m decomp.skill_context --validate reported CONSISTENT_STORED_REPORTS for all 100 tasks.",
+    "diff_check": "PASS; git diff --check exited 0.",
+    "execution_json_parse": "PASS; python3 -m json.tool parsed this record successfully.",
+    "fresh_full_rom_g2": "NOT_RUN because the candidate failed original-unit exactness; production source, manifest, build inputs, and stored proof are unchanged.",
+    "live_game_verification": "NOT_RUN"
+  },
+  "stored_proof_unchanged": true,
+  "decision": "Record G64-066 as RESEARCH_ONLY, retain func_8003A060 as GLOBAL_ASM, and make no claim about D0's runtime event or audible effect.",
+  "next": "G64-067 Revisit engine state 8003A138."
+}

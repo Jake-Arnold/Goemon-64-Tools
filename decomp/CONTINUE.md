@@ -106,7 +106,13 @@ to active records in a 16-entry sweep. Its CE/CF neighbors are untouched;
 the runtime trigger and meaning of D0 remain unknown. Host boundary tests pass,
 while production ASM and stored proof remain unchanged. See
 `plans/execution/2026-11-14-g64-065-engine-pan-sweep.json`.
-Continue at G64-066.
+G64-066 completed as `RESEARCH_ONLY`: command-table entry 6 reaches the
+216-byte `8003A060` fixed-pan sweep. D0 zero sets it to 1 and scans 16 records;
+nonzero D0 returns without writes or calls. One full-unit IDO hypothesis was
+212 bytes and first diverged at `+0x0C` in the prologue, so the original ASM
+remains. No G2 was run and the stored proof is unchanged. See
+`plans/execution/2026-11-14-g64-066-fixed-pan-sweep.json`.
+Continue at G64-067.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list
