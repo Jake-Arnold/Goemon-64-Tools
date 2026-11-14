@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Verified Japanese static-recomp build input
+
+- **Implemented:** `decomp/recomp_rom_input.py` expands exact USA/Japanese retail ROMs to 32 MiB recompilation inputs using the Nisitenma file table, original LZKN64 codec, 16-byte file alignment, CIC-6102 header checksums and final SHA-1 gates. No ROM data is committed.
+- **Evidence:** Supplied Japan revision 0 expanded to SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded` matching the upstream `mnsg/config/japan_0/splat.yaml`. USA expanded to `6ea0ed71032ce08fc2745f412d84936382197494`, matching the existing USA recomp baseline.
+- **Tests:** Five ROM-free synthetic tests passed locally; both original retail images passed actual integration expansion. All actual native recomp execution tests remain outstanding.
+- **Limits:** No Japanese N64Recomp function/symbol output, overlays, runtime port or complete Goemon64Recomp savestate support is yet implemented. GitHub connector cannot create a fork or checkout full upstream source.
+- **Next:** Obtain a writable fork/worktree of Goemon64Recomp; derive Japanese function symbols and overlays, port region-specific patches and loader, then run N64Recomp and native gameplay tests. See `docs/JAPAN_RECOMP_INPUT.md`.
+
 ### 2026-11-14 — Native emulator savestates in dashboard
 
 - **Change:** Exposed slot-based full savestates via Project64 and Mupen64Plus native save/load hotkeys; the former logical-checkpoint card is hidden but legacy data and code are retained.
