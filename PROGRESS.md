@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Measure distinct Mini Ebisumaru movement speed under halfword override
+
+- **Observed:** user measured toolkit-derived velocity magnitude maxima of about 98 for normal size with `s16 0x8020C8E6 = 0`, 32 for miniature with `-1`, and 98 for miniature forcibly set to `0`. The apparent extra speed is genuine observed displacement, not solely visual perspective.
+- **Interpretation:** strong evidence that this halfword gates or influences movement-speed selection independently of visible model size. Approximately 67% reduction in observed movement magnitude during normal mini mode; exact engine multiplier not verified.
+- **Changed:** appended read-only measurement summary, causal evidence, limits and original MIPS tracing targets to `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md`. No toolkit code or game-memory operation changed.
+- **Tests:** user-reported runtime measurements; no automated tests or assistant-executed gameplay.
+- **Limitations:** actual stored velocity field, MIPS access width and locomotion formula remain unidentified; polling-based maxima are approximate and not a controlled identical-route timing experiment.
+- **Next:** identify original MIPS reader(s) of the halfword and the native speed/movement calculation; compare small -1, small forced 0 and full-size 0.
+
 ### 2026-11-14 — Separate Mini Ebisumaru halfword from visible size and character-switch state
 
 - **Evidence:** user forced `s16 0x8020C8E6 = -1` while Ebisumaru remained normal; activating the power briefly shrank him, then restored normal size and `0`. Conversely, forcing `0` while miniature briefly grew him, then returned to miniature and `-1`. Forcing `0` while miniature before switching characters made other playable characters appear miniature.

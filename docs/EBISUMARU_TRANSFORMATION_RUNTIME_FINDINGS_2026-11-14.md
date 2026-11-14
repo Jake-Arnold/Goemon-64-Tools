@@ -111,3 +111,21 @@ The user independently reports three **controlled memory-edit experiments** perf
 Use **read-only watches** for `s16 0x8020C8E6`, `u8 0x801C159A`, active character ID, and any independently verified actor scale fields during normal/small idle, button press, animation completion and character switch. Capture whether the halfword or `0x801C159A` resets on character change and on map load. Avoid additional forced writes/freeze of transition fields, particularly in states inconsistent with visible size, without a reproducible recovery route.
 
 **Confidence:** user-reported causal interventions strongly support a halfword/visual-size distinction and cross-character effect. The original native code, exact state-machine structure, renderer scale storage and update ordering remain unknown.
+
+## Movement-speed A/B/C measurements after forced halfword edit (14 November 2026)
+
+The user measured movement using the toolkit's **observed velocity magnitude** (position displacement divided by elapsed sample time, **not a recovered original-engine velocity field**). Approximate maxima:
+
+| Visible size | Signed 16-bit word `0x8020C8E6` | Observed velocity magnitude maximum |
+| --- | --- | ---: |
+| Normal | `0` / `0x0000` | ~98 |
+| Miniature | `-1` / `0xFFFF` | ~32 |
+| Miniature, manually forced normal halfword | `0` / `0x0000` | ~98 |
+
+The miniature/−1 maximum is approximately 32/98 = **0.327** of the normal/0 maximum, roughly **67% slower**. Crucially, the visual model remains miniature under the forced 0 while the measured speed rises to approximately the ordinary full-size maximum. This falsifies the weaker alternative that the model only *looks* faster due to apparent scale in the camera; measured displacement speed changes.
+
+**Interpretation (strong behavioral evidence):** the halfword at `0x8020C8E6` controls or selects a movement-speed path associated with miniature mode, independently of the displayed model size. This does **not** identify a native velocity variable or prove the halfword directly stores a speed multiplier. A guard, distinct movement routine, input scaling, or other movement calculation could depend on it.
+
+**Limitations:** the maxima are user-reported approximations from toolkit polling, without a formal matched-route experiment, fixed frame timing, acceleration control or direct native velocity field. They should be treated as strong intervention evidence but not as a recovered exact speed ratio or MIPS instruction semantics.
+
+**Original-code targets:** trace both readers and writers of `s16 0x8020C8E6`, find branches splitting miniature vs ordinary locomotion, inspect movement calculation and any distinct actor/model scale data, and identify actual movement/velocity fields via MIPS stores. Compare ordinary and forced-mismatch execution paths. Preserve the already-established distinction from the Mini Ebisumaru ownership flag `0x8015C6F3`.
