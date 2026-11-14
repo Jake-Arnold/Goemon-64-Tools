@@ -1,7 +1,7 @@
 """Goemon Practice Toolkit v0.11.17 — host UI for US Goemon.
 
-Observes original-game RDRAM state and manages position bookmarks, route
-calibration, and experimental logical progression checkpoints. Memory writes
+Observes original-game RDRAM state and manages position bookmarks, gameplay diagnostics
+and experimental logical progression checkpoints. Memory writes
 are enabled by default; --read-only disables writes and game input. This is not a savestate
 and is not an in-game N64 ROM patch.
 """
@@ -21,9 +21,8 @@ import threading
 from tkinter import ttk, messagebox, filedialog
 import sys
 
-from autosplitter.bridge import find_pid
+from autosplitter.process_discovery import find_pid
 from autosplitter.memory import HostProcess, Rdram, discover_rdram
-from autosplitter.engine import load_route, save_route
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
 from practice.value_freezes_ui import ValueFreezesMixin
@@ -112,8 +111,6 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         self.last, self.last_t = None, None
         self.observed_velocity = None
         self.current = None
-        self.route_path = Path(args.route) if args.route else None
-        self.route = load_route(str(self.route_path)) if self.route_path and self.route_path.exists() else None
         self.bookmarks = json.loads(BOOKMARKS_FILE.read_text()) if BOOKMARKS_FILE.exists() else []
         self.checkpoints = load_checkpoint_file(CHECKPOINTS_FILE)
         self.status = tk.StringVar(value="Disconnected. Start US Goemon in Recomp or Project64, then Connect.")
@@ -235,19 +232,6 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
                                              command=self.cancel_pending_restore)
         self.cancel_restore_btn.pack(fill='x', pady=(3, 0))
         self.cancel_restore_btn.state(['disabled'])
-
-        calibration = ttk.LabelFrame(left, text=' LiveSplit route calibration ', padding=12)
-        calibration.pack(fill='x')
-        row = ttk.Frame(calibration, style='Card.TFrame')
-        row.pack(fill='x')
-        self.segment_index = tk.IntVar(value=1)
-        self.radius = tk.StringVar(value='45')
-        ttk.Label(row, text='Split #', style='Card.TLabel').pack(side='left')
-        ttk.Entry(row, textvariable=self.segment_index, width=5).pack(side='left', padx=(5, 12))
-        ttk.Label(row, text='Radius', style='Card.TLabel').pack(side='left')
-        ttk.Entry(row, textvariable=self.radius, width=7).pack(side='left', padx=(5, 12))
-        ttk.Button(calibration, text='Capture next route trigger here',
-                   command=self.capture_trigger).pack(fill='x', pady=(8, 0))
 
         scene_card = ttk.LabelFrame(right, text=' Scene browser ', padding=10)
         scene_card.grid(row=0, column=0, sticky='nsew', pady=(0, 6))
@@ -975,27 +959,6 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
             self.cancel_pending_restore(quiet=True)
             messagebox.showerror('Logical restore failed',str(exc))
 
-    def capture_trigger(self):
-        if not self.route or not self.route_path:
-            messagebox.showerror("No route","Launch with --route route.json after importing an .lss file")
-            return
-        if not self.current or self.current["x"] is None:
-            messagebox.showerror("Not connected","Read a valid position first")
-            return
-        try:
-            index=self.segment_index.get()-1
-            radius=float(self.radius.get())
-            if not (0<=index<len(self.route["segments"])) or not (0<radius<10000):
-                raise ValueError("Invalid segment number or radius")
-            s=self.current
-            self.route["segments"][index]["trigger"]={"type":"position_enter",
-                "x":round(s["x"],3),"y":round(s["y"],3),"z":round(s["z"],3),
-                "radius":radius,"character":s["character"]}
-            save_route(self.route,str(self.route_path))
-            self.status.set(f"Calibrated segment {index+1}: {self.route['segments'][index]['name']}")
-            self.segment_index.set(index+2)
-        except Exception as e:
-            messagebox.showerror("Calibration failed",str(e))
 
 
 PRACTICE_OPTIONS = ('enable_teleport', 'enable_state_restore', 'enable_debug_menu', 'enable_hex_edit')
@@ -1014,7 +977,6 @@ def parse_args(argv=None):
     ap.add_argument("--pid",type=int)
     ap.add_argument("--base",help="RDRAM host base 0x...; bypasses experimental auto-discovery")
     ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
-    ap.add_argument("--route",help="route.json from autosplitter import-splits")
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
     ap.add_argument("--linux-enable-writes",action="store_true",
                     help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled

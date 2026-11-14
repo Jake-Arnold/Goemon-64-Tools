@@ -62,16 +62,11 @@ class TestUnlocksUI(unittest.TestCase):
             self.app.set_unlock_hex(field,'1FF')
             self.assertEqual(self.app.mem.read_guest(field.address,1),bytes((cap,)))
 
-    def test_unsafe_live_raw_write_any_hex(self):
-        self.app.mem = FakeRAM()
-        self.app.hex_advanced.set(True)
+    def test_live_raw_write_allowed_by_default(self):
+        self.app.mem=FakeRAM()
         self.app.raw_address.set('8015C5E8')
         self.app.raw_width.set('4')
         self.app.raw_value.set('DEADBEEF')
-        self.app.write_raw_hex()
-        self.assertEqual(self.app.mem.read_guest(0x8015C5E8,4),bytes.fromhex('DEADBEEF'))
-        self.app.hex_advanced.set(False)
-        self.app.raw_value.set('AABBCCDD')
         self.app.write_raw_hex()
         self.assertEqual(self.app.mem.read_guest(0x8015C5E8,4),bytes.fromhex('DEADBEEF'))
 
@@ -85,15 +80,10 @@ class TestUnlocksUI(unittest.TestCase):
         self.app.set_unlock(battery, 0)
         self.assertEqual(self.app.mem.bytes[addr], 0x85)
 
-    def test_readonly_second_battery_and_ushiwaka_statuses(self):
-        self.app.mem = FakeRAM()
-        self.app.mem.bytes[0x8015C609] = 0x60
-        self.app.mem.bytes[0x8015C60D] = 0x38
-        self.app.refresh_unlocks(force=True)
-        self.assertIn('YES', self.app.sasuke_second_status.get())
-        self.assertIn('0x40', self.app.sasuke_second_status.get())
-        self.assertIn('Five yellow fish requested',self.app.ushiwaka_status.get())
-        self.assertFalse(hasattr(self.app,'set_second_battery'))
+    def test_unlocks_has_no_redundant_story_panel(self):
+        self.assertFalse(hasattr(self.app, 'sasuke_second_status'))
+        self.assertFalse(hasattr(self.app, 'ushiwaka_status'))
+        self.assertEqual(self.app.notebook.tab(self.app.unlock_tab,'text'),'Unlocks')
 
     def test_disconnected_does_not_write(self):
         self.app.set_unlock(BY_ADDRESS[0x8015C6C7], 1)

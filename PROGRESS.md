@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Remove obsolete Unlocks panel and LiveSplit integration
+
+- Removed the duplicate read-only Sasuke battery/Ushiwaka progression box from Unlocks; standalone Story progress remains available and continues to refresh.
+- Removed the LiveSplit route calibration card, route CLI argument, loading, and capture handler from the toolkit.
+- Extracted game PID discovery into an independent `autosplitter/process_discovery.py`, keeping Linux/Windows attachment independent of any timing integration.
+- Removed old LiveSplit bridge, client and route engine modules and their route-specific regression tests, leaving the game-memory adapter intact.
+- Updated UI regression tests for the removed panel and default-write behaviour. Local automated and live gameplay tests have not been executed.
+
+
 ### 2026-11-14 — Remove obsolete README write-unlock instructions
 
 - **Changed:** updated old release notes that directed users to a now-removed checkbox or deleted movement probe buttons. Current entrance-aware double-click scene reloads and default writable sessions are described instead.

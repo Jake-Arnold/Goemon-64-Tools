@@ -5,10 +5,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
-from autosplitter.bridge import find_pid
+from autosplitter.process_discovery import find_pid
 from autosplitter.memory import readable_spans
 from autosplitter.memory import Rdram, SYS_POINTER_ADDR, SYS_EXPECTED_PTR, PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR, CHARACTER_ID_ADDR, LOADING_FLAG_ADDR, discover_rdram, RDRAM_SIZE
-from autosplitter.engine import SplitEngine, make_route, segment_names, save_route, load_route
 
 BASE=0x10000000
 
@@ -151,35 +150,5 @@ class Tests(unittest.TestCase):
         p=FakeProcess()
         with self.assertRaises(ValueError): Rdram(p,BASE).snapshot()
 
-    def test_trigger_requires_outside_while_running(self):
-        route=make_route(['A','B'])
-        for i in range(2):
-            route['segments'][i]['trigger']={'type':'position_enter','x':float(i*200),'y':0.,'z':0.,'radius':10.}
-        engine=SplitEngine(route)
-        def frame(x): return {'x':x,'y':0.,'z':0.,'loading':0}
-        self.assertIsNone(engine.update(frame(0),False))
-        self.assertIsNone(engine.update(frame(0),True))
-        self.assertIsNone(engine.update(frame(-30),True))
-        self.assertIsNone(engine.update(frame(0),True))
-        self.assertEqual(engine.update(frame(0),True).name,'A')
-        self.assertIsNone(engine.update(frame(175),True))
-        self.assertIsNone(engine.update(frame(200),True))
-        self.assertEqual(engine.update(frame(200),True).name,'B')
-
-    def test_unconfigured_does_not_split_or_skip(self):
-        e=SplitEngine(make_route(['One','Two']))
-        for _ in range(20):
-            self.assertIsNone(e.update({'x':0,'y':0,'z':0},True))
-        self.assertEqual(e.index,0)
-
-    def test_route_import_uses_names_exactly(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            lss=pathlib.Path(tmp)/'example.lss';out=pathlib.Path(tmp)/'route.json'
-            lss.write_text('<Run><Segments><Segment><Name>Oedo Castle</Name></Segment>'
-                           '<Segment><Name>Impact &amp; Boss</Name></Segment></Segments></Run>')
-            names=segment_names(str(lss));self.assertEqual(names,['Oedo Castle','Impact & Boss'])
-            save_route(make_route(names),str(out));route=load_route(str(out))
-            self.assertEqual(len(route['segments']),2)
-            self.assertIsNone(route['segments'][0]['trigger'])
 
 if __name__=='__main__':unittest.main()
