@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Japanese wiki review and scene transition RAM comparison
+
+- Reviewed both Japanese gameplay wikis (Match 6974 AtWiki and earlier goe1070momo WikiWiki). They share lineage and document 45 Fortune Dolls (40 silver, five gold), JP-exclusive C-Right map-glitch behaviour with unsafe door transitions, 7F/6F jump timing, chain-pipe and wall-edge movement. These are **reproduction/validation references**, not newly verified memory addresses.
+- User confirmed the 58 Japanese NG5J cheat-backed Live-tab values respond sensibly in actual game play; labels and all underlying value semantics still need specific A/B observations.
+- Added **ten distinctly marked UNVERIFIED Japanese scene/global probes**, individually enumerated using a region-offset hypothesis grounded in the two independently published JP debug-engine code addresses (both USA+0x57F0): map, phase, submode, previous/pending scenes, transition, exit, pause, character, loading. The existing, sourced debug-state watch is not duplicated.
+- Added **Capture baseline**, **Compare**, and **Copy changes** to Japanese Live. Comparison uses raw canonical guest bytes across 68 read-only entries, supports continuing refresh, invalidates baseline on changed PID/RDRAM and clears it on region change/disconnect/savestate load. No game RAM writes, cheats, freezes or teleport controls.
+- Added five scene-probe tests, two Tk baseline-change tests, and updated Tk count assertions. Unit tests added for local CI; source-level static verification performed but no real live game test has yet occurred after this feature change. See `docs/JAPAN_WIKI_SCENE_RESEARCH.md`.
+- Keep the separately prepared USA source-only memory/actor findings on PR #12 for the next USA decomp session.
+
 ### 2026-11-14 — Japanese Mupen live fields (read-only)
 
 - **Build on real PID attach:** User's Linux Mupen64Plus Japan-0 connection reached code-verified RDRAM at host base `0x7AA843EC0000` (wordswapped) and read valid Japanese startup MIPS bytes at guest `0x80000450`. Existing attachment remains separate from USA `self.mem`.

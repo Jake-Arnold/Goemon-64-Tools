@@ -6,6 +6,7 @@ import unittest
 
 from practice.japanese_fields_ui import JapaneseFieldsUi
 from practice.japanese_fields import JAPAN_FIELDS
+from practice.japanese_scene_probes import JAPAN_SCENE_PROBES
 from tests.test_japanese_fields import FakeRam
 
 
@@ -34,7 +35,7 @@ class JapanTkSmokeTest(unittest.TestCase):
     def test_all_japan_fields_are_present(self):
         tree = self.host.jp_fields_tree
         self.assertEqual(sum(len(tree.get_children(x)) for x in tree.get_children('')),
-                         len(JAPAN_FIELDS))
+                         len(JAPAN_FIELDS) + len(JAPAN_SCENE_PROBES))
         self.assertEqual(tree.set('jp_field_ryo', 'value'), '—')
         self.assertIn('Japan Live', self.host.notebook.tab(self.host.jp_fields_tab, 'text'))
 
