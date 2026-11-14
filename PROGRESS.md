@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Protect connection changes from fast freeze worker
+
+- **Changed:** reconnection, previous process handle close and successful/failure session swaps now coordinate with ValueFreezes' RLock, so 10 ms background polling cannot write after a connection has been superseded.
+- **Shutdown:** the worker stops before the toolkit closes its game-process handle.
+- **Tests:** deterministic connection and GUI tests to follow. No live game validation yet.
+
+
 ### 2026-11-14 — Wire fast freeze polling to Tk without depending on UI timers
 
 - Freeze requests launch an independent 10 ms daemon worker. Tk reads status messages every 150 ms; the worker never accesses widgets.

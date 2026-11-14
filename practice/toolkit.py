@@ -505,25 +505,27 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         except ValueError:
             self.status.set('Enter a valid positive PID, or leave it blank for automatic selection.')
             return
-        self.stop_all_freezes()
-        self.cancel_pending_restore(quiet=True)
-        self.pending_direct_warp = None
-        self.pending_native_warp = None
-        self._connecting = True
-        self.connect_button.state(['disabled'])
-        self.status.set('Connecting to '+(f'PID {pid_hint}' if pid_hint else 'detected game')+
-                        ': discovering Goemon RAM...')
-        self.mem = None
-        self.current = None
-        self.game_pid = None
-        self.last, self.last_t = None, None
-        previous = self.process
-        self.process = None
-        if previous is not None:
-            try:
-                previous.close()
-            except OSError:
-                pass
+        # Complete all old-session freeze writes before closing the RAM handle.
+        with self.value_freezes.guard:
+            self.stop_all_freezes()
+            self.cancel_pending_restore(quiet=True)
+            self.pending_direct_warp = None
+            self.pending_native_warp = None
+            self._connecting = True
+            self.connect_button.state(['disabled'])
+            self.status.set('Connecting to '+(f'PID {pid_hint}' if pid_hint else 'detected game')+
+                            ': discovering Goemon RAM...')
+            self.mem = None
+            self.current = None
+            self.game_pid = None
+            self.last, self.last_t = None, None
+            previous = self.process
+            self.process = None
+            if previous is not None:
+                try:
+                    previous.close()
+                except OSError:
+                    pass
         opts = (pid_hint, self.args.base, self.args.endian,
                 bool(self.args.enable_teleport or self.args.enable_state_restore or
                      self.args.enable_debug_menu or self.args.enable_scene_warp or
@@ -587,13 +589,15 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         self.connect_button.state(['!disabled'])
         if result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
-            self.process, self.mem, self.game_pid, self.current = process, candidate, pid, sample
+            with self.value_freezes.guard:
+                self.process, self.mem, self.game_pid, self.current = process, candidate, pid, sample
             if sample['x'] is None or sample['action'] is None:
                 self.status.set(f'Connected PID {pid}, RAM 0x{base:X}, format {endian}; player unavailable. Memory watches remain available.')
             else:self.status.set(f'Validated PID {pid}, RAM 0x{base:X}, format {endian}. Move to verify updates.')
         else:
-            self.process = self.mem = self.current = None
-            self.game_pid = None
+            with self.value_freezes.guard:
+                self.process = self.mem = self.current = None
+                self.game_pid = None
             self.pos_text.set('X: —    Y: —    Z: —')
             self.speed_text.set('Speed: —')
             self.misc_text.set('Character: —    Action: —    Loading: —')
@@ -994,6 +998,7 @@ def main(argv=None):
     try:
         root.mainloop()
     finally:
+        app._stop_freeze_worker()
         app.stop_transition_trace()
         app.cancel_pending_restore(quiet=True)
         if getattr(app,'native_key_release',None):app._release_debug_key()
