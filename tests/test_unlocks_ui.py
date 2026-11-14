@@ -85,6 +85,20 @@ class TestUnlocksUI(unittest.TestCase):
         self.assertFalse(hasattr(self.app, 'ushiwaka_status'))
         self.assertEqual(self.app.notebook.tab(self.app.unlock_tab,'text'),'Unlocks')
 
+    def test_unlock_all_button_is_one_time_and_read_only_aware(self):
+        from tests.test_checkpoint import TestCheckpoint
+        _, self.app.mem = TestCheckpoint().sample()
+        self.assertEqual(self.app.unlock_all_button.cget('text'),
+                         'Unlock all mapped items, weapons and abilities')
+        self.app.unlock_all_items()
+        self.assertIn('34 entries checked', self.app.unlock_status.get())
+        self.assertEqual(self.app.mem.u8(0x8015C6BF), 2)
+        self.assertEqual(self.app.mem.u8(0x8015C71B), 8)
+        self.app.args.read_only = True
+        with patch.object(self.app.mem, 'write_guest', side_effect=AssertionError('Read-only write')):
+            self.app.unlock_all_items()
+        self.assertIn('read-only', self.app.unlock_status.get())
+
     def test_disconnected_does_not_write(self):
         self.app.set_unlock(BY_ADDRESS[0x8015C6C7], 1)
         self.assertIn('Disconnected', self.app.unlock_status.get())

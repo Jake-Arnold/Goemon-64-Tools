@@ -15,6 +15,14 @@ MAX_HEALTH = 0x8015C5E0
 HEALTH = 0x8015C5E4
 MAX_LOCKS = 32
 FREEZE_INTERVAL_SECONDS = 0.010
+GOD_RYO = 0x8015C5E8
+GOD_LIVES = 0x8015C5EC
+GOD_RYO_MAX = 9999
+GOD_LIVES_MAX = 99
+
+
+def _overlaps(a, size, b, other_size):
+    return a < b + other_size and b < a + size
 # User-observed enemy-body pass-through when the live player task has state 6.
 # This is NOT an invincibility, damage-prevention or terrain-noclip control.
 ENEMY_PASS_THROUGH_OFFSET = 0x30
@@ -35,6 +43,7 @@ class ValueFreezes:
         self.locks = {}
         self.keep_health = False
         self.enemy_pass_through = False
+        self.god_mode = False
         self.token = None
 
     def clear(self):
@@ -42,6 +51,7 @@ class ValueFreezes:
             self.locks.clear()
             self.keep_health = False
             self.enemy_pass_through = False
+            self.god_mode = False
             self.token = None
 
     def bind(self, token):
@@ -52,7 +62,7 @@ class ValueFreezes:
 
     def active(self):
         with self.guard:
-            return bool(self.locks or self.keep_health or self.enemy_pass_through)
+            return bool(self.locks or self.keep_health or self.enemy_pass_through or self.god_mode)
 
     def snapshot(self):
         with self.guard:
@@ -79,6 +89,20 @@ class ValueFreezes:
             self.bind(token)
             self.enemy_pass_through = True
 
+    def enable_god_mode(self, token):
+        """Keep current health full, lives 99 and Ryo 9999; no inventory edits."""
+        with self.guard:
+            self.bind(token)
+            for lock in self.locks.values():
+                if any(_overlaps(lock.address, len(lock.value), address, 4)
+                       for address in (HEALTH, GOD_RYO, GOD_LIVES)):
+                    raise ValueError('Remove resource freezes conflicting with God Mode first')
+            self.god_mode = True
+
+    def disable_god_mode(self):
+        with self.guard:
+            self.god_mode = False
+
     def rename_lock(self, address, original, replacement):
         with self.guard:
             lock=self.locks.get(address)
@@ -92,6 +116,9 @@ class ValueFreezes:
             if len(value) not in (1, 2, 4, 8) or not 0x80000000 <= address < address+len(value) <= 0x80800000:
                 raise ValueError('Use 1/2/4/8 bytes within guest RDRAM')
             self.bind(token)
+            if self.god_mode and any(_overlaps(address, len(value), resource, 4)
+                                     for resource in (HEALTH, GOD_RYO, GOD_LIVES)):
+                raise ValueError('This freeze conflicts with God Mode')
             if self.keep_health and address < HEALTH+4 and address+len(value) > HEALTH:
                 raise ValueError('Stop Keep health at maximum before freezing that range')
             for old in self.locks.values():
@@ -110,7 +137,7 @@ class ValueFreezes:
 
     def poll(self, ram, token, *, writable):
         with self.guard:
-            if not self.locks and not self.keep_health and not self.enemy_pass_through:
+            if not self.locks and not self.keep_health and not self.enemy_pass_through and not self.god_mode:
                 return 'No active freezes.'
             if ram is None or token != self.token or not writable:
                 self.clear()
@@ -136,11 +163,16 @@ class ValueFreezes:
                         raise ValueError('Player collision state overlaps a fixed value freeze')
                     targets.append(ValueLock(enemy_address, ENEMY_PASS_THROUGH_VALUE,
                                              'Enemy pass-through (player task +0x30)', True))
-                if self.keep_health:
+                if self.keep_health or self.god_mode:
                     maximum = ram.u32(MAX_HEALTH)
                     if not 1 <= maximum <= 127:
                         raise ValueError('Maximum health is outside the known range')
                     targets.append(ValueLock(HEALTH, maximum.to_bytes(4, 'big'), 'Maximum health', False))
+                if self.god_mode:
+                    targets.extend((
+                        ValueLock(GOD_LIVES, GOD_LIVES_MAX.to_bytes(4, 'big'), 'God Mode lives', False),
+                        ValueLock(GOD_RYO, GOD_RYO_MAX.to_bytes(4, 'big'), 'God Mode Ryo', False),
+                    ))
                 corrected = 0
                 for lock in targets:
                     old = ram.read_guest(lock.address, len(lock.value))
@@ -160,7 +192,8 @@ class ValueFreezes:
                 enemy = (f'; enemy pass-through 0x{enemy_address:08X}'
                          if enemy_address is not None else '')
                 return (f'Active: {len(self.locks)} value freezes; maximum health '
-                        f'{"on" if self.keep_health else "off"}{enemy}.')
+                        f'{"on" if self.keep_health or self.god_mode else "off"}'
+                        f'; God Mode {"on" if self.god_mode else "off"}{enemy}.')
             except (OSError, ValueError, RuntimeError, PermissionError) as exc:
                 self.clear()
                 return f'Freezes stopped after failure: {exc}'

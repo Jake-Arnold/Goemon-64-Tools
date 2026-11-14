@@ -3,6 +3,7 @@ import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
 from practice.toolkit import Toolkit,parse_args
+from practice.inspector import Watch
 from tests import test_checkpoint
 
 
@@ -65,14 +66,14 @@ class ValueFreezeUITests(unittest.TestCase):
 
     def test_no_address_cannot_freeze_and_read_only_blocks_context(self):
         app=self.app
-        app.watch_rows=[SimpleNamespace(name='Derived',addr=None,raw='—')]
+        app.watch_rows=[Watch('Derived',None,'—','—','DERIVED','Test-only computed field')]
         app.draw_watches()
         with patch.object(app.watch_tree,'identify_row',return_value='Derived'), \
              patch.object(app.watch_context_menu,'tk_popup'):
             app.open_live_watch_menu(SimpleNamespace(y=11,x_root=15,y_root=20))
         self.assertEqual(app.watch_context_menu.entrycget(0,'state'),'disabled')
         app.args.read_only=True
-        app.watch_rows=[SimpleNamespace(name='Ryo',addr=0x8015C5E8,raw='0x00000000')]
+        app.watch_rows=[Watch('Ryo',0x8015C5E8,'0','0x00000000','OK','Test fixture')]
         app.freeze_watch_by_id('Ryo')
         self.assertFalse(app.value_freezes.locks)
         self.assertIn('read-only',app.freeze_status.get())
@@ -106,6 +107,26 @@ class ValueFreezeUITests(unittest.TestCase):
         app.toggle_enemy_pass_through()
         self.assertFalse(app.value_freezes.enemy_pass_through)
         self.assertFalse(app.enemy_pass_through.get())
+
+    def test_god_mode_toggle_refills_resources(self):
+        app=self.app
+        app.mem.write_guest(0x8015C5E4,(5).to_bytes(4,'big'))
+        app.mem.write_guest(0x8015C5EC,(2).to_bytes(4,'big'))
+        app.mem.write_guest(0x8015C5E8,(30).to_bytes(4,'big'))
+        app.god_mode_var.set(True)
+        app.toggle_god_mode()
+        self.assertTrue(app.value_freezes.god_mode)
+        app._freeze_poll_once()
+        self.assertEqual(app.mem.u32(0x8015C5E4),10)
+        self.assertEqual(app.mem.u32(0x8015C5EC),99)
+        self.assertEqual(app.mem.u32(0x8015C5E8),9999)
+        app.god_mode_var.set(False)
+        app.toggle_god_mode()
+        self.assertFalse(app.value_freezes.god_mode)
+        app.args.read_only=True
+        app.god_mode_var.set(True)
+        app.toggle_god_mode()
+        self.assertFalse(app.value_freezes.god_mode)
 
     def test_selected_watch_is_fresh_and_connection_change_never_reuses_lock(self):
         app=self.app

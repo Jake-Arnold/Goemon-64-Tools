@@ -192,7 +192,7 @@ class InspectorMixin(EntranceMixin):
         self.experimental_warp_btn.pack(fill='x',pady=4)
         if not self.args.enable_hex_edit:self.experimental_warp_btn.state(['disabled'])
         ttk.Label(scenes,textvariable=self.scene_status,wraplength=950).pack(anchor='w',pady=8)
-        self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.open_debug_for_selected_scene)
+        self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.enter_debug_menu)
         self.native_debug_btn.pack(fill='x',pady=5)
         if not self.args.enable_debug_menu:self.native_debug_btn.state(['disabled'])
         ttk.Label(scenes,text='Warp destinations use the original debug-menu transition and the selected entrance coordinates.',wraplength=950).pack(anchor='w')
@@ -1154,8 +1154,22 @@ class InspectorMixin(EntranceMixin):
             messagebox.showerror('Native debug entry failed',str(exc))
 
     def enter_debug_menu(self):
-        """Preserve previous call-site compatibility: open the original native menu."""
-        self.open_debug_for_selected_scene()
+        """Open original debug menu directly; no scene selection or warp staging."""
+        if getattr(self.args, 'read_only', False):
+            self.scene_status.set('Read-only mode: debug-menu entry disabled.')
+            return
+        if self.mem is None or not self.args.enable_debug_menu:
+            self.scene_status.set('Connect to the game before opening the debug menu.')
+            return
+        if self.pending_direct_warp or self.pending_restore or self.pending_native_warp:
+            self.scene_status.set('Complete or cancel the pending scene request first.')
+            return
+        try:
+            with self.value_freezes.guard:
+                open_native_debug_menu(self.mem)
+            self.scene_status.set('Original debug menu opened. Choose a destination in the game.')
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self.scene_status.set('Native debug menu entry blocked: ' + str(exc))
 
     def export_inspector(self):
         if not self.mem or not self.watch_rows:

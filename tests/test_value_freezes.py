@@ -142,6 +142,33 @@ class ValueFreezeTests(unittest.TestCase):
             self.assertIn('overlaps', self.poll())
         self.assertFalse(self.freezes.active())
 
+    def test_god_mode_resources_enforce_and_uncheck_is_not_revert(self):
+        self.ram.write_guest(HEALTH,(2).to_bytes(4,'big'))
+        self.ram.write_guest(0x8015C5E8,(5).to_bytes(4,'big'))
+        self.ram.write_guest(0x8015C5EC,(1).to_bytes(4,'big'))
+        self.freezes.enable_god_mode(self.token)
+        self.assertIn('God Mode on',self.poll())
+        self.assertEqual(self.ram.u32(HEALTH),10)
+        self.assertEqual(self.ram.u32(0x8015C5E8),9999)
+        self.assertEqual(self.ram.u32(0x8015C5EC),99)
+        self.freezes.disable_god_mode()
+        self.assertFalse(self.freezes.active())
+        self.ram.write_guest(0x8015C5E8,(10).to_bytes(4,'big'))
+        with patch.object(self.process,'write',side_effect=AssertionError('No writes after off')):
+            self.poll()
+        self.assertEqual(self.ram.u32(0x8015C5E8),10)
+
+    def test_god_mode_conflict_and_disconnect(self):
+        self.freezes.add(self.token,HEALTH,b'\x00\x00\x00\x05')
+        with self.assertRaisesRegex(ValueError,'conflicting'):
+            self.freezes.enable_god_mode(self.token)
+        self.freezes.clear()
+        self.freezes.enable_god_mode(self.token)
+        with self.assertRaisesRegex(ValueError,'conflicts'):
+            self.freezes.add(self.token,0x8015C5E9,b'\x01')
+        self.assertIn('stopped',self.freezes.poll(None,self.token,writable=True))
+        self.assertFalse(self.freezes.god_mode)
+
     def test_readback_failure_clears_all_locks(self):
         self.freezes.add(self.token,0x8015C63B,b'\x10')
         with patch.object(self.process,'write',return_value=None):

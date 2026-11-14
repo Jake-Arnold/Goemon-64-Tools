@@ -25,9 +25,16 @@ class ValueFreezesMixin:
                   wraplength=1050).pack(anchor='w', pady=6)
         self.freeze_health = tk.BooleanVar(value=False)
         self.enemy_pass_through = tk.BooleanVar(value=False)
+        self.god_mode_var = tk.BooleanVar(value=False)
         self.freeze_health_button = ttk.Checkbutton(tab, text='Keep health at current maximum',
             variable=self.freeze_health, command=self.toggle_freeze_health)
         self.freeze_health_button.pack(anchor='w', pady=5)
+        self.god_mode_button = ttk.Checkbutton(
+            tab, text='God Mode — full health, 99 lives, 9,999 Ryo',
+            variable=self.god_mode_var, command=self.toggle_god_mode)
+        self.god_mode_button.pack(anchor='w', pady=5)
+        ttk.Label(tab, text='Resource protection only; no enemy collision or item unlock changes. '
+                  'Stops enforcing resources when unchecked.', wraplength=1050).pack(anchor='w')
         self.enemy_pass_through_button = ttk.Checkbutton(
             tab, text='Pass through enemies (experimental; player task +0x30 = 6)',
             variable=self.enemy_pass_through, command=self.toggle_enemy_pass_through)
@@ -59,6 +66,7 @@ class ValueFreezesMixin:
         if not self.args.enable_hex_edit:
             self.freeze_health_button.state(['disabled']);self.freeze_raw_button.state(['disabled'])
             self.enemy_pass_through_button.state(['disabled'])
+            self.god_mode_button.state(['disabled'])
         self.root.after(150,self.poll_value_freezes)
 
     def freeze_token(self):
@@ -101,6 +109,20 @@ class ValueFreezesMixin:
             self.freeze_status.set('Maximum-health freeze '+('enabled.' if self.freeze_health.get() else 'stopped.'))
         except (OSError,ValueError,RuntimeError,PermissionError) as exc:
             self.freeze_health.set(False);self.freeze_status.set(str(exc))
+
+    def toggle_god_mode(self):
+        try:
+            if self.god_mode_var.get():
+                self.require_freeze_access()
+                self.value_freezes.enable_god_mode(self.freeze_token())
+                self._ensure_freeze_worker()
+            else:
+                self.value_freezes.disable_god_mode()
+            self.freeze_status.set('God Mode ' + ('enabled.' if self.god_mode_var.get()
+                                                    else 'disabled; resources not restored.'))
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self.god_mode_var.set(False)
+            self.freeze_status.set(f'God Mode blocked: {exc}')
 
     def toggle_enemy_pass_through(self):
         try:
@@ -176,6 +198,7 @@ class ValueFreezesMixin:
     def stop_all_freezes(self):
         self.value_freezes.clear();self.freeze_health.set(False)
         self.enemy_pass_through.set(False)
+        self.god_mode_var.set(False)
         self.draw_value_freezes();self.freeze_status.set('All freezes stopped.')
 
     def poll_value_freezes(self):
@@ -198,4 +221,5 @@ class ValueFreezesMixin:
             self.draw_value_freezes()
         self.freeze_health.set(self.value_freezes.keep_health)
         self.enemy_pass_through.set(self.value_freezes.enemy_pass_through)
+        self.god_mode_var.set(self.value_freezes.god_mode)
         self.root.after(150,self.poll_value_freezes)

@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Separate God Mode, Unlock All and unselected native debug entry
+
+- Added independent resource-only God Mode toggle using the existing 10 ms freeze worker for full current health, 99 lives and 9,999 Ryo, plus strict lock conflict checks and read-only/session safeguards. Turning it off does not revert awarded resources.
+- Added one-shot Unlock all mapped items button in the Unlocks tab, applying only the 34 known inventory/party/weapon/ability/quantity fields. It preserves unrelated packed bits and avoids general story-completion flags. Partially completed edits remain if interrupted.
+- Open original debug menu button now calls the direct native menu entry and requires no scene selection, target character or destination spawn. Scene reload remains selection-dependent.
+- Fixed Live Memory context-menu test mock by creating full Watch records with required status and source. Added regression tests for resource toggles, unlock batch and no-selection debug menu.
+- Connector-authored and committed with no new branch; local GUI tests and game behavior need verification on the Linux machine.
+
 ### 2026-11-14 — Player-relative enemy pass-through control
 
 - **Changed:** Added an experimental enemy-body pass-through checkbox in Value freezes, reusing the existing 10 ms worker. Every poll resolves the live pointer at `0x801FC604` and enforces `u8 = 6` at task `+0x30` rather than retaining a fixed actor address. The toggle stops writes when disabled and clears on disconnect, read-only, incompatible session or worker failure.

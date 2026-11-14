@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from practice.theme import PALETTE
-from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock, normalize_unlock_value
+from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock, normalize_unlock_value, unlock_all_known
 from practice.hex_edit import parse_hex
 
 class UnlocksMixin:
@@ -26,6 +26,16 @@ class UnlocksMixin:
         ttk.Label(intro, text='Click any value to write it immediately to the original N64 RAM. '
                   'The game may not refresh its inventory until an area or menu reload.',
                   style='Muted.TLabel').pack(anchor='w', pady=(4, 0))
+        all_bar = ttk.Frame(tab)
+        all_bar.pack(fill='x', pady=(0, 8))
+        self.unlock_all_button = ttk.Button(
+            all_bar, text='Unlock all mapped items, weapons and abilities',
+            command=self.unlock_all_items)
+        self.unlock_all_button.pack(side='left')
+        if not self.args.enable_hex_edit:
+            self.unlock_all_button.state(['disabled'])
+        ttk.Label(all_bar, text='One-time edit; does not set story completion flags.',
+                  style='Muted.TLabel').pack(side='left', padx=8)
         ttk.Label(tab, textvariable=self.unlock_status).pack(fill='x', pady=(0, 8))
         shell = ttk.Frame(tab)
         shell.pack(fill='both', expand=True)
@@ -73,6 +83,29 @@ class UnlocksMixin:
                     self.unlock_count_entries[item.address]=entry
                 self.unlock_row_widgets[item.address] = (state, controls)
 
+
+    def unlock_all_items(self):
+        if self.mem is None:
+            self.unlock_status.set('Connect to a game before unlocking items.')
+            return
+        if getattr(self.args, 'read_only', False) or not self.args.enable_hex_edit:
+            self.unlock_status.set('Unlock all blocked in read-only mode.')
+            return
+        from practice.checkpoints import _ensure_capture_safe
+        try:
+            with self.value_freezes.guard:
+                _ensure_capture_safe(self.mem)
+                for lock in self.value_freezes.locks.values():
+                    if any(lock.address <= item.address < lock.address + len(lock.value)
+                           for item in UNLOCKS):
+                        raise ValueError('Stop overlapping freezes before unlocking items')
+                changed, total = unlock_all_known(self.mem)
+            self.unlock_status.set(f'Unlock all: {changed} changed / {total} entries checked. '
+                                   'Story flags untouched. Some changes require a scene refresh.')
+            self.last_inspect_at = 0.0
+            self.refresh_unlocks(force=True)
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self.unlock_status.set(f'Unlock all stopped: {exc}. Previous writes may remain.')
 
     def set_unlock(self, unlock: Unlock, value: int) -> None:
         """One click = one measured byte write; never confirmation dialogs."""

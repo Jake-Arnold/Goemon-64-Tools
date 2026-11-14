@@ -1,5 +1,13 @@
 # Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
 
+## Gameplay presets
+
+**God Mode** is a session-only checkbox in **Value freezes**. It uses the existing 10 ms worker to maintain health at its known current maximum, 99 lives and 9,999 Ryo. It is independent of enemy-body pass-through and does not change inventory. Turning it off stops writes; already increased resources are not reverted.
+
+**Unlock all mapped items, weapons and abilities** is a one-time button in **Unlocks**. It sets all 34 mapped party members, weapons, upgrades, known abilities, items, collectible flags and capped fish counts. It preserves unrelated bits in the shared battery field; it does **not** mark general story progression complete or modify unknown inventory slots. Changes are immediate, may partially apply if interrupted, and may require a menu or area reload to appear.
+
+**Open original debug menu** in Scene browser no longer requires scene selection and does not stage a warp or character change. Double-click/reload still requires a destination.
+
 ## Experimental player-relative enemy pass-through
 
 The **Value freezes** tab has a **Pass through enemies** checkbox. It continuously resolves the active player-task pointer at `0x801FC604` and targets its `+0x30` byte with value `6` while normal gameplay is active. The game's player task may move in guest RAM after transitions; never substitute a permanently frozen address such as `0x80169FD0`. The existing independent 10 ms freeze worker performs the pointer lookup and suppresses writes during pause, scripts and loading. On disconnection, permission failure or reconnect, the toggle stops; turning it off leaves state restoration to the game.
