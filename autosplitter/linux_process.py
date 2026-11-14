@@ -104,10 +104,9 @@ class LinuxProcess:
                 self._fallback_mem = True
                 return self._transfer_via_proc(address, size, data)
             if code in (errno.EPERM, errno.EACCES):
+                from practice.linux_pid_access import external_pid_hint
                 raise PermissionError(
-                    code, f"{name} denied for PID {self.pid}; check Linux ptrace "
-                          "permissions (launch the game from the toolkit or "
-                          "inspect kernel.yama.ptrace_scope)")
+                    code, f"{name} denied. {external_pid_hint(self.pid)}")
             raise OSError(code, f"{name} failed for PID {self.pid}: {os.strerror(code)}")
         if count != size:
             raise OSError(f"{name} short transfer at 0x{address:X}: {count}/{size} bytes")

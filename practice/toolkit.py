@@ -39,6 +39,7 @@ from practice.story_progress_ui import StoryProgressMixin
 from practice.state_discovery import measured_velocity
 from practice.experimental_controls import stage_reload_trial
 from practice.entrances import checkpoint_spawn
+from practice.linux_pid_access import ptrace_scope, change_ptrace_scope, external_pid_hint
 from practice.checkpoints import MAP_ADDR, _ensure_capture_safe, validate_checkpoint
 from practice.native_character import (
     prepare_character_swap, undo_character_preparation,
@@ -103,6 +104,9 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         self.game_pid = None
         self._connect_queue = queue.SimpleQueue()
         self._connecting = False
+        self._linux_scope_queue = queue.SimpleQueue()
+        self._linux_scope_changing = False
+        self._linux_prior_scope = None
         self.pending_restore = None
         self.native_key_release = None
         self.last, self.last_t = None, None
@@ -175,6 +179,20 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         if sys.platform == 'linux':
             ttk.Button(connection, text='Launch native Linux recomp',
                        command=self.launch_linux_recomp).pack(fill='x', pady=(0, 7))
+            linux_access=ttk.Frame(connection)
+            linux_access.pack(fill='x',pady=(0,7))
+            self.linux_attach_btn=ttk.Button(
+                linux_access,text='Permit connection to existing Linux PID',
+                command=self.enable_linux_external_pid)
+            self.linux_attach_btn.pack(side='left')
+            self.linux_restore_btn=ttk.Button(
+                linux_access,text='Restore original PID protection',
+                command=self.restore_linux_pid_protection)
+            self.linux_restore_btn.pack(side='left',padx=7)
+            self.linux_restore_btn.state(['disabled'])
+            ttk.Label(connection,text='Existing Linux game processes may require an OS '
+                      'ptrace permission change. This affects other processes until restored.',
+                      style='CardMuted.TLabel',wraplength=420).pack(anchor='w',pady=(0,7))
         ttk.Label(connection, textvariable=self.pos_text, style='AccentValue.TLabel').pack(anchor='w')
         ttk.Label(connection, textvariable=self.speed_text, style='CardMuted.TLabel').pack(anchor='w')
         ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
@@ -419,6 +437,76 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         except (OSError, ValueError) as exc:
             self.status.set(f'Linux recomp launch failed: {exc}')
 
+    def _begin_linux_scope_change(self, value):
+        """Authenticate outside the UI thread; never run Tk calls in a worker."""
+        if self._linux_scope_changing:
+            return
+        self._linux_scope_changing=True
+        self.linux_attach_btn.state(['disabled'])
+        self.linux_restore_btn.state(['disabled'])
+        self.status.set('Requesting OS authorization for Linux PID permission change...')
+        def work():
+            try:
+                changed=change_ptrace_scope(value)
+                self._linux_scope_queue.put(('ok',value,changed))
+            except (OSError,ValueError,PermissionError,subprocess.TimeoutExpired) as exc:
+                self._linux_scope_queue.put(('error',value,str(exc)))
+        threading.Thread(target=work,name='GoemonLinuxPIDPermissions',daemon=True).start()
+        self.root.after(100,self._poll_linux_scope_change)
+
+    def enable_linux_external_pid(self):
+        if sys.platform!='linux' or self._linux_scope_changing:
+            return
+        existing=ptrace_scope()
+        if existing is None:
+            self.status.set('Yama ptrace_scope is unavailable; check process permissions and sandbox settings.')
+            return
+        if existing == 0:
+            self.status.set('Linux already permits normal same-user PID attachment. Connect using the game PID.')
+            return
+        if existing not in (1,2):
+            self.status.set(f'ptrace_scope={existing} cannot be changed by this control.')
+            return
+        if not messagebox.askyesno(
+            'Change Linux process access',
+            f'Current kernel.yama.ptrace_scope={existing}. Setting it to 0 permits '
+            'other same-user processes to inspect one another until restored or rebooted. '
+            'Administrator authentication is required. Allow this temporary system-wide change?',
+            parent=self.root):
+            return
+        self._linux_prior_scope=existing
+        self._begin_linux_scope_change(0)
+
+    def restore_linux_pid_protection(self):
+        if sys.platform!='linux' or self._linux_scope_changing:
+            return
+        original=self._linux_prior_scope
+        if original not in (1,2):
+            self.status.set('No earlier PID protection level was recorded by this toolkit session.')
+            return
+        self._begin_linux_scope_change(original)
+
+    def _poll_linux_scope_change(self):
+        try:
+            result=self._linux_scope_queue.get_nowait()
+        except queue.Empty:
+            self.root.after(100,self._poll_linux_scope_change)
+            return
+        self._linux_scope_changing=False
+        self.linux_attach_btn.state(['!disabled'])
+        if result[0]=='error':
+            self.status.set('Linux PID permission change failed: '+result[2])
+        elif result[1]==0:
+            self.status.set('Linux external-PID access enabled for this boot. '
+                            'Connect to the existing game PID; restore protection when finished.')
+        else:
+            self._linux_prior_scope=None
+            self.status.set('Previous Linux PID protection restored.')
+        if self._linux_prior_scope in (1,2) and ptrace_scope()==0:
+            self.linux_restore_btn.state(['!disabled'])
+        else:
+            self.linux_restore_btn.state(['disabled'])
+
     def connect(self):
         """Start expensive process discovery in a worker, not Tk's event loop.
 
@@ -439,7 +527,8 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         self.pending_native_warp = None
         self._connecting = True
         self.connect_button.state(['disabled'])
-        self.status.set('Connecting: searching for Goemon RAM (interface remains responsive)...')
+        self.status.set('Connecting to '+(f'PID {pid_hint}' if pid_hint else 'detected game')+
+                        ': discovering Goemon RAM...')
         self.mem = None
         self.current = None
         self.game_pid = None
@@ -481,7 +570,12 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
                     process.close()
                 except Exception:
                     pass
-            self._connect_queue.put(('error', str(exc)))
+            if sys.platform == 'linux' and isinstance(exc, PermissionError):
+                from practice.linux_pid_access import external_pid_hint
+                detail=external_pid_hint(pid if 'pid' in locals() else pid_hint or 'unknown')
+                self._connect_queue.put(('error',f'{exc} {detail}'))
+            else:
+                self._connect_queue.put(('error', str(exc)))
 
     def _poll_connect_results(self):
         if not self._connecting:

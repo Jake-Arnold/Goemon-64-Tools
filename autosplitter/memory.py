@@ -363,8 +363,8 @@ def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
         return no_player_candidates[0]
     if len(no_player_candidates) > 1:
         raise RuntimeError(f"Ambiguous RAM bases ({len(no_player_candidates)}) without a player; use --base")
-    reason = (" Linux process-memory access was denied; launch the native game "
-              "from the toolkit or check ptrace permissions." if permission_denied else "")
+    reason = (" Linux process-memory access was denied; see Connection panel "
+              "for existing-PID permission options." if permission_denied else "")
     raise RuntimeError(
         f"No validated game RAM found ({rejected} rejected matches). "
         "Start the game and retry. "

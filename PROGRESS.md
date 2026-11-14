@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Attach to existing Linux game PID with explicit OS permission support
+
+- **Changed:** the Connection panel supports direct, explicitly selected PID attachment independently of the game launcher. Added a Linux-only permission control that, with explicit warning and polkit authentication, applies a temporary `kernel.yama.ptrace_scope=0` system setting, plus a control restoring the previous scope recorded in the toolkit session. Permission changes run in a worker; the Tk interface remains responsive.
+- **Why:** Linux Yama ptrace scope often blocks same-user `process_vm_readv` against an independently launched game, even with a correct PID. PID selection alone cannot override kernel access rules. No permission changes happen automatically when connecting.
+- **Guards:** only stock `pkexec` and `sysctl` binaries are executed for the requested setting; no game or toolkit executable runs as root. System-wide same-user ptrace isolation is relaxed only after the user accepts the warning. The toolkit never writes permanent sysctl configuration, and process ownership / Flatpak limits still apply.
+- **Tests:** added OS helper unit tests for scope reporting, the authenticated command and invalid value blocking. Live polkit/game tests not executed in this connector environment.
+- **Next:** test external PID on Ubuntu, verify game memory scanning and restore original scope after use.
+
+
 ### 2026-11-14 — Live Memory right-click freeze and persistent field renaming
 
 - **Changed:** the Live Memory table now has a per-row secondary-click menu with Freeze value / Unfreeze value and Rename field. The menu targets the clicked row (not a previously selected row). Frozen values use the existing fresh-RAM read, UNSAFE permission, gameplay checks, address width validation, session-only lock lifecycle and Value freezes list.
