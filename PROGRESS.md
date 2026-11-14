@@ -1,3 +1,12 @@
+## 2026-11-14 — Read-only scene context in State Discovery
+
+- Added a user-facing **Scene / boss investigation** panel with one-click reads of map ID, VM program cursor, VM state, resource ID and signed pause byte.
+- The observer reads original-ROM-researched guest addresses without requiring a valid player object. Individual unreadable fields display as unavailable; no memory writes or warp requests are made.
+- Added synthetic unit tests for no-player operation, partial read failure and cautious labels.
+- Reason: improve investigation of Impact/boss fights, loading screens and scene changes while separating observations from unverified HP/transition semantics.
+- Verification: **not executed** (GitHub connector editing does not provide a local Python runtime). Synthetic tests are committed for local execution; live game behaviour remains unverified.
+- Next: run `python3 -m unittest tests.test_transition_observer -v` and existing toolkit tests locally, then inspect the Tk layout and verify reads in a running game before merging.
+
 # Goemon 64 Tools — Development Progress
 
 ### 2026-11-14 — G64-087 state dispatcher (RESEARCH_ONLY)
