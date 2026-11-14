@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-14 — G64-058 spill provenance and G64-059 event order (RESEARCH_ONLY)
+
+- **Changed:** reconciled the Ghost entrance near-match report against current source provenance; marked G64-058 and G64-059 research-only. Strengthened the host fixture to check the full event order, including the task flag being set before the helper and callback replacement occurring last.
+- **Why:** the historical two-word spill result names source SHA-256 `1b3d52c6f3e73bfb422a83ceff6ad12560fdb13da2fa7d58443d9760003482b0`, while the checked-in candidate hashes to `666eb7a02d1768aa6f1983e6600aca315e0463098ff8cc2c064c57097a4993de`. Without the historical source or a new ABI discriminator, another IDO variant would be ungrounded. Original MIPS places the task flag store in the delay slot before the helper call, then installs the callback after the helper.
+- **Tests:** ASan/UBSan host fixture compiled and passed 800/800 deterministic cases; `python3 -m decomp.skill_context --validate` reported `CONSISTENT_STORED_REPORTS`. `python3 -m decomp.local_ci` exited 0: 193 decomp tests, 105 verifier/ledger tests, task validation and display-emitter sanitizer passed. `git diff --check` passed. No new IDO, whole-unit, full-ROM G2, or inventory run.
+- **Limitations:** `func_08006490_6F9970` remains `GLOBAL_ASM`; the old report's two-word mismatch is historical, not current-source proof. The host fixture proves only modeled call/store behavior. No live gameplay verification.
+- **Next:** G64-060 overlay promotion gate. The separate file_12 dialogue callbacks remain research-only until they pass production original-unit and fresh full-ROM/inventory gates.
+
 ## 2026-11-14 — G64-057 key initializer semantics (PASSED_G2)
 
 - **Changed:** strengthened `decomp/test_key_spawn_gate.c` to assert the callback installation updates the modeled current-task callback word at `+0x0C`, preserves surrounding task-state sentinels, and leaves the key task unchanged.

@@ -2438,7 +2438,7 @@
       "ordinal": 58,
       "phase": 6,
       "title": "Resolve Ghost Toys entrance spill",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-055"
       ],
@@ -2489,7 +2489,7 @@
       "ordinal": 59,
       "phase": 6,
       "title": "Prove Ghost event logic",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-058"
       ],

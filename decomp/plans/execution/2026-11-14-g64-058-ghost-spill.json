@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-14",
+  "task_id": "G64-058",
+  "title": "Resolve Ghost Toys entrance spill",
+  "status": "RESEARCH_ONLY",
+  "strategy": "architect-v2-wave-e; stop-at-evidence-boundary",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "064417441b5b0eb39a2fd683ae62add031ab91db",
+    "remote_head_before_task": "064417441b5b0eb39a2fd683ae62add031ab91db",
+    "worktree_initial_state": "clean",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "stored_proof_at_start": "158 claims / 12,216 bytes; complete 33,554,432-byte ROM identity"
+  },
+  "target": {
+    "symbol": "func_08006490_6F9970",
+    "vma": "0x08006490",
+    "rom_offset": "0x6F9970",
+    "size_bytes": 140,
+    "original_instruction_sha256": "c96aa2507f3322508dafcfd47894d90cd26ec626b6ec4b304d0d2252a53d19e0",
+    "checked_in_candidate_source": "decomp/candidates/ghost_probe.c",
+    "checked_in_candidate_sha256": "666eb7a02d1768aa6f1983e6600aca315e0463098ff8cc2c064c57097a4993de",
+    "manifest_owner": "GLOBAL_ASM"
+  },
+  "historical_probe_reconciliation": {
+    "report": "decomp/results/ghost_entrance_candidate.json",
+    "reported_candidate_source_sha256": "1b3d52c6f3e73bfb422a83ceff6ad12560fdb13da2fa7d58443d9760003482b0",
+    "source_recovered": false,
+    "matches_checked_in_source": false,
+    "historical_reported_word_differences": [
+      {"offset": "0x18", "expected": "AFA3001C", "candidate": "AFA30018"},
+      {"offset": "0x28", "expected": "8FA3001C", "candidate": "8FA30018"}
+    ],
+    "interpretation": "Those two spill differences are historical and are not a current-source result. The current candidate's prior native summary is not source-hash-bound."
+  },
+  "original_mips_evidence": {
+    "source": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/file_43.s",
+    "extent": "35 words / 140 bytes at guest VMA 0x08006490 and ROM 0x6F9970",
+    "pointer_save": "At VMA 0x080064A8, sw $v1,0x1C($sp) saves the test-flag helper address.",
+    "pointer_reload": "At VMA 0x080064B8, lw $v1,0x1C($sp) reloads it for the second flag test.",
+    "semantics": "Tests 0x19A and 0x19B with short-circuiting; sets 0x19C, sets task +0x60 bit 0 before helper 0x224, then replaces the callback with 0x0800651C.",
+    "caller": "The preceding file_43 function registers this callback through func_8003521C_35E1C; it does not directly call it."
+  },
+  "bounded_trials": {
+    "prior_native_variants": 5,
+    "prior_permuter_search_seconds": 30,
+    "prior_logged_result": "No exact 35-word match; the historical near-match source is missing and the current checked-in candidate hash differs.",
+    "new_native_variants": 0,
+    "reason_stopped": "The task-specific variant budget was already spent. No source-level lifetime/interface hypothesis is falsifiable without the historical source or new ABI evidence."
+  },
+  "tests": {
+    "sanitized_host_fixture": {
+      "compile_command": "gcc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -Idecomp/test_support decomp/test_ghost_probe.c -o /tmp/g64-059-ghost-event",
+      "run_command": "/tmp/g64-059-ghost-event",
+      "result": "PASS: Ghost entrance host mock, 800/800 cases",
+      "exit_code": 0
+    },
+    "rom_free_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 193,
+      "verifier_ledger_tests": 105,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS"
+    },
+    "diff_check": "PASS before commit",
+    "full_unit_native": "NOT_RUN: no new source hypothesis and historical candidate source is unavailable",
+    "fresh_full_rom_g2": "NOT_RUN: production source, manifest, verifier and proof inputs are unchanged",
+    "inventory_rebuild": "NOT_RUN: no candidate reached source-unit exactness",
+    "in_game": "NOT_RUN"
+  },
+  "decision": "RESEARCH_ONLY. Preserve the original assembly ownership. The old linked result remains historical evidence only; do not claim its exact two-word delta for the checked-in source.",
+  "limitations": [
+    "The checked-in C draft is not a verified reconstruction.",
+    "No full original-unit or full-ROM proof was produced for this task.",
+    "The semantic fixture is a synthetic host model, not game execution."
+  ],
+  "next": "G64-059 semantic fixture completion, then G64-060 overlay promotion gate."
+}

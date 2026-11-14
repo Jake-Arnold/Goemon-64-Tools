@@ -60,7 +60,13 @@ follow-up added four exact dialogue helpers (320 bytes) in the existing
 combined proof. G64-057 then validated the key initializer's collected and
 uncollected host paths against the original overlay instructions, using the
 current full-ROM proof without rerunning an unchanged production build. See
-`plans/execution/2026-11-14-g64-057-key-semantics.json`. G64-074 added the
+`plans/execution/2026-11-14-g64-057-key-semantics.json`. G64-058 is
+`RESEARCH_ONLY`: the checked-in Ghost candidate is not the source hash in the
+historical two-word spill report, and its bounded native trials are exhausted.
+G64-059's sanitized event fixture passes 800/800 cases, including flag-store
+timing and callback order; the function remains assembly-owned. See the dated
+G64-058/059 execution records. G64-060 is the next overlay promotion gate.
+G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list
 walker. See `plans/execution/2026-11-13-g64-074-object-flags.json`. The old object-dispatch eight-byte mismatch is

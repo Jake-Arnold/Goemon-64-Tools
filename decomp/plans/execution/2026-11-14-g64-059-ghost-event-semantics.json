@@ -1,0 +1,73 @@
+{
+  "date": "2026-11-14",
+  "task_id": "G64-059",
+  "title": "Prove Ghost event logic",
+  "status": "RESEARCH_ONLY",
+  "strategy": "architect-v2-wave-e; original-mips-derived-host-contract",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "064417441b5b0eb39a2fd683ae62add031ab91db",
+    "remote_head_before_task": "064417441b5b0eb39a2fd683ae62add031ab91db",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "dependency": "G64-058=RESEARCH_ONLY",
+    "stored_proof_at_start": "158 claims / 12,216 bytes; complete 33,554,432-byte ROM identity"
+  },
+  "target": {
+    "symbol": "func_08006490_6F9970",
+    "vma": "0x08006490",
+    "rom_offset": "0x6F9970",
+    "size_bytes": 140,
+    "production_owner": "GLOBAL_ASM",
+    "candidate_source_sha256": "666eb7a02d1768aa6f1983e6600aca315e0463098ff8cc2c064c57097a4993de",
+    "fixture_source": "decomp/test_ghost_probe.c",
+    "fixture_source_sha256": "08a6df5876605e5180b7d0760c3b72f841dca58a56f7978bab708608bd0e1655"
+  },
+  "original_mips_contract": {
+    "flag_tests": "Call flag test for 0x19A, then test 0x19B only when the first result is nonzero.",
+    "success_path": "Call setter for 0x19C; set bit 0 at task +0x60 in the delay slot before helper 0x224 runs; replace callback with guest address 0x0800651C after the helper.",
+    "failure_path": "Return without setting 0x19C, modifying task +0x60, calling helper 0x224, or replacing the callback.",
+    "unknown_fields": "Only task +0x60 and the callback setter boundary are modeled; other task fields and helper internals remain opaque."
+  },
+  "host_fixture": {
+    "command": "gcc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -Idecomp/test_support decomp/test_ghost_probe.c -o /tmp/g64-059-ghost-event && /tmp/g64-059-ghost-event",
+    "result": "PASS: Ghost entrance host mock, 800/800 cases",
+    "exit_code": 0,
+    "coverage": [
+      "All four combinations of 0x19A and 0x19B results, with second test short-circuiting when 0x19A is false.",
+      "The flag-set callback observes task +0x60 before bit 0 is changed.",
+      "The helper callback observes bit 0 already set and receives exactly 0x224.",
+      "Callback replacement receives func_0800651C_6F99FC and occurs last.",
+      "Rejected paths preserve task flags and opaque task bytes."
+    ],
+    "iterations": 800
+  },
+  "current_full_rom_proof": {
+    "fresh_g2_run_for_this_task": false,
+    "reason": "Only the research host fixture changed. Production C, manifest, overlay staging and proof inputs are unchanged.",
+    "tracked_report": "decomp/results/combined.json",
+    "tracked_report_sha256": "738214ca8a97c2f3580191db670a4c1354874356b92b0574e93ee8f55e47f21b",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_functions": 158,
+    "claimed_functions": 158,
+    "matched_function_bytes": 12216
+  },
+  "rom_free_local_ci": {
+    "command": "python3 -m decomp.local_ci",
+    "exit_code": 0,
+    "status": "PASS",
+    "decomp_python_tests": 193,
+    "verifier_ledger_tests": 105,
+    "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+    "display_emitter_sanitizer": "PASS"
+  },
+  "decision": "RESEARCH_ONLY; the synthetic host contract is covered, but the function remains GLOBAL_ASM because there is no current-source exact IDO/full-unit/whole-ROM result.",
+  "limitations": [
+    "This mock models only observed callback boundaries and the known task word.",
+    "No in-game verification was performed.",
+    "No full ROM was rebuilt because production inputs are unchanged."
+  ],
+  "next": "G64-060 overlay promotion gate, including the separate file_12 callback research leads."
+}

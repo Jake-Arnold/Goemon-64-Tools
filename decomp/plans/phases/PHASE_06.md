@@ -271,7 +271,7 @@ completion internals were not modeled. See
 
 ### G64-058 — Resolve Ghost Toys entrance spill
 
-**Status:** PLANNED. **Dependencies:** G64-055.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-055.
 **Focus files:** `decomp/candidates/ghost_probe.c`; `decomp/GHOST_TOYS_CHECKPOINT.md`.
 
 **Architectural intent:** For func_08006490_6F9970 (140 bytes), isolate sp+0x1C original vs sp+0x18 candidate store/reload; preserve pointer lifetime.
@@ -296,9 +296,18 @@ completion internals were not modeled. See
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
 
+**Outcome (2026-11-14):** `RESEARCH_ONLY`; original ASM remains. The checked-in
+candidate hashes to `666eb7a02d1768aa6f1983e6600aca315e0463098ff8cc2c064c57097a4993de`,
+while the historical two-word report belongs to missing source hash
+`1b3d52c6f3e73bfb422a83ceff6ad12560fdb13da2fa7d58443d9760003482b0`. Five
+previous native variants and the bounded permuter search are exhausted; no
+new source-level discriminator is available. The current host fixture passes
+800/800 sanitized cases. No fresh IDO, whole-unit, G2, or inventory run was
+justified. Full evidence: `../execution/2026-11-14-g64-058-ghost-spill.json`.
+
 ### G64-059 — Prove Ghost event logic
 
-**Status:** PLANNED. **Dependencies:** G64-058.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-058.
 **Focus files:** `decomp/test_ghost_probe.c`; `decomp/GHOST_TOYS_CHECKPOINT.md`.
 
 **Architectural intent:** Model flags 0x19A/0x19B gate, writing 0x19C, task +0x60 bit, helper argument 0x224 and callback replacement.
@@ -322,6 +331,14 @@ completion internals were not modeled. See
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-14):** `RESEARCH_ONLY`; assembly ownership remains. The
+sanitized host fixture passed 800 cases across all four flag-result paths. It
+checks short-circuit behavior, the `+0x60` flag word before and after helper
+`0x224`, untouched opaque bytes, and callback replacement as the last action.
+The contract is a synthetic model checked against original MIPS; no live game,
+new native compile, or full-ROM build was run. See
+`../execution/2026-11-14-g64-059-ghost-event-semantics.json`.
 
 ### G64-060 — Gate overlay promotions
 
