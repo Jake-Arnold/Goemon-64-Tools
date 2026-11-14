@@ -1067,8 +1067,8 @@ class InspectorMixin(EntranceMixin):
             messagebox.showerror('Native debug entry failed',str(exc))
 
     def enter_debug_menu(self):
-        """Preserve previous call-site compatibility: open with selected hint."""
-        self.activate_selected_scene()
+        """Preserve previous call-site compatibility: open the original native menu."""
+        self.open_debug_for_selected_scene()
 
     def export_inspector(self):
         if not self.mem or not self.watch_rows:

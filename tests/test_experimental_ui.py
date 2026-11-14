@@ -95,6 +95,13 @@ class TestExperimentalGUI(unittest.TestCase):
         self.assertEqual(self.ram.u16(PENDING_MAP_ADDR),353)
         self.assertIsNotNone(self.app.pending_direct_warp)
 
+    def test_enter_debug_menu_routes_to_manual_menu_not_reload(self):
+        with patch.object(self.app, 'open_debug_for_selected_scene') as native, \
+             patch.object(self.app, 'try_reload_warp') as reload_request:
+            self.app.enter_debug_menu()
+        native.assert_called_once_with()
+        reload_request.assert_not_called()
+
     def test_read_only_blocks_both_scene_routes(self):
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
