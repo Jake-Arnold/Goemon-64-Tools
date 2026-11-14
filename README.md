@@ -1,5 +1,11 @@
 # Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
 
+## Experimental player-relative enemy pass-through
+
+The **Value freezes** tab has a **Pass through enemies** checkbox. It continuously resolves the active player-task pointer at `0x801FC604` and targets its `+0x30` byte with value `6` while normal gameplay is active. The game's player task may move in guest RAM after transitions; never substitute a permanently frozen address such as `0x80169FD0`. The existing independent 10 ms freeze worker performs the pointer lookup and suppresses writes during pause, scripts and loading. On disconnection, permission failure or reconnect, the toggle stops; turning it off leaves state restoration to the game.
+
+The value `6` was observed by the user to permit moving through enemies in one tested scene. This is **not** a verified no-damage or terrain-noclip mode and can be overwritten by the game between toolkit writes. Experimental gameplay use only.
+
 ## Active development branch and damage-event recorder
 
 Use `chatgptweb/decomp` as the current consolidated integration branch for new toolkit work. The `main` branch is not the newest toolkit baseline. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.

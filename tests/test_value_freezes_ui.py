@@ -86,6 +86,27 @@ class ValueFreezeUITests(unittest.TestCase):
             app.freeze_health.set(True);app.toggle_freeze_health();app.freeze_raw_value()
         self.assertFalse(app.value_freezes.keep_health);self.assertFalse(app.value_freezes.locks)
 
+
+    def test_enemy_pass_through_toggle_tracks_relative_target(self):
+        from autosplitter.memory import PLAYER_TASK_PTR_ADDR
+        app=self.app
+        address=app.mem.u32(PLAYER_TASK_PTR_ADDR)+0x30
+        app.enemy_pass_through.set(True)
+        app.toggle_enemy_pass_through()
+        self.assertTrue(app.value_freezes.enemy_pass_through)
+        app._freeze_poll_once()
+        self.assertEqual(app.mem.u8(address),6)
+        app.enemy_pass_through.set(False)
+        app.toggle_enemy_pass_through()
+        self.assertFalse(app.value_freezes.enemy_pass_through)
+        app.poll_value_freezes()
+        self.assertFalse(app.enemy_pass_through.get())
+        app.args.read_only=True
+        app.enemy_pass_through.set(True)
+        app.toggle_enemy_pass_through()
+        self.assertFalse(app.value_freezes.enemy_pass_through)
+        self.assertFalse(app.enemy_pass_through.get())
+
     def test_selected_watch_is_fresh_and_connection_change_never_reuses_lock(self):
         app=self.app
         app.watch_rows=[SimpleNamespace(name='Freeze test',addr=0x8015C5E8,raw='0xFFFFFFFF')]

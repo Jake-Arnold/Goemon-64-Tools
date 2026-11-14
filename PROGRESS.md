@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Player-relative enemy pass-through control
+
+- **Changed:** Added an experimental enemy-body pass-through checkbox in Value freezes, reusing the existing 10 ms worker. Every poll resolves the live pointer at `0x801FC604` and enforces `u8 = 6` at task `+0x30` rather than retaining a fixed actor address. The toggle stops writes when disabled and clears on disconnect, read-only, incompatible session or worker failure.
+- **Why:** User gameplay experiment showed state `6` allows passing through enemies; forcing a fixed address cannot survive task relocation and the engine frequently rewrites state `3`.
+- **Safety:** Revalidates ordinary gameplay and the task pointer immediately before each write, pauses during transitions, avoids conflicting fixed locks, and never assumes protection from damage or terrain collision. No state `3` restore write is forced when disabled.
+- **Tests:** Added synthetic relocation, task-pointer race, pause, session/read-only, fixed-lock conflict and Tk control tests. These are committed as regression coverage; real-game behaviour and complete repository test suite have not been exercised from this connector environment.
+- **Next:** Validate live enemy-body pass-through, scene-transition follow, and prompt cancellation in the user's Linux recomp. Investigate native collision check before claiming frame-perfect bypass.
+
 ### 2026-11-14 — Fix removed Ushiwaka status widget crash on Linux
 
 - **Changed:** Removed the obsolete `ushiwaka_status` assignment in Story Progress; the live `ushiwaka_story` field already receives the value. Updated the conflicting UI test and added a disconnected-Tk-tick regression covering the reported AttributeError.

@@ -24,9 +24,18 @@ class ValueFreezesMixin:
                   'Raw targets are fixed guest addresses; actor addresses can be reused after scene changes.',
                   wraplength=1050).pack(anchor='w', pady=6)
         self.freeze_health = tk.BooleanVar(value=False)
+        self.enemy_pass_through = tk.BooleanVar(value=False)
         self.freeze_health_button = ttk.Checkbutton(tab, text='Keep health at current maximum',
             variable=self.freeze_health, command=self.toggle_freeze_health)
         self.freeze_health_button.pack(anchor='w', pady=5)
+        self.enemy_pass_through_button = ttk.Checkbutton(
+            tab, text='Pass through enemies (experimental; player task +0x30 = 6)',
+            variable=self.enemy_pass_through, command=self.toggle_enemy_pass_through)
+        self.enemy_pass_through_button.pack(anchor='w', pady=4)
+        ttk.Label(tab, text='Uses the live player-task pointer every 10 ms, even after actor relocation. '
+                  'Enemy-body collision only; damage, walls and scripted contacts are not guaranteed to be disabled. '
+                  'Turning off stops writes and lets the game restore its own state.',
+                  wraplength=1050).pack(anchor='w', pady=(0, 5))
         row = ttk.Frame(tab); row.pack(fill='x', pady=5)
         for title, variable, width in [('Guest address (hex)',self.raw_address,14),
                                        ('Bytes',self.raw_width,3),('Target hex',self.raw_value,20)]:
@@ -49,6 +58,7 @@ class ValueFreezesMixin:
         ttk.Button(row,text='Stop all freezes',command=self.stop_all_freezes).pack(side='left',padx=6)
         if not self.args.enable_hex_edit:
             self.freeze_health_button.state(['disabled']);self.freeze_raw_button.state(['disabled'])
+            self.enemy_pass_through_button.state(['disabled'])
         self.root.after(150,self.poll_value_freezes)
 
     def freeze_token(self):
@@ -91,6 +101,21 @@ class ValueFreezesMixin:
             self.freeze_status.set('Maximum-health freeze '+('enabled.' if self.freeze_health.get() else 'stopped.'))
         except (OSError,ValueError,RuntimeError,PermissionError) as exc:
             self.freeze_health.set(False);self.freeze_status.set(str(exc))
+
+    def toggle_enemy_pass_through(self):
+        try:
+            if self.enemy_pass_through.get():
+                self.require_freeze_access()
+                self.value_freezes.enable_enemy_pass_through(self.freeze_token())
+                self._ensure_freeze_worker()
+            else:
+                self.value_freezes.disable_enemy_pass_through()
+            self.freeze_status.set('Enemy pass-through ' +
+                ('enabled; target follows the live player task.' if self.enemy_pass_through.get()
+                 else 'disabled; game controls player state.'))
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self.enemy_pass_through.set(False)
+            self.freeze_status.set(f'Enemy pass-through blocked: {exc}')
 
     def freeze_raw_value(self):
         try:
@@ -150,6 +175,7 @@ class ValueFreezesMixin:
 
     def stop_all_freezes(self):
         self.value_freezes.clear();self.freeze_health.set(False)
+        self.enemy_pass_through.set(False)
         self.draw_value_freezes();self.freeze_status.set('All freezes stopped.')
 
     def poll_value_freezes(self):
@@ -171,4 +197,5 @@ class ValueFreezesMixin:
         if not active and self.freeze_tree.get_children():
             self.draw_value_freezes()
         self.freeze_health.set(self.value_freezes.keep_health)
+        self.enemy_pass_through.set(self.value_freezes.enemy_pass_through)
         self.root.after(150,self.poll_value_freezes)

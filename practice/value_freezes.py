@@ -9,11 +9,16 @@ import threading
 
 from practice.checkpoints import _ensure_capture_safe
 from practice.hex_edit import checked_write
+from autosplitter.memory import PLAYER_TASK_PTR_ADDR
 
 MAX_HEALTH = 0x8015C5E0
 HEALTH = 0x8015C5E4
 MAX_LOCKS = 32
 FREEZE_INTERVAL_SECONDS = 0.010
+# User-observed enemy-body pass-through when the live player task has state 6.
+# This is NOT an invincibility, damage-prevention or terrain-noclip control.
+ENEMY_PASS_THROUGH_OFFSET = 0x30
+ENEMY_PASS_THROUGH_VALUE = b'\x06'
 
 
 @dataclass(frozen=True)
@@ -29,12 +34,14 @@ class ValueFreezes:
         self.guard = threading.RLock()
         self.locks = {}
         self.keep_health = False
+        self.enemy_pass_through = False
         self.token = None
 
     def clear(self):
         with self.guard:
             self.locks.clear()
             self.keep_health = False
+            self.enemy_pass_through = False
             self.token = None
 
     def bind(self, token):
@@ -45,7 +52,7 @@ class ValueFreezes:
 
     def active(self):
         with self.guard:
-            return bool(self.locks or self.keep_health)
+            return bool(self.locks or self.keep_health or self.enemy_pass_through)
 
     def snapshot(self):
         with self.guard:
@@ -62,6 +69,15 @@ class ValueFreezes:
     def disable_health(self):
         with self.guard:
             self.keep_health = False
+
+    def disable_enemy_pass_through(self):
+        with self.guard:
+            self.enemy_pass_through = False
+
+    def enable_enemy_pass_through(self, token):
+        with self.guard:
+            self.bind(token)
+            self.enemy_pass_through = True
 
     def rename_lock(self, address, original, replacement):
         with self.guard:
@@ -94,7 +110,7 @@ class ValueFreezes:
 
     def poll(self, ram, token, *, writable):
         with self.guard:
-            if not self.locks and not self.keep_health:
+            if not self.locks and not self.keep_health and not self.enemy_pass_through:
                 return 'No active freezes.'
             if ram is None or token != self.token or not writable:
                 self.clear()
@@ -105,6 +121,21 @@ class ValueFreezes:
                 except ValueError:
                     return 'Freezes paused: waiting for ordinary gameplay (no writes).'
                 targets = list(self.locks.values())
+                enemy_address = None
+                if self.enemy_pass_through:
+                    # Never retain an absolute actor address. Resolve from the
+                    # freshly validated player snapshot on EVERY worker poll.
+                    live = _ensure_capture_safe(ram)
+                    task = live['task_ptr']
+                    enemy_address = task + ENEMY_PASS_THROUGH_OFFSET
+                    if (not ram.is_ram_pointer(enemy_address, 1) or
+                            ram.u32(PLAYER_TASK_PTR_ADDR) != task):
+                        return 'Enemy pass-through paused: player task changed during sample.'
+                    if any(lock.address <= enemy_address < lock.address+len(lock.value)
+                           for lock in targets):
+                        raise ValueError('Player collision state overlaps a fixed value freeze')
+                    targets.append(ValueLock(enemy_address, ENEMY_PASS_THROUGH_VALUE,
+                                             'Enemy pass-through (player task +0x30)', True))
                 if self.keep_health:
                     maximum = ram.u32(MAX_HEALTH)
                     if not 1 <= maximum <= 127:
@@ -115,12 +146,21 @@ class ValueFreezes:
                     old = ram.read_guest(lock.address, len(lock.value))
                     if old == lock.value:
                         continue
-                    # Recheck gameplay immediately before a write.
-                    _ensure_capture_safe(ram)
+                    # Recheck gameplay immediately before a write. For the
+                    # relative target, refuse stale writes if the player task
+                    # changed during this poll, even within the same scene.
+                    fresh = _ensure_capture_safe(ram)
+                    if enemy_address == lock.address and (
+                            fresh['task_ptr'] + ENEMY_PASS_THROUGH_OFFSET != enemy_address or
+                            ram.u32(PLAYER_TASK_PTR_ADDR) != fresh['task_ptr']):
+                        return 'Enemy pass-through paused: player task changed before write.'
                     if checked_write(ram, lock.address, old, lock.value,
                                      allow_advanced=True, raw_override=lock.raw):
                         corrected += 1
-                return f'Active: {len(self.locks)} value freezes; maximum health {"on" if self.keep_health else "off"}.'
+                enemy = (f'; enemy pass-through 0x{enemy_address:08X}'
+                         if enemy_address is not None else '')
+                return (f'Active: {len(self.locks)} value freezes; maximum health '
+                        f'{"on" if self.keep_health else "off"}{enemy}.')
             except (OSError, ValueError, RuntimeError, PermissionError) as exc:
                 self.clear()
                 return f'Freezes stopped after failure: {exc}'
