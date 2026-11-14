@@ -454,15 +454,55 @@ step at `-10.0f`/`+10.0f`, applies it to task `+0x74`, then clears `+0xE4` when
 the profile target is reached. Its target is selected from the profile table
 `D_801FC91C` using profile byte `+0x98` and movement-mode byte `+0x70`.
 `func_801D85B0_5944C0` calls it in the control/update path. This makes the
-literal `2.0f` a plausible lead for the normal transient sample, but this
-function has no miniature-mode predicate and does not explain the miniature
-`0.8f` sample. Neither transient has been tied to a specific writer yet.
+function a separate signed profile-ramp writer; it has no miniature-mode
+predicate and cannot explain the `0.8f` sample by itself.
 
-The next step for the transient values is to capture the MIPS PC that writes
-the live task's `+0xE4` during each event (a write watchpoint in an emulator
-debugger, if available), then map that PC to one of the static writer paths.
-This resolves the stop and hurt behavior without assuming that the shared field
-has only one writer or one role.
+#### Exact `2.0f` / `0.8f` stop-state writer
+
+`func_801E276C_59E67C` (`VMA 0x801E276C`, ROM `0x59E67C`, size `0x94`) is a
+much stronger match for the user's paired stop values. It first zeros the
+player's movement vector at `+0x68/+0x6C/+0x70`, then calls the verified mini
+predicate. For miniature mode it loads `D_8020B348 = 0.8f`; otherwise it builds
+`2.0f`. It writes that same selected value to task `+0xE4`, task `+0xE8`, and
+context `+0x04`. These are exact MIPS-proven values and instructions, not a
+ratio inference. The caller is `func_801E3400_59F310` at two sites
+(`0x801E3678` and `0x801E3714`); that parent also calls `func_801E1C90` to
+restore the steady `1.12f`/`2.8f` limit. Its nearby `func_801E26AC_59E5BC`
+check returns `0x10` when context byte `+0x85` is at least 9 and one of three
+coordinate differences reaches the `0.28f` threshold. This suggests an
+event/position transition, but the exact in-game event represented by that
+branch is not yet named.
+
+```c
+/* Analyst reconstruction of func_801E276C_59E67C; not matching C. */
+void reset_movement_for_event(Task *task)
+{
+    TaskContext *ctx = read_pointer(task, 0x5C);
+    ctx->state0 = 1;
+    task->movement[0] = 0.0f;
+    task->movement[1] = 0.0f;
+    task->movement[2] = 0.0f;
+
+    float reset_limit = is_ebi_mini_mode(task) ? 0.8f : 2.0f;
+    task->limit_e4 = reset_limit;
+    task->limit_e8 = reset_limit;
+    ctx->value4 = reset_limit;
+    ctx->value2 = ctx->value1A;
+    ctx->byte2D = 0;
+    play_sound(0x22F);
+}
+```
+
+This is now the leading static explanation for the reported normal-stop value
+`2.0f` and miniature-stop value `0.8f`. The exact event still needs one runtime
+check: the transient should coincide with stores at `0x801E27CC` in normal
+mode or `0x801E27B0` in mini mode. The hurt-animation sample `1.0f` remains
+unmapped and should be traced separately.
+
+The next step is to capture the live task's `+0xE4` writer PC during the stop
+and hurt events (a write watchpoint in an emulator debugger, if available). A
+stop write at one of the two `func_801E276C` PCs would confirm this path; a hurt
+write at another PC will identify the remaining `1.0f` function.
 
 ### Remaining gaps
 
@@ -472,8 +512,9 @@ has only one writer or one role.
 - The `+0x74` profile table varies by internal profile, but profile-to-character
   mapping is not established.
 - The user's transient hurt/stopping values (`1.0`, `2.0`, `0.8`) are confirmed
-  runtime observations; `func_801D896C` is a verified `±2.0` writer lead, but
-  none of the transient samples is yet mapped to an exact runtime writer path.
+  runtime observations; `func_801E276C` statically writes the exact mode-paired
+  `2.0`/`0.8` values and clears movement, but the runtime event match still
+  needs confirmation. The hurt value `1.0` is unresolved.
 - Visible model scale, collision dimensions, `0x801C159A`, and the miniature
   appearance carried to another character remain unresolved.
 - No assistant-run live game or emulator validation was performed; runtime

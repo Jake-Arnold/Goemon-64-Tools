@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Find the exact mode-dependent stop-limit pair
+
+- **Changed:** documented `func_801E276C_59E67C` as the static writer that selects `2.0f` normally and `0.8f` in miniature mode, zeros the movement vector, and is called from the state path in `func_801E3400_59F310`. Kept the separate `func_801D896C` profile ramp distinguished from this reset path.
+- **Reason:** directly test the user's normal/mini stop values against original MIPS constants and writes.
+- **Evidence:** MIPS at `0x801E27B0` stores `D_8020B348` (`0.8f`) to task `+0xE4`; MIPS at `0x801E27CC` stores immediate `2.0f`. The same branch writes `+0xE8` and context `+0x04`, and clears movement `+0x68/+0x6C/+0x70`.
+- **Tests:** `git diff --check` passed. Documentation/research only; no automated suite or game session was run.
+- **Limitations:** static behavior exactly matches the two stop values, but the live transient has not been tied to either instruction PC. The hurt value `1.0f` is still unresolved.
+- **Next:** use a write watchpoint on live `task +0xE4` during stopping and hurt animation; confirm whether stops hit `0x801E27B0`/`0x801E27CC`, then map the `1.0f` writer.
+
 ### 2026-11-14 — Trace movement-limit interpolator callers
 
 - **Changed:** expanded `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md` with a C-level behavioral reconstruction of `func_801E3DE0_59FCF0`, its mode-specific and fixed-target callers, and the `±2.0f` speed-profile ramp in `func_801D896C_59487C`.
