@@ -1,12 +1,20 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-063 middle transition dispatcher (RESEARCH_ONLY)
+
+- **Changed:** documented the original-MIPS branch order, caller-inferred signature, VM cursor predicate, and successful store/call order in `decomp/MAP_TRANSITION_TRACE.md`; added a portable host reference and execution record. Marked G64-063 `RESEARCH_ONLY`; production source, manifest, combined proof and inventory remain unchanged.
+- **Why:** establish the dispatcher's exact guards and relationship to `0x80077858` before deciding whether any C candidate is justified. The original helper only returns whether the VM program cursor is nonzero; neither helper nor dispatcher advances it.
+- **Evidence:** target `func_8001F940_20540` is 252 bytes at VMA `0x8001F940`, ROM `[0x20540,0x2063C)`, and matches pinned retail/reference bytes. The inferred signature is `void func_8001F940(void)` from its caller, not an original declaration. Two isolated IDO variants linked at the original VMA but both first differed at `+0x10`; V1 was 236 bytes and V2 was 264 bytes. The v2 stop rule ended compiler trials, leaving `GLOBAL_ASM` intact.
+- **Tests:** the ASan/UBSan host reference passed; removing the second `0x800C7AE9` read caused its negative-control mutant to abort as expected. Repository local CI, task-evidence validation and diff checks are recorded in the execution JSON. No fresh full-ROM G2 or live-game verification was run.
+- **Limitations/next:** effects in delegated `8001FA80` and downstream `80038C30` remain untraced; host mutation only tests read ordering, not observed retail behavior. Continue with G64-064, the transition loop at `8000394C`.
+
 ### 2026-11-14 — G64-062 file/resource loader boundary (RESEARCH_ONLY)
 
 - **Changed:** added the original-MIPS call-edge trace from `800030F0` through `80001C00`, its table readers, DMA/decompression branches, a caller-owned temporary allocation/free example, and caller-supplied request destinations. Marked G64-062 `RESEARCH_ONLY`; no production C, manifest, inventory or stored proof changed.
 - **Why:** establish which source bytes file ID 15 loads, how it maps into the shared overlay RAM window, and where allocation/release occur without treating a state write or file copy as scene activation.
 - **Evidence:** retail ID 15 is uncompressed `[0x61D5DE,0x626E5E)`; the same bytes map to Splat `file_15` `[0x65E310,0x667B90)`, loaded at `0x801CB460` with `0x14CA0` BSS zero-fill. `80001C00` has no allocator/free or overlay-activation call. The current-start high-bit rule and next-file flag were checked against original instructions and raw tables. Full call-edge notes are in `decomp/MAP_TRANSITION_TRACE.md` and `decomp/plans/execution/2026-11-14-g64-062-loader-boundary.json`.
 - **Tested:** pinned retail/reference table and byte-range assertions passed; `80001C00` and `800030F0` instruction slices match between images. `python3 -m decomp.local_ci`, task-evidence validation and `git diff --check` results are recorded in the execution file. No full-ROM G2 rerun or in-game transition was performed because production and proof inputs were unchanged.
-- **Limitations/next:** overlay activation, old-overlay release, room teardown, object-list rebuilding, and `D_800548D8`'s meaning remain unknown. Continue with G64-063's middle transition dispatcher; reassess the untried 456-byte save/Pak callback only after the ordered transition tasks.
+- **Limitations/next:** overlay activation, old-overlay release, room teardown, object-list rebuilding, and `D_800548D8`'s meaning remain unknown. G64-063 is complete; continue with G64-064, and reassess the untried 456-byte save/Pak callback only after the ordered transition tasks.
 
 ## 2026-11-14 — file_12 96-byte Ryo callback (RESEARCH_ONLY)
 

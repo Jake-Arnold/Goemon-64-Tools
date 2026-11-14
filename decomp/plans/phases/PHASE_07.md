@@ -52,7 +52,7 @@ requests file ID 15 at its pinned overlay VMA only when `D_800548D8` is zero;
 the file maps to `file_15`, not generic room content. The flag's meaning and
 the routines' complete teardown/activation effects remain unproven. No C was
 promoted and no fresh G2 was run. `800030F0` and `8001F8B0` remain ASM-owned;
-G64-062 completed as `RESEARCH_ONLY`; G64-063 is next.
+G64-063 completed as `RESEARCH_ONLY`; G64-064 is next.
 
 ### G64-062 — Trace file/resource loading boundary
 
@@ -87,11 +87,11 @@ G64-062 completed as `RESEARCH_ONLY`; G64-063 is next.
 `static_overlay_1` window at `0x801CB460`; the loader fills `0x14CA0` BSS bytes
 and returns `0x801E9980`. Allocation/free are caller-owned. No activation,
 prior-overlay release or room teardown edge was established. See the execution
-record and loader call-edge table in `MAP_TRANSITION_TRACE.md`. G64-063 is next.
+record and loader call-edge table in `MAP_TRANSITION_TRACE.md`. G64-064 is next.
 
 ### G64-063 — Analyze middle transition dispatcher
 
-**Status:** PLANNED. **Dependencies:** G64-061.
+**Status:** RESEARCH_ONLY (2026-11-14). **Dependencies:** G64-061.
 **Focus files:** `decomp/rotation_angles.c`; `decomp/MAP_TRANSITION_TRACE.md`.
 
 **Architectural intent:** Recover func_8001F940_20540 between already matched 8001F914 and 8001FA3C; inspect all global changes/calls.
@@ -115,6 +115,17 @@ record and loader call-edge table in `MAP_TRANSITION_TRACE.md`. G64-063 is next.
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-14):** `RESEARCH_ONLY`; raw pinned-ROM instructions and the
+caller establish the 252-byte CFG, guarded store order, and an inferred
+`void func_8001F940(void)` signature. The cursor helper is a pure nonzero test
+of VM program PC `0x80077858`; this dispatcher does not update it. The
+ASan/UBSan host reference and its reload negative control passed. Two bounded
+IDO variants linked at the original VMA but both first differed at `+0x10`,
+so codegen stopped and `rotation_angles.c` retains `GLOBAL_ASM`. No fresh G2 was
+run; manifest, proof, and inventory are unchanged. See
+`../execution/2026-11-14-g64-063-middle-transition-dispatch.json`.
+G64-064 is next.
 
 ### G64-064 — Analyze transition loop 8000394C
 

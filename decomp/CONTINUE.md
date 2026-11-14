@@ -89,7 +89,13 @@ Splat `file_15` from retail `[0x61D5DE, 0x626E5E)` into the shared
 `0x801CB460` overlay window, then zero-fills its `0x14CA0` BSS. Allocation is
 caller-owned; no activation, prior-overlay release or room teardown was
 proved. See `MAP_TRANSITION_TRACE.md` and
-`plans/execution/2026-11-14-g64-062-loader-boundary.json`. G64-063 is next.
+`plans/execution/2026-11-14-g64-062-loader-boundary.json`.
+G64-063 completed as `RESEARCH_ONLY`: the middle dispatcher reads the VM
+program cursor only through the nonzero predicate at `8003F1D8`, does not
+advance it, and retains `GLOBAL_ASM` after two native candidates first
+diverged at `+0x10`. No fresh G2 was run; the stored proof is unchanged. See
+`plans/execution/2026-11-14-g64-063-middle-transition-dispatch.json`.
+G64-064 is next.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list

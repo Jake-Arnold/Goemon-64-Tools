@@ -299,3 +299,69 @@ overlay release, room teardown, actor/object-list rebuilding, or safe warp
 semantics. Those remain separate trace targets; no runtime feature or memory
 write was changed. The execution record is
 [`plans/execution/2026-11-14-g64-062-loader-boundary.json`](plans/execution/2026-11-14-g64-062-loader-boundary.json).
+
+## G64-063 — Middle transition dispatcher and VM cursor gate
+
+The pinned USA `func_8001F940_20540` occupies ROM `[0x20540, 0x2063C)` and is
+252 bytes (63 words). Its raw retail and decompressed-reference bytes match;
+the slice SHA-256 is
+`025dd045f4347ed791523672b3779a1d7e9e78d093ee2e33e846cfa78b12a497`. The
+source disassembly is `asm/usa/204B0.s`. Neighboring C-owned entries are
+`8001F914` (44 bytes) and `8001FA3C` (68 bytes). Dispatcher `8001F8B0` selects
+this function from entry 1 of the three-pointer table at ROM `0x6C330`, using
+`SYS_W +0x3ADDE`, then calls the selected pointer with `jalr` and ignores its
+return. `8001F940` reads no incoming argument and produces no return value, so
+`void func_8001F940(void)` is the caller-facing signature inferred from MIPS,
+not a recovered original declaration.
+
+### Verified order and raw field accesses
+
+The routine calls `8000B7E4` first on every path. The already-matching helper
+performs its confirmed tick rule: when its 16-bit counter is at least 60, it
+subtracts 60 and increments save-data word `+0x264`. The dispatcher then reads
+these addresses; field names remain unknown unless separately established:
+
+| Address | Width / operation | Branch effect |
+| --- | --- | --- |
+| `0x800C7AE6` | halfword read | Nonzero delegates to `8001FA80` and returns before all other gates. |
+| `0x800C7D3C` | halfword masked with `0x1000` | A clear bit returns. |
+| `0x800C7AE9` | byte read, then read again after the cursor predicate | Either nonzero value returns; the second read is a real reload. |
+| `0x800C7AA4` | unsigned byte | Value 3 and values at least 4 return; only 0, 1, or 2 continue. The architecture report identifies this address as a gameplay submode byte, distinct from VM state at `0x801C77E0`. |
+| `0x80077858` | read inside `8003F1D8` | The helper returns 1 iff this word is nonzero. A nonzero VM program pointer makes this dispatcher return. Neither helper nor dispatcher advances or clears it. |
+| `0x8015C562` | byte read | Nonzero returns after the cursor predicate. |
+| `0x8015C54D` | byte read | Nonzero returns after the second `0x800C7AE9` read. |
+| `0x800C7AD6` | halfword read | Nonzero returns. |
+| `0x800C7AE6` | halfword write of 1 | Written only after every preceding guard passes. |
+| `0x800C7AA0`, `0x800C7AA1` | byte writes of 0 | Both precede the final helper; the second store is the `jal` delay slot. |
+
+The `0x800C7AE9` reread follows the call to `8003F1D8`; the host harness uses an
+artificial mutation of that byte to check reload/order behavior. No evidence
+shows that the cursor helper mutates the byte during retail execution. The
+`0x80077858` relation is narrower and directly verified: `8003F1D8` loads the
+word and returns a boolean for nonzero. The separate VM report establishes
+that word as the relocated program cursor; this call site does not use it as a
+text-character cursor or alter it.
+
+When all gates pass, `8001F940` writes halfword 1 at `0x800C7AE6`, clears bytes
+`0x800C7AA0` and `0x800C7AA1`, then calls `80038BC8(3)`. That 48-byte wrapper
+masks its argument to 16 bits and forwards it to `80038C30(3, 0, 0)`. The
+dispatcher itself has no direct file-loader, allocator, free, overlay or room
+teardown call. Its other path delegates to the still-assembly-owned
+`8001FA80` (0x888 bytes); that routine's broader effects are not assigned to
+this wrapper. Thus neither the status write nor helper call proves scene
+activation or unloading.
+
+The focused host reference covers the busy-halfword delegate, bit gate,
+`0x800C7AE9` early gate, selector boundaries 0–2 versus 3/4+, nonzero cursor,
+each post-cursor guard, and successful store-before-call order. A mutant that
+removed the second byte read failed the artificial reload probe as expected.
+This model is a behavior fixture; production `rotation_angles.c` retains the
+original `GLOBAL_ASM` placeholder.
+
+Two isolated IDO source shapes compiled and linked at `0x8001F940`, but both
+first differed at `+0x10`: original word `0x3C03800C`, candidate destination
+register `a0` in V1 and `t6` in V2. V1 emitted a 236-byte symbol; V2 emitted
+264 bytes. The first mismatch did not move, so codegen stopped after V2 and no
+candidate was integrated. No fresh full-ROM G2 was run; the manifest and
+stored proof remain unchanged. See
+[`plans/execution/2026-11-14-g64-063-middle-transition-dispatch.json`](plans/execution/2026-11-14-g64-063-middle-transition-dispatch.json).

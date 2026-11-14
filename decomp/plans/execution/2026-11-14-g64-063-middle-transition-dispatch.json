@@ -1,0 +1,105 @@
+{
+  "date": "2026-11-14",
+  "task_id": "G64-063",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "f434aba2514058ab70e411b898f19731b6aff3a5",
+    "remote_head_before_task": "f434aba2514058ab70e411b898f19731b6aff3a5",
+    "initial_worktree": "Existing task-local edits: G64-063 trace section and host reference; no unrelated changes.",
+    "independent_review": "Sol Medium read-only review confirmed the branch matrix, cursor helper semantics, and the two-variant stop point; it found no conflict with the current v2 plan.",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "retail_rom_size": 16777216,
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "decompressed_reference_size": 33554432
+  },
+  "source_snapshot": {
+    "target": "func_8001F940_20540",
+    "target_vma": "0x8001F940",
+    "target_rom_extent": "[0x20540,0x2063C)",
+    "target_size": 252,
+    "retail_reference_raw_slice_sha256": "025dd045f4347ed791523672b3779a1d7e9e78d093ee2e33e846cfa78b12a497",
+    "assembly_source": "asm/usa/204B0.s",
+    "production_translation_unit_sha256_unchanged": "80357db43c81ae9d794f95da4e2e836dd9f729f083b3204c5e46d8d641fb947e",
+    "manifest_sha256_unchanged": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "combined_proof_sha256_unchanged": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "inventory_sha256_unchanged": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051"
+  },
+  "original_mips_evidence": {
+    "raw_slice_validation": "The 63-word pinned assembly span equals both the private retail USA ROM and decompressed reference at the stated ROM extent.",
+    "caller_and_signature": "Dispatcher 8001F8B0 selects entry 1 from the three-pointer table at ROM 0x6C330 using SYS_W+0x3ADDE, calls it with jalr, and ignores the return. No argument is read and no return value is constructed; void func_8001F940(void) is an inferred caller-facing signature, not a recovered source declaration.",
+    "helper_slices": [
+      {"symbol": "func_8000B7E4_C3E4", "rom_extent": "[0xC3E4,0xC424)", "size": 64, "sha256": "3cf0648f37df25afdde1895858eed84c6984d992d11ac2c911050ef42d15bae8"},
+      {"symbol": "func_8003F1D8_3FDD8", "rom_extent": "[0x3FDD8,0x3FDFC)", "size": 36, "sha256": "6c5243a277aa2e1bf3d5d8f5e01bf97d82be6b5af0da7eb395a655165e057a45"},
+      {"symbol": "func_80038BC8_397C8", "rom_extent": "[0x397C8,0x397F8)", "size": 48, "sha256": "ee54db7b05cd687b8a196c11b9e5a9724313d337c82936a1071a7654a5657232"}
+    ],
+    "branch_order": [
+      "Call 8000B7E4 on every path; its confirmed helper subtracts 60 from a 16-bit counter when at least 60 and increments save-data word +0x264.",
+      "Nonzero halfword 0x800C7AE6 delegates to 8001FA80 and returns before later guards.",
+      "Require halfword 0x800C7D3C bit 0x1000, byte 0x800C7AE9 equal zero, and unsigned selector byte 0x800C7AA4 in 0..2; values 3 and >=4 return.",
+      "Call 8003F1D8; it returns 1 exactly when word 0x80077858 is nonzero. The runtime cursor report identifies that word as relocated VM program PC. This helper and dispatcher do not advance or clear it.",
+      "After the cursor predicate, require bytes 0x8015C562, 0x800C7AE9 (a real second read), and 0x8015C54D, plus halfword 0x800C7AD6, all zero.",
+      "On success write halfword 1 to 0x800C7AE6, clear bytes 0x800C7AA0 and 0x800C7AA1, then call 80038BC8(3); both stores precede the helper, with the second in the jal delay slot."
+    ],
+    "unproven": [
+      "The meanings of raw fields are not inferred beyond separately verified evidence.",
+      "The host fixture mutates 0x800C7AE9 across the cursor helper only as an artificial reload-order probe; no retail callback mutation at that point is established.",
+      "No direct loader, allocator, free, overlay activation, or room teardown call occurs in 8001F940; effects within 8001FA80 and downstream 80038C30 remain untraced."
+    ]
+  },
+  "host_reference": {
+    "file": "decomp/test_middle_transition_dispatch.c",
+    "source_sha256": "f5fc486517193315c807dc8e4deb274db67ef0e624e7dad1e84f8651c3522e7f",
+    "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all decomp/test_middle_transition_dispatch.c -o /tmp/g64-063-transition-model && /tmp/g64-063-transition-model",
+    "result": "PASS",
+    "coverage": "Timer call first on all paths; busy-halfword delegation before other gates; bit and byte gates; selector boundaries 0..2 versus 3/4+; nonzero PC; each post-cursor guard; success stores before message request.",
+    "negative_control": {
+      "mutation": "Remove the second 0x800C7AE9 read from a temporary model copy.",
+      "result": "Rejected as expected (process exit 134 / assertion abort).",
+      "limitation": "Synthetic ordering probe only; no claim that the cursor helper mutates this byte in retail execution."
+    }
+  },
+  "native_probes": [
+    {
+      "variant": 1,
+      "full_translation_unit_source_sha256": "938940edb6b4e92c3eaaa156e4a78b737c509d7ba90e75217f2bbea22c250709",
+      "isolated_source_sha256": "d7e50c4f1226d48d39c0d50757fe9077eb2cdc64bce5b9d9f3da65a1d000adf9",
+      "linked_symbol_size": 236,
+      "isolated_text_size": 240,
+      "first_mismatch": {"offset": "+0x10", "original_word": "0x3C03800C", "candidate_word": "0x3C04800C"},
+      "different_words": 56
+    },
+    {
+      "variant": 2,
+      "full_translation_unit_source_sha256": "e6038350eded6a355604860da3ca4bd506e9ee8eec1c2c13a3bd829b542aa649",
+      "isolated_source_sha256": "78944868fcc4118e06d7c401d60bcb996869221c8394dd2d50ff1b2a6740190d",
+      "linked_symbol_size": 264,
+      "isolated_text_size": 272,
+      "first_mismatch": {"offset": "+0x10", "original_word": "0x3C03800C", "candidate_word": "0x3C0E800C"},
+      "different_words": 64
+    }
+  ],
+  "tests": {
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "result": "207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and the display-emitter ASan/UBSan fixture (1,000 synthetic cases) passed. The log includes expected negative-path diagnostics from orchestration tests; the runner exited 0 with its final all-selected-checks PASS."
+    },
+    "task_evidence_validation": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "status": "PASS",
+      "result": "CONSISTENT_STORED_REPORTS; 100 tasks validated. --status selects G64-064 as first planned."
+    },
+    "diff_check": {"command": "git diff --check", "status": "PASS"},
+    "execution_json_parse": {"command": "python3 -m json.tool decomp/plans/execution/2026-11-14-g64-063-middle-transition-dispatch.json", "status": "PASS"},
+    "fresh_full_rom_g2": "NOT_RUN; no production source, manifest claim, build input, or stored proof changed.",
+    "live_game_verification": "NOT_RUN"
+  },
+  "stored_proof_unchanged": true,
+  "decision": "The two bounded native variants share the same +0x10 destination-register mismatch, so the task budget is exhausted without a new falsifiable register hypothesis. Keep func_8001F940 as GLOBAL_ASM; classify as RESEARCH_ONLY and do not run G2.",
+  "next": "G64-064 Analyze transition loop 8000394C. Revisit the separate 456-byte save/Pak overlay callback only after the ordered transition tasks."
+}
