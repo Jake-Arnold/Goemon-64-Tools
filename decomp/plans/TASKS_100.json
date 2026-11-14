@@ -2893,7 +2893,7 @@
       "ordinal": 68,
       "phase": 7,
       "title": "Review default entrance 80020F10",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-061",
         "G64-062",

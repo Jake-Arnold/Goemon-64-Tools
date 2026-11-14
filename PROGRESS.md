@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-068 stage/room selection trace (RESEARCH_ONLY)
+
+- **Changed:** Recorded the original dispatch/table/arithmetic trace and separated intended-room selection from the matched 10-byte entrance-record helper. Marked G64-068 RESEARCH_ONLY; production remains GLOBAL_ASM.
+- **Reason:** The MIPS shows the target is a large display handler with no entrance-table read. Its confirm path requests the existing state/entry path, but does not prove a completed room load.
+- **Tests:** Existing decomp/test_default_entrance.c host fixture passed under AddressSanitizer and UndefinedBehaviorSanitizer for room indices 1 and 2, including all-zero xyz clearing. Original target bytes and lookup tables matched in the USA retail and decompressed images.
+- **Limitations/next:** No native C candidate or fresh full-ROM G2 was run. Invalid category handling reads an uninitialized stack halfword, and group indexes are unchecked. Continue with G64-069.
+
 ### 2026-11-14 — G64-067 engine-state mode and byte mapping (RESEARCH_ONLY)
 
 - **Changed:** traced `func_8003A138_3AD38`, added MIPS-derived host cases for its mode table and byte latches, and recorded one complete-unit IDO probe. Marked G64-067 `RESEARCH_ONLY`; production remains `GLOBAL_ASM`.

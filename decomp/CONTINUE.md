@@ -120,7 +120,15 @@ functions but changed the first branch delay slot at `+0x10`; production ASM
 and the stored proof remain unchanged. See
 `ENGINE_STATE_TRACE.md` and
 `plans/execution/2026-11-14-g64-067-engine-state-mode-map.json`.
-Continue at G64-068.
+G64-068 completed as RESEARCH_ONLY: 0x80020F10 is a 1,332-byte selection
+display handler. It writes a group-local selection and derived intended room
+ID; the matched 0x80021444/214E4 chain performs the separate entrance-record
+and state-request work. Existing all-zero-coordinate and room-index host tests
+passed, but no bounded whole-function C candidate was justified. Keep
+GLOBAL_ASM; the stored full-ROM proof remains unchanged. See
+DEFAULT_ENTRANCE_TRACE.md and
+plans/execution/2026-11-14-g64-068-default-entrance-review.json.
+Continue at G64-069.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list

@@ -301,7 +301,7 @@ next.
 
 ### G64-068 — Review default entrance 80020F10
 
-**Status:** PLANNED. **Dependencies:** G64-061, G64-062, G64-063, G64-064.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-061, G64-062, G64-063, G64-064.
 **Focus files:** `decomp/default_entrance.c`; `decomp/test_default_entrance.c`.
 
 **Architectural intent:** Model func_80020F10_21B10 adjacent to matching 80021444/214E4; separate entrance record selection from load requests.
@@ -325,6 +325,17 @@ next.
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-14):** The 1,332-byte target is the indirect-dispatch
+stage/room selection display handler, not the entrance-record reader. It
+indexes group base/count tables, updates SYS_W+0x3ADF4 and derives the intended
+room ID at +0x3ADF2. Only the confirm path calls matched 0x80021444; matched
+0x800214E4 performs the 10-byte record lookup and all-zero-coordinate
+clearing. Existing host tests for those neighbors passed. No whole-function
+native candidate was justified under the v2 budget, so retain GLOBAL_ASM; no
+fresh G2 was run and the stored proof is unchanged. See
+../../DEFAULT_ENTRANCE_TRACE.md and
+../execution/2026-11-14-g64-068-default-entrance-review.json.
 
 ### G64-069 — Architect transition safety assertions
 

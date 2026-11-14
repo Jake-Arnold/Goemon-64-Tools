@@ -1,0 +1,129 @@
+{
+  "format": "goemon-task-execution-v1",
+  "date": "2026-11-14",
+  "task_id": "G64-068",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "worktree_path": "/home/jake/.codex/worktrees/vm-dialogue-overlay/Goemon-64-Tools",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "b22d8f8b9a754d62b585b0e746b952f4484912d6",
+    "remote_head_before_task": "b22d8f8b9a754d62b585b0e746b952f4484912d6",
+    "initial_worktree": "clean",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "independent_review": "A read-only Sol Medium review confirmed the indirect selection/display role, group tables, and the separate 80021444/800214E4 entrance-record boundary."
+  },
+  "source_snapshot": {
+    "target": "func_80020F10_21B10",
+    "target_vma": "0x80020F10",
+    "target_rom_extent": "[0x21B10,0x22044)",
+    "target_size": 1332,
+    "target_raw_slice_sha256": "4421d83070bb55997b55ce24c6df19f3f8aeae8cdd78ab003c0c5e497724e0ab",
+    "raw_slice_equal_in": [
+      "USA retail image",
+      "decompressed USA reference image"
+    ],
+    "assembly_source": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/21330.s",
+    "dispatcher_rom_address": "0x6DBC8",
+    "dispatcher_entries": [
+      "0x800207AC",
+      "0x80020804",
+      "0x80020964",
+      "0x800209B4",
+      "0x80020C78",
+      "0x80020F10"
+    ],
+    "dispatcher_selector": "unsigned byte SYS_W+0x3ADD6, indirect jalr, no visible bounds guard",
+    "direct_jal_references": "None found in pinned USA assembly; target is reached as zero-based dispatcher entry 5.",
+    "copied_tables": {
+      "display_pointers_rom": "0x6DC88",
+      "display_pointer_count": 11,
+      "group_bases_rom": "0x6DCB4",
+      "group_bases_u16": [
+        0,
+        300,
+        350,
+        400,
+        540,
+        544,
+        549,
+        561,
+        588,
+        607,
+        613,
+        619
+      ],
+      "group_counts_rom": "0x6DCCC",
+      "group_counts_u16": [
+        300,
+        50,
+        50,
+        140,
+        4,
+        5,
+        12,
+        27,
+        19,
+        6,
+        5,
+        1
+      ],
+      "group_index": "Unsigned byte SYS_W+0x3ADE4; no visible range guard."
+    },
+    "production_ownership": "GLOBAL_ASM",
+    "source_sha256_unchanged": "38df36c1c09deda054d5879c4dd610a110e445bc1874302dff75a39dffaf2eb0",
+    "neighbor_test_sha256_unchanged": "e398e89fb7e85a0d643193240318993d2e4a9b86b02b7fb280f983df55838391",
+    "manifest_sha256_unchanged": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "combined_proof_sha256_unchanged": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "inventory_sha256_unchanged": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051"
+  },
+  "original_mips_evidence": {
+    "selection_inputs": "The function ORs unsigned halfwords at (SYS_W+0x38000)+0x3094 and (SYS_W+0x38000)+0x307C. Bits 0x0100 and 0x0200 adjust the word at SYS_W+0x3B048 within the observed 0..2 range. Categories 0, 1, and 2 select steps 1, 10, and 100.",
+    "unresolved_category": "Other category values read a halfword from stack offset +0x8C without a prior initialization in this function.",
+    "selection_and_room_id": "The local selection is a signed halfword at SYS_W+0x3ADF4. Input bit 0x0800 subtracts the step and loads the group table value when the signed result is negative. Input bit 0x0400 adds the step and wraps to zero unless the result is below the group table value. The function stores the selection at +0x3ADF4 and stores group_base+selection as a halfword at +0x3ADF2.",
+    "display": "Eight calls to 0x800042AC use the copied pointer table; the target also computes decimal quotient and remainder values. It does not directly read D_8006B780, call 0x8000B864, or call a resource loader.",
+    "confirm_boundary": "Input bit 0x4000 writes 2 to SYS_W+0x3ADD6, after which the function rereads save-area input. OR-mask 0x9000 calls matched 0x80021444.",
+    "neighbor_contract": "80021444 conditionally copies intended room ID +0x3ADF2 and group +0x3ADE4, calls 800214E4 and 8000B864, and requests state 0x0B. With D_8006CFBC==0xFF it skips the record/helper writes but still requests state 0x0B. 800214E4 indexes D_8006B780 at ROM 0x6C380 using an unsigned room ID and 10-byte stride; if any xyz halfword is nonzero it copies xyz/heading/mode, otherwise it clears all five destination halfwords. The index is unchecked.",
+    "unknown": [
+      "The valid runtime range of the dispatcher selector and group byte is not established; neither is bounds-checked in the observed path.",
+      "The behavior of category values outside 0..2 depends on an uninitialized stack halfword.",
+      "Input masks are recorded as bits only; their user-facing button meanings are not assigned here.",
+      "A state-0x0B request does not prove a complete map load or successful transition.",
+      "No live-game verification was performed."
+    ]
+  },
+  "behavior_hypothesis": {
+    "statement": "80020F10 maintains a group-local selection at SYS_W+0x3ADF4, derives an intended room ID at SYS_W+0x3ADF2 from the group-base table, and leaves 10-byte entrance-record lookup to 800214E4 after the guarded 80021444 call.",
+    "result": "Confirmed by original dispatch, table accesses, stores, and call sites."
+  },
+  "native_codegen_trial": {
+    "variant_count": 0,
+    "candidate_source_sha256": null,
+    "first_mismatch": "NOT_RUN",
+    "reason": "No bounded whole-function C hypothesis was justified under the v2 budget. The target is 333 instructions with eight drawing calls and decimal-formatting paths; category values outside 0..2 read uninitialized stack data. No native candidate or IDO compile was attempted."
+  },
+  "host_reference": {
+    "file": "decomp/test_default_entrance.c",
+    "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/default_entrance.c decomp/test_default_entrance.c -o /tmp/g64-068-default-entrance-host && /tmp/g64-068-default-entrance-host",
+    "compiler": "GCC 15.2.0",
+    "result": "PASS, compile exit 0 and host fixture exit 0.",
+    "coverage": "Matched-neighbor behavior for intended room indices 1 and 2, record field copy, all-zero xyz clearing of all five output halfwords, sentinel preservation, and guarded state-request path.",
+    "scope": "Host fixture for already matched 80021444/800214E4 only. It is not execution of 80020F10 assembly, native IDO equality, full-ROM proof, or in-game verification."
+  },
+  "tests": {
+    "target_and_table_raw_bytes": "PASS; the 0x534-byte target slice and tables at 0x6DBC8, 0x6DC88, 0x6DCB4, and 0x6DCCC were read from both USA images and matched.",
+    "host_reference": "PASS under AddressSanitizer and UndefinedBehaviorSanitizer; compile and execution exited 0.",
+    "repository_local_ci": "PASS; python3 -m decomp.local_ci exited 0. It ran 207 decomp Python tests, 116 verifier/ledger tests, task/evidence validation, and the 1,000-case display-emitter sanitizer fixture.",
+    "task_evidence_validation": "PASS; validation reported CONSISTENT_STORED_REPORTS for all 100 tasks.",
+    "diff_check": "PASS; git diff --check exited 0.",
+    "execution_json_parse": "PASS; python3 -m json.tool parsed the execution record with exit 0.",
+    "fresh_full_rom_g2": "NOT_RUN; no source/manifest/proof change and no native candidate.",
+    "live_game_verification": "NOT_RUN"
+  },
+  "stored_proof_unchanged": true,
+  "decision": "Record G64-068 as RESEARCH_ONLY, retain func_80020F10 as GLOBAL_ASM, and keep selection separate from entrance-record setup and state requests.",
+  "next": "G64-069 Architect transition safety assertions."
+}
