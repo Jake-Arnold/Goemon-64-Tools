@@ -38,6 +38,11 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertTrue(app.connect_button.winfo_exists())
         self.assertTrue(app.restore_state_btn.winfo_exists())
         self.assertTrue(app.cancel_restore_btn.winfo_exists())
+        self.assertTrue(app.capture_state_btn.winfo_exists())
+        self.assertTrue(app.checkpoint_name.winfo_exists())
+        self.assertFalse(hasattr(app,'bookmarks_box'))
+        self.assertFalse(hasattr(app,'teleport_btn'))
+        self.assertFalse(hasattr(app,'bookmark_name'))
         app.open_full_scene_tab()
         self.assertEqual(app.notebook.select(), str(app.scene_tab))
         app.open_live_memory_tab()
@@ -48,7 +53,23 @@ class DashboardSmokeTests(unittest.TestCase):
         self.root.geometry('960x640')
         self.root.update_idletasks()
         self.assertEqual(app.notebook.tab(app.notebook.tabs()[0], 'text'),'Dashboard')
-        self.assertTrue(app.bookmarks_box.winfo_exists())
+        self.assertTrue(app.checkpoints_box.winfo_exists())
+
+    def test_combined_selector_labels_full_and_legacy_position_without_misrepresentation(self):
+        from tests.test_checkpoint import TestCheckpoint
+        from practice.checkpoints import capture_checkpoint
+        app=self.toolkit
+        _,ram=TestCheckpoint().sample()
+        full=capture_checkpoint(ram,'Complete snapshot')
+        app.checkpoints=[full]
+        app.legacy_bookmarks=[dict(name='Old room',x=1.5,y=2.5,z=3.5,character=0,map_id=35),
+                              dict(name='No map',x=1,y=2,z=3,character=0)]
+        labels=app.checkpoint_labels()
+        self.assertEqual(app.checkpoint_choices(),[('logical',0),('position',0),('position',1)])
+        self.assertIn('logical',labels[0]);self.assertIn('XYZ saved',labels[0])
+        self.assertIn('POSITION ONLY',labels[1]);self.assertIn('no inventory',labels[1])
+        self.assertIn('map unknown',labels[2])
+        self.assertFalse(hasattr(app,'save_bookmark'))
 
     def test_dark_theme_and_no_unsafe_warp_activation(self):
         self.assertEqual(self.root.cget('background'), PALETTE['background'])

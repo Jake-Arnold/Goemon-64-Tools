@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Unify position bookmarks and logical checkpoints
+
+- **Dashboard:** Removed redundant Position bookmarks dropdown and Save position/Restore position buttons. The single Logical checkpoints panel now has one name field, one combined selector, Capture logical checkpoint, Restore selected checkpoint and Cancel pending restore.
+- **Capture semantics:** New logical checkpoints continue to store original-game saved flags, inventory, resources, map, character, XYZ and rotation; the existing `goemon-logical-checkpoint-v1` format, capture validation, cross-area reload, native character swap and in-room restore are unchanged.
+- **Legacy data:** Load existing `bookmarks.json` as *position-only* items in the same selector. Do not rewrite, delete or invent logical progression for legacy records. Restores of these entries only write XYZ within the original map/character after confirmation and stable-gameplay/pointer revalidation, with readback and best-effort rollback; missing-map entries remain visible but blocked. New captures write only to `checkpoints.json`.
+- **Tests:** Updated dashboard tests and added combined-selector, full-capture-position, position-only restore and refusal cases for missing map, cross-map and read-only states. Implementation/committed source reviewed; full GUI suite and live game behavior not run in this connector environment.
+
 ### 2026-11-14 — Toolkit UI consolidation and memory-row deduplication
 
 - **Dashboard:** Removed embedded Scene Browser, Live Memory preview and rebuilt-recomp Game speed controls. Retained connection, player status, position bookmarks, checkpoints and scrolling single-column layout; reduced minimum window dimensions. Dedicated Scene Browser/Live Memory and F1 access remain functional.

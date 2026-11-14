@@ -1,7 +1,7 @@
 """Goemon Practice Toolkit v0.11.17 — host UI for US Goemon.
 
-Observes original-game RDRAM state and manages position bookmarks, gameplay diagnostics
-and experimental logical progression checkpoints. Memory writes
+Observes original-game RDRAM state and manages gameplay diagnostics and
+experimental logical checkpoints (including saved position and orientation). Memory writes
 are enabled by default; --read-only disables writes and game input. This is not a savestate
 and is not an in-game N64 ROM patch.
 """
@@ -18,6 +18,7 @@ import platform
 import ctypes
 import queue
 import threading
+import struct
 from tkinter import ttk, messagebox, filedialog
 import sys
 
@@ -111,7 +112,9 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         self.last, self.last_t = None, None
         self.observed_velocity = None
         self.current = None
-        self.bookmarks = json.loads(BOOKMARKS_FILE.read_text()) if BOOKMARKS_FILE.exists() else []
+        # Legacy position-only bookmarks are presented in the same selector but
+        # never misrepresented or rewritten as full progression checkpoints.
+        self.legacy_bookmarks = json.loads(BOOKMARKS_FILE.read_text()) if BOOKMARKS_FILE.exists() else []
         self.checkpoints = load_checkpoint_file(CHECKPOINTS_FILE)
         self.status = tk.StringVar(value="Disconnected. Start US Goemon in Recomp or Project64, then Connect.")
         self.connection_target = tk.StringVar(value='auto')
@@ -188,41 +191,34 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
                   wraplength=420).pack(anchor='w')
 
-        checkpoints = ttk.LabelFrame(left, text=' Checkpoints and bookmarks ', padding=12)
+        checkpoints = ttk.LabelFrame(left, text=' Logical checkpoints ', padding=12)
         checkpoints.pack(fill='x', pady=(0, 10))
-        ttk.Label(checkpoints, text='Name for the next saved checkpoint',
-                  style='CardMuted.TLabel').pack(anchor='w')
-        self.bookmark_name = ttk.Entry(checkpoints)
-        self.bookmark_name.insert(0, 'Practice checkpoint')
-        self.bookmark_name.pack(fill='x', pady=(4, 8))
-        ttk.Label(checkpoints, text='Position bookmarks', style='Card.TLabel').pack(anchor='w')
-        self.bookmarks_box = ttk.Combobox(checkpoints, state='readonly', values=self.bookmark_labels())
-        self.bookmarks_box.pack(fill='x', pady=4)
-        row = ttk.Frame(checkpoints, style='Card.TFrame')
-        row.pack(fill='x', pady=(2, 8))
-        ttk.Button(row, text='Save position', command=self.save_bookmark,
-                   style='Accent.TButton').pack(side='left', fill='x', expand=True)
-        self.teleport_btn = ttk.Button(row, text='Restore position', command=self.restore_bookmark)
-        self.teleport_btn.pack(side='left', fill='x', expand=True, padx=(8, 0))
-        if not args.enable_teleport:
-            self.teleport_btn.state(['disabled'])
-        ttk.Label(checkpoints, text='Logical checkpoints (experimental)',
-                  style='Card.TLabel').pack(anchor='w', pady=(2, 0))
+        ttk.Label(checkpoints, text='Includes saved position, orientation, health, lives, Ryo, items and progression.',
+                  style='CardMuted.TLabel',wraplength=900).pack(anchor='w',pady=(0,7))
+        ttk.Label(checkpoints, text='Name for new checkpoint',style='CardMuted.TLabel').pack(anchor='w')
+        self.checkpoint_name = ttk.Entry(checkpoints)
+        self.checkpoint_name.insert(0, 'Practice checkpoint')
+        self.checkpoint_name.pack(fill='x', pady=(4, 8))
+        ttk.Label(checkpoints, text='Saved checkpoints',style='Card.TLabel').pack(anchor='w')
         self.checkpoints_box = ttk.Combobox(checkpoints, state='readonly', values=self.checkpoint_labels())
         self.checkpoints_box.pack(fill='x', pady=4)
         state_buttons = ttk.Frame(checkpoints, style='Card.TFrame')
         state_buttons.pack(fill='x', pady=(2, 5))
-        ttk.Button(state_buttons, text='Capture checkpoint', command=self.capture_full_checkpoint,
-                   style='Gold.TButton').pack(side='left', expand=True, fill='x')
-        self.restore_state_btn = ttk.Button(state_buttons, text='Restore (experimental)',
+        self.capture_state_btn = ttk.Button(state_buttons, text='Capture logical checkpoint',
+                                            command=self.capture_full_checkpoint,style='Gold.TButton')
+        self.capture_state_btn.pack(side='left', expand=True, fill='x')
+        self.restore_state_btn = ttk.Button(state_buttons, text='Restore selected checkpoint',
                                             command=self.restore_full_checkpoint)
         self.restore_state_btn.pack(side='left', expand=True, fill='x', padx=(8, 0))
-        if not args.enable_state_restore:
+        if not (args.enable_state_restore or args.enable_teleport):
             self.restore_state_btn.state(['disabled'])
         self.cancel_restore_btn = ttk.Button(checkpoints, text='Cancel pending checkpoint restore',
                                              command=self.cancel_pending_restore)
         self.cancel_restore_btn.pack(fill='x', pady=(3, 0))
         self.cancel_restore_btn.state(['disabled'])
+        ttk.Label(checkpoints,text='Older position bookmarks appear here as position-only; '
+                  'they cannot restore health, items or progression.',style='CardMuted.TLabel',
+                  wraplength=900).pack(anchor='w',pady=(6,0))
 
         ttk.Label(left, text='Scene Browser, Live Memory, Unlocks and Event Sessions each have their own tabs.',
                   style='CardMuted.TLabel', wraplength=850).pack(anchor='w', pady=(2, 8))
@@ -254,9 +250,6 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         """Toolkit-local shortcut for the complete Live Memory tab."""
         self.open_live_memory_tab()
         return 'break'
-
-    def bookmark_labels(self):
-        return [f"{i+1}. {x['name']} ({x['x']:.1f}, {x['y']:.1f}, {x['z']:.1f})" for i,x in enumerate(self.bookmarks)]
 
     def launch_linux_recomp(self):
         """Launch a user-selected native Linux build as our child for ptrace access.
@@ -547,65 +540,83 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.refresh_unlocks(force=True)
         self.root.after(170,self.tick)
 
-    def save_bookmark(self):
-        s=self.current
-        if not s or s["x"] is None:
-            messagebox.showerror("Not connected","Read a valid player position first")
-            return
-        entry={"name":self.bookmark_name.get() or "Checkpoint",
-               "x":s["x"],"y":s["y"],"z":s["z"],"character":s["character"],
-               "action":s["action"],
-               "map_id":self.mem.u16(0x800C7AB2) if self.mem else None}
-        self.bookmarks.append(entry)
-        BOOKMARKS_FILE.write_text(json.dumps(self.bookmarks,indent=2)+"\n")
-        self.bookmarks_box["values"]=self.bookmark_labels()
-        self.bookmarks_box.current(len(self.bookmarks)-1)
-        self.status.set(f"Saved bookmark: {entry['name']}")
-
-    def restore_bookmark(self):
-        idx=self.bookmarks_box.current()
-        if not self.args.enable_teleport or idx<0 or not self.mem or not self.current:
-            return
-        b=self.bookmarks[idx]
-        if self.current["loading"] or self.current["x"] is None:
-            messagebox.showerror("Blocked","Restore only in stable gameplay")
-            return
-        if self.current["character"]!=b["character"]:
-            messagebox.showerror("Blocked","Bookmark character doesn't match the active character")
-            return
-        if b.get("map_id") is None:
-            messagebox.showerror("Blocked","Legacy bookmark has no recorded map ID. Recapture this bookmark in v0.4 before restoring.")
-            return
-        if self.mem.u16(0x800C7AB2)!=b["map_id"]:
-            messagebox.showerror("Blocked","Bookmark map differs. Use the original debug menu to reach that map first.")
-            return
-        if not messagebox.askyesno("Practice teleport",
-                "This writes N64 object coordinates and can softlock, crash, or corrupt game state. "
-                "It does not restore the full scene or physics state. Use only within the same room. Continue?"):
-            return
-        try:
-            obj=self.current["player_ptr"]
-            if not obj: raise ValueError("No player object")
-            for i,k in enumerate(("x","y","z")):
-                self.mem.write_f32(obj+8+i*4,float(b[k]))
-            self.status.set(f"Moved to saved coordinates: {b['name']} (practice mode only)")
-        except Exception as e:
-            messagebox.showerror("Teleport failed",str(e))
+    def checkpoint_choices(self):
+        """One selector for full logical checkpoints and unmodified legacy bookmarks."""
+        return ([('logical', i) for i in range(len(self.checkpoints))] +
+                [('position', i) for i in range(len(self.legacy_bookmarks))])
 
     def checkpoint_labels(self):
         labels=[]
-        for i, cp in enumerate(self.checkpoints):
-            p=cp["payload"]
-            stats=p["summary"]
-            labels.append(f"{i+1}. {p['name']} (map {p['map_id']}, {stats['health']}/{stats['max_health']} HP, {stats['ryo']} Ryo, {stats['lives']} lives)")
+        for n, (kind, index) in enumerate(self.checkpoint_choices(), 1):
+            if kind=='logical':
+                p=self.checkpoints[index]['payload']
+                stats=p['summary']
+                labels.append(f"{n}. {p['name']} — logical (map {p['map_id']}, "
+                              f"{stats['health']}/{stats['max_health']} HP, "
+                              f"{stats['ryo']} Ryo, {stats['lives']} lives; XYZ saved)")
+            else:
+                b=self.legacy_bookmarks[index]
+                map_id=b.get('map_id')
+                where=f'map {map_id}' if map_id is not None else 'map unknown'
+                labels.append(f"{n}. {b.get('name','Untitled')} — legacy POSITION ONLY "
+                              f"({where}; no inventory or progression)")
         return labels
+
+    def _restore_legacy_position(self, bookmark):
+        """A legacy entry restores coordinates only. Never manufacture progress data."""
+        if not self.args.enable_teleport:
+            self.status.set('Position-only restore disabled by current access settings.')
+            return
+        try:
+            before=_ensure_capture_safe(self.mem)
+            saved_map=bookmark.get('map_id')
+            if type(saved_map) is not int or not 0 <= saved_map < 65536:
+                raise ValueError('Legacy bookmark has no valid map ID; capture a new logical checkpoint.')
+            if before['character'] != bookmark.get('character'):
+                raise ValueError('Position-only checkpoint character differs from the active character.')
+            if self.mem.u16(MAP_ADDR) != saved_map:
+                raise ValueError('Position-only checkpoint requires its original map; automatic warp is unavailable.')
+            xyz=tuple(float(bookmark[k]) for k in ('x','y','z'))
+            if any(not math.isfinite(v) or abs(v)>=1e6 for v in xyz):
+                raise ValueError('Invalid saved position coordinates')
+            obj=before['player_ptr']
+            if not obj or not self.mem.is_ram_pointer(obj,0x1A):
+                raise ValueError('Player object unavailable')
+        except (OSError,ValueError,KeyError,TypeError,OverflowError) as exc:
+            messagebox.showerror('Position-only restore blocked',str(exc))
+            return
+        if not messagebox.askyesno('Legacy position-only checkpoint',
+            'Restore XYZ only in this map? This does NOT restore inventory, health, '
+            'lives, Ryo, rotation, scripts or story progress. It may disrupt gameplay. Continue?'):
+            return
+        try:
+            with self.value_freezes.guard:
+                current=_ensure_capture_safe(self.mem)
+                if (current['player_ptr'] != obj or current['character'] != before['character'] or
+                        self.mem.u16(MAP_ADDR) != saved_map):
+                    raise ValueError('Player, character or map changed before position restore')
+                encoded=struct.pack('>fff',*xyz)
+                original=self.mem.read_guest(obj+0x08,12)
+                try:
+                    self.mem.write_guest(obj+0x08,encoded)
+                    if self.mem.read_guest(obj+0x08,12)!=encoded:
+                        raise OSError('Position readback mismatch')
+                except Exception:
+                    try:self.mem.write_guest(obj+0x08,original)
+                    except Exception:pass
+                    raise
+            self.last=self.last_t=None
+            self.status.set(f"Restored legacy position-only checkpoint: {bookmark.get('name','Untitled')} "
+                            '(XYZ only; progress unchanged).')
+        except (OSError,ValueError,RuntimeError) as exc:
+            messagebox.showerror('Position-only restore failed',str(exc))
 
     def capture_full_checkpoint(self):
         if not self.mem or not self.current:
             messagebox.showerror("Not connected","Connect to the game first")
             return
         try:
-            cp=capture_checkpoint(self.mem,self.bookmark_name.get())
+            cp=capture_checkpoint(self.mem,self.checkpoint_name.get())
             self.checkpoints.append(cp)
             save_checkpoint_file(CHECKPOINTS_FILE,self.checkpoints)
             self.checkpoints_box["values"]=self.checkpoint_labels()
@@ -613,7 +624,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.refresh_checkpoint_options()
             self.diff_cp.current(len(self.checkpoints)-1)
             self.refresh_checkpoint_diff(force=True)
-            self.status.set("Captured original N64 progress flags, stats, unlocks and position. Experimental in-room restore available.")
+            self.status.set("Captured logical checkpoint: XYZ, rotation, health, lives, Ryo, inventory and progression. This is not a savestate.")
         except Exception as e:
             messagebox.showerror("Checkpoint capture blocked",str(e))
 
@@ -640,7 +651,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         self.pending_restore=None
         self._release_native_key()
         if getattr(self,'cancel_restore_btn',None):self.cancel_restore_btn.state(['disabled'])
-        if getattr(self,'restore_state_btn',None) and self.args.enable_state_restore:
+        if getattr(self,'restore_state_btn',None) and (self.args.enable_state_restore or self.args.enable_teleport):
             self.restore_state_btn.state(['!disabled'])
         if pending and self.mem:
             try:
@@ -780,15 +791,27 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.status.set(f'Waiting for safe native character state: {exc}')
 
     def restore_full_checkpoint(self):
+        if getattr(self.args,'read_only',False):
+            self.status.set('Checkpoint restore is disabled in read-only mode.')
+            return
         i=self.checkpoints_box.current()
-        if not self.args.enable_state_restore or i<0 or not self.mem or not self.current:return
+        if i<0 or not self.mem or not self.current:return
         if self.pending_restore:
             self.status.set('A checkpoint restore is already pending; cancel it first.')
             return
         if self.pending_direct_warp or self.pending_native_warp:
             self.status.set('Finish or cancel the scene request before restoring a checkpoint.')
             return
-        cp=self.checkpoints[i]
+        choice=self.checkpoint_choices()
+        if i>=len(choice):return
+        kind, index=choice[i]
+        if kind=='position':
+            self._restore_legacy_position(self.legacy_bookmarks[index])
+            return
+        if not self.args.enable_state_restore:
+            self.status.set('Logical checkpoint restoration is disabled.')
+            return
+        cp=self.checkpoints[index]
         p=cp['payload']
         try:
             validate_checkpoint(cp)

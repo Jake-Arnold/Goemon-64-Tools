@@ -1,8 +1,14 @@
 # Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
 
+## Unified logical checkpoints
+
+The Dashboard now has one **Logical checkpoints** panel: enter a name, choose **Capture logical checkpoint**, select from **Saved checkpoints**, or **Restore selected checkpoint**. A new full checkpoint already records XYZ position, rotation, character, map, health, lives, Ryo, inventory and saved progression flags. It is a logical snapshot, **not** an N64 savestate; actor state, camera, active scripts and physics are not captured. Cross-room restoration continues to use the guarded experimental stage reload and character-swap flow.
+
+The older `bookmarks.json` is **read-only legacy input**, not silently converted into fabricated progression snapshots. Its entries appear at the end of the same selector as **legacy POSITION ONLY**; restoring one may write XYZ only in the original map with the original character, after a separate warning. Legacy bookmarks with unknown maps cannot be restored. Existing `bookmarks.json` and `checkpoints.json` are preserved; new captures save only to `checkpoints.json`. There is no separate Save position/Restore position UI.
+
 ## Current simplified toolkit layout
 
-Dashboard contains connection status, player position, bookmarks and checkpoints only. The compact single-column layout remains scrollable at smaller window sizes. Scene Browser and Live Memory are separate dedicated tabs; the dashboard no longer duplicates their tables.
+Dashboard contains connection status, player position and a unified logical-checkpoint panel only. The compact single-column layout remains scrollable at smaller window sizes. Scene Browser and Live Memory are separate dedicated tabs; the dashboard no longer duplicates their tables.
 
 The rebuilt-recomp **Game speed** UI has been removed. Standalone speed research and preparation code remains in the repository but is not part of the toolkit interface.
 
