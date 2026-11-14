@@ -1,6 +1,6 @@
 # Finding native C targets from conversation traces
 
-2026-11-13. Evidence uses the original USA MIPS and SHA-1-pinned decompressed image described in [INPUTS.md](INPUTS.md). The recorded guest PCs come from the [gameplay runtime observations](../docs/VM_GAMEPLAY_RUNTIME_FINDINGS_2026-11-13.md).
+2026-11-13; updated 2026-11-14. Evidence uses the original USA MIPS and SHA-1-pinned decompressed image described in [INPUTS.md](INPUTS.md). The recorded guest PCs come from the [gameplay runtime observations](../docs/VM_GAMEPLAY_RUNTIME_FINDINGS_2026-11-13.md).
 
 ## Chain Pipe notice
 
@@ -81,25 +81,41 @@ The linked bytes and function entry are identical. The focused host
 ASan/UBSan harness covered all signed halfword phases, absent slots,
 flag preservation, line wrapping and repeated selector updates.
 
+The target branch later added `func_80222034_5DD504` and
+`func_80222168_5DD638` as exact C in the `file_12` overlay. The first is the
+20-byte G64-060 promotion; the second is a 36-byte follow-up. Their combined
+fresh proof is 160 functions / 12,272 MIPS bytes with an exact 32 MiB ROM
+match. The latest complete evidence is in
+`decomp/results/combined.json` and
+`decomp/plans/execution/2026-11-14-vm-file12-dialogue-call.json`.
+
 ## Native callback leads
 
 An aligned `0x800B` scan of resources 93, 96 and 97 found 203 main-segment
 references to five distinct callbacks already covered by the manifest.
 Extending the scan to 756 nonempty resources with virtual base
 `0x08000000` and restricting operands to identified native function
-entries found 1,043 references to 11 distinct targets. Four still have
-assembly ownership, all in the unit beginning at decompressed image offset
-`0x5C8770`. Treat these as static call-site candidates until reachability and
-overlay identity are confirmed.
+entries found 1,043 references to 11 distinct targets. The four targets below
+are in the unit beginning at decompressed-reference offset `0x5C8770`.
+These counts are static operand matches; they do not prove a callback runs in
+the observed conversation.
 
-| Guest VMA / decompressed offset / size | References | First observed native effect |
-| --- | ---: | --- |
-| `80222034 / 5DD504 / 20 B` | 11 | Copies a global word to `801C7750`. |
-| `80222168 / 5DD638 / 36 B` | 31 | Calls `801DCD48` with the sign-extended byte at `801C7743`. |
-| `80221FD4 / 5DD4A4 / 96 B` | 81 | Reads a signed script halfword, adds it to a global word and checks limits. |
-| `80214D58 / 5D0228 / 456 B` | 12 | Calls native predicates before branching. Resource 96 contains a candidate reference. |
+`file_12` maps decompressed-reference ROM range `[0x5C8770, 0x5F6840)` to VMA
+`0x8020D2A0` under exclusive RAM ID `static_overlay_2`; its text ends at
+`0x5E3C90`. The function ROM offsets below are in the 32 MiB decompressed
+reference image, not retail cartridge DMA offsets. Resource ID 12 is stored
+compressed in the retail table. Both promoted callbacks were checked against
+the linked overlay ELF and complete ROM.
 
-The 20- and 36-byte callbacks are the first overlay candidates to try.
-The current matching manifest and verifier require the main-segment
-ROM/VMA relation. These callbacks use a different relation and need
-overlay-aware symbol, section and full-ROM verification before promotion.
+| Guest VMA / decompressed offset / size | Static references | First observed native effect | Current ownership |
+| --- | ---: | --- | --- |
+| `80222034 / 5DD504 / 20 B` | 11 | Copies a global word to `801C7750`. | Exact C, passed G2 |
+| `80222168 / 5DD638 / 36 B` | 31 | Loads signed byte `801C7743` in the `jal` delay slot and calls `801DCD48`. | Exact C, passed G2 |
+| `80221FD4 / 5DD4A4 / 96 B` | 81 | Reads a signed script halfword, adds it to a global word and checks limits. | Assembly |
+| `80214D58 / 5D0228 / 456 B` | 12 | Calls native predicates before branching. Resource 96 contains a candidate reference. | Assembly |
+
+The 36-byte C body uses an `int` call argument sourced from the original
+signed-byte load. Its full original function extent and all three linked
+relocation targets match. The 96- and 456-byte leads remain research candidates;
+their static references need runtime/reachability context before drawing
+dialogue-specific conclusions.

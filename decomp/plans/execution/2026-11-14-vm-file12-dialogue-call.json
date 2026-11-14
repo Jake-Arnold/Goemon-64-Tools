@@ -1,0 +1,99 @@
+{
+  "format": "goemon-dialogue-callback-followup-v1",
+  "date": "2026-11-14",
+  "status": "PASSED_G2",
+  "scope": "Independent follow-up to the conversation-trace callback leads; not a new G64 task or a change to the 100-task queue.",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "652b086527ceaf0a7e07a6ad63b217c95ff35909",
+    "remote_head_before_task": "652b086527ceaf0a7e07a6ad63b217c95ff35909",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "original_mips": {
+    "function": "func_80222168_5DD638",
+    "section": ".file_12",
+    "vma": "0x80222168",
+    "decompressed_reference_rom_offset": "0x5DD638",
+    "size_bytes": 36,
+    "instruction_sha256": "2fc27981dfd6f3b7bec3855adf32d1969e5efe4a62e235c6abda6c1cfdd38c98",
+    "verified_contract": "The callback saves/restores ra, loads the sign-extended byte D_801C7743 into a0 in the jal delay slot, and calls 0x801DCD48.",
+    "static_reference_count": 31,
+    "reference_limit": "Static operand matches do not establish runtime reachability or prove that this callback runs in a specific observed conversation."
+  },
+  "candidate": {
+    "source": "decomp/candidates/file12_dialogue_call.c",
+    "source_sha256": "2fff2f49dbeb427200ef469596a8a229c9763db6f70bee93e662a1b1016ef6d1",
+    "project_build_object_sha256": "b82046c06cc59881668b07c8c8fd84659be8599315b21f03753211a8accbeebe",
+    "staged_object_sha256": "d292b9e69f4976d4e9f217670e9c092c2429e57d1f0acf6208397d6708020a6d",
+    "linked_function_sha256": "2fc27981dfd6f3b7bec3855adf32d1969e5efe4a62e235c6abda6c1cfdd38c98",
+    "relocations": [
+      {"section_offset": "0x8", "type": "R_MIPS_HI16", "symbol": "D_801C7743", "resolved_vma": "0x801C7743"},
+      {"section_offset": "0xC", "type": "R_MIPS_26", "symbol": "func_801DCD48_598C58", "resolved_vma": "0x801DCD48"},
+      {"section_offset": "0x10", "type": "R_MIPS_LO16", "symbol": "D_801C7743", "resolved_vma": "0x801C7743"}
+    ]
+  },
+  "overlay_proof": {
+    "section": ".file_12",
+    "vma_start": "0x8020D2A0",
+    "decompressed_reference_rom_range": ["0x5C8770", "0x5F6840"],
+    "size_bytes": 188624,
+    "reference_and_candidate_section_sha256": "1fe5547a5899a34c0cb94c3ca56576d88509c4cff9f7682202627e0df0eddc4e",
+    "semantic_relocations_match": 7051,
+    "raw_relocation_section_bytes_identical": false,
+    "approved_normalizations": {
+      "same_data_symbol_notype_to_object": 296,
+      "pinned_zero_size_tail_alias_section_representation": 4
+    },
+    "existing_callback_also_retained": "func_80222034_5DD504 (20 bytes; G64-060)"
+  },
+  "fresh_g2": {
+    "command": "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --workdir practice/diagnostics/decomp-100-inputs/g64-dialogue/file12-multi-2026-11-14b --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --baseline-cache practice/diagnostics/decomp-100-inputs/g64-082/g2-run-2026-11-13/baseline --report practice/diagnostics/decomp-100-inputs/g64-dialogue/file12-multi-2026-11-14b-report.json --uv \"$(command -v uv)\" --jobs 2",
+    "exit_code": 0,
+    "raw_report": "practice/diagnostics/decomp-100-inputs/g64-dialogue/file12-multi-2026-11-14b-report.json",
+    "raw_report_sha256": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "checked_in_report": "decomp/results/combined.json",
+    "checked_in_report_sha256": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_functions": 160,
+    "claimed_functions": 160,
+    "matched_function_bytes": 12272
+  },
+  "inventory": {
+    "command": "python3 -m decomp.inventory --baseline practice/diagnostics/decomp-100-inputs/g64-082/g2-run-2026-11-13/baseline --candidate practice/diagnostics/decomp-100-inputs/g64-dialogue/file12-multi-2026-11-14b/candidate --report practice/diagnostics/decomp-100-inputs/g64-dialogue/file12-multi-2026-11-14b-inventory.json",
+    "exit_code": 0,
+    "report": "decomp/results/inventory.json",
+    "report_sha256": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051",
+    "identified_function_entries": 7376,
+    "newly_matching_c": 160,
+    "current_unmarked_entries": 173,
+    "remaining_assembly_entries": 7203,
+    "identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  },
+  "tests": {
+    "focused_command": "python3 -m unittest tests.test_decomp_verify decomp.test_overlay_file12 decomp.test_probe_file12_callbacks -q",
+    "focused_exit_code": 0,
+    "focused_tests": 52,
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "decomp_python_tests": 207,
+      "verifier_ledger_tests": 116,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_asan_ubsan": "PASS, 1,000 synthetic cases"
+    },
+    "skill_context_validation": "CONSISTENT_STORED_REPORTS",
+    "git_diff_check": "PASS"
+  },
+  "decision": "Promote only func_80222168_5DD638. The existing 20-byte sibling and the 36-byte callback both retain exact linked bytes and relocation targets; the full overlay and complete ROM pass.",
+  "limitations": [
+    "The function is proven against pinned linked MIPS and the full ROM; no live-game runtime verification was performed.",
+    "Static resource operand counts are not proof of runtime callback reachability.",
+    "Raw relocation section bytes differ because ELF symbol metadata and the pinned tail alias use different encodings; semantic records pass under the explicitly bounded normalizations above."
+  ],
+  "next": "Resume the authoritative 100-task plan at G64-062; the callback follow-up does not reorder that queue."
+}

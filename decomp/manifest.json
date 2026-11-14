@@ -1289,19 +1289,34 @@
       "size": 96
     }
   },
-  "overlay_file12_stage": {
-    "format": "goemon-file12-c-stage-v1",
-    "source": "candidates/file12_dialogue_copy.c",
-    "source_sha256": "bce7049e5438f50b9cb5bd7cea430fb2101067dcfdab760003ecaef3c2527fd2",
-    "compiler_object_sha256": "0d91354ac69cf05f78154675170f45faddf1d97665b83d1db7ced32db115afaf",
-    "object_sha256": "a8a7db2bc82ea6aec60a41215dc87a6fe112630e9439c066bec79942cdcc0b6d",
-    "function": {
-      "name": "func_80222034_5DD504",
-      "rom_offset": 6149380,
-      "vma": 2149720116,
-      "size": 20
+  "overlay_file12_stages": [
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/file12_dialogue_copy.c",
+      "source_sha256": "bce7049e5438f50b9cb5bd7cea430fb2101067dcfdab760003ecaef3c2527fd2",
+      "compiler_object_sha256": "0d91354ac69cf05f78154675170f45faddf1d97665b83d1db7ced32db115afaf",
+      "object_sha256": "a8a7db2bc82ea6aec60a41215dc87a6fe112630e9439c066bec79942cdcc0b6d",
+      "function": {
+        "name": "func_80222034_5DD504",
+        "rom_offset": 6149380,
+        "vma": 2149720116,
+        "size": 20
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/file12_dialogue_call.c",
+      "source_sha256": "2fff2f49dbeb427200ef469596a8a229c9763db6f70bee93e662a1b1016ef6d1",
+      "compiler_object_sha256": "b82046c06cc59881668b07c8c8fd84659be8599315b21f03753211a8accbeebe",
+      "object_sha256": "d292b9e69f4976d4e9f217670e9c092c2429e57d1f0acf6208397d6708020a6d",
+      "function": {
+        "name": "func_80222168_5DD638",
+        "rom_offset": 6149688,
+        "vma": 2149720424,
+        "size": 36
+      }
     }
-  },
+  ],
   "vm_assignment_table_layout": true,
   "existing_source_patches": [
     {

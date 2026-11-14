@@ -25,19 +25,19 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "9dcee62484f7b2370ef4f4795548835f6608f84909a5bc9135ef320475d65e1d",
+    "manifest_sha256": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "e8a9ac8d2de3115e05adefac6c1893129bc4acd48c3cf78637b3cd7dd658b862"
+    "verifier_sha256": "3ff0c04a3b713603c81c35e281bd07b540a0ec5411d9da92b94eb8462f879be5"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "a32657b785eaf5391a3b5aa53bdbb082fa1d1bc017163da9c141447ba1cc17af",
+    "report_sha256": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "3f06b5ed5c15805ccc8959c5ada08790ce291ce18dcf2a10d04d529ab89bb3b1",
-    "matching_c_functions": 159,
-    "matching_c_bytes": 12236,
-    "combined_c_entries": 172,
-    "asm_entries": 7204,
+    "combined_proof_sha256": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "matching_c_functions": 160,
+    "matching_c_bytes": 12272,
+    "combined_c_entries": 173,
+    "asm_entries": 7203,
     "identified_entries": 7376,
     "full_rom_exact": true,
     "note": "The generated inventory.json is preserved as the whole-project symbol inventory. Its 13 upstream_unmarked_names are unrelated upstream C entries; they are not these 13 script_vm GLOBAL_ASM functions.",
@@ -348,8 +348,8 @@
         "bytes": 36
       }
     ],
-    "status": "RESEARCH_ONLY: both isolated IDO probes exact; overlay unit/linker/relocation and full-ROM/inventory proof are not established.",
-    "report": "codex/goemon-vm-overlay-followup:decomp/VM_CONVERSATION_TARGETS.md"
+    "status": "RESOLVED: both callbacks are staged in the production file_12 overlay path and pass linked-ELF and full-ROM verification; see plans/execution/2026-11-14-vm-file12-dialogue-call.json.",
+    "report": "decomp/plans/execution/2026-11-14-vm-file12-dialogue-call.json"
   },
   "decision": "All 13 manifest assembly_functions are present once, tie to the pinned decompressed ROM with original byte hashes and current production source fingerprint, and remain GLOBAL_ASM. Prior full-unit and isolated failures are reconciled by evidence; traces without C candidates are explicitly marked as such. The standard generated whole-project inventory was not edited or rebuilt.",
   "original_rom_validation": {

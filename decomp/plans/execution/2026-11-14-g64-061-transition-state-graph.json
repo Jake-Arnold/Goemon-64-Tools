@@ -50,6 +50,7 @@
       "splat_segment": "file_15",
       "rom_start": "0x65E310",
       "rom_end_exclusive": "0x667B90",
+      "offset_domain": "32 MiB decompressed-reference image; not retail cartridge DMA offsets",
       "vma": "0x801CB460",
       "exclusive_ram_id": "static_overlay_1",
       "same_vma_alternates": ["file_13", "file_14", "file_16"]

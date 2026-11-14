@@ -29,9 +29,10 @@ Read [MASTER_WORK_QUEUE.md](MASTER_WORK_QUEUE.md) for the reconciled VM and over
 ## 1. Establish the current state
 
 **Authoritative continuation checkpoint — 2026-11-14; supersedes the dated
-142-function and 20-step checkpoints below.** Work continues in the fresh
-Codex worktree `codex/decomp-100-task-plan`, on target branch history through
-`760f1af37df3b38a6d43e419fa4dfa5524b71c06` at G64-060 start. G64-022 and
+142-function and 20-step checkpoints below.** The dialogue-callback follow-up
+continues in fresh worktree `codex/vm-dialogue-overlay`, based on verified
+`origin/chatgptweb/decomp` commit `652b086527ceaf0a7e07a6ad63b217c95ff35909`.
+G64-022 and
 earlier milestones are retained as historical checkpoints. The completed
 G64-055/056 overlay integration is published at `3062843c95768b898d9430ecfea03ed7e8b8896d`.
 `main` was not changed. The private USA retail/decompressed ROMs, pinned `mnsg` source at
@@ -45,12 +46,16 @@ and compiler locations, checksums, and fresh proof commands for recreating it.
 The fresh pinned-source baseline reproduced 142 prior claims. Then the resource
 dispatch, menu hook and object dispatch production translation units were
 integrated and independently gated. Current `manifest.json`, `results/combined.json`
-and `results/inventory.json` report **159/159 claims, 12,236 matching MIPS
-bytes, an exact 33,554,432-byte ROM match** (SHA-1
-`6ea0ed71032ce08fc2745f412d84936382197494`), **171 combined C, 7,205 ASM, and
-7,376 identified entries** (172 combined C, 7,204 ASM). G64-060 added the exact 20-byte `file_12` callback
+and `results/inventory.json` report **160/160 matching-C claims, 12,272 matching
+MIPS bytes, and an exact 33,554,432-byte ROM match** (SHA-1
+`6ea0ed71032ce08fc2745f412d84936382197494`). Inventory reports **7,376
+identified entries, 173 current unmarked entries, and 7,203 remaining ASM
+entries**. G64-060 added the exact 20-byte `file_12` callback
 `func_80222034_5DD504` at VMA `0x80222034` / ROM `0x5DD504`; the full
-188,624-byte overlay and semantic relocation set match. G64-056 added the exact
+188,624-byte overlay and semantic relocation set match. Its 36-byte sibling
+`func_80222168_5DD638` now also passes linked-overlay and full-ROM proof; see
+`VM_CONVERSATION_TARGETS.md` and
+`plans/execution/2026-11-14-vm-file12-dialogue-call.json`. G64-056 added the exact
 96-byte overlay initializer
 `func_080001BC_6F369C` through the G64-055 file_43 adapter. Its original and
 candidate overlay sections and all eight target relocations match; see
@@ -77,8 +82,9 @@ separate five-state `800030F0` subdispatcher and the three-entry `8001F8B0`
 dispatcher. It identifies an ID-15 overlay-load request but leaves
 `D_800548D8`'s meaning and scene teardown/activation unproven; both dispatchers
 remain ASM-owned. See
-`plans/execution/2026-11-14-g64-061-transition-state-graph.json`. G64-062 is
-the next eligible task.
+`plans/execution/2026-11-14-g64-061-transition-state-graph.json`. The separate
+dialogue-callback follow-up does not change task ordering: G64-062 remains the
+next eligible 100-plan task.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list

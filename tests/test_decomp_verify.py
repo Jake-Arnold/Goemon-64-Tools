@@ -14,8 +14,10 @@ from decomp.verify import (
     stage_file43_splat, verify_file43_ownership, append_file43_function_comparison,
     verify_file43_stage_build, require_file43_full_rom_match,
     lower_file43_text_alignment, prepare_file43_stage_objects,
+    manifest_file12_stages, stage_file12_splats,
     validate_file12_stage_definition, validate_file12_stage, stage_file12_splat,
     patch_file12_tail_alias_sources,
+    _file12_stages_layout,
     lower_file12_text_alignment, prepare_file12_stage_objects,
     verify_file12_ownership, verify_file12_stage_build,
     append_file12_function_comparison, require_file12_full_rom_match,
@@ -40,9 +42,9 @@ def file43_stage(*, source='candidates/key_spawn_gate.c', source_sha256='a'*64,
     }
 
 
-def file12_stage(*, source='candidates/file12_dialogue_copy.c', source_sha256='a'*64,
+def file12_stage(*, name='func_80222034_5DD504',
+                 source='candidates/file12_dialogue_copy.c', source_sha256='a'*64,
                  compiler_object_sha256='c'*64, object_sha256='b'*64):
-    name='func_80222034_5DD504'
     vma, offset, size, _ = overlay_file12.FUNCTIONS[name]
     return {
         'format': 'goemon-file12-c-stage-v1',
@@ -107,7 +109,7 @@ class DecompVerificationTests(unittest.TestCase):
         disabled=copy.deepcopy(manifest);disabled['overlay_file43_stage']=None
         self.assertEqual(len(claimed_functions(disabled)),
                          len(main_claimed_functions(disabled))+
-                         (disabled.get('overlay_file12_stage') is not None))
+                         len(manifest_file12_stages(disabled)))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
         staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
@@ -117,7 +119,8 @@ class DecompVerificationTests(unittest.TestCase):
             loaded=load_manifest(path)
             self.assertIn(stage['function'],claimed_functions(loaded))
             self.assertEqual(len(claimed_functions(loaded)),
-                             len(main_claimed_functions(loaded))+2)
+                             len(main_claimed_functions(loaded))+
+                             1+len(manifest_file12_stages(loaded)))
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
             path.write_text(json.dumps(bad))
@@ -136,29 +139,45 @@ class DecompVerificationTests(unittest.TestCase):
 
     def test_file12_stage_definition_is_explicit_and_fail_closed(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
-        stage=manifest['overlay_file12_stage']
+        stages=manifest_file12_stages(manifest)
+        self.assertEqual([stage['function']['name'] for stage in stages], [
+            'func_80222034_5DD504', 'func_80222168_5DD638',
+        ])
+        stage=stages[0]
         self.assertEqual(stage['function']['name'],'func_80222034_5DD504')
         self.assertIn(stage['function'],claimed_functions(manifest))
         self.assertEqual(validate_file12_stage_definition(stage).as_posix(),
                          'candidates/file12_dialogue_copy.c')
+        self.assertEqual(validate_file12_stage_definition(stages[1]).as_posix(),
+                         'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
-                         len(main_claimed_functions(manifest))+2)
+                         len(main_claimed_functions(manifest))+1+len(stages))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             bad=copy.deepcopy(manifest)
-            bad['overlay_file12_stage']['function']['vma']+=4
+            bad['overlay_file12_stages'][0]['function']['vma']+=4
             path.write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError,'pinned extent'):
                 load_manifest(path)
             bad=copy.deepcopy(manifest)
-            bad['overlay_file12_stage']['source']='../escape.c'
+            bad['overlay_file12_stages'][0]['source']='../escape.c'
             path.write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError,'source path'):
                 load_manifest(path)
             bad=copy.deepcopy(manifest)
-            bad['overlay_file12_stage']['object_sha256']='not-a-hash'
+            bad['overlay_file12_stages'][0]['object_sha256']='not-a-hash'
             path.write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError,'object_sha256'):
+                load_manifest(path)
+            bad=copy.deepcopy(manifest)
+            bad['overlay_file12_stages'].reverse()
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'Overlapping or unordered'):
+                load_manifest(path)
+            bad=copy.deepcopy(manifest)
+            bad['overlay_file12_stage']=bad['overlay_file12_stages'][0]
+            path.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError,'only one file_12 stage'):
                 load_manifest(path)
 
     def test_file12_splat_split_preserves_data_and_neighbor(self):
@@ -182,6 +201,40 @@ class DecompVerificationTests(unittest.TestCase):
                          original.split('  - name: file_13\n',1)[1])
         with self.assertRaisesRegex(ValueError,'VMA, ROM, overlay ID'):
             stage_file12_splat(original.replace('0x5E3C90','0x5E3C94'),file12_stage())
+
+    def test_file12_splat_multiple_callbacks_preserves_intervening_assembly(self):
+        original=(
+            'sha1: '+overlay_file12.ROM_SHA1+'\nsegments:\n'
+            '  - name: file_12\n'
+            '    type: code\n    start: 0x5C8770\n    vram: 0x8020D2A0\n'
+            '    bss_size: 0xE0\n    subalign: 16\n    overlay: yes\n'
+            '    exclusive_ram_id: static_overlay_2\n    subsegments:\n'
+            '    - [0x5C8770, asm]\n    - [0x5E3C90, data]\n'
+            '  - name: file_13\n    start: 0x5F6840\n')
+        stages=[file12_stage(),file12_stage(
+            name='func_80222168_5DD638',
+            source='candidates/file12_dialogue_call.c',
+        )]
+        updated,assembly=stage_file12_splats(original,stages)
+        self.assertEqual(assembly,(
+            'file_12_before_5DD504',
+            'file_12_gap_5DD518_5DD638',
+            'file_12_after_5DD65C',
+        ))
+        for line in (
+            '    - [0x5DD504, c, file12_dialogue_copy]',
+            '    - [0x5DD518, asm, file_12_gap_5DD518_5DD638]',
+            '    - [0x5DD638, c, file12_dialogue_call]',
+            '    - [0x5DD65C, asm, file_12_after_5DD65C]',
+            '    - [0x5E3C90, data, file_12]',
+        ):
+            self.assertIn(line,updated)
+        self.assertEqual(updated.split('  - name: file_13\n',1)[1],
+                         original.split('  - name: file_13\n',1)[1])
+        with self.assertRaisesRegex(ValueError,'original ROM order'):
+            stage_file12_splats(original,list(reversed(stages)))
+        with self.assertRaisesRegex(ValueError,'Overlapping'):
+            stage_file12_splats(original,[stages[0],stages[0]])
 
     def test_file12_stage_binds_source_hash_and_reference(self):
         source=b'void func_80222034_5DD504(void) {}\n'
@@ -303,6 +356,43 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertIn('file_12_after_5DD518.s.o: ASFLAGS += --no-pad-sections',make)
             self.assertNotIn('file_12',updated.split('  - name: file_13\n',1)[1])
 
+    def test_file12_apply_copies_multiple_callbacks_and_preserves_gap_objects(self):
+        first=b'void func_80222034_5DD504(void) {}\n'
+        second=b'void func_80222168_5DD638(void) {}\n'
+        stages=[
+            file12_stage(source_sha256=hashlib.sha256(first).hexdigest()),
+            file12_stage(
+                name='func_80222168_5DD638',
+                source='candidates/file12_dialogue_call.c',
+                source_sha256=hashlib.sha256(second).hexdigest(),
+            ),
+        ]
+        original=(
+            'sha1: '+overlay_file12.ROM_SHA1+'\n'
+            '  - name: file_12\n    type: code\n    start: 0x5C8770\n'
+            '    vram: 0x8020D2A0\n    bss_size: 0xE0\n    subalign: 16\n'
+            '    overlay: yes\n    exclusive_ram_id: static_overlay_2\n'
+            '    subsegments:\n    - [0x5C8770, asm]\n    - [0x5E3C90, data]\n'
+            '  - name: file_13\n    start: 0x5F6840\n')
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);checkout=root/'candidate'
+            (checkout/'config/usa').mkdir(parents=True)
+            (checkout/'src').mkdir()
+            (checkout/'Makefile').write_text('build rules\n')
+            sources=root/'sources';(sources/'candidates').mkdir(parents=True)
+            (sources/'candidates/file12_dialogue_copy.c').write_bytes(first)
+            (sources/'candidates/file12_dialogue_call.c').write_bytes(second)
+            config=checkout/'config/usa/splat.yaml';config.write_text(original)
+            manifest={'units':[],'overlay_file12_stages':stages}
+            with mock.patch.object(overlay_file12,'validate_reference_inputs'):
+                apply_units(checkout,manifest,sources,b'ROM')
+            updated=config.read_text()
+            self.assertIn('    - [0x5DD518, asm, file_12_gap_5DD518_5DD638]',updated)
+            self.assertEqual((checkout/'src/file12_dialogue_copy.c').read_bytes(),first)
+            self.assertEqual((checkout/'src/file12_dialogue_call.c').read_bytes(),second)
+            make=(checkout/'Makefile').read_text()
+            self.assertIn('file_12_gap_5DD518_5DD638.s.o: ASFLAGS += --no-pad-sections',make)
+
     def test_file12_ownership_requires_c_object_and_exact_map_placement(self):
         name='func_80222034_5DD504';size=20
         source=b'candidate callback source'
@@ -316,6 +406,11 @@ class DecompVerificationTests(unittest.TestCase):
             object_sha256=hashlib.sha256(packed).hexdigest())
         before,after,_=__import__('decomp.verify',fromlist=['_file12_stage_segments'])._file12_stage_segments(stage)
         c_name='build/usa/src/file12_dialogue_copy.c.o'
+        prefix_size=overlay_file12.FUNCTIONS[name][0]-overlay_file12.VMA_START
+        suffix_start=overlay_file12.FUNCTIONS[name][0]+size
+        text_end_vma=overlay_file12.VMA_START+(
+            overlay_file12.ROM_TEXT_END-overlay_file12.ROM_START)
+        suffix_size=text_end_vma-suffix_start
         with tempfile.TemporaryDirectory() as folder:
             checkout=Path(folder);(checkout/'src').mkdir()
             (checkout/'src/file12_dialogue_copy.c').write_bytes(source)
@@ -331,12 +426,12 @@ class DecompVerificationTests(unittest.TestCase):
             mapping=(
                 '.file_12 0x8020d2a0 0x2e0d0 load address 0x005c8770\n'
                 f' {before_name}(.text)\n'
-                f' .text 0x8020d2a0 0x4 {before_name}\n'
+                f' .text 0x{overlay_file12.VMA_START:08x} 0x{prefix_size:x} {before_name}\n'
                 f' {c_name}(.text)\n'
                 f' .text 0x80222034 0x14 {c_name}\n'
                 f' 0x80222034 {name}\n'
                 f' {after_name}(.text)\n'
-                f' .text 0x80222048 0x4 {after_name}\n'
+                f' .text 0x{suffix_start:08x} 0x{suffix_size:x} {after_name}\n'
                 '.file_12_bss 0x8023b370 0x0 load address 0x005f6840\n')
             (checkout/'build/usa/mnsg.map').write_text(mapping)
             proof=verify_file12_ownership(checkout,stage)
@@ -346,6 +441,108 @@ class DecompVerificationTests(unittest.TestCase):
                 f' {c_name}(.text)\n',''))
             with self.assertRaisesRegex(ValueError,'does not place expected'):
                 verify_file12_ownership(checkout,stage)
+
+    def test_file12_ownership_verifies_multiple_c_objects_and_original_gap(self):
+        from decomp.elf_layout import pack_file12_callback_text
+        first_name='func_80222034_5DD504'
+        second_name='func_80222168_5DD638'
+        first_source=b'first callback source'
+        second_source=b'second callback source'
+        first_raw,_=relocatable_file12_callback(bytes(range(20)))
+        first_relocs=overlay_file12.FUNCTION_RELOCATIONS[first_name]
+        first_packed,_=pack_file12_callback_text(
+            first_raw,first_name,20,first_relocs,
+            overlay_file12.FUNCTION_RELOCATION_SYMBOLS[first_name],
+        )
+        second_relocs=(
+            (8,5,'D_801C7743'),(16,6,'D_801C7743'),
+            (12,4,'func_801DCD48_598C58'),
+        )
+        second_raw,_=relocatable_file12_callback(
+            bytes(range(36)),relocations=second_relocs,
+            function_name=second_name,
+            symbol_shapes=overlay_file12.FUNCTION_RELOCATION_SYMBOLS[second_name],
+        )
+        second_packed,_=pack_file12_callback_text(
+            second_raw,second_name,36,
+            overlay_file12.FUNCTION_RELOCATIONS[second_name],
+            overlay_file12.FUNCTION_RELOCATION_SYMBOLS[second_name],
+        )
+        stages=[
+            file12_stage(
+                source_sha256=hashlib.sha256(first_source).hexdigest(),
+                compiler_object_sha256=hashlib.sha256(first_raw).hexdigest(),
+                object_sha256=hashlib.sha256(first_packed).hexdigest(),
+            ),
+            file12_stage(
+                name=second_name,source='candidates/file12_dialogue_call.c',
+                source_sha256=hashlib.sha256(second_source).hexdigest(),
+                compiler_object_sha256=hashlib.sha256(second_raw).hexdigest(),
+                object_sha256=hashlib.sha256(second_packed).hexdigest(),
+            ),
+        ]
+        layout=_file12_stages_layout(stages)
+        with tempfile.TemporaryDirectory() as folder:
+            checkout=Path(folder)
+            (checkout/'src').mkdir(parents=True)
+            (checkout/'build/usa/src').mkdir(parents=True)
+            (checkout/'build/usa/asm/usa').mkdir(parents=True)
+            (checkout/'build/usa/src/file12_dialogue_copy.c').write_bytes(first_source)
+            (checkout/'build/usa/src/file12_dialogue_call.c').write_bytes(second_source)
+            (checkout/'src/file12_dialogue_copy.c').write_bytes(first_source)
+            (checkout/'src/file12_dialogue_call.c').write_bytes(second_source)
+            (checkout/'build/usa/src/file12_dialogue_copy.c.o').write_bytes(first_packed)
+            (checkout/'build/usa/src/file12_dialogue_call.c.o').write_bytes(second_packed)
+            for index,segment in enumerate(layout['assembly']):
+                obj=relocatable_function_object(text_alignment=16)
+                if index:
+                    obj=lower_file12_text_alignment(obj)
+                (checkout/f'build/usa/asm/usa/{segment}.s.o').write_bytes(obj)
+
+            text_end=overlay_file12.VMA_START+(
+                overlay_file12.ROM_TEXT_END-overlay_file12.ROM_START)
+            map_lines=[
+                '.file_12 0x8020d2a0 0x2e0d0 load address 0x005c8770',
+            ]
+            cursor=overlay_file12.VMA_START
+            assembly_index=0
+            for stage in stages:
+                function=stage['function']
+                if function['vma']>cursor:
+                    segment=layout['assembly'][assembly_index]
+                    obj=f'build/usa/asm/usa/{segment}.s.o'
+                    map_lines.extend((
+                        f' {obj}(.text)',
+                        f' .text 0x{cursor:08x} 0x{function["vma"]-cursor:x} {obj}',
+                    ))
+                    assembly_index+=1
+                source_name=Path(stage['source']).name
+                c_object=f'build/usa/src/{source_name}.o'
+                map_lines.extend((
+                    f' {c_object}(.text)',
+                    f' .text 0x{function["vma"]:08x} 0x{function["size"]:x} {c_object}',
+                    f' 0x{function["vma"]:08x} {function["name"]}',
+                ))
+                cursor=function['vma']+function['size']
+            suffix=layout['assembly'][assembly_index]
+            suffix_object=f'build/usa/asm/usa/{suffix}.s.o'
+            map_lines.extend((
+                f' {suffix_object}(.text)',
+                f' .text 0x{cursor:08x} 0x{text_end-cursor:x} {suffix_object}',
+                '.file_12_bss 0x8023b370 0x0 load address 0x005f6840',
+            ))
+            map_path=checkout/'build/usa/mnsg.map'
+            map_path.write_text('\n'.join(map_lines)+'\n')
+            proof=verify_file12_ownership(checkout,stages)
+            self.assertEqual([item['function'] for item in proof['callbacks']],
+                             [first_name,second_name])
+            self.assertIn('file_12_gap_5DD518_5DD638.s.o',
+                          '\n'.join(proof['assembly_objects']))
+            wrong=map_path.read_text().replace(
+                '.text 0x80222048 0x120', '.text 0x8022204c 0x11c')
+            map_path.write_text(wrong)
+            with self.assertRaisesRegex(ValueError,'assembly gap'):
+                verify_file12_ownership(checkout,stages)
 
     def test_file12_claim_append_requires_exact_link_proof_and_full_rom(self):
         stage=file12_stage();name=stage['function']['name']
@@ -609,7 +806,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claims),unit_functions+
                          len(manifest.get('existing_source_patches',[]))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         (manifest.get('overlay_file12_stage') is not None))
+                         len(manifest_file12_stages(manifest)))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
@@ -887,8 +1084,7 @@ class DecompVerificationTests(unittest.TestCase):
         sources={u['source'] for u in manifest['units']}|set(manifest['support_headers'])|{p['source'] for p in manifest.get('existing_source_patches', [])}
         if manifest.get('overlay_file43_stage') is not None:
             sources.add(manifest['overlay_file43_stage']['source'])
-        if manifest.get('overlay_file12_stage') is not None:
-            sources.add(manifest['overlay_file12_stage']['source'])
+        sources.update(stage['source'] for stage in manifest_file12_stages(manifest))
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

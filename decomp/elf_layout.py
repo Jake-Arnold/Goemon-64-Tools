@@ -140,7 +140,7 @@ def pack_heap_noop_text(original):
 
 
 def pack_file12_callback_text(original, function_name, function_size,
-                              expected_relocations):
+                              expected_relocations, expected_symbol_shapes=None):
     """Trim IDO's 12 zero tail bytes for one pinned file_12 callback object.
 
     The pinned object must contain one global function at .text offset zero,
@@ -190,17 +190,29 @@ def pack_file12_callback_text(original, function_name, function_size,
         raise ValueError('Unexpected allocated data in file_12 callback object')
 
     relocations = elf.relocations(index)
-    observed = tuple((item.offset, item.relocation_type, item.symbol.name)
-                     for item in relocations)
-    if observed != tuple(expected_relocations):
+    observed = tuple(sorted(
+        (item.offset, item.relocation_type, item.symbol.name)
+        for item in relocations
+    ))
+    if observed != tuple(sorted(expected_relocations)):
         raise ValueError('Unexpected file_12 callback relocation signatures')
     if any(item.offset < 0 or item.offset >= function_size or item.offset & 3
            for item in relocations):
         raise ValueError('file_12 callback relocation points outside function')
-    if any(item.symbol.section != 0 or item.symbol.binding != 1 or
-           item.symbol.kind != 1 or item.symbol.size != 4
-           for item in relocations):
-        raise ValueError('Unexpected file_12 callback relocation symbol')
+    if expected_symbol_shapes is not None and set(expected_symbol_shapes) != {
+            item.symbol.name for item in relocations}:
+        raise ValueError('Unexpected file_12 callback relocation symbol set')
+    for item in relocations:
+        shape = (item.symbol.kind, item.symbol.size)
+        expected_shape = (expected_symbol_shapes.get(item.symbol.name)
+                          if expected_symbol_shapes is not None else None)
+        if (item.symbol.section != 0 or item.symbol.binding != 1 or
+                (shape != expected_shape if expected_symbol_shapes is not None else
+                 not ((item.relocation_type in (5, 6) and
+                       item.symbol.kind == 1 and item.symbol.size in (1, 2, 4)) or
+                      (item.relocation_type == 4 and
+                       item.symbol.kind == 2 and item.symbol.size == 0)))):
+            raise ValueError('Unexpected file_12 callback relocation symbol')
 
     header_offset = struct.unpack_from('>I', original, 32)[0]
     entry_width = struct.unpack_from('>H', original, 46)[0]

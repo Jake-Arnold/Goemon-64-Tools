@@ -84,16 +84,19 @@ def linked_file12_elf(data, function_name, function_vma, function_size,
 
 
 def relocatable_file12_callback(code, *, tail=bytes(12), text_alignment=16,
-                                relocations=None):
-    name = 'func_80222034_5DD504'
+                                relocations=None,
+                                function_name='func_80222034_5DD504',
+                                symbol_shapes=None):
+    name = function_name
     shnames = b'\0.text\0.rel.text\0.symtab\0.strtab\0.shstrtab\0'
-    strings = (b'\0.text\0' + name.encode() +
-               b'\0D_8015C5E8\0D_801C7750_1C8350\0')
-    symbol_offsets = {
-        label: strings.index(label + b'\0')
-        for label in (b'.text', name.encode(), b'D_8015C5E8',
-                      b'D_801C7750_1C8350')
-    }
+    relocations = relocations or (
+        (0, 5, 'D_8015C5E8'), (4, 6, 'D_8015C5E8'),
+        (8, 5, 'D_801C7750_1C8350'), (16, 6, 'D_801C7750_1C8350'),
+    )
+    target_names = sorted({target for _, _, target in relocations})
+    labels = ['.text', name, *target_names]
+    strings = b'\0' + b'\0'.join(label.encode() for label in labels) + b'\0'
+    symbol_offsets = {label: strings.index(label.encode() + b'\0') for label in labels}
     content = bytearray(52)
 
     def append(payload, alignment=4):
@@ -104,24 +107,30 @@ def relocatable_file12_callback(code, *, tail=bytes(12), text_alignment=16,
 
     text_payload = code + tail
     text_offset = append(text_payload, 16)
-    relocations = relocations or (
-        (0, 5, 3), (4, 6, 3), (8, 5, 4), (16, 6, 4),
-    )
+    target_indices = {target: 3 + index for index, target in enumerate(target_names)}
     rel_offset = append(b''.join(
-        struct.pack('>II', offset, (symbol << 8) | kind)
-        for offset, kind, symbol in relocations
+        struct.pack('>II', offset, (target_indices[target] << 8) | kind)
+        for offset, kind, target in relocations
     ))
     symbols = [
         bytes(16),
-        struct.pack('>IIIBBH', symbol_offsets[b'.text'], 0, len(text_payload),
+        struct.pack('>IIIBBH', symbol_offsets['.text'], 0, len(text_payload),
                     0x03, 0, 1),
-        struct.pack('>IIIBBH', symbol_offsets[name.encode()], 0, len(code),
+        struct.pack('>IIIBBH', symbol_offsets[name], 0, len(code),
                     0x12, 0, 1),
-        struct.pack('>IIIBBH', symbol_offsets[b'D_8015C5E8'], 0, 4,
-                    0x11, 0, 0),
-        struct.pack('>IIIBBH', symbol_offsets[b'D_801C7750_1C8350'], 0, 4,
-                    0x11, 0, 0),
     ]
+    for target in target_names:
+        kinds = {relocation_type for _, relocation_type, name in relocations
+                 if name == target}
+        shape = (symbol_shapes or {}).get(target)
+        if shape is None:
+            shape = ((2, 0) if kinds == {4} else
+                     (1, 1 if target == 'D_801C7743' else 4))
+        kind, size = shape
+        symbols.append(struct.pack(
+            '>IIIBBH', symbol_offsets[target], 0, size,
+            (1 << 4) | kind, 0, 0,
+        ))
     sym_offset = append(b''.join(symbols), 4)
     string_offset = append(strings, 1)
     shstr_offset = append(shnames, 1)
@@ -270,6 +279,33 @@ class OverlayFile12Tests(TestCase):
                              header + text_index * 40 + 36)))
         self.assertTrue(changed)
         self.assertTrue(all(offset in allowed for offset in changed))
+
+    def test_callback_packer_checks_call_and_signed_byte_relocation_shapes(self):
+        name='func_80222168_5DD638'
+        relocations=(
+            (8,5,'D_801C7743'),
+            (16,6,'D_801C7743'),
+            (12,4,'func_801DCD48_598C58'),
+        )
+        raw,_=relocatable_file12_callback(
+            bytes(range(36)), relocations=relocations, function_name=name,
+            symbol_shapes=mod.FUNCTION_RELOCATION_SYMBOLS[name],
+        )
+        expected=((8,5,'D_801C7743'),(12,4,'func_801DCD48_598C58'),
+                  (16,6,'D_801C7743'))
+        with mock.patch.dict(mod.FUNCTION_RELOCATIONS,{name:expected},clear=True):
+            packed,evidence=pack_file12_callback_text(
+                raw,name,36,expected,mod.FUNCTION_RELOCATION_SYMBOLS[name],
+            )
+        elf=Elf32(packed)
+        text=elf.sections[elf.names.index('.text')]
+        self.assertEqual((text[5],text[8]),(36,4))
+        self.assertEqual(evidence['relocations_retained'],3)
+        wrong_shapes=dict(mod.FUNCTION_RELOCATION_SYMBOLS[name])
+        wrong_shapes['D_801C7743']=(1,4)
+        with self.assertRaisesRegex(ValueError,'relocation symbol'):
+            with mock.patch.dict(mod.FUNCTION_RELOCATIONS,{name:expected},clear=True):
+                pack_file12_callback_text(raw,name,36,expected,wrong_shapes)
 
     def test_callback_packer_rejects_nonzero_padding_and_wrong_relocations(self):
         code = bytes(range(20))

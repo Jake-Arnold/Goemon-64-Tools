@@ -212,8 +212,9 @@ branch-likely path whose delay slot restores `$ra`, returning before either
 `8000383C` or `80001C00` and before the substate increment. A zero value calls
 `8000383C`, then calls `80001C00` with ID `15` in `$a0` and destination
 `0x801CB460` in `$a1`; the call's return is replaced before the later
-substate increment. Pinned Splat maps ID 15 to overlay `file_15`, ROM
-`0x65E310..0x667B90`, VMA `0x801CB460`, RAM ID `static_overlay_1`. Files 13,
+substate increment. Pinned Splat maps ID 15 to overlay `file_15`, decompressed-
+reference image interval `0x65E310..0x667B90` (not retail cartridge DMA
+offsets), VMA `0x801CB460`, RAM ID `static_overlay_1`. Files 13,
 14, 15 and 16 share that VMA/RAM ID as mutually exclusive overlays, so the
 destination address alone does not identify a resource. This path proves a
 file-15 loader request, not successful activation, prior-overlay release,

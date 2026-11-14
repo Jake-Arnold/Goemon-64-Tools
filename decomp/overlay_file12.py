@@ -59,6 +59,17 @@ FUNCTION_RELOCATIONS = {
     ),
 }
 
+FUNCTION_RELOCATION_SYMBOLS = {
+    "func_80222034_5DD504": {
+        "D_8015C5E8": (1, 4),
+        "D_801C7750_1C8350": (1, 4),
+    },
+    "func_80222168_5DD638": {
+        "D_801C7743": (1, 1),
+        "func_801DCD48_598C58": (2, 0),
+    },
+}
+
 EXPECTED_SEGMENT_LINES = (
     "type: code", "start: 0x5C8770", "vram: 0x8020D2A0",
     "bss_size: 0xE0", "subalign: 16", "overlay: yes",
