@@ -30,6 +30,40 @@ class ValueFreezeUITests(unittest.TestCase):
         self.assertEqual(app.mem.u32(0x8015C5E4),10)
         app.stop_all_freezes();self.assertFalse(app.freeze_health.get())
 
+    def test_context_menu_freeze_unfreeze_uses_clicked_watch_and_fresh_value(self):
+        app=self.app
+        app.current=app.mem.snapshot()
+        app.refresh_inspector(app.current)
+        app.watch_tree.selection_set('Lives')
+        app.mem.write_guest(0x8015C5E8,(321).to_bytes(4,'big'))
+        with patch.object(app.watch_tree,'identify_row',return_value='Ryo'), \
+             patch.object(app.watch_context_menu,'tk_popup'):
+            app.open_live_watch_menu(SimpleNamespace(y=11,x_root=15,y_root=20))
+        self.assertEqual(app.watch_tree.selection(),('Ryo',))
+        app.watch_context_menu.invoke(0)
+        self.assertEqual(app.value_freezes.locks[0x8015C5E8].value,(321).to_bytes(4,'big'))
+        self.assertEqual(app.value_freezes.locks[0x8015C5E8].label,'Ryo')
+        with patch.object(app.watch_tree,'identify_row',return_value='Ryo'), \
+             patch.object(app.watch_context_menu,'tk_popup'):
+            app.open_live_watch_menu(SimpleNamespace(y=11,x_root=15,y_root=20))
+        self.assertEqual(app.watch_context_menu.entrycget(0,'label'),'Unfreeze value')
+        app.watch_context_menu.invoke(0)
+        self.assertNotIn(0x8015C5E8,app.value_freezes.locks)
+
+    def test_no_address_cannot_freeze_and_read_only_blocks_context(self):
+        app=self.app
+        app.watch_rows=[SimpleNamespace(name='Derived',addr=None,raw='—')]
+        app.draw_watches()
+        with patch.object(app.watch_tree,'identify_row',return_value='Derived'), \
+             patch.object(app.watch_context_menu,'tk_popup'):
+            app.open_live_watch_menu(SimpleNamespace(y=11,x_root=15,y_root=20))
+        self.assertEqual(app.watch_context_menu.entrycget(0,'state'),'disabled')
+        app.args.read_only=True
+        app.watch_rows=[SimpleNamespace(name='Ryo',addr=0x8015C5E8,raw='0x00000000')]
+        app.freeze_watch_by_id('Ryo')
+        self.assertFalse(app.value_freezes.locks)
+        self.assertIn('read-only',app.freeze_status.get())
+
     def test_read_only_blocks_both_entry_paths_and_disconnect_clears_controls(self):
         app=self.app;app.freeze_health.set(True);app.toggle_freeze_health()
         app.mem=None;app.poll_value_freezes()

@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Live Memory right-click freeze and persistent field renaming
+
+- **Changed:** the Live Memory table now has a per-row secondary-click menu with Freeze value / Unfreeze value and Rename field. The menu targets the clicked row (not a previously selected row). Frozen values use the existing fresh-RAM read, UNSAFE permission, gameplay checks, address width validation, session-only lock lifecycle and Value freezes list.
+- **Renames:** custom watch renames update the existing validated, persistent `custom_watches.json` definitions; built-in and derived names are display-only aliases in atomic `watch_names.json` storage, leaving canonical row IDs, source confidence and decoded semantics unchanged. Blank input restores the built-in name. The dashboard read-only preview and Live Memory search display aliases. Already-active lock labels update when their field is renamed.
+- **Safety:** no fixed guest address disables Freeze value; read-only mode or missing UNSAFE blocks freezing; renaming never writes RAM; active freezes never persist across restarts and still stop on disconnection. Raw write editor behaviour is unchanged.
+- **Tests:** added watch-name storage tests, right-click hit-target and freeze/unfreeze tests, custom-watch rename/remove, built-in alias/filter/dashboard tests, and read-only blocking checks. These tests were not executable in the connector-only editing environment; live Goemon64Recomp verification is still needed.
+- **Next:** run `python3 -m unittest tests.test_watch_names tests.test_custom_watches_ui tests.test_value_freezes_ui tests.test_custom_watches tests.test_value_freezes` with a Tk display, then test right-click on a stable gameplay value in the running application.
+
+
 ### 2026-11-14 — Mini Ebisumaru halfword gates attacking and switching; prioritise max speed cap
 
 - **Observed:** user reports legitimate miniature `s16 0x8020C8E6=-1` permits walking, jumping and NPC/sign interaction but prevents ordinary attacks and character switching. Forcing `0` while still visibly miniature removes the attack and switching restrictions, and raises toolkit-derived max movement magnitude from ~32 to ~98. The previously observed miniature appearance carried over through character switching only in this forced-zero state.

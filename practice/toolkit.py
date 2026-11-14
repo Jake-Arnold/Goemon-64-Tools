@@ -388,7 +388,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
             value = rows.get(name)
             if not value or value.addr is None:
                 continue
-            fields = (name, f'0x{value.addr:08X}', value.raw)
+            fields = (self.display_watch_name(name), f'0x{value.addr:08X}', value.raw)
             tag = ('changed',) if name in old and tuple(old[name]) != fields else ()
             self.quick_watch_tree.insert('', 'end', iid=name, values=fields, tags=tag)
 

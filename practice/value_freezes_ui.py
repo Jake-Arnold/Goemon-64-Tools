@@ -76,20 +76,39 @@ class ValueFreezesMixin:
         except (OSError,ValueError,RuntimeError,PermissionError) as exc:self.freeze_status.set(str(exc))
 
     def freeze_selected_watch(self):
+        selected=self.watch_tree.selection()
+        if not selected:
+            self.freeze_status.set('Select a watch in Live memory first.')
+            return
+        self.freeze_watch_by_id(selected[0])
+
+    def freeze_watch_by_id(self, row_id):
+        """Use the same fresh-read and gameplay guards for context-menu freezing."""
         try:
             self.require_freeze_access(raw=True)
-            selected=self.watch_tree.selection()
-            if not selected:raise ValueError('Select a watch in Live memory first')
-            watch=next(w for w in self.watch_rows if w.name==selected[0])
-            if watch.addr is None:raise ValueError('Selected watch has no fixed guest address')
+            watch=next((w for w in self.watch_rows if w.name==row_id),None)
+            if watch is None:
+                raise ValueError('Selected watch is no longer available')
+            if watch.addr is None:
+                raise ValueError('Selected watch has no fixed guest address')
             spec=next((s for s in self.custom_watches if s.row_name==watch.name),None)
             policy=get_policy(watch.addr)
-            width=spec.width if spec else policy.width if policy else len(watch.raw.removeprefix('0x').removeprefix('0X'))//2
-            if width not in (1,2,4,8):raise ValueError('No supported scalar width for this watch')
+            raw_text=watch.raw.removeprefix('0x').removeprefix('0X').strip()
+            width=(spec.width if spec else policy.width if policy else
+                   len(raw_text)//2 if len(raw_text) in (2,4,8,16) and
+                   all(c in '0123456789abcdefABCDEF' for c in raw_text) else 0)
+            if width not in (1,2,4,8):
+                raise ValueError('No supported scalar width for this watch')
+            # Always fetch current game RAM bytes instead of freezing a stale table value.
             value=self.mem.read_guest(watch.addr,width)
-            self.value_freezes.add(self.freeze_token(),watch.addr,value,watch.name)
-            self.draw_value_freezes();self.freeze_status.set('Selected watch freeze armed.')
-        except (StopIteration,OSError,ValueError,RuntimeError,PermissionError) as exc:self.freeze_status.set(str(exc))
+            label=self.display_watch_name(watch.name)
+            self.value_freezes.add(self.freeze_token(),watch.addr,value,label)
+            self.draw_value_freezes()
+            self.freeze_status.set(f'Freeze armed: {label} (0x{watch.addr:08X}).')
+            self.inspector_status.set(self.freeze_status.get())
+        except (OSError,ValueError,RuntimeError,PermissionError) as exc:
+            self.freeze_status.set(f'Freeze blocked: {exc}')
+            self.inspector_status.set(self.freeze_status.get())
 
     def draw_value_freezes(self):
         self.freeze_tree.delete(*self.freeze_tree.get_children())

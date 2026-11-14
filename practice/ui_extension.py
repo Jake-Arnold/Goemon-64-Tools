@@ -4,6 +4,7 @@ import json
 import queue
 import threading
 from datetime import datetime, timezone
+from dataclasses import replace
 from pathlib import Path
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
@@ -18,6 +19,7 @@ from practice.scene_placement import SpawnPlacement
 from practice.paths import practice_data_dir, diagnostics_dir
 from practice.custom_watches import (CustomWatch, FORMATS, make_watch, append_watch,
                                      load_watches, save_watches, read_watch)
+from practice.watch_names import load_watch_names, save_watch_names, validate_watch_label
 from practice.theme import PALETTE
 from practice.native_character import press_native_debug_accept, ready_for_scene_spawn
 from practice.native_debug_watch import FIELDS as NATIVE_WATCH_FIELDS, read_fields as read_native_watches, changed_fields as changed_native_watches, make_change_event as make_native_change_event, can_mark_state as can_mark_native_state, decode_hover_pointer
@@ -31,6 +33,7 @@ from practice.native_character_cursor_scan import (
 
 DEBUG_PROFILE_PATH = practice_data_dir() / "native_debug_fields.json"
 CUSTOM_WATCHES_PATH = practice_data_dir() / "custom_watches.json"
+WATCH_NAMES_PATH = practice_data_dir() / "watch_names.json"
 
 class InspectorMixin(EntranceMixin):
     def build_inspector_tabs(self, notebook):
@@ -44,6 +47,12 @@ class InspectorMixin(EntranceMixin):
         except (OSError,ValueError,KeyError,TypeError) as exc:
             self.custom_watches=[]
             self.custom_watch_load_error=str(exc)
+        self.watch_aliases={}
+        self.watch_alias_load_error=None
+        try:
+            self.watch_aliases=load_watch_names(WATCH_NAMES_PATH)
+        except (OSError,ValueError,TypeError) as exc:
+            self.watch_alias_load_error=str(exc)
         self.scene_selected=None
         self.debug_observations=[]
         self.debug_candidates=[]
@@ -109,7 +118,10 @@ class InspectorMixin(EntranceMixin):
         if self.custom_watch_load_error:
             ttk.Label(watch_tools,text='Existing custom watch file could not be read: '+self.custom_watch_load_error,
                       style='Muted.TLabel').pack(anchor='w')
-        ttk.Label(inspector,text='Double-click a HEX cell to edit. UNSAFE enables unrestricted hex values at the displayed guest address (including mapped bounds override).').pack(anchor='w')
+        if self.watch_alias_load_error:
+            ttk.Label(watch_tools,text='Saved field names could not be read: '+self.watch_alias_load_error,
+                      style='Muted.TLabel').pack(anchor='w')
+        ttk.Label(inspector,text='Right-click any Live memory row to freeze/unfreeze its current value or rename the field. Names persist; freezes do not. Double-click a HEX cell to edit. UNSAFE is required for raw writes and freezes.').pack(anchor='w')
         self.unsafe_check=ttk.Checkbutton(inspector,text='UNSAFE: enable raw guest-memory hex editing (any 1/2/4/8-byte value and address)',variable=self.hex_advanced)
         self.unsafe_check.pack(anchor='w')
         if not self.args.enable_hex_edit:self.unsafe_check.state(['disabled'])
@@ -140,6 +152,9 @@ class InspectorMixin(EntranceMixin):
         self.watch_tree.configure(yscrollcommand=scroll.set)
         self.watch_tree.pack(side='left',fill='both',expand=True);scroll.pack(side='right',fill='y')
         self.watch_tree.bind('<Double-1>',self.edit_live_hex)
+        self.watch_context_menu=tk.Menu(self.watch_tree,tearoff=False)
+        self.watch_tree.bind('<Button-3>',self.open_live_watch_menu)
+        self.watch_tree.bind('<Control-Button-1>',self.open_live_watch_menu)
         ttk.Label(inspector,text='Recent raw-field changes (not definitive semantic proof). F1 opens this tab from anywhere in the toolkit.').pack(anchor='w')
         self.event_text=tk.Text(inspector,height=6,wrap='none',font=('Consolas',9),state='disabled',
                                 background='#1a1d23', foreground='#f3eee5',
@@ -237,6 +252,100 @@ class InspectorMixin(EntranceMixin):
             self.draw_watches()
         self.inspector_status.set(f'Removed {selected}.')
 
+    def display_watch_name(self, row_id):
+        """An alias changes presentation only; the stable row ID remains original."""
+        return self.watch_aliases.get(row_id, row_id)
+
+    def open_live_watch_menu(self, event):
+        """Right-click acts on the row under the pointer, never a previous selection."""
+        row_id=self.watch_tree.identify_row(event.y)
+        watch=next((w for w in self.watch_rows if w.name==row_id),None)
+        if not row_id or not self.watch_tree.exists(row_id) or watch is None:
+            return 'break'
+        self.watch_tree.selection_set(row_id)
+        self.watch_tree.focus(row_id)
+        menu=self.watch_context_menu
+        menu.delete(0,'end')
+        active=(watch.addr is not None and watch.addr in self.value_freezes.locks)
+        menu.add_command(label='Unfreeze value' if active else 'Freeze value',
+                         state='normal' if watch.addr is not None else 'disabled',
+                         command=lambda row_id=row_id:self.toggle_live_watch_freeze(row_id))
+        menu.add_command(label='Rename field…',
+                         command=lambda row_id=row_id:self.rename_live_watch(row_id))
+        try:
+            menu.tk_popup(event.x_root,event.y_root)
+        finally:
+            menu.grab_release()
+        return 'break'
+
+    def toggle_live_watch_freeze(self, row_id):
+        watch=next((w for w in self.watch_rows if w.name==row_id),None)
+        if watch is None or watch.addr is None:
+            self.inspector_status.set('No fixed guest address for this field.')
+            return
+        if watch.addr in self.value_freezes.locks:
+            self.value_freezes.locks.pop(watch.addr,None)
+            self.draw_value_freezes()
+            self.freeze_status.set(f'Unfroze {self.display_watch_name(row_id)}.')
+            self.inspector_status.set(self.freeze_status.get())
+        else:
+            self.freeze_watch_by_id(row_id)
+
+    def rename_live_watch(self, row_id):
+        """Rename a custom watch definition, or persist a built-in display alias."""
+        watch=next((w for w in self.watch_rows if w.name==row_id),None)
+        if watch is None:
+            self.inspector_status.set('This Live Memory field is no longer available.')
+            return
+        spec=next((s for s in self.custom_watches if s.row_name==row_id),None)
+        previous=self.display_watch_name(row_id)
+        proposed=simpledialog.askstring(
+            'Rename Live Memory field',
+            ('New custom watch name (1–64 characters):' if spec else
+             'New display name (1–64 characters; blank restores original):'),
+            initialvalue=spec.name if spec else previous,parent=self.root)
+        if proposed is None:
+            return
+        try:
+            if spec is not None:
+                renamed=make_watch(proposed,spec.address,spec.kind)
+                new_id=renamed.row_name
+                if new_id==row_id:
+                    return
+                changed=[renamed if s.row_name==row_id else s for s in self.custom_watches]
+                save_watches(CUSTOM_WATCHES_PATH,changed)
+                self.custom_watches=changed
+                self.watch_rows=[replace(w,name=new_id) if w.name==row_id else w for w in self.watch_rows]
+                if row_id in self.watch_previous:
+                    self.watch_previous[new_id]=self.watch_previous.pop(row_id)
+                new_label=new_id
+            else:
+                new_label=validate_watch_label(proposed) if proposed.strip() else row_id
+                aliases=dict(self.watch_aliases)
+                if new_label==row_id:
+                    aliases.pop(row_id,None)
+                else:
+                    aliases[row_id]=new_label
+                save_watch_names(WATCH_NAMES_PATH,aliases)
+                self.watch_aliases=aliases
+                new_id=row_id
+            # Keep an already-active lock's label consistent with the renamed field.
+            if watch.addr is not None:
+                lock=self.value_freezes.locks.get(watch.addr)
+                if lock is not None and lock.label==previous:
+                    self.value_freezes.locks[watch.addr]=replace(lock,label=new_label)
+                    self.draw_value_freezes()
+            self.draw_watches()
+            if not self.watch_tree.exists(new_id):
+                self.filter_text.set('')
+            if self.watch_tree.exists(new_id):
+                self.watch_tree.selection_set(new_id)
+                self.watch_tree.see(new_id)
+            self.refresh_quick_watch()
+            self.inspector_status.set(f'Field renamed: {previous} → {new_label}.')
+        except (ValueError,OSError,TypeError) as exc:
+            self.inspector_status.set(f'Rename failed: {exc}')
+
     def write_raw_hex(self):
         """Write explicitly entered guest bytes; unlocked only by UNSAFE toggle."""
         if not self.mem:
@@ -326,12 +435,13 @@ class InspectorMixin(EntranceMixin):
         chosen=self.watch_tree.selection()
         self.watch_tree.delete(*self.watch_tree.get_children())
         for w in self.watch_rows:
-            if filt and filt not in (' '.join((w.name,w.value,w.raw,w.source,
+            display=self.display_watch_name(w.name)
+            if filt and filt not in (' '.join((w.name,display,w.value,w.raw,w.source,
                                    f'0x{w.addr:08X}' if w.addr is not None else ''))).lower():
                 continue
             mark=(w.name,w.raw)
             tag = 'invalid' if w.status in ('CHECK','ERROR') else ('changed' if w.name in self.watch_previous and self.watch_previous[w.name]!=w.raw else '')
-            self.watch_tree.insert('', 'end',iid=w.name,text=w.name,
+            self.watch_tree.insert('', 'end',iid=w.name,text=display,
                     values=(f'0x{w.addr:08X}' if w.addr is not None else '—',w.value,w.raw,w.status,w.source),tags=(tag,))
         for iid in chosen:
             if self.watch_tree.exists(iid):self.watch_tree.selection_add(iid)
