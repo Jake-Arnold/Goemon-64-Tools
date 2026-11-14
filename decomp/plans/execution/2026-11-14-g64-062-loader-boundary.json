@@ -1,0 +1,177 @@
+{
+  "date": "2026-11-14",
+  "task_id": "G64-062",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "e1427587bf1ea190067abea92a8fe60101506f38",
+    "remote_head_before_task": "e1427587bf1ea190067abea92a8fe60101506f38",
+    "initial_worktree": "clean",
+    "independent_review": "Sol Medium read-only review confirmed G64-062 precedes the remaining 456-byte save/Pak callback lead.",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "retail_rom_size": 16777216,
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "decompressed_reference_size": 33554432,
+    "reference_linked_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038"
+  },
+  "source_snapshot": {
+    "transition_state_c_sha256": "87cfc2d37719940f71e20dd747ac3d098477590d442dcd6f8df6d58cc2611006",
+    "file_table_c_sha256": "091ce2b034f4f617e8ca5d0eaacec336a266064e0e6da59b2dc7b93b7b63af71",
+    "manifest_sha256": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "combined_proof_sha256": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "inventory_sha256": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051",
+    "production_source_changed": false,
+    "manifest_or_proof_changed": false
+  },
+  "original_mips_evidence": {
+    "tool": "GNU mips-linux-gnu-nm/objdump; pinned baseline ELF built from the decompressed reference",
+    "function_extents": [
+      {"symbol": "func_80001C00_2800", "vma": "0x80001C00", "rom_offset": "0x2800", "size_bytes": 360, "ownership": "GLOBAL_ASM"},
+      {"symbol": "func_80001D68_2968", "vma": "0x80001D68", "rom_offset": "0x2968", "size_bytes": 44, "ownership": "matching C"},
+      {"symbol": "func_80001D94_2994", "vma": "0x80001D94", "rom_offset": "0x2994", "size_bytes": 44, "ownership": "GLOBAL_ASM"},
+      {"symbol": "func_80001640_2240", "vma": "0x80001640", "rom_offset": "0x2240", "size_bytes": 164, "ownership": "GLOBAL_ASM"},
+      {"symbol": "func_80005394_5F94", "vma": "0x80005394", "rom_offset": "0x5F94", "size_bytes": 1388, "ownership": "GLOBAL_ASM"},
+      {"symbol": "func_80005900_6500", "vma": "0x80005900", "rom_offset": "0x6500", "size_bytes": 132, "ownership": "GLOBAL_ASM"},
+      {"symbol": "func_80005984_6584", "vma": "0x80005984", "rom_offset": "0x6584", "size_bytes": 152, "ownership": "GLOBAL_ASM"},
+      {"symbol": "func_800030F0_3CF0", "vma": "0x800030F0", "rom_offset": "0x3CF0", "size_bytes": 568, "ownership": "GLOBAL_ASM"},
+      {"symbol": "func_801D46F8_590608", "vma": "0x801D46F8", "reference_offset": "0x590608", "size_bytes": 304, "ownership": "overlay GLOBAL_ASM"},
+      {"symbol": "func_801DC9C8_5988D8", "vma": "0x801DC9C8", "reference_offset": "0x5988D8", "size_bytes": 156, "ownership": "overlay GLOBAL_ASM"}
+    ],
+    "commands": [
+      "mips-linux-gnu-nm -S --defined-only <pinned-baseline>/build/usa/mnsg.elf",
+      "mips-linux-gnu-objdump -dr --start-address=0x80001C00 --stop-address=0x80001E50 <pinned-baseline>/build/usa/mnsg.elf",
+      "mips-linux-gnu-objdump -dr --start-address=0x800030F0 --stop-address=0x80003328 <pinned-baseline>/build/usa/mnsg.elf",
+      "rg -n 'jal +func_80001C00_2800' practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa --glob '*.s'"
+    ],
+    "instruction_slice_checks": {
+      "loader_vma": "0x80001C00",
+      "loader_size": 360,
+      "loader_retail_reference_byte_equal": true,
+      "loader_instruction_sha256": "19e65a3fda8160428dfd0af82f192d84bb03541d3a723958bda1627a82a140d4",
+      "transition_vma": "0x800030F0",
+      "transition_size": 568,
+      "transition_retail_reference_byte_equal": true,
+      "transition_instruction_sha256": "26227d5b03bbb1e1acdd224521eb50efdc312da3218ba9651676dfd442c9d4b1"
+    }
+  },
+  "verified_loader_contract": {
+    "symbol": "func_80001C00_2800",
+    "inputs": {"a0": "one-based file-table ID", "a1": "caller-supplied RAM destination"},
+    "accepted_id_test": "1 <= ID < 0x520; otherwise returns zero",
+    "size_source": "masked current and next words in D_800573D4 boundary table",
+    "compression_test": "sign/high bit of the current start word only",
+    "uncompressed_edge": "80001640 invalidates caches, starts osPiStartDma, waits via osRecvMesg",
+    "compressed_edge": "80005394 decodes into the same caller destination and refills through 80005984/80005900 and 80001640",
+    "post_load": "zero-fills destination tail to D_80054ACC-derived end, calls osWritebackDCache, returns that end pointer",
+    "allocation_and_free": "not performed by 80001C00; supplied by callers when needed",
+    "transient_global": "D_8015C5D4 is saved, set to 1 during the load, then restored; its broader meaning is unknown",
+    "direct_calls": ["80001640", "80005394", "osWritebackDCache"],
+    "no_direct_calls_to": ["800148F0 allocator", "80014B74 free", "overlay activation", "room teardown"]
+  },
+  "id_15_table_mapping": {
+    "table_rom_offset": "0x57FD4",
+    "retail_current_start_word": "0x0061D5DE",
+    "retail_next_word": "0x80626E5E",
+    "retail_current_start_compressed": false,
+    "retail_dma_start": "0x61D5DE",
+    "retail_dma_end_exclusive": "0x626E5E",
+    "transfer_size": "0x9880",
+    "next_word_bit_belongs_to": "ID 16; its current start word is 0x80626E5E and selects the compressed path",
+    "reference_current_start": "0x0065E310",
+    "reference_next_start": "0x00667B90",
+    "splat_segment": "file_15",
+    "splat_vma": "0x801CB460",
+    "exclusive_ram_id": "static_overlay_1",
+    "splat_bss_size": "0x14CA0",
+    "destination_table_rom_offset": "0x556CC",
+    "destination_table_row": 14,
+    "destination_table_start": "0x801CB460",
+    "destination_table_end": "0x801E9980",
+    "destination_table_span": "0x1E520",
+    "zero_fill_length": "0x14CA0",
+    "retail_file_bytes_equal_reference_file_15": true,
+    "same_vma_alternates": ["file_11", "file_13", "file_14", "file_16"]
+  },
+  "call_edge_classification": [
+    {
+      "caller": "func_800030F0_3CF0",
+      "callsite_vma": "0x80003164",
+      "arguments": ["ID 15", "0x801CB460"],
+      "classification": "file ID to shared overlay RAM window",
+      "observed": "Only in substate 1 with D_800548D8 == 0; calls 8000383C first; overwrites loader result with 0xFFFF before wait and substate increment."
+    },
+    {
+      "caller": "func_801D46F8_590608",
+      "callsite_vma": "0x801D473C",
+      "arguments": ["ID 7", "returned 0xA0-byte pool allocation"],
+      "classification": "temporary file data in caller-owned allocation",
+      "observed": "Allocates through 800148F0, loads into the returned pointer, processes records, then releases it through 80014B74."
+    },
+    {
+      "caller": "func_80005A64_6664",
+      "callsite_vma": "0x80005B10",
+      "arguments": ["masked ID from eight-byte request record", "pointer stored at request+4"],
+      "classification": "file-load request list; destination owned elsewhere",
+      "observed": "Iterates records in eight-byte steps and either continues or clears the owning list slot. No object-list identity is established."
+    },
+    {
+      "caller": "func_801DC9C8_5988D8",
+      "callsite_vma": "0x801DCA10",
+      "arguments": ["halfword ID from one table", "destination pointer from another table"],
+      "classification": "table-selected file and RAM pointer",
+      "observed": "Supplies both values directly; no allocation/free at this call site. Higher-level resource lifecycle remains unknown."
+    }
+  ],
+  "vm_id_separation": {
+    "generic_file_loader_id": "argument to 80001C00 and file table at 0x57FD4",
+    "script_vm_current_id": "0x801C78E8, resolved by 8003D468 through 800141C4/80013B14",
+    "relationship": "No edge in this trace maps VM resource IDs 96/97 to file ID 15 or this overlay load."
+  },
+  "unproven_or_hypothetical": [
+    "No call in the 80001C00 loader or its state-15 caller proves overlay activation, prior-overlay release, room teardown, or actor/object-list rebuilding.",
+    "D_800548D8 and D_8015C5D4 meanings remain unknown; the former only gates the observed state-15 request in this trace.",
+    "Splat's exclusive_ram_id describes shared overlay RAM placement; it does not identify a runtime active-overlay pointer.",
+    "No live transition replay was performed."
+  ],
+  "experiments": {
+    "native_ido_variants": 0,
+    "reason": "Pure original-MIPS trace; no C candidate was proposed.",
+    "full_rom_g2": "NOT_RUN; production source, manifest, proof inputs and inventory were unchanged.",
+    "in_game_verification": "NOT_RUN"
+  },
+  "tests": {
+    "raw_table_and_resource_byte_assertions": {
+      "status": "PASS",
+      "checks": [
+        "Retail ID-15 table entries are 0x0061D5DE and 0x80626E5E; current start is unflagged.",
+        "Decompressed-reference entries are 0x0065E310 and 0x00667B90; source bytes equal the retail ID-15 range.",
+        "D_80054ACC row 14 supplies 0x801CB460..0x801E9980; tail length equals Splat BSS 0x14CA0.",
+        "The 0x2800..0x2968 loader and 0x3CF0..0x3F28 transition MIPS slices match between retail and reference images."
+      ]
+    },
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "status": "PASS",
+      "result": "Exit 0. ROM-free Python regressions, task/evidence validation, and ASan/UBSan display-emitter fixture passed. Expected negative-path diagnostics emitted by the CI orchestration tests were followed by the final all-selected-checks PASS."
+    },
+    "task_evidence_validation": {
+      "command": "python3 -m decomp.skill_context --validate",
+      "status": "PASS",
+      "result": "CONSISTENT_STORED_REPORTS; 100 tasks validated."
+    },
+    "diff_check": {"command": "git diff --check", "status": "PASS"}
+  },
+  "stored_proof_unchanged": {
+    "matched_functions": 160,
+    "claimed_functions": 160,
+    "matched_function_bytes": 12272,
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "decision": "RESEARCH_ONLY; the loader's data, table and allocation boundaries are established, but scene activation and release remain unproven. Keep transition dispatch and loader in GLOBAL_ASM.",
+  "next": "G64-063 Analyze middle transition dispatcher; revisit the remaining 456-byte save/Pak callback after the ordered transition tasks."
+}

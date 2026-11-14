@@ -52,11 +52,11 @@ requests file ID 15 at its pinned overlay VMA only when `D_800548D8` is zero;
 the file maps to `file_15`, not generic room content. The flag's meaning and
 the routines' complete teardown/activation effects remain unproven. No C was
 promoted and no fresh G2 was run. `800030F0` and `8001F8B0` remain ASM-owned;
-G64-062 is next.
+G64-062 completed as `RESEARCH_ONLY`; G64-063 is next.
 
 ### G64-062 — Trace file/resource loading boundary
 
-**Status:** PLANNED. **Dependencies:** G64-061.
+**Status:** RESEARCH_ONLY (2026-11-14). **Dependencies:** G64-061.
 **Focus files:** `decomp/transition_state.c`; `decomp/file_table.c`; `decomp/MAP_TRANSITION_TRACE.md`.
 
 **Architectural intent:** Follow 80001C00_2800 and table paths toward resource allocation, room scene activation and releases without changing runtime features.
@@ -80,6 +80,14 @@ G64-062 is next.
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome:** The retail table proves ID 15 is uncompressed at `[0x61D5DE,
+0x626E5E)` and maps to Splat `file_15` at reference interval
+`[0x65E310, 0x667B90)`. Its caller-supplied destination is the shared
+`static_overlay_1` window at `0x801CB460`; the loader fills `0x14CA0` BSS bytes
+and returns `0x801E9980`. Allocation/free are caller-owned. No activation,
+prior-overlay release or room teardown edge was established. See the execution
+record and loader call-edge table in `MAP_TRANSITION_TRACE.md`. G64-063 is next.
 
 ### G64-063 — Analyze middle transition dispatcher
 

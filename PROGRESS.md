@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-062 file/resource loader boundary (RESEARCH_ONLY)
+
+- **Changed:** added the original-MIPS call-edge trace from `800030F0` through `80001C00`, its table readers, DMA/decompression branches, a caller-owned temporary allocation/free example, and caller-supplied request destinations. Marked G64-062 `RESEARCH_ONLY`; no production C, manifest, inventory or stored proof changed.
+- **Why:** establish which source bytes file ID 15 loads, how it maps into the shared overlay RAM window, and where allocation/release occur without treating a state write or file copy as scene activation.
+- **Evidence:** retail ID 15 is uncompressed `[0x61D5DE,0x626E5E)`; the same bytes map to Splat `file_15` `[0x65E310,0x667B90)`, loaded at `0x801CB460` with `0x14CA0` BSS zero-fill. `80001C00` has no allocator/free or overlay-activation call. The current-start high-bit rule and next-file flag were checked against original instructions and raw tables. Full call-edge notes are in `decomp/MAP_TRANSITION_TRACE.md` and `decomp/plans/execution/2026-11-14-g64-062-loader-boundary.json`.
+- **Tested:** pinned retail/reference table and byte-range assertions passed; `80001C00` and `800030F0` instruction slices match between images. `python3 -m decomp.local_ci`, task-evidence validation and `git diff --check` results are recorded in the execution file. No full-ROM G2 rerun or in-game transition was performed because production and proof inputs were unchanged.
+- **Limitations/next:** overlay activation, old-overlay release, room teardown, object-list rebuilding, and `D_800548D8`'s meaning remain unknown. Continue with G64-063's middle transition dispatcher; reassess the untried 456-byte save/Pak callback only after the ordered transition tasks.
+
 ## 2026-11-14 — file_12 96-byte Ryo callback (RESEARCH_ONLY)
 
 - **Changed:** recorded the pinned MIPS behavior and four bounded source variants for `func_80221FD4_5DD4A4`; preserved each C source and the exact first-mismatch evidence. Updated the conversation callback report and added a standalone execution record. The function remains `GLOBAL_ASM`; production manifest and stored proof are unchanged.

@@ -231,3 +231,71 @@ while a zero read makes the loader request and then advances. No live capture
 was available here to validate the flag's runtime meaning; keep that meaning
 hypothetical. Both `800030F0` and `8001F8B0` remain assembly-owned, and no
 scene-warp or unload shortcut follows from this graph.
+
+## G64-062 — Verified file/resource loading boundary
+
+Evidence uses the pinned USA retail image (SHA-1
+`df8083a54296b8c151917c5333e1c85f014a2a66`), its 32 MiB decompressed reference
+(SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`), and pinned `mnsg` commit
+`7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. The retail and reference MIPS
+instruction slices for `80001C00` and `800030F0` are byte-identical. Linked
+symbol sizes are from the pinned baseline ELF; function starts, ends and
+callers were cross-checked against `asm/usa/2800.s`, `2C40.s`, `5E20.s`,
+`6500.s`, `main.s`, and `587370.s`.
+
+`func_80001C00_2800` is 360 bytes at VMA `0x80001C00` / ROM offset `0x2800` and
+remains `GLOBAL_ASM`. Its first argument is a file-table ID and its second is a
+caller-supplied RAM destination. It returns zero for ID 0 or IDs at least
+`0x520`; otherwise it returns the destination plus the range stored for that
+ID in `D_80054ACC`. The loader does not allocate or free that destination.
+
+The current/next file-boundary words are read from `D_800573D4` at ROM offset
+`0x57FD4`. `80001D68` reads the current entry and clears bit 31;
+`80001D94` does the same for the next entry. In `80001C00`, the compression
+branch tests the **current start word**. The next word's high bit marks the
+following file and must not be used to classify the current one.
+
+For ID `0x0F`, the retail table gives current start `0x0061D5DE` and next word
+`0x80626E5E`. The current start is unflagged, so the loader takes the
+uncompressed path. Masking the next word gives an end of `0x00626E5E`, for a
+`0x9880`-byte transfer. ID 16 begins at `0x80626E5E`, so its start is flagged
+for the compressed path. The decompressed reference table instead gives ID 15
+the interval `[0x65E310, 0x667B90)`, exactly the Splat `file_15` interval. The
+retail bytes at `[0x61D5DE, 0x626E5E)` exactly equal those reference bytes.
+
+The ID-15 row in `D_80054ACC` (ROM offset `0x556CC`, row `ID - 1`) is
+`[0x801CB460, 0x801E9980)`. The transition caller supplies `0x801CB460`, and
+Splat marks `file_15` at that VMA with BSS size `0x14CA0`. After the `0x9880`
+bytes are loaded, `80001C00` zero-fills the remaining `0x14CA0` bytes, writes
+back the full `0x1E520`-byte destination range, and returns `0x801E9980`.
+`file_15` is an overlay in `static_overlay_1`; Splat also places files 11 and
+13–16 at `0x801CB460`. The shared address identifies a reusable overlay RAM
+window, not which overlay is active.
+
+### Loader call edges and data classes
+
+| Original call edge | Data and RAM ownership | Verified effect | Still unknown |
+| --- | --- | --- | --- |
+| `800030F0` at `0x80003164` → `80001C00(15, 0x801CB460)` | File-table ID 15; fixed `static_overlay_1` destination. | Reached only from substate 1 when `D_800548D8 == 0`; calls `8000383C` first. The caller overwrites the loader return with `0xFFFF`, waits in a bounded loop, then increments `SYS_W +0x3ADD6`. | Whether the newly copied overlay becomes active, what the guard means, and whether an old overlay is released or room objects are torn down. |
+| `80001C00` → `80001640` → `osPiStartDma` / `osRecvMesg` | ROM address and caller's RAM pointer. | Invalidates data/instruction caches, starts PI DMA, waits on the message queue, then the loader zero-fills and writes back its range. This is the ID-15 path. | No allocation, ownership transfer, or scene transition is performed by this edge. |
+| `80001C00` → `80005394` → `80005984` / `80005900` → `80001640` | Compressed file data to the same caller-supplied destination. | The current start word's high bit selects the decoder; the decoder refills its input through chunked DMA. | This compressed branch is not used for ID 15; the complete decoder format/asset semantics are outside this trace. |
+| `801D46F8` → `800148F0(0xA0)` → `80001C00(7, returned_pointer)` → `80014B74` | A temporary 0xA0-byte pool allocation and its returned RAM pointer. | The caller allocates the buffer, passes it to the loader, uses the loaded records, and frees it itself. This demonstrates caller-owned allocation and release, separate from `80001C00`. | The loaded record table's higher-level purpose is not established here. |
+| `80005A64` → `80001C00(dynamic_id, request_entry+4)` | An eight-byte file-load request entry supplies an ID/flags word and destination pointer. | The caller masks flag bits from the ID and passes the pointer stored at `+4`; it iterates or clears request entries after loading. | These are file-load request records, not evidence of an object list or room teardown. |
+| `801DC9C8` → `80001C00(halfword_id, table_destination)` | A file ID comes from a halfword table; destination comes from a separate pointer table. | The caller supplies both values directly and performs no allocation at this call site. | The surrounding table's resource naming and lifecycle are not fully recovered. |
+
+The loader's direct calls are `80001640`, `80005394`, and
+`osWritebackDCache`; it has no allocator, free, overlay-activation, or room
+teardown call. `D_8015C5D4` is saved, set to one during the load, and restored;
+its broader meaning remains unknown. The matched `80001D68` helper is only a
+masked table lookup; `80001D94`, `80001C00`, and the decoder remain assembly.
+
+The numeric file ID passed to `80001C00` is a different call path from the
+Script VM's current resource ID at `0x801C78E8`, which `8003D468` resolves using
+`800141C4` and `80013B14`. This trace does not map VM resource IDs 96/97 to
+file ID 15 or to the `static_overlay_1` load.
+
+No original call edge here establishes successful scene activation, prior
+overlay release, room teardown, actor/object-list rebuilding, or safe warp
+semantics. Those remain separate trace targets; no runtime feature or memory
+write was changed. The execution record is
+[`plans/execution/2026-11-14-g64-062-loader-boundary.json`](plans/execution/2026-11-14-g64-062-loader-boundary.json).
