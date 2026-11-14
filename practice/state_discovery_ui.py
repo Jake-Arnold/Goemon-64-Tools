@@ -9,6 +9,7 @@ from pathlib import Path
 from practice.paths import diagnostics_dir
 from practice.state_discovery import PROBE_ACTIONS, capture_state, compare_captures
 from practice.theme import PALETTE
+from practice.transition_observer import read_transition_observation, format_transition_observation
 
 
 class StateDiscoveryMixin:
@@ -23,6 +24,12 @@ class StateDiscoveryMixin:
         ttk.Label(tab,text='Capture A (before), B (after) and optionally C (returned to the original state). '
                   'Only observed values are reported: no addresses are assumed to represent the requested flag.',
                   style='Muted.TLabel',wraplength=1080).pack(anchor='w',pady=(0,9))
+        context=ttk.LabelFrame(tab,text='Scene / boss investigation (read-only)',padding=8)
+        context.pack(fill='x',pady=(0,9))
+        ttk.Label(context,text='Works without a valid player object. Capture engine and Script VM context before and after a boss phase, loading screen or scene change. Values are observations, not confirmed boss HP or safe warp targets.',style='Muted.TLabel',wraplength=1050).pack(anchor='w')
+        self.transition_observation_text=tk.StringVar(value='Connect to the game, then select Read scene context.')
+        ttk.Button(context,text='Read scene context',command=self.read_scene_context).pack(anchor='w',pady=(5,3))
+        ttk.Label(context,textvariable=self.transition_observation_text,wraplength=1050,justify='left').pack(anchor='w')
         row=ttk.Frame(tab);row.pack(fill='x',pady=(0,6))
         ttk.Label(row,text='Test:').pack(side='left',padx=(0,6))
         self.state_probe_kind=tk.StringVar(value='Map displayed')
@@ -70,6 +77,16 @@ class StateDiscoveryMixin:
         ttk.Label(row,text='A/B changes alone are hypotheses. For persistent storyline flags, A/B is sufficient. '
                   'Player-task float values are not proven velocity.',style='Muted.TLabel',
                   wraplength=850).pack(side='left',padx=(15,0))
+
+    def read_scene_context(self):
+        if not self.mem:
+            self.transition_observation_text.set('Not connected to game memory.')
+            return
+        try:
+            observation=read_transition_observation(self.mem)
+            self.transition_observation_text.set(format_transition_observation(observation))
+        except (OSError,ValueError,RuntimeError) as exc:
+            self.transition_observation_text.set(f'Unable to read scene context: {exc}')
 
     def capture_state_probe(self,stage):
         if not self.mem:
