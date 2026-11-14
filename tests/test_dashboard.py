@@ -102,6 +102,31 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertIn('map unknown',labels[2])
         self.assertFalse(hasattr(app,'save_bookmark'))
 
+    def test_native_savestates_replace_logical_dashboard(self):
+        app = self.toolkit
+        self.assertTrue(app.native_save_btn.winfo_exists())
+        self.assertTrue(app.native_load_btn.winfo_exists())
+        self.assertEqual(app.legacy_checkpoint_card.winfo_manager(), '')
+        self.assertEqual(app.savestate_slot_box.get(), '0')
+
+    def test_native_savestate_sends_emulator_command(self):
+        app = self.toolkit
+        app.connection_target.set('project64')
+        with patch('practice.toolkit.find_emulator_pid', return_value=(1234, 'project64')), \
+             patch('practice.toolkit.send_state_command') as command:
+            app.native_savestate_action('save')
+        command.assert_called_once_with(1234, 'project64', 'save', 0)
+        self.assertIsNone(app.mem)
+        self.assertIn('Requested project64 save', app.status.get())
+
+    def test_native_savestate_rejects_recomp(self):
+        app = self.toolkit
+        app.connection_target.set('recomp')
+        with patch('practice.toolkit.send_state_command') as command:
+            app.native_savestate_action('load')
+        command.assert_not_called()
+        self.assertIn('cannot create complete savestates', app.status.get())
+
     def test_game_version_selector_disables_unsupported_japanese_runtime(self):
         app = self.toolkit
         self.assertEqual(app.active_version.key, 'usa')

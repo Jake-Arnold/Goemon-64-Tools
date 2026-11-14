@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Native emulator savestates in dashboard
+
+- **Change:** Exposed slot-based full savestates via Project64 and Mupen64Plus native save/load hotkeys; the former logical-checkpoint card is hidden but legacy data and code are retained.
+- **Emulators:** Added PID/process-name verification and foreground-window validation on Windows and Linux X11. Mupen64Plus can be selected for savestate-only interaction; no Mupen RAM support is asserted.
+- **Safety:** Recomp has no complete savestate support. Invalid, multiple, or mismatched emulator processes fail closed. Toolkit freezes and pending operations stop before hotkeys; RAM connection is discarded before loading. Read-only and Wayland disable hotkeys.
+- **Tests:** Added mocked process, focus, hotkey and GUI tests. No complete local GUI suite or live emulator tests were executed in this connected GitHub environment; live success must be checked in the emulator.
+- **Limits:** Emulator hotkeys can be reassigned, state formats are emulator-specific, and identifying a process is not verification of the ROM running in that process. Japanese recomp remains unimplemented.
+- **Next:** Run new mocked and Tk tests under Xvfb and validate actual Project64 and Mupen64Plus save/load. See docs/NATIVE_SAVESTATES.md.
+
 ### 2026-11-14 — Game-version selector with strict Japanese ROM-only mode
 
 - **UI:** Added USA/Japan version selection and offline ROM verification to the compact dashboard Connection card, with the existing USA live toolkit as default.

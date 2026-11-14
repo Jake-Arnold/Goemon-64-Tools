@@ -31,6 +31,7 @@ from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
+from practice.emulator_savestates import find_emulator_pid, verified_emulator_pid, send_state_command
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
@@ -188,7 +189,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             version_row, text='Verify ROM', command=self.verify_rom_for_version)
         self.verify_rom_button.pack(side='left', padx=(7, 0))
         ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
-                     values=('auto', 'recomp', 'project64')).pack(fill='x', pady=(0, 7))
+                     values=('auto', 'recomp', 'project64', 'mupen64plus')).pack(fill='x', pady=(0, 7))
         pid_row=ttk.Frame(connection);pid_row.pack(fill='x',pady=(0,7))
         ttk.Label(pid_row,text='PID (optional)').pack(side='left')
         ttk.Entry(pid_row,textvariable=self.pid_text,width=14).pack(side='left',padx=6)
@@ -219,7 +220,35 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
                   wraplength=420).pack(anchor='w')
 
-        checkpoints = ttk.LabelFrame(right, text=' Logical checkpoints ', padding=10)
+        state_card = ttk.LabelFrame(right, text=' Full emulator savestates ', padding=10)
+        state_card.pack(fill='x', pady=(0, 6))
+        ttk.Label(state_card, text='Complete states are saved by Project64 or Mupen64Plus. '
+                  'Goemon64Recomp does not support full savestates.',
+                  style='CardMuted.TLabel', wraplength=430).pack(anchor='w', pady=(0, 7))
+        slot_row = ttk.Frame(state_card)
+        slot_row.pack(fill='x', pady=(0, 7))
+        ttk.Label(slot_row, text='Save slot').pack(side='left', padx=(0, 8))
+        self.savestate_slot = tk.StringVar(value='0')
+        self.savestate_slot_box = ttk.Combobox(
+            slot_row, textvariable=self.savestate_slot, width=5, state='readonly',
+            values=tuple(str(i) for i in range(10)))
+        self.savestate_slot_box.pack(side='left')
+        native_buttons = ttk.Frame(state_card)
+        native_buttons.pack(fill='x')
+        self.native_save_btn = ttk.Button(native_buttons, text='Save full state',
+                                          command=lambda: self.native_savestate_action('save'),
+                                          style='Gold.TButton')
+        self.native_save_btn.pack(side='left', fill='x', expand=True)
+        self.native_load_btn = ttk.Button(native_buttons, text='Load full state',
+                                          command=lambda: self.native_savestate_action('load'))
+        self.native_load_btn.pack(side='left', fill='x', expand=True, padx=(8, 0))
+        if getattr(args, 'read_only', False):
+            self.native_save_btn.state(['disabled'])
+            self.native_load_btn.state(['disabled'])
+
+        # Retain existing logical checkpoint code/data but hide its incomplete
+        # snapshot controls so the dashboard presents only native full states.
+        checkpoints = ttk.LabelFrame(right, text=' Legacy logical checkpoints ', padding=10)
         checkpoints.pack(fill='x', pady=(0, 6))
         ttk.Label(checkpoints, text='Includes saved position, orientation, health, lives, Ryo, items and progression.',
                   style='CardMuted.TLabel',wraplength=430).pack(anchor='w',pady=(0,7))
@@ -247,6 +276,8 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         ttk.Label(checkpoints,text='Older position bookmarks appear here as position-only; '
                   'they cannot restore health, items or progression.',style='CardMuted.TLabel',
                   wraplength=430).pack(anchor='w',pady=(6,0))
+        self.legacy_checkpoint_card = checkpoints
+        checkpoints.pack_forget()
 
         # The dedicated tabs are visible directly above; no duplicate footer is needed.
         self._arrange_dashboard(1220)
@@ -331,6 +362,42 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         self.active_version = version
         self.verified_rom_path = None
         self._apply_game_version_ui()
+
+    def native_savestate_action(self, action):
+        """Request native emulator-owned F5/F7; never claim it finished writing."""
+        if getattr(self.args, 'read_only', False):
+            self.status.set('Savestate input disabled by --read-only.')
+            return
+        if self._connecting:
+            self.status.set('Finish connecting before using emulator savestates.')
+            return
+        target = self.connection_target.get()
+        try:
+            if target == 'recomp':
+                raise ValueError('Goemon64Recomp cannot create complete savestates yet')
+            specified = self.pid_text.get().strip()
+            if specified:
+                pid, kind = verified_emulator_pid(int(specified), target)
+            elif self.game_pid is not None:
+                pid, kind = verified_emulator_pid(self.game_pid, target)
+            else:
+                pid, kind = find_emulator_pid(target)
+            slot = int(self.savestate_slot.get())
+            # Stop asynchronous toolkit writers before the emulator snapshots
+            # or restores the machine. A load invalidates cached guest pointers.
+            self.stop_damage_capture(quiet=True)
+            with self.value_freezes.guard:
+                self.stop_all_freezes()
+                self.cancel_pending_restore(quiet=True)
+                self.pending_direct_warp = None
+                self.pending_native_warp = None
+            if action == 'load':
+                self._disconnect_for_version_change()
+            send_state_command(pid, kind, action, slot)
+            self.status.set(f'Requested {kind} {action} in state slot {slot} (PID {pid}). '
+                            'Confirm completion in the emulator.')
+        except (ValueError, RuntimeError, OSError) as exc:
+            self.status.set(f'Full savestate unavailable: {exc}')
 
     def verify_rom_for_version(self):
         """Offline-only retail ROM verification; never attaches to a game process."""
@@ -483,6 +550,18 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         handle until the UI takes it from the completion queue.
         """
         if self._connecting:
+            return
+        if self.connection_target.get() == 'mupen64plus':
+            try:
+                specified = self.pid_text.get().strip()
+                pid, kind = (verified_emulator_pid(int(specified), 'mupen64plus')
+                             if specified else find_emulator_pid('mupen64plus'))
+                self._disconnect_for_version_change()
+                self.game_pid = pid
+                self.status.set(f'Mupen64Plus PID {pid} selected for full savestates. '
+                                'Its RAM layout is not supported by the toolkit.')
+            except (ValueError, RuntimeError, OSError) as exc:
+                self.status.set(f'Mupen64Plus connection failed: {exc}')
             return
         if not self.active_version.live_memory_supported:
             self.status.set('Japanese live memory is not supported: verify the ROM offline instead.')
