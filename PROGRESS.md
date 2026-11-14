@@ -1,5 +1,9 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Correct GitHub transfer indentation in Japanese Mupen test
+
+- **Fix:** Restored method indentation of `test_rejects_single_anchor_match` in the committed test source; the independently executed local suite passes seven tests. Runtime emulator integration is still untested.
+
 ### 2026-11-14 — Japanese Mupen manual-base safety refinement
 
 - **Follow-up:** Refuse a non-Linux host before opening a remote process. Even an explicitly supplied host RAM base now checks the low 4 MiB mapping and rejects cartridge-ROM-buffer decoys in addition to all Japanese executable fingerprints.

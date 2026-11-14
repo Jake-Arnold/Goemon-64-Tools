@@ -117,7 +117,7 @@ class TestJapaneseMupenProbe(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'cartridge ROM buffer'):
                 mod.attach_japanese_mupen(42,Path('/unused'),0x20000000)
 
-        def test_rejects_single_anchor_match(self):
+    def test_rejects_single_anchor_match(self):
         rom,ram=synth('big')
         ram[0x30000]^=0xff
         p=FakeProcess([(0x20000000,ram)])
