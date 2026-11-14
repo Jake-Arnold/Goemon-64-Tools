@@ -102,5 +102,11 @@
     "The host fixture models the callback setter's single original 32-bit store and the finish-call boundary, not scheduler completion internals.",
     "No game-memory write, key-spawn toolkit feature or in-game verification was performed."
   ],
+  "publication": {
+    "commit_sha": "5d009f658d160f35026990ba83dcafdde31933e3",
+    "remote_ref": "refs/heads/chatgptweb/decomp",
+    "remote_head_when_verified": "5d009f658d160f35026990ba83dcafdde31933e3",
+    "verification": "Pushed without force; git ls-remote confirmed the task evidence commit."
+  },
   "next": "Continue with G64-058, resolving the Ghost Toys entrance stack-spill mismatch within its task-specific stop rule."
 }
