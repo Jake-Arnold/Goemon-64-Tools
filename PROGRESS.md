@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Japanese main/overlay MIPS structural function mapping
+
+- **Code:** Added `decomp/japan_function_map.py` and `decomp/japan_overlay_map.py` for verified USA/JP expanded ROMs, unique 16-instruction MIPS structural signatures, exact USA N64Recomp function bounds, Splat-derived separate overlay code regions, and JSON candidate mappings.
+- **Integration:** Main code found 633 unambiguous structural start anchors from 781 direct USA JAL targets. Sample 20 original USA `.main` functions: 16 full normalized-structure matches. Sample 24 original USA Impact `.file_13` functions: 14 full matches.
+- **Tests:** Nine synthetic Python tests passed locally; both hash-verified decompressed ROMs and original symbol subsets exercised. No gameplay, N64Recomp Japanese generation or full savestate runtime testing performed.
+- **Limits:** Masking immediates/JAL targets leaves behavioural uncertainty. Indirect-only and changed functions require more research. No Japanese runtime support is enabled. No copyrighted ROM/assets are committed.
+- **Next:** Run full original symbol corpus and Splat configurations, then generate Japanese-specific symbols, patches and overlays in an isolated writable Goemon64Recomp checkout. See docs/JAPAN_FUNCTION_MAPPING.md.
+
 ### 2026-11-14 — Verified Japanese static-recomp build input
 
 - **Implemented:** `decomp/recomp_rom_input.py` expands exact USA/Japanese retail ROMs to 32 MiB recompilation inputs using the Nisitenma file table, original LZKN64 codec, 16-byte file alignment, CIC-6102 header checksums and final SHA-1 gates. No ROM data is committed.
