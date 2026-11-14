@@ -352,6 +352,48 @@ collision size are unverified.
 - Do not add a production write/freeze for `+0x86` or `+0xE4`; this investigation
   verified read paths and engine-selected values, not a safe write workflow.
 
+### F. C-level function sketches for the next decomp step
+
+The pinned `mnsg` checkout does not include C source for these player routines.
+The following names and types are analyst labels for MIPS-verified behavior,
+not recovered original identifiers, compilable replacements, or matching-C
+claims. They give a concrete starting point for a later source reconstruction:
+
+```c
+/* Behavioral sketch of func_801E7DE8_5A3CF8. */
+bool is_ebi_mini_mode(const Task *task)
+{
+    return read_u8(task, 0x60) == 1 &&
+           read_u16(read_pointer(task, 0x5C), 0x86) == 0xFFFF;
+}
+
+/* The exact func_801E1C90 path also checks its per-player input magnitude. */
+float movement_limit_target(const Task *task)
+{
+    return is_ebi_mini_mode(task) ? 1.12f : 2.8f;
+}
+
+/* Core magnitude clamp in func_801CD310_589220. */
+void clamp_movement_vector(float delta[3], float limit)
+{
+    float magnitude = sqrtf(delta[0] * delta[0] +
+                            delta[1] * delta[1] +
+                            delta[2] * delta[2]);
+    if (magnitude > limit && magnitude != 0.0f) {
+        float scale = limit / magnitude;
+        delta[0] *= scale;
+        delta[1] *= scale;
+        delta[2] *= scale;
+    }
+}
+```
+
+The next source-level target is the easing/setter function `func_801E3DE0_59FCF0`
+and its callers. Its MIPS writes `+0xE4` and `+0xE8`, while the user has now
+observed other temporary limit values during stopping and hurt recovery. Before
+turning these sketches into a typed host model, recover the caller-selected
+transition parameters and verify which task/context pointers each call receives.
+
 ### Remaining gaps
 
 - The direct MIPS cap is 40% of normal (`1.12/2.8`); the earlier displacement

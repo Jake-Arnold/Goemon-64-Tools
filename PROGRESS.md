@@ -2,12 +2,12 @@
 
 ### 2026-11-14 — Reverse-trace Mini Ebisumaru speed limit and action gates
 
-- **Changed:** expanded `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md` with original USA MIPS readers/writers, the task-context offset for `0x8020C8E6`, the `f32 +0xE4` movement-vector clamp, the exact `2.8`/`1.12` mode selection, action-gate functions, countdown logic, and confidence-separated memory/function maps.
+- **Changed:** expanded `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md` with original USA MIPS readers/writers, the task-context offset for `0x8020C8E6`, the `f32 +0xE4` movement-vector clamp, the exact `2.8`/`1.12` mode selection, action-gate functions, countdown logic, confidence-separated memory/function maps, and C-level behavior sketches for the three verified speed functions.
 - **Reason:** identify the engine mechanism behind the user's speed and action experiments without adding toolkit writes or controls.
 - **Evidence:** verified the USA ROM hashes and split the ROM using pinned `mnsg` source `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. MIPS `func_801E1C90` selects `1.12f` only when character index 1 has `u16 task[+0x5C]+0x86 == 0xFFFF`; otherwise it selects `2.8f`. `func_801E3DE0` writes the scalar to task `+0xE4`, and `func_801CD310` clamps the movement vector to that scalar. MIPS checks separately gate the ordinary action path and character cycling.
 - **Tests:** ROM SHA-1 checks and Splat split against the expected decompressed hash; `git diff --check`. Documentation/research only; no game was run by the assistant and no automated test suite was run.
 - **Limitations:** user runtime pointer/value reports were not independently live-read. The `~0.327` displacement ratio differs from the verified `0.4` cap ratio; `0x801C159A`, renderer/collision scale, transient `1.0`/`2.0`/`0.8` writers, and speed-profile-to-character mapping remain unresolved.
-- **Next:** trace the visual scale field and the remaining transient speed/profile paths; do not add speculative memory writes.
+- **Next:** trace the caller-selected transition parameters for `func_801E3DE0`, map the speed-profile byte to live character states, and continue looking for the owner of `0x801C159A`; do not add speculative memory writes.
 
 ### 2026-11-14 — Live Memory right-click freeze and persistent field renaming
 
