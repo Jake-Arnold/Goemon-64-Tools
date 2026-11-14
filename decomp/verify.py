@@ -92,6 +92,31 @@ def _file12_stage_list(stage_or_stages):
     raise ValueError('Invalid file_12 stage collection')
 
 
+def manifest_file13_stages(manifest):
+    """Return the ordered file_13 stages, retaining the legacy single-stage key."""
+    single_present = 'overlay_file13_stage' in manifest
+    multiple_present = 'overlay_file13_stages' in manifest
+    if single_present and multiple_present:
+        raise ValueError('Use only one file_13 stage manifest field')
+    if single_present:
+        stage = manifest['overlay_file13_stage']
+        return [] if stage is None else [stage]
+    if not multiple_present:
+        return []
+    stages = manifest['overlay_file13_stages']
+    if not isinstance(stages, list) or not stages:
+        raise ValueError('file_13 stages must be a nonempty list')
+    return stages
+
+
+def _file13_stage_list(stage_or_stages):
+    if isinstance(stage_or_stages, dict):
+        return [stage_or_stages]
+    if isinstance(stage_or_stages, (list, tuple)):
+        return list(stage_or_stages)
+    raise ValueError('Invalid file_13 stage collection')
+
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -99,9 +124,7 @@ def claimed_functions(manifest):
     if stage is not None:
         functions.append(stage['function'])
     functions.extend(stage['function'] for stage in manifest_file12_stages(manifest))
-    stage = manifest.get('overlay_file13_stage')
-    if stage is not None:
-        functions.append(stage['function'])
+    functions.extend(stage['function'] for stage in manifest_file13_stages(manifest))
     return functions
 
 
@@ -399,24 +422,77 @@ def stage_file12_splat(text, stage):
     return updated, assembly[0], assembly[-1]
 
 
-def _file13_stage_segments(stage):
-    function = stage['function']
-    source_stem = PurePosixPath(stage['source']).stem
-    before = f'file_13_before_{function["rom_offset"]:06X}'
-    after_offset = function['rom_offset'] + function['size']
-    after = f'file_13_after_{after_offset:06X}'
-    lines = (
-        f'    - [0x{overlay_file13.ROM_START:X}, asm, {before}]',
-        f'    - [0x{function["rom_offset"]:X}, c, {source_stem}]',
-        f'    - [0x{after_offset:X}, asm, {after}]',
-        f'    - [0x{overlay_file13.ROM_TEXT_END:X}, data]',
-    )
-    return before, after, lines
+def _file13_stages_layout(stage_or_stages):
+    stages = _file13_stage_list(stage_or_stages)
+    if not stages:
+        raise ValueError('file_13 stages must be nonempty')
+    objects = []
+    lines = []
+    assembly = []
+    names = set()
+    sources = set()
+    previous_end = None
+    for stage in stages:
+        source = validate_file13_stage_definition(stage)
+        function = stage['function']
+        name = function['name']
+        start = function['rom_offset']
+        end = start + function['size']
+        if name in names or (previous_end is not None and start < previous_end):
+            raise ValueError('Overlapping, duplicated, or unordered file_13 functions')
+        if source.name in sources:
+            raise ValueError('file_13 stages must use distinct C source files')
+        if start < overlay_file13.ROM_START or end > overlay_file13.ROM_TEXT_END:
+            raise ValueError('file_13 function crosses the original text boundary')
+        names.add(name)
+        sources.add(source.name)
+        previous_end = end
+
+    prefix = f'file_13_before_{stages[0]["function"]["rom_offset"]:06X}'
+    lines.append(f'    - [0x{overlay_file13.ROM_START:X}, asm, {prefix}]')
+    assembly.append(prefix)
+    objects.append({
+        'kind': 'asm', 'name': prefix,
+        'start': overlay_file13.ROM_START,
+        'end': stages[0]['function']['rom_offset'],
+    })
+    for index, stage in enumerate(stages):
+        function = stage['function']
+        start = function['rom_offset']
+        end = start + function['size']
+        source_stem = PurePosixPath(stage['source']).stem
+        lines.append(f'    - [0x{start:X}, c, {source_stem}]')
+        objects.append({
+            'kind': 'c', 'name': source_stem,
+            'start': start, 'end': end,
+            'stage': stage,
+        })
+        if index + 1 < len(stages):
+            next_start = stages[index + 1]['function']['rom_offset']
+            if end < next_start:
+                name = f'file_13_between_{end:06X}_{next_start:06X}'
+                lines.append(f'    - [0x{end:X}, asm, {name}]')
+                assembly.append(name)
+                objects.append({
+                    'kind': 'asm', 'name': name, 'start': end,
+                    'end': next_start,
+                })
+        else:
+            name = f'file_13_after_{end:06X}'
+            lines.append(f'    - [0x{end:X}, asm, {name}]')
+            assembly.append(name)
+            objects.append({
+                'kind': 'asm', 'name': name, 'start': end,
+                'end': overlay_file13.ROM_TEXT_END,
+            })
+    lines.append(f'    - [0x{overlay_file13.ROM_TEXT_END:X}, data]')
+    return {'assembly': assembly, 'objects': objects, 'lines': tuple(lines)}
 
 
-def stage_file13_splat(text, stage):
-    """Split one file_13 function while retaining the overlay data boundary."""
+def stage_file13_splat(text, stage_or_stages):
+    """Split reviewed file_13 functions while retaining its data boundary."""
     overlay_file13.validate_layout(text)
+    layout = _file13_stages_layout(stage_or_stages)
     segments = list(re.finditer(r'(?m)^  - name: (\S+)\s*$', text))
     names = [item.group(1) for item in segments]
     if names.count('file_13') != 1 or names.count('file_14') != 1:
@@ -432,10 +508,9 @@ def stage_file13_splat(text, stage):
     )
     if block.count('    subalign: 16\n') != 1 or block.count(anchor) != 1:
         raise ValueError('Pinned file_13 Splat split anchor differs')
-    before, after, replacement_lines = _file13_stage_segments(stage)
     block = block.replace('    subalign: 16\n', '    subalign: null\n', 1)
-    block = block.replace(anchor, '\n'.join(replacement_lines))
-    return text[:start] + block + text[end:], before, after
+    block = block.replace(anchor, '\n'.join(layout['lines']))
+    return text[:start] + block + text[end:], tuple(layout['assembly'])
 
 
 def patch_file12_tail_alias_sources(candidate_checkout, stage):
@@ -647,52 +722,76 @@ def lower_file13_text_alignment(object_bytes):
     return result
 
 
-def prepare_file13_stage_objects(candidate_checkout, stage):
-    """Pin the C function extent and preserve aligned assembly neighbors."""
-    validate_file13_stage_definition(stage)
+def prepare_file13_stage_objects(candidate_checkout, stage_or_stages):
+    """Pin each staged C function and preserve every file_13 assembly extent."""
+    stages = _file13_stage_list(stage_or_stages)
+    layout = _file13_stages_layout(stages)
     checkout = Path(candidate_checkout)
-    function = stage['function']
-    source_name = PurePosixPath(stage['source']).name
-    before, after, _ = _file13_stage_segments(stage)
-    c_path = checkout / f'build/usa/src/{source_name}.o'
-    before_path = checkout / f'build/usa/asm/usa/{before}.s.o'
-    after_path = checkout / f'build/usa/asm/usa/{after}.s.o'
-    if not c_path.is_file() or not before_path.is_file() or not after_path.is_file():
-        raise ValueError('Missing compiled file_13 source or assembly slices')
+    function_names = {stage['function']['name'] for stage in stages}
+    c_layouts = []
+    for stage in stages:
+        validate_file13_stage_definition(stage)
+        function = stage['function']
+        source_name = PurePosixPath(stage['source']).name
+        c_path = checkout / f'build/usa/src/{source_name}.o'
+        if not c_path.is_file():
+            raise ValueError('Missing compiled file_13 C object')
+        c_original = c_path.read_bytes()
+        if digest(c_original, 'sha256') != stage['compiler_object_sha256']:
+            raise ValueError('file_13 compiler object hash mismatch')
+        c_staged, pack_evidence = pack_overlay_function_text(
+            c_original, function['name'], function['size'],
+            overlay_file13.FUNCTION_OBJECT_PADDING[function['name']],
+            overlay_file13.FUNCTION_RELOCATIONS[function['name']],
+            overlay_file13.FUNCTION_RELOCATION_SYMBOLS[function['name']],
+            'file_13 ' + function['name'],
+            'file13_' + PurePosixPath(stage['source']).stem,
+        )
+        c_staged_hash = digest(c_staged, 'sha256')
+        if c_staged_hash != stage['object_sha256']:
+            raise ValueError('file_13 staged C object hash mismatch')
+        c_elf = Elf32(c_staged)
+        c_symbol = c_elf.function(function['name'])
+        c_text = c_elf.sections[c_symbol.section]
+        if (c_symbol.value != 0 or c_symbol.size != function['size'] or
+                c_symbol.binding != 1 or c_elf.names[c_symbol.section] != '.text' or
+                c_text[5] != function['size'] or c_text[8] != 4):
+            raise ValueError('file_13 staged function placement or text extent differs')
+        c_path.write_bytes(c_staged)
+        c_layouts.append({
+            'source': stage['source'],
+            'compiler_object': f'build/usa/src/{source_name}.o',
+            'compiler_object_sha256': digest(c_original, 'sha256'),
+            'staged_object_sha256': c_staged_hash,
+            'function': function['name'],
+            'callback_layout': pack_evidence,
+        })
 
-    c_original = c_path.read_bytes()
-    if digest(c_original, 'sha256') != stage['compiler_object_sha256']:
-        raise ValueError('file_13 compiler object hash mismatch')
-    expected_relocations = overlay_file13.FUNCTION_RELOCATIONS[function['name']]
-    c_staged, pack_evidence = pack_overlay_function_text(
-        c_original, function['name'], function['size'], 8,
-        expected_relocations,
-        overlay_file13.FUNCTION_RELOCATION_SYMBOLS[function['name']],
-        'file_13 HP clamp', 'file13_hp_clamp',
-    )
-    c_staged_hash = digest(c_staged, 'sha256')
-    if c_staged_hash != stage['object_sha256']:
-        raise ValueError('file_13 staged C object hash mismatch')
-    c_elf = Elf32(c_staged)
-    c_symbol = c_elf.function(function['name'])
-    c_text = c_elf.sections[c_symbol.section]
-    if (c_symbol.value != 0 or c_symbol.size != function['size'] or
-            c_symbol.binding != 1 or c_elf.names[c_symbol.section] != '.text' or
-            c_text[5] != function['size'] or c_text[8] != 4):
-        raise ValueError('file_13 staged function placement or text extent differs')
-
-    before_elf = Elf32(before_path.read_bytes())
-    after_original = after_path.read_bytes()
-    after_elf = Elf32(after_original)
-    for label, elf in (('prefix', before_elf), ('suffix', after_elf)):
-        text_sections = [i for i, name in enumerate(elf.names) if name == '.text']
-        if (len(text_sections) != 1 or not elf.sections[text_sections[0]][2] & 0x4 or
-                elf.sections[text_sections[0]][8] != 16):
-            raise ValueError(f'file_13 assembly {label} .text alignment differs')
-        if any(symbol.name == function['name'] and symbol.section != 0
-               for symbol in elf.symbols):
-            raise ValueError(f'file_13 assembly {label} still owns the staged function')
-    after_staged = lower_file13_text_alignment(after_original)
+    assembly_layouts = []
+    for index, name in enumerate(layout['assembly']):
+        object_path = checkout / f'build/usa/asm/usa/{name}.s.o'
+        if not object_path.is_file():
+            raise ValueError('Missing compiled file_13 assembly slice')
+        original = object_path.read_bytes()
+        assembly = Elf32(original)
+        text_sections = [i for i, label in enumerate(assembly.names) if label == '.text']
+        if (len(text_sections) != 1 or not assembly.sections[text_sections[0]][2] & 0x4 or
+                assembly.sections[text_sections[0]][8] != 16):
+            raise ValueError('file_13 assembly .text alignment differs from pinned compiler output')
+        if any(symbol.name in function_names and symbol.section != 0
+               for symbol in assembly.symbols):
+            raise ValueError('file_13 assembly slice still owns a staged function')
+        staged = original if index == 0 else lower_file13_text_alignment(original)
+        object_path.write_bytes(staged)
+        assembly_layouts.append({
+            'object': f'build/usa/asm/usa/{name}.s.o',
+            'sha256_before': digest(original, 'sha256'),
+            'sha256_after': digest(staged, 'sha256'),
+            'alignment_before': 16,
+            'alignment_after': 16 if index == 0 else 4,
+            'extent': next(obj for obj in layout['objects']
+                           if obj['kind'] == 'asm' and obj['name'] == name),
+        })
 
     linker_script = checkout / '.splat/usa/mnsg.ld'
     script = linker_script.read_text(encoding='utf-8')
@@ -700,21 +799,10 @@ def prepare_file13_stage_objects(candidate_checkout, stage):
     if (re.search(anchor + r'\s+SUBALIGN\(', script) or
             len(re.findall(anchor, script)) != 1):
         raise ValueError('Generated linker script does not preserve file_13 input alignment')
-
-    c_path.write_bytes(c_staged)
-    after_path.write_bytes(after_staged)
     return {
-        'compiler_object': f'build/usa/src/{source_name}.o',
-        'compiler_object_sha256': digest(c_original, 'sha256'),
-        'staged_object_sha256': c_staged_hash,
-        'callback_layout': pack_evidence,
-        'adjusted_text_alignment': {'from': 16, 'to': 4},
-        'suffix_object': f'build/usa/asm/usa/{after}.s.o',
-        'suffix_object_sha256_before': digest(after_original, 'sha256'),
-        'suffix_object_sha256_after': digest(after_staged, 'sha256'),
-        'preserved_prefix_text_alignment': before_elf.sections[
-            next(i for i, name in enumerate(before_elf.names) if name == '.text')
-        ][8],
+        'functions': c_layouts,
+        'assembly_objects': assembly_layouts,
+        'preserved_prefix_text_alignment': 16,
         'linker_script_sha256': digest(script.encode('utf-8'), 'sha256'),
     }
 
@@ -899,16 +987,8 @@ def load_manifest(path):
                     file43_stage['function']['rom_offset'] <
                     function['rom_offset'] + function['size']):
                 raise ValueError('file_12 function overlaps file_43 function')
-    file13_stage = manifest.get('overlay_file13_stage')
-    if file13_stage is not None:
-        stage_source = validate_file13_stage_definition(file13_stage)
-        function = file13_stage['function']
-        function_name = function['name']
-        if function_name in seen or function_name in assembly_seen:
-            raise ValueError('Duplicate file_13 function ownership')
-        if any(start < function['rom_offset'] + function['size'] and
-               function['rom_offset'] < end for start, end in ranges):
-            raise ValueError('file_13 function overlaps a main-segment unit')
+    file13_stages = manifest_file13_stages(manifest)
+    if file13_stages:
         source_names = ({unit['source'] for unit in manifest['units']} |
                         set(manifest.get('support_headers', [])) |
                         {patch['source'] for patch in patches})
@@ -916,19 +996,35 @@ def load_manifest(path):
             source_names.add(PurePosixPath(file43_stage['source']).name)
         source_names.update(PurePosixPath(stage['source']).name
                             for stage in file12_stages)
-        if stage_source.name in source_names:
-            raise ValueError('file_13 C source collides with another source')
-        if (file43_stage is not None and
-                function['rom_offset'] <
-                file43_stage['function']['rom_offset'] + file43_stage['function']['size'] and
-                file43_stage['function']['rom_offset'] <
-                function['rom_offset'] + function['size']):
-            raise ValueError('file_13 function overlaps file_43 function')
-        for stage in file12_stages:
-            other = stage['function']
-            if (function['rom_offset'] < other['rom_offset'] + other['size'] and
-                    other['rom_offset'] < function['rom_offset'] + function['size']):
-                raise ValueError('file_13 function overlaps file_12 function')
+        file13_source_names = set()
+        previous_end = None
+        for file13_stage in file13_stages:
+            stage_source = validate_file13_stage_definition(file13_stage)
+            function = file13_stage['function']
+            function_name = function['name']
+            if function_name in seen or function_name in assembly_seen:
+                raise ValueError('Duplicate file_13 function ownership')
+            if previous_end is not None and function['rom_offset'] < previous_end:
+                raise ValueError('Overlapping or unordered file_13 functions')
+            previous_end = function['rom_offset'] + function['size']
+            if any(start < function['rom_offset'] + function['size'] and
+                   function['rom_offset'] < end for start, end in ranges):
+                raise ValueError('file_13 function overlaps a main-segment unit')
+            if (stage_source.name in source_names or
+                    stage_source.name in file13_source_names):
+                raise ValueError('file_13 C source collides with another source')
+            file13_source_names.add(stage_source.name)
+            if (file43_stage is not None and
+                    function['rom_offset'] <
+                    file43_stage['function']['rom_offset'] + file43_stage['function']['size'] and
+                    file43_stage['function']['rom_offset'] <
+                    function['rom_offset'] + function['size']):
+                raise ValueError('file_13 function overlaps file_43 function')
+            for stage in file12_stages:
+                other = stage['function']
+                if (function['rom_offset'] < other['rom_offset'] + other['size'] and
+                        other['rom_offset'] < function['rom_offset'] + function['size']):
+                    raise ValueError('file_13 function overlaps file_12 function')
     ranges.sort()
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):raise ValueError('Overlapping units')
     if 'heap_noop_text_layout' in manifest:
@@ -959,12 +1055,12 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
     text=config.read_text(encoding='utf-8')
     file43_stage=manifest.get('overlay_file43_stage')
     file12_stages=manifest_file12_stages(manifest)
-    file13_stage=manifest.get('overlay_file13_stage')
+    file13_stages=manifest_file13_stages(manifest)
     file43_source=None
     file12_sources=[]
     file43_asm_objects=()
     file12_asm_objects=()
-    file13_source=None
+    file13_sources=[]
     file13_asm_objects=()
     if file43_stage is not None:
         if reference_rom is None:
@@ -985,17 +1081,18 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
                 raise ValueError('Existing file_12 candidate source destination')
             file12_sources.append(source)
         text,file12_asm_objects=stage_file12_splats(text,file12_stages)
-    if file13_stage is not None:
+    if file13_stages:
         if reference_rom is None:
             raise ValueError('file_13 staging requires the verified decompressed ROM')
-        file13_source=validate_file13_stage(
-            file13_stage,text,reference_rom,source_dir
-        )
-        file13_destination=checkout/'src'/file13_source.name
-        if file13_destination.exists():
-            raise ValueError('Existing file_13 candidate source destination')
-        text,before,after=stage_file13_splat(text,file13_stage)
-        file13_asm_objects=(before,after)
+        for file13_stage in file13_stages:
+            file13_source=validate_file13_stage(
+                file13_stage,text,reference_rom,source_dir
+            )
+            file13_destination=checkout/'src'/file13_source.name
+            if file13_destination.exists():
+                raise ValueError('Existing file_13 candidate source destination')
+            file13_sources.append(file13_source)
+        text,file13_asm_objects=stage_file13_splat(text,file13_stages)
     if manifest.get('splat_options'):
         if text.count('options:\n')!=1:raise ValueError('Missing/ambiguous Splat options anchor')
         text=text.replace('options:\n','options:\n  asm_jtbl_label_macro: glabel\n')
@@ -1056,7 +1153,7 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
         copies.append((file43_source,checkout/'src'/file43_source.name))
     for file12_source in file12_sources:
         copies.append((file12_source,checkout/'src'/file12_source.name))
-    if file13_source is not None:
+    for file13_source in file13_sources:
         copies.append((file13_source,checkout/'src'/file13_source.name))
     staged_patches=[]
     for entry in manifest.get('existing_source_patches', []):
@@ -1523,35 +1620,37 @@ def require_file12_full_rom_match(comparison):
         raise ValueError('Candidate failed complete-ROM comparison before file_12 proof')
 
 
-def verify_file13_stage_build(baseline_checkout, candidate_checkout, stage,
-                              reference_rom):
-    """Verify file_13 source ownership, exact linker placement and whole bytes."""
-    validate_file13_stage_definition(stage)
+def verify_file13_stage_build(baseline_checkout, candidate_checkout,
+                              stage_or_stages, reference_rom):
+    """Verify each file_13 C source, linked extent, and complete overlay bytes."""
+    stages = _file13_stage_list(stage_or_stages)
+    for stage in stages:
+        validate_file13_stage_definition(stage)
+    layout = _file13_stages_layout(stages)
     candidate_checkout = Path(candidate_checkout)
-    function = stage['function']
-    name = function['name']
-    source_name = PurePosixPath(stage['source']).name
-    source_path = candidate_checkout / 'src' / source_name
-    if (not source_path.is_file() or
-            digest(source_path.read_bytes().replace(b'\r\n', b'\n'), 'sha256') !=
-            stage['source_sha256']):
-        raise ValueError('Staged file_13 source hash mismatch')
+    function_names = [stage['function']['name'] for stage in stages]
 
-    before, after, _ = _file13_stage_segments(stage)
-    c_object = f'build/usa/src/{source_name}.o'
-    assembly_objects = [
-        f'build/usa/asm/usa/{before}.s.o',
-        f'build/usa/asm/usa/{after}.s.o',
-    ]
-    c_path = candidate_checkout / c_object
-    if not c_path.is_file() or digest(c_path.read_bytes(), 'sha256') != stage['object_sha256']:
-        raise ValueError('Staged file_13 C object hash mismatch')
-    c_elf = Elf32(c_path.read_bytes())
-    c_symbol = c_elf.function(name)
-    if (c_symbol.value, c_symbol.size, c_symbol.binding) != (0, function['size'], 1):
-        raise ValueError('Staged file_13 C function object identity differs')
+    for stage in stages:
+        source_name = PurePosixPath(stage['source']).name
+        source_path = candidate_checkout / 'src' / source_name
+        if (not source_path.is_file() or
+                digest(source_path.read_bytes().replace(b'\r\n', b'\n'), 'sha256') !=
+                stage['source_sha256']):
+            raise ValueError('Staged file_13 source hash mismatch')
+        c_object = f'build/usa/src/{source_name}.o'
+        c_path = candidate_checkout / c_object
+        if not c_path.is_file() or digest(c_path.read_bytes(), 'sha256') != stage['object_sha256']:
+            raise ValueError('Staged file_13 C object hash mismatch')
+        c_elf = Elf32(c_path.read_bytes())
+        c_symbol = c_elf.function(stage['function']['name'])
+        if (c_symbol.value, c_symbol.size, c_symbol.binding) != (
+                0, stage['function']['size'], 1):
+            raise ValueError('Staged file_13 C function object identity differs')
 
-    for index, object_name in enumerate(assembly_objects):
+    assembly_objects = []
+    for index, name in enumerate(layout['assembly']):
+        object_name = f'build/usa/asm/usa/{name}.s.o'
+        assembly_objects.append(object_name)
         object_path = candidate_checkout / object_name
         if not object_path.is_file():
             raise ValueError('Missing generated file_13 assembly slice')
@@ -1561,12 +1660,13 @@ def verify_file13_stage_build(baseline_checkout, candidate_checkout, stage,
         if (len(text_indices) != 1 or
                 assembly.sections[text_indices[0]][8] != expected_alignment):
             raise ValueError('Generated file_13 assembly text layout differs')
-        if any(symbol.name == name and symbol.section != 0 for symbol in assembly.symbols):
-            raise ValueError('Generated file_13 assembly still owns the C function')
+        if any(symbol.name in function_names and symbol.section != 0
+               for symbol in assembly.symbols):
+            raise ValueError('Generated file_13 assembly still owns a C function')
 
     baseline_checkout = Path(baseline_checkout)
     original_splat = (baseline_checkout / 'config/usa/splat.yaml').read_text(encoding='utf-8')
-    expected_splat, _, _ = stage_file13_splat(original_splat, stage)
+    expected_splat, _ = stage_file13_splat(original_splat, stages)
     candidate_splat = (candidate_checkout / 'config/usa/splat.yaml').read_text(encoding='utf-8')
     expected_start = re.search(r'(?m)^  - name: file_13\s*$', expected_splat)
     candidate_start = re.search(r'(?m)^  - name: file_13\s*$', candidate_splat)
@@ -1601,9 +1701,16 @@ def verify_file13_stage_build(baseline_checkout, candidate_checkout, stage,
             overlay_file13.VMA_START, overlay_file13.ROM_END - overlay_file13.ROM_START):
         raise ValueError('Link map .file_13 VMA or extent differs from pinned overlay')
     block = mapping[section_match.start():section_match.end() + bss_match.start()]
-    expected_objects = [assembly_objects[0], c_object, assembly_objects[1]]
+
+    expected_objects = []
+    for obj in layout['objects']:
+        if obj['kind'] == 'asm':
+            name = f'build/usa/asm/usa/{obj["name"]}.s.o'
+        else:
+            name = f'build/usa/src/{obj["name"]}.c.o'
+        expected_objects.append((name, obj))
     positions = []
-    for object_name in expected_objects:
+    for object_name, _ in expected_objects:
         object_pattern = r'(?m)^\s*' + re.escape(object_name + '(.text)') + r'\s*$'
         hits = list(re.finditer(object_pattern, block))
         if len(hits) != 1:
@@ -1622,38 +1729,39 @@ def verify_file13_stage_build(baseline_checkout, candidate_checkout, stage,
             raise ValueError('Link map omits file_13 input text extent: ' + object_name)
         return tuple(int(match.group(i), 16) for i in (1, 2))
 
-    function_end = function['vma'] + function['size']
-    text_end_vma = overlay_file13.VMA_START + (
-        overlay_file13.ROM_TEXT_END - overlay_file13.ROM_START
-    )
-    expected_extents = (
-        (overlay_file13.VMA_START, function['vma'] - overlay_file13.VMA_START),
-        (function['vma'], function['size']),
-        (function_end, text_end_vma - function_end),
-    )
-    for object_name, expected_extent in zip(expected_objects, expected_extents):
+    for object_name, obj in expected_objects:
+        vma = overlay_file13.VMA_START + (obj['start'] - overlay_file13.ROM_START)
+        expected_extent = (vma, obj['end'] - obj['start'])
         if input_text_extent(object_name) != expected_extent:
             raise ValueError('Link map file_13 input does not preserve its original extent')
-    symbol_lines = re.findall(
-        r'(?m)^\s*0x([0-9a-fA-F]+)\s+' + re.escape(name) + r'\s*$', block
-    )
-    if [int(value, 16) for value in symbol_lines] != [function['vma']]:
-        raise ValueError('Link map does not place file_13 C function at its original VMA')
+    for stage in stages:
+        function = stage['function']
+        symbol_lines = re.findall(
+            r'(?m)^\s*0x([0-9a-fA-F]+)\s+' +
+            re.escape(function['name']) + r'\s*$', block
+        )
+        if [int(value, 16) for value in symbol_lines] != [function['vma']]:
+            raise ValueError('Link map does not place file_13 C function at its original VMA')
 
     baseline_elf = (baseline_checkout / 'build/usa/mnsg.elf').read_bytes()
     candidate_elf = (candidate_checkout / 'build/usa/mnsg.elf').read_bytes()
     candidate_symbols = Elf32(candidate_elf)
-    if any(symbol.name == name + '.NON_MATCHING'
+    if any(symbol.name.endswith('.NON_MATCHING') and
+           symbol.name[:-len('.NON_MATCHING')] in function_names
            for symbol in candidate_symbols.symbols):
         raise ValueError('Staged file_13 function retains a NON_MATCHING marker')
     linked = overlay_file13.validate_linked_elf_provenance(
-        original_splat, reference_rom, baseline_elf, candidate_elf, (name,)
+        original_splat, reference_rom, baseline_elf, candidate_elf,
+        tuple(function_names)
     )
     return {
-        'source': stage['source'],
-        'source_sha256': stage['source_sha256'],
-        'compiler_object_sha256': stage['compiler_object_sha256'],
-        'staged_object_sha256': stage['object_sha256'],
+        'stages': [{
+            'source': stage['source'],
+            'source_sha256': stage['source_sha256'],
+            'compiler_object_sha256': stage['compiler_object_sha256'],
+            'staged_object_sha256': stage['object_sha256'],
+            'function': stage['function']['name'],
+        } for stage in stages],
         'assembly_objects': assembly_objects,
         'splat_block_matches': True,
         'link_map_objects_in_order': True,
@@ -1662,35 +1770,39 @@ def verify_file13_stage_build(baseline_checkout, candidate_checkout, stage,
     }
 
 
-def append_file13_function_comparison(comparison, stage, linked_provenance):
-    """Add the overlay function claim only after full-ROM and ELF proof."""
-    function = stage['function']
+def append_file13_function_comparison(comparison, stage_or_stages,
+                                      linked_provenance):
+    """Add overlay function claims only after full-ROM and ELF proof."""
+    stages = _file13_stage_list(stage_or_stages)
     rows = linked_provenance.get('functions', [])
-    if len(rows) != 1 or rows[0].get('name') != function['name']:
-        raise ValueError('Linked file_13 proof does not cover the staged function')
-    row = rows[0]
-    expected = overlay_file13.FUNCTIONS[function['name']]
-    if (row.get('section') != '.file_13' or
-            row.get('vma') != f'0x{function["vma"]:08X}' or
-            row.get('rom_offset') != f'0x{function["rom_offset"]:X}' or
-            row.get('bytes') != function['size'] or
-            row.get('original_sha256') != expected[3] or
-            row.get('candidate_sha256') != expected[3] or
-            not row.get('candidate_code_matches_original') or
-            not row.get('candidate_relocations_match_reference')):
-        raise ValueError('Staged file_13 function failed linked provenance')
-    comparison['functions'].append({
-        'name': function['name'], 'size': function['size'],
-        'guest_address': f'0x{function["vma"]:08X}',
-        'rom_offset': f'0x{function["rom_offset"]:X}', 'matched': True,
-        'expected_sha256': row['original_sha256'],
-        'candidate_sha256': row['candidate_sha256'],
-        'relocation_count': row['relocation_count'],
-        'overlay': 'file_13',
-    })
-    comparison['claimed_functions'] += 1
-    comparison['matched_functions'] += 1
-    comparison['matched_function_bytes'] += function['size']
+    if (len(rows) != len(stages) or
+            [row.get('name') for row in rows] !=
+            [stage['function']['name'] for stage in stages]):
+        raise ValueError('Linked file_13 proof does not cover all staged functions')
+    for stage, row in zip(stages, rows):
+        function = stage['function']
+        expected = overlay_file13.FUNCTIONS[function['name']]
+        if (row.get('section') != '.file_13' or
+                row.get('vma') != f'0x{function["vma"]:08X}' or
+                row.get('rom_offset') != f'0x{function["rom_offset"]:X}' or
+                row.get('bytes') != function['size'] or
+                row.get('original_sha256') != expected[3] or
+                row.get('candidate_sha256') != expected[3] or
+                not row.get('candidate_code_matches_original') or
+                not row.get('candidate_relocations_match_reference')):
+            raise ValueError('Staged file_13 function failed linked provenance')
+        comparison['functions'].append({
+            'name': function['name'], 'size': function['size'],
+            'guest_address': f'0x{function["vma"]:08X}',
+            'rom_offset': f'0x{function["rom_offset"]:X}', 'matched': True,
+            'expected_sha256': row['original_sha256'],
+            'candidate_sha256': row['candidate_sha256'],
+            'relocation_count': row['relocation_count'],
+            'overlay': 'file_13',
+        })
+        comparison['claimed_functions'] += 1
+        comparison['matched_functions'] += 1
+        comparison['matched_function_bytes'] += function['size']
 
 
 def require_file13_full_rom_match(comparison):
@@ -1790,7 +1902,7 @@ def run_build(args,manifest,report):
     shutil.copyfile(args.retail_rom,candidate/'config/usa/baserom.z64')
     logged('candidate-setup',['make','setup','UV='+uv],candidate)
     file43_stage=manifest.get('overlay_file43_stage')
-    file13_stage=manifest.get('overlay_file13_stage')
+    file13_stages=manifest_file13_stages(manifest)
     if file43_stage is not None:
         before, after, _ = _file43_stage_segments(file43_stage)
         logged('candidate-file43-objects',['make','-j'+str(args.jobs),'UV='+uv,
@@ -1815,18 +1927,17 @@ def run_build(args,manifest,report):
         report['overlay_file12_object_layout']=prepare_file12_stage_objects(
             candidate,file12_stages
         )
-    if file13_stage is not None:
-        before, after, _ = _file13_stage_segments(file13_stage)
+    if file13_stages:
+        layout = _file13_stages_layout(file13_stages)
         object_targets = [
-            f'build/usa/src/{PurePosixPath(file13_stage["source"]).name}.o',
-            f'build/usa/asm/usa/{before}.s.o',
-            f'build/usa/asm/usa/{after}.s.o',
-        ]
+            f'build/usa/src/{PurePosixPath(stage["source"]).name}.o'
+            for stage in file13_stages
+        ] + [f'build/usa/asm/usa/{name}.s.o' for name in layout['assembly']]
         logged('candidate-file13-objects',
                ['make', '-j' + str(args.jobs), 'UV=' + uv, *object_targets],
                candidate)
         report['overlay_file13_object_layout']=prepare_file13_stage_objects(
-            candidate,file13_stage
+            candidate,file13_stages
         )
     if manifest.get('vm_assignment_table_layout'):
         logged('candidate-vm-object',['make','-j'+str(args.jobs),'UV='+uv,
@@ -1857,7 +1968,7 @@ def run_build(args,manifest,report):
         staged_name=PurePosixPath(file12_stage['source']).name
         report['sources_sha256_lf'][file12_stage['source']]=digest(
             (candidate/'src'/staged_name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
-    if file13_stage is not None:
+    for file13_stage in file13_stages:
         staged_name=PurePosixPath(file13_stage['source']).name
         report['sources_sha256_lf'][file13_stage['source']]=digest(
             (candidate/'src'/staged_name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
@@ -1866,7 +1977,7 @@ def run_build(args,manifest,report):
         object_name='build/usa/src/'+unit['source']+'.o'
         if not (candidate/object_name).is_file() or object_name not in mapping:
             raise ValueError('Reconstructed C object absent from link evidence')
-    if file13_stage is not None:
+    for file13_stage in file13_stages:
         object_name='build/usa/src/'+PurePosixPath(file13_stage['source']).name+'.o'
         if not (candidate/object_name).is_file() or object_name not in mapping:
             raise ValueError('file_13 C object absent from link evidence')
@@ -1889,14 +2000,14 @@ def run_build(args,manifest,report):
         )
         report['overlay_file12_stages']=file12_report
         report['comparison']=result
-    if file13_stage is not None:
+    if file13_stages:
         require_file13_full_rom_match(result)
-        report['overlay_file13_stage']=verify_file13_stage_build(
-            baseline,candidate,file13_stage,expected
+        report['overlay_file13_stages']=verify_file13_stage_build(
+            baseline,candidate,file13_stages,expected
         )
         append_file13_function_comparison(
-            result,file13_stage,
-            report['overlay_file13_stage']['linked_elf_provenance']
+            result,file13_stages,
+            report['overlay_file13_stages']['linked_elf_provenance']
         )
         report['comparison']=result
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:

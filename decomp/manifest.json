@@ -1229,11 +1229,11 @@
           "rom_offset": 53228,
           "size": 68
         },
-    {
-      "name": "func_8000C430_D030",
-      "rom_offset": 53296,
-      "size": 36
-    },
+        {
+          "name": "func_8000C430_D030",
+          "rom_offset": 53296,
+          "size": 36
+        },
         {
           "name": "func_8000C53C_D13C",
           "rom_offset": 53564,
@@ -1322,19 +1322,6 @@
       }
     }
   ],
-  "overlay_file13_stage": {
-    "format": "goemon-file13-c-stage-v1",
-    "source": "impact_hp_clamp.c",
-    "source_sha256": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99",
-    "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
-    "object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
-    "function": {
-      "name": "func_801D3954_5FED34",
-      "rom_offset": 6286644,
-      "vma": 2149398868,
-      "size": 40
-    }
-  },
   "vm_assignment_table_layout": true,
   "existing_source_patches": [
     {
@@ -1348,5 +1335,33 @@
       }
     }
   ],
-  "heap_noop_text_layout": true
+  "heap_noop_text_layout": true,
+  "overlay_file13_stages": [
+    {
+      "format": "goemon-file13-c-stage-v1",
+      "source": "impact_hp_clamp.c",
+      "source_sha256": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99",
+      "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+      "object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+      "function": {
+        "name": "func_801D3954_5FED34",
+        "rom_offset": 6286644,
+        "vma": 2149398868,
+        "size": 40
+      }
+    },
+    {
+      "format": "goemon-file13-c-stage-v1",
+      "source": "impact_hp_floor_return.c",
+      "source_sha256": "e4f833d487976620505e83c3408f2e0e0ea1485f682cfc9c95280e6375fb8068",
+      "compiler_object_sha256": "e4ee3aaaea220673b10618c7353bb445e3f2b4a8985362a0aa2ac9799fd469fb",
+      "object_sha256": "f2b00e708dec6dc63e1f08c17e1a9ce968dbf60b59a2a78c04f5490a1be60f47",
+      "function": {
+        "name": "func_801D3A44_5FEE24",
+        "rom_offset": 6286884,
+        "vma": 2149399108,
+        "size": 36
+      }
+    }
+  ]
 }

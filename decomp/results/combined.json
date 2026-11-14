@@ -1,10 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-14T12:33:56.823157+00:00",
+  "started_utc": "2026-11-14T13:06:29.801929+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "40f6acd42070ae6717c17d431c8260ac44730fa0c65de147a5c7d88533b9bb05",
+  "verifier_source_sha256_lf": "7574eca4b11311057c9ed907cedc623eacd035a1bfa6ccbd581ab401de69a498",
   "tool_versions": {
     "uv": "uv 0.13.7 (x86_64-unknown-linux-gnu)",
     "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
@@ -42,7 +42,7 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "83e14db1c5e5deb552f4542a561484080cea28dad3228e02649d57abcb2422d1"
+    "linker_script_sha256": "cb881ecdd12ada04b354eb67ae685ff2510371b98cb21d74fb485360f812c171"
   },
   "overlay_file12_tail_alias": {
     "rom_offset": "0x5E3C8C",
@@ -116,34 +116,94 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "83e14db1c5e5deb552f4542a561484080cea28dad3228e02649d57abcb2422d1"
+    "linker_script_sha256": "cb881ecdd12ada04b354eb67ae685ff2510371b98cb21d74fb485360f812c171"
   },
   "overlay_file13_object_layout": {
-    "compiler_object": "build/usa/src/impact_hp_clamp.c.o",
-    "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
-    "staged_object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
-    "callback_layout": {
-      "kind": "file13_hp_clamp_text_metadata_v1",
-      "old_size": 48,
-      "new_size": 40,
-      "old_alignment": 16,
-      "new_alignment": 4,
-      "zero_padding_bytes": 8,
-      "relocations_retained": 2,
-      "payload_bytes_changed": 0,
-      "input_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
-      "output_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
-      "function_object_sha256": "3584862d38be7cde90b035b70242789dfc8611a0bc2d8d68ac59db1494e93e75"
-    },
-    "adjusted_text_alignment": {
-      "from": 16,
-      "to": 4
-    },
-    "suffix_object": "build/usa/asm/usa/file_13_after_5FED5C.s.o",
-    "suffix_object_sha256_before": "f7abf0226f72ecea7f5bb4dfa39adbbd4a0f165bd762cd5ee433a67169afbea4",
-    "suffix_object_sha256_after": "73e744652b870eb48be73af11af2060d7282c550b50b43b524d81da6698c50c9",
+    "functions": [
+      {
+        "source": "impact_hp_clamp.c",
+        "compiler_object": "build/usa/src/impact_hp_clamp.c.o",
+        "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+        "staged_object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+        "function": "func_801D3954_5FED34",
+        "callback_layout": {
+          "kind": "file13_impact_hp_clamp_text_metadata_v1",
+          "old_size": 48,
+          "new_size": 40,
+          "old_alignment": 16,
+          "new_alignment": 4,
+          "zero_padding_bytes": 8,
+          "relocations_retained": 2,
+          "payload_bytes_changed": 0,
+          "input_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+          "output_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+          "function_object_sha256": "3584862d38be7cde90b035b70242789dfc8611a0bc2d8d68ac59db1494e93e75"
+        }
+      },
+      {
+        "source": "impact_hp_floor_return.c",
+        "compiler_object": "build/usa/src/impact_hp_floor_return.c.o",
+        "compiler_object_sha256": "e4ee3aaaea220673b10618c7353bb445e3f2b4a8985362a0aa2ac9799fd469fb",
+        "staged_object_sha256": "f2b00e708dec6dc63e1f08c17e1a9ce968dbf60b59a2a78c04f5490a1be60f47",
+        "function": "func_801D3A44_5FEE24",
+        "callback_layout": {
+          "kind": "file13_impact_hp_floor_return_text_metadata_v1",
+          "old_size": 48,
+          "new_size": 36,
+          "old_alignment": 16,
+          "new_alignment": 4,
+          "zero_padding_bytes": 12,
+          "relocations_retained": 2,
+          "payload_bytes_changed": 0,
+          "input_sha256": "e4ee3aaaea220673b10618c7353bb445e3f2b4a8985362a0aa2ac9799fd469fb",
+          "output_sha256": "f2b00e708dec6dc63e1f08c17e1a9ce968dbf60b59a2a78c04f5490a1be60f47",
+          "function_object_sha256": "85a89f51dba5d1a26c36bf60f1fa068ed1842c540c50c3e56579eba44c0ace1c"
+        }
+      }
+    ],
+    "assembly_objects": [
+      {
+        "object": "build/usa/asm/usa/file_13_before_5FED34.s.o",
+        "sha256_before": "d8919197c8ab7371102e828a68089888616094d3e676a99dd12037761ba76f03",
+        "sha256_after": "d8919197c8ab7371102e828a68089888616094d3e676a99dd12037761ba76f03",
+        "alignment_before": 16,
+        "alignment_after": 16,
+        "extent": {
+          "kind": "asm",
+          "name": "file_13_before_5FED34",
+          "start": 6252608,
+          "end": 6286644
+        }
+      },
+      {
+        "object": "build/usa/asm/usa/file_13_between_5FED5C_5FEE24.s.o",
+        "sha256_before": "5a033e7c1f3f24a3b28d071d92d81243a0f3c3d37ecf56c2fec32db9b549057f",
+        "sha256_after": "4a2f47969dcc9ba373234b3e3cc03e8d434dcbd5475ca77dd823a205e8ec1396",
+        "alignment_before": 16,
+        "alignment_after": 4,
+        "extent": {
+          "kind": "asm",
+          "name": "file_13_between_5FED5C_5FEE24",
+          "start": 6286684,
+          "end": 6286884
+        }
+      },
+      {
+        "object": "build/usa/asm/usa/file_13_after_5FEE48.s.o",
+        "sha256_before": "214df66c3d2aff8c209e773336112431c8b5dfab86c17a0a4ae08336ba4d9be6",
+        "sha256_after": "5d27dad020c1c1d83a87feed4c2c5d97a2fd7bedd156ae44d3ebd3086cf7f525",
+        "alignment_before": 16,
+        "alignment_after": 4,
+        "extent": {
+          "kind": "asm",
+          "name": "file_13_after_5FEE48",
+          "start": 6286920,
+          "end": 6508080
+        }
+      }
+    ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "83e14db1c5e5deb552f4542a561484080cea28dad3228e02649d57abcb2422d1"
+    "linker_script_sha256": "cb881ecdd12ada04b354eb67ae685ff2510371b98cb21d74fb485360f812c171"
   },
   "object_layout": {
     "kind": "vm_assignment_rodata_metadata_v1",
@@ -180,9 +240,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 162,
-    "claimed_functions": 162,
-    "matched_function_bytes": 12348,
+    "matched_functions": 163,
+    "claimed_functions": 163,
+    "matched_function_bytes": 12384,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -1646,6 +1706,17 @@
         "candidate_sha256": "0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf",
         "relocation_count": 2,
         "overlay": "file_13"
+      },
+      {
+        "name": "func_801D3A44_5FEE24",
+        "size": 36,
+        "guest_address": "0x801D3A44",
+        "rom_offset": "0x5FEE24",
+        "matched": true,
+        "expected_sha256": "b25fc487c5084143936a71e2fedcb1f53d5a497030af1fd2de25a196517fac7b",
+        "candidate_sha256": "b25fc487c5084143936a71e2fedcb1f53d5a497030af1fd2de25a196517fac7b",
+        "relocation_count": 2,
+        "overlay": "file_13"
       }
     ]
   },
@@ -1774,12 +1845,13 @@
     "vm_compare_reference.h": "0506ee4dcf54ee5245015e34e25bc30a6dbcc46d9e9f2ed03e1658b599cbb900",
     "object_flags.h": "a1ae2142a30df3f47807b974a0641e5d0569bca8be95c497eb2bb48ba2e23616",
     "default_entrance.h": "3d82c004281d4a33d8ddb39a39031f24899d0b39323c3a4904e4169429440568",
-    "impact_controller.h": "7334c2c70ca857950d2abbb5cffdc6aafba2761ecad514f8461bdb9164082dbd",
+    "impact_controller.h": "d3b7d77da6ccea6a102015d57a670770964a1dc5b63a81aa8e2905b03a32a712",
     "27FE0.c": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63",
     "candidates/key_spawn_gate.c": "39a1c21e090a1c6aa00b74e9142c28963b0a00ee2ead6242c90d147290a855ef",
     "candidates/file12_dialogue_copy.c": "bce7049e5438f50b9cb5bd7cea430fb2101067dcfdab760003ecaef3c2527fd2",
     "candidates/file12_dialogue_call.c": "2fff2f49dbeb427200ef469596a8a229c9763db6f70bee93e662a1b1016ef6d1",
-    "impact_hp_clamp.c": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99"
+    "impact_hp_clamp.c": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99",
+    "impact_hp_floor_return.c": "e4f833d487976620505e83c3408f2e0e0ea1485f682cfc9c95280e6375fb8068"
   },
   "overlay_file43_stage": {
     "ownership": {
@@ -1800,7 +1872,7 @@
     "linked_elf_provenance": {
       "format": "goemon-file43-linked-elf-provenance-v1",
       "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
-      "candidate_elf_sha256": "bb765c9fac7d450d63fec917e4a9d891869308ed6c19c503cbc04ec0a6b28bb9",
+      "candidate_elf_sha256": "08f2fdd1b290b744d6cf5f63d9677ffced0004ca918a524dd87ab5c711267bd7",
       "reference_section": {
         "name": ".file_43",
         "vma_start": "0x08000000",
@@ -1950,7 +2022,7 @@
     "linked_elf_provenance": {
       "format": "goemon-file12-linked-elf-provenance-v1",
       "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
-      "candidate_elf_sha256": "bb765c9fac7d450d63fec917e4a9d891869308ed6c19c503cbc04ec0a6b28bb9",
+      "candidate_elf_sha256": "08f2fdd1b290b744d6cf5f63d9677ffced0004ca918a524dd87ab5c711267bd7",
       "reference_section": {
         "name": ".file_12",
         "vma_start": "0x8020D2A0",
@@ -2071,7 +2143,7 @@
       "full_section_relocations_semantically_match": true,
       "raw_relocation_section_bytes_identical": false,
       "reference_raw_relocation_sha256": "48c95b35cdbd659707e557eead6b8e65d7fe389d3ff1bb2a9240719527087933",
-      "candidate_raw_relocation_sha256": "593bb84c5608f5f58e177a153f04218a5a9510d823f2aa44ac2d9fed85a017a7",
+      "candidate_raw_relocation_sha256": "2be2b4968bb3981c018198a5cbbeb9227035b43d64bf11b5dd41da499fe22e1d",
       "relocation_symbol_metadata_normalizations": {
         "notype_to_object_data_symbols": 296,
         "absolute_to_overlay_tail_alias": 4,
@@ -2081,14 +2153,27 @@
       "proof_level": "linked overlay symbol, whole section bytes, function bytes and semantic relocation targets; raw symbol-index section bytes are reported separately"
     }
   },
-  "overlay_file13_stage": {
-    "source": "impact_hp_clamp.c",
-    "source_sha256": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99",
-    "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
-    "staged_object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+  "overlay_file13_stages": {
+    "stages": [
+      {
+        "source": "impact_hp_clamp.c",
+        "source_sha256": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99",
+        "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+        "staged_object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+        "function": "func_801D3954_5FED34"
+      },
+      {
+        "source": "impact_hp_floor_return.c",
+        "source_sha256": "e4f833d487976620505e83c3408f2e0e0ea1485f682cfc9c95280e6375fb8068",
+        "compiler_object_sha256": "e4ee3aaaea220673b10618c7353bb445e3f2b4a8985362a0aa2ac9799fd469fb",
+        "staged_object_sha256": "f2b00e708dec6dc63e1f08c17e1a9ce968dbf60b59a2a78c04f5490a1be60f47",
+        "function": "func_801D3A44_5FEE24"
+      }
+    ],
     "assembly_objects": [
       "build/usa/asm/usa/file_13_before_5FED34.s.o",
-      "build/usa/asm/usa/file_13_after_5FED5C.s.o"
+      "build/usa/asm/usa/file_13_between_5FED5C_5FEE24.s.o",
+      "build/usa/asm/usa/file_13_after_5FEE48.s.o"
     ],
     "splat_block_matches": true,
     "link_map_objects_in_order": true,
@@ -2126,9 +2211,21 @@
           "candidate_code_matches_original": true,
           "candidate_relocations_match_reference": true,
           "relocation_count": 2
+        },
+        {
+          "name": "func_801D3A44_5FEE24",
+          "section": ".file_13",
+          "vma": "0x801D3A44",
+          "rom_offset": "0x5FEE24",
+          "bytes": 36,
+          "original_sha256": "b25fc487c5084143936a71e2fedcb1f53d5a497030af1fd2de25a196517fac7b",
+          "candidate_sha256": "b25fc487c5084143936a71e2fedcb1f53d5a497030af1fd2de25a196517fac7b",
+          "candidate_code_matches_original": true,
+          "candidate_relocations_match_reference": true,
+          "relocation_count": 2
         }
       ]
     }
   },
-  "ended_utc": "2026-11-14T12:34:40.562577+00:00"
+  "ended_utc": "2026-11-14T13:07:13.175195+00:00"
 }

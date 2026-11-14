@@ -31,7 +31,10 @@
     "verified_contract": "Uses the signed word argument as an index into D_80167C48_168848. If the selected DialogueWindow pointer is non-null, stores the low halfword of the second word argument at window +0x70, then returns.",
     "caller": {
       "function": "func_8003DF98_3EB98",
-      "call_sites": ["0x8003E0F8", "0x8003E110"],
+      "call_sites": [
+        "0x8003E0F8",
+        "0x8003E110"
+      ],
       "arguments": "Both sites pass the current D_801C7754 value as the slot and immediate 9 as the stored value."
     }
   },
@@ -66,7 +69,7 @@
     "claimed_functions": 162,
     "matched_function_bytes": 12348,
     "baseline_cache_used": true,
-    "cached_report": "decomp/results/combined.json"
+    "superseded_current_report_note": "This 162-function result was the checked-in combined proof at the time of this promotion; the current 163-function report is recorded in 2026-11-14-impact-hp-floor-return-promotion.json."
   },
   "inventory": {
     "command": "python3 -m decomp.inventory --baseline /tmp/goemon-impact-hp-g2-20261114/baseline --candidate /tmp/goemon-impact-hp-dialogue-g2-run1-20261114/candidate --report practice/diagnostics/impact/dialogue-window-c430-inventory-run1.json",
@@ -78,7 +81,7 @@
     "combined_c_entries": 175,
     "remaining_assembly_entries": 7201,
     "identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
-    "cached_report": "decomp/results/inventory.json"
+    "superseded_current_report_note": "This 162-function inventory was current at the time of this promotion; the current 163-function inventory is recorded in 2026-11-14-impact-hp-floor-return-promotion.json."
   },
   "tests": {
     "dialogue_window_host": {

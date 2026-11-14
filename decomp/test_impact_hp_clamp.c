@@ -22,5 +22,17 @@ int main(void) {
     assert(func_801D3954_5FED34(-5) == 5);
     assert(controller.enemy_hp == 5);
 
+    controller.enemy_hp = 100;
+    assert(func_801D3A44_5FEE24() == 100);
+    assert(controller.enemy_hp == 100);
+
+    controller.enemy_hp = 0;
+    assert(func_801D3A44_5FEE24() == 0);
+    assert(controller.enemy_hp == 0);
+
+    controller.enemy_hp = -7;
+    assert(func_801D3A44_5FEE24() == 0);
+    assert(controller.enemy_hp == 0);
+
     return 0;
 }

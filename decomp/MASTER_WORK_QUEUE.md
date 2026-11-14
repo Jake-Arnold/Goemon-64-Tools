@@ -2,9 +2,10 @@
 
 **Reconciled on 2026-11-14:** The old 142-function checkpoint and ten-function
 queue below are historical. Current authority is `decomp/CONTINUE.md` and the
-live proof reports: **162 matching C / 12,348 bytes / 175 combined C / 7,201
+live proof reports: **163 matching C / 12,384 bytes / 176 combined C / 7,200
 ASM**. The resource, menu, object, overlay-key, dialogue-window slot setter,
-and Impact HP clamp candidates have passed full-ROM verification. The resource, menu and
+and Impact HP helpers have passed full-ROM verification. The active Impact
+follow-up is separate from the 100-task queue below. The resource, menu and
 object candidates from the older queue have passed full-ROM verification.
 G64-015–018 were retried and remain
 `FAILED_NATIVE`; G64-021 is `DOC_ONLY` with its call graph in

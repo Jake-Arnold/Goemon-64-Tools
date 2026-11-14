@@ -52,6 +52,24 @@ def stage_record():
     }
 
 
+def floor_return_stage_record():
+    name = 'func_801D3A44_5FEE24'
+    function = overlay_file13.FUNCTIONS[name]
+    return {
+        'format': 'goemon-file13-c-stage-v1',
+        'source': 'impact_hp_floor_return.c',
+        'source_sha256': '3' * 64,
+        'compiler_object_sha256': '4' * 64,
+        'object_sha256': '5' * 64,
+        'function': {
+            'name': name,
+            'vma': function[0],
+            'rom_offset': function[1],
+            'size': function[2],
+        },
+    }
+
+
 class OverlayFile13Tests(TestCase):
     def test_layout_pins_file_table_boundary_and_overlay_window(self):
         layout = overlay_file13.validate_layout(pinned_splat())
@@ -63,12 +81,19 @@ class OverlayFile13Tests(TestCase):
                 'start: 0x63A2B0', 'start: 0x63A2B4'))
 
     def test_splat_split_places_only_reviewed_function_in_c_segment(self):
-        updated, before, after = stage_file13_splat(pinned_splat(), stage_record())
-        self.assertEqual(before, 'file_13_before_5FED34')
-        self.assertEqual(after, 'file_13_after_5FED5C')
+        updated, assembly = stage_file13_splat(
+            pinned_splat(), [stage_record(), floor_return_stage_record()]
+        )
+        self.assertEqual(assembly, (
+            'file_13_before_5FED34',
+            'file_13_between_5FED5C_5FEE24',
+            'file_13_after_5FEE48',
+        ))
         self.assertIn('subalign: null', updated)
         self.assertIn('- [0x5FED34, c, impact_hp_clamp]', updated)
-        self.assertIn('- [0x5FED5C, asm, file_13_after_5FED5C]', updated)
+        self.assertIn('- [0x5FED5C, asm, file_13_between_5FED5C_5FEE24]', updated)
+        self.assertIn('- [0x5FEE24, c, impact_hp_floor_return]', updated)
+        self.assertIn('- [0x5FEE48, asm, file_13_after_5FEE48]', updated)
         self.assertIn('- [0x634E30, data]', updated)
 
     def test_ido_overlay_object_packing_trims_only_eight_zero_bytes(self):
@@ -97,6 +122,27 @@ class OverlayFile13Tests(TestCase):
                 original, FUNCTION, 40, 8, RELOCATIONS, SYMBOL_SHAPES,
                 'file_13 HP clamp', 'file13_hp_clamp',
             )
+
+    def test_ido_overlay_object_packing_trims_floor_return_padding(self):
+        name = 'func_801D3A44_5FEE24'
+        relocations = (
+            (0, 5, 'D_8020EED0_63A2B0'),
+            (4, 6, 'D_8020EED0_63A2B0'),
+        )
+        original, _ = relocatable_file12_callback(
+            bytes(range(36)), tail=bytes(12), function_name=name,
+            relocations=relocations,
+            symbol_shapes={'D_8020EED0_63A2B0': (1, 4)},
+        )
+        packed, evidence = pack_overlay_function_text(
+            original, name, 36, 12, relocations,
+            {'D_8020EED0_63A2B0': (1, 4)},
+            'file_13 HP floor-return', 'file13_hp_floor_return',
+        )
+        self.assertEqual(evidence['zero_padding_bytes'], 12)
+        self.assertEqual(evidence['payload_bytes_changed'], 0)
+        self.assertEqual(evidence['new_size'], 36)
+        self.assertEqual(len(packed), len(original))
 
     def test_relocation_check_allows_only_named_elf_symbol_type_upgrades(self):
         original = (

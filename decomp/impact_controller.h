@@ -11,5 +11,6 @@ typedef struct ImpactController {
 extern ImpactController *D_8020EED0_63A2B0;
 
 s32 func_801D3954_5FED34(s32 amount);
+s32 func_801D3A44_5FEE24(void);
 
 #endif

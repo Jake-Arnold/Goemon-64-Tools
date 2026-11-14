@@ -96,6 +96,15 @@
 - **Tests:** Dialogue-window host fixture passed ASan/UBSan; 53 focused verifier/overlay tests passed; `python3 -m decomp.local_ci` passed with 212 decomp tests, 117 verifier/ledger tests, task evidence validation, and the display-emitter ASan/UBSan fixture.
 - **Limitations/next:** No live-game test; host coverage uses synthetic windows. The `+0x70` field remains opaque and slot bounds remain unchecked. G64-088 remains first PLANNED in the 100-task queue.
 
+### 2026-11-14 — Promote Impact HP floor-and-return helper
+
+- **Changed:** Added `func_801D3A44_5FEE24` as a second, noncontiguous C stage in `file_13`; generalized the fail-closed Splat split, object alignment, link-map extent, symbol, and relocation checks for ordered overlay stages. Added the C source and HP host cases. The earlier HP subtraction stage and all intervening assembly remain exact.
+- **Why:** Continue from damage subtraction to the next direct HP helper in the Impact overlay. This 36-byte function returns positive HP, otherwise clears the word and returns zero; an Impact overlay caller reaches it at `0x801F099C`.
+- **Evidence:** VMA `0x801D3A44`, decompressed ROM `0x5FEE24`, function SHA-256 `b25fc487c5084143936a71e2fedcb1f53d5a497030af1fd2de25a196517fac7b`. Fresh G2 matched 163/163 claims / 12,384 bytes and the complete 32 MiB ROM (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). The full 277,104-byte `.file_13` section matched; all 9,589 relocation sites and targets remained unchanged. Inventory reports 176 combined C / 7,200 ASM entries. See `decomp/plans/execution/2026-11-14-impact-hp-floor-return-promotion.json`.
+- **Candidate triage:** `func_801D3A18_5FEDF8` is the 44-byte zero-HP predicate called after subtraction. Three bounded IDO forms did not match (44/40/40 bytes); it remains `GLOBAL_ASM` under its candidate budget.
+- **Tests:** The combined Impact HP host fixture passed ASan/UBSan; 54 focused verifier/overlay tests passed; `python3 -m decomp.local_ci` passed with 213 decomp tests, 117 verifier/ledger tests, 100-task evidence validation, and the display-emitter ASan/UBSan fixture.
+- **Limitations/next:** No live-game test; host cases use a synthetic controller. The whole overlay allows the same five name-scoped symbol-kind upgrades while preserving relocation sites/targets. Continue the Impact file_13 sweep with the 64-byte oil clamp `func_801D39A0_5FED80`, then review the 60-byte charge adjustment `func_801D3A68_5FEE48`. This is separate from the 100-task queue.
+
 ### 2026-11-14 — G64-070 transition-slice gate (RESEARCH_ONLY)
 
 - **Changed:** Completed a fresh full-ROM verification and inventory for the current transition slice; recorded that no new C candidate was justified and kept all transition dispatchers assembly-owned.

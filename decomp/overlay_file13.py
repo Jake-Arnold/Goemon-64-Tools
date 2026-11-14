@@ -32,15 +32,28 @@ FUNCTIONS = {
         0x801D3954, 0x5FED34, 40,
         "0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf",
     ),
+    "func_801D3A44_5FEE24": (
+        0x801D3A44, 0x5FEE24, 36,
+        "b25fc487c5084143936a71e2fedcb1f53d5a497030af1fd2de25a196517fac7b",
+    ),
 }
 FUNCTION_RELOCATIONS = {
     "func_801D3954_5FED34": (
         (0, 5, "D_8020EED0_63A2B0"),
         (4, 6, "D_8020EED0_63A2B0"),
     ),
+    "func_801D3A44_5FEE24": (
+        (0, 5, "D_8020EED0_63A2B0"),
+        (4, 6, "D_8020EED0_63A2B0"),
+    ),
 }
 FUNCTION_RELOCATION_SYMBOLS = {
     "func_801D3954_5FED34": {"D_8020EED0_63A2B0": (1, 4)},
+    "func_801D3A44_5FEE24": {"D_8020EED0_63A2B0": (1, 4)},
+}
+FUNCTION_OBJECT_PADDING = {
+    "func_801D3954_5FED34": 8,
+    "func_801D3A44_5FEE24": 12,
 }
 APPROVED_SYMBOL_KIND_UPGRADES = {
     "D_8015C5C8_15D1C8": 1,
@@ -174,10 +187,6 @@ def validate_linked_elf_provenance(splat_yaml: str, reference_rom: bytes,
                                     function_names: tuple[str, ...]) -> dict:
     """Prove complete file_13 bytes and relocation preservation in linked ELFs."""
     validate_reference_inputs(splat_yaml, reference_rom, function_names)
-    if len(function_names) != 1:
-        raise ValueError("file_13 staging accepts one reviewed function")
-    name = function_names[0]
-    expected_vma, expected_offset, expected_size, expected_hash = FUNCTIONS[name]
     expected_section = reference_rom[ROM_START:ROM_END]
 
     def inspect(elf_bytes: bytes, label: str):
@@ -218,21 +227,36 @@ def validate_linked_elf_provenance(splat_yaml: str, reference_rom: bytes,
     relocation_normalizations = normalize_relocation_metadata(
         baseline_relocations, candidate_relocations
     )
-    symbol = candidate.function(name)
-    if (symbol.value != expected_vma or symbol.size != expected_size or
-            symbol.binding != 1 or symbol.section != candidate_index):
-        raise ValueError("candidate file_13 function symbol identity differs")
-    code = candidate.code(symbol)
-    original = reference_rom[expected_offset:expected_offset + expected_size]
-    if code != original or hashlib.sha256(code).hexdigest() != expected_hash:
-        raise ValueError("candidate file_13 function bytes differ from original")
-    function_relocations = tuple(sorted(
-        (item.offset - expected_vma, item.relocation_type, item.symbol.name)
-        for item in candidate.relocations(candidate_index)
-        if expected_vma <= item.offset < expected_vma + expected_size
-    ))
-    if function_relocations != FUNCTION_RELOCATIONS[name]:
-        raise ValueError("candidate file_13 function relocation signature differs")
+    function_rows = []
+    for name in function_names:
+        expected_vma, expected_offset, expected_size, expected_hash = FUNCTIONS[name]
+        symbol = candidate.function(name)
+        if (symbol.value != expected_vma or symbol.size != expected_size or
+                symbol.binding != 1 or symbol.section != candidate_index):
+            raise ValueError("candidate file_13 function symbol identity differs")
+        code = candidate.code(symbol)
+        original = reference_rom[expected_offset:expected_offset + expected_size]
+        if code != original or hashlib.sha256(code).hexdigest() != expected_hash:
+            raise ValueError("candidate file_13 function bytes differ from original")
+        function_relocations = tuple(sorted(
+            (item.offset - expected_vma, item.relocation_type, item.symbol.name)
+            for item in candidate.relocations(candidate_index)
+            if expected_vma <= item.offset < expected_vma + expected_size
+        ))
+        if function_relocations != FUNCTION_RELOCATIONS[name]:
+            raise ValueError("candidate file_13 function relocation signature differs")
+        function_rows.append({
+            "name": name,
+            "section": ".file_13",
+            "vma": f"0x{expected_vma:08X}",
+            "rom_offset": f"0x{expected_offset:X}",
+            "bytes": expected_size,
+            "original_sha256": expected_hash,
+            "candidate_sha256": hashlib.sha256(code).hexdigest(),
+            "candidate_code_matches_original": True,
+            "candidate_relocations_match_reference": True,
+            "relocation_count": len(function_relocations),
+        })
     return {
         "format": "goemon-file13-linked-elf-v1",
         "overlay": OVERLAY_NAME,
@@ -245,16 +269,5 @@ def validate_linked_elf_provenance(splat_yaml: str, reference_rom: bytes,
         "relocation_sites_and_targets_match_baseline": True,
         "raw_relocation_metadata_identical": not relocation_normalizations["symbol_kind_upgrades"],
         "relocation_metadata_normalizations": relocation_normalizations,
-        "functions": [{
-            "name": name,
-            "section": ".file_13",
-            "vma": f"0x{expected_vma:08X}",
-            "rom_offset": f"0x{expected_offset:X}",
-            "bytes": expected_size,
-            "original_sha256": expected_hash,
-            "candidate_sha256": hashlib.sha256(code).hexdigest(),
-            "candidate_code_matches_original": True,
-            "candidate_relocations_match_reference": True,
-            "relocation_count": len(function_relocations),
-        }],
+        "functions": function_rows,
     }
