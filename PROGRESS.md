@@ -1,5 +1,10 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Japanese Mupen manual-base safety refinement
+
+- **Follow-up:** Refuse a non-Linux host before opening a remote process. Even an explicitly supplied host RAM base now checks the low 4 MiB mapping and rejects cartridge-ROM-buffer decoys in addition to all Japanese executable fingerprints.
+- **Verification:** Added manual-base positive/negative test, bringing this probe to seven synthetic tests passed locally; real ROM against both synthetic endian layouts remains validated. Actual running Mupen process still has not been tested. Existing USA gameplay controls remain untouched.
+
 ### 2026-11-14 — Experimental read-only Japanese Mupen64Plus RDRAM probe
 
 - **Implementation:** Added `practice/japan_mupen_rdram.py`, a standalone CLI using the existing Linux HostProcess and Rdram to inspect an existing Mupen64Plus PID without injecting input or enabling USA gameplay-memory controls.

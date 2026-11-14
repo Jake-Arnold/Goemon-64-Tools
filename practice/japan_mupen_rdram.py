@@ -143,6 +143,8 @@ def attach_japanese_mupen(pid: int, rom_path: Path, base_hint: int | None = None
     Caller owns the returned HostProcess and must close it. Do not feed this
     handle to any USA gameplay snapshot or writer.
     """
+    if sys.platform != "linux":
+        raise OSError("Japanese Mupen RAM attachment currently supports Linux only")
     verified_emulator_pid(pid, "mupen64plus")
     rom = checked_japan_rom(rom_path)
     process = HostProcess(pid, writable=False)
@@ -162,6 +164,11 @@ def attach_japanese_mupen(pid: int, rom_path: Path, base_hint: int | None = None
             if len(candidates) != 1:
                 raise ValueError("Manual base did not uniquely validate against Japanese code")
             base, endian = base_hint, candidates[0]
+            process.read(base, 4)
+            process.read(base + RDRAM_MIN_SIZE - 4, 4)
+            decoy = rom[ROM_RAM_OFFSET:ROM_RAM_OFFSET + 256]
+            if process.read(base, 256) == (decoy if endian == "big" else _wordswapped(decoy)):
+                raise ValueError("Manual base points to a cartridge ROM buffer, not RDRAM")
         else:
             base, endian = find_japanese_rdram(process, rom, _writable_linux_regions(pid), max_scan_bytes=max_scan_bytes)
         memory = Rdram(process, base, endian)

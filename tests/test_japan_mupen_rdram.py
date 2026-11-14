@@ -98,7 +98,26 @@ class TestJapaneseMupenProbe(unittest.TestCase):
             self.assertEqual(result,(0x20000000,endian))
             self.assertEqual(p.writes,[])
 
-    def test_rejects_single_anchor_match(self):
+    def test_manual_base_validation_prevents_rom_decoy(self):
+        rom,ram=synth('big')
+        p=FakeProcess([(0x20000000,ram)])
+        with patch.object(mod,'checked_japan_rom',return_value=rom), \
+             patch.object(mod,'HostProcess',return_value=p):
+            proc,mem=mod.attach_japanese_mupen(42,Path('/unused'),0x20000000)
+            self.assertIs(proc,p)
+            self.assertEqual(mem.base,0x20000000)
+            self.assertEqual(mem.endian,'big')
+        # A RAM-like match which contains the ROM bootcode at the false base
+        # is rejected even when the supplied base was explicit.
+        decoy=bytearray(ram)
+        decoy[:256]=rom[0xC00:0xD00]
+        p=FakeProcess([(0x20000000,decoy)])
+        with patch.object(mod,'checked_japan_rom',return_value=rom), \
+             patch.object(mod,'HostProcess',return_value=p):
+            with self.assertRaisesRegex(ValueError,'cartridge ROM buffer'):
+                mod.attach_japanese_mupen(42,Path('/unused'),0x20000000)
+
+        def test_rejects_single_anchor_match(self):
         rom,ram=synth('big')
         ram[0x30000]^=0xff
         p=FakeProcess([(0x20000000,ram)])
