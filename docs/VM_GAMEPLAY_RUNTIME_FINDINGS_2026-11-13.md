@@ -142,3 +142,14 @@ The now-observed contiguous 16-byte resource region is:
 | `+0x0C` | `0x802F706C` | `u32` | Special-attack charge (0–100 observed) |
 
 The first three addresses have been confirmed by the user across all Impact bosses tested and after game restart. A similar multi-boss/restart test of the **fourth** aligned field has not been separately established. For all four, actual native access widths, precise struct ownership, reset semantics across modes and original code-level writers/readers remain to be traced. This section supersedes the earlier statement that the 100 maximum and fourth-width hypothesis were unverified.
+
+## Interactive dialogue-menu selection candidate at 0x801C792C (14 Nov 2026)
+
+Two native Recomp/toolkit screen recordings were inspected at approximately 0.5-second sampling resolution:
+
+- **Inn, 10:07:33 clip (~14 s):** a `u32` custom watch at `0x801C792C` follows the red highlight through three options: `0 = Spend the night`, `1 = Adventure Diary`, `2 = Nothing`. Repeated forward/reverse menu movement reproduces the values; occasional single-frame discrepancies are consistent with non-atomic toolkit/UI/recording timing. The word reads `0xFFFFFFFF` (`4294967295`, signed −1) before choice presentation and after the menu closes.
+- **General Store, 10:08:01 clip (~21 s):** the same field switches among `0, 1, 2` during the shopkeeper's visible *introductory text*, even while no selection labels are displayed. It also reads `0xFFFFFFFF` in non-choice portions and at least one sampled frame showing a two-option purchase prompt. In a later Yes/No prompt, `0` was seen; no complete verified mapping of both displayed choices was captured.
+
+**High-confidence scoped result:** `0x801C792C` is a zero-based index matching the inn's highlighted choice, with `0xFFFFFFFF` plausibly indicating unset/inactive. **Not yet verified:** universal applicability to every NPC choice menu, original MIPS access width/writers, how the value interacts with VM state 2 and choice record `0x801C7800`, and whether movement inputs can update a latent selection while unrelated dialogue is rendered. In particular, the shop recording rules out treating `0xFFFFFFFF` as an absolute proof that *no* choice is visible.
+
+**Next capture:** monitor `0x801C792C` as `u32` alongside VM state `0x801C77E0` (`u32`) and choice context `0x801C7800` (`u32`, semantic interpretation not yet established). Record inn / general-store / another unrelated NPC choice at selection-open, every arrow movement, confirm/cancel and close. Compare both options of a Yes/No menu, test arrow movement during text-only frames, and confirm reset/initialization across new interactions. Read only; do not infer an event-flag or edit this field until dispatcher writers and branch semantics are verified.

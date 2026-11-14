@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Observe dialogue selection index candidate 0x801C792C
+
+- **Evidence:** inspected two user videos: inn selection `u32 0x801C792C` consistently follows options `0 Spend the night`, `1 Adventure Diary`, `2 Nothing`; `0xFFFFFFFF` appears before/after choice. General Store shows `0/1/2` during plain introductory text and `0xFFFFFFFF` in some apparently interactive frames, so an unqualified universal-menu claim is unsafe.
+- **Changed:** appended observed mapping, caveats and read-only follow-up capture protocol to `docs/VM_GAMEPLAY_RUNTIME_FINDINGS_2026-11-13.md`. Documentation-only change.
+- **Tests:** direct frame inspection of supplied videos; no automated tests, source-level MIPS attribution or live replay by assistant.
+- **Next:** compare field against `0x801C77E0` VM state 2, choice context `0x801C7800`, and a separate Yes/No dialogue. Trace original reader/writer instructions.
+
 ### 2026-11-14 — Verify 32-bit Impact special charge and 0–100 behaviour
 
 - **Observed:** `u32 0x802F706C` and the previously discovered `u8 0x802F706F` show the same charge reading (79 in one screenshot). User reports consistent equality through charge cycles, 0–100 range, +1 special-charge unit for each Ryo shot, other charging/discharging effects and return to 0 after using a special attack.
