@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Trace the Impact battle controller and cockpit HUD
+
+- **Evidence:** USA file 13 allocates the controller from the arena at `0x802F7000`. Its HUD constructor creates seven models from the 192-entry, `0x98`-stride engine pool. Constructor order explains the recorded slot permutation.
+- **Changed:** added [Impact battle memory trace](docs/IMPACT_BATTLE_MEMORY_TRACE.md) with original MIPS sites, a controller layout, resource and teardown paths, a bounded read-only trace design and five follow-up experiments. The report identifies word-width counters, a halfword HUD mode and two camera angles plus a derived vector component.
+- **Tests:** matched file 13 directly to USA retail and checked annotated MIPS against the pinned decompressed ROM. Four recording samples reproduce the original camera calculation. Repository local CI passed 207 Python tests, 116 verifier/ledger tests, the task evidence check and the display-emitter sanitizer fixture. The Linux process, state-discovery and inspector suites passed 32 tests.
+- **Limitations:** original-ROM analysis and recording inspection only. Exact auxiliary mesh identities, the frame-specific HUD reaction branch and the Game Over reuse writer still need live tracing.
+- **Next:** run the bounded trace through one hit, special activation, a win and a Game Over, checking arena membership and overlay ownership before following any model pointers.
+
 ### 2026-11-14 — Observe dialogue selection index candidate 0x801C792C
 
 - **Evidence:** inspected two user videos: inn selection `u32 0x801C792C` consistently follows options `0 Spend the night`, `1 Adventure Diary`, `2 Nothing`; `0xFFFFFFFF` appears before/after choice. General Store shows `0/1/2` during plain introductory text and `0xFFFFFFFF` in some apparently interactive frames, so an unqualified universal-menu claim is unsafe.
