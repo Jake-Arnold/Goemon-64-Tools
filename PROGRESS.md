@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Close the 100-task decomp execution plan
+
+- **Changed:** Marked the execution handoff and Architect v2 strategy closed after G64-087. Remaining `PLANNED` entries are retained as unexecuted history; no task was marked complete by this closeout.
+- **Why:** The user directed that G64-087 be the last completed step and that no further tasks be pursued under this plan.
+- **Evidence:** G64-087 remains `RESEARCH_ONLY` with its dispatcher trace and two bounded native attempts in `decomp/plans/execution/2026-11-14-g64-087-state-dispatcher.json`. The stored proof remains 160/160 matching-C functions / 12,272 bytes. G64-088 remains `PLANNED`, not completed.
+- **Tests:** `python3 -m decomp.local_ci` passed: 207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and the 1,000-case display-emitter ASan/UBSan fixture. `python3 -m decomp.skill_context --status` confirmed 160/160 stored proof and G64-088 as the first remaining planned entry; `git diff --check` passed.
+- **Limitations/next:** No fresh ROM build or task execution is part of this closeout. The 100-task plan is closed; future work requires a separate goal.
+
 ### 2026-11-14 — Reconcile fast-freeze UI with manual lock changes
 
 - **Changed:** UI status polling ignores stale 'active' messages after locks have been stopped (and stale stop messages after new locks have been armed), and clears outdated list rows when any connection/test path removes locks.

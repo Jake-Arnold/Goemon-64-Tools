@@ -1,6 +1,6 @@
 # Architect v2: evidence-led execution of the remaining 100-task Goemon plan
 
-**Reviewed 2026-11-11 on `chatgptweb/decomp`.** Binding for the still-PLANNED G64 tasks. Do not restart the plan, renumber tasks, alter completed statuses, weaken exact-ROM proof, or touch `main`. Read the compact `python3 -m decomp.skill_context --task G64-NNN` output for the relevant per-task override instead of loading the 361 KB JSON.
+**Reviewed 2026-11-11 on `chatgptweb/decomp`.** This was binding for the still-PLANNED G64 tasks. On 2026-11-14, the user closed the 100-task execution plan after G64-087. Remaining PLANNED entries are preserved as unexecuted ledger records and are out of scope for this plan; do not start another task from it. This document is retained as historical strategy. Do not renumber tasks, alter completed statuses, weaken exact-ROM proof, or touch `main`.
 
 ## What the work has actually achieved
 

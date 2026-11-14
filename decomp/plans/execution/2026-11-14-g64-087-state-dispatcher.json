@@ -117,5 +117,5 @@
     "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
   },
   "decision": "Record G64-087 as RESEARCH_ONLY. Retain func_8001F8B0_204B0 as GLOBAL_ASM; the host contract and native candidate are not matching-C proof. Do not infer a safe/default invalid-selector path.",
-  "next": "G64-088 Analyze 8001FA80 adjacent routine remains PLANNED; pause here as requested and do not start it until resumed."
+  "next": "At G64-087 completion, G64-088 was first PLANNED. The user subsequently closed the 100-task plan on 2026-11-14, so no further plan task is in scope."
 }
