@@ -25,7 +25,8 @@ class ProbeUITests(unittest.TestCase):
 
     def test_capture_compare_export_and_clear(self):
         app=self.app
-        self.assertEqual(app.notebook.tab(app.state_discovery_tab,'text'),'State discovery')
+        self.assertEqual(app.event_sections.tab(app.state_discovery_tab,'text'),'Advanced RAM comparison')
+        self.assertNotIn('State discovery', [app.notebook.tab(t,'text') for t in app.notebook.tabs()])
         mem=Memory()
         app.mem=mem
         app.current=mem.snapshot()

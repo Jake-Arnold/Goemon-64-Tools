@@ -29,55 +29,26 @@ class DashboardSmokeTests(unittest.TestCase):
         if hasattr(self, 'root'):
             self.root.destroy()
 
-    def test_dashboard_scene_search_and_tab_navigation(self):
+    def test_dashboard_only_has_connection_and_checkpoints(self):
         app = self.toolkit
         self.assertEqual(app.notebook.tab(app.notebook.tabs()[0], 'text'), 'Dashboard')
-        app.quick_scene_filter.set('Festival Temple')
-        scene_ids = app.quick_scene_tree.get_children()
-        self.assertTrue(scene_ids)
-        scene_id = scene_ids[0]
-        app.quick_scene_tree.selection_set(scene_id)
-        app.choose_quick_scene()
-        self.assertEqual(app.scene_selected, int(scene_id))
-        self.assertIsNone(app.pending_direct_warp)
-        self.assertIsNone(app.pending_native_warp)
+        self.assertFalse(hasattr(app, 'quick_scene_tree'))
+        self.assertFalse(hasattr(app, 'quick_watch_tree'))
+        self.assertFalse(hasattr(app, 'speed_launch_button'))
+        self.assertTrue(app.connect_button.winfo_exists())
+        self.assertTrue(app.restore_state_btn.winfo_exists())
+        self.assertTrue(app.cancel_restore_btn.winfo_exists())
         app.open_full_scene_tab()
         self.assertEqual(app.notebook.select(), str(app.scene_tab))
         app.open_live_memory_tab()
         self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
 
-    def test_dashboard_double_click_requests_reload_without_opening_scene_browser(self):
+    def test_dashboard_scrollable_at_compact_window_size(self):
         app = self.toolkit
-        app.quick_scene_filter.set('Festival Temple')
-        scene_id = app.quick_scene_tree.get_children()[0]
-        app.scene_filter.set('not a real destination')
-        app.quick_scene_tree.selection_clear()
-        app.notebook.select(app.notebook.tabs()[0])
-        with patch.object(app, 'try_reload_warp') as reload_request:
-            with patch.object(app.quick_scene_tree, 'identify_row', return_value=scene_id):
-                self.assertEqual(app.activate_quick_scene(SimpleNamespace(y=5)), 'break')
-            reload_request.assert_called_once_with()
-        self.assertEqual(app.scene_selected, int(scene_id))
-        self.assertEqual(app.notebook.select(), app.notebook.tabs()[0])
-        with patch.object(app, 'try_reload_warp') as reload_request:
-            with patch.object(app.quick_scene_tree, 'identify_row', return_value=''):
-                self.assertEqual(app.activate_quick_scene(SimpleNamespace(y=9999)), 'break')
-            reload_request.assert_not_called()
-
-    def test_disconnected_memory_preview_remains_empty(self):
-        app = self.toolkit
-        app.watch_rows = [Watch('Map ID', 0x800C7AB2, '90', '005A', 'OK', 'mapped')]
-        app.refresh_quick_watch()
-        self.assertEqual(app.quick_watch_tree.get_children(), ())
-        app.mem = object()  # Preview only; no game-memory calls required.
-        app.refresh_quick_watch()
-        self.assertEqual(app.quick_watch_tree.item('Map ID', 'values')[2], '005A')
-        app.watch_rows = [Watch('Map ID', 0x800C7AB2, '96', '0060', 'OK', 'mapped')]
-        app.refresh_quick_watch()
-        self.assertIn('changed', app.quick_watch_tree.item('Map ID', 'tags'))
-        app.mem = None
-        app.refresh_quick_watch()
-        self.assertEqual(app.quick_watch_tree.get_children(), ())
+        self.root.geometry('960x640')
+        self.root.update_idletasks()
+        self.assertEqual(app.notebook.tab(app.notebook.tabs()[0], 'text'),'Dashboard')
+        self.assertTrue(app.bookmarks_box.winfo_exists())
 
     def test_dark_theme_and_no_unsafe_warp_activation(self):
         self.assertEqual(self.root.cget('background'), PALETTE['background'])

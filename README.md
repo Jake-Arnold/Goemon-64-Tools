@@ -1,5 +1,15 @@
 # Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
 
+## Current simplified toolkit layout
+
+Dashboard contains connection status, player position, bookmarks and checkpoints only. The compact single-column layout remains scrollable at smaller window sizes. Scene Browser and Live Memory are separate dedicated tabs; the dashboard no longer duplicates their tables.
+
+The rebuilt-recomp **Game speed** UI has been removed. Standalone speed research and preparation code remains in the repository but is not part of the toolkit interface.
+
+**Event sessions** has two internal tabs: **Event flag sessions** for repeated 100-byte saved-event experiments, and **Advanced RAM comparison** for the former State discovery A/B/C probes (including wide scope and no-player contexts). The redundant **Saved / shadow** UI has been removed.
+
+**Story progress** has subject tabs (Fortune Dolls, Benkei/Kihachi, Ushiwaka/training, keys/locks, collectibles, external annotations, diagnostics) plus an **All** view. Fortune Doll pickup flags and the two known word counters are together. Live Memory no longer repeats all story flags or the low-byte alias of the full Fortune Doll progress word.
+
 ## Gameplay presets
 
 **God Mode** is a session-only checkbox in **Value freezes**. It uses the existing 10 ms worker to maintain health at its known current maximum, 99 lives and 9,999 Ryo. It is independent of enemy-body pass-through and does not change inventory. Turning it off stops writes; already increased resources are not reverted.
@@ -49,15 +59,9 @@ map 353 old man and the map 432 coffee-shop man. The existing Omitsu flag
 entry now includes the user’s first-conversation observation. See
 [Oedo dialogue observations](docs/OEDO_DIALOGUE_FLAGS.md).
 
-## Live recomp speed control
+## Archived speed-control research
 
-The Dashboard has a **Game speed (recomp)** control. Click **Launch speed-enabled
-recomp**, then **Connect to game** using the filled PID. Select **Speed up** and
-choose 2×, 3× or 4×; clear the checkbox for 1×. The host reports its applied
-rate in the panel. The ordinary
-stock recomp and Project64 do not expose this control and remain unaffected.
-The local speed build uses separate portable saves. Host-clock switching has
-been tested, but gameplay and audio at higher rates remain experimental.
+The previous Dashboard speed controls were removed because they required a separately rebuilt recomp. Source preparation and experimental standalone speed-control modules remain for reference; see [speed research](docs/SPEED_CONTROL_RESEARCH.md).
 
 ## Connect without a player
 
@@ -84,8 +88,7 @@ Live memory now shows the full **Fortune Doll progress (quarters)** word at
 `0x8015C704`, and the separately annotated total at `0x8015C708`. The former
 boolean 1/4 control now supports quarter states. Individual world-pickup flags
 remain separate in Story progress. Event sessions only captures the 100-byte
-saved-event bank; use Live memory or State discovery focused captures for these
-outside-bank counters. [Three pickups and code evidence](docs/SILVER_FORTUNE_DOLLS.md).
+saved-event bank; use Story progress's Fortune Dolls section or Event sessions → Advanced RAM comparison for outside-bank counters. [Three pickups and code evidence](docs/SILVER_FORTUNE_DOLLS.md).
 
 ## Value freezes
 
@@ -134,7 +137,7 @@ The completed Native menu calibration, Character cursor scan and Checkpoint comp
 
 Event sessions now shows a UI clock, time since Capture A, and the native game-loop counter. Capturing B immediately reports raw changed bytes/bits, regardless of trial role. **Record trial** updates the ranked list; idle/control trials supply noise evidence and do not create candidates. Identical A/B values are explicitly reported.
 
-Event sessions deliberately captures only the 100 saved event bytes at `0x8015C608..0x8015C66B`. It excludes clocks, temporary Bank A/B flags and the shadow buffer. Use **State discovery**, focused scope, for the system clock and saved/shadow regions; use wide scope for temporary Bank A/B flags. The new **Saved / shadow** tab displays all 772 bytes at `0x8015C608` and `0x8015C910`, with addresses and XOR differences. It refreshes while selected, clears on disconnect/read failure, and makes no game writes. Its two sequential reads are observations, not an atomic capture or proof of persistence to disk.
+Event sessions deliberately captures only the 100 saved event bytes at `0x8015C608..0x8015C66B`. It excludes clocks, temporary Bank A/B flags and the shadow buffer. Use **Event sessions → Advanced RAM comparison**, focused scope, for the system clock and saved/shadow regions; use wide scope for temporary Bank A/B flags. The separate **Saved / shadow** tab was removed because it duplicated the research workflows.
 
 The entrance atlas had exposed 153 valid rooms missing from the old name catalog. Another 125 now have descriptive labels from [mn64rando's pinned room index](https://github.com/abyssonym/mn64rando/blob/9c580d03fe89354f79c3c83ba2e1bcf192f32577/tables/room_indexes.txt). Existing names are retained; 28 atlas rooms still show “Unidentified room” with their native menu index. Labels do not establish safe spawn coordinates or make unused rooms playable.
 
@@ -167,7 +170,7 @@ The new **Story progress** tab shows mapped Benkei/Ushiwaka/Kihachi milestones,
 known flag masks, raw values and evidence. It distinguishes training success,
 recorded reward and actual Mini-Ebisu ownership, with advisory flag/inventory
 discrepancies. Raw Bank A/B views retain separate labels and unknown lifecycle.
-Named story watches also appear in Live memory; Unlocks links to the new panel.
+Named story flag rows are now grouped in Story progress instead of being repeated in Live Memory; Unlocks still provides item controls.
 
 215 tests passed, with a successful live read-only recomp sample and visual Tk
 check. [Panel guide and limitations](docs/STORY_PROGRESS.md). Existing unsafe

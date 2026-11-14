@@ -337,7 +337,6 @@ class InspectorMixin(EntranceMixin):
             if self.watch_tree.exists(new_id):
                 self.watch_tree.selection_set(new_id)
                 self.watch_tree.see(new_id)
-            self.refresh_quick_watch()
             self.inspector_status.set(f'Field renamed: {previous} → {new_label}.')
         except (ValueError,OSError,TypeError) as exc:
             self.inspector_status.set(f'Rename failed: {exc}')
@@ -458,7 +457,6 @@ class InspectorMixin(EntranceMixin):
                     modified.append((w.name,old[w.name],w.raw))
             self.watch_rows=watches
             self.draw_watches()
-            self.refresh_quick_watch()
             self.watch_previous={w.name:w.raw for w in watches}
             invalid=[w.name for w in watches if w.status in ('CHECK','ERROR')]
             self.inspector_status.set(f'Map {live_map} ({SCENES.get(live_map,"unmapped")})  |  {len(watches)} fields  |  {len(invalid)} need verification  |  {len(modified)} changed this poll')

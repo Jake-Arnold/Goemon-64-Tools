@@ -1,4 +1,4 @@
-"""Small persistent-event trials, separate from the wider A/B/C discovery probes."""
+"""Event research UI: persistent-flag sessions and nested advanced RAM probes."""
 import json
 import queue
 import threading
@@ -8,7 +8,7 @@ from tkinter import ttk, filedialog
 
 from practice.event_sessions import (new_session,capture_event,with_trial,save_session,
                                      load_session,rank_bits,changed_context_fields,describe_contexts)
-from practice.checkpoints import GAMEDATA_ADDR, GAMEDATA_LEN, SHADOW_ADDR, STATE_ADDR
+from practice.checkpoints import GAMEDATA_ADDR, STATE_ADDR
 from practice.paths import diagnostics_dir
 
 
@@ -17,6 +17,11 @@ class EventSessionsMixin:
         tab=ttk.Frame(notebook,padding=10)
         notebook.add(tab,text='Event sessions')
         self.event_sessions_tab=tab
+        self.event_sections=ttk.Notebook(tab)
+        self.event_sections.pack(fill='both',expand=True)
+        session=ttk.Frame(self.event_sections,padding=8)
+        self.event_sections.add(session,text='Event flag sessions')
+        tab=session
         self.event_session=None;self.event_pending={};self.event_token=None;self.event_capture_started=None
         self.event_rows=[]
         self.event_generation=0
@@ -25,7 +30,7 @@ class EventSessionsMixin:
         ttk.Label(tab,text='Repeated persistent-event experiments',font=('Segoe UI Semibold',16)).pack(anchor='w')
         ttk.Label(tab,text='Read-only capture of 100 saved event bytes. Room/character changes between captures are allowed. '
                   'Use idle/control pairs, then repeat the same event from your own pre-event save. '
-                  'Clocks, Bank A/B and shadow bytes are outside this range; use State discovery for wider changes. '
+                  'For temporary flags, clocks and broader RAM changes, use Advanced RAM comparison beside this view. '
                   'No automatic reset, input or memory writes.',wraplength=1080).pack(anchor='w',pady=6)
         row=ttk.Frame(tab);row.pack(fill='x')
         ttk.Label(row,text='Experiment:').pack(side='left')
@@ -67,7 +72,6 @@ class EventSessionsMixin:
                                    foreground='#f3eee5',insertbackground='#edbf6b')
         self.set_event_evidence('Select a row for exact trial IDs. Candidates are never automatically confirmed.')
         self.event_evidence.pack(fill='x',pady=6)
-        self.build_save_buffers_tab(notebook)
         self.root.after(250,self.poll_event_monitor)
 
     def refresh_pending_event_comparison(self):
@@ -81,62 +85,12 @@ class EventSessionsMixin:
         detail='; '.join(f'0x{GAMEDATA_ADDR+i:08X}: {x:02X}->{y:02X}' for i,x,y in changes[:8])
         if len(changes)>8:detail+='; ...'
         if not changes:
-            detail='The 100 saved event bytes are identical. Repeating an already-completed event may change nothing; use State discovery for temporary flags and clocks.'
+            detail='The 100 saved event bytes are identical. Repeating an already-completed event may change nothing; use Advanced RAM comparison for temporary fields.'
         self.event_comparison.set(f'Pending A/B: {len(changes)} changed bytes, {bits} changed bits. '+detail+
                                   ' Record trial to include this pair in analysis. '
                                   + ('Context changed: '+', '.join(changed_context_fields(self.event_pending))+'. '
                                      if changed_context_fields(self.event_pending) else '')
                                   + describe_contexts(self.event_pending))
-
-    def build_save_buffers_tab(self,notebook):
-        tab=ttk.Frame(notebook,padding=10)
-        notebook.add(tab,text='Saved / shadow')
-        self.save_buffers_tab=tab
-        ttk.Label(tab,text='Read-only saved and shadow buffers',font=('Segoe UI Semibold',16)).pack(anchor='w')
-        ttk.Label(tab,text='Saved 0x8015C608 and shadow 0x8015C910, 772 bytes each. '
-                  'Offsets +0x00..+0x63 contain event flags; +0x64..+0x93 are resource mirrors and may be stale. '
-                  'Differences are observations, not confirmed story flags or proof of disk-save persistence.',
-                  wraplength=1080).pack(anchor='w',pady=6)
-        self.save_buffers_status=tk.StringVar(value='Select this tab while connected to inspect both buffers.')
-        ttk.Label(tab,textvariable=self.save_buffers_status,wraplength=1080).pack(anchor='w',pady=4)
-        columns=('offset','saved_address','saved','shadow_address','shadow','xor')
-        self.save_buffers_tree=ttk.Treeview(tab,columns=columns,show='headings',height=24)
-        for key,title,width in zip(columns,('Offset','Saved address','Saved hex','Shadow address','Shadow hex','XOR'),
-                                   (65,110,290,110,290,290)):
-            self.save_buffers_tree.heading(key,text=title)
-            self.save_buffers_tree.column(key,width=width)
-        scroll=ttk.Scrollbar(tab,orient='vertical',command=self.save_buffers_tree.yview)
-        scroll.pack(side='right',fill='y')
-        self.save_buffers_tree.configure(yscrollcommand=scroll.set)
-        self.save_buffers_tree.pack(fill='both',expand=True)
-        self.save_buffers_tree.tag_configure('different',foreground='#edbf6b')
-        self.save_buffers_previous=None
-
-    def refresh_save_buffers(self):
-        if not self.mem:
-            self.save_buffers_tree.delete(*self.save_buffers_tree.get_children())
-            self.save_buffers_previous=None
-            self.save_buffers_status.set('Disconnected; no current saved/shadow values.')
-            return
-        # Two sequential observations, not an atomic snapshot or capture for ranking.
-        saved=self.mem.read_guest(GAMEDATA_ADDR,GAMEDATA_LEN)
-        shadow=self.mem.read_guest(SHADOW_ADDR,GAMEDATA_LEN)
-        if len(saved)!=GAMEDATA_LEN or len(shadow)!=GAMEDATA_LEN:
-            raise ValueError('Incomplete saved/shadow read')
-        pair=(saved,shadow)
-        if pair!=self.save_buffers_previous:
-            for offset in range(0,GAMEDATA_LEN,16):
-                a=saved[offset:offset+16];b=shadow[offset:offset+16]
-                values=(f'+0x{offset:03X}',f'0x{GAMEDATA_ADDR+offset:08X}',a.hex(' ').upper(),
-                        f'0x{SHADOW_ADDR+offset:08X}',b.hex(' ').upper(),
-                        bytes(x^y for x,y in zip(a,b)).hex(' ').upper())
-                key=str(offset);tags=('different',) if a!=b else ()
-                if self.save_buffers_tree.exists(key):self.save_buffers_tree.item(key,values=values,tags=tags)
-                else:self.save_buffers_tree.insert('','end',iid=key,values=values,tags=tags)
-            self.save_buffers_previous=pair
-        differences=sum(a!=b for a,b in zip(saved,shadow))
-        self.save_buffers_status.set(f'Live read: {differences} differing bytes / {GAMEDATA_LEN}. '
-                                     'Rows contain up to 16 bytes; sequential reads can straddle game updates.')
 
     def poll_event_monitor(self):
         now=time.monotonic()
@@ -152,13 +106,8 @@ class EventSessionsMixin:
                 self.event_live.set(f'{prefix} | Game-loop counter: {loops} | State: {state}'
                                     ' | Counter may stop while paused; captures validate gameplay separately.')
             else:self.event_live.set(prefix+' | Disconnected; connect before capturing.')
-            if self.notebook.select()==str(self.save_buffers_tab) or not self.mem:
-                self.refresh_save_buffers()
         except (OSError,ValueError,RuntimeError) as exc:
             self.event_live.set(prefix+f' | Read unavailable: {exc}')
-            self.save_buffers_status.set(f'Read unavailable; displayed values cleared: {exc}')
-            self.save_buffers_tree.delete(*self.save_buffers_tree.get_children())
-            self.save_buffers_previous=None
         finally:
             self.root.after(250,self.poll_event_monitor)
 

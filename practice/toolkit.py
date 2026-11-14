@@ -27,7 +27,6 @@ from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
 from practice.value_freezes_ui import ValueFreezesMixin
 from practice.damage_event_capture_ui import DamageEventCaptureMixin
-from practice.live_speed_ui import LiveSpeedMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.theme import apply_theme, PALETTE
@@ -90,13 +89,13 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(DamageEventCaptureMixin, LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
         root.title("Goemon Practice Toolkit v0.11.17 · USA N64")
-        root.geometry("1390x900")
-        root.minsize(1100, 730)
+        root.geometry("1220x790")
+        root.minsize(960, 640)
         apply_theme(root)
         configure_window_branding(root)
         root.attributes("-topmost", False)
@@ -151,16 +150,9 @@ class Toolkit(DamageEventCaptureMixin, LiveSpeedMixin, ValueFreezesMixin, StoryP
         dash_window = dash_canvas.create_window((0, 0), window=frm, anchor='nw')
         frm.bind('<Configure>', lambda _e: dash_canvas.configure(scrollregion=dash_canvas.bbox('all')))
         dash_canvas.bind('<Configure>', lambda e: dash_canvas.itemconfigure(dash_window, width=e.width))
-        frm.columnconfigure(0, weight=4, minsize=395)
-        frm.columnconfigure(1, weight=6, minsize=475)
-        frm.rowconfigure(0, weight=1)
+        frm.columnconfigure(0, weight=1)
         left = ttk.Frame(frm)
-        left.grid(row=0, column=0, sticky='nsew', padx=(0, 7))
-        right = ttk.Frame(frm)
-        right.grid(row=0, column=1, sticky='nsew', padx=(7, 0))
-        right.columnconfigure(0, weight=1)
-        right.rowconfigure(0, weight=1)
-        right.rowconfigure(1, weight=1)
+        left.grid(row=0, column=0, sticky='new', padx=(6, 6))
 
         connection = ttk.LabelFrame(left, text=' Connection ', padding=12)
         connection.pack(fill='x', pady=(0, 10))
@@ -195,8 +187,6 @@ class Toolkit(DamageEventCaptureMixin, LiveSpeedMixin, ValueFreezesMixin, StoryP
         ttk.Label(connection, textvariable=self.speed_text, style='CardMuted.TLabel').pack(anchor='w')
         ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
                   wraplength=420).pack(anchor='w')
-
-        self.build_live_speed_controls(left)
 
         checkpoints = ttk.LabelFrame(left, text=' Checkpoints and bookmarks ', padding=12)
         checkpoints.pack(fill='x', pady=(0, 10))
@@ -234,68 +224,14 @@ class Toolkit(DamageEventCaptureMixin, LiveSpeedMixin, ValueFreezesMixin, StoryP
         self.cancel_restore_btn.pack(fill='x', pady=(3, 0))
         self.cancel_restore_btn.state(['disabled'])
 
-        scene_card = ttk.LabelFrame(right, text=' Scene browser ', padding=10)
-        scene_card.grid(row=0, column=0, sticky='nsew', pady=(0, 6))
-        scene_card.columnconfigure(0, weight=1)
-        scene_card.rowconfigure(1, weight=1)
-        self.quick_scene_filter = tk.StringVar()
-        ttk.Entry(scene_card, textvariable=self.quick_scene_filter).grid(row=0, column=0,
-                                                                sticky='ew', pady=(0, 7))
-        self.quick_scene_filter.trace_add('write', lambda *_: self.draw_quick_scenes())
-        scene_columns = ('map', 'name', 'category')
-        self.quick_scene_tree = ttk.Treeview(scene_card, columns=scene_columns,
-                                             show='headings', height=7, selectmode='browse')
-        for col, label, width in [('map', 'ID', 70), ('name', 'Area / scene', 245),
-                                  ('category', 'Category', 85)]:
-            self.quick_scene_tree.heading(col, text=label)
-            self.quick_scene_tree.column(col, width=width, stretch=(col == 'name'))
-        self.quick_scene_tree.grid(row=1, column=0, sticky='nsew')
-        scene_scroll = ttk.Scrollbar(scene_card, orient='vertical', command=self.quick_scene_tree.yview)
-        scene_scroll.grid(row=1, column=1, sticky='ns')
-        self.quick_scene_tree.configure(yscrollcommand=scene_scroll.set)
-        # Single-click selects; double-click uses the same guarded reload as the full browser.
-        self.quick_scene_tree.bind('<<TreeviewSelect>>', self.choose_quick_scene)
-        self.quick_scene_tree.bind('<Double-1>', self.activate_quick_scene)
-        footer = ttk.Frame(scene_card, style='Card.TFrame')
-        footer.grid(row=2, column=0, sticky='ew', pady=(7, 0))
-        ttk.Label(footer, text='Double-click an area to reload (experimental).',
-                  style='CardMuted.TLabel').pack(side='left')
-        ttk.Button(footer, text='Full scene browser', command=self.open_full_scene_tab).pack(side='right')
-
-        memory_card = ttk.LabelFrame(right, text=' Live memory (read-only preview) ', padding=10)
-        memory_card.grid(row=1, column=0, sticky='nsew', pady=(6, 0))
-        memory_card.columnconfigure(0, weight=1)
-        memory_card.rowconfigure(1, weight=1)
-        ttk.Label(memory_card, text='Live values from the original N64 guest RAM',
-                  style='CardMuted.TLabel').grid(row=0, column=0, sticky='w', pady=(0, 6))
-        memory_columns = ('field', 'addr', 'hex')
-        self.quick_watch_tree = ttk.Treeview(memory_card, columns=memory_columns,
-                                            show='headings', height=7)
-        for col, label, width in [('field', 'Field', 185), ('addr', 'N64 address', 112),
-                                  ('hex', 'Hex', 120)]:
-            self.quick_watch_tree.heading(col, text=label)
-            self.quick_watch_tree.column(col, width=width, stretch=(col == 'field'))
-        self.quick_watch_tree.grid(row=1, column=0, sticky='nsew')
-        watch_scroll = ttk.Scrollbar(memory_card, orient='vertical', command=self.quick_watch_tree.yview)
-        watch_scroll.grid(row=1, column=1, sticky='ns')
-        self.quick_watch_tree.configure(yscrollcommand=watch_scroll.set)
-        self.quick_watch_tree.tag_configure('changed', background=PALETTE['changed'])
-        preview_footer = ttk.Frame(memory_card, style='Card.TFrame')
-        preview_footer.grid(row=2, column=0, sticky='ew', pady=(7, 0))
-        ttk.Label(preview_footer, text='Edit guarded fields in the full Live memory tab.',
-                  style='CardMuted.TLabel').pack(side='left')
-        ttk.Button(preview_footer, text='Open live memory', command=self.open_live_memory_tab).pack(side='right')
-        self.draw_quick_scenes()
+        ttk.Label(left, text='Scene Browser, Live Memory, Unlocks and Event Sessions each have their own tabs.',
+                  style='CardMuted.TLabel', wraplength=850).pack(anchor='w', pady=(2, 8))
         self.build_inspector_tabs(notebook)
-        # Show blocked requests and reload progress without opening the Scene Browser tab.
-        ttk.Label(scene_card, textvariable=self.scene_status, wraplength=420,
-                  style='CardMuted.TLabel').grid(row=3, column=0, columnspan=2,
-                                                  sticky='ew', pady=(4, 0))
         self.build_value_freezes_tab(notebook)
         self.build_value_search_tab(notebook)
-        self.build_state_discovery_tab(notebook)
         self.build_damage_event_capture_tab(notebook)
         self.build_event_sessions_tab(notebook)
+        self.build_state_discovery_tab(self.event_sections)
         self.build_unlock_tabs(notebook)
         self.build_story_progress_tab(notebook)
         # Toolkit-local F1; it does not register a system-wide/game hotkey.
@@ -308,93 +244,16 @@ class Toolkit(DamageEventCaptureMixin, LiveSpeedMixin, ValueFreezesMixin, StoryP
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
 
-    def draw_quick_scenes(self):
-        """Keep the dashboard scene catalog searchable, without guest writes."""
-        from practice.scenes import SCENES
-        query = self.quick_scene_filter.get().strip().lower()
-        selected = self.quick_scene_tree.selection()
-        self.quick_scene_tree.delete(*self.quick_scene_tree.get_children())
-        for map_id, name in sorted(SCENES.items()):
-            if query not in f'{map_id} {map_id:03X} {name}'.lower():
-                continue
-            category = 'SIRO' if map_id < 300 else ('DOUCHU' if map_id < 350 else 'MACHI / OTHER')
-            self.quick_scene_tree.insert('', 'end', iid=str(map_id), values=(map_id, name, category))
-        for entry in selected:
-            if self.quick_scene_tree.exists(entry):
-                self.quick_scene_tree.selection_set(entry)
-
-    def choose_quick_scene(self, event=None):
-        """Synchronise dashboard selection to the full browser, never mutate RAM."""
-        selection = self.quick_scene_tree.selection()
-        if not selection or not hasattr(self, 'scene_options'):
-            return
-        map_id = int(selection[0])
-        for index, (candidate, _) in enumerate(self.scene_options):
-            if candidate == map_id:
-                self.scene_list.selection_clear(0, 'end')
-                self.scene_list.selection_set(index)
-                self.scene_list.see(index)
-                self.select_scene()
-                return
-        # The full browser may have its own filter; reset it before synchronising.
-        self.scene_filter.set('')
-        for index, (candidate, _) in enumerate(self.scene_options):
-            if candidate == map_id:
-                self.scene_list.selection_set(index)
-                self.scene_list.see(index)
-                self.select_scene()
-                break
-
-    def activate_quick_scene(self, event=None):
-        """Double-click the clicked dashboard row and reload without changing tabs."""
-        if event is not None:
-            row = self.quick_scene_tree.identify_row(event.y)
-            if not row:
-                return 'break'
-            self.quick_scene_tree.selection_set(row)
-        selection = self.quick_scene_tree.selection()
-        if not selection:
-            return 'break'
-        target = int(selection[0])
-        self.choose_quick_scene()
-        chosen = self.scene_list.curselection()
-        if not chosen or self.scene_options[chosen[0]][0] != target:
-            self.scene_status.set(f'Could not select stage {target} in the Scene Browser.')
-            return 'break'
-        self.activate_selected_scene()
-        return 'break'
-
     def open_full_scene_tab(self, event=None):
-        self.choose_quick_scene()
         self.notebook.select(self.scene_tab)
 
     def open_live_memory_tab(self):
         self.notebook.select(self.live_memory_tab)
 
     def _on_f1_open_memory(self, _event=None):
-        """Jump to the Live Memory / debug hex editor from any toolkit widget."""
+        """Toolkit-local shortcut for the complete Live Memory tab."""
         self.open_live_memory_tab()
         return 'break'
-
-    def refresh_quick_watch(self):
-        """Reflect real inspector samples; a disconnected session remains empty."""
-        if not self.mem or not self.watch_rows:
-            self.quick_watch_tree.delete(*self.quick_watch_tree.get_children())
-            return
-        priority = ('Map ID', 'Character', 'Current health (units)', 'Ryo',
-                    'Lives', 'Pending destination', 'Exit request (not warp)',
-                    'Native menu entry pointer', 'X', 'Y', 'Z')
-        rows = {row.name: row for row in self.watch_rows}
-        old = {row_id: self.quick_watch_tree.item(row_id, 'values') for row_id
-               in self.quick_watch_tree.get_children()}
-        self.quick_watch_tree.delete(*self.quick_watch_tree.get_children())
-        for name in priority:
-            value = rows.get(name)
-            if not value or value.addr is None:
-                continue
-            fields = (self.display_watch_name(name), f'0x{value.addr:08X}', value.raw)
-            tag = ('changed',) if name in old and tuple(old[name]) != fields else ()
-            self.quick_watch_tree.insert('', 'end', iid=name, values=fields, tags=tag)
 
     def bookmark_labels(self):
         return [f"{i+1}. {x['name']} ({x['x']:.1f}, {x['y']:.1f}, {x['z']:.1f})" for i,x in enumerate(self.bookmarks)]

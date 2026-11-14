@@ -75,6 +75,16 @@ class TestInspector(unittest.TestCase):
         rows = {r.name: r for r in get_watches(ram, ram.snapshot(), SCENES)}
         self.assertIn('outside ordinary gameplay', rows['Gameplay submode'].value)
 
+    def test_story_flags_are_not_duplicated_in_live_memory(self):
+        _,ram=self.sample()
+        rows=get_watches(ram,ram.snapshot(),SCENES)
+        self.assertFalse(any(row.name.startswith('Story: ') for row in rows))
+        self.assertNotIn('Fortune Doll progress (low byte)',{r.name for r in rows})
+        self.assertEqual(len(rows),len({r.name for r in rows}))
+        # Same stored byte; distinct bits, not redundant flags.
+        self.assertIn('Sasuke battery 1 collected',{r.name for r in rows})
+        self.assertIn('Sasuke battery 2 cutscene finished (observed)',{r.name for r in rows})
+
     def test_sasuke_battery_bit_live_watch(self):
         _,ram=self.sample()
         ram.write_guest(0x8015C609,b'\x85')

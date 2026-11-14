@@ -15,11 +15,11 @@ from practice.transition_observer import read_transition_observation, format_tra
 class StateDiscoveryMixin:
     def build_state_discovery_tab(self, notebook):
         tab=ttk.Frame(notebook,padding=10)
-        notebook.add(tab,text='State discovery')
+        notebook.add(tab,text='Advanced RAM comparison')
         self.state_discovery_tab=tab
         self.state_captures={}
         self.state_report=None
-        ttk.Label(tab,text='Discover original N64 memory fields',font=('Segoe UI Semibold',16),
+        ttk.Label(tab,text='Advanced A/B/C guest memory comparison',font=('Segoe UI Semibold',16),
                   foreground=PALETTE['gold']).pack(anchor='w',pady=(2,6))
         ttk.Label(tab,text='Capture A (before), B (after) and optionally C (returned to the original state). '
                   'Only observed values are reported: no addresses are assumed to represent the requested flag.',

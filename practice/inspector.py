@@ -11,7 +11,6 @@ import struct
 import math
 from practice import checkpoints as cp
 from practice.native_menu_categories import native_menu_category, NATIVE_MENU_CATEGORIES
-from practice.story_progress import read_story_state,story_rows
 
 CHARACTERS = ('Goemon', 'Ebisumaru', 'Sasuke', 'Yae')
 
@@ -160,9 +159,6 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Sasuke battery 2 cutscene finished (observed)',0x8015C609,1,
         lambda v: 'Yes (bit 0x40)' if v & 0x40 else 'No (bit 0x40)',
         source='observed: second battery cutscene ends with 0x20 -> 0x60; cutscene trigger separate')
-    for row in story_rows(read_story_state(ram)):
-        watches.append(Watch('Story: '+row['name'],row['address'],row['value'],row['raw'],row['status'],
-            row['bank']+'; mask '+row['mask']+'; '+row['source']))
     add('Map overlay state (observed)',0x8015C574,1,
         lambda v: f'{v} ({"visible" if v == 1 else "hidden" if v == 0 else "unusual"})',
         validator=lambda v: v in (0,1),
@@ -197,6 +193,10 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Fortune Dolls obtained (annotated total)',0x8015C708,4,
         source='mn64rando word annotation; live value 2 alongside half icon; full reset/award rules not traced')
     for name,addr,width,maximum,hint in INVENTORY:
+        # Low-byte view of the full Fortune Doll progress word above, not
+        # an independent Live Memory field.
+        if addr == 0x8015C707:
+            continue
         if addr == 0x8015C609:
             add(name,addr,1,lambda v: 'Yes (bit 0x20)' if v & 0x20 else 'No (bit 0x20)',
                 source='confirmed by live pre-pickup flag write and subsequent stage progression')

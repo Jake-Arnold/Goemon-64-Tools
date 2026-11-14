@@ -241,6 +241,49 @@ DOLL_PLACEMENT_FLAGS = (
 
 FLAGS = CURATED_FLAGS + EXTERNAL_FLAGS + PLACEMENT_PICKUPS + DOLL_PLACEMENT_FLAGS
 
+STORY_SECTIONS = ('All', 'Fortune Dolls', 'Benkei & Kihachi',
+                  'Ushiwaka & Training', 'Keys & Locks',
+                  'Collectibles & Miracles', 'External annotations',
+                  'Other story', 'Diagnostics')
+
+
+def story_section_for_key(key):
+    """One canonical subject category; the All view contains each record once."""
+    if (key in ('fortune_doll_quarters', 'fortune_doll_total') or
+            key.startswith(('placed_silver_doll_', 'placed_gold_doll_', 'silver_doll_')) or
+            'doll_reward' in key):
+        return 'Fortune Dolls'
+    if key in ('bank_a','bank_b'):
+        return 'Diagnostics'
+    if (key.startswith(('benkei','kihachi','food_')) or
+            key in ('thaisamba',)):
+        return 'Benkei & Kihachi'
+    if (key.startswith(('ushi_','training_','mini_')) or
+            key in ('blue_request','yellow_request','red_request','temple',
+                    'heel_recorded','mini','heel')):
+        return 'Ushiwaka & Training'
+    if 'key' in key or 'lock' in key or 'gate' in key:
+        return 'Keys & Locks'
+    if key.startswith('external_'):
+        return 'External annotations'
+    if ('collected' in key or 'placement' in key or 'miracle' in key or
+            'arrow' in key or 'elly' in key):
+        return 'Collectibles & Miracles'
+    return 'Other story'
+
+
+def validate_story_catalog():
+    """Duplicate flag IDs are never independent flags, unlike distinct bit IDs in one byte."""
+    if len({f.key for f in FLAGS}) != len(FLAGS):
+        raise ValueError('Duplicate story flag keys')
+    if len({f.flag_id for f in FLAGS}) != len(FLAGS):
+        raise ValueError('Duplicate saved event-bit IDs')
+    if any(story_section_for_key(f.key) not in STORY_SECTIONS for f in FLAGS):
+        raise ValueError('Story flag has no UI category')
+
+
+validate_story_catalog()
+
 
 def read_story_state(ram):
     """Small independent samples; failures remain unknown, never inferred zero.
@@ -250,7 +293,9 @@ def read_story_state(ram):
     """
     errors={};blocks={}
     for key,address,size in (('saved',SAVED_BASE,0x64),('bank_a',BANK_A,2),('bank_b',BANK_B,2),
-                             ('mini',0x8015C6F0,4),('heel',0x8015C70C,4)):
+                             ('mini',0x8015C6F0,4),('heel',0x8015C70C,4),
+                             ('fortune_doll_quarters',0x8015C704,4),
+                             ('fortune_doll_total',0x8015C708,4)):
         if ram is None:blocks[key]=None;continue
         try:
             data=ram.read_guest(address,size)
@@ -318,6 +363,16 @@ def story_rows(state):
             value='Unavailable' if value is None else ('Absent' if value==0 else 'Present' if value==1 else 'Unexpected'),
             raw=raw,status='ERROR' if value is None else 'OBSERVED' if value in (0,1) else 'CHECK',
             source='ROM reward-script word write; separate from progression flag'))
+    for key,label,address in (
+            ('fortune_doll_quarters','Silver Fortune Doll progress (quarters)',0x8015C704),
+            ('fortune_doll_total','Fortune Dolls obtained (annotated total)',0x8015C708)):
+        data=state['blocks'][key]
+        value=None if data is None else int.from_bytes(data,'big')
+        raw='—' if data is None else '0x'+data.hex().upper()
+        rows.append(dict(key=key,name=label,bank='Inventory',address=address,mask='—',
+                         value='Unavailable' if value is None else str(value),raw=raw,
+                         status='ERROR' if value is None else 'OBSERVED',
+                         source='Read-only saved resource counter; no implied per-pickup event flag'))
     return rows
 
 

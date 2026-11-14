@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Toolkit UI consolidation and memory-row deduplication
+
+- **Dashboard:** Removed embedded Scene Browser, Live Memory preview and rebuilt-recomp Game speed controls. Retained connection, player status, position bookmarks, checkpoints and scrolling single-column layout; reduced minimum window dimensions. Dedicated Scene Browser/Live Memory and F1 access remain functional.
+- **Event research:** Event sessions now hosts **Event flag sessions** and **Advanced RAM comparison** (former State discovery) in a nested notebook. The redundant Saved / shadow tab and its independent polling code are removed. Broader RAM probes and transient/no-player workflows remain accessible under the advanced subtab.
+- **Story progress:** Grouped original flag catalogue by subject in an internal notebook (All, Fortune Dolls, Benkei & Kihachi, Ushiwaka & Training, Keys & Locks, Collectibles & Miracles, External annotations, Other story, Diagnostics). Fortune Doll counters +0xFC and +0x100 appear alongside pickup flags. Added import-time assertions for unique flag keys and bit IDs; different masks in the same byte remain distinct.
+- **Live Memory:** Removed duplicate Story Progress flag rows and the low-byte alias of the full Fortune Doll progress word, preserving dedicated instrumentation and independent Sasuke battery bitmasks.
+- **Tests/documentation:** Updated dashboard, speed-UI removal, nested event research, Story Progress grouping, and Live Memory dedupe regression tests plus guides. Current code changes have not been exercised with a live game or an independent full Tk test run; no assertion of gameplay verification.
+
 ### 2026-11-14 — Correct non-gameplay Unlock All regression assertion
 
 - **Changed:** Non-gameplay Unlock All test now captures and compares all 34 mapped unlock bytes before and after rejection instead of assuming the fixture's patterned save RAM initializes the pipe upgrade at zero. User's Linux run recorded 50/51 tests passing; the sole failure was this stale expectation (observed initial value 145). Production unlock behaviour is unchanged.
