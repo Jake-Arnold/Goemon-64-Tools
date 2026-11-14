@@ -128,7 +128,14 @@ passed, but no bounded whole-function C candidate was justified. Keep
 GLOBAL_ASM; the stored full-ROM proof remains unchanged. See
 DEFAULT_ENTRANCE_TRACE.md and
 plans/execution/2026-11-14-g64-068-default-entrance-review.json.
-Continue at G64-069.
+G64-069 completed as RESEARCH_ONLY. MAP_TRANSITION_TRACE.md now separates a
+state request, a gated file-15 load request, and a safe playable transition.
+The host fixture protects intended-room sentinels and the static file-15
+destination window. Disabled direct-warp and scene-list tests now spy on
+write_guest, so a write followed by restoration is caught. Production controls,
+the manifest, and stored proof are unchanged; no fresh G2 was run. See
+plans/execution/2026-11-14-g64-069-transition-safety-assertions.json.
+Continue at G64-070.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list

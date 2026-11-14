@@ -421,6 +421,29 @@ transition completed. Production `transition_state.c` keeps the target as
 was a pure trace/host-reference task and no new C hypothesis was justified.
 See [`plans/execution/2026-11-14-g64-064-transition-loop-gate.json`](plans/execution/2026-11-14-g64-064-transition-loop-gate.json).
 
+## G64-069 — State, resource, transition, and toolkit boundaries
+
+These are separate claims with different evidence:
+
+| Claim | Original/static evidence | What is established |
+| --- | --- | --- |
+| State request | Matched `80003728` writes the requested `stepw`, clears nested state bytes, and calls the next state setter. Matched `80021444` requests state `0x0B` on both guard paths. | The observed state-field updates and calls are established. |
+| Room-resource request | In `800030F0`, substate 1 calls `80001C00(15, 0x801CB460)` only when `D_800548D8 == 0`, after `8000383C`. The caller replaces the loader return with `0xFFFF` before the later wait and substate increment. | A file-15 load request with a caller-supplied destination is established. G64-062 verifies the USA file-table bytes, row 14 destination range `0x801CB460..0x801E9980`, and pinned Splat mapping. The shared overlay VMA and ignored return do not prove that file 15 is active or that a later pointer is valid. See [the G64-062 record](plans/execution/2026-11-14-g64-062-loader-boundary.json). |
+| Safe gameplay transition | The traced state and loader edges do not establish complete prior-overlay release, room teardown, actor creation, valid player state, or stable gameplay after the request. | Unproven; no safe generic warp or unload API follows from these facts. |
+
+The host fixture now protects the documented state order and intended-room
+fields with sentinels. Compile-time checks pin the file-15 destination inside
+the verified static destination-table window and pin that window's span; they
+do not establish runtime overlay activation or safety.
+
+The controllable toolkit paths have a narrower no-write guarantee:
+`practice.scene_controls.request_scene_warp` raises before writing guest RAM,
+and the scene-list double-click handler only updates its status display. Their
+tests spy on `write_guest`, so a write followed by restoration still fails the
+test. This assertion does not cover the separate explicitly enabled
+`practice.experimental_controls` trial or the manual native debug-menu path,
+which has its own intentional state write. No production controls were changed.
+
 ## G64-065 — Engine-state pan sweep at `80039F84`
 
 The target is `func_80039F84_3AB84`, 55 words / 220 bytes at VMA

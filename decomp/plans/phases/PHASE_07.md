@@ -339,7 +339,7 @@ fresh G2 was run and the stored proof is unchanged. See
 
 ### G64-069 — Architect transition safety assertions
 
-**Status:** PLANNED. **Dependencies:** G64-061, G64-062, G64-063, G64-064, G64-065, G64-066, G64-067, G64-068.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-061, G64-062, G64-063, G64-064, G64-065, G64-066, G64-067, G64-068.
 **Focus files:** `decomp/MAP_TRANSITION_TRACE.md`; `decomp/test_transition_state.c`.
 
 **Architectural intent:** Add static/synthetic checks for correct state sequencing, resource pointer validity assumptions and absence of toolkit writes.
@@ -363,6 +363,8 @@ fresh G2 was run and the stored proof is unchanged. See
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-14):** Added a three-claim evidence matrix to MAP_TRANSITION_TRACE.md, distinguishing a state request, the gated file-15 load request, and a safe gameplay transition. Existing G64-062 original-ROM/table evidence supports only the static destination window; runtime activation remains unknown. The state host fixture now protects intended-room sentinels and the file-15 table window. Disabled direct-warp and scene-list tests now spy on write_guest, catching write-then-restore behavior. Focused C and Python tests and local decomp CI passed. No production control or matching-C ownership changed; no fresh G2 was run. See ../execution/2026-11-14-g64-069-transition-safety-assertions.json.
 
 ### G64-070 — Gate transition slice
 

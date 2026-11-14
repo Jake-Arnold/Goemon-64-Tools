@@ -3,6 +3,16 @@
 #include "common.h"
 static SYS_W sys; static SYS_W alternate_sys; SYS_W *D_8015C5C8_15D1C8=&sys;
 static int stage; u8 D_800C7A95_C8695; s32 D_8006D328_6DF28;
+/* Pinned G64-062 layout evidence; this is not runtime activation proof. */
+#define FILE15_DESTINATION 0x801CB460u
+#define FILE15_WINDOW_START 0x801CB460u
+#define FILE15_WINDOW_END 0x801E9980u
+#define FILE15_WINDOW_SPAN 0x1E520u
+_Static_assert(FILE15_DESTINATION >= FILE15_WINDOW_START &&
+               FILE15_DESTINATION < FILE15_WINDOW_END,
+               "file-15 destination is inside its static table window");
+_Static_assert(FILE15_WINDOW_END - FILE15_WINDOW_START == FILE15_WINDOW_SPAN,
+               "file-15 destination-table span");
 void func_800369F0_375F0(s32 x) { assert(stage==14 && x==33); stage=15; }
 void func_80038BC8_397C8(s32 x) { assert(stage==15 && x==7 && sys.unk_3add6==1); stage=16; }
 void func_800038E4_44E4(void);
@@ -56,6 +66,19 @@ static int loop_events[3];
 static int loop_event_count;
 static int rebind_system_pointer_in_80003880;
 
+static void set_entry_sentinels(void) {
+    sys.intended_room_group = 0xA5;
+    sys.intended_room_id = 0xD35A;
+    alternate_sys.intended_room_group = 0x5A;
+    alternate_sys.intended_room_id = 0xA6C3;
+}
+
+static void assert_entry_sentinels(void) {
+    assert(sys.intended_room_group == 0xA5 && sys.intended_room_id == 0xD35A);
+    assert(alternate_sys.intended_room_group == 0x5A &&
+           alternate_sys.intended_room_id == 0xA6C3);
+}
+
 static void record_loop_event(int event) {
     assert(loop_event_count < (int)(sizeof(loop_events) / sizeof(loop_events[0])));
     loop_events[loop_event_count++] = event;
@@ -101,6 +124,7 @@ static void reset_loop_fixture(void) {
     rebind_system_pointer_in_80003880 = 0;
     D_8006D328_6DF28 = 0x12345678;
     D_8015C5C8_15D1C8 = &sys;
+    set_entry_sentinels();
 
     sys.stepw = 0x17;
     sys.stepw_end = 0x24;
@@ -147,6 +171,7 @@ static void test_transition_loop_nonzero_gate_returns_without_direct_stores(void
     assert(transition_halfword_7A76 == 0xBEEF);
     assert(D_8015C5C8_15D1C8 == &sys);
     assert_transition_sentinels(0x17, 0x24, 0xFF, 0x31, 0x42, 0x53, 0x64, 0x75);
+    assert_entry_sentinels();
 }
 
 static void test_transition_loop_zero_gate_stores_before_reset_and_reloads_pointer(void) {
@@ -163,6 +188,7 @@ static void test_transition_loop_zero_gate_stores_before_reset_and_reloads_point
     assert(D_8015C5C8_15D1C8 == &alternate_sys);
     assert(sys.unk_3add6 == 0xFF);
     assert_transition_sentinels(0x86, 0x97, 0, 0xA8, 0xB9, 0xCA, 0xDB, 0xEC);
+    assert_entry_sentinels();
 }
 
 static void test_transition_loop_counter_wraps_as_byte(void) {
@@ -170,10 +196,12 @@ static void test_transition_loop_counter_wraps_as_byte(void) {
     sys.unk_3add6 = 0;
     reference_transition_loop_8000394C();
     assert(sys.unk_3add6 == 1);
+    assert_entry_sentinels();
 
     reset_loop_fixture();
     reference_transition_loop_8000394C();
     assert(sys.unk_3add6 == 0);
+    assert_entry_sentinels();
 }
 
 int main(void) {
@@ -183,11 +211,13 @@ int main(void) {
     sys.stepw=4;sys.stepw_end=9;sys.retraces_per_game_step=7;
     sys.unk_3add6=5;sys.unk_3add7=6;sys.unk_3add8=7;sys.unk_3add9=8;
     sys.unk_3adde=9;sys.unk_3addf=10;sys.unk_3ade0=11;sys.unk_3ade1=12;
+    set_entry_sentinels();
     func_80003728_4328(11);
     assert(sys.stepw==11 && sys.stepw_end==0 && sys.retraces_per_game_step==2);
     assert(sys.unk_3add6==0 && sys.unk_3add7==0 && sys.unk_3add8==0 &&
            sys.unk_3add9==0 && sys.unk_3adde==0 && sys.unk_3addf==0 &&
            sys.unk_3ade0==0 && sys.unk_3ade1==0);
+    assert_entry_sentinels();
     func_80003328_3F28();
     assert(stage==10 && sys.stepw==0x11);
     func_80003358_3F58();

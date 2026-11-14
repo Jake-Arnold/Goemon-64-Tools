@@ -1,0 +1,126 @@
+{
+  "format": "goemon-task-execution-v1",
+  "date": "2026-11-14",
+  "task_id": "G64-069",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/vm-dialogue-overlay",
+    "worktree_path": "/home/jake/.codex/worktrees/vm-dialogue-overlay/Goemon-64-Tools",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "f5b0836bd072582a59d136624c9f1f1d1dacacac",
+    "remote_head_before_task": "f5b0836bd072582a59d136624c9f1f1d1dacacac",
+    "initial_worktree": "clean",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "independent_review": "Sol Medium read-only review confirmed the existing 8000394C sequence tests and identified byte-snapshot tests that could miss write-then-restore behavior."
+  },
+  "original_mips_anchor": {
+    "target": "func_8000394C_454C",
+    "target_vma": "0x8000394C",
+    "target_rom_extent": "[0x454C,0x45C0)",
+    "target_size": 116,
+    "target_raw_slice_sha256": "1cc9c4dd44c8e502915ab8c38af2bf9b79e7c79401a30749d73d8d447f638109",
+    "raw_slice_equal_in": [
+      "USA retail image",
+      "decompressed USA reference image"
+    ],
+    "assembly_source": "practice/diagnostics/decomp-100-inputs/mnsg-pinned/asm/usa/2C40.s",
+    "production_ownership": "GLOBAL_ASM",
+    "branch_matrix": [
+      "Calls 80034734, then 80036908 with D_8006D328 loaded in its delay slot.",
+      "A nonzero helper result returns before either raw store, 80003880, or the system-state counter increment.",
+      "A zero result stores byte 5 to 0x800C7CDD; the jal delay slot stores halfword 1 to 0x800C7A76 before entering 80003880.",
+      "After 80003880 returns, reloads D_8015C5C8 and increments SYS_W+0x3ADD6 as a byte."
+    ],
+    "limitations": [
+      "The effects of 80034734 and the broader 80003880 helper chain are not fully established.",
+      "The synthetic system-pointer rebind checks reload order; retail pointer rebinding is not established.",
+      "The target body has no direct file-load, free, overlay-activation, or room-warp call; indirect helper effects remain outside this proof."
+    ]
+  },
+  "static_resource_pointer_evidence": {
+    "loader_callsite": "0x80003164 in func_800030F0_3CF0",
+    "gate": "Only in substate 1 when D_800548D8 is zero; 8000383C runs first.",
+    "arguments": {
+      "file_id": "0x0F",
+      "caller_destination": "0x801CB460"
+    },
+    "return_handling": "Caller replaces the loader result with 0xFFFF before its wait/substate path; it does not validate successful activation.",
+    "pinned_file_table_record": "decomp/plans/execution/2026-11-14-g64-062-loader-boundary.json",
+    "static_destination_table_row_14": {
+      "start": "0x801CB460",
+      "end_exclusive": "0x801E9980",
+      "span": "0x1E520"
+    },
+    "pinned_splat_mapping": {
+      "file": "file_15",
+      "vma": "0x801CB460",
+      "exclusive_ram_id": "static_overlay_1",
+      "bss_size": "0x14CA0"
+    },
+    "claim": "Static destination geometry is checked; this does not prove the runtime overlay is active, a loaded pointer is usable, or a gameplay transition succeeded."
+  },
+  "test_changes": {
+    "files": [
+      "decomp/MAP_TRANSITION_TRACE.md",
+      "decomp/test_transition_state.c",
+      "tests/test_scene_warp.py",
+      "tests/test_direct_gameplay_warp.py"
+    ],
+    "behavior": "The trace now separates a state request, a gated resource load request, and a safe gameplay transition. The C fixture protects intended-room/group sentinels through the known state setter and MIPS-derived 8000394C reference, and compile-time assertions pin file 15's static destination-table window. Disabled direct-warp and scene-list tests spy on write_guest, so a write followed by restoration is observable.",
+    "scope": "No production toolkit controls or decomp C implementation changed. The no-write assertion covers only the disabled direct-warp request and scene-list double-click paths; explicit experimental controls and the manual debug-menu path are outside it."
+  },
+  "source_snapshot": {
+    "transition_state_c_sha256_unchanged": "87cfc2d37719940f71e20dd747ac3d098477590d442dcd6f8df6d58cc2611006",
+    "map_transition_trace_sha256": "2d7f802a32aabc2fbae8a7704aef7d9596a659b411a6bd70ca8a708d32fb6f82",
+    "transition_state_test_sha256": "5dfa8c129ff5f9d4cc42f179bc670822aadb04b2ae66341d825d5f47b660e5f7",
+    "scene_warp_test_sha256": "5a1c0c1db1921ebddac4d81c323f0c9736aa93eeb7d89d918cfe6f9f62b9a64d",
+    "direct_gameplay_warp_test_sha256": "51d4336e347f2450ade8c0aeff18e2bef7b8ed5f6505a74e603367f30d0222ec",
+    "manifest_sha256_unchanged": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "combined_proof_sha256_unchanged": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
+    "inventory_sha256_unchanged": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051"
+  },
+  "host_tests": {
+    "transition_state": {
+      "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_support -Idecomp decomp/transition_state.c decomp/test_transition_state.c -o /tmp/g64-069-transition-state-host && /tmp/g64-069-transition-state-host",
+      "compiler": "GCC 15.2.0",
+      "result": "PASS; compile and execution both exited 0.",
+      "coverage": "Known state-setter ordering; 8000394C nonzero/zero gate paths; stores visible before helper entry; post-helper system-pointer reload; adjacent state-byte sentinels; byte counter wrap; intended-room/group sentinels; compile-time file-15 destination-window bounds."
+    },
+    "disabled_warp_calls": {
+      "command": "python3 -m unittest tests.test_scene_warp tests.test_direct_gameplay_warp -q",
+      "result": "PASS; 12 tests, exit 0.",
+      "coverage": "Disabled API raises without any write_guest call for multiple destinations; disabled UI scene-list action makes no write_guest call; existing byte snapshots remain unchanged.",
+      "negative_control": "The write_guest spy records calls independently of final bytes, so a write followed by restoration fails assert_not_called. No temporary production mutant was run."
+    },
+    "scope": "Synthetic host assertions only. They do not execute original MIPS, prove overlay activation, establish a complete loader, or verify a safe in-game transition."
+  },
+  "native_codegen_trial": {
+    "variant_count": 0,
+    "first_mismatch": "NOT_RUN",
+    "reason": "This is an evidence-boundary and regression-test task, not a matching-C reconstruction. No production source or manifest ownership changed."
+  },
+  "tests": {
+    "target_raw_slice": "PASS against both USA images; 116 bytes equal, SHA-256 recorded above.",
+    "focused_transition_state_host": "PASS under AddressSanitizer and UndefinedBehaviorSanitizer.",
+    "focused_disabled_warp_python": "PASS; 12 tests.",
+    "repository_local_ci": "PASS; python3 -m decomp.local_ci exited 0 with 207 decomp tests, 116 verifier/ledger tests, task/evidence validation, and the 1,000-case ASan/UBSan display-emitter fixture.",
+    "task_evidence_validation": "PASS; validation reported CONSISTENT_STORED_REPORTS for all 100 tasks.",
+    "diff_check": "PASS; git diff --check exited 0.",
+    "execution_json_parse": "PASS; python3 -m json.tool parsed both the execution record and TASKS_100.json with exit 0.",
+    "fresh_full_rom_g2": "NOT_RUN; no production source, manifest, or proof change and no native candidate.",
+    "live_game_verification": "NOT_RUN"
+  },
+  "stored_proof_unchanged": {
+    "matched_functions": 160,
+    "claimed_functions": 160,
+    "matched_function_bytes": 12272,
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "decision": "Record G64-069 as RESEARCH_ONLY. Preserve GLOBAL_ASM ownership, avoid claiming safe transition semantics, and retain the distinction between state updates, resource requests, and controllable toolkit actions.",
+  "next": "G64-070 Gate transition slice."
+}

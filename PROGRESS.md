@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — G64-069 transition safety assertions (RESEARCH_ONLY)
+
+- **Changed:** Added an evidence matrix separating state updates, a gated file-15 load request, and a safe gameplay transition. Added state/room sentinels and a static file-15 destination-window assertion; strengthened disabled direct-warp tests with write-call spies.
+- **Reason:** State writes, a loader request, and a completed playable transition are distinct. Byte snapshots alone can miss guest writes that are later restored.
+- **Tests:** The ASan/UBSan transition-state fixture passed; 12 focused scene-warp/UI tests passed; the local decomp CI gate passed.
+- **Limitations/next:** The loader return is discarded and shared overlay RAM does not prove active-resource validity. No safe gameplay transition is established; production controls and matching-C proof are unchanged. Continue with G64-070.
+
 ### 2026-11-14 — G64-068 stage/room selection trace (RESEARCH_ONLY)
 
 - **Changed:** Recorded the original dispatch/table/arithmetic trace and separated intended-room selection from the matched 10-byte entrance-record helper. Marked G64-068 RESEARCH_ONLY; production remains GLOBAL_ASM.
