@@ -262,7 +262,7 @@ class InspectorMixin(EntranceMixin):
         self.watch_tree.focus(row_id)
         menu=self.watch_context_menu
         menu.delete(0,'end')
-        active=(watch.addr is not None and watch.addr in self.value_freezes.locks)
+        active=(watch.addr is not None and self.value_freezes.get(watch.addr) is not None)
         menu.add_command(label='Unfreeze value' if active else 'Freeze value',
                          state='normal' if watch.addr is not None and not getattr(self.args,'read_only',False) else 'disabled',
                          command=lambda row_id=row_id:self.toggle_live_watch_freeze(row_id))
@@ -279,8 +279,8 @@ class InspectorMixin(EntranceMixin):
         if watch is None or watch.addr is None:
             self.inspector_status.set('No fixed guest address for this field.')
             return
-        if watch.addr in self.value_freezes.locks:
-            self.value_freezes.locks.pop(watch.addr,None)
+        if self.value_freezes.get(watch.addr) is not None:
+            self.value_freezes.remove(watch.addr)
             self.draw_value_freezes()
             self.freeze_status.set(f'Unfroze {self.display_watch_name(row_id)}.')
             self.inspector_status.set(self.freeze_status.get())
@@ -327,9 +327,9 @@ class InspectorMixin(EntranceMixin):
                 new_id=row_id
             # Keep an already-active lock's label consistent with the renamed field.
             if watch.addr is not None:
-                lock=self.value_freezes.locks.get(watch.addr)
+                lock=self.value_freezes.get(watch.addr)
                 if lock is not None and lock.label==previous:
-                    self.value_freezes.locks[watch.addr]=replace(lock,label=new_label)
+                    self.value_freezes.rename_lock(watch.addr,previous,new_label)
                     self.draw_value_freezes()
             self.draw_watches()
             if not self.watch_tree.exists(new_id):

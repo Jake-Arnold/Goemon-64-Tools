@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Wire fast freeze polling to Tk without depending on UI timers
+
+- Freeze requests launch an independent 10 ms daemon worker. Tk reads status messages every 150 ms; the worker never accesses widgets.
+- Context menu freeze/unfreeze, lock renaming and freeze list rendering use thread-safe ValueFreezes APIs.
+- The worker stops when the root window is destroyed; connection swaps are synchronized in a follow-up change.
+- No automated or live game tests ran in this connector-only environment.
+
+
 ### 2026-11-14 — Thread-safe fast freeze engine at 100 Hz
 
 - **Changed:** added a 10 ms independent background worker for active freeze locks, instead of relying on Tk's slower callback scheduling. Worker reads/writes game RAM only, never touches Tk. It sleeps longer when idle.
