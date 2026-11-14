@@ -394,6 +394,76 @@ observed other temporary limit values during stopping and hurt recovery. Before
 turning these sketches into a typed host model, recover the caller-selected
 transition parameters and verify which task/context pointers each call receives.
 
+#### Concrete setter and caller paths
+
+The setter's current MIPS shape is specific enough for a C reconstruction. Its
+semantic arguments are the player task, a target `f32`, a baseline `f32`, and an
+`f32` multiplier for the secondary `+0xE8` field. At entry it reads the motion
+value selected by task byte `+0x90` from `D_800C7DBC`. If that value's absolute
+magnitude is below the double-precision threshold `D_8020B370`, it returns
+`0.0f` without writing either task field. Otherwise it calculates a step from
+`D_8020B378 / motion_value`; non-positive results use `8.0f`. It advances from
+the baseline toward the target by one step, clamps at the target, writes the
+result to `+0xE4`, writes `result * multiplier` to `+0xE8`, and returns the step.
+
+```c
+/* Analyst reconstruction of func_801E3DE0_59FCF0; not matching C. */
+float update_movement_limit(Task *task, float target, float baseline,
+                            float auxiliary_scale)
+{
+    float motion = motion_values[read_u8(task, 0x90)];
+    if (fabsf(motion) < 0.00001)
+        return 0.0f;
+
+    float step = 0.55f / motion;
+    if (step <= 0.0f)
+        step = 8.0f;
+
+    float next = baseline + (target - baseline) / step;
+    if (target <= next)
+        next = target;
+
+    write_f32(task, 0xE4, next);
+    write_f32(task, 0xE8, next * auxiliary_scale);
+    return step;
+}
+```
+
+The verified callers show that `func_801E3DE0` is a shared motion-limit
+interpolator, not the complete mode decision by itself:
+
+| Function path | Original inputs to `func_801E3DE0` | MIPS evidence |
+| --- | --- | --- |
+| `func_801E1C90_59DBA0` | Mini `1.12`, normal `2.8`, baseline `0`, auxiliary scale `0.3` | Mode predicate and constants at `0x801E1CF4–0x801E1D38` |
+| `func_801E1E10_59DD20` → `func_801E1F5C_59DE6C` | Mini `0.48`, normal `1.2`, baseline `0`, auxiliary scale `0.2` | Call from `func_801DEE08_59AD18` at `0x801DEEEC`; mode branch in `E1E10` |
+| `func_801E1E70_59DD80` → `func_801E1F5C_59DE6C` | Mini `0.72`, normal `1.8`, baseline `0`, auxiliary scale `0.1` | Callers `func_801DF6D0`, `func_801DF748`, `func_801DF7E0` |
+| `func_801E1ED0_59DDE0` → `func_801E1F5C_59DE6C` | Fixed `1.2`, baseline `0`, auxiliary scale `0.4` | Caller `func_801DFCD8` at `0x801DFDB8` |
+| `func_801E5D2C_5A1C3C` | Fixed `0.4`, baseline `0`, auxiliary scale `0.1` | Two callers in the `func_801DFF70`/`func_801E026C` paths |
+
+`func_801E1F00_59DE10`, called by `func_801F5F4C_5B1E5C`, computes another
+target as `(120.0f - 2.8f * sqrtf(D_8020B300)) / 40.0f`; the data image stores
+`D_8020B300 = 150.0000153f` and `D_8020B304 = 2.8f`. It passes that target
+through `func_801E1F5C` with additional values `1.0f` and `6.0f`. These
+state-specific profiles establish concrete C reconstruction targets, but the
+static call tree does not prove that any one produces the user's stop or hurt
+samples.
+
+There is a second verified writer worth separating from the interpolator:
+`func_801D896C_59487C` updates task `+0xE4` by `-2.0f` or `+2.0f`, bounds that
+step at `-10.0f`/`+10.0f`, applies it to task `+0x74`, then clears `+0xE4` when
+the profile target is reached. Its target is selected from the profile table
+`D_801FC91C` using profile byte `+0x98` and movement-mode byte `+0x70`.
+`func_801D85B0_5944C0` calls it in the control/update path. This makes the
+literal `2.0f` a plausible lead for the normal transient sample, but this
+function has no miniature-mode predicate and does not explain the miniature
+`0.8f` sample. Neither transient has been tied to a specific writer yet.
+
+The next step for the transient values is to capture the MIPS PC that writes
+the live task's `+0xE4` during each event (a write watchpoint in an emulator
+debugger, if available), then map that PC to one of the static writer paths.
+This resolves the stop and hurt behavior without assuming that the shared field
+has only one writer or one role.
+
 ### Remaining gaps
 
 - The direct MIPS cap is 40% of normal (`1.12/2.8`); the earlier displacement
@@ -402,7 +472,8 @@ transition parameters and verify which task/context pointers each call receives.
 - The `+0x74` profile table varies by internal profile, but profile-to-character
   mapping is not established.
 - The user's transient hurt/stopping values (`1.0`, `2.0`, `0.8`) are confirmed
-  runtime observations; the exact state writers were not fully traced.
+  runtime observations; `func_801D896C` is a verified `±2.0` writer lead, but
+  none of the transient samples is yet mapped to an exact runtime writer path.
 - Visible model scale, collision dimensions, `0x801C159A`, and the miniature
   appearance carried to another character remain unresolved.
 - No assistant-run live game or emulator validation was performed; runtime

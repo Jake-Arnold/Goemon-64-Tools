@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Trace movement-limit interpolator callers
+
+- **Changed:** expanded `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md` with a C-level behavioral reconstruction of `func_801E3DE0_59FCF0`, its mode-specific and fixed-target callers, and the `±2.0f` speed-profile ramp in `func_801D896C_59487C`.
+- **Reason:** turn the verified MIPS behavior into concrete C function targets and narrow the source of the user's transient `+0xE4` readings.
+- **Evidence:** `func_801E3DE0` advances `+0xE4` toward a caller-supplied target and stores a scaled companion at `+0xE8`; caller profiles include `1.12/2.8`, `0.48/1.2`, and `0.72/1.8`. `func_801D896C` separately increments or decrements `+0xE4` by `2.0f`, clamped to `±10.0f`, while adjusting `+0x74` toward a profile-table target.
+- **Tests:** `git diff --check` passed. Documentation/research only; no automated suite or game session was run.
+- **Limitations:** these static paths do not yet map the runtime `1.0`, `2.0`, or `0.8` samples to exact writer PCs. `func_801D896C` does not check miniature mode, so it does not explain the `0.8f` report.
+- **Next:** capture the runtime MIPS store PC for `task +0xE4` during stop and hurt events, then map the PC to its original function; continue the profile-byte-to-character mapping separately.
+
 ### 2026-11-14 — Reverse-trace Mini Ebisumaru speed limit and action gates
 
 - **Changed:** expanded `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md` with original USA MIPS readers/writers, the task-context offset for `0x8020C8E6`, the `f32 +0xE4` movement-vector clamp, the exact `2.8`/`1.12` mode selection, action-gate functions, countdown logic, confidence-separated memory/function maps, and C-level behavior sketches for the three verified speed functions.
