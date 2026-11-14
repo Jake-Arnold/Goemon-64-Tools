@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Remove obsolete README write-unlock instructions
+
+- **Changed:** updated old release notes that directed users to a now-removed checkbox or deleted movement probe buttons. Current entrance-aware double-click scene reloads and default writable sessions are described instead.
+- **Tests:** docs only, automated and live gameplay tests not run in this connector environment.
+- **Next:** validate an external Ubuntu PID and writable memory controls in-game.
+
+
 ### 2026-11-14 — Linux existing-PID memory permission preflight
 
 - **Changed:** Linux Connect now attempts a one-byte read from a readable process mapping before the full RDRAM scan, allowing an explicit external PID to fail promptly with Yama permission guidance rather than scanning gigabytes of unreadable memory. Some special mappings are not copyable, so ordinary memory errors skip to another mapping without conflating them with permission denial.

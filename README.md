@@ -194,18 +194,17 @@ Read-only capture/save/reopen smoke tests passed against both running Project64
 and Goemon64Recomp. No new quest flag has been confirmed. See the
 [step-by-step capture guide](docs/EVENT_SESSIONS.md).
 
-# Goemon Speedrun Tools v0.11.4 — unsafe tools enabled by default
+# Goemon Speedrun Tools v0.11.4 — historical write-access defaults
 
-Ordinary startup now enables teleport, logical checkpoint restore, native debug
-menu access, hex editing and the **UNSAFE** checkbox. The existing experimental
-reload is available without a separate UNSAFE unlock. Enabling tools does not
-execute them or write game memory during startup, connection or polling.
+At v0.11.4, game-memory editing and practice controls were enabled at startup.
+The extra write-unlock checkbox that existed in this older release was removed.
+Connecting and polling game memory do not perform any writes by themselves.
 
 `Run.bat`, `python -m practice.toolkit` and the packaged entry point share these
 defaults. Existing `--enable-*` flags remain accepted. Use `Run.bat --read-only`,
 `python -m practice.toolkit --read-only`, or the executable's `--read-only` option
 to disable game writes and automated game input. Read-only takes precedence over
-all enable flags; UNSAFE starts unchecked and the write controls are disabled.
+all enable flags; the edit controls remain disabled in read-only mode.
 Read-only sessions still support watches, captures and local report exports.
 
 The legacy direct-warp prototype remains disabled. Existing action confirmations,
@@ -284,9 +283,9 @@ This US Goemon64Recomp desktop toolkit now includes **explicit, experimental** c
 
 ## Experimental controls (v0.10.8)
 
-**Experimental warp:** In **Scene browser**, select the target scene, open **Live memory** and tick **UNSAFE**, return to Scene browser and click **EXPERIMENT: reload into selected stage**. Confirm the prompt. The program writes `0x800C7CA0` (pending destination, u16) and then `0x800C7A94 = 0x0C` (top-level reload). It does **not** write the old exit request, overwrite current map or guess target XYZ. An 8-second read-only monitor saves a JSON report with destination, transition state and observed position under local `diagnostics/`. **Wrong spawn, softlock or crash remain possible.** The one-click debug-menu-equivalent spawn loader is not established. Double-clicking a scene remains selection-only.
+**Experimental warp (historical):** The original button required extra steps and was unverified. Current builds reload from the dashboard or Scene Browser by double-clicking the destination, staging its selected ROM entrance without extra confirmations. The inactive exit-flag route remains blocked. Collision, scripts and camera must still be checked in-game.
 
-**Movement offset test:** In **Live memory**, tick **UNSAFE** and use **Probe +4.0**, **Probe -4.0**, or **Speed pulse ×1.5**. Controls resolve the *current* player task pointer and write only a 4-byte IEEE-754 float at `task_ptr + 0x68`. The speed pulse scales the current float by 1.5 (up to ±16); if approximately zero it writes +4.0 as a probe. **This is not a proven speed boost.** Record effects on measured XYZ velocity; a nudge is only evidence of influence.
+**Movement offset test (historical):** Earlier builds exposed PlayerTask movement probes at `task_ptr + 0x68`. These probe buttons were later removed after they failed to establish a reliable speed modifier.
 
 **Manual 4-byte float test:** `00000000` = 0.0, `3F800000` = +1.0, `40800000` = +4.0, `C0800000` = −4.0. Entering `192` in the hex editor does *not* mean decimal float 192. The absolute pointer found during an earlier capture (`0x8016A0F8`) may change every scene; only the offset `+0x68` is stable by struct definition. Avoid 8-byte writes (which overwrite `+0x6C`).
 
@@ -300,13 +299,13 @@ This US Goemon64Recomp desktop toolkit now includes **explicit, experimental** c
 
 ## Custom live-memory watches (v0.10.5)
 
-The **Live memory** tab now has **Name**, **Address** and **Type** inputs above the table, plus **Add watch** and **Remove selected watch** buttons. Add any guest address such as `0x8015C574` with `u8`, `u16`, `u32`, signed variants, `f32`, `f64` or raw eight-byte hex. Custom rows refresh with the regular memory table, support filtering by name or address, and are visibly labelled **Custom** rather than misrepresented as confirmed mappings. Double-click their Hex cell to edit after enabling **UNSAFE**. Custom watches are saved to `practice/custom_watches.json` (source) or `%LOCALAPPDATA%\GoemonSpeedrunTools\custom_watches.json` (packaged app), separate from the built-in address map.
+The **Live memory** tab now has **Name**, **Address** and **Type** inputs above the table, plus **Add watch** and **Remove selected watch** buttons. Add any guest address such as `0x8015C574` with `u8`, `u16`, `u32`, signed variants, `f32`, `f64` or raw eight-byte hex. Custom rows refresh with the regular memory table, support filtering by name or address, and are visibly labelled **Custom** rather than misrepresented as confirmed mappings. Double-click their Hex cell to edit in a writable session (the default). Custom watches are saved to `practice/custom_watches.json` (source) or `%LOCALAPPDATA%\GoemonSpeedrunTools\custom_watches.json` (packaged app), separate from the built-in address map.
 
 The **State discovery** tab also has **Watch selected address**, which adds the selected candidate to Live memory in one click. Dynamic task pointers may change after changing character or stage, so watch addresses inside player tasks can become stale across loads.
 
 **Map test correction (2026-11-02):** `0x8015C574` is **read** as `00` while hidden and `01` while visible, but **writing** `00`, `01` or other tested bytes opens the map rather than closes it. Built-in live watch available; no on/off write toggle is claimed.
 
-**Equipped weapon (confirmed):** `0x8015C607` is a one-byte index, `01`/`02`/`03` across all four characters. The Live Memory tab now watches it; UNSAFE permits arbitrary hex writes. Out-of-range values produce unintended next-character weapon assets. Magic-active and internal player velocity remain unconfirmed.
+**Equipped weapon (confirmed):** `0x8015C607` is a one-byte index, `01`/`02`/`03` across all four characters. The Live Memory tab now watches it; Writable sessions permit arbitrary hex writes. Out-of-range values produce unintended next-character weapon assets. Magic-active and internal player velocity remain unconfirmed.
 
 ---
 
@@ -358,7 +357,7 @@ The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/tas
 - **Cucumber:** the byte previously called *Blue Sausage* at `0x8015C717` is now tentatively labelled Cucumber.
 - **Four Miracle Items:** new buttons use `0x8015C85B`, `0x8015C85F`, `0x8015C863`, and `0x8015C866`. Individual icons/names are not yet mapped.
 - **Achilles' Heel / Sasuke battery:** labelled **candidate** slots, not proven item identity; test against in-game status before treating them as definitive.
-- **Live Memory:** enable `UNSAFE` to write any width-appropriate hex value, bypass mapped limits, or explicitly enter a guest N64 address and 1/2/4/8-byte value. The write checks old memory and verifies the result; arbitrary values can crash or corrupt game state. This does not provide a working warp.
+- **Live Memory:** enable `separate write-unlock` to write any width-appropriate hex value, bypass mapped limits, or explicitly enter a guest N64 address and 1/2/4/8-byte value. The write checks old memory and verifies the result; arbitrary values can crash or corrupt game state. This does not provide a working warp.
 - **Original sprites:** Sprites tab includes a link to the [referenced original sheet](https://www.spriters-resource.com/nintendo_64/mysticalninjastarringgoemon/asset/123088/) and retains the local PNG import workflow. Original copyright art is not committed to the public repository.
 
 ---
@@ -373,7 +372,7 @@ The tab now includes confirmed stage offset, previous map, pending destination, 
 
 **Double-click the Hex CELL** (third data column, labelled Hex) to open an editor. For resources and explicitly mapped inventory entries, enter a hexadecimal value (with optional `0x` prefix), review a before/after dialog, and confirm. The app checks the old value immediately before writing and verifies readback. Changes are in **canonical original N64 byte order** and appear in the diagnostic event log. They are not persisted as a game save. A changed value or in-flight game transition can prevent a write.
 
-Game-state, map, pending destination, exit request, character, loading and menu-pointer addresses are **locked by default**. To edit them, deliberately tick the `UNSAFE: allow editing game-state/transition/pointer fields` checkbox, then confirm the individual write. These fields are unsafe and **manual writes do not implement direct warp**; they can cause a return to title, softlock or crash. The editor does not make unsupported fields (e.g. dynamic position floats) editable. The `Run.bat` launcher opts into hex-edit capability, but the separate dangerous-address toggle resets every launch. The GUI does not write anything on a simple row selection.
+Game-state, map, pending destination, exit request, character, loading and menu-pointer addresses are **locked by default**. To edit them, deliberately tick the `separate write-unlock: allow editing game-state/transition/pointer fields` checkbox, then confirm the individual write. These fields are unsafe and **manual writes do not implement direct warp**; they can cause a return to title, softlock or crash. The editor does not make unsupported fields (e.g. dynamic position floats) editable. The `Run.bat` launcher opts into hex-edit capability, but the separate dangerous-address toggle resets every launch. The GUI does not write anything on a simple row selection.
 
 The version retains the v0.9.8 read-only real-door transition tracer and does not re-enable the broken direct-warp shortcut.
 
