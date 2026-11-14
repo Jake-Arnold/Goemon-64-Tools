@@ -2578,7 +2578,7 @@
       "ordinal": 61,
       "phase": 7,
       "title": "Draw native transition state graph",
-      "status": "PLANNED",
+      "status": "RESEARCH_ONLY",
       "depends_on": [
         "G64-002"
       ],

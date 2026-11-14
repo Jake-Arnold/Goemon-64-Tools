@@ -151,3 +151,82 @@ decompression behavior remains assembly. Nearby `80001D68_2968` now matches
 as C (44 bytes), indexing a table with an unsigned 16-bit index and masking
 the top bit. Its index is unchecked; the high bit's full meaning is not yet
 proven by this helper alone.
+
+## G64-061 — Verified state-dispatch graph
+
+This graph comes from the pinned USA build's original linked ELF, SHA-256
+`83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038`, built
+from `mnsg` commit `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` against the
+decompressed-ROM SHA-1 recorded above. `mips-linux-gnu-nm -S` supplied exact
+symbol extents; `mips-linux-gnu-objdump -dr` inspected instructions at their
+original VMAs. Table bytes were read from the same linked ELF, and resource
+identity was checked against its pinned Splat config.
+
+```mermaid
+flowchart TD
+    A["80002040 / ROM 0x2C40, 0x78 bytes<br/>dispatches byte SYS_W +0x3ADD4"]
+    A -->|stepw 15| B["800030F0 / ROM 0x3CF0, 0x238 bytes<br/>dispatches byte +0x3ADD6, states 0–4"]
+    A -->|stepw 16| C["80003328 / ROM 0x3F28, 0x30 bytes"]
+    A -->|stepw 17| D["80003358 / ROM 0x3F58, 0x28 bytes"]
+    C --> C1["8000B364"]
+    C1 --> C2["8000383C"]
+    C2 --> C3["80003728(0x11)<br/>sets stepw 17; resets nested bytes"]
+    C3 -. next outer dispatch reads stepw 17 .-> A
+    D --> E["8001F8B0 / ROM 0x204B0, 0x64 bytes<br/>dispatches byte +0x3ADDE, entries 0–2"]
+    E -->|entry 0| F["8001F914 → 80020440<br/>clear 0x800C7A76; 80003478"]
+    E -->|entry 1| G["8001F940, 0xFC bytes<br/>assembly guards; semantics unresolved"]
+    E -->|entry 2| H["8001FA3C → 80004240<br/>80034EF8(D_8006D328); set +0x3ADDF=1"]
+    D --> I["80034734 after 8001F8B0<br/>effect unresolved"]
+    B -->|substate 1, D_800548D8 == 0| J["8000383C; then 80001C00(15, 0x801CB460)<br/>loader return is overwritten"]
+    B -->|substate 1, D_800548D8 != 0| K["return without the loader call<br/>or +0x3ADD6 increment"]
+    B --> L["substate 4 / stepw_end 3<br/>8000383C; write 0x8000 to 0x800C7AD8;<br/>80003728(5) resets nested bytes"]
+```
+
+`80002040` copies the 18-word dispatch table at ROM `0x59508` (`D_80058908`)
+to its stack frame, reads `SYS_W.stepw`, and calls the indexed pointer. The
+table entries at indices 15, 16 and 17 are `800030F0`, `80003328` and
+`80003358`. The function has no visible range check before indexing the copied
+table; this records instruction behavior and does not establish which values
+are valid at runtime. This is the dispatch-mediated relationship: `800030F0`
+and `8001F8B0` are not direct callers of one another.
+
+`80003358` calls `8001F8B0` and then `80034734`. `8001F8B0` copies three
+pointers from ROM `0x6C330` (`8001F914`, `8001F940`, `8001FA3C`), indexes them
+with `SYS_W +0x3ADDE`, and uses `jalr` without a visible range check. The
+already-matched entry-0 and entry-2 functions have the effects shown above;
+entry 1 remains assembly-owned and inspects multiple guards. The numeric entry
+values are preserved here without assigning them “load” or “unload” names.
+
+Within `800030F0`, the unsigned `sltiu` check accepts substate
+indices 0–4 before the five-entry table at ROM `0x7B48C`; larger values return.
+States 0–3 update the visible substate or globals and advance `+0x3ADD6`.
+State 4 branches on `stepw_end` 0–3: value 0 calls `80034734`; values 1 and 2
+call `8000383C`, write 3 or 1 to `SYS_W +0x3ADF4`, clear `stepw_end`, and call
+`8003488C(0x801CCB7C)`; value 3 calls `8000383C`, writes `0x8000` to
+`0x800C7AD8`, and calls `80003728(5)`. Other end-byte values return without
+those actions. The called routines' broader effects are not inferred from
+their names.
+
+In state-15 substate 1, `80003148` reads `D_800548D8`. A nonzero value takes a
+branch-likely path whose delay slot restores `$ra`, returning before either
+`8000383C` or `80001C00` and before the substate increment. A zero value calls
+`8000383C`, then calls `80001C00` with ID `15` in `$a0` and destination
+`0x801CB460` in `$a1`; the call's return is replaced before the later
+substate increment. Pinned Splat maps ID 15 to overlay `file_15`, ROM
+`0x65E310..0x667B90`, VMA `0x801CB460`, RAM ID `static_overlay_1`. Files 13,
+14, 15 and 16 share that VMA/RAM ID as mutually exclusive overlays, so the
+destination address alone does not identify a resource. This path proves a
+file-15 loader request, not successful activation, prior-overlay release,
+room teardown, actor creation, or a safe room transition.
+
+The name and full meaning of `D_800548D8` are unresolved. Static original
+references show a clear at `0x80000924`, a set at `0x80000A24` after a
+pointer-sized store to a structure field at `0x80000A18`, and another clear at
+`0x8000110C` after calls to `80001328` and `8000098C`. These accesses support
+only this falsifiable hypothesis: the nonzero flag gates the state-15
+file-15 request while some frame/display work is active. The static prediction
+is that a nonzero read at `0x80003148` returns without advancing substate 1,
+while a zero read makes the loader request and then advances. No live capture
+was available here to validate the flag's runtime meaning; keep that meaning
+hypothetical. Both `800030F0` and `8001F8B0` remain assembly-owned, and no
+scene-warp or unload shortcut follows from this graph.

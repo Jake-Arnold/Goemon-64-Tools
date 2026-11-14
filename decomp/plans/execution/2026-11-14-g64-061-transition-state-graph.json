@@ -1,0 +1,111 @@
+{
+  "date": "2026-11-14",
+  "task_id": "G64-061",
+  "status": "RESEARCH_ONLY",
+  "strategy": "goemon-architect-v2",
+  "starting_state": {
+    "worktree_branch": "codex/decomp-100-task-plan",
+    "target_branch": "chatgptweb/decomp",
+    "task_start_head": "b84dabca7d7e39b57c89c014ed3714efa20a57ec",
+    "remote_head_before_task": "b84dabca7d7e39b57c89c014ed3714efa20a57ec",
+    "review": "Sol Medium read-only review; graph independently checked against pinned original ELF and Splat config",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "reference_linked_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038"
+  },
+  "original_mips_evidence": {
+    "tool": "GNU mips-linux-gnu-objdump 2.45.90.20260125",
+    "functions": [
+      {"symbol": "func_80002040_2C40", "vma": "0x80002040", "rom_offset": "0x2C40", "size_bytes": 120},
+      {"symbol": "func_800030F0_3CF0", "vma": "0x800030F0", "rom_offset": "0x3CF0", "size_bytes": 568},
+      {"symbol": "func_80003328_3F28", "vma": "0x80003328", "rom_offset": "0x3F28", "size_bytes": 48},
+      {"symbol": "func_80003358_3F58", "vma": "0x80003358", "rom_offset": "0x3F58", "size_bytes": 40},
+      {"symbol": "func_80001C00_2800", "vma": "0x80001C00", "rom_offset": "0x2800", "size_bytes": 360},
+      {"symbol": "func_8001F8B0_204B0", "vma": "0x8001F8B0", "rom_offset": "0x204B0", "size_bytes": 100},
+      {"symbol": "func_8001F914_20514", "vma": "0x8001F914", "rom_offset": "0x20514", "size_bytes": 44},
+      {"symbol": "func_8001F940_20540", "vma": "0x8001F940", "rom_offset": "0x20540", "size_bytes": 252},
+      {"symbol": "func_8001FA3C_2063C", "vma": "0x8001FA3C", "rom_offset": "0x2063C", "size_bytes": 68}
+    ],
+    "commands": [
+      "mips-linux-gnu-nm -S --defined-only <pinned-baseline>/build/usa/mnsg.elf",
+      "mips-linux-gnu-objdump -dr --start-address=0x80002040 --stop-address=0x80002170 <pinned-baseline>/build/usa/mnsg.elf",
+      "mips-linux-gnu-objdump -dr --start-address=0x800030F0 --stop-address=0x80003328 <pinned-baseline>/build/usa/mnsg.elf",
+      "mips-linux-gnu-objdump -dr --start-address=0x8001F8B0 --stop-address=0x8001F914 <pinned-baseline>/build/usa/mnsg.elf",
+      "mips-linux-gnu-objdump -dr --start-address=0x8001F914 --stop-address=0x8001FA80 <pinned-baseline>/build/usa/mnsg.elf"
+    ],
+    "table_evidence": {
+      "outer_state_byte": "SYS_W +0x3ADD4",
+      "outer_table_symbol": "D_80058908_59508",
+      "outer_table_rom_offset": "0x59508",
+      "outer_entries": 18,
+      "outer_entries_15_16_17": ["0x800030F0", "0x80003328", "0x80003358"],
+      "first_dispatcher_substate_byte": "SYS_W +0x3ADD6",
+      "first_dispatcher_table_rom_offset": "0x7B48C",
+      "first_dispatcher_states": 5,
+      "nested_state_byte": "SYS_W +0x3ADDE",
+      "nested_table_rom_offset": "0x6C330",
+      "nested_entries": ["0x8001F914", "0x8001F940", "0x8001FA3C"]
+    },
+    "file_id_15_mapping": {
+      "splat_segment": "file_15",
+      "rom_start": "0x65E310",
+      "rom_end_exclusive": "0x667B90",
+      "vma": "0x801CB460",
+      "exclusive_ram_id": "static_overlay_1",
+      "same_vma_alternates": ["file_13", "file_14", "file_16"]
+    }
+  },
+  "verified_effects": [
+    "80002040 copies the 18-word outer table, reads stepw and calls the indexed entry; no range check is visible before indexing.",
+    "800030F0 bounds its +0x3ADD6 substate to 0..4; substate 1 calls 80001C00(15, 0x801CB460) only when D_800548D8 is zero.",
+    "When D_800548D8 is nonzero, the branch-likely delay slot restores ra and returns before the loader call or substate increment.",
+    "After the ID-15 call, its return value is replaced before a later substate increment; this caller does not test the loader result.",
+    "80003328 calls 8000B364, 8000383C, then 80003728(0x11), which sets stepw 17 and clears nested state bytes.",
+    "80003358 calls 8001F8B0, then 80034734; there is no direct call edge from 800030F0 to 8001F8B0.",
+    "The nested dispatcher selects 8001F914/1F940/1FA3C by +0x3ADDE; entry 1 remains assembly-owned."
+  ],
+  "guard_observations": {
+    "symbol": "D_800548D8_554D8",
+    "read_in_candidate_path": "0x80003148",
+    "direct_writes_in_pinned_main_assembly": [
+      {"address": "0x80000924", "value": 0, "context": "clear"},
+      {"address": "0x80000A24", "value": 1, "context": "after a pointer-sized store at 0x80000A18"},
+      {"address": "0x8000110C", "value": 0, "context": "after calls at 0x800010F8 and 0x80001100"}
+    ],
+    "purpose": "unknown"
+  },
+  "unproven_or_hypothetical": [
+    "D_800548D8 may be a frame/display-work guard that defers the state-15 file-15 request; its purpose is not established.",
+    "No complete overlay teardown, room load, actor creation, state-machine completion or safe warp semantics follow from these edges.",
+    "No live runtime capture was available to correlate the guard's writers and its read at 0x80003148."
+  ],
+  "tests": {
+    "original_elf_identity_checked": true,
+    "whole_rom_g2_run_for_task": false,
+    "reason_no_g2": "The task produced a read-only evidence graph; no production code, manifest claim or proof input changed.",
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "decomp_python_tests": 201,
+      "verifier_ledger_tests": 113,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_asan_ubsan": "PASS, 1,000 synthetic cases"
+    },
+    "graph_source_sha256": "e3c878f37e988b3ae8adf63c147c2b38b256a20de164519e274a6d2629aec69f",
+    "transition_state_source_unchanged": true,
+    "transition_state_host_fixture": {
+      "status": "NOT_RUN",
+      "reason": "The fixture asserts 32-bit N64 SYS_W offsets; this host lacks 32-bit libc development headers (bits/wordsize.h) and no MIPS runtime emulator is installed."
+    }
+  },
+  "stored_proof_unchanged": {
+    "matched_functions": 159,
+    "claimed_functions": 159,
+    "matched_function_bytes": 12236,
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "decision": "RESEARCH_ONLY; document the verified graph and keep the still-assembly dispatchers ASM-owned.",
+  "next": "G64-062 Trace file/resource loading boundary"
+}

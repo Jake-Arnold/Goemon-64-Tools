@@ -71,8 +71,14 @@ timing and callback order; the function remains assembly-owned. See the dated
 G64-058/059 execution records. The G64-060 file_12 adapter also records why raw
 relocation-section bytes differ: symbol metadata and the zero-size tail alias
 use different ELF encodings, while all 7,051 relocation records match after
-the explicitly tested narrow normalizations. G64-061 is now the next eligible
-task. See `plans/execution/2026-11-14-g64-060-file12-dialogue-copy.json`.
+the explicitly tested narrow normalizations. G64-061 is `RESEARCH_ONLY`: its
+verified original-address graph distinguishes the outer `stepw` dispatch, the
+separate five-state `800030F0` subdispatcher and the three-entry `8001F8B0`
+dispatcher. It identifies an ID-15 overlay-load request but leaves
+`D_800548D8`'s meaning and scene teardown/activation unproven; both dispatchers
+remain ASM-owned. See
+`plans/execution/2026-11-14-g64-061-transition-state-graph.json`. G64-062 is
+the next eligible task.
 G64-074 added the
 128-byte `func_80036308_36F08` per-node dispatcher after exact integrated IDO
 and fresh G2 verification; its neighboring `func_800362DC_36EDC` is the list

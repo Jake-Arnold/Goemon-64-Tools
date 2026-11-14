@@ -19,7 +19,7 @@ A matching state setter is not proof of a safe room warp, unload, map reset or s
 
 ### G64-061 — Draw native transition state graph
 
-**Status:** PLANNED. **Dependencies:** G64-002.
+**Status:** RESEARCH_ONLY. **Dependencies:** G64-002.
 **Focus files:** `decomp/transition_state.c`; `decomp/MAP_TRANSITION_TRACE.md`.
 
 **Architectural intent:** Connect matching 80003728/80003628/80003528/80003428/80003380 helpers to dispatcher 8001F8B0 and pending 800030F0.
@@ -43,6 +43,16 @@ A matching state setter is not proof of a safe room warp, unload, map reset or s
 **Stop/recovery:** If only isolated/host tests pass, record RESEARCH_ONLY. If native full-unit codegen differs, retain the original GLOBAL_ASM. If full-ROM bytes, addresses or inventory differ, reject promotion and preserve a fresh failure report. Do not edit compiled instructions or comparison masks.
 
 **Evidence packet:** record exact branch HEAD, target function/ROM extent/VMA (if applicable), tested source hash, commands and observed exit codes, native mismatch first word, full-ROM evidence or NOT_RUN, source/manifest/proof diff, and verified remote SHA if published.
+
+**Outcome (2026-11-14):** `RESEARCH_ONLY`; the original-address graph is
+documented in `../MAP_TRANSITION_TRACE.md`. The pinned linked ELF confirms the
+18-entry outer `stepw` table, the separate five-entry `800030F0` substate
+dispatch and the three-entry `8001F8B0` nested dispatch. State 15/substate 1
+requests file ID 15 at its pinned overlay VMA only when `D_800548D8` is zero;
+the file maps to `file_15`, not generic room content. The flag's meaning and
+the routines' complete teardown/activation effects remain unproven. No C was
+promoted and no fresh G2 was run. `800030F0` and `8001F8B0` remain ASM-owned;
+G64-062 is next.
 
 ### G64-062 — Trace file/resource loading boundary
 
