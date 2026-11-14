@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Source-only USA cheat/actor value registry
+
+- **Added:** `research/usa_external_memory_leads.json` and `docs/USA_EXTERNAL_CHEAT_ACTOR_LEADS.md` to preserve 25 USA addresses not previously identified in active toolkit field mappings, 47 externally annotated actor IDs, four raw actor-record sketches, and two region-specific debug-menu code comparisons.
+- **Highlights:** Newly logged USA warp entries `0x8015C8E0/E4/E8`; bulk warp range `0x8015C8B7..DF` (11 entries, stride four); boss-rush/sound flags `0x8015CC1B/1F/21`; input-conditional code address `0x800C7D3B`; skybox/size/audio/Impact code leads and three TCRF actor-loading function addresses.
+- **Cross-region confirmation from TCRF:** USA-to-JP `+0x57F0` is independently shown for both debug state `0x800C7A94 → 0x800CD284` and L input condition `0x800C7D3B → 0x800CD52B`. This is *not* assumed for other code or overlays.
+- **Deduplication:** Explicitly exclude existing USA mapped party/weapon/Miracle-item variables and debug state. Source annotations remain `EXTERNAL_UNVERIFIED`; no built-in watch entries or write-capable UI/actions were enabled.
+- **Checks:** Five in-memory structural/provenance validations passed on the committed JSON; added five Python unit tests for future CI use (not executed in this connector-only environment).
+- **Sources:** TCRF USA-only Notes, TCRF main game's GameShark/debug pages, GameHacking.org USA (NG5E). External cheat prefixes, conditional activators and incomplete placeholders are retained verbatim.
+
 ### 2026-11-14 — Japan-0 Mupen64Plus RDRAM duplicate/ROM-copy ambiguity fix
 
 - **Root cause:** A PID may contain multiple code-matching host buffers. The earlier scanner had no way to distinguish a full cartridge-ROM copy masquerading as N64 RDRAM and returned a non-actionable ambiguity even with explicit emulator PID.
