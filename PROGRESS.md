@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Capture Mini Ebisumaru active-size RAM candidates
+
+- **Evidence:** inspected 33.185-second user video with repeated miniature/normal Ebisumaru transitions; `u8 0x8020C8E6` and `u8 0x8020C8E7` settle at `0xFF` miniature vs `0x00` normal; `u8 0x801C159A` correlates as 28 vs 52. Transitional frames contain short mismatches, so these are not yet confirmed control flags.
+- **Changed:** added `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md`, separating active transformation from already-verified ownership flag `0x8015C6F3` and outlining read-only 16/32-bit width and motion-control tests. No toolkit code or safety gates changed.
+- **Tests:** manual video-frame inspection; no automated code change/tests or independent live-game reproduction. Underlying MIPS field widths and writers/readers remain unknown.
+- **Next:** watch `u16/s16 0x8020C8E6`, `u32 0x8020C8E4` and `u8 0x801C159A` during settled toggles and movements without toggles, then trace original MIPS owners.
+
 ### 2026-11-14 — Double-click entrance reload from dashboard and scene browser
 
 - **Changed:** dashboard area double-click synchronises the selected stage and directly invokes the guarded experimental entrance reload, without switching tabs; the Scene Browser area double-click uses the same path. Blank-row double-clicks do nothing. Both explicit reload and original native-debug-menu buttons act without confirmation prompts. The dashboard now shows scene-request results and status directly.
