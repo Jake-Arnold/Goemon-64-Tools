@@ -109,3 +109,19 @@ Four further screenshots of the Thaisamba 2 Impact boss battle show that the ear
 **Confirmed for this fight:** the `u32` values correlate with and match their corresponding HUD counters. The user separately reports that editing these runtime resource values also changes the corresponding in-game variables, further supporting their functional identity. The boss HP decrease by 5 is visible in the final screenshots. This upgrades the former two-field `u32` hypothesis to a three-field observed layout with 4-byte spacing, 12 bytes total.
 
 **Not yet established:** the actual original MIPS access width (reads at `+2` may still be intentional), whether this is a globally fixed structure or a dynamically allocated instance, which original instructions read/write it, stability across restarting the game and across boss encounters, or whether every Impact boss uses exactly the same layout. Until independently verified, keep addresses as **Impact battle / screenshot-verified observations**, not unconditional universal game globals. The older `u16` hits remain valid low-half representations but should not be described as evidence that the native fields are only 16 bits wide.
+
+### Special-attack charge and cross-boss stability (14 Nov 2026)
+
+The user has now independently tested the three original full-word counters across **all Impact boss fights tested** and after **restarting the game**: `0x802F7060` enemy HP, `0x802F7064` Impact Ryo, and `0x802F7068` oil/health continued to match the corresponding in-game values at the same addresses. The user had also confirmed that editing these runtime values changes the expected corresponding resource. This supports calling the three addresses **stable, user-validated Impact resource fields**, rather than merely single-encounter candidates. The original MIPS owners/readers/writers remain unidentified.
+
+A fourth field was found during the boss fight:
+
+| Candidate field | N64 guest address | Observed reading | Behaviour |
+| --- | --- | --- | --- |
+| Impact special-attack charge | `0x802F706F` | `u8`: 0, 50 (`0x32`), 86 (`0x56`) | Increases as the charge bar fills; drops/resets to zero after the special attack is used |
+
+The screenshots show this value changing alongside the charging mechanic. Its exact charge maximum, whether intermediate values correspond linearly to the visible meter, and the underlying original MIPS field width have not been established. Because `0x802F706F` is byte 3 within the aligned word beginning at `0x802F706C`, it could be a standalone byte or the low byte of a `u32` counter (or part of some other layout). A **read-only** `u32` watch at `0x802F706C` would distinguish common possibilities: it should equal the `u8` watch if the upper 24 bits are consistently zero, but that agreement alone cannot prove the original MIPS uses 32-bit accesses.
+
+Observed offsets from the stable resource block base `0x802F7060`: enemy HP +0x0, Ryo +0x4, oil +0x8, special-attack charge byte +0xF. These are address relationships, not yet a verified C struct. Existing normal-character pointer validation remains independent; the toolkit's special-mode monitoring must not treat these addresses as ordinary player objects.
+
+**Next research focus:** find original MIPS reads/writes of this 16-byte region, confirm field widths/charge reset, and distinguish fixed globals from a consistently allocated battle struct. Do not imply that a charge maximum of 100 or any particular threshold has been confirmed.

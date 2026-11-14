@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Verify stable Impact resources and special-attack charge byte
+
+- **Observed across fights/restart:** user confirms enemy HP `u32 0x802F7060`, Ryo `u32 0x802F7064`, and oil `u32 0x802F7068` retain their addresses across every Impact boss they tested and after a game restart.
+- **New:** special-attack charge at `u8 0x802F706F`; screenshots show 0, 50, and 86, and the user observes charge accumulation and a reset after use. Updated `docs/VM_GAMEPLAY_RUNTIME_FINDINGS_2026-11-13.md`.
+- **Scope:** documentation only. No reads/writes or safety rules changed. No new automated tests; user verified live behaviour, not assistant-operated gameplay.
+- **Unverified:** original field width of the charge byte (it is the last byte of aligned word `0x802F706C`), charge maximum, MIPS owner/readers/writers, and original structure lifetime/allocation rules.
+- **Next:** compare a read-only `u32` watch at `0x802F706C` with `u8` at `0x802F706F`, then trace the relevant original MIPS writers.
+
 ### 2026-11-14 — Confirm Impact enemy HP, Ryo and oil as adjacent 32-bit values
 
 - **Evidence:** four user screenshots during Thaisamba 2 show three neighbouring `u32` custom watches: boss HP `0x802F7060` (2000 → 1995), Impact Ryo `0x802F7064` (200 → 186), oil/health `0x802F7068` (400 → 320 → 250), agreeing with the HUD. Previous `u16` hits at +2 are the lower halves of these words. User reports live value edits also change the corresponding game variables.
