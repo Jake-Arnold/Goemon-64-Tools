@@ -70,7 +70,7 @@ outside-bank counters. [Three pickups and code evidence](docs/SILVER_FORTUNE_DOL
 ## Value freezes
 
 Open **Value freezes** and select **Keep health at current maximum** to replenish
-the live health word from the current maximum every 250 ms during ordinary
+the live health word from the current maximum every 10 ms (best effort) during ordinary
 gameplay. It follows maximum-health upgrades without changing the maximum itself.
 This is periodic replenishment, not guaranteed invulnerability.
 
@@ -83,11 +83,13 @@ Values are N64 big-endian hex; a raw freeze holds every bit in its byte range.
 Raw and health freezes are available in writable sessions without an unlock checkbox.
 Explicit `--read-only` mode blocks all freeze entry points.
 
-Freezes start inactive, stay only in memory for this connection, and stop on
+Freezes start inactive and run in a separate thread, not the GUI refresh loop.
+They stay only in memory for this connection and stop on
 reconnect/disconnect, revoked permission, invalid data or a write/readback failure.
 They pause during loading, scripts, menus and pause screens. Only changed targets
 are written, with compare-before-write/readback checks; a failure clears all locks
-without retry. Up to 32 non-overlapping raw ranges are supported. Raw actor addresses
+without retry. This polling reduces visible overwrites, but it cannot make the
+lock frame-perfect when the game overwrites a value more frequently. Up to 32 non-overlapping raw ranges are supported. Raw actor addresses
 can be reused across rooms; they remain fixed addresses rather than tracked actors.
 No saved configuration can automatically enable a freeze on launch.
 
@@ -524,7 +526,7 @@ a fresh session requires fresh captures.
 
 ## Starting
 
-Launch Goemon64Recomp into normal gameplay. Unzip this folder and double-click **`Run.bat`**, then connect. The launcher enables experimental tools by default. Keep a disposable save. Original `practice/checkpoints.json`, `practice/bookmarks.json`, and `route.json` can be copied from earlier releases.
+Launch Goemon64Recomp into normal gameplay. Unzip this folder and double-click **`Run.bat`**, then connect. The launcher enables experimental tools by default. Keep a disposable save. Original `practice/checkpoints.json` and `practice/bookmarks.json` can be copied from earlier releases.
 
 ## What the source establishes
 
@@ -560,7 +562,7 @@ All learned addresses refer to **original N64 guest RAM**, so the semantic knowl
 - It refuses writes to known gameplay map ID, global character/inventory, and live-resource regions.
 - It checks the selected bytes stayed written before sending A, and waits for both map and character to match after the transition.
 - It **does not** provide fully proven scene warp or a true savestate. Game crashes/softlocks are possible in experimental mode.
-- Old checkpoint/LiveSplit/inspector functionality remains, including experimental cross-map restore (not a native savestate).
+- Checkpoint and inspector functionality remains, including experimental cross-map restore (not a native savestate).
 
 ## Testing
 

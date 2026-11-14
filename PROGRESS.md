@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Freeze UI regression coverage and README cleanup
+
+- **Tests:** adapted GUI freeze tests to use explicit synchronous checks under the new freeze guard, while separately asserting that the Tk status callback performs no memory writes. The independent 10 ms worker has separate unit tests.
+- **Docs:** updated current freeze behaviour to 10 ms, explained that polling cannot guarantee frame-perfect values, and removed LiveSplit route-copy instructions and the last README LiveSplit claim.
+- **Verification:** source changes and tests committed, not executed in this connector-only environment; live memory gameplay is not verified.
+
+
 ### 2026-11-14 — Protect connection changes from fast freeze worker
 
 - **Changed:** reconnection, previous process handle close and successful/failure session swaps now coordinate with ValueFreezes' RLock, so 10 ms background polling cannot write after a connection has been superseded.

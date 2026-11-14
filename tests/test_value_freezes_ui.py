@@ -13,20 +13,33 @@ class ValueFreezeUITests(unittest.TestCase):
         self.root.withdraw();self.app=Toolkit(self.root,parse_args([]))
         self.process,self.app.mem=test_checkpoint.TestCheckpoint().sample()
         self.app.game_pid=123
+        # Deterministic UI tests exercise the same poll under the freeze guard.
+        # The actual 10 ms background thread is covered separately.
+        self._start_patch=patch.object(self.app,'_ensure_freeze_worker')
+        self._start_patch.start()
 
     def tearDown(self):
+        self._start_patch.stop()
         self.root.destroy()
+
+    def test_ui_poll_does_not_perform_game_writes(self):
+        app=self.app
+        app.raw_address.set('8015C63B');app.raw_width.set('1');app.raw_value.set('10')
+        app.freeze_raw_value()
+        with patch.object(self.process,'write',side_effect=AssertionError('Tk must not write RAM')):
+            app.poll_value_freezes()
+        self.assertTrue(app.value_freezes.active())
 
     def test_defaults_inactive_raw_freeze_stop_and_health_toggle(self):
         app=self.app
         self.assertFalse(app.freeze_health.get());self.assertFalse(app.value_freezes.locks)
         app.raw_address.set('8015C63B');app.raw_width.set('1');app.raw_value.set('10')
-        app.freeze_raw_value();app.poll_value_freezes()
+        app.freeze_raw_value();app._freeze_poll_once();app.poll_value_freezes()
         self.assertEqual(app.mem.u8(0x8015C63B),16)
         self.assertEqual(len(app.freeze_tree.get_children()),1)
         app.freeze_tree.selection_set(str(0x8015C63B));app.stop_selected_freeze()
         self.assertFalse(app.value_freezes.locks)
-        app.freeze_health.set(True);app.toggle_freeze_health();app.poll_value_freezes()
+        app.freeze_health.set(True);app.toggle_freeze_health();app._freeze_poll_once();app.poll_value_freezes()
         self.assertEqual(app.mem.u32(0x8015C5E4),10)
         app.stop_all_freezes();self.assertFalse(app.freeze_health.get())
 
@@ -66,7 +79,7 @@ class ValueFreezeUITests(unittest.TestCase):
 
     def test_read_only_blocks_both_entry_paths_and_disconnect_clears_controls(self):
         app=self.app;app.freeze_health.set(True);app.toggle_freeze_health()
-        app.mem=None;app.poll_value_freezes()
+        app.mem=None;app._freeze_poll_once();app.poll_value_freezes()
         self.assertFalse(app.freeze_health.get())
         _,app.mem=test_checkpoint.TestCheckpoint().sample();app.args.read_only=True
         with patch.object(app.mem,'write_guest',side_effect=AssertionError('Read only')):
@@ -80,6 +93,7 @@ class ValueFreezeUITests(unittest.TestCase):
         app.freeze_selected_watch()
         self.assertEqual(app.value_freezes.locks[0x8015C5E8].value,(100).to_bytes(4,'big'))
         app.game_pid=999
-        with patch.object(app.mem,'write_guest',side_effect=AssertionError('Changed connection')):app.poll_value_freezes()
+        with patch.object(app.mem,'write_guest',side_effect=AssertionError('Changed connection')):app._freeze_poll_once()
+        app.poll_value_freezes()
         self.assertFalse(app.value_freezes.locks)
         self.assertFalse(app.freeze_tree.get_children())
