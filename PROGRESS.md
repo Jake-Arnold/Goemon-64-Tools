@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Mini Ebisumaru halfword gates attacking and switching; prioritise max speed cap
+
+- **Observed:** user reports legitimate miniature `s16 0x8020C8E6=-1` permits walking, jumping and NPC/sign interaction but prevents ordinary attacks and character switching. Forcing `0` while still visibly miniature removes the attack and switching restrictions, and raises toolkit-derived max movement magnitude from ~32 to ~98. The previously observed miniature appearance carried over through character switching only in this forced-zero state.
+- **Interpretation:** this halfword likely selects multiple gameplay restrictions rather than only speed or animation state; original guard instructions and speed mechanism remain unverified.
+- **Changed:** updated `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md` with the tested action matrix, cross-character clarification and explicit highest-priority search for the native maximum movement-speed limit/parameter or equivalent calculation, rather than only a velocity field. Documentation only, no toolkit code changes.
+- **Tests:** user-reported game runtime experiments; no new automated tests or independent MIPS source confirmation.
+- **Next:** locate miniature/normal max-speed selection and the attack/switch input gates through original MIPS readers of the halfword, distinguishing stored speed caps from constants and calculated limits.
+
 ### 2026-11-14 — Measure distinct Mini Ebisumaru movement speed under halfword override
 
 - **Observed:** user measured toolkit-derived velocity magnitude maxima of about 98 for normal size with `s16 0x8020C8E6 = 0`, 32 for miniature with `-1`, and 98 for miniature forcibly set to `0`. The apparent extra speed is genuine observed displacement, not solely visual perspective.

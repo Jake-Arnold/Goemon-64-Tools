@@ -129,3 +129,19 @@ The miniature/−1 maximum is approximately 32/98 = **0.327** of the normal/0 ma
 **Limitations:** the maxima are user-reported approximations from toolkit polling, without a formal matched-route experiment, fixed frame timing, acceleration control or direct native velocity field. They should be treated as strong intervention evidence but not as a recovered exact speed ratio or MIPS instruction semantics.
 
 **Original-code targets:** trace both readers and writers of `s16 0x8020C8E6`, find branches splitting miniature vs ordinary locomotion, inspect movement calculation and any distinct actor/model scale data, and identify actual movement/velocity fields via MIPS stores. Compare ordinary and forced-mismatch execution paths. Preserve the already-established distinction from the Mini Ebisumaru ownership flag `0x8015C6F3`.
+
+## Miniature action restrictions and movement-speed-cap research priority (14 November 2026)
+
+The user clarified that with Mini Ebisumaru power active and `s16 0x8020C8E6 = -1`, the character **cannot switch to another character** and **cannot attack normally**. Walking, jumping, and interacting with NPCs/signs continue to work. When the user manually changes the same halfword to `0` while Ebisumaru remains visibly small, ordinary attacks and character switching become available. The earlier observation of switching to another character that remains miniature was performed in this forced-zero state, and therefore is **not contradictory** to the native miniature-mode character-switch lock.
+
+| Miniature appearance | `s16 0x8020C8E6` | Walking / jumping | NPC/sign interaction | Normal attack | Character switch | Measured max movement magnitude |
+| --- | --- | --- | --- | --- | --- | --- |
+| Yes | `-1` | Allowed | Allowed | Blocked | Blocked | ~32 |
+| Yes (manual mismatch) | `0` | Allowed | Not separately compared | Allowed | Allowed | ~98 |
+| No (normal) | `0` | Normal gameplay | Normal gameplay | Normal gameplay | Normal gameplay | ~98 |
+
+**Significance:** the halfword may select a broader **miniature gameplay-restriction mode**, not just a movement-speed path. Correlated movement and action changes make it especially valuable to trace MIPS code that checks `0x8020C8E6` (including equivalent pointer-relative access) for **locomotion max-speed selection**, **attack input gating**, and **character-switch input gating**. Those may be separate readers of one field rather than a single central controller. Do not infer that only the listed actions are available or unavailable; the user explicitly tested only those actions.
+
+**Revised investigation priority:** Recover the game's **maximum movement speed parameter/limit or equivalent computed speed cap**, rather than merely the position-derived velocity magnitude or any instantaneous velocity component. Determine whether speed is limited by an actor-field value, a constant selected by mode, separate acceleration curves, a vector clamp, or frame-dependent movement routine. Trace the exact decision path causing approximately 32 in legitimate miniature/−1 and approximately 98 in normal/0 and miniature/forced-0. Report the original function/PC, field address or offset (if stored), original instruction and data width, source constant(s), and verification. If there is no stored max-speed variable, report the control-flow and calculation instead of inventing one. Native velocity storage is a secondary follow-up, not the primary deliverable.
+
+**Evidence scope:** user-reported runtime interventions; no original MIPS reader/writer or precise speed ceiling proven. No toolkit memory-writing behaviour changed.
