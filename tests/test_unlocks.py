@@ -115,9 +115,11 @@ class TestUnlocks(unittest.TestCase):
         from tests.test_checkpoint import TestCheckpoint
         _, ram = TestCheckpoint().sample()
         ram.write_guest(0x800C7A94,b'\x04')
+        before = {field.address: ram.read_guest(field.address, 1) for field in UNLOCKS}
         with self.assertRaises(ValueError):
             unlock_all_known(ram)
-        self.assertEqual(ram.u8(0x8015C6AF),0)
+        after = {field.address: ram.read_guest(field.address, 1) for field in UNLOCKS}
+        self.assertEqual(after, before)
 
     def test_transition_blocks_flag_write(self):
         ram = FakeRAM()

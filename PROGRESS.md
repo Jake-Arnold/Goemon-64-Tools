@@ -1,5 +1,10 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Correct non-gameplay Unlock All regression assertion
+
+- **Changed:** Non-gameplay Unlock All test now captures and compares all 34 mapped unlock bytes before and after rejection instead of assuming the fixture's patterned save RAM initializes the pipe upgrade at zero. User's Linux run recorded 50/51 tests passing; the sole failure was this stale expectation (observed initial value 145). Production unlock behaviour is unchanged.
+- **Verification:** Source reviewed and corrected on the integration branch. Full local Linux test run remains to be performed by the user; no claim of independent in-game verification.
+
 ### 2026-11-14 — Separate God Mode, Unlock All and unselected native debug entry
 
 - Added independent resource-only God Mode toggle using the existing 10 ms freeze worker for full current health, 99 lives and 9,999 Ryo, plus strict lock conflict checks and read-only/session safeguards. Turning it off does not revert awarded resources.
