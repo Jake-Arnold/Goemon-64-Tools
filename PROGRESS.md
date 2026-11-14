@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-14 — Read-only Japanese Mupen64Plus live PID attachment
+
+- **Implemented:** Added `practice/japanese_mupen_attach.py` to locate a running Japan-0 Mupen64Plus RDRAM mapping by three separated 64-byte main-code signatures derived from an exact user-verified retail ROM; validates word-swapped and big-endian mappings, 8 MiB extent and all signatures. Ambiguous/mismatched candidates fail closed; manual host bases do not bypass validation.
+- **UI:** Japanese Game Version + verified ROM + target `mupen64plus` now attaches to an existing emulator PID in a worker thread, opens only a `HostProcess(..., writable=False)` handle and enables the new raw N64 RDRAM read panel (max 64 bytes). USA-specific field parsing, freezes, warps, checkpoint restore, story and unlock tabs remain disabled in Japanese mode.
+- **Validation:** Nine isolated synthetic tests for pointer discovery and fail-closed behaviour passed in a local stubbed-harness. An 8 MiB word-swapped RDRAM synthetic reconstruction using actual verified Japan-0 ROM code signatures was found and decoded. The UI and a real running Mupen64Plus process have NOT been tested here.
+- **Limits:** Matching three code windows is not a full proof of the ROM loaded by the emulator; Japanese runtime field addresses are not mapped. A native Japanese Goemon64Recomp executable remains unimplemented, and the USA runner must not accept the Japanese ROM.
+- **Next:** Exercise the GUI on a running Linux Mupen64Plus PID, check /proc/Yama restrictions and code probe stability across gameplay/savestate, then independently map Japanese player/system fields. See `docs/JAPAN_MUPEN_READONLY_ATTACH.md`.
+
 ### 2026-11-14 — Japanese Impact full-function reconciliation with original N64Recomp symbols
 
 - **Implemented:** Added `decomp/japan_symbol_reconciliation.py`, a strict whole-function audit of candidate USA→JP direct-JAL anchors against original USA N64Recomp function starts and sizes. Checks exact ROM hashes and Splat section identities, validates both ROM and VRAM candidate addresses, re-confirms unique 16-word anchors and only reports full normalized function-structure matches.

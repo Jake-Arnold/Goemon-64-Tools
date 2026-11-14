@@ -32,6 +32,7 @@ from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.emulator_savestates import find_emulator_pid, verified_emulator_pid, send_state_command
+from practice.japanese_mupen_attach import verified_japan_probes, discover_japanese_mupen_rdram
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
@@ -107,6 +108,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         root.attributes("-topmost", False)
         self.mem, self.process = None, None
         self.game_pid = None
+        self.jp_rdram = None  # Independently verified read-only Japan-0 Mupen RAM
         self._connect_queue = queue.SimpleQueue()
         self._connecting = False
         self._linux_scope_queue = queue.SimpleQueue()
@@ -246,6 +248,29 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.native_save_btn.state(['disabled'])
             self.native_load_btn.state(['disabled'])
 
+        # Japan mode intentionally has no USA-specific field interpretation.
+        # This raw guest-RAM reader is always read-only, even in write-enabled mode.
+        jp_card = ttk.LabelFrame(right, text=' Japan Mupen64Plus RDRAM (read-only) ', padding=10)
+        jp_card.pack(fill='x', pady=(0, 6))
+        ttk.Label(jp_card, text='Verify the exact Japanese ROM, select mupen64plus, '
+                  'then Connect. Only raw N64 bytes are exposed; USA pointers, '
+                  'checkpoints and memory writes are disabled.',
+                  style='CardMuted.TLabel', wraplength=420).pack(anchor='w', pady=(0, 7))
+        jp_inputs = ttk.Frame(jp_card)
+        jp_inputs.pack(fill='x')
+        self.jp_read_address = tk.StringVar(value='0x80000450')
+        self.jp_read_length = tk.StringVar(value='16')
+        ttk.Label(jp_inputs, text='Address').pack(side='left')
+        ttk.Entry(jp_inputs, textvariable=self.jp_read_address, width=15).pack(side='left', padx=5)
+        ttk.Label(jp_inputs, text='Bytes').pack(side='left')
+        ttk.Entry(jp_inputs, textvariable=self.jp_read_length, width=5).pack(side='left', padx=5)
+        self.jp_read_button = ttk.Button(jp_inputs, text='Read', command=self.read_japan_rdram)
+        self.jp_read_button.pack(side='left', padx=5)
+        self.jp_read_button.state(['disabled'])
+        self.jp_read_result = tk.StringVar(value='Japanese guest RAM is not connected.')
+        ttk.Label(jp_card, textvariable=self.jp_read_result,
+                  style='CardMuted.TLabel', wraplength=420).pack(anchor='w', pady=(7, 0))
+
         # Retain existing logical checkpoint code/data but hide its incomplete
         # snapshot controls so the dashboard presents only native full states.
         checkpoints = ttk.LabelFrame(right, text=' Legacy logical checkpoints ', padding=10)
@@ -310,7 +335,9 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.notebook.select(self.notebook.tabs()[0])
         for tab in self.notebook.tabs()[1:]:
             self.notebook.tab(tab, state='normal' if enabled else 'disabled')
-        self.connect_button.state(['!disabled'] if enabled else ['disabled'])
+        # Japan is now attachable only to a separately validated Mupen64Plus
+        # RDRAM reader; all USA-specific feature tabs remain disabled.
+        self.connect_button.state(['!disabled'])
         if hasattr(self, 'launch_recomp_button'):
             self.launch_recomp_button.state(['!disabled'] if enabled else ['disabled'])
         self.capture_state_btn.state(['!disabled'] if enabled else ['disabled'])
@@ -320,8 +347,9 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         if enabled:
             self.status.set('USA selected. Connect to the USA game in Recomp or Project64.')
         else:
-            self.status.set('Japan selected. ROM verification works; Japanese RAM, '
-                            'checkpoints and recompiled gameplay are not yet supported.')
+            self.status.set('Japan selected. Verify the Japan-0 ROM, select '
+                            'mupen64plus and Connect for read-only raw RDRAM. '
+                            'USA-specific memory features remain unavailable.')
 
     def _disconnect_for_version_change(self):
         """Stop write workers and detach before switching region interpretations."""
@@ -332,7 +360,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.pending_direct_warp = None
             self.pending_native_warp = None
             previous = self.process
-            self.process = self.mem = self.current = None
+            self.process = self.mem = self.current = self.jp_rdram = None
             self.game_pid = None
             self.last = self.last_t = None
             self.observed_velocity = None
@@ -344,6 +372,24 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         self.pos_text.set('X: —    Y: —    Z: —')
         self.speed_text.set('Speed: —')
         self.misc_text.set('Character: —    Action: —    Loading: —')
+        if getattr(self, 'jp_read_button', None):
+            self.jp_read_button.state(['disabled'])
+            self.jp_read_result.set('Japanese guest RAM is not connected.')
+
+    def read_japan_rdram(self):
+        """Read raw guest bytes without invoking any USA live-memory parser."""
+        if self.active_version.key != 'japan' or self.jp_rdram is None:
+            self.jp_read_result.set('Japanese guest RAM is not connected.')
+            return
+        try:
+            address = int(self.jp_read_address.get().strip(), 0)
+            length = int(self.jp_read_length.get().strip(), 0)
+            if not 1 <= length <= 64:
+                raise ValueError('Read length must be between 1 and 64 bytes')
+            guest = self.jp_rdram.read_guest(address, length)
+            self.jp_read_result.set(f'0x{address:08X}: {guest.hex(" ").upper()}')
+        except (ValueError, OSError, PermissionError) as exc:
+            self.jp_read_result.set(f'RDRAM read rejected: {exc}')
 
     def on_game_version_changed(self, _event=None):
         """A version selection never remaps the existing USA RDRAM handle."""
@@ -415,7 +461,7 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             return
         self.verified_rom_path = Path(selected)
         capability = ('USA live toolkit supported' if version.live_memory_supported
-                      else 'Japanese ROM identified; live toolkit not mapped yet')
+                      else 'Japan-0 verified; select mupen64plus and Connect for read-only RDRAM')
         self.status.set(f'Verified {version.label} (revision 0). {capability}.')
 
     def _arrange_dashboard(self, width):
@@ -551,6 +597,9 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         """
         if self._connecting:
             return
+        if self.active_version.key == 'japan':
+            self._connect_japan_mupen()
+            return
         if self.connection_target.get() == 'mupen64plus':
             try:
                 specified = self.pid_text.get().strip()
@@ -604,6 +653,53 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         thread.start()
         self.root.after(50, self._poll_connect_results)
 
+    def _connect_japan_mupen(self):
+        """Attach to a verified Japanese ROM in an existing Mupen PID, read-only."""
+        if self.connection_target.get() != 'mupen64plus':
+            self.status.set('Japan requires target mupen64plus; USA recomp is not a Japan runner.')
+            return
+        if self.verified_rom_path is None:
+            self.status.set('Verify the exact Japan-0 ROM before attaching to Mupen64Plus.')
+            return
+        try:
+            pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
+            if pid_hint is not None and pid_hint <= 0:
+                raise ValueError()
+        except ValueError:
+            self.status.set('Enter a positive emulator PID or leave it empty.')
+            return
+        self._disconnect_for_version_change()
+        self._connecting = True
+        self.connect_button.state(['disabled'])
+        self.version_selector.state(['disabled'])
+        self.status.set('Checking Japanese Mupen64Plus memory signatures...')
+        opts = (pid_hint, self.verified_rom_path, self.args.base, self.args.endian)
+        threading.Thread(target=self._connect_japan_worker, args=(opts,), daemon=True,
+                         name='GoemonJapanMupenDiscovery').start()
+        self.root.after(50, self._poll_connect_results)
+
+    def _connect_japan_worker(self, opts):
+        """No Tk interaction and no memory writes from the background worker."""
+        pid_hint, rom_path, base_hint, endian = opts
+        process = None
+        try:
+            pid, _ = (verified_emulator_pid(pid_hint, 'mupen64plus')
+                      if pid_hint else find_emulator_pid('mupen64plus'))
+            probes = verified_japan_probes(rom_path)
+            process = HostProcess(pid, writable=False)
+            base = (int(base_hint, 0) if isinstance(base_hint, str) else
+                    int(base_hint) if base_hint is not None else None)
+            reader, address, mode = discover_japanese_mupen_rdram(
+                process, probes, base_hint=base, mode=endian)
+            self._connect_queue.put(('japan-ok', pid, process, reader, address, mode))
+        except Exception as exc:
+            if process is not None:
+                try:
+                    process.close()
+                except OSError:
+                    pass
+            self._connect_queue.put(('error', str(exc)))
+
     def _connect_worker(self, opts):
         """No Tk calls here; even errors are returned through the queue."""
         pid_hint, base_hint, endian_hint, writable, target = opts
@@ -656,9 +752,17 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             return
         self._connecting = False
         self.version_selector.state(['!disabled', 'readonly'])
-        self.connect_button.state(['!disabled'] if self.active_version.live_memory_supported
-                                  else ['disabled'])
-        if result[0] == 'ok':
+        self.connect_button.state(['!disabled'])
+        if result[0] == 'japan-ok':
+            _, pid, process, reader, base, endian = result
+            with self.value_freezes.guard:
+                self.process, self.jp_rdram, self.game_pid = process, reader, pid
+                self.mem = self.current = None
+            self.jp_read_button.state(['!disabled'])
+            self.jp_read_result.set(f'Japan-0 main-code probes matched RDRAM at 0x{base:X}; {endian}.')
+            self.status.set(f'Attached read-only to Japanese-code Mupen64Plus PID {pid}, '
+                            f'RAM 0x{base:X}, {endian}. USA field controls remain disabled.')
+        elif result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
             with self.value_freezes.guard:
                 self.process, self.mem, self.game_pid, self.current = process, candidate, pid, sample
@@ -667,8 +771,9 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             else:self.status.set(f'Validated PID {pid}, RAM 0x{base:X}, format {endian}. Move to verify updates.')
         else:
             with self.value_freezes.guard:
-                self.process = self.mem = self.current = None
+                self.process = self.mem = self.current = self.jp_rdram = None
                 self.game_pid = None
+                self.jp_read_button.state(['disabled'])
             self.pos_text.set('X: —    Y: —    Z: —')
             self.speed_text.set('Speed: —')
             self.misc_text.set('Character: —    Action: —    Loading: —')
