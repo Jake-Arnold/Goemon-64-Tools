@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Confirmed Japanese character-switch overlay and full MIPS boundaries
+
+- **Original Japanese ROM:** Normalised Japan-0 ROM checksum-verified; 32 MiB decompressed image reproduced SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`. The supplied pinned Splat environment extracted original Japanese assembly successfully.
+- **18-word trace identification:** Original-code overlay probe matched all 18 Project64 MIPS instructions in `file_11` (0/18 in competing `file_13` and `file_14`). Original Japanese ROM offsets for caller instruction `0x801E2944` and callee entry `0x801E2970`: `0x59E914` and `0x59E940`.
+- **Full functions:** Generated assembly identifies a 180-byte character-cycle selector `func_801E28BC_59E88C`, 148-byte character reset `func_801E2970_59E940`, related 132-byte alternate reset `func_801E2A04_59E9D4`, and smaller neighbouring wrappers. The selector checks four slots at `0x80161E8C+4*i`; the reset clears pointed-to halfword `+0x86` and dispatches an engine callback. Detailed meanings/limitations in `docs/JAPAN_CHARACTER_SWITCH_DECOMP_2026-11-15.md`.
+- **Tests:** Real Japan-0 SHA-1 check and original 18-word code probe passed. All six Python synthetic tests passed; C research model compiled and ran with strict GCC C11 warnings and ASan/UBSan.
+- **Limitations:** No Japanese C production promotion, full-function native IDO match, or Japanese 32 MiB exact-rebuild gate claimed. Japan region source still contains hard-coded USA `GLOBAL_ASM` paths.
+- **Next:** Standalone native original-address C trials on `func_801E2970_59E940` and the 180-byte selector; fix Japanese region build integration and require full-ROM equality before promoting either function.
+
 ### 2026-11-15 — Bounded C model of Project64 character-switch stores
 
 - **Reason:** Turn the traced Japanese character-switch caller/callee instructions into a testable C behavioural model while original overlay ROM bytes remain inaccessible in this session.
