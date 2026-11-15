@@ -20,6 +20,12 @@ or any proof gate.
 
 Run `python3 -m decomp.local_ci` for the standard ROM-free local test gate (decomp Python regressions, verifier/ledger tests, task evidence validation, and a sanitizer host fixture). For Python-only debugging use `python3 -m decomp.local_ci --quick`, reporting skipped sanitizer coverage. This is intentionally **not** an Actions workflow: absence of `.github/workflows` is not a Local CI blocker. Do not run a workflow-dependent `local-ci` skill or `act` here. Task-specific host tests and the original-VMA native IDO/32 MiB full-ROM G2 gates remain distinct and must be reported separately.
 
+## Japanese Project64 character-switch to USA original C (research follow-up, 15 Nov 2026)
+
+The draft PR #20 (`chatgptweb/japan-character-switch-decomp`) has **13 separately exact USA/JP original-VMA IDO 5.3 C functions per region, 620 bytes per region**. A pinned upstream scratch USA `file_11` mixed-C/ASM reconstruction rebuilt all **33,554,432 ROM bytes exactly**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; its 8,825 relocation records match the already validated four-function scratch build exactly, including their order. See `docs/USA_JAPAN_CHARACTER_SWITCH_13_FUNCTIONS_2026-11-15.md` on that PR branch. The regional character globals are USA `0x8015C5DC`, Japan `0x80161DCC`; candidate availability word arrays USA `0x8015C69C`, Japan `0x80161E8C`. The 180-byte four-character selector remains assembly-owned.
+
+**This is not yet central verification or published matching-C promotion.** The production `decomp/manifest.json`, central `decomp.verify`, combined results and inventory are unchanged. The next bounded integration task is a production-safe mixed C/ASM `file_11` adapter and manifest declarations, followed by the central full-ROM G2, semantic relocations and inventory gate. Do not increase published totals based on standalone research; Java/Japan full-ROM build is still blocked by hard-coded USA `GLOBAL_ASM` paths.
+
 ## 0. Cross-conversation handoff
 
 For the reviewed integration blockers and reproducible next steps, see [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).

@@ -1,0 +1,169 @@
+{
+  "format": "goemon-character-actor-wrappers-native-proof-v1",
+  "scope": "isolated original-VMA native IDO; USA full-ROM stage separate",
+  "regions": {
+    "usa": {
+      "region": "usa",
+      "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "functions": [
+        {
+          "name": "func_801DDA08_599918",
+          "original_vma": "0x801DDA08",
+          "rom_offset": "0x599918",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801DDA28_599938",
+          "original_vma": "0x801DDA28",
+          "rom_offset": "0x599938",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801DDA48_599958",
+          "original_vma": "0x801DDA48",
+          "rom_offset": "0x599958",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801DDA68_599978",
+          "original_vma": "0x801DDA68",
+          "rom_offset": "0x599978",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801DDA88_599998",
+          "original_vma": "0x801DDA88",
+          "rom_offset": "0x599998",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801DDAA8_5999B8",
+          "original_vma": "0x801DDAA8",
+          "rom_offset": "0x5999B8",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801DDAC8_5999D8",
+          "original_vma": "0x801DDAC8",
+          "rom_offset": "0x5999D8",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801DDAE8_5999F8",
+          "original_vma": "0x801DDAE8",
+          "rom_offset": "0x5999F8",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801DDB08_599A18",
+          "original_vma": "0x801DDB08",
+          "rom_offset": "0x599A18",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        }
+      ],
+      "matched_bytes": 288,
+      "total_bytes": 288,
+      "all_exact": true
+    },
+    "japan": {
+      "region": "japan",
+      "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "functions": [
+        {
+          "name": "func_801E2DB8_59ED88",
+          "original_vma": "0x801E2DB8",
+          "rom_offset": "0x59ED88",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801E2DD8_59EDA8",
+          "original_vma": "0x801E2DD8",
+          "rom_offset": "0x59EDA8",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801E2DF8_59EDC8",
+          "original_vma": "0x801E2DF8",
+          "rom_offset": "0x59EDC8",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801E2E18_59EDE8",
+          "original_vma": "0x801E2E18",
+          "rom_offset": "0x59EDE8",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801E2E38_59EE08",
+          "original_vma": "0x801E2E38",
+          "rom_offset": "0x59EE08",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801E2E58_59EE28",
+          "original_vma": "0x801E2E58",
+          "rom_offset": "0x59EE28",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801E2E78_59EE48",
+          "original_vma": "0x801E2E78",
+          "rom_offset": "0x59EE48",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801E2E98_59EE68",
+          "original_vma": "0x801E2E98",
+          "rom_offset": "0x59EE68",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        },
+        {
+          "name": "func_801E2EB8_59EE88",
+          "original_vma": "0x801E2EB8",
+          "rom_offset": "0x59EE88",
+          "size": 32,
+          "exact": true,
+          "word_matches": 8
+        }
+      ],
+      "matched_bytes": 288,
+      "total_bytes": 288,
+      "all_exact": true
+    }
+  },
+  "all_exact": true
+}
