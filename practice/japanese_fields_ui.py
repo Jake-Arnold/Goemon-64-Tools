@@ -38,8 +38,8 @@ class JapaneseFieldsUi:
             ' research fields have mixed evidence: four scene fields are'
             ' supported by live traces, character 0/1 by both switch directions,'
             ' and the remaining fields are hypotheses. All field watches are'
-            ' read-only. Use the shared Unlocks tab for guarded party flags;'
-            ' the Goemon XYZ control here has its own write opt-in.', wraplength=960,
+            ' read-only. The shared Unlocks tab edits mapped Japanese items directly;'
+            ' the Goemon XYZ action remains a separate manual operation.', wraplength=960,
         ).pack(anchor='w', pady=(0, 8))
         toolbar = ttk.Frame(tab)
         toolbar.pack(fill='x', pady=(0, 6))
@@ -62,9 +62,9 @@ class JapaneseFieldsUi:
             move,
             text='Live-tested position-controlling float32 vector: '
                  'X 0x80151B10 · Y 0x80151B14 · Z 0x80151B18. '
-                 'Read position is always read-only; Apply requires a separate '
-                 '--enable-japan-position-writes opt-in, Goemon (0), '
-                 'scene 0x161, explicit confirmation and an emulator savestate. '
+                 'Read position is always read-only; Apply is enabled by default '
+                 'when connected (unless --read-only), for Goemon (0) in '
+                 'scene 0x161, with an explicit per-action confirmation. '
                  'Not verified in other scenes or characters.',
             wraplength=960,
         ).pack(anchor='w')
@@ -95,7 +95,7 @@ class JapaneseFieldsUi:
         self.jp_position_apply_button.state(['disabled'])
         self.jp_position_result = tk.StringVar(
             value='Position reads require Japanese RAM connection. '
-                  'Writes disabled until separately opted in.')
+                  'Writes default on after connection, unless --read-only.')
         ttk.Label(
             move, textvariable=self.jp_position_result,
             wraplength=960).pack(anchor='w', pady=(5, 0))
@@ -125,7 +125,7 @@ class JapaneseFieldsUi:
             '(0x800CD284). No debug menu or keyboard A input. '
             'The manual debug button is separate. '
             'Instant reload requires --enable-japan-scene-writes '
-            '(legacy debug-write opt-in also works).'))
+            '(native debug and scene writes are enabled by default).'))
         ttk.Label(debug, textvariable=self.jp_debug_result,
                   wraplength=960).pack(anchor='w', pady=(3, 0))
 
