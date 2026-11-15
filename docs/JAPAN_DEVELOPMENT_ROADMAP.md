@@ -7,6 +7,7 @@
 - Scene **300 → 355** and **352 → 354** were observed. Current, previous and pending scene globals behave coherently at stable endpoints. Gameplay submode **1 → 2** was observed once. Pending-scene timing *during loading* remains unknown.
 - Japanese character index `0x80161DCC`: **0 Goemon ↔ 1 Ebisumaru**, directly observed in both normal swap directions.
 - The user subsequently tested using Cheat Engine: writing `2` or `3` directly to the character index **does not correctly change the playable character**. Writing the Japanese Sasuke/Yae party-availability flags **does unlock native selection**. The resulting genuine Sasuke/Yae index values have not yet been supplied.
+- **15 November update:** the user also reports that the two new *toolkit* Sasuke/Yae unlock buttons worked correctly in live Japan-0 Mupen, and the prior party regression suite passed on Ubuntu. The specific read-only character-index values after switching via C-Down were not reported; do not mark Sasuke=2/Yae=3 confirmed yet.
 - The Japanese full native Goemon64Recomp executable is **not yet built**. Partial USA↔Japan function correlations and ROM decompression are not equivalent to a runnable port.
 
 ## P0: Safe Sasuke/Yae native-character test
@@ -25,6 +26,16 @@
 | Restore pre-experiment Mupen savestate | Party flags and character revert to snapshot | Return to pre-test values | Not yet recorded |
 
 Only promote value `2` / `3` from **unverified** to **confirmed** after a genuine native in-game switch, not after raw memory edit.
+
+## P0.5: Region-aware read-only research tabs — code delivered, emulator tests pending
+
+Source: same draft PR #17; [full parity checklist](USA_JAPAN_TOOLKIT_PARITY_CHECKLIST.md) and [live testing protocol](JAPAN_READONLY_VALUE_SEARCH.md).
+
+- **Implemented in code:** existing Value Search can now select verified Japanese 8 MiB RDRAM, without assigning it to the USA `self.mem` pointer or enabling any raw writers; includes unsigned/signed/float filters, unknown baseline and custom-watch promotion.
+- **Implemented in code:** separate Japan Live typed custom watch list, persisted in a Japan-0-specific JSON file, with read-only value/raw views and baseline comparison. No USA watch list is automatically imported or treated as writable.
+- **Implemented in code:** existing Event Sessions → Advanced RAM Comparison supports asynchronous Japan-focused or 8 MiB A/B/C captures, bounded change shortlists, same-session identity and candidate exports. USA persistent Event flag sessions stay disabled for Japan until save-bank layout is validated.
+- **Validation outstanding:** execute expanded `./scripts/test_japan_party.sh`; test all three features against real Japanese Mupen and verify connection/savestate cache invalidation. These new tests are not covered by the user's earlier successful party-write testing.
+- **Next:** map exact Japanese player/task pointers and XYZ, then investigate the Japanese event-bank layout and 45 Fortune Dolls. Promote only observed semantics to write-capable fields; keep Japanese recomp as a separate effort.
 
 ## P1: Japanese player and task pointers
 
