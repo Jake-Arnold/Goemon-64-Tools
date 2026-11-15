@@ -1,7 +1,8 @@
-"""Read-only attachment to an already-running Japan-0 Mupen64Plus RDRAM.
+"""Read-only Japan-0 RDRAM discovery for Mupen64Plus and Windows Project64.
 
-A verified retail ROM supplies boot/main-code signatures; no Japanese USA
-RAM address mapping is assumed and no process writes are allowed.
+Require an exact verified retail Japan-0 ROM and three separate code probes.
+Project64 may map 4 MiB or 8 MiB; never assume a configured fixed base is
+actually live guest RAM. Discovery and validation perform no process writes.
 """
 from __future__ import annotations
 
@@ -17,6 +18,7 @@ ROM_TO_GUEST = 0xC00
 PROBE_ROM_OFFSETS = (0x1050, 0x1200, 0x3000)
 PROBE_BYTES = 64
 SCAN_CHUNK = 1 << 20
+MIN_RDRAM_SIZE = 0x400000  # Project64 supports unexpanded 4 MiB guest RDRAM.
 
 
 class VerifiedJapaneseProbes(tuple):
@@ -75,7 +77,8 @@ def _is_cartridge_copy(process, base: int, endian: str, probes) -> bool:
 
 
 def validate_rdram_base(process, base: int, endian: str,
-                        probes: tuple[tuple[int, bytes], ...]) -> Rdram:
+                        probes: tuple[tuple[int, bytes], ...],
+                        *, allow_4mb: bool = False) -> Rdram:
     """Require three independently positioned, complete main-code probes."""
     if type(base) is not int or base <= 0 or base % 16:
         raise ValueError('RDRAM host base must be a positive 16-byte-aligned address')
@@ -90,18 +93,31 @@ def validate_rdram_base(process, base: int, endian: str,
         canonical = _swapped_words(original) if endian == 'wordswapped' else original
         if canonical != expected:
             raise ValueError(f'Japanese main-code verification failed at RDRAM +0x{offset:X}')
-    process.read(base + RDRAM_SIZE - 4, 4)
+    # Do not silently read outside an unexpanded 4 MiB Project64 mapping.
+    # The default 8 MiB requirement preserves the existing Mupen behaviour.
+    try:
+        process.read(base + RDRAM_SIZE - 4, 4)
+        mapped_size = RDRAM_SIZE
+    except OSError:
+        if not allow_4mb:
+            raise
+        process.read(base + MIN_RDRAM_SIZE - 4, 4)
+        mapped_size = MIN_RDRAM_SIZE
     if _is_cartridge_copy(process, base, endian, probes):
         raise ValueError(f'Host address 0x{base:X} points into cartridge ROM, not live RDRAM')
-    return Rdram(process, base, endian)
+    reader = Rdram(process, base, endian)
+    reader.rdram_size = mapped_size
+    return reader
 
 
 def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
                                   base_hint: int | None = None,
-                                  max_scan_mb: int = 2048):
+                                  max_scan_mb: int = 2048,
+                                  allow_4mb: bool = False):
     """Return (Rdram, base, endian), refusing missing or ambiguous candidates.
 
-    Scans only memory readable through the normal Linux process permissions.
+    Scans only readable host process memory, on Windows or Linux.
+    Project64 callers allow 4 MiB, Mupen keeps its existing 8 MiB minimum.
     Manual base hints must still match all three Japanese code probes.
     """
     if mode not in ('auto', 'big', 'wordswapped'):
@@ -111,8 +127,9 @@ def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
         matches = []
         for endian in modes:
             try:
-                matches.append((validate_rdram_base(process, base_hint, endian, probes),
-                                base_hint, endian))
+                matches.append((validate_rdram_base(
+                    process, base_hint, endian, probes, allow_4mb=allow_4mb),
+                    base_hint, endian))
             except (OSError, ValueError):
                 pass
         if len(matches) != 1:
@@ -126,8 +143,9 @@ def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
     matches = set()
     scanned = 0
     budget = max_scan_mb * 1048576
+    minimum_size = MIN_RDRAM_SIZE if allow_4mb else RDRAM_SIZE
     for start, length in readable_spans(process.regions()):
-        if length < RDRAM_SIZE or scanned >= budget:
+        if length < minimum_size or scanned >= budget:
             continue
         tail = b''
         for pos in range(start, start + length, SCAN_CHUNK):
@@ -149,7 +167,8 @@ def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
                     base = found - first_offset
                     if base > 0 and base % 16 == 0:
                         try:
-                            validate_rdram_base(process, base, endian, probes)
+                            validate_rdram_base(
+                                process, base, endian, probes, allow_4mb=allow_4mb)
                         except PermissionError:
                             raise
                         except (OSError, ValueError):
@@ -161,9 +180,10 @@ def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
     if len(matches) != 1:
         if not matches:
             raise RuntimeError(
-                'No Japanese Mupen64Plus RDRAM matched all three code probes; '
+                'No Japanese emulator RDRAM matched all three code probes; '
                 'check ROM, PID, Linux permissions and whether the game has booted'
             )
         raise AmbiguousJapaneseRdram(matches)
     base, endian = next(iter(matches))
-    return validate_rdram_base(process, base, endian, probes), base, endian
+    return validate_rdram_base(
+        process, base, endian, probes, allow_4mb=allow_4mb), base, endian
