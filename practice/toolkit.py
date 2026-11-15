@@ -45,6 +45,11 @@ from practice.japanese_position import (
     JAPAN_OEDO_SOUTH_SCENE, JAPAN_CHARACTER_INDEX,
     checked_japan_xyz, read_japan_position, move_japan_goemon_oedo_south,
 )
+from practice.japanese_debug_warp import (
+    JAPAN_DEBUG_ENGINE_MODE, JAPAN_NATIVE_DEBUG_MODE,
+    debug_menu_selection_hint, get_japan_debug_context,
+    enter_japan_native_debug_menu,
+)
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
@@ -667,6 +672,100 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             if outcome.changed else 'Goemon was already at the specified XYZ.')
         self.status.set(result_text.get())
         self.refresh_japan_position()
+
+    def open_japan_debug_for_selected_scene(self):
+        """Open native debug level selection; destination remains manual.
+
+        Do NOT write active or pending map. PJ64 must revalidate ROM,
+        process and RAM after the operator gives consent.
+        """
+        caption = self.jp_debug_result
+        if (self.active_version.key != 'japan' or self._connecting
+                or getattr(self.args, 'read_only', False)
+                or not getattr(self.args, 'enable_japan_debug_menu_writes', False)
+                or self.jp_rdram is None or self.game_pid is None
+                or self.verified_rom_path is None):
+            caption.set('Native debug entry requires connected Japanese ROM and '
+                        '--enable-japan-debug-menu-writes without --read-only.')
+            return
+        try:
+            destination = self.selected_japan_debug_scene()
+            category, index = debug_menu_selection_hint(destination)
+            original = self.jp_rdram
+            context = get_japan_debug_context(original)
+            # Reuse the read-only primitive's exact conservative gameplay
+            # predicate BEFORE asking user for consent.
+            from practice.japanese_debug_warp import _normal_gameplay
+            _normal_gameplay(context)
+        except (OSError, PermissionError, ValueError, RuntimeError) as exc:
+            caption.set(f'Native debug entry rejected before confirmation: {exc}')
+            return
+        yes = messagebox.askyesno(
+            'Enter native Japanese debug menu?',
+            f'Open original debug level selector while in scene 0x{context[1]:03X}?'
+            f'\n\nTarget hint (NOT auto-selected): '
+            f'{SCENES[destination]} (0x{destination:03X})'
+            f'\nExpected menu category/index (USA-derived): {category} / {index}'
+            '\n\nMake a Project64/Mupen64Plus savestate before proceeding.'
+            '\nThe ONLY proposed RAM change is 0x800CD284: 0D → 0A.'
+            '\nThe game must complete destination navigation and loading.'
+            '\nNo scene IDs, pending maps, exit flags or coordinates are written.',
+            parent=self.root)
+        if not yes:
+            caption.set('Native debug entry cancelled; no RAM written.')
+            return
+        pid = self.game_pid
+        writable = None
+        try:
+            target = self.jp_backend
+            if target not in ('project64', 'mupen64plus'):
+                raise RuntimeError('Japanese emulator backend not verified')
+            if target == 'project64' and sys.platform != 'win32':
+                raise RuntimeError('Project64 debug entry requires Windows')
+            if self.connection_target.get() != target:
+                raise RuntimeError('Selected emulator backend changed; reconnect')
+            if verified_emulator_pid(pid, target) != (pid, target):
+                raise RuntimeError('Target emulator PID changed; reconnect')
+            probes = verified_japan_probes(self.verified_rom_path)
+            writable = HostProcess(pid, writable=True)
+            verified = validate_rdram_base(
+                writable, original.base, original.endian, probes,
+                allow_4mb=(target == 'project64'))
+            if getattr(verified, 'rdram_size', 0x800000) != getattr(
+                    original, 'rdram_size', 0x800000):
+                raise RuntimeError('Emulator guest RAM size changed; reconnect')
+            # The native debug mode byte is the only destination of this write.
+            # Full context agreement catches stale or shadow mappings.
+            if get_japan_debug_context(verified) != get_japan_debug_context(original):
+                raise RuntimeError('Writable/read-only Japanese gameplay differs')
+            result = enter_japan_native_debug_menu(
+                verified, destination, expected_context=context)
+            observed = original.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
+            if observed not in (JAPAN_NATIVE_DEBUG_MODE, 0x0D):
+                raise RuntimeError(f'Unexpected engine state {observed}; check savestate')
+        except (OSError, PermissionError, ValueError, RuntimeError) as exc:
+            caption.set(f'Native debug entry failed: {exc}')
+            self.status.set(f'Native debug entry failed: {exc}')
+            return
+        finally:
+            if writable is not None:
+                writable.close()
+
+        if result.observed_state == JAPAN_NATIVE_DEBUG_MODE:
+            message = (
+                f'Native debug engine state 0x0A observed. Choose '
+                f'{category} / index {index} manually for '
+                f'0x{destination:03X} {SCENES[destination]}. '
+                'Verify on-screen debug menu; Japanese menu layout is not '
+                'independently validated. No direct map write.')
+        else:
+            message = (
+                f'Native debug entry byte written but engine returned to 0x0D. '
+                f'Inspect the on-screen debug menu. Target hint: {category} / '
+                f'index {index}; no destination selection was made.')
+        caption.set(message)
+        self.status.set(message)
+        self.refresh_japan_fields(force=True)
 
     def native_savestate_action(self, action):
         """Request native emulator-owned F5/F7; never claim it finished writing."""
@@ -1504,6 +1603,7 @@ def apply_access_mode(args):
             setattr(args, name, False)
         args.enable_japan_party_writes = False
         args.enable_japan_position_writes = False
+        args.enable_japan_debug_menu_writes = False
     return args
 
 
@@ -1521,6 +1621,9 @@ def parse_args(argv=None):
     ap.add_argument("--enable-japan-position-writes", action="store_true",
                     help="Opt in to confirmed-scene Japan-0 Goemon XYZ manual moves only "
                          "(Oedo South 0x161; each write requires confirmation and ROM/PID validation)")
+    ap.add_argument("--enable-japan-debug-menu-writes", action="store_true",
+                    help="Opt in to experimental Japanese native debug-menu entry "
+                         "(engine 0x800CD284 only; selection/warp remains manual)")
     ap.add_argument("--linux-enable-writes",action="store_true",
                     help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled
     ap.add_argument("--enable-teleport",action="store_true",default=True,help="Write game coordinates (enabled by default)")
