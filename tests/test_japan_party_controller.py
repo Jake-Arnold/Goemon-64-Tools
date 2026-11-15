@@ -126,7 +126,7 @@ class JapanesePartyControllerTests(unittest.TestCase):
         verify_pid.assert_called_once_with(959604, 'project64')
         host.assert_called_once_with(959604, writable=True)
         self.assertEqual(validate.call_args.kwargs['allow_4mb'], True)
-        self.assertEqual(guest_writer.read_guest(0x80161E9B, 1), b'\\x01')
+        self.assertEqual(guest_writer.read_guest(0x80161E9B, 1), bytes((1,)))
         self.assertEqual(len(writer.writes), 1)
         self.assertEqual(writer.close_count, 1)
 
