@@ -2725,3 +2725,10 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Integrated synthetic regression in existing Windows PowerShell/Linux toolkit test runners. When BOTH GOEMON_USA_DECOMPRESSED and GOEMON_JAPAN_DECOMPRESSED are set, these scripts also run the exact-ROM reference summary. Maintained AGENTS.md mandate: local CI only, no GitHub Actions workflow.
 - Ran four local scanner unit tests (4 passed) and the two exact-ROM decompression/hash checks. Full private GitHub toolkit test suite and Windows Tk/Project64 cannot be run in this container because the private repository is not mounted or cloneable. Do not claim those results passed.
 - See docs/JAPAN_ROM_REFERENCE_AUDIT.md for method, 23 matched pairs, caveats and reproduction. PR #17 stays draft. Next: full remote toolkit regression, targeted manual emulator confirmation, stacked PR review.
+
+
+### 2026-11-15 — Japanese PR stack consolidation audit (PR #17)
+
+- Inspected remote PRs #13–#17: all open/draft, stacked sequentially; PR #17 targets the #16 head branch and includes the full earlier Japanese branch ancestry (285 commits at audit). No merge or branch pruning is justified until integrated tests pass and ancestry is reviewed.
+- Checked production imports: the superseded native scene-warper's staging prototype is unused in Toolkit, but its scene-loaded read helper is **still imported in production**. The old party unlock primitive is retained for standalone tests; production Unlocks now uses the separate direct regional writer. Neither legacy module can be deleted blindly.
+- Documented exact merge/test gate and cleanup sequence in docs/JAPAN_PR17_CONSOLIDATION_AUDIT.md. Kept PR #17 draft and did not touch main, decomp G2 evidence, savestates or ROM assets.
