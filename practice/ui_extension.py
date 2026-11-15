@@ -229,7 +229,8 @@ class InspectorMixin(EntranceMixin):
             self.native_debug_btn.configure(
                 text='Open ORIGINAL debug menu (manual only)')
             enabled = bool(
-                getattr(self.args, 'enable_japan_debug_menu_writes', False)
+                (getattr(self.args, 'enable_japan_scene_writes', False)
+                 or getattr(self.args, 'enable_japan_debug_menu_writes', False))
                 and not getattr(self.args, 'read_only', False))
             self.scene_footer_note.configure(
                 text='Scene Browser instantly triggers Japan-0 native reload '
