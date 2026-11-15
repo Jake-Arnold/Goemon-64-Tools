@@ -47,8 +47,8 @@ For the two separately verified party-unlock buttons only, use the prior opt-in:
 py -3 -m practice.toolkit --game-version japan --enable-japan-party-writes
 ```
 
-On the dashboard, select `mupen64plus`, **Verify ROM** using the exact Japan-0
-retail ROM, then connect to its process PID. The region-specific raw RDRAM,
+On the dashboard, select `project64` for Windows Project64 3.0 or `mupen64plus`, **Verify ROM** using the exact Japan-0
+retail ROM, then connect to the matching process PID. The region-specific raw RDRAM,
 Japan Live custom watches, Value Search and Event Sessions → Advanced RAM
 Comparison are separate from USA write controls. A full Mupen savestate is the
 rollback point for the two party-write experiments.
@@ -58,7 +58,7 @@ rollback point for the two party-write experiments.
 The shared `HostProcess` backend uses Win32 `OpenProcess`,
 `ReadProcessMemory`, `WriteProcessMemory` and `VirtualQueryEx` on Windows.
 The Japan-0 scanner and the guarded party writer call that backend through
-`HostProcess`, so they are designed to have a native Windows code path.
+`HostProcess`, with native Project64 3.0 identity checks and verified 4/8 MiB bounds.
 
 **Not live-verified here:** Windows process detection for a given Mupen64Plus
 distribution, discovery of its actual 8 MiB RAM buffer, its code-signature
@@ -66,8 +66,11 @@ matching and the native Windows GUI party-write workflow. The user previously
 verified the Linux Mupen party-writing implementation, not this Windows
 emulator/OS combination. Windows UAC/anti-cheat/process privilege boundaries
 and emulator executable names can differ; failures must be reported rather
-than forcing a guessed RAM base. This does not imply Japanese Project64
-attachment works: this branch's Japanese connection targets Mupen64Plus only.
+than forcing a guessed RAM base. Japanese Project64 3.0 connection is now implemented with the **same**
+three ROM signatures, validated 4/8 MiB process RAM, and separately consented
+Sasuke/Yae flags; it is **not yet live tested on Windows**. See
+[`JAPAN_PROJECT64_WINDOWS.md`](JAPAN_PROJECT64_WINDOWS.md) for detailed
+Windows Project64 setup and recovery instructions.
 
 The live tests to repeat on Windows are described in
 [`JAPAN_READONLY_VALUE_SEARCH.md`](JAPAN_READONLY_VALUE_SEARCH.md).
