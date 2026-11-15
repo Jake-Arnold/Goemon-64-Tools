@@ -98,6 +98,30 @@ class UnlocksMixin:
                     self.unlock_count_buttons[item.address]=count_button
                 self.unlock_row_widgets[item.address] = (state, controls)
 
+        # Tk mouse-wheel events target the child under the pointer rather than
+        # the parent Canvas. Bind only Unlocks descendants, so scrolling other
+        # tabs and editable controls is not hijacked by a global binding.
+        self.unlock_canvas = canvas
+        def wheel(event):
+            if getattr(event, 'num', None) in (4, 5):
+                steps = -1 if event.num == 4 else 1
+            else:
+                delta = getattr(event, 'delta', 0)
+                if not delta:
+                    return 'break'
+                steps = -max(1, abs(delta) // 120) if delta > 0 else max(1, abs(delta) // 120)
+            canvas.yview_scroll(steps, 'units')
+            return 'break'
+        self._unlock_wheel = wheel
+
+        def bind_wheel(widget):
+            for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
+                widget.bind(sequence, wheel, add='+')
+            for child in widget.winfo_children():
+                bind_wheel(child)
+        bind_wheel(canvas)
+        bind_wheel(body)
+
 
     def _japan_unlock_controls_ready(self):
         """Source-backed Japanese fields write by default once RAM is attached."""
