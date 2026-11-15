@@ -55,13 +55,13 @@ def get_japan_debug_context(rdram):
 def _normal_gameplay(context):
     state, scene, character, loading, submode, exit_flag = context
     if (state != JAPAN_ORDINARY_ENGINE_MODE or not 0 < scene < 0x800
-            or character not in (0, 1) or loading != 0 or
+            or character not in (0, 1, 2, 3) or loading != 0 or
             submode not in (0, 1, 2, 3) or exit_flag != 0):
         raise RuntimeError(
             f'Debug menu refused: engine={state}, scene=0x{scene:03X}, '
             f'character={character}, loading={loading}, '
             f'submode={submode}, exit={exit_flag}; '
-            'requires ordinary stable Goemon/Ebisumaru gameplay')
+            'requires stable gameplay as any playable character')
 
 
 def enter_japan_native_debug_menu(rdram, destination: int, *,
