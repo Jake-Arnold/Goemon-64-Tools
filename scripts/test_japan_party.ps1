@@ -65,6 +65,7 @@ $guiTests = @(
     'tests.test_japanese_party_controls_ui',
     'tests.test_japanese_position_ui',
     'tests.test_japanese_debug_ui',
+    'tests.test_japan_event_sessions_ui',
     'tests.test_japan_readonly_parity',
     'tests.test_japan_state_comparison_ui',
     'tests.test_value_search_ui',
