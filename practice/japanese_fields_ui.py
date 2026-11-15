@@ -20,15 +20,16 @@ class JapaneseFieldsUi:
     def build_japanese_fields_tab(self, notebook):
         tab = ttk.Frame(notebook, padding=10)
         self.jp_fields_tab = tab
-        notebook.add(tab, text='Japan Live (read-only)')
+        notebook.add(tab, text='Japan Live / Party Test')
         ttk.Label(tab, text='Japan Live: cheat-backed values and experimental scene probes (read-only)').pack(
             anchor='w', pady=(0, 5))
         ttk.Label(
             tab, text='The 58 cheat-backed values are externally sourced. The 10 scene'
             ' research fields have mixed evidence: four scene fields are'
             ' supported by live traces, character 0/1 by both switch directions,'
-            ' and the remaining fields are hypotheses. No cheats, RAM writes'
-            ' or automatic warps.', wraplength=960,
+            ' and the remaining fields are hypotheses. All field watches are'
+            ' read-only; only separately opted-in party unlocks can write.'
+            ' No automatic warps.', wraplength=960,
         ).pack(anchor='w', pady=(0, 8))
         toolbar = ttk.Frame(tab)
         toolbar.pack(fill='x', pady=(0, 6))
@@ -42,6 +43,32 @@ class JapaneseFieldsUi:
                    command=self.capture_japan_baseline).pack(side='right', padx=(4, 0))
         ttk.Button(toolbar, text='Refresh',
                    command=lambda: self.refresh_japan_fields(force=True)).pack(side='right', padx=(4, 0))
+        party = ttk.LabelFrame(tab, text='Opt-in Japan character unlock test', padding=8)
+        party.pack(fill='x', pady=(0, 8))
+        ttk.Label(
+            party,
+            text='The game builds character actors itself. These buttons only set '
+                 'the Sasuke/Yae party flags from the published Japanese cheats. '
+                 'Never force the character-index word directly. '
+                 'Make a full emulator savestate first.',
+            wraplength=960,
+        ).pack(anchor='w')
+        controls = ttk.Frame(party)
+        controls.pack(fill='x', pady=(5, 3))
+        self.jp_party_buttons = {}
+        for character, label in ((2, 'Unlock Sasuke'), (3, 'Unlock Yae')):
+            button = ttk.Button(
+                controls, text=label,
+                command=lambda cid=character: self.enable_japan_party(cid))
+            button.pack(side='left', padx=(0, 6))
+            self.jp_party_buttons[character] = button
+            button.state(['disabled'])
+        self.jp_party_result = tk.StringVar(
+            value='Write option disabled by default. Restart with '
+                  '--enable-japan-party-writes to use these buttons.')
+        ttk.Label(party, textvariable=self.jp_party_result,
+                  wraplength=960).pack(anchor='w', pady=(4, 0))
+
         body = ttk.Frame(tab)
         body.pack(fill='both', expand=True)
         tree = ttk.Treeview(body, columns=('address', 'value', 'raw', 'status'),
@@ -84,6 +111,19 @@ class JapaneseFieldsUi:
         self._jp_baseline_identity = None
         self._jp_compare_on = False
         self._jp_last_changes = ()
+
+    def refresh_japan_party_controls(self):
+        enabled = (
+            self.active_version.key == 'japan'
+            and self.jp_rdram is not None
+            and getattr(self, 'game_pid', None) is not None
+            and bool(getattr(getattr(self, 'args', None),
+                             'enable_japan_party_writes', False))
+            and not bool(getattr(getattr(self, 'args', None),
+                                 'read_only', False))
+        )
+        for button in self.jp_party_buttons.values():
+            button.state(['!disabled'] if enabled else ['disabled'])
 
     def _japan_reader_identity(self):
         return (getattr(self, 'game_pid', None), self.jp_rdram.base,
@@ -157,9 +197,11 @@ class JapaneseFieldsUi:
         self._jp_compare_on = False
         self._jp_last_changes = ()
         self.jp_fields_caption.set('Connect to Japanese Mupen64Plus RAM.')
+        self.refresh_japan_party_controls()
 
     def refresh_japan_fields(self, force=False):
         """At most 1.3 UI reads/s unless manually refreshed; never writes RAM."""
+        self.refresh_japan_party_controls()
         if self.active_version.key != 'japan' or self.jp_rdram is None:
             return
         now = time.monotonic()
