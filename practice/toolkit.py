@@ -852,7 +852,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         opts = (pid_hint, self.verified_rom_path, base_hint, endian,
                 selected_pid, target)
         threading.Thread(target=self._connect_japan_worker, args=(opts,), daemon=True,
-                         name='GoemonJapanMupenDiscovery').start()
+                         name='GoemonJapanEmulatorDiscovery').start()
         self.root.after(50, self._poll_connect_results)
 
     def _connect_japan_worker(self, opts):
