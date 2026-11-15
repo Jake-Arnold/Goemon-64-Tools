@@ -23,6 +23,7 @@ PYTHON="${PYTHON:-python3}"
   tests.test_japan_project64 \
   tests.test_remembered_rom \
   tests.test_region_views \
+  tests.test_japan_story_progress \
   tests.test_region_unlocks \
   tests.test_rom_layout_audit \
   tests.test_rom_context_audit \

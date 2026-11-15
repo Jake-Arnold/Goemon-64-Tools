@@ -152,10 +152,10 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.entrance_box.winfo_manager(), '')
         self.assertIn('JAPAN:', app.scene_instruction.cget('text'))
         self.assertIn('disabled', app.raw_write_btn.state())
-        self.assertIn('disabled', app.freeze_raw_button.state())
+        self.assertNotIn('disabled', app.freeze_raw_button.state())
         self.assertEqual(app.usa_unlock_shell.winfo_manager(), 'pack')
         self.assertEqual(
-            app.unlock_address_labels[0x8015C69F].cget('text'), '80161E8F ?')
+            app.unlock_address_labels[0x8015C69F].cget('text'), '80161E8F')
         self.assertEqual(
             app.unlock_address_labels[0x8015C6A7].cget('text'), '80161E97')
         app.open_full_scene_tab()

@@ -100,17 +100,44 @@ class StoryProgressMixin:
         return state
 
     def refresh_japan_story_progress(self):
-        """Japan progress-like reads, never USA saved-event offsets."""
+        """Show confirmed Japanese inventory progress, not invented event bits."""
         from practice.region_views import japan_story_fields
         from practice.japanese_fields import read_japan_field
-        if self._story_display_region != 'japan':
+        from practice.japan_story_progress import (
+            JAPAN_PROGRESS_ITEMS, japan_progress_row)
+        region_switched = self._story_display_region != 'japan'
+        if region_switched:
             for table in self.story_tables.values():
                 table.delete(*table.get_children())
             self._story_display_region = 'japan'
+            self._story_edit_key = None
         self.benkei_story.set('Benkei: Japanese story flag not mapped')
         self.ushiwaka_story.set('Ushiwaka: Japanese story flag not mapped')
         grouped={section:[] for section in STORY_SECTIONS}
+        for item in JAPAN_PROGRESS_ITEMS.values():
+            record = japan_progress_row(item, self.jp_rdram)
+            key = record['key']
+            values = (record['bank'], f'0x{record["address"]:08X}',
+                      record['mask'], record['value'],
+                      record['raw'], record['source'])
+            for target in ('All', record['section']):
+                table = self.story_tables[target]
+                if table.exists(key):
+                    table.item(key, text=record['name'], values=values)
+                else:
+                    table.insert('', 'end', iid=key,
+                                 text=record['name'], values=values)
+                grouped[target].append(key)
+        # Older raw Japan field cards are still useful for map and bonus
+        # research, but skip duplicates already present as live-verified
+        # named rows above.
+        seen_addresses = {
+            japan_unlock_lead(item).address
+            for item in JAPAN_PROGRESS_ITEMS.values()
+        }
         for field in japan_story_fields():
+            if field.address in seen_addresses:
+                continue
             key='jp_'+field.key
             if self.jp_rdram is not None:
                 result=read_japan_field(self.jp_rdram,field)
@@ -134,17 +161,15 @@ class StoryProgressMixin:
         self._story_row_ids=grouped['All']
         self._story_row_ids_by_section=grouped
         self.filter_story_progress()
-        self.story_edit_button.state(['disabled'])
-        self.story_edit_combo.configure(state='disabled')
-        self.story_edit_label.set('Japan-0: saved-event bitfield meanings are unmapped')
-        self.story_edit_status.set(
-            'Use Event sessions / Advanced RAM comparison to discover '
-            'Japanese saved-event flags. Never edit USA story bits in Japan.')
+        if region_switched:
+            self.select_story_edit()
         self.story_notes.set(
-            f'{len(grouped["All"])} Japanese source-backed items, map unlocks, '
-            'bonus modes and time values shown. These are candidate state '
-            'observations, not confirmed Japanese story flags.')
-        return {'region':'japan', 'mapped_candidates':len(grouped['All'])}
+            f'{len(JAPAN_PROGRESS_ITEMS)} user-verified inventory/party progress '
+            'rows plus Japanese map/bonus research fields. '
+            'Named progress rows can be edited. Unmapped saved-event bits '
+            'remain read-only and are not copied from USA.')
+        return {'region':'japan', 'mapped_inventory_rows':len(JAPAN_PROGRESS_ITEMS),
+                'mapped_candidates':len(grouped['All'])}
 
     def _active_story_table(self):
         section=self.story_sections.tab(self.story_sections.select(),'text')
@@ -170,6 +195,30 @@ class StoryProgressMixin:
         selection=table.selection()
         key=selection[0] if len(selection)==1 else None
         self._story_edit_key=key
+        if self.active_version.key == 'japan':
+            from practice.japan_story_progress import (
+                JAPAN_PROGRESS_ITEMS, japan_progress_edit_options)
+            slug = key.removeprefix('jp_unlock_') if key else None
+            item = (JAPAN_PROGRESS_ITEMS.get(slug)
+                    if key and key.startswith('jp_unlock_') else None)
+            options = japan_progress_edit_options(item) if item else ()
+            value = table.item(key, 'values')[3] if options else ''
+            writable = bool(
+                options and value in options and
+                self._japan_unlock_controls_ready())
+            self.story_edit_combo.configure(
+                values=options, state='readonly' if writable else 'disabled')
+            self.story_edit_choice.set(value if writable else '')
+            self.story_edit_button.state(
+                ['!disabled'] if writable else ['disabled'])
+            self.story_edit_label.set(
+                table.item(key, 'text') if item else
+                'Japanese saved-event bits and research fields: read-only')
+            self.story_edit_status.set(
+                'Choose a verified Japanese inventory value, then Apply state.'
+                if writable else
+                'Only live-verified Japanese inventory fields are editable here.')
+            return
         options=story_edit_options(key) if key else ()
         value=table.item(key,'values')[3] if options else ''
         writable=bool(options and value in options and self.mem is not None and
@@ -184,8 +233,39 @@ class StoryProgressMixin:
 
     def apply_story_edit(self):
         if self.active_version.key == 'japan':
-            self.story_edit_status.set(
-                'Japan-0 USA story writes refused; map the Japanese flag first.')
+            from practice.japan_story_progress import (
+                JAPAN_PROGRESS_ITEMS, japan_progress_edit_options)
+            from practice.region_unlocks import japan_unlock_lead
+            try:
+                table = self._active_story_table()
+                selection = table.selection()
+                if len(selection) != 1:
+                    raise ValueError('Select one Japanese progress row')
+                key = selection[0]
+                if key != self._story_edit_key or not key.startswith('jp_unlock_'):
+                    raise ValueError('Select a verified Japanese progress entry first')
+                item = JAPAN_PROGRESS_ITEMS.get(key.removeprefix('jp_unlock_'))
+                if item is None or not self._japan_unlock_controls_ready():
+                    raise PermissionError('Connect Japanese write-enabled RDRAM first')
+                target_text = self.story_edit_choice.get()
+                if target_text not in japan_progress_edit_options(item):
+                    raise ValueError('Select a valid Japanese progress state')
+                shown = str(table.item(key, 'values')[4])
+                if not shown.startswith('0x'):
+                    raise RuntimeError('Progress value unavailable; refresh')
+                lead = japan_unlock_lead(item)
+                before = self.jp_rdram.read_guest(lead.address, lead.width)
+                if before != bytes.fromhex(shown[2:]):
+                    raise RuntimeError('Japanese progress changed; refresh before editing')
+                changed, _ = self.apply_japan_unlocks(
+                    ((item, int(target_text, 16)),))
+                self.refresh_story_progress()
+                self.refresh_unlocks(force=True)
+                self.story_edit_status.set(
+                    f'{item.label}: {target_text} ' +
+                    ('(written)' if changed else '(unchanged)'))
+            except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+                self.story_edit_status.set(f'Japanese progress edit blocked: {exc}')
             return
         try:
             if self.mem is None:raise ValueError('Connect to a game first')
