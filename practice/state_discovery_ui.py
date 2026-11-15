@@ -139,7 +139,72 @@ class StateDiscoveryMixin:
         except (OSError,ValueError,RuntimeError) as exc:
             self.transition_observation_text.set(f'Unable to read scene context: {exc}')
 
+    def _capture_japan_probe(self, stage):
+        if self._jp_probe_busy:
+            self.state_probe_status.set('A Japanese capture is already running.')
+            return
+        reader = getattr(self, 'jp_rdram', None)
+        if reader is None or getattr(self, 'game_pid', None) is None:
+            self.state_probe_status.set('Connect to verified Japan-0 Mupen RDRAM first.')
+            return
+        identity = ('japan-0', self.game_pid, reader.base, reader.endian)
+        scope = self.state_probe_scope.get()
+        label = self.state_probe_kind.get() + ' ' + stage
+        self._jp_probe_generation += 1
+        generation = self._jp_probe_generation
+        self._jp_probe_busy = True
+        results = queue.SimpleQueue()
+        self.state_probe_status.set(
+            f'Reading Japan-0 {scope} snapshot {stage} in the background (read-only)...')
+
+        def worker():
+            try:
+                capture = capture_japan_memory(reader, label, scope=scope, identity=identity)
+                results.put((capture, None))
+            except Exception as exc:
+                results.put((None, str(exc)))
+
+        def poll():
+            if generation != self._jp_probe_generation:
+                return
+            try:
+                capture, error = results.get_nowait()
+            except queue.Empty:
+                self.root.after(70, poll)
+                return
+            self._jp_probe_busy = False
+            current = getattr(self, 'jp_rdram', None)
+            if (not self._state_is_japan() or current is not reader
+                    or getattr(self, 'game_pid', None) != identity[1]
+                    or reader.base != identity[2] or reader.endian != identity[3]):
+                self.state_probe_status.set('Japanese connection changed; capture discarded.')
+                return
+            if error is not None:
+                self.state_probe_status.set(f'Japanese {stage} capture failed: {error}')
+                return
+            if stage == 'A':
+                self.state_captures.clear()
+            elif 'A' not in self.state_captures:
+                self.state_probe_status.set('A was cleared; recapture A first.')
+                return
+            self.state_captures[stage] = capture
+            if stage == 'B':
+                self.state_captures.pop('C', None)
+            self.state_report = None
+            self.state_probe_status.set(
+                f'Japan {stage} captured: {scope}, map {capture.map_id}, '
+                f'character {capture.character if capture.character is not None else "unknown"}; '
+                f'present: {", ".join(sorted(self.state_captures))}. '
+                'All memory reads only.')
+
+        threading.Thread(target=worker, daemon=True,
+                         name='GoemonJapanABCReadOnly').start()
+        self.root.after(70, poll)
+
     def capture_state_probe(self,stage):
+        if self._state_is_japan():
+            self._capture_japan_probe(stage)
+            return
         if not self.mem:
             self.state_probe_status.set('Connect to Goemon64Recomp before capturing memory.')
             return
@@ -162,8 +227,17 @@ class StateDiscoveryMixin:
             self.state_probe_status.set('Capture A and B first.')
             return
         try:
-            report=compare_captures(self.state_captures['A'],self.state_captures['B'],
-                                    self.state_captures.get('C'))
+            if self._jp_probe_busy:
+                self.state_probe_status.set('Finish the current Japanese snapshot first.')
+                return
+            if self._state_is_japan():
+                report = compare_japan_memory(
+                    self.state_captures['A'], self.state_captures['B'],
+                    self.state_captures.get('C'))
+            else:
+                report = compare_captures(
+                    self.state_captures['A'], self.state_captures['B'],
+                    self.state_captures.get('C'))
             self.state_report=report
             self.state_probe_table.delete(*self.state_probe_table.get_children())
             for i,row in enumerate(report['candidates']):
@@ -172,11 +246,13 @@ class StateDiscoveryMixin:
                     row['xor_mask'],'yes' if row['reverted'] else '—',row['kind']))
             counts=report['counts']
             event_count=len(report.get('event_flag_changes',[]))
-            self.state_probe_status.set(f"Compared {counts['regions_compared']} regions; "
+            note = ('Japanese event banks are not mapped. ' if self._state_is_japan()
+                    else f'{event_count} changed saved event-flag bytes. ')
+            self.state_probe_status.set(
+                f"Compared {counts['regions_compared']} regions; "
                 f"{counts['observed_changes']} byte changes; "
                 f"{counts['candidate_count']} candidates (showing {counts['reported_candidates']}); "
-                f"{event_count} changed saved event-flag bytes. "
-                'No candidate has been validated as an actual game flag.')
+                + note + 'No candidate has been validated as an actual game flag.')
         except (OSError,ValueError,RuntimeError) as exc:
             self.state_probe_status.set(f'Comparison failed: {exc}')
 
@@ -209,6 +285,13 @@ class StateDiscoveryMixin:
         row=self.state_probe_table.item(chosen[0],'values')
         address=row[0]
         kind='f32' if row[6]=='f32 candidate' else 'u8'
+        if self._state_is_japan():
+            if self.add_japan_custom_watch_from_search(
+                    address, kind, label=f'JP A/B/C {address}'):
+                self.notebook.select(self.jp_fields_tab)
+            else:
+                self.state_probe_status.set(self.jp_custom_watch_status.get())
+            return
         self.user_watch_name.set(f'{self.state_probe_kind.get()} {address}')
         self.user_watch_address.set(address)
         self.user_watch_type.set(kind)
@@ -216,6 +299,8 @@ class StateDiscoveryMixin:
         self.notebook.select(self.live_memory_tab)
 
     def reset_state_probes(self):
+        self._jp_probe_generation += 1
+        self._jp_probe_busy = False
         self.state_captures={}
         self.state_report=None
         self.state_probe_table.delete(*self.state_probe_table.get_children())
