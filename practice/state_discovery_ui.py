@@ -15,6 +15,7 @@ from practice.japan_state_comparison import (
     capture_japan_memory, compare_japan_memory,
 )
 from practice.japanese_scene_probes import read_japan_scene_probes
+from practice.transition_observer import read_transition_observation, format_transition_observation
 
 JAPAN_PROBE_ACTIONS = {
     'Scene transition': 'Capture A before using a doorway, B after loading. Repeat in both directions; no scene writes.',
@@ -24,7 +25,6 @@ JAPAN_PROBE_ACTIONS = {
     'Story event candidate': 'Capture a repeated story action. Japan saved-event banks are not mapped; do not assume USA offsets.',
     'Player movement': 'Compare stationary versus moving. Japanese XYZ, task offsets and velocity remain unmapped.',
 }
-from practice.transition_observer import read_transition_observation, format_transition_observation
 
 
 class StateDiscoveryMixin:
@@ -147,6 +147,9 @@ class StateDiscoveryMixin:
         if reader is None or getattr(self, 'game_pid', None) is None:
             self.state_probe_status.set('Connect to verified Japan-0 Mupen RDRAM first.')
             return
+        if stage == 'C' and 'B' not in self.state_captures:
+            self.state_probe_status.set('Capture A and B before optional C.')
+            return
         identity = ('japan-0', self.game_pid, reader.base, reader.endian, id(reader))
         scope = self.state_probe_scope.get()
         label = self.state_probe_kind.get() + ' ' + stage
@@ -246,7 +249,7 @@ class StateDiscoveryMixin:
                     row['xor_mask'],'yes' if row['reverted'] else '—',row['kind']))
             counts=report['counts']
             event_count=len(report.get('event_flag_changes',[]))
-            note = ('Japanese event banks are not mapped. ' if self._state_is_japan()
+            note = ('Japanese event banks are unmapped. ' if self._state_is_japan()
                     else f'{event_count} changed saved event-flag bytes. ')
             self.state_probe_status.set(
                 f"Compared {counts['regions_compared']} regions; "
@@ -261,7 +264,10 @@ class StateDiscoveryMixin:
             self.state_probe_status.set('Compare A and B before exporting.')
             return
         try:
-            path=diagnostics_dir()/('state_probe_'+datetime.now().strftime('%Y%m%d_%H%M%S_%f')+'.json')
+            prefix = ('japan_state_probe_' if self.state_report.get('region') == 'japan-0'
+                      else 'state_probe_')
+            path = diagnostics_dir() / (prefix +
+                datetime.now().strftime('%Y%m%d_%H%M%S_%f') + '.json')
             path.write_text(json.dumps(self.state_report,indent=2)+'\n',encoding='utf-8')
             self.state_probe_status.set(f'Exported comparison to {path}')
         except OSError as exc:
