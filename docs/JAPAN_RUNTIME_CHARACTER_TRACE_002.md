@@ -40,3 +40,7 @@ The earlier independent scene transition, 300 → 355, showed the same pattern: 
 ## Remaining validation
 
 A third scene transition using an unrelated scene pair, plus one recording of the Pending and Loading values *before* the current scene updates, would allow stronger inference about loader ordering. Reading the Japanese character index does not unlock XYZ; Japanese player/task pointers still require independent mapping.
+
+## Follow-up: Project64 original MIPS writer trace (2026-11-15)
+
+The subsequent Windows Project64 investigation independently confirmed `0x80161DCC` for Goemon/Ebisumaru and captured the original Japanese MIPS instructions at `0x801E2944` and `0x801E298C` writing the global character index. Single stepping also confirmed a call to `0x801E2970` with a character-related byte at `object+0x60`. See [JAPAN_PROJECT64_CHARACTER_SWITCH_MIPS_TRACE.md](JAPAN_PROJECT64_CHARACTER_SWITCH_MIPS_TRACE.md) for the full observed instruction/register sequence, confidence boundaries, and unresolved pointer/overlay work. The evidence is not yet sufficient to treat the observed object pointer as a stable player pointer.
