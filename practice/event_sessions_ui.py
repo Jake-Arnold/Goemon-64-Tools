@@ -6,8 +6,11 @@ import time
 import tkinter as tk
 from tkinter import ttk, filedialog
 
-from practice.event_sessions import (new_session,capture_event,with_trial,save_session,
-                                     load_session,rank_bits,changed_context_fields,describe_contexts)
+from practice.event_sessions import (
+    EVENT_START, JAPAN_CANDIDATE_START, new_session, capture_event,
+    capture_japan_event, with_trial, save_session, load_session, rank_bits,
+    changed_context_fields, describe_contexts,
+)
 from practice.checkpoints import GAMEDATA_ADDR, STATE_ADDR
 from practice.paths import diagnostics_dir
 
@@ -53,6 +56,17 @@ class EventSessionsMixin:
         ttk.Button(row,text='Record trial',command=self.record_event_trial).pack(side='left',padx=3)
         ttk.Button(row,text='Discard captures',command=self.discard_event_captures).pack(side='left',padx=3)
         self.event_status=tk.StringVar(value='Connect to a game, name the experiment, then create a session. A=before, B=after; C=optional reverted.')
+        region_row=ttk.Frame(tab)
+        region_row.pack(fill='x', pady=(0, 4))
+        ttk.Label(region_row, text='100-byte research window:').pack(side='left')
+        self.event_region_start=tk.StringVar(
+            value=f'0x{(JAPAN_CANDIDATE_START if self.active_version.key == "japan" else EVENT_START):08X}')
+        self.event_region_entry=ttk.Entry(
+            region_row, textvariable=self.event_region_start, width=15)
+        self.event_region_entry.pack(side='left', padx=(6, 8))
+        self.event_region_note=tk.StringVar(value='')
+        ttk.Label(region_row, textvariable=self.event_region_note,
+                  wraplength=800).pack(side='left')
         ttk.Label(tab,textvariable=self.event_status,wraplength=1100).pack(anchor='w',pady=6)
         self.event_comparison=tk.StringVar(value='No pending A/B comparison. Ranked candidates appear after Record trial; only event trials create candidates.')
         ttk.Label(tab,textvariable=self.event_comparison,wraplength=1100).pack(anchor='w',pady=4)
@@ -74,6 +88,37 @@ class EventSessionsMixin:
         self.event_evidence.pack(fill='x',pady=6)
         self.root.after(250,self.poll_event_monitor)
 
+    def configure_event_region(self):
+        """One event-sessions tab; region-correct 100-byte capture schema."""
+        japan=self.active_version.key=='japan'
+        self.event_region_entry.configure(
+            state='normal' if japan else 'disabled')
+        if self.event_session is None or (
+                self.event_session.get('region','usa') != (
+                    'japan' if japan else 'usa')):
+            self.event_session=None
+            self.event_pending={}
+            self.event_token=None
+            self.event_capture_started=None
+            # Invalidate asynchronous rank workers from the former ROM before
+            # a stale USA result can repopulate the Japanese session table.
+            self.event_generation+=1
+            self.event_region_start.set(
+                f'0x{JAPAN_CANDIDATE_START if japan else EVENT_START:08X}')
+            self.event_rows=[]
+            self.event_table.delete(*self.event_table.get_children())
+            self.event_trial_summary.set('No trials for current ROM region')
+        self.event_region_note.set(
+            'Japan-0: choose any 100-byte RAM region; this is NOT a '
+            'verified saved-event bank. No Japanese event-bit meanings '
+            'are assumed.' if japan
+            else 'USA: fixed saved-event block; native mapped semantics.')
+        self.event_status.set(
+            'Japanese RAM bit evidence sessions are read-only; choose a '
+            '100-byte region, create a session and capture A/B/C.'
+            if japan else 'USA saved-event flag sessions: create a session '
+            'and capture A/B/C; idle/control trials filter noise.')
+
     def refresh_pending_event_comparison(self):
         if not all(key in self.event_pending for key in ('A','B')):
             self.event_comparison.set('Capture A, perform the event, then capture B. Record trial to update ranked candidates.')
@@ -82,7 +127,9 @@ class EventSessionsMixin:
         b=bytes.fromhex(self.event_pending['B']['bytes_hex'])
         changes=[(i,x,y) for i,(x,y) in enumerate(zip(a,b)) if x!=y]
         bits=sum((x^y).bit_count() for _,x,y in changes)
-        detail='; '.join(f'0x{GAMEDATA_ADDR+i:08X}: {x:02X}->{y:02X}' for i,x,y in changes[:8])
+        start=(self.event_session.get('event_start',EVENT_START)
+               if self.event_session else EVENT_START)
+        detail='; '.join(f'0x{start+i:08X}: {x:02X}->{y:02X}' for i,x,y in changes[:8])
         if len(changes)>8:detail+='; ...'
         if not changes:
             detail='The 100 saved event bytes are identical. Repeating an already-completed event may change nothing; use Advanced RAM comparison for temporary fields.'
@@ -99,9 +146,15 @@ class EventSessionsMixin:
                if self.event_capture_started is not None else '')
         prefix=f'UI clock: {elapsed:.1f}s{since}'
         try:
-            if self.mem:
+            if self.active_version.key == 'japan' and self.jp_rdram is not None:
+                engine=self.jp_rdram.read_guest(0x800CD284,1)[0]
+                map_id=int.from_bytes(
+                    self.jp_rdram.read_guest(0x800CD2A2,2),'big')
+                self.event_live.set(
+                    f'{prefix} | Japan-0 scene: 0x{map_id:03X} | '
+                    f'engine: {engine}; region-correct read-only session.')
+            elif self.mem:
                 state=self.mem.u8(STATE_ADDR)
-                # SYS_W.game_loops_count: base 0x8008CCC0 + offset 0x3ADCE.
                 loops=self.mem.u16(0x800C7A8E)
                 self.event_live.set(f'{prefix} | Game-loop counter: {loops} | State: {state}'
                                     ' | Counter may stop while paused; captures validate gameplay separately.')
@@ -112,6 +165,12 @@ class EventSessionsMixin:
             self.root.after(250,self.poll_event_monitor)
 
     def _event_connection(self):
+        if self.active_version.key == 'japan':
+            ram=self.jp_rdram
+            if ram is None or not self.game_pid or not self.jp_backend:
+                raise ValueError('Connect to Japanese emulator RAM first')
+            return ((self.game_pid,'japan',id(ram),ram.base,ram.endian),
+                    self.jp_backend)
         if not self.mem or not self.game_pid:raise ValueError('Connect to a game first')
         import psutil
         name=psutil.Process(self.game_pid).name().lower()
@@ -132,7 +191,11 @@ class EventSessionsMixin:
     def new_event_session(self):
         try:
             _,backend=self._event_connection()
-            session=new_session(self.event_label.get(),backend,self.event_rom.get())
+            japanese=self.active_version.key=='japan'
+            start=int(self.event_region_start.get(),0)
+            session=new_session(
+                self.event_label.get(),backend,self.event_rom.get(),
+                region='japan' if japanese else 'usa',event_start=start)
             save_session(self._event_path(session),session)
             self.event_session=session;self.event_pending={};self.event_token=None;self.event_capture_started=None
             self.refresh_pending_event_comparison()
@@ -145,6 +208,12 @@ class EventSessionsMixin:
         if not path:return
         try:
             session=load_session(path)
+            expected='japan' if self.active_version.key=='japan' else 'usa'
+            if session.get('region','usa') != expected:
+                raise ValueError(f'Event session is for a different ROM region: '
+                                 f'{session.get("region","usa")}')
+            self.event_region_start.set(
+                f'0x{session.get("event_start",EVENT_START):08X}')
             self.event_session=session;self.event_pending={};self.event_token=None;self.event_capture_started=None
             self.event_label.set(session['label']);self.event_rom.set(session['rom_sha1'] or '')
             self.refresh_pending_event_comparison()
@@ -161,7 +230,13 @@ class EventSessionsMixin:
             if stage!='A' and (not self.event_pending.get('A') or token!=self.event_token):
                 raise ValueError('Connection changed or A missing; capture a fresh A')
             if stage=='C' and 'B' not in self.event_pending:raise ValueError('Capture B before optional C')
-            capture=capture_event(self.mem)
+            if self.event_session.get('region','usa') != self.active_version.key:
+                raise ValueError('Saved event session belongs to the other ROM region')
+            capture=(capture_japan_event(
+                        self.jp_rdram,
+                        event_start=self.event_session['event_start'])
+                     if self.active_version.key=='japan'
+                     else capture_event(self.mem))
             if stage=='A':
                 self.event_pending={};self.event_token=token
                 self.event_capture_started=time.monotonic()
@@ -199,7 +274,11 @@ class EventSessionsMixin:
         generation=self.event_generation
         counts={role:sum(t['role']==role for t in session['trials']) for role in ('event','idle','control')}
         changed=sum(bool(changed_context_fields(t['captures'])) for t in session['trials'])
-        summary=f'{session["label"]} | {session["backend"]} | ROM identity unverified | Trials: {counts} | Context-changing trials: {changed}'
+        summary=(f'{session["label"]} | {session["backend"]} '
+                 f'| {session.get("region","usa").upper()} '
+                 f'| 100-byte slice 0x{session.get("event_start",EVENT_START):08X} '
+                 f'| ROM identity unverified | Trials: {counts} '
+                 f'| Context-changing trials: {changed}')
         self.event_trial_summary.set(summary+' | Analysing…')
         self.event_table.delete(*self.event_table.get_children())
         self.set_event_evidence('Select a row for trial IDs. No semantic meaning or write safety is established.')
