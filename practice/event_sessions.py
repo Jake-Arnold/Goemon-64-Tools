@@ -12,22 +12,35 @@ FORMAT = 'goemon-event-session-v1'
 EVENT_START = 0x8015C608
 EVENT_SIZE = 0x64
 MAX_TRIALS = 500
+JAPAN_CANDIDATE_START = 0x80161D80  # user-editable read-only probe; NOT a mapped event bank
 
 
 def utc_now():
     return datetime.now(timezone.utc).isoformat()
 
 
-def new_session(label, backend, rom_sha1=''):
+def new_session(label, backend, rom_sha1='', *, region='usa', event_start=None):
     if not isinstance(label,str) or not label.strip() or len(label)>160:
         raise ValueError('Give this experiment a name (1–160 characters)')
-    if backend not in ('project64','recomp'):
-        raise ValueError('Select an explicit Project64 or recomp backend')
+    if backend not in ('project64','recomp','mupen64plus'):
+        raise ValueError('Select an explicit Project64, Mupen or recomp backend')
+    if region not in ('usa', 'japan'):
+        raise ValueError('Unsupported event-session region')
+    if region == 'usa' and backend == 'mupen64plus':
+        raise ValueError('USA Mupen event sessions are not supported')
+    address = (EVENT_START if region == 'usa'
+               else JAPAN_CANDIDATE_START) if event_start is None else event_start
+    if type(address) is not int or not (0x80000000 <= address
+             and address + EVENT_SIZE <= 0x80800000):
+        raise ValueError('Invalid 100-byte event comparison range')
+    if region == 'usa' and address != EVENT_START:
+        raise ValueError('USA saved event bank address must remain fixed')
     rom_sha1=rom_sha1.strip().lower()
     if rom_sha1 and not re.fullmatch('[0-9a-f]{40}',rom_sha1):
         raise ValueError('ROM SHA-1 must contain 40 hexadecimal characters, or be blank/unverified')
     return dict(format=FORMAT,id=uuid.uuid4().hex,label=label.strip(),backend=backend,
-                rom_sha1=rom_sha1 or None,created_utc=utc_now(),trials=[])
+                rom_sha1=rom_sha1 or None,created_utc=utc_now(),trials=[],
+                region=region,event_start=address)
 
 
 def _context(ram):
@@ -44,6 +57,37 @@ def _context(ram):
                 player_ptr=state['player_ptr'],task_ptr=state['task_ptr'])
 
 
+def _japan_event_context(ram):
+    """Strict gameplay identity without inventing JP player/task pointers."""
+    from practice.japanese_debug_warp import (
+        JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE,
+        JAPAN_DEBUG_CHARACTER, JAPAN_DEBUG_LOADING,
+    )
+    engine=ram.read_guest(JAPAN_DEBUG_ENGINE_MODE,1)[0]
+    loading=int.from_bytes(ram.read_guest(JAPAN_DEBUG_LOADING,4),'big')
+    scene=int.from_bytes(ram.read_guest(JAPAN_DEBUG_SCENE,2),'big')
+    character=int.from_bytes(ram.read_guest(JAPAN_DEBUG_CHARACTER,4),'big')
+    if (engine != 13 or loading or not 0 < scene < 0x800
+            or character not in (0,1,2,3)):
+        raise ValueError('Japan event comparison needs stable gameplay')
+    return dict(map_id=scene,character=character,player_ptr=0,task_ptr=0)
+
+
+def capture_japan_event(ram, *, event_start=JAPAN_CANDIDATE_START):
+    """Explicit Japanese 100-byte guest slice; no claim it is a saved bank."""
+    if type(event_start) is not int or not (
+            0x80000000 <= event_start and event_start + EVENT_SIZE <= 0x80800000):
+        raise ValueError('Invalid Japanese candidate RAM range')
+    started=utc_now()
+    before=_japan_event_context(ram)
+    data=ram.read_guest(event_start,EVENT_SIZE)
+    after=_japan_event_context(ram)
+    if len(data)!=EVENT_SIZE or before != after:
+        raise ValueError('Japanese context changed or short RAM capture')
+    return dict(started_utc=started,ended_utc=utc_now(),
+                context=before,bytes_hex=data.hex())
+
+
 def capture_event(ram):
     """One 100-byte block, bounded context reads. Not an atomic frame snapshot."""
     started=utc_now()
@@ -55,7 +99,7 @@ def capture_event(ram):
     return dict(started_utc=started,ended_utc=utc_now(),context=before,bytes_hex=data.hex())
 
 
-def _validate_capture(capture):
+def _validate_capture(capture, *, region='usa'):
     if not isinstance(capture,dict):raise ValueError('Invalid capture')
     for field in ('started_utc','ended_utc'):
         stamp=datetime.fromisoformat(capture[field])
@@ -66,7 +110,10 @@ def _validate_capture(capture):
     if not isinstance(ctx,dict) or set(ctx)!={'map_id','character','player_ptr','task_ptr'}:
         raise ValueError('Invalid capture context')
     for key,low,high in (('map_id',0,65535),('character',0,3),
-                         ('player_ptr',0x80000000,0x807FFFFF),('task_ptr',0x80000000,0x807FFFFF)):
+                         ('player_ptr',0 if region == 'japan' else 0x80000000,
+                          0 if region == 'japan' else 0x807FFFFF),
+                         ('task_ptr',0 if region == 'japan' else 0x80000000,
+                          0 if region == 'japan' else 0x807FFFFF)):
         if type(ctx[key]) is not int or not low<=ctx[key]<=high:raise ValueError('Invalid '+key)
     raw=capture['bytes_hex']
     if not isinstance(raw,str) or not re.fullmatch('[0-9a-fA-F]{200}',raw):
@@ -78,7 +125,10 @@ def validate_session(session):
         if not isinstance(session,dict) or session['format']!=FORMAT:
             raise ValueError('Unsupported event-session format')
         if not re.fullmatch('[0-9a-f]{32}',session['id']):raise ValueError('Invalid session ID')
-        new_session(session['label'],session['backend'],session['rom_sha1'] or '')
+        region=session.get('region','usa')
+        address=session.get('event_start',EVENT_START)
+        new_session(session['label'],session['backend'],session['rom_sha1'] or '',
+                    region=region,event_start=address)
         if datetime.fromisoformat(session['created_utc']).tzinfo is None:
             raise ValueError('Session timestamp requires timezone')
         trials=session['trials']
@@ -94,7 +144,7 @@ def validate_session(session):
             if not isinstance(captures,dict) or set(captures) not in ({'A','B'},{'A','B','C'}):
                 raise ValueError('Trials need A/B and optional C')
             for capture in captures.values():
-                _validate_capture(capture)
+                _validate_capture(capture,region=region)
             ordered=[captures[key] for key in ('A','B','C') if key in captures]
             if any(datetime.fromisoformat(a['ended_utc'])>datetime.fromisoformat(b['started_utc'])
                    for a,b in zip(ordered,ordered[1:])):
@@ -177,13 +227,16 @@ def rank_bits(session):
                     if 'C' in c:
                         destination=reverted if ((c['C'][index]^c['A'][index])&mask)==0 else not_reverted
                         destination.append(t['id'])
-                rows.append(dict(address=f'0x{EVENT_START+index:08X}',mask=f'{mask:02X}',
+                base=session.get('event_start',EVENT_START)
+                rows.append(dict(address=f'0x{base+index:08X}',mask=f'{mask:02X}',
                     direction='set' if direction==1 else 'clear',support=[t['id'] for t in support],
                     event_trials=len(events),opposite=opposite,absent=absent,control_overlap=noise,
                     reverted=reverted,not_reverted=not_reverted,confirmed=False))
     rows.sort(key=lambda r:(bool(r['control_overlap']),len(r['opposite'])+len(r['absent']),
                             -len(r['support']),int(r['address'],16),int(r['mask'],16),r['direction']))
     return dict(format='goemon-event-ranking-v1',session_id=session['id'],
+                region=session.get('region','usa'),
+                event_start=f'0x{session.get("event_start",EVENT_START):08X}',
                 rom_identity_verified=False,rom_sha1=session['rom_sha1'],candidates=rows,
                 context_changes={t['id']:changed_context_fields(t['captures']) for t in session['trials']
                                  if changed_context_fields(t['captures'])},
