@@ -2,9 +2,14 @@
 from __future__ import annotations
 
 import struct
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
 from practice.japan_state_comparison import capture_japan_memory
-from practice.japan_player_position_research import find_japan_xyz_candidates
+from practice.japan_player_position_research import (
+    find_japan_xyz_candidates, export_japan_xyz_all_candidates,
+)
 from tests.test_japan_state_comparison import JP_ID, ReadOnlyJapanRam
 
 XYZ_ADDR = 0x80034020
@@ -96,6 +101,59 @@ class JapanPlayerPositionResearchTests(unittest.TestCase):
         report = find_japan_xyz_candidates(a, b, c)
         self.assertFalse(any(r['address'] == f'0x{XYZ_ADDR:08X}'
                              for r in report['candidates']))
+
+    def test_export_all_xyz_candidates_beyond_the_display_limit(self):
+        mem = FourMegabyteJapanRam()
+        addresses = [XYZ_ADDR + 32 * i for i in range(240)]
+        for i, addr in enumerate(addresses):
+            put_xyz(mem, addr, (100.0 + i, 15.0, -75.0 + i / 4))
+        a = capture(mem, 'A standing')
+        for i, addr in enumerate(addresses):
+            put_xyz(mem, addr, (112.0 + i, 15.0, -66.0 + i / 4))
+        b = capture(mem, 'B moved')
+        c = capture(mem, 'C still at B')
+        preview = find_japan_xyz_candidates(a, b, c)
+        self.assertEqual(len(preview['candidates']), 200)
+        self.assertGreater(preview['counts']['candidate_count'], 200)
+        with TemporaryDirectory() as temp:
+            target = Path(temp) / 'all_xyz_candidates.json'
+            count = export_japan_xyz_all_candidates(
+                a, b, c, target,
+                expected_count=preview['counts']['candidate_count'])
+            export = json.loads(target.read_text(encoding='utf-8'))
+            self.assertEqual(count, preview['counts']['candidate_count'])
+            self.assertEqual(export['counts']['exported_candidates'], count)
+            self.assertEqual(len(export['candidates']), count)
+            self.assertEqual(export['candidate_order'], 'guest_address_ascending')
+            self.assertEqual(export['session'], preview['session'])
+            self.assertEqual(export['capture_A'], preview['capture_A'])
+            self.assertNotIn('regions', export)
+            self.assertNotIn('raw_snapshots', export)
+            in_preview = {r['address'] for r in preview['candidates']}
+            all_addresses = [r['address'] for r in export['candidates']]
+            self.assertEqual(all_addresses, sorted(all_addresses))
+            self.assertTrue(set(all_addresses) - in_preview)
+            self.assertIn(f'0x{addresses[-1]:08X}', all_addresses)
+            self.assertFalse(any(Path(temp).glob('*.tmp')))
+
+    def test_full_xyz_export_rejects_bad_counts_and_cancelled_sessions(self):
+        mem = FourMegabyteJapanRam()
+        put_xyz(mem, XYZ_ADDR, (100.0, 20.0, -50.0))
+        a = capture(mem)
+        put_xyz(mem, XYZ_ADDR, (111.0, 20.0, -48.0))
+        b = capture(mem, 'B')
+        c = capture(mem, 'C')
+        with TemporaryDirectory() as temp:
+            target = Path(temp) / 'would_be_incomplete.json'
+            with self.assertRaisesRegex(RuntimeError, 'count mismatch'):
+                export_japan_xyz_all_candidates(
+                    a, b, c, target, expected_count=999)
+            self.assertFalse(target.exists())
+            with self.assertRaisesRegex(RuntimeError, 'cancelled'):
+                export_japan_xyz_all_candidates(
+                    a, b, c, target, cancelled=lambda: True)
+            self.assertFalse(target.exists())
+            self.assertFalse(list(Path(temp).glob('*.tmp')))
 
     def test_stationary_A_and_B_identical_has_no_candidate(self):
         mem = FourMegabyteJapanRam()
