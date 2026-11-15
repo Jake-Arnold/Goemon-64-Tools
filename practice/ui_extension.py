@@ -224,9 +224,7 @@ class InspectorMixin(EntranceMixin):
             self.scene_character.configure(values=(
                 'Keep current character',
                 'Goemon', 'Ebisumaru', 'Sasuke', 'Yae'))
-            if self.scene_character.current() < 0 or (
-                    self.scene_character.get() not in self.scene_character.cget('values')):
-                self.scene_character.current(0)
+            self.scene_character.current(0)
             self.scene_character_line.pack(fill='x', pady=4,
                                            after=self.scene_instruction)
             self.entrance_box.pack_forget()
