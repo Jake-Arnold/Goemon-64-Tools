@@ -2,7 +2,7 @@
 
 **Evidence:** User-operated *Ganbare Goemon: Neo Momoyama Bakufu no Odori* (Japan) in Project64 3.0 on Windows, with Project64 virtual RDRAM editing and Goemon Practice Toolkit v0.11.17 Japan Live custom watches (`f32`). Original user screenshots and descriptions are in the investigation conversation; screenshots are **not included in this repository file**. Addresses below are **N64 guest virtual addresses**, not Windows process addresses. This is gameplay observation, not a matching-C proof or an automated test.
 
-**Status:** High-confidence **functional XYZ position controls in at least two ordinary Oedo Town scenes**, explicitly confirmed by the user's edit tests. Their stability outside those scenes remains unverified.
+**Status:** High-confidence **functional XYZ position controls**. Direct before/after edits are documented in Oedo Town South and North; the user subsequently reported that the same coordinates **seem to work everywhere** in their additional gameplay testing. The latter is a broader user report without an enumerated scene/character/state matrix, so universal applicability is **not yet proven**.
 
 ## Position-controlling XYZ fields
 
@@ -23,6 +23,10 @@
 The user wrote `C3908000 00000000 C3270000` into consecutive guest words beginning at `0x80151B10` and reported teleportation to the **exact intended entrance position** in Japanese gameplay. Subsequent Y override `42500000` (52.0) visibly elevated the player above the ceiling. Those outcomes support a position-controlling vector; they do not establish safe arbitrary teleportation or collision handling.
 
 **Cross-scene validation (user follow-up):** The user explicitly confirmed that these **same three addresses continued to control the character in both Oedo Town South (scene 353 / `0x161`) and Oedo Town North (scene 352 / `0x160`)**. This is stronger than a one-scene test, but not proof of all-scene or cross-session lifetime. This validation was reported from gameplay, not produced by an independent debugger trace of each write.
+
+## Later cross-scene user report (2026-11-15)
+
+Following the two specific Oedo-scene validations, the user reported: **“seems to work everywhere”**, referring to `0x80151B10`, `0x80151B14`, and `0x80151B18` as position-controlling floats. This is meaningful evidence that the vector is not limited to the first two scene allocations. No additional scene IDs, character identities, boss states, transformation states, precise debugger readings, or emulator restart results accompanied this report. Preserve the result as **user-reported broad success** rather than a claim that every scene or gameplay mode has been independently tested.
 
 ## Readback mirrors / derived candidate vectors
 
@@ -53,9 +57,9 @@ Separate Japanese Project64 stepping in [JAPAN_PROJECT64_CHARACTER_SWITCH_MIPS_T
 
 ## Toolkit implications / remaining validation
 
-- The position vector can be **labelled as runtime-confirmed for Oedo South and North**, with clear read-only discovery metadata. This document does **not** enable guest writes in the Japanese toolkit.
+- The position vector can be **labelled as runtime-confirmed in Oedo South and North, with broader user-reported success elsewhere**, with clear read-only discovery metadata. This document does **not** enable guest writes in the Japanese toolkit.
 - Gate any future Japanese teleport/checkpoint implementation on a verified scene and character state; capture/restore complete emulator savestates for experimental writes; reject loading/transition/cutscene/boss states until independently tested.
-- Verify in buildings, unrelated overworld scenes, dungeons, boss fights and character transformations, and on emulator restarts or fresh RAM allocations.
+- Record named scene IDs and evidence for any additional successful locations, especially buildings, unrelated overworld scenes, dungeons, boss fights and character transformations; also verify across emulator restarts or fresh RAM allocations. The user's wider success report is not a complete scene matrix.
 - Find original MIPS readers/writers of `0x80151B10`, `+0x04`, `+0x08` to establish update semantics and whether the vector is global or pointer-relative.
 - Investigate whether the mirrors are collision/ground positions and identify the airborne-Y field separately. Do not conclude `0x80151B14` has all desired jump physics behaviour solely from a one-time Y teleport.
 
