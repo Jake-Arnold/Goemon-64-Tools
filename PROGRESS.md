@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — USA + JP character switch: six exact IDO candidates, USA full-ROM and relocations exact
+
+- **Original code mapping:** Pinpointed USA selected-character u32 `0x8015C5DC` versus JP `0x80161DCC`, four 32-bit availability words at USA `0x8015C69C` / JP `0x80161E8C`, and the 180-byte character selector plus 148-byte synchroniser in both `file_11` overlays. These regional offsets are not a universal address delta.
+- **Isolated matching C:** Three previously assembly-owned USA functions—12-byte `func_801DD500_599410`, 40-byte `func_801DD4D8_5993E8`, and 148-byte `func_801DD5C0_5994D0`—now compile under original IDO 5.3 -O2 -mips2 and link to the exact original **200/200 bytes** at native addresses. The corresponding JP functions also match their original **200/200 bytes** after region-specific relocation. The synchroniser's `u16` argument type is necessary for matching register allocation.
+- **Full USA build proof:** Independently reproduced an exact 33,554,432-byte USA ROM rebuild using pinned upstream Splat, the 200 C bytes and the untouched 180-byte selector assembly. Both original and rebuilt USA SHA-1 are `6ea0ed71032ce08fc2745f412d84936382197494`. Original versus candidate `file_11` ELF relocation lists are **8,825/8,825 identical** in their complete ordered site/type/target/symbol tuples.
+- **Reproducibility:** Added research-only regional C, isolated compiler/relocation probe, scratch-USA full-ROM integration script, ELF32 BE MIPS relocation-preserving section-trim helper, regression tests and dated report `docs/USA_JAPAN_CHARACTER_SWITCH_MATCHING_2026-11-15.md`; proof metadata excludes game bytes. The full-ROM rebuild was independently repeated from a fresh upstream ZIP extraction.
+- **Tests:** 14 ROM-free Python tests passed; six independent original-address native IDO comparisons passed; clean full USA-ROM equality and `file_11` relocation identity passed. Original Japanese full-ROM rebuild remains blocked by upstream hardcoded USA `GLOBAL_ASM` references.
+- **Limits/next:** This is a research-verified production promotion candidate, **not yet registered in the central `decomp.verify` manifest or published matching-C count**. Integrate a mixed C/ASM `file_11` adapter into the central verifier and require fresh G2/relocation and inventory proof before incrementing counts; the 180-byte selector and 132-byte alternate reset remain in ASM.
+
 ### 2026-11-15 — Confirmed Japanese character-switch overlay and full MIPS boundaries
 
 - **Original Japanese ROM:** Normalised Japan-0 ROM checksum-verified; 32 MiB decompressed image reproduced SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`. The supplied pinned Splat environment extracted original Japanese assembly successfully.
