@@ -51,6 +51,7 @@ $backendTests = @(
     'tests.test_remembered_rom',
     'tests.test_region_views',
     'tests.test_region_unlocks',
+    'tests.test_rom_layout_audit',
     'tests.test_japan_live_memory_edit',
     'tests.test_japan_event_sessions',
     'tests.test_japan_damage_capture',
@@ -84,6 +85,13 @@ try {
 
     Write-Host 'Running read-only and synthetic memory tests...'
     Invoke-PythonTest -Arguments (@('-m', 'unittest') + $backendTests + @('-v'))
+
+    if ($env:GOEMON_USA_DECOMPRESSED -and $env:GOEMON_JAPAN_DECOMPRESSED) {
+        Write-Host 'Running optional exact-ROM MIPS cross-region reference audit...'
+        Invoke-PythonTest -Arguments @('-m', 'practice.rom_layout_audit', '--usa',
+            $env:GOEMON_USA_DECOMPRESSED, '--japan',
+            $env:GOEMON_JAPAN_DECOMPRESSED, '--summary')
+    }
 
     Write-Host 'Running native Windows Tk GUI tests (desktop session required)...'
     Invoke-PythonTest -Arguments (@('-m', 'unittest') + $guiTests + @('-v'))
