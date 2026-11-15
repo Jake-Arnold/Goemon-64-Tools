@@ -22,7 +22,7 @@ class NamedNativeCheckpointsTests(unittest.TestCase):
         self.assertEqual(items[0]['name'], 'Oedo redo')
         self.assertEqual(items[1]['region'], 'usa')
         self.assertIn('scene 0x161', label_named_checkpoint(items[0]))
-        self.assertNotIn('xyz', items[0])
+        self.assertIsNone(items[0]['xyz'])
 
     def test_roundtrip_atomic_file_is_metadata_only(self):
         with tempfile.TemporaryDirectory() as directory:

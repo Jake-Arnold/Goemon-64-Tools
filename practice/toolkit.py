@@ -1196,6 +1196,12 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or record['backend'] != self.connection_target.get()):
             self.status.set('Named checkpoint is for another region/emulator.')
             return
+        if (self.jp_rdram is None or self.game_pid is None
+                or self.jp_backend != record['backend']):
+            self.status.set(
+                'Connect to the matching Japan-0 emulator before loading '
+                'a named checkpoint.')
+            return
         self.savestate_slot.set(str(record['slot']))
         dispatched = self.native_savestate_action('load')
         if dispatched is not None:

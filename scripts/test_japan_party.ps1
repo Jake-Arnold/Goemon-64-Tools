@@ -79,6 +79,8 @@ $guiTests = @(
     'tests.test_value_search_ui',
     'tests.test_state_discovery_ui',
     'tests.test_region_unlocks_ui',
+    'tests.test_japan_story_progress_ui',
+    'tests.test_japan_named_checkpoint_ui',
     'tests.test_dashboard'
 )
 

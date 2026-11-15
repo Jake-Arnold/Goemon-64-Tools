@@ -2779,3 +2779,10 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Native state request handler returns a success receipt only after the command was sent; UI states explicitly that the save/load was **requested** and must be confirmed in the emulator. Existing native load invalidates freezes and stale RDRAM connections. Backend mismatches, read-only mode and non-Japanese region reject named actions.
 - Added four pure model regression tests `tests/test_native_checkpoints.py` and included them in Windows/Linux existing test runners; full Windows/Tk/new native checkpoint workflow **not yet tested** in this build. USA checkpoint control and native save/load behaviour preserved.
 - Documentation: `docs/JAPAN_NAMED_CHECKPOINTS.md`. Next: Tk acceptance test, test full Windows suite, verify named save/load in Project64; no direct JP actor/flag logical restore until independently mapped.
+
+### 2026-11-15 — Named checkpoints and Japan Story Progress GUI regression coverage
+
+- Fixed a mistaken pure-model test expectation: a valid native slot metadata record includes an `xyz` key with `None` when no position is available; the assertion now checks for None, not missing key.
+- Named checkpoint LOAD now requires an attached, matching verified Japanese emulator RDRAM reader and PID before dispatch, rather than trusting only the stored backend label. A stale label alone cannot load into an arbitrary process.
+- Added Tk regression tests for named native save/load request routing, metadata-only labels, missing-attachment refusal and USA dashboard UI preservation; added Tk tests for Japanese Story Progress grouped rows, edit routing, stale-value refusal and region switching. Both test groups are included in the existing Windows PowerShell/Linux Tk runners.
+- **Still pending:** run these newly authored tests and the entire existing GUI suite in a real Windows/Tk session; only user-reported pre-change tests/warps are verified. Do not merge PR #17 based solely on this source-level review.
