@@ -39,6 +39,8 @@ class JapanPlayerPositionResearchTests(unittest.TestCase):
                    if item['address'] == f'0x{XYZ_ADDR:08X}')
         self.assertEqual(row['watch_type'], 'f32')
         self.assertEqual(row['kind'], 'XYZ triple candidate')
+        self.assertTrue(row['c_stable_at_b'])
+        self.assertNotIn('reverted', row)
         self.assertEqual(row['xyz_A'], [102.0, 18.0, -64.0])
         self.assertAlmostEqual(row['horizontal_delta'], (149) ** 0.5, places=3)
         self.assertLess(row['stationary_delta_max'], 0.11)
