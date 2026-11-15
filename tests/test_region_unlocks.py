@@ -27,6 +27,8 @@ class RegionUnlockMappingTests(unittest.TestCase):
         self.assertEqual(by_label['Yae in party'].address, 0x80161E9B)
         self.assertEqual(by_label['Triton Shell'].address, 0x80161EEF)
         self.assertEqual(by_label['Cucumber'].address, 0x80161F07)
+        self.assertEqual(by_label["Lord's Pass"].address, 0x80161EF3)
+        self.assertEqual(by_label["Achilles' Heel"].address, 0x80161EFF)
         self.assertEqual(by_label['Red fish count'].address, 0x80161F0B)
         self.assertEqual(by_label['Yellow fish count'].address, 0x80161F0F)
         self.assertEqual(by_label['Blue fish count'].address, 0x80161F13)
@@ -34,17 +36,19 @@ class RegionUnlockMappingTests(unittest.TestCase):
         self.assertIsNone(by_label['Goemon pipe upgrade'])
         self.assertIsNone(by_label['Gold Key'])
         self.assertIsNone(by_label['Star'])
-        self.assertEqual(sum(x is not None for x in by_label.values()), 7)
+        self.assertEqual(sum(x is not None for x in by_label.values()), 9)
         self.assertTrue(all(lead.address not in {r.address for r in UNLOCKS}
                             for lead in JAPAN_UNLOCK_LEADS.values()))
 
     def test_every_named_japanese_field_is_a_direct_write_target(self):
-        self.assertEqual(len(japan_unlock_all_targets()), 7)
+        self.assertEqual(len(japan_unlock_all_targets()), 9)
         targets = {row.slug: value for row, value in japan_unlock_all_targets()}
         self.assertEqual(targets['sasuke_in_party'], 1)
         self.assertEqual(targets['yae_in_party'], 1)
         self.assertEqual(targets['triton_shell'], 1)
         self.assertEqual(targets['cucumber'], 1)
+        self.assertEqual(targets['lord_s_pass'], 1)
+        self.assertEqual(targets['achilles_heel'], 1)
         self.assertEqual(targets['red_fish_count'], 8)
         self.assertEqual(targets['yellow_fish_count'], 5)
         self.assertEqual(targets['blue_fish_count'], 3)
