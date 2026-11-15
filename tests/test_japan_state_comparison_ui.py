@@ -89,7 +89,7 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         app.compare_state_probes()
         # Same PID/base/endian alone cannot prove continuous physical identity.
         # UI invalidates snapshots during the actual disconnect/reconnect path.
-        self.assertIn('No candidate', app.state_probe_status.get())
+        self.assertIn('Different Japanese', app.state_probe_status.get())
 
 
 if __name__ == '__main__':
