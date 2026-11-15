@@ -9,7 +9,7 @@ class JapaneseDebugMenuTkTests(JapanTkSmokeTest):
     def test_native_menu_disabled_by_default_and_scene_index_is_hint(self):
         host = self.host
         self.assertIn('disabled', host.jp_debug_menu_button.state())
-        host.jp_research_tabs.select(2)
+        host.jp_research_tabs.select(1)
         self.assertEqual(
             host.jp_research_tabs.tab(host.jp_research_tabs.select(), 'text'),
             'Scene warp')
