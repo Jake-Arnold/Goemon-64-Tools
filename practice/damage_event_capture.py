@@ -179,8 +179,11 @@ def candidate_report(events, *, limit=MAX_ROWS):
             for width, kind in ((1, "u8"), (2, "u16"), (4, "u32")):
                 for offset in range(0, len(data) - width + 1, width):
                     guest_addr = address + offset
-                    # Exclude the known HP word from invulnerability candidates.
-                    if name == "game_data" and guest_addr < HP + 4 and guest_addr + width > HP:
+                    # HP itself is the event trigger, not a discovered
+                    # invulnerability timer. Mask both known regional forms.
+                    # USA HP is a word; Japan-0 HP is the last byte of a word.
+                    if any(guest_addr < addr+span and guest_addr+width > addr
+                           for addr,span in ((HP,4),(0x80161DD7,1))):
                         continue
                     features = _features(event, name, offset, width)
                     if features is None:
