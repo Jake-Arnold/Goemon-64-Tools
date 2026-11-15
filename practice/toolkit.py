@@ -580,6 +580,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             return
         target = self.connection_target.get()
         try:
+            if (self.active_version.key == 'japan' and self.jp_rdram is not None
+                    and target != self.jp_backend):
+                raise ValueError('Selected emulator differs from connected Japan-0 process; reconnect')
             if target == 'recomp':
                 raise ValueError('Goemon64Recomp cannot create complete savestates yet')
             specified = self.pid_text.get().strip()
