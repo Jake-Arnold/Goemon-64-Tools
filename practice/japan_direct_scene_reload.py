@@ -14,7 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from practice.entrances import Spawn
 from practice.japanese_debug_warp import (
-    JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE,
+    JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE, JAPAN_DEBUG_CHARACTER,
     JAPAN_ORDINARY_ENGINE_MODE, get_japan_debug_context, _normal_gameplay,
 )
 from practice.scenes import SCENES
@@ -32,10 +32,13 @@ class JapanDirectReload:
     pending_width: int
     spawn: Spawn | None
     state_after_write: int
+    target_character: int | None = None
+    character_staged: bool = False
 
 
 def stage_japan_direct_reload(rdram, destination: int, *,
-                              expected_context: tuple, spawn: Spawn | None = None):
+                              expected_context: tuple, spawn: Spawn | None = None,
+                              target_character: int | None = None):
     """Write pending destination/entrance, then 0x0D→0x0C immediately.
 
     The loaded game owns player reconstruction. Restore the previous pending
@@ -46,6 +49,9 @@ def stage_japan_direct_reload(rdram, destination: int, *,
     if not isinstance(expected_context, tuple) or len(expected_context) != 6:
         raise ValueError('Missing complete Japanese source-gameplay context')
     _normal_gameplay(expected_context)
+    if target_character is not None and (
+            type(target_character) is not int or target_character not in range(4)):
+        raise ValueError('Target character must be Goemon, Ebisumaru, Sasuke or Yae')
     if spawn is not None:
         if not isinstance(spawn, Spawn) or spawn.destination != destination:
             raise ValueError('Spawn must belong to the selected Japanese destination')
@@ -59,6 +65,8 @@ def stage_japan_direct_reload(rdram, destination: int, *,
     if len(previous) != len(requested):
         raise OSError('Short Japanese pending entrance read')
     wrote = False
+    character_staged = False
+    original_character = before[2].to_bytes(4, 'big')
     try:
         # Exactly the same operation ordering as USA stage_reload_trial:
         # stage pending map/entrance first, THEN trigger state 0x0C.
@@ -69,6 +77,15 @@ def stage_japan_direct_reload(rdram, destination: int, *,
             raise OSError('Japanese pending scene did not verify; reload not sent')
         if get_japan_debug_context(rdram) != before:
             raise RuntimeError('Japanese source gameplay changed during pending staging')
+        # Optional experimental target-character selection, matching the
+        # USA browser control. Default is None: retain the playable character.
+        # The engine rebuilds scene actors during the subsequent 0x0C reload.
+        if target_character is not None and target_character != before[2]:
+            requested_character = target_character.to_bytes(4, 'big')
+            rdram.write_guest(JAPAN_DEBUG_CHARACTER, requested_character)
+            character_staged = True
+            if rdram.read_guest(JAPAN_DEBUG_CHARACTER, 4) != requested_character:
+                raise OSError('Japanese target character write did not verify')
         rdram.write_guest(JAPAN_DEBUG_ENGINE_MODE, bytes([JAPAN_DIRECT_RELOAD_MODE]))
         observed = rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
         # State might already be back in ordinary gameplay if the game runs.
@@ -78,9 +95,18 @@ def stage_japan_direct_reload(rdram, destination: int, *,
                 'inspect Project64 and restore a native savestate if necessary')
     except Exception:
         try:
-            safe = (get_japan_debug_context(rdram) == before)
+            observed_context = get_japan_debug_context(rdram)
+            safe = (observed_context[:2] == before[:2]
+                    and observed_context[3:] == before[3:]
+                    and observed_context[2] in (
+                        before[2], target_character if target_character is not None else before[2]))
         except (OSError, ValueError, RuntimeError, PermissionError):
             safe = False
+        if safe and character_staged:
+            try:
+                rdram.write_guest(JAPAN_DEBUG_CHARACTER, original_character)
+            except (OSError, ValueError, RuntimeError, PermissionError):
+                pass
         if safe and wrote:
             try:
                 if rdram.read_guest(JAPAN_PENDING_MAP, len(requested)) == requested:
@@ -92,4 +118,5 @@ def stage_japan_direct_reload(rdram, destination: int, *,
         source_scene=before[1], destination=destination,
         previous_pending_scene=int.from_bytes(previous[:2], 'big'),
         pending_width=len(requested), spawn=spawn,
-        state_after_write=observed)
+        state_after_write=observed, target_character=target_character,
+        character_staged=character_staged)
