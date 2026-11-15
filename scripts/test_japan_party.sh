@@ -14,6 +14,8 @@ PYTHON="${PYTHON:-python3}"
   tests.test_japanese_scene_probes \
   tests.test_japanese_party_unlock \
   tests.test_japanese_position \
+  tests.test_japanese_debug_warp \
+  tests.test_japan_debug_menu_controller \
   tests.test_japan_position_controller \
   tests.test_japan_party_cli \
   tests.test_japan_party_controller \
@@ -31,6 +33,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_japanese_scene_probe_ui \
     tests.test_japanese_party_controls_ui \
     tests.test_japanese_position_ui \
+    tests.test_japanese_debug_ui \
     tests.test_japan_readonly_parity \
     tests.test_japan_state_comparison_ui \
     tests.test_value_search_ui \
@@ -43,6 +46,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_japanese_scene_probe_ui \
     tests.test_japanese_party_controls_ui \
     tests.test_japanese_position_ui \
+    tests.test_japanese_debug_ui \
     tests.test_japan_readonly_parity \
     tests.test_japan_state_comparison_ui \
     tests.test_value_search_ui \
