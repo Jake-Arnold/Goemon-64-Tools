@@ -14,7 +14,9 @@ from practice.theme import PALETTE
 from practice.japan_state_comparison import (
     capture_japan_memory, compare_japan_memory,
 )
-from practice.japan_player_position_research import find_japan_xyz_candidates
+from practice.japan_player_position_research import (
+    find_japan_xyz_candidates, export_japan_xyz_all_candidates,
+)
 from practice.japanese_scene_probes import read_japan_scene_probes
 from practice.transition_observer import read_transition_observation, format_transition_observation
 
@@ -360,9 +362,84 @@ class StateDiscoveryMixin:
                          name='GoemonJapanXYZReadOnly').start()
         self.root.after(70, poll)
 
+    def _export_all_japan_xyz_candidates(self):
+        """Stream all matching XYZ rows, never just the 200-row table preview."""
+        if self._jp_probe_busy:
+            self.state_probe_status.set('Finish current Japan capture/export first.')
+            return
+        report = self.state_report
+        if (not self._state_is_japan() or
+                any(stage not in self.state_captures for stage in ('A', 'B', 'C'))):
+            self.state_probe_status.set('XYZ snapshots are missing; recapture A/B/C.')
+            return
+        reader = getattr(self, 'jp_rdram', None)
+        if reader is None or getattr(self, 'game_pid', None) is None:
+            self.state_probe_status.set('Reconnect to Japan-0 before exporting XYZ.')
+            return
+        identity = ('japan-0', self.game_pid, reader.base, reader.endian, id(reader))
+        captures = tuple(self.state_captures[stage] for stage in ('A', 'B', 'C'))
+        if any(c.identity != identity for c in captures):
+            self.state_probe_status.set('Connection changed; recapture XYZ before export.')
+            return
+        try:
+            path = diagnostics_dir() / (
+                'japan_state_probe_' +
+                datetime.now().strftime('%Y%m%d_%H%M%S_%f') + '.json')
+        except OSError as exc:
+            self.state_probe_status.set(f'XYZ export setup failed: {exc}')
+            return
+        self._jp_probe_generation += 1
+        generation = self._jp_probe_generation
+        self._jp_probe_busy = True
+        expected = report['counts']['candidate_count']
+        self.state_probe_status.set(
+            f'Exporting ALL {expected} XYZ candidates (table remains top 200); '
+            'scanning cached A/B/C RAM snapshots, not reading live game RAM...')
+        results = queue.SimpleQueue()
+
+        def worker():
+            try:
+                count = export_japan_xyz_all_candidates(
+                    *captures, path, expected_count=expected,
+                    cancelled=lambda: generation != self._jp_probe_generation)
+                results.put((count, None))
+            except Exception as exc:
+                results.put((None, str(exc)))
+
+        def poll():
+            if generation != self._jp_probe_generation:
+                return
+            try:
+                count, error = results.get_nowait()
+            except queue.Empty:
+                self.root.after(70, poll)
+                return
+            self._jp_probe_busy = False
+            if (not self._state_is_japan() or
+                    getattr(self, 'jp_rdram', None) is not reader or
+                    getattr(self, 'game_pid', None) != identity[1] or
+                    self.state_report is not report):
+                path.unlink(missing_ok=True)
+                self.state_probe_status.set('Japanese connection changed; XYZ export discarded.')
+                return
+            if error is not None:
+                self.state_probe_status.set(f'XYZ full export failed: {error}')
+                return
+            self.state_probe_status.set(
+                f'Exported ALL {count} XYZ candidates to {path}; '
+                'interactive table remains limited to top 200. '
+                'No raw snapshots or guest writes.')
+
+        threading.Thread(target=worker, daemon=True,
+                         name='GoemonJapanXYZFullExport').start()
+        self.root.after(70, poll)
+
     def export_state_probe(self):
         if not self.state_report:
             self.state_probe_status.set('Compare A and B before exporting.')
+            return
+        if self.state_report.get('format') == 'goemon-japan-xyz-heuristic-v1':
+            self._export_all_japan_xyz_candidates()
             return
         try:
             prefix = ('japan_state_probe_' if self.state_report.get('region') == 'japan-0'
