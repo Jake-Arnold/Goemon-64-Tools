@@ -26,6 +26,7 @@ PYTHON="${PYTHON:-python3}"
   tests.test_japan_event_sessions \
   tests.test_japan_damage_capture \
   tests.test_japan_native_scene_warp \
+  tests.test_japan_direct_scene_reload \
   tests.test_japan_native_scene_controller \
   tests.test_japan_state_comparison \
   tests.test_japan_player_position_research \
