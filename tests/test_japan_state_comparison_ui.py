@@ -105,6 +105,8 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         self.assertIn('candidate', app.state_probe_status.get())
         self.assertEqual(app.state_probe_table.heading('returned', 'text'),
                          'C stable at B?')
+        self.assertEqual(app.state_probe_export_button.cget('text'),
+                         'Export ALL XYZ candidates')
         with patch('practice.state_discovery_ui.diagnostics_dir',
                    return_value=Path(self.temp.name)):
             app.export_state_probe()
