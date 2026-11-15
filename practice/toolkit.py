@@ -212,6 +212,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.jp_base_row.pack(fill='x', pady=(0, 7))
         self.jp_candidates = {}
         self.jp_candidates_pid = None
+        self.jp_candidates_backend = None
+        self.jp_backend = None
         self.connect_button = ttk.Button(connection, text='Connect to game',
                    style='Accent.TButton', command=self.connect)
         self.connect_button.pack(fill='x', pady=(0, 7))
@@ -422,6 +424,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         """Discard process-specific candidate bases when the region or ROM changes."""
         self.jp_candidates = {}
         self.jp_candidates_pid = None
+        self.jp_candidates_backend = None
         self.jp_base_selector['values'] = ('Auto (detect)',)
         self.jp_base_choice.set('Auto (detect)')
 
@@ -436,6 +439,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             previous = self.process
             self.process = self.mem = self.current = self.jp_rdram = None
             self.game_pid = None
+            self.jp_backend = None
             self.last = self.last_t = None
             self.observed_velocity = None
         if previous is not None:
@@ -505,7 +509,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         consent = messagebox.askyesno(
             f'Unlock {name} temporarily?',
             f'Write one byte to Japanese party flag 0x{address:08X}: 00 → 01?'
-            '\n\nCreate a complete Mupen64Plus savestate BEFORE proceeding.'
+            '\n\nCreate a complete emulator savestate BEFORE proceeding.'
             '\nThis does not switch the character itself. Use in-game C-Down '
             'afterwards; restoring the savestate is the recovery path.'
             '\n\nDo not save in-game progress if the unlock should not persist.',
@@ -518,13 +522,25 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         original = self.jp_rdram
         writable = None
         try:
-            if verified_emulator_pid(pid, 'mupen64plus')[0] != pid:
-                raise RuntimeError('The Mupen64Plus PID changed; reconnect')
+            target = self.jp_backend
+            if target not in ('mupen64plus', 'project64'):
+                raise RuntimeError('Japanese emulator backend is not confirmed; reconnect')
+            if target == 'project64' and sys.platform != 'win32':
+                raise RuntimeError('Japanese Project64 writes are Windows-only')
+            if self.connection_target.get() != target:
+                raise RuntimeError('Selected emulator changed; reconnect first')
+            if verified_emulator_pid(pid, target) != (pid, target):
+                raise RuntimeError('The verified emulator PID changed; reconnect')
             probes = verified_japan_probes(self.verified_rom_path)
             # Reopen only for this user-initiated write, not for background polling.
             writable = HostProcess(pid, writable=True)
-            verified = validate_rdram_base(writable, original.base,
-                                            original.endian, probes)
+            verified = validate_rdram_base(
+                writable, original.base, original.endian, probes,
+                allow_4mb=(target == 'project64'))
+            if getattr(verified, 'rdram_size', 0x800000) != getattr(
+                    original, 'rdram_size', 0x800000):
+                raise RuntimeError('Japanese RDRAM size changed; reconnect')
+
             # Confirm both handles still observe identical, sane scene/character
             # state before using the writable view.
             for addr, width in ((CHARACTER_INDEX_ADDR, 4),
@@ -744,7 +760,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         if self._connecting:
             return
         if self.active_version.key == 'japan':
-            self._connect_japan_mupen()
+            self._connect_japan_emulator()
             return
         if self.connection_target.get() == 'mupen64plus':
             try:
@@ -799,13 +815,18 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         thread.start()
         self.root.after(50, self._poll_connect_results)
 
-    def _connect_japan_mupen(self):
-        """Attach to a verified Japanese ROM in an existing Mupen PID, read-only."""
-        if self.connection_target.get() != 'mupen64plus':
-            self.status.set('Japan requires target mupen64plus; USA recomp is not a Japan runner.')
+    def _connect_japan_emulator(self):
+        """Attach Japan-0 to verified Mupen or Windows Project64 guest RDRAM."""
+        target = self.connection_target.get()
+        if target not in ('mupen64plus', 'project64'):
+            self.status.set('Japan requires target mupen64plus or project64; '
+                            'USA recomp is not a Japan runner.')
+            return
+        if target == 'project64' and sys.platform != 'win32':
+            self.status.set('Japanese Project64 attachment is supported on Windows only.')
             return
         if self.verified_rom_path is None:
-            self.status.set('Verify the exact Japan-0 ROM before attaching to Mupen64Plus.')
+            self.status.set('Verify the exact Japan-0 ROM before attaching to the emulator.')
             return
         try:
             pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
@@ -816,7 +837,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             return
         selected = self.jp_base_choice.get()
         candidate = self.jp_candidates.get(selected)
-        if selected != 'Auto (detect)' and candidate is None:
+        if selected != 'Auto (detect)' and (
+                candidate is None or self.jp_candidates_backend != target):
             self.status.set('The selected Japanese RAM candidate is stale; rescan.')
             return
         base_hint = candidate[0] if candidate else self.args.base
@@ -826,19 +848,23 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._connecting = True
         self.connect_button.state(['disabled'])
         self.version_selector.state(['disabled'])
-        self.status.set('Checking Japanese Mupen64Plus memory signatures...')
-        opts = (pid_hint, self.verified_rom_path, base_hint, endian, selected_pid)
+        self.status.set(f'Checking Japanese {target} memory signatures...')
+        opts = (pid_hint, self.verified_rom_path, base_hint, endian,
+                selected_pid, target)
         threading.Thread(target=self._connect_japan_worker, args=(opts,), daemon=True,
                          name='GoemonJapanMupenDiscovery').start()
         self.root.after(50, self._poll_connect_results)
 
     def _connect_japan_worker(self, opts):
-        """No Tk interaction and no memory writes from the background worker."""
-        pid_hint, rom_path, base_hint, endian, selected_pid = opts
+        """Verified ROM code probes only; no Tk or memory writes in worker."""
+        pid_hint, rom_path, base_hint, endian, selected_pid, target = opts
         process = None
         try:
-            pid, _ = (verified_emulator_pid(pid_hint, 'mupen64plus')
-                      if pid_hint else find_emulator_pid('mupen64plus'))
+            pid, kind = (verified_emulator_pid(pid_hint, target)
+                         if pid_hint else find_emulator_pid(target))
+            if kind != target:
+                raise RuntimeError('Emulator process changed during discovery')
+
             if selected_pid is not None and pid != selected_pid:
                 raise RuntimeError('Selected RAM base belongs to a different emulator PID; rescan')
             probes = verified_japan_probes(rom_path)
@@ -846,15 +872,19 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             base = (int(base_hint, 0) if isinstance(base_hint, str) else
                     int(base_hint) if base_hint is not None else None)
             reader, address, mode = discover_japanese_mupen_rdram(
-                process, probes, base_hint=base, mode=endian)
-            self._connect_queue.put(('japan-ok', pid, process, reader, address, mode))
+                process, probes, base_hint=base, mode=endian,
+                allow_4mb=(target == 'project64'))
+            self._connect_queue.put(('japan-ok', pid, target, process, reader,
+                                     address, mode))
+
         except AmbiguousJapaneseRdram as exc:
             if process is not None:
                 try:
                     process.close()
                 except OSError:
                     pass
-            self._connect_queue.put(('japan-ambiguous', pid, exc.candidates))
+            self._connect_queue.put(('japan-ambiguous', pid, target,
+                                     exc.candidates))
         except Exception as exc:
             if process is not None:
                 try:
@@ -917,7 +947,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.version_selector.state(['!disabled', 'readonly'])
         self.connect_button.state(['!disabled'])
         if result[0] == 'japan-ambiguous':
-            _, pid, choices = result
+            _, pid, target, choices = result
+            self.jp_candidates_backend = target
             self.jp_candidates = {
                 f'0x{base:X} ({endian})': (base, endian)
                 for base, endian in choices
@@ -931,19 +962,23 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'Select a code-matching RAM base above, then reconnect. '
                 'A match alone does not prove the copy is actively changing.')
             self.status.set(
-                f'Found {len(choices)} candidate RAM buffers in Mupen PID {pid}. '
+                f'Found {len(choices)} candidate RAM buffers in {target} PID {pid}. '
                 'Choose a base from the dropdown and reconnect.')
         elif result[0] == 'japan-ok':
-            _, pid, process, reader, base, endian = result
+            _, pid, target, process, reader, base, endian = result
             with self.value_freezes.guard:
                 self.process, self.jp_rdram, self.game_pid = process, reader, pid
+                self.jp_backend = target
                 self.mem = self.current = None
             self.jp_read_button.state(['!disabled'])
-            self.jp_read_result.set(f'Japan-0 main-code probes matched RDRAM at 0x{base:X}; {endian}.')
+            size_mb = getattr(reader, 'rdram_size', 0x800000) // 0x100000
+            self.jp_read_result.set(
+                f'Japan-0 verified {size_mb} MiB RDRAM at 0x{base:X}; {endian}.')
+
             self.refresh_japan_fields(force=True)
             self.notebook.select(self.jp_fields_tab)
-            self.status.set(f'Attached read-only to Japanese-code Mupen64Plus PID {pid}, '
-                            f'RAM 0x{base:X}, {endian}. Japan Live, Value Search and '
+            self.status.set(f'Attached read-only to Japan-0 {target} PID {pid}, '
+                            f'{size_mb} MiB RAM 0x{base:X}, {endian}. Japan Live, Value Search and '
                             'Advanced A/B/C are read-only; USA write controls remain disabled.')
         elif result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
@@ -956,6 +991,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             with self.value_freezes.guard:
                 self.process = self.mem = self.current = self.jp_rdram = None
                 self.game_pid = None
+                self.jp_backend = None
                 self.jp_read_button.state(['disabled'])
             self.pos_text.set('X: —    Y: —    Z: —')
             self.speed_text.set('Speed: —')
