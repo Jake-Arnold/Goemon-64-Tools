@@ -276,6 +276,17 @@ class InspectorMixin(EntranceMixin):
         if labels and self.diff_cp.current()<0:self.diff_cp.current(len(labels)-1)
 
     def add_custom_watch(self):
+        if self.active_version.key == 'japan':
+            if self.add_japan_custom_watch_from_search(
+                    self.user_watch_address.get(),
+                    self.user_watch_type.get(),
+                    label=self.user_watch_name.get()):
+                self.refresh_inspector({})
+                self.inspector_status.set(
+                    'Japan-only typed custom watch saved; read-only.')
+            else:
+                self.inspector_status.set(self.jp_custom_watch_status.get())
+            return
         try:
             spec=make_watch(self.user_watch_name.get(),self.user_watch_address.get(),
                             self.user_watch_type.get())
@@ -298,6 +309,28 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Add watch failed: {exc}')
 
     def remove_custom_watch(self):
+        if self.active_version.key == 'japan':
+            selected = set(self.watch_tree.selection())
+            found = next(
+                (item for item in self.jp_custom_watches
+                 if item.row_name in selected), None)
+            if found is None:
+                self.inspector_status.set('Select a Japanese custom watch first.')
+                return
+            updated = [item for item in self.jp_custom_watches if item != found]
+            try:
+                save_watches(self.jp_watch_path, updated)
+            except (OSError, ValueError) as exc:
+                self.inspector_status.set(f'Japan watch removal failed: {exc}')
+                return
+            self.jp_custom_watches = updated
+            if self.jp_fields_tree.exists(self._jp_custom_iid(found)):
+                self.jp_fields_tree.delete(self._jp_custom_iid(found))
+            self._jp_reset_comparison()
+            self.refresh_japan_fields(force=True)
+            self.refresh_inspector({})
+            self.inspector_status.set(f'Removed Japan-only watch: {found.name}')
+            return
         chosen=self.watch_tree.selection()
         names={spec.row_name for spec in self.custom_watches}
         selected=next((name for name in chosen if name in names),None)
@@ -336,7 +369,10 @@ class InspectorMixin(EntranceMixin):
         menu.delete(0,'end')
         active=(watch.addr is not None and self.value_freezes.get(watch.addr) is not None)
         menu.add_command(label='Unfreeze value' if active else 'Freeze value',
-                         state='normal' if watch.addr is not None and not getattr(self.args,'read_only',False) else 'disabled',
+                         state='normal' if (self.active_version.key != 'japan'
+                              and watch.addr is not None
+                              and not getattr(self.args,'read_only',False))
+                              else 'disabled',
                          command=lambda row_id=row_id:self.toggle_live_watch_freeze(row_id))
         menu.add_command(label='Rename field…',
                          command=lambda row_id=row_id:self.rename_live_watch(row_id))
@@ -414,7 +450,12 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Rename failed: {exc}')
 
     def write_raw_hex(self):
-        """Write explicitly entered guest bytes on a writable connection."""
+        """Write explicitly entered guest bytes on a writable USA connection."""
+        if self.active_version.key == 'japan':
+            self.inspector_status.set(
+                'Japanese raw writes require a verified region-specific control; '
+                'generic USA raw editor is disabled.')
+            return
         if not self.mem:
             self.inspector_status.set('Connect to the game first.')
             return
@@ -434,7 +475,11 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Raw write failed: {exc}')
 
     def edit_live_hex(self,event):
-        """Launch a typed hex editor only for the clicked HEX column."""
+        """Never apply USA hex policies to Japanese live addresses."""
+        if self.active_version.key == 'japan':
+            self.inspector_status.set(
+                'Japan Live is read-only; use a verified Japanese write control.')
+            return
         if self.watch_tree.identify_region(event.x,event.y)!='cell':return
         if self.watch_tree.identify_column(event.x)!='#3':return
         row_id=self.watch_tree.identify_row(event.y)
@@ -503,6 +548,39 @@ class InspectorMixin(EntranceMixin):
         self.event_text.see('end');self.event_text.configure(state='disabled')
 
     def refresh_inspector(self, snapshot):
+        if self.active_version.key == 'japan':
+            if self.jp_rdram is None:
+                self.watch_rows=[]
+                self.draw_watches()
+                self.scene_live.set('Current map: —')
+                self.inspector_status.set('Connect to Japan-0 RDRAM for shared Live Memory.')
+                return
+            import time
+            now=time.monotonic()
+            if now-self.last_inspect_at < 0.30:
+                return
+            self.last_inspect_at=now
+            from practice.region_views import japan_live_watches
+            try:
+                rows=japan_live_watches(self.jp_rdram, self.jp_custom_watches)
+                changed=sum(
+                    1 for row in rows
+                    if row.name in self.watch_previous
+                    and self.watch_previous[row.name] != row.raw)
+                self.watch_rows=rows
+                self.draw_watches()
+                self.watch_previous={row.name:row.raw for row in rows}
+                scene=int.from_bytes(
+                    self.jp_rdram.read_guest(0x800CD2A2, 2), 'big')
+                self.scene_live.set(
+                    f'Current map: 0x{scene:03X} '
+                    f'{self.scene_catalog().get(scene, "unmapped")}')
+                self.inspector_status.set(
+                    f'Japan-0: {len(rows)} source-backed/custom fields; '
+                    f'{changed} changed; USA-only address policies disabled.')
+            except (OSError, RuntimeError, ValueError) as exc:
+                self.inspector_status.set(f'Japan live inspector failed: {exc}')
+            return
         if not self.mem:return
         import time
         now=time.monotonic()
