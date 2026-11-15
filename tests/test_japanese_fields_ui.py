@@ -17,6 +17,10 @@ class Host(JapaneseFieldsUi):
     def __init__(self, root):
         self.active_version = SimpleNamespace(key='japan')
         self.jp_rdram = None
+        # JP Live's manual fallback uses the shared Scene Browser selection,
+        # which is intentionally not built by this isolated Tk smoke host.
+        self.scene_selected = 0x161
+        self.scene_list = SimpleNamespace(curselection=lambda: ())
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(fill='both', expand=True)
         self.build_japanese_fields_tab(self.notebook)
@@ -29,6 +33,11 @@ class Host(JapaneseFieldsUi):
 
     def open_japan_debug_for_selected_scene(self):
         raise AssertionError('UI smoke host must never enter debug mode')
+
+    def open_full_scene_tab(self):
+        # In the real Toolkit this selects the shared Scene Browser; this
+        # lightweight test host deliberately does not build USA tabs.
+        return None
 
 
 class JapanTkSmokeTest(unittest.TestCase):
