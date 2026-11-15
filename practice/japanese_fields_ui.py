@@ -131,36 +131,29 @@ class JapaneseFieldsUi:
             wraplength=960).pack(anchor='w', pady=(5, 0))
 
         debug = ttk.Frame(research_tabs, padding=7)
-        research_tabs.add(debug, text='Scene warp (debug)')
+        research_tabs.add(debug, text='Scene warp')
         ttk.Label(
             debug,
-            text='Use the shared Scene Browser for both USA and Japan. '
-                 'Single-click selects a scene; double-click executes the '
-                 'region-specific scene warp. This panel retains only the '
-                 'original debug menu fallback and the Project64 N64 A '
-                 'keyboard binding used for automatic Japanese warps.',
+            text='Use the existing Scene Browser in both USA and Japan. '
+                 'Double-click a room to request its immediate native '
+                 '0x0C area reload. The debug menu is not involved. '
+                 'The original debug button below is manual only.',
             wraplength=960).pack(anchor='w')
         row = ttk.Frame(debug)
         row.pack(fill='x', pady=(7, 4))
-        ttk.Label(row, text='Project64 N64 A key:').pack(side='left')
-        self.jp_warp_a_key = tk.StringVar(value='X')
-        self.jp_warp_a_selector = ttk.Combobox(
-            row, textvariable=self.jp_warp_a_key, state='readonly',
-            values=('X', 'Z', 'C', 'SPACE', 'ENTER',
-                    'A', 'S', 'J', 'K', 'L'), width=8)
-        self.jp_warp_a_selector.pack(side='left', padx=(7, 12))
-        self.jp_warp_a_selector.current(0)
         ttk.Button(
             row, text='Open shared Scene Browser',
             command=self.open_full_scene_tab).pack(side='left')
         self.jp_debug_menu_button = ttk.Button(
-            debug, text='Open ORIGINAL debug menu only (manual fallback)',
+            debug, text='Open original debug menu (manual only)',
             command=self.open_japan_debug_for_selected_scene)
         self.jp_debug_menu_button.pack(anchor='w', pady=(5, 3))
         self.jp_debug_menu_button.state(['disabled'])
         self.jp_debug_result = tk.StringVar(value=(
-            'Double-click a room in Scene Browser to request its full native '
-            'scene load. The manual debug button is separate. '
+            'Scene Browser double-click stages the Japan pending scene '
+            '(0x800CD490) and requests native area reload 0x0C '
+            '(0x800CD284). No debug menu or keyboard A input. '
+            'The manual debug button is separate. '
             'Requires --enable-japan-debug-menu-writes.'))
         ttk.Label(debug, textvariable=self.jp_debug_result,
                   wraplength=960).pack(anchor='w', pady=(3, 0))
