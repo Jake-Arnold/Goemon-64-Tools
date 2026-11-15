@@ -237,6 +237,9 @@ class JapaneseFieldsUi:
             self.active_version.key == 'japan'
             and self.jp_rdram is not None
             and getattr(self, 'game_pid', None) is not None
+            and (getattr(self, 'jp_backend', None) is None or
+                 getattr(getattr(self, 'connection_target', None),
+                         'get', lambda: None)() == self.jp_backend)
             and bool(getattr(getattr(self, 'args', None),
                              'enable_japan_party_writes', False))
             and not bool(getattr(getattr(self, 'args', None),
