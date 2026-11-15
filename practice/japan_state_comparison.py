@@ -40,18 +40,19 @@ class JapanMemoryCapture:
 def capture_japan_memory(reader, label: str, *, scope='focused', identity=None):
     """Capture no-player-required Japan-0 guest RAM from a verified reader.
 
-    Identity is ('japan-0', PID, host-RDRAM-base, endian), supplied by the
+    Identity is ('japan-0', PID, host-RDRAM-base, endian, session-token), supplied by the
     connection owner. A different session must never reuse prior captures.
     """
     if scope not in ('focused', 'wide'):
         raise ValueError('Use focused or wide scope')
     if not isinstance(label, str) or not label.strip():
         raise ValueError('A capture label is required')
-    if (not isinstance(identity, tuple) or len(identity) != 4
+    if (not isinstance(identity, tuple) or len(identity) != 5
             or identity[0] != 'japan-0'
             or type(identity[1]) is not int or identity[1] <= 0
             or type(identity[2]) is not int or identity[2] <= 0
-            or identity[3] not in ('big', 'wordswapped')):
+            or identity[3] not in ('big', 'wordswapped')
+            or type(identity[4]) is not int or identity[4] <= 0):
         raise ValueError('Verified Japan-0 PID/RDRAM identity required')
 
     fields = JAPAN_FOCUSED_RANGES if scope == 'focused' else (JAPAN_WIDE_RANGE,)
