@@ -26,6 +26,11 @@ from autosplitter.process_discovery import find_pid
 from autosplitter.memory import HostProcess, Rdram, discover_rdram
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
+from practice.native_checkpoints import (
+    load_named_checkpoints, save_named_checkpoints,
+    make_named_checkpoint, upsert_named_checkpoint, label_named_checkpoint,
+    japan_checkpoint_summary,
+)
 from practice.value_freezes_ui import ValueFreezesMixin
 from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
@@ -75,6 +80,7 @@ from practice.native_character import (
 ROOT = resource_root()
 BOOKMARKS_FILE = practice_data_dir() / "bookmarks.json"
 CHECKPOINTS_FILE = practice_data_dir() / "checkpoints.json"
+NATIVE_CHECKPOINTS_FILE = practice_data_dir() / "native-state-bookmarks.json"
 
 
 ASSETS_DIR = ROOT / "assets"
@@ -150,6 +156,13 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         # never misrepresented or rewritten as full progression checkpoints.
         self.legacy_bookmarks = json.loads(BOOKMARKS_FILE.read_text()) if BOOKMARKS_FILE.exists() else []
         self.checkpoints = load_checkpoint_file(CHECKPOINTS_FILE)
+        # A named native state is a local label for an emulator slot, never
+        # a copy of its savestate bytes. Corrupt metadata must not prevent boot.
+        try:
+            self.named_native_checkpoints = load_named_checkpoints(
+                NATIVE_CHECKPOINTS_FILE)
+        except (OSError, ValueError):
+            self.named_native_checkpoints = []
         self.status = tk.StringVar(value="Disconnected. Start USA Goemon in Recomp or Project64, then Connect.")
         self.connection_target = tk.StringVar(value='auto')
         self.pid_text = tk.StringVar(value=str(args.pid) if args.pid else '')
@@ -291,6 +304,41 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.native_save_btn.state(['disabled'])
             self.native_load_btn.state(['disabled'])
 
+        # Japan-0 named checkpoints are references to emulator-owned full
+        # save slots, NOT USA logical RAM checkpoints.
+        named = ttk.Frame(state_card)
+        named.pack(fill='x', pady=(7, 0))
+        self.named_native_frame = named
+        ttk.Label(
+            named, text='Named Japanese state slots (emulator owns the saves)',
+            style='CardMuted.TLabel').pack(anchor='w')
+        name_row = ttk.Frame(named)
+        name_row.pack(fill='x', pady=(3, 3))
+        self.named_native_name = tk.StringVar(value='Practice checkpoint')
+        ttk.Entry(name_row, textvariable=self.named_native_name,
+                  width=26).pack(side='left', fill='x', expand=True)
+        self.named_native_save_btn = ttk.Button(
+            name_row, text='Save named slot',
+            command=self.save_named_native_checkpoint)
+        self.named_native_save_btn.pack(side='left', padx=(6, 0))
+        choice_row = ttk.Frame(named)
+        choice_row.pack(fill='x')
+        self.named_native_choice = tk.StringVar()
+        self.named_native_selector = ttk.Combobox(
+            choice_row, textvariable=self.named_native_choice,
+            state='readonly', width=33)
+        self.named_native_selector.pack(side='left', fill='x', expand=True)
+        self.named_native_load_btn = ttk.Button(
+            choice_row, text='Load named slot',
+            command=self.load_named_native_checkpoint)
+        self.named_native_load_btn.pack(side='left', padx=(6, 0))
+        self._named_native_visible = []
+        self.connection_target.trace_add(
+            'write', lambda *_: self.refresh_named_native_checkpoints())
+        if self.active_version.key != 'japan':
+            named.pack_forget()
+        self.refresh_named_native_checkpoints()
+
         # Read-only diagnostics coexist with direct mapped Japanese unlock edits.
         jp_card = ttk.LabelFrame(right, text=' Japan Project64 / Mupen64Plus RDRAM ', padding=10)
         self.jp_card = jp_card
@@ -415,6 +463,11 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         else:
             self.jp_card.pack_forget()
         self.refresh_japan_party_controls()
+        if version.key == 'japan':
+            self.named_native_frame.pack(fill='x', pady=(7, 0))
+        else:
+            self.named_native_frame.pack_forget()
+        self.refresh_named_native_checkpoints()
         # Japan permits fixed-address raw freezes; USA-only task-pointer /
         # health / God Mode controls remain disabled. No USA guest offsets are
         # ever used by Japanese freeze polling.
@@ -1067,8 +1120,90 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             send_state_command(pid, kind, action, slot)
             self.status.set(f'Requested {kind} {action} in state slot {slot} (PID {pid}). '
                             'Confirm completion in the emulator.')
+            return pid, kind, slot
         except (ValueError, RuntimeError, OSError) as exc:
             self.status.set(f'Full savestate unavailable: {exc}')
+
+    def refresh_named_native_checkpoints(self):
+        """Only show labels for the selected region and emulator backend."""
+        if not hasattr(self, 'named_native_selector'):
+            return
+        region = self.active_version.key
+        backend = self.connection_target.get()
+        filtered = [
+            record for record in self.named_native_checkpoints
+            if record['region'] == region and record['backend'] == backend
+        ]
+        previous = self.named_native_choice.get()
+        labels = [label_named_checkpoint(record) for record in filtered]
+        self._named_native_visible = filtered
+        self.named_native_selector.configure(values=labels)
+        self.named_native_choice.set(previous if previous in labels else
+                                     labels[0] if labels else '')
+        writable = (region == 'japan' and
+                    backend in ('project64', 'mupen64plus') and
+                    not getattr(self.args, 'read_only', False))
+        self.named_native_save_btn.state(
+            ['!disabled'] if writable else ['disabled'])
+        self.named_native_load_btn.state(
+            ['!disabled'] if writable and filtered else ['disabled'])
+
+    def save_named_native_checkpoint(self):
+        """Request an emulator full save; store only its human-readable slot label."""
+        if (self.active_version.key != 'japan'
+                or self.jp_rdram is None
+                or self.game_pid is None
+                or self.connection_target.get() != self.jp_backend):
+            self.status.set('Connect Japan-0 Project64/Mupen before naming a state slot.')
+            return
+        name = self.named_native_name.get().strip()
+        if not 1 <= len(name) <= 64:
+            self.status.set('Named checkpoint requires a name of 1–64 characters.')
+            return
+        # Capture optional observational metadata before issuing the save.
+        summary = japan_checkpoint_summary(self.jp_rdram)
+        dispatched = self.native_savestate_action('save')
+        if dispatched is None:
+            return
+        _pid, backend, slot = dispatched
+        record = make_named_checkpoint(
+            name, 'japan', backend, slot, **summary)
+        try:
+            updated = upsert_named_checkpoint(
+                self.named_native_checkpoints, record)
+            save_named_checkpoints(NATIVE_CHECKPOINTS_FILE, updated)
+            self.named_native_checkpoints = updated
+            self.refresh_named_native_checkpoints()
+            self.named_native_choice.set(label_named_checkpoint(record))
+            self.status.set(
+                f'Emulator SAVE REQUEST sent to {backend} slot {slot}; '
+                f'named metadata recorded as "{name}". '
+                'Confirm the actual save completed in the emulator.')
+        except (OSError, ValueError) as exc:
+            self.status.set(
+                f'Emulator save request sent for slot {slot}, but the '
+                f'checkpoint label could not be stored: {exc}')
+
+    def load_named_native_checkpoint(self):
+        """Route through existing emulator load; never restore a Japanese RAM dump."""
+        selected = self.named_native_selector.current()
+        if not 0 <= selected < len(self._named_native_visible):
+            self.status.set('Select an existing named Japanese state slot.')
+            return
+        record = self._named_native_visible[selected]
+        if (self.active_version.key != 'japan'
+                or record['region'] != 'japan'
+                or record['backend'] != self.connection_target.get()):
+            self.status.set('Named checkpoint is for another region/emulator.')
+            return
+        self.savestate_slot.set(str(record['slot']))
+        dispatched = self.native_savestate_action('load')
+        if dispatched is not None:
+            self.status.set(
+                f'Requested native {record["backend"]} load of '
+                f'{record["name"]} (slot {record["slot"]}). '
+                'Confirm completion in the emulator. '
+                'Reconnect to read the restored Japanese RAM.')
 
     def verify_rom_for_version(self):
         """Offline-only retail ROM verification; never attaches to a game process."""
