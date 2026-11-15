@@ -112,7 +112,7 @@ class InspectorMixin(EntranceMixin):
                    style='Gold.TButton').pack(side='left',padx=(0,6))
         ttk.Button(custom_row,text='Remove selected watch',command=self.remove_custom_watch).pack(side='left')
         ttk.Label(watch_tools,text='Custom values refresh with the live table. Select the custom row to remove it. '
-                  'Double-click its Hex cell to edit.',
+                  'Right-click a value to edit, rename or freeze it.',
                   style='Muted.TLabel').pack(anchor='w',pady=(4,0))
         if self.custom_watch_load_error:
             ttk.Label(watch_tools,text='Existing custom watch file could not be read: '+self.custom_watch_load_error,
@@ -120,7 +120,7 @@ class InspectorMixin(EntranceMixin):
         if self.watch_alias_load_error:
             ttk.Label(watch_tools,text='Saved field names could not be read: '+self.watch_alias_load_error,
                       style='Muted.TLabel').pack(anchor='w')
-        ttk.Label(inspector,text='Right-click a Live memory row to freeze/unfreeze its current value or rename the field. Names persist; freezes do not. Double-click the Hex cell to edit. Writes are enabled unless launched with --read-only.').pack(anchor='w')
+        ttk.Label(inspector,text='Right-click any Live Memory row to edit its hex value or rename it (and freeze USA values). Double-click Hex to edit. Writes enabled unless --read-only.').pack(anchor='w')
         manual=ttk.Frame(inspector);manual.pack(fill='x',pady=(3,7))
         ttk.Label(manual,text='Raw address:').pack(side='left')
         self.raw_address=tk.StringVar(value='0x8015C717')
@@ -174,7 +174,10 @@ class InspectorMixin(EntranceMixin):
                values=('0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
         self.scene_character.current(0)
         self.scene_character.pack(side='left',padx=8)
-        ttk.Label(character_line,text='Experimental pre-load spawn ID, no C-Down. Native model selection unverified.').pack(side='left')
+        self.scene_character_note = ttk.Label(
+            character_line,
+            text='Keep current by default; alternate character is staged before reload (experimental).')
+        self.scene_character_note.pack(side='left')
         self.build_entrance_controls(scenes)
         self.scene_filter=tk.StringVar()
         ttk.Entry(scenes,textvariable=self.scene_filter).pack(fill='x',pady=6)
@@ -218,7 +221,12 @@ class InspectorMixin(EntranceMixin):
                 text='JAPAN: single-click selects; double-click immediately '
                      'requests the selected room using the same 0x0C area '
                      'reload mechanism as USA. No debug menu is opened.')
-            self.scene_character_line.pack_forget()
+            self.scene_character.configure(values=(
+                'Keep current character',
+                'Goemon', 'Ebisumaru', 'Sasuke', 'Yae'))
+            self.scene_character.current(0)
+            self.scene_character_line.pack(fill='x', pady=4,
+                                           after=self.scene_instruction)
             self.entrance_box.pack_forget()
             self.scene_transition_note.configure(
                 text='Japan-0: stage the pending destination at '
@@ -240,6 +248,9 @@ class InspectorMixin(EntranceMixin):
             self.scene_instruction.configure(
                 text='USA: single-click selects; double-click uses the '
                      'selected entrance reload. Manual debug menu is separate.')
+            self.scene_character.configure(values=(
+                '0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
+            self.scene_character.current(0)
             self.scene_character_line.pack(fill='x', pady=4,
                                            after=self.scene_instruction)
             self.entrance_box.pack(fill='x', pady=4,
@@ -370,6 +381,16 @@ class InspectorMixin(EntranceMixin):
         menu=self.watch_context_menu
         menu.delete(0,'end')
         active=(watch.addr is not None and self.value_freezes.get(watch.addr) is not None)
+        editor_available = (
+            watch.addr is not None
+            and not getattr(self.args, 'read_only', False)
+            and (self.jp_rdram is not None if self.active_version.key == 'japan'
+                 else self.mem is not None))
+        menu.add_command(
+            label='Edit value (hex)…',
+            state='normal' if editor_available else 'disabled',
+            command=lambda row_id=row_id: self.edit_live_watch_value(row_id))
+        menu.add_separator()
         menu.add_command(label='Unfreeze value' if active else 'Freeze value',
                          state='normal' if (self.active_version.key != 'japan'
                               and watch.addr is not None
@@ -476,54 +497,82 @@ class InspectorMixin(EntranceMixin):
         except (ValueError,OSError,RuntimeError,PermissionError) as exc:
             self.inspector_status.set(f'Raw write failed: {exc}')
 
-    def edit_live_hex(self,event):
-        """Never apply USA hex policies to Japanese live addresses."""
-        if self.active_version.key == 'japan':
-            self.inspector_status.set(
-                'Japan Live is read-only; use a verified Japanese write control.')
+    def edit_live_hex(self, event):
+        """Double-click the Hex column; right-click uses the same editor."""
+        if self.watch_tree.identify_region(event.x, event.y) != 'cell':
             return
-        if self.watch_tree.identify_region(event.x,event.y)!='cell':return
-        if self.watch_tree.identify_column(event.x)!='#3':return
-        row_id=self.watch_tree.identify_row(event.y)
-        if not row_id or not self.mem:return
-        if getattr(self.args,'read_only',False) or not getattr(self.args,'enable_hex_edit',False):
-            messagebox.showwarning('Read-only mode','Memory editing is disabled by --read-only.')
+        if self.watch_tree.identify_column(event.x) != '#3':
             return
-        watch=next((w for w in self.watch_rows if w.name==row_id),None)
-        if watch is None or watch.addr is None:return
-        policy=get_policy(watch.addr)
-        spec=next((v for v in self.custom_watches if v.row_name==watch.name),None)
+        row_id = self.watch_tree.identify_row(event.y)
+        if row_id:
+            self.edit_live_watch_value(row_id)
+
+    def edit_live_watch_value(self, row_id):
+        """Edit the selected row using its own USA or Japanese RDRAM backend."""
+        japan = self.active_version.key == 'japan'
+        ram = self.jp_rdram if japan else self.mem
+        if ram is None:
+            self.inspector_status.set('Connect to game RAM before editing.')
+            return
+        if getattr(self.args, 'read_only', False) or not getattr(self.args, 'enable_hex_edit', True):
+            self.inspector_status.set('Memory editing is disabled by --read-only.')
+            return
+        watch = next((w for w in self.watch_rows if w.name == row_id), None)
+        if watch is None or watch.addr is None:
+            self.inspector_status.set('This row has no fixed guest RAM address.')
+            return
         try:
-            # Unknown floats and other raw watches provide their byte width
-            # through the displayed hex data, rather than a guessed policy.
-            raw_text=watch.raw.removeprefix('0x').removeprefix('0X').strip()
+            policy = None if japan else get_policy(watch.addr)
+            definitions = self.jp_custom_watches if japan else self.custom_watches
+            spec = next((v for v in definitions if v.row_name == watch.name), None)
+            raw_text = watch.raw.removeprefix('0x').removeprefix('0X').strip()
             if spec is not None:
-                width=spec.width
+                width = spec.width
             elif policy is not None:
-                width=policy.width
-            elif len(raw_text) in (2,4,8,16) and all(c in '0123456789abcdefABCDEF' for c in raw_text):
-                width=len(raw_text)//2
+                width = policy.width
+            elif (len(raw_text) in (2, 4, 8, 16)
+                  and all(ch in '0123456789abcdefABCDEF' for ch in raw_text)):
+                width = len(raw_text) // 2
             else:
-                raise ValueError('No valid raw width for this watch; use the raw address editor')
-            original=self.mem.read_guest(watch.addr,width)
-            original_hex='0x'+original.hex().upper()
-            new_string=simpledialog.askstring('Edit N64 guest hex — '+watch.name,
-                f'{watch.name}\n0x{watch.addr:08X} ({width} bytes; N64 big-endian)\n'
-                +'\nRaw memory write (game values can change concurrently).'
-                +'\nNew hex value:',initialvalue=original_hex,parent=self.root)
-            if new_string is None:return
-            proposed=parse_hex(new_string,width)
-            if proposed==original:return
-            did_write=checked_write(self.mem,watch.addr,original,proposed,
-                     allow_advanced=True,raw_override=True)
-            if did_write:
-                stamp=datetime.now().strftime('%H:%M:%S')
-                self.append_event(f'{stamp} USER WRITE {watch.name}: {original_hex} -> 0x{proposed.hex().upper()}')
-                self.last_inspect_at=0.0
-                self.refresh_inspector({} if self.mem.u8(0x800C7A94)==10 else (self.current or {}))
-                self.inspector_status.set(f'Verified write: {watch.name} {original_hex} -> 0x{proposed.hex().upper()}')
-        except (ValueError,OSError,RuntimeError,PermissionError) as exc:
-            messagebox.showerror('Hex write blocked / failed',str(exc),parent=self.root)
+                raise ValueError(
+                    'No usable hex width for this watch; edit a typed custom watch.')
+            original = ram.read_guest(watch.addr, width)
+            original_hex = '0x' + original.hex().upper()
+            text = simpledialog.askstring(
+                'Edit N64 guest hex — ' + self.display_watch_name(row_id),
+                f'{self.display_watch_name(row_id)}\n'
+                f'0x{watch.addr:08X} ({width} byte(s); N64 big-endian)\n'
+                'Experimental direct RAM write; values may change during gameplay.'
+                '\nNew hex value:',
+                initialvalue=original_hex, parent=self.root)
+            if text is None:
+                return
+            proposed = parse_hex(text, width)
+            if proposed == original:
+                return
+            if japan:
+                changed = self.write_japan_raw_bytes(
+                    watch.addr, proposed, expected=original)
+            else:
+                changed = checked_write(
+                    self.mem, watch.addr, original, proposed,
+                    allow_advanced=True, raw_override=True)
+            if changed:
+                stamp = datetime.now().strftime('%H:%M:%S')
+                self.append_event(
+                    f'{stamp} {self.active_version.key.upper()} USER WRITE '
+                    f'{row_id}: {original_hex} -> 0x{proposed.hex().upper()}')
+                self.last_inspect_at = 0.0
+                self.refresh_inspector(
+                    {} if japan else
+                    ({} if self.mem.u8(0x800C7A94) == 10
+                     else (self.current or {})))
+                self.inspector_status.set(
+                    f'Verified write: {self.display_watch_name(row_id)} '
+                    f'{original_hex} -> 0x{proposed.hex().upper()}')
+        except (ValueError, OSError, RuntimeError, PermissionError) as exc:
+            messagebox.showerror('Live Memory write failed', str(exc),
+                                 parent=self.root)
 
     def draw_watches(self):
         filt=self.filter_text.get().lower().strip()
