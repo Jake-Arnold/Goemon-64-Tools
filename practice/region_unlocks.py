@@ -68,7 +68,7 @@ def write_japan_unlock(rdram, unlock, target):
 
 
 def japan_unlock_all_targets():
-    """Bulk targets cover only identified Japanese equivalents (7 currently)."""
+    """Bulk targets cover only identified Japanese equivalents (9 currently)."""
     return tuple(
         (field, field.max_value if field.quantity else field.values[-1])
         for field in UNLOCKS if japan_unlock_lead(field) is not None
