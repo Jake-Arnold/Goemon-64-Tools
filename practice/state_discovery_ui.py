@@ -147,7 +147,7 @@ class StateDiscoveryMixin:
         if reader is None or getattr(self, 'game_pid', None) is None:
             self.state_probe_status.set('Connect to verified Japan-0 Mupen RDRAM first.')
             return
-        identity = ('japan-0', self.game_pid, reader.base, reader.endian)
+        identity = ('japan-0', self.game_pid, reader.base, reader.endian, id(reader))
         scope = self.state_probe_scope.get()
         label = self.state_probe_kind.get() + ' ' + stage
         self._jp_probe_generation += 1
