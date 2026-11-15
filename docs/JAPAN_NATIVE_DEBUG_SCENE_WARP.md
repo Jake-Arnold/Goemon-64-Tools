@@ -1,7 +1,7 @@
 # Japan-0 native scene warp via original debug level selector
 
 **Date:** 2026-11-15  
-**Implementation status:** Code and synthetic tests committed to `chatgptweb/japan-controlled-party-writes`. **Not live-tested in Project64 with this new button. The debug menu has not yet been shown opening from this toolkit implementation.**  
+**Implementation status (user verified 2026-11-15):** The Japanese native debug-menu button **successfully opened the original menu in live Windows Project64**, according to the user's direct gameplay report. This verifies the menu-entry stage in the tested setup. **Manual selection of a different destination and a completed controllable scene load have not yet been reported**; this is not a verified end-to-end or one-click warp.  
 **Scope:** Open the game's own debug selection UI in Japanese retail revision 0; manually select a destination. Fully automatic cursor staging/confirm remains **unimplemented** until the relevant Japanese menu fields are mapped.
 
 ## Provenance and exact boundaries
@@ -27,9 +27,16 @@ Previously tried direct writes to USA pending map + exit request returned to the
 5. Choose a **Destination hint** from the list. For **Oedo Town South** (scene `0x0161` / decimal 353), the USA-derived native selector hint is **MACHI / index 3**. For **Goemon's House** (scene `0x01D1`), it is **SHOP / index 65**. These are **menu hints**, not map writes or guaranteed Japanese category indices.
 6. Click **Open native Japanese debug menu (confirm)**. The toolkit displays source scene, destination hint, the only intended write, and the savestate warning. Cancel means no write.
 7. On consent, the toolkit rechecks the Project64 PID, verified ROM code signatures and original RAM base/byte-order/4-vs-8-MiB mapping, then compares writable and read-only RAM views. It refuses debug entry if the game has left ordinary mode `0x0D`, the character is not Goemon/Ebisumaru, a load/exit is active or the gameplay submode is unsupported.
-8. **Only** `0x800CD284: 0D → 0A` is requested, once; the result is read back. The game may already have advanced to another state by the time it is observed. Inspect Project64 to see if the original debug menu actually opens; an engine-byte read-back alone does not prove the menu rendered.
+8. **Only** `0x800CD284: 0D → 0A` is requested, once; the result is read back. **Live Windows Project64 now confirms the on-screen original debug menu opens** for the user. This gameplay observation is stronger evidence than engine-byte read-back alone. The menu's destination selection and actual scene loading remain the next separate validation.
 9. **Select the desired room manually using the game's own debug menu controls and confirm it there.** Observe actual playable destination, character actor, current scene, previous/pending scene and loaded position. The toolkit **does not** press A or stage an unverified menu cursor behind the user's back.
 10. If the game does not open the menu, crashes, returns to title, spawns outside geometry or enters an unusable scene, restore the original emulator savestate and reconnect. Report the before/after engine state and observed on-screen behaviour. Never patch the current scene directly to recover.
+
+## Live acceptance: menu entry confirmed, full room warp pending
+
+- **User report (15 November 2026):** The new toolkit control opened the game's original Japanese debug menu in Project64; Goemon XYZ preset also successfully moved him to the desired Oedo South coordinates.
+- **Distinct validation boundaries:** Oedo South XYZ teleport is **within the same scene** and is not an inter-scene warp. Debug menu **opening** has been verified, but no gameplay report yet shows selecting a different room through it and receiving a controllable actor in the new scene.
+- **Automated scene selection remains unmapped:** The USA-derived category/index hints are still just hints. No direct map writes or speculative menu-cursor writes are enabled.
+- **Regression status:** A later Windows run of 107 backend tests passed, but the GUI stage reported 39 errors from a minimal Tk Host lacking new write callbacks and one dashboard savestate Combobox default selection failure. Corrective commits `ec35b9c` (inert test-host callbacks) and `7fc29bd` (explicit slot 0) are pushed; **full post-fix suite rerun pending**.
 
 ## What constitutes a working native scene warp
 
