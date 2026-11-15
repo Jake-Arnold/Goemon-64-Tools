@@ -2,7 +2,7 @@
 
 The shared **Unlocks** tab retains these 34 original USA entries and controls in both game versions. An exact Japanese address is shown only when supported by an explicitly named Japanese source. Otherwise the visible Japanese address is **`unknown`**; there is no USA-address fallback or arithmetic offset.
 
-All **seven mapped Japanese rows are directly writable by default**: Sasuke/Yae On and Off, Triton Shell and Cucumber On and Off, plus all three fish counts. No confirmation dialog or party-state guard is used. A short-lived writable emulator handle performs a one-byte update and readback; ROM/RDRAM identification still happens when connecting. `--read-only` disables edits. Japanese Unlock All updates only those seven rows, skipping the 27 unknown ones.
+All **nine mapped Japanese rows are directly writable by default**: Sasuke/Yae On and Off, Triton Shell, Lord's Pass (JP Super Pass), Achilles' Heel (JP Benkei's weakness) and Cucumber On and Off, plus all three fish counts. No confirmation dialog or party-state guard is used. A short-lived writable emulator handle performs a one-byte update and readback; ROM/RDRAM identification still happens when connecting. `--read-only` disables edits. Japanese Unlock All updates only those nine rows, skipping the 25 unknown ones.
 
 | Original unlock | Group | USA N64 guest address | Japan-0 N64 guest address | Japan control |
 | --- | --- | --- | --- | --- |
@@ -29,10 +29,10 @@ All **seven mapped Japanese rows are directly writable by default**: Sasuke/Yae 
 | Triton Shell | Items and keys | `0x8015C6FF` | `0x80161EEF` | Direct On/Off |
 | Gold Key | Items and keys | `0x8015C713` | `unknown` | unknown — not writable |
 | Cucumber | Items and keys | `0x8015C717` | `0x80161F07` | Direct On/Off |
-| Lord's Pass | Items and keys | `0x8015C703` | `unknown` | unknown — not writable |
+| Lord's Pass | Items and keys | `0x8015C703` | `0x80161EF3` | Direct On/Off (JP Super Pass) |
 | Silver Fortune Doll progress | Items and keys | `0x8015C707` | `unknown` | unknown — not writable |
 | Sasuke battery 1 collected | Items and keys | `0x8015C609` | `unknown` | unknown — not writable |
-| Achilles' Heel | Items and keys | `0x8015C70F` | `unknown` | unknown — not writable |
+| Achilles' Heel | Items and keys | `0x8015C70F` | `0x80161EFF` | Direct On/Off (JP Benkei weakness) |
 | Red fish count | Fish counts | `0x8015C71B` | `0x80161F0B` | Direct hex count |
 | Blue fish count | Fish counts | `0x8015C723` | `0x80161F13` | Direct hex count |
 | Yellow fish count | Fish counts | `0x8015C71F` | `0x80161F0F` | Direct hex count |
@@ -43,4 +43,4 @@ All **seven mapped Japanese rows are directly writable by default**: Sasuke/Yae 
 
 Note: Entries with `unknown` Japanese addresses display no read value and have disabled write controls. The original USA mappings and behaviours are unchanged. Known Japanese rows use single-byte direct writes without dialog prompts. Anonymous Japanese GameShark repeat slots are not assigned to named weapon upgrades without independent evidence.
 
-Japanese-only candidate fields such as Super Pass (`0x80161EF3`), Benkei's weakness (`0x80161EFF`), and world-map access (`0x80162063`) have no confirmed equivalent in this USA Unlocks catalogue (**USA: `unknown`**). They remain visible through Japanese diagnostic/story research views; they are not silently assigned to unrelated USA items.
+The user identified **Super Pass** (`0x80161EF3`) as the Japanese counterpart of USA **Lord's Pass**, and **Benkei's weakness** (`0x80161EFF`) as USA **Achilles' Heel**. These two source-backed Japanese addresses are mapped above. Other Japanese-only candidate fields such as world-map access (`0x80162063`) still have **USA: `unknown`**.
