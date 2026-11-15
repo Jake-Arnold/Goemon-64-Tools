@@ -146,6 +146,14 @@ def compare_japan_memory(before, after, reverted=None, *, limit=MAX_RESULTS):
                                         'one-bit candidate' if bit else 'byte'),
                 'width': 1,
             }
+            # 0x80161DCF is the final byte of the verified Japanese
+            # 0x80161DCC u32 character index, NOT an independent event flag.
+            # The adjacent three bytes are part of that same known word.
+            if 0x80161DCC <= address <= 0x80161DCF:
+                row['kind'] = 'character-index byte (known alias)'
+                row['alias_of'] = '0x80161DCC'
+                row['known_field'] = 'scene_character'
+
             # Higher score first; on ties prefer the earlier guest address.
             entry = (score, -address, row)
             if len(top) < limit:
