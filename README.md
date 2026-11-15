@@ -6,6 +6,12 @@ The Dashboard now has one **Logical checkpoints** panel: enter a name, choose **
 
 The older `bookmarks.json` is **read-only legacy input**, not silently converted into fabricated progression snapshots. Its entries appear at the end of the same selector as **legacy POSITION ONLY**; restoring one may write XYZ only in the original map with the original character, after a separate warning. Legacy bookmarks with unknown maps cannot be restored. Existing `bookmarks.json` and `checkpoints.json` are preserved; new captures save only to `checkpoints.json`. There is no separate Save position/Restore position UI.
 
+## Experimental Japanese Project64 3.0 support on Windows
+
+Japan-0 can now use the exact-ROM-verified memory attachment with **Project64.exe on Windows** or Mupen64Plus. Project64 RDRAM may be 4 MiB or 8 MiB. Read-only Japanese Live, custom watches, Value Search and Advanced A/B/C compare use the verified region reader; USA-specific field writers remain unavailable in Japanese mode. The only optional Japanese writes are the previously documented individually confirmed Sasuke/Yae party unlocks.
+
+**Status: code and synthetic tests committed, actual Windows Project64 attach and unlock still unverified.** Prior successful live tests were on Linux Mupen. See [PowerShell clone, test and Project64 setup](docs/JAPAN_PROJECT64_WINDOWS.md) and [feature parity checklist](docs/USA_JAPAN_TOOLKIT_PARITY_CHECKLIST.md). The PR remains draft until new Windows/PJ64 tests are completed.
+
 ## Current simplified toolkit layout
 
 Dashboard contains **Connection** and **Logical checkpoints** side by side at its default 1220×790 window size, keeping both panels visible without scrolling. At narrower widths, the cards stack vertically and the scrollbar remains available. Scene Browser and Live Memory are separate dedicated tabs; the dashboard no longer duplicates their tables.
