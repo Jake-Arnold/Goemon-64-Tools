@@ -76,8 +76,8 @@ class RegionUnlockUITests(unittest.TestCase):
         self._select_japan()
         app.args.enable_japan_party_writes = True
         app.jp_rdram = FakeRam({
-            (0x80161E97, 1): b'\\x00',
-            (0x80161E9B, 1): b'\\x00',
+            (0x80161E97, 1): bytes((0,)),
+            (0x80161E9B, 1): bytes((0,)),
         })
         app.game_pid = 1234
         app.verified_rom_path = 'verified-japan-rom.n64'
