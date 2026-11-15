@@ -269,10 +269,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
 
         # Japanese raw RDRAM viewer remains read-only even when the separate
         # party-unlock test buttons are explicitly enabled.
-        jp_card = ttk.LabelFrame(right, text=' Japan Mupen64Plus RDRAM (read-only) ', padding=10)
+        jp_card = ttk.LabelFrame(right, text=' Japan Project64 / Mupen64Plus RDRAM (read-only) ', padding=10)
         self.jp_card = jp_card
         jp_card.pack(fill='x', pady=(0, 6))
-        ttk.Label(jp_card, text='Verify the exact Japanese ROM, select mupen64plus, '
+        ttk.Label(jp_card, text='Verify Japan-0 ROM; select project64 (Windows) or mupen64plus, '
                   'then Connect. Only raw N64 bytes are exposed; USA pointers, '
                   'USA checkpoints and USA RAM editors remain disabled. '
                   'Optional Japanese party unlocks are separate.',
@@ -417,7 +417,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.status.set('USA selected. Connect to the USA game in Recomp or Project64.')
         else:
             self.status.set('Japan selected. Verify the Japan-0 ROM, select '
-                            'mupen64plus and Connect for read-only raw RDRAM. '
+                            'project64 (Windows) or mupen64plus; Connect for read-only raw RDRAM. '
                             'USA-specific memory features remain unavailable.')
 
     def _clear_japan_base_choices(self):
@@ -623,7 +623,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.verified_rom_path = Path(selected)
         self._clear_japan_base_choices()
         capability = ('USA live toolkit supported' if version.live_memory_supported
-                      else 'Japan-0 verified; select mupen64plus and Connect for read-only RDRAM')
+                      else 'Japan-0 verified; select project64 (Windows) or mupen64plus and Connect for read-only RDRAM')
         self.status.set(f'Verified {version.label} (revision 0). {capability}.')
 
     def _arrange_dashboard(self, width):
