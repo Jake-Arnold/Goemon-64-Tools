@@ -5,6 +5,10 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 PYTHON="${PYTHON:-python3}"
 
+# Fail immediately with a clear syntax report for any practice module,
+# including GUI files that might otherwise be imported late in test discovery.
+"${PYTHON}" -m compileall -q practice
+
 "${PYTHON}" -m unittest \
   tests.test_japanese_fields \
   tests.test_japanese_scene_probes \
