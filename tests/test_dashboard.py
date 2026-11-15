@@ -149,7 +149,7 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.notebook.tab(app.story_progress_tab, 'state'), 'normal')
         self.assertEqual(app.scene_character_line.winfo_manager(), '')
         self.assertEqual(app.entrance_box.winfo_manager(), '')
-        self.assertIn('Japan-0', app.scene_instruction.cget('text'))
+        self.assertIn('JAPAN:', app.scene_instruction.cget('text'))
         self.assertIn('disabled', app.raw_write_btn.state())
         self.assertIn('disabled', app.freeze_raw_button.state())
         self.assertEqual(app.jp_unlock_panel.winfo_manager(), 'pack')
