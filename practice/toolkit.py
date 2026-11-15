@@ -393,20 +393,20 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.root.title(f"Goemon Practice Toolkit v0.11.17 · {version.label}")
         self.version_heading.set(f"v0.11.17  |  {version.label}")
         enabled = version.live_memory_supported
-        if not enabled or (version.key != 'japan' and
-                           self.notebook.select() == str(self.jp_fields_tab)):
+        region_active = version.key in ('usa', 'japan')
+        if (version.key != 'japan' and
+                self.notebook.select() == str(self.jp_fields_tab)):
             self.notebook.select(self.notebook.tabs()[0])
         for tab in self.notebook.tabs()[1:]:
-            japan_tab = tab == str(self.jp_fields_tab)
-            # Value Search is read-only and uses the independent JP RDRAM
-            # reader. All other USA-specific tabs remain disabled for Japan.
-            japan_search = (version.key == 'japan'
-                            and tab == str(self.value_search_tab))
-            japan_advanced = (version.key == 'japan'
-                              and tab == str(self.event_sessions_tab))
-            tab_enabled = ((version.key == 'japan') if japan_tab
-                           else (enabled or japan_search or japan_advanced))
-            self.notebook.tab(tab, state='normal' if tab_enabled else 'disabled')
+            japan_specific_tab = tab == str(self.jp_fields_tab)
+            tab_enabled = region_active and (
+                not japan_specific_tab or version.key == 'japan')
+            self.notebook.tab(
+                tab, state='normal' if tab_enabled else 'disabled')
+        # The same visible scene browser and inspector follow the active ROM;
+        # USA-only write controls stay individually gated.
+        self.configure_scene_browser_region()
+        self.configure_unlock_region()
         # JP event-bank semantics are unknown. Only the read-only Advanced
         # RAM Comparison subtab is exposed; USA event flag sessions stay gated.
         self.event_sections.tab(self.event_sections.tabs()[0],
@@ -421,6 +421,25 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         else:
             self.jp_card.pack_forget()
         self.refresh_japan_party_controls()
+        # Never run the USA raw writer or player-task freezes on a Japan RAM
+        # view: the main tabs stay available for JP read-only data.
+        usa_edit = bool(
+            version.key == 'usa' and self.args.enable_hex_edit
+            and not getattr(self.args, 'read_only', False))
+        self.raw_write_btn.state(
+            ['!disabled'] if usa_edit else ['disabled'])
+        for button in (
+                self.freeze_raw_button, self.freeze_health_button,
+                self.god_mode_button, self.enemy_pass_through_button):
+            button.state(['!disabled'] if usa_edit else ['disabled'])
+        if version.key == 'japan':
+            self.inspector_status.set(
+                'Japan Live Memory: Japanese RAM addresses; custom watches '
+                'read-only. USA raw writes and task freezes blocked.')
+            self.freeze_status.set(
+                'Japan: use source-backed read-only watches; USA task-pointer '
+                'freeze operations are not portable.')
+            self.refresh_story_progress()
         if hasattr(self, 'access_footer'):
             jp_writes = (version.key == 'japan'
                          and getattr(self.args, 'enable_japan_party_writes', False)
@@ -1074,11 +1093,11 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         )
 
     def open_full_scene_tab(self, event=None):
-        if self.active_version.live_memory_supported:
+        if self.active_version.key in ('usa', 'japan'):
             self.notebook.select(self.scene_tab)
 
     def open_live_memory_tab(self):
-        if self.active_version.live_memory_supported:
+        if self.active_version.key in ('usa', 'japan'):
             self.notebook.select(self.live_memory_tab)
 
     def _on_f1_open_memory(self, _event=None):
@@ -1408,7 +1427,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 f'Japan-0 verified {size_mb} MiB RDRAM at 0x{base:X}; {endian}.')
 
             self.refresh_japan_fields(force=True)
-            self.notebook.select(self.jp_fields_tab)
+            self.last_inspect_at=0.0
+            self.refresh_inspector({})
+            self.refresh_unlocks(force=True)
+            self.notebook.select(self.scene_tab)
             self.status.set(f'Attached read-only to Japan-0 {target} PID {pid}, '
                             f'{size_mb} MiB RAM 0x{base:X}, {endian}. Japan Live, Value Search and '
                             'Advanced A/B/C are read-only; USA write controls remain disabled.')
@@ -1434,6 +1456,28 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         if self.jp_rdram is not None:
             self.poll_japan_native_scene_warp(time.monotonic())
             self.refresh_japan_fields()
+            self.refresh_inspector({})
+            self.refresh_unlocks()
+            # Story-like Japanese item/map values share source-backed reads
+            # with the unlock view; avoid flooding Tk on every frame.
+            now_jp=time.monotonic()
+            if now_jp-getattr(self, '_jp_story_last_poll', 0) > 0.8:
+                self._jp_story_last_poll=now_jp
+                self.refresh_story_progress()
+                try:
+                    from practice.japanese_position import read_japan_position
+                    from practice.japanese_debug_warp import JAPAN_DEBUG_CHARACTER
+                    xyz=read_japan_position(self.jp_rdram)
+                    character=int.from_bytes(
+                        self.jp_rdram.read_guest(JAPAN_DEBUG_CHARACTER,4),'big')
+                    self.pos_text.set(
+                        f'X: {xyz[0]:10.2f}    Y: {xyz[1]:10.2f}    Z: {xyz[2]:10.2f}')
+                    self.misc_text.set(
+                        f'Character: {character}   Region: Japan-0')
+                    self.speed_text.set(
+                        'Japan: movement velocity / player task not mapped')
+                except (OSError, RuntimeError, ValueError, PermissionError):
+                    self.pos_text.set('X: —    Y: —    Z: —')
         if self.mem:
             try:
                 now=time.monotonic()
