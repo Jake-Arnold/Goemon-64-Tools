@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Independent fresh upstream full-USA-ROM proof for central file_11 adapter
+
+- **Fresh environment:** Extracted a new upstream `mnsg-japan.zip` checkout (pinned `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`), verified the supplied original USA 16 MiB ROM and decompressed 32 MiB reference image, and staged the 13 original-address C functions using the newly published `overlay_file11.stage_sources`—not the old hand-built scratch adapter.
+- **Production adapter procedure:** Native original IDO 5.3 compiler and Splat generated eight ordered C/ASM file_11 chunks. `overlay_file11.prepare_objects` trimmed the eight ELF32 MIPS input text sections with relocations intact, preserved the 180-byte selector in ASM, and installed the pinned 4-byte SUBALIGN.
+- **Exact result:** Built the complete original USA 33,554,432-byte image byte-for-byte (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). `overlay_file11.verify_linked_stage` independently passed 13 C-linked symbols / 620 bytes, exact eight object positions, four original-source and staged-ELF identities, and **8,825/8,825 identical relocation tuples including record order**, compared with a separately generated pristine original linked ELF.
+- **Tests/proof:** The combined research test suite passed **36 Python cases**. Saved non-copyrighted reproducibility evidence in `decomp/results/file11_optin_clean_proof_20261115.json` and expanded `docs/USA_FILE11_CENTRAL_ADAPTER_2026-11-15.md`. Disposable build failures from Japan-generated ASM in an earlier scratch checkout and standalone Python path mismatch were both isolated and corrected by the independent clean ZIP extraction.
+- **Counts/next:** The canonical `decomp/manifest.json` and production `combined.json` and inventory still contain **160 prior claims**. This fresh native test is **not a run of the entire production `decomp.verify` with the previous 160 C modules**, and must not be reported as a 173-function production proof. Next formal candidate: activate the optional manifest stage, run full central G2 and inventory, then promote if exact.
+
 ### 2026-11-15 — Central USA file_11 verifier adapter added as opt-in, 13 C functions fail-closed
 
 - **Central pipeline support:** Added `decomp/overlay_file11.py` and opt-in `overlay_file11_stage` handling in `decomp/verify.py`. The manifest default is unchanged; only the precise stage declaration `{"format":"goemon-file11-character-switch-13-v1"}` activates the eight-chunk mixed ASM/C overlay adapter. The 180-byte character selector stays ASM-owned. The stage prevalidates original 32 MiB SHA-1, all 13 original function SHA-256 hashes, four pinned source hashes, exact 4-byte C/ASM section lengths and after-trim IDO object hashes.
