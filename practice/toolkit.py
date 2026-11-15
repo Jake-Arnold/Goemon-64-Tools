@@ -407,14 +407,12 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         # USA-only write controls stay individually gated.
         self.configure_scene_browser_region()
         self.configure_unlock_region()
-        # JP event-bank semantics are unknown. Only the read-only Advanced
-        # RAM Comparison subtab is exposed; USA event flag sessions stay gated.
-        self.event_sections.tab(self.event_sections.tabs()[0],
-                                state='disabled' if version.key == 'japan'
-                                else 'normal')
+        # Both ROMs use the same event sessions UI. Japanese sessions
+        # compare an explicitly labelled 100-byte research slice (NOT a
+        # validated saved-event bank); the existing Advanced A/B/C remains.
+        self.event_sections.tab(self.event_sections.tabs()[0], state='normal')
         self.event_sections.tab(self.state_discovery_tab, state='normal')
-        if version.key == 'japan':
-            self.event_sections.select(self.state_discovery_tab)
+        self.configure_event_region()
         self.configure_state_probe_region()
         if version.key == 'japan':
             self.jp_card.pack(fill='x', pady=(0, 6))
