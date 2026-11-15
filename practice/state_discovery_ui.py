@@ -338,7 +338,7 @@ class StateDiscoveryMixin:
             for i, row in enumerate(report['candidates']):
                 self.state_probe_table.insert('', 'end', iid=str(i), values=(
                     row['address'], row['region'], row['before'], row['after'],
-                    row['xor_mask'], 'yes' if row['reverted'] else '—', row['kind']))
+                    row['xor_mask'], 'yes' if row['c_stable_at_b'] else '—', row['kind']))
             counts = report['counts']
             self.state_probe_status.set(
                 f"XYZ heuristic: {counts['candidate_count']} moving/settled float "
