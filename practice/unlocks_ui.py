@@ -7,13 +7,11 @@ from tkinter import ttk
 from practice.theme import PALETTE
 from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock, normalize_unlock_value, unlock_all_known
 from practice.hex_edit import parse_hex
-from practice.region_unlocks import JAPAN_WRITABLE_PARTY, japan_unlock_lead
+from practice.region_unlocks import japan_unlock_lead, japan_unlock_all_targets
 
 class UnlocksMixin:
     def build_unlock_tabs(self, notebook) -> None:
         self.unlock_status = tk.StringVar(value='Connect to US Goemon in Recomp or Project64 to read and change flags.')
-        # Existing guarded party writer reports into the shared Unlocks tab.
-        self.jp_party_result = self.unlock_status
         self.unlock_intro_text = tk.StringVar(value=
             'Click any value to write it immediately to the original N64 RAM. '
             'The game may not refresh its inventory until an area or menu reload.')
@@ -101,18 +99,16 @@ class UnlocksMixin:
                 self.unlock_row_widgets[item.address] = (state, controls)
 
 
-    def _japan_party_controls_ready(self):
-        """Enable only the two existing guarded 00->01 Japanese operations."""
+    def _japan_unlock_controls_ready(self):
+        """Source-backed Japanese fields write by default once RAM is attached."""
         return bool(
             self.active_version.key == 'japan'
             and self.jp_rdram is not None
             and getattr(self, 'game_pid', None) is not None
-            and getattr(self, 'verified_rom_path', None) is not None
             and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus')
             and getattr(getattr(self, 'connection_target', None),
                         'get', lambda: None)() == self.jp_backend
             and not getattr(self, '_connecting', False)
-            and getattr(self.args, 'enable_japan_party_writes', False)
             and not getattr(self.args, 'read_only', False))
 
     def configure_unlock_region(self):
@@ -124,15 +120,21 @@ class UnlocksMixin:
         self.unlock_intro_text.set(
             'Japan-0: original USA controls and grouping. Addresses shown are '
             'Japanese source-backed leads only; unknown means unmapped. '
-            'Only Sasuke/Yae On use verified guarded party writes.'
+            'Mapped fields can be changed directly; no confirmation or party guard.'
             if japan else
             'Click any value to write it immediately to the original N64 RAM. '
             'The game may not refresh its inventory until an area or menu reload.')
         self.unlock_all_hint.set(
-            'Japan: unlock-all unavailable until item addresses and writes '
-            'are independently verified.' if japan else
+            'Japan: writes only mapped addresses; unknown rows are skipped.'
+            if japan else
             'One-time edit; does not set story completion flags.')
-        self.unlock_all_button.state(['!disabled'] if usa_writable else ['disabled'])
+        self.unlock_all_button.configure(
+            text=(f'Unlock all mapped Japanese entries '
+                  f'({len(japan_unlock_all_targets())})'
+                  if japan else 'Unlock all mapped items, weapons and abilities'))
+        self.unlock_all_button.state(
+            ['!disabled'] if (self._japan_unlock_controls_ready()
+                              if japan else usa_writable) else ['disabled'])
         for item in UNLOCKS:
             lead = japan_unlock_lead(item) if japan else item
             self.unlock_address_labels[item.address].configure(
@@ -148,7 +150,7 @@ class UnlocksMixin:
         self.unlock_last_poll = 0.0
         self.unlock_status.set(
             'Japan-0: 34 original unlock rows. Unknown addresses cannot be '
-            'read or written; Sasuke/Yae On uses the guarded Japanese writer.'
+            'read or written; mapped items support direct writes by default.'
             if japan else
             'Connect to US Goemon in Recomp or Project64 to read and change flags.')
         self.refresh_unlocks(force=True)
@@ -161,7 +163,9 @@ class UnlocksMixin:
         if not force and now - self.unlock_last_poll < 0.8:
             return
         self.unlock_last_poll = now
-        can_write_party = self._japan_party_controls_ready()
+        can_write = self._japan_unlock_controls_ready()
+        self.unlock_all_button.state(
+            ['!disabled'] if can_write else ['disabled'])
         for item in UNLOCKS:
             label, controls = self.unlock_row_widgets[item.address]
             lead = japan_unlock_lead(item)
@@ -180,23 +184,38 @@ class UnlocksMixin:
                 foreground=(PALETTE['teal'] if raw is not None
                             and (raw in item.values or item.quantity)
                             else PALETTE['warning']))
-            writable_character = JAPAN_WRITABLE_PARTY.get(item.slug)
             for value, button in controls.items():
-                # The Japanese primitive only supports party unlock 00->01.
-                allowed = bool(can_write_party and writable_character is not None
-                               and value == 1)
-                button.state(['!disabled'] if allowed else ['disabled'])
+                button.state(
+                    ['!disabled'] if can_write and lead is not None
+                    else ['disabled'])
                 button.configure(
                     style='Gold.TButton' if raw is not None and raw == value
                     else 'TButton')
             if item.quantity:
-                self.unlock_count_buttons[item.address].state(['disabled'])
-                self.unlock_count_entries[item.address].configure(state='disabled')
+                self.unlock_count_buttons[item.address].state(
+                    ['!disabled'] if can_write and lead is not None
+                    else ['disabled'])
+                self.unlock_count_entries[item.address].configure(
+                    state='normal' if can_write and lead is not None
+                    else 'disabled')
+                if raw is not None:
+                    try:
+                        focused_path = str(self.root.tk.call('focus'))
+                    except tk.TclError:
+                        focused_path = ''
+                    if focused_path != str(self.unlock_count_entries[item.address]):
+                        self.unlock_count_inputs[item.address].set(f'{raw:02X}')
 
     def unlock_all_items(self):
         if self.active_version.key == 'japan':
-            self.unlock_status.set(
-                'Japan-0: bulk unlock unavailable; unmapped writes are blocked.')
+            try:
+                changed, total = self.apply_japan_unlocks(japan_unlock_all_targets())
+                self.unlock_status.set(
+                    f'Japan-0: {changed} changed / {total} mapped entries. '
+                    'All unknown addresses skipped.')
+                self.refresh_unlocks(force=True)
+            except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+                self.unlock_status.set(f'Japanese unlock-all failed: {exc}')
             return
         if self.mem is None:
             self.unlock_status.set('Connect to a game before unlocking items.')
@@ -221,15 +240,23 @@ class UnlocksMixin:
             self.unlock_status.set(f'Unlock all stopped: {exc}. Previous writes may remain.')
 
     def set_unlock(self, unlock: Unlock, value: int) -> None:
-        """One click = one measured USA byte write; never translate to Japan."""
+        """One click = regional single-byte write; never reuse another ROM address."""
         if self.active_version.key == 'japan':
-            character = JAPAN_WRITABLE_PARTY.get(unlock.slug)
-            if character is None or value != 1:
+            lead = japan_unlock_lead(unlock)
+            if lead is None:
                 self.unlock_status.set(
-                    f'{unlock.label}: Japanese address unknown or write not '
-                    'verified; no game memory changed.')
+                    f'{unlock.label}: Japanese address unknown; no write.')
                 return
-            self.enable_japan_party(character)
+            try:
+                actual = normalize_unlock_value(unlock, value)
+                changed, _ = self.apply_japan_unlocks(((unlock, actual),))
+                self.unlock_status.set(
+                    f'Japan-0 {unlock.label}: 0x{actual:02X} '
+                    + ('(written)' if changed else '(unchanged)'))
+                self.refresh_unlocks(force=True)
+            except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+                self.unlock_status.set(
+                    f'Japan-0 {unlock.label}: write failed — {exc}')
             return
         if not self.mem:
             self.unlock_status.set('Disconnected. Connect before editing unlocks.')
