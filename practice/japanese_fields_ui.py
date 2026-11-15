@@ -1,4 +1,4 @@
-"""Read-only Japanese status tab for verified external-Mupen RDRAM attachment."""
+"""Japanese live watches with isolated, explicitly guarded experiment controls."""
 from __future__ import annotations
 
 import time
@@ -14,6 +14,10 @@ from practice.scenes import SCENES
 from practice.custom_watches import (FORMATS as CUSTOM_FORMATS, make_watch,
     append_watch, load_watches, save_watches, read_watch)
 from practice.paths import practice_data_dir
+from practice.japanese_position import (
+    JAPAN_PLAYER_XYZ, JAPAN_OEDO_SOUTH_SCENE,
+    JAPAN_OEDO_SOUTH_ENTRANCE, read_japan_position,
+)
 
 ALL_JAPAN_READS = JAPAN_FIELDS + JAPAN_SCENE_PROBES
 
@@ -31,8 +35,8 @@ class JapaneseFieldsUi:
             ' research fields have mixed evidence: four scene fields are'
             ' supported by live traces, character 0/1 by both switch directions,'
             ' and the remaining fields are hypotheses. All field watches are'
-            ' read-only; only separately opted-in party unlocks can write.'
-            ' No automatic warps.', wraplength=960,
+            ' read-only; separately opted-in party unlocks and one Oedo South'
+            ' Goemon XYZ move control can write. No automatic warps.', wraplength=960,
         ).pack(anchor='w', pady=(0, 8))
         toolbar = ttk.Frame(tab)
         toolbar.pack(fill='x', pady=(0, 6))
@@ -75,6 +79,52 @@ class JapaneseFieldsUi:
                         '--enable-japan-party-writes to use these buttons.'))
         ttk.Label(party, textvariable=self.jp_party_result,
                   wraplength=960).pack(anchor='w', pady=(4, 0))
+
+        move = ttk.LabelFrame(
+            tab, text='Japan Goemon XYZ — Oedo Town South only (experimental)',
+            padding=8)
+        move.pack(fill='x', pady=(0, 8))
+        ttk.Label(
+            move,
+            text='Live-tested position-controlling float32 vector: '
+                 'X 0x80151B10 · Y 0x80151B14 · Z 0x80151B18. '
+                 'Read position is always read-only; Apply requires a separate '
+                 '--enable-japan-position-writes opt-in, Goemon (0), '
+                 'scene 0x161, explicit confirmation and an emulator savestate. '
+                 'Not verified in other scenes or characters.',
+            wraplength=960,
+        ).pack(anchor='w')
+        row = ttk.Frame(move)
+        row.pack(fill='x', pady=(4, 3))
+        self.jp_pos_x, self.jp_pos_y, self.jp_pos_z = (
+            tk.StringVar(value=str(value))
+            for value in JAPAN_OEDO_SOUTH_ENTRANCE)
+        for axis, address, variable in zip(
+                ('X', 'Y', 'Z'), JAPAN_PLAYER_XYZ,
+                (self.jp_pos_x, self.jp_pos_y, self.jp_pos_z)):
+            ttk.Label(row, text=f'{axis} 0x{address:08X}').pack(
+                side='left', padx=(0, 4))
+            ttk.Entry(row, textvariable=variable, width=12).pack(
+                side='left', padx=(0, 8))
+        buttons = ttk.Frame(move)
+        buttons.pack(fill='x', pady=(3, 0))
+        ttk.Button(
+            buttons, text='Read current XYZ',
+            command=self.refresh_japan_position).pack(side='left')
+        ttk.Button(
+            buttons, text='Use Oedo South entrance values',
+            command=self.use_japan_oedo_entrance).pack(side='left', padx=(8, 0))
+        self.jp_position_apply_button = ttk.Button(
+            buttons, text='Apply XYZ once (confirm)',
+            command=self.move_japan_oedo_xyz)
+        self.jp_position_apply_button.pack(side='left', padx=(8, 0))
+        self.jp_position_apply_button.state(['disabled'])
+        self.jp_position_result = tk.StringVar(
+            value='Position reads require Japanese RAM connection. '
+                  'Writes disabled until separately opted in.')
+        ttk.Label(
+            move, textvariable=self.jp_position_result,
+            wraplength=960).pack(anchor='w', pady=(5, 0))
 
         # Never reuse USA's custom-watch file or promote a candidate to a write.
         self.jp_watch_path = practice_data_dir() / 'japan_0_custom_watches.json'
@@ -232,6 +282,50 @@ class JapaneseFieldsUi:
         self.jp_custom_watch_status.set(f'Removed Japanese watch: {watch.name}')
         return True
 
+    def use_japan_oedo_entrance(self):
+        for variable, value in zip(
+                (self.jp_pos_x, self.jp_pos_y, self.jp_pos_z),
+                JAPAN_OEDO_SOUTH_ENTRANCE):
+            variable.set(str(value))
+        self.jp_position_result.set(
+            'Oedo Town South entrance XYZ loaded in the inputs only; no RAM write.')
+
+    def refresh_japan_position(self):
+        if self.active_version.key != 'japan' or self.jp_rdram is None:
+            self.jp_position_result.set('Connect to verified Japan RAM for XYZ reads.')
+            return
+        try:
+            values = read_japan_position(self.jp_rdram)
+            scene = int.from_bytes(
+                self.jp_rdram.read_guest(0x800CD2A2, 2), 'big')
+            char = int.from_bytes(
+                self.jp_rdram.read_guest(0x80161DCC, 4), 'big')
+            for variable, value in zip(
+                    (self.jp_pos_x, self.jp_pos_y, self.jp_pos_z), values):
+                variable.set(f'{value:.6f}')
+            self.jp_position_result.set(
+                f'Live XYZ = ({values[0]:.3f}, {values[1]:.3f}, {values[2]:.3f}); '
+                f'scene 0x{scene:03X}; character {char}; no RAM write.')
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self.jp_position_result.set(f'Japan XYZ read failed: {exc}')
+
+    def refresh_japan_position_controls(self):
+        enabled = (
+            self.active_version.key == 'japan'
+            and self.jp_rdram is not None
+            and getattr(self, 'game_pid', None) is not None
+            and getattr(self, 'verified_rom_path', None) is not None
+            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus')
+            and getattr(getattr(self, 'connection_target', None),
+                        'get', lambda: None)() == self.jp_backend
+            and bool(getattr(getattr(self, 'args', None),
+                             'enable_japan_position_writes', False))
+            and not bool(getattr(getattr(self, 'args', None),
+                                 'read_only', False))
+        )
+        self.jp_position_apply_button.state(
+            ['!disabled'] if enabled else ['disabled'])
+
     def refresh_japan_party_controls(self):
         enabled = (
             self.active_version.key == 'japan'
@@ -247,6 +341,7 @@ class JapaneseFieldsUi:
         )
         for button in self.jp_party_buttons.values():
             button.state(['!disabled'] if enabled else ['disabled'])
+        self.refresh_japan_position_controls()
 
     def _japan_reader_identity(self):
         return (getattr(self, 'game_pid', None),
@@ -327,6 +422,7 @@ class JapaneseFieldsUi:
         self._jp_compare_on = False
         self._jp_last_changes = ()
         self.jp_fields_caption.set('Connect to Japanese Project64/Mupen64Plus RAM.')
+        self.jp_position_result.set('Disconnected; XYZ inputs are not a game write.')
         self.refresh_japan_party_controls()
 
     def refresh_japan_fields(self, force=False):
