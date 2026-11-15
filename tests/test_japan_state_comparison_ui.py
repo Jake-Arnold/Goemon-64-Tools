@@ -86,6 +86,9 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         app = self.app
         app.jp_rdram = FourMegabyteJapanRam()
         app.state_probe_kind.set('Player movement')
+        app._set_state_probe_instruction()
+        self.assertEqual(app.state_probe_capture_buttons['C'].cget('text'),
+                         'Capture C: Still at B')
         app.state_probe_scope.set('wide')
         put_xyz(app.jp_rdram, XYZ_ADDR, (100.0, 20.0, -50.0))
         app.capture_state_probe('A')
