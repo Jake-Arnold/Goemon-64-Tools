@@ -19,6 +19,9 @@ class EntranceMixin:
 
     def scene_catalog(self):
         catalog=dict(SCENES)
+        # USA entrance atlas metadata must never leak into the Japan menu.
+        if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan':
+            return catalog
         if self.entrance_atlas:
             for stage in self.entrance_atlas['payload']['rooms']:catalog.setdefault(stage,unidentified_scene_name(stage))
         return catalog
@@ -26,6 +29,7 @@ class EntranceMixin:
     def build_entrance_controls(self,parent):
         import tkinter as tk
         box=ttk.LabelFrame(parent,text=' Destination entrance ',padding=6);box.pack(fill='x',pady=4)
+        self.entrance_box=box
         line=ttk.Frame(box);line.pack(fill='x')
         self.entrance_load_button=ttk.Button(line,text='Load original USA ROM…',command=self.load_entrance_rom)
         self.entrance_load_button.pack(side='left')
