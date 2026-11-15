@@ -10,7 +10,7 @@ The older `bookmarks.json` is **read-only legacy input**, not silently converted
 
 Japan-0 can now use the exact-ROM-verified memory attachment with **Project64.exe on Windows** or Mupen64Plus. Project64 RDRAM may be 4 MiB or 8 MiB. Read-only Japanese Live, custom watches, Value Search and Advanced A/B/C compare use the verified region reader; USA-specific field writers remain unavailable in Japanese mode. The only optional Japanese writes are the previously documented individually confirmed Sasuke/Yae party unlocks.
 
-**Status: code and synthetic tests committed, actual Windows Project64 attach and unlock still unverified.** Prior successful live tests were on Linux Mupen. See [PowerShell clone, test and Project64 setup](docs/JAPAN_PROJECT64_WINDOWS.md) and [feature parity checklist](docs/USA_JAPAN_TOOLKIT_PARITY_CHECKLIST.md). The PR remains draft until new Windows/PJ64 tests are completed.
+**Status (2026-11-15): user confirms Windows PowerShell tests, live Project64 Japanese read-only memory, Project64 savestate restoration and both Sasuke/Yae unlock writes work.** Screenshots separately verify Ryo Value Search, scene context and focused A/B/C. The newer [read-only XYZ candidate finder](docs/JAPAN_XYZ_DISCOVERY.md) is now in the Advanced RAM Comparison tab but has not yet been live-tested; native Sasuke/Yae character-index 2/3 transitions remain outstanding. See [Project64 setup](docs/JAPAN_PROJECT64_WINDOWS.md) and [parity checklist](docs/USA_JAPAN_TOOLKIT_PARITY_CHECKLIST.md). The PR remains draft.
 
 ## Current simplified toolkit layout
 
