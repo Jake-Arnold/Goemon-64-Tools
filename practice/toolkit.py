@@ -32,6 +32,11 @@ from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.remembered_rom import remember_verified_rom, load_remembered_rom
+from practice.japan_native_scene_warp import (
+    japan_warp_selection, read_japan_menu_selection,
+    stage_japan_native_destination, is_japan_scene_loaded,
+)
+from practice.japan_project64_input import press_project64_native_a
 from practice.scenes import SCENES
 from practice.emulator_savestates import find_emulator_pid, verified_emulator_pid, send_state_command
 from practice.japanese_mupen_attach import (
@@ -137,6 +142,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._linux_prior_scope = None
         self.pending_restore = None
         self.native_key_release = None
+        self.jp_auto_warp = None
+        self.jp_native_key_release = None
         self.last, self.last_t = None, None
         self.observed_velocity = None
         self.current = None
@@ -459,6 +466,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.cancel_pending_restore(quiet=True)
             self.pending_direct_warp = None
             self.pending_native_warp = None
+            self.jp_auto_warp = None
+            self._release_japan_native_key()
             previous = self.process
             self.process = self.mem = self.current = self.jp_rdram = None
             self.game_pid = None
@@ -788,6 +797,183 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         caption.set(message)
         self.status.set(message)
         self.refresh_japan_fields(force=True)
+
+    def _japan_native_warp_writer(self):
+        """Reverify exact Japan ROM, Project64 PID and live RAM before each step.
+
+        Returns a short-lived host and matching guest reader; caller closes host.
+        This path is independent of USA's layout and never trusts saved PID/base.
+        """
+        original = self.jp_rdram
+        pid = self.game_pid
+        if (self.active_version.key != 'japan'
+                or self._connecting or original is None or pid is None
+                or self.verified_rom_path is None
+                or getattr(self.args, 'read_only', False)
+                or not getattr(self.args, 'enable_japan_debug_menu_writes', False)
+                or self.jp_backend != 'project64'
+                or self.connection_target.get() != 'project64'
+                or sys.platform != 'win32'):
+            raise RuntimeError('Auto warp requires verified Japanese Project64 '
+                               'and --enable-japan-debug-menu-writes')
+        if verified_emulator_pid(pid, 'project64') != (pid, 'project64'):
+            raise RuntimeError('Project64 PID changed; reconnect')
+        probes = verified_japan_probes(self.verified_rom_path)
+        handle = HostProcess(pid, writable=True)
+        try:
+            verified = validate_rdram_base(
+                handle, original.base, original.endian, probes, allow_4mb=True)
+            if getattr(verified, 'rdram_size', 0x800000) != getattr(
+                    original, 'rdram_size', 0x800000):
+                raise RuntimeError('Japan RAM mapping size changed; reconnect')
+            for address, size in (
+                    (JAPAN_DEBUG_ENGINE_MODE, 1),
+                    (JAPAN_DEBUG_SCENE, 2),
+                    (JAPAN_DEBUG_CHARACTER, 4)):
+                if verified.read_guest(address, size) != original.read_guest(address, size):
+                    raise RuntimeError('Japanese writable and read-only RAM disagree')
+            return handle, verified
+        except Exception:
+            handle.close()
+            raise
+
+    def _release_japan_native_key(self):
+        release = self.jp_native_key_release
+        self.jp_native_key_release = None
+        if release:
+            release()
+
+    def _finish_japan_native_warp(self, message):
+        pending = self.jp_auto_warp
+        self.jp_auto_warp = None
+        try:
+            self._release_japan_native_key()
+        except (OSError, RuntimeError):
+            pass
+        if hasattr(self, 'jp_debug_result'):
+            self.jp_debug_result.set(message)
+        self.status.set(message)
+
+    def start_japan_native_scene_warp(self):
+        """USA-style flow: native menu → category/stage → N64 A → gameplay.
+
+        This is user-triggered after CLI opt-in. It does not patch scene IDs,
+        request loading via exit flags, or bypass native character creation.
+        """
+        if self.jp_auto_warp is not None:
+            self.jp_debug_result.set('Finish the current native scene warp first.')
+            return
+        try:
+            destination = self.selected_japan_debug_scene()
+            target = japan_warp_selection(destination)
+            key = self.jp_warp_a_key.get()
+            if key not in ('X', 'Z', 'C', 'SPACE', 'ENTER', 'A', 'S', 'J', 'K', 'L'):
+                raise ValueError('Select the keyboard key mapped to N64 A')
+            reader = self.jp_rdram
+            if reader is None:
+                raise RuntimeError('Connect to verified Japan RAM first')
+            context = get_japan_debug_context(reader)
+            from practice.japanese_debug_warp import _normal_gameplay
+            _normal_gameplay(context)
+            if destination == context[1]:
+                raise ValueError('Select a different destination scene for inter-scene warp')
+            handle, writable = self._japan_native_warp_writer()
+            try:
+                if get_japan_debug_context(writable) != context:
+                    raise RuntimeError('Game state changed while verifying warp')
+                enter_japan_native_debug_menu(
+                    writable, destination, expected_context=context)
+            finally:
+                handle.close()
+            self.jp_auto_warp = {
+                'destination': destination, 'category': target.category_index,
+                'stage': target.stage_index, 'label': target.category_name,
+                'source': context[1], 'character': context[2], 'pid': self.game_pid,
+                'reader': reader, 'key': key, 'phase': 'wait_menu',
+                'started': time.monotonic(), 'deadline': time.monotonic() + 28,
+                'confirm_at': None, 'stable': 0,
+            }
+            self.jp_debug_result.set(
+                f'Warp requested: 0x{context[1]:03X} → 0x{destination:03X}. '
+                f'Waiting for native debug menu, then {target.category_name} '
+                f'index {target.stage_index} and N64 A ({key}).')
+            self.status.set(self.jp_debug_result.get())
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self.jp_debug_result.set(f'Automatic native warp refused: {exc}')
+            self.status.set(f'Automatic native warp refused: {exc}')
+
+    def poll_japan_native_scene_warp(self, now):
+        """Nonblocking, time-bounded native selection and loaded-state monitor."""
+        pending = self.jp_auto_warp
+        if not pending:
+            return
+        if (self.active_version.key != 'japan'
+                or getattr(self.args, 'read_only', False)
+                or self.jp_rdram is not pending['reader']
+                or self.game_pid != pending['pid']
+                or self.jp_backend != 'project64'
+                or self._connecting):
+            self._finish_japan_native_warp('Japanese warp cancelled: emulator session changed')
+            return
+        if now > pending['deadline']:
+            self._finish_japan_native_warp(
+                f'Native warp to 0x{pending["destination"]:03X} NOT confirmed '
+                'before timeout. No additional writes or key input.')
+            return
+        try:
+            phase = pending['phase']
+            state = self.jp_rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
+            if phase == 'wait_menu':
+                if now - pending['started'] < 0.30:
+                    return
+                if state != JAPAN_NATIVE_DEBUG_MODE:
+                    return
+                handle, writable = self._japan_native_warp_writer()
+                try:
+                    stage_japan_native_destination(
+                        writable, pending['destination'])
+                finally:
+                    handle.close()
+                pending['phase'] = 'staged'
+                pending['confirm_at'] = now + 0.25
+                self.jp_debug_result.set(
+                    f'Native menu staged: {pending["label"]} / '
+                    f'{pending["stage"]}. Checking whether values persist.')
+            elif phase == 'staged':
+                if state != JAPAN_NATIVE_DEBUG_MODE:
+                    raise RuntimeError('Native menu exited before A confirmation')
+                if now < pending['confirm_at']:
+                    return
+                selected = read_japan_menu_selection(self.jp_rdram)
+                if selected != (pending['category'], pending['stage']):
+                    raise RuntimeError(
+                        f'Native menu overwrote category/stage {selected}; '
+                        'automatic A not sent')
+                # The selected keyboard key is mapped to N64 A in Project64.
+                # A is held long enough for its emulator polling cycle.
+                release = press_project64_native_a(
+                    pending['pid'], pending['key'])
+                self.jp_native_key_release = release
+                self.root.after(150, self._release_japan_native_key)
+                pending['phase'] = 'wait_load'
+                self.jp_debug_result.set(
+                    f'N64 A ({pending["key"]}) sent to original menu. '
+                    f'Waiting for full scene 0x{pending["destination"]:03X} load.')
+            elif phase == 'wait_load':
+                if is_japan_scene_loaded(
+                        self.jp_rdram, pending['destination']):
+                    pending['stable'] += 1
+                    if pending['stable'] >= 3:
+                        self._finish_japan_native_warp(
+                            f'Native scene warp loaded 0x{pending["destination"]:03X} '
+                            f'{SCENES[pending["destination"]]}: stable gameplay, '
+                            'character and XYZ observed. Check controls in Project64.')
+                else:
+                    pending['stable'] = 0
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self._finish_japan_native_warp(
+                f'Native scene warp stopped: {exc}. Restore Project64 '
+                'savestate if needed; no retry was sent.')
 
     def native_savestate_action(self, action):
         """Request native emulator-owned F5/F7; never claim it finished writing."""
@@ -1234,6 +1420,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
 
     def tick(self):
         if self.jp_rdram is not None:
+            self.poll_japan_native_scene_warp(time.monotonic())
             self.refresh_japan_fields()
         if self.mem:
             try:
@@ -1679,6 +1866,7 @@ def main(argv=None):
         app.stop_transition_trace()
         app.cancel_pending_restore(quiet=True)
         if getattr(app,'native_key_release',None):app._release_debug_key()
+        if getattr(app,'jp_native_key_release',None):app._release_japan_native_key()
         if app.process: app.process.close()
 
 if __name__=="__main__": main()
