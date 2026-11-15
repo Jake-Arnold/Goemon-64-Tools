@@ -5,12 +5,12 @@ from practice.japan_state_comparison import (
 )
 from practice.value_search import GUEST_BASE, RDRAM_SIZE
 
-JP_ID = ('japan-0', 123, 0x10000000, 'wordswapped')
+JP_ID = ('japan-0', 123, 0x10000000, 'wordswapped', 991)
 
 
 class ReadOnlyJapanRam:
     def __init__(self):
-        self.base, self.endian = JP_ID[2:]
+        self.base, self.endian = JP_ID[2:4]
         self.data = bytearray(RDRAM_SIZE)
         self.data[0xCD2A2:0xCD2A4] = (352).to_bytes(2, 'big')
         self.data[0x161DCC:0x161DD0] = (0).to_bytes(4, 'big')
@@ -57,11 +57,11 @@ class JapanAbcReadOnlyTests(unittest.TestCase):
         mem = ReadOnlyJapanRam()
         a = capture_japan_memory(mem, 'A', identity=JP_ID)
         b = capture_japan_memory(mem, 'B',
-                                 identity=('japan-0', 124, JP_ID[2], JP_ID[3]))
+                                 identity=('japan-0', 124, JP_ID[2], JP_ID[3], JP_ID[4]))
         with self.assertRaisesRegex(ValueError, 'Different Japanese'):
             compare_japan_memory(a, b)
         with self.assertRaises(ValueError):
-            capture_japan_memory(mem, 'A', identity=('usa', 123, JP_ID[2], JP_ID[3]))
+            capture_japan_memory(mem, 'A', identity=('usa', 123, JP_ID[2], JP_ID[3], JP_ID[4]))
         with self.assertRaises(ValueError):
             capture_japan_memory(mem, 'A', scope='invalid', identity=JP_ID)
 
