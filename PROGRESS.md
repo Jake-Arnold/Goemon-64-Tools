@@ -1,5 +1,17 @@
 # Goemon 64 Tools — Development Progress
 
+
+### 2026-11-15 — Syntax repair and full USA↔Japan feature parity audit
+
+- **User-reported reproducible blocker:** `./scripts/test_japan_party.sh` failed immediately while importing `practice/japanese_fields_ui.py` at line 105: `SyntaxError: unmatched ')'`. Inspected the exact current branch file and removed its one extra closing parenthesis. Pushed independently as `0bd99793936328113cac1ab41e3a38d488d8dae5`; a fix was committed, **not a claim that the suite now passes**.
+- **Branch audit:** `chatgptweb/japan-controlled-party-writes` descends from the current USA integration `chatgptweb/decomp` and was 20 commits ahead at the time of review. Do not replace it with stale `main`. Existing UX gate `_apply_game_version_ui` leaves Dashboard and Japan Live active for Japan; every other USA feature tab is disabled even if its Tk code exists.
+- **Feature-parity checklist committed:** `docs/USA_JAPAN_TOOLKIT_PARITY_CHECKLIST.md` includes 15 tab/subtab rows, feature-specific test gates, 4 delivery phases, Japanese evidence vs hypothesis and USA improvement opportunities. Document commit: `dbc1c82a37a89484aa105b1b7e8cfb56b106e00b`.
+- **High-value read-only first:** Port JP custom live watches, Value Search and Advanced A/B/C RAM compare over verified Japan RDRAM **before** attempting JP player pointers, full flag writes, checkpoint restore or scene warps. Existing Japanese Live already provides 58 sourced cheat fields, 10 scene probes and observed Goemon/Ebisumaru and scene transitions; only the two party flags have guarded opt-in writes (not toolkit live-tested).
+- **USA improvement leads:** verified USA Mupen64Plus RAM attach reusing region-specific JP scanner architecture; shared no-player memory scanning; common watch baseline/compare/copy; region-scoped session persistence; per-field write guards in place of broad region booleans. These are **proposals, not implemented functionality**.
+- **Syntax regression gate pushed:** `fd55b1baf5d1d09edc6340e8cfb8ed8986d8cc97` adds `python3 -m compileall -q practice` before `./scripts/test_japan_party.sh` invokes unit/Tk tests. Nothing in the GitHub connector executed this gate; the user must run it locally, report results, and continue real Mupen tests.
+- **Next:** (1) local compile + synthetic/Tk tests; (2) native Japanese Mupen save/load safety and Sasuke/Yae C-Down proof; (3) region-backed common read-only memory session, watch UI and generic search; (4) A/B/C sessions; (5) pointer and event-flag investigation; (6) guarded writes last. Commit and push after each small tested milestone, update checklist/PROGRESS with exact confidence and evidence.
+
+
 ### 2026-11-15 — Controlled Japanese party unlock writes, user Cheat Engine verification
 
 - **User-confirmed finding:** Editing Japan-0 character index `0x80161DCC` directly does *not* correctly swap the in-game character. Separately, using Cheat Engine to set the published **Sasuke party flag `0x80161E97`** or **Yae party flag `0x80161E9B`** makes the relevant character selectable through the original game. This verifies the *party-unlock mechanism*, not yet the normal Sasuke=2 or Yae=3 character-index values.
