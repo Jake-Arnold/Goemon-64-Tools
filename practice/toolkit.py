@@ -31,6 +31,7 @@ from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
+from practice.remembered_rom import remember_verified_rom, load_remembered_rom
 from practice.scenes import SCENES
 from practice.emulator_savestates import find_emulator_pid, verified_emulator_pid, send_state_command
 from practice.japanese_mupen_attach import (
@@ -117,7 +118,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.root, self.args = root, args
         self.active_version = selected_version(getattr(args, 'game_version', 'usa'))
         self.game_version_choice = tk.StringVar(value=self.active_version.label)
-        self.verified_rom_path = None
+        self.verified_rom_path = (
+            load_remembered_rom('japan')
+            if self.active_version.key == 'japan' else None)
         root.title(f"Goemon Practice Toolkit v0.11.17 · {self.active_version.label}")
         root.geometry("1220x790")
         root.minsize(960, 640)
@@ -352,6 +355,11 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.build_story_progress_tab(notebook)
         self.build_japanese_fields_tab(notebook)
         self._apply_game_version_ui()
+        if self.verified_rom_path is not None:
+            self.status.set(
+                f'Japan-0 ROM verified again from saved selection: '
+                f'{self.verified_rom_path}. Connect to Project64 or Mupen; '
+                'live RAM signatures will still be checked.')
         # Toolkit-local F1; it does not register a system-wide/game hotkey.
         root.bind_all('<F1>', self._on_f1_open_memory, add='+')
         statusbar = ttk.Frame(root, style='Header.TFrame', padding=(16, 5))
@@ -505,8 +513,14 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._disconnect_for_version_change()
         self._clear_japan_base_choices()
         self.active_version = version
-        self.verified_rom_path = None
+        self.verified_rom_path = (
+            load_remembered_rom('japan') if version.key == 'japan' else None)
         self._apply_game_version_ui()
+        if self.verified_rom_path is not None:
+            self.status.set(
+                f'Previously selected Japan-0 ROM reverified: '
+                f'{self.verified_rom_path}. Live RAM connection still requires '
+                'the current emulator signatures.')
 
     def enable_japan_party(self, character: int):
         """One explicitly requested Japan party unlock; never write character index."""
@@ -829,10 +843,22 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.status.set(f'ROM verification failed: {exc}')
             return
         self.verified_rom_path = Path(selected)
+        remembered = False
+        if version.key == 'japan':
+            try:
+                self.verified_rom_path = remember_verified_rom(selected, 'japan')
+                remembered = True
+            except (OSError, ValueError) as exc:
+                # A correctly verified ROM remains valid for this session;
+                # a read-only disk or corrupt registry must not disable use.
+                self.status.set(f'ROM verified but preference could not be saved: {exc}')
         self._clear_japan_base_choices()
         capability = ('USA live toolkit supported' if version.live_memory_supported
                       else 'Japan-0 verified; select project64 (Windows) or mupen64plus and Connect for read-only RDRAM')
-        self.status.set(f'Verified {version.label} (revision 0). {capability}.')
+        self.status.set(
+            f'Verified {version.label} (revision 0). {capability}. '
+            + ('ROM path remembered for future sessions; file checked again '
+               'before each reuse.' if remembered else ''))
 
     def _arrange_dashboard(self, width):
         """Place both cards above the fold at default size; stack on narrow screens."""
