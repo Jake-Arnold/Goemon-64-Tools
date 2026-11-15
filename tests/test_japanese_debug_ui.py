@@ -15,8 +15,11 @@ class JapaneseDebugMenuTkTests(JapanTkSmokeTest):
             'Scene warp (debug)')
         self.assertEqual(host.selected_japan_debug_scene(), 0x161)
         host.show_japan_debug_target()
-        self.assertIn('MACHI / index 3', host.jp_debug_result.get())
-        self.assertIn('not a RAM write', host.jp_debug_result.get())
+        self.assertIn('MACHI / stage index 3', host.jp_debug_result.get())
+        self.assertIn('Double-click this room in Scene Browser',
+                      host.jp_debug_result.get())
+        self.assertFalse(hasattr(host, 'jp_warp_scene_list'))
+        self.assertFalse(hasattr(host, 'jp_debug_scene_selector'))
 
     def test_optin_requires_connection_pid_backend_and_rom(self):
         host = self.host
