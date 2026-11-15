@@ -869,6 +869,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             context = get_japan_debug_context(reader)
             from practice.japanese_debug_warp import _normal_gameplay
             _normal_gameplay(context)
+            selector = getattr(self, 'scene_character', None)
+            selected = selector.current() if selector is not None else 0
+            target_character = selected - 1 if selected in (1, 2, 3, 4) else None
             spawn = self._japan_reference_entrance(
                 destination, context[1])
             handle, writable = self._japan_native_warp_writer()
@@ -878,7 +881,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                         'Japanese gameplay context changed during attachment')
                 outcome = stage_japan_direct_reload(
                     writable, destination, expected_context=context,
-                    spawn=spawn)
+                    spawn=spawn, target_character=target_character)
             finally:
                 handle.close()
             now = time.monotonic()
@@ -888,6 +891,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'reader': reader, 'started': now, 'deadline': now + 18,
                 'seen_reload': outcome.state_after_write == JAPAN_DIRECT_RELOAD_MODE,
                 'stable': 0, 'spawn': spawn,
+                'target_character': target_character,
             }
             entrance_note = (
                 f' USA-reference entrance {spawn.entrance_id} was staged.'
@@ -898,6 +902,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 f'Japan instant reload 0x{context[1]:03X} → '
                 f'0x{destination:03X}: pending destination written, '
                 f'engine 0x0C requested; waiting for playable scene.'
+                + (f' Target character {target_character} staged experimentally.'
+                   if outcome.character_staged else
+                   ' Keeping the existing character.')
                 + entrance_note)
             self.jp_debug_result.set(message)
             self.scene_status.set(message)
