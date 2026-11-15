@@ -1,6 +1,7 @@
 """Synthetic Tk test of Japanese Event Sessions > Advanced RAM Comparison."""
 from argparse import Namespace
 from pathlib import Path
+import json
 from tempfile import TemporaryDirectory
 import time
 import tkinter as tk
@@ -104,6 +105,19 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         self.assertIn('candidate', app.state_probe_status.get())
         self.assertEqual(app.state_probe_table.heading('returned', 'text'),
                          'C stable at B?')
+        with patch('practice.state_discovery_ui.diagnostics_dir',
+                   return_value=Path(self.temp.name)):
+            app.export_state_probe()
+            self._finish_capture()
+        exported_files = list(Path(self.temp.name).glob('japan_state_probe_*.json'))
+        self.assertEqual(len(exported_files), 1)
+        exported = json.loads(exported_files[0].read_text(encoding='utf-8'))
+        self.assertEqual(exported['export_policy'], 'all_matched_candidates')
+        self.assertEqual(exported['counts']['exported_candidates'],
+                         app.state_report['counts']['candidate_count'])
+        self.assertEqual(len(exported['candidates']),
+                         exported['counts']['candidate_count'])
+        self.assertIn('Exported ALL', app.state_probe_status.get())
         iid = next(i for i in app.state_probe_table.get_children()
                    if app.state_probe_table.item(i, 'values')[0]
                    == f'0x{XYZ_ADDR:08X}')
