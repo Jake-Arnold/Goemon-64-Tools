@@ -1,6 +1,17 @@
 # Goemon 64 Tools — Development Progress
 
 
+### 2026-11-15 — Windows smoke test reported a Python syntax failure; fixed
+
+- User's Windows PowerShell `scripts/test_japan_party.ps1` failed at the **first `compileall -q practice` gate** with `SyntaxError: unterminated string literal` in `practice/value_search_ui.py`, line 55. Direct `py -3 -m practice.toolkit --game-version japan` also failed at the same import before any game attach.
+- Root cause: prior Japan Value Search label inserted Python single-quoted text containing the apostrophe `ROM's`, terminating the string prematurely.
+- **Fix pushed:** commit `3e1216650c5882e6b6245b1d258134b78b6df2d1` changes the Tk label to double-quoted text: `"Scans the selected N64 ROM's guest RAM (4 or 8 MiB); no player object required. "`.
+- **Validation:** GitHub source reflects the one-line correction. GitHub connector cannot execute the user's local Python or Project64; the corrected `compileall`, full regression suite, GUI launch and PJ64 process connection are **still pending local Windows run**.
+- **Local PowerShell reproduction:** `git pull --ff-only origin chatgptweb/japan-controlled-party-writes`, `py -3 -m compileall -q practice`, `.\\scripts\\test_japan_party.ps1`, then `py -3 -m practice.toolkit --game-version japan`.
+- **Regression lesson:** the compile gate caught a real syntax failure before tests attempted to attach or write guest memory. Keep it as the first step of both PowerShell and Bash runners.
+
+
+
 ### 2026-11-15 — Windows Project64 3.0 Japan-0 support (experimental, code pushed)
 
 - **User's current environment:** Windows PowerShell and Project64 3.0 (`Project64.exe`), moving from Ubuntu Mupen64Plus. The repository is private, so clone `chatgptweb/japan-controlled-party-writes` with authenticated Git. Details: `docs/JAPAN_PROJECT64_WINDOWS.md`.
