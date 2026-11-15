@@ -43,7 +43,7 @@ class RegionUnlockUITests(unittest.TestCase):
         self.app.on_game_version_changed()
         self.assertEqual(self.app.active_version.key, 'japan')
 
-    def test_all_34_rows_keep_controls_and_label_inferred_addresses(self):
+    def test_all_34_rows_keep_controls_and_label_only_unknown_battery(self):
         app = self.app
         usa_labels = {
             item.address: app.unlock_address_labels[item.address].cget('text')
@@ -56,7 +56,7 @@ class RegionUnlockUITests(unittest.TestCase):
         self.assertEqual(app.usa_unlock_shell.winfo_manager(), 'pack')
         self.assertEqual(len(app.unlock_row_widgets), 34)
         self.assertEqual(
-            app.unlock_address_labels[0x8015C69F].cget('text'), '80161E8F ?')
+            app.unlock_address_labels[0x8015C69F].cget('text'), '80161E8F')
         self.assertEqual(
             app.unlock_address_labels[0x8015C6A7].cget('text'), '80161E97')
         self.assertEqual(
@@ -101,10 +101,17 @@ class RegionUnlockUITests(unittest.TestCase):
         self.assertNotIn('disabled', app.unlock_row_widgets[goemon.address][1][1].state())
         self.assertEqual(
             app.unlock_address_labels[0x8015C6DB].cget('text'),
-            '80161ECB ?')
+            '80161ECB')
         self.assertEqual(
             app.unlock_address_labels[0x8015C85B].cget('text'),
-            '8016204B (guess)')
+            '8016204B')
+        battery = next(x for x in UNLOCKS
+                       if x.label == 'Sasuke battery 1 collected')
+        self.assertEqual(
+            app.unlock_address_labels[battery.address].cget('text'),
+            '80161DF9 ?')
+        self.assertNotIn(
+            'disabled', app.unlock_row_widgets[battery.address][1][1].state())
         chain = next(x for x in UNLOCKS if x.label == 'Chain Pipe')
         self.assertEqual(
             app.unlock_row_widgets[chain.address][1][2].cget('text'), 'On [01]')
@@ -122,14 +129,18 @@ class RegionUnlockUITests(unittest.TestCase):
             write.reset_mock()
             app.set_unlock(goemon, 1)
             write.assert_called_once_with(((goemon, 1),))
-        self.assertIn('[offset]', app.unlock_status.get())
-        with patch.object(app, 'apply_japan_unlocks', return_value=(29, 29)) as write:
+        self.assertIn('[live-verified]', app.unlock_status.get())
+        with patch.object(app, 'apply_japan_unlocks', return_value=(33, 33)) as write:
             app.unlock_all_items()
             targets = write.call_args.args[0]
-            self.assertEqual(len(targets), 29)
-            self.assertNotIn('star', {row.slug for row, _ in targets})
+            self.assertEqual(len(targets), 33)
+            self.assertIn('star', {row.slug for row, _ in targets})
+            self.assertIn('silver_fortune_doll_progress',
+                          {row.slug for row, _ in targets})
             self.assertNotIn('sasuke_battery_1_collected',
                              {row.slug for row, _ in targets})
+            self.assertIn('Only Sasuke battery 1 skipped',
+                          app.unlock_status.get())
         app.args.read_only = True
         app.refresh_unlocks(force=True)
         self.assertIn('disabled', app.unlock_row_widgets[yae.address][1][1].state())
@@ -140,7 +151,7 @@ class RegionUnlockUITests(unittest.TestCase):
         app = self.app
         self._select_japan()
         self.assertEqual(
-            app.unlock_address_labels[0x8015C69F].cget('text'), '80161E8F ?')
+            app.unlock_address_labels[0x8015C69F].cget('text'), '80161E8F')
         self.assertIn('disabled', app.unlock_count_buttons[0x8015C71B].state())
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()

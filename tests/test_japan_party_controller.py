@@ -89,24 +89,27 @@ class JapanesePartyControllerTests(unittest.TestCase):
         self.assertEqual(writer.rdram().read_guest(0x80161F07, 1), bytes((1,)))
         self.assertEqual(writer.rdram().read_guest(0x80161F13, 1), bytes((3,)))
 
-    def test_bulk_unlock_writes_29_candidates_but_skips_five_guesses(self):
+    def test_bulk_unlock_writes_33_user_verified_but_skips_battery(self):
         writer = Writer()
         screen = controller(writer)
         targets = japan_unlock_all_targets()
-        self.assertEqual(len(targets), 29)
+        self.assertEqual(len(targets), 33)
         with patch('practice.toolkit.HostProcess', return_value=writer) as host:
             changed, total = Toolkit.apply_japan_unlocks(screen, targets)
-        self.assertEqual((changed, total), (29, 29))
+        self.assertEqual((changed, total), (33, 33))
         host.assert_called_once_with(959604, writable=True)
         self.assertEqual(writer.close_count, 1)
         self.assertEqual(writer.rdram().read_guest(0x80161F0B, 1), bytes((8,)))
         self.assertEqual(writer.rdram().read_guest(0x80161F0F, 1), bytes((5,)))
         self.assertEqual(writer.rdram().read_guest(0x80161F13, 1), bytes((3,)))
-        self.assertEqual(len(writer.writes), 29)
+        self.assertEqual(len(writer.writes), 33)
         self.assertEqual(writer.rdram().read_guest(0x80161EAF, 1), bytes((1,)))
         self.assertEqual(writer.rdram().read_guest(0x80161ECB, 1), bytes((1,)))
         self.assertEqual(writer.rdram().read_guest(0x80161ECF, 1), bytes((1,)))
-        self.assertEqual(writer.rdram().read_guest(0x8016204B, 1), bytes((0,)))
+        for addr in (0x8016204B, 0x8016204F, 0x80162053, 0x80162057):
+            self.assertEqual(writer.rdram().read_guest(addr, 1), bytes((1,)))
+        self.assertEqual(writer.rdram().read_guest(0x80161EF7, 1), bytes((4,)))
+        self.assertEqual(writer.rdram().read_guest(0x80161F03, 1), bytes((1,)))
         self.assertEqual(writer.rdram().read_guest(0x80161DF9, 1), bytes((0,)))
 
     def test_unknown_row_rejected_before_opening_host(self):

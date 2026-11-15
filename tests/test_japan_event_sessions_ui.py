@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 from practice.toolkit import Toolkit, parse_args
-from practice.event_sessions import JAPAN_CANDIDATE_START
+from practice.event_sessions import JAPAN_CANDIDATE_START, JAPAN_BATTERY_RESEARCH_START
 from practice.japanese_debug_warp import (
     JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE,
     JAPAN_DEBUG_CHARACTER, JAPAN_DEBUG_LOADING,
@@ -77,6 +77,24 @@ class JapanEventSessionsUiTests(unittest.TestCase):
         self.assertEqual(app.event_rows[0]['address'],'0x80161D80')
         self.assertEqual(self.writer.writes,[])
 
+    def test_sasuke_battery_preset_covers_unverified_bit_without_game_writes(self):
+        app=self.app
+        self.assertNotIn('disabled', app.event_battery_preset_button.state())
+        self.writer.set_guest(JAPAN_BATTERY_RESEARCH_START, bytes(100))
+        app.prepare_sasuke_battery_session()
+        self.assertEqual(app.event_region_start.get(), '0x80161DC0')
+        self.assertIn('battery', app.event_label.get().lower())
+        self.assertIsNone(app.event_session)
+        self.assertIn('UNVERIFIED', app.event_status.get())
+        app.new_event_session()
+        self.assertEqual(app.event_session['event_start'],
+                         JAPAN_BATTERY_RESEARCH_START)
+        app.capture_event_stage('A')
+        self.writer.set_guest(0x80161DF9, bytes((0x20,)))
+        app.capture_event_stage('B')
+        self.assertIn('0x80161DF9: 00->20', app.event_comparison.get())
+        self.assertEqual(self.writer.writes, [])
+
     def test_region_change_clears_event_session_without_cross_link(self):
         app=self.app
         app.new_event_session()
@@ -89,6 +107,7 @@ class JapanEventSessionsUiTests(unittest.TestCase):
         self.assertIsNone(app.event_session)
         self.assertEqual(app.event_region_start.get(),'0x8015C608')
         self.assertIn('disabled',app.event_region_entry.state())
+        self.assertIn('disabled',app.event_battery_preset_button.state())
         self.assertEqual(self.writer.writes,[])
 
 

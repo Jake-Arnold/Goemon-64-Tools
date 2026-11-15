@@ -7,7 +7,8 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 
 from practice.event_sessions import (
-    EVENT_START, JAPAN_CANDIDATE_START, new_session, capture_event,
+    EVENT_START, JAPAN_CANDIDATE_START, JAPAN_BATTERY_RESEARCH_START,
+    new_session, capture_event,
     capture_japan_event, with_trial, save_session, load_session, rank_bits,
     changed_context_fields, describe_contexts,
 )
@@ -64,6 +65,10 @@ class EventSessionsMixin:
         self.event_region_entry=ttk.Entry(
             region_row, textvariable=self.event_region_start, width=15)
         self.event_region_entry.pack(side='left', padx=(6, 8))
+        self.event_battery_preset_button=ttk.Button(
+            region_row, text='Sasuke battery probe',
+            command=self.prepare_sasuke_battery_session)
+        self.event_battery_preset_button.pack(side='left', padx=(0, 8))
         self.event_region_note=tk.StringVar(value='')
         ttk.Label(region_row, textvariable=self.event_region_note,
                   wraplength=800).pack(side='left')
@@ -88,11 +93,26 @@ class EventSessionsMixin:
         self.event_evidence.pack(fill='x',pady=6)
         self.root.after(250,self.poll_event_monitor)
 
+    def prepare_sasuke_battery_session(self):
+        """Set a Japanese-only read-only probe without replacing any saved session."""
+        if self.active_version.key != 'japan':
+            self.event_status.set('Sasuke battery probe is Japanese-only.')
+            return
+        self.event_region_start.set(f'0x{JAPAN_BATTERY_RESEARCH_START:08X}')
+        self.event_label.set('Sasuke battery 1 acquisition')
+        self.event_status.set(
+            'Battery preset: read-only 100-byte range '
+            '0x80161DC0–0x80161E23 covers candidate 0x80161DF9 '
+            '(bit 0x20 UNVERIFIED). Create a new session and capture '
+            'idle/control and repeated A/B trials.')
+
     def configure_event_region(self):
         """One event-sessions tab; region-correct 100-byte capture schema."""
         japan=self.active_version.key=='japan'
         self.event_region_entry.configure(
             state='normal' if japan else 'disabled')
+        self.event_battery_preset_button.state(
+            ['!disabled'] if japan else ['disabled'])
         if self.event_session is None or (
                 self.event_session.get('region','usa') != (
                     'japan' if japan else 'usa')):

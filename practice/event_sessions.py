@@ -13,6 +13,10 @@ EVENT_START = 0x8015C608
 EVENT_SIZE = 0x64
 MAX_TRIALS = 500
 JAPAN_CANDIDATE_START = 0x80161D80  # user-editable read-only probe; NOT a mapped event bank
+# A 100-byte window containing the unverified Japanese battery byte 0x80161DF9.
+# The generic Japanese 0x80161D80–0x80161DE3 window misses that candidate.
+JAPAN_BATTERY_RESEARCH_START = 0x80161DC0
+assert JAPAN_BATTERY_RESEARCH_START <= 0x80161DF9 < JAPAN_BATTERY_RESEARCH_START + EVENT_SIZE
 
 
 def utc_now():

@@ -145,15 +145,15 @@ class UnlocksMixin:
             not japan and getattr(self.args, 'enable_hex_edit', False)
             and not getattr(self.args, 'read_only', False))
         self.unlock_intro_text.set(
-            'Japan-0: original USA controls and grouping. Addresses shown are '
-            'Nine named, twenty inferred and five experimental guess addresses. '
-            'A question mark identifies unverified mappings; edits are immediate.'
+            'Japan-0: 33/34 unlocks reported working in live gameplay. '
+            'Only Sasuke battery 1 remains unverified (marked ?). '
+            'Individual edits are immediate.'
             if japan else
             'Click any value to write it immediately to the original N64 RAM. '
             'The game may not refresh its inventory until an area or menu reload.')
         self.unlock_all_hint.set(
-            'Japan: Unlock All writes 29 named/inferred rows; five guesses are '
-            'editable individually but skipped in bulk.'
+            'Japan: Unlock All writes all 33 live-tested entries; '
+            'the unverified Sasuke battery byte is skipped.'
             if japan else
             'One-time edit; does not set story completion flags.')
         self.unlock_all_button.configure(
@@ -167,8 +167,7 @@ class UnlocksMixin:
             lead = japan_unlock_lead(item) if japan else item
             address = (
                 'unknown' if lead is None else
-                f'{lead.address:08X} (guess)' if japan and lead.confidence == 'guess'
-                else f'{lead.address:08X} ?' if japan and lead.confidence != 'named'
+                f'{lead.address:08X} ?' if japan and not lead.user_verified
                 else f'{lead.address:08X}'
             )
             self.unlock_address_labels[item.address].configure(text=address)
@@ -186,8 +185,8 @@ class UnlocksMixin:
                     state='normal' if usa_writable or not japan else 'disabled')
         self.unlock_last_poll = 0.0
         self.unlock_status.set(
-            'Japan-0: 34 candidate addresses (9 named, 20 inferred, 5 guesses); '
-            'question-mark rows are experimental and should be checked in-game.'
+            'Japan-0: 33 of 34 entries user-verified in gameplay; '
+            'Sasuke battery 1 remains an unverified writable research candidate.'
             if japan else
             'Connect to US Goemon in Recomp or Project64 to read and change flags.')
         self.refresh_unlocks(force=True)
@@ -251,7 +250,7 @@ class UnlocksMixin:
                 changed, total = self.apply_japan_unlocks(japan_unlock_all_targets())
                 self.unlock_status.set(
                     f'Japan-0: {changed} changed / {total} mapped entries. '
-                    'Five speculative mappings skipped by default.')
+                    'Only Sasuke battery 1 skipped (not live-verified).')
                 self.refresh_unlocks(force=True)
             except (OSError, ValueError, RuntimeError, PermissionError) as exc:
                 self.unlock_status.set(f'Japanese unlock-all failed: {exc}')
@@ -292,7 +291,8 @@ class UnlocksMixin:
                 self.unlock_status.set(
                     f'Japan-0 {unlock.label}: '
                     f'0x{japan_unlock_wire_value(unlock, actual):02X} '
-                    f'[{lead.confidence}] '
+                    ('[live-verified] ' if lead.user_verified else
+                     '[UNVERIFIED battery candidate] ')
                     + ('(written)' if changed else '(unchanged)'))
                 self.refresh_unlocks(force=True)
             except (OSError, ValueError, RuntimeError, PermissionError) as exc:

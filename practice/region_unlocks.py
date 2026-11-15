@@ -11,12 +11,14 @@ EXPERIMENTAL candidates, not proof of gameplay semantics.
 
 The final four treasures are assigned provisionally in source order; the
 Japanese fourth is 0x80162057, NOT the naive translation of USA 0x8015C866.
-Sasuke's battery event bit is speculative. These five speculative rows are
-editable individually but excluded from default Unlock All.
+Sasuke's battery event bit remains speculative. The user live-confirmed
+33/34 Japanese Unlocks on 15 November 2026, including all Miracle items,
+weapons, abilities, Gold Key and Fortune Doll progress. Source provenance
+is retained independently of the user-reported gameplay verification.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from practice.unlocks import UNLOCKS, normalize_unlock_value
 from practice.japanese_fields import JAPAN_FIELDS, JP_CHEATS
@@ -29,17 +31,19 @@ _USA = {field.slug: field for field in UNLOCKS}
 # named = existing source-identified mapping
 # array = address proven by a Japanese array cheat; individual item inferred
 # offset = inferred solely from the consistent USA->Japan inventory displacement
-# guess = speculative event bit or four-item treasure ordering.
+# guess = original bit/treasure-order hypothesis (historical provenance).
+# user_verified separately records the user's gameplay result, not source strength.
 @dataclass(frozen=True)
 class JapanUnlockLead:
     address: int
     width: int
     confidence: str
     evidence: str
+    user_verified: bool = False
 
     @property
     def bulk_eligible(self) -> bool:
-        return self.confidence != 'guess'
+        return self.user_verified
 
 
 _NAMED = {
@@ -84,8 +88,8 @@ _OFFSET = {
     'silver_fortune_doll_progress': 'inventory progress byte after Super Pass',
 }
 
-# User explicitly authorised guesses for experimental manual testing.
-# Do not include speculative flags in the default mass-write command.
+# Original research hypotheses retained for traceability: four treasure
+# slots are now gameplay-verified, while the battery flag remains unverified.
 _GUESSES = {
     'sasuke_battery_1_collected': (
         0x80161DF9,
@@ -121,6 +125,18 @@ for slug, (address, evidence) in _GUESSES.items():
     JAPAN_UNLOCK_LEADS[slug] = JapanUnlockLead(
         address, 1, 'guess', evidence)
 
+# 15 Nov 2026 live gameplay report: only Sasuke battery 1 remains unverified.
+# Assert the historical 34-row size: future new fields cannot inherit this
+# confirmation merely by being added to the original USA Unlocks table.
+JAPAN_LIVE_VERIFIED_SLUGS = frozenset(
+    item.slug for item in UNLOCKS
+    if item.slug != 'sasuke_battery_1_collected'
+)
+assert len(JAPAN_LIVE_VERIFIED_SLUGS) == 33
+for slug in JAPAN_LIVE_VERIFIED_SLUGS:
+    JAPAN_UNLOCK_LEADS[slug] = replace(
+        JAPAN_UNLOCK_LEADS[slug], user_verified=True)
+
 assert len(UNLOCKS) == 34
 assert len(JAPAN_UNLOCK_LEADS) == len(UNLOCKS)
 assert set(JAPAN_UNLOCK_LEADS) == set(_USA)
@@ -132,6 +148,8 @@ assert all(
 )
 assert JAPAN_UNLOCK_LEADS['bazooka'].address == 0x80161ECB
 assert JAPAN_UNLOCK_LEADS['medal_of_flames'].address == 0x80161ECF
+assert sum(item.user_verified for item in JAPAN_UNLOCK_LEADS.values()) == 33
+assert not JAPAN_UNLOCK_LEADS['sasuke_battery_1_collected'].user_verified
 
 
 def japan_unlock_lead(unlock):
@@ -184,7 +202,7 @@ def write_japan_unlock(rdram, unlock, target):
 
 
 def japan_unlock_all_targets(*, include_speculative=False):
-    """Unlock 29 named/array/offset candidates; skip 5 guesses by default."""
+    """Unlock all 33 user-tested Japanese entries; skip battery only by default."""
     return tuple(
         (item, item.max_value if item.quantity else item.values[-1])
         for item in UNLOCKS

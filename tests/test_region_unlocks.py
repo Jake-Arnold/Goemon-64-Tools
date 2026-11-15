@@ -3,7 +3,8 @@ import unittest
 
 from practice.unlocks import UNLOCKS, GROUPS
 from practice.region_unlocks import (
-    REGION_DELTA, JAPAN_UNLOCK_LEADS, japan_unlock_lead,
+    REGION_DELTA, JAPAN_UNLOCK_LEADS, JAPAN_LIVE_VERIFIED_SLUGS,
+    japan_unlock_lead,
     japan_unlock_all_targets, japan_unlock_wire_value,
     japan_unlock_display_value, write_japan_unlock,
 )
@@ -96,14 +97,24 @@ class RegionUnlockMappingTests(unittest.TestCase):
             self.assertEqual(JAPAN_UNLOCK_LEADS[slug].address, address)
             self.assertEqual(JAPAN_UNLOCK_LEADS[slug].confidence, 'guess')
 
-    def test_bulk_skips_five_guesses_but_allows_manual_edit(self):
+    def test_user_verified_33_rows_in_bulk_and_battery_excluded(self):
+        self.assertEqual(len(JAPAN_LIVE_VERIFIED_SLUGS), 33)
+        self.assertEqual(
+            {slug for slug, lead in JAPAN_UNLOCK_LEADS.items()
+             if not lead.user_verified}, {'sasuke_battery_1_collected'})
         targets = japan_unlock_all_targets()
-        self.assertEqual(len(targets), 29)
+        self.assertEqual(len(targets), 33)
         self.assertEqual(len(japan_unlock_all_targets(include_speculative=True)), 34)
         values = {field.slug: value for field, value in targets}
-        for slug in ('star', 'moon', 'flower', 'snowflake',
-                     'sasuke_battery_1_collected'):
-            self.assertNotIn(slug, values)
+        for slug in ('star', 'moon', 'flower', 'snowflake'):
+            self.assertEqual(values[slug], 1)
+            self.assertTrue(JAPAN_UNLOCK_LEADS[slug].user_verified)
+            self.assertEqual(JAPAN_UNLOCK_LEADS[slug].confidence, 'guess')
+        self.assertNotIn('sasuke_battery_1_collected', values)
+        self.assertFalse(JAPAN_UNLOCK_LEADS[
+            'sasuke_battery_1_collected'].bulk_eligible)
+        self.assertEqual(values['silver_fortune_doll_progress'], 4)
+        self.assertEqual(values['gold_key'], 1)
         self.assertEqual(values['red_fish_count'], 8)
         self.assertEqual(values['yellow_fish_count'], 5)
         self.assertEqual(values['blue_fish_count'], 3)

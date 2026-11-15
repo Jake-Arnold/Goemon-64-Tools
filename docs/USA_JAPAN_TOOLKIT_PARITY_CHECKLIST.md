@@ -1,6 +1,14 @@
 # USA ↔ Japan Toolkit feature parity checklist
 
 
+## Japanese Unlocks — live user acceptance (15 November 2026, latest)
+
+The user reports that **33 of the 34 Japanese Unlocks controls work correctly in Project64**, including the individual Miracle items, Gold Key, Silver Fortune Doll progress, all weapons, upgrades and abilities. The sole **unverified** entry is **Sasuke battery 1** at candidate `0x80161DF9` (bit `0x20`). Toolkit metadata now records independent `user_verified` status while retaining the original source provenance; only that battery row retains a visible question mark. Japanese Unlock All covers **33/34**, battery excluded, and USA Unlocks behaviour is unchanged.
+
+The next investigation is the unverified battery byte. A Japan-only, read-only **Sasuke battery probe** preset is available in Event Sessions, selecting `0x80161DC0` as the 100-byte window start. Documentation: [Sasuke battery investigation](JAPAN_SASUKE_BATTERY_RESEARCH.md). The user report verifies the preceding toolkit build, **not** this new post-report code revision; the new GUI and regression changes still need to be run on Windows.
+
+Historical entries below describe prior stages and are superseded by this section where they disagree.
+
 ## Latest research-to-code mapping — 15 November 2026
 
 **Experimental candidate implementation, not 34 gameplay-verified unlocks.** The shared 34-row USA/Japan Unlocks interface now has Japanese address proposals for every row: **nine named source-backed mappings, sixteen inferred from published Japanese four-slot GameShark arrays, four inferred from the consistent USA+0x57F0 regional displacement, and five explicitly marked guesses**. Names and confidence labels are in [the full mapping table](USA_JAPAN_UNLOCK_MAPPING.md). The original USA row addresses, button values, and write implementation were not modified.
@@ -47,7 +55,7 @@ The sections below are historical implementation notes. Any older statement that
 | Dashboard | Region-specific RDRAM process; Japanese scene, character and position values shown; remembered exact Japan ROM path reverified on each new session | Japan velocity/action/task pointers and logical checkpoints unverified |
 | Scene Browser | **Same existing browser; no duplicate Japanese selector.** Double-click **immediately** stages Japan pending destination at 0x800CD490 (u16 or 12-byte reference entrance block) and requests **0x800CD284 = 0x0C** area reload in the same callback, then monitors 3 stable gameplay polls. Original debug menu 0x0A remains a separate manual button | **First real inter-scene Japanese warp not yet live confirmed.** User did verify visible debug menu opening. USA double-click/entrance path remains unchanged |
 | Live Memory | **Same Live Memory tab**, reads 58 Japan cheat-backed values, 10 scene probes, 3 observed XYZ floats and isolated Japan custom watches | General Japan raw edit/freeze disabled pending mapped permissions |
-| Unlocks | **Same 34 USA rows and seven groups**, with 9 named + 16 array-inferred + 4 offset-inferred + 5 guessed Japanese addresses. Guess rows visibly labelled; Japanese Chain Pipe On=01. Direct per-row writes enabled. **Unlock All** writes the 29 non-guess candidates. | Verify array ordering (especially Bazooka), four treasure item names, battery bit, Gold Key/Fortune Doll behaviour, and 29-row bulk writes in live Japan gameplay |
+| Unlocks | **Same 34 USA rows and seven groups**; 33/34 Japanese controls user-confirmed in live Project64 gameplay, all except Sasuke battery 1. Japanese Unlock All writes 33 and skips only the unverified battery. Source provenance retained separately from user verification. | Run updated Windows tests; investigate the JP battery byte/bit using the read-only Event Sessions preset; reconcile PR stack before merge. |
 | Story Progress | **Same nested progress tables**, presents Japan item/map/bonus-mode candidates with addresses and evidence | JP saved-event bank and story-bit causality unknown; no USA bit editing |
 | Event Sessions | Same A/B/C event/idle/control flow and ranking. Japan captures 100 user-selected source RAM bytes (default 0x80161D80); provenance stores region, address, and backend. Advanced RAM Comparison still available | These Japan bytes are candidate RAM, **not** a confirmed persistent event bank |
 | Damage events | Same event recorder UI uses JP HP byte 0x80161DD7, current scene 0x800CD2A2 and character 0x80161DCC, omitting guessed USA task/object pointers | No proof of JP invulnerability/collision semantics |
