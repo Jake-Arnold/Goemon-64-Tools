@@ -55,11 +55,15 @@ def capture_japan_memory(reader, label: str, *, scope='focused', identity=None):
             or type(identity[4]) is not int or identity[4] <= 0):
         raise ValueError('Verified Japan-0 PID/RDRAM identity required')
 
-    fields = JAPAN_FOCUSED_RANGES if scope == 'focused' else (JAPAN_WIDE_RANGE,)
+    visible_size = getattr(reader, 'rdram_size', RDRAM_SIZE)
+    if visible_size not in (0x400000, RDRAM_SIZE):
+        raise ValueError('Expected verified 4/8 MiB Japanese RDRAM')
+    fields = (JAPAN_FOCUSED_RANGES if scope == 'focused'
+              else ((JAPAN_WIDE_RANGE[0], GUEST_BASE, visible_size),))
     regions = []
     for name, addr, length in fields:
         if scope == 'wide':
-            data = read_ram(reader, size=RDRAM_SIZE)
+            data = read_ram(reader, size=visible_size)
         else:
             data = reader.read_guest(addr, length)
         if len(data) != length:
