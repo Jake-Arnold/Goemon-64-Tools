@@ -22,6 +22,7 @@ class StoryProgressMixin:
         ttk.Entry(filter_row,textvariable=self.story_filter,width=42).pack(side='left',padx=6)
         ttk.Label(filter_row,text='Filter “external” for the added source annotations.',style='Muted.TLabel').pack(side='left')
         self._story_row_ids=[]
+        self._story_display_region = None
         self._story_row_ids_by_section={section:[] for section in STORY_SECTIONS}
         self._story_edit_key=None
         self.story_filter.trace_add('write',lambda *_:self.filter_story_progress())
@@ -65,6 +66,12 @@ class StoryProgressMixin:
                   'Advisories are observations; no repair is performed.',style='Muted.TLabel',wraplength=1100).pack(anchor='w')
 
     def refresh_story_progress(self):
+        if self.active_version.key == 'japan':
+            return self.refresh_japan_story_progress()
+        if self._story_display_region != 'usa':
+            for table in self.story_tables.values():
+                table.delete(*table.get_children())
+            self._story_display_region = 'usa'
         state=read_story_state(self.mem)
         self.benkei_story.set('Benkei: '+state['benkei'])
         self.ushiwaka_story.set('Ushiwaka: '+state['ushiwaka'])
@@ -91,6 +98,53 @@ class StoryProgressMixin:
         self.story_notes.set(notes)
         if self.mem is None and self._story_edit_key is not None:self.select_story_edit()
         return state
+
+    def refresh_japan_story_progress(self):
+        """Japan progress-like reads, never USA saved-event offsets."""
+        from practice.region_views import japan_story_fields
+        from practice.japanese_fields import read_japan_field
+        if self._story_display_region != 'japan':
+            for table in self.story_tables.values():
+                table.delete(*table.get_children())
+            self._story_display_region = 'japan'
+        self.benkei_story.set('Benkei: Japanese story flag not mapped')
+        self.ushiwaka_story.set('Ushiwaka: Japanese story flag not mapped')
+        grouped={section:[] for section in STORY_SECTIONS}
+        for field in japan_story_fields():
+            key='jp_'+field.key
+            if self.jp_rdram is not None:
+                result=read_japan_field(self.jp_rdram,field)
+                value,raw,status=result.value,result.raw,result.status
+            else:
+                value,raw,status='—','—','Disconnected'
+            section=('Collectibles & Miracles'
+                     if field.group=='Items' else
+                     'Other story' if field.group=='World map'
+                     else 'Diagnostics')
+            row=(field.group, f'0x{field.address:08X}', '—',
+                 value, '0x'+raw if raw!='—' else '—',
+                 f'Japan-0 {field.key}; {status}; NOT USA story bit')
+            for target in ('All',section):
+                table=self.story_tables[target]
+                if table.exists(key):
+                    table.item(key, text=field.label, values=row)
+                else:
+                    table.insert('','end',iid=key,text=field.label,values=row)
+                grouped[target].append(key)
+        self._story_row_ids=grouped['All']
+        self._story_row_ids_by_section=grouped
+        self.filter_story_progress()
+        self.story_edit_button.state(['disabled'])
+        self.story_edit_combo.configure(state='disabled')
+        self.story_edit_label.set('Japan-0: saved-event bitfield meanings are unmapped')
+        self.story_edit_status.set(
+            'Use Event sessions / Advanced RAM comparison to discover '
+            'Japanese saved-event flags. Never edit USA story bits in Japan.')
+        self.story_notes.set(
+            f'{len(grouped["All"])} Japanese source-backed items, map unlocks, '
+            'bonus modes and time values shown. These are candidate state '
+            'observations, not confirmed Japanese story flags.')
+        return {'region':'japan', 'mapped_candidates':len(grouped['All'])}
 
     def _active_story_table(self):
         section=self.story_sections.tab(self.story_sections.select(),'text')
@@ -129,6 +183,10 @@ class StoryProgressMixin:
         else:self.story_edit_status.set('Choose the desired state, then apply it.')
 
     def apply_story_edit(self):
+        if self.active_version.key == 'japan':
+            self.story_edit_status.set(
+                'Japan-0 USA story writes refused; map the Japanese flag first.')
+            return
         try:
             if self.mem is None:raise ValueError('Connect to a game first')
             if getattr(self.args,'read_only',False) or not getattr(self.args,'enable_hex_edit',False):
