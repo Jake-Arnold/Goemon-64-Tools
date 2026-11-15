@@ -174,7 +174,10 @@ class InspectorMixin(EntranceMixin):
                values=('0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
         self.scene_character.current(0)
         self.scene_character.pack(side='left',padx=8)
-        ttk.Label(character_line,text='Experimental pre-load spawn ID, no C-Down. Native model selection unverified.').pack(side='left')
+        self.scene_character_note = ttk.Label(
+            character_line,
+            text='Keep current by default; alternate character is staged before reload (experimental).')
+        self.scene_character_note.pack(side='left')
         self.build_entrance_controls(scenes)
         self.scene_filter=tk.StringVar()
         ttk.Entry(scenes,textvariable=self.scene_filter).pack(fill='x',pady=6)
@@ -218,7 +221,14 @@ class InspectorMixin(EntranceMixin):
                 text='JAPAN: single-click selects; double-click immediately '
                      'requests the selected room using the same 0x0C area '
                      'reload mechanism as USA. No debug menu is opened.')
-            self.scene_character_line.pack_forget()
+            self.scene_character.configure(values=(
+                'Keep current character',
+                'Goemon', 'Ebisumaru', 'Sasuke', 'Yae'))
+            if self.scene_character.current() < 0 or (
+                    self.scene_character.get() not in self.scene_character.cget('values')):
+                self.scene_character.current(0)
+            self.scene_character_line.pack(fill='x', pady=4,
+                                           after=self.scene_instruction)
             self.entrance_box.pack_forget()
             self.scene_transition_note.configure(
                 text='Japan-0: stage the pending destination at '
@@ -240,6 +250,9 @@ class InspectorMixin(EntranceMixin):
             self.scene_instruction.configure(
                 text='USA: single-click selects; double-click uses the '
                      'selected entrance reload. Manual debug menu is separate.')
+            self.scene_character.configure(values=(
+                '0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
+            self.scene_character.current(0)
             self.scene_character_line.pack(fill='x', pady=4,
                                            after=self.scene_instruction)
             self.entrance_box.pack(fill='x', pady=4,
