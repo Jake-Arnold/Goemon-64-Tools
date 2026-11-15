@@ -1287,7 +1287,10 @@ class InspectorMixin(EntranceMixin):
         return 'break'
 
     def open_debug_for_selected_scene(self,event=None):
-        """Open the native menu immediately, using original selection guards."""
+        """Open manual native menu for active ROM; never invoke a warp."""
+        if self.active_version.key == 'japan':
+            self.open_japan_debug_for_selected_scene()
+            return
         if getattr(self.args,'read_only',False):
             self.scene_status.set('Read-only mode: debug-menu requests are disabled.')
             return
