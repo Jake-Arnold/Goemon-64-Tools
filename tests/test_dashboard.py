@@ -160,8 +160,10 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.notebook.tab(app.value_search_tab, 'state'), 'normal')
         self.assertEqual(app.notebook.tab(app.event_sessions_tab, 'state'), 'normal')
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
-                         'disabled')
-        self.assertEqual(app.event_sections.select(), str(app.state_discovery_tab))
+                         'normal')
+        self.assertNotIn('disabled', app.event_region_entry.state())
+        self.assertIn('Japan-0', app.event_region_note.get())
+        self.assertEqual(app.event_region_start.get(), '0x80161D80')
         self.assertEqual(app.notebook.tab(app.jp_fields_tab, 'state'), 'normal')
         # Direct connect must never fall through to unsupported USA process memory.
         app.connect()
@@ -181,6 +183,8 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertNotIn('disabled', app.raw_write_btn.state())
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
                          'normal')
+        self.assertIn('disabled', app.event_region_entry.state())
+        self.assertEqual(app.event_region_start.get(), '0x8015C608')
 
     def test_japan_project64_windows_selection_and_wrong_backend_guard(self):
         app = self.toolkit
