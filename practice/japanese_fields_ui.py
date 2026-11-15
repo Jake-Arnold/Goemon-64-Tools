@@ -199,8 +199,8 @@ class JapaneseFieldsUi:
             f'(0x{watch.address:08X}, {watch.kind}).')
         return True
 
-    def add_japan_custom_watch_from_search(self, address, kind):
-        self.jp_watch_name.set(f'Value Search {address}')
+    def add_japan_custom_watch_from_search(self, address, kind, label=None):
+        self.jp_watch_name.set(label or f'Value Search {address}')
         self.jp_watch_address.set(address)
         self.jp_watch_type.set(kind)
         return self.add_japan_custom_watch()
