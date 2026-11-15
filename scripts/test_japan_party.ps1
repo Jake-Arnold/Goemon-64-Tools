@@ -50,6 +50,7 @@ $backendTests = @(
     'tests.test_japan_project64',
     'tests.test_remembered_rom',
     'tests.test_region_views',
+    'tests.test_japan_damage_capture',
     'tests.test_japan_native_scene_warp',
     'tests.test_japan_native_scene_controller',
     'tests.test_japan_state_comparison',
