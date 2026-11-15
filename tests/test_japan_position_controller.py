@@ -82,6 +82,10 @@ class JapanPositionControllerTests(unittest.TestCase):
     def test_project64_success_only_writes_xyz_12_bytes_and_closes(self):
         writer = Writer()
         screen = fake_controller(writer)
+        # Regression: our simple status stub intentionally has .set but no
+        # .get; the successful writer must not assume every status proxy is a
+        # full Tk StringVar.
+        self.assertFalse(hasattr(screen.jp_position_result, 'get'))
         guest_writer = writer.rdram()
         with patch('practice.toolkit.sys.platform', 'win32'), \
              patch('practice.toolkit.messagebox.askyesno', return_value=True), \
@@ -102,6 +106,7 @@ class JapanPositionControllerTests(unittest.TestCase):
         self.assertEqual(guest_writer.read_guest(JAPAN_CHARACTER_INDEX, 4),
                          bytes(4))
         self.assertIn('Goemon moved', screen.status.value)
+        self.assertEqual(screen.jp_position_result.value, screen.status.value)
 
     def test_pid_mismatch_rejects_prior_to_opening_writable_handle(self):
         writer = Writer()
