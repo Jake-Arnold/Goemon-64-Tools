@@ -27,7 +27,7 @@
 | 11 | **Value search** | USA focused/wide value scanning and repeat comparisons | **Implemented in code; new tests/live scan pending.** The same Value Search tab is enabled in Japan mode and uses verified JP 8 MiB RDRAM with a worker; Watch selected creates a Japan-only read-only custom watch. | [ ] Region-neutral scanner over bounded JP 8 MiB with chunking and time limits; [ ] u8/u16/u32 and float endian-aware filters; [ ] changed/unchanged/increased/decreased; [ ] candidate-to-watch; [ ] no write requirement or guessed semantics. |
 | 12 | **Automatic events** | USA health-decrement-triggered damage recorder, about 25 Hz, pre/post ring buffer and ranked candidates | **Absent.** JP current-HP guest byte is a published cheat lead but trigger behaviour and event contexts still need end-to-end confirmation. | [ ] Validate JP health decrement; [ ] region-neutral recorder/snapshots; [ ] support no-player periods; [ ] time-stamped correlation export and repeated trials. |
 | 13 | **Event sessions → Event flag sessions** | USA A/B/C trials of 100-byte saved-event bank, idle/control/event evidence and candidate rankings | **Absent.** JP fixed-field baseline/compare is simpler and not an equivalent event-bank trial system. | [ ] Map JP saved-event bank(s) first; [ ] region-identified A/B/C and provenance; [ ] repeated control experiments; [ ] preserve uncertain labels and export raw observations. |
-| 14 | **Event sessions → Advanced RAM comparison** | USA read-only A/B/C focused/wide probe, no-player support, XOR report, watch selected | **Partial, separate JP tab.** JP Live compares 68 preselected watches at a captured baseline; it does not scan arbitrary memory or support A/B/C persistence. | [ ] Reuse generic scanner to capture arbitrary JP ranges with bounded 8 MiB reads; [ ] same-PID/ROM/base/endian snapshots; [ ] A/B/C filters and JSON export; [ ] promote candidates into JP Live watch list, not verified mappings. |
+| 14 | **Event sessions → Advanced RAM comparison** | USA read-only A/B/C focused/wide probe, no-player support, XOR report, watch selected | **Implemented in JP code; tests and live validation pending.** Existing Event Sessions Advanced subtab now supports Japan-only focused 2×4 KiB and full 8 MiB A/B/C captures, bounded ranking, session checks, JSON export and candidate→JP watch. USA Event flag sessions remains disabled for Japan. | [ ] Reuse generic scanner to capture arbitrary JP ranges with bounded 8 MiB reads; [ ] same-PID/ROM/base/endian snapshots; [ ] A/B/C filters and JSON export; [ ] promote candidates into JP Live watch list, not verified mappings. |
 | 15 | **Japan Live / Party Test** | **No USA equivalent dedicated tab.** USA has richer integrated tools listed above. | **Available in code, partially live-validated.** 58 cheat leads + 10 candidate/observed scene fields; real user confirmed some scene/character deltas. Two allowlisted, opted-in party write buttons; UI tests still outstanding after syntax correction. | [ ] Run full Japan synthetic and Tk tests; [ ] live Sasuke/Yae normal switches; [ ] migrate generic watches into shared Live memory/Unlocks/Events without losing evidence badges or unsafe-write isolation. |
 
 **Actual UI gating:** `Toolkit._apply_game_version_ui` disables every non-Dashboard, non-`Japan Live / Party Test` tab when Japan is selected. There is **no current Japanese parity** for tabs merely because the same tab classes exist in the Python package. `practice/game_versions.py` marks Japanese `live_memory_supported=False` to prevent USA-only methods being invoked; changing it to True alone would be dangerous.
@@ -46,6 +46,13 @@
 - New protocol and exact Ubuntu reproduction steps: [`docs/JAPAN_READONLY_VALUE_SEARCH.md`](JAPAN_READONLY_VALUE_SEARCH.md).
 - User reports prior Japan party-writing tests passed and Sasuke/Yae buttons worked in the live emulator. No claim yet on normal-switch index values or new search/watch feature success.
 
+### Advanced RAM Comparison checkpoint (same date)
+
+- `3c3851f` adds `practice/japan_state_comparison.py` (JP-only scene/character context, arbitrary focused/full-RDRAM snapshot, 1,200-row max candidate shortlist, no bulk RAM export).
+- `a23d6cf` and `cfef2cb` bring Japan experiment names and async A/B/C capture to the existing Advanced tab. `4914796` enables **only** Advanced RAM Comparison within Japan Event Sessions, not the USA 100-byte saved-event tab.
+- `420ab9f` / `edd3b70` require a distinct reader-session token to prevent A/B/C comparisons across otherwise identical PID/base/endian reconnects; `1415d59` adds A/B/C sequence gate and region-labelled export names.
+- New synthetic and Tk tests, plus an expanded parity regression script, are **authored but not yet executed here**; do not mark A/B/C runtime-verified. Details: [`JAPAN_READONLY_VALUE_SEARCH.md`](JAPAN_READONLY_VALUE_SEARCH.md).
+
 ## Ordered delivery checklist
 
 ### Phase A — reliability and architecture (P0)
@@ -59,7 +66,7 @@
 ### Phase B — maximum parity without RAM writes (P1)
 - [x] JP typed custom watches, persistence isolation and baseline compare **implemented in code**. [ ] Live validation, full same-tab USA-style field management and export remain outstanding.
 - [x] JP bounded Value Search over verified 8 MiB RDRAM and promote selected candidate to Japan-only watch **implemented in code**; [ ] execute fresh tests and live Mupen scan.
-- [ ] JP Advanced RAM Comparison A/B/C (generic ranges; explicitly tagged hypotheses).
+- [x] JP Advanced RAM Comparison A/B/C with 2×4 KiB focused / 8 MiB full ranges, async snapshot reads, source-tagged candidates and bounded exports **implemented in code**. [ ] New tests and live emulator validation.
 - [ ] Region-scoped JSON session exports, alias names and ROM fingerprints.
 - [ ] Bring 58 known JP fields into common watch model, preserving external evidence badges.
 
