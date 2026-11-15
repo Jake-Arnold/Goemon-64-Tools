@@ -20,6 +20,11 @@ class DashboardSmokeTests(unittest.TestCase):
         except tk.TclError as exc:
             self.skipTest(f'Graphical Tk display unavailable: {exc}')
         self.root.withdraw()
+        # Per-user remembered ROM state must not alter presentation tests.
+        rom_cache = patch('practice.toolkit.load_remembered_rom',
+                          return_value=None)
+        rom_cache.start()
+        self.addCleanup(rom_cache.stop)
         opts = dict(pid=None, base=None, endian='auto', route=None,
                     enable_teleport=True, enable_state_restore=True,
                     enable_debug_menu=True, enable_hex_edit=True,
@@ -135,9 +140,23 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.active_version.key, 'japan')
         self.assertIn('Japan selected', app.status.get())
         self.assertNotIn('disabled', app.connect_button.state())
-        self.assertEqual(app.notebook.tab(app.scene_tab, 'state'), 'disabled')
-        self.assertEqual(app.notebook.tab(app.unlock_tab, 'state'), 'disabled')
-        self.assertEqual(app.notebook.tab(app.value_freezes_tab, 'state'), 'disabled')
+        # The same navigation tabs remain active for both game versions;
+        # the content and individually writable features switch by region.
+        self.assertEqual(app.notebook.tab(app.scene_tab, 'state'), 'normal')
+        self.assertEqual(app.notebook.tab(app.unlock_tab, 'state'), 'normal')
+        self.assertEqual(app.notebook.tab(app.value_freezes_tab, 'state'), 'normal')
+        self.assertEqual(app.notebook.tab(app.live_memory_tab, 'state'), 'normal')
+        self.assertEqual(app.notebook.tab(app.story_progress_tab, 'state'), 'normal')
+        self.assertEqual(app.scene_character_line.winfo_manager(), '')
+        self.assertEqual(app.entrance_box.winfo_manager(), '')
+        self.assertIn('Japan-0', app.scene_instruction.cget('text'))
+        self.assertIn('disabled', app.raw_write_btn.state())
+        self.assertIn('disabled', app.freeze_raw_button.state())
+        self.assertEqual(app.jp_unlock_panel.winfo_manager(), 'pack')
+        app.open_full_scene_tab()
+        self.assertEqual(app.notebook.select(), str(app.scene_tab))
+        app.open_live_memory_tab()
+        self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
         self.assertEqual(app.notebook.tab(app.value_search_tab, 'state'), 'normal')
         self.assertEqual(app.notebook.tab(app.event_sessions_tab, 'state'), 'normal')
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
@@ -156,6 +175,10 @@ class DashboardSmokeTests(unittest.TestCase):
         app.on_game_version_changed()
         self.assertNotIn('disabled', app.connect_button.state())
         self.assertEqual(app.notebook.tab(app.scene_tab, 'state'), 'normal')
+        self.assertNotEqual(app.scene_character_line.winfo_manager(), '')
+        self.assertNotEqual(app.entrance_box.winfo_manager(), '')
+        self.assertEqual(app.jp_unlock_panel.winfo_manager(), '')
+        self.assertNotIn('disabled', app.raw_write_btn.state())
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
                          'normal')
 
