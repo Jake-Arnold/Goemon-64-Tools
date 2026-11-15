@@ -210,6 +210,65 @@ class InspectorMixin(EntranceMixin):
             wraplength=950)
         self.scene_footer_note.pack(anchor='w')
 
+    def configure_scene_browser_region(self):
+        """One browser with two explicit, separately validated warp backends."""
+        japan = self.active_version.key == 'japan'
+        if japan:
+            self.scene_instruction.configure(
+                text='JAPAN: single-click selects; double-click sends the '
+                     'selected room through the original debug category/stage '
+                     'and N64 A path. USA entrance data is not used.')
+            self.scene_character_line.pack_forget()
+            self.entrance_box.pack_forget()
+            self.scene_transition_note.configure(
+                text='Japan-0: native debug menu entry → category/stage → '
+                     'Project64 N64 A → verify playable destination. '
+                     'The Japanese scene loader owns the spawn.')
+            self.experimental_warp_btn.configure(
+                text='Warp to selected Japanese scene')
+            self.native_debug_btn.configure(
+                text='Open ORIGINAL debug menu (manual only)')
+            enabled = bool(
+                getattr(self.args, 'enable_japan_debug_menu_writes', False)
+                and not getattr(self.args, 'read_only', False))
+            self.scene_footer_note.configure(
+                text='Project64 N64 A key is configured in Japan Live → '
+                     'Scene warp (debug). No direct current/pending map writes.')
+        else:
+            self.scene_instruction.configure(
+                text='USA: single-click selects; double-click uses the '
+                     'selected entrance reload. Manual debug menu is separate.')
+            self.scene_character_line.pack(fill='x', pady=4,
+                                           after=self.scene_instruction)
+            self.entrance_box.pack(fill='x', pady=4,
+                                   after=self.scene_character_line)
+            self.scene_transition_note.configure(
+                text='USA experimental native entrance reload with verified '
+                     'spawn and character checks.')
+            self.experimental_warp_btn.configure(
+                text='Warp to selected USA entrance')
+            self.native_debug_btn.configure(
+                text='Open original debug menu (manual only)')
+            enabled = bool(getattr(self.args, 'enable_hex_edit', False)
+                           and getattr(self.args, 'enable_teleport', False)
+                           and not getattr(self.args, 'read_only', False))
+            self.scene_footer_note.configure(
+                text='USA reload uses the selected decoded entrance; Japan '
+                     'uses its own native debug menu selector.')
+        self.experimental_warp_btn.state(
+            ['!disabled'] if enabled else ['disabled'])
+        manual = bool(
+            (getattr(self.args, 'enable_japan_debug_menu_writes', False)
+             if japan else getattr(self.args, 'enable_debug_menu', False))
+            and not getattr(self.args, 'read_only', False))
+        self.native_debug_btn.state(
+            ['!disabled'] if manual else ['disabled'])
+        self.draw_scene_list()
+        self.scene_status.set(
+            'Japan-0: select a room and double-click for a native warp.'
+            if japan else 'USA: select a room and double-click for '
+                          'the experimental entrance reload.')
+
     def refresh_checkpoint_options(self):
         if not hasattr(self,'diff_cp'):return
         labels=self.checkpoint_labels()
