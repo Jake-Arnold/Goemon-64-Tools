@@ -53,7 +53,8 @@ from practice.japanese_position import (
     checked_japan_xyz, read_japan_position, move_japan_goemon_oedo_south,
 )
 from practice.japanese_debug_warp import (
-    JAPAN_DEBUG_ENGINE_MODE, JAPAN_NATIVE_DEBUG_MODE,
+    JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE, JAPAN_DEBUG_CHARACTER,
+    JAPAN_NATIVE_DEBUG_MODE,
     debug_menu_selection_hint, get_japan_debug_context,
     enter_japan_native_debug_menu,
 )
