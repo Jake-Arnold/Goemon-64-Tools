@@ -52,6 +52,7 @@ $backendTests = @(
     'tests.test_region_views',
     'tests.test_region_unlocks',
     'tests.test_rom_layout_audit',
+    'tests.test_rom_context_audit',
     'tests.test_japan_live_memory_edit',
     'tests.test_japan_event_sessions',
     'tests.test_japan_damage_capture',
@@ -91,6 +92,11 @@ try {
         Invoke-PythonTest -Arguments @('-m', 'practice.rom_layout_audit', '--usa',
             $env:GOEMON_USA_DECOMPRESSED, '--japan',
             $env:GOEMON_JAPAN_DECOMPRESSED, '--summary')
+        if ($env:GOEMON_ROM_CONTEXT_AUDIT -eq '1') {
+            Invoke-PythonTest -Arguments @('-m', 'practice.rom_context_audit', '--usa',
+                $env:GOEMON_USA_DECOMPRESSED, '--japan',
+                $env:GOEMON_JAPAN_DECOMPRESSED, '--summary')
+        }
     }
 
     Write-Host 'Running native Windows Tk GUI tests (desktop session required)...'

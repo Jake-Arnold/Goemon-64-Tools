@@ -40,3 +40,28 @@ Never commit decompressed ROMs or diagnostic snapshots. The CLI verifies exact i
 ## Next evidence step
 
 Inspect the referencing functions and compare their control flow for Bazooka, Goemon/Ebisumaru party and treasure slot dispatch; test inventory changes live before promoting individual names to confirmed. Maintain the mapping provenance labels in practice/region_unlocks.py.
+
+
+## Second-pass direct/indirect reference and matching instruction-context analysis
+
+A separate research CLI, practice/rom_context_audit.py, conservatively tracks LUI-derived register constants through selected MIPS arithmetic and movement instructions for up to 64 instructions, stopping at a branch/jump delay slot and invalidating overwritten registers. It compares **eleven-instruction opcode/register-shape windows** around accesses. Literal immediate and branch targets are masked, not raw instructions exported. It is deliberately distinct from the prior first-pass direct scan so its 23/34 baseline remains reproducible.
+
+On the same two verified original decompressed 32 MiB images:
+
+- **30/34 candidate aligned-word pairs** have at least one identical 11-instruction shaped access context (same load/store mnemonic). This supports related code paths, not named byte identity.
+- **26/34 pairs** have exactly matching deduplicated read/write mnemonic counts in this deeper bounded tracker.
+- **4/34 without observed paired context**: Gold Key, Cucumber, Lord's Pass, and Achilles' Heel. Not disproven: all four can be accessed via pointer/indirect pathways not resolved by static local register tracking.
+- **4 additional pairs** have matching opcode context but unequal operation counts: Sasuke kunai upgrade and red/blue/yellow fish. This is consistent with region-specific code paths; one shared code path is identifiable, but inventory semantics remain unproven.
+- Triton Shell and Silver Fortune Doll progress gain identical bounded-context references despite having zero matches in the first-pass direct scanner.
+
+Especially useful Bazooka evidence: USA ROM offset 0x006724B0 uses a word load from aligned guest 0x8015C6D8; Japan ROM offset 0x00677190 loads aligned guest 0x80161EC8 with the same eleven-instruction shape, including corresponding conditional control flow. This strongly supports regional structure placement, not identification of the last byte as the Bazooka item flag.
+
+**False confidence example:** the guessed Sasuke battery field's matched store at USA offset 0x00024D50 / Japan 0x00024A10 is inside a byte-clearing loop (four sequential zero stores), not a demonstrated battery-acquisition handler. Keep both the byte/bit mapping and item name classified as a guess. Matching instruction context can reflect initialization logic.
+
+Local reproduction after setting the two exact-ROM environment variables:
+
+    python -m practice.rom_context_audit --usa /path/usa.decompressed.z64 --japan /path/japan.decompressed.z64 --summary
+
+For the platform test runners, GOEMON_ROM_CONTEXT_AUDIT=1 opts into this *additional* full-ROM scan when both ROM path variables are already set. The six new ROM-free synthetic unit tests always run in the standard toolkit backend suite. The actual PR toolkit suite still needs native Windows/GUI verification.
+
+The context scanner is bounded, flow-insensitive across branches, and not an executable-code-only disassembler. Treat results as *correlation*, not control-flow or gameplay proof.

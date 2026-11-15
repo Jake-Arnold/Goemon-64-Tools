@@ -25,6 +25,7 @@ PYTHON="${PYTHON:-python3}"
   tests.test_region_views \
   tests.test_region_unlocks \
   tests.test_rom_layout_audit \
+  tests.test_rom_context_audit \
   tests.test_japan_live_memory_edit \
   tests.test_japan_event_sessions \
   tests.test_japan_damage_capture \
@@ -41,6 +42,11 @@ if [[ -n "${GOEMON_USA_DECOMPRESSED:-}" && -n "${GOEMON_JAPAN_DECOMPRESSED:-}" ]
   "${PYTHON}" -m practice.rom_layout_audit \
     --usa "${GOEMON_USA_DECOMPRESSED}" \
     --japan "${GOEMON_JAPAN_DECOMPRESSED}" --summary
+  if [[ "${GOEMON_ROM_CONTEXT_AUDIT:-}" == '1' ]]; then
+    "${PYTHON}" -m practice.rom_context_audit \
+      --usa "${GOEMON_USA_DECOMPRESSED}" \
+      --japan "${GOEMON_JAPAN_DECOMPRESSED}" --summary
+  fi
 fi
 
 if command -v xvfb-run >/dev/null 2>&1; then

@@ -2732,3 +2732,12 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Inspected remote PRs #13–#17: all open/draft, stacked sequentially; PR #17 targets the #16 head branch and includes the full earlier Japanese branch ancestry (285 commits at audit). No merge or branch pruning is justified until integrated tests pass and ancestry is reviewed.
 - Checked production imports: the superseded native scene-warper's staging prototype is unused in Toolkit, but its scene-loaded read helper is **still imported in production**. The old party unlock primitive is retained for standalone tests; production Unlocks now uses the separate direct regional writer. Neither legacy module can be deleted blindly.
 - Documented exact merge/test gate and cleanup sequence in docs/JAPAN_PR17_CONSOLIDATION_AUDIT.md. Kept PR #17 draft and did not touch main, decomp G2 evidence, savestates or ROM assets.
+
+
+### 2026-11-15 — Second-pass Japanese/USA MIPS context investigation
+
+- Restored both user-supplied exact decompressed 32 MiB ROMs locally and reran the original direct-reference scan: reproduced 23/34 paired patterns. Baseline scanner remains intact.
+- Wrote bounded LUI+register-constant tracker and 11-instruction normalized context comparison (practice/rom_context_audit.py). Executed against both pinned SHA-1 ROMs: 30/34 have a matching local memory-access code shape; 26/34 have identical deduplicated operation counts. Gold Key, Cucumber, Lord's Pass, and Achilles' Heel still have no paired static context. These are not mapping disprovals.
+- Bazooka USA ROM offset 0x006724B0 / Japan 0x00677190 load corresponding aligned words 0x8015C6D8 / 0x80161EC8 in identical eleven-instruction neighborhoods. The candidate inventory byte's **identity is not proven by this**.
+- Critical caveat: matched Sasuke battery store site occurs in a byte-clearing loop rather than confirmed battery item logic; the bit 0x20 and guessed address must remain speculative.
+- Six ROM-free synthetic tests were run locally and passed; full Windows/Tk/project emulator checks were not run. Added the six tests to Windows/Linux toolkit runners; optional exact-ROM second pass uses GOEMON_ROM_CONTEXT_AUDIT=1 and both existing ROM input paths. No GitHub Actions, ROMs, raw code bytes, or state dumps committed. Documentation: docs/JAPAN_ROM_REFERENCE_AUDIT.md.
