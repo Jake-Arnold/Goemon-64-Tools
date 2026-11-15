@@ -2741,3 +2741,10 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Bazooka USA ROM offset 0x006724B0 / Japan 0x00677190 load corresponding aligned words 0x8015C6D8 / 0x80161EC8 in identical eleven-instruction neighborhoods. The candidate inventory byte's **identity is not proven by this**.
 - Critical caveat: matched Sasuke battery store site occurs in a byte-clearing loop rather than confirmed battery item logic; the bit 0x20 and guessed address must remain speculative.
 - Six ROM-free synthetic tests were run locally and passed; full Windows/Tk/project emulator checks were not run. Added the six tests to Windows/Linux toolkit runners; optional exact-ROM second pass uses GOEMON_ROM_CONTEXT_AUDIT=1 and both existing ROM input paths. No GitHub Actions, ROMs, raw code bytes, or state dumps committed. Documentation: docs/JAPAN_ROM_REFERENCE_AUDIT.md.
+
+### 2026-11-15 — Read-context evidence ranking refinement
+
+- Split the 30/34 paired MIPS contexts into **26 matching load/read contexts**, **4 store-only contexts**, and **4 without local paired contexts**. The store-only matches belong to Sasuke kunai upgrade, Sudden Impact, Mini Ebisumaru and Magic Mermaid. Treat them as structural initialization/write alignment rather than corroborated gameplay reads.
+- Added paired_read_context_count to rom_context_audit JSON and CLI summary without changing unlock runtime mapping or code writes. Added a store-only synthetic regression: 7/7 ROM-free tests passed locally. The full toolkit GUI suite and live Japanese Project64 remain untested.
+- Updated docs/JAPAN_ROM_REFERENCE_AUDIT.md; same exact USA/JP 32 MiB image hashes and same candidate mapping remain in force.
+

@@ -27,12 +27,23 @@ class TrackedMipsReferencesTest(unittest.TestCase):
         values = compare_contexts(
             usa, jp, [('bazooka', 0x8015C6DB, 0x80161ECB, 'array')])
         self.assertTrue(values[0]['matching_context'])
+        self.assertTrue(values[0]['matching_read_context'])
         self.assertTrue(values[0]['same_operation_counts'])
         self.assertEqual(values[0]['usa_operation_counts'], {'lw': 1, 'sw': 1})
         self.assertEqual(values[0]['japan_operation_counts'], {'lw': 1, 'sw': 1})
         self.assertEqual(values[0]['best_context']['matching_instructions'], 11)
         self.assertNotIn('instructions', json.dumps(values[0]).lower().replace(
             'matching_instructions', '').replace('window_instructions', ''))
+
+    def test_store_only_context_is_not_a_read(self):
+        usa = code(*([0] * 6), 0x3C088016, 0x2508C6D8,
+                   0xAD000000, 0x03E00008, 0, *([0] * 6))
+        jp = code(*([0] * 6), 0x3C088016, 0x25081EC8,
+                  0xAD000000, 0x03E00008, 0, *([0] * 6))
+        result = compare_contexts(
+            usa, jp, [('candidate', 0x8015C6DB, 0x80161ECB, 'array')])[0]
+        self.assertTrue(result['matching_context'])
+        self.assertFalse(result['matching_read_context'])
 
     def test_register_overwrite_invalidates_constant(self):
         sequence = code(0x3C088016, 0x25081EC8, 0x8FA80000,

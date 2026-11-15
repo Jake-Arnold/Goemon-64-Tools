@@ -178,6 +178,10 @@ def compare_contexts(usa, japan, rows, *, window=64, radius=5):
         count_a = dict(sorted(Counter(item['operation'] for item in a).items()))
         count_b = dict(sorted(Counter(item['operation'] for item in b).items()))
         context = best_context_pair(usa, japan, a, b, radius)
+        read_context = best_context_pair(
+            usa, japan,
+            [site for site in a if site['operation'].startswith('l')],
+            [site for site in b if site['operation'].startswith('l')], radius)
         results.append({
             'slug': slug,
             'mapping_provenance': provenance,
@@ -188,6 +192,9 @@ def compare_contexts(usa, japan, rows, *, window=64, radius=5):
             'same_operation_counts': bool(count_a and count_a == count_b),
             'matching_context': bool(context and
                                      context['matching_instructions'] == 2 * radius + 1),
+            'matching_read_context': bool(
+                read_context and
+                read_context['matching_instructions'] == 2 * radius + 1),
             'best_context': context,
         })
     return results
@@ -208,11 +215,13 @@ def main(argv=None):
     items = compare_contexts(load_verified(args.usa, 'usa'),
                              load_verified(args.japan, 'japan_0'), rows)
     matched = sum(item['matching_context'] for item in items)
+    matched_reads = sum(item['matching_read_context'] for item in items)
     same_counts = sum(item['same_operation_counts'] for item in items)
     result = {
         'note': 'Code-shape correlation only; DOES NOT identify individual item bytes or bit masks',
         'candidate_count': len(items),
         'paired_context_count': matched,
+        'paired_read_context_count': matched_reads,
         'same_operation_counts': same_counts,
         'candidates': items,
     }
@@ -220,7 +229,8 @@ def main(argv=None):
         args.output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     if args.summary:
         print(f'MIPS tracked reference context pairs: {matched}/{len(items)} '
-              f'(equal operation counts: {same_counts}/{len(items)})')
+              f'(read contexts: {matched_reads}/{len(items)}; '
+              f'equal operation counts: {same_counts}/{len(items)})')
     elif not args.output:
         print(json.dumps(result, indent=2))
     return 0

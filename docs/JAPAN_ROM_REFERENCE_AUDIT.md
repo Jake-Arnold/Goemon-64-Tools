@@ -65,3 +65,17 @@ Local reproduction after setting the two exact-ROM environment variables:
 For the platform test runners, GOEMON_ROM_CONTEXT_AUDIT=1 opts into this *additional* full-ROM scan when both ROM path variables are already set. The six new ROM-free synthetic unit tests always run in the standard toolkit backend suite. The actual PR toolkit suite still needs native Windows/GUI verification.
 
 The context scanner is bounded, flow-insensitive across branches, and not an executable-code-only disassembler. Treat results as *correlation*, not control-flow or gameplay proof.
+
+## Distinguishing reads from initialization-only matches
+
+The 30/34 matching local instruction contexts have different evidence strengths:
+
+| Correlation type | Count | Interpretation |
+| --- | ---: | --- |
+| Identical local read context (load) | 26 | At least one corresponding read path; still only word-level alignment |
+| Identical context, but stores only | 4 | Could be initializer/clearing logic; weaker evidence for item names |
+| No paired local context | 4 | This scanner cannot resolve the address; not evidence against it |
+
+The **four store-only matches** are Sasuke kunai upgrade, Sudden Impact, Mini Ebisumaru, and Magic Mermaid. The **four with no matched context** remain Gold Key, Cucumber, Lord's Pass, and Achilles' Heel. A matched read alone is not proof of acquisition logic or of a bit-mask, particularly when the code reads aligned words and the UI edits the last byte.
+
+Seven ROM-free synthetic tests were run locally and passed, including a new check that a shared write-only pattern does not count as a paired read. The output JSON and --summary now expose `paired_read_context_count` separately from `paired_context_count`.
