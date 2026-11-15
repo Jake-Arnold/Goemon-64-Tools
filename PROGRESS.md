@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Japanese Project64 character-switch overlay ROM probe
+
+- **Reason:** Project64 native character-switch trace identified stores/call at Japanese guest 0x801E2944/0x801E2970 and a pointer to 0x80211650, matching the start of file_11 BSS. The traced VMA overlaps multiple overlays and must not be assigned a ROM offset by a universal mapping.
+- **Research implementation:** Added read-only `decomp/japan_character_switch_probe.py` to authenticate the Japan-0 decompressed ROM and pinned Splat SHA-1, enumerate VMA-overlapping overlays, and test the exact observed MIPS instruction words without embedding ROM contents. Added `docs/JAPAN_CHARACTER_SWITCH_DECOMP_2026-11-15.md` with ROM-offset candidates and a bounded next-step protocol.
+- **Tests:** Six ROM-free synthetic unit tests passed (opcode/JAL encoding, matching and mismatched overlays, Splat identity guard, and instruction-gap handling). Original Japanese ROM execution and compiler/full-ROM verification were **not run** in this session: project-root binary materialization was unavailable.
+- **Limits:** No overlay ownership, complete function bounds, matching C, new promoted decomp functions, or Japanese ROM rebuild is claimed. Existing manifests, production code and main branch remain unchanged.
+- **Next:** Run the probe against the SHA-1-verified 32 MiB Japan-0 decompressed ROM, confirm unique overlay and complete function bounds, then reconstruct and test an isolated original-address C candidate before considering any promotion.
+
 ### 2026-11-14 — Dashboard fit at default window dimensions
 
 - **UI:** Arranged Connection and Logical checkpoints in side-by-side columns at the default 1220×790 opening window; removed the redundant tab-navigation footer and shortened two Linux PID button labels. Existing connection and checkpoint actions are unchanged.
