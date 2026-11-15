@@ -37,6 +37,15 @@ Source: same draft PR #17; [full parity checklist](USA_JAPAN_TOOLKIT_PARITY_CHEC
 - **Validation outstanding:** execute expanded `./scripts/test_japan_party.sh`; test all three features against real Japanese Mupen and verify connection/savestate cache invalidation. These new tests are not covered by the user's earlier successful party-write testing.
 - **Next:** map exact Japanese player/task pointers and XYZ, then investigate the Japanese event-bank layout and 45 Fortune Dolls. Promote only observed semantics to write-capable fields; keep Japanese recomp as a separate effort.
 
+## P0.7: User-verified Project64, read-only XYZ research now available (2026-11-15)
+
+- **Project64:** the user confirms complete savestate **restoration** and Sasuke/Yae party-unlock **writes** work in their Windows Project64 session. This validates the bounded one-shot flag writes and recovery for the tested setup. Native character-switch index values `2`/`3` and actor model construction remain separately unverified.
+- **Live memory:** user screenshots validate Windows PJ64 Japan Live custom watches, 5-snapshot `u16` Value Search narrowing to `0x80161DDA`, scene context and focused Advanced A/B/C. See [the image evidence transcription](JAPAN_PROJECT64_LIVE_SCREENSHOT_EVIDENCE_2026-11-15.md).
+- **Alias identified:** `0x80161DCF`, observed A `00` → B `01` → C `00`, is the low byte of confirmed region-specific `scene_character` word `0x80161DCC`, **not a new saved-event flag**. The other reversible `0x80161DBD` bit difference remains unknown.
+- **P1 first implementation:** `practice/japan_player_position_research.py` and Japanese **Find XYZ triples** button rank stationary→moved→stationary-at-new-position wide-RAM `f32` triplets without assuming a player pointer or USA offsets. Three snapshots must retain identical PID, base, endian, reader session, map and character. Background work, limited results and JSON exports hold no RAM memory dumps. See [XYZ testing protocol](JAPAN_XYZ_DISCOVERY.md).
+- **Acceptance still open:** synthetic XYZ tests have been authored but need running on the user's Windows system; first real XYZ candidate requires screenshots/JSON and repeated two-scene/two-direction independent observations; the presence of an XYZ triple does not prove a player object or task pointer.
+- **Safety:** do not add Japanese movement writes, freezes, checkpoint restore, warps, task-pointer dereferences or USA layout assumptions as part of this milestone.
+
 ## P1: Japanese player and task pointers
 
 1. Inspect **Japan-native code references** to globals corresponding to USA `PLAYER_OBJECT_PTR_ADDR=0x801FC60C` and `PLAYER_TASK_PTR_ADDR=0x801FC604`. Do not assume `+0x57F0` works on overlays. Use Japan decomp symbol references / disassembly and reverse cross-references.
