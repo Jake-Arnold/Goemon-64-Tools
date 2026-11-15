@@ -1,6 +1,16 @@
 # Goemon 64 Tools — Development Progress
 
 
+### 2026-11-15 — Windows Project64 Value Search / Scene Context / focused A-B-C live screenshots
+
+- **Source:** Four additional user-provided screenshot attachments `image(20261115-143753).png`, `image(20261115-143809).png`, `image(20261115-143825).png`, `image(20261115-143906).png`. User states **A/B/C works** and that all Windows tests passed (previous message). Original PNGs remain attached to the conversation; **textual extraction** is committed as `docs/JAPAN_PROJECT64_LIVE_SCREENSHOT_EVIDENCE_2026-11-15.md` (commit `3edd566`).
+- **Live Ryo candidate and search-to-watch proof:** User-promoted read-only `u16` custom watch at `0x80161DDA` displays **95** (`0x005F`). Value Search tab shows `u16` search input `97`, **5 snapshots**, `Decreased` filter and **exactly one surviving candidate**, `0x80161DDA` = **93** (`0x005D`). This demonstrates region-correct cross-tab search/watch interoperability in the shown states; timestamps/order and in-game transaction are not shown.
+- **Live scene context:** `scene_map=353/0x161` Oedo Town (South), `scene_previous=465/0x1D1` South Oedo - Goemon's House, `scene_pending=353/0x161`, `scene_submode=2` town candidate, `scene_character=Goemon(0)`, and phase=1; transition/exit/pause/loading all zero. Retain the screenshot's per-field OBSERVED versus UNVERIFIED labels; static context values alone do not prove all hypothesised semantics.
+- **Focused Advanced A/B/C:** User screenshot shows **2 compared regions, 22 raw byte changes, 2 shortlisted candidates**, C matched A for both. `0x80161DCF` (region `jp_inventory_candidates`): A `00` → B `01`, XOR `01`, **boolean candidate**. `0x80161DBD`: A `0B` → B `09`, XOR `02`, **one-bit candidate**. All are raw reversible byte observations; no Japanese event flag/write semantics are implied.
+- **Acceptance:** Read-only Japan Live, read-only numeric Value Search, watch promotion, scene context and **focused A/B/C** receive user-confirmed Windows/PJ64 live UI evidence. Wider 4/8 MiB capture, export, PID/host base reporting, Project64 savestate rollback, and in-game Sasuke/Yae switches are still open. No source code write permission added. PR #17 stays draft.
+
+
+
 ### 2026-11-15 — User confirms Windows tests pass; Japanese live custom watch displays Goemon index
 
 - **New user-reported result:** After fixing the Value Search single-quote `SyntaxError` (`3e12166`), the user reports that **all tests pass** on Windows and that the Japanese toolkit **works perfectly**. No raw test output was attached to archive or independently replay.
