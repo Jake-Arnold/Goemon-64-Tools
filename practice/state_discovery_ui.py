@@ -351,7 +351,7 @@ class StateDiscoveryMixin:
                     row['xor_mask'], 'yes' if row['c_stable_at_b'] else '—', row['kind']))
             counts = report['counts']
             self.state_probe_status.set(
-                f"XYZ heuristic: {counts['candidate_count']} moving/settled float "
+                f"XYZ candidates: {counts['candidate_count']} moving/settled float "
                 f"triples; showing {counts['reported_candidates']}. "
                 'These can describe NPCs or other objects. Watch and test across '
                 'multiple scenes before identifying the player. No writes.')
