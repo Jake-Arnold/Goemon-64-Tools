@@ -83,8 +83,12 @@ class DamageEventCaptureMixin:
                   wraplength=1050).pack(anchor="w", pady=(8, 5))
 
     def start_damage_capture(self):
-        if self.mem is None:
-            self.damage_capture_status.set("Connect to a running game first.")
+        japan = self.active_version.key == 'japan'
+        ram = self.jp_rdram if japan else self.mem
+        if ram is None:
+            self.damage_capture_status.set(
+                'Connect to verified Japan-0 RDRAM first.' if japan
+                else 'Connect to a running USA game first.')
             return
         self.stop_damage_capture(quiet=True)
         if (self.damage_capture_worker is not None and
@@ -93,8 +97,11 @@ class DamageEventCaptureMixin:
             return
         self.damage_capture_generation += 1
         generation = self.damage_capture_generation
-        ram = self.mem
-        recorder = DamageRecorder(ram)
+        if japan:
+            from practice.japan_damage_capture import JapanDamageRecorder
+            recorder = JapanDamageRecorder(ram)
+        else:
+            recorder = DamageRecorder(ram)
         signal = threading.Event()
         self.damage_recorder = recorder
         self.damage_capture_stop = signal
@@ -103,7 +110,8 @@ class DamageEventCaptureMixin:
         self.damage_capture_tree.delete(*self.damage_capture_tree.get_children())
         self.damage_capture_timeline.set("Select a candidate after the first completed hit.")
         self.damage_capture_status.set(
-            "Recording. Take damage during normal gameplay; maximum eight events.")
+            f"Recording {('Japan-0' if japan else 'USA')} read-only damage "
+            "events. Take damage during normal gameplay; maximum eight events.")
 
         def worker():
             error = None
@@ -234,7 +242,10 @@ class DamageEventCaptureMixin:
             path = diagnostics_dir() / (
                 "damage_capture_" +
                 datetime.now().strftime("%Y%m%d_%H%M%S_%f") + ".json")
-            path.write_text(json.dumps(export_report(recorder), indent=2) + "\n",
+            report=export_report(recorder)
+            report['game_version']=getattr(recorder,'region','usa')
+            report['hp_guest_address']=f"0x{getattr(recorder,'hp_address',0x8015C5E4):08X}"
+            path.write_text(json.dumps(report, indent=2) + "\n",
                             encoding="utf-8")
             self.damage_capture_status.set(f"Exported report to {path}")
         except OSError as exc:
