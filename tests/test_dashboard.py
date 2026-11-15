@@ -152,7 +152,11 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertIn('JAPAN:', app.scene_instruction.cget('text'))
         self.assertIn('disabled', app.raw_write_btn.state())
         self.assertIn('disabled', app.freeze_raw_button.state())
-        self.assertEqual(app.jp_unlock_panel.winfo_manager(), 'pack')
+        self.assertEqual(app.usa_unlock_shell.winfo_manager(), 'pack')
+        self.assertEqual(
+            app.unlock_address_labels[0x8015C69F].cget('text'), 'unknown')
+        self.assertEqual(
+            app.unlock_address_labels[0x8015C6A7].cget('text'), '80161E97')
         app.open_full_scene_tab()
         self.assertEqual(app.notebook.select(), str(app.scene_tab))
         app.open_live_memory_tab()
@@ -179,7 +183,11 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.notebook.tab(app.scene_tab, 'state'), 'normal')
         self.assertNotEqual(app.scene_character_line.winfo_manager(), '')
         self.assertNotEqual(app.entrance_box.winfo_manager(), '')
-        self.assertEqual(app.jp_unlock_panel.winfo_manager(), '')
+        self.assertEqual(app.usa_unlock_shell.winfo_manager(), 'pack')
+        self.assertEqual(
+            app.unlock_address_labels[0x8015C69F].cget('text'), '8015C69F')
+        self.assertEqual(
+            app.unlock_address_labels[0x8015C6A7].cget('text'), '8015C6A7')
         self.assertNotIn('disabled', app.raw_write_btn.state())
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
                          'normal')
