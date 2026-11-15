@@ -80,6 +80,36 @@ class RegionReadTests(unittest.TestCase):
         InspectorMixin.enter_debug_menu(host)
         self.assertEqual(commands[-1], ('manual', None))
 
+    def test_scene_browser_doubleclick_never_dispatches_manual_debug_menu(self):
+        routed = []
+        class SceneList:
+            def nearest(self, y):
+                return 0
+            def bbox(self, index):
+                return (0, 0, 300, 22)
+            def selection_clear(self, first, last):
+                pass
+            def selection_set(self, index):
+                pass
+            def activate(self, index):
+                pass
+            def curselection(self):
+                return (0,)
+        host = SimpleNamespace(
+            active_version=SimpleNamespace(key='japan'),
+            scene_list=SceneList(),
+            scene_options=[(0x1D1, "Goemon's House")],
+            select_scene=lambda: None,
+            request_direct_scene=lambda dest, label:
+                routed.append(('reload', dest)),
+            open_japan_debug_for_selected_scene=lambda:
+                routed.append(('debug-menu', None)),
+        )
+        outcome = InspectorMixin.activate_selected_scene(
+            host, SimpleNamespace(y=10))
+        self.assertEqual(outcome, 'break')
+        self.assertEqual(routed, [('reload', 0x1D1)])
+
     def test_usa_scene_reload_path_remains_separate(self):
         calls=[]
         host=SimpleNamespace(
