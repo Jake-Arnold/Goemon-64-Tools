@@ -2697,3 +2697,12 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 ```
 
 **Commit rule:** Every functional/documentation change must update this file in the same commit. Push the commit to `main` (or push a feature branch and merge it) as part of completing the change; never claim a push succeeded without checking GitHub.
+
+
+### 2026-11-15 — USA/Japan shared Unlocks refactor (PR #17)
+
+- User confirms the original 141 backend and 62 GUI tests pass after the earlier assertion corrections. This is **before** the new shared-Unlocks changes below.
+- Restored the **single existing 34-row USA Unlocks layout** for both USA/Japan. The Japanese region now swaps only explicit, source-matched guest addresses; unmatched rows display literal `unknown`, not a guessed USA->JP offset. Exact matches initially: Sasuke/Yae party, Triton Shell, Cucumber and three fish counts (seven reads). USA addresses, ordering, options and existing one-shot / unlock-all implementation are preserved.
+- Removed both redundant Japanese **Unlock Sasuke** / **Unlock Yae** button pairs and their standalone Japanese Treeview. The shared Sasuke/Yae **On** buttons use the already proven ROM/PID-checked one-byte Japanese writer; Off and all other Japanese writes remain disabled. The Japan Live diagnostic notebook retains Goemon XYZ and manual original debug menu; automatic shared Scene Browser `0x0C` warp unchanged.
+- New targeted mapping/UI regression modules `tests.test_region_unlocks` and `tests.test_region_unlocks_ui` were added to both Windows and Linux scripts. Dashboard, Japanese diagnostics, and scene-warp tab tests were updated for the shared layout. **New tests have not been executed in this connector-only session; Windows rerun required before claiming them passing.**
+- Source of truth: `practice/unlocks.py` (unchanged USA), `practice/region_unlocks.py` (Japan-only identity mapping), `practice/unlocks_ui.py` (shared presentation), `practice/toolkit.py` (existing guarded writer).
