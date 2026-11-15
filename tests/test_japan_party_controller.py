@@ -11,6 +11,15 @@ from practice.japanese_party_unlock import CHARACTER_INDEX_ADDR
 from tests.test_japanese_party_unlock import Process
 
 
+class Label:
+    """Minimal mutable label used by synthetic controller smoke fixtures."""
+    def __init__(self):
+        self.value = ''
+
+    def set(self, value):
+        self.value = value
+
+
 class Writer(Process):
     def __init__(self):
         super().__init__("wordswapped", writable=True)
