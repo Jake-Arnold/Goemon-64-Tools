@@ -215,15 +215,15 @@ class InspectorMixin(EntranceMixin):
         japan = self.active_version.key == 'japan'
         if japan:
             self.scene_instruction.configure(
-                text='JAPAN: single-click selects; double-click sends the '
-                     'selected room through the original debug category/stage '
-                     'and N64 A path. USA entrance data is not used.')
+                text='JAPAN: single-click selects; double-click immediately '
+                     'requests the selected room using the same 0x0C area '
+                     'reload mechanism as USA. No debug menu is opened.')
             self.scene_character_line.pack_forget()
             self.entrance_box.pack_forget()
             self.scene_transition_note.configure(
-                text='Japan-0: native debug menu entry → category/stage → '
-                     'Project64 N64 A → verify playable destination. '
-                     'The Japanese scene loader owns the spawn.')
+                text='Japan-0: stage the pending destination at '
+                     '0x800CD490, then request native area reload 0x0C at '
+                     '0x800CD284. No input injection; verify loaded scene.')
             self.experimental_warp_btn.configure(
                 text='Warp to selected Japanese scene')
             self.native_debug_btn.configure(
@@ -232,8 +232,9 @@ class InspectorMixin(EntranceMixin):
                 getattr(self.args, 'enable_japan_debug_menu_writes', False)
                 and not getattr(self.args, 'read_only', False))
             self.scene_footer_note.configure(
-                text='Project64 N64 A key is configured in Japan Live → '
-                     'Scene warp (debug). No direct current/pending map writes.')
+                text='Scene Browser instantly triggers Japan-0 native reload '
+                     '(0x0C). If cached USA reference entrance data exists, '
+                     'use it when unambiguous. No active-map or exit-bit writes.')
         else:
             self.scene_instruction.configure(
                 text='USA: single-click selects; double-click uses the '
@@ -253,8 +254,8 @@ class InspectorMixin(EntranceMixin):
                            and getattr(self.args, 'enable_teleport', False)
                            and not getattr(self.args, 'read_only', False))
             self.scene_footer_note.configure(
-                text='USA reload uses the selected decoded entrance; Japan '
-                     'uses its own native debug menu selector.')
+                text='USA and Japan both use native 0x0C area reloads, '
+                     'with independent region-specific addresses.')
         self.experimental_warp_btn.state(
             ['!disabled'] if enabled else ['disabled'])
         manual = bool(
@@ -1249,13 +1250,10 @@ class InspectorMixin(EntranceMixin):
         self.scene_selected=mid
         if self.active_version.key == 'japan':
             try:
-                from practice.japan_native_scene_warp import japan_warp_selection
-                target=japan_warp_selection(mid)
                 self.scene_status.set(
-                    f'Japan-0 selected 0x{mid:03X} {name}: '
-                    f'{target.category_name} / stage {target.stage_index}. '
-                    'Double-click to stage original menu selection, send '
-                    'N64 A and verify that the destination loads.')
+                    f'Japan-0 selected 0x{mid:03X} {name}. '
+                    'Double-click for immediate 0x0C area reload; '
+                    'no debug menu or N64 A key required.')
                 self.show_japan_debug_target()
             except (ValueError, RuntimeError) as exc:
                 self.scene_status.set(f'Japanese scene selection unavailable: {exc}')
