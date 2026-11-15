@@ -52,7 +52,7 @@ class ValueSearchMixin:
         self.value_search_tab = tab
         ttk.Label(tab, text='Find oil, Ryo, boss HP, timers and other unknown values',
                   font=('Segoe UI Semibold', 16)).pack(anchor='w', pady=(0, 7))
-        ttk.Label(tab, text='Scans all 8 MiB of the selected N64 ROM's guest RAM; no player object required. '
+        ttk.Label(tab, text="Scans the selected N64 ROM's guest RAM (4 or 8 MiB); no player object required. "
                   'Reads only. Each filter compares a new snapshot with the previous one. '
                   'Values are unverified candidates, not named game fields.',
                   wraplength=1100).pack(anchor='w', pady=(0, 10))
