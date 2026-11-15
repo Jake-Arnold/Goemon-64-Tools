@@ -894,11 +894,12 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'started': time.monotonic(), 'deadline': time.monotonic() + 28,
                 'confirm_at': None, 'stable': 0,
             }
-            self.jp_debug_result.set(
+            message = (
                 f'Warp requested: 0x{context[1]:03X} → 0x{destination:03X}. '
                 f'Waiting for native debug menu, then {target.category_name} '
                 f'index {target.stage_index} and N64 A ({key}).')
-            self.status.set(self.jp_debug_result.get())
+            self.jp_debug_result.set(message)
+            self.status.set(message)
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
             self.jp_debug_result.set(f'Automatic native warp refused: {exc}')
             self.status.set(f'Automatic native warp refused: {exc}')
