@@ -1,4 +1,4 @@
-"""Shared USA/Japan Unlocks Tk presentation and guarded button routing."""
+"""Shared USA/Japan Unlocks candidate presentation and direct write routing."""
 import tkinter as tk
 import unittest
 from argparse import Namespace
@@ -43,7 +43,7 @@ class RegionUnlockUITests(unittest.TestCase):
         self.app.on_game_version_changed()
         self.assertEqual(self.app.active_version.key, 'japan')
 
-    def test_all_34_rows_keep_controls_and_unknown_addresses(self):
+    def test_all_34_rows_keep_controls_and_label_inferred_addresses(self):
         app = self.app
         usa_labels = {
             item.address: app.unlock_address_labels[item.address].cget('text')
@@ -56,11 +56,11 @@ class RegionUnlockUITests(unittest.TestCase):
         self.assertEqual(app.usa_unlock_shell.winfo_manager(), 'pack')
         self.assertEqual(len(app.unlock_row_widgets), 34)
         self.assertEqual(
-            app.unlock_address_labels[0x8015C69F].cget('text'), 'unknown')
+            app.unlock_address_labels[0x8015C69F].cget('text'), '80161E8F ?')
         self.assertEqual(
             app.unlock_address_labels[0x8015C6A7].cget('text'), '80161E97')
         self.assertEqual(
-            app.unlock_row_widgets[0x8015C69F][0].cget('text'), 'unknown')
+            app.unlock_row_widgets[0x8015C69F][0].cget('text'), '—')
         self.assertIn('disabled', app.unlock_all_button.state())
         for item in UNLOCKS:
             _state, buttons = app.unlock_row_widgets[item.address]
@@ -98,7 +98,16 @@ class RegionUnlockUITests(unittest.TestCase):
                 self.assertNotIn('disabled', button.state())
         self.assertNotIn('disabled', app.unlock_count_buttons[fish.address].state())
         self.assertNotIn('disabled', app.unlock_all_button.state())
-        self.assertIn('disabled', app.unlock_row_widgets[goemon.address][1][1].state())
+        self.assertNotIn('disabled', app.unlock_row_widgets[goemon.address][1][1].state())
+        self.assertEqual(
+            app.unlock_address_labels[0x8015C6DB].cget('text'),
+            '80161ECB ?')
+        self.assertEqual(
+            app.unlock_address_labels[0x8015C85B].cget('text'),
+            '8016204B (guess)')
+        chain = next(x for x in UNLOCKS if x.label == 'Chain Pipe')
+        self.assertEqual(
+            app.unlock_row_widgets[chain.address][1][2].cget('text'), 'On [01]')
         with patch.object(app, 'apply_japan_unlocks', return_value=(1, 1)) as write:
             app.set_unlock(sasuke, 0)
             write.assert_called_with(((sasuke, 0),))
@@ -112,11 +121,15 @@ class RegionUnlockUITests(unittest.TestCase):
             write.assert_called_with(((fish, 3),))
             write.reset_mock()
             app.set_unlock(goemon, 1)
-            write.assert_not_called()
-        self.assertIn('unknown', app.unlock_status.get())
-        with patch.object(app, 'apply_japan_unlocks', return_value=(9, 9)) as write:
+            write.assert_called_once_with(((goemon, 1),))
+        self.assertIn('[offset]', app.unlock_status.get())
+        with patch.object(app, 'apply_japan_unlocks', return_value=(29, 29)) as write:
             app.unlock_all_items()
-            self.assertEqual(len(write.call_args.args[0]), 9)
+            targets = write.call_args.args[0]
+            self.assertEqual(len(targets), 29)
+            self.assertNotIn('star', {row.slug for row, _ in targets})
+            self.assertNotIn('sasuke_battery_1_collected',
+                             {row.slug for row, _ in targets})
         app.args.read_only = True
         app.refresh_unlocks(force=True)
         self.assertIn('disabled', app.unlock_row_widgets[yae.address][1][1].state())
@@ -127,7 +140,7 @@ class RegionUnlockUITests(unittest.TestCase):
         app = self.app
         self._select_japan()
         self.assertEqual(
-            app.unlock_address_labels[0x8015C69F].cget('text'), 'unknown')
+            app.unlock_address_labels[0x8015C69F].cget('text'), '80161E8F ?')
         self.assertIn('disabled', app.unlock_count_buttons[0x8015C71B].state())
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
@@ -140,6 +153,9 @@ class RegionUnlockUITests(unittest.TestCase):
         self.assertNotIn('disabled', app.unlock_row_widgets[0x8015C6A7][1][0].state())
         self.assertNotIn('disabled', app.unlock_count_buttons[0x8015C71B].state())
         self.assertNotIn('disabled', app.unlock_all_button.state())
+        chain = next(x for x in UNLOCKS if x.label == 'Chain Pipe')
+        self.assertEqual(app.unlock_row_widgets[chain.address][1][2].cget('text'),
+                         'On [02]')
 
 
     def test_unlock_mouse_wheel_bound_to_cards_and_buttons(self):
