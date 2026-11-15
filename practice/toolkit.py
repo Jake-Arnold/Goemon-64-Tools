@@ -853,10 +853,12 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             pass
         if hasattr(self, 'jp_debug_result'):
             self.jp_debug_result.set(message)
+        if hasattr(self, 'scene_status'):
+            self.scene_status.set(message)
         self.status.set(message)
 
-    def start_japan_native_scene_warp(self):
-        """USA-style flow: native menu → category/stage → N64 A → gameplay.
+    def start_japan_native_scene_warp(self, destination=None):
+        """Shared Scene Browser: native menu → selection → N64 A → gameplay.
 
         This is user-triggered after CLI opt-in. It does not patch scene IDs,
         request loading via exit flags, or bypass native character creation.
@@ -865,7 +867,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.jp_debug_result.set('Finish the current native scene warp first.')
             return
         try:
-            destination = self.selected_japan_debug_scene()
+            destination = (
+                self.selected_japan_debug_scene()
+                if destination is None else destination)
             target = japan_warp_selection(destination)
             key = self.jp_warp_a_key.get()
             if key not in ('X', 'Z', 'C', 'SPACE', 'ENTER', 'A', 'S', 'J', 'K', 'L'):
@@ -899,10 +903,13 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 f'Waiting for native debug menu, then {target.category_name} '
                 f'index {target.stage_index} and N64 A ({key}).')
             self.jp_debug_result.set(message)
+            self.scene_status.set(message)
             self.status.set(message)
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
-            self.jp_debug_result.set(f'Automatic native warp refused: {exc}')
-            self.status.set(f'Automatic native warp refused: {exc}')
+            message = f'Automatic native warp refused: {exc}'
+            self.jp_debug_result.set(message)
+            self.scene_status.set(message)
+            self.status.set(message)
 
     def poll_japan_native_scene_warp(self, now):
         """Nonblocking, time-bounded native selection and loaded-state monitor."""
@@ -938,9 +945,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                     handle.close()
                 pending['phase'] = 'staged'
                 pending['confirm_at'] = now + 0.25
-                self.jp_debug_result.set(
-                    f'Native menu staged: {pending["label"]} / '
-                    f'{pending["stage"]}. Checking whether values persist.')
+                message = (f'Native menu staged: {pending["label"]} / '
+                           f'{pending["stage"]}. Checking whether values persist.')
+                self.jp_debug_result.set(message)
+                self.scene_status.set(message)
             elif phase == 'staged':
                 if state != JAPAN_NATIVE_DEBUG_MODE:
                     raise RuntimeError('Native menu exited before A confirmation')
@@ -958,9 +966,11 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 self.jp_native_key_release = release
                 self.root.after(150, self._release_japan_native_key)
                 pending['phase'] = 'wait_load'
-                self.jp_debug_result.set(
+                message = (
                     f'N64 A ({pending["key"]}) sent to original menu. '
                     f'Waiting for full scene 0x{pending["destination"]:03X} load.')
+                self.jp_debug_result.set(message)
+                self.scene_status.set(message)
             elif phase == 'wait_load':
                 if is_japan_scene_loaded(
                         self.jp_rdram, pending['destination']):
