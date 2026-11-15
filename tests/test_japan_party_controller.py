@@ -84,16 +84,16 @@ class JapanesePartyControllerTests(unittest.TestCase):
         writer = Writer()
         screen = controller(writer)
         targets = japan_unlock_all_targets()
-        self.assertEqual(len(targets), 7)
+        self.assertEqual(len(targets), 9)
         with patch('practice.toolkit.HostProcess', return_value=writer) as host:
             changed, total = Toolkit.apply_japan_unlocks(screen, targets)
-        self.assertEqual((changed, total), (7, 7))
+        self.assertEqual((changed, total), (9, 9))
         host.assert_called_once_with(959604, writable=True)
         self.assertEqual(writer.close_count, 1)
         self.assertEqual(writer.rdram().read_guest(0x80161F0B, 1), bytes((8,)))
         self.assertEqual(writer.rdram().read_guest(0x80161F0F, 1), bytes((5,)))
         self.assertEqual(writer.rdram().read_guest(0x80161F13, 1), bytes((3,)))
-        self.assertEqual(len(writer.writes), 7)
+        self.assertEqual(len(writer.writes), 9)
 
     def test_unknown_row_rejected_before_opening_host(self):
         writer = Writer()
