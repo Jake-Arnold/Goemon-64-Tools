@@ -38,8 +38,8 @@ class JapaneseFieldsUi:
             ' research fields have mixed evidence: four scene fields are'
             ' supported by live traces, character 0/1 by both switch directions,'
             ' and the remaining fields are hypotheses. All field watches are'
-            ' read-only; separately opted-in party unlocks and one Oedo South'
-            ' Goemon XYZ move control can write. No automatic warps.', wraplength=960,
+            ' read-only. Use the shared Unlocks tab for guarded party flags;'
+            ' the Goemon XYZ control here has its own write opt-in.', wraplength=960,
         ).pack(anchor='w', pady=(0, 8))
         toolbar = ttk.Frame(tab)
         toolbar.pack(fill='x', pady=(0, 6))
@@ -56,36 +56,6 @@ class JapaneseFieldsUi:
         research_tabs = ttk.Notebook(tab)
         self.jp_research_tabs = research_tabs
         research_tabs.pack(fill='x', pady=(0, 7))
-        party = ttk.Frame(research_tabs, padding=7)
-        research_tabs.add(party, text='Party unlocks')
-        ttk.Label(
-            party,
-            text='The game builds character actors itself. These buttons only set '
-                 'the Sasuke/Yae party flags from the published Japanese cheats. '
-                 'Never force the character-index word directly. '
-                 'Make a full emulator savestate first.',
-            wraplength=960,
-        ).pack(anchor='w')
-        controls = ttk.Frame(party)
-        controls.pack(fill='x', pady=(5, 3))
-        self.jp_party_buttons = {}
-        for character, label in ((2, 'Unlock Sasuke'), (3, 'Unlock Yae')):
-            button = ttk.Button(
-                controls, text=label,
-                command=lambda cid=character: self.enable_japan_party(cid))
-            button.pack(side='left', padx=(0, 6))
-            self.jp_party_buttons[character] = button
-            button.state(['disabled'])
-        self.jp_party_result = tk.StringVar(
-            value=('Opt-in enabled. Connect, create an emulator savestate, '
-                   'then confirm each individual unlock.'
-                   if getattr(getattr(self, 'args', None),
-                              'enable_japan_party_writes', False)
-                   else 'Party write option disabled by default. Restart with '
-                        '--enable-japan-party-writes to use these buttons.'))
-        ttk.Label(party, textvariable=self.jp_party_result,
-                  wraplength=960).pack(anchor='w', pady=(4, 0))
-
         move = ttk.Frame(research_tabs, padding=7)
         research_tabs.add(move, text='Goemon XYZ')
         ttk.Label(
@@ -401,20 +371,10 @@ class JapaneseFieldsUi:
             ['!disabled'] if enabled else ['disabled'])
 
     def refresh_japan_party_controls(self):
-        enabled = (
-            self.active_version.key == 'japan'
-            and self.jp_rdram is not None
-            and getattr(self, 'game_pid', None) is not None
-            and (getattr(self, 'jp_backend', None) is None or
-                 getattr(getattr(self, 'connection_target', None),
-                         'get', lambda: None)() == self.jp_backend)
-            and bool(getattr(getattr(self, 'args', None),
-                             'enable_japan_party_writes', False))
-            and not bool(getattr(getattr(self, 'args', None),
-                                 'read_only', False))
-        )
-        for button in self.jp_party_buttons.values():
-            button.state(['!disabled'] if enabled else ['disabled'])
+        """Retained as a legacy refresh entrypoint for XYZ/debug guards.
+
+        The Sasuke/Yae buttons now live only in the shared Unlocks tab.
+        """
         self.refresh_japan_position_controls()
         self.refresh_japan_debug_controls()
 
