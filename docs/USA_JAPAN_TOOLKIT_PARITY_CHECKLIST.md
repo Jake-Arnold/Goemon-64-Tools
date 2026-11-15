@@ -1,6 +1,19 @@
 # USA ↔ Japan Toolkit feature parity checklist
 
 
+## Latest research-to-code mapping — 15 November 2026
+
+**Experimental candidate implementation, not 34 gameplay-verified unlocks.** The shared 34-row USA/Japan Unlocks interface now has Japanese address proposals for every row: **nine named source-backed mappings, sixteen inferred from published Japanese four-slot GameShark arrays, four inferred from the consistent USA+0x57F0 regional displacement, and five explicitly marked guesses**. Names and confidence labels are in [the full mapping table](USA_JAPAN_UNLOCK_MAPPING.md). The original USA row addresses, button values, and write implementation were not modified.
+
+- Source: [GameHacking.org's NG5J cheats](https://gamehacking.org/game/20438) prove array starting addresses, width, repeat count and stride, **not the identities of individual slots**.
+- **Bazooka candidate: 0x80161ECB** (Japanese subweapon slot 3). Medal of Flames is subweapon slot 4 at `0x80161ECF`. Do not confuse these with the dialogue/event-bit deltas from the earlier Bazooka pickup screenshot; Bazooka identity is still pending a live toggle check.
+- **Japanese Chain Pipe uses On=01**, unlike USA On=02; the shared button labels and on-wire write values are region-aware while USA definitions remain unchanged.
+- The five weak guesses are Sasuke battery 1 (`0x80161DF9`, bit `0x20`), and Star/Moon/Flower/Snowflake assigned in order to Japanese treasure slots `0x8016204B/4F/53/57`. These five are **manually writable for experiments, but excluded from the default Japanese Unlock All**.
+- Default Japanese Unlock All writes **29 rows** (named + array/offset inferences) and skips these five guesses. `--read-only` disables all writes.
+- Added/updated region mapping, backend write, USA regression, and Tk GUI tests. **The latest Windows tests and emulator confirmation are pending**. PR #17 remains draft.
+
+The sections below are historical implementation notes. Any older statement that Japanese Unlocks only contain nine mappings, that Sasuke/Yae need a confirmation dialog, or that 25 rows remain `unknown` is superseded by the current mapping table above.
+
 ## Character-compatible warps, editable Live Memory and additional identity mappings — 2026-11-15
 
 - User confirms live Japanese Sasuke/Yae party unlock, Triton Shell, Cucumber, all fish counts and normal scene teleports work. Scene warp while currently playing Sasuke/Yae was rejected by a character-0/1-only predicate. The same 0x0C native reload is now allowed in stable gameplay for all characters 0–3; no scene or submode restrictions were otherwise changed.
@@ -34,7 +47,7 @@
 | Dashboard | Region-specific RDRAM process; Japanese scene, character and position values shown; remembered exact Japan ROM path reverified on each new session | Japan velocity/action/task pointers and logical checkpoints unverified |
 | Scene Browser | **Same existing browser; no duplicate Japanese selector.** Double-click **immediately** stages Japan pending destination at 0x800CD490 (u16 or 12-byte reference entrance block) and requests **0x800CD284 = 0x0C** area reload in the same callback, then monitors 3 stable gameplay polls. Original debug menu 0x0A remains a separate manual button | **First real inter-scene Japanese warp not yet live confirmed.** User did verify visible debug menu opening. USA double-click/entrance path remains unchanged |
 | Live Memory | **Same Live Memory tab**, reads 58 Japan cheat-backed values, 10 scene probes, 3 observed XYZ floats and isolated Japan custom watches | General Japan raw edit/freeze disabled pending mapped permissions |
-| Unlocks | **Same 34 USA rows and seven groups** for both ROMs. Japan displays `unknown` for 25 unmapped counterparts; the nine named Japanese addresses allow direct 1-byte On/Off or fish-count editing, without confirmation or the party guard. **Unlock All** affects mapped Japan rows only | Live Project64 readback/gameplay confirmation for newly enabled Triton Shell, Cucumber and fish writes; mapping the remaining 27 unknowns |
+| Unlocks | **Same 34 USA rows and seven groups**, with 9 named + 16 array-inferred + 4 offset-inferred + 5 guessed Japanese addresses. Guess rows visibly labelled; Japanese Chain Pipe On=01. Direct per-row writes enabled. **Unlock All** writes the 29 non-guess candidates. | Verify array ordering (especially Bazooka), four treasure item names, battery bit, Gold Key/Fortune Doll behaviour, and 29-row bulk writes in live Japan gameplay |
 | Story Progress | **Same nested progress tables**, presents Japan item/map/bonus-mode candidates with addresses and evidence | JP saved-event bank and story-bit causality unknown; no USA bit editing |
 | Event Sessions | Same A/B/C event/idle/control flow and ranking. Japan captures 100 user-selected source RAM bytes (default 0x80161D80); provenance stores region, address, and backend. Advanced RAM Comparison still available | These Japan bytes are candidate RAM, **not** a confirmed persistent event bank |
 | Damage events | Same event recorder UI uses JP HP byte 0x80161DD7, current scene 0x800CD2A2 and character 0x80161DCC, omitting guessed USA task/object pointers | No proof of JP invulnerability/collision semantics |
