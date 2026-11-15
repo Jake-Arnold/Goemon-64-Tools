@@ -100,6 +100,9 @@ class EventSessionsMixin:
             self.event_pending={}
             self.event_token=None
             self.event_capture_started=None
+            # Invalidate asynchronous rank workers from the former ROM before
+            # a stale USA result can repopulate the Japanese session table.
+            self.event_generation+=1
             self.event_region_start.set(
                 f'0x{JAPAN_CANDIDATE_START if japan else EVENT_START:08X}')
             self.event_rows=[]
