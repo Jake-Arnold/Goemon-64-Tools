@@ -102,7 +102,7 @@ class JapaneseFieldsUi:
                                         RUNTIME_OBSERVATION_STATUS.get(
                                             field.key, 'UNVERIFIED: offset candidate')
                                         if field in JAPAN_SCENE_PROBES
-                                        else 'External lead')))
+                                        else 'External lead'))
         ttk.Label(
             tab, text='Sources: Japanese GameHacking.org cheats; TCRF debug code;'
             ' regional-offset hypotheses for scene probes. Both Japanese wikis'
