@@ -1,6 +1,16 @@
 # Goemon 64 Tools — Development Progress
 
 
+### 2026-11-15 — Backend regression: XYZ controller success-message AttributeError fixed
+
+- User ran scripts/test_japan_party.ps1 after adding Japanese debug-menu and XYZ controls; backend group ended FAILED (errors=1). User-pasted shell output lacks the underlying unittest traceback. Exact failing test name is not independently established.
+- Inspection found a definite successful-write-path bug in Toolkit.move_japan_oedo_xyz: it called result_text.get(), but the existing synthetic controller's Label status stub implements set(), not get(). This raises AttributeError in the successful Project64 XYZ controller test. The bug is consistent with one backend test error but cannot be conclusively matched to the omitted Python traceback.
+- Commit 0c995e3 avoids accessing get(): first refresh displayed live position, then use one locally built success message for both status destinations. This also stops the live position refresh from hiding the outcome.
+- Commit b49cbd9 hardens tests/test_japan_position_controller.py so the status stub remains set-only and both status messages must match.
+- Windows rerun pending: py -3 -m unittest tests.test_japan_position_controller -v; then scripts/test_japan_party.ps1. No claim of test pass or live debug-menu warp yet.
+
+
+
 ### 2026-11-15 — Japanese Goemon authoritative position behavioural test; original native debug scene warp research
 
 - **User-performed position-write breakthrough (new high-confidence data):** writing `0x80151B10` float32 to **0** caused Goemon to physically move to X=0; the previously identical `0x80151BA8`, `0x80151C40`, `0x80211870`, `0x802118E0` values followed the new X. Editing the apparent copies `0x80211870` or `0x802118E0` did **not** move Goemon; those values were overwritten. This is strong evidence the `0x80151B10` vector is upstream/position-controlling in the tested scene, not proof of the internal player task owner across overlays.
