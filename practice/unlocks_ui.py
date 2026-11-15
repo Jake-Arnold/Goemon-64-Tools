@@ -21,6 +21,7 @@ class UnlocksMixin:
         self.unlock_tab = tab
         intro = ttk.Frame(tab)
         intro.pack(fill='x', pady=(0, 8))
+        self.usa_unlock_intro = intro
         ttk.Label(intro, text='Unlocks, weapons and upgrades', font=('Segoe UI Semibold', 16),
                   foreground=PALETTE['gold']).pack(anchor='w')
         ttk.Label(intro, text='Click any value to write it immediately to the original N64 RAM. '
@@ -28,6 +29,7 @@ class UnlocksMixin:
                   style='Muted.TLabel').pack(anchor='w', pady=(4, 0))
         all_bar = ttk.Frame(tab)
         all_bar.pack(fill='x', pady=(0, 8))
+        self.usa_unlock_all_bar = all_bar
         self.unlock_all_button = ttk.Button(
             all_bar, text='Unlock all mapped items, weapons and abilities',
             command=self.unlock_all_items)
@@ -36,9 +38,11 @@ class UnlocksMixin:
             self.unlock_all_button.state(['disabled'])
         ttk.Label(all_bar, text='One-time edit; does not set story completion flags.',
                   style='Muted.TLabel').pack(side='left', padx=8)
-        ttk.Label(tab, textvariable=self.unlock_status).pack(fill='x', pady=(0, 8))
+        self.unlock_status_label=ttk.Label(tab, textvariable=self.unlock_status)
+        self.unlock_status_label.pack(fill='x', pady=(0, 8))
         shell = ttk.Frame(tab)
         shell.pack(fill='both', expand=True)
+        self.usa_unlock_shell = shell
         canvas = tk.Canvas(shell, bg=PALETTE['background'], highlightthickness=0)
         scroll = ttk.Scrollbar(shell, orient='vertical', command=canvas.yview)
         canvas.configure(yscrollcommand=scroll.set)
@@ -84,7 +88,109 @@ class UnlocksMixin:
                 self.unlock_row_widgets[item.address] = (state, controls)
 
 
+        # The same Unlocks TAB renders version-specific, source-backed rows.
+        # No USA addresses may be interpreted while Japan-0 is selected.
+        japanese = ttk.Frame(tab, padding=(2, 4))
+        self.jp_unlock_panel = japanese
+        ttk.Label(
+            japanese, text='Japan-0 unlocks and inventory',
+            font=('Segoe UI Semibold', 16)).pack(anchor='w')
+        ttk.Label(
+            japanese, text='Original Japanese guest addresses from the JP '
+                           'cheat catalogue. Most entries are source-backed '
+                           'leads, not confirmed writing targets. The two '
+                           'user-verified party unlocks use the separate '
+                           'guarded Japan controller.',
+            wraplength=1020).pack(anchor='w', pady=(3, 6))
+        self.jp_unlock_status = tk.StringVar(
+            value='Connect to verified Japan-0 RAM to read mapped unlocks.')
+        ttk.Label(japanese, textvariable=self.jp_unlock_status).pack(
+            fill='x', pady=(2, 5))
+        buttons=ttk.Frame(japanese)
+        buttons.pack(fill='x', pady=(2, 6))
+        self.jp_unlock_buttons={}
+        for char, name in ((2,'Unlock Sasuke'),(3,'Unlock Yae')):
+            button=ttk.Button(
+                buttons, text=name,
+                command=lambda index=char:self.enable_japan_party(index))
+            button.pack(side='left', padx=(0, 8))
+            button.state(['disabled'])
+            self.jp_unlock_buttons[char]=button
+        from practice.region_views import japan_unlock_fields
+        self.jp_unlock_fields=japan_unlock_fields()
+        table=ttk.Treeview(
+            japanese, columns=('address','value','raw','status'),
+            show='tree headings', height=21)
+        table.heading('#0',text='Japanese field')
+        table.column('#0',width=340)
+        for key,label,width in (
+            ('address','Japan guest address',150),
+            ('value','Observed',160),('raw','Raw',80),
+            ('status','Evidence / status',290)):
+            table.heading(key,text=label)
+            table.column(key,width=width)
+        scrollbar=ttk.Scrollbar(
+            japanese, orient='vertical', command=table.yview)
+        table.configure(yscrollcommand=scrollbar.set)
+        table.pack(side='left', fill='both', expand=True)
+        scrollbar.pack(side='right', fill='y')
+        self.jp_unlock_table=table
+        for field in self.jp_unlock_fields:
+            table.insert('', 'end', iid=field.key, text=field.label,
+                         values=(f'0x{field.address:08X}','—','—',
+                                 'Source-backed; awaiting live read'))
+        self.jp_unlock_last_poll=0.0
+
+    def configure_unlock_region(self):
+        japan=self.active_version.key=='japan'
+        for widget in (self.usa_unlock_intro, self.usa_unlock_all_bar,
+                       self.unlock_status_label, self.usa_unlock_shell):
+            if japan:
+                widget.pack_forget()
+            else:
+                widget.pack(fill='both' if widget is self.usa_unlock_shell
+                            else 'x', expand=(widget is self.usa_unlock_shell))
+        if japan:
+            self.jp_unlock_panel.pack(fill='both',expand=True)
+            self.refresh_japan_unlocks(force=True)
+        else:
+            self.jp_unlock_panel.pack_forget()
+            self.refresh_unlocks(force=True)
+
+    def refresh_japan_unlocks(self, *, force=False):
+        if self.active_version.key!='japan':
+            return
+        now=time.monotonic()
+        if not force and now-self.jp_unlock_last_poll < 0.8:
+            return
+        self.jp_unlock_last_poll=now
+        from practice.japanese_fields import read_japan_field
+        for field in self.jp_unlock_fields:
+            if self.jp_rdram is None:
+                value,raw,status='—','—','Disconnected'
+            else:
+                result=read_japan_field(self.jp_rdram,field)
+                value,raw,status=result.value,result.raw,result.status
+            self.jp_unlock_table.item(
+                field.key,values=(f'0x{field.address:08X}',
+                                  value,raw,status))
+        enabled=bool(
+            self.jp_rdram is not None
+            and getattr(self.args,'enable_japan_party_writes',False)
+            and not getattr(self.args,'read_only',False))
+        for button in self.jp_unlock_buttons.values():
+            button.state(['!disabled'] if enabled else ['disabled'])
+        self.jp_unlock_status.set(
+            f'Japan-0: {len(self.jp_unlock_fields)} mapped read-only '
+            'source leads; Sasuke/Yae guarded unlocks available.'
+            if self.jp_rdram is not None
+            else 'Connect to verified Japan-0 RAM to read mapped unlocks.')
+
     def unlock_all_items(self):
+        if self.active_version.key == 'japan':
+            self.jp_unlock_status.set(
+                'Japan-only unlock-all not mapped; USA inventory writes refused.')
+            return
         if self.mem is None:
             self.unlock_status.set('Connect to a game before unlocking items.')
             return
@@ -108,7 +214,11 @@ class UnlocksMixin:
             self.unlock_status.set(f'Unlock all stopped: {exc}. Previous writes may remain.')
 
     def set_unlock(self, unlock: Unlock, value: int) -> None:
-        """One click = one measured byte write; never confirmation dialogs."""
+        """One click = one measured USA byte write; never translate to Japan."""
+        if self.active_version.key == 'japan':
+            self.jp_unlock_status.set(
+                'Japan-0: USA unlock addresses are unavailable; no writes.')
+            return
         if not self.mem:
             self.unlock_status.set('Disconnected. Connect before editing unlocks.')
             return
@@ -140,7 +250,10 @@ class UnlocksMixin:
             self.unlock_status.set(f'{field.label}: invalid count — {exc}')
 
     def refresh_unlocks(self, *, force=False) -> None:
-        """Refresh from live RAM, including external edits and game changes."""
+        """Refresh region-specific values without reusing USA addresses."""
+        if self.active_version.key == 'japan':
+            self.refresh_japan_unlocks(force=force)
+            return
         now = time.monotonic()
         if not force and now - self.unlock_last_poll < 0.5:
             return
