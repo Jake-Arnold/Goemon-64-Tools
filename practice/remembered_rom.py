@@ -9,15 +9,22 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import sys
 import tempfile
 from practice.game_versions import selected_version, verify_selected_rom
-from practice.paths import practice_data_dir
 
 FORMAT = "goemon-verified-rom-paths-v1"
 
 
 def registry_path():
-    return practice_data_dir() / "verified_rom_paths.json"
+    """Per-user config, never the Git checkout or temporary frozen app root."""
+    if sys.platform == "win32":
+        base = Path(os.environ.get("LOCALAPPDATA") or
+                    Path.home() / "AppData" / "Local")
+    else:
+        base = Path(os.environ.get("XDG_CONFIG_HOME") or
+                    Path.home() / ".config")
+    return base / "GoemonSpeedrunTools" / "verified_rom_paths.json"
 
 
 def _entries(path):
