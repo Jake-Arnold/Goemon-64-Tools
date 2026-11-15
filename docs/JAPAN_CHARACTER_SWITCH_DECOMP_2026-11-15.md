@@ -26,6 +26,24 @@ The probe verifies the exact 32 MiB Japanese ROM SHA-1 `6f8745fecc3a5e7d4918c7a7
 
 Host-only tests: `python3 -m unittest tests.test_japan_character_switch_probe -v`. In the standalone research environment, six synthetic tests passed 15 November 2026; no original Japanese ROM byte check was possible from this chat's project-storage interface.
 
+## Bounded C reconstruction of the observed writes (research only)
+
+`decomp/research/japan_character_switch_prefix_model.[ch]` encodes the **observed** memory effects of caller `0x801E2944..0x801E2954` and callee `0x801E2970..0x801E299C` against a simulated big-endian guest RDRAM. In order, the caller stores `T9` to `V0+4` (the character global in the capture), stores `T1` to `V0+0x2C` (opaque), reads `u8[S0+0x60]`, and passes `S0`. The callee re-stores that byte to `object+0x60`, writes its zero-extended value to global `0x80161DCC`, follows a guest pointer at `object+0x5C`, and writes byte `1` at `pointer+0x69`.
+
+A relevant consequence is that **the callee's `SW` can overwrite the caller's `T9` value** if the object byte differs. This is a directly supported prefix-level MIPS fact, not a proven normal gameplay case. The model validates guest addresses and referenced allocations before writing, for safety in the host fixture; this is a model guard, not a proven native branch. The real MIPS also sets `F0` to zero and writes registers to the stack; neither effect is modelled because the subsequent use is not traced. Unknown caller gap and callee tail are excluded. No full-function C claim is made, and the research model is not included in any build manifest.
+
+Host smoke and sanitizer command (ROM-free):
+
+```sh
+cc -std=c11 -O1 -g -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
+  decomp/research/japan_character_switch_prefix_model.c \
+  decomp/research/test_japan_character_switch_prefix_model.c \
+  -o /tmp/goemon-jp-switch-prefix-model
+/tmp/goemon-jp-switch-prefix-model
+```
+
+The host model and ASan/UBSan test passed in this research session. Tests cover both observed values, a deliberately mismatched T9/object byte, use of a second object/indirect allocation, big-endian stores, and invalid pointer rejection with no memory modification.
+
 ## Next matching-C work once the probe identifies the section
 
 1. Resolve the actual original function start and end for the caller and `0x801E2970` using that section's generated Splat assembly and symbol boundaries. Do not derive a function boundary from the short trace alone.

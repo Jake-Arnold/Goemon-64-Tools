@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Bounded C model of Project64 character-switch stores
+
+- **Reason:** Turn the traced Japanese character-switch caller/callee instructions into a testable C behavioural model while original overlay ROM bytes remain inaccessible in this session.
+- **Implementation:** Added `decomp/research/japan_character_switch_prefix_model.[ch]` and C host test, retaining the exact order of observed global/secondary stores, object byte read/write and the indirect `+0x69` byte store. Guest addresses are dynamically validated as big-endian RDRAM; omitted MIPS stack/FPU effects and the unobserved remainder are explicitly excluded. Updated the Japanese switch research note.
+- **Tests:** Host model test passed with strict GCC C11 warnings, and again with ASan/UBSan. The six ROM-free Python overlay-probe tests also passed. Tests cover mismatched T9 versus object character, dynamic indirect pointer, big-endian write representation and invalid pointer with zero memory modification.
+- **Limits:** No original-address IDO comparison, JP ROM match, complete switch function, or decomp manifest promotion. The model is standalone host research, not linked to game code.
+- **Next:** On an authorized expanded ROM, identify the overlay using the MIPS probe and recover complete function bounds/tail before compiler experiments.
+
 ### 2026-11-15 — Japanese Project64 character-switch overlay ROM probe
 
 - **Reason:** Project64 native character-switch trace identified stores/call at Japanese guest 0x801E2944/0x801E2970 and a pointer to 0x80211650, matching the start of file_11 BSS. The traced VMA overlaps multiple overlays and must not be assigned a ROM offset by a universal mapping.
