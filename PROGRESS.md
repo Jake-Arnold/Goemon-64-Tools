@@ -1,6 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
 
+### 2026-11-15 — Native Windows PowerShell test/launch instructions
+
+- **Environment change:** the user is now running Windows rather than Ubuntu and requested PowerShell commands. Published `scripts/test_japan_party.ps1` (`736164b`), mirroring Bash compile/typed Japanese/backend + USA regression tests and Tk GUI suites. Selects `py -3` (or `python`); no Bash, WSL, Xvfb or Linux permissions changes. Executing the script requires Windows Python with Tk support.
+- **Documentation:** `docs/JAPAN_WINDOWS_POWERSHELL.md` (`6c307e0`) includes Windows update, test and launch commands, optional prior opt-in Sasuke/Yae writer flag, execution-policy fallback and Win32/JP Mupen limitations. Windows reproduction moved before the Linux example in `docs/JAPAN_READONLY_VALUE_SEARCH.md` (`85f05be`).
+- **Compatibility assessment:** `autosplitter/memory.py` uses native Win32 OpenProcess/ReadProcessMemory/VirtualQueryEx on Windows, so the Japanese RDRAM scanner has an operating-system backend and is not inherently Linux-only. **Still unverified:** actual Windows Mupen process discovery, live Japanese RDRAM scan, full savestates and the latest Value Search/A-B-C/custom watch regression tests. Japanese Project64 still unsupported in this branch. No Windows test success is claimed by this change.
+- **Next:** user runs the PowerShell suite on the Windows checkout and then tests verified Japan-0 Mupen connection; continue mapping Japanese player/task/XYZ only after safe read-only parity is validated.
+
+
+
 ### 2026-11-15 — Second Japan parity milestone: Advanced RAM Comparison A/B/C
 
 - **Delivered in separate GitHub pushes:** `practice/japan_state_comparison.py` (`3c3851f`), region-sensitive Advanced A/B/C UI experiment choices (`a23d6cf`), background Japanese guest snapshots and comparison routing (`cfef2cb`), Event Sessions gating (Japan only Advanced enabled; USA 100-byte event-session backend disabled, `4914796`).
