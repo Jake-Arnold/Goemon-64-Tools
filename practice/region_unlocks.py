@@ -16,6 +16,8 @@ _JAPAN_FIELD_KEYS = {
     "sasuke_in_party": "sasuke_party",
     "yae_in_party": "yae_party",
     "triton_shell": "triton_shell",
+    "lord_s_pass": "super_pass",
+    "achilles_heel": "benkei_weakness",
     "cucumber": "cucumber",
     "red_fish_count": "red_fish",
     "blue_fish_count": "blue_fish",
