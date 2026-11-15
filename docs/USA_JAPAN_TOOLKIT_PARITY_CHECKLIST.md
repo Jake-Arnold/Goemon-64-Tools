@@ -1,6 +1,14 @@
 # USA ↔ Japan Toolkit feature parity checklist
 
 
+## Immediate scene-warp correction — 2026-11-15
+
+- **Live failure reported:** Japanese Scene Browser double-click showed the **original debug menu**, unlike USA's instant area reload.
+- **Root cause found in source:** Japan was writing engine `0x0A` and waiting for debug category/keyboard-A, while USA uses pending map/entrance followed by **engine `0x0C`**.
+- **Correction committed:** `practice/japan_direct_scene_reload.py` and `Toolkit.start_japan_native_scene_warp` now write Japanese pending `0x800CD490` (2 or 12 bytes) and immediately request `0x800CD284=0x0C`. Original debug button remains manual-only; no keyboard input. Optional entrance uses cached USA reference data only when uniquely determined and warns otherwise.
+- **New explicit CLI:** `--enable-japan-scene-writes`; legacy `--enable-japan-debug-menu-writes` still allows the direct reload for existing setups, but does not make the original debug menu part of double-click.
+- **Tests committed:** `tests.test_japan_direct_scene_reload`, revised `tests.test_japan_native_scene_controller` and exact Scene Browser double-click dispatch tests, wired into Windows/Linux parity suites. [ ] Windows suite rerun. [ ] Live Project64 inter-scene destination/footing verified.
+
 ## Latest cross-region implementation (2026-11-15; Windows rerun pending)
 
 **Read this section as current.** The original row-by-row audit below is a historical pre-consolidation baseline, with some “absent”/“disabled” cells superseded by the changes listed here. The user requested one UI shared between both game versions, not a separate Japanese scene browser. The Japanese ROM still cannot inherit arbitrary USA task pointers, event bits or write privileges.
@@ -8,7 +16,7 @@
 | Shared tab or feature | New Japan-0 implementation | Remaining validation |
 | --- | --- | --- |
 | Dashboard | Region-specific RDRAM process; Japanese scene, character and position values shown; remembered exact Japan ROM path reverified on each new session | Japan velocity/action/task pointers and logical checkpoints unverified |
-| Scene Browser | **Same existing browser; no duplicate Japanese selector.** Double-click starts native 0x800CD284 menu entry → Japan category byte 0x800CD294 → stage u16 0x800CD2A4 → configured Project64 N64 A input → 3 stable gameplay polls | **First real inter-scene Japanese warp not yet live confirmed.** User did verify visible debug menu opening. USA double-click/entrance path remains unchanged |
+| Scene Browser | **Same existing browser; no duplicate Japanese selector.** Double-click **immediately** stages Japan pending destination at 0x800CD490 (u16 or 12-byte reference entrance block) and requests **0x800CD284 = 0x0C** area reload in the same callback, then monitors 3 stable gameplay polls. Original debug menu 0x0A remains a separate manual button | **First real inter-scene Japanese warp not yet live confirmed.** User did verify visible debug menu opening. USA double-click/entrance path remains unchanged |
 | Live Memory | **Same Live Memory tab**, reads 58 Japan cheat-backed values, 10 scene probes, 3 observed XYZ floats and isolated Japan custom watches | General Japan raw edit/freeze disabled pending mapped permissions |
 | Unlocks | **Same Unlocks tab**, swaps USA editable inventory for JP source-backed read-only fields and separately gated user-confirmed Sasuke/Yae unlock controls | Other JP unlock writes not independently verified |
 | Story Progress | **Same nested progress tables**, presents Japan item/map/bonus-mode candidates with addresses and evidence | JP saved-event bank and story-bit causality unknown; no USA bit editing |
@@ -18,7 +26,7 @@
 | Value Freezes, checkpoint restore, native menu calibration | Existing panels retain USA-specific semantics and write gates; Japan actions cannot borrow USA raw editor, player-task or event addresses | Region-specific JP task/pointer, freeze and logical checkpoint schemas required before equivalent writes |
 | ROM verification | Saved path + exact expected Japan SHA-1 in per-user config, rehash/verify file each future session; PID, host RAM and code signature revalidation unchanged | First post-upgrade remembered-path startup test in Windows pending |
 
-**Implementation constraints:** Japan automatic warp only targets the Project64 backend in the current code; `--enable-japan-debug-menu-writes` is the explicit opt-in, and `--read-only` overrides it. The menu selection and A-input code are assumed to match USA semantics at specifically derived Japan fields, but **only the original-menu opening** is user-verified. No direct current/pending scene or exit-flag writes are used. Files are committed, but complete new Windows PowerShell tests and first actual destination load remain outstanding.
+**Implementation constraints:** Japan automatic warp only targets the Project64 backend in the current code; `--enable-japan-debug-menu-writes` is the explicit opt-in, and `--read-only` overrides it. The previous debug-category/stage/A-input double-click prototype was replaced after the user confirmed it **only opened the original menu**. The new 0x0C native reload writes the pending destination/optional entrance (not current map or exit flag), **exactly as the USA reload does**. It is not yet live verified; the original debug-menu opening is only evidence for the separate manual control. Files are committed, but complete new Windows PowerShell tests and first actual destination load remain outstanding.
 
 
 **Audit:** 2026-11-15. **Comparison:** current USA integration branch `chatgptweb/decomp` versus Japan-0 feature branch `chatgptweb/japan-controlled-party-writes` (a descendant of the integration branch, 20 commits ahead when audited).
