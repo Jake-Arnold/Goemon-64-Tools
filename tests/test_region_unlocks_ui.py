@@ -2,6 +2,8 @@
 import tkinter as tk
 import unittest
 from argparse import Namespace
+from types import SimpleNamespace
+from practice.inspector import Watch
 from unittest.mock import patch
 
 from practice.game_versions import VERSIONS
@@ -138,6 +140,54 @@ class RegionUnlockUITests(unittest.TestCase):
         self.assertNotIn('disabled', app.unlock_row_widgets[0x8015C6A7][1][0].state())
         self.assertNotIn('disabled', app.unlock_count_buttons[0x8015C71B].state())
         self.assertNotIn('disabled', app.unlock_all_button.state())
+
+
+    def test_unlock_mouse_wheel_bound_to_cards_and_buttons(self):
+        app = self.app
+        self.assertTrue(app.unlock_canvas.bind('<MouseWheel>'))
+        self.assertTrue(app.unlock_canvas.bind('<Button-4>'))
+        button = app.unlock_row_widgets[0x8015C6A7][1][1]
+        self.assertTrue(button.bind('<MouseWheel>'))
+        self.assertEqual(
+            app._unlock_wheel(SimpleNamespace(delta=-120, num=None)), 'break')
+        self._select_japan()
+        self.assertTrue(button.bind('<MouseWheel>'))
+
+    def test_japanese_live_memory_context_menu_and_hex_edit(self):
+        app = self.app
+        self._select_japan()
+        app.jp_rdram = FakeRam({(0x80161EEF, 1): bytes((0,))})
+        app.game_pid = 1234
+        app.jp_backend = 'project64'
+        app.connection_target.set('project64')
+        row_name = 'Items: Triton Shell'
+        app.watch_rows = [Watch(
+            row_name, 0x80161EEF, 'No (0)', '00', 'External lead',
+            'Japanese sourced item')]
+        app.draw_watches()
+        self.assertTrue(app.watch_tree.exists(row_name))
+        mouse = SimpleNamespace(y=6, x_root=100, y_root=100)
+        with patch.object(app.watch_tree, 'identify_row', return_value=row_name), \
+             patch.object(app.watch_context_menu, 'tk_popup'):
+            app.open_live_watch_menu(mouse)
+        self.assertIn('Edit value', app.watch_context_menu.entrycget(0, 'label'))
+        self.assertEqual(app.watch_context_menu.entrycget(0, 'state'), 'normal')
+        with patch('practice.ui_extension.simpledialog.askstring',
+                   return_value='0x01') as dialog, \
+             patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer, \
+             patch.object(app, 'refresh_inspector'):
+            app.edit_live_watch_value(row_name)
+        writer.assert_called_once_with(
+            0x80161EEF, bytes((1,)), expected=bytes((0,)))
+        self.assertEqual(dialog.call_count, 1)
+        self.assertIn('Verified write', app.inspector_status.get())
+
+        app.args.read_only = True
+        with patch.object(app.watch_tree, 'identify_row', return_value=row_name), \
+             patch.object(app.watch_context_menu, 'tk_popup'):
+            app.open_live_watch_menu(mouse)
+        self.assertEqual(app.watch_context_menu.entrycget(0, 'state'),
+                         'disabled')
 
 
 if __name__ == '__main__':
