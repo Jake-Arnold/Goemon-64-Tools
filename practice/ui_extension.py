@@ -163,8 +163,12 @@ class InspectorMixin(EntranceMixin):
         self.scene_tab=scenes
         self.scene_live=tk.StringVar(value='Current map: —')
         ttk.Label(scenes,textvariable=self.scene_live,font=('Consolas',12)).pack(anchor='w',pady=4)
-        ttk.Label(scenes,text='Single-click selects; double-click immediately requests the selected entrance reload (experimental). The manual debug-menu button remains available.').pack(anchor='w')
+        self.scene_instruction=ttk.Label(
+            scenes,text='Single-click selects; double-click requests the '
+                        'version-specific native scene warp.')
+        self.scene_instruction.pack(anchor='w')
         character_line=ttk.Frame(scenes);character_line.pack(fill='x',pady=4)
+        self.scene_character_line=character_line
         ttk.Label(character_line,text='Target character:').pack(side='left')
         self.scene_character=ttk.Combobox(character_line,state='readonly',width=30,
                values=('0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
@@ -186,8 +190,13 @@ class InspectorMixin(EntranceMixin):
         self.scene_list.bind('<<ListboxSelect>>',self.select_scene)
         self.scene_list.bind('<Double-Button-1>',self.activate_selected_scene)
         self.draw_scene_list()
-        ttk.Label(scenes,text='Experimental 0x0C reload: stage the selected ROM entrance XYZ and facing before native loading, then place the loaded player after destination/character checks. Collision, camera and scene scripts still require live validation. The old exit-flag route remains disabled.',wraplength=950).pack(anchor='w',pady=3)
-        self.experimental_warp_btn=ttk.Button(scenes,text='EXPERIMENT: reload at selected entrance',
+        self.scene_transition_note=ttk.Label(
+            scenes, text='USA experimental entrance reload with actor and XYZ '
+                         'checks. Japan uses the native debug-menu category/stage '
+                         'and A input instead of direct scene ID writes.',
+            wraplength=950)
+        self.scene_transition_note.pack(anchor='w',pady=3)
+        self.experimental_warp_btn=ttk.Button(scenes,text='Warp to selected scene',
             command=self.try_reload_warp,style='Gold.TButton')
         self.experimental_warp_btn.pack(fill='x',pady=4)
         if not self.args.enable_hex_edit:self.experimental_warp_btn.state(['disabled'])
@@ -195,7 +204,11 @@ class InspectorMixin(EntranceMixin):
         self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.enter_debug_menu)
         self.native_debug_btn.pack(fill='x',pady=5)
         if not self.args.enable_debug_menu:self.native_debug_btn.state(['disabled'])
-        ttk.Label(scenes,text='Warp destinations use the original debug-menu transition and the selected entrance coordinates.',wraplength=950).pack(anchor='w')
+        self.scene_footer_note=ttk.Label(
+            scenes,text='USA reload uses the selected entrance; Japan uses its '
+                        'native debug menu to load the chosen room.',
+            wraplength=950)
+        self.scene_footer_note.pack(anchor='w')
 
     def refresh_checkpoint_options(self):
         if not hasattr(self,'diff_cp'):return
@@ -901,6 +914,14 @@ class InspectorMixin(EntranceMixin):
 
 
     def try_reload_warp(self):
+        if self.active_version.key == 'japan':
+            chosen=self.scene_list.curselection()
+            if not chosen:
+                self.scene_status.set('Select a Japanese scene first.')
+                return
+            destination,_name=self.scene_options[chosen[0]]
+            self.start_japan_native_scene_warp(destination=destination)
+            return
         if getattr(self.args,'read_only',False):
             self.scene_status.set('Read-only mode: scene requests are disabled.')
             return
@@ -1084,11 +1105,24 @@ class InspectorMixin(EntranceMixin):
             finally:self.native_key_release=None
 
     def select_scene(self,event=None):
-        """A single click only selects; never writes guest RAM."""
+        """Shared scene selection; the active ROM decides which backend runs."""
         chosen=self.scene_list.curselection()
         if not chosen:return
         mid,name=self.scene_options[chosen[0]]
         self.scene_selected=mid
+        if self.active_version.key == 'japan':
+            try:
+                from practice.japan_native_scene_warp import japan_warp_selection
+                target=japan_warp_selection(mid)
+                self.scene_status.set(
+                    f'Japan-0 selected 0x{mid:03X} {name}: '
+                    f'{target.category_name} / stage {target.stage_index}. '
+                    'Double-click to stage original menu selection, send '
+                    'N64 A and verify that the destination loads.')
+                self.show_japan_debug_target()
+            except (ValueError, RuntimeError) as exc:
+                self.scene_status.set(f'Japanese scene selection unavailable: {exc}')
+            return
         self.refresh_entrance_choices(mid)
         try:
             target=native_debug_selection(mid,self.scene_catalog())
@@ -1152,7 +1186,10 @@ class InspectorMixin(EntranceMixin):
             messagebox.showerror('Native debug entry failed',str(exc))
 
     def enter_debug_menu(self):
-        """Open original debug menu directly; no scene selection or warp staging."""
+        """Explicit manual menu fallback only, never the double-click action."""
+        if self.active_version.key == 'japan':
+            self.open_japan_debug_for_selected_scene()
+            return
         if getattr(self.args, 'read_only', False):
             self.scene_status.set('Read-only mode: debug-menu entry disabled.')
             return
