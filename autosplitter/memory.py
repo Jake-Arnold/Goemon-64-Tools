@@ -148,6 +148,8 @@ class Rdram:
         if length == 0:
             return b""
         off = self.offset(address, length)
+        if off + length > getattr(self, 'rdram_size', RDRAM_SIZE):
+            raise ValueError('Guest read exceeds verified emulator RDRAM size')
         if self.endian == "big":
             return self.process.read(self.base + off, length)
         start, end = off & ~3, (off + length + 3) & ~3
@@ -160,6 +162,8 @@ class Rdram:
         if not data:
             return
         off = self.offset(address, len(data))
+        if off + len(data) > getattr(self, 'rdram_size', RDRAM_SIZE):
+            raise ValueError('Guest write exceeds verified emulator RDRAM size')
         if self.endian == "big":
             self.process.write(self.base + off, data)
             return
