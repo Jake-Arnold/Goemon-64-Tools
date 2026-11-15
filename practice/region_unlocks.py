@@ -1,20 +1,17 @@
-"""Region-specific unlock read leads for the original 34-row USA interface.
+"""Explicit USA/Japan unlock identities and direct Japanese one-byte writes.
 
-The canonical labels, grouping and controls live in practice.unlocks.UNLOCKS.
-Only exact Japanese source-backed field identities are listed here. A lead
-is NOT write permission: currently only the user-verified Sasuke/Yae party
-flags have a guarded Japanese writer. Never infer an address from a USA delta
-or identify anonymous GameShark repeat slots as specific abilities.
+The original 34 USA rows are the canonical UI. Japanese addresses are sourced
+only by exact field identity; unknown rows never borrow USA pointers. Mapped
+Japanese rows can be edited directly during development (unless --read-only).
+No confirmation, party-only guard, character check or ROM re-probe per click.
 """
 from __future__ import annotations
 
-from practice.unlocks import UNLOCKS
+from practice.unlocks import UNLOCKS, normalize_unlock_value
 from practice.japanese_fields import JAPAN_FIELDS
-from practice.japanese_party_unlock import PARTY_FLAGS
 
 _FIELDS = {field.key: field for field in JAPAN_FIELDS}
 
-# Canonical USA Unlock.slug -> Japanese sourced field.key.
 _JAPAN_FIELD_KEYS = {
     "sasuke_in_party": "sasuke_party",
     "yae_in_party": "yae_party",
@@ -28,22 +25,49 @@ _JAPAN_FIELD_KEYS = {
 JAPAN_UNLOCK_LEADS = {
     slug: _FIELDS[key] for slug, key in _JAPAN_FIELD_KEYS.items()
 }
-
-# The existing one-byte, ROM/PID-validated writer is intentionally the ONLY
-# Japanese writer reachable from the shared Unlocks tab.
-JAPAN_WRITABLE_PARTY = {
-    "sasuke_in_party": 2,
-    "yae_in_party": 3,
-}
-
 assert len({item.slug for item in UNLOCKS}) == len(UNLOCKS)
 assert set(JAPAN_UNLOCK_LEADS) <= {item.slug for item in UNLOCKS}
 assert len({f.address for f in JAPAN_UNLOCK_LEADS.values()}) == len(JAPAN_UNLOCK_LEADS)
-for slug, character in JAPAN_WRITABLE_PARTY.items():
-    field = JAPAN_UNLOCK_LEADS[slug]
-    assert PARTY_FLAGS[character][1] == field.address and field.width == 1
+assert all(field.width == 1 for field in JAPAN_UNLOCK_LEADS.values())
 
 
 def japan_unlock_lead(unlock):
-    """Return a Japanese read definition or None; never a USA fallback."""
+    """Return the exact Japanese field, or None if the address is unknown."""
     return JAPAN_UNLOCK_LEADS.get(unlock.slug)
+
+
+def write_japan_unlock(rdram, unlock, target):
+    """Direct mapped one-byte write, including party Off/On and item counts.
+
+    The caller provides an already-attached Japan-0 writable host RAM view.
+    This intentionally does not use the older party-specific gated writer or
+    USA write policies. Its readback is for reporting success, not a consent
+    or scene-state gate. Neighbor bytes are preserved by Rdram.write_guest.
+    """
+    lead = japan_unlock_lead(unlock)
+    if lead is None:
+        raise ValueError(f'{unlock.label}: Japanese address unknown')
+    if lead.width != 1:
+        raise ValueError(f'{unlock.label}: unsupported Japanese field width')
+    target = normalize_unlock_value(unlock, target)
+    before = rdram.read_guest(lead.address, 1)
+    if len(before) != 1:
+        raise OSError('Short Japanese unlock read')
+    raw = before[0]
+    if unlock.bit_mask is not None:
+        target = raw | unlock.bit_mask if target else raw & ~unlock.bit_mask
+    after = bytes((target,))
+    if before == after:
+        return False
+    rdram.write_guest(lead.address, after)
+    if rdram.read_guest(lead.address, 1) != after:
+        raise OSError(f'{unlock.label}: Japanese write readback mismatch')
+    return True
+
+
+def japan_unlock_all_targets():
+    """Bulk targets cover only identified Japanese equivalents (7 currently)."""
+    return tuple(
+        (field, field.max_value if field.quantity else field.values[-1])
+        for field in UNLOCKS if japan_unlock_lead(field) is not None
+    )
