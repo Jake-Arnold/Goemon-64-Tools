@@ -369,9 +369,20 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             # reader. All other USA-specific tabs remain disabled for Japan.
             japan_search = (version.key == 'japan'
                             and tab == str(self.value_search_tab))
+            japan_advanced = (version.key == 'japan'
+                              and tab == str(self.event_sessions_tab))
             tab_enabled = ((version.key == 'japan') if japan_tab
-                           else (enabled or japan_search))
+                           else (enabled or japan_search or japan_advanced))
             self.notebook.tab(tab, state='normal' if tab_enabled else 'disabled')
+        # JP event-bank semantics are unknown. Only the read-only Advanced
+        # RAM Comparison subtab is exposed; USA event flag sessions stay gated.
+        self.event_sections.tab(self.event_sections.tabs()[0],
+                                state='disabled' if version.key == 'japan'
+                                else 'normal')
+        self.event_sections.tab(self.state_discovery_tab, state='normal')
+        if version.key == 'japan':
+            self.event_sections.select(self.state_discovery_tab)
+        self.configure_state_probe_region()
         if version.key == 'japan':
             self.jp_card.pack(fill='x', pady=(0, 6))
         else:
@@ -436,6 +447,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.speed_text.set('Speed: —')
         self.misc_text.set('Character: —    Action: —    Loading: —')
         self.clear_japan_field_values()
+        if hasattr(self, 'state_discovery_tab'):
+            self.reset_state_probes()
         if hasattr(self, 'value_search_tab'):
             self.invalidate_value_search_connection()
         if getattr(self, 'jp_read_button', None):
@@ -930,8 +943,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.refresh_japan_fields(force=True)
             self.notebook.select(self.jp_fields_tab)
             self.status.set(f'Attached read-only to Japanese-code Mupen64Plus PID {pid}, '
-                            f'RAM 0x{base:X}, {endian}. Japan Live and read-only '
-                            'Value Search are available; USA write controls remain disabled.')
+                            f'RAM 0x{base:X}, {endian}. Japan Live, Value Search and '
+                            'Advanced A/B/C are read-only; USA write controls remain disabled.')
         elif result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
             with self.value_freezes.guard:
