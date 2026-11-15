@@ -154,7 +154,8 @@ class JapaneseFieldsUi:
             '(0x800CD490) and requests native area reload 0x0C '
             '(0x800CD284). No debug menu or keyboard A input. '
             'The manual debug button is separate. '
-            'Requires --enable-japan-debug-menu-writes.'))
+            'Instant reload requires --enable-japan-scene-writes '
+            '(legacy debug-write opt-in also works).'))
         ttk.Label(debug, textvariable=self.jp_debug_result,
                   wraplength=960).pack(anchor='w', pady=(3, 0))
 
@@ -375,9 +376,10 @@ class JapaneseFieldsUi:
             scene = self.selected_japan_debug_scene()
             category, index = debug_menu_selection_hint(scene)
             self.jp_debug_result.set(
-                f'Selected 0x{scene:03X} ({SCENES[scene]}); native '
-                f'{category} / stage index {index}. '
-                'Double-click this room in Scene Browser for the full warp.')
+                f'Selected 0x{scene:03X} ({SCENES[scene]}); original '
+                f'debug-menu hint {category} / stage index {index} '
+                '(manual fallback only). Double-click this room in Scene '
+                'Browser for immediate 0x0C area reload, without the menu.')
         except (ValueError, TypeError) as exc:
             self.jp_debug_result.set(f'Select a catalogued scene: {exc}')
 
