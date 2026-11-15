@@ -14,6 +14,7 @@ from practice.theme import PALETTE
 from practice.japan_state_comparison import (
     capture_japan_memory, compare_japan_memory,
 )
+from practice.japan_player_position_research import find_japan_xyz_candidates
 from practice.japanese_scene_probes import read_japan_scene_probes
 from practice.transition_observer import read_transition_observation, format_transition_observation
 
@@ -23,7 +24,7 @@ JAPAN_PROBE_ACTIONS = {
     'Ryo or inventory change': 'Capture before/after a Ryo pickup or item action. Changed bytes are candidates only.',
     'Menu or map shown': 'Capture A closed, B displayed, C closed again to filter reversible changes.',
     'Story event candidate': 'Capture a repeated story action. Japan saved-event banks are not mapped; do not assume USA offsets.',
-    'Player movement': 'Compare stationary versus moving. Japanese XYZ, task offsets and velocity remain unmapped.',
+    'Player movement': 'For XYZ research use WIDE A stationary, B after walking to a different position, C stationary at B. Click Find XYZ triples. No player position writes.',
 }
 
 
@@ -71,8 +72,14 @@ class StateDiscoveryMixin:
         row=ttk.Frame(tab);row.pack(fill='x',pady=(0,9))
         for stage,caption in (('A','Capture A: Before'),('B','Capture B: After'),('C','Capture C: Reverted')):
             ttk.Button(row,text=caption,command=lambda s=stage:self.capture_state_probe(s)).pack(side='left',padx=(0,7))
-        ttk.Button(row,text='Compare',style='Gold.TButton',command=self.compare_state_probes).pack(side='left',padx=8)
-        ttk.Button(row,text='Export comparison JSON',command=self.export_state_probe).pack(side='left',padx=(0,7))
+        ttk.Button(row,text='Compare',style='Gold.TButton',
+                   command=self.compare_state_probes).pack(side='left',padx=8)
+        self.state_xyz_button = ttk.Button(
+            row, text='Find XYZ triples (read-only)',
+            command=self.find_japan_xyz_from_captures)
+        self.state_probe_export_button = ttk.Button(
+            row, text='Export comparison JSON', command=self.export_state_probe)
+        self.state_probe_export_button.pack(side='left',padx=(0,7))
         ttk.Button(row,text='Clear',command=self.reset_state_probes).pack(side='left')
         self.state_probe_status=tk.StringVar(value='No captures. Select a test and connect to the game.')
         ttk.Label(tab,textvariable=self.state_probe_status,wraplength=1060).pack(anchor='w',pady=(0,10))
@@ -111,10 +118,15 @@ class StateDiscoveryMixin:
         self.state_probe_selector['values'] = tuple(actions)
         self.state_probe_kind.set(next(iter(actions)))
         self._set_state_probe_instruction()
+        if self._state_is_japan():
+            self.state_xyz_button.pack(side='left', padx=(0, 7),
+                                       before=self.state_probe_export_button)
+        else:
+            self.state_xyz_button.pack_forget()
         self.state_probe_scope_hint.set(
             'Japan focused: two 4 KiB engine/save candidate ranges (not confirmed '
-            'event banks). Wide: read-only full 8 MiB Japan RDRAM; requires '
-            'extra reading time. No player pointer required.'
+            'event banks). Wide: read-only full verified 4/8 MiB Japan RDRAM. '
+            'For XYZ: A still, B moved, C still at B; no player pointer required.'
             if self._state_is_japan() else
             'USA focused: game globals and optional player regions. '
             'USA wide: 4 MiB N64 RAM. Use identical ranges for A/B/C.')
@@ -123,7 +135,7 @@ class StateDiscoveryMixin:
         if self._state_is_japan():
             if getattr(self, 'jp_rdram', None) is None:
                 self.transition_observation_text.set(
-                    'Connect to verified Japanese Mupen64Plus first.')
+                    'Connect to verified Japanese Project64 or Mupen64Plus first.')
                 return
             readings = read_japan_scene_probes(self.jp_rdram)
             self.transition_observation_text.set('\n'.join(
@@ -145,7 +157,7 @@ class StateDiscoveryMixin:
             return
         reader = getattr(self, 'jp_rdram', None)
         if reader is None or getattr(self, 'game_pid', None) is None:
-            self.state_probe_status.set('Connect to verified Japan-0 Mupen RDRAM first.')
+            self.state_probe_status.set('Connect to verified Japan-0 emulator RDRAM first.')
             return
         if stage == 'C' and 'B' not in self.state_captures:
             self.state_probe_status.set('Capture A and B before optional C.')
@@ -242,6 +254,9 @@ class StateDiscoveryMixin:
                     self.state_captures['A'], self.state_captures['B'],
                     self.state_captures.get('C'))
             self.state_report=report
+            self.state_probe_table.heading('returned', text='C matched A?')
+            self.state_probe_table.column('before', width=95)
+            self.state_probe_table.column('after', width=95)
             self.state_probe_table.delete(*self.state_probe_table.get_children())
             for i,row in enumerate(report['candidates']):
                 self.state_probe_table.insert('','end',iid=str(i),values=(
@@ -258,6 +273,82 @@ class StateDiscoveryMixin:
                 + note + 'No candidate has been validated as an actual game flag.')
         except (OSError,ValueError,RuntimeError) as exc:
             self.state_probe_status.set(f'Comparison failed: {exc}')
+
+    def find_japan_xyz_from_captures(self):
+        """Rank read-only Japanese float triples from three full-RAM snapshots.
+
+        Captures must be A stationary, B walked elsewhere, C stationary at B.
+        This is a heuristic and never validates an address for memory writing.
+        """
+        if not self._state_is_japan():
+            self.state_probe_status.set('XYZ candidate research is Japan-only.')
+            return
+        if self._jp_probe_busy:
+            self.state_probe_status.set('Finish the current Japanese capture/research first.')
+            return
+        if any(stage not in self.state_captures for stage in ('A', 'B', 'C')):
+            self.state_probe_status.set(
+                'Capture WIDE A (stationary), B (after moving), C (stationary at B).')
+            return
+        a, b, c = (self.state_captures[stage] for stage in ('A', 'B', 'C'))
+        if any(getattr(snapshot, 'scope', None) != 'wide' for snapshot in (a, b, c)):
+            self.state_probe_status.set('XYZ candidate research requires three WIDE captures.')
+            return
+        reader = getattr(self, 'jp_rdram', None)
+        if reader is None or getattr(self, 'game_pid', None) is None:
+            self.state_probe_status.set('Reconnect to Japan-0 RDRAM before XYZ research.')
+            return
+        identity = ('japan-0', self.game_pid, reader.base, reader.endian, id(reader))
+        if any(snapshot.identity != identity for snapshot in (a, b, c)):
+            self.state_probe_status.set('Japanese connection changed; recapture all XYZ snapshots.')
+            return
+        self._jp_probe_generation += 1
+        generation = self._jp_probe_generation
+        self._jp_probe_busy = True
+        self.state_probe_status.set('Ranking wide Japanese XYZ float triples in the background; read-only.')
+        results = queue.SimpleQueue()
+
+        def worker():
+            try:
+                results.put((find_japan_xyz_candidates(a, b, c), None))
+            except Exception as exc:
+                results.put((None, str(exc)))
+
+        def poll():
+            if generation != self._jp_probe_generation:
+                return
+            try:
+                report, error = results.get_nowait()
+            except queue.Empty:
+                self.root.after(70, poll)
+                return
+            self._jp_probe_busy = False
+            if (not self._state_is_japan() or getattr(self, 'jp_rdram', None) is not reader
+                    or getattr(self, 'game_pid', None) != identity[1]):
+                self.state_probe_status.set('Japanese connection changed; XYZ results discarded.')
+                return
+            if error is not None:
+                self.state_probe_status.set(f'XYZ research rejected: {error}')
+                return
+            self.state_report = report
+            self.state_probe_table.delete(*self.state_probe_table.get_children())
+            self.state_probe_table.heading('returned', text='C stable at B?')
+            self.state_probe_table.column('before', width=205)
+            self.state_probe_table.column('after', width=205)
+            for i, row in enumerate(report['candidates']):
+                self.state_probe_table.insert('', 'end', iid=str(i), values=(
+                    row['address'], row['region'], row['before'], row['after'],
+                    row['xor_mask'], 'yes' if row['reverted'] else '—', row['kind']))
+            counts = report['counts']
+            self.state_probe_status.set(
+                f"XYZ heuristic: {counts['candidate_count']} moving/settled float "
+                f"triples; showing {counts['reported_candidates']}. "
+                'These can describe NPCs or other objects. Watch and test across '
+                'multiple scenes before identifying the player. No writes.')
+
+        threading.Thread(target=worker, daemon=True,
+                         name='GoemonJapanXYZReadOnly').start()
+        self.root.after(70, poll)
 
     def export_state_probe(self):
         if not self.state_report:
@@ -290,10 +381,13 @@ class StateDiscoveryMixin:
             return
         row=self.state_probe_table.item(chosen[0],'values')
         address=row[0]
-        kind='f32' if row[6]=='f32 candidate' else 'u8'
+        kind='f32' if row[6] in ('f32 candidate', 'XYZ triple candidate') else 'u8'
         if self._state_is_japan():
             if self.add_japan_custom_watch_from_search(
-                    address, kind, label=f'JP A/B/C {address}'):
+                    address, kind,
+                    label=(f'JP XYZ candidate X {address}' if
+                           row[6] == 'XYZ triple candidate' else
+                           f'JP A/B/C {address}')):
                 self.notebook.select(self.jp_fields_tab)
             else:
                 self.state_probe_status.set(self.jp_custom_watch_status.get())
