@@ -38,11 +38,20 @@ class JapanNativeSceneWarpTests(unittest.TestCase):
                                  bytes.fromhex('0161'))
                 self.assertEqual(ram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0a')
                 self.assertEqual(len(p.writes), 2)
+                # The fake process logs physical RDRAM offsets, not
+                # 0x80000000-based N64 guest addresses. Word-swapped
+                # writes may log the containing aligned host word.
+                expected_host_offsets = {
+                    JAPAN_MENU_CATEGORY - 0x80000000,
+                    JAPAN_MENU_STAGE_INDEX - 0x80000000,
+                }
+                if endian == 'wordswapped':
+                    expected_host_offsets = {
+                        offset & ~3 for offset in expected_host_offsets
+                    }
                 self.assertEqual(
                     sorted({addr for addr, _data in p.writes}),
-                    sorted({JAPAN_MENU_CATEGORY, JAPAN_MENU_STAGE_INDEX}
-                           if endian == 'big' else
-                           {JAPAN_MENU_CATEGORY & ~3, JAPAN_MENU_STAGE_INDEX & ~3}))
+                    sorted(expected_host_offsets))
                 self.assertTrue(all(len(data) <= 4 for _, data in p.writes))
 
     def test_staging_rejected_if_debug_menu_is_closed(self):
