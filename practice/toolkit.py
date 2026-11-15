@@ -1847,20 +1847,16 @@ def parse_args(argv=None):
     ap.add_argument("--base",help="RDRAM host base 0x...; Japan always validates three ROM code probes")
     ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
     ap.add_argument("--game-version", choices=tuple(VERSIONS), default="usa",
-                    help="USA live toolkit (default) or Japanese Mupen read-only raw RAM")
+                    help="USA toolkit (default) or Japanese Project64/Mupen toolkit")
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
-    ap.add_argument("--enable-japan-party-writes", action="store_true",
-                    help="Allow only one-byte Japan-0 Sasuke/Yae party unlocks after confirmation; "
-                         "never write the character index")
-    ap.add_argument("--enable-japan-position-writes", action="store_true",
-                    help="Opt in to confirmed-scene Japan-0 Goemon XYZ manual moves only "
-                         "(Oedo South 0x161; each write requires confirmation and ROM/PID validation)")
-    ap.add_argument("--enable-japan-debug-menu-writes", action="store_true",
-                    help="Opt in to original manual Japanese debug-menu entry "
-                         "(legacy switch also permits Japanese direct 0x0C reload)")
-    ap.add_argument("--enable-japan-scene-writes", action="store_true",
-                    help="Opt in to Japanese Scene Browser instant 0x0C reload "
-                         "(verified live ROM/PID/RDRAM required; no debug menu)")
+    ap.add_argument("--enable-japan-party-writes", action="store_true", default=True,
+                    help=argparse.SUPPRESS)  # Deprecated; mapped unlocks write by default
+    ap.add_argument("--enable-japan-position-writes", action="store_true", default=True,
+                    help="Enable Japanese XYZ actions (on by default; --read-only disables)")
+    ap.add_argument("--enable-japan-debug-menu-writes", action="store_true", default=True,
+                    help="Enable native Japanese debug-menu entry (on by default)")
+    ap.add_argument("--enable-japan-scene-writes", action="store_true", default=True,
+                    help="Enable Japanese Scene Browser instant 0x0C reload (on by default)")
     ap.add_argument("--linux-enable-writes",action="store_true",
                     help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled
     ap.add_argument("--enable-teleport",action="store_true",default=True,help="Write game coordinates (enabled by default)")
