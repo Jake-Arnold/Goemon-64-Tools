@@ -541,6 +541,44 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 f'{self.verified_rom_path}. Live RAM connection still requires '
                 'the current emulator signatures.')
 
+    def write_japan_raw_bytes(self, address, data, *, expected=None):
+        """Direct per-row Japanese Live Memory edit, including research fields.
+
+        No confirmation dialogue, byte allowlist, or expensive ROM revalidation
+        on every edit. Only the attached Japanese PID/base/endian are used.
+        Explicit --read-only always blocks writes. A stale displayed value
+        is rejected rather than blindly overwriting changes by the game.
+        """
+        if (self.active_version.key != 'japan'
+                or getattr(self.args, 'read_only', False)
+                or self._connecting or self.jp_rdram is None
+                or self.game_pid is None
+                or self.jp_backend not in ('project64', 'mupen64plus')
+                or self.connection_target.get() != self.jp_backend):
+            raise RuntimeError('Connect Japanese RAM with writes enabled first')
+        if not isinstance(data, bytes) or len(data) not in (1, 2, 4, 8):
+            raise ValueError('Live Memory edit must contain 1, 2, 4, or 8 bytes')
+        if expected is not None and len(expected) != len(data):
+            raise ValueError('Expected and replacement byte widths differ')
+        original = self.jp_rdram
+        # Validate the guest address against the active 4/8 MiB reader first.
+        original.read_guest(address, len(data))
+        host = HostProcess(self.game_pid, writable=True)
+        try:
+            writer = Rdram(host, original.base, original.endian)
+            writer.rdram_size = getattr(original, 'rdram_size', 0x800000)
+            before = writer.read_guest(address, len(data))
+            if expected is not None and before != expected:
+                raise RuntimeError('RAM value changed since opening editor; retry')
+            if before == data:
+                return False
+            writer.write_guest(address, data)
+            if writer.read_guest(address, len(data)) != data:
+                raise OSError('Japanese Live Memory write readback mismatch')
+            return True
+        finally:
+            host.close()
+
     def apply_japan_unlocks(self, changes):
         """Direct mapped Japanese edits without consent or party-only guards.
 
