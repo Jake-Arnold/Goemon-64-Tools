@@ -18,6 +18,7 @@ PYTHON="${PYTHON:-python3}"
   tests.test_japanese_mupen_attach \
   tests.test_japan_project64 \
   tests.test_japan_state_comparison \
+  tests.test_japan_player_position_research \
   tests.test_value_search \
   tests.test_state_discovery \
   -v
