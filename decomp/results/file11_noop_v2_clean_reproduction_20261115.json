@@ -1,0 +1,23 @@
+{
+  "format": "goemon-file11-optin-v2-clean-repeat-v1",
+  "date": "2026-11-15",
+  "source_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "stage_format": "goemon-file11-character-switch-50-v2",
+  "baseline_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "rebuild_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_rom_bytes": 33554432,
+  "byte_for_byte_identical": true,
+  "baseline_linked_elf_sha256": "1dc2309cce0fc5545a53d03301ebfbf7ab20fbdbd43afae51bea6e690613efa7",
+  "candidate_linked_elf_sha256": "2ef1b553b9d06f29c1eb0006b197199830f2379a29f94aa329fbfa19582212e6",
+  "file11_c_functions": 50,
+  "file11_c_bytes": 1064,
+  "previous_character_switch_functions": 13,
+  "new_noop_callback_functions": 37,
+  "file11_linker_chunks": 12,
+  "file11_semantic_relocation_records": 8825,
+  "original_vs_candidate_relocation_order_identical": true,
+  "python_unit_tests_passed": 48,
+  "central_160_existing_c_gate": "not_run",
+  "canonical_decomp_manifest": "unchanged",
+  "warning": "Independent source staging and authentic full-ROM proof, not complete central decomp.verify promotion."
+}

@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Second independent 50-function file_11 clean build using versioned v2 stage
+
+- Repeated the 50-function stage on a separate pinned upstream USA workspace using the new v2 source verification and Splat staging interfaces, independent of the previous 50-function scratch build.
+- The full 33,554,432-byte ROM is byte-for-byte identical to the original (SHA-1 6ea0ed71032ce08fc2745f412d84936382197494). The candidate linked ELF SHA-256 is again 2ef1b553b9d06f29c1eb0006b197199830f2379a29f94aa329fbfa19582212e6.
+- All 50 native-C original-VMA FUNC symbols and 1,064 bytes, 12 exact C/ASM link extents, 6 source/compiler ELF identities and all 8,825 original semantic relocation records, including record order, passed; 48 ROM-free Python tests passed.
+- Temporary tooling timeouts and standalone Python environment mismatch were resolved without relaxing the ROM/ELF comparison. This is still not the complete central decomp.verify run with the 160 existing C functions; canonical production manifest and result counts remain unchanged.
+
 ### 2026-11-15 — Central USA file_11 v2 verification path: 50 reconstructed functions
 
 - Added a strictly versioned optional stage in decomp/verify.py: v1 retains 13 functions/620 bytes; v2 includes those 13 plus 37 empty callbacks, for 50 functions/1,064 bytes total. Unrecognised stage contracts fail closed; absent stage leaves the existing decomp manifest unchanged.

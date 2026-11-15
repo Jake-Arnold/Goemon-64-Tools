@@ -51,3 +51,11 @@ No ROM bytes, generated disassembly, linked objects or proprietary compiler bina
 ## Follow-up production-stage interface (research opt-in, not promoted)
 
 The checked source adapter now exposes `STAGE_FORMAT = "goemon-file11-character-switch-50-v2"` and validates both new C source SHA-256 hashes before staging. It maintains the twelve pinned C/ASM chunks and the strict original-ROM, FUNC, source/object, map and relocation proofs. The canonical central verifier is extended separately to accept v1 (13 functions) or v2 (50 functions), refusing unknown formats. This API extension does not change the previously proven 32 MiB USA source build or official matching-C total.
+
+## Independent repeat using the v2 staging interface (15 November, later run)
+
+A second scratch workspace was copied from the independently verified 13-function pinned upstream baseline, **before** applying any callback changes. The updated `usa_file11_noop_groups.prepare` called the new exact-source check and Splat-split API rather than manually copying callback sources. Pinned original USA ROM and original Splat input were authenticated. Splat regenerated all twelve chunks; the original IDO 5.3/MIPS toolchain compiled every input. The first build had to resume after processing several thousand upstream binary asset objects, then the adapter trimmed the twelve sections with the pinned C-object SHA-256 checks and completed the second whole-ROM build.
+
+The independent repeat produced precisely the **same** linked ELF SHA-256 `2ef1b553b9d06f29c1eb0006b197199830f2379a29f94aa329fbfa19582212e6`, the same `6ea0ed71032ce08fc2745f412d84936382197494` full ROM SHA-1, all **50** original-VMA C FUNC symbols/1,064 bytes, all twelve original-sized link inputs and exactly **8,825** semantic relocations identical to the separately built pristine original ELF **including their order**. The 48 ROM-free regression tests passed again. The temporary timeout and terminal Python environment mix-up were both build-environment issues, not native C mismatches.
+
+The opt-in central verifier v2 support is committed, but this independent run still does **not** constitute the combined 160+50 production `decomp.verify` run. The canonical manifest/results/inventory remain unchanged.
