@@ -15,6 +15,8 @@ PYTHON="${PYTHON:-python3}"
   tests.test_japanese_party_unlock \
   tests.test_japan_party_cli \
   tests.test_japan_party_controller \
+  tests.test_japanese_mupen_attach \
+  tests.test_japan_project64 \
   tests.test_japan_state_comparison \
   tests.test_value_search \
   tests.test_state_discovery \
