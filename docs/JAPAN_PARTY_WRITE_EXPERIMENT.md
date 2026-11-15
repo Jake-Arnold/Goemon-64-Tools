@@ -48,10 +48,25 @@ If Linux permissions allow reads but deny `process_vm_writev`, the button report
 
 1. Unit tests: only indices 2/3 accepted; both host endian orders; byte-accurate single flag write; no-write when already 1; rejection of unexpected word contents, unknown current character, invalid scene, and non-writable process.
 2. CLI tests: default disabled, explicit opt-in enabled, `--read-only` takes precedence.
-3. Tk smoke tests: both buttons disabled until verified Japan PID + reader + CLI opt-in; disabled in USA and on disconnect.
-4. Real Linux Mupen64Plus test: write and readback of both flags, then normal C-Down switch with correct character visuals and index `2`/`3`, then restore savestate and reconnect.
+3. Controller tests: opt-in/--read-only gating, decline confirmation, PID mismatch rejection, independent writable view, and writable handle closure.
+4. Tk smoke tests: both buttons disabled until verified Japan PID + reader + CLI opt-in; disabled in USA and on disconnect.
+5. Real Linux Mupen64Plus test: write and readback of both flags, then normal C-Down switch with correct character visuals and index `2`/`3`, then restore savestate and reconnect.
 
 **Only after the last item passes** should the two Japanese character-index identities be marked fully runtime-confirmed.
+
+### Reproducible test commands
+
+From the repo root on Ubuntu:
+
+```bash
+sudo apt-get install -y python3-tk xvfb xauth
+python3 -m pip install -r requirements.txt
+./scripts/test_japan_party.sh
+```
+
+The script runs the unit/controller tests against synthetic process memory and the Tk smoke tests under Xvfb (or an existing X11 display). It **does not** write to a real emulator or replace the user-controlled native-game test. If the host uses an externally managed Python, use the project's virtual environment as `PYTHON=.venv/bin/python ./scripts/test_japan_party.sh`.
+
+**Current verification status in this chat:** test source is committed but the private branch's Python tests have not been executed here; do not claim 20 passing tests solely because 20 are defined.
 
 ## GitHub cadence and progress records
 
@@ -60,6 +75,7 @@ This feature uses a **separate draft branch** based on the latest Japanese scene
 - Checkpoint 1: write primitive and ROM-free behavioural tests.
 - Checkpoint 2: guarded UI with optional CLI gate, independently validated writable handle and confirmation.
 - Checkpoint 3: test coverage, evidence log, step-by-step live test and forward plan.
+- Checkpoint 4: controller-level tests, executable test script and precise test-status documentation.
 
 `PROGRESS.md` records the implementation and its limitations. Keep each significant feature on an isolated branch with a draft PR, add a source-linked evidence record when the user provides a real RAM trace, and do not merge to the decomp mainline until runtime tests pass.
 
