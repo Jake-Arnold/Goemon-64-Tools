@@ -1,5 +1,26 @@
 # USA ↔ Japan Toolkit feature parity checklist
 
+
+## Latest cross-region implementation (2026-11-15; Windows rerun pending)
+
+**Read this section as current.** The original row-by-row audit below is a historical pre-consolidation baseline, with some “absent”/“disabled” cells superseded by the changes listed here. The user requested one UI shared between both game versions, not a separate Japanese scene browser. The Japanese ROM still cannot inherit arbitrary USA task pointers, event bits or write privileges.
+
+| Shared tab or feature | New Japan-0 implementation | Remaining validation |
+| --- | --- | --- |
+| Dashboard | Region-specific RDRAM process; Japanese scene, character and position values shown; remembered exact Japan ROM path reverified on each new session | Japan velocity/action/task pointers and logical checkpoints unverified |
+| Scene Browser | **Same existing browser; no duplicate Japanese selector.** Double-click starts native 0x800CD284 menu entry → Japan category byte 0x800CD294 → stage u16 0x800CD2A4 → configured Project64 N64 A input → 3 stable gameplay polls | **First real inter-scene Japanese warp not yet live confirmed.** User did verify visible debug menu opening. USA double-click/entrance path remains unchanged |
+| Live Memory | **Same Live Memory tab**, reads 58 Japan cheat-backed values, 10 scene probes, 3 observed XYZ floats and isolated Japan custom watches | General Japan raw edit/freeze disabled pending mapped permissions |
+| Unlocks | **Same Unlocks tab**, swaps USA editable inventory for JP source-backed read-only fields and separately gated user-confirmed Sasuke/Yae unlock controls | Other JP unlock writes not independently verified |
+| Story Progress | **Same nested progress tables**, presents Japan item/map/bonus-mode candidates with addresses and evidence | JP saved-event bank and story-bit causality unknown; no USA bit editing |
+| Event Sessions | Same A/B/C event/idle/control flow and ranking. Japan captures 100 user-selected source RAM bytes (default 0x80161D80); provenance stores region, address, and backend. Advanced RAM Comparison still available | These Japan bytes are candidate RAM, **not** a confirmed persistent event bank |
+| Damage events | Same event recorder UI uses JP HP byte 0x80161DD7, current scene 0x800CD2A2 and character 0x80161DCC, omitting guessed USA task/object pointers | No proof of JP invulnerability/collision semantics |
+| Value Search and A/B/C | Existing shared scan and wide matching, including **all candidate** JSON export separate from 200-row preview | Native Windows wide export/regression rerun pending |
+| Value Freezes, checkpoint restore, native menu calibration | Existing panels retain USA-specific semantics and write gates; Japan actions cannot borrow USA raw editor, player-task or event addresses | Region-specific JP task/pointer, freeze and logical checkpoint schemas required before equivalent writes |
+| ROM verification | Saved path + exact expected Japan SHA-1 in per-user config, rehash/verify file each future session; PID, host RAM and code signature revalidation unchanged | First post-upgrade remembered-path startup test in Windows pending |
+
+**Implementation constraints:** Japan automatic warp only targets the Project64 backend in the current code; `--enable-japan-debug-menu-writes` is the explicit opt-in, and `--read-only` overrides it. The menu selection and A-input code are assumed to match USA semantics at specifically derived Japan fields, but **only the original-menu opening** is user-verified. No direct current/pending scene or exit-flag writes are used. Files are committed, but complete new Windows PowerShell tests and first actual destination load remain outstanding.
+
+
 **Audit:** 2026-11-15. **Comparison:** current USA integration branch `chatgptweb/decomp` versus Japan-0 feature branch `chatgptweb/japan-controlled-party-writes` (a descendant of the integration branch, 20 commits ahead when audited).
 
 ## Status vocabulary
