@@ -1,6 +1,18 @@
 # Goemon 64 Tools — Development Progress
 
 
+### 2026-11-15 — Second Japan parity milestone: Advanced RAM Comparison A/B/C
+
+- **Delivered in separate GitHub pushes:** `practice/japan_state_comparison.py` (`3c3851f`), region-sensitive Advanced A/B/C UI experiment choices (`a23d6cf`), background Japanese guest snapshots and comparison routing (`cfef2cb`), Event Sessions gating (Japan only Advanced enabled; USA 100-byte event-session backend disabled, `4914796`).
+- **Capture identity:** Japanese region/revision, exact emulator PID, validated RDRAM host base, word order, and reader-instance token are required across all A/B/C captures. Changes of ROM/PID/reader trigger reset; mismatched identity raises rather than showing plausible but invalid candidates (`420ab9f`, `edd3b70`, `89f8423`, `71beaeb`).
+- **Focused snapshot:** `0x800CD000..0x800CDFFF` engine candidate bytes plus `0x80161C00..0x80162BFF` Japanese inventory/save *candidate* bytes. These are research ranges, not identified Japanese event banks. **Wide snapshot:** `0x80000000..0x807FFFFF` full 8 MiB, read-only in 64 KiB chunks by worker. Character `0x80161DCC` and scene `0x800CD2A2` provide observed context. No USA task pointers, story flags or scene writers are used.
+- **Analysis:** A→B raw-byte changes; optional C requires exact byte reversion to A; only top 1,200 scored candidates retained, while observed/eligible counts remain global; save event candidate classification is explicitly disabled. Selected JP candidates become Japan-only read-only custom watches; JSON includes metadata/candidates but never full memory dumps. A/B/C ordering and export file prefixes fixed in `1415d59`.
+- **Tests authored, not run:** `tests.test_japan_state_comparison` checks read-only focused/wide capture, boundaries, reversion, constrained ranking, session mismatches; `tests.test_japan_state_comparison_ui` checks Japanese-only tab gating and live synthetic A/B → JP custom watch, reconnect invalidation. The shared regression script now includes original USA Value Search, A/B/C and Dashboard tests; stale Dashboard test expectations were updated in `71fffb4` and `5f65be0` added them to the runner. No GitHub Actions runs exist for this feature branch; results cannot be claimed as passing until the user runs the new suite.
+- **Detailed handoff:** `docs/JAPAN_READONLY_VALUE_SEARCH.md` includes sample Japanese Ryo search and scene-transition A/B/C steps; `docs/USA_JAPAN_TOOLKIT_PARITY_CHECKLIST.md` and issue #18 distinguish **implemented in code** from emulator-confirmed behaviour. PR #17 remains draft. User reports **earlier** party-write tests and Sasuke/Yae buttons successful.
+- **Next:** execute expanded tests on Ubuntu, perform native Ryo/scene A/B/C evidence captures, then map Japanese XYZ/player/task pointers and event-bank offsets before enabling Japanese Event flag sessions. Once this baseline is validated, port common Live Memory UI rather than enabling USA-only write paths. Continue USA decomp independently and consider verified USA Mupen attach using the Japanese RDRAM architecture.
+
+
+
 ### 2026-11-15 — First USA→Japan parity delivery: read-only Value Search and custom watches
 
 - **New live user confirmation:** The user reports the prior Japanese party test suite completed successfully and both `Unlock Sasuke` and `Unlock Yae` toolkit actions worked correctly on live Mupen64Plus. This upgrades the confidence in *those two toolkit writes*. Still **not provided:** the actual character-index watch readout after native C-Down; the Sasuke=2/Yae=3 hypotheses remain unconfirmed by native switch traces.
