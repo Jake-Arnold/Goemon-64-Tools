@@ -1,6 +1,6 @@
 # Japanese Goemon (Japan-0) — Windows Project64 3.0 support
 
-**Status:** Implemented and pushed on `chatgptweb/japan-controlled-party-writes`. The synthetic regression tests are authored, but **no real Windows Project64 3.0 attach, party write, or savestate has been executed in this GitHub-connector session**. Previous successful Sasuke/Yae write testing was on Linux Mupen64Plus and is not evidence of a Windows PJ64 test.
+**Status (2026-11-15):** Implemented on `chatgptweb/japan-controlled-party-writes`. The user reports **all Windows PowerShell tests pass, live Project64 Japanese read-only Value Search and focused A/B/C work, Project64 savestate restoration works, and both separately opted-in Sasuke/Yae party-unlock writes work**. Earlier screenshots document the read-only memory experiments; the latest restore/write confirmations are **user reports, not independent process traces**. Native Sasuke/Yae C-Down selection as indices 2 and 3 remains unverified. The new XYZ research tool and its regression tests have **not yet been run by the user**.
 
 ## Clone the private repository on Windows
 
@@ -24,7 +24,7 @@ py -3 -m pip install psutil
 .\scripts\test_japan_party.ps1
 ```
 
-This runs `compileall`, previous Japanese party and read-only memory tests, Project64 4/8 MiB synthetic attach tests, and USA regression/Tk tests. A passing test suite **does not** establish live Project64 compatibility.
+This runs `compileall`, previous Japanese party and read-only memory tests, Project64 4/8 MiB synthetic attach tests, and USA regression/Tk tests. The user previously reported this regression suite passed on Windows and provided live Project64 screenshots. The **new XYZ research tests** were added afterward and remain unexecuted. A passing synthetic suite alone does not establish live compatibility for a new field.
 
 If local execution policy blocks PowerShell scripts, without changing your account's permanent policy:
 
@@ -84,6 +84,6 @@ Use the existing native emulator savestate controls with the Project64 target; t
 - **Project64 memory size:** the ROM settings may choose 4 MiB or 8 MiB. Both mappings are now accepted if verified; 8 MiB is not forced.
 - **Windows process permission failures:** run the toolkit at the same integrity level as the emulator; do not disable Windows security protections. Report the exact error before changing any permissions or RAM settings.
 - **USA branch unaffected:** when USA is selected, existing Project64 attachment and USA-only editors remain separately gated. Japanese party writes are never exposed through those USA editors.
-- **What is still unverified:** live PJ64 3.0 RAM discovery, fresh Japan UI tests on Windows, Project64 slot save/load and both Project64-specific party write buttons. These require an actual Windows/PJ64 session and are not established by the authored synthetic tests.
+- **What is now user-verified:** Windows Project64 Japanese RAM access, Value Search, custom watches, focused A/B/C, Project64 savestate restoration and the Sasuke/Yae unlock writes. **Still unverified:** normal Sasuke/Yae character-switch indices 2/3, Project64 wide A/B/C and the newly implemented read-only XYZ discovery. See [the XYZ procedure](JAPAN_XYZ_DISCOVERY.md) and [screenshot evidence](JAPAN_PROJECT64_LIVE_SCREENSHOT_EVIDENCE_2026-11-15.md).
 
 Sources: the [Project64 debugger setup and optional fixed RDRAM address](https://hack64.net/docs/pj64d/), the [Project64 debugger's RDRAM address range](https://github.com/project64/project64/blob/develop/Source/Project64/UserInterface/Debugger/Debugger-ViewMemory.cpp), and [Project64 memory-size settings](https://mib64.github.io/manual/app-game-settings.html).
