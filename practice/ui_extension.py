@@ -540,10 +540,10 @@ class InspectorMixin(EntranceMixin):
             original_hex = '0x' + original.hex().upper()
             text = simpledialog.askstring(
                 'Edit N64 guest hex — ' + self.display_watch_name(row_id),
-                f'{self.display_watch_name(row_id)}\\n'
-                f'0x{watch.addr:08X} ({width} byte(s); N64 big-endian)\\n'
+                f'{self.display_watch_name(row_id)}\n'
+                f'0x{watch.addr:08X} ({width} byte(s); N64 big-endian)\n'
                 'Experimental direct RAM write; values may change during gameplay.'
-                '\\nNew hex value:',
+                '\nNew hex value:',
                 initialvalue=original_hex, parent=self.root)
             if text is None:
                 return
