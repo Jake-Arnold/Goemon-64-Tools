@@ -112,9 +112,9 @@ class RegionUnlockUITests(unittest.TestCase):
             app.set_unlock(goemon, 1)
             write.assert_not_called()
         self.assertIn('unknown', app.unlock_status.get())
-        with patch.object(app, 'apply_japan_unlocks', return_value=(7, 7)) as write:
+        with patch.object(app, 'apply_japan_unlocks', return_value=(9, 9)) as write:
             app.unlock_all_items()
-            self.assertEqual(len(write.call_args.args[0]), 7)
+            self.assertEqual(len(write.call_args.args[0]), 9)
         app.args.read_only = True
         app.refresh_unlocks(force=True)
         self.assertIn('disabled', app.unlock_row_widgets[yae.address][1][1].state())
