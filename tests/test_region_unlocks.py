@@ -3,7 +3,8 @@ import unittest
 
 from practice.unlocks import UNLOCKS, GROUPS
 from practice.region_unlocks import (
-    JAPAN_UNLOCK_LEADS, JAPAN_WRITABLE_PARTY, japan_unlock_lead,
+    JAPAN_UNLOCK_LEADS, japan_unlock_lead, japan_unlock_all_targets,
+    write_japan_unlock,
 )
 
 
@@ -37,13 +38,44 @@ class RegionUnlockMappingTests(unittest.TestCase):
         self.assertTrue(all(lead.address not in {r.address for r in UNLOCKS}
                             for lead in JAPAN_UNLOCK_LEADS.values()))
 
-    def test_only_existing_verified_party_on_writes_are_exposed(self):
-        self.assertEqual(JAPAN_WRITABLE_PARTY, {
-            'sasuke_in_party': 2, 'yae_in_party': 3})
-        self.assertTrue(set(JAPAN_WRITABLE_PARTY) <= set(JAPAN_UNLOCK_LEADS))
-        self.assertNotIn('goemon_in_party', JAPAN_WRITABLE_PARTY)
-        self.assertNotIn('triton_shell', JAPAN_WRITABLE_PARTY)
+    def test_every_named_japanese_field_is_a_direct_write_target(self):
+        self.assertEqual(len(japan_unlock_all_targets()), 7)
+        targets = {row.slug: value for row, value in japan_unlock_all_targets()}
+        self.assertEqual(targets['sasuke_in_party'], 1)
+        self.assertEqual(targets['yae_in_party'], 1)
+        self.assertEqual(targets['triton_shell'], 1)
+        self.assertEqual(targets['cucumber'], 1)
+        self.assertEqual(targets['red_fish_count'], 8)
+        self.assertEqual(targets['yellow_fish_count'], 5)
+        self.assertEqual(targets['blue_fish_count'], 3)
 
+    def test_direct_on_off_with_no_party_guard_and_no_usa_fallback(self):
+        class RAM:
+            def __init__(self):
+                self.values = {}
+                self.writes = []
+            def read_guest(self, address, size):
+                return bytes((self.values.get(address, 0),))
+            def write_guest(self, address, data):
+                self.writes.append((address, data))
+                self.values[address] = data[0]
+        ram = RAM()
+        sasuke = next(x for x in UNLOCKS if x.label == 'Sasuke in party')
+        triton = next(x for x in UNLOCKS if x.label == 'Triton Shell')
+        unknown = next(x for x in UNLOCKS if x.label == 'Goemon in party')
+        self.assertTrue(write_japan_unlock(ram, sasuke, 1))
+        self.assertFalse(write_japan_unlock(ram, sasuke, 1))
+        self.assertTrue(write_japan_unlock(ram, sasuke, 0))
+        self.assertTrue(write_japan_unlock(ram, triton, 1))
+        self.assertTrue(write_japan_unlock(ram, triton, 0))
+        with self.assertRaisesRegex(ValueError, 'unknown'):
+            write_japan_unlock(ram, unknown, 1)
+        self.assertEqual(ram.writes, [
+            (0x80161E97, bytes((1,))),
+            (0x80161E97, bytes((0,))),
+            (0x80161EEF, bytes((1,))),
+            (0x80161EEF, bytes((0,))),
+        ])
 
 if __name__ == '__main__':
     unittest.main()
