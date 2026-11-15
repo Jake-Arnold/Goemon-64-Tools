@@ -1,14 +1,11 @@
-"""Synthetic shared-browser Japanese native warp sequence, no live emulator."""
+"""Synthetic shared Scene Browser instant Japan 0x0C reload controller tests."""
 import struct
 import time
-from types import SimpleNamespace
-import unittest
 from unittest.mock import patch
+import unittest
 
 from practice.toolkit import Toolkit
-from practice.japan_native_scene_warp import (
-    JAPAN_MENU_CATEGORY, JAPAN_MENU_STAGE_INDEX,
-)
+from practice.japan_direct_scene_reload import JAPAN_PENDING_MAP
 from practice.japanese_debug_warp import (
     JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE,
 )
@@ -24,77 +21,86 @@ def make_controller():
     app.__dict__.update(source.__dict__)
     app.jp_auto_warp = None
     app.jp_native_key_release = None
-    app.jp_warp_a_key = SimpleNamespace(get=lambda: 'X')
     app.selected_japan_debug_scene = lambda: 0x1D1
     app._japan_native_warp_writer = lambda: (writer, writer.rdram())
     app.scene_status = Label()
-    scheduled = []
-    app.root = SimpleNamespace(
-        after=lambda ms, callback: scheduled.append((ms, callback)))
-    return app, writer, scheduled
+    return app, writer
 
 
 class JapanFullNativeSceneControllerTests(unittest.TestCase):
-    def test_browser_target_auto_stages_and_sends_a_then_observes_loaded_map(self):
-        app, writer, scheduled = make_controller()
-        pressed = []
-        with patch('practice.toolkit.press_project64_native_a',
-                   side_effect=lambda pid, key: (
-                       pressed.append((pid, key)) or
-                       (lambda: pressed.append(('release', key))))):
+    def test_doubleclick_requests_immediate_0x0c_without_menu_or_a(self):
+        app, writer = make_controller()
+        with patch('practice.toolkit.enter_japan_native_debug_menu') as menu, \
+             patch('practice.japan_project64_input.press_project64_native_a') as press:
             app.start_japan_native_scene_warp(destination=0x1D1)
-            self.assertIsNotNone(app.jp_auto_warp)
             self.assertEqual(
-                writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE,1), b'\x0a')
-            # No direct scene write. Actual game still reports source map.
+                writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0c')
             self.assertEqual(
-                writer.rdram().read_guest(JAPAN_DEBUG_SCENE,2),
+                writer.rdram().read_guest(JAPAN_PENDING_MAP, 2),
+                bytes.fromhex('01D1'))
+            self.assertEqual(
+                writer.rdram().read_guest(JAPAN_DEBUG_SCENE, 2),
                 bytes.fromhex('0161'))
-            app.jp_auto_warp['started'] = time.monotonic() - 2
-            app.poll_japan_native_scene_warp(time.monotonic())
-            self.assertEqual(
-                writer.rdram().read_guest(JAPAN_MENU_CATEGORY,1), b'\x04')
-            self.assertEqual(
-                writer.rdram().read_guest(JAPAN_MENU_STAGE_INDEX,2),
-                bytes.fromhex('0041'))
-            app.poll_japan_native_scene_warp(time.monotonic() + 0.6)
-            self.assertEqual(pressed, [(959604, 'X')])
-            self.assertEqual(len(scheduled),1)
-            app._release_japan_native_key()
-            self.assertEqual(pressed[-1], ('release','X'))
-            # Simulate engine-owned load into requested map and valid XYZ.
-            writer.set_guest(JAPAN_DEBUG_ENGINE_MODE,b'\x0d')
-            writer.set_guest(JAPAN_DEBUG_SCENE,bytes.fromhex('01d1'))
-            writer.set_guest(
-                JAPAN_PLAYER_XYZ_START,
-                struct.pack('>fff', 5.0, 0.0, -10.0))
-            for _ in range(3):
-                app.poll_japan_native_scene_warp(time.monotonic()+0.8)
-            self.assertIsNone(app.jp_auto_warp)
-            self.assertIn('Native scene warp loaded',app.scene_status.value)
+            self.assertIsNotNone(app.jp_auto_warp)
+            self.assertIn('instant reload', app.scene_status.value)
+            menu.assert_not_called()
+            press.assert_not_called()
+        self.assertEqual(writer.close_count, 1)
 
-    def test_stale_menu_selection_suppresses_a(self):
-        app, writer, _scheduled = make_controller()
-        with patch('practice.toolkit.press_project64_native_a') as press:
-            app.start_japan_native_scene_warp(destination=0x1D1)
-            app.jp_auto_warp['started'] = time.monotonic()-2
+        # A fast game can complete the 0x0C state before a 170ms Tk tick.
+        writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, b'\x0d')
+        writer.set_guest(JAPAN_DEBUG_SCENE, bytes.fromhex('01d1'))
+        writer.set_guest(
+            JAPAN_PLAYER_XYZ_START,
+            struct.pack('>fff', 5.0, 0.0, -10.0))
+        for _ in range(3):
             app.poll_japan_native_scene_warp(time.monotonic())
-            writer.set_guest(JAPAN_MENU_STAGE_INDEX,bytes.fromhex('0000'))
-            app.poll_japan_native_scene_warp(time.monotonic()+0.6)
-        press.assert_not_called()
         self.assertIsNone(app.jp_auto_warp)
-        self.assertIn('overwrote',app.scene_status.value)
+        self.assertIn('Japan scene reload reached', app.scene_status.value)
+
+    def test_pending_warp_never_opens_native_menu_or_injects_a(self):
+        app, writer = make_controller()
+        app.start_japan_native_scene_warp(destination=0x1D1)
+        app.poll_japan_native_scene_warp(time.monotonic())
+        self.assertTrue(app.jp_auto_warp['seen_reload'])
+        self.assertEqual(
+            writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0c')
+        app.start_japan_native_scene_warp(destination=0x161)
+        self.assertIn('pending', app.scene_status.value)
+
+    def test_direct_reload_entrance_when_unique_source_route_exists(self):
+        app, writer = make_controller()
+        app.entrance_atlas = {'payload': {'entries': [{
+            'id': '161:001', 'kind': 'exit', 'source_map': 0x161,
+            'destination': 0x1D1, 'position': [4, 8, -10],
+            'heading': 512, 'mode': 0x10, 'exit_id': 1,
+        }]}}
+        app.start_japan_native_scene_warp(destination=0x1D1)
+        self.assertEqual(app.jp_auto_warp['spawn'].position, (4, 8, -10))
+        self.assertEqual(
+            writer.rdram().read_guest(JAPAN_PENDING_MAP, 12),
+            app.jp_auto_warp['spawn'].pending_bytes())
+        self.assertEqual(
+            writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0c')
 
     def test_start_failure_has_no_pending_warp_or_scene_change(self):
-        app, writer, _scheduled=make_controller()
-        writer.set_guest(JAPAN_DEBUG_ENGINE_MODE,b'\x0a')
+        app, writer = make_controller()
+        writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, b'\x0a')
         app.start_japan_native_scene_warp(destination=0x1D1)
         self.assertIsNone(app.jp_auto_warp)
-        self.assertIn('refused',app.scene_status.value)
+        self.assertIn('refused', app.scene_status.value)
         self.assertEqual(
-            writer.rdram().read_guest(JAPAN_DEBUG_SCENE,2),
+            writer.rdram().read_guest(JAPAN_DEBUG_SCENE, 2),
             bytes.fromhex('0161'))
 
+    def test_explicit_original_debug_menu_remains_separate(self):
+        app, writer = make_controller()
+        with patch('practice.toolkit.enter_japan_native_debug_menu') as menu:
+            app.start_japan_native_scene_warp(destination=0x1D1)
+        menu.assert_not_called()
+        self.assertEqual(
+            writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0c')
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     unittest.main()
