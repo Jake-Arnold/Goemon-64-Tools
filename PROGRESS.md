@@ -1,5 +1,10 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Include file_11 promotion tests in normal ROM-free local CI
+
+- The repository's `decomp.local_ci` verifier-test step discovers `tests/test_decomp_*.py`, so the promotion runner's 16 acceptance tests were moved from `tests/test_promote_file11.py` to `tests/test_decomp_promote_file11.py`. No separate CI runner or GitHub Actions workflow was introduced.
+- Independently ran the exact focused discovery pattern `python -m unittest discover -s tests -p 'test_decomp_*.py' -q` against the 16 new tests; **16/16 passed**. The full local research suite passed **64/64** Python tests. Full central native G2 remains unavailable without a local checkout containing the existing 160 production sources; canonical manifest/inventory remain at 160 matching C.
+
 ### 2026-11-15 — Formal USA file_11 50-function promotion runner and strict acceptance tests
 
 - Added `decomp/promote_file11.py`, a **non-destructive full central G2/inventory promotion runner**. It rejects unexpected canonical manifest state, generates a separate v2 optional file_11 manifest (old 160 + new 50 = prospective 210 C claims), and calls the existing `decomp.verify` on a new external workdir followed by `decomp.inventory`.
