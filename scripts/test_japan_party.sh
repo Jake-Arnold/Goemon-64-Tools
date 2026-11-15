@@ -23,6 +23,7 @@ PYTHON="${PYTHON:-python3}"
   tests.test_japan_project64 \
   tests.test_remembered_rom \
   tests.test_region_views \
+  tests.test_region_unlocks \
   tests.test_japan_event_sessions \
   tests.test_japan_damage_capture \
   tests.test_japan_native_scene_warp \
@@ -46,6 +47,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_japan_state_comparison_ui \
     tests.test_value_search_ui \
     tests.test_state_discovery_ui \
+    tests.test_region_unlocks_ui \
     tests.test_dashboard \
     -v
 elif [[ -n "${DISPLAY:-}" ]]; then
@@ -60,6 +62,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_japan_state_comparison_ui \
     tests.test_value_search_ui \
     tests.test_state_discovery_ui \
+    tests.test_region_unlocks_ui \
     tests.test_dashboard \
     -v
 else
