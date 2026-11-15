@@ -124,6 +124,11 @@ class ValueSearchMixin:
         number = self.value_search_value.get()
         filter_mode = self.value_search_filter.get()
         include_unaligned = self.value_search_unaligned.get()
+        # Project64 may expose only an unexpanded 4 MiB RDRAM mapping.
+        # Keep USA and synthetic test scanner sizes unchanged.
+        scan_size = (getattr(mem, 'rdram_size', self.value_search_size)
+                     if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan'
+                     else self.value_search_size)
         self.value_scan_busy = True
         self.value_search_status.set('Reading game RAM; UI remains responsive...')
         generation = self.value_scan_generation
@@ -132,7 +137,7 @@ class ValueSearchMixin:
             try:
                 scanner = self.value_scanner
                 if action in ('exact', 'unknown'):
-                    scanner = ValueScanner(size=self.value_search_size,
+                    scanner = ValueScanner(size=scan_size,
                                            aligned=not include_unaligned)
                     if action == 'exact':
                         scanner.start_exact(mem, kind, number)
