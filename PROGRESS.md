@@ -1,6 +1,20 @@
 # Goemon 64 Tools — Development Progress
 
 
+### 2026-11-15 — First USA→Japan parity delivery: read-only Value Search and custom watches
+
+- **New live user confirmation:** The user reports the prior Japanese party test suite completed successfully and both `Unlock Sasuke` and `Unlock Yae` toolkit actions worked correctly on live Mupen64Plus. This upgrades the confidence in *those two toolkit writes*. Still **not provided:** the actual character-index watch readout after native C-Down; the Sasuke=2/Yae=3 hypotheses remain unconfirmed by native switch traces.
+- **Pushed checkpoint 1** `6cc7d762c4e615e941a56332cbae174631af47d8`: region-aware read-only `ValueSearchMixin._value_search_reader`; the existing 8 MiB numeric scanner can read independently verified Japan Mupen `jp_rdram` without assigning it to USA `self.mem`. No Japanese editor, freeze or USA pointer access is exposed. Stale-result checks use the selected region reader.
+- **Pushed checkpoint 2** `d1833930fc175166a7076fd99f31fd1dee1e49cf`: Value Search tab is enabled for Japan while unrelated USA tabs stay disabled; scan candidates are invalidated on region change, disconnect/reconnect and toolkit-commanded savestate load.
+- **Pushed checkpoint 3** `5b596cb0a19ab6c3204faf8d3fa31a62c863e884`: dedicated Japan Live typed custom watches (u8/s8/u16/s16/u32/s32/f32/f64/hex8 through shared decoder), independent `japan_0_custom_watches.json` profile, persisted names/addresses, read-only decoded/raw display, add/remove, baseline/compare/copy; Value Search candidate promotion targets this Japanese-only list and never USA custom watches.
+- **Pushed checkpoint 4** `b8ae73e4f574bb374f72cfc31fd4df1c3c452752`: authored Tk regression tests for different USA/JP RAM buffers, exact typed-value search and candidate promotion, disconnected-reader blocking, watch persistence, bounds validation, duplicate rejection, and read-only party-independent behaviour.
+- **Pushed checkpoint 5** `3eef60a0d34a058a9bab8e2a253d7c8738228a38`: test runner invokes the new GUI suite; `e67c33c4453e86706bf9a3a01fbc30d4ab95a39a` isolates older Tk test fixtures from persisted developer watches. Added `docs/JAPAN_READONLY_VALUE_SEARCH.md` in `b3dc20f247aacc35004275c0d049febb58da512a` and refreshed the feature parity checklist in `5ba1ad89c9117883e7e1113aa15080ef00451a40`.
+- **Validation caveat:** the user ran the previous party suite, **not these newly committed Value Search/watch tests**. A private GitHub connector cannot run the user's Linux Mupen or local Python checkout. The new code is published for reproducible testing but remains **locally and end-to-end unverified**.
+- **Next milestones:** 1. Run `./scripts/test_japan_party.sh` plus live JP Ryo u16 Value Search and inspect/freeze-free candidate promotion. 2. Implement Japanese A/B/C Advanced RAM Comparison in the existing Event Sessions UI with strict per-PID/base/region scope; block USA 100-byte event-session backend until Japan save-bank confirmed. 3. Map JP player/task, XYZ and scene loader while preserving read-only access. 4. Extend validated JP Unlocks and story flags incrementally, never by blanket regional offsets. 5. Reuse region-aware no-player scans to develop USA Mupen RDRAM attachment.
+- **Push discipline:** above checkpoints were pushed separately during this live task; issue #18 tracks remaining feature parity and the PR stays draft until tests and real emulator observations support release.
+
+
+
 ### 2026-11-15 — Syntax repair and full USA↔Japan feature parity audit
 
 - **User-reported reproducible blocker:** `./scripts/test_japan_party.sh` failed immediately while importing `practice/japanese_fields_ui.py` at line 105: `SyntaxError: unmatched ')'`. Inspected the exact current branch file and removed its one extra closing parenthesis. Pushed independently as `0bd99793936328113cac1ab41e3a38d488d8dae5`; a fix was committed, **not a claim that the suite now passes**.
