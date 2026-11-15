@@ -26,6 +26,10 @@ The draft PR #20 (`chatgptweb/japan-character-switch-decomp`) has **13 separatel
 
 **This is not yet central verification or published matching-C promotion.** The production `decomp/manifest.json`, central `decomp.verify`, combined results and inventory are unchanged. The next bounded integration task is a production-safe mixed C/ASM `file_11` adapter and manifest declarations, followed by the central full-ROM G2, semantic relocations and inventory gate. Do not increase published totals based on standalone research; Java/Japan full-ROM build is still blocked by hard-coded USA `GLOBAL_ASM` paths.
 
+## USA file_11 central verifier adapter (15 November 2026)
+
+An **opt-in, fail-closed** `decomp/overlay_file11.py` stage is now wired into `decomp/verify.py`; see `docs/USA_FILE11_CENTRAL_ADAPTER_2026-11-15.md`. Activate only with `{"overlay_file11_stage":{"format":"goemon-file11-character-switch-13-v1"}}` in a verified candidate manifest. It stages exactly 13 original-USA matching-C functions / 620 bytes in 4 C source islands, retaining the 180-byte selector and all other code in assembly. The module checks the complete 32 MiB ROM, 13 original linked symbols, 8 linker input objects, 4 source/object identities, and all 8,825 file_11 relocation tuples before modifying any function count. The existing previously independently verified 13-function scratch ROM and ELF passed this new module's linked provenance checker. **Not yet a completed full central verifier run; production manifest/results/inventory remain unchanged.** Run central G2 using an opt-in manifest, then audit and promote only if exact.
+
 ## 0. Cross-conversation handoff
 
 For the reviewed integration blockers and reproducible next steps, see [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).
