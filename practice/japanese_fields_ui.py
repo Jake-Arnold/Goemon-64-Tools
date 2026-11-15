@@ -30,7 +30,7 @@ class JapaneseFieldsUi:
     def build_japanese_fields_tab(self, notebook):
         tab = ttk.Frame(notebook, padding=10)
         self.jp_fields_tab = tab
-        notebook.add(tab, text='Japan Live / Party Test')
+        notebook.add(tab, text='Japan Live (diagnostics)')
         ttk.Label(tab, text='Japan Live: cheat-backed values and experimental scene probes (read-only)').pack(
             anchor='w', pady=(0, 5))
         ttk.Label(
