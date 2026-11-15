@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from practice.japanese_fields import JapanFieldReading
+from practice.scenes import SCENES
 
 TCRF = "https://tcrf.net/Mystical_Ninja_Starring_Goemon_(Nintendo_64)"
 GROUP = "Scene research (candidate)"
@@ -50,6 +51,15 @@ JAPAN_SCENE_PROBES = (
 assert len(set(x.key for x in JAPAN_SCENE_PROBES)) == len(JAPAN_SCENE_PROBES)
 assert len(set(x.address for x in JAPAN_SCENE_PROBES)) == len(JAPAN_SCENE_PROBES)
 
+# First *real Japanese Mupen64Plus* read-only observation, 2026-11-15:
+# scene 300 -> 355; previous 355 -> 300; pending 300 -> 355;
+# submode 1 -> 2. The observed behaviour is consistent with the four
+# hypothesis labels, but a single before/after capture cannot prove their
+# transient meaning or that they apply to all scenes.
+RUNTIME_OBSERVED_SCENE_KEYS = frozenset((
+    "scene_map", "scene_previous", "scene_pending", "scene_submode",
+))
+
 
 def read_japan_scene_probes(rdram):
     """Return one result per probe; never write or infer a player pointer."""
@@ -62,10 +72,16 @@ def read_japan_scene_probes(rdram):
             val = int.from_bytes(data, "big")
             label = str(val)
             if probe.key in ("scene_map", "scene_previous", "scene_pending"):
-                label = f"{val} / 0x{val:03X}"
+                known_scene = SCENES.get(val)
+                label = (f"{val} / 0x{val:03X} — {known_scene}"
+                         if known_scene else f"{val} / 0x{val:03X} — not catalogued")
+            elif probe.key == "scene_submode" and val in (1, 2):
+                label = f"{val} — {'overworld' if val == 1 else 'town'} (candidate)"
             elif probe.key == "scene_character" and 0 <= val <= 3:
                 label = ("Goemon", "Ebisumaru", "Sasuke", "Yae")[val] + f" ({val})"
-            status = "UNVERIFIED: regional-offset hypothesis"
+            status = ("OBSERVED: one real Japanese transition; repeat to confirm"
+                      if probe.key in RUNTIME_OBSERVED_SCENE_KEYS
+                      else "UNVERIFIED: regional-offset hypothesis")
             if probe.key == "scene_map" and val > 0x800:
                 status = "CHECK: out-of-range scene candidate"
             elif probe.key == "scene_character" and val > 3:

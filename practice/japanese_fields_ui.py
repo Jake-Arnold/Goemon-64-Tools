@@ -7,8 +7,10 @@ from tkinter import ttk
 
 from practice.japanese_fields import JAPAN_FIELDS, FIELD_GROUPS, read_japan_fields
 from practice.japanese_scene_probes import (
-    JAPAN_SCENE_PROBES, read_japan_scene_probes, compare_guest_readings,
+    JAPAN_SCENE_PROBES, RUNTIME_OBSERVED_SCENE_KEYS,
+    read_japan_scene_probes, compare_guest_readings,
 )
+from practice.scenes import SCENES
 
 ALL_JAPAN_READS = JAPAN_FIELDS + JAPAN_SCENE_PROBES
 
@@ -65,8 +67,10 @@ class JapaneseFieldsUi:
                     tree.insert(group_id, 'end', iid='jp_field_' + field.key,
                                 text=field.label,
                                 values=(f'0x{field.address:08X}', '—', '—',
-                                        'UNVERIFIED: offset candidate'
-                                        if field in JAPAN_SCENE_PROBES else 'External lead'))
+                                        'OBSERVED: one JP transition'
+                                        if field.key in RUNTIME_OBSERVED_SCENE_KEYS
+                                        else ('UNVERIFIED: offset candidate'
+                                              if field in JAPAN_SCENE_PROBES else 'External lead')))
         ttk.Label(
             tab, text='Sources: Japanese GameHacking.org cheats; TCRF debug code;'
             ' regional-offset hypotheses for scene probes. Both Japanese wikis'
@@ -120,6 +124,13 @@ class JapaneseFieldsUi:
         ]
         for key, before, after in self._jp_last_changes:
             lines.append(f'{names[key]} [{key}]: {before} -> {after}')
+            if key in ('scene_map', 'scene_previous', 'scene_pending'):
+                before_id, after_id = int(before, 16), int(after, 16)
+                before_name = SCENES.get(before_id, 'unlisted')
+                after_name = SCENES.get(after_id, 'unlisted')
+                lines.append(
+                    f'  Scene catalogue (USA-derived; JP unconfirmed): '
+                    f'{before_id} {before_name} -> {after_id} {after_name}')
         # Clipboard interaction is user-initiated and does not write game RAM.
         root = self.jp_fields_tab.winfo_toplevel()
         root.clipboard_clear()
@@ -135,8 +146,10 @@ class JapaneseFieldsUi:
             self.jp_fields_tree.set(iid, 'value', '—')
             self.jp_fields_tree.set(iid, 'raw', '—')
             self.jp_fields_tree.set(
-                iid, 'status', 'UNVERIFIED: offset candidate'
-                if field in JAPAN_SCENE_PROBES else 'External lead')
+                iid, 'status', 'OBSERVED: one JP transition'
+                if field.key in RUNTIME_OBSERVED_SCENE_KEYS
+                else ('UNVERIFIED: offset candidate'
+                      if field in JAPAN_SCENE_PROBES else 'External lead'))
         self._jp_last_readings = {}
         self._jp_baseline = None
         self._jp_baseline_identity = None

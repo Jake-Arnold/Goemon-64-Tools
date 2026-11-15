@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — First Japanese live scene-transition capture (one trial)
+
+- **User runtime evidence:** Japanese Mupen64Plus PID 959604, host RDRAM `0x7AA843EC0000`, wordswapped. Read-only baseline/compare records **scene map 300 (0x12C) → 355 (0x163)**, previous scene **355 → 300**, pending scene **300 → 355**, and submode **1 → 2**. Raw playtime counter `0x0000D500 → 0x0000D506`, change +6 (time units unknown).
+- **Catalogue:** USA-derived stage list names 300 Kai Highway and 355 Oedo Town (Northwest); the user did not provide an on-screen location confirmation or the kind of transition. These remain catalogue labels, not independently proven Japanese scene names.
+- **Confidence update:** Only `scene_map`, `scene_previous`, `scene_pending`, `scene_submode` promoted to **OBSERVED: one real Japanese transition; repeat to confirm**. All remaining speculative Japanese scene globals retain **UNVERIFIED** status. Steady-state before/after sampling does not prove transient pending destination semantics.
+- **UI:** Japanese Live scene entries now resolve labels via existing scene catalogue and Copy changes includes stage names with explicit USA-derived / JP unconfirmed caveat. No RAM writes or automatic JP warps added.
+- **Research archive:** `research/japan_scene_runtime_2026-11-15.json`, explanatory `docs/JAPAN_RUNTIME_SCENE_TRACE_001.md`. Regression tests updated to assert scene labels, observed vs unverified status, and precise preserved trace.
+- **Remaining:** Repeat in opposite direction and another scene pair; independently map Japanese player and task pointers for live XYZ. Separate native Japanese Goemon64Recomp runner remains unimplemented.
+
 ### 2026-11-14 — Japanese wiki review and scene transition RAM comparison
 
 - Reviewed both Japanese gameplay wikis (Match 6974 AtWiki and earlier goe1070momo WikiWiki). They share lineage and document 45 Fortune Dolls (40 silver, five gold), JP-exclusive C-Right map-glitch behaviour with unsafe door transitions, 7F/6F jump timing, chain-pipe and wall-edge movement. These are **reproduction/validation references**, not newly verified memory addresses.

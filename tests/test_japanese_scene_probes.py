@@ -1,9 +1,11 @@
 """Source-only Japanese scene hypotheses, no emulator memory writes."""
 import unittest
+import json
+from pathlib import Path
 
 from practice.japanese_fields import JAPAN_FIELDS, JapanFieldReading
 from practice.japanese_scene_probes import (
-    JAPAN_SCENE_PROBES, compare_guest_readings, read_japan_scene_probes,
+    JAPAN_SCENE_PROBES, RUNTIME_OBSERVED_SCENE_KEYS, compare_guest_readings, read_japan_scene_probes,
 )
 
 
@@ -37,11 +39,46 @@ class JapaneseSceneProbeTests(unittest.TestCase):
         ram = Ram(v)
         out = read_japan_scene_probes(ram)
         self.assertEqual(out["scene_map"].raw, "012C")
-        self.assertEqual(out["scene_map"].value, "300 / 0x12C")
+        self.assertEqual(out["scene_map"].value, "300 / 0x12C — Kai Highway")
         self.assertEqual(out["scene_character"].value, "Yae (3)")
-        self.assertTrue(out["scene_map"].status.startswith("UNVERIFIED"))
+        self.assertTrue(out["scene_map"].status.startswith("OBSERVED"))
         self.assertEqual(len(ram.reads), 10)
         self.assertFalse(hasattr(ram, "write_guest"))
+
+    def test_single_observation_status_is_limited_to_four_fields(self):
+        self.assertEqual(RUNTIME_OBSERVED_SCENE_KEYS,
+                         {"scene_map", "scene_previous", "scene_pending", "scene_submode"})
+        out = read_japan_scene_probes(Ram({
+            (0x800CD2A2, 2): bytes.fromhex("0163"),
+            (0x800CD2AC, 2): bytes.fromhex("012C"),
+            (0x800CD490, 2): bytes.fromhex("0163"),
+            (0x800CD294, 1): bytes.fromhex("02"),
+        }))
+        self.assertEqual(out["scene_map"].value, "355 / 0x163 — Oedo Town (Northwest)")
+        self.assertEqual(out["scene_previous"].value, "300 / 0x12C — Kai Highway")
+        self.assertEqual(out["scene_pending"].raw, "0163")
+        self.assertEqual(out["scene_submode"].value, "2 — town (candidate)")
+        for key in RUNTIME_OBSERVED_SCENE_KEYS:
+            self.assertTrue(out[key].status.startswith("OBSERVED"))
+        self.assertTrue(out["scene_phase"].status.startswith("UNVERIFIED"))
+
+    def test_runtime_evidence_archive_exact_bytes(self):
+        root = Path(__file__).resolve().parents[1]
+        data = json.loads((root / "research" /
+            "japan_scene_runtime_2026-11-15.json").read_text(encoding="utf-8"))
+        self.assertEqual(data["evidence_class"], "runtime-observed-single-trial")
+        self.assertEqual(data["region"], "japan-0")
+        evidence = {x["key"]: x for x in data["observations"]}
+        self.assertEqual(set(evidence), {
+            "total_time_raw", "scene_map", "scene_submode",
+            "scene_previous", "scene_pending"})
+        self.assertEqual((evidence["scene_map"]["before"],
+                          evidence["scene_map"]["after"]), ("012C", "0163"))
+        self.assertEqual((evidence["scene_previous"]["before"],
+                          evidence["scene_previous"]["after"]), ("0163", "012C"))
+        self.assertEqual(evidence["scene_pending"]["after"], "0163")
+        self.assertEqual(evidence["scene_submode"]["after"], "02")
+        self.assertEqual(evidence["total_time_raw"]["raw_delta"], 6)
 
     def test_unusual_scene_or_character_values_not_hidden(self):
         ram = Ram({
