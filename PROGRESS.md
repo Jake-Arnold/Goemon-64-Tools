@@ -1,6 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
 
+### 2026-11-15 — Windows XYZ GUI regression recheck passes after status fix
+
+- The user reports **OK from the targeted tests** after updating past the XYZ UI status-string correction (`39069b5`).
+- Earlier failure: `tests.test_japan_state_comparison_ui` expected a success status containing `candidate`, but GUI said `XYZ heuristic:`. The implementation now says `XYZ candidates:`; regression outcome now **user-reported passing**.
+- This confirms the synthetic Tk test workflow as exercised by the user; it does **not** independently verify live Japanese XYZ locations, wide Project64 motion captures, or the entire PowerShell suite being rerun after this fix.
+- The next live experiment remains A stationary, B moved, C stationary at B using **wide** Japanese memory captures, followed by the read-only XYZ candidate button. No position writes are authorised.
+
+
+
 ### 2026-11-15 — PJ64 restore and Sasuke/Yae writes verified; Japan XYZ read-only candidate research starts
 
 - **User live verification (Windows Project64):** the user explicitly reports full emulator **savestate restoration works** and the toolkit's separately consented **Sasuke and Yae party-unlock RAM writes work**. Prior screenshots had already confirmed Windows PJ64 Japan Live/custom watches, Ryo Value Search, scene context and focused A/B/C. These are user reports and screenshot evidence, not assistant-operated emulator tests.
