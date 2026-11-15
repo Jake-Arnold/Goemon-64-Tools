@@ -54,7 +54,7 @@ class JapanEventSessionsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'fixed'):
             new_session('USA', 'project64', region='usa',
                         event_start=JAPAN_CANDIDATE_START)
-        with self.assertRaisesRegex(ValueError,'unsupported'):
+        with self.assertRaisesRegex(ValueError,'not supported'):
             new_session('USA','mupen64plus',region='usa')
         with self.assertRaisesRegex(ValueError,'Invalid'):
             capture_japan_event(self.writer.rdram(),
