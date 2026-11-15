@@ -79,6 +79,23 @@ class JapanAbcReadOnlyTests(unittest.TestCase):
         self.assertNotIn('regions', report)
         self.assertNotIn('data', report['candidates'][0])
 
+    def test_character_index_byte_is_known_alias_not_a_story_flag(self):
+        mem = ReadOnlyJapanRam()
+        a = capture_japan_memory(mem, 'A Goemon', identity=JP_ID)
+        mem.set_bytes(0x80161DCC, (1).to_bytes(4, 'big'))
+        b = capture_japan_memory(mem, 'B Ebisumaru', identity=JP_ID)
+        mem.set_bytes(0x80161DCC, (0).to_bytes(4, 'big'))
+        c = capture_japan_memory(mem, 'C Goemon', identity=JP_ID)
+        report = compare_japan_memory(a, b, c)
+        known = next(row for row in report['candidates']
+                     if row['address'] == '0x80161DCF')
+        self.assertEqual(known['kind'], 'character-index byte (known alias)')
+        self.assertEqual(known['alias_of'], '0x80161DCC')
+        self.assertEqual(known['known_field'], 'scene_character')
+        self.assertEqual((known['before'], known['after']), ('00', '01'))
+        self.assertTrue(known['reverted'])
+        self.assertEqual(report['event_flag_changes'], [])
+
     def test_bounded_candidate_storage_and_full_count(self):
         mem = ReadOnlyJapanRam()
         a = capture_japan_memory(mem, 'A', identity=JP_ID)
