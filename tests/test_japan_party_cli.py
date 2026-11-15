@@ -9,6 +9,7 @@ class JapanPartyCliTests(unittest.TestCase):
         self.assertFalse(args.enable_japan_party_writes)
         self.assertFalse(args.enable_japan_position_writes)
         self.assertFalse(args.enable_japan_debug_menu_writes)
+        self.assertFalse(args.enable_japan_scene_writes)
 
     def test_explicit_opt_in(self):
         args = parse_args(["--game-version", "japan",
@@ -27,6 +28,18 @@ class JapanPartyCliTests(unittest.TestCase):
             "--enable-japan-position-writes", "--read-only"])
         self.assertFalse(blocked.enable_japan_debug_menu_writes)
         self.assertFalse(blocked.enable_japan_position_writes)
+
+    def test_dedicated_instant_scene_reload_optin_is_independent(self):
+        args = parse_args([
+            "--game-version", "japan", "--enable-japan-scene-writes"])
+        self.assertTrue(args.enable_japan_scene_writes)
+        self.assertFalse(args.enable_japan_debug_menu_writes)
+        self.assertFalse(args.enable_japan_position_writes)
+        blocked = parse_args([
+            "--game-version", "japan", "--enable-japan-scene-writes",
+            "--read-only"])
+        self.assertFalse(blocked.enable_japan_scene_writes)
+        self.assertTrue(blocked.read_only)
 
     def test_read_only_overrides_opt_in(self):
         args = parse_args(["--game-version", "japan",
