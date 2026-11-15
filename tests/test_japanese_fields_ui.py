@@ -21,6 +21,15 @@ class Host(JapaneseFieldsUi):
         self.notebook.pack(fill='both', expand=True)
         self.build_japanese_fields_tab(self.notebook)
 
+    # This minimal UI host deliberately has no Toolkit memory-write backend.
+    # The real app binds these callbacks to Toolkit methods; smoke tests
+    # must supply inert callbacks to construct the full Japanese tab.
+    def move_japan_oedo_xyz(self):
+        raise AssertionError('UI smoke host must never issue a position write')
+
+    def open_japan_debug_for_selected_scene(self):
+        raise AssertionError('UI smoke host must never enter debug mode')
+
 
 class JapanTkSmokeTest(unittest.TestCase):
     def setUp(self):
