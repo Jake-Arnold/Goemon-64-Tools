@@ -42,6 +42,12 @@ The verifier accepts only the previous thirteen-function stage format or the new
 
 The pristine pinned USA upstream scratch build independently met those constraints, but the full central decomp.verify build with the existing 160 C modules has not yet been run. The canonical manifest and inventory remain unchanged. See docs/USA_FILE11_NOOP_CALLBACKS_2026-11-15.md.
 
+## Formal file_11 promotion review runner (15 November 2026)
+
+The reviewed optional v2 50-function USA file_11 stage now has a strictly gated runner at `decomp/promote_file11.py`. Use `python3 -m decomp.promote_file11 --source-dir ./decomp --upstream /path/to/clean/mnsg --retail-rom /path/to/USA.z64 --workdir /tmp/new-g2 --output-dir /tmp/new-file11-review --jobs 2`, optionally with `--baseline-cache` and `--binutils-root`. It generates a temporary 210-function candidate manifest but does not mutate the canonical 160-function manifest or claim verification. It requires the *complete central* G2 and inventory to pass (210 functions / 13,336 bytes / exact 32 MiB original USA ROM / all original file_11 linked C symbols, offsets, hashes, 8,825 relocations / 7,153 ASM entries) before emitting a reviewable promotion bundle. If any criterion fails, no promotion is made. Run `python3 -m decomp.local_ci` and examine the bundle before committing canonical manifest/results/inventory. Details in `docs/USA_FILE11_CENTRAL_PROMOTION_RUNNER_2026-11-15.md`.
+
+**Known execution blocker in this ChatGPT container:** pinned original ROM, upstream ZIP, IDO, native MIPS build inputs exist; the 160-function full production source checkout is only available via private GitHub connector, not as mounted filesystem files. The complete central 210-function G2 was not run; research scratch full-ROM matches do not satisfy that combined gate.
+
 ## 0. Cross-conversation handoff
 
 For the reviewed integration blockers and reproducible next steps, see [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).

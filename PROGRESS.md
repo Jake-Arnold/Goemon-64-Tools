@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Formal USA file_11 50-function promotion runner and strict acceptance tests
+
+- Added `decomp/promote_file11.py`, a **non-destructive full central G2/inventory promotion runner**. It rejects unexpected canonical manifest state, generates a separate v2 optional file_11 manifest (old 160 + new 50 = prospective 210 C claims), and calls the existing `decomp.verify` on a new external workdir followed by `decomp.inventory`.
+- Both stages must succeed before emitting a promotion review bundle: complete 33,554,432-byte USA ROM identity, 210/210 matched functions, 13,336 matching bytes, original 50 function names and exact VMAs/ROM offsets/sizes/SHA-256 values, all 12 file_11 linker slices and 8,825 original relocation records in the same order, and reconciled 7,376-entry inventory (7,153 remaining assembly entries).
+- The runner never modifies canonical `decomp/manifest.json`, `results/combined.json`, or `results/inventory.json`, rejects existing output/work directories and refuses outputs inside the source repository. No official matching-C claim is incremented on a failed or incomplete G2.
+- Added `tests/test_promote_file11.py` with sixteen ROM-free positive/negative tests; all **64 local research and promotion acceptance Python tests passed** in this session. Verified original retail USA ROM SHA-1 and existing previously completed 50-function native scratch ROM SHA-1 remain correct. New detailed runbook `docs/USA_FILE11_CENTRAL_PROMOTION_RUNNER_2026-11-15.md`.
+- **Blocker:** The connected private GitHub decomp source files for all prior 160 production C functions are not mounted in the isolated Linux runtime, although pinned upstream source ZIP, compiler, and game ROMs are available. The complete combined 160+50 native central verifier/inventory **has not been run**. Canonical promotion is therefore intentionally withheld; official total remains **160** (12,272 bytes), with 50 research-verified file_11 candidates awaiting that final gate.
+
 ### 2026-11-15 — Second independent 50-function file_11 clean build using versioned v2 stage
 
 - Repeated the 50-function stage on a separate pinned upstream USA workspace using the new v2 source verification and Splat staging interfaces, independent of the previous 50-function scratch build.
