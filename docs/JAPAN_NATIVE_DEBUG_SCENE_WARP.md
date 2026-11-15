@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-15  
 **Implementation status (user verified 2026-11-15):** The Japanese native debug-menu button **successfully opened the original menu in live Windows Project64**, according to the user's direct gameplay report. This verifies the menu-entry stage in the tested setup. **Manual selection of a different destination and a completed controllable scene load have not yet been reported**; this is not a verified end-to-end or one-click warp.  
-**Scope:** Open the game's own debug selection UI in Japanese retail revision 0; manually select a destination. Fully automatic cursor staging/confirm remains **unimplemented** until the relevant Japanese menu fields are mapped.
+**Scope:** The shared Scene Browser now requests full native scene-to-scene warps for Japan-0: enter the game-owned debug menu, stage Japan category/stage fields, send a configurable Project64 N64 A key, and watch for the destination's ordinary gameplay state. **The complete automatic sequence is implemented and synthetic-tested in code, but has not been live-confirmed as a successful cross-scene warp.** Manual original-menu entry remains a separate fallback.
 
 ## Provenance and exact boundaries
 
@@ -11,6 +11,32 @@ The original US game's L-button debug patch and the [mn64rando project](https://
 The USA controller L button input conditional is at `0x800C7D3B`, mask `0x20`. **Do not take its apparent Japan offset** (`0x800CD52B`) as a verified Japanese L-button code. This new runtime feature **does not patch the ROM or force a physical L press**; it makes a one-time state request consistent with the native debug menu.
 
 Previously tried direct writes to USA pending map + exit request returned to the title screen. The Japanese addresses for current map (`0x800CD2A2`), pending map (`0x800CD490`), exit request (`0x800CD28F`) and loading (`0x80161DC4`) are **never written** here. USA scene IDs and category hints come from an existing reference catalogue and may require Japan-specific verification.
+
+## Automatic warp: shared Scene Browser
+
+This is **not** a second scene list. Exactly the same Scene Browser and double-click action are used for USA and Japan, with the active ROM choosing its own backend:
+
+- **USA:** existing selected ROM entrance reload/placement workflow; the Japanese debug staging does not run.
+- **Japan-0:** use the original debug-menu pipeline. A destination such as `0x01D1` (Goemon's House) is translated through the same scene category/index reference used by USA: `SHOP` / menu category `4` / stage index `65`. Japan offsets are `0x800CD294` (category byte) and `0x800CD2A4` (stage-index halfword), with normal game state `0x800CD284=0x0D` and original debug state `=0x0A`. These Japanese stage/category *write behaviours* remain inferred from the regional layout; the user requested implementation assuming parity.
+- Once in the original menu, the toolkit writes only those two selector fields, checks that they remain unchanged, then sends the **configured** Project64 keyboard key mapped to N64 A (default `X`). A single A keydown is released after 150 ms. It does **not** write active scene, pending scene, exit flags or player XYZ.
+- The toolkit requires multiple consecutive observations of ordinary engine mode, the requested scene ID, no loading/exit, and plausible character/XYZ before reporting a completed load. **This is stronger than observing the scene ID change, but is not a guarantee that the player is controllable.**
+- Errors, changed PID/RAM mapping, overwritten menu selection and timeouts stop automatic actions without retries.
+
+**Windows launch**:
+
+```powershell
+git pull --ff-only origin chatgptweb/japan-controlled-party-writes
+.\scripts\test_japan_party.ps1
+py -3 -m practice.toolkit --game-version japan --enable-japan-debug-menu-writes
+```
+
+Choose `project64`, connect the verified Japan ROM, create a native savestate, open **Scene Browser**, single-click a room to inspect its region-specific stage index, then **double-click that room to request the full warp**. Configure the N64 A keyboard binding in **Japan Live → Scene warp (debug)** only if Project64 does not map A to `X`.
+
+The JavaScript-free Python implementation is `practice/japan_native_scene_warp.py`, `practice/japan_project64_input.py`, and the `Toolkit.start_japan_native_scene_warp` / `poll_japan_native_scene_warp` controller. The original-menu-only button is retained as a manual fallback; **double-click does not invoke that fallback**.
+
+## Verified ROM memory across sessions
+
+On first verification, the toolkit stores the canonical Japan-0 ROM path and its expected SHA-1 under the user's config directory (`%LOCALAPPDATA%\GoemonSpeedrunTools\verified_rom_paths.json` on Windows). Future sessions automatically re-open and **reverify the actual ROM file** using the exact retail-revision verifier. If it is missing or edited, the user must reverify it. **Live Project64 PID, ROM code signatures, RAM mapping, 4/8 MiB size and byte order are still validated on every new connection and writable step.** The saved path does not store a process handle or grant write access.
 
 ## Windows Project64 procedure
 
@@ -53,7 +79,7 @@ That requires discovering, via actual Japanese debug-menu A/B/C captures or deco
 - the native **accept/commit** path and whether it depends on a real controller input,
 - the completion criteria: loading phase, scene, valid player/task and coordinates after crossing overlays.
 
-Only then is it safe to stage selection and commit automatically. **No guessed writes to these fields are enabled.** The existing manual native debug selector is the first experimentally bounded step, not a verified automatic scene warp.
+The category and stage fields have now been *implemented as a testable assumption*, with bounds/readback checks and separate game-owned A input. The final native warp is **not yet live-confirmed**. If Project64 does not select and load the intended room, no alternate guessed current-map writes are used; use the captured menu-state evidence to diagnose and correct the layout.
 
 ## Tests added
 
