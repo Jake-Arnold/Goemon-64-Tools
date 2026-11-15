@@ -41,6 +41,10 @@ The earlier independent scene transition, 300 → 355, showed the same pattern: 
 
 A third scene transition using an unrelated scene pair, plus one recording of the Pending and Loading values *before* the current scene updates, would allow stronger inference about loader ordering. Reading the Japanese character index does not unlock XYZ; Japanese player/task pointers still require independent mapping.
 
+## Follow-up: Project64 Japanese XYZ position control (2026-11-15)
+
+Subsequent Project64 virtual-memory edits and Japanese Live `f32` watches found the functional position-controlling XYZ triplet at `0x80151B10` (X), `0x80151B14` (Y), and `0x80151B18` (Z). A full vector write to USA Oedo South's default entrance `(-289, 0, -167)` teleported Goemon, while changing Y to `52` raised the character above the ceiling. The user subsequently confirmed the same fields **continued to control the character in both Oedo South (353) and Oedo North (352)**. Separately observed `0x80211870` and `0x802118E0` position triplets match normal movement and USA entrance values but are overwritten when edited, so their roles remain derived/readout candidates. See [JAPAN_PLAYER_XYZ_TELEPORT_RUNTIME_2026-11-15.md](JAPAN_PLAYER_XYZ_TELEPORT_RUNTIME_2026-11-15.md) for exact float words, source observations, cross-version comparisons and limits. No Japanese toolkit write feature or player-object-pointer equivalence is claimed.
+
 ## Follow-up: Project64 original MIPS writer trace (2026-11-15)
 
 The subsequent Windows Project64 investigation independently confirmed `0x80161DCC` for Goemon/Ebisumaru and captured the original Japanese MIPS instructions at `0x801E2944` and `0x801E298C` writing the global character index. Single stepping also confirmed a call to `0x801E2970` with a character-related byte at `object+0x60`. See [JAPAN_PROJECT64_CHARACTER_SWITCH_MIPS_TRACE.md](JAPAN_PROJECT64_CHARACTER_SWITCH_MIPS_TRACE.md) for the full observed instruction/register sequence, confidence boundaries, and unresolved pointer/overlay work. The evidence is not yet sufficient to treat the observed object pointer as a stable player pointer.
