@@ -4,7 +4,7 @@ Implemented on `chatgptweb/japan-controlled-party-writes` as the first increment
 
 ## Scope and safety
 
-The **existing Value search tab** is enabled for the verified Japanese Mupen64Plus session. It uses `jp_rdram` rather than the USA `mem` pointer, and scans the canonical 8 MiB N64 guest address range `0x80000000`–`0x807FFFFF` in chunks via `read_guest()`. Supported types are u8/s8/u16/s16/u32/s32/f32; filters are Exact, Increased, Decreased, Changed and Unchanged. The scanner already runs in a worker, without depending on the USA player/task pointer. The UI never calls a guest-RAM writer in Value Search.
+The **existing Value search tab** is enabled for the verified Japanese Project64 (Windows) or Mupen64Plus session. It uses `jp_rdram` rather than the USA `mem` pointer, and scans the verified 4 or 8 MiB N64 guest RAM extent starting at `0x80000000` in chunks via `read_guest()`. Supported types are u8/s8/u16/s16/u32/s32/f32; filters are Exact, Increased, Decreased, Changed and Unchanged. The scanner already runs in a worker, without depending on the USA player/task pointer. The UI never calls a guest-RAM writer in Value Search.
 
 The **Japan Live / Party Test tab** now has a Japan-only read-only custom-watch editor. Add a name, exact guest address and numeric/hex type, then inspect decoded/hex values, baseline changes and copied change reports. The existing `practice.custom_watches` decoder and schema provide address/width checks and a 128-watch bound. Each new field is explicitly a **user candidate**, not a verified game-variable mapping.
 
@@ -14,11 +14,19 @@ A change of version, process or RDRAM, as well as a toolkit-requested emulator s
 
 Japanese party unlocks remain **the only Japanese memory writes**, behind their prior explicit opt-in and per-action confirmation. The new Value Search and watch controls are read-only even when party writes are opted in; the USA editor and freeze/checkpoint writers remain inaccessible.
 
+## Windows Project64 live verification — 2026-11-15
+
+The user reports that the expanded Windows PowerShell regression suite passes, and has supplied four screenshot records demonstrating that Japan Live custom watches, `u16` Value Search, scene-context reads, and **focused** Japanese Advanced A/B/C comparison are operational with their current Project64 setup.
+
+The Value Search screenshot shows five `u16` snapshots and one remaining `0x80161DDA` Decreased candidate at `93` (`0x005D`), while the promoted read-only custom watch shows `95` (`0x005F`) at a different captured moment. The Advanced A/B/C screenshot shows two compared regions, 22 raw byte differences, and two candidates with C matching A: `0x80161DCF` `00→01` XOR `01`, and `0x80161DBD` `0B→09` XOR `02`. They are reversible changes, **not proven event flags**.
+
+See [the detailed screenshot evidence transcription](JAPAN_PROJECT64_LIVE_SCREENSHOT_EVIDENCE_2026-11-15.md). Wide A/B/C mode, savestate restoration, real Sasuke/Yae character-index transitions and any newly guessed write controls remain unverified.
+
 ## Validation reported by user
 
 The user reported on 2026-11-15 that the preceding `./scripts/test_japan_party.sh` suite passed and both Sasuke/Yae **toolkit unlock buttons worked in a real emulator**. This confirms the prior party-write implementation's immediate use, not the two new parity controls or the characters' on-switch index values. No evidence yet confirms native Sasuke=2 / Yae=3 by observing `0x80161DCC` after real C-Down.
 
-The new read-only parity tests were **authored on GitHub and not executed through the connector**. The script now includes `tests.test_japan_readonly_parity` in its Xvfb GUI phase, and existing Japanese UI tests use isolated temporary watch directories.
+The new read-only parity tests were **authored on GitHub and not executed through the connector**; the user subsequently reported that the expanded Windows PowerShell suite passed. The script now includes `tests.test_japan_readonly_parity` in its Xvfb GUI phase, and existing Japanese UI tests use isolated temporary watch directories.
 
 ## Reproduce on Windows PowerShell
 
