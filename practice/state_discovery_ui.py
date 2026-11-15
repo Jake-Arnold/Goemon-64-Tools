@@ -3,12 +3,27 @@ from __future__ import annotations
 
 from datetime import datetime
 import json
+import queue
+import threading
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 from practice.paths import diagnostics_dir
 from practice.state_discovery import PROBE_ACTIONS, capture_state, compare_captures
 from practice.theme import PALETTE
+from practice.japan_state_comparison import (
+    capture_japan_memory, compare_japan_memory,
+)
+from practice.japanese_scene_probes import read_japan_scene_probes
+
+JAPAN_PROBE_ACTIONS = {
+    'Scene transition': 'Capture A before using a doorway, B after loading. Repeat in both directions; no scene writes.',
+    'Character switch': 'Capture A before native C-Down and B afterward. Confirm model identity and character index separately.',
+    'Ryo or inventory change': 'Capture before/after a Ryo pickup or item action. Changed bytes are candidates only.',
+    'Menu or map shown': 'Capture A closed, B displayed, C closed again to filter reversible changes.',
+    'Story event candidate': 'Capture a repeated story action. Japan saved-event banks are not mapped; do not assume USA offsets.',
+    'Player movement': 'Compare stationary versus moving. Japanese XYZ, task offsets and velocity remain unmapped.',
+}
 from practice.transition_observer import read_transition_observation, format_transition_observation
 
 
@@ -19,6 +34,8 @@ class StateDiscoveryMixin:
         self.state_discovery_tab=tab
         self.state_captures={}
         self.state_report=None
+        self._jp_probe_generation = 0
+        self._jp_probe_busy = False
         ttk.Label(tab,text='Advanced A/B/C guest memory comparison',font=('Segoe UI Semibold',16),
                   foreground=PALETTE['gold']).pack(anchor='w',pady=(2,6))
         ttk.Label(tab,text='Capture A (before), B (after) and optionally C (returned to the original state). '
@@ -36,17 +53,20 @@ class StateDiscoveryMixin:
         selector=ttk.Combobox(row,textvariable=self.state_probe_kind,values=list(PROBE_ACTIONS),
                               width=26,state='readonly')
         selector.pack(side='left')
+        self.state_probe_selector = selector
         ttk.Label(row,text='Memory range:').pack(side='left',padx=(18,5))
         self.state_probe_scope=tk.StringVar(value='focused')
         ttk.Combobox(row,textvariable=self.state_probe_scope,values=('focused','wide'),
                      width=10,state='readonly').pack(side='left')
         self.state_probe_instruction=tk.StringVar(value=PROBE_ACTIONS[self.state_probe_kind.get()])
-        selector.bind('<<ComboboxSelected>>',lambda _e:self.state_probe_instruction.set(PROBE_ACTIONS[self.state_probe_kind.get()]))
+        selector.bind('<<ComboboxSelected>>',
+                      lambda _e: self._set_state_probe_instruction())
         ttk.Label(tab,textvariable=self.state_probe_instruction,style='Muted.TLabel',
                   wraplength=1100).pack(anchor='w',pady=(0,6))
-        ttk.Label(tab,text='Focused: nearby game globals + player task/object when available; works without a player '
-                  '(title/Impact). Wide: original 4 MiB N64 RAM; slower and includes unrelated changing bytes. '
-                  'Use the same range for A/B/C.',
+        self.state_probe_scope_hint = tk.StringVar(
+            value='USA focused: game globals and optional player regions. '
+                  'USA wide: 4 MiB N64 RAM. Use identical ranges for A/B/C.')
+        ttk.Label(tab,textvariable=self.state_probe_scope_hint,
                   style='Muted.TLabel',wraplength=1080).pack(anchor='w',pady=(0,8))
         row=ttk.Frame(tab);row.pack(fill='x',pady=(0,9))
         for stage,caption in (('A','Capture A: Before'),('B','Capture B: After'),('C','Capture C: Reverted')):
@@ -78,7 +98,38 @@ class StateDiscoveryMixin:
                   'Player-task float values are not proven velocity.',style='Muted.TLabel',
                   wraplength=850).pack(side='left',padx=(15,0))
 
+    def _state_is_japan(self):
+        return getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan'
+
+    def _set_state_probe_instruction(self):
+        actions = JAPAN_PROBE_ACTIONS if self._state_is_japan() else PROBE_ACTIONS
+        self.state_probe_instruction.set(
+            actions.get(self.state_probe_kind.get(), 'Choose a capture experiment.'))
+
+    def configure_state_probe_region(self):
+        actions = JAPAN_PROBE_ACTIONS if self._state_is_japan() else PROBE_ACTIONS
+        self.state_probe_selector['values'] = tuple(actions)
+        self.state_probe_kind.set(next(iter(actions)))
+        self._set_state_probe_instruction()
+        self.state_probe_scope_hint.set(
+            'Japan focused: two 4 KiB engine/save candidate ranges (not confirmed '
+            'event banks). Wide: read-only full 8 MiB Japan RDRAM; requires '
+            'extra reading time. No player pointer required.'
+            if self._state_is_japan() else
+            'USA focused: game globals and optional player regions. '
+            'USA wide: 4 MiB N64 RAM. Use identical ranges for A/B/C.')
+
     def read_scene_context(self):
+        if self._state_is_japan():
+            if getattr(self, 'jp_rdram', None) is None:
+                self.transition_observation_text.set(
+                    'Connect to verified Japanese Mupen64Plus first.')
+                return
+            readings = read_japan_scene_probes(self.jp_rdram)
+            self.transition_observation_text.set('\n'.join(
+                f'{key}: {value.value} [{value.raw}] — {value.status}'
+                for key, value in readings.items()))
+            return
         if not self.mem:
             self.transition_observation_text.set('Not connected to game memory.')
             return
