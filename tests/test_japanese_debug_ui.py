@@ -12,7 +12,7 @@ class JapaneseDebugMenuTkTests(JapanTkSmokeTest):
         host.jp_research_tabs.select(2)
         self.assertEqual(
             host.jp_research_tabs.tab(host.jp_research_tabs.select(), 'text'),
-            'Scene warp (debug)')
+            'Scene warp')
         self.assertEqual(host.selected_japan_debug_scene(), 0x161)
         host.show_japan_debug_target()
         self.assertIn('MACHI / stage index 3', host.jp_debug_result.get())
@@ -20,6 +20,7 @@ class JapaneseDebugMenuTkTests(JapanTkSmokeTest):
                       host.jp_debug_result.get())
         self.assertFalse(hasattr(host, 'jp_warp_scene_list'))
         self.assertFalse(hasattr(host, 'jp_debug_scene_selector'))
+        self.assertFalse(hasattr(host, 'jp_warp_a_key'))
 
     def test_optin_requires_connection_pid_backend_and_rom(self):
         host = self.host
