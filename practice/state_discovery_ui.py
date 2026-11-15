@@ -70,8 +70,13 @@ class StateDiscoveryMixin:
         ttk.Label(tab,textvariable=self.state_probe_scope_hint,
                   style='Muted.TLabel',wraplength=1080).pack(anchor='w',pady=(0,8))
         row=ttk.Frame(tab);row.pack(fill='x',pady=(0,9))
-        for stage,caption in (('A','Capture A: Before'),('B','Capture B: After'),('C','Capture C: Reverted')):
-            ttk.Button(row,text=caption,command=lambda s=stage:self.capture_state_probe(s)).pack(side='left',padx=(0,7))
+        self.state_probe_capture_buttons = {}
+        for stage,caption in (('A','Capture A: Before'),('B','Capture B: After'),
+                              ('C','Capture C: Reverted')):
+            button = ttk.Button(
+                row, text=caption, command=lambda s=stage:self.capture_state_probe(s))
+            button.pack(side='left',padx=(0,7))
+            self.state_probe_capture_buttons[stage] = button
         ttk.Button(row,text='Compare',style='Gold.TButton',
                    command=self.compare_state_probes).pack(side='left',padx=8)
         self.state_xyz_button = ttk.Button(
@@ -112,6 +117,11 @@ class StateDiscoveryMixin:
         actions = JAPAN_PROBE_ACTIONS if self._state_is_japan() else PROBE_ACTIONS
         self.state_probe_instruction.set(
             actions.get(self.state_probe_kind.get(), 'Choose a capture experiment.'))
+        # For movement heuristics, C is taken *at B*, not at A as in the
+        # general reversible A/B/C experiment. Avoid a misleading button name.
+        moving = self._state_is_japan() and self.state_probe_kind.get() == 'Player movement'
+        self.state_probe_capture_buttons['C'].configure(
+            text='Capture C: Still at B' if moving else 'Capture C: Reverted')
 
     def configure_state_probe_region(self):
         actions = JAPAN_PROBE_ACTIONS if self._state_is_japan() else PROBE_ACTIONS
