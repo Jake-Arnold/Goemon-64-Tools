@@ -53,8 +53,11 @@ class JapaneseFieldsUi:
                    command=self.capture_japan_baseline).pack(side='right', padx=(4, 0))
         ttk.Button(toolbar, text='Refresh',
                    command=lambda: self.refresh_japan_fields(force=True)).pack(side='right', padx=(4, 0))
-        party = ttk.LabelFrame(tab, text='Opt-in Japan character unlock test', padding=8)
-        party.pack(fill='x', pady=(0, 8))
+        research_tabs = ttk.Notebook(tab)
+        self.jp_research_tabs = research_tabs
+        research_tabs.pack(fill='x', pady=(0, 7))
+        party = ttk.Frame(research_tabs, padding=7)
+        research_tabs.add(party, text='Party unlocks')
         ttk.Label(
             party,
             text='The game builds character actors itself. These buttons only set '
@@ -83,10 +86,8 @@ class JapaneseFieldsUi:
         ttk.Label(party, textvariable=self.jp_party_result,
                   wraplength=960).pack(anchor='w', pady=(4, 0))
 
-        move = ttk.LabelFrame(
-            tab, text='Japan Goemon XYZ — Oedo Town South only (experimental)',
-            padding=8)
-        move.pack(fill='x', pady=(0, 8))
+        move = ttk.Frame(research_tabs, padding=7)
+        research_tabs.add(move, text='Goemon XYZ')
         ttk.Label(
             move,
             text='Live-tested position-controlling float32 vector: '
@@ -129,10 +130,8 @@ class JapaneseFieldsUi:
             move, textvariable=self.jp_position_result,
             wraplength=960).pack(anchor='w', pady=(5, 0))
 
-        debug = ttk.LabelFrame(
-            tab, text='Native Japanese scene warp — debug level select (research)',
-            padding=8)
-        debug.pack(fill='x', pady=(0, 8))
+        debug = ttk.Frame(research_tabs, padding=7)
+        research_tabs.add(debug, text='Scene warp (debug)')
         ttk.Label(debug, text=(
             'The game itself handles loading and spawn when a level is selected '
             'from its original debug menu. The documented engine state byte is '
