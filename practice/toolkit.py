@@ -667,12 +667,15 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         finally:
             if writable is not None:
                 writable.close()
-        result_text.set(
+        # Refresh the displayed coordinates first; then leave the one-shot
+        # operation outcome visible rather than overwriting it with a read.
+        self.refresh_japan_position()
+        message = (
             'Goemon moved to requested XYZ in Oedo South (verified read-back). '
             'Restore emulator savestate if movement or collision is invalid.'
             if outcome.changed else 'Goemon was already at the specified XYZ.')
-        self.status.set(result_text.get())
-        self.refresh_japan_position()
+        result_text.set(message)
+        self.status.set(message)
 
     def open_japan_debug_for_selected_scene(self):
         """Open native debug level selection; destination remains manual.
