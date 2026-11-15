@@ -22,12 +22,14 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_japanese_fields_ui \
     tests.test_japanese_scene_probe_ui \
     tests.test_japanese_party_controls_ui \
+    tests.test_japan_readonly_parity \
     -v
 elif [[ -n "${DISPLAY:-}" ]]; then
   "${PYTHON}" -m unittest \
     tests.test_japanese_fields_ui \
     tests.test_japanese_scene_probe_ui \
     tests.test_japanese_party_controls_ui \
+    tests.test_japan_readonly_parity \
     -v
 else
   echo 'ERROR: Tk smoke tests need xvfb-run (sudo apt install xvfb xauth)' >&2
