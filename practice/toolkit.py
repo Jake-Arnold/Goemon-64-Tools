@@ -264,6 +264,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.savestate_slot_box = ttk.Combobox(
             slot_row, textvariable=self.savestate_slot, width=5, state='readonly',
             values=tuple(str(i) for i in range(10)))
+        # ttk's readonly Combobox can expose an empty displayed selection on
+        # certain native Windows Tk versions despite StringVar(value='0').
+        # Explicitly choose index 0 so the displayed slot and backend agree.
+        self.savestate_slot_box.current(0)
         self.savestate_slot_box.pack(side='left')
         native_buttons = ttk.Frame(state_card)
         native_buttons.pack(fill='x')
