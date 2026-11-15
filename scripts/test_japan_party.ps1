@@ -51,6 +51,7 @@ $backendTests = @(
     'tests.test_remembered_rom',
     'tests.test_region_views',
     'tests.test_region_unlocks',
+    'tests.test_japan_live_memory_edit',
     'tests.test_japan_event_sessions',
     'tests.test_japan_damage_capture',
     'tests.test_japan_native_scene_warp',
