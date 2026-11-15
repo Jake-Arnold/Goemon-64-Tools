@@ -365,7 +365,12 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.notebook.select(self.notebook.tabs()[0])
         for tab in self.notebook.tabs()[1:]:
             japan_tab = tab == str(self.jp_fields_tab)
-            tab_enabled = (version.key == 'japan') if japan_tab else enabled
+            # Value Search is read-only and uses the independent JP RDRAM
+            # reader. All other USA-specific tabs remain disabled for Japan.
+            japan_search = (version.key == 'japan'
+                            and tab == str(self.value_search_tab))
+            tab_enabled = ((version.key == 'japan') if japan_tab
+                           else (enabled or japan_search))
             self.notebook.tab(tab, state='normal' if tab_enabled else 'disabled')
         if version.key == 'japan':
             self.jp_card.pack(fill='x', pady=(0, 6))
@@ -431,6 +436,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.speed_text.set('Speed: —')
         self.misc_text.set('Character: —    Action: —    Loading: —')
         self.clear_japan_field_values()
+        if hasattr(self, 'value_search_tab'):
+            self.invalidate_value_search_connection()
         if getattr(self, 'jp_read_button', None):
             self.jp_read_button.state(['disabled'])
             self.jp_read_result.set('Japanese guest RAM is not connected.')
@@ -923,7 +930,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.refresh_japan_fields(force=True)
             self.notebook.select(self.jp_fields_tab)
             self.status.set(f'Attached read-only to Japanese-code Mupen64Plus PID {pid}, '
-                            f'RAM 0x{base:X}, {endian}. USA field controls remain disabled.')
+                            f'RAM 0x{base:X}, {endian}. Japan Live and read-only '
+                            'Value Search are available; USA write controls remain disabled.')
         elif result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
             with self.value_freezes.guard:
