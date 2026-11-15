@@ -1,51 +1,45 @@
-"""Japanese party write CLI cannot be enabled implicitly or under --read-only."""
+"""Japanese experimental operations are enabled unless --read-only."""
 import unittest
+
 from practice.toolkit import parse_args
 
 
 class JapanPartyCliTests(unittest.TestCase):
-    def test_default_is_no_japan_writes(self):
+    def test_default_enables_japanese_experimental_writes(self):
         args = parse_args(["--game-version", "japan"])
-        self.assertFalse(args.enable_japan_party_writes)
-        self.assertFalse(args.enable_japan_position_writes)
-        self.assertFalse(args.enable_japan_debug_menu_writes)
-        self.assertFalse(args.enable_japan_scene_writes)
-
-    def test_explicit_opt_in(self):
-        args = parse_args(["--game-version", "japan",
-                           "--enable-japan-party-writes"])
         self.assertTrue(args.enable_japan_party_writes)
+        self.assertTrue(args.enable_japan_position_writes)
+        self.assertTrue(args.enable_japan_debug_menu_writes)
+        self.assertTrue(args.enable_japan_scene_writes)
+        self.assertTrue(args.enable_hex_edit)
         self.assertFalse(args.read_only)
 
-    def test_debug_menu_and_position_are_independent_opt_ins(self):
-        args = parse_args([
-            "--game-version", "japan", "--enable-japan-debug-menu-writes"])
-        self.assertTrue(args.enable_japan_debug_menu_writes)
-        self.assertFalse(args.enable_japan_position_writes)
-        self.assertFalse(args.enable_japan_party_writes)
-        blocked = parse_args([
-            "--game-version", "japan", "--enable-japan-debug-menu-writes",
-            "--enable-japan-position-writes", "--read-only"])
-        self.assertFalse(blocked.enable_japan_debug_menu_writes)
-        self.assertFalse(blocked.enable_japan_position_writes)
+    def test_legacy_japan_party_optin_does_not_change_defaults(self):
+        normal = parse_args(["--game-version", "japan"])
+        legacy = parse_args(["--game-version", "japan",
+                             "--enable-japan-party-writes"])
+        self.assertEqual(normal.enable_japan_party_writes,
+                         legacy.enable_japan_party_writes)
 
-    def test_dedicated_instant_scene_reload_optin_is_independent(self):
-        args = parse_args([
-            "--game-version", "japan", "--enable-japan-scene-writes"])
-        self.assertTrue(args.enable_japan_scene_writes)
-        self.assertFalse(args.enable_japan_debug_menu_writes)
-        self.assertFalse(args.enable_japan_position_writes)
-        blocked = parse_args([
-            "--game-version", "japan", "--enable-japan-scene-writes",
-            "--read-only"])
-        self.assertFalse(blocked.enable_japan_scene_writes)
-        self.assertTrue(blocked.read_only)
-
-    def test_read_only_overrides_opt_in(self):
+    def test_default_debug_position_and_scene_independent_of_party_switch(self):
         args = parse_args(["--game-version", "japan",
-                           "--enable-japan-party-writes", "--read-only"])
-        self.assertFalse(args.enable_japan_party_writes)
+                           "--enable-japan-debug-menu-writes"])
+        self.assertTrue(args.enable_japan_debug_menu_writes)
+        self.assertTrue(args.enable_japan_position_writes)
+        self.assertTrue(args.enable_japan_scene_writes)
+        self.assertTrue(args.enable_japan_party_writes)
+
+    def test_read_only_overrides_all_japanese_write_defaults(self):
+        args = parse_args(["--game-version", "japan", "--read-only",
+                           "--enable-japan-party-writes",
+                           "--enable-japan-scene-writes",
+                           "--enable-japan-debug-menu-writes",
+                           "--enable-japan-position-writes"])
         self.assertTrue(args.read_only)
+        for key in ("enable_japan_party_writes", "enable_japan_scene_writes",
+                    "enable_japan_debug_menu_writes", "enable_japan_position_writes",
+                    "enable_hex_edit", "enable_teleport"):
+            self.assertFalse(getattr(args, key), key)
 
 
 if __name__ == "__main__":
