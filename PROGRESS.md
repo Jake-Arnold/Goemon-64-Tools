@@ -1,6 +1,17 @@
 # Goemon 64 Tools — Development Progress
 
 
+### 2026-11-15 — First live 8 MiB XYZ export; user requests ALL matches in JSON
+
+- **New live source:** user-uploaded `japan_state_probe_20261115_151245_163964.json`. This is **actual Windows Project64 full 8 MiB RAM** (`wordswapped`, PID 33476 and transient host base `0xDFEA0000`), scene `353` Oedo Town South, Goemon index `0`, captures A at `15:12:23.328783Z`, B at `15:12:29.130343Z`, C at `15:12:32.408438Z`. Wide XYZ heuristic reported **1,240 eligible float triples but prior JSON serialized only the top 200**, preventing complete second-run address intersection. The old 1,040 omitted rows cannot be recovered from its summary.
+- **Strong repeated coordinate pattern:** `0x80151B10`, `0x80151BA8`, `0x80151C40`, `0x80211870`, `0x802118E0` all record A `(-174.898819, 0, -142.228333)` and B/C `(-218.588043, 0, -191.803894)`. `0x802119EC` shares X/Z with Y offset 20. These are player/world-coordinate **candidates**, not a proven authoritative player task or safe write target. See `docs/JAPAN_XYZ_LIVE_PROJECT64_RUN_001_2026-11-15.md`.
+- **User-driven export correction:** rank/count **all** matches in `practice/japan_player_position_research.py`, keep only 200 best for interactive Tk table, but stream **every eligible candidate** to disk on `Export ALL XYZ candidates`. Source and threshold predicate is shared between preview and export; output order is **ascending guest address** to support exact joins across runs. File contains all addresses, before/after and XYZ_A/B/C values, score and session/capture context; **never includes raw 4/8 MiB RAM snapshots**. This fixes the misleading old report in which `candidate_count=1240` but `len(candidates)=200`. New output also has `counts.exported_candidates`, `export_policy=all_matched_candidates` and `candidate_order=guest_address_ascending`.
+- **Reliability:** full export runs in worker thread and uses a temporary JSON file followed by atomic rename; failures, stale capture session, Clear/reconnect cancellation or a preview-vs-export count mismatch cannot produce a deceptively complete final file. Normal raw A/B/C comparison export remains unchanged. The same read-only canonical RAM buffers are reprocessed, not the live process.
+- **Tests authored:** new synthetic 4 MiB test creates 240+ true matched triples, verifies preview is exactly 200 while exported list contains every candidate and is address-sorted, plus cancellation/count-mismatch cleanup. Tk test covers full asynchronous export and button label. **The new tests are not yet user-executed on Windows.**
+- **Next user acceptance:** `git pull --ff-only origin chatgptweb/japan-controlled-party-writes`; `.\\scripts\\test_japan_party.ps1`. Restart the toolkit, recapture two distinct same-scene A/B/C movement experiments and click **Export ALL XYZ candidates** for each. The original 200-row JSON cannot recover its missing 1,040 rows. Confirm `counts.exported_candidates == counts.candidate_count == len(candidates)` for each export, then intersect candidates by guest address. Position and task pointers are still unverified; no position writes enabled.
+
+
+
 ### 2026-11-15 — Windows XYZ GUI regression recheck passes after status fix
 
 - The user reports **OK from the targeted tests** after updating past the XYZ UI status-string correction (`39069b5`).
