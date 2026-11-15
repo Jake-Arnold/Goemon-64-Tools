@@ -181,7 +181,7 @@ def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
         if not matches:
             raise RuntimeError(
                 'No Japanese emulator RDRAM matched all three code probes; '
-                'check ROM, PID, Linux permissions and whether the game has booted'
+                'check ROM, PID, process permissions and whether the game has booted'
             )
         raise AmbiguousJapaneseRdram(matches)
     base, endian = next(iter(matches))
