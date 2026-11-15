@@ -59,6 +59,29 @@ Project64 Commands showed the following instructions in the running Japanese gam
 
 **Not established:** the caller's complete function start/end, overlay identity and ROM offset, meaning of `object+0x5C` or global `0x80161DF4`, lifetime/type of the `0x8016F780` object, Sasuke/Yae behaviour through this function, actor/XYZ pointer equivalence, or a C implementation matching either region.
 
+## Follow-up: pointer dereference and secondary byte write (2026-11-15)
+
+Further user-supplied Project64 Commands and Memory screenshots single-stepped the **same captured invocation** beyond `0x801E2990`. These screenshots were displayed in the conversation but are not included as repository binary assets.
+
+| PC / step | Register or guest-memory observation | Conclusion |
+| --- | --- | --- |
+| Before `0x801E2990` | `A0=0x8016F780`; guest word at `0x8016F7DC` is `80211650` | `A0+0x5C` contains a guest pointer in this instance |
+| After `LW T7,0x5C(A0)`, PC `0x801E2994` | `T7=0x80211650` | **Runtime-confirmed pointer dereference** |
+| Before `SB V0,0x69(T7)`, PC `0x801E299C` | `T7=0x80211650`, `V0=1`; debugger at `0x802116B9` displays four bytes `00 01 00 BF` | Store about to target byte `0x802116B9` |
+| After stepping once, PC `0x801E29A0` | Same memory row starts `01 01 00 BF` | **Runtime-confirmed byte transition `00 → 01` at `0x802116B9`** |
+
+```mips
+801E2990  LW    T7, 0x005C(A0)     # *(u32 *)(8016F780+5C) = 80211650
+801E2994  ADDIU V0, R0, 0x0001
+801E2998  MTC1  R0, F0
+801E299C  SB    V0, 0x0069(T7)     # 80211650+69 = 802116B9, observed 00->01
+801E29A0  LW    T8, 0x005C(A0)     # next instruction, not yet traced here
+```
+
+**Interpretation constraint:** The callee follows a pointer held in the character-related object and sets a byte in the pointed-to allocation during a native character switch. The byte's semantic meaning (reset/request/activation/animation/etc.) is **unknown**. `0x80211650` is an observed allocation, **not a validated fixed player/task pointer**. Earlier Mupen float-address hypotheses falling near it were obtained in a different emulator session and are not proof that this pointer owns player XYZ. No universal cross-session pointer stability is established.
+
+**Next validation:** Sample the pointer from `0x8016F7DC` in independent scenes and for all four characters, and test whether the value at `pointer+0x69` changes under ordinary non-switch conditions; separately verify positional fields dynamically before naming this allocation an actor or player.
+
 ## Next static/dynamic investigation
 
 - Determine the loaded section/overlay for Japanese address range `0x801E2944..0x801E2990` **at this point in gameplay**; overlay VRAM ranges may be reused. Then map to its original Japanese ROM offset and actual function boundaries using the region-specific Splat map and the decompressed ROM, rather than a blanket USA offset.
