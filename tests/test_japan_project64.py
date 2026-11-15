@@ -67,11 +67,13 @@ class JapanProject64Tests(unittest.TestCase):
         proc = FourMegabyteProcess()
         # Published Japan Ryo u16, in bounds of the unexpanded mapping.
         offset = 0x161DDA
-        proc.memory[(offset & ~3):(offset & ~3)+4] = bytes((0, 0, 0, 12))
+        # Project64's word-swapped storage: canonical guest bytes
+        # 00 00 00 0C at this aligned word become 0C 00 00 00.
+        proc.memory[(offset & ~3):(offset & ~3)+4] = bytes((12, 0, 0, 0))
         reader, _, _ = jp.discover_japanese_mupen_rdram(
             proc, PROBES, allow_4mb=True, base_hint=BASE)
         scanner = ValueScanner(size=reader.rdram_size)
-        self.assertGreaterEqual(scanner.start_exact(reader, 'u16', '12'), 0)
+        self.assertGreaterEqual(scanner.start_exact(reader, 'u16', '12'), 1)
         identity = ('japan-0', 1234, BASE, 'wordswapped', id(reader))
         before = capture_japan_memory(reader, 'A', scope='wide', identity=identity)
         self.assertEqual(len(before.regions[0].data), 0x400000)
