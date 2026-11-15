@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Live Project64 Oedo XYZ teleport and native debug-menu opening confirmed; Tk regressions isolated
+
+- **User-confirmed gameplay success:** the new Japan Live **Goemon XYZ** write control moved Goemon to the requested Oedo South coordinates (scene `0x161`). This is functional within-scene relocation with the experimentally established `f32` vector `0x80151B10`, `0x80151B14`, `0x80151B18`.
+- **User-confirmed original debug UI:** the new **Scene warp (debug)** controller in Windows Project64 successfully **opened the game's native debug menu** via the one-shot Japanese engine-mode transition `0x800CD284: 0x0D→0x0A`. This upgrades the menu-entry stage from code-only to user-verified, but **a different destination's completed load and controllable player have not been observed/reported**. Keep inter-scene warp and automatic destination selection unchecked.
+- **Attached PowerShell history:** the user later pulled commit `860fafb` and reran `py -3 -m unittest tests.test_japan_position_controller -v`: **7 tests OK**. A subsequent complete `scripts/test_japan_party.ps1` run showed **107 backend tests OK**. The Tk group instead ended **FAILED (errors=39, failures=1)**. Nearly all GUI errors shared the same cause: `tests/test_japanese_fields_ui.Host` inherits only `JapaneseFieldsUi`, but the new widget uses `self.move_japan_oedo_xyz` (which exists in `Toolkit`, not the lightweight test host), raising `AttributeError` during tab creation; 39 tests never reached their assertions.
+- **Two concrete test regressions fixed:** commit `ec35b9c` gives the isolated Tk smoke Host explicit non-writing callback stubs for **both** Goemon XYZ and the native debug-menu button. Commit `7fc29bd` explicitly calls `savestate_slot_box.current(0)` after creating the readonly Tk Combobox, addressing the independent dashboard failure that showed `''` rather than `'0'`. Neither fix changes the verified memory-write path; stub callbacks raise if invoked.
+- **Validation boundary:** a complete Windows GUI test rerun after those commits has **not** been reported. Latest good live proof covers the actual menu opening and within-Oedo coordinates, not a finished native destination warp. Preserve the distinction in PR #17 and parity issue #18.
+
+
 
 ### 2026-11-15 — Backend regression: XYZ controller success-message AttributeError fixed
 
