@@ -1,5 +1,6 @@
 """Synthetic shared Scene Browser instant Japan 0x0C reload controller tests."""
 import struct
+from types import SimpleNamespace
 import time
 from unittest.mock import patch
 import unittest
@@ -57,6 +58,19 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
             app.poll_japan_native_scene_warp(time.monotonic())
         self.assertIsNone(app.jp_auto_warp)
         self.assertIn('Japan scene reload reached', app.scene_status.value)
+
+    def test_japan_character_selection_stages_yae_before_reload(self):
+        app, writer = make_controller()
+        app.scene_character = SimpleNamespace(current=lambda: 4)  # JP selector index
+        app.start_japan_native_scene_warp(destination=0x1D1)
+        self.assertEqual(
+            writer.rdram().read_guest(0x80161DCC, 4),
+            bytes.fromhex('00000003'))
+        self.assertEqual(
+            writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1),
+            bytes((12,)))
+        self.assertEqual(app.jp_auto_warp['target_character'], 3)
+        self.assertIn('Target character 3 staged', app.scene_status.value)
 
     def test_pending_warp_never_opens_native_menu_or_injects_a(self):
         app, writer = make_controller()
