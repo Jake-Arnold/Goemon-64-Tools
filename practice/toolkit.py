@@ -40,6 +40,11 @@ from practice.japanese_fields_ui import JapaneseFieldsUi
 from practice.japanese_party_unlock import (
     CHARACTER_INDEX_ADDR, PARTY_FLAGS, unlock_japan_party_member,
 )
+from practice.japanese_position import (
+    JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE, JAPAN_SCENE_INDEX,
+    JAPAN_OEDO_SOUTH_SCENE, JAPAN_CHARACTER_INDEX,
+    checked_japan_xyz, read_japan_position, move_japan_goemon_oedo_south,
+)
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
@@ -569,6 +574,99 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.jp_party_result.set(message)
         self.status.set(message)
         self.refresh_japan_fields(force=True)
+
+    def move_japan_oedo_xyz(self):
+        """User-triggered XYZ in verified Oedo South as Goemon only."""
+        result_text = self.jp_position_result
+        if (self.active_version.key != 'japan' or self._connecting
+                or getattr(self.args, 'read_only', False)
+                or not getattr(self.args, 'enable_japan_position_writes', False)
+                or self.jp_rdram is None or self.game_pid is None
+                or self.verified_rom_path is None):
+            result_text.set('Japan position writes require a verified connection and '
+                            '--enable-japan-position-writes (without --read-only).')
+            return
+        try:
+            coords = checked_japan_xyz((
+                self.jp_pos_x.get(), self.jp_pos_y.get(), self.jp_pos_z.get()))
+            current = read_japan_position(self.jp_rdram)
+            before = self.jp_rdram.read_guest(
+                JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE)
+            scene = int.from_bytes(
+                self.jp_rdram.read_guest(JAPAN_SCENE_INDEX, 2), 'big')
+            character = int.from_bytes(
+                self.jp_rdram.read_guest(JAPAN_CHARACTER_INDEX, 4), 'big')
+            if (scene != JAPAN_OEDO_SOUTH_SCENE or character != 0):
+                raise RuntimeError(
+                    'XYZ writes are verified only for Goemon (0) '
+                    'in Oedo Town South (scene 0x161); no other scenes/characters.')
+        except (ValueError, OSError, RuntimeError, PermissionError) as exc:
+            result_text.set(f'Japanese XYZ write rejected: {exc}')
+            return
+
+        consent = messagebox.askyesno(
+            'Move Goemon to XYZ?',
+            'Experimental Japanese position write — Oedo Town South only.'
+            '\n\nCreate a complete Project64/Mupen savestate before proceeding.'
+            f'\nCurrent XYZ: ({current[0]:.3f}, {current[1]:.3f}, {current[2]:.3f})'
+            f'\nRequested XYZ: ({coords[0]:.3f}, {coords[1]:.3f}, {coords[2]:.3f})'
+            '\n\nOnly the verified 12 position bytes at '
+            '0x80151B10–0x80151B1B will be changed once.'
+            '\nNo scene/character changes, collision bypass, or repeated freeze.',
+            parent=self.root)
+        if not consent:
+            result_text.set('Japanese XYZ move cancelled; no RAM written.')
+            return
+
+        writable = None
+        pid = self.game_pid
+        original = self.jp_rdram
+        try:
+            target = self.jp_backend
+            if target not in ('project64', 'mupen64plus'):
+                raise RuntimeError('Japanese emulator backend is not confirmed')
+            if target == 'project64' and sys.platform != 'win32':
+                raise RuntimeError('Project64 position writes require Windows')
+            if self.connection_target.get() != target:
+                raise RuntimeError('Selected emulator changed; reconnect')
+            if verified_emulator_pid(pid, target) != (pid, target):
+                raise RuntimeError('Verified emulator process changed; reconnect')
+            probes = verified_japan_probes(self.verified_rom_path)
+            writable = HostProcess(pid, writable=True)
+            verified = validate_rdram_base(
+                writable, original.base, original.endian, probes,
+                allow_4mb=(target == 'project64'))
+            if getattr(verified, 'rdram_size', 0x800000) != getattr(
+                    original, 'rdram_size', 0x800000):
+                raise RuntimeError('Japanese RDRAM mapping size changed; reconnect')
+            # Compare independent read and write views immediately before use.
+            for address, count in (
+                    (JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE),
+                    (JAPAN_CHARACTER_INDEX, 4),
+                    (JAPAN_SCENE_INDEX, 2)):
+                if verified.read_guest(address, count) != original.read_guest(address, count):
+                    raise RuntimeError('Writable/read-only RAM disagreement; no XYZ write')
+            if verified.read_guest(JAPAN_PLAYER_XYZ_START, 12) != before:
+                raise RuntimeError('Position changed after confirmation; no XYZ write')
+            outcome = move_japan_goemon_oedo_south(
+                verified, coords, expected_before=before)
+            if outcome.changed and original.read_guest(
+                    JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE) != (
+                        verified.read_guest(JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE)):
+                raise RuntimeError('Read-only view did not match the verified XYZ write')
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            result_text.set(f'Japanese XYZ write rejected: {exc}')
+            self.status.set(f'Japanese XYZ write rejected: {exc}')
+            return
+        finally:
+            if writable is not None:
+                writable.close()
+        result_text.set(
+            'Goemon moved to requested XYZ in Oedo South (verified read-back). '
+            'Restore emulator savestate if movement or collision is invalid.'
+            if outcome.changed else 'Goemon was already at the specified XYZ.')
+        self.status.set(result_text.get())
+        self.refresh_japan_position()
 
     def native_savestate_action(self, action):
         """Request native emulator-owned F5/F7; never claim it finished writing."""
@@ -1405,6 +1503,7 @@ def apply_access_mode(args):
         for name in (*PRACTICE_OPTIONS, 'enable_scene_warp'):
             setattr(args, name, False)
         args.enable_japan_party_writes = False
+        args.enable_japan_position_writes = False
     return args
 
 
@@ -1419,6 +1518,9 @@ def parse_args(argv=None):
     ap.add_argument("--enable-japan-party-writes", action="store_true",
                     help="Allow only one-byte Japan-0 Sasuke/Yae party unlocks after confirmation; "
                          "never write the character index")
+    ap.add_argument("--enable-japan-position-writes", action="store_true",
+                    help="Opt in to confirmed-scene Japan-0 Goemon XYZ manual moves only "
+                         "(Oedo South 0x161; each write requires confirmation and ROM/PID validation)")
     ap.add_argument("--linux-enable-writes",action="store_true",
                     help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled
     ap.add_argument("--enable-teleport",action="store_true",default=True,help="Write game coordinates (enabled by default)")
