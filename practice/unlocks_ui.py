@@ -7,7 +7,10 @@ from tkinter import ttk
 from practice.theme import PALETTE
 from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock, normalize_unlock_value, unlock_all_known
 from practice.hex_edit import parse_hex
-from practice.region_unlocks import japan_unlock_lead, japan_unlock_all_targets
+from practice.region_unlocks import (
+    japan_unlock_lead, japan_unlock_all_targets,
+    japan_unlock_wire_value, japan_unlock_display_value,
+)
 
 class UnlocksMixin:
     def build_unlock_tabs(self, notebook) -> None:
@@ -143,13 +146,14 @@ class UnlocksMixin:
             and not getattr(self.args, 'read_only', False))
         self.unlock_intro_text.set(
             'Japan-0: original USA controls and grouping. Addresses shown are '
-            'Japanese source-backed leads only; unknown means unmapped. '
-            'Mapped fields can be changed directly; no confirmation or party guard.'
+            'Nine named, twenty inferred and five experimental guess addresses. '
+            'A question mark identifies unverified mappings; edits are immediate.'
             if japan else
             'Click any value to write it immediately to the original N64 RAM. '
             'The game may not refresh its inventory until an area or menu reload.')
         self.unlock_all_hint.set(
-            'Japan: writes only mapped addresses; unknown rows are skipped.'
+            'Japan: Unlock All writes 29 named/inferred rows; five guesses are '
+            'editable individually but skipped in bulk.'
             if japan else
             'One-time edit; does not set story completion flags.')
         self.unlock_all_button.configure(
@@ -161,10 +165,19 @@ class UnlocksMixin:
                               if japan else usa_writable) else ['disabled'])
         for item in UNLOCKS:
             lead = japan_unlock_lead(item) if japan else item
-            self.unlock_address_labels[item.address].configure(
-                text=f'{lead.address:08X}' if lead is not None else 'unknown')
+            address = (
+                'unknown' if lead is None else
+                f'{lead.address:08X} (guess)' if japan and lead.confidence == 'guess'
+                else f'{lead.address:08X} ?' if japan and lead.confidence != 'named'
+                else f'{lead.address:08X}'
+            )
+            self.unlock_address_labels[item.address].configure(text=address)
             _state, controls = self.unlock_row_widgets[item.address]
             for value, button in controls.items():
+                # Chain Pipe remains USA On [02] but is Japan On [01].
+                wire = japan_unlock_wire_value(item, value) if japan else value
+                label = item.levels[item.values.index(value)]
+                button.configure(text=f'{label} [{wire:02X}]')
                 button.state(['!disabled'] if usa_writable else ['disabled'])
             if item.quantity:
                 self.unlock_count_buttons[item.address].state(
@@ -173,8 +186,8 @@ class UnlocksMixin:
                     state='normal' if usa_writable or not japan else 'disabled')
         self.unlock_last_poll = 0.0
         self.unlock_status.set(
-            'Japan-0: 34 original unlock rows. Unknown addresses cannot be '
-            'read or written; mapped items support direct writes by default.'
+            'Japan-0: 34 candidate addresses (9 named, 20 inferred, 5 guesses); '
+            'question-mark rows are experimental and should be checked in-game.'
             if japan else
             'Connect to US Goemon in Recomp or Project64 to read and change flags.')
         self.refresh_unlocks(force=True)
@@ -202,18 +215,20 @@ class UnlocksMixin:
                     raw = int.from_bytes(guest, 'big')
                 except (OSError, ValueError, PermissionError, RuntimeError):
                     pass
+            display = (
+                japan_unlock_display_value(item, raw) if raw is not None else None)
             label.configure(
                 text=('unknown' if lead is None else
                       '—' if raw is None else f'0x{raw:02X}'),
-                foreground=(PALETTE['teal'] if raw is not None
-                            and (raw in item.values or item.quantity)
+                foreground=(PALETTE['teal'] if display is not None
+                            and (display in item.values or item.quantity)
                             else PALETTE['warning']))
             for value, button in controls.items():
                 button.state(
                     ['!disabled'] if can_write and lead is not None
                     else ['disabled'])
                 button.configure(
-                    style='Gold.TButton' if raw is not None and raw == value
+                    style='Gold.TButton' if display is not None and display == value
                     else 'TButton')
             if item.quantity:
                 self.unlock_count_buttons[item.address].state(
@@ -236,7 +251,7 @@ class UnlocksMixin:
                 changed, total = self.apply_japan_unlocks(japan_unlock_all_targets())
                 self.unlock_status.set(
                     f'Japan-0: {changed} changed / {total} mapped entries. '
-                    'All unknown addresses skipped.')
+                    'Five speculative mappings skipped by default.')
                 self.refresh_unlocks(force=True)
             except (OSError, ValueError, RuntimeError, PermissionError) as exc:
                 self.unlock_status.set(f'Japanese unlock-all failed: {exc}')
@@ -275,7 +290,9 @@ class UnlocksMixin:
                 actual = normalize_unlock_value(unlock, value)
                 changed, _ = self.apply_japan_unlocks(((unlock, actual),))
                 self.unlock_status.set(
-                    f'Japan-0 {unlock.label}: 0x{actual:02X} '
+                    f'Japan-0 {unlock.label}: '
+                    f'0x{japan_unlock_wire_value(unlock, actual):02X} '
+                    f'[{lead.confidence}] '
                     + ('(written)' if changed else '(unchanged)'))
                 self.refresh_unlocks(force=True)
             except (OSError, ValueError, RuntimeError, PermissionError) as exc:
