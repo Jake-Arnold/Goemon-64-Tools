@@ -53,6 +53,14 @@
 - `420ab9f` / `edd3b70` require a distinct reader-session token to prevent A/B/C comparisons across otherwise identical PID/base/endian reconnects; `1415d59` adds A/B/C sequence gate and region-labelled export names.
 - New synthetic and Tk tests plus the PowerShell regression script **passed on the user's Windows machine by report**; the focused A/B/C runtime is now supported by a screenshot, but wide mode and candidate semantics are not proven. Details: [`JAPAN_READONLY_VALUE_SEARCH.md`](JAPAN_READONLY_VALUE_SEARCH.md).
 
+### Full candidate XYZ export and first live wide scan — 2026-11-15
+
+- [x] User supplied **live 8 MiB wide Japanese XYZ scan** with matching scene `353`, character `0`, A/B/C, wordswapped Project64 RDRAM: **1,240 XYZ candidates** detected. The old JSON exported only the top **200**, so it cannot be used to cross-reference the missing 1,040 addresses.
+- [x] Preview continues showing **200 best-ranked** candidates, but **Export ALL XYZ candidates** now writes **all** scan matches to JSON sorted by guest address using a worker and atomic temporary file. Count must match original A/B/C preview count. The exported JSON includes `counts.exported_candidates`, session identity and per-candidate XYZ, but no 4/8 MiB raw snapshots.
+- [x] Synthetic tests for **240+** matches and Tk full export written; [ ] user re-runs these new tests under Windows and performs two complete live wide captures for exact address cross-reference.
+- [x] High-priority duplicate position family observed at `0x80151B10`, `0x80151BA8`, `0x80151C40`, `0x80211870` and `0x802118E0`; [ ] verify ownership and stability across movement, jump and scene/actor transitions. **No player pointer or writable XYZ confirmed**.
+- [First full-width live capture findings](JAPAN_XYZ_LIVE_PROJECT64_RUN_001_2026-11-15.md) · [Updated export procedure](JAPAN_XYZ_DISCOVERY.md).
+
 ### Japanese XYZ discovery milestone — 2026-11-15 (code, synthetic tests not yet rerun)
 
 - [x] Implement a **read-only**, user-labelled `Find XYZ triples` action within Event Sessions → Advanced RAM comparison. Requires **three WIDE, same-region/PID/base/endian/reader, same-scene/character** snapshots: A stationary, B after moving, C stationary at B (not returning to A).
