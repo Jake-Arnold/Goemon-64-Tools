@@ -67,9 +67,6 @@ def find_japan_xyz_candidates(before, moved, settled, *, limit=MAX_XYZ_CANDIDATE
         # Skip identical 12-byte groups before decoding expensive floats.
         if a[offset:offset + 12] == b[offset:offset + 12]:
             continue
-        if b[offset:offset + 12] != c[offset:offset + 12]:
-            # Allow a small float drift in settled C, checked numerically below.
-            pass
         av = unpack(a, offset)
         bv = unpack(b, offset)
         cv = unpack(c, offset)
@@ -99,7 +96,7 @@ def find_japan_xyz_candidates(before, moved, settled, *, limit=MAX_XYZ_CANDIDATE
         row = {
             'address': f'0x{address:08X}', 'region': 'jp_full_rdram',
             'before': fmt(av), 'after': fmt(bv),
-            'xor_mask': '—', 'reverted': True,
+            'xor_mask': '—', 'c_stable_at_b': True,
             'kind': 'XYZ triple candidate', 'width': 12,
             'watch_type': 'f32', 'score': score,
             'xyz_A': list(av), 'xyz_B': list(bv), 'xyz_C': list(cv),
