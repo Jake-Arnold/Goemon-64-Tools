@@ -5,8 +5,8 @@ from practice.japan_direct_scene_reload import (
     JAPAN_PENDING_MAP, JAPAN_DIRECT_RELOAD_MODE, stage_japan_direct_reload,
 )
 from practice.japanese_debug_warp import (
-    JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE, JAPAN_DEBUG_EXIT,
-    get_japan_debug_context,
+    JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE, JAPAN_DEBUG_CHARACTER,
+    JAPAN_DEBUG_EXIT, get_japan_debug_context,
 )
 from tests.test_japanese_debug_warp import debugger
 
@@ -43,6 +43,43 @@ class JapanDirectSceneReloadTests(unittest.TestCase):
                 self.assertEqual(
                     p.writes[1][0],
                     (JAPAN_DEBUG_ENGINE_MODE&0x1FFFFFFF)&(~3 if endian=='wordswapped' else ~0))
+
+    def test_yae_and_sasuke_in_dungeon_can_warp_without_character_switch(self):
+        for character in (2, 3):
+            for endian in ('big', 'wordswapped'):
+                with self.subTest(character=character, endian=endian):
+                    p = debugger(endian, state=13, scene=0x00F,
+                                 character=character, submode=0)
+                    outcome = stage_japan_direct_reload(
+                        p.rdram(), 0x1D1,
+                        expected_context=get_japan_debug_context(p.rdram()))
+                    self.assertEqual(outcome.source_scene, 0x00F)
+                    self.assertFalse(outcome.character_staged)
+                    self.assertEqual(
+                        int.from_bytes(p.rdram().read_guest(
+                            JAPAN_DEBUG_CHARACTER, 4), 'big'), character)
+                    self.assertEqual(
+                        p.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1),
+                        bytes((12,)))
+
+    def test_optional_target_character_staged_before_engine_reload(self):
+        for endian in ('big', 'wordswapped'):
+            with self.subTest(endian=endian):
+                p = debugger(endian, state=13, scene=0x00F,
+                             character=3, submode=0)
+                outcome = stage_japan_direct_reload(
+                    p.rdram(), 0x1D1,
+                    expected_context=get_japan_debug_context(p.rdram()),
+                    target_character=2)
+                self.assertTrue(outcome.character_staged)
+                self.assertEqual(outcome.target_character, 2)
+                self.assertEqual(
+                    p.rdram().read_guest(JAPAN_DEBUG_CHARACTER, 4),
+                    bytes.fromhex('00000002'))
+                self.assertEqual(
+                    p.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1),
+                    bytes((12,)))
+                self.assertEqual(len(p.writes), 3)
 
     def test_full_entrance_block_matches_usa_native_layout(self):
         p=debugger(state=13)
