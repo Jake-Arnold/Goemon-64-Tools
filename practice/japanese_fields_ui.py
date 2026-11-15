@@ -135,8 +135,9 @@ class JapaneseFieldsUi:
         ttk.Label(debug, text=(
             'The game itself handles loading and spawn when a level is selected '
             'from its original debug menu. The documented engine state byte is '
-            '0x800CD284: normal 13, debug 10. Opening the menu is experimental '
-            'in Japanese Project64; menu cursor/commit addresses remain unmapped. '
+            '0x800CD284: normal 13, debug 10. Project64 menu opening is '
+            'user-verified. Automatic scene warp stages category/stage offset '
+            'and sends native A; gameplay completion is checked. '
             'Never write scene IDs directly.'),
             wraplength=960).pack(anchor='w')
         scene_row = ttk.Frame(debug)
@@ -162,10 +163,49 @@ class JapaneseFieldsUi:
             command=self.open_japan_debug_for_selected_scene)
         self.jp_debug_menu_button.pack(anchor='w', pady=(2, 2))
         self.jp_debug_menu_button.state(['disabled'])
+        auto = ttk.LabelFrame(
+            debug, text='Automatic scene-to-scene warp (Project64)', padding=7)
+        auto.pack(fill='x', pady=(6, 3))
+        ttk.Label(
+            auto, text='Select an area, then Warp, or double-click an area '
+                       'below. Uses native debug category + stage index, '
+                       'then the configured N64 A keyboard key. '
+                       'Experimental: keep a Project64 savestate.',
+            wraplength=940).pack(anchor='w')
+        search_row = ttk.Frame(auto)
+        search_row.pack(fill='x', pady=(4, 2))
+        ttk.Label(search_row, text='Filter scenes').pack(side='left')
+        self.jp_warp_search = tk.StringVar(value='')
+        ttk.Entry(search_row, textvariable=self.jp_warp_search,
+                  width=34).pack(side='left', padx=(6, 8))
+        ttk.Label(search_row, text='N64 A keyboard key').pack(side='left')
+        self.jp_warp_a_key = tk.StringVar(value='X')
+        self.jp_warp_a_selector = ttk.Combobox(
+            search_row, textvariable=self.jp_warp_a_key, state='readonly',
+            width=7, values=('X', 'Z', 'C', 'SPACE', 'ENTER',
+                             'A', 'S', 'J', 'K', 'L'))
+        self.jp_warp_a_selector.pack(side='left', padx=(6, 8))
+        self.jp_warp_apply_button = ttk.Button(
+            search_row, text='Warp to selected scene',
+            command=self.start_japan_native_scene_warp,
+            style='Gold.TButton')
+        self.jp_warp_apply_button.pack(side='left')
+        self.jp_warp_apply_button.state(['disabled'])
+        self.jp_warp_scene_list = tk.Listbox(
+            auto, height=6, exportselection=False, font=('Consolas', 10))
+        self.jp_warp_scene_list.pack(fill='x', pady=(2, 3))
+        self.jp_warp_filtered_scenes = []
+        self.jp_warp_scene_list.bind(
+            '<<ListboxSelect>>', self.select_japan_warp_list_scene)
+        self.jp_warp_scene_list.bind(
+            '<Double-Button-1>', self.doubleclick_japan_warp_scene)
+        self.jp_warp_search.trace_add(
+            'write', lambda *_args: self.refresh_japan_warp_scene_list())
+        self.refresh_japan_warp_scene_list()
         self.jp_debug_result = tk.StringVar(value=(
-            'Native menu: select the destination with the in-game controls; '
-            'one-click selection is not yet implemented. '
-            'Enable entry with --enable-japan-debug-menu-writes.'))
+            'Native menu opening and native category/stage scene warps are '
+            'available with --enable-japan-debug-menu-writes. '
+            'Project64 N64 A defaults to keyboard X; change it if rebound.'))
         ttk.Label(debug, textvariable=self.jp_debug_result,
                   wraplength=960).pack(anchor='w', pady=(3, 0))
 
@@ -388,6 +428,49 @@ class JapaneseFieldsUi:
             'Japanese category mapping not yet independently verified. '
             'The selected scene is a menu hint, not a RAM write.')
 
+    def refresh_japan_warp_scene_list(self):
+        query = self.jp_warp_search.get().strip().casefold()
+        original = self.selected_japan_debug_scene()
+        choices = [
+            (mid, name) for mid, name in sorted(SCENES.items())
+            if not query or query in name.casefold()
+            or query in f'{mid:03X}'.casefold() or query in str(mid)
+        ]
+        self.jp_warp_filtered_scenes = choices
+        listing = self.jp_warp_scene_list
+        listing.delete(0, 'end')
+        current_index = None
+        for index, (mid, name) in enumerate(choices):
+            listing.insert('end', f'0x{mid:03X}  {name}')
+            if mid == original:
+                current_index = index
+        if current_index is not None:
+            listing.selection_set(current_index)
+            listing.see(current_index)
+
+    def select_japan_warp_list_scene(self, _event=None):
+        selected = self.jp_warp_scene_list.curselection()
+        if not selected:
+            return
+        index = selected[0]
+        if index >= len(self.jp_warp_filtered_scenes):
+            return
+        mid, name = self.jp_warp_filtered_scenes[index]
+        self.jp_debug_scene_choice.set(f'0x{mid:03X} | {name}')
+        self.show_japan_debug_target()
+
+    def doubleclick_japan_warp_scene(self, event):
+        index = self.jp_warp_scene_list.nearest(event.y)
+        rect = self.jp_warp_scene_list.bbox(index)
+        if (rect is None or not (rect[1] <= event.y < rect[1] + rect[3])
+                or index >= len(self.jp_warp_filtered_scenes)):
+            return 'break'
+        self.jp_warp_scene_list.selection_clear(0, 'end')
+        self.jp_warp_scene_list.selection_set(index)
+        self.select_japan_warp_list_scene()
+        self.start_japan_native_scene_warp()
+        return 'break'
+
     def refresh_japan_debug_controls(self):
         enabled = (
             self.active_version.key == 'japan'
@@ -404,6 +487,9 @@ class JapaneseFieldsUi:
         )
         self.jp_debug_menu_button.state(
             ['!disabled'] if enabled else ['disabled'])
+        self.jp_warp_apply_button.state(
+            ['!disabled'] if enabled and self.jp_backend == 'project64'
+            else ['disabled'])
 
     def refresh_japan_party_controls(self):
         enabled = (
