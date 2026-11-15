@@ -828,12 +828,14 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or self._connecting or original is None or pid is None
                 or self.verified_rom_path is None
                 or getattr(self.args, 'read_only', False)
-                or not getattr(self.args, 'enable_japan_debug_menu_writes', False)
+                or not (getattr(self.args, 'enable_japan_scene_writes', False)
+                        or getattr(self.args, 'enable_japan_debug_menu_writes', False))
                 or self.jp_backend != 'project64'
                 or self.connection_target.get() != 'project64'
                 or sys.platform != 'win32'):
-            raise RuntimeError('Auto warp requires verified Japanese Project64 '
-                               'and --enable-japan-debug-menu-writes')
+            raise RuntimeError(
+                'Instant warp requires verified Japanese Project64 and '
+                '--enable-japan-scene-writes (legacy debug-write opt-in also accepted)')
         if verified_emulator_pid(pid, 'project64') != (pid, 'project64'):
             raise RuntimeError('Project64 PID changed; reconnect')
         probes = verified_japan_probes(self.verified_rom_path)
@@ -1888,6 +1890,7 @@ def apply_access_mode(args):
         args.enable_japan_party_writes = False
         args.enable_japan_position_writes = False
         args.enable_japan_debug_menu_writes = False
+        args.enable_japan_scene_writes = False
     return args
 
 
@@ -1906,8 +1909,11 @@ def parse_args(argv=None):
                     help="Opt in to confirmed-scene Japan-0 Goemon XYZ manual moves only "
                          "(Oedo South 0x161; each write requires confirmation and ROM/PID validation)")
     ap.add_argument("--enable-japan-debug-menu-writes", action="store_true",
-                    help="Opt in to experimental Japanese native debug-menu entry "
-                         "(engine 0x800CD284 only; selection/warp remains manual)")
+                    help="Opt in to original manual Japanese debug-menu entry "
+                         "(legacy switch also permits Japanese direct 0x0C reload)")
+    ap.add_argument("--enable-japan-scene-writes", action="store_true",
+                    help="Opt in to Japanese Scene Browser instant 0x0C reload "
+                         "(verified live ROM/PID/RDRAM required; no debug menu)")
     ap.add_argument("--linux-enable-writes",action="store_true",
                     help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled
     ap.add_argument("--enable-teleport",action="store_true",default=True,help="Write game coordinates (enabled by default)")
