@@ -20,6 +20,24 @@ The user reported on 2026-11-15 that the preceding `./scripts/test_japan_party.s
 
 The new read-only parity tests were **authored on GitHub and not executed through the connector**. The script now includes `tests.test_japan_readonly_parity` in its Xvfb GUI phase, and existing Japanese UI tests use isolated temporary watch directories.
 
+## Reproduce on Windows PowerShell
+
+Run PowerShell from the checkout root. The dedicated Windows test runner is
+[`scripts/test_japan_party.ps1`](../scripts/test_japan_party.ps1); see the
+[Windows setup and Mupen validation notes](JAPAN_WINDOWS_POWERSHELL.md).
+
+```powershell
+git fetch origin chatgptweb/japan-controlled-party-writes
+git switch --detach FETCH_HEAD
+.\scripts\test_japan_party.ps1
+py -3 -m practice.toolkit --game-version japan
+```
+
+To enable the two separately consented Sasuke/Yae write buttons, add
+`--enable-japan-party-writes` to the final launch command. The Windows
+backend uses Win32 process-memory APIs; live Japanese Mupen attachment and
+GUI workflows on Windows remain to be verified independently of Linux.
+
 ## Reproduce on Ubuntu
 
 ```bash
