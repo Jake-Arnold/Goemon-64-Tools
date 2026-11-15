@@ -22,6 +22,7 @@ try:
     from . import overlay_file43
     from . import overlay_file12
     from . import overlay_file11
+    from .research import usa_file11_noop_groups as overlay_file11_noops
     from .elf_layout import pack_object_file, pack_heap_noop_file
     from .elf_layout import pack_file12_callback_text
     from .collision_patch import prepare_collision_gate
@@ -31,6 +32,7 @@ except ImportError:
     import overlay_file43
     import overlay_file12
     import overlay_file11
+    from decomp.research import usa_file11_noop_groups as overlay_file11_noops
     from elf_layout import pack_object_file, pack_heap_noop_file
     from elf_layout import pack_file12_callback_text
     from collision_patch import prepare_collision_gate
@@ -92,6 +94,18 @@ def _file12_stage_list(stage_or_stages):
     raise ValueError('Invalid file_12 stage collection')
 
 
+def file11_stage_mode(manifest):
+    """Validate an optional file_11 stage version without accepting unknown fields."""
+    if 'overlay_file11_stage' not in manifest:
+        return None
+    stage = manifest['overlay_file11_stage']
+    if stage == {'format': overlay_file11.STAGE_FORMAT}:
+        return 13
+    if stage == {'format': overlay_file11_noops.STAGE_FORMAT}:
+        return 50
+    raise ValueError('Unsupported file_11 matching-C stage contract')
+
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -99,9 +113,17 @@ def claimed_functions(manifest):
     if stage is not None:
         functions.append(stage['function'])
     functions.extend(stage['function'] for stage in manifest_file12_stages(manifest))
-    if manifest.get('overlay_file11_stage') is not None:
-        functions.extend({'name': name, 'rom_offset': rom, 'vma': overlay_file11.VMA_START + rom - overlay_file11.ROM_START, 'size': size}
+    mode = file11_stage_mode(manifest)
+    if mode is not None:
+        functions.extend({'name': name, 'rom_offset': rom,
+                          'vma': overlay_file11.VMA_START + rom - overlay_file11.ROM_START,
+                          'size': size}
                          for name, rom, size, _ in overlay_file11.FUNCTIONS)
+        if mode == 50:
+            functions.extend({'name': name, 'rom_offset': rom,
+                              'vma': overlay_file11.VMA_START + rom - overlay_file11.ROM_START,
+                              'size': 12}
+                             for name, rom in overlay_file11_noops.entries())
     return functions
 
 
@@ -711,11 +733,13 @@ def load_manifest(path):
                     file43_stage['function']['rom_offset'] <
                     function['rom_offset'] + function['size']):
                 raise ValueError('file_12 function overlaps file_43 function')
-    if 'overlay_file11_stage' in manifest:
-        if manifest['overlay_file11_stage'] != {'format': overlay_file11.STAGE_FORMAT}:
-            raise ValueError('Unsupported file_11 matching-C stage contract')
-        staged = {(name, rom, size) for name, rom, size, _ in overlay_file11.FUNCTIONS}
-        if len(staged) != len(overlay_file11.FUNCTIONS):
+    file11_mode = file11_stage_mode(manifest)
+    if file11_mode is not None:
+        candidates = [(name, rom, size) for name, rom, size, _ in overlay_file11.FUNCTIONS]
+        if file11_mode == 50:
+            candidates.extend((name, rom, 12) for name, rom in overlay_file11_noops.entries())
+        staged = set(candidates)
+        if len(staged) != len(candidates):
             raise ValueError('Duplicated pinned file_11 function identity')
         for name, rom, size in staged:
             if name in seen or name in assembly_seen:
@@ -751,11 +775,16 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
     config=checkout/'config/usa/splat.yaml'
     text=config.read_text(encoding='utf-8')
     file11_copies=[]
-    if manifest.get('overlay_file11_stage') is not None:
+    file11_mode=file11_stage_mode(manifest)
+    if file11_mode is not None:
         if reference_rom is None:
             raise ValueError('file_11 staging requires authenticated USA decompressed ROM')
         file11_copies=overlay_file11.checked_source_copies(checkout,source_dir/'research',reference_rom)
         text=overlay_file11.stage_config(text)
+        if file11_mode == 50:
+            file11_copies.extend(overlay_file11_noops.checked_source_copies(
+                checkout,source_dir/'research',reference_rom))
+            text=overlay_file11_noops.stage_splat(text)
     file43_stage=manifest.get('overlay_file43_stage')
     file12_stages=manifest_file12_stages(manifest)
     file43_source=None
@@ -1416,10 +1445,18 @@ def run_build(args,manifest,report):
         report['overlay_file12_object_layout']=prepare_file12_stage_objects(
             candidate,file12_stages
         )
-    if manifest.get('overlay_file11_stage') is not None:
+    file11_mode=file11_stage_mode(manifest)
+    if file11_mode is not None:
+        if file11_mode == 50:
+            file11_objects=overlay_file11_noops.object_targets()
+        else:
+            file11_objects=overlay_file11.object_targets()
         logged('candidate-file11-objects',['make','-j'+str(args.jobs),'UV='+uv,
-            *overlay_file11.object_targets()],candidate)
-        report['overlay_file11_object_layout']=overlay_file11.prepare_objects(candidate)
+            *file11_objects],candidate)
+        if file11_mode == 50:
+            report['overlay_file11_object_layout']=overlay_file11_noops.trim(candidate)
+        else:
+            report['overlay_file11_object_layout']=overlay_file11.prepare_objects(candidate)
     if manifest.get('vm_assignment_table_layout'):
         logged('candidate-vm-object',['make','-j'+str(args.jobs),'UV='+uv,
             'build/usa/src/script_vm.c.o','build/usa/asm/usa/data/main_continued.rodata.s.o'],candidate)
@@ -1449,10 +1486,14 @@ def run_build(args,manifest,report):
         staged_name=PurePosixPath(file12_stage['source']).name
         report['sources_sha256_lf'][file12_stage['source']]=digest(
             (candidate/'src'/staged_name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
-    if manifest.get('overlay_file11_stage') is not None:
+    if file11_mode is not None:
         for source_name, target_name, _, _ in overlay_file11.SOURCE_SPECS:
             report['sources_sha256_lf']['research/'+source_name]=digest(
                 (candidate/'src'/(target_name+'.c')).read_bytes().replace(b'\r\n',b'\n'),'sha256')
+        if file11_mode == 50:
+            for _, _, name in overlay_file11_noops.GROUPS:
+                report['sources_sha256_lf']['research/'+name+'.c']=digest(
+                    (candidate/'src'/(name+'.c')).read_bytes().replace(b'\r\n',b'\n'),'sha256')
     mapping=(candidate/'build/usa/mnsg.map').read_text()
     for unit in manifest['units']:
         object_name='build/usa/src/'+unit['source']+'.o'
@@ -1477,14 +1518,32 @@ def run_build(args,manifest,report):
         )
         report['overlay_file12_stages']=file12_report
         report['comparison']=result
-    if manifest.get('overlay_file11_stage') is not None:
-        proof11=overlay_file11.verify_linked_stage(
-            expected,(candidate/'build/usa/mnsg.z64').read_bytes(),
-            (baseline/'build/usa/mnsg.elf').read_bytes(),
-            (candidate/'build/usa/mnsg.elf').read_bytes(),
-            candidate,source_dir/'research'
-        )
-        for function in proof11['functions']:
+    if file11_mode is not None:
+        if file11_mode == 50:
+            proof11=overlay_file11_noops.verify(
+                candidate,expected,baseline/'build/usa/mnsg.elf')
+            proof11['stage']=overlay_file11_noops.STAGE_FORMAT
+            proof_functions=[
+                {'name': name, 'rom_offset': rom,
+                 'vma': overlay_file11.VMA_START + rom - overlay_file11.ROM_START,
+                 'size': size, 'sha256': digest(expected[rom:rom+size],'sha256')}
+                for name, rom, size, _ in overlay_file11.FUNCTIONS
+            ]
+            proof_functions.extend(
+                {'name': name, 'rom_offset': rom,
+                 'vma': overlay_file11.VMA_START + rom - overlay_file11.ROM_START,
+                 'size': 12, 'sha256': digest(expected[rom:rom+12],'sha256')}
+                for name, rom in overlay_file11_noops.entries()
+            )
+        else:
+            proof11=overlay_file11.verify_linked_stage(
+                expected,(candidate/'build/usa/mnsg.z64').read_bytes(),
+                (baseline/'build/usa/mnsg.elf').read_bytes(),
+                (candidate/'build/usa/mnsg.elf').read_bytes(),
+                candidate,source_dir/'research'
+            )
+            proof_functions=proof11['functions']
+        for function in proof_functions:
             result['functions'].append({
                 'name': function['name'], 'size': function['size'],
                 'guest_address': f'0x{function["vma"]:08X}',

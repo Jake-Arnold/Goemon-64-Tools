@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from decomp.research import usa_file11_noop_groups as mod
@@ -65,6 +66,45 @@ class TestFile11NoopGroups(unittest.TestCase):
     def test_verify_fails_on_wrong_reference_before_touching_elf(self):
         with self.assertRaisesRegex(ValueError,'ROM identity'):
             mod.verify(Path('/invalid'),b'wrong',Path('/invalid'))
+
+
+    def test_v2_splat_extension_rejects_repeat(self):
+        s='  - name: file_11\n    - [0x599918, c, character_switch_wrappers]\n'+mod.SPLAT_OLD+'\n  - name: file_12\n'
+        converted=mod.stage_splat(s)
+        self.assertIn('    - [0x59D0C0, c, callback_noops_a]',converted)
+        self.assertIn('    - [0x59D38C, c, callback_noops_b]',converted)
+        with self.assertRaisesRegex(ValueError,'Expected pristine'):
+            mod.stage_splat(converted)
+
+    def test_exact_v2_stage_contract(self):
+        self.assertEqual(mod.STAGE_FORMAT,'goemon-file11-character-switch-50-v2')
+        self.assertEqual(len(mod.object_targets()),12)
+        self.assertEqual(mod.object_targets()[8],'build/usa/src/callback_noops_a.c.o')
+        self.assertEqual(mod.object_targets()[10],'build/usa/src/callback_noops_b.c.o')
+
+    def test_c_source_copies_have_pinned_hashes(self):
+        root=Path(__file__).resolve().parents[1]/'decomp/research'
+        with tempfile.TemporaryDirectory() as tmp:
+            home=Path(tmp)
+            (home/'src').mkdir()
+            with mock.patch.object(mod,'validate_reference',return_value=None):
+                staged=mod.checked_source_copies(home,root,b'')
+            self.assertEqual(len(staged),2)
+            for source,dest in staged:
+                self.assertTrue(source.is_file())
+                self.assertFalse(dest.exists())
+                self.assertEqual(mod.sha256(source.read_bytes()),mod.PINNED_SOURCE_SHA256[dest.stem])
+
+    def test_c_source_collision_rejected_before_copy(self):
+        root=Path(__file__).resolve().parents[1]/'decomp/research'
+        with tempfile.TemporaryDirectory() as tmp:
+            home=Path(tmp)
+            (home/'src').mkdir()
+            (home/'src/callback_noops_b.c').write_text('collision')
+            with mock.patch.object(mod,'validate_reference',return_value=None):
+                with self.assertRaisesRegex(ValueError,'colliding'):
+                    mod.checked_source_copies(home,root,b'')
+            self.assertFalse((home/'src/callback_noops_a.c').exists())
 
 
 if __name__=='__main__':unittest.main()

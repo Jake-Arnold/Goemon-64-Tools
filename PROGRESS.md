@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Central USA file_11 v2 verification path: 50 reconstructed functions
+
+- Added a strictly versioned optional stage in decomp/verify.py: v1 retains 13 functions/620 bytes; v2 includes those 13 plus 37 empty callbacks, for 50 functions/1,064 bytes total. Unrecognised stage contracts fail closed; absent stage leaves the existing decomp manifest unchanged.
+- V2 authenticates the 32 MiB original ROM, all original function patterns/hashes, six C source and compiled ELF object identities, twelve source/ASM input positions and original sizes, all 8,825 semantic relocations and the complete original ROM before appending any matching-C claims.
+- The independently built native upstream USA candidate with 50 functions previously passed these authenticity gates (exact 32 MiB SHA-1 6ea0ed71032ce08fc2745f412d84936382197494, 8,825/8,825 relocations including order). The extended read-only research source/contract tests pass 48 ROM-free Python cases.
+- No central end-to-end verifier G2 containing all 160 existing C functions has been run. Canonical decomp/manifest.json, published combined proof and inventory remain unchanged at 160. The nonmatching 180-byte selector stays ASM. Do not report 210 formally promoted C functions.
+
 ### 2026-11-15 — Two additional original-USA file_11 callback clusters: 37 native matching-C functions / 444 bytes
 
 - **Original ROM discovery:** A read-only scan of the authenticated pinned USA `file_11` assembly found **50** 12-byte no-op callback stubs with exactly `sw a0,0(sp); jr ra; sw a1,4(sp)`. Native IDO 5.3 `-O2 -mips2` produces these three words from an empty two-argument `void` C function. These are genuinely empty callbacks, **not new gameplay semantics**.

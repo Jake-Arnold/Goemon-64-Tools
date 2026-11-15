@@ -42,8 +42,12 @@ The original pristine linked ELF used for the relocation comparison has SHA-256 
 
 ## Technical limitations and remaining tasks
 
-This is a **complete USA ROM and ELF provenance proof in a dedicated scratch checkout**, not a completed end-to-end central `decomp.verify` run with the 160 previously migrated matching-C functions. Therefore, **the official verified total is not increased**; do not report 210 formally promoted functions. The existing opt-in central `file_11` adapter still targets thirteen character-switch functions and does not yet declare the new 37 callbacks; this work is a separately staged research extension, not an active canonical manifest stage.
+This is a **complete USA ROM and ELF provenance proof in a dedicated scratch checkout**, not a completed end-to-end central `decomp.verify` run with the 160 previously migrated matching-C functions. Therefore, **the official verified total is not increased**; do not report 210 formally promoted functions. The existing central `file_11` adapter initially supported thirteen character-switch functions; the follow-up adds a separate **opt-in v2** stage capable of staging all fifty from the same independently authenticated source. Neither v1 nor v2 is active in the canonical manifest, and neither has passed the full central 160+ function G2 in this session.
 
 All 37 callbacks are meaningful only as **empty callback entry points**; their presence does not establish gameplay semantics or new character-switch knowledge. The additional thirteen isolated empty callbacks warrant separate source-layout review. The 180-byte cycling selector remains assembly, as do the Japanese build and overlay integration problems.
 
 No ROM bytes, generated disassembly, linked objects or proprietary compiler binaries are committed. Only C reconstruction, bounded build script, tests and proof metadata are suitable for version control.
+
+## Follow-up production-stage interface (research opt-in, not promoted)
+
+The checked source adapter now exposes `STAGE_FORMAT = "goemon-file11-character-switch-50-v2"` and validates both new C source SHA-256 hashes before staging. It maintains the twelve pinned C/ASM chunks and the strict original-ROM, FUNC, source/object, map and relocation proofs. The canonical central verifier is extended separately to accept v1 (13 functions) or v2 (50 functions), refusing unknown formats. This API extension does not change the previously proven 32 MiB USA source build or official matching-C total.

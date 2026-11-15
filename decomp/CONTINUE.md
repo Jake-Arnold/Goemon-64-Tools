@@ -36,6 +36,12 @@ The same USA `file_11` overlay as the 13 exact character-switch C functions also
 
 **Important:** The 37 are genuine *empty callbacks*, not 37 newly deciphered gameplay systems. The central opt-in `overlay_file11_stage` still supports only the previous 13 functions. The canonical `decomp/manifest.json`, formal 160-function verifier and inventory have not yet been rebuilt with either optional file_11 stage. The new 37 are research-only until a reviewed stage and complete central G2 test exist.
 
+## Opt-in USA file_11 verifier v2 (15 November 2026)
+
+The verifier accepts only the previous thirteen-function stage format or the new goemon-file11-character-switch-50-v2 format in a temporary reviewed manifest. V2 includes 13 character-switch C functions plus 37 authentic empty actor callbacks (50 C functions/1,064 bytes), and requires all six native compiler C objects, twelve original linker input positions, 8,825 original ELF relocations, original linked symbols and full 32 MiB ROM equality before counting these functions.
+
+The pristine pinned USA upstream scratch build independently met those constraints, but the full central decomp.verify build with the existing 160 C modules has not yet been run. The canonical manifest and inventory remain unchanged. See docs/USA_FILE11_NOOP_CALLBACKS_2026-11-15.md.
+
 ## 0. Cross-conversation handoff
 
 For the reviewed integration blockers and reproducible next steps, see [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).

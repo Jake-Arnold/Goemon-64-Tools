@@ -47,6 +47,12 @@ CHUNKS = (
     ('asm', '59D4DC', 0x59D4DC, 0x1B024),
 )
 PIN = '7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee'
+STAGE_FORMAT = 'goemon-file11-character-switch-50-v2'
+PINNED_SOURCE_SHA256 = {
+    'callback_noops_a': '8a817e6023d1f6cd45dfd628300d5495adf8b59f70d0f1c931b44ec5c3054757',
+    'callback_noops_b': 'd39424ba83477114587a320987ad5516fbfee6277fc05fdd2dc1c9fc3059415b',
+}
+
 TRIMMED_C_OBJECT_SHA256 = {
     'callback_noops_a': 'c125dea48c318b5af19d3c9ac2897c788ff907ef82122303f93055df03ca2963',
     'callback_noops_b': '8879a28b89af1ee5c783d3b7abb63b7d77de407fe916107170b28e80c9b9ba51',
@@ -78,6 +84,36 @@ def objects() -> list[tuple[Path, int]]:
             for kind, name, _, size in CHUNKS]
 
 
+
+def stage_splat(text: str) -> str:
+    """Version 2 extension of the already-verified 13-function file_11 Splat split."""
+    if text.count(SPLAT_OLD) != 1 or text.count('    - [0x599918, c, character_switch_wrappers]') != 1:
+        raise ValueError('Expected pristine 13-function staged Splat layout')
+    return text.replace(SPLAT_OLD, SPLAT_NEW)
+
+
+def checked_source_copies(checkout: Path, research_dir: Path,
+                          reference_rom: bytes) -> list[tuple[Path, Path]]:
+    """Prevalidate the two new C source copies without mutating checkout."""
+    validate_reference(reference_rom)
+    sources = []
+    for start, count, name in GROUPS:
+        original = Path(research_dir)/(name+'.c')
+        destination = Path(checkout)/'src'/(name+'.c')
+        if not original.is_file() or destination.exists():
+            raise ValueError('Missing or colliding callback source: '+name)
+        data = original.read_bytes().replace(b'\r\n',b'\n')
+        if (sha256(data) != PINNED_SOURCE_SHA256[name] or
+                data.decode('utf-8') != render(name,count,start)):
+            raise ValueError('Unreviewed callback source bytes: '+name)
+        sources.append((original,destination))
+    return sources
+
+
+def object_targets() -> list[str]:
+    return [path.as_posix() for path,_ in objects()]
+
+
 def prepare(checkout: Path, reference: bytes) -> None:
     validate_reference(reference)
     rev = subprocess.check_output(['git','-C',str(checkout),'rev-parse','HEAD'],text=True).strip()
@@ -85,14 +121,10 @@ def prepare(checkout: Path, reference: bytes) -> None:
         raise ValueError('Not the pinned upstream checkout')
     cfg = checkout/'config/usa/splat.yaml'
     text = cfg.read_text()
-    if text.count(SPLAT_OLD) != 1 or text.count('    - [0x599918, c, character_switch_wrappers]') != 1:
-        raise ValueError('Expected preverified 13-function file_11 Splat stage')
-    for start,count,name in GROUPS:
-        path=checkout/'src'/(name+'.c')
-        if path.exists(): raise ValueError('Refusing to replace staged C file: '+str(path))
-    for start,count,name in GROUPS:
-        (checkout/'src'/(name+'.c')).write_text(render(name,count,start))
-    cfg.write_text(text.replace(SPLAT_OLD,SPLAT_NEW))
+    text=stage_splat(text)
+    for source,dest in checked_source_copies(checkout,Path(__file__).parent,reference):
+        shutil.copyfile(source,dest)
+    cfg.write_text(text)
 
 
 def trim(checkout: Path) -> dict:
