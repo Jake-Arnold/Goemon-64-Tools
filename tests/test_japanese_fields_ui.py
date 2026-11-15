@@ -2,6 +2,9 @@
 import tkinter as tk
 from tkinter import ttk
 from types import SimpleNamespace
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest.mock import patch
 import unittest
 
 from practice.japanese_fields_ui import JapaneseFieldsUi
@@ -26,7 +29,12 @@ class JapanTkSmokeTest(unittest.TestCase):
         except tk.TclError as exc:
             self.skipTest(f'No Tk display: {exc}')
         self.root.withdraw()
-        self.host = Host(self.root)
+        # A developer's Japan watch profile must never change smoke-test counts.
+        self.custom_watch_temp = TemporaryDirectory()
+        self.addCleanup(self.custom_watch_temp.cleanup)
+        with patch('practice.japanese_fields_ui.practice_data_dir',
+                   return_value=Path(self.custom_watch_temp.name)):
+            self.host = Host(self.root)
 
     def tearDown(self):
         if hasattr(self, 'root'):
