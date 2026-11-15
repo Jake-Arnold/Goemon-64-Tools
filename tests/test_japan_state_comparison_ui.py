@@ -79,6 +79,37 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         self.assertIsNone(app.state_report)
         self.assertIsNone(app.jp_rdram)
 
+    def test_japan_wide_xyz_research_and_float_watch(self):
+        from tests.test_japan_player_position_research import (
+            FourMegabyteJapanRam, XYZ_ADDR, put_xyz,
+        )
+        app = self.app
+        app.jp_rdram = FourMegabyteJapanRam()
+        app.state_probe_kind.set('Player movement')
+        app.state_probe_scope.set('wide')
+        put_xyz(app.jp_rdram, XYZ_ADDR, (100.0, 20.0, -50.0))
+        app.capture_state_probe('A')
+        self._finish_capture()
+        put_xyz(app.jp_rdram, XYZ_ADDR, (111.0, 20.0, -48.0))
+        app.capture_state_probe('B')
+        self._finish_capture()
+        app.capture_state_probe('C')
+        self._finish_capture()
+        app.find_japan_xyz_from_captures()
+        self._finish_capture()
+        self.assertEqual(app.state_report['format'], 'goemon-japan-xyz-heuristic-v1')
+        self.assertIn('candidate', app.state_probe_status.get())
+        self.assertEqual(app.state_probe_table.heading('returned', 'text'),
+                         'C stable at B?')
+        iid = next(i for i in app.state_probe_table.get_children()
+                   if app.state_probe_table.item(i, 'values')[0]
+                   == f'0x{XYZ_ADDR:08X}')
+        app.state_probe_table.selection_set(iid)
+        app.watch_state_probe_candidate()
+        self.assertEqual(app.jp_custom_watches[-1].kind, 'f32')
+        self.assertEqual(app.jp_custom_watches[-1].address, XYZ_ADDR)
+        self.assertTrue(app.jp_custom_watches[-1].name.startswith('JP XYZ candidate'))
+
     def test_disallow_comparison_after_reconnect(self):
         app = self.app
         app.capture_state_probe('A')
