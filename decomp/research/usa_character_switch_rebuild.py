@@ -1,4 +1,4 @@
-"""Scratch-only stage and proof of three USA character-switch C functions.
+"""Scratch-only stage and proof of four USA character-switch C functions.
 
 This is a bounded reproduction of a complete 32 MiB USA ROM comparison, not
 an automatic edit to the production Goemon decomp manifest. It requires a
@@ -21,13 +21,14 @@ from decomp.research.trim_elf32_mips_text import trim_text_section
 UPSTREAM_COMMIT = "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
 USA_ROM_SHA1 = "6ea0ed71032ce08fc2745f412d84936382197494"
 SPLAT_OLD = "    - [0x587370, asm]\n    - [0x5B8500, data]"
-SPLAT_NEW = "    - [0x587370, asm]\n    - [0x5993E8, c, character_switch_entry]\n    - [0x59941C, asm]\n    - [0x5994D0, c, character_switch_sync]\n    - [0x599564, asm]\n    - [0x5B8500, data]"
+SPLAT_NEW = "    - [0x587370, asm]\n    - [0x5993E8, c, character_switch_entry]\n    - [0x59941C, asm]\n    - [0x5994D0, c, character_switch_sync]\n    - [0x599564, c, character_switch_alt]\n    - [0x5995E8, asm]\n    - [0x5B8500, data]"
 CHUNKS = {
     "build/usa/asm/usa/587370.s.o": 0x12078,
     "build/usa/src/character_switch_entry.c.o": 0x34,
     "build/usa/asm/usa/59941C.s.o": 0xB4,
     "build/usa/src/character_switch_sync.c.o": 0x94,
-    "build/usa/asm/usa/599564.s.o": 0x1EF9C,
+    "build/usa/src/character_switch_alt.c.o": 0x84,
+    "build/usa/asm/usa/5995E8.s.o": 0x1EF18,
 }
 
 
@@ -49,12 +50,12 @@ def prepare(checkout: Path):
     data = config.read_text(encoding="utf-8")
     if data.count(SPLAT_OLD) != 1:
         raise ValueError("Expected pristine file_11 Splat layout (do not patch twice)")
-    for name in ("character_switch_entry", "character_switch_sync"):
+    for name in ("character_switch_entry", "character_switch_sync", "character_switch_alt"):
         destination = checkout / "src" / (name + ".c")
         if destination.exists():
             raise ValueError(f"Refusing to overwrite existing {destination}")
     candidates = Path(__file__).resolve().parent
-    for name in ("character_switch_entry", "character_switch_sync"):
+    for name in ("character_switch_entry", "character_switch_sync", "character_switch_alt"):
         shutil.copyfile(candidates / ("usa_" + name + ".c"), checkout / "src" / (name + ".c"))
     config.write_text(data.replace(SPLAT_OLD, SPLAT_NEW), encoding="utf-8")
     print("Prepared original file_11 island; now run pinned Splat and the first USA build")
@@ -74,7 +75,7 @@ def trim(checkout: Path):
     for path, data in revisions:
         path.write_bytes(data)
     script.write_text(s.replace(old, ".file_11 0x801CB460 : AT(file_11_ROM_START) SUBALIGN(4)"))
-    print("Adjusted five original-code/IDO chunks with .rel.text preserved")
+    print("Adjusted six original-code/IDO chunks with .rel.text preserved")
 
 
 def verify(checkout: Path, reference: Path):

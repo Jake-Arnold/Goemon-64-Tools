@@ -21,12 +21,14 @@ REGIONS = {
             "character_reader": ("SELECT_READER", "func_801DD500_599410", 0x801DD500, 0x599410, 12),
             "character_wrapper": ("SELECT_WRAPPER", "func_801DD4D8_5993E8", 0x801DD4D8, 0x5993E8, 40),
             "character_sync": ("SELECT_SYNC", "func_801DD5C0_5994D0", 0x801DD5C0, 0x5994D0, 148),
+            "character_alternate": ("SELECT_ALT", "func_801DD654_599564", 0x801DD654, 0x599564, 132),
         },
         "symbols": {
             "func_801DD5C0_5994D0": 0x801DD5C0,
             "D_8015C5DC_15D1DC": 0x8015C5DC,
             "func_801E0944_59C854": 0x801E0944,
             "func_8003522C_35E2C": 0x8003522C,
+            "func_801E0BF8_59CB08": 0x801E0BF8,
         },
     },
     "japan": {
@@ -35,12 +37,14 @@ REGIONS = {
             "character_reader": ("SELECT_READER", "func_801E28B0_59E880", 0x801E28B0, 0x59E880, 12),
             "character_wrapper": ("SELECT_WRAPPER", "func_801E2888_59E858", 0x801E2888, 0x59E858, 40),
             "character_sync": ("SELECT_SYNC", "func_801E2970_59E940", 0x801E2970, 0x59E940, 148),
+            "character_alternate": ("SELECT_ALT", "func_801E2A04_59E9D4", 0x801E2A04, 0x59E9D4, 132),
         },
         "symbols": {
             "func_801E2970_59E940": 0x801E2970,
             "D_80161DCC_1629CC": 0x80161DCC,
             "func_801E5B5C_5A1B2C": 0x801E5B5C,
             "func_80034E9C_35A9C": 0x80034E9C,
+            "func_801E5E10_5A1DE0": 0x801E5E10,
         },
     },
 }
@@ -114,13 +118,13 @@ def main(argv=None):
     for region in ("usa", "japan"):
         rom = verified_rom(getattr(args, region), region)
         result["regions"][region] = native_probe(rom, region, args.candidate, args.cc, args.ld, args.objcopy)
-    result["all_six_exact"] = all(row["exact"] for reg in result["regions"].values() for row in reg.values())
+    result["all_eight_exact"] = all(row["exact"] for reg in result["regions"].values() for row in reg.values())
     text = json.dumps(result, indent=2) + "\n"
     if args.report:
         args.report.write_text(text)
     else:
         print(text, end="")
-    return 0 if result["all_six_exact"] else 1
+    return 0 if result["all_eight_exact"] else 1
 
 
 if __name__ == "__main__":

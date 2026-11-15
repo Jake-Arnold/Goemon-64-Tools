@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Fourth cross-region matching-C function; USA 332-byte full-ROM proof
+
+- **New native C:** Reconstructed the 132-byte alternate character-state reset at USA `func_801DD654_599564` / JP `func_801E2A04_59E9D4`. The argument ABI is `u16`, and source-order of object byte `+0x30` mask and `+0xCC=0xBB` assignment is required for exact IDO register/codegen match.
+- **Isolated original-address check:** The 12-byte reader, 40-byte wrapper, 148-byte synchroniser, and 132-byte alternate reset compile/link using native IDO 5.3 to **332/332 byte-for-byte exact** in both USA and Japan (8 exact original-address candidates). Verified against authentic 32 MiB decompressed ROM images.
+- **Full USA-ROM proof:** Staged all four functions into isolated pinned `file_11` source with the 180-byte selector still in assembly, using six original-sized C/ASM chunks with relocation-preserving ELF section trimming and local 4-byte link subalignment. Complete 33,554,432-byte rebuild compared byte-for-byte with the original USA reference: SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, exact. The clean upstream checkout was reused after its independently verified baseline and 3-function rebuild.
+- **Relocation detail:** Original and 4-function `file_11` ELF relocation sections each contain 8,825 entries and have exactly identical `(site, type, target, symbol)` multisets; **three entries are reordered**, so raw order equality is not claimed.
+- **Tests:** 14 ROM-free Python unit tests pass; original full USA ROM equality and eight IDO original-address function comparisons pass.
+- **Scope:** Updated the region-aware native probe, optional C source, scratch-only full-ROM assembly adapter, tests, proof metadata, and `docs/USA_JAPAN_CHARACTER_SWITCH_MATCHING_2026-11-15.md`. No ROMs or original code bytes are committed.
+- **Limitations/next:** Research-verified **four-function/332-byte full-USA-ROM promotion candidate**; unchanged central `decomp/manifest.json`, `decomp.verify` and production matching-C total (160). Japanese full-ROM build remains blocked by upstream hard-coded USA `GLOBAL_ASM` path usage. Next formal gate: integrate mixed C/ASM `file_11` into the central verifier, then rerun its exact 32 MiB G2 and inventory before promotion; target remaining 180-byte selector separately.
+
 ### 2026-11-15 — USA + JP character switch: six exact IDO candidates, USA full-ROM and relocations exact
 
 - **Original code mapping:** Pinpointed USA selected-character u32 `0x8015C5DC` versus JP `0x80161DCC`, four 32-bit availability words at USA `0x8015C69C` / JP `0x80161E8C`, and the 180-byte character selector plus 148-byte synchroniser in both `file_11` overlays. These regional offsets are not a universal address delta.

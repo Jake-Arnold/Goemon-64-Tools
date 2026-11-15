@@ -28,16 +28,16 @@ Directly editing the global index does **not** execute the object/model/animatio
 | Character-state synchroniser | `0x801DD5C0 / 0x5994D0` | `0x801E2970 / 0x59E940` | 148 | 34/37 |
 | Alternate state reset | `0x801DD654 / 0x599564` | `0x801E2A04 / 0x59E9D4` | 132 | 30/33 |
 
-All remaining instruction differences in these five original function pairs are regional addresses or JAL targets. The selector is still `GLOBAL_ASM`; its C draft is not matching. The alternate reset is also assembly-owned.
+All remaining instruction differences in these five original function pairs are regional addresses or JAL targets. The selector is still `GLOBAL_ASM`; its C draft is not matching. The alternate reset now has an exact original-address IDO C candidate in both regions; only the four-slot selector remains assembly-owned.
 
 ## New native C, tested in both regions
 
-`decomp/research/character_switch_native_candidates.c` provides a single regional C source with three separately compiled units (`SELECT_READER`, `SELECT_WRAPPER`, `SELECT_SYNC`, each under `REGION_USA` or `REGION_JAPAN`). It uses the original IDO 5.3 compiler and original-VMA linker scripts to prove the exact original bytes after relocation. The synchroniser's second argument must be `u16`; `u8` or `u32` parameter declarations produce different MIPS register scheduling. `decomp/research/cross_region_native_probe.py` authenticates both 32 MiB ROM SHA-1 values, compiles, links and compares without exporting game-code bytes.
+`decomp/research/character_switch_native_candidates.c` provides a single regional C source with four separately compiled units (`SELECT_READER`, `SELECT_WRAPPER`, `SELECT_SYNC`, `SELECT_ALT`, each under `REGION_USA` or `REGION_JAPAN`). It uses the original IDO 5.3 compiler and original-VMA linker scripts to prove the exact original bytes after relocation. The synchroniser's second argument must be `u16`; `u8` or `u32` parameter declarations produce different MIPS register scheduling. `decomp/research/cross_region_native_probe.py` authenticates both 32 MiB ROM SHA-1 values, compiles, links and compares without exporting game-code bytes.
 
-| Region | State reader | Wrapper | Synchroniser | Isolated total |
-| --- | --- | --- | --- | ---: |
-| USA | 12/12 exact | 40/40 exact | 148/148 exact | **200/200 bytes** |
-| Japan | 12/12 exact | 40/40 exact | 148/148 exact | **200/200 bytes** |
+| Region | State reader | Wrapper | Synchroniser | Alternate reset | Isolated total |
+| --- | --- | --- | --- | --- | ---: |
+| USA | 12/12 exact | 40/40 exact | 148/148 exact | 132/132 exact | **332/332 bytes** |
+| Japan | 12/12 exact | 40/40 exact | 148/148 exact | 132/132 exact | **332/332 bytes** |
 
 Run the isolated comparison with:
 
@@ -55,9 +55,9 @@ python3 -m decomp.research.cross_region_native_probe \
 
 ## Full USA ROM build verified (independent reproduction)
 
-The two committed research C files `usa_character_switch_entry.c` (40-byte wrapper followed by 12-byte reader) and `usa_character_switch_sync.c` (148-byte synchroniser) were staged into an isolated copy of the pinned original USA source. The 180-byte selector and all surrounding functions were left in original assembly. The generated `file_11` linker script was switched from `SUBALIGN(16)` to `SUBALIGN(4)` for this overlay alone. The original assembler/IDO objects carried 16-byte section-tail padding; `trim_elf32_mips_text.py` adjusted the ELF32 big-endian `.text` section lengths while preserving *all* `.rel.text` relocations. GNU `objcopy --update-section` was explicitly rejected for this use because it strips the text relocation records in this toolchain.
+The three research C files `usa_character_switch_entry.c` (40-byte wrapper followed by 12-byte reader), `usa_character_switch_sync.c` (148-byte synchroniser), and `usa_character_switch_alt.c` (132-byte alternate reset) were staged into an isolated copy of the pinned original USA source. The 180-byte selector and all surrounding functions were left in original assembly. The generated `file_11` linker script was switched from `SUBALIGN(16)` to `SUBALIGN(4)` for this overlay alone. The original assembler/IDO objects carried 16-byte section-tail padding; `trim_elf32_mips_text.py` adjusted the ELF32 big-endian `.text` section lengths while preserving *all* `.rel.text` relocations. GNU `objcopy --update-section` was explicitly rejected for this use because it strips the text relocation records in this toolchain.
 
-The exact original-C island comprises `0x5993E8..0x599564` including the retained 180-byte ASM selector; the C portions are 200 bytes. The five staged chunks are:
+The exact original-C island comprises `0x5993E8..0x5995E8` including the retained 180-byte ASM selector; the C portions are 332 bytes. The six staged chunks are:
 
 | Object / subsegment | Original .text bytes |
 | --- | ---: |
@@ -65,9 +65,10 @@ The exact original-C island comprises `0x5993E8..0x599564` including the retaine
 | C wrapper and reader | `0x34` |
 | ASM selector | `0xB4` |
 | C synchroniser | `0x94` |
-| ASM after `0x599564` | `0x1EF9C` |
+| C alternate reset | `0x84` |
+| ASM after `0x5995E8` | `0x1EF18` |
 
-**Independent full-ROM proof:** a new fresh extraction of the supplied upstream archive, fresh original-ROM expansion, fresh Splat and unmodified USA build, followed by the standalone C staging script and a fresh candidate build, all succeeded. Final original and rebuilt images were **33,554,432 bytes** and both SHA-1 **`6ea0ed71032ce08fc2745f412d84936382197494`**. The `file_11` baseline and candidate ELF relocation sections both contain **8,825 entries**; the complete ordered lists of relocation address, type, resolved target and symbol name are identical. The `file_11` text and data boundaries remained unchanged. No raw game memory or gameplay writes were performed.
+**Independent full-ROM proof:** a new fresh extraction of the supplied upstream archive, fresh original-ROM expansion, fresh Splat and unmodified USA build, followed by the standalone C staging script and a fresh candidate build, all succeeded. Final original and rebuilt images were **33,554,432 bytes** and both SHA-1 **`6ea0ed71032ce08fc2745f412d84936382197494`**. The `file_11` baseline and candidate ELF relocation sections both contain **8,825 entries**; their **multisets** of `(relocation site, type, resolved target, symbol name)` are identical. The fourth C function reorders three otherwise identical relocation records (indices 2506–2508), so the raw ordered relocation lists are **not** identical. The entire original-ROM image remains byte-exact. The `file_11` text and data boundaries remained unchanged. No raw game memory or gameplay writes were performed.
 
 ### Full-ROM reproduction phases
 
@@ -92,14 +93,14 @@ python3 -m decomp.research.usa_character_switch_rebuild \
   --checkout /PRIVATE/clean-mnsg --phase verify
 ```
 
-`--phase trim` changes five **scratch build objects** and a generated linker script; it does **not** patch the ROM or write to a running game. The first candidate build will normally differ before padding is removed. Preserve all relocation records. `--phase verify` rejects any different full-ROM byte or checksum. This tested standalone integration method is not yet wired into the central production `decomp.verify` manifest; until formal integration plus a fresh verifier/inventory gate, **do not increment the repository's published verified-function count**.
+`--phase trim` changes six **scratch build objects** and a generated linker script; it does **not** patch the ROM or write to a running game. The first candidate build will normally differ before padding is removed. Preserve all relocation records. `--phase verify` rejects any different full-ROM byte or checksum. This tested standalone integration method is not yet wired into the central production `decomp.verify` manifest; until formal integration plus a fresh verifier/inventory gate, **do not increment the repository's published verified-function count**.
 
 ## Verification matrix and outstanding work
 
 - Six original JP Project64-overlap unit tests and eight new unit tests for byte comparison/ELF relocation preservation passed (14 in total). They are ROM-free tests.
-- Six original-address IDO candidates checked against two real ROMs: all exact.
-- A complete original USA ROM baseline and two subsequent C-replacement rebuilds matched; the second was from an independently extracted clean upstream source.
-- USA `file_11` semantic relocation records: 8,825/8,825 identical.
+- Eight original-address IDO candidates checked against two real ROMs: all exact (332 original instruction bytes per region).
+- A complete original USA ROM baseline and two C-replacement stages (three-function and four-function) matched. The three-function reproduction was also repeated from a fresh upstream extraction; the four-function image was rebuilt from that clean checkout. All checked USA images had the exact 32 MiB original SHA-1.
+- USA `file_11` semantic relocation records: 8,825/8,825 identical as a multiset, with three original records in a different order in the four-function candidate.
 - **Not yet done:** Register the `file_11` mixed C/ASM object adapter and matching manifest entries in the production decomp pipeline; rerun the central `decomp.verify` and inventory. This work may require harmonising the existing overlay adapters without changing previous matched sources.
 - **Japanese full-ROM build:** still blocked by upstream source files with hardcoded USA `GLOBAL_ASM` paths. Isolated Japanese C function equality is proven, but there is no Japan-0 full-ROM rebuild/overlay acceptance gate yet.
-- **Next C target:** 180-byte four-character selector (`func_801DD50C_59941C` / `func_801E28BC_59E88C`) and 132-byte alternate reset (`func_801DD654_599564` / `func_801E2A04_59E9D4`). Their original full function shapes are mapped across both regions but neither has an exact IDO C candidate yet.
+- **Next C target:** 180-byte four-character selector (`func_801DD50C_59941C` / `func_801E28BC_59E88C`). The selector is still 180-byte ASM; the alternate reset now matches and is a full-ROM-proven USA C candidate.

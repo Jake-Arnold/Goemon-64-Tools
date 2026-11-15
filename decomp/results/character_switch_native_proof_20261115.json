@@ -35,6 +35,17 @@
         "exact": true,
         "candidate_sha256": "bad0b42cbda479a929526c9585f6d4e0f6a80b3824fb332be9462b685525c81f",
         "reference_sha256": "bad0b42cbda479a929526c9585f6d4e0f6a80b3824fb332be9462b685525c81f"
+      },
+      "character_alternate": {
+        "function": "func_801DD654_599564",
+        "original_vma": "0x801DD654",
+        "rom_offset": "0x599564",
+        "original_bytes": 132,
+        "equal_instruction_words": 33,
+        "instruction_words": 33,
+        "exact": true,
+        "candidate_sha256": "b6db221fe20f44b79ba9f14652a63e6a6febd2e4331ea8e11f5395d3156383bf",
+        "reference_sha256": "b6db221fe20f44b79ba9f14652a63e6a6febd2e4331ea8e11f5395d3156383bf"
       }
     },
     "japan": {
@@ -70,10 +81,21 @@
         "exact": true,
         "candidate_sha256": "9e87cb88a5fd60f120b9f65207da9863eded7bb1ddf6c890d57e2e73eef93363",
         "reference_sha256": "9e87cb88a5fd60f120b9f65207da9863eded7bb1ddf6c890d57e2e73eef93363"
+      },
+      "character_alternate": {
+        "function": "func_801E2A04_59E9D4",
+        "original_vma": "0x801E2A04",
+        "rom_offset": "0x59E9D4",
+        "original_bytes": 132,
+        "equal_instruction_words": 33,
+        "instruction_words": 33,
+        "exact": true,
+        "candidate_sha256": "5cd9a9acbc741485da9d7d416f0187a5c15bf79de2a378d41edcbd47bda6d4be",
+        "reference_sha256": "5cd9a9acbc741485da9d7d416f0187a5c15bf79de2a378d41edcbd47bda6d4be"
       }
     }
   },
-  "all_six_exact": true,
+  "all_eight_exact": true,
   "date": "2026-11-15",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "ido_compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
@@ -87,15 +109,17 @@
     "file_11_relocations": {
       "baseline_count": 8825,
       "candidate_count": 8825,
-      "all_ordered_site_type_symbol_target_tuples_identical": true
+      "identical_site_type_symbol_target_multisets": true,
+      "ordered_tuples_identical": false,
+      "records_reordered": 3
     },
-    "C_functions_in_assembly_overlaid_region": 3,
-    "C_function_bytes": 200
+    "C_functions_in_assembly_overlaid_region": 4,
+    "C_function_bytes": 332
   },
   "promotion_status": "research_verified_not_integrated_into_decomp_manifest",
   "limitations": [
-    "USA 32 MiB full-ROM equality is independently proven using the temporary Splat/ELF adapter; it has not yet been run through the central decomp.verify production manifest.",
-    "Japanese region has only original-address isolated IDO proof; Japanese full-ROM build remains blocked by hardcoded USA GLOBAL_ASM references.",
+    "USA 32 MiB full-ROM equality is proven for four C replacements staged into the pinned source, including a clean checkout; central decomp.verify manifest integration/inventory remains outstanding.",
+    "Japanese original-address IDO proof passes for all four functions, but its full-ROM build remains blocked by hardcoded USA GLOBAL_ASM references.",
     "No game ROM, source assembly, assets or compiled object files are contained in this metadata."
   ]
 }
