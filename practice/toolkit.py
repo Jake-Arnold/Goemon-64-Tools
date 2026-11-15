@@ -44,9 +44,7 @@ from practice.japanese_mupen_attach import (
     validate_rdram_base, AmbiguousJapaneseRdram,
 )
 from practice.japanese_fields_ui import JapaneseFieldsUi
-from practice.japanese_party_unlock import (
-    CHARACTER_INDEX_ADDR, PARTY_FLAGS, unlock_japan_party_member,
-)
+from practice.region_unlocks import japan_unlock_lead, write_japan_unlock
 from practice.japanese_position import (
     JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE, JAPAN_SCENE_INDEX,
     JAPAN_OEDO_SOUTH_SCENE, JAPAN_CHARACTER_INDEX,
@@ -293,15 +291,14 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.native_save_btn.state(['disabled'])
             self.native_load_btn.state(['disabled'])
 
-        # Japanese raw RDRAM viewer remains read-only even when the separate
-        # party-unlock test buttons are explicitly enabled.
-        jp_card = ttk.LabelFrame(right, text=' Japan Project64 / Mupen64Plus RDRAM (read-only) ', padding=10)
+        # Read-only diagnostics coexist with direct mapped Japanese unlock edits.
+        jp_card = ttk.LabelFrame(right, text=' Japan Project64 / Mupen64Plus RDRAM ', padding=10)
         self.jp_card = jp_card
         jp_card.pack(fill='x', pady=(0, 6))
         ttk.Label(jp_card, text='Verify Japan-0 ROM; select project64 (Windows) or mupen64plus, '
                   'then Connect. Only raw N64 bytes are exposed; USA pointers, '
                   'USA checkpoints and USA RAM editors remain disabled. '
-                  'Optional Japanese party unlocks are separate.',
+                  'Mapped Japanese unlocks write directly in the shared Unlocks tab.',
                   style='CardMuted.TLabel', wraplength=420).pack(anchor='w', pady=(0, 7))
         jp_inputs = ttk.Frame(jp_card)
         jp_inputs.pack(fill='x')
@@ -375,11 +372,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         ttk.Label(statusbar, text='EXPERIMENTAL PRACTICE ONLY  •  Never use for submitted runs',
                   style='HeaderSub.TLabel').pack(side='left')
         self.access_footer = tk.StringVar(
-            value=('JAPAN: SASUKE/YAE PARTY FLAG WRITES OPTED IN (WATCHES READ-ONLY)'
+            value=('JAPAN: mapped unlock writes enabled; unknown rows skipped'
                    if self.active_version.key == 'japan'
-                   and getattr(args, 'enable_japan_party_writes', False)
                    and not getattr(args, 'read_only', False)
-                   else 'JAPAN RAM READ ONLY  •  Emulator savestates are separate'
+                   else 'JAPAN READ ONLY'
                    if self.active_version.key == 'japan'
                    else ('READ ONLY' if getattr(args, 'read_only', False)
                          else 'USA memory writes enabled  •  Experimental entrance reload')))
@@ -439,16 +435,12 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'freeze operations are not portable.')
             self.refresh_story_progress()
         if hasattr(self, 'access_footer'):
-            jp_writes = (version.key == 'japan'
-                         and getattr(self.args, 'enable_japan_party_writes', False)
-                         and not getattr(self.args, 'read_only', False))
             self.access_footer.set(
-                'JAPAN: SASUKE/YAE PARTY FLAG WRITES OPTED IN (ALL WATCHES READ-ONLY)'
-                if jp_writes else
-                'JAPAN RAM READ ONLY  •  Emulator savestates are separate'
-                if version.key == 'japan' else
-                ('READ ONLY' if getattr(self.args, 'read_only', False) else
-                 'USA memory writes enabled  •  Experimental entrance reload'))
+                'JAPAN: mapped unlock writes enabled; unknown rows skipped'
+                if version.key == 'japan' and not getattr(self.args, 'read_only', False)
+                else 'JAPAN READ ONLY' if version.key == 'japan'
+                else ('READ ONLY' if getattr(self.args, 'read_only', False)
+                      else 'USA memory writes enabled  •  Experimental entrance reload'))
         # Japan raw-memory mode has no USA-specific field interpretation.
         if version.key == 'japan':
             self.jp_base_row.pack(fill='x', before=self.connect_button, pady=(0, 7))
@@ -549,82 +541,75 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 f'{self.verified_rom_path}. Live RAM connection still requires '
                 'the current emulator signatures.')
 
-    def enable_japan_party(self, character: int):
-        """One explicitly requested Japan party unlock; never write character index."""
-        if (self.active_version.key != 'japan' or self._connecting
+    def write_japan_raw_bytes(self, address, data, *, expected=None):
+        """Direct per-row Japanese Live Memory edit, including research fields.
+
+        No confirmation dialogue, byte allowlist, or expensive ROM revalidation
+        on every edit. Only the attached Japanese PID/base/endian are used.
+        Explicit --read-only always blocks writes. A stale displayed value
+        is rejected rather than blindly overwriting changes by the game.
+        """
+        if (self.active_version.key != 'japan'
                 or getattr(self.args, 'read_only', False)
-                or not getattr(self.args, 'enable_japan_party_writes', False)
-                or self.jp_rdram is None or self.game_pid is None
-                or self.verified_rom_path is None
-                or character not in PARTY_FLAGS):
-            self.jp_party_result.set(
-                'Unlock unavailable. Attach Japan-0 and explicitly launch with '
-                '--enable-japan-party-writes (without --read-only).')
-            return
-        name, address = PARTY_FLAGS[character]
-        consent = messagebox.askyesno(
-            f'Unlock {name} temporarily?',
-            f'Write one byte to Japanese party flag 0x{address:08X}: 00 → 01?'
-            '\n\nCreate a complete emulator savestate BEFORE proceeding.'
-            '\nThis does not switch the character itself. Use in-game C-Down '
-            'afterwards; restoring the savestate is the recovery path.'
-            '\n\nDo not save in-game progress if the unlock should not persist.',
-            parent=self.root)
-        if not consent:
-            self.jp_party_result.set(f'{name} party unlock cancelled; no RAM written.')
-            return
-
-        pid = self.game_pid
+                or self._connecting or self.jp_rdram is None
+                or self.game_pid is None
+                or self.jp_backend not in ('project64', 'mupen64plus')
+                or self.connection_target.get() != self.jp_backend):
+            raise RuntimeError('Connect Japanese RAM with writes enabled first')
+        if not isinstance(data, bytes) or len(data) not in (1, 2, 4, 8):
+            raise ValueError('Live Memory edit must contain 1, 2, 4, or 8 bytes')
+        if expected is not None and len(expected) != len(data):
+            raise ValueError('Expected and replacement byte widths differ')
         original = self.jp_rdram
-        writable = None
+        # Validate the guest address against the active 4/8 MiB reader first.
+        original.read_guest(address, len(data))
+        host = HostProcess(self.game_pid, writable=True)
         try:
-            target = self.jp_backend
-            if target not in ('mupen64plus', 'project64'):
-                raise RuntimeError('Japanese emulator backend is not confirmed; reconnect')
-            if target == 'project64' and sys.platform != 'win32':
-                raise RuntimeError('Japanese Project64 writes are Windows-only')
-            if self.connection_target.get() != target:
-                raise RuntimeError('Selected emulator changed; reconnect first')
-            if verified_emulator_pid(pid, target) != (pid, target):
-                raise RuntimeError('The verified emulator PID changed; reconnect')
-            probes = verified_japan_probes(self.verified_rom_path)
-            # Reopen only for this user-initiated write, not for background polling.
-            writable = HostProcess(pid, writable=True)
-            verified = validate_rdram_base(
-                writable, original.base, original.endian, probes,
-                allow_4mb=(target == 'project64'))
-            if getattr(verified, 'rdram_size', 0x800000) != getattr(
-                    original, 'rdram_size', 0x800000):
-                raise RuntimeError('Japanese RDRAM size changed; reconnect')
-
-            # Confirm both handles still observe identical, sane scene/character
-            # state before using the writable view.
-            for addr, width in ((CHARACTER_INDEX_ADDR, 4),
-                                (0x800CD2A2, 2), (address - 3, 4)):
-                if verified.read_guest(addr, width) != original.read_guest(addr, width):
-                    raise RuntimeError(
-                        f'Writable/read-only RAM disagreement at 0x{addr:08X}; no write')
-            result = unlock_japan_party_member(verified, character)
-            if original.read_guest(address, 1) != b'\x01':
-                raise RuntimeError(
-                    'Writable view changed but read-only PID did not confirm flag 1')
-        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
-            self.jp_party_result.set(f'Japanese party unlock rejected: {exc}')
-            self.status.set(f'Japanese party unlock rejected: {exc}')
-            return
+            writer = Rdram(host, original.base, original.endian)
+            writer.rdram_size = getattr(original, 'rdram_size', 0x800000)
+            before = writer.read_guest(address, len(data))
+            if expected is not None and before != expected:
+                raise RuntimeError('RAM value changed since opening editor; retry')
+            if before == data:
+                return False
+            writer.write_guest(address, data)
+            if writer.read_guest(address, len(data)) != data:
+                raise OSError('Japanese Live Memory write readback mismatch')
+            return True
         finally:
-            if writable is not None:
-                writable.close()
+            host.close()
 
-        if result.changed:
-            message = (f'{name} party flag set to 1 at 0x{address:08X}. '
-                       'Select using the game\'s normal C-Down button; '
-                       'observe character index 2/3. No direct index write made.')
-        else:
-            message = f'{name} party flag was already 1; no write necessary.'
-        self.jp_party_result.set(message)
-        self.status.set(message)
-        self.refresh_japan_fields(force=True)
+    def apply_japan_unlocks(self, changes):
+        """Direct mapped Japanese edits without consent or party-only guards.
+
+        The ROM/RAM identity was established at Connect. Reopen a writable
+        handle for this click, without rescanning the ROM or checking gameplay
+        character/scene each time. Only explicitly mapped Japanese bytes may
+        be written, and all unknown rows are rejected before opening a handle.
+        """
+        changes = tuple(changes)
+        if not changes:
+            return 0, 0
+        if (self.active_version.key != 'japan'
+                or getattr(self.args, 'read_only', False)
+                or self._connecting or self.jp_rdram is None
+                or self.game_pid is None
+                or self.jp_backend not in ('project64', 'mupen64plus')
+                or self.connection_target.get() != self.jp_backend):
+            raise RuntimeError('Connect Japanese RAM in write-enabled mode first')
+        for item, _target in changes:
+            if japan_unlock_lead(item) is None:
+                raise ValueError(f'{item.label}: Japanese address unknown')
+        host = HostProcess(self.game_pid, writable=True)
+        try:
+            attached = self.jp_rdram
+            writable = Rdram(host, attached.base, attached.endian)
+            writable.rdram_size = getattr(attached, 'rdram_size', 0x800000)
+            changed = sum(write_japan_unlock(writable, item, target)
+                          for item, target in changes)
+            return changed, len(changes)
+        finally:
+            host.close()
 
     def move_japan_oedo_xyz(self):
         """User-triggered XYZ in verified Oedo South as Goemon only."""
@@ -922,6 +907,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             context = get_japan_debug_context(reader)
             from practice.japanese_debug_warp import _normal_gameplay
             _normal_gameplay(context)
+            selector = getattr(self, 'scene_character', None)
+            selected = selector.current() if selector is not None else 0
+            target_character = selected - 1 if selected in (1, 2, 3, 4) else None
             spawn = self._japan_reference_entrance(
                 destination, context[1])
             handle, writable = self._japan_native_warp_writer()
@@ -931,7 +919,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                         'Japanese gameplay context changed during attachment')
                 outcome = stage_japan_direct_reload(
                     writable, destination, expected_context=context,
-                    spawn=spawn)
+                    spawn=spawn, target_character=target_character)
             finally:
                 handle.close()
             now = time.monotonic()
@@ -941,6 +929,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'reader': reader, 'started': now, 'deadline': now + 18,
                 'seen_reload': outcome.state_after_write == JAPAN_DIRECT_RELOAD_MODE,
                 'stable': 0, 'spawn': spawn,
+                'target_character': target_character,
             }
             entrance_note = (
                 f' USA-reference entrance {spawn.entrance_id} was staged.'
@@ -951,6 +940,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 f'Japan instant reload 0x{context[1]:03X} → '
                 f'0x{destination:03X}: pending destination written, '
                 f'engine 0x0C requested; waiting for playable scene.'
+                + (f' Target character {target_character} staged experimentally.'
+                   if outcome.character_staged else
+                   ' Keeping the existing character.')
                 + entrance_note)
             self.jp_debug_result.set(message)
             self.scene_status.set(message)
@@ -1440,9 +1432,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.refresh_inspector({})
             self.refresh_unlocks(force=True)
             self.notebook.select(self.scene_tab)
-            self.status.set(f'Attached read-only to Japan-0 {target} PID {pid}, '
-                            f'{size_mb} MiB RAM 0x{base:X}, {endian}. Japan Live, Value Search and '
-                            'Advanced A/B/C are read-only; USA write controls remain disabled.')
+            self.status.set(f'Attached to Japan-0 {target} PID {pid}, '
+                            f'{size_mb} MiB RAM 0x{base:X}, {endian}. '
+                            'Mapped Unlocks write directly; research and USA-only writers remain read-only.')
         elif result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
             with self.value_freezes.guard:
@@ -1900,20 +1892,16 @@ def parse_args(argv=None):
     ap.add_argument("--base",help="RDRAM host base 0x...; Japan always validates three ROM code probes")
     ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
     ap.add_argument("--game-version", choices=tuple(VERSIONS), default="usa",
-                    help="USA live toolkit (default) or Japanese Mupen read-only raw RAM")
+                    help="USA toolkit (default) or Japanese Project64/Mupen toolkit")
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
-    ap.add_argument("--enable-japan-party-writes", action="store_true",
-                    help="Allow only one-byte Japan-0 Sasuke/Yae party unlocks after confirmation; "
-                         "never write the character index")
-    ap.add_argument("--enable-japan-position-writes", action="store_true",
-                    help="Opt in to confirmed-scene Japan-0 Goemon XYZ manual moves only "
-                         "(Oedo South 0x161; each write requires confirmation and ROM/PID validation)")
-    ap.add_argument("--enable-japan-debug-menu-writes", action="store_true",
-                    help="Opt in to original manual Japanese debug-menu entry "
-                         "(legacy switch also permits Japanese direct 0x0C reload)")
-    ap.add_argument("--enable-japan-scene-writes", action="store_true",
-                    help="Opt in to Japanese Scene Browser instant 0x0C reload "
-                         "(verified live ROM/PID/RDRAM required; no debug menu)")
+    ap.add_argument("--enable-japan-party-writes", action="store_true", default=True,
+                    help=argparse.SUPPRESS)  # Deprecated; mapped unlocks write by default
+    ap.add_argument("--enable-japan-position-writes", action="store_true", default=True,
+                    help="Enable Japanese XYZ actions (on by default; --read-only disables)")
+    ap.add_argument("--enable-japan-debug-menu-writes", action="store_true", default=True,
+                    help="Enable native Japanese debug-menu entry (on by default)")
+    ap.add_argument("--enable-japan-scene-writes", action="store_true", default=True,
+                    help="Enable Japanese Scene Browser instant 0x0C reload (on by default)")
     ap.add_argument("--linux-enable-writes",action="store_true",
                     help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled
     ap.add_argument("--enable-teleport",action="store_true",default=True,help="Write game coordinates (enabled by default)")
