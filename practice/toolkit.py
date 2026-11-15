@@ -31,6 +31,7 @@ from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
+from practice.scenes import SCENES
 from practice.emulator_savestates import find_emulator_pid, verified_emulator_pid, send_state_command
 from practice.japanese_mupen_attach import (
     verified_japan_probes, discover_japanese_mupen_rdram,
