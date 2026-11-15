@@ -1,6 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
 
+### 2026-11-15 — User confirms Windows tests pass; Japanese live custom watch displays Goemon index
+
+- **New user-reported result:** After fixing the Value Search single-quote `SyntaxError` (`3e12166`), the user reports that **all tests pass** on Windows and that the Japanese toolkit **works perfectly**. No raw test output was attached to archive or independently replay.
+- **Screenshot evidence:** Japan Live / Party Test is open with a manually added read-only custom watch named `Japan candidate`, typed `u32`, guest address `0x80161DCC`, value `0`, raw bytes `0x00000000`. The built-in `Character index (candidate)` reports **Goemon (0)**, `00000000`, at the same guest address. The UI confirms successful custom-watch addition, and both entries agree.
+- **Environment context:** The user switched to Windows and Project64 3.0 for this work. The screenshot establishes UI memory-read output consistent with Japanese live RAM attachment and watch parity; it does **not**, by itself, show the emulator PID/version, raw connection diagnostics, dynamic switching to Ebisumaru/Sasuke/Yae, size of RDRAM, value-search/A-B-C scan output, or party-write behaviour specifically on Project64. Describe such remaining items as **not yet separately observed**.
+- **Milestone status:** PowerShell regression suite passes **per user report**. Japanese custom typed read-only watch can be added and displays consistent `0x80161DCC` current index with built-in Japan field in the provided screenshot. No new source-code changes required by this report. Do not close draft PR #17 until outstanding PJ64 savestate, in-game normal character switch, wide A/B/C, and full USA regression evidence is sufficient.
+
+
+
 ### 2026-11-15 — Windows smoke test reported a Python syntax failure; fixed
 
 - User's Windows PowerShell `scripts/test_japan_party.ps1` failed at the **first `compileall -q practice` gate** with `SyntaxError: unterminated string literal` in `practice/value_search_ui.py`, line 55. Direct `py -3 -m practice.toolkit --game-version japan` also failed at the same import before any game attach.
