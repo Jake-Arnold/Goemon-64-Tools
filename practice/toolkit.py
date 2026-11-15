@@ -625,6 +625,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.jp_party_result.set(message)
         self.status.set(message)
         self.refresh_japan_fields(force=True)
+        # The same Unlocks rows are used by USA and Japan. Immediately
+        # re-read Japanese party values after a confirmed one-shot write.
+        if hasattr(self, 'refresh_unlocks'):
+            self.refresh_unlocks(force=True)
 
     def move_japan_oedo_xyz(self):
         """User-triggered XYZ in verified Oedo South as Goemon only."""
