@@ -246,12 +246,13 @@ class JapaneseFieldsUi:
             button.state(['!disabled'] if enabled else ['disabled'])
 
     def _japan_reader_identity(self):
-        return (getattr(self, 'game_pid', None), self.jp_rdram.base,
-                self.jp_rdram.endian)
+        return (getattr(self, 'game_pid', None),
+                getattr(self, 'jp_backend', None), self.jp_rdram.base,
+                self.jp_rdram.endian, id(self.jp_rdram))
 
     def capture_japan_baseline(self):
         if self.active_version.key != 'japan' or self.jp_rdram is None:
-            self.jp_fields_caption.set('Connect to Japanese Mupen64Plus before capturing.')
+            self.jp_fields_caption.set('Connect to Japanese emulator before capturing.')
             return
         self._jp_compare_on = False
         self.refresh_japan_fields(force=True)
@@ -280,7 +281,7 @@ class JapaneseFieldsUi:
         names = {field.key: field.label for field in ALL_JAPAN_READS}
         names.update({self._jp_custom_key(w): w.name for w in self.jp_custom_watches})
         lines = [
-            'Japan-0 Mupen64Plus read-only RAM comparison',
+            'Japan-0 read-only emulator RAM comparison',
             f'PID/base/endian: {self._jp_baseline_identity}',
             'Changes are observations, not verified field semantics.',
         ]
@@ -322,7 +323,7 @@ class JapaneseFieldsUi:
         self._jp_baseline_identity = None
         self._jp_compare_on = False
         self._jp_last_changes = ()
-        self.jp_fields_caption.set('Connect to Japanese Mupen64Plus RAM.')
+        self.jp_fields_caption.set('Connect to Japanese Project64/Mupen64Plus RAM.')
         self.refresh_japan_party_controls()
 
     def refresh_japan_fields(self, force=False):
