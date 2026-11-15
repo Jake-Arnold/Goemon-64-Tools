@@ -49,6 +49,28 @@ class RegionUnlockMappingTests(unittest.TestCase):
         self.assertEqual(targets['yellow_fish_count'], 5)
         self.assertEqual(targets['blue_fish_count'], 3)
 
+    def test_direct_writes_preserve_adjacent_bytes_in_both_host_endians(self):
+        from tests.test_japanese_party_unlock import Process
+        for endian in ('big', 'wordswapped'):
+            with self.subTest(endian=endian):
+                p = Process(endian)
+                ram = p.rdram()
+                sasuke = next(x for x in UNLOCKS
+                              if x.label == 'Sasuke in party')
+                triton = next(x for x in UNLOCKS
+                              if x.label == 'Triton Shell')
+                p.set_guest(0x80161E94, bytes.fromhex('ABCDEF00'))
+                p.set_guest(0x80161EEC, bytes.fromhex('12345600'))
+                self.assertTrue(write_japan_unlock(ram, sasuke, 1))
+                self.assertTrue(write_japan_unlock(ram, triton, 1))
+                self.assertEqual(ram.read_guest(0x80161E94, 4),
+                                 bytes.fromhex('ABCDEF01'))
+                self.assertEqual(ram.read_guest(0x80161EEC, 4),
+                                 bytes.fromhex('12345601'))
+                self.assertTrue(write_japan_unlock(ram, sasuke, 0))
+                self.assertEqual(ram.read_guest(0x80161E94, 4),
+                                 bytes.fromhex('ABCDEF00'))
+
     def test_direct_on_off_with_no_party_guard_and_no_usa_fallback(self):
         class RAM:
             def __init__(self):
