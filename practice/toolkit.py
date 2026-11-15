@@ -32,11 +32,11 @@ from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.remembered_rom import remember_verified_rom, load_remembered_rom
-from practice.japan_native_scene_warp import (
-    japan_warp_selection, read_japan_menu_selection,
-    stage_japan_native_destination, is_japan_scene_loaded,
+from practice.japan_native_scene_warp import is_japan_scene_loaded
+from practice.japan_direct_scene_reload import (
+    JAPAN_DIRECT_RELOAD_MODE, stage_japan_direct_reload,
 )
-from practice.japan_project64_input import press_project64_native_a
+from practice.entrances import incoming, spawn_from_entry
 from practice.scenes import SCENES
 from practice.emulator_savestates import find_emulator_pid, verified_emulator_pid, send_state_command
 from practice.japanese_mupen_attach import (
@@ -874,64 +874,95 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.scene_status.set(message)
         self.status.set(message)
 
-    def start_japan_native_scene_warp(self, destination=None):
-        """Shared Scene Browser: native menu → selection → N64 A → gameplay.
+    def _japan_reference_entrance(self, destination, source):
+        """Use a uniquely matched USA-atlas entrance, if explicitly available.
 
-        This is user-triggered after CLI opt-in. It does not patch scene IDs,
-        request loading via exit flags, or bypass native character creation.
+        The user verified USA Oedo South X/Y/Z in Japan, not every entrance.
+        Do not invent coordinates for unknown/ambiguous destinations. With no
+        reference entrance the game's native reload receives map ID only.
+        """
+        atlas = getattr(self, 'entrance_atlas', None)
+        if atlas is None:
+            return None
+        rows = incoming(atlas, destination)
+        matching = [row for row in rows
+                    if row['kind'] == 'exit' and row['source_map'] == source]
+        defaults = [row for row in rows if row['kind'] == 'default']
+        for group in (matching, defaults):
+            possible = [spawn_from_entry(row) for row in group]
+            unique = {
+                (tuple(spawn.position), spawn.heading, spawn.mode): spawn
+                for spawn in possible
+            }
+            if len(unique) == 1:
+                return next(iter(unique.values()))
+        return None
+
+    def start_japan_native_scene_warp(self, destination=None):
+        """Same immediate 0x0C area-reload sequence as USA Scene Browser.
+
+        Stages Japanese pending scene/optional entrance, then requests 0x0C
+        in the SAME call. Never enters debug menu, injects A or writes active
+        scene/exit flag. Original debug-menu control is a separate fallback.
         """
         if self.jp_auto_warp is not None:
-            self.jp_debug_result.set('Finish the current native scene warp first.')
+            self.scene_status.set('Another Japanese scene reload is pending.')
             return
         try:
             destination = (
                 self.selected_japan_debug_scene()
                 if destination is None else destination)
-            target = japan_warp_selection(destination)
-            key = self.jp_warp_a_key.get()
-            if key not in ('X', 'Z', 'C', 'SPACE', 'ENTER', 'A', 'S', 'J', 'K', 'L'):
-                raise ValueError('Select the keyboard key mapped to N64 A')
+            if type(destination) is not int or destination not in SCENES:
+                raise ValueError('Select a catalogued scene')
             reader = self.jp_rdram
             if reader is None:
-                raise RuntimeError('Connect to verified Japan RAM first')
+                raise RuntimeError('Connect to verified Japan-0 RAM first')
             context = get_japan_debug_context(reader)
             from practice.japanese_debug_warp import _normal_gameplay
             _normal_gameplay(context)
-            if destination == context[1]:
-                raise ValueError('Select a different destination scene for inter-scene warp')
+            spawn = self._japan_reference_entrance(
+                destination, context[1])
             handle, writable = self._japan_native_warp_writer()
             try:
                 if get_japan_debug_context(writable) != context:
-                    raise RuntimeError('Game state changed while verifying warp')
-                enter_japan_native_debug_menu(
-                    writable, destination, expected_context=context)
+                    raise RuntimeError(
+                        'Japanese gameplay context changed during attachment')
+                outcome = stage_japan_direct_reload(
+                    writable, destination, expected_context=context,
+                    spawn=spawn)
             finally:
                 handle.close()
+            now = time.monotonic()
             self.jp_auto_warp = {
-                'destination': destination, 'category': target.category_index,
-                'stage': target.stage_index, 'label': target.category_name,
-                'source': context[1], 'character': context[2], 'pid': self.game_pid,
-                'reader': reader, 'key': key, 'phase': 'wait_menu',
-                'started': time.monotonic(), 'deadline': time.monotonic() + 28,
-                'confirm_at': None, 'stable': 0,
+                'destination': destination, 'source': context[1],
+                'character': context[2], 'pid': self.game_pid,
+                'reader': reader, 'started': now, 'deadline': now + 18,
+                'seen_reload': outcome.state_after_write == JAPAN_DIRECT_RELOAD_MODE,
+                'stable': 0, 'spawn': spawn,
             }
+            entrance_note = (
+                f' USA-reference entrance {spawn.entrance_id} was staged.'
+                if spawn is not None else
+                ' No validated entrance was available; only the native '
+                'pending scene ID was staged.')
             message = (
-                f'Warp requested: 0x{context[1]:03X} → 0x{destination:03X}. '
-                f'Waiting for native debug menu, then {target.category_name} '
-                f'index {target.stage_index} and N64 A ({key}).')
+                f'Japan instant reload 0x{context[1]:03X} → '
+                f'0x{destination:03X}: pending destination written, '
+                f'engine 0x0C requested; waiting for playable scene.'
+                + entrance_note)
             self.jp_debug_result.set(message)
             self.scene_status.set(message)
             self.status.set(message)
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
-            message = f'Automatic native warp refused: {exc}'
+            message = f'Japanese instant scene reload refused: {exc}'
             self.jp_debug_result.set(message)
             self.scene_status.set(message)
             self.status.set(message)
 
     def poll_japan_native_scene_warp(self, now):
-        """Nonblocking, time-bounded native selection and loaded-state monitor."""
+        """Observe native reload and destination; send no menu/A input."""
         pending = self.jp_auto_warp
-        if not pending:
+        if pending is None:
             return
         if (self.active_version.key != 'japan'
                 or getattr(self.args, 'read_only', False)
@@ -939,70 +970,48 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or self.game_pid != pending['pid']
                 or self.jp_backend != 'project64'
                 or self._connecting):
-            self._finish_japan_native_warp('Japanese warp cancelled: emulator session changed')
+            self._finish_japan_native_warp(
+                'Japan scene reload cancelled: emulator session changed')
             return
         if now > pending['deadline']:
             self._finish_japan_native_warp(
-                f'Native warp to 0x{pending["destination"]:03X} NOT confirmed '
-                'before timeout. No additional writes or key input.')
+                f'Japan reload to 0x{pending["destination"]:03X} '
+                'NOT confirmed before timeout; no retry was sent.')
             return
         try:
-            phase = pending['phase']
             state = self.jp_rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
-            if phase == 'wait_menu':
-                if now - pending['started'] < 0.30:
+            if state == JAPAN_DIRECT_RELOAD_MODE:
+                pending['seen_reload'] = True
+                pending['stable'] = 0
+                return
+            if state == JAPAN_NATIVE_DEBUG_MODE:
+                self._finish_japan_native_warp(
+                    'Japan reload unexpectedly entered original debug menu; '
+                    'no menu selection or A input sent.')
+                return
+            if is_japan_scene_loaded(
+                    self.jp_rdram, pending['destination']):
+                # A different loaded map is independent evidence of a reload
+                # even when the short 0x0C interval was missed by Tk polling.
+                if not (pending['seen_reload']
+                        or pending['destination'] != pending['source']):
                     return
-                if state != JAPAN_NATIVE_DEBUG_MODE:
-                    return
-                handle, writable = self._japan_native_warp_writer()
-                try:
-                    stage_japan_native_destination(
-                        writable, pending['destination'])
-                finally:
-                    handle.close()
-                pending['phase'] = 'staged'
-                pending['confirm_at'] = now + 0.25
-                message = (f'Native menu staged: {pending["label"]} / '
-                           f'{pending["stage"]}. Checking whether values persist.')
-                self.jp_debug_result.set(message)
-                self.scene_status.set(message)
-            elif phase == 'staged':
-                if state != JAPAN_NATIVE_DEBUG_MODE:
-                    raise RuntimeError('Native menu exited before A confirmation')
-                if now < pending['confirm_at']:
-                    return
-                selected = read_japan_menu_selection(self.jp_rdram)
-                if selected != (pending['category'], pending['stage']):
-                    raise RuntimeError(
-                        f'Native menu overwrote category/stage {selected}; '
-                        'automatic A not sent')
-                # The selected keyboard key is mapped to N64 A in Project64.
-                # A is held long enough for its emulator polling cycle.
-                release = press_project64_native_a(
-                    pending['pid'], pending['key'])
-                self.jp_native_key_release = release
-                self.root.after(150, self._release_japan_native_key)
-                pending['phase'] = 'wait_load'
-                message = (
-                    f'N64 A ({pending["key"]}) sent to original menu. '
-                    f'Waiting for full scene 0x{pending["destination"]:03X} load.')
-                self.jp_debug_result.set(message)
-                self.scene_status.set(message)
-            elif phase == 'wait_load':
-                if is_japan_scene_loaded(
-                        self.jp_rdram, pending['destination']):
-                    pending['stable'] += 1
-                    if pending['stable'] >= 3:
-                        self._finish_japan_native_warp(
-                            f'Native scene warp loaded 0x{pending["destination"]:03X} '
-                            f'{SCENES[pending["destination"]]}: stable gameplay, '
-                            'character and XYZ observed. Check controls in Project64.')
-                else:
-                    pending['stable'] = 0
+                pending['stable'] += 1
+                if pending['stable'] >= 3:
+                    spawn_note = (
+                        ' Reference entrance staged from USA atlas.'
+                        if pending['spawn'] is not None else
+                        ' Native default entrance/position remains to be verified.')
+                    self._finish_japan_native_warp(
+                        f'Japan scene reload reached 0x{pending["destination"]:03X} '
+                        f'{SCENES[pending["destination"]]} with three stable '
+                        'gameplay/character/XYZ reads. Confirm actual controls '
+                        'and footing in Project64.' + spawn_note)
+            else:
+                pending['stable'] = 0
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
             self._finish_japan_native_warp(
-                f'Native scene warp stopped: {exc}. Restore Project64 '
-                'savestate if needed; no retry was sent.')
+                f'Japan scene reload stopped: {exc}; no retry was sent.')
 
     def native_savestate_action(self, action):
         """Request native emulator-owned F5/F7; never claim it finished writing."""
