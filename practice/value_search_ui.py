@@ -12,6 +12,27 @@ from practice.value_search import (
 
 
 class ValueSearchMixin:
+    def _value_search_reader(self):
+        """One region-selected *read-only* guest-RAM reader.
+
+        Japanese Mupen RDRAM is verified independently and never assigned to
+        self.mem: that would expose USA pointer and write operations.
+        """
+        if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan':
+            return getattr(self, 'jp_rdram', None)
+        return getattr(self, 'mem', None)
+
+    def invalidate_value_search_connection(self):
+        """Discard scan identity on ROM/PID/RDRAM changes and savestate loads."""
+        self.value_scan_generation += 1
+        self.value_scan_memory = None
+        # A worker may still be using the previous scanner: let its stale
+        # response be discarded by _value_search_poll instead of racing clear().
+        if not self.value_scan_busy:
+            self.value_scanner.clear()
+        self.value_search_tree.delete(*self.value_search_tree.get_children())
+        self.value_search_status.set('Connection changed; start a new read-only scan.')
+
     def build_value_search_tab(self, notebook):
         self.value_search_size = RDRAM_SIZE
         self.value_scanner = ValueScanner()
@@ -31,7 +52,7 @@ class ValueSearchMixin:
         self.value_search_tab = tab
         ttk.Label(tab, text='Find oil, Ryo, boss HP, timers and other unknown values',
                   font=('Segoe UI Semibold', 16)).pack(anchor='w', pady=(0, 7))
-        ttk.Label(tab, text='Scans all 8 MiB of US N64 guest RAM; no player object required. '
+        ttk.Label(tab, text='Scans all 8 MiB of the selected N64 ROM's guest RAM; no player object required. '
                   'Reads only. Each filter compares a new snapshot with the previous one. '
                   'Values are unverified candidates, not named game fields.',
                   wraplength=1100).pack(anchor='w', pady=(0, 10))
@@ -91,7 +112,7 @@ class ValueSearchMixin:
         if self.value_scan_busy:
             self.value_search_status.set('A RAM read is already running.')
             return
-        mem = self.mem
+        mem = self._value_search_reader()
         if mem is None:
             self.value_search_status.set('Connect to a running game first.')
             return
@@ -141,7 +162,7 @@ class ValueSearchMixin:
             return
         generation, mem, action, scanner, rows, error = result
         self.value_scan_busy = False
-        if generation != self.value_scan_generation or mem is not self.mem:
+        if generation != self.value_scan_generation or mem is not self._value_search_reader():
             self.value_search_status.set('Game connection changed; start a new scan.')
             self.value_scanner.clear()
             self.value_scan_memory = None
@@ -171,7 +192,7 @@ class ValueSearchMixin:
 
     def _value_search_auto_tick(self):
         if (self.value_search_autorefresh.get() and not self.value_scan_busy and
-                self.value_scanner.previous is not None and self.mem is self.value_scan_memory and
+                self.value_scanner.previous is not None and self._value_search_reader() is self.value_scan_memory and
                 self.notebook.select() == str(self.value_search_tab)):
             self._value_start('refresh')
         self.root.after(1800, self._value_search_auto_tick)
@@ -194,6 +215,12 @@ class ValueSearchMixin:
         addr = selected[0]
         kind = self.value_scanner.kind
         if kind is None:
+            return
+        if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan':
+            if self.add_japan_custom_watch_from_search(addr, kind):
+                self.notebook.select(self.jp_fields_tab)
+            else:
+                self.value_search_status.set(self.jp_custom_watch_status.get())
             return
         self.user_watch_name.set(f'Value Search {addr}')
         self.user_watch_address.set(addr)
