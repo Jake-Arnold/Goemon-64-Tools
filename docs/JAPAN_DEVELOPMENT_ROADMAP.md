@@ -1,5 +1,18 @@
 # Japanese port work plan — living engineering handoff (2026-11-15)
 
+
+## Active shared-toolkit milestone — USA/Japan version dispatch (2026-11-15)
+
+- **Navigation:** The original Scene Browser is shared. Japan mode hides the USA entrance and forced-character controls, leaves the same scene list visible, and routes double-click/“Warp to selected” through its original native level selector. The Japanese-only duplicate list has been deleted. The separate “Open original debug menu” button remains a manual fallback and no longer masquerades as a scene warp.
+- **Japanese automatic warp (first full implementation, NOT live proven):** `practice/japan_native_scene_warp.py` stages category `0x800CD294` (u8, SHOP=4) and stage `0x800CD2A4` (u16, index 65 for scene `0x1D1`); `practice/japan_project64_input.py` sends one configurable Project64 N64 A key, with release; `Toolkit.start_japan_native_scene_warp`/`poll_japan_native_scene_warp` wait for engine state `0x0A`, verify selection holds, then require repeated stable gameplay observations at the requested map. **Only native debug-menu opening and Oedo same-scene XYZ teleport are user-live-confirmed. No completed inter-scene load has been reported.**
+- **ROM persistence:** `practice/remembered_rom.py` stores the last exactly verified Japan-0 ROM file path and expected SHA-1 under the user config directory, rehashes the actual file at every future use, and always preserves separate emulator PID, RDRAM extent/endian and executable-code verification. No cached process or write access.
+- **Shared data tabs:** Live Memory switches to Japan's 58 published fields + 10 scene probes + observed XYZ + JP-scoped typed watches; Unlocks becomes read-only JP inventory/party reads plus two opt-in confirmed one-byte party flags; Story Progress uses JP source-backed item/map/bonus candidate rows instead of USA story bits; Event Sessions uses the exact same A/B/C, idle and control research workflow with a user-specified **100-byte Japanese window** (default `0x80161D80`, not a verified event bank), plus existing Advanced RAM comparison; Damage events samples JP HP `0x80161DD7` and regional character/scene with no USA task pointer.
+- **Deliberate remaining limits:** Generic JP raw hex writes, arbitrary freezes, logical checkpoints/USA actor restore, USA native menu calibration and proven JP event semantics are not ported merely by turning their tabs on. User-visible buttons are guarded or read-only until individual Japanese ownership and safety are established.
+- **Regression coverage authored/pushed:** synthetic ROM-cache tamper/missing tests, Japan category/stage/mode/destination tests, shared Scene Browser dispatch, JP live field data, damage capture, Japan A/B/C backend roundtrip, and a native Tk Japan Event Sessions switch/record test, all linked in the Windows and Linux parity runners.
+- **Immediate acceptance:** run `.\\scripts\\test_japan_party.ps1` after pulling the branch and compare a Project64 scene 0x161 → 0x1D1 transition. Confirm the game's on-screen full load and controls, inspect menu A key binding if no transition. Gather the entire traceback for any regression; **no tests in this new batch have yet been reported passing on Windows**.
+- **GitHub discipline:** every meaningful file change is immediately committed to `chatgptweb/japan-controlled-party-writes`, PR #17 remains draft, issue #18 tracks acceptance.
+
+
 ## Current validated baseline
 
 - The user attached the toolkit directly to Japan revision-0 **Mupen64Plus PID 959604** on Linux using independently checked executable signatures and a word-swapped 8 MiB RDRAM map.
