@@ -415,24 +415,30 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         else:
             self.jp_card.pack_forget()
         self.refresh_japan_party_controls()
-        # Never run the USA raw writer or player-task freezes on a Japan RAM
-        # view: the main tabs stay available for JP read-only data.
+        # Japan permits fixed-address raw freezes; USA-only task-pointer /
+        # health / God Mode controls remain disabled. No USA guest offsets are
+        # ever used by Japanese freeze polling.
         usa_edit = bool(
             version.key == 'usa' and self.args.enable_hex_edit
             and not getattr(self.args, 'read_only', False))
+        jp_edit = bool(
+            version.key == 'japan'
+            and getattr(self.args, 'enable_hex_edit', True)
+            and not getattr(self.args, 'read_only', False))
         self.raw_write_btn.state(
             ['!disabled'] if usa_edit else ['disabled'])
-        for button in (
-                self.freeze_raw_button, self.freeze_health_button,
-                self.god_mode_button, self.enemy_pass_through_button):
+        self.freeze_raw_button.state(
+            ['!disabled'] if (usa_edit or jp_edit) else ['disabled'])
+        for button in (self.freeze_health_button,
+                       self.god_mode_button, self.enemy_pass_through_button):
             button.state(['!disabled'] if usa_edit else ['disabled'])
         if version.key == 'japan':
             self.inspector_status.set(
-                'Japan Live Memory: Japanese RAM addresses; custom watches '
-                'read-only. USA raw writes and task freezes blocked.')
+                'Japan Live Memory: right-click to edit or freeze fixed guest '
+                'addresses; freeze pauses during transitions.')
             self.freeze_status.set(
-                'Japan: use source-backed read-only watches; USA task-pointer '
-                'freeze operations are not portable.')
+                'Japan-0 raw freezes available during stable gameplay; '
+                'USA task-pointer/health/God Mode freezes remain disabled.')
             self.refresh_story_progress()
         if hasattr(self, 'access_footer'):
             self.access_footer.set(
@@ -540,6 +546,24 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 f'Previously selected Japan-0 ROM reverified: '
                 f'{self.verified_rom_path}. Live RAM connection still requires '
                 'the current emulator signatures.')
+
+    def _open_japan_freeze_writer(self, attached, token):
+        """Worker-only, ephemeral Japan-0 writer; never retain across polls."""
+        if (self.active_version.key != 'japan'
+                or self.jp_rdram is not attached
+                or token != self.freeze_token()
+                or getattr(self.args, 'read_only', False)
+                or self._connecting or self.game_pid is None
+                or self.jp_backend not in ('project64', 'mupen64plus')):
+            raise RuntimeError('Japanese freeze connection changed')
+        host = HostProcess(self.game_pid, writable=True)
+        try:
+            writer = Rdram(host, attached.base, attached.endian)
+            writer.rdram_size = getattr(attached, 'rdram_size', 0x800000)
+            return host, writer
+        except Exception:
+            host.close()
+            raise
 
     def write_japan_raw_bytes(self, address, data, *, expected=None):
         """Direct per-row Japanese Live Memory edit, including research fields.

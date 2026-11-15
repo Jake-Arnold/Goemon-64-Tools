@@ -120,7 +120,7 @@ class InspectorMixin(EntranceMixin):
         if self.watch_alias_load_error:
             ttk.Label(watch_tools,text='Saved field names could not be read: '+self.watch_alias_load_error,
                       style='Muted.TLabel').pack(anchor='w')
-        ttk.Label(inspector,text='Right-click any Live Memory row to edit its hex value or rename it (and freeze USA values). Double-click Hex to edit. Writes enabled unless --read-only.').pack(anchor='w')
+        ttk.Label(inspector,text='Right-click Live Memory to edit, rename, freeze or unfreeze a fixed N64 RAM value (USA and Japan). Double-click Hex to edit. Freezes pause during loading and stop on disconnect.').pack(anchor='w')
         manual=ttk.Frame(inspector);manual.pack(fill='x',pady=(3,7))
         ttk.Label(manual,text='Raw address:').pack(side='left')
         self.raw_address=tk.StringVar(value='0x8015C717')
@@ -392,9 +392,8 @@ class InspectorMixin(EntranceMixin):
             command=lambda row_id=row_id: self.edit_live_watch_value(row_id))
         menu.add_separator()
         menu.add_command(label='Unfreeze value' if active else 'Freeze value',
-                         state='normal' if (self.active_version.key != 'japan'
-                              and watch.addr is not None
-                              and not getattr(self.args,'read_only',False))
+                         state='normal' if (editor_available
+                              and getattr(self.args, 'enable_hex_edit', True))
                               else 'disabled',
                          command=lambda row_id=row_id:self.toggle_live_watch_freeze(row_id))
         menu.add_command(label='Rename field…',

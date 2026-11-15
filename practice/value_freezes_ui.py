@@ -5,12 +5,13 @@ from tkinter import ttk
 
 from practice.checkpoints import _ensure_capture_safe
 from practice.hex_edit import parse_hex, get_policy
-from practice.value_freezes import ValueFreezes, FastFreezeWorker
+from practice.value_freezes import FastFreezeWorker
+from practice.japan_value_freezes import RegionalValueFreezes, stable_japan_gameplay
 
 
 class ValueFreezesMixin:
     def build_value_freezes_tab(self, notebook):
-        self.value_freezes = ValueFreezes()
+        self.value_freezes = RegionalValueFreezes(self._open_japan_freeze_writer)
         self._freeze_worker_messages = queue.SimpleQueue()
         self._freeze_worker = FastFreezeWorker(
             self.value_freezes, self._freeze_worker_connection, self._freeze_worker_messages)
@@ -70,10 +71,26 @@ class ValueFreezesMixin:
         self.root.after(150,self.poll_value_freezes)
 
     def freeze_token(self):
-        return (self.game_pid,id(self.mem),getattr(self.mem,'base',None),getattr(self.mem,'endian',None))
+        if self.active_version.key == 'japan':
+            reader = self.jp_rdram
+            return ('japan', self.game_pid, id(reader),
+                    getattr(reader, 'base', None),
+                    getattr(reader, 'endian', None),
+                    getattr(reader, 'rdram_size', None),
+                    self.jp_backend)
+        return (self.game_pid, id(self.mem), getattr(self.mem, 'base', None),
+                getattr(self.mem, 'endian', None))
 
     def _freeze_worker_connection(self):
-        """Plain Python attributes only; never read Tk variables from worker."""
+        """Worker reads only plain Python attributes, never Tk variables."""
+        if self.active_version.key == 'japan':
+            connected = (
+                self.jp_rdram is not None and self.game_pid is not None
+                and self.jp_backend in ('project64', 'mupen64plus')
+                and not self._connecting
+                and not getattr(self.args, 'read_only', False)
+                and getattr(self.args, 'enable_hex_edit', True))
+            return self.jp_rdram, self.freeze_token(), bool(connected)
         return (self.mem, self.freeze_token(),
                 not getattr(self.args,'read_only',False) and self.args.enable_hex_edit)
 
@@ -94,6 +111,19 @@ class ValueFreezesMixin:
             return self.value_freezes.poll(ram,token,writable=writable)
 
     def require_freeze_access(self, raw=False):
+        if self.active_version.key == 'japan':
+            if not raw:
+                raise PermissionError('USA health, God Mode and task freezes are not Japan-0 compatible')
+            if (self.jp_rdram is None or self.game_pid is None or self._connecting
+                    or self.jp_backend not in ('project64', 'mupen64plus')
+                    or self.connection_target.get() != self.jp_backend):
+                raise RuntimeError('Connect to Japanese RAM before freezing')
+            if (getattr(self.args, 'read_only', False)
+                    or not getattr(self.args, 'enable_hex_edit', True)):
+                raise PermissionError('Value freezing disabled by --read-only')
+            if stable_japan_gameplay(self.jp_rdram) is None:
+                raise ValueError('Freeze requires stable Japanese gameplay')
+            return
         if not self.mem:raise ValueError('Connect to a game first')
         if getattr(self.args,'read_only',False) or not self.args.enable_hex_edit:
             raise PermissionError('Value freezing is disabled in read-only mode')
@@ -165,8 +195,10 @@ class ValueFreezesMixin:
                 raise ValueError('Selected watch is no longer available')
             if watch.addr is None:
                 raise ValueError('Selected watch has no fixed guest address')
-            spec=next((s for s in self.custom_watches if s.row_name==watch.name),None)
-            policy=get_policy(watch.addr)
+            japan = self.active_version.key == 'japan'
+            definitions = self.jp_custom_watches if japan else self.custom_watches
+            spec=next((s for s in definitions if s.row_name==watch.name),None)
+            policy=None if japan else get_policy(watch.addr)
             raw_text=watch.raw.removeprefix('0x').removeprefix('0X').strip()
             width=(spec.width if spec else policy.width if policy else
                    len(raw_text)//2 if len(raw_text) in (2,4,8,16) and
@@ -174,7 +206,8 @@ class ValueFreezesMixin:
             if width not in (1,2,4,8):
                 raise ValueError('No supported scalar width for this watch')
             # Always fetch current game RAM bytes instead of freezing a stale table value.
-            value=self.mem.read_guest(watch.addr,width)
+            ram=self.jp_rdram if japan else self.mem
+            value=ram.read_guest(watch.addr,width)
             label=self.display_watch_name(watch.name)
             self.value_freezes.add(self.freeze_token(),watch.addr,value,label)
             self._ensure_freeze_worker()

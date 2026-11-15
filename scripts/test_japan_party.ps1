@@ -54,6 +54,7 @@ $backendTests = @(
     'tests.test_rom_layout_audit',
     'tests.test_rom_context_audit',
     'tests.test_japan_live_memory_edit',
+    'tests.test_japan_value_freezes',
     'tests.test_japan_event_sessions',
     'tests.test_japan_damage_capture',
     'tests.test_japan_native_scene_warp',
