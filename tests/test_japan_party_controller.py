@@ -5,7 +5,7 @@ import unittest
 
 from autosplitter.memory import Rdram
 from practice.toolkit import Toolkit
-from practice.unlocks import UNLOCKS
+from practice.unlocks import UNLOCKS, Unlock
 from practice.region_unlocks import japan_unlock_all_targets
 from practice.japanese_party_unlock import CHARACTER_INDEX_ADDR
 from tests.test_japanese_party_unlock import Process
@@ -89,20 +89,25 @@ class JapanesePartyControllerTests(unittest.TestCase):
         self.assertEqual(writer.rdram().read_guest(0x80161F07, 1), bytes((1,)))
         self.assertEqual(writer.rdram().read_guest(0x80161F13, 1), bytes((3,)))
 
-    def test_unlock_all_opens_one_process_and_never_writes_unknown(self):
+    def test_bulk_unlock_writes_29_candidates_but_skips_five_guesses(self):
         writer = Writer()
         screen = controller(writer)
         targets = japan_unlock_all_targets()
-        self.assertEqual(len(targets), 9)
+        self.assertEqual(len(targets), 29)
         with patch('practice.toolkit.HostProcess', return_value=writer) as host:
             changed, total = Toolkit.apply_japan_unlocks(screen, targets)
-        self.assertEqual((changed, total), (9, 9))
+        self.assertEqual((changed, total), (29, 29))
         host.assert_called_once_with(959604, writable=True)
         self.assertEqual(writer.close_count, 1)
         self.assertEqual(writer.rdram().read_guest(0x80161F0B, 1), bytes((8,)))
         self.assertEqual(writer.rdram().read_guest(0x80161F0F, 1), bytes((5,)))
         self.assertEqual(writer.rdram().read_guest(0x80161F13, 1), bytes((3,)))
-        self.assertEqual(len(writer.writes), 9)
+        self.assertEqual(len(writer.writes), 29)
+        self.assertEqual(writer.rdram().read_guest(0x80161EAF, 1), bytes((1,)))
+        self.assertEqual(writer.rdram().read_guest(0x80161ECB, 1), bytes((1,)))
+        self.assertEqual(writer.rdram().read_guest(0x80161ECF, 1), bytes((1,)))
+        self.assertEqual(writer.rdram().read_guest(0x8016204B, 1), bytes((0,)))
+        self.assertEqual(writer.rdram().read_guest(0x80161DF9, 1), bytes((0,)))
 
     def test_unknown_row_rejected_before_opening_host(self):
         writer = Writer()
@@ -110,7 +115,8 @@ class JapanesePartyControllerTests(unittest.TestCase):
         with patch('practice.toolkit.HostProcess') as host:
             with self.assertRaisesRegex(ValueError, 'unknown'):
                 Toolkit.apply_japan_unlocks(
-                    screen, ((unlock('Goemon in party'), 1),))
+                    screen, ((Unlock('Unknown future row', 0x80001234,
+                                     'Items and keys'), 1),))
         host.assert_not_called()
         self.assertEqual(writer.writes, [])
 
