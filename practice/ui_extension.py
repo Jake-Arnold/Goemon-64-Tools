@@ -163,8 +163,12 @@ class InspectorMixin(EntranceMixin):
         self.scene_tab=scenes
         self.scene_live=tk.StringVar(value='Current map: —')
         ttk.Label(scenes,textvariable=self.scene_live,font=('Consolas',12)).pack(anchor='w',pady=4)
-        ttk.Label(scenes,text='Single-click selects; double-click immediately requests the selected entrance reload (experimental). The manual debug-menu button remains available.').pack(anchor='w')
+        self.scene_instruction=ttk.Label(
+            scenes,text='Single-click selects; double-click requests the '
+                        'version-specific native scene warp.')
+        self.scene_instruction.pack(anchor='w')
         character_line=ttk.Frame(scenes);character_line.pack(fill='x',pady=4)
+        self.scene_character_line=character_line
         ttk.Label(character_line,text='Target character:').pack(side='left')
         self.scene_character=ttk.Combobox(character_line,state='readonly',width=30,
                values=('0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
@@ -186,8 +190,13 @@ class InspectorMixin(EntranceMixin):
         self.scene_list.bind('<<ListboxSelect>>',self.select_scene)
         self.scene_list.bind('<Double-Button-1>',self.activate_selected_scene)
         self.draw_scene_list()
-        ttk.Label(scenes,text='Experimental 0x0C reload: stage the selected ROM entrance XYZ and facing before native loading, then place the loaded player after destination/character checks. Collision, camera and scene scripts still require live validation. The old exit-flag route remains disabled.',wraplength=950).pack(anchor='w',pady=3)
-        self.experimental_warp_btn=ttk.Button(scenes,text='EXPERIMENT: reload at selected entrance',
+        self.scene_transition_note=ttk.Label(
+            scenes, text='USA experimental entrance reload with actor and XYZ '
+                         'checks. Japan uses the native debug-menu category/stage '
+                         'and A input instead of direct scene ID writes.',
+            wraplength=950)
+        self.scene_transition_note.pack(anchor='w',pady=3)
+        self.experimental_warp_btn=ttk.Button(scenes,text='Warp to selected scene',
             command=self.try_reload_warp,style='Gold.TButton')
         self.experimental_warp_btn.pack(fill='x',pady=4)
         if not self.args.enable_hex_edit:self.experimental_warp_btn.state(['disabled'])
@@ -195,7 +204,72 @@ class InspectorMixin(EntranceMixin):
         self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.enter_debug_menu)
         self.native_debug_btn.pack(fill='x',pady=5)
         if not self.args.enable_debug_menu:self.native_debug_btn.state(['disabled'])
-        ttk.Label(scenes,text='Warp destinations use the original debug-menu transition and the selected entrance coordinates.',wraplength=950).pack(anchor='w')
+        self.scene_footer_note=ttk.Label(
+            scenes,text='USA reload uses the selected entrance; Japan uses its '
+                        'native debug menu to load the chosen room.',
+            wraplength=950)
+        self.scene_footer_note.pack(anchor='w')
+
+    def configure_scene_browser_region(self):
+        """One browser with two explicit, separately validated warp backends."""
+        japan = self.active_version.key == 'japan'
+        if japan:
+            self.scene_instruction.configure(
+                text='JAPAN: single-click selects; double-click immediately '
+                     'requests the selected room using the same 0x0C area '
+                     'reload mechanism as USA. No debug menu is opened.')
+            self.scene_character_line.pack_forget()
+            self.entrance_box.pack_forget()
+            self.scene_transition_note.configure(
+                text='Japan-0: stage the pending destination at '
+                     '0x800CD490, then request native area reload 0x0C at '
+                     '0x800CD284. No input injection; verify loaded scene.')
+            self.experimental_warp_btn.configure(
+                text='Warp to selected Japanese scene')
+            self.native_debug_btn.configure(
+                text='Open ORIGINAL debug menu (manual only)')
+            enabled = bool(
+                (getattr(self.args, 'enable_japan_scene_writes', False)
+                 or getattr(self.args, 'enable_japan_debug_menu_writes', False))
+                and not getattr(self.args, 'read_only', False))
+            self.scene_footer_note.configure(
+                text='Scene Browser instantly triggers Japan-0 native reload '
+                     '(0x0C). If cached USA reference entrance data exists, '
+                     'use it when unambiguous. No active-map or exit-bit writes.')
+        else:
+            self.scene_instruction.configure(
+                text='USA: single-click selects; double-click uses the '
+                     'selected entrance reload. Manual debug menu is separate.')
+            self.scene_character_line.pack(fill='x', pady=4,
+                                           after=self.scene_instruction)
+            self.entrance_box.pack(fill='x', pady=4,
+                                   after=self.scene_character_line)
+            self.scene_transition_note.configure(
+                text='USA experimental native entrance reload with verified '
+                     'spawn and character checks.')
+            self.experimental_warp_btn.configure(
+                text='Warp to selected USA entrance')
+            self.native_debug_btn.configure(
+                text='Open original debug menu (manual only)')
+            enabled = bool(getattr(self.args, 'enable_hex_edit', False)
+                           and getattr(self.args, 'enable_teleport', False)
+                           and not getattr(self.args, 'read_only', False))
+            self.scene_footer_note.configure(
+                text='USA and Japan both use native 0x0C area reloads, '
+                     'with independent region-specific addresses.')
+        self.experimental_warp_btn.state(
+            ['!disabled'] if enabled else ['disabled'])
+        manual = bool(
+            (getattr(self.args, 'enable_japan_debug_menu_writes', False)
+             if japan else getattr(self.args, 'enable_debug_menu', False))
+            and not getattr(self.args, 'read_only', False))
+        self.native_debug_btn.state(
+            ['!disabled'] if manual else ['disabled'])
+        self.draw_scene_list()
+        self.scene_status.set(
+            'Japan-0: select a room and double-click for a native warp.'
+            if japan else 'USA: select a room and double-click for '
+                          'the experimental entrance reload.')
 
     def refresh_checkpoint_options(self):
         if not hasattr(self,'diff_cp'):return
@@ -204,6 +278,17 @@ class InspectorMixin(EntranceMixin):
         if labels and self.diff_cp.current()<0:self.diff_cp.current(len(labels)-1)
 
     def add_custom_watch(self):
+        if self.active_version.key == 'japan':
+            if self.add_japan_custom_watch_from_search(
+                    self.user_watch_address.get(),
+                    self.user_watch_type.get(),
+                    label=self.user_watch_name.get()):
+                self.refresh_inspector({})
+                self.inspector_status.set(
+                    'Japan-only typed custom watch saved; read-only.')
+            else:
+                self.inspector_status.set(self.jp_custom_watch_status.get())
+            return
         try:
             spec=make_watch(self.user_watch_name.get(),self.user_watch_address.get(),
                             self.user_watch_type.get())
@@ -226,6 +311,28 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Add watch failed: {exc}')
 
     def remove_custom_watch(self):
+        if self.active_version.key == 'japan':
+            selected = set(self.watch_tree.selection())
+            found = next(
+                (item for item in self.jp_custom_watches
+                 if item.row_name in selected), None)
+            if found is None:
+                self.inspector_status.set('Select a Japanese custom watch first.')
+                return
+            updated = [item for item in self.jp_custom_watches if item != found]
+            try:
+                save_watches(self.jp_watch_path, updated)
+            except (OSError, ValueError) as exc:
+                self.inspector_status.set(f'Japan watch removal failed: {exc}')
+                return
+            self.jp_custom_watches = updated
+            if self.jp_fields_tree.exists(self._jp_custom_iid(found)):
+                self.jp_fields_tree.delete(self._jp_custom_iid(found))
+            self._jp_reset_comparison()
+            self.refresh_japan_fields(force=True)
+            self.refresh_inspector({})
+            self.inspector_status.set(f'Removed Japan-only watch: {found.name}')
+            return
         chosen=self.watch_tree.selection()
         names={spec.row_name for spec in self.custom_watches}
         selected=next((name for name in chosen if name in names),None)
@@ -264,7 +371,10 @@ class InspectorMixin(EntranceMixin):
         menu.delete(0,'end')
         active=(watch.addr is not None and self.value_freezes.get(watch.addr) is not None)
         menu.add_command(label='Unfreeze value' if active else 'Freeze value',
-                         state='normal' if watch.addr is not None and not getattr(self.args,'read_only',False) else 'disabled',
+                         state='normal' if (self.active_version.key != 'japan'
+                              and watch.addr is not None
+                              and not getattr(self.args,'read_only',False))
+                              else 'disabled',
                          command=lambda row_id=row_id:self.toggle_live_watch_freeze(row_id))
         menu.add_command(label='Rename field…',
                          command=lambda row_id=row_id:self.rename_live_watch(row_id))
@@ -342,7 +452,12 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Rename failed: {exc}')
 
     def write_raw_hex(self):
-        """Write explicitly entered guest bytes on a writable connection."""
+        """Write explicitly entered guest bytes on a writable USA connection."""
+        if self.active_version.key == 'japan':
+            self.inspector_status.set(
+                'Japanese raw writes require a verified region-specific control; '
+                'generic USA raw editor is disabled.')
+            return
         if not self.mem:
             self.inspector_status.set('Connect to the game first.')
             return
@@ -362,7 +477,11 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Raw write failed: {exc}')
 
     def edit_live_hex(self,event):
-        """Launch a typed hex editor only for the clicked HEX column."""
+        """Never apply USA hex policies to Japanese live addresses."""
+        if self.active_version.key == 'japan':
+            self.inspector_status.set(
+                'Japan Live is read-only; use a verified Japanese write control.')
+            return
         if self.watch_tree.identify_region(event.x,event.y)!='cell':return
         if self.watch_tree.identify_column(event.x)!='#3':return
         row_id=self.watch_tree.identify_row(event.y)
@@ -431,6 +550,39 @@ class InspectorMixin(EntranceMixin):
         self.event_text.see('end');self.event_text.configure(state='disabled')
 
     def refresh_inspector(self, snapshot):
+        if self.active_version.key == 'japan':
+            if self.jp_rdram is None:
+                self.watch_rows=[]
+                self.draw_watches()
+                self.scene_live.set('Current map: —')
+                self.inspector_status.set('Connect to Japan-0 RDRAM for shared Live Memory.')
+                return
+            import time
+            now=time.monotonic()
+            if now-self.last_inspect_at < 0.30:
+                return
+            self.last_inspect_at=now
+            from practice.region_views import japan_live_watches
+            try:
+                rows=japan_live_watches(self.jp_rdram, self.jp_custom_watches)
+                changed=sum(
+                    1 for row in rows
+                    if row.name in self.watch_previous
+                    and self.watch_previous[row.name] != row.raw)
+                self.watch_rows=rows
+                self.draw_watches()
+                self.watch_previous={row.name:row.raw for row in rows}
+                scene=int.from_bytes(
+                    self.jp_rdram.read_guest(0x800CD2A2, 2), 'big')
+                self.scene_live.set(
+                    f'Current map: 0x{scene:03X} '
+                    f'{self.scene_catalog().get(scene, "unmapped")}')
+                self.inspector_status.set(
+                    f'Japan-0: {len(rows)} source-backed/custom fields; '
+                    f'{changed} changed; USA-only address policies disabled.')
+            except (OSError, RuntimeError, ValueError) as exc:
+                self.inspector_status.set(f'Japan live inspector failed: {exc}')
+            return
         if not self.mem:return
         import time
         now=time.monotonic()
@@ -901,6 +1053,14 @@ class InspectorMixin(EntranceMixin):
 
 
     def try_reload_warp(self):
+        if self.active_version.key == 'japan':
+            chosen=self.scene_list.curselection()
+            if not chosen:
+                self.scene_status.set('Select a Japanese scene first.')
+                return
+            destination,_name=self.scene_options[chosen[0]]
+            self.start_japan_native_scene_warp(destination=destination)
+            return
         if getattr(self.args,'read_only',False):
             self.scene_status.set('Read-only mode: scene requests are disabled.')
             return
@@ -1084,11 +1244,21 @@ class InspectorMixin(EntranceMixin):
             finally:self.native_key_release=None
 
     def select_scene(self,event=None):
-        """A single click only selects; never writes guest RAM."""
+        """Shared scene selection; the active ROM decides which backend runs."""
         chosen=self.scene_list.curselection()
         if not chosen:return
         mid,name=self.scene_options[chosen[0]]
         self.scene_selected=mid
+        if self.active_version.key == 'japan':
+            try:
+                self.scene_status.set(
+                    f'Japan-0 selected 0x{mid:03X} {name}. '
+                    'Double-click for immediate 0x0C area reload; '
+                    'no debug menu or N64 A key required.')
+                self.show_japan_debug_target()
+            except (ValueError, RuntimeError) as exc:
+                self.scene_status.set(f'Japanese scene selection unavailable: {exc}')
+            return
         self.refresh_entrance_choices(mid)
         try:
             target=native_debug_selection(mid,self.scene_catalog())
@@ -1116,7 +1286,10 @@ class InspectorMixin(EntranceMixin):
         return 'break'
 
     def open_debug_for_selected_scene(self,event=None):
-        """Open the native menu immediately, using original selection guards."""
+        """Open manual native menu for active ROM; never invoke a warp."""
+        if self.active_version.key == 'japan':
+            self.open_japan_debug_for_selected_scene()
+            return
         if getattr(self.args,'read_only',False):
             self.scene_status.set('Read-only mode: debug-menu requests are disabled.')
             return
@@ -1152,7 +1325,10 @@ class InspectorMixin(EntranceMixin):
             messagebox.showerror('Native debug entry failed',str(exc))
 
     def enter_debug_menu(self):
-        """Open original debug menu directly; no scene selection or warp staging."""
+        """Explicit manual menu fallback only, never the double-click action."""
+        if self.active_version.key == 'japan':
+            self.open_japan_debug_for_selected_scene()
+            return
         if getattr(self.args, 'read_only', False):
             self.scene_status.set('Read-only mode: debug-menu entry disabled.')
             return
