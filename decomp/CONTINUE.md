@@ -30,6 +30,12 @@ The draft PR #20 (`chatgptweb/japan-character-switch-decomp`) has **13 separatel
 
 An **opt-in, fail-closed** `decomp/overlay_file11.py` stage is now wired into `decomp/verify.py`; see `docs/USA_FILE11_CENTRAL_ADAPTER_2026-11-15.md`. Activate only with `{"overlay_file11_stage":{"format":"goemon-file11-character-switch-13-v1"}}` in a verified candidate manifest. It stages exactly 13 original-USA matching-C functions / 620 bytes in 4 C source islands, retaining the 180-byte selector and all other code in assembly. The module checks the complete 32 MiB ROM, 13 original linked symbols, 8 linker input objects, 4 source/object identities, and all 8,825 file_11 relocation tuples before modifying any function count. The existing previously independently verified 13-function scratch ROM and ELF passed this new module's linked provenance checker. **Not yet a completed full central verifier run; production manifest/results/inventory remain unchanged.** Run central G2 using an opt-in manifest, then audit and promote only if exact.
 
+## Follow-up USA file_11 callback matching-C research (15 Nov 2026)
+
+The same USA `file_11` overlay as the 13 exact character-switch C functions also contains **50 original no-op callback stubs** of 12 bytes apiece. Two adjacent source groups (9 and 28, **37 newly reconstructed functions / 444 bytes**) were demonstrated with authentic original-ID0 and a whole-ROM build in a separate scratch checkout. Together with the earlier 13 functions, the **complete 33,554,432-byte USA ROM matches exactly with 50 C functions / 1,064 bytes staged in file_11**, all 8,825 original overlay relocations identical in order, and the original 180-byte selector still assembly-owned. All 44 ROM-free research Python tests passed. Details: `docs/USA_FILE11_NOOP_CALLBACKS_2026-11-15.md` and `decomp/results/file11_noop_37_native_proof_20261115.json`.
+
+**Important:** The 37 are genuine *empty callbacks*, not 37 newly deciphered gameplay systems. The central opt-in `overlay_file11_stage` still supports only the previous 13 functions. The canonical `decomp/manifest.json`, formal 160-function verifier and inventory have not yet been rebuilt with either optional file_11 stage. The new 37 are research-only until a reviewed stage and complete central G2 test exist.
+
 ## 0. Cross-conversation handoff
 
 For the reviewed integration blockers and reproducible next steps, see [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).
