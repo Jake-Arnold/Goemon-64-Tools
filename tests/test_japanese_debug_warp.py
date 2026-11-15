@@ -59,7 +59,7 @@ class JapaneseDebugMenuCoreTests(unittest.TestCase):
     def test_reject_non_gameplay_and_changed_context_with_no_write(self):
         cases = [
             dict(state=10), dict(state=12), dict(scene=0),
-            dict(character=2), dict(loading=1), dict(submode=4),
+            dict(character=4), dict(loading=1), dict(submode=4),
             dict(exit_flag=1),
         ]
         for case in cases:
@@ -78,6 +78,16 @@ class JapaneseDebugMenuCoreTests(unittest.TestCase):
             enter_japan_native_debug_menu(
                 p.rdram(), 0x161, expected_context=before)
         self.assertEqual(p.writes, [])
+
+    def test_all_four_characters_can_enter_native_reload_gameplay(self):
+        for character in range(4):
+            with self.subTest(character=character):
+                p = debugger(character=character, scene=0x00F, submode=0)
+                context = get_japan_debug_context(p.rdram())
+                self.assertEqual(context[2], character)
+                result = enter_japan_native_debug_menu(
+                    p.rdram(), 0x161, expected_context=context)
+                self.assertTrue(result.changed)
 
     def test_readonly_ram_prevents_native_debug_write(self):
         p = debugger()
