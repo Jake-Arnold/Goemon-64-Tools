@@ -93,6 +93,41 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
             writer.rdram().read_guest(JAPAN_DEBUG_SCENE, 2),
             bytes.fromhex('0161'))
 
+    def test_new_scene_only_optin_allows_revalidated_writer(self):
+        from unittest.mock import patch
+        app, writer = make_controller()
+        app.args.enable_japan_debug_menu_writes = False
+        app.args.enable_japan_scene_writes = True
+        # Exercise the actual live-writer guard, not the synthetic shortcut.
+        del app._japan_native_warp_writer
+        with patch('practice.toolkit.sys.platform', 'win32'), \
+             patch('practice.toolkit.verified_emulator_pid',
+                   return_value=(959604, 'project64')), \
+             patch('practice.toolkit.verified_japan_probes',
+                   return_value=('verified',)), \
+             patch('practice.toolkit.HostProcess',
+                   return_value=writer), \
+             patch('practice.toolkit.validate_rdram_base',
+                   return_value=writer.rdram()):
+            handle, verified = Toolkit._japan_native_warp_writer(app)
+        self.assertIs(handle, writer)
+        self.assertEqual(verified.read_guest(JAPAN_DEBUG_ENGINE_MODE,1),
+                         b'\x0d')
+        handle.close()
+        self.assertEqual(writer.close_count,1)
+        self.assertEqual(writer.writes,[])
+
+    def test_new_scene_optin_refuses_readonly(self):
+        app, writer = make_controller()
+        app.args.enable_japan_scene_writes = True
+        app.args.enable_japan_debug_menu_writes = False
+        app.args.read_only = True
+        del app._japan_native_warp_writer
+        with patch('practice.toolkit.HostProcess') as handle:
+            with self.assertRaisesRegex(RuntimeError, 'requires'):
+                Toolkit._japan_native_warp_writer(app)
+        handle.assert_not_called()
+
     def test_explicit_original_debug_menu_remains_separate(self):
         app, writer = make_controller()
         with patch('practice.toolkit.enter_japan_native_debug_menu') as menu:
