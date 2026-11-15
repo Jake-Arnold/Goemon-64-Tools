@@ -7,7 +7,7 @@ from tkinter import ttk
 
 from practice.japanese_fields import JAPAN_FIELDS, FIELD_GROUPS, read_japan_fields
 from practice.japanese_scene_probes import (
-    JAPAN_SCENE_PROBES, RUNTIME_OBSERVED_SCENE_KEYS,
+    JAPAN_SCENE_PROBES, RUNTIME_OBSERVATION_STATUS,
     read_japan_scene_probes, compare_guest_readings,
 )
 from practice.scenes import SCENES
@@ -25,9 +25,10 @@ class JapaneseFieldsUi:
             anchor='w', pady=(0, 5))
         ttk.Label(
             tab, text='The 58 cheat-backed values are externally sourced. The 10 scene'
-            ' fields are unverified JP address hypotheses based on a limited'
-            ' region displacement. Baseline comparison records byte changes'
-            ' only: no cheats, writes or automatic warps.', wraplength=960,
+            ' research fields have mixed evidence: four scene fields are'
+            ' supported by live traces, character 0/1 by both switch directions,'
+            ' and the remaining fields are hypotheses. No cheats, RAM writes'
+            ' or automatic warps.', wraplength=960,
         ).pack(anchor='w', pady=(0, 8))
         toolbar = ttk.Frame(tab)
         toolbar.pack(fill='x', pady=(0, 6))
@@ -67,10 +68,10 @@ class JapaneseFieldsUi:
                     tree.insert(group_id, 'end', iid='jp_field_' + field.key,
                                 text=field.label,
                                 values=(f'0x{field.address:08X}', '—', '—',
-                                        'OBSERVED: one JP transition'
-                                        if field.key in RUNTIME_OBSERVED_SCENE_KEYS
-                                        else ('UNVERIFIED: offset candidate'
-                                              if field in JAPAN_SCENE_PROBES else 'External lead')))
+                                        RUNTIME_OBSERVATION_STATUS.get(
+                                            field.key, 'UNVERIFIED: offset candidate')
+                                        if field in JAPAN_SCENE_PROBES
+                                        else 'External lead')))
         ttk.Label(
             tab, text='Sources: Japanese GameHacking.org cheats; TCRF debug code;'
             ' regional-offset hypotheses for scene probes. Both Japanese wikis'
@@ -146,10 +147,10 @@ class JapaneseFieldsUi:
             self.jp_fields_tree.set(iid, 'value', '—')
             self.jp_fields_tree.set(iid, 'raw', '—')
             self.jp_fields_tree.set(
-                iid, 'status', 'OBSERVED: one JP transition'
-                if field.key in RUNTIME_OBSERVED_SCENE_KEYS
-                else ('UNVERIFIED: offset candidate'
-                      if field in JAPAN_SCENE_PROBES else 'External lead'))
+                iid, 'status',
+                RUNTIME_OBSERVATION_STATUS.get(
+                    field.key, 'UNVERIFIED: offset candidate')
+                if field in JAPAN_SCENE_PROBES else 'External lead')
         self._jp_last_readings = {}
         self._jp_baseline = None
         self._jp_baseline_identity = None

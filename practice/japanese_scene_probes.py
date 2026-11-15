@@ -51,14 +51,27 @@ JAPAN_SCENE_PROBES = (
 assert len(set(x.key for x in JAPAN_SCENE_PROBES)) == len(JAPAN_SCENE_PROBES)
 assert len(set(x.address for x in JAPAN_SCENE_PROBES)) == len(JAPAN_SCENE_PROBES)
 
-# First *real Japanese Mupen64Plus* read-only observation, 2026-11-15:
-# scene 300 -> 355; previous 355 -> 300; pending 300 -> 355;
-# submode 1 -> 2. The observed behaviour is consistent with the four
-# hypothesis labels, but a single before/after capture cannot prove their
-# transient meaning or that they apply to all scenes.
+# Read-only observations from actual Japanese Mupen64Plus, 2026-11-15:
+# - scene 300 -> 355, previous 355 -> 300, pending 300 -> 355,
+#   submode 1 -> 2 (first capture).
+# - scene 352 -> 354, previous 353 -> 352, pending 352 -> 354
+#   (Oedo Town North -> castle bridge). Two endpoint captures do NOT prove
+#   when pending changes during loading.
+# - character 0 -> 1 (Goemon -> Ebisumaru) and 1 -> 0 (return).
+# Only character values 0 and 1 have direct bidirectional JP verification.
 RUNTIME_OBSERVED_SCENE_KEYS = frozenset((
     "scene_map", "scene_previous", "scene_pending", "scene_submode",
+    "scene_character",
 ))
+
+RUNTIME_OBSERVATION_STATUS = {
+    "scene_map": "OBSERVED: two JP scene transitions",
+    "scene_previous": "OBSERVED: two JP scene transitions",
+    "scene_pending": "OBSERVED: two endpoint traces; pending timing unknown",
+    "scene_submode": "OBSERVED: one JP submode change",
+    "scene_character": "CONFIRMED: Goemon/Ebisumaru both directions",
+}
+
 
 
 def read_japan_scene_probes(rdram):
@@ -79,9 +92,12 @@ def read_japan_scene_probes(rdram):
                 label = f"{val} — {'overworld' if val == 1 else 'town'} (candidate)"
             elif probe.key == "scene_character" and 0 <= val <= 3:
                 label = ("Goemon", "Ebisumaru", "Sasuke", "Yae")[val] + f" ({val})"
-            status = ("OBSERVED: one real Japanese transition; repeat to confirm"
-                      if probe.key in RUNTIME_OBSERVED_SCENE_KEYS
-                      else "UNVERIFIED: regional-offset hypothesis")
+                if val in (2, 3):
+                    label += " — name candidate"
+            status = RUNTIME_OBSERVATION_STATUS.get(
+                probe.key, "UNVERIFIED: regional-offset hypothesis")
+            if probe.key == "scene_character" and val in (2, 3):
+                status = "UNVERIFIED: character values 2/3 not yet tested"
             if probe.key == "scene_map" and val > 0x800:
                 status = "CHECK: out-of-range scene candidate"
             elif probe.key == "scene_character" and val > 3:

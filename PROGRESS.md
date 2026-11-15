@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-15 — Japanese character 0/1 reversible test and second scene transition
+
+- **New user gameplay evidence:** PID 959604, host RDRAM 0x7AA843EC0000, wordswapped. Japanese character index `0x80161DCC` showed **Goemon 0 → Ebisumaru 1**, followed by **Ebisumaru 1 → Goemon 0** in separate user-identified switch trials. These two character identities are now confirmed in both directions; Sasuke (2) and Yae (3) remain untested in Japan.
+- **Oedo scene:** User travelled Oedo Town North → Oedo Castle Bridge. Current JP scene `0x800CD2A2` **352 → 354**; Previous `0x800CD2AC` **353 → 352** (new previous matches old current); Pending `0x800CD490` **352 → 354**. This replicates the field behaviour from the earlier scene 300 → 355 trace, though the Pending update *during loading* was not observed.
+- **Raw counter:** Character switch +2 and +2 raw units; Oedo scene change +15 raw units. Counter timebase still unknown.
+- **Archived:** `research/japan_scene_character_runtime_2026-11-15.json` and `docs/JAPAN_RUNTIME_CHARACTER_TRACE_002.md`. Added regression tests for precise capture bytes and confidence labels.
+- **UI:** Evidence labels distinguish twice-observed scene fields, once-observed JP submode, and bidirectionally confirmed Goemon/Ebisumaru character index; scene_character values 2/3 remain unverified. No JP writes, player/task pointer assumptions, freezes or teleports were enabled. Test files added; do not claim a full suite run here.
+- **Outstanding:** JP player/task pointers and XYZ, mid-transition loader traces and native Japanese Goemon64Recomp execution remain separate unsolved tasks.
+
 ### 2026-11-15 — First Japanese live scene-transition capture (one trial)
 
 - **User runtime evidence:** Japanese Mupen64Plus PID 959604, host RDRAM `0x7AA843EC0000`, wordswapped. Read-only baseline/compare records **scene map 300 (0x12C) → 355 (0x163)**, previous scene **355 → 300**, pending scene **300 → 355**, and submode **1 → 2**. Raw playtime counter `0x0000D500 → 0x0000D506`, change +6 (time units unknown).

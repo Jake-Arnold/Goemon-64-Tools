@@ -5,7 +5,8 @@ from pathlib import Path
 
 from practice.japanese_fields import JAPAN_FIELDS, JapanFieldReading
 from practice.japanese_scene_probes import (
-    JAPAN_SCENE_PROBES, RUNTIME_OBSERVED_SCENE_KEYS, compare_guest_readings, read_japan_scene_probes,
+    JAPAN_SCENE_PROBES, RUNTIME_OBSERVED_SCENE_KEYS, RUNTIME_OBSERVATION_STATUS,
+    compare_guest_readings, read_japan_scene_probes,
 )
 
 
@@ -40,14 +41,18 @@ class JapaneseSceneProbeTests(unittest.TestCase):
         out = read_japan_scene_probes(ram)
         self.assertEqual(out["scene_map"].raw, "012C")
         self.assertEqual(out["scene_map"].value, "300 / 0x12C — Kai Highway")
-        self.assertEqual(out["scene_character"].value, "Yae (3)")
+        self.assertEqual(out["scene_character"].value, "Yae (3) — name candidate")
+        self.assertTrue(out["scene_character"].status.startswith("UNVERIFIED"))
         self.assertTrue(out["scene_map"].status.startswith("OBSERVED"))
         self.assertEqual(len(ram.reads), 10)
         self.assertFalse(hasattr(ram, "write_guest"))
 
     def test_single_observation_status_is_limited_to_four_fields(self):
-        self.assertEqual(RUNTIME_OBSERVED_SCENE_KEYS,
-                         {"scene_map", "scene_previous", "scene_pending", "scene_submode"})
+        self.assertEqual(RUNTIME_OBSERVED_SCENE_KEYS, {
+            "scene_map", "scene_previous", "scene_pending",
+            "scene_submode", "scene_character"})
+        self.assertIn("two JP", RUNTIME_OBSERVATION_STATUS["scene_previous"])
+        self.assertIn("both directions", RUNTIME_OBSERVATION_STATUS["scene_character"])
         out = read_japan_scene_probes(Ram({
             (0x800CD2A2, 2): bytes.fromhex("0163"),
             (0x800CD2AC, 2): bytes.fromhex("012C"),
@@ -58,9 +63,61 @@ class JapaneseSceneProbeTests(unittest.TestCase):
         self.assertEqual(out["scene_previous"].value, "300 / 0x12C — Kai Highway")
         self.assertEqual(out["scene_pending"].raw, "0163")
         self.assertEqual(out["scene_submode"].value, "2 — town (candidate)")
-        for key in RUNTIME_OBSERVED_SCENE_KEYS:
+        for key in ("scene_map", "scene_previous", "scene_pending", "scene_submode"):
             self.assertTrue(out[key].status.startswith("OBSERVED"))
+        self.assertTrue(out["scene_character"].status.startswith("CONFIRMED"))
         self.assertTrue(out["scene_phase"].status.startswith("UNVERIFIED"))
+
+    def test_character_both_directions_and_untested_2_3(self):
+        addr = 0x80161DCC
+        goemon = read_japan_scene_probes(Ram({
+            (addr, 4): bytes.fromhex("00000000")}))["scene_character"]
+        ebisumaru = read_japan_scene_probes(Ram({
+            (addr, 4): bytes.fromhex("00000001")}))["scene_character"]
+        sasuke = read_japan_scene_probes(Ram({
+            (addr, 4): bytes.fromhex("00000002")}))["scene_character"]
+        self.assertEqual(goemon.value, "Goemon (0)")
+        self.assertEqual(ebisumaru.value, "Ebisumaru (1)")
+        self.assertTrue(goemon.status.startswith("CONFIRMED"))
+        self.assertTrue(ebisumaru.status.startswith("CONFIRMED"))
+        self.assertTrue(sasuke.status.startswith("UNVERIFIED"))
+        self.assertIn("name candidate", sasuke.value)
+
+    def test_second_trace_preserved_verbatim(self):
+        root = Path(__file__).resolve().parents[1]
+        data = json.loads((root / "research" /
+            "japan_scene_character_runtime_2026-11-15.json").read_text(encoding="utf-8"))
+        self.assertEqual(data["region"], "japan-0")
+        events = {x["id"]: x for x in data["observations"]}
+        self.assertEqual(set(events), {
+            "goemon-to-ebisumaru", "oedo-north-to-castle-bridge",
+            "ebisumaru-to-goemon"})
+        forward = {x["key"]: x for x in events["goemon-to-ebisumaru"]["changes"]}
+        reverse = {x["key"]: x for x in events["ebisumaru-to-goemon"]["changes"]}
+        oedo = {x["key"]: x for x in events["oedo-north-to-castle-bridge"]["changes"]}
+        self.assertEqual((forward["scene_character"]["before"],
+                          forward["scene_character"]["after"]),
+                         ("00000000", "00000001"))
+        self.assertEqual((reverse["scene_character"]["before"],
+                          reverse["scene_character"]["after"]),
+                         ("00000001", "00000000"))
+        self.assertEqual((oedo["scene_map"]["before"], oedo["scene_map"]["after"]),
+                         ("0160", "0162"))
+        self.assertEqual((oedo["scene_previous"]["before"],
+                          oedo["scene_previous"]["after"]), ("0161", "0160"))
+        self.assertEqual((oedo["scene_pending"]["before"],
+                          oedo["scene_pending"]["after"]), ("0160", "0162"))
+        for event, expected_delta in (
+            ("goemon-to-ebisumaru", 2),
+            ("oedo-north-to-castle-bridge", 15),
+            ("ebisumaru-to-goemon", 2),
+        ):
+            counter = next(x for x in events[event]["changes"]
+                           if x["key"] == "total_time_raw")
+            self.assertEqual(counter["raw_delta"], expected_delta)
+            self.assertEqual(
+                int(counter["after"], 16) - int(counter["before"], 16),
+                expected_delta)
 
     def test_runtime_evidence_archive_exact_bytes(self):
         root = Path(__file__).resolve().parents[1]
