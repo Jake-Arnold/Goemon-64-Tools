@@ -342,7 +342,11 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         ttk.Label(statusbar, text='EXPERIMENTAL PRACTICE ONLY  •  Never use for submitted runs',
                   style='HeaderSub.TLabel').pack(side='left')
         self.access_footer = tk.StringVar(
-            value=('JAPAN RAM READ ONLY  •  Emulator savestates are separate'
+            value=('JAPAN: SASUKE/YAE PARTY FLAG WRITES OPTED IN (WATCHES READ-ONLY)'
+                   if self.active_version.key == 'japan'
+                   and getattr(args, 'enable_japan_party_writes', False)
+                   and not getattr(args, 'read_only', False)
+                   else 'JAPAN RAM READ ONLY  •  Emulator savestates are separate'
                    if self.active_version.key == 'japan'
                    else ('READ ONLY' if getattr(args, 'read_only', False)
                          else 'USA memory writes enabled  •  Experimental entrance reload')))

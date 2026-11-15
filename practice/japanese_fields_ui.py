@@ -64,8 +64,12 @@ class JapaneseFieldsUi:
             self.jp_party_buttons[character] = button
             button.state(['disabled'])
         self.jp_party_result = tk.StringVar(
-            value='Write option disabled by default. Restart with '
-                  '--enable-japan-party-writes to use these buttons.')
+            value=('Opt-in enabled. Connect, create an emulator savestate, '
+                   'then confirm each individual unlock.'
+                   if getattr(getattr(self, 'args', None),
+                              'enable_japan_party_writes', False)
+                   else 'Party write option disabled by default. Restart with '
+                        '--enable-japan-party-writes to use these buttons.'))
         ttk.Label(party, textvariable=self.jp_party_result,
                   wraplength=960).pack(anchor='w', pady=(4, 0))
 
