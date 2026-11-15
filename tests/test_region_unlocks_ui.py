@@ -71,40 +71,55 @@ class RegionUnlockUITests(unittest.TestCase):
             [app.jp_research_tabs.tab(x, 'text')
              for x in app.jp_research_tabs.tabs()], ['Goemon XYZ', 'Scene warp'])
 
-    def test_only_verified_japanese_party_on_routes_to_existing_writer(self):
+    def test_all_mapped_japanese_fields_write_without_opt_in_or_consent(self):
         app = self.app
         self._select_japan()
-        app.args.enable_japan_party_writes = True
         app.jp_rdram = FakeRam({
             (0x80161E97, 1): bytes((0,)),
             (0x80161E9B, 1): bytes((0,)),
+            (0x80161EEF, 1): bytes((0,)),
+            (0x80161F07, 1): bytes((0,)),
+            (0x80161F13, 1): bytes((2,)),
         })
         app.game_pid = 1234
-        app.verified_rom_path = 'verified-japan-rom.n64'
         app.jp_backend = 'project64'
         app.connection_target.set('project64')
         app.refresh_unlocks(force=True)
-        sasuke = next(row for row in UNLOCKS if row.label == 'Sasuke in party')
-        yae = next(row for row in UNLOCKS if row.label == 'Yae in party')
-        goemon = next(row for row in UNLOCKS if row.label == 'Goemon in party')
-        self.assertNotIn('disabled', app.unlock_row_widgets[sasuke.address][1][1].state())
-        self.assertIn('disabled', app.unlock_row_widgets[sasuke.address][1][0].state())
-        self.assertNotIn('disabled', app.unlock_row_widgets[yae.address][1][1].state())
+        sasuke = next(x for x in UNLOCKS if x.label == 'Sasuke in party')
+        yae = next(x for x in UNLOCKS if x.label == 'Yae in party')
+        triton = next(x for x in UNLOCKS if x.label == 'Triton Shell')
+        cucumber = next(x for x in UNLOCKS if x.label == 'Cucumber')
+        fish = next(x for x in UNLOCKS if x.label == 'Blue fish count')
+        goemon = next(x for x in UNLOCKS if x.label == 'Goemon in party')
+        for item in (sasuke, yae, triton, cucumber):
+            for button in app.unlock_row_widgets[item.address][1].values():
+                self.assertNotIn('disabled', button.state())
+        self.assertNotIn('disabled', app.unlock_count_buttons[fish.address].state())
+        self.assertNotIn('disabled', app.unlock_all_button.state())
         self.assertIn('disabled', app.unlock_row_widgets[goemon.address][1][1].state())
-        with patch.object(app, 'enable_japan_party') as guarded:
-            app.set_unlock(sasuke, 1)
-            guarded.assert_called_once_with(2)
-            guarded.reset_mock()
-            app.set_unlock(yae, 1)
-            guarded.assert_called_once_with(3)
-            guarded.reset_mock()
+        with patch.object(app, 'apply_japan_unlocks', return_value=(1, 1)) as write:
             app.set_unlock(sasuke, 0)
+            write.assert_called_with(((sasuke, 0),))
+            app.set_unlock(yae, 1)
+            write.assert_called_with(((yae, 1),))
+            app.set_unlock(triton, 1)
+            write.assert_called_with(((triton, 1),))
+            app.set_unlock(cucumber, 0)
+            write.assert_called_with(((cucumber, 0),))
+            app.set_unlock_hex(fish, '03')
+            write.assert_called_with(((fish, 3),))
+            write.reset_mock()
             app.set_unlock(goemon, 1)
-            guarded.assert_not_called()
+            write.assert_not_called()
         self.assertIn('unknown', app.unlock_status.get())
+        with patch.object(app, 'apply_japan_unlocks', return_value=(7, 7)) as write:
+            app.unlock_all_items()
+            self.assertEqual(len(write.call_args.args[0]), 7)
         app.args.read_only = True
         app.refresh_unlocks(force=True)
         self.assertIn('disabled', app.unlock_row_widgets[yae.address][1][1].state())
+        self.assertIn('disabled', app.unlock_count_buttons[fish.address].state())
+        self.assertIn('disabled', app.unlock_all_button.state())
 
     def test_switch_back_to_usa_restores_addresses_and_enabled_controls(self):
         app = self.app
