@@ -32,15 +32,7 @@ def _xyz_context(capture):
             'scene': capture.map_id, 'character': capture.character}
 
 
-def find_japan_xyz_candidates(before, moved, settled, *, limit=MAX_XYZ_CANDIDATES):
-    """Rank aligned three-float groups moving A→B then stable at B→C.
-
-    Runs only over complete, equal-length, same-session WIDE snapshots.
-    No player task pointer or USA struct offset is assumed. Every result is
-    a candidate for manual watch-and-walk validation, not a verified XYZ.
-    """
-    if type(limit) is not int or not 1 <= limit <= MAX_XYZ_CANDIDATES:
-        raise ValueError('XYZ candidate limit must be 1..200')
+def _validated_wide_buffers(before, moved, settled):
     captures = (before, moved, settled)
     if any(not isinstance(c, JapanMemoryCapture) for c in captures):
         raise ValueError('Three Japan-0 captures A/B/C are required')
@@ -58,18 +50,22 @@ def find_japan_xyz_candidates(before, moved, settled, *, limit=MAX_XYZ_CANDIDATE
                 or len(r.data) != len(ra.data) for r in (rb, rc)) or
             len(ra.data) not in (0x400000, 0x800000)):
         raise ValueError('WIDE Japanese RAM ranges differ or are incomplete')
+    return tuple(memoryview(r.data) for r in (ra, rb, rc))
 
-    a, b, c = (memoryview(r.data) for r in (ra, rb, rc))
+
+def _xyz_candidate_rows(a, b, c, *, cancelled=None):
+    """Yield every matching candidate, in guest-address order.
+
+    Never collects a huge 8 MiB scan's matches in RAM. The same predicate
+    serves both the limited Tk preview and the complete on-disk JSON export.
+    """
     unpack = struct.Struct('>fff').unpack_from
-    top = []
-    possible = 0
     for offset in range(0, len(a) - 11, 4):
-        # Skip identical 12-byte groups before decoding expensive floats.
+        if cancelled is not None and offset % 0x8000 == 0 and cancelled():
+            raise RuntimeError('XYZ export cancelled after captures changed')
         if a[offset:offset + 12] == b[offset:offset + 12]:
             continue
-        av = unpack(a, offset)
-        bv = unpack(b, offset)
-        cv = unpack(c, offset)
+        av, bv, cv = (unpack(buf, offset) for buf in (a, b, c))
         if not (_valid_triple(av) and _valid_triple(bv) and _valid_triple(cv)):
             continue
         dx, dy, dz = (bv[i] - av[i] for i in range(3))
@@ -81,19 +77,14 @@ def find_japan_xyz_candidates(before, moved, settled, *, limit=MAX_XYZ_CANDIDATE
         stable = max(abs(cv[i] - bv[i]) for i in range(3))
         if stable > STATIONARY_TOLERANCE:
             continue
-        # XYZ structures with a nearly unchanged vertical coordinate and
-        # a settled endpoint are promising, but false positives are expected.
-        possible += 1
         score = (round(50.0 - min(50.0, stable * 60.0), 3)
                  + (20 if abs(dy) <= 0.25 else 0)
                  + (10 if abs(dx) >= 0.75 and abs(dz) >= 0.75 else 0)
                  + (10 if 2.0 <= horizontal <= 250.0 else 0))
         address = GUEST_BASE + offset
-        if len(top) >= limit and (score, -address) <= top[0][:2]:
-            continue
-        def fmt(v):
-            return '(' + ', '.join(f'{x:.2f}' for x in v) + ')'
-        row = {
+        def fmt(values):
+            return '(' + ', '.join(f'{value:.2f}' for value in values) + ')'
+        yield {
             'address': f'0x{address:08X}', 'region': 'jp_full_rdram',
             'before': fmt(av), 'after': fmt(bv),
             'xor_mask': '—', 'c_stable_at_b': True,
@@ -104,13 +95,9 @@ def find_japan_xyz_candidates(before, moved, settled, *, limit=MAX_XYZ_CANDIDATE
             'vertical_delta': round(dy, 4),
             'stationary_delta_max': round(stable, 4),
         }
-        entry = (score, -address, row)
-        if len(top) < limit:
-            heapq.heappush(top, entry)
-        else:
-            heapq.heapreplace(top, entry)
 
-    rows = [entry[2] for entry in sorted(top, key=lambda x: (-x[0], -x[1]))]
+
+def _report_metadata(before, moved, settled, size):
     return {
         'format': 'goemon-japan-xyz-heuristic-v1',
         'region': 'japan-0',
@@ -118,18 +105,108 @@ def find_japan_xyz_candidates(before, moved, settled, *, limit=MAX_XYZ_CANDIDATE
         'session': {'pid': before.identity[1],
                     'rdram_base': hex(before.identity[2]),
                     'endian': before.identity[3],
-                    'guest_ram_size': len(a)},
+                    'guest_ram_size': size},
         'capture_A': _xyz_context(before),
         'capture_B': _xyz_context(moved),
         'capture_C': _xyz_context(settled),
-        'counts': {'regions_compared': 1, 'observed_changes': possible,
-                   'candidate_count': possible,
-                   'reported_candidates': len(rows)},
         'event_flag_changes': [],
-        'candidates': rows,
         'notes': ('Read-only aligned f32 XYZ-like triplets. A=stationary, '
                   'B=walked to new position, C=stationary at B. '
                   'A candidate can belong to scenery, NPCs or calculations. '
                   'No Japanese player pointer/XYZ field is confirmed. '
-                  'The exported JSON omits all raw memory snapshots.'),
+                  'The exported JSON contains every matching candidate, '
+                  'but never the raw 4/8 MiB RAM snapshots.'),
     }
+
+
+def find_japan_xyz_candidates(before, moved, settled, *, limit=MAX_XYZ_CANDIDATES):
+    """Return at most 200 ranked matches for the interactive Tk table.
+
+    Counts reflect ALL matches. Export uses the same match generator to
+    write every candidate separately without this display-only cap.
+    """
+    if type(limit) is not int or not 1 <= limit <= MAX_XYZ_CANDIDATES:
+        raise ValueError('XYZ candidate limit must be 1..200')
+    a, b, c = _validated_wide_buffers(before, moved, settled)
+    top = []
+    possible = 0
+    for row in _xyz_candidate_rows(a, b, c):
+        possible += 1
+        score = row['score']
+        address = int(row['address'], 16)
+        entry = (score, -address, row)
+        if len(top) < limit:
+            heapq.heappush(top, entry)
+        elif entry[:2] > top[0][:2]:
+            heapq.heapreplace(top, entry)
+    rows = [entry[2] for entry in sorted(top, key=lambda x: (-x[0], -x[1]))]
+    metadata = _report_metadata(before, moved, settled, len(a))
+    metadata.update({
+        'counts': {'regions_compared': 1, 'observed_changes': possible,
+                   'candidate_count': possible,
+                   'reported_candidates': len(rows)},
+        'candidates': rows,
+        'display_limit': limit,
+        'export_policy': 'all_candidates_recompute_from_captures',
+    })
+    return metadata
+
+
+def export_japan_xyz_all_candidates(before, moved, settled, destination, *,
+                                     expected_count=None, cancelled=None):
+    """Atomically stream ALL candidate rows to JSON, with bounded RAM usage.
+
+    Display stays limited to the best 200, while export writes every match
+    in ascending guest-address order for straightforward cross-run joins.
+    No raw RAM snapshots or guest writes. A failed/cancelled export leaves
+    no partial or incorrectly named final JSON.
+    """
+    import json
+    import os
+    from pathlib import Path
+    import tempfile
+
+    a, b, c = _validated_wide_buffers(before, moved, settled)
+    path = Path(destination)
+    metadata = _report_metadata(before, moved, settled, len(a))
+    metadata['display_limit'] = MAX_XYZ_CANDIDATES
+    metadata['export_policy'] = 'all_matched_candidates'
+    metadata['candidate_order'] = 'guest_address_ascending'
+    tmp_path = None
+    count = 0
+    try:
+        with tempfile.NamedTemporaryFile(
+                'w', encoding='utf-8', dir=path.parent,
+                prefix=f'.{path.name}.', suffix='.tmp',
+                delete=False) as output:
+            tmp_path = Path(output.name)
+            output.write('{\n')
+            for name, value in metadata.items():
+                output.write('  ' + json.dumps(name) + ': '
+                             + json.dumps(value, ensure_ascii=False) + ',\n')
+            output.write('  "candidates": [\n')
+            for row in _xyz_candidate_rows(a, b, c, cancelled=cancelled):
+                if count:
+                    output.write(',\n')
+                output.write('    ' + json.dumps(row, ensure_ascii=False))
+                count += 1
+            if cancelled is not None and cancelled():
+                raise RuntimeError('XYZ export cancelled after captures changed')
+            if expected_count is not None and count != expected_count:
+                raise RuntimeError(
+                    f'XYZ candidate count mismatch: preview counted {expected_count}, '
+                    f'full export found {count}; no JSON committed')
+            output.write('\n  ],\n')
+            output.write('  "counts": ' + json.dumps({
+                'regions_compared': 1, 'observed_changes': count,
+                'candidate_count': count, 'reported_candidates': min(
+                    count, MAX_XYZ_CANDIDATES),
+                'exported_candidates': count
+            }) + '\n}\n')
+        if cancelled is not None and cancelled():
+            raise RuntimeError('XYZ export cancelled after captures changed')
+        os.replace(tmp_path, path)
+        return count
+    finally:
+        if tmp_path is not None and tmp_path.exists():
+            tmp_path.unlink()
