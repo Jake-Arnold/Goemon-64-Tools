@@ -159,6 +159,26 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
                          'normal')
 
+    def test_japan_project64_windows_selection_and_wrong_backend_guard(self):
+        app = self.toolkit
+        app.game_version_choice.set(VERSIONS['japan'].label)
+        app.on_game_version_changed()
+        app.connection_target.set('project64')
+        with patch('practice.toolkit.sys.platform', 'win32'):
+            app.connect()
+        self.assertIn('Verify the exact Japan-0 ROM', app.status.get())
+        self.assertIsNone(app.mem)
+
+        # A changed target cannot trigger the wrong emulator's savestate.
+        app.jp_backend = 'project64'
+        app.game_pid = 1234
+        app.jp_rdram = object()
+        app.connection_target.set('mupen64plus')
+        with patch('practice.toolkit.send_state_command') as command:
+            app.native_savestate_action('save')
+        command.assert_not_called()
+        self.assertIn('differs from connected', app.status.get())
+
     def test_japan_verification_is_offline_only(self):
         app = self.toolkit
         app.game_version_choice.set(VERSIONS['japan'].label)
