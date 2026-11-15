@@ -266,6 +266,7 @@ class StateDiscoveryMixin:
                     self.state_captures['A'], self.state_captures['B'],
                     self.state_captures.get('C'))
             self.state_report=report
+            self.state_probe_export_button.configure(text='Export comparison JSON')
             self.state_probe_table.heading('returned', text='C matched A?')
             self.state_probe_table.column('before', width=95)
             self.state_probe_table.column('after', width=95)
@@ -343,6 +344,7 @@ class StateDiscoveryMixin:
                 self.state_probe_status.set(f'XYZ research rejected: {error}')
                 return
             self.state_report = report
+            self.state_probe_export_button.configure(text='Export ALL XYZ candidates')
             self.state_probe_table.delete(*self.state_probe_table.get_children())
             self.state_probe_table.heading('returned', text='C stable at B?')
             self.state_probe_table.column('before', width=205)
@@ -490,5 +492,6 @@ class StateDiscoveryMixin:
         self._jp_probe_busy = False
         self.state_captures={}
         self.state_report=None
+        self.state_probe_export_button.configure(text='Export comparison JSON')
         self.state_probe_table.delete(*self.state_probe_table.get_children())
         self.state_probe_status.set('Captures cleared; no game memory was written.')
