@@ -127,23 +127,37 @@ class DashboardSmokeTests(unittest.TestCase):
         command.assert_not_called()
         self.assertIn('cannot create complete savestates', app.status.get())
 
-    def test_game_version_selector_disables_unsupported_japanese_runtime(self):
+    def test_game_version_selector_gates_usa_writers_but_exposes_japan_reads(self):
         app = self.toolkit
         self.assertEqual(app.active_version.key, 'usa')
-        self.assertEqual(app.version_selector.get(), VERSIONS['usa'].label)
         app.game_version_choice.set(VERSIONS['japan'].label)
         app.on_game_version_changed()
         self.assertEqual(app.active_version.key, 'japan')
-        self.assertIn('Japanese RAM', app.status.get())
-        self.assertIn('disabled', app.connect_button.state())
+        self.assertIn('Japan selected', app.status.get())
+        self.assertNotIn('disabled', app.connect_button.state())
         self.assertEqual(app.notebook.tab(app.scene_tab, 'state'), 'disabled')
-        app.connect()  # Even a direct method call must not attach to USA memory.
+        self.assertEqual(app.notebook.tab(app.unlock_tab, 'state'), 'disabled')
+        self.assertEqual(app.notebook.tab(app.value_freezes_tab, 'state'), 'disabled')
+        self.assertEqual(app.notebook.tab(app.value_search_tab, 'state'), 'normal')
+        self.assertEqual(app.notebook.tab(app.event_sessions_tab, 'state'), 'normal')
+        self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
+                         'disabled')
+        self.assertEqual(app.event_sections.select(), str(app.state_discovery_tab))
+        self.assertEqual(app.notebook.tab(app.jp_fields_tab, 'state'), 'normal')
+        # Direct connect must never fall through to unsupported USA process memory.
+        app.connect()
         self.assertIsNone(app.mem)
-        self.assertIn('not supported', app.status.get())
+        self.assertIsNone(app.jp_rdram)
+        self.assertIn('requires target mupen64plus', app.status.get())
+        app.connection_target.set('mupen64plus')
+        app.connect()
+        self.assertIn('Verify the exact Japan-0 ROM', app.status.get())
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
         self.assertNotIn('disabled', app.connect_button.state())
         self.assertEqual(app.notebook.tab(app.scene_tab, 'state'), 'normal')
+        self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
+                         'normal')
 
     def test_japan_verification_is_offline_only(self):
         app = self.toolkit
