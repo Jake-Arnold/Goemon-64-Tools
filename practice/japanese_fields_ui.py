@@ -18,6 +18,9 @@ from practice.japanese_position import (
     JAPAN_PLAYER_XYZ, JAPAN_OEDO_SOUTH_SCENE,
     JAPAN_OEDO_SOUTH_ENTRANCE, read_japan_position,
 )
+from practice.japanese_debug_warp import (
+    debug_menu_selection_hint, get_japan_debug_context,
+)
 
 ALL_JAPAN_READS = JAPAN_FIELDS + JAPAN_SCENE_PROBES
 
@@ -125,6 +128,47 @@ class JapaneseFieldsUi:
         ttk.Label(
             move, textvariable=self.jp_position_result,
             wraplength=960).pack(anchor='w', pady=(5, 0))
+
+        debug = ttk.LabelFrame(
+            tab, text='Native Japanese scene warp — debug level select (research)',
+            padding=8)
+        debug.pack(fill='x', pady=(0, 8))
+        ttk.Label(debug, text=(
+            'The game itself handles loading and spawn when a level is selected '
+            'from its original debug menu. The documented engine state byte is '
+            '0x800CD284: normal 13, debug 10. Opening the menu is experimental '
+            'in Japanese Project64; menu cursor/commit addresses remain unmapped. '
+            'Never write scene IDs directly.'),
+            wraplength=960).pack(anchor='w')
+        scene_row = ttk.Frame(debug)
+        scene_row.pack(fill='x', pady=(5, 3))
+        ttk.Label(scene_row, text='Destination hint').pack(side='left')
+        self.jp_debug_scene_choice = tk.StringVar(
+            value=f'0x161 | {SCENES.get(0x161, "Oedo Town South")}')
+        self.jp_debug_scene_selector = ttk.Combobox(
+            scene_row, textvariable=self.jp_debug_scene_choice,
+            values=tuple(f'0x{scene:03X} | {name}'
+                         for scene, name in sorted(SCENES.items())),
+            state='readonly', width=63)
+        self.jp_debug_scene_selector.pack(side='left', padx=(7, 8), fill='x',
+                                           expand=True)
+        self.jp_debug_scene_selector.bind(
+            '<<ComboboxSelected>>',
+            lambda _event: self.show_japan_debug_target())
+        ttk.Button(
+            scene_row, text='Show menu index',
+            command=self.show_japan_debug_target).pack(side='left')
+        self.jp_debug_menu_button = ttk.Button(
+            debug, text='Open native Japanese debug menu (confirm)',
+            command=self.open_japan_debug_for_selected_scene)
+        self.jp_debug_menu_button.pack(anchor='w', pady=(2, 2))
+        self.jp_debug_menu_button.state(['disabled'])
+        self.jp_debug_result = tk.StringVar(value=(
+            'Native menu: select the destination with the in-game controls; '
+            'one-click selection is not yet implemented. '
+            'Enable entry with --enable-japan-debug-menu-writes.'))
+        ttk.Label(debug, textvariable=self.jp_debug_result,
+                  wraplength=960).pack(anchor='w', pady=(3, 0))
 
         # Never reuse USA's custom-watch file or promote a candidate to a write.
         self.jp_watch_path = practice_data_dir() / 'japan_0_custom_watches.json'
@@ -326,6 +370,42 @@ class JapaneseFieldsUi:
         self.jp_position_apply_button.state(
             ['!disabled'] if enabled else ['disabled'])
 
+    def selected_japan_debug_scene(self):
+        choice = self.jp_debug_scene_choice.get().split(' | ', 1)[0]
+        scene = int(choice, 16)
+        debug_menu_selection_hint(scene)
+        return scene
+
+    def show_japan_debug_target(self):
+        try:
+            scene = self.selected_japan_debug_scene()
+            category, index = debug_menu_selection_hint(scene)
+        except (ValueError, TypeError) as exc:
+            self.jp_debug_result.set(f'Choose a catalogued scene: {exc}')
+            return
+        self.jp_debug_result.set(
+            f'For 0x{scene:03X} ({SCENES[scene]}), expected native USA-style '
+            f'debug selector: {category} / index {index}. '
+            'Japanese category mapping not yet independently verified. '
+            'The selected scene is a menu hint, not a RAM write.')
+
+    def refresh_japan_debug_controls(self):
+        enabled = (
+            self.active_version.key == 'japan'
+            and self.jp_rdram is not None
+            and getattr(self, 'game_pid', None) is not None
+            and getattr(self, 'verified_rom_path', None) is not None
+            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus')
+            and getattr(getattr(self, 'connection_target', None),
+                        'get', lambda: None)() == self.jp_backend
+            and bool(getattr(getattr(self, 'args', None),
+                             'enable_japan_debug_menu_writes', False))
+            and not bool(getattr(getattr(self, 'args', None),
+                                 'read_only', False))
+        )
+        self.jp_debug_menu_button.state(
+            ['!disabled'] if enabled else ['disabled'])
+
     def refresh_japan_party_controls(self):
         enabled = (
             self.active_version.key == 'japan'
@@ -342,6 +422,7 @@ class JapaneseFieldsUi:
         for button in self.jp_party_buttons.values():
             button.state(['!disabled'] if enabled else ['disabled'])
         self.refresh_japan_position_controls()
+        self.refresh_japan_debug_controls()
 
     def _japan_reader_identity(self):
         return (getattr(self, 'game_pid', None),
@@ -423,6 +504,7 @@ class JapaneseFieldsUi:
         self._jp_last_changes = ()
         self.jp_fields_caption.set('Connect to Japanese Project64/Mupen64Plus RAM.')
         self.jp_position_result.set('Disconnected; XYZ inputs are not a game write.')
+        self.jp_debug_result.set('Disconnected; native debug menu not requested.')
         self.refresh_japan_party_controls()
 
     def refresh_japan_fields(self, force=False):
