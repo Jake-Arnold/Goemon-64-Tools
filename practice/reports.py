@@ -70,6 +70,14 @@ def reports_root():
             documents_dir() / "Goemon Practice Toolkit" / "Reports")
 
 
+
+def working_investigations_dir(region):
+    """Private, resumable A/B/C working data; not an exported report."""
+    if region not in REGIONS:
+        raise ValueError("Unknown investigation region")
+    return reports_root() / ".working" / REGIONS[region]
+
+
 def safe_slug(value):
     label = unicodedata.normalize("NFKD", str(value))
     ascii_label = label.encode("ascii", "ignore").decode("ascii").lower()
