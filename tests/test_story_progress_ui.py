@@ -74,7 +74,7 @@ class StoryProgressUITests(unittest.TestCase):
         self.assertEqual(app.story_table.item('external_koryuta_freed','values')[3],'Set')
         self.assertEqual(set(app.story_table.get_children()),set(visible))
         app.story_filter.set('0x8015C614')
-        self.assertEqual(len(app.story_table.get_children()),3)
+        self.assertEqual(len(app.story_table.get_children()),sum(f.address==0x8015C614 for f in FLAGS))
         app.story_filter.set('')
         self.assertEqual(len(app.story_table.get_children()),len(FLAGS)+6)
 

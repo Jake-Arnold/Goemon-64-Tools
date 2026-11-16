@@ -506,6 +506,10 @@ a concrete target first. Prefer actual upstream types over guessed structures.
 
 For map load/unload research, start with [MAP_TRANSITION_TRACE.md](MAP_TRANSITION_TRACE.md); it lists the native state and entrance candidates, evidence and failed probes.
 
+The common Plasma event and its 39 checked-or-set flags are mapped in
+[PLASMA_TRIGGERS.md](../docs/PLASMA_TRIGGERS.md); script effects and native
+code are separate evidence.
+
 Next targets, in useful order:
 
 | Target | Existing evidence / next action |

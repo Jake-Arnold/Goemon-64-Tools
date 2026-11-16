@@ -96,16 +96,36 @@ CURATED_FLAGS = (
 )
 
 
+# These additional bits are checked by the verified common Plasma advice event.
+# Their descriptions retain the existing randomizer attribution; they have not
+# been independently tested in gameplay unless noted elsewhere.
+PLASMA_FLAGS = (
+    StoryFlag('plasma_zazen_dwarf','Plasma condition: Zazen dwarf information',0x00A,'Plasma event check; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_sasuke_battery','Plasma condition: Sasuke battery 1',0x00D,'Plasma event check; mn64rando annotation; acquisition not independently tested here'),
+    StoryFlag('plasma_cucumber','Plasma condition: cucumber obtained',0x00F,'Plasma event check; mn64rando annotation; acquisition not independently tested here'),
+    StoryFlag('plasma_sudden_advice','Plasma: Sudden Impact advice given',0x03C,'Plasma event branch and set; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_cracked_door','Plasma condition: cracked door seen',0x03E,'Plasma event check; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_battery_clue','Plasma condition: Inaba battery clue heard',0x03F,'Plasma event check; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_silver_heard','Plasma: silver weapon advice heard',0x041,'Plasma event set; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_silver_condition','Plasma: silver weapon advice condition',0x042,'Plasma event check; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_festival_advice','Plasma: Festival Village advice given',0x043,'Plasma event branch and set; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_benkei_advice','Plasma: collector advice given',0x045,'Plasma event branch and set; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_final_advice','Plasma: final Ugo advice given',0x046,'Plasma event branch and set; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_dragon_problem','Plasma condition: dragon problem heard',0x063,'Plasma event check; mn64rando annotation; not independently gameplay-verified'),
+    StoryFlag('plasma_sasuke_advice','Plasma: Sasuke revival advice given',0x080,'Plasma event branch and set; mn64rando annotation; not independently gameplay-verified'),
+)
+
+
 EXTERNAL_EVIDENCE = "External annotation: mn64rando; not locally gameplay-verified"
 
 EXTERNAL_FLAGS = (
-    StoryFlag('external_super_pass','Super Pass receipt recorded',0x000,EXTERNAL_EVIDENCE,True,24,'0x748B50'),
+    StoryFlag('external_super_pass','Super Pass receipt recorded',0x000,EXTERNAL_EVIDENCE+'; user force-tested this bit as Plasma third-advice condition when the Chain Pipe bit is set',True,24,'0x748B50'),
     StoryFlag('external_pass_gate','Super Pass gate opened',0x001,EXTERNAL_EVIDENCE,True,4,'0x756FA0'),
     StoryFlag('external_omitsu_ufo','Omitsu UFO conversation recorded',0x007,
               'External annotation: mn64rando; UFO detail not locally gameplay-verified; user map 432 A/B: first Omitsu coffee-shop conversation sets the bit and later dialogue changes; persistence across reload untested',True,2,'0x758E80'),
     StoryFlag('external_japan_map','Japan map receipt recorded',0x009,EXTERNAL_EVIDENCE,True,4,'0x77B8E4'),
     StoryFlag('external_sasuke_recruited','Sasuke recruitment recorded',0x00E,EXTERNAL_EVIDENCE,True,5,'0x77C050'),
-    StoryFlag('external_chain_pipe','Chain Pipe receipt recorded',0x010,EXTERNAL_EVIDENCE,True,9,'0x7579BC'),
+    StoryFlag('external_chain_pipe','Chain Pipe receipt recorded',0x010,EXTERNAL_EVIDENCE+'; user force-tested this bit as the first-priority Plasma advice condition',True,9,'0x7579BC'),
     StoryFlag('external_mokubei_upgrades','Mokubei upgrades available',0x011,EXTERNAL_EVIDENCE,True,6,'0x76D714'),
     StoryFlag('external_silver_weapons','Silver weapon upgrade recorded',0x012,EXTERNAL_EVIDENCE,True,3,'0x77A624'),
     StoryFlag('external_fire_ryo','Fire Ryo receipt recorded',0x013,EXTERNAL_EVIDENCE,True,3,'0x77AD8C'),
@@ -239,7 +259,7 @@ DOLL_PLACEMENT_FLAGS = (
               'ROM instantiated placement: stage 340/file 0x402/definition 4; not live-collected'),
 )
 
-FLAGS = CURATED_FLAGS + EXTERNAL_FLAGS + PLACEMENT_PICKUPS + DOLL_PLACEMENT_FLAGS
+FLAGS = CURATED_FLAGS + PLASMA_FLAGS + EXTERNAL_FLAGS + PLACEMENT_PICKUPS + DOLL_PLACEMENT_FLAGS
 
 STORY_SECTIONS = ('All', 'Fortune Dolls', 'Benkei & Kihachi',
                   'Ushiwaka & Training', 'Keys & Locks',

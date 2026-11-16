@@ -1,0 +1,487 @@
+{
+  "format": "goemon-plasma-conditions-v1",
+  "scenario_file": "0x070",
+  "scenario_sha256": "ac955eeb226edf51e2fc5c1bad504159037b00411585dc2ce450b395a01ac306",
+  "event_id": "0x288",
+  "event_entry": "0x08002F98",
+  "rooms": [
+    {
+      "stage": 423,
+      "room_file": "0x447",
+      "definition": 2,
+      "event_id": "0x288"
+    },
+    {
+      "stage": 424,
+      "room_file": "0x448",
+      "definition": 2,
+      "event_id": "0x288"
+    },
+    {
+      "stage": 425,
+      "room_file": "0x449",
+      "definition": 2,
+      "event_id": "0x288"
+    },
+    {
+      "stage": 426,
+      "room_file": "0x44A",
+      "definition": 2,
+      "event_id": "0x288"
+    }
+  ],
+  "flag_checks": 40,
+  "distinct_checked_flags": 37,
+  "set_operations": 11,
+  "operations": [
+    {
+      "file_offset": "0x3208",
+      "rom_offset": "0x7A1C38",
+      "flag_id": "0x010",
+      "address": "0x8015C60A",
+      "mask": "0x01",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3260"
+    },
+    {
+      "file_offset": "0x3260",
+      "rom_offset": "0x7A1C90",
+      "flag_id": "0x000",
+      "address": "0x8015C608",
+      "mask": "0x01",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3290"
+    },
+    {
+      "file_offset": "0x3290",
+      "rom_offset": "0x7A1CC0",
+      "flag_id": "0x03A",
+      "address": "0x8015C60F",
+      "mask": "0x04",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x32D8"
+    },
+    {
+      "file_offset": "0x32D8",
+      "rom_offset": "0x7A1D08",
+      "flag_id": "0x029",
+      "address": "0x8015C60D",
+      "mask": "0x02",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3340"
+    },
+    {
+      "file_offset": "0x332C",
+      "rom_offset": "0x7A1D5C",
+      "flag_id": "0x025",
+      "address": "0x8015C60C",
+      "mask": "0x20",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x3340",
+      "rom_offset": "0x7A1D70",
+      "flag_id": "0x033",
+      "address": "0x8015C60E",
+      "mask": "0x08",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3370"
+    },
+    {
+      "file_offset": "0x3370",
+      "rom_offset": "0x7A1DA0",
+      "flag_id": "0x063",
+      "address": "0x8015C614",
+      "mask": "0x08",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x33A8"
+    },
+    {
+      "file_offset": "0x33A8",
+      "rom_offset": "0x7A1DD8",
+      "flag_id": "0x014",
+      "address": "0x8015C60A",
+      "mask": "0x10",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x33F8"
+    },
+    {
+      "file_offset": "0x33F8",
+      "rom_offset": "0x7A1E28",
+      "flag_id": "0x00A",
+      "address": "0x8015C609",
+      "mask": "0x04",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3460"
+    },
+    {
+      "file_offset": "0x3460",
+      "rom_offset": "0x7A1E90",
+      "flag_id": "0x028",
+      "address": "0x8015C60D",
+      "mask": "0x01",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x34A8"
+    },
+    {
+      "file_offset": "0x3494",
+      "rom_offset": "0x7A1EC4",
+      "flag_id": "0x00A",
+      "address": "0x8015C609",
+      "mask": "0x04",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x34A8",
+      "rom_offset": "0x7A1ED8",
+      "flag_id": "0x031",
+      "address": "0x8015C60E",
+      "mask": "0x02",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x34E0"
+    },
+    {
+      "file_offset": "0x34E0",
+      "rom_offset": "0x7A1F10",
+      "flag_id": "0x018",
+      "address": "0x8015C60B",
+      "mask": "0x01",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3518"
+    },
+    {
+      "file_offset": "0x3518",
+      "rom_offset": "0x7A1F48",
+      "flag_id": "0x00D",
+      "address": "0x8015C609",
+      "mask": "0x20",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3640"
+    },
+    {
+      "file_offset": "0x3524",
+      "rom_offset": "0x7A1F54",
+      "flag_id": "0x03E",
+      "address": "0x8015C60F",
+      "mask": "0x40",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x35D8"
+    },
+    {
+      "file_offset": "0x3530",
+      "rom_offset": "0x7A1F60",
+      "flag_id": "0x03F",
+      "address": "0x8015C60F",
+      "mask": "0x80",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x35D8"
+    },
+    {
+      "file_offset": "0x353C",
+      "rom_offset": "0x7A1F6C",
+      "flag_id": "0x080",
+      "address": "0x8015C618",
+      "mask": "0x01",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x35B4"
+    },
+    {
+      "file_offset": "0x35A8",
+      "rom_offset": "0x7A1FD8",
+      "flag_id": "0x080",
+      "address": "0x8015C618",
+      "mask": "0x01",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x35D8",
+      "rom_offset": "0x7A2008",
+      "flag_id": "0x00D",
+      "address": "0x8015C609",
+      "mask": "0x20",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3640"
+    },
+    {
+      "file_offset": "0x3640",
+      "rom_offset": "0x7A2070",
+      "flag_id": "0x00E",
+      "address": "0x8015C609",
+      "mask": "0x40",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x36B0"
+    },
+    {
+      "file_offset": "0x36B0",
+      "rom_offset": "0x7A20E0",
+      "flag_id": "0x040",
+      "address": "0x8015C610",
+      "mask": "0x01",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x36E0"
+    },
+    {
+      "file_offset": "0x36E0",
+      "rom_offset": "0x7A2110",
+      "flag_id": "0x017",
+      "address": "0x8015C60A",
+      "mask": "0x80",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3708"
+    },
+    {
+      "file_offset": "0x3708",
+      "rom_offset": "0x7A2138",
+      "flag_id": "0x01C",
+      "address": "0x8015C60B",
+      "mask": "0x10",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x37E8"
+    },
+    {
+      "file_offset": "0x3714",
+      "rom_offset": "0x7A2144",
+      "flag_id": "0x03C",
+      "address": "0x8015C60F",
+      "mask": "0x10",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x37B4"
+    },
+    {
+      "file_offset": "0x37A0",
+      "rom_offset": "0x7A21D0",
+      "flag_id": "0x03C",
+      "address": "0x8015C60F",
+      "mask": "0x10",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x37E8",
+      "rom_offset": "0x7A2218",
+      "flag_id": "0x042",
+      "address": "0x8015C610",
+      "mask": "0x04",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3860"
+    },
+    {
+      "file_offset": "0x3860",
+      "rom_offset": "0x7A2290",
+      "flag_id": "0x011",
+      "address": "0x8015C60A",
+      "mask": "0x02",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x38E0"
+    },
+    {
+      "file_offset": "0x38C4",
+      "rom_offset": "0x7A22F4",
+      "flag_id": "0x041",
+      "address": "0x8015C610",
+      "mask": "0x02",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x38CC",
+      "rom_offset": "0x7A22FC",
+      "flag_id": "0x011",
+      "address": "0x8015C60A",
+      "mask": "0x02",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x38E0",
+      "rom_offset": "0x7A2310",
+      "flag_id": "0x012",
+      "address": "0x8015C60A",
+      "mask": "0x04",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3918"
+    },
+    {
+      "file_offset": "0x3918",
+      "rom_offset": "0x7A2348",
+      "flag_id": "0x015",
+      "address": "0x8015C60A",
+      "mask": "0x20",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3950"
+    },
+    {
+      "file_offset": "0x3950",
+      "rom_offset": "0x7A2380",
+      "flag_id": "0x01F",
+      "address": "0x8015C60B",
+      "mask": "0x80",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3A7C"
+    },
+    {
+      "file_offset": "0x395C",
+      "rom_offset": "0x7A238C",
+      "flag_id": "0x043",
+      "address": "0x8015C610",
+      "mask": "0x08",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x39D4"
+    },
+    {
+      "file_offset": "0x39C0",
+      "rom_offset": "0x7A23F0",
+      "flag_id": "0x043",
+      "address": "0x8015C610",
+      "mask": "0x08",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x39D4",
+      "rom_offset": "0x7A2404",
+      "flag_id": "0x044",
+      "address": "0x8015C610",
+      "mask": "0x10",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3A34"
+    },
+    {
+      "file_offset": "0x3A20",
+      "rom_offset": "0x7A2450",
+      "flag_id": "0x044",
+      "address": "0x8015C610",
+      "mask": "0x10",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x3A34",
+      "rom_offset": "0x7A2464",
+      "flag_id": "0x01F",
+      "address": "0x8015C60B",
+      "mask": "0x80",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3A7C"
+    },
+    {
+      "file_offset": "0x3A7C",
+      "rom_offset": "0x7A24AC",
+      "flag_id": "0x032",
+      "address": "0x8015C60E",
+      "mask": "0x04",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3ACC"
+    },
+    {
+      "file_offset": "0x3ACC",
+      "rom_offset": "0x7A24FC",
+      "flag_id": "0x023",
+      "address": "0x8015C60C",
+      "mask": "0x08",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3B48"
+    },
+    {
+      "file_offset": "0x3AD8",
+      "rom_offset": "0x7A2508",
+      "flag_id": "0x045",
+      "address": "0x8015C610",
+      "mask": "0x20",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3B18"
+    },
+    {
+      "file_offset": "0x3B04",
+      "rom_offset": "0x7A2534",
+      "flag_id": "0x045",
+      "address": "0x8015C610",
+      "mask": "0x20",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x3B18",
+      "rom_offset": "0x7A2548",
+      "flag_id": "0x023",
+      "address": "0x8015C60C",
+      "mask": "0x08",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3B48"
+    },
+    {
+      "file_offset": "0x3B48",
+      "rom_offset": "0x7A2578",
+      "flag_id": "0x022",
+      "address": "0x8015C60C",
+      "mask": "0x04",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3B80"
+    },
+    {
+      "file_offset": "0x3B80",
+      "rom_offset": "0x7A25B0",
+      "flag_id": "0x024",
+      "address": "0x8015C60C",
+      "mask": "0x10",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3BD0"
+    },
+    {
+      "file_offset": "0x3BBC",
+      "rom_offset": "0x7A25EC",
+      "flag_id": "0x024",
+      "address": "0x8015C60C",
+      "mask": "0x10",
+      "operation": "set"
+    },
+    {
+      "file_offset": "0x3BD0",
+      "rom_offset": "0x7A2600",
+      "flag_id": "0x027",
+      "address": "0x8015C60C",
+      "mask": "0x80",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3C38"
+    },
+    {
+      "file_offset": "0x3C38",
+      "rom_offset": "0x7A2668",
+      "flag_id": "0x020",
+      "address": "0x8015C60C",
+      "mask": "0x01",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3C68"
+    },
+    {
+      "file_offset": "0x3C68",
+      "rom_offset": "0x7A2698",
+      "flag_id": "0x00F",
+      "address": "0x8015C609",
+      "mask": "0x80",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3CB0"
+    },
+    {
+      "file_offset": "0x3CB0",
+      "rom_offset": "0x7A26E0",
+      "flag_id": "0x035",
+      "address": "0x8015C60E",
+      "mask": "0x20",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3CD8"
+    },
+    {
+      "file_offset": "0x3CD8",
+      "rom_offset": "0x7A2708",
+      "flag_id": "0x046",
+      "address": "0x8015C610",
+      "mask": "0x40",
+      "operation": "branch_if_set",
+      "target_file_offset": "0x3D50"
+    },
+    {
+      "file_offset": "0x3D3C",
+      "rom_offset": "0x7A276C",
+      "flag_id": "0x046",
+      "address": "0x8015C610",
+      "mask": "0x40",
+      "operation": "set"
+    }
+  ],
+  "limitation": "Aligned opcode candidates in one verified event region; reachability and full state semantics require further validation"
+}

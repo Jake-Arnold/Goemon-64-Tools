@@ -37,6 +37,19 @@ class StoryProgressTests(unittest.TestCase):
         with self.assertRaises(ValueError):write_story_value(ram,'bank_a','Set',b'\x00')
         with self.assertRaises(ValueError):write_story_value(ram,'mini','Set',b'\x00'*4)
 
+    def test_plasma_priority_bits_are_independent_and_all_sources_are_labelled(self):
+        ram=self.sample(); ram.bytes[0x8015C60A]=0; ram.bytes[0x8015C608]=0
+        self.assertTrue(write_story_value(ram,'external_super_pass','Set',b'\x00'))
+        rows={r['key']:r for r in story_rows(read_story_state(ram))}
+        self.assertEqual(rows['external_chain_pipe']['value'],'Clear')
+        self.assertEqual(rows['external_super_pass']['value'],'Set')
+        self.assertIn('user force-tested',rows['external_super_pass']['source'])
+        self.assertTrue(write_story_value(ram,'external_chain_pipe','Set',b'\x00'))
+        rows={r['key']:r for r in story_rows(read_story_state(ram))}
+        self.assertEqual(rows['external_chain_pipe']['value'],'Set')
+        self.assertEqual(rows['external_super_pass']['value'],'Set')
+        self.assertIn('mn64rando',rows['plasma_sudden_advice']['source'])
+
     def test_oedo_dialogue_cycle_flags_and_existing_omitsu_annotation(self):
         ram=self.sample();ram.bytes[0x8015C608]=0x84;ram.bytes[0x8015C609]=0x01
         rows={r['key']:r for r in story_rows(read_story_state(ram))}

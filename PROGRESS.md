@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-10 - v0.11.17 map common Plasma advice conditions
+
+- Traced instantiated Plasma actors in all four normal rooms to event 0x288 and scenario file 0x70. Its bounded advice path has 40 branch checks on 37 distinct flags and 11 set operations; 39 distinct bits are checked or set. Added a text-free, ROM-validated extractor and metadata; retail and decompressed US inputs produced identical results.
+- User force-tested 0x8015C60A/01 and 0x8015C608/01: the first bit gates the second check, including the case where only the second bit is set. Documented priority order, all advice branches, nested checks and flag effects in docs/PLASMA_TRIGGERS.md. The existing 0x044 Kegon bit can also be set by Plasma's preceding ocean advice.
+- Added 13 previously unlisted conditions to Story progress so all 39 checked/set bits are inspectable and editable. Attribute existing condition meanings to the pinned mn64rando annotation; aside from the user's specified observations these are not independently gameplay-verified. A separate bounded GEV scan records 69 possible set/clear sites for these bits; no native-code completeness or script reachability is claimed.
+- Validation: retail/decompressed metadata equality, extraction boundary/actor/opcode regression tests, user-confirmed mask and priority evidence, and Story progress/UI tests; full Windows suite: 356 tests, 351 passed and five native skips. No assistant live game writes, ROM assets, dialogue text or personal session data committed.
+- Next: controlled in-game tests for later Plasma stages; trace GEV writer candidates to specific NPC/event paths and continue native decompilation.
+
+
 
 ### 2026-11-15 — Fix Japanese Scene Browser double-click: immediate USA-style 0x0C reload
 
@@ -2831,3 +2840,9 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Combined user acceptance now covers Japanese warps, 33 of 34 individual unlocks, the complete regression suite, Japanese Live Memory Freeze, Japanese Story Progress and named native Checkpoints. No further functional failures have been reported in the tested Japanese feature set.
 - **Integration audit:** the Japanese draft PRs #13–#17 remain open and mergeable, stacked on custom development branches. PR #17 targets `chatgptweb/japan-scene-character-traces-002` (PR #16), contains **299 commits and 93 file changes** relative to that base; `main` and PR #17 have **diverged (496 commits ahead on PR #17; 1 commit behind main)**. PR #13's base is `chatgptweb/japan-mupen-ambiguity-fix` (PR #11); PR #12 is a separate USA-memory-lead sibling branch. This is a nontrivial ancestry/integration issue, not a failing user test.
 - **Do not mass-merge this unreviewed 299-commit stack or delete source branches solely because end-user feature acceptance is complete.** Next is a controlled ancestry, scope and merge-target audit to preserve recent mainline changes and USA/decomp development, then staged integration. Draft status retained; no runtime code changes in this record.
+
+### 2026-11-16 — Mainline/Japanese two-parent integration candidate
+
+- Prepared two-parent integration, preserving user-accepted Japan branch `dd35df81b36a` and latest main-only USA Plasma commit `12e7699a4294`. The Japanese version-aware GUI and all prior source history remain intact. Existing source branches were neither rewritten nor deleted.
+- Copied eight exact mainline files by Git blob SHA; reconciled 13 Plasma Story Progress flags, two priority-bit evidence notes, Plasma backend test, Story Progress UI filter count, and decomp research link. README and Toolkit already included mainline v0.11.17 text, so no unnecessary overwrite.
+- Combined branch needs a new complete Windows local regression run, Plasma test run, and large-diff review. The user's previously completed 195 backend / 94 GUI passing suite and live features applied to the Japanese source before this merge. Battery hypothesis remains deferred; no ROM assets committed.
