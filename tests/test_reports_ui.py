@@ -47,6 +47,8 @@ class ReportBrowserTests(unittest.TestCase):
         self.assertEqual(app.notebook.tab(app.reports_tab, "text"), "Reports")
         self.assertEqual(len(app.reports_tree.get_children()), 1)
         self.assertEqual(app.reports_tree.item("0", "text"), "Sasuke position")
+        self.assertNotIn("location", app.reports_tree["columns"])
+        self.assertIn("candidates", app.reports_tree["columns"])
         app.reports_tree.selection_set("0")
         with patch("practice.reports_ui.open_in_file_manager") as opener:
             app.open_selected_report()
@@ -60,6 +62,31 @@ class ReportBrowserTests(unittest.TestCase):
         opener.assert_called_once_with(self.folder)
         app.copy_selected_report_path()
         self.assertEqual(self.root.clipboard_get(), str(self.folder))
+
+
+    def test_tidy_folder_asks_and_preserves_selection(self):
+        app = self.shell
+        app.reports_tree.selection_set("0")
+        migrated = self.folder.parent / "Sasuke position" / "2026-11-16 18-15-00 UTC"
+        with patch("practice.reports_ui.messagebox.askyesno",
+                   return_value=True) as confirm, \
+             patch("practice.reports_ui.organise_report_folder",
+                   return_value=migrated) as organiser, \
+             patch.object(app, "refresh_reports") as refresh:
+            app.organise_selected_report()
+        confirm.assert_called_once()
+        organiser.assert_called_once_with(self.folder)
+        refresh.assert_called_once_with(select_path=migrated)
+        self.assertIn("Organised", app.report_status.get())
+
+    def test_tidy_folder_cancelled_is_non_destructive(self):
+        app = self.shell
+        app.reports_tree.selection_set("0")
+        with patch("practice.reports_ui.messagebox.askyesno",
+                   return_value=False), \
+             patch("practice.reports_ui.organise_report_folder") as organiser:
+            app.organise_selected_report()
+        organiser.assert_not_called()
 
     def test_missing_selection_is_explained(self):
         app = self.shell
