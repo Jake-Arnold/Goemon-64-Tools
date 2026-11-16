@@ -2,6 +2,15 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.32 mandatory reciprocal discovery protocol
+
+- **Reason:** Subsequent USA or Japanese memory discoveries should immediately produce a counterpart hypothesis, rather than relying on future agents to remember the `±0x57F0` rule.
+- **Implementation:** Root `AGENTS.md` now requires same-task bidirectional field triage with source ROM identity, width, bitmask, evidence, independent validation and explicit exceptions. Expanded `docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md` with six-step agent workflow, negative examples and an evidence template.
+- **Agent tool:** `practice/region_crosswalk_agent.py` and `scripts/crosswalk_address.py` resolve known USA↔JP pairs and exceptions before offset arithmetic. New addresses require `--kind static-global` or `--kind saved-event`; return status is always `offset-candidate`. Reject sample known dynamic/VM addresses; no guest reads/writes and no new writable controls.
+- **Tests:** Added ROM-free symmetrical lookup/exception/negative-control tests to `scripts/test_japan_party.sh`; fresh hosted CI result pending. Existing Ubuntu baseline passed 301 non-GUI and 124 Tk tests before this follow-up.
+- **Limits:** Dynamic/overlaid fields still require independent original-MIPS or runtime mapping; no universal converter exists. Separate decomp skill/docs maintained in `decomp/bidirectional-crosswalk-agents-20261116`. Live JP confirmation and Windows testing remain outstanding.
+- **Next:** Review CLI/CI, capture paired gameplay evidence, then merge the toolkit PR to `main` and decomp PR to `chatgptweb/decomp` independently.
+
 ## 2026-11-16 — v0.11.32 USA/Japan cross-region read-only mapping (feature branch)
 
 - **Reason:** Four new user-reported Japanese gameplay checks support the `+0x57F0` USA→JP shift: equipped weapon `0x80161DF7`, submode `0x800CD294`, map overlay `0x80161D64`, and Benkei encounter `0x80161DFC & 0x20`.
