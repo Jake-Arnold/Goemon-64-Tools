@@ -247,7 +247,7 @@ class ValueScanner:
             # would otherwise make 200 separate process-memory syscalls/poll.
             groups = []
             for off in offsets:
-                if not groups or off + width - groups[-1][-1] > 0x1000:
+                if not groups or off + width - groups[-1][0] > 0x1000:
                     groups.append([off])
                 else:
                     groups[-1].append(off)
