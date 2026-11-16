@@ -1835,9 +1835,19 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         pending=self.pending_restore
         self.pending_restore=None
         self._release_native_key()
-        if getattr(self,'cancel_restore_btn',None):self.cancel_restore_btn.state(['disabled'])
-        if getattr(self,'restore_state_btn',None) and (self.args.enable_state_restore or self.args.enable_teleport):
-            self.restore_state_btn.state(['!disabled'])
+        # main() also performs cleanup after the user has closed the Tk root.
+        # Destroyed widgets still exist as Python objects, but their Tcl
+        # commands no longer exist. Never abort pending-state cleanup there.
+        try:
+            if (getattr(self, 'cancel_restore_btn', None) is not None
+                    and self.cancel_restore_btn.winfo_exists()):
+                self.cancel_restore_btn.state(['disabled'])
+            if (getattr(self, 'restore_state_btn', None) is not None
+                    and (self.args.enable_state_restore or self.args.enable_teleport)
+                    and self.restore_state_btn.winfo_exists()):
+                self.restore_state_btn.state(['!disabled'])
+        except tk.TclError:
+            pass  # UI already destroyed; finish non-UI cleanup below.
         if pending and self.mem:
             try:
                 note=undo_character_preparation(self.mem,pending.get('party_patch'),

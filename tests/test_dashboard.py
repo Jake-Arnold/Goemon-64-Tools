@@ -107,6 +107,14 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertIn('map unknown',labels[2])
         self.assertFalse(hasattr(app,'save_bookmark'))
 
+    def test_cancel_pending_restore_after_tk_root_destroy_is_safe(self):
+        """Closing the main window must not touch deleted Tcl widget commands."""
+        app = self.toolkit
+        self.root.destroy()
+        # Regression: used to raise TclError: invalid command name ...button.
+        app.cancel_pending_restore(quiet=True)
+        self.assertIsNone(app.pending_restore)
+
     def test_native_savestates_replace_logical_dashboard(self):
         app = self.toolkit
         self.assertTrue(app.native_save_btn.winfo_exists())

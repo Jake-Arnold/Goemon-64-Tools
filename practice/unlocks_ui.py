@@ -291,8 +291,8 @@ class UnlocksMixin:
                 self.unlock_status.set(
                     f'Japan-0 {unlock.label}: '
                     f'0x{japan_unlock_wire_value(unlock, actual):02X} '
-                    ('[live-verified] ' if lead.user_verified else
-                     '[UNVERIFIED battery candidate] ')
+                    + ('[live-verified] ' if lead.user_verified else
+                       '[UNVERIFIED battery candidate] ')
                     + ('(written)' if changed else '(unchanged)'))
                 self.refresh_unlocks(force=True)
             except (OSError, ValueError, RuntimeError, PermissionError) as exc:

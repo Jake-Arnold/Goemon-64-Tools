@@ -105,6 +105,7 @@ class StoryProgressMixin:
         from practice.japanese_fields import read_japan_field
         from practice.japan_story_progress import (
             JAPAN_PROGRESS_ITEMS, japan_progress_row)
+        from practice.region_unlocks import japan_unlock_lead
         region_switched = self._story_display_region != 'japan'
         if region_switched:
             for table in self.story_tables.values():
