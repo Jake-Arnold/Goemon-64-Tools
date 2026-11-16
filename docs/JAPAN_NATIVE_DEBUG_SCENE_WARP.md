@@ -3,6 +3,14 @@
 **Date:** 2026-11-15  
 **Live evidence:** The user confirmed that the Japan-0 Project64 toolkit can open the original debug menu (`0x800CD284 = 0x0A`) and teleport Goemon to known Oedo South XYZ. On a subsequent test, **double-click only opened the debug menu**, which is **not** the requested USA-equivalent instant warp. That incorrect dispatch has now been replaced in source. **The new direct `0x0C` area reload still awaits live confirmation.**
 
+## v0.11.24 — permanent numeric scene/entrance coordinates
+
+The Goemon toolkit no longer depends on the original USA ROM being present at launch for already known warp coordinates. Both USA and Japanese scene browsers now load the validated extracted `entrance-coordinates.json` atlas from the user's persistent config directory, not a checkout-specific file. Previous `practice/entrances.json` data is migrated automatically. The numeric table contains scene ID, source scene when present, entrance ID, X/Y/Z, heading and mode; **scene ID by itself can be ambiguous when a room has multiple doors**.
+
+For an entirely fresh installation with no extracted original-USA atlas, the toolkit includes the one actual observed XYZ from prior gameplay tests: **Oedo Town South (`0x161`) at `(-289, 0, -167)`**. It is offered as a permanent known point with an explicitly unverified 0/0x10 heading/mode. No made-up entries are added for rooms whose XYZ has not been observed or extracted. A verified USA entrance record for Oedo or another scene overrides the built-in fallback. Once the full USA ROM is extracted once and the numbers are cached, further warps into any covered scene use them without needing the ROM again.
+
+The Japanese and USA region-specific write backends continue to use the same selected `Spawn` and identical coordinates. Native Japanese post-load Goemon position writes remain guarded and one-shot; this change only improves how stable entrance records are found.
+
 ## v0.11.23 correction — Japan now uses the exact selected USA entrance
 
 The earlier v0.11.22 conclusion that `self.entrance_atlas` was never initialized was incomplete. `EntranceMixin.init_entrances()` does load the USA atlas from the toolkit's cached `entrances.json`. The actual defect was that the Japanese controller never selected from that shared atlas; it consulted a different Japan-only warp point registry, while the Japanese Scene Browser hid the USA entrance dropdown.
