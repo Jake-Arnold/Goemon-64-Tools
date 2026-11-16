@@ -104,6 +104,12 @@ New original-IDO research on PR #23: `decomp/research/file11_adjacent_wave2_prob
 
 Native proof `decomp/results/file11_adjacent_wave2_native_proof_20261116.json`, dated report `docs/USA_FILE11_ADJACENT_WAVE2_44_NATIVE_MATCHES_2026-11-16.md`. Existing older checkout still has two unrelated stale-source fingerprint failures in overall local CI: report honestly. **No whole-ROM G2, relocation/inventory promotion for these 189 pending research functions.** Official `chatgptweb/decomp` inventory **remains 210 functions / 13,336 bytes / 7,153 assembly entries**; prospective 399 is not production.
 
+## Third USA file_11 original-VMA adjacency sweep (16 November 2026)
+
+Research PR #23 now also includes `decomp/research/file11_adjacent_wave3_sources.json` and `file11_adjacent_wave3_probe.py`. Native IDO 5.3 compiled **10 new original-USA functions (488 bytes)** exactly, with **nine combined contiguous C units 9/9** spanning **27 distinct original functions / 984 bytes**, and with no overlap against the earlier 77/68/44 unpromoted candidates or 50 promoted file_11 functions. The six-function 216-byte `[0x59EEB4,0x59EF8C)` actor-state reset block and four-function 164-byte `[0x5B04F4,0x5B0598)` callback block are important integration targets; see `docs/USA_FILE11_ADJACENT_WAVE3_10_NATIVE_MATCHES_2026-11-16.md` and `decomp/results/file11_adjacent_wave3_native_proof_20261116.json`. 18 focused new tests passed; the original-IDO 10 individual + nine-group proof ran twice.
+
+**Still research-only:** previous 189 + new 10 = **199 unpromoted candidates / 7,000 original instruction bytes**. No complete 409-function ROM G2, overlay relocation or inventory was run. Canonical published decomp still 210 matching C / 13,336 bytes / 7,153 assembly. Full ROM-free CI from the old user-uploaded ZIP still fails two older source-pin fingerprints, although these new tests pass. Never report prospective 409 as promoted.
+
 ## 0. Cross-conversation handoff
 
 For the reviewed integration blockers and reproducible next steps, see [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).
