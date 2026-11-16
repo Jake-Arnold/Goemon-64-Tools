@@ -78,7 +78,7 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         app.watch_state_probe_candidate()
         self.assertEqual(len(app.jp_custom_watches), 1)
         self.assertTrue(app.jp_custom_watches[0].name.startswith('JP A/B/C'))
-        self.assertEqual(app.notebook.select(), str(app.jp_fields_tab))
+        self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
 
         app._disconnect_for_version_change()
         self.assertFalse(app.state_captures)
@@ -142,7 +142,9 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         app.state_probe_table.selection_set(iid)
         app.watch_state_probe_candidate()
         self.assertEqual(app.jp_custom_watches[-1].kind, 'f32')
-        self.assertEqual(app.jp_custom_watches[-1].address, XYZ_ADDR)
+        self.assertEqual(
+            {w.address for w in app.jp_custom_watches[-3:]},
+            {XYZ_ADDR, XYZ_ADDR + 4, XYZ_ADDR + 8})
         self.assertTrue(app.jp_custom_watches[-1].name.startswith('JP XYZ candidate'))
 
     def test_disallow_comparison_after_reconnect(self):
