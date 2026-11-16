@@ -99,6 +99,28 @@ class EventSessionUITests(unittest.TestCase):
             release.set();self.root.update()
         self.assertEqual(app.event_rows,[])
 
+
+    def test_all_discovery_modes_share_candidate_columns_and_actions(self):
+        app = self.app
+        modes = (
+            (app.value_search_tree, app.value_search_results),
+            (app.state_probe_table, app.state_probe_results),
+            (app.event_table, app.event_results),
+            (app.damage_capture_tree, app.damage_results),
+        )
+        for tree, panel in modes:
+            with self.subTest(panel=panel.label):
+                self.assertEqual(tuple(tree['columns'])[:4],
+                                 ('address', 'type', 'live', 'raw'))
+                self.assertEqual(str(tree['selectmode']), 'extended')
+                self.assertEqual(panel.save_button.cget('text'), 'Save report')
+                self.assertTrue(panel.auto.get())
+                self.assertEqual(panel.interval.get(), '250 ms')
+                self.assertTrue(callable(panel.watch_selected))
+                self.assertTrue(callable(panel.refresh_now))
+                self.assertTrue(callable(panel.copy_address))
+                self.assertTrue(callable(panel.select_visible))
+
     def test_event_sessions_consolidates_advanced_memory_and_removes_shadow(self):
         app=self.app
         tabs={app.notebook.tab(tab,'text') for tab in app.notebook.tabs()}
