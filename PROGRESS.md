@@ -9,6 +9,8 @@
 - Verification: independent three-function IDO C isolates 420/420 bytes and 25 original-named external relocations PASS, full linked candidate PASS, six additional synthetic fail-closed preflight tests PASS.
 - Limitations: original upstream assembly plus three C only. This is NOT a 315+3 canonical combined G2 or a formal promotion; original 315 production C count, manifest and proofs remain unchanged. Complete central decomp.verify, decomp.inventory and local_ci still required.
 - Follow-up: version the adapter for the existing 315-C pipeline, then run complete original-ROM, ELF relocation, symbol inventory and local CI acceptance.
+- Reproduction publication: committed the byte-identical original-linked full-ROM integration script and its six locally passing synthetic tests (`decomp/research/file12_spatial/integrate_fullrom.py`; `tests/test_file12_fullrom_preflight.py`); Git blob identities match the actual tested files. No production stage or manifest changes.
+
 
 
 ### 2026-11-16 — Three USA file_12 actor-lifecycle C isolates exact at original VMA (research only)
