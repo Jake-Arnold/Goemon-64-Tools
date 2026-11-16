@@ -249,6 +249,9 @@ class ValueSearchMixin:
         kind = self.value_search_type.get()
         number = self.value_search_value.get()
         filter_mode = self.value_search_filter.get()
+        filter_value = self.value_filter_value.get()
+        comparison = self.value_search_compare.get()
+        encoding = self.value_search_encoding.get()
         include_unaligned = self.value_search_unaligned.get()
         # Project64 may expose only an unexpanded 4 MiB RDRAM mapping.
         # Keep USA and synthetic test scanner sizes unchanged.
@@ -256,7 +259,10 @@ class ValueSearchMixin:
                      if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan'
                      else self.value_search_size)
         self.value_scan_busy = True
-        self.value_search_status.set('Reading game RAM; UI remains responsive...')
+        self._value_search_next_refresh = time.monotonic() + (
+            int(self.value_search_refresh_ms.get().split()[0]) / 1000)
+        self.value_search_status.set(
+            'Reading guest RAM in the background; the interface remains responsive...')
         generation = self.value_scan_generation
 
         def worker():
@@ -265,13 +271,18 @@ class ValueSearchMixin:
                 if action in ('exact', 'unknown'):
                     scanner = ValueScanner(size=scan_size,
                                            aligned=not include_unaligned)
-                    if action == 'exact':
+                    if action == 'exact' and kind == 'Text':
+                        scanner.start_text(mem, number, encoding=encoding)
+                    elif action == 'exact':
                         scanner.start_exact(mem, kind, number)
+                    elif kind == 'Text':
+                        raise ValueError('Text patterns require an exact starting search')
                     else:
                         scanner.start_unknown(mem, kind)
                     rows = scanner.rows(DISPLAY_LIMIT)
                 elif action == 'filter':
-                    scanner.filter(mem, filter_mode, number)
+                    scanner.filter(mem, filter_mode, filter_value,
+                                   compare_to=comparison)
                     rows = scanner.rows(DISPLAY_LIMIT)
                 elif action == 'refresh':
                     rows = scanner.rows(DISPLAY_LIMIT, ram=mem)
@@ -308,15 +319,22 @@ class ValueSearchMixin:
         if action in ('exact', 'unknown'):
             self.value_scanner = scanner
             self.value_scan_memory = mem
-        selected = self.value_search_tree.selection()
-        selected_id = selected[0] if selected else None
-        self.value_search_tree.delete(*self.value_search_tree.get_children())
+        selected = tuple(self.value_search_tree.selection())
+        if action != 'refresh':
+            self.value_search_tree.delete(*self.value_search_tree.get_children())
         for row in rows:
             address = f'0x{row["address"]:08X}'
-            self.value_search_tree.insert('', 'end', iid=address,
-                values=(address, row['kind'], row['value'], row['hex']))
-        if selected_id and self.value_search_tree.exists(selected_id):
-            self.value_search_tree.selection_set(selected_id)
+            values = (address, row['kind'], row['initial'],
+                      row['previous'], row['value'], row['hex'])
+            if self.value_search_tree.exists(address):
+                self.value_search_tree.item(address, values=values)
+            else:
+                self.value_search_tree.insert('', 'end', iid=address, values=values)
+        if action != 'refresh':
+            surviving = tuple(x for x in selected
+                              if self.value_search_tree.exists(x))
+            if surviving:
+                self.value_search_tree.selection_set(surviving)
         label = 'Live preview' if action == 'refresh' else 'Search updated'
         self.value_search_status.set(
             f'{label}: {self.value_scanner.count:,} candidates; '
@@ -335,8 +353,10 @@ class ValueSearchMixin:
             for row in self.value_scanner.rows(DISPLAY_LIMIT):
                 displayed.append({
                     'address': f'0x{row["address"]:08X}',
-                    'kind': row['kind'], 'value': row['value'],
-                    'hex': row['hex'],
+                    'kind': row['kind'],
+                    'initial': row['initial'],
+                    'previous': row['previous'],
+                    'value': row['value'], 'hex': row['hex'],
                 })
             region = getattr(getattr(self, 'active_version', None),
                              'key', 'usa')
@@ -344,11 +364,14 @@ class ValueSearchMixin:
                 region=region,
                 title=self.value_report_name.get() or 'Memory value search',
                 rows=displayed, total_count=self.value_scanner.count,
-                value_type=self.value_scanner.kind,
+                value_type=(
+                    'text/' + self.value_scanner.text_encoding
+                    if self.value_scanner.kind == TEXT_KIND else
+                    self.value_scanner.kind),
                 sample_count=self.value_scanner.samples)
             self.value_search_status.set(
                 f'Saved {len(displayed)}/{self.value_scanner.count} '
-                f'candidate rows to {folder}. View them in Reports.')
+                'candidate rows. Open Reports to inspect the files.')
             if hasattr(self, 'refresh_reports'):
                 self.refresh_reports(select_path=folder)
         except (OSError, ValueError, TypeError) as exc:
@@ -366,12 +389,18 @@ class ValueSearchMixin:
 
     def _value_search_auto_tick(self):
         self._value_search_auto_after = None
+        now = time.monotonic()
+        interval = int(self.value_search_refresh_ms.get().split()[0]) / 1000
         if (self.value_search_autorefresh.get() and not self.value_scan_busy and
-                self.value_scanner.previous is not None and self._value_search_reader() is self.value_scan_memory and
-                self._value_search_tab_visible()):
+                self.value_scanner.previous is not None and
+                self._value_search_reader() is self.value_scan_memory and
+                self._value_search_tab_visible() and
+                now >= self._value_search_next_refresh):
+            # Many spatially scattered process-memory reads can be expensive.
+            # The background worker drops refresh overlap, never queues it.
             self._value_start('refresh')
         self._value_search_auto_after = self.root.after(
-            1800, self._value_search_auto_tick)
+            100, self._value_search_auto_tick)
 
     def clear_value_search(self):
         if self.value_scan_busy:
@@ -384,22 +413,82 @@ class ValueSearchMixin:
         self.value_search_status.set('Cleared candidate set; game memory unchanged.')
 
     def watch_value_search_candidate(self):
-        selected = self.value_search_tree.selection()
+        selected = tuple(self.value_search_tree.selection())
         if not selected:
-            self.value_search_status.set('Select a surviving address first.')
+            self.value_search_status.set(
+                'Select one or more addresses (Ctrl/Shift-click), then Watch selected.')
             return
-        addr = selected[0]
+        if self.value_scan_busy:
+            self.value_search_status.set('Let the current memory scan finish first.')
+            return
         kind = self.value_scanner.kind
+        if kind == TEXT_KIND:
+            self.value_search_status.set(
+                'Variable-length text matches cannot yet be pinned as fixed-width '
+                'Live Memory watches. Numeric and f32/f64 matches are supported.')
+            return
         if kind is None:
             return
-        if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan':
-            if self.add_japan_custom_watch_from_search(addr, kind):
+        region = getattr(getattr(self, 'active_version', None), 'key', 'usa')
+        watch_list = ('jp_custom_watches' if region == 'japan' else 'custom_watches')
+        existing = getattr(self, watch_list, None)
+        if existing is None:
+            # Compatibility with standalone scanner extensions and mock toolkits.
+            for addr in selected:
+                if region == 'japan':
+                    if not self.add_japan_custom_watch_from_search(addr, kind):
+                        break
+                else:
+                    self.user_watch_name.set(f'Value Search {addr}')
+                    self.user_watch_address.set(addr)
+                    self.user_watch_type.set(kind)
+                    self.add_custom_watch()
+            if region == 'japan':
                 self.notebook.select(self.jp_fields_tab)
             else:
-                self.value_search_status.set(self.jp_custom_watch_status.get())
+                self.notebook.select(self.live_memory_tab)
             return
-        self.user_watch_name.set(f'Value Search {addr}')
-        self.user_watch_address.set(addr)
-        self.user_watch_type.set(kind)
-        self.add_custom_watch()
+
+        from practice.custom_watches import make_watch, append_watch, save_watches
+        try:
+            updated = list(existing)
+            added = []
+            skipped = 0
+            for addr in selected:
+                address = int(addr, 16)
+                if any(w.address == address and w.kind == kind for w in updated):
+                    skipped += 1
+                    continue
+                watch = make_watch(f'Value Search {addr}', addr, kind)
+                updated = append_watch(updated, watch)
+                added.append(watch)
+            if not added:
+                self.value_search_status.set(
+                    f'All {skipped} selected values are already watched.')
+                return
+            if region == 'japan':
+                path = self.jp_watch_path
+            else:
+                from practice.ui_extension import CUSTOM_WATCHES_PATH
+                path = CUSTOM_WATCHES_PATH
+            save_watches(path, updated)
+        except (OSError, ValueError, TypeError, KeyError) as exc:
+            self.value_search_status.set(
+                f'No new watches saved; check the selection: {exc}')
+            return
+
+        setattr(self, watch_list, updated)
+        if region == 'japan':
+            for watch in added:
+                self._jp_insert_custom_watch(watch)
+            self._jp_reset_comparison()
+            self.refresh_japan_fields(force=True)
+        if hasattr(self, 'refresh_inspector'):
+            self.last_inspect_at = 0.0
+            self.refresh_inspector(
+                self.current if isinstance(getattr(self, 'current', None), dict)
+                else {})
         self.notebook.select(self.live_memory_tab)
+        self.value_search_status.set(
+            f'Added {len(added)} watched address(es) to Live Memory.'
+            + (f' Skipped {skipped} already watched.' if skipped else ''))
