@@ -10,7 +10,7 @@ class StoryProgressUITests(unittest.TestCase):
     def setUp(self):
         try:self.root=tk.Tk()
         except tk.TclError as exc:self.skipTest(str(exc))
-        self.root.withdraw();self.app=Toolkit(self.root,parse_args(['--read-only']))
+        self.root.withdraw();self.app=Toolkit(self.root,parse_args(['--read-only','--game-version','usa']))
 
     def tearDown(self):
         if hasattr(self,'root'):self.root.destroy()
