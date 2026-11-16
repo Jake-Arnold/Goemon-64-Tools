@@ -115,74 +115,35 @@ def _create_run_folder(parent, when):
             continue
     raise RuntimeError("No unused report run folder could be allocated")
 
+
 def create_value_search_report(*, region, title, rows, total_count,
                                value_type, sample_count, timestamp=None,
                                root=None):
-    if region not in REGIONS:
-        raise ValueError("A report must belong to USA or Japan")
-    if not isinstance(rows, (list, tuple)) or not 0 <= len(rows) <= total_count:
-        raise ValueError("Invalid result list or candidate count")
-    when = timestamp or datetime.now(timezone.utc)
-    if when.tzinfo is None:
-        raise ValueError("Report timestamp must include a timezone")
-    when = when.astimezone(timezone.utc)
-    base = (Path(root) if root is not None else reports_root()) / REGIONS[region]
-    experiment = base / readable_report_name(title)
-    experiment.mkdir(parents=True, exist_ok=True)
-    folder = _create_run_folder(experiment, when)
-    manifest = {
-        "schema": SCHEMA, "kind": "value-search",
-        "title": title.strip() or "Value search",
-        "region": REGIONS[region],
-        "created_utc": when.isoformat().replace("+00:00", "Z"),
-        "candidate_total": total_count,
-        "candidate_exported": len(rows),
-        "candidate_truncated": len(rows) < total_count,
-        "value_type": value_type, "snapshots": sample_count,
-        "instruction_access_tracing": False,
-        "evidence": "memory-snapshot-only",
-    }
-    notes = [
-        "# " + manifest["title"], "",
-        "**Region:** " + manifest["region"],
-        "**Date (UTC):** " + manifest["created_utc"],
-        "**Value type:** " + value_type,
-        "**Snapshots:** " + str(sample_count),
-        "**Total candidates:** " + str(total_count),
-        "**Exported rows:** " + str(len(rows)), "",
-        "Read-only game RAM value search. These are unverified candidate"
-        " addresses. No original MIPS instruction reads/writes were traced.",
-    ]
-    if manifest["candidate_truncated"]:
-        notes += ["", "**Coverage warning:** Only the displayed candidate"
-                  " rows are exported. Narrow the search for a complete list."]
-    notes += ["", "## Candidate preview", "",
-              "| Address | Type | Initial | Previous | Value | Raw hex |",
-              "| --- | --- | --- | --- | --- | --- |"]
-    for row in rows[:50]:
-        columns = [str(row.get(key, "")).replace("|", r"\|").replace("\n", " ")
-                   for key in ("address", "kind", "initial", "previous", "value", "hex")]
-        notes.append("| " + " | ".join(columns) + " |")
-    if len(rows) > 50:
-        notes += ["", "Additional exported rows are in candidates.csv."]
-    with (folder / "candidates.csv").open("w", encoding="utf-8",
-                                           newline="") as output:
-        writer = csv.DictWriter(
-            output, fieldnames=("address", "kind", "initial", "previous", "value", "hex"),
-            extrasaction="ignore")
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({k: row.get(k, "") for k in writer.fieldnames})
-    (folder / "session.json").write_text(
-        json.dumps({"manifest": manifest, "candidates": list(rows),
-                    "evidence": {"value_type": value_type, "snapshots": sample_count}},
-                   indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    (folder / "summary.md").write_text("\n".join(notes) + "\n",
-                                       encoding="utf-8")
-    # The manifest is written last; partial reports are excluded from the index.
-    (folder / "manifest.json").write_text(
-        json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    return folder
+    """Value scans share the same report writer as every other investigation."""
+    return create_discovery_report(
+        region=region, title=title,
+        kind="value-search",
+        candidates=rows, candidate_total=total_count,
+        evidence={
+            "value_type": value_type,
+            "snapshot_count": sample_count,
+            "candidate_values": list(rows),
+        },
+        metadata={
+            "value_type": value_type,
+            "snapshots": sample_count,
+            "candidate_limit": len(rows),
+            "source": "read-only guest RAM value search",
+        },
+        notes=[
+            "Only the displayed candidate rows are exported if total results "
+            "exceed this report's candidate limit."
+            if len(rows) < total_count else
+            "All surviving candidate rows are included.",
+            "Value matches do not reveal original MIPS readers/writers "
+            "or prove a field is safe to modify.",
+        ],
+        timestamp=timestamp, root=root)
 
 
 
