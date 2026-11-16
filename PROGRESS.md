@@ -1,5 +1,20 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Full USA 303-C central acceptance passed (PR #32)
+
+- Tested: the user-uploaded full original USA build bundle was reconstructed locally from the private checkout and pinned upstream/compiler/toolchain; the opt-in corrected 143-C stage ran a fresh native G2 using the certified original baseline. Full 33,554,432-byte ROM reproduced original SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; 303/303 C functions and 16,180 bytes matched; the original 8,825 file_11 semantic relocations were preserved.
+- Inventory: 7,376 original positive-sized function identities preserved, 13 upstream unmarked functions, 303 newly matching C functions, 316 combined C entries, 7,060 remaining assembly entries, no extra positive FUNC aliases; the original-function identity checksum remains `01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787`.
+- Local CI: complete ROM-free decomp and verifier suites, task evidence validation, and C ASan/UBSan emitter regression passed after reconciling two tests that improperly compared the historical 210-C proof's source fingerprint to the newer verifier. The provenance of published 210-C proof remains untouched.
+- Acceptance: the standard fail-closed `decomp.review_file11_143` runner generated `REVIEW.json` with `status=ready_for_human_review`, `rom_free_local_ci=PASS`, and `official_production_manifest_unchanged=true`. This is candidate acceptance, not production promotion or a merge.
+- Remaining: review PR #32's proof bundle and accept or reject the +93 function promotion; retain the canonical 210-C production manifest until approved.
+
+### 2026-11-16 — PR #32 historical verifier fingerprint CI reconciliation
+
+- Changed: two tests now check that canonical `decomp/results/combined.json` preserves its verified original 210-C verifier SHA-256, and separately check the present verifier bytes against the reviewed VM residual current-source ledger. This retains a fail-closed current verifier fingerprint without inventing a fresh 210-C proof or rewriting historical artifacts.
+- Why: fresh native 303/303-C G2 and 7,376-entry inventory both passed on the uploaded Linux build after the third synthetic NOP alias fix. Local CI uncovered the two remaining assertions comparing the historical 210-C proof to the newer, 143-C-enabled verifier source.
+- Tested: native 303/303-C G2, exact 32 MiB ROM and 8,825 relocs PASS; original inventory 7,376 entries, zero aliases and 7,060 ASM PASS; full local CI PASS (216 decomp tests, 153 verifier/ledger tests, task evidence and C ASan/UBSan regression). No historical G2 artifact modified.
+- Remaining: formal promotion and any merge require human review; canonical production remains at 210 functions.
+
 ### 2026-11-16 — 303-C whole-ROM G2 passed; fail-closed third Splat NOP alias reconciliation
 
 - Changed: only the 143-C file_11 layout now removes the Splat-invented positive-sized `func_801F2CCC_5AEBDC` symbol at 0x5AEBDC, after validating its exact single 0x00000000 NOP line and NON_MATCHING marker. The original two 50-C aliases and all instruction/marker bytes remain intact. The 143-C object-digest exception list and acceptance-report audit now require precisely three documented metadata-only ASM alias corrections, not an arbitrary count or an inventory waiver. Added positive/negative synthetic regression tests.

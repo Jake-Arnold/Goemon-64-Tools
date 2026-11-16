@@ -215,8 +215,13 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
+        # The certified 210-C proof records the verifier used for that build.
+        # A newer 143-C-capable verifier must not rewrite old G2 provenance.
         self.assertEqual(current['verifier_source_sha256_lf'],
-                         hashlib.sha256((ROOT/'verify.py').read_bytes().replace(b'\r\n',b'\n')).hexdigest())
+                         '1c60206c7007b9e499250fc2512851bfa2c1d07f5743e607b90938196bd4280b')
+        current_sha = hashlib.sha256((ROOT/'verify.py').read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+        verified_current_sha = json.loads((ROOT/'results/vm_residual_inventory.json').read_text())['current_sources']['verifier_sha256']
+        self.assertEqual(current_sha, verified_current_sha)
         for name in ('batch_pilot.json','batch_search_pilot.json','batch_entrance_followup.json','batch_ui_followup.json','batch_autonomous_main_v1.json'):
             result=json.loads((ROOT/'results'/name).read_text())
             self.assertEqual(result['newly_verified_full_rom_functions'],0)
