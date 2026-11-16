@@ -199,7 +199,7 @@ class ValueSearchMixin:
         ):
             self.value_search_tree.heading(key, text=title)
             self.value_search_tree.column(
-                key, width=width, anchor='w', stretch=(key == 'value'))
+                key, width=width, anchor='w', stretch=(key == 'live'))
         scrollbar = ttk.Scrollbar(
             frame, orient='vertical', command=self.value_search_tree.yview)
         self.value_search_tree.configure(yscrollcommand=scrollbar.set)
@@ -543,4 +543,4 @@ class ValueSearchMixin:
     def watch_value_search_candidate(self):
         """Compatibility entrypoint; same batch-watch action as every tool."""
         self.value_search_results.watch_selected()
-        self.value_search_status.set(self.value_search_results.live_status.get())
+        # Keep scan evidence/status unchanged; the shared bar shows watch outcomes.
