@@ -74,7 +74,7 @@ They cover the new reported mappings, bit masks, known exceptions,
 negative evidence, exclusion of dynamically allocated/VM fields, read-only
 reads, big-endian values and baseline diffs.
 
-The Ubuntu workflow [43972242638](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43972242638) passed **301 ROM-free non-GUI tests (300 passed, 1 skipped)** and **124 Xvfb Tk GUI tests**. This includes the added registry and Tk smoke tests. The registry comprises **119 named entries** (27 static, 34 unlock, 45 curated story and 13 Plasma flags).
+The initial Ubuntu workflow [43972242638](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43972242638) passed **301 ROM-free non-GUI tests (300 passed, 1 skipped)** and **124 Xvfb Tk GUI tests**. The later agent-CLI-inclusive run [43973775950](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43973775950) passed **310 non-GUI tests (309 passed, 1 skipped)** and **124 GUI tests**. This includes the added registry and Tk smoke tests. The registry comprises **119 named entries** (27 static, 34 unlock, 45 curated story and 13 Plasma flags).
 
 Synthetic tests do not replace checks against the actual USA/Japan games.
 A Japanese live runtime comparison and Windows regression are still required
