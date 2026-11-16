@@ -69,7 +69,7 @@ class ValueSearchMixin:
         self.value_report_name = tk.StringVar(value='Memory value search')
 
         tab = ttk.Frame(notebook, padding=10)
-        notebook.add(tab, text='Value search')
+        notebook.add(tab, text='Find a value')
         self.value_search_tab = tab
         ttk.Label(tab, text='Find addresses by value or game action',
                   font=('Segoe UI Semibold', 16)).pack(anchor='w', pady=(0, 5))
@@ -194,7 +194,7 @@ class ValueSearchMixin:
         ttk.Label(exports, text='Report name').pack(side='left', padx=(0, 5))
         ttk.Entry(exports, textvariable=self.value_report_name, width=35).pack(
             side='left', padx=(0, 7))
-        ttk.Button(exports, text='Save candidate report',
+        ttk.Button(exports, text='Save report',
                    command=self.export_value_search_report).pack(side='left')
         ttk.Label(exports, text='Ctrl/Shift-click to select multiple rows').pack(
             side='left', padx=(16, 0))
