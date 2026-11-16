@@ -74,6 +74,8 @@ They cover the new reported mappings, bit masks, known exceptions,
 negative evidence, exclusion of dynamically allocated/VM fields, read-only
 reads, big-endian values and baseline diffs.
 
+The Ubuntu workflow [43972242638](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43972242638) passed **301 ROM-free non-GUI tests (300 passed, 1 skipped)** and **124 Xvfb Tk GUI tests**. This includes the added registry and Tk smoke tests. The registry comprises **119 named entries** (27 static, 34 unlock, 45 curated story and 13 Plasma flags).
+
 Synthetic tests do not replace checks against the actual USA/Japan games.
-A full GUI suite and a Japanese live runtime comparison must pass before
-merging the feature into `main` or describing the crosswalk as validated.
+A Japanese live runtime comparison and Windows regression are still required
+before calling the new story translations validated.
