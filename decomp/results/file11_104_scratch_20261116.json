@@ -1,0 +1,62 @@
+{
+  "format": "goemon-file11-104-independent-full-rom-and-elf-v1",
+  "date": "2026-11-16",
+  "status": "matched_scratch_not_central",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "candidate_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_33554432_bytes_identical": true,
+  "file11_c_functions": 104,
+  "file11_new_c_functions_since_101": 3,
+  "file11_c_bytes": 2496,
+  "file11_bytes_added_since_101": 148,
+  "file11_original_vma_link_chunks": 86,
+  "file11_overlay_vma": "0x801CB460",
+  "file11_overlay_size": 267264,
+  "original_function_entries": 7376,
+  "candidate_function_entries": 7376,
+  "original_function_identity_set_equal": true,
+  "file11_c_func_symbols_matched": 104,
+  "file11_relocations": 8825,
+  "relocation_semantic_tuples_equal": true,
+  "reordered_indices": [
+    2506,
+    2507,
+    2508,
+    6131,
+    6132,
+    6133,
+    6762,
+    6763,
+    6764
+  ],
+  "raw_relocation_order_equal": false,
+  "new_usa_functions": [
+    {
+      "name": "func_801FB270_5B7180",
+      "rom_offset": "0x5B7180",
+      "size": 52,
+      "sha256": "010b3414a16b5bd346d909a297453bc31d3e7363e0f2b5eabad8ffe9ab7b05b2"
+    },
+    {
+      "name": "func_801FC590_5B84A0",
+      "rom_offset": "0x5B84A0",
+      "size": 48,
+      "sha256": "79720fafd1d5de29f8aae667a2825f858e94cd2523119d9ff107f5c301f992ce"
+    },
+    {
+      "name": "func_801FC5C0_5B84D0",
+      "rom_offset": "0x5B84D0",
+      "size": 48,
+      "sha256": "de76592a64d835fe847f326919397f1f7960540d276becc2dd9ef219c2137ebd"
+    }
+  ],
+  "japan_exact_original_vma_functions": 3,
+  "japan_exact_original_vma_bytes": 148,
+  "central_264_g2": "not_run",
+  "japanese_whole_rom": "not_built",
+  "canonical_manifest_modified": false,
+  "local_101_rom_free_tests_passed": 14,
+  "new_104_rom_free_tests_passed": 9,
+  "source_only_archive": "goemon-file11-followup-104-research-20261116.zip",
+  "source_only_archive_sha256": "efd9daa63d176fe4b915363d7e1f9615ea0f6e704842c73fbbc00e8e43cb4cc6"
+}

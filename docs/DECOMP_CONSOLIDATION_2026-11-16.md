@@ -43,3 +43,12 @@ adding function counts. Never merge a research-only proof into the official func
 - Connected-repo structural assertions: 24 distinct Japanese manifest functions, 1,604 instruction bytes, 20 source units, no duplicate ROM offsets, and consistent 24-C runner + verifier paths. These are not a substitute for a native compiled full-ROM check.
 - Still **not run**: imported ROM-free test suite, full ROM-free local CI, canonical USA 210-C G2, Japanese source-linked 24-C ELF and complete 32/16 MiB build. PR remains draft; no official counts changed.
 
+
+
+## 2026-11-16: USA candidate research snapshots and overlap
+
+- Pinned 22 added `file_11` source/probe/result/test/report files from `chatgptweb/file11-expansion-20261116` at `5e2edb72e5d4e4a2081926527090c50741209df9`, and 14 added files from `chatgptweb/file11-transition-52-research` at `defbfb82f63fdb5124946d021b09260c342342c1`. These are research-only inputs, not production manifest updates.
+- The 207 candidate offsets reported by the expansion branch are disjoint across 77 + 68 + 44 + 10 + 5 + 3 waves. Its Wave 4+5 scratch ROM result is not a 210+207 combined production result.
+- Two of the three explicitly listed functions from the transition branch overlap expansion Wave 2 with identical size and original code SHA-256: `0x5B84A0` and `0x5B84D0`. The third, `0x5B7180`, is distinct. The other 51 of its reported 54 cannot be fully reconciled from the three-function list alone. See `decomp/results/file11_crossbranch_overlap_20261116.json`.
+- The independent local Splat test also confirmed all 20 generated Japanese stubs contain the expected `asm/japan_0/nonmatchings` patterns accepted by the guarded JP installer. No live or full combined ROM verification is claimed.
+- **Acceptance remains blocked** on full ROM-free regression execution on the actual private checkout, fresh 210-function USA central G2, and freshly rebuilt 24-function Japanese linker/ROM verifier. Production counts remain unchanged.

@@ -8,6 +8,13 @@
 
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Import pinned USA file_11 research snapshots without raising official C totals
+
+- **Source-only snapshot:** Added 36 new ROM-free `file_11` research fixtures, native-proof metadata, technical reports and regression tests from `chatgptweb/file11-expansion-20261116` at `5e2edb72e5d4e4a2081926527090c50741209df9` and `chatgptweb/file11-transition-52-research` at `defbfb82f63fdb5124946d021b09260c342342c1`. Files are copied by immutable Git blob SHA. No canonical USA C source, manifest, linked proof or inventory is altered; both source branches remain editable independently.
+- **Overlap audit:** The newer expansion branch proves **207 still-unpromoted USA C candidates / 7,444 bytes** from waves 1–5; their original ROM offsets are mutually disjoint. The other branch reports **54 unpromoted functions** atop its 50-function scratch baseline. Three of those 54 are explicitly enumerated in its latest scratch proof: `0x5B84A0` and `0x5B84D0` duplicate wave-two functions with identical sizes and original code SHA-256, whereas `0x5B7180` does not occur in the 207 set. Full 54-function overlap is **unknown**, not 207+54.
+- **Evidence:** `decomp/results/file11_crossbranch_overlap_20261116.json`. Exact-ROM **scratch** integration from research sources is not the full central 210-plus-new-candidates G2; official USA total stays **210 / 13,336**, Japan stays a separately recorded 24 / 1,604 on this draft branch.
+- **Tests / limits / next:** 207-function offset identity and three cross-branch code-hash/size comparisons checked against connected GitHub source JSON. Imported local Python tests, combined USA native ROM verification, and Japan full ROM + ELF checks have not run on the private combined checkout. Next promote deduplicated C islands in small batches after full-ROM G2 and inventory checks.
+
 ### 2026-11-16 — Full native USA file_11 promotion: 50 more exact C functions, canonical 210/210 G2 and whole-ROM inventory
 
 - **Promotion:** Reconstructed 13 original-USA character-switch functions (620 bytes) and 37 genuine no-op actor callbacks (444 bytes) are formally integrated through the reviewed v2 mixed C/ASM file_11 adapter in the **canonical decomp/manifest.json**. The 180-byte character selector remains assembly-owned.
