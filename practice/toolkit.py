@@ -1536,7 +1536,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         selected = self.jp_base_choice.get()
         candidate = self.jp_candidates.get(selected)
         if selected != 'Auto (detect)' and (
-                candidate is None or self.jp_candidates_backend not in ('auto', target)):
+                candidate is None or (target != 'auto' and self.jp_candidates_backend != target)):
             self.status.set('The selected Japanese RAM candidate is stale; rescan.')
             return
         base_hint = candidate[0] if candidate else self.args.base
