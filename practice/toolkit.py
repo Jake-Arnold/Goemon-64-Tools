@@ -1466,14 +1466,14 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.status.set('Japanese Project64 attachment is supported on Windows only.')
             return
         if self.verified_rom_path is None:
-            self.status.set('Verify the exact Japan-0 ROM before attaching to the emulator.')
+            self.status.set('Verify the exact Japan-0 ROM before attaching to the selected game.')
             return
         try:
             pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
             if pid_hint is not None and pid_hint <= 0:
                 raise ValueError()
         except ValueError:
-            self.status.set('Enter a positive emulator PID or leave it empty.')
+            self.status.set('Enter a positive game PID or leave it empty.')
             return
         selected = self.jp_base_choice.get()
         candidate = self.jp_candidates.get(selected)
@@ -1492,7 +1492,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         opts = (pid_hint, self.verified_rom_path, base_hint, endian,
                 selected_pid, target)
         threading.Thread(target=self._connect_japan_worker, args=(opts,), daemon=True,
-                         name='GoemonJapanEmulatorDiscovery').start()
+                         name='GoemonJapanRegionDiscovery').start()
         self.root.after(50, self._poll_connect_results)
 
     def _connect_japan_worker(self, opts):
@@ -1507,7 +1507,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 pid, kind = (verified_emulator_pid(pid_hint, target)
                              if pid_hint else find_emulator_pid(target))
             if kind != target:
-                raise RuntimeError('Emulator process changed during discovery')
+                raise RuntimeError('Selected game process changed during discovery')
 
             if selected_pid is not None and pid != selected_pid:
                 raise RuntimeError('Selected RAM base belongs to a different emulator PID; rescan')
@@ -1610,10 +1610,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.jp_base_choice.set('Auto (detect)')
             self.jp_read_button.state(['disabled'])
             self.jp_read_result.set(
-                'Select a code-matching RAM base above, then reconnect. '
+                'Select a Japan-code-matching RAM base above, then reconnect. '
                 'A match alone does not prove the copy is actively changing.')
             self.status.set(
-                f'Found {len(choices)} candidate RAM buffers in {target} PID {pid}. '
+                f'Found {len(choices)} candidate RAM buffers in Japanese {target} PID {pid}. '
                 'Choose a base from the dropdown and reconnect.')
         elif result[0] == 'japan-ok':
             _, pid, target, process, reader, base, endian = result
