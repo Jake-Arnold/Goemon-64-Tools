@@ -1,4 +1,4 @@
-"""ROM-free checks for the opt-in, noncanonical USA 143-C central stage."""
+"""ROM-free checks for the now-canonical USA 143-C central stage."""
 from __future__ import annotations
 
 import copy
@@ -24,13 +24,12 @@ class File11143CentralStageTests(unittest.TestCase):
         manifest['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
         return manifest
 
-    def test_pinned_manifest_is_still_only_210(self):
-        self.assertEqual(verify.file11_stage_mode(self.base), 50)
-        self.assertEqual(len(verify.claimed_functions(self.base)), 210)
-        self.assertEqual(self.base['overlay_file11_stage']['format'],
-                         'goemon-file11-character-switch-50-v2')
+    def test_canonical_manifest_now_promotes_303(self):
+        self.assertEqual(verify.file11_stage_mode(self.base), 143)
+        self.assertEqual(len(verify.claimed_functions(self.base)), 303)
+        self.assertEqual(self.base['overlay_file11_stage']['format'], stage.STAGE_FORMAT)
 
-    def test_opt_in_143_claims_are_separate_from_canonical_210(self):
+    def test_canonical_143_stage_has_exact_303_claims(self):
         candidate = self.opt_in()
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'review-manifest.json'
@@ -44,6 +43,8 @@ class File11143CentralStageTests(unittest.TestCase):
         plan = stage.reviewed_plan(loaded)
         self.assertEqual((plan['existing_file11_c'], plan['additional_research_c']),
                          (50, 93))
+        # The historical source fixture remains a preflight; published
+        # production G2/inventory (not this fixture) proves eligibility.
         self.assertFalse(plan['eligible_for_manifest_promotion'])
         self.assertFalse(plan['central_g2_verified'])
 

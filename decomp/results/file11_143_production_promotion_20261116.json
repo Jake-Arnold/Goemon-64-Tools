@@ -1,0 +1,37 @@
+{
+  "format": "goemon-usa-file11-143-production-promotion-v1",
+  "date": "2026-11-16",
+  "status": "PRODUCTION_VERIFIED",
+  "target_branch": "chatgptweb/decomp",
+  "basis": "PR #32 native acceptance bundle generated from user-provided USA retail ROM and pinned original IDO upstream",
+  "source_pr": 32,
+  "source_review_commit": "58ce18f0f0f68779903281cf4dbd1b6b808231a8",
+  "canonical_usa_matching_c": 303,
+  "added_c": 93,
+  "canonical_usa_matching_bytes": 16180,
+  "file11_matching_c": 143,
+  "file11_matching_bytes": 3908,
+  "original_upstream_c": 13,
+  "combined_c": 316,
+  "identified_original_functions": 7376,
+  "remaining_assembly": 7060,
+  "file11_semantic_relocations": 8825,
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_rom_bytes": 33554432,
+  "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
+  "evidence": {
+    "accepted_review_sha256": "94e5c7efa7fbbbc7d1173e53a7869b475b3e91515e5dafd746529bfb754d7721",
+    "canonical_manifest_sha256": "1b9d36ff35b9c95c150499cf0989ec3f7c8d28a32bacd977179914451c5c944f",
+    "native_g2_sha256": "432ba72dc487403191da60b48cf87905547b805926a39c7e52b1c5311572e844",
+    "inventory_sha256": "59ffa061504b63d790026ead2fae02443536fbff70be2c9a65b0141ff55bfe13",
+    "archived_210_g2_sha256": "d92971fc76cbe9ddba9481c07745d1622ffacef3a1de52b2350ebcf6a70fe6c4",
+    "archived_210_inventory_sha256": "de70101b39a252962aae5f53e64bcf0ca0e8584ef4e27386f2cf1a8df57417cd"
+  },
+  "checks": {
+    "native_g2": "PASS",
+    "full_rom_byte_equality": "PASS",
+    "function_inventory": "PASS",
+    "rom_free_local_ci": "PASS"
+  },
+  "notes": "Production manifest and published proof promoted together from native 303-C acceptance. Prior 210-C proofs retained as immutable historical build evidence; no new gameplay behaviour or Japan decomp claimed."
+}

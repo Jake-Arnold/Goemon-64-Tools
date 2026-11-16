@@ -1,4 +1,4 @@
-"""Opt-in, fail-closed USA 303-C file_11 central acceptance runner.
+"""Fail-closed USA 303-C file_11 central acceptance runner for production and historical reviews.
 
 Runs the full central G2, original-ELF function inventory, and ROM-free local CI
 before writing a review bundle. Never edits canonical manifests or proof files.
@@ -34,18 +34,27 @@ def sha256(data: bytes) -> str:
 
 
 def candidate_manifest(original: dict) -> tuple[dict, list[dict]]:
-    """Produce a separate 303-C opt-in manifest from exactly 210 canonical C."""
+    """Validate current canonical 303 C or reconstruct from a historical 210-C manifest.
+
+    Regardless of provenance, the exact same 143-C fixture, identities and
+    complete native build/inventory/CI gates remain mandatory.
+    """
     from . import verify, file11_143_stage
-    if original.get('overlay_file11_stage') != {'format': 'goemon-file11-character-switch-50-v2'}:
-        raise ValueError('Source manifest is not the pinned canonical 50-C file_11 baseline')
-    base_claims = verify.claimed_functions(original)
-    if len(base_claims) != 210 or len({r['name'] for r in base_claims}) != 210:
-        raise ValueError('Source manifest does not contain 210 unique canonical claims')
+    stage = original.get('overlay_file11_stage')
     review = copy.deepcopy(original)
-    review['overlay_file11_stage'] = {'format': STAGE_FORMAT}
+    if stage == {'format': STAGE_FORMAT}:
+        # The new production default: no staged production mutations required.
+        pass
+    elif stage == {'format': 'goemon-file11-character-switch-50-v2'}:
+        previous = verify.claimed_functions(original)
+        if len(previous) != 210 or len({fn['name'] for fn in previous}) != 210:
+            raise ValueError('Historical 210-C review baseline is not pinned')
+        review['overlay_file11_stage'] = {'format': STAGE_FORMAT}
+    else:
+        raise ValueError('Unsupported production/research file_11 stage')
     plan = file11_143_stage.reviewed_plan(review)
     if (plan['prospective_usa_c'], plan['file11_c_instruction_bytes']) != (TOTAL_C, FILE11_C_BYTES):
-        raise ValueError('Candidate stage differs from 303-C reviewed proposal')
+        raise ValueError('143-C source fixture differs from the 303-C native proof')
     claims = verify.claimed_functions(review)
     if (len(claims) != TOTAL_C or len({r['name'] for r in claims}) != TOTAL_C
             or sum(r['size'] for r in claims) != TOTAL_C_BYTES):

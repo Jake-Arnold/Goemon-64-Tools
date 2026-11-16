@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Formally promoted USA file_11 143-C into canonical 303-C production
+
+- Changed: switched `decomp/manifest.json` to the already native-verified `goemon-file11-143-central-v1`, replacing the 210-C stage with 303 canonical original-address C claims. Published original complete-ROM G2 and 7,376-entry ELF inventory now reflect the precise native 303-C run; archived the original 210-C proof/inventory without editing their content. Updated the VM research ledger source/result fingerprints and canonical counts, reference tests and continuation docs.
+- Evidence: PR #32 acceptance `REVIEW.json` passed full G2, all 303 function instruction hashes (16,180 bytes), 143 file_11 C functions (93 promoted), original 8,825 relocations, 88 pinned source object slots, byte-exact 32 MiB USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, original 7,376 function identities, zero extra positive-sized aliases, 316 combined C entries and 7,060 remaining ASM.
+- Integrity: the promoted canonical manifest is byte-identical to the PR #32 native review manifest (SHA-256 `1b9d36ff35b9c95c150499cf0989ec3f7c8d28a32bacd977179914451c5c944f`). Native proof SHA-256 `432ba72dc487403191da60b48cf87905547b805926a39c7e52b1c5311572e844`; inventory SHA-256 `59ffa061504b63d790026ead2fae02443536fbff70be2c9a65b0141ff55bfe13`. No ROM/game assets committed.
+- Review runner: now supports both current canonical 303 and an explicitly pinned historical 210 source manifest without weakening original ROM, function, relocation or inventory verification. Historical 50-function preflight tests remain as a research fixture, not as a production count.
+- Remaining: no Japan full-ROM port, no inferred full gameplay-system reconstruction, and no new in-game test claimed.
+
 ### 2026-11-16 — Full USA 303-C central acceptance passed (PR #32)
 
 - Tested: the user-uploaded full original USA build bundle was reconstructed locally from the private checkout and pinned upstream/compiler/toolchain; the opt-in corrected 143-C stage ran a fresh native G2 using the certified original baseline. Full 33,554,432-byte ROM reproduced original SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; 303/303 C functions and 16,180 bytes matched; the original 8,825 file_11 semantic relocations were preserved.

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import unittest
 
 from decomp import review_file11_143 as review
@@ -66,6 +67,19 @@ class File11143ReviewTests(unittest.TestCase):
                 'function_entry_identity_sha256': review.ORIGINAL_INVENTORY_SHA256,
             }
         }
+
+    def test_published_canonical_303_contract_matches_native_proof(self):
+        from pathlib import Path
+        from decomp import verify
+        root = Path(__file__).resolve().parents[1] / 'decomp'
+        manifest = verify.load_manifest(root / 'manifest.json')
+        review_manifest, claims = review.candidate_manifest(manifest)
+        self.assertEqual(review_manifest, manifest)
+        self.assertEqual(len(claims),303)
+        g2 = json.loads((root/'results/combined.json').read_text())
+        inventory = json.loads((root/'results/inventory.json').read_text())
+        self.assertEqual(review.verify_g2_report(g2,claims)['matched_bytes'],16180)
+        self.assertEqual(review.verify_inventory_report(inventory)['remaining_assembly_entries'],7060)
 
     def test_synthetic_good_reports_accept_only_review(self):
         self.assertEqual(review.verify_g2_report(self.g2,self.claims)['claimed_functions'],303)
