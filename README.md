@@ -1,5 +1,16 @@
-# Goemon Speedrun Tools v0.11.20 — corrected Ubuntu dock WM_CLASS
+# Goemon Speedrun Tools v0.11.21 — Japanese native recomp write controls
 
+## v0.11.21 — fix disabled Japanese recomp writes after successful connection
+
+A successful Japan-0 native `recomp` attachment in v0.11.20 still left several buttons greyed out. Root cause: the connection backend admitted native `recomp`, but older Japanese UI access checks still accepted only `project64` and `mupen64plus`. This was **not** caused by `--read-only`, which remains disabled by default in the unified launcher.
+
+All previously mapped Japanese operations now accept the same verified native recomp session, including the shared Unlocks buttons and bulk action, editable named Story Progress inventory values, bounded Goemon XYZ and original debug-menu controls, Live Memory right-click edit/freeze, and the Japanese raw-freeze worker. The shared Live Memory **Write raw hex** button now uses `write_japan_raw_bytes(..., expected=...)` for Japan, instead of being disabled as if it were a USA-only feature. Native writes continue to reopen a writable host process, verify the original Japanese retail-ROM signature and mapped 8 MiB RDRAM, and check write readback; USA layouts are not silently reused. On completing native attachment, the toolkit immediately refreshes Unlocks and Story Progress editor state.
+
+**Still intentionally grey in Japan:** USA-specific task-pointer health/God Mode/enemy-pass-through freezes and full native emulator savestates. These features require independently mapped Japanese game objects or emulator support; simply forcing their GUI buttons on would apply the wrong ROM's semantics.
+
+ROM-free Tk button-state and Japanese raw-editor dispatch regression tests have been added as `tests/test_japan_recomp_write_ui.py` to both Linux and Windows test suites. No local Linux native-game write was executed from the GitHub connector. The user should relaunch the updated toolkit to load the corrected UI logic.
+
+## Previous v0.11.20 — corrected Ubuntu dock WM_CLASS
 ## v0.11.20 — Linux GNOME cog icon regression
 
 Fixed the desktop/app identity mismatch responsible for the separate generic cog dock icon. Real Tk 8.6/X11 reports `WM_CLASS = "goemonPracticeToolkit", "Goemonpracticetoolkit"` for the previous `Tk(className="GoemonPracticeToolkit")`, but the v0.11.19 desktop launcher declared `StartupWMClass=GoemonPracticeToolkit`. The difference in capitalization means GNOME cannot reliably associate the running window with the installed desktop entry.
