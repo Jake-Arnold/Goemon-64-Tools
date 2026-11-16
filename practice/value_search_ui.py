@@ -481,8 +481,12 @@ class ValueSearchMixin:
                 'Run a scan and let it finish before saving a report.')
             return
         try:
+            # Reports are not limited to the first 200 rows on screen.
+            # Bound heavy snapshots to keep one click from allocating
+            # millions of JSON objects on an unknown-value scan.
+            report_limit = min(self.value_scanner.count, 20000)
             displayed = []
-            for row in self.value_scanner.rows(DISPLAY_LIMIT):
+            for row in self.value_scanner.rows(report_limit):
                 displayed.append({
                     'address': f'0x{row["address"]:08X}',
                     'kind': row['kind'],
@@ -502,8 +506,9 @@ class ValueSearchMixin:
                     self.value_scanner.kind),
                 sample_count=self.value_scanner.samples)
             self.value_search_status.set(
-                f'Saved {len(displayed)}/{self.value_scanner.count} '
-                'candidate rows. Open Reports to inspect the files.')
+                f'Saved {len(displayed):,}/{self.value_scanner.count:,} '
+                'candidate rows (up to 20,000 per report). '
+                'Open Reports to inspect the files.')
             if hasattr(self, 'refresh_reports'):
                 self.refresh_reports(select_path=folder)
         except (OSError, ValueError, TypeError) as exc:
