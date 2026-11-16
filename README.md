@@ -1,5 +1,18 @@
-# Goemon Speedrun Tools v0.11.25 — repository-owned entrance coordinate atlas
+# Goemon Speedrun Tools v0.11.26 — bundled complete USA/Japan warp entrance atlas
 
+## v0.11.26 — extracted user-supplied coordinates committed to Git
+
+The full user-extracted original-USA entrance atlas has been **validated and checked into `practice/data/entrance-coordinates.json`**. Both the USA and Japanese Scene Browser controllers now load the same numeric entrance data automatically from the repository, with no ROM selection or original ROM file needed. This fulfills the planned v0.11.25 repository-asset support; v0.11.25's statements that the data was missing are historical and are superseded by this release.
+
+The supplied table contains **333 indexed scenes and 888 entrance records across 266 destination scenes**: 592 exits, 266 native default positions, 16 flute and 14 save entrance records. IDs and distinct entrances are preserved; one scene may have different door/source-specific XYZ coordinates, facing and mode. The table passed SHA256 checksum verification, original-USA ROM-identity verification against the extractor's pinned SHA-1 field, record-type/index/coordinate validation and unique-ID checks. **Only functional numeric metadata is committed, not the ROM.**
+
+The file also **confirms Oedo Town South (scene 0x161 / 353)**: source-scene 351 entrance `15F:006` and native default `default:353` both place Goemon at `(-289, 0, -167)` with **heading 256 and mode 16**. The older no-ROM fallback now uses those source-verified values instead of experimental heading zero.
+
+**To use:** pull this branch, start `bash Run-Linux.sh`, select USA or Japan, open Scene Browser, choose a destination and the desired entrance. All 888 entries are available immediately. The existing persistent user cache remains a fallback only if the repository file is absent or invalid. Destinations without a decoded entrance remain explicitly unsupported rather than receiving invented coordinates. Native Japanese Goemon's guarded one-shot post-load XYZ correction remains in place.
+
+**Verification:** The uploaded JSON was inspected and its shape, 888 record constraints, distinct IDs and SHA256 checksum checked, then a fresh GitHub fetch confirmed the full JSON is committed without truncation. Added `tests.test_repository_entrance_atlas` and updated existing fallback tests in both Linux/Windows regression suites. The Python/Tk suite and live Japanese game warp have **not yet been run in the user's Ubuntu environment**; the PR remains draft. See `practice/data/README.md` for the exact dataset provenance and optional re-extraction command.
+
+## Previous v0.11.25 — repository-owned entrance coordinate atlas
 ## v0.11.25 — bundle decoded entrance coordinates with the toolkit
 
 The **complete verified original-USA scene/entrance coordinate table can now be committed to the repository** as `practice/data/entrance-coordinates.json`, and will become the default data source for **both USA and Japanese warps**. Once committed, everyone receives the data with `git pull` and does **not** need a ROM, a user-specific extracted atlas, or an entrance extraction step. It stores only functional numeric metadata and the existing validation checksum, **not** copyrighted ROM bytes, graphics, or audio.
