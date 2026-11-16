@@ -38,6 +38,10 @@ from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.version import DISPLAY_VERSION
 from practice.launcher_preferences import load_last_region, save_last_region
+from practice.japan_auto_attach import (
+    JapanProcessCandidate, list_japan_processes, connect_candidate_ram,
+    describe_verified_connections, remember_verified_connection,
+)
 from practice.japan_native_recomp import (
     verified_japan_recomp_pid, find_japan_recomp_pid,
     discover_japan_recomp_rdram, validate_japan_recomp_writer,
@@ -176,8 +180,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         except (OSError, ValueError):
             self.named_native_checkpoints = []
         self.status = tk.StringVar(value="Disconnected. Start USA Goemon in Recomp or Project64, then Connect.")
-        self.connection_target = tk.StringVar(
-            value='recomp' if self.active_version.key == 'japan' else 'auto')
+        self.connection_target = tk.StringVar(value='auto')
         self.pid_text = tk.StringVar(value=str(args.pid) if args.pid else '')
         self.pos_text = tk.StringVar(value="X: —    Y: —    Z: —")
         self.speed_text = tk.StringVar(value="Speed: —")
@@ -528,9 +531,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         if enabled:
             self.status.set('USA selected. Connect to the USA game in Recomp or Project64.')
         else:
-            self.status.set('Japan selected. Verify the Japan-0 ROM, select '
-                            'recomp (native PC port), project64 (Windows) or mupen64plus. '
-                            'USA-specific memory features remain unavailable.')
+            self.status.set('Japan selected. Verify the Japan-0 ROM once, then '
+                            'click Connect for automatic PID/backend/RDRAM detection. '
+                            'USA-only memory features remain unavailable.')
 
     def _clear_japan_base_choices(self):
         """Discard process-specific candidate bases when the region or ROM changes."""
@@ -606,9 +609,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._disconnect_for_version_change()
         self._clear_japan_base_choices()
         self.active_version = version
-        if version.key == 'japan' and self.connection_target.get() == 'auto':
-            self.connection_target.set('recomp')
-        elif version.key == 'usa' and self.connection_target.get() == 'mupen64plus':
+        if version.key == 'usa' and self.connection_target.get() == 'mupen64plus':
             self.connection_target.set('auto')
         self.verified_rom_path = (
             load_remembered_rom('japan') if version.key == 'japan' else None)
@@ -667,7 +668,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or self._connecting or self.jp_rdram is None
                 or self.game_pid is None
                 or self.jp_backend not in ('project64', 'mupen64plus', 'recomp')
-                or self.connection_target.get() != self.jp_backend):
+                or self.connection_target.get() not in ('auto', self.jp_backend)):
             raise RuntimeError('Connect Japanese RAM with writes enabled first')
         if not isinstance(data, bytes) or len(data) not in (1, 2, 4, 8):
             raise ValueError('Live Memory edit must contain 1, 2, 4, or 8 bytes')
@@ -707,7 +708,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or self._connecting or self.jp_rdram is None
                 or self.game_pid is None
                 or self.jp_backend not in ('project64', 'mupen64plus', 'recomp')
-                or self.connection_target.get() != self.jp_backend):
+                or self.connection_target.get() not in ('auto', self.jp_backend)):
             raise RuntimeError('Connect Japanese RAM in write-enabled mode first')
         for item, _target in changes:
             if japan_unlock_lead(item) is None:
@@ -774,7 +775,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 raise RuntimeError('Japanese backend is not confirmed')
             if target == 'project64' and sys.platform != 'win32':
                 raise RuntimeError('Project64 position writes require Windows')
-            if self.connection_target.get() != target:
+            if self.connection_target.get() not in ('auto', target):
                 raise RuntimeError('Selected emulator changed; reconnect')
             check = (verified_japan_recomp_pid(pid) if target == 'recomp'
                      else verified_emulator_pid(pid, target))
@@ -844,7 +845,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 raise RuntimeError('Japanese backend not verified')
             if target == 'project64' and sys.platform != 'win32':
                 raise RuntimeError('Project64 debug entry requires Windows')
-            if self.connection_target.get() != target:
+            if self.connection_target.get() not in ('auto', target):
                 raise RuntimeError('Connection backend changed; reconnect')
             check = (verified_japan_recomp_pid(pid) if target == 'recomp'
                      else verified_emulator_pid(pid, target))
@@ -894,7 +895,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or not (getattr(self.args, 'enable_japan_scene_writes', False)
                         or getattr(self.args, 'enable_japan_debug_menu_writes', False))
                 or target not in ('project64', 'recomp')
-                or self.connection_target.get() != target
+                or self.connection_target.get() not in ('auto', target)
                 or (target == 'project64' and sys.platform != 'win32')):
             raise RuntimeError(
                 'Instant warp requires verified Japanese Project64 or native recomp '
@@ -1171,6 +1172,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.status.set('Finish connecting before using emulator savestates.')
             return
         target = self.connection_target.get()
+        if target == 'auto' and self.active_version.key == 'japan' and self.jp_backend:
+            target = self.jp_backend
         try:
             if (self.active_version.key == 'japan' and self.jp_rdram is not None
                     and target != self.jp_backend):
@@ -1208,6 +1211,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             return
         region = self.active_version.key
         backend = self.connection_target.get()
+        if backend == 'auto' and self.active_version.key == 'japan':
+            backend = self.jp_backend
         filtered = [
             record for record in self.named_native_checkpoints
             if record['region'] == region and record['backend'] == backend
@@ -1231,7 +1236,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         if (self.active_version.key != 'japan'
                 or self.jp_rdram is None
                 or self.game_pid is None
-                or self.connection_target.get() != self.jp_backend):
+                or self.connection_target.get() not in ('auto', self.jp_backend)):
             self.status.set('Connect Japan-0 Project64/Mupen before naming a state slot.')
             return
         name = self.named_native_name.get().strip()
@@ -1271,7 +1276,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         record = self._named_native_visible[selected]
         if (self.active_version.key != 'japan'
                 or record['region'] != 'japan'
-                or record['backend'] != self.connection_target.get()):
+                or record['backend'] != (self.jp_backend if self.connection_target.get() == 'auto'
+                                          else self.connection_target.get())):
             self.status.set('Named checkpoint is for another region/emulator.')
             return
         if (self.jp_rdram is None or self.game_pid is None
@@ -1511,8 +1517,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
     def _connect_japan_emulator(self):
         """Attach Japan-0 to verified Mupen or Windows Project64 guest RDRAM."""
         target = self.connection_target.get()
-        if target not in ('mupen64plus', 'project64', 'recomp'):
-            self.status.set('Japan requires an explicit target: recomp, mupen64plus or project64.')
+        if target not in ('auto', 'mupen64plus', 'project64', 'recomp'):
+            self.status.set('Select auto, recomp, mupen64plus or project64.')
             return
         if target == 'project64' and sys.platform != 'win32':
             self.status.set('Japanese Project64 attachment is supported on Windows only.')
@@ -1530,7 +1536,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         selected = self.jp_base_choice.get()
         candidate = self.jp_candidates.get(selected)
         if selected != 'Auto (detect)' and (
-                candidate is None or self.jp_candidates_backend != target):
+                candidate is None or self.jp_candidates_backend not in ('auto', target)):
             self.status.set('The selected Japanese RAM candidate is stale; rescan.')
             return
         base_hint = candidate[0] if candidate else self.args.base
@@ -1540,7 +1546,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._connecting = True
         self.connect_button.state(['disabled'])
         self.version_selector.state(['disabled'])
-        self.status.set(f'Checking Japanese {target} memory signatures...')
+        self.status.set(f'Checking Japanese {target} memory signatures '
+                        '(three independent code probes; auto RAM layout)...')
         opts = (pid_hint, self.verified_rom_path, base_hint, endian,
                 selected_pid, target)
         threading.Thread(target=self._connect_japan_worker, args=(opts,), daemon=True,
@@ -2157,7 +2164,7 @@ def parse_args(argv=None):
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid",type=int)
     ap.add_argument("--base",help="RDRAM host base 0x...; Japan always validates three ROM code probes")
-    ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
+    ap.add_argument("--endian",choices=["auto","wordswapped","byteswapped","big"],default="auto")
     ap.add_argument("--game-version", choices=tuple(VERSIONS), default=None,
                     help=argparse.SUPPRESS)  # Legacy override; select in Dashboard
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
