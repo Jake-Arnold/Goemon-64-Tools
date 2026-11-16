@@ -1,19 +1,34 @@
-# Bundled numeric entrance coordinates
+# Repository-bundled warp entrance coordinates
 
-The **single repository-owned coordinate table** belongs here:
+`practice/data/entrance-coordinates.json` **is now committed** to this
+repository. It is the validated original-USA ROM numeric entrance atlas
+provided on 16 November 2026:
 
-```text
-practice/data/entrance-coordinates.json
-```
+- 333 indexed room IDs.
+- 888 distinct entrance records, covering 266 destination rooms.
+- 592 exit records, 266 native default spawns, 16 flute points and 14
+  save points.
+- ROM identity: `df8083a54296b8c151917c5333e1c85f014a2a66`
+  (SHA-1), checked by the original extractor.
+- Atlas checksum:
+  `980a9676b364af83f48437c5fa421dc9dc9e64a82ef8954cad52f4a11b0e7a90`.
 
-This is a functional *data* file: destination scene ID, source scene,
-entrance ID/type, numeric X/Y/Z, heading and mode, plus atlas provenance and
-validation checksum. Do **not** put ROM bytes, game assets, save states,
-extracted room geometry or copyrighted text assets here.
+The JSON contains **only functional numeric entrance metadata**:
+destination scene ID, source scene when applicable, entrance ID/type,
+X/Y/Z, heading and mode, and validation provenance. No original ROM,
+models, scripts, audio, textures, game saves or other game assets
+are distributed.
 
-## Produce the table once
+The toolkit loads this checked-in file by default for both USA and
+Japan; no ROM extraction or local cache is needed. Existing per-user
+and legacy caches remain available as fallback only if the packaged
+table is missing or invalid. A scene can have several entrances, so
+the user selects by destination AND specific entrance/source route.
 
-Use a locally owned original USA ROM, outside Git:
+## Updating the source data (only when necessary)
+
+If a verified newer extractor or correction is needed, use a locally
+owned original USA ROM outside Git:
 
 ```bash
 python3 -m practice.entrances \
@@ -21,37 +36,27 @@ python3 -m practice.entrances \
   --output "/tmp/goemon-entrance-coordinates.json"
 ```
 
-The command reads and identifies the USA ROM, extracts the numeric entrance
-table and writes the validated atlas JSON. It prints a count of scenes and
-entrances. Send **only the resulting JSON** for review/commit, or copy that
-file to `practice/data/entrance-coordinates.json` in the Git checkout for
-a local test. Never commit the ROM.
+Review changes against the committed atlas, verify the extracted count,
+schema and SHA256 checksum, and commit **only the JSON** after review.
+Never commit the ROM. For a real coordinate correction, retain multiple
+entrance positions rather than collapsing a scene to one XYZ.
 
-When this JSON is committed to the toolkit branch it becomes the preferred
-lookup source for **both** USA and Japanese scene warps. No ROM or user cache
-is required thereafter. The toolkit still supports validated per-user and
-old-checkout caches as a fallback until this file is provided, and they do
-not override a valid checked-in atlas.
-
-Do not invent destination coordinates or collapse multiple entrances of
-one scene to a single XYZ point. The existing validated atlas schema
-(`goemon-usa-entrance-atlas-v1`) includes all known variants and a
-checksum, and the GUI picks the unique source-specific/default entry or
-asks for an explicit choice when ambiguous.
-
-## Validate the checked-in data
+## Verify the checked-in table
 
 ```bash
 python3 - <<'PY'
 from practice.entrance_ui import repository_entrance_atlas_path
 from practice.entrances import load_atlas
 atlas = load_atlas(repository_entrance_atlas_path())
-if atlas is None:
-    raise SystemExit("No repository entrance atlas has been supplied yet")
-print(len(atlas['payload']['rooms']), "scenes")
-print(len(atlas['payload']['entries']), "entrances")
+assert atlas is not None
+assert len(atlas["payload"]["rooms"]) == 333
+assert len(atlas["payload"]["entries"]) == 888
+print("Verified repository atlas:", len(atlas["payload"]["rooms"]),
+      "scenes,", len(atlas["payload"]["entries"]), "entrances")
 PY
 ```
 
-The repository must not claim to bundle an exhaustive coordinate table
-until this real extracted JSON has been reviewed and committed.
+`tests.test_repository_entrance_atlas` also asserts the shared original-USA
+Oedo South entrance is `(-289, 0, -167)`, heading 256, mode 16, that
+other entrances to that room remain distinct, and that the atlas loads
+without reading a ROM.
