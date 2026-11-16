@@ -638,7 +638,9 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
 
     def _disconnect_for_version_change(self):
         """Stop write workers and detach before switching region interpretations."""
-        self.stop_damage_capture(quiet=True)
+        # Region switching must not leave old damage candidates/live rows
+        # visible under the new game's address interpretation.
+        self.clear_damage_capture()
         with self.value_freezes.guard:
             self.stop_all_freezes()
             self.cancel_pending_restore(quiet=True)
