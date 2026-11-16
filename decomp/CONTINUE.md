@@ -1,5 +1,10 @@
 # Decomp continuation runbook
 
+## 2026-11-16 — Wave 4+5 file_11 research, not formally promoted
+
+Three further native exact original-address C functions (Wave 5, 164 bytes) extend three contiguous original C islands (16 functions / 564 bytes), following the five-function / 280-byte Wave 4. The six Wave 4+5 groups total 1,364 original bytes and pass an independent **clean-upstream** complete 32 MiB USA ROM rebuild and all 8,825 file_11 semantic relocation identities. The 207 pending research functions / 7,444 bytes remain **unpromoted**. Formal published baseline stays 210 C functions / 13,336 bytes, pending an independent combined 210+207 G2/ROM/inventory run. See `docs/USA_FILE11_ADJACENT_WAVES4_5_NATIVE_MATCHES_2026-11-16.md` and the Wave 5 fixture and proof files.
+
+
 Start here when continuing the matching-C work. This is the operational handoff;
 For the executor-grade 100-task architecture and mandatory verification/stop rules, start at [plans/README.md](plans/README.md) and [plans/EXECUTOR_PROTOCOL.md](plans/EXECUTOR_PROTOCOL.md). These are planning documents only; live manifest/proof remain authoritative.
 README.md explains the recovered units, BATCH_PIPELINE.md describes the tools,

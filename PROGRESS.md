@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — USA file_11 Wave 4+5 native matching-C and full-ROM research proof
+- Changed: Documented five Wave 4 and three Wave 5 new original-USA C functions, three new Wave 5 contiguous C groups (16 functions / 564 bytes), complete six-group clean-upstream ROM integration (1,364 bytes), pinned native source fixtures, and structured proof. Three Wave 5 functions add 164 matching research bytes beyond the 204-candidate Wave 4 pool.
+- Why: Expand genuine contiguous C islands around actor handlers and state predicates while retaining strict original-address matches.
+- Tested: Native IDO 5.3 3/3 individual Wave 5, 3/3 contiguous Wave 5 groups; full 33,554,432-byte USA image exactly equal to original SHA-1 6ea0ed71032ce08fc2745f412d84936382197494. Original/candidate file_11 8,825/8,825 relocations and site/type/target multiset exact. No in-game testing.
+- Limitations: Clean-upstream Wave 4+5 ROM integration is not the 210+207 combined production G2/inventory verification. Official baseline remains 210 functions / 13,336 bytes; 207 research candidates / 7,444 bytes unpromoted. Historical checkout source-pin local CI failures are unrelated and not claimed resolved.
+- Next: Integrate all 207 pending candidate functions on top of the current production 210-function tree; audit all overlays, relocations, manifest, inventory and complete original ROM, then continue adjacent searches.
+
+
 ### 2026-11-16 — Third file_11 adjacency pass: 10 original-USA native-C functions, nine exact C islands
 
 - **Authentic source basis:** Pinned upstream `mnsg` commit `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, original decompressed USA ROM (33,554,432 bytes, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`) and original generated USA `file_11` assembly SHA-256 `e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b` (906 positive-size original boundaries). Used actual IDO 5.3 `-O2 -mips2 -G0` and native original-VMA MIPS linker/objcopy on user-provided local toolchain.
