@@ -8,6 +8,10 @@ from __future__ import annotations
 
 import csv
 import sys
+from pathlib import Path
+
+# Allow the documented invocation from a source checkout without PYTHONPATH.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from practice.region_memory_crosswalk import CROSS_REGION_FIELDS
 
