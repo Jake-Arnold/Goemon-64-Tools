@@ -1,5 +1,10 @@
 # Decomp continuation runbook
 
+## 2026-11-16 — 143-function file_11 integration research, formal promotion gate outstanding
+
+Research helper `decomp/research/file11_143_candidate/` now includes 44 exact C groups (143 original functions/3,908 bytes), preserving intervening assembly in 88 pinned original contiguous file_11 input objects. It combines the 50 already published file_11 functions (1,064 bytes) with 93 independently original-matched still-unpromoted functions (2,844 bytes). Two clean pinned-upstream full-ROM builds pass exact 33,554,432-byte USA comparison (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`), 8,825 semantic file_11 relocation multiset equality, 143 linked original function boundaries, 88 object hashes and nine fail-closed source regression tests. It is a **clean-upstream file_11** replay, not the current canonical 210+93 production G2 and inventory gate. Official counts remain 210 functions / 13,336 bytes, research pool 207 functions / 7,444 bytes unpromoted. Prospective verified only after formal promotion: 303 functions / 16,180 bytes, with 114 still unpromoted. Follow `AGENTS.md`, fail-closed manifest rules, source and ROM pins. Next task: opt-in v3 production overlay adapter and central full-ROM G2/inventory verification; do not inflate counts prematurely.
+
+
 ## 2026-11-16 — Wave 4+5 file_11 research, not formally promoted
 
 Three further native exact original-address C functions (Wave 5, 164 bytes) extend three contiguous original C islands (16 functions / 564 bytes), following the five-function / 280-byte Wave 4. The six Wave 4+5 groups total 1,364 original bytes and pass an independent **clean-upstream** complete 32 MiB USA ROM rebuild and all 8,825 file_11 semantic relocation identities. The 207 pending research functions / 7,444 bytes remain **unpromoted**. Formal published baseline stays 210 C functions / 13,336 bytes, pending an independent combined 210+207 G2/ROM/inventory run. See `docs/USA_FILE11_ADJACENT_WAVES4_5_NATIVE_MATCHES_2026-11-16.md` and the Wave 5 fixture and proof files.

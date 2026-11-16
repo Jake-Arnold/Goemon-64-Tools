@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — USA file_11 143-function integrated promotion candidate
+- Changed: Added a pinned 44-C-group/88-object native source fixture, clean-upstream replay builder, full-ROM/relocation verifier, proof JSON, and nine fail-closed contract tests at `decomp/research/file11_143_candidate/`.
+- Why: Move 93 distinct still-unpromoted research functions (2,844 bytes) beyond isolated original-VMA matching into the same actual USA file_11 overlay as the previously promoted 50, without duplicating Wave 1 or Wave 4–5 group ownership.
+- Tested: Original pinned `7e2029c5` source, original 32 MiB ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, original ELF and 906-function assembly SHA256 authenticated. In one clean-upstream mixed-C/ASM overlay, all 143 original linked function symbol addresses/sizes exact, 88/88 object hashes exact, full 33,554,432-byte ROM byte-for-byte exact, 8,825/8,825 relocation site/type/target identities exact, 9/9 negative/positive contract regressions passed. A second independently copied scratch checkout also reproduced these gates; no in-game testing.
+- Limitations: This **is not** the current main-decomp canonical 210+93 full G2/inventory gate. Official production stays **210 C functions / 13,336 bytes**. 303 / 16,180 is conditional only; 114 research functions remain without this combined overlay integration. The replay requires an exact pinned original upstream baseline and original toolchain locally. Do not commit ROM, original generated assembly, binary/ELF, object files or extracted assets.
+- Next: Extend the current v2 `overlay_file11_stage` to an opt-in v3 143-function candidate in the 210-function canonical verifier; run the real central `decomp.verify` and `decomp.inventory`, full-ROM/relocation acceptance, then promote 93 claims only on success.
+
+
 ### 2026-11-16 — USA file_11 Wave 4+5 native matching-C and full-ROM research proof
 - Changed: Documented five Wave 4 and three Wave 5 new original-USA C functions, three new Wave 5 contiguous C groups (16 functions / 564 bytes), complete six-group clean-upstream ROM integration (1,364 bytes), pinned native source fixtures, and structured proof. Three Wave 5 functions add 164 matching research bytes beyond the 204-candidate Wave 4 pool.
 - Why: Expand genuine contiguous C islands around actor handlers and state predicates while retaining strict original-address matches.
