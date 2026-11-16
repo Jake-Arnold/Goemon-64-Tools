@@ -19,6 +19,8 @@ class RegionUnlockUITests(unittest.TestCase):
         except tk.TclError as exc:
             self.skipTest(f'Graphical Tk display required: {exc}')
         self.root.withdraw()
+        store = patch('practice.toolkit.save_last_region')
+        store.start(); self.addCleanup(store.stop)
         cache = patch('practice.toolkit.load_remembered_rom', return_value=None)
         cache.start()
         self.addCleanup(cache.stop)
