@@ -15,6 +15,12 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(reports.safe_slug("Sasuke: Position? / JP"),
                          "sasuke-position-jp")
         self.assertEqual(reports.safe_slug("../\\<>"), "research")
+        self.assertEqual(reports.readable_report_name(
+            "First Memory Test - Ryo Known"), "First Memory Test - Ryo Known")
+        self.assertEqual(reports.readable_report_name("Sasuke: XYZ/health?"),
+                         "Sasuke - XYZ - health")
+        self.assertEqual(reports.readable_report_name("CON"), "Report - CON")
+        self.assertEqual(reports.readable_report_name("../"), "Untitled investigation")
         with TemporaryDirectory() as tmp:
             home = Path(tmp)
             self.assertEqual(
@@ -36,10 +42,9 @@ class ReportTests(unittest.TestCase):
                 total_count=500, value_type="f32", sample_count=3,
                 timestamp=datetime(2026, 11, 16, 18, 15,
                                    tzinfo=timezone.utc), root=root)
-            self.assertEqual(folder.parent.name, "JP")
-            self.assertRegex(
-                folder.name,
-                r"^2026-11-16_181500Z__sasuke-movement__[a-f0-9]{8}$")
+            self.assertEqual(folder.parent.parent.name, "JP")
+            self.assertEqual(folder.parent.name, "Sasuke movement")
+            self.assertEqual(folder.name, "2026-11-16 18-15-00 UTC")
             data = json.loads((folder / "manifest.json").read_text())
             self.assertTrue(data["candidate_truncated"])
             self.assertEqual(data["candidate_exported"], 1)
@@ -65,13 +70,70 @@ class ReportTests(unittest.TestCase):
             b = reports.create_value_search_report(region="usa", **args)
             c = reports.create_value_search_report(region="japan", **args)
             self.assertNotEqual(a, b)
-            self.assertEqual(a.parent.name, "USA")
-            self.assertEqual(c.parent.name, "JP")
+            self.assertEqual(a.parent.parent.name, "USA")
+            self.assertEqual(c.parent.parent.name, "JP")
+            self.assertEqual(a.parent.name, "Health changes")
+            self.assertEqual(a.parent, b.parent)
             with self.assertRaises(ValueError):
                 reports.create_value_search_report(region="../../etc", **args)
             with self.assertRaises(ValueError):
                 reports.create_value_search_report(
                     region="usa", **{**args, "rows": [{}]})
+
+
+    def test_same_timestamp_gets_a_readable_collision_suffix(self):
+        with TemporaryDirectory() as tmp:
+            when = datetime(2026, 11, 16, 18, 30, 43,
+                            tzinfo=timezone.utc)
+            kwargs = dict(region="japan", title="First Memory Test - Ryo Known",
+                          rows=[], total_count=0, value_type="u16",
+                          sample_count=11, timestamp=when, root=tmp)
+            a = reports.create_value_search_report(**kwargs)
+            b = reports.create_value_search_report(**kwargs)
+            self.assertEqual(a.name, "2026-11-16 18-30-43 UTC")
+            self.assertEqual(b.name, "2026-11-16 18-30-43 UTC (2)")
+            self.assertEqual(a.parent.name, "First Memory Test - Ryo Known")
+            self.assertEqual(len(reports.list_reports(
+                root=tmp, legacy_dir=Path(tmp) / "unused")), 2)
+
+    def test_previous_flat_reports_stay_visible_and_can_be_tided_explicitly(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp) / "Reports"
+            original = root / "JP" / "2026-11-16_183043Z__ryo__fe026609"
+            original.mkdir(parents=True)
+            content = "# This existing report must remain unchanged\n"
+            (original / "summary.md").write_text(content)
+            (original / "manifest.json").write_text(json.dumps({
+                "schema": reports.SCHEMA, "region": "JP",
+                "kind": "value-search",
+                "title": "First Memory Test - Ryo Known",
+                "candidate_total": 1,
+                "created_utc": "2026-11-16T18:30:43.975041Z"}))
+            first_index = reports.list_reports(root=root,
+                        legacy_dir=root / "unknown")
+            self.assertEqual(first_index[0].path, original)
+            self.assertTrue(original.exists())  # Listing never modifies files.
+            moved = reports.organise_report_folder(original, root=root)
+            self.assertFalse(original.exists())
+            self.assertEqual(moved.parent.name,
+                             "First Memory Test - Ryo Known")
+            self.assertEqual(moved.name, "2026-11-16 18-30-43 UTC")
+            self.assertEqual((moved / "summary.md").read_text(), content)
+            self.assertEqual(
+                reports.organise_report_folder(moved, root=root), moved)
+            items = reports.list_reports(root=root, legacy_dir=root / "unknown")
+            self.assertEqual([item.path for item in items], [moved])
+
+    def test_folder_organiser_rejects_outside_region_and_bad_manifest(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp) / "reports"
+            other = Path(tmp) / "other"
+            other.mkdir()
+            (other / "manifest.json").write_text(json.dumps({
+                "schema": reports.SCHEMA, "region": "JP",
+                "title": "Test", "created_utc": "2026-11-16T18:30:43Z"}))
+            with self.assertRaises(ValueError):
+                reports.organise_report_folder(other, root=root)
 
     def test_legacy_read_only_and_ignore_incomplete(self):
         with TemporaryDirectory() as tmp:
