@@ -72,6 +72,7 @@ esac
   tests.test_japan_player_position_research \
   tests.test_value_search \
   tests.test_reports \
+  tests.test_discovery_results \
   tests.test_state_discovery \
   -v
 
