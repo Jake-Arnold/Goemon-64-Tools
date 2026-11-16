@@ -38,7 +38,7 @@ class JapanEventSessionsUiTests(unittest.TestCase):
         self.app.jp_backend='project64'
         self.folder=tempfile.TemporaryDirectory()
         self.addCleanup(self.folder.cleanup)
-        storage=patch('practice.event_sessions_ui.diagnostics_dir',
+        storage=patch('practice.event_sessions_ui.working_investigations_dir',
                       return_value=Path(self.folder.name))
         storage.start()
         self.addCleanup(storage.stop)
