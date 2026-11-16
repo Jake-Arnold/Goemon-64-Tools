@@ -12,7 +12,7 @@ from pathlib import Path
 from practice.paths import diagnostics_dir
 from practice.discovery_results import DiscoveryResultsPanel
 from practice.reports import create_discovery_report
-from practice.state_discovery import PROBE_ACTIONS, capture_state, compare_captures
+from practice.state_discovery import capture_state, compare_captures
 from practice.theme import PALETTE
 from practice.japan_state_comparison import (
     capture_japan_memory, compare_japan_memory,
@@ -23,14 +23,6 @@ from practice.japan_player_position_research import (
 from practice.japanese_scene_probes import read_japan_scene_probes
 from practice.transition_observer import read_transition_observation, format_transition_observation
 
-JAPAN_PROBE_ACTIONS = {
-    'Scene transition': 'Capture A before using a doorway, B after loading. Repeat in both directions; no scene writes.',
-    'Character switch': 'Capture A before native C-Down and B afterward. Confirm model identity and character index separately.',
-    'Ryo or inventory change': 'Capture before/after a Ryo pickup or item action. Changed bytes are candidates only.',
-    'Menu or map shown': 'Capture A closed, B displayed, C closed again to filter reversible changes.',
-    'Story event candidate': 'Capture a repeated story action. Japan saved-event banks are not mapped; do not assume USA offsets.',
-    'Player movement': 'For XYZ research use WIDE A stationary, B after walking to a different position, C stationary at B. Click Find XYZ triples. No player position writes.',
-}
 
 
 class StateDiscoveryMixin:
@@ -40,7 +32,9 @@ class StateDiscoveryMixin:
         self.state_discovery_tab=tab
         self.state_captures={}
         self.state_report=None
-        self.state_report_name = tk.StringVar(value='Memory changes')
+        self.state_report_name = tk.StringVar(value='Memory comparison')
+        # Keep old capture variable as freeform report name for compatibility.
+        self.state_probe_kind = self.state_report_name
         self._jp_probe_generation = 0
         self._jp_probe_busy = False
         ttk.Label(tab,text='Find memory changes before and after an action',font=('Segoe UI Semibold',16),
@@ -58,19 +52,18 @@ class StateDiscoveryMixin:
         ttk.Button(context,text='Read scene context',command=self.read_scene_context).pack(anchor='w',pady=(5,3))
         ttk.Label(context,textvariable=self.transition_observation_text,wraplength=1050,justify='left').pack(anchor='w')
         row=ttk.Frame(tab);row.pack(fill='x',pady=(0,6))
-        ttk.Label(row,text='Test:').pack(side='left',padx=(0,6))
-        self.state_probe_kind=tk.StringVar(value='Map displayed')
-        selector=ttk.Combobox(row,textvariable=self.state_probe_kind,values=list(PROBE_ACTIONS),
-                              width=26,state='readonly')
-        selector.pack(side='left')
-        self.state_probe_selector = selector
-        ttk.Label(row,text='Memory range:').pack(side='left',padx=(18,5))
+        ttk.Label(row,text='Investigation name').pack(side='left',padx=(0,6))
+        self.state_probe_selector=ttk.Entry(
+            row, textvariable=self.state_probe_kind, width=34)
+        self.state_probe_selector.pack(side='left')
+        ttk.Label(row,text='Capture scope').pack(side='left',padx=(18,5))
         self.state_probe_scope=tk.StringVar(value='focused')
         ttk.Combobox(row,textvariable=self.state_probe_scope,values=('focused','wide'),
                      width=10,state='readonly').pack(side='left')
-        self.state_probe_instruction=tk.StringVar(value=PROBE_ACTIONS[self.state_probe_kind.get()])
-        selector.bind('<<ComboboxSelected>>',
-                      lambda _e: self._set_state_probe_instruction())
+        self.state_probe_instruction=tk.StringVar(value=(
+            'The name only labels the captures and report. Focused reads '
+            'selected game globals and available player memory. Wide compares '
+            'full guest RAM. No preset limits the search.'))
         ttk.Label(tab,textvariable=self.state_probe_instruction,style='Muted.TLabel',
                   wraplength=1100).pack(anchor='w',pady=(0,6))
         self.state_probe_scope_hint = tk.StringVar(
@@ -104,7 +97,7 @@ class StateDiscoveryMixin:
             wraplength=790)
         # Normally hidden, since the standard Save report handles ordinary A/B/C.
         self.state_xyz_full_export_button.pack_forget()
-        self.state_probe_status=tk.StringVar(value='No captures. Select a test and connect to the game.')
+        self.state_probe_status=tk.StringVar(value='No captures. Name an investigation and connect to the game.')
         ttk.Label(tab,textvariable=self.state_probe_status,wraplength=1060).pack(anchor='w',pady=(0,10))
         self.state_probe_results = DiscoveryResultsPanel(
             self, tab, tree=lambda: self.state_probe_table,
@@ -136,20 +129,18 @@ class StateDiscoveryMixin:
         return getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan'
 
     def _set_state_probe_instruction(self):
-        actions = JAPAN_PROBE_ACTIONS if self._state_is_japan() else PROBE_ACTIONS
+        # Legacy API: the experiment name does not change the search policy.
         self.state_probe_instruction.set(
-            actions.get(self.state_probe_kind.get(), 'Choose a capture experiment.'))
-        # For movement heuristics, C is taken *at B*, not at A as in the
-        # general reversible A/B/C experiment. Avoid a misleading button name.
-        moving = self._state_is_japan() and self.state_probe_kind.get() == 'Player movement'
-        self.state_probe_capture_buttons['C'].configure(
-            text='Capture C: Still at B' if moving else 'Capture C: Reverted')
+            'Investigation names are labels only. Capture A before, B after; '
+            'optional C tests whether changes returned to A. '
+            'For Japan XYZ research, capture wide A still, B moved and '
+            'C still at B, then use Find XYZ triples.')
 
     def configure_state_probe_region(self):
-        actions = JAPAN_PROBE_ACTIONS if self._state_is_japan() else PROBE_ACTIONS
-        self.state_probe_selector['values'] = tuple(actions)
-        self.state_probe_kind.set(next(iter(actions)))
+        # Never reset a user's investigation name on a game-region change.
         self._set_state_probe_instruction()
+        self.state_probe_capture_buttons['C'].configure(
+            text='Capture C: Optional')
         if self._state_is_japan():
             self.state_xyz_button.pack(side='left', padx=(0, 7))
         else:
@@ -157,12 +148,12 @@ class StateDiscoveryMixin:
             self.state_xyz_full_export_button.pack_forget()
             self.state_xyz_full_export_note.pack_forget()
         self.state_probe_scope_hint.set(
-            'Japan focused: two 4 KiB engine/save candidate ranges (not confirmed '
-            'event banks). Wide: read-only full verified 4/8 MiB Japan RDRAM. '
-            'For XYZ: A still, B moved, C still at B; no player pointer required.'
+            'Japan focused: two 4 KiB engine/save candidate ranges (not '
+            'confirmed saved-event banks). Wide: full 4/8 MiB Japanese RDRAM. '
+            'XYZ search requires wide A still, B moved, C still at B.'
             if self._state_is_japan() else
-            'USA focused: game globals and optional player regions. '
-            'USA wide: 4 MiB N64 RAM. Use identical ranges for A/B/C.')
+            'USA focused: global state and available player/task regions. '
+            'Wide: full 4 MiB guest RAM. Snapshot labels do not filter addresses.')
 
     def read_scene_context(self):
         if self._state_is_japan():
