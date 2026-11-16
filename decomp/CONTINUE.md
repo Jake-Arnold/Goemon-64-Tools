@@ -54,6 +54,12 @@ retained for reproduction of the historical transition from a 160-claim manifest
 for later fresh verification of the already-promoted canonical 210 claims, use
 `python3 -m decomp.verify` followed by `python3 -m decomp.inventory`.
 
+## Original USA file_11 expansion research (16 Nov 2026; not promoted)
+
+After the 210-function formal promotion, the original pristine USA ELF and 32 MiB ROM were re-scanned for short repeatable code patterns. New file `decomp/research/file11_expansion_probe.py` compiles authentic original-VMA candidates with IDO 5.3 and proves **77 additional original instruction matches / 2,120 bytes**: 59 direct-call actor wrappers (1,888 bytes), 16 remaining 12-byte no-op callbacks (192 bytes), and two 20-byte actor float zeroing functions (40 bytes). The earlier note's fifty total 12-byte no-op estimate was an undercount: original ELF contains **53**, 37 already promoted and 16 additional. There are also **68** simple 32-byte call wrappers, nine already promoted and 59 new. The strong unpromoted downstream logic targets are the 220-byte handler `func_801E3AC0_59F9D0` (18 new call wrappers) and the 388-byte `func_801EB6BC_5A75CC` (eight new wrappers). Full research, codegen identity and limitations: `docs/USA_FILE11_77_MORE_NATIVE_MATCHES_2026-11-16.md` and `decomp/results/file11_expansion_native_20261116.json`.
+
+**These are isolated original-ID0 compiler proofs, not an overlay G2 or production matching-C promotion.** The official 210 matching-C claims, 13,336 bytes and inventory remain unchanged. Next: versioned mixed file_11 overlay stage + whole original ROM/relocation proof + full central `decomp.verify`/inventory, then promotion; do not conflate function count with actual game subsystem reconstruction. Full ROM-free local CI including new twelve tests passed.
+
 ## Local decomp CI (no GitHub Actions)
 
 Run `python3 -m decomp.local_ci` for the standard ROM-free local test gate (decomp Python regressions, verifier/ledger tests, task evidence validation, and a sanitizer host fixture). For Python-only debugging use `python3 -m decomp.local_ci --quick`, reporting skipped sanitizer coverage. This is intentionally **not** an Actions workflow: absence of `.github/workflows` is not a Local CI blocker. Do not run a workflow-dependent `local-ci` skill or `act` here. Task-specific host tests and the original-VMA native IDO/32 MiB full-ROM G2 gates remain distinct and must be reported separately.
