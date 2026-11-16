@@ -73,6 +73,14 @@ class AutoJapaneseAttachTests(unittest.TestCase):
         self.assertEqual((base, endian), (BASE, 'byteswapped'))
         self.assertEqual(rdram.read_guest(0x80000450, 64), MUPEN_PROBES[0][1])
 
+    def test_three_code_probes_without_plausible_live_state_cannot_attach(self):
+        process = MupenProcess('wordswapped')
+        process.memory[0xCD284 ^ 3] = 255  # Invalid Japanese engine state
+        candidate = JapanProcessCandidate(102, 'mupen64plus',
+                                           '/usr/bin/mupen64plus')
+        with self.assertRaisesRegex(ValueError, 'implausible'):
+            connect_candidate_ram(candidate, process, MUPEN_PROBES)
+
     def test_executable_hint_persists_but_never_substitutes_for_code_checks(self):
         candidate = JapanProcessCandidate(102, 'mupen64plus', '/usr/bin/mupen64plus')
         process = MupenProcess()
