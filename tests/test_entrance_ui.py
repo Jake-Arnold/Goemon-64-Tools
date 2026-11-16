@@ -110,7 +110,7 @@ class EntranceUITests(unittest.TestCase):
             atlas = atlas_fixture()
             save_atlas(legacy, atlas)
             with patch('practice.entrance_ui.stored_entrance_atlas_path',
-                       return_value=persistent), \\
+                       return_value=persistent), \
                  patch('practice.entrance_ui.practice_data_dir',
                        return_value=folder):
                 first = EntranceMixin()
