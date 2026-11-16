@@ -2,6 +2,30 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Japanese native recomp (v0.11.18 experimental)
+
+The native Japanese PC port is developed on `Jake-Arnold/Goemon64Recomp` branch `feature/japan-native-recomp`. The toolkit does **not** build the game, and this connection has not yet been verified against a live Japanese native executable. Unlike Mupen64Plus, native recompilation does not provide complete emulator savestates.
+
+From a clean toolkit checkout with the dependencies below installed:
+
+```bash
+python -m practice.toolkit --game-version japan --read-only
+```
+
+In Dashboard → Connection, select **Japan — Ganbare Goemon**, verify the exact original Japanese revision-0 retail ROM, set connection target **recomp**, provide the native game's PID (or use **Launch native Linux recomp**), and press **Connect to game** after the ROM has booted. Reconnect if the native game restarts. Other instances of the USA and Japanese executable may have the same name; with multiple instances, specify the correct PID.
+
+Connection uses the **same Japanese guest-memory fields** as the emulator and retains ROM verification, endian detection, reject-ROM-copy checks and fail-closed ambiguity handling. It requires the Japanese native executable to preserve three original main-code fingerprints at the usual guest RDRAM offsets. If this developing port omits original code from RDRAM, the toolkit will reject attachment instead of silently scanning based on USA offsets. Native recomp compatibility is not guaranteed until that runtime detail is established with a live game.
+
+After read-only connection succeeds, rerun without `--read-only` for Japanese unlock edits, Live Memory writes/freezes or guarded `0x0C` scene reload. Every native recomp writer revalidates the PID, Japanese ROM fingerprints and guest mapping. Avoid treating successful readback as proof of a safe gameplay state; make an independent backup of the game save first.
+
+Run synthetic tests (no live game writes):
+
+```bash
+bash scripts/test_japan_party.sh
+```
+
+**Version discipline:** `practice/version.py` controls the title/header. Increase the patch version for every toolkit release and keep README/PROGRESS in sync.
+
 ## Ubuntu installation
 
 ```bash
