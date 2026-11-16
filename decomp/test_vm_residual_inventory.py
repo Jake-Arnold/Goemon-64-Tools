@@ -55,7 +55,33 @@ class VmResidualInventoryTests(unittest.TestCase):
             path = ROOT / sources[field]
             self.assertTrue(path.is_file())
             digest = hashlib.sha256(path.read_bytes()).hexdigest()
-            self.assertEqual(digest, sources[f"{field.split('/')[-1].split('.')[0]}_sha256"])
+            recorded = sources[f"{field.split('/')[-1].split('.')[0]}_sha256"]
+            if field == "verifier" and digest != recorded:
+                # The original 315-C evidence remains tied to the historical
+                # verifier. Accept only the *exact* reviewed opt-in 323-C
+                # dispatcher without relabeling the earlier evidence.
+                self.assertEqual(
+                    recorded,
+                    "93e91fa551668a51fbc45e24ba39c73c2c60cc4e2a854d43040c4f0b209d7737",
+                )
+                self.assertEqual(
+                    digest,
+                    "a07e437c6bfd43fdca79b8f7ca981c3f2fc83ea8fa77543555afaf98808c548b",
+                )
+                from decomp import verify, file11_160_stage
+                import copy
+                self.assertEqual(verify.file11_stage_mode(self.manifest), 152)
+                self.assertEqual(
+                    self.manifest["overlay_file11_stage"],
+                    {"format": "goemon-file11-152-central-v1"},
+                )
+                candidate = copy.deepcopy(self.manifest)
+                candidate["overlay_file11_stage"] = {"format": file11_160_stage.STAGE_FORMAT}
+                self.assertEqual(file11_160_stage.STAGE_FORMAT, "goemon-file11-160-central-v1")
+                self.assertEqual(verify.file11_stage_mode(candidate), 160)
+                self.assertEqual(len(verify.claimed_functions(candidate)), 323)
+            else:
+                self.assertEqual(digest, recorded)
 
         whole = self.ledger["whole_project_inventory"]
         for path_key, hash_key in (
@@ -77,6 +103,12 @@ class VmResidualInventoryTests(unittest.TestCase):
         )
 
         combined = json.loads((ROOT / whole["combined_proof"]).read_text())
+        # Retain the original proof's verifier provenance independently of
+        # the narrow, source-pinned dispatcher extension above.
+        self.assertEqual(
+            combined["verifier_source_sha256_lf"],
+            sources["verifier_sha256"],
+        )
         self.assertEqual(combined["status"], "matched")
         self.assertTrue(combined["comparison"]["full_rom_match"])
         self.assertEqual(combined["comparison"]["rom_size"], 33554432)

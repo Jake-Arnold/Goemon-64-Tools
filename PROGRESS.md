@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Current verifier 160-stage contract proven; historical ledger test fixed
+
+- Changed: updated `decomp/test_vm_residual_inventory.py` to preserve the original 315-C verifier SHA-256 `93e91fa...` as immutable historical evidence while permitting **only** the exact 160-stage opt-in verifier SHA-256 `a07e437c...`, contingent on unchanged canonical 315-C manifest plus unique 323-C explicit opt-in claims. Historical `combined.json` verifier evidence is still required to match the old source hash. No production inventory/manifest rewrite.
+- Why: the existing test incorrectly required the *current* 160-aware verifier source to equal the historical 315-C verifier, making current-branch local CI impossible even if the 323-C native build matched.
+- Tested locally: restored exact Github 143-C, 144-C, 152-C, 160-C modules/fixtures by Git SHA and ran the updated original inventory ledger suite: **5 tests, 4 PASS / 1 expected ROM-optional SKIP**. Exact corrected `file11_160_stage.py` independently passed native linked-stage verification on reconstructed 323-C ELF/ROM, with **90** original native object provenance checks, **8,825** identical relocations, 160 matching functions and complete 32 MiB original USA ROM; isolated fail-closed unit tests **7/7 PASS** using a mock of the unavailable historical preflight dependency.
+- Remaining: official unchanged PR #41 end-to-end review command and entire current-checkout `decomp.local_ci` are still outstanding, so no canonical 323 promotion.
+
+
 ### 2026-11-16 — Correct 323-C PR stage contract and native object proof count
 
 - Changed: fixed `decomp/file11_160_stage.py` to declare `goemon-file11-160-central-v1` (not its copied 152-C format), pin the eight-function C source/object/ROM hashes rather than the previous wave's hashes, report all **90** verified native objects instead of 88, and assert the **50 C / 40 ASM** source split. Strengthened regression tests to check the literal version string and new native fingerprints.
