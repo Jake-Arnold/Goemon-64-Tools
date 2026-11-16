@@ -15,8 +15,11 @@ from tests.test_entrances import atlas_fixture
 class EntranceUITests(unittest.TestCase):
     def setUp(self):
         self.root=tk.Tk();self.root.withdraw()
+        store = patch('practice.toolkit.save_last_region')
+        store.start(); self.addCleanup(store.stop)
         with patch('practice.entrance_ui.load_atlas',return_value=atlas_fixture()):
-            self.app=Toolkit(self.root,parse_args([]))
+            self.app=Toolkit(self.root,parse_args(['--game-version','usa']))
+        self.assertEqual(self.app.active_version.key, 'usa')
         self.process,self.app.mem=checkpoint_fixture.TestCheckpoint().sample()
         self.app.mem.write_guest(MAP_ADDR,(1).to_bytes(2,'big'))
         self.app.current=self.app.mem.snapshot()
@@ -211,6 +214,33 @@ class EntranceUITests(unittest.TestCase):
         self.assertEqual(self.app.selected_scene_spawn(2).position,
                          (40,50,60))
 
+    def test_auto_selected_entry_rechecks_changed_live_origin(self):
+        atlas=copy.deepcopy(atlas_fixture())
+        row=copy.deepcopy(atlas['payload']['entries'][0])
+        row.update(id='default:2',kind='default',source_map=None,
+                   source_file=None,position=[40,50,60])
+        atlas['payload']['entries'].append(row)
+        atlas['sha256']=digest(atlas['payload'])
+        self.app.entrance_atlas=atlas
+        self.app.refresh_entrance_choices(2)
+        self.assertEqual(self.app.selected_scene_spawn(2).position,(-10,20,30))
+        self.app.mem.write_guest(MAP_ADDR,b'\x00\x23')
+        self.assertEqual(self.app.selected_scene_spawn(2).position,(40,50,60))
+
+    def test_manually_selected_entry_is_preserved_in_same_context(self):
+        atlas=copy.deepcopy(atlas_fixture())
+        row=copy.deepcopy(atlas['payload']['entries'][0])
+        row.update(id='default:2',kind='default',source_map=None,
+                   source_file=None,position=[40,50,60])
+        atlas['payload']['entries'].append(row)
+        atlas['sha256']=digest(atlas['payload'])
+        self.app.entrance_atlas=atlas
+        self.app.refresh_entrance_choices(2)
+        self.app.entrance_choice.current(0)
+        self.app._entrance_chosen_by_user(None)
+        self.app.mem.write_guest(MAP_ADDR,b'\x00\x23')
+        self.assertEqual(self.app.selected_scene_spawn(2).position,(-10,20,30))
+
     def test_native_default_is_used_when_origin_has_no_unique_route(self):
         atlas=copy.deepcopy(atlas_fixture());row=copy.deepcopy(atlas['payload']['entries'][0])
         row.update(id='default:2',kind='default',source_map=None,source_file=None,position=[40,50,60])
@@ -224,6 +254,12 @@ class EntranceUITests(unittest.TestCase):
         checkpoint=capture_checkpoint(self.app.mem,'Before reload')
         self.app.checkpoints=[checkpoint];self.app.checkpoints_box['values']=['Before reload'];self.app.checkpoints_box.current(0)
         with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):self.app.try_reload_warp()
-        with patch.object(self.process,'write',side_effect=AssertionError('No second transition')):
+        # An unexpected failure to stage the USA warp must fail fast rather
+        # than display a hidden Tk modal under Xvfb and hang the whole suite.
+        self.assertIsNotNone(self.app.pending_direct_warp,
+                             'Expected USA warp; check selected test region')
+        with patch.object(self.process,'write',side_effect=AssertionError('No second transition')), \
+             patch('practice.toolkit.messagebox.askyesno',
+                   side_effect=AssertionError('Hidden checkpoint modal forbidden')):
             self.app.restore_full_checkpoint()
         self.assertIn('scene request',self.app.status.get())

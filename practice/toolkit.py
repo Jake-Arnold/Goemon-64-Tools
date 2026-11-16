@@ -38,12 +38,18 @@ from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.version import DISPLAY_VERSION
 from practice.launcher_preferences import load_last_region, save_last_region
+from practice.japan_auto_attach import (
+    JapanProcessCandidate, list_japan_processes, connect_candidate_ram,
+    describe_verified_connections, remember_verified_connection,
+)
 from practice.japan_native_recomp import (
     verified_japan_recomp_pid, find_japan_recomp_pid,
     discover_japan_recomp_rdram, validate_japan_recomp_writer,
 )
 from practice.remembered_rom import remember_verified_rom, load_remembered_rom
-from practice.japan_native_scene_warp import is_japan_scene_loaded
+from practice.japan_native_scene_warp import (
+    is_japan_scene_loaded, japan_scene_readiness,
+)
 from practice.japan_direct_scene_reload import (
     JAPAN_DIRECT_RELOAD_MODE, stage_japan_direct_reload,
 )
@@ -176,8 +182,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         except (OSError, ValueError):
             self.named_native_checkpoints = []
         self.status = tk.StringVar(value="Disconnected. Start USA Goemon in Recomp or Project64, then Connect.")
-        self.connection_target = tk.StringVar(
-            value='recomp' if self.active_version.key == 'japan' else 'auto')
+        self.connection_target = tk.StringVar(value='auto')
         self.pid_text = tk.StringVar(value=str(args.pid) if args.pid else '')
         self.pos_text = tk.StringVar(value="X: —    Y: —    Z: —")
         self.speed_text = tk.StringVar(value="Speed: —")
@@ -260,6 +265,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.jp_candidates_pid = None
         self.jp_candidates_backend = None
         self.jp_backend = None
+        self._jp_reconnect_enabled = False  # only after successful JP Auto attach
+        self._jp_process_birth = None      # psutil PID creation time, prevents reuse
+        self._jp_last_liveness_check = 0.0
+        self._jp_last_auto_attempt = 0.0
         self.connect_button = ttk.Button(connection, text='Connect to game',
                    style='Accent.TButton', command=self.connect)
         self.connect_button.pack(fill='x', pady=(0, 7))
@@ -528,9 +537,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         if enabled:
             self.status.set('USA selected. Connect to the USA game in Recomp or Project64.')
         else:
-            self.status.set('Japan selected. Verify the Japan-0 ROM, select '
-                            'recomp (native PC port), project64 (Windows) or mupen64plus. '
-                            'USA-specific memory features remain unavailable.')
+            self.status.set('Japan selected. Verify the Japan-0 ROM once, then '
+                            'click Connect for automatic PID/backend/RDRAM detection. '
+                            'USA-only memory features remain unavailable.')
 
     def _clear_japan_base_choices(self):
         """Discard process-specific candidate bases when the region or ROM changes."""
@@ -603,12 +612,12 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             return
         if version == self.active_version:
             return
+        self._jp_reconnect_enabled = False
+        self._jp_process_birth = None
         self._disconnect_for_version_change()
         self._clear_japan_base_choices()
         self.active_version = version
-        if version.key == 'japan' and self.connection_target.get() == 'auto':
-            self.connection_target.set('recomp')
-        elif version.key == 'usa' and self.connection_target.get() == 'mupen64plus':
+        if version.key == 'usa' and self.connection_target.get() == 'mupen64plus':
             self.connection_target.set('auto')
         self.verified_rom_path = (
             load_remembered_rom('japan') if version.key == 'japan' else None)
@@ -667,7 +676,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or self._connecting or self.jp_rdram is None
                 or self.game_pid is None
                 or self.jp_backend not in ('project64', 'mupen64plus', 'recomp')
-                or self.connection_target.get() != self.jp_backend):
+                or self.connection_target.get() not in ('auto', self.jp_backend)):
             raise RuntimeError('Connect Japanese RAM with writes enabled first')
         if not isinstance(data, bytes) or len(data) not in (1, 2, 4, 8):
             raise ValueError('Live Memory edit must contain 1, 2, 4, or 8 bytes')
@@ -707,7 +716,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or self._connecting or self.jp_rdram is None
                 or self.game_pid is None
                 or self.jp_backend not in ('project64', 'mupen64plus', 'recomp')
-                or self.connection_target.get() != self.jp_backend):
+                or self.connection_target.get() not in ('auto', self.jp_backend)):
             raise RuntimeError('Connect Japanese RAM in write-enabled mode first')
         for item, _target in changes:
             if japan_unlock_lead(item) is None:
@@ -774,7 +783,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 raise RuntimeError('Japanese backend is not confirmed')
             if target == 'project64' and sys.platform != 'win32':
                 raise RuntimeError('Project64 position writes require Windows')
-            if self.connection_target.get() != target:
+            if self.connection_target.get() not in ('auto', target):
                 raise RuntimeError('Selected emulator changed; reconnect')
             check = (verified_japan_recomp_pid(pid) if target == 'recomp'
                      else verified_emulator_pid(pid, target))
@@ -822,98 +831,58 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.status.set(message)
 
     def open_japan_debug_for_selected_scene(self):
-        """Open native debug level selection; destination remains manual.
+        """Unrestricted original debug-menu entry, independent of scene/actor.
 
-        Do NOT write active or pending map. PJ64 must revalidate ROM,
-        process and RAM after the operator gives consent.
+        Only 0x800CD284 -> 0x0A is written, at most once. Never request a
+        destination, inspect loading/cutscenes/character or inject input.
+        Region/PID/ROM/RDRAM mapping validation is still mandatory.
         """
         caption = self.jp_debug_result
         if (self.active_version.key != 'japan' or self._connecting
                 or getattr(self.args, 'read_only', False)
-                or not getattr(self.args, 'enable_japan_debug_menu_writes', False)
                 or self.jp_rdram is None or self.game_pid is None
                 or self.verified_rom_path is None):
-            caption.set('Native debug entry requires connected Japanese ROM and '
-                        '--enable-japan-debug-menu-writes without --read-only.')
+            caption.set('Connect verified Japanese RAM with writes enabled first.')
             return
-        try:
-            destination = self.selected_japan_debug_scene()
-            category, index = debug_menu_selection_hint(destination)
-            original = self.jp_rdram
-            context = get_japan_debug_context(original)
-            # Reuse the read-only primitive's exact conservative gameplay
-            # predicate BEFORE asking user for consent.
-            from practice.japanese_debug_warp import _normal_gameplay
-            _normal_gameplay(context)
-        except (OSError, PermissionError, ValueError, RuntimeError) as exc:
-            caption.set(f'Native debug entry rejected before confirmation: {exc}')
-            return
-        yes = messagebox.askyesno(
-            'Enter native Japanese debug menu?',
-            f'Open original debug level selector while in scene 0x{context[1]:03X}?'
-            f'\n\nTarget hint (NOT auto-selected): '
-            f'{SCENES[destination]} (0x{destination:03X})'
-            f'\nExpected menu category/index (USA-derived): {category} / {index}'
-            '\n\nBack up your save; native recomp does not support full savestates.'
-            '\nThe ONLY proposed RAM change is 0x800CD284: 0D → 0A.'
-            '\nThe game must complete destination navigation and loading.'
-            '\nNo scene IDs, pending maps, exit flags or coordinates are written.',
-            parent=self.root)
-        if not yes:
-            caption.set('Native debug entry cancelled; no RAM written.')
-            return
+        original = self.jp_rdram
         pid = self.game_pid
+        target = self.jp_backend
         writable = None
         try:
-            target = self.jp_backend
             if target not in ('project64', 'mupen64plus', 'recomp'):
                 raise RuntimeError('Japanese backend not verified')
             if target == 'project64' and sys.platform != 'win32':
                 raise RuntimeError('Project64 debug entry requires Windows')
-            if self.connection_target.get() != target:
-                raise RuntimeError('Selected emulator backend changed; reconnect')
+            if self.connection_target.get() not in ('auto', target):
+                raise RuntimeError('Connection backend changed; reconnect')
             check = (verified_japan_recomp_pid(pid) if target == 'recomp'
                      else verified_emulator_pid(pid, target))
             if check != (pid, target):
-                raise RuntimeError('Target Japanese process changed; reconnect')
+                raise RuntimeError('Japanese process identity changed')
             probes = verified_japan_probes(self.verified_rom_path)
             writable = HostProcess(pid, writable=True)
-            verified = (validate_japan_recomp_writer(writable, original, probes)
-                        if target == 'recomp' else validate_rdram_base(
-                            writable, original.base, original.endian, probes,
-                            allow_4mb=(target == 'project64')))
+            # Do not call validate_japan_recomp_context here: it deliberately
+            # rejects invalid characters in ordinary gameplay and would make
+            # the debug button conditional on character/actor initialization.
+            verified = validate_rdram_base(
+                writable, original.base, original.endian, probes,
+                allow_4mb=(target == 'project64'))
             if getattr(verified, 'rdram_size', 0x800000) != getattr(
                     original, 'rdram_size', 0x800000):
-                raise RuntimeError('Emulator guest RAM size changed; reconnect')
-            # The native debug mode byte is the only destination of this write.
-            # Full context agreement catches stale or shadow mappings.
-            if get_japan_debug_context(verified) != get_japan_debug_context(original):
-                raise RuntimeError('Writable/read-only Japanese gameplay differs')
-            result = enter_japan_native_debug_menu(
-                verified, destination, expected_context=context)
-            observed = original.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
-            if observed not in (JAPAN_NATIVE_DEBUG_MODE, 0x0D):
-                raise RuntimeError(f'Unexpected engine state {observed}; check savestate')
+                raise RuntimeError('Japanese RDRAM mapping size changed')
+            result = enter_japan_native_debug_menu(verified)
         except (OSError, PermissionError, ValueError, RuntimeError) as exc:
-            caption.set(f'Native debug entry failed: {exc}')
-            self.status.set(f'Native debug entry failed: {exc}')
+            message = f'Original Japanese debug menu entry failed: {exc}'
+            caption.set(message)
+            self.status.set(message)
             return
         finally:
             if writable is not None:
                 writable.close()
-
-        if result.observed_state == JAPAN_NATIVE_DEBUG_MODE:
-            message = (
-                f'Native debug engine state 0x0A observed. Choose '
-                f'{category} / index {index} manually for '
-                f'0x{destination:03X} {SCENES[destination]}. '
-                'Verify on-screen debug menu; Japanese menu layout is not '
-                'independently validated. No direct map write.')
-        else:
-            message = (
-                f'Native debug entry byte written but engine returned to 0x0D. '
-                f'Inspect the on-screen debug menu. Target hint: {category} / '
-                f'index {index}; no destination selection was made.')
+        message = ('Original Japanese debug mode already 0x0A; no RAM write.'
+                   if not result.changed else
+                   'Original Japanese debug menu requested: wrote only '
+                   '0x0A to 0x800CD284; no map, actor, entrance or input changes.')
         caption.set(message)
         self.status.set(message)
         self.refresh_japan_fields(force=True)
@@ -934,7 +903,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or not (getattr(self.args, 'enable_japan_scene_writes', False)
                         or getattr(self.args, 'enable_japan_debug_menu_writes', False))
                 or target not in ('project64', 'recomp')
-                or self.connection_target.get() != target
+                or self.connection_target.get() not in ('auto', target)
                 or (target == 'project64' and sys.platform != 'win32')):
             raise RuntimeError(
                 'Instant warp requires verified Japanese Project64 or native recomp '
@@ -1097,7 +1066,12 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.status.set(message)
 
     def poll_japan_native_scene_warp(self, now):
-        """Observe native reload and destination; send no menu/A input."""
+        """Monitor area reload; never infer a playable actor from map ID alone.
+
+        Stable scene/mode/loading/character data is distinct from independently
+        verified player task or animation. Only the originally confirmed
+        Goemon/Oedo vector is eligible for post-load position correction.
+        """
         pending = self.jp_auto_warp
         if pending is None:
             return
@@ -1111,93 +1085,110 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'Japan scene reload cancelled: game session changed')
             return
         if now > pending['deadline']:
+            detail = pending.get('wrong_character')
+            expected = (pending['target_character'] if
+                        pending['target_character'] is not None else
+                        pending['character'])
+            suffix = (f' Expected character {expected}, last observed {detail}.'
+                      if detail is not None else '')
             self._finish_japan_native_warp(
                 f'Japan reload to 0x{pending["destination"]:03X} '
-                'NOT confirmed before timeout; no retry was sent.')
+                'NOT confirmed before timeout; no retry was sent.' + suffix)
             return
         try:
             state = self.jp_rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
             if state == JAPAN_DIRECT_RELOAD_MODE:
                 pending['seen_reload'] = True
                 pending['stable'] = 0
+                pending['stable_character'] = None
                 return
             if state == JAPAN_NATIVE_DEBUG_MODE:
                 self._finish_japan_native_warp(
                     'Japan reload unexpectedly entered original debug menu; '
                     'no menu selection or A input sent.')
                 return
-            if is_japan_scene_loaded(
-                    self.jp_rdram, pending['destination']):
-                # A different loaded map is independent evidence of a reload
-                # even when the short 0x0C interval was missed by Tk polling.
-                if not (pending['seen_reload']
-                        or pending['destination'] != pending['source']):
-                    return
-                pending['stable'] += 1
-                if pending['stable'] >= 3:
-                    # USA performs a one-shot destination placement after
-                    # loading: stage-first is not sufficient if the engine
-                    # overwrites the entrance bytes while rebuilding actors.
-                    # Reuse the same selected USA Spawn for Japan/Goemon.
-                    spawn = pending['spawn']
-                    observed_character = int.from_bytes(
-                        self.jp_rdram.read_guest(JAPAN_DEBUG_CHARACTER, 4), 'big')
-                    if (observed_character != 0
-                            or (pending['target_character'] is not None
-                                and pending['target_character'] != 0)):
-                        self._finish_japan_native_warp(
-                            f'Japan scene 0x{pending["destination"]:03X} loaded; '
-                            f'selected USA entrance XYZ {spawn.position} staged, '
-                            f'but character {observed_character} is not Goemon. '
-                            'Post-load XYZ write blocked until the Japanese '
-                            'character position address is verified.')
-                        return
-                    actual = read_japan_position(self.jp_rdram)
-                    expected_raw = struct.pack(
-                        '>fff', *checked_japan_xyz(spawn.position))
-                    # Match the USA one-shot path: send the exact selected
-                    # entrance float32 bytes, not a fuzzy/rounded position
-                    # check. A successful scene ID alone is insufficient.
-                    before_raw = self.jp_rdram.read_guest(
-                        JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE)
-                    if before_raw != expected_raw:
-                        # Never write the same destination twice. Failure is
-                        # reported and cannot trigger automatic retries.
-                        pending['placement_attempted'] = True
-                        expected_before = before_raw
-                        handle, writer = self._japan_native_warp_writer()
-                        try:
-                            if not is_japan_scene_loaded(
-                                    writer, pending['destination']):
-                                raise RuntimeError(
-                                    'Destination became unstable before placement')
-                            actual = place_japan_spawn_once(
-                                writer, spawn, expected_before=expected_before)
-                        finally:
-                            handle.close()
-                    final_xyz = read_japan_position(self.jp_rdram)
-                    distance = position_difference(spawn.position, final_xyz)
-                    target_xyz = '(' + ', '.join(
-                        f'{v:.1f}' for v in spawn.position) + ')'
-                    observed_xyz = '(' + ', '.join(
-                        f'{v:.1f}' for v in final_xyz) + ')'
-                    if distance > 8:
-                        verdict = (
-                            'SPAWN MISMATCH: requested USA entrance '
-                            f'{target_xyz}; actual JP XYZ {observed_xyz}; '
-                            f'distance {distance:.1f} units. No retry sent.')
-                    else:
-                        verdict = (
-                            f'USA entrance {spawn.entrance_id}: requested '
-                            f'{target_xyz}; JP actual {observed_xyz} '
-                            f'(distance {distance:.1f}). '
-                            'Post-load Goemon XYZ verified; collision, '
-                            'camera and footing still require live testing.')
-                    self._finish_japan_native_warp(
-                        f'Japan 0x{pending["destination"]:03X} '
-                        f'{SCENES[pending["destination"]]}: {verdict}')
-            else:
+            readiness = japan_scene_readiness(
+                self.jp_rdram, pending['destination'])
+            if not readiness.scene_loaded:
                 pending['stable'] = 0
+                pending['stable_character'] = None
+                pending['last_not_ready'] = readiness.note
+                return
+            # An actual destination change is independent evidence of a
+            # transition if the short 0x0C interval was missed by polling.
+            if not (pending['seen_reload']
+                    or pending['destination'] != pending['source']):
+                return
+            expected = (pending['target_character']
+                        if pending['target_character'] is not None else
+                        pending['character'])
+            if readiness.character != expected:
+                pending['wrong_character'] = readiness.character
+                pending['stable'] = 0
+                pending['stable_character'] = None
+                return
+            if pending.get('stable_character') != readiness.character:
+                pending['stable_character'] = readiness.character
+                pending['stable'] = 0
+            pending['stable'] += 1
+            if pending['stable'] < 3:
+                return
+            spawn = pending['spawn']
+            character = readiness.character
+            assert character is not None
+            if character != 0:
+                self._finish_japan_native_warp(
+                    f'Japan scene 0x{pending["destination"]:03X} '
+                    f'{SCENES[pending["destination"]]}: stable scene, '
+                    f'character {character} detected across 3 reads; '
+                    f'USA entrance {spawn.entrance_id} staged. '
+                    'Playability/actor initialization is NOT confirmed '
+                    'without a verified Japanese per-character actor/task '
+                    'pointer; no post-load XYZ write was attempted.')
+                return
+            actual = read_japan_position(self.jp_rdram)
+            if pending['destination'] != JAPAN_OEDO_SOUTH_SCENE:
+                distance = position_difference(spawn.position, actual)
+                self._finish_japan_native_warp(
+                    f'Japan scene 0x{pending["destination"]:03X} '
+                    f'{SCENES[pending["destination"]]}: stable Goemon state '
+                    f'and plausible XYZ {actual}; source USA entrance '
+                    f'{spawn.entrance_id} XYZ {spawn.position} staged. '
+                    f'Difference {distance:.1f}. Actor/task not independently '
+                    'verified; no post-load write because the JP Goemon XYZ '
+                    'offset is only validated for Oedo South (0x161).')
+                return
+            before_raw = self.jp_rdram.read_guest(
+                JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE)
+            expected_raw = struct.pack(
+                '>fff', *checked_japan_xyz(spawn.position))
+            if before_raw != expected_raw:
+                # Guarded, one-shot and ONLY in the verified Oedo South scene.
+                pending['placement_attempted'] = True
+                handle, writer = self._japan_native_warp_writer()
+                try:
+                    if not is_japan_scene_loaded(writer, pending['destination']):
+                        raise RuntimeError(
+                            'Destination became unstable before placement')
+                    place_japan_spawn_once(
+                        writer, spawn, expected_before=before_raw)
+                finally:
+                    handle.close()
+            final_xyz = read_japan_position(self.jp_rdram)
+            distance = position_difference(spawn.position, final_xyz)
+            target_xyz = '(' + ', '.join(f'{v:.1f}' for v in spawn.position) + ')'
+            observed_xyz = '(' + ', '.join(f'{v:.1f}' for v in final_xyz) + ')'
+            verdict = (f'SPAWN MISMATCH: requested {target_xyz}; '
+                       f'actual {observed_xyz}; distance {distance:.1f}.'
+                       if distance > 8 else
+                       f'USA entrance {spawn.entrance_id}: requested '
+                       f'{target_xyz}; JP actual {observed_xyz} '
+                       f'(distance {distance:.1f}). '
+                       'Goemon/Oedo XYZ verified; collision/actor/task '
+                       'initialization still require gameplay confirmation.')
+            self._finish_japan_native_warp(
+                f'Japan 0x{pending["destination"]:03X} '
+                f'{SCENES[pending["destination"]]}: {verdict}')
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
             self._finish_japan_native_warp(
                 f'Japan scene reload stopped: {exc}; no retry was sent.')
@@ -1211,6 +1202,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.status.set('Finish connecting before using emulator savestates.')
             return
         target = self.connection_target.get()
+        if target == 'auto' and self.active_version.key == 'japan' and self.jp_backend:
+            target = self.jp_backend
         try:
             if (self.active_version.key == 'japan' and self.jp_rdram is not None
                     and target != self.jp_backend):
@@ -1248,6 +1241,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             return
         region = self.active_version.key
         backend = self.connection_target.get()
+        if backend == 'auto' and self.active_version.key == 'japan':
+            backend = self.jp_backend
         filtered = [
             record for record in self.named_native_checkpoints
             if record['region'] == region and record['backend'] == backend
@@ -1271,7 +1266,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         if (self.active_version.key != 'japan'
                 or self.jp_rdram is None
                 or self.game_pid is None
-                or self.connection_target.get() != self.jp_backend):
+                or self.connection_target.get() not in ('auto', self.jp_backend)):
             self.status.set('Connect Japan-0 Project64/Mupen before naming a state slot.')
             return
         name = self.named_native_name.get().strip()
@@ -1311,7 +1306,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         record = self._named_native_visible[selected]
         if (self.active_version.key != 'japan'
                 or record['region'] != 'japan'
-                or record['backend'] != self.connection_target.get()):
+                or record['backend'] != (self.jp_backend if self.connection_target.get() == 'auto'
+                                          else self.connection_target.get())):
             self.status.set('Named checkpoint is for another region/emulator.')
             return
         if (self.jp_rdram is None or self.game_pid is None
@@ -1551,8 +1547,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
     def _connect_japan_emulator(self):
         """Attach Japan-0 to verified Mupen or Windows Project64 guest RDRAM."""
         target = self.connection_target.get()
-        if target not in ('mupen64plus', 'project64', 'recomp'):
-            self.status.set('Japan requires an explicit target: recomp, mupen64plus or project64.')
+        if target not in ('auto', 'mupen64plus', 'project64', 'recomp'):
+            self.status.set('Select auto, recomp, mupen64plus or project64.')
             return
         if target == 'project64' and sys.platform != 'win32':
             self.status.set('Japanese Project64 attachment is supported on Windows only.')
@@ -1570,7 +1566,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         selected = self.jp_base_choice.get()
         candidate = self.jp_candidates.get(selected)
         if selected != 'Auto (detect)' and (
-                candidate is None or self.jp_candidates_backend != target):
+                candidate is None or (target != 'auto' and self.jp_candidates_backend != target)):
             self.status.set('The selected Japanese RAM candidate is stale; rescan.')
             return
         base_hint = candidate[0] if candidate else self.args.base
@@ -1580,16 +1576,102 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._connecting = True
         self.connect_button.state(['disabled'])
         self.version_selector.state(['disabled'])
-        self.status.set(f'Checking Japanese {target} memory signatures...')
+        self.status.set(f'Checking Japanese {target} memory signatures '
+                        '(three independent code probes; auto RAM layout)...')
         opts = (pid_hint, self.verified_rom_path, base_hint, endian,
                 selected_pid, target)
         threading.Thread(target=self._connect_japan_worker, args=(opts,), daemon=True,
                          name='GoemonJapanRegionDiscovery').start()
         self.root.after(50, self._poll_connect_results)
 
+    def _connect_japan_auto_worker(self, opts):
+        """Select the *one* process with proven Japan-0 RDRAM, not first name.
+
+        All candidate PID/region/3-code-probe/layout checks run in this worker,
+        never on Tk's event thread. A cached executable/base is only a hint:
+        code signatures and RAM context are rechecked every time.
+        """
+        pid_hint, rom_path, base_hint, endian, selected_pid, _ = opts
+        confirmed = []
+        ambiguous = []
+        errors = []
+        try:
+            probes = verified_japan_probes(rom_path)
+            if selected_pid is not None:
+                if pid_hint is not None and pid_hint != selected_pid:
+                    raise RuntimeError('Selected RAM candidate is for a different PID')
+                pid_hint = selected_pid
+            candidates = list_japan_processes(
+                pid_hint=pid_hint, target='auto',
+                allow_project64=(sys.platform == 'win32'))
+            base = (int(base_hint, 0) if isinstance(base_hint, str)
+                    else int(base_hint) if base_hint is not None else None)
+            for choice in candidates:
+                process = None
+                try:
+                    if choice.backend == 'recomp':
+                        check = verified_japan_recomp_pid(choice.pid)
+                    else:
+                        check = verified_emulator_pid(choice.pid, choice.backend)
+                    if check != (choice.pid, choice.backend):
+                        raise RuntimeError('Process identity changed during discovery')
+                    process = HostProcess(choice.pid, writable=False)
+                    reader, address, mode = connect_candidate_ram(
+                        choice, process, probes, base_hint=base, endian=endian)
+                    confirmed.append((choice, process, reader, address, mode))
+                    process = None  # Owned by result list from now onward.
+                except AmbiguousJapaneseRdram as exc:
+                    ambiguous.append((choice, exc.candidates))
+                except (OSError, PermissionError, RuntimeError, ValueError) as exc:
+                    errors.append(f'PID {choice.pid} {choice.backend}: {exc}')
+                finally:
+                    if process is not None:
+                        process.close()
+            if len(confirmed) > 1:
+                details = describe_verified_connections(
+                    (choice.pid, choice.backend, addr, mode)
+                    for choice, _, _, addr, mode in confirmed)
+                raise RuntimeError(
+                    'Multiple Japanese processes pass exact ROM/RDRAM verification: '
+                    + details + '. Close other games or provide a PID.')
+            if confirmed and ambiguous:
+                raise RuntimeError(
+                    'Another Japanese process contains ambiguous code-matching '
+                    'RAM buffers: ' +
+                    ', '.join(f'PID {c.pid} {c.backend}' for c, _ in ambiguous)
+                    + '. Resolve before auto-connecting.')
+            if len(confirmed) == 1:
+                choice, process, reader, address, mode = confirmed.pop()
+                remember_verified_connection(choice, probes, address, mode)
+                self._connect_queue.put(
+                    ('japan-ok', choice.pid, choice.backend,
+                     process, reader, address, mode))
+                return
+            if len(ambiguous) == 1 and len(candidates) == 1:
+                choice, rows = ambiguous[0]
+                self._connect_queue.put(
+                    ('japan-ambiguous', choice.pid, choice.backend, rows))
+                return
+            failures = ('; '.join(errors + [
+                f'PID {c.pid} {c.backend}: {len(rows)} RAM candidates'
+                for c, rows in ambiguous])) or 'No code-signature matches'
+            raise RuntimeError(
+                'No uniquely verified Japan-0 process/layout. ' + failures)
+        except Exception as exc:
+            message = str(exc)
+            if sys.platform == 'linux' and isinstance(exc, PermissionError):
+                message += ' ' + external_pid_hint(pid_hint or 'unknown')
+            self._connect_queue.put(('error', message))
+        finally:
+            for _choice, handle, _reader, _address, _mode in confirmed:
+                handle.close()
+
     def _connect_japan_worker(self, opts):
         """Verified ROM code probes only; no Tk or memory writes in worker."""
         pid_hint, rom_path, base_hint, endian, selected_pid, target = opts
+        if target == 'auto':
+            Toolkit._connect_japan_auto_worker(self, opts)
+            return
         process = None
         try:
             if target == 'recomp':
@@ -1716,6 +1798,18 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 self.mem = self.current = None
             self.jp_read_button.state(['!disabled'])
             self.jp_capture_spawn_btn.state(['!disabled'])
+            # Only a successful Auto attachment can arm live restart tracking.
+            self._jp_reconnect_enabled = self.connection_target.get() == 'auto'
+            self._jp_process_birth = None
+            if self._jp_reconnect_enabled:
+                try:
+                    import psutil
+                    self._jp_process_birth = psutil.Process(pid).create_time()
+                except (psutil.NoSuchProcess, psutil.AccessDenied, OSError,
+                        ImportError):
+                    # Do not guess that a future process with this PID is
+                    # the same binary; no automatic monitoring without proof.
+                    pass
             size_mb = getattr(reader, 'rdram_size', 0x800000) // 0x100000
             self.jp_read_result.set(
                 f'Japan-0 verified {size_mb} MiB RDRAM at 0x{base:X}; {endian}.')
@@ -1750,7 +1844,57 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.misc_text.set('Character: —    Action: —    Loading: —')
             self.status.set(f'Connection failed: {result[1]}')
 
+    def _watch_japan_process_restart(self, now):
+        """Detect an exited/reused PID and re-run JP Auto connection safely.
+
+        This is a throttled Tk-thread lifecycle check, not a write operation.
+        Each replacement process still passes exact ROM/RDRAM verification in
+        the background before any toolkit controls are re-enabled.
+        """
+        if (not getattr(self, '_jp_reconnect_enabled', False)
+                or self.active_version.key != 'japan'
+                or self.connection_target.get() != 'auto'
+                or self._connecting
+                or now - getattr(self, '_jp_last_liveness_check', 0) < 2):
+            return
+        self._jp_last_liveness_check = now
+        if self.jp_rdram is None:
+            # A game that is not running must not cause expensive rapid scans.
+            if now - getattr(self, '_jp_last_auto_attempt', 0) < 10:
+                return
+            self._jp_last_auto_attempt = now
+            self.pid_text.set('')
+            self._clear_japan_base_choices()
+            self._connect_japan_emulator()
+            return
+        old_birth = getattr(self, '_jp_process_birth', None)
+        if old_birth is None:
+            return  # No trustworthy PID identity; manual reconnect remains.
+        try:
+            import psutil
+            current_birth = psutil.Process(self.game_pid).create_time()
+        except psutil.NoSuchProcess:
+            current_birth = None
+        except (psutil.AccessDenied, OSError):
+            return
+        if current_birth == old_birth:
+            return
+        # All old-session handles and asynchronous freezes must be disabled
+        # before scanning the new executable. A PID reused by an unrelated
+        # process must never inherit the previous RDRAM mapping/writer.
+        self._jp_last_auto_attempt = now
+        old_pid = self.game_pid
+        self._disconnect_for_version_change()
+        self._jp_process_birth = None
+        self.pid_text.set('')
+        self._clear_japan_base_choices()
+        self.status.set(
+            f'Japanese client PID {old_pid} exited or restarted; '
+            'discovering the new verified process automatically.')
+        self._connect_japan_emulator()
+
     def tick(self):
+        self._watch_japan_process_restart(time.monotonic())
         if self.jp_rdram is not None:
             self.poll_japan_native_scene_warp(time.monotonic())
             self.refresh_japan_fields()
@@ -2197,7 +2341,7 @@ def parse_args(argv=None):
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid",type=int)
     ap.add_argument("--base",help="RDRAM host base 0x...; Japan always validates three ROM code probes")
-    ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
+    ap.add_argument("--endian",choices=["auto","wordswapped","byteswapped","big"],default="auto")
     ap.add_argument("--game-version", choices=tuple(VERSIONS), default=None,
                     help=argparse.SUPPRESS)  # Legacy override; select in Dashboard
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")

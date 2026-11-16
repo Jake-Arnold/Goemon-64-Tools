@@ -1,0 +1,32 @@
+name: Toolkit Linux regression
+
+on:
+  push:
+    branches:
+      - "toolkit/**"
+  pull_request:
+    paths:
+      - "practice/**"
+      - "autosplitter/**"
+      - "tests/**"
+      - "scripts/test_japan_party.sh"
+      - ".github/workflows/toolkit-linux-regression.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-and-tk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install headless Tk and process-test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb xauth x11-utils python3-tk python3-psutil
+      - name: Run isolated synthetic and Tk regressions
+        env:
+          PYTHON: python3
+          GOEMON_GUI_TEST_TIMEOUT_SECONDS: "120"
+        run: bash scripts/test_japan_party.sh

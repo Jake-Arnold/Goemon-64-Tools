@@ -1,23 +1,16 @@
 """Experimental Japanese Live Memory byte edits; synthetic Project64/Mupen RAM."""
 import unittest
-from types import SimpleNamespace
 from unittest.mock import patch
 
 from practice.toolkit import Toolkit
-from tests.test_japan_party_controller import Writer, Reader
-from autosplitter.memory import Rdram
+from tests.test_japan_party_controller import Writer, controller
 
 
 def editor(writer, *, read_only=False):
-    return SimpleNamespace(
-        active_version=SimpleNamespace(key='japan'),
-        _connecting=False,
-        args=SimpleNamespace(read_only=read_only),
-        jp_rdram=Rdram(Reader(writer), 0, 'wordswapped'),
-        game_pid=959604,
-        jp_backend='project64',
-        connection_target=SimpleNamespace(get=lambda: 'project64'),
-    )
+    # Reuse the synthetic unlocked-JP controller and its real Toolkit writer
+    # method binding. Duplicate minimal SimpleNamespace fixtures previously
+    # omitted _japan_writable_reader and masked the intended edit semantics.
+    return controller(writer, read_only=read_only, backend='project64')
 
 
 class JapanLiveEditTests(unittest.TestCase):

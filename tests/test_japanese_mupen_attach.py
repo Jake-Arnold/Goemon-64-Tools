@@ -21,7 +21,8 @@ class Process:
     def __init__(self, endian='wordswapped', duplicate=False):
         self.memory=bytearray(jp.RDRAM_SIZE * (2 if duplicate else 1))
         for offset, value in PROBES:
-            data=jp._swapped_words(value) if endian=='wordswapped' else value
+            data=(jp._swapped_words(value) if endian=='wordswapped' else
+                  jp._swapped_pairs(value) if endian=='byteswapped' else value)
             self.memory[offset:offset+len(data)] = data
             if duplicate:
                 other=jp.RDRAM_SIZE+offset
@@ -51,6 +52,22 @@ class JapaneseMupenAttachTests(unittest.TestCase):
         _,base,endian=jp.discover_japanese_mupen_rdram(
             Process('big'),PROBES,max_scan_mb=12)
         self.assertEqual((base,endian),(BASE,'big'))
+
+    def test_detect_byte_swapped_with_unaligned_guest_reads_and_writes(self):
+        proc=Process('byteswapped')
+        rdram,base,endian=jp.discover_japanese_mupen_rdram(
+            proc,PROBES,max_scan_mb=12)
+        self.assertEqual((base,endian),(BASE,'byteswapped'))
+        self.assertEqual(rdram.read_guest(0x80000451,5),PROBES[0][1][1:6])
+        before=rdram.read_guest(0x80000450,10)
+        # Test a byte write straddling a 16-bit pair; only targeted guest
+        # bytes change, and neighboring executable bytes are preserved.
+        payload=b'XYZ'
+        proc.write=lambda address,data: proc.memory.__setitem__(
+            slice(address-BASE,address-BASE+len(data)), data)
+        rdram.write_guest(0x80000453,payload)
+        updated=rdram.read_guest(0x80000450,10)
+        self.assertEqual(updated, before[:3]+payload+before[6:])
 
     def test_manual_base_requires_three_probes(self):
         process=Process()

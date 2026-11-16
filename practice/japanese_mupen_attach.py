@@ -60,6 +60,23 @@ def _swapped_words(data: bytes) -> bytes:
     return b''.join(data[i:i+4][::-1] for i in range(0, len(data), 4))
 
 
+def _swapped_pairs(data: bytes) -> bytes:
+    """Reverse adjacent bytes in each guest halfword (N64 .v64 layout)."""
+    if len(data) % 2:
+        raise ValueError('Guest code probe must be halfword-aligned')
+    return b''.join(data[i:i+2][::-1] for i in range(0, len(data), 2))
+
+
+def _host_order(data: bytes, endian: str) -> bytes:
+    if endian == 'wordswapped':
+        return _swapped_words(data)
+    if endian == 'byteswapped':
+        return _swapped_pairs(data)
+    if endian == 'big':
+        return data
+    raise ValueError('Unsupported RDRAM byte order')
+
+
 def _is_cartridge_copy(process, base: int, endian: str, probes) -> bool:
     """Reject a ROM buffer masquerading as RAM because code bytes coincide.
 
@@ -69,7 +86,7 @@ def _is_cartridge_copy(process, base: int, endian: str, probes) -> bool:
     header = getattr(probes, 'cartridge_header', None)
     if not header or base <= ROM_TO_GUEST:
         return False
-    expected = _swapped_words(header) if endian == 'wordswapped' else header
+    expected = _host_order(header, endian)
     try:
         return process.read(base - ROM_TO_GUEST, len(expected)) == expected
     except OSError:
@@ -82,7 +99,7 @@ def validate_rdram_base(process, base: int, endian: str,
     """Require three independently positioned, complete main-code probes."""
     if type(base) is not int or base <= 0 or base % 16:
         raise ValueError('RDRAM host base must be a positive 16-byte-aligned address')
-    if endian not in ('wordswapped', 'big'):
+    if endian not in ('wordswapped', 'byteswapped', 'big'):
         raise ValueError('Unsupported RDRAM byte order')
     if len(probes) < 3:
         raise ValueError('At least three Japanese executable probes are required')
@@ -90,7 +107,7 @@ def validate_rdram_base(process, base: int, endian: str,
         if not 0 <= offset < RDRAM_SIZE or offset + len(expected) > RDRAM_SIZE:
             raise ValueError('Invalid Japanese RDRAM probe offset')
         original = process.read(base + offset, len(expected))
-        canonical = _swapped_words(original) if endian == 'wordswapped' else original
+        canonical = _host_order(original, endian)
         if canonical != expected:
             raise ValueError(f'Japanese main-code verification failed at RDRAM +0x{offset:X}')
     # Do not silently read outside an unexpanded 4 MiB Project64 mapping.
@@ -120,9 +137,9 @@ def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
     Project64 callers allow 4 MiB, Mupen keeps its existing 8 MiB minimum.
     Manual base hints must still match all three Japanese code probes.
     """
-    if mode not in ('auto', 'big', 'wordswapped'):
+    if mode not in ('auto', 'big', 'wordswapped', 'byteswapped'):
         raise ValueError('Invalid RDRAM endian selection')
-    modes = ('big', 'wordswapped') if mode == 'auto' else (mode,)
+    modes = ('big', 'wordswapped', 'byteswapped') if mode == 'auto' else (mode,)
     if base_hint is not None:
         matches = []
         for endian in modes:
@@ -137,7 +154,7 @@ def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
         return matches[0]
     first_offset, first_code = probes[0]
     signatures = {
-        endian: (_swapped_words(first_code) if endian == 'wordswapped' else first_code)
+        endian: _host_order(first_code, endian)
         for endian in modes
     }
     matches = set()

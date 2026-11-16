@@ -17,6 +17,8 @@ class JapanStoryProgressUITests(unittest.TestCase):
         except tk.TclError as exc:
             self.skipTest(f'Graphical Tk unavailable: {exc}')
         self.root.withdraw()
+        store = patch('practice.toolkit.save_last_region')
+        store.start(); self.addCleanup(store.stop)
         patcher=patch('practice.toolkit.load_remembered_rom',return_value=None)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -25,6 +27,7 @@ class JapanStoryProgressUITests(unittest.TestCase):
         self.addCleanup(metadata.stop)
         self.app=Toolkit(self.root,Namespace(
             pid=None, base=None, endian='auto', route=None,
+            game_version='usa',
             enable_teleport=True, enable_state_restore=True,
             enable_debug_menu=True, enable_hex_edit=True,
             enable_scene_warp=False, read_only=False))

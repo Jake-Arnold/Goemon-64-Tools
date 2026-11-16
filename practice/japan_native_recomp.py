@@ -45,7 +45,7 @@ def find_japan_recomp_pid() -> tuple[int, str]:
     return verified_japan_recomp_pid(find_pid('recomp'))
 
 
-def validate_japan_recomp_context(reader):
+def validate_japan_recomp_context(reader, *, strict_character=True):
     """Sanity check Japan-specific live globals after the full ROM-code proof.
 
     This is an extra plausibility check, not a substitute for code signatures.
@@ -55,7 +55,7 @@ def validate_japan_recomp_context(reader):
     scene = int.from_bytes(reader.read_guest(JAPAN_DEBUG_SCENE, 2), 'big')
     if state > 17 or scene >= 0x800:
         raise ValueError('Japanese recomp live engine state or scene is implausible')
-    if state == 13:
+    if strict_character and state == 13:
         character = int.from_bytes(
             reader.read_guest(JAPAN_DEBUG_CHARACTER, 4), 'big')
         if character not in (0, 1, 2, 3):
@@ -64,11 +64,15 @@ def validate_japan_recomp_context(reader):
 
 
 def discover_japan_recomp_rdram(process, probes, *, mode='auto',
-                               base_hint=None):
+                               base_hint=None, strict_character=False):
     """Identify the actual live 8 MiB Japanese RDRAM, never a ROM-buffer copy."""
     reader, base, endian = discover_japanese_mupen_rdram(
         process, probes, mode=mode, base_hint=base_hint, allow_4mb=False)
-    validate_japan_recomp_context(reader)
+    # Connection remains available in cutscenes/transitions and when guest
+    # actor initialization is incomplete. Writes targeting gameplay actors
+    # still use the default strict context check separately.
+    validate_japan_recomp_context(reader,
+                                  strict_character=strict_character)
     return reader, base, endian
 
 

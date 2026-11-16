@@ -19,11 +19,14 @@ class RegionUnlockUITests(unittest.TestCase):
         except tk.TclError as exc:
             self.skipTest(f'Graphical Tk display required: {exc}')
         self.root.withdraw()
+        store = patch('practice.toolkit.save_last_region')
+        store.start(); self.addCleanup(store.stop)
         cache = patch('practice.toolkit.load_remembered_rom', return_value=None)
         cache.start()
         self.addCleanup(cache.stop)
         self.app = Toolkit(self.root, Namespace(
             pid=None, base=None, endian='auto', route=None,
+            game_version='usa',
             enable_teleport=True, enable_state_restore=True,
             enable_debug_menu=True, enable_hex_edit=True,
             enable_scene_warp=False, read_only=False,

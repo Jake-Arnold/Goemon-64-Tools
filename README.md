@@ -1,5 +1,42 @@
-# Goemon Speedrun Tools v0.11.27 — one unified toolkit development branch
+# Goemon Speedrun Tools v0.11.31 — Japanese connection and entrance-selection reliability
 
+## v0.11.31 — Ubuntu regression suite passes (16 November 2026)
+
+The automated Ubuntu 24.04 workflow passed on commit 3048921014af6f364a59b2769d0b9f7d49e74fb0: **292 non-GUI tests executed (291 passed, 1 skipped)**, and **116 Xvfb GUI tests passed**. The previously hanging entrance/checkpoint test completed successfully. Review the [successful CI run](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43894609637). No original ROM, native-game launch or live Japanese process connection was involved. PR #33 remains draft pending actual-game PID/RDRAM and warp testing.
+
+## v0.11.31 — CI-discovered GUI regression corrections
+
+The first ROM-free Ubuntu GitHub Actions run on PR #33 reproduced **three GUI test failures** and one GUI runner CLI error, without hanging. The runner now accepts the existing unittest `-v` flag. Japanese raw hex editing remains intentionally enabled in the UI, while production writes still require verified process, ROM and memory; the outdated disabled-button assertion was corrected.
+
+The entrance selector now invalidates stale automatic choices when the ROM atlas changes, the game region switches or the current scene source changes. An explicitly user-selected entrance remains selected within the same region, atlas and destination. This also prevents a removed atlas from leaving an outdated cached entrance active. Added regression coverage for current-origin changes and intentional manual selection. The subsequent Ubuntu CI run passed; live gameplay verification remains pending.
+
+
+
+## v0.11.30 — GUI test isolation correction after Ubuntu 290-pass run
+
+**16 November Ubuntu verification:** The separate Japanese native recomp stage-5 suite passed all **15** tests and compiled successfully; its recorded game launch exited with a clean timer-worker join (no native-game SIGSEGV in this sample). The toolkit's **290 non-GUI tests passed** on this branch. Its subsequent Xvfb GUI run exposed several unrelated USA-only test failures and stopped without a summary during `test_scene_request_blocks_overlapping_checkpoint_restore`, consistent with a hidden Tk confirmation prompt.
+
+**Test-harness correction (no production gameplay changes):** GUI tests that require USA now explicitly choose USA regardless of saved launcher preferences. Japanese UI transition tests start in a defined USA state and mock preference persistence; the Linux runner uses a disposable XDG configuration directory. The checkpoint-overlap test now checks for an actual pending USA warp and replaces any unexpected modal confirmation with a fast assertion failure. The GUI phase is bounded to 120 seconds by default, so a future hidden-dialog hang cannot stall the terminal indefinitely.
+
+**Status:** Corrections are committed to draft PR #33, but the full GUI suite has **not yet been rerun after this change**. See [Ubuntu failures report](docs/UBUNTU_TEST_FAILURES_2026-11-16.md). The 0x081 room crash remains an independent native recomp investigation.
+
+## v0.11.30 — unrestricted original JP menu and automatic verified connection
+
+**The original Japanese debug-menu button now sends only engine mode 0x0A to guest address `0x800CD284`**, from any current engine state. If the byte already equals 0x0A it does not write. The button no longer depends on selected scene, dialogue/cutscene/loading, gameplay character or a confirmation dialog. It never stages a map, entrance or character or simulates controller input. It *still requires* a connected region-verified Japanese process, independently validated PID, exact verified Japan ROM and three genuine RDRAM code signatures; explicit `--read-only` refuses the operation. This is deliberately separate from Scene Browser's native 0x0C warp.
+
+**Connect now defaults to `auto`** for both the native recomp and Japanese emulators. For Japanese mode, Connect searches recomp/Mupen64Plus/Windows Project64 candidate processes, checks each candidate's PID/executable type and **three independent original-Japan-ROM 64-byte code signatures**, rejects cartridge copies, and checks plausible Japanese RAM engine/scene fields before choosing a unique candidate. Region and RAM verification—not the process name—determine selection. The RDRAM scanner and guest memory reader now support big-endian, 32-bit word-swapped and 16-bit byte-swapped memory. Connect reports multiple valid PIDs/layouts rather than choosing arbitrarily, and can automatically reattach when a previously verified Auto-connected game exits, restarts or has its PID reused. Process-creation identity is polled at most once every two seconds, with reconnection attempts separated by at least ten seconds while no game is available.
+
+Successful settings are optionally cached per executable path, backend and verified ROM fingerprint in the user's private XDG/LocalAppData `japan-connection-hints.json`, outside Git. A cached address/order is never trusted by itself: its code signatures, RAM size and plausible game state are **revalidated each time**; invalid hints trigger a fresh scan. Manual target/PID/layout choices remain available for ambiguous sessions. The original verified Japan ROM must still have been selected once in the toolkit before the initial connection.
+
+**Scene warp reliability:** after an immediate 0x0C reload, the toolkit distinguishes engine loading from stable scene + character state; checks all playable IDs (Goemon 0, Ebisumaru 1, Sasuke 2, Yae 3) and expects the current character unless the user explicitly changed the selector. Three consistent observations are required before reporting scene-ready. The character's **runtime actor/task pointers are not yet region-verified**; "scene ready" is not represented as independently verified playable actor initialization. The original-USA numeric entrance atlas remains shared. Unverified Japanese XYZ writes are forbidden for Ebisumaru/Sasuke/Yae and **for Goemon outside the verified Oedo Town South scene (0x161)**; those areas rely on the native entrance staging and report observed status without forcibly overwriting player memory. Only the existing guarded Goemon/Oedo single post-load XYZ correction is retained, never retried automatically.
+
+The user has reported the **Gourmet Sub 2F Bazooka Room (0x081)** as independently crashing in the Japanese native recomp client. This is tracked in `docs/JAPAN_NATIVE_SCENE_081_CRASH.md` as a separate native-game investigation. The toolkit has no room-specific crash workaround and does not claim causation or repair.
+
+Added regression tests for debug-mode idempotence and exact write isolation, 3-endian memory handling, automatic PID selection, cached hint invalidation, PID change/ASLR, ambiguous concurrent clients, four-character transition monitoring and no unverified XYZ writes. Test runners include the new modules. **GitHub connector commits these changes but has not executed the complete Ubuntu test suite or live gameplay; the PR remains draft.**
+
+This feature branch derives from `main` v0.11.27; the separate older **v0.11.29 bugfix PR #30** remains open and should be integrated first, then this feature branch refreshed before merging to avoid README/PROGRESS/version overlap. Version numbering here is v0.11.30 so it does not collide with that pending bugfix release.
+
+## Previous v0.11.27 — one unified toolkit development branch
 ## v0.11.27 — consolidate active USA/Japan toolkit development
 
 The unified v0.11.27 USA/Japan toolkit has been **merged into `main` via PR #27**. The merge preserves the v0.11.26 Japanese-native-recomp toolkit and full 888-entrance atlas, with no feature-code reset or overwrite. It retains the current USA and Japan toolkit implementation, supported writes and process backends, Ubuntu dock launcher, 888-entry source-verified original-USA entrance atlas, unified Scene Browser, and live-memory/checkpoint tooling.

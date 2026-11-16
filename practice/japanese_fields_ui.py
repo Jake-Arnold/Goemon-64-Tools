@@ -107,7 +107,7 @@ class JapaneseFieldsUi:
             text='Use the existing Scene Browser in both USA and Japan. '
                  'Double-click a room to request its immediate native '
                  '0x0C area reload. The debug menu is not involved. '
-                 'The original debug button below is manual only.',
+                 'The original debug button writes only engine mode 0x0A from any state.',
             wraplength=960).pack(anchor='w')
         row = ttk.Frame(debug)
         row.pack(fill='x', pady=(7, 4))
@@ -115,7 +115,7 @@ class JapaneseFieldsUi:
             row, text='Open shared Scene Browser',
             command=self.open_full_scene_tab).pack(side='left')
         self.jp_debug_menu_button = ttk.Button(
-            debug, text='Open original debug menu (manual only)',
+            debug, text='Open original debug menu (any state)',
             command=self.open_japan_debug_for_selected_scene)
         self.jp_debug_menu_button.pack(anchor='w', pady=(5, 3))
         self.jp_debug_menu_button.state(['disabled'])
@@ -320,7 +320,7 @@ class JapaneseFieldsUi:
             and getattr(self, 'verified_rom_path', None) is not None
             and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus', 'recomp')
             and getattr(getattr(self, 'connection_target', None),
-                        'get', lambda: None)() == self.jp_backend
+                        'get', lambda: None)() in ('auto', self.jp_backend)
             and bool(getattr(getattr(self, 'args', None),
                              'enable_japan_position_writes', False))
             and not bool(getattr(getattr(self, 'args', None),
@@ -361,11 +361,10 @@ class JapaneseFieldsUi:
             and getattr(self, 'verified_rom_path', None) is not None
             and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus', 'recomp')
             and getattr(getattr(self, 'connection_target', None),
-                        'get', lambda: None)() == self.jp_backend
-            and bool(getattr(getattr(self, 'args', None),
-                             'enable_japan_debug_menu_writes', False))
+                        'get', lambda: None)() in ('auto', self.jp_backend)
             and not bool(getattr(getattr(self, 'args', None),
                                  'read_only', False))
+            and not bool(getattr(self, '_connecting', False))
         )
         self.jp_debug_menu_button.state(
             ['!disabled'] if enabled else ['disabled'])

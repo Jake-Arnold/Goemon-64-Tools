@@ -2,6 +2,20 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Japan auto-connect and unrestricted original debug (v0.11.30)
+
+In the Japan region, **Connection target defaults to Auto**. Leave PID blank and Japanese RAM base on `Auto (detect)`; click **Connect to game**. The toolkit inventories native Goemon64Recomp, Mupen64Plus and (on Windows) Project64 candidate processes, then checks each against the originally verified Japan ROM using three separate 64-byte game-code fingerprints. Matching copies of the ROM are explicitly rejected. It reads Japanese engine/scene state for plausibility and automatically chooses big, 32-bit word-swapped or 16-bit byte-swapped RDRAM. It does not infer Japan from executable names alone, and it refuses to pick between multiple separately verified processes.
+
+A successful executable/backend/layout may be cached at `~/.config/GoemonSpeedrunTools/japan-connection-hints.json` (subject to XDG_CONFIG_HOME, Windows LocalAppData) as a **hint**, not proof. The exact live process signatures and RAM size/state are checked on every new Connect; a failed hint triggers full discovery. After a successful Auto attachment the toolkit records the PID's process-creation identity. If that process exits or its PID is reused, it closes the stale RDRAM handle and retries verified auto detection with a ten-second minimum interval while the game is unavailable. Explicit backend/manual attachments are not silently replaced. Connect also performs a fresh discovery at any time. Selecting a PID, backend or RAM candidate explicitly remains possible for resolving ambiguity. Windows Project64 is not supported by the Linux process access path.
+
+The original **Open original debug menu (any state)** control only changes Japanese guest engine mode `0x800CD284` to `0x0A` if different; no confirmation, cutscene/loading/character guard, menu stage/entrance write or simulated input. It requires a verified Japanese RAM mapping and write-enabled connection. It is deliberately **not** the Scene Browser instant `0x0C` warp operation.
+
+The Scene Browser still stages the exact shared USA entrance but requires a confirmed post-load scene, transition-clear state and three stable, expected character ID readings before reporting scene ready. For Ebisumaru, Sasuke and Yae the Japanese actor/task pointers are not yet independently validated and the app will not claim verified playable actor initialization. Japanese Goemon post-load XYZ writes are restricted to the original proven **Oedo South (0x161)** vector; other rooms use native staged entrance placement with *no speculative post-load XYZ write*.
+
+Known independent native-game crash: **Gourmet Sub 2F Bazooka Room, scene 0x081**, tracked separately in `docs/JAPAN_NATIVE_SCENE_081_CRASH.md` and not attributed to toolkit warp logic.
+
+**Verification status:** Synthetic unit tests authored; native Ubuntu and real-game smoke checks still required. Do not equate code-signature matches or a scene ID with live actor readiness.
+
 ## Checked-in complete entrance coordinates (v0.11.26)
 
 The actual original-USA numeric entrance table supplied by the user has now been **committed** at `practice/data/entrance-coordinates.json`. It is loaded automatically by both USA and Japan. **No ROM extraction, local cache or original-USA ROM file is needed** to access the covered entrance records in any new checkout.

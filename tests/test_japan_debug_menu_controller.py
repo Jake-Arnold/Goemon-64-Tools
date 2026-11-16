@@ -1,4 +1,4 @@
-"""Japanese native debug menu controller: test consent/PID/ROM/one-byte only."""
+"""Japanese original debug menu: 0x0A state write, no gameplay guards."""
 import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -39,61 +39,107 @@ def screen(writer, *, opt_in=True, read_only=False, backend='project64',
     )
 
 
-class JapaneseDebugMenuControllerTests(unittest.TestCase):
-    def test_missing_opt_in_or_readonly_never_opens_writer(self):
-        for options in (dict(opt_in=False), dict(read_only=True)):
-            s = screen(Writer(), **options)
-            with patch('practice.toolkit.HostProcess') as handle:
-                Toolkit.open_japan_debug_for_selected_scene(s)
-            handle.assert_not_called()
-            self.assertIn('requires', s.jp_debug_result.value)
+def click_menu(screen_obj, writer, *, pid=959604):
+    """Run controller through its real region/PID/code/memory validations."""
+    with patch('practice.toolkit.sys.platform', 'win32'), \
+         patch('practice.toolkit.messagebox.askyesno') as dialog, \
+         patch('practice.toolkit.verified_emulator_pid',
+               return_value=(pid, screen_obj.jp_backend)) as verify_pid, \
+         patch('practice.toolkit.verified_japan_probes',
+               return_value=('verified',)) as probes, \
+         patch('practice.toolkit.HostProcess', return_value=writer) as host, \
+         patch('practice.toolkit.validate_rdram_base',
+               return_value=writer.rdram()) as validate:
+        Toolkit.open_japan_debug_for_selected_scene(screen_obj)
+    dialog.assert_not_called()
+    return host, verify_pid, probes, validate
 
-    def test_user_cancels_before_opening_writer(self):
+
+class JapaneseDebugMenuControllerTests(unittest.TestCase):
+    def test_readonly_and_disconnected_never_open_writer(self):
+        for read_only in (True,):
+            s = screen(Writer(), read_only=read_only)
+            with patch('practice.toolkit.HostProcess') as host:
+                Toolkit.open_japan_debug_for_selected_scene(s)
+            host.assert_not_called()
+            self.assertIn('writes enabled', s.jp_debug_result.value)
         s = screen(Writer())
-        with patch('practice.toolkit.messagebox.askyesno', return_value=False), \
+        s.jp_rdram = None
+        with patch('practice.toolkit.HostProcess') as host:
+            Toolkit.open_japan_debug_for_selected_scene(s)
+        host.assert_not_called()
+
+    def test_any_state_cutscene_character_loading_and_old_optin_are_ignored(self):
+        for state in (0, 10, 12, 13, 255):
+            with self.subTest(state=state):
+                writer = Writer()
+                s = screen(writer, state=state, opt_in=False)
+                writer.set_guest(JAPAN_DEBUG_CHARACTER, (99).to_bytes(4, 'big'))
+                writer.set_guest(JAPAN_DEBUG_LOADING, (1).to_bytes(4, 'big'))
+                writer.set_guest(JAPAN_DEBUG_SUBMODE, b'\x06')
+                writer.writes.clear()
+                original_scene = writer.rdram().read_guest(JAPAN_DEBUG_SCENE, 2)
+                host, pid, probes, validate = click_menu(s, writer)
+                host.assert_called_once_with(959604, writable=True)
+                pid.assert_called_once_with(959604, 'project64')
+                probes.assert_called_once_with('verified-japan-rom.n64')
+                self.assertTrue(validate.call_args.kwargs['allow_4mb'])
+                self.assertEqual(
+                    writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1),
+                    b'\x0a')
+                self.assertEqual(len(writer.writes), 0 if state == 10 else 1)
+                if state != 10:
+                    # One physical host byte, not a read/modify/write
+                    # of the surrounding word in word-swapped memory.
+                    self.assertEqual(writer.writes[0], (0xCD287, b'\x0a'))
+                self.assertEqual(writer.rdram().read_guest(JAPAN_DEBUG_SCENE, 2),
+                                 original_scene)
+                self.assertEqual(writer.rdram().read_guest(
+                    JAPAN_DEBUG_CHARACTER, 4), (99).to_bytes(4, 'big'))
+                self.assertEqual(writer.rdram().read_guest(
+                    JAPAN_DEBUG_LOADING, 4), (1).to_bytes(4, 'big'))
+                self.assertIn('no RAM write' if state == 10 else 'only',
+                              s.status.value)
+                self.assertEqual(writer.close_count, 1)
+
+    def test_auto_backend_is_valid_for_an_already_verified_connection(self):
+        writer = Writer()
+        s = screen(writer, state=12)
+        s.connection_target = SimpleNamespace(get=lambda: 'auto')
+        click_menu(s, writer)
+        self.assertEqual(len(writer.writes), 1)
+
+    def test_process_identity_mismatch_rejects_without_write(self):
+        writer = Writer()
+        s = screen(writer, state=12)
+        with patch('practice.toolkit.sys.platform', 'win32'), \
+             patch('practice.toolkit.verified_emulator_pid',
+                   return_value=(123, 'project64')), \
              patch('practice.toolkit.HostProcess') as handle:
             Toolkit.open_japan_debug_for_selected_scene(s)
         handle.assert_not_called()
-        self.assertIn('cancelled', s.jp_debug_result.value)
+        self.assertEqual(writer.writes, [])
 
-    def test_verified_project64_writes_only_native_engine_mode(self):
+    def test_native_recomp_does_not_require_initialized_gameplay_character(self):
         writer = Writer()
-        s = screen(writer)
-        writable = writer.rdram()
-        with patch('practice.toolkit.sys.platform', 'win32'), \
-             patch('practice.toolkit.messagebox.askyesno', return_value=True), \
-             patch('practice.toolkit.verified_emulator_pid',
-                   return_value=(959604, 'project64')), \
+        s = screen(writer, backend='recomp', state=13)
+        writer.set_guest(JAPAN_DEBUG_CHARACTER, (0xFFFFFFFF).to_bytes(4, 'big'))
+        writer.writes.clear()
+        with patch('practice.toolkit.verified_japan_recomp_pid',
+                   return_value=(959604, 'recomp')) as pid, \
              patch('practice.toolkit.verified_japan_probes',
                    return_value=('verified',)), \
-             patch('practice.toolkit.HostProcess', return_value=writer) as handle, \
+             patch('practice.toolkit.HostProcess', return_value=writer), \
              patch('practice.toolkit.validate_rdram_base',
-                   return_value=writable) as validate:
+                   return_value=writer.rdram()) as validate, \
+             patch('practice.toolkit.validate_japan_recomp_writer') as strict:
             Toolkit.open_japan_debug_for_selected_scene(s)
-        handle.assert_called_once_with(959604, writable=True)
-        self.assertTrue(validate.call_args.kwargs['allow_4mb'])
-        self.assertEqual(writer.close_count, 1)
-        self.assertEqual(writable.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0a')
-        self.assertEqual(writable.read_guest(JAPAN_DEBUG_SCENE, 2),
-                         bytes.fromhex('0161'))
+        pid.assert_called_once_with(959604)
+        self.assertFalse(validate.call_args.kwargs['allow_4mb'])
+        strict.assert_not_called()
+        self.assertEqual(writer.rdram().read_guest(
+            JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0a')
         self.assertEqual(len(writer.writes), 1)
-        self.assertEqual(len(writer.writes[0][1]), 4)
-        self.assertIn('menu', s.status.value.lower())
-        self.assertIn('MACHI / index 3', s.status.value)
-
-    def test_pid_mismatch_and_unstable_game_refuse(self):
-        for unstable in (False, True):
-            writer = Writer()
-            s = screen(writer, state=10 if unstable else 13)
-            with patch('practice.toolkit.sys.platform', 'win32'), \
-                 patch('practice.toolkit.messagebox.askyesno',
-                       return_value=True), \
-                 patch('practice.toolkit.verified_emulator_pid',
-                       return_value=(123, 'project64')), \
-                 patch('practice.toolkit.HostProcess') as handle:
-                Toolkit.open_japan_debug_for_selected_scene(s)
-            handle.assert_not_called()
-            self.assertEqual(writer.writes, [])
 
 
 if __name__ == '__main__':

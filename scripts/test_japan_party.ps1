@@ -48,6 +48,9 @@ $backendTests = @(
     'tests.test_japan_party_controller',
     'tests.test_japanese_mupen_attach',
     'tests.test_japan_native_recomp',
+    'tests.test_japan_auto_attach',
+    'tests.test_japan_pid_restart_watch',
+    'tests.test_gui_smoke_runner',
     'tests.test_toolkit_version',
     'tests.test_linux_launcher',
     'tests.test_launcher_preferences',
@@ -73,6 +76,7 @@ $backendTests = @(
     'tests.test_known_entrances',
     'tests.test_repository_entrance_atlas',
     'tests.test_japan_native_scene_controller',
+    'tests.test_japan_scene_readiness',
     'tests.test_japan_state_comparison',
     'tests.test_japan_player_position_research',
     'tests.test_value_search',
@@ -121,7 +125,7 @@ try {
     }
 
     Write-Host 'Running native Windows Tk GUI tests (desktop session required)...'
-    Invoke-PythonTest -Arguments (@('-m', 'unittest') + $guiTests + @('-v'))
+    Invoke-PythonTest -Arguments (@('-m', 'tests.gui_smoke_runner') + $guiTests)
 
     Write-Host 'Japanese/USA parity regression suite passed.'
 } finally {

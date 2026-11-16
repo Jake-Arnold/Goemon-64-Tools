@@ -29,10 +29,12 @@ class DashboardSmokeTests(unittest.TestCase):
         region_store.start()
         self.addCleanup(region_store.stop)
         opts = dict(pid=None, base=None, endian='auto', route=None,
+                    game_version='usa',
                     enable_teleport=True, enable_state_restore=True,
                     enable_debug_menu=True, enable_hex_edit=True,
                     enable_scene_warp=False)
         self.toolkit = Toolkit(self.root, Namespace(**opts))
+        self.assertEqual(self.toolkit.active_version.key, 'usa')
 
     def tearDown(self):
         # A shutdown regression test deliberately destroys Tk before cleanup.
@@ -169,7 +171,9 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertNotEqual(app.entrance_box.winfo_manager(), '')
         self.assertIn('Load original USA ROM', app.entrance_load_button.cget('text'))
         self.assertIn('JAPAN:', app.scene_instruction.cget('text'))
-        self.assertIn('disabled', app.raw_write_btn.state())
+        # Japanese raw memory editing is available in the UI; real writes
+        # still require independently verified ROM/PID/RDRAM and permissions.
+        self.assertNotIn('disabled', app.raw_write_btn.state())
         self.assertNotIn('disabled', app.freeze_raw_button.state())
         self.assertEqual(app.usa_unlock_shell.winfo_manager(), 'pack')
         self.assertEqual(
@@ -188,12 +192,14 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertIn('Japan-0', app.event_region_note.get())
         self.assertEqual(app.event_region_start.get(), '0x80161D80')
         self.assertEqual(app.notebook.tab(app.jp_fields_tab, 'state'), 'normal')
-        # Explicitly invalid target must never fall into USA memory discovery.
+        # Auto PID/backend discovery is now the default for Japan. The
+        # verified Japanese ROM remains mandatory before probing any process
+        # and the USA RAM path must never be selected by Japan's Connect.
         app.connection_target.set('auto')
         app.connect()
         self.assertIsNone(app.mem)
         self.assertIsNone(app.jp_rdram)
-        self.assertIn('requires an explicit target', app.status.get())
+        self.assertIn('Verify the exact Japan-0 ROM', app.status.get())
         app.connection_target.set('mupen64plus')
         app.connect()
         self.assertIn('Verify the exact Japan-0 ROM', app.status.get())

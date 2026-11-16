@@ -80,18 +80,56 @@ def stage_japan_native_destination(rdram, destination: int):
     return selection
 
 
-def is_japan_scene_loaded(rdram, destination: int):
-    """Require actual stable gameplay, not menu-highlight changing the map."""
-    if rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0] != JAPAN_ORDINARY_ENGINE_MODE:
-        return False
-    if int.from_bytes(rdram.read_guest(JAPAN_DEBUG_SCENE, 2), 'big') != destination:
-        return False
-    if int.from_bytes(rdram.read_guest(JAPAN_DEBUG_LOADING, 4), 'big') != 0:
-        return False
+@dataclass(frozen=True)
+class JapanSceneReadiness:
+    """Scene transition complete is NOT the same as actor playable."""
+
+    scene_loaded: bool
+    character: int | None
+    goemon_position_plausible: bool
+    note: str
+
+
+def japan_scene_readiness(rdram, destination: int) -> JapanSceneReadiness:
+    """Read-only, region-specific scene and character initialization evidence.
+
+    Every character ID 0..3 is distinguished. The exact Japan-0 actor/task
+    pointers have not yet been verified, so this routine NEVER claims that
+    a playable actor exists on the basis of a scene ID alone. For Goemon a
+    plausible live XYZ provides an additional check; for other characters
+    the Goemon-only XYZ address is not read.
+    """
+    def not_ready(reason, character=None):
+        return JapanSceneReadiness(False, character, False, reason)
+    state = rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
+    if state != JAPAN_ORDINARY_ENGINE_MODE:
+        return not_ready(f'engine mode 0x{state:02X}; still transitioning')
+    scene = int.from_bytes(rdram.read_guest(JAPAN_DEBUG_SCENE, 2), 'big')
+    if scene != destination:
+        return not_ready(f'current scene 0x{scene:03X}, target 0x{destination:03X}')
+    loading = int.from_bytes(rdram.read_guest(JAPAN_DEBUG_LOADING, 4), 'big')
+    if loading != 0:
+        return not_ready('game loading has not completed')
     if rdram.read_guest(JAPAN_DEBUG_EXIT, 1)[0] != 0:
-        return False
+        return not_ready('scene-exit transition still pending')
     char = int.from_bytes(rdram.read_guest(JAPAN_DEBUG_CHARACTER, 4), 'big')
-    if char not in (0, 1, 2, 3):
-        return False
-    xyz = read_japan_position(rdram)
-    return all(isfinite(value) and abs(value) < 100000 for value in xyz)
+    if char not in range(4):
+        return not_ready(f'player character field is not initialized: {char}')
+    if char == 0:
+        try:
+            xyz = read_japan_position(rdram)
+        except (OSError, ValueError, RuntimeError):
+            return not_ready('Goemon XYZ field not initialized', char)
+        if not all(isfinite(value) and abs(value) < 100000 for value in xyz):
+            return not_ready('Goemon XYZ values are implausible', char)
+        return JapanSceneReadiness(
+            True, 0, True,
+            'scene and Goemon XYZ plausible; actor/task pointer not verified')
+    return JapanSceneReadiness(
+        True, char, False,
+        'scene and character ID stable; non-Goemon actor/task not verified')
+
+
+def is_japan_scene_loaded(rdram, destination: int):
+    """Compatibility predicate: scene-ready, not proof of spawned actor."""
+    return japan_scene_readiness(rdram, destination).scene_loaded

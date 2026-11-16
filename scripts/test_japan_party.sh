@@ -5,6 +5,24 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 PYTHON="${PYTHON:-python3}"
 
+# Tk tests switch between Japan and USA. Prevent test run preferences
+# (especially on_game_version_changed -> save_last_region) from modifying
+# a real user's region/connection settings or affecting a later run.
+TEST_CONFIG_HOME="$(mktemp -d "${TMPDIR:-/tmp}/goemon-ui-tests.XXXXXXXX")"
+trap 'rm -rf -- "$TEST_CONFIG_HOME"' EXIT
+export XDG_CONFIG_HOME="$TEST_CONFIG_HOME"
+
+# Hidden modal confirmations in Xvfb can otherwise block indefinitely.
+# This bounding applies only to the GUI smoke phase, not full ROM scans.
+if ! command -v timeout >/dev/null 2>&1; then
+  echo 'ERROR: GNU coreutils timeout is required to guard GUI smoke tests' >&2
+  exit 2
+fi
+GUI_TIMEOUT_SECONDS="${GOEMON_GUI_TEST_TIMEOUT_SECONDS:-120}"
+case "$GUI_TIMEOUT_SECONDS" in
+  ''|*[!0-9]*) echo 'ERROR: GOEMON_GUI_TEST_TIMEOUT_SECONDS must be an integer' >&2; exit 2 ;;
+esac
+
 # Fail immediately with a clear syntax report for any practice module,
 # including GUI files that might otherwise be imported late in test discovery.
 "${PYTHON}" -m compileall -q practice
@@ -21,6 +39,9 @@ PYTHON="${PYTHON:-python3}"
   tests.test_japan_party_controller \
   tests.test_japanese_mupen_attach \
   tests.test_japan_native_recomp \
+  tests.test_japan_auto_attach \
+  tests.test_japan_pid_restart_watch \
+  tests.test_gui_smoke_runner \
   tests.test_toolkit_version \
   tests.test_linux_launcher \
   tests.test_launcher_preferences \
@@ -46,6 +67,7 @@ PYTHON="${PYTHON:-python3}"
   tests.test_known_entrances \
   tests.test_repository_entrance_atlas \
   tests.test_japan_native_scene_controller \
+  tests.test_japan_scene_readiness \
   tests.test_japan_state_comparison \
   tests.test_japan_player_position_research \
   tests.test_value_search \
@@ -64,7 +86,7 @@ if [[ -n "${GOEMON_USA_DECOMPRESSED:-}" && -n "${GOEMON_JAPAN_DECOMPRESSED:-}" ]
 fi
 
 if command -v xvfb-run >/dev/null 2>&1; then
-  xvfb-run -a "${PYTHON}" -m unittest \
+  xvfb-run -a timeout --signal=TERM --kill-after=5s "${GUI_TIMEOUT_SECONDS}s" "${PYTHON}" -m tests.gui_smoke_runner \
     tests.test_japanese_fields_ui \
     tests.test_japanese_scene_probe_ui \
     tests.test_japanese_party_controls_ui \
@@ -86,7 +108,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_japan_recomp_write_ui \
     -v
 elif [[ -n "${DISPLAY:-}" ]]; then
-  "${PYTHON}" -m unittest \
+  timeout --signal=TERM --kill-after=5s "${GUI_TIMEOUT_SECONDS}s" "${PYTHON}" -m tests.gui_smoke_runner \
     tests.test_japanese_fields_ui \
     tests.test_japanese_scene_probe_ui \
     tests.test_japanese_party_controls_ui \

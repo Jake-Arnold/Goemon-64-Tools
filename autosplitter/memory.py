@@ -106,8 +106,8 @@ else:
 
 class Rdram:
     def __init__(self, process, host_base: int, endian: str = "wordswapped"):
-        if endian not in ("wordswapped", "big"):
-            raise ValueError("endian must be wordswapped or big")
+        if endian not in ("wordswapped", "byteswapped", "big"):
+            raise ValueError("endian must be wordswapped, byteswapped or big")
         self.process, self.base, self.endian = process, host_base, endian
 
     @staticmethod
@@ -123,17 +123,19 @@ class Rdram:
     def u32(self, address: int) -> int:
         offset = self.offset(address, 4)
         raw = self.process.read(self.base + offset, 4)
-        return int.from_bytes(raw, "little" if self.endian == "wordswapped" else "big")
+        return int.from_bytes(self.read_guest(address, 4), "big")
 
     def u8(self, address: int) -> int:
         offset = self.offset(address)
-        if self.endian == "wordswapped": offset ^= 3
+        if self.endian == "wordswapped":
+            offset ^= 3
+        elif self.endian == "byteswapped":
+            offset ^= 1
         return self.process.read(self.base + offset, 1)[0]
 
     def f32(self, address: int) -> float:
         offset = self.offset(address, 4)
-        raw = self.process.read(self.base + offset, 4)
-        return struct.unpack("<f" if self.endian == "wordswapped" else ">f", raw)[0]
+        return struct.unpack(">f", self.read_guest(address, 4))[0]
 
 
     def read_guest(self, address: int, length: int) -> bytes:
@@ -152,10 +154,29 @@ class Rdram:
             raise ValueError('Guest read exceeds verified emulator RDRAM size')
         if self.endian == "big":
             return self.process.read(self.base + off, length)
-        start, end = off & ~3, (off + length + 3) & ~3
+        unit = 4 if self.endian == "wordswapped" else 2
+        start, end = off & ~(unit - 1), (off + length + unit - 1) & ~(unit - 1)
         raw = self.process.read(self.base + start, end - start)
-        guest = b"".join(raw[i:i+4][::-1] for i in range(0, len(raw), 4))
+        guest = b"".join(raw[i:i+unit][::-1]
+                         for i in range(0, len(raw), unit))
         return guest[off-start:off-start+length]
+
+    def write_guest_byte_exact(self, address: int, value: int):
+        """Write exactly one host byte for one guest byte.
+
+        Critical for original debug-menu mode changes: a general
+        read/modify/write of the surrounding 2/4-byte swapped unit could
+        overwrite an adjacent live variable if the game updated it between
+        our read and write. Never touch neighboring host bytes here.
+        """
+        if type(value) is not int or not 0 <= value <= 0xFF:
+            raise ValueError('Guest byte must be an integer 0..255')
+        off = self.offset(address, 1)
+        if off >= getattr(self, 'rdram_size', RDRAM_SIZE):
+            raise ValueError('Guest byte outside verified emulator RDRAM size')
+        host = (off ^ 3 if self.endian == "wordswapped" else
+                off ^ 1 if self.endian == "byteswapped" else off)
+        self.process.write(self.base + host, bytes((value,)))
 
     def write_guest(self, address: int, data: bytes):
         """Write guest bytes, preserving neighboring bytes in partial words."""
@@ -167,11 +188,14 @@ class Rdram:
         if self.endian == "big":
             self.process.write(self.base + off, data)
             return
-        start, end = off & ~3, (off + len(data) + 3) & ~3
+        unit = 4 if self.endian == "wordswapped" else 2
+        start, end = off & ~(unit - 1), (off + len(data) + unit - 1) & ~(unit - 1)
         raw = self.process.read(self.base + start, end - start)
-        guest = bytearray(b"".join(raw[i:i+4][::-1] for i in range(0, len(raw), 4)))
+        guest = bytearray(b"".join(
+            raw[i:i+unit][::-1] for i in range(0, len(raw), unit)))
         guest[off-start:off-start+len(data)] = data
-        changed = b"".join(guest[i:i+4][::-1] for i in range(0, len(guest), 4))
+        changed = b"".join(
+            guest[i:i+unit][::-1] for i in range(0, len(guest), unit))
         self.process.write(self.base + start, changed)
 
     def u16(self, address: int) -> int:
@@ -180,8 +204,7 @@ class Rdram:
     def write_f32(self, address: int, value: float):
         if not math.isfinite(value):
             raise ValueError("Non-finite position")
-        raw = struct.pack("<f" if self.endian == "wordswapped" else ">f", value)
-        self.process.write(self.base + self.offset(address, 4), raw)
+        self.write_guest(address, struct.pack(">f", value))
 
     @classmethod
     def is_ram_pointer(cls, value: int, size: int = 1) -> bool:

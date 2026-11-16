@@ -33,7 +33,7 @@ class JapaneseDebugMenuCoreTests(unittest.TestCase):
                 debug_menu_selection_hint(bad)
 
     def test_single_native_debug_state_write_both_endians(self):
-        for endian in ('big', 'wordswapped'):
+        for endian in ('big', 'wordswapped', 'byteswapped'):
             with self.subTest(endian=endian):
                 p = debugger(endian)
                 before = get_japan_debug_context(p.rdram())
@@ -49,35 +49,52 @@ class JapaneseDebugMenuCoreTests(unittest.TestCase):
                 self.assertEqual(p.rdram().read_guest(JAPAN_DEBUG_SCENE, 2),
                                  bytes.fromhex('0161'))
                 self.assertEqual(len(p.writes), 1)
-                self.assertEqual(len(p.writes[0][1]), 1 if endian == 'big' else 4)
+                self.assertEqual(p.writes[0][1], b'\x0a')
                 self.assertEqual(
                     p.writes[0][0],
-                    0xCD284 if endian == 'big' else (0xCD284 & ~3))
+                    0xCD284 ^ (3 if endian == 'wordswapped' else
+                               1 if endian == 'byteswapped' else 0))
                 self.assertEqual(
                     result.suggested_destination, 0x161)
 
-    def test_reject_non_gameplay_and_changed_context_with_no_write(self):
+    def test_any_engine_loading_character_and_scene_can_open_debug(self):
         cases = [
-            dict(state=10), dict(state=12), dict(scene=0),
-            dict(character=4), dict(loading=1), dict(submode=4),
-            dict(exit_flag=1),
+            dict(state=0), dict(state=10), dict(state=12), dict(state=13),
+            dict(state=255), dict(scene=0), dict(character=99),
+            dict(loading=1), dict(submode=6), dict(exit_flag=1),
         ]
         for case in cases:
             with self.subTest(case=case):
                 p = debugger(**case)
-                with self.assertRaisesRegex(RuntimeError, 'refused'):
-                    enter_japan_native_debug_menu(
-                        p.rdram(), 0x161,
-                        expected_context=get_japan_debug_context(p.rdram()))
+                before = p.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
+                p.writes.clear()
+                outcome = enter_japan_native_debug_menu(p.rdram())
+                self.assertEqual(outcome.changed, before != 10)
+                self.assertEqual(len(p.writes), 0 if before == 10 else 1)
+                self.assertEqual(
+                    p.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0a')
+                self.assertEqual(
+                    p.rdram().read_guest(JAPAN_DEBUG_SCENE, 2),
+                    case.get('scene', 0x161).to_bytes(2, 'big'))
+
+    def test_already_in_debug_mode_does_not_write_again(self):
+        for endian in ('big', 'wordswapped', 'byteswapped'):
+            with self.subTest(endian=endian):
+                p = debugger(endian, state=10)
+                out = enter_japan_native_debug_menu(p.rdram())
+                self.assertFalse(out.changed)
+                self.assertEqual(out.before_state, 10)
                 self.assertEqual(p.writes, [])
 
-        p = debugger()
-        before = get_japan_debug_context(p.rdram())
+    def test_context_hint_is_not_a_gameplay_precondition(self):
+        p = debugger(state=12)
+        old = get_japan_debug_context(p.rdram())
         p.set_guest(JAPAN_DEBUG_SCENE, (0x162).to_bytes(2, 'big'))
-        with self.assertRaisesRegex(RuntimeError, 'changed'):
-            enter_japan_native_debug_menu(
-                p.rdram(), 0x161, expected_context=before)
-        self.assertEqual(p.writes, [])
+        outcome = enter_japan_native_debug_menu(
+            p.rdram(), 0x161, expected_context=old)
+        self.assertTrue(outcome.changed)
+        self.assertEqual(outcome.source_scene, 0x162)
+        self.assertEqual(len(p.writes), 1)
 
     def test_all_four_characters_can_enter_native_reload_gameplay(self):
         for character in range(4):

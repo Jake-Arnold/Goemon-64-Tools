@@ -22,7 +22,7 @@ class JapaneseDebugMenuTkTests(JapanTkSmokeTest):
         self.assertFalse(hasattr(host, 'jp_debug_scene_selector'))
         self.assertFalse(hasattr(host, 'jp_warp_a_key'))
 
-    def test_optin_requires_connection_pid_backend_and_rom(self):
+    def test_debug_button_requires_verified_connection_not_gameplay_or_optin(self):
         host = self.host
         host.args = SimpleNamespace(
             enable_japan_debug_menu_writes=True, read_only=False,
@@ -35,6 +35,8 @@ class JapaneseDebugMenuTkTests(JapanTkSmokeTest):
         host.refresh_japan_debug_controls()
         self.assertIn('disabled', host.jp_debug_menu_button.state())
         host.verified_rom_path = 'verified-japan-rom.n64'
+        host.args.enable_japan_debug_menu_writes = False
+        host.connection_target = SimpleNamespace(get=lambda: 'auto')
         host.refresh_japan_debug_controls()
         self.assertNotIn('disabled', host.jp_debug_menu_button.state())
         host.args.read_only = True
