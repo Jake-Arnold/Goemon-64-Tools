@@ -86,7 +86,7 @@ class ValueFreezesMixin:
         if self.active_version.key == 'japan':
             connected = (
                 self.jp_rdram is not None and self.game_pid is not None
-                and self.jp_backend in ('project64', 'mupen64plus')
+                and self.jp_backend in ('project64', 'mupen64plus', 'recomp')
                 and not self._connecting
                 and not getattr(self.args, 'read_only', False)
                 and getattr(self.args, 'enable_hex_edit', True))
@@ -115,7 +115,7 @@ class ValueFreezesMixin:
             if not raw:
                 raise PermissionError('USA health, God Mode and task freezes are not Japan-0 compatible')
             if (self.jp_rdram is None or self.game_pid is None or self._connecting
-                    or self.jp_backend not in ('project64', 'mupen64plus')
+                    or self.jp_backend not in ('project64', 'mupen64plus', 'recomp')
                     or self.connection_target.get() != self.jp_backend):
                 raise RuntimeError('Connect to Japanese RAM before freezing')
             if (getattr(self.args, 'read_only', False)
