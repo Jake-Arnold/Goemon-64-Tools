@@ -123,6 +123,19 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
                          app.state_report['counts']['candidate_count'])
         self.assertTrue((manifests[0].parent/'session.json').is_file())
         self.assertIn('Saved XYZ report', app.state_probe_status.get())
+        self.assertNotEqual(
+            app.state_xyz_full_export_button.winfo_manager(), '')
+        with patch('practice.state_discovery_ui.diagnostics_dir',
+                   return_value=Path(self.temp.name)):
+            app.state_xyz_full_export_button.invoke()
+            self._finish_capture()
+        full = list(Path(self.temp.name).glob('japan_state_probe_*.json'))
+        self.assertEqual(len(full), 1)
+        full_data = json.loads(full[0].read_text(encoding='utf-8'))
+        self.assertEqual(full_data['export_policy'], 'all_matched_candidates')
+        self.assertEqual(full_data['counts']['exported_candidates'],
+                         app.state_report['counts']['candidate_count'])
+        self.assertIn('Exported ALL', app.state_probe_status.get())
         iid = next(i for i in app.state_probe_table.get_children()
                    if app.state_probe_table.item(i, 'values')[0]
                    == f'0x{XYZ_ADDR:08X}')
