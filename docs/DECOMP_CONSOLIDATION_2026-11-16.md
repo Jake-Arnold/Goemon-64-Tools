@@ -70,3 +70,14 @@ adding function counts. Never merge a research-only proof into the official func
 - Original rebuilt USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, original ELF SHA-256 `83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038`, file_11 ASM source SHA-256 `e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b` — all matching pinned source-provenance identities.
 - Imported exact immutable files from `chatgptweb/file11-expansion-20261116` @ `60a5d55f5453d2e4241597e2ee9365bec2b127a8` for the 143-function / 44-group + 44 ASM-slice research proof (50 existing plus 93 unpromoted candidates). Its clean-upstream full-ROM research result is **not** the combined production G2.
 - Added 5 ROM-free test cases to the standard `decomp/test_*.py` entrypoint; not executed locally against a full private toolkit checkout. The production USA manifest, proof and inventory remain untouched.
+
+
+## 2026-11-16: alternate-USA 54-function source reconstruction
+
+### 2026-11-16 — USA research overlap reconstruction: 50 shared, four distinct (provisional)
+
+- Reconstructed the alternate USA file_11 **54-candidate** set from its reported waves: 2 original callbacks, 6 actor helper functions, 15 original-VMA empty callbacks, 16 actor wrappers, 12 additional short state/scene helpers, and 3 final adjacent matches. All 54 reconstructed ROM offsets are disjoint within that set.
+- Compared against the previously pinned **207** original-VMA native-matching USA research offsets (77 + 68 + 44 + 10 + 5 + 3). **50 overlap and four distinct offsets remain:** `0x5B4DEC` (48 bytes), `0x5B64B8` (44), `0x5B71B4` (44), `0x5B7180` (52). The other branch's 16 Wave-101 actor wrappers are documented only by inclusive range; the 207-pool has exactly 16 candidates inside that range, so membership is *inferred*, not independently certified from the original 16-function source archive.
+- **Provisional union:** **211 unpromoted research candidates / 7,632 instruction bytes**, not 207+54. All 211 would require current production whole-ROM G2, semantic relocations, original linked symbol extents and inventory before counting; current USA production remains **210 C / 13,336 bytes**.
+- Added a machine-readable six-wave identity ledger `decomp/results/file11_crossbranch_overlap_v2_20261116.json` and five ROM-free regression tests `decomp/test_file11_crossbranch_dedup.py` (committed but not executed in the full private checkout). No source branches or production manifest changed.
+

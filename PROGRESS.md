@@ -8,6 +8,13 @@
 
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — USA research overlap reconstruction: 50 shared, four distinct (provisional)
+
+- Reconstructed the alternate USA file_11 **54-candidate** set from its reported waves: 2 original callbacks, 6 actor helper functions, 15 original-VMA empty callbacks, 16 actor wrappers, 12 additional short state/scene helpers, and 3 final adjacent matches. All 54 reconstructed ROM offsets are disjoint within that set.
+- Compared against the previously pinned **207** original-VMA native-matching USA research offsets (77 + 68 + 44 + 10 + 5 + 3). **50 overlap and four distinct offsets remain:** `0x5B4DEC` (48 bytes), `0x5B64B8` (44), `0x5B71B4` (44), `0x5B7180` (52). The other branch's 16 Wave-101 actor wrappers are documented only by inclusive range; the 207-pool has exactly 16 candidates inside that range, so membership is *inferred*, not independently certified from the original 16-function source archive.
+- **Provisional union:** **211 unpromoted research candidates / 7,632 instruction bytes**, not 207+54. All 211 would require current production whole-ROM G2, semantic relocations, original linked symbol extents and inventory before counting; current USA production remains **210 C / 13,336 bytes**.
+- Added a machine-readable six-wave identity ledger `decomp/results/file11_crossbranch_overlap_v2_20261116.json` and five ROM-free regression tests `decomp/test_file11_crossbranch_dedup.py` (committed but not executed in the full private checkout). No source branches or production manifest changed.
+
 ### 2026-11-16 — Stage new 143-function USA file_11 proof and reproduce pristine USA baseline
 
 - **New research checkpoint:** Source branch `chatgptweb/file11-expansion-20261116` advanced to `60a5d55f5453d2e4241597e2ee9365bec2b127a8`, adding a `file11_143_candidate` source fixture, full clean-upstream replay script, proof, tests, and report. Snapshotted these five exact Git blobs into draft PR #26. The set comprises 50 already formally promoted file_11 functions plus 93 additional functions (2,844 bytes); the 93 belong to the existing pool of 207 research matches. The scratch 143-function/3,908-byte USA ROM was reportedly exact and all 8,825 file_11 relocation tuples matched, but its independent replay is not a 210+93 project-wide G2.
