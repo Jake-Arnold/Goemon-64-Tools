@@ -385,7 +385,7 @@ class InspectorMixin(EntranceMixin):
             watch.addr is not None
             and not getattr(self.args, 'read_only', False)
             and (self.jp_rdram is not None
-                 and self.jp_backend in ('project64', 'mupen64plus')
+                 and self.jp_backend in ('project64', 'mupen64plus', 'recomp')
                  and self.connection_target.get() == self.jp_backend
                  if self.active_version.key == 'japan'
                  else self.mem is not None))
@@ -475,14 +475,11 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Rename failed: {exc}')
 
     def write_raw_hex(self):
-        """Write explicitly entered guest bytes on a writable USA connection."""
-        if self.active_version.key == 'japan':
-            self.inspector_status.set(
-                'Japanese raw writes require a verified region-specific control; '
-                'generic USA raw editor is disabled.')
-            return
-        if not self.mem:
-            self.inspector_status.set('Connect to the game first.')
+        """Write explicitly entered guest bytes using the active regional backend."""
+        japan = self.active_version.key == 'japan'
+        ram = self.jp_rdram if japan else self.mem
+        if ram is None:
+            self.inspector_status.set('Connect to the game before writing.')
             return
         if getattr(self.args,'read_only',False) or not getattr(self.args,'enable_hex_edit',False):
             self.inspector_status.set('Memory writes are disabled in read-only mode.')
@@ -491,8 +488,12 @@ class InspectorMixin(EntranceMixin):
             addr=int(self.raw_address.get().strip(),16)
             width=int(self.raw_width.get())
             new=parse_hex(self.raw_value.get(),width)
-            before=self.mem.read_guest(addr,width)
-            changed=checked_write(self.mem,addr,before,new,allow_advanced=True,raw_override=True)
+            before=ram.read_guest(addr,width)
+            if japan:
+                # Use the Japanese PID/ROM-validated writer, never USA policies.
+                changed=self.write_japan_raw_bytes(addr,new,expected=before)
+            else:
+                changed=checked_write(self.mem,addr,before,new,allow_advanced=True,raw_override=True)
             self.append_event(f'RAW USER WRITE 0x{addr:08X}: 0x{before.hex().upper()} -> 0x{new.hex().upper()}')
             self.inspector_status.set(f'Raw write verified at 0x{addr:08X}: 0x{new.hex().upper()}'+('' if changed else ' (unchanged)'))
             self.last_inspect_at=0.0
