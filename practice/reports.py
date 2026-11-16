@@ -149,18 +149,18 @@ def create_value_search_report(*, region, title, rows, total_count,
         notes += ["", "**Coverage warning:** Only the displayed candidate"
                   " rows are exported. Narrow the search for a complete list."]
     notes += ["", "## Candidate preview", "",
-              "| Address | Type | Value | Raw hex |",
-              "| --- | --- | --- | --- |"]
+              "| Address | Type | Initial | Previous | Value | Raw hex |",
+              "| --- | --- | --- | --- | --- | --- |"]
     for row in rows[:50]:
         columns = [str(row.get(key, "")).replace("|", r"\|").replace("\n", " ")
-                   for key in ("address", "kind", "value", "hex")]
+                   for key in ("address", "kind", "initial", "previous", "value", "hex")]
         notes.append("| " + " | ".join(columns) + " |")
     if len(rows) > 50:
         notes += ["", "Additional exported rows are in candidates.csv."]
     with (folder / "candidates.csv").open("w", encoding="utf-8",
                                            newline="") as output:
         writer = csv.DictWriter(
-            output, fieldnames=("address", "kind", "value", "hex"),
+            output, fieldnames=("address", "kind", "initial", "previous", "value", "hex"),
             extrasaction="ignore")
         writer.writeheader()
         for row in rows:
