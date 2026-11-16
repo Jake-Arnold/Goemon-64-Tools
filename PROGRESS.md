@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Four additional original-USA/JP exact C matches in file_12 and file_14 (research only)
+
+- Changed: appended exact independently matched original C code for `func_80219E40_5D5310` (48 B, add scalar to XYZ), `func_80219E08_5D52D8` (56 B, scale XYZ), `func_801D2138_640F88` (32 B, add actor to indexed table), `func_801D84E8_647338` (32 B, similar alternate table). Checked in isolated sources/proof metadata under `decomp/research/jp_recomp_to_c/`; updated full mapping doc. These four are distinct from current canonical 315 C.
+- Tested: fresh strict original-USA/Japan ROM-SHA-1, original IDO 5.3 symbol extent, source SHA-256, zero-relocation and exact original instruction comparison PASS for **40/40 functions / 1,912 bytes** in each region. Seven synthetic cross-region scan tests PASS. C archive contains 40 source files. New candidate subset is **37 original C functions / 1,784 bytes**, three already promoted USA duplicates.
+- Limitations: no combined native original-ROM G2, overlay linker relocation proof, full production ELF inventory or full local CI on this research branch; the canonical 315-C count and all historical proof artifacts are unchanged. Japanese Impact memory observations remain read-only and do not prove the BSS controller-pointer slot.
+- Next: integrate isolated original-address C in a reviewed mixed C/ASM overlay unit preserving every original symbol/relocation; run complete USA G2, 7,376-entry inventory, full local CI, then promote only verified results. Continue original-symbol normalized matching beyond the 303 byte-identical pool.
+
+
 ### 2026-11-16 — Cross-region JP/USA C matching continues to 36 isolated functions (research only)
 
 - Changed: added seven original-ID0 exact C reconstructions, mapped to independently byte-identical Japanese function ROM spans: six new research-only `file_18/file_19` functions (244 bytes) and one existing promoted main-code bit-array predicate `func_800166AC_172AC` (52 bytes). Total isolated original-ROM verification is **36 functions / 1,744 instruction bytes per region**, with **33 new USA candidates / 1,616 bytes** and three existing C duplicates. Documented original JP Impact value-search archive `0x802F7060/7064/7068` and corrected the 'Impact HP' export label vs. established oil offset.

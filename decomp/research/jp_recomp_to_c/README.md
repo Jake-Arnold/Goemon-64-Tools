@@ -1,8 +1,8 @@
 # New isolated JP ↔ USA exact C functions — 2026-11-16
 
-These seven reconstruction sources are **research-only** original-ID0 matching-C proofs. Each has an independent exact code match in USA and Japanese decompressed retail ROMs; individual linked overlay relocations/full-ROM G2 have not been retested.
+These eleven reconstruction sources are **research-only** original-ID0 matching-C proofs. Each has an independent exact code match in USA and Japanese decompressed retail ROMs; individual linked overlay relocations/full-ROM G2 have not been retested.
 
-**Count:** 7 exact functions, 296 bytes per region. Six new USA candidates, 244 bytes; `func_800166AC_172AC` is already formally promoted, and must never be added a second time.
+**Count:** 11 exact functions, 464 bytes per region. Ten new USA candidates, 412 bytes; `func_800166AC_172AC` is already formally promoted, and must never be added a second time.
 
 Source SHA-256 and original regional address pairs are in the complete 36-function `manifest.json` distributed in the local reproducible source bundle, alongside `verify_candidates.py`, `scan_cross_region_exact.py`, 303-code-lead discovery report and seven unit tests.
 
