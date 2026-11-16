@@ -31,6 +31,7 @@ from practice.native_checkpoints import (
     make_named_checkpoint, upsert_named_checkpoint, label_named_checkpoint,
     japan_checkpoint_summary,
 )
+from practice.reports_ui import ReportsMixin
 from practice.value_freezes_ui import ValueFreezesMixin
 from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
@@ -138,7 +139,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -422,13 +423,21 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._arrange_dashboard(1220)
         self.build_inspector_tabs(notebook)
         self.build_value_freezes_tab(notebook)
-        self.build_value_search_tab(notebook)
-        self.build_damage_event_capture_tab(notebook)
-        self.build_event_sessions_tab(notebook)
+        # Shared research workspace: preserve all scanners and event algorithms
+        # while consolidating their formerly scattered top-level navigation.
+        discovery = ttk.Frame(notebook, padding=7)
+        notebook.add(discovery, text='Memory discovery')
+        self.discovery_tab = discovery
+        self.discovery_tabs = ttk.Notebook(discovery)
+        self.discovery_tabs.pack(fill='both', expand=True)
+        self.build_value_search_tab(self.discovery_tabs)
+        self.build_damage_event_capture_tab(self.discovery_tabs)
+        self.build_event_sessions_tab(self.discovery_tabs)
         self.build_state_discovery_tab(self.event_sections)
         self.build_unlock_tabs(notebook)
         self.build_story_progress_tab(notebook)
         self.build_japanese_fields_tab(notebook)
+        self.build_reports_tab(notebook)
         self._apply_game_version_ui()
         if self.verified_rom_path is not None:
             self.status.set(
