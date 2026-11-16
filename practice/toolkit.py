@@ -2134,8 +2134,8 @@ def parse_args(argv=None):
 
 def main(argv=None):
     args=parse_args(argv)
-    # A stable WM_CLASS associates the running Tk window with the Ubuntu dock icon.
-    root=tk.Tk(className='GoemonPracticeToolkit'); app=Toolkit(root,args)
+    # Tk normalizes WM_CLASS capitalization. The instance matches the\n    # lowercase desktop filename on real Tk 8.6 / X11.
+    root=tk.Tk(className='goemon-practice-toolkit'); app=Toolkit(root,args)
     try:
         root.mainloop()
     finally:
