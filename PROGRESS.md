@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — One-command fail-closed 303-C review runner (ROM-free gate tests only)
+
+- Added `decomp.review_file11_143` to create a separate 303-C opt-in manifest, execute fresh central G2, validate every function identity/hash and the pinned 143-C linker/relocation evidence, execute original-ELF inventory, then run full ROM-free `decomp.local_ci` before writing a human-review-only acceptance bundle.
+- Pins original ROM SHA-1, 303/303 C claims, 16,180 C bytes, 143 file_11 functions, 8,825 semantic relocations, 7,376 original-function inventory entries, 7,060 remaining assembly entries, zero unexpected positive-sized aliases, and the previously verified original function identity checksum. Existing 210-C canonical manifest/proofs remain untouched.
+- Five isolated Python unit tests passed for synthetic acceptance reports, including duplicate/unmatched functions, wrong ROM, relocation drift, wrong alias normalisation and inventory identity failures. Source syntax compilation passed. Full-repository local CI and native 303-C build **not run**: the private full checkout is unavailable to this isolated runtime. Output files are excluded from the repository by requiring new scratch directories.
+- Next: run the one-command runner in a complete local checkout with the original ROM and pinned native build environment; fix any native failures before proposing a production promotion. Instructions: `docs/USA_FILE11_143_REVIEW_RUNNER.md`.
+
 ### 2026-11-16 — Draft native 210+93 C mixed-stage verifier integration (not executed)
 
 - **Change:** Added opt-in `decomp.file11_143_stage` and extended `decomp.verify` to recognize only `overlay_file11_stage: {"format":"goemon-file11-143-central-v1"}` in an **external trial manifest**. The checked-in canonical `decomp/manifest.json` remains at its original 50-C file_11 stage and 210 total C claims. The new adapter authenticates the original 210-function baseline, substitutes 44 reviewed C + 44 ASM segments, installs exact inline C source, compiles and trims 88 stage objects, compares native source/object provenance, verifies 143 original VMA/size symbols and all 8,825 semantic original file_11 relocations, and requires the complete 32 MiB ROM to match before any verifier reports success.
