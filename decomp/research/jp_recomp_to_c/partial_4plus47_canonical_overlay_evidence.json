@@ -1,0 +1,32 @@
+{
+  "format": "goemon-usa-315plus47-real-overlay-source-partial-evidence-v1",
+  "status": "PARTIAL_4_CANONICAL_C_PLUS_47_C_EXACT_NOT_PRODUCTION_362",
+  "current_canonical_usa_c": 315,
+  "new_overlay_c": 47,
+  "new_c_bytes": 2220,
+  "existing_canonical_overlap_c": 4,
+  "combined_locally_verified_c": 51,
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_rom_bytes": 33554432,
+  "original_elf_func_count": 7376,
+  "candidate_elf_func_count": 7376,
+  "new_unmarked_c": 51,
+  "relocations": {
+    "file_12": 7051,
+    "file_13": 9589,
+    "file_14": 3041,
+    "file_15": 1625,
+    "file_17": 1739,
+    "file_18": 3365,
+    "file_19": 1078
+  },
+  "complete_overlay_relocations_equal": true,
+  "first_linked_elf_sha256": "49b61d63676137f60c5663c31d34d8739d83d37fd916f42f3c95e0cc585721d5",
+  "second_linked_elf_sha256": "49b61d63676137f60c5663c31d34d8739d83d37fd916f42f3c95e0cc585721d5",
+  "source_git_blob_hashes_checked": true,
+  "canonical_four_pinned_compiler_and_staged_sha256s_exact": true,
+  "full_315plus47_canonical_g2_executed": false,
+  "production_manifest_modified": false,
+  "source_reproduction_archive": "goemon_362_combined_preflight_20261116.zip",
+  "blocker": "Canonical 315-C decomp checkout not mounted in Linux sandbox; blocked outbound GitHub DNS/network. No user ROM or compiler is missing."
+}

@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Real canonical overlay-source interaction with 47 research C (4+47 native proof)
+
+- Changed: reproduced all four **current production** `file_12`/`file_13` canonical C compiler objects and staged objects from their exact GitHub source blob SHA-1s, matching all published original-ID0 SHA-256s; integrated them with the 47 new source-authenticated overlay C helpers in two fresh full-link scratch builds. Published details in `docs/JP_315_PLUS_47_COMPOSITION_PARTIAL_20261116.md` and separate reproducer `goemon_362_combined_preflight_20261116.zip`.
+- Tested: both fresh mixed **4 original production C + 47 new C** scratch builds reproduced the exact **33,554,432-byte** original USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, all **7,376** original ELF function identities, exactly **51** new unmarked C function owners, and all seven complete semantic relocation multisets (7,051/9,589/3,041/1,625/1,739/3,365/1,078). Both linked ELFs had identical SHA-256 `49b61d63676137f60c5663c31d34d8739d83d37fd916f42f3c95e0cc585721d5`. Original cross-region 52/52 native compiler sources and 7/7 discovery tests reverified.
+- Limitation: the current tool environment contains original ROMs, toolchain archives and research sources, **but not a local copy of canonical decomp repository source**; outbound GitHub network is blocked, although its source is readable with the connector. The other **311 canonical C** objects were absent from the local trial. Accordingly **no combined 362-C production G2, full decomp.local_ci, canonical manifest increment or official promotion** is claimed. Official USA count remains **315**.
+- Next: in network-capable Linux with canonical `chatgptweb/decomp` pinned 315 source, execute `run_315_plus_47.sh` from the provided archive, review combined G2/relocations/ELF inventory/full local CI, and then implement versioned canonical 362-C ownership only on passing results.
+
+
 ### 2026-11-16 — Check in native 47-C scratch reproduction scripts
 
 - Changed: published the already native-tested fail-closed original-USA seven-overlay scratch runner in `decomp/research/jp_recomp_to_c/native_scratch/`: source staging, exact C object and ASM section padding checks, complete-ROM/ELF/relocation verifier and wrapper, together with precise execution prerequisites. Requires the user's original ROM, pinned toolchain and 52-source manifest; no game assets or built binaries committed.
