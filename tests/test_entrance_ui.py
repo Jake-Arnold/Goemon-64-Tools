@@ -15,6 +15,8 @@ from tests.test_entrances import atlas_fixture
 class EntranceUITests(unittest.TestCase):
     def setUp(self):
         self.root=tk.Tk();self.root.withdraw()
+        store = patch('practice.toolkit.save_last_region')
+        store.start(); self.addCleanup(store.stop)
         with patch('practice.entrance_ui.load_atlas',return_value=atlas_fixture()):
             self.app=Toolkit(self.root,parse_args(['--game-version','usa']))
         self.assertEqual(self.app.active_version.key, 'usa')
