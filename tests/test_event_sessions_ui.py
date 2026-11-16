@@ -84,11 +84,16 @@ class EventSessionUITests(unittest.TestCase):
             app.discovery_tabs.tab(t, 'text')
             for t in app.discovery_tabs.tabs()
         }
-        self.assertIn('Event sessions', nested_discovery)
+        self.assertEqual(nested_discovery, {
+            'Start here', 'Find a value', 'Compare memory changes',
+            'Investigate flags', 'Record damage'
+        })
         self.assertNotIn('Saved / shadow',tabs)
         self.assertNotIn('State discovery',tabs)
-        nested={app.event_sections.tab(t,'text') for t in app.event_sections.tabs()}
-        self.assertEqual(nested,{'Event flag sessions','Advanced RAM comparison'})
+        self.assertIs(app.event_sections, app.discovery_tabs)
+        self.assertEqual(
+            app.event_sections.tab(app.state_discovery_tab,'text'),
+            'Compare memory changes')
         self.assertFalse(hasattr(app,'save_buffers_tree'))
         self.assertFalse(hasattr(app,'save_buffers_tab'))
         app.refresh_checkpoint_options();app.refresh_checkpoint_diff(force=True)
