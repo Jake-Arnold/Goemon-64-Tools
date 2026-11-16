@@ -150,6 +150,31 @@ class RegionUnlockUITests(unittest.TestCase):
         self.assertIn('disabled', app.unlock_count_buttons[fish.address].state())
         self.assertIn('disabled', app.unlock_all_button.state())
 
+    def test_auto_backend_unlock_controls_enabled_only_with_verified_japan_connection(self):
+        app = self.app
+        self._select_japan()
+        app.connection_target.set('auto')
+        self.assertFalse(app._japan_unlock_controls_ready())
+        self.assertIn('disabled', app.unlock_all_button.state())
+        app.jp_rdram = FakeRam({
+            (0x80161E97, 1): b'\x00',
+            (0x80161E9B, 1): b'\x00',
+        })
+        app.game_pid = 1234
+        app.jp_backend = 'recomp'
+        app.refresh_unlocks(force=True)
+        self.assertTrue(app._japan_unlock_controls_ready())
+        self.assertNotIn('disabled', app.unlock_all_button.state())
+        sasuke = next(item for item in UNLOCKS
+                      if item.label == 'Sasuke in party')
+        self.assertNotIn('disabled',
+                         app.unlock_row_widgets[sasuke.address][1][1].state())
+        # The selected backend no longer matches the attached one.
+        app.connection_target.set('mupen64plus')
+        app.refresh_unlocks(force=True)
+        self.assertFalse(app._japan_unlock_controls_ready())
+        self.assertIn('disabled', app.unlock_all_button.state())
+
     def test_switch_back_to_usa_restores_addresses_and_enabled_controls(self):
         app = self.app
         self._select_japan()
