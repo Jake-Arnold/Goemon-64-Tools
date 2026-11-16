@@ -161,6 +161,23 @@ class Rdram:
                          for i in range(0, len(raw), unit))
         return guest[off-start:off-start+length]
 
+    def write_guest_byte_exact(self, address: int, value: int):
+        """Write exactly one host byte for one guest byte.
+
+        Critical for original debug-menu mode changes: a general
+        read/modify/write of the surrounding 2/4-byte swapped unit could
+        overwrite an adjacent live variable if the game updated it between
+        our read and write. Never touch neighboring host bytes here.
+        """
+        if type(value) is not int or not 0 <= value <= 0xFF:
+            raise ValueError('Guest byte must be an integer 0..255')
+        off = self.offset(address, 1)
+        if off >= getattr(self, 'rdram_size', RDRAM_SIZE):
+            raise ValueError('Guest byte outside verified emulator RDRAM size')
+        host = (off ^ 3 if self.endian == "wordswapped" else
+                off ^ 1 if self.endian == "byteswapped" else off)
+        self.process.write(self.base + host, bytes((value,)))
+
     def write_guest(self, address: int, data: bytes):
         """Write guest bytes, preserving neighboring bytes in partial words."""
         if not data:
