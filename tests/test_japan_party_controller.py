@@ -38,7 +38,11 @@ class Reader:
 
 
 def controller(writer, *, read_only=False, backend='mupen64plus'):
-    return SimpleNamespace(
+    # These tests deliberately call Toolkit methods against a lightweight
+    # controller, rather than constructing Tk. Keep the synthetic controller's
+    # method bindings in sync with real Toolkit after writer-validation methods
+    # were factored out. Do not bypass the writer-selection implementation.
+    screen = SimpleNamespace(
         active_version=SimpleNamespace(key='japan'),
         _connecting=False,
         args=SimpleNamespace(read_only=read_only),
@@ -47,6 +51,10 @@ def controller(writer, *, read_only=False, backend='mupen64plus'):
         jp_backend=backend,
         connection_target=SimpleNamespace(get=lambda: backend),
     )
+    screen._japan_writable_reader = (
+        lambda host, attached: Toolkit._japan_writable_reader(
+            screen, host, attached))
+    return screen
 
 
 def unlock(label):
