@@ -56,6 +56,21 @@ class JapanEventSessionsUiTests(unittest.TestCase):
             time.sleep(0.01)
         self.assertNotIn('Analysing',self.app.event_trial_summary.get())
 
+    def test_auto_connection_is_recognised_across_discovery_methods(self):
+        app = self.app
+        app.connection_target.set('auto')
+        token, backend = app._event_connection()
+        self.assertEqual(backend, 'project64')
+        self.assertEqual(token[0], app.game_pid)
+        app._refresh_discovery_connection_state()
+        self.assertIn('JP memory attached', app.discovery_connection_state.get())
+        self.assertIn('PID 5599', app.discovery_connection_state.get())
+        app.connection_target.set('recomp')
+        with self.assertRaisesRegex(ValueError, 'selected backend differs'):
+            app._event_connection()
+        app.connection_target.set('auto')
+        self.assertEqual(app._event_connection()[1], 'project64')
+
     def test_japan_event_session_uses_same_tab_and_correct_guest_base(self):
         app=self.app
         self.assertEqual(
