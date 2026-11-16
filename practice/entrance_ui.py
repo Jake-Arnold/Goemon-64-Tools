@@ -151,7 +151,7 @@ class EntranceMixin:
             self.refresh_entrance_choices(destination)
         if not self.entrance_rows:
             raise ValueError(
-                'No known coordinates for this scene; load original USA ROM '
+                'No known coordinates for this scene. Load original USA ROM '
                 'once to store the full entrance table')
         index=self.entrance_choice.current()
         if not 0<=index<len(self.entrance_rows):raise ValueError('Choose a destination entrance first; no reload sent')
