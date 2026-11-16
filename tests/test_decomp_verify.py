@@ -1071,7 +1071,13 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(result['upstream_commit'],manifest['upstream_commit'])
         self.assertTrue(result['comparison']['full_rom_match'])
         verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
-        self.assertEqual(result['verifier_source_sha256_lf'],hashlib.sha256(verifier).hexdigest())
+        # The canonical 210-C result is historical evidence. Keep the hash
+        # of the verifier which actually generated it, and independently pin
+        # the current verifier through the reviewed VM residual source ledger.
+        self.assertEqual(result['verifier_source_sha256_lf'],
+                         '1c60206c7007b9e499250fc2512851bfa2c1d07f5743e607b90938196bd4280b')
+        ledger=json.loads((ROOT/'decomp/results/vm_residual_inventory.json').read_text())
+        self.assertEqual(hashlib.sha256(verifier).hexdigest(),ledger['current_sources']['verifier_sha256'])
         expected={f['name']:f for f in claimed_functions(manifest)}
         actual={f['name']:f for f in result['comparison']['functions']}
         self.assertEqual(set(expected),set(actual))

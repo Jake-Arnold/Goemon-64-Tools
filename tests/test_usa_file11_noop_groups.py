@@ -116,6 +116,55 @@ class TestFile11NoopGroups(unittest.TestCase):
                 self.assertNotIn(f'glabel {name}',actual)
                 self.assertNotIn(f'endlabel {name}',actual)
 
+    def test_143_layout_removes_third_synthetic_nop_func_without_changing_words(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            directory = home / 'asm/usa'
+            directory.mkdir(parents=True)
+            aliases = mod.SPLIT_NOP_ALIASES + (mod.FILE11_143_SPLIT_NOP_ALIAS,)
+            originals = {}
+            for segment, name, offset, vma in aliases:
+                source = (
+                    f'.include "macro.inc"\nnonmatching {name}, 0x4\n\n'
+                    f'glabel {name}\n'
+                    f'    /* {offset} {vma} 00000000 */  nop\n'
+                    f'endlabel {name}\n'
+                )
+                originals[segment] = source
+                (directory / (segment + '.s')).write_text(source)
+            evidence = mod.patch_synthetic_nop_aliases(home)
+            self.assertEqual(evidence['preserved_original_nops'], 3)
+            self.assertEqual(evidence['removed_spurious_func_aliases'],
+                             [row[1] for row in aliases])
+            for segment, name, offset, vma in aliases:
+                actual = (directory / (segment + '.s')).read_text()
+                self.assertEqual(actual, originals[segment]
+                                 .replace(f'glabel {name}\n', '')
+                                 .replace(f'endlabel {name}\n', ''))
+                self.assertIn(f'nonmatching {name}, 0x4', actual)
+                self.assertIn(f'/* {offset} {vma} 00000000 */  nop', actual)
+
+    def test_143_layout_rejects_changed_nop_before_any_source_write(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            directory = home / 'asm/usa'
+            directory.mkdir(parents=True)
+            aliases = mod.SPLIT_NOP_ALIASES + (mod.FILE11_143_SPLIT_NOP_ALIAS,)
+            originals = {}
+            for segment, name, offset, vma in aliases:
+                instruction = '00000001' if segment == '5AEBDC' else '00000000'
+                source = (
+                    f'nonmatching {name}, 0x4\n\nglabel {name}\n'
+                    f'    /* {offset} {vma} {instruction} */  nop\n'
+                    f'endlabel {name}\n'
+                )
+                originals[segment] = source
+                (directory / (segment + '.s')).write_text(source)
+            with self.assertRaisesRegex(ValueError, 'Unexpected synthetic nop'):
+                mod.patch_synthetic_nop_aliases(home)
+            for segment, source in originals.items():
+                self.assertEqual((directory / (segment + '.s')).read_text(), source)
+
     def test_splat_nop_alias_patch_rejects_modified_instruction(self):
         with tempfile.TemporaryDirectory() as tmp:
             home=Path(tmp)

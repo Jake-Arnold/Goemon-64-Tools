@@ -53,6 +53,14 @@ SPLIT_NOP_ALIASES = (
     ('5995E8', 'func_801DD6D8_5995E8', '5995E8', '801DD6D8'),
     ('59D4DC', 'func_801E15CC_59D4DC', '59D4DC', '801E15CC'),
 )
+# The 143-C layout ends the two 12-byte callbacks at 0x5AEBDC and
+# introduces an extra ASM slice there. The retail 32 MiB USA ROM has
+# exactly 0x00000000 at this offset (a NOP, not a function); the original
+# ELF contains no positive-sized FUNC with this name. Suppress only its
+# newly generated FUNC annotation, preserving the instruction and marker.
+FILE11_143_SPLIT_NOP_ALIAS = (
+    '5AEBDC', 'func_801F2CCC_5AEBDC', '5AEBDC', '801F2CCC'
+)
 # In the complete original+50 C build IDO relocations at indices 2506..2508
 # are emitted in the HILO/then JAL sequence instead of the original JAL/HILO.
 # All relocation sites, types, resolved targets, names and counts remain exact.
@@ -145,15 +153,19 @@ def prepare(checkout: Path, reference: bytes) -> None:
 
 
 def patch_synthetic_nop_aliases(checkout: Path) -> dict:
-    """Suppress two false positive FUNC symbols, without changing any MIPS word.
+    """Suppress exact Splat-created NOP FUNC aliases, not original functions.
 
-    The Splat-generated nop is retained and the original NON_MATCHING object
-    marker is retained. Only the introduced glabel/endlabel FUNC annotations
-    are removed, and only at the two independently pinned split boundaries.
+    The 50-C layout has two pinned aliases; only the 143-C layout adds
+    the 0x5AEBDC split. Preserve each NOP and NON_MATCHING marker. Validate
+    every target before writing any file; never modify another ASM symbol.
     Must run after Splat extraction but before assembling file_11 objects.
     """
+    extra_path = checkout / 'asm/usa/5AEBDC.s'
+    aliases = SPLIT_NOP_ALIASES + (
+        (FILE11_143_SPLIT_NOP_ALIAS,) if extra_path.is_file() else ()
+    )
     edits=[]
-    for segment, name, offset, vma in SPLIT_NOP_ALIASES:
+    for segment, name, offset, vma in aliases:
         path=checkout / 'asm/usa' / (segment+'.s')
         original=path.read_text(encoding='utf-8')
         marker=f'nonmatching {name}, 0x4\n\n'
@@ -172,7 +184,7 @@ def patch_synthetic_nop_aliases(checkout: Path) -> dict:
         edits.append((path,edited))
     for path,edited in edits:
         path.write_text(edited,encoding='utf-8',newline='\n')
-    return {'removed_spurious_func_aliases':[name for _,name,_,_ in SPLIT_NOP_ALIASES],
+    return {'removed_spurious_func_aliases':[name for _,name,_,_ in aliases],
             'preserved_original_nops':len(edits)}
 
 
