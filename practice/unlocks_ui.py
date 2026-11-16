@@ -134,7 +134,7 @@ class UnlocksMixin:
             and getattr(self, 'game_pid', None) is not None
             and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus', 'recomp')
             and getattr(getattr(self, 'connection_target', None),
-                        'get', lambda: None)() == self.jp_backend
+                        'get', lambda: None)() in ('auto', self.jp_backend)
             and not getattr(self, '_connecting', False)
             and not getattr(self.args, 'read_only', False))
 
@@ -185,8 +185,11 @@ class UnlocksMixin:
                     state='normal' if usa_writable or not japan else 'disabled')
         self.unlock_last_poll = 0.0
         self.unlock_status.set(
-            'Japan-0: 33 of 34 entries user-verified in gameplay; '
-            'Sasuke battery 1 remains an unverified writable research candidate.'
+            ('Japan-0: 33 of 34 entries user-verified; Sasuke battery 1 '
+             'remains unverified. Connect to verified Japanese RAM to edit; '
+             'automatic backend selection is supported.' if not self._japan_unlock_controls_ready()
+             else 'Japan-0 unlock edits available on verified connection; '
+                  'Sasuke battery 1 remains unverified.')
             if japan else
             'Connect to US Goemon in Recomp or Project64 to read and change flags.')
         self.refresh_unlocks(force=True)
