@@ -300,16 +300,19 @@ class ValueSearchMixin:
         # with no piled-up workers even when a full 8 MiB pass is slow.
         self._value_start('filter', repeated=True)
 
-    def stop_continuous_value_filter(self, *, reason=None):
+    def stop_continuous_value_filter(self, *, reason=None, update_ui=True):
         self._value_repeat_running = False
         self._value_repeat_spec = None
-        if hasattr(self, 'value_repeat_button'):
+        self._value_repeat_due = 0.0
+        # <Destroy> fires after Tk has already removed child widget commands.
+        # Never reconfigure a destroyed button while tearing down the root.
+        if update_ui and hasattr(self, 'value_repeat_button'):
             self.value_repeat_button.configure(text='Start continuous filter')
             self.value_filter_widget.configure(state='readonly')
             self.value_compare_widget.configure(state='readonly')
             self.value_repeat_interval_widget.configure(state='readonly')
             self._value_search_filter_changed()
-        if hasattr(self, 'value_repeat_status'):
+        if update_ui and hasattr(self, 'value_repeat_status'):
             self.value_repeat_status.set(
                 reason or f'Stopped after {self._value_repeat_scans} pass(es).')
 
@@ -325,7 +328,8 @@ class ValueSearchMixin:
         """Stop callbacks owned by this Tk root, not by another test window."""
         if event.widget is not self.root:
             return
-        self.stop_continuous_value_filter(reason='Stopped: toolkit closed.')
+        self.stop_continuous_value_filter(
+            reason='Stopped: toolkit closed.', update_ui=False)
         for attribute in ('_value_search_auto_after',
                           '_value_search_poll_after'):
             job = getattr(self, attribute, None)
