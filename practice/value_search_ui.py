@@ -27,6 +27,7 @@ class ValueSearchMixin:
 
     def invalidate_value_search_connection(self):
         """Discard scan identity on ROM/PID/RDRAM changes and savestate loads."""
+        self.stop_continuous_value_filter(reason='Stopped: game connection changed.')
         self.value_scan_generation += 1
         self.value_scan_memory = None
         # A worker may still be using the previous scanner: let its stale
@@ -46,6 +47,10 @@ class ValueSearchMixin:
         self._value_search_auto_after = None
         self._value_search_poll_after = None
         self._value_search_next_refresh = 0.0
+        self._value_repeat_running = False
+        self._value_repeat_spec = None
+        self._value_repeat_scans = 0
+        self._value_repeat_due = 0.0
         self.root.bind('<Destroy>', self._value_search_on_destroy, add='+')
 
         self.value_search_status = tk.StringVar(
@@ -59,6 +64,8 @@ class ValueSearchMixin:
         self.value_search_unaligned = tk.BooleanVar(value=False)
         self.value_search_autorefresh = tk.BooleanVar(value=True)
         self.value_search_refresh_ms = tk.StringVar(value='250 ms')
+        self.value_repeat_interval = tk.StringVar(value='500 ms')
+        self.value_repeat_status = tk.StringVar(value='Continuous filtering is stopped.')
         self.value_report_name = tk.StringVar(value='Memory value search')
 
         tab = ttk.Frame(notebook, padding=10)
@@ -116,12 +123,14 @@ class ValueSearchMixin:
             row2, textvariable=self.value_search_filter, values=FILTERS,
             state='readonly', width=11)
         filterbox.pack(side='left', padx=(0, 9))
+        self.value_filter_widget = filterbox
         filterbox.bind('<<ComboboxSelected>>',
                        lambda _event: self._value_search_filter_changed())
         ttk.Label(row2, text='Compared with').pack(side='left', padx=(0, 5))
-        ttk.Combobox(row2, textvariable=self.value_search_compare,
-                     values=('Previous', 'Initial'), state='readonly',
-                     width=10).pack(side='left', padx=(0, 9))
+        self.value_compare_widget = ttk.Combobox(
+            row2, textvariable=self.value_search_compare,
+            values=('Previous', 'Initial'), state='readonly', width=10)
+        self.value_compare_widget.pack(side='left', padx=(0, 9))
         ttk.Label(row2, text='Filter value (Exact only)').pack(
             side='left', padx=(0, 5))
         self.value_filter_entry = ttk.Entry(
@@ -135,6 +144,29 @@ class ValueSearchMixin:
             'or Previous. Filtering narrows results permanently until New scan.'),
             wraplength=1050).pack(anchor='w', pady=(4, 0))
         self._value_search_filter_changed()
+        repeat_bar = ttk.Frame(refine)
+        repeat_bar.pack(fill='x', pady=(7, 0))
+        self.value_repeat_button = ttk.Button(
+            repeat_bar, text='Start continuous filter',
+            command=self.toggle_continuous_value_filter)
+        self.value_repeat_button.pack(side='left', padx=(0, 9))
+        ttk.Label(repeat_bar, text='Repeat every').pack(side='left', padx=(0, 4))
+        self.value_repeat_interval_widget = ttk.Combobox(
+            repeat_bar, textvariable=self.value_repeat_interval,
+            values=('250 ms', '500 ms', '1000 ms', '2000 ms'),
+            state='readonly', width=9)
+        self.value_repeat_interval_widget.pack(side='left', padx=(0, 10))
+        ttk.Label(
+            repeat_bar, textvariable=self.value_repeat_status,
+            wraplength=490).pack(side='left')
+        ttk.Label(
+            refine,
+            text='Continuous filtering repeatedly NARROWS the same candidate set. '
+                 'Unchanged + Initial retains values matching the very first scan. '
+                 'Unchanged + Previous requires stability at every pass. '
+                 'It stops when you press Stop, disconnect or reach zero matches. '
+                 'Start a new scan to restore discarded candidates.',
+            wraplength=1060).pack(anchor='w', pady=(4, 0))
 
         toolbar = ttk.Frame(tab)
         toolbar.pack(fill='x', pady=(0, 6))
@@ -210,7 +242,76 @@ class ValueSearchMixin:
 
     def _value_search_filter_changed(self):
         exact = self.value_search_filter.get() == 'Exact'
-        self.value_filter_entry.configure(state='normal' if exact else 'disabled')
+        self.value_filter_entry.configure(
+            state='normal' if exact and not self._value_repeat_running else 'disabled')
+
+
+    def toggle_continuous_value_filter(self):
+        if self._value_repeat_running:
+            self.stop_continuous_value_filter(
+                reason=f'Stopped after {self._value_repeat_scans} filter pass(es).')
+            return
+        if (self.value_scanner.previous is None or
+                self.value_scan_memory is not self._value_search_reader() or
+                self.value_scanner.count == 0):
+            self.value_repeat_status.set(
+                'Finish a scan with surviving candidates before starting.')
+            return
+        if self.value_scan_busy:
+            self.value_repeat_status.set('Current scan is still running.')
+            return
+        mode = self.value_search_filter.get()
+        basis = self.value_search_compare.get()
+        exact_value = self.value_filter_value.get()
+        if mode not in FILTERS or basis not in ('Previous', 'Initial'):
+            self.value_repeat_status.set('Choose a valid filter and comparison.')
+            return
+        if mode == 'Exact':
+            try:
+                if self.value_scanner.kind == TEXT_KIND:
+                    encoded = self.value_scanner.encode_text(
+                        exact_value, self.value_scanner.text_encoding)
+                    if len(encoded) != self.value_scanner.text_width:
+                        raise ValueError('Text must retain the original byte length')
+                else:
+                    from practice.value_search import encode_value
+                    encode_value(self.value_scanner.kind, exact_value)
+            except ValueError as exc:
+                self.value_repeat_status.set(f'Invalid Exact filter value: {exc}')
+                return
+        if (self.value_scanner.kind == TEXT_KIND and
+                mode in ('Increased', 'Decreased')):
+            self.value_repeat_status.set(
+                'Text patterns support Exact, Changed and Unchanged only.')
+            return
+        self._value_repeat_spec = (mode, exact_value, basis)
+        self._value_repeat_scans = 0
+        self._value_repeat_running = True
+        self._value_repeat_due = 0.0
+        self.value_repeat_button.configure(text='Stop continuous filter')
+        self.value_filter_widget.configure(state='disabled')
+        self.value_compare_widget.configure(state='disabled')
+        self.value_filter_entry.configure(state='disabled')
+        self.value_repeat_interval_widget.configure(state='disabled')
+        self.value_repeat_status.set(
+            f'Running {mode} vs {basis}; 0 passes. '
+            'The filter will repeat until stopped.')
+        # Start immediately. Afterwards schedule only from completed scans,
+        # with no piled-up workers even when a full 8 MiB pass is slow.
+        self._value_start('filter', repeated=True)
+
+    def stop_continuous_value_filter(self, *, reason=None):
+        self._value_repeat_running = False
+        self._value_repeat_spec = None
+        if hasattr(self, 'value_repeat_button'):
+            self.value_repeat_button.configure(text='Start continuous filter')
+            self.value_filter_widget.configure(state='readonly')
+            self.value_compare_widget.configure(state='readonly')
+            self.value_repeat_interval_widget.configure(state='readonly')
+            self._value_search_filter_changed()
+        if hasattr(self, 'value_repeat_status'):
+            self.value_repeat_status.set(
+                reason or f'Stopped after {self._value_repeat_scans} pass(es).')
 
     def select_all_value_results(self):
         rows = self.value_search_tree.get_children()
@@ -224,6 +325,7 @@ class ValueSearchMixin:
         """Stop callbacks owned by this Tk root, not by another test window."""
         if event.widget is not self.root:
             return
+        self.stop_continuous_value_filter(reason='Stopped: toolkit closed.')
         for attribute in ('_value_search_auto_after',
                           '_value_search_poll_after'):
             job = getattr(self, attribute, None)
@@ -234,12 +336,16 @@ class ValueSearchMixin:
                 except tk.TclError:
                     pass  # Tcl interpreter is already disposing of widgets.
 
-    def _value_start(self, action):
+    def _value_start(self, action, *, repeated=False):
+        if not repeated and action in ('exact', 'unknown', 'filter') and self._value_repeat_running:
+            self.stop_continuous_value_filter(
+                reason='Stopped: manual scan or filter requested.')
         if self.value_scan_busy:
             self.value_search_status.set('A RAM read is already running.')
             return
         mem = self._value_search_reader()
         if mem is None:
+            self.stop_continuous_value_filter(reason='Stopped: game disconnected.')
             self.value_search_status.set('Connect to a running game first.')
             return
         if action in ('filter', 'refresh') and (self.value_scanner.previous is None or
@@ -251,6 +357,10 @@ class ValueSearchMixin:
         filter_mode = self.value_search_filter.get()
         filter_value = self.value_filter_value.get()
         comparison = self.value_search_compare.get()
+        if repeated:
+            if not self._value_repeat_running or self._value_repeat_spec is None:
+                return
+            filter_mode, filter_value, comparison = self._value_repeat_spec
         encoding = self.value_search_encoding.get()
         include_unaligned = self.value_search_unaligned.get()
         # Project64 may expose only an unexpanded 4 MiB RDRAM mapping.
@@ -288,9 +398,9 @@ class ValueSearchMixin:
                     rows = scanner.rows(DISPLAY_LIMIT, ram=mem)
                 else:
                     raise ValueError('Invalid value-search operation')
-                self.value_scan_queue.put((generation, mem, action, scanner, rows, None))
+                self.value_scan_queue.put((generation, mem, action, scanner, rows, None, repeated))
             except Exception as exc:  # Report worker failure instead of leaving UI permanently busy.
-                self.value_scan_queue.put((generation, mem, action, None, None, str(exc)))
+                self.value_scan_queue.put((generation, mem, action, None, None, str(exc), repeated))
 
         # The RDRAM reader can be slow; never scan 8 MiB on the Tk event loop.
         threading.Thread(target=worker, daemon=True, name='GoemonReadOnlyValueSearch').start()
@@ -305,15 +415,19 @@ class ValueSearchMixin:
             self._value_search_poll_after = self.root.after(
                 70, self._value_search_poll)
             return
-        generation, mem, action, scanner, rows, error = result
+        generation, mem, action, scanner, rows, error, repeated = result
         self.value_scan_busy = False
         if generation != self.value_scan_generation or mem is not self._value_search_reader():
+            self.stop_continuous_value_filter(reason='Stopped: game connection changed.')
             self.value_search_status.set('Game connection changed; start a new scan.')
             self.value_scanner.clear()
             self.value_scan_memory = None
             self.value_search_tree.delete(*self.value_search_tree.get_children())
             return
         if error is not None:
+            if repeated:
+                self.stop_continuous_value_filter(
+                    reason=f'Stopped: scan failed: {error}')
             self.value_search_status.set(f'Value search failed: {error}')
             return
         if action in ('exact', 'unknown'):
@@ -341,6 +455,20 @@ class ValueSearchMixin:
             f'showing {len(rows):,}. Type {self.value_scanner.kind}; '
             f'{self.value_scanner.samples} snapshot(s). '
             'No game memory was modified.')
+        if repeated and self._value_repeat_running:
+            self._value_repeat_scans += 1
+            if self.value_scanner.count == 0:
+                self.stop_continuous_value_filter(
+                    reason='Stopped automatically: zero candidates. '
+                           'Start a new scan to restore results.')
+            else:
+                mode, _text, basis = self._value_repeat_spec
+                interval = int(self.value_repeat_interval.get().split()[0]) / 1000
+                self._value_repeat_due = time.monotonic() + interval
+                self.value_repeat_status.set(
+                    f'Running {mode} vs {basis}: '
+                    f'{self._value_repeat_scans} pass(es), '
+                    f'{self.value_scanner.count:,} candidates left.')
 
     def export_value_search_report(self):
         """Save the current *displayed* snapshot; never claim a full trace."""
@@ -391,7 +519,13 @@ class ValueSearchMixin:
         self._value_search_auto_after = None
         now = time.monotonic()
         interval = int(self.value_search_refresh_ms.get().split()[0]) / 1000
-        if (self.value_search_autorefresh.get() and not self.value_scan_busy and
+        if (self._value_repeat_running and not self.value_scan_busy and
+                self._value_repeat_due > 0 and
+                now >= self._value_repeat_due):
+            self._value_repeat_due = 0.0
+            self._value_start('filter', repeated=True)
+        if (not self._value_repeat_running and
+                self.value_search_autorefresh.get() and not self.value_scan_busy and
                 self.value_scanner.previous is not None and
                 self._value_search_reader() is self.value_scan_memory and
                 self._value_search_tab_visible() and
@@ -403,6 +537,9 @@ class ValueSearchMixin:
             100, self._value_search_auto_tick)
 
     def clear_value_search(self):
+        if self._value_repeat_running:
+            self.stop_continuous_value_filter(
+                reason='Stopped: scan cleared.')
         if self.value_scan_busy:
             self.value_search_status.set('Current scan must finish before clearing.')
             return
