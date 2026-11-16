@@ -10,6 +10,27 @@ Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C 
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
 7. The initial v0.9.9 imported-baseline work did not establish direct warps. Later native-warp and story-flag work on `main` superseded that historical limitation (user confirmation 2026-11-08). The decomp-only branch must not revisit or modify those features without separate authorization.
 
+## Mandatory USA ↔ Japan memory crosswalk
+
+When any agent discovers or validates a **fixed original-USA or Japan-0
+guest-RAM global, packed story flag, inventory field or other static
+game-data address**, it MUST immediately record the candidate for the
+*other* regional ROM in the same task. Start with the local
+[USA/Japan crosswalk playbook](decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md)
+and [.agents/skills/goemon-region-crosswalk/SKILL.md](.agents/skills/goemon-region-crosswalk/SKILL.md).
+Check known pairings/exceptions first. For **classified static data only**,
+`JP = USA + 0x57F0` and `USA = JP - 0x57F0`, producing an **unverified
+candidate**, never an automatic field promotion. Annotate field width,
+endianness, saved-event mask, ROM identity, original MIPS evidence,
+target independent validation, conflicts and ownership.
+
+Do not apply the delta to VM, player/task pointers, dynamic Impact
+controller, overlays or code addresses. Preserve known Snowflake
+`+0x57F1` exception, disputed JP pause `0x800CD2D6` and unverified
+JP battery `0x80161DF9 & 0x20`. A raw A/B changed byte is not proof
+of semantics. Keep research on a `decomp/*` branch and port only a
+reviewed mapping to a separate `main`-based toolkit PR.
+
 ## Decomp continuation
 
 For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
