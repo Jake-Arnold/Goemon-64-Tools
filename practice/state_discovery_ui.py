@@ -93,6 +93,17 @@ class StateDiscoveryMixin:
             row, text='Save report', command=self.export_state_probe)
         self.state_probe_export_button.pack(side='left',padx=(0,7))
         ttk.Button(row,text='Clear',command=self.reset_state_probes).pack(side='left')
+        self.state_xyz_export_row = ttk.Frame(tab)
+        self.state_xyz_export_row.pack(fill='x', pady=(0, 6))
+        self.state_xyz_full_export_button = ttk.Button(
+            self.state_xyz_export_row,
+            text='Export all XYZ candidates (advanced JSON)',
+            command=self._export_all_japan_xyz_candidates)
+        ttk.Label(self.state_xyz_export_row,
+                  text='Exhaustive cached A/B/C analysis; may create a large legacy JSON file.',
+                  wraplength=790).pack(side='right')
+        # Normally hidden, since the standard Save report handles ordinary A/B/C.
+        self.state_xyz_full_export_button.pack_forget()
         self.state_probe_status=tk.StringVar(value='No captures. Select a test and connect to the game.')
         ttk.Label(tab,textvariable=self.state_probe_status,wraplength=1060).pack(anchor='w',pady=(0,10))
         headings=('address','region','before','after','bitmask','returned','kind')
@@ -140,6 +151,7 @@ class StateDiscoveryMixin:
                                        before=self.state_probe_export_button)
         else:
             self.state_xyz_button.pack_forget()
+            self.state_xyz_full_export_button.pack_forget()
         self.state_probe_scope_hint.set(
             'Japan focused: two 4 KiB engine/save candidate ranges (not confirmed '
             'event banks). Wide: read-only full verified 4/8 MiB Japan RDRAM. '
@@ -271,6 +283,7 @@ class StateDiscoveryMixin:
                     self.state_captures['A'], self.state_captures['B'],
                     self.state_captures.get('C'))
             self.state_report=report
+            self.state_xyz_full_export_button.pack_forget()
             self.state_probe_export_button.configure(text='Save report')
             self.state_probe_table.heading('returned', text='C matched A?')
             self.state_probe_table.column('before', width=95)
@@ -350,6 +363,7 @@ class StateDiscoveryMixin:
                 return
             self.state_report = report
             self.state_probe_export_button.configure(text='Save report')
+            self.state_xyz_full_export_button.pack(side='left', padx=(0, 10))
             self.state_probe_table.delete(*self.state_probe_table.get_children())
             self.state_probe_table.heading('returned', text='C stable at B?')
             self.state_probe_table.column('before', width=205)
@@ -560,5 +574,6 @@ class StateDiscoveryMixin:
         self.state_captures={}
         self.state_report=None
         self.state_probe_export_button.configure(text='Save report')
+        self.state_xyz_full_export_button.pack_forget()
         self.state_probe_table.delete(*self.state_probe_table.get_children())
         self.state_probe_status.set('Captures cleared; no game memory was written.')
