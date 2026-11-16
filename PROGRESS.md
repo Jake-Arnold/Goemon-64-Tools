@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Next eight USA file_11 callbacks: independent exact native scratch, not canonical promotion
+
+- Changed: on isolated branch `chatgptweb/decomp-file11-next8-scratch-20261116`, added the authentic native C source for eight adjacent 44-byte callbacks at `0x5A6F30–0x5A7090`, a source-only verification ledger, a reproducible layout/report and ROM-free regression tests. Production `decomp/manifest.json`, `decomp/results/combined.json` and `decomp/results/inventory.json` remain unchanged at 315 USA C.
+- Why: reconcile the distinct 105-function PR #23 backlog and prove a bounded contiguous eight-function batch using the original game rather than isolated codegen alone.
+- Tested: freshly rebuilt pinned upstream USA ROM and separate eight-C scratch candidate; full 33,554,432-byte `cmp` PASS and original SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; `readelf -Wr` exact original versus candidate 8,825 semantic file_11 relocations, and `readelf -Ws` equal 7,098 named FUNC symbol identities including all eight original VMAs/sizes. No gameplay test; full 323-C central G2, 7,376-entry inventory and full local CI were not run.
+- Remaining: current 152-C mixed-layout adapter must split the surrounding ASM `0x5A63F8–0x5A74CC` and preserve all preceding verified C/ASM sources and object hashes.
+- Next: stage 160-file11-C adapter, then run combined native 323-C `decomp.verify`, `decomp.inventory` and `decomp.local_ci` before any production promotion.
+
+
 ### 2026-11-16 — Eight additional USA file_11 C functions promoted by exact 315-C native proof
 
 - Changed: upgraded the versioned `file_11` stage from 144 to 152 original-address C functions, replacing four complete assembly slices: `0x59EB80–0x59EBBC` (1 C / 60 B), `0x59EE00–0x59EE54` (3 C / 84 B), `0x5B22C8–0x5B2314` (2 C / 76 B), and `0x5B84A0–0x5B8500` (2 C / 96 B). All eight original function extents and all 88 original file_11 object positions remain unchanged. Preserved historical 307/306/303/210 reports independently.
