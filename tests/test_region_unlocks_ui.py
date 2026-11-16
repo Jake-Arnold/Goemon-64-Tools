@@ -74,7 +74,7 @@ class RegionUnlockUITests(unittest.TestCase):
         self.assertFalse(hasattr(app, 'jp_party_buttons'))
         self.assertEqual(
             [app.jp_research_tabs.tab(x, 'text')
-             for x in app.jp_research_tabs.tabs()], ['Goemon XYZ', 'Scene warp'])
+             for x in app.jp_research_tabs.tabs()], ['Goemon XYZ', 'Scene warp', 'USA → JP crosswalk'])
 
     def test_all_mapped_japanese_fields_write_without_opt_in_or_consent(self):
         app = self.app
