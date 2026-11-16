@@ -38,7 +38,11 @@ class Reader:
 
 
 def controller(writer, *, read_only=False, backend='mupen64plus'):
-    return SimpleNamespace(
+    # These tests deliberately call Toolkit methods against a lightweight
+    # controller, rather than constructing Tk. Keep the synthetic controller's
+    # method bindings in sync with real Toolkit after writer-validation methods
+    # were factored out. Do not bypass the writer-selection implementation.
+    screen = SimpleNamespace(
         active_version=SimpleNamespace(key='japan'),
         _connecting=False,
         args=SimpleNamespace(read_only=read_only),
@@ -47,6 +51,10 @@ def controller(writer, *, read_only=False, backend='mupen64plus'):
         jp_backend=backend,
         connection_target=SimpleNamespace(get=lambda: backend),
     )
+    screen._japan_writable_reader = (
+        lambda host, attached: Toolkit._japan_writable_reader(
+            screen, host, attached))
+    return screen
 
 
 def unlock(label):
@@ -111,6 +119,26 @@ class JapanesePartyControllerTests(unittest.TestCase):
         self.assertEqual(writer.rdram().read_guest(0x80161EF7, 1), bytes((4,)))
         self.assertEqual(writer.rdram().read_guest(0x80161F03, 1), bytes((1,)))
         self.assertEqual(writer.rdram().read_guest(0x80161DF9, 1), bytes((0,)))
+
+    def test_mock_controller_uses_real_recomp_writer_validation(self):
+        # Regression: the SimpleNamespace fixture must not skip the native
+        # writer's separate ROM, process and RDRAM validation branch.
+        writer = Writer()
+        screen = controller(writer, backend='recomp')
+        screen.verified_rom_path = '/synthetic/JP.z64'
+        trusted = writer.rdram()
+        with patch('practice.toolkit.verified_japan_recomp_pid',
+                   return_value=(959604, 'recomp')) as pid, \
+             patch('practice.toolkit.verified_japan_probes',
+                   return_value=('verified-probe',)) as probes, \
+             patch('practice.toolkit.validate_japan_recomp_writer',
+                   return_value=trusted) as validate:
+            result = screen._japan_writable_reader(writer, screen.jp_rdram)
+        self.assertIs(result, trusted)
+        pid.assert_called_once_with(959604)
+        probes.assert_called_once_with('/synthetic/JP.z64')
+        validate.assert_called_once_with(
+            writer, screen.jp_rdram, ('verified-probe',))
 
     def test_unknown_row_rejected_before_opening_host(self):
         writer = Writer()
