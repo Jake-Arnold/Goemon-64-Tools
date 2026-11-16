@@ -1,0 +1,30 @@
+name: Toolkit Windows report smoke
+
+on:
+  push:
+    branches:
+      - "toolkit/**"
+  pull_request:
+    paths:
+      - "practice/reports.py"
+      - "practice/reports_ui.py"
+      - "tests/test_reports.py"
+      - "tests/test_toolkit_version.py"
+      - ".github/workflows/toolkit-windows-report.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  portable-reports:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Python practice modules
+        run: python -m compileall -q practice
+      - name: Verify Windows-compatible report and version functions
+        run: python -m unittest tests.test_reports tests.test_toolkit_version -v
