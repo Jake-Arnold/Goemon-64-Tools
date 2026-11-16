@@ -23,6 +23,31 @@
 | **Unused calibration/cursor builders** | `practice/ui_extension.py` defines native calibration and character-cursor pages that the Toolkit constructor does not presently call. | **Mark unmounted/dead-UI candidates**, but do not delete without a caller/search/import audit and test coverage. |
 | **Hidden logical checkpoint panel** | Toolkit instantiates legacy bookmark/checkpoint handling and later hides part of the layout. | **Preserve persistent saved states and APIs** until all uses and fallbacks have been mapped. |
 
+## What the former "Test" presets actually meant
+
+All of these have been removed from the selection dropdown in v0.11.36. They were proposed **actions for the human to perform between captures**, not independent search modes.
+
+| USA preset | Intended controlled game action |
+|---|---|
+| Travel destinations | Unlock a previously unavailable dragon travel destination. |
+| Map displayed | Toggle C-Right map off/on/off while otherwise stationary. |
+| Selected item / weapon | Switch equipped weapon and observe item/animation fields; a previously documented weapon index was given as background. |
+| Magic active | Activate magic (C-Up), then record again when its effect ends. |
+| Player velocity | Compare stationary, moving/jumping, and stationary states. |
+| Storyline event / quest flag | Repeat or perform a particular quest interaction, such as Benkei conversation or Ushiwaka reward. |
+| Item ownership only | Add an item (Achilles Heel example) without advancing the associated quest. |
+
+| Japanese preset | Intended controlled game action |
+|---|---|
+| Scene transition | Capture before and after a doorway/scene reload. |
+| Character switch | Capture before and after native C-Down switching. |
+| Ryo or inventory change | Compare before and after changing currency or items. |
+| Menu or map shown | Compare before/open/closed to identify reversible menu state. |
+| Story event candidate | Capture a repeatable dialogue/reward event; JP saved-event bytes were explicitly unverified. |
+| Player movement | Record still/moved/still-at-B snapshots; use the separate wide XYZ float-triple heuristic. |
+
+**Former hidden influence:** In USA comparisons the prefix of the chosen label applied small score boosts, even though it did not change the RAM ranges being captured. This behaviour has now been removed. The reports still identify known USA saved-event address ranges by address, not by the selected label. Japanese Player movement only affected the displayed capture-C wording and indicated the separate XYZ procedure; it was never a restricted capture mode.
+
 ## Comparison controls: exact current behaviour
 
 1. **Investigation name:** freeform, labels captures/report. It does not change memory range, matching rules or ranking.
