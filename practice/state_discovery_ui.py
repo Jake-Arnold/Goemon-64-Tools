@@ -52,11 +52,8 @@ class StateDiscoveryMixin:
         ttk.Button(context,text='Read scene context',command=self.read_scene_context).pack(anchor='w',pady=(5,3))
         ttk.Label(context,textvariable=self.transition_observation_text,wraplength=1050,justify='left').pack(anchor='w')
         row=ttk.Frame(tab);row.pack(fill='x',pady=(0,6))
-        ttk.Label(row,text='Investigation name').pack(side='left',padx=(0,6))
-        self.state_probe_selector=ttk.Entry(
-            row, textvariable=self.state_probe_kind, width=34)
-        self.state_probe_selector.pack(side='left')
-        ttk.Label(row,text='Capture scope').pack(side='left',padx=(18,5))
+        # The common Results toolbar owns the single editable experiment name.
+        ttk.Label(row,text='Capture scope').pack(side='left',padx=(0,6))
         self.state_probe_scope=tk.StringVar(value='focused')
         ttk.Combobox(row,textvariable=self.state_probe_scope,values=('focused','wide'),
                      width=10,state='readonly').pack(side='left')
@@ -105,6 +102,8 @@ class StateDiscoveryMixin:
             report_name=self.state_report_name,
             label='Memory comparison', save=self.export_state_probe)
         self.state_probe_export_button = self.state_probe_results.save_button
+        self.state_probe_selector = self.state_probe_results.report_entry
+        self.state_probe_results.controls.pack_configure(before=context)
         headings=('address','type','live','raw','region','before','after','bitmask','returned')
         frame=ttk.Frame(tab);frame.pack(fill='both',expand=True)
         self.state_probe_table=ttk.Treeview(
@@ -131,10 +130,11 @@ class StateDiscoveryMixin:
     def _set_state_probe_instruction(self):
         # Legacy API: the experiment name does not change the search policy.
         self.state_probe_instruction.set(
-            'Investigation names are labels only. Capture A before, B after; '
-            'optional C tests whether changes returned to A. '
-            'For Japan XYZ research, capture wide A still, B moved and '
-            'C still at B, then use Find XYZ triples.')
+            'Report name is a label only. Capture A before and B after. '
+            'Optional C retains only changes that revert to A; skip C for '
+            'irreversible or persistent events. For Japan XYZ research, '
+            'capture wide A still, B moved and C still at B, then use '
+            'Find XYZ triples.')
 
     def configure_state_probe_region(self):
         # Never reset a user's investigation name on a game-region change.
