@@ -12,6 +12,20 @@ import tkinter as tk
 from scripts.install_linux_launcher import APP_ID, WINDOW_CLASS, install
 
 
+def matches_toolkit_wm_class(output: str) -> bool:
+    """Tk's instance may gain ' #N'; its second WM_CLASS token is stable."""
+    match = re.fullmatch(
+        r'WM_CLASS\(STRING\)\s*=\s*"([^"]+)",\s*"([^"]+)"\s*',
+        output.strip(),
+    )
+    if match is None:
+        return False
+    instance, app_class = match.groups()
+    return (app_class == WINDOW_CLASS and
+            (instance == APP_ID or
+             re.fullmatch(re.escape(APP_ID) + r" #\d+", instance) is not None))
+
+
 class LinuxLauncherTests(unittest.TestCase):
     def test_installs_actual_png_and_stable_gnome_desktop_entry(self):
         with TemporaryDirectory() as tmp:
@@ -26,7 +40,8 @@ class LinuxLauncherTests(unittest.TestCase):
             contents = desktop.read_text(encoding="utf-8")
             self.assertIn("Name=Goemon Practice Toolkit", contents)
             self.assertIn(f"StartupWMClass={WINDOW_CLASS}", contents)
-            self.assertEqual(APP_ID, WINDOW_CLASS)
+            self.assertEqual(WINDOW_CLASS, 'Goemon-practice-toolkit')
+            self.assertNotEqual(APP_ID, WINDOW_CLASS)
             self.assertIn(f"Icon={data / 'icons' / (APP_ID + '.png')}", contents)
             self.assertIn('Exec=/usr/bin/env bash "', contents)
             self.assertIn(str(root / "Run-Linux.sh"), contents)
@@ -52,8 +67,19 @@ class LinuxLauncherTests(unittest.TestCase):
     def test_native_tk_class_matches_desktop_launcher(self):
         source = (Path(__file__).resolve().parents[1] /
                   "practice" / "toolkit.py").read_text(encoding="utf-8")
-        self.assertIn(f"tk.Tk(className='{WINDOW_CLASS}')", source)
-
+        self.assertIn(f"tk.Tk(className='{APP_ID}')", source)
+ 
+    def test_tk_class_accepts_numbered_instances_but_not_window_manager_frame(self):
+        self.assertTrue(matches_toolkit_wm_class(
+            'WM_CLASS(STRING) = "goemon-practice-toolkit", "Goemon-practice-toolkit"'))
+        self.assertTrue(matches_toolkit_wm_class(
+            'WM_CLASS(STRING) = "goemon-practice-toolkit #2", "Goemon-practice-toolkit"'))
+        self.assertFalse(matches_toolkit_wm_class(
+            'WM_CLASS(STRING) = "mutter-x11-frames", "mutter-x11-frames"'))
+        self.assertFalse(matches_toolkit_wm_class(
+            'WM_CLASS(STRING) = "other #2", "Goemon-practice-toolkit"'))
+        self.assertFalse(matches_toolkit_wm_class(
+            'WM_CLASS(STRING) = "goemon-practice-toolkit #2", "Wrong"'))
 
     @unittest.skipUnless(sys.platform == "linux" and os.environ.get("DISPLAY")
                          and shutil.which("xprop") and shutil.which("xwininfo"),
@@ -66,7 +92,7 @@ class LinuxLauncherTests(unittest.TestCase):
         the matching X window from the X11 hierarchy, then query its ID.
         """
         try:
-            root = tk.Tk(className=WINDOW_CLASS)
+            root = tk.Tk(className=APP_ID)
         except tk.TclError as exc:
             self.skipTest(str(exc))
         try:
@@ -89,7 +115,7 @@ class LinuxLauncherTests(unittest.TestCase):
                     capture_output=True, text=True, timeout=5, check=True)
                 matches.append(result.stdout)
             self.assertTrue(
-                any(f'"{APP_ID}"' in output for output in matches),
+                any(matches_toolkit_wm_class(output) for output in matches),
                 "No toolkit X11 client had the expected WM_CLASS. "
                 f"Title: {title!r}. Candidates: {matches!r}. "
                 f"X11 tree: {tree.stdout[-3000:]}")
