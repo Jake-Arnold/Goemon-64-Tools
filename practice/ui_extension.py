@@ -203,6 +203,11 @@ class InspectorMixin(EntranceMixin):
             command=self.try_reload_warp,style='Gold.TButton')
         self.experimental_warp_btn.pack(fill='x',pady=4)
         if not self.args.enable_hex_edit:self.experimental_warp_btn.state(['disabled'])
+        self.jp_capture_spawn_btn = ttk.Button(
+            scenes, text="Record current Japanese Goemon XYZ as this room's warp point",
+            command=self.capture_japan_warp_spawn)
+        self.jp_capture_spawn_btn.pack(fill='x', pady=(0, 4))
+        self.jp_capture_spawn_btn.state(['disabled'])
         ttk.Label(scenes,textvariable=self.scene_status,wraplength=950).pack(anchor='w',pady=8)
         self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.enter_debug_menu)
         self.native_debug_btn.pack(fill='x',pady=5)
@@ -217,6 +222,11 @@ class InspectorMixin(EntranceMixin):
         """One browser with two explicit, separately validated warp backends."""
         japan = self.active_version.key == 'japan'
         if japan:
+            self.jp_capture_spawn_btn.pack(
+                fill='x', after=self.experimental_warp_btn, pady=(0, 4))
+            self.jp_capture_spawn_btn.state(
+                ['!disabled'] if self.jp_rdram is not None
+                and not self._connecting else ['disabled'])
             self.scene_instruction.configure(
                 text='JAPAN: single-click selects; double-click immediately '
                      'requests the selected room using the same 0x0C area '
@@ -245,6 +255,7 @@ class InspectorMixin(EntranceMixin):
                      '(0x0C). If cached USA reference entrance data exists, '
                      'use it when unambiguous. No active-map or exit-bit writes.')
         else:
+            self.jp_capture_spawn_btn.pack_forget()
             self.scene_instruction.configure(
                 text='USA: single-click selects; double-click uses the '
                      'selected entrance reload. Manual debug menu is separate.')
