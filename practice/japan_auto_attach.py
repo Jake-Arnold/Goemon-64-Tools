@@ -82,3 +82,54 @@ def describe_verified_connections(connections) -> str:
     return "; ".join(
         f"PID {pid} {backend} at 0x{base:X} ({endian})"
         for pid, backend, base, endian in connections)
+
+
+def connect_candidate_ram(candidate: JapanProcessCandidate, process, probes, *,
+                          base_hint=None, endian="auto"):
+    """Verify a cached hint first; fall back to a full 3-signature scan.
+
+    The hint is only a speed optimization, never proof of a live game. Manual
+    host-base/endian overrides remain explicit and are re-verified.
+    """
+    from practice.japan_connection_hints import load_hint
+    from practice.japanese_mupen_attach import (
+        discover_japanese_mupen_rdram, validate_rdram_base,
+    )
+    from practice.japan_native_recomp import (
+        discover_japan_recomp_rdram, validate_japan_recomp_context,
+    )
+    allow_4mb = candidate.backend == "project64"
+    if base_hint is None and endian == "auto" and candidate.executable:
+        hint = load_hint(candidate.executable, candidate.backend, probes)
+        if hint is not None:
+            base, cached_endian = hint
+            try:
+                reader = validate_rdram_base(
+                    process, base, cached_endian, probes, allow_4mb=allow_4mb)
+                if candidate.backend == "recomp":
+                    validate_japan_recomp_context(
+                        reader, strict_character=False)
+                return reader, base, cached_endian
+            except (OSError, ValueError, RuntimeError):
+                # A recompilation update or ASLR may have changed the mapping.
+                # Retrying a full scan is mandatory; do not accept the cache.
+                pass
+    if candidate.backend == "recomp":
+        return discover_japan_recomp_rdram(
+            process, probes, mode=endian, base_hint=base_hint,
+            strict_character=False)
+    return discover_japanese_mupen_rdram(
+        process, probes, mode=endian, base_hint=base_hint,
+        allow_4mb=allow_4mb)
+
+
+def remember_verified_connection(candidate: JapanProcessCandidate,
+                                 probes, base: int, endian: str) -> None:
+    """Best-effort local preference; never part of the attach proof."""
+    if candidate.executable:
+        from practice.japan_connection_hints import save_hint
+        try:
+            save_hint(candidate.executable, candidate.backend,
+                      probes, base, endian)
+        except OSError:
+            pass
