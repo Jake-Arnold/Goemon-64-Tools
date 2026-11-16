@@ -10,6 +10,7 @@ import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 from practice.paths import diagnostics_dir
+from practice.discovery_results import DiscoveryResultsPanel
 from practice.reports import create_discovery_report
 from practice.state_discovery import PROBE_ACTIONS, capture_state, compare_captures
 from practice.theme import PALETTE
@@ -39,6 +40,7 @@ class StateDiscoveryMixin:
         self.state_discovery_tab=tab
         self.state_captures={}
         self.state_report=None
+        self.state_report_name = tk.StringVar(value='Memory changes')
         self._jp_probe_generation = 0
         self._jp_probe_busy = False
         ttk.Label(tab,text='Find memory changes before and after an action',font=('Segoe UI Semibold',16),
@@ -89,9 +91,6 @@ class StateDiscoveryMixin:
         self.state_xyz_button = ttk.Button(
             row, text='Find XYZ triples (read-only)',
             command=self.find_japan_xyz_from_captures)
-        self.state_probe_export_button = ttk.Button(
-            row, text='Save report', command=self.export_state_probe)
-        self.state_probe_export_button.pack(side='left',padx=(0,7))
         ttk.Button(row,text='Clear',command=self.reset_state_probes).pack(side='left')
         self.state_xyz_export_row = ttk.Frame(tab)
         self.state_xyz_export_row.pack(fill='x', pady=(0, 6))
@@ -107,27 +106,31 @@ class StateDiscoveryMixin:
         self.state_xyz_full_export_button.pack_forget()
         self.state_probe_status=tk.StringVar(value='No captures. Select a test and connect to the game.')
         ttk.Label(tab,textvariable=self.state_probe_status,wraplength=1060).pack(anchor='w',pady=(0,10))
-        headings=('address','region','before','after','bitmask','returned','kind')
+        self.state_probe_results = DiscoveryResultsPanel(
+            self, tab, tree=lambda: self.state_probe_table,
+            status=self.state_probe_status,
+            report_name=self.state_report_name,
+            label='Memory comparison', save=self.export_state_probe)
+        self.state_probe_export_button = self.state_probe_results.save_button
+        headings=('address','type','live','raw','region','before','after','bitmask','returned')
         frame=ttk.Frame(tab);frame.pack(fill='both',expand=True)
-        self.state_probe_table=ttk.Treeview(frame,columns=headings,show='headings',height=15)
+        self.state_probe_table=ttk.Treeview(
+            frame,columns=headings,show='headings',selectmode='extended',height=15)
         for key,heading,width in (
-                ('address','Guest address',150),('region','Region',135),
-                ('before','A: before',95),('after','B: after',95),
-                ('bitmask','XOR mask',85),('returned','C matched A?',125),
-                ('kind','Potential type',150)):
+                ('address','N64 address',145),('type','Type',135),
+                ('live','Live value',140),('raw','Live hex',145),
+                ('region','Region',130),('before','A: before',95),
+                ('after','B: after',95),('bitmask','XOR mask',85),
+                ('returned','C matched A?',125)):
             self.state_probe_table.heading(key,text=heading)
             self.state_probe_table.column(key,width=width,stretch=key=='region')
         bar=ttk.Scrollbar(frame,orient='vertical',command=self.state_probe_table.yview)
         self.state_probe_table.configure(yscrollcommand=bar.set)
         self.state_probe_table.pack(side='left',fill='both',expand=True)
         bar.pack(side='right',fill='y')
-        row=ttk.Frame(tab);row.pack(fill='x',pady=7)
-        ttk.Button(row,text='Copy selected address',command=self.copy_state_probe_address).pack(side='left')
-        ttk.Button(row,text='Watch selected address',command=self.watch_state_probe_candidate,
-                   style='Gold.TButton').pack(side='left',padx=(8,0))
-        ttk.Label(row,text='A/B changes alone are hypotheses. For persistent storyline flags, A/B is sufficient. '
-                  'Player-task float values are not proven velocity.',style='Muted.TLabel',
-                  wraplength=850).pack(side='left',padx=(15,0))
+        ttk.Label(tab,text='A/B comparisons identify hypotheses, not proven game fields. '
+                  'Live updates do not alter A/B/C evidence.',style='Muted.TLabel',
+                  wraplength=1050).pack(anchor='w',pady=(6,0))
 
     def _state_is_japan(self):
         return getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan'
@@ -148,8 +151,7 @@ class StateDiscoveryMixin:
         self.state_probe_kind.set(next(iter(actions)))
         self._set_state_probe_instruction()
         if self._state_is_japan():
-            self.state_xyz_button.pack(side='left', padx=(0, 7),
-                                       before=self.state_probe_export_button)
+            self.state_xyz_button.pack(side='left', padx=(0, 7))
         else:
             self.state_xyz_button.pack_forget()
             self.state_xyz_full_export_button.pack_forget()
@@ -294,8 +296,12 @@ class StateDiscoveryMixin:
             self.state_probe_table.delete(*self.state_probe_table.get_children())
             for i,row in enumerate(report['candidates']):
                 self.state_probe_table.insert('','end',iid=str(i),values=(
-                    row['address'],row['region'],row['before'],row['after'],
-                    row['xor_mask'],'yes' if row['reverted'] else '—',row['kind']))
+                    row['address'],row['kind'],'—','—',row['region'],
+                    row['before'],row['after'],row['xor_mask'],
+                    'yes' if row['reverted'] else '—'))
+            self.state_probe_results.label = (
+                'JP A/B/C' if self._state_is_japan() else 'Memory comparison')
+            self.state_probe_results.refresh_now()
             counts=report['counts']
             event_count=len(report.get('event_flag_changes',[]))
             note = ('Japanese event banks are unmapped. ' if self._state_is_japan()
@@ -374,8 +380,11 @@ class StateDiscoveryMixin:
             self.state_probe_table.column('after', width=205)
             for i, row in enumerate(report['candidates']):
                 self.state_probe_table.insert('', 'end', iid=str(i), values=(
-                    row['address'], row['region'], row['before'], row['after'],
-                    row['xor_mask'], 'yes' if row['c_stable_at_b'] else '—', row['kind']))
+                    row['address'], row['kind'], '—', '—', row['region'],
+                    row['before'], row['after'], row['xor_mask'],
+                    'yes' if row['c_stable_at_b'] else '—'))
+            self.state_probe_results.label = 'JP XYZ candidate'
+            self.state_probe_results.refresh_now()
             counts = report['counts']
             self.state_probe_status.set(
                 f"XYZ candidates: {counts['candidate_count']} moving/settled float "
@@ -539,38 +548,12 @@ class StateDiscoveryMixin:
             self.state_probe_status.set(f'Save report failed: {exc}')
 
     def copy_state_probe_address(self):
-        chosen=self.state_probe_table.selection()
-        if not chosen:
-            self.state_probe_status.set('Select a candidate row first.')
-            return
-        addr=self.state_probe_table.item(chosen[0],'values')[0]
-        self.root.clipboard_clear()
-        self.root.clipboard_append(addr)
-        self.state_probe_status.set(f'Copied candidate address {addr}; not confirmed or enabled for editing.')
+        self.state_probe_results.copy_address()
+        self.state_probe_status.set(self.state_probe_results.live_status.get())
 
     def watch_state_probe_candidate(self):
-        chosen=self.state_probe_table.selection()
-        if not chosen:
-            self.state_probe_status.set('Select a candidate before adding it to Live Memory.')
-            return
-        row=self.state_probe_table.item(chosen[0],'values')
-        address=row[0]
-        kind='f32' if row[6] in ('f32 candidate', 'XYZ triple candidate') else 'u8'
-        if self._state_is_japan():
-            if self.add_japan_custom_watch_from_search(
-                    address, kind,
-                    label=(f'JP XYZ candidate X {address}' if
-                           row[6] == 'XYZ triple candidate' else
-                           f'JP A/B/C {address}')):
-                self.notebook.select(self.jp_fields_tab)
-            else:
-                self.state_probe_status.set(self.jp_custom_watch_status.get())
-            return
-        self.user_watch_name.set(f'{self.state_probe_kind.get()} {address}')
-        self.user_watch_address.set(address)
-        self.user_watch_type.set(kind)
-        self.add_custom_watch()
-        self.notebook.select(self.live_memory_tab)
+        self.state_probe_results.watch_selected()
+        self.state_probe_status.set(self.state_probe_results.live_status.get())
 
     def reset_state_probes(self):
         self._jp_probe_generation += 1
@@ -581,4 +564,5 @@ class StateDiscoveryMixin:
         self.state_xyz_full_export_button.pack_forget()
         self.state_xyz_full_export_note.pack_forget()
         self.state_probe_table.delete(*self.state_probe_table.get_children())
+        self.state_probe_results.invalidate()
         self.state_probe_status.set('Captures cleared; no game memory was written.')
