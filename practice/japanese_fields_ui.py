@@ -318,7 +318,7 @@ class JapaneseFieldsUi:
             and self.jp_rdram is not None
             and getattr(self, 'game_pid', None) is not None
             and getattr(self, 'verified_rom_path', None) is not None
-            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus')
+            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus', 'recomp')
             and getattr(getattr(self, 'connection_target', None),
                         'get', lambda: None)() == self.jp_backend
             and bool(getattr(getattr(self, 'args', None),
@@ -359,7 +359,7 @@ class JapaneseFieldsUi:
             and self.jp_rdram is not None
             and getattr(self, 'game_pid', None) is not None
             and getattr(self, 'verified_rom_path', None) is not None
-            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus')
+            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus', 'recomp')
             and getattr(getattr(self, 'connection_target', None),
                         'get', lambda: None)() == self.jp_backend
             and bool(getattr(getattr(self, 'args', None),
