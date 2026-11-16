@@ -47,7 +47,10 @@ from practice.japan_native_scene_warp import is_japan_scene_loaded
 from practice.japan_direct_scene_reload import (
     JAPAN_DIRECT_RELOAD_MODE, stage_japan_direct_reload,
 )
-from practice.entrances import incoming, spawn_from_entry
+from practice.japan_warp_spawns import (
+    load_japan_spawns, save_japan_spawn, capture_current_japan_spawn,
+    destination_spawn, position_difference,
+)
 from practice.scenes import SCENES
 from practice.emulator_savestates import find_emulator_pid, verified_emulator_pid, send_state_command
 from practice.japanese_mupen_attach import (
@@ -156,6 +159,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.native_key_release = None
         self.jp_auto_warp = None
         self.jp_native_key_release = None
+        self.jp_warp_spawns = load_japan_spawns()
         self.last, self.last_t = None, None
         self.observed_velocity = None
         self.current = None
@@ -976,28 +980,43 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.status.set(message)
 
     def _japan_reference_entrance(self, destination, source):
-        """Use a uniquely matched USA-atlas entrance, if explicitly available.
+        """Use only Japan-captured XYZ or the observed Oedo South preset.
 
-        The user verified USA Oedo South X/Y/Z in Japan, not every entrance.
-        Do not invent coordinates for unknown/ambiguous destinations. With no
-        reference entrance the game's native reload receives map ID only.
+        The old code read self.entrance_atlas, which was NEVER initialized.
+        As a result the loader always received just a 2-byte map ID. It is
+        also incorrect to silently treat a USA ROM entrance atlas as JP data.
         """
-        atlas = getattr(self, 'entrance_atlas', None)
-        if atlas is None:
-            return None
-        rows = incoming(atlas, destination)
-        matching = [row for row in rows
-                    if row['kind'] == 'exit' and row['source_map'] == source]
-        defaults = [row for row in rows if row['kind'] == 'default']
-        for group in (matching, defaults):
-            possible = [spawn_from_entry(row) for row in group]
-            unique = {
-                (tuple(spawn.position), spawn.heading, spawn.mode): spawn
-                for spawn in possible
-            }
-            if len(unique) == 1:
-                return next(iter(unique.values()))
-        return None
+        return destination_spawn(
+            getattr(self, 'jp_warp_spawns', {}), destination)
+
+    def capture_japan_warp_spawn(self):
+        """Record the current Japanese Goemon position for future room reloads.
+
+        This is a deliberate, user-initiated capture from *the destination*
+        while already visiting it. No game memory is written at capture time.
+        """
+        try:
+            if (self.active_version.key != 'japan'
+                    or self.jp_rdram is None or self.game_pid is None
+                    or self._connecting or self.jp_auto_warp is not None):
+                raise RuntimeError(
+                    'Connect to stable Japanese gameplay without a pending warp')
+            point, basis = capture_current_japan_spawn(self.jp_rdram)
+            save_japan_spawn(point, basis=basis)
+            self.jp_warp_spawns[point.destination] = point
+            message = (
+                f'Captured JP scene 0x{point.destination:03X} warp XYZ '
+                f'({point.position[0]:.2f}, {point.position[1]:.2f}, '
+                f'{point.position[2]:.2f}). Heading/mode: '
+                + ('observed matching native pending record.'
+                   if basis == 'native-pending' else
+                   'UNVERIFIED defaults (0 / 0x10). Test footing.'))
+            self.scene_status.set(message)
+            self.status.set(message)
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            message = f'Japanese warp-point capture refused: {exc}'
+            self.scene_status.set(message)
+            self.status.set(message)
 
     def start_japan_native_scene_warp(self, destination=None):
         """Same immediate 0x0C area-reload sequence as USA Scene Browser.
@@ -1046,10 +1065,14 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'target_character': target_character,
             }
             entrance_note = (
-                f' USA-reference entrance {spawn.entrance_id} was staged.'
+                f' Japanese warp XYZ {tuple(round(v, 2) for v in spawn.position)} '
+                f'({spawn.entrance_id}) staged in a 12-byte entry block; '
+                'native spawn handling is still experimental.'
                 if spawn is not None else
-                ' No validated entrance was available; only the native '
-                'pending scene ID was staged.')
+                ' NO JAPANESE WARP XYZ KNOWN: only a 2-byte scene ID was '
+                'staged. Coordinates are NOT set and footing is unverified. '
+                'Visit the room normally and capture its Japanese position '
+                'before expecting a correctly positioned warp.')
             message = (
                 f'Japan instant reload 0x{context[1]:03X} → '
                 f'0x{destination:03X}: pending destination written, '
@@ -1106,15 +1129,41 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                     return
                 pending['stable'] += 1
                 if pending['stable'] >= 3:
-                    spawn_note = (
-                        ' Reference entrance staged from USA atlas.'
-                        if pending['spawn'] is not None else
-                        ' Native default entrance/position remains to be verified.')
+                    actual = read_japan_position(self.jp_rdram)
+                    xyz_text = '(' + ', '.join(f'{v:.1f}' for v in actual) + ')'
+                    intended = pending['spawn']
+                    if intended is None:
+                        verdict = (
+                            'SCENE LOADED; NO DESTINATION XYZ WAS STAGED. '
+                            f'Observed position {xyz_text} is not verified '
+                            'against any entrance. Capture a Japanese warp '
+                            'point in this scene before relying on its spawn.')
+                    else:
+                        delta = position_difference(intended.position, actual)
+                        target_xyz = '(' + ', '.join(
+                            f'{v:.1f}' for v in intended.position) + ')'
+                        if delta > 16:
+                            verdict = (
+                                'SCENE LOADED, SPAWN MISMATCH: '
+                                f'requested {target_xyz}, observed {xyz_text}, '
+                                f'3D displacement {delta:.1f} units. '
+                                'The game did not preserve the staged spawn.')
+                        else:
+                            verdict = (
+                                f'SCENE LOADED near requested XYZ {target_xyz}: '
+                                f'observed {xyz_text} (delta {delta:.1f} units). '
+                                'Collision/footing still needs in-game verification.')
+                    if pending['target_character'] is not None:
+                        character = int.from_bytes(
+                            self.jp_rdram.read_guest(JAPAN_DEBUG_CHARACTER, 4),
+                            'big')
+                        if character != pending['target_character']:
+                            verdict += (
+                                f' Requested character {pending["target_character"]}, '
+                                f'but live character is {character}.')
                     self._finish_japan_native_warp(
-                        f'Japan scene reload reached 0x{pending["destination"]:03X} '
-                        f'{SCENES[pending["destination"]]} with three stable '
-                        'gameplay/character/XYZ reads. Confirm actual controls '
-                        f'and footing in {self.jp_backend}.' + spawn_note)
+                        f'Japan 0x{pending["destination"]:03X} '
+                        f'{SCENES[pending["destination"]]}: {verdict}')
             else:
                 pending['stable'] = 0
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
