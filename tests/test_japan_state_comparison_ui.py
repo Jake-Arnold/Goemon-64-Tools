@@ -59,7 +59,8 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         self.assertEqual(app.notebook.tab(app.unlock_tab, 'state'), 'normal')
         app.event_sections.select(app.state_discovery_tab)
         self.assertEqual(app.event_sections.select(), str(app.state_discovery_tab))
-        self.assertEqual(app.state_probe_kind.get(), 'Scene transition')
+        self.assertEqual(app.state_probe_kind.get(), 'Memory comparison')
+        self.assertIsInstance(app.state_probe_selector, __import__('tkinter').ttk.Entry)
         app.state_probe_scope.set('focused')
 
         app.capture_state_probe('A')
@@ -94,7 +95,8 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         app.state_probe_kind.set('Player movement')
         app._set_state_probe_instruction()
         self.assertEqual(app.state_probe_capture_buttons['C'].cget('text'),
-                         'Capture C: Still at B')
+                         'Capture C: Optional')
+        self.assertIn('C still at B', app.state_probe_instruction.get())
         app.state_probe_scope.set('wide')
         put_xyz(app.jp_rdram, XYZ_ADDR, (100.0, 20.0, -50.0))
         app.capture_state_probe('A')
