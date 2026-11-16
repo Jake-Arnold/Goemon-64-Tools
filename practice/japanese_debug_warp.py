@@ -79,8 +79,10 @@ def enter_japan_native_debug_menu(rdram, destination=None, *,
     before = rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
     changed = before != JAPAN_NATIVE_DEBUG_MODE
     if changed:
-        rdram.write_guest(JAPAN_DEBUG_ENGINE_MODE,
-                          bytes((JAPAN_NATIVE_DEBUG_MODE,)))
+        # An exact physical byte write is required: a swapped 2/4-byte
+        # read-modify-write could overwrite neighboring live engine fields.
+        rdram.write_guest_byte_exact(
+            JAPAN_DEBUG_ENGINE_MODE, JAPAN_NATIVE_DEBUG_MODE)
     observed = rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
     if observed != JAPAN_NATIVE_DEBUG_MODE:
         raise RuntimeError(
