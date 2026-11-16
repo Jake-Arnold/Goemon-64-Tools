@@ -88,6 +88,27 @@ class JapanRecompWriteUITests(unittest.TestCase):
         self.assertIn('disabled', app.jp_position_apply_button.state())
         self.assertIn('disabled', app.jp_debug_menu_button.state())
 
+    def test_native_recomp_story_progress_inventory_editor_enabled(self):
+        app = self.app
+        app.jp_rdram.values[(0x8016204B, 1)] = bytes((1,))
+        app.refresh_story_progress()
+        app.story_sections.select(0)
+        app.story_tables['All'].selection_set('jp_unlock_star')
+        app.select_story_edit()
+        self.assertNotIn('disabled', app.story_edit_button.state())
+        self.assertEqual(tuple(app.story_edit_combo['values']),
+                         ('0x00', '0x01'))
+        self.assertEqual(JAPAN_PROGRESS_ITEMS['star'].label, 'Star')
+
+    def test_native_recomp_freeze_permission_accepts_valid_gameplay(self):
+        app = self.app
+        with patch('practice.value_freezes_ui.stable_japan_gameplay',
+                   return_value=(13, 0x161, 0, 0)):
+            app.require_freeze_access(raw=True)
+            app.args.read_only = True
+            with self.assertRaises(PermissionError):
+                app.require_freeze_access(raw=True)
+
     def test_unmapped_japanese_fields_stay_distinct_from_usa_writers(self):
         app = self.app
         app.refresh_unlocks(force=True)
