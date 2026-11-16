@@ -17,6 +17,7 @@ class EntranceUITests(unittest.TestCase):
         self.root=tk.Tk();self.root.withdraw()
         with patch('practice.entrance_ui.load_atlas',return_value=atlas_fixture()):
             self.app=Toolkit(self.root,parse_args(['--game-version','usa']))
+        self.assertEqual(self.app.active_version.key, 'usa')
         self.process,self.app.mem=checkpoint_fixture.TestCheckpoint().sample()
         self.app.mem.write_guest(MAP_ADDR,(1).to_bytes(2,'big'))
         self.app.current=self.app.mem.snapshot()
