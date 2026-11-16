@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Cross-region JP/USA C matching continues to 36 isolated functions (research only)
+
+- Changed: added seven original-ID0 exact C reconstructions, mapped to independently byte-identical Japanese function ROM spans: six new research-only `file_18/file_19` functions (244 bytes) and one existing promoted main-code bit-array predicate `func_800166AC_172AC` (52 bytes). Total isolated original-ROM verification is **36 functions / 1,744 instruction bytes per region**, with **33 new USA candidates / 1,616 bytes** and three existing C duplicates. Documented original JP Impact value-search archive `0x802F7060/7064/7068` and corrected the 'Impact HP' export label vs. established oil offset.
+- Tested: both exact 32 MiB original ROM SHA-1s verified; 36/36 pinned source SHA-256, named compiled IDO 5.3 function byte extents, no MIPS relocations and original USA/JP instruction matches passed with `verify_candidates.py`; seven pure synthetic cross-region scanner regression tests passed. No native combined production G2, ELF inventory, or complete `decomp.local_ci` was executed for this research addition.
+- Limitations: new sources are isolated proof only; live JP Impact controller-pointer slot is not verified, and no runtime writes are enabled. Current USA canonical 315-C production manifest/results/inventory and Japanese regional 24-C proof are unchanged.
+- Next: deduplicate and integrate approved original-address source groups in fail-closed mixed ASM/C overlay stage with a fresh complete USA ROM, relocation, 7,376-entry inventory and full local CI gate; expand source reconstruction beyond 303 identical-byte leads.
+
+
 ### 2026-11-16 — Three additional Impact isolates: 29 exact JP/USA C probes in research
 
 - Changed: appended original USA/JP VMAs for `func_801D619C_60157C` (56 B), `func_801D825C_60363C` (52 B), `func_80203F5C_62F33C` (44 B) to `docs/JP_RECOMP_TO_C_MATCHING_2026-11-16.md`. Native isolated cross-region matches total **29 functions / 1,448 bytes**, two already canonical, **27 new candidates / 1,372 bytes**. Canonical USA remains 315.

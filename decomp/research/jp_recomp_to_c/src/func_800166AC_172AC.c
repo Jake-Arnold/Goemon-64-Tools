@@ -1,0 +1,1 @@
+typedef unsigned char u8; int func_800166AC_172AC (u8 *p,int bit){return (p[bit >> 3] & (1 << (bit & 7))) ? 1 : 0;}
