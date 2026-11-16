@@ -111,6 +111,8 @@ class EntranceUITests(unittest.TestCase):
             save_atlas(legacy, atlas)
             with patch('practice.entrance_ui.stored_entrance_atlas_path',
                        return_value=persistent), \
+                 patch('practice.entrance_ui.repository_entrance_atlas_path',
+                       return_value=folder / 'missing-bundled.json'), \
                  patch('practice.entrance_ui.practice_data_dir',
                        return_value=folder):
                 first = EntranceMixin()
@@ -121,6 +123,53 @@ class EntranceUITests(unittest.TestCase):
                 second = EntranceMixin()
                 second.init_entrances()
                 self.assertEqual(second.entrance_atlas, atlas)
+
+    def test_repository_bundled_entrance_table_wins_over_local_cache(self):
+        from practice.entrance_ui import EntranceMixin
+        from practice.entrances import save_atlas
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            bundled = folder / 'repo' / 'entrance-coordinates.json'
+            local = folder / 'xdg' / 'entrance-coordinates.json'
+            atlas = atlas_fixture()
+            save_atlas(bundled, atlas)
+            changed = copy.deepcopy(atlas)
+            changed['payload']['entries'][0]['position'] = [7, 8, 9]
+            changed['sha256'] = digest(changed['payload'])
+            save_atlas(local, changed)
+            with patch('practice.entrance_ui.repository_entrance_atlas_path',
+                       return_value=bundled), \
+                 patch('practice.entrance_ui.stored_entrance_atlas_path',
+                       return_value=local), \
+                 patch('practice.entrance_ui.practice_data_dir',
+                       return_value=folder):
+                host = EntranceMixin()
+                host.init_entrances()
+                self.assertEqual(host.entrance_atlas, atlas)
+                self.assertEqual(host.entrance_atlas_source, 'repository')
+
+    def test_invalid_checked_in_entrance_table_falls_back_to_valid_user_cache(self):
+        from practice.entrance_ui import EntranceMixin
+        from practice.entrances import save_atlas
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            bundled = folder / 'repo' / 'entrance-coordinates.json'
+            bundled.parent.mkdir()
+            bundled.write_text('invalid file', encoding='utf-8')
+            local = folder / 'xdg' / 'entrance-coordinates.json'
+            atlas = atlas_fixture()
+            save_atlas(local, atlas)
+            with patch('practice.entrance_ui.repository_entrance_atlas_path',
+                       return_value=bundled), \
+                 patch('practice.entrance_ui.stored_entrance_atlas_path',
+                       return_value=local), \
+                 patch('practice.entrance_ui.practice_data_dir',
+                       return_value=folder):
+                host = EntranceMixin()
+                host.init_entrances()
+                self.assertEqual(host.entrance_atlas, atlas)
+                self.assertEqual(host.entrance_atlas_source,
+                                 'persistent user cache')
 
     def test_failed_rom_load_preserves_previous_atlas(self):
         old=self.app.entrance_atlas
