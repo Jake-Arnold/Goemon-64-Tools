@@ -1,5 +1,96 @@
 # Ubuntu Japanese toolkit test failures and native JP crash (2026-11-16)
 
+## Later v0.11.30 user run (14:55 UTC): 290 core tests passed, GUI stalled
+
+User launched the *separate* `Goemon64RecompiledJP` from
+`~/Goemon64Recomp-JP` after successfully completing its 15 stage-5 unit
+tests and Clang/CMake build. This game run logged a clean timer-worker join
+and cleaner audit, with guest teardown still explicitly not proven. No
+segmentation fault or native-game freeze is shown in this later log.
+
+The user then checked out
+`toolkit/japan-debug-autoattach-warp-reliability` and ran
+`bash scripts/test_japan_party.sh`. **All 290 non-GUI tests passed**.
+The Xvfb GUI section passed the Japanese-focused tests and GNOME launcher
+test but reported multiple USA-only test FAIL/ERROR results in
+`tests.test_value_freezes_ui`, `tests.test_story_progress_ui`,
+`tests.test_dashboard` and `tests.test_entrance_ui`. The supplied log
+ends without a GUI suite result on
+`tests.test_entrance_ui.EntranceUITests.test_scene_request_blocks_overlapping_checkpoint_restore`,
+whose `restore_full_checkpoint()` can open a modal
+`messagebox.askyesno` if `pending_direct_warp` is absent.
+**The log does not show a Python traceback or process thread dump**;
+the hidden-modal mechanism is a strongly supported hypothesis, not a
+directly observed stack trace.
+
+### Identified cross-test dependency and scoped correction
+
+The GUI tests intentionally switch the toolkit to Japan using
+`on_game_version_changed()`, which persists the selection with
+`save_last_region()`. The subsequent **USA-only** test fixtures
+constructed `Toolkit(..., parse_args([]))` without specifying a
+region, causing them to inherit the last saved Japanese selection
+from the same test sequence or user's settings. This explains the
+broad cluster of unrelated USA-only failures and why the synthetic USA
+scene request would not produce the expected pending warp.
+Calling `restore_full_checkpoint()` then bypasses the pending-warp
+guard and reaches the confirmation dialog, which is invisible under
+Xvfb and can wait indefinitely.
+
+Corrections on the v0.11.30 feature branch:
+
+1. Pin USA-only fixture constructors in
+   `test_value_freezes_ui.py`, `test_story_progress_ui.py`,
+   `test_dashboard.py`, and `test_entrance_ui.py` to explicitly
+   select `usa`, independent of persisted preferences. Each checks
+   `active_version.key == 'usa'` during setup.
+2. Pin initial USA state in Japanese transition tests
+   `test_japan_named_checkpoint_ui.py`, `test_japan_value_freezes_ui.py`,
+   `test_japan_story_progress_ui.py`, and `test_region_unlocks_ui.py`
+   and prevent their `save_last_region` calls from writing to the
+   developer's own launcher preferences.
+3. Isolate the entire Linux test run with a disposable
+   `XDG_CONFIG_HOME` directory; remove it on script exit.
+   This prevents tests from modifying the installed toolkit's
+   persistent region, ROM cache, or connection hints.
+4. The formerly hanging entrance/checkpoint test explicitly asserts
+   that `pending_direct_warp` exists and mocks
+   `practice.toolkit.messagebox.askyesno` to raise an immediate
+   test error rather than block on a hidden GUI dialog if the
+   precondition unexpectedly fails.
+5. Bound the Xvfb and DISPLAY GUI smoke phase with coreutils
+   `timeout` (default **120 seconds**, configurable with
+   `GOEMON_GUI_TEST_TIMEOUT_SECONDS`), so any further unmocked
+   modal deadlock fails with nonzero exit instead of waiting forever.
+
+These changes touch **test fixtures and the Linux test runner only**;
+native recomp executable and production toolkit RAM/discovery/warp
+logic are unchanged by this correction.
+
+**Verification boundary:** These corrections were committed on GitHub
+after the observed 290-pass/hung-GUI run. The user has **not yet
+rerun** the corrected GUI suite. Do not claim this issue is closed
+until the full GUI test summary succeeds, including the formerly
+stalled entrance/checkpoint test.
+
+### Reproduction / verification after fetching the new commit
+
+```bash
+cd ~/Desktop/Goemon-64-Tools-JP-Recomp
+git fetch origin
+git switch toolkit/japan-debug-autoattach-warp-reliability
+git pull --ff-only
+bash scripts/test_japan_party.sh
+```
+
+The command tests in an isolated temporary preferences environment.
+An unrelated live game process is **not** required; the memory/write
+fixtures are synthetic. Only run `bash Run-Linux.sh` separately
+after the tests, and perform live game validation independently.
+
+---
+
+
 ## Reproduction evidence
 
 User ran `bash scripts/test_japan_party.sh` from a fresh toolkit
