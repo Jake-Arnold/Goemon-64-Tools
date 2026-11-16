@@ -159,7 +159,7 @@ class StateDiscoveryMixin:
         if self._state_is_japan():
             if getattr(self, 'jp_rdram', None) is None:
                 self.transition_observation_text.set(
-                    'Connect to verified Japanese Project64 or Mupen64Plus first.')
+                    'Connect to verified Japanese native recomp, Project64 or Mupen64Plus RAM first.')
                 return
             readings = read_japan_scene_probes(self.jp_rdram)
             self.transition_observation_text.set('\n'.join(
@@ -181,7 +181,7 @@ class StateDiscoveryMixin:
             return
         reader = getattr(self, 'jp_rdram', None)
         if reader is None or getattr(self, 'game_pid', None) is None:
-            self.state_probe_status.set('Connect to verified Japan-0 emulator RDRAM first.')
+            self.state_probe_status.set('Connect to verified Japan-0 native recomp or emulator RDRAM first.')
             return
         if stage == 'C' and 'B' not in self.state_captures:
             self.state_probe_status.set('Capture A and B before optional C.')
