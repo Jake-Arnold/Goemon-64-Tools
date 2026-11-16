@@ -69,6 +69,7 @@ $backendTests = @(
     'tests.test_japan_native_scene_warp',
     'tests.test_japan_direct_scene_reload',
     'tests.test_japan_warp_spawns',
+    'tests.test_japan_spawn_placement',
     'tests.test_japan_native_scene_controller',
     'tests.test_japan_state_comparison',
     'tests.test_japan_player_position_research',
