@@ -2,6 +2,11 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+import os
+import shutil
+import subprocess
+import sys
+import tkinter as tk
 
 from scripts.install_linux_launcher import APP_ID, WINDOW_CLASS, install
 
@@ -20,6 +25,7 @@ class LinuxLauncherTests(unittest.TestCase):
             contents = desktop.read_text(encoding="utf-8")
             self.assertIn("Name=Goemon Practice Toolkit", contents)
             self.assertIn(f"StartupWMClass={WINDOW_CLASS}", contents)
+            self.assertEqual(APP_ID, WINDOW_CLASS)
             self.assertIn(f"Icon={data / 'icons' / (APP_ID + '.png')}", contents)
             self.assertIn('Exec=/usr/bin/env bash "', contents)
             self.assertIn(str(root / "Run-Linux.sh"), contents)
@@ -46,6 +52,25 @@ class LinuxLauncherTests(unittest.TestCase):
         source = (Path(__file__).resolve().parents[1] /
                   "practice" / "toolkit.py").read_text(encoding="utf-8")
         self.assertIn(f"tk.Tk(className='{WINDOW_CLASS}')", source)
+
+
+    @unittest.skipUnless(sys.platform == "linux" and os.environ.get("DISPLAY")
+                         and shutil.which("xprop"), "Requires Linux X11 and xprop")
+    def test_real_tk_x11_window_instance_matches_installed_desktop_id(self):
+        """Verify actual Tk WM_CLASS through X11 rather than assuming case."""
+        try:
+            root = tk.Tk(className=WINDOW_CLASS)
+        except tk.TclError as exc:
+            self.skipTest(str(exc))
+        try:
+            root.title("Goemon Practice Toolkit Dock Identity Smoke Test")
+            root.update()
+            result = subprocess.run(
+                ["xprop", "-name", "Goemon Practice Toolkit Dock Identity Smoke Test",
+                 "WM_CLASS"], capture_output=True, text=True, timeout=5, check=True)
+            self.assertIn('"' + APP_ID + '"', result.stdout, result.stdout)
+        finally:
+            root.destroy()
 
 
 if __name__ == "__main__":
