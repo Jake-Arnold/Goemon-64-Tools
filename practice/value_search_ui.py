@@ -441,6 +441,9 @@ class ValueSearchMixin:
             f'showing {len(rows):,}. Type {self.value_scanner.kind}; '
             f'{self.value_scanner.samples} snapshot(s). '
             'No game memory was modified.')
+        self.value_search_results.live_status.set(
+            f'{len(rows):,} live/filtered rows; '
+            f'{self.value_scanner.count:,} candidates total')
         if repeated and self._value_repeat_running:
             self._value_repeat_scans += 1
             if self.value_scanner.count == 0:
