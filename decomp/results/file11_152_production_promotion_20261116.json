@@ -1,0 +1,146 @@
+{
+  "format": "goemon-usa-crossbranch-production-promotion-v2",
+  "date": "2026-11-16",
+  "region": "usa",
+  "status": "NATIVE_G2_INVENTORY_AND_LOCAL_CI_PASS_PENDING_GITHUB_MERGE",
+  "target_branch": "chatgptweb/decomp",
+  "source_research_prs": [
+    23
+  ],
+  "previous_matching_c": 307,
+  "promoted_matching_c": 8,
+  "candidate_matching_c": 315,
+  "matching_instruction_bytes": 16660,
+  "file11_matching_c": 152,
+  "file11_matching_bytes": 4276,
+  "promoted_groups": [
+    {
+      "rom_start": "0x59eb80",
+      "rom_end": "0x59ebbc",
+      "original_bytes": 60,
+      "functions": [
+        {
+          "name": "func_801E2C70_59EB80",
+          "off": 5892992,
+          "vma": 2149461104,
+          "size": 60
+        }
+      ],
+      "source_sha256": "abd979e63d1febcb09eb4450b021e1a26b8ff9009a6d074148c5795b8862f31e",
+      "original_instructions_sha256": "1246e5a7ba794d272f53e2cd1d1773173a3b77d659ace1f3f5bf43fdf170b8ff",
+      "native_IDO_trimmed_object_sha256": "190abc4d8badcfc13b0fc8ab0270a8785542249cdec2b6959b4f7f13a589a679"
+    },
+    {
+      "rom_start": "0x59ee00",
+      "rom_end": "0x59ee54",
+      "original_bytes": 84,
+      "functions": [
+        {
+          "name": "func_801E2EF0_59EE00",
+          "off": 5893632,
+          "vma": 2149461744,
+          "size": 36
+        },
+        {
+          "name": "func_801E2F14_59EE24",
+          "off": 5893668,
+          "vma": 2149461780,
+          "size": 36
+        },
+        {
+          "name": "func_801E2F38_59EE48",
+          "off": 5893704,
+          "vma": 2149461816,
+          "size": 12
+        }
+      ],
+      "source_sha256": "9142bded2672c1b5278bf6a2e244ec5728f0d3ff689492fccd28965a61fa2328",
+      "original_instructions_sha256": "12f9b20b7b8dcf94aaea9980bfd35af519232cb402c60da319acde4cd9d217d9",
+      "native_IDO_trimmed_object_sha256": "cc4f232f592451c983d1de744bb0826a4366624d14917fabbb7d630424aa73cb"
+    },
+    {
+      "rom_start": "0x5b22c8",
+      "rom_end": "0x5b2314",
+      "original_bytes": 76,
+      "functions": [
+        {
+          "name": "func_801F63B8_5B22C8",
+          "off": 5972680,
+          "vma": 2149540792,
+          "size": 40
+        },
+        {
+          "name": "func_801F63E0_5B22F0",
+          "off": 5972720,
+          "vma": 2149540832,
+          "size": 36
+        }
+      ],
+      "source_sha256": "6e60cccff74150d76b51ca6cf15310e3f7aba4f24e1507e4c85368797410767c",
+      "original_instructions_sha256": "f56c8aaaa2a81b0599043e4f15709bdeeb9bc0290fe4c3d9942fc131e18bcdbd",
+      "native_IDO_trimmed_object_sha256": "6acc5b6df12368c34275e928a00570a4f94b831fb330ad9e0ce325da997be966"
+    },
+    {
+      "rom_start": "0x5b84a0",
+      "rom_end": "0x5b8500",
+      "original_bytes": 96,
+      "functions": [
+        {
+          "name": "func_801FC590_5B84A0",
+          "off": 5997728,
+          "vma": 2149565840,
+          "size": 48
+        },
+        {
+          "name": "func_801FC5C0_5B84D0",
+          "off": 5997776,
+          "vma": 2149565888,
+          "size": 48
+        }
+      ],
+      "source_sha256": "0e6331f60e0bc4155b624128fe594e9bddc81abff38c0e464bd03b9a7c8c69bd",
+      "original_instructions_sha256": "9494c9179158dae11aa71d74a34ab78a80f75079e6f4d756cb26d4246901dea6",
+      "native_IDO_trimmed_object_sha256": "db9fcd60af547d13737d0a23a9c2c49309ced62cc61e815dbc137a2f6ead7b55"
+    }
+  ],
+  "native_checks": {
+    "result": "PASS",
+    "complete_original_rom_equal": true,
+    "rom_bytes": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_functions": 315,
+    "matched_instruction_bytes": 16660,
+    "file11_semantic_relocations": 8825,
+    "original_object_slots_preserved": 88,
+    "impact_overlay_original_section_and_relocations_preserved": true,
+    "original_elf_positive_function_entries": 7376,
+    "original_elf_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
+    "combined_c_entries": 328,
+    "remaining_asm_entries": 7048,
+    "unexpected_positive_function_aliases": 0,
+    "native_g2_sha256": "d688cdd3888a0d7c319ae2cc5c8d2743177dd6c4e515aa23f1bfdff41676545d",
+    "native_inventory_sha256": "ef0eaed74982a00cf148de8c80df6e624dac2e19c3b78ee031f8c15ca2f962bd",
+    "manifest_sha256": "5cc043940ddc0ebc6e2f5c39c194443c0d1498d3265b87dc837e31321fc0ae16",
+    "verifier_sha256": "93e91fa551668a51fbc45e24ba39c73c2c60cc4e2a854d43040c4f0b209d7737"
+  },
+  "full_local_ci": {
+    "result": "PASS",
+    "decomp_python_tests": 222,
+    "verifier_ledger_python_tests": 167,
+    "skipped": 5,
+    "task_evidence": "PASS",
+    "address_sanitizer_and_undefined_behavior_regression": "PASS",
+    "ci_log_sha256": "4a9e206680a1488f78efd253002a6412588cd4b874e448da73228721d270bc04"
+  },
+  "historical_verified_307": {
+    "combined_sha256": "904337186b789bca19150080a520b99c7380c511e2ccb47656c1171c9cfeb94e",
+    "inventory_sha256": "26beca30a6c826d856e97cfe3c681513fc189fecf8edb05540b44dfde80d8b9f"
+  },
+  "remaining_unpromoted_research": {
+    "pr23_new_functions": 105,
+    "pr24_distinct_leads": 4,
+    "usa_total": 109
+  },
+  "no_original_rom_or_compiled_game_assets_committed": true,
+  "caveat": "Final GitHub integration validation and formal merge pending; count must not change until merged."
+}

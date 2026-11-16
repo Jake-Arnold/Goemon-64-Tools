@@ -1,12 +1,12 @@
 # Decomp continuation runbook
 
-## Current authoritative production: 307 USA matching-C functions (16 November 2026)
+## Current authoritative production: 315 USA matching-C functions (16 November 2026)
 
-The canonical manifest and published proofs now record **307/307 verified C functions / 16,344 original instruction bytes**, including 144 original-address C in `file_11` (the 52-byte `func_801E3008_59EF18` from the cross-branch research), the two `file_13` Impact HP helpers and one dialogue slot setter. The original 32 MiB USA ROM is byte exact, the 7,376 original function identities are preserved, and 7,056 assembly entries remain. The 306-C, 303-C and 210-C reports are separately archived and remain unchanged.
+The canonical manifest and published proofs now record **315/315 verified C functions / 16,660 original instruction bytes**, including 152 original-address C in `file_11` (eight whole-slice research functions / 316 bytes newly promoted), the two `file_13` Impact HP helpers and one dialogue slot setter. The original 32 MiB USA ROM is byte exact, all 8,825 `file_11` semantic relocations match, the 7,376 original function identities are preserved, and 7,048 assembly entries remain. The previous 307-C, 306-C, 303-C and 210-C reports are separately archived and remain unchanged.
 
 - Canonical proof: `results/combined.json` / `results/inventory.json`.
-- Native stage: `overlay_file13_stages` on top of canonical `overlay_file11_stage` 144-C in the pinned manifest.
-- Further USA candidates: PR #23 (`file11-expansion-20261116`), PR #24 (`file11-transition-52-research`). Their native source proofs and partial scratch builds are not enough to claim combined production C matches. Deduplicate against the 144-C file_11 manifest (113 PR #23 candidates remain after the new 52-byte promotion), then run fresh combined full G2 + original inventory + local CI.
+- Native stage: `overlay_file13_stages` on top of canonical `overlay_file11_stage` 152-C in the pinned manifest.
+- Further USA candidates: PR #23 (`file11-expansion-20261116`), PR #24 (`file11-transition-52-research`). Their native source proofs and partial scratch builds are not enough to claim combined production C matches. Deduplicate against the 152-C file_11 manifest (105 PR #23 candidates remain after the eight-group function promotion), then run fresh combined full G2 + original inventory + local CI.
 - Japan: PR #26 has a separately exact regional 24-C proof, but is not part of the USA count and requires its own integrated regional acceptance.
 
 Start here when continuing the matching-C work. This is the operational handoff;

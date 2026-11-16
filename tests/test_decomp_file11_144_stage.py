@@ -21,9 +21,9 @@ class File11144StageTests(unittest.TestCase):
         m['overlay_file11_stage'] = {'format': trial.STAGE_FORMAT}
         return m
 
-    def test_prod_307_canonical_and_preserves_306_historical_stage(self):
-        self.assertEqual(verify.file11_stage_mode(self.canonical), 144)
-        self.assertEqual(len(verify.claimed_functions(self.canonical)), 307)
+    def test_historical_307_stage_and_preserves_306_historical_stage(self):
+        self.assertEqual(verify.file11_stage_mode(self.canonical), 152)
+        self.assertEqual(len(verify.claimed_functions(self.canonical)), 315)
         historical = copy.deepcopy(self.canonical)
         historical['overlay_file11_stage'] = {'format': prior.STAGE_FORMAT}
         self.assertEqual(len(verify.claimed_functions(historical)), 306)

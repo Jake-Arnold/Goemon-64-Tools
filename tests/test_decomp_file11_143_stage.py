@@ -24,11 +24,11 @@ class File11143CentralStageTests(unittest.TestCase):
         manifest['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
         return manifest
 
-    def test_canonical_307_includes_144_file11(self):
-        self.assertEqual(verify.file11_stage_mode(self.base), 144)
-        self.assertEqual(len(verify.claimed_functions(self.base)), 307)
+    def test_canonical_315_includes_152_file11(self):
+        self.assertEqual(verify.file11_stage_mode(self.base), 152)
+        self.assertEqual(len(verify.claimed_functions(self.base)), 315)
         self.assertEqual(self.base['overlay_file11_stage']['format'],
-                         'goemon-file11-144-central-v1')
+                         'goemon-file11-152-central-v1')
 
     def test_canonical_143_claims_coexist_with_impact(self):
         candidate = self.opt_in()

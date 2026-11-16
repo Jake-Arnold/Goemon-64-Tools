@@ -68,18 +68,22 @@ class File11143ReviewTests(unittest.TestCase):
             }
         }
 
-    def test_published_canonical_307_contract_matches_native_proof(self):
+    def test_published_canonical_315_contract_matches_native_proof(self):
         from pathlib import Path
         from decomp import verify
         root = Path(__file__).resolve().parents[1] / 'decomp'
         manifest = verify.load_manifest(root / 'manifest.json')
         review_manifest, claims = review.candidate_manifest(manifest)
         self.assertEqual(review_manifest, manifest)
-        self.assertEqual(len(claims),307)
+        self.assertEqual(len(claims),315)
         g2 = json.loads((root/'results/combined.json').read_text())
         inventory = json.loads((root/'results/inventory.json').read_text())
-        self.assertEqual(review.verify_g2_report(g2,claims)['matched_bytes'],16344)
-        self.assertEqual(review.verify_inventory_report(inventory,307)['remaining_assembly_entries'],7056)
+        self.assertEqual(review.verify_g2_report(g2,claims)['matched_bytes'],16660)
+        self.assertEqual(review.verify_inventory_report(inventory,315)['remaining_assembly_entries'],7048)
+        historic307 = json.loads((root/'results/combined_307_20261116.json').read_text())
+        historic307inv = json.loads((root/'results/inventory_307_20261116.json').read_text())
+        self.assertEqual(historic307['comparison']['matched_functions'],307)
+        self.assertEqual(historic307inv['summary']['remaining_assembly_entries'],7056)
         historical306 = json.loads((root/'results/combined_306_20261116.json').read_text())
         historical306inv = json.loads((root/'results/inventory_306_20261116.json').read_text())
         self.assertEqual(historical306['comparison']['matched_functions'],306)
@@ -89,16 +93,16 @@ class File11143ReviewTests(unittest.TestCase):
         self.assertEqual(historic['comparison']['matched_functions'],303)
         self.assertEqual(older_inventory['summary']['remaining_assembly_entries'],7060)
 
-    def test_published_file11_144_evidence_must_match(self):
+    def test_published_file11_152_evidence_must_match(self):
         from pathlib import Path
         root = Path(__file__).resolve().parents[1] / 'decomp'
         from decomp import verify
         manifest = verify.load_manifest(root/'manifest.json')
         claims = verify.claimed_functions(manifest)
         g2 = json.loads((root/'results/combined.json').read_text())
-        self.assertEqual(g2['overlay_file11_stage']['original_address_matching_c'],144)
-        self.assertEqual(g2['overlay_file11_stage']['file11_C_instruction_bytes'],3960)
-        g2['overlay_file11_stage']['file11_C_instruction_bytes'] = 3908
+        self.assertEqual(g2['overlay_file11_stage']['original_address_matching_c'],152)
+        self.assertEqual(g2['overlay_file11_stage']['file11_C_instruction_bytes'],4276)
+        g2['overlay_file11_stage']['file11_C_instruction_bytes'] = 3960
         with self.assertRaises(ValueError):
             review.verify_g2_report(g2,claims)
 

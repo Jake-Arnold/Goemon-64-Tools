@@ -1,4 +1,4 @@
-"""Fail-closed USA 303/306/307-C file_11 central acceptance runner for production and historical reviews.
+"""Fail-closed USA 303/306/307/315-C file_11 central acceptance runner for production and historical reviews.
 
 Runs the full central G2, original-ELF function inventory, and ROM-free local CI
 before writing a review bundle. Never edits canonical manifests or proof files.
@@ -18,6 +18,7 @@ import sys
 
 STAGE_FORMAT = 'goemon-file11-143-central-v1'
 STAGE_FORMAT_144 = 'goemon-file11-144-central-v1'
+STAGE_FORMAT_152 = 'goemon-file11-152-central-v1'
 ROM_SHA1 = '6ea0ed71032ce08fc2745f412d84936382197494'
 ROM_SIZE = 33_554_432
 TOTAL_C = 303
@@ -35,15 +36,16 @@ def sha256(data: bytes) -> str:
 
 
 def candidate_manifest(original: dict) -> tuple[dict, list[dict]]:
-    """Validate canonical USA 303/306/307 C or reconstruct from historical 210 C.
+    """Validate canonical USA 303/306/307/315 C or reconstruct from historical 210 C.
 
     Regardless of provenance, the exact same 143-C fixture, identities and
     complete native build/inventory/CI gates remain mandatory.
     """
-    from . import verify, file11_143_stage, file11_144_stage
+    from . import verify, file11_143_stage, file11_144_stage, file11_152_stage
     stage = original.get('overlay_file11_stage')
     review = copy.deepcopy(original)
-    if stage in ({'format': STAGE_FORMAT}, {'format': STAGE_FORMAT_144}):
+    if stage in ({'format': STAGE_FORMAT}, {'format': STAGE_FORMAT_144},
+                 {'format': STAGE_FORMAT_152}):
         # Both exact C/ASM layouts are versioned and independently pinned.
         pass
     elif stage == {'format': 'goemon-file11-character-switch-50-v2'}:
@@ -53,21 +55,26 @@ def candidate_manifest(original: dict) -> tuple[dict, list[dict]]:
         review['overlay_file11_stage'] = {'format': STAGE_FORMAT}
     else:
         raise ValueError('Unsupported production/research file_11 stage')
-    is_144 = review['overlay_file11_stage'] == {'format': STAGE_FORMAT_144}
-    adapter = file11_144_stage if is_144 else file11_143_stage
-    plan = adapter.reviewed_plan(review)
-    required_layout = (144, 3960) if is_144 else (143, 3908)
-    if (plan['file11_c_total'], plan['file11_c_instruction_bytes']) != required_layout:
+    mode = review['overlay_file11_stage']['format']
+    adapters = {STAGE_FORMAT: file11_143_stage,
+                STAGE_FORMAT_144: file11_144_stage,
+                STAGE_FORMAT_152: file11_152_stage}
+    layouts = {STAGE_FORMAT: (143, 3908), STAGE_FORMAT_144: (144, 3960),
+               STAGE_FORMAT_152: (152, 4276)}
+    plan = adapters[mode].reviewed_plan(review)
+    if (plan['file11_c_total'], plan['file11_c_instruction_bytes']) != layouts[mode]:
         raise ValueError('file_11 exact C/ASM layout differs')
     claims = verify.claimed_functions(review)
     n = len(claims)
-    expected_bytes = {303: 16_180, 306: 16_292, 307: 16_344}
-    if is_144 != (n == 307):
-        raise ValueError('144-C file_11 requires exactly 307 total C claims')
+    expected_bytes = {303: 16_180, 306: 16_292, 307: 16_344, 315: 16_660}
+    if ((mode == STAGE_FORMAT_144) != (n == 307)
+            or (mode == STAGE_FORMAT_152) != (n == 315)
+            or (mode == STAGE_FORMAT and n not in (303, 306))):
+        raise ValueError('USA matching-C count and file_11 stage disagree')
     if (n not in expected_bytes or len({r['name'] for r in claims}) != n
             or sum(r['size'] for r in claims) != expected_bytes[n]):
         raise ValueError('Combined USA matching-C identities changed')
-    if n in (306, 307):
+    if n in (306, 307, 315):
         impact = review.get('overlay_file13_stages')
         expected = [('func_801D3954_5FED34', 40),
                     ('func_801D3A44_5FEE24', 36)]
@@ -89,9 +96,9 @@ def verify_g2_report(report: dict, claims: list[dict]) -> dict:
         raise ValueError('Central G2 did not complete with matched status')
     comparison = report.get('comparison') or {}
     total = len(claims)
-    if total not in (303, 306, 307):
+    if total not in (303, 306, 307, 315):
         raise ValueError('Unreviewed USA matching C count')
-    total_bytes = {303: 16_180, 306: 16_292, 307: 16_344}[total]
+    total_bytes = {303: 16_180, 306: 16_292, 307: 16_344, 315: 16_660}[total]
     required = {
         'full_rom_match': True, 'expected_sha1': ROM_SHA1,
         'candidate_sha1': ROM_SHA1, 'rom_size': ROM_SIZE,
@@ -127,12 +134,13 @@ def verify_g2_report(report: dict, claims: list[dict]) -> dict:
                 or row.get('candidate_sha256') != digest):
             raise ValueError('G2 function bytes differ: ' + name)
     stage = report.get('overlay_file11_stage') or {}
-    is_307 = total == 307
+    is_307, is_315 = total == 307, total == 315
     stage_required = {
-        'stage': STAGE_FORMAT_144 if is_307 else STAGE_FORMAT, 'status': 'PASS',
-        'original_address_matching_c': 144 if is_307 else FILE11_C,
-        'additional_beyond_50_existing': 94 if is_307 else 93,
-        'file11_C_instruction_bytes': 3960 if is_307 else FILE11_C_BYTES,
+        'stage': STAGE_FORMAT_152 if is_315 else
+                 (STAGE_FORMAT_144 if is_307 else STAGE_FORMAT), 'status': 'PASS',
+        'original_address_matching_c': 152 if is_315 else (144 if is_307 else FILE11_C),
+        'additional_beyond_50_existing': 102 if is_315 else (94 if is_307 else 93),
+        'file11_C_instruction_bytes': 4276 if is_315 else (3960 if is_307 else FILE11_C_BYTES),
         'original_native_object_provenance_checked': 88,
         'original_semantic_file11_relocations': RELOCATIONS,
         'candidate_semantic_file11_relocations': RELOCATIONS,
@@ -156,7 +164,7 @@ def verify_g2_report(report: dict, claims: list[dict]) -> dict:
     if (alias_evidence.get('removed_spurious_func_aliases') != list(expected_aliases)
             or alias_evidence.get('preserved_original_nops') != 3):
         raise ValueError('Synthetic NOP ASM source annotation evidence differs')
-    if total in (306, 307):
+    if total in (306, 307, 315):
         impact = report.get('overlay_file13_stages') or {}
         linked = impact.get('linked_elf_provenance') or {}
         if (linked.get('section_bytes') != 277104
@@ -169,7 +177,7 @@ def verify_g2_report(report: dict, claims: list[dict]) -> dict:
                        for row in linked['functions'])):
             raise ValueError('Combined 306-C Impact overlay proof differs')
     return {'claimed_functions': total, 'matched_bytes': total_bytes,
-            'file11_functions': 144 if is_307 else FILE11_C, 'original_relocations': RELOCATIONS,
+            'file11_functions': 152 if is_315 else (144 if is_307 else FILE11_C), 'original_relocations': RELOCATIONS,
             'rom_sha1': ROM_SHA1}
 
 
@@ -179,7 +187,7 @@ def verify_inventory_report(report: dict, expected_claims: int | None = None) ->
         raise ValueError('Inventory is not from the original USA ROM')
     summary = report.get('summary') or {}
     count = expected_claims if expected_claims is not None else summary.get('newly_matching_c')
-    if count not in (303, 306, 307):
+    if count not in (303, 306, 307, 315):
         raise ValueError('Unexpected original-function inventory C count')
     expected = {
         'identified_function_entries': ENTRIES,
