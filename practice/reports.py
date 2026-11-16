@@ -166,13 +166,141 @@ def create_value_search_report(*, region, title, rows, total_count,
         for row in rows:
             writer.writerow({k: row.get(k, "") for k in writer.fieldnames})
     (folder / "session.json").write_text(
-        json.dumps({"manifest": manifest, "candidates": list(rows)},
+        json.dumps({"manifest": manifest, "candidates": list(rows),
+                    "evidence": {"value_type": value_type, "snapshots": sample_count}},
                    indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     (folder / "summary.md").write_text("\n".join(notes) + "\n",
                                        encoding="utf-8")
     # The manifest is written last; partial reports are excluded from the index.
     (folder / "manifest.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return folder
+
+
+
+DISCOVERY_KINDS = {
+    "value-search": "Value search",
+    "memory-comparison": "Memory changes",
+    "flag-investigation": "Repeated flag changes",
+    "damage-events": "Automatic damage recording",
+}
+
+
+def create_discovery_report(*, region, title, kind, candidates, evidence,
+                            candidate_total=None, metadata=None, notes=(),
+                            root=None, timestamp=None):
+    """Write the same four portable files for every research workflow.
+
+    session.json contains the complete *available* structured evidence.
+    candidates.csv contains every supplied candidate, not just a table preview.
+    Guest-memory dumps are intentionally not duplicated into exported files.
+    """
+    if region not in REGIONS or kind not in DISCOVERY_KINDS:
+        raise ValueError("Unknown game region or discovery report type")
+    if not isinstance(candidates, (list, tuple)) or not isinstance(evidence, dict):
+        raise ValueError("Candidates must be a list and evidence must be a mapping")
+    total = len(candidates) if candidate_total is None else candidate_total
+    if type(total) is not int or total < len(candidates):
+        raise ValueError("Total candidates cannot be smaller than exported rows")
+    title = str(title or "").strip() or DISCOVERY_KINDS[kind]
+    when = timestamp or datetime.now(timezone.utc)
+    if when.tzinfo is None:
+        raise ValueError("Report timestamp must have a timezone")
+    when = when.astimezone(timezone.utc)
+    meta = dict(metadata or {})
+    # Confirm serialisability *before* creating report folders.
+    fields = sorted({key for row in candidates for key in row})
+    preferred = ("address", "kind", "type", "region", "before", "after",
+                 "initial", "previous", "value", "mask", "direction",
+                 "score", "hits", "returns", "support", "hex")
+    fields = [key for key in preferred if key in fields] + [
+        key for key in fields if key not in preferred]
+    if not fields:
+        fields = ["address", "kind"]
+    manifest = {
+        "schema": SCHEMA,
+        "kind": kind,
+        "title": title,
+        "region": REGIONS[region],
+        "created_utc": when.isoformat().replace("+00:00", "Z"),
+        "candidate_total": total,
+        "candidate_exported": len(candidates),
+        "candidate_truncated": total > len(candidates),
+        "instruction_access_tracing": False,
+        "evidence": "game-memory-observations-only",
+        "metadata": meta,
+        "notes": list(notes),
+        "files": ["summary.md", "candidates.csv", "session.json", "manifest.json"],
+    }
+    document = {"manifest": manifest, "candidates": list(candidates),
+                "evidence": evidence}
+    serialised = json.dumps(document, ensure_ascii=False, indent=2) + "\n"
+    title_md = title.replace("\n", " ").replace("\r", " ")
+    lines = [
+        f"# {title_md}", "",
+        f"**Research method:** {DISCOVERY_KINDS[kind]}",
+        f"**Region:** {REGIONS[region]}",
+        f"**Date (UTC):** {manifest['created_utc']}",
+        f"**Candidate addresses/entries:** {total:,}",
+        f"**Candidates exported:** {len(candidates):,}", "",
+        "The report records memory observations, not original MIPS "
+        "instruction-access traces. Candidate field meanings and "
+        "write safety are unverified.", ""
+    ]
+    if total > len(candidates):
+        lines += [f"**Coverage limitation:** {total - len(candidates):,} "
+                  "candidates were omitted by the underlying analyzer's "
+                  "result limit.", ""]
+    if meta:
+        lines += ["## Investigation details", ""]
+        for key, value in meta.items():
+            rendered = (json.dumps(value, ensure_ascii=False)
+                        if isinstance(value, (dict, list)) else str(value))
+            lines.append(f"- **{key.replace('_', ' ').capitalize()}:** {rendered}")
+        lines.append("")
+    if notes:
+        lines += ["## Evidence limitations", ""]
+        lines += [f"- {str(note)}" for note in notes]
+        lines.append("")
+    lines += ["## Candidate preview", "",
+              "| " + " | ".join(fields[:8]) + " |",
+              "| " + " | ".join(["---"] * min(len(fields), 8)) + " |"]
+    for row in candidates[:50]:
+        def cell(value):
+            value = (json.dumps(value, ensure_ascii=False)
+                     if isinstance(value, (dict, list)) else str(value))
+            return value.replace("|", r"\|").replace("\n", " ")
+        lines.append("| " + " | ".join(cell(row.get(k, "")) for k in fields[:8]) + " |")
+    if len(candidates) > 50:
+        lines += ["", f"The remaining {len(candidates)-50:,} exported candidates "
+                  "are in candidates.csv and session.json."]
+    region_root = (Path(root) if root is not None else reports_root()) / REGIONS[region]
+    experiment = region_root / readable_report_name(title)
+    experiment.mkdir(parents=True, exist_ok=True)
+    folder = _create_run_folder(experiment, when)
+    try:
+        with (folder / "candidates.csv").open("w", newline="",
+                                              encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fields,
+                                    extrasaction="ignore")
+            writer.writeheader()
+            for row in candidates:
+                writer.writerow({
+                    k: json.dumps(row.get(k), ensure_ascii=False)
+                       if isinstance(row.get(k), (dict, list))
+                       else row.get(k, "")
+                    for k in fields
+                })
+        (folder / "session.json").write_text(serialised, encoding="utf-8")
+        (folder / "summary.md").write_text(
+            "\n".join(lines) + "\n", encoding="utf-8")
+        (folder / "manifest.json").write_text(
+            json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8")
+    except Exception:
+        # The manifest is always committed last: a partial report won't index.
+        (folder / "manifest.json").unlink(missing_ok=True)
+        raise
     return folder
 
 
