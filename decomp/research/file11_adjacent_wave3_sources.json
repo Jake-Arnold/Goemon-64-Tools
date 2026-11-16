@@ -1,0 +1,265 @@
+{
+  "format": "goemon-file11-adjacent-wave3-source-fixtures-v1",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "generated_asm_sha256": "e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b",
+  "previous_research_77_count": 77,
+  "previous_research_68_count": 68,
+  "previous_research_44_count": 44,
+  "functions": [
+    {
+      "name": "func_801E2950_59E860",
+      "rom_offset": 5892192,
+      "vma": 2149460304,
+      "size": 48,
+      "original_sha256": "6dae3b0f2726ad3b4b833ae14a57573478f48695f142e5eed571b4a5d5a215bd",
+      "source": "extern void handler(unsigned);typedef struct {char p[0x2C];unsigned char flag;}Inner;typedef struct {char p[0x5C];Inner*inner;}Actor;void func_801E2950_59E860(Actor*a){a->inner->flag=0;handler(526);handler(587);}\n",
+      "bindings": {
+        "handler": "0x80038BC8"
+      },
+      "category": "event_forwarding"
+    },
+    {
+      "name": "func_801E2C70_59EB80",
+      "rom_offset": 5892992,
+      "vma": 2149461104,
+      "size": 60,
+      "original_sha256": "1246e5a7ba794d272f53e2cd1d1773173a3b77d659ace1f3f5bf43fdf170b8ff",
+      "source": "extern void handler(void*,unsigned);typedef struct{char p[0xE4];float e4,e8;} Actor;void func_801E2C70_59EB80(Actor*a){handler(a,19);a->e4=0.0f;a->e8=1.0f;}\n",
+      "bindings": {
+        "handler": "0x801E3834"
+      },
+      "category": "actor_state"
+    },
+    {
+      "name": "func_801E2FA4_59EEB4",
+      "rom_offset": 5893812,
+      "vma": 2149461924,
+      "size": 60,
+      "original_sha256": "d6ff36832333dcb4183e15e3d2e2c1258f983276c8c9549d752234621bd43d47",
+      "source": "typedef struct {char p[0x30];short v;} Inner;typedef struct {char p[0x30];unsigned char flags;char p2[0x5C-0x31];Inner*inner;char p3[0xE4-0x60];float e4,e8;}Actor;extern void handler();void func_801E2FA4_59EEB4(Actor*a){a->inner->v=0;a->e4=0;a->e8=0;a->flags&=~1;handler();}",
+      "bindings": {
+        "handler": "0x801E8160"
+      },
+      "category": "actor_state"
+    },
+    {
+      "name": "func_801E3008_59EF18",
+      "rom_offset": 5893912,
+      "vma": 2149462024,
+      "size": 52,
+      "original_sha256": "01a2ee6edebc172353056fea6431c94c82500d681115481434ececce2f575cc8",
+      "source": "typedef struct {short field;char pad[0x2C-2];unsigned char flag;} Inner;typedef struct {char p[0x4C];unsigned char mode;char p1[0x5C-0x4D];Inner*inner;char p2[0x68-0x60];float v68,v6c,v70;char p3[0xE4-0x74];float e4,e8;}Actor;void func_801E3008_59EF18(Actor*a){a->e4=0;a->e8=0;a->v70=0;a->v6c=0;a->v68=0;a->inner->flag=0;a->mode=20;a->inner->field=0;}\n",
+      "bindings": {},
+      "category": "actor_state"
+    },
+    {
+      "name": "func_801E3158_59F068",
+      "rom_offset": 5894248,
+      "vma": 2149462360,
+      "size": 32,
+      "original_sha256": "16f5cfeb301fd977c0c7bed92817024d9a3238fc8808951474e582aa89b7aeba",
+      "source": "typedef unsigned char u8;typedef struct {char p[0x30];u8 flags;char pad[0xD4-0x31];u8 mode;} Actor;void func_801E3158_59F068(Actor*a){a->mode=60;a->flags&=~1;a->flags|=4;}\n",
+      "bindings": {},
+      "category": "actor_state"
+    },
+    {
+      "name": "func_801E5090_5A0FA0",
+      "rom_offset": 5902240,
+      "vma": 2149470352,
+      "size": 48,
+      "original_sha256": "8d32c6328cfe62c255af1f6df9a82fc6e82424c9a4aa4979045630eb5f2e6620",
+      "source": "typedef struct {short flag;} Inner;typedef struct {char p[0x30];unsigned char flags;char p2[0x5C-0x31];Inner* state;char p3[0x68-0x60];float v68,v6c,v70;char p4[0xE8-0x74];float ve8;} Actor;void func_801E5090_5A0FA0(Actor*a){a->v70=0.0f;a->v6c=0.0f;a->v68=0.0f;a->ve8=0.0f;a->state->flag=1;a->flags&=~1;}\n",
+      "bindings": {},
+      "category": "actor_state"
+    },
+    {
+      "name": "func_801E7DE8_5A3CF8",
+      "rom_offset": 5913848,
+      "vma": 2149481960,
+      "size": 48,
+      "original_sha256": "6b4d0e3c25761f0b41de46bc9639f125af7dbb006c0a6496a8d4640a7fe17f0b",
+      "source": "typedef struct {char pad[0x86];unsigned short flag;} Inner;typedef struct {char pad[0x5C];Inner* state;unsigned char character;} Actor;\nint func_801E7DE8_5A3CF8(Actor*a){return a->character==1 && a->state->flag==0xffff;}\n",
+      "bindings": {},
+      "category": "predicate"
+    },
+    {
+      "name": "func_801F4658_5B0568",
+      "rom_offset": 5965160,
+      "vma": 2149533272,
+      "size": 48,
+      "original_sha256": "3e7ce81c68c88dbb5609759ad184bc4e21cfec7d94e60475277acf147de7f1f7",
+      "source": "extern void first();extern void second();void func_801F4658_5B0568(void*a,unsigned ev){first(a);second(a,0);}\n",
+      "bindings": {
+        "first": "0x801E84A4",
+        "second": "0x801F4E38"
+      },
+      "category": "event_forwarding"
+    },
+    {
+      "name": "func_801F845C_5B436C",
+      "rom_offset": 5981036,
+      "vma": 2149549148,
+      "size": 44,
+      "original_sha256": "334fd5a3736e4a989157bcbe4aa507c410fd3a4aadbfce448037e6edbab4cbc6",
+      "source": "extern char global;extern void first(void);extern void second(void*);void func_801F845C_5B436C(void){first();second(&global);}",
+      "bindings": {
+        "first": "0x801F95D8",
+        "second": "0x8003521C",
+        "global": "0x801F8488"
+      },
+      "category": "event_forwarding"
+    },
+    {
+      "name": "func_801FB240_5B7150",
+      "rom_offset": 5992784,
+      "vma": 2149560896,
+      "size": 48,
+      "original_sha256": "364113becada17e254bc5c93c5f55d5efc6102c63dc08bb2211ceff1632bdda5",
+      "source": "typedef struct {char p[0x22];unsigned short flags;}Global;extern Global* global;extern void handler(void);void func_801FB240_5B7150(void){global->flags|=4;handler();}\n",
+      "bindings": {
+        "global": "0x801FC600",
+        "handler": "0x801FB270"
+      },
+      "category": "global_flag"
+    }
+  ],
+  "adjacent_groups": [
+    {
+      "start": 5892192,
+      "end": 5892272,
+      "function_offsets": [
+        5892192,
+        5892240
+      ],
+      "original_sha256": "09e79a8b50dd89de3abfa8b8790ee2b921bba949d1b9b00804058bc258687cbc",
+      "source": "extern void handler_59E860(unsigned);typedef struct {char p[0x2C];unsigned char flag;}Inner_59E860;typedef struct {char p[0x5C];Inner_59E860*inner;}Actor_59E860;void func_801E2950_59E860(Actor_59E860*a){a->inner->flag=0;handler_59E860(526);handler_59E860(587);}\n\nextern void handler_59E890(void *);\nvoid func_801E2980_59E890(void *actor) { handler_59E890(actor); }\n\n",
+      "bindings": {
+        "handler_59E860": "0x80038BC8",
+        "handler_59E890": "0x801E291C"
+      }
+    },
+    {
+      "start": 5892960,
+      "end": 5893116,
+      "function_offsets": [
+        5892960,
+        5892992,
+        5893052,
+        5893084
+      ],
+      "original_sha256": "60f8c054f0c0216929a737168dcee91736686021e39cf202bcb509453a8a7e4e",
+      "source": "extern void handler_59EB60(void *, unsigned int);\nvoid func_801E2C50_59EB60(void *actor) { handler_59EB60(actor, 18); }\n\nextern void handler_59EB80(void*,unsigned);typedef struct{char p[0xE4];float e4,e8;} Actor_59EB80;void func_801E2C70_59EB80(Actor_59EB80*a){handler_59EB80(a,19);a->e4=0.0f;a->e8=1.0f;}\n\nextern void handler_59EBBC(void *, unsigned int);\nvoid func_801E2CAC_59EBBC(void *actor) { handler_59EBBC(actor, 12); }\n\nextern void handler_59EBDC(void *, unsigned int);\nvoid func_801E2CCC_59EBDC(void *actor) { handler_59EBDC(actor, 13); }\n\n",
+      "bindings": {
+        "handler_59EB60": "0x801E3834",
+        "handler_59EB80": "0x801E3834",
+        "handler_59EBBC": "0x801E2CEC",
+        "handler_59EBDC": "0x801E2CEC"
+      }
+    },
+    {
+      "start": 5893812,
+      "end": 5894028,
+      "function_offsets": [
+        5893812,
+        5893872,
+        5893892,
+        5893912,
+        5893964,
+        5893996
+      ],
+      "original_sha256": "de5cc0d758fa7563c7ec6d8978086a65452b491b60d5b606a94b864502a5c10f",
+      "source": "typedef struct {char p[0x30];short v;} Inner_59EEB4;typedef struct {char p[0x30];unsigned char flags;char p2[0x5C-0x31];Inner_59EEB4*inner;char p3[0xE4-0x60];float e4,e8;}Actor_59EEB4;extern void handler_59EEB4();void func_801E2FA4_59EEB4(Actor_59EEB4*a){a->inner->v=0;a->e4=0;a->e8=0;a->flags&=~1;handler_59EEB4();}\ntypedef struct { unsigned char pad[0xE4]; float x, y; } Actor_59EEF0;\nvoid func_801E2FE0_59EEF0(Actor_59EEF0 *a) { a->x = 0.0f; a->y = 0.0f; }\nvoid func_801E2FF4_59EF04(Actor_59EEF0 *a) { a->x = 0.0f; a->y = 0.0f; }\ntypedef struct {short field;char pad[0x2C-2];unsigned char flag;} Inner_59EF18;typedef struct {char p[0x4C];unsigned char mode;char p1[0x5C-0x4D];Inner_59EF18*inner;char p2[0x68-0x60];float v68,v6c,v70;char p3[0xE4-0x74];float e4,e8;}Actor_59EF18;void func_801E3008_59EF18(Actor_59EF18*a){a->e4=0;a->e8=0;a->v70=0;a->v6c=0;a->v68=0;a->inner->flag=0;a->mode=20;a->inner->field=0;}\n\nextern void handler_59EF4C(void *);\nvoid func_801E303C_59EF4C(void *actor) { handler_59EF4C(actor); }\n\nextern void handler_59EF6C(void *);\nvoid func_801E305C_59EF6C(void *actor) { handler_59EF6C(actor); }\n\n",
+      "bindings": {
+        "handler_59EEB4": "0x801E8160",
+        "handler_59EF4C": "0x801E3008",
+        "handler_59EF6C": "0x801E3008"
+      }
+    },
+    {
+      "start": 5894212,
+      "end": 5894280,
+      "function_offsets": [
+        5894212,
+        5894248
+      ],
+      "original_sha256": "364d0cd11e77a515f5dfc292e288865c806534ea82296db21d08b5b4359f5452",
+      "source": "typedef struct {short code;} Inner_59F044;typedef struct {char pad[0x5C];Inner_59F044*state;} Actor_59F044;extern void handler_59F044(void*);void func_801E3134_59F044(Actor_59F044*p){p->state->code=0;handler_59F044(p);}\n\ntypedef unsigned char u8;typedef struct {char p[0x30];u8 flags;char pad[0xD4-0x31];u8 mode;} Actor_59F068;void func_801E3158_59F068(Actor_59F068*a){a->mode=60;a->flags&=~1;a->flags|=4;}\n\n",
+      "bindings": {
+        "handler_59F044": "0x801E3158"
+      }
+    },
+    {
+      "start": 5902228,
+      "end": 5902288,
+      "function_offsets": [
+        5902228,
+        5902240
+      ],
+      "original_sha256": "90f1d014bfe4e8908209bbb70ff8dd3db2a78fb98ffee8a2d6ac23f69ad9e8d8",
+      "source": "void func_801E5084_5A0F94(void *a0, void *a1) {}\n\ntypedef struct {short flag;} Inner_5A0FA0;typedef struct {char p[0x30];unsigned char flags;char p2[0x5C-0x31];Inner_5A0FA0* state;char p3[0x68-0x60];float v68,v6c,v70;char p4[0xE8-0x74];float ve8;} Actor_5A0FA0;void func_801E5090_5A0FA0(Actor_5A0FA0*a){a->v70=0.0f;a->v6c=0.0f;a->v68=0.0f;a->ve8=0.0f;a->state->flag=1;a->flags&=~1;}\n\n",
+      "bindings": {}
+    },
+    {
+      "start": 5913776,
+      "end": 5913896,
+      "function_offsets": [
+        5913776,
+        5913808,
+        5913848
+      ],
+      "original_sha256": "77807baca573a8dc1c27e42181b8d3bf98ea3479135d4c0fa08e0f5558998051",
+      "source": "typedef struct {char pad[0xCC];unsigned char state;} Actor_5A3CB0;\nint func_801E7DA0_5A3CB0(Actor_5A3CB0*a){return a->state >= 0 && a->state < 4;}\n\ntypedef struct {char pad[0x86];unsigned short flag;} Inner_5A3CD0;\ntypedef struct {char pad[0x5C];Inner_5A3CD0* state;unsigned char character;} Actor_5A3CD0;\nint func_801E7DC0_5A3CD0(Actor_5A3CD0*a){return (a->character==0) && (a->state->flag!=0);}\n\ntypedef struct {char pad[0x86];unsigned short flag;} Inner_5A3CF8;typedef struct {char pad[0x5C];Inner_5A3CF8* state;unsigned char character;} Actor_5A3CF8;\nint func_801E7DE8_5A3CF8(Actor_5A3CF8*a){return a->character==1 && a->state->flag==0xffff;}\n\n",
+      "bindings": {}
+    },
+    {
+      "start": 5965044,
+      "end": 5965208,
+      "function_offsets": [
+        5965044,
+        5965084,
+        5965124,
+        5965160
+      ],
+      "original_sha256": "d5c91903b5cfc40918862bbf6882d6941601fe564e0a737492d4618587787a19",
+      "source": "extern void handler_5B04F4(void*,int,int);\nvoid func_801F45E4_5B04F4(void*a,unsigned unused){handler_5B04F4(a,121,122);}\n\nextern void handler_5B051C(void*,int,int);\nvoid func_801F460C_5B051C(void*a,unsigned unused){handler_5B051C(a,2,20);}\n\nextern void handler_5B0544();\nvoid func_801F4634_5B0544(void*a,unsigned unused){handler_5B0544(a,123);}\n\nextern void first_5B0568();extern void second_5B0568();void func_801F4658_5B0568(void*a,unsigned ev){first_5B0568(a);second_5B0568(a,0);}\n\n",
+      "bindings": {
+        "handler_5B04F4": "0x801F4AA4",
+        "handler_5B051C": "0x801F4B6C",
+        "handler_5B0544": "0x801F4C20",
+        "first_5B0568": "0x801E84A4",
+        "second_5B0568": "0x801F4E38"
+      }
+    },
+    {
+      "start": 5981036,
+      "end": 5981092,
+      "function_offsets": [
+        5981036,
+        5981080
+      ],
+      "original_sha256": "1acc7777fb6b9b5ce8dbeec14383cd8fc1c5f5e06560104cc1a4e8f7230900d4",
+      "source": "extern char global_5B436C;extern void first_5B436C(void);extern void second_5B436C(void*);void func_801F845C_5B436C(void){first_5B436C();second_5B436C(&global_5B436C);}\nvoid func_801F8488_5B4398(void *a0, void *a1) {}\n\n",
+      "bindings": {
+        "first_5B436C": "0x801F95D8",
+        "second_5B436C": "0x8003521C",
+        "global_5B436C": "0x801F8488"
+      }
+    },
+    {
+      "start": 5992768,
+      "end": 5992832,
+      "function_offsets": [
+        5992768,
+        5992784
+      ],
+      "original_sha256": "94ef6c1f542164c2fc97dcbb45d96c8b7262d4a88aaa645fb78479167ab8aa4a",
+      "source": "extern unsigned char flags_5B7140;void func_801FB230_5B7140(void){flags_5B7140=0x80;}\n\ntypedef struct {char p[0x22];unsigned short flags;}Global_5B7150;extern Global_5B7150* global_5B7150;extern void handler_5B7150(void);void func_801FB240_5B7150(void){global_5B7150->flags|=4;handler_5B7150();}\n\n",
+      "bindings": {
+        "flags_5B7140": "0x8015C54D",
+        "global_5B7150": "0x801FC600",
+        "handler_5B7150": "0x801FB270"
+      }
+    }
+  ]
+}

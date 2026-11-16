@@ -1,0 +1,40 @@
+{
+  "format": "goemon-file11-transition-52-scratch-proof-v1",
+  "date": "2026-11-16",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "usa_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "japan_decompressed_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "usa_scratch_full_rom_exact": true,
+  "usa_scratch_rom_bytes": 33554432,
+  "file11_c_function_count": 52,
+  "file11_c_code_bytes": 1120,
+  "existing_50_functions": 50,
+  "additional_new_functions": 2,
+  "file11_mixed_link_chunks": 14,
+  "file11_overlay_bytes": 267264,
+  "file11_relocation_tuples_matching": 8825,
+  "raw_relocation_order_identical": false,
+  "known_three_record_cycle_starts": [
+    2506,
+    6131
+  ],
+  "identified_func_entries_before_and_after": 7376,
+  "unmarked_func_entries_before": 13,
+  "unmarked_func_entries_scratch": 65,
+  "new_function_entries_exact": true,
+  "research_tests_passed": 12,
+  "japan_original_address_pair_exact": true,
+  "central_210_existing_g2": "passed_on_pr20_branch_d394efe7",
+  "central_212_g2": "not_run",
+  "japan_full_rom": "not_run",
+  "canonical_manifest_modified": false,
+  "new_usa_function_names": [
+    "func_801F845C_5B436C",
+    "func_801F8488_5B4398"
+  ],
+  "new_japan_function_names": [
+    "func_801FD364_5B9334",
+    "func_801FD390_5B9360"
+  ],
+  "new_source_sha256": "b01c5c0491b74e6332a9730c3b802a34c269d1b792e722754f57a09aa0e55889"
+}

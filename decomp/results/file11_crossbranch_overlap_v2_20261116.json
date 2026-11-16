@@ -1,0 +1,158 @@
+{
+  "format": "goemon-file11-two-pr-dedup-source-review-v2",
+  "date": "2026-11-16",
+  "region": "usa",
+  "source_snapshots": {
+    "expansion_branch": "chatgptweb/file11-expansion-20261116",
+    "expansion_research_pin": "5e2edb72e5d4e4a2081926527090c50741209df9",
+    "expansion_current_143_fixture_pin": "60a5d55f5453d2e4241597e2ee9365bec2b127a8",
+    "alternate_branch": "chatgptweb/file11-transition-52-research",
+    "alternate_pin": "defbfb82f63fdb5124946d021b09260c342342c1"
+  },
+  "evidence": {
+    "source": "docs/USA_FILE11_ADJACENT_73_RESEARCH_2026-11-16.md and docs/USA_FILE11_ADJACENT_101_VERIFICATION_2026-11-16.md and docs/USA_FILE11_ADJACENT_104_VERIFICATION_2026-11-16.md, plus matching decomp/results files",
+    "original_file11_vma": 2149364832,
+    "original_file11_rom_start": 5796720,
+    "caveat": "The 101-wave 16 wrapper identities are reconstructed as exactly the 16 independently matched candidates within the documented inclusive range 0x5B2004..0x5B2654, not directly enumerated by the alternate branch's uploaded source-only archive. Confirmation from that original 16-function source list is still pending."
+  },
+  "alternate_54_reconstructed": [
+    {
+      "wave": "52",
+      "provenance": "explicit_52_research",
+      "offsets": [
+        "0x5b436c",
+        "0x5b4398"
+      ]
+    },
+    {
+      "wave": "73_paired",
+      "provenance": "explicit_research_table",
+      "offsets": [
+        "0x5b3040",
+        "0x5b3048",
+        "0x5b4dec",
+        "0x5b64b8",
+        "0x5b65d4",
+        "0x5b7140"
+      ]
+    },
+    {
+      "wave": "73_noops",
+      "provenance": "explicit_source_VMA_list_converted_by_overlay_mapping",
+      "offsets": [
+        "0x5874d4",
+        "0x587704",
+        "0x58e2d8",
+        "0x59c720",
+        "0x59c7c0",
+        "0x5a0f94",
+        "0x5a5fdc",
+        "0x5a63e0",
+        "0x5a63ec",
+        "0x5a9410",
+        "0x5a941c",
+        "0x5aebc4",
+        "0x5aebd0",
+        "0x5b8488",
+        "0x5b8494"
+      ]
+    },
+    {
+      "wave": "101_wrappers",
+      "provenance": "inferred_all_16_captures_in_documented_offset_range",
+      "offsets": [
+        "0x5b2004",
+        "0x5b202c",
+        "0x5b2054",
+        "0x5b2080",
+        "0x5b225c",
+        "0x5b2284",
+        "0x5b22a8",
+        "0x5b22c8",
+        "0x5b22f0",
+        "0x5b2314",
+        "0x5b2578",
+        "0x5b25a4",
+        "0x5b25d0",
+        "0x5b25fc",
+        "0x5b2628",
+        "0x5b2654"
+      ]
+    },
+    {
+      "wave": "101_helpers",
+      "provenance": "explicit_research_document",
+      "offsets": [
+        "0x58e2d0",
+        "0x59e35c",
+        "0x59ee48",
+        "0x59eef0",
+        "0x59ef04",
+        "0x5a1630",
+        "0x5a4070",
+        "0x5aa30c",
+        "0x5aac94",
+        "0x5ab77c",
+        "0x5b7150",
+        "0x5b71b4"
+      ]
+    },
+    {
+      "wave": "104",
+      "provenance": "explicit_104_scratch_JSON",
+      "offsets": [
+        "0x5b7180",
+        "0x5b84a0",
+        "0x5b84d0"
+      ]
+    }
+  ],
+  "expansion_unpromoted_exact_original_offset_count": 207,
+  "alternate_research_count": 54,
+  "alternate_distinct_original_offsets": 54,
+  "overlap_offsets": 50,
+  "not_in_expansion": [
+    {
+      "rom_offset": "0x5b4dec",
+      "size": 48,
+      "name": "func_801F8EDC_5B4DEC"
+    },
+    {
+      "rom_offset": "0x5b64b8",
+      "size": 44,
+      "name": "func_801FA5A8_5B64B8"
+    },
+    {
+      "rom_offset": "0x5b71b4",
+      "size": 44,
+      "name": "func_801FB2A4_5B71B4"
+    },
+    {
+      "rom_offset": "0x5b7180",
+      "size": 52,
+      "name": "func_801FB270_5B7180"
+    }
+  ],
+  "exact_new_distinct_total": 4,
+  "four_distinct_original_instruction_bytes": 188,
+  "union_unpromoted_candidates_provisional": 211,
+  "union_unpromoted_original_instruction_bytes_provisional": 7632,
+  "hypothetical_total_usa_matching_c_if_all_pass": 421,
+  "hypothetical_total_usa_matching_c_bytes_if_all_pass": 20968,
+  "hypothetical_remaining_asm_entries_if_all_pass": 6942,
+  "full_identity_54_verified_from_original_source_archive": false,
+  "canonical_210_plus_candidates_rom_gate_completed": false,
+  "production_function_claims_added": 0,
+  "status": "PROVISIONAL_RANGE_BASED_OVERLAP_REVIEW_NOT_PROMOTION",
+  "independent_original_elf_symbol_audit": {
+    "result": "PASS",
+    "verified_original_function_count": 211,
+    "matching_original_symbol_vma_and_size": 211,
+    "unexpected_or_missing_original_symbols": 0,
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "independently_rebuilt_pristine_usa_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "reference_original_elf_parser": "readelf -Ws, global positive-size func_ symbols",
+    "method": "For each of the 207 pinned independent native research offsets plus four separately documented offsets, compute original USA file_11 VMA as 0x801CB460 + ROMoffset - 0x587370, and verify original ELF native function symbol address/length. All match.",
+    "limitation": "Proof of original addresses and extents only; not C codegen or combined production 210+211 full-ROM verification."
+  }
+}

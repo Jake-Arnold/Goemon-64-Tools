@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Merge-ready file_11 research source/proof handoff (no production promotions)
+
+- **Change:** Snapshot 37 new source-only USA `file_11` research files from `chatgptweb/decomp-consolidation-20261116` (pinned commit `1e66db5b8413f3847bbe738c8e2dcc861fa79699`). Includes original-VMA candidate source fixtures, the 143-function mixed C/ASM reproduction script and research proof, 18 independently parsed JSON metadata/proof files, and 10 research documentation files. These are inert without explicitly running the research tools; no existing canonical source, manifest, verifier, local CI entrypoint, build output or production result is modified.
+- **Reason:** Make the documented, independently investigated 207-function USA research pool and the alternate 54-function scratch results available to the main decomp work without waiting for a speculative 210+211 production G2 or counting duplicate research functions.
+- **Checks:** Before snapshot, reviewed the private GitHub diff: exactly 37 new files, all existing production verification paths unchanged. Parsed all 18 JSON files successfully, checked the 143-function fixture spans 44 C + 44 ASM chunks without overlapping ROM offsets or symbol names, and verified 211/211 candidate original FUNC address/size identities against the original upstream USA ELF. Confirmed existing isolated original USA 32 MiB rebuild SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. These are research/import checks, **not** an executed full `decomp.local_ci` or updated central USA matching-C build.
+- **Limits:** No original-ROM central 210+93 or 210+211 combined production gate has passed. Exact identification of the 16 range-described Wave-101 functions still needs original source-archive confirmation. USA canonical matching C remains **210 functions / 13,336 bytes**; the approximately 211 research functions remain unpromoted. This snapshot also does not merge Japanese build/test files or older Impact candidates.
+- **Next:** Run full `decomp.local_ci` and the original-ROM central `decomp.verify`/`decomp.inventory` on the consolidation integration branch; promote native-exact C islands in a separate gated PR. Keep research branches independent.
+
 ### 2026-11-16 — Full native USA file_11 promotion: 50 more exact C functions, canonical 210/210 G2 and whole-ROM inventory
 
 - **Promotion:** Reconstructed 13 original-USA character-switch functions (620 bytes) and 37 genuine no-op actor callbacks (444 bytes) are formally integrated through the reviewed v2 mixed C/ASM file_11 adapter in the **canonical decomp/manifest.json**. The 180-byte character selector remains assembly-owned.
