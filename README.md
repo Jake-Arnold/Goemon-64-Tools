@@ -1,5 +1,12 @@
-# Goemon Speedrun Tools v0.11.19 — unified Linux launcher and dock identity
+# Goemon Speedrun Tools v0.11.20 — corrected Ubuntu dock WM_CLASS
 
+## v0.11.20 — Linux GNOME cog icon regression
+
+Fixed the desktop/app identity mismatch responsible for the separate generic cog dock icon. Real Tk 8.6/X11 reports `WM_CLASS = "goemonPracticeToolkit", "Goemonpracticetoolkit"` for the previous `Tk(className="GoemonPracticeToolkit")`, but the v0.11.19 desktop launcher declared `StartupWMClass=GoemonPracticeToolkit`. The difference in capitalization means GNOME cannot reliably associate the running window with the installed desktop entry.
+
+The application now starts with `Tk(className="goemon-practice-toolkit")`, whose real X11 `WM_CLASS` instance is **`goemon-practice-toolkit`**, matching both the desktop-file basename and the corrected `StartupWMClass`. Re-running `python3 scripts/install_linux_launcher.py` replaces the previous per-user launcher while preserving the original logo. Close any running toolkit first, launch **Goemon Practice Toolkit** from the Ubuntu application grid and replace an older pinned cog entry. A real Xvfb/Tk/xprop smoke probe verified the new WM_CLASS instance. Live GNOME Shell association on the user's machine remains to be checked; the new X11 identity regression test is included in the Linux test suite.
+
+## Previous v0.11.19 — unified Linux launcher and dock identity
 ## v0.11.19 — one launcher, remembered region, Ubuntu dock icon
 
 **Unified startup on Ubuntu:** `bash Run-Linux.sh` or `python -m practice.toolkit` opens the same USA/Japan application. Select the game region in the Dashboard; no `--game-version` option is required. The last selected region is remembered in the user's XDG configuration directory. The Japanese native recomp is the default target when the Dashboard is switched to Japan from auto selection; USA keeps its existing normal discovery. **Write-enabled practice controls remain the default** for both games; the explicit legacy `--read-only` override is preserved for compatibility but is not part of normal launch instructions.
