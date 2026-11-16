@@ -79,7 +79,12 @@ class EventSessionUITests(unittest.TestCase):
     def test_event_sessions_consolidates_advanced_memory_and_removes_shadow(self):
         app=self.app
         tabs={app.notebook.tab(tab,'text') for tab in app.notebook.tabs()}
-        self.assertIn('Event sessions',tabs)
+        self.assertIn('Memory discovery',tabs)
+        nested_discovery = {
+            app.discovery_tabs.tab(t, 'text')
+            for t in app.discovery_tabs.tabs()
+        }
+        self.assertIn('Event sessions', nested_discovery)
         self.assertNotIn('Saved / shadow',tabs)
         self.assertNotIn('State discovery',tabs)
         nested={app.event_sections.tab(t,'text') for t in app.event_sections.tabs()}
