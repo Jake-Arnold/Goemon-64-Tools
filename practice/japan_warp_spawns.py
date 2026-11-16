@@ -1,10 +1,10 @@
 """User-observed Japanese warp-point records; never infer JP spawns from USA.
 
-The old Japanese controller attempted to use self.entrance_atlas, which was
-never initialized. Thus it always staged only a destination map ID. This
-module records Japanese same-region XYZ from explicit live gameplay and uses
-a native-pending heading/mode only when that pending block independently
-agrees with the observed Japanese character position.
+Legacy per-Japanese-room position capture research, retained for inspecting
+a game's live entrance record. The shared Scene Browser in v0.11.23 instead
+uses the same original-USA ROM entrance atlas and selected entrance for both
+regions. These optional saved positions DO NOT override the USA entrance
+coordinates on a Japanese scene warp.
 
 Records are user-specific metadata, never ROM bytes or save states. A captured
 coordinate is evidence of a position, not proof of safe collision or a door.
