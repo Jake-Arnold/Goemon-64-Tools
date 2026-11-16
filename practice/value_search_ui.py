@@ -6,6 +6,7 @@ import threading
 import tkinter as tk
 from tkinter import ttk
 
+from practice.reports import create_value_search_report
 from practice.value_search import (
     ValueScanner, FORMATS, FILTERS, RDRAM_SIZE, DISPLAY_LIMIT,
 )
@@ -51,6 +52,7 @@ class ValueSearchMixin:
         self.value_search_filter = tk.StringVar(value='Decreased')
         self.value_search_unaligned = tk.BooleanVar(value=False)
         self.value_search_autorefresh = tk.BooleanVar(value=False)
+        self.value_report_name = tk.StringVar(value='Memory value search')
 
         tab = ttk.Frame(notebook, padding=10)
         notebook.add(tab, text='Value search')
@@ -91,6 +93,13 @@ class ValueSearchMixin:
         ttk.Button(row2, text='Watch selected address',
                    command=self.watch_value_search_candidate).pack(side='left', padx=(0, 7))
         ttk.Button(row2, text='Clear', command=self.clear_value_search).pack(side='left')
+        exports = ttk.Frame(tab)
+        exports.pack(fill='x', pady=(0, 7))
+        ttk.Label(exports, text='Report name:').pack(side='left', padx=(0, 5))
+        ttk.Entry(exports, textvariable=self.value_report_name, width=30).pack(
+            side='left', padx=(0, 7))
+        ttk.Button(exports, text='Save candidate report',
+                   command=self.export_value_search_report).pack(side='left')
 
         ttk.Label(tab, textvariable=self.value_search_status, wraplength=1090).pack(fill='x', pady=(0, 8))
         frame = ttk.Frame(tab)
@@ -218,11 +227,51 @@ class ValueSearchMixin:
             f'{self.value_scanner.samples} snapshot(s). '
             'No game memory was modified.')
 
+    def export_value_search_report(self):
+        """Save the current *displayed* snapshot; never claim a full trace."""
+        if self.value_scan_busy or self.value_scanner.previous is None:
+            self.value_search_status.set(
+                'Run a scan and let it finish before saving a report.')
+            return
+        try:
+            displayed = []
+            for row in self.value_scanner.rows(DISPLAY_LIMIT):
+                displayed.append({
+                    'address': f'0x{row["address"]:08X}',
+                    'kind': row['kind'], 'value': row['value'],
+                    'hex': row['hex'],
+                })
+            region = getattr(getattr(self, 'active_version', None),
+                             'key', 'usa')
+            folder = create_value_search_report(
+                region=region,
+                title=self.value_report_name.get() or 'Memory value search',
+                rows=displayed, total_count=self.value_scanner.count,
+                value_type=self.value_scanner.kind,
+                sample_count=self.value_scanner.samples)
+            self.value_search_status.set(
+                f'Saved {len(displayed)}/{self.value_scanner.count} '
+                f'candidate rows to {folder}. View them in Reports.')
+            if hasattr(self, 'refresh_reports'):
+                self.refresh_reports(select_path=folder)
+        except (OSError, ValueError, TypeError) as exc:
+            self.value_search_status.set(f'Report export failed: {exc}')
+
+    def _value_search_tab_visible(self):
+        # Standalone scanner tests may attach the tab directly to the root.
+        if self.notebook.select() == str(self.value_search_tab):
+            return True
+        discovery = getattr(self, 'discovery_tab', None)
+        tabs = getattr(self, 'discovery_tabs', None)
+        return bool(discovery is not None and tabs is not None and
+                    self.notebook.select() == str(discovery) and
+                    tabs.select() == str(self.value_search_tab))
+
     def _value_search_auto_tick(self):
         self._value_search_auto_after = None
         if (self.value_search_autorefresh.get() and not self.value_scan_busy and
                 self.value_scanner.previous is not None and self._value_search_reader() is self.value_scan_memory and
-                self.notebook.select() == str(self.value_search_tab)):
+                self._value_search_tab_visible()):
             self._value_start('refresh')
         self._value_search_auto_after = self.root.after(
             1800, self._value_search_auto_tick)
