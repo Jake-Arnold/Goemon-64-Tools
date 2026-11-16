@@ -30,7 +30,7 @@ class EntranceMixin:
                 atlas=load_atlas(candidate)
                 if atlas is not None:
                     self.entrance_atlas=atlas
-                    if candidate == legacy and not durable.exists():
+                    if candidate == legacy:
                         try:save_atlas(durable, atlas)
                         except OSError:pass
                     break
