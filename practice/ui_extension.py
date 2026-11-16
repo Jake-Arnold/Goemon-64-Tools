@@ -204,7 +204,7 @@ class InspectorMixin(EntranceMixin):
         self.experimental_warp_btn.pack(fill='x',pady=4)
         if not self.args.enable_hex_edit:self.experimental_warp_btn.state(['disabled'])
         self.jp_capture_spawn_btn = ttk.Button(
-            scenes, text="Record current Japanese Goemon XYZ as this room's warp point",
+            scenes, text="Record CURRENT loaded Japanese room XYZ (not selected scene)",
             command=self.capture_japan_warp_spawn)
         self.jp_capture_spawn_btn.pack(fill='x', pady=(0, 4))
         self.jp_capture_spawn_btn.state(['disabled'])
