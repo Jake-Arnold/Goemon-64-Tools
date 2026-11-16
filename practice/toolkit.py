@@ -133,7 +133,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         args = apply_access_mode(args)
         self.root, self.args = root, args
         self.active_version = selected_version(
-            getattr(args, 'game_version', None) or load_last_region())
+            getattr(args, 'game_version', 'usa') or load_last_region())
         self.game_version_choice = tk.StringVar(value=self.active_version.label)
         self.verified_rom_path = (
             load_remembered_rom('japan')
