@@ -74,6 +74,7 @@ $backendTests = @(
     'tests.test_known_entrances',
     'tests.test_repository_entrance_atlas',
     'tests.test_japan_native_scene_controller',
+    'tests.test_japan_scene_readiness',
     'tests.test_japan_state_comparison',
     'tests.test_japan_player_position_research',
     'tests.test_value_search',
