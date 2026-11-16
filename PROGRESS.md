@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Correct cross-region research checkpoint wording and exact-ROM size
+
+- Changed: corrected the 40-C draft research handoff's historical 29/36 checkpoints, confirmed three canonical duplicates, updated per-overlay 37-new distribution, documented eleven in-repository research-only source files, and restored correct USA full-ROM acceptance length **33,554,432 bytes**. No native source, manifest or production proof was modified by this documentation correction.
+- Tests: inspected the pinned repo documentation against the source manifest and original 32 MiB ROM length; the separately stored 40-source original-ID0 checker had already passed 40/40 and scanner output was independently byte-for-byte reproduced.
+- Limits: this is a documentation correction, not a new native G2, ROM match or C promotion. Next step remains reviewed integration and full original linker/relocation/inventory/local CI gates.
+
+
 ### 2026-11-16 — Four additional original-USA/JP exact C matches in file_12 and file_14 (research only)
 
 - Changed: appended exact independently matched original C code for `func_80219E40_5D5310` (48 B, add scalar to XYZ), `func_80219E08_5D52D8` (56 B, scale XYZ), `func_801D2138_640F88` (32 B, add actor to indexed table), `func_801D84E8_647338` (32 B, similar alternate table). Checked in isolated sources/proof metadata under `decomp/research/jp_recomp_to_c/`; updated full mapping doc. These four are distinct from current canonical 315 C.
