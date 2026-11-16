@@ -1,0 +1,45 @@
+{
+  "format": "goemon-file11-adjacent73-independent-scratch-proof-v1",
+  "date": "2026-11-16",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_usa_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_japan_decompressed_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "usa_new_original_vma_native_matching_functions": 21,
+  "usa_new_bytes": 336,
+  "japan_new_original_vma_native_matching_functions": 8,
+  "japan_new_bytes": 180,
+  "previous_file11_research_functions": 52,
+  "combined_file11_scratch_functions": 73,
+  "combined_file11_c_bytes": 1456,
+  "mixed_c_asm_chunks": 46,
+  "overlay_vma": "0x801CB460",
+  "overlay_size": 267264,
+  "complete_usa_rom_bytes": 33554432,
+  "complete_usa_rom_byte_identical": true,
+  "baseline_elf_function_entries": 7376,
+  "scratch_elf_function_entries": 7376,
+  "matched_original_address_func_symbols": 73,
+  "baseline_file11_relocations": 8825,
+  "scratch_file11_relocations": 8825,
+  "relocations_identical_semantic_multiset": true,
+  "relocations_identical_order": false,
+  "relocation_order_cycles": [
+    [
+      2506,
+      2507,
+      2508
+    ],
+    [
+      6131,
+      6132,
+      6133
+    ]
+  ],
+  "generated_splat_false_function_label_removed": "func_801F2CCC_5AEBDC",
+  "original_padding_instruction_preserved": true,
+  "rom_free_research_tests_passed": 19,
+  "baseline_central_promoted_functions": 210,
+  "central_233_full_g2": "not_run",
+  "canonical_manifest_modified": false,
+  "source_archive_sha256": "deb96e14a4a6e13af6a6b7b9e6098f503990db7e9afcbddfc731145078456094"
+}

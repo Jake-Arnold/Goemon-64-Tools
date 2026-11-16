@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Adjacent file_11 original-address C matches, full 73-function scratch USA ROM proof (research-only)
+
+- Confirmed **21 additional distinct USA file_11 C functions / 336 instruction bytes** at their original addresses with pinned native IDO 5.3 (six helpers and 15 original no-op callbacks); eight equivalent Japanese functions match **180 bytes**. No overlap with PR #20's 50 or PR #24's two functions.
+- Rebuilt an independent pinned USA scratch game with **73 file_11 C functions / 1,456 bytes** in **46 original-order C/ASM chunks**; full original USA ROM matches **33,554,432/33,554,432 bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
+- Pristine and candidate `file_11` ELFs have the same overlay VMA/size, **8,825** identical semantic relocation tuples and **7,376** positive-size function entries. Two *known, exact* three-record relocation-order rotations (indices 2506–2508, 6131–6133) remain; raw relocation order is not identical. One Splat-only FUNC label on a retained NOP was removed.
+- **19 ROM-free source/proof tests passed.** Complete native 233-function central G2 was **not** run; 210 remains the canonical production C count. Japan full-ROM verification remains blocked. Dedicated report: `docs/USA_FILE11_ADJACENT_73_RESEARCH_2026-11-16.md` and source-only chat archive.
+
 ### 2026-11-16 — Independent exact USA 52-function file_11 transition scratch proof (research-only)
 
 - **Base:** Follow-up research branch starts at the now formally promoted PR #20 commit `d394efe7` (210 central matched C functions). No canonical manifest, promotion count, gameplay toolkit or existing verification result changed.
