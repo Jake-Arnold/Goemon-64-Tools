@@ -36,7 +36,7 @@ def encode_value(kind: str, text: str) -> bytes:
         raise ValueError('Enter a number to search')
     fmt, _width = FORMATS[kind]
     try:
-        if kind == 'f32':
+        if kind in ('f32', 'f64'):
             number = float(raw)
             if not math.isfinite(number):
                 raise ValueError('Float must be finite')
