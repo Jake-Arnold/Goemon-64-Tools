@@ -1,5 +1,16 @@
-# Goemon Speedrun Tools v0.11.27 — one unified toolkit development branch
+# Goemon Speedrun Tools v0.11.28 — Ubuntu test harness repairs
 
+## v0.11.28 — eight Japanese fixture errors and one GNOME X11 test failure
+
+The first `main` toolkit regression run on Ubuntu completed 264 tests and reported **8 errors and 1 failure**. The eight errors all stem from synthetic `SimpleNamespace` test screens missing the real Toolkit's `_japan_writable_reader` method; they are not evidence that the real toolkit's Japanese writer is absent. The Japanese Unlocks and Live Memory edit tests now share an updated synthetic controller that delegates to the actual writer selector. The regression additionally asserts that the native Japanese recomp still uses PID/ROM/probe writer validation instead of bypassing its security gates.
+
+The GNOME X11 smoke test used `xprop -name` and matched `mutter-x11-frames`, not the tested Tk client. It now gives the test window a unique title, selects that window's ID using `xwininfo -root -tree`, then reads `WM_CLASS` from the selected client with `xprop -id`. An equivalent lookup passed under local Xvfb with `"goemon-practice-toolkit"` as the instance class. **The complete Ubuntu suite has not yet been rerun after these changes.**
+
+The user also reported an **independent intermittent SIGSEGV** from a separate `Goemon64RecompiledJP` binary under `~/Goemon64Recomp-JP` after the runtime heap-initialization message. It cannot be diagnosed from the test-suite failures; a matching native-game backtrace is required. `Failed to preload executable!` also appeared on noncrashing launches and is not sufficient to identify the cause. This patch makes **no changes** to that executable or to production Toolkit memory writes.
+
+See [Ubuntu test failures and native crash report](docs/UBUNTU_TEST_FAILURES_2026-11-16.md) for exact test names, fix rationale, evidence and safe local stack-trace steps. The source/feature branch derives from `main`; all future toolkit changes continue to target `main`.
+
+## Previous v0.11.27 — one unified toolkit development branch
 ## v0.11.27 — consolidate active USA/Japan toolkit development
 
 The unified v0.11.27 USA/Japan toolkit has been **merged into `main` via PR #27**. The merge preserves the v0.11.26 Japanese-native-recomp toolkit and full 888-entrance atlas, with no feature-code reset or overwrite. It retains the current USA and Japan toolkit implementation, supported writes and process backends, Ubuntu dock launcher, 888-entry source-verified original-USA entrance atlas, unified Scene Browser, and live-memory/checkpoint tooling.
