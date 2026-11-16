@@ -22,6 +22,8 @@ class JapanRawFreezeUITests(unittest.TestCase):
         except tk.TclError as exc:
             self.skipTest(str(exc))
         self.root.withdraw()
+        store = patch('practice.toolkit.save_last_region')
+        store.start(); self.addCleanup(store.stop)
         patches=[
             patch('practice.toolkit.load_remembered_rom', return_value=None),
             patch('practice.toolkit.load_named_checkpoints', return_value=[]),
