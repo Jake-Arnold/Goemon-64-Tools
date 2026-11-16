@@ -41,9 +41,8 @@ class EventSessionsMixin:
             'Compare memory changes instead. This method is read-only.'),
             wraplength=1080).pack(anchor='w',pady=6)
         row=ttk.Frame(tab);row.pack(fill='x')
-        ttk.Label(row,text='Experiment:').pack(side='left')
-        self.event_label=tk.StringVar(value='Benkei first conversation')
-        ttk.Entry(row,textvariable=self.event_label,width=35).pack(side='left',padx=5)
+        self.event_setup_row = row
+        self.event_label=tk.StringVar(value='Flag investigation')
         ttk.Label(row,text='ROM SHA-1 (optional, unverified):').pack(side='left')
         self.event_rom=tk.StringVar()
         ttk.Entry(row,textvariable=self.event_rom,width=42).pack(side='left',padx=5)
@@ -91,6 +90,7 @@ class EventSessionsMixin:
             self, tab, tree=lambda: self.event_table, status=self.event_status,
             report_name=self.event_label, save=self.save_event_investigation_report,
             label='Flag research')
+        self.event_results.controls.pack_configure(before=self.event_setup_row)
         columns=('address','type','live','raw','mask','direction',
                  'support','opposite','absent','noise','reverted')
         result_frame=ttk.Frame(tab);result_frame.pack(fill='both',expand=True)
