@@ -41,6 +41,7 @@ esac
   tests.test_japan_native_recomp \
   tests.test_japan_auto_attach \
   tests.test_japan_pid_restart_watch \
+  tests.test_gui_smoke_runner \
   tests.test_toolkit_version \
   tests.test_linux_launcher \
   tests.test_launcher_preferences \
@@ -85,7 +86,7 @@ if [[ -n "${GOEMON_USA_DECOMPRESSED:-}" && -n "${GOEMON_JAPAN_DECOMPRESSED:-}" ]
 fi
 
 if command -v xvfb-run >/dev/null 2>&1; then
-  xvfb-run -a timeout --signal=TERM --kill-after=5s "${GUI_TIMEOUT_SECONDS}s" "${PYTHON}" -m unittest \
+  xvfb-run -a timeout --signal=TERM --kill-after=5s "${GUI_TIMEOUT_SECONDS}s" "${PYTHON}" -m tests.gui_smoke_runner \
     tests.test_japanese_fields_ui \
     tests.test_japanese_scene_probe_ui \
     tests.test_japanese_party_controls_ui \
@@ -107,7 +108,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_japan_recomp_write_ui \
     -v
 elif [[ -n "${DISPLAY:-}" ]]; then
-  timeout --signal=TERM --kill-after=5s "${GUI_TIMEOUT_SECONDS}s" "${PYTHON}" -m unittest \
+  timeout --signal=TERM --kill-after=5s "${GUI_TIMEOUT_SECONDS}s" "${PYTHON}" -m tests.gui_smoke_runner \
     tests.test_japanese_fields_ui \
     tests.test_japanese_scene_probe_ui \
     tests.test_japanese_party_controls_ui \

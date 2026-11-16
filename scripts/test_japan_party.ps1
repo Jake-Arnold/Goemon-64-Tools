@@ -50,6 +50,7 @@ $backendTests = @(
     'tests.test_japan_native_recomp',
     'tests.test_japan_auto_attach',
     'tests.test_japan_pid_restart_watch',
+    'tests.test_gui_smoke_runner',
     'tests.test_toolkit_version',
     'tests.test_linux_launcher',
     'tests.test_launcher_preferences',
@@ -124,7 +125,7 @@ try {
     }
 
     Write-Host 'Running native Windows Tk GUI tests (desktop session required)...'
-    Invoke-PythonTest -Arguments (@('-m', 'unittest') + $guiTests + @('-v'))
+    Invoke-PythonTest -Arguments (@('-m', 'tests.gui_smoke_runner') + $guiTests)
 
     Write-Host 'Japanese/USA parity regression suite passed.'
 } finally {

@@ -1,5 +1,15 @@
 # Ubuntu Japanese toolkit test failures and native JP crash (2026-11-16)
 
+## Additional synthetic GUI-test safeguard (16 November 2026)
+
+The test-only GUI runner converts unmocked tkinter.messagebox, filedialog
+and simpledialog calls into immediate test failures, avoiding hidden modals.
+Expected dialogs can still be mocked explicitly. Linux and Windows tests
+use this guard; the existing Linux GUI timeout remains enabled. A ROM-free
+Ubuntu 24.04 workflow now exercises synthetic and Tk regression suites.
+Its results, and the user's corrected GUI rerun, have not been observed.
+This does not validate any Japanese live-game memory operations.
+
 ## Later v0.11.30 user run (14:55 UTC): 290 core tests passed, GUI stalled
 
 User launched the *separate* `Goemon64RecompiledJP` from

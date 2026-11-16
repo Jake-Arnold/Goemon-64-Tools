@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.30 GUI modal guard and CI preflight
+
+- **Reason:** GUI tests had hung without a summary; corrected region fixtures still lack a full rerun. A timeout prevents an endless hang, but unexpected hidden Tk dialogs need actionable failures.
+- **Changes:** Added a test-only guard that rejects unmocked confirmation, information, file and entry dialogs immediately. Linux/Windows GUI smoke runners use it, and two headless guard tests join their non-GUI suites. Added an Ubuntu 24.04 ROM-free GitHub Actions synthetic/Tk regression workflow.
+- **Evidence:** Two guard regression tests and direct guarded execution passed locally with Python 3. This does not prove the full toolkit, Japanese recomp, or in-game connection/warp functionality. The earlier 290 core passes and unfinished GUI test summary are still the last live user results.
+- **Next:** Evaluate automated workflow output and rerun the entire GUI suite on Ubuntu; validate real PID and byte order and each of the four characters before merging PR #33. Production memory writes, version v0.11.30 and main remain unchanged.
+
 ## 2026-11-16 — v0.11.30 GUI smoke hang after 290 passing unit tests
 
 - **Fresh user log:** Stage-5 native JP runtime tests **15/15 passed**, CMake/Clang linked `Goemon64RecompiledJP`, and the sampled execution joined its timer worker and exited; no SIGSEGV observed in this run. Toolkit's **290 non-GUI tests passed**. The Xvfb UI suite then logged many FAIL/ERROR lines in USA-specific `test_value_freezes_ui`, `test_story_progress_ui`, `test_dashboard`, and `test_entrance_ui`; output ceased during `test_scene_request_blocks_overlapping_checkpoint_restore` with no UI summary.
