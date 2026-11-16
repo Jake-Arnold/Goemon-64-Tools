@@ -3,7 +3,7 @@
 # Run from any directory: bash decomp/build_japan_twentyfour_c.sh checkout deps runtime
 set -euo pipefail
 if (( $# != 3 )); then
-  echo 'Usage: build_japan_eighteen_c.sh <pinned-mnsg-checkout> <dependencies-dir> <runtime-additions-dir>' >&2
+  echo 'Usage: build_japan_twentyfour_c.sh <pinned-mnsg-checkout> <dependencies-dir> <runtime-additions-dir>' >&2
   exit 2
 fi
 checkout=$(realpath -- "$1")
@@ -43,16 +43,16 @@ fi
 if [[ "$(sha1sum config/japan_0/baserom.decompressed.z64 | cut -d' ' -f1)" != 6f8745fecc3a5e7d4918c7a73353eb0726116ded ]]; then
   echo 'Expanded Japanese ROM does not match pinned original' >&2; exit 1
 fi
-run_module decomp.japan_eighteen_c stage "$checkout"
+run_module decomp.japan_twentyfour_c stage "$checkout"
 "$py" "$deps/.venv/bin/splat" split config/japan_0/splat_twentyfour_c.local.yaml >/dev/null
-run_module decomp.japan_eighteen_c install "$checkout"
+run_module decomp.japan_twentyfour_c install "$checkout"
 run_module decomp.japan_asm_baseline patch-asm "$checkout"
 C_FILES='src/jp_bit_array.c src/jp_camera_13B70.c src/jp_main_38620.c src/jp_mode_flags.c src/jp_motion_12D60.c src/jp_state_37D1C.c src/jp_transition_37870.c src/jp_warp_37920.c src/jp_warp_37B58.c src/jp_warp_37C4C.c src/jp_warp_37C84.c src/jp_warp_37CB8.c src/jp_warp_37CE0.c src/jp_warp_call_37900.c src/jp_coord_37958.c src/jp_coord_37A24.c src/jp_state_37AF4.c src/jp_warp_37B8C.c src/jp_state_37D5C.c src/jp_compare_37EEC.c'
 objects=()
 for file in $C_FILES; do objects+=("build/japan_0/$file.o"); done
 objects+=(build/japan_0/asm/japan_0/main_37DB8.s.o build/japan_0/asm/japan_0/main_37F20.s.o)
 make -j"${GOEMON_JOBS:-8}" VERSION=japan_0 "C_FILES=$C_FILES" "${objects[@]}" >/dev/null
-run_module decomp.japan_eighteen_c layout "$checkout" --report "$checkout/build/japan_0/twentyfour-layout-proof.json" --objdump "$deps/bin/mips-linux-gnu-objdump"
+run_module decomp.japan_twentyfour_c layout "$checkout" --report "$checkout/build/japan_0/twentyfour-layout-proof.json" --objdump "$deps/bin/mips-linux-gnu-objdump"
 make -j"${GOEMON_JOBS:-8}" VERSION=japan_0 "C_FILES=$C_FILES" build/japan_0/mnsg.z64 >/dev/null
 if ! cmp -s build/japan_0/mnsg.z64 config/japan_0/baserom.decompressed.z64; then
   echo 'Japanese expanded ROM differs from original' >&2; exit 1
