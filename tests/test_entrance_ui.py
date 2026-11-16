@@ -16,7 +16,7 @@ class EntranceUITests(unittest.TestCase):
     def setUp(self):
         self.root=tk.Tk();self.root.withdraw()
         with patch('practice.entrance_ui.load_atlas',return_value=atlas_fixture()):
-            self.app=Toolkit(self.root,parse_args([]))
+            self.app=Toolkit(self.root,parse_args(['--game-version','usa']))
         self.process,self.app.mem=checkpoint_fixture.TestCheckpoint().sample()
         self.app.mem.write_guest(MAP_ADDR,(1).to_bytes(2,'big'))
         self.app.current=self.app.mem.snapshot()
@@ -224,6 +224,12 @@ class EntranceUITests(unittest.TestCase):
         checkpoint=capture_checkpoint(self.app.mem,'Before reload')
         self.app.checkpoints=[checkpoint];self.app.checkpoints_box['values']=['Before reload'];self.app.checkpoints_box.current(0)
         with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):self.app.try_reload_warp()
-        with patch.object(self.process,'write',side_effect=AssertionError('No second transition')):
+        # An unexpected failure to stage the USA warp must fail fast rather
+        # than display a hidden Tk modal under Xvfb and hang the whole suite.
+        self.assertIsNotNone(self.app.pending_direct_warp,
+                             'Expected USA warp; check selected test region')
+        with patch.object(self.process,'write',side_effect=AssertionError('No second transition')), \
+             patch('practice.toolkit.messagebox.askyesno',
+                   side_effect=AssertionError('Hidden checkpoint modal forbidden')):
             self.app.restore_full_checkpoint()
         self.assertIn('scene request',self.app.status.get())
