@@ -2,6 +2,16 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.25 repository-committable entrance coordinate table
+
+- **User instruction:** Store the known warp coordinates in the GitHub repository and use one extraction supplied once, instead of requiring each user to extract and cache a copy locally. The exported JSON has not yet been uploaded; do not commit placeholder or invented coordinates.
+- **Versioned source-of-truth path:** Reserved `practice/data/entrance-coordinates.json` for a validated, extracted original-USA numeric atlas. Added `practice/data/README.md` with the exact local command `python3 -m practice.entrances --rom "/path/to/original-usa.z64" --output "/tmp/goemon-entrance-coordinates.json"`. Only the resulting JSON is to be shared/committed, not the ROM.
+- **Priority and fallback:** `practice/entrance_ui.py` now loads the checked-in atlas via `resource_root()/practice/data/entrance-coordinates.json` first; thereafter uses validated per-user persistent `entrance-coordinates.json`, then validated legacy `practice/entrances.json` migration, and finally the existing single observed Oedo South preset where no complete atlas is available. Invalid bundled data is not trusted; the preexisting schema/digest check applies on every load. The GUI reports whether its coordinates came from the repository or a cache.
+- **Shared region semantics:** USA and Japan already use `selected_scene_spawn(destination)` and retain multiple distinct entrances per scene and source-route. The new repository atlas is therefore immediately consumed by both versions once the decoded data is committed.
+- **Tests authored:** Updated `tests/test_entrance_ui.py` to check checked-in atlas priority over conflicting user cache, invalid-bundle fallback, and legacy migration even after the repository atlas is introduced. Registered `tests.test_entrance_ui` in both Linux Xvfb/real-display and Windows Tk test groups (it previously was not included in the Japan suite).
+- **Version:** Increased `practice/version.py` to **v0.11.25**, updated README and progress log. **The actual full extracted coordinate JSON has not yet been supplied, so it is not present in GitHub.** No tests or native-game writes were executed through the GitHub connector. The PR remains a draft.
+- **Next:** Receive JSON only, verify original-USA atlas schema, room/entrance coverage, hash and representative XYZ, then commit to `practice/data/entrance-coordinates.json`; run both test suites, check UI displays repository as the atlas source and compare USA/JP warps in gameplay.
+
 ## 2026-11-16 — v0.11.24 fixed scene-ID entrance coordinates and durable user atlas
 
 - **User request:** Rather than requiring a ROM at launch for USA/JP warp coordinates, permanently store the coordinates known for scene IDs. Clarified that a scene can have multiple distinct entrance positions, so key by destination scene and entrance/route, never scene ID alone where ambiguous.
