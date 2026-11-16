@@ -1,0 +1,152 @@
+{
+  "format": "goemon-japan-eighteen-native-original-build-v1",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "region": "japan_0",
+  "status": "PASS",
+  "functions": 18,
+  "matching_c_bytes": 756,
+  "translation_units": 14,
+  "assembly_marked_elf_entries": 7358,
+  "elf_positive_sized_entries": 7376,
+  "elf_sections": 73,
+  "expanded_rom": {
+    "bytes": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "different_bytes": 0
+  },
+  "retail_rom": {
+    "bytes": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "different_bytes": 0
+  },
+  "units": [
+    {
+      "object": "build/japan_0/src/jp_motion_12D60.c.o",
+      "source_sha256": "c573d93bef7d803afa44a9e3fd09437819cb863dad8c210c00b46e4c84889f89",
+      "text_sha256": "7abe3e7fff0963bfcb4e6b333fa738d03ddb1d3147b3ca02f8573f4f34fbdf55",
+      "size": 32,
+      "relocations": 0,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_camera_13B70.c.o",
+      "source_sha256": "b924622510395f9b8d3d4be8cf5a662160cff676678c5d4541c76ead87ae8d5b",
+      "text_sha256": "5ac8c04bfd5044d48649fa29217ef11385d853508fcff5445d9376620cec3ca5",
+      "size": 32,
+      "relocations": 0,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_bit_array.c.o",
+      "source_sha256": "acd4065aeb90b4015c19cc443e5d333e45aaedea94dee710dda4615b2bf0f650",
+      "text_sha256": "585a234af53888f922034d8f0c4f7c9c157dc35c12d26b3d35b1a9ff7419cc70",
+      "size": 128,
+      "relocations": 0,
+      "functions": 3,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_transition_37870.c.o",
+      "source_sha256": "e98ba1ce4db0783b249f509e68e3e448303333e5423db873a491c96a42fa5d6b",
+      "text_sha256": "a83e37d5505962bbb0d7edaf4080fa9931d725a1325cd11774e19bcf2b6268d9",
+      "size": 96,
+      "relocations": 3,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_mode_flags.c.o",
+      "source_sha256": "72eed7b6756517d2c1a91e0c2442dc0e5ac94ac9744c4c57c2d48e6933cecee8",
+      "text_sha256": "952f9004206e8f3ab29fe84f8c8fcc536e5d237d742c76e4522234368f2c50c8",
+      "size": 48,
+      "relocations": 6,
+      "functions": 3,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_warp_call_37900.c.o",
+      "source_sha256": "2723f04618138b20a43935fe81be83048336a0e318dbb9b87131bfc4090aa064",
+      "text_sha256": "7c70158f28f75cceb029fb3b2658ed024d443310cb4a3d920e8d3469dd187fa5",
+      "size": 32,
+      "relocations": 1,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_warp_37920.c.o",
+      "source_sha256": "e01e75d47949a585124c7447b12b4c89587fccfde094596c0456905ff3b387a6",
+      "text_sha256": "b4632d4574a9a331388d6b563675fa5011bff7d2be20bc4c3393199a850da0c1",
+      "size": 56,
+      "relocations": 3,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_warp_37B58.c.o",
+      "source_sha256": "7d33a95092f8fae3820f6fced6494170518a77424d26b6b0137946d0ece1e5ed",
+      "text_sha256": "723de51182c06b568d55aa4e12cf0acb3c7c96078fc7c3393d75a2bcca299202",
+      "size": 52,
+      "relocations": 2,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_warp_37C4C.c.o",
+      "source_sha256": "60a6f1cc8b3bdbc47ddf61d5d724b5f562facf4bd58ddbfa60a52703136eca34",
+      "text_sha256": "dedb70617fa6ace57622bad6965abd1396618d4a44b3099f8fb477b9d54812a9",
+      "size": 56,
+      "relocations": 3,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_warp_37C84.c.o",
+      "source_sha256": "f86c49e730f3ccda4b0b14aedaed257844d1c4e51cc58ef29ade7751279c1b3b",
+      "text_sha256": "f7dabf5f4ab19dc80fb16c4a4896db2f12862f6a971c9167fa9920866245a313",
+      "size": 52,
+      "relocations": 2,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_warp_37CB8.c.o",
+      "source_sha256": "d73e21bfd4df34ea99aff51f4e478e059b5a94fbfe910258d777664251eb6721",
+      "text_sha256": "bae4c2f3713710bc735cc030dfd36004c669172a38198b011a704c9c9d783676",
+      "size": 40,
+      "relocations": 2,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_warp_37CE0.c.o",
+      "source_sha256": "242e4b42e2edfc1850ed36532d8ddad7176bdf8acbc2bc947975cbf27b83957b",
+      "text_sha256": "49158b601f13395a37e1bb312990290cd729fbbb05243fc57736e6a350d54392",
+      "size": 60,
+      "relocations": 2,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_state_37D1C.c.o",
+      "source_sha256": "a52ac549fa820181775dc56a12c58851eef61d6c049faf480ac9a2994410388b",
+      "text_sha256": "04c8bc73db3dff5ebad38ccc8a66da3af133376d0642ec1a2886c4ea9184e9d5",
+      "size": 64,
+      "relocations": 3,
+      "functions": 1,
+      "status": "PASS"
+    },
+    {
+      "object": "build/japan_0/src/jp_main_38620.c.o",
+      "source_sha256": "b5dcce37328f69fdbd4a1d07e5a43bdd373dee22061e951e7f6672daaa430da2",
+      "text_sha256": "2415714719d85e4a789acee079f28e4e4c4c2b693ab00b843e8d8d91c8c3882c",
+      "size": 16,
+      "relocations": 0,
+      "functions": 1,
+      "status": "PASS"
+    }
+  ],
+  "native_pc_runtime": "NOT RUN",
+  "emulator_gameplay": "NOT RUN"
+}
