@@ -14,6 +14,7 @@ from practice.event_sessions import (
 )
 from practice.checkpoints import GAMEDATA_ADDR, STATE_ADDR
 from practice.paths import diagnostics_dir
+from practice.discovery_results import DiscoveryResultsPanel
 from practice.reports import create_discovery_report, working_investigations_dir
 
 
@@ -50,8 +51,6 @@ class EventSessionsMixin:
                    command=self.new_event_session).pack(side='left')
         ttk.Button(row,text='Open investigation',
                    command=self.open_event_session).pack(side='left',padx=5)
-        ttk.Button(row,text='Save report',
-                   command=self.save_event_investigation_report).pack(side='left',padx=5)
         row=ttk.Frame(tab);row.pack(fill='x',pady=7)
         ttk.Label(row,text='Repeat type:').pack(side='left',padx=(0,4))
         self.event_role=tk.StringVar(value='event')
@@ -88,13 +87,30 @@ class EventSessionsMixin:
         ttk.Label(tab,textvariable=self.event_live,wraplength=1100).pack(anchor='w',pady=4)
         self.event_trial_summary=tk.StringVar(value='No trials')
         ttk.Label(tab,textvariable=self.event_trial_summary,wraplength=1100).pack(anchor='w')
-        columns=('address','mask','direction','support','opposite','absent','noise','reverted')
-        self.event_table=ttk.Treeview(tab,columns=columns,show='headings',height=12)
-        for name,title in zip(columns,('Address','Bit mask','Direction','Event support','Opposite','Unchanged','Idle/control overlap','C reverted')):
-            self.event_table.heading(name,text=title);self.event_table.column(name,width=125)
-        scroll=ttk.Scrollbar(tab,orient='vertical',command=self.event_table.yview)
-        scroll.pack(side='right',fill='y');self.event_table.configure(yscrollcommand=scroll.set)
-        self.event_table.pack(fill='both',expand=True)
+        self.event_results = DiscoveryResultsPanel(
+            self, tab, tree=lambda: self.event_table, status=self.event_status,
+            report_name=self.event_label, save=self.save_event_investigation_report,
+            label='Flag research')
+        columns=('address','type','live','raw','mask','direction',
+                 'support','opposite','absent','noise','reverted')
+        result_frame=ttk.Frame(tab);result_frame.pack(fill='both',expand=True)
+        self.event_table=ttk.Treeview(
+            result_frame,columns=columns,show='headings',
+            selectmode='extended',height=12)
+        headers=(('address','N64 address',145),('type','Type',95),
+                 ('live','Live value',140),('raw','Live hex',145),
+                 ('mask','Bit mask',90),('direction','Direction',95),
+                 ('support','Event support',125),('opposite','Opposite',95),
+                 ('absent','Unchanged',95),('noise','Control overlap',135),
+                 ('reverted','C reverted',110))
+        for key,title,width in headers:
+            self.event_table.heading(key,text=title)
+            self.event_table.column(key,width=width,stretch=key in ('live','raw'))
+        scroll=ttk.Scrollbar(
+            result_frame,orient='vertical',command=self.event_table.yview)
+        scroll.pack(side='right',fill='y')
+        self.event_table.configure(yscrollcommand=scroll.set)
+        self.event_table.pack(side='left',fill='both',expand=True)
         self.event_table.bind('<<TreeviewSelect>>',self.show_event_evidence)
         self.event_evidence=tk.Text(tab,height=4,wrap='word',background='#1a1d23',
                                    foreground='#f3eee5',insertbackground='#edbf6b')
@@ -366,6 +382,7 @@ class EventSessionsMixin:
     def refresh_event_session(self):
         session=self.event_session
         self.event_rows=[]
+        self.event_results.invalidate()
         self.event_generation+=1
         generation=self.event_generation
         counts={role:sum(t['role']==role for t in session['trials']) for role in ('event','idle','control')}
@@ -391,10 +408,13 @@ class EventSessionsMixin:
                 self.event_trial_summary.set(summary+' | Analysis failed: '+result);return
             self.event_rows=result
             for i,row in enumerate(result):
-                self.event_table.insert('','end',iid=str(i),values=(row['address'],row['mask'],row['direction'],
-                    f'{len(row["support"])}/{row["event_trials"]}',len(row['opposite']),len(row['absent']),
+                self.event_table.insert('','end',iid=str(i),values=(
+                    row['address'],'u8','—','—',row['mask'],row['direction'],
+                    f'{len(row["support"])}/{row["event_trials"]}',
+                    len(row['opposite']),len(row['absent']),
                     len(row['control_overlap']),len(row['reverted'])))
             self.event_trial_summary.set(summary+f' | {len(result)} bit candidates')
+            self.event_results.refresh_now()
         threading.Thread(target=worker,daemon=True,name='GoemonEventRanking').start()
         self.root.after(40,poll)
 
