@@ -7,6 +7,7 @@ access tracing. No code in this module writes game RAM.
 from __future__ import annotations
 
 import math
+from contextlib import nullcontext
 import queue
 import struct
 import threading
@@ -226,7 +227,7 @@ class DiscoveryResultsPanel:
         first.pack(fill="x", pady=(0, 5))
         ttk.Button(first, text="Watch selected",
                    command=self.watch_selected).pack(side="left", padx=(0, 6))
-        ttk.Button(first, text="Select visible",
+        ttk.Button(first, text="Select all listed",
                    command=self.select_visible).pack(side="left", padx=(0, 6))
         ttk.Button(first, text="Copy address",
                    command=self.copy_address).pack(side="left", padx=(0, 6))
@@ -287,7 +288,10 @@ class DiscoveryResultsPanel:
         entries = self.tree.get_children()
         if entries:
             self.tree.selection_set(entries)
-        self.live_status.set(f"{len(entries)} visible row(s) selected")
+        message = f"{len(entries)} listed row(s) selected"
+        if len(entries) > 128:
+            message += "; select fewer to fit the 128-watch limit"
+        self.live_status.set(message)
 
     def copy_address(self):
         chosen = self._selection()
@@ -378,7 +382,12 @@ class DiscoveryResultsPanel:
         generation = self._generation
         def work():
             try:
-                values = read_live_candidates(reader, rows)
+                guard = getattr(getattr(self.owner, "value_freezes", None),
+                                "guard", None)
+                # Attach/detach operations on the real toolkit use this guard.
+                # Never read a process concurrently with its guarded closure.
+                with (guard if guard is not None else nullcontext()):
+                    values = read_live_candidates(reader, rows)
                 self._pending.put((generation, identity, values, None))
             except Exception as exc:
                 self._pending.put((generation, identity, None, str(exc)))
