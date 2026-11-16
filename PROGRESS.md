@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.35 final automated verification
+
+- **Linux:** [workflow 43943477576](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43943477576), code commit 39b7d9f94657dbbf40aee3cc9a6fdcdc6777be58: **313 non-GUI synthetic tests (312 pass, 1 skip)** and **135 Xvfb Tk tests** PASSED.
+- **Windows:** [workflow 43943477681](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43943477681), same commit: **33 portable tests** PASSED. This covers portable report/numeric/watch logic but does not launch the full Windows Tk toolkit.
+- **Limitations:** Neither workflow attaches to a real USA or Japanese native recomp process, measures sustained UI responsiveness at user screen resolutions, or instruments original MIPS instruction readers/writers. Keep PR #35 draft until live-game and design review.
+
 ## 2026-11-16 — v0.11.35 unified discovery results/watch/live-preview redesign
 
 - **Root cause:** Each discovery method previously defined its own table columns, watch handler, selection mode and refresh strategy. Flags had no direct watch action, damage used a USA-specific watch path, and memory comparison only watched one address at a time. Underlying research methods are distinct but should share basic result interactions.

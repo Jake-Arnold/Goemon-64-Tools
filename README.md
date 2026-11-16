@@ -2,6 +2,8 @@
 
 ## v0.11.35 — Consistent discovery results, watching and live updating (16 November 2026)
 
+**Final v0.11.35 branch-tip code verification:** [Linux 43943477576](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43943477576) passed 313 non-GUI tests (312 passed, 1 skipped) and 135 GUI tests. [Windows 43943477681](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43943477681) passed 33 portable tests. These verify synthetic RAM/Tk behaviours, not real USA/JP native-game memory tracing or Windows Tk gameplay.
+
 **Experimental branch-only build** on toolkit/unified-memory-discovery. This is the shared UI layer following the v0.11.34 four-method navigation and common reporting implementation. Main is unchanged.
 
 ### Standard discovery results interface
