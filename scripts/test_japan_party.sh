@@ -53,6 +53,7 @@ esac
   tests.test_japan_story_progress \
   tests.test_native_checkpoints \
   tests.test_region_unlocks \
+  tests.test_region_memory_crosswalk \
   tests.test_rom_layout_audit \
   tests.test_rom_context_audit \
   tests.test_japan_live_memory_edit \
@@ -98,6 +99,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_value_search_ui \
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
+    tests.test_region_memory_crosswalk_ui \
     tests.test_japan_story_progress_ui \
     tests.test_japan_named_checkpoint_ui \
     tests.test_japan_value_freezes_ui \
@@ -120,6 +122,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_value_search_ui \
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
+    tests.test_region_memory_crosswalk_ui \
     tests.test_japan_story_progress_ui \
     tests.test_japan_named_checkpoint_ui \
     tests.test_japan_value_freezes_ui \
