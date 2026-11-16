@@ -9,11 +9,11 @@ from tests.test_japanese_debug_warp import debugger
 
 
 class JapanSpawnPlacementTests(unittest.TestCase):
-    def test_exact_selected_usa_xyz_applied_once_both_ram_endians(self):
-        spawn = Spawn(0x1D1, (120, 4, -210), heading=500, mode=0x10)
-        for endian in ('big', 'wordswapped'):
+    def test_exact_selected_usa_xyz_applied_only_in_verified_oedo_scene(self):
+        spawn = Spawn(0x161, (120, 4, -210), heading=500, mode=0x10)
+        for endian in ('big', 'wordswapped', 'byteswapped'):
             with self.subTest(endian=endian):
-                proc = debugger(endian=endian, scene=0x1D1)
+                proc = debugger(endian=endian, scene=0x161)
                 proc.set_guest(
                     JAPAN_PLAYER_XYZ_START,
                     struct.pack('>fff', 5.0, 0.0, 10.0))
@@ -35,9 +35,9 @@ class JapanSpawnPlacementTests(unittest.TestCase):
                 self.assertEqual(len(proc.writes), 1)
 
     def test_invalid_character_map_loading_and_stale_vector_do_not_write(self):
-        spawn = Spawn(0x1D1, (120, 4, -210))
+        spawn = Spawn(0x161, (120, 4, -210))
         for opts in (
-            dict(scene=0x161), dict(character=3),
+            dict(scene=0x1D1), dict(character=3),
             dict(state=12), dict(loading=1)):
             with self.subTest(opts=opts):
                 proc = debugger(**opts)
@@ -50,7 +50,7 @@ class JapanSpawnPlacementTests(unittest.TestCase):
                         proc.rdram(), spawn,
                         expected_before=struct.pack('>fff', 0, 0, 0))
                 self.assertEqual(proc.writes, [])
-        proc = debugger(scene=0x1D1)
+        proc = debugger(scene=0x161)
         proc.set_guest(
             JAPAN_PLAYER_XYZ_START,
             struct.pack('>fff', 5, 0, 10))
@@ -62,10 +62,10 @@ class JapanSpawnPlacementTests(unittest.TestCase):
         self.assertEqual(proc.writes, [])
 
     def test_write_is_exact_guest_float32_and_not_a_direct_map_edit(self):
-        proc = debugger(scene=0x1D1)
+        proc = debugger(scene=0x161)
         proc.set_guest(JAPAN_PLAYER_XYZ_START, struct.pack('>fff', 0, 0, 0))
         proc.writes.clear()
-        spawn = Spawn(0x1D1, (9.25, -3.5, 17.75))
+        spawn = Spawn(0x161, (9.25, -3.5, 17.75))
         ram = proc.rdram()
         place_japan_spawn_once(
             ram, spawn,
@@ -74,6 +74,19 @@ class JapanSpawnPlacementTests(unittest.TestCase):
             ram.read_guest(JAPAN_PLAYER_XYZ_START, 12),
             struct.pack('>fff', 9.25, -3.5, 17.75))
         self.assertEqual(len(proc.writes), 1)
+
+    def test_other_scenes_never_write_unverified_japanese_xyz(self):
+        proc = debugger(scene=0x1D1)
+        proc.set_guest(
+            JAPAN_PLAYER_XYZ_START, struct.pack('>fff', 5, 0, 10))
+        proc.writes.clear()
+        ram = proc.rdram()
+        raw = ram.read_guest(JAPAN_PLAYER_XYZ_START, 12)
+        with self.assertRaisesRegex(RuntimeError, 'only for Goemon'):
+            place_japan_spawn_once(
+                ram, Spawn(0x1D1, (120, 4, -210)), expected_before=raw)
+        self.assertEqual(proc.writes, [])
+        self.assertEqual(ram.read_guest(JAPAN_PLAYER_XYZ_START, 12), raw)
 
 
 if __name__ == '__main__':
