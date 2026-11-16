@@ -1,25 +1,26 @@
 # Whole-build function inventory
 
-Current proof snapshot: 2026-11-11. Pinned upstream:
-`7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. Baseline and current candidate
-both reproduce decompressed ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
-The [current metadata report](results/inventory.json) records the measurement,
-ELF hashes, tool hash and original entry-map identity. The matching proof in
-`results/combined.json` records a byte-identical 33,554,432-byte image.
+**Current proof snapshot: 2026-11-16.** Pinned upstream revision:
+`7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. Baseline and candidate
+reproduce the same decompressed 33,554,432-byte USA ROM, SHA-1
+`6ea0ed71032ce08fc2745f412d84936382197494`. Full native verification
+passed **210/210** exact C function claims and **13,336 instruction bytes**.
+The [current metadata report](results/inventory.json) records ELF fingerprints,
+source tool identity, and the immutable original function-entry map.
 
 | Inventory | Entries |
 | --- | ---: |
-| Identified function entries across the configured ROM | 7,376 |
+| Identified function entries across the configured USA ROM | 7,376 |
 | Matching C already in pinned upstream | 13 |
-| Newly matching C in this toolkit's decomp track | 148 |
-| Matching C combined | 161 |
-| Still marked as assembly | **7,215** |
+| Newly matching C in this toolkit's decomp track | 210 |
+| Matching C combined | **223** |
+| Still marked as assembly | **7,153** |
 
-The current `script_vm.c` manifest unit has 56 function entries: 43 C and 13
-retained assembly. Its subset count is not the whole-game count. The toolkit's
-headline 148-function count deliberately excludes the 13 routines already
-present as matching upstream C. The report lists those names explicitly;
-existing source definitions were checked in the pinned upstream C units.
+The 50 newly promoted `file_11` functions comprise 13 native
+character-switch routines and 37 empty actor callbacks. Two split-generated
+four-byte `nop` labels were explicitly restored to their original
+non-function symbol status before the inventory was accepted. The 180-byte
+character selector is still owned by assembly.
 
 ## What is counted
 
@@ -30,14 +31,15 @@ must agree exactly with the matching manifest. It checks both complete ROM
 identities before producing a report. Objects, undefined/absolute symbols and
 data-only `.NON_MATCHING` markers do not become functions.
 
-The candidate exports **850 zero-sized switch labels** as function symbols for
+The candidate exports **851 zero-sized switch labels** as function symbols for
 mixed C/assembly linking. They are excluded; a raw `FUNC` count would incorrectly
-report 8,226 entries. Overlay functions sharing a guest address remain separate
+report 8,227 entries. Overlay functions sharing a guest address remain separate
 entries, and positive-sized aliases are reported rather than silently merged.
 No positive-sized alias duplicates were found in this pinned inventory.
 
-One retained routine, `func_8003F6E8_402E8`, has different ELF size metadata:
-48 bytes in baseline and 56 in the mixed build. The extra extent covers its
+Two retained routines have different ELF size metadata: `func_8003F6E8_402E8`
+is 48 bytes in baseline and 56 in the mixed build, and `func_8000D3B8_DFB8`
+is 64 bytes in baseline and 72 in the mixed build. The extra extent covers its
 existing alignment tail; entry addresses and all ROM bytes are unchanged. This
 is recorded as a size-annotation difference, not a newly recovered function or
 extra code. The baseline entry map remains the identity reference.

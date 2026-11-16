@@ -1420,6 +1420,8 @@ def run_build(args,manifest,report):
     (candidate/'.venv').symlink_to(baseline/'.venv',target_is_directory=True)
     shutil.copyfile(args.retail_rom,candidate/'config/usa/baserom.z64')
     logged('candidate-setup',['make','setup','UV='+uv],candidate)
+    if file11_stage_mode(manifest)==50:
+        report['overlay_file11_nop_aliases']=overlay_file11_noops.patch_synthetic_nop_aliases(candidate)
     file43_stage=manifest.get('overlay_file43_stage')
     if file43_stage is not None:
         before, after, _ = _file43_stage_segments(file43_stage)

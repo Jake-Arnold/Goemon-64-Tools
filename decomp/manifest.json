@@ -1330,5 +1330,8 @@
       }
     }
   ],
-  "heap_noop_text_layout": true
+  "heap_noop_text_layout": true,
+  "overlay_file11_stage": {
+    "format": "goemon-file11-character-switch-50-v2"
+  }
 }

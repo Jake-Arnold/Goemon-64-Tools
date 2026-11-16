@@ -95,6 +95,59 @@ class TestFile11NoopGroups(unittest.TestCase):
                 self.assertFalse(dest.exists())
                 self.assertEqual(mod.sha256(source.read_bytes()),mod.PINNED_SOURCE_SHA256[dest.stem])
 
+    def test_splat_nop_alias_patch_retains_instructions_and_markers(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            home=Path(tmp)
+            directory=home/'asm/usa';directory.mkdir(parents=True)
+            expected=[]
+            for seg,name,offset,vma in mod.SPLIT_NOP_ALIASES:
+                source=(f'.include "macro.inc"\nnonmatching {name}, 0x4\n\n'
+                        f'glabel {name}\n'
+                        f'    /* {offset} {vma} 00000000 */  nop\n'
+                        f'endlabel {name}\n')
+                (directory/(seg+'.s')).write_text(source)
+                expected.append(source)
+            evidence=mod.patch_synthetic_nop_aliases(home)
+            self.assertEqual(evidence['preserved_original_nops'],2)
+            for (seg,name,offset,vma),source in zip(mod.SPLIT_NOP_ALIASES,expected):
+                actual=(directory/(seg+'.s')).read_text()
+                self.assertIn(f'nonmatching {name}, 0x4',actual)
+                self.assertIn(f'/* {offset} {vma} 00000000 */  nop',actual)
+                self.assertNotIn(f'glabel {name}',actual)
+                self.assertNotIn(f'endlabel {name}',actual)
+
+    def test_splat_nop_alias_patch_rejects_modified_instruction(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            home=Path(tmp)
+            directory=home/'asm/usa';directory.mkdir(parents=True)
+            for seg,name,offset,vma in mod.SPLIT_NOP_ALIASES:
+                (directory/(seg+'.s')).write_text(
+                    f'nonmatching {name}, 0x4\n\nglabel {name}\n'
+                    f'    /* {offset} {vma} 00000000 */  nop\nendlabel {name}\n')
+            first=mod.SPLIT_NOP_ALIASES[0][0]
+            file=directory/(first+'.s')
+            file.write_text(file.read_text().replace('00000000','12345678'))
+            with self.assertRaisesRegex(ValueError,'Unexpected synthetic nop'):
+                mod.patch_synthetic_nop_aliases(home)
+            second=directory/(mod.SPLIT_NOP_ALIASES[1][0]+'.s')
+            self.assertIn('glabel',second.read_text())
+
+    def test_only_exact_known_three_relocation_record_rotation_accepted(self):
+        orig=[(0x80000000+i*4,2,0x80000000,'unused') for i in range(8825)]
+        for i,item in zip(mod.RELOCATION_REORDER_INDICES,mod.RELOCATION_REORDER_ORIGINAL):
+            orig[i]=item
+        cand=list(orig)
+        result=mod.relocation_order_exception(orig,cand)
+        self.assertEqual(result,{'relocation_order_equivalence':'identical',
+                                 'reordered_relocations':0})
+        for i,item in zip(mod.RELOCATION_REORDER_INDICES,
+                          mod.RELOCATION_REORDER_ORIGINAL[1:]+mod.RELOCATION_REORDER_ORIGINAL[:1]):
+            cand[i]=item
+        self.assertEqual(mod.relocation_order_exception(orig,cand)['reordered_relocations'],3)
+        cand[2505],cand[2509]=cand[2509],cand[2505]
+        with self.assertRaisesRegex(ValueError,'order'):
+            mod.relocation_order_exception(orig,cand)
+
     def test_c_source_collision_rejected_before_copy(self):
         root=Path(__file__).resolve().parents[1]/'decomp/research'
         with tempfile.TemporaryDirectory() as tmp:

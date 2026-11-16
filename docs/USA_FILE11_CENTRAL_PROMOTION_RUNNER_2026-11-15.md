@@ -42,3 +42,29 @@ Optional `--baseline-cache /path/to/certified/baseline` can reuse an immutable, 
 ## Tests actually run in this session
 
 64 **ROM-free Python research and promotion acceptance tests** pass using `PYTHONPATH=.` from the local research workspace. They include failures for old 160-only or scratch 50-only reports, wrong ROM, missing function names, changed 50-function original VMA/code hash, changed relocation count/order, insufficient inventory, duplicate stage, and attempted output reuse. The earlier complete native 50-function USA scratch ROM SHA-1 was independently checked against the supplied verified original. **No complete central 210-function run or inventory reconciliation was executed in this session.**
+## Formal native promotion completed — 16 November 2026
+
+The one-shot promotion runner was executed with the authenticated USA retail
+ROM, original IDO 5.3, a fresh pinned upstream checkout, and a certified
+independently exact native baseline. Central G2 passed **210/210 C functions,
+13,336 native function bytes, 33,554,432 exact ROM bytes**, SHA-1
+`6ea0ed71032ce08fc2745f412d84936382197494`. The **8,825** file_11
+semantic relocations matched in site, type, target and symbol; the only
+record-order difference was the exact three-item permutation at indices
+2506–2508, now explicitly whitelisted by identity and count. Splat's two
+synthetic 4-byte nop function aliases were removed from generated ASM labels,
+retaining all instruction bytes and original NON_MATCHING markers. Inventory
+then passed: **7,376 original functions, 223 combined C and 7,153 ASM**.
+The real central verifier and inventory were recorded in
+`decomp/results/combined.json` and `decomp/results/inventory.json`, with the
+hash-bound acceptance summary in
+`decomp/results/file11_central_promotion_20261116.json`. Full ROM-free local CI
+passed 216 decomp Python tests (one skip), 133 verifier/ledger Python tests
+(four skips), task-evidence validation and a C ASan/UBSan display-emitter test.
+
+**The canonical 210-function manifest now enables this original v2 file_11
+stage.** The one-time promotion script intentionally refuses manifests that
+already claim file_11. For subsequent new original-ROM proofs, run the normal
+`python3 -m decomp.verify` plus `python3 -m decomp.inventory` pair instead.
+The full Japanese ROM remains independently blocked by USA-specific upstream
+assembly source paths; the 180-byte USA character selector remains ASM.

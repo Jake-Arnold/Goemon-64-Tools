@@ -111,8 +111,13 @@ def verify_g2_report(proof: dict, expected_names: set[str]) -> dict:
             raise ValueError(f"Linked file_11 {key} identity differs from pinned stage")
     # The relocation multiset is already checked by stage.verify(); original
     # order is an additional deliberate invariant of this particular promotion.
-    if stage.get("relocations_same_order") is not True:
-        raise ValueError("Linked overlay relocation order changed")
+    if stage.get("relocations_same_order") is True:
+        if (stage.get("relocation_order_equivalence")!="identical" or
+                stage.get("reordered_relocations")!=0):
+            raise ValueError("File_11 identical relocation order lacks independent proof")
+    elif (stage.get("relocation_order_equivalence")!="known_3_record_permutation" or
+          stage.get("reordered_relocations")!=3):
+        raise ValueError("Unverified file_11 relocation order change")
     pinned = {
         name: (rom, size, original_hash)
         for name, rom, size, original_hash in overlay_file11.FUNCTIONS
@@ -211,7 +216,7 @@ def promote(args: argparse.Namespace) -> Path:
     inventory_command = [sys.executable, "-m", "decomp.inventory",
                          "--baseline", str(baseline),
                          "--candidate", str(args.workdir.resolve() / "candidate"),
-                         "--report", str(inv)]
+                         "--report", str(inv), "--manifest", str(candidate)]
     invoke(inventory_command, repo_root, output / "central-inventory.log")
     summary = verify_inventory_report(json.loads(inv.read_text()))
     # This bundle can be reviewed and committed separately. No tracked or

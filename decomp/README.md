@@ -9,13 +9,9 @@ This directory contains reconstructed C and repeatable matching evidence. It is
 separate from the Python companion, autosplitter and existing portable C core.
 No game assets, ROMs, generated assembly, object files or saves are included.
 
-Current verified total: **141 functions / 10,312 function bytes**: 140 functions across thirty-two migrated units, plus the reviewed collision gate restored within an upstream-owned translation unit.
-The combined baseline/C-replacement whole-ROM match is recorded in
-[combined result metadata](results/combined.json).
+**Current verified baseline — 16 November 2026:** **210 matching-C functions / 13,336 instruction bytes** in the toolkit's decomp track. The pinned upstream already contains another 13 original C function entries, giving **223 combined C entries** among 7,376 identified native functions and **7,153 remaining assembly entries**. The full 33,554,432-byte original USA ROM and linked overlay are identical, with all 8,825 file_11 relocation identities preserved. See [combined proof](results/combined.json) and [whole-build inventory](results/inventory.json).
 
-The [whole-build inventory](INVENTORY.md) identifies **7,376 function entries**:
-**154 matching C entries** (13 upstream plus these 140), leaving **7,222 assembly
-entries**, including SDK/runtime code. Exported jump labels are excluded.
+The 50 functions promoted in `file_11` consist of 13 character-switch routines (620 bytes) and 37 genuine empty native actor callbacks (444 bytes). They are distinct from unreconstructed selector and other assembly code. Historical counts in older notes below remain period-specific.
 
 ## Screen-rectangle bounds helper
 

@@ -25,23 +25,23 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+    "manifest_sha256": "9da16e4b5f53b78904cde9b24ab72f32cb9de77b2301290a528e0a95d734aec2",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "3ff0c04a3b713603c81c35e281bd07b540a0ec5411d9da92b94eb8462f879be5"
+    "verifier_sha256": "1c60206c7007b9e499250fc2512851bfa2c1d07f5743e607b90938196bd4280b"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "665696c638fa7ecae97ec7bed87bd9c0cf6775efb7b7fcfbf21e752c3c247051",
+    "report_sha256": "de70101b39a252962aae5f53e64bcf0ca0e8584ef4e27386f2cf1a8df57417cd",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "f59665c11f78a0176990fccdcc0c1e69b84c2955a57ba1c7d528dddb97b04973",
-    "matching_c_functions": 160,
-    "matching_c_bytes": 12272,
-    "combined_c_entries": 173,
-    "asm_entries": 7203,
+    "combined_proof_sha256": "d92971fc76cbe9ddba9481c07745d1622ffacef3a1de52b2350ebcf6a70fe6c4",
+    "matching_c_functions": 210,
+    "matching_c_bytes": 13336,
+    "combined_c_entries": 223,
+    "asm_entries": 7153,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "The generated inventory.json is preserved as the whole-project symbol inventory. Its 13 upstream_unmarked_names are unrelated upstream C entries; they are not these 13 script_vm GLOBAL_ASM functions.",
-    "reconciled_date": "2026-11-14"
+    "note": "The 13 original upstream unmarked entries remain distinct from the VM residual GLOBAL_ASM functions. USA file_11 50 functions were promoted after a 210/210 full native verifier and exact whole-ROM/inventory gate.",
+    "reconciled_date": "2026-11-16"
   },
   "residual_functions": [
     {
@@ -378,5 +378,6 @@
     "full_rom_g2": "NOT_RUN: production source/manifest/verifier unchanged; no candidate staged.",
     "inventory_rebuild": "NOT_RUN: the generated whole-project proof inventory is preserved unchanged.",
     "in_game": "NOT_RUN"
-  }
+  },
+  "current_proof_date": "2026-11-16"
 }

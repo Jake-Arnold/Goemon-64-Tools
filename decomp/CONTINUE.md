@@ -16,6 +16,44 @@ disambiguates `0x80077858` as the VM program cursor from the separate
 text-token cursor at `0x801C77E8`; it does not change the matching-C task queue
 or any proof gate.
 
+## Authoritative 2026-11-16 USA matching-C promotion checkpoint (supersedes dated 160-function checkpoints)
+
+The full native central `decomp.verify` and `decomp.inventory` were run using
+pinned upstream revision `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`,
+the authenticated original USA retail ROM, original IDO 5.3, portable Python
+3.12 / Splat and MIPS binutils, with a fresh candidate checkout and an
+independently exact full-ROM baseline cache. The **complete 33,554,432-byte
+ROM matches the original byte-for-byte**, SHA-1
+`6ea0ed71032ce08fc2745f412d84936382197494`.
+
+**Canonical manifest, `results/combined.json` and `results/inventory.json` now
+prove 210/210 matching C functions, 13,336 original machine-code bytes,
+7,376 identified entries, 223 total combined C entries including 13 upstream
+C functions, and 7,153 remaining assembly entries.** The new USA file_11
+stage format `goemon-file11-character-switch-50-v2` is enabled in the canonical
+manifest. The overlay contains 13 reconstructed character-switch functions
+(620 bytes) plus 37 authentic no-op callbacks (444 bytes), with all twelve
+C/ASM linker input extents exact.
+
+Original and candidate file_11 contain the same **8,825** semantic relocation
+records (identical site/type/target/symbol multisets). Only three original
+records at indices 2506–2508 appear in a pinned cyclical permutation, after
+ID0 codegen; no other order difference is accepted by the fail-closed verifier.
+The 180-byte character selector remains assembly-owned. Two synthetic
+four-byte nop FUNC labels introduced solely by Splat text splitting are
+normalized out while preserving all instructions and NON_MATCHING markers.
+
+Fresh central G2/whole-symbol inventory proof and formal acceptance bundle:
+`results/combined.json`, `results/inventory.json` and
+`results/file11_central_promotion_20261116.json`. The build proof is a native
+exact-ROM test, not in-game character-switch validation. Japan full-ROM build
+remains independently blocked by original sources' hardcoded USA assembly paths.
+**Do not use the historical 160-function numbers in the dated sections below
+as current counts.** The one-shot `decomp.promote_file11` review runner is now
+retained for reproduction of the historical transition from a 160-claim manifest;
+for later fresh verification of the already-promoted canonical 210 claims, use
+`python3 -m decomp.verify` followed by `python3 -m decomp.inventory`.
+
 ## Local decomp CI (no GitHub Actions)
 
 Run `python3 -m decomp.local_ci` for the standard ROM-free local test gate (decomp Python regressions, verifier/ledger tests, task evidence validation, and a sanitizer host fixture). For Python-only debugging use `python3 -m decomp.local_ci --quick`, reporting skipped sanitizer coverage. This is intentionally **not** an Actions workflow: absence of `.github/workflows` is not a Local CI blocker. Do not run a workflow-dependent `local-ci` skill or `act` here. Task-specific host tests and the original-VMA native IDO/32 MiB full-ROM G2 gates remain distinct and must be reported separately.

@@ -46,6 +46,23 @@ CHUNKS = (
     ('c', 'callback_noops_b', 0x59D38C, 0x150),
     ('asm', '59D4DC', 0x59D4DC, 0x1B024),
 )
+# Splat introduces two 4-byte nop FUNC symbols solely because these start new
+# assembly slices. In the unsplit retail ELF only their NON_MATCHING OBJECT
+# markers exist; both are padding, not additional callable functions.
+SPLIT_NOP_ALIASES = (
+    ('5995E8', 'func_801DD6D8_5995E8', '5995E8', '801DD6D8'),
+    ('59D4DC', 'func_801E15CC_59D4DC', '59D4DC', '801E15CC'),
+)
+# In the complete original+50 C build IDO relocations at indices 2506..2508
+# are emitted in the HILO/then JAL sequence instead of the original JAL/HILO.
+# All relocation sites, types, resolved targets, names and counts remain exact.
+RELOCATION_REORDER_ORIGINAL = (
+    (0x801DD6C0, 4, 0x8003522C, 'func_8003522C_35E2C'),
+    (0x801DD6B0, 5, 0x801E0BF8, 'func_801E0BF8_59CB08'),
+    (0x801DD6C4, 6, 0x801E0BF8, 'func_801E0BF8_59CB08'),
+)
+RELOCATION_REORDER_INDICES = (2506, 2507, 2508)
+
 PIN = '7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee'
 STAGE_FORMAT = 'goemon-file11-character-switch-50-v2'
 PINNED_SOURCE_SHA256 = {
@@ -127,6 +144,56 @@ def prepare(checkout: Path, reference: bytes) -> None:
     cfg.write_text(text)
 
 
+def patch_synthetic_nop_aliases(checkout: Path) -> dict:
+    """Suppress two false positive FUNC symbols, without changing any MIPS word.
+
+    The Splat-generated nop is retained and the original NON_MATCHING object
+    marker is retained. Only the introduced glabel/endlabel FUNC annotations
+    are removed, and only at the two independently pinned split boundaries.
+    Must run after Splat extraction but before assembling file_11 objects.
+    """
+    edits=[]
+    for segment, name, offset, vma in SPLIT_NOP_ALIASES:
+        path=checkout / 'asm/usa' / (segment+'.s')
+        original=path.read_text(encoding='utf-8')
+        marker=f'nonmatching {name}, 0x4\n\n'
+        glabel=f'glabel {name}\n'
+        end=f'endlabel {name}\n'
+        raw_nop=f'/* {offset} {vma} 00000000 */  nop'
+        if (original.count(marker)!=1 or original.count(glabel)!=1 or
+                original.count(end)!=1 or original.count(raw_nop)!=1 or
+                original.index(glabel)<original.index(marker) or
+                original.index(end)<original.index(raw_nop) or
+                original.index(raw_nop)<original.index(glabel)):
+            raise ValueError('Unexpected synthetic nop split alias: '+str(path))
+        edited=original.replace(glabel,'',1).replace(end,'',1)
+        if edited.count('nonmatching '+name+', 0x4')!=1 or raw_nop not in edited:
+            raise ValueError('Synthetic alias normalization altered original instruction')
+        edits.append((path,edited))
+    for path,edited in edits:
+        path.write_text(edited,encoding='utf-8',newline='\n')
+    return {'removed_spurious_func_aliases':[name for _,name,_,_ in SPLIT_NOP_ALIASES],
+            'preserved_original_nops':len(edits)}
+
+
+def relocation_order_exception(original: list, candidate: list) -> dict:
+    """Require original order OR precisely the known three-entry IDO cycle."""
+    if len(original)!=8825 or len(candidate)!=8825 or Counter(original)!=Counter(candidate):
+        raise ValueError('Original file_11 relocation identities differ')
+    mismatches=[i for i,(a,b) in enumerate(zip(original,candidate)) if a!=b]
+    if not mismatches:
+        return {'relocation_order_equivalence':'identical','reordered_relocations':0}
+    if (mismatches!=list(RELOCATION_REORDER_INDICES) or
+            tuple(original[i] for i in mismatches)!=RELOCATION_REORDER_ORIGINAL or
+            tuple(candidate[i] for i in mismatches)!=(
+                RELOCATION_REORDER_ORIGINAL[1],
+                RELOCATION_REORDER_ORIGINAL[2],
+                RELOCATION_REORDER_ORIGINAL[0])):
+        raise ValueError('Unexpected file_11 relocation order difference')
+    return {'relocation_order_equivalence':'known_3_record_permutation',
+            'reordered_relocations':3}
+
+
 def trim(checkout: Path) -> dict:
     linker=checkout/'.splat/usa/mnsg.ld'
     original=linker.read_text()
@@ -154,6 +221,7 @@ def verify(checkout: Path, reference: bytes, baseline_elf: Path) -> dict:
     candidate_rel=candidate.relocations()
     if len(original_rel)!=8825 or Counter(original_rel)!=Counter(candidate_rel):
         raise ValueError('Original relocation records differ')
+    relocation_order=relocation_order_exception(original_rel,candidate_rel)
     config=(checkout/'config/usa/splat.yaml').read_text()
     if config.count(SPLAT_NEW)!=1:
         raise ValueError('Staged callback Splat ownership missing or changed')
@@ -188,6 +256,14 @@ def verify(checkout: Path, reference: bytes, baseline_elf: Path) -> dict:
         if sha256(native_object) != TRIMMED_C_OBJECT_SHA256[name]:
             raise ValueError('Callback object differs from verified original IDO output')
     symbols=candidate.symbols();section=candidate.overlay_info()[0]
+    for _, alias, _, _ in SPLIT_NOP_ALIASES:
+        if any(row[0]==alias and (row[3] & 15)==2 and row[2]>0
+               for row in symbols):
+            raise ValueError('Splat split invented a positive-sized FUNC alias: '+alias)
+        if not any(row[0]==alias+'.NON_MATCHING' and row[2]==4 and
+                   (row[3] & 15)==1 for row in symbols):
+            raise ValueError('Original nop NON_MATCHING marker was removed: '+alias)
+
     for name,offset in entries():
         vma=VMA_START+offset-ROM_START
         occurrences=[row for row in symbols if row[0]==name and row[1]==vma and row[2]==12 and row[4]==section and (row[3]&15)==2]
@@ -213,6 +289,7 @@ def verify(checkout: Path, reference: bytes, baseline_elf: Path) -> dict:
             'ordered_linker_objects':len(positions),
             'rom_bytes':len(rebuilt),'rom_sha1':hashlib.sha1(rebuilt).hexdigest(),
             'relocations':len(original_rel),'relocations_same_order':original_rel==candidate_rel,
+            **relocation_order,
             'linked_elf_sha256':sha256((checkout/'build/usa/mnsg.elf').read_bytes())}
 
 

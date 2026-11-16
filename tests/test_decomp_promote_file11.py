@@ -44,7 +44,8 @@ def fake_g2():
                 "total_overlay_c_functions":50,"total_overlay_c_bytes":1064,
                 "ordered_linker_objects":12,"rom_bytes":33554432,
                 "rom_sha1":p.ORIGINAL_SHA1,"relocations":8825,
-                "relocations_same_order":True}}
+                "relocations_same_order":True,"relocation_order_equivalence":"identical",
+                "reordered_relocations":0}}
 
 
 def fake_inventory():
@@ -104,6 +105,17 @@ class PromotionTests(unittest.TestCase):
     def test_wrong_relocation_order_rejected(self):
         g=fake_g2();g['overlay_file11_stage']['relocations_same_order']=False
         with self.assertRaises(ValueError):p.verify_g2_report(g,p.expected_file11_names())
+
+    def test_exact_three_record_reorder_is_accepted_only_when_attested(self):
+        p31=fake_g2()
+        stage=p31['overlay_file11_stage']
+        stage['relocations_same_order']=False
+        stage['relocation_order_equivalence']='known_3_record_permutation'
+        stage['reordered_relocations']=3
+        self.assertEqual(p.verify_g2_report(p31,p.expected_file11_names())['g2_functions'],210)
+        stage['reordered_relocations']=4
+        with self.assertRaisesRegex(ValueError,'Unverified'):
+            p.verify_g2_report(p31,p.expected_file11_names())
 
     def test_verified_inventory(self):
         self.assertEqual(p.verify_inventory_report(fake_inventory())['remaining_assembly_entries'],7153)
