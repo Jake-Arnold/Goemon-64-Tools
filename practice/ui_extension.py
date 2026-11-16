@@ -239,9 +239,9 @@ class InspectorMixin(EntranceMixin):
                                            after=self.scene_instruction)
             self.entrance_box.pack_forget()
             self.scene_transition_note.configure(
-                text='Japan-0: stage the pending destination at '
-                     '0x800CD490, then request native area reload 0x0C at '
-                     '0x800CD284. No input injection; verify loaded scene.')
+                text='Japan-0: stage pending destination at 0x800CD490 and '
+                     'recorded XYZ if known, then request native 0x0C reload '
+                     'at 0x800CD284. Position is compared after loading.')
             self.experimental_warp_btn.configure(
                 text='Warp to selected Japanese scene')
             self.native_debug_btn.configure(
@@ -251,9 +251,11 @@ class InspectorMixin(EntranceMixin):
                  or getattr(self.args, 'enable_japan_debug_menu_writes', False))
                 and not getattr(self.args, 'read_only', False))
             self.scene_footer_note.configure(
-                text='Scene Browser instantly triggers Japan-0 native reload '
-                     '(0x0C). If cached USA reference entrance data exists, '
-                     'use it when unambiguous. No active-map or exit-bit writes.')
+                text='Japan-0: double-click triggers 0x0C reload. Captured '
+                     'Japanese XYZ stages a complete 12-byte entrance block. '
+                     'Without a captured Japanese point, only the scene ID '
+                     'is sent; position cannot be guaranteed. '
+                     'Never reuse USA entrance coordinates.')
         else:
             self.jp_capture_spawn_btn.pack_forget()
             self.scene_instruction.configure(
