@@ -9,8 +9,11 @@ import os
 from pathlib import Path
 import shutil
 
-APP_ID = "goemon-practice-toolkit"
-WINDOW_CLASS = APP_ID  # Exact Tk WM_CLASS instance / .desktop basename
+APP_ID = "goemon-practice-toolkit"  # Stable .desktop basename and Tk className
+# Tk 8.6 normalizes the *class* to title case. The lowercase instance can
+# acquire a transient " #2" suffix in a session with other Tk roots.
+# GNOME StartupWMClass must match the stable second WM_CLASS token exactly.
+WINDOW_CLASS = "Goemon-practice-toolkit"
 
 
 def _desktop_exec_quote(value: str) -> str:
@@ -62,7 +65,7 @@ def main() -> None:
     result = install()
     print(f"Installed Goemon Practice Toolkit launcher: {result}")
     print("Close old toolkit windows; launch from Ubuntu app grid and pin to dock.")
-    print("Expected WM_CLASS instance: goemon-practice-toolkit")
+    print(f"Expected stable WM_CLASS class: {WINDOW_CLASS}")
     print("If a cog persists, run: xprop WM_CLASS (click the toolkit window)")
 
 
