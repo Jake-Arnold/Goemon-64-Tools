@@ -73,7 +73,7 @@ def checked_write(ram, address: int, expected: bytes, new: bytes, *, allow_advan
     """
     if raw_override:
         if not allow_advanced:
-            raise PermissionError('Raw hex overrides require the UNSAFE toggle')
+            raise PermissionError('Raw hex overrides require write permission')
         width=len(new)
         if width not in (1, 2, 4, 8) or len(expected)!=width:
             raise ValueError('Raw writes must be 1, 2, 4, or 8 bytes')
@@ -90,7 +90,7 @@ def checked_write(ram, address: int, expected: bytes, new: bytes, *, allow_advan
     policy=get_policy(address)
     if policy is None: raise ValueError(f'No approved field at 0x{address:08X}')
     if policy.advanced and not allow_advanced:
-        raise PermissionError('Engine-state editing is disabled. Enable the explicit unsafe toggle first.')
+        raise PermissionError('Engine-state editing requires advanced write permission.')
     if len(expected)!=policy.width or len(new)!=policy.width:
         raise ValueError('Address width mismatch')
     value=int.from_bytes(new,'big')

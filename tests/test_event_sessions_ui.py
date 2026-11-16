@@ -76,36 +76,27 @@ class EventSessionUITests(unittest.TestCase):
             release.set();self.root.update()
         self.assertEqual(app.event_rows,[])
 
-    def test_removed_tabs_and_saved_shadow_visibility(self):
+    def test_event_sessions_consolidates_advanced_memory_and_removes_shadow(self):
         app=self.app
         tabs={app.notebook.tab(tab,'text') for tab in app.notebook.tabs()}
-        self.assertTrue({'Saved / shadow','Event sessions'}<=tabs)
-        self.assertFalse({'Native menu calibration','Checkpoint compare','Character cursor scan'}&tabs)
+        self.assertIn('Event sessions',tabs)
+        self.assertNotIn('Saved / shadow',tabs)
+        self.assertNotIn('State discovery',tabs)
+        nested={app.event_sections.tab(t,'text') for t in app.event_sections.tabs()}
+        self.assertEqual(nested,{'Event flag sessions','Advanced RAM comparison'})
+        self.assertFalse(hasattr(app,'save_buffers_tree'))
+        self.assertFalse(hasattr(app,'save_buffers_tab'))
         app.refresh_checkpoint_options();app.refresh_checkpoint_diff(force=True)
         app.refresh_native_watch(time.monotonic())
-        from practice.checkpoints import SHADOW_ADDR,GAMEDATA_LEN
-        app.mem.write_guest(SHADOW_ADDR,bytes(GAMEDATA_LEN))
-        app.mem.write_guest(SHADOW_ADDR+771,b'\x80')
-        with patch.object(self.process,'write',side_effect=AssertionError('No writes')):
-            app.refresh_save_buffers()
-        rows=app.save_buffers_tree.get_children()
-        self.assertEqual(len(rows),49)
-        self.assertEqual(app.save_buffers_tree.item('768','values')[4],'00 00 00 80')
-        app.mem=None;app.refresh_save_buffers()
-        self.assertEqual(app.save_buffers_tree.get_children(),())
 
-    def test_monitor_advances_separately_from_game_and_recovers_after_failure(self):
+    def test_monitor_advances_without_removed_shadow_panel(self):
         app=self.app
-        app.notebook.select(app.save_buffers_tab)
         with patch.object(self.process,'write',side_effect=AssertionError('No writes')):
             app.poll_event_monitor()
             self.assertIn('Game-loop counter:',app.event_live.get())
             with patch.object(app.mem,'read_guest',side_effect=OSError('lost connection')):
                 app.poll_event_monitor()
             self.assertIn('Read unavailable',app.event_live.get())
-            self.assertEqual(app.save_buffers_tree.get_children(),())
-            app.poll_event_monitor()
-            self.assertEqual(len(app.save_buffers_tree.get_children()),49)
             app.mem=None
             with patch('practice.event_sessions_ui.time.monotonic',return_value=app.event_monitor_started+12.5):
                 app.poll_event_monitor()

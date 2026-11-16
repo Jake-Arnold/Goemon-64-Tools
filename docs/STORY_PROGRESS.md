@@ -1,5 +1,10 @@
 # Story progress panel
 
+The panel now has internal subject tabs: **All**, **Fortune Dolls**, **Benkei & Kihachi**, **Ushiwaka & Training**, **Keys & Locks**, **Collectibles & Miracles**, **External annotations**, **Other story**, and **Diagnostics**. Each flag is listed once in All and in exactly one matching subject tab. Select a tab to work on that subject; its filter and editor still use live RAM.
+
+Fortune Dolls includes silver/gold pickup flags, reward flags, the read-only quarter-progress word at `0x8015C704`, and the read-only annotated total at `0x8015C708`. Raw Bank A/B views are in Diagnostics, not interleaved with story quests. Live Memory no longer duplicates the entire story flag catalogue or the low-byte alias of the quarter counter.
+
+
 Select an individual saved flag and choose **Clear** or **Set**, or select an
 ownership word and choose **Absent** or **Present**, then click **Apply state**.
 The selector initially shows the observed state. The write preserves other bits
@@ -32,9 +37,9 @@ credited existing annotations; the panel does not claim new flag discoveries.
   their progression flags are different fields.
 - Bank A/B first-16-bit raw views, explicitly labelled as storage with unknown
   lifecycle/scene meanings. They do not reuse saved-bank semantic labels.
-- Matching named rows in Live memory, and a clearer Ushiwaka summary/link from
-  Unlocks. The stale Achilles' Heel candidate label in Live memory is corrected
-  from the original reward-script trace.
+- Story rows are no longer repeated in Live Memory. The Ushiwaka summary and
+  Unlocks remain available. The Achilles' Heel ownership word and its recorded
+  reward flag are distinct, not duplicate flags.
 
 The registry is a selected set, not an automatic confirmation of every
 randomizer annotation. Filter **external** to see the 37 added source annotations;

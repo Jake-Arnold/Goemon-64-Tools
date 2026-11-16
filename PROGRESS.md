@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 - Stage isolated Japanese toolkit mainline integration
+
+- Prepared an isolated main-based Japanese Practice Toolkit candidate (from user-accepted Japanese revision and reconciled mainline Plasma research). The mainline `decomp/`, `AGENTS.md`, .agents workflow and decomp-only tests are deliberately **unchanged**; this is not the 499-commit development-branch merge.
+- Brought across the complete version-aware `practice/` toolkit, required cross-platform `autosplitter/` and `speed/` support, two local regression scripts, 72 selected toolkit tests, 36 toolkit/Japanese documentation files and two text-only runtime research records; existing mainline USA Plasma metadata/scripts/tests stay intact. `README.md` retains the expanded region-aware documentation.
+- User earlier confirmed all Japanese scene warps, 33 of 34 unlocks, right-click Live Memory freezes, named native checkpoints and Story Progress work; the Japanese source passed 195 backend and 94 GUI Windows tests. **This newly assembled main-based tree has not been tested.** Rerun the complete Windows cross-region regression before any production merge; keep the clean PR draft. Sasuke battery remains deferred; no ROM or savestate assets included.
+- The separate full-history integration PR #21 remains in draft for historical/decomp reconciliation and is not the recommended toolkit merge path.
+
 ## 2026-11-10 - v0.11.17 map common Plasma advice conditions
 
 - Traced instantiated Plasma actors in all four normal rooms to event 0x288 and scenario file 0x70. Its bounded advice path has 40 branch checks on 37 distinct flags and 11 set operations; 39 distinct bits are checked or set. Added a text-free, ROM-validated extractor and metadata; retail and decompressed US inputs produced identical results.

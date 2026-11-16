@@ -72,6 +72,23 @@ host-wide multiplier, and has not been tested here. It does not establish correc
 speeding of audio, timers, cutscenes or transitions. Do not label a generic
 memory write or movement pulse as an established arbitrary-speed mode.
 
+## Experimental native Linux live speed (2026-11-13)
+
+The patched runtime channel now also exposes a Linux-only v2 POSIX shared-memory
+mapping at `/goemon64speed_<PID>` (`/dev/shm/goemon64speed_<PID>`).
+It is created with owner-only 0600 permissions and unlinked on a normal exit.
+The Python Linux client checks that the selected PID actually maps that shared
+memory, checks owner/permissions/length and validates the same magic/version/PID
+and requested/applied fields used on Windows. No stock executable contains
+the patch; this is **not** a speedhack for existing unmodified game processes.
+
+The native Linux channel was compiled and tested against a synthetic host:
+a 1x channel accepted a 4x request, acknowledged 4x, and cleaned up the
+shared-memory name on normal exit. It was not tested with a real Goemon game.
+To use it, prepare a separate pinned runtime with `speed.prepare_runtime`
+and `speed.prepare_live_runtime`, then build the native game against that
+runtime. Do not alter the installed stock game or its saves.
+
 ## Project64
 
 Project64 upstream source inspected at commit

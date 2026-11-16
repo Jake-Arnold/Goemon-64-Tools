@@ -1,5 +1,73 @@
 # Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
 
+## Region-aware shared toolkit — 2026-11-15
+
+The **same Scene Browser, Live Memory, Unlocks, Story Progress, Event Sessions, Value Search and damage-event UI** now select the appropriate address readers according to **USA** versus **Japan-0**. For Japan, source-backed inventory/scene/progress fields are read-only unless a specific user-tested one-shot write exists; USA event-bit and player-task addresses are never silently reused. Additional Japanese watch and stage evidence remains needed for complete semantics.
+
+**Scene Browser is the only scene list.** USA double-click stages native pending entrance/map and writes engine state `0x0C` to reload immediately. Japan now does the **same**, using guest `0x800CD490` for pending destination and `0x800CD284 = 0x0C` for reload. **It no longer opens the debug menu or sends N64 A on double-click.** The original debug-menu button is a separate manual action (`0x0A`). Existing cached USA entrance data can be staged as a reference when unambiguous; otherwise Japan stages only the pending scene ID and warns about unverified spawn. **Full Japanese inter-scene loading remains to be verified in live Project64.** See [the native warp guide](docs/JAPAN_NATIVE_DEBUG_SCENE_WARP.md).
+
+**Japan ROM verification is remembered:** after the first successful exact revision-0 verification, the canonical file path is stored under the user config directory and **the actual ROM is reverified at startup**. The live emulator code probes, PID, mapping and endian are still checked upon attachment and before guarded writes. Changing or removing the ROM invalidates the remembered selection.
+
+New synthetic backend/Tk regressions are in `scripts/test_japan_party.ps1` and `scripts/test_japan_party.sh`. **They have not been run on the user's Windows installation after this consolidation.** The branch is experimental and PR #17 remains draft.
+
+## Unified logical checkpoints
+
+The Dashboard now has one **Logical checkpoints** panel: enter a name, choose **Capture logical checkpoint**, select from **Saved checkpoints**, or **Restore selected checkpoint**. A new full checkpoint already records XYZ position, rotation, character, map, health, lives, Ryo, inventory and saved progression flags. It is a logical snapshot, **not** an N64 savestate; actor state, camera, active scripts and physics are not captured. Cross-room restoration continues to use the guarded experimental stage reload and character-swap flow.
+
+The older `bookmarks.json` is **read-only legacy input**, not silently converted into fabricated progression snapshots. Its entries appear at the end of the same selector as **legacy POSITION ONLY**; restoring one may write XYZ only in the original map with the original character, after a separate warning. Legacy bookmarks with unknown maps cannot be restored. Existing `bookmarks.json` and `checkpoints.json` are preserved; new captures save only to `checkpoints.json`. There is no separate Save position/Restore position UI.
+
+## Experimental Japanese Project64 3.0 support on Windows
+
+Japan-0 can now use the exact-ROM-verified memory attachment with **Project64.exe on Windows** or Mupen64Plus. Project64 RDRAM may be 4 MiB or 8 MiB. Read-only Japanese Live, custom watches, Value Search and Advanced A/B/C compare use the verified region reader; USA-specific field writers remain unavailable in Japanese mode. Japanese writes are now isolated, explicitly opted-in operations: verified Sasuke/Yae party flags; experimentally validated Goemon XYZ in Oedo Town South; and a **user-live-verified** entry into the game's native debug level selector. No Japanese generic raw hex editor, arbitrary freeze, or direct map-ID write is enabled. **The shared Scene Browser now implements a guarded experimental immediate `0x0C` reload for Japanese Project64, patterned after the USA reload; not yet validated end-to-end in the emulator.**
+
+**Status (2026-11-15): user confirms Windows PowerShell tests, live Project64 Japanese read-only memory, Project64 savestate restoration and both Sasuke/Yae unlock writes work.** Screenshots separately verify Ryo Value Search, scene context and focused A/B/C. The user subsequently demonstrated position-controlling Japanese XYZ floats at `0x80151B10/14/18`, including moving Goemon to Oedo South's entrance and raising him by changing Y. A **separately opted-in, Goemon/Oedo South only** manual XYZ panel now exists. The new [native debug-menu entry and scene-warp research path](docs/JAPAN_NATIVE_DEBUG_SCENE_WARP.md) has now **successfully opened the original Japanese debug menu in live Windows Project64**, but the first Japanese Scene Browser double-click only opened that debug menu. The updated code now stages the pending destination and immediately requests `0x0C` area reload instead, like USA. **The resulting automatic cross-scene load remains unverified in live Project64.** Native Sasuke/Yae character-index 2/3 transitions remain separately outstanding. See [Project64 setup](docs/JAPAN_PROJECT64_WINDOWS.md) and [parity checklist](docs/USA_JAPAN_TOOLKIT_PARITY_CHECKLIST.md). The PR remains draft. The user-provided 2026-11-15 log showed 107 backend tests passing and GUI regressions (39 test-host setup errors, one blank savestate slot) that have been corrected in source; post-fix full Windows GUI validation is still pending.
+
+## Current simplified toolkit layout
+
+Dashboard contains **Connection** and **Logical checkpoints** side by side at its default 1220×790 window size, keeping both panels visible without scrolling. At narrower widths, the cards stack vertically and the scrollbar remains available. Scene Browser and Live Memory are separate dedicated tabs; the dashboard no longer duplicates their tables.
+
+The rebuilt-recomp **Game speed** UI has been removed. Standalone speed research and preparation code remains in the repository but is not part of the toolkit interface.
+
+**Event sessions** has two internal tabs: **Event flag sessions** for repeated 100-byte USA saved-event experiments or a user-selected 100-byte Japanese *research window* (not a known JP saved bank), and **Advanced RAM comparison** for the former State discovery A/B/C probes (including wide scope and no-player contexts). The redundant **Saved / shadow** UI has been removed.
+
+**Story progress** has subject tabs (Fortune Dolls, Benkei/Kihachi, Ushiwaka/training, keys/locks, collectibles, external annotations, diagnostics) plus an **All** view. Fortune Doll pickup flags and the two known word counters are together. Live Memory no longer repeats all story flags or the low-byte alias of the full Fortune Doll progress word.
+
+## Gameplay presets
+
+**God Mode** is a session-only checkbox in **Value freezes**. It uses the existing 10 ms worker to maintain health at its known current maximum, 99 lives and 9,999 Ryo. It is independent of enemy-body pass-through and does not change inventory. Turning it off stops writes; already increased resources are not reverted.
+
+**Unlock all mapped items, weapons and abilities** is a one-time button in **Unlocks**. It sets all 34 mapped party members, weapons, upgrades, known abilities, items, collectible flags and capped fish counts. It preserves unrelated bits in the shared battery field; it does **not** mark general story progression complete or modify unknown inventory slots. Changes are immediate, may partially apply if interrupted, and may require a menu or area reload to appear.
+
+**Open original debug menu** in Scene browser no longer requires scene selection and does not stage a warp or character change. Double-click/reload still requires a destination.
+
+## Experimental player-relative enemy pass-through
+
+The **Value freezes** tab has a **Pass through enemies** checkbox. It continuously resolves the active player-task pointer at `0x801FC604` and targets its `+0x30` byte with value `6` while normal gameplay is active. The game's player task may move in guest RAM after transitions; never substitute a permanently frozen address such as `0x80169FD0`. The existing independent 10 ms freeze worker performs the pointer lookup and suppresses writes during pause, scripts and loading. On disconnection, permission failure or reconnect, the toggle stops; turning it off leaves state restoration to the game.
+
+The value `6` was observed by the user to permit moving through enemies in one tested scene. This is **not** a verified no-damage or terrain-noclip mode and can be overwritten by the game between toolkit writes. Experimental gameplay use only.
+
+## Active development branch and damage-event recorder
+
+Use `chatgptweb/decomp` as the current consolidated integration branch for new toolkit work. The `main` branch is not the newest toolkit baseline. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
+
+The **Automatic events** tab captures read-only memory samples around health-loss events, ranks transient candidate fields and exports JSON evidence. It is designed to investigate damage immunity and collision handling; candidate addresses are not yet verified collision controls. Recording stops on map, character, pointer or connection changes.
+
+## Linux existing PID and write-enabled controls
+
+Enter the PID of an already-running native Linux game, then choose **Connect to
+game**. Where Linux Yama permissions block it, the Connection panel offers an
+explicit polkit authorization to temporarily permit normal same-user external-PID
+memory access; this **weakens system-wide same-user process isolation** until
+restored. See [Linux access guidance](docs/LINUX_TOOLKIT.md).
+
+Memory editing, scene reload and Live Memory context-menu freezing are available
+without an additional unlock checkbox. Practice writes default on in Linux and
+Windows; launch with `--read-only` to disable game writes and automated input.
+
+## Experimental native Linux toolkit
+
+The Python/Tk toolkit has an experimental native Linux process-memory backend, a native-game launch control, existing-PID connection with optional OS authorization, write-enabled practice controls by default, original-ROM-researched script diagnostics, **X11-only verified-target key injection**, and a **Linux speed channel for separately rebuilt patched hosts**. See [Linux setup and limitations](docs/LINUX_TOOLKIT.md). This is not a claim of Wayland input support, stock-recomp speed control or live gameplay verification.
+
 The four normal Plasma locations share one advice event. Story progress now
 includes all 39 bits checked or set by its traced advice path. Your two forced
 bit tests confirm the first two checks are priority ordered. See
@@ -13,15 +81,9 @@ map 353 old man and the map 432 coffee-shop man. The existing Omitsu flag
 entry now includes the user’s first-conversation observation. See
 [Oedo dialogue observations](docs/OEDO_DIALOGUE_FLAGS.md).
 
-## Live recomp speed control
+## Archived speed-control research
 
-The Dashboard has a **Game speed (recomp)** control. Click **Launch speed-enabled
-recomp**, then **Connect to game** using the filled PID. Select **Speed up** and
-choose 2×, 3× or 4×; clear the checkbox for 1×. The host reports its applied
-rate in the panel. The ordinary
-stock recomp and Project64 do not expose this control and remain unaffected.
-The local speed build uses separate portable saves. Host-clock switching has
-been tested, but gameplay and audio at higher rates remain experimental.
+The previous Dashboard speed controls were removed because they required a separately rebuilt recomp. Source preparation and experimental standalone speed-control modules remain for reference; see [speed research](docs/SPEED_CONTROL_RESEARCH.md).
 
 ## Connect without a player
 
@@ -48,13 +110,12 @@ Live memory now shows the full **Fortune Doll progress (quarters)** word at
 `0x8015C704`, and the separately annotated total at `0x8015C708`. The former
 boolean 1/4 control now supports quarter states. Individual world-pickup flags
 remain separate in Story progress. Event sessions only captures the 100-byte
-saved-event bank; use Live memory or State discovery focused captures for these
-outside-bank counters. [Three pickups and code evidence](docs/SILVER_FORTUNE_DOLLS.md).
+saved-event bank; use Story progress's Fortune Dolls section or Event sessions → Advanced RAM comparison for outside-bank counters. [Three pickups and code evidence](docs/SILVER_FORTUNE_DOLLS.md).
 
 ## Value freezes
 
 Open **Value freezes** and select **Keep health at current maximum** to replenish
-the live health word from the current maximum every 250 ms during ordinary
+the live health word from the current maximum every 10 ms (best effort) during ordinary
 gameplay. It follows maximum-health upgrades without changing the maximum itself.
 This is periodic replenishment, not guaranteed invulnerability.
 
@@ -64,14 +125,16 @@ exact target hex, then **Freeze raw hex**. Or select a Live memory watch and use
 raw fields also have a Freeze button and a link to manage locks. The list shows
 all raw targets; use **Stop selected** or **Stop all freezes** to release them.
 Values are N64 big-endian hex; a raw freeze holds every bit in its byte range.
-Raw freezes require the existing UNSAFE toggle. Health freezing requires write
-access; read-only mode blocks all freeze entry points.
+Raw and health freezes are available in writable sessions without an unlock checkbox.
+Explicit `--read-only` mode blocks all freeze entry points.
 
-Freezes start inactive, stay only in memory for this connection, and stop on
+Freezes start inactive and run in a separate thread, not the GUI refresh loop.
+They stay only in memory for this connection and stop on
 reconnect/disconnect, revoked permission, invalid data or a write/readback failure.
 They pause during loading, scripts, menus and pause screens. Only changed targets
 are written, with compare-before-write/readback checks; a failure clears all locks
-without retry. Up to 32 non-overlapping raw ranges are supported. Raw actor addresses
+without retry. This polling reduces visible overwrites, but it cannot make the
+lock frame-perfect when the game overwrites a value more frequently. Up to 32 non-overlapping raw ranges are supported. Raw actor addresses
 can be reused across rooms; they remain fixed addresses rather than tracked actors.
 No saved configuration can automatically enable a freeze on launch.
 
@@ -96,7 +159,7 @@ The completed Native menu calibration, Character cursor scan and Checkpoint comp
 
 Event sessions now shows a UI clock, time since Capture A, and the native game-loop counter. Capturing B immediately reports raw changed bytes/bits, regardless of trial role. **Record trial** updates the ranked list; idle/control trials supply noise evidence and do not create candidates. Identical A/B values are explicitly reported.
 
-Event sessions deliberately captures only the 100 saved event bytes at `0x8015C608..0x8015C66B`. It excludes clocks, temporary Bank A/B flags and the shadow buffer. Use **State discovery**, focused scope, for the system clock and saved/shadow regions; use wide scope for temporary Bank A/B flags. The new **Saved / shadow** tab displays all 772 bytes at `0x8015C608` and `0x8015C910`, with addresses and XOR differences. It refreshes while selected, clears on disconnect/read failure, and makes no game writes. Its two sequential reads are observations, not an atomic capture or proof of persistence to disk.
+Event sessions deliberately captures only the 100 saved event bytes at `0x8015C608..0x8015C66B`. It excludes clocks, temporary Bank A/B flags and the shadow buffer. Use **Event sessions → Advanced RAM comparison**, focused scope, for the system clock and saved/shadow regions; use wide scope for temporary Bank A/B flags. The separate **Saved / shadow** tab was removed because it duplicated the research workflows.
 
 The entrance atlas had exposed 153 valid rooms missing from the old name catalog. Another 125 now have descriptive labels from [mn64rando's pinned room index](https://github.com/abyssonym/mn64rando/blob/9c580d03fe89354f79c3c83ba2e1bcf192f32577/tables/room_indexes.txt). Existing names are retained; 28 atlas rooms still show “Unidentified room” with their native menu index. Labels do not establish safe spawn coordinates or make unused rooms playable.
 
@@ -129,7 +192,7 @@ The new **Story progress** tab shows mapped Benkei/Ushiwaka/Kihachi milestones,
 known flag masks, raw values and evidence. It distinguishes training success,
 recorded reward and actual Mini-Ebisu ownership, with advisory flag/inventory
 discrepancies. Raw Bank A/B views retain separate labels and unknown lifecycle.
-Named story watches also appear in Live memory; Unlocks links to the new panel.
+Named story flag rows are now grouped in Story progress instead of being repeated in Live Memory; Unlocks still provides item controls.
 
 215 tests passed, with a successful live read-only recomp sample and visual Tk
 check. [Panel guide and limitations](docs/STORY_PROGRESS.md). Existing unsafe
@@ -178,18 +241,17 @@ Read-only capture/save/reopen smoke tests passed against both running Project64
 and Goemon64Recomp. No new quest flag has been confirmed. See the
 [step-by-step capture guide](docs/EVENT_SESSIONS.md).
 
-# Goemon Speedrun Tools v0.11.4 — unsafe tools enabled by default
+# Goemon Speedrun Tools v0.11.4 — historical write-access defaults
 
-Ordinary startup now enables teleport, logical checkpoint restore, native debug
-menu access, hex editing and the **UNSAFE** checkbox. The existing experimental
-reload is available without a separate UNSAFE unlock. Enabling tools does not
-execute them or write game memory during startup, connection or polling.
+At v0.11.4, game-memory editing and practice controls were enabled at startup.
+The extra write-unlock checkbox that existed in this older release was removed.
+Connecting and polling game memory do not perform any writes by themselves.
 
 `Run.bat`, `python -m practice.toolkit` and the packaged entry point share these
 defaults. Existing `--enable-*` flags remain accepted. Use `Run.bat --read-only`,
 `python -m practice.toolkit --read-only`, or the executable's `--read-only` option
 to disable game writes and automated game input. Read-only takes precedence over
-all enable flags; UNSAFE starts unchecked and the write controls are disabled.
+all enable flags; the edit controls remain disabled in read-only mode.
 Read-only sessions still support watches, captures and local report exports.
 
 The legacy direct-warp prototype remains disabled. Existing action confirmations,
@@ -268,9 +330,9 @@ This US Goemon64Recomp desktop toolkit now includes **explicit, experimental** c
 
 ## Experimental controls (v0.10.8)
 
-**Experimental warp:** In **Scene browser**, select the target scene, open **Live memory** and tick **UNSAFE**, return to Scene browser and click **EXPERIMENT: reload into selected stage**. Confirm the prompt. The program writes `0x800C7CA0` (pending destination, u16) and then `0x800C7A94 = 0x0C` (top-level reload). It does **not** write the old exit request, overwrite current map or guess target XYZ. An 8-second read-only monitor saves a JSON report with destination, transition state and observed position under local `diagnostics/`. **Wrong spawn, softlock or crash remain possible.** The one-click debug-menu-equivalent spawn loader is not established. Double-clicking a scene remains selection-only.
+**Experimental warp (historical):** The original button required extra steps and was unverified. Current builds reload from the dashboard or Scene Browser by double-clicking the destination, staging its selected ROM entrance without extra confirmations. The inactive exit-flag route remains blocked. Collision, scripts and camera must still be checked in-game.
 
-**Movement offset test:** In **Live memory**, tick **UNSAFE** and use **Probe +4.0**, **Probe -4.0**, or **Speed pulse ×1.5**. Controls resolve the *current* player task pointer and write only a 4-byte IEEE-754 float at `task_ptr + 0x68`. The speed pulse scales the current float by 1.5 (up to ±16); if approximately zero it writes +4.0 as a probe. **This is not a proven speed boost.** Record effects on measured XYZ velocity; a nudge is only evidence of influence.
+**Movement offset test (historical):** Earlier builds exposed PlayerTask movement probes at `task_ptr + 0x68`. These probe buttons were later removed after they failed to establish a reliable speed modifier.
 
 **Manual 4-byte float test:** `00000000` = 0.0, `3F800000` = +1.0, `40800000` = +4.0, `C0800000` = −4.0. Entering `192` in the hex editor does *not* mean decimal float 192. The absolute pointer found during an earlier capture (`0x8016A0F8`) may change every scene; only the offset `+0x68` is stable by struct definition. Avoid 8-byte writes (which overwrite `+0x6C`).
 
@@ -284,13 +346,13 @@ This US Goemon64Recomp desktop toolkit now includes **explicit, experimental** c
 
 ## Custom live-memory watches (v0.10.5)
 
-The **Live memory** tab now has **Name**, **Address** and **Type** inputs above the table, plus **Add watch** and **Remove selected watch** buttons. Add any guest address such as `0x8015C574` with `u8`, `u16`, `u32`, signed variants, `f32`, `f64` or raw eight-byte hex. Custom rows refresh with the regular memory table, support filtering by name or address, and are visibly labelled **Custom** rather than misrepresented as confirmed mappings. Double-click their Hex cell to edit after enabling **UNSAFE**. Custom watches are saved to `practice/custom_watches.json` (source) or `%LOCALAPPDATA%\GoemonSpeedrunTools\custom_watches.json` (packaged app), separate from the built-in address map.
+The **Live memory** tab now has **Name**, **Address** and **Type** inputs above the table, plus **Add watch** and **Remove selected watch** buttons. Add any guest address such as `0x8015C574` with `u8`, `u16`, `u32`, signed variants, `f32`, `f64` or raw eight-byte hex. Custom rows refresh with the regular memory table, support filtering by name or address, and are visibly labelled **Custom** rather than misrepresented as confirmed mappings. Double-click their Hex cell to edit in a writable session (the default). Custom watches are saved to `practice/custom_watches.json` (source) or `%LOCALAPPDATA%\GoemonSpeedrunTools\custom_watches.json` (packaged app), separate from the built-in address map.
 
 The **State discovery** tab also has **Watch selected address**, which adds the selected candidate to Live memory in one click. Dynamic task pointers may change after changing character or stage, so watch addresses inside player tasks can become stale across loads.
 
 **Map test correction (2026-11-02):** `0x8015C574` is **read** as `00` while hidden and `01` while visible, but **writing** `00`, `01` or other tested bytes opens the map rather than closes it. Built-in live watch available; no on/off write toggle is claimed.
 
-**Equipped weapon (confirmed):** `0x8015C607` is a one-byte index, `01`/`02`/`03` across all four characters. The Live Memory tab now watches it; UNSAFE permits arbitrary hex writes. Out-of-range values produce unintended next-character weapon assets. Magic-active and internal player velocity remain unconfirmed.
+**Equipped weapon (confirmed):** `0x8015C607` is a one-byte index, `01`/`02`/`03` across all four characters. The Live Memory tab now watches it; Writable sessions permit arbitrary hex writes. Out-of-range values produce unintended next-character weapon assets. Magic-active and internal player velocity remain unconfirmed.
 
 ---
 
@@ -322,7 +384,7 @@ A single-file branded Windows executable can be built with `build/Build-Windows.
 The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/taskbar icon and includes the logo resources for Tkinter's window icon. The graphical app is launched with the same opt-in practice flags as `Run.bat`, but **direct scene warp remains disabled**. Use a disposable save.
 
 - Existing source usage remains `Run.bat`; the source-run launcher keeps local state in `practice/`.
-- The packaged executable writes bookmarks, checkpoints, debug-menu profile and exported diagnostics under `%LOCALAPPDATA%\GoemonSpeedrunTools\` to avoid PyInstaller's temporary directory.
+- The packaged executable writes bookmarks, checkpoints, debug-menu profile and exported diagnostics under `%LOCALAPPDATA%\GoemonSpeedrunTools` to avoid PyInstaller's temporary directory.
 - Existing source-based bookmarks/checkpoints are *not migrated automatically*. Copy any wanted `practice/bookmarks.json`, `practice/checkpoints.json` and `practice/native_debug_fields.json` to the packaged app data directory manually.
 - Only the Python unit tests have been run in this environment; the Windows packaging step and real Windows taskbar icon have not yet been verified on Windows.
 
@@ -342,7 +404,7 @@ The executable embeds `assets/goemon_tools_logo.ico` as the Windows Explorer/tas
 - **Cucumber:** the byte previously called *Blue Sausage* at `0x8015C717` is now tentatively labelled Cucumber.
 - **Four Miracle Items:** new buttons use `0x8015C85B`, `0x8015C85F`, `0x8015C863`, and `0x8015C866`. Individual icons/names are not yet mapped.
 - **Achilles' Heel / Sasuke battery:** labelled **candidate** slots, not proven item identity; test against in-game status before treating them as definitive.
-- **Live Memory:** enable `UNSAFE` to write any width-appropriate hex value, bypass mapped limits, or explicitly enter a guest N64 address and 1/2/4/8-byte value. The write checks old memory and verifies the result; arbitrary values can crash or corrupt game state. This does not provide a working warp.
+- **Live Memory:** enable `separate write-unlock` to write any width-appropriate hex value, bypass mapped limits, or explicitly enter a guest N64 address and 1/2/4/8-byte value. The write checks old memory and verifies the result; arbitrary values can crash or corrupt game state. This does not provide a working warp.
 - **Original sprites:** Sprites tab includes a link to the [referenced original sheet](https://www.spriters-resource.com/nintendo_64/mysticalninjastarringgoemon/asset/123088/) and retains the local PNG import workflow. Original copyright art is not committed to the public repository.
 
 ---
@@ -357,7 +419,7 @@ The tab now includes confirmed stage offset, previous map, pending destination, 
 
 **Double-click the Hex CELL** (third data column, labelled Hex) to open an editor. For resources and explicitly mapped inventory entries, enter a hexadecimal value (with optional `0x` prefix), review a before/after dialog, and confirm. The app checks the old value immediately before writing and verifies readback. Changes are in **canonical original N64 byte order** and appear in the diagnostic event log. They are not persisted as a game save. A changed value or in-flight game transition can prevent a write.
 
-Game-state, map, pending destination, exit request, character, loading and menu-pointer addresses are **locked by default**. To edit them, deliberately tick the `UNSAFE: allow editing game-state/transition/pointer fields` checkbox, then confirm the individual write. These fields are unsafe and **manual writes do not implement direct warp**; they can cause a return to title, softlock or crash. The editor does not make unsupported fields (e.g. dynamic position floats) editable. The `Run.bat` launcher opts into hex-edit capability, but the separate dangerous-address toggle resets every launch. The GUI does not write anything on a simple row selection.
+Game-state, map, pending destination, exit request, character, loading and menu-pointer addresses are **locked by default**. To edit them, deliberately tick the `separate write-unlock: allow editing game-state/transition/pointer fields` checkbox, then confirm the individual write. These fields are unsafe and **manual writes do not implement direct warp**; they can cause a return to title, softlock or crash. The editor does not make unsupported fields (e.g. dynamic position floats) editable. The `Run.bat` launcher opts into hex-edit capability, but the separate dangerous-address toggle resets every launch. The GUI does not write anything on a simple row selection.
 
 The version retains the v0.9.8 read-only real-door transition tracer and does not re-enable the broken direct-warp shortcut.
 
@@ -509,7 +571,7 @@ a fresh session requires fresh captures.
 
 ## Starting
 
-Launch Goemon64Recomp into normal gameplay. Unzip this folder and double-click **`Run.bat`**, then connect. The launcher enables experimental tools by default. Keep a disposable save. Original `practice/checkpoints.json`, `practice/bookmarks.json`, and `route.json` can be copied from earlier releases.
+Launch Goemon64Recomp into normal gameplay. Unzip this folder and double-click **`Run.bat`**, then connect. The launcher enables experimental tools by default. Keep a disposable save. Original `practice/checkpoints.json` and `practice/bookmarks.json` can be copied from earlier releases.
 
 ## What the source establishes
 
@@ -545,7 +607,7 @@ All learned addresses refer to **original N64 guest RAM**, so the semantic knowl
 - It refuses writes to known gameplay map ID, global character/inventory, and live-resource regions.
 - It checks the selected bytes stayed written before sending A, and waits for both map and character to match after the transition.
 - It **does not** provide fully proven scene warp or a true savestate. Game crashes/softlocks are possible in experimental mode.
-- Old checkpoint/LiveSplit/inspector functionality remains, including experimental cross-map restore (not a native savestate).
+- Checkpoint and inspector functionality remains, including experimental cross-map restore (not a native savestate).
 
 ## Testing
 

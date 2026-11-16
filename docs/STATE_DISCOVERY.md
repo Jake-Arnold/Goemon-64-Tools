@@ -56,7 +56,7 @@ The prior character-select scan at `0x800C7E60` traced 12-byte-spaced pointers w
 
 ## Benkei and Ushiwaka story-event protocol (2026-11-02)
 
-Use **State discovery → Storyline event / quest flag**, preferably **focused**, and make separate A/B captures for distinct events; do not use C for one-time story flags. Begin with a disposable checkpoint before each event and avoid moving rooms/characters between A and B. Record the precise stage of the dialogue/cutscene relative to each capture.
+Use **Event sessions → Advanced RAM comparison → Storyline event / quest flag**, preferably **focused**, and make separate A/B captures for distinct events; do not use C for one-time story flags. Begin with a disposable checkpoint before each event and avoid moving rooms/characters between A and B. Record the precise stage of the dialogue/cutscene relative to each capture.
 
 1. **First Benkei dialogue:** A directly before first approach; B once the initial conversation finishes. Then repeat conversation and compare with a new A/B to separate initial encounter from recurring dialogue.
 2. **Ushiwaka fish completion:** A immediately before the fish hand-in; B immediately after the minigame reward and cutscene conclude. Do not assume Achilles' Heel ownership by itself changes this progression bit.
@@ -109,7 +109,7 @@ The new Live Memory **Custom watches** controls can monitor the raw byte continu
 
 ## Capture protocol
 
-1. Connect to **US Goemon64Recomp** and select **State discovery**.
+1. Connect to **US Goemon64Recomp** and open **Event sessions → Advanced RAM comparison**.
 2. Choose the appropriate test and keep conditions as close as possible, e.g. same area and same character unless the test explicitly requires changing them.
 3. Capture **A** with the feature off/absent. Perform exactly one action. Capture **B** with it on/present.
 4. For toggles (map, equipped weapon, magic), undo the action and capture **C**. Comparison with C filters out candidates that do not revert byte-for-byte to A.

@@ -1,0 +1,37 @@
+# Native Linux Goemon toolkit (experimental)
+
+The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
+
+## Ubuntu installation
+
+```bash
+sudo apt install python3-venv python3-tk
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m practice.toolkit --read-only
+```
+
+In **Connection**, enter the PID of an already-running native Goemon64Recompiled game and select **Connect to game**. The toolkit attaches directly when Linux permits it; there is no need to launch the game through the toolkit. Auto-detection also works if the executable name contains `goemon64recomp`. The **Launch native Linux recomp** button remains available.
+
+On Ubuntu, a separately launched game is often **not a child of the toolkit**, so the default kernel Yama policy (`kernel.yama.ptrace_scope=1`) may reject process memory reads even with the correct PID. To permit an external PID, use **Permit connection to existing Linux PID**. After a warning, the toolkit requests administrator authorization via the installed `pkexec` and `sysctl` utilities to set the *runtime-only* `kernel.yama.ptrace_scope=0`. This weakens process inspection isolation for all same-user programs while active; it is **not** scoped to the game. **Restore original PID protection** reverses the setting recorded in this toolkit session. Reboot normally restores the machine's configured value. This is never done automatically during Connect, and it does not permanently write sysctl configuration. If authorization fails or polkit is absent, adjust ptrace permissions manually or continue launching the game as a toolkit child. Different process owners and Flatpak sandboxes may still prevent connection.
+
+## Details and limitations
+
+- The host process adapter reads `/proc/<pid>/maps` and uses `process_vm_readv`. In environments where the syscall returns `ENOSYS`, it falls back to `/proc/<pid>/mem` using Linux's normal process permissions. No root escalation or ptrace security settings are changed.
+- The existing RDRAM discovery verifies original-USA game pointers, player/state fields, mapping bounds and endian mode. The Linux native recomp must expose a compatible memory layout; this has **not yet been tested against a live Linux game**.
+- **Linux and Windows now default to write-enabled practice controls**. Reading and connecting do not write game memory. Memory editing, freezes and scene reloads no longer require a separate unlock checkbox. `--read-only` explicitly disables game-memory writes and input. The old `--linux-enable-writes` option remains accepted but is unnecessary. Use disposable saves for experiments.
+- Native Linux C-Down and N64 A keyboard injection is available on an **X11/Xorg session** with `xdotool` (`sudo apt install xdotool`). The toolkit checks the visible game window's PID, focuses it, verifies the focused PID and balances keydown/keyup. A Wayland desktop is **not** supported by this X11 adapter: it fails closed instead of sending keys to an unverified window. Manual in-game keyboard/controller input still works.
+- Native Linux live speed requests (1x–4x) use a user-owned POSIX shared-memory channel with magic/version/PID verification and host acknowledgement. **Only a separately built speed-patched native recomp exposes this channel.** Stock Linux builds cannot change their host clock when the toolkit requests speed. Windows named memory mappings remain unchanged.
+- The speed patch is provided in `speed/runtime_channel.inc` and installed by `python -m speed.prepare_live_runtime` into an **isolated runtime checkout already prepared by** `python -m speed.prepare_runtime`; the runtime checkout must be the pinned revision documented in `speed/prepare_runtime.py`. Rebuilding and linking the native Goemon64Recompiled executable against that patched runtime is necessary. These source-preparation scripts do not build the game. Preserve stock binaries, ROMs and saves; use isolated copies for tests.
+- Native speed IPC has been tested with a compiled synthetic Linux host using a 4x request and applied-rate acknowledgement; real gameplay, audio, VI scheduling and scene transitions remain unverified.
+- Native Flatpak sandbox boundaries may prevent external process-memory access. Prefer a standalone native build of the game under the same user. Inspect process ownership and `kernel.yama.ptrace_scope` if access is denied. The optional OS permission button intentionally relaxes global same-user ptrace isolation until restored, and should be used only if that trade-off is acceptable.
+- An explicit `--pid` or `--base 0x...` can select a process or known host RAM address. Core RDRAM snapshot validation still rejects incompatible mappings.
+
+## Script diagnostics
+
+The Live memory inspector now exposes original-ROM-derived VM globals: script cursor (`0x80077858`), VM state (`0x801C77E0`), resource ID (`0x801C78E8`), and signed pause byte (`0x801C78FC`). These are read-only and use original access widths; labels describing their purpose remain inferred.
+
+## Verification status
+
+The native Linux process adapter was tested against a disposable child process. The new X11 input path has subprocess-mocked fail-closed tests; native speed IPC was compiled and checked against a synthetic C++ host with 1x-to-4x acknowledgement. Actual native game input, full GUI and runtime speed behaviour remain unverified. No game ROM is bundled or needed to start the toolkit.

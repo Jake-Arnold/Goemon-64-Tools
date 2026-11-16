@@ -94,7 +94,52 @@ class StateDiscoveryTests(unittest.TestCase):
         b=capture_state(mem,'title B',snapshot=snap)
         self.assertIsNone(compare_captures(a,b)['capture_A']['character'])
         mem.write(0x8015C5DC,(0xFFFFFFFF).to_bytes(4,'big'))
-        with self.assertRaises(ValueError):capture_state(mem,'invalid',snapshot={'player_ptr':0x80100000,'task_ptr':0})
+        # Read-only global probes tolerate a stale character ID even with a
+        # previous player pointer; they do not validate player actions.
+        self.assertIsNone(capture_state(mem,'invalid',
+                                        snapshot={'player_ptr':0x80100000,'task_ptr':0}).character)
+
+
+    def test_invalid_special_mode_player_does_not_block_global_captures(self):
+        mem=Memory()
+        mem.write(0x8015C5DC,(0xFFFFFFFF).to_bytes(4,'big'))
+        mem.write(0x800C7AA4,b'\x04')
+        class ImpactMemory(Memory):
+            def snapshot(self):
+                raise ValueError('Invalid player object pointer 0xA4600014')
+            def snapshot_for_monitoring(self):
+                return {'player_ptr': None, 'task_ptr': None, 'character': None,
+                        'player_unavailable_reason': 'Invalid player object pointer 0xA4600014'}
+        impact=ImpactMemory()
+        impact.data.update(mem.data)
+        a=capture_state(impact,'Impact A')
+        impact.write(0x800C7AA4,b'\x07')
+        b=capture_state(impact,'Impact B')
+        diff=compare_captures(a,b)
+        self.assertIsNone(a.character)
+        self.assertEqual({r.name for r in a.regions},{'system','game_data'})
+        self.assertTrue(any(r['address']=='0x800C7AA4' for r in diff['candidates']))
+
+    def test_invalid_optional_dynamic_pointer_is_skipped(self):
+        mem=Memory()
+        before=capture_state(mem,'A',snapshot={'player_ptr':0xA4600014,'task_ptr':0x801234A0})
+        self.assertEqual({r.name for r in before.regions},
+                         {'system','game_data','player_task'})
+
+    def test_failed_optional_dynamic_region_does_not_block_capture(self):
+        class BrokenTaskMemory(Memory):
+            def read_guest(self,addr,length):
+                if addr==0x801234A0:
+                    raise OSError('task disappeared')
+                return super().read_guest(addr,length)
+        mem=BrokenTaskMemory()
+        snap={'player_ptr':0xA4600014,'task_ptr':0x801234A0}
+        before=capture_state(mem,'A',snapshot=snap)
+        self.assertEqual({r.name for r in before.regions},{'system','game_data'})
+        mem.write(0x800C7AA4,b'\x02')
+        after=capture_state(mem,'B',snapshot=snap)
+        self.assertTrue(any(x['address']=='0x800C7AA4'
+                        for x in compare_captures(before,after)['candidates']))
 
     def test_measured_velocity_only_same_valid_player_and_dt(self):
         a=dict(player_ptr=0x80100000,character=0,loading=0,x=1.,y=2.,z=5.)

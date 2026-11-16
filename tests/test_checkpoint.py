@@ -40,6 +40,11 @@ class TestCheckpoint(unittest.TestCase):
         cp = capture_checkpoint(ram, "Sakura practice")
         data = cp["payload"]
         self.assertEqual(data["summary"], {"max_health":10, "health":8, "ryo":100, "lives":3})
+        self.assertEqual(data['map_id'],35)
+        self.assertEqual(len(data['position']),3)
+        self.assertAlmostEqual(data['position'][0],125.25)
+        self.assertIn('rotation_b64',data)
+        self.assertEqual(set(data['regions']),{'live','gamedata','header'})
         ram.write_guest(LIVE_ADDR + 12, struct.pack(">I",1))
         ram.write_guest(LIVE_ADDR + 16, struct.pack(">I",777))
         ram.write_guest(GAMEDATA_ADDR + 0x138, b"\xFE\xED\xBE\xEF")

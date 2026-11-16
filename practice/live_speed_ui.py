@@ -1,5 +1,6 @@
 """Live 1x/2x control for a compatible recomp host."""
 from pathlib import Path
+import sys
 import time
 import tkinter as tk
 from tkinter import ttk, filedialog
@@ -11,7 +12,8 @@ class LiveSpeedMixin:
     def build_live_speed_controls(self, parent):
         frame = ttk.LabelFrame(parent, text=' Game speed (recomp) ', padding=8)
         frame.pack(fill='x', pady=(0, 8))
-        default = Path.home() / 'g64-speed-build' / 'build-speed' / 'Goemon64Recompiled.exe'
+        binary_name = 'Goemon64Recompiled' if sys.platform == 'linux' else 'Goemon64Recompiled.exe'
+        default = Path.home() / 'g64-speed-build' / 'build-speed' / binary_name
         self.speed_executable = tk.StringVar(value=str(default) if default.is_file() else '')
         row = ttk.Frame(frame); row.pack(fill='x')
         ttk.Entry(row, textvariable=self.speed_executable).pack(side='left', fill='x', expand=True)
@@ -28,8 +30,12 @@ class LiveSpeedMixin:
                                               values=('2×','3×','4×'), state='readonly', width=5)
         self.live_speed_combo.pack(side='left', padx=5)
         self.live_speed_combo.bind('<<ComboboxSelected>>', self.change_live_speed_factor)
-        ttk.Label(frame, text='The local speed build uses separate portable saves. Speed and audio behavior are experimental.',
-                  wraplength=390, style='CardMuted.TLabel').pack(anchor='w')
+        note = ('Requires a separately rebuilt speed-patched native Linux recomp; '
+                'the stock Linux build has no live control channel.' if sys.platform == 'linux'
+                else 'The local speed build uses separate portable saves. '
+                     'Speed and audio behavior are experimental.')
+        ttk.Label(frame, text=note, wraplength=390,
+                  style='CardMuted.TLabel').pack(anchor='w')
         self.live_speed_status = tk.StringVar(value='Connect to a speed-enabled recomp to control speed.')
         ttk.Label(frame, textvariable=self.live_speed_status, wraplength=390, style='CardMuted.TLabel').pack(anchor='w')
         self._speed_pid = None
@@ -40,8 +46,8 @@ class LiveSpeedMixin:
         self.root.after(500, self.poll_live_speed)
 
     def browse_speed_executable(self):
-        selected = filedialog.askopenfilename(title='Choose a speed-enabled recomp executable',
-                                               filetypes=[('Executable', '*.exe'), ('All files', '*')])
+        kind = [('All files', '*')] if sys.platform == 'linux' else [('Executable', '*.exe'), ('All files', '*')]
+        selected = filedialog.askopenfilename(title='Choose a speed-patched recomp executable', filetypes=kind)
         if selected: self.speed_executable.set(selected)
 
     def launch_speed_game(self):

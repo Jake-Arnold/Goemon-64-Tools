@@ -4,6 +4,7 @@ import json
 import queue
 import threading
 from datetime import datetime, timezone
+from dataclasses import replace
 from pathlib import Path
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
@@ -18,6 +19,7 @@ from practice.scene_placement import SpawnPlacement
 from practice.paths import practice_data_dir, diagnostics_dir
 from practice.custom_watches import (CustomWatch, FORMATS, make_watch, append_watch,
                                      load_watches, save_watches, read_watch)
+from practice.watch_names import load_watch_names, save_watch_names, validate_watch_label
 from practice.theme import PALETTE
 from practice.native_character import press_native_debug_accept, ready_for_scene_spawn
 from practice.native_debug_watch import FIELDS as NATIVE_WATCH_FIELDS, read_fields as read_native_watches, changed_fields as changed_native_watches, make_change_event as make_native_change_event, can_mark_state as can_mark_native_state, decode_hover_pointer
@@ -31,12 +33,12 @@ from practice.native_character_cursor_scan import (
 
 DEBUG_PROFILE_PATH = practice_data_dir() / "native_debug_fields.json"
 CUSTOM_WATCHES_PATH = practice_data_dir() / "custom_watches.json"
+WATCH_NAMES_PATH = practice_data_dir() / "watch_names.json"
 
 class InspectorMixin(EntranceMixin):
     def build_inspector_tabs(self, notebook):
         self.init_entrances()
         self.watch_previous={}
-        self.hex_advanced=tk.BooleanVar(value=bool(self.args.enable_hex_edit))
         self.watch_rows=[]
         self.custom_watch_load_error=None
         try:
@@ -44,6 +46,12 @@ class InspectorMixin(EntranceMixin):
         except (OSError,ValueError,KeyError,TypeError) as exc:
             self.custom_watches=[]
             self.custom_watch_load_error=str(exc)
+        self.watch_aliases={}
+        self.watch_alias_load_error=None
+        try:
+            self.watch_aliases=load_watch_names(WATCH_NAMES_PATH)
+        except (OSError,ValueError,TypeError) as exc:
+            self.watch_alias_load_error=str(exc)
         self.scene_selected=None
         self.debug_observations=[]
         self.debug_candidates=[]
@@ -73,7 +81,7 @@ class InspectorMixin(EntranceMixin):
         self.last_inspect_at=0.0
         self.last_compare_at=0.0
         self.inspector_status=tk.StringVar(value='Connect to begin inspecting memory. Raw addresses refer to US N64 guest RAM.')
-        self.scene_status=tk.StringVar(value='Direct warp disabled: v0.9.7 exits to title. Double-click does NOT write memory. Capture a normal transition to identify the loader.')
+        self.scene_status=tk.StringVar(value='Double-click an area to request an experimental entrance reload. Requires a connected game, a resolved ROM entrance and write access.')
         self.compare_status=tk.StringVar(value='Capture or select a logical checkpoint to compare.')
 
         inspector=ttk.Frame(notebook,padding=10)
@@ -104,15 +112,15 @@ class InspectorMixin(EntranceMixin):
                    style='Gold.TButton').pack(side='left',padx=(0,6))
         ttk.Button(custom_row,text='Remove selected watch',command=self.remove_custom_watch).pack(side='left')
         ttk.Label(watch_tools,text='Custom values refresh with the live table. Select the custom row to remove it. '
-                  'Double-click its Hex cell to edit when UNSAFE is enabled.',
+                  'Right-click a value to edit, rename or freeze it.',
                   style='Muted.TLabel').pack(anchor='w',pady=(4,0))
         if self.custom_watch_load_error:
             ttk.Label(watch_tools,text='Existing custom watch file could not be read: '+self.custom_watch_load_error,
                       style='Muted.TLabel').pack(anchor='w')
-        ttk.Label(inspector,text='Double-click a HEX cell to edit. UNSAFE enables unrestricted hex values at the displayed guest address (including mapped bounds override).').pack(anchor='w')
-        self.unsafe_check=ttk.Checkbutton(inspector,text='UNSAFE: enable raw guest-memory hex editing (any 1/2/4/8-byte value and address)',variable=self.hex_advanced)
-        self.unsafe_check.pack(anchor='w')
-        if not self.args.enable_hex_edit:self.unsafe_check.state(['disabled'])
+        if self.watch_alias_load_error:
+            ttk.Label(watch_tools,text='Saved field names could not be read: '+self.watch_alias_load_error,
+                      style='Muted.TLabel').pack(anchor='w')
+        ttk.Label(inspector,text='Right-click Live Memory to edit, rename, freeze or unfreeze a fixed N64 RAM value (USA and Japan). Double-click Hex to edit. Freezes pause during loading and stop on disconnect.').pack(anchor='w')
         manual=ttk.Frame(inspector);manual.pack(fill='x',pady=(3,7))
         ttk.Label(manual,text='Raw address:').pack(side='left')
         self.raw_address=tk.StringVar(value='0x8015C717')
@@ -140,6 +148,9 @@ class InspectorMixin(EntranceMixin):
         self.watch_tree.configure(yscrollcommand=scroll.set)
         self.watch_tree.pack(side='left',fill='both',expand=True);scroll.pack(side='right',fill='y')
         self.watch_tree.bind('<Double-1>',self.edit_live_hex)
+        self.watch_context_menu=tk.Menu(self.watch_tree,tearoff=False)
+        self.watch_tree.bind('<Button-3>',self.open_live_watch_menu)
+        self.watch_tree.bind('<Control-Button-1>',self.open_live_watch_menu)
         ttk.Label(inspector,text='Recent raw-field changes (not definitive semantic proof). F1 opens this tab from anywhere in the toolkit.').pack(anchor='w')
         self.event_text=tk.Text(inspector,height=6,wrap='none',font=('Consolas',9),state='disabled',
                                 background='#1a1d23', foreground='#f3eee5',
@@ -152,14 +163,21 @@ class InspectorMixin(EntranceMixin):
         self.scene_tab=scenes
         self.scene_live=tk.StringVar(value='Current map: —')
         ttk.Label(scenes,textvariable=self.scene_live,font=('Consolas',12)).pack(anchor='w',pady=4)
-        ttk.Label(scenes,text='Double-click selects a stage without writing memory. Choose an entrance, then use an explicit scene request button.').pack(anchor='w')
+        self.scene_instruction=ttk.Label(
+            scenes,text='Single-click selects; double-click requests the '
+                        'version-specific native scene warp.')
+        self.scene_instruction.pack(anchor='w')
         character_line=ttk.Frame(scenes);character_line.pack(fill='x',pady=4)
+        self.scene_character_line=character_line
         ttk.Label(character_line,text='Target character:').pack(side='left')
         self.scene_character=ttk.Combobox(character_line,state='readonly',width=30,
                values=('0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
         self.scene_character.current(0)
         self.scene_character.pack(side='left',padx=8)
-        ttk.Label(character_line,text='Experimental pre-load spawn ID, no C-Down. Native model selection unverified.').pack(side='left')
+        self.scene_character_note = ttk.Label(
+            character_line,
+            text='Keep current by default; alternate character is staged before reload (experimental).')
+        self.scene_character_note.pack(side='left')
         self.build_entrance_controls(scenes)
         self.scene_filter=tk.StringVar()
         ttk.Entry(scenes,textvariable=self.scene_filter).pack(fill='x',pady=6)
@@ -175,16 +193,94 @@ class InspectorMixin(EntranceMixin):
         self.scene_list.bind('<<ListboxSelect>>',self.select_scene)
         self.scene_list.bind('<Double-Button-1>',self.activate_selected_scene)
         self.draw_scene_list()
-        ttk.Label(scenes,text='Experimental 0x0C reload: stage the selected ROM entrance XYZ and facing before native loading, then place the loaded player after destination/character checks. Collision, camera and scene scripts still require live validation. The old exit-flag route remains disabled.',wraplength=950).pack(anchor='w',pady=3)
-        self.experimental_warp_btn=ttk.Button(scenes,text='EXPERIMENT: reload at selected entrance',
+        self.scene_transition_note=ttk.Label(
+            scenes, text='USA experimental entrance reload with actor and XYZ '
+                         'checks. Japan uses the native debug-menu category/stage '
+                         'and A input instead of direct scene ID writes.',
+            wraplength=950)
+        self.scene_transition_note.pack(anchor='w',pady=3)
+        self.experimental_warp_btn=ttk.Button(scenes,text='Warp to selected scene',
             command=self.try_reload_warp,style='Gold.TButton')
         self.experimental_warp_btn.pack(fill='x',pady=4)
         if not self.args.enable_hex_edit:self.experimental_warp_btn.state(['disabled'])
         ttk.Label(scenes,textvariable=self.scene_status,wraplength=950).pack(anchor='w',pady=8)
-        self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.open_debug_for_selected_scene)
+        self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.enter_debug_menu)
         self.native_debug_btn.pack(fill='x',pady=5)
         if not self.args.enable_debug_menu:self.native_debug_btn.state(['disabled'])
-        ttk.Label(scenes,text='Warp destinations use the original debug-menu transition and the selected entrance coordinates.',wraplength=950).pack(anchor='w')
+        self.scene_footer_note=ttk.Label(
+            scenes,text='USA reload uses the selected entrance; Japan uses its '
+                        'native debug menu to load the chosen room.',
+            wraplength=950)
+        self.scene_footer_note.pack(anchor='w')
+
+    def configure_scene_browser_region(self):
+        """One browser with two explicit, separately validated warp backends."""
+        japan = self.active_version.key == 'japan'
+        if japan:
+            self.scene_instruction.configure(
+                text='JAPAN: single-click selects; double-click immediately '
+                     'requests the selected room using the same 0x0C area '
+                     'reload mechanism as USA. No debug menu is opened.')
+            self.scene_character.configure(values=(
+                'Keep current character',
+                'Goemon', 'Ebisumaru', 'Sasuke', 'Yae'))
+            self.scene_character.current(0)
+            self.scene_character_line.pack(fill='x', pady=4,
+                                           after=self.scene_instruction)
+            self.entrance_box.pack_forget()
+            self.scene_transition_note.configure(
+                text='Japan-0: stage the pending destination at '
+                     '0x800CD490, then request native area reload 0x0C at '
+                     '0x800CD284. No input injection; verify loaded scene.')
+            self.experimental_warp_btn.configure(
+                text='Warp to selected Japanese scene')
+            self.native_debug_btn.configure(
+                text='Open ORIGINAL debug menu (manual only)')
+            enabled = bool(
+                (getattr(self.args, 'enable_japan_scene_writes', False)
+                 or getattr(self.args, 'enable_japan_debug_menu_writes', False))
+                and not getattr(self.args, 'read_only', False))
+            self.scene_footer_note.configure(
+                text='Scene Browser instantly triggers Japan-0 native reload '
+                     '(0x0C). If cached USA reference entrance data exists, '
+                     'use it when unambiguous. No active-map or exit-bit writes.')
+        else:
+            self.scene_instruction.configure(
+                text='USA: single-click selects; double-click uses the '
+                     'selected entrance reload. Manual debug menu is separate.')
+            self.scene_character.configure(values=(
+                '0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
+            self.scene_character.current(0)
+            self.scene_character_line.pack(fill='x', pady=4,
+                                           after=self.scene_instruction)
+            self.entrance_box.pack(fill='x', pady=4,
+                                   after=self.scene_character_line)
+            self.scene_transition_note.configure(
+                text='USA experimental native entrance reload with verified '
+                     'spawn and character checks.')
+            self.experimental_warp_btn.configure(
+                text='Warp to selected USA entrance')
+            self.native_debug_btn.configure(
+                text='Open original debug menu (manual only)')
+            enabled = bool(getattr(self.args, 'enable_hex_edit', False)
+                           and getattr(self.args, 'enable_teleport', False)
+                           and not getattr(self.args, 'read_only', False))
+            self.scene_footer_note.configure(
+                text='USA and Japan both use native 0x0C area reloads, '
+                     'with independent region-specific addresses.')
+        self.experimental_warp_btn.state(
+            ['!disabled'] if enabled else ['disabled'])
+        manual = bool(
+            (getattr(self.args, 'enable_japan_debug_menu_writes', False)
+             if japan else getattr(self.args, 'enable_debug_menu', False))
+            and not getattr(self.args, 'read_only', False))
+        self.native_debug_btn.state(
+            ['!disabled'] if manual else ['disabled'])
+        self.draw_scene_list()
+        self.scene_status.set(
+            'Japan-0: select a room and double-click for a native warp.'
+            if japan else 'USA: select a room and double-click for '
+                          'the experimental entrance reload.')
 
     def refresh_checkpoint_options(self):
         if not hasattr(self,'diff_cp'):return
@@ -193,6 +289,17 @@ class InspectorMixin(EntranceMixin):
         if labels and self.diff_cp.current()<0:self.diff_cp.current(len(labels)-1)
 
     def add_custom_watch(self):
+        if self.active_version.key == 'japan':
+            if self.add_japan_custom_watch_from_search(
+                    self.user_watch_address.get(),
+                    self.user_watch_type.get(),
+                    label=self.user_watch_name.get()):
+                self.refresh_inspector({})
+                self.inspector_status.set(
+                    'Japan-only typed custom watch saved; read-only.')
+            else:
+                self.inspector_status.set(self.jp_custom_watch_status.get())
+            return
         try:
             spec=make_watch(self.user_watch_name.get(),self.user_watch_address.get(),
                             self.user_watch_type.get())
@@ -215,6 +322,28 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Add watch failed: {exc}')
 
     def remove_custom_watch(self):
+        if self.active_version.key == 'japan':
+            selected = set(self.watch_tree.selection())
+            found = next(
+                (item for item in self.jp_custom_watches
+                 if item.row_name in selected), None)
+            if found is None:
+                self.inspector_status.set('Select a Japanese custom watch first.')
+                return
+            updated = [item for item in self.jp_custom_watches if item != found]
+            try:
+                save_watches(self.jp_watch_path, updated)
+            except (OSError, ValueError) as exc:
+                self.inspector_status.set(f'Japan watch removal failed: {exc}')
+                return
+            self.jp_custom_watches = updated
+            if self.jp_fields_tree.exists(self._jp_custom_iid(found)):
+                self.jp_fields_tree.delete(self._jp_custom_iid(found))
+            self._jp_reset_comparison()
+            self.refresh_japan_fields(force=True)
+            self.refresh_inspector({})
+            self.inspector_status.set(f'Removed Japan-only watch: {found.name}')
+            return
         chosen=self.watch_tree.selection()
         names={spec.row_name for spec in self.custom_watches}
         selected=next((name for name in chosen if name in names),None)
@@ -237,13 +366,126 @@ class InspectorMixin(EntranceMixin):
             self.draw_watches()
         self.inspector_status.set(f'Removed {selected}.')
 
+    def display_watch_name(self, row_id):
+        """An alias changes presentation only; the stable row ID remains original."""
+        return self.watch_aliases.get(row_id, row_id)
+
+    def open_live_watch_menu(self, event):
+        """Right-click acts on the row under the pointer, never a previous selection."""
+        row_id=self.watch_tree.identify_row(event.y)
+        watch=next((w for w in self.watch_rows if w.name==row_id),None)
+        if not row_id or not self.watch_tree.exists(row_id) or watch is None:
+            return 'break'
+        self.watch_tree.selection_set(row_id)
+        self.watch_tree.focus(row_id)
+        menu=self.watch_context_menu
+        menu.delete(0,'end')
+        active=(watch.addr is not None and self.value_freezes.get(watch.addr) is not None)
+        editor_available = (
+            watch.addr is not None
+            and not getattr(self.args, 'read_only', False)
+            and (self.jp_rdram is not None
+                 and self.jp_backend in ('project64', 'mupen64plus')
+                 and self.connection_target.get() == self.jp_backend
+                 if self.active_version.key == 'japan'
+                 else self.mem is not None))
+        menu.add_command(
+            label='Edit value (hex)…',
+            state='normal' if editor_available else 'disabled',
+            command=lambda row_id=row_id: self.edit_live_watch_value(row_id))
+        menu.add_separator()
+        menu.add_command(label='Unfreeze value' if active else 'Freeze value',
+                         state='normal' if (editor_available
+                              and getattr(self.args, 'enable_hex_edit', True))
+                              else 'disabled',
+                         command=lambda row_id=row_id:self.toggle_live_watch_freeze(row_id))
+        menu.add_command(label='Rename field…',
+                         command=lambda row_id=row_id:self.rename_live_watch(row_id))
+        try:
+            menu.tk_popup(event.x_root,event.y_root)
+        finally:
+            menu.grab_release()
+        return 'break'
+
+    def toggle_live_watch_freeze(self, row_id):
+        watch=next((w for w in self.watch_rows if w.name==row_id),None)
+        if watch is None or watch.addr is None:
+            self.inspector_status.set('No fixed guest address for this field.')
+            return
+        if self.value_freezes.get(watch.addr) is not None:
+            self.value_freezes.remove(watch.addr)
+            self.draw_value_freezes()
+            self.freeze_status.set(f'Unfroze {self.display_watch_name(row_id)}.')
+            self.inspector_status.set(self.freeze_status.get())
+        else:
+            self.freeze_watch_by_id(row_id)
+
+    def rename_live_watch(self, row_id):
+        """Rename a custom watch definition, or persist a built-in display alias."""
+        watch=next((w for w in self.watch_rows if w.name==row_id),None)
+        if watch is None:
+            self.inspector_status.set('This Live Memory field is no longer available.')
+            return
+        spec=next((s for s in self.custom_watches if s.row_name==row_id),None)
+        previous=self.display_watch_name(row_id)
+        proposed=simpledialog.askstring(
+            'Rename Live Memory field',
+            ('New custom watch name (1–64 characters):' if spec else
+             'New display name (1–64 characters; blank restores original):'),
+            initialvalue=spec.name if spec else previous,parent=self.root)
+        if proposed is None:
+            return
+        try:
+            if spec is not None:
+                renamed=make_watch(proposed,spec.address,spec.kind)
+                new_id=renamed.row_name
+                if new_id==row_id:
+                    return
+                changed=[renamed if s.row_name==row_id else s for s in self.custom_watches]
+                save_watches(CUSTOM_WATCHES_PATH,changed)
+                self.custom_watches=changed
+                self.watch_rows=[replace(w,name=new_id) if w.name==row_id else w for w in self.watch_rows]
+                if row_id in self.watch_previous:
+                    self.watch_previous[new_id]=self.watch_previous.pop(row_id)
+                new_label=new_id
+            else:
+                new_label=validate_watch_label(proposed) if proposed.strip() else row_id
+                aliases=dict(self.watch_aliases)
+                if new_label==row_id:
+                    aliases.pop(row_id,None)
+                else:
+                    aliases[row_id]=new_label
+                save_watch_names(WATCH_NAMES_PATH,aliases)
+                self.watch_aliases=aliases
+                new_id=row_id
+            # Keep an already-active lock's label consistent with the renamed field.
+            if watch.addr is not None:
+                lock=self.value_freezes.get(watch.addr)
+                if lock is not None and lock.label==previous:
+                    self.value_freezes.rename_lock(watch.addr,previous,new_label)
+                    self.draw_value_freezes()
+            self.draw_watches()
+            if not self.watch_tree.exists(new_id):
+                self.filter_text.set('')
+            if self.watch_tree.exists(new_id):
+                self.watch_tree.selection_set(new_id)
+                self.watch_tree.see(new_id)
+            self.inspector_status.set(f'Field renamed: {previous} → {new_label}.')
+        except (ValueError,OSError,TypeError) as exc:
+            self.inspector_status.set(f'Rename failed: {exc}')
+
     def write_raw_hex(self):
-        """Write explicitly entered guest bytes; unlocked only by UNSAFE toggle."""
+        """Write explicitly entered guest bytes on a writable USA connection."""
+        if self.active_version.key == 'japan':
+            self.inspector_status.set(
+                'Japanese raw writes require a verified region-specific control; '
+                'generic USA raw editor is disabled.')
+            return
         if not self.mem:
             self.inspector_status.set('Connect to the game first.')
             return
-        if not getattr(self.args,'enable_hex_edit',False) or not self.hex_advanced.get():
-            self.inspector_status.set('Raw writes require --enable-hex-edit and the UNSAFE checkbox.')
+        if getattr(self.args,'read_only',False) or not getattr(self.args,'enable_hex_edit',False):
+            self.inspector_status.set('Memory writes are disabled in read-only mode.')
             return
         try:
             addr=int(self.raw_address.get().strip(),16)
@@ -257,81 +499,95 @@ class InspectorMixin(EntranceMixin):
         except (ValueError,OSError,RuntimeError,PermissionError) as exc:
             self.inspector_status.set(f'Raw write failed: {exc}')
 
-    def edit_live_hex(self,event):
-        """Launch a typed hex editor only for the clicked HEX column."""
-        if self.watch_tree.identify_region(event.x,event.y)!='cell':return
-        if self.watch_tree.identify_column(event.x)!='#3':return
-        row_id=self.watch_tree.identify_row(event.y)
-        if not row_id or not self.mem:return
-        if not getattr(self.args,'enable_hex_edit',False):
-            messagebox.showwarning('Hex editing off','Restart with --enable-hex-edit to opt in to memory writing.')
+    def edit_live_hex(self, event):
+        """Double-click the Hex column; right-click uses the same editor."""
+        if self.watch_tree.identify_region(event.x, event.y) != 'cell':
             return
-        watch=next((w for w in self.watch_rows if w.name==row_id),None)
-        if watch is None or watch.addr is None:return
-        policy=get_policy(watch.addr)
-        spec=next((v for v in self.custom_watches if v.row_name==watch.name),None)
-        unsafe=self.hex_advanced.get()
-        if spec is not None and not unsafe:
-            messagebox.showwarning('Custom watch is read-only',
-                'Enable UNSAFE to edit a custom guest-RAM watch.')
+        if self.watch_tree.identify_column(event.x) != '#3':
             return
-        if policy is None and not unsafe:
-            messagebox.showwarning('Read-only field','Enable UNSAFE to edit a field without a declared policy.')
+        row_id = self.watch_tree.identify_row(event.y)
+        if row_id:
+            self.edit_live_watch_value(row_id)
+
+    def edit_live_watch_value(self, row_id):
+        """Edit the selected row using its own USA or Japanese RDRAM backend."""
+        japan = self.active_version.key == 'japan'
+        ram = self.jp_rdram if japan else self.mem
+        if ram is None:
+            self.inspector_status.set('Connect to game RAM before editing.')
             return
-        if policy is not None and policy.advanced and not unsafe:
-            messagebox.showwarning('Engine-state field locked','Enable UNSAFE to edit this field.')
+        if getattr(self.args, 'read_only', False) or not getattr(self.args, 'enable_hex_edit', True):
+            self.inspector_status.set('Memory editing is disabled by --read-only.')
+            return
+        watch = next((w for w in self.watch_rows if w.name == row_id), None)
+        if watch is None or watch.addr is None:
+            self.inspector_status.set('This row has no fixed guest RAM address.')
             return
         try:
-            # Unknown floats and other raw watches provide their byte width
-            # through the displayed hex data, rather than a guessed policy.
-            raw_text=watch.raw.removeprefix('0x').removeprefix('0X').strip()
+            policy = None if japan else get_policy(watch.addr)
+            definitions = self.jp_custom_watches if japan else self.custom_watches
+            spec = next((v for v in definitions if v.row_name == watch.name), None)
+            raw_text = watch.raw.removeprefix('0x').removeprefix('0X').strip()
             if spec is not None:
-                width=spec.width
+                width = spec.width
             elif policy is not None:
-                width=policy.width
-            elif len(raw_text) in (2,4,8,16) and all(c in '0123456789abcdefABCDEF' for c in raw_text):
-                width=len(raw_text)//2
+                width = policy.width
+            elif (len(raw_text) in (2, 4, 8, 16)
+                  and all(ch in '0123456789abcdefABCDEF' for ch in raw_text)):
+                width = len(raw_text) // 2
             else:
-                raise ValueError('No valid raw width for this watch; use the raw address editor')
-            original=self.mem.read_guest(watch.addr,width)
-            original_hex='0x'+original.hex().upper()
-            new_string=simpledialog.askstring('Edit N64 guest hex — '+watch.name,
-                f'{watch.name}\n0x{watch.addr:08X} ({width} bytes; N64 big-endian)\n'
-                +('UNSAFE: any raw value of this width is accepted\n' if unsafe else policy.note+'\n')
-                +'\nNew hex value:',initialvalue=original_hex,parent=self.root)
-            if new_string is None:return
-            proposed=parse_hex(new_string,width)
-            if proposed==original:return
-            if not unsafe:
-                value=int.from_bytes(proposed,'big')
-                if policy.max_value is not None and value>policy.max_value:
-                    raise ValueError(f'Value {value} exceeds maximum {policy.max_value}')
-                approved=messagebox.askyesno('Confirm N64 RAM write',
-                    f'{watch.name}\nBefore: {original_hex}\nAfter: 0x{proposed.hex().upper()}',
-                    parent=self.root,icon='warning')
-                if not approved:return
-            did_write=checked_write(self.mem,watch.addr,original,proposed,
-                     allow_advanced=unsafe,raw_override=unsafe)
-            if did_write:
-                stamp=datetime.now().strftime('%H:%M:%S')
-                self.append_event(f'{stamp} USER WRITE {watch.name}: {original_hex} -> 0x{proposed.hex().upper()}')
-                self.last_inspect_at=0.0
-                self.refresh_inspector({} if self.mem.u8(0x800C7A94)==10 else (self.current or {}))
-                self.inspector_status.set(f'Verified write: {watch.name} {original_hex} -> 0x{proposed.hex().upper()}')
-        except (ValueError,OSError,RuntimeError,PermissionError) as exc:
-            messagebox.showerror('Hex write blocked / failed',str(exc),parent=self.root)
+                raise ValueError(
+                    'No usable hex width for this watch; edit a typed custom watch.')
+            original = ram.read_guest(watch.addr, width)
+            original_hex = '0x' + original.hex().upper()
+            text = simpledialog.askstring(
+                'Edit N64 guest hex — ' + self.display_watch_name(row_id),
+                f'{self.display_watch_name(row_id)}\n'
+                f'0x{watch.addr:08X} ({width} byte(s); N64 big-endian)\n'
+                'Experimental direct RAM write; values may change during gameplay.'
+                '\nNew hex value:',
+                initialvalue=original_hex, parent=self.root)
+            if text is None:
+                return
+            proposed = parse_hex(text, width)
+            if proposed == original:
+                return
+            if japan:
+                changed = self.write_japan_raw_bytes(
+                    watch.addr, proposed, expected=original)
+            else:
+                changed = checked_write(
+                    self.mem, watch.addr, original, proposed,
+                    allow_advanced=True, raw_override=True)
+            if changed:
+                stamp = datetime.now().strftime('%H:%M:%S')
+                self.append_event(
+                    f'{stamp} {self.active_version.key.upper()} USER WRITE '
+                    f'{row_id}: {original_hex} -> 0x{proposed.hex().upper()}')
+                self.last_inspect_at = 0.0
+                self.refresh_inspector(
+                    {} if japan else
+                    ({} if self.mem.u8(0x800C7A94) == 10
+                     else (self.current or {})))
+                self.inspector_status.set(
+                    f'Verified write: {self.display_watch_name(row_id)} '
+                    f'{original_hex} -> 0x{proposed.hex().upper()}')
+        except (ValueError, OSError, RuntimeError, PermissionError) as exc:
+            messagebox.showerror('Live Memory write failed', str(exc),
+                                 parent=self.root)
 
     def draw_watches(self):
         filt=self.filter_text.get().lower().strip()
         chosen=self.watch_tree.selection()
         self.watch_tree.delete(*self.watch_tree.get_children())
         for w in self.watch_rows:
-            if filt and filt not in (' '.join((w.name,w.value,w.raw,w.source,
+            display=self.display_watch_name(w.name)
+            if filt and filt not in (' '.join((w.name,display,w.value,w.raw,w.source,
                                    f'0x{w.addr:08X}' if w.addr is not None else ''))).lower():
                 continue
             mark=(w.name,w.raw)
             tag = 'invalid' if w.status in ('CHECK','ERROR') else ('changed' if w.name in self.watch_previous and self.watch_previous[w.name]!=w.raw else '')
-            self.watch_tree.insert('', 'end',iid=w.name,text=w.name,
+            self.watch_tree.insert('', 'end',iid=w.name,text=display,
                     values=(f'0x{w.addr:08X}' if w.addr is not None else '—',w.value,w.raw,w.status,w.source),tags=(tag,))
         for iid in chosen:
             if self.watch_tree.exists(iid):self.watch_tree.selection_add(iid)
@@ -345,6 +601,39 @@ class InspectorMixin(EntranceMixin):
         self.event_text.see('end');self.event_text.configure(state='disabled')
 
     def refresh_inspector(self, snapshot):
+        if self.active_version.key == 'japan':
+            if self.jp_rdram is None:
+                self.watch_rows=[]
+                self.draw_watches()
+                self.scene_live.set('Current map: —')
+                self.inspector_status.set('Connect to Japan-0 RDRAM for shared Live Memory.')
+                return
+            import time
+            now=time.monotonic()
+            if now-self.last_inspect_at < 0.30:
+                return
+            self.last_inspect_at=now
+            from practice.region_views import japan_live_watches
+            try:
+                rows=japan_live_watches(self.jp_rdram, self.jp_custom_watches)
+                changed=sum(
+                    1 for row in rows
+                    if row.name in self.watch_previous
+                    and self.watch_previous[row.name] != row.raw)
+                self.watch_rows=rows
+                self.draw_watches()
+                self.watch_previous={row.name:row.raw for row in rows}
+                scene=int.from_bytes(
+                    self.jp_rdram.read_guest(0x800CD2A2, 2), 'big')
+                self.scene_live.set(
+                    f'Current map: 0x{scene:03X} '
+                    f'{self.scene_catalog().get(scene, "unmapped")}')
+                self.inspector_status.set(
+                    f'Japan-0: {len(rows)} source-backed/custom fields; '
+                    f'{changed} changed; USA-only address policies disabled.')
+            except (OSError, RuntimeError, ValueError) as exc:
+                self.inspector_status.set(f'Japan live inspector failed: {exc}')
+            return
         if not self.mem:return
         import time
         now=time.monotonic()
@@ -371,7 +660,6 @@ class InspectorMixin(EntranceMixin):
                     modified.append((w.name,old[w.name],w.raw))
             self.watch_rows=watches
             self.draw_watches()
-            self.refresh_quick_watch()
             self.watch_previous={w.name:w.raw for w in watches}
             invalid=[w.name for w in watches if w.status in ('CHECK','ERROR')]
             self.inspector_status.set(f'Map {live_map} ({SCENES.get(live_map,"unmapped")})  |  {len(watches)} fields  |  {len(invalid)} need verification  |  {len(modified)} changed this poll')
@@ -816,6 +1104,17 @@ class InspectorMixin(EntranceMixin):
 
 
     def try_reload_warp(self):
+        if self.active_version.key == 'japan':
+            chosen=self.scene_list.curselection()
+            if not chosen:
+                self.scene_status.set('Select a Japanese scene first.')
+                return
+            destination,_name=self.scene_options[chosen[0]]
+            self.start_japan_native_scene_warp(destination=destination)
+            return
+        if getattr(self.args,'read_only',False):
+            self.scene_status.set('Read-only mode: scene requests are disabled.')
+            return
         if self.pending_direct_warp or self.pending_restore or self.pending_native_warp:
             self.scene_status.set('Another scene or checkpoint transition is pending; finish or cancel it first.')
             return
@@ -833,17 +1132,12 @@ class InspectorMixin(EntranceMixin):
             return
         if not getattr(self.args,'enable_teleport',False):
             self.scene_status.set('Position restoration is disabled; entrance reload was not sent.');return
-        if not getattr(self.args,'enable_hex_edit',False) or not self.hex_advanced.get():
-            self.scene_status.set('Enable Live Memory UNSAFE before experimental reloading.')
+        if not getattr(self.args,'enable_hex_edit',False):
+            self.scene_status.set('Memory writes disabled; scene reload was not sent.')
             return
         try:spawn=self.selected_scene_spawn(dest)
         except ValueError as exc:
             self.scene_status.set(str(exc));return
-        if not messagebox.askyesno('Experimental entrance reload',
-            f'Reload {dest} ({name}) at {spawn.label}?\n'
-            f'XYZ {tuple(spawn.position)}, character {target_character}.\n'
-            'The original reload remains experimental; model, collision, camera and scripts may differ from an ordinary door transition.'):
-            return
         try:
             info=stage_reload_trial(self.mem,dest,self.scene_catalog(),spawn_character=target_character,spawn=spawn)
             now=__import__('time').monotonic()
@@ -876,7 +1170,7 @@ class InspectorMixin(EntranceMixin):
         """Place only the requested destination player; never repair actor IDs."""
         pending=self.pending_direct_warp
         if not pending or not self.mem:return
-        if getattr(self.args,'read_only',False) or not self.args.enable_teleport or not self.args.enable_hex_edit or not self.hex_advanced.get():
+        if getattr(self.args,'read_only',False) or not self.args.enable_teleport or not self.args.enable_hex_edit:
             self.pending_direct_warp=None;return
         try:
             assessment=assess_direct_warp(self.mem,pending['map_id'])
@@ -892,11 +1186,12 @@ class InspectorMixin(EntranceMixin):
             self._finish_direct_warp(pending,'placement_stopped',f'Entrance placement stopped: {exc}. No further writes.')
 
     def request_direct_scene(self,mid,name):
-        """Double-click is selection-only; experimental writes need a dedicated button."""
-        self.scene_status.set(
-            f'Selected {mid} ({name}); double-click warp DISABLED, no memory writes sent. Use the explicit '
-            'EXPERIMENT reload button and choose a ROM entrance after enabling UNSAFE.'
-        )
+        """Keep the historical entry point; use the validated entrance-reload path."""
+        chosen=self.scene_list.curselection()
+        if not chosen or self.scene_options[chosen[0]][0]!=mid:
+            self.scene_status.set('Scene selection changed; reload was not sent.')
+            return
+        self.try_reload_warp()
 
     def start_transition_trace(self):
         from practice.transition_trace import TransitionTrace
@@ -1000,29 +1295,55 @@ class InspectorMixin(EntranceMixin):
             finally:self.native_key_release=None
 
     def select_scene(self,event=None):
-        """A single click only selects; never writes guest RAM."""
+        """Shared scene selection; the active ROM decides which backend runs."""
         chosen=self.scene_list.curselection()
         if not chosen:return
         mid,name=self.scene_options[chosen[0]]
         self.scene_selected=mid
+        if self.active_version.key == 'japan':
+            try:
+                self.scene_status.set(
+                    f'Japan-0 selected 0x{mid:03X} {name}. '
+                    'Double-click for immediate 0x0C area reload; '
+                    'no debug menu or N64 A key required.')
+                self.show_japan_debug_target()
+            except (ValueError, RuntimeError) as exc:
+                self.scene_status.set(f'Japanese scene selection unavailable: {exc}')
+            return
         self.refresh_entrance_choices(mid)
         try:
             target=native_debug_selection(mid,self.scene_catalog())
             self.scene_status.set(
                 f'Selected {mid}: {name}. Native debug index: {target["label"]}. '
-                'Direct warp disabled; double-click will make NO guest memory writes. Separate button opens the original debug menu.')
+                'Double-click requests the guarded experimental entrance reload; the manual debug menu is a separate button.')
         except ValueError as e:
             self.scene_status.set(str(e))
 
     def activate_selected_scene(self,event=None):
-        """Double-click requests a direct gameplay scene transition, NO debug menu."""
+        """Request a guarded reload for the row actually double-clicked."""
+        if event is not None:
+            index=self.scene_list.nearest(event.y)
+            bounds=self.scene_list.bbox(index)
+            if bounds is None or not (bounds[1] <= event.y < bounds[1]+bounds[3]):
+                return 'break'
+            self.scene_list.selection_clear(0,'end')
+            self.scene_list.selection_set(index)
+            self.scene_list.activate(index)
+            self.select_scene()
         chosen=self.scene_list.curselection()
-        if not chosen:return
+        if not chosen:return 'break'
         mid,name=self.scene_options[chosen[0]]
         self.request_direct_scene(mid,name)
+        return 'break'
 
     def open_debug_for_selected_scene(self,event=None):
-        """Separate manual native menu path, intentionally not the double-click path."""
+        """Open manual native menu for active ROM; never invoke a warp."""
+        if self.active_version.key == 'japan':
+            self.open_japan_debug_for_selected_scene()
+            return
+        if getattr(self.args,'read_only',False):
+            self.scene_status.set('Read-only mode: debug-menu requests are disabled.')
+            return
         chosen=self.scene_list.curselection()
         if not chosen:return
         mid,name=self.scene_options[chosen[0]]
@@ -1041,18 +1362,6 @@ class InspectorMixin(EntranceMixin):
         except (OSError,ValueError) as exc:
             self.scene_status.set(str(exc));return
         ready=calibrated_for_direct_warp(self.debug_profile)
-        if ready and not self.native_warp_confirmed:
-            if not messagebox.askyesno('Experimental native warp',
-                'This uses addresses LEARNED from original debug-menu selections and then sends N64 A.\n'
-                'Calibration is not proof of safety. It can crash/softlock the game. Continue on a disposable save?'):
-                return
-            self.native_warp_confirmed=True
-        if not ready and not self.debug_shortcut_confirmed:
-            if not messagebox.askyesno('Native debug menu needs calibration',
-                'This build cannot safely invent the menu selection addresses.\n'
-                'Open the native debug menu now for manual navigation / calibration?'):
-                return
-            self.debug_shortcut_confirmed=True
         try:
             result=open_native_debug_for_scene(self.mem,mid,self.scene_catalog())
             from time import monotonic
@@ -1067,8 +1376,25 @@ class InspectorMixin(EntranceMixin):
             messagebox.showerror('Native debug entry failed',str(exc))
 
     def enter_debug_menu(self):
-        """Preserve previous call-site compatibility: open with selected hint."""
-        self.activate_selected_scene()
+        """Explicit manual menu fallback only, never the double-click action."""
+        if self.active_version.key == 'japan':
+            self.open_japan_debug_for_selected_scene()
+            return
+        if getattr(self.args, 'read_only', False):
+            self.scene_status.set('Read-only mode: debug-menu entry disabled.')
+            return
+        if self.mem is None or not self.args.enable_debug_menu:
+            self.scene_status.set('Connect to the game before opening the debug menu.')
+            return
+        if self.pending_direct_warp or self.pending_restore or self.pending_native_warp:
+            self.scene_status.set('Complete or cancel the pending scene request first.')
+            return
+        try:
+            with self.value_freezes.guard:
+                open_native_debug_menu(self.mem)
+            self.scene_status.set('Original debug menu opened. Choose a destination in the game.')
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self.scene_status.set('Native debug menu entry blocked: ' + str(exc))
 
     def export_inspector(self):
         if not self.mem or not self.watch_rows:

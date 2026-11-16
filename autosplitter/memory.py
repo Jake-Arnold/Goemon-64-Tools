@@ -1,15 +1,17 @@
-"""Read USA Goemon N64 RAM through Windows process memory.
+"""Read USA Goemon N64 RAM through Windows or native Linux process memory.
 
-N64 symbols are grounded in klorfmorf/Goemon64Recomp source. Read-only Windows
-discovery and live field updates were verified on Project64 3.0.1.5664.
+Original RAM symbols are grounded in Goemon64Recomp; the Linux process adapter
+is experimental and does not establish live-game compatibility on its own.
 """
 from __future__ import annotations
 
 import ctypes
 from ctypes import wintypes
+import errno
 import math
 import os
 import struct
+import sys
 
 # These N64 addresses are grounded in Goemon64Recomp source, USA ROM only.
 SYS_POINTER_ADDR = 0x8015C5C8  # points to 0x8008CCC0 after init
@@ -95,6 +97,13 @@ class WindowsProcess:
             pointer = int(start) + max(int(length), 0x1000)
 
 
+if sys.platform == "linux":
+    from .linux_process import LinuxProcess
+    HostProcess = LinuxProcess
+else:
+    HostProcess = WindowsProcess
+
+
 class Rdram:
     def __init__(self, process, host_base: int, endian: str = "wordswapped"):
         if endian not in ("wordswapped", "big"):
@@ -139,6 +148,8 @@ class Rdram:
         if length == 0:
             return b""
         off = self.offset(address, length)
+        if off + length > getattr(self, 'rdram_size', RDRAM_SIZE):
+            raise ValueError('Guest read exceeds verified emulator RDRAM size')
         if self.endian == "big":
             return self.process.read(self.base + off, length)
         start, end = off & ~3, (off + length + 3) & ~3
@@ -151,6 +162,8 @@ class Rdram:
         if not data:
             return
         off = self.offset(address, len(data))
+        if off + len(data) > getattr(self, 'rdram_size', RDRAM_SIZE):
+            raise ValueError('Guest write exceeds verified emulator RDRAM size')
         if self.endian == "big":
             self.process.write(self.base + off, data)
             return
@@ -220,6 +233,40 @@ class Rdram:
         return state
 
 
+
+    def snapshot_for_monitoring(self) -> dict:
+        """Best-effort player snapshot for read-only scene monitoring.
+
+        A valid RDRAM mapping is still mandatory. Title screens, Impact scenes
+        and other nonstandard modes can leave the ordinary player pointers
+        nonzero but unusable. Never expose such pointers to player controls.
+        Call snapshot() instead for strict player-dependent operations.
+        """
+        try:
+            state = self.snapshot()
+            if (state["player_ptr"] and state["task_ptr"] and
+                    state["character"] is not None and state["x"] is not None and
+                    state["action"] is not None):
+                return state
+            reason = "Normal player object/task unavailable in this scene"
+        except (ValueError, OSError) as exc:
+            reason = str(exc)
+
+        # A missing player is recoverable; a bad RAM base or invalid global
+        # loading flag is not. Re-read these independent global sentinels.
+        system = self.u32(SYS_POINTER_ADDR)
+        if system != SYS_EXPECTED_PTR:
+            raise ValueError(f"Invalid system pointer 0x{system:08X}; wrong RAM base or ROM variant")
+        loading = self.u8(LOADING_FLAG_ADDR)
+        if loading not in (0, 1):
+            raise ValueError(f"Invalid loading flag {loading}; RAM base is not validated")
+        return {
+            "character": None, "player_ptr": None, "task_ptr": None,
+            "loading": loading, "x": None, "y": None, "z": None,
+            "action": None, "object_rotation_y": None,
+            "player_unavailable_reason": reason,
+        }
+
 def readable_spans(regions):
     """Join adjacent readable regions, including Project64's protected code pages.
 
@@ -251,6 +298,7 @@ def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
                   for m in modes}
     scanned = 0
     rejected = 0
+    permission_denied = False
     candidates = []
     no_player_candidates = []
     budget = max_scan_mb * 1048576
@@ -265,7 +313,9 @@ def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
             scanned += read_len
             try:
                 block = previous + process.read(pos, read_len)
-            except OSError:
+            except OSError as exc:
+                if getattr(exc, "errno", None) in (errno.EPERM, errno.EACCES):
+                    permission_denied = True
                 previous = b""
                 continue
             for endian, signature in signatures.items():
@@ -278,7 +328,7 @@ def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
                     if base > 0 and base % 16 == 0:
                         try:
                             ram = Rdram(process, base, endian)
-                            state = ram.snapshot()
+                            state = ram.snapshot_for_monitoring()
                             # Check both ends of the full guest mapping.
                             process.read(base, 4)
                             process.read(base + RDRAM_SIZE - 4, 4)
@@ -317,10 +367,12 @@ def discover_rdram(process, mode: str = "auto", max_scan_mb: int = 2048):
         return no_player_candidates[0]
     if len(no_player_candidates) > 1:
         raise RuntimeError(f"Ambiguous RAM bases ({len(no_player_candidates)}) without a player; use --base")
+    reason = (" Linux process-memory access was denied; see Connection panel "
+              "for existing-PID permission options." if permission_denied else "")
     raise RuntimeError(
         f"No validated game RAM found ({rejected} rejected matches). "
         "Start the game and retry. "
-        "Unsupported game version or memory layout is also possible."
+        "Unsupported game version or memory layout is also possible." + reason
     )
 
 

@@ -1,7 +1,7 @@
-"""Goemon Practice Toolkit v0.11.17 — external Windows UI for US Goemon.
+"""Goemon Practice Toolkit v0.11.17 — USA practice and Japan-0 raw RAM attach.
 
-Observes original-game RDRAM state and manages position bookmarks, route
-calibration, and experimental logical progression checkpoints. Memory writes
+Observes original-game RDRAM state and manages gameplay diagnostics and
+experimental logical checkpoints (including saved position and orientation). Memory writes
 are enabled by default; --read-only disables writes and game input. This is not a savestate
 and is not an in-game N64 ROM patch.
 """
@@ -9,33 +9,68 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 from pathlib import Path
+import subprocess
 import time
 import tkinter as tk
 import platform
 import ctypes
 import queue
 import threading
-from tkinter import ttk, messagebox
+import struct
+from tkinter import ttk, messagebox, filedialog
 import sys
 
-from autosplitter.bridge import find_pid
-from autosplitter.memory import WindowsProcess, Rdram, discover_rdram
-from autosplitter.engine import load_route, save_route
+from autosplitter.process_discovery import find_pid
+from autosplitter.memory import HostProcess, Rdram, discover_rdram
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
+from practice.native_checkpoints import (
+    load_named_checkpoints, save_named_checkpoints,
+    make_named_checkpoint, upsert_named_checkpoint, label_named_checkpoint,
+    japan_checkpoint_summary,
+)
 from practice.value_freezes_ui import ValueFreezesMixin
-from practice.live_speed_ui import LiveSpeedMixin
+from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
+from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
+from practice.remembered_rom import remember_verified_rom, load_remembered_rom
+from practice.japan_native_scene_warp import is_japan_scene_loaded
+from practice.japan_direct_scene_reload import (
+    JAPAN_DIRECT_RELOAD_MODE, stage_japan_direct_reload,
+)
+from practice.entrances import incoming, spawn_from_entry
+from practice.scenes import SCENES
+from practice.emulator_savestates import find_emulator_pid, verified_emulator_pid, send_state_command
+from practice.japanese_mupen_attach import (
+    verified_japan_probes, discover_japanese_mupen_rdram,
+    validate_rdram_base, AmbiguousJapaneseRdram,
+)
+from practice.japanese_fields_ui import JapaneseFieldsUi
+from practice.region_unlocks import japan_unlock_lead, write_japan_unlock
+from practice.japanese_position import (
+    JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE, JAPAN_SCENE_INDEX,
+    JAPAN_OEDO_SOUTH_SCENE, JAPAN_CHARACTER_INDEX,
+    checked_japan_xyz, read_japan_position, move_japan_goemon_oedo_south,
+)
+from practice.japanese_debug_warp import (
+    JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE, JAPAN_DEBUG_CHARACTER,
+    JAPAN_NATIVE_DEBUG_MODE,
+    debug_menu_selection_hint, get_japan_debug_context,
+    enter_japan_native_debug_menu,
+)
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
+from practice.value_search_ui import ValueSearchMixin
 from practice.event_sessions_ui import EventSessionsMixin
 from practice.story_progress_ui import StoryProgressMixin
 from practice.state_discovery import measured_velocity
 from practice.experimental_controls import stage_reload_trial
 from practice.entrances import checkpoint_spawn
+from practice.linux_pid_access import ptrace_scope, change_ptrace_scope, external_pid_hint
 from practice.checkpoints import MAP_ADDR, _ensure_capture_safe, validate_checkpoint
 from practice.native_character import (
     prepare_character_swap, undo_character_preparation,
@@ -45,6 +80,7 @@ from practice.native_character import (
 ROOT = resource_root()
 BOOKMARKS_FILE = practice_data_dir() / "bookmarks.json"
 CHECKPOINTS_FILE = practice_data_dir() / "checkpoints.json"
+NATIVE_CHECKPOINTS_FILE = practice_data_dir() / "native-state-bookmarks.json"
 
 
 ASSETS_DIR = ROOT / "assets"
@@ -86,30 +122,48 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        root.title("Goemon Practice Toolkit v0.11.17 · USA N64")
-        root.geometry("1390x900")
-        root.minsize(1100, 730)
+        self.active_version = selected_version(getattr(args, 'game_version', 'usa'))
+        self.game_version_choice = tk.StringVar(value=self.active_version.label)
+        self.verified_rom_path = (
+            load_remembered_rom('japan')
+            if self.active_version.key == 'japan' else None)
+        root.title(f"Goemon Practice Toolkit v0.11.17 · {self.active_version.label}")
+        root.geometry("1220x790")
+        root.minsize(960, 640)
         apply_theme(root)
         configure_window_branding(root)
         root.attributes("-topmost", False)
         self.mem, self.process = None, None
         self.game_pid = None
+        self.jp_rdram = None  # Independently verified read-only Japan-0 Mupen RAM
         self._connect_queue = queue.SimpleQueue()
         self._connecting = False
+        self._linux_scope_queue = queue.SimpleQueue()
+        self._linux_scope_changing = False
+        self._linux_prior_scope = None
         self.pending_restore = None
         self.native_key_release = None
+        self.jp_auto_warp = None
+        self.jp_native_key_release = None
         self.last, self.last_t = None, None
         self.observed_velocity = None
         self.current = None
-        self.route_path = Path(args.route) if args.route else None
-        self.route = load_route(str(self.route_path)) if self.route_path and self.route_path.exists() else None
-        self.bookmarks = json.loads(BOOKMARKS_FILE.read_text()) if BOOKMARKS_FILE.exists() else []
+        # Legacy position-only bookmarks are presented in the same selector but
+        # never misrepresented or rewritten as full progression checkpoints.
+        self.legacy_bookmarks = json.loads(BOOKMARKS_FILE.read_text()) if BOOKMARKS_FILE.exists() else []
         self.checkpoints = load_checkpoint_file(CHECKPOINTS_FILE)
-        self.status = tk.StringVar(value="Disconnected. Start US Goemon in Recomp or Project64, then Connect.")
+        # A named native state is a local label for an emulator slot, never
+        # a copy of its savestate bytes. Corrupt metadata must not prevent boot.
+        try:
+            self.named_native_checkpoints = load_named_checkpoints(
+                NATIVE_CHECKPOINTS_FILE)
+        except (OSError, ValueError):
+            self.named_native_checkpoints = []
+        self.status = tk.StringVar(value="Disconnected. Start USA Goemon in Recomp or Project64, then Connect.")
         self.connection_target = tk.StringVar(value='auto')
         self.pid_text = tk.StringVar(value=str(args.pid) if args.pid else '')
         self.pos_text = tk.StringVar(value="X: —    Y: —    Z: —")
@@ -129,7 +183,8 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(header, text='v0.11.17  |  US Goemon · Recomp / Project64',
+        self.version_heading = tk.StringVar(value=f'v0.11.17  |  {self.active_version.label}')
+        ttk.Label(header, textvariable=self.version_heading,
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
         self.notebook = notebook = ttk.Notebook(root)
@@ -145,233 +200,1199 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         frm = ttk.Frame(dash_canvas, padding=12)
         dash_window = dash_canvas.create_window((0, 0), window=frm, anchor='nw')
         frm.bind('<Configure>', lambda _e: dash_canvas.configure(scrollregion=dash_canvas.bbox('all')))
-        dash_canvas.bind('<Configure>', lambda e: dash_canvas.itemconfigure(dash_window, width=e.width))
-        frm.columnconfigure(0, weight=4, minsize=395)
-        frm.columnconfigure(1, weight=6, minsize=475)
-        frm.rowconfigure(0, weight=1)
+        def resize_dashboard(event):
+            dash_canvas.itemconfigure(dash_window, width=event.width)
+            self._arrange_dashboard(event.width)
+        dash_canvas.bind('<Configure>', resize_dashboard)
+        self.dashboard_canvas = dash_canvas
+        self.dashboard_frame = frm
+        self.dashboard_wide = None
+        frm.columnconfigure(0, weight=1)
         left = ttk.Frame(frm)
-        left.grid(row=0, column=0, sticky='nsew', padx=(0, 7))
+        left.grid(row=0, column=0, sticky='new', padx=(6, 6))
         right = ttk.Frame(frm)
-        right.grid(row=0, column=1, sticky='nsew', padx=(7, 0))
-        right.columnconfigure(0, weight=1)
-        right.rowconfigure(0, weight=1)
-        right.rowconfigure(1, weight=1)
+        right.grid(row=0, column=1, sticky='new', padx=(6, 6))
+        self.dashboard_connection_column = left
+        self.dashboard_checkpoints_column = right
 
-        connection = ttk.LabelFrame(left, text=' Connection ', padding=12)
-        connection.pack(fill='x', pady=(0, 10))
+        connection = ttk.LabelFrame(left, text=' Connection ', padding=10)
+        connection.pack(fill='x', pady=(0, 6))
         ttk.Label(connection, textvariable=self.status, style='Card.TLabel',
                   wraplength=410).pack(anchor='w', pady=(0, 7))
+        version_row = ttk.Frame(connection)
+        version_row.pack(fill='x', pady=(0, 7))
+        ttk.Label(version_row, text='Game version').pack(side='left', padx=(0, 8))
+        self.version_selector = ttk.Combobox(
+            version_row, textvariable=self.game_version_choice, state='readonly',
+            values=tuple(version.label for version in VERSIONS.values()), width=23)
+        self.version_selector.pack(side='left', fill='x', expand=True)
+        self.version_selector.bind('<<ComboboxSelected>>', self.on_game_version_changed)
+        self.verify_rom_button = ttk.Button(
+            version_row, text='Verify ROM', command=self.verify_rom_for_version)
+        self.verify_rom_button.pack(side='left', padx=(7, 0))
         ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
-                     values=('auto', 'recomp', 'project64')).pack(fill='x', pady=(0, 7))
+                     values=('auto', 'recomp', 'project64', 'mupen64plus')).pack(fill='x', pady=(0, 7))
         pid_row=ttk.Frame(connection);pid_row.pack(fill='x',pady=(0,7))
         ttk.Label(pid_row,text='PID (optional)').pack(side='left')
         ttk.Entry(pid_row,textvariable=self.pid_text,width=14).pack(side='left',padx=6)
+        self.jp_base_row = ttk.Frame(connection)
+        ttk.Label(self.jp_base_row, text='Japanese RAM base').pack(side='left')
+        self.jp_base_choice = tk.StringVar(value='Auto (detect)')
+        self.jp_base_selector = ttk.Combobox(
+            self.jp_base_row, textvariable=self.jp_base_choice, state='readonly',
+            values=('Auto (detect)',), width=31)
+        self.jp_base_selector.pack(side='left', fill='x', expand=True, padx=(7, 0))
+        self.jp_base_row.pack(fill='x', pady=(0, 7))
+        self.jp_candidates = {}
+        self.jp_candidates_pid = None
+        self.jp_candidates_backend = None
+        self.jp_backend = None
         self.connect_button = ttk.Button(connection, text='Connect to game',
                    style='Accent.TButton', command=self.connect)
         self.connect_button.pack(fill='x', pady=(0, 7))
+        if sys.platform == 'linux':
+            self.launch_recomp_button = ttk.Button(
+                connection, text='Launch native Linux recomp',
+                command=self.launch_linux_recomp)
+            self.launch_recomp_button.pack(fill='x', pady=(0, 7))
+            linux_access=ttk.Frame(connection)
+            linux_access.pack(fill='x',pady=(0,7))
+            self.linux_attach_btn=ttk.Button(
+                linux_access,text='Permit existing Linux PID',
+                command=self.enable_linux_external_pid)
+            self.linux_attach_btn.pack(side='left')
+            self.linux_restore_btn=ttk.Button(
+                linux_access,text='Restore PID protection',
+                command=self.restore_linux_pid_protection)
+            self.linux_restore_btn.pack(side='left',padx=7)
+            self.linux_restore_btn.state(['disabled'])
+            ttk.Label(connection,text='Existing Linux game processes may require an OS '
+                      'ptrace permission change. This affects other processes until restored.',
+                      style='CardMuted.TLabel',wraplength=420).pack(anchor='w',pady=(0,7))
         ttk.Label(connection, textvariable=self.pos_text, style='AccentValue.TLabel').pack(anchor='w')
         ttk.Label(connection, textvariable=self.speed_text, style='CardMuted.TLabel').pack(anchor='w')
         ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
                   wraplength=420).pack(anchor='w')
 
-        self.build_live_speed_controls(left)
+        state_card = ttk.LabelFrame(right, text=' Full emulator savestates ', padding=10)
+        state_card.pack(fill='x', pady=(0, 6))
+        ttk.Label(state_card, text='Complete states are saved by Project64 or Mupen64Plus. '
+                  'Goemon64Recomp does not support full savestates.',
+                  style='CardMuted.TLabel', wraplength=430).pack(anchor='w', pady=(0, 7))
+        slot_row = ttk.Frame(state_card)
+        slot_row.pack(fill='x', pady=(0, 7))
+        ttk.Label(slot_row, text='Save slot').pack(side='left', padx=(0, 8))
+        self.savestate_slot = tk.StringVar(value='0')
+        self.savestate_slot_box = ttk.Combobox(
+            slot_row, textvariable=self.savestate_slot, width=5, state='readonly',
+            values=tuple(str(i) for i in range(10)))
+        # ttk's readonly Combobox can expose an empty displayed selection on
+        # certain native Windows Tk versions despite StringVar(value='0').
+        # Explicitly choose index 0 so the displayed slot and backend agree.
+        self.savestate_slot_box.current(0)
+        self.savestate_slot_box.pack(side='left')
+        native_buttons = ttk.Frame(state_card)
+        native_buttons.pack(fill='x')
+        self.native_save_btn = ttk.Button(native_buttons, text='Save full state',
+                                          command=lambda: self.native_savestate_action('save'),
+                                          style='Gold.TButton')
+        self.native_save_btn.pack(side='left', fill='x', expand=True)
+        self.native_load_btn = ttk.Button(native_buttons, text='Load full state',
+                                          command=lambda: self.native_savestate_action('load'))
+        self.native_load_btn.pack(side='left', fill='x', expand=True, padx=(8, 0))
+        if getattr(args, 'read_only', False):
+            self.native_save_btn.state(['disabled'])
+            self.native_load_btn.state(['disabled'])
 
-        checkpoints = ttk.LabelFrame(left, text=' Checkpoints and bookmarks ', padding=12)
-        checkpoints.pack(fill='x', pady=(0, 10))
-        ttk.Label(checkpoints, text='Name for the next saved checkpoint',
-                  style='CardMuted.TLabel').pack(anchor='w')
-        self.bookmark_name = ttk.Entry(checkpoints)
-        self.bookmark_name.insert(0, 'Practice checkpoint')
-        self.bookmark_name.pack(fill='x', pady=(4, 8))
-        ttk.Label(checkpoints, text='Position bookmarks', style='Card.TLabel').pack(anchor='w')
-        self.bookmarks_box = ttk.Combobox(checkpoints, state='readonly', values=self.bookmark_labels())
-        self.bookmarks_box.pack(fill='x', pady=4)
-        row = ttk.Frame(checkpoints, style='Card.TFrame')
-        row.pack(fill='x', pady=(2, 8))
-        ttk.Button(row, text='Save position', command=self.save_bookmark,
-                   style='Accent.TButton').pack(side='left', fill='x', expand=True)
-        self.teleport_btn = ttk.Button(row, text='Restore position (unsafe)', command=self.restore_bookmark)
-        self.teleport_btn.pack(side='left', fill='x', expand=True, padx=(8, 0))
-        if not args.enable_teleport:
-            self.teleport_btn.state(['disabled'])
-        ttk.Label(checkpoints, text='Logical checkpoints (experimental)',
-                  style='Card.TLabel').pack(anchor='w', pady=(2, 0))
+        # Japan-0 named checkpoints are references to emulator-owned full
+        # save slots, NOT USA logical RAM checkpoints.
+        named = ttk.Frame(state_card)
+        named.pack(fill='x', pady=(7, 0))
+        self.named_native_frame = named
+        ttk.Label(
+            named, text='Named Japanese state slots (emulator owns the saves)',
+            style='CardMuted.TLabel').pack(anchor='w')
+        name_row = ttk.Frame(named)
+        name_row.pack(fill='x', pady=(3, 3))
+        self.named_native_name = tk.StringVar(value='Practice checkpoint')
+        ttk.Entry(name_row, textvariable=self.named_native_name,
+                  width=26).pack(side='left', fill='x', expand=True)
+        self.named_native_save_btn = ttk.Button(
+            name_row, text='Save named slot',
+            command=self.save_named_native_checkpoint)
+        self.named_native_save_btn.pack(side='left', padx=(6, 0))
+        choice_row = ttk.Frame(named)
+        choice_row.pack(fill='x')
+        self.named_native_choice = tk.StringVar()
+        self.named_native_selector = ttk.Combobox(
+            choice_row, textvariable=self.named_native_choice,
+            state='readonly', width=33)
+        self.named_native_selector.pack(side='left', fill='x', expand=True)
+        self.named_native_load_btn = ttk.Button(
+            choice_row, text='Load named slot',
+            command=self.load_named_native_checkpoint)
+        self.named_native_load_btn.pack(side='left', padx=(6, 0))
+        self._named_native_visible = []
+        self.connection_target.trace_add(
+            'write', lambda *_: self.refresh_named_native_checkpoints())
+        if self.active_version.key != 'japan':
+            named.pack_forget()
+        self.refresh_named_native_checkpoints()
+
+        # Read-only diagnostics coexist with direct mapped Japanese unlock edits.
+        jp_card = ttk.LabelFrame(right, text=' Japan Project64 / Mupen64Plus RDRAM ', padding=10)
+        self.jp_card = jp_card
+        jp_card.pack(fill='x', pady=(0, 6))
+        ttk.Label(jp_card, text='Verify Japan-0 ROM; select project64 (Windows) or mupen64plus, '
+                  'then Connect. Only raw N64 bytes are exposed; USA pointers, '
+                  'USA checkpoints and USA RAM editors remain disabled. '
+                  'Mapped Japanese unlocks write directly in the shared Unlocks tab.',
+                  style='CardMuted.TLabel', wraplength=420).pack(anchor='w', pady=(0, 7))
+        jp_inputs = ttk.Frame(jp_card)
+        jp_inputs.pack(fill='x')
+        self.jp_read_address = tk.StringVar(value='0x80000450')
+        self.jp_read_length = tk.StringVar(value='16')
+        ttk.Label(jp_inputs, text='Address').pack(side='left')
+        ttk.Entry(jp_inputs, textvariable=self.jp_read_address, width=15).pack(side='left', padx=5)
+        ttk.Label(jp_inputs, text='Bytes').pack(side='left')
+        ttk.Entry(jp_inputs, textvariable=self.jp_read_length, width=5).pack(side='left', padx=5)
+        self.jp_read_button = ttk.Button(jp_inputs, text='Read', command=self.read_japan_rdram)
+        self.jp_read_button.pack(side='left', padx=5)
+        self.jp_read_button.state(['disabled'])
+        self.jp_read_result = tk.StringVar(value='Japanese guest RAM is not connected.')
+        ttk.Label(jp_card, textvariable=self.jp_read_result,
+                  style='CardMuted.TLabel', wraplength=420).pack(anchor='w', pady=(7, 0))
+
+        # Retain existing logical checkpoint code/data but hide its incomplete
+        # snapshot controls so the dashboard presents only native full states.
+        checkpoints = ttk.LabelFrame(right, text=' Legacy logical checkpoints ', padding=10)
+        checkpoints.pack(fill='x', pady=(0, 6))
+        ttk.Label(checkpoints, text='Includes saved position, orientation, health, lives, Ryo, items and progression.',
+                  style='CardMuted.TLabel',wraplength=430).pack(anchor='w',pady=(0,7))
+        ttk.Label(checkpoints, text='Name for new checkpoint',style='CardMuted.TLabel').pack(anchor='w')
+        self.checkpoint_name = ttk.Entry(checkpoints)
+        self.checkpoint_name.insert(0, 'Practice checkpoint')
+        self.checkpoint_name.pack(fill='x', pady=(4, 8))
+        ttk.Label(checkpoints, text='Saved checkpoints',style='Card.TLabel').pack(anchor='w')
         self.checkpoints_box = ttk.Combobox(checkpoints, state='readonly', values=self.checkpoint_labels())
         self.checkpoints_box.pack(fill='x', pady=4)
         state_buttons = ttk.Frame(checkpoints, style='Card.TFrame')
         state_buttons.pack(fill='x', pady=(2, 5))
-        ttk.Button(state_buttons, text='Capture checkpoint', command=self.capture_full_checkpoint,
-                   style='Gold.TButton').pack(side='left', expand=True, fill='x')
-        self.restore_state_btn = ttk.Button(state_buttons, text='Restore (experimental)',
+        self.capture_state_btn = ttk.Button(state_buttons, text='Capture logical checkpoint',
+                                            command=self.capture_full_checkpoint,style='Gold.TButton')
+        self.capture_state_btn.pack(side='left', expand=True, fill='x')
+        self.restore_state_btn = ttk.Button(state_buttons, text='Restore selected checkpoint',
                                             command=self.restore_full_checkpoint)
         self.restore_state_btn.pack(side='left', expand=True, fill='x', padx=(8, 0))
-        if not args.enable_state_restore:
+        if not (args.enable_state_restore or args.enable_teleport):
             self.restore_state_btn.state(['disabled'])
         self.cancel_restore_btn = ttk.Button(checkpoints, text='Cancel pending checkpoint restore',
                                              command=self.cancel_pending_restore)
         self.cancel_restore_btn.pack(fill='x', pady=(3, 0))
         self.cancel_restore_btn.state(['disabled'])
+        ttk.Label(checkpoints,text='Older position bookmarks appear here as position-only; '
+                  'they cannot restore health, items or progression.',style='CardMuted.TLabel',
+                  wraplength=430).pack(anchor='w',pady=(6,0))
+        self.legacy_checkpoint_card = checkpoints
+        checkpoints.pack_forget()
 
-        calibration = ttk.LabelFrame(left, text=' LiveSplit route calibration ', padding=12)
-        calibration.pack(fill='x')
-        row = ttk.Frame(calibration, style='Card.TFrame')
-        row.pack(fill='x')
-        self.segment_index = tk.IntVar(value=1)
-        self.radius = tk.StringVar(value='45')
-        ttk.Label(row, text='Split #', style='Card.TLabel').pack(side='left')
-        ttk.Entry(row, textvariable=self.segment_index, width=5).pack(side='left', padx=(5, 12))
-        ttk.Label(row, text='Radius', style='Card.TLabel').pack(side='left')
-        ttk.Entry(row, textvariable=self.radius, width=7).pack(side='left', padx=(5, 12))
-        ttk.Button(calibration, text='Capture next route trigger here',
-                   command=self.capture_trigger).pack(fill='x', pady=(8, 0))
-
-        scene_card = ttk.LabelFrame(right, text=' Scene browser ', padding=10)
-        scene_card.grid(row=0, column=0, sticky='nsew', pady=(0, 6))
-        scene_card.columnconfigure(0, weight=1)
-        scene_card.rowconfigure(1, weight=1)
-        self.quick_scene_filter = tk.StringVar()
-        ttk.Entry(scene_card, textvariable=self.quick_scene_filter).grid(row=0, column=0,
-                                                                sticky='ew', pady=(0, 7))
-        self.quick_scene_filter.trace_add('write', lambda *_: self.draw_quick_scenes())
-        scene_columns = ('map', 'name', 'category')
-        self.quick_scene_tree = ttk.Treeview(scene_card, columns=scene_columns,
-                                             show='headings', height=7, selectmode='browse')
-        for col, label, width in [('map', 'ID', 70), ('name', 'Area / scene', 245),
-                                  ('category', 'Category', 85)]:
-            self.quick_scene_tree.heading(col, text=label)
-            self.quick_scene_tree.column(col, width=width, stretch=(col == 'name'))
-        self.quick_scene_tree.grid(row=1, column=0, sticky='nsew')
-        scene_scroll = ttk.Scrollbar(scene_card, orient='vertical', command=self.quick_scene_tree.yview)
-        scene_scroll.grid(row=1, column=1, sticky='ns')
-        self.quick_scene_tree.configure(yscrollcommand=scene_scroll.set)
-        # Linked to the full scene-browser selection; double click never writes RAM.
-        self.quick_scene_tree.bind('<<TreeviewSelect>>', self.choose_quick_scene)
-        self.quick_scene_tree.bind('<Double-1>', self.open_full_scene_tab)
-        footer = ttk.Frame(scene_card, style='Card.TFrame')
-        footer.grid(row=2, column=0, sticky='ew', pady=(7, 0))
-        ttk.Label(footer, text='Selecting scenes is read-only; direct warp disabled.',
-                  style='CardMuted.TLabel').pack(side='left')
-        ttk.Button(footer, text='Full scene browser', command=self.open_full_scene_tab).pack(side='right')
-
-        memory_card = ttk.LabelFrame(right, text=' Live memory (read-only preview) ', padding=10)
-        memory_card.grid(row=1, column=0, sticky='nsew', pady=(6, 0))
-        memory_card.columnconfigure(0, weight=1)
-        memory_card.rowconfigure(1, weight=1)
-        ttk.Label(memory_card, text='Live values from the original N64 guest RAM',
-                  style='CardMuted.TLabel').grid(row=0, column=0, sticky='w', pady=(0, 6))
-        memory_columns = ('field', 'addr', 'hex')
-        self.quick_watch_tree = ttk.Treeview(memory_card, columns=memory_columns,
-                                            show='headings', height=7)
-        for col, label, width in [('field', 'Field', 185), ('addr', 'N64 address', 112),
-                                  ('hex', 'Hex', 120)]:
-            self.quick_watch_tree.heading(col, text=label)
-            self.quick_watch_tree.column(col, width=width, stretch=(col == 'field'))
-        self.quick_watch_tree.grid(row=1, column=0, sticky='nsew')
-        watch_scroll = ttk.Scrollbar(memory_card, orient='vertical', command=self.quick_watch_tree.yview)
-        watch_scroll.grid(row=1, column=1, sticky='ns')
-        self.quick_watch_tree.configure(yscrollcommand=watch_scroll.set)
-        self.quick_watch_tree.tag_configure('changed', background=PALETTE['changed'])
-        preview_footer = ttk.Frame(memory_card, style='Card.TFrame')
-        preview_footer.grid(row=2, column=0, sticky='ew', pady=(7, 0))
-        ttk.Label(preview_footer, text='Edit guarded fields in the full Live memory tab.',
-                  style='CardMuted.TLabel').pack(side='left')
-        ttk.Button(preview_footer, text='Open live memory', command=self.open_live_memory_tab).pack(side='right')
-        self.draw_quick_scenes()
+        # The dedicated tabs are visible directly above; no duplicate footer is needed.
+        self._arrange_dashboard(1220)
         self.build_inspector_tabs(notebook)
         self.build_value_freezes_tab(notebook)
-        self.build_state_discovery_tab(notebook)
+        self.build_value_search_tab(notebook)
+        self.build_damage_event_capture_tab(notebook)
         self.build_event_sessions_tab(notebook)
+        self.build_state_discovery_tab(self.event_sections)
         self.build_unlock_tabs(notebook)
         self.build_story_progress_tab(notebook)
+        self.build_japanese_fields_tab(notebook)
+        self._apply_game_version_ui()
+        if self.verified_rom_path is not None:
+            self.status.set(
+                f'Japan-0 ROM verified again from saved selection: '
+                f'{self.verified_rom_path}. Connect to Project64 or Mupen; '
+                'live RAM signatures will still be checked.')
         # Toolkit-local F1; it does not register a system-wide/game hotkey.
         root.bind_all('<F1>', self._on_f1_open_memory, add='+')
         statusbar = ttk.Frame(root, style='Header.TFrame', padding=(16, 5))
         statusbar.pack(fill='x')
         ttk.Label(statusbar, text='EXPERIMENTAL PRACTICE ONLY  •  Never use for submitted runs',
                   style='HeaderSub.TLabel').pack(side='left')
-        ttk.Label(statusbar, text=('READ ONLY' if getattr(args, 'read_only', False) else 'Unsafe tools enabled') + '  •  Direct warp disabled',
+        self.access_footer = tk.StringVar(
+            value=('JAPAN: mapped unlock writes enabled; unknown rows skipped'
+                   if self.active_version.key == 'japan'
+                   and not getattr(args, 'read_only', False)
+                   else 'JAPAN READ ONLY'
+                   if self.active_version.key == 'japan'
+                   else ('READ ONLY' if getattr(args, 'read_only', False)
+                         else 'USA memory writes enabled  •  Experimental entrance reload')))
+        ttk.Label(statusbar, textvariable=self.access_footer,
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
 
-    def draw_quick_scenes(self):
-        """Keep the dashboard scene catalog searchable, without guest writes."""
-        from practice.scenes import SCENES
-        query = self.quick_scene_filter.get().strip().lower()
-        selected = self.quick_scene_tree.selection()
-        self.quick_scene_tree.delete(*self.quick_scene_tree.get_children())
-        for map_id, name in sorted(SCENES.items()):
-            if query not in f'{map_id} {map_id:03X} {name}'.lower():
-                continue
-            category = 'SIRO' if map_id < 300 else ('DOUCHU' if map_id < 350 else 'MACHI / OTHER')
-            self.quick_scene_tree.insert('', 'end', iid=str(map_id), values=(map_id, name, category))
-        for entry in selected:
-            if self.quick_scene_tree.exists(entry):
-                self.quick_scene_tree.selection_set(entry)
+    def _apply_game_version_ui(self):
+        """Expose the selected version without implying a mapped Japanese RDRAM."""
+        version = self.active_version
+        self.root.title(f"Goemon Practice Toolkit v0.11.17 · {version.label}")
+        self.version_heading.set(f"v0.11.17  |  {version.label}")
+        enabled = version.live_memory_supported
+        region_active = version.key in ('usa', 'japan')
+        if (version.key != 'japan' and
+                self.notebook.select() == str(self.jp_fields_tab)):
+            self.notebook.select(self.notebook.tabs()[0])
+        for tab in self.notebook.tabs()[1:]:
+            japan_specific_tab = tab == str(self.jp_fields_tab)
+            tab_enabled = region_active and (
+                not japan_specific_tab or version.key == 'japan')
+            self.notebook.tab(
+                tab, state='normal' if tab_enabled else 'disabled')
+        # The same visible scene browser and inspector follow the active ROM;
+        # USA-only write controls stay individually gated.
+        self.configure_scene_browser_region()
+        self.configure_unlock_region()
+        # Both ROMs use the same event sessions UI. Japanese sessions
+        # compare an explicitly labelled 100-byte research slice (NOT a
+        # validated saved-event bank); the existing Advanced A/B/C remains.
+        self.event_sections.tab(self.event_sections.tabs()[0], state='normal')
+        self.event_sections.tab(self.state_discovery_tab, state='normal')
+        self.configure_event_region()
+        self.configure_state_probe_region()
+        if version.key == 'japan':
+            self.jp_card.pack(fill='x', pady=(0, 6))
+        else:
+            self.jp_card.pack_forget()
+        self.refresh_japan_party_controls()
+        if version.key == 'japan':
+            self.named_native_frame.pack(fill='x', pady=(7, 0))
+        else:
+            self.named_native_frame.pack_forget()
+        self.refresh_named_native_checkpoints()
+        # Japan permits fixed-address raw freezes; USA-only task-pointer /
+        # health / God Mode controls remain disabled. No USA guest offsets are
+        # ever used by Japanese freeze polling.
+        usa_edit = bool(
+            version.key == 'usa' and self.args.enable_hex_edit
+            and not getattr(self.args, 'read_only', False))
+        jp_edit = bool(
+            version.key == 'japan'
+            and getattr(self.args, 'enable_hex_edit', True)
+            and not getattr(self.args, 'read_only', False))
+        self.raw_write_btn.state(
+            ['!disabled'] if usa_edit else ['disabled'])
+        self.freeze_raw_button.state(
+            ['!disabled'] if (usa_edit or jp_edit) else ['disabled'])
+        for button in (self.freeze_health_button,
+                       self.god_mode_button, self.enemy_pass_through_button):
+            button.state(['!disabled'] if usa_edit else ['disabled'])
+        if version.key == 'japan':
+            self.inspector_status.set(
+                'Japan Live Memory: right-click to edit or freeze fixed guest '
+                'addresses; freeze pauses during transitions.')
+            self.freeze_status.set(
+                'Japan-0 raw freezes available during stable gameplay; '
+                'USA task-pointer/health/God Mode freezes remain disabled.')
+            self.refresh_story_progress()
+        if hasattr(self, 'access_footer'):
+            self.access_footer.set(
+                'JAPAN: mapped unlock writes enabled; unknown rows skipped'
+                if version.key == 'japan' and not getattr(self.args, 'read_only', False)
+                else 'JAPAN READ ONLY' if version.key == 'japan'
+                else ('READ ONLY' if getattr(self.args, 'read_only', False)
+                      else 'USA memory writes enabled  •  Experimental entrance reload'))
+        # Japan raw-memory mode has no USA-specific field interpretation.
+        if version.key == 'japan':
+            self.jp_base_row.pack(fill='x', before=self.connect_button, pady=(0, 7))
+        else:
+            self.jp_base_row.pack_forget()
+        self.connect_button.state(['!disabled'])
+        if hasattr(self, 'launch_recomp_button'):
+            self.launch_recomp_button.state(['!disabled'] if enabled else ['disabled'])
+        self.capture_state_btn.state(['!disabled'] if enabled else ['disabled'])
+        self.restore_state_btn.state(
+            ['!disabled'] if enabled and (self.args.enable_state_restore or
+                                        self.args.enable_teleport) else ['disabled'])
+        if enabled:
+            self.status.set('USA selected. Connect to the USA game in Recomp or Project64.')
+        else:
+            self.status.set('Japan selected. Verify the Japan-0 ROM, select '
+                            'project64 (Windows) or mupen64plus; Connect for read-only raw RDRAM. '
+                            'USA-specific memory features remain unavailable.')
 
-    def choose_quick_scene(self, event=None):
-        """Synchronise dashboard selection to the full browser, never mutate RAM."""
-        selection = self.quick_scene_tree.selection()
-        if not selection or not hasattr(self, 'scene_options'):
+    def _clear_japan_base_choices(self):
+        """Discard process-specific candidate bases when the region or ROM changes."""
+        self.jp_candidates = {}
+        self.jp_candidates_pid = None
+        self.jp_candidates_backend = None
+        self.jp_base_selector['values'] = ('Auto (detect)',)
+        self.jp_base_choice.set('Auto (detect)')
+
+    def _disconnect_for_version_change(self):
+        """Stop write workers and detach before switching region interpretations."""
+        self.stop_damage_capture(quiet=True)
+        with self.value_freezes.guard:
+            self.stop_all_freezes()
+            self.cancel_pending_restore(quiet=True)
+            self.pending_direct_warp = None
+            self.pending_native_warp = None
+            self.jp_auto_warp = None
+            self._release_japan_native_key()
+            previous = self.process
+            self.process = self.mem = self.current = self.jp_rdram = None
+            self.game_pid = None
+            self.jp_backend = None
+            self.last = self.last_t = None
+            self.observed_velocity = None
+        if previous is not None:
+            try:
+                previous.close()
+            except OSError:
+                pass
+        self.pos_text.set('X: —    Y: —    Z: —')
+        self.speed_text.set('Speed: —')
+        self.misc_text.set('Character: —    Action: —    Loading: —')
+        self.clear_japan_field_values()
+        if hasattr(self, 'state_discovery_tab'):
+            self.reset_state_probes()
+        if hasattr(self, 'value_search_tab'):
+            self.invalidate_value_search_connection()
+        if getattr(self, 'jp_read_button', None):
+            self.jp_read_button.state(['disabled'])
+            self.jp_read_result.set('Japanese guest RAM is not connected.')
+
+    def read_japan_rdram(self):
+        """Read raw guest bytes without invoking any USA live-memory parser."""
+        if self.active_version.key != 'japan' or self.jp_rdram is None:
+            self.jp_read_result.set('Japanese guest RAM is not connected.')
             return
-        map_id = int(selection[0])
-        for index, (candidate, _) in enumerate(self.scene_options):
-            if candidate == map_id:
-                self.scene_list.selection_clear(0, 'end')
-                self.scene_list.selection_set(index)
-                self.scene_list.see(index)
-                self.select_scene()
+        try:
+            address = int(self.jp_read_address.get().strip(), 0)
+            length = int(self.jp_read_length.get().strip(), 0)
+            if not 1 <= length <= 64:
+                raise ValueError('Read length must be between 1 and 64 bytes')
+            guest = self.jp_rdram.read_guest(address, length)
+            self.jp_read_result.set(f'0x{address:08X}: {guest.hex(" ").upper()}')
+        except (ValueError, OSError, PermissionError) as exc:
+            self.jp_read_result.set(f'RDRAM read rejected: {exc}')
+
+    def on_game_version_changed(self, _event=None):
+        """A version selection never remaps the existing USA RDRAM handle."""
+        if self._connecting:
+            self.game_version_choice.set(self.active_version.label)
+            self.status.set('Complete the existing connection attempt before changing versions.')
+            return
+        version = next((item for item in VERSIONS.values()
+                        if item.label == self.game_version_choice.get()), None)
+        if version is None:
+            self.game_version_choice.set(self.active_version.label)
+            return
+        if version == self.active_version:
+            return
+        self._disconnect_for_version_change()
+        self._clear_japan_base_choices()
+        self.active_version = version
+        self.verified_rom_path = (
+            load_remembered_rom('japan') if version.key == 'japan' else None)
+        self._apply_game_version_ui()
+        if self.verified_rom_path is not None:
+            self.status.set(
+                f'Previously selected Japan-0 ROM reverified: '
+                f'{self.verified_rom_path}. Live RAM connection still requires '
+                'the current emulator signatures.')
+
+    def _open_japan_freeze_writer(self, attached, token):
+        """Worker-only, ephemeral Japan-0 writer; never retain across polls."""
+        if (self.active_version.key != 'japan'
+                or self.jp_rdram is not attached
+                or token != self.freeze_token()
+                or getattr(self.args, 'read_only', False)
+                or self._connecting or self.game_pid is None
+                or self.jp_backend not in ('project64', 'mupen64plus')):
+            raise RuntimeError('Japanese freeze connection changed')
+        host = HostProcess(self.game_pid, writable=True)
+        try:
+            writer = Rdram(host, attached.base, attached.endian)
+            writer.rdram_size = getattr(attached, 'rdram_size', 0x800000)
+            return host, writer
+        except Exception:
+            host.close()
+            raise
+
+    def write_japan_raw_bytes(self, address, data, *, expected=None):
+        """Direct per-row Japanese Live Memory edit, including research fields.
+
+        No confirmation dialogue, byte allowlist, or expensive ROM revalidation
+        on every edit. Only the attached Japanese PID/base/endian are used.
+        Explicit --read-only always blocks writes. A stale displayed value
+        is rejected rather than blindly overwriting changes by the game.
+        """
+        if (self.active_version.key != 'japan'
+                or getattr(self.args, 'read_only', False)
+                or self._connecting or self.jp_rdram is None
+                or self.game_pid is None
+                or self.jp_backend not in ('project64', 'mupen64plus')
+                or self.connection_target.get() != self.jp_backend):
+            raise RuntimeError('Connect Japanese RAM with writes enabled first')
+        if not isinstance(data, bytes) or len(data) not in (1, 2, 4, 8):
+            raise ValueError('Live Memory edit must contain 1, 2, 4, or 8 bytes')
+        if expected is not None and len(expected) != len(data):
+            raise ValueError('Expected and replacement byte widths differ')
+        original = self.jp_rdram
+        # Validate the guest address against the active 4/8 MiB reader first.
+        original.read_guest(address, len(data))
+        host = HostProcess(self.game_pid, writable=True)
+        try:
+            writer = Rdram(host, original.base, original.endian)
+            writer.rdram_size = getattr(original, 'rdram_size', 0x800000)
+            before = writer.read_guest(address, len(data))
+            if expected is not None and before != expected:
+                raise RuntimeError('RAM value changed since opening editor; retry')
+            if before == data:
+                return False
+            writer.write_guest(address, data)
+            if writer.read_guest(address, len(data)) != data:
+                raise OSError('Japanese Live Memory write readback mismatch')
+            return True
+        finally:
+            host.close()
+
+    def apply_japan_unlocks(self, changes):
+        """Direct mapped Japanese edits without consent or party-only guards.
+
+        The ROM/RAM identity was established at Connect. Reopen a writable
+        handle for this click, without rescanning the ROM or checking gameplay
+        character/scene each time. Only explicitly mapped Japanese bytes may
+        be written, and all unknown rows are rejected before opening a handle.
+        """
+        changes = tuple(changes)
+        if not changes:
+            return 0, 0
+        if (self.active_version.key != 'japan'
+                or getattr(self.args, 'read_only', False)
+                or self._connecting or self.jp_rdram is None
+                or self.game_pid is None
+                or self.jp_backend not in ('project64', 'mupen64plus')
+                or self.connection_target.get() != self.jp_backend):
+            raise RuntimeError('Connect Japanese RAM in write-enabled mode first')
+        for item, _target in changes:
+            if japan_unlock_lead(item) is None:
+                raise ValueError(f'{item.label}: Japanese address unknown')
+        host = HostProcess(self.game_pid, writable=True)
+        try:
+            attached = self.jp_rdram
+            writable = Rdram(host, attached.base, attached.endian)
+            writable.rdram_size = getattr(attached, 'rdram_size', 0x800000)
+            changed = sum(write_japan_unlock(writable, item, target)
+                          for item, target in changes)
+            return changed, len(changes)
+        finally:
+            host.close()
+
+    def move_japan_oedo_xyz(self):
+        """User-triggered XYZ in verified Oedo South as Goemon only."""
+        result_text = self.jp_position_result
+        if (self.active_version.key != 'japan' or self._connecting
+                or getattr(self.args, 'read_only', False)
+                or not getattr(self.args, 'enable_japan_position_writes', False)
+                or self.jp_rdram is None or self.game_pid is None
+                or self.verified_rom_path is None):
+            result_text.set('Japan position writes require a verified connection and '
+                            '--enable-japan-position-writes (without --read-only).')
+            return
+        try:
+            coords = checked_japan_xyz((
+                self.jp_pos_x.get(), self.jp_pos_y.get(), self.jp_pos_z.get()))
+            current = read_japan_position(self.jp_rdram)
+            before = self.jp_rdram.read_guest(
+                JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE)
+            scene = int.from_bytes(
+                self.jp_rdram.read_guest(JAPAN_SCENE_INDEX, 2), 'big')
+            character = int.from_bytes(
+                self.jp_rdram.read_guest(JAPAN_CHARACTER_INDEX, 4), 'big')
+            if (scene != JAPAN_OEDO_SOUTH_SCENE or character != 0):
+                raise RuntimeError(
+                    'XYZ writes are verified only for Goemon (0) '
+                    'in Oedo Town South (scene 0x161); no other scenes/characters.')
+        except (ValueError, OSError, RuntimeError, PermissionError) as exc:
+            result_text.set(f'Japanese XYZ write rejected: {exc}')
+            return
+
+        consent = messagebox.askyesno(
+            'Move Goemon to XYZ?',
+            'Experimental Japanese position write — Oedo Town South only.'
+            '\n\nCreate a complete Project64/Mupen savestate before proceeding.'
+            f'\nCurrent XYZ: ({current[0]:.3f}, {current[1]:.3f}, {current[2]:.3f})'
+            f'\nRequested XYZ: ({coords[0]:.3f}, {coords[1]:.3f}, {coords[2]:.3f})'
+            '\n\nOnly the verified 12 position bytes at '
+            '0x80151B10–0x80151B1B will be changed once.'
+            '\nNo scene/character changes, collision bypass, or repeated freeze.',
+            parent=self.root)
+        if not consent:
+            result_text.set('Japanese XYZ move cancelled; no RAM written.')
+            return
+
+        writable = None
+        pid = self.game_pid
+        original = self.jp_rdram
+        try:
+            target = self.jp_backend
+            if target not in ('project64', 'mupen64plus'):
+                raise RuntimeError('Japanese emulator backend is not confirmed')
+            if target == 'project64' and sys.platform != 'win32':
+                raise RuntimeError('Project64 position writes require Windows')
+            if self.connection_target.get() != target:
+                raise RuntimeError('Selected emulator changed; reconnect')
+            if verified_emulator_pid(pid, target) != (pid, target):
+                raise RuntimeError('Verified emulator process changed; reconnect')
+            probes = verified_japan_probes(self.verified_rom_path)
+            writable = HostProcess(pid, writable=True)
+            verified = validate_rdram_base(
+                writable, original.base, original.endian, probes,
+                allow_4mb=(target == 'project64'))
+            if getattr(verified, 'rdram_size', 0x800000) != getattr(
+                    original, 'rdram_size', 0x800000):
+                raise RuntimeError('Japanese RDRAM mapping size changed; reconnect')
+            # Compare independent read and write views immediately before use.
+            for address, count in (
+                    (JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE),
+                    (JAPAN_CHARACTER_INDEX, 4),
+                    (JAPAN_SCENE_INDEX, 2)):
+                if verified.read_guest(address, count) != original.read_guest(address, count):
+                    raise RuntimeError('Writable/read-only RAM disagreement; no XYZ write')
+            if verified.read_guest(JAPAN_PLAYER_XYZ_START, 12) != before:
+                raise RuntimeError('Position changed after confirmation; no XYZ write')
+            outcome = move_japan_goemon_oedo_south(
+                verified, coords, expected_before=before)
+            if outcome.changed and original.read_guest(
+                    JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE) != (
+                        verified.read_guest(JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE)):
+                raise RuntimeError('Read-only view did not match the verified XYZ write')
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            result_text.set(f'Japanese XYZ write rejected: {exc}')
+            self.status.set(f'Japanese XYZ write rejected: {exc}')
+            return
+        finally:
+            if writable is not None:
+                writable.close()
+        # Refresh the displayed coordinates first; then leave the one-shot
+        # operation outcome visible rather than overwriting it with a read.
+        self.refresh_japan_position()
+        message = (
+            'Goemon moved to requested XYZ in Oedo South (verified read-back). '
+            'Restore emulator savestate if movement or collision is invalid.'
+            if outcome.changed else 'Goemon was already at the specified XYZ.')
+        result_text.set(message)
+        self.status.set(message)
+
+    def open_japan_debug_for_selected_scene(self):
+        """Open native debug level selection; destination remains manual.
+
+        Do NOT write active or pending map. PJ64 must revalidate ROM,
+        process and RAM after the operator gives consent.
+        """
+        caption = self.jp_debug_result
+        if (self.active_version.key != 'japan' or self._connecting
+                or getattr(self.args, 'read_only', False)
+                or not getattr(self.args, 'enable_japan_debug_menu_writes', False)
+                or self.jp_rdram is None or self.game_pid is None
+                or self.verified_rom_path is None):
+            caption.set('Native debug entry requires connected Japanese ROM and '
+                        '--enable-japan-debug-menu-writes without --read-only.')
+            return
+        try:
+            destination = self.selected_japan_debug_scene()
+            category, index = debug_menu_selection_hint(destination)
+            original = self.jp_rdram
+            context = get_japan_debug_context(original)
+            # Reuse the read-only primitive's exact conservative gameplay
+            # predicate BEFORE asking user for consent.
+            from practice.japanese_debug_warp import _normal_gameplay
+            _normal_gameplay(context)
+        except (OSError, PermissionError, ValueError, RuntimeError) as exc:
+            caption.set(f'Native debug entry rejected before confirmation: {exc}')
+            return
+        yes = messagebox.askyesno(
+            'Enter native Japanese debug menu?',
+            f'Open original debug level selector while in scene 0x{context[1]:03X}?'
+            f'\n\nTarget hint (NOT auto-selected): '
+            f'{SCENES[destination]} (0x{destination:03X})'
+            f'\nExpected menu category/index (USA-derived): {category} / {index}'
+            '\n\nMake a Project64/Mupen64Plus savestate before proceeding.'
+            '\nThe ONLY proposed RAM change is 0x800CD284: 0D → 0A.'
+            '\nThe game must complete destination navigation and loading.'
+            '\nNo scene IDs, pending maps, exit flags or coordinates are written.',
+            parent=self.root)
+        if not yes:
+            caption.set('Native debug entry cancelled; no RAM written.')
+            return
+        pid = self.game_pid
+        writable = None
+        try:
+            target = self.jp_backend
+            if target not in ('project64', 'mupen64plus'):
+                raise RuntimeError('Japanese emulator backend not verified')
+            if target == 'project64' and sys.platform != 'win32':
+                raise RuntimeError('Project64 debug entry requires Windows')
+            if self.connection_target.get() != target:
+                raise RuntimeError('Selected emulator backend changed; reconnect')
+            if verified_emulator_pid(pid, target) != (pid, target):
+                raise RuntimeError('Target emulator PID changed; reconnect')
+            probes = verified_japan_probes(self.verified_rom_path)
+            writable = HostProcess(pid, writable=True)
+            verified = validate_rdram_base(
+                writable, original.base, original.endian, probes,
+                allow_4mb=(target == 'project64'))
+            if getattr(verified, 'rdram_size', 0x800000) != getattr(
+                    original, 'rdram_size', 0x800000):
+                raise RuntimeError('Emulator guest RAM size changed; reconnect')
+            # The native debug mode byte is the only destination of this write.
+            # Full context agreement catches stale or shadow mappings.
+            if get_japan_debug_context(verified) != get_japan_debug_context(original):
+                raise RuntimeError('Writable/read-only Japanese gameplay differs')
+            result = enter_japan_native_debug_menu(
+                verified, destination, expected_context=context)
+            observed = original.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
+            if observed not in (JAPAN_NATIVE_DEBUG_MODE, 0x0D):
+                raise RuntimeError(f'Unexpected engine state {observed}; check savestate')
+        except (OSError, PermissionError, ValueError, RuntimeError) as exc:
+            caption.set(f'Native debug entry failed: {exc}')
+            self.status.set(f'Native debug entry failed: {exc}')
+            return
+        finally:
+            if writable is not None:
+                writable.close()
+
+        if result.observed_state == JAPAN_NATIVE_DEBUG_MODE:
+            message = (
+                f'Native debug engine state 0x0A observed. Choose '
+                f'{category} / index {index} manually for '
+                f'0x{destination:03X} {SCENES[destination]}. '
+                'Verify on-screen debug menu; Japanese menu layout is not '
+                'independently validated. No direct map write.')
+        else:
+            message = (
+                f'Native debug entry byte written but engine returned to 0x0D. '
+                f'Inspect the on-screen debug menu. Target hint: {category} / '
+                f'index {index}; no destination selection was made.')
+        caption.set(message)
+        self.status.set(message)
+        self.refresh_japan_fields(force=True)
+
+    def _japan_native_warp_writer(self):
+        """Reverify exact Japan ROM, Project64 PID and live RAM before each step.
+
+        Returns a short-lived host and matching guest reader; caller closes host.
+        This path is independent of USA's layout and never trusts saved PID/base.
+        """
+        original = self.jp_rdram
+        pid = self.game_pid
+        if (self.active_version.key != 'japan'
+                or self._connecting or original is None or pid is None
+                or self.verified_rom_path is None
+                or getattr(self.args, 'read_only', False)
+                or not (getattr(self.args, 'enable_japan_scene_writes', False)
+                        or getattr(self.args, 'enable_japan_debug_menu_writes', False))
+                or self.jp_backend != 'project64'
+                or self.connection_target.get() != 'project64'
+                or sys.platform != 'win32'):
+            raise RuntimeError(
+                'Instant warp requires verified Japanese Project64 and '
+                '--enable-japan-scene-writes (legacy debug-write opt-in also accepted)')
+        if verified_emulator_pid(pid, 'project64') != (pid, 'project64'):
+            raise RuntimeError('Project64 PID changed; reconnect')
+        probes = verified_japan_probes(self.verified_rom_path)
+        handle = HostProcess(pid, writable=True)
+        try:
+            verified = validate_rdram_base(
+                handle, original.base, original.endian, probes, allow_4mb=True)
+            if getattr(verified, 'rdram_size', 0x800000) != getattr(
+                    original, 'rdram_size', 0x800000):
+                raise RuntimeError('Japan RAM mapping size changed; reconnect')
+            for address, size in (
+                    (JAPAN_DEBUG_ENGINE_MODE, 1),
+                    (JAPAN_DEBUG_SCENE, 2),
+                    (JAPAN_DEBUG_CHARACTER, 4)):
+                if verified.read_guest(address, size) != original.read_guest(address, size):
+                    raise RuntimeError('Japanese writable and read-only RAM disagree')
+            return handle, verified
+        except Exception:
+            handle.close()
+            raise
+
+    def _release_japan_native_key(self):
+        release = self.jp_native_key_release
+        self.jp_native_key_release = None
+        if release:
+            release()
+
+    def _finish_japan_native_warp(self, message):
+        pending = self.jp_auto_warp
+        self.jp_auto_warp = None
+        try:
+            self._release_japan_native_key()
+        except (OSError, RuntimeError):
+            pass
+        if hasattr(self, 'jp_debug_result'):
+            self.jp_debug_result.set(message)
+        if hasattr(self, 'scene_status'):
+            self.scene_status.set(message)
+        self.status.set(message)
+
+    def _japan_reference_entrance(self, destination, source):
+        """Use a uniquely matched USA-atlas entrance, if explicitly available.
+
+        The user verified USA Oedo South X/Y/Z in Japan, not every entrance.
+        Do not invent coordinates for unknown/ambiguous destinations. With no
+        reference entrance the game's native reload receives map ID only.
+        """
+        atlas = getattr(self, 'entrance_atlas', None)
+        if atlas is None:
+            return None
+        rows = incoming(atlas, destination)
+        matching = [row for row in rows
+                    if row['kind'] == 'exit' and row['source_map'] == source]
+        defaults = [row for row in rows if row['kind'] == 'default']
+        for group in (matching, defaults):
+            possible = [spawn_from_entry(row) for row in group]
+            unique = {
+                (tuple(spawn.position), spawn.heading, spawn.mode): spawn
+                for spawn in possible
+            }
+            if len(unique) == 1:
+                return next(iter(unique.values()))
+        return None
+
+    def start_japan_native_scene_warp(self, destination=None):
+        """Same immediate 0x0C area-reload sequence as USA Scene Browser.
+
+        Stages Japanese pending scene/optional entrance, then requests 0x0C
+        in the SAME call. Never enters debug menu, injects A or writes active
+        scene/exit flag. Original debug-menu control is a separate fallback.
+        """
+        if self.jp_auto_warp is not None:
+            self.scene_status.set('Another Japanese scene reload is pending.')
+            return
+        try:
+            destination = (
+                self.selected_japan_debug_scene()
+                if destination is None else destination)
+            if type(destination) is not int or destination not in SCENES:
+                raise ValueError('Select a catalogued scene')
+            reader = self.jp_rdram
+            if reader is None:
+                raise RuntimeError('Connect to verified Japan-0 RAM first')
+            context = get_japan_debug_context(reader)
+            from practice.japanese_debug_warp import _normal_gameplay
+            _normal_gameplay(context)
+            selector = getattr(self, 'scene_character', None)
+            selected = selector.current() if selector is not None else 0
+            target_character = selected - 1 if selected in (1, 2, 3, 4) else None
+            spawn = self._japan_reference_entrance(
+                destination, context[1])
+            handle, writable = self._japan_native_warp_writer()
+            try:
+                if get_japan_debug_context(writable) != context:
+                    raise RuntimeError(
+                        'Japanese gameplay context changed during attachment')
+                outcome = stage_japan_direct_reload(
+                    writable, destination, expected_context=context,
+                    spawn=spawn, target_character=target_character)
+            finally:
+                handle.close()
+            now = time.monotonic()
+            self.jp_auto_warp = {
+                'destination': destination, 'source': context[1],
+                'character': context[2], 'pid': self.game_pid,
+                'reader': reader, 'started': now, 'deadline': now + 18,
+                'seen_reload': outcome.state_after_write == JAPAN_DIRECT_RELOAD_MODE,
+                'stable': 0, 'spawn': spawn,
+                'target_character': target_character,
+            }
+            entrance_note = (
+                f' USA-reference entrance {spawn.entrance_id} was staged.'
+                if spawn is not None else
+                ' No validated entrance was available; only the native '
+                'pending scene ID was staged.')
+            message = (
+                f'Japan instant reload 0x{context[1]:03X} → '
+                f'0x{destination:03X}: pending destination written, '
+                f'engine 0x0C requested; waiting for playable scene.'
+                + (f' Target character {target_character} staged experimentally.'
+                   if outcome.character_staged else
+                   ' Keeping the existing character.')
+                + entrance_note)
+            self.jp_debug_result.set(message)
+            self.scene_status.set(message)
+            self.status.set(message)
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            message = f'Japanese instant scene reload refused: {exc}'
+            self.jp_debug_result.set(message)
+            self.scene_status.set(message)
+            self.status.set(message)
+
+    def poll_japan_native_scene_warp(self, now):
+        """Observe native reload and destination; send no menu/A input."""
+        pending = self.jp_auto_warp
+        if pending is None:
+            return
+        if (self.active_version.key != 'japan'
+                or getattr(self.args, 'read_only', False)
+                or self.jp_rdram is not pending['reader']
+                or self.game_pid != pending['pid']
+                or self.jp_backend != 'project64'
+                or self._connecting):
+            self._finish_japan_native_warp(
+                'Japan scene reload cancelled: emulator session changed')
+            return
+        if now > pending['deadline']:
+            self._finish_japan_native_warp(
+                f'Japan reload to 0x{pending["destination"]:03X} '
+                'NOT confirmed before timeout; no retry was sent.')
+            return
+        try:
+            state = self.jp_rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
+            if state == JAPAN_DIRECT_RELOAD_MODE:
+                pending['seen_reload'] = True
+                pending['stable'] = 0
                 return
-        # The full browser may have its own filter; reset it before synchronising.
-        self.scene_filter.set('')
-        for index, (candidate, _) in enumerate(self.scene_options):
-            if candidate == map_id:
-                self.scene_list.selection_set(index)
-                self.scene_list.see(index)
-                self.select_scene()
-                break
+            if state == JAPAN_NATIVE_DEBUG_MODE:
+                self._finish_japan_native_warp(
+                    'Japan reload unexpectedly entered original debug menu; '
+                    'no menu selection or A input sent.')
+                return
+            if is_japan_scene_loaded(
+                    self.jp_rdram, pending['destination']):
+                # A different loaded map is independent evidence of a reload
+                # even when the short 0x0C interval was missed by Tk polling.
+                if not (pending['seen_reload']
+                        or pending['destination'] != pending['source']):
+                    return
+                pending['stable'] += 1
+                if pending['stable'] >= 3:
+                    spawn_note = (
+                        ' Reference entrance staged from USA atlas.'
+                        if pending['spawn'] is not None else
+                        ' Native default entrance/position remains to be verified.')
+                    self._finish_japan_native_warp(
+                        f'Japan scene reload reached 0x{pending["destination"]:03X} '
+                        f'{SCENES[pending["destination"]]} with three stable '
+                        'gameplay/character/XYZ reads. Confirm actual controls '
+                        'and footing in Project64.' + spawn_note)
+            else:
+                pending['stable'] = 0
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self._finish_japan_native_warp(
+                f'Japan scene reload stopped: {exc}; no retry was sent.')
+
+    def native_savestate_action(self, action):
+        """Request native emulator-owned F5/F7; never claim it finished writing."""
+        if getattr(self.args, 'read_only', False):
+            self.status.set('Savestate input disabled by --read-only.')
+            return
+        if self._connecting:
+            self.status.set('Finish connecting before using emulator savestates.')
+            return
+        target = self.connection_target.get()
+        try:
+            if (self.active_version.key == 'japan' and self.jp_rdram is not None
+                    and target != self.jp_backend):
+                raise ValueError('Selected emulator differs from connected Japan-0 process; reconnect')
+            if target == 'recomp':
+                raise ValueError('Goemon64Recomp cannot create complete savestates yet')
+            specified = self.pid_text.get().strip()
+            if specified:
+                pid, kind = verified_emulator_pid(int(specified), target)
+            elif self.game_pid is not None:
+                pid, kind = verified_emulator_pid(self.game_pid, target)
+            else:
+                pid, kind = find_emulator_pid(target)
+            slot = int(self.savestate_slot.get())
+            # Stop asynchronous toolkit writers before the emulator snapshots
+            # or restores the machine. A load invalidates cached guest pointers.
+            self.stop_damage_capture(quiet=True)
+            with self.value_freezes.guard:
+                self.stop_all_freezes()
+                self.cancel_pending_restore(quiet=True)
+                self.pending_direct_warp = None
+                self.pending_native_warp = None
+            if action == 'load':
+                self._disconnect_for_version_change()
+            send_state_command(pid, kind, action, slot)
+            self.status.set(f'Requested {kind} {action} in state slot {slot} (PID {pid}). '
+                            'Confirm completion in the emulator.')
+            return pid, kind, slot
+        except (ValueError, RuntimeError, OSError) as exc:
+            self.status.set(f'Full savestate unavailable: {exc}')
+
+    def refresh_named_native_checkpoints(self):
+        """Only show labels for the selected region and emulator backend."""
+        if not hasattr(self, 'named_native_selector'):
+            return
+        region = self.active_version.key
+        backend = self.connection_target.get()
+        filtered = [
+            record for record in self.named_native_checkpoints
+            if record['region'] == region and record['backend'] == backend
+        ]
+        previous = self.named_native_choice.get()
+        labels = [label_named_checkpoint(record) for record in filtered]
+        self._named_native_visible = filtered
+        self.named_native_selector.configure(values=labels)
+        self.named_native_choice.set(previous if previous in labels else
+                                     labels[0] if labels else '')
+        writable = (region == 'japan' and
+                    backend in ('project64', 'mupen64plus') and
+                    not getattr(self.args, 'read_only', False))
+        self.named_native_save_btn.state(
+            ['!disabled'] if writable else ['disabled'])
+        self.named_native_load_btn.state(
+            ['!disabled'] if writable and filtered else ['disabled'])
+
+    def save_named_native_checkpoint(self):
+        """Request an emulator full save; store only its human-readable slot label."""
+        if (self.active_version.key != 'japan'
+                or self.jp_rdram is None
+                or self.game_pid is None
+                or self.connection_target.get() != self.jp_backend):
+            self.status.set('Connect Japan-0 Project64/Mupen before naming a state slot.')
+            return
+        name = self.named_native_name.get().strip()
+        if not 1 <= len(name) <= 64:
+            self.status.set('Named checkpoint requires a name of 1–64 characters.')
+            return
+        # Capture optional observational metadata before issuing the save.
+        summary = japan_checkpoint_summary(self.jp_rdram)
+        dispatched = self.native_savestate_action('save')
+        if dispatched is None:
+            return
+        _pid, backend, slot = dispatched
+        record = make_named_checkpoint(
+            name, 'japan', backend, slot, **summary)
+        try:
+            updated = upsert_named_checkpoint(
+                self.named_native_checkpoints, record)
+            save_named_checkpoints(NATIVE_CHECKPOINTS_FILE, updated)
+            self.named_native_checkpoints = updated
+            self.refresh_named_native_checkpoints()
+            self.named_native_choice.set(label_named_checkpoint(record))
+            self.status.set(
+                f'Emulator SAVE REQUEST sent to {backend} slot {slot}; '
+                f'named metadata recorded as "{name}". '
+                'Confirm the actual save completed in the emulator.')
+        except (OSError, ValueError) as exc:
+            self.status.set(
+                f'Emulator save request sent for slot {slot}, but the '
+                f'checkpoint label could not be stored: {exc}')
+
+    def load_named_native_checkpoint(self):
+        """Route through existing emulator load; never restore a Japanese RAM dump."""
+        selected = self.named_native_selector.current()
+        if not 0 <= selected < len(self._named_native_visible):
+            self.status.set('Select an existing named Japanese state slot.')
+            return
+        record = self._named_native_visible[selected]
+        if (self.active_version.key != 'japan'
+                or record['region'] != 'japan'
+                or record['backend'] != self.connection_target.get()):
+            self.status.set('Named checkpoint is for another region/emulator.')
+            return
+        if (self.jp_rdram is None or self.game_pid is None
+                or self.jp_backend != record['backend']):
+            self.status.set(
+                'Connect to the matching Japan-0 emulator before loading '
+                'a named checkpoint.')
+            return
+        self.savestate_slot.set(str(record['slot']))
+        dispatched = self.native_savestate_action('load')
+        if dispatched is not None:
+            self.status.set(
+                f'Requested native {record["backend"]} load of '
+                f'{record["name"]} (slot {record["slot"]}). '
+                'Confirm completion in the emulator. '
+                'Reconnect to read the restored Japanese RAM.')
+
+    def verify_rom_for_version(self):
+        """Offline-only retail ROM verification; never attaches to a game process."""
+        selected = filedialog.askopenfilename(
+            title=f'Verify {self.active_version.label} ROM',
+            filetypes=(('Nintendo 64 ROMs', '*.z64 *.n64 *.v64'),
+                       ('All files', '*.*')))
+        if not selected:
+            return
+        try:
+            version = verify_selected_rom(selected, self.active_version.key)
+        except (OSError, ValueError) as exc:
+            self.verified_rom_path = None
+            self.status.set(f'ROM verification failed: {exc}')
+            return
+        self.verified_rom_path = Path(selected)
+        remembered = False
+        if version.key == 'japan':
+            try:
+                self.verified_rom_path = remember_verified_rom(selected, 'japan')
+                remembered = True
+            except (OSError, ValueError) as exc:
+                # A correctly verified ROM remains valid for this session;
+                # a read-only disk or corrupt registry must not disable use.
+                self.status.set(f'ROM verified but preference could not be saved: {exc}')
+        self._clear_japan_base_choices()
+        capability = ('USA live toolkit supported' if version.live_memory_supported
+                      else 'Japan-0 verified; select project64 (Windows) or mupen64plus and Connect for read-only RDRAM')
+        self.status.set(
+            f'Verified {version.label} (revision 0). {capability}. '
+            + ('ROM path remembered for future sessions; file checked again '
+               'before each reuse.' if remembered else ''))
+
+    def _arrange_dashboard(self, width):
+        """Place both cards above the fold at default size; stack on narrow screens."""
+        wide = width >= 1080
+        if self.dashboard_wide == wide:
+            return
+        self.dashboard_wide = wide
+        self.dashboard_frame.columnconfigure(1, weight=1 if wide else 0)
+        self.dashboard_checkpoints_column.grid_configure(
+            row=0 if wide else 1,
+            column=1 if wide else 0,
+            sticky='new',
+            padx=(6, 6),
+            pady=(0, 0 if wide else 6),
+        )
 
     def open_full_scene_tab(self, event=None):
-        self.choose_quick_scene()
-        self.notebook.select(self.scene_tab)
+        if self.active_version.key in ('usa', 'japan'):
+            self.notebook.select(self.scene_tab)
 
     def open_live_memory_tab(self):
-        self.notebook.select(self.live_memory_tab)
+        if self.active_version.key in ('usa', 'japan'):
+            self.notebook.select(self.live_memory_tab)
 
     def _on_f1_open_memory(self, _event=None):
-        """Jump to the Live Memory / debug hex editor from any toolkit widget."""
+        """Toolkit-local shortcut for the complete Live Memory tab."""
         self.open_live_memory_tab()
         return 'break'
 
-    def refresh_quick_watch(self):
-        """Reflect real inspector samples; a disconnected session remains empty."""
-        if not self.mem or not self.watch_rows:
-            self.quick_watch_tree.delete(*self.quick_watch_tree.get_children())
-            return
-        priority = ('Map ID', 'Character', 'Current health (units)', 'Ryo',
-                    'Lives', 'Pending destination', 'Exit request (not warp)',
-                    'Native menu entry pointer', 'X', 'Y', 'Z')
-        rows = {row.name: row for row in self.watch_rows}
-        old = {row_id: self.quick_watch_tree.item(row_id, 'values') for row_id
-               in self.quick_watch_tree.get_children()}
-        self.quick_watch_tree.delete(*self.quick_watch_tree.get_children())
-        for name in priority:
-            value = rows.get(name)
-            if not value or value.addr is None:
-                continue
-            fields = (name, f'0x{value.addr:08X}', value.raw)
-            tag = ('changed',) if name in old and tuple(old[name]) != fields else ()
-            self.quick_watch_tree.insert('', 'end', iid=name, values=fields, tags=tag)
+    def launch_linux_recomp(self):
+        """Launch a user-selected native Linux build as our child for ptrace access.
 
-    def bookmark_labels(self):
-        return [f"{i+1}. {x['name']} ({x['x']:.1f}, {x['y']:.1f}, {x['z']:.1f})" for i,x in enumerate(self.bookmarks)]
+        Selecting an executable does not modify game memory and is available in
+        read-only mode. Flatpak sandbox boundaries may block memory access.
+        """
+        if sys.platform != 'linux':
+            return
+        if not self.active_version.live_memory_supported:
+            self.status.set('Japanese recompilation is not supported; USA build only.')
+            return
+        selected = filedialog.askopenfilename(
+            title='Select native Linux Goemon64Recompiled executable')
+        if not selected:
+            return
+        try:
+            binary = Path(selected).resolve(strict=True)
+            if not binary.is_file() or not os.access(binary, os.X_OK):
+                raise ValueError('Select a locally executable native Linux game binary')
+            process = subprocess.Popen([str(binary)], cwd=str(binary.parent))
+            self._linux_game_process = process
+            self.pid_text.set(str(process.pid))
+            self.connection_target.set('recomp')
+            self.status.set(f'Launched native Linux game PID {process.pid}; connect once started.')
+        except (OSError, ValueError) as exc:
+            self.status.set(f'Linux recomp launch failed: {exc}')
+
+    def _begin_linux_scope_change(self, value):
+        """Authenticate outside the UI thread; never run Tk calls in a worker."""
+        if self._linux_scope_changing:
+            return
+        self._linux_scope_changing=True
+        self.linux_attach_btn.state(['disabled'])
+        self.linux_restore_btn.state(['disabled'])
+        self.status.set('Requesting OS authorization for Linux PID permission change...')
+        def work():
+            try:
+                changed=change_ptrace_scope(value)
+                self._linux_scope_queue.put(('ok',value,changed))
+            except (OSError,ValueError,PermissionError,subprocess.TimeoutExpired) as exc:
+                self._linux_scope_queue.put(('error',value,str(exc)))
+        threading.Thread(target=work,name='GoemonLinuxPIDPermissions',daemon=True).start()
+        self.root.after(100,self._poll_linux_scope_change)
+
+    def enable_linux_external_pid(self):
+        if sys.platform!='linux' or self._linux_scope_changing:
+            return
+        existing=ptrace_scope()
+        if existing is None:
+            self.status.set('Yama ptrace_scope is unavailable; check process permissions and sandbox settings.')
+            return
+        if existing == 0:
+            self.status.set('Linux already permits normal same-user PID attachment. Connect using the game PID.')
+            return
+        if existing not in (1,2):
+            self.status.set(f'ptrace_scope={existing} cannot be changed by this control.')
+            return
+        if not messagebox.askyesno(
+            'Change Linux process access',
+            f'Current kernel.yama.ptrace_scope={existing}. Setting it to 0 permits '
+            'other same-user processes to inspect one another until restored or rebooted. '
+            'Administrator authentication is required. Allow this temporary system-wide change?',
+            parent=self.root):
+            return
+        self._linux_prior_scope=existing
+        self._begin_linux_scope_change(0)
+
+    def restore_linux_pid_protection(self):
+        if sys.platform!='linux' or self._linux_scope_changing:
+            return
+        original=self._linux_prior_scope
+        if original not in (1,2):
+            self.status.set('No earlier PID protection level was recorded by this toolkit session.')
+            return
+        self._begin_linux_scope_change(original)
+
+    def _poll_linux_scope_change(self):
+        try:
+            result=self._linux_scope_queue.get_nowait()
+        except queue.Empty:
+            self.root.after(100,self._poll_linux_scope_change)
+            return
+        self._linux_scope_changing=False
+        self.linux_attach_btn.state(['!disabled'])
+        if result[0]=='error':
+            self.status.set('Linux PID permission change failed: '+result[2])
+        elif result[1]==0:
+            self.status.set('Linux external-PID access enabled for this boot. '
+                            'Connect to the existing game PID; restore protection when finished.')
+        else:
+            self._linux_prior_scope=None
+            self.status.set('Previous Linux PID protection restored.')
+        if self._linux_prior_scope in (1,2) and ptrace_scope()==0:
+            self.linux_restore_btn.state(['!disabled'])
+        else:
+            self.linux_restore_btn.state(['disabled'])
 
     def connect(self):
-        """Start expensive Windows process discovery in a worker, not Tk's event loop.
+        """Start expensive process discovery in a worker, not Tk's event loop.
 
         Only the UI thread may touch Tk widgets. Workers own the new process
         handle until the UI takes it from the completion queue.
         """
         if self._connecting:
+            return
+        if self.active_version.key == 'japan':
+            self._connect_japan_emulator()
+            return
+        if self.connection_target.get() == 'mupen64plus':
+            try:
+                specified = self.pid_text.get().strip()
+                pid, kind = (verified_emulator_pid(int(specified), 'mupen64plus')
+                             if specified else find_emulator_pid('mupen64plus'))
+                self._disconnect_for_version_change()
+                self.game_pid = pid
+                self.status.set(f'Mupen64Plus PID {pid} selected for full savestates. '
+                                'Its RAM layout is not supported by the toolkit.')
+            except (ValueError, RuntimeError, OSError) as exc:
+                self.status.set(f'Mupen64Plus connection failed: {exc}')
+            return
+        if not self.active_version.live_memory_supported:
+            self.status.set('Japanese live memory is not supported: verify the ROM offline instead.')
             return
         try:
             pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
@@ -379,24 +1400,29 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         except ValueError:
             self.status.set('Enter a valid positive PID, or leave it blank for automatic selection.')
             return
-        self.stop_all_freezes()
-        self.cancel_pending_restore(quiet=True)
-        self.pending_direct_warp = None
-        self.pending_native_warp = None
-        self._connecting = True
-        self.connect_button.state(['disabled'])
-        self.status.set('Connecting: searching for Goemon RAM (interface remains responsive)...')
-        self.mem = None
-        self.current = None
-        self.game_pid = None
-        self.last, self.last_t = None, None
-        previous = self.process
-        self.process = None
-        if previous is not None:
-            try:
-                previous.close()
-            except OSError:
-                pass
+        self.stop_damage_capture(quiet=True)
+        # Complete all old-session freeze writes before closing the RAM handle.
+        with self.value_freezes.guard:
+            self.stop_all_freezes()
+            self.cancel_pending_restore(quiet=True)
+            self.pending_direct_warp = None
+            self.pending_native_warp = None
+            self._connecting = True
+            self.connect_button.state(['disabled'])
+            self.version_selector.state(['disabled'])
+            self.status.set('Connecting to '+(f'PID {pid_hint}' if pid_hint else 'detected game')+
+                            ': discovering Goemon RAM...')
+            self.mem = None
+            self.current = None
+            self.game_pid = None
+            self.last, self.last_t = None, None
+            previous = self.process
+            self.process = None
+            if previous is not None:
+                try:
+                    previous.close()
+                except OSError:
+                    pass
         opts = (pid_hint, self.args.base, self.args.endian,
                 bool(self.args.enable_teleport or self.args.enable_state_restore or
                      self.args.enable_debug_menu or self.args.enable_scene_warp or
@@ -406,20 +1432,112 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         thread.start()
         self.root.after(50, self._poll_connect_results)
 
+    def _connect_japan_emulator(self):
+        """Attach Japan-0 to verified Mupen or Windows Project64 guest RDRAM."""
+        target = self.connection_target.get()
+        if target not in ('mupen64plus', 'project64'):
+            self.status.set('Japan requires target mupen64plus or project64; '
+                            'USA recomp is not a Japan runner.')
+            return
+        if target == 'project64' and sys.platform != 'win32':
+            self.status.set('Japanese Project64 attachment is supported on Windows only.')
+            return
+        if self.verified_rom_path is None:
+            self.status.set('Verify the exact Japan-0 ROM before attaching to the emulator.')
+            return
+        try:
+            pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
+            if pid_hint is not None and pid_hint <= 0:
+                raise ValueError()
+        except ValueError:
+            self.status.set('Enter a positive emulator PID or leave it empty.')
+            return
+        selected = self.jp_base_choice.get()
+        candidate = self.jp_candidates.get(selected)
+        if selected != 'Auto (detect)' and (
+                candidate is None or self.jp_candidates_backend != target):
+            self.status.set('The selected Japanese RAM candidate is stale; rescan.')
+            return
+        base_hint = candidate[0] if candidate else self.args.base
+        endian = candidate[1] if candidate else self.args.endian
+        selected_pid = self.jp_candidates_pid if candidate else None
+        self._disconnect_for_version_change()
+        self._connecting = True
+        self.connect_button.state(['disabled'])
+        self.version_selector.state(['disabled'])
+        self.status.set(f'Checking Japanese {target} memory signatures...')
+        opts = (pid_hint, self.verified_rom_path, base_hint, endian,
+                selected_pid, target)
+        threading.Thread(target=self._connect_japan_worker, args=(opts,), daemon=True,
+                         name='GoemonJapanEmulatorDiscovery').start()
+        self.root.after(50, self._poll_connect_results)
+
+    def _connect_japan_worker(self, opts):
+        """Verified ROM code probes only; no Tk or memory writes in worker."""
+        pid_hint, rom_path, base_hint, endian, selected_pid, target = opts
+        process = None
+        try:
+            pid, kind = (verified_emulator_pid(pid_hint, target)
+                         if pid_hint else find_emulator_pid(target))
+            if kind != target:
+                raise RuntimeError('Emulator process changed during discovery')
+
+            if selected_pid is not None and pid != selected_pid:
+                raise RuntimeError('Selected RAM base belongs to a different emulator PID; rescan')
+            probes = verified_japan_probes(rom_path)
+            process = HostProcess(pid, writable=False)
+            base = (int(base_hint, 0) if isinstance(base_hint, str) else
+                    int(base_hint) if base_hint is not None else None)
+            reader, address, mode = discover_japanese_mupen_rdram(
+                process, probes, base_hint=base, mode=endian,
+                allow_4mb=(target == 'project64'))
+            self._connect_queue.put(('japan-ok', pid, target, process, reader,
+                                     address, mode))
+
+        except AmbiguousJapaneseRdram as exc:
+            if process is not None:
+                try:
+                    process.close()
+                except OSError:
+                    pass
+            self._connect_queue.put(('japan-ambiguous', pid, target,
+                                     exc.candidates))
+        except Exception as exc:
+            if process is not None:
+                try:
+                    process.close()
+                except OSError:
+                    pass
+            self._connect_queue.put(('error', str(exc)))
+
     def _connect_worker(self, opts):
         """No Tk calls here; even errors are returned through the queue."""
         pid_hint, base_hint, endian_hint, writable, target = opts
         process = None
         try:
             pid = pid_hint or find_pid(target)
-            process = WindowsProcess(pid, writable=writable)
+            process = HostProcess(pid, writable=writable)
+            if sys.platform == 'linux':
+                # Fail immediately for a correct PID blocked by Linux Yama.
+                # Discovery otherwise scans large readable-map ranges before
+                # reporting that every process_vm_readv was denied.
+                for start, size in process.regions():
+                    if size < 1:
+                        continue
+                    try:
+                        process.read(start, 1)
+                    except PermissionError:
+                        raise
+                    except OSError:
+                        continue  # Some readable maps cannot be copied by readv.
+                    break
             if base_hint:
                 base, endian = int(base_hint, 0) if isinstance(base_hint, str) else int(base_hint), (
                     'wordswapped' if endian_hint == 'auto' else endian_hint)
             else:
                 base, endian = discover_rdram(process, endian_hint)
             candidate = Rdram(process, base, endian)
-            sample = candidate.snapshot()
+            sample = candidate.snapshot_for_monitoring()
             self._connect_queue.put(('ok', pid, process, candidate, sample, base, endian))
         except Exception as exc:
             if process is not None:
@@ -427,7 +1545,12 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
                     process.close()
                 except Exception:
                     pass
-            self._connect_queue.put(('error', str(exc)))
+            if sys.platform == 'linux' and isinstance(exc, PermissionError):
+                from practice.linux_pid_access import external_pid_hint
+                detail=external_pid_hint(pid if 'pid' in locals() else pid_hint or 'unknown')
+                self._connect_queue.put(('error',f'{exc} {detail}'))
+            else:
+                self._connect_queue.put(('error', str(exc)))
 
     def _poll_connect_results(self):
         if not self._connecting:
@@ -438,22 +1561,89 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
             self.root.after(50, self._poll_connect_results)
             return
         self._connecting = False
+        self.version_selector.state(['!disabled', 'readonly'])
         self.connect_button.state(['!disabled'])
-        if result[0] == 'ok':
+        if result[0] == 'japan-ambiguous':
+            _, pid, target, choices = result
+            self.jp_candidates_backend = target
+            self.jp_candidates = {
+                f'0x{base:X} ({endian})': (base, endian)
+                for base, endian in choices
+            }
+            self.jp_candidates_pid = pid
+            self.jp_base_selector['values'] = (
+                'Auto (detect)', *self.jp_candidates.keys())
+            self.jp_base_choice.set('Auto (detect)')
+            self.jp_read_button.state(['disabled'])
+            self.jp_read_result.set(
+                'Select a code-matching RAM base above, then reconnect. '
+                'A match alone does not prove the copy is actively changing.')
+            self.status.set(
+                f'Found {len(choices)} candidate RAM buffers in {target} PID {pid}. '
+                'Choose a base from the dropdown and reconnect.')
+        elif result[0] == 'japan-ok':
+            _, pid, target, process, reader, base, endian = result
+            with self.value_freezes.guard:
+                self.process, self.jp_rdram, self.game_pid = process, reader, pid
+                self.jp_backend = target
+                self.mem = self.current = None
+            self.jp_read_button.state(['!disabled'])
+            size_mb = getattr(reader, 'rdram_size', 0x800000) // 0x100000
+            self.jp_read_result.set(
+                f'Japan-0 verified {size_mb} MiB RDRAM at 0x{base:X}; {endian}.')
+
+            self.refresh_japan_fields(force=True)
+            self.last_inspect_at=0.0
+            self.refresh_inspector({})
+            self.refresh_unlocks(force=True)
+            self.notebook.select(self.scene_tab)
+            self.status.set(f'Attached to Japan-0 {target} PID {pid}, '
+                            f'{size_mb} MiB RAM 0x{base:X}, {endian}. '
+                            'Mapped Unlocks write directly; research and USA-only writers remain read-only.')
+        elif result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
-            self.process, self.mem, self.game_pid, self.current = process, candidate, pid, sample
+            with self.value_freezes.guard:
+                self.process, self.mem, self.game_pid, self.current = process, candidate, pid, sample
             if sample['x'] is None or sample['action'] is None:
                 self.status.set(f'Connected PID {pid}, RAM 0x{base:X}, format {endian}; player unavailable. Memory watches remain available.')
             else:self.status.set(f'Validated PID {pid}, RAM 0x{base:X}, format {endian}. Move to verify updates.')
         else:
-            self.process = self.mem = self.current = None
-            self.game_pid = None
+            with self.value_freezes.guard:
+                self.process = self.mem = self.current = self.jp_rdram = None
+                self.game_pid = None
+                self.jp_backend = None
+                self.jp_read_button.state(['disabled'])
             self.pos_text.set('X: —    Y: —    Z: —')
             self.speed_text.set('Speed: —')
             self.misc_text.set('Character: —    Action: —    Loading: —')
             self.status.set(f'Connection failed: {result[1]}')
 
     def tick(self):
+        if self.jp_rdram is not None:
+            self.poll_japan_native_scene_warp(time.monotonic())
+            self.refresh_japan_fields()
+            self.refresh_inspector({})
+            self.refresh_unlocks()
+            # Story-like Japanese item/map values share source-backed reads
+            # with the unlock view; avoid flooding Tk on every frame.
+            now_jp=time.monotonic()
+            if now_jp-getattr(self, '_jp_story_last_poll', 0) > 0.8:
+                self._jp_story_last_poll=now_jp
+                self.refresh_story_progress()
+                try:
+                    from practice.japanese_position import read_japan_position
+                    from practice.japanese_debug_warp import JAPAN_DEBUG_CHARACTER
+                    xyz=read_japan_position(self.jp_rdram)
+                    character=int.from_bytes(
+                        self.jp_rdram.read_guest(JAPAN_DEBUG_CHARACTER,4),'big')
+                    self.pos_text.set(
+                        f'X: {xyz[0]:10.2f}    Y: {xyz[1]:10.2f}    Z: {xyz[2]:10.2f}')
+                    self.misc_text.set(
+                        f'Character: {character}   Region: Japan-0')
+                    self.speed_text.set(
+                        'Japan: movement velocity / player task not mapped')
+                except (OSError, RuntimeError, ValueError, PermissionError):
+                    self.pos_text.set('X: —    Y: —    Z: —')
         if self.mem:
             try:
                 now=time.monotonic()
@@ -478,7 +1668,29 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
                     self.root.after(170,self.tick)
                     return
                 self.poll_native_warp_menu(now)
-                s=self.mem.snapshot()
+                s=self.mem.snapshot_for_monitoring()
+                if s.get("player_unavailable_reason"):
+                    # Impact and title/transition scenes need not expose the
+                    # ordinary character, task, position, or action fields.
+                    # Keep the same validated RDRAM handle for global watches.
+                    self.current = None
+                    self.last = self.last_t = None
+                    self.observed_velocity = None
+                    self.pos_text.set('X: —    Y: —    Z: —')
+                    self.speed_text.set('Speed: —')
+                    self.misc_text.set('Normal player unavailable; global memory is still connected')
+                    self.status.set(
+                        f'Connected PID {self.game_pid}; normal player unavailable: '
+                        f'{s["player_unavailable_reason"]}')
+                    self.cancel_pending_restore(quiet=True)
+                    self.pending_direct_warp = None
+                    self.pending_native_warp = None
+                    self.refresh_inspector({})
+                    self.refresh_unlocks()
+                    self.root.after(170, self.tick)
+                    return
+                if self.status.get().startswith(f'Connected PID {self.game_pid}; normal player unavailable:'):
+                    self.status.set(f'Connected PID {self.game_pid}; normal player restored.')
                 now=time.monotonic()
                 self.observed_velocity = None
                 if s["x"] is not None:
@@ -505,6 +1717,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
                 if self.pending_restore and self.pending_restore.get('phase') != 'warp':
                     self.poll_pending_restore(s, now)
             except (OSError,ValueError) as e:
+                self.stop_damage_capture(quiet=True)
                 self.status.set(f"Memory read failed: {e}")
                 self.cancel_pending_restore(quiet=True)
                 self.mem=None
@@ -512,65 +1725,83 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
             self.refresh_unlocks(force=True)
         self.root.after(170,self.tick)
 
-    def save_bookmark(self):
-        s=self.current
-        if not s or s["x"] is None:
-            messagebox.showerror("Not connected","Read a valid player position first")
-            return
-        entry={"name":self.bookmark_name.get() or "Checkpoint",
-               "x":s["x"],"y":s["y"],"z":s["z"],"character":s["character"],
-               "action":s["action"],
-               "map_id":self.mem.u16(0x800C7AB2) if self.mem else None}
-        self.bookmarks.append(entry)
-        BOOKMARKS_FILE.write_text(json.dumps(self.bookmarks,indent=2)+"\n")
-        self.bookmarks_box["values"]=self.bookmark_labels()
-        self.bookmarks_box.current(len(self.bookmarks)-1)
-        self.status.set(f"Saved bookmark: {entry['name']}")
-
-    def restore_bookmark(self):
-        idx=self.bookmarks_box.current()
-        if not self.args.enable_teleport or idx<0 or not self.mem or not self.current:
-            return
-        b=self.bookmarks[idx]
-        if self.current["loading"] or self.current["x"] is None:
-            messagebox.showerror("Blocked","Restore only in stable gameplay")
-            return
-        if self.current["character"]!=b["character"]:
-            messagebox.showerror("Blocked","Bookmark character doesn't match the active character")
-            return
-        if b.get("map_id") is None:
-            messagebox.showerror("Blocked","Legacy bookmark has no recorded map ID. Recapture this bookmark in v0.4 before restoring.")
-            return
-        if self.mem.u16(0x800C7AB2)!=b["map_id"]:
-            messagebox.showerror("Blocked","Bookmark map differs. Use the original debug menu to reach that map first.")
-            return
-        if not messagebox.askyesno("Unsafe practice teleport",
-                "This writes N64 object coordinates and can softlock, crash, or corrupt game state. "
-                "It does not restore the full scene or physics state. Use only within the same room. Continue?"):
-            return
-        try:
-            obj=self.current["player_ptr"]
-            if not obj: raise ValueError("No player object")
-            for i,k in enumerate(("x","y","z")):
-                self.mem.write_f32(obj+8+i*4,float(b[k]))
-            self.status.set(f"Moved to saved coordinates: {b['name']} (practice mode only)")
-        except Exception as e:
-            messagebox.showerror("Teleport failed",str(e))
+    def checkpoint_choices(self):
+        """One selector for full logical checkpoints and unmodified legacy bookmarks."""
+        return ([('logical', i) for i in range(len(self.checkpoints))] +
+                [('position', i) for i in range(len(self.legacy_bookmarks))])
 
     def checkpoint_labels(self):
         labels=[]
-        for i, cp in enumerate(self.checkpoints):
-            p=cp["payload"]
-            stats=p["summary"]
-            labels.append(f"{i+1}. {p['name']} (map {p['map_id']}, {stats['health']}/{stats['max_health']} HP, {stats['ryo']} Ryo, {stats['lives']} lives)")
+        for n, (kind, index) in enumerate(self.checkpoint_choices(), 1):
+            if kind=='logical':
+                p=self.checkpoints[index]['payload']
+                stats=p['summary']
+                labels.append(f"{n}. {p['name']} — logical (map {p['map_id']}, "
+                              f"{stats['health']}/{stats['max_health']} HP, "
+                              f"{stats['ryo']} Ryo, {stats['lives']} lives; XYZ saved)")
+            else:
+                b=self.legacy_bookmarks[index]
+                map_id=b.get('map_id')
+                where=f'map {map_id}' if map_id is not None else 'map unknown'
+                labels.append(f"{n}. {b.get('name','Untitled')} — legacy POSITION ONLY "
+                              f"({where}; no inventory or progression)")
         return labels
+
+    def _restore_legacy_position(self, bookmark):
+        """A legacy entry restores coordinates only. Never manufacture progress data."""
+        if not self.args.enable_teleport:
+            self.status.set('Position-only restore disabled by current access settings.')
+            return
+        try:
+            before=_ensure_capture_safe(self.mem)
+            saved_map=bookmark.get('map_id')
+            if type(saved_map) is not int or not 0 <= saved_map < 65536:
+                raise ValueError('Legacy bookmark has no valid map ID; capture a new logical checkpoint.')
+            if before['character'] != bookmark.get('character'):
+                raise ValueError('Position-only checkpoint character differs from the active character.')
+            if self.mem.u16(MAP_ADDR) != saved_map:
+                raise ValueError('Position-only checkpoint requires its original map; automatic warp is unavailable.')
+            xyz=tuple(float(bookmark[k]) for k in ('x','y','z'))
+            if any(not math.isfinite(v) or abs(v)>=1e6 for v in xyz):
+                raise ValueError('Invalid saved position coordinates')
+            obj=before['player_ptr']
+            if not obj or not self.mem.is_ram_pointer(obj,0x1A):
+                raise ValueError('Player object unavailable')
+        except (OSError,ValueError,KeyError,TypeError,OverflowError) as exc:
+            messagebox.showerror('Position-only restore blocked',str(exc))
+            return
+        if not messagebox.askyesno('Legacy position-only checkpoint',
+            'Restore XYZ only in this map? This does NOT restore inventory, health, '
+            'lives, Ryo, rotation, scripts or story progress. It may disrupt gameplay. Continue?'):
+            return
+        try:
+            with self.value_freezes.guard:
+                current=_ensure_capture_safe(self.mem)
+                if (current['player_ptr'] != obj or current['character'] != before['character'] or
+                        self.mem.u16(MAP_ADDR) != saved_map):
+                    raise ValueError('Player, character or map changed before position restore')
+                encoded=struct.pack('>fff',*xyz)
+                original=self.mem.read_guest(obj+0x08,12)
+                try:
+                    self.mem.write_guest(obj+0x08,encoded)
+                    if self.mem.read_guest(obj+0x08,12)!=encoded:
+                        raise OSError('Position readback mismatch')
+                except Exception:
+                    try:self.mem.write_guest(obj+0x08,original)
+                    except Exception:pass
+                    raise
+            self.last=self.last_t=None
+            self.status.set(f"Restored legacy position-only checkpoint: {bookmark.get('name','Untitled')} "
+                            '(XYZ only; progress unchanged).')
+        except (OSError,ValueError,RuntimeError) as exc:
+            messagebox.showerror('Position-only restore failed',str(exc))
 
     def capture_full_checkpoint(self):
         if not self.mem or not self.current:
             messagebox.showerror("Not connected","Connect to the game first")
             return
         try:
-            cp=capture_checkpoint(self.mem,self.bookmark_name.get())
+            cp=capture_checkpoint(self.mem,self.checkpoint_name.get())
             self.checkpoints.append(cp)
             save_checkpoint_file(CHECKPOINTS_FILE,self.checkpoints)
             self.checkpoints_box["values"]=self.checkpoint_labels()
@@ -578,7 +1809,7 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
             self.refresh_checkpoint_options()
             self.diff_cp.current(len(self.checkpoints)-1)
             self.refresh_checkpoint_diff(force=True)
-            self.status.set("Captured original N64 progress flags, stats, unlocks and position. Experimental in-room restore available.")
+            self.status.set("Captured logical checkpoint: XYZ, rotation, health, lives, Ryo, inventory and progression. This is not a savestate.")
         except Exception as e:
             messagebox.showerror("Checkpoint capture blocked",str(e))
 
@@ -604,9 +1835,19 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
         pending=self.pending_restore
         self.pending_restore=None
         self._release_native_key()
-        if getattr(self,'cancel_restore_btn',None):self.cancel_restore_btn.state(['disabled'])
-        if getattr(self,'restore_state_btn',None) and self.args.enable_state_restore:
-            self.restore_state_btn.state(['!disabled'])
+        # main() also performs cleanup after the user has closed the Tk root.
+        # Destroyed widgets still exist as Python objects, but their Tcl
+        # commands no longer exist. Never abort pending-state cleanup there.
+        try:
+            if (getattr(self, 'cancel_restore_btn', None) is not None
+                    and self.cancel_restore_btn.winfo_exists()):
+                self.cancel_restore_btn.state(['disabled'])
+            if (getattr(self, 'restore_state_btn', None) is not None
+                    and (self.args.enable_state_restore or self.args.enable_teleport)
+                    and self.restore_state_btn.winfo_exists()):
+                self.restore_state_btn.state(['!disabled'])
+        except tk.TclError:
+            pass  # UI already destroyed; finish non-UI cleanup below.
         if pending and self.mem:
             try:
                 note=undo_character_preparation(self.mem,pending.get('party_patch'),
@@ -745,15 +1986,27 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
             self.status.set(f'Waiting for safe native character state: {exc}')
 
     def restore_full_checkpoint(self):
+        if getattr(self.args,'read_only',False):
+            self.status.set('Checkpoint restore is disabled in read-only mode.')
+            return
         i=self.checkpoints_box.current()
-        if not self.args.enable_state_restore or i<0 or not self.mem or not self.current:return
+        if i<0 or not self.mem or not self.current:return
         if self.pending_restore:
             self.status.set('A checkpoint restore is already pending; cancel it first.')
             return
         if self.pending_direct_warp or self.pending_native_warp:
             self.status.set('Finish or cancel the scene request before restoring a checkpoint.')
             return
-        cp=self.checkpoints[i]
+        choice=self.checkpoint_choices()
+        if i>=len(choice):return
+        kind, index=choice[i]
+        if kind=='position':
+            self._restore_legacy_position(self.legacy_bookmarks[index])
+            return
+        if not self.args.enable_state_restore:
+            self.status.set('Logical checkpoint restoration is disabled.')
+            return
+        cp=self.checkpoints[index]
         p=cp['payload']
         try:
             validate_checkpoint(cp)
@@ -791,47 +2044,41 @@ class Toolkit(LiveSpeedMixin, ValueFreezesMixin, StoryProgressMixin, EventSessio
             self.cancel_pending_restore(quiet=True)
             messagebox.showerror('Logical restore failed',str(exc))
 
-    def capture_trigger(self):
-        if not self.route or not self.route_path:
-            messagebox.showerror("No route","Launch with --route route.json after importing an .lss file")
-            return
-        if not self.current or self.current["x"] is None:
-            messagebox.showerror("Not connected","Read a valid position first")
-            return
-        try:
-            index=self.segment_index.get()-1
-            radius=float(self.radius.get())
-            if not (0<=index<len(self.route["segments"])) or not (0<radius<10000):
-                raise ValueError("Invalid segment number or radius")
-            s=self.current
-            self.route["segments"][index]["trigger"]={"type":"position_enter",
-                "x":round(s["x"],3),"y":round(s["y"],3),"z":round(s["z"],3),
-                "radius":radius,"character":s["character"]}
-            save_route(self.route,str(self.route_path))
-            self.status.set(f"Calibrated segment {index+1}: {self.route['segments'][index]['name']}")
-            self.segment_index.set(index+2)
-        except Exception as e:
-            messagebox.showerror("Calibration failed",str(e))
 
 
 PRACTICE_OPTIONS = ('enable_teleport', 'enable_state_restore', 'enable_debug_menu', 'enable_hex_edit')
 
 
 def apply_access_mode(args):
-    """Read-only overrides every legacy opt-in regardless of argument order."""
+    """Practice controls are write-enabled unless explicitly read-only."""
     if getattr(args, 'read_only', False):
         for name in (*PRACTICE_OPTIONS, 'enable_scene_warp'):
             setattr(args, name, False)
+        args.enable_japan_party_writes = False
+        args.enable_japan_position_writes = False
+        args.enable_japan_debug_menu_writes = False
+        args.enable_japan_scene_writes = False
     return args
 
 
 def parse_args(argv=None):
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid",type=int)
-    ap.add_argument("--base",help="RDRAM host base 0x...; bypasses experimental auto-discovery")
+    ap.add_argument("--base",help="RDRAM host base 0x...; Japan always validates three ROM code probes")
     ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
-    ap.add_argument("--route",help="route.json from autosplitter import-splits")
+    ap.add_argument("--game-version", choices=tuple(VERSIONS), default="usa",
+                    help="USA toolkit (default) or Japanese Project64/Mupen toolkit")
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
+    ap.add_argument("--enable-japan-party-writes", action="store_true", default=True,
+                    help=argparse.SUPPRESS)  # Deprecated; mapped unlocks write by default
+    ap.add_argument("--enable-japan-position-writes", action="store_true", default=True,
+                    help="Enable Japanese XYZ actions (on by default; --read-only disables)")
+    ap.add_argument("--enable-japan-debug-menu-writes", action="store_true", default=True,
+                    help="Enable native Japanese debug-menu entry (on by default)")
+    ap.add_argument("--enable-japan-scene-writes", action="store_true", default=True,
+                    help="Enable Japanese Scene Browser instant 0x0C reload (on by default)")
+    ap.add_argument("--linux-enable-writes",action="store_true",
+                    help=argparse.SUPPRESS)  # Deprecated no-op; writes already enabled
     ap.add_argument("--enable-teleport",action="store_true",default=True,help="Write game coordinates (enabled by default)")
     ap.add_argument("--enable-state-restore",action="store_true",default=True,help="Restore logical checkpoints (enabled by default)")
     ap.add_argument("--enable-debug-menu",action="store_true",default=True,help="Allow original debug menu (enabled by default)")
@@ -846,9 +2093,12 @@ def main(argv=None):
     try:
         root.mainloop()
     finally:
+        app.stop_damage_capture(quiet=True)
+        app._stop_freeze_worker()
         app.stop_transition_trace()
         app.cancel_pending_restore(quiet=True)
         if getattr(app,'native_key_release',None):app._release_debug_key()
+        if getattr(app,'jp_native_key_release',None):app._release_japan_native_key()
         if app.process: app.process.close()
 
 if __name__=="__main__": main()
