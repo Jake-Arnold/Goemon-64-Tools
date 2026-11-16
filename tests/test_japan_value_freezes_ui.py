@@ -33,6 +33,7 @@ class JapanRawFreezeUITests(unittest.TestCase):
             self.addCleanup(handle.stop)
         self.app=Toolkit(self.root, Namespace(
             pid=None, base=None, endian='auto', route=None,
+            game_version='usa',
             enable_teleport=True, enable_state_restore=True,
             enable_debug_menu=True, enable_hex_edit=True,
             enable_scene_warp=False, read_only=False))
