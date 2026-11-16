@@ -11,7 +11,6 @@ import re
 import subprocess
 import sys
 import unicodedata
-import uuid
 from zipfile import ZipFile, ZIP_DEFLATED
 
 SCHEMA = "goemon-discovery-report-v1"
@@ -28,6 +27,7 @@ class ReportEntry:
     created: str
     kind: str
     legacy: bool = False
+    candidate_total: int | None = None
 
 
 def documents_dir(*, platform_name=None, home=None, environ=None):
@@ -76,6 +76,37 @@ def safe_slug(value):
     return re.sub(r"[^a-z0-9]+", "-", ascii_label).strip("-")[:64].rstrip("-") or "research"
 
 
+
+def readable_report_name(title):
+    """Keep an experiment recognisable in GNOME Files and Windows Explorer."""
+    name = unicodedata.normalize("NFC", str(title or ""))
+    # Windows-reserved characters and control bytes must never enter a path.
+    name = re.sub(r'[<>:"/\\|?*\x00-\x1f]', " - ", name)
+    name = re.sub(r"\s+", " ", name).strip(" .-")
+    name = re.sub(r"(?:\s*-\s*){2,}", " - ", name)
+    name = name[:64].rstrip(" .-") or "Untitled investigation"
+    if re.fullmatch(r"(?i)(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])", name):
+        name = "Report - " + name
+    return name
+
+
+def _run_stamp(when):
+    return when.strftime("%Y-%m-%d %H-%M-%S UTC")
+
+
+def _create_run_folder(parent, when):
+    """A timestamp is a subfolder, not part of the experiment's label."""
+    base_name = _run_stamp(when)
+    for suffix in range(1, 1000):
+        name = base_name if suffix == 1 else f"{base_name} ({suffix})"
+        folder = parent / name
+        try:
+            folder.mkdir()
+            return folder
+        except FileExistsError:
+            continue
+    raise RuntimeError("No unused report run folder could be allocated")
+
 def create_value_search_report(*, region, title, rows, total_count,
                                value_type, sample_count, timestamp=None,
                                root=None):
@@ -87,19 +118,10 @@ def create_value_search_report(*, region, title, rows, total_count,
     if when.tzinfo is None:
         raise ValueError("Report timestamp must include a timezone")
     when = when.astimezone(timezone.utc)
-    stamp = when.strftime("%Y-%m-%d_%H%M%SZ")
     base = (Path(root) if root is not None else reports_root()) / REGIONS[region]
-    base.mkdir(parents=True, exist_ok=True)
-    for _ in range(12):
-        folder = base / (stamp + "__" + safe_slug(title) +
-                         "__" + uuid.uuid4().hex[:8])
-        try:
-            folder.mkdir()
-            break
-        except FileExistsError:
-            continue
-    else:
-        raise RuntimeError("Could not allocate a unique report directory")
+    experiment = base / readable_report_name(title)
+    experiment.mkdir(parents=True, exist_ok=True)
+    folder = _create_run_folder(experiment, when)
     manifest = {
         "schema": SCHEMA, "kind": "value-search",
         "title": title.strip() or "Value search",
@@ -161,18 +183,26 @@ def list_reports(*, root=None, legacy_dir=None):
         parent = root / region
         if not parent.is_dir():
             continue
-        for folder in parent.iterdir():
-            if not folder.is_dir():
+        for entry in parent.iterdir():
+            if not entry.is_dir() or entry.is_symlink():
                 continue
-            try:
-                meta = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
-                if meta.get("schema") != SCHEMA or meta.get("region") != region:
+            # Both v0.11.32 flat timestamp folders and readable experiment/run
+            # subfolders are indexed. Existing report paths are never moved.
+            run_folders = ([entry] if (entry / "manifest.json").is_file()
+                           else (child for child in entry.iterdir()
+                                 if child.is_dir() and not child.is_symlink()))
+            for folder in run_folders:
+                try:
+                    meta = json.loads((folder / "manifest.json").read_text(
+                        encoding="utf-8"))
+                    if meta.get("schema") != SCHEMA or meta.get("region") != region:
+                        continue
+                    items.append(ReportEntry(
+                        folder, meta.get("title") or entry.name, region,
+                        meta.get("created_utc", ""), meta.get("kind", "research"),
+                        candidate_total=meta.get("candidate_total")))
+                except (OSError, ValueError, TypeError):
                     continue
-                items.append(ReportEntry(
-                    folder, meta.get("title") or folder.name, region,
-                    meta.get("created_utc", ""), meta.get("kind", "research")))
-            except (OSError, ValueError, TypeError):
-                continue
     if legacy_dir is None:
         from practice.paths import practice_data_dir
         legacy_dir = practice_data_dir() / "diagnostics"
@@ -187,6 +217,51 @@ def list_reports(*, root=None, legacy_dir=None):
                     stamp, "legacy-json", True))
     return sorted(items, key=lambda item: item.created, reverse=True)
 
+
+
+def organise_report_folder(folder, *, root=None):
+    """Explicitly rename a v0.11.32 flat folder without rewriting its files.
+
+    This operation moves an existing report; callers must obtain user consent.
+    Files outside the configured reports root are not accepted.
+    """
+    folder = Path(folder)
+    base = Path(root) if root is not None else reports_root()
+    if folder.is_symlink() or not folder.is_dir():
+        raise ValueError("Select a completed, non-symlink report folder")
+    manifest_path = folder / "manifest.json"
+    try:
+        meta = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError) as exc:
+        raise ValueError("The selected folder has no valid report manifest") from exc
+    region = meta.get("region")
+    if meta.get("schema") != SCHEMA or region not in ("USA", "JP"):
+        raise ValueError("The selected report has an unsupported manifest")
+    region_dir = (base / region).resolve()
+    # Already in the new two-level structure? Keep the location unchanged.
+    if folder.resolve().parent.parent == region_dir:
+        return folder
+    if folder.resolve().parent != region_dir:
+        raise ValueError("The selected report is outside its region directory")
+    created = meta.get("created_utc", "")
+    try:
+        when = datetime.fromisoformat(created.replace("Z", "+00:00"))
+        if when.tzinfo is None:
+            raise ValueError("Timezone missing")
+        when = when.astimezone(timezone.utc)
+    except (TypeError, AttributeError, ValueError) as exc:
+        raise ValueError("The report does not have a valid UTC timestamp") from exc
+    experiment = base / region / readable_report_name(meta.get("title"))
+    experiment.mkdir(parents=True, exist_ok=True)
+    stem = _run_stamp(when)
+    for counter in range(1, 1000):
+        name = stem if counter == 1 else f"{stem} ({counter})"
+        target = experiment / name
+        if target.exists():
+            continue
+        folder.rename(target)
+        return target
+    raise RuntimeError("No unused name for the selected report")
 
 def export_report_zip(folder):
     folder = Path(folder)
