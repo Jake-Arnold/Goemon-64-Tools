@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class ToolkitVersionTests(unittest.TestCase):
     def test_version_is_semver_and_display_is_derived(self):
-        self.assertRegex(VERSION, r'^\\d+\\.\\d+\\.\\d+$')
+        self.assertRegex(VERSION, r'^\d+\.\d+\.\d+$')
         self.assertEqual(DISPLAY_VERSION, 'v' + VERSION)
 
     def test_release_heading_and_progress_reference_current_version(self):
@@ -26,7 +26,7 @@ class ToolkitVersionTests(unittest.TestCase):
         self.assertIn('from practice.version import DISPLAY_VERSION', source)
         self.assertIn('Goemon Practice Toolkit {DISPLAY_VERSION}', source)
         self.assertIn('{DISPLAY_VERSION}  |', source)
-        self.assertNotRegex(source, r'Goemon Practice Toolkit v\\d+\\.\\d+\\.\\d+')
+        self.assertNotRegex(source, r'Goemon Practice Toolkit v\d+\.\d+\.\d+')
 
 
 if __name__ == '__main__':
