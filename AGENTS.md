@@ -45,6 +45,47 @@ authoritative. If the branch scheme intentionally changes, update
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
 7. The current toolkit baseline is v0.11.27 on `main` as of 16 November 2026. Older v0.9.x instructions are historical. Scene-warp code and ROM-derived entrance data exist, but live USA/Japanese native gameplay tests must be distinguished from synthetic memory tests; do not claim unverified behaviour has passed.
 
+## Mandatory USA ↔ Japan memory-discovery crosswalk
+
+Whenever **any agent** discovers, validates, edits, or documents an N64 guest
+RAM field in **either** Mystical Ninja Starring Goemon (USA NG5E-0) or
+Ganbare Goemon: Neo Momoyama Bakufu no Odori (Japan-0), perform a
+**bidirectional cross-region triage in the same task**. This includes a new
+fixed global, scene state, resource field, inventory byte, or packed story
+event bit. **Do not wait for a separate request.**
+
+1. **Classify the source**: record region/ROM revision, guest address (not host
+   process offset), size and big-endian interpretation, bit mask when relevant,
+   scope/lifetime (persistent static vs dynamic object/overlay/code), and actual
+   source evidence. Never treat a debug/code VMA or ROM offset as saved RAM.
+2. **Consult explicit mappings and exceptions before arithmetic.** Read
+   [the cross-region evidence and workflow](docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md),
+   `practice/region_memory_crosswalk.py`, and existing regional tables.
+   For a **classified fixed global or saved-event bit** without a known pair,
+   generate the **unverified** counterpart:
+   `JP = USA + 0x57F0`; `USA = JP - 0x57F0`.
+   Run `python3 scripts/crosswalk_address.py --source usa --address 0x8015C60C --mask 0x20`
+   (replace region/address/mask; use `--kind static-global` or
+   `--kind saved-event` when the source address is not yet registered).
+3. **Preserve evidence**: label the other-region result
+   `offset-candidate`, record its original field width, mask, expected value
+   changes, known exceptions, scene/character context, evidence links,
+   and what independent test would confirm it. Verify with read-only
+   A/B/control trials and/or original regional MIPS before promotion.
+4. **Never auto-port** writes, freeze targets, warps, code addresses, script
+   VM globals, player/task pointers, Impact allocations or loaded overlays.
+   Unknown ownership is a blocker, not permission to apply the delta.
+5. **Update both discovery notes and a reviewable crosswalk record** in the
+   appropriate short-lived feature branch, with tests and `PROGRESS.md`.
+   Record conflicts and negative tests; do not overwrite existing verified
+   mappings or infer user confirmation. Preserve the separate main/toolkit
+   and decomp branch workflows above.
+
+Existing counterexamples: JP pause `0x800CD2D6` is disputed; the Japanese
+Miracle Snowflake byte is `0x80162057` (USA `0x8015C866`, **+0x57F1**);
+JP `0x80161DF9 & 0x20` Sasuke battery remains unverified. **A byte change
+alone does not establish the meaning of an event flag.**
+
 ## Decomp continuation
 
 For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
