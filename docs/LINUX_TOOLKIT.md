@@ -2,21 +2,41 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Unified Ubuntu application launcher (v0.11.19)
+
+This single launcher works for **USA and Japan-0**. There is no region-specific CLI startup or read-only default. Writes, freezes, unlock controls and supported practice actions are enabled on both regional dashboards by default; selecting a region merely chooses the correct memory interpretation and runtime backend.
+
+From the toolkit checkout:
+
+```bash
+# One-time setup for Ubuntu; creates a .desktop app and installs our existing logo.
+python3 scripts/install_linux_launcher.py
+
+# Launch without choosing a region in the terminal.
+bash Run-Linux.sh
+```
+
+The launcher uses the checkout's `.venv/bin/python` if available, otherwise the system `python3`. The GUI remembers the last selected USA/Japan region at `~/.config/GoemonSpeedrunTools/launcher-preferences.json` (or XDG_CONFIG_HOME). To switch regions, use **Dashboard → Game version**; reconnect to the appropriate backend. When selecting Japan from the default auto target, the toolkit selects `recomp`; Mupen64Plus/Project64 remain available in the target selector.
+
+The installer copies the existing `assets/goemon_tools_logo.png` to the user XDG icon directory and writes `~/.local/share/applications/goemon-practice-toolkit.desktop` (or XDG_DATA_HOME). It uses **StartupWMClass=GoemonPracticeToolkit**, matching the Tk window's native class, which allows GNOME Shell/Ubuntu Dock to associate the window with the correct logo instead of the generic settings cog. Open **Goemon Practice Toolkit** from the Ubuntu application grid and pin it to the dock. If an older generic icon was pinned, unpin it and pin this registered application. No root/sudo required. Repeat installation only if the toolkit checkout moves; the installed app points at that directory.
+
+This changes only the desktop application identity and user configuration. It does not change the game ROM, native recomp, RDRAM backend or Linux process security settings.
+
 ## Japanese native recomp (v0.11.18 experimental)
 
-The native Japanese PC port is developed on `Jake-Arnold/Goemon64Recomp` branch `feature/japan-native-recomp`. The toolkit does **not** build the game, and this connection has not yet been verified against a live Japanese native executable. Unlike Mupen64Plus, native recompilation does not provide complete emulator savestates.
+The native Japanese PC port is developed on `Jake-Arnold/Goemon64Recomp` branch `feature/japan-native-recomp`. The toolkit does **not** build the game. The user reports successful connection to their working Japanese native Linux recomp, but other gameplay writes and dock behavior still require direct testing. Unlike Mupen64Plus, native recompilation does not provide complete emulator savestates.
 
 From a clean toolkit checkout with the dependencies below installed:
 
 ```bash
-python -m practice.toolkit --game-version japan --read-only
+bash Run-Linux.sh
 ```
 
 In Dashboard → Connection, select **Japan — Ganbare Goemon**, verify the exact original Japanese revision-0 retail ROM, set connection target **recomp**, provide the native game's PID (or use **Launch native Linux recomp**), and press **Connect to game** after the ROM has booted. Reconnect if the native game restarts. Other instances of the USA and Japanese executable may have the same name; with multiple instances, specify the correct PID.
 
 Connection uses the **same Japanese guest-memory fields** as the emulator and retains ROM verification, endian detection, reject-ROM-copy checks and fail-closed ambiguity handling. It requires the Japanese native executable to preserve three original main-code fingerprints at the usual guest RDRAM offsets. If this developing port omits original code from RDRAM, the toolkit will reject attachment instead of silently scanning based on USA offsets. Native recomp compatibility is not guaranteed until that runtime detail is established with a live game.
 
-After read-only connection succeeds, rerun without `--read-only` for Japanese unlock edits, Live Memory writes/freezes or guarded `0x0C` scene reload. Every native recomp writer revalidates the PID, Japanese ROM fingerprints and guest mapping. Avoid treating successful readback as proof of a safe gameplay state; make an independent backup of the game save first.
+Japanese unlock edits, Live Memory writes/freezes and guarded `0x0C` scene reload are already enabled by default once a verified writable connection is established. Every native recomp writer revalidates the PID, Japanese ROM fingerprints and guest mapping. Avoid treating successful readback as proof of a safe gameplay state; make an independent backup of the game save first.
 
 Run synthetic tests (no live game writes):
 
@@ -33,7 +53,7 @@ sudo apt install python3-venv python3-tk
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-python -m practice.toolkit --read-only
+bash Run-Linux.sh
 ```
 
 In **Connection**, enter the PID of an already-running native Goemon64Recompiled game and select **Connect to game**. The toolkit attaches directly when Linux permits it; there is no need to launch the game through the toolkit. Auto-detection also works if the executable name contains `goemon64recomp`. The **Launch native Linux recomp** button remains available.
