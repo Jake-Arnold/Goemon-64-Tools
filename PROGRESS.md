@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Cross-region Japan recomp research: 26 isolated matching C (not promoted)
+
+- Changed: documented an original-ROM-verified 69-section USA/JP code scan with 303 unique byte-identical function leads from 4,372 eligible function spans; recorded 26 exact isolated IDO C matches (1,296 bytes each region), two overlapping existing USA C and 24 new research-only USA candidates (1,220 bytes). Full mapping, Japanese Impact RAM/code distinctions and acceptance plan: `docs/JP_RECOMP_TO_C_MATCHING_2026-11-16.md`.
+- Tests performed: re-ran hash-checked original-ID0 exact native codegen for all 26 candidates, original symbol sizes, source fingerprints and no external relocations (26/26 PASS); independently re-ran original USA assembly / 69-section Japan exact-code scan (4,810 original annotations, 4,372 eligible, 303 unique, 62 ambiguous, 4,007 non-identical) with identical JSON results.
+- Limitations: research-only, no new combined original-ROM G2, overlay ELF relocation acceptance, full CI, in-game runtime HP-field validation or change to the current canonical **315** USA C count. The Japan file_13 `0x80214600` section BSS boundary is not yet a proven live controller pointer. Source and strict verification scripts remain in separate research archive pending source import.
+- Next: deduplicate across all mixed-overlay stage declarations and PR #23/#24; stage code/layout/regional targets and run native full-ROM/inventory/CI gates. Expand beyond 303 byte-identical candidates to normalized full-corpus mapping.
+
+
 ### 2026-11-16 — Eight additional USA file_11 C functions promoted by exact 315-C native proof
 
 - Changed: upgraded the versioned `file_11` stage from 144 to 152 original-address C functions, replacing four complete assembly slices: `0x59EB80–0x59EBBC` (1 C / 60 B), `0x59EE00–0x59EE54` (3 C / 84 B), `0x5B22C8–0x5B2314` (2 C / 76 B), and `0x5B84A0–0x5B8500` (2 C / 96 B). All eight original function extents and all 88 original file_11 object positions remain unchanged. Preserved historical 307/306/303/210 reports independently.
