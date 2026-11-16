@@ -34,6 +34,7 @@ class DashboardSmokeTests(unittest.TestCase):
                     enable_debug_menu=True, enable_hex_edit=True,
                     enable_scene_warp=False)
         self.toolkit = Toolkit(self.root, Namespace(**opts))
+        self.assertEqual(self.toolkit.active_version.key, 'usa')
 
     def tearDown(self):
         # A shutdown regression test deliberately destroys Tk before cleanup.
