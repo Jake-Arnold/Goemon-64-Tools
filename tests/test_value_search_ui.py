@@ -120,6 +120,15 @@ class ValueSearchUITests(unittest.TestCase):
         self.assertIn('No game memory was modified', app.value_search_status.get())
 
 
+    def test_destroy_does_not_reconfigure_deleted_controls(self):
+        app = self.app
+        # A real Tk root recursively removes children before sending Destroy.
+        with patch.object(self.root, 'report_callback_exception') as callback_error:
+            self.root.destroy()
+        callback_error.assert_not_called()
+        self.assertIsNone(app._value_search_auto_after)
+        self.assertIsNone(app._value_search_poll_after)
+
     def test_continuous_unchanged_against_initial_and_stop(self):
         app = self.app
         app.value_repeat_interval.set('2000 ms')
