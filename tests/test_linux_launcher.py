@@ -3,6 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -55,20 +56,43 @@ class LinuxLauncherTests(unittest.TestCase):
 
 
     @unittest.skipUnless(sys.platform == "linux" and os.environ.get("DISPLAY")
-                         and shutil.which("xprop"), "Requires Linux X11 and xprop")
+                         and shutil.which("xprop") and shutil.which("xwininfo"),
+                         "Requires Linux X11, xprop and xwininfo")
     def test_real_tk_x11_window_instance_matches_installed_desktop_id(self):
-        """Verify actual Tk WM_CLASS through X11 rather than assuming case."""
+        """Query the actual X11 Tk client, not a GNOME/Mutter title-matched frame.
+
+        xprop -name can match mutter-x11-frames on GNOME, even when Tk's
+        WM_CLASS is correct. Use a per-test unique window title to select
+        the matching X window from the X11 hierarchy, then query its ID.
+        """
         try:
             root = tk.Tk(className=WINDOW_CLASS)
         except tk.TclError as exc:
             self.skipTest(str(exc))
         try:
-            root.title("Goemon Practice Toolkit Dock Identity Smoke Test")
+            title = (f"Goemon Toolkit Dock Identity {os.getpid()}-"
+                     f"{root.winfo_id():x}")
+            root.title(title)
             root.update()
-            result = subprocess.run(
-                ["xprop", "-name", "Goemon Practice Toolkit Dock Identity Smoke Test",
-                 "WM_CLASS"], capture_output=True, text=True, timeout=5, check=True)
-            self.assertIn('"' + APP_ID + '"', result.stdout, result.stdout)
+            tree = subprocess.run(
+                ["xwininfo", "-root", "-tree"],
+                capture_output=True, text=True, timeout=5, check=True)
+            matches = []
+            for line in tree.stdout.splitlines():
+                if f'"{title}"' not in line:
+                    continue
+                window_id = re.match(r"\s*(0x[0-9a-fA-F]+)\b", line)
+                if window_id is None:
+                    continue
+                result = subprocess.run(
+                    ["xprop", "-id", window_id.group(1), "WM_CLASS"],
+                    capture_output=True, text=True, timeout=5, check=True)
+                matches.append(result.stdout)
+            self.assertTrue(
+                any(f'"{APP_ID}"' in output for output in matches),
+                "No toolkit X11 client had the expected WM_CLASS. "
+                f"Title: {title!r}. Candidates: {matches!r}. "
+                f"X11 tree: {tree.stdout[-3000:]}")
         finally:
             root.destroy()
 
