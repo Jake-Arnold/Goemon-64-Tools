@@ -66,7 +66,11 @@ class ValueSearchUITests(unittest.TestCase):
 
     def tearDown(self):
         if hasattr(self, 'root'):
-            self.root.destroy()
+            try:
+                if self.root.winfo_exists():
+                    self.root.destroy()
+            except tk.TclError:
+                pass  # A teardown regression may have destroyed Tk deliberately.
 
     def finish(self):
         deadline = time.monotonic() + 5
