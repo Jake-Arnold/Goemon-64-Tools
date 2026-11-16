@@ -1999,7 +1999,10 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         self._watch_japan_process_restart(time.monotonic())
         if self.jp_rdram is not None:
             self.poll_japan_native_scene_warp(time.monotonic())
-            self.refresh_japan_fields()
+            # The old JP diagnostics table is hidden. Do not continuously
+            # reread 68+ old fields solely to update an invisible Treeview.
+            # Shared Live Memory already polls the regional watches.
+            self.refresh_japan_party_controls()
             self.refresh_inspector({})
             self.refresh_unlocks()
             # Story-like Japanese item/map values share source-backed reads
