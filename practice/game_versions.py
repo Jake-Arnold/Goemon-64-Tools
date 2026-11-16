@@ -1,7 +1,7 @@
 """Strict Goemon release identities for the host toolkit.
 
 Selecting a ROM does not prove the running process is that ROM's region.
-Only USA RAM addresses and actions are currently supported.
+USA and Japan have separate RAM readers and guarded write contracts.\nThe selected ROM is reverified before Japanese native process attachment.
 """
 from __future__ import annotations
 
