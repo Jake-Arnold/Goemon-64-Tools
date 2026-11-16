@@ -39,3 +39,22 @@ PR #17 includes 285 commits as of this audit. The branch is NOT an independent p
 5. After the region integration is verified and merged, prune only confirmed merged/unused remote branches. Keep active matching-C branches separate and do not mutate main or decomp manifests as part of toolkit cleanup.
 
 Status: **research / local regression integration complete; full merge gate outstanding.** PR #17 should remain draft.
+
+## 2026-11-16 — Live toolkit acceptance and actual integration scope
+
+**Runtime acceptance completed by user:** all 33 Japanese Unlocks except the deferred, unverified Sasuke Battery 1; all requested Japanese scene warps; Japanese Live Memory edit and Freeze/Unfreeze; named Project64 native checkpoint save/load; editable Japanese Story Progress. The updated full Windows PowerShell regression suite was also user-confirmed passing.
+
+**GitHub integration facts checked on 16 November 2026:**
+
+- PR #13 `japan-readonly-gameplay-fields` → `japan-mupen-ambiguity-fix`, open draft, 1 commit.
+- PR #14 `japan-scene-probes-and-diff` → PR #13 branch, open draft, 1 commit.
+- PR #15 `japan-scene-trace-001` → PR #14 branch, open draft, 1 commit.
+- PR #16 `japan-scene-character-traces-002` → PR #15 branch, open draft, 1 commit.
+- PR #17 `japan-controlled-party-writes` → PR #16 branch, open draft, **299 commits, 93 changed files**, Github reports mergeable into its immediate base.
+- The prior parent PR #11 (`japan-mupen-ambiguity-fix`) and PR #10 are still open drafts; PR #12 (`usa-external-memory-leads`) is a parallel sibling off PR #11's branch, not a direct ancestor of PR #13.
+- GitHub comparison of `main` versus PR #17 returns **diverged, ahead 496, behind 1**, and 300 files in the compare response (provider upper-bound). **Do not construe the #17 immediate-base 93-file diff as the entire mainline merge change**. One mainline commit is not in the Japanese head.
+- Source-user feature acceptance does not resolve this ancestry problem or verify the unrelated commits carried by the draft branch. Review the whole proposed mainline delta and incorporate main's extra commit before any merge or branch removal.
+
+**Recommended controlled integration:** start at the earliest Japanese base branch after checking ancestry to `main`; isolate previously validated USA/decomp work and the single main-only commit; verify the precise full diff and test it, then integrate in dependency order or prepare a dedicated clean integration PR. Avoid blindly using GitHub's per-PR immediate-base mergeable flag to infer mainline safety. Keep working draft PRs until integration is complete.
+
+No functional code changed here; these are user-acceptance notes and branch-review gates.

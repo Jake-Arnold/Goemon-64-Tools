@@ -1,5 +1,14 @@
 # USA ↔ Japan Toolkit feature parity checklist
 
+## Japanese feature acceptance COMPLETE — 16 November 2026
+
+**User-confirmed live gameplay results:** Japanese Live Memory **Freeze/Unfreeze works**, named full native **Checkpoints work**, and editable **Story Progress works**. The user previously confirmed Japanese scene warps work, **33/34 unlocks** (all except the deferred Sasuke Battery 1) work, and the native Windows PowerShell cross-region regression suite passes. No active Japanese gameplay failure has been reported for these tested features.
+
+This completes the **feature-acceptance gate**, separate from the **branch-integration gate**. PRs #13–#17 are stacked drafts; #17 is 299 commits/93 changed files against PR #16's branch, and its tree is diverged from `main` (496 ahead / 1 behind as reported by GitHub compare). Preserve the original project and USA changes: first review exact ancestry and differential merge scope before merging to main. The acceptance note does not certify all untested code in the large branch.
+
+The battery address is intentionally out of scope and must not block completion of the 33 verified unlocks.
+
+
 ## Native Windows regression gate — 16 November 2026
 
 **User-confirmed passing** after commit `06706bc`: the full `scripts/test_japan_party.ps1` test suite. The prior observed run counted **195 backend tests passing** and **93/94 Tk GUI tests passing**; the sole Tk error was an already-destroyed test root in teardown, corrected in `06706bc`. The user subsequently reported **all tests pass**. Because the final passing output was not supplied, **195/195 backend plus 94/94 GUI** are expected counts, not independently read from the final run.
