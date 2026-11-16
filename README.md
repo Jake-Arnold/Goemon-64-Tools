@@ -1,4 +1,41 @@
-# Goemon Speedrun Tools v0.11.34 — unified research and reports test
+# Goemon Speedrun Tools v0.11.35 — shared research results and live updates test
+
+## v0.11.35 — Consistent discovery results, watching and live updating (16 November 2026)
+
+**Experimental branch-only build** on toolkit/unified-memory-discovery. This is the shared UI layer following the v0.11.34 four-method navigation and common reporting implementation. Main is unchanged.
+
+### Standard discovery results interface
+
+All four Memory discovery methods (**Find a value**, **Compare memory changes**, **Investigate flags**, **Record damage**) now use the same **Results · read-only** bar. Its actions appear in the same order on every page:
+
+- **Watch selected** — add multiple typed guest addresses directly into shared Live Memory, using the correct USA or Japan watch file; duplicates are skipped. If a Japanese XYZ triple is selected, add three individual float watches (X/Y/Z).
+- **Select all listed** — select all candidates currently listed in the table; at most 128 typed watches can be saved. **Copy address** copies the first selected address.
+- **Refresh now** — request an immediate read of displayed/selected candidate values. **Live update** and **Every (100/250/500/1000 ms)** continuously refresh while that method's tab is active, without overlapping workers.
+- **Report name** and **Save report** — use the common report manager to save Markdown, CSV and full available JSON evidence in the same four-file schema.
+
+All four tables start with **N64 address / Type / Live value / Live hex**. Remaining columns show only evidence specific to the method (previous values; captured A/B; mask and trial support; damage hit counts). Changing a value during gameplay updates the **Live** column without altering the original comparison evidence, trial rankings or saved snapshots.
+
+For the three non-scanner workflows, live values are read in background threads and grouped into bounded 4 KiB guest-RAM ranges; the active tab samples selected and currently viewed rows. The numeric scanner retains its established asynchronous live/continuous scan engine but exposes the same controls. Actual update rates depend on the native recomp/emulator's process-memory read throughput.
+
+### Compatibility and safety
+
+- Live reads are *external value polls*, not original game MIPS instruction reader/writer traces. No research action writes guest RAM.
+- Live Memory custom watches remain independently stored per region. Invalid/unknown-width text matches cannot be pinned to numeric Live Memory watches; candidate rows remain available in reports.
+- Candidate regions and original captured evidence are not reinterpreted when switching USA/JP; pending live updates and old damage/flag rows are invalidated.
+- Dedicated research evidence remains intact: A/B/C captures, repeated flag trials and automatic damage-event timelines continue to use the unified report format.
+- Specialist exhaustive Japanese XYZ export remains available as an advanced option. Unsupported original-MIPS read/write tracing has not been implemented.
+
+### Testing
+
+[Linux CI](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/workflows/toolkit-linux-regression.yml) now runs numeric live-preview, structured candidate consistency, all four Tk tabs, JP/USA batch watch isolation, XYZ triple expansion and GUI teardown tests. [Windows CI](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/workflows/toolkit-windows-report.yml) runs portable live-read, watch and report tests. Both test synthetic game memory only; real-game USA/JP and Windows GUI interaction remain to be validated.
+
+Run on Ubuntu:
+
+    cd ~/Desktop/Goemon-64-Tools-JP-Recomp
+    git fetch origin
+    git switch toolkit/unified-memory-discovery
+    git pull --ff-only
+    bash Run-Linux.sh
 
 ## v0.11.34 — Guided Memory Discovery and unified reports (16 November 2026)
 

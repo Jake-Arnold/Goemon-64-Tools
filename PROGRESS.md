@@ -2,6 +2,17 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.35 unified discovery results/watch/live-preview redesign
+
+- **Root cause:** Each discovery method previously defined its own table columns, watch handler, selection mode and refresh strategy. Flags had no direct watch action, damage used a USA-specific watch path, and memory comparison only watched one address at a time. Underlying research methods are distinct but should share basic result interactions.
+- **Shared component:** practice/discovery_results.py defines one Results toolbar, canonical types, strict read-only guest RAM decoding, max-4 KiB grouped reads, 100/250/500/1000 ms best-effort active-tab polling and stale process/region generation checks. Live updates are asynchronous, prefer currently viewed/selected rows, and do not change A/B/C/flag/damage evidence.
+- **Common table columns:** N64 address, Type, Live value and Live hex are now first for all four tools; evidence-specific columns follow.
+- **Watch selected:** Uniform multi-select/Select all listed/Copy address actions. Typed f32/f64/u8-u32 source rows promote to the region-correct Live Memory watch store. XYZ triple candidates expand to X/Y/Z f32 watches. Address+type duplicates are skipped; invalid/unsupported selection or 128-watch overflow prevents partial persistence. Text-pattern results remain reportable but cannot be promoted as variable-length numeric watches.
+- **Consistency:** Report name and Save report are in the same shared action bar for all methods; each underlying evidence/analysis engine remains intact. Existing named report and legacy-work formats are retained.
+- **Safety:** Read-only externally polled Live values are explicitly not original MIPS instruction-access traces. No guest writes. On game region changes, event result workers and damage candidates are invalidated, and background reads are guarded against the attached process being closed.
+- **Tests:** Added tests/test_discovery_results.py and tests/test_discovery_results_ui.py, plus full Toolkit tab consistency assertions. Linux hosted CI reached **313 non-GUI tests (312 pass, 1 skip) and 135 GUI tests passing** on code commit e3c4e9e9b7e92fc5c543f7fbadb42bedd6837276. Windows hosted CI passed **33 portable tests** on the same commit. Later minor UI/read-lock changes require final branch-tip CI. Live native recomp and Windows GUI testing still remain unverified; PR #35 stays draft.
+- **Next technical milestone:** Original guest MIPS read/write tracing feasibility for native USA and JP recompiled builds, then comparison of actual user-facing UI screenshots at 960x640 and 1220x790.
+ 
 ## 2026-11-16 — v0.11.34 final hosted CI verification
 
 - **Linux:** [GitHub Actions 43938746400](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43938746400) PASSED at code commit 5731553793a36ff278085e97dd4a5319140ffdc5: **307 non-GUI tests (306 pass, 1 skip)** and **131 Xvfb Tk tests**. No callback exceptions found in logs.
