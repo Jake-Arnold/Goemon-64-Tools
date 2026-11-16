@@ -428,6 +428,15 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         discovery = ttk.Frame(notebook, padding=7)
         notebook.add(discovery, text='Memory discovery')
         self.discovery_tab = discovery
+        connection_bar = ttk.Frame(discovery)
+        connection_bar.pack(fill='x', pady=(0, 7))
+        self.discovery_connection_state = tk.StringVar(
+            value='Checking game connection...')
+        ttk.Label(connection_bar, textvariable=self.discovery_connection_state,
+                  wraplength=970).pack(side='left', fill='x', expand=True)
+        ttk.Button(connection_bar, text='Open connection',
+                   command=lambda: self.notebook.select(
+                       self.notebook.tabs()[0])).pack(side='right')
         self.discovery_tabs = ttk.Notebook(discovery)
         self.discovery_tabs.pack(fill='both', expand=True)
         # A single entry point answers "which experiment should I use?".
@@ -475,7 +484,12 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         self.build_story_progress_tab(notebook)
         self.build_japanese_fields_tab(notebook)
         self.build_reports_tab(notebook)
+        self.status.trace_add(
+            'write', lambda *_: self._refresh_discovery_connection_state())
+        self.connection_target.trace_add(
+            'write', lambda *_: self._refresh_discovery_connection_state())
         self._apply_game_version_ui()
+        self._refresh_discovery_connection_state()
         if self.verified_rom_path is not None:
             self.status.set(
                 f'Japan-0 ROM verified again from saved selection: '
@@ -498,6 +512,33 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         ttk.Label(statusbar, textvariable=self.access_footer,
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
+
+    def _refresh_discovery_connection_state(self):
+        """Describe the actual attached memory reader, not an old UI hint."""
+        if not hasattr(self, 'discovery_connection_state'):
+            return
+        region = getattr(self.active_version, 'key', 'usa')
+        reader = (self.jp_rdram if region == 'japan'
+                  else self.mem)
+        pid = getattr(self, 'game_pid', None)
+        if reader is None:
+            state = ('No Japanese game memory attached.' if region == 'japan'
+                     else 'No USA game memory attached.')
+        elif not pid:
+            state = ('Game RAM is present but the process identity is missing. '
+                     'Reconnect from Dashboard before starting a session.')
+        else:
+            backend = getattr(self, 'jp_backend', None) if region == 'japan' else (
+                getattr(self, 'connection_target', None).get())
+            if region == 'japan' and backend not in (
+                    'project64', 'mupen64plus', 'recomp'):
+                state = ('Japanese RAM is attached but the detected game backend '
+                         'is missing. Reconnect on Dashboard.')
+            else:
+                state = (f"{region.upper()} memory attached | PID {pid} | "
+                         f"Backend: {backend or 'connected'} | "
+                         "Research scans use this connection.")
+        self.discovery_connection_state.set(state)
 
     def _apply_game_version_ui(self):
         """Expose the selected version without implying a mapped Japanese RDRAM."""
