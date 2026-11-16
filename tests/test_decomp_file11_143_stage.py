@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class File11143CentralStageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.base = verify.load_manifest(ROOT / 'decomp/manifest.json')
+        cls.base = verify.load_manifest(ROOT / 'decomp/manifest_315_preserved_20261116.json')
 
     def opt_in(self):
         manifest = copy.deepcopy(self.base)

@@ -25,22 +25,22 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "5cc043940ddc0ebc6e2f5c39c194443c0d1498d3265b87dc837e31321fc0ae16",
+    "manifest_sha256": "291d239c29f5a404cac932c9481397571074b85a50eb0e2aefee6fd190aeebb5",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "93e91fa551668a51fbc45e24ba39c73c2c60cc4e2a854d43040c4f0b209d7737"
+    "verifier_sha256": "512dcb943e7fbe3c5ecdaf715aff9e8b499fa4dbb96f4d94810833d112b7aa3e"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "ef0eaed74982a00cf148de8c80df6e624dac2e19c3b78ee031f8c15ca2f962bd",
+    "report_sha256": "8cbcaedb9cedd33e9f0c8ce776cbfc15122d0b94512df054bc4566ded2b38962",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "d688cdd3888a0d7c319ae2cc5c8d2743177dd6c4e515aa23f1bfdff41676545d",
-    "matching_c_functions": 315,
-    "matching_c_bytes": 16660,
-    "combined_c_entries": 328,
-    "asm_entries": 7048,
+    "combined_proof_sha256": "20e7f59c89d5b0fcdce2010937ead2bc3df5356ffab8986d856f7158923e81dd",
+    "matching_c_functions": 342,
+    "matching_c_bytes": 17568,
+    "combined_c_entries": 355,
+    "asm_entries": 7021,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "The 13 original upstream unmarked entries remain distinct from the VM residual GLOBAL_ASM functions. USA file_11 50 functions were promoted after a 210/210 full native verifier and exact whole-ROM/inventory gate.",
+    "note": "Central USA 342/342 full original-ROM G2 verified; file11 expands 152 to 179 exact C functions with 27 novel original offsets. The 13 upstream unmarked functions remain distinct from VM residual GLOBAL_ASM functions.",
     "reconciled_date": "2026-11-16"
   },
   "residual_functions": [

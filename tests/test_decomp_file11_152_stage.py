@@ -22,7 +22,7 @@ EXPECTED = {
 
 class File11152StageTests(unittest.TestCase):
     def setUp(self):
-        self.manifest = json.loads((ROOT / 'manifest.json').read_text())
+        self.manifest = json.loads((ROOT / 'manifest_315_preserved_20261116.json').read_text())
         self.fixture = new.load_fixture()
         self.old_fixture = old.load_fixture()
 
