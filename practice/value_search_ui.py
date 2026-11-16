@@ -7,6 +7,7 @@ import time
 import tkinter as tk
 from tkinter import ttk
 
+from practice.discovery_results import DiscoveryResultsPanel
 from practice.reports import create_value_search_report
 from practice.value_search import (
     ValueScanner, FORMATS, FILTERS, TEXT_ENCODINGS, TEXT_KIND,
@@ -168,52 +169,33 @@ class ValueSearchMixin:
                  'Start a new scan to restore discarded candidates.',
             wraplength=1060).pack(anchor='w', pady=(4, 0))
 
-        toolbar = ttk.Frame(tab)
-        toolbar.pack(fill='x', pady=(0, 6))
-        ttk.Button(toolbar, text='Refresh values now',
-                   command=lambda: self._value_start('refresh')).pack(
-                       side='left', padx=(0, 8))
-        ttk.Checkbutton(toolbar, text='Live refresh',
-                        variable=self.value_search_autorefresh).pack(
-                            side='left', padx=(0, 6))
-        ttk.Label(toolbar, text='Every').pack(side='left', padx=(0, 4))
-        ttk.Combobox(toolbar, textvariable=self.value_search_refresh_ms,
-                     values=('100 ms', '250 ms', '500 ms', '1000 ms'),
-                     state='readonly', width=9).pack(side='left', padx=(0, 15))
-        ttk.Button(toolbar, text='Select all visible',
-                   command=self.select_all_value_results).pack(
-                       side='left', padx=(0, 7))
-        ttk.Button(toolbar, text='Watch selected addresses',
-                   command=self.watch_value_search_candidate).pack(
-                       side='left', padx=(0, 7))
-        ttk.Button(toolbar, text='Clear scan',
-                   command=self.clear_value_search).pack(side='left')
-
-        exports = ttk.Frame(tab)
-        exports.pack(fill='x', pady=(0, 7))
-        ttk.Label(exports, text='Report name').pack(side='left', padx=(0, 5))
-        ttk.Entry(exports, textvariable=self.value_report_name, width=35).pack(
-            side='left', padx=(0, 7))
-        ttk.Button(exports, text='Save report',
-                   command=self.export_value_search_report).pack(side='left')
-        ttk.Label(exports, text='Ctrl/Shift-click to select multiple rows').pack(
-            side='left', padx=(16, 0))
+        self.value_search_results = DiscoveryResultsPanel(
+            self, tab, tree=lambda: self.value_search_tree,
+            status=self.value_search_status,
+            report_name=self.value_report_name,
+            label='Value Search',
+            save=self.export_value_search_report,
+            refresh=lambda: self._value_start('refresh'),
+            auto=self.value_search_autorefresh,
+            interval=self.value_search_refresh_ms,
+            external_poll=True)
+        # Scan/capture controls are method-specific. Candidate controls are shared.
         ttk.Label(tab, textvariable=self.value_search_status,
                   wraplength=1070).pack(fill='x', pady=(0, 7))
 
         frame = ttk.Frame(tab)
         frame.pack(fill='both', expand=True)
-        columns = ('address', 'type', 'initial', 'previous', 'value', 'hex')
+        columns = ('address', 'type', 'live', 'raw', 'initial', 'previous')
         self.value_search_tree = ttk.Treeview(
             frame, columns=columns, show='headings',
             selectmode='extended', height=16)
         for key, title, width in (
             ('address', 'N64 address', 155),
-            ('type', 'Data type', 105),
+            ('type', 'Type', 105),
+            ('live', 'Live value', 145),
+            ('raw', 'Live hex', 170),
             ('initial', 'Initial', 130),
             ('previous', 'Previous', 130),
-            ('value', 'Live', 145),
-            ('hex', 'Raw hex', 170),
         ):
             self.value_search_tree.heading(key, text=title)
             self.value_search_tree.column(
@@ -442,8 +424,8 @@ class ValueSearchMixin:
             self.value_search_tree.delete(*self.value_search_tree.get_children())
         for row in rows:
             address = f'0x{row["address"]:08X}'
-            values = (address, row['kind'], row['initial'],
-                      row['previous'], row['value'], row['hex'])
+            values = (address, row['kind'], row['value'], row['hex'],
+                      row['initial'], row['previous'])
             if self.value_search_tree.exists(address):
                 self.value_search_tree.item(address, values=values)
             else:
@@ -559,82 +541,6 @@ class ValueSearchMixin:
         self.value_search_status.set('Cleared candidate set; game memory unchanged.')
 
     def watch_value_search_candidate(self):
-        selected = tuple(self.value_search_tree.selection())
-        if not selected:
-            self.value_search_status.set(
-                'Select one or more addresses (Ctrl/Shift-click), then Watch selected.')
-            return
-        if self.value_scan_busy:
-            self.value_search_status.set('Let the current memory scan finish first.')
-            return
-        kind = self.value_scanner.kind
-        if kind == TEXT_KIND:
-            self.value_search_status.set(
-                'Variable-length text matches cannot yet be pinned as fixed-width '
-                'Live Memory watches. Numeric and f32/f64 matches are supported.')
-            return
-        if kind is None:
-            return
-        region = getattr(getattr(self, 'active_version', None), 'key', 'usa')
-        watch_list = ('jp_custom_watches' if region == 'japan' else 'custom_watches')
-        existing = getattr(self, watch_list, None)
-        if existing is None:
-            # Compatibility with standalone scanner extensions and mock toolkits.
-            for addr in selected:
-                if region == 'japan':
-                    if not self.add_japan_custom_watch_from_search(addr, kind):
-                        break
-                else:
-                    self.user_watch_name.set(f'Value Search {addr}')
-                    self.user_watch_address.set(addr)
-                    self.user_watch_type.set(kind)
-                    self.add_custom_watch()
-            if region == 'japan':
-                self.notebook.select(self.jp_fields_tab)
-            else:
-                self.notebook.select(self.live_memory_tab)
-            return
-
-        from practice.custom_watches import make_watch, append_watch, save_watches
-        try:
-            updated = list(existing)
-            added = []
-            skipped = 0
-            for addr in selected:
-                address = int(addr, 16)
-                if any(w.address == address and w.kind == kind for w in updated):
-                    skipped += 1
-                    continue
-                watch = make_watch(f'Value Search {addr}', addr, kind)
-                updated = append_watch(updated, watch)
-                added.append(watch)
-            if not added:
-                self.value_search_status.set(
-                    f'All {skipped} selected values are already watched.')
-                return
-            if region == 'japan':
-                path = self.jp_watch_path
-            else:
-                from practice.ui_extension import CUSTOM_WATCHES_PATH
-                path = CUSTOM_WATCHES_PATH
-            save_watches(path, updated)
-        except (OSError, ValueError, TypeError, KeyError) as exc:
-            self.value_search_status.set(
-                f'No new watches saved; check the selection: {exc}')
-            return
-
-        setattr(self, watch_list, updated)
-        if region == 'japan':
-            for watch in added:
-                self._jp_insert_custom_watch(watch)
-            self._jp_reset_comparison()
-            self.refresh_japan_fields(force=True)
-        if hasattr(self, 'refresh_inspector'):
-            self.last_inspect_at = 0.0
-            self.refresh_inspector(
-                self.current if isinstance(getattr(self, 'current', None), dict)
-                else {})
-        self.notebook.select(self.live_memory_tab)
-        self.value_search_status.set(
-            f'Added {len(added)} watched address(es) to Live Memory.'
-            + (f' Skipped {skipped} already watched.' if skipped else ''))
+        """Compatibility entrypoint; same batch-watch action as every tool."""
+        self.value_search_results.watch_selected()
+        self.value_search_status.set(self.value_search_results.live_status.get())
