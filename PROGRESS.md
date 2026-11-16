@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Independent exact USA 52-function file_11 transition scratch proof (research-only)
+
+- **Base:** Follow-up research branch starts at the now formally promoted PR #20 commit `d394efe7` (210 central matched C functions). No canonical manifest, promotion count, gameplay toolkit or existing verification result changed.
+- **New native source:** Two original-address transition functions at USA `0x801F845C` (44 bytes) and `0x801F8488` (12 bytes), with independently matching Japanese counterparts `0x801FD364` and `0x801FD390`.
+- **USA scratch proof:** Original pinned IDO 5.3 and upstream `7e2029c5` produced an exact 33,554,432-byte USA ROM with all previously promoted 50 `file_11` C routines **plus these two new ones** (52 C functions/1,120 bytes). Fourteen linked C/ASM text extents and 52 original FUNC symbol VMAs/sizes match; 7,376 identified function entries remain stable, with precisely 52 assembly-to-C ownership changes.
+- **Relocations:** All 8,825 original site/type/target/symbol relocation records match as a multiset; raw record order differs only in two pinned three-record cycles at indices 2506–2508 and 6131–6133. This is not an unchanged raw relocation order claim.
+- **Tests:** 12/12 local source/pin/layout/relocation/full-ROM research tests passed, plus 5/5 ROM-free metadata claim-guard tests. No full repository Local CI or complete 212-function central G2 was run in this isolated environment. Japanese native original-address pair matches do not remove the known Japan whole-ROM build blocker.
+- **Next:** Integrate these two functions as a separately versioned file_11 v3 extension of the already promoted v2 stage, then run one central 212-function original-ROM verifier, inventory and Local CI. Until then the two functions remain research candidates.
+
 ### 2026-11-16 — Full native USA file_11 promotion: 50 more exact C functions, canonical 210/210 G2 and whole-ROM inventory
 
 - **Promotion:** Reconstructed 13 original-USA character-switch functions (620 bytes) and 37 genuine no-op actor callbacks (444 bytes) are formally integrated through the reviewed v2 mixed C/ASM file_11 adapter in the **canonical decomp/manifest.json**. The 180-byte character selector remains assembly-owned.
