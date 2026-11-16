@@ -1554,9 +1554,94 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                          name='GoemonJapanRegionDiscovery').start()
         self.root.after(50, self._poll_connect_results)
 
+    def _connect_japan_auto_worker(self, opts):
+        """Select the *one* process with proven Japan-0 RDRAM, not first name.
+
+        All candidate PID/region/3-code-probe/layout checks run in this worker,
+        never on Tk's event thread. A cached executable/base is only a hint:
+        code signatures and RAM context are rechecked every time.
+        """
+        pid_hint, rom_path, base_hint, endian, selected_pid, _ = opts
+        confirmed = []
+        ambiguous = []
+        errors = []
+        try:
+            probes = verified_japan_probes(rom_path)
+            if selected_pid is not None:
+                if pid_hint is not None and pid_hint != selected_pid:
+                    raise RuntimeError('Selected RAM candidate is for a different PID')
+                pid_hint = selected_pid
+            candidates = list_japan_processes(
+                pid_hint=pid_hint, target='auto',
+                allow_project64=(sys.platform == 'win32'))
+            base = (int(base_hint, 0) if isinstance(base_hint, str)
+                    else int(base_hint) if base_hint is not None else None)
+            for choice in candidates:
+                process = None
+                try:
+                    if choice.backend == 'recomp':
+                        check = verified_japan_recomp_pid(choice.pid)
+                    else:
+                        check = verified_emulator_pid(choice.pid, choice.backend)
+                    if check != (choice.pid, choice.backend):
+                        raise RuntimeError('Process identity changed during discovery')
+                    process = HostProcess(choice.pid, writable=False)
+                    reader, address, mode = connect_candidate_ram(
+                        choice, process, probes, base_hint=base, endian=endian)
+                    confirmed.append((choice, process, reader, address, mode))
+                    process = None  # Owned by result list from now onward.
+                except AmbiguousJapaneseRdram as exc:
+                    ambiguous.append((choice, exc.candidates))
+                except (OSError, PermissionError, RuntimeError, ValueError) as exc:
+                    errors.append(f'PID {choice.pid} {choice.backend}: {exc}')
+                finally:
+                    if process is not None:
+                        process.close()
+            if len(confirmed) > 1:
+                details = describe_verified_connections(
+                    (choice.pid, choice.backend, addr, mode)
+                    for choice, _, _, addr, mode in confirmed)
+                raise RuntimeError(
+                    'Multiple Japanese processes pass exact ROM/RDRAM verification: '
+                    + details + '. Close other games or provide a PID.')
+            if confirmed and ambiguous:
+                raise RuntimeError(
+                    'Another Japanese process contains ambiguous code-matching '
+                    'RAM buffers: ' +
+                    ', '.join(f'PID {c.pid} {c.backend}' for c, _ in ambiguous)
+                    + '. Resolve before auto-connecting.')
+            if len(confirmed) == 1:
+                choice, process, reader, address, mode = confirmed.pop()
+                remember_verified_connection(choice, probes, address, mode)
+                self._connect_queue.put(
+                    ('japan-ok', choice.pid, choice.backend,
+                     process, reader, address, mode))
+                return
+            if len(ambiguous) == 1 and len(candidates) == 1:
+                choice, rows = ambiguous[0]
+                self._connect_queue.put(
+                    ('japan-ambiguous', choice.pid, choice.backend, rows))
+                return
+            failures = ('; '.join(errors + [
+                f'PID {c.pid} {c.backend}: {len(rows)} RAM candidates'
+                for c, rows in ambiguous])) or 'No code-signature matches'
+            raise RuntimeError(
+                'No uniquely verified Japan-0 process/layout. ' + failures)
+        except Exception as exc:
+            message = str(exc)
+            if sys.platform == 'linux' and isinstance(exc, PermissionError):
+                message += ' ' + external_pid_hint(pid_hint or 'unknown')
+            self._connect_queue.put(('error', message))
+        finally:
+            for _choice, handle, _reader, _address, _mode in confirmed:
+                handle.close()
+
     def _connect_japan_worker(self, opts):
         """Verified ROM code probes only; no Tk or memory writes in worker."""
         pid_hint, rom_path, base_hint, endian, selected_pid, target = opts
+        if target == 'auto':
+            Toolkit._connect_japan_auto_worker(self, opts)
+            return
         process = None
         try:
             if target == 'recomp':
