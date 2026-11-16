@@ -151,6 +151,7 @@ class EventSessionsMixin:
             self.event_region_start.set(
                 f'0x{JAPAN_CANDIDATE_START if japan else EVENT_START:08X}')
             self.event_rows=[]
+            self.event_results.invalidate()
             self.event_table.delete(*self.event_table.get_children())
             self.event_trial_summary.set('No trials for current ROM region')
         self.event_region_note.set(
