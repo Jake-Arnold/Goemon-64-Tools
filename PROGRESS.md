@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.33 full hosted CI proof
+
+- **Ubuntu:** GitHub Actions [43933889974](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43933889974), code/metadata commit 5f81c8ef490b95fb279383a5f8e5e3aa258cc35d, PASSED: **305 Python synthetic tests (304 pass, 1 skip)** and **128 Xvfb Tk GUI tests pass** with zero recorded invalid-Tk-command/callback exceptions. Includes continuous filtering, baseline comparisons, report directory migration and multi-address USA/JP watch selection.
+- **Windows:** GitHub Actions [43933890711](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43933890711) PASSED: **25 portable tests**, including report storage, value search types and toolkit version; practice modules passed compileall.
+- **Limitations:** Both suites are synthetic. No native USA or Japanese recomp process/gameplay trace was exercised; Windows GUI remains unverified. PR #35 remains draft pending review; no change to guest game writes.
+
 ## 2026-11-16 — v0.11.33 memory-scanner UX and continuous filtering
 
 - **User observations:** v0.11.32 report folder names appeared as long UTC-slug-random identifiers in GNOME Files; separate initial/next Exact value input was confusing, and numeric watches refreshed at a fixed slow cadence. Requested stable-value repeat-filter mode, baseline comparisons, multi-select, floats and text searching.

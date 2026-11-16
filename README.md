@@ -2,6 +2,8 @@
 
 ## v0.11.33 — Memory search usability, continuous filtering and readable reports (16 November 2026)
 
+**Automated test evidence for this build:** Ubuntu [run 43933889974](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43933889974) passed **305 non-GUI tests (304 passed, 1 skipped)** and **128 Xvfb Tk GUI tests** with no Tk callback errors. Windows [run 43933890711](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43933890711) passed **25 portable reporting, numeric/text scanner and version tests**. These are synthetic checks, not real USA/JP native recomp execution.
+
 **Review build on toolkit/unified-memory-discovery; not merged into main.**
 
 - **Starting value** is now separate from the **Filter value (Exact only)**, so an Exact filter never silently reuses the original number.
