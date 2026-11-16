@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — 27 deduplicated file_11 C functions pass 342/342 central USA G2 and inventory
+
+- **Deduplication:** Compared PR #24's 104 researched file_11 functions with the live canonical 315-function production proof. **77 already promoted**; the remaining **27 original-ROM identities / 908 instruction bytes** are all distinct and independently original-address matched. 23 also overlapped an unpromoted PR #23 candidate pool; four were additional unique research sources.
+- **Central native G2:** Reproduced the original 315-function canonical verifier (exact USA 32 MiB ROM) from pinned source and authenticated retail ROM. Added versioned `goemon-file11-179-central-v1` to the production verifier (152 existing file_11 C + 27 unique), pinned all **45 newly generated original-address ELF object SHA-256** values, then reran the complete standard verifier **without experimental bypass**. Result: **342/342 exact C functions / 17,568 matching instruction bytes**; complete 33,554,432-byte original USA image identical, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
+- **ELF audit:** 179 file_11 C identities, 126 original VMA chunk extents (76 C and 50 ASM), all 8,825 original semantic relocation tuples, unchanged 7,376 positive-size FUNC inventory, 355 total C entries and 7,021 remaining ASM. Nine relocation records differ only by three strictly identified three-entry order cycles; raw relocation order is **not** byte-identical.
+- **Source hygiene:** No duplicate C function claim, no original NOP opcode changed, and existing 152 C source chunks remain exactly owned. All local CI gates passed (222 decomp Python tests, 171 verifier/ledger Python tests, task/evidence validation, GCC ASan/UBSan display regression). Historical 315 G2, inventory and manifest preserved separately. Source-only fixtures and verified whole-ROM/inventory reports staged together; no proprietary ROM/toolchain/ELF/object files.
+- **Regions:** The central exact-ROM proof is USA. Japanese isolated original-address C research is not a Japanese complete-ROM rebuild.
+
 ### 2026-11-16 — Eight additional USA file_11 C functions promoted by exact 315-C native proof
 
 - Changed: upgraded the versioned `file_11` stage from 144 to 152 original-address C functions, replacing four complete assembly slices: `0x59EB80–0x59EBBC` (1 C / 60 B), `0x59EE00–0x59EE54` (3 C / 84 B), `0x5B22C8–0x5B2314` (2 C / 76 B), and `0x5B84A0–0x5B8500` (2 C / 96 B). All eight original function extents and all 88 original file_11 object positions remain unchanged. Preserved historical 307/306/303/210 reports independently.

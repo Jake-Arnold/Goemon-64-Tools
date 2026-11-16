@@ -72,12 +72,12 @@ class File11143ReviewTests(unittest.TestCase):
         from pathlib import Path
         from decomp import verify
         root = Path(__file__).resolve().parents[1] / 'decomp'
-        manifest = verify.load_manifest(root / 'manifest.json')
+        manifest = verify.load_manifest(root / 'manifest_315_preserved_20261116.json')
         review_manifest, claims = review.candidate_manifest(manifest)
         self.assertEqual(review_manifest, manifest)
         self.assertEqual(len(claims),315)
-        g2 = json.loads((root/'results/combined.json').read_text())
-        inventory = json.loads((root/'results/inventory.json').read_text())
+        g2 = json.loads((root/'results/combined_315_preserved_20261116.json').read_text())
+        inventory = json.loads((root/'results/inventory_315_preserved_20261116.json').read_text())
         self.assertEqual(review.verify_g2_report(g2,claims)['matched_bytes'],16660)
         self.assertEqual(review.verify_inventory_report(inventory,315)['remaining_assembly_entries'],7048)
         historic307 = json.loads((root/'results/combined_307_20261116.json').read_text())
@@ -97,9 +97,9 @@ class File11143ReviewTests(unittest.TestCase):
         from pathlib import Path
         root = Path(__file__).resolve().parents[1] / 'decomp'
         from decomp import verify
-        manifest = verify.load_manifest(root/'manifest.json')
+        manifest = verify.load_manifest(root/'manifest_315_preserved_20261116.json')
         claims = verify.claimed_functions(manifest)
-        g2 = json.loads((root/'results/combined.json').read_text())
+        g2 = json.loads((root/'results/combined_315_preserved_20261116.json').read_text())
         self.assertEqual(g2['overlay_file11_stage']['original_address_matching_c'],152)
         self.assertEqual(g2['overlay_file11_stage']['file11_C_instruction_bytes'],4276)
         g2['overlay_file11_stage']['file11_C_instruction_bytes'] = 3960
@@ -110,8 +110,8 @@ class File11143ReviewTests(unittest.TestCase):
         from pathlib import Path
         from decomp import verify
         root = Path(__file__).resolve().parents[1] / 'decomp'
-        claims = verify.claimed_functions(verify.load_manifest(root/'manifest.json'))
-        g2 = json.loads((root/'results/combined.json').read_text())
+        claims = verify.claimed_functions(verify.load_manifest(root/'manifest_315_preserved_20261116.json'))
+        g2 = json.loads((root/'results/combined_315_preserved_20261116.json').read_text())
         g2['overlay_file13_stages']['linked_elf_provenance']['relocation_sites_and_targets_match_baseline'] = False
         with self.assertRaises(ValueError):
             review.verify_g2_report(g2,claims)

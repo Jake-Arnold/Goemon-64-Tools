@@ -14,7 +14,7 @@ OFFSET = 0x59EF18
 class File11144StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.canonical = verify.load_manifest(ROOT / 'decomp/manifest.json')
+        cls.canonical = verify.load_manifest(ROOT / 'decomp/manifest_315_preserved_20261116.json')
 
     def opt_in(self):
         m = copy.deepcopy(self.canonical)
