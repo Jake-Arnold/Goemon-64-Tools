@@ -2,7 +2,8 @@
 from __future__ import annotations
 import struct
 import unittest
-from practice.state_discovery import capture_state,compare_captures,measured_velocity,PROBE_ACTIONS
+from dataclasses import replace
+from practice.state_discovery import capture_state,compare_captures,measured_velocity
 
 
 class Memory:
@@ -20,11 +21,18 @@ class Memory:
 
 
 class StateDiscoveryTests(unittest.TestCase):
-    def test_five_questions_have_actionable_instructions(self):
-        self.assertEqual(len(PROBE_ACTIONS),7)
-        self.assertIn('Benkei',PROBE_ACTIONS['Storyline event / quest flag'])
-        self.assertIn('C-Right',PROBE_ACTIONS['Map displayed'])
-        self.assertIn('C-Up',PROBE_ACTIONS['Magic active'])
+    def test_report_name_does_not_change_scanned_addresses_or_candidate_score(self):
+        mem = Memory()
+        a = capture_state(mem, 'Travel A')
+        mem.write(0x8015C8F7, b'\x01')
+        mem.write(0x8015C609, b'\x20')
+        b = capture_state(mem, 'Travel B')
+        first = compare_captures(a, b)
+        renamed = compare_captures(
+            replace(a, label='Storyline event A'),
+            replace(b, label='Magic active B'))
+        self.assertEqual(first['candidates'], renamed['candidates'])
+        self.assertEqual(first['counts'], renamed['counts'])
 
     def test_reversed_boolean_and_persistent_destination_flags(self):
         mem=Memory()
