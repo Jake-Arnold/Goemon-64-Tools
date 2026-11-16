@@ -58,6 +58,7 @@ class DamageEventCaptureMixin:
             self, tab, tree=lambda: self.damage_capture_tree,
             status=self.damage_capture_status, report_name=self.damage_report_name,
             save=self.export_damage_capture, label='Damage candidate')
+        self.damage_results.controls.pack_configure(before=bar)
         columns = ("address", "type", "live", "raw",
                    "region", "hits", "returns", "score")
         frame = ttk.Frame(tab)
