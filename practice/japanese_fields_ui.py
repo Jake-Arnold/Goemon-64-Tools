@@ -100,6 +100,44 @@ class JapaneseFieldsUi:
             move, textvariable=self.jp_position_result,
             wraplength=960).pack(anchor='w', pady=(5, 0))
 
+        # Only the region-specific XYZ editor is unique to the old Japanese
+        # diagnostics page. Expose it in the shared Scene Browser instead.
+        # It shares the same StringVars and guarded functions as the legacy
+        # internal controls, so no new memory writer is introduced.
+        if hasattr(self, 'scene_tab'):
+            self.jp_scene_position_frame = ttk.LabelFrame(
+                self.scene_tab, text='Japan · Goemon position (experimental)',
+                padding=7)
+            ttk.Label(
+                self.jp_scene_position_frame,
+                text=('Verified Goemon XYZ only in Oedo South (0x161). '
+                      'Reading is safe; applying values changes guest RAM '
+                      'only after the existing safety confirmation.'),
+                wraplength=920).pack(anchor='w', pady=(0, 4))
+            pos_row = ttk.Frame(self.jp_scene_position_frame)
+            pos_row.pack(fill='x')
+            for axis, value in zip(
+                    ('X', 'Y', 'Z'),
+                    (self.jp_pos_x, self.jp_pos_y, self.jp_pos_z)):
+                ttk.Label(pos_row, text=axis).pack(
+                    side='left', padx=(0, 3))
+                ttk.Entry(pos_row, textvariable=value, width=12).pack(
+                    side='left', padx=(0, 12))
+            ttk.Button(pos_row, text='Read current',
+                       command=self.refresh_japan_position).pack(
+                           side='left', padx=(0, 6))
+            ttk.Button(pos_row, text='Oedo South preset',
+                       command=self.use_japan_oedo_entrance).pack(
+                           side='left', padx=(0, 6))
+            self.jp_scene_position_apply_button = ttk.Button(
+                pos_row, text='Apply XYZ (confirm)',
+                command=self.move_japan_oedo_xyz)
+            self.jp_scene_position_apply_button.pack(side='left')
+            self.jp_scene_position_apply_button.state(['disabled'])
+            ttk.Label(self.jp_scene_position_frame,
+                      textvariable=self.jp_position_result,
+                      wraplength=920).pack(anchor='w', pady=(5, 0))
+
         debug = ttk.Frame(research_tabs, padding=7)
         research_tabs.add(debug, text='Scene warp')
         ttk.Label(
@@ -328,6 +366,9 @@ class JapaneseFieldsUi:
         )
         self.jp_position_apply_button.state(
             ['!disabled'] if enabled else ['disabled'])
+        if hasattr(self, 'jp_scene_position_apply_button'):
+            self.jp_scene_position_apply_button.state(
+                ['!disabled'] if enabled else ['disabled'])
 
     def selected_japan_debug_scene(self):
         """Use the SAME shared scene selection for every ROM region."""
