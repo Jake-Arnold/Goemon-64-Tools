@@ -7,6 +7,7 @@ import unittest
 
 from practice.toolkit import Toolkit
 from practice.japan_direct_scene_reload import JAPAN_PENDING_MAP
+from practice.entrances import Spawn
 from practice.japanese_debug_warp import (
     JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE,
 )
@@ -22,6 +23,7 @@ def make_controller():
     app.__dict__.update(source.__dict__)
     app.jp_auto_warp = None
     app.jp_native_key_release = None
+    app.jp_warp_spawns = {}
     app.selected_japan_debug_scene = lambda: 0x1D1
     app._japan_native_warp_writer = lambda: (writer, writer.rdram())
     app.scene_status = Label()
@@ -57,7 +59,7 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
         for _ in range(3):
             app.poll_japan_native_scene_warp(time.monotonic())
         self.assertIsNone(app.jp_auto_warp)
-        self.assertIn('Japan scene reload reached', app.scene_status.value)
+        self.assertIn('NO DESTINATION XYZ WAS STAGED', app.scene_status.value)
 
     def test_japan_character_selection_stages_yae_before_reload(self):
         app, writer = make_controller()
@@ -82,20 +84,54 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
         app.start_japan_native_scene_warp(destination=0x161)
         self.assertIn('pending', app.scene_status.value)
 
-    def test_direct_reload_entrance_when_unique_source_route_exists(self):
+    def test_captured_japan_warp_point_stages_entire_coordinate_block(self):
         app, writer = make_controller()
-        app.entrance_atlas = {'payload': {'entries': [{
-            'id': '161:001', 'kind': 'exit', 'source_map': 0x161,
-            'destination': 0x1D1, 'position': [4, 8, -10],
-            'heading': 512, 'mode': 0x10, 'exit_id': 1,
-        }]}}
+        # The old self.entrance_atlas was never initialized. Native JP must
+        # now use explicitly user-captured Japan XYZ, not guessed USA entries.
+        app.jp_warp_spawns[0x1D1] = Spawn(
+            0x1D1, (4, 8, -10), heading=512, mode=0x10,
+            label='Japan captured', entrance_id='jp:capture:1D1')
         app.start_japan_native_scene_warp(destination=0x1D1)
         self.assertEqual(app.jp_auto_warp['spawn'].position, (4, 8, -10))
         self.assertEqual(
             writer.rdram().read_guest(JAPAN_PENDING_MAP, 12),
             app.jp_auto_warp['spawn'].pending_bytes())
         self.assertEqual(
-            writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0c')
+            writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1),
+            bytes((12,)))
+        self.assertIn('12-byte entry block', app.scene_status.value)
+
+    def test_japan_loaded_map_reports_wrong_spawn_xyz_not_success(self):
+        app, writer = make_controller()
+        app.jp_warp_spawns[0x1D1] = Spawn(
+            0x1D1, (100, 5, 200), label='Japan captured',
+            entrance_id='jp:capture:1D1')
+        app.start_japan_native_scene_warp(destination=0x1D1)
+        writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((13,)))
+        writer.set_guest(JAPAN_DEBUG_SCENE, bytes.fromhex('01D1'))
+        writer.set_guest(
+            JAPAN_PLAYER_XYZ_START,
+            struct.pack('>fff', 5.0, 0.0, -10.0))
+        for _ in range(3):
+            app.poll_japan_native_scene_warp(time.monotonic())
+        self.assertIsNone(app.jp_auto_warp)
+        self.assertIn('SPAWN MISMATCH', app.scene_status.value)
+        self.assertIn('requested (100.0, 5.0, 200.0)', app.scene_status.value)
+
+    def test_capture_current_japan_xyz_persists_without_game_writes(self):
+        app, writer = make_controller()
+        writer.set_guest(
+            JAPAN_PLAYER_XYZ_START,
+            struct.pack('>fff', -289.0, 0.0, -167.0))
+        writer.writes.clear()
+        with patch('practice.toolkit.save_japan_spawn') as save:
+            app.capture_japan_warp_spawn()
+        save.assert_called_once()
+        self.assertEqual(
+            app.jp_warp_spawns[0x161].position, (-289.0, 0.0, -167.0))
+        self.assertEqual(writer.writes, [])
+        self.assertIn('Captured JP scene', app.scene_status.value)
+
 
     def test_start_failure_has_no_pending_warp_or_scene_change(self):
         app, writer = make_controller()
