@@ -215,18 +215,21 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # Current 306-C proof must fingerprint the exact verifier that ran it.
-        self.assertEqual(current['comparison']['matched_functions'],306)
-        self.assertEqual(current['comparison']['matched_function_bytes'],16292)
+        # Published 307-C canonical proof is pinned to its exact verifier.
+        self.assertEqual(current['comparison']['matched_functions'],307)
+        self.assertEqual(current['comparison']['matched_function_bytes'],16344)
+        historic306=json.loads((ROOT/'results/combined_306_20261116.json').read_text())
+        self.assertEqual(historic306['comparison']['matched_functions'],306)
+        self.assertEqual(historic306['comparison']['matched_function_bytes'],16292)
+        self.assertEqual(historic306['verifier_source_sha256_lf'],
+                         '876390a62891188161c2e32744abb8543a9598e3e7c61fffce04d2eb1a0cda79')
         historic303=json.loads((ROOT/'results/combined_303_20261116.json').read_text())
         self.assertEqual(historic303['comparison']['matched_functions'],303)
         self.assertEqual(historic303['comparison']['matched_function_bytes'],16180)
         self.assertEqual(historic303['verifier_source_sha256_lf'],
                          '0b4556a01128510da5a23ef36e6e55094339e69a7bb070b5b45c213128231769')
-        # Current 306-C G2 is immutable historical evidence; the verifier
-        # now also supports a separate 307-C opt-in research stage.
         self.assertEqual(current['verifier_source_sha256_lf'],
-                         '876390a62891188161c2e32744abb8543a9598e3e7c61fffce04d2eb1a0cda79')
+                         '607fc38152d04ce555ed38a1a16c24fb2e76104833c7c765a5933cb212c1b8ab')
         # The certified historical 210-C proof retains its original hash.
         historic = json.loads((ROOT/'results/combined_210_20261116.json').read_text())
         self.assertEqual(historic['verifier_source_sha256_lf'],

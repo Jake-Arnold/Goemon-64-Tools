@@ -1,7 +1,7 @@
 """Opt-in 144-function USA file_11 mixed-C/ASM stage for full central G2.
 
-Production remains at 143 file_11 C functions. This
-adapter activates only when a separate review manifest explicitly requests
+Canonical production now includes 144 file_11 C functions. This
+adapter activates only when a validated manifest explicitly requests
 goemon-file11-144-central-v1. A matching source fixture is necessary but never
 sufficient: a fresh 307-C whole-ROM build, ELF relocation and inventory gates
 remain mandatory. All files written here are in disposable verifier checkouts.

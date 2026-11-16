@@ -1,10 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-16T17:57:44.257985+00:00",
+  "started_utc": "2026-11-16T18:51:39.308051+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "876390a62891188161c2e32744abb8543a9598e3e7c61fffce04d2eb1a0cda79",
+  "verifier_source_sha256_lf": "607fc38152d04ce555ed38a1a16c24fb2e76104833c7c765a5933cb212c1b8ab",
   "tool_versions": {
     "uv": "uv 0.10.0 (offline wrapper using archived Python 3.12 environment)",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
@@ -50,7 +50,7 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "6246aa4916d936bc9c9bc8d5b9230b76eac741af375d7f47d899afe13adc25ec"
+    "linker_script_sha256": "a3f357401da6e86a375ce89cac83fb2ec10da7670ac822861b96536e17fedc97"
   },
   "overlay_file12_tail_alias": {
     "rom_offset": "0x5E3C8C",
@@ -124,13 +124,13 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "6246aa4916d936bc9c9bc8d5b9230b76eac741af375d7f47d899afe13adc25ec"
+    "linker_script_sha256": "a3f357401da6e86a375ce89cac83fb2ec10da7670ac822861b96536e17fedc97"
   },
   "overlay_file11_object_layout": {
-    "format": "goemon-file11-143-object-layout-v1",
+    "format": "goemon-file11-144-object-layout-v1",
     "objects_original_address_exact": 88,
-    "original_source_C_objects": 44,
-    "original_source_ASM_objects": 44,
+    "original_source_C_objects": 45,
+    "original_source_ASM_objects": 43,
     "normalised_original_NOP_ASM_offsets": [
       "0x5995e8",
       "0x59d4dc",
@@ -223,7 +223,7 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "229e82e693ef9294f78ea53a8092e6c24f49f1dcd4c1401730a66e8b1cb1cb5c"
+    "linker_script_sha256": "fcc0063af095896ebd12794164937b114de9e4bb6fd6f2b7562913974e545a71"
   },
   "object_layout": {
     "kind": "vm_assignment_rodata_metadata_v1",
@@ -260,9 +260,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 306,
-    "claimed_functions": 306,
-    "matched_function_bytes": 16292,
+    "matched_functions": 307,
+    "claimed_functions": 307,
+    "matched_function_bytes": 16344,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -2554,6 +2554,15 @@
         "candidate_sha256": "23f6be3f2c37e1eded6ccd47cb38fd65358dda6866c54e1367d114aa3d827110"
       },
       {
+        "name": "func_801E3008_59EF18",
+        "size": 52,
+        "guest_address": "0x801E3008",
+        "rom_offset": "0x59EF18",
+        "matched": true,
+        "expected_sha256": "01a2ee6edebc172353056fea6431c94c82500d681115481434ececce2f575cc8",
+        "candidate_sha256": "01a2ee6edebc172353056fea6431c94c82500d681115481434ececce2f575cc8"
+      },
+      {
         "name": "func_801E303C_59EF4C",
         "size": 32,
         "guest_address": "0x801E303C",
@@ -3182,6 +3191,7 @@
     "research/file11_143_candidate/file11_wave1_59eda0.c": "587345092294599159bb67a0ade56d388b7da725be2e1335778beac5e46a0d5e",
     "research/file11_143_candidate/file11_wave1_59ee54.c": "b5228bfe37364607c05afdc866f0211f5689e7d32cc832c0dde11fc6fff886ec",
     "research/file11_143_candidate/file11_wave1_59eef0.c": "a40b3ee729ae5d11f23f7c3c967c81dd8accb1f1d2ae15be7d6898c002f5b803",
+    "research/file11_143_candidate/file11_wave6_59ef18.c": "ff2fdde2b4b2a6e4895627ed60be4a826e9f53ffe49d71a76e2bc47a914891d9",
     "research/file11_143_candidate/file11_wave1_59ef4c.c": "22aa9e0cda9a2b26f23c9eb085b640b8d28bc6d0315110de114af392700a9136",
     "research/file11_143_candidate/wave5_59f044.c": "90242da42ae5cb3b6a003a35d2ebf2e7f34ecd8da24b53cb4d8b60396f33a08d",
     "research/file11_143_candidate/file11_wave1_5a0f94.c": "63c976cf1d6c5345b6dc3944ae8267bdb9e784cfd01205880e8d6ee1b45f0291",
@@ -3223,7 +3233,7 @@
     "linked_elf_provenance": {
       "format": "goemon-file43-linked-elf-provenance-v1",
       "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
-      "candidate_elf_sha256": "a25fc1ca97de0cfa426553e8fea35e55c4dd77edbc115720c780c2e839b95034",
+      "candidate_elf_sha256": "273c3ee1d65db44ce0dd198b3497829bcbac9661d3bc25f68c6047bf458b1314",
       "reference_section": {
         "name": ".file_43",
         "vma_start": "0x08000000",
@@ -3373,7 +3383,7 @@
     "linked_elf_provenance": {
       "format": "goemon-file12-linked-elf-provenance-v1",
       "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
-      "candidate_elf_sha256": "a25fc1ca97de0cfa426553e8fea35e55c4dd77edbc115720c780c2e839b95034",
+      "candidate_elf_sha256": "273c3ee1d65db44ce0dd198b3497829bcbac9661d3bc25f68c6047bf458b1314",
       "reference_section": {
         "name": ".file_12",
         "vma_start": "0x8020D2A0",
@@ -3494,7 +3504,7 @@
       "full_section_relocations_semantically_match": true,
       "raw_relocation_section_bytes_identical": false,
       "reference_raw_relocation_sha256": "48c95b35cdbd659707e557eead6b8e65d7fe389d3ff1bb2a9240719527087933",
-      "candidate_raw_relocation_sha256": "b87416c4410e6ca4768b704eb737e366d74b824050f3af466d741a888d9ab64e",
+      "candidate_raw_relocation_sha256": "0b9b2acd8e663de19252bee0b763566bd0a26ea6f6035a68da09a67fee6a06c7",
       "relocation_symbol_metadata_normalizations": {
         "notype_to_object_data_symbols": 296,
         "absolute_to_overlay_tail_alias": 4,
@@ -3505,11 +3515,11 @@
     }
   },
   "overlay_file11_stage": {
-    "format": "goemon-file11-143-central-original-link-v1",
+    "format": "goemon-file11-144-central-original-link-v1",
     "status": "PASS",
-    "original_address_matching_c": 143,
-    "additional_beyond_50_existing": 93,
-    "file11_C_instruction_bytes": 3908,
+    "original_address_matching_c": 144,
+    "additional_beyond_50_existing": 94,
+    "file11_C_instruction_bytes": 3960,
     "original_native_object_provenance_checked": 88,
     "normalised_NOP_asm_symbol_tables": [
       "0x5995e8",
@@ -3521,7 +3531,7 @@
     "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "complete_rom_bytes_equal": 33554432,
     "native_elf_inventory": "REQUIRES decomp.inventory after central G2",
-    "stage": "goemon-file11-143-central-v1"
+    "stage": "goemon-file11-144-central-v1"
   },
   "overlay_file13_stages": {
     "stages": [
@@ -3597,5 +3607,5 @@
       ]
     }
   },
-  "ended_utc": "2026-11-16T17:58:28.165916+00:00"
+  "ended_utc": "2026-11-16T18:52:23.737462+00:00"
 }

@@ -21,9 +21,12 @@ class File11144StageTests(unittest.TestCase):
         m['overlay_file11_stage'] = {'format': trial.STAGE_FORMAT}
         return m
 
-    def test_prod_306_unchanged_and_307_research_claims(self):
-        self.assertEqual(verify.file11_stage_mode(self.canonical), 143)
-        self.assertEqual(len(verify.claimed_functions(self.canonical)), 306)
+    def test_prod_307_canonical_and_preserves_306_historical_stage(self):
+        self.assertEqual(verify.file11_stage_mode(self.canonical), 144)
+        self.assertEqual(len(verify.claimed_functions(self.canonical)), 307)
+        historical = copy.deepcopy(self.canonical)
+        historical['overlay_file11_stage'] = {'format': prior.STAGE_FORMAT}
+        self.assertEqual(len(verify.claimed_functions(historical)), 306)
         m = self.opt_in()
         self.assertEqual(verify.file11_stage_mode(m), 144)
         claims = verify.claimed_functions(m)
@@ -62,7 +65,9 @@ class File11144StageTests(unittest.TestCase):
         self.assertNotIn('build/usa/asm/usa/59EF18.s.o',trial.object_targets())
 
     def test_refuse_wrong_stage_or_modified_source_and_digest(self):
-        with self.assertRaises(ValueError): trial.reviewed_plan(self.canonical)
+        historical = copy.deepcopy(self.canonical)
+        historical['overlay_file11_stage'] = {'format': prior.STAGE_FORMAT}
+        with self.assertRaises(ValueError): trial.reviewed_plan(historical)
         orig=trial.load_fixture()
         for field,value in [('source','void other(void){}'),
                             ('source_sha256','0'*64),
