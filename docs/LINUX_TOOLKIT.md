@@ -2,6 +2,24 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Repository-bundled entrance atlas (v0.11.25)
+
+The next stable source of scene warp coordinates is the **version-controlled, checked-in numeric table** `practice/data/entrance-coordinates.json`. Both USA and Japan load it automatically, without a ROM or per-user setup. Each destination scene may contain multiple entrances (source scene, ID, XYZ, heading, mode), all of which remain distinct.
+
+**The actual full table has not been supplied or committed yet.** To generate it once on Ubuntu using your own original USA ROM:
+
+```bash
+cd ~/Desktop/Goemon-64-Tools-JP-Recomp
+git pull --ff-only
+python3 -m practice.entrances \
+  --rom "/path/to/original-usa.z64" \
+  --output "/tmp/goemon-entrance-coordinates.json"
+```
+
+Upload **only** `/tmp/goemon-entrance-coordinates.json`, not the ROM. After validating the extractor's ROM SHA1/schema/checksum and reviewing the numeric data, that JSON can be committed to `practice/data/entrance-coordinates.json`. It will be available to both regional warps with `git pull` and will take precedence over all locally cached coordinate data.
+
+Until the JSON is actually committed, the toolkit loads an existing validated user atlas from XDG_CONFIG_HOME, migrates legacy `practice/entrances.json` where available, and retains the single observed Oedo South position as a no-ROM fallback. The code refuses guessed positions in scenes without any recorded entrance. For the reviewed schema and extraction steps, see `practice/data/README.md`.
+
 ## Fixed entrance coordinates without a ROM at launch (v0.11.24)
 
 Both USA and Japanese Scene Browsers now consult a **persistent entrance-coordinate table** keyed by scene and individual entrance ID. The full original-USA ROM-derived table is stored under `~/.config/GoemonSpeedrunTools/entrance-coordinates.json` on Ubuntu (using XDG_CONFIG_HOME if set), **outside** the git checkout. The toolkit loads it automatically every launch. Any validated `practice/entrances.json` created by an older version is migrated on first launch, so changing the toolkit checkout does not lose already extracted coordinates. The original ROM can be removed after a successful one-time import, and does not need to be opened again for regular warps.
