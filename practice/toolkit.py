@@ -736,7 +736,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         consent = messagebox.askyesno(
             'Move Goemon to XYZ?',
             'Experimental Japanese position write — Oedo Town South only.'
-            '\n\nCreate a complete Project64/Mupen savestate before proceeding.'
+            '\n\nBack up your save; native recomp does not support full savestates.'
             f'\nCurrent XYZ: ({current[0]:.3f}, {current[1]:.3f}, {current[2]:.3f})'
             f'\nRequested XYZ: ({coords[0]:.3f}, {coords[1]:.3f}, {coords[2]:.3f})'
             '\n\nOnly the verified 12 position bytes at '
@@ -752,19 +752,22 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         original = self.jp_rdram
         try:
             target = self.jp_backend
-            if target not in ('project64', 'mupen64plus'):
-                raise RuntimeError('Japanese emulator backend is not confirmed')
+            if target not in ('project64', 'mupen64plus', 'recomp'):
+                raise RuntimeError('Japanese backend is not confirmed')
             if target == 'project64' and sys.platform != 'win32':
                 raise RuntimeError('Project64 position writes require Windows')
             if self.connection_target.get() != target:
                 raise RuntimeError('Selected emulator changed; reconnect')
-            if verified_emulator_pid(pid, target) != (pid, target):
-                raise RuntimeError('Verified emulator process changed; reconnect')
+            check = (verified_japan_recomp_pid(pid) if target == 'recomp'
+                     else verified_emulator_pid(pid, target))
+            if check != (pid, target):
+                raise RuntimeError('Verified Japanese process changed; reconnect')
             probes = verified_japan_probes(self.verified_rom_path)
             writable = HostProcess(pid, writable=True)
-            verified = validate_rdram_base(
-                writable, original.base, original.endian, probes,
-                allow_4mb=(target == 'project64'))
+            verified = (validate_japan_recomp_writer(writable, original, probes)
+                        if target == 'recomp' else validate_rdram_base(
+                            writable, original.base, original.endian, probes,
+                            allow_4mb=(target == 'project64')))
             if getattr(verified, 'rdram_size', 0x800000) != getattr(
                     original, 'rdram_size', 0x800000):
                 raise RuntimeError('Japanese RDRAM mapping size changed; reconnect')
@@ -795,7 +798,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.refresh_japan_position()
         message = (
             'Goemon moved to requested XYZ in Oedo South (verified read-back). '
-            'Restore emulator savestate if movement or collision is invalid.'
+            'Check the game and saved progress if movement or collision is invalid.'
             if outcome.changed else 'Goemon was already at the specified XYZ.')
         result_text.set(message)
         self.status.set(message)
@@ -833,7 +836,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             f'\n\nTarget hint (NOT auto-selected): '
             f'{SCENES[destination]} (0x{destination:03X})'
             f'\nExpected menu category/index (USA-derived): {category} / {index}'
-            '\n\nMake a Project64/Mupen64Plus savestate before proceeding.'
+            '\n\nBack up your save; native recomp does not support full savestates.'
             '\nThe ONLY proposed RAM change is 0x800CD284: 0D → 0A.'
             '\nThe game must complete destination navigation and loading.'
             '\nNo scene IDs, pending maps, exit flags or coordinates are written.',
@@ -845,19 +848,22 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         writable = None
         try:
             target = self.jp_backend
-            if target not in ('project64', 'mupen64plus'):
-                raise RuntimeError('Japanese emulator backend not verified')
+            if target not in ('project64', 'mupen64plus', 'recomp'):
+                raise RuntimeError('Japanese backend not verified')
             if target == 'project64' and sys.platform != 'win32':
                 raise RuntimeError('Project64 debug entry requires Windows')
             if self.connection_target.get() != target:
                 raise RuntimeError('Selected emulator backend changed; reconnect')
-            if verified_emulator_pid(pid, target) != (pid, target):
-                raise RuntimeError('Target emulator PID changed; reconnect')
+            check = (verified_japan_recomp_pid(pid) if target == 'recomp'
+                     else verified_emulator_pid(pid, target))
+            if check != (pid, target):
+                raise RuntimeError('Target Japanese process changed; reconnect')
             probes = verified_japan_probes(self.verified_rom_path)
             writable = HostProcess(pid, writable=True)
-            verified = validate_rdram_base(
-                writable, original.base, original.endian, probes,
-                allow_4mb=(target == 'project64'))
+            verified = (validate_japan_recomp_writer(writable, original, probes)
+                        if target == 'recomp' else validate_rdram_base(
+                            writable, original.base, original.endian, probes,
+                            allow_4mb=(target == 'project64')))
             if getattr(verified, 'rdram_size', 0x800000) != getattr(
                     original, 'rdram_size', 0x800000):
                 raise RuntimeError('Emulator guest RAM size changed; reconnect')
@@ -895,32 +901,36 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.refresh_japan_fields(force=True)
 
     def _japan_native_warp_writer(self):
-        """Reverify exact Japan ROM, Project64 PID and live RAM before each step.
+        """Reverify exact Japan ROM, process identity and live RAM before each step.
 
         Returns a short-lived host and matching guest reader; caller closes host.
         This path is independent of USA's layout and never trusts saved PID/base.
         """
         original = self.jp_rdram
         pid = self.game_pid
+        target = self.jp_backend
         if (self.active_version.key != 'japan'
                 or self._connecting or original is None or pid is None
                 or self.verified_rom_path is None
                 or getattr(self.args, 'read_only', False)
                 or not (getattr(self.args, 'enable_japan_scene_writes', False)
                         or getattr(self.args, 'enable_japan_debug_menu_writes', False))
-                or self.jp_backend != 'project64'
-                or self.connection_target.get() != 'project64'
-                or sys.platform != 'win32'):
+                or target not in ('project64', 'recomp')
+                or self.connection_target.get() != target
+                or (target == 'project64' and sys.platform != 'win32')):
             raise RuntimeError(
-                'Instant warp requires verified Japanese Project64 and '
-                '--enable-japan-scene-writes (legacy debug-write opt-in also accepted)')
-        if verified_emulator_pid(pid, 'project64') != (pid, 'project64'):
-            raise RuntimeError('Project64 PID changed; reconnect')
+                'Instant warp requires verified Japanese Project64 or native recomp '
+                'and enabled Japan scene writes (without --read-only)')
+        check = (verified_japan_recomp_pid(pid) if target == 'recomp'
+                 else verified_emulator_pid(pid, target))
+        if check != (pid, target):
+            raise RuntimeError('Japanese game PID changed; reconnect')
         probes = verified_japan_probes(self.verified_rom_path)
         handle = HostProcess(pid, writable=True)
         try:
-            verified = validate_rdram_base(
-                handle, original.base, original.endian, probes, allow_4mb=True)
+            verified = (validate_japan_recomp_writer(handle, original, probes)
+                        if target == 'recomp' else validate_rdram_base(
+                            handle, original.base, original.endian, probes, allow_4mb=True))
             if getattr(verified, 'rdram_size', 0x800000) != getattr(
                     original, 'rdram_size', 0x800000):
                 raise RuntimeError('Japan RAM mapping size changed; reconnect')
@@ -1055,7 +1065,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or getattr(self.args, 'read_only', False)
                 or self.jp_rdram is not pending['reader']
                 or self.game_pid != pending['pid']
-                or self.jp_backend != 'project64'
+                or self.jp_backend not in ('project64', 'recomp')
                 or self._connecting):
             self._finish_japan_native_warp(
                 'Japan scene reload cancelled: emulator session changed')
@@ -1093,7 +1103,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                         f'Japan scene reload reached 0x{pending["destination"]:03X} '
                         f'{SCENES[pending["destination"]]} with three stable '
                         'gameplay/character/XYZ reads. Confirm actual controls '
-                        'and footing in Project64.' + spawn_note)
+                        f'and footing in {self.jp_backend}.' + spawn_note)
             else:
                 pending['stable'] = 0
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
