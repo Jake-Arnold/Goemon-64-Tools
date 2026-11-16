@@ -27,4 +27,4 @@ jobs:
       - name: Compile Python practice modules
         run: python -m compileall -q practice
       - name: Verify Windows-compatible report and version functions
-        run: python -m unittest tests.test_reports tests.test_value_search tests.test_toolkit_version -v
+        run: python -m unittest tests.test_reports tests.test_discovery_results tests.test_value_search tests.test_toolkit_version -v
