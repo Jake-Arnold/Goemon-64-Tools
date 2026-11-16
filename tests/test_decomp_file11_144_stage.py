@@ -86,7 +86,7 @@ class File11144StageTests(unittest.TestCase):
         results = ROOT / 'decomp/results'
         proof = json.loads((results/'file11_144_native_trial_20261116.json').read_text())
         audit = json.loads((results/'file11_crossbranch_306_reconciliation_20261116.json').read_text())
-        self.assertEqual(proof['status'], 'NATIVE_G2_AND_INVENTORY_MATCH_RESEARCH_ONLY')
+        self.assertEqual(proof['status'], 'FULL_NATIVE_G2_INVENTORY_AND_CI_PASS_RESEARCH_ONLY')
         self.assertTrue(proof['canonical_production_unchanged'])
         self.assertEqual(proof['candidate']['matching_c_functions'], 307)
         self.assertEqual(proof['candidate']['matching_c_bytes'], 16344)
@@ -98,6 +98,11 @@ class File11144StageTests(unittest.TestCase):
         self.assertEqual(proof['inventory']['remaining_assembly'], 7056)
         self.assertEqual(proof['inventory']['extra_positive_aliases'], 0)
         self.assertEqual(proof['full_local_ci']['status'], 'PASS')
+        self.assertEqual(len(proof['proof_provenance']['full_central_g2_cli_report_sha256']), 64)
+        full_g2 = results/'file11_144_native_full_g2_20261116.json'
+        self.assertEqual(hashlib.sha256(full_g2.read_bytes()).hexdigest(),
+                         proof['proof_provenance']['full_central_g2_cli_report_sha256'])
+        self.assertEqual(json.loads(full_g2.read_text())['comparison']['matched_functions'], 307)
         self.assertEqual((audit['file11_research_discovered'],
                           audit['file11_already_promoted_from_research'],
                           audit['file11_not_yet_promoted']), (207,93,114))

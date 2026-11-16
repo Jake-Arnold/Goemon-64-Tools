@@ -36,13 +36,11 @@ The initial verifier command reached the asset-link phase but exceeded the
 bounded execution session. Its candidate build was resumed via `make` and
 completed. The exact existing verifier post-build comparisons and overlay
 checks were then executed directly and the inventory was run with the standard
-CLI. This does **not** constitute an uninterrupted standard `decomp.verify`
-CLI report, so this work is review-only and **does not raise the canonical 306**.
+CLI. A further, separately executed **uninterrupted standard `decomp.verify` CLI** completed with `status=matched` and 307/307 C functions. Its report SHA-256 is `904337186b789bca19150080a520b99c7380c511e2ccb47656c1171c9cfeb94e`; the official `decomp.inventory --manifest` run also passed at 307 C, 7,056 ASM and zero aliases. This work remains **review-only until the production manifest/proof is formally updated**.
 
 ### Follow-up gates
 
-- Re-run the opt-in 307 candidate through the standard full verifier (with sufficient
-  build time or a fail-closed resumable CLI checkpoint) and create its standard report.
+- The opt-in 307 candidate has now passed the uninterrupted standard full verifier and inventory; preserve its full reports and complete formal production publication/CI reconciliation before promotion.
 - Local CI passed on the isolated opt-in source (222 decomp, 160 verifier/ledger tests, task evidence audit, and GCC ASan/UBSan host regression). Preserve historical 306/303 G2 proofs.
 - Review and formally promote the 307 result only after all stages pass together.
 - Expand the multi-island adapter to the additional 114 candidates after prioritizing
