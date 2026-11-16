@@ -28,6 +28,8 @@ class File11160StageTests(unittest.TestCase):
         self.trial["overlay_file11_stage"] = {"format": new.STAGE_FORMAT}
 
     def test_canonical_unmodified_and_trial_count(self):
+        self.assertEqual(new.STAGE_FORMAT, 'goemon-file11-160-central-v1')
+        self.assertNotEqual(new.STAGE_FORMAT, old.STAGE_FORMAT)
         self.assertEqual(verify.file11_stage_mode(self.canonical), 152)
         self.assertEqual(len(verify.claimed_functions(self.canonical)), 315)
         self.assertEqual(verify.file11_stage_mode(self.trial), 160)
@@ -82,6 +84,9 @@ class File11160StageTests(unittest.TestCase):
         objects = new.source_objects()
         self.assertEqual(len(objects), 90)
         self.assertEqual(sum(x[1] for x in objects), 0x5B8500 - 0x587370)
+        self.assertEqual(new.NEW_FUNCTION_SOURCE_SHA256, c['source_sha256'])
+        self.assertEqual(new.NEW_FUNCTION_OBJECT_SHA256, c['trimmed_obj_sha256'])
+        self.assertEqual(new.NEW_FUNCTION_ROM_SHA256, c['original_sha256'])
         self.assertEqual(objects[60][0].as_posix(),
                          "build/usa/src/file11_eight_callbacks.c.o")
 

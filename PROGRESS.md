@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Correct 323-C PR stage contract and native object proof count
+
+- Changed: fixed `decomp/file11_160_stage.py` to declare `goemon-file11-160-central-v1` (not its copied 152-C format), pin the eight-function C source/object/ROM hashes rather than the previous wave's hashes, report all **90** verified native objects instead of 88, and assert the **50 C / 40 ASM** source split. Strengthened regression tests to check the literal version string and new native fingerprints.
+- Why: despite exact native 323-C ROM and original ELF inventory matches in local scratch, the draft connector branch had a stale format constant that would fail opt-in review dispatch and misreport object provenance.
+- Tested: version-dispatch and fixture structural invariants inspected against the canonical production 315-C manifest; full current-branch CI and official acceptance runner remain pending.
+- Next: run the updated adapter and current-branch ROM-free tests in the reconstructed local checkout, then execute the official 323-C G2/inventory/CI acceptance suite.
+
+
 ### 2026-11-16 — 323-C combined native G2 and 7,376-entry inventory PASS in reconstructed local scratch
 
 - Changed: recorded independently executed combined native G2 and original-ELF inventory evidence for PR #41, with complete current-repo CI explicitly marked **pending**. No production manifest or canonical result changed.

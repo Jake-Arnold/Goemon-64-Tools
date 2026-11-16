@@ -23,7 +23,7 @@ from .research.file11_143_candidate.verify_file11_143 import (
 
 ROOT = Path(__file__).resolve().parent
 FIXTURE = ROOT / 'research/file11_143_candidate/file11_160_source_fixture.json'
-STAGE_FORMAT = 'goemon-file11-152-central-v1'
+STAGE_FORMAT = 'goemon-file11-160-central-v1'
 ORIGINAL_STAGE_FORMAT = usa_file11_noop_groups.STAGE_FORMAT
 START = 0x587370
 END = 0x5B8500
@@ -35,9 +35,9 @@ NEW_LINKER = '.file_11 0x801CB460 : AT(file_11_ROM_START) SUBALIGN(4)'
 # instructions; the resulting ASM .o symbol tables cannot match the original
 # unnormalised original 143-C research object's full-file SHA-256.
 NORMALIZED_NOP_ALIAS_ASM_OFFSETS = frozenset((0x5995E8, 0x59D4DC, 0x5AEBDC))
-NEW_FUNCTION_SOURCE_SHA256 = 'ff2fdde2b4b2a6e4895627ed60be4a826e9f53ffe49d71a76e2bc47a914891d9'
-NEW_FUNCTION_OBJECT_SHA256 = '89980da48f2448a3af0a06fd6346dd2c87c5def09266cf53055d245a91496e1b'
-NEW_FUNCTION_ROM_SHA256 = '01a2ee6edebc172353056fea6431c94c82500d681115481434ececce2f575cc8'
+NEW_FUNCTION_SOURCE_SHA256 = '7919d61ac0453f342629d51186b1ddf16f3716f527b411c93716815941122d60'
+NEW_FUNCTION_OBJECT_SHA256 = 'c79a3a252f4b78ce0e5188a8406842e532ed3a9d4b44ad98f0314eee8c475ca1'
+NEW_FUNCTION_ROM_SHA256 = 'b1fbaa8f74fec1f63e9f3cf2d0647daf26fd008a135cba0f767e5958113dcff1'
 
 
 
@@ -181,8 +181,10 @@ def source_objects() -> list[tuple[Path, int, dict]]:
         else:
             path = Path('build/usa/asm/usa') / (f"{chunk['rom_start']:X}.s.o")
         result.append((path, chunk['size'], chunk))
-    if len(result) != 90:
-        raise ValueError('Expected original 44 C/44 ASM object ownership')
+    if (len(result) != 90 or
+            sum(chunk['kind'] == 'c' for chunk in load_fixture()['chunks']) != 50 or
+            sum(chunk['kind'] == 'asm' for chunk in load_fixture()['chunks']) != 40):
+        raise ValueError('Expected 50 C and 40 ASM original objects')
     return result
 
 
@@ -191,7 +193,7 @@ def object_targets() -> list[str]:
 
 
 def prepare_objects(checkout: Path) -> dict:
-    """Trim only original zero padding; require all 88 exact object digests."""
+    """Trim only original zero padding; require all 90 pinned object digests."""
     checkout = Path(checkout)
     staged = []
     alias_normalized = []
@@ -264,7 +266,7 @@ def verify_linked(checkout: Path, expected_rom: bytes, original_elf: Path) -> di
         'format': 'goemon-file11-160-central-original-link-v1',
         'status': 'PASS', 'original_address_matching_c': 160,
         'additional_beyond_50_existing': 110, 'file11_C_instruction_bytes': 4628,
-        'original_native_object_provenance_checked': 88,
+        'original_native_object_provenance_checked': 90,
         'normalised_NOP_asm_symbol_tables': [hex(x) for x in sorted(NORMALIZED_NOP_ALIAS_ASM_OFFSETS)],
         'original_semantic_file11_relocations': len(original_rel),
         'candidate_semantic_file11_relocations': len(candidate_rel),
