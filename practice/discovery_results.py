@@ -140,7 +140,7 @@ def add_research_watches(owner, candidates, *, label):
                     address + delta, "f32"))
         else:
             specs.append(make_watch(
-                f"{label} 0x{address:08X}", address, kind))
+                f"{label} {kind} 0x{address:08X}", address, kind))
 
     attr = "jp_custom_watches" if region == "japan" else "custom_watches"
     existing = getattr(owner, attr, None)
@@ -149,7 +149,7 @@ def add_research_watches(owner, candidates, *, label):
         for spec in specs:
             if region == "japan":
                 owner.add_japan_custom_watch_from_search(
-                    f"0x{spec.address:08X}", spec.kind, label=spec.name)
+                    f"0x{spec.address:08X}", spec.kind)
             else:
                 owner.user_watch_name.set(spec.name)
                 owner.user_watch_address.set(f"0x{spec.address:08X}")
@@ -311,7 +311,12 @@ class DiscoveryResultsPanel:
                     f"All {duplicates} selected watches already exist")
             if added and hasattr(self.owner, "notebook") and hasattr(
                     self.owner, "live_memory_tab"):
-                self.owner.notebook.select(self.owner.live_memory_tab)
+                target = self.owner.live_memory_tab
+                if (getattr(getattr(self.owner, "active_version", None),
+                            "key", "usa") == "japan"
+                        and getattr(self.owner, "jp_custom_watches", None) is None):
+                    target = getattr(self.owner, "jp_fields_tab", target)
+                self.owner.notebook.select(target)
         except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
             self.live_status.set(f"Cannot watch selected candidates: {exc}")
 
@@ -383,7 +388,11 @@ class DiscoveryResultsPanel:
                     generation, token, values, error = self._pending.get_nowait()
                 except queue.Empty:
                     break
-                if generation != self._generation or token != self._attached_reader()[1]:
+                if generation != self._generation:
+                    continue
+                if token != self._attached_reader()[1]:
+                    self._busy = False
+                    self.live_status.set("Connection changed; reconnect to refresh")
                     continue
                 self._busy = False
                 if error is not None:
