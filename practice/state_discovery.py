@@ -18,15 +18,6 @@ FOCUSED_RANGES = (
 )
 WIDE_RANGE = ('base_4mb', 0x80000000, 0x400000)
 DYNAMIC_RANGES = (('player_task', 'task_ptr', 0xF0), ('player_object', 'player_ptr', 0x98))
-PROBE_ACTIONS = {
-    'Travel destinations': 'Capture A before visiting a never-before-seen dragon travel stop; B after it is unlocked. Expect persistent bits, not necessarily one byte per destination.',
-    'Map displayed': 'Hold still in an outdoor area. Capture A with C-Right map hidden; B with map visible; C after hiding again.',
-    'Selected item / weapon': 'Equipped weapon index confirmed at 0x8015C607: 01/02/03 for each character. Compare A/B/C to investigate other item selection and animation fields.',
-    'Magic active': 'Capture A before C-Up, B while the magic effect is active, C after it ends. Repeat separately for Goemon, Ebisumaru, Sasuke and Yae.',
-    'Player velocity': 'Capture A while stationary, B while moving or jumping and C when stationary again. Player-task float candidates are shown separately; observed XYZ speed is already displayed on Dashboard.',
-    'Storyline event / quest flag': 'For Benkei first conversation or Ushiwaka fish completion: A before dialogue/reward, B afterward, same map. No C for irreversible events. Saved event-flag bytes start at 0x8015C608.',
-    'Item ownership only': 'A before adding Achilles Heel item to inventory; B after the edit, without talking to NPCs or completing Ushiwaka. Contrast with actual minigame reward capture.',
-}
 
 
 @dataclass(frozen=True)
@@ -125,8 +116,6 @@ def compare_captures(before: ProbeCapture, after: ProbeCapture,
             is_bit=mask.bit_count()==1
             binary=a in (0,1) and b in (0,1)
             score=(50 if returned else 0)+(20 if binary else 0)+(12 if is_bit else 0)
-            if old.name in ('game_data','base_4mb') and before.label.lower().startswith('travel'):
-                score+=5
             if old.name=='player_task':
                 score+=3
             row={'address':f'0x{old.address+i:08X}', 'region':old.name,
@@ -159,8 +148,6 @@ def compare_captures(before: ProbeCapture, after: ProbeCapture,
         event_changes.append(dict(address=row['address'],before=row['before'],after=row['after'],
             bits_set=f'{b & ~a:02X}',bits_cleared=f'{a & ~b:02X}',confirmed=False))
         row['kind']='saved event flag candidate'
-        if before.label.lower().startswith(('storyline','item ownership')):
-            row['score']+=30
     rows.sort(key=lambda v:(-v['score'],v['region'],int(v['address'],16),v['width']))
     return {
         'format':'goemon-state-difference-v1',
