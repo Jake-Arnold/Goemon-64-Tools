@@ -132,7 +132,7 @@ class UnlocksMixin:
             self.active_version.key == 'japan'
             and self.jp_rdram is not None
             and getattr(self, 'game_pid', None) is not None
-            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus')
+            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus', 'recomp')
             and getattr(getattr(self, 'connection_target', None),
                         'get', lambda: None)() == self.jp_backend
             and not getattr(self, '_connecting', False)
