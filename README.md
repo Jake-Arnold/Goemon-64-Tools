@@ -2,15 +2,15 @@
 
 ## v0.11.27 — consolidate active USA/Japan toolkit development
 
-All **current toolkit** development is now on **`chatgptweb/toolkit-unified`**. This branch was created directly from the complete v0.11.26 Japanese-native-recomp toolkit, with **no feature-code reset or overwrite**. It retains the current USA and Japan toolkit implementation, supported writes and process backends, Ubuntu dock launcher, 888-entry source-verified original-USA entrance atlas, unified Scene Browser, and live-memory/checkpoint tooling.
+The unified v0.11.27 USA/Japan toolkit has been **merged into `main` via PR #27**. The merge preserves the v0.11.26 Japanese-native-recomp toolkit and full 888-entrance atlas, with no feature-code reset or overwrite. It retains the current USA and Japan toolkit implementation, supported writes and process backends, Ubuntu dock launcher, 888-entry source-verified original-USA entrance atlas, unified Scene Browser, and live-memory/checkpoint tooling.
 
 This consolidates **the active development target**, not the separate decompilation project. The older Japan toolkit, Mupen probe, native savestate, Linux prototype and earlier Japan integration branches are now **historical references**, not parallel locations for new toolkit work. Their earlier `practice/toolkit.py` and `practice/ui_extension.py` method inventories were compared with the v0.11.26 baseline; the latest toolkit contains all method names from both earlier consolidation/integration controllers, with later ROM-validation and native-recomp logic. Old code that was deliberately removed, such as the separate experimental speed controls, has not been reintroduced.
 
-**All future toolkit changes should target `chatgptweb/toolkit-unified` only.** The previous v0.11.26 feature branch and its PR remain intact as history, but the unified branch is the single active candidate for eventual merge to `main`. Do not merge unrelated `decomp`, `file11`, Impact or ROM-research trees blindly.
+**All future toolkit changes should branch from `main` into short-lived `toolkit/*` branches, then merge reviewed PRs back into `main`.** The permanent decomp baseline stays at `chatgptweb/decomp`, with research branches off it. The previous toolkit feature branches remain historical only. Do not merge unrelated `decomp`, `file11`, Impact or ROM-research trees blindly.
 
 Full branch map, scope, old-branch provenance and Ubuntu checkout commands: **[Toolkit branch policy](docs/TOOLKIT_BRANCH_POLICY.md)**.
 
-This is a branch consolidation and documentation release; it has not yet run the user's Ubuntu GUI regression suite or live USA/Japanese warp/write tests. The unified PR remains draft until those checks pass.
+This is a branch consolidation release; PR #27 merged into `main` on 16 November 2026. Its Ubuntu GUI regression suite and live USA/Japanese warp/write checks had not run at merge time, so runtime acceptance remains outstanding.
 
 ## Previous v0.11.26 — bundled complete USA/Japan warp entrance atlas
 ## v0.11.26 — extracted user-supplied coordinates committed to Git
