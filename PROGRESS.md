@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — PR #41 160-file11 adapter uniqueness gate corrected
+
+- Changed: fixed the 160-stage `source_payloads` duplicate-source guard: the 160-function layout has **50** unique C objects, not the earlier 49. The old test would always reject a valid 323-function trial before the native build, despite the matching `len(result)==50` check.
+- Why: the independent native combined run reached the 160-stage source staging and exposed this stale invariant. This is a real implementation defect, not an original-ROM mismatch.
+- Tested: isolated local reviewed 160-stage plan has exactly 50 unique source objects across 90 original-address slices; the corrected guard passes locally and subsequent native candidate staging proceeds. The complete combined 323-C acceptance, original inventory and full local CI are still pending.
+- Next: complete native 323-C G2, verify original function inventory and full ROM-free CI before promoting the canonical manifest.
+
+
 ### 2026-11-16 — Reproduced USA next-eight native proof; all 7,376 original FUNC identities preserved (scratch)
 
 - Changed: published another independently rebuilt pinned-upstream candidate audit for PR #41; strengthened prior named-function subset comparison from 7,098 to the full original 7,376 positive-sized FUNC symbol names, VMAs, and sizes. No changes to the canonical 315-C manifest, combined G2 proof, or original inventory.

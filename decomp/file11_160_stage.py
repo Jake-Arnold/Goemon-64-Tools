@@ -168,7 +168,7 @@ def source_payloads(checkout: Path, plan: dict) -> list[tuple[Path, str]]:
         if destination.exists():
             raise FileExistsError('Existing 160-C candidate source: ' + str(destination))
         result.append((destination, source))
-    if len(result) != 50 or len({x[0] for x in result}) != 49:
+    if len(result) != 50 or len({x[0] for x in result}) != 50:
         raise ValueError('Incomplete or repeated original C source identities')
     return result
 
