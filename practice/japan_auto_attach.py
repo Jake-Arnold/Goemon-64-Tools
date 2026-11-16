@@ -133,5 +133,7 @@ def remember_verified_connection(candidate: JapanProcessCandidate,
         try:
             save_hint(candidate.executable, candidate.backend,
                       probes, base, endian)
-        except OSError:
+        except (OSError, ValueError, TypeError):
+            # Invalid or unwriteable preference data must never prevent a
+            # proven live connection or leak its process handle.
             pass
