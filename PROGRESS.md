@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.30 GUI smoke hang after 290 passing unit tests
+
+- **Fresh user log:** Stage-5 native JP runtime tests **15/15 passed**, CMake/Clang linked `Goemon64RecompiledJP`, and the sampled execution joined its timer worker and exited; no SIGSEGV observed in this run. Toolkit's **290 non-GUI tests passed**. The Xvfb UI suite then logged many FAIL/ERROR lines in USA-specific `test_value_freezes_ui`, `test_story_progress_ui`, `test_dashboard`, and `test_entrance_ui`; output ceased during `test_scene_request_blocks_overlapping_checkpoint_restore` with no UI summary.
+- **Identified test-state leak:** Several Japan UI tests call `on_game_version_changed()` and therefore persist `japan` via `save_last_region`. Later USA-only `Toolkit(parse_args([]))` fixtures inherited that selection, invalidating their fake USA RAM and warp assumptions. The checkpoint-overlap test's intended pending direct warp never became active, allowing `restore_full_checkpoint()` to reach an Xvfb-invisible modal confirmation. This is a strong explanation for the hang, but a stack trace was not captured.
+- **Fixed in PR #33:** Pin USA-only fixture constructors in `test_value_freezes_ui`, `test_story_progress_ui`, `test_dashboard`, `test_entrance_ui`; add explicit region assertions. Start Japan UI-transition tests in a deterministic USA state and mock saved-region writes. Wrap the complete Linux suite in a temporary `XDG_CONFIG_HOME` to avoid touching real user settings; bound GUI tests with GNU `timeout` (120s default). The previously hanging entrance/checkpoint test asserts a pending USA warp and forbids unexpected Tk modal confirmations.
+- **Safety:** Test harness changes only; production connection, ROM verification, warp and native game code unchanged. Existing pending v0.11.30 feature review remains draft.
+- **Outstanding:** Rerun `bash scripts/test_japan_party.sh` with the updated feature branch, record full GUI suite summary, and live-test actual Japanese process attachment/warps separately. The later 0x081 independent native-recomp room issue is not diagnosed by this test correction.
+
 ## 2026-11-16 — v0.11.30 unrestricted JP debug button, verified auto-attach and warp status
 
 - **Branch strategy:** New `toolkit/japan-debug-autoattach-warp-reliability` from canonical `main` v0.11.27. Keep separate pending v0.11.29 launcher/test-bugfix PR #30 untouched. The feature release uses 0.11.30 and must be refreshed after that pending PR before final integration.
