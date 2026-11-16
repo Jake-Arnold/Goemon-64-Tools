@@ -1,4 +1,23 @@
-# Goemon Speedrun Tools v0.11.31 — Japanese connection and entrance-selection reliability
+# Goemon Speedrun Tools v0.11.32 — unified memory discovery test prototype
+
+## v0.11.32 — Memory Discovery + Reports TEST PROTOTYPE (16 November 2026)
+
+**Isolated feature branch: toolkit/unified-memory-discovery; main remains unchanged.**
+Read the [full plan](docs/UNIFIED_MEMORY_DISCOVERY_PLAN_2026-11-16.md)
+and [redundancy audit](docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md).
+
+A single **Memory discovery** top-level tab now contains the existing Value search, Automatic events and Event sessions (including the Advanced RAM comparison). No current discovery algorithm is removed. The new **Reports** tab indexes the new format and historical diagnostic JSON; it supports opening report/folder, copying the selected path and exporting ZIP. After a Value search, name and **Save candidate report**. New reports are stored outside the source checkout, in Documents/Goemon Practice Toolkit/Reports/USA or JP. Reports include summary.md, candidates.csv, session.json, manifest.json; any truncated result set is explicitly disclosed. Linux uses xdg-open and Windows uses its native file opener.
+
+**Not yet included:** original MIPS PC read/write tracing in native recomp; guided combined A/B/C sessions; full JP Live consolidation; live-game verification. This is a limited but functional research/reporting preview, not the complete roadmap.
+
+To run the preview on Ubuntu:
+
+    git fetch origin
+    git switch toolkit/unified-memory-discovery
+    git pull --ff-only
+    bash scripts/test_japan_party.sh
+    bash Run-Linux.sh
+
 
 ## v0.11.31 — Ubuntu regression suite passes (16 November 2026)
 

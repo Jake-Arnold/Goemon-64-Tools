@@ -2,6 +2,16 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.32 unified discovery/report TEST prototype
+
+- **Approved plan and audit:** docs/UNIFIED_MEMORY_DISCOVERY_PLAN_2026-11-16.md and docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md.
+- **Design:** Memory discovery groups the existing Value search, Automatic events and Event sessions screens; Advanced RAM comparison stays nested under Event sessions. Existing region-correct scanning algorithms retained.
+- **Reporting:** New practice/reports.py and reports_ui.py support UTC descriptive USA/JP Documents-based report directories, Markdown/CSV/JSON/manifest, honest visible-row count and no-tracing provenance, selectable open/folder/copy/ZIP actions and read-only indexing of legacy diagnostics.
+- **Testing:** Added reports unit tests and updated synthetic GUI tab assertions. Hosted Ubuntu CI and real native-game smoke checks pending at commit time.
+- **Not done:** Native recomp instrumented MIPS-PC read/write tracing, guided experiment integration, consolidation of JP Live, native Windows/Ubuntu game validation.
+- **Safety:** No changes to any game writing, scene reload, freeze, unlock or checkpoint code; main and decomp branches unchanged.
+
+
 ## 2026-11-16 — v0.11.31 Ubuntu synthetic/Tk CI green
 
 - **Verification:** GitHub Actions push run 43894609637 for commit 3048921014af6f364a59b2769d0b9f7d49e74fb0 completed successfully on Ubuntu 24.04. Non-GUI: **292 executed, 291 passed, 1 skipped**. Xvfb GUI: **116 passed**, including formerly stalled test_scene_request_blocks_overlapping_checkpoint_restore and the new entrance-selection regressions. No GUI deadlock and no runner argument error.
