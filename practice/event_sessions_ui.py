@@ -14,7 +14,7 @@ from practice.event_sessions import (
 )
 from practice.checkpoints import GAMEDATA_ADDR, STATE_ADDR
 from practice.paths import diagnostics_dir
-from practice.reports import create_discovery_report
+from practice.reports import create_discovery_report, working_investigations_dir
 
 
 class EventSessionsMixin:
@@ -215,7 +215,8 @@ class EventSessionsMixin:
                 self.root.after_cancel(callback)
 
     def _event_path(self,session):
-        return diagnostics_dir()/('event_session_'+session['id']+'.json')
+        return (working_investigations_dir(session.get('region', 'usa'))
+                / ('event_session_' + session['id'] + '.json'))
 
     def new_event_session(self):
         try:
@@ -235,7 +236,10 @@ class EventSessionsMixin:
         except (OSError,ValueError,RuntimeError) as exc:self.event_status.set(f'New session failed: {exc}')
 
     def open_event_session(self):
-        path=filedialog.askopenfilename(parent=self.root,title='Open local event session',filetypes=[('JSON','*.json')])
+        path=filedialog.askopenfilename(
+            parent=self.root, title='Open saved flag investigation',
+            initialdir=str(working_investigations_dir(self.active_version.key)),
+            filetypes=[('Investigation data', '*.json')])
         if not path:return
         try:
             session=load_session(path)
