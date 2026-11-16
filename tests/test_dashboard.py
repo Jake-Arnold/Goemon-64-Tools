@@ -184,8 +184,8 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.notebook.select(), str(app.scene_tab))
         app.open_live_memory_tab()
         self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
-        self.assertEqual(app.notebook.tab(app.value_search_tab, 'state'), 'normal')
-        self.assertEqual(app.notebook.tab(app.event_sessions_tab, 'state'), 'normal')
+        self.assertEqual(app.discovery_tabs.tab(app.value_search_tab, 'state'), 'normal')
+        self.assertEqual(app.discovery_tabs.tab(app.event_sessions_tab, 'state'), 'normal')
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
                          'normal')
         self.assertNotIn('disabled', app.event_region_entry.state())
