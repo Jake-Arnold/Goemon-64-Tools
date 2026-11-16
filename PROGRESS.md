@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Reproduced USA next-eight native proof; all 7,376 original FUNC identities preserved (scratch)
+
+- Changed: published another independently rebuilt pinned-upstream candidate audit for PR #41; strengthened prior named-function subset comparison from 7,098 to the full original 7,376 positive-sized FUNC symbol names, VMAs, and sizes. No changes to the canonical 315-C manifest, combined G2 proof, or original inventory.
+- Why: verify the entire original ELF function identity set and linker relocation multiset before attempting the 323-C central stage.
+- Tested: reconstructed original pinned `mnsg` checkout and portable Linux toolchain from user-supplied archives; original 32 MiB USA baseline exact; separately compiled eight C callbacks with original ASM preserved, trimmed only zero section tails, rebuilt another exact 33,554,432-byte original USA ROM (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`); `readelf -Wr` original/candidate file_11 relocation symbol/value/type/site multisets **8,825/8,825**; `readelf -Ws` positive-sized FUNC identity comparison **7,376/7,376**, original names/VMAs/sizes unchanged, eight new C matches confirmed.
+- Remaining: this is the pristine-upstream native scratch and does not perform `decomp.verify` with existing 315 production C sources; the original inventory's **323 matching C** annotation and complete ROM-free CI are unperformed. Attempted to obtain current connected GitHub checkout locally; outbound GitHub clone was unavailable. An older uploaded Goemon archive was found, but it predates the current production modules.
+- Next: run the opt-in full 323-C central acceptance on a complete current PR #41 checkout and publish only if G2, inventory, and full local CI all pass.
+
+
 ### 2026-11-16 — Opt-in USA 323-C integration added after exact five-split native scratch
 
 - Changed: on PR #41's independent branch, added a versioned 160-C file_11 layout fixture and fail-closed adapter, wired optional 160-stage dispatch into the central verifier, extended the review runner with explicit `--candidate-file11-160`, and added ROM-free regression tests. No production manifest, results/combined.json or inventory.json modifications.

@@ -54,5 +54,29 @@
   "combined_323_central_g2_performed": false,
   "original_7376_inventory_performed": false,
   "full_local_ci_performed": false,
-  "acceptance_condition": "323-C decomp.verify plus original-ELF inventory of 7376 plus full local CI"
+  "acceptance_condition": "323-C decomp.verify plus original-ELF inventory of 7376 plus full local CI",
+  "independent_reproduction_20261116": {
+    "mode": "PINNED_UPSTREAM_SCRATCH_NOT_COMBINED_323",
+    "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "pristine_original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "scratch_candidate_elf_sha256": "02f020ea6d75c77a2615c0d5311fa372a615959549aa6ddb2429586ab68694f8",
+    "source_file_sha256": "7919d61ac0453f342629d51186b1ddf16f3716f527b411c93716815941122d60",
+    "original_and_candidate_roms_exact_reference_sha1": true,
+    "complete_rom_size_bytes": 33554432,
+    "file11_relocations": {
+      "original": 8825,
+      "candidate": 8825,
+      "equal_site_type_value_symbol_multisets": true
+    },
+    "full_original_positive_sized_func_symbol_identity": {
+      "original": 7376,
+      "candidate": 7376,
+      "equal_names_vmas_and_sizes": true,
+      "extra_positive_size_aliases": 0
+    },
+    "full_central_verified_323": false,
+    "full_original_inventory_with_323_claims": false,
+    "full_local_ci_performed": false,
+    "note": "The independent pinned-upstream scratch is not an integrated 323-C candidate. This records a stronger original-ELF identity check of all 7,376 positive-sized names than the earlier named func_* subset of 7,098."
+  }
 }
