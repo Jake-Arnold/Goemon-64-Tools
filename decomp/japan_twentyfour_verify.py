@@ -142,6 +142,6 @@ def main(argv=None):
     report=verify(args.checkout,args.retail_output,json.loads(args.manifest.read_text()),
         args.source_dir,args.objcopy,args.objdump)
     with args.report.open('x') as f:json.dump(report,f,indent=2);f.write('\n')
-    print('JAPAN 18-C PASS: exact original 32/16 MiB ROMs and 24 original functions')
+    print('JAPAN 24-C PASS: exact original 32/16 MiB ROMs and 24 original functions')
 
 if __name__=='__main__':main()
