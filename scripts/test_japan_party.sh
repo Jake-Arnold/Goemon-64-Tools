@@ -20,6 +20,8 @@ PYTHON="${PYTHON:-python3}"
   tests.test_japan_party_cli \
   tests.test_japan_party_controller \
   tests.test_japanese_mupen_attach \
+  tests.test_japan_native_recomp \
+  tests.test_toolkit_version \
   tests.test_japan_project64 \
   tests.test_remembered_rom \
   tests.test_region_views \
