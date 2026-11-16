@@ -1,5 +1,18 @@
-# Goemon Speedrun Tools v0.11.23 — identical USA and Japan warp entrance coordinates
+# Goemon Speedrun Tools v0.11.24 — permanent scene-ID entrance coordinates
 
+## v0.11.24 — remember fixed warp coordinates without reloading a ROM
+
+**USA and Japanese games use the same destination/entrance lookup.** A scene ID identifies a room, but a room may have *more than one entrance and different XYZ*. The stored key therefore retains `scene ID + entrance ID` (including source map for exits) rather than collapsing all entrances to one coordinate.
+
+The original-USA ROM extractor already cached its decoded entrance atlas, but only in the current repository checkout (`practice/entrances.json`). Now the toolkit loads validated **persistent user-level entrance coordinate data** from `~/.config/GoemonSpeedrunTools/entrance-coordinates.json` on Linux (or LocalAppData on Windows), independent of the checkout. If an earlier checkout already has a valid `practice/entrances.json`, it is automatically migrated into the persistent cache. On future launches **neither region needs the original ROM file** once a valid atlas is cached. A new one-time **Load original USA ROM** import stores the coordinate table permanently in the user directory rather than in the checkout.
+
+The code also ships a tiny, source-labelled permanent coordinate registry, `practice/known_entrances.py`. It currently includes the only **observed in-game fixed XYZ** already confirmed in the project: **Oedo Town South, scene 0x161 / decimal 353, XYZ (-289, 0, -167)**. Its `heading=0` and `mode=0x10` are explicitly experimental, **not verified USA-ROM entrance fields**. Both USA and Japan can select this known point with **no ROM or cache at all**. Other scenes without a saved atlas remain unknown; the software refuses to invent their coordinates and instead offers the one-time extraction path.
+
+The standard USA/Japan entrance selector gives validated ROM-extracted rows precedence over the single observed fallback, preserving every known entrance for the destination, source-specific route selection, native heading and entrance mode. A selected `Spawn` still stages the same 12-byte destination/mode/XYZ/heading in USA and Japan; Japanese Goemon also gets the guarded one-shot post-load XYZ verification/correction introduced in v0.11.23.
+
+**Tests added:** bundled-known-point validity and missing-scene rejection; original USA and Japanese Scene Browser reuse of known coordinates without a ROM; migration of a validated old atlas to durable user configuration, then reload after deleting the old file. Tests included in Linux and Windows scripts. This PR is still draft. GitHub editing does not execute Python/Tk or the user's live recomp.
+
+## Previous v0.11.23 — identical USA and Japan warp entrance coordinates
 ## v0.11.23 — shared original-USA entrance selector and XYZ for both regions
 
 The Japanese Scene Browser now uses **the exact same original-USA ROM entrance atlas, dropdown selection, source-room prioritization, 12-byte pending entrance record and post-load XYZ goal as USA**. The user confirmed that their Japanese and USA warps should use identical destination coordinates; the toolkit no longer substitutes separately recorded Japanese positions for the selected USA entrance.
