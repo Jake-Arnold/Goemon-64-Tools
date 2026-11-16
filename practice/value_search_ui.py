@@ -3,12 +3,14 @@ from __future__ import annotations
 
 import queue
 import threading
+import time
 import tkinter as tk
 from tkinter import ttk
 
 from practice.reports import create_value_search_report
 from practice.value_search import (
-    ValueScanner, FORMATS, FILTERS, RDRAM_SIZE, DISPLAY_LIMIT,
+    ValueScanner, FORMATS, FILTERS, TEXT_ENCODINGS, TEXT_KIND,
+    RDRAM_SIZE, DISPLAY_LIMIT,
 )
 
 
@@ -43,85 +45,180 @@ class ValueSearchMixin:
         self.value_scan_generation = 0
         self._value_search_auto_after = None
         self._value_search_poll_after = None
-        # Cancel recurring timers before Tk deletes their registered commands,
-        # otherwise the next test/app window reports "invalid command name".
+        self._value_search_next_refresh = 0.0
         self.root.bind('<Destroy>', self._value_search_on_destroy, add='+')
-        self.value_search_status = tk.StringVar(value='Read-only search. Connect to the game, then start an exact or unknown-value scan.')
+
+        self.value_search_status = tk.StringVar(
+            value='Connect to USA or Japan, then start a scan. Searches never write game RAM.')
         self.value_search_type = tk.StringVar(value='u16')
         self.value_search_value = tk.StringVar(value='950')
+        self.value_search_encoding = tk.StringVar(value='ASCII')
         self.value_search_filter = tk.StringVar(value='Decreased')
+        self.value_filter_value = tk.StringVar(value='')
+        self.value_search_compare = tk.StringVar(value='Previous')
         self.value_search_unaligned = tk.BooleanVar(value=False)
-        self.value_search_autorefresh = tk.BooleanVar(value=False)
+        self.value_search_autorefresh = tk.BooleanVar(value=True)
+        self.value_search_refresh_ms = tk.StringVar(value='250 ms')
         self.value_report_name = tk.StringVar(value='Memory value search')
 
         tab = ttk.Frame(notebook, padding=10)
         notebook.add(tab, text='Value search')
         self.value_search_tab = tab
-        ttk.Label(tab, text='Find oil, Ryo, boss HP, timers and other unknown values',
-                  font=('Segoe UI Semibold', 16)).pack(anchor='w', pady=(0, 7))
-        ttk.Label(tab, text="Scans the selected N64 ROM's guest RAM (4 or 8 MiB); no player object required. "
-                  'Reads only. Each filter compares a new snapshot with the previous one. '
-                  'Values are unverified candidates, not named game fields.',
-                  wraplength=1100).pack(anchor='w', pady=(0, 10))
+        ttk.Label(tab, text='Find addresses by value or game action',
+                  font=('Segoe UI Semibold', 16)).pack(anchor='w', pady=(0, 5))
+        ttk.Label(tab, text=(
+            'Start a scan, change something in-game, then filter the surviving '
+            'addresses. Initial = the first snapshot; Previous = the last filter '
+            'snapshot; Live = the latest displayed reading.'),
+            wraplength=1050).pack(anchor='w', pady=(0, 7))
 
-        row = ttk.Frame(tab)
-        row.pack(fill='x', pady=(0, 6))
-        ttk.Label(row, text='Type:').pack(side='left', padx=(0, 4))
-        ttk.Combobox(row, textvariable=self.value_search_type, values=tuple(FORMATS),
-                     state='readonly', width=7).pack(side='left', padx=(0, 12))
-        ttk.Label(row, text='Number:').pack(side='left', padx=(0, 4))
-        ttk.Entry(row, textvariable=self.value_search_value, width=17).pack(side='left', padx=(0, 12))
-        ttk.Button(row, text='New exact scan', command=lambda: self._value_start('exact'),
-                   style='Gold.TButton').pack(side='left', padx=(0, 7))
-        ttk.Button(row, text='Unknown initial value',
-                   command=lambda: self._value_start('unknown')).pack(side='left', padx=(0, 7))
-        ttk.Checkbutton(row, text='Include unaligned addresses (slower)',
+        startbox = ttk.LabelFrame(tab, text='1 · Start a new scan', padding=7)
+        startbox.pack(fill='x', pady=(0, 7))
+        row = ttk.Frame(startbox)
+        row.pack(fill='x')
+        ttk.Label(row, text='Data type').pack(side='left', padx=(0, 4))
+        typebox = ttk.Combobox(
+            row, textvariable=self.value_search_type,
+            values=(*FORMATS.keys(), 'Text'), state='readonly', width=9)
+        typebox.pack(side='left', padx=(0, 10))
+        typebox.bind('<<ComboboxSelected>>', lambda _event: self._value_search_kind_changed())
+        ttk.Label(row, text='Starting value / text').pack(side='left', padx=(0, 4))
+        ttk.Entry(row, textvariable=self.value_search_value, width=21).pack(
+            side='left', padx=(0, 10))
+        ttk.Label(row, text='Text encoding').pack(side='left', padx=(0, 4))
+        self.value_search_encoding_widget = ttk.Combobox(
+            row, textvariable=self.value_search_encoding,
+            values=tuple(TEXT_ENCODINGS), state='disabled', width=11)
+        self.value_search_encoding_widget.pack(side='left', padx=(0, 10))
+        ttk.Button(row, text='Start exact search',
+                   command=lambda: self._value_start('exact')).pack(
+                       side='left', padx=(0, 5))
+        self.value_unknown_button = ttk.Button(
+            row, text='Start unknown search',
+            command=lambda: self._value_start('unknown'))
+        self.value_unknown_button.pack(side='left')
+        options = ttk.Frame(startbox)
+        options.pack(fill='x', pady=(4, 0))
+        ttk.Checkbutton(options, text='Include unaligned addresses (slower)',
                         variable=self.value_search_unaligned).pack(side='left')
+        ttk.Label(options, text=(
+            'Text searches match literal bytes (ASCII, Shift-JIS or UTF-8); '
+            'custom in-game character encodings may not match.'),
+            wraplength=780).pack(side='left', padx=(14, 0))
 
-        row2 = ttk.Frame(tab)
-        row2.pack(fill='x', pady=(0, 7))
-        ttk.Label(row2, text='Next filter:').pack(side='left', padx=(0, 5))
-        ttk.Combobox(row2, textvariable=self.value_search_filter, values=FILTERS,
-                     state='readonly', width=13).pack(side='left', padx=(0, 10))
-        ttk.Button(row2, text='Filter surviving results',
-                   command=lambda: self._value_start('filter'),
-                   style='Gold.TButton').pack(side='left', padx=(0, 7))
-        ttk.Button(row2, text='Refresh visible values',
-                   command=lambda: self._value_start('refresh')).pack(side='left', padx=(0, 7))
-        ttk.Checkbutton(row2, text='Auto-refresh visible values',
-                        variable=self.value_search_autorefresh).pack(side='left', padx=(0, 11))
-        ttk.Button(row2, text='Watch selected address',
-                   command=self.watch_value_search_candidate).pack(side='left', padx=(0, 7))
-        ttk.Button(row2, text='Clear', command=self.clear_value_search).pack(side='left')
+        refine = ttk.LabelFrame(tab, text='2 · Narrow the current results', padding=7)
+        refine.pack(fill='x', pady=(0, 7))
+        row2 = ttk.Frame(refine)
+        row2.pack(fill='x')
+        ttk.Label(row2, text='Keep addresses where value is').pack(
+            side='left', padx=(0, 5))
+        filterbox = ttk.Combobox(
+            row2, textvariable=self.value_search_filter, values=FILTERS,
+            state='readonly', width=11)
+        filterbox.pack(side='left', padx=(0, 9))
+        filterbox.bind('<<ComboboxSelected>>',
+                       lambda _event: self._value_search_filter_changed())
+        ttk.Label(row2, text='Compared with').pack(side='left', padx=(0, 5))
+        ttk.Combobox(row2, textvariable=self.value_search_compare,
+                     values=('Previous', 'Initial'), state='readonly',
+                     width=10).pack(side='left', padx=(0, 9))
+        ttk.Label(row2, text='Filter value (Exact only)').pack(
+            side='left', padx=(0, 5))
+        self.value_filter_entry = ttk.Entry(
+            row2, textvariable=self.value_filter_value, width=16)
+        self.value_filter_entry.pack(side='left', padx=(0, 9))
+        ttk.Button(row2, text='Apply filter',
+                   command=lambda: self._value_start('filter')).pack(side='left')
+        ttk.Label(refine, text=(
+            'Exact uses the Filter value above, never the Starting value. '
+            'Increased/Decreased/Changed/Unchanged compare against Initial '
+            'or Previous. Filtering narrows results permanently until New scan.'),
+            wraplength=1050).pack(anchor='w', pady=(4, 0))
+        self._value_search_filter_changed()
+
+        toolbar = ttk.Frame(tab)
+        toolbar.pack(fill='x', pady=(0, 6))
+        ttk.Button(toolbar, text='Refresh values now',
+                   command=lambda: self._value_start('refresh')).pack(
+                       side='left', padx=(0, 8))
+        ttk.Checkbutton(toolbar, text='Live refresh',
+                        variable=self.value_search_autorefresh).pack(
+                            side='left', padx=(0, 6))
+        ttk.Label(toolbar, text='Every').pack(side='left', padx=(0, 4))
+        ttk.Combobox(toolbar, textvariable=self.value_search_refresh_ms,
+                     values=('100 ms', '250 ms', '500 ms', '1000 ms'),
+                     state='readonly', width=9).pack(side='left', padx=(0, 15))
+        ttk.Button(toolbar, text='Select all visible',
+                   command=self.select_all_value_results).pack(
+                       side='left', padx=(0, 7))
+        ttk.Button(toolbar, text='Watch selected addresses',
+                   command=self.watch_value_search_candidate).pack(
+                       side='left', padx=(0, 7))
+        ttk.Button(toolbar, text='Clear scan',
+                   command=self.clear_value_search).pack(side='left')
+
         exports = ttk.Frame(tab)
         exports.pack(fill='x', pady=(0, 7))
-        ttk.Label(exports, text='Report name:').pack(side='left', padx=(0, 5))
-        ttk.Entry(exports, textvariable=self.value_report_name, width=30).pack(
+        ttk.Label(exports, text='Report name').pack(side='left', padx=(0, 5))
+        ttk.Entry(exports, textvariable=self.value_report_name, width=35).pack(
             side='left', padx=(0, 7))
         ttk.Button(exports, text='Save candidate report',
                    command=self.export_value_search_report).pack(side='left')
+        ttk.Label(exports, text='Ctrl/Shift-click to select multiple rows').pack(
+            side='left', padx=(16, 0))
+        ttk.Label(tab, textvariable=self.value_search_status,
+                  wraplength=1070).pack(fill='x', pady=(0, 7))
 
-        ttk.Label(tab, textvariable=self.value_search_status, wraplength=1090).pack(fill='x', pady=(0, 8))
         frame = ttk.Frame(tab)
         frame.pack(fill='both', expand=True)
-        columns = ('address', 'type', 'value', 'hex')
-        self.value_search_tree = ttk.Treeview(frame, columns=columns, show='headings', height=18)
+        columns = ('address', 'type', 'initial', 'previous', 'value', 'hex')
+        self.value_search_tree = ttk.Treeview(
+            frame, columns=columns, show='headings',
+            selectmode='extended', height=16)
         for key, title, width in (
-            ('address', 'N64 guest address', 170), ('type', 'Type', 95),
-            ('value', 'Value', 160), ('hex', 'Raw big-endian hex', 190),
+            ('address', 'N64 address', 155),
+            ('type', 'Data type', 105),
+            ('initial', 'Initial', 130),
+            ('previous', 'Previous', 130),
+            ('value', 'Live', 145),
+            ('hex', 'Raw hex', 170),
         ):
             self.value_search_tree.heading(key, text=title)
-            self.value_search_tree.column(key, width=width, anchor='w', stretch=(key == 'value'))
-        scrollbar = ttk.Scrollbar(frame, orient='vertical', command=self.value_search_tree.yview)
+            self.value_search_tree.column(
+                key, width=width, anchor='w', stretch=(key == 'value'))
+        scrollbar = ttk.Scrollbar(
+            frame, orient='vertical', command=self.value_search_tree.yview)
         self.value_search_tree.configure(yscrollcommand=scrollbar.set)
         self.value_search_tree.pack(side='left', fill='both', expand=True)
         scrollbar.pack(side='right', fill='y')
-        ttk.Label(tab, text='Only the first 200 surviving addresses are shown. Narrow the search before adding a watch. '
-                  'Integer scans use exact values; f32 matches IEEE-754 bytes. '
-                  'Unknown-value scans begin with every candidate address and may take longer.',
-                  wraplength=1080).pack(anchor='w', pady=(8, 0))
+        ttk.Label(tab, text=(
+            'Up to 200 candidates are shown at once. Live refresh samples '
+            'visible addresses only; full RAM is read when starting or '
+            'filtering. A value match is not proof of what the address does.'),
+            wraplength=1080).pack(anchor='w', pady=(7, 0))
+
         self._value_search_auto_after = self.root.after(
-            1800, self._value_search_auto_tick)
+            125, self._value_search_auto_tick)
+
+    def _value_search_kind_changed(self):
+        text_mode = self.value_search_type.get() == 'Text'
+        self.value_search_encoding_widget.configure(
+            state='readonly' if text_mode else 'disabled')
+        self.value_unknown_button.state(
+            ['disabled'] if text_mode else ['!disabled'])
+        self._value_search_filter_changed()
+
+    def _value_search_filter_changed(self):
+        exact = self.value_search_filter.get() == 'Exact'
+        self.value_filter_entry.configure(state='normal' if exact else 'disabled')
+
+    def select_all_value_results(self):
+        rows = self.value_search_tree.get_children()
+        if rows:
+            self.value_search_tree.selection_set(rows)
+            self.value_search_status.set(
+                f'{len(rows)} visible addresses selected. '
+                'Watch selected addresses adds numeric values to Live Memory.')
 
     def _value_search_on_destroy(self, event):
         """Stop callbacks owned by this Tk root, not by another test window."""
