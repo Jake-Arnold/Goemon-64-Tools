@@ -52,3 +52,13 @@ adding function counts. Never merge a research-only proof into the official func
 - Two of the three explicitly listed functions from the transition branch overlap expansion Wave 2 with identical size and original code SHA-256: `0x5B84A0` and `0x5B84D0`. The third, `0x5B7180`, is distinct. The other 51 of its reported 54 cannot be fully reconciled from the three-function list alone. See `decomp/results/file11_crossbranch_overlap_20261116.json`.
 - The independent local Splat test also confirmed all 20 generated Japanese stubs contain the expected `asm/japan_0/nonmatchings` patterns accepted by the guarded JP installer. No live or full combined ROM verification is claimed.
 - **Acceptance remains blocked** on full ROM-free regression execution on the actual private checkout, fresh 210-function USA central G2, and freshly rebuilt 24-function Japanese linker/ROM verifier. Production counts remain unchanged.
+
+
+## 2026-11-16: fresh native Japanese 24-C acceptance-equivalent reproduction
+
+- All 20 original Japanese C source blob identities were reproduced exactly from the connector; original pinned source and toolchain authenticated.
+- Full 20-object native IDO build, reviewed ELF layout packing, original linker placement, and local source-signature checks passed.
+- Full 32 MiB decompressed ROM and recompressed 16 MiB normalized Japanese retail ROM are **byte-identical** to their original references. SHA-1: `6f8745fecc3a5e7d4918c7a73353eb0726116ded` / `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b`.
+- All 55 original C-object relocation signatures match the reviewed target/order/type contracts; all 24 C-owned ELF symbols match expected original addresses, with 7,376 total game FUNC entries, 7,352 ASM-marked and 73 sections.
+- This was an **independent local reproduction**, not a run of the checked-in `japan_twentyfour_verify` command or complete ROM-free `decomp.local_ci`. The USA 210-C combined-build G2 has not been executed. Counts unchanged; PR remains draft.
+- Proof: `decomp/results/japan_0_consolidation_native_20261116.json`. No user ROM, rebuilt executable, object, raw assembly, toolchain, save, or personal diagnostic included.

@@ -8,6 +8,14 @@
 
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Independent Japanese 24-C native full-ROM reproduction on consolidation snapshot
+
+- **Source provenance:** Recreated 20 Japanese C sources in an isolated local pinned `mnsg` checkout; all 20 Git blob SHA-1 identifiers matched the imported `decomp/japan_matching` source blobs on PR #26. Upstream pinned at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`; Japan retail ROM hash authenticated.
+- **Actual native build:** Splat 24-C layout produced 20 reviewed C stubs and original ASM slices; original cross-ASM global labels and BSS aliases repaired in local scratch; all 20 C objects compiled using original IDO 5.3. Reviewed 14 ELF .text metadata packs, 308-byte ASM slice and `SUBALIGN(4)`; successfully linked a 32 MiB Japanese image **identical byte-for-byte** with the original (SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`).
+- **Exact retail and ELF:** Rommy recompressed the built 32 MiB image to the exact original 16 MiB retail image (SHA-1 `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b`). Linked ELF inventory: **7,376 positive-sized native game functions = 24 C + 7,352 assembly-marked**, **73** game sections. All **24** C labels have correct original ROM offset and VMA; all **55** C-object relocation entries match the exact reviewed symbol/type/order signatures.
+- **Evidence and limits:** Committed metadata-only report `decomp/results/japan_0_consolidation_native_20261116.json` (no ROM, ELF or toolchain binaries). This independently reconstructed and checked the reviewed stage, **not** a run of the repository's own complete Japanese build/verifier scripts unchanged. The imported unittest/full ROM-free CI and canonical USA 210-function G2 have not run; PR #26 stays a draft and official counts remain unchanged.
+- **Next:** Execute both unchanged regional strict build/verifier suites in a complete checkout; then start deduplicated USA `file_11` promotion.
+
 ### 2026-11-16 — Import pinned USA file_11 research snapshots without raising official C totals
 
 - **Source-only snapshot:** Added 36 new ROM-free `file_11` research fixtures, native-proof metadata, technical reports and regression tests from `chatgptweb/file11-expansion-20261116` at `5e2edb72e5d4e4a2081926527090c50741209df9` and `chatgptweb/file11-transition-52-research` at `defbfb82f63fdb5124946d021b09260c342342c1`. Files are copied by immutable Git blob SHA. No canonical USA C source, manifest, linked proof or inventory is altered; both source branches remain editable independently.

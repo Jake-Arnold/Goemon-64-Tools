@@ -1,0 +1,56 @@
+{
+  "format": "goemon-japan-24c-consolidation-independent-reproduction-v1",
+  "date": "2026-11-16",
+  "region": "japan_0",
+  "status": "PASS_INDEPENDENT_NATIVE_REPRODUCTION",
+  "source": {
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "japanese_source_snapshot": "ed4c0e3ad2a96d6c2e033da0351ed43f58b9b203",
+    "matching_c_source_files": 20,
+    "source_git_blob_shas_matching_snapshot": 20,
+    "pinned_native_compiler": "IDO 5.3 -O2 -mips2",
+    "original_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b"
+  },
+  "checks": {
+    "verified_portable_python_mips_tools": true,
+    "original_japan_rom_sha1_valid": true,
+    "original_expanded_decompression_sha1_valid": true,
+    "splat_source_config_converted_original_c_segments_to_asm": 189,
+    "japanese_c_stubs_generated": 20,
+    "japanese_main_assembly_slices": 54,
+    "guarded_stub_path_shapes_pass": 20,
+    "cross_object_local_asm_labels_promoted": 22,
+    "reviewed_bss_alias_renames": 2,
+    "native_c_compiler_objects_built": 20,
+    "reviewed_c_object_text_extent_packs": 14,
+    "reviewed_adjacent_asm_slice_size_bytes": 308,
+    "reviewed_linker_main_subalign": 4,
+    "c_object_relocations_matching_exact_source_signatures": 55,
+    "linked_original_address_c_functions": 24,
+    "functions_with_verified_rom_offset_vma_mapping": 24,
+    "native_positive_elf_functions": 7376,
+    "native_asm_marked_elf_functions": 7352,
+    "native_elf_game_sections": 73,
+    "independent_rebuilt_expanded_32m_exact_bytes": true,
+    "independent_recompressed_retail_16m_exact_bytes": true
+  },
+  "output_metadata": {
+    "expanded_bytes": 33554432,
+    "expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "expanded_sha256": "cd09a12277060259a9e83ae9ba5a52b80d08722ed89c0e5419c8932e74500271",
+    "retail_bytes": 16777216,
+    "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "retail_sha256": "a1d288fa352ef185e0499a63b64dfc937c460da15a10456f180ee71298277413",
+    "linked_elf_sha256": "42bee2f0fe2dfad16eac0c4481dfa06bbb91e0862d058fa2d0a7640baa6a2a79",
+    "differing_expanded_bytes": 0,
+    "differing_retail_bytes": 0
+  },
+  "verification_scope": "Fresh isolated local reproduction using all 20 exact imported C source files and independently reconstructed 24-C staging/ELF checks. Not execution of repository decomp.build_japan_twentyfour_c.sh and japan_twentyfour_verify.py unchanged. This is independent corroboration, not a substitute for the canonical test suite.",
+  "missing": [
+    "Run the repository's own decomp/test_japan_twentyfour_runner.py and complete decomp.local_ci in a full connected checkout",
+    "Run the repository's own decomp.build_japan_twentyfour_c.sh and japan_twentyfour_verify.py unchanged in a new pinned checkout",
+    "Run fresh current USA 210-function decomp.verify G2 and decomp.inventory on the consolidated checkout",
+    "Deduplicate remaining identities in the alternate 54-candidate USA scratch set"
+  ],
+  "official_usa_production_claims_changed": false
+}
