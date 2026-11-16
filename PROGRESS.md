@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.31 Ubuntu synthetic/Tk CI green
+
+- **Verification:** GitHub Actions push run 43894609637 for commit 3048921014af6f364a59b2769d0b9f7d49e74fb0 completed successfully on Ubuntu 24.04. Non-GUI: **292 executed, 291 passed, 1 skipped**. Xvfb GUI: **116 passed**, including formerly stalled test_scene_request_blocks_overlapping_checkpoint_restore and the new entrance-selection regressions. No GUI deadlock and no runner argument error.
+- **Boundaries:** CI proves synthetic memory, Python/toolkit UI behaviour and headless Tk on the hosted runner. It does **not** prove native Japanese game stability, real PID/ASLR auto-attachment, regional ROM signatures in a live process, actual memory write isolation or warps with Goemon/Ebisumaru/Sasuke/Yae. The independent native scene 0x081 crash remains unresolved.
+- **Next:** Keep PR #33 draft until live Japanese recomp/emulator tests are recorded. No functional change in this documentation-only commit.
+
 ## 2026-11-16 — v0.11.31 CI-detected entrance-choice and test runner regressions
 
 - **GitHub Actions first run:** The protected GUI suite reached its summary without hanging: 115 GUI tests, 3 failures and 1 error. The -v runner argument was wrongly treated as a module. One dashboard assertion expected Japanese raw hex editing disabled although supported UI editing has been enabled. Two entrance tests exposed stale cached entrance selection across atlas/region changes and after the atlas was removed.

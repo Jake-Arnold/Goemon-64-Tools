@@ -1,5 +1,15 @@
 # Ubuntu Japanese toolkit test failures and native JP crash (2026-11-16)
 
+## Subsequent Ubuntu CI pass (16 November 2026)
+
+After v0.11.31 fixes, GitHub Actions run 43894609637 on commit
+3048921014af6f364a59b2769d0b9f7d49e74fb0 **passed**:
+292 non-GUI tests executed (291 passed, one skipped), followed by
+116 Xvfb GUI tests passed. This includes the previously hanging
+entrance/checkpoint overlap test. The regression run is synthetic and
+does not validate real Japanese game memory, live four-character gameplay
+or native scene 0x081.
+
 ## GitHub Actions regression result and follow-up (16 November 2026)
 
 The first GitHub Actions workflow after adding the modal guard executed the GUI
