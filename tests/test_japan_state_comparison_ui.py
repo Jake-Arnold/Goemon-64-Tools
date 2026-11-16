@@ -48,14 +48,14 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
 
     def test_jp_advanced_only_tab_and_candidate_watch(self):
         app = self.app
-        self.assertEqual(app.notebook.tab(app.event_sessions_tab, 'state'), 'normal')
+        self.assertEqual(app.discovery_tabs.tab(app.event_sessions_tab, 'state'), 'normal')
         # Japanese 100-byte Event flag sessions now share the USA UI,
         # but are explicitly labelled as research (not a saved-event bank).
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
                          'normal')
         self.assertIn('NOT a verified saved-event bank',
                       app.event_region_note.get())
-        self.assertEqual(app.notebook.tab(app.value_search_tab, 'state'), 'normal')
+        self.assertEqual(app.discovery_tabs.tab(app.value_search_tab, 'state'), 'normal')
         self.assertEqual(app.notebook.tab(app.unlock_tab, 'state'), 'normal')
         app.event_sections.select(app.state_discovery_tab)
         self.assertEqual(app.event_sections.select(), str(app.state_discovery_tab))
