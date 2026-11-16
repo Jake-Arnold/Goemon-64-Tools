@@ -3,6 +3,16 @@
 **Date:** 2026-11-15  
 **Live evidence:** The user confirmed that the Japan-0 Project64 toolkit can open the original debug menu (`0x800CD284 = 0x0A`) and teleport Goemon to known Oedo South XYZ. On a subsequent test, **double-click only opened the debug menu**, which is **not** the requested USA-equivalent instant warp. That incorrect dispatch has now been replaced in source. **The new direct `0x0C` area reload still awaits live confirmation.**
 
+## v0.11.23 correction — Japan now uses the exact selected USA entrance
+
+The earlier v0.11.22 conclusion that `self.entrance_atlas` was never initialized was incomplete. `EntranceMixin.init_entrances()` does load the USA atlas from the toolkit's cached `entrances.json`. The actual defect was that the Japanese controller never selected from that shared atlas; it consulted a different Japan-only warp point registry, while the Japanese Scene Browser hid the USA entrance dropdown.
+
+v0.11.23 exposes the **same destination entrance combobox** in USA and Japan, along with **Load original USA ROM**. Both regions now use `selected_scene_spawn(destination)` to choose the same source-specific or default entrance. The current Japan source scene comes from guest `0x800CD2A2` instead of the USA RAM layout. The selected `Spawn.pending_bytes()` is staged at Japanese pending address `0x800CD490` exactly as USA stages it at `0x800C7CA0`, then Japanese engine state `0x0C` triggers the load. An unknown or ambiguous entrance blocks both paths instead of silently allowing a Japanese scene-ID-only warp.
+
+As in USA, Japanese Goemon gets a guarded, one-shot **post-load XYZ placement**: after the destination scene and character have stabilized, the toolkit compares Japanese live position at `0x80151B10` against the selected USA entrance's exact 3 float32 values. When different, it reopens a ROM/PID/RDRAM-verified writable handle, checks the scene and unchanged previous position, writes the exact selected USA XYZ once, and reads back the result. The region-specific fixed vector is observed for Goemon; for other Japanese characters the toolkit only stages the common native entrance and reports that post-load placement is not yet mapped. No broad retry/write loop.
+
+The separate Japanese warp-point capture is no longer the default and never overrides the USA entrance chosen in the shared dropdown. This follows the user's stated expectation that both regional warps should have identical coordinates. Actual native Japanese gameplay collision, camera, spawn record mode/heading semantics and other-character positions remain unverified until tested in-game. The new v0.11.23 regression tests cover staging/placement/selection but have not been executed by the GitHub connector.
+
 ## v0.11.22 correction — Japanese destination coordinates were never initialized
 
 The original controller's `self.entrance_atlas` attribute was never created. Every previous native Japanese Scene Browser warp therefore chose `spawn=None` and staged only the pending 2-byte destination at `0x800CD490`. The 12-byte path existed only in synthetic tests that injected an atlas. This explains why room loading can appear successful while Goemon appears at incorrect or stale XYZ.
