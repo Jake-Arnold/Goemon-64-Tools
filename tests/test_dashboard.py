@@ -25,6 +25,9 @@ class DashboardSmokeTests(unittest.TestCase):
                           return_value=None)
         rom_cache.start()
         self.addCleanup(rom_cache.stop)
+        region_store = patch('practice.toolkit.save_last_region')
+        region_store.start()
+        self.addCleanup(region_store.stop)
         opts = dict(pid=None, base=None, endian='auto', route=None,
                     enable_teleport=True, enable_state_restore=True,
                     enable_debug_menu=True, enable_hex_edit=True,
@@ -184,11 +187,12 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertIn('Japan-0', app.event_region_note.get())
         self.assertEqual(app.event_region_start.get(), '0x80161D80')
         self.assertEqual(app.notebook.tab(app.jp_fields_tab, 'state'), 'normal')
-        # Direct connect must never fall through to unsupported USA process memory.
+        # Explicitly invalid target must never fall into USA memory discovery.
+        app.connection_target.set('auto')
         app.connect()
         self.assertIsNone(app.mem)
         self.assertIsNone(app.jp_rdram)
-        self.assertIn('requires target mupen64plus', app.status.get())
+        self.assertIn('requires an explicit target', app.status.get())
         app.connection_target.set('mupen64plus')
         app.connect()
         self.assertIn('Verify the exact Japan-0 ROM', app.status.get())
