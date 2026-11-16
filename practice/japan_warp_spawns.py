@@ -107,18 +107,21 @@ def save_japan_spawn(spawn: Spawn, *, basis: str, store=None):
     existing[spawn.destination] = spawn
     if len(existing) > MAX_SPAWNS:
         raise ValueError("Too many Japanese warp points")
+    prior_records = {}
+    try:
+        if dest.stat().st_size <= MAX_FILE_BYTES:
+            raw = json.loads(dest.read_text(encoding="utf-8"))
+            if raw.get("format") == FORMAT and isinstance(raw.get("spawns"), dict):
+                prior_records = raw["spawns"]
+    except (OSError, ValueError, AttributeError):
+        pass
     records = {}
     for scene, point in sorted(existing.items()):
-        previous_basis = "xyz-only"
-        if dest.exists():
-            # Preserve provenance for other entries when valid.
-            try:
-                raw = json.loads(dest.read_text(encoding="utf-8"))
-                prior = raw.get("spawns", {}).get(str(scene), {})
-                if prior.get("basis") in ("native-pending", "xyz-only"):
-                    previous_basis = prior["basis"]
-            except (OSError, ValueError, AttributeError):
-                pass
+        prior = prior_records.get(str(scene), {})
+        previous_basis = (
+            prior.get("basis") if isinstance(prior, dict)
+            and prior.get("basis") in ("native-pending", "xyz-only")
+            else "xyz-only")
         records[str(scene)] = dict(
             scene=scene, position=list(point.position),
             heading=point.heading, mode=point.mode,
