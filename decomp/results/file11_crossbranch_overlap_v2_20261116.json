@@ -143,5 +143,16 @@
   "full_identity_54_verified_from_original_source_archive": false,
   "canonical_210_plus_candidates_rom_gate_completed": false,
   "production_function_claims_added": 0,
-  "status": "PROVISIONAL_RANGE_BASED_OVERLAP_REVIEW_NOT_PROMOTION"
+  "status": "PROVISIONAL_RANGE_BASED_OVERLAP_REVIEW_NOT_PROMOTION",
+  "independent_original_elf_symbol_audit": {
+    "result": "PASS",
+    "verified_original_function_count": 211,
+    "matching_original_symbol_vma_and_size": 211,
+    "unexpected_or_missing_original_symbols": 0,
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "independently_rebuilt_pristine_usa_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "reference_original_elf_parser": "readelf -Ws, global positive-size func_ symbols",
+    "method": "For each of the 207 pinned independent native research offsets plus four separately documented offsets, compute original USA file_11 VMA as 0x801CB460 + ROMoffset - 0x587370, and verify original ELF native function symbol address/length. All match.",
+    "limitation": "Proof of original addresses and extents only; not C codegen or combined production 210+211 full-ROM verification."
+  }
 }

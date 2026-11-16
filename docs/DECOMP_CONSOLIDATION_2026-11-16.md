@@ -81,3 +81,14 @@ adding function counts. Never merge a research-only proof into the official func
 - **Provisional union:** **211 unpromoted research candidates / 7,632 instruction bytes**, not 207+54. All 211 would require current production whole-ROM G2, semantic relocations, original linked symbol extents and inventory before counting; current USA production remains **210 C / 13,336 bytes**.
 - Added a machine-readable six-wave identity ledger `decomp/results/file11_crossbranch_overlap_v2_20261116.json` and five ROM-free regression tests `decomp/test_file11_crossbranch_dedup.py` (committed but not executed in the full private checkout). No source branches or production manifest changed.
 
+
+
+## 2026-11-16: independent original-symbol size/placement audit
+
+### 2026-11-16 — Independent 211/211 original-USA ELF function identity audit
+
+- Rebuilt the pristine upstream USA ELF in a fresh isolated Linux checkout using the supplied authentic original retail ROM and pinned original MIPS toolchain. Reconstructed the **207** unpromoted original-VMA candidates in the expansion proof plus **four** additional, nonoverlapping original offsets recovered from the alternate 54-function scratch reports.
+- Verified using the actual pinned pristine ELF (`readelf -Ws`, SHA-256 `83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038`) that **211/211 candidate function identities have the exact expected original RAM VMA and code size**. Zero missing/mismatched original function symbols.
+- Added optional `GOEMON_PINNED_BASELINE_ELF` regression to `decomp/test_file11_crossbranch_dedup.py`, allowing repeatable independent original-symbol auditing on Ubuntu when the private pinned ELF is available. Normal ROM-free CI skips this additional native-input check.
+- This is **original function identity verification only**, not native compilation of all 211 C candidates and not current central 210+211 `decomp.verify`/inventory promotion. Official USA count remains 210. Updated `decomp/results/file11_crossbranch_overlap_v2_20261116.json`.
+

@@ -5,7 +5,10 @@ identities are explicitly range-inferred rather than source-archive verified.
 No production function claim may follow directly from this audit.
 """
 from __future__ import annotations
+import hashlib
 import json
+import os
+import subprocess
 from pathlib import Path
 import unittest
 
@@ -72,5 +75,43 @@ class File11CrossbranchDedupTests(unittest.TestCase):
         self.assertFalse(review["canonical_210_plus_candidates_rom_gate_completed"])
         self.assertEqual(review["production_function_claims_added"],0)
         self.assertEqual(review["union_unpromoted_candidates_provisional"],211)
+
+    def test_optional_pinned_original_elf_has_all_211_function_symbols(self):
+        location=os.environ.get("GOEMON_PINNED_BASELINE_ELF")
+        if not location:
+            self.skipTest("Set GOEMON_PINNED_BASELINE_ELF to a pinned pristine USA build/usa/mnsg.elf")
+        elf=Path(location)
+        self.assertEqual(hashlib.sha256(elf.read_bytes()).hexdigest(),
+            "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038")
+        output=subprocess.run(["readelf","-Ws",str(elf)],check=True,text=True,
+            capture_output=True).stdout
+        symbols={}
+        for line in output.splitlines():
+            fields=line.split()
+            if len(fields)<8 or fields[3]!="FUNC" or fields[4]!="GLOBAL":
+                continue
+            if not fields[-1].startswith("func_"):
+                continue
+            try:
+                vma=int(fields[1],16)
+                size=int(fields[2])
+            except ValueError:
+                continue
+            symbols.setdefault(vma,set()).add(size)
+
+        pools=[load(WAVE1)["functions"],load(ADJ)["functions"],
+               load(WAVE2)["functions"],load(WAVE3)["functions"],
+               [f for f in load(WAVE5)["functions"] if f["new_wave5"]]]
+        entries=[(f["rom_offset"],f["size"]) for group in pools for f in group]
+        entries.extend(((0x599CCC,48),(0x59E82C,52),(0x5B1808,60),
+                        (0x5B186C,60),(0x5B18A8,60)))
+        entries.extend((int(k,16),v) for k,v in (
+            ("5B4DEC",48),("5B64B8",44),("5B71B4",44),("5B7180",52)))
+        self.assertEqual(len(entries),211)
+        self.assertEqual(len({offset for offset,_ in entries}),211)
+        for offset,size in entries:
+            vma=0x801CB460+offset-0x587370
+            with self.subTest(rom_offset=hex(offset)):
+                self.assertIn(size,symbols.get(vma,set()))
 
 if __name__=="__main__":unittest.main()

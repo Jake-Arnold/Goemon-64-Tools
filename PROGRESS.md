@@ -8,6 +8,13 @@
 
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Independent 211/211 original-USA ELF function identity audit
+
+- Rebuilt the pristine upstream USA ELF in a fresh isolated Linux checkout using the supplied authentic original retail ROM and pinned original MIPS toolchain. Reconstructed the **207** unpromoted original-VMA candidates in the expansion proof plus **four** additional, nonoverlapping original offsets recovered from the alternate 54-function scratch reports.
+- Verified using the actual pinned pristine ELF (`readelf -Ws`, SHA-256 `83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038`) that **211/211 candidate function identities have the exact expected original RAM VMA and code size**. Zero missing/mismatched original function symbols.
+- Added optional `GOEMON_PINNED_BASELINE_ELF` regression to `decomp/test_file11_crossbranch_dedup.py`, allowing repeatable independent original-symbol auditing on Ubuntu when the private pinned ELF is available. Normal ROM-free CI skips this additional native-input check.
+- This is **original function identity verification only**, not native compilation of all 211 C candidates and not current central 210+211 `decomp.verify`/inventory promotion. Official USA count remains 210. Updated `decomp/results/file11_crossbranch_overlap_v2_20261116.json`.
+
 ### 2026-11-16 — USA research overlap reconstruction: 50 shared, four distinct (provisional)
 
 - Reconstructed the alternate USA file_11 **54-candidate** set from its reported waves: 2 original callbacks, 6 actor helper functions, 15 original-VMA empty callbacks, 16 actor wrappers, 12 additional short state/scene helpers, and 3 final adjacent matches. All 54 reconstructed ROM offsets are disjoint within that set.
