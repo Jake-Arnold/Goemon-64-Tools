@@ -121,7 +121,7 @@ class ResultPanelsTest(unittest.TestCase):
                                  "0x" + data.hex().upper())
                 self.assertTrue(panel.auto.get())
                 self.assertEqual(panel.interval.get(), "250 ms")
-                self.assertEqual(tree["selectmode"], "extended")
+                self.assertEqual(str(tree["selectmode"]), "extended")
                 self.assertEqual(panel.save_button.cget("text"), "Save report")
         self.assertEqual(self.app.mem.writes, 0)
 
