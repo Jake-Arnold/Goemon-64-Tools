@@ -109,11 +109,13 @@ def collect_inventory(baseline, candidate, manifest):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--manifest', type=Path, default=Path(__file__).with_name('manifest.json'),
+                        help='Explicit reviewed 210-function candidate manifest, or canonical default')
     parser.add_argument('--baseline', type=Path, required=True)
     parser.add_argument('--candidate', type=Path, required=True)
     parser.add_argument('--report', type=Path, required=True, help='New metadata report, never overwritten')
     args = parser.parse_args(argv)
-    manifest = load_manifest(Path(__file__).with_name('manifest.json'))
+    manifest = load_manifest(args.manifest)
     result = collect_inventory(args.baseline, args.candidate, manifest)
     with args.report.open('x', encoding='utf-8') as output:
         json.dump(result, output, indent=2)

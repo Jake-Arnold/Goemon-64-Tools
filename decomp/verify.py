@@ -21,6 +21,8 @@ import subprocess
 try:
     from . import overlay_file43
     from . import overlay_file12
+    from . import overlay_file11
+    from .research import usa_file11_noop_groups as overlay_file11_noops
     from .elf_layout import pack_object_file, pack_heap_noop_file
     from .elf_layout import pack_file12_callback_text
     from .collision_patch import prepare_collision_gate
@@ -29,6 +31,8 @@ try:
 except ImportError:
     import overlay_file43
     import overlay_file12
+    import overlay_file11
+    from decomp.research import usa_file11_noop_groups as overlay_file11_noops
     from elf_layout import pack_object_file, pack_heap_noop_file
     from elf_layout import pack_file12_callback_text
     from collision_patch import prepare_collision_gate
@@ -90,6 +94,18 @@ def _file12_stage_list(stage_or_stages):
     raise ValueError('Invalid file_12 stage collection')
 
 
+def file11_stage_mode(manifest):
+    """Validate an optional file_11 stage version without accepting unknown fields."""
+    if 'overlay_file11_stage' not in manifest:
+        return None
+    stage = manifest['overlay_file11_stage']
+    if stage == {'format': overlay_file11.STAGE_FORMAT}:
+        return 13
+    if stage == {'format': overlay_file11_noops.STAGE_FORMAT}:
+        return 50
+    raise ValueError('Unsupported file_11 matching-C stage contract')
+
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -97,6 +113,17 @@ def claimed_functions(manifest):
     if stage is not None:
         functions.append(stage['function'])
     functions.extend(stage['function'] for stage in manifest_file12_stages(manifest))
+    mode = file11_stage_mode(manifest)
+    if mode is not None:
+        functions.extend({'name': name, 'rom_offset': rom,
+                          'vma': overlay_file11.VMA_START + rom - overlay_file11.ROM_START,
+                          'size': size}
+                         for name, rom, size, _ in overlay_file11.FUNCTIONS)
+        if mode == 50:
+            functions.extend({'name': name, 'rom_offset': rom,
+                              'vma': overlay_file11.VMA_START + rom - overlay_file11.ROM_START,
+                              'size': 12}
+                             for name, rom in overlay_file11_noops.entries())
     return functions
 
 
@@ -706,6 +733,19 @@ def load_manifest(path):
                     file43_stage['function']['rom_offset'] <
                     function['rom_offset'] + function['size']):
                 raise ValueError('file_12 function overlaps file_43 function')
+    file11_mode = file11_stage_mode(manifest)
+    if file11_mode is not None:
+        candidates = [(name, rom, size) for name, rom, size, _ in overlay_file11.FUNCTIONS]
+        if file11_mode == 50:
+            candidates.extend((name, rom, 12) for name, rom in overlay_file11_noops.entries())
+        staged = set(candidates)
+        if len(staged) != len(candidates):
+            raise ValueError('Duplicated pinned file_11 function identity')
+        for name, rom, size in staged:
+            if name in seen or name in assembly_seen:
+                raise ValueError('file_11 function is already claimed or assembly placeholder')
+            if any(start < rom + size and rom < end for start, end in ranges):
+                raise ValueError('file_11 function overlaps main-segment unit')
     ranges.sort()
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):raise ValueError('Overlapping units')
     if 'heap_noop_text_layout' in manifest:
@@ -734,6 +774,17 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
     checkout=Path(checkout);source_dir=Path(source_dir)
     config=checkout/'config/usa/splat.yaml'
     text=config.read_text(encoding='utf-8')
+    file11_copies=[]
+    file11_mode=file11_stage_mode(manifest)
+    if file11_mode is not None:
+        if reference_rom is None:
+            raise ValueError('file_11 staging requires authenticated USA decompressed ROM')
+        file11_copies=overlay_file11.checked_source_copies(checkout,source_dir/'research',reference_rom)
+        text=overlay_file11.stage_config(text)
+        if file11_mode == 50:
+            file11_copies.extend(overlay_file11_noops.checked_source_copies(
+                checkout,source_dir/'research',reference_rom))
+            text=overlay_file11_noops.stage_splat(text)
     file43_stage=manifest.get('overlay_file43_stage')
     file12_stages=manifest_file12_stages(manifest)
     file43_source=None
@@ -795,7 +846,7 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
         makefile+='\n# Preserve exact file_12 assembly slices around staged C functions.\n'
         for name in file12_asm_objects:
             makefile+=f'build/usa/asm/usa/{name}.s.o: ASFLAGS += --no-pad-sections\n'
-    copies=[]
+    copies=list(file11_copies)
     for name in manifest.get('support_headers',[]):
         source=source_dir/name;destination=checkout/'src'/name
         if not source.is_file() or destination.exists():raise ValueError('Missing or existing support header')
@@ -1369,6 +1420,8 @@ def run_build(args,manifest,report):
     (candidate/'.venv').symlink_to(baseline/'.venv',target_is_directory=True)
     shutil.copyfile(args.retail_rom,candidate/'config/usa/baserom.z64')
     logged('candidate-setup',['make','setup','UV='+uv],candidate)
+    if file11_stage_mode(manifest)==50:
+        report['overlay_file11_nop_aliases']=overlay_file11_noops.patch_synthetic_nop_aliases(candidate)
     file43_stage=manifest.get('overlay_file43_stage')
     if file43_stage is not None:
         before, after, _ = _file43_stage_segments(file43_stage)
@@ -1394,6 +1447,18 @@ def run_build(args,manifest,report):
         report['overlay_file12_object_layout']=prepare_file12_stage_objects(
             candidate,file12_stages
         )
+    file11_mode=file11_stage_mode(manifest)
+    if file11_mode is not None:
+        if file11_mode == 50:
+            file11_objects=overlay_file11_noops.object_targets()
+        else:
+            file11_objects=overlay_file11.object_targets()
+        logged('candidate-file11-objects',['make','-j'+str(args.jobs),'UV='+uv,
+            *file11_objects],candidate)
+        if file11_mode == 50:
+            report['overlay_file11_object_layout']=overlay_file11_noops.trim(candidate)
+        else:
+            report['overlay_file11_object_layout']=overlay_file11.prepare_objects(candidate)
     if manifest.get('vm_assignment_table_layout'):
         logged('candidate-vm-object',['make','-j'+str(args.jobs),'UV='+uv,
             'build/usa/src/script_vm.c.o','build/usa/asm/usa/data/main_continued.rodata.s.o'],candidate)
@@ -1423,6 +1488,14 @@ def run_build(args,manifest,report):
         staged_name=PurePosixPath(file12_stage['source']).name
         report['sources_sha256_lf'][file12_stage['source']]=digest(
             (candidate/'src'/staged_name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
+    if file11_mode is not None:
+        for source_name, target_name, _, _ in overlay_file11.SOURCE_SPECS:
+            report['sources_sha256_lf']['research/'+source_name]=digest(
+                (candidate/'src'/(target_name+'.c')).read_bytes().replace(b'\r\n',b'\n'),'sha256')
+        if file11_mode == 50:
+            for _, _, name in overlay_file11_noops.GROUPS:
+                report['sources_sha256_lf']['research/'+name+'.c']=digest(
+                    (candidate/'src'/(name+'.c')).read_bytes().replace(b'\r\n',b'\n'),'sha256')
     mapping=(candidate/'build/usa/mnsg.map').read_text()
     for unit in manifest['units']:
         object_name='build/usa/src/'+unit['source']+'.o'
@@ -1446,6 +1519,45 @@ def run_build(args,manifest,report):
             result,file12_stages,file12_report['linked_elf_provenance']
         )
         report['overlay_file12_stages']=file12_report
+        report['comparison']=result
+    if file11_mode is not None:
+        if file11_mode == 50:
+            proof11=overlay_file11_noops.verify(
+                candidate,expected,baseline/'build/usa/mnsg.elf')
+            proof11['stage']=overlay_file11_noops.STAGE_FORMAT
+            proof_functions=[
+                {'name': name, 'rom_offset': rom,
+                 'vma': overlay_file11.VMA_START + rom - overlay_file11.ROM_START,
+                 'size': size, 'sha256': digest(expected[rom:rom+size],'sha256')}
+                for name, rom, size, _ in overlay_file11.FUNCTIONS
+            ]
+            proof_functions.extend(
+                {'name': name, 'rom_offset': rom,
+                 'vma': overlay_file11.VMA_START + rom - overlay_file11.ROM_START,
+                 'size': 12, 'sha256': digest(expected[rom:rom+12],'sha256')}
+                for name, rom in overlay_file11_noops.entries()
+            )
+        else:
+            proof11=overlay_file11.verify_linked_stage(
+                expected,(candidate/'build/usa/mnsg.z64').read_bytes(),
+                (baseline/'build/usa/mnsg.elf').read_bytes(),
+                (candidate/'build/usa/mnsg.elf').read_bytes(),
+                candidate,source_dir/'research'
+            )
+            proof_functions=proof11['functions']
+        for function in proof_functions:
+            result['functions'].append({
+                'name': function['name'], 'size': function['size'],
+                'guest_address': f'0x{function["vma"]:08X}',
+                'rom_offset': f'0x{function["rom_offset"]:X}',
+                'matched': True,
+                'expected_sha256': function['sha256'],
+                'candidate_sha256': function['sha256'],
+            })
+            result['claimed_functions'] += 1
+            result['matched_functions'] += 1
+            result['matched_function_bytes'] += function['size']
+        report['overlay_file11_stage']=proof11
         report['comparison']=result
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')

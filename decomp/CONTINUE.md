@@ -16,9 +16,75 @@ disambiguates `0x80077858` as the VM program cursor from the separate
 text-token cursor at `0x801C77E8`; it does not change the matching-C task queue
 or any proof gate.
 
+## Authoritative 2026-11-16 USA matching-C promotion checkpoint (supersedes dated 160-function checkpoints)
+
+The full native central `decomp.verify` and `decomp.inventory` were run using
+pinned upstream revision `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`,
+the authenticated original USA retail ROM, original IDO 5.3, portable Python
+3.12 / Splat and MIPS binutils, with a fresh candidate checkout and an
+independently exact full-ROM baseline cache. The **complete 33,554,432-byte
+ROM matches the original byte-for-byte**, SHA-1
+`6ea0ed71032ce08fc2745f412d84936382197494`.
+
+**Canonical manifest, `results/combined.json` and `results/inventory.json` now
+prove 210/210 matching C functions, 13,336 original machine-code bytes,
+7,376 identified entries, 223 total combined C entries including 13 upstream
+C functions, and 7,153 remaining assembly entries.** The new USA file_11
+stage format `goemon-file11-character-switch-50-v2` is enabled in the canonical
+manifest. The overlay contains 13 reconstructed character-switch functions
+(620 bytes) plus 37 authentic no-op callbacks (444 bytes), with all twelve
+C/ASM linker input extents exact.
+
+Original and candidate file_11 contain the same **8,825** semantic relocation
+records (identical site/type/target/symbol multisets). Only three original
+records at indices 2506–2508 appear in a pinned cyclical permutation, after
+ID0 codegen; no other order difference is accepted by the fail-closed verifier.
+The 180-byte character selector remains assembly-owned. Two synthetic
+four-byte nop FUNC labels introduced solely by Splat text splitting are
+normalized out while preserving all instructions and NON_MATCHING markers.
+
+Fresh central G2/whole-symbol inventory proof and formal acceptance bundle:
+`results/combined.json`, `results/inventory.json` and
+`results/file11_central_promotion_20261116.json`. The build proof is a native
+exact-ROM test, not in-game character-switch validation. Japan full-ROM build
+remains independently blocked by original sources' hardcoded USA assembly paths.
+**Do not use the historical 160-function numbers in the dated sections below
+as current counts.** The one-shot `decomp.promote_file11` review runner is now
+retained for reproduction of the historical transition from a 160-claim manifest;
+for later fresh verification of the already-promoted canonical 210 claims, use
+`python3 -m decomp.verify` followed by `python3 -m decomp.inventory`.
+
 ## Local decomp CI (no GitHub Actions)
 
 Run `python3 -m decomp.local_ci` for the standard ROM-free local test gate (decomp Python regressions, verifier/ledger tests, task evidence validation, and a sanitizer host fixture). For Python-only debugging use `python3 -m decomp.local_ci --quick`, reporting skipped sanitizer coverage. This is intentionally **not** an Actions workflow: absence of `.github/workflows` is not a Local CI blocker. Do not run a workflow-dependent `local-ci` skill or `act` here. Task-specific host tests and the original-VMA native IDO/32 MiB full-ROM G2 gates remain distinct and must be reported separately.
+
+## Japanese Project64 character-switch to USA original C (research follow-up, 15 Nov 2026)
+
+The draft PR #20 (`chatgptweb/japan-character-switch-decomp`) has **13 separately exact USA/JP original-VMA IDO 5.3 C functions per region, 620 bytes per region**. A pinned upstream scratch USA `file_11` mixed-C/ASM reconstruction rebuilt all **33,554,432 ROM bytes exactly**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; its 8,825 relocation records match the already validated four-function scratch build exactly, including their order. See `docs/USA_JAPAN_CHARACTER_SWITCH_13_FUNCTIONS_2026-11-15.md` on that PR branch. The regional character globals are USA `0x8015C5DC`, Japan `0x80161DCC`; candidate availability word arrays USA `0x8015C69C`, Japan `0x80161E8C`. The 180-byte four-character selector remains assembly-owned.
+
+**This is not yet central verification or published matching-C promotion.** The production `decomp/manifest.json`, central `decomp.verify`, combined results and inventory are unchanged. The next bounded integration task is a production-safe mixed C/ASM `file_11` adapter and manifest declarations, followed by the central full-ROM G2, semantic relocations and inventory gate. Do not increase published totals based on standalone research; Java/Japan full-ROM build is still blocked by hard-coded USA `GLOBAL_ASM` paths.
+
+## USA file_11 central verifier adapter (15 November 2026)
+
+An **opt-in, fail-closed** `decomp/overlay_file11.py` stage is now wired into `decomp/verify.py`; see `docs/USA_FILE11_CENTRAL_ADAPTER_2026-11-15.md`. Activate only with `{"overlay_file11_stage":{"format":"goemon-file11-character-switch-13-v1"}}` in a verified candidate manifest. It stages exactly 13 original-USA matching-C functions / 620 bytes in 4 C source islands, retaining the 180-byte selector and all other code in assembly. The module checks the complete 32 MiB ROM, 13 original linked symbols, 8 linker input objects, 4 source/object identities, and all 8,825 file_11 relocation tuples before modifying any function count. The existing previously independently verified 13-function scratch ROM and ELF passed this new module's linked provenance checker. **Not yet a completed full central verifier run; production manifest/results/inventory remain unchanged.** Run central G2 using an opt-in manifest, then audit and promote only if exact.
+
+## Follow-up USA file_11 callback matching-C research (15 Nov 2026)
+
+The same USA `file_11` overlay as the 13 exact character-switch C functions also contains **50 original no-op callback stubs** of 12 bytes apiece. Two adjacent source groups (9 and 28, **37 newly reconstructed functions / 444 bytes**) were demonstrated with authentic original-ID0 and a whole-ROM build in a separate scratch checkout. Together with the earlier 13 functions, the **complete 33,554,432-byte USA ROM matches exactly with 50 C functions / 1,064 bytes staged in file_11**, all 8,825 original overlay relocations identical in order, and the original 180-byte selector still assembly-owned. All 44 ROM-free research Python tests passed. Details: `docs/USA_FILE11_NOOP_CALLBACKS_2026-11-15.md` and `decomp/results/file11_noop_37_native_proof_20261115.json`.
+
+**Important:** The 37 are genuine *empty callbacks*, not 37 newly deciphered gameplay systems. The central opt-in `overlay_file11_stage` still supports only the previous 13 functions. The canonical `decomp/manifest.json`, formal 160-function verifier and inventory have not yet been rebuilt with either optional file_11 stage. The new 37 are research-only until a reviewed stage and complete central G2 test exist.
+
+## Opt-in USA file_11 verifier v2 (15 November 2026)
+
+The verifier accepts only the previous thirteen-function stage format or the new goemon-file11-character-switch-50-v2 format in a temporary reviewed manifest. V2 includes 13 character-switch C functions plus 37 authentic empty actor callbacks (50 C functions/1,064 bytes), and requires all six native compiler C objects, twelve original linker input positions, 8,825 original ELF relocations, original linked symbols and full 32 MiB ROM equality before counting these functions.
+
+The pristine pinned USA upstream scratch build independently met those constraints, but the full central decomp.verify build with the existing 160 C modules has not yet been run. The canonical manifest and inventory remain unchanged. See docs/USA_FILE11_NOOP_CALLBACKS_2026-11-15.md.
+
+## Formal file_11 promotion review runner (15 November 2026)
+
+The reviewed optional v2 50-function USA file_11 stage now has a strictly gated runner at `decomp/promote_file11.py`. Use `python3 -m decomp.promote_file11 --source-dir ./decomp --upstream /path/to/clean/mnsg --retail-rom /path/to/USA.z64 --workdir /tmp/new-g2 --output-dir /tmp/new-file11-review --jobs 2`, optionally with `--baseline-cache` and `--binutils-root`. It generates a temporary 210-function candidate manifest but does not mutate the canonical 160-function manifest or claim verification. It requires the *complete central* G2 and inventory to pass (210 functions / 13,336 bytes / exact 32 MiB original USA ROM / all original file_11 linked C symbols, offsets, hashes, 8,825 relocations / 7,153 ASM entries) before emitting a reviewable promotion bundle. If any criterion fails, no promotion is made. Run `python3 -m decomp.local_ci` and examine the bundle before committing canonical manifest/results/inventory. Details in `docs/USA_FILE11_CENTRAL_PROMOTION_RUNNER_2026-11-15.md`.
+
+**Known execution blocker in this ChatGPT container:** pinned original ROM, upstream ZIP, IDO, native MIPS build inputs exist; the 160-function full production source checkout is only available via private GitHub connector, not as mounted filesystem files. The complete central 210-function G2 was not run; research scratch full-ROM matches do not satisfy that combined gate.
 
 ## 0. Cross-conversation handoff
 

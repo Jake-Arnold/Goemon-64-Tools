@@ -1,0 +1,38 @@
+{
+  "format": "goemon-file11-central-promotion-review-v1",
+  "status": "verified_and_promoted_to_canonical_manifest",
+  "created_utc": "2026-11-16T01:38:39.604677+00:00",
+  "canonical_manifest_sha256": "0a903860ca2ae74cfebc09f26e60980049c7f5fcc9b13562e28dc1d1673bc77d",
+  "candidate_manifest_sha256": "9da16e4b5f53b78904cde9b24ab72f32cb9de77b2301290a528e0a95d734aec2",
+  "g2_report_sha256": "d92971fc76cbe9ddba9481c07745d1622ffacef3a1de52b2350ebcf6a70fe6c4",
+  "inventory_report_sha256": "de70101b39a252962aae5f53e64bcf0ca0e8584ef4e27386f2cf1a8df57417cd",
+  "g2": {
+    "g2_functions": 210,
+    "g2_bytes": 13336,
+    "file11_new_functions": 50,
+    "file11_new_bytes": 1064,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "file11_relocations": 8825
+  },
+  "inventory": {
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 210,
+    "current_unmarked_entries": 223,
+    "remaining_assembly_entries": 7153
+  },
+  "tracked_repository_files_modified": true,
+  "promotion_date": "2026-11-16",
+  "promoted_manifest_path": "decomp/manifest.json",
+  "promoted_full_g2_path": "decomp/results/combined.json",
+  "promoted_inventory_path": "decomp/results/inventory.json",
+  "relocation_order_permutation": {
+    "indices": [
+      2506,
+      2507,
+      2508
+    ],
+    "count": 3,
+    "all_semantic_relocation_targets_and_types_unchanged": true
+  }
+}

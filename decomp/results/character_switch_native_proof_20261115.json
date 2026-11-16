@@ -1,0 +1,125 @@
+{
+  "format": "goemon-isolated-character-switch-ido-proof-v1",
+  "scope": "isolated original-address native C compilation/link; not full ROM",
+  "regions": {
+    "usa": {
+      "character_reader": {
+        "function": "func_801DD500_599410",
+        "original_vma": "0x801DD500",
+        "rom_offset": "0x599410",
+        "original_bytes": 12,
+        "equal_instruction_words": 3,
+        "instruction_words": 3,
+        "exact": true,
+        "candidate_sha256": "b48732223e740fed84b92fbee5fa9a3fb0197fb627625e29f574bc94a423c1a5",
+        "reference_sha256": "b48732223e740fed84b92fbee5fa9a3fb0197fb627625e29f574bc94a423c1a5"
+      },
+      "character_wrapper": {
+        "function": "func_801DD4D8_5993E8",
+        "original_vma": "0x801DD4D8",
+        "rom_offset": "0x5993E8",
+        "original_bytes": 40,
+        "equal_instruction_words": 10,
+        "instruction_words": 10,
+        "exact": true,
+        "candidate_sha256": "e5d88c3382a2f7de59e90a2cccd8985f3bfb3d61f167a6d8e9fa82fb8529487d",
+        "reference_sha256": "e5d88c3382a2f7de59e90a2cccd8985f3bfb3d61f167a6d8e9fa82fb8529487d"
+      },
+      "character_sync": {
+        "function": "func_801DD5C0_5994D0",
+        "original_vma": "0x801DD5C0",
+        "rom_offset": "0x5994D0",
+        "original_bytes": 148,
+        "equal_instruction_words": 37,
+        "instruction_words": 37,
+        "exact": true,
+        "candidate_sha256": "bad0b42cbda479a929526c9585f6d4e0f6a80b3824fb332be9462b685525c81f",
+        "reference_sha256": "bad0b42cbda479a929526c9585f6d4e0f6a80b3824fb332be9462b685525c81f"
+      },
+      "character_alternate": {
+        "function": "func_801DD654_599564",
+        "original_vma": "0x801DD654",
+        "rom_offset": "0x599564",
+        "original_bytes": 132,
+        "equal_instruction_words": 33,
+        "instruction_words": 33,
+        "exact": true,
+        "candidate_sha256": "b6db221fe20f44b79ba9f14652a63e6a6febd2e4331ea8e11f5395d3156383bf",
+        "reference_sha256": "b6db221fe20f44b79ba9f14652a63e6a6febd2e4331ea8e11f5395d3156383bf"
+      }
+    },
+    "japan": {
+      "character_reader": {
+        "function": "func_801E28B0_59E880",
+        "original_vma": "0x801E28B0",
+        "rom_offset": "0x59E880",
+        "original_bytes": 12,
+        "equal_instruction_words": 3,
+        "instruction_words": 3,
+        "exact": true,
+        "candidate_sha256": "b48732223e740fed84b92fbee5fa9a3fb0197fb627625e29f574bc94a423c1a5",
+        "reference_sha256": "b48732223e740fed84b92fbee5fa9a3fb0197fb627625e29f574bc94a423c1a5"
+      },
+      "character_wrapper": {
+        "function": "func_801E2888_59E858",
+        "original_vma": "0x801E2888",
+        "rom_offset": "0x59E858",
+        "original_bytes": 40,
+        "equal_instruction_words": 10,
+        "instruction_words": 10,
+        "exact": true,
+        "candidate_sha256": "ac19e4b67f7d32974f4462beb03d85979df8247b9b16e74c09c8fd3faf61a771",
+        "reference_sha256": "ac19e4b67f7d32974f4462beb03d85979df8247b9b16e74c09c8fd3faf61a771"
+      },
+      "character_sync": {
+        "function": "func_801E2970_59E940",
+        "original_vma": "0x801E2970",
+        "rom_offset": "0x59E940",
+        "original_bytes": 148,
+        "equal_instruction_words": 37,
+        "instruction_words": 37,
+        "exact": true,
+        "candidate_sha256": "9e87cb88a5fd60f120b9f65207da9863eded7bb1ddf6c890d57e2e73eef93363",
+        "reference_sha256": "9e87cb88a5fd60f120b9f65207da9863eded7bb1ddf6c890d57e2e73eef93363"
+      },
+      "character_alternate": {
+        "function": "func_801E2A04_59E9D4",
+        "original_vma": "0x801E2A04",
+        "rom_offset": "0x59E9D4",
+        "original_bytes": 132,
+        "equal_instruction_words": 33,
+        "instruction_words": 33,
+        "exact": true,
+        "candidate_sha256": "5cd9a9acbc741485da9d7d416f0187a5c15bf79de2a378d41edcbd47bda6d4be",
+        "reference_sha256": "5cd9a9acbc741485da9d7d416f0187a5c15bf79de2a378d41edcbd47bda6d4be"
+      }
+    }
+  },
+  "all_eight_exact": true,
+  "date": "2026-11-15",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "ido_compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "full_usa_reproduction": {
+    "size_bytes": 33554432,
+    "reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "byte_exact": true,
+    "clean_unmodified_baseline_matched": true,
+    "independent_clean_source_replay_matched": true,
+    "file_11_relocations": {
+      "baseline_count": 8825,
+      "candidate_count": 8825,
+      "identical_site_type_symbol_target_multisets": true,
+      "ordered_tuples_identical": false,
+      "records_reordered": 3
+    },
+    "C_functions_in_assembly_overlaid_region": 4,
+    "C_function_bytes": 332
+  },
+  "promotion_status": "research_verified_not_integrated_into_decomp_manifest",
+  "limitations": [
+    "USA 32 MiB full-ROM equality is proven for four C replacements staged into the pinned source, including a clean checkout; central decomp.verify manifest integration/inventory remains outstanding.",
+    "Japanese original-address IDO proof passes for all four functions, but its full-ROM build remains blocked by hardcoded USA GLOBAL_ASM references.",
+    "No game ROM, source assembly, assets or compiled object files are contained in this metadata."
+  ]
+}

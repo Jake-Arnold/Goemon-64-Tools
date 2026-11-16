@@ -14,7 +14,7 @@ from decomp.verify import (
     stage_file43_splat, verify_file43_ownership, append_file43_function_comparison,
     verify_file43_stage_build, require_file43_full_rom_match,
     lower_file43_text_alignment, prepare_file43_stage_objects,
-    manifest_file12_stages, stage_file12_splats,
+    manifest_file12_stages, file11_stage_mode, stage_file12_splats,
     validate_file12_stage_definition, validate_file12_stage, stage_file12_splat,
     patch_file12_tail_alias_sources,
     _file12_stages_layout,
@@ -109,7 +109,7 @@ class DecompVerificationTests(unittest.TestCase):
         disabled=copy.deepcopy(manifest);disabled['overlay_file43_stage']=None
         self.assertEqual(len(claimed_functions(disabled)),
                          len(main_claimed_functions(disabled))+
-                         len(manifest_file12_stages(disabled)))
+                         len(manifest_file12_stages(disabled))+(file11_stage_mode(disabled) or 0))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
         staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
@@ -120,7 +120,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertIn(stage['function'],claimed_functions(loaded))
             self.assertEqual(len(claimed_functions(loaded)),
                              len(main_claimed_functions(loaded))+
-                             1+len(manifest_file12_stages(loaded)))
+                             1+len(manifest_file12_stages(loaded))+(file11_stage_mode(loaded) or 0))
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
             path.write_text(json.dumps(bad))
@@ -151,7 +151,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(validate_file12_stage_definition(stages[1]).as_posix(),
                          'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
-                         len(main_claimed_functions(manifest))+1+len(stages))
+                         len(main_claimed_functions(manifest))+1+len(stages)+(file11_stage_mode(manifest) or 0))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             bad=copy.deepcopy(manifest)
@@ -806,7 +806,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claims),unit_functions+
                          len(manifest.get('existing_source_patches',[]))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         len(manifest_file12_stages(manifest)))
+                         len(manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
@@ -1085,6 +1085,12 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('overlay_file43_stage') is not None:
             sources.add(manifest['overlay_file43_stage']['source'])
         sources.update(stage['source'] for stage in manifest_file12_stages(manifest))
+        if manifest.get('overlay_file11_stage') is not None:
+            from decomp import overlay_file11
+            from decomp.research import usa_file11_noop_groups
+            sources.update('research/'+source for source, _, _, _ in overlay_file11.SOURCE_SPECS)
+            if manifest['overlay_file11_stage'] == {'format': usa_file11_noop_groups.STAGE_FORMAT}:
+                sources.update('research/'+name+'.c' for _, _, name in usa_file11_noop_groups.GROUPS)
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

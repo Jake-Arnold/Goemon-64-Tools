@@ -1,0 +1,37 @@
+{
+  "original_address_c_functions": 37,
+  "original_address_c_bytes": 444,
+  "total_overlay_c_functions": 50,
+  "total_overlay_c_bytes": 1064,
+  "ordered_linker_objects": 12,
+  "rom_bytes": 33554432,
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "relocations": 8825,
+  "relocations_same_order": true,
+  "linked_elf_sha256": "2ef1b553b9d06f29c1eb0006b197199830f2379a29f94aa329fbfa19582212e6",
+  "format": "goemon-file11-37-noop-original-rom-rebuild-v1",
+  "date": "2026-11-15",
+  "original_elf_sha256": "1dc2309cce0fc5545a53d03301ebfbf7ab20fbdbd43afae51bea6e690613efa7",
+  "original_ido": "IDO 5.3 -O2 -mips2",
+  "new_c_groups": [
+    {
+      "rom_start": "0x59d0c0",
+      "functions": 9,
+      "rom_end": "0x59d12c",
+      "source": "decomp/research/callback_noops_a.c",
+      "source_sha256": "8a817e6023d1f6cd45dfd628300d5495adf8b59f70d0f1c931b44ec5c3054757",
+      "staged_object_sha256": "c125dea48c318b5af19d3c9ac2897c788ff907ef82122303f93055df03ca2963"
+    },
+    {
+      "rom_start": "0x59d38c",
+      "functions": 28,
+      "rom_end": "0x59d4dc",
+      "source": "decomp/research/callback_noops_b.c",
+      "source_sha256": "d39424ba83477114587a320987ad5516fbfee6277fc05fdd2dc1c9fc3059415b",
+      "staged_object_sha256": "8879a28b89af1ee5c783d3b7abb63b7d77de407fe916107170b28e80c9b9ba51"
+    }
+  ],
+  "production_manifest": "unchanged",
+  "central_160_function_gate": "not_run",
+  "warning": "Research-only original-ROM proof; not formal production promotion; empty callbacks are not substantive gameplay logic"
+}
