@@ -88,6 +88,10 @@ class JapaneseDebugMenuControllerTests(unittest.TestCase):
                     writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1),
                     b'\x0a')
                 self.assertEqual(len(writer.writes), 0 if state == 10 else 1)
+                if state != 10:
+                    # One physical host byte, not a read/modify/write
+                    # of the surrounding word in word-swapped memory.
+                    self.assertEqual(writer.writes[0], (0xCD287, b'\x0a'))
                 self.assertEqual(writer.rdram().read_guest(JAPAN_DEBUG_SCENE, 2),
                                  original_scene)
                 self.assertEqual(writer.rdram().read_guest(
