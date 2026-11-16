@@ -2,6 +2,14 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Native Japanese recomp write controls (v0.11.21)
+
+Earlier v0.11.20 builds could attach to the native Japanese recomp and display values, but left write buttons grey because several Japanese UI eligibility checks recognized only Project64/Mupen64Plus. This is fixed in v0.11.21: the verified native `recomp` backend is eligible for mapped Unlocks, Japanese Story Progress inventory edits, Goemon XYZ experiments, native debug-menu entry, Live Memory right-click hex edits, direct **Write raw hex**, and fixed-address freezes. The raw editor uses Japanese-specific `write_japan_raw_bytes` with expected-byte comparison and per-write RDRAM/ROM/PID verification.
+
+These controls **do not** require an extra write toggle or CLI flag. To use the updated UI, `git pull --ff-only`, close the old toolkit window, start `bash Run-Linux.sh`, select **Japan** in the Dashboard, and connect to the native Japanese recomp. For end-to-end validation, run `bash scripts/test_japan_party.sh` and test a single known Japanese inventory byte after backing up the game save. The regression suite includes `tests.test_japan_recomp_write_ui` (synthetic Tk and memory only).
+
+**USA-only operations remain intentionally disabled on Japan:** God Mode/task-pointer/max-health freeze, enemy pass-through, unverified Japanese story event bits and complete recomp savestates. Their Japanese guest layouts or runtime support have not been established. Successful attachment and an enabled button do not by themselves establish that a live process memory write was permitted or acted on by the game.
+
 ## Ubuntu Dock cog icon correction (v0.11.20)
 
 The v0.11.19 launcher had a real GNOME identity mismatch: `Tk(className="GoemonPracticeToolkit")` actually exposes **`WM_CLASS = "goemonPracticeToolkit", "Goemonpracticetoolkit"`** on Tk 8.6/X11, but the installed `.desktop` file advertised `StartupWMClass=GoemonPracticeToolkit`. Case matters.
