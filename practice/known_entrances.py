@@ -10,9 +10,10 @@ from practice.japanese_position import (
     JAPAN_OEDO_SOUTH_SCENE, JAPAN_OEDO_SOUTH_ENTRANCE,
 )
 
-# Observed Goemon position in Oedo Town South, Japanese game. The user expects
-# the same XYZ for the USA scene. Heading 0 and mode 0x10 are experimental
-# fallback values, NOT measured from a native entrance record or original ROM.
+# Oedo South XYZ first observed in the Japanese game. Confirmed in the
+# verified original-USA ROM atlas supplied on 2026-11-16: both the native
+# default:353 and source-scene 351 entrance 15F:006 have XYZ (-289,0,-167),
+# heading 256, mode 16. This built-in fallback now matches those values.
 # Do not add guessed scene coordinates to this file.
 _KNOWN_ENTRANCES = (
     dict(
@@ -24,10 +25,10 @@ _KNOWN_ENTRANCES = (
         exit_id=0,
         destination=JAPAN_OEDO_SOUTH_SCENE,
         position=list(JAPAN_OEDO_SOUTH_ENTRANCE),
-        heading=0,
-        mode=0x10,
+        heading=256,
+        mode=16,
         provenance="observed-japan-oedo-south-goemon-xyz",
-        heading_mode_verified=False,
+        heading_mode_verified=True,
     ),
 )
 
