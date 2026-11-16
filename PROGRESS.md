@@ -1,5 +1,16 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — USA file12 three-C exact full-ROM original-upstream integration (research preflight)
+
+- Built original pinned USA baseline, then a fresh separate mixed-C/ASM candidate incorporating three original-address C functions and surrounding original assembly.
+- Complete candidate 32 MiB ROM: 33,554,432/33,554,432 bytes identical to source, SHA-1 6ea0ed71032ce08fc2745f412d84936382197494. Original file_12 section VMA/size/alignment retained.
+- Original/candidate file_12 relocations: 7,051/7,051 identical multisets of site, MIPS relocation type, resolved value, and symbol name. Raw record ordering differs. ELF positive-sized FUNC (name/VMA/size) inventory: 7,376/7,376 preserved.
+- Six six-object ASM/C/ASM extents retained via zero-only ELF tail removal and lowering the input text alignment to four bytes. Restored the original zero-size overlay-tail data-label ownership and removed the unsplit ASM object from linker data/rodata/BSS ownership to prevent duplicate symbols.
+- Verification: independent three-function IDO C isolates 420/420 bytes and 25 original-named external relocations PASS, full linked candidate PASS, six additional synthetic fail-closed preflight tests PASS.
+- Limitations: original upstream assembly plus three C only. This is NOT a 315+3 canonical combined G2 or a formal promotion; original 315 production C count, manifest and proofs remain unchanged. Complete central decomp.verify, decomp.inventory and local_ci still required.
+- Follow-up: version the adapter for the existing 315-C pipeline, then run complete original-ROM, ELF relocation, symbol inventory and local CI acceptance.
+
+
 ### 2026-11-16 — Three USA file_12 actor-lifecycle C isolates exact at original VMA (research only)
 
 - Changed: added three original-IDO 5.3 C reconstruction sources and fail-closed standalone verifier under `decomp/research/file12_spatial/`, four ROM-free structural tests, and `docs/USA_FILE12_THREE_C_ISOLATES_2026-11-16.md`. The previous spatial original-ROM anchor report remains intact.
