@@ -1,0 +1,68 @@
+{
+  "format": "goemon-japan-0-matching-c-promotion-v4",
+  "date": "2026-11-15",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "previous": {
+    "functions": 5,
+    "function_bytes": 168,
+    "translation_units": 3
+  },
+  "new_promotion": {
+    "name": "func_80012F70_13B70",
+    "rom_offset": "0x13B70",
+    "vram": "0x80012F70",
+    "function_bytes": 32,
+    "source": "japan_matching/jp_camera_13B70.c",
+    "source_sha256": "b924622510395f9b8d3d4be8cf5a662160cff676678c5d4541c76ead87ae8d5b",
+    "object": "build/japan_0/src/jp_camera_13B70.c.o",
+    "object_text_sha256": "5ac8c04bfd5044d48649fa29217ef11385d853508fcff5445d9376620cec3ca5",
+    "object_section_bytes": 32,
+    "text_relocations": 0,
+    "link_map_vram": "0x80012F70",
+    "source_link_status": "PASS",
+    "object_text_identical_to_original": true,
+    "behavior": "Stores three float arguments to pointer offsets 0x60, 0x6C, 0x78; higher-level game meaning not yet verified"
+  },
+  "current": {
+    "functions": 6,
+    "function_bytes": 200,
+    "translation_units": 4,
+    "positive_size_japanese_elf_entries": 7376,
+    "assembly_marked_entries": 7370,
+    "unreviewed_unmarked_entries": 0,
+    "section_count": 73,
+    "elf_symbol_identity_sha256": "83fbb9b20540f89761eaf6f58bc7220c8d54b118a4701c2e8a1b10ce172f8db6"
+  },
+  "proof": {
+    "compiler": "Native pinned IDO 5.3, -mips2 -O2",
+    "native_splat_split": "PASS",
+    "symbol_alias_fixups": {
+      "cross_object_labels": 22,
+      "bss_aliases": 2
+    },
+    "expanded_rom": {
+      "bytes": 33554432,
+      "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "different_bytes": 0,
+      "status": "PASS"
+    },
+    "retail_rom": {
+      "bytes": 16777216,
+      "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+      "different_bytes": 0,
+      "status": "PASS"
+    },
+    "region_verifier": "MATCH: 6 C functions / 200 bytes",
+    "inventory": "7376 entries / 7370 ASM / 6 C / zero other unmarked"
+  },
+  "tests": {
+    "focused_rom_free": "37/37 PASS",
+    "shell_runner_syntax": "PASS",
+    "one_command_runner": "Not executed as one command; identical component commands executed manually",
+    "usa_full_matching_g2": "NOT RUN",
+    "emulator_gameplay": "NOT RUN",
+    "pc_native_game": "NOT RUN"
+  },
+  "copyright": "Only source code, test and metadata; no original game bytes, generated assembly or ROMs committed"
+}
