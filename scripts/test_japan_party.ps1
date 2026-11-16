@@ -91,7 +91,8 @@ $guiTests = @(
     'tests.test_japan_value_freezes_ui',
     'tests.test_value_freezes_ui',
     'tests.test_story_progress_ui',
-    'tests.test_dashboard'
+    'tests.test_dashboard',
+    'tests.test_japan_recomp_write_ui'
 )
 
 Push-Location -LiteralPath $repoRoot
