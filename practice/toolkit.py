@@ -351,7 +351,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         jp_card = ttk.LabelFrame(right, text=' Japan Project64 / Mupen64Plus RDRAM ', padding=10)
         self.jp_card = jp_card
         jp_card.pack(fill='x', pady=(0, 6))
-        ttk.Label(jp_card, text='Verify Japan-0 ROM; select project64 (Windows) or mupen64plus, '
+        ttk.Label(jp_card, text='Verify Japan-0 ROM; select recomp, project64 (Windows) or mupen64plus, '
                   'then Connect. Only raw N64 bytes are exposed; USA pointers, '
                   'USA checkpoints and USA RAM editors remain disabled. '
                   'Mapped Japanese unlocks write directly in the shared Unlocks tab.',
@@ -487,7 +487,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             and getattr(self.args, 'enable_hex_edit', True)
             and not getattr(self.args, 'read_only', False))
         self.raw_write_btn.state(
-            ['!disabled'] if usa_edit else ['disabled'])
+            ['!disabled'] if (usa_edit or jp_edit) else ['disabled'])
         self.freeze_raw_button.state(
             ['!disabled'] if (usa_edit or jp_edit) else ['disabled'])
         for button in (self.freeze_health_button,
@@ -1641,10 +1641,13 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.last_inspect_at=0.0
             self.refresh_inspector({})
             self.refresh_unlocks(force=True)
+            self.refresh_story_progress()
+            self.select_story_edit()
             self.notebook.select(self.scene_tab)
             self.status.set(f'Attached to Japan-0 {target} PID {pid}, '
                             f'{size_mb} MiB RAM 0x{base:X}, {endian}. '
-                            'Mapped Unlocks write directly; research and USA-only writers remain read-only.')
+                            'Japanese mapped writes, raw edits and freezes enabled; '
+                            'USA-only player/task controls remain unavailable.')
         elif result[0] == 'ok':
             _, pid, process, candidate, sample, base, endian = result
             with self.value_freezes.guard:
