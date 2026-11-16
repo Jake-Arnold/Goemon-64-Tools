@@ -19,7 +19,7 @@ class EntranceMixin:
 
     def scene_catalog(self):
         catalog=dict(SCENES)
-        # USA entrance atlas metadata must never leak into the Japan menu.
+        # Keep regional scene names separate; the selected USA entrance\n        # coordinates are nevertheless shared by both native warp paths.
         if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan':
             return catalog
         if self.entrance_atlas:
@@ -43,7 +43,7 @@ class EntranceMixin:
     def entrance_summary(self):
         if self.entrance_atlas:
             p=self.entrance_atlas['payload'];return f'Original USA ROM: {len(p["rooms"])} stages, {len(p["entries"])} entry records. Select a destination and entrance.'
-        return 'Load the original USA ROM once to enable entrance-corrected scene requests.'+(f' Cache error: {self.entrance_load_error}' if self.entrance_load_error else '')
+        return 'Load the original USA ROM once. Both USA and Japan warps use exactly these entrance coordinates.'+(f' Cache error: {self.entrance_load_error}' if self.entrance_load_error else '')
 
     def load_entrance_rom(self):
         if self.entrance_loading:return
@@ -88,8 +88,16 @@ class EntranceMixin:
         self.entrance_choice.set('')
         chosen_index=next((i for i,e in enumerate(self.entrance_rows) if e['id']==previous),None)
         if chosen_index is None:
-            try:origin=self.mem.u16(0x800C7AB2) if self.mem else None
-            except (OSError,ValueError):origin=None
+            try:
+                if getattr(self.active_version, 'key', 'usa') == 'japan':
+                    reader = getattr(self, 'jp_rdram', None)
+                    origin = (int.from_bytes(
+                        reader.read_guest(0x800CD2A2, 2), 'big')
+                        if reader is not None else None)
+                else:
+                    origin = self.mem.u16(0x800C7AB2) if self.mem else None
+            except (OSError, ValueError, RuntimeError, PermissionError):
+                origin = None
             candidates=[i for i,e in enumerate(self.entrance_rows) if e['source_map']==origin and e['kind']=='exit']
             if not candidates:
                 defaults=[i for i,e in enumerate(self.entrance_rows) if e['kind']=='default']
