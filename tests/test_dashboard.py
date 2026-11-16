@@ -188,12 +188,14 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertIn('Japan-0', app.event_region_note.get())
         self.assertEqual(app.event_region_start.get(), '0x80161D80')
         self.assertEqual(app.notebook.tab(app.jp_fields_tab, 'state'), 'normal')
-        # Explicitly invalid target must never fall into USA memory discovery.
+        # Auto PID/backend discovery is now the default for Japan. The
+        # verified Japanese ROM remains mandatory before probing any process
+        # and the USA RAM path must never be selected by Japan's Connect.
         app.connection_target.set('auto')
         app.connect()
         self.assertIsNone(app.mem)
         self.assertIsNone(app.jp_rdram)
-        self.assertIn('requires an explicit target', app.status.get())
+        self.assertIn('Verify the exact Japan-0 ROM', app.status.get())
         app.connection_target.set('mupen64plus')
         app.connect()
         self.assertIn('Verify the exact Japan-0 ROM', app.status.get())
