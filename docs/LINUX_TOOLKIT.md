@@ -2,6 +2,16 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Fixed entrance coordinates without a ROM at launch (v0.11.24)
+
+Both USA and Japanese Scene Browsers now consult a **persistent entrance-coordinate table** keyed by scene and individual entrance ID. The full original-USA ROM-derived table is stored under `~/.config/GoemonSpeedrunTools/entrance-coordinates.json` on Ubuntu (using XDG_CONFIG_HOME if set), **outside** the git checkout. The toolkit loads it automatically every launch. Any validated `practice/entrances.json` created by an older version is migrated on first launch, so changing the toolkit checkout does not lose already extracted coordinates. The original ROM can be removed after a successful one-time import, and does not need to be opened again for regular warps.
+
+A small built-in static table also supplies the user-observed **Oedo Town South, scene 0x161 (353), Goemon XYZ (-289, 0, -167)** with no ROM or cache at all. Its heading/mode defaults have not been confirmed from the original USA entrance record. Verified ROM-derived rows take precedence over that fallback. Other destinations are only available without the ROM when their numeric entrance records already exist in the persistent cache.
+
+**Scene ID alone is not a unique position:** a room can have several entries with different XYZ, heading and mode. The existing shared entrance picker distinguishes entrances and still prefers a unique source-scene route or default; it does not arbitrarily pick between conflicting positions. Japan and USA both use whichever exact recorded entrance is selected.
+
+When data is missing for a room, **Load original USA ROM** once in Scene Browser. After the numeric records are extracted, future USA/Japanese warps use the same cached values automatically. Only coordinates and functional scene/entrance metadata are stored; the ROM is never copied into this cache.
+
 ## Identical USA and Japanese scene warp coordinates (v0.11.23)
 
 **Both regions use the original-USA entrance atlas**. In the unified toolkit's **Scene Browser**, the exact same **Destination entrance** selector and **Load original USA ROM** button appear for USA and Japan. The toolkit automatically loads the previously cached original-USA entrance atlas from `practice/entrances.json` if available. If not, load your original USA ROM using that button. This is entrance-data extraction only; the current live Japanese game still connects to its own separately verified Japanese ROM and memory backend.
