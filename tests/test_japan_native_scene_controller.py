@@ -104,15 +104,17 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
         self.assertIn('Shared USA entrance', app.scene_status.value)
         self.assertIn('USA entrance', app.scene_status.value)
 
-    def test_japan_postload_places_exact_usa_xyz_once(self):
+    def test_japan_postload_places_exact_usa_xyz_once_in_oedo(self):
         app, writer = make_controller()
         selected = Spawn(
-            0x1D1, (100, 5, 200), label='USA same coords',
+            0x161, (100, 5, 200), label='USA same coords',
             entrance_id='usa:shared')
         app.selected_scene_spawn = lambda dest: selected
-        app.start_japan_native_scene_warp(destination=0x1D1)
-        writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((13,)))
+        # Start from another playable scene; finish in verified Oedo South.
         writer.set_guest(JAPAN_DEBUG_SCENE, bytes.fromhex('01D1'))
+        app.start_japan_native_scene_warp(destination=0x161)
+        writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((13,)))
+        writer.set_guest(JAPAN_DEBUG_SCENE, bytes.fromhex('0161'))
         writer.set_guest(
             JAPAN_PLAYER_XYZ_START,
             struct.pack('>fff', 5.0, 0.0, -10.0))
@@ -139,6 +141,9 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
 
     def test_other_character_does_not_write_unmapped_japanese_xyz(self):
         app, writer = make_controller()
+        # Explicitly choose Yae. Without this, changing global character from
+        # Goemon to Yae during a warp must not count as a confirmed success.
+        app.scene_character = SimpleNamespace(current=lambda: 4)
         app.start_japan_native_scene_warp(destination=0x1D1)
         writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((13,)))
         writer.set_guest(JAPAN_DEBUG_SCENE, bytes.fromhex('01D1'))
@@ -151,7 +156,39 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
             app.poll_japan_native_scene_warp(time.monotonic())
         self.assertIsNone(app.jp_auto_warp)
         self.assertEqual(writer.writes, [])
-        self.assertIn('not Goemon', app.scene_status.value)
+        self.assertIn('actor/task', app.scene_status.value)
+
+    def test_non_oedo_goemon_does_not_write_unverified_xyz(self):
+        app, writer = make_controller()
+        app.start_japan_native_scene_warp(destination=0x1D1)
+        writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((13,)))
+        writer.set_guest(JAPAN_DEBUG_SCENE, bytes.fromhex('01D1'))
+        writer.set_guest(
+            JAPAN_PLAYER_XYZ_START,
+            struct.pack('>fff', 500.0, 0.0, 200.0))
+        writer.writes.clear()
+        for _ in range(3):
+            app.poll_japan_native_scene_warp(time.monotonic())
+        self.assertIsNone(app.jp_auto_warp)
+        self.assertEqual(writer.writes, [])
+        self.assertIn('no post-load write', app.scene_status.value)
+
+    def test_unexpected_character_remains_pending_until_timeout(self):
+        app, writer = make_controller()
+        app.start_japan_native_scene_warp(destination=0x1D1)
+        writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((13,)))
+        writer.set_guest(JAPAN_DEBUG_SCENE, bytes.fromhex('01D1'))
+        # Global character changed without an explicit character request.
+        writer.set_guest(0x80161DCC, (3).to_bytes(4, 'big'))
+        writer.writes.clear()
+        for _ in range(3):
+            app.poll_japan_native_scene_warp(time.monotonic())
+        self.assertIsNotNone(app.jp_auto_warp)
+        self.assertEqual(writer.writes, [])
+        app.poll_japan_native_scene_warp(app.jp_auto_warp['deadline'] + 1)
+        self.assertIsNone(app.jp_auto_warp)
+        self.assertIn('Expected character 0', app.scene_status.value)
+        self.assertIn('last observed 3', app.scene_status.value)
 
     def test_capture_current_japan_xyz_persists_without_game_writes(self):
         app, writer = make_controller()
