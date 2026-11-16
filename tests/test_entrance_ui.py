@@ -84,6 +84,44 @@ class EntranceUITests(unittest.TestCase):
         with patch.object(self.process,'write',side_effect=AssertionError('No writes')):self.app.poll_direct_warp(1)
         self.assertIsNone(self.app.pending_direct_warp)
 
+    def test_known_oedo_coordinates_work_without_any_rom_in_both_regions(self):
+        from practice.game_versions import VERSIONS
+        self.app.entrance_atlas = None
+        self.app.entrance_choice.set('')
+        self.app.refresh_entrance_choices(0x161)
+        usa = self.app.selected_scene_spawn(0x161)
+        self.assertEqual(usa.position, (-289.0, 0.0, -167.0))
+        self.assertIn('experimental', self.app.entrance_note.get())
+
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        self.app.refresh_entrance_choices(0x161)
+        japan = self.app.selected_scene_spawn(0x161)
+        self.assertEqual(japan.pending_bytes(), usa.pending_bytes())
+        self.assertEqual(japan.entrance_id, usa.entrance_id)
+
+    def test_validated_legacy_atlas_migrates_to_durable_user_settings(self):
+        from practice.entrance_ui import EntranceMixin
+        from practice.entrances import load_atlas, save_atlas
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            legacy = folder / 'entrances.json'
+            persistent = folder / 'xdg-config' / 'entrance-coordinates.json'
+            atlas = atlas_fixture()
+            save_atlas(legacy, atlas)
+            with patch('practice.entrance_ui.stored_entrance_atlas_path',
+                       return_value=persistent), \\
+                 patch('practice.entrance_ui.practice_data_dir',
+                       return_value=folder):
+                first = EntranceMixin()
+                first.init_entrances()
+                self.assertEqual(first.entrance_atlas, atlas)
+                self.assertEqual(load_atlas(persistent), atlas)
+                legacy.unlink()
+                second = EntranceMixin()
+                second.init_entrances()
+                self.assertEqual(second.entrance_atlas, atlas)
+
     def test_failed_rom_load_preserves_previous_atlas(self):
         old=self.app.entrance_atlas
         self.app.entrance_results.put(('error','incorrect ROM'))
