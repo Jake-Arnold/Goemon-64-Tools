@@ -1,8 +1,60 @@
+"""Self-contained USA RAM fixtures for checkpoint and value-freeze tests.
+
+Keep these tests independent of the removed LiveSplit/autosplitter bridge
+and route engine. The shared RDRAM reader remains production code.
+"""
 import unittest
 import struct
-import tests.test_tools as helpers
-from tests.test_tools import BASE, write_u32, write_u8
-from autosplitter.memory import Rdram
+from autosplitter.memory import (
+    Rdram, SYS_POINTER_ADDR, SYS_EXPECTED_PTR, PLAYER_OBJECT_PTR_ADDR,
+    PLAYER_TASK_PTR_ADDR, CHARACTER_ID_ADDR, LOADING_FLAG_ADDR,
+)
+
+BASE = 0x10000000
+
+
+class FakeProcess:
+    def __init__(self):
+        self.mem = bytearray(0x800000)
+
+    def read(self, addr, size):
+        offset = addr - BASE
+        if offset < 0 or offset + size > len(self.mem):
+            raise OSError("bad read")
+        return bytes(self.mem[offset:offset + size])
+
+    def write(self, addr, value):
+        offset = addr - BASE
+        if offset < 0 or offset + len(value) > len(self.mem):
+            raise OSError("bad write")
+        self.mem[offset:offset + len(value)] = value
+
+    def regions(self):
+        return [(BASE, len(self.mem))]
+
+
+def write_u32(process, address, value):
+    process.write(BASE + (address & 0x1FFFFFFF), struct.pack("<I", value))
+
+
+def write_u8(process, address, value):
+    process.write(BASE + ((address & 0x1FFFFFFF) ^ 3), bytes([value]))
+
+
+def sample_process():
+    process = FakeProcess()
+    write_u32(process, SYS_POINTER_ADDR, SYS_EXPECTED_PTR)
+    write_u32(process, PLAYER_OBJECT_PTR_ADDR, 0x801A0000)
+    write_u32(process, PLAYER_TASK_PTR_ADDR, 0x801B0000)
+    write_u32(process, CHARACTER_ID_ADDR, 3)
+    write_u8(process, LOADING_FLAG_ADDR, 0)
+    write_u8(process, 0x801B0000 + 0xCC, 4)
+    for index, value in enumerate((125.25, -5.5, 700.5)):
+        process.write(
+            BASE + (0x801A0008 & 0x1FFFFFFF) + index * 4,
+            struct.pack("<f", value),
+        )
+    return process
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   validate_checkpoint, LIVE_ADDR, GAMEDATA_ADDR,
                                   HEADER_ADDR, SHADOW_ADDR, MAP_ADDR, STATE_ADDR,
@@ -13,7 +65,7 @@ class TestCheckpoint(unittest.TestCase):
     def sample(self, endian="wordswapped"):
         if endian != "wordswapped":
             raise NotImplementedError
-        p = helpers.Tests().sample()
+        p = sample_process()
         ram = Rdram(p, BASE, endian)
         write_u8(p, STATE_ADDR, 13)
         write_u8(p, PHASE_ADDR, 1)
