@@ -2,6 +2,16 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.27 unified active toolkit development branch
+
+- **User request:** Consolidate current Goemon Practice Toolkit code into one obvious active branch; parallel Japan/Linux/USA toolkit prototypes and draft PRs had become confusing.
+- **Branch inventory:** Enumerated all **24** remote branches; investigated open PRs and compared the active native Japanese recomp branch against `main`, earlier `chatgptweb/japan-toolkit-consolidation`, `chatgptweb/japan-main-integration-20261116`, `chatgptweb/toolkit-linux-native`, native savestate/Mupen branches, and relevant research/decomp branches. The previously active v0.11.26 toolkit branch was ahead of main by 128 commits. Older consolidation/integration toolkit controller and shared UI method names were fully present in the current implementation; their obsolete Project64-only, raw-RAM-only and experimental speed UI code was not blindly reintroduced. The separate decomp/ROM branches were excluded deliberately.
+- **Single active branch:** Created `chatgptweb/toolkit-unified` directly from `chatgptweb/japan-native-recomp-toolkit-v01118` @ `4cd217e8285f38e2491097aaea6113c61e32915a`. All v0.11.26 toolkit source, bundled `practice/data/entrance-coordinates.json` (333 rooms/888 entrances), docs and tests are inherited byte-for-byte before the v0.11.27 version/docs update.
+- **Documentation:** Added `docs/TOOLKIT_BRANCH_POLICY.md` identifying the only active toolkit destination, old experimental branch categories, decomp exclusions, step-by-step Ubuntu branch switching and validation limitations. Updated README release heading and progress. No historical branch force-pushed, reset or deleted; their research remains accessible, but future toolkit commits should use only the unified branch.
+- **Release version:** Bumped `practice/version.py` **0.11.26 → 0.11.27**; existing toolkit feature code and safety gates unchanged.
+- **PR state:** Create one **draft** `chatgptweb/toolkit-unified` → `main` PR; retire superseded draft PR #25 by closing it with a referral to the new PR, retaining the older branch and commits. Keep unrelated research PRs untouched.
+- **Verification:** GitHub connected API confirms branch exists and files are inherited. This consolidation has **not** executed local Python/Tk GUI suites or tested live USA/JP native recomp. Require `bash scripts/test_japan_party.sh`, exact warp point tests and runtime smoke tests before merging to main.
+
 ## 2026-11-16 — v0.11.26 committed extracted 888-entrance numeric atlas
 
 - **User provided:** `goemon-entrance-coordinates.json` (145,610 UTF-8 bytes), extracted locally from their original USA ROM using `python3 -m practice.entrances`; no original ROM file was uploaded, requested or committed.
