@@ -2,6 +2,18 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Identical USA and Japanese scene warp coordinates (v0.11.23)
+
+**Both regions use the original-USA entrance atlas**. In the unified toolkit's **Scene Browser**, the exact same **Destination entrance** selector and **Load original USA ROM** button appear for USA and Japan. The toolkit automatically loads the previously cached original-USA entrance atlas from `practice/entrances.json` if available. If not, load your original USA ROM using that button. This is entrance-data extraction only; the current live Japanese game still connects to its own separately verified Japanese ROM and memory backend.
+
+Select a destination scene and then choose **the exact same entrance** from the dropdown in either region. Automatic selection uses a unique source-room entrance when known (the current Japanese room is read from `0x800CD2A2`) or the same native default fallback used by USA. If entrance data is missing or ambiguous, the toolkit refuses the warp until the user selects an entry; there are no scene-ID-only Japanese shortcuts.
+
+For either region, the selected `Spawn.pending_bytes()` encodes the exact same `scene/mode/X/Y/Z/heading` 12-byte payload, then region-specific native 0x0C reload requests it. USA performs a guarded one-shot post-load XYZ placement. Japanese native Goemon gameplay now likewise writes the same original-USA entrance XYZ as 3 guest float32 coordinates at `0x80151B10` only once if the loaded position differs, after verifying the correct destination, Goemon character and stable gameplay, and re-opening the verified native writable handle. The status then reports requested versus actual XYZ, not merely a scene-ID match.
+
+The old optional per-Japanese-room coordinate capture registry remains historical research metadata, **not an override** of the original-USA entrance choices. The separate capture button has been hidden. Japanese Yae/Sasuke/Ebisumaru post-load placement is *not* forced through the Goemon-only static XYZ address; the common 12-byte entrance staging is still performed. Collision, heading, camera and cross-region map equivalence remain live-test questions.
+
+After pulling v0.11.23, run `bash scripts/test_japan_party.sh` and confirm one known room's selected USA entrance yields the requested XYZ in the Japanese recomp. The suite was authored but has not been executed via the GitHub connector. Back up your game save before testing a scene warp.
+
 ## Japanese warp XYZ capture and destination comparison (v0.11.22)
 
 Previous native Japanese instant warps had an overlooked bug: the optional `self.entrance_atlas` was never initialized, so the controller always sent **only the 2-byte map ID** instead of the 12-byte destination/mode/XYZ/heading record. A scene ID that loads successfully is not evidence of correct destination XYZ.
