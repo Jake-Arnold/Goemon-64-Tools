@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 - Windows Japan/USA toolkit integration regression gate accepted
+
+- The user reran `./scripts/test_japan_party.ps1` on native Windows on the clean `chatgptweb/japan-toolkit-mainline-20261116` branch after the checkpoint fixture decoupling, and confirmed **all tests pass**, including the script's backend and Tk GUI phases. No full console transcript or independently executed runner is available in this record; this is **user-reported** acceptance, not an assistant-executed test.
+- The prior `autosplitter.bridge` import failure is no longer reported. The 33 tested Japanese unlocks, scene warps, Live Memory freezes, Story Progress and named checkpoints were separately user-accepted on the source branch. Sasuke Battery 1 is still excluded and unverified.
+- The integration remains toolkit-only, preserving the existing mainline `decomp/` contents and USA Plasma research. Follow-up work: verify the integrated toolkit against emulator builds after merging; continue Japanese permanent-event flag research separately.
+
 ## 2026-11-16 - Decouple checkpoint and freeze regressions from removed LiveSplit modules
 
 - On the clean integration branch, the user's Windows run completed 213 backend test entries with one import error before the GUI suite: `tests.test_value_freezes` imported `tests.test_checkpoint`, which imported the historical `tests.test_tools`; that file imports the removed `autosplitter.bridge` and `autosplitter.engine`.
