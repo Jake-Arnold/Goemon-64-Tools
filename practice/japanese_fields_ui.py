@@ -11,6 +11,9 @@ from practice.japanese_scene_probes import (
     read_japan_scene_probes, compare_guest_readings,
 )
 from practice.scenes import SCENES
+from practice.region_memory_crosswalk import (
+    CROSS_REGION_FIELDS, read_cross_region_fields, changed_cross_region_fields,
+)
 from practice.custom_watches import (FORMATS as CUSTOM_FORMATS, make_watch,
     append_watch, load_watches, save_watches, read_watch)
 from practice.paths import practice_data_dir
@@ -128,6 +131,70 @@ class JapaneseFieldsUi:
             '(native debug and scene writes are enabled by default).'))
         ttk.Label(debug, textvariable=self.jp_debug_result,
                   wraplength=960).pack(anchor='w', pady=(3, 0))
+
+        # Manual read-only cross-region validation. No additional fields are
+        # exposed to the unlock editor, freezes, or automatic guest writes.
+        cross = ttk.Frame(research_tabs, padding=7)
+        research_tabs.add(cross, text='USA → JP crosswalk')
+        ttk.Label(
+            cross, text='Static USA globals and saved-event flag hypotheses at '
+            'USA + 0x57F0. A raw change is not semantic proof. '
+            'Disputed, mismatched-layout and unverified entries stay read-only.',
+            wraplength=950,
+        ).pack(anchor='w')
+        cross_buttons = ttk.Frame(cross)
+        cross_buttons.pack(fill='x', pady=(3, 4))
+        ttk.Button(cross_buttons, text='Refresh JP raw values',
+                   command=lambda: self.refresh_japan_crosswalk()).pack(side='left')
+        ttk.Button(cross_buttons, text='Capture baseline',
+                   command=lambda: self.refresh_japan_crosswalk(capture=True)).pack(
+                       side='left', padx=(6, 0))
+        ttk.Button(cross_buttons, text='Compare with baseline',
+                   command=lambda: self.refresh_japan_crosswalk(compare=True)).pack(
+                       side='left', padx=(6, 0))
+        ttk.Button(cross_buttons, text='Copy changed rows',
+                   command=self.copy_japan_crosswalk_changes).pack(
+                       side='left', padx=(6, 0))
+        self.jp_crosswalk_status = tk.StringVar(
+            value=f'{len(CROSS_REGION_FIELDS)} mapped/candidate fields; '
+                  'connect to verified JP RAM, then refresh. Never writes.')
+        ttk.Label(cross, textvariable=self.jp_crosswalk_status,
+                  wraplength=950).pack(anchor='w')
+        cross_tree_frame = ttk.Frame(cross)
+        cross_tree_frame.pack(fill='both', expand=True, pady=(3, 0))
+        self.jp_crosswalk_tree = ttk.Treeview(
+            cross_tree_frame, show='tree headings', height=8,
+            columns=('usa', 'japan', 'mask', 'value', 'evidence'))
+        for key, title, width in (
+            ('#0', 'USA field', 295), ('usa', 'USA address', 115),
+            ('japan', 'JP candidate', 115), ('mask', 'Mask', 58),
+            ('value', 'JP raw/bit', 170), ('evidence', 'Evidence', 125)):
+            self.jp_crosswalk_tree.heading(key, text=title)
+            self.jp_crosswalk_tree.column(
+                key, width=width, stretch=key in ('#0', 'value'))
+        scrollbar = ttk.Scrollbar(
+            cross_tree_frame, orient='vertical',
+            command=self.jp_crosswalk_tree.yview)
+        self.jp_crosswalk_tree.configure(yscrollcommand=scrollbar.set)
+        self.jp_crosswalk_tree.pack(side='left', fill='both', expand=True)
+        scrollbar.pack(side='right', fill='y')
+        cross_groups = {}
+        for field in CROSS_REGION_FIELDS:
+            if field.group not in cross_groups:
+                iid = 'jp_cross_group_' + str(len(cross_groups))
+                cross_groups[field.group] = iid
+                self.jp_crosswalk_tree.insert(
+                    '', 'end', iid=iid, text=field.group, open=True)
+            self.jp_crosswalk_tree.insert(
+                cross_groups[field.group], 'end',
+                iid='jp_cross_' + field.key, text=field.label,
+                values=(f'0x{field.usa:08X}', f'0x{field.japan:08X}',
+                        f'0x{field.mask:02X}' if field.mask is not None else '—',
+                        '—', field.evidence))
+        self._jp_crosswalk_baseline = None
+        self._jp_crosswalk_baseline_identity = None
+        self._jp_crosswalk_last = None
+        self._jp_crosswalk_changes = ()
 
         # Never reuse USA's custom-watch file or promote a candidate to a write.
         self.jp_watch_path = practice_data_dir() / 'japan_0_custom_watches.json'
@@ -377,6 +444,71 @@ class JapaneseFieldsUi:
         self.refresh_japan_position_controls()
         self.refresh_japan_debug_controls()
 
+    def refresh_japan_crosswalk(self, *, capture=False, compare=False):
+        """Manual read-only batch: never infer a JP field just from a value."""
+        if self.active_version.key != 'japan' or self.jp_rdram is None:
+            self.jp_crosswalk_status.set('Connect to a verified Japanese RDRAM session.')
+            return False
+        identity = self._japan_reader_identity()
+        readings = read_cross_region_fields(self.jp_rdram)
+        self._jp_crosswalk_last = readings
+        if capture:
+            self._jp_crosswalk_baseline = dict(readings)
+            self._jp_crosswalk_baseline_identity = identity
+        elif compare and self._jp_crosswalk_baseline_identity != identity:
+            self._jp_crosswalk_baseline = None
+            self._jp_crosswalk_baseline_identity = None
+            self._jp_crosswalk_changes = ()
+            self.jp_crosswalk_status.set(
+                'Session changed or baseline missing; capture a new baseline.')
+            compare = False
+        changes = (
+            changed_cross_region_fields(self._jp_crosswalk_baseline, readings)
+            if compare and self._jp_crosswalk_baseline is not None else ()
+        )
+        self._jp_crosswalk_changes = changes
+        changed_keys = {field.key: (before, after)
+                        for field, before, after in changes}
+        errors = 0
+        for field in CROSS_REGION_FIELDS:
+            reading = readings[field.key]
+            evidence = field.evidence
+            if reading.error:
+                errors += 1
+                evidence = 'READ ERROR'
+            elif field.key in changed_keys:
+                old, new = changed_keys[field.key]
+                evidence = f'RAW CHANGE {old}→{new}; {field.evidence}'
+            self.jp_crosswalk_tree.set(
+                'jp_cross_' + field.key, 'value', reading.value)
+            self.jp_crosswalk_tree.set(
+                'jp_cross_' + field.key, 'evidence', evidence)
+        mode = ('Baseline saved' if capture else
+                'Compared' if compare else 'Read-only refresh')
+        self.jp_crosswalk_status.set(
+            f'{mode}: {len(readings)} fields, {errors} read errors, '
+            f'{len(changes)} raw changes. Candidate labels are not validated '
+            'by plausible values or changes alone.')
+        return True
+
+    def copy_japan_crosswalk_changes(self):
+        if not self._jp_crosswalk_changes:
+            self.jp_crosswalk_status.set(
+                'No comparison changes; capture baseline then compare.')
+            return
+        lines = ['JP read-only crosswalk raw differences (NOT semantic proof)']
+        for field, before, after in self._jp_crosswalk_changes:
+            lines.append(
+                f'{field.label}: USA 0x{field.usa:08X} => '
+                f'JP 0x{field.japan:08X} '
+                f'mask={("0x%02X" % field.mask) if field.mask is not None else "—"} '
+                f'{before} -> {after}; {field.evidence}')
+        root = self.jp_fields_tab.winfo_toplevel()
+        root.clipboard_clear()
+        root.clipboard_append('\n'.join(lines))
+        self.jp_crosswalk_status.set(
+            f'Copied {len(self._jp_crosswalk_changes)} raw changes.')
+
     def _japan_reader_identity(self):
         return (getattr(self, 'game_pid', None),
                 getattr(self, 'jp_backend', None), self.jp_rdram.base,
@@ -434,6 +566,17 @@ class JapaneseFieldsUi:
 
     def clear_japan_field_values(self):
         self._jp_last_field_poll = 0.0
+        self._jp_crosswalk_baseline = None
+        self._jp_crosswalk_baseline_identity = None
+        self._jp_crosswalk_last = None
+        self._jp_crosswalk_changes = ()
+        if hasattr(self, 'jp_crosswalk_tree'):
+            for field in CROSS_REGION_FIELDS:
+                iid = 'jp_cross_' + field.key
+                self.jp_crosswalk_tree.set(iid, 'value', '—')
+                self.jp_crosswalk_tree.set(iid, 'evidence', field.evidence)
+            self.jp_crosswalk_status.set(
+                'Disconnected; cross-region candidates require verified Japanese RAM.')
         if not hasattr(self, 'jp_fields_tree'):
             return
         for field in ALL_JAPAN_READS:
