@@ -1,4 +1,19 @@
-# Goemon Speedrun Tools v0.11.32 — unified memory discovery test prototype
+# Goemon Speedrun Tools v0.11.33 — memory research usability test
+
+## v0.11.33 — Memory search usability, continuous filtering and readable reports (16 November 2026)
+
+**Review build on toolkit/unified-memory-discovery; not merged into main.**
+
+- **Starting value** is now separate from the **Filter value (Exact only)**, so an Exact filter never silently reuses the original number.
+- **Compare with Previous or Initial:** choose the last filter snapshot or the first scan snapshot. The value table now shows **Initial / Previous / Live** separately.
+- **Continuous filter:** under "Narrow current results", choose Exact, Unchanged, Increased, Decreased or Changed and a baseline, then click **Start continuous filter**. It repeats every 250/500/1000/2000 ms **after each completed pass**; no overlapping reads. Click **Stop continuous filter** at any time. It automatically stops at zero results, on error or when a game connection changes. Repeated passes *permanently narrow* candidates until a new scan begins. For stable values choose Unchanged against Initial; for an unchanged value relative to the previous pass choose Previous.
+- **Live refresh:** enabled by default, with 100/250/500/1000 ms target intervals, using grouped RAM reads for visible rows. Actual update rate may be slower on a busy recomp process or many scattered addresses; continuous filtering supersedes separate live refresh while active.
+- **Search types:** u8/s8/u16/s16/u32/s32, **f32, f64** and literal text patterns in **ASCII, Shift-JIS or UTF-8**. Text scanning searches encoded byte patterns, not language meaning or custom in-game text encodings. Variable-length text candidates cannot yet be added as fixed-width Live Memory watches.
+- **Batch watch:** Ctrl/Shift-select multiple numeric candidates, or use Select all visible (at most 200), then Watch selected addresses. Save them together, respecting region-specific watch files and existing watch-capacity limits.
+- **Readable report directory layout:** Reports/JP or USA/Experiment name/YYYY-MM-DD HH-MM-SS UTC/. Repeated trials group under the experiment name, with a numeric suffix only when a timestamp collides. The Reports table shows name, region, date, research type and candidate count instead of a long path. **Tidy folder name** migrates a selected older flat-format report only with an explicit confirmation; old files are not rewritten automatically. ZIP filenames now include the experiment name, and candidate reports include Initial/Previous.
+- **Still pending:** native recomp original MIPS instruction read/write tracing, full guided Discovery wizard, full JP Live consolidation and live gameplay verification on both operating systems. The project remains draft PR #35.
+
+Ubuntu: update the branch using git fetch / git switch toolkit/unified-memory-discovery / git pull --ff-only, then run bash Run-Linux.sh. The selected USA or JP region is retained.
 
 ## v0.11.32 — Memory Discovery + Reports TEST PROTOTYPE (16 November 2026)
 

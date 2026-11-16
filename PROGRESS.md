@@ -2,6 +2,16 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.33 memory-scanner UX and continuous filtering
+
+- **User observations:** v0.11.32 report folder names appeared as long UTC-slug-random identifiers in GNOME Files; separate initial/next Exact value input was confusing, and numeric watches refreshed at a fixed slow cadence. Requested stable-value repeat-filter mode, baseline comparisons, multi-select, floats and text searching.
+- **Data model:** The first RAM scan now retains an immutable initial snapshot, alongside the previous filter snapshot. Filters can explicitly compare to Initial or Previous. Exact always uses its independent Filter value. Added f64, Shift-JIS/ASCII/UTF-8 encoded byte-pattern searches with limits, and initial/previous/live decoded rows. Dense visible refreshes are grouped into bounded process-memory reads.
+- **Continuous filtering:** Start/Stop buttons and 250/500/1000/2000 ms target intervals. One background filter scan at a time; next pass scheduled after completion, independent of whether the Discovery tab has focus. Stops on user request, zero results, scan error, reconnect/region change or GUI shutdown. Filter setting remains fixed for the run; every pass narrows candidates, never restores eliminated addresses.
+- **Watch handling:** Extended Treeview selection, Select all visible and atomic multi-watch persistence for USA and Japan, preserving region-specific files, validating capacities and skipping duplicates. Text matches remain research only; they are not inserted as numeric watches.
+- **Reports:** Human-readable region/experiment/run directory hierarchy, compact report list with candidate count rather than full paths, optional confirmation-gated Tidy folder name for existing flat reports, descriptive ZIP names, Initial/Previous columns in CSV/Markdown; old files stay indexed.
+- **Testing:** Added scanner, report, USA/JP multi-selection, continuous-filter and Tk shutdown synthetic tests. Windows workflow also runs portable scanner tests. Automated hosted CI checks and live native recomp acceptance are separate; the latter has not yet been performed.
+- **Safety:** Read-only scans do not mutate guest RAM; full RDRAM access is never equated with original MIPS reader/writer traces. No old folders are moved without explicit consent; main unchanged and draft PR #35 retained.
+
 ## 2026-11-16 — v0.11.32 final prototype CI proof (both hosted platforms)
 
 - **Linux:** GitHub Actions run [43927149682](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43927149682) succeeded on code/CI commit 7e14c7ea4d7606ad2f046f2f9c5454af20cc102f: **297 non-GUI synthetic tests (296 passed, 1 skipped)** and **119 Xvfb GUI tests passed**. Includes the new report-browser tests and existing scene/recomp test fixtures.
