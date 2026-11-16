@@ -40,6 +40,11 @@ class ValueSearchMixin:
         self.value_scan_busy = False
         self.value_scan_queue = queue.SimpleQueue()
         self.value_scan_generation = 0
+        self._value_search_auto_after = None
+        self._value_search_poll_after = None
+        # Cancel recurring timers before Tk deletes their registered commands,
+        # otherwise the next test/app window reports "invalid command name".
+        self.root.bind('<Destroy>', self._value_search_on_destroy, add='+')
         self.value_search_status = tk.StringVar(value='Read-only search. Connect to the game, then start an exact or unknown-value scan.')
         self.value_search_type = tk.StringVar(value='u16')
         self.value_search_value = tk.StringVar(value='950')
@@ -106,7 +111,22 @@ class ValueSearchMixin:
                   'Integer scans use exact values; f32 matches IEEE-754 bytes. '
                   'Unknown-value scans begin with every candidate address and may take longer.',
                   wraplength=1080).pack(anchor='w', pady=(8, 0))
-        self.root.after(1800, self._value_search_auto_tick)
+        self._value_search_auto_after = self.root.after(
+            1800, self._value_search_auto_tick)
+
+    def _value_search_on_destroy(self, event):
+        """Stop callbacks owned by this Tk root, not by another test window."""
+        if event.widget is not self.root:
+            return
+        for attribute in ('_value_search_auto_after',
+                          '_value_search_poll_after'):
+            job = getattr(self, attribute, None)
+            setattr(self, attribute, None)
+            if job is not None:
+                try:
+                    self.root.after_cancel(job)
+                except tk.TclError:
+                    pass  # Tcl interpreter is already disposing of widgets.
 
     def _value_start(self, action):
         if self.value_scan_busy:
@@ -157,13 +177,16 @@ class ValueSearchMixin:
 
         # The RDRAM reader can be slow; never scan 8 MiB on the Tk event loop.
         threading.Thread(target=worker, daemon=True, name='GoemonReadOnlyValueSearch').start()
-        self.root.after(70, self._value_search_poll)
+        self._value_search_poll_after = self.root.after(
+            70, self._value_search_poll)
 
     def _value_search_poll(self):
+        self._value_search_poll_after = None
         try:
             result = self.value_scan_queue.get_nowait()
         except queue.Empty:
-            self.root.after(70, self._value_search_poll)
+            self._value_search_poll_after = self.root.after(
+                70, self._value_search_poll)
             return
         generation, mem, action, scanner, rows, error = result
         self.value_scan_busy = False
@@ -196,11 +219,13 @@ class ValueSearchMixin:
             'No game memory was modified.')
 
     def _value_search_auto_tick(self):
+        self._value_search_auto_after = None
         if (self.value_search_autorefresh.get() and not self.value_scan_busy and
                 self.value_scanner.previous is not None and self._value_search_reader() is self.value_scan_memory and
                 self.notebook.select() == str(self.value_search_tab)):
             self._value_start('refresh')
-        self.root.after(1800, self._value_search_auto_tick)
+        self._value_search_auto_after = self.root.after(
+            1800, self._value_search_auto_tick)
 
     def clear_value_search(self):
         if self.value_scan_busy:

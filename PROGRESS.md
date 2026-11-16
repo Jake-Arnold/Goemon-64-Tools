@@ -2806,3 +2806,8 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Fixed the independently reported `SyntaxWarning: 'str' object is not callable` in `practice/unlocks_ui.py` on the Japan direct-write status string by explicitly concatenating the verification-status conditional. Existing GUI acceptance already asserts that a live-verified write displays `[live-verified]`.
 - The earlier Windows application-close traceback `_tkinter.TclError: invalid command name ...button` was caused by `cancel_pending_restore()` addressing Tk controls after the root was destroyed. Guarded the two widget-state calls by existence checks and caught stale Tcl commands while still completing non-UI pending cleanup. Added a dashboard regression test for post-destroy shutdown.
 - The run also showed harmless-looking `_value_search_auto_tick` after-callback errors from destroyed Tk test windows. Those were not among the 23 test failures; investigate separately if they persist on rerun. No Japanese saved-event guesses or battery changes. The user's previously verified 33/34 Unlocks and scene warps are unchanged.
+
+### 2026-11-16 — Value Search Tk timer cleanup
+
+- The submitted GUI log also showed `invalid command name "..._value_search_auto_tick"` messages after preceding Tk test windows were destroyed. These were asynchronous Tcl callback errors, not part of the 23 `NameError` failures.
+- `practice/value_search_ui.py` now tracks the periodic auto-refresh timer and in-flight scan poll timer, and cancels both on the toolkit root's `<Destroy>` event. It does not cancel timers for ordinary descendant widget destruction. Added a synthetic Tk regression verifying timer cancellation; live Windows full-suite rerun still pending.

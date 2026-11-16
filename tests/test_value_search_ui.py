@@ -6,6 +6,8 @@ import time
 import tkinter as tk
 from tkinter import ttk
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from practice.value_search_ui import ValueSearchMixin
 from practice.value_search import GUEST_BASE
@@ -69,6 +71,18 @@ class ValueSearchUITests(unittest.TestCase):
             time.sleep(0.01)
         self.root.update()
         self.assertFalse(self.app.value_scan_busy, self.app.value_search_status.get())
+
+    def test_root_destroy_cancels_periodic_search_callbacks(self):
+        app = self.app
+        initial = app._value_search_auto_after
+        self.assertIsNotNone(initial)
+        with patch.object(self.root, 'after_cancel',
+                          wraps=self.root.after_cancel) as cancel:
+            app._value_search_on_destroy(
+                SimpleNamespace(widget=self.root))
+            cancel.assert_any_call(initial)
+        self.assertIsNone(app._value_search_auto_after)
+        self.assertIsNone(app._value_search_poll_after)
 
     def test_find_oil_and_narrow_without_player_object(self):
         app = self.app
