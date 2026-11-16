@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — toolkit branch workflow: main is canonical, decomp is separate
+
+- **Merged:** PR #27, `chatgptweb/toolkit-unified` to `main`, merge SHA `7d808a5b36b4efd1078894a8798bdc59fee1b85e`. The main branch now contains toolkit v0.11.27 and the source-verified 888-entry original-USA entrance atlas.
+- **Permanent branches:** `main` for the stable toolkit; `chatgptweb/decomp` for the independently verified decomplication baseline, retaining PR #26 (integration) and PRs #23/#24 (research) against their existing base.
+- **Future work:** Branch `toolkit/*` from main and PR back into main. Branch `decomp/*` from `chatgptweb/decomp` and PR back into the decomp baseline. Do not merge both codebases wholesale or reintroduce removed prototype features.
+- **Policy updated:** `docs/TOOLKIT_BRANCH_POLICY.md` and README reflect the post-merge scheme. This documentation-only update does not change the toolkit binary, memory addresses, tests or v0.11.27 runtime code.
+- **Testing:** GitHub reported PR #27 as mergeable and accepted the merge, but no CI status/workflow runs were present. Full Ubuntu Tk and actual USA/JP native gameplay remain unverified; do not treat mergeability as test success.
+
 ## 2026-11-16 — v0.11.27 unified active toolkit development branch
 
 - **User request:** Consolidate current Goemon Practice Toolkit code into one obvious active branch; parallel Japan/Linux/USA toolkit prototypes and draft PRs had become confusing.
