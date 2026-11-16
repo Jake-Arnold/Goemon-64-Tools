@@ -571,6 +571,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         if getattr(self, 'jp_read_button', None):
             self.jp_read_button.state(['disabled'])
             self.jp_read_result.set('Japanese guest RAM is not connected.')
+        if hasattr(self, 'jp_capture_spawn_btn'):
+            self.jp_capture_spawn_btn.state(['disabled'])
 
     def read_japan_rdram(self):
         """Read raw guest bytes without invoking any USA live-memory parser."""
@@ -1669,6 +1671,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'Auto (detect)', *self.jp_candidates.keys())
             self.jp_base_choice.set('Auto (detect)')
             self.jp_read_button.state(['disabled'])
+            self.jp_capture_spawn_btn.state(['disabled'])
             self.jp_read_result.set(
                 'Select a Japan-code-matching RAM base above, then reconnect. '
                 'A match alone does not prove the copy is actively changing.')
@@ -1682,6 +1685,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 self.jp_backend = target
                 self.mem = self.current = None
             self.jp_read_button.state(['!disabled'])
+            self.jp_capture_spawn_btn.state(['!disabled'])
             size_mb = getattr(reader, 'rdram_size', 0x800000) // 0x100000
             self.jp_read_result.set(
                 f'Japan-0 verified {size_mb} MiB RDRAM at 0x{base:X}; {endian}.')
@@ -1710,6 +1714,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 self.game_pid = None
                 self.jp_backend = None
                 self.jp_read_button.state(['disabled'])
+                self.jp_capture_spawn_btn.state(['disabled'])
             self.pos_text.set('X: —    Y: —    Z: —')
             self.speed_text.set('Speed: —')
             self.misc_text.set('Character: —    Action: —    Loading: —')
