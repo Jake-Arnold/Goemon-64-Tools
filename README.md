@@ -1,4 +1,11 @@
-# Goemon Speedrun Tools v0.11.31 — Japanese connection and entrance-selection reliability
+# Goemon Speedrun Tools v0.11.32 — USA/Japan read-only memory crosswalk
+
+## v0.11.32 — source-qualified USA/JP memory crosswalk (16 November 2026)
+
+A dedicated read-only USA → JP crosswalk in **Japan Live (diagnostics)** exposes the existing USA named static globals, 34 unlocks, and curated story/Plasma event-bit flags translated to Japanese candidate addresses where justified by the repeated `+0x57F0` displacement. Each entry retains its original USA location, Japanese candidate, mask and evidence status. Manual Refresh/Baseline/Compare and Copy changed rows **never write game memory**. Export all named rows as CSV via `python3 scripts/export_region_memory_crosswalk.py`.
+
+User-observed Japanese matches added: equipped weapon `0x80161DF7`, gameplay submode `0x800CD294`, map overlay `0x80161D64`, and Benkei encounter `0x80161DFC & 0x20`. Japanese pause `0x800CD2D6` remains **disputed**; Sasuke battery and the other predicted story flags remain **unverified**. Do not apply this delta to player pointers, VM/overlay memory or dynamic Impact controllers. See [crosswalk evidence and limits](docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md). Synthetic and actual-game verification of this new branch remain pending.
+
 
 ## v0.11.31 — Ubuntu regression suite passes (16 November 2026)
 
