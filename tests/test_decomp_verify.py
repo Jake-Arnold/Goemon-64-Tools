@@ -1125,7 +1125,10 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(result['upstream_commit'],manifest['upstream_commit'])
         self.assertTrue(result['comparison']['full_rom_match'])
         verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
-        self.assertEqual(result['verifier_source_sha256_lf'],hashlib.sha256(verifier).hexdigest())
+        self.assertEqual(result['verifier_source_sha256_lf'],
+                         '876390a62891188161c2e32744abb8543a9598e3e7c61fffce04d2eb1a0cda79')
+        self.assertEqual(hashlib.sha256(verifier).hexdigest(),
+                         json.loads((ROOT/'decomp/results/vm_residual_inventory.json').read_text())['current_sources']['verifier_sha256'])
         expected={f['name']:f for f in claimed_functions(manifest)}
         actual={f['name']:f for f in result['comparison']['functions']}
         self.assertEqual(set(expected),set(actual))

@@ -223,8 +223,10 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(historic303['comparison']['matched_function_bytes'],16180)
         self.assertEqual(historic303['verifier_source_sha256_lf'],
                          '0b4556a01128510da5a23ef36e6e55094339e69a7bb070b5b45c213128231769')
+        # Current 306-C G2 is immutable historical evidence; the verifier
+        # now also supports a separate 307-C opt-in research stage.
         self.assertEqual(current['verifier_source_sha256_lf'],
-                         hashlib.sha256((ROOT/'verify.py').read_bytes().replace(b'\r\n',b'\n')).hexdigest())
+                         '876390a62891188161c2e32744abb8543a9598e3e7c61fffce04d2eb1a0cda79')
         # The certified historical 210-C proof retains its original hash.
         historic = json.loads((ROOT/'results/combined_210_20261116.json').read_text())
         self.assertEqual(historic['verifier_source_sha256_lf'],
