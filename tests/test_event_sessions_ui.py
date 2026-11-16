@@ -21,7 +21,7 @@ class EventSessionUITests(unittest.TestCase):
         self.app.mem.write_guest(EVENT_START,bytes(EVENT_SIZE))
         self.app._event_connection=lambda: ((123,456),'project64')
         self.folder=tempfile.TemporaryDirectory()
-        self.storage=patch('practice.event_sessions_ui.diagnostics_dir',return_value=Path(self.folder.name))
+        self.storage=patch('practice.event_sessions_ui.working_investigations_dir',return_value=Path(self.folder.name))
         self.storage.start()
 
     def tearDown(self):
