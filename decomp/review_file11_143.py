@@ -34,7 +34,7 @@ def sha256(data: bytes) -> str:
 
 
 def candidate_manifest(original: dict) -> tuple[dict, list[dict]]:
-    """Validate current canonical 303 C or reconstruct from a historical 210-C manifest.
+    """Validate canonical USA 303/306 C or reconstruct from historical 210 C.
 
     Regardless of provenance, the exact same 143-C fixture, identities and
     complete native build/inventory/CI gates remain mandatory.
@@ -43,7 +43,9 @@ def candidate_manifest(original: dict) -> tuple[dict, list[dict]]:
     stage = original.get('overlay_file11_stage')
     review = copy.deepcopy(original)
     if stage == {'format': STAGE_FORMAT}:
-        # The new production default: no staged production mutations required.
+        # Both canonical 303-C and 306-C retain the same verified 143 file_11 C.
+        # The 306-C state is verified in place, never reduced to 303 or counted
+        # by a guessed diff. Exact additional claims are checked below.
         pass
     elif stage == {'format': 'goemon-file11-character-switch-50-v2'}:
         previous = verify.claimed_functions(original)
@@ -56,9 +58,24 @@ def candidate_manifest(original: dict) -> tuple[dict, list[dict]]:
     if (plan['prospective_usa_c'], plan['file11_c_instruction_bytes']) != (TOTAL_C, FILE11_C_BYTES):
         raise ValueError('143-C source fixture differs from the 303-C native proof')
     claims = verify.claimed_functions(review)
-    if (len(claims) != TOTAL_C or len({r['name'] for r in claims}) != TOTAL_C
-            or sum(r['size'] for r in claims) != TOTAL_C_BYTES):
-        raise ValueError('Combined 303-C identities changed')
+    n = len(claims)
+    expected_bytes = {303: 16_180, 306: 16_292}
+    if (n not in expected_bytes or len({r['name'] for r in claims}) != n
+            or sum(r['size'] for r in claims) != expected_bytes[n]):
+        raise ValueError('Combined USA matching-C identities changed')
+    if n == 306:
+        impact = review.get('overlay_file13_stages')
+        expected = [('func_801D3954_5FED34', 40),
+                    ('func_801D3A44_5FEE24', 36)]
+        if (not isinstance(impact, list) or len(impact) != 2 or
+                [(x['function']['name'], x['function']['size']) for x in impact] != expected
+                or review['support_headers'].count('impact_controller.h') != 1):
+            raise ValueError('Unexpected 306-C Impact stage identities')
+        dialogue = next(u for u in review['units'] if u['source'] == 'dialogue_window.c')
+        if (sum(f == dict(name='func_8000C430_D030',rom_offset=0xD030,size=36)
+                for f in dialogue['functions']) != 1
+                or 'func_8000C430_D030' in dialogue.get('assembly_functions', [])):
+            raise ValueError('Unexpected 306-C dialogue helper identity')
     return review, claims
 
 
@@ -67,20 +84,24 @@ def verify_g2_report(report: dict, claims: list[dict]) -> dict:
             or report.get('status') != 'matched' or report.get('stage') != 'complete'):
         raise ValueError('Central G2 did not complete with matched status')
     comparison = report.get('comparison') or {}
+    total = len(claims)
+    if total not in (303, 306):
+        raise ValueError('Unreviewed USA matching C count')
+    total_bytes = 16_180 if total == 303 else 16_292
     required = {
         'full_rom_match': True, 'expected_sha1': ROM_SHA1,
         'candidate_sha1': ROM_SHA1, 'rom_size': ROM_SIZE,
-        'claimed_functions': TOTAL_C, 'matched_functions': TOTAL_C,
-        'matched_function_bytes': TOTAL_C_BYTES,
+        'claimed_functions': total, 'matched_functions': total,
+        'matched_function_bytes': total_bytes,
     }
     for key, expected in required.items():
         if type(comparison.get(key)) is not type(expected) or comparison[key] != expected:
             raise ValueError('Central G2 mismatched ' + key)
     expected_by_name = {r['name']: r for r in claims}
     rows = comparison.get('functions')
-    if (len(expected_by_name) != TOTAL_C or not isinstance(rows, list)
-            or len(rows) != TOTAL_C):
-        raise ValueError('Central G2 has incomplete 303-function evidence')
+    if (len(expected_by_name) != total or not isinstance(rows, list)
+            or len(rows) != total):
+        raise ValueError('Central G2 has incomplete matching-C evidence')
     seen = set()
     for row in rows:
         if not isinstance(row, dict):
@@ -130,22 +151,37 @@ def verify_g2_report(report: dict, claims: list[dict]) -> dict:
     if (alias_evidence.get('removed_spurious_func_aliases') != list(expected_aliases)
             or alias_evidence.get('preserved_original_nops') != 3):
         raise ValueError('Synthetic NOP ASM source annotation evidence differs')
-    return {'claimed_functions': TOTAL_C, 'matched_bytes': TOTAL_C_BYTES,
+    if total == 306:
+        impact = report.get('overlay_file13_stages') or {}
+        linked = impact.get('linked_elf_provenance') or {}
+        if (linked.get('section_bytes') != 277104
+                or linked.get('relocation_count') != 9589
+                or linked.get('section_bytes_match_original') is not True
+                or linked.get('relocation_sites_and_targets_match_baseline') is not True
+                or len(linked.get('functions', [])) != 2
+                or any(row.get('candidate_code_matches_original') is not True
+                       or row.get('candidate_relocations_match_reference') is not True
+                       for row in linked['functions'])):
+            raise ValueError('Combined 306-C Impact overlay proof differs')
+    return {'claimed_functions': total, 'matched_bytes': total_bytes,
             'file11_functions': FILE11_C, 'original_relocations': RELOCATIONS,
             'rom_sha1': ROM_SHA1}
 
 
-def verify_inventory_report(report: dict) -> dict:
+def verify_inventory_report(report: dict, expected_claims: int | None = None) -> dict:
     if (report.get('format') != 'goemon-function-inventory-v1'
             or report.get('decompressed_sha1') != ROM_SHA1):
         raise ValueError('Inventory is not from the original USA ROM')
     summary = report.get('summary') or {}
+    count = expected_claims if expected_claims is not None else summary.get('newly_matching_c')
+    if count not in (303, 306):
+        raise ValueError('Unexpected original-function inventory C count')
     expected = {
         'identified_function_entries': ENTRIES,
         'upstream_unmarked_entries': 13,
-        'newly_matching_c': TOTAL_C,
-        'current_unmarked_entries': 316,
-        'remaining_assembly_entries': 7_060,
+        'newly_matching_c': count,
+        'current_unmarked_entries': count + 13,
+        'remaining_assembly_entries': ENTRIES - count - 13,
         'extra_positive_alias_entries': 0,
         'function_entry_identity_sha256': ORIGINAL_INVENTORY_SHA256,
     }
@@ -199,7 +235,7 @@ def run_review(args: argparse.Namespace) -> Path:
     invoke([sys.executable, '-m', 'decomp.inventory', '--manifest', str(trial_path),
             '--baseline', str(baseline), '--candidate', str(work / 'candidate'),
             '--report', str(inventory_path)], repo, output / 'inventory.log')
-    inventory = verify_inventory_report(json.loads(inventory_path.read_text()))
+    inventory = verify_inventory_report(json.loads(inventory_path.read_text()), len(claims))
     invoke([sys.executable, '-m', 'decomp.local_ci'], repo, output / 'local-ci.log')
     if canonical.read_bytes() != original_bytes:
         raise ValueError('Canonical manifest changed during acceptance run')
@@ -239,7 +275,7 @@ def main(argv: list[str] | None = None) -> int:
         path = run_review(args)
     except (OSError, ValueError, subprocess.CalledProcessError, json.JSONDecodeError) as exc:
         p.exit(1, f'303-C promotion NOT verified: {exc}\n')
-    print(f'303-C exact-ROM G2, inventory and local CI passed; review bundle: {path}')
+    print(f'USA matching-C exact-ROM G2, inventory and local CI passed; review bundle: {path}')
     return 0
 
 

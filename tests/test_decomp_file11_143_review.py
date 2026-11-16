@@ -68,18 +68,32 @@ class File11143ReviewTests(unittest.TestCase):
             }
         }
 
-    def test_published_canonical_303_contract_matches_native_proof(self):
+    def test_published_canonical_306_contract_matches_native_proof(self):
         from pathlib import Path
         from decomp import verify
         root = Path(__file__).resolve().parents[1] / 'decomp'
         manifest = verify.load_manifest(root / 'manifest.json')
         review_manifest, claims = review.candidate_manifest(manifest)
         self.assertEqual(review_manifest, manifest)
-        self.assertEqual(len(claims),303)
+        self.assertEqual(len(claims),306)
         g2 = json.loads((root/'results/combined.json').read_text())
         inventory = json.loads((root/'results/inventory.json').read_text())
-        self.assertEqual(review.verify_g2_report(g2,claims)['matched_bytes'],16180)
-        self.assertEqual(review.verify_inventory_report(inventory)['remaining_assembly_entries'],7060)
+        self.assertEqual(review.verify_g2_report(g2,claims)['matched_bytes'],16292)
+        self.assertEqual(review.verify_inventory_report(inventory,306)['remaining_assembly_entries'],7057)
+        historic = json.loads((root/'results/combined_303_20261116.json').read_text())
+        older_inventory = json.loads((root/'results/inventory_303_20261116.json').read_text())
+        self.assertEqual(historic['comparison']['matched_functions'],303)
+        self.assertEqual(older_inventory['summary']['remaining_assembly_entries'],7060)
+
+    def test_missing_impact_relocation_evidence_fails(self):
+        from pathlib import Path
+        from decomp import verify
+        root = Path(__file__).resolve().parents[1] / 'decomp'
+        claims = verify.claimed_functions(verify.load_manifest(root/'manifest.json'))
+        g2 = json.loads((root/'results/combined.json').read_text())
+        g2['overlay_file13_stages']['linked_elf_provenance']['relocation_sites_and_targets_match_baseline'] = False
+        with self.assertRaises(ValueError):
+            review.verify_g2_report(g2,claims)
 
     def test_synthetic_good_reports_accept_only_review(self):
         self.assertEqual(review.verify_g2_report(self.g2,self.claims)['claimed_functions'],303)

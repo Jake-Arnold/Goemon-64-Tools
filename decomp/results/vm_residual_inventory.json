@@ -25,22 +25,22 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "1b9d36ff35b9c95c150499cf0989ec3f7c8d28a32bacd977179914451c5c944f",
+    "manifest_sha256": "0e2e7c103c0c1451307fb048041d409bbf5ac467b6d54e4c17d7dcb5b51d9075",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "0b4556a01128510da5a23ef36e6e55094339e69a7bb070b5b45c213128231769"
+    "verifier_sha256": "876390a62891188161c2e32744abb8543a9598e3e7c61fffce04d2eb1a0cda79"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "59ffa061504b63d790026ead2fae02443536fbff70be2c9a65b0141ff55bfe13",
+    "report_sha256": "bdb49555c1b104298812d90133af92c63ae2ab2058729ad41e3fe980c6cd56c1",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "432ba72dc487403191da60b48cf87905547b805926a39c7e52b1c5311572e844",
-    "matching_c_functions": 303,
-    "matching_c_bytes": 16180,
-    "combined_c_entries": 316,
-    "asm_entries": 7060,
+    "combined_proof_sha256": "c10ed93197dbcc925943a2beab769a67ad4d88bfe3cc8124fc65775e2bf1beb1",
+    "matching_c_functions": 306,
+    "matching_c_bytes": 16292,
+    "combined_c_entries": 319,
+    "asm_entries": 7057,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "The 13 original upstream unmarked entries remain distinct from 303 matching-C functions (143 in USA file_11); a fresh 303/303 exact-ROM G2, original 7,376 ELF identities, all 8,825 relocation tuples and full local CI passed on 2026-11-16.",
+    "note": "The 13 original upstream unmarked entries remain distinct from the VM residual GLOBAL_ASM functions. USA file_11 50 functions were promoted after a 210/210 full native verifier and exact whole-ROM/inventory gate.",
     "reconciled_date": "2026-11-16"
   },
   "residual_functions": [

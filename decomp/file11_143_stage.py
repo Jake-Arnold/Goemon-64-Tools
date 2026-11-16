@@ -30,12 +30,10 @@ END = 0x5B8500
 OLD_SPLAT = '    - [0x587370, asm]\n    - [0x5B8500, data]'
 OLD_LINKER = '.file_11 0x801CB460 : AT(file_11_ROM_START) SUBALIGN(16)'
 NEW_LINKER = '.file_11 0x801CB460 : AT(file_11_ROM_START) SUBALIGN(4)'
-# The canonical 50-C normaliser removes two Splat-created positive-sized FUNC
-# aliases; the 143-C layout introduces a third at 0x5AEBDC immediately after
-# two 12-byte callback functions. All three original instructions are pinned
-# NOPs (0x00000000), and all NON_MATCHING markers are retained. The ASM
-# object SHA-256 therefore changes only in symbol metadata for these offsets;
-# full-ROM, relocation, and original-function inventory gates remain required.
+# Two Splat-created positive-sized FUNC aliases are deliberately removed by
+# the already-pinned canonical 50-C normaliser. That edits only labels, not
+# instructions; the resulting ASM .o symbol tables cannot match the original
+# unnormalised 143-C research object's full-file SHA-256.
 NORMALIZED_NOP_ALIAS_ASM_OFFSETS = frozenset((0x5995E8, 0x59D4DC, 0x5AEBDC))
 
 
@@ -61,6 +59,29 @@ def reviewed_plan(manifest: dict, original_rom: bytes | None = None) -> dict:
     from .file11_143_preflight import validate
     baseline = copy.deepcopy(manifest)
     baseline['overlay_file11_stage'] = {'format': ORIGINAL_STAGE_FORMAT}
+    # The exact original 210-C preflight is an independent file_11 fixture
+    # audit. For a subsequent, separately proven three-function Impact batch,
+    # reconstruct the original 210-C reference solely for that legacy audit.
+    # The real candidate retains the additions and undergoes full G2/inventory.
+    stages = baseline.get('overlay_file13_stages')
+    if stages is not None:
+        from . import overlay_file13
+        expected = ('func_801D3954_5FED34', 'func_801D3A44_5FEE24')
+        if (not isinstance(stages, list) or len(stages) != 2
+                or tuple(stage.get('function', {}).get('name') for stage in stages) != expected
+                or tuple(stage.get('function', {}).get('size') for stage in stages) != (40, 36)):
+            raise ValueError('Unreviewed file_13 extension to file_11 stage')
+        if 'impact_controller.h' not in baseline['support_headers']:
+            raise ValueError('Missing independently verified Impact ABI header')
+        unit = next(u for u in baseline['units'] if u['source'] == 'dialogue_window.c')
+        added_name = 'func_8000C430_D030'
+        added = [f for f in unit['functions'] if f['name'] == added_name]
+        if len(added) != 1 or added[0] != {'name': added_name, 'rom_offset': 0xD030, 'size': 36}:
+            raise ValueError('Unreviewed combined dialogue-window C extension')
+        unit['functions'].remove(added[0])
+        unit['assembly_functions'].insert(2, added_name)
+        baseline['support_headers'].remove('impact_controller.h')
+        del baseline['overlay_file13_stages']
     plan = validate(baseline, load_fixture(), original_rom)
     if (plan['baseline_usa_c'], plan['additional_research_c'],
         plan['file11_c_total'], plan['file11_c_instruction_bytes']) != (210, 93, 143, 3908):
