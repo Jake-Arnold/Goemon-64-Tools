@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Check in native 47-C scratch reproduction scripts
+
+- Changed: published the already native-tested fail-closed original-USA seven-overlay scratch runner in `decomp/research/jp_recomp_to_c/native_scratch/`: source staging, exact C object and ASM section padding checks, complete-ROM/ELF/relocation verifier and wrapper, together with precise execution prerequisites. Requires the user's original ROM, pinned toolchain and 52-source manifest; no game assets or built binaries committed.
+- Tests: identical local scripts reproduced **47/47 original C code**, 2,220 bytes, exact 32 MiB ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, 7,376/7,376 FUNC identities and all seven semantic relocation multisets. The checked-in source scripts are supplied for reproducibility; full canonical mixed-C `decomp.local_ci` was **not** run, nor was a combined 362-C G2.
+- Limitation: canonical USA count stays 315; these native checks use the unmodified upstream ASM source baseline, not canonical 315-C. Complete combined acceptance before formal promotion remains mandatory.
+
+
 ### 2026-11-16 — 47 new overlay C functions passed complete native original-ROM and ELF scratch (not production-promoted)
 
 - Changed: imported 25 previously absent matching-C sources to `decomp/research/jp_recomp_to_c/src/`, completing **47 new original-address USA overlay C sources** across file_12/13/14/15/17/18/19. Documented fresh original-IDO native scratch at `docs/JAPAN_47_C_NATIVE_SCRATCH_20261116.md` and immutable numeric proof in `decomp/research/jp_recomp_to_c/native_scratch_47_evidence.json`. Original canonical 315-C manifest/proofs/verifier untouched.
