@@ -3,6 +3,16 @@
 **Date:** 2026-11-15  
 **Live evidence:** The user confirmed that the Japan-0 Project64 toolkit can open the original debug menu (`0x800CD284 = 0x0A`) and teleport Goemon to known Oedo South XYZ. On a subsequent test, **double-click only opened the debug menu**, which is **not** the requested USA-equivalent instant warp. That incorrect dispatch has now been replaced in source. **The new direct `0x0C` area reload still awaits live confirmation.**
 
+## v0.11.30 — unconditional original debug entry, verified auto-attach and scene status
+
+The **manual original Japanese debug button** now directly requests mode `0x0A` at `0x800CD284`, writing only the one guest byte if it is different. It does not require ordinary gameplay, stable character/loading, source scene or a selected destination; a second click when already in mode 0x0A performs no write. It continues to require an independently verified Japan ROM/PID/RDRAM mapping and a write-enabled handle. No consent box, alternate memory state edits or simulated inputs occur. This intentionally changes the earlier historical `0x0D → 0x0A`-only, confirmation-based debug behavior described later in this document; those sections are superseded for this one action.
+
+The **Scene Browser's instant warp** remains separate: pending native destination/selected original-USA entrance 12-byte block followed by engine mode `0x0C`. Default character selection preserves the current character; an explicitly chosen Goemon/Ebisumaru/Sasuke/Yae target is staged and then observed across three stable destination samples. The toolkit reports whether scene engine/loading/exit/character were consistent, not an unverified claim that the loaded actor/task or animation is playable. Only the user-confirmed Japanese Goemon/Oedo South `0x161` address can receive an additional guarded post-load XYZ write. Unverified actor XYZ copies in other rooms or for Ebisumaru/Sasuke/Yae are **never forcibly written**.
+
+Japanese Connect now scans all available supported game process candidates (recomp, Mupen, Windows Project64), verifies three native JP ROM code probes and plausible live RAM state, and selects an unambiguous big, word-swapped or 16-bit byte-swapped memory layout. Per-executable last-known host offsets are speed hints that are **reverified** on reconnect; several valid processes are reported as ambiguous rather than guessed.
+
+The user reports an independently crashing **Gourmet Sub 2F Bazooka Room, scene 0x081**, in the native JP recomp executable. Treat it as an open game/port crash, **not an established toolkit warp defect**. See `docs/JAPAN_NATIVE_SCENE_081_CRASH.md`. Real native warp and all four character gameplay initialization still require live validation; no such tests were executed through the GitHub connector.
+
 ## v0.11.26 — verified original-USA atlas bundled and used by both versions
 
 The complete user-extracted atlas is committed as `practice/data/entrance-coordinates.json`: **333 indexed scenes, 888 entrance records, 266 covered destinations**. This is the exact table accessed by `selected_scene_spawn(destination)` in both the USA and native Japanese Scene Browser; a separate ROM, Japanese-specific capture, or one-time extraction on each install is no longer required.
