@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.36 final hosted CI proof
+
+- **Linux:** [GitHub Actions 43948425965](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948425965) PASSED at code commit `aaa2b9ff5a71f7520cbff8d45c63b83d4f519dd0`: 313 non-GUI synthetic tests (312 passed, 1 skipped), 139 Xvfb Tk GUI tests, no reported Tk callback failures.
+- **Windows:** [GitHub Actions 43948426011](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948426011) PASSED at the same code commit: 33 portable tests.
+- **UI code wording clean-up:** New Japanese manual ROM pick/connection messages mention native recomp, Mupen64Plus and Project64 where relevant; the old emulator-only description is no longer displayed.
+- **Limitations:** These prove the synthetic APIs and GUI smoke tests, not attachment to an actual native USA or Japanese recomp game or Windows Tk end-to-end UI. The hidden old Japan diagnostics widget is retained internally as a compatibility measure, not exposed as a top-level user tab. Original MIPS instruction access tracing remains unimplemented. PR #35 stays draft.
+
 ## 2026-11-16 — v0.11.36 redundancy, ROM connection UX and comparison preset cleanup
 
 - **Motivation:** Japan Live (diagnostics) duplicates the shared Live Memory page and Scene Browser. A separate Verify ROM button appears redundant despite the genuine safety need for an exact Japanese ROM to establish three independent 64-byte code probes. Fixed comparison "Test" labels look like restrictive algorithms while mostly serving as user instructions and occasionally secretly influencing rank.

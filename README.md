@@ -2,6 +2,8 @@
 
 ## v0.11.36 — Remove duplicate JP diagnostics and comparison presets (16 November 2026)
 
+**Final code verification:** [Linux CI 43948425965](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948425965) passed **313 synthetic non-GUI tests (312 passed, 1 skipped) and 139 Tk GUI tests**. [Windows CI 43948426011](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948426011) passed **33 portable tests**. Both tested code commit `aaa2b9ff5a71f7520cbff8d45c63b83d4f519dd0`; final documentation changes only. Real-game Linux and Windows Tk integration has not been exercised.
+
 **Draft test branch:** toolkit/unified-memory-discovery, not merged into main.
 
 ### Reduced navigation and controls
