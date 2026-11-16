@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Agent protocol for USA/JP reciprocal memory discovery (decomp research branch)
+
+- **Reason:** User-reported cross-region checks support `JP=USA+0x57F0` for long-lived static fields, including weapon `0x80161DF7`, gameplay submode `0x800CD294`, map overlay `0x80161D64` and Benkei encounter bit `0x80161DFC & 0x20`.
+- **Changes:** Added `decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md`, `.agents/skills/goemon-region-crosswalk/SKILL.md`, and mandatory `AGENTS.md`/skill index instructions. New discoveries in either region now trigger recording the other's candidate and a verification plan.
+- **Boundaries:** The relocation is scoped to fixed globals/saved flags only; it does not apply to dynamic player pointers, VM, Impact allocations, code/overlay VMAs or ROM offsets. JP pause `0x800CD2D6` disputed, JP battery `0x80161DF9 & 0x20` not verified, Snowflake is a +0x57F1 exception. No native ROM, memory writes or decomp promotions changed.
+- **Tests:** Documentation and skill-metadata validation pending; no live runtime test in this change.
+- **Next:** Validate skill metadata using `python3 -m unittest decomp.test_codex_skills -v` and review on the `chatgptweb/decomp` baseline. Port future proven static mappings separately to toolkit `main`-based PRs.
+
+
 ### 2026-11-16 — Eight additional USA file_11 C functions promoted by exact 315-C native proof
 
 - Changed: upgraded the versioned `file_11` stage from 144 to 152 original-address C functions, replacing four complete assembly slices: `0x59EB80–0x59EBBC` (1 C / 60 B), `0x59EE00–0x59EE54` (3 C / 84 B), `0x5B22C8–0x5B2314` (2 C / 76 B), and `0x5B84A0–0x5B8500` (2 C / 96 B). All eight original function extents and all 88 original file_11 object positions remain unchanged. Preserved historical 307/306/303/210 reports independently.
