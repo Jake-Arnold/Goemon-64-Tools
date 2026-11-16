@@ -37,6 +37,7 @@ from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.version import DISPLAY_VERSION
+from practice.launcher_preferences import load_last_region, save_last_region
 from practice.japan_native_recomp import (
     verified_japan_recomp_pid, find_japan_recomp_pid,
     discover_japan_recomp_rdram, validate_japan_recomp_writer,
@@ -131,7 +132,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
-        self.active_version = selected_version(getattr(args, 'game_version', 'usa'))
+        self.active_version = selected_version(
+            getattr(args, 'game_version', None) or load_last_region())
         self.game_version_choice = tk.StringVar(value=self.active_version.label)
         self.verified_rom_path = (
             load_remembered_rom('japan')
@@ -599,6 +601,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.verified_rom_path = (
             load_remembered_rom('japan') if version.key == 'japan' else None)
         self._apply_game_version_ui()
+        try:
+            save_last_region(version.key)
+        except OSError:
+            pass  # Missing config permission does not block gameplay.
         if self.verified_rom_path is not None:
             self.status.set(
                 f'Previously selected Japan-0 ROM reverified: '
@@ -2100,8 +2106,8 @@ def parse_args(argv=None):
     ap.add_argument("--pid",type=int)
     ap.add_argument("--base",help="RDRAM host base 0x...; Japan always validates three ROM code probes")
     ap.add_argument("--endian",choices=["auto","wordswapped","big"],default="auto")
-    ap.add_argument("--game-version", choices=tuple(VERSIONS), default="usa",
-                    help="USA toolkit (default) or Japanese native recomp/emulator toolkit")
+    ap.add_argument("--game-version", choices=tuple(VERSIONS), default=None,
+                    help=argparse.SUPPRESS)  # Legacy override; select in Dashboard
     ap.add_argument("--read-only",action="store_true",help="Disable game writes and game input; overrides all enable flags")
     ap.add_argument("--enable-japan-party-writes", action="store_true", default=True,
                     help=argparse.SUPPRESS)  # Deprecated; mapped unlocks write by default
@@ -2123,7 +2129,8 @@ def parse_args(argv=None):
 
 def main(argv=None):
     args=parse_args(argv)
-    root=tk.Tk(); app=Toolkit(root,args)
+    # A stable WM_CLASS associates the running Tk window with the Ubuntu dock icon.
+    root=tk.Tk(className='GoemonPracticeToolkit'); app=Toolkit(root,args)
     try:
         root.mainloop()
     finally:
