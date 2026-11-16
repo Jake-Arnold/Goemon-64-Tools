@@ -822,98 +822,58 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.status.set(message)
 
     def open_japan_debug_for_selected_scene(self):
-        """Open native debug level selection; destination remains manual.
+        """Unrestricted original debug-menu entry, independent of scene/actor.
 
-        Do NOT write active or pending map. PJ64 must revalidate ROM,
-        process and RAM after the operator gives consent.
+        Only 0x800CD284 -> 0x0A is written, at most once. Never request a
+        destination, inspect loading/cutscenes/character or inject input.
+        Region/PID/ROM/RDRAM mapping validation is still mandatory.
         """
         caption = self.jp_debug_result
         if (self.active_version.key != 'japan' or self._connecting
                 or getattr(self.args, 'read_only', False)
-                or not getattr(self.args, 'enable_japan_debug_menu_writes', False)
                 or self.jp_rdram is None or self.game_pid is None
                 or self.verified_rom_path is None):
-            caption.set('Native debug entry requires connected Japanese ROM and '
-                        '--enable-japan-debug-menu-writes without --read-only.')
+            caption.set('Connect verified Japanese RAM with writes enabled first.')
             return
-        try:
-            destination = self.selected_japan_debug_scene()
-            category, index = debug_menu_selection_hint(destination)
-            original = self.jp_rdram
-            context = get_japan_debug_context(original)
-            # Reuse the read-only primitive's exact conservative gameplay
-            # predicate BEFORE asking user for consent.
-            from practice.japanese_debug_warp import _normal_gameplay
-            _normal_gameplay(context)
-        except (OSError, PermissionError, ValueError, RuntimeError) as exc:
-            caption.set(f'Native debug entry rejected before confirmation: {exc}')
-            return
-        yes = messagebox.askyesno(
-            'Enter native Japanese debug menu?',
-            f'Open original debug level selector while in scene 0x{context[1]:03X}?'
-            f'\n\nTarget hint (NOT auto-selected): '
-            f'{SCENES[destination]} (0x{destination:03X})'
-            f'\nExpected menu category/index (USA-derived): {category} / {index}'
-            '\n\nBack up your save; native recomp does not support full savestates.'
-            '\nThe ONLY proposed RAM change is 0x800CD284: 0D → 0A.'
-            '\nThe game must complete destination navigation and loading.'
-            '\nNo scene IDs, pending maps, exit flags or coordinates are written.',
-            parent=self.root)
-        if not yes:
-            caption.set('Native debug entry cancelled; no RAM written.')
-            return
+        original = self.jp_rdram
         pid = self.game_pid
+        target = self.jp_backend
         writable = None
         try:
-            target = self.jp_backend
             if target not in ('project64', 'mupen64plus', 'recomp'):
                 raise RuntimeError('Japanese backend not verified')
             if target == 'project64' and sys.platform != 'win32':
                 raise RuntimeError('Project64 debug entry requires Windows')
             if self.connection_target.get() != target:
-                raise RuntimeError('Selected emulator backend changed; reconnect')
+                raise RuntimeError('Connection backend changed; reconnect')
             check = (verified_japan_recomp_pid(pid) if target == 'recomp'
                      else verified_emulator_pid(pid, target))
             if check != (pid, target):
-                raise RuntimeError('Target Japanese process changed; reconnect')
+                raise RuntimeError('Japanese process identity changed')
             probes = verified_japan_probes(self.verified_rom_path)
             writable = HostProcess(pid, writable=True)
-            verified = (validate_japan_recomp_writer(writable, original, probes)
-                        if target == 'recomp' else validate_rdram_base(
-                            writable, original.base, original.endian, probes,
-                            allow_4mb=(target == 'project64')))
+            # Do not call validate_japan_recomp_context here: it deliberately
+            # rejects invalid characters in ordinary gameplay and would make
+            # the debug button conditional on character/actor initialization.
+            verified = validate_rdram_base(
+                writable, original.base, original.endian, probes,
+                allow_4mb=(target == 'project64'))
             if getattr(verified, 'rdram_size', 0x800000) != getattr(
                     original, 'rdram_size', 0x800000):
-                raise RuntimeError('Emulator guest RAM size changed; reconnect')
-            # The native debug mode byte is the only destination of this write.
-            # Full context agreement catches stale or shadow mappings.
-            if get_japan_debug_context(verified) != get_japan_debug_context(original):
-                raise RuntimeError('Writable/read-only Japanese gameplay differs')
-            result = enter_japan_native_debug_menu(
-                verified, destination, expected_context=context)
-            observed = original.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
-            if observed not in (JAPAN_NATIVE_DEBUG_MODE, 0x0D):
-                raise RuntimeError(f'Unexpected engine state {observed}; check savestate')
+                raise RuntimeError('Japanese RDRAM mapping size changed')
+            result = enter_japan_native_debug_menu(verified)
         except (OSError, PermissionError, ValueError, RuntimeError) as exc:
-            caption.set(f'Native debug entry failed: {exc}')
-            self.status.set(f'Native debug entry failed: {exc}')
+            message = f'Original Japanese debug menu entry failed: {exc}'
+            caption.set(message)
+            self.status.set(message)
             return
         finally:
             if writable is not None:
                 writable.close()
-
-        if result.observed_state == JAPAN_NATIVE_DEBUG_MODE:
-            message = (
-                f'Native debug engine state 0x0A observed. Choose '
-                f'{category} / index {index} manually for '
-                f'0x{destination:03X} {SCENES[destination]}. '
-                'Verify on-screen debug menu; Japanese menu layout is not '
-                'independently validated. No direct map write.')
-        else:
-            message = (
-                f'Native debug entry byte written but engine returned to 0x0D. '
-                f'Inspect the on-screen debug menu. Target hint: {category} / '
-                f'index {index}; no destination selection was made.')
+        message = ('Original Japanese debug mode already 0x0A; no RAM write.'
+                   if not result.changed else
+                   'Original Japanese debug menu requested: wrote only '
+                   '0x0A to 0x800CD284; no map, actor, entrance or input changes.')
         caption.set(message)
         self.status.set(message)
         self.refresh_japan_fields(force=True)
