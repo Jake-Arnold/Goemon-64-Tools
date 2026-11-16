@@ -3,6 +3,18 @@
 **Date:** 2026-11-15  
 **Live evidence:** The user confirmed that the Japan-0 Project64 toolkit can open the original debug menu (`0x800CD284 = 0x0A`) and teleport Goemon to known Oedo South XYZ. On a subsequent test, **double-click only opened the debug menu**, which is **not** the requested USA-equivalent instant warp. That incorrect dispatch has now been replaced in source. **The new direct `0x0C` area reload still awaits live confirmation.**
 
+## v0.11.22 correction — Japanese destination coordinates were never initialized
+
+The original controller's `self.entrance_atlas` attribute was never created. Every previous native Japanese Scene Browser warp therefore chose `spawn=None` and staged only the pending 2-byte destination at `0x800CD490`. The 12-byte path existed only in synthetic tests that injected an atlas. This explains why room loading can appear successful while Goemon appears at incorrect or stale XYZ.
+
+v0.11.22 **removes the dead USA-atlas dependency** rather than making guesses about Japanese ROM entrances. A user can visit a room naturally as Goemon, connect to a stable Japanese RAM session, and press **Record CURRENT loaded Japanese room XYZ (not selected scene)** in the shared Scene Browser. It saves that room's observed float32 player XYZ in the user-specific Japanese warp registry. Native pending mode and heading are preserved only if the observed current-room pending record has the same scene ID and close XYZ; otherwise they are labelled experimental `mode=0x10` / `heading=0` defaults. The Oedo South `(-289, 0, -167)` user-observed coordinates remain available as a separately labelled experimental preset.
+
+Later warps to recorded rooms stage the complete native `>HHhhhH` block: scene ID, mode, signed 16-bit rounded X/Y/Z, heading, **before** engine state `0x0C`. Warps with no recorded native Japanese XYZ still stage the scene ID only and are **explicitly unverified for spawn**. The controller never substitutes arbitrary USA entrance coordinates into Japan. Existing freeze locks are stopped so old-room XYZ freezes cannot resume after a scene reload and overwrite the new location.
+
+After three valid destination gameplay reads, the toolkit compares the requested coordinates with **actual post-load XYZ at `0x80151B10..0x80151B1B`**. If the 3D difference exceeds 16 units it reports `SPAWN MISMATCH` plus requested/observed numbers. If no Japanese spawn was staged it reports `NO DESTINATION XYZ WAS STAGED`. Even a close measurement does not prove grounded collision, facing or controllable actor.
+
+The new `japan-warp-spawns.json` contains only user-recorded scene/spawn metadata under the user's configuration directory; it does not include or modify any ROM, game saves or executable. Native Japanese room metadata extraction remains a future research task. **No new claim of verified cross-scene spawning is made until live Goemon64Recompiled behaviour is observed.**
+
 ## Correct implementation: identical reload mechanism, region-specific addresses
 
 The existing **Scene Browser** is the only scene picker in both USA and Japan. Double-click is an immediate memory request in the currently selected version. The original **Open debug menu** button remains an independent, optional manual operation.
