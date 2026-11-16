@@ -24,6 +24,9 @@ def make_controller():
     app.jp_auto_warp = None
     app.jp_native_key_release = None
     app.jp_warp_spawns = {}
+    app.selected_scene_spawn = lambda destination: Spawn(
+        destination, (4, 8, -10), heading=512, mode=0x10,
+        label='Original USA entrance', entrance_id='usa:shared')
     app.selected_japan_debug_scene = lambda: 0x1D1
     app._japan_native_warp_writer = lambda: (writer, writer.rdram())
     app.scene_status = Label()
@@ -59,7 +62,7 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
         for _ in range(3):
             app.poll_japan_native_scene_warp(time.monotonic())
         self.assertIsNone(app.jp_auto_warp)
-        self.assertIn('NO DESTINATION XYZ WAS STAGED', app.scene_status.value)
+        self.assertIn('USA entrance usa:shared', app.scene_status.value)
 
     def test_japan_character_selection_stages_yae_before_reload(self):
         app, writer = make_controller()
@@ -84,39 +87,71 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
         app.start_japan_native_scene_warp(destination=0x161)
         self.assertIn('pending', app.scene_status.value)
 
-    def test_captured_japan_warp_point_stages_entire_coordinate_block(self):
+    def test_japan_warp_stages_exact_selected_usa_entrance(self):
         app, writer = make_controller()
-        # The old self.entrance_atlas was never initialized. Native JP must
-        # now use explicitly user-captured Japan XYZ, not guessed USA entries.
-        app.jp_warp_spawns[0x1D1] = Spawn(
-            0x1D1, (4, 8, -10), heading=512, mode=0x10,
-            label='Japan captured', entrance_id='jp:capture:1D1')
+        selected = Spawn(
+            0x1D1, (40, 8, -10), heading=512, mode=0x20,
+            label='USA selected from 161', entrance_id='usa:161:exit:1')
+        app.selected_scene_spawn = lambda dest: selected
         app.start_japan_native_scene_warp(destination=0x1D1)
-        self.assertEqual(app.jp_auto_warp['spawn'].position, (4, 8, -10))
+        self.assertEqual(app.jp_auto_warp['spawn'], selected)
         self.assertEqual(
             writer.rdram().read_guest(JAPAN_PENDING_MAP, 12),
-            app.jp_auto_warp['spawn'].pending_bytes())
+            selected.pending_bytes())
         self.assertEqual(
             writer.rdram().read_guest(JAPAN_DEBUG_ENGINE_MODE, 1),
             bytes((12,)))
-        self.assertIn('12-byte entry block', app.scene_status.value)
+        self.assertIn('Shared USA entrance', app.scene_status.value)
+        self.assertIn('USA entrance', app.scene_status.value)
 
-    def test_japan_loaded_map_reports_wrong_spawn_xyz_not_success(self):
+    def test_japan_postload_places_exact_usa_xyz_once(self):
         app, writer = make_controller()
-        app.jp_warp_spawns[0x1D1] = Spawn(
-            0x1D1, (100, 5, 200), label='Japan captured',
-            entrance_id='jp:capture:1D1')
+        selected = Spawn(
+            0x1D1, (100, 5, 200), label='USA same coords',
+            entrance_id='usa:shared')
+        app.selected_scene_spawn = lambda dest: selected
         app.start_japan_native_scene_warp(destination=0x1D1)
         writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((13,)))
         writer.set_guest(JAPAN_DEBUG_SCENE, bytes.fromhex('01D1'))
         writer.set_guest(
             JAPAN_PLAYER_XYZ_START,
             struct.pack('>fff', 5.0, 0.0, -10.0))
+        writer.writes.clear()
         for _ in range(3):
             app.poll_japan_native_scene_warp(time.monotonic())
         self.assertIsNone(app.jp_auto_warp)
-        self.assertIn('SPAWN MISMATCH', app.scene_status.value)
-        self.assertIn('requested (100.0, 5.0, 200.0)', app.scene_status.value)
+        self.assertEqual(
+            writer.rdram().read_guest(JAPAN_PLAYER_XYZ_START, 12),
+            struct.pack('>fff', *selected.position))
+        self.assertEqual(len(writer.writes), 1)
+        self.assertIn('USA entrance usa:shared', app.scene_status.value)
+        self.assertIn('JP actual (100.0, 5.0, 200.0)', app.scene_status.value)
+
+    def test_japan_warp_refuses_if_selected_usa_entrance_is_missing(self):
+        app, writer = make_controller()
+        def missing(_destination):
+            raise ValueError('Load original USA ROM entrance data first')
+        app.selected_scene_spawn = missing
+        app.start_japan_native_scene_warp(destination=0x1D1)
+        self.assertIsNone(app.jp_auto_warp)
+        self.assertIn('Load original USA ROM', app.scene_status.value)
+        self.assertEqual(writer.writes, [])
+
+    def test_other_character_does_not_write_unmapped_japanese_xyz(self):
+        app, writer = make_controller()
+        app.start_japan_native_scene_warp(destination=0x1D1)
+        writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((13,)))
+        writer.set_guest(JAPAN_DEBUG_SCENE, bytes.fromhex('01D1'))
+        writer.set_guest(0x80161DCC, (3).to_bytes(4, 'big'))
+        writer.set_guest(
+            JAPAN_PLAYER_XYZ_START,
+            struct.pack('>fff', 500.0, 0.0, 200.0))
+        writer.writes.clear()
+        for _ in range(3):
+            app.poll_japan_native_scene_warp(time.monotonic())
+        self.assertIsNone(app.jp_auto_warp)
+        self.assertEqual(writer.writes, [])
+        self.assertIn('not Goemon', app.scene_status.value)
 
     def test_capture_current_japan_xyz_persists_without_game_writes(self):
         app, writer = make_controller()
