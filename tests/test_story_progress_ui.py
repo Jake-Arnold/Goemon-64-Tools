@@ -11,6 +11,7 @@ class StoryProgressUITests(unittest.TestCase):
         try:self.root=tk.Tk()
         except tk.TclError as exc:self.skipTest(str(exc))
         self.root.withdraw();self.app=Toolkit(self.root,parse_args(['--read-only','--game-version','usa']))
+        self.assertEqual(self.app.active_version.key, 'usa')
 
     def tearDown(self):
         if hasattr(self,'root'):self.root.destroy()
