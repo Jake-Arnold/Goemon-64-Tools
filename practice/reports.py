@@ -31,10 +31,11 @@ class ReportEntry:
 
 
 def documents_dir(*, platform_name=None, home=None, environ=None):
+    custom_location = home is not None or environ is not None
     platform_name = sys.platform if platform_name is None else platform_name
     env = os.environ if environ is None else environ
     home = Path.home() if home is None else Path(home)
-    if platform_name == "win32":
+    if platform_name == "win32" and not custom_location:
         try:
             import winreg
             with winreg.OpenKey(winreg.HKEY_CURRENT_USER,
@@ -45,6 +46,7 @@ def documents_dir(*, platform_name=None, home=None, environ=None):
                 return Path(expanded).expanduser()
         except (ImportError, OSError, ValueError):
             pass
+    if platform_name == "win32":
         return Path(env.get("USERPROFILE") or home) / "Documents"
     raw = env.get("XDG_DOCUMENTS_DIR", "")
     if not raw:
