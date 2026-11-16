@@ -98,6 +98,12 @@ Draft PR #23 now includes `decomp/research/file11_adjacent_native_probe.py` and 
 
 **Research only:** 77+68 = 145 new original-VMA matching-C candidates (4,536 bytes). A complete central 355-function G2 + exact USA 32 MiB ROM, all 8,825 overlay relocations and inventory has NOT been run. Canonical manifest/proof/inventory still 210 C / 13,336 bytes / 7,153 assembly. Uploaded repository snapshot predates the 210-function merge, and its old local CI still shows two stale source-hash failures; never claim complete CI success from that ZIP.
 
+## USA file_11 second adjacent sweep (16 November 2026)
+
+New original-IDO research on PR #23: `decomp/research/file11_adjacent_wave2_probe.py` and `file11_adjacent_wave2_sources.json` prove **44 additional** original-address matching-C functions / **1,976 bytes**, disjoint from the prior 77+68 and the already-promoted 50. Nine fully contiguous combined C translation units also match **9/9**, covering 44 functions (37 newly identified, 7 prior research) and **1,892 bytes**. The nine-function `[0x5AA138,0x5AA320)` real actor-state helper island emits all **488 original bytes** exactly, including field copying and paired byte clamps. Also a new six-function `[0x5B0EB4,0x5B0FB4)` event dispatcher island, and a four-function `[0x5B8488,0x5B8500)` no-op plus shared-state-bit toggle island. 18 new ROM-free regression tests passed.
+
+Native proof `decomp/results/file11_adjacent_wave2_native_proof_20261116.json`, dated report `docs/USA_FILE11_ADJACENT_WAVE2_44_NATIVE_MATCHES_2026-11-16.md`. Existing older checkout still has two unrelated stale-source fingerprint failures in overall local CI: report honestly. **No whole-ROM G2, relocation/inventory promotion for these 189 pending research functions.** Official `chatgptweb/decomp` inventory **remains 210 functions / 13,336 bytes / 7,153 assembly entries**; prospective 399 is not production.
+
 ## 0. Cross-conversation handoff
 
 For the reviewed integration blockers and reproducible next steps, see [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).
