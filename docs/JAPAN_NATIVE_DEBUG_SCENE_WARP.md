@@ -3,6 +3,44 @@
 **Date:** 2026-11-15  
 **Live evidence:** The user confirmed that the Japan-0 Project64 toolkit can open the original debug menu (`0x800CD284 = 0x0A`) and teleport Goemon to known Oedo South XYZ. On a subsequent test, **double-click only opened the debug menu**, which is **not** the requested USA-equivalent instant warp. That incorrect dispatch has now been replaced in source. **The new direct `0x0C` area reload still awaits live confirmation.**
 
+## v0.11.26 — verified original-USA atlas bundled and used by both versions
+
+The complete user-extracted atlas is committed as `practice/data/entrance-coordinates.json`: **333 indexed scenes, 888 entrance records, 266 covered destinations**. This is the exact table accessed by `selected_scene_spawn(destination)` in both the USA and native Japanese Scene Browser; a separate ROM, Japanese-specific capture, or one-time extraction on each install is no longer required.
+
+Entries preserve all source-specific exits/defaults, XYZ, heading and mode. For example, Oedo South (`0x161`) has ten distinct entrance records; the source-scene 351 exit and native default each use `XYZ (-289, 0, -167), heading 256, mode 16`. The new data supersedes older Japanese fallback heading-zero speculation.
+
+The bundled JSON passed original-USA extractor identity/checksum and numeric entrance validation, and has been fetched back from GitHub intact. Real Japanese-native post-reload XYZ placement and collision are still subject to the on-device regression and gameplay test; only the data source is now complete for the 266 covered destinations.
+
+## v0.11.24 — permanent numeric scene/entrance coordinates
+
+The Goemon toolkit no longer depends on the original USA ROM being present at launch for already known warp coordinates. Both USA and Japanese scene browsers now load the validated extracted `entrance-coordinates.json` atlas from the user's persistent config directory, not a checkout-specific file. Previous `practice/entrances.json` data is migrated automatically. The numeric table contains scene ID, source scene when present, entrance ID, X/Y/Z, heading and mode; **scene ID by itself can be ambiguous when a room has multiple doors**.
+
+For an entirely fresh installation with no extracted original-USA atlas, the toolkit includes the one actual observed XYZ from prior gameplay tests: **Oedo Town South (`0x161`) at `(-289, 0, -167)`**. It is offered as a permanent known point with an explicitly unverified 0/0x10 heading/mode. No made-up entries are added for rooms whose XYZ has not been observed or extracted. A verified USA entrance record for Oedo or another scene overrides the built-in fallback. Once the full USA ROM is extracted once and the numbers are cached, further warps into any covered scene use them without needing the ROM again.
+
+The Japanese and USA region-specific write backends continue to use the same selected `Spawn` and identical coordinates. Native Japanese post-load Goemon position writes remain guarded and one-shot; this change only improves how stable entrance records are found.
+
+## v0.11.23 correction — Japan now uses the exact selected USA entrance
+
+The earlier v0.11.22 conclusion that `self.entrance_atlas` was never initialized was incomplete. `EntranceMixin.init_entrances()` does load the USA atlas from the toolkit's cached `entrances.json`. The actual defect was that the Japanese controller never selected from that shared atlas; it consulted a different Japan-only warp point registry, while the Japanese Scene Browser hid the USA entrance dropdown.
+
+v0.11.23 exposes the **same destination entrance combobox** in USA and Japan, along with **Load original USA ROM**. Both regions now use `selected_scene_spawn(destination)` to choose the same source-specific or default entrance. The current Japan source scene comes from guest `0x800CD2A2` instead of the USA RAM layout. The selected `Spawn.pending_bytes()` is staged at Japanese pending address `0x800CD490` exactly as USA stages it at `0x800C7CA0`, then Japanese engine state `0x0C` triggers the load. An unknown or ambiguous entrance blocks both paths instead of silently allowing a Japanese scene-ID-only warp.
+
+As in USA, Japanese Goemon gets a guarded, one-shot **post-load XYZ placement**: after the destination scene and character have stabilized, the toolkit compares Japanese live position at `0x80151B10` against the selected USA entrance's exact 3 float32 values. When different, it reopens a ROM/PID/RDRAM-verified writable handle, checks the scene and unchanged previous position, writes the exact selected USA XYZ once, and reads back the result. The region-specific fixed vector is observed for Goemon; for other Japanese characters the toolkit only stages the common native entrance and reports that post-load placement is not yet mapped. No broad retry/write loop.
+
+The separate Japanese warp-point capture is no longer the default and never overrides the USA entrance chosen in the shared dropdown. This follows the user's stated expectation that both regional warps should have identical coordinates. Actual native Japanese gameplay collision, camera, spawn record mode/heading semantics and other-character positions remain unverified until tested in-game. The new v0.11.23 regression tests cover staging/placement/selection but have not been executed by the GitHub connector.
+
+## v0.11.22 correction — Japanese destination coordinates were never initialized
+
+The original controller's `self.entrance_atlas` attribute was never created. Every previous native Japanese Scene Browser warp therefore chose `spawn=None` and staged only the pending 2-byte destination at `0x800CD490`. The 12-byte path existed only in synthetic tests that injected an atlas. This explains why room loading can appear successful while Goemon appears at incorrect or stale XYZ.
+
+v0.11.22 **removes the dead USA-atlas dependency** rather than making guesses about Japanese ROM entrances. A user can visit a room naturally as Goemon, connect to a stable Japanese RAM session, and press **Record CURRENT loaded Japanese room XYZ (not selected scene)** in the shared Scene Browser. It saves that room's observed float32 player XYZ in the user-specific Japanese warp registry. Native pending mode and heading are preserved only if the observed current-room pending record has the same scene ID and close XYZ; otherwise they are labelled experimental `mode=0x10` / `heading=0` defaults. The Oedo South `(-289, 0, -167)` user-observed coordinates remain available as a separately labelled experimental preset.
+
+Later warps to recorded rooms stage the complete native `>HHhhhH` block: scene ID, mode, signed 16-bit rounded X/Y/Z, heading, **before** engine state `0x0C`. Warps with no recorded native Japanese XYZ still stage the scene ID only and are **explicitly unverified for spawn**. The controller never substitutes arbitrary USA entrance coordinates into Japan. Existing freeze locks are stopped so old-room XYZ freezes cannot resume after a scene reload and overwrite the new location.
+
+After three valid destination gameplay reads, the toolkit compares the requested coordinates with **actual post-load XYZ at `0x80151B10..0x80151B1B`**. If the 3D difference exceeds 16 units it reports `SPAWN MISMATCH` plus requested/observed numbers. If no Japanese spawn was staged it reports `NO DESTINATION XYZ WAS STAGED`. Even a close measurement does not prove grounded collision, facing or controllable actor.
+
+The new `japan-warp-spawns.json` contains only user-recorded scene/spawn metadata under the user's configuration directory; it does not include or modify any ROM, game saves or executable. Native Japanese room metadata extraction remains a future research task. **No new claim of verified cross-scene spawning is made until live Goemon64Recompiled behaviour is observed.**
+
 ## Correct implementation: identical reload mechanism, region-specific addresses
 
 The existing **Scene Browser** is the only scene picker in both USA and Japan. Double-click is an immediate memory request in the currently selected version. The original **Open debug menu** button remains an independent, optional manual operation.

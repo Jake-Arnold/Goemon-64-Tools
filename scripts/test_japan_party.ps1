@@ -47,6 +47,10 @@ $backendTests = @(
     'tests.test_japan_party_cli',
     'tests.test_japan_party_controller',
     'tests.test_japanese_mupen_attach',
+    'tests.test_japan_native_recomp',
+    'tests.test_toolkit_version',
+    'tests.test_linux_launcher',
+    'tests.test_launcher_preferences',
     'tests.test_japan_project64',
     'tests.test_remembered_rom',
     'tests.test_region_views',
@@ -64,6 +68,10 @@ $backendTests = @(
     'tests.test_japan_damage_capture',
     'tests.test_japan_native_scene_warp',
     'tests.test_japan_direct_scene_reload',
+    'tests.test_japan_warp_spawns',
+    'tests.test_japan_spawn_placement',
+    'tests.test_known_entrances',
+    'tests.test_repository_entrance_atlas',
     'tests.test_japan_native_scene_controller',
     'tests.test_japan_state_comparison',
     'tests.test_japan_player_position_research',
@@ -87,7 +95,9 @@ $guiTests = @(
     'tests.test_japan_value_freezes_ui',
     'tests.test_value_freezes_ui',
     'tests.test_story_progress_ui',
-    'tests.test_dashboard'
+    'tests.test_dashboard',
+    'tests.test_entrance_ui',
+    'tests.test_japan_recomp_write_ui'
 )
 
 Push-Location -LiteralPath $repoRoot

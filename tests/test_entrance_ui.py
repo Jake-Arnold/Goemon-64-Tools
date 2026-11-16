@@ -84,12 +84,132 @@ class EntranceUITests(unittest.TestCase):
         with patch.object(self.process,'write',side_effect=AssertionError('No writes')):self.app.poll_direct_warp(1)
         self.assertIsNone(self.app.pending_direct_warp)
 
+    def test_known_oedo_coordinates_work_without_any_rom_in_both_regions(self):
+        from practice.game_versions import VERSIONS
+        self.app.entrance_atlas = None
+        self.app.entrance_choice.set('')
+        self.app.refresh_entrance_choices(0x161)
+        usa = self.app.selected_scene_spawn(0x161)
+        self.assertEqual(usa.position, (-289.0, 0.0, -167.0))
+        self.assertIn('Staged before reload', self.app.entrance_note.get())
+
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        self.app.refresh_entrance_choices(0x161)
+        japan = self.app.selected_scene_spawn(0x161)
+        self.assertEqual(japan.pending_bytes(), usa.pending_bytes())
+        self.assertEqual(japan.entrance_id, usa.entrance_id)
+
+    def test_validated_legacy_atlas_migrates_to_durable_user_settings(self):
+        from practice.entrance_ui import EntranceMixin
+        from practice.entrances import load_atlas, save_atlas
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            legacy = folder / 'entrances.json'
+            persistent = folder / 'xdg-config' / 'entrance-coordinates.json'
+            atlas = atlas_fixture()
+            save_atlas(legacy, atlas)
+            with patch('practice.entrance_ui.stored_entrance_atlas_path',
+                       return_value=persistent), \
+                 patch('practice.entrance_ui.repository_entrance_atlas_path',
+                       return_value=folder / 'missing-bundled.json'), \
+                 patch('practice.entrance_ui.practice_data_dir',
+                       return_value=folder):
+                first = EntranceMixin()
+                first.init_entrances()
+                self.assertEqual(first.entrance_atlas, atlas)
+                self.assertEqual(load_atlas(persistent), atlas)
+                legacy.unlink()
+                second = EntranceMixin()
+                second.init_entrances()
+                self.assertEqual(second.entrance_atlas, atlas)
+
+    def test_repository_bundled_entrance_table_wins_over_local_cache(self):
+        from practice.entrance_ui import EntranceMixin
+        from practice.entrances import save_atlas
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            bundled = folder / 'repo' / 'entrance-coordinates.json'
+            local = folder / 'xdg' / 'entrance-coordinates.json'
+            atlas = atlas_fixture()
+            save_atlas(bundled, atlas)
+            changed = copy.deepcopy(atlas)
+            changed['payload']['entries'][0]['position'] = [7, 8, 9]
+            changed['sha256'] = digest(changed['payload'])
+            save_atlas(local, changed)
+            with patch('practice.entrance_ui.repository_entrance_atlas_path',
+                       return_value=bundled), \
+                 patch('practice.entrance_ui.stored_entrance_atlas_path',
+                       return_value=local), \
+                 patch('practice.entrance_ui.practice_data_dir',
+                       return_value=folder):
+                host = EntranceMixin()
+                host.init_entrances()
+                self.assertEqual(host.entrance_atlas, atlas)
+                self.assertEqual(host.entrance_atlas_source, 'repository')
+
+    def test_invalid_checked_in_entrance_table_falls_back_to_valid_user_cache(self):
+        from practice.entrance_ui import EntranceMixin
+        from practice.entrances import save_atlas
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            bundled = folder / 'repo' / 'entrance-coordinates.json'
+            bundled.parent.mkdir()
+            bundled.write_text('invalid file', encoding='utf-8')
+            local = folder / 'xdg' / 'entrance-coordinates.json'
+            atlas = atlas_fixture()
+            save_atlas(local, atlas)
+            with patch('practice.entrance_ui.repository_entrance_atlas_path',
+                       return_value=bundled), \
+                 patch('practice.entrance_ui.stored_entrance_atlas_path',
+                       return_value=local), \
+                 patch('practice.entrance_ui.practice_data_dir',
+                       return_value=folder):
+                host = EntranceMixin()
+                host.init_entrances()
+                self.assertEqual(host.entrance_atlas, atlas)
+                self.assertEqual(host.entrance_atlas_source,
+                                 'persistent user cache')
+
     def test_failed_rom_load_preserves_previous_atlas(self):
         old=self.app.entrance_atlas
         self.app.entrance_results.put(('error','incorrect ROM'))
         self.app.poll_entrance_rom()
         self.assertIs(self.app.entrance_atlas,old)
         self.assertIn('incorrect ROM',self.app.entrance_note.get())
+
+    def test_japan_uses_same_usa_entrance_for_matching_source_scene(self):
+        from practice.game_versions import VERSIONS
+        from tests.test_japanese_fields import FakeRam
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        self.app.entrance_atlas=atlas_fixture()
+        self.app.jp_rdram=FakeRam({
+            (0x800CD2A2,2): (1).to_bytes(2,'big')})
+        self.app.refresh_entrance_choices(2)
+        spawn=self.app.selected_scene_spawn(2)
+        self.assertEqual(spawn.position,(-10,20,30))
+        self.assertEqual(spawn.pending_bytes(),
+                         Spawn(2,(-10,20,30),spawn.heading,spawn.mode).pending_bytes())
+        self.assertNotEqual(self.app.entrance_box.winfo_manager(),'')
+
+    def test_japan_uses_same_default_fallback_when_source_unrelated(self):
+        from practice.game_versions import VERSIONS
+        from tests.test_japanese_fields import FakeRam
+        atlas=copy.deepcopy(atlas_fixture())
+        row=copy.deepcopy(atlas['payload']['entries'][0])
+        row.update(id='default:2',kind='default',source_map=None,
+                   source_file=None,position=[40,50,60])
+        atlas['payload']['entries'].append(row)
+        atlas['sha256']=digest(atlas['payload'])
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        self.app.entrance_atlas=atlas
+        self.app.jp_rdram=FakeRam({
+            (0x800CD2A2,2):(0x23).to_bytes(2,'big')})
+        self.app.refresh_entrance_choices(2)
+        self.assertEqual(self.app.selected_scene_spawn(2).position,
+                         (40,50,60))
 
     def test_native_default_is_used_when_origin_has_no_unique_route(self):
         atlas=copy.deepcopy(atlas_fixture());row=copy.deepcopy(atlas['payload']['entries'][0])

@@ -1,4 +1,125 @@
-# Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
+# Goemon Speedrun Tools v0.11.27 — one unified toolkit development branch
+
+## v0.11.27 — consolidate active USA/Japan toolkit development
+
+All **current toolkit** development is now on **`chatgptweb/toolkit-unified`**. This branch was created directly from the complete v0.11.26 Japanese-native-recomp toolkit, with **no feature-code reset or overwrite**. It retains the current USA and Japan toolkit implementation, supported writes and process backends, Ubuntu dock launcher, 888-entry source-verified original-USA entrance atlas, unified Scene Browser, and live-memory/checkpoint tooling.
+
+This consolidates **the active development target**, not the separate decompilation project. The older Japan toolkit, Mupen probe, native savestate, Linux prototype and earlier Japan integration branches are now **historical references**, not parallel locations for new toolkit work. Their earlier `practice/toolkit.py` and `practice/ui_extension.py` method inventories were compared with the v0.11.26 baseline; the latest toolkit contains all method names from both earlier consolidation/integration controllers, with later ROM-validation and native-recomp logic. Old code that was deliberately removed, such as the separate experimental speed controls, has not been reintroduced.
+
+**All future toolkit changes should target `chatgptweb/toolkit-unified` only.** The previous v0.11.26 feature branch and its PR remain intact as history, but the unified branch is the single active candidate for eventual merge to `main`. Do not merge unrelated `decomp`, `file11`, Impact or ROM-research trees blindly.
+
+Full branch map, scope, old-branch provenance and Ubuntu checkout commands: **[Toolkit branch policy](docs/TOOLKIT_BRANCH_POLICY.md)**.
+
+This is a branch consolidation and documentation release; it has not yet run the user's Ubuntu GUI regression suite or live USA/Japanese warp/write tests. The unified PR remains draft until those checks pass.
+
+## Previous v0.11.26 — bundled complete USA/Japan warp entrance atlas
+## v0.11.26 — extracted user-supplied coordinates committed to Git
+
+The full user-extracted original-USA entrance atlas has been **validated and checked into `practice/data/entrance-coordinates.json`**. Both the USA and Japanese Scene Browser controllers now load the same numeric entrance data automatically from the repository, with no ROM selection or original ROM file needed. This fulfills the planned v0.11.25 repository-asset support; v0.11.25's statements that the data was missing are historical and are superseded by this release.
+
+The supplied table contains **333 indexed scenes and 888 entrance records across 266 destination scenes**: 592 exits, 266 native default positions, 16 flute and 14 save entrance records. IDs and distinct entrances are preserved; one scene may have different door/source-specific XYZ coordinates, facing and mode. The table passed SHA256 checksum verification, original-USA ROM-identity verification against the extractor's pinned SHA-1 field, record-type/index/coordinate validation and unique-ID checks. **Only functional numeric metadata is committed, not the ROM.**
+
+The file also **confirms Oedo Town South (scene 0x161 / 353)**: source-scene 351 entrance `15F:006` and native default `default:353` both place Goemon at `(-289, 0, -167)` with **heading 256 and mode 16**. The older no-ROM fallback now uses those source-verified values instead of experimental heading zero.
+
+**To use:** pull this branch, start `bash Run-Linux.sh`, select USA or Japan, open Scene Browser, choose a destination and the desired entrance. All 888 entries are available immediately. The existing persistent user cache remains a fallback only if the repository file is absent or invalid. Destinations without a decoded entrance remain explicitly unsupported rather than receiving invented coordinates. Native Japanese Goemon's guarded one-shot post-load XYZ correction remains in place.
+
+**Verification:** The uploaded JSON was inspected and its shape, 888 record constraints, distinct IDs and SHA256 checksum checked, then a fresh GitHub fetch confirmed the full JSON is committed without truncation. Added `tests.test_repository_entrance_atlas` and updated existing fallback tests in both Linux/Windows regression suites. The Python/Tk suite and live Japanese game warp have **not yet been run in the user's Ubuntu environment**; the PR remains draft. See `practice/data/README.md` for the exact dataset provenance and optional re-extraction command.
+
+## Previous v0.11.25 — repository-owned entrance coordinate atlas
+## v0.11.25 — bundle decoded entrance coordinates with the toolkit
+
+The **complete verified original-USA scene/entrance coordinate table can now be committed to the repository** as `practice/data/entrance-coordinates.json`, and will become the default data source for **both USA and Japanese warps**. Once committed, everyone receives the data with `git pull` and does **not** need a ROM, a user-specific extracted atlas, or an entrance extraction step. It stores only functional numeric metadata and the existing validation checksum, **not** copyrighted ROM bytes, graphics, or audio.
+
+**Data is not yet present in the branch.** One original USA ROM extraction must first be supplied as JSON. From the toolkit checkout:
+
+```bash
+python3 -m practice.entrances \
+  --rom "/path/to/original-usa.z64" \
+  --output "/tmp/goemon-entrance-coordinates.json"
+```
+
+The user can attach `/tmp/goemon-entrance-coordinates.json` to the conversation for verification and a follow-up commit to `practice/data/entrance-coordinates.json`. The ROM itself is not needed or wanted. See `practice/data/README.md`. The original extractor validates the ROM identity, checks scene/entrance structure and adds a digest.
+
+**Lookup precedence** is now: (1) valid bundled `practice/data/entrance-coordinates.json` from Git; (2) verified per-user XDG/LocalAppData atlas; (3) validated legacy checkout cache; (4) source-backed individual observed XYZ fallbacks where no full table exists. A corrupt/invalid checked-in file cannot silently override a valid cached atlas. Multiple entrances to the same scene retain their separate IDs, source scenes, positions, headings and modes, and ambiguous choices continue to require explicit selection.
+
+ROM-free tests cover bundle-first loading, invalid-bundle fallback, prior-cache migration, and no-ROM Oedo fallback, including the Tk GUI entrance selector; the Bash and PowerShell suites register them. The schema and full native game behaviour remain subject to tests. No false claim is made that the complete coordinate data is already checked in.
+
+## Previous v0.11.24 — permanent scene-ID entrance coordinates
+## v0.11.24 — remember fixed warp coordinates without reloading a ROM
+
+**USA and Japanese games use the same destination/entrance lookup.** A scene ID identifies a room, but a room may have *more than one entrance and different XYZ*. The stored key therefore retains `scene ID + entrance ID` (including source map for exits) rather than collapsing all entrances to one coordinate.
+
+The original-USA ROM extractor already cached its decoded entrance atlas, but only in the current repository checkout (`practice/entrances.json`). Now the toolkit loads validated **persistent user-level entrance coordinate data** from `~/.config/GoemonSpeedrunTools/entrance-coordinates.json` on Linux (or LocalAppData on Windows), independent of the checkout. If an earlier checkout already has a valid `practice/entrances.json`, it is automatically migrated into the persistent cache. On future launches **neither region needs the original ROM file** once a valid atlas is cached. A new one-time **Load original USA ROM** import stores the coordinate table permanently in the user directory rather than in the checkout.
+
+The code also ships a tiny, source-labelled permanent coordinate registry, `practice/known_entrances.py`. It currently includes the only **observed in-game fixed XYZ** already confirmed in the project: **Oedo Town South, scene 0x161 / decimal 353, XYZ (-289, 0, -167)**. Its `heading=0` and `mode=0x10` are explicitly experimental, **not verified USA-ROM entrance fields**. Both USA and Japan can select this known point with **no ROM or cache at all**. Other scenes without a saved atlas remain unknown; the software refuses to invent their coordinates and instead offers the one-time extraction path.
+
+The standard USA/Japan entrance selector gives validated ROM-extracted rows precedence over the single observed fallback, preserving every known entrance for the destination, source-specific route selection, native heading and entrance mode. A selected `Spawn` still stages the same 12-byte destination/mode/XYZ/heading in USA and Japan; Japanese Goemon also gets the guarded one-shot post-load XYZ verification/correction introduced in v0.11.23.
+
+**Tests added:** bundled-known-point validity and missing-scene rejection; original USA and Japanese Scene Browser reuse of known coordinates without a ROM; migration of a validated old atlas to durable user configuration, then reload after deleting the old file. Tests included in Linux and Windows scripts. This PR is still draft. GitHub editing does not execute Python/Tk or the user's live recomp.
+
+## Previous v0.11.23 — identical USA and Japan warp entrance coordinates
+## v0.11.23 — shared original-USA entrance selector and XYZ for both regions
+
+The Japanese Scene Browser now uses **the exact same original-USA ROM entrance atlas, dropdown selection, source-room prioritization, 12-byte pending entrance record and post-load XYZ goal as USA**. The user confirmed that their Japanese and USA warps should use identical destination coordinates; the toolkit no longer substitutes separately recorded Japanese positions for the selected USA entrance.
+
+**Correction to v0.11.22's diagnosis:** the shared EntranceMixin *does* initialize the USA atlas via `init_entrances()` and reads cached `practice/entrances.json`. What was missing was **Japanese use of that shared atlas and entrance selector**. The Japan controller ignored `selected_scene_spawn()` and selected an independent Japanese capture/preset path. v0.11.23 routes Japan through **`selected_scene_spawn(destination)`**, just as USA does, with the same explicit entrance choice, heading, mode and `Spawn.pending_bytes()`. The shared entrance panel is visible on both regional Scene Browsers. Japan automatically prefers a unique entrance corresponding to the **current Japanese source scene** (read from `0x800CD2A2`), or the same USA/default fallback selection rules. When the selected entrance is unknown or ambiguous, the warp is blocked rather than staging only a scene ID.
+
+**How to use:** open the unified toolkit, select **Japan** or **USA**, open **Scene Browser**, and in **Destination entrance** click **Load original USA ROM** if entrance data is not already cached. Select the desired map and the same entrance row for either region. Double-click or press Warp. Both stages use exactly the same decoded `(X, Y, Z)`, heading and mode values. A separately captured Japanese warp-point registry is kept only as optional historical research; it does not override this shared entrance choice.
+
+**Post-load parity:** USA performs a guarded **one-shot player XYZ placement after scene loading**. Japan now also reads actual loaded Goemon XYZ and, if the float32 bytes differ from the chosen USA entrance, opens a fresh region-verified Japanese writable handle and writes **the exact same USA entrance XYZ** to `0x80151B10..0x80151B1B` **once**, after confirming stable Japanese gameplay, matching destination scene/Goemon, no loading and an unchanged pre-write vector. Every write includes readback and scene/character rechecks; no retries or stale-frame writes. The result reports requested and observed XYZ; a mismatch greater than eight world units remains visible. Japanese post-load placement is **Goemon-only** until player-coordinate pointers for the other characters are verified; their native 12-byte staging still uses the selected USA entrance.
+
+**Verification boundary:** This fixes the *software path* mismatch and makes both regional warp requests use the same explicit entrance coordinates, but it has **not** been tested on the user's native Japanese recomp in live gameplay. Exact memory readback does not establish correct collision, camera orientation, cutscenes, or that a particular entrance is semantically equivalent across all regional maps. Regression tests for selected source/entrance parity, endian-correct stage/write, one-shot placement and rejection conditions were authored for both Linux/Windows suites. The draft PR remains unmerged until the Ubuntu suite and native in-game warps pass.
+
+## Previous v0.11.22 — Japanese warp spawn coordinates
+## v0.11.22 — stop silently warping without destination XYZ
+
+**Root cause found:** The Japanese instant warp controller used `self.entrance_atlas` to find coordinates, but `self.entrance_atlas` was never initialized anywhere in the toolkit. Every uncaptured scene therefore staged a **2-byte map ID only**, not the 12-byte native entrance record `>HHhhhH` (destination, mode, X/Y/Z signed halfwords, heading). The previous code observed the new scene and finite player XYZ but never compared it with the intended destination position, so the UI could claim an apparently successful warp at the wrong coordinates.
+
+The Japanese controller now **never imports guesses from a USA entrance atlas**. In the shared Scene Browser, use **Record CURRENT loaded Japanese room XYZ (not selected scene)** while playing as Goemon in normal gameplay. The button records the current scene's Japanese float32 XYZ and, only if a matching live 12-byte pending entrance record agrees with those coordinates, also captures its actual mode and heading. Otherwise the XYZ is saved with clearly labelled **unverified** heading/mode defaults (`heading=0`, `mode=0x10`). Each record is saved in the user's config at `~/.config/GoemonSpeedrunTools/japan-warp-spawns.json` on Linux and is reused on later launches. No game memory is written during capture.
+
+When later warping **into a recorded scene**, the controller stages the **full 12-byte destination+XYZ+mode+heading block** before sending the Japanese `0x0C` scene reload. The previously user-observed Japanese Oedo South XYZ (`-289, 0, -167`) is offered as an explicitly experimental fallback for that scene; its heading/mode remain unverified. When the destination has **no Japanese warp point**, the controller still allows a scene-only experimental reload but states clearly that **no coordinates were staged**. It does not assert the location is correct.
+
+Once the destination is loaded and stable, the toolkit reads the **actual Japanese XYZ** and compares it to the requested point. A displacement over 16 game units is reported prominently as **SPAWN MISMATCH**, including requested and observed coordinates. If no destination point exists, it reports **SCENE LOADED; NO DESTINATION XYZ WAS STAGED**, not successful positioning. A close XYZ reading is not proof of grounded collision or controllability. Any stale memory freezes are stopped before a validated scene warp request so an old room's frozen XYZ cannot overwrite the new room's position.
+
+**Important limit:** This fixes the missing coordinate staging and false-success reporting, but it cannot guarantee every scene's correct native entrance, collider, facing or spawn from a USA map catalogue. Only user-captured Japanese locations are eligible for automatically staged XYZ; other rooms need live Japanese evidence. These changes are not yet tested against the user's running native Japanese recomp. Both Bash and PowerShell suites now include synthetic Japanese spawn capture and post-load mismatch tests.
+
+## Previous v0.11.21 — Japanese native recomp write controls
+## v0.11.21 — fix disabled Japanese recomp writes after successful connection
+
+A successful Japan-0 native `recomp` attachment in v0.11.20 still left several buttons greyed out. Root cause: the connection backend admitted native `recomp`, but older Japanese UI access checks still accepted only `project64` and `mupen64plus`. This was **not** caused by `--read-only`, which remains disabled by default in the unified launcher.
+
+All previously mapped Japanese operations now accept the same verified native recomp session, including the shared Unlocks buttons and bulk action, editable named Story Progress inventory values, bounded Goemon XYZ and original debug-menu controls, Live Memory right-click edit/freeze, and the Japanese raw-freeze worker. The shared Live Memory **Write raw hex** button now uses `write_japan_raw_bytes(..., expected=...)` for Japan, instead of being disabled as if it were a USA-only feature. Native writes continue to reopen a writable host process, verify the original Japanese retail-ROM signature and mapped 8 MiB RDRAM, and check write readback; USA layouts are not silently reused. On completing native attachment, the toolkit immediately refreshes Unlocks and Story Progress editor state.
+
+**Still intentionally grey in Japan:** USA-specific task-pointer health/God Mode/enemy-pass-through freezes and full native emulator savestates. These features require independently mapped Japanese game objects or emulator support; simply forcing their GUI buttons on would apply the wrong ROM's semantics.
+
+ROM-free Tk button-state and Japanese raw-editor dispatch regression tests have been added as `tests/test_japan_recomp_write_ui.py` to both Linux and Windows test suites. No local Linux native-game write was executed from the GitHub connector. The user should relaunch the updated toolkit to load the corrected UI logic.
+
+## Previous v0.11.20 — corrected Ubuntu dock WM_CLASS
+## v0.11.20 — Linux GNOME cog icon regression
+
+Fixed the desktop/app identity mismatch responsible for the separate generic cog dock icon. Real Tk 8.6/X11 reports `WM_CLASS = "goemonPracticeToolkit", "Goemonpracticetoolkit"` for the previous `Tk(className="GoemonPracticeToolkit")`, but the v0.11.19 desktop launcher declared `StartupWMClass=GoemonPracticeToolkit`. The difference in capitalization means GNOME cannot reliably associate the running window with the installed desktop entry.
+
+The application now starts with `Tk(className="goemon-practice-toolkit")`, whose real X11 `WM_CLASS` instance is **`goemon-practice-toolkit`**, matching both the desktop-file basename and the corrected `StartupWMClass`. Re-running `python3 scripts/install_linux_launcher.py` replaces the previous per-user launcher while preserving the original logo. Close any running toolkit first, launch **Goemon Practice Toolkit** from the Ubuntu application grid and replace an older pinned cog entry. A real Xvfb/Tk/xprop smoke probe verified the new WM_CLASS instance. Live GNOME Shell association on the user's machine remains to be checked; the new X11 identity regression test is included in the Linux test suite.
+
+## Previous v0.11.19 — unified Linux launcher and dock identity
+## v0.11.19 — one launcher, remembered region, Ubuntu dock icon
+
+**Unified startup on Ubuntu:** `bash Run-Linux.sh` or `python -m practice.toolkit` opens the same USA/Japan application. Select the game region in the Dashboard; no `--game-version` option is required. The last selected region is remembered in the user's XDG configuration directory. The Japanese native recomp is the default target when the Dashboard is switched to Japan from auto selection; USA keeps its existing normal discovery. **Write-enabled practice controls remain the default** for both games; the explicit legacy `--read-only` override is preserved for compatibility but is not part of normal launch instructions.
+
+**Real Ubuntu dock logo:** the existing checked-in `assets/goemon_tools_logo.png` is installed as an application icon (not a generated replacement). Run `python scripts/install_linux_launcher.py` from the checkout. It creates `~/.local/share/applications/goemon-practice-toolkit.desktop` and copies the logo into `~/.local/share/icons/` (respecting XDG_DATA_HOME); both point at `Run-Linux.sh` in this checkout. `tk.Tk(className="GoemonPracticeToolkit")` matches the desktop entry's `StartupWMClass`, so GNOME can group and display the correct icon instead of its generic cog. Open from Ubuntu's app grid and pin the application to the dock; old pinned generic/Python entries may need to be unpinned.
+
+**Japanese native recomp:** the user confirmed that the experimental v0.11.18 connection to the running Japanese native recomp works, although process-memory discovery takes noticeable time. There is no claim that gameplay writers/warps or dock integration are independently live tested. Initial Japanese native RAM discovery still scans for verified original-ROM signatures; this release does not bypass or weaken those checks. Additional ROM-free installer/preference tests are in the cross-platform regression scripts.
+
+## Previous v0.11.18 — Japanese native recomp support
+## v0.11.18 — Japan-0 native Linux recomp attachment (experimental)
+
+The shared USA/Japan Python/Tk toolkit now supports **Japan-0 Goemon64Recompiled** in addition to Japanese Mupen64Plus and Windows Project64. Select **Japan — Ganbare Goemon**, verify the original Japanese revision-0 retail ROM, select target **recomp**, and connect to the running Linux native Japanese game PID. Alternatively use **Launch native Linux recomp** to start a user-selected native executable.
+
+The Japanese native reader requires three distinct original-ROM-verified guest code fingerprints, a valid 8 MiB guest RDRAM mapping, process identity and plausible Japanese game state. A USA recomp or copied cartridge buffer must never be interpreted as Japanese gameplay RAM. Native Japanese writes reverify the process and code mapping on fresh writable handles. Existing Japanese field, Story Progress, Unlocks, Live Memory and scene-reload logic is reused, but **live native Japanese gameplay has not yet been tested with this branch**. A native recomp does not support full emulator savestates; preserve separate backup save files before trying memory writes. Run `bash scripts/test_japan_party.sh` for synthetic regression tests.
+
+The toolkit's displayed release is centralized in `practice/version.py`. Update that version, the README heading and PROGRESS.md for each future change. This avoids keeping an obsolete version in the title bar.
+
+## Previous v0.11.17 — Plasma advice conditions
 
 ## Region-aware shared toolkit — 2026-11-15
 
@@ -48,7 +169,7 @@ The value `6` was observed by the user to permit moving through enemies in one t
 
 ## Active development branch and damage-event recorder
 
-Use `chatgptweb/decomp` as the current consolidated integration branch for new toolkit work. The `main` branch is not the newest toolkit baseline. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
+Use `main` as the integrated USA/Japan toolkit baseline after PR #22 (16 November 2026). Work on isolated feature branches and merge only after tests and live acceptance. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
 
 The **Automatic events** tab captures read-only memory samples around health-loss events, ranks transient candidate fields and exports JSON evidence. It is designed to investigate damage immunity and collision handling; candidate addresses are not yet verified collision controls. Recording stops on map, character, pointer or connection changes.
 

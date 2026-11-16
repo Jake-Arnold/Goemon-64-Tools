@@ -43,7 +43,7 @@ class JapaneseFieldsUi:
         ).pack(anchor='w', pady=(0, 8))
         toolbar = ttk.Frame(tab)
         toolbar.pack(fill='x', pady=(0, 6))
-        self.jp_fields_caption = tk.StringVar(value='Connect to Japanese Mupen64Plus RAM.')
+        self.jp_fields_caption = tk.StringVar(value='Connect to Japanese native recomp / Project64 / Mupen64Plus RAM.')
         ttk.Label(toolbar, textvariable=self.jp_fields_caption).pack(side='left')
         ttk.Button(toolbar, text='Copy changes',
                    command=self.copy_japan_changes).pack(side='right', padx=(4, 0))
@@ -318,7 +318,7 @@ class JapaneseFieldsUi:
             and self.jp_rdram is not None
             and getattr(self, 'game_pid', None) is not None
             and getattr(self, 'verified_rom_path', None) is not None
-            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus')
+            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus', 'recomp')
             and getattr(getattr(self, 'connection_target', None),
                         'get', lambda: None)() == self.jp_backend
             and bool(getattr(getattr(self, 'args', None),
@@ -359,7 +359,7 @@ class JapaneseFieldsUi:
             and self.jp_rdram is not None
             and getattr(self, 'game_pid', None) is not None
             and getattr(self, 'verified_rom_path', None) is not None
-            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus')
+            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus', 'recomp')
             and getattr(getattr(self, 'connection_target', None),
                         'get', lambda: None)() == self.jp_backend
             and bool(getattr(getattr(self, 'args', None),
@@ -385,7 +385,7 @@ class JapaneseFieldsUi:
 
     def capture_japan_baseline(self):
         if self.active_version.key != 'japan' or self.jp_rdram is None:
-            self.jp_fields_caption.set('Connect to Japanese emulator before capturing.')
+            self.jp_fields_caption.set('Connect to Japanese game RDRAM before capturing.')
             return
         self._jp_compare_on = False
         self.refresh_japan_fields(force=True)
@@ -414,7 +414,7 @@ class JapaneseFieldsUi:
         names = {field.key: field.label for field in ALL_JAPAN_READS}
         names.update({self._jp_custom_key(w): w.name for w in self.jp_custom_watches})
         lines = [
-            'Japan-0 read-only emulator RAM comparison',
+            'Japan-0 read-only guest RAM comparison',
             f'PID/base/endian: {self._jp_baseline_identity}',
             'Changes are observations, not verified field semantics.',
         ]
@@ -456,7 +456,7 @@ class JapaneseFieldsUi:
         self._jp_baseline_identity = None
         self._jp_compare_on = False
         self._jp_last_changes = ()
-        self.jp_fields_caption.set('Connect to Japanese Project64/Mupen64Plus RAM.')
+        self.jp_fields_caption.set('Connect to Japanese recomp / Project64 / Mupen64Plus RAM.')
         self.jp_position_result.set('Disconnected; XYZ inputs are not a game write.')
         self.jp_debug_result.set('Disconnected; native debug menu not requested.')
         self.refresh_japan_party_controls()

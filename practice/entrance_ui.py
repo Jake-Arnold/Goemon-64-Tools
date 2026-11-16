@@ -5,8 +5,24 @@ from pathlib import Path
 from tkinter import ttk,filedialog
 
 from practice.entrances import extract_atlas,load_atlas,save_atlas,incoming,spawn_from_entry
-from practice.paths import practice_data_dir
+from practice.known_entrances import known_entrances, known_entrance_count
+from practice.launcher_preferences import preferences_path
+from practice.paths import practice_data_dir, resource_root
 from practice.scenes import SCENES,unidentified_scene_name
+
+
+def stored_entrance_atlas_path():
+    """Keep the full numeric coordinate atlas across source checkout changes."""
+    return preferences_path().parent / 'entrance-coordinates.json'
+
+
+def repository_entrance_atlas_path():
+    """Versioned numeric scene/entrance atlas shipped with the toolkit.
+
+    The extraction file is committed only after validated original-USA ROM
+    data has been supplied; it never contains a ROM or executable.
+    """
+    return resource_root() / 'practice' / 'data' / 'entrance-coordinates.json'
 
 
 class EntranceMixin:
@@ -14,12 +30,33 @@ class EntranceMixin:
         self.entrance_atlas=None;self.entrance_load_error=None
         self.entrance_rows=[];self.entrance_destination=None
         self.entrance_loading=False;self.entrance_results=queue.Queue()
-        try:self.entrance_atlas=load_atlas(practice_data_dir()/'entrances.json')
-        except (OSError,ValueError,TypeError,KeyError) as exc:self.entrance_load_error=str(exc)
+        bundled = repository_entrance_atlas_path()
+        durable = stored_entrance_atlas_path()
+        legacy = practice_data_dir() / 'entrances.json'
+        self.entrance_atlas_source = 'none'
+        # Prefer the version-controlled, reviewed numeric table when present.
+        # Fall back to local user data until the full extracted table is
+        # committed. Never mistake a corrupted bundled file for a valid atlas.
+        for candidate in (bundled, durable, legacy):
+            try:
+                atlas=load_atlas(candidate)
+                if atlas is not None:
+                    self.entrance_atlas=atlas
+                    self.entrance_atlas_source = (
+                        'repository' if candidate == bundled else
+                        'persistent user cache' if candidate == durable else
+                        'legacy checkout cache')
+                    if candidate == legacy:
+                        try:save_atlas(durable, atlas)
+                        except OSError:pass
+                    break
+            except (OSError,ValueError,TypeError,KeyError) as exc:
+                self.entrance_load_error=str(exc)
 
     def scene_catalog(self):
         catalog=dict(SCENES)
-        # USA entrance atlas metadata must never leak into the Japan menu.
+        # Keep regional scene names separate; the selected USA entrance
+        # coordinates are nevertheless shared by both native warp paths.
         if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan':
             return catalog
         if self.entrance_atlas:
@@ -41,9 +78,18 @@ class EntranceMixin:
         self.entrance_choice.bind('<<ComboboxSelected>>',lambda _e:self.describe_entrance())
 
     def entrance_summary(self):
+        built_in = known_entrance_count()
         if self.entrance_atlas:
-            p=self.entrance_atlas['payload'];return f'Original USA ROM: {len(p["rooms"])} stages, {len(p["entries"])} entry records. Select a destination and entrance.'
-        return 'Load the original USA ROM once to enable entrance-corrected scene requests.'+(f' Cache error: {self.entrance_load_error}' if self.entrance_load_error else '')
+            p=self.entrance_atlas['payload']
+            source = getattr(self, 'entrance_atlas_source', 'stored cache')
+            return (f'{source} entrance coordinates: {len(p["rooms"])} scenes, '
+                    f'{len(p["entries"])} entrance records, plus {built_in} '
+                    'built-in observed point(s). No ROM needed on startup.')
+        return (f'{built_in} permanent known warp point(s) included. '
+                'For other scenes, load original USA ROM once to store all '
+                'extracted coordinates permanently.'
+                + (f' Cache error: {self.entrance_load_error}'
+                   if self.entrance_load_error else ''))
 
     def load_entrance_rom(self):
         if self.entrance_loading:return
@@ -53,7 +99,7 @@ class EntranceMixin:
         self.entrance_note.set('Reading entrance data from the ROM…')
         def work():
             try:
-                atlas=extract_atlas(Path(path).read_bytes());save_atlas(practice_data_dir()/'entrances.json',atlas)
+                atlas=extract_atlas(Path(path).read_bytes());save_atlas(stored_entrance_atlas_path(),atlas)
                 self.entrance_results.put(('ok',atlas))
             except (OSError,ValueError,TypeError,KeyError) as exc:self.entrance_results.put(('error',str(exc)))
         threading.Thread(target=work,daemon=True).start();self.root.after(60,self.poll_entrance_rom)
@@ -65,6 +111,7 @@ class EntranceMixin:
         self.entrance_loading=False;self.entrance_load_button.state(['!disabled'])
         if kind=='ok':
             self.entrance_atlas=value;self.entrance_load_error=None
+            self.entrance_atlas_source='persistent user cache (new extraction)'
             self.draw_scene_list();self.refresh_entrance_choices()
             self.entrance_note.set(self.entrance_summary())
         else:self.entrance_note.set('Entrance ROM load failed: '+value)
@@ -77,7 +124,12 @@ class EntranceMixin:
         previous=None
         index=self.entrance_choice.current()
         if self.entrance_destination==destination and 0<=index<len(self.entrance_rows):previous=self.entrance_rows[index]['id']
-        self.entrance_destination=destination;self.entrance_rows=incoming(self.entrance_atlas,destination)
+        self.entrance_destination=destination
+        self.entrance_rows=incoming(self.entrance_atlas,destination)
+        if not self.entrance_rows:
+            # The checked-in known XYZ records are available without any ROM.
+            # Never override more complete validated USA-atlas entrance rows.
+            self.entrance_rows=known_entrances(destination)
         values=[]
         catalog=self.scene_catalog()
         for row in self.entrance_rows:
@@ -88,8 +140,16 @@ class EntranceMixin:
         self.entrance_choice.set('')
         chosen_index=next((i for i,e in enumerate(self.entrance_rows) if e['id']==previous),None)
         if chosen_index is None:
-            try:origin=self.mem.u16(0x800C7AB2) if self.mem else None
-            except (OSError,ValueError):origin=None
+            try:
+                if getattr(self.active_version, 'key', 'usa') == 'japan':
+                    reader = getattr(self, 'jp_rdram', None)
+                    origin = (int.from_bytes(
+                        reader.read_guest(0x800CD2A2, 2), 'big')
+                        if reader is not None else None)
+                else:
+                    origin = self.mem.u16(0x800C7AB2) if self.mem else None
+            except (OSError, ValueError, RuntimeError, PermissionError):
+                origin = None
             candidates=[i for i,e in enumerate(self.entrance_rows) if e['source_map']==origin and e['kind']=='exit']
             if not candidates:
                 defaults=[i for i,e in enumerate(self.entrance_rows) if e['kind']=='default']
@@ -97,11 +157,20 @@ class EntranceMixin:
             variants={tuple(self.entrance_rows[i]['position'])+(self.entrance_rows[i]['heading'],self.entrance_rows[i]['mode']) for i in candidates}
             if len(variants)==1:chosen_index=candidates[0]
         if chosen_index is not None:self.entrance_choice.current(chosen_index);self.describe_entrance()
-        elif self.entrance_atlas:self.entrance_note.set(f'{len(values)} entries for this stage. Choose an entrance before reloading.' if values else 'No decoded entrance for this stage. Scene reload is blocked.')
+        else:
+            self.entrance_note.set(
+                f'{len(values)} recorded entrances for this scene; choose one.'
+                if values else
+                'No stored coordinates for this scene. Load original USA ROM '
+                'once to save its entrance records, or select a known scene.')
 
     def selected_scene_spawn(self,destination):
-        if not self.entrance_atlas:raise ValueError('Load original USA ROM entrance data first')
-        if self.entrance_destination!=destination or self.entrance_choice.current()<0:self.refresh_entrance_choices(destination)
+        if self.entrance_destination!=destination or self.entrance_choice.current()<0:
+            self.refresh_entrance_choices(destination)
+        if not self.entrance_rows:
+            raise ValueError(
+                'No known coordinates for this scene. Load original USA ROM '
+                'once to store the full entrance table')
         index=self.entrance_choice.current()
         if not 0<=index<len(self.entrance_rows):raise ValueError('Choose a destination entrance first; no reload sent')
         spawn=spawn_from_entry(self.entrance_rows[index])
@@ -112,7 +181,13 @@ class EntranceMixin:
         index=self.entrance_choice.current()
         if 0<=index<len(self.entrance_rows):
             spawn=spawn_from_entry(self.entrance_rows[index])
-            self.entrance_note.set(f'{spawn.label}; XYZ {tuple(spawn.position)}. Coordinates are staged before reload and checked on the loaded player.')
+            evidence=(' Heading/mode are experimental for this observed point.'
+                      if self.entrance_rows[index].get('heading_mode_verified') is False
+                      else '')
+            self.entrance_note.set(
+                f'{spawn.label}; XYZ {tuple(spawn.position)}. '
+                'Staged before reload and verified against the loaded player.'
+                + evidence)
 
     def cancel_scene_request(self):
         self.pending_direct_warp=None;self.pending_native_warp=None

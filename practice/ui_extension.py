@@ -203,6 +203,11 @@ class InspectorMixin(EntranceMixin):
             command=self.try_reload_warp,style='Gold.TButton')
         self.experimental_warp_btn.pack(fill='x',pady=4)
         if not self.args.enable_hex_edit:self.experimental_warp_btn.state(['disabled'])
+        self.jp_capture_spawn_btn = ttk.Button(
+            scenes, text="Record CURRENT loaded Japanese room XYZ (not selected scene)",
+            command=self.capture_japan_warp_spawn)
+        self.jp_capture_spawn_btn.pack(fill='x', pady=(0, 4))
+        self.jp_capture_spawn_btn.state(['disabled'])
         ttk.Label(scenes,textvariable=self.scene_status,wraplength=950).pack(anchor='w',pady=8)
         self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.enter_debug_menu)
         self.native_debug_btn.pack(fill='x',pady=5)
@@ -217,6 +222,10 @@ class InspectorMixin(EntranceMixin):
         """One browser with two explicit, separately validated warp backends."""
         japan = self.active_version.key == 'japan'
         if japan:
+            self.jp_capture_spawn_btn.pack_forget()  # Shared USA entrance selector supersedes separate JP capture
+            self.jp_capture_spawn_btn.state(
+                ['!disabled'] if self.jp_rdram is not None
+                and not self._connecting else ['disabled'])
             self.scene_instruction.configure(
                 text='JAPAN: single-click selects; double-click immediately '
                      'requests the selected room using the same 0x0C area '
@@ -227,13 +236,17 @@ class InspectorMixin(EntranceMixin):
             self.scene_character.current(0)
             self.scene_character_line.pack(fill='x', pady=4,
                                            after=self.scene_instruction)
-            self.entrance_box.pack_forget()
+            # The same USA entrance dropdown, selected row and coordinates
+            # are required for both native regional scene-reload backends.
+            self.entrance_box.pack(
+                fill='x', pady=4, after=self.scene_character_line)
             self.scene_transition_note.configure(
-                text='Japan-0: stage the pending destination at '
-                     '0x800CD490, then request native area reload 0x0C at '
-                     '0x800CD284. No input injection; verify loaded scene.')
+                text='USA and Japan use the SAME selected original-USA ROM '
+                     'entrance XYZ, heading and mode. Japan stages the 12-byte '
+                     'entry before 0x0C and verifies/places Goemon XYZ after '
+                     'the destination finishes loading.')
             self.experimental_warp_btn.configure(
-                text='Warp to selected Japanese scene')
+                text='Warp Japan to selected USA entrance XYZ')
             self.native_debug_btn.configure(
                 text='Open ORIGINAL debug menu (manual only)')
             enabled = bool(
@@ -241,10 +254,12 @@ class InspectorMixin(EntranceMixin):
                  or getattr(self.args, 'enable_japan_debug_menu_writes', False))
                 and not getattr(self.args, 'read_only', False))
             self.scene_footer_note.configure(
-                text='Scene Browser instantly triggers Japan-0 native reload '
-                     '(0x0C). If cached USA reference entrance data exists, '
-                     'use it when unambiguous. No active-map or exit-bit writes.')
+                text='Japan/USA: choose the same destination and entrance '
+                     'in the shared dropdown. Original USA entrance data '
+                     'must be loaded; unknown/ambiguous entrance selections '
+                     'block the warp instead of sending scene-only writes.')
         else:
+            self.jp_capture_spawn_btn.pack_forget()
             self.scene_instruction.configure(
                 text='USA: single-click selects; double-click uses the '
                      'selected entrance reload. Manual debug menu is separate.')
@@ -278,7 +293,8 @@ class InspectorMixin(EntranceMixin):
             ['!disabled'] if manual else ['disabled'])
         self.draw_scene_list()
         self.scene_status.set(
-            'Japan-0: select a room and double-click for a native warp.'
+            'Japan-0: select a room and original-USA entrance; double-click '
+            'for the same coordinates as the USA native warp.'
             if japan else 'USA: select a room and double-click for '
                           'the experimental entrance reload.')
 
@@ -385,7 +401,7 @@ class InspectorMixin(EntranceMixin):
             watch.addr is not None
             and not getattr(self.args, 'read_only', False)
             and (self.jp_rdram is not None
-                 and self.jp_backend in ('project64', 'mupen64plus')
+                 and self.jp_backend in ('project64', 'mupen64plus', 'recomp')
                  and self.connection_target.get() == self.jp_backend
                  if self.active_version.key == 'japan'
                  else self.mem is not None))
@@ -475,14 +491,11 @@ class InspectorMixin(EntranceMixin):
             self.inspector_status.set(f'Rename failed: {exc}')
 
     def write_raw_hex(self):
-        """Write explicitly entered guest bytes on a writable USA connection."""
-        if self.active_version.key == 'japan':
-            self.inspector_status.set(
-                'Japanese raw writes require a verified region-specific control; '
-                'generic USA raw editor is disabled.')
-            return
-        if not self.mem:
-            self.inspector_status.set('Connect to the game first.')
+        """Write explicitly entered guest bytes using the active regional backend."""
+        japan = self.active_version.key == 'japan'
+        ram = self.jp_rdram if japan else self.mem
+        if ram is None:
+            self.inspector_status.set('Connect to the game before writing.')
             return
         if getattr(self.args,'read_only',False) or not getattr(self.args,'enable_hex_edit',False):
             self.inspector_status.set('Memory writes are disabled in read-only mode.')
@@ -491,8 +504,12 @@ class InspectorMixin(EntranceMixin):
             addr=int(self.raw_address.get().strip(),16)
             width=int(self.raw_width.get())
             new=parse_hex(self.raw_value.get(),width)
-            before=self.mem.read_guest(addr,width)
-            changed=checked_write(self.mem,addr,before,new,allow_advanced=True,raw_override=True)
+            before=ram.read_guest(addr,width)
+            if japan:
+                # Use the Japanese PID/ROM-validated writer, never USA policies.
+                changed=self.write_japan_raw_bytes(addr,new,expected=before)
+            else:
+                changed=checked_write(self.mem,addr,before,new,allow_advanced=True,raw_override=True)
             self.append_event(f'RAW USER WRITE 0x{addr:08X}: 0x{before.hex().upper()} -> 0x{new.hex().upper()}')
             self.inspector_status.set(f'Raw write verified at 0x{addr:08X}: 0x{new.hex().upper()}'+('' if changed else ' (unchanged)'))
             self.last_inspect_at=0.0
@@ -1301,9 +1318,11 @@ class InspectorMixin(EntranceMixin):
         mid,name=self.scene_options[chosen[0]]
         self.scene_selected=mid
         if self.active_version.key == 'japan':
+            self.refresh_entrance_choices(mid)
             try:
                 self.scene_status.set(
                     f'Japan-0 selected 0x{mid:03X} {name}. '
+                    'Choose the SAME original-USA entrance and XYZ as USA. '
                     'Double-click for immediate 0x0C area reload; '
                     'no debug menu or N64 A key required.')
                 self.show_japan_debug_target()
