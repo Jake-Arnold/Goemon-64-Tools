@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — 323-C combined native G2 and 7,376-entry inventory PASS in reconstructed local scratch
+
+- Changed: recorded independently executed combined native G2 and original-ELF inventory evidence for PR #41, with complete current-repo CI explicitly marked **pending**. No production manifest or canonical result changed.
+- Why: prior eight-C scratch matched by itself, but did not prove that all 323 C functions coexisted in one original ROM. This run compiled the previous 315 and eight new callbacks together in a disposable pinned-upstream candidate.
+- Tested: **323/323 original-address C functions**, **17,012 matching instruction bytes**, **exact 33,554,432-byte USA ROM** SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; `file_11` 160 matching C / 4,628 bytes, **90** exact native chunks and **8,825/8,825** relocation tuples; entire original ELF inventory **7,376** identities, **336** total unmarked, **7,040** ASM remaining, **0** extra aliases. 95/95 original canonical 315 report source SHA-256 hashes identical, one new C source. Host C sanitizer passed 1,000 synthetic cases.
+- Limitation: current PR checkout not present in the filesystem; restored old archived toolkit omitted historical stages and source/published-report hashes. Local full ROM-free CI ran **267** tests with two fingerprint failures and five missing historical adapter/fixture errors. The reconstructed native verifier is not the exact official current PR verifier, so this is draft evidence, not full PR CI acceptance.
+- Next: run current-branch full `decomp.local_ci` and complete opt-in `review_file11_143 --candidate-file11-160` without altering the source tree. Promote to canonical 323 only after all official acceptance checks pass.
+
+
 ### 2026-11-16 — PR #41 160-file11 adapter uniqueness gate corrected
 
 - Changed: fixed the 160-stage `source_payloads` duplicate-source guard: the 160-function layout has **50** unique C objects, not the earlier 49. The old test would always reject a valid 323-function trial before the native build, despite the matching `len(result)==50` check.
