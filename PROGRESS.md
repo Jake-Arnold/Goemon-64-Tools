@@ -2,6 +2,16 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.28 repair eight failing JP mock tests and GNOME X11 smoke test
+
+- **Observed Ubuntu run:** The user executed `bash scripts/test_japan_party.sh` after moving the toolkit checkout to `main`; 264 tests ran, with exactly **8 errors** and **1 failure**. The error messages and separate `Goemon64RecompiledJP` native crash log are preserved in `docs/UBUNTU_TEST_FAILURES_2026-11-16.md`.
+- **Root cause of 8 errors:** `tests.test_japan_party_controller` (3 failures) and `tests.test_japan_live_memory_edit` (5 subtest/errors) called class methods on stale synthetic `SimpleNamespace` screens that omitted `_japan_writable_reader`. The production helper is present on real Toolkit; tests were out of sync with the newer native-writer code.
+- **Fix:** `tests/test_japan_party_controller.py` binds the **actual** `Toolkit._japan_writable_reader` to its test screen. `tests/test_japan_live_memory_edit.py` reuses the same fixture instead of duplicating an incomplete screen definition. Added native recomp fixture regression to ensure PID/verified ROM probes and `validate_japan_recomp_writer` are still exercised through the actual implementation. No production write semantics, ROM verification or memory address paths were changed.
+- **X11 failure and fix:** `tests.test_linux_launcher` used `xprop -name` which returned GNOME's `mutter-x11-frames` instead of the Tk toolkit client. The test now assigns a unique per-process Tk title, enumerates X11 client windows via `xwininfo -root -tree` and reads WM_CLASS by **matched native X window ID**. A standalone equivalent selector successfully located `WM_CLASS(STRING) = "goemon-practice-toolkit", "Goemon-practice-toolkit"` under local Xvfb. **The user's Ubuntu regression suite has not yet been rerun.**
+- **Independent issue:** The separate `~/Goemon64Recomp-JP` game executable intermittently SIGSEGVs after native heap initialization. `Failed to preload executable!` appeared also in non-crashing launches. The log supplies no symbolized native stack trace or local game branch/commit, so the crash root cause remains unknown. This change is *not* represented as a fix for the game executable.
+- **Release:** `practice/version.py` incremented to **v0.11.28**, README updated and this detailed report committed on short-lived `toolkit/fix-japan-test-fixtures-and-x11-smoke` derived from `main`.
+- **Next verification:** Re-run `bash scripts/test_japan_party.sh` (expected previous 9 failures removed), retest GNOME app icon grouping, and analyze a real native JP core via gdb before attempting any C++ gameplay fix. No GitHub CI status or complete on-device tests have been obtained during this patch.
+
 ## 2026-11-16 — agent-facing branch instructions aligned with main/decomp workflow
 
 - **Reason:** Future coding agents were not guaranteed to consult the detailed policy; root `AGENTS.md` also contained stale v0.9.9 instructions, potentially causing changes on the wrong historic branch.
