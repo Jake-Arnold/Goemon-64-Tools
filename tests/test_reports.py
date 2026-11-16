@@ -11,6 +11,54 @@ from practice import reports
 
 
 class ReportTests(unittest.TestCase):
+    def test_four_discovery_methods_share_report_schema_and_complete_evidence(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp) / 'Reports'
+            candidates = [
+                {'address': '0x80161DF9', 'mask': '20',
+                 'support': ['trial1', 'trial2'], 'region': 'jp_candidate'},
+                {'address': '0x80161DDA', 'mask': '01',
+                 'support': ['trial3'], 'region': 'jp_candidate'},
+            ]
+            for kind in reports.DISCOVERY_KINDS:
+                with self.subTest(kind=kind):
+                    folder = reports.create_discovery_report(
+                        region='japan', title='Sasuke - test',
+                        kind=kind, candidates=candidates,
+                        candidate_total=5,
+                        metadata={'backend': 'recomp', 'trials': 3},
+                        evidence={'trial_captures': [
+                            {'A': {'bytes_hex': '0000'}, 'B': {'bytes_hex': '0020'}}
+                        ]},
+                        notes=['Two of five candidate rows retained by source analyzer'],
+                        root=root)
+                    files = {item.name for item in folder.iterdir()}
+                    self.assertEqual(files, {
+                        'summary.md', 'candidates.csv', 'session.json',
+                        'manifest.json'})
+                    manifest = json.loads((folder / 'manifest.json').read_text())
+                    session = json.loads((folder / 'session.json').read_text())
+                    self.assertEqual(manifest['kind'], kind)
+                    self.assertEqual(manifest['candidate_total'], 5)
+                    self.assertTrue(manifest['candidate_truncated'])
+                    self.assertEqual(len(session['candidates']), 2)
+                    self.assertEqual(session['evidence']['trial_captures'][0]['B']
+                                     ['bytes_hex'], '0020')
+                    self.assertIn('Coverage limitation',
+                                  (folder / 'summary.md').read_text())
+                    self.assertEqual(folder.parent.name, 'Sasuke - test')
+            items = reports.list_reports(root=root, legacy_dir=root / 'missing')
+            self.assertEqual(len(items), 4)
+
+    def test_shared_report_never_claims_original_instruction_tracing(self):
+        with TemporaryDirectory() as tmp:
+            folder = reports.create_discovery_report(
+                region='usa', title='Evidence only', kind='memory-comparison',
+                candidates=[], evidence={'contexts': []}, root=tmp)
+            manifest = json.loads((folder / 'manifest.json').read_text())
+            self.assertFalse(manifest['instruction_access_tracing'])
+            self.assertIn('not original MIPS', (folder / 'summary.md').read_text())
+
     def test_safe_names_and_platform_documents(self):
         self.assertEqual(reports.safe_slug("Sasuke: Position? / JP"),
                          "sasuke-position-jp")
