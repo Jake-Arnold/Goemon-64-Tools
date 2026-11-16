@@ -196,11 +196,20 @@ class EventSessionsMixin:
     def _event_connection(self):
         if self.active_version.key == 'japan':
             ram=self.jp_rdram
-            if ram is None or not self.game_pid or not self.jp_backend:
-                raise ValueError('Connect to Japanese emulator RAM first')
+            if ram is None:
+                raise ValueError('No Japanese RAM reader attached. Connect from Dashboard.')
+            if not self.game_pid:
+                raise ValueError('Japanese RAM is attached but PID identity is missing. Reconnect from Dashboard.')
+            if not self.jp_backend:
+                raise ValueError('Japanese RAM is attached but its backend is unknown. Reconnect from Dashboard.')
+            if self.connection_target.get() not in ('auto', self.jp_backend):
+                raise ValueError('The selected backend differs from the attached Japanese game. Reconnect or choose auto.')
             return ((self.game_pid,'japan',id(ram),ram.base,ram.endian),
                     self.jp_backend)
-        if not self.mem or not self.game_pid:raise ValueError('Connect to a game first')
+        if not self.mem:
+            raise ValueError('No USA game memory attached. Connect from Dashboard.')
+        if not self.game_pid:
+            raise ValueError('USA game RAM is attached but PID identity is missing. Reconnect from Dashboard.')
         import psutil
         name=psutil.Process(self.game_pid).name().lower()
         backend='project64' if name=='project64.exe' else ('recomp' if 'goemon64recomp' in name else None)
