@@ -2,9 +2,9 @@
 
 ### 2026-11-16 — Read-only USA file_12 spatial entity lifecycle research (separate branch)
 
-- Changed: added source-only report \`docs/USA_FILE12_ENTITY_SPATIAL_LIFECYCLE_2026-11-16.md\`, original-ROM instruction anchor verifier \`decomp/file12_spatial_probe.py\`, and four ROM-free synthetic tests. No changes to game memory, emulator, original ROM, manifest, production C or prior proof metadata.
-- Reason: user captured NPCs loading on approach, not loading on departure, reloading on return, and confirmed the placement active byte changing 01→00 when the release instruction executed. New static trace links 3D neighborhood cell scanning \`0x8020D36C\`, actor initialization \`0x80218A54\`, actor update \`0x80218E7C\`, and conditional release \`0x8021A328\`.
-- Original ROM verification: authenticated USA retail 16 MiB SHA-1 \`df8083a54296b8c151917c5333e1c85f014a2a66\`; independently decompressed original 32 MiB SHA-1 \`6ea0ed71032ce08fc2745f412d84936382197494\`; 38/38 opcode/call-site anchors PASS, four synthetic Python tests PASS.
+- Changed: added source-only report `docs/USA_FILE12_ENTITY_SPATIAL_LIFECYCLE_2026-11-16.md`, original-ROM instruction anchor verifier `decomp/file12_spatial_probe.py`, and four ROM-free synthetic tests. No changes to game memory, emulator, original ROM, manifest, production C or prior proof metadata.
+- Reason: user captured NPCs loading on approach, not loading on departure, reloading on return, and confirmed the placement active byte changing 01→00 when the release instruction executed. New static trace links 3D neighborhood cell scanning `0x8020D36C`, actor initialization `0x80218A54`, actor update `0x80218E7C`, and conditional release `0x8021A328`.
+- Original ROM verification: authenticated USA retail 16 MiB SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`; independently decompressed original 32 MiB SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; 38/38 opcode/call-site anchors PASS, four synthetic Python tests PASS.
 - Limitations: Original MIPS code and user runtime screenshots only; no new original-IDO C compile, native candidate link, full G2, independent emulator run, generic heap-free proof or JP ROM claim. The active 315-C USA canonical gate remains unchanged.
 - Next: trace stream-out state-2 reclamation and grid-cell ownership, inspect alternate initializer call sites, then consider bounded matching-C reconstruction with original-ROM/G2 and ELF/relocation acceptance.
 
