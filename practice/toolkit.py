@@ -49,8 +49,9 @@ from practice.japan_direct_scene_reload import (
 )
 from practice.japan_warp_spawns import (
     load_japan_spawns, save_japan_spawn, capture_current_japan_spawn,
-    destination_spawn, position_difference,
+    position_difference,
 )
+from practice.japan_spawn_placement import place_japan_spawn_once
 from practice.scenes import SCENES
 from practice.emulator_savestates import find_emulator_pid, verified_emulator_pid, send_state_command
 from practice.japanese_mupen_attach import (
@@ -982,14 +983,14 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.status.set(message)
 
     def _japan_reference_entrance(self, destination, source):
-        """Use only Japan-captured XYZ or the observed Oedo South preset.
+        """Resolve the exact same selected USA entrance as the USA warp path.
 
-        The old code read self.entrance_atlas, which was NEVER initialized.
-        As a result the loader always received just a 2-byte map ID. It is
-        also incorrect to silently treat a USA ROM entrance atlas as JP data.
+        Both regions share EntranceMixin's cached original-USA atlas, source-
+        map/default prioritization, explicit entrance chooser, XYZ/heading/mode
+        and Spawn.pending_bytes encoding. No Japan-specific fallback overrides
+        the user's selected original USA entrance.
         """
-        return destination_spawn(
-            getattr(self, 'jp_warp_spawns', {}), destination)
+        return self.selected_scene_spawn(destination)
 
     def capture_japan_warp_spawn(self):
         """Record the current Japanese Goemon position for future room reloads.
@@ -1070,18 +1071,14 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'character': context[2], 'pid': self.game_pid,
                 'reader': reader, 'started': now, 'deadline': now + 18,
                 'seen_reload': outcome.state_after_write == JAPAN_DIRECT_RELOAD_MODE,
-                'stable': 0, 'spawn': spawn,
+                'stable': 0, 'spawn': spawn, 'placement_attempted': False,
                 'target_character': target_character,
             }
             entrance_note = (
-                f' Japanese warp XYZ {tuple(round(v, 2) for v in spawn.position)} '
-                f'({spawn.entrance_id}) staged in a 12-byte entry block; '
-                'native spawn handling is still experimental.'
-                if spawn is not None else
-                ' NO JAPANESE WARP XYZ KNOWN: only a 2-byte scene ID was '
-                'staged. Coordinates are NOT set and footing is unverified. '
-                'Visit the room normally and capture its Japanese position '
-                'before expecting a correctly positioned warp.')
+                f' Shared USA entrance {spawn.entrance_id}, '
+                f'XYZ {tuple(round(v, 2) for v in spawn.position)}, '
+                f'heading 0x{spawn.heading:X}, mode 0x{spawn.mode:X} '
+                'staged in the same native 12-byte entry block as USA.')
             message = (
                 f'Japan instant reload 0x{context[1]:03X} → '
                 f'0x{destination:03X}: pending destination written, '
@@ -1111,7 +1108,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 or self.jp_backend not in ('project64', 'recomp')
                 or self._connecting):
             self._finish_japan_native_warp(
-                'Japan scene reload cancelled: emulator session changed')
+                'Japan scene reload cancelled: game session changed')
             return
         if now > pending['deadline']:
             self._finish_japan_native_warp(
@@ -1138,38 +1135,59 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                     return
                 pending['stable'] += 1
                 if pending['stable'] >= 3:
+                    # USA performs a one-shot destination placement after
+                    # loading: stage-first is not sufficient if the engine
+                    # overwrites the entrance bytes while rebuilding actors.
+                    # Reuse the same selected USA Spawn for Japan/Goemon.
+                    spawn = pending['spawn']
+                    observed_character = int.from_bytes(
+                        self.jp_rdram.read_guest(JAPAN_DEBUG_CHARACTER, 4), 'big')
+                    if (observed_character != 0
+                            or (pending['target_character'] is not None
+                                and pending['target_character'] != 0)):
+                        self._finish_japan_native_warp(
+                            f'Japan scene 0x{pending["destination"]:03X} loaded; '
+                            f'selected USA entrance XYZ {spawn.position} staged, '
+                            f'but character {observed_character} is not Goemon. '
+                            'Post-load XYZ write blocked until the Japanese '
+                            'character position address is verified.')
+                        return
                     actual = read_japan_position(self.jp_rdram)
-                    xyz_text = '(' + ', '.join(f'{v:.1f}' for v in actual) + ')'
-                    intended = pending['spawn']
-                    if intended is None:
+                    difference = position_difference(spawn.position, actual)
+                    if difference > 8:
+                        # Never write the same destination twice. Failure is
+                        # reported and cannot trigger automatic retries.
+                        pending['placement_attempted'] = True
+                        expected_before = self.jp_rdram.read_guest(
+                            JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE)
+                        handle, writer = self._japan_native_warp_writer()
+                        try:
+                            if not is_japan_scene_loaded(
+                                    writer, pending['destination']):
+                                raise RuntimeError(
+                                    'Destination became unstable before placement')
+                            actual = place_japan_spawn_once(
+                                writer, spawn, expected_before=expected_before)
+                        finally:
+                            handle.close()
+                    final_xyz = read_japan_position(self.jp_rdram)
+                    distance = position_difference(spawn.position, final_xyz)
+                    target_xyz = '(' + ', '.join(
+                        f'{v:.1f}' for v in spawn.position) + ')'
+                    observed_xyz = '(' + ', '.join(
+                        f'{v:.1f}' for v in final_xyz) + ')'
+                    if distance > 8:
                         verdict = (
-                            'SCENE LOADED; NO DESTINATION XYZ WAS STAGED. '
-                            f'Observed position {xyz_text} is not verified '
-                            'against any entrance. Capture a Japanese warp '
-                            'point in this scene before relying on its spawn.')
+                            'SPAWN MISMATCH: requested USA entrance '
+                            f'{target_xyz}; actual JP XYZ {observed_xyz}; '
+                            f'distance {distance:.1f} units. No retry sent.')
                     else:
-                        delta = position_difference(intended.position, actual)
-                        target_xyz = '(' + ', '.join(
-                            f'{v:.1f}' for v in intended.position) + ')'
-                        if delta > 16:
-                            verdict = (
-                                'SCENE LOADED, SPAWN MISMATCH: '
-                                f'requested {target_xyz}, observed {xyz_text}, '
-                                f'3D displacement {delta:.1f} units. '
-                                'The game did not preserve the staged spawn.')
-                        else:
-                            verdict = (
-                                f'SCENE LOADED near requested XYZ {target_xyz}: '
-                                f'observed {xyz_text} (delta {delta:.1f} units). '
-                                'Collision/footing still needs in-game verification.')
-                    if pending['target_character'] is not None:
-                        character = int.from_bytes(
-                            self.jp_rdram.read_guest(JAPAN_DEBUG_CHARACTER, 4),
-                            'big')
-                        if character != pending['target_character']:
-                            verdict += (
-                                f' Requested character {pending["target_character"]}, '
-                                f'but live character is {character}.')
+                        verdict = (
+                            f'USA entrance {spawn.entrance_id}: requested '
+                            f'{target_xyz}; JP actual {observed_xyz} '
+                            f'(distance {distance:.1f}). '
+                            'Post-load Goemon XYZ verified; collision, '
+                            'camera and footing still require live testing.')
                     self._finish_japan_native_warp(
                         f'Japan 0x{pending["destination"]:03X} '
                         f'{SCENES[pending["destination"]]}: {verdict}')
