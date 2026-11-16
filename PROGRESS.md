@@ -1,3 +1,20 @@
+# Goemon 64 Tools — Development Progress
+
+### 2026-11-16 — Rebase draft consolidation on completed file_11 research-only merge
+
+- **Merged:** PR #31 placed 37 immutable, passive USA `file_11` research fixtures, proof files and reports onto `chatgptweb/decomp` via squash commit `1fe5499400d27b39f5d459c9952586d3fe9d3fdd`. No canonical production verifier, manifest, overlay adapter or accepted proof was changed; official USA matching C remains **210 / 13,336 bytes**.
+- **Reconciliation:** Incorporated that exact base commit as a second parent into draft PR #26's integration branch, retaining the independent JP 24-function build scripts and remaining opt-in tests. Resolved the concurrent root PROGRESS update and corrected its former misplaced top-level title.
+- **Tests and limits:** Native 32 MiB USA original baseline, independent Japan 24 C exact 32/16 MiB and original-ELF 211 identity audit were previously reproduced. No full consolidated `decomp.local_ci`, unchanged strict Japanese build verifier or combined USA production `decomp.verify`/inventory was run by this Git reconciliation. PR #26 stays draft and all research branches stay independent.
+
+### 2026-11-16 — Merge-ready file_11 research source/proof handoff (no production promotions)
+
+- **Change:** Snapshot 37 new source-only USA `file_11` research files from `chatgptweb/decomp-consolidation-20261116` (pinned commit `1e66db5b8413f3847bbe738c8e2dcc861fa79699`). Includes original-VMA candidate source fixtures, the 143-function mixed C/ASM reproduction script and research proof, 18 independently parsed JSON metadata/proof files, and 10 research documentation files. These are inert without explicitly running the research tools; no existing canonical source, manifest, verifier, local CI entrypoint, build output or production result is modified.
+- **Reason:** Make the documented, independently investigated 207-function USA research pool and the alternate 54-function scratch results available to the main decomp work without waiting for a speculative 210+211 production G2 or counting duplicate research functions.
+- **Checks:** Before snapshot, reviewed the private GitHub diff: exactly 37 new files, all existing production verification paths unchanged. Parsed all 18 JSON files successfully, checked the 143-function fixture spans 44 C + 44 ASM chunks without overlapping ROM offsets or symbol names, and verified 211/211 candidate original FUNC address/size identities against the original upstream USA ELF. Confirmed existing isolated original USA 32 MiB rebuild SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. These are research/import checks, **not** an executed full `decomp.local_ci` or updated central USA matching-C build.
+- **Limits:** No original-ROM central 210+93 or 210+211 combined production gate has passed. Exact identification of the 16 range-described Wave-101 functions still needs original source-archive confirmation. USA canonical matching C remains **210 functions / 13,336 bytes**; the approximately 211 research functions remain unpromoted. This snapshot also does not merge Japanese build/test files or older Impact candidates.
+- **Next:** Run full `decomp.local_ci` and the original-ROM central `decomp.verify`/`decomp.inventory` on the consolidation integration branch; promote native-exact C islands in a separate gated PR. Keep research branches independent.
+
+
 ### 2026-11-16 — Draft decomp consolidation: stage Japan 24-C beside verified USA 210-C; repair 24-C runner
 
 - **Isolated integration:** Draft PR #26, `chatgptweb/decomp-consolidation-20261116`, snapshots 121 JP-only source/build/test/proof/documentation paths from `chatgptweb/japanese-decomp-port` commit `ed4c0e3ad2a96d6c2e033da0351ed43f58b9b203`. Existing `chatgptweb/decomp` USA canonical 210-function manifest, G2 and inventory have not been modified; original research branches remain independent and active.
@@ -5,8 +22,6 @@
 - **Actual independent local checks:** User-supplied USA and Japanese retail ROM SHA-1 hashes match their pinned references; upstream `mnsg` checkout is `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`; portable Python 3.12 packages and MIPS linker load. Original Japanese Rommy decompression reproduces exact 32 MiB SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`. Reconstructed the reviewed 24-C Splat segment substitutions against that pinned source and ran Splat extraction successfully: 189 original C entries converted to ASM, 20 JP C source stubs generated, and 54 main assembly slices written. Independent connected-repo structural checks found 24 unique JP function ROM offsets / 1,604 bytes / 20 C units, with stage/install/layout/verifier and new guard-test references correct.
 - **Limits:** The standalone container does not include the complete private `Goemon-64-Tools` checkout, so the newly committed unittest, full `decomp.local_ci`, integrated USA 210-C G2, and native JP 24-C build/ELF/retail-recompression **were not executed**. This is a staged integration with partial layout verification, **not** a newly accepted combined build. Do not adjust the official matching-C count or merge draft PR #26 until both full verification gates pass.
 - **Next:** Execute the new ROM-free test and full test suite with the actual consolidation checkout; run both independent original-ROM and ELF verifier/inventory gates, repair any integration-specific failures, then deduplicate PR #24/PR #23 USA `file_11` research before staged promotion.
-
-# Goemon 64 Tools — Development Progress
 
 ### 2026-11-16 — Independent 211/211 original-USA ELF function identity audit
 

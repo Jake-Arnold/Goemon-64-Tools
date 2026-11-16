@@ -92,3 +92,10 @@ adding function counts. Never merge a research-only proof into the official func
 - Added optional `GOEMON_PINNED_BASELINE_ELF` regression to `decomp/test_file11_crossbranch_dedup.py`, allowing repeatable independent original-symbol auditing on Ubuntu when the private pinned ELF is available. Normal ROM-free CI skips this additional native-input check.
 - This is **original function identity verification only**, not native compilation of all 211 C candidates and not current central 210+211 `decomp.verify`/inventory promotion. Official USA count remains 210. Updated `decomp/results/file11_crossbranch_overlap_v2_20261116.json`.
 
+
+## 2026-11-16: PR #31 research-only merge completed
+
+- `chatgptweb/decomp` now includes 37 previously staged USA `file_11` research files through merged PR #31 (base SHA `1fe5499400d27b39f5d459c9952586d3fe9d3fdd`). No production matching-C claims changed.
+- Draft PR #26 was reconciled via a two-parent merge commit, preserving Japanese staging, its 24-C source and verifier fixes, and the remaining ROM-free acceptance tests, while keeping research file content unchanged.
+- The root PROGRESS title was normalised to a single document heading. No native build or full local CI ran during this reconciliation. Outstanding production acceptance gates remain listed above.
+
