@@ -1,0 +1,58 @@
+{
+  "format": "goemon-usa-file11-160-native-split-preflight-v1",
+  "date": "2026-11-16",
+  "status": "NATIVE_SPLIT_SCRATCH_VERIFIED_NOT_CENTRAL",
+  "current_production_c": 315,
+  "current_production_c_bytes": 16660,
+  "projected_c_if_combined_verified": 323,
+  "projected_c_bytes_if_combined_verified": 17012,
+  "original_usa_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_usa_rom_length": 33554432,
+  "new_function_count": 8,
+  "new_function_bytes": 352,
+  "exact_source_sha256": "7919d61ac0453f342629d51186b1ddf16f3716f527b411c93716815941122d60",
+  "original_source_span_sha256": "b1fbaa8f74fec1f63e9f3cf2d0647daf26fd008a135cba0f767e5958113dcff1",
+  "original_rom_equal_after_five_split": true,
+  "relocation_counts": {
+    "original": 8825,
+    "candidate": 8825,
+    "multiset_equal": true
+  },
+  "named_positive_sized_func_symbols": {
+    "original": 7098,
+    "candidate": 7098,
+    "names_vmas_sizes_identical": true
+  },
+  "segment_split": [
+    {
+      "start": "0x5A63F8",
+      "end": "0x5A6F30",
+      "kind": "asm",
+      "bytes": 2872,
+      "obj_sha256": "303190ce2546616637d48cf01334ce628f05721c1042117f24813634fdd80ec3"
+    },
+    {
+      "start": "0x5A6F30",
+      "end": "0x5A7090",
+      "kind": "c",
+      "bytes": 352,
+      "obj_sha256": "c79a3a252f4b78ce0e5188a8406842e532ed3a9d4b44ad98f0314eee8c475ca1"
+    },
+    {
+      "start": "0x5A7090",
+      "end": "0x5A74CC",
+      "kind": "asm",
+      "bytes": 1084,
+      "obj_sha256": "8942a6c4c238623fa6be9ff168f557d924814d377ab54427f01dd3b891a5e960"
+    }
+  ],
+  "untouched_canonical_files": [
+    "decomp/manifest.json",
+    "decomp/results/combined.json",
+    "decomp/results/inventory.json"
+  ],
+  "combined_323_central_g2_performed": false,
+  "original_7376_inventory_performed": false,
+  "full_local_ci_performed": false,
+  "acceptance_condition": "323-C decomp.verify plus original-ELF inventory of 7376 plus full local CI"
+}

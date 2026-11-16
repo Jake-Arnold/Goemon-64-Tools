@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Opt-in USA 323-C integration added after exact five-split native scratch
+
+- Changed: on PR #41's independent branch, added a versioned 160-C file_11 layout fixture and fail-closed adapter, wired optional 160-stage dispatch into the central verifier, extended the review runner with explicit `--candidate-file11-160`, and added ROM-free regression tests. No production manifest, results/combined.json or inventory.json modifications.
+- Why: the next eight original-address C callbacks at `0x5A6F30–0x5A7090` must be combined with the existing 315 C claims, without losing the surrounding original assembly or prematurely adding verified function counts.
+- Tested: pinned upstream native scratch rebuilt after exact five-way ASM/C/ASM split and zero-only object-tail trimming; complete **33,554,432-byte USA ROM exact**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, original/candidate file_11 relocation multiset **8,825/8,825** identical and **7,098/7,098** named positive-sized ELF FUNC symbols identical. New adapter's source/object hashes derived from that build. Full combined 323-C `decomp.verify`, 7,376-entry original `decomp.inventory`, full `decomp.local_ci`, and live gameplay were NOT run in this session.
+- Remaining: a complete filesystem checkout of the up-to-date private decomp branch is needed to run the opt-in combined 323-C central gate. PR stays draft until those native and ROM-free acceptance checks pass.
+- Next: run `python3 -m decomp.review_file11_143 --candidate-file11-160` using pinned upstream + retail ROM + full decomp checkout; promote only after its full G2/inventory/CI acceptance bundle succeeds.
+
+
 ### 2026-11-16 — Next eight USA file_11 callbacks: independent exact native scratch, not canonical promotion
 
 - Changed: on isolated branch `chatgptweb/decomp-file11-next8-scratch-20261116`, added the authentic native C source for eight adjacent 44-byte callbacks at `0x5A6F30–0x5A7090`, a source-only verification ledger, a reproducible layout/report and ROM-free regression tests. Production `decomp/manifest.json`, `decomp/results/combined.json` and `decomp/results/inventory.json` remain unchanged at 315 USA C.
