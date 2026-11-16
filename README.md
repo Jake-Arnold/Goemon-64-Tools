@@ -2,6 +2,8 @@
 
 ## v0.11.32 — Memory Discovery + Reports TEST PROTOTYPE (16 November 2026)
 
+**Prototype CI status:** [Ubuntu workflow](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43927149682) PASS (297 non-GUI tests: 296 pass, 1 skipped; 119 Tk GUI tests pass). [Windows portable workflow](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43927149804) PASS (8 report/version tests). No real native-game playthrough or Windows Tk integration has been verified.
+
 **Isolated feature branch: toolkit/unified-memory-discovery; main remains unchanged.**
 Read the [full plan](docs/UNIFIED_MEMORY_DISCOVERY_PLAN_2026-11-16.md)
 and [redundancy audit](docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md).

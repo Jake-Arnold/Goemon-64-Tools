@@ -2,6 +2,12 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.32 final prototype CI proof (both hosted platforms)
+
+- **Linux:** GitHub Actions run [43927149682](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43927149682) succeeded on code/CI commit 7e14c7ea4d7606ad2f046f2f9c5454af20cc102f: **297 non-GUI synthetic tests (296 passed, 1 skipped)** and **119 Xvfb GUI tests passed**. Includes the new report-browser tests and existing scene/recomp test fixtures.
+- **Windows:** GitHub Actions run [43927149804](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43927149804) succeeded on the same commit: **8 portable reporting/version tests passed**, with compileall for practice modules. Does not establish Windows Tk or live recomp/gameplay operation.
+- **Caveat:** UI and memory tests use synthetic RAM; no live original MIPS reader/writer traces were implemented. User review and real Linux/Windows game testing remain outstanding; PR #35 stays draft. This is a documentation-only verification update.
+
 ## 2026-11-16 — v0.11.32 unified discovery/report TEST prototype
 
 - **Approved plan and audit:** docs/UNIFIED_MEMORY_DISCOVERY_PLAN_2026-11-16.md and docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md.
