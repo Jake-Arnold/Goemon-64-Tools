@@ -2,6 +2,17 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.36 redundancy, ROM connection UX and comparison preset cleanup
+
+- **Motivation:** Japan Live (diagnostics) duplicates the shared Live Memory page and Scene Browser. A separate Verify ROM button appears redundant despite the genuine safety need for an exact Japanese ROM to establish three independent 64-byte code probes. Fixed comparison "Test" labels look like restrictive algorithms while mostly serving as user instructions and occasionally secretly influencing rank.
+- **Change:** Hide old Japan Live tab in the main notebook for USA and Japan, retain its model and legacy widget implementation while existing callers/tests depend on it. Stop repeated hidden Japanese field polling in Toolkit.tick. Relocate unique manual Goemon XYZ read/preset/apply fields into Scene Browser, preserving original address/safety checks.
+- **Connection:** Remove separate Verify ROM dashboard button. Japanese Connect requests a ROM picker only if the remembered SHA-1-verified Japan-0 file is unavailable; button removal never weakens matching retail-ROM SHA1, remembered-path rehash or per-process guest-RAM code fingerprint validation. Cancel/invalid ROM fails closed. US connect remains unchanged.
+- **Comparison UI:** Replace seven USA/six JP canned Test choices with an unrestricted freeform report name (one field in shared Results bar). Keep focused/wide range as the actual search scope. Remove label-prefix scoring bonuses for Travel and Storyline/Item comparisons; names cannot bias the result. Standard Capture C explicitly indicates reversible-only filtering; JP XYZ separately needs C settled at B.
+- **Report toolbar:** Shared report/watch/live controls are placed consistently before experiment-specific controls on all four methods; no duplicate name field in flags or A/B comparison.
+- **Audit:** Updated docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md with every former USA/JP comparison preset, evidence, exact semantics, preserved unique functions and deferred cleanup candidates. No old watch/report/checkpoint files were deleted.
+- **Validation:** Added tests/test_toolkit_redundancy_ui.py (hidden tab, unique position in shared Scene Browser, automatic verified-ROM selection/cancellation), updated dashboard and memory comparison unit/UI regression tests; interim Linux CI reached 313 synthetic non-GUI tests (312 passed, 1 skipped) and 139 Tk GUI tests passed on code commit 565d3c65a40c15c9ebf430477641bbcb4d7a6d3e. Windows portable CI succeeded on same stage. Subsequent documentation/test runner changes require final branch-tip validation.
+- **Outstanding:** Real JP native recomp + USA client connection UX, desktop minimum-window screenshots, Windows GUI, original guest-MIPS instruction access tracing, legacy exporter migration. PR #35 stays draft; main and decomp branches unchanged.
+
 ## 2026-11-16 — v0.11.35 final automated verification
 
 - **Linux:** [workflow 43943477576](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43943477576), code commit 39b7d9f94657dbbf40aee3cc9a6fdcdc6777be58: **313 non-GUI synthetic tests (312 pass, 1 skip)** and **135 Xvfb Tk tests** PASSED.

@@ -1,4 +1,33 @@
-# Goemon Speedrun Tools v0.11.35 — shared research results and live updates test
+# Goemon Speedrun Tools v0.11.36 — simplified navigation and unrestricted memory comparison test
+
+## v0.11.36 — Remove duplicate JP diagnostics and comparison presets (16 November 2026)
+
+**Draft test branch:** toolkit/unified-memory-discovery, not merged into main.
+
+### Reduced navigation and controls
+
+- The standalone **Japan Live (diagnostics)** top-level tab is no longer shown in either region. The old diagnostic widget/model is retained internally for compatibility with source-backed readings, guards and old saved Japanese custom watches. Continuous hidden-tab polling has been stopped. Use shared **Live Memory** for typed values, search-generated watches, renaming, freezes and live refresh.
+- The **manual Japan Goemon XYZ editor** (a genuinely unique feature of that tab) now appears in the shared **Scene Browser** in Japanese mode, using the same X/Y/Z variables and original scene/character/PID/RAM verification and write-confirmation routine. The Scene Browser already supplies native debug-menu and room-warp actions, so no extra Japanese scene controller tab is visible.
+- The separate **Verify ROM** button is removed from Dashboard. Clicking **Connect** in Japan mode now prompts for the original Japan-0 ROM only if no previously verified ROM is remembered. Correct 16 MiB retail-ROM SHA-1 validation, three independent 64-byte code-fingerprint probes and per-attachment RAM/backend verification are still mandatory. A cancelled or mismatched ROM never authorises a Japanese attachment. USA uses its existing process attach path.
+- **Compare memory changes** no longer offers misleading fixed **Test** presets. Any experiment name is entered once via the shared **Report name** control. The only capture-range setting is **focused** versus **wide**; the meaning is explained in the tab. A report name never changes captured addresses or boosts rankings. Removed unused dropdown presets and the previous 5/30-point USA prefix-based candidate ranking bonuses.
+- **Capture C: Optional** is now explicit: ordinary A/B/C comparison *filters to values that reverted to A*, therefore **skip C for irreversible/persistent state**; Japanese wide XYZ analysis instead requires C stationary at B, after moving from A to B.
+- The shared **Results · read-only** toolbar (report name, Save report, selected watches, refresh cadence) is now placed **before the method-specific capture controls** in all four research tabs, removing duplicate local report names.
+
+### Further source audit
+
+The full row-by-row [redundancy and safety audit](docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md) documents what was removed, moved and retained. Legacy raw JSON exports, specialised freezes, Story progress and Unlocks, and the quick raw-byte dashboard reader have possible overlap, but are not deleted without evidence of functional equivalence and compatibility. Old investigations and watch files are not modified.
+
+### Tests and limits
+
+The current Linux Tk smoke suite includes Japanese-hidden-tab/regional scene editor behaviour, automatic ROM picker safety, freeform comparison capture semantics, and existing USA/JP research/watch regressions. The Windows report workflow validates portable APIs. These checks use synthetic game memory; real native recomp gameplay on Linux/Windows and original guest MIPS read/write tracing remain unverified.
+
+Ubuntu test checkout:
+
+    cd ~/Desktop/Goemon-64-Tools-JP-Recomp
+    git fetch origin
+    git switch toolkit/unified-memory-discovery
+    git pull --ff-only
+    bash Run-Linux.sh
 
 ## v0.11.35 — Consistent discovery results, watching and live updating (16 November 2026)
 
