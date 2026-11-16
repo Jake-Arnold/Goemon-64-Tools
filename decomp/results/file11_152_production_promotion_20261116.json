@@ -2,7 +2,7 @@
   "format": "goemon-usa-crossbranch-production-promotion-v2",
   "date": "2026-11-16",
   "region": "usa",
-  "status": "NATIVE_G2_INVENTORY_AND_LOCAL_CI_PASS_PENDING_GITHUB_MERGE",
+  "status": "PRODUCTION_VERIFIED",
   "target_branch": "chatgptweb/decomp",
   "source_research_prs": [
     23
@@ -142,5 +142,12 @@
     "usa_total": 109
   },
   "no_original_rom_or_compiled_game_assets_committed": true,
-  "caveat": "Final GitHub integration validation and formal merge pending; count must not change until merged."
+  "caveat": "The matching-C production count is 315 on chatgptweb/decomp. Further original-address research candidates remain unpromoted.",
+  "production_merge": {
+    "pr": 39,
+    "merged_into": "chatgptweb/decomp",
+    "merge_commit": "a0b448aebcf1f499f42b98328269312763147bc9",
+    "functions": 315,
+    "region": "usa"
+  }
 }
