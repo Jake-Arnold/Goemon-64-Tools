@@ -1153,13 +1153,18 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                             'character position address is verified.')
                         return
                     actual = read_japan_position(self.jp_rdram)
-                    difference = position_difference(spawn.position, actual)
-                    if difference > 8:
+                    expected_raw = struct.pack(
+                        '>fff', *checked_japan_xyz(spawn.position))
+                    # Match the USA one-shot path: send the exact selected
+                    # entrance float32 bytes, not a fuzzy/rounded position
+                    # check. A successful scene ID alone is insufficient.
+                    before_raw = self.jp_rdram.read_guest(
+                        JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE)
+                    if before_raw != expected_raw:
                         # Never write the same destination twice. Failure is
                         # reported and cannot trigger automatic retries.
                         pending['placement_attempted'] = True
-                        expected_before = self.jp_rdram.read_guest(
-                            JAPAN_PLAYER_XYZ_START, JAPAN_PLAYER_XYZ_SIZE)
+                        expected_before = before_raw
                         handle, writer = self._japan_native_warp_writer()
                         try:
                             if not is_japan_scene_loaded(
