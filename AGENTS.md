@@ -15,3 +15,7 @@ Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C 
 For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
 It is the operational runbook; older checkpoints and result reports retain
 historical evidence and must not be treated as current instructions/counts.
+
+## Mandatory version increments
+
+Every user-facing toolkit change must increment the patch component of `practice/version.py` (e.g. 0.11.17 → 0.11.18), even if the change is experimental. Update the first README heading and document the version in PROGRESS.md in the same change. The Tk window title and header must always import `DISPLAY_VERSION` from `practice/version.py`, never embed a separate hard-coded release number. Extend release regression tests when changing version behavior. Do not describe experimental emulator/native backend support as live-verified until the user's actual Linux game has been tested.
