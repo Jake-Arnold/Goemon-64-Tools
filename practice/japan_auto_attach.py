@@ -7,8 +7,6 @@ Multiple verified processes are errors, not a guessed preferred target.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from pathlib import PurePath
-
 from practice.emulator_savestates import emulator_kind
 
 VALID_TARGETS = frozenset(("auto", "recomp", "project64", "mupen64plus"))
@@ -106,21 +104,25 @@ def connect_candidate_ram(candidate: JapanProcessCandidate, process, probes, *,
             try:
                 reader = validate_rdram_base(
                     process, base, cached_endian, probes, allow_4mb=allow_4mb)
-                if candidate.backend == "recomp":
-                    validate_japan_recomp_context(
-                        reader, strict_character=False)
+                # A ROM-code match is not enough on its own: every backend
+                # must also look like plausible Japanese live game RAM.
+                validate_japan_recomp_context(
+                    reader, strict_character=False)
                 return reader, base, cached_endian
             except (OSError, ValueError, RuntimeError):
                 # A recompilation update or ASLR may have changed the mapping.
                 # Retrying a full scan is mandatory; do not accept the cache.
                 pass
     if candidate.backend == "recomp":
-        return discover_japan_recomp_rdram(
+        reader, base, order = discover_japan_recomp_rdram(
             process, probes, mode=endian, base_hint=base_hint,
             strict_character=False)
-    return discover_japanese_mupen_rdram(
-        process, probes, mode=endian, base_hint=base_hint,
-        allow_4mb=allow_4mb)
+    else:
+        reader, base, order = discover_japanese_mupen_rdram(
+            process, probes, mode=endian, base_hint=base_hint,
+            allow_4mb=allow_4mb)
+    validate_japan_recomp_context(reader, strict_character=False)
+    return reader, base, order
 
 
 def remember_verified_connection(candidate: JapanProcessCandidate,
