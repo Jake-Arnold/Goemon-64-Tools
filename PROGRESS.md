@@ -8,6 +8,14 @@
 
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Stage new 143-function USA file_11 proof and reproduce pristine USA baseline
+
+- **New research checkpoint:** Source branch `chatgptweb/file11-expansion-20261116` advanced to `60a5d55f5453d2e4241597e2ee9365bec2b127a8`, adding a `file11_143_candidate` source fixture, full clean-upstream replay script, proof, tests, and report. Snapshotted these five exact Git blobs into draft PR #26. The set comprises 50 already formally promoted file_11 functions plus 93 additional functions (2,844 bytes); the 93 belong to the existing pool of 207 research matches. The scratch 143-function/3,908-byte USA ROM was reportedly exact and all 8,825 file_11 relocation tuples matched, but its independent replay is not a 210+93 project-wide G2.
+- **New ROM-free contract:** Added `decomp/test_file11_143_candidate_contract.py` to the normal decomp unittest discovery path. It pins source/revision/proof metadata, contiguous 44 C and 44 ASM segments, complete 143 symbol ranges, 77 native-matched Wave 1 identities, and refusal to claim central promotion. These Python tests are committed but not executed in the isolated container; corresponding source-structure assertions were independently checked through the GitHub connector.
+- **Actual fresh USA upstream reconstruction:** Re-extracted the supplied authenticated original USA ROM in a separate clean pinned `mnsg` checkout, compiled all upstream native objects with the supplied Python 3.12/MIPS toolchain and obtained **exact 33,554,432-byte ROM equality**. Rebuilt ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; authentic pristine USA ELF SHA-256 `83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038`; original file_11 ASM source SHA-256 `e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b`.
+- **Gates remaining:** Replay the 143 research runner on this pristine USA checkout and, separately, run full current 210+93 decomp.verify G2 and inventory from a complete private decomp checkout. Also run the exact checked-in JP 24-function script and full ROM-free CI in a combined checkout. Official USA total remains **210 C / 13,336 bytes**.
+- **No side effects:** No upstream or source research branches modified, no copyrighted game images or objects committed. Evidence/report: `decomp/results/file11_143_consolidation_review_20261116.json`.
+
 ### 2026-11-16 — Independent Japanese 24-C native full-ROM reproduction on consolidation snapshot
 
 - **Source provenance:** Recreated 20 Japanese C sources in an isolated local pinned `mnsg` checkout; all 20 Git blob SHA-1 identifiers matched the imported `decomp/japan_matching` source blobs on PR #26. Upstream pinned at `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`; Japan retail ROM hash authenticated.

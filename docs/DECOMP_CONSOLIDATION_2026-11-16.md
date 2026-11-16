@@ -62,3 +62,11 @@ adding function counts. Never merge a research-only proof into the official func
 - All 55 original C-object relocation signatures match the reviewed target/order/type contracts; all 24 C-owned ELF symbols match expected original addresses, with 7,376 total game FUNC entries, 7,352 ASM-marked and 73 sections.
 - This was an **independent local reproduction**, not a run of the checked-in `japan_twentyfour_verify` command or complete ROM-free `decomp.local_ci`. The USA 210-C combined-build G2 has not been executed. Counts unchanged; PR remains draft.
 - Proof: `decomp/results/japan_0_consolidation_native_20261116.json`. No user ROM, rebuilt executable, object, raw assembly, toolchain, save, or personal diagnostic included.
+
+
+## 2026-11-16: authentic USA upstream rebuild and 143-function research handoff
+
+- Confirmed clean original-USA ROM exact 32 MiB rebuild in scratch using pinned original upstream SHA `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` and supplied portable toolchain.
+- Original rebuilt USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, original ELF SHA-256 `83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038`, file_11 ASM source SHA-256 `e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b` — all matching pinned source-provenance identities.
+- Imported exact immutable files from `chatgptweb/file11-expansion-20261116` @ `60a5d55f5453d2e4241597e2ee9365bec2b127a8` for the 143-function / 44-group + 44 ASM-slice research proof (50 existing plus 93 unpromoted candidates). Its clean-upstream full-ROM research result is **not** the combined production G2.
+- Added 5 ROM-free test cases to the standard `decomp/test_*.py` entrypoint; not executed locally against a full private toolkit checkout. The production USA manifest, proof and inventory remain untouched.
