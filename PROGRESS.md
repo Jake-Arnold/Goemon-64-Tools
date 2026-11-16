@@ -1,5 +1,11 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Authentic USA original-ROM 143-C source-boundary audit
+
+- Recomputed original code SHA-256 independently from the user-supplied, authenticated USA 32 MiB ROM at each of the **88 pinned C/ASM chunk spans** in the prospective file_11 143-function stage. All 88 match their exact original-ROM SHA-256 fixture records across original range `0x587370–0x5B8500` (201,104 bytes), zero mismatches. The audit explicitly does not claim 143 compiled C functions or a 303-function combined production build.
+- The preflight output writer was hardened to reject staging anywhere under the repository root, including the top-level repo outside `decomp/`; local syntax checks and isolated output creation/overwrite/repository-path smoke tests passed. Main production verifier and manifest unchanged.
+- Metadata-only audit: `decomp/results/file11_143_original_rom_chunks_20261116.json`. Still requires full current 210+93 G2/ELF relocation/inventory and local CI before any official count increase.
+
 ### 2026-11-16 — Draft source preflight for potential 143-C file_11 stage (50 existing + 93 unpromoted)
 
 - **Prepared:** Added opt-in `decomp.file11_143_preflight` and eight mutation/guard tests. It authenticates all 50 existing stage-v2 function identities against the 143-function original-VMA research fixture, checks all 93 distinct added identities and original contiguous 44 C/44 ASM ownership boundaries, source checksums and optional 32 MiB USA source-ROM chunk digests. It produces 44 reviewed C source files and the 88 stage-segment lines **only** into a previously nonexistent external scratch directory.

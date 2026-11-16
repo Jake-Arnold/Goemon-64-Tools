@@ -31,6 +31,12 @@ Outputs are written **only** to a previously nonexistent external directory: `sr
 
 ROM-free tests: `python3 -m unittest tests.test_decomp_file11_143_preflight -v`. This suite needs the full connected repository fixture; Python source syntax was checked in an isolated environment, and connected-repository structural assertions for the existing 50 and new 93 were performed. The complete Python suite and native 303-function build **have not yet been run**.
 
+## Fresh original-ROM boundary audit
+
+Using the authentic local original USA expanded 32 MiB ROM (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`), independently recomputed SHA-256 for **all 88 contiguous file_11 text chunks**, spanning ROM `0x587370–0x5B8500` (**201,104 bytes**). Every chunk digest matched the corresponding pinned source fixture's `original_sha256`; **88/88 PASS, zero discrepancies**. The aggregate FNV-1a 64-bit value `a60bac069e456e44` was used only to transport/check the individual SHA-256 comparison list between isolated runtimes, not as a replacement cryptographic hash.
+
+The audit proves original-ROM chunk extents/data identity, **not** that the 44 emitted C sources reproduce original IDO object code when combined with the current 210-C production build. Metadata-only report: `decomp/results/file11_143_original_rom_chunks_20261116.json`.
+
 ## Central production acceptance still required
 
 This preflight is only the staging input. Implement a separately reviewed, opt-in **143-C mixed-stage adapter** for `decomp.verify`, preserving all non-file_11 canonical C/ASM objects, followed by the full USA **210+93=303** whole-ROM comparison, original address/name/size validation, all 8,825 semantic file_11 relocations, `decomp.inventory`, and complete `decomp.local_ci`. Do not change `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json` or any official matching-C count until every gate passes. The later 118 distinct file_11 candidates and three Impact/dialogue candidates remain independently pending.
