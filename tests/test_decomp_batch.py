@@ -215,8 +215,14 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # Current 303-C proof must fingerprint the exact verifier that ran it.
-        self.assertEqual(current['comparison']['matched_functions'],303)
+        # Current 306-C proof must fingerprint the exact verifier that ran it.
+        self.assertEqual(current['comparison']['matched_functions'],306)
+        self.assertEqual(current['comparison']['matched_function_bytes'],16292)
+        historic303=json.loads((ROOT/'results/combined_303_20261116.json').read_text())
+        self.assertEqual(historic303['comparison']['matched_functions'],303)
+        self.assertEqual(historic303['comparison']['matched_function_bytes'],16180)
+        self.assertEqual(historic303['verifier_source_sha256_lf'],
+                         '0b4556a01128510da5a23ef36e6e55094339e69a7bb070b5b45c213128231769')
         self.assertEqual(current['verifier_source_sha256_lf'],
                          hashlib.sha256((ROOT/'verify.py').read_bytes().replace(b'\r\n',b'\n')).hexdigest())
         # The certified historical 210-C proof retains its original hash.

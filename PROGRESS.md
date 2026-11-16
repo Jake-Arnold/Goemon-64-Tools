@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Three independent Impact/dialogue USA functions passed combined 306-C G2
+
+- Changed: consolidated exactly three previously G2-proven functions from `codex/goemon-impact-research` on top of canonical 303: `func_801D3954_5FED34` (40 B Impact HP clamp), `func_801D3A44_5FEE24` (36 B Impact HP floor/return), and `func_8000C430_D030` (36 B dialogue slot setter). Added only the two pinned `file_13` stages, exact 36-byte dialogue C ownership, dedicated stage/header/ABI, matching verifier and regression tests. No unrelated research-only functions were promoted.
+- Native G2: **306/306 C, 16,292 matching instruction bytes, exact original 33,554,432-byte USA image** SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Exact 143-C file_11 source and 8,825 semantic relocations retained; original 277,104-byte file_13 segment, 9,589 relocation sites/targets, and both approved Impact C objects verified. Fresh original-ELF inventory: 7,376 identities, no aliases, 319 combined C entries and 7,057 ASM. Source/proof SHA-256s pinned in the new 306 promotion record.
+- Tested: fresh native complete-ROM G2 and original-function inventory passed, and full local CI passed (222 decomp tests, 153 verifier/ledger tests, task and evidence audit, GCC ASan/UBSan display-emitter fixture). Historical canonical 303 and 210 proof files are retained separately without rewriting them.
+- Remaining: additional USA `file_11` native source candidates on PRs #23/#24 require deduplication against canonical 143 and fresh combined G2+inventory before any further count increase. Japanese 24 matching-C requires independent regional production gate and must not be mixed into USA 306 tally. No retail ROM/ELF/object/game asset committed.
+
 ### 2026-11-16 — Formally promoted USA file_11 143-C into canonical 303-C production
 
 - Changed: switched `decomp/manifest.json` to the already native-verified `goemon-file11-143-central-v1`, replacing the 210-C stage with 303 canonical original-address C claims. Published original complete-ROM G2 and 7,376-entry ELF inventory now reflect the precise native 303-C run; archived the original 210-C proof/inventory without editing their content. Updated the VM research ledger source/result fingerprints and canonical counts, reference tests and continuation docs.

@@ -1,0 +1,88 @@
+{
+  "format": "goemon-usa-crossbranch-production-promotion-v1",
+  "date": "2026-11-16",
+  "status": "PRODUCTION_VERIFIED",
+  "target_branch": "chatgptweb/decomp",
+  "source_branch": "codex/goemon-impact-research",
+  "source_head": "8af9e747320dfc5ff4319212b69ddca4b8c5c4a5",
+  "previous_c": 303,
+  "promoted_c": 3,
+  "canonical_c": 306,
+  "matching_instruction_bytes": 16292,
+  "promoted_functions": [
+    {
+      "name": "func_801D3954_5FED34",
+      "rom_offset": "0x5FED34",
+      "bytes": 40,
+      "unit": "file_13",
+      "category": "Impact HP subtract/clamp"
+    },
+    {
+      "name": "func_801D3A44_5FEE24",
+      "rom_offset": "0x5FEE24",
+      "bytes": 36,
+      "unit": "file_13",
+      "category": "Impact HP floor/return"
+    },
+    {
+      "name": "func_8000C430_D030",
+      "rom_offset": "0xD030",
+      "bytes": 36,
+      "unit": "dialogue_window.c",
+      "category": "Dialogue slot field setter"
+    }
+  ],
+  "full_rom": {
+    "status": "matched",
+    "bytes": 33554432,
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matching_functions": 306,
+    "matching_bytes": 16292,
+    "report_sha256": "c10ed93197dbcc925943a2beab769a67ad4d88bfe3cc8124fc65775e2bf1beb1"
+  },
+  "file11": {
+    "c_functions": 143,
+    "semantic_relocations": 8825,
+    "original_object_provenance": 88
+  },
+  "file13": {
+    "new_c_functions": 2,
+    "section_bytes": 277104,
+    "relocation_sites_and_targets": 9589,
+    "full_section_original_match": true
+  },
+  "inventory": {
+    "report_sha256": "bdb49555c1b104298812d90133af92c63ae2ab2058729ad41e3fe980c6cd56c1",
+    "original_entries": 7376,
+    "upstream_c": 13,
+    "combined_c": 319,
+    "remaining_asm": 7057,
+    "extra_positive_aliases": 0,
+    "original_function_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  },
+  "canonical_sources": {
+    "manifest_sha256": "0e2e7c103c0c1451307fb048041d409bbf5ac467b6d54e4c17d7dcb5b51d9075",
+    "verifier_sha256": "876390a62891188161c2e32744abb8543a9598e3e7c61fffce04d2eb1a0cda79"
+  },
+  "local_ci": {
+    "status": "PASS",
+    "log_sha256": "e42da666100942954b909b2d753590d4d447d129a7318319be082e0cc32e76b7",
+    "decomp_tests": 222,
+    "verifier_ledger_tests": 153,
+    "task_evidence": "PASS",
+    "sanitizer_regression": "PASS",
+    "note": "Executed in isolated reconstructed native checkout before publishing reviewed historical-303 acceptance compatibility assertions."
+  },
+  "historical_reports": [
+    "decomp/results/combined_303_20261116.json",
+    "decomp/results/inventory_303_20261116.json",
+    "decomp/results/combined_210_20261116.json",
+    "decomp/results/inventory_210_20261116.json"
+  ],
+  "not_in_scope": [
+    "Uncombined USA file11 research-only functions from PR #23 and PR #24",
+    "Japanese 24-C separate-region pipeline",
+    "Game ROMs, generated ELF and objects"
+  ],
+  "privacy": "metadata and source only, no copyrighted game assets"
+}

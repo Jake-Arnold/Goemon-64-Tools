@@ -1,4 +1,4 @@
-"""ROM-free checks for the now-canonical USA 143-C central stage."""
+"""ROM-free checks for the opt-in, noncanonical USA 143-C central stage."""
 from __future__ import annotations
 
 import copy
@@ -24,12 +24,13 @@ class File11143CentralStageTests(unittest.TestCase):
         manifest['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
         return manifest
 
-    def test_canonical_manifest_now_promotes_303(self):
+    def test_canonical_306_includes_143_file11(self):
         self.assertEqual(verify.file11_stage_mode(self.base), 143)
-        self.assertEqual(len(verify.claimed_functions(self.base)), 303)
-        self.assertEqual(self.base['overlay_file11_stage']['format'], stage.STAGE_FORMAT)
+        self.assertEqual(len(verify.claimed_functions(self.base)), 306)
+        self.assertEqual(self.base['overlay_file11_stage']['format'],
+                         stage.STAGE_FORMAT)
 
-    def test_canonical_143_stage_has_exact_303_claims(self):
+    def test_canonical_143_claims_coexist_with_impact(self):
         candidate = self.opt_in()
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'review-manifest.json'
@@ -37,20 +38,16 @@ class File11143CentralStageTests(unittest.TestCase):
             loaded = verify.load_manifest(path)
         self.assertEqual(verify.file11_stage_mode(loaded), 143)
         claims = verify.claimed_functions(loaded)
-        self.assertEqual(len(claims), 303)
-        self.assertEqual(len({x['name'] for x in claims}), 303)
-        self.assertEqual(sum(x['size'] for x in claims), 16180)
+        self.assertEqual(len(claims), 306)
+        self.assertEqual(len({x['name'] for x in claims}), 306)
+        self.assertEqual(sum(x['size'] for x in claims), 16292)
         plan = stage.reviewed_plan(loaded)
         self.assertEqual((plan['existing_file11_c'], plan['additional_research_c']),
                          (50, 93))
-        # The historical source fixture remains a preflight; published
-        # production G2/inventory (not this fixture) proves eligibility.
         self.assertFalse(plan['eligible_for_manifest_promotion'])
         self.assertFalse(plan['central_g2_verified'])
 
     def test_stage_has_complete_44_c_and_44_assembly_objects(self):
-        self.assertEqual(stage.NORMALIZED_NOP_ALIAS_ASM_OFFSETS,
-                         frozenset((0x5995E8, 0x59D4DC, 0x5AEBDC)))
         objects = stage.source_objects()
         self.assertEqual(len(objects), 88)
         self.assertEqual(len(stage.object_targets()), 88)

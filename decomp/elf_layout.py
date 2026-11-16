@@ -139,16 +139,22 @@ def pack_heap_noop_text(original):
         function_sha256=hashlib.sha256(payload[:8]).hexdigest())
 
 
-def pack_file12_callback_text(original, function_name, function_size,
-                              expected_relocations, expected_symbol_shapes=None):
-    """Trim IDO's 12 zero tail bytes for one pinned file_12 callback object.
+def pack_overlay_function_text(original, function_name, function_size,
+                               padding_bytes, expected_relocations,
+                               expected_symbol_shapes, label, metadata_kind):
+    """Trim verified IDO tail padding from one overlay function object.
 
-    The pinned object must contain one global function at .text offset zero,
-    followed by exactly twelve zero bytes. All relocation sites and symbols
-    must belong to the function. Only .text size/alignment metadata changes.
+    The global function must begin at .text offset zero. The only permitted
+    changes are the section size and alignment words after checking the exact
+    zero padding, symbols and relocation sites.
     """
     from .probe import Elf32
 
+    if (type(padding_bytes) is not int or padding_bytes <= 0 or
+            type(function_size) is not int or function_size <= 0 or
+            not isinstance(label, str) or not label or
+            not isinstance(metadata_kind, str) or not metadata_kind):
+        raise ValueError('Invalid overlay function text packing parameters')
     elf = Elf32(original)
     if elf.kind != 1:
         raise ValueError('Requires relocatable MIPS object')
@@ -157,14 +163,14 @@ def pack_file12_callback_text(original, function_name, function_size,
         raise ValueError('Expected unique .text section')
     index = indices[0]
     section = elf.sections[index]
-    old_size = function_size + 12
+    old_size = function_size + padding_bytes
     if (section[1], section[2], section[5], section[8]) != (1, 6, old_size, 16):
-        raise ValueError('Unexpected file_12 callback .text section layout')
+        raise ValueError(f'Unexpected {label} .text section layout')
     payload = elf.payload(index)
     prefix = payload[:function_size]
     padding = payload[function_size:]
-    if len(padding) != 12 or padding != bytes(12):
-        raise ValueError('Unexpected file_12 callback padding')
+    if len(padding) != padding_bytes or padding != bytes(padding_bytes):
+        raise ValueError(f'Unexpected {label} padding')
 
     functions = [symbol for symbol in elf.symbols
                  if symbol.kind == 2 and symbol.size > 0 and
@@ -173,21 +179,21 @@ def pack_file12_callback_text(original, function_name, function_size,
             functions[0].name, functions[0].value, functions[0].size,
             functions[0].section, functions[0].binding) != (
             function_name, 0, function_size, index, 1):
-        raise ValueError('Unexpected file_12 callback function symbol')
+        raise ValueError(f'Unexpected {label} function symbol')
     section_symbols = [symbol for symbol in elf.symbols
                        if symbol.section == index and symbol.kind == 3]
     if (len(section_symbols) != 1 or
             (section_symbols[0].name, section_symbols[0].value,
              section_symbols[0].size, section_symbols[0].binding) !=
             ('.text', 0, old_size, 0)):
-        raise ValueError('Unexpected file_12 callback .text section symbol')
+        raise ValueError(f'Unexpected {label} .text section symbol')
     if any(symbol.section == index and symbol.kind not in (2, 3)
            for symbol in elf.symbols):
-        raise ValueError('Unexpected file_12 callback symbol in .text')
+        raise ValueError(f'Unexpected {label} symbol in .text')
     if any(section_index != index and section_header[2] & 2 and section_header[5]
            and elf.names[section_index] != '.reginfo'
            for section_index, section_header in enumerate(elf.sections)):
-        raise ValueError('Unexpected allocated data in file_12 callback object')
+        raise ValueError(f'Unexpected allocated data in {label} object')
 
     relocations = elf.relocations(index)
     observed = tuple(sorted(
@@ -195,13 +201,13 @@ def pack_file12_callback_text(original, function_name, function_size,
         for item in relocations
     ))
     if observed != tuple(sorted(expected_relocations)):
-        raise ValueError('Unexpected file_12 callback relocation signatures')
+        raise ValueError(f'Unexpected {label} relocation signatures')
     if any(item.offset < 0 or item.offset >= function_size or item.offset & 3
            for item in relocations):
-        raise ValueError('file_12 callback relocation points outside function')
+        raise ValueError(f'{label} relocation points outside function')
     if expected_symbol_shapes is not None and set(expected_symbol_shapes) != {
             item.symbol.name for item in relocations}:
-        raise ValueError('Unexpected file_12 callback relocation symbol set')
+        raise ValueError(f'Unexpected {label} relocation symbol set')
     for item in relocations:
         shape = (item.symbol.kind, item.symbol.size)
         expected_shape = (expected_symbol_shapes.get(item.symbol.name)
@@ -212,7 +218,7 @@ def pack_file12_callback_text(original, function_name, function_size,
                        item.symbol.kind == 1 and item.symbol.size in (1, 2, 4)) or
                       (item.relocation_type == 4 and
                        item.symbol.kind == 2 and item.symbol.size == 0)))):
-            raise ValueError('Unexpected file_12 callback relocation symbol')
+            raise ValueError(f'Unexpected {label} relocation symbol')
 
     header_offset = struct.unpack_from('>I', original, 32)[0]
     entry_width = struct.unpack_from('>H', original, 46)[0]
@@ -226,10 +232,10 @@ def pack_file12_callback_text(original, function_name, function_size,
                            header_offset + index * entry_width + 36)))
     if any(before != after and offset not in permitted
            for offset, (before, after) in enumerate(zip(original, patched))):
-        raise AssertionError('Changed bytes outside approved file_12 ELF metadata')
+        raise AssertionError(f'Changed bytes outside approved {label} ELF metadata')
     packed = bytes(patched)
     return packed, dict(
-        kind='file12_callback_text_metadata_v1',
+        kind=f'{metadata_kind}_text_metadata_v1',
         old_size=old_size, new_size=function_size,
         old_alignment=16, new_alignment=4,
         zero_padding_bytes=len(padding),
@@ -237,6 +243,15 @@ def pack_file12_callback_text(original, function_name, function_size,
         input_sha256=hashlib.sha256(original).hexdigest(),
         output_sha256=hashlib.sha256(packed).hexdigest(),
         function_object_sha256=hashlib.sha256(prefix).hexdigest(),
+    )
+
+
+def pack_file12_callback_text(original, function_name, function_size,
+                              expected_relocations, expected_symbol_shapes=None):
+    """Preserve the established file_12 callback packing contract."""
+    return pack_overlay_function_text(
+        original, function_name, function_size, 12, expected_relocations,
+        expected_symbol_shapes, 'file_12 callback', 'file12_callback',
     )
 
 

@@ -1,5 +1,14 @@
 # Decomp continuation runbook
 
+## Current authoritative production: 306 USA matching-C functions (16 November 2026)
+
+The canonical manifest and published proofs now record **306/306 verified C functions / 16,292 original instruction bytes**, including 143 original-address C in file_11 and the two `file_13` Impact HP functions plus the one dialogue slot setter. The original 32 MiB USA ROM is byte exact, the 7,376 original function identities are preserved, and 7,057 assembly entries remain. The 303-C report is separately archived in `results/combined_303_20261116.json` and `results/inventory_303_20261116.json`, alongside historic 210-C reports.
+
+- Canonical proof: `results/combined.json` / `results/inventory.json`.
+- Native stage: `overlay_file13_stages` on top of `overlay_file11_stage` 143-C in the pinned manifest.
+- Further USA candidates: PR #23 (`file11-expansion-20261116`), PR #24 (`file11-transition-52-research`). Their native source proofs and partial scratch builds are not enough to claim combined production C matches. Deduplicate against the 143-C file_11 manifest, then run fresh combined full G2 + original inventory + local CI.
+- Japan: PR #26 has a separately exact regional 24-C proof, but is not part of the USA count and requires its own integrated regional acceptance.
+
 Start here when continuing the matching-C work. This is the operational handoff;
 For the executor-grade 100-task architecture and mandatory verification/stop rules, start at [plans/README.md](plans/README.md) and [plans/EXECUTOR_PROTOCOL.md](plans/EXECUTOR_PROTOCOL.md). These are planning documents only; live manifest/proof remain authoritative.
 README.md explains the recovered units, BATCH_PIPELINE.md describes the tools,

@@ -1,6 +1,6 @@
 """Fail-closed ROM-free acceptance of the opt-in file_11 143-C preflight.
 
-The historical 210-function source stage is reconstructed for regression tests; canonical production now has 303.
+The existing 210-function manifest remains the sole production source of truth.
 """
 from __future__ import annotations
 
@@ -18,14 +18,22 @@ class File11143PreflightTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest = load_manifest(mod.ROOT / 'manifest.json')
-        # Research-only preflight models the former canonical 210-C stage.
+        # Explicit historical 210-C projection: strip precisely the current
+        # 143-C file_11 stage, the two Impact stages and the 36-byte dialogue C.
+        cls.manifest = copy.deepcopy(cls.manifest)
         cls.manifest['overlay_file11_stage'] = {'format': 'goemon-file11-character-switch-50-v2'}
+        del cls.manifest['overlay_file13_stages']
+        cls.manifest['support_headers'].remove('impact_controller.h')
+        dialogue = next(u for u in cls.manifest['units'] if u['source']=='dialogue_window.c')
+        added = next(f for f in dialogue['functions'] if f['name']=='func_8000C430_D030')
+        dialogue['functions'].remove(added)
+        dialogue['assembly_functions'].insert(2,added['name'])
         cls.fixture = json.loads(mod.FIXTURE.read_text(encoding='utf-8'))
 
     def checked(self, fixture=None, manifest=None, rom=None):
         return mod.validate(manifest or self.manifest, fixture or self.fixture, rom)
 
-    def test_historical_210_plus_93_preflight_contract(self):
+    def test_canonical_210_plus_93_is_not_promoted(self):
         plan = self.checked()
         self.assertEqual((plan['baseline_usa_c'], plan['existing_file11_c'],
                           plan['additional_research_c'], plan['prospective_usa_c']),

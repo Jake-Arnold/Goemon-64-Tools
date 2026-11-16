@@ -1,0 +1,46 @@
+{
+  "format": "goemon-function-inventory-v1",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "baseline_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "candidate_elf_sha256": "8665911dc836a43bf8dfdd74fbcc37a9976cc4338104756823dc5a320f04a796",
+  "inventory_tool_sha256_lf": "c2de5df12985f1a4a830c47e2af6497ae51162e6135e32ab6587db4ab821bd81",
+  "summary": {
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 303,
+    "current_unmarked_entries": 316,
+    "remaining_assembly_entries": 7060,
+    "baseline_zero_sized_function_labels_ignored": 0,
+    "candidate_zero_sized_function_labels_ignored": 851,
+    "extra_positive_alias_entries": 0,
+    "upstream_unmarked_names": [
+      "func_8000A480_B080",
+      "func_80013940_14540",
+      "func_80013AC4_146C4",
+      "func_80013C0C_1480C",
+      "func_80013C70_14870",
+      "func_800141C4_14DC4",
+      "func_8001481C_1541C",
+      "func_80014840_15440",
+      "func_800148C0_154C0",
+      "func_80014C00_15800",
+      "func_80014C20_15820",
+      "func_80029E58_2AA58",
+      "func_8002A168_2AD68"
+    ],
+    "size_annotation_differences": [
+      {
+        "name": "func_8000D3B8_DFB8",
+        "baseline_size": 64,
+        "candidate_size": 72
+      },
+      {
+        "name": "func_8003F6E8_402E8",
+        "baseline_size": 48,
+        "candidate_size": 56
+      }
+    ],
+    "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  }
+}
