@@ -91,7 +91,7 @@ class EntranceUITests(unittest.TestCase):
         self.app.refresh_entrance_choices(0x161)
         usa = self.app.selected_scene_spawn(0x161)
         self.assertEqual(usa.position, (-289.0, 0.0, -167.0))
-        self.assertIn('experimental', self.app.entrance_note.get())
+        self.assertIn('Staged before reload', self.app.entrance_note.get())
 
         self.app.game_version_choice.set(VERSIONS['japan'].label)
         self.app.on_game_version_changed()
