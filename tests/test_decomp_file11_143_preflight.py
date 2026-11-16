@@ -92,8 +92,11 @@ class File11143PreflightTests(unittest.TestCase):
                 mod.emit(plan, output)
 
     def test_refuse_staging_into_repository_source_tree(self):
-        with self.assertRaises(ValueError):
-            mod.emit(self.checked(), mod.ROOT / 'never-write-stage-here')
+        for destination in (mod.ROOT / 'never-write-stage-here',
+                            mod.ROOT.parent / 'also-never-write-here'):
+            with self.subTest(destination=destination):
+                with self.assertRaises(ValueError):
+                    mod.emit(self.checked(), destination)
 
 
 if __name__ == '__main__':

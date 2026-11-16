@@ -144,10 +144,12 @@ def validate(manifest: dict, fixture: dict, original_rom: bytes | None = None) -
 
 def emit(plan: dict, out: Path) -> None:
     """Write exact reviewed stage inputs into a new external scratch directory."""
+    out = out.resolve()
     if out.exists():
         raise FileExistsError('Refusing an existing output directory: ' + str(out))
-    if ROOT == out or ROOT in out.parents:
-        raise ValueError('Refusing to stage generated sources inside project decomp/')
+    repo_root = ROOT.parent.resolve()
+    if out == repo_root or repo_root in out.parents:
+        raise ValueError('Refusing to stage generated sources inside source repository')
     lines = [f'    - [0x{at:X}, {kind}' + (f', {stem}' if stem else '') + ']'
              for at, kind, stem in plan['ordered_segments']]
     out.mkdir(parents=True, exist_ok=False)
