@@ -10,7 +10,7 @@ from pathlib import Path
 import shutil
 
 APP_ID = "goemon-practice-toolkit"
-WINDOW_CLASS = "GoemonPracticeToolkit"
+WINDOW_CLASS = APP_ID  # Exact Tk WM_CLASS instance / .desktop basename
 
 
 def _desktop_exec_quote(value: str) -> str:
@@ -61,7 +61,9 @@ def install(*, repo_root=None, data_home=None) -> Path:
 def main() -> None:
     result = install()
     print(f"Installed Goemon Practice Toolkit launcher: {result}")
-    print("Open Goemon Practice Toolkit from Ubuntu's app grid and pin it to the dock.")
+    print("Close old toolkit windows; launch from Ubuntu app grid and pin to dock.")
+    print("Expected WM_CLASS instance: goemon-practice-toolkit")
+    print("If a cog persists, run: xprop WM_CLASS (click the toolkit window)")
 
 
 if __name__ == "__main__":
