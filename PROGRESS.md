@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.34 final hosted CI verification
+
+- **Linux:** [GitHub Actions 43938746400](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43938746400) PASSED at code commit 5731553793a36ff278085e97dd4a5319140ffdc5: **307 non-GUI tests (306 pass, 1 skip)** and **131 Xvfb Tk tests**. No callback exceptions found in logs.
+- **Windows:** [GitHub Actions 43938746437](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43938746437) PASSED at same code commit: **27 portable report, value search and version tests**, plus compileall.
+- **Test-only regression corrected:** One GUI test had asserted the string JP while the actual new indicator printed JAPAN. The app now consistently prints JP; actual RAM connection checks had succeeded throughout.
+- **Live limitations:** Neither hosted environment launched native USA or Japanese recomp for memory attachment and real in-game report verification; Windows Tk usability is still untested. PR #35 remains draft.
+
 ## 2026-11-16 — v0.11.34 unified discovery report workflows and JP unlock auto-detection
 
 - **Usability:** Memory discovery now has a start page explaining four *direct* tools, removing nested generic/event naming: Find a value, Compare memory changes, Investigate flags, Record damage.

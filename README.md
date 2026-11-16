@@ -2,6 +2,8 @@
 
 ## v0.11.34 — Guided Memory Discovery and unified reports (16 November 2026)
 
+**Hosted tests for v0.11.34:** [Linux run 43938746400](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43938746400) passed **307 non-GUI tests (306 passed, 1 skipped) and 131 Tk GUI tests**, with no Tk callback errors. [Windows run 43938746437](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43938746437) passed **27 portable reporting, scanning and version tests**. Actual live USA/JP recomp processes and Windows Tk GUI have not been exercised in CI.
+
 **Draft branch only.** Keep toolkit/unified-memory-discovery separate from main until user review and live game tests.
 
 ### What changed
