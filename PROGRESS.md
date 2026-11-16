@@ -2811,3 +2811,9 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 
 - The submitted GUI log also showed `invalid command name "..._value_search_auto_tick"` messages after preceding Tk test windows were destroyed. These were asynchronous Tcl callback errors, not part of the 23 `NameError` failures.
 - `practice/value_search_ui.py` now tracks the periodic auto-refresh timer and in-flight scan poll timer, and cancels both on the toolkit root's `<Destroy>` event. It does not cancel timers for ordinary descendant widget destruction. Added a synthetic Tk regression verifying timer cancellation; live Windows full-suite rerun still pending.
+
+### 2026-11-16 — User Windows rerun: 195/195 backend and 93/94 GUI; single test teardown fix
+
+- User ran `.\\scripts\\test_japan_party.ps1` on `1a06175`. All **195 backend/synthetic tests passed** and **93 of 94 Tk GUI tests passed**; prior 23 Japanese Story Progress NameErrors, unlock status SyntaxWarning and recurring Value Search timer noise are absent in this log.
+- Sole GUI failure: `test_cancel_pending_restore_after_tk_root_destroy_is_safe` explicitly destroys its own Tk root and then the test fixture's `tearDown` unconditionally calls `root.destroy()` again, raising `_tkinter.TclError: can't invoke "destroy" command: application has been destroyed`. The production checkpoint cleanup under test succeeded; the fixture is what errored.
+- Fixed `DashboardSmokeTests.tearDown` to check whether the root still exists and safely ignore Tcl errors when it has already been destroyed. No production gameplay code changed in this patch; Windows post-fix suite rerun pending. PR #17 remains draft for live Japanese freeze/story/checkpoint validation.

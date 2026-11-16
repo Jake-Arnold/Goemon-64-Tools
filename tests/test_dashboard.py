@@ -32,8 +32,14 @@ class DashboardSmokeTests(unittest.TestCase):
         self.toolkit = Toolkit(self.root, Namespace(**opts))
 
     def tearDown(self):
+        # A shutdown regression test deliberately destroys Tk before cleanup.
+        # Destroying the same root again raises TclError on Windows/Tk 3.14.
         if hasattr(self, 'root'):
-            self.root.destroy()
+            try:
+                if self.root.winfo_exists():
+                    self.root.destroy()
+            except tk.TclError:
+                pass  # Already destroyed during the test or application close.
 
     def test_dashboard_only_has_connection_and_checkpoints(self):
         app = self.toolkit
