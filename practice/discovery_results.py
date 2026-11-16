@@ -356,10 +356,18 @@ class DiscoveryResultsPanel:
                 self.live_status.set("Connect to game RAM before refreshing")
             return
         tree = self.tree
+        all_ids = tree.get_children()
+        visible_count = max(1, int(tree.cget("height"))) + 4
+        start = max(0, min(len(all_ids) - 1,
+                           int(tree.yview()[0] * len(all_ids)))) if all_ids else 0
+        # Prefer selected rows (including scrolled-off selections), then rows
+        # in the visible scroll viewport; never re-read a huge full result set.
+        wanted = list(dict.fromkeys(
+            [*tree.selection(), *all_ids[start:start + visible_count]]))
         rows = [
             {"id": iid, "address": tree.set(iid, "address"),
              "type": tree.set(iid, "type")}
-            for iid in tree.get_children()[:200]
+            for iid in wanted[:200]
         ]
         if not rows:
             if force:
