@@ -20,6 +20,8 @@ class JapanNamedCheckpointUITests(unittest.TestCase):
         except tk.TclError as exc:
             self.skipTest(f'Graphical Tk unavailable: {exc}')
         self.root.withdraw()
+        store = patch('practice.toolkit.save_last_region')
+        store.start(); self.addCleanup(store.stop)
         for name, val in (
             ('practice.toolkit.load_remembered_rom', None),
             ('practice.toolkit.load_named_checkpoints', []),
