@@ -1,5 +1,24 @@
-# Goemon Speedrun Tools v0.11.24 — permanent scene-ID entrance coordinates
+# Goemon Speedrun Tools v0.11.25 — repository-owned entrance coordinate atlas
 
+## v0.11.25 — bundle decoded entrance coordinates with the toolkit
+
+The **complete verified original-USA scene/entrance coordinate table can now be committed to the repository** as `practice/data/entrance-coordinates.json`, and will become the default data source for **both USA and Japanese warps**. Once committed, everyone receives the data with `git pull` and does **not** need a ROM, a user-specific extracted atlas, or an entrance extraction step. It stores only functional numeric metadata and the existing validation checksum, **not** copyrighted ROM bytes, graphics, or audio.
+
+**Data is not yet present in the branch.** One original USA ROM extraction must first be supplied as JSON. From the toolkit checkout:
+
+```bash
+python3 -m practice.entrances \
+  --rom "/path/to/original-usa.z64" \
+  --output "/tmp/goemon-entrance-coordinates.json"
+```
+
+The user can attach `/tmp/goemon-entrance-coordinates.json` to the conversation for verification and a follow-up commit to `practice/data/entrance-coordinates.json`. The ROM itself is not needed or wanted. See `practice/data/README.md`. The original extractor validates the ROM identity, checks scene/entrance structure and adds a digest.
+
+**Lookup precedence** is now: (1) valid bundled `practice/data/entrance-coordinates.json` from Git; (2) verified per-user XDG/LocalAppData atlas; (3) validated legacy checkout cache; (4) source-backed individual observed XYZ fallbacks where no full table exists. A corrupt/invalid checked-in file cannot silently override a valid cached atlas. Multiple entrances to the same scene retain their separate IDs, source scenes, positions, headings and modes, and ambiguous choices continue to require explicit selection.
+
+ROM-free tests cover bundle-first loading, invalid-bundle fallback, prior-cache migration, and no-ROM Oedo fallback, including the Tk GUI entrance selector; the Bash and PowerShell suites register them. The schema and full native game behaviour remain subject to tests. No false claim is made that the complete coordinate data is already checked in.
+
+## Previous v0.11.24 — permanent scene-ID entrance coordinates
 ## v0.11.24 — remember fixed warp coordinates without reloading a ROM
 
 **USA and Japanese games use the same destination/entrance lookup.** A scene ID identifies a room, but a room may have *more than one entrance and different XYZ*. The stored key therefore retains `scene ID + entrance ID` (including source map for exits) rather than collapsing all entrances to one coordinate.
