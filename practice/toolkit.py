@@ -246,9 +246,6 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
             values=tuple(version.label for version in VERSIONS.values()), width=23)
         self.version_selector.pack(side='left', fill='x', expand=True)
         self.version_selector.bind('<<ComboboxSelected>>', self.on_game_version_changed)
-        self.verify_rom_button = ttk.Button(
-            version_row, text='Verify ROM', command=self.verify_rom_for_version)
-        self.verify_rom_button.pack(side='left', padx=(7, 0))
         ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
                      values=('auto', 'recomp', 'project64', 'mupen64plus')).pack(fill='x', pady=(0, 7))
         pid_row=ttk.Frame(connection);pid_row.pack(fill='x',pady=(0,7))
@@ -547,18 +544,25 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         self.version_heading.set(f"{DISPLAY_VERSION}  |  {version.label}")
         enabled = version.live_memory_supported
         region_active = version.key in ('usa', 'japan')
-        if (version.key != 'japan' and
-                self.notebook.select() == str(self.jp_fields_tab)):
-            self.notebook.select(self.notebook.tabs()[0])
+        if self.notebook.select() == str(self.jp_fields_tab):
+            self.notebook.select(self.live_memory_tab)
         for tab in self.notebook.tabs()[1:]:
-            japan_specific_tab = tab == str(self.jp_fields_tab)
-            tab_enabled = region_active and (
-                not japan_specific_tab or version.key == 'japan')
+            if tab == str(self.jp_fields_tab):
+                # Historical JP probes still supply model/backend state, but
+                # the second Live Memory page is no longer user-visible.
+                self.notebook.tab(tab, state='hidden')
+                continue
             self.notebook.tab(
-                tab, state='normal' if tab_enabled else 'disabled')
+                tab, state='normal' if region_active else 'disabled')
         # The same visible scene browser and inspector follow the active ROM;
         # USA-only write controls stay individually gated.
         self.configure_scene_browser_region()
+        if hasattr(self, 'jp_scene_position_frame'):
+            if version.key == 'japan':
+                self.jp_scene_position_frame.pack(
+                    fill='x', pady=(5, 7), after=self.scene_character_line)
+            else:
+                self.jp_scene_position_frame.pack_forget()
         self.configure_unlock_region()
         # Both ROMs use the same event sessions UI. Japanese sessions
         # compare an explicitly labelled 100-byte research slice (NOT a
@@ -596,7 +600,7 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
             button.state(['!disabled'] if usa_edit else ['disabled'])
         if version.key == 'japan':
             self.inspector_status.set(
-                'Japan Live Memory: right-click to edit or freeze fixed guest '
+                'Shared Live Memory: right-click to edit or freeze fixed guest '
                 'addresses; freeze pauses during transitions.')
             self.freeze_status.set(
                 'Japan-0 raw freezes available during stable gameplay; '
@@ -624,9 +628,10 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         if enabled:
             self.status.set('USA selected. Connect to the USA game in Recomp or Project64.')
         else:
-            self.status.set('Japan selected. Verify the Japan-0 ROM once, then '
-                            'click Connect for automatic PID/backend/RDRAM detection. '
-                            'USA-only memory features remain unavailable.')
+            self.status.set(
+                'Japan selected. Click Connect for automatic PID/backend/RDRAM '
+                'detection; the original retail ROM is requested only once '
+                'if no verified path is remembered.')
 
     def _clear_japan_base_choices(self):
         """Discard process-specific candidate bases when the region or ROM changes."""
@@ -1415,19 +1420,24 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
                 'Reconnect to read the restored Japanese RAM.')
 
     def verify_rom_for_version(self):
-        """Offline-only retail ROM verification; never attaches to a game process."""
+        """Pick and validate a retail ROM when first attaching Japanese RAM.
+
+        The public dashboard no longer has a separate preliminary Verify ROM
+        button. Connect invokes this picker only when no verified path exists.
+        """
         selected = filedialog.askopenfilename(
-            title=f'Verify {self.active_version.label} ROM',
+            title=f'Select your original {self.active_version.label} ROM (one time)',
             filetypes=(('Nintendo 64 ROMs', '*.z64 *.n64 *.v64'),
                        ('All files', '*.*')))
         if not selected:
-            return
+            self.status.set('ROM selection cancelled; no game was attached.')
+            return False
         try:
             version = verify_selected_rom(selected, self.active_version.key)
         except (OSError, ValueError) as exc:
             self.verified_rom_path = None
             self.status.set(f'ROM verification failed: {exc}')
-            return
+            return False
         self.verified_rom_path = Path(selected)
         remembered = False
         if version.key == 'japan':
@@ -1445,6 +1455,7 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
             f'Verified {version.label} (revision 0). {capability}. '
             + ('ROM path remembered for future sessions; file checked again '
                'before each reuse.' if remembered else ''))
+        return True
 
     def _arrange_dashboard(self, width):
         """Place both cards above the fold at default size; stack on narrow screens."""
@@ -1643,8 +1654,10 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
             self.status.set('Japanese Project64 attachment is supported on Windows only.')
             return
         if self.verified_rom_path is None:
-            self.status.set('Verify the exact Japan-0 ROM before attaching to the selected game.')
-            return
+            # ROM bytes are used to derive code fingerprints for RDRAM
+            # matching, so an unverified path cannot be bypassed.
+            if not self.verify_rom_for_version():
+                return
         try:
             pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
             if pid_hint is not None and pid_hint <= 0:
