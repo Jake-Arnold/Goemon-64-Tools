@@ -40,3 +40,46 @@ The audit proves original-ROM chunk extents/data identity, **not** that the 44 e
 ## Central production acceptance still required
 
 This preflight is only the staging input. Implement a separately reviewed, opt-in **143-C mixed-stage adapter** for `decomp.verify`, preserving all non-file_11 canonical C/ASM objects, followed by the full USA **210+93=303** whole-ROM comparison, original address/name/size validation, all 8,825 semantic file_11 relocations, `decomp.inventory`, and complete `decomp.local_ci`. Do not change `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json` or any official matching-C count until every gate passes. The later 118 distinct file_11 candidates and three Impact/dialogue candidates remain independently pending.
+
+## Draft central 303-function native trial (not yet executed)
+
+The opt-in adapter is now implemented in `decomp/file11_143_stage.py` and conditionally invoked by `decomp/verify.py`. It is activated only by a separate, newly generated manifest with `"overlay_file11_stage": {"format": "goemon-file11-143-central-v1"}`. The tracked canonical `manifest.json` remains **unchanged**, with 210 matching USA C functions.
+
+On an Ubuntu checkout containing all private `Goemon-64-Tools` source files and the pinned toolchain, create the trial manifest *outside* the repository:
+
+```bash
+python3 - <<'PY'
+from copy import deepcopy
+import json
+from pathlib import Path
+from decomp.verify import load_manifest
+manifest = deepcopy(load_manifest(Path("decomp/manifest.json")))
+manifest["overlay_file11_stage"] = {"format": "goemon-file11-143-central-v1"}
+Path("/tmp/goemon-usa-303-trial-manifest.json").write_text(
+    json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+)
+PY
+
+python3 -m decomp.verify \
+  --upstream /path/to/pinned/mnsg-japan \
+  --retail-rom "/path/to/Mystical Ninja Starring Goemon (USA).z64" \
+  --manifest /tmp/goemon-usa-303-trial-manifest.json \
+  --workdir /tmp/goemon-303-g2-FRESH \
+  --report /tmp/goemon-303-g2-report-FRESH.json \
+  --source-dir decomp \
+  --jobs 8
+
+python3 -m decomp.inventory \
+  --manifest /tmp/goemon-usa-303-trial-manifest.json \
+  --baseline /tmp/goemon-303-g2-FRESH/baseline \
+  --candidate /tmp/goemon-303-g2-FRESH/candidate \
+  --report /tmp/goemon-303-g2-inventory-FRESH.json
+
+python3 -m decomp.local_ci
+```
+
+Replace the pinned checkout and ROM paths with the actual available paths, and provide portable Python/binutils options if using the supplied offline environment. Both `--workdir` and report paths must be **new/nonexistent**, and all generated ROMs, objects and reports must remain outside Git.
+
+**Required green gates:** the trial verifier must report **303 newly C-owned USA functions / 16,180 instruction bytes** and an identical original 33,554,432-byte ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, with 143 original-function symbols and **8,825** semantic file_11 relocations. The inventory must retain **7,376** positive-sized original ELF function entries, 13 original upstream C entries, 303 newly promoted C and **7,060** assembly-owned entries, with zero unexpected aliases. The unchanged `decomp.local_ci` regression suite must also pass.
+
+**Status:** This native 303-C execution is **not run**. The original USA source/ROM baseline and 143 original ELF entry identities were independently verified in this session, but the container does not have the private canonical 210-C source tree. A draft code change is not proof of native matching and must not be merged or counted until all native and ROM-free gates pass.
