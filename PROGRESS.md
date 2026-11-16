@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Three additional Impact isolates: 29 exact JP/USA C probes in research
+
+- Changed: appended original USA/JP VMAs for `func_801D619C_60157C` (56 B), `func_801D825C_60363C` (52 B), `func_80203F5C_62F33C` (44 B) to `docs/JP_RECOMP_TO_C_MATCHING_2026-11-16.md`. Native isolated cross-region matches total **29 functions / 1,448 bytes**, two already canonical, **27 new candidates / 1,372 bytes**. Canonical USA remains 315.
+- Tested: fresh original-USA-and-Japan hash-verified IDO 5.3 source codegen checker passed 29/29, including exact original symbol lengths, zero external relocations and byte-for-byte original ROM code. Seven scan unit tests passed. Two other Impact trials failed original codegen and remain ASM.
+- Limits: research archive sources not yet imported to Git branch, no linked overlay relocations, full-ROM G2, inventory or local CI promotion. The Japanese controller BSS pointer is unproven.
+- Next: deduplicate and stage original-address linked source, then full G2+inventory+CI; inspect remaining eight identical Impact code spans plus normalized mapping candidates.
+
+
 ### 2026-11-16 — Cross-region Japan recomp research: 26 isolated matching C (not promoted)
 
 - Changed: documented an original-ROM-verified 69-section USA/JP code scan with 303 unique byte-identical function leads from 4,372 eligible function spans; recorded 26 exact isolated IDO C matches (1,296 bytes each region), two overlapping existing USA C and 24 new research-only USA candidates (1,220 bytes). Full mapping, Japanese Impact RAM/code distinctions and acceptance plan: `docs/JP_RECOMP_TO_C_MATCHING_2026-11-16.md`.

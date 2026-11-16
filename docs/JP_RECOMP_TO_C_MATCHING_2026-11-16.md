@@ -8,9 +8,9 @@
 - Original Japanese revision-0 decompressed 32 MiB SHA-1: `6f8745fecc3a5e7d4918c7a73353eb0726116ded`.
 - Original pinned `mnsg` source `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, Splat section definitions, generated original USA assembly, original IDO 5.3 `-O2 -mips2 -G 0 -non_shared`.
 - Cross-region scanner inspected **69 corresponding executable sections**, parsed **4,810 original USA assembly annotations**, identified **4,372 eligible functions** of at least 32 bytes, of which **303** were uniquely byte-identical for the entire function across regions, **62** ambiguous and **4,007** non-identical. This is a discovery pool, not 303 decompiled C functions, and not exhaustive of the 7,376 original ELF function identities.
-- Isolated original-ID0 verification re-run locally and passed for **26/26 original-address C source functions**, **1,296 original instruction bytes per region**; each generated source has pinned SHA-256, correct exact compiler function length, no external relocations and byte-exact code against both hash-verified original ROMs.
-- Two of 26, `func_80016660_17260` and `func_80016684_17284`, are **already** USA canonical C; thus **24 newly identified research candidates / 1,220 bytes**. One nonmatching trial `func_801E7398_5A32A8` was explicitly rejected.
-- The live canonical USA branch advanced from 307 to **315 verified C functions** during this research, with eight independent file_11 promotions; these new 24 were not part of those eight promoted slices. The upper bound is **339 USA C** *only if* all 24 prove distinct and pass a combined production gate. Japan's independently verified 24 C remain a separate count.
+- Isolated original-ID0 verification re-run locally and passed for **29/29 original-address C source functions**, **1,448 original instruction bytes per region**; each generated source has pinned SHA-256, correct exact compiler function length, no external relocations and byte-exact code against both hash-verified original ROMs.
+- Two of 29, `func_80016660_17260` and `func_80016684_17284`, are **already** USA canonical C; thus **27 newly identified research candidates / 1,372 bytes**. One nonmatching trial `func_801E7398_5A32A8` was explicitly rejected.
+- The live canonical USA branch advanced from 307 to **315 verified C functions** during this research, with eight independent file_11 promotions; these new 27 were not part of those eight promoted slices. The upper bound is **342 USA C** *only if* all 27 prove distinct and pass a combined production gate. Japan's independently verified 24 C remain a separate count.
 
 ## Verified isolated C function map
 
@@ -45,7 +45,11 @@ Function names and ROM-derived Japanese VMAs are source-verified individual span
 | `func_80210F80_698980` | file_19 | `0x80215D78` | 32 | NEW |
 | `func_80210FA0_6989A0` | file_19 | `0x80215D98` | 32 | NEW |
 
-New candidates by segment: **main 1; file_11 1; Impact file_13 12; file_18 6; file_19 4**. The most reusable recovered shapes include linked-node X/Y/Z coordinate adjustments, vector field setters/accessors, floating-point clamping, float decay, and bit-array operations. Internal field names are provisional semantics, not newly established full actor struct layouts.
+| `func_801D619C_60157C` | file_13 | `0x801DB8BC` | 56 | NEW |
+| `func_801D825C_60363C` | file_13 | `0x801DD97C` | 52 | NEW |
+| `func_80203F5C_62F33C` | file_13 | `0x8020968C` | 44 | NEW |
+
+New candidates by segment: **main 1; file_11 1; Impact file_13 15; file_18 6; file_19 4**. The most reusable recovered shapes include linked-node X/Y/Z coordinate adjustments, vector field setters/accessors, floating-point clamping, float decay, and bit-array operations. Internal field names are provisional semantics, not newly established full actor struct layouts.
 
 ## Japanese Impact RAM addresses and corresponding code
 
@@ -53,7 +57,7 @@ The USA Impact battle trace on `codex/goemon-impact-research` (`docs/IMPACT_BATT
 
 The original Splat layouts place the USA Impact overlay at `0x801CB460` and Japanese Impact overlay at `0x801D0B90`. The original JP file_13 data/BSS section boundary is `0x80214600`. **This boundary has not yet been proven to store the Japanese controller pointer.** Do not infer active JP HP, oil, charge or player fields from that boundary without original load/store cross-references and live RAM confirmation. Do not use a universal USA→JP constant: individual function shifts, overlay BSS positions, data locations and dynamic allocations can differ.
 
-For example, original USA Impact `func_801D721C_6025FC` maps to JP `0x801DC93C`; the distinct `func_801D600C_6013EC` maps to JP `0x801DB72C`. These are executable function VMAs, **not memory watch addresses**. Actual Japanese gameplay watch addresses should be separately logged with observed value changes, sample scene, endianness, type, and source pointer chain; runtime claims require repeated independent evidence. The new 12 Impact C candidates can then be cross-referenced against confirmed controller offset consumers and MIPS references, without confusing model XYZ functions with cockpit resource fields.
+For example, original USA Impact `func_801D721C_6025FC` maps to JP `0x801DC93C`; the distinct `func_801D600C_6013EC` maps to JP `0x801DB72C`. These are executable function VMAs, **not memory watch addresses**. Actual Japanese gameplay watch addresses should be separately logged with observed value changes, sample scene, endianness, type, and source pointer chain; runtime claims require repeated independent evidence. The new 15 Impact C candidates can then be cross-referenced against confirmed controller offset consumers and MIPS references, without confusing model XYZ functions with cockpit resource fields.
 
 ## Fail-closed path to promotion and exhaustive coverage
 
@@ -65,4 +69,8 @@ For example, original USA Impact `func_801D721C_6025FC` maps to JP `0x801DC93C`;
 
 ## Execution provenance
 
-This entry documents a real local original-ROM scan and 26 isolated IDO compiler checks, but **does not claim a new full-ROM build, a 24-C combined verification, a Japanese runtime test, or a compiler-source import into this Git branch**. All source and discovery data are preserved in the separate reproducible research bundle delivered with the findings. Canonical USA manifest, result proofs and inventory are untouched by this documentation commit.
+This entry documents a real local original-ROM scan and 29 isolated IDO compiler checks, but **does not claim a new full-ROM build, a 24-C combined verification, a Japanese runtime test, or a compiler-source import into this Git branch**. All source and discovery data are preserved in the separate reproducible research bundle delivered with the findings. Canonical USA manifest, result proofs and inventory are untouched by this documentation commit.
+
+## Additional Impact original-ID0 matches (29-function checkpoint)
+
+Three further previously-unpromoted file_13 functions compiled with exact byte-for-byte original MIPS output under pinned IDO 5.3 against both USA and JP original ROMs: `func_801D619C_60157C` (56 bytes, JP `0x801DB8BC`), `func_801D825C_60363C` (52 bytes, JP `0x801DD97C`), and `func_80203F5C_62F33C` (44 bytes, JP `0x8020968C`). All three have exact individual symbol sizes, no external relocations and pinned source hashes. Full isolated checker now passes **29/29 functions (1,448 bytes)**. Of 23 originally byte-identical Impact discovery spans, **15** have matching C in isolation; eight remain. Two further bounded Impact probes, `func_801D620C_6015EC` and `func_801DF5C4_60A9A4`, were **nonmatching** and remain assembly-owned. No combined-ROM verification or promotion was performed.
