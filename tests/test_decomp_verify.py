@@ -1036,7 +1036,10 @@ class DecompVerificationTests(unittest.TestCase):
             vm=next(u for u in bad['units'] if u['source']=='script_vm.c')
             vm['functions']=[f for f in vm['functions'] if f['name']!='func_8003DB0C_3E70C']
             path.write_text(json.dumps(bad))
-            with self.assertRaisesRegex(ValueError,'pinned assignment'):load_manifest(path)
+            # 143-C preflight validates the complete 210-function source
+            # subset before the VM-specific preset check is reached.
+            with self.assertRaisesRegex(ValueError,'Canonical 210-function claim inventory changed'):
+                load_manifest(path)
 
     def test_vm_layout_changes_only_selected_main_header_and_table(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -1071,10 +1074,11 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(result['upstream_commit'],manifest['upstream_commit'])
         self.assertTrue(result['comparison']['full_rom_match'])
         verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
-        # The canonical 210-C result is historical evidence. Keep the hash
-        # of the verifier which actually generated it, and independently pin
-        # the current verifier through the reviewed VM residual source ledger.
-        self.assertEqual(result['verifier_source_sha256_lf'],
+        # The canonical 303-C report records the verifier used for native G2.
+        self.assertEqual(result['comparison']['matched_functions'], 303)
+        self.assertEqual(result['verifier_source_sha256_lf'],hashlib.sha256(verifier).hexdigest())
+        historical=json.loads((ROOT/'decomp/results/combined_210_20261116.json').read_text())
+        self.assertEqual(historical['verifier_source_sha256_lf'],
                          '1c60206c7007b9e499250fc2512851bfa2c1d07f5743e607b90938196bd4280b')
         ledger=json.loads((ROOT/'decomp/results/vm_residual_inventory.json').read_text())
         self.assertEqual(hashlib.sha256(verifier).hexdigest(),ledger['current_sources']['verifier_sha256'])
@@ -1091,17 +1095,31 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('overlay_file43_stage') is not None:
             sources.add(manifest['overlay_file43_stage']['source'])
         sources.update(stage['source'] for stage in manifest_file12_stages(manifest))
+        staged_file11_c = {}
         if manifest.get('overlay_file11_stage') is not None:
             from decomp import overlay_file11
             from decomp.research import usa_file11_noop_groups
-            sources.update('research/'+source for source, _, _, _ in overlay_file11.SOURCE_SPECS)
-            if manifest['overlay_file11_stage'] == {'format': usa_file11_noop_groups.STAGE_FORMAT}:
-                sources.update('research/'+name+'.c' for _, _, name in usa_file11_noop_groups.GROUPS)
+            if manifest['overlay_file11_stage'] == {'format': 'goemon-file11-143-central-v1'}:
+                from decomp.file11_143_stage import load_fixture
+                for chunk in load_fixture()['chunks']:
+                    if chunk['kind'] == 'c':
+                        key='research/file11_143_candidate/'+chunk['name']+'.c'
+                        staged_file11_c[key] = chunk['source'].encode('utf-8')
+                        sources.add(key)
+            else:
+                sources.update('research/'+source for source, _, _, _ in overlay_file11.SOURCE_SPECS)
+                if manifest['overlay_file11_stage'] == {'format': usa_file11_noop_groups.STAGE_FORMAT}:
+                    sources.update('research/'+name+'.c' for _, _, name in usa_file11_noop_groups.GROUPS)
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]
             if patches:
                 self.assertEqual(result['sources_sha256_lf'][name],patches[0]['patched_sha256_lf'])
+            elif name in staged_file11_c:
+                # 143-C source text comes from the exact pinned fixture; the
+                # source paths are provenance keys, not separate tracked files.
+                data=staged_file11_c[name]
+                self.assertEqual(hashlib.sha256(data).hexdigest(),result['sources_sha256_lf'][name],name)
             else:
                 data=(ROOT/'decomp'/name).read_bytes().replace(b'\r\n',b'\n')
                 self.assertEqual(hashlib.sha256(data).hexdigest(),result['sources_sha256_lf'][name],name)

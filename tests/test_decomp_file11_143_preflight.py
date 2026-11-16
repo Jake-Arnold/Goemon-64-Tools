@@ -1,6 +1,6 @@
 """Fail-closed ROM-free acceptance of the opt-in file_11 143-C preflight.
 
-The existing 210-function manifest remains the sole production source of truth.
+The historical 210-function source stage is reconstructed for regression tests; canonical production now has 303.
 """
 from __future__ import annotations
 
@@ -18,12 +18,14 @@ class File11143PreflightTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest = load_manifest(mod.ROOT / 'manifest.json')
+        # Research-only preflight models the former canonical 210-C stage.
+        cls.manifest['overlay_file11_stage'] = {'format': 'goemon-file11-character-switch-50-v2'}
         cls.fixture = json.loads(mod.FIXTURE.read_text(encoding='utf-8'))
 
     def checked(self, fixture=None, manifest=None, rom=None):
         return mod.validate(manifest or self.manifest, fixture or self.fixture, rom)
 
-    def test_canonical_210_plus_93_is_not_promoted(self):
+    def test_historical_210_plus_93_preflight_contract(self):
         plan = self.checked()
         self.assertEqual((plan['baseline_usa_c'], plan['existing_file11_c'],
                           plan['additional_research_c'], plan['prospective_usa_c']),

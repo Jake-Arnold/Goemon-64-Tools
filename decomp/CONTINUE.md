@@ -16,7 +16,7 @@ disambiguates `0x80077858` as the VM program cursor from the separate
 text-token cursor at `0x801C77E8`; it does not change the matching-C task queue
 or any proof gate.
 
-## Authoritative 2026-11-16 USA matching-C promotion checkpoint (supersedes dated 160-function checkpoints)
+## Authoritative 2026-11-16 USA matching-C promotion checkpoint (303 functions; supersedes dated 210/160-function checkpoints)
 
 The full native central `decomp.verify` and `decomp.inventory` were run using
 pinned upstream revision `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`,
@@ -26,26 +26,30 @@ independently exact full-ROM baseline cache. The **complete 33,554,432-byte
 ROM matches the original byte-for-byte**, SHA-1
 `6ea0ed71032ce08fc2745f412d84936382197494`.
 
-**Canonical manifest, `results/combined.json` and `results/inventory.json` now
-prove 210/210 matching C functions, 13,336 original machine-code bytes,
-7,376 identified entries, 223 total combined C entries including 13 upstream
-C functions, and 7,153 remaining assembly entries.** The new USA file_11
-stage format `goemon-file11-character-switch-50-v2` is enabled in the canonical
-manifest. The overlay contains 13 reconstructed character-switch functions
-(620 bytes) plus 37 authentic no-op callbacks (444 bytes), with all twelve
-C/ASM linker input extents exact.
+**Canonical `manifest.json`, `results/combined.json` and `results/inventory.json`
+prove 303/303 original-address matching C functions, 16,180 instruction bytes,
+7,376 identified original function entries, 316 combined C entries including 13
+upstream C functions, and 7,060 remaining assembly entries.** The canonical
+USA file_11 stage is `goemon-file11-143-central-v1`: 143 matching functions
+(3,908 bytes), of which 93 were formally promoted from the previously accepted
+50-function (1,064-byte) stage. All 44 C / 44 assembly source objects retain
+original linked bounds. The complete original USA ROM and 8,825 semantic file_11
+relocations match. Published 210-function proof and inventory are archived as
+`results/combined_210_20261116.json` and `results/inventory_210_20261116.json`.
+Promotion and provenance record: `results/file11_143_production_promotion_20261116.json`.
 
 Original and candidate file_11 contain the same **8,825** semantic relocation
 records (identical site/type/target/symbol multisets). Only three original
 records at indices 2506–2508 appear in a pinned cyclical permutation, after
 ID0 codegen; no other order difference is accepted by the fail-closed verifier.
-The 180-byte character selector remains assembly-owned. Two synthetic
-four-byte nop FUNC labels introduced solely by Splat text splitting are
+The 180-byte character selector remains assembly-owned. Three synthetic
+four-byte NOP FUNC annotations introduced solely by Splat text splitting are
 normalized out while preserving all instructions and NON_MATCHING markers.
 
-Fresh central G2/whole-symbol inventory proof and formal acceptance bundle:
+Fresh central G2/whole-symbol inventory proof and formal promotion record:
 `results/combined.json`, `results/inventory.json` and
-`results/file11_central_promotion_20261116.json`. The build proof is a native
+`results/file11_143_production_promotion_20261116.json` (historical 50-C promotion
+remains in `results/file11_central_promotion_20261116.json`). The build proof is a native
 exact-ROM test, not in-game character-switch validation. Japan full-ROM build
 remains independently blocked by original sources' hardcoded USA assembly paths.
 **Do not use the historical 160-function numbers in the dated sections below
