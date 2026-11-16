@@ -430,10 +430,47 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         self.discovery_tab = discovery
         self.discovery_tabs = ttk.Notebook(discovery)
         self.discovery_tabs.pack(fill='both', expand=True)
+        # A single entry point answers "which experiment should I use?".
+        # All four research modes are siblings, never nested in each other.
+        discovery_home = ttk.Frame(self.discovery_tabs, padding=14)
+        self.discovery_tabs.add(discovery_home, text="Start here")
+        ttk.Label(discovery_home, text="What are you trying to find?",
+                  font=("Segoe UI Semibold", 17)).pack(anchor="w", pady=(4, 7))
+        ttk.Label(discovery_home, text=(
+            "All methods work on the selected USA or Japanese game. "
+            "Every method has a Save report button and exports the same "
+            "four-file evidence package. None of these searches edits RAM."),
+            wraplength=900).pack(anchor="w", pady=(0, 14))
         self.build_value_search_tab(self.discovery_tabs)
-        self.build_damage_event_capture_tab(self.discovery_tabs)
+        self.build_state_discovery_tab(self.discovery_tabs)
         self.build_event_sessions_tab(self.discovery_tabs)
-        self.build_state_discovery_tab(self.event_sections)
+        self.build_damage_event_capture_tab(self.discovery_tabs)
+        method_cards = (
+            ("Find a known or unknown value",
+             "Find health, Ryo, coordinates, floats, or text. Narrow matches "
+             "with Exact/Changed/Unchanged filters; optionally repeat.",
+             self.value_search_tab),
+            ("Compare memory before and after",
+             "Capture A before an action, B after, optionally C after reverting. "
+             "Best for temporary values, movement, menus and scene changes.",
+             self.state_discovery_tab),
+            ("Find event and unlock flags",
+             "Repeat an event with before/after and idle/control trials. "
+             "Best for persistent story and inventory bits in a chosen 100-byte region.",
+             self.event_sessions_tab),
+            ("Record damage automatically",
+             "Start a recording, take damage in-game, repeat the hit and "
+             "rank candidate changes around the damage event.",
+             self.damage_capture_tab),
+        )
+        for title, explanation, target in method_cards:
+            card = ttk.LabelFrame(discovery_home, text=title, padding=10)
+            card.pack(fill="x", pady=(0, 9))
+            ttk.Label(card, text=explanation, wraplength=720).pack(
+                side="left", fill="x", expand=True, padx=(0, 10))
+            ttk.Button(card, text="Open tool",
+                       command=lambda page=target:
+                       self.discovery_tabs.select(page)).pack(side="right")
         self.build_unlock_tabs(notebook)
         self.build_story_progress_tab(notebook)
         self.build_japanese_fields_tab(notebook)
@@ -485,8 +522,8 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         # Both ROMs use the same event sessions UI. Japanese sessions
         # compare an explicitly labelled 100-byte research slice (NOT a
         # validated saved-event bank); the existing Advanced A/B/C remains.
-        self.event_sections.tab(self.event_sections.tabs()[0], state='normal')
-        self.event_sections.tab(self.state_discovery_tab, state='normal')
+        self.discovery_tabs.tab(self.event_sessions_tab, state='normal')
+        self.discovery_tabs.tab(self.state_discovery_tab, state='normal')
         self.configure_event_region()
         self.configure_state_probe_region()
         if version.key == 'japan':
