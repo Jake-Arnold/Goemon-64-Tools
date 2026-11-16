@@ -1,5 +1,18 @@
-# Goemon Speedrun Tools v0.11.21 — Japanese native recomp write controls
+# Goemon Speedrun Tools v0.11.22 — Japanese warp spawn coordinates
 
+## v0.11.22 — stop silently warping without destination XYZ
+
+**Root cause found:** The Japanese instant warp controller used `self.entrance_atlas` to find coordinates, but `self.entrance_atlas` was never initialized anywhere in the toolkit. Every uncaptured scene therefore staged a **2-byte map ID only**, not the 12-byte native entrance record `>HHhhhH` (destination, mode, X/Y/Z signed halfwords, heading). The previous code observed the new scene and finite player XYZ but never compared it with the intended destination position, so the UI could claim an apparently successful warp at the wrong coordinates.
+
+The Japanese controller now **never imports guesses from a USA entrance atlas**. In the shared Scene Browser, use **Record CURRENT loaded Japanese room XYZ (not selected scene)** while playing as Goemon in normal gameplay. The button records the current scene's Japanese float32 XYZ and, only if a matching live 12-byte pending entrance record agrees with those coordinates, also captures its actual mode and heading. Otherwise the XYZ is saved with clearly labelled **unverified** heading/mode defaults (`heading=0`, `mode=0x10`). Each record is saved in the user's config at `~/.config/GoemonSpeedrunTools/japan-warp-spawns.json` on Linux and is reused on later launches. No game memory is written during capture.
+
+When later warping **into a recorded scene**, the controller stages the **full 12-byte destination+XYZ+mode+heading block** before sending the Japanese `0x0C` scene reload. The previously user-observed Japanese Oedo South XYZ (`-289, 0, -167`) is offered as an explicitly experimental fallback for that scene; its heading/mode remain unverified. When the destination has **no Japanese warp point**, the controller still allows a scene-only experimental reload but states clearly that **no coordinates were staged**. It does not assert the location is correct.
+
+Once the destination is loaded and stable, the toolkit reads the **actual Japanese XYZ** and compares it to the requested point. A displacement over 16 game units is reported prominently as **SPAWN MISMATCH**, including requested and observed coordinates. If no destination point exists, it reports **SCENE LOADED; NO DESTINATION XYZ WAS STAGED**, not successful positioning. A close XYZ reading is not proof of grounded collision or controllability. Any stale memory freezes are stopped before a validated scene warp request so an old room's frozen XYZ cannot overwrite the new room's position.
+
+**Important limit:** This fixes the missing coordinate staging and false-success reporting, but it cannot guarantee every scene's correct native entrance, collider, facing or spawn from a USA map catalogue. Only user-captured Japanese locations are eligible for automatically staged XYZ; other rooms need live Japanese evidence. These changes are not yet tested against the user's running native Japanese recomp. Both Bash and PowerShell suites now include synthetic Japanese spawn capture and post-load mismatch tests.
+
+## Previous v0.11.21 — Japanese native recomp write controls
 ## v0.11.21 — fix disabled Japanese recomp writes after successful connection
 
 A successful Japan-0 native `recomp` attachment in v0.11.20 still left several buttons greyed out. Root cause: the connection backend admitted native `recomp`, but older Japanese UI access checks still accepted only `project64` and `mupen64plus`. This was **not** caused by `--read-only`, which remains disabled by default in the unified launcher.
