@@ -81,6 +81,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_entrance_ui \
     tests.test_japan_recomp_write_ui \
     -v
 elif [[ -n "${DISPLAY:-}" ]]; then
@@ -102,6 +103,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_entrance_ui \
     tests.test_japan_recomp_write_ui \
     -v
 else
