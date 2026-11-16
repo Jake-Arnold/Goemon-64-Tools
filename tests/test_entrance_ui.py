@@ -91,6 +91,39 @@ class EntranceUITests(unittest.TestCase):
         self.assertIs(self.app.entrance_atlas,old)
         self.assertIn('incorrect ROM',self.app.entrance_note.get())
 
+    def test_japan_uses_same_usa_entrance_for_matching_source_scene(self):
+        from practice.game_versions import VERSIONS
+        from tests.test_japanese_fields import FakeRam
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        self.app.entrance_atlas=atlas_fixture()
+        self.app.jp_rdram=FakeRam({
+            (0x800CD2A2,2): (1).to_bytes(2,'big')})
+        self.app.refresh_entrance_choices(2)
+        spawn=self.app.selected_scene_spawn(2)
+        self.assertEqual(spawn.position,(-10,20,30))
+        self.assertEqual(spawn.pending_bytes(),
+                         Spawn(2,(-10,20,30),spawn.heading,spawn.mode).pending_bytes())
+        self.assertNotEqual(self.app.entrance_box.winfo_manager(),'')
+
+    def test_japan_uses_same_default_fallback_when_source_unrelated(self):
+        from practice.game_versions import VERSIONS
+        from tests.test_japanese_fields import FakeRam
+        atlas=copy.deepcopy(atlas_fixture())
+        row=copy.deepcopy(atlas['payload']['entries'][0])
+        row.update(id='default:2',kind='default',source_map=None,
+                   source_file=None,position=[40,50,60])
+        atlas['payload']['entries'].append(row)
+        atlas['sha256']=digest(atlas['payload'])
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        self.app.entrance_atlas=atlas
+        self.app.jp_rdram=FakeRam({
+            (0x800CD2A2,2):(0x23).to_bytes(2,'big')})
+        self.app.refresh_entrance_choices(2)
+        self.assertEqual(self.app.selected_scene_spawn(2).position,
+                         (40,50,60))
+
     def test_native_default_is_used_when_origin_has_no_unique_route(self):
         atlas=copy.deepcopy(atlas_fixture());row=copy.deepcopy(atlas['payload']['entries'][0])
         row.update(id='default:2',kind='default',source_map=None,source_file=None,position=[40,50,60])
