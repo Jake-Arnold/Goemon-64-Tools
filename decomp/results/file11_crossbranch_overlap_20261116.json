@@ -1,0 +1,52 @@
+{
+  "format": "goemon-crossbranch-file11-overlap-v1",
+  "date": "2026-11-16",
+  "region": "usa",
+  "baseline": {
+    "branch": "chatgptweb/decomp",
+    "matching_c_functions": 210,
+    "matching_c_bytes": 13336
+  },
+  "source_snapshots": [
+    {
+      "branch": "chatgptweb/file11-expansion-20261116",
+      "commit": "5e2edb72e5d4e4a2081926527090c50741209df9",
+      "unpromoted_original_vma_matches": 207,
+      "intra_branch_duplicate_offsets": 0,
+      "full_210_plus_207_central_rom_gate": false
+    },
+    {
+      "branch": "chatgptweb/file11-transition-52-research",
+      "commit": "defbfb82f63fdb5124946d021b09260c342342c1",
+      "additional_candidates_claimed": 54,
+      "identities_enumerated_in_this_overlap_check": 3,
+      "complete_all_54_cross_branch_overlap_check": false
+    }
+  ],
+  "explicit_overlap": [
+    {
+      "name": "func_801FB270_5B7180",
+      "rom_offset": "0x5B7180",
+      "size": 52,
+      "already_in_207": false
+    },
+    {
+      "name": "func_801FC590_5B84A0",
+      "rom_offset": "0x5B84A0",
+      "size": 48,
+      "already_in_207": true,
+      "matching_original_size": true,
+      "matching_original_code_sha256": true
+    },
+    {
+      "name": "func_801FC5C0_5B84D0",
+      "rom_offset": "0x5B84D0",
+      "size": 48,
+      "already_in_207": true,
+      "matching_original_size": true,
+      "matching_original_code_sha256": true
+    }
+  ],
+  "interpretation": "The 207 candidates are confirmed unique by original ROM offset across waves 1–5. Only three of the other branch's 54 unpromoted functions are explicitly enumerated in the latest scratch proof; two duplicate the 207 set. No valid combined total can be calculated for all 54 until the complete per-function list is available. Research snapshots are not canonical matching-C promotions.",
+  "production_counts_changed": false
+}

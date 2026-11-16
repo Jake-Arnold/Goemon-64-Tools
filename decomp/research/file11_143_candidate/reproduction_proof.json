@@ -1,0 +1,465 @@
+{
+  "format": "goemon-file11-143-full-rom-reproduction-v1",
+  "date_utc": "2026-11-16",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_usa_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "pinned_original_asm_sha256": "e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b",
+  "file11_c_functions_original_address_exact": 143,
+  "file11_C_groups": 44,
+  "file11_original_C_instruction_bytes": 3908,
+  "additional_beyond_production_50": 93,
+  "file11_relocation_records_original": 8825,
+  "file11_relocation_records_candidate": 8825,
+  "semantic_relocations_match": true,
+  "whole_rom_bytes_compared": 33554432,
+  "whole_rom_byte_exact": true,
+  "object_extents_and_hashes_verified": 88,
+  "linked_original_symbol_vma_and_size_verified": 143,
+  "local_regression_tests_passed": 9,
+  "combined_210_plus_207_production_g2_ran": false,
+  "production_promotion_claims": 0,
+  "scope": "pristine_USA_source_plus_file11_only",
+  "original_object_hashes": [
+    {
+      "rom_start": "0x587370",
+      "kind": "asm",
+      "sha256": "584a547dbe0be11c2025adb55287530da1c337f4dc684240e8d7d354f25210fb"
+    },
+    {
+      "rom_start": "0x5874D4",
+      "kind": "c",
+      "sha256": "30ed06b5bb2def72384022a0a2f86e91a94308cab6df9591aaec553da9790d99"
+    },
+    {
+      "rom_start": "0x5874E0",
+      "kind": "asm",
+      "sha256": "d9abd995282ef4eb598b5fbc63b7a93bc16ecac561de743e389d2b73c5cb3719"
+    },
+    {
+      "rom_start": "0x5876E4",
+      "kind": "c",
+      "sha256": "e260daa03e2a7dcdb6aa8784d84b18cdf43540e7cd207ab856bf4f44754e44cc"
+    },
+    {
+      "rom_start": "0x587710",
+      "kind": "asm",
+      "sha256": "77e19ff71a5b2004a5bea2bf7061b12a05b73a7daf864d1021b8319094c153c9"
+    },
+    {
+      "rom_start": "0x58E2D8",
+      "kind": "c",
+      "sha256": "95b3e8ee839268a2236332c600092417ebb7bf1fcbb2a07085042d1d5c7a43b0"
+    },
+    {
+      "rom_start": "0x58E2E4",
+      "kind": "asm",
+      "sha256": "a112275c2be1e90e43b08dae1df00d7fc96573a36b05043ed872ebe5d9ea00bd"
+    },
+    {
+      "rom_start": "0x58EAE8",
+      "kind": "c",
+      "sha256": "04565ae4ca4793bda0bd81511a07197e94264aa94437c3d0b5c0c41ac0b0000c"
+    },
+    {
+      "rom_start": "0x58EB08",
+      "kind": "asm",
+      "sha256": "7acf2e9d65fcc4b0398e217e9f016135aa2ade7c8d99d3374d8e1ac101b15474"
+    },
+    {
+      "rom_start": "0x596AEC",
+      "kind": "c",
+      "sha256": "50aaf4d7eb6b6215d0ca6c8a626912df31d6822cb6aa3ddb6bb7889138aa7770"
+    },
+    {
+      "rom_start": "0x596B0C",
+      "kind": "asm",
+      "sha256": "6065eff58d4c79056b114ab6d4ad7e320217b612cc14a04ed20c54b7a3545b8f"
+    },
+    {
+      "rom_start": "0x5993E8",
+      "kind": "c",
+      "sha256": "5d8cec511b0b7d00c626a1bb3b87dd17454e1e996ae5fd719b7b9df52c9a04e0"
+    },
+    {
+      "rom_start": "0x59941C",
+      "kind": "asm",
+      "sha256": "c1f1277f8168de152893853813d2651be869442d316ec1626ceb4c76a826311e"
+    },
+    {
+      "rom_start": "0x5994D0",
+      "kind": "c",
+      "sha256": "d547538caee0555757a297aefc4230c08b93503658b9644e870f8fb5506d9d25"
+    },
+    {
+      "rom_start": "0x599564",
+      "kind": "c",
+      "sha256": "7f059fbfb0dde21f450156bd79f234e79f450c3fc8d157b7f6816686a87e03a5"
+    },
+    {
+      "rom_start": "0x5995E8",
+      "kind": "asm",
+      "sha256": "e3de817db59e326309e155f3a29ea17d6402bed58c362de1f7f0c5cb1480a202"
+    },
+    {
+      "rom_start": "0x599918",
+      "kind": "c",
+      "sha256": "e2d70831ab0b5180dc760a7775bf134b772e88abd319ad68e646821f59fc29c9"
+    },
+    {
+      "rom_start": "0x599A38",
+      "kind": "asm",
+      "sha256": "07d325ebd199baa9ecef6af940fec4bc97f2c5c3673bf0bb61122c6035b2f149"
+    },
+    {
+      "rom_start": "0x599C6C",
+      "kind": "c",
+      "sha256": "6d83d37e0496b9fefe6a4de370fb4b141c3405e59f082e3fc3b04c2d9ec7074e"
+    },
+    {
+      "rom_start": "0x599CFC",
+      "kind": "asm",
+      "sha256": "8329eaf73c4fa0e968bf500f4a755f405a4ec15daf6b440930816c1907878d59"
+    },
+    {
+      "rom_start": "0x59A38C",
+      "kind": "c",
+      "sha256": "1bfbcd5955a8b2edccd5e4ca6d63910b57b8b422ac3b2cf7ddd0a953326dd39a"
+    },
+    {
+      "rom_start": "0x59A510",
+      "kind": "asm",
+      "sha256": "41381c1a5c7c434120960e3c3d20a45593ae8d0beabab51aeb6fb35e3c23710c"
+    },
+    {
+      "rom_start": "0x59AA90",
+      "kind": "c",
+      "sha256": "05e1a7e1bf8f4585c0e1bc2928c4c1cc8712786fe7a7f5f35df549b3bb4d2ec9"
+    },
+    {
+      "rom_start": "0x59AAD0",
+      "kind": "asm",
+      "sha256": "8a268904c187c9d79b81e5daafa03a9e9b5451ace2f1bc4159b9991a59d932d6"
+    },
+    {
+      "rom_start": "0x59AB34",
+      "kind": "c",
+      "sha256": "dc71233a8b45caf6a941760463b508922199d347052c4f38f4813376c4d8af09"
+    },
+    {
+      "rom_start": "0x59AB54",
+      "kind": "asm",
+      "sha256": "0177b819c691564d43d0e8c61cf5fc92b31e1274385ab463ddf15c8d7c2af0dc"
+    },
+    {
+      "rom_start": "0x59AED8",
+      "kind": "c",
+      "sha256": "611c3c5fedeab2bd3111d2e20a9133ccffb18ee67d3f0530969156328ed12189"
+    },
+    {
+      "rom_start": "0x59AF38",
+      "kind": "asm",
+      "sha256": "e524dfc551e2a1b4e428c795c2243fcea7242ba0742006eaff64d33a8c7ebafc"
+    },
+    {
+      "rom_start": "0x59C720",
+      "kind": "c",
+      "sha256": "dea5f43425ab7f497ed8e18d5aa484edbb46bc7bcb6034e2a4b1c0487b3289ff"
+    },
+    {
+      "rom_start": "0x59C72C",
+      "kind": "asm",
+      "sha256": "b0d8ae0e5522e1c62e027b59cd06d848f45e634f767b0e2efc0072ba82e3f3dc"
+    },
+    {
+      "rom_start": "0x59C7C0",
+      "kind": "c",
+      "sha256": "bff10f3382032437d6fc18e94774159e50e72ab7a4ab5601d3a931b6aa2d3f01"
+    },
+    {
+      "rom_start": "0x59C7CC",
+      "kind": "asm",
+      "sha256": "1b057d8edf8de7b2dac700af1ab01bbd5b49598fe9499ff7d75c360540d1a89d"
+    },
+    {
+      "rom_start": "0x59D0C0",
+      "kind": "c",
+      "sha256": "c125dea48c318b5af19d3c9ac2897c788ff907ef82122303f93055df03ca2963"
+    },
+    {
+      "rom_start": "0x59D12C",
+      "kind": "asm",
+      "sha256": "8b98d6b3cff5a663e248b419cf3ad2eea2d9aa45fb0cb276a5682465bfbba72f"
+    },
+    {
+      "rom_start": "0x59D38C",
+      "kind": "c",
+      "sha256": "8879a28b89af1ee5c783d3b7abb63b7d77de407fe916107170b28e80c9b9ba51"
+    },
+    {
+      "rom_start": "0x59D4DC",
+      "kind": "asm",
+      "sha256": "7cd0b4bf5cbb7fb994c32a89b56c20972be62e0014cb2ca295d0de3fc2c8419b"
+    },
+    {
+      "rom_start": "0x59E32C",
+      "kind": "c",
+      "sha256": "2d210620154d93853b3fcd0a8ab22c651fb6b8ddaa43c4a50dc9113be71e22dd"
+    },
+    {
+      "rom_start": "0x59E368",
+      "kind": "asm",
+      "sha256": "64c25c957e624dce62e557ef39ccf7cb784136890119483d7e2680a317a2cef1"
+    },
+    {
+      "rom_start": "0x59E82C",
+      "kind": "c",
+      "sha256": "782a8497c6718f0c8d23f1abc462ca722d485abaa71384e1348cbea0dc557d06"
+    },
+    {
+      "rom_start": "0x59E8B0",
+      "kind": "asm",
+      "sha256": "4beaeb6577cefa9125014c7a636bee06eef178823f32ac5c93d2ac37141f005f"
+    },
+    {
+      "rom_start": "0x59EB60",
+      "kind": "c",
+      "sha256": "af0132c5b473012b55c5cfca9f3bb77ca70a37126942b8ec3fadd7751da02d50"
+    },
+    {
+      "rom_start": "0x59EB80",
+      "kind": "asm",
+      "sha256": "325ea3a90da09ca640751c26204234a9fead158bfceadade5c3519bb2d48bcf7"
+    },
+    {
+      "rom_start": "0x59EBBC",
+      "kind": "c",
+      "sha256": "36ca327806c44f1e33c6113206c47581e4f7d93afcddcfcf78133409da8cb291"
+    },
+    {
+      "rom_start": "0x59EBFC",
+      "kind": "asm",
+      "sha256": "7f37fe015359a50a76ce0679a1e8bb50c67e99635097058bc022f084a8d0d186"
+    },
+    {
+      "rom_start": "0x59EDA0",
+      "kind": "c",
+      "sha256": "f9f3f7ee1606114475e35710335b87bae88d86e2f51b92ebc2cc904dfa98715a"
+    },
+    {
+      "rom_start": "0x59EE00",
+      "kind": "asm",
+      "sha256": "2fdd009d91afacc0f7119e472a69801f6096532471ac4a17d5b31668bd2c3739"
+    },
+    {
+      "rom_start": "0x59EE54",
+      "kind": "c",
+      "sha256": "e6e3977afde7d1ce802c38a2feed6fc46c2ce4f0950d9725f1d53848956d8dd8"
+    },
+    {
+      "rom_start": "0x59EE74",
+      "kind": "asm",
+      "sha256": "45bc366124dddc04b641d27597ac1b664bd3c3926dbec8a10ae54e1f13805513"
+    },
+    {
+      "rom_start": "0x59EEF0",
+      "kind": "c",
+      "sha256": "609bdaefa044dea8b7fa02af9f4bebb223434f26c822162ad9d816c550cf0bc4"
+    },
+    {
+      "rom_start": "0x59EF18",
+      "kind": "asm",
+      "sha256": "533d0ea2fb93494d8c4b80de9a6336a4200d4ee727a001eee8673642700590ab"
+    },
+    {
+      "rom_start": "0x59EF4C",
+      "kind": "c",
+      "sha256": "f7abd8b9990640b4c7eed2826e26eccdf599fdadad635938e1836b761b810132"
+    },
+    {
+      "rom_start": "0x59EF8C",
+      "kind": "asm",
+      "sha256": "e1f8a6057221fc18779c9a9eed01efbd652ec89df9eb86ddbc3bddd5c9ddf926"
+    },
+    {
+      "rom_start": "0x59F044",
+      "kind": "c",
+      "sha256": "7260d98cd56cc41a5498aea51cd9971ccc1a901f49a5132acd2a10f06efcda91"
+    },
+    {
+      "rom_start": "0x59F0B8",
+      "kind": "asm",
+      "sha256": "0c52181ac437cabef5d4364457eb639ae859b91a1c8ccb58821a65d521377ef2"
+    },
+    {
+      "rom_start": "0x5A0F94",
+      "kind": "c",
+      "sha256": "e8ffe31cb325d762d52b2e2f239404e0dccdca2bc50c8eb2d4f49edb93b09c0f"
+    },
+    {
+      "rom_start": "0x5A0FA0",
+      "kind": "asm",
+      "sha256": "aa1a911445651874f1130cf25b0f39d95452781638503073c7d526f890a59b40"
+    },
+    {
+      "rom_start": "0x5A5FDC",
+      "kind": "c",
+      "sha256": "11ebd44f207679f8e813ee1471ced6a4e8f069c80e72564bc8182f6a9dba0bfb"
+    },
+    {
+      "rom_start": "0x5A5FE8",
+      "kind": "asm",
+      "sha256": "f1f9d3bc30c20f16f483ad4c44ae7be9b7210ea0734c524bb6b7d729f934f809"
+    },
+    {
+      "rom_start": "0x5A63E0",
+      "kind": "c",
+      "sha256": "8831fc23ef4c67b1ec0cb54c2eb5483ed22612bdbec04d5d9e10e9fff394bf76"
+    },
+    {
+      "rom_start": "0x5A63F8",
+      "kind": "asm",
+      "sha256": "adba3623bffd4403c813951dc2a9ab8c72f1ce1ef9ad988165fed3bc258abcab"
+    },
+    {
+      "rom_start": "0x5A74CC",
+      "kind": "c",
+      "sha256": "1dec6a1c31e8b24afcb44d15039740ce6287a30888ca7f0f386508164bf5e0a1"
+    },
+    {
+      "rom_start": "0x5A75CC",
+      "kind": "asm",
+      "sha256": "c836760084406c387c9eb9fe54e383b742437b5ff1faf5bf9b33e9db30b119b4"
+    },
+    {
+      "rom_start": "0x5A9410",
+      "kind": "c",
+      "sha256": "5424f559f232e0211f7397c95afbfc63efc8987551a03f9407f53c067e0b09ef"
+    },
+    {
+      "rom_start": "0x5A9428",
+      "kind": "asm",
+      "sha256": "adf397e7b98c05bff4f8db4fa6a55cb719b45aa65070373f0e89ce0ae068a7ca"
+    },
+    {
+      "rom_start": "0x5A9838",
+      "kind": "c",
+      "sha256": "2a25c8cd4f8240b66bf7c66e36cfa97ce76be29940b81f17edd9225d99adf961"
+    },
+    {
+      "rom_start": "0x5A9878",
+      "kind": "asm",
+      "sha256": "9fbd253ded83f9bba083bfa2b5cd21fd09aa83c4dcb85464b2718da62fac6441"
+    },
+    {
+      "rom_start": "0x5AC230",
+      "kind": "c",
+      "sha256": "62008f393466dc68c0b5e1eb4db8b0f202d1724eb0552109e5780aab8e7a4749"
+    },
+    {
+      "rom_start": "0x5AC250",
+      "kind": "asm",
+      "sha256": "c804339d8190fc68d72cab42a8c619ce4ee1013be99748f9eea9738126f2e953"
+    },
+    {
+      "rom_start": "0x5AEBC4",
+      "kind": "c",
+      "sha256": "eb30e3bded771cdd5069d304ba7f7473c83403c8251c1ae28f2fce312eac1177"
+    },
+    {
+      "rom_start": "0x5AEBDC",
+      "kind": "asm",
+      "sha256": "4c0e47718e9cf7b4d5c1d2244e5848f53d3e4eaf14c42c3a3c83627a2b428530"
+    },
+    {
+      "rom_start": "0x5B1310",
+      "kind": "c",
+      "sha256": "3ca25ce08b087c426a3c6ba5057eecb66c03b4e569b59cb209429f8dd9cf5861"
+    },
+    {
+      "rom_start": "0x5B1330",
+      "kind": "asm",
+      "sha256": "d6e0d9d8e1a467a1543c30083979a057216fe472cc41663167e4371185e2faa4"
+    },
+    {
+      "rom_start": "0x5B144C",
+      "kind": "c",
+      "sha256": "3cbfcfc2c92f1d15094d6abfe56ac9b93e8dcf38c4137ef9756100773d72f997"
+    },
+    {
+      "rom_start": "0x5B14EC",
+      "kind": "asm",
+      "sha256": "24dffbef9086a6b0c4435f366861b7f3e938ca8814a1fa05f9f8c4c1294cb976"
+    },
+    {
+      "rom_start": "0x5B1808",
+      "kind": "c",
+      "sha256": "37b9773e015e5a58ef39fce9441c90c6b0188495a25649af52f9f71d9afd27df"
+    },
+    {
+      "rom_start": "0x5B1A14",
+      "kind": "asm",
+      "sha256": "01ff0ce1e91d08e8158e8bce81d6ba64e8085ce56c87f0dcd7a5d8d8f56ee693"
+    },
+    {
+      "rom_start": "0x5B1E3C",
+      "kind": "c",
+      "sha256": "e17e19b0f97a4e48094938e3c766fef18793f5bf6d3848266816c03c56e030d5"
+    },
+    {
+      "rom_start": "0x5B1E5C",
+      "kind": "asm",
+      "sha256": "c0f90fdd261e3fc78f0b37f72b4994bee43a0455f56d2b302d7a94ec308184d2"
+    },
+    {
+      "rom_start": "0x5B22A8",
+      "kind": "c",
+      "sha256": "4a066ec614e2ce314e7c80a25d42bc609100e1c64326ce380b0fe74c5baf12f9"
+    },
+    {
+      "rom_start": "0x5B22C8",
+      "kind": "asm",
+      "sha256": "a1e0897d54c0bb2a3ce230a4ba783c2543ff6758d16f282f79d730727ba3f715"
+    },
+    {
+      "rom_start": "0x5B2314",
+      "kind": "c",
+      "sha256": "f26e4556b5ade4da9633e0f7b126bd5e29485e1f21a46944fe9ec7e4cd36a329"
+    },
+    {
+      "rom_start": "0x5B2334",
+      "kind": "asm",
+      "sha256": "ee980c4172afc965a74376e3095c6e0ef9c396ffeb0e5753a6a5f2adfed51c12"
+    },
+    {
+      "rom_start": "0x5B4398",
+      "kind": "c",
+      "sha256": "d5c96073ae144f00a38049eb043a3889bac0db550f872a5dea80cf7e8e8b1503"
+    },
+    {
+      "rom_start": "0x5B43A4",
+      "kind": "asm",
+      "sha256": "a60470644534e192a847c8fa57a417e6249a65581918c9705f6be1825e056e38"
+    },
+    {
+      "rom_start": "0x5B65D4",
+      "kind": "c",
+      "sha256": "d59c515964d11f0b54189dfbd9dab16b5a4b8bd871acdac448a5274520934965"
+    },
+    {
+      "rom_start": "0x5B65F4",
+      "kind": "asm",
+      "sha256": "cec4792afe722448f665338e6cf4f5c010fb4ebadaae75caa8c263bbc7e1fecc"
+    },
+    {
+      "rom_start": "0x5B8488",
+      "kind": "c",
+      "sha256": "4e0bb70419d8d1b3f43d5d38f2775dc84d49532b061935e670228d1623dd0a34"
+    },
+    {
+      "rom_start": "0x5B84A0",
+      "kind": "asm",
+      "sha256": "0d54f6fbb07bb730eee4a46e9bd769b657335a6d6e0a80ca6ba4f2b67047187c"
+    }
+  ]
+}

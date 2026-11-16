@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-16",
+  "region": "usa",
+  "stage": "isolated_and_adjacent_native_ido5.3_plus_clean_upstream_full_rom_wave4_wave5",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_asm_sha256": "e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b",
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "wave4_new_functions": 5,
+  "wave4_new_bytes": 280,
+  "wave4_exact_groups": 3,
+  "wave4_grouped_bytes": 800,
+  "wave5_new_functions": 3,
+  "wave5_new_bytes": 164,
+  "wave5_exact_individual": 3,
+  "wave5_exact_groups": 3,
+  "wave5_grouped_functions": 16,
+  "wave5_grouped_bytes": 564,
+  "wave4_plus_wave5_group_bytes": 1364,
+  "wave4_plus_wave5_clean_upstream_full_rom_match": true,
+  "rom_size_bytes": 33554432,
+  "original_file11_relocations": 8825,
+  "candidate_file11_relocations": 8825,
+  "relocation_site_type_target_multiset_equal": true,
+  "official_production_matching_functions": 210,
+  "official_production_matching_bytes": 13336,
+  "unpromoted_matching_functions": 207,
+  "unpromoted_matching_bytes": 7444,
+  "hypothetical_post_promotion_functions": 417,
+  "hypothetical_post_promotion_bytes": 20780,
+  "combined_production_210_plus_207_rom_gate_run": false,
+  "new_production_claims": 0,
+  "verified_wave5_groups": [
+    {
+      "start": "0x59E32C",
+      "end": "0x59E368",
+      "functions": 2,
+      "bytes": 60,
+      "original_sha256": "63b8f875e090cebc71d1769e7e0431256f6863262e3a1c33687d82c1d8319280"
+    },
+    {
+      "start": "0x59A38C",
+      "end": "0x59A510",
+      "functions": 11,
+      "bytes": 388,
+      "original_sha256": "c84db559fe00b9cd36a091eb6c32a9f46c4c4a9daa96820cfbe5bd85bbd11836"
+    },
+    {
+      "start": "0x59F044",
+      "end": "0x59F0B8",
+      "functions": 3,
+      "bytes": 116,
+      "original_sha256": "de52cd23f99b597ff1768a8ea65cc0f2c88c1139ee92121c4f9bf97aa5571c30"
+    }
+  ]
+}

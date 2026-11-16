@@ -1,0 +1,242 @@
+{
+  "format": "goemon-file11-adjacent-wave5-source-fixtures-v1",
+  "region": "usa",
+  "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_asm_sha256": "e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b",
+  "baseline_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "previous_unpromoted_research_candidates": 199,
+  "previous_wave4_candidates": 5,
+  "new_functions": 3,
+  "new_function_bytes": 164,
+  "adjacent_groups": [
+    {
+      "start": 5890860,
+      "end": 5890920,
+      "sha256": "63b8f875e090cebc71d1769e7e0431256f6863262e3a1c33687d82c1d8319280",
+      "function_offsets": [
+        5890860,
+        5890908
+      ]
+    },
+    {
+      "start": 5874572,
+      "end": 5874960,
+      "sha256": "c84db559fe00b9cd36a091eb6c32a9f46c4c4a9daa96820cfbe5bd85bbd11836",
+      "function_offsets": [
+        5874572,
+        5874604,
+        5874636,
+        5874668,
+        5874700,
+        5874732,
+        5874764,
+        5874796,
+        5874828,
+        5874860,
+        5874892
+      ]
+    },
+    {
+      "start": 5894212,
+      "end": 5894328,
+      "sha256": "de52cd23f99b597ff1768a8ea65cc0f2c88c1139ee92121c4f9bf97aa5571c30",
+      "function_offsets": [
+        5894212,
+        5894248,
+        5894280
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "name": "func_801DE47C_59A38C",
+      "rom_offset": 5874572,
+      "vma": 2149442684,
+      "size": 32,
+      "original_sha256": "1ae996a03e67f5423ac2099d416a2d8a292df1d4961b1bcfe3b3752471db2928",
+      "source": "extern void handler(void*);void func_801DE47C_59A38C(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149464768
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE49C_59A3AC",
+      "rom_offset": 5874604,
+      "vma": 2149442716,
+      "size": 32,
+      "original_sha256": "1ae996a03e67f5423ac2099d416a2d8a292df1d4961b1bcfe3b3752471db2928",
+      "source": "extern void handler(void*);void func_801DE49C_59A3AC(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149464768
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE4BC_59A3CC",
+      "rom_offset": 5874636,
+      "vma": 2149442748,
+      "size": 32,
+      "original_sha256": "1ae996a03e67f5423ac2099d416a2d8a292df1d4961b1bcfe3b3752471db2928",
+      "source": "extern void handler(void*);void func_801DE4BC_59A3CC(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149464768
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE4DC_59A3EC",
+      "rom_offset": 5874668,
+      "vma": 2149442780,
+      "size": 32,
+      "original_sha256": "1ae996a03e67f5423ac2099d416a2d8a292df1d4961b1bcfe3b3752471db2928",
+      "source": "extern void handler(void*);void func_801DE4DC_59A3EC(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149464768
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE4FC_59A40C",
+      "rom_offset": 5874700,
+      "vma": 2149442812,
+      "size": 32,
+      "original_sha256": "1ae996a03e67f5423ac2099d416a2d8a292df1d4961b1bcfe3b3752471db2928",
+      "source": "extern void handler(void*);void func_801DE4FC_59A40C(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149464768
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE51C_59A42C",
+      "rom_offset": 5874732,
+      "vma": 2149442844,
+      "size": 32,
+      "original_sha256": "1ae996a03e67f5423ac2099d416a2d8a292df1d4961b1bcfe3b3752471db2928",
+      "source": "extern void handler(void*);void func_801DE51C_59A42C(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149464768
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE53C_59A44C",
+      "rom_offset": 5874764,
+      "vma": 2149442876,
+      "size": 32,
+      "original_sha256": "1ae996a03e67f5423ac2099d416a2d8a292df1d4961b1bcfe3b3752471db2928",
+      "source": "extern void handler(void*);void func_801DE53C_59A44C(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149464768
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE55C_59A46C",
+      "rom_offset": 5874796,
+      "vma": 2149442908,
+      "size": 32,
+      "original_sha256": "1ae996a03e67f5423ac2099d416a2d8a292df1d4961b1bcfe3b3752471db2928",
+      "source": "extern void handler(void*);void func_801DE55C_59A46C(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149464768
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE57C_59A48C",
+      "rom_offset": 5874828,
+      "vma": 2149442940,
+      "size": 32,
+      "original_sha256": "1ae996a03e67f5423ac2099d416a2d8a292df1d4961b1bcfe3b3752471db2928",
+      "source": "extern void handler(void*);void func_801DE57C_59A48C(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149464768
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE59C_59A4AC",
+      "rom_offset": 5874860,
+      "vma": 2149442972,
+      "size": 32,
+      "original_sha256": "6bee464b5fbf33ec55d5e7dd0f9fbae2bb1ec3e009c1683d711afd83f03dca1c",
+      "source": "extern void handler(void*);void func_801DE59C_59A4AC(void*a,unsigned unused){handler(a);}",
+      "bindings": {
+        "handler": 2149467056
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801DE5BC_59A4CC",
+      "rom_offset": 5874892,
+      "vma": 2149443004,
+      "size": 68,
+      "original_sha256": "5b90a313e15356be51eab8c7316d6ee686315b49928415cc68159af735a71ff0",
+      "source": "typedef struct{char p[0x60];unsigned char state;}Actor;extern void first(void*,int);extern void second(void*);void func_801DE5BC_59A4CC(void*a,unsigned ignored){if(((Actor*)a)->state==2)first(a,3);else second(a);}",
+      "bindings": {
+        "first": 2149538800,
+        "second": 2149467056
+      },
+      "new_wave5": true
+    },
+    {
+      "name": "func_801E241C_59E32C",
+      "rom_offset": 5890860,
+      "vma": 2149458972,
+      "size": 48,
+      "original_sha256": "d79ce2d558892100592dea078eb3e81d1e775bfd86b997109af00a4fec168031",
+      "source": "extern void handler(void *,float,float,float);void func_801E241C_59E32C(void*a){handler(a,0,1.0f,1.0f);}",
+      "bindings": {
+        "handler": 2149462740
+      },
+      "new_wave5": true
+    },
+    {
+      "name": "func_801E244C_59E35C",
+      "rom_offset": 5890908,
+      "vma": 2149459020,
+      "size": 12,
+      "original_sha256": "ade804364e8f37442c95266896916bcaa26d150242d327f0d36f61d569dd0e2b",
+      "source": "typedef struct {short flag;} Inner;typedef struct {char pad[0x5C];Inner* state;} Actor;void func_801E244C_59E35C(Actor*a){a->state->flag=0;}\n",
+      "bindings": {},
+      "new_wave5": false
+    },
+    {
+      "name": "func_801E3134_59F044",
+      "rom_offset": 5894212,
+      "vma": 2149462324,
+      "size": 36,
+      "original_sha256": "6d3a329f163b17e744e6e1b7f90062fec4e057bb8d369553b8ecfb14ed6f2737",
+      "source": "typedef struct {short code;} Inner;typedef struct {char pad[0x5C];Inner*state;} Actor;extern void handler(void*);void func_801E3134_59F044(Actor*p){p->state->code=0;handler(p);}\n",
+      "bindings": {
+        "handler": 2149462360
+      },
+      "new_wave5": false
+    },
+    {
+      "name": "func_801E3158_59F068",
+      "rom_offset": 5894248,
+      "vma": 2149462360,
+      "size": 32,
+      "original_sha256": "16f5cfeb301fd977c0c7bed92817024d9a3238fc8808951474e582aa89b7aeba",
+      "source": "typedef unsigned char u8;typedef struct {char p[0x30];u8 flags;char pad[0xD4-0x31];u8 mode;} Actor;void func_801E3158_59F068(Actor*a){a->mode=60;a->flags&=~1;a->flags|=4;}\n",
+      "bindings": {},
+      "new_wave5": false
+    },
+    {
+      "name": "func_801E3178_59F088",
+      "rom_offset": 5894280,
+      "vma": 2149462392,
+      "size": 48,
+      "original_sha256": "d79ce2d558892100592dea078eb3e81d1e775bfd86b997109af00a4fec168031",
+      "source": "extern void handler(void *,float,float,float);void func_801E3178_59F088(void*a){handler(a,0,1.0f,1.0f);}",
+      "bindings": {
+        "handler": 2149462740
+      },
+      "new_wave5": true
+    }
+  ]
+}
