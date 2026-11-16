@@ -15,7 +15,7 @@ class JapanesePartyUiSmokeTest(JapanTkSmokeTest):
             host.jp_research_tabs.tab(tab, 'text')
             for tab in host.jp_research_tabs.tabs()
         ]
-        self.assertEqual(names, ['Goemon XYZ', 'Scene warp'])
+        self.assertEqual(names, ['Goemon XYZ', 'Scene warp', 'USA → JP crosswalk'])
 
     def test_legacy_refresh_keeps_independent_controls_safe(self):
         host = self.host
