@@ -360,7 +360,7 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         self.refresh_named_native_checkpoints()
 
         # Read-only diagnostics coexist with direct mapped Japanese unlock edits.
-        jp_card = ttk.LabelFrame(right, text=' Japan Project64 / Mupen64Plus RDRAM ', padding=10)
+        jp_card = ttk.LabelFrame(right, text=' Japanese guest RAM (recomp / emulators) ', padding=10)
         self.jp_card = jp_card
         jp_card.pack(fill='x', pady=(0, 6))
         ttk.Label(jp_card, text='Verify Japan-0 ROM; select recomp, project64 (Windows) or mupen64plus, '
@@ -490,7 +490,7 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         if self.verified_rom_path is not None:
             self.status.set(
                 f'Japan-0 ROM verified again from saved selection: '
-                f'{self.verified_rom_path}. Connect to Project64 or Mupen; '
+                f'{self.verified_rom_path}. Connect to native recomp, Project64 or Mupen; '
                 'live RAM signatures will still be checked.')
         # Toolkit-local F1; it does not register a system-wide/game hotkey.
         root.bind_all('<F1>', self._on_f1_open_memory, add='+')
@@ -1604,7 +1604,7 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
                 self.status.set(f'Mupen64Plus connection failed: {exc}')
             return
         if not self.active_version.live_memory_supported:
-            self.status.set('Japanese live memory is not supported: verify the ROM offline instead.')
+            self.status.set('The selected game region does not support this connection backend.')
             return
         try:
             pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
@@ -1645,7 +1645,7 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         self.root.after(50, self._poll_connect_results)
 
     def _connect_japan_emulator(self):
-        """Attach Japan-0 to verified Mupen or Windows Project64 guest RDRAM."""
+        """Attach Japan-0 to verified native recomp/Mupen/Project64 guest RDRAM."""
         target = self.connection_target.get()
         if target not in ('auto', 'mupen64plus', 'project64', 'recomp'):
             self.status.set('Select auto, recomp, mupen64plus or project64.')
