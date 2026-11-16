@@ -1,0 +1,60 @@
+{
+  "format": "goemon-usa-307-native-trial-v1",
+  "status": "FULL_NATIVE_G2_INVENTORY_AND_CI_PASS_RESEARCH_ONLY",
+  "date": "2026-11-16",
+  "source_branch": "chatgptweb/decomp 306 baseline",
+  "candidate_new_function": {
+    "name": "func_801E3008_59EF18",
+    "rom_offset": "0x59EF18",
+    "size_bytes": 52,
+    "original_rom_code_sha256": "01a2ee6edebc172353056fea6431c94c82500d681115481434ececce2f575cc8",
+    "source_sha256": "ff2fdde2b4b2a6e4895627ed60be4a826e9f53ffe49d71a76e2bc47a914891d9",
+    "trimmed_object_sha256": "89980da48f2448a3af0a06fd6346dd2c87c5def09266cf53055d245a91496e1b"
+  },
+  "full_rom": {
+    "exact_bytes": 33554432,
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "full_rom_match": true
+  },
+  "candidate": {
+    "matching_c_functions": 307,
+    "matching_c_bytes": 16344,
+    "file11_matching_c_functions": 144,
+    "file11_c_bytes": 3960
+  },
+  "file11_relocations": {
+    "original": 8825,
+    "candidate": 8825
+  },
+  "inventory": {
+    "identified_original_entries": 7376,
+    "combined_c_entries": 320,
+    "remaining_assembly": 7056,
+    "extra_positive_aliases": 0,
+    "identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  },
+  "proof_provenance": {
+    "execution": "Fresh uninterrupted standard decomp.verify CLI using opt-in 307-C manifest and pinned 306 baseline, followed by standard decomp.inventory --manifest on same fresh candidate and full decomp.local_ci on source checkout.",
+    "original_baseline_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "candidate_elf_sha256": "273c3ee1d65db44ce0dd198b3497829bcbac9661d3bc25f68c6047bf458b1314",
+    "full_postbuild_audit_sha256": "33a0a22103853ab2cff28264fd5560e3c4be972a53f121eec792e6683f20af19",
+    "original_inventory_audit_sha256": "26beca30a6c826d856e97cfe3c681513fc189fecf8edb05540b44dfde80d8b9f",
+    "full_central_g2_cli_report_sha256": "904337186b789bca19150080a520b99c7380c511e2ccb47656c1171c9cfeb94e",
+    "full_central_g2_cli_report": "decomp/results/file11_144_native_full_g2_20261116.json",
+    "g2_verifier_source_sha256": "607fc38152d04ce555ed38a1a16c24fb2e76104833c7c765a5933cb212c1b8ab"
+  },
+  "canonical_production_unchanged": true,
+  "full_local_ci": {
+    "status": "PASS",
+    "decomp_tests": 222,
+    "verifier_ledger_tests": 160,
+    "decomp_skipped": 1,
+    "verifier_skipped": 4,
+    "task_evidence": "PASS",
+    "gcc_asan_ubsan_regression": "PASS"
+  },
+  "limitations": [
+    "Native full-ROM G2, original ELF inventory, and complete local CI passed. This is a separate opt-in 307 research manifest, not canonical production.",
+    "Other 114 remaining file11 candidates and 4 distinct PR24 candidates have not undergone joint ROM G2."
+  ]
+}

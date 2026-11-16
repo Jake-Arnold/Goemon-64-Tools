@@ -27,7 +27,7 @@
     "manifest": "decomp/manifest.json",
     "manifest_sha256": "0e2e7c103c0c1451307fb048041d409bbf5ac467b6d54e4c17d7dcb5b51d9075",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "876390a62891188161c2e32744abb8543a9598e3e7c61fffce04d2eb1a0cda79"
+    "verifier_sha256": "607fc38152d04ce555ed38a1a16c24fb2e76104833c7c765a5933cb212c1b8ab"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",

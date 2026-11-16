@@ -1,5 +1,19 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Full standard 307-C opt-in G2 and inventory passed
+
+- Tested: independently reran the complete canonical `decomp.verify` CLI with the pinned original USA ROM, cached certified pristine baseline, and a separate 144-function `file_11` review manifest. It completed uninterrupted with `status=matched`, all **307/307** C functions and **16,344** instruction bytes matching the original **33,554,432-byte USA ROM** (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`); full report SHA-256 `904337186b789bca19150080a520b99c7380c511e2ccb47656c1171c9cfeb94e`.
+- Checked: 8,825/8,825 `file_11` semantic relocations and all existing Impact overlay constraints; `decomp.inventory --manifest` passed at 7,376 original ELF identities, 320 combined C, 7,056 assembly functions, zero extra positive-sized aliases.
+- ROM-free local CI: PASS, 222 decomp tests and 160 verifier/ledger tests (five skipped total), task evidence validation, and GCC ASan/UBSan display-emitter regression. Historical 306/303/210 production proofs unchanged.
+- Scope: updated the PR #37 research-only evidence and regression test to retain the complete standard G2 proof; **canonical production remains 306** until a separate formal manifest/inventory/proof promotion and review.
+
+### 2026-11-16 — Original-USA 307-C opt-in native trial and 114-candidate cross-branch deduplication
+
+- Changed: added versioned, opt-in `decomp.file11_144_stage`, leaving canonical 143-C `file_11` stage and 306-C USA manifest/proofs unchanged. Replaced the 52-byte original ASM slice `0x59EF18–0x59EF4C` with independently matching C `func_801E3008_59EF18`; pin original instruction, C source, trimmed IDO object and unchanged 88-chunk layout hashes. Added seven fail-closed regression tests. Reconciled historical verifier source fingerprint checks rather than rewriting earlier proofs.
+- Cross-branch audit: PR #23 contains 207 independent `file_11` candidate offsets, 93 already promoted and 114 still outstanding; PR #24 contributes four distinct candidate offsets not in the PR #23 pool. Hypothetical USA ceiling is 424 only after future full native G2, relocation and inventory proof; Japanese C candidates remain separate.
+- Tested: original IDO 5.3 52/52 instruction bytes identical, 12 zero bytes trimmed; completed candidate native 32 MiB USA ROM exact, post-build verifier primitives checked 307/307 C (16,344 bytes), `file_11` 8,825/8,825 semantic relocations and the complete original Impact overlay; baseline 7,376-function identity preserved with zero new aliases, 7,056 ASM. Full ROM-free local CI passed (222 decomp tests, 160 verifier/ledger tests, task evidence and GCC ASan/UBSan regression). The original verifier CLI timed out during asset linking; completed candidate build and official verifier post-build functions were run separately, not represented as an uninterrupted central G2 CLI report.
+- Remaining: keep production at 306. Obtain the standard combined 307 CLI proof and review the source/ledger before any production promotion; then incrementally integrate the remaining 114+4 USA candidates.
+
 ### 2026-11-16 — Three independent Impact/dialogue USA functions passed combined 306-C G2
 
 - Changed: consolidated exactly three previously G2-proven functions from `codex/goemon-impact-research` on top of canonical 303: `func_801D3954_5FED34` (40 B Impact HP clamp), `func_801D3A44_5FEE24` (36 B Impact HP floor/return), and `func_8000C430_D030` (36 B dialogue slot setter). Added only the two pinned `file_13` stages, exact 36-byte dialogue C ownership, dedicated stage/header/ABI, matching verifier and regression tests. No unrelated research-only functions were promoted.
