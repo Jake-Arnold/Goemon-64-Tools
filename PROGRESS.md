@@ -2794,3 +2794,8 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Added two Japanese GUI tests for right-click Freeze/Unfreeze with a synthetic verified Project64-style RDRAM reader; test that the command is enabled, values freeze from fresh RAM, the menu switches to Unfreeze, read-only blocks it, and region switching clears locks.
 - Matched the Japanese edit/freeze menu-enabled condition to the attached emulator backend target; an attached reader from another target no longer enables a misleading writable menu. No extra prompts, ROM writes or USB/proprietary dependencies added.
 - **These newly extended cross-region regression tests still need a Windows run;** prior user report that tests passed predates the new code.
+
+### 2026-11-15 — Integration checkpoint: JP freezes, inventory progress, named native checkpoints
+
+- Summarised newest region-correct toolkit capabilities and verification boundaries at the top of `docs/USA_JAPAN_TOOLKIT_PARITY_CHECKLIST.md`. Historical entries were retained for research provenance rather than silently rewriting past observations.
+- Existing user acceptance covers old Windows/Linux tests and all JP warps; the new freeze, progress and named-state code plus expanded USA regressions still needs retesting before merge. Keep PR #17 draft. Next priority after the tests: verify Japanese raw freezes at live values, save/load named native state slots and test 17 verified progress row edits. Then reconcile stacked PRs #13–#17.

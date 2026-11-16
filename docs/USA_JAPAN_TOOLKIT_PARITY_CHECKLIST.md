@@ -1,5 +1,21 @@
 # USA ↔ Japan Toolkit feature parity checklist
 
+## Japanese toolkit acceptance and parity expansion — 15 November 2026 (current)
+
+**User acceptance before this batch:** the existing native Project64 Japanese scene warps work, and the then-current Windows and Linux regression suites passed. Right-click Live Memory Hex Edit worked; Freeze was disabled by an explicit Japan-only UI gate.
+
+**This batch, implemented and pushed to draft PR #17:**
+
+- **Live Memory freezes:** Japanese fixed guest-address 1/2/4/8-byte Freeze/Unfreeze is now available from the right-click menu and the shared Value freezes tab. A 10 ms best-effort worker checks Japan-0 gameplay context, pauses during scene reloads/menus, and opens a short-lived writable handle only when a value diverges. Freezes stop on disconnect, backend/region changes and toolkit savestate actions. USA health/God Mode/player-task freezes remain USA-specific; the original USA freeze path is preserved.
+- **Story Progress:** 17 user-verified Japanese inventory/party progression rows now appear across the existing grouped Story Progress tabs. They are readable and writable through the existing region-specific mapped unlock writer, with stale-value checks. These rows represent **inventory progress**, not Japanese permanent saved-event flags; unknown JP story bits are still read-only research subjects. USA story bit mappings remain unchanged.
+- **Named Japanese checkpoints:** the existing native emulator full savestate card offers a name field, **Save named slot** and **Load named slot** for Japan Project64/Mupen64Plus. Native slots 0–9 are still owned by the emulator, which preserves position, actor state, inventory and progress. The toolkit saves **only local slot metadata**, optional scene/character/XYZ observations, and request timestamp; it never serializes game state. Commands explicitly say **requested**, not confirmed complete, and named LOAD requires a connected matching Japanese emulator.
+- **Regression coverage:** added Japanese synthetic freeze tests, Story Progress model tests, native slot metadata tests, and Tk tests covering all three features. Cross-region scripts now include the existing USA raw-freeze backend, USA freeze UI and USA Story Progress UI suites. Fixed the preexisting stale USA menu-index expectation (Freeze is item 2 after Hex Edit and separator). Documentation: [Named checkpoint design](JAPAN_NAMED_CHECKPOINTS.md) and `PROGRESS.md`.
+
+**Verification boundary:** The user's previously reported test pass and live warp success predate these feature commits. This new batch has been statically reviewed and committed, **but has not yet completed an independent Windows/Tk regression run or live Project64 test**. PR #17 remains draft. No Japanese actor pointer/USA story-event mapping was fabricated or imported.
+
+The earlier entries below are historical checkpoints and may describe features previously missing or disabled; this section supersedes them.
+
+
 
 ## Japanese Unlocks — live user acceptance (15 November 2026, latest)
 
