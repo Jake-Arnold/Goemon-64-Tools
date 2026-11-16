@@ -98,6 +98,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_japan_state_comparison_ui \
     tests.test_value_search_ui \
     tests.test_reports_ui \
+    tests.test_discovery_reports_ui \
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
     tests.test_japan_story_progress_ui \
@@ -121,6 +122,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_japan_state_comparison_ui \
     tests.test_value_search_ui \
     tests.test_reports_ui \
+    tests.test_discovery_reports_ui \
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
     tests.test_japan_story_progress_ui \
