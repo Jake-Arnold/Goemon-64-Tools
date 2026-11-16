@@ -63,7 +63,7 @@ class JapaneseRecompAttachTests(unittest.TestCase):
                 reader, base, got = discover_japan_recomp_rdram(
                     process, PROBES)
                 self.assertEqual((base, got), (HOST_BASE, endian))
-                self.assertEqual(reader.read_guest(0x800CD284, 1), b'\\x0d')
+                self.assertEqual(reader.read_guest(0x800CD284, 1), bytes((13,)))
                 self.assertEqual(reader.read_guest(0x800CD2A2, 2),
                                  bytes.fromhex('0161'))
 
@@ -77,7 +77,7 @@ class JapaneseRecompAttachTests(unittest.TestCase):
         process = SyntheticNativeProcess('big')
         reader, _, _ = discover_japan_recomp_rdram(process, PROBES)
         writable = validate_japan_recomp_writer(process, reader, PROBES)
-        self.assertEqual(writable.read_guest(0x800CD284, 1), b'\\x0d')
+        self.assertEqual(writable.read_guest(0x800CD284, 1), bytes((13,)))
         process.memory[0x600] ^= 1
         with self.assertRaisesRegex(ValueError, 'verification failed'):
             validate_japan_recomp_writer(process, reader, PROBES)
@@ -94,10 +94,10 @@ class JapaneseRecompAttachTests(unittest.TestCase):
         app._connect_queue = queue.SimpleQueue()
         process = SyntheticNativeProcess('big')
         with patch('practice.toolkit.verified_japan_recomp_pid',
-                   return_value=(1234, 'recomp')) as native, \\
-             patch('practice.toolkit.verified_emulator_pid') as emulator, \\
+                   return_value=(1234, 'recomp')) as native, \
+             patch('practice.toolkit.verified_emulator_pid') as emulator, \
              patch('practice.toolkit.verified_japan_probes',
-                   return_value=PROBES), \\
+                   return_value=PROBES), \
              patch('practice.toolkit.HostProcess', return_value=process):
             app._connect_japan_worker((1234, 'verified_rom', None,
                                        'auto', None, 'recomp'))
@@ -115,11 +115,11 @@ class JapaneseRecompAttachTests(unittest.TestCase):
         process = SyntheticNativeProcess('big')
         reader, _, _ = discover_japan_recomp_rdram(process, PROBES)
         with patch('practice.toolkit.verified_japan_recomp_pid',
-                   return_value=(1234, 'recomp')) as pid_check, \\
+                   return_value=(1234, 'recomp')) as pid_check, \
              patch('practice.toolkit.verified_japan_probes',
                    return_value=PROBES):
             writer = Toolkit._japan_writable_reader(app, process, reader)
-        self.assertEqual(writer.read_guest(0x800CD284, 1), b'\\x0d')
+        self.assertEqual(writer.read_guest(0x800CD284, 1), bytes((13,)))
         pid_check.assert_called_once_with(1234)
 
 
