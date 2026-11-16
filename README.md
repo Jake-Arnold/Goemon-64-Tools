@@ -1,5 +1,14 @@
-# Goemon Speedrun Tools v0.11.18 — Japanese native recomp support
+# Goemon Speedrun Tools v0.11.19 — unified Linux launcher and dock identity
 
+## v0.11.19 — one launcher, remembered region, Ubuntu dock icon
+
+**Unified startup on Ubuntu:** `bash Run-Linux.sh` or `python -m practice.toolkit` opens the same USA/Japan application. Select the game region in the Dashboard; no `--game-version` option is required. The last selected region is remembered in the user's XDG configuration directory. The Japanese native recomp is the default target when the Dashboard is switched to Japan from auto selection; USA keeps its existing normal discovery. **Write-enabled practice controls remain the default** for both games; the explicit legacy `--read-only` override is preserved for compatibility but is not part of normal launch instructions.
+
+**Real Ubuntu dock logo:** the existing checked-in `assets/goemon_tools_logo.png` is installed as an application icon (not a generated replacement). Run `python scripts/install_linux_launcher.py` from the checkout. It creates `~/.local/share/applications/goemon-practice-toolkit.desktop` and copies the logo into `~/.local/share/icons/` (respecting XDG_DATA_HOME); both point at `Run-Linux.sh` in this checkout. `tk.Tk(className="GoemonPracticeToolkit")` matches the desktop entry's `StartupWMClass`, so GNOME can group and display the correct icon instead of its generic cog. Open from Ubuntu's app grid and pin the application to the dock; old pinned generic/Python entries may need to be unpinned.
+
+**Japanese native recomp:** the user confirmed that the experimental v0.11.18 connection to the running Japanese native recomp works, although process-memory discovery takes noticeable time. There is no claim that gameplay writers/warps or dock integration are independently live tested. Initial Japanese native RAM discovery still scans for verified original-ROM signatures; this release does not bypass or weaken those checks. Additional ROM-free installer/preference tests are in the cross-platform regression scripts.
+
+## Previous v0.11.18 — Japanese native recomp support
 ## v0.11.18 — Japan-0 native Linux recomp attachment (experimental)
 
 The shared USA/Japan Python/Tk toolkit now supports **Japan-0 Goemon64Recompiled** in addition to Japanese Mupen64Plus and Windows Project64. Select **Japan — Ganbare Goemon**, verify the original Japanese revision-0 retail ROM, select target **recomp**, and connect to the running Linux native Japanese game PID. Alternatively use **Launch native Linux recomp** to start a user-selected native executable.
