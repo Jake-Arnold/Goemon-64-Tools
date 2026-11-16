@@ -1047,18 +1047,18 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             target_character = selected - 1 if selected in (1, 2, 3, 4) else None
             spawn = self._japan_reference_entrance(
                 destination, context[1])
-            # An old XYZ freeze would otherwise rewrite the previous room's
-            # coordinates as soon as gameplay resumes in the destination.
-            # Drop stale freezes before staging a new Japanese area reload.
-            if hasattr(self, 'value_freezes'):
-                with self.value_freezes.guard:
-                    if self.value_freezes.active():
-                        self.stop_all_freezes()
             handle, writable = self._japan_native_warp_writer()
             try:
                 if get_japan_debug_context(writable) != context:
                     raise RuntimeError(
                         'Japanese gameplay context changed during attachment')
+                # An old XYZ freeze would otherwise rewrite the previous room's
+                # coordinates after the destination reaches gameplay. Stop
+                # freezes only after identity and source-context verification.
+                if hasattr(self, 'value_freezes'):
+                    with self.value_freezes.guard:
+                        if self.value_freezes.active():
+                            self.stop_all_freezes()
                 outcome = stage_japan_direct_reload(
                     writable, destination, expected_context=context,
                     spawn=spawn, target_character=target_character)
