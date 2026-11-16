@@ -1,5 +1,18 @@
-# Goemon Speedrun Tools v0.11.28 — Ubuntu test harness repairs
+# Goemon Speedrun Tools v0.11.29 — GNOME dock WM_CLASS correctness
 
+## v0.11.29 — fix GNOME's stable Tk class and validate numbered X11 instances
+
+The user's Ubuntu re-run on the prior v0.11.28 test branch confirmed the **eight Japanese mock-writer errors are resolved**. The entire `bash scripts/test_japan_party.sh` run executed **265 tests with one remaining failure**: GNOME's actual Tk window advertises `WM_CLASS(STRING) = "goemon-practice-toolkit #2", "Goemon-practice-toolkit"`. The earlier smoke test wrongly demanded an exact lowercase instance, despite the real first token being allowed to acquire a Tk `#N` suffix. The previous version's `StartupWMClass=goemon-practice-toolkit` also matched neither observed token.
+
+The installer now writes **`StartupWMClass=Goemon-practice-toolkit`**, the *stable second X11 WM_CLASS field*, while retaining the lowercase `goemon-practice-toolkit.desktop` filename, icon ID, and lowercase Tk `className` argument. The live X11 test selects the real client by window ID and validates the stable class with either a plain or `#N`-suffixed application instance; explicit tests reject Mutter frames and incorrect classes. An independent **Xvfb experiment passed with two Tk roots**, demonstrating both the unnumbered and numbered `#2` cases. The full user's Ubuntu suite still needs a fresh run; no other production toolkit code changed.
+
+**Reinstall the desktop entry after pulling this branch:** `python3 scripts/install_linux_launcher.py`. Then restart the toolkit before evaluating dock icon grouping. This is a `.desktop` launcher fix, not a Japanese game renderer or native recomp patch.
+
+A **separate** test log for `~/Goemon64Recomp-JP` stopped on stage-3 `test_registry_tracks_guest_lifetimes`. That user's older test compared `context->initialized.wait()` to the first `jp_guest_creations_in_flight.fetch_sub`, which occurs in the legitimate rejection-before-spawn path. The current `feature/japan-reset-guest-quiescence-stage3` branch test instead checks the distinct `memory_order_relaxed` rejection decrement **before** initialization and `memory_order_release` success decrement **after** initialization. No change to C++ reset/guest worker semantics was necessary from that assertion alone; update the game checkout and rerun its four test modules before resuming CMake. The independent intermittent `Goemon64RecompiledJP` SIGSEGV remains unassigned without a native backtrace.
+
+See [Ubuntu failure and evidence report](docs/UBUNTU_TEST_FAILURES_2026-11-16.md). PR #30 remains draft until the Ubuntu suite has been rerun with these changes.
+
+## Previous v0.11.28 — Ubuntu test harness repairs
 ## v0.11.28 — eight Japanese fixture errors and one GNOME X11 test failure
 
 The first `main` toolkit regression run on Ubuntu completed 264 tests and reported **8 errors and 1 failure**. The eight errors all stem from synthetic `SimpleNamespace` test screens missing the real Toolkit's `_japan_writable_reader` method; they are not evidence that the real toolkit's Japanese writer is absent. The Japanese Unlocks and Live Memory edit tests now share an updated synthetic controller that delegates to the actual writer selector. The regression additionally asserts that the native Japanese recomp still uses PID/ROM/probe writer validation instead of bypassing its security gates.
