@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Formal USA 307-C production promotion from verified PR #37
+
+- Changed: promoted `func_801E3008_59EF18` (52 bytes, original-address actor-state reset) into canonical `decomp/manifest.json` by selecting the exact preverified `goemon-file11-144-central-v1` adapter. 144 C functions now occupy `file_11`, alongside the 3 earlier Impact/dialogue additions. Published canonical 307-C G2 and 7,376-function inventory; preserved the previous exact 306-C report and inventory separately without rewriting the 303/210 archives.
+- Verified: complete standard native G2 **307/307**, **16,344 matching instruction bytes**, exact 33,554,432-byte original USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Linked `file_11` semantic relocation multiset 8,825/8,825, Impact `file_13` original 277,104-byte section and 9,589 semantic relocation sites/targets preserved; inventory 7,376 original names, zero extra aliases, 320 combined C and 7,056 remaining ASM. Native G2 SHA-256 `904337186b789bca19150080a520b99c7380c511e2ccb47656c1171c9cfeb94e`, inventory SHA-256 `26beca30a6c826d856e97cfe3c681513fc189fecf8edb05540b44dfde80d8b9f`.
+- Tested: full ROM-free local CI on canonical 307 checkout PASS: 222 decomp tests, 160 verifier/ledger tests, task evidence and GCC ASan/UBSan display-emitter regression. Original-ID0 code 52/52 bytes exact; only 12 compiler-created zero-padding bytes removed. Promotion metadata `decomp/results/file11_144_production_promotion_20261116.json` records source and proof identities.
+- Remaining: 113 PR #23 original-address `file_11` candidates after deduplication plus 4 distinct PR #24 candidates; none is counted until a fresh combined original-ROM G2, overlay relocation and ELF inventory gate. Japan 24-C remains separate-region.
+
 ### 2026-11-16 — Full standard 307-C opt-in G2 and inventory passed
 
 - Tested: independently reran the complete canonical `decomp.verify` CLI with the pinned original USA ROM, cached certified pristine baseline, and a separate 144-function `file_11` review manifest. It completed uninterrupted with `status=matched`, all **307/307** C functions and **16,344** instruction bytes matching the original **33,554,432-byte USA ROM** (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`); full report SHA-256 `904337186b789bca19150080a520b99c7380c511e2ccb47656c1171c9cfeb94e`.

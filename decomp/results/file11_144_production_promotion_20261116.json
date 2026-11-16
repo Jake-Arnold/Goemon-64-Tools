@@ -1,0 +1,47 @@
+{
+  "format": "goemon-usa-file11-144-production-promotion-v1",
+  "date": "2026-11-16",
+  "status": "PRODUCTION_VERIFIED",
+  "target_branch": "chatgptweb/decomp",
+  "source_pr": 37,
+  "previous_matching_c": 306,
+  "new_matching_c": 307,
+  "promoted_functions": [
+    {
+      "name": "func_801E3008_59EF18",
+      "rom_offset": "0x59EF18",
+      "vma": "0x801E3008",
+      "size": 52,
+      "kind": "actor-state reset"
+    }
+  ],
+  "matched_instruction_bytes": 16344,
+  "full_rom_exact": true,
+  "original_rom_size": 33554432,
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "file11_c_count": 144,
+  "file11_semantic_relocations": 8825,
+  "impact_overlay_preserved": true,
+  "original_function_identities": 7376,
+  "extra_positive_alias_entries": 0,
+  "remaining_assembly_functions": 7056,
+  "evidence_sha256": {
+    "manifest": "bd4611c5d242da33d129a605570ce730bd112fe64aabe70196125655df6c7354",
+    "combined": "904337186b789bca19150080a520b99c7380c511e2ccb47656c1171c9cfeb94e",
+    "inventory": "26beca30a6c826d856e97cfe3c681513fc189fecf8edb05540b44dfde80d8b9f",
+    "historic_306_combined": "c10ed93197dbcc925943a2beab769a67ad4d88bfe3cc8124fc65775e2bf1beb1",
+    "historic_306_inventory": "bdb49555c1b104298812d90133af92c63ae2ab2058729ad41e3fe980c6cd56c1"
+  },
+  "local_ci": {
+    "status": "PASS",
+    "decomp_tests": 222,
+    "verifier_ledger_tests": 160,
+    "task_evidence": "PASS",
+    "sanitizer_regression": "PASS"
+  },
+  "not_promoted": [
+    "remaining 113 PR23 research functions",
+    "four distinct PR24 research candidates",
+    "separate Japanese 24-C region"
+  ]
+}
