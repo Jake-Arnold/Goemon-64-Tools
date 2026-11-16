@@ -1,5 +1,13 @@
 # USA ↔ Japan Toolkit feature parity checklist
 
+## Native Windows regression gate — 16 November 2026
+
+**User-confirmed passing** after commit `06706bc`: the full `scripts/test_japan_party.ps1` test suite. The prior observed run counted **195 backend tests passing** and **93/94 Tk GUI tests passing**; the sole Tk error was an already-destroyed test root in teardown, corrected in `06706bc`. The user subsequently reported **all tests pass**. Because the final passing output was not supplied, **195/195 backend plus 94/94 GUI** are expected counts, not independently read from the final run.
+
+**Regression gate: passed by user report.** Remaining acceptance: exercise new Japanese Live Memory Freeze/Unfreeze, all applicable editable Story Progress rows, and named native emulator slot save/load in live Project64/Mupen. Existing Japanese scene warps and the 33 verified unlock fields were accepted previously. Sasuke battery remains intentionally out of scope. The stacked PR is still draft until live acceptance and integration review.
+
+Older entries below describe the chronology and can predate the final successful rerun.
+
 ## Japanese toolkit acceptance and parity expansion — 15 November 2026 (current)
 
 **User acceptance before this batch:** the existing native Project64 Japanese scene warps work, and the then-current Windows and Linux regression suites passed. Right-click Live Memory Hex Edit worked; Freeze was disabled by an explicit Japan-only UI gate.
