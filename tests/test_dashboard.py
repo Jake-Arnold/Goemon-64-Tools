@@ -191,18 +191,23 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertNotIn('disabled', app.event_region_entry.state())
         self.assertIn('Japan-0', app.event_region_note.get())
         self.assertEqual(app.event_region_start.get(), '0x80161D80')
-        self.assertEqual(app.notebook.tab(app.jp_fields_tab, 'state'), 'normal')
+        self.assertEqual(app.notebook.tab(app.jp_fields_tab, 'state'), 'hidden')
+        self.assertNotEqual(app.jp_scene_position_frame.winfo_manager(), '')
+        self.assertFalse(hasattr(app, 'verify_rom_button'))
         # Auto PID/backend discovery is now the default for Japan. The
         # verified Japanese ROM remains mandatory before probing any process
         # and the USA RAM path must never be selected by Japan's Connect.
         app.connection_target.set('auto')
-        app.connect()
-        self.assertIsNone(app.mem)
-        self.assertIsNone(app.jp_rdram)
-        self.assertIn('Verify the exact Japan-0 ROM', app.status.get())
-        app.connection_target.set('mupen64plus')
-        app.connect()
-        self.assertIn('Verify the exact Japan-0 ROM', app.status.get())
+        with patch('practice.toolkit.filedialog.askopenfilename',
+                   return_value='') as pick_rom:
+            app.connect()
+            self.assertIsNone(app.mem)
+            self.assertIsNone(app.jp_rdram)
+            self.assertIn('ROM selection cancelled', app.status.get())
+            app.connection_target.set('mupen64plus')
+            app.connect()
+            self.assertIn('ROM selection cancelled', app.status.get())
+            self.assertEqual(pick_rom.call_count, 2)
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
         self.assertNotIn('disabled', app.connect_button.state())
@@ -225,9 +230,12 @@ class DashboardSmokeTests(unittest.TestCase):
         app.game_version_choice.set(VERSIONS['japan'].label)
         app.on_game_version_changed()
         app.connection_target.set('project64')
-        with patch('practice.toolkit.sys.platform', 'win32'):
+        with patch('practice.toolkit.sys.platform', 'win32'), patch(
+                'practice.toolkit.filedialog.askopenfilename',
+                return_value='') as pick_rom:
             app.connect()
-        self.assertIn('Verify the exact Japan-0 ROM', app.status.get())
+        pick_rom.assert_called_once()
+        self.assertIn('ROM selection cancelled', app.status.get())
         self.assertIsNone(app.mem)
 
         # A changed target cannot trigger the wrong emulator's savestate.
