@@ -78,6 +78,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_japan_recomp_write_ui \
     -v
 elif [[ -n "${DISPLAY:-}" ]]; then
   "${PYTHON}" -m unittest \
@@ -98,6 +99,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_japan_recomp_write_ui \
     -v
 else
   echo 'ERROR: Tk smoke tests need xvfb-run (sudo apt install xvfb xauth)' >&2
