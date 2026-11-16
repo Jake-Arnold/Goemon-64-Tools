@@ -12,6 +12,7 @@ class ValueFreezeUITests(unittest.TestCase):
         try:self.root=tk.Tk()
         except tk.TclError as exc:self.skipTest(str(exc))
         self.root.withdraw();self.app=Toolkit(self.root,parse_args(['--game-version','usa']))
+        self.assertEqual(self.app.active_version.key, 'usa')
         self.process,self.app.mem=test_checkpoint.TestCheckpoint().sample()
         self.app.game_pid=123
         # Deterministic UI tests exercise the same poll under the freeze guard.
