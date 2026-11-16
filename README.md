@@ -1,4 +1,23 @@
-# Goemon Speedrun Tools v0.11.33 — memory research usability test
+# Goemon Speedrun Tools v0.11.34 — unified research and reports test
+
+## v0.11.34 — Guided Memory Discovery and unified reports (16 November 2026)
+
+**Draft branch only.** Keep toolkit/unified-memory-discovery separate from main until user review and live game tests.
+
+### What changed
+- Memory discovery opens with a **Start here** page describing four direct methods: **Find a value**, **Compare memory changes**, **Investigate flags**, **Record damage**. No nested "Event sessions > Advanced RAM comparison". The existing underlying algorithms and saved investigation compatibility remain.
+- A small connected-game status line at the top shows the actual attached USA/JP reader, PID and backend; **Open connection** returns to Dashboard. If a Japanese flag investigation has attached RAM but missing identity metadata, the error now says exactly which part is missing.
+- All four methods have **Save report**, using one implementation and the same four files: summary.md, candidates.csv, session.json and manifest.json, grouped by region, readable investigation and timestamp. CSV stores all candidates supplied by each research engine; JSON preserves complete available trial/event/context evidence.
+- Value search now exports up to **20,000** surviving candidates, not just 200 visible rows. Larger result sets are honestly marked partial; snapshots are observations, not guest-MIPS access traces.
+- **Compare memory changes** saves derived candidates, context and captured-region lengths/SHA-256 provenance. The analyzer may limit ranked results; report counts disclose this. No raw 8 MiB guest RAM dumps are written.
+- **Investigate flags** keeps complete 100-byte A/B/C captures, repeat/trial IDs, notes, roles, gameplay contexts and ranked bit evidence. Work-in-progress investigations autosave in Reports/.working/[USA|JP], outside the published Reports index. Old diagnostics JSON can still be opened.
+- **Record damage** saves the full ranked candidate list produced by its recorder and available event metadata/timelines. Detailed timelines are capped to the strongest 300 candidate entries and the report discloses this limit.
+- **Japanese Unlocks fix:** treat backend selector **auto** as valid when the connected, detected backend is Project64, Mupen64Plus or native recomp. Existing verified RAM, PID, read-only and backend mismatch guards remain in place. All 33 previously tested JP entries and one unverified Sasuke battery candidate retain their existing verification labels; no new addresses are invented.
+- No native recomp original-MIPS-PC read/write tracing yet. No changes to decompilation branches or shipped game code.
+
+### Testing
+
+Synthetic unit, Linux Xvfb Tk and Windows portable checks are run on this branch. Results are recorded in PROGRESS.md. Neither host CI check establishes live-game compatibility.
 
 ## v0.11.33 — Memory search usability, continuous filtering and readable reports (16 November 2026)
 

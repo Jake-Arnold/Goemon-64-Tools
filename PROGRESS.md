@@ -2,6 +2,19 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.34 unified discovery report workflows and JP unlock auto-detection
+
+- **Usability:** Memory discovery now has a start page explaining four *direct* tools, removing nested generic/event naming: Find a value, Compare memory changes, Investigate flags, Record damage.
+- **One export schema:** All four Save report actions use the same create_discovery_report writer, saving summary.md, candidates.csv, session.json and manifest.json into descriptive USA/JP investigation/run directories. Data includes available evidence, metadata, contexts and limitations; no raw RAM dump or original MIPS trace claim.
+- **Value search:** Expanded exported snapshot candidate limit from 200 visible rows to 20,000; warns of larger surviving candidate sets.
+- **Flag work:** Completed ranked-bit reports include all trial roles, trial IDs, full A/B/C 100-byte captures and context, plus pending captures as not-yet-ranked. Resumable investigation autosaves moved from diagnostics/ into hidden Reports/.working to avoid duplicating completed report cards; existing JSON remains readable.
+- **Memory comparison:** Saves ranked observed changes and region/hash context. The existing specialist exhaustive Japanese XYZ export remains available separately; unified report explicitly notes a capped ranked shortlist.
+- **Automatic damage:** Saves ranked addresses with available hit counts, pre/post event metadata and detailed time series for up to 300 candidate entries; omissions and heuristics documented.
+- **JP Unlocks:** Fixed readiness mismatch for automatic backend selection; verified JP memory attachment can enable mapped controls without changing writer validation. Added GUI regression for JP native recomp with auto; mismatch and read-only conditions still disable.
+- **Connection UX:** Unified Discovery header displays actual RAM+PID+backend status and links to dashboard; event flag errors distinguish no RAM from missing PID/backend, and support auto without a false disconnect error.
+- **Testing:** Added cross-kind reports, context preservation, flag report, damage UI report, Japanese auto/backend checks. Linux and Windows GitHub Actions are separate from unperformed live gameplay tests.
+- **Limitations:** Original guest-MIPS instruction read/write tracing, advanced function correlation, some historical report migration and live USA/JP end-to-end tests remain outstanding; main unaffected.
+
 ## 2026-11-16 — v0.11.33 full hosted CI proof
 
 - **Ubuntu:** GitHub Actions [43933889974](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43933889974), code/metadata commit 5f81c8ef490b95fb279383a5f8e5e3aa258cc35d, PASSED: **305 Python synthetic tests (304 pass, 1 skip)** and **128 Xvfb Tk GUI tests pass** with zero recorded invalid-Tk-command/callback exceptions. Includes continuous filtering, baseline comparisons, report directory migration and multi-address USA/JP watch selection.
