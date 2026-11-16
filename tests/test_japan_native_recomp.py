@@ -34,6 +34,9 @@ class SyntheticNativeProcess:
         if endian == 'wordswapped':
             memory = bytearray(b''.join(memory[i:i+4][::-1]
                                         for i in range(0, len(memory), 4)))
+        elif endian == 'byteswapped':
+            memory = bytearray(b''.join(memory[i:i+2][::-1]
+                                        for i in range(0, len(memory), 2)))
         self.memory = memory
         self.endian = endian
 
@@ -56,8 +59,8 @@ class JapaneseRecompAttachTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'not a Goemon'):
                 verified_japan_recomp_pid(1234)
 
-    def test_native_recomp_discovers_verified_japan_ram_both_endians(self):
-        for endian in ('wordswapped', 'big'):
+    def test_native_recomp_discovers_verified_japan_ram_all_layouts(self):
+        for endian in ('wordswapped', 'big', 'byteswapped'):
             with self.subTest(endian=endian):
                 process = SyntheticNativeProcess(endian)
                 reader, base, got = discover_japan_recomp_rdram(
@@ -66,6 +69,16 @@ class JapaneseRecompAttachTests(unittest.TestCase):
                 self.assertEqual(reader.read_guest(0x800CD284, 1), bytes((13,)))
                 self.assertEqual(reader.read_guest(0x800CD2A2, 2),
                                  bytes.fromhex('0161'))
+
+    def test_connection_does_not_require_playable_character_initialization(self):
+        process = SyntheticNativeProcess('big')
+        process.memory[0x161DCC:0x161DD0] = (99).to_bytes(4, 'big')
+        reader, base, mode = discover_japan_recomp_rdram(process, PROBES)
+        self.assertEqual((base, mode), (HOST_BASE, 'big'))
+        self.assertEqual(reader.read_guest(0x80161DCC, 4),
+                         (99).to_bytes(4, 'big'))
+        with self.assertRaisesRegex(ValueError, 'character is invalid'):
+            validate_japan_recomp_writer(process, reader, PROBES)
 
     def test_native_attach_rejects_missing_original_code(self):
         process = SyntheticNativeProcess('big')
