@@ -2,6 +2,16 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Japanese warp XYZ capture and destination comparison (v0.11.22)
+
+Previous native Japanese instant warps had an overlooked bug: the optional `self.entrance_atlas` was never initialized, so the controller always sent **only the 2-byte map ID** instead of the 12-byte destination/mode/XYZ/heading record. A scene ID that loads successfully is not evidence of correct destination XYZ.
+
+To stage Japanese destination coordinates reliably *from your own gameplay*, first visit a room normally as Goemon, connect with the unified toolkit, and choose **Scene Browser → Record CURRENT loaded Japanese room XYZ (not selected scene)**. The toolkit saves that current map and observed float32 XYZ under `~/.config/GoemonSpeedrunTools/japan-warp-spawns.json`. The capture performs no RAM writes and is stored per-scene for later launches. It attempts to read heading/mode from a matching actual native pending entrance record; if this cannot be validated, it uses explicitly **experimental** default heading/mode (`0`/`0x10`), not a claimed original Japanese spawn.
+
+Later warps into that recorded room stage the full native entrance record before `0x0C`. The existing user-tested Oedo South position `(-289, 0, -167)` is also an experimental preset. For other unrecorded rooms, the game still receives only a scene ID; the status states **NO DESTINATION XYZ WAS STAGED**, not “position verified”. After each loaded destination becomes stable, the toolkit compares actual Japanese float32 XYZ with the requested position and reports any 3D difference greater than 16 units as **SPAWN MISMATCH**. It clears old freeze locks before an actual reload to prevent stale XYZ writes from the previous scene.
+
+There is no implicit reuse of USA ROM entrance coordinates and no uncontrolled post-load XYZ write. An approximate match is still not proof of stable collision or gameplay. The Linux/Python tests for this feature are synthetic and **not yet run against a live Japanese recomp**.
+
 ## Native Japanese recomp write controls (v0.11.21)
 
 Earlier v0.11.20 builds could attach to the native Japanese recomp and display values, but left write buttons grey because several Japanese UI eligibility checks recognized only Project64/Mupen64Plus. This is fixed in v0.11.21: the verified native `recomp` backend is eligible for mapped Unlocks, Japanese Story Progress inventory edits, Goemon XYZ experiments, native debug-menu entry, Live Memory right-click hex edits, direct **Write raw hex**, and fixed-address freezes. The raw editor uses Japanese-specific `write_japan_raw_bytes` with expected-byte comparison and per-write RDRAM/ROM/PID verification.
