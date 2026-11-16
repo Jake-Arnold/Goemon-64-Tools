@@ -7,7 +7,7 @@ from tkinter import ttk,filedialog
 from practice.entrances import extract_atlas,load_atlas,save_atlas,incoming,spawn_from_entry
 from practice.known_entrances import known_entrances, known_entrance_count
 from practice.launcher_preferences import preferences_path
-from practice.paths import practice_data_dir
+from practice.paths import practice_data_dir, resource_root
 from practice.scenes import SCENES,unidentified_scene_name
 
 
@@ -16,20 +16,36 @@ def stored_entrance_atlas_path():
     return preferences_path().parent / 'entrance-coordinates.json'
 
 
+def repository_entrance_atlas_path():
+    """Versioned numeric scene/entrance atlas shipped with the toolkit.
+
+    The extraction file is committed only after validated original-USA ROM
+    data has been supplied; it never contains a ROM or executable.
+    """
+    return resource_root() / 'practice' / 'data' / 'entrance-coordinates.json'
+
+
 class EntranceMixin:
     def init_entrances(self):
         self.entrance_atlas=None;self.entrance_load_error=None
         self.entrance_rows=[];self.entrance_destination=None
         self.entrance_loading=False;self.entrance_results=queue.Queue()
+        bundled = repository_entrance_atlas_path()
         durable = stored_entrance_atlas_path()
         legacy = practice_data_dir() / 'entrances.json'
-        # Try the stable per-user atlas first; old checkouts may still have a
-        # valid per-repository cache. Migrate only validated numeric metadata.
-        for candidate in (durable, legacy):
+        self.entrance_atlas_source = 'none'
+        # Prefer the version-controlled, reviewed numeric table when present.
+        # Fall back to local user data until the full extracted table is
+        # committed. Never mistake a corrupted bundled file for a valid atlas.
+        for candidate in (bundled, durable, legacy):
             try:
                 atlas=load_atlas(candidate)
                 if atlas is not None:
                     self.entrance_atlas=atlas
+                    self.entrance_atlas_source = (
+                        'repository' if candidate == bundled else
+                        'persistent user cache' if candidate == durable else
+                        'legacy checkout cache')
                     if candidate == legacy:
                         try:save_atlas(durable, atlas)
                         except OSError:pass
@@ -65,7 +81,8 @@ class EntranceMixin:
         built_in = known_entrance_count()
         if self.entrance_atlas:
             p=self.entrance_atlas['payload']
-            return (f'Stored entrance coordinates: {len(p["rooms"])} scenes, '
+            source = getattr(self, 'entrance_atlas_source', 'stored cache')
+            return (f'{source} entrance coordinates: {len(p["rooms"])} scenes, '
                     f'{len(p["entries"])} entrance records, plus {built_in} '
                     'built-in observed point(s). No ROM needed on startup.')
         return (f'{built_in} permanent known warp point(s) included. '
@@ -94,6 +111,7 @@ class EntranceMixin:
         self.entrance_loading=False;self.entrance_load_button.state(['!disabled'])
         if kind=='ok':
             self.entrance_atlas=value;self.entrance_load_error=None
+            self.entrance_atlas_source='persistent user cache (new extraction)'
             self.draw_scene_list();self.refresh_entrance_choices()
             self.entrance_note.set(self.entrance_summary())
         else:self.entrance_note.set('Entrance ROM load failed: '+value)
