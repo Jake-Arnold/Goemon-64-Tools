@@ -3,6 +3,14 @@
 **Date:** 2026-11-15  
 **Live evidence:** The user confirmed that the Japan-0 Project64 toolkit can open the original debug menu (`0x800CD284 = 0x0A`) and teleport Goemon to known Oedo South XYZ. On a subsequent test, **double-click only opened the debug menu**, which is **not** the requested USA-equivalent instant warp. That incorrect dispatch has now been replaced in source. **The new direct `0x0C` area reload still awaits live confirmation.**
 
+## v0.11.26 — verified original-USA atlas bundled and used by both versions
+
+The complete user-extracted atlas is committed as `practice/data/entrance-coordinates.json`: **333 indexed scenes, 888 entrance records, 266 covered destinations**. This is the exact table accessed by `selected_scene_spawn(destination)` in both the USA and native Japanese Scene Browser; a separate ROM, Japanese-specific capture, or one-time extraction on each install is no longer required.
+
+Entries preserve all source-specific exits/defaults, XYZ, heading and mode. For example, Oedo South (`0x161`) has ten distinct entrance records; the source-scene 351 exit and native default each use `XYZ (-289, 0, -167), heading 256, mode 16`. The new data supersedes older Japanese fallback heading-zero speculation.
+
+The bundled JSON passed original-USA extractor identity/checksum and numeric entrance validation, and has been fetched back from GitHub intact. Real Japanese-native post-reload XYZ placement and collision are still subject to the on-device regression and gameplay test; only the data source is now complete for the 266 covered destinations.
+
 ## v0.11.24 — permanent numeric scene/entrance coordinates
 
 The Goemon toolkit no longer depends on the original USA ROM being present at launch for already known warp coordinates. Both USA and Japanese scene browsers now load the validated extracted `entrance-coordinates.json` atlas from the user's persistent config directory, not a checkout-specific file. Previous `practice/entrances.json` data is migrated automatically. The numeric table contains scene ID, source scene when present, entrance ID, X/Y/Z, heading and mode; **scene ID by itself can be ambiguous when a room has multiple doors**.
