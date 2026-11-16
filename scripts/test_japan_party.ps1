@@ -49,6 +49,8 @@ $backendTests = @(
     'tests.test_japanese_mupen_attach',
     'tests.test_japan_native_recomp',
     'tests.test_toolkit_version',
+    'tests.test_linux_launcher',
+    'tests.test_launcher_preferences',
     'tests.test_japan_project64',
     'tests.test_remembered_rom',
     'tests.test_region_views',
