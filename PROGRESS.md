@@ -2786,3 +2786,11 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Named checkpoint LOAD now requires an attached, matching verified Japanese emulator RDRAM reader and PID before dispatch, rather than trusting only the stored backend label. A stale label alone cannot load into an arbitrary process.
 - Added Tk regression tests for named native save/load request routing, metadata-only labels, missing-attachment refusal and USA dashboard UI preservation; added Tk tests for Japanese Story Progress grouped rows, edit routing, stale-value refusal and region switching. Both test groups are included in the existing Windows PowerShell/Linux Tk runners.
 - **Still pending:** run these newly authored tests and the entire existing GUI suite in a real Windows/Tk session; only user-reported pre-change tests/warps are verified. Do not merge PR #17 based solely on this source-level review.
+
+### 2026-11-15 — Preserve USA freeze and story regressions in cross-region suite
+
+- Found the legacy `tests/test_value_freezes_ui.py` context-menu test still selected item index 0, which became the Hex editor when the combined Live Memory right-click menu was introduced; fixed it to select Freeze/Unfreeze at menu index 2 instead. This stale test was not in the Japanese scripts, so a green Japanese script previously did not cover it.
+- Added the existing USA `tests.test_value_freezes` backend suite and `tests.test_value_freezes_ui` / `tests.test_story_progress_ui` Tk regressions to the cross-region Windows/Linux runners to prevent a Japan freeze change from breaking USA behaviour.
+- Added two Japanese GUI tests for right-click Freeze/Unfreeze with a synthetic verified Project64-style RDRAM reader; test that the command is enabled, values freeze from fresh RAM, the menu switches to Unfreeze, read-only blocks it, and region switching clears locks.
+- Matched the Japanese edit/freeze menu-enabled condition to the attached emulator backend target; an attached reader from another target no longer enables a misleading writable menu. No extra prompts, ROM writes or USB/proprietary dependencies added.
+- **These newly extended cross-region regression tests still need a Windows run;** prior user report that tests passed predates the new code.

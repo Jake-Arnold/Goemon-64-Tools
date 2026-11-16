@@ -57,6 +57,7 @@ $backendTests = @(
     'tests.test_rom_context_audit',
     'tests.test_japan_live_memory_edit',
     'tests.test_japan_value_freezes',
+    'tests.test_value_freezes',
     'tests.test_japan_event_sessions',
     'tests.test_japan_damage_capture',
     'tests.test_japan_native_scene_warp',
@@ -81,6 +82,9 @@ $guiTests = @(
     'tests.test_region_unlocks_ui',
     'tests.test_japan_story_progress_ui',
     'tests.test_japan_named_checkpoint_ui',
+    'tests.test_japan_value_freezes_ui',
+    'tests.test_value_freezes_ui',
+    'tests.test_story_progress_ui',
     'tests.test_dashboard'
 )
 

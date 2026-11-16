@@ -384,7 +384,10 @@ class InspectorMixin(EntranceMixin):
         editor_available = (
             watch.addr is not None
             and not getattr(self.args, 'read_only', False)
-            and (self.jp_rdram is not None if self.active_version.key == 'japan'
+            and (self.jp_rdram is not None
+                 and self.jp_backend in ('project64', 'mupen64plus')
+                 and self.connection_target.get() == self.jp_backend
+                 if self.active_version.key == 'japan'
                  else self.mem is not None))
         menu.add_command(
             label='Edit value (hex)…',

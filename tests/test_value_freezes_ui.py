@@ -54,14 +54,15 @@ class ValueFreezeUITests(unittest.TestCase):
              patch.object(app.watch_context_menu,'tk_popup'):
             app.open_live_watch_menu(SimpleNamespace(y=11,x_root=15,y_root=20))
         self.assertEqual(app.watch_tree.selection(),('Ryo',))
-        app.watch_context_menu.invoke(0)
+        # Edit is now item 0; freeze/unfreeze is item 2, after separator.
+        app.watch_context_menu.invoke(2)
         self.assertEqual(app.value_freezes.locks[0x8015C5E8].value,(321).to_bytes(4,'big'))
         self.assertEqual(app.value_freezes.locks[0x8015C5E8].label,'Ryo')
         with patch.object(app.watch_tree,'identify_row',return_value='Ryo'), \
              patch.object(app.watch_context_menu,'tk_popup'):
             app.open_live_watch_menu(SimpleNamespace(y=11,x_root=15,y_root=20))
-        self.assertEqual(app.watch_context_menu.entrycget(0,'label'),'Unfreeze value')
-        app.watch_context_menu.invoke(0)
+        self.assertEqual(app.watch_context_menu.entrycget(2,'label'),'Unfreeze value')
+        app.watch_context_menu.invoke(2)
         self.assertNotIn(0x8015C5E8,app.value_freezes.locks)
 
     def test_no_address_cannot_freeze_and_read_only_blocks_context(self):
