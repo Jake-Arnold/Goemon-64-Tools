@@ -222,6 +222,7 @@ class DiscoveryResultsPanel:
         self._generation = 0
 
         controls = ttk.LabelFrame(tab, text="Results · read-only", padding=7)
+        self.controls = controls
         controls.pack(fill="x", pady=(0, 7))
         first = ttk.Frame(controls)
         first.pack(fill="x", pady=(0, 5))
@@ -244,8 +245,9 @@ class DiscoveryResultsPanel:
         second = ttk.Frame(controls)
         second.pack(fill="x")
         ttk.Label(second, text="Report name").pack(side="left", padx=(0, 7))
-        ttk.Entry(second, textvariable=report_name, width=37).pack(
-            side="left", padx=(0, 7))
+        self.report_entry = ttk.Entry(
+            second, textvariable=report_name, width=37)
+        self.report_entry.pack(side="left", padx=(0, 7))
         self.save_button = ttk.Button(second, text="Save report",
                                       command=save)
         self.save_button.pack(side="left", padx=(0, 10))
