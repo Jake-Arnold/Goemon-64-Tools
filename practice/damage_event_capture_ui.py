@@ -18,7 +18,7 @@ from practice.reports import create_discovery_report, DISCOVERY_KINDS
 class DamageEventCaptureMixin:
     def build_damage_event_capture_tab(self, notebook):
         tab = ttk.Frame(notebook, padding=10)
-        notebook.add(tab, text="Automatic events")
+        notebook.add(tab, text="Record damage")
         self.damage_capture_tab = tab
         self.damage_recorder = None
         self.damage_capture_worker = None
