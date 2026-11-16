@@ -114,8 +114,7 @@ class ValueScanner:
         target = self.encode_text(value, encoding)
         snapshot = self._read(ram)
         width = len(target)
-        flags = bytearray(self._slots(width) if self.kind == TEXT_KIND else
-                          max(0, self.size - width + 1))
+        flags = bytearray(max(0, self.size - width + 1))
         count = 0
         cursor = snapshot.find(target)
         while cursor >= 0:
@@ -153,11 +152,11 @@ class ValueScanner:
         target = encode_value(kind, text)
         snapshot = self._read(ram)
         width = len(target)
-        flags = bytearray(self._slots(width))
+        stride = width if self.aligned else 1
+        flags = bytearray(max(0, (self.size - width) // stride + 1))
         count = 0
         index = snapshot.find(target)
         while index >= 0:
-            stride = self._stride(width)
             if index % stride == 0 and index // stride < len(flags):
                 flags[index // stride] = 1
                 count += 1
@@ -241,18 +240,41 @@ class ValueScanner:
         unpack = (struct.Struct('>' + FORMATS[self.kind][0]).unpack
                   if self.kind != TEXT_KIND else None)
         result = []
-        for offset in self._addresses(limit):
-            data = (ram.read_guest(GUEST_BASE + offset, width) if ram is not None
-                    else self.previous[offset:offset + width])
-            if len(data) != width:
-                raise OSError(f'Incomplete value read at 0x{GUEST_BASE + offset:08X}')
-            value = (data.decode(TEXT_ENCODINGS[self.text_encoding], errors='replace')
-                     if self.kind == TEXT_KIND else unpack(data)[0])
+        offsets = list(self._addresses(limit))
+        current = {}
+        if ram is not None:
+            # Nearby addresses share one guest RAM read. Dense unknown scans
+            # would otherwise make 200 separate process-memory syscalls/poll.
+            groups = []
+            for off in offsets:
+                if not groups or off + width - groups[-1][-1] > 0x1000:
+                    groups.append([off])
+                else:
+                    groups[-1].append(off)
+            for group in groups:
+                start, end = group[0], group[-1] + width
+                blob = ram.read_guest(GUEST_BASE + start, end - start)
+                if len(blob) != end - start:
+                    raise OSError(f'Incomplete live value read at 0x{GUEST_BASE + start:08X}')
+                for off in group:
+                    current[off] = blob[off - start:off - start + width]
+
+        def decoded(data):
+            val = (data.decode(TEXT_ENCODINGS[self.text_encoding],
+                               errors='replace') if self.kind == TEXT_KIND
+                   else unpack(data)[0])
+            return f'{val:.10g}' if isinstance(val, float) else str(val)
+
+        for offset in offsets:
+            data = (current[offset] if ram is not None else
+                    self.previous[offset:offset + width])
             result.append({
                 'address': GUEST_BASE + offset,
                 'kind': (f'text/{self.text_encoding}' if self.kind == TEXT_KIND
                          else self.kind),
-                'value': f'{value:.10g}' if isinstance(value, float) else str(value),
+                'value': decoded(data),
+                'initial': decoded(self.initial[offset:offset + width]),
+                'previous': decoded(self.previous[offset:offset + width]),
                 'hex': '0x' + data.hex().upper(),
             })
         return result
