@@ -2,6 +2,16 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Checked-in complete entrance coordinates (v0.11.26)
+
+The actual original-USA numeric entrance table supplied by the user has now been **committed** at `practice/data/entrance-coordinates.json`. It is loaded automatically by both USA and Japan. **No ROM extraction, local cache or original-USA ROM file is needed** to access the covered entrance records in any new checkout.
+
+Verified dataset: **333 indexed scenes, 888 entrances for 266 destinations** (592 exits, 266 defaults, 16 flute, 14 save records). Different entrances within a scene retain separate IDs, X/Y/Z, heading and mode. Oedo South (`0x161`) has the original-USA native default and source-scene 351 entry both at `(-289, 0, -167)`, heading 256, mode 16; the old fallback was corrected accordingly.
+
+After `git pull --ff-only`, launch `bash Run-Linux.sh`, choose Japan or USA, open Scene Browser and select the destination/entrance. The entrance header should identify **repository** as the coordinate source. Unmapped scenes still require validated data rather than invented coordinates. A valid per-user or old checkout cache is used only if the checked-in JSON is absent/corrupt. The v0.11.25 instructions to extract and upload a first copy are now historical.
+
+The JSON has been locally checked and freshly fetched from GitHub; the full toolkit test suite and native Japanese in-game warp remain outstanding. Run `bash scripts/test_japan_party.sh` for the new atlas regression.
+
 ## Repository-bundled entrance atlas (v0.11.25)
 
 The next stable source of scene warp coordinates is the **version-controlled, checked-in numeric table** `practice/data/entrance-coordinates.json`. Both USA and Japan load it automatically, without a ROM or per-user setup. Each destination scene may contain multiple entrances (source scene, ID, XYZ, heading, mode), all of which remain distinct.
