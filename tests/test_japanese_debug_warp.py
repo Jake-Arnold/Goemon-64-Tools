@@ -49,14 +49,11 @@ class JapaneseDebugMenuCoreTests(unittest.TestCase):
                 self.assertEqual(p.rdram().read_guest(JAPAN_DEBUG_SCENE, 2),
                                  bytes.fromhex('0161'))
                 self.assertEqual(len(p.writes), 1)
-                self.assertEqual(len(p.writes[0][1]),
-                                 1 if endian == 'big' else
-                                 2 if endian == 'byteswapped' else 4)
+                self.assertEqual(p.writes[0][1], b'\x0a')
                 self.assertEqual(
                     p.writes[0][0],
-                    0xCD284 if endian == 'big' else
-                    (0xCD284 & ~1) if endian == 'byteswapped' else
-                    (0xCD284 & ~3))
+                    0xCD284 ^ (3 if endian == 'wordswapped' else
+                               1 if endian == 'byteswapped' else 0))
                 self.assertEqual(
                     result.suggested_destination, 0x161)
 
