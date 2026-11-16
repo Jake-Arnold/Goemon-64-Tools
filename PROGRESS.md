@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.32 USA/Japan cross-region read-only mapping (feature branch)
+
+- **Reason:** Four new user-reported Japanese gameplay checks support the `+0x57F0` USA→JP shift: equipped weapon `0x80161DF7`, submode `0x800CD294`, map overlay `0x80161D64`, and Benkei encounter `0x80161DFC & 0x20`.
+- **Change:** Added `practice/region_memory_crosswalk.py`, a source-labelled read-only registry of selected static globals, all 34 unlocks, and the original USA named story/Plasma flag entries. Added Japan Live crosswalk tab with manual reads and A/B comparisons, plus CSV export and ROM-free unit tests. Existing warps, writes, freezes, unlock gating, and regional attachment are unchanged.
+- **Limits:** Japanese pause `0x800CD2D6` is disputed; other event bits remain unverified offset candidates. Snowflake inventory is a documented `+0x57F1` exception. Dynamic player pointers, overlay/VM and Impact memory are excluded from the offset converter. Raw changes cannot prove field semantics.
+- **Tests:** Test module committed, but full Python/Tk regression and actual Japanese live runtime have **not yet been executed** against this feature branch. No ROM or user diagnostics committed.
+- **Next:** Run targeted and full Linux/Windows suites and Japanese game A/B checks. Review PR into `main` only after pass; avoid automatic promotion into writable controls.
+
 ## 2026-11-16 — v0.11.31 Ubuntu synthetic/Tk CI green
 
 - **Verification:** GitHub Actions push run 43894609637 for commit 3048921014af6f364a59b2769d0b9f7d49e74fb0 completed successfully on Ubuntu 24.04. Non-GUI: **292 executed, 291 passed, 1 skipped**. Xvfb GUI: **116 passed**, including formerly stalled test_scene_request_blocks_overlapping_checkpoint_restore and the new entrance-selection regressions. No GUI deadlock and no runner argument error.
