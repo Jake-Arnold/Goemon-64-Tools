@@ -71,6 +71,7 @@ esac
   tests.test_japan_state_comparison \
   tests.test_japan_player_position_research \
   tests.test_value_search \
+  tests.test_reports \
   tests.test_state_discovery \
   -v
 
@@ -96,6 +97,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_japan_readonly_parity \
     tests.test_japan_state_comparison_ui \
     tests.test_value_search_ui \
+    tests.test_reports_ui \
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
     tests.test_japan_story_progress_ui \
@@ -118,6 +120,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_japan_readonly_parity \
     tests.test_japan_state_comparison_ui \
     tests.test_value_search_ui \
+    tests.test_reports_ui \
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
     tests.test_japan_story_progress_ui \
