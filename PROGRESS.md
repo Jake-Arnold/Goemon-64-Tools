@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Audit duplication and add 12 new exact JP/USA C sources (research only)
+
+- Changed: checked the live **315-function** original-ROM verified USA production list at `7255b2fa59b376c0e03346f434f82d4d02e639e0`, isolating three pre-existing C functions in the 52 research matches. Inspected active PRs #23/#24/#41 (file_11) and #26 (Japanese main), then selected twelve new matching-C functions from distinct `file_12`, `file_14`, `file_15`, and `file_17` regions. Added all 12 exact source files and SHA-256 manifest to `decomp/research/jp_recomp_to_c/` and updated `docs/JP_RECOMP_TO_C_MATCHING_2026-11-16.md`.
+- Tested: pinned original IDO 5.3 recompiled **52/52** individually exact original-USA and Japan functions (2,412 instruction bytes per region), all named source symbol extents and zero external relocations; SHA-256 fingerprints confirmed, new source Git blob IDs match verified archive bytes. Seven cross-region discovery scanner tests PASS.
+- Limits: the 49 new USA candidate functions (2,284 original bytes) are **not** formally promoted. Canonical USA production stays **315 C**, Japanese 24-C remains independent, and no complete integrated USA full-ROM G2, linked overlay relocation and 7,376-function inventory, separate JP full-ROM gate, or complete decomp.local_ci was run in this research batch.
+- Next: repeat branch deduplication immediately before staged integration, then require original-address mixed C/ASM linked overlay, semantic relocations, entire USA 32 MiB ROM, original ELF inventory, and full CI proof. Research exact byte-identical pool is not a full 7,376-function decompilation.
+
+
 ### 2026-11-16 — Correct cross-region research checkpoint wording and exact-ROM size
 
 - Changed: corrected the 40-C draft research handoff's historical 29/36 checkpoints, confirmed three canonical duplicates, updated per-overlay 37-new distribution, documented eleven in-repository research-only source files, and restored correct USA full-ROM acceptance length **33,554,432 bytes**. No native source, manifest or production proof was modified by this documentation correction.

@@ -8,9 +8,9 @@
 - Original Japanese revision-0 decompressed 32 MiB SHA-1: `6f8745fecc3a5e7d4918c7a73353eb0726116ded`.
 - Original pinned `mnsg` source `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, Splat section definitions, generated original USA assembly, original IDO 5.3 `-O2 -mips2 -G 0 -non_shared`.
 - Cross-region scanner inspected **69 corresponding executable sections**, parsed **4,810 original USA assembly annotations**, identified **4,372 eligible functions** of at least 32 bytes, of which **303** were uniquely byte-identical for the entire function across regions, **62** ambiguous and **4,007** non-identical. This is a discovery pool, not 303 decompiled C functions, and not exhaustive of the 7,376 original ELF function identities.
-- Isolated original-ID0 verification re-run locally and passed for **40/40 original-address C source functions**, **1,912 original instruction bytes per region**; each generated source has pinned SHA-256, correct exact compiler function length, no external relocations and byte-exact code against both hash-verified original ROMs.
-- Three of 40, `func_80016660_17260`, `func_80016684_17284`, and `func_800166AC_172AC`, are **already** USA canonical C; thus **37 newly identified research candidates / 1,784 bytes**. One nonmatching trial `func_801E7398_5A32A8` was explicitly rejected.
-- The live canonical USA branch advanced from 307 to **315 verified C functions** during this research, with eight independent file_11 promotions; these new 37 were not part of those eight promoted slices. The upper bound is **352 USA C** *only if* all 37 prove distinct and pass a combined production gate. Japan's independently verified 24 C remain a separate count.
+- Isolated original-ID0 verification re-run locally and passed for **52/52 original-address C source functions**, **2,412 original instruction bytes per region**; each generated source has pinned SHA-256, correct exact compiler function length, no external relocations and byte-exact code against both hash-verified original ROMs.
+- Three of 52, `func_80016660_17260`, `func_80016684_17284`, and `func_800166AC_172AC`, are **already** USA canonical C; thus **49 newly identified research candidates / 2,284 bytes**. One nonmatching trial `func_801E7398_5A32A8` was explicitly rejected.
+- The live canonical USA branch advanced from 307 to **315 verified C functions** during this research, with eight independent file_11 promotions; these new 49 were not part of those eight promoted slices. The upper bound is **364 USA C** *only if* all 49 prove distinct and pass a combined production gate. Japan's independently verified 24 C remain a separate count.
 
 ## Verified isolated C function map
 
@@ -62,7 +62,20 @@ Function names and ROM-derived Japanese VMAs are source-verified individual span
 | `func_801D2138_640F88` | file_14 | `0x801D7868` | 32 | NEW |
 | `func_801D84E8_647338` | file_14 | `0x801DDC18` | 32 | NEW |
 
-New candidates by segment: **main 1; file_11 1; Impact file_13 15; file_18 9; file_19 7; file_12 2; file_14 2**. The most reusable recovered shapes include linked-node X/Y/Z coordinate adjustments, vector field setters/accessors, floating-point clamping, float decay, and bit-array operations. Internal field names are provisional semantics, not newly established full actor struct layouts.
+| `func_801CC148_63AF98` | file_14 | `0x801D1878` | 32 | NEW |
+| `func_801CC20C_65F0BC` | file_15 | `0x801D191C` | 32 | NEW |
+| `func_801CC5A8_65F458` | file_15 | `0x801D1CB8` | 32 | NEW |
+| `func_801CC7E0_63B630` | file_14 | `0x801D1F10` | 52 | NEW |
+| `func_801D0B80_63F9D0` | file_14 | `0x801D62B0` | 56 | NEW |
+| `func_801D17C0_640610` | file_14 | `0x801D6EF0` | 40 | NEW |
+| `func_801D1918_640768` | file_14 | `0x801D7048` | 40 | NEW |
+| `func_801D1940_640790` | file_14 | `0x801D7070` | 52 | NEW |
+| `func_8020E328_66D2D8` | file_17 | `0x80213118` | 36 | NEW |
+| `func_80217114_5D25E4` | file_12 | `0x8021BE84` | 48 | NEW |
+| `func_8021C628_5D7AF8` | file_12 | `0x80221398` | 44 | NEW |
+| `func_80222C10_5DE0E0` | file_12 | `0x80227980` | 36 | NEW |
+
+New candidates by segment: **main 1; file_11 1; Impact file_13 15; file_18 9; file_19 7; file_12 5; file_14 8; file_15 2; file_17 1**. The most reusable recovered shapes include linked-node X/Y/Z coordinate adjustments, vector field setters/accessors, floating-point clamping, float decay, and bit-array operations. Internal field names are provisional semantics, not newly established full actor struct layouts.
 
 ## Japanese Impact RAM addresses and corresponding code
 
@@ -112,3 +125,26 @@ An independent C reconstruction pass added four exact original function matches 
 These four are new original-ROM C matches in both regions, have original-sized compiler symbols, no external MIPS relocations and exact machine-code bytes under the pinned original IDO 5.3. None is in canonical USA 315-C. **No combined full-ROM G2 or source promotion was performed**. Total independent research: **40/40 exact C / 1,912 bytes per region**, **37 newly-unpromoted / 1,784 bytes**. Conditional USA upper bound **352** if all 37 independently pass original production gates.
 
 The full locally reproducible source bundle now includes **40 C files**, original ROM SHA-1 manifest and source SHA-256 checks, executable original-ROM verifier, 303 function discovery JSON, exact scanner and its seven synthetic tests. Four new source files and their proof metadata are also checked into the draft branch under `decomp/research/jp_recomp_to_c/`.
+
+## 52-source checkpoint: audited overlaps and 12 new exact original-ID0 functions
+
+Rechecked the current **315-C** USA production proof in `chatgptweb/decomp` at `7255b2fa59b376c0e03346f434f82d4d02e639e0` (proof blob `b6e509682d5b91b418e725b457bbaf7e96a9cebf`). Of the **52** independently code-exact C probes, exactly **three** (`func_80016660_17260`, `func_80016684_17284`, `func_800166AC_172AC`) are already formally promoted. **All twelve new functions** are absent from canonical G2; they also target separate overlays from the concurrent `file_11` PRs #23, #24 and #41 and Japan-main PR #26. No observed duplicated work in this twelve-function continuation.
+
+| USA function | Overlay | Japanese VMA | Bytes |
+|---|---|---|---:|
+| `func_801CC148_63AF98` | file_14 | `0x801D1878` | 32 |
+| `func_801CC20C_65F0BC` | file_15 | `0x801D191C` | 32 |
+| `func_801CC5A8_65F458` | file_15 | `0x801D1CB8` | 32 |
+| `func_801CC7E0_63B630` | file_14 | `0x801D1F10` | 52 |
+| `func_801D0B80_63F9D0` | file_14 | `0x801D62B0` | 56 |
+| `func_801D17C0_640610` | file_14 | `0x801D6EF0` | 40 |
+| `func_801D1918_640768` | file_14 | `0x801D7048` | 40 |
+| `func_801D1940_640790` | file_14 | `0x801D7070` | 52 |
+| `func_8020E328_66D2D8` | file_17 | `0x80213118` | 36 |
+| `func_80217114_5D25E4` | file_12 | `0x8021BE84` | 48 |
+| `func_8021C628_5D7AF8` | file_12 | `0x80221398` | 44 |
+| `func_80222C10_5DE0E0` | file_12 | `0x80227980` | 36 |
+
+Native verification: all **52 C sources**, **2,412 instruction bytes per region**, recompiled separately with the pinned IDO 5.3 and agreed byte-for-byte with both SHA-1-verified 32 MiB original ROMs. Individual symbols have their exact original sizes and no external relocations; all 52 source SHA-256 values are pinned in the reproducible local archive, with the 12 new GitHub sources additionally pinned in `decomp/research/jp_recomp_to_c/new_12_provenance.json`. Seven scanner unit tests passed. Each of the 12 new Git blob IDs was independently compared to the same local source file, preventing drift between the archive and this branch.
+
+The complete research archive additionally contains all 52 C sources, `verify_candidates.py`, `audit_dedup.py`, 303-code-lead discovery results, and the synthetic scanner tests. **This is research only:** no 32 MiB combined build, full original overlay relocation gate, whole ELF inventory, or full `decomp.local_ci` was run for the 12 new functions. Official USA production remains **315**; 364 is the theoretical ceiling only if 49 unpromoted candidates pass all production gates. Recheck live branches before attempting formal promotion.
