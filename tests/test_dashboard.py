@@ -29,6 +29,7 @@ class DashboardSmokeTests(unittest.TestCase):
         region_store.start()
         self.addCleanup(region_store.stop)
         opts = dict(pid=None, base=None, endian='auto', route=None,
+                    game_version='usa',
                     enable_teleport=True, enable_state_restore=True,
                     enable_debug_menu=True, enable_hex_edit=True,
                     enable_scene_warp=False)
