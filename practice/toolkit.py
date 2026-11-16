@@ -535,7 +535,7 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
                 state = ('Japanese RAM is attached but the detected game backend '
                          'is missing. Reconnect on Dashboard.')
             else:
-                state = (f"{region.upper()} memory attached | PID {pid} | "
+                state = (f"{'JP' if region == 'japan' else 'USA'} memory attached | PID {pid} | "
                          f"Backend: {backend or 'connected'} | "
                          "Research scans use this connection.")
         self.discovery_connection_state.set(state)
