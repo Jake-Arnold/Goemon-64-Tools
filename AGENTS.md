@@ -2,13 +2,48 @@
 
 Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C core).
 
+## Required branch selection (read before editing)
+
+This repository has **two long-lived development baselines**. Choose the
+correct one *before making any changes*:
+
+| Work type | Starting branch | Temporary feature branch | PR target |
+| --- | --- | --- | --- |
+| Toolkit UI, USA/Japan runtime, Linux launchers, practice controls, warps, autosplitter, memory tooling | `main` | `toolkit/<topic>` | `main` |
+| Matching-C decomp, MIPS/ROM mapping, function discovery, research observations, relocation proofs | `chatgptweb/decomp` | `decomp/<topic>` | `chatgptweb/decomp` |
+
+**`main` is the canonical toolkit branch** since PR #27 merged v0.11.27
+on 16 November 2026. **`chatgptweb/decomp` is the separate canonical
+decomp baseline**; PRs #23, #24 and #26 are based on that branch. There is
+no permanently active `toolkit` integration branch. Prior branches such as
+`chatgptweb/toolkit-unified`,
+`chatgptweb/japan-native-recomp-toolkit-v01118`,
+`chatgptweb/japan-toolkit-consolidation` and earlier regional prototypes
+are historical and **must not be used as new feature branch bases**.
+
+Before any work, inspect `git status`, `git branch --show-current` and
+`git fetch origin`; verify the chosen baseline is up to date. Do not
+switch/reset a working tree with uncommitted changes or force-push a
+shared branch. Do not merge the entire decomp history into `main`
+or the toolkit history into the decomp branch; extract only specifically
+reviewed cross-project changes. Preserve research PRs and avoid treating
+unpromoted matching-C functions as official production matches.
+
+**Full runbook:** [docs/TOOLKIT_BRANCH_POLICY.md](docs/TOOLKIT_BRANCH_POLICY.md).
+For decomp-specific continuation also read
+[decomp/CONTINUE.md](decomp/CONTINUE.md).
+On any conflict between outdated README/PROGRESS historical entries and
+these branch rules, treat this section and the current branch policy as
+authoritative. If the branch scheme intentionally changes, update
+`AGENTS.md` and the runbook together in the same PR.
+
 1. For **every change**, update root `PROGRESS.md` with date, summary, reason, tests, limitations and next step. Include `PROGRESS.md` in the same Git commit as implementation changes.
 2. Push each completed commit to the connected GitHub repository `Jake-Arnold/Goemon-64-Tools`; check the remote commit SHA and report truthfully. If credentials/network/repository access are unavailable, provide the local commit or patch and explicitly say that the push did not occur. Do not simulate a push.
 3. Maintain or expand Python and portable C tests. Execute appropriate tests before commits; distinguish mock-RAM tests from in-game verification.
 4. Treat N64 scene loading, game state, map pointers and character pointers as unsafe until the engine's native transition path is understood. Do not enable raw warp shortcuts based only on apparent map-ID changes.
 5. Do not commit ROMs, copyrighted game assets, saves, per-user routes, diagnostics containing personal information, credentials, or raw game memory dumps. Respect `.gitignore`.
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
-7. Continue from v0.9.9 as the imported baseline; no claim of a successful direct warp is supported.
+7. The current toolkit baseline is v0.11.27 on `main` as of 16 November 2026. Older v0.9.x instructions are historical. Scene-warp code and ROM-derived entrance data exist, but live USA/Japanese native gameplay tests must be distinguished from synthetic memory tests; do not claim unverified behaviour has passed.
 
 ## Decomp continuation
 

@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — agent-facing branch instructions aligned with main/decomp workflow
+
+- **Reason:** Future coding agents were not guaranteed to consult the detailed policy; root `AGENTS.md` also contained stale v0.9.9 instructions, potentially causing changes on the wrong historic branch.
+- **Changed:** Added prominent mandatory branch routing to the root `AGENTS.md`: toolkit branches derive from `main` and PR into `main`; decomp/research branches derive from `chatgptweb/decomp` and PR into that branch. Older `chatgptweb/toolkit-unified`, native recomp and Japan integration branches are historical; unrelated decomp trees must not be blindly merged. Included instructions to check current branch, dirty files and remote status, and links to `docs/TOOLKIT_BRANCH_POLICY.md` and `decomp/CONTINUE.md`.
+- **Maintenance:** Replaced obsolete `v0.9.9` baseline directive with the true v0.11.27 toolkit version and a requirement to distinguish synthetic tests from actual game behaviour.
+- **Testing:** Documentation/instruction-only update; no toolkit code or memory write paths modified. GitHub diff reviewed, no Python/runtime tests run. No release version bump required for agent instructions.
+- **Workflow:** `toolkit/agent-branch-guidance` short-lived branch; open a PR against `main`, review and merge when verified.
+
 ## 2026-11-16 — toolkit branch workflow: main is canonical, decomp is separate
 
 - **Merged:** PR #27, `chatgptweb/toolkit-unified` to `main`, merge SHA `7d808a5b36b4efd1078894a8798bdc59fee1b85e`. The main branch now contains toolkit v0.11.27 and the source-verified 888-entry original-USA entrance atlas.
