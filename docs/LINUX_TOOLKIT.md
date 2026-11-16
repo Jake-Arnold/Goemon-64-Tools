@@ -2,6 +2,21 @@
 
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
+## Ubuntu Dock cog icon correction (v0.11.20)
+
+The v0.11.19 launcher had a real GNOME identity mismatch: `Tk(className="GoemonPracticeToolkit")` actually exposes **`WM_CLASS = "goemonPracticeToolkit", "Goemonpracticetoolkit"`** on Tk 8.6/X11, but the installed `.desktop` file advertised `StartupWMClass=GoemonPracticeToolkit`. Case matters.
+
+v0.11.20 gives the Tk window a lowercase class-name seed (`goemon-practice-toolkit`), yielding `WM_CLASS = "goemon-practice-toolkit", "Goemon-practice-toolkit"` in a real Xvfb/X11 probe. The installer now sets `StartupWMClass=goemon-practice-toolkit` and the desktop-file basename is `goemon-practice-toolkit.desktop`. These three identities agree.
+
+After pulling the new branch, **close existing toolkit windows** and rerun:
+
+```bash
+python3 scripts/install_linux_launcher.py
+bash Run-Linux.sh
+```
+
+To verify exact runtime identity while the toolkit window is visible, run `xprop WM_CLASS` (install `x11-utils` if absent), then click the actual toolkit window. The first quoted value must be `goemon-practice-toolkit`. Unpin the old anonymous cog entry, launch the registered **Goemon Practice Toolkit** application from the Ubuntu app grid, and pin that running application instead. If GNOME retains an old launcher association, log out and back in before retrying. On GNOME's Wayland session, Tk may run as XWayland and still report an X11 WM_CLASS.
+
 ## Unified Ubuntu application launcher (v0.11.19)
 
 This single launcher works for **USA and Japan-0**. There is no region-specific CLI startup or read-only default. Writes, freezes, unlock controls and supported practice actions are enabled on both regional dashboards by default; selecting a region merely chooses the correct memory interpretation and runtime backend.
@@ -18,7 +33,7 @@ bash Run-Linux.sh
 
 The launcher uses the checkout's `.venv/bin/python` if available, otherwise the system `python3`. The GUI remembers the last selected USA/Japan region at `~/.config/GoemonSpeedrunTools/launcher-preferences.json` (or XDG_CONFIG_HOME). To switch regions, use **Dashboard → Game version**; reconnect to the appropriate backend. When selecting Japan from the default auto target, the toolkit selects `recomp`; Mupen64Plus/Project64 remain available in the target selector.
 
-The installer copies the existing `assets/goemon_tools_logo.png` to the user XDG icon directory and writes `~/.local/share/applications/goemon-practice-toolkit.desktop` (or XDG_DATA_HOME). It uses **StartupWMClass=GoemonPracticeToolkit**, matching the Tk window's native class, which allows GNOME Shell/Ubuntu Dock to associate the window with the correct logo instead of the generic settings cog. Open **Goemon Practice Toolkit** from the Ubuntu application grid and pin it to the dock. If an older generic icon was pinned, unpin it and pin this registered application. No root/sudo required. Repeat installation only if the toolkit checkout moves; the installed app points at that directory.
+The installer copies the existing `assets/goemon_tools_logo.png` to the user XDG icon directory and writes `~/.local/share/applications/goemon-practice-toolkit.desktop` (or XDG_DATA_HOME). It uses **StartupWMClass=goemon-practice-toolkit**, matching Tk's verified X11 WM_CLASS instance, which allows GNOME Shell/Ubuntu Dock to associate the window with the correct logo instead of the generic settings cog. Open **Goemon Practice Toolkit** from the Ubuntu application grid and pin it to the dock. If an older generic icon was pinned, unpin it and pin this registered application. No root/sudo required. Repeat installation only if the toolkit checkout moves; the installed app points at that directory.
 
 This changes only the desktop application identity and user configuration. It does not change the game ROM, native recomp, RDRAM backend or Linux process security settings.
 
