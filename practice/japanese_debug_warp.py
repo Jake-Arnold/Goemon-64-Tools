@@ -1,4 +1,4 @@
-"""Japan-0 original debug-menu transition research, never direct scene writes.
+"""Japan-0 original debug-menu entry: only 0x800CD284 is written.
 
 The externally documented engine-mode byte is 0x800CD284 (0x0A debug).
 The L-trigger cheat and US original debug menu use that engine mode.
@@ -64,31 +64,40 @@ def _normal_gameplay(context):
             'requires stable gameplay as any playable character')
 
 
-def enter_japan_native_debug_menu(rdram, destination: int, *,
-                                  expected_context):
-    """Only one byte 0x0D→0x0A at 0x800CD284, never a scene-id write.
+def enter_japan_native_debug_menu(rdram, destination=None, *,
+                                  expected_context=None):
+    """Unrestricted original Japan debug menu: engine mode byte only.
 
-    The selection is for a USER menu hint only; this does not auto-warp.
-    ROM/PID/RDRAM re-verification and explicit consent belong to controller.
+    The connected writer must already have been verified for the correct
+    Japanese executable, PID and RDRAM layout. Engine state, gameplay,
+    loading, cutscene, character, source scene and destination are not
+    preconditions. No dialog, artificial input or other RAM edit occurs here.
+
+    The legacy destination/context parameters are accepted as *hints* only
+    so older callers cannot accidentally re-enable gameplay restrictions.
     """
-    category, index = debug_menu_selection_hint(destination)
-    if not isinstance(expected_context, tuple) or len(expected_context) != 6:
-        raise ValueError('Missing verified Japanese gameplay context')
-    _normal_gameplay(expected_context)
-    before = get_japan_debug_context(rdram)
-    if before != expected_context:
-        raise RuntimeError('Japanese engine/scene context changed since confirmation')
-    if get_japan_debug_context(rdram) != before:
-        raise RuntimeError('Japanese gameplay context changed during debug-menu validation')
-    rdram.write_guest(JAPAN_DEBUG_ENGINE_MODE, bytes([JAPAN_NATIVE_DEBUG_MODE]))
+    before = rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
+    changed = before != JAPAN_NATIVE_DEBUG_MODE
+    if changed:
+        rdram.write_guest(JAPAN_DEBUG_ENGINE_MODE,
+                          bytes((JAPAN_NATIVE_DEBUG_MODE,)))
     observed = rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1)[0]
-    if observed not in (JAPAN_NATIVE_DEBUG_MODE, JAPAN_ORDINARY_ENGINE_MODE):
+    if observed != JAPAN_NATIVE_DEBUG_MODE:
         raise RuntimeError(
-            f'Unexpected Japanese debug engine state {observed}; '
-            'inspect emulator or restore savestate')
+            f'Japanese engine mode 0x0A did not verify; read 0x{observed:02X}')
+    # Scene selection is only a display hint; opening the original debug
+    # menu never stages a map, entrance, character, or button press.
+    scene = 0
+    try:
+        scene = int.from_bytes(rdram.read_guest(JAPAN_DEBUG_SCENE, 2), 'big')
+    except (ValueError, OSError, PermissionError):
+        pass
+    hint = destination if type(destination) is int else None
+    try:
+        category, index = debug_menu_selection_hint(hint)
+    except ValueError:
+        category, index = '', -1
     return DebugMenuEntryResult(
-        before_state=JAPAN_ORDINARY_ENGINE_MODE,
-        observed_state=observed,
-        source_scene=before[1], suggested_destination=destination,
-        category_hint=category, menu_index_hint=index,
-        changed=True)
+        before_state=before, observed_state=observed,
+        source_scene=scene, suggested_destination=hint,
+        category_hint=category, menu_index_hint=index, changed=changed)
