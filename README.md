@@ -1,4 +1,14 @@
-# Goemon Speedrun Tools v0.11.17 - Plasma advice conditions
+# Goemon Speedrun Tools v0.11.18 — Japanese native recomp support
+
+## v0.11.18 — Japan-0 native Linux recomp attachment (experimental)
+
+The shared USA/Japan Python/Tk toolkit now supports **Japan-0 Goemon64Recompiled** in addition to Japanese Mupen64Plus and Windows Project64. Select **Japan — Ganbare Goemon**, verify the original Japanese revision-0 retail ROM, select target **recomp**, and connect to the running Linux native Japanese game PID. Alternatively use **Launch native Linux recomp** to start a user-selected native executable.
+
+The Japanese native reader requires three distinct original-ROM-verified guest code fingerprints, a valid 8 MiB guest RDRAM mapping, process identity and plausible Japanese game state. A USA recomp or copied cartridge buffer must never be interpreted as Japanese gameplay RAM. Native Japanese writes reverify the process and code mapping on fresh writable handles. Existing Japanese field, Story Progress, Unlocks, Live Memory and scene-reload logic is reused, but **live native Japanese gameplay has not yet been tested with this branch**. A native recomp does not support full emulator savestates; preserve separate backup save files before trying memory writes. Run `bash scripts/test_japan_party.sh` for synthetic regression tests.
+
+The toolkit's displayed release is centralized in `practice/version.py`. Update that version, the README heading and PROGRESS.md for each future change. This avoids keeping an obsolete version in the title bar.
+
+## Previous v0.11.17 — Plasma advice conditions
 
 ## Region-aware shared toolkit — 2026-11-15
 
@@ -48,7 +58,7 @@ The value `6` was observed by the user to permit moving through enemies in one t
 
 ## Active development branch and damage-event recorder
 
-Use `chatgptweb/decomp` as the current consolidated integration branch for new toolkit work. The `main` branch is not the newest toolkit baseline. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
+Use `main` as the integrated USA/Japan toolkit baseline after PR #22 (16 November 2026). Work on isolated feature branches and merge only after tests and live acceptance. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
 
 The **Automatic events** tab captures read-only memory samples around health-loss events, ranks transient candidate fields and exports JSON evidence. It is designed to investigate damage immunity and collision handling; candidate addresses are not yet verified collision controls. Recording stops on map, character, pointer or connection changes.
 
