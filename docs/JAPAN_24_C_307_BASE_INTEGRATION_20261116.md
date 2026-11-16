@@ -25,3 +25,12 @@ Japanese C functions must not be added to the USA 307-function count.
 
 No ROM, original generated assembly, object, ELF or compiler binary is part
 of this integration.
+
+## Additional overlays and symbol research from PRs #7–8
+
+Eight further previously absent Japan/USA research-source, test and document
+files are imported by original Git blob from Japanese symbol-reconciliation
+head `a2f57bacbe67230af82b7767c1140878c422c8db`. They cover 69-overlay direct-JAL scanning, audio-patch
+audit and reconciled original-symbol function extents. Their tests are
+synthetic ROM-free tests; their research claims do **not** change Japanese
+24-C native production acceptance or the USA 307 canonical count.
