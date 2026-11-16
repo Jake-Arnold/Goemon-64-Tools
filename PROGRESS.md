@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Three USA file_12 actor-lifecycle C isolates exact at original VMA (research only)
+
+- Changed: added three original-IDO 5.3 C reconstruction sources and fail-closed standalone verifier under `decomp/research/file12_spatial/`, four ROM-free structural tests, and `docs/USA_FILE12_THREE_C_ISOLATES_2026-11-16.md`. The previous spatial original-ROM anchor report remains intact.
+- Native result: original USA 32 MiB SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; all **3/3** C functions compile and link at exact original VMA, match **420/420** original function bytes, and contain 25 checked original-named symbol relocation entries (1 + 14 + 10). The contiguous actor-update dispatcher and state-2 callback account for 364 bytes; the active-placement gate another 56.
+- Tested: direct original-address IDO 5.3 compiler/MIPS linker/objcopy comparisons PASS; 4/4 new ROM-free structural tests PASS; previous 4/4 file12 anchor tests and 38/38 original ROM anchors also PASS.
+- Interpretation: identified state-2 successor reallocation and the scheduler-global task processing call; the main scheduler operates on linked tasks and a free-list path, not proven immediate heap deallocation. Explicit compiler-only stack pad in the callback does not represent a known original game field.
+- Limitations: no combined overlay splice, full-ROM G2, original complete relocation multiset, production C promotion, or independent emulator run. Canonical USA baseline remains 315 matching-C functions; no ROM/assets or modified-game binaries committed.
+- Next: build an original-location ASM/C/ASM `file_12` adapter, retain original relocation identity, then run central `decomp.verify`, complete ELF inventory and `decomp.local_ci`.
+
+
 ### 2026-11-16 — Read-only USA file_12 spatial entity lifecycle research (separate branch)
 
 - Changed: added source-only report `docs/USA_FILE12_ENTITY_SPATIAL_LIFECYCLE_2026-11-16.md`, original-ROM instruction anchor verifier `decomp/file12_spatial_probe.py`, and four ROM-free synthetic tests. No changes to game memory, emulator, original ROM, manifest, production C or prior proof metadata.
