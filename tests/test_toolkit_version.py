@@ -26,6 +26,10 @@ class ToolkitVersionTests(unittest.TestCase):
         self.assertIn('from practice.version import DISPLAY_VERSION', source)
         self.assertIn('Goemon Practice Toolkit {DISPLAY_VERSION}', source)
         self.assertIn('{DISPLAY_VERSION}  |', source)
+        launcher = (ROOT / 'Run.bat').read_text(encoding='utf-8')
+        self.assertIn('GOEMON_VERSION', launcher)
+        self.assertIn('from practice.version import DISPLAY_VERSION', launcher)
+        self.assertNotIn('v0.11.17', launcher)
         self.assertNotRegex(source, r'Goemon Practice Toolkit v\d+\.\d+\.\d+')
 
 
