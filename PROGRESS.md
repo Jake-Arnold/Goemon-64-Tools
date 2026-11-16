@@ -2,6 +2,15 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.20 GNOME dock icon association correction
+
+- **User-reported regression:** The v0.11.19 per-user Ubuntu desktop launcher showed the toolkit logo in the app list, but the running Tk window still spawned a second generic settings cog icon on the GNOME Dock.
+- **Root cause verified, not guessed:** Actual `xvfb-run` + Python Tk 8.6 + `xprop -name` measured `WM_CLASS(STRING) = "goemonPracticeToolkit", "Goemonpracticetoolkit"` for `Tk(className="GoemonPracticeToolkit")`, while the previous launcher had `StartupWMClass=GoemonPracticeToolkit`. The wrong casing prevented a reliable GNOME match.
+- **Fix:** Toolkit now initializes `Tk(className="goemon-practice-toolkit")`; actual X11 probe reports `WM_CLASS(STRING) = "goemon-practice-toolkit", "Goemon-practice-toolkit"`. The Linux installer now sets `StartupWMClass=goemon-practice-toolkit`, exactly matching the actual window instance and the desktop-file basename `goemon-practice-toolkit.desktop`. Existing repository PNG logo continues to be installed; no replacement artwork needed.
+- **Version:** Increased `practice/version.py` from 0.11.19 to **0.11.20**; updated README and Linux setup instructions. Same one-launcher USA/JP flow and write-enabled defaults retained. Previous installed desktop entry is corrected only after rerunning `python3 scripts/install_linux_launcher.py` and reopening the toolkit.
+- **Verification:** Ran actual Tk 8.6/Xvfb/xprop probe for both old and new class names in this session: old `goemonPracticeToolkit` (mismatch), new `goemon-practice-toolkit` (match). Added `test_real_tk_x11_window_instance_matches_installed_desktop_id` to the Linux suite, skipping when X11/xprop is absent. Tests in the GitHub checkout, GNOME dock appearance on the user's real Ubuntu desktop, and live game behavior have **not** been run by GitHub connector.
+- **Next:** User runs `git pull --ff-only`, `python3 scripts/install_linux_launcher.py`, closes old windows, relaunches from Ubuntu app grid, and replaces any previously pinned anonymous cog. If grouping is still wrong, inspect `xprop WM_CLASS` for the user-specific running toolkit window and the installed desktop file, and diagnose stale GNOME app cache/launcher duplicates.
+
 ## 2026-11-16 — v0.11.19 unified launcher and Ubuntu dock application icon
 
 - **Version discipline:** Incremented toolkit release to **v0.11.19** (previous feature branch was v0.11.18). GUI and Windows batch launcher still use `practice/version.py`, and the README headline matches; release consistency tests extended.
