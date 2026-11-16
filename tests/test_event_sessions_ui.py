@@ -49,6 +49,29 @@ class EventSessionUITests(unittest.TestCase):
             app.open_event_session();self.wait_rank()
         self.assertEqual(len(app.event_session['trials']),1);self.assertEqual(app.event_pending,{})
 
+    def test_flag_report_contains_full_trials_and_ranked_bits(self):
+        import json
+        app = self.app
+        app.new_event_session()
+        app.capture_event_stage('A')
+        app.mem.write_guest(EVENT_START, b'\x20')
+        app.capture_event_stage('B')
+        app.record_event_trial()
+        self.wait_rank()
+        with patch('practice.reports.reports_root',
+                   return_value=Path(self.folder.name) / 'reports'):
+            app.save_event_investigation_report()
+        found = list((Path(self.folder.name) / 'reports').glob(
+            'USA/*/*/manifest.json'))
+        self.assertEqual(len(found), 1)
+        session = json.loads((found[0].parent / 'session.json').read_text())
+        self.assertEqual(session['manifest']['kind'], 'flag-investigation')
+        self.assertEqual(len(session['evidence']['working_investigation']['trials']), 1)
+        self.assertEqual(session['evidence']['working_investigation']
+                         ['trials'][0]['captures']['B']['bytes_hex'][:2], '20')
+        self.assertTrue(session['candidates'])
+        self.assertIn('Saved', app.event_status.get())
+
     def test_disconnect_capture_failure_and_failed_save_leave_no_phantom_trial(self):
         app=self.app;app.new_event_session();app.capture_event_stage('A')
         app._event_connection=lambda: ((999,456),'project64')
