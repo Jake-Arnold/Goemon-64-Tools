@@ -30,6 +30,10 @@ class ToolkitVersionTests(unittest.TestCase):
         self.assertIn('GOEMON_VERSION', launcher)
         self.assertIn('from practice.version import DISPLAY_VERSION', launcher)
         self.assertNotIn('v0.11.17', launcher)
+        linux = (ROOT / 'Run-Linux.sh').read_text(encoding='utf-8')
+        self.assertIn('python -m practice.toolkit', linux)
+        self.assertNotIn('--game-version', linux)
+        self.assertNotIn('--read-only', linux)
         self.assertNotRegex(source, r'Goemon Practice Toolkit v\d+\.\d+\.\d+')
 
 
