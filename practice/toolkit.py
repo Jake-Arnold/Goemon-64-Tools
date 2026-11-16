@@ -265,6 +265,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.jp_candidates_pid = None
         self.jp_candidates_backend = None
         self.jp_backend = None
+        self._jp_reconnect_enabled = False  # only after successful JP Auto attach
+        self._jp_process_birth = None      # psutil PID creation time, prevents reuse
+        self._jp_last_liveness_check = 0.0
+        self._jp_last_auto_attempt = 0.0
         self.connect_button = ttk.Button(connection, text='Connect to game',
                    style='Accent.TButton', command=self.connect)
         self.connect_button.pack(fill='x', pady=(0, 7))
@@ -608,6 +612,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             return
         if version == self.active_version:
             return
+        self._jp_reconnect_enabled = False
+        self._jp_process_birth = None
         self._disconnect_for_version_change()
         self._clear_japan_base_choices()
         self.active_version = version
@@ -1792,6 +1798,18 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 self.mem = self.current = None
             self.jp_read_button.state(['!disabled'])
             self.jp_capture_spawn_btn.state(['!disabled'])
+            # Only a successful Auto attachment can arm live restart tracking.
+            self._jp_reconnect_enabled = self.connection_target.get() == 'auto'
+            self._jp_process_birth = None
+            if self._jp_reconnect_enabled:
+                try:
+                    import psutil
+                    self._jp_process_birth = psutil.Process(pid).create_time()
+                except (psutil.NoSuchProcess, psutil.AccessDenied, OSError,
+                        ImportError):
+                    # Do not guess that a future process with this PID is
+                    # the same binary; no automatic monitoring without proof.
+                    pass
             size_mb = getattr(reader, 'rdram_size', 0x800000) // 0x100000
             self.jp_read_result.set(
                 f'Japan-0 verified {size_mb} MiB RDRAM at 0x{base:X}; {endian}.')
@@ -1826,7 +1844,57 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.misc_text.set('Character: —    Action: —    Loading: —')
             self.status.set(f'Connection failed: {result[1]}')
 
+    def _watch_japan_process_restart(self, now):
+        """Detect an exited/reused PID and re-run JP Auto connection safely.
+
+        This is a throttled Tk-thread lifecycle check, not a write operation.
+        Each replacement process still passes exact ROM/RDRAM verification in
+        the background before any toolkit controls are re-enabled.
+        """
+        if (not getattr(self, '_jp_reconnect_enabled', False)
+                or self.active_version.key != 'japan'
+                or self.connection_target.get() != 'auto'
+                or self._connecting
+                or now - getattr(self, '_jp_last_liveness_check', 0) < 2):
+            return
+        self._jp_last_liveness_check = now
+        if self.jp_rdram is None:
+            # A game that is not running must not cause expensive rapid scans.
+            if now - getattr(self, '_jp_last_auto_attempt', 0) < 10:
+                return
+            self._jp_last_auto_attempt = now
+            self.pid_text.set('')
+            self._clear_japan_base_choices()
+            self._connect_japan_emulator()
+            return
+        old_birth = getattr(self, '_jp_process_birth', None)
+        if old_birth is None:
+            return  # No trustworthy PID identity; manual reconnect remains.
+        try:
+            import psutil
+            current_birth = psutil.Process(self.game_pid).create_time()
+        except psutil.NoSuchProcess:
+            current_birth = None
+        except (psutil.AccessDenied, OSError):
+            return
+        if current_birth == old_birth:
+            return
+        # All old-session handles and asynchronous freezes must be disabled
+        # before scanning the new executable. A PID reused by an unrelated
+        # process must never inherit the previous RDRAM mapping/writer.
+        self._jp_last_auto_attempt = now
+        old_pid = self.game_pid
+        self._disconnect_for_version_change()
+        self._jp_process_birth = None
+        self.pid_text.set('')
+        self._clear_japan_base_choices()
+        self.status.set(
+            f'Japanese client PID {old_pid} exited or restarted; '
+            'discovering the new verified process automatically.')
+        self._connect_japan_emulator()
+
     def tick(self):
+        self._watch_japan_process_restart(time.monotonic())
         if self.jp_rdram is not None:
             self.poll_japan_native_scene_warp(time.monotonic())
             self.refresh_japan_fields()
