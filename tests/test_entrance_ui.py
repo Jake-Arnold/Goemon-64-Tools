@@ -214,6 +214,33 @@ class EntranceUITests(unittest.TestCase):
         self.assertEqual(self.app.selected_scene_spawn(2).position,
                          (40,50,60))
 
+    def test_auto_selected_entry_rechecks_changed_live_origin(self):
+        atlas=copy.deepcopy(atlas_fixture())
+        row=copy.deepcopy(atlas['payload']['entries'][0])
+        row.update(id='default:2',kind='default',source_map=None,
+                   source_file=None,position=[40,50,60])
+        atlas['payload']['entries'].append(row)
+        atlas['sha256']=digest(atlas['payload'])
+        self.app.entrance_atlas=atlas
+        self.app.refresh_entrance_choices(2)
+        self.assertEqual(self.app.selected_scene_spawn(2).position,(-10,20,30))
+        self.app.mem.write_guest(MAP_ADDR,b'\x00\x23')
+        self.assertEqual(self.app.selected_scene_spawn(2).position,(40,50,60))
+
+    def test_manually_selected_entry_is_preserved_in_same_context(self):
+        atlas=copy.deepcopy(atlas_fixture())
+        row=copy.deepcopy(atlas['payload']['entries'][0])
+        row.update(id='default:2',kind='default',source_map=None,
+                   source_file=None,position=[40,50,60])
+        atlas['payload']['entries'].append(row)
+        atlas['sha256']=digest(atlas['payload'])
+        self.app.entrance_atlas=atlas
+        self.app.refresh_entrance_choices(2)
+        self.app.entrance_choice.current(0)
+        self.app._entrance_chosen_by_user(None)
+        self.app.mem.write_guest(MAP_ADDR,b'\x00\x23')
+        self.assertEqual(self.app.selected_scene_spawn(2).position,(-10,20,30))
+
     def test_native_default_is_used_when_origin_has_no_unique_route(self):
         atlas=copy.deepcopy(atlas_fixture());row=copy.deepcopy(atlas['payload']['entries'][0])
         row.update(id='default:2',kind='default',source_map=None,source_file=None,position=[40,50,60])

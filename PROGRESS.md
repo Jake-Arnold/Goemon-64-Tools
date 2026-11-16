@@ -2,6 +2,13 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.31 CI-detected entrance-choice and test runner regressions
+
+- **GitHub Actions first run:** The protected GUI suite reached its summary without hanging: 115 GUI tests, 3 failures and 1 error. The -v runner argument was wrongly treated as a module. One dashboard assertion expected Japanese raw hex editing disabled although supported UI editing has been enabled. Two entrance tests exposed stale cached entrance selection across atlas/region changes and after the atlas was removed.
+- **Production correction:** EntranceMixin now distinguishes explicitly selected entrances from automatically suggested ones, reselects automatically on live origin changes, and invalidates cached choices when region or atlas identity changes. Manual entrance selection persists only for the same destination/region/atlas. Missing coordinates continue to fail closed; no new warping or memory-write mechanism is introduced.
+- **Tests and runner:** GUI runner accepts -v. Corrected outdated Japanese raw-edit UI assertion and added synthetic tests for changing source scene and preserving a manual entry. The original three failed tests remain in the suite.
+- **Version:** v0.11.31, README and progress updated. These changes have not yet passed a subsequent CI run or real Japanese gameplay test. Keep PR #33 draft.
+
 ## 2026-11-16 — v0.11.30 GUI modal guard and CI preflight
 
 - **Reason:** GUI tests had hung without a summary; corrected region fixtures still lack a full rerun. A timeout prevents an endless hang, but unexpected hidden Tk dialogs need actionable failures.

@@ -1,5 +1,20 @@
 # Ubuntu Japanese toolkit test failures and native JP crash (2026-11-16)
 
+## GitHub Actions regression result and follow-up (16 November 2026)
+
+The first GitHub Actions workflow after adding the modal guard executed the GUI
+suite to completion: **115 GUI tests, 3 failures, 1 error**. It did not freeze.
+The error was a -v option erroneously interpreted as a test module. The
+dashboard test expected Japanese raw editing disabled although it is enabled
+in the supported UI. Two entrance failures revealed stale automatically
+selected entrances surviving atlas or region changes and missing-atlas cases.
+
+The v0.11.31 change accepts -v, corrects the outdated dashboard assertion,
+and updates the production entrance selection context and manual selection
+tracking. Added regression tests for auto selection after a live source scene
+change and preservation of a user-selected entry. Retest is required; no
+new CI pass is claimed by these notes.
+
 ## Additional synthetic GUI-test safeguard (16 November 2026)
 
 The test-only GUI runner converts unmocked tkinter.messagebox, filedialog

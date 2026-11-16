@@ -29,6 +29,8 @@ class EntranceMixin:
     def init_entrances(self):
         self.entrance_atlas=None;self.entrance_load_error=None
         self.entrance_rows=[];self.entrance_destination=None
+        self._entrance_selection_context=None
+        self._entrance_manual_selection=False
         self.entrance_loading=False;self.entrance_results=queue.Queue()
         bundled = repository_entrance_atlas_path()
         durable = stored_entrance_atlas_path()
@@ -75,7 +77,13 @@ class EntranceMixin:
         ttk.Label(box,textvariable=self.entrance_note,wraplength=900).pack(anchor='w',pady=3)
         self.entrance_choice=ttk.Combobox(box,state='readonly',width=100)
         self.entrance_choice.pack(fill='x')
-        self.entrance_choice.bind('<<ComboboxSelected>>',lambda _e:self.describe_entrance())
+        self.entrance_choice.bind('<<ComboboxSelected>>',self._entrance_chosen_by_user)
+
+    def _entrance_chosen_by_user(self, _event):
+        # Preserve an explicitly chosen entrance, but not an auto-selected
+        # entry carried over from an obsolete scene/region/atlas context.
+        self._entrance_manual_selection=True
+        self.describe_entrance()
 
     def entrance_summary(self):
         built_in = known_entrance_count()
@@ -121,10 +129,17 @@ class EntranceMixin:
         if destination is None:
             chosen=self.scene_list.curselection()
             destination=self.scene_options[chosen[0]][0] if chosen else None
+        context=(getattr(getattr(self,'active_version',None),'key','usa'),id(self.entrance_atlas))
         previous=None
         index=self.entrance_choice.current()
-        if self.entrance_destination==destination and 0<=index<len(self.entrance_rows):previous=self.entrance_rows[index]['id']
+        if (self._entrance_manual_selection and
+                self._entrance_selection_context==context and
+                self.entrance_destination==destination and
+                0<=index<len(self.entrance_rows)):
+            previous=self.entrance_rows[index]['id']
         self.entrance_destination=destination
+        self._entrance_selection_context=context
+        self._entrance_manual_selection=False
         self.entrance_rows=incoming(self.entrance_atlas,destination)
         if not self.entrance_rows:
             # The checked-in known XYZ records are available without any ROM.
@@ -156,7 +171,10 @@ class EntranceMixin:
                 candidates=defaults or list(range(len(self.entrance_rows)))
             variants={tuple(self.entrance_rows[i]['position'])+(self.entrance_rows[i]['heading'],self.entrance_rows[i]['mode']) for i in candidates}
             if len(variants)==1:chosen_index=candidates[0]
-        if chosen_index is not None:self.entrance_choice.current(chosen_index);self.describe_entrance()
+        if chosen_index is not None:
+            self.entrance_choice.current(chosen_index)
+            self._entrance_manual_selection=(previous is not None)
+            self.describe_entrance()
         else:
             self.entrance_note.set(
                 f'{len(values)} recorded entrances for this scene; choose one.'
@@ -165,7 +183,11 @@ class EntranceMixin:
                 'once to save its entrance records, or select a known scene.')
 
     def selected_scene_spawn(self,destination):
-        if self.entrance_destination!=destination or self.entrance_choice.current()<0:
+        context=(getattr(getattr(self,'active_version',None),'key','usa'),id(self.entrance_atlas))
+        if (self.entrance_destination!=destination or
+                self.entrance_choice.current()<0 or
+                self._entrance_selection_context!=context or
+                not self._entrance_manual_selection):
             self.refresh_entrance_choices(destination)
         if not self.entrance_rows:
             raise ValueError(

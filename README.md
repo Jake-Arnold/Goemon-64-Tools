@@ -1,4 +1,12 @@
-# Goemon Speedrun Tools v0.11.30 — Japanese debug, auto-connect and verified warp checks
+# Goemon Speedrun Tools v0.11.31 — Japanese connection and entrance-selection reliability
+
+## v0.11.31 — CI-discovered GUI regression corrections
+
+The first ROM-free Ubuntu GitHub Actions run on PR #33 reproduced **three GUI test failures** and one GUI runner CLI error, without hanging. The runner now accepts the existing unittest `-v` flag. Japanese raw hex editing remains intentionally enabled in the UI, while production writes still require verified process, ROM and memory; the outdated disabled-button assertion was corrected.
+
+The entrance selector now invalidates stale automatic choices when the ROM atlas changes, the game region switches or the current scene source changes. An explicitly user-selected entrance remains selected within the same region, atlas and destination. This also prevents a removed atlas from leaving an outdated cached entrance active. Added regression coverage for current-origin changes and intentional manual selection. Full CI and live gameplay verification remain pending.
+
+
 
 ## v0.11.30 — GUI test isolation correction after Ubuntu 290-pass run
 

@@ -34,7 +34,9 @@ def reject_unexpected_modals():
         yield
 
 def main(modules=None):
-    names = sys.argv[1:] if modules is None else modules
+    arguments = sys.argv[1:] if modules is None else modules
+    # Existing Bash smoke scripts pass the standard unittest -v flag.
+    names = [name for name in arguments if name not in ('-v', '--verbose')]
     if not names:
         print("Usage: python -m tests.gui_smoke_runner TEST_MODULE [...]", file=sys.stderr)
         return 2

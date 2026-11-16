@@ -171,7 +171,9 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertNotEqual(app.entrance_box.winfo_manager(), '')
         self.assertIn('Load original USA ROM', app.entrance_load_button.cget('text'))
         self.assertIn('JAPAN:', app.scene_instruction.cget('text'))
-        self.assertIn('disabled', app.raw_write_btn.state())
+        # Japanese raw memory editing is available in the UI; real writes
+        # still require independently verified ROM/PID/RDRAM and permissions.
+        self.assertNotIn('disabled', app.raw_write_btn.state())
         self.assertNotIn('disabled', app.freeze_raw_button.state())
         self.assertEqual(app.usa_unlock_shell.winfo_manager(), 'pack')
         self.assertEqual(
