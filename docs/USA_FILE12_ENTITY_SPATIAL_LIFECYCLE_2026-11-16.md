@@ -75,6 +75,14 @@ The user's runtime capture at `PC=0x8021A4B8`, `A0=0x8016B350`, `V1=0x8039A558` 
 
 The user observed the initializer breakpoint firing on NPC entering range and again on re-entry, not when leaving, while the release breakpoint fired around the NPC disappearing. This supports streaming activation/release **but does not prove immediate memory free, exact timing of visual removal, or that every actor uses the same policy**.
 
+## State-2 task-retirement follow-up (static trace)
+
+The actor callback `func_80218F30_5D4400` (`0x80218F30`, decompressed ROM `0x5D4400`, size `0xB8`) calls the update chain `0x80218E7C` at `0x80218F3C`, then tests **bit `0x2` of `actor+0x68`** at `0x80218F54`. On state 2 it calls main-code `func_80034ED4_35AD4` (`0x80034ED4`) at `0x80218F6C`. The main-code helper delegates to `0x80034EF8` and thence to scheduler-list routines `0x80034F44` and `0x80035044` / `0x800350C4`. These functions manipulate linked scheduler entries, callback fields and a count; this is evidence of **task retirement/recycling**, not proof of immediate raw heap deallocation.
+
+After the state-2 cleanup request, the callback reads the placement link `actor+0x70`. If it is NULL (as in the observed range-release path), it exits without attempting replacement. If still non-NULL, it has a distinct successor-creation path via `0x80034E08`: the successor receives the original placement link, state `8`, and an increased range byte (`old actor+0x76 + 5`); failure clears the placement active byte at `0x80218FD4`. Do **not** conflate this successor path with ordinary distance-based despawning.
+
+The remaining unproven work is to establish when the scheduler finally reuses each actor slot, and to identify all other code paths that set state 2 with a non-NULL placement link.
+
 ## Next research gates
 
-Trace who schedules `0x8020D2A0` and `0x80218E7C`, the allocator's reuse/reclamation of state-2 tasks, the two alternate initializer callers, and the types and units of the grid-axis scale fields. Validate the full condition flow before constructing exact original-IDO C. No production manifest, verifier, ROM proof, or toolkit changes are authorized by this research evidence alone.
+Trace who schedules `0x8020D2A0` and `0x80218E7C`, the final reuse timing for state-2 scheduler slots, the two alternate initializer callers, and the types and units of the grid-axis scale fields. Validate the full condition flow before constructing exact original-IDO C. No production manifest, verifier, ROM proof, or toolkit changes are authorized by this research evidence alone.

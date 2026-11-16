@@ -6,7 +6,8 @@
 - Reason: user captured NPCs loading on approach, not loading on departure, reloading on return, and confirmed the placement active byte changing 01→00 when the release instruction executed. New static trace links 3D neighborhood cell scanning `0x8020D36C`, actor initialization `0x80218A54`, actor update `0x80218E7C`, and conditional release `0x8021A328`.
 - Original ROM verification: authenticated USA retail 16 MiB SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`; independently decompressed original 32 MiB SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; 38/38 opcode/call-site anchors PASS, four synthetic Python tests PASS.
 - Limitations: Original MIPS code and user runtime screenshots only; no new original-IDO C compile, native candidate link, full G2, independent emulator run, generic heap-free proof or JP ROM claim. The active 315-C USA canonical gate remains unchanged.
-- Next: trace stream-out state-2 reclamation and grid-cell ownership, inspect alternate initializer call sites, then consider bounded matching-C reconstruction with original-ROM/G2 and ELF/relocation acceptance.
+- Follow-up static trace: `func_80218F30_5D4400` handles state bit 2 and calls the main-task retirement chain `0x80034ED4` → `0x80034EF8` → scheduler-list helpers. A non-NULL placement link can take a separate successor-creation path; no actual allocator reuse timing is claimed.
+- Next: trace final state-2 scheduler slot reuse and grid-cell ownership, inspect alternate initializer call sites, then consider bounded matching-C reconstruction with original-ROM/G2 and ELF/relocation acceptance.
 
 ### 2026-11-16 — Eight additional USA file_11 C functions promoted by exact 315-C native proof
 
