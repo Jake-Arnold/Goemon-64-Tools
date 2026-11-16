@@ -1,5 +1,13 @@
 # Goemon Speedrun Tools v0.11.30 — Japanese debug, auto-connect and verified warp checks
 
+## v0.11.30 — GUI test isolation correction after Ubuntu 290-pass run
+
+**16 November Ubuntu verification:** The separate Japanese native recomp stage-5 suite passed all **15** tests and compiled successfully; its recorded game launch exited with a clean timer-worker join (no native-game SIGSEGV in this sample). The toolkit's **290 non-GUI tests passed** on this branch. Its subsequent Xvfb GUI run exposed several unrelated USA-only test failures and stopped without a summary during `test_scene_request_blocks_overlapping_checkpoint_restore`, consistent with a hidden Tk confirmation prompt.
+
+**Test-harness correction (no production gameplay changes):** GUI tests that require USA now explicitly choose USA regardless of saved launcher preferences. Japanese UI transition tests start in a defined USA state and mock preference persistence; the Linux runner uses a disposable XDG configuration directory. The checkpoint-overlap test now checks for an actual pending USA warp and replaces any unexpected modal confirmation with a fast assertion failure. The GUI phase is bounded to 120 seconds by default, so a future hidden-dialog hang cannot stall the terminal indefinitely.
+
+**Status:** Corrections are committed to draft PR #33, but the full GUI suite has **not yet been rerun after this change**. See [Ubuntu failures report](docs/UBUNTU_TEST_FAILURES_2026-11-16.md). The 0x081 room crash remains an independent native recomp investigation.
+
 ## v0.11.30 — unrestricted original JP menu and automatic verified connection
 
 **The original Japanese debug-menu button now sends only engine mode 0x0A to guest address `0x800CD284`**, from any current engine state. If the byte already equals 0x0A it does not write. The button no longer depends on selected scene, dialogue/cutscene/loading, gameplay character or a confirmation dialog. It never stages a map, entrance or character or simulates controller input. It *still requires* a connected region-verified Japanese process, independently validated PID, exact verified Japan ROM and three genuine RDRAM code signatures; explicit `--read-only` refuses the operation. This is deliberately separate from Scene Browser's native 0x0C warp.
