@@ -13,9 +13,11 @@ class KnownEntrancesTests(unittest.TestCase):
         record = records[0]
         self.assertEqual(record["destination"], 0x161)
         self.assertEqual(record["position"], [-289.0, 0.0, -167.0])
+        self.assertEqual(record["heading"], 256)
+        self.assertEqual(record["mode"], 16)
         self.assertEqual(record["provenance"],
                          "observed-japan-oedo-south-goemon-xyz")
-        self.assertFalse(record["heading_mode_verified"])
+        self.assertTrue(record["heading_mode_verified"])
         spawn = spawn_from_entry(record)
         self.assertEqual(spawn.position, (-289.0, 0.0, -167.0))
         self.assertEqual(Spawn(0x161, spawn.position, spawn.heading,
@@ -33,7 +35,7 @@ class KnownEntrancesTests(unittest.TestCase):
         row["heading"] = 123
         new = known_entrances(0x161)[0]
         self.assertEqual(new["position"][0], -289.0)
-        self.assertEqual(new["heading"], 0)
+        self.assertEqual(new["heading"], 256)
 
 
 if __name__ == "__main__":
