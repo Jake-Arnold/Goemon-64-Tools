@@ -267,7 +267,13 @@ def export_report_zip(folder):
     folder = Path(folder)
     if not folder.is_dir() or not (folder / "manifest.json").is_file():
         raise ValueError("Select a completed research report")
-    archive = folder.with_suffix(".zip")
+    try:
+        info = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
+        title = readable_report_name(info.get("title") or "Investigation")
+    except (OSError, ValueError, TypeError) as exc:
+        raise ValueError("Invalid report manifest") from exc
+    # Export names remain meaningful outside the experiment directory.
+    archive = folder.parent / f"{title} - {folder.name}.zip"
     with ZipFile(archive, "w", ZIP_DEFLATED) as output:
         for name in EXPORT_FILES:
             path = folder / name
