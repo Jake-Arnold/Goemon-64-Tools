@@ -222,8 +222,7 @@ class InspectorMixin(EntranceMixin):
         """One browser with two explicit, separately validated warp backends."""
         japan = self.active_version.key == 'japan'
         if japan:
-            self.jp_capture_spawn_btn.pack(
-                fill='x', after=self.experimental_warp_btn, pady=(0, 4))
+            self.jp_capture_spawn_btn.pack_forget()  # Shared USA entrance selector supersedes separate JP capture
             self.jp_capture_spawn_btn.state(
                 ['!disabled'] if self.jp_rdram is not None
                 and not self._connecting else ['disabled'])
@@ -237,13 +236,17 @@ class InspectorMixin(EntranceMixin):
             self.scene_character.current(0)
             self.scene_character_line.pack(fill='x', pady=4,
                                            after=self.scene_instruction)
-            self.entrance_box.pack_forget()
+            # The same USA entrance dropdown, selected row and coordinates
+            # are required for both native regional scene-reload backends.
+            self.entrance_box.pack(
+                fill='x', pady=4, after=self.scene_character_line)
             self.scene_transition_note.configure(
-                text='Japan-0: stage pending destination at 0x800CD490 and '
-                     'recorded XYZ if known, then request native 0x0C reload '
-                     'at 0x800CD284. Position is compared after loading.')
+                text='USA and Japan use the SAME selected original-USA ROM '
+                     'entrance XYZ, heading and mode. Japan stages the 12-byte '
+                     'entry before 0x0C and verifies/places Goemon XYZ after '
+                     'the destination finishes loading.')
             self.experimental_warp_btn.configure(
-                text='Warp to selected Japanese scene')
+                text='Warp Japan to selected USA entrance XYZ')
             self.native_debug_btn.configure(
                 text='Open ORIGINAL debug menu (manual only)')
             enabled = bool(
@@ -251,11 +254,10 @@ class InspectorMixin(EntranceMixin):
                  or getattr(self.args, 'enable_japan_debug_menu_writes', False))
                 and not getattr(self.args, 'read_only', False))
             self.scene_footer_note.configure(
-                text='Japan-0: double-click triggers 0x0C reload. Captured '
-                     'Japanese XYZ stages a complete 12-byte entrance block. '
-                     'Without a captured Japanese point, only the scene ID '
-                     'is sent; position cannot be guaranteed. '
-                     'Never reuse USA entrance coordinates.')
+                text='Japan/USA: choose the same destination and entrance '
+                     'in the shared dropdown. Original USA entrance data '
+                     'must be loaded; unknown/ambiguous entrance selections '
+                     'block the warp instead of sending scene-only writes.')
         else:
             self.jp_capture_spawn_btn.pack_forget()
             self.scene_instruction.configure(
@@ -291,7 +293,8 @@ class InspectorMixin(EntranceMixin):
             ['!disabled'] if manual else ['disabled'])
         self.draw_scene_list()
         self.scene_status.set(
-            'Japan-0: select a room and double-click for a native warp.'
+            'Japan-0: select a room and original-USA entrance; double-click '
+            'for the same coordinates as the USA native warp.'
             if japan else 'USA: select a room and double-click for '
                           'the experimental entrance reload.')
 
@@ -1315,9 +1318,11 @@ class InspectorMixin(EntranceMixin):
         mid,name=self.scene_options[chosen[0]]
         self.scene_selected=mid
         if self.active_version.key == 'japan':
+            self.refresh_entrance_choices(mid)
             try:
                 self.scene_status.set(
                     f'Japan-0 selected 0x{mid:03X} {name}. '
+                    'Choose the SAME original-USA entrance and XYZ as USA. '
                     'Double-click for immediate 0x0C area reload; '
                     'no debug menu or N64 A key required.')
                 self.show_japan_debug_target()
