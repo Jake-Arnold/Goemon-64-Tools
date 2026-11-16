@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — 47 new overlay C functions passed complete native original-ROM and ELF scratch (not production-promoted)
+
+- Changed: imported 25 previously absent matching-C sources to `decomp/research/jp_recomp_to_c/src/`, completing **47 new original-address USA overlay C sources** across file_12/13/14/15/17/18/19. Documented fresh original-IDO native scratch at `docs/JAPAN_47_C_NATIVE_SCRATCH_20261116.md` and immutable numeric proof in `decomp/research/jp_recomp_to_c/native_scratch_47_evidence.json`. Original canonical 315-C manifest/proofs/verifier untouched.
+- Native verified: rebuilt pristine original 100%-ASM baseline to exactly **33,554,432 USA ROM bytes** (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). Compiled 47 original named C functions / 2,220 instruction bytes, without external relocations; trimmed only verified zero-padding (212 C-object bytes, 316 split-ASM bytes). Rebuilt complete candidate mixed C/ASM original USA ROM byte-for-byte exact (same SHA-1). Linked ELF original and candidate both retain exact **7,376/7,376 positive-sized original FUNC identities**. Seven full semantic relocation multisets preserved precisely: 7,051 / 9,589 / 3,041 / 1,625 / 1,739 / 3,365 / 1,078 entries by file_12/13/14/15/17/18/19.
+- Limitations: this native PASS is against original all-ASM Splat baseline, **not** combined with already-promoted canonical 315-C source/layout. The official result stays **315 C**, and the combined hypothetical 362-C G2, canonical ELF inventory and full `decomp.local_ci` have not been performed. Two remaining new helpers (main and file_11) were excluded to avoid active promotion-stage conflicts; Japanese region production remains independent. No ROM/ELF/object/compiler assets committed.
+- Next: integrate 47 approved linked overlays with the current **315-C decomp.verify stage**, run complete 362-C original-USA G2, original 7,376-name ELF inventory, all relocs and full local CI, then formally increment the canonical C count only after every gate passes.
+
+
 ### 2026-11-16 — Audit duplication and add 12 new exact JP/USA C sources (research only)
 
 - Changed: checked the live **315-function** original-ROM verified USA production list at `7255b2fa59b376c0e03346f434f82d4d02e639e0`, isolating three pre-existing C functions in the 52 research matches. Inspected active PRs #23/#24/#41 (file_11) and #26 (Japanese main), then selected twelve new matching-C functions from distinct `file_12`, `file_14`, `file_15`, and `file_17` regions. Added all 12 exact source files and SHA-256 manifest to `decomp/research/jp_recomp_to_c/` and updated `docs/JP_RECOMP_TO_C_MATCHING_2026-11-16.md`.
