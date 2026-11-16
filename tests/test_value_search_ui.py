@@ -76,6 +76,17 @@ class ValueSearchUITests(unittest.TestCase):
         self.root.update()
         self.assertFalse(self.app.value_scan_busy, self.app.value_search_status.get())
 
+    def trigger_next_repeat(self):
+        app = self.app
+        prior = app._value_repeat_scans
+        app._value_repeat_due = time.monotonic() - 1
+        deadline = time.monotonic() + 3
+        while app._value_repeat_scans == prior and time.monotonic() < deadline:
+            self.root.update()
+            time.sleep(0.02)
+        self.assertGreater(app._value_repeat_scans, prior)
+        self.finish()
+
     def test_root_destroy_cancels_periodic_search_callbacks(self):
         app = self.app
         initial = app._value_search_auto_after
@@ -124,9 +135,7 @@ class ValueSearchUITests(unittest.TestCase):
         self.assertEqual(app._value_repeat_scans, 1)
         self.assertIn('Stop continuous filter', app.value_repeat_button.cget('text'))
         app.mem.put(8, 20)
-        app._value_repeat_due = time.monotonic() - 1
-        self.root.update()
-        self.finish()
+        self.trigger_next_repeat()
         self.assertEqual(app._value_repeat_scans, 2)
         self.assertLess(app.value_scanner.count, initial_count)
         app.toggle_continuous_value_filter()
@@ -148,9 +157,7 @@ class ValueSearchUITests(unittest.TestCase):
         self.assertEqual(app.value_scanner.count, 1)
         self.assertTrue(app._value_repeat_running)
         app.mem.put(8, 800)
-        app._value_repeat_due = time.monotonic() - 1
-        self.root.update()
-        self.finish()
+        self.trigger_next_repeat()
         self.assertFalse(app._value_repeat_running)
         self.assertEqual(app.value_scanner.count, 0)
         self.assertIn('zero candidates', app.value_repeat_status.get())
@@ -195,7 +202,7 @@ class ValueSearchUITests(unittest.TestCase):
         app.mem.put(24, 950)
         app._value_start('exact')
         self.finish()
-        self.assertEqual(app.value_search_tree['selectmode'], 'extended')
+        self.assertEqual(str(app.value_search_tree['selectmode']), 'extended')
         app.select_all_value_results()
         self.assertEqual(len(app.value_search_tree.selection()), 2)
         with TemporaryDirectory() as tmp, patch(
