@@ -4,5 +4,5 @@ Bump VERSION for every user-facing toolkit change. Keep the README release
 heading and PROGRESS.md entry in sync; do not hard-code versions in GUI widgets.
 """
 
-VERSION = "0.11.28"
+VERSION = "0.11.29"
 DISPLAY_VERSION = f"v{VERSION}"
