@@ -74,7 +74,10 @@ class ReportsMixin:
             self.reports_tree.delete(*self.reports_tree.get_children())
             for idx, item in enumerate(items):
                 kind_name = {
-                    "value-search": "Value search",
+                    "value-search": "Find a value",
+                    "memory-comparison": "Memory changes",
+                    "flag-investigation": "Repeated flags",
+                    "damage-events": "Damage events",
                     "legacy-json": "Legacy JSON",
                 }.get(item.kind, item.kind.replace("-", " ").title())
                 self.reports_tree.insert(
