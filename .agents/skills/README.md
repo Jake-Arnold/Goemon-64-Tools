@@ -1,6 +1,6 @@
 # Goemon Codex skills
 
-20 repository-local, task-specific skills are discoverable under `.agents/skills/<name>/SKILL.md`. Only skill metadata is loaded at discovery. Load the body of one relevant skill and an optional second specialist, not all 20.
+21 repository-local, task-specific skills are discoverable under `.agents/skills/<name>/SKILL.md`. Only skill metadata is loaded at discovery. Load the body of one relevant skill and an optional second specialist, not all 20.
 
 Use `python3 -m decomp.skill_context --status` and `python3 -m decomp.skill_context --task G64-031`; `--detail` loads a full task packet, `--phase 4` shows only a phase, and `--validate` checks stored-plan/report consistency without building a ROM.
 
@@ -20,7 +20,7 @@ Use `python3 -m decomp.skill_context --status` and `python3 -m decomp.skill_cont
 | [goemon-vm-stream](goemon-vm-stream/SKILL.md) | Use when working on Goemon VM text parser, token walker, branch-likely delays, stream cursor or signed opcode dispatch. |
 | [goemon-vm-graphics](goemon-vm-graphics/SKILL.md) | Use for Goemon VM display-list emitters, two-word graphics writes, float callback ABI and number formatting. |
 | [goemon-overlay-analysis](goemon-overlay-analysis/SKILL.md) | Use for Goemon N64 overlays, file_43 ROM/VMA mapping, ELF sections, rodata, key and Ghost Toys reconstruction. |
-| [goemon-scene-state](goemon-scene-state/SKILL.md) | Use for Goemon scene transitions, native map loading, reset state, entrances and story flags without unsafe warp changes. |
+| [goemon-region-crosswalk](goemon-region-crosswalk/SKILL.md) | Use whenever a fixed USA or JP guest RAM global/bitfield is discovered; propose and separately verify the other region, preserving exceptions and evidence. |\n| [goemon-scene-state](goemon-scene-state/SKILL.md) | Use for Goemon scene transitions, native map loading, reset state, entrances and story flags without unsafe warp changes. |
 | [goemon-rea-evidence](goemon-rea-evidence/SKILL.md) | Use when evaluating Reverse Engineer Anything or direct Ghidra as optional read-only Goemon MIPS analysis evidence. |
 | [goemon-upstream-review](goemon-upstream-review/SKILL.md) | Use to review pinned mnsg source or Goemon camera branches without merging speculative code or types. |
 | [goemon-bounded-probes](goemon-bounded-probes/SKILL.md) | Use to batch Goemon IDO compiler variants efficiently and avoid repetitive trial-and-error and large model-context dumps. |
