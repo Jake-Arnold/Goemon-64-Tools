@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Additional original-USA file_11 native-C adjacency proof
+
+- **Authenticated original source:** 32 MiB decompressed USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494` and pristine pinned upstream Splat `asm/usa/587370.s` SHA-256 `e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b` (906 original overlay function records), pinned `mnsg` commit `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.
+- **68/68 new native-ID0 matching-C functions, 2,416 original instruction bytes:** 55 additional event-forwarding wrappers plus 13 state/flag/nop helpers, disjoint from the prior 77-function research proof and 50 previously promoted file_11 functions. All compile at their original USA VMA with original IDO 5.3, pinned cross linker and exact ROM byte-span comparison.
+- **13/13 contiguous C islands exact:** 42 functions / 1,576 bytes compiled as complete C source translation units, including eight adjacent 44-byte wrappers `[0x5A6F30,0x5A7090)` (352 bytes, no trailing text-padding adjustment), three actor float/nested-state resets `[0x59EE00,0x59EE54)` and two shared global bit operations `[0x5A4070,0x5A40A4)`. Other mixed C groups preserve original size before final text padding.
+- **Reproducible files:** `decomp/research/file11_adjacent_sources.json`, `decomp/research/file11_adjacent_native_probe.py`, `decomp/results/file11_adjacent_native_proof_20261116.json`, `docs/USA_FILE11_ADJACENT_68_NATIVE_MATCHES_2026-11-16.md`, and ROM-free `tests/test_decomp_file11_adjacent.py` (17/17 tests passed). No copyrighted ROM, assembly dump, native objects or compiler binaries committed.
+- **Limitations:** No candidate 355-function full central G2, candidate ROM ELF relocation proof or new production inventory. The uploaded old checkout failed two previously known source-fingerprint local CI tests unrelated to these new source files; do not claim full local CI success. Official canonical count remains **210 matching C / 13,336 bytes / 7,153 remaining assembly**. Previous 77 + new 68 yield 145 additional independently native-matched research candidates, prospective-only 355 / 17,872 bytes after full combined verification.
+
 ### 2026-11-16 — Original-USA file_11 systematic callback expansion: 77 new exact native-C research functions
 
 - **Method and reason:** Reused the exact 210-function USA baseline, authenticated original decompressed 32 MiB ROM and pristine pinned original ELF (`83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038`). Searched original ELF positive-size FUNC symbols in file_11 using the original eight-word call-wrapper pattern and 12-byte empty-callback signature; excluded every 32-byte wrapper and no-op already promoted.

@@ -92,6 +92,12 @@ The reviewed optional v2 50-function USA file_11 stage now has a strictly gated 
 
 **Known execution blocker in this ChatGPT container:** pinned original ROM, upstream ZIP, IDO, native MIPS build inputs exist; the 160-function full production source checkout is only available via private GitHub connector, not as mounted filesystem files. The complete central 210-function G2 was not run; research scratch full-ROM matches do not satisfy that combined gate.
 
+## USA file_11 adjacency research continuation (16 November 2026)
+
+Draft PR #23 now includes `decomp/research/file11_adjacent_native_probe.py` and `file11_adjacent_sources.json`. This exact pinned original USA-ROM and Splat function-boundary codegen probe confirms **68 new original-VMA C functions / 2,416 bytes**, beyond the earlier 77, with **13 complete contiguous C source islands / 42 functions / 1,576 original bytes** also matching native IDO. The eight-function `[0x5A6F30,0x5A7090)` island emits exactly 352 bytes without extra padding. It also identifies an adjacent `[0x59EE00,0x59EE54)` three-function actor-state group and `[0x5A4070,0x5A40A4)` global bit set/clear pair. 17 new ROM-free unit tests passed. Details: `docs/USA_FILE11_ADJACENT_68_NATIVE_MATCHES_2026-11-16.md` and `decomp/results/file11_adjacent_native_proof_20261116.json`.
+
+**Research only:** 77+68 = 145 new original-VMA matching-C candidates (4,536 bytes). A complete central 355-function G2 + exact USA 32 MiB ROM, all 8,825 overlay relocations and inventory has NOT been run. Canonical manifest/proof/inventory still 210 C / 13,336 bytes / 7,153 assembly. Uploaded repository snapshot predates the 210-function merge, and its old local CI still shows two stale source-hash failures; never claim complete CI success from that ZIP.
+
 ## 0. Cross-conversation handoff
 
 For the reviewed integration blockers and reproducible next steps, see [INTEGRATION_HANDOFF.md](INTEGRATION_HANDOFF.md).
