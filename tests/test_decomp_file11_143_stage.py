@@ -48,6 +48,8 @@ class File11143CentralStageTests(unittest.TestCase):
         self.assertFalse(plan['central_g2_verified'])
 
     def test_stage_has_complete_44_c_and_44_assembly_objects(self):
+        self.assertEqual(stage.NORMALIZED_NOP_ALIAS_ASM_OFFSETS,
+                         frozenset((0x5995E8, 0x59D4DC, 0x5AEBDC)))
         objects = stage.source_objects()
         self.assertEqual(len(objects), 88)
         self.assertEqual(len(stage.object_targets()), 88)

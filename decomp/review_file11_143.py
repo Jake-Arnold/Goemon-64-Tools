@@ -107,9 +107,20 @@ def verify_g2_report(report: dict, claims: list[dict]) -> dict:
     for key, expected in stage_required.items():
         if type(stage.get(key)) is not type(expected) or stage[key] != expected:
             raise ValueError('143-C linked-stage evidence differs: ' + key)
-    if len(set(stage.get('normalised_NOP_asm_symbol_tables', []))) != 2 or set(
-            stage['normalised_NOP_asm_symbol_tables']) != {'0x5995e8', '0x59d4dc'}:
+    expected_aliases = (
+        'func_801DD6D8_5995E8',
+        'func_801E15CC_59D4DC',
+        'func_801F2CCC_5AEBDC',
+    )
+    normalised_offsets = stage.get('normalised_NOP_asm_symbol_tables', [])
+    if (not isinstance(normalised_offsets, list)
+            or len(normalised_offsets) != 3
+            or set(normalised_offsets) != {'0x5995e8', '0x59d4dc', '0x5aebdc'}):
         raise ValueError('Unexpected synthetic NOP alias normalization')
+    alias_evidence = report.get('overlay_file11_nop_aliases') or {}
+    if (alias_evidence.get('removed_spurious_func_aliases') != list(expected_aliases)
+            or alias_evidence.get('preserved_original_nops') != 3):
+        raise ValueError('Synthetic NOP ASM source annotation evidence differs')
     return {'claimed_functions': TOTAL_C, 'matched_bytes': TOTAL_C_BYTES,
             'file11_functions': FILE11_C, 'original_relocations': RELOCATIONS,
             'rom_sha1': ROM_SHA1}

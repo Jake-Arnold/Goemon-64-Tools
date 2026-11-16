@@ -30,11 +30,13 @@ END = 0x5B8500
 OLD_SPLAT = '    - [0x587370, asm]\n    - [0x5B8500, data]'
 OLD_LINKER = '.file_11 0x801CB460 : AT(file_11_ROM_START) SUBALIGN(16)'
 NEW_LINKER = '.file_11 0x801CB460 : AT(file_11_ROM_START) SUBALIGN(4)'
-# Two Splat-created positive-sized FUNC aliases are deliberately removed by
-# the already-pinned canonical 50-C normaliser. That edits only labels, not
-# instructions; the resulting ASM .o symbol tables cannot match the original
-# unnormalised 143-C research object's full-file SHA-256.
-NORMALIZED_NOP_ALIAS_ASM_OFFSETS = frozenset((0x5995E8, 0x59D4DC))
+# The canonical 50-C normaliser removes two Splat-created positive-sized FUNC
+# aliases; the 143-C layout introduces a third at 0x5AEBDC immediately after
+# two 12-byte callback functions. All three original instructions are pinned
+# NOPs (0x00000000), and all NON_MATCHING markers are retained. The ASM
+# object SHA-256 therefore changes only in symbol metadata for these offsets;
+# full-ROM, relocation, and original-function inventory gates remain required.
+NORMALIZED_NOP_ALIAS_ASM_OFFSETS = frozenset((0x5995E8, 0x59D4DC, 0x5AEBDC))
 
 
 def load_fixture() -> dict:

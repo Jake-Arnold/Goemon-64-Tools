@@ -42,8 +42,16 @@ class File11143ReviewTests(unittest.TestCase):
                 'candidate_semantic_file11_relocations': 8825,
                 'original_rom_sha1': review.ROM_SHA1,
                 'complete_rom_bytes_equal': review.ROM_SIZE,
-                'normalised_NOP_asm_symbol_tables': ['0x5995e8','0x59d4dc'],
-            }
+                'normalised_NOP_asm_symbol_tables': ['0x5995e8','0x59d4dc','0x5aebdc'],
+            },
+            'overlay_file11_nop_aliases': {
+                'removed_spurious_func_aliases': [
+                    'func_801DD6D8_5995E8',
+                    'func_801E15CC_59D4DC',
+                    'func_801F2CCC_5AEBDC',
+                ],
+                'preserved_original_nops': 3,
+            },
         }
         self.inventory = {
             'format': 'goemon-function-inventory-v1',
@@ -87,12 +95,22 @@ class File11143ReviewTests(unittest.TestCase):
     def test_refuse_wrong_relocations_and_unreviewed_nop_aliases(self):
         for field,value in [('candidate_semantic_file11_relocations',8824),
                             ('normalised_NOP_asm_symbol_tables',[]),
+                            ('normalised_NOP_asm_symbol_tables',['0x5995e8','0x59d4dc']),
                             ('original_native_object_provenance_checked',87)]:
             with self.subTest(field=field):
                 bad=copy.deepcopy(self.g2)
                 bad['overlay_file11_stage'][field]=value
                 with self.assertRaises(ValueError):
                     review.verify_g2_report(bad,self.claims)
+
+    def test_refuse_missing_third_nop_annotation_proof(self):
+        for field, value in [('preserved_original_nops', 2),
+                             ('removed_spurious_func_aliases',
+                              ['func_801DD6D8_5995E8','func_801E15CC_59D4DC'])]:
+            bad = copy.deepcopy(self.g2)
+            bad['overlay_file11_nop_aliases'][field] = value
+            with self.assertRaises(ValueError):
+                review.verify_g2_report(bad, self.claims)
 
     def test_refuse_inventory_identity_and_aliases(self):
         for key,value in [('newly_matching_c',302),('remaining_assembly_entries',7061),

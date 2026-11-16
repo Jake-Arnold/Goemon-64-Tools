@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — 303-C whole-ROM G2 passed; fail-closed third Splat NOP alias reconciliation
+
+- Changed: only the 143-C file_11 layout now removes the Splat-invented positive-sized `func_801F2CCC_5AEBDC` symbol at 0x5AEBDC, after validating its exact single 0x00000000 NOP line and NON_MATCHING marker. The original two 50-C aliases and all instruction/marker bytes remain intact. The 143-C object-digest exception list and acceptance-report audit now require precisely three documented metadata-only ASM alias corrections, not an arbitrary count or an inventory waiver. Added positive/negative synthetic regression tests.
+- Why: the user's first full Linux G2 matched **303/303 functions, 16,180 bytes, the full original 32 MiB USA ROM and all 8,825 file_11 relocations**, but full inventory rejected 7,377 candidate positive FUNC symbols vs. 7,376 original. The one extra candidate FUNC is a four-byte NOP at the pinned C-to-ASM split. Two old function-length annotations (64→72, 48→56) are already permitted and do not create/drop functions.
+- Changed: refreshed the VM residual research ledger's `decomp/verify.py` source fingerprint to `0b4556a01128510da5a23ef36e6e55094339e69a7bb070b5b45c213128231769`, independently recorded by the user's successful native G2; this addresses a distinct fail-closed local CI fingerprint regression.
+- Tested: original user G2 report `status=matched`, 303/303 C and exact complete ROM; user-supplied symbol diff showed one extra FUNC and no baseline-only functions or address changes; original ROM at 0x5AEBDC independently confirmed `00000000`. Code changes are ROM-free and require a **fresh full G2 + original inventory + full local CI rerun**; no post-fix native acceptance, promotion or production manifest update is claimed.
+- Remaining: rerun PR #32 opt-in acceptance on a fresh candidate using the already-certified original baseline, and retain exact 7,376-function inventory and zero extra aliases as mandatory gates.
+
 ### 2026-11-16 — One-command fail-closed 303-C review runner (ROM-free gate tests only)
 
 - Added `decomp.review_file11_143` to create a separate 303-C opt-in manifest, execute fresh central G2, validate every function identity/hash and the pinned 143-C linker/relocation evidence, execute original-ELF inventory, then run full ROM-free `decomp.local_ci` before writing a human-review-only acceptance bundle.
