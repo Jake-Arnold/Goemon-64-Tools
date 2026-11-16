@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Eight additional USA file_11 C functions promoted by exact 315-C native proof
+
+- Changed: upgraded the versioned `file_11` stage from 144 to 152 original-address C functions, replacing four complete assembly slices: `0x59EB80–0x59EBBC` (1 C / 60 B), `0x59EE00–0x59EE54` (3 C / 84 B), `0x5B22C8–0x5B2314` (2 C / 76 B), and `0x5B84A0–0x5B8500` (2 C / 96 B). All eight original function extents and all 88 original file_11 object positions remain unchanged. Preserved historical 307/306/303/210 reports independently.
+- Native G2: standard verifier on a fresh candidate checkout `315/315`, **16,660** matching code bytes, exact **33,554,432-byte USA ROM** SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Original `file_11` relocation multiset **8,825/8,825**; the unchanged Impact controller overlay is still validated. The original ELF inventory retains **7,376** function identities, **328** combined C entries, **7,048** ASM entries and zero extra function aliases.
+- Root cause resolved: the two C state-flag helpers at `0x5B84A0` originally emitted literal `0xCF8F0` values, causing four missing HI16/LO16 ELF relocation records despite an identical final ROM. C now refers to the original `D_CF8F0` linker symbol through its address, retaining all four original relocations and the same 96 instruction bytes.
+- Tested: seven new fail-closed stage regression tests; full local CI PASS (222 decomp Python tests, 167 verifier/ledger tests, task/evidence validation, GCC ASan/UBSan display-emitter regression). The previous 307-function G2 and inventory files are retained byte-for-byte as dated archives. Full proof and object SHA-256s are pinned in `decomp/results/file11_152_production_promotion_20261116.json`.
+- Remaining research: PR #23 has 105 unique USA file_11 candidates not yet promoted; PR #24 has four distinct provisional leads. Japanese 24-C is a separate regional pipeline not counted in the USA 315.
+
 ### 2026-11-16 — Formal USA 307-C production promotion from verified PR #37
 
 - Changed: promoted `func_801E3008_59EF18` (52 bytes, original-address actor-state reset) into canonical `decomp/manifest.json` by selecting the exact preverified `goemon-file11-144-central-v1` adapter. 144 C functions now occupy `file_11`, alongside the 3 earlier Impact/dialogue additions. Published canonical 307-C G2 and 7,376-function inventory; preserved the previous exact 306-C report and inventory separately without rewriting the 303/210 archives.

@@ -1,0 +1,1922 @@
+{
+  "format": "goemon-file11-152-exact-staging-candidate-v1",
+  "scope": "USA_file11_clean_upstream_overlay_only",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "original_asm_sha256": "e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b",
+  "rom_length": 33554432,
+  "file11_relocations": 8825,
+  "overlay_text_start": 5796720,
+  "overlay_text_end": 5997824,
+  "original_file11_stage_c_functions": 50,
+  "wave1_research_functions_covered": 77,
+  "wave45_additional_functions_beyond_wave1": 16,
+  "total_represented_functions": 152,
+  "new_covered_functions_beyond_existing_50": 102,
+  "all_C_text_bytes": 4276,
+  "chunks": [
+    {
+      "rom_start": 5796720,
+      "rom_end": 5797076,
+      "kind": "asm",
+      "name": null,
+      "size": 356,
+      "original_sha256": "d5206c673e322dfe21ddc5006301e9d5340b9e93e1de25827d91b7d020cb982e",
+      "trimmed_obj_sha256": "584a547dbe0be11c2025adb55287530da1c337f4dc684240e8d7d354f25210fb"
+    },
+    {
+      "rom_start": 5797076,
+      "rom_end": 5797088,
+      "kind": "c",
+      "name": "file11_wave1_5874d4",
+      "size": 12,
+      "original_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b",
+      "trimmed_obj_sha256": "30ed06b5bb2def72384022a0a2f86e91a94308cab6df9591aaec553da9790d99",
+      "source": "void func_801CB5C4_5874D4(void*a0,void*a1) {}\n",
+      "source_sha256": "1049360216cb9f24f89933a0925ec3d76b2365904df69a75d5f3ad687ae38939",
+      "functions": [
+        {
+          "name": "func_801CB5C4_5874D4",
+          "off": 5797076,
+          "vma": 2149365188,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5797088,
+      "rom_end": 5797604,
+      "kind": "asm",
+      "name": null,
+      "size": 516,
+      "original_sha256": "44b64c0fc19552f87a75f4e0c119fda3919771246e4771c947bb4ce201f1ea7a",
+      "trimmed_obj_sha256": "d9abd995282ef4eb598b5fbc63b7a93bc16ecac561de743e389d2b73c5cb3719"
+    },
+    {
+      "rom_start": 5797604,
+      "rom_end": 5797648,
+      "kind": "c",
+      "name": "file11_wave1_5876e4",
+      "size": 44,
+      "original_sha256": "d8ccb5d43c95c7e18b9ad24ccfd7c51266442ca648649c47efd89cc1e91ce67a",
+      "trimmed_obj_sha256": "e260daa03e2a7dcdb6aa8784d84b18cdf43540e7cd207ab856bf4f44754e44cc",
+      "source": "extern void func_801CC30C_58821C(void*);void func_801CB7D4_5876E4(void*a,unsigned unused){ func_801CC30C_58821C(a); }\n\nvoid func_801CB7F4_587704(void*a0,void*a1) {}\n",
+      "source_sha256": "b0287df087f5f2ae436271f4c8f00e39f672c4ff2ecfe85a904fd0b211fe540d",
+      "functions": [
+        {
+          "name": "func_801CB7D4_5876E4",
+          "off": 5797604,
+          "vma": 2149365716,
+          "size": 32
+        },
+        {
+          "name": "func_801CB7F4_587704",
+          "off": 5797636,
+          "vma": 2149365748,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5797648,
+      "rom_end": 5825240,
+      "kind": "asm",
+      "name": null,
+      "size": 27592,
+      "original_sha256": "0883d7c107d131d46a5d90f57fe208994737f492b00743b6b496fbc8edf699f5",
+      "trimmed_obj_sha256": "77e19ff71a5b2004a5bea2bf7061b12a05b73a7daf864d1021b8319094c153c9"
+    },
+    {
+      "rom_start": 5825240,
+      "rom_end": 5825252,
+      "kind": "c",
+      "name": "file11_wave1_58e2d8",
+      "size": 12,
+      "original_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b",
+      "trimmed_obj_sha256": "95b3e8ee839268a2236332c600092417ebb7bf1fcbb2a07085042d1d5c7a43b0",
+      "source": "void func_801D23C8_58E2D8(void*a0,void*a1) {}\n",
+      "source_sha256": "c81f064b6a4235be28f3f5727d33cb7680e1e427e35b024f8fb7e87f9ac28db0",
+      "functions": [
+        {
+          "name": "func_801D23C8_58E2D8",
+          "off": 5825240,
+          "vma": 2149393352,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5825252,
+      "rom_end": 5827304,
+      "kind": "asm",
+      "name": null,
+      "size": 2052,
+      "original_sha256": "03984c2f6306fe2b66ed5eb4a8b242851bffe943b55e6104c1206af328a22598",
+      "trimmed_obj_sha256": "a112275c2be1e90e43b08dae1df00d7fc96573a36b05043ed872ebe5d9ea00bd"
+    },
+    {
+      "rom_start": 5827304,
+      "rom_end": 5827336,
+      "kind": "c",
+      "name": "file11_wave1_58eae8",
+      "size": 32,
+      "original_sha256": "e9ef6d29a04cb6bcc7882698c9ee40e2606c583da5982ce07c57e1721a26719d",
+      "trimmed_obj_sha256": "04565ae4ca4793bda0bd81511a07197e94264aa94437c3d0b5c0c41ac0b0000c",
+      "source": "extern void func_801D2C88_58EB98(void*);void func_801D2BD8_58EAE8(void*a){ func_801D2C88_58EB98(a); }\n",
+      "source_sha256": "1ccfaa2c85ec0b72698cf78841151c4321c2943ef4e8f1b06112465247cfd792",
+      "functions": [
+        {
+          "name": "func_801D2BD8_58EAE8",
+          "off": 5827304,
+          "vma": 2149395416,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5827336,
+      "rom_end": 5860076,
+      "kind": "asm",
+      "name": null,
+      "size": 32740,
+      "original_sha256": "5930850a4ecb188f8b4ba89e00da9354f9853bfb050abab726ad5f32bb52751e",
+      "trimmed_obj_sha256": "7acf2e9d65fcc4b0398e217e9f016135aa2ade7c8d99d3374d8e1ac101b15474"
+    },
+    {
+      "rom_start": 5860076,
+      "rom_end": 5860108,
+      "kind": "c",
+      "name": "file11_wave1_596aec",
+      "size": 32,
+      "original_sha256": "1e46fd2f6de7a8610d42f5923f7a2a87ddf01168806df72952efa101eed25aaa",
+      "trimmed_obj_sha256": "50aaf4d7eb6b6215d0ca6c8a626912df31d6822cb6aa3ddb6bb7889138aa7770",
+      "source": "extern void func_801DB060_596F70(void*);void func_801DABDC_596AEC(void*a){ func_801DB060_596F70(a); }\n",
+      "source_sha256": "4705d2cfb53fbf9ca91d533ce627d3481bbfb906abfac8895ce0fb610bb312c5",
+      "functions": [
+        {
+          "name": "func_801DABDC_596AEC",
+          "off": 5860076,
+          "vma": 2149428188,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5860108,
+      "rom_end": 5870568,
+      "kind": "asm",
+      "name": null,
+      "size": 10460,
+      "original_sha256": "7d60bf12c6cea449bb44a26e51440e30fc6d45bbd9b5e627610c49ea0dc8f48a",
+      "trimmed_obj_sha256": "6065eff58d4c79056b114ab6d4ad7e320217b612cc14a04ed20c54b7a3545b8f"
+    },
+    {
+      "rom_start": 5870568,
+      "rom_end": 5870620,
+      "kind": "c",
+      "name": "character_switch_entry",
+      "size": 52,
+      "original_sha256": "7fabcb7b94951752c372ad06f93ba6b4bde6bbcd16b8537452683da4e2cb5f0a",
+      "trimmed_obj_sha256": "5d8cec511b0b7d00c626a1bb3b87dd17454e1e996ae5fd719b7b9df52c9a04e0",
+      "source": "typedef unsigned char u8;\nextern void func_801DD5C0_5994D0(void *,u8);\nvoid func_801DD4D8_5993E8(void *obj,u8 character) {\n    func_801DD5C0_5994D0(obj, character);\n}\ntypedef struct { u8 padding[0x5C];u8 *state;} CharacterObject;\nu8 func_801DD500_599410(CharacterObject *obj) {\n    return obj->state[0x69];\n}\n",
+      "source_sha256": "f607d2b0342ba9b3ece7bf52769bbb09b5a59faef989752467e6dc2e736b3b18",
+      "functions": [
+        {
+          "name": "func_801DD4D8_5993E8",
+          "off": 5870568,
+          "vma": 2149438680,
+          "size": 40
+        },
+        {
+          "name": "func_801DD500_599410",
+          "off": 5870608,
+          "vma": 2149438720,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5870620,
+      "rom_end": 5870800,
+      "kind": "asm",
+      "name": null,
+      "size": 180,
+      "original_sha256": "9e0648fced6e8e8dbf0f236d71f0facb13d587d41f9610315795a3f3cdb58b73",
+      "trimmed_obj_sha256": "c1f1277f8168de152893853813d2651be869442d316ec1626ceb4c76a826311e"
+    },
+    {
+      "rom_start": 5870800,
+      "rom_end": 5870948,
+      "kind": "c",
+      "name": "character_switch_sync",
+      "size": 148,
+      "original_sha256": "bad0b42cbda479a929526c9585f6d4e0f6a80b3824fb332be9462b685525c81f",
+      "trimmed_obj_sha256": "d547538caee0555757a297aefc4230c08b93503658b9644e870f8fb5506d9d25",
+      "source": "typedef unsigned char u8;\ntypedef unsigned short u16;\ntypedef unsigned int u32;\ntypedef float f32;\nextern u32 D_8015C5DC_15D1DC;\nextern void func_801E0944_59C854(void);\nextern void func_8003522C_35E2C(void *, void (*)(void));\n#define O8(obj, offset) (*(u8 *)((u8 *)(obj) + (offset)))\n#define O16(obj, offset) (*(u16 *)((u8 *)(obj) + (offset)))\n#define O32(obj, offset) (*(u32 *)((u8 *)(obj) + (offset)))\n#define OF(obj, offset) (*(f32 *)((u8 *)(obj) + (offset)))\n#define SUB(obj) ((u8 *)*(void **)((u8 *)(obj) + 0x5C))\nvoid func_801DD5C0_5994D0(void *obj, unsigned short character) {\n    O8(obj, 0x60) = character;\n    D_8015C5DC_15D1DC = (u8)character;\n    O8(SUB(obj),0x69)=1;\n    O16(SUB(obj),0x86)=0;\n    O16(obj,0x80)=0;\n    O16(SUB(obj),0x30)=0;\n    OF(obj,0xe8)=0.0f;\n    OF(obj,0x68)=0.0f;\n    OF(obj,0x6c)=0.0f;\n    OF(obj,0x70)=0.0f;\n    O16(SUB(obj),0)=1;\n    O32(obj,0x48)=0;\n    O8(obj,0xdb)=1;\n    O8(obj,0x30)&=~1;\n    O8(obj,0xcc)=0xBA;\n    func_8003522C_35E2C(obj,func_801E0944_59C854);\n}\n",
+      "source_sha256": "525f8655c5f41681e3fb53841aa8254016a47fa7fd457090ea7cda12521614fb",
+      "functions": [
+        {
+          "name": "func_801DD5C0_5994D0",
+          "off": 5870800,
+          "vma": 2149438912,
+          "size": 148
+        }
+      ]
+    },
+    {
+      "rom_start": 5870948,
+      "rom_end": 5871080,
+      "kind": "c",
+      "name": "character_switch_alt",
+      "size": 132,
+      "original_sha256": "b6db221fe20f44b79ba9f14652a63e6a6febd2e4331ea8e11f5395d3156383bf",
+      "trimmed_obj_sha256": "7f059fbfb0dde21f450156bd79f234e79f450c3fc8d157b7f6816686a87e03a5",
+      "source": "typedef unsigned char u8;\ntypedef unsigned short u16;\ntypedef unsigned int u32;\ntypedef float f32;\nextern u32 D_8015C5DC_15D1DC;\nextern void func_801E0BF8_59CB08(void);\nextern void func_8003522C_35E2C(void *, void (*)(void));\n#define O8(obj, offset) (*(u8 *)((u8 *)(obj) + (offset)))\n#define O16(obj, offset) (*(u16 *)((u8 *)(obj) + (offset)))\n#define OF(obj, offset) (*(f32 *)((u8 *)(obj) + (offset)))\n#define SUB(obj) ((u8 *)*(void **)((u8 *)(obj) + 0x5C))\nvoid func_801DD654_599564(void *obj, u16 character) {\n    O8(obj, 0x60) = character;\n    D_8015C5DC_15D1DC = (u8)character;\n    O8(SUB(obj),0x69)=1;\n    O16(obj,0x80)=0;\n    O16(SUB(obj),0x30)=0;\n    OF(obj,0xe8)=0.0f;\n    OF(obj,0x68)=0.0f;\n    OF(obj,0x6c)=0.0f;\n    OF(obj,0x70)=0.0f;\n    O16(SUB(obj),0)=1;\n    O8(obj,0x30)&=~1;\n    O8(obj,0xcc)=0xBB;\n    func_8003522C_35E2C(obj,func_801E0BF8_59CB08);\n}\n",
+      "source_sha256": "6816720d380252b8fa789079551c015bd245316565cfc24d96c7d596b323c24d",
+      "functions": [
+        {
+          "name": "func_801DD654_599564",
+          "off": 5870948,
+          "vma": 2149439060,
+          "size": 132
+        }
+      ]
+    },
+    {
+      "rom_start": 5871080,
+      "rom_end": 5871896,
+      "kind": "asm",
+      "name": null,
+      "size": 816,
+      "original_sha256": "1999a6c06aacba2013b6a7dd7a546e4a8bf2d0464c03ca8b99a11ac0ea66bc65",
+      "trimmed_obj_sha256": "e3de817db59e326309e155f3a29ea17d6402bed58c362de1f7f0c5cb1480a202"
+    },
+    {
+      "rom_start": 5871896,
+      "rom_end": 5872184,
+      "kind": "c",
+      "name": "character_switch_wrappers",
+      "size": 288,
+      "original_sha256": "13b9b1f792bbb61e7ee379fd60b3aa2fe23a6e205823a00fef1722580df6cc3d",
+      "trimmed_obj_sha256": "e2d70831ab0b5180dc760a7775bf134b772e88abd319ad68e646821f59fc29c9",
+      "source": "/* Original-address IDO 5.3 candidates for nine USA file_11 actor wrappers.\n * The incoming second parameter is intentionally unused by the C calls.\n * Tested against ROM 0x599918..0x599A38 (288 bytes).\n */\ntypedef unsigned int u32;\nextern void func_801E1B60_59DA70(void *actor);\nextern void func_801E7CC4_5A3BD4(void *actor);\nextern void func_801E15D0_59D4E0(void *actor);\nvoid func_801DDA08_599918(void *actor, u32 event) { func_801E1B60_59DA70(actor); }\nvoid func_801DDA28_599938(void *actor, u32 event) { func_801E1B60_59DA70(actor); }\nvoid func_801DDA48_599958(void *actor, u32 event) { func_801E1B60_59DA70(actor); }\nvoid func_801DDA68_599978(void *actor, u32 event) { func_801E7CC4_5A3BD4(actor); }\nvoid func_801DDA88_599998(void *actor, u32 event) { func_801E7CC4_5A3BD4(actor); }\nvoid func_801DDAA8_5999B8(void *actor, u32 event) { func_801E15D0_59D4E0(actor); }\nvoid func_801DDAC8_5999D8(void *actor, u32 event) { func_801E15D0_59D4E0(actor); }\nvoid func_801DDAE8_5999F8(void *actor, u32 event) { func_801E15D0_59D4E0(actor); }\nvoid func_801DDB08_599A18(void *actor, u32 event) { func_801E15D0_59D4E0(actor); }\n",
+      "source_sha256": "5091d28046356990f8b48b269a241da1a596794b0ef588ddb82a41877e663ec9",
+      "functions": [
+        {
+          "name": "func_801DDA08_599918",
+          "off": 5871896,
+          "vma": 2149440008,
+          "size": 32
+        },
+        {
+          "name": "func_801DDA28_599938",
+          "off": 5871928,
+          "vma": 2149440040,
+          "size": 32
+        },
+        {
+          "name": "func_801DDA48_599958",
+          "off": 5871960,
+          "vma": 2149440072,
+          "size": 32
+        },
+        {
+          "name": "func_801DDA68_599978",
+          "off": 5871992,
+          "vma": 2149440104,
+          "size": 32
+        },
+        {
+          "name": "func_801DDA88_599998",
+          "off": 5872024,
+          "vma": 2149440136,
+          "size": 32
+        },
+        {
+          "name": "func_801DDAA8_5999B8",
+          "off": 5872056,
+          "vma": 2149440168,
+          "size": 32
+        },
+        {
+          "name": "func_801DDAC8_5999D8",
+          "off": 5872088,
+          "vma": 2149440200,
+          "size": 32
+        },
+        {
+          "name": "func_801DDAE8_5999F8",
+          "off": 5872120,
+          "vma": 2149440232,
+          "size": 32
+        },
+        {
+          "name": "func_801DDB08_599A18",
+          "off": 5872152,
+          "vma": 2149440264,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5872184,
+      "rom_end": 5872748,
+      "kind": "asm",
+      "name": null,
+      "size": 564,
+      "original_sha256": "c6abcd18188aa318a288b877bb949704efafb39e854d1527925347ce81c484ff",
+      "trimmed_obj_sha256": "07d325ebd199baa9ecef6af940fec4bc97f2c5c3673bf0bb61122c6035b2f149"
+    },
+    {
+      "rom_start": 5872748,
+      "rom_end": 5872892,
+      "kind": "c",
+      "name": "wave4_599c6c",
+      "size": 144,
+      "original_sha256": "c2a20919f9c810a5c261bd0d0af10855d339703be80243c663d45638665b6ae3",
+      "trimmed_obj_sha256": "6d83d37e0496b9fefe6a4de370fb4b141c3405e59f082e3fc3b04c2d9ec7074e",
+      "source": "extern void func_801E3400_59F310(void*);void func_801DDD5C_599C6C(void*a,unsigned unused){ func_801E3400_59F310(a); }\n\nextern void func_801E3400_59F310(void*);void func_801DDD7C_599C8C(void*a,unsigned unused){ func_801E3400_59F310(a); }\n\nextern void func_801E3400_59F310(void*);void func_801DDD9C_599CAC(void*a,unsigned unused){ func_801E3400_59F310(a); }\n\nextern void func_801E3400_59F310(void*);extern void func_801E8964_5A4874(void*,int);void func_801DDDBC_599CCC(void*a,unsigned b){func_801E3400_59F310(a);func_801E8964_5A4874(a,36);}\n",
+      "source_sha256": "47cc5cc10dac17c87aa02b90d8e96190166e19ff304d2a93ae2b9bc81a4b1cc7",
+      "functions": [
+        {
+          "name": "func_801DDD5C_599C6C",
+          "off": 5872748,
+          "vma": 2149440860,
+          "size": 32
+        },
+        {
+          "name": "func_801DDD7C_599C8C",
+          "off": 5872780,
+          "vma": 2149440892,
+          "size": 32
+        },
+        {
+          "name": "func_801DDD9C_599CAC",
+          "off": 5872812,
+          "vma": 2149440924,
+          "size": 32
+        },
+        {
+          "name": "func_801DDDBC_599CCC",
+          "off": 5872844,
+          "vma": 2149440956,
+          "size": 48
+        }
+      ]
+    },
+    {
+      "rom_start": 5872892,
+      "rom_end": 5874572,
+      "kind": "asm",
+      "name": null,
+      "size": 1680,
+      "original_sha256": "76af9488fda6e43e7863f1cd26f1c41a42763c3578864ca308591641da5070fb",
+      "trimmed_obj_sha256": "8329eaf73c4fa0e968bf500f4a755f405a4ec15daf6b440930816c1907878d59"
+    },
+    {
+      "rom_start": 5874572,
+      "rom_end": 5874960,
+      "kind": "c",
+      "name": "wave5_59a38c",
+      "size": 388,
+      "original_sha256": "c84db559fe00b9cd36a091eb6c32a9f46c4c4a9daa96820cfbe5bd85bbd11836",
+      "trimmed_obj_sha256": "1bfbcd5955a8b2edccd5e4ca6d63910b57b8b422ac3b2cf7ddd0a953326dd39a",
+      "source": "extern void func_801E3AC0_59F9D0(void*);void func_801DE47C_59A38C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801DE49C_59A3AC(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801DE4BC_59A3CC(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801DE4DC_59A3EC(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801DE4FC_59A40C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801DE51C_59A42C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801DE53C_59A44C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801DE55C_59A46C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801DE57C_59A48C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E43B0_5A02C0(void*);void func_801DE59C_59A4AC(void*a,unsigned unused){ func_801E43B0_5A02C0(a); }\n\ntypedef struct{char p[0x60];unsigned char state;}Actor_59A4CC;extern void func_801F5BF0_5B1B00(void*,int);extern void func_801E43B0_5A02C0(void*);void func_801DE5BC_59A4CC(void*a,unsigned ignored){if(((Actor_59A4CC*)a)->state==2)func_801F5BF0_5B1B00(a,3);else func_801E43B0_5A02C0(a);}\n",
+      "source_sha256": "fd10636a38391a0027242c3d8128e3722e63213810219d80997029c54a0b9306",
+      "functions": [
+        {
+          "name": "func_801DE47C_59A38C",
+          "off": 5874572,
+          "vma": 2149442684,
+          "size": 32
+        },
+        {
+          "name": "func_801DE49C_59A3AC",
+          "off": 5874604,
+          "vma": 2149442716,
+          "size": 32
+        },
+        {
+          "name": "func_801DE4BC_59A3CC",
+          "off": 5874636,
+          "vma": 2149442748,
+          "size": 32
+        },
+        {
+          "name": "func_801DE4DC_59A3EC",
+          "off": 5874668,
+          "vma": 2149442780,
+          "size": 32
+        },
+        {
+          "name": "func_801DE4FC_59A40C",
+          "off": 5874700,
+          "vma": 2149442812,
+          "size": 32
+        },
+        {
+          "name": "func_801DE51C_59A42C",
+          "off": 5874732,
+          "vma": 2149442844,
+          "size": 32
+        },
+        {
+          "name": "func_801DE53C_59A44C",
+          "off": 5874764,
+          "vma": 2149442876,
+          "size": 32
+        },
+        {
+          "name": "func_801DE55C_59A46C",
+          "off": 5874796,
+          "vma": 2149442908,
+          "size": 32
+        },
+        {
+          "name": "func_801DE57C_59A48C",
+          "off": 5874828,
+          "vma": 2149442940,
+          "size": 32
+        },
+        {
+          "name": "func_801DE59C_59A4AC",
+          "off": 5874860,
+          "vma": 2149442972,
+          "size": 32
+        },
+        {
+          "name": "func_801DE5BC_59A4CC",
+          "off": 5874892,
+          "vma": 2149443004,
+          "size": 68
+        }
+      ]
+    },
+    {
+      "rom_start": 5874960,
+      "rom_end": 5876368,
+      "kind": "asm",
+      "name": null,
+      "size": 1408,
+      "original_sha256": "aaf90a0abb561844fecce8967a4cc72c1cf5b882e8e44a0015f76ec93febb7e0",
+      "trimmed_obj_sha256": "41381c1a5c7c434120960e3c3d20a45593ae8d0beabab51aeb6fb35e3c23710c"
+    },
+    {
+      "rom_start": 5876368,
+      "rom_end": 5876432,
+      "kind": "c",
+      "name": "file11_wave1_59aa90",
+      "size": 64,
+      "original_sha256": "809fb9f1f0e7d93db7d653f94228a877868a0cb1ff3723a445a725062b1377a3",
+      "trimmed_obj_sha256": "05e1a7e1bf8f4585c0e1bc2928c4c1cc8712786fe7a7f5f35df549b3bb4d2ec9",
+      "source": "extern void func_801E5154_5A1064(void*);void func_801DEB80_59AA90(void*a,unsigned unused){ func_801E5154_5A1064(a); }\n\nextern void func_801E5208_5A1118(void*);void func_801DEBA0_59AAB0(void*a,unsigned unused){ func_801E5208_5A1118(a); }\n",
+      "source_sha256": "d4c6d848068d5529e6804c1fd36742d1353215a890dc8137690da3a9d4a508c9",
+      "functions": [
+        {
+          "name": "func_801DEB80_59AA90",
+          "off": 5876368,
+          "vma": 2149444480,
+          "size": 32
+        },
+        {
+          "name": "func_801DEBA0_59AAB0",
+          "off": 5876400,
+          "vma": 2149444512,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5876432,
+      "rom_end": 5876532,
+      "kind": "asm",
+      "name": null,
+      "size": 100,
+      "original_sha256": "aa835d7b8f25cb21d1096ca4f393cba72afed9cbab4ebf275e92da7f26e19887",
+      "trimmed_obj_sha256": "8a268904c187c9d79b81e5daafa03a9e9b5451ace2f1bc4159b9991a59d932d6"
+    },
+    {
+      "rom_start": 5876532,
+      "rom_end": 5876564,
+      "kind": "c",
+      "name": "file11_wave1_59ab34",
+      "size": 32,
+      "original_sha256": "475cb824461034286398a309470dd1a41facd69d7f58c4530bc1899a4f51b5c8",
+      "trimmed_obj_sha256": "dc71233a8b45caf6a941760463b508922199d347052c4f38f4813376c4d8af09",
+      "source": "extern void func_801E50C0_5A0FD0(void*);void func_801DEC24_59AB34(void*a,unsigned unused){ func_801E50C0_5A0FD0(a); }\n",
+      "source_sha256": "f56793cac4590e539059c1710e1a0bbffe481b92afd6ed201ea4453fce77ffe4",
+      "functions": [
+        {
+          "name": "func_801DEC24_59AB34",
+          "off": 5876532,
+          "vma": 2149444644,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5876564,
+      "rom_end": 5877464,
+      "kind": "asm",
+      "name": null,
+      "size": 900,
+      "original_sha256": "cc82fc771b9a8c0114e87575b7feb5f119af4e93e6abee663794a216eba2b327",
+      "trimmed_obj_sha256": "0177b819c691564d43d0e8c61cf5fc92b31e1274385ab463ddf15c8d7c2af0dc"
+    },
+    {
+      "rom_start": 5877464,
+      "rom_end": 5877560,
+      "kind": "c",
+      "name": "file11_wave1_59aed8",
+      "size": 96,
+      "original_sha256": "3c12ed02a3ad29a6532a8f2d620a3f3ac97ad1449e5fd3b6cf8bd177a93e319f",
+      "trimmed_obj_sha256": "611c3c5fedeab2bd3111d2e20a9133ccffb18ee67d3f0530969156328ed12189",
+      "source": "extern void func_801E4530_5A0440(void*);void func_801DEFC8_59AED8(void*a,unsigned unused){ func_801E4530_5A0440(a); }\n\nextern void func_801E4530_5A0440(void*);void func_801DEFE8_59AEF8(void*a,unsigned unused){ func_801E4530_5A0440(a); }\n\nextern void func_801E4530_5A0440(void*);void func_801DF008_59AF18(void*a,unsigned unused){ func_801E4530_5A0440(a); }\n",
+      "source_sha256": "d30eb7354bb68e0d274415f142febb836e8fa7f3ac2c05b37a2fead2a6c80100",
+      "functions": [
+        {
+          "name": "func_801DEFC8_59AED8",
+          "off": 5877464,
+          "vma": 2149445576,
+          "size": 32
+        },
+        {
+          "name": "func_801DEFE8_59AEF8",
+          "off": 5877496,
+          "vma": 2149445608,
+          "size": 32
+        },
+        {
+          "name": "func_801DF008_59AF18",
+          "off": 5877528,
+          "vma": 2149445640,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5877560,
+      "rom_end": 5883680,
+      "kind": "asm",
+      "name": null,
+      "size": 6120,
+      "original_sha256": "e5c70c6cb12f590a7c3ee30586eaa165e75e65289d20a1b2e9f0a7ecc065950c",
+      "trimmed_obj_sha256": "e524dfc551e2a1b4e428c795c2243fcea7242ba0742006eaff64d33a8c7ebafc"
+    },
+    {
+      "rom_start": 5883680,
+      "rom_end": 5883692,
+      "kind": "c",
+      "name": "file11_wave1_59c720",
+      "size": 12,
+      "original_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b",
+      "trimmed_obj_sha256": "dea5f43425ab7f497ed8e18d5aa484edbb46bc7bcb6034e2a4b1c0487b3289ff",
+      "source": "void func_801E0810_59C720(void*a0,void*a1) {}\n",
+      "source_sha256": "2bdc6fb5a1b3d5c107692d9c5e3ef1b861841248461414cc7c041efd6e304a06",
+      "functions": [
+        {
+          "name": "func_801E0810_59C720",
+          "off": 5883680,
+          "vma": 2149451792,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5883692,
+      "rom_end": 5883840,
+      "kind": "asm",
+      "name": null,
+      "size": 148,
+      "original_sha256": "6139120d2b676fd17bfd17d2e221629dc67b4ffd403a5f18c59bc71f61cf2714",
+      "trimmed_obj_sha256": "b0d8ae0e5522e1c62e027b59cd06d848f45e634f767b0e2efc0072ba82e3f3dc"
+    },
+    {
+      "rom_start": 5883840,
+      "rom_end": 5883852,
+      "kind": "c",
+      "name": "file11_wave1_59c7c0",
+      "size": 12,
+      "original_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b",
+      "trimmed_obj_sha256": "bff10f3382032437d6fc18e94774159e50e72ab7a4ab5601d3a931b6aa2d3f01",
+      "source": "void func_801E08B0_59C7C0(void*a0,void*a1) {}\n",
+      "source_sha256": "eecf13d14eaf6ecbf17b782de6ec4a8e5172445d141e11cb8b7fa58463572686",
+      "functions": [
+        {
+          "name": "func_801E08B0_59C7C0",
+          "off": 5883840,
+          "vma": 2149451952,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5883852,
+      "rom_end": 5886144,
+      "kind": "asm",
+      "name": null,
+      "size": 2292,
+      "original_sha256": "c090bf97e7065ebba6fcd7cb1247a40dd779295999ef7952798194c7a827699f",
+      "trimmed_obj_sha256": "1b057d8edf8de7b2dac700af1ab01bbd5b49598fe9499ff7d75c360540d1a89d"
+    },
+    {
+      "rom_start": 5886144,
+      "rom_end": 5886252,
+      "kind": "c",
+      "name": "callback_noops_a",
+      "size": 108,
+      "original_sha256": "d8e5a5386d973aa92431aa9296927d4723f37315b39b61dc97c28a5360dc7218",
+      "trimmed_obj_sha256": "c125dea48c318b5af19d3c9ac2897c788ff907ef82122303f93055df03ca2963",
+      "source": "/* Exact C bodies of original unused two-argument actor callbacks. */\nvoid func_801E11B0_59D0C0(void *a0, void *a1) {}\nvoid func_801E11BC_59D0CC(void *a0, void *a1) {}\nvoid func_801E11C8_59D0D8(void *a0, void *a1) {}\nvoid func_801E11D4_59D0E4(void *a0, void *a1) {}\nvoid func_801E11E0_59D0F0(void *a0, void *a1) {}\nvoid func_801E11EC_59D0FC(void *a0, void *a1) {}\nvoid func_801E11F8_59D108(void *a0, void *a1) {}\nvoid func_801E1204_59D114(void *a0, void *a1) {}\nvoid func_801E1210_59D120(void *a0, void *a1) {}\n",
+      "source_sha256": "8a817e6023d1f6cd45dfd628300d5495adf8b59f70d0f1c931b44ec5c3054757",
+      "functions": [
+        {
+          "name": "func_801E11B0_59D0C0",
+          "off": 5886144,
+          "vma": 2149454256,
+          "size": 12
+        },
+        {
+          "name": "func_801E11BC_59D0CC",
+          "off": 5886156,
+          "vma": 2149454268,
+          "size": 12
+        },
+        {
+          "name": "func_801E11C8_59D0D8",
+          "off": 5886168,
+          "vma": 2149454280,
+          "size": 12
+        },
+        {
+          "name": "func_801E11D4_59D0E4",
+          "off": 5886180,
+          "vma": 2149454292,
+          "size": 12
+        },
+        {
+          "name": "func_801E11E0_59D0F0",
+          "off": 5886192,
+          "vma": 2149454304,
+          "size": 12
+        },
+        {
+          "name": "func_801E11EC_59D0FC",
+          "off": 5886204,
+          "vma": 2149454316,
+          "size": 12
+        },
+        {
+          "name": "func_801E11F8_59D108",
+          "off": 5886216,
+          "vma": 2149454328,
+          "size": 12
+        },
+        {
+          "name": "func_801E1204_59D114",
+          "off": 5886228,
+          "vma": 2149454340,
+          "size": 12
+        },
+        {
+          "name": "func_801E1210_59D120",
+          "off": 5886240,
+          "vma": 2149454352,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5886252,
+      "rom_end": 5886860,
+      "kind": "asm",
+      "name": null,
+      "size": 608,
+      "original_sha256": "d226b3b2857499d3a624e16fcf611dfff7ede810dc80f5c78015ee7ccd193ef9",
+      "trimmed_obj_sha256": "8b98d6b3cff5a663e248b419cf3ad2eea2d9aa45fb0cb276a5682465bfbba72f"
+    },
+    {
+      "rom_start": 5886860,
+      "rom_end": 5887196,
+      "kind": "c",
+      "name": "callback_noops_b",
+      "size": 336,
+      "original_sha256": "32505c0d518139329bdc16ca046fe7fba94dec60a455002fb7603c5ee4be67a1",
+      "trimmed_obj_sha256": "8879a28b89af1ee5c783d3b7abb63b7d77de407fe916107170b28e80c9b9ba51",
+      "source": "/* Exact C bodies of original unused two-argument actor callbacks. */\nvoid func_801E147C_59D38C(void *a0, void *a1) {}\nvoid func_801E1488_59D398(void *a0, void *a1) {}\nvoid func_801E1494_59D3A4(void *a0, void *a1) {}\nvoid func_801E14A0_59D3B0(void *a0, void *a1) {}\nvoid func_801E14AC_59D3BC(void *a0, void *a1) {}\nvoid func_801E14B8_59D3C8(void *a0, void *a1) {}\nvoid func_801E14C4_59D3D4(void *a0, void *a1) {}\nvoid func_801E14D0_59D3E0(void *a0, void *a1) {}\nvoid func_801E14DC_59D3EC(void *a0, void *a1) {}\nvoid func_801E14E8_59D3F8(void *a0, void *a1) {}\nvoid func_801E14F4_59D404(void *a0, void *a1) {}\nvoid func_801E1500_59D410(void *a0, void *a1) {}\nvoid func_801E150C_59D41C(void *a0, void *a1) {}\nvoid func_801E1518_59D428(void *a0, void *a1) {}\nvoid func_801E1524_59D434(void *a0, void *a1) {}\nvoid func_801E1530_59D440(void *a0, void *a1) {}\nvoid func_801E153C_59D44C(void *a0, void *a1) {}\nvoid func_801E1548_59D458(void *a0, void *a1) {}\nvoid func_801E1554_59D464(void *a0, void *a1) {}\nvoid func_801E1560_59D470(void *a0, void *a1) {}\nvoid func_801E156C_59D47C(void *a0, void *a1) {}\nvoid func_801E1578_59D488(void *a0, void *a1) {}\nvoid func_801E1584_59D494(void *a0, void *a1) {}\nvoid func_801E1590_59D4A0(void *a0, void *a1) {}\nvoid func_801E159C_59D4AC(void *a0, void *a1) {}\nvoid func_801E15A8_59D4B8(void *a0, void *a1) {}\nvoid func_801E15B4_59D4C4(void *a0, void *a1) {}\nvoid func_801E15C0_59D4D0(void *a0, void *a1) {}\n",
+      "source_sha256": "d39424ba83477114587a320987ad5516fbfee6277fc05fdd2dc1c9fc3059415b",
+      "functions": [
+        {
+          "name": "func_801E147C_59D38C",
+          "off": 5886860,
+          "vma": 2149454972,
+          "size": 12
+        },
+        {
+          "name": "func_801E1488_59D398",
+          "off": 5886872,
+          "vma": 2149454984,
+          "size": 12
+        },
+        {
+          "name": "func_801E1494_59D3A4",
+          "off": 5886884,
+          "vma": 2149454996,
+          "size": 12
+        },
+        {
+          "name": "func_801E14A0_59D3B0",
+          "off": 5886896,
+          "vma": 2149455008,
+          "size": 12
+        },
+        {
+          "name": "func_801E14AC_59D3BC",
+          "off": 5886908,
+          "vma": 2149455020,
+          "size": 12
+        },
+        {
+          "name": "func_801E14B8_59D3C8",
+          "off": 5886920,
+          "vma": 2149455032,
+          "size": 12
+        },
+        {
+          "name": "func_801E14C4_59D3D4",
+          "off": 5886932,
+          "vma": 2149455044,
+          "size": 12
+        },
+        {
+          "name": "func_801E14D0_59D3E0",
+          "off": 5886944,
+          "vma": 2149455056,
+          "size": 12
+        },
+        {
+          "name": "func_801E14DC_59D3EC",
+          "off": 5886956,
+          "vma": 2149455068,
+          "size": 12
+        },
+        {
+          "name": "func_801E14E8_59D3F8",
+          "off": 5886968,
+          "vma": 2149455080,
+          "size": 12
+        },
+        {
+          "name": "func_801E14F4_59D404",
+          "off": 5886980,
+          "vma": 2149455092,
+          "size": 12
+        },
+        {
+          "name": "func_801E1500_59D410",
+          "off": 5886992,
+          "vma": 2149455104,
+          "size": 12
+        },
+        {
+          "name": "func_801E150C_59D41C",
+          "off": 5887004,
+          "vma": 2149455116,
+          "size": 12
+        },
+        {
+          "name": "func_801E1518_59D428",
+          "off": 5887016,
+          "vma": 2149455128,
+          "size": 12
+        },
+        {
+          "name": "func_801E1524_59D434",
+          "off": 5887028,
+          "vma": 2149455140,
+          "size": 12
+        },
+        {
+          "name": "func_801E1530_59D440",
+          "off": 5887040,
+          "vma": 2149455152,
+          "size": 12
+        },
+        {
+          "name": "func_801E153C_59D44C",
+          "off": 5887052,
+          "vma": 2149455164,
+          "size": 12
+        },
+        {
+          "name": "func_801E1548_59D458",
+          "off": 5887064,
+          "vma": 2149455176,
+          "size": 12
+        },
+        {
+          "name": "func_801E1554_59D464",
+          "off": 5887076,
+          "vma": 2149455188,
+          "size": 12
+        },
+        {
+          "name": "func_801E1560_59D470",
+          "off": 5887088,
+          "vma": 2149455200,
+          "size": 12
+        },
+        {
+          "name": "func_801E156C_59D47C",
+          "off": 5887100,
+          "vma": 2149455212,
+          "size": 12
+        },
+        {
+          "name": "func_801E1578_59D488",
+          "off": 5887112,
+          "vma": 2149455224,
+          "size": 12
+        },
+        {
+          "name": "func_801E1584_59D494",
+          "off": 5887124,
+          "vma": 2149455236,
+          "size": 12
+        },
+        {
+          "name": "func_801E1590_59D4A0",
+          "off": 5887136,
+          "vma": 2149455248,
+          "size": 12
+        },
+        {
+          "name": "func_801E159C_59D4AC",
+          "off": 5887148,
+          "vma": 2149455260,
+          "size": 12
+        },
+        {
+          "name": "func_801E15A8_59D4B8",
+          "off": 5887160,
+          "vma": 2149455272,
+          "size": 12
+        },
+        {
+          "name": "func_801E15B4_59D4C4",
+          "off": 5887172,
+          "vma": 2149455284,
+          "size": 12
+        },
+        {
+          "name": "func_801E15C0_59D4D0",
+          "off": 5887184,
+          "vma": 2149455296,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5887196,
+      "rom_end": 5890860,
+      "kind": "asm",
+      "name": null,
+      "size": 3664,
+      "original_sha256": "a9fdd85a4a065ecd039eedc4f4b2469e4ffaa5e41f62e803e4e12f24bef0fb93",
+      "trimmed_obj_sha256": "7cd0b4bf5cbb7fb994c32a89b56c20972be62e0014cb2ca295d0de3fc2c8419b"
+    },
+    {
+      "rom_start": 5890860,
+      "rom_end": 5890920,
+      "kind": "c",
+      "name": "wave5_59e32c",
+      "size": 60,
+      "original_sha256": "63b8f875e090cebc71d1769e7e0431256f6863262e3a1c33687d82c1d8319280",
+      "trimmed_obj_sha256": "2d210620154d93853b3fcd0a8ab22c651fb6b8ddaa43c4a50dc9113be71e22dd",
+      "source": "extern void func_801E32D4_59F1E4(void *,float,float,float);void func_801E241C_59E32C(void*a){func_801E32D4_59F1E4(a,0,1.0f,1.0f);}\ntypedef struct {short flag;} Inner_59E35C;typedef struct {char pad[0x5C];Inner_59E35C* state;} Actor_59E35C;void func_801E244C_59E35C(Actor_59E35C*a){a->state->flag=0;}\n\n",
+      "source_sha256": "7364620489dba472546748fa9026eb66e3dce974be45be3ae09fdc44cfed3bbc",
+      "functions": [
+        {
+          "name": "func_801E241C_59E32C",
+          "off": 5890860,
+          "vma": 2149458972,
+          "size": 48
+        },
+        {
+          "name": "func_801E244C_59E35C",
+          "off": 5890908,
+          "vma": 2149459020,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5890920,
+      "rom_end": 5892140,
+      "kind": "asm",
+      "name": null,
+      "size": 1220,
+      "original_sha256": "acefdd1d8c83b283545f63e03b63f23d38bc8c05385124c7dde107253b8ad8af",
+      "trimmed_obj_sha256": "64c25c957e624dce62e557ef39ccf7cb784136890119483d7e2680a317a2cef1"
+    },
+    {
+      "rom_start": 5892140,
+      "rom_end": 5892272,
+      "kind": "c",
+      "name": "wave4_59e82c",
+      "size": 132,
+      "original_sha256": "ec54d03c9a7ba916b07feb134ab380375530959bec4c14289fb5674ad610498b",
+      "trimmed_obj_sha256": "782a8497c6718f0c8d23f1abc462ca722d485abaa71384e1348cbea0dc557d06",
+      "source": "typedef struct{char p[0x68];float f68,f6c,f70;char pad[0xE4-0x74];float e4,e8;}Actor_59E82C;extern void func_801E2950_59E860();void func_801E291C_59E82C(Actor_59E82C*a){a->f70=0.0f;a->f6c=0.0f;a->f68=0.0f;a->e4=0.0f;a->e8=0.0f;func_801E2950_59E860(a);}\nextern void func_80038BC8_397C8(unsigned);typedef struct{char p[0x2C];unsigned char flag;}Inner_59E860;typedef struct{char p[0x5C];Inner_59E860*inner;}Actor_59E860;void func_801E2950_59E860(Actor_59E860*a){a->inner->flag=0;func_80038BC8_397C8(526);func_80038BC8_397C8(587);}\nextern void func_801E291C_59E82C();void func_801E2980_59E890(void*a){ func_801E291C_59E82C(a); }\n\n",
+      "source_sha256": "03b36d99a12f746bfc0f61eab9d42d128faecfed997c5e03ae65b45fb8355072",
+      "functions": [
+        {
+          "name": "func_801E291C_59E82C",
+          "off": 5892140,
+          "vma": 2149460252,
+          "size": 52
+        },
+        {
+          "name": "func_801E2950_59E860",
+          "off": 5892192,
+          "vma": 2149460304,
+          "size": 48
+        },
+        {
+          "name": "func_801E2980_59E890",
+          "off": 5892240,
+          "vma": 2149460352,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5892272,
+      "rom_end": 5892960,
+      "kind": "asm",
+      "name": null,
+      "size": 688,
+      "original_sha256": "59eb220aa00e5399f840d74d2cca37653350bb01133704c0a995b6da36d07c02",
+      "trimmed_obj_sha256": "4beaeb6577cefa9125014c7a636bee06eef178823f32ac5c93d2ac37141f005f"
+    },
+    {
+      "rom_start": 5892960,
+      "rom_end": 5892992,
+      "kind": "c",
+      "name": "file11_wave1_59eb60",
+      "size": 32,
+      "original_sha256": "4fa093cf6576a28cafeda052a40bf4c7163aa47e9765f96097a74c2dd0649914",
+      "trimmed_obj_sha256": "af0132c5b473012b55c5cfca9f3bb77ca70a37126942b8ec3fadd7751da02d50",
+      "source": "extern void func_801E3834_59F744(void*,unsigned);void func_801E2C50_59EB60(void*a){ func_801E3834_59F744(a,18); }\n",
+      "source_sha256": "f48d95f0b7afac8aa1e1351f8b8bab00d1bbcd8d8e795e789ad8ce06b4676340",
+      "functions": [
+        {
+          "name": "func_801E2C50_59EB60",
+          "off": 5892960,
+          "vma": 2149461072,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5892992,
+      "rom_end": 5893052,
+      "kind": "c",
+      "name": "file11_wave7_59eb80",
+      "size": 60,
+      "original_sha256": "1246e5a7ba794d272f53e2cd1d1773173a3b77d659ace1f3f5bf43fdf170b8ff",
+      "trimmed_obj_sha256": "190abc4d8badcfc13b0fc8ab0270a8785542249cdec2b6959b4f7f13a589a679",
+      "source": "extern void func_801E3834_59F744(void*,unsigned);typedef struct{char p[0xE4];float e4,e8;} Actor_59EB80;void func_801E2C70_59EB80(Actor_59EB80*a){func_801E3834_59F744(a,19);a->e4=0.0f;a->e8=1.0f;}\n\n",
+      "source_sha256": "abd979e63d1febcb09eb4450b021e1a26b8ff9009a6d074148c5795b8862f31e",
+      "functions": [
+        {
+          "name": "func_801E2C70_59EB80",
+          "off": 5892992,
+          "vma": 2149461104,
+          "size": 60
+        }
+      ]
+    },
+    {
+      "rom_start": 5893052,
+      "rom_end": 5893116,
+      "kind": "c",
+      "name": "file11_wave1_59ebbc",
+      "size": 64,
+      "original_sha256": "a107d8b8f0e34f7d786d3802bf740c7ff08cddfe9836b252c896bd0f5bd050fd",
+      "trimmed_obj_sha256": "36ca327806c44f1e33c6113206c47581e4f7d93afcddcfcf78133409da8cb291",
+      "source": "extern void func_801E2CEC_59EBFC(void*,unsigned);void func_801E2CAC_59EBBC(void*a){ func_801E2CEC_59EBFC(a,12); }\n\nextern void func_801E2CEC_59EBFC(void*,unsigned);void func_801E2CCC_59EBDC(void*a){ func_801E2CEC_59EBFC(a,13); }\n",
+      "source_sha256": "7495509079d5c40b5a2612159aa6dcfa7846464d58a78c486f8f92df5bff9295",
+      "functions": [
+        {
+          "name": "func_801E2CAC_59EBBC",
+          "off": 5893052,
+          "vma": 2149461164,
+          "size": 32
+        },
+        {
+          "name": "func_801E2CCC_59EBDC",
+          "off": 5893084,
+          "vma": 2149461196,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5893116,
+      "rom_end": 5893536,
+      "kind": "asm",
+      "name": null,
+      "size": 420,
+      "original_sha256": "7b7318368b1dbd0fde083a4bf112a3e3201ac2b6d0731a3f351cb7d46cc0a5f0",
+      "trimmed_obj_sha256": "7f37fe015359a50a76ce0679a1e8bb50c67e99635097058bc022f084a8d0d186"
+    },
+    {
+      "rom_start": 5893536,
+      "rom_end": 5893632,
+      "kind": "c",
+      "name": "file11_wave1_59eda0",
+      "size": 96,
+      "original_sha256": "a0fdc175416bc2ee66edab5414af6ce97c08ccabc3ae22284ba3a8d22b4b2124",
+      "trimmed_obj_sha256": "f9f3f7ee1606114475e35710335b87bae88d86e2f51b92ebc2cc904dfa98715a",
+      "source": "extern void func_801E2EF0_59EE00(void*,unsigned);void func_801E2E90_59EDA0(void*a){ func_801E2EF0_59EE00(a,14); }\n\nextern void func_801E2EF0_59EE00(void*,unsigned);void func_801E2EB0_59EDC0(void*a){ func_801E2EF0_59EE00(a,15); }\n\nextern void func_801E2EF0_59EE00(void*,unsigned);void func_801E2ED0_59EDE0(void*a){ func_801E2EF0_59EE00(a,16); }\n",
+      "source_sha256": "587345092294599159bb67a0ade56d388b7da725be2e1335778beac5e46a0d5e",
+      "functions": [
+        {
+          "name": "func_801E2E90_59EDA0",
+          "off": 5893536,
+          "vma": 2149461648,
+          "size": 32
+        },
+        {
+          "name": "func_801E2EB0_59EDC0",
+          "off": 5893568,
+          "vma": 2149461680,
+          "size": 32
+        },
+        {
+          "name": "func_801E2ED0_59EDE0",
+          "off": 5893600,
+          "vma": 2149461712,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5893632,
+      "rom_end": 5893716,
+      "kind": "c",
+      "name": "file11_wave7_59ee00",
+      "size": 84,
+      "original_sha256": "12f9b20b7b8dcf94aaea9980bfd35af519232cb402c60da319acde4cd9d217d9",
+      "trimmed_obj_sha256": "cc4f232f592451c983d1de744bb0826a4366624d14917fabbb7d630424aa73cb",
+      "source": "typedef struct {char pad[0x2c];unsigned char flag;} Inner_59EE00;typedef struct {char pad[0x4c];unsigned char mode;char gap[0x5c-0x4d];Inner_59EE00*state;char reserved[0x68-0x60];float a,b,c;char gap2[0xe4-0x74];float d,e;} Actor_59EE00;void func_801E2EF0_59EE00(Actor_59EE00*p,unsigned unused){p->d=0.0f;p->e=0.0f;p->mode=20;p->state->flag=0;}\n\ntypedef struct {char pad[0x2c];unsigned char flag;} Inner_59EE24;typedef struct {char pad[0x4c];unsigned char mode;char gap[0x5c-0x4d];Inner_59EE24*state;char reserved[0x68-0x60];float a,b,c;char gap2[0xe4-0x74];float d,e;} Actor_59EE24;void func_801E2F14_59EE24(Actor_59EE24*p){p->d=0.0f;p->e=0.0f;p->c=0.0f;p->b=0.0f;p->a=0.0f;p->state->flag=0;}\n\ntypedef struct {char pad[0x2C];unsigned char flag;} Inner_59EE48;typedef struct {char pad[0x5C];Inner_59EE48* state;} Actor_59EE48;void func_801E2F38_59EE48(Actor_59EE48*a){a->state->flag=0;}\n\n",
+      "source_sha256": "9142bded2672c1b5278bf6a2e244ec5728f0d3ff689492fccd28965a61fa2328",
+      "functions": [
+        {
+          "name": "func_801E2EF0_59EE00",
+          "off": 5893632,
+          "vma": 2149461744,
+          "size": 36
+        },
+        {
+          "name": "func_801E2F14_59EE24",
+          "off": 5893668,
+          "vma": 2149461780,
+          "size": 36
+        },
+        {
+          "name": "func_801E2F38_59EE48",
+          "off": 5893704,
+          "vma": 2149461816,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5893716,
+      "rom_end": 5893748,
+      "kind": "c",
+      "name": "file11_wave1_59ee54",
+      "size": 32,
+      "original_sha256": "87f56569ca6174ded4ddf80270fdc85805a210ed5781a278dd20b7e480f20fdd",
+      "trimmed_obj_sha256": "e6e3977afde7d1ce802c38a2feed6fc46c2ce4f0950d9725f1d53848956d8dd8",
+      "source": "extern void func_801E2F14_59EE24(void*);void func_801E2F44_59EE54(void*a){ func_801E2F14_59EE24(a); }\n",
+      "source_sha256": "b5228bfe37364607c05afdc866f0211f5689e7d32cc832c0dde11fc6fff886ec",
+      "functions": [
+        {
+          "name": "func_801E2F44_59EE54",
+          "off": 5893716,
+          "vma": 2149461828,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5893748,
+      "rom_end": 5893872,
+      "kind": "asm",
+      "name": null,
+      "size": 124,
+      "original_sha256": "76898b2122e57da857bfb049e82e768531f5c00d061ca3c1e3e243f803fa3bfa",
+      "trimmed_obj_sha256": "45bc366124dddc04b641d27597ac1b664bd3c3926dbec8a10ae54e1f13805513"
+    },
+    {
+      "rom_start": 5893872,
+      "rom_end": 5893912,
+      "kind": "c",
+      "name": "file11_wave1_59eef0",
+      "size": 40,
+      "original_sha256": "827dafb896593b9892f9782eda6895eda2ff1c1c6895ea919ce14c84fd29254e",
+      "trimmed_obj_sha256": "609bdaefa044dea8b7fa02af9f4bebb223434f26c822162ad9d816c550cf0bc4",
+      "source": "typedef struct {unsigned char p[0xE4]; float x,y;} Actor_59EEF0;void func_801E2FE0_59EEF0(Actor_59EEF0*a){a->x=0.0f;a->y=0.0f;}\n\ntypedef struct {unsigned char p[0xE4]; float x,y;} Actor_59EF04;void func_801E2FF4_59EF04(Actor_59EF04*a){a->x=0.0f;a->y=0.0f;}\n",
+      "source_sha256": "a40b3ee729ae5d11f23f7c3c967c81dd8accb1f1d2ae15be7d6898c002f5b803",
+      "functions": [
+        {
+          "name": "func_801E2FE0_59EEF0",
+          "off": 5893872,
+          "vma": 2149461984,
+          "size": 20
+        },
+        {
+          "name": "func_801E2FF4_59EF04",
+          "off": 5893892,
+          "vma": 2149462004,
+          "size": 20
+        }
+      ]
+    },
+    {
+      "rom_start": 5893912,
+      "rom_end": 5893964,
+      "kind": "c",
+      "name": "file11_wave6_59ef18",
+      "size": 52,
+      "original_sha256": "01a2ee6edebc172353056fea6431c94c82500d681115481434ececce2f575cc8",
+      "trimmed_obj_sha256": "89980da48f2448a3af0a06fd6346dd2c87c5def09266cf53055d245a91496e1b",
+      "source": "typedef struct {short field;char pad[0x2C-2];unsigned char flag;} Inner;typedef struct {char p[0x4C];unsigned char mode;char p1[0x5C-0x4D];Inner*inner;char p2[0x68-0x60];float v68,v6c,v70;char p3[0xE4-0x74];float e4,e8;}Actor;void func_801E3008_59EF18(Actor*a){a->e4=0;a->e8=0;a->v70=0;a->v6c=0;a->v68=0;a->inner->flag=0;a->mode=20;a->inner->field=0;}\n",
+      "source_sha256": "ff2fdde2b4b2a6e4895627ed60be4a826e9f53ffe49d71a76e2bc47a914891d9",
+      "functions": [
+        {
+          "name": "func_801E3008_59EF18",
+          "off": 5893912,
+          "vma": 2149462024,
+          "size": 52
+        }
+      ]
+    },
+    {
+      "rom_start": 5893964,
+      "rom_end": 5894028,
+      "kind": "c",
+      "name": "file11_wave1_59ef4c",
+      "size": 64,
+      "original_sha256": "285f3eabd4cdbb7e08c4fab620951360b198d5512db830e8488d6fd32accd771",
+      "trimmed_obj_sha256": "f7abd8b9990640b4c7eed2826e26eccdf599fdadad635938e1836b761b810132",
+      "source": "extern void func_801E3008_59EF18(void*);void func_801E303C_59EF4C(void*a){ func_801E3008_59EF18(a); }\n\nextern void func_801E3008_59EF18(void*);void func_801E305C_59EF6C(void*a){ func_801E3008_59EF18(a); }\n",
+      "source_sha256": "22aa9e0cda9a2b26f23c9eb085b640b8d28bc6d0315110de114af392700a9136",
+      "functions": [
+        {
+          "name": "func_801E303C_59EF4C",
+          "off": 5893964,
+          "vma": 2149462076,
+          "size": 32
+        },
+        {
+          "name": "func_801E305C_59EF6C",
+          "off": 5893996,
+          "vma": 2149462108,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5894028,
+      "rom_end": 5894212,
+      "kind": "asm",
+      "name": null,
+      "size": 184,
+      "original_sha256": "6d78d1c81a33e5121324c5bc9e6ae6f18fca0a5f6f0b0411f0e132d83e22c744",
+      "trimmed_obj_sha256": "e1f8a6057221fc18779c9a9eed01efbd652ec89df9eb86ddbc3bddd5c9ddf926"
+    },
+    {
+      "rom_start": 5894212,
+      "rom_end": 5894328,
+      "kind": "c",
+      "name": "wave5_59f044",
+      "size": 116,
+      "original_sha256": "de52cd23f99b597ff1768a8ea65cc0f2c88c1139ee92121c4f9bf97aa5571c30",
+      "trimmed_obj_sha256": "7260d98cd56cc41a5498aea51cd9971ccc1a901f49a5132acd2a10f06efcda91",
+      "source": "typedef struct Actor_59F068 Actor_59F068;\ntypedef struct {short code;} Inner_59F044;typedef struct {char pad[0x5C];Inner_59F044*state;} Actor_59F044;extern void func_801E3158_59F068(Actor_59F068*);void func_801E3134_59F044(Actor_59F044*p){p->state->code=0;func_801E3158_59F068((Actor_59F068*)p);}\n\ntypedef unsigned char u8;struct Actor_59F068 {char p[0x30];u8 flags;char pad[0xD4-0x31];u8 mode;};void func_801E3158_59F068(Actor_59F068*a){a->mode=60;a->flags&=~1;a->flags|=4;}\n\nextern void func_801E32D4_59F1E4(void *,float,float,float);void func_801E3178_59F088(void*a){func_801E32D4_59F1E4(a,0,1.0f,1.0f);}\n",
+      "source_sha256": "90242da42ae5cb3b6a003a35d2ebf2e7f34ecd8da24b53cb4d8b60396f33a08d",
+      "functions": [
+        {
+          "name": "func_801E3134_59F044",
+          "off": 5894212,
+          "vma": 2149462324,
+          "size": 36
+        },
+        {
+          "name": "func_801E3158_59F068",
+          "off": 5894248,
+          "vma": 2149462360,
+          "size": 32
+        },
+        {
+          "name": "func_801E3178_59F088",
+          "off": 5894280,
+          "vma": 2149462392,
+          "size": 48
+        }
+      ]
+    },
+    {
+      "rom_start": 5894328,
+      "rom_end": 5902228,
+      "kind": "asm",
+      "name": null,
+      "size": 7900,
+      "original_sha256": "901db065f6c6fe5bba598fc9635c017b4f79c5711649235819e8fa5e87e71d69",
+      "trimmed_obj_sha256": "0c52181ac437cabef5d4364457eb639ae859b91a1c8ccb58821a65d521377ef2"
+    },
+    {
+      "rom_start": 5902228,
+      "rom_end": 5902240,
+      "kind": "c",
+      "name": "file11_wave1_5a0f94",
+      "size": 12,
+      "original_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b",
+      "trimmed_obj_sha256": "e8ffe31cb325d762d52b2e2f239404e0dccdca2bc50c8eb2d4f49edb93b09c0f",
+      "source": "void func_801E5084_5A0F94(void*a0,void*a1) {}\n",
+      "source_sha256": "63c976cf1d6c5345b6dc3944ae8267bdb9e784cfd01205880e8d6ee1b45f0291",
+      "functions": [
+        {
+          "name": "func_801E5084_5A0F94",
+          "off": 5902228,
+          "vma": 2149470340,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5902240,
+      "rom_end": 5922780,
+      "kind": "asm",
+      "name": null,
+      "size": 20540,
+      "original_sha256": "7f274d4300e685a226c849fe6f03a8409b6c6b2daab4568ec627074b64c94bb9",
+      "trimmed_obj_sha256": "aa1a911445651874f1130cf25b0f39d95452781638503073c7d526f890a59b40"
+    },
+    {
+      "rom_start": 5922780,
+      "rom_end": 5922792,
+      "kind": "c",
+      "name": "file11_wave1_5a5fdc",
+      "size": 12,
+      "original_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b",
+      "trimmed_obj_sha256": "11ebd44f207679f8e813ee1471ced6a4e8f069c80e72564bc8182f6a9dba0bfb",
+      "source": "void func_801EA0CC_5A5FDC(void*a0,void*a1) {}\n",
+      "source_sha256": "9cef8043fa8b17f6e8a1bb933051873d2c83fecae030be7465deb094ba139282",
+      "functions": [
+        {
+          "name": "func_801EA0CC_5A5FDC",
+          "off": 5922780,
+          "vma": 2149490892,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5922792,
+      "rom_end": 5923808,
+      "kind": "asm",
+      "name": null,
+      "size": 1016,
+      "original_sha256": "15ad8832fda7da97e6d1ef3bcbbcab8aa6fd8804851062537941bb2edb5acd64",
+      "trimmed_obj_sha256": "f1f9d3bc30c20f16f483ad4c44ae7be9b7210ea0734c524bb6b7d729f934f809"
+    },
+    {
+      "rom_start": 5923808,
+      "rom_end": 5923832,
+      "kind": "c",
+      "name": "file11_wave1_5a63e0",
+      "size": 24,
+      "original_sha256": "e954154426b738122ed49a7260485b9c82562345ab755f2299989c3f3f0adace",
+      "trimmed_obj_sha256": "8831fc23ef4c67b1ec0cb54c2eb5483ed22612bdbec04d5d9e10e9fff394bf76",
+      "source": "void func_801EA4D0_5A63E0(void*a0,void*a1) {}\n\nvoid func_801EA4DC_5A63EC(void*a0,void*a1) {}\n",
+      "source_sha256": "e6bde92622bd8390faf397b9265608bf50501d1e277e94c908a3ab7d6a2140d5",
+      "functions": [
+        {
+          "name": "func_801EA4D0_5A63E0",
+          "off": 5923808,
+          "vma": 2149491920,
+          "size": 12
+        },
+        {
+          "name": "func_801EA4DC_5A63EC",
+          "off": 5923820,
+          "vma": 2149491932,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5923832,
+      "rom_end": 5928140,
+      "kind": "asm",
+      "name": null,
+      "size": 4308,
+      "original_sha256": "a909de1b923bc378e5654d5bfaaa70974f0ee7515950883c91cca75863c0b089",
+      "trimmed_obj_sha256": "adba3623bffd4403c813951dc2a9ab8c72f1ce1ef9ad988165fed3bc258abcab"
+    },
+    {
+      "rom_start": 5928140,
+      "rom_end": 5928396,
+      "kind": "c",
+      "name": "file11_wave1_5a74cc",
+      "size": 256,
+      "original_sha256": "6db12c12bf7b5ddcaf96a1edac4ffda452764f759c890e571fe572b0e8e96c1e",
+      "trimmed_obj_sha256": "1dec6a1c31e8b24afcb44d15039740ce6287a30888ca7f0f386508164bf5e0a1",
+      "source": "extern void func_801EB6BC_5A75CC(void*);void func_801EB5BC_5A74CC(void*a,unsigned unused){ func_801EB6BC_5A75CC(a); }\n\nextern void func_801EB6BC_5A75CC(void*);void func_801EB5DC_5A74EC(void*a,unsigned unused){ func_801EB6BC_5A75CC(a); }\n\nextern void func_801EB6BC_5A75CC(void*);void func_801EB5FC_5A750C(void*a,unsigned unused){ func_801EB6BC_5A75CC(a); }\n\nextern void func_801EB6BC_5A75CC(void*);void func_801EB61C_5A752C(void*a,unsigned unused){ func_801EB6BC_5A75CC(a); }\n\nextern void func_801EB6BC_5A75CC(void*);void func_801EB63C_5A754C(void*a,unsigned unused){ func_801EB6BC_5A75CC(a); }\n\nextern void func_801EB6BC_5A75CC(void*);void func_801EB65C_5A756C(void*a,unsigned unused){ func_801EB6BC_5A75CC(a); }\n\nextern void func_801EB6BC_5A75CC(void*);void func_801EB67C_5A758C(void*a,unsigned unused){ func_801EB6BC_5A75CC(a); }\n\nextern void func_801EB6BC_5A75CC(void*);void func_801EB69C_5A75AC(void*a,unsigned unused){ func_801EB6BC_5A75CC(a); }\n",
+      "source_sha256": "92be3e2257ca80d79b5bde84b457e7a1beb37394753349eaac5265a7500166b4",
+      "functions": [
+        {
+          "name": "func_801EB5BC_5A74CC",
+          "off": 5928140,
+          "vma": 2149496252,
+          "size": 32
+        },
+        {
+          "name": "func_801EB5DC_5A74EC",
+          "off": 5928172,
+          "vma": 2149496284,
+          "size": 32
+        },
+        {
+          "name": "func_801EB5FC_5A750C",
+          "off": 5928204,
+          "vma": 2149496316,
+          "size": 32
+        },
+        {
+          "name": "func_801EB61C_5A752C",
+          "off": 5928236,
+          "vma": 2149496348,
+          "size": 32
+        },
+        {
+          "name": "func_801EB63C_5A754C",
+          "off": 5928268,
+          "vma": 2149496380,
+          "size": 32
+        },
+        {
+          "name": "func_801EB65C_5A756C",
+          "off": 5928300,
+          "vma": 2149496412,
+          "size": 32
+        },
+        {
+          "name": "func_801EB67C_5A758C",
+          "off": 5928332,
+          "vma": 2149496444,
+          "size": 32
+        },
+        {
+          "name": "func_801EB69C_5A75AC",
+          "off": 5928364,
+          "vma": 2149496476,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5928396,
+      "rom_end": 5936144,
+      "kind": "asm",
+      "name": null,
+      "size": 7748,
+      "original_sha256": "c13ab39c56efbc55a11e83d39abe00e4ce0d8b4351a1bddd6675f5dabfa8718a",
+      "trimmed_obj_sha256": "c836760084406c387c9eb9fe54e383b742437b5ff1faf5bf9b33e9db30b119b4"
+    },
+    {
+      "rom_start": 5936144,
+      "rom_end": 5936168,
+      "kind": "c",
+      "name": "file11_wave1_5a9410",
+      "size": 24,
+      "original_sha256": "e954154426b738122ed49a7260485b9c82562345ab755f2299989c3f3f0adace",
+      "trimmed_obj_sha256": "5424f559f232e0211f7397c95afbfc63efc8987551a03f9407f53c067e0b09ef",
+      "source": "void func_801ED500_5A9410(void*a0,void*a1) {}\n\nvoid func_801ED50C_5A941C(void*a0,void*a1) {}\n",
+      "source_sha256": "ae84290101f1a209e020426743ed31f892864474cba711bf75a6f9367815f6c3",
+      "functions": [
+        {
+          "name": "func_801ED500_5A9410",
+          "off": 5936144,
+          "vma": 2149504256,
+          "size": 12
+        },
+        {
+          "name": "func_801ED50C_5A941C",
+          "off": 5936156,
+          "vma": 2149504268,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5936168,
+      "rom_end": 5937208,
+      "kind": "asm",
+      "name": null,
+      "size": 1040,
+      "original_sha256": "0d5b00d607cf8d9b5befc216e8c0fffd90488371e98a81db3909775c41188127",
+      "trimmed_obj_sha256": "adf397e7b98c05bff4f8db4fa6a55cb719b45aa65070373f0e89ce0ae068a7ca"
+    },
+    {
+      "rom_start": 5937208,
+      "rom_end": 5937272,
+      "kind": "c",
+      "name": "file11_wave1_5a9838",
+      "size": 64,
+      "original_sha256": "4182ebfc9ee9474810232a2eaa1c2485ec5e402d4968adc6e9d61ae225d43e4b",
+      "trimmed_obj_sha256": "2a25c8cd4f8240b66bf7c66e36cfa97ce76be29940b81f17edd9225d99adf961",
+      "source": "extern void func_801ED968_5A9878(void*);void func_801ED928_5A9838(void*a,unsigned unused){ func_801ED968_5A9878(a); }\n\nextern void func_801ED968_5A9878(void*);void func_801ED948_5A9858(void*a,unsigned unused){ func_801ED968_5A9878(a); }\n",
+      "source_sha256": "ab1a721ebd79f48cbc068957034151835b6b8acc4e91610fd2295db9d123fb4c",
+      "functions": [
+        {
+          "name": "func_801ED928_5A9838",
+          "off": 5937208,
+          "vma": 2149505320,
+          "size": 32
+        },
+        {
+          "name": "func_801ED948_5A9858",
+          "off": 5937240,
+          "vma": 2149505352,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5937272,
+      "rom_end": 5947952,
+      "kind": "asm",
+      "name": null,
+      "size": 10680,
+      "original_sha256": "cea4ff2a0b1b33646465444a5b1f2eb97b12cc1ba487a103912bf515567ad30d",
+      "trimmed_obj_sha256": "9fbd253ded83f9bba083bfa2b5cd21fd09aa83c4dcb85464b2718da62fac6441"
+    },
+    {
+      "rom_start": 5947952,
+      "rom_end": 5947984,
+      "kind": "c",
+      "name": "file11_wave1_5ac230",
+      "size": 32,
+      "original_sha256": "27df7b4c8e5894cf426c28393d044354e25961af7e7aa8c098a767ae2ba8e677",
+      "trimmed_obj_sha256": "62008f393466dc68c0b5e1eb4db8b0f202d1724eb0552109e5780aab8e7a4749",
+      "source": "extern void func_801F0340_5AC250(void*);void func_801F0320_5AC230(void*a,unsigned unused){ func_801F0340_5AC250(a); }\n",
+      "source_sha256": "be8174f776269fa6f34ada26f213d8c10a6246dc4b1443621473d73d03a6072d",
+      "functions": [
+        {
+          "name": "func_801F0320_5AC230",
+          "off": 5947952,
+          "vma": 2149516064,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5947984,
+      "rom_end": 5958596,
+      "kind": "asm",
+      "name": null,
+      "size": 10612,
+      "original_sha256": "5f165d74c30e0a6a6fcb774087e9d3ce8af9920e8020c07fbe6e21dc1680ed47",
+      "trimmed_obj_sha256": "c804339d8190fc68d72cab42a8c619ce4ee1013be99748f9eea9738126f2e953"
+    },
+    {
+      "rom_start": 5958596,
+      "rom_end": 5958620,
+      "kind": "c",
+      "name": "file11_wave1_5aebc4",
+      "size": 24,
+      "original_sha256": "e954154426b738122ed49a7260485b9c82562345ab755f2299989c3f3f0adace",
+      "trimmed_obj_sha256": "eb30e3bded771cdd5069d304ba7f7473c83403c8251c1ae28f2fce312eac1177",
+      "source": "void func_801F2CB4_5AEBC4(void*a0,void*a1) {}\n\nvoid func_801F2CC0_5AEBD0(void*a0,void*a1) {}\n",
+      "source_sha256": "e61acf0c55c048921e0340066fd4fbc0280d6e76a2f78226c00051777dc546bb",
+      "functions": [
+        {
+          "name": "func_801F2CB4_5AEBC4",
+          "off": 5958596,
+          "vma": 2149526708,
+          "size": 12
+        },
+        {
+          "name": "func_801F2CC0_5AEBD0",
+          "off": 5958608,
+          "vma": 2149526720,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5958620,
+      "rom_end": 5968656,
+      "kind": "asm",
+      "name": null,
+      "size": 10036,
+      "original_sha256": "bb31f961d014aa5742ec7ca4da9dd38f340569427688b941c7f02a1fa870ac29",
+      "trimmed_obj_sha256": "4c0e47718e9cf7b4d5c1d2244e5848f53d3e4eaf14c42c3a3c83627a2b428530"
+    },
+    {
+      "rom_start": 5968656,
+      "rom_end": 5968688,
+      "kind": "c",
+      "name": "file11_wave1_5b1310",
+      "size": 32,
+      "original_sha256": "948ee254e57779fd6af23c25fe7e32bbdbf5d524c8a63f08dc8fa56b146d854e",
+      "trimmed_obj_sha256": "3ca25ce08b087c426a3c6ba5057eecb66c03b4e569b59cb209429f8dd9cf5861",
+      "source": "extern void func_801F5420_5B1330(void*);void func_801F5400_5B1310(void*a,unsigned unused){ func_801F5420_5B1330(a); }\n",
+      "source_sha256": "cd3efcea3ea939e695a00bee73e209a16d47851165123f9ab91e62640a144d03",
+      "functions": [
+        {
+          "name": "func_801F5400_5B1310",
+          "off": 5968656,
+          "vma": 2149536768,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5968688,
+      "rom_end": 5968972,
+      "kind": "asm",
+      "name": null,
+      "size": 284,
+      "original_sha256": "43ab669e416a5c8f45ad7247f6f6072cf313acb3c94af78e5d5ffe7d7138f0f2",
+      "trimmed_obj_sha256": "d6e0d9d8e1a467a1543c30083979a057216fe472cc41663167e4371185e2faa4"
+    },
+    {
+      "rom_start": 5968972,
+      "rom_end": 5969132,
+      "kind": "c",
+      "name": "file11_wave1_5b144c",
+      "size": 160,
+      "original_sha256": "6dbd1e7a097fd113a79ec8edf139a1bbc95ae833c5f885894fcb010878446b94",
+      "trimmed_obj_sha256": "3cbfcfc2c92f1d15094d6abfe56ac9b93e8dcf38c4137ef9756100773d72f997",
+      "source": "extern void func_801E3AC0_59F9D0(void*);void func_801F553C_5B144C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801F555C_5B146C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801F557C_5B148C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E43B0_5A02C0(void*);void func_801F559C_5B14AC(void*a,unsigned unused){ func_801E43B0_5A02C0(a); }\n\nextern void func_801E4530_5A0440(void*);void func_801F55BC_5B14CC(void*a,unsigned unused){ func_801E4530_5A0440(a); }\n",
+      "source_sha256": "06a7f9767e401e3ab4c5e8e7a4412b39be0f9c150a94465623a7ecec2593d8ed",
+      "functions": [
+        {
+          "name": "func_801F553C_5B144C",
+          "off": 5968972,
+          "vma": 2149537084,
+          "size": 32
+        },
+        {
+          "name": "func_801F555C_5B146C",
+          "off": 5969004,
+          "vma": 2149537116,
+          "size": 32
+        },
+        {
+          "name": "func_801F557C_5B148C",
+          "off": 5969036,
+          "vma": 2149537148,
+          "size": 32
+        },
+        {
+          "name": "func_801F559C_5B14AC",
+          "off": 5969068,
+          "vma": 2149537180,
+          "size": 32
+        },
+        {
+          "name": "func_801F55BC_5B14CC",
+          "off": 5969100,
+          "vma": 2149537212,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5969132,
+      "rom_end": 5969928,
+      "kind": "asm",
+      "name": null,
+      "size": 796,
+      "original_sha256": "73e02ce4023ff2c08469db8343fc6f10b3fd90fcb2ed9245048a6562fe3da4c4",
+      "trimmed_obj_sha256": "24dffbef9086a6b0c4435f366861b7f3e938ca8814a1fa05f9f8c4c1294cb976"
+    },
+    {
+      "rom_start": 5969928,
+      "rom_end": 5970452,
+      "kind": "c",
+      "name": "wave4_5b1808",
+      "size": 524,
+      "original_sha256": "51459468ada29fa15b494c0d7554ab3ca278b70a4e5beac65f95ea8295dfc346",
+      "trimmed_obj_sha256": "37b9773e015e5a58ef39fce9441c90c6b0188495a25649af52f9f71d9afd27df",
+      "source": "extern void func_801F5B04_5B1A14(void*,int,int,int,int,int);void func_801F58F8_5B1808(void *a,unsigned ignored){func_801F5B04_5B1A14(a,7,98,100,1,6);}\nextern void func_801F5B9C_5B1AAC(void*,int,int);void func_801F5934_5B1844(void*a,unsigned unused){func_801F5B9C_5B1AAC(a,101,2);}\nextern void func_801F5B04_5B1A14(void*,int,int,int,int,int);void func_801F595C_5B186C(void *a,unsigned ignored){func_801F5B04_5B1A14(a,11,105,107,4,9);}\nextern void func_801F5B04_5B1A14(void*,int,int,int,int,int);void func_801F5998_5B18A8(void *a,unsigned ignored){func_801F5B04_5B1A14(a,12,106,108,5,10);}\nextern void func_801F5B9C_5B1AAC(void*,int,int);void func_801F59D4_5B18E4(void*a,unsigned unused){func_801F5B9C_5B1AAC(a,109,6);}\nextern void func_801E3AC0_59F9D0(void*);void func_801F59FC_5B190C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801F5A1C_5B192C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801F5A3C_5B194C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801F5A5C_5B196C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801F5A7C_5B198C(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801E3AC0_59F9D0(void*);void func_801F5A9C_5B19AC(void*a,unsigned unused){ func_801E3AC0_59F9D0(a); }\n\nextern void func_801F5BF0_5B1B00();void func_801F5ABC_5B19CC(void*a,unsigned unused){func_801F5BF0_5B1B00(a,3);}\nextern void func_801F5BF0_5B1B00();void func_801F5AE0_5B19F0(void*a,unsigned unused){func_801F5BF0_5B1B00(a,7);}\n",
+      "source_sha256": "a24291b01048e1682daacb9049cc876c82d27b7402a6f2c018587b657f428044",
+      "functions": [
+        {
+          "name": "func_801F58F8_5B1808",
+          "off": 5969928,
+          "vma": 2149538040,
+          "size": 60
+        },
+        {
+          "name": "func_801F5934_5B1844",
+          "off": 5969988,
+          "vma": 2149538100,
+          "size": 40
+        },
+        {
+          "name": "func_801F595C_5B186C",
+          "off": 5970028,
+          "vma": 2149538140,
+          "size": 60
+        },
+        {
+          "name": "func_801F5998_5B18A8",
+          "off": 5970088,
+          "vma": 2149538200,
+          "size": 60
+        },
+        {
+          "name": "func_801F59D4_5B18E4",
+          "off": 5970148,
+          "vma": 2149538260,
+          "size": 40
+        },
+        {
+          "name": "func_801F59FC_5B190C",
+          "off": 5970188,
+          "vma": 2149538300,
+          "size": 32
+        },
+        {
+          "name": "func_801F5A1C_5B192C",
+          "off": 5970220,
+          "vma": 2149538332,
+          "size": 32
+        },
+        {
+          "name": "func_801F5A3C_5B194C",
+          "off": 5970252,
+          "vma": 2149538364,
+          "size": 32
+        },
+        {
+          "name": "func_801F5A5C_5B196C",
+          "off": 5970284,
+          "vma": 2149538396,
+          "size": 32
+        },
+        {
+          "name": "func_801F5A7C_5B198C",
+          "off": 5970316,
+          "vma": 2149538428,
+          "size": 32
+        },
+        {
+          "name": "func_801F5A9C_5B19AC",
+          "off": 5970348,
+          "vma": 2149538460,
+          "size": 32
+        },
+        {
+          "name": "func_801F5ABC_5B19CC",
+          "off": 5970380,
+          "vma": 2149538492,
+          "size": 36
+        },
+        {
+          "name": "func_801F5AE0_5B19F0",
+          "off": 5970416,
+          "vma": 2149538528,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "rom_start": 5970452,
+      "rom_end": 5971516,
+      "kind": "asm",
+      "name": null,
+      "size": 1064,
+      "original_sha256": "f7a68a59603572e709b5843a6747970fda3d6209b4d852176a3a2bc797623515",
+      "trimmed_obj_sha256": "01ff0ce1e91d08e8158e8bce81d6ba64e8085ce56c87f0dcd7a5d8d8f56ee693"
+    },
+    {
+      "rom_start": 5971516,
+      "rom_end": 5971548,
+      "kind": "c",
+      "name": "file11_wave1_5b1e3c",
+      "size": 32,
+      "original_sha256": "07a1bd2127380ebc49a67a21c9f888ffa6e9a8470c54098f28a01678fc19f287",
+      "trimmed_obj_sha256": "e17e19b0f97a4e48094938e3c766fef18793f5bf6d3848266816c03c56e030d5",
+      "source": "extern void func_801F5F4C_5B1E5C(void*);void func_801F5F2C_5B1E3C(void*a,unsigned unused){ func_801F5F4C_5B1E5C(a); }\n",
+      "source_sha256": "73fbc76d9eed0f20c3d986c0e25ce1ec9c66998917ce9adaeaa97071295418e5",
+      "functions": [
+        {
+          "name": "func_801F5F2C_5B1E3C",
+          "off": 5971516,
+          "vma": 2149539628,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5971548,
+      "rom_end": 5972648,
+      "kind": "asm",
+      "name": null,
+      "size": 1100,
+      "original_sha256": "fa8c3d92d56b00770e0759451631d51648aa32ed238df23655cd718d8dbe5263",
+      "trimmed_obj_sha256": "c0f90fdd261e3fc78f0b37f72b4994bee43a0455f56d2b302d7a94ec308184d2"
+    },
+    {
+      "rom_start": 5972648,
+      "rom_end": 5972680,
+      "kind": "c",
+      "name": "file11_wave1_5b22a8",
+      "size": 32,
+      "original_sha256": "bcb0a5e9b754addf98dd06fce4cdfe1f7b68accc0429bb0f54317b7bf551196d",
+      "trimmed_obj_sha256": "4a066ec614e2ce314e7c80a25d42bc609100e1c64326ce380b0fe74c5baf12f9",
+      "source": "extern void func_801F65A4_5B24B4(void*);void func_801F6398_5B22A8(void*a,unsigned unused){ func_801F65A4_5B24B4(a); }\n",
+      "source_sha256": "09514514a202f52decd148af5fe9eeb5377a481341c0c2307aaa9809408f0d6e",
+      "functions": [
+        {
+          "name": "func_801F6398_5B22A8",
+          "off": 5972648,
+          "vma": 2149540760,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5972680,
+      "rom_end": 5972756,
+      "kind": "c",
+      "name": "file11_wave7_5b22c8",
+      "size": 76,
+      "original_sha256": "f56c8aaaa2a81b0599043e4f15709bdeeb9bc0290fe4c3d9942fc131e18bcdbd",
+      "trimmed_obj_sha256": "6acc5b6df12368c34275e928a00570a4f94b831fb330ad9e0ce325da997be966",
+      "source": "extern void func_801F6424_5B2334(void*,int,int);\nvoid func_801F63B8_5B22C8(void*a,unsigned unused){func_801F6424_5B2334(a,160,21);}\n\nextern void func_801F64E8_5B23F8();\nvoid func_801F63E0_5B22F0(void*a,unsigned unused){func_801F64E8_5B23F8(a,161);}\n\n",
+      "source_sha256": "6e60cccff74150d76b51ca6cf15310e3f7aba4f24e1507e4c85368797410767c",
+      "functions": [
+        {
+          "name": "func_801F63B8_5B22C8",
+          "off": 5972680,
+          "vma": 2149540792,
+          "size": 40
+        },
+        {
+          "name": "func_801F63E0_5B22F0",
+          "off": 5972720,
+          "vma": 2149540832,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "rom_start": 5972756,
+      "rom_end": 5972788,
+      "kind": "c",
+      "name": "file11_wave1_5b2314",
+      "size": 32,
+      "original_sha256": "bcb0a5e9b754addf98dd06fce4cdfe1f7b68accc0429bb0f54317b7bf551196d",
+      "trimmed_obj_sha256": "f26e4556b5ade4da9633e0f7b126bd5e29485e1f21a46944fe9ec7e4cd36a329",
+      "source": "extern void func_801F65A4_5B24B4(void*);void func_801F6404_5B2314(void*a,unsigned unused){ func_801F65A4_5B24B4(a); }\n",
+      "source_sha256": "8ea219c9c6acd67a9a0eeeae916fecbd93aa98f2a6bb12321401dccfc38569dd",
+      "functions": [
+        {
+          "name": "func_801F6404_5B2314",
+          "off": 5972756,
+          "vma": 2149540868,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5972788,
+      "rom_end": 5981080,
+      "kind": "asm",
+      "name": null,
+      "size": 8292,
+      "original_sha256": "39b700db32d3e6362937f4bcddcd8c7fa2a398170f1fd99e098b792dc0507091",
+      "trimmed_obj_sha256": "ee980c4172afc965a74376e3095c6e0ef9c396ffeb0e5753a6a5f2adfed51c12"
+    },
+    {
+      "rom_start": 5981080,
+      "rom_end": 5981092,
+      "kind": "c",
+      "name": "file11_wave1_5b4398",
+      "size": 12,
+      "original_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b",
+      "trimmed_obj_sha256": "d5c96073ae144f00a38049eb043a3889bac0db550f872a5dea80cf7e8e8b1503",
+      "source": "void func_801F8488_5B4398(void*a0,void*a1) {}\n",
+      "source_sha256": "a52e45210c9afd1ab1b5f75d547a8ade628f6915d386e9d340cc7dcebc317ca4",
+      "functions": [
+        {
+          "name": "func_801F8488_5B4398",
+          "off": 5981080,
+          "vma": 2149549192,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5981092,
+      "rom_end": 5989844,
+      "kind": "asm",
+      "name": null,
+      "size": 8752,
+      "original_sha256": "5e3a6fd49ff01b1eb7b6e3c1de50c66db8f454830991220b775568c28689f5e6",
+      "trimmed_obj_sha256": "a60470644534e192a847c8fa57a417e6249a65581918c9705f6be1825e056e38"
+    },
+    {
+      "rom_start": 5989844,
+      "rom_end": 5989876,
+      "kind": "c",
+      "name": "file11_wave1_5b65d4",
+      "size": 32,
+      "original_sha256": "297bd76729f87888401ec28d0f73c6ff0c1bf24435118595bcc35cf058c19d25",
+      "trimmed_obj_sha256": "d59c515964d11f0b54189dfbd9dab16b5a4b8bd871acdac448a5274520934965",
+      "source": "extern void func_801FA6E4_5B65F4(void*);void func_801FA6C4_5B65D4(void){ func_801FA6E4_5B65F4((void*)0); }\n",
+      "source_sha256": "9a88be73989305c2b6b801e655343866ff9f09be16e97940e91e8f8ca5f0010b",
+      "functions": [
+        {
+          "name": "func_801FA6C4_5B65D4",
+          "off": 5989844,
+          "vma": 2149557956,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "rom_start": 5989876,
+      "rom_end": 5997704,
+      "kind": "asm",
+      "name": null,
+      "size": 7828,
+      "original_sha256": "10a446b9e073e914632fc40f3bb36c6d9b91838bd92d40791f9e5fa96db2d2ad",
+      "trimmed_obj_sha256": "cec4792afe722448f665338e6cf4f5c010fb4ebadaae75caa8c263bbc7e1fecc"
+    },
+    {
+      "rom_start": 5997704,
+      "rom_end": 5997728,
+      "kind": "c",
+      "name": "file11_wave1_5b8488",
+      "size": 24,
+      "original_sha256": "e954154426b738122ed49a7260485b9c82562345ab755f2299989c3f3f0adace",
+      "trimmed_obj_sha256": "4e0bb70419d8d1b3f43d5d38f2775dc84d49532b061935e670228d1623dd0a34",
+      "source": "void func_801FC578_5B8488(void*a0,void*a1) {}\n\nvoid func_801FC584_5B8494(void*a0,void*a1) {}\n",
+      "source_sha256": "290a141022f6a11f4e359f983574c536204a57c7c685e1a4a138ae817dca7d24",
+      "functions": [
+        {
+          "name": "func_801FC578_5B8488",
+          "off": 5997704,
+          "vma": 2149565816,
+          "size": 12
+        },
+        {
+          "name": "func_801FC584_5B8494",
+          "off": 5997716,
+          "vma": 2149565828,
+          "size": 12
+        }
+      ]
+    },
+    {
+      "rom_start": 5997728,
+      "rom_end": 5997824,
+      "kind": "c",
+      "name": "file11_wave7_5b84a0",
+      "size": 96,
+      "original_sha256": "9494c9179158dae11aa71d74a34ab78a80f75079e6f4d756cb26d4246901dea6",
+      "trimmed_obj_sha256": "db9fcd60af547d13737d0a23a9c2c49309ced62cc61e815dbc137a2f6ead7b55",
+      "source": "extern char D_CF8F0;\ntypedef struct {char pad[0x22];unsigned short flags;} State;\nextern unsigned D_8015C5C8_15D1C8;\n\nvoid func_801FC590_5B84A0(void){State *s=*(State **)(D_8015C5C8_15D1C8 + (unsigned)&D_CF8F0);if(s){s->flags &= ~0x14;}}\n\nextern unsigned D_8015C5C8_15D1C8;\n\nvoid func_801FC5C0_5B84D0(void){State *s=*(State **)(D_8015C5C8_15D1C8 + (unsigned)&D_CF8F0);if(s){s->flags |= 0x14;}}\n\n",
+      "source_sha256": "0e6331f60e0bc4155b624128fe594e9bddc81abff38c0e464bd03b9a7c8c69bd",
+      "functions": [
+        {
+          "name": "func_801FC590_5B84A0",
+          "off": 5997728,
+          "vma": 2149565840,
+          "size": 48
+        },
+        {
+          "name": "func_801FC5C0_5B84D0",
+          "off": 5997776,
+          "vma": 2149565888,
+          "size": 48
+        }
+      ]
+    }
+  ],
+  "full_210_plus_research_g2_verified": false,
+  "production_promotion_count": 0
+}

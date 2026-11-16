@@ -215,9 +215,14 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # Published 307-C canonical proof is pinned to its exact verifier.
-        self.assertEqual(current['comparison']['matched_functions'],307)
-        self.assertEqual(current['comparison']['matched_function_bytes'],16344)
+        # Published 315-C canonical proof is pinned to its exact verifier.
+        self.assertEqual(current['comparison']['matched_functions'],315)
+        self.assertEqual(current['comparison']['matched_function_bytes'],16660)
+        historical307=json.loads((ROOT/'results/combined_307_20261116.json').read_text())
+        self.assertEqual(historical307['comparison']['matched_functions'],307)
+        self.assertEqual(historical307['comparison']['matched_function_bytes'],16344)
+        self.assertEqual(historical307['verifier_source_sha256_lf'],
+                         '607fc38152d04ce555ed38a1a16c24fb2e76104833c7c765a5933cb212c1b8ab')
         historic306=json.loads((ROOT/'results/combined_306_20261116.json').read_text())
         self.assertEqual(historic306['comparison']['matched_functions'],306)
         self.assertEqual(historic306['comparison']['matched_function_bytes'],16292)
@@ -229,7 +234,7 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(historic303['verifier_source_sha256_lf'],
                          '0b4556a01128510da5a23ef36e6e55094339e69a7bb070b5b45c213128231769')
         self.assertEqual(current['verifier_source_sha256_lf'],
-                         '607fc38152d04ce555ed38a1a16c24fb2e76104833c7c765a5933cb212c1b8ab')
+                         '93e91fa551668a51fbc45e24ba39c73c2c60cc4e2a854d43040c4f0b209d7737')
         # The certified historical 210-C proof retains its original hash.
         historic = json.loads((ROOT/'results/combined_210_20261116.json').read_text())
         self.assertEqual(historic['verifier_source_sha256_lf'],

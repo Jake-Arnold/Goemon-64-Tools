@@ -1126,7 +1126,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertTrue(result['comparison']['full_rom_match'])
         verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
         self.assertEqual(result['verifier_source_sha256_lf'],
-                         '607fc38152d04ce555ed38a1a16c24fb2e76104833c7c765a5933cb212c1b8ab')
+                         '93e91fa551668a51fbc45e24ba39c73c2c60cc4e2a854d43040c4f0b209d7737')
         self.assertEqual(hashlib.sha256(verifier).hexdigest(),
                          json.loads((ROOT/'decomp/results/vm_residual_inventory.json').read_text())['current_sources']['verifier_sha256'])
         expected={f['name']:f for f in claimed_functions(manifest)}
@@ -1143,10 +1143,10 @@ class DecompVerificationTests(unittest.TestCase):
             sources.add(manifest['overlay_file43_stage']['source'])
         sources.update(stage['source'] for stage in manifest_file12_stages(manifest))
         if manifest.get('overlay_file11_stage') is not None:
-            from decomp import overlay_file11, file11_143_stage, file11_144_stage
+            from decomp import overlay_file11, file11_143_stage, file11_144_stage, file11_152_stage
             from decomp.research import usa_file11_noop_groups
-            if file11_stage_mode(manifest) in (143,144):
-                adapter = file11_144_stage if file11_stage_mode(manifest)==144 else file11_143_stage
+            if file11_stage_mode(manifest) in (143,144,152):
+                adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage}[file11_stage_mode(manifest)]
                 sources.update('research/file11_143_candidate/'+chunk['name']+'.c'
                                for chunk in adapter.load_fixture()['chunks'] if chunk['kind']=='c')
             else:
@@ -1161,8 +1161,8 @@ class DecompVerificationTests(unittest.TestCase):
                 self.assertEqual(result['sources_sha256_lf'][name],patches[0]['patched_sha256_lf'])
             else:
                 if name.startswith('research/file11_143_candidate/'):
-                    from decomp import file11_143_stage, file11_144_stage
-                    adapter = file11_144_stage if file11_stage_mode(manifest)==144 else file11_143_stage
+                    from decomp import file11_143_stage, file11_144_stage, file11_152_stage
+                    adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage}[file11_stage_mode(manifest)]
                     stem=name.rsplit('/',1)[-1].removesuffix('.c')
                     data=next(chunk['source'].encode('utf-8') for chunk in adapter.load_fixture()['chunks'] if chunk.get('name')==stem)
                 else:
