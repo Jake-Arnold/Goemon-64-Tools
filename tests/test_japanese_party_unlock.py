@@ -26,6 +26,8 @@ class Process:
             offset = start + pos
             if self.endian == "wordswapped":
                 offset ^= 3
+            elif self.endian == "byteswapped":
+                offset ^= 1
             self.mem[offset] = byte
 
     def read(self, address, length):
