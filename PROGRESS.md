@@ -1,5 +1,11 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-16 — Draft source preflight for potential 143-C file_11 stage (50 existing + 93 unpromoted)
+
+- **Prepared:** Added opt-in `decomp.file11_143_preflight` and eight mutation/guard tests. It authenticates all 50 existing stage-v2 function identities against the 143-function original-VMA research fixture, checks all 93 distinct added identities and original contiguous 44 C/44 ASM ownership boundaries, source checksums and optional 32 MiB USA source-ROM chunk digests. It produces 44 reviewed C source files and the 88 stage-segment lines **only** into a previously nonexistent external scratch directory.
+- **Evidence:** The exact Python source compiled successfully in the isolated local runtime; the same Git blob SHA was committed. Connected-repository assertions confirmed 13 canonical character-switch + 37 canonical no-op functions occur identically in the 143-function fixture; 93 distinct functions remain, 3,908 total original C bytes, 44 C and 44 ASM chunks, continuous file_11 ROM text. The full new unittest suite has not run against the private repo checkout.
+- **Safety:** This step does **not** change `decomp/manifest.json`, verifier, linked original ROM proof or inventory, does not perform native IDO linkage, and does not increment the USA production 210-function count. The future 303-function central G2, ELF relocations and inventory remain acceptance gates. Details: `docs/USA_FILE11_143_CENTRAL_PREFLIGHT_2026-11-16.md`.
+
 ### 2026-11-16 — Merge-ready file_11 research source/proof handoff (no production promotions)
 
 - **Change:** Snapshot 37 new source-only USA `file_11` research files from `chatgptweb/decomp-consolidation-20261116` (pinned commit `1e66db5b8413f3847bbe738c8e2dcc861fa79699`). Includes original-VMA candidate source fixtures, the 143-function mixed C/ASM reproduction script and research proof, 18 independently parsed JSON metadata/proof files, and 10 research documentation files. These are inert without explicitly running the research tools; no existing canonical source, manifest, verifier, local CI entrypoint, build output or production result is modified.
