@@ -79,3 +79,110 @@ The Ubuntu workflow [43972242638](https://github.com/Jake-Arnold/Goemon-64-Tools
 Synthetic tests do not replace checks against the actual USA/Japan games.
 A Japanese live runtime comparison and Windows regression are still required
 before calling the new story translations validated.
+
+## Mandatory agent workflow for every new USA or JP memory discovery
+
+**Agent trigger:** any newly discovered RAM address, typed field, mapped bit,
+original MIPS read/write site, or regional mapping correction. Apply the
+procedure **in the same research task**, whether the first discovery came
+from USA or Japan. The goal is *automatic candidate generation*, **not**
+automatic verification or editing.
+
+1. **Pin the input identity.** Source ROM region/revision (USA NG5E-0 or
+   Japan-0), guest virtual address, read width, byte order, event bit mask,
+   current scene/character/context, type of memory and evidence provenance.
+   Translate *guest RDRAM* addresses only; host/ASLR process offsets and
+   compressed ROM offsets are not interchangeable with them.
+2. **Classify ownership** before any arithmetic: fixed/long-lived system
+   global; saved inventory and packed event flags; or dynamic pointer,
+   overlay, code VMA, VM resource, scene-scoped allocation, or unknown.
+   Only the first two categories qualify for an offset **hypothesis**.
+3. **Resolve known mappings first**, including field-width differences and
+   explicit exceptions. On the toolkit branch use the registry in
+   `practice/region_memory_crosswalk.py`; for decomp-only checkouts read
+   this document and the toolkit branch's published registry. New source
+   USA field: `candidateJP = addressUSA + 0x57F0`. New source Japan field:
+   `candidateUSA = addressJP - 0x57F0`.
+4. **Produce a paired entry** in research notes for both regions, even if
+   the counterpart is unknown, with the status **offset-candidate**, not
+   `verified`, and an explicit test plan. If a field name/mask already
+   exists, compare its independent regional evidence rather than creating a
+   duplicate. Do not assume widths, masks or packed layout are unchanged.
+5. **Validate independently** by reading the candidate against the expected
+   event/variable in the other regional build, preserving an idle/control
+   sample; use original MIPS readers/writers or a reversible guarded
+   gameplay test where warranted. A single equal value or raw A/B
+   difference is evidence, **not proof of causality**. Record failures and
+   conflicting evidence just as prominently as positives.
+6. **Promote only with explicit evidence**, date, scene and target ROM
+   identity. No speculative auto-writes, freezes, warps or changes to
+   production unlock flags. Commit the test and both-region mapping record
+   on the relevant feature branch; follow separate toolkit/decomp PR bases.
+
+### Practical agent lookup (both directions)
+
+```bash
+# Existing USA story flag -> explicit JP match and original mask.
+python3 scripts/crosswalk_address.py --source usa --address 0x8015C60C --mask 0x20
+
+# Japanese Snowflake -> explicit USA exception (not naive subtraction).
+python3 scripts/crosswalk_address.py --source jp --address 0x80162057
+
+# Unlisted fixed USA global -> JP hypothesis only.
+python3 scripts/crosswalk_address.py --source usa --address 0x8015C777 --kind static-global
+
+# Unlisted Japanese persistent flag -> USA hypothesis only.
+python3 scripts/crosswalk_address.py --source jp --address 0x80161F67 --kind saved-event --mask 0x08
+```
+
+The CLI returns machine-readable JSON with field key, both addresses,
+mask/width, evidence status and notes. If an address is unlisted it
+**requires** a supplied `--kind` before generating a target candidate.
+Known dynamic/VM examples are rejected; the denylist is illustrative,
+not proof that any other address is static.
+
+### Evidence record template for future agents
+
+```yaml
+discovery:
+  source_region: usa | japan
+  source_rom_revision: NG5E-0 | Japan-0
+  source_address: "0x8015C60C"
+  source_type: saved-event | static-global | dynamic | overlay | unknown
+  field_name: benkei_encounter
+  guest_width_bytes: 1
+  endian: big
+  bit_mask: "0x20"
+  source_evidence: "exact original script / gameplay A-B / source file + commit"
+  scene_and_character: "explicit or unknown"
+crosswalk:
+  target_region: japan
+  target_address: "0x80161DFC"
+  derivation: "explicit pair / +/-0x57F0 candidate / known exception"
+  target_status: user-confirmed | offset-candidate | disputed | conflict
+  target_evidence: "tested observation, citation or unverified"
+  independent_validation: "A/B, idle control, MIPS access, game-visible effect"
+  write_permission: false
+  unresolved: "specific remaining test and conflicting hypotheses"
+```
+
+Use the template as an evidence checklist; the example address and labels
+must never be copied as new facts for unrelated discoveries.
+
+### Width and exception examples
+
+| USA finding | JP counterpart | Scope |
+| --- | --- | --- |
+| `0x8015C607` weapon select | `0x80161DF7` | User-confirmed static byte |
+| `0x800C7AA4` gameplay submode | `0x800CD294` | User-confirmed state byte |
+| `0x8015C574` map overlay | `0x80161D64` | User-confirmed observed value; not a safe toggle |
+| `0x8015C60C & 0x20` Benkei | `0x80161DFC & 0x20` | User-confirmed event bit |
+| `0x8015C5E0` u32 max HP | JP cheat reads low byte `0x80161DD3` | Low-byte accessor, not independent JP u32 validation |
+| `0x8015C866` Snowflake | `0x80162057` | Explicit **+0x57F1** exception |
+| `0x800C7AE6` pause candidate | `0x800CD2D6` | **Disputed; do not promote** |
+| `0x8015C609 & 0x20` first battery | `0x80161DF9 & 0x20` | **Unverified JP** |
+| USA player object `0x801FC60C` | No offset mapping | Dynamic/lifetime-sensitive |
+| USA script VM `0x801C77E0` | No offset mapping | VM resource/overlay scope |
+
+The fixed-data relocation rule is strong evidence for **finding where
+to look**, not a license to treat every 8 MiB address as its counterpart.
