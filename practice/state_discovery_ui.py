@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+import hashlib
 import json
 import queue
 import threading
@@ -9,6 +10,7 @@ import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 from practice.paths import diagnostics_dir
+from practice.reports import create_discovery_report
 from practice.state_discovery import PROBE_ACTIONS, capture_state, compare_captures
 from practice.theme import PALETTE
 from practice.japan_state_comparison import (
@@ -33,16 +35,19 @@ JAPAN_PROBE_ACTIONS = {
 class StateDiscoveryMixin:
     def build_state_discovery_tab(self, notebook):
         tab=ttk.Frame(notebook,padding=10)
-        notebook.add(tab,text='Advanced RAM comparison')
+        notebook.add(tab,text='Compare memory changes')
         self.state_discovery_tab=tab
         self.state_captures={}
         self.state_report=None
         self._jp_probe_generation = 0
         self._jp_probe_busy = False
-        ttk.Label(tab,text='Advanced A/B/C guest memory comparison',font=('Segoe UI Semibold',16),
+        ttk.Label(tab,text='Find memory changes before and after an action',font=('Segoe UI Semibold',16),
                   foreground=PALETTE['gold']).pack(anchor='w',pady=(2,6))
-        ttk.Label(tab,text='Capture A (before), B (after) and optionally C (returned to the original state). '
-                  'Only observed values are reported: no addresses are assumed to represent the requested flag.',
+        ttk.Label(tab,text='Best for temporary values, positions, scene changes, '
+                  'timers or unknown game state. Capture A (before), B (after), '
+                  'and optionally C (reverted or stable). To identify persistent '
+                  'bits across repeatable events, use Investigate flags instead. '
+                  'Findings are candidates, not confirmed fields.',
                   style='Muted.TLabel',wraplength=1080).pack(anchor='w',pady=(0,9))
         context=ttk.LabelFrame(tab,text='Scene / boss investigation (read-only)',padding=8)
         context.pack(fill='x',pady=(0,9))
@@ -85,7 +90,7 @@ class StateDiscoveryMixin:
             row, text='Find XYZ triples (read-only)',
             command=self.find_japan_xyz_from_captures)
         self.state_probe_export_button = ttk.Button(
-            row, text='Export comparison JSON', command=self.export_state_probe)
+            row, text='Save report', command=self.export_state_probe)
         self.state_probe_export_button.pack(side='left',padx=(0,7))
         ttk.Button(row,text='Clear',command=self.reset_state_probes).pack(side='left')
         self.state_probe_status=tk.StringVar(value='No captures. Select a test and connect to the game.')
@@ -266,7 +271,7 @@ class StateDiscoveryMixin:
                     self.state_captures['A'], self.state_captures['B'],
                     self.state_captures.get('C'))
             self.state_report=report
-            self.state_probe_export_button.configure(text='Export comparison JSON')
+            self.state_probe_export_button.configure(text='Save report')
             self.state_probe_table.heading('returned', text='C matched A?')
             self.state_probe_table.column('before', width=95)
             self.state_probe_table.column('after', width=95)
@@ -344,7 +349,7 @@ class StateDiscoveryMixin:
                 self.state_probe_status.set(f'XYZ research rejected: {error}')
                 return
             self.state_report = report
-            self.state_probe_export_button.configure(text='Export ALL XYZ candidates')
+            self.state_probe_export_button.configure(text='Save report')
             self.state_probe_table.delete(*self.state_probe_table.get_children())
             self.state_probe_table.heading('returned', text='C stable at B?')
             self.state_probe_table.column('before', width=205)
@@ -438,20 +443,82 @@ class StateDiscoveryMixin:
 
     def export_state_probe(self):
         if not self.state_report:
-            self.state_probe_status.set('Compare A and B before exporting.')
+            self.state_probe_status.set('Capture and compare A/B first.')
             return
-        if self.state_report.get('format') == 'goemon-japan-xyz-heuristic-v1':
-            self._export_all_japan_xyz_candidates()
+        if self._jp_probe_busy:
+            self.state_probe_status.set('Finish the current Japanese operation first.')
             return
         try:
-            prefix = ('japan_state_probe_' if self.state_report.get('region') == 'japan-0'
-                      else 'state_probe_')
-            path = diagnostics_dir() / (prefix +
-                datetime.now().strftime('%Y%m%d_%H%M%S_%f') + '.json')
-            path.write_text(json.dumps(self.state_report,indent=2)+'\n',encoding='utf-8')
-            self.state_probe_status.set(f'Exported comparison to {path}')
-        except OSError as exc:
-            self.state_probe_status.set(f'Export failed: {exc}')
+            report = self.state_report
+            counts = report.get('counts', {})
+            rows = list(report.get('candidates', []))
+            region = 'japan' if self._state_is_japan() else 'usa'
+            source_capture_info = {}
+            for label, capture in self.state_captures.items():
+                source_capture_info[label] = {
+                    'label': capture.label,
+                    'captured_utc': capture.utc,
+                    'map_id': capture.map_id,
+                    'character': capture.character,
+                    'scope': capture.scope,
+                    'regions': [
+                        {'name': reg.name,
+                         'guest_start': f'0x{reg.address:08X}',
+                         'byte_count': len(reg.data),
+                         'sha256': hashlib.sha256(reg.data).hexdigest()}
+                        for reg in capture.regions
+                    ],
+                }
+            xyz = report.get('format') == 'goemon-japan-xyz-heuristic-v1'
+            total = counts.get('candidate_count', len(rows))
+            scope = self.state_probe_scope.get()
+            title = (
+                f'{self.state_probe_kind.get()} - XYZ candidates'
+                if xyz else self.state_probe_kind.get())
+            folder = create_discovery_report(
+                region=region,
+                title=title,
+                kind='memory-comparison',
+                candidates=rows,
+                candidate_total=total,
+                evidence={
+                    'analysis': report,
+                    'capture_provenance': source_capture_info,
+                },
+                metadata={
+                    'comparison': ('A vs B vs C' if 'C' in self.state_captures
+                                   else 'A vs B'),
+                    'scope': scope,
+                    'capture_count': len(self.state_captures),
+                    'method': 'XYZ float triple ranking' if xyz else 'RAM snapshot comparison',
+                    'analyzed_changes': counts.get('observed_changes', None),
+                    'regions_compared': counts.get('regions_compared', None),
+                },
+                notes=[
+                    'Full captured RAM is not duplicated into these reports. '
+                    'Each captured region has an address, length and SHA-256 '
+                    'fingerprint; observed candidate values are saved.',
+                    'The underlying comparison may limit its ranked candidates '
+                    'to a preview. Counts in the manifest disclose omitted rows.',
+                    'Only correlations were found, not original MIPS readers/writers.',
+                    'Wide Japanese XYZ research has a separate exhaustive export '
+                    'that may be large.' if xyz else
+                    'For repeated stable event bits use Investigate flags.',
+                ])
+            if hasattr(self, 'refresh_reports'):
+                self.refresh_reports(select_path=folder)
+            self.state_probe_status.set(
+                f'Saved {len(rows)}/{total} candidate rows and '
+                f'{len(source_capture_info)} capture records. Open Reports.')
+            if xyz:
+                # The original exhaustive XYZ file is still available as a
+                # specialist advanced export, not silently substituted for the
+                # standard investigation report.
+                self.state_probe_status.set(
+                    f'Saved XYZ report ({len(rows)}/{total} ranked rows). '
+                    'Use the separate exhaustive XYZ function for all triples.')
+        except (OSError, ValueError, TypeError, KeyError) as exc:
+            self.state_probe_status.set(f'Save report failed: {exc}')
 
     def copy_state_probe_address(self):
         chosen=self.state_probe_table.selection()
@@ -492,6 +559,6 @@ class StateDiscoveryMixin:
         self._jp_probe_busy = False
         self.state_captures={}
         self.state_report=None
-        self.state_probe_export_button.configure(text='Export comparison JSON')
+        self.state_probe_export_button.configure(text='Save report')
         self.state_probe_table.delete(*self.state_probe_table.get_children())
         self.state_probe_status.set('Captures cleared; no game memory was written.')
