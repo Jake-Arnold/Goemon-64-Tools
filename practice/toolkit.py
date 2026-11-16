@@ -171,7 +171,8 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         except (OSError, ValueError):
             self.named_native_checkpoints = []
         self.status = tk.StringVar(value="Disconnected. Start USA Goemon in Recomp or Project64, then Connect.")
-        self.connection_target = tk.StringVar(value='auto')
+        self.connection_target = tk.StringVar(
+            value='recomp' if self.active_version.key == 'japan' else 'auto')
         self.pid_text = tk.StringVar(value=str(args.pid) if args.pid else '')
         self.pos_text = tk.StringVar(value="X: —    Y: —    Z: —")
         self.speed_text = tk.StringVar(value="Speed: —")
@@ -598,6 +599,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._disconnect_for_version_change()
         self._clear_japan_base_choices()
         self.active_version = version
+        if version.key == 'japan' and self.connection_target.get() == 'auto':
+            self.connection_target.set('recomp')
+        elif version.key == 'usa' and self.connection_target.get() == 'mupen64plus':
+            self.connection_target.set('auto')
         self.verified_rom_path = (
             load_remembered_rom('japan') if version.key == 'japan' else None)
         self._apply_game_version_ui()
