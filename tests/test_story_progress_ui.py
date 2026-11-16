@@ -21,7 +21,7 @@ class StoryProgressUITests(unittest.TestCase):
         with patch.object(ram,'write_guest',side_effect=AssertionError('No writes')):
             app.refresh_unlocks(force=True)
         self.assertEqual(app.notebook.tab(app.story_progress_tab,'text'),'Story progress')
-        self.assertEqual(len(app.story_table.get_children()),len(FLAGS)+4)
+        self.assertEqual(len(app.story_table.get_children()),len(FLAGS)+6)
         self.assertIn('Training passed',app.ushiwaka_story.get())
         self.assertIn('reward branch may be skipped',app.story_notes.get())
         self.assertEqual(app.story_table.item('training_passed','values')[2],'0x40')
@@ -29,8 +29,19 @@ class StoryProgressUITests(unittest.TestCase):
         app.story_table.selection_set('training_passed')
         ram.bytes[0x8015C60D]=0x38;app.refresh_unlocks(force=True)
         self.assertEqual(app.story_table.selection(),('training_passed',))
-        self.assertIn('Five yellow',app.ushiwaka_status.get())
+        self.assertFalse(hasattr(app, 'ushiwaka_status'))
+        self.assertIn('Five yellow',app.ushiwaka_story.get())
         self.assertIn('disabled',app.raw_write_btn.state())
+
+    def test_disconnected_tick_without_legacy_ushiwaka_widget(self):
+        # Regression: an old Unlocks label was removed, but the periodic
+        # disconnected refresh path still attempted to update it.
+        app = self.app
+        self.assertFalse(hasattr(app, 'ushiwaka_status'))
+        app.mem = None
+        with patch.object(self.root, 'after', return_value=None):
+            app.tick()
+        self.assertIn('Unavailable', app.ushiwaka_story.get())
 
     def test_disconnect_clears_previous_story_values(self):
         app=self.app;app.mem=FakeRAM();app.mem.bytes[0x8015C60C]=0x28
@@ -65,7 +76,27 @@ class StoryProgressUITests(unittest.TestCase):
         app.story_filter.set('0x8015C614')
         self.assertEqual(len(app.story_table.get_children()),sum(f.address==0x8015C614 for f in FLAGS))
         app.story_filter.set('')
-        self.assertEqual(len(app.story_table.get_children()),len(FLAGS)+4)
+        self.assertEqual(len(app.story_table.get_children()),len(FLAGS)+6)
+
+    def test_fortune_doll_tab_groups_pickups_and_counters(self):
+        app=self.app;app.mem=FakeRAM();app.refresh_story_progress()
+        sections={app.story_sections.tab(i,'text') for i in app.story_sections.tabs()}
+        self.assertIn('Fortune Dolls',sections)
+        self.assertIn('Benkei & Kihachi',sections)
+        self.assertIn('Keys & Locks',sections)
+        dolls=app.story_tables['Fortune Dolls']
+        for key in ('silver_doll_356','placed_gold_doll_0f2',
+                    'fortune_doll_quarters','fortune_doll_total'):
+            self.assertTrue(dolls.exists(key),key)
+        self.assertFalse(dolls.exists('training_passed'))
+        tab=next(i for i in app.story_sections.tabs()
+                 if app.story_sections.tab(i,'text')=='Fortune Dolls')
+        app.story_sections.select(tab)
+        app.story_filter.set('silver')
+        self.assertTrue(dolls.get_children())
+        self.assertNotIn('fortune_doll_total',dolls.get_children())
+        app.story_filter.set('')
+        self.assertIn('fortune_doll_total',dolls.get_children())
 
     def test_story_dropdown_applies_selected_flag_and_keeps_other_bits(self):
         app=self.app; app.args.read_only=False; app.args.enable_hex_edit=True

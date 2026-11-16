@@ -119,4 +119,19 @@ def write_unlock(ram, unlock: Unlock, target: int) -> bool:
     return checked_write(ram, unlock.address, before, bytes((target,)))
 
 
+def unlock_all_known(ram):
+    """One-shot mapped maximums, not story flags; partial writes remain on error."""
+    from practice.checkpoints import _ensure_capture_safe
+    _ensure_capture_safe(ram)
+    changed = 0
+    for field in UNLOCKS:
+        _ensure_capture_safe(ram)
+        target = field.max_value if field.quantity else field.values[-1]
+        if target is None:
+            raise ValueError('No validated maximum for ' + field.label)
+        if write_unlock(ram, field, target):
+            changed += 1
+    return changed, len(UNLOCKS)
+
+
 validate_unlocks()

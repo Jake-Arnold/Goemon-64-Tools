@@ -3,7 +3,12 @@ from __future__ import annotations
 from contextlib import contextmanager
 from dataclasses import dataclass
 import ctypes
+import mmap
 import os
+from pathlib import Path
+import stat
+import struct
+import sys
 
 MAGIC = 0x47363453
 VERSION = 2
@@ -21,9 +26,44 @@ class SpeedUnavailable(RuntimeError):
 
 
 @contextmanager
+def _open_linux_channel(pid):
+    """Open only a verified user-owned mapping held by this exact process."""
+    name = f"goemon64speed_{pid}"
+    path = Path("/dev/shm") / name
+    try:
+        maps = Path(f"/proc/{pid}/maps").read_text(encoding="utf-8")
+        if not any(f"/dev/shm/{name}" in line for line in maps.splitlines()):
+            raise SpeedUnavailable("Selected process has no mapped Linux speed channel; rebuild a compatible recomp")
+        flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
+        fd = os.open(path, flags)
+        try:
+            meta = os.fstat(fd)
+            if (not stat.S_ISREG(meta.st_mode) or meta.st_uid != os.geteuid()
+                    or meta.st_size != 24 or (stat.S_IMODE(meta.st_mode) & 0o077)):
+                raise SpeedUnavailable("Unsafe or incompatible Linux speed-channel permissions")
+            with mmap.mmap(fd, 24, access=mmap.ACCESS_WRITE) as view:
+                class Channel:
+                    def read(self):
+                        return struct.unpack_from("=6i", view, 0)
+                    def request(self, rate):
+                        # Aligned 32-bit process-shared store; the patched host
+                        # acknowledges the applied rate in its next poll cycle.
+                        struct.pack_into("=i", view, 12, rate)
+                yield Channel()
+        finally:
+            os.close(fd)
+    except (OSError, ValueError) as exc:
+        raise SpeedUnavailable(f"Linux speed channel unavailable: {exc}") from exc
+
+
+@contextmanager
 def _open_channel(pid):
+    if sys.platform == "linux":
+        with _open_linux_channel(pid) as channel:
+            yield channel
+        return
     if os.name != 'nt':
-        raise SpeedUnavailable('Live recomp speed control requires Windows')
+        raise SpeedUnavailable('Live recomp speed control requires Windows or Linux')
     kernel = ctypes.WinDLL('kernel32', use_last_error=True)
     kernel.OpenFileMappingW.argtypes = (ctypes.c_uint32, ctypes.c_int, ctypes.c_wchar_p)
     kernel.OpenFileMappingW.restype = ctypes.c_void_p

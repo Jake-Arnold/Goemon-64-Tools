@@ -1,0 +1,82 @@
+{
+  "schema": "goemon-japan0-runtime-observation-v1",
+  "observation_id": "2026-11-15-jp-scene-300-355",
+  "region": "japan-0",
+  "capture_source": "User-supplied real Mupen64Plus read-only RAM comparison",
+  "reported_process": {
+    "pid": 959604,
+    "host_rdram_base": "0x7AA843EC0000",
+    "endian": "wordswapped"
+  },
+  "situation": "One before/after snapshot; route and whether transition was ordinary walking, menu warp or savestate loading were not supplied.",
+  "scene_catalogue": {
+    "300": "Kai Highway",
+    "355": "Oedo Town (Northwest)",
+    "note": "Labels from repo's USA-derived SCENES catalogue. Japanese scene-name correspondence still requires direct visual confirmation."
+  },
+  "observations": [
+    {
+      "key": "total_time_raw",
+      "address": "0x8016205C",
+      "width": 4,
+      "before": "0000D500",
+      "after": "0000D506",
+      "raw_delta": 6,
+      "interpretation": "Counter advanced; units and relation to elapsed time unverified"
+    },
+    {
+      "key": "scene_map",
+      "address": "0x800CD2A2",
+      "width": 2,
+      "before": "012C",
+      "after": "0163",
+      "before_decimal": 300,
+      "after_decimal": 355,
+      "interpretation": "Likely current scene ID; one real read-only transition corroborates candidate"
+    },
+    {
+      "key": "scene_submode",
+      "address": "0x800CD294",
+      "width": 1,
+      "before": "01",
+      "after": "02",
+      "interpretation": "Matches existing USA-derived mode association: overworld (1), town (2); Japanese semantics provisional"
+    },
+    {
+      "key": "scene_previous",
+      "address": "0x800CD2AC",
+      "width": 2,
+      "before": "0163",
+      "after": "012C",
+      "before_decimal": 355,
+      "after_decimal": 300,
+      "interpretation": "After value equals old current scene. Strong single-trial evidence of prior-scene tracking"
+    },
+    {
+      "key": "scene_pending",
+      "address": "0x800CD490",
+      "width": 2,
+      "before": "012C",
+      "after": "0163",
+      "before_decimal": 300,
+      "after_decimal": 355,
+      "interpretation": "After value equals destination/current scene in stable snapshot; exact transient pending semantics not proven"
+    }
+  ],
+  "unmodified_candidate_keys": [
+    "scene_phase",
+    "scene_transition",
+    "scene_exit",
+    "scene_pause",
+    "scene_character",
+    "scene_loading"
+  ],
+  "evidence_class": "runtime-observed-single-trial",
+  "safety": "No RAM writes; this evidence does not authorize Japanese warps, checkpoint writes or pointer-based gameplay editing",
+  "replication_needed": [
+    "Repeat 300↔355 and a different scene pair",
+    "Confirm on-screen locations match catalogue IDs",
+    "Sample pending scene before/during/after a loading zone",
+    "Capture full loading and phase sequence at emulator frame cadence"
+  ]
+}

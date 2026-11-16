@@ -25,7 +25,8 @@ class ProbeUITests(unittest.TestCase):
 
     def test_capture_compare_export_and_clear(self):
         app=self.app
-        self.assertEqual(app.notebook.tab(app.state_discovery_tab,'text'),'State discovery')
+        self.assertEqual(app.event_sections.tab(app.state_discovery_tab,'text'),'Advanced RAM comparison')
+        self.assertNotIn('State discovery', [app.notebook.tab(t,'text') for t in app.notebook.tabs()])
         mem=Memory()
         app.mem=mem
         app.current=mem.snapshot()
@@ -44,6 +45,28 @@ class ProbeUITests(unittest.TestCase):
         app.reset_state_probes()
         self.assertIsNone(app.state_report)
         self.assertEqual(len(app.state_probe_table.get_children()),0)
+
+
+    def test_capture_without_normal_player_during_impact(self):
+        class ImpactMemory(Memory):
+            def snapshot(self):
+                raise ValueError('Invalid player object pointer 0xA4600014')
+            def snapshot_for_monitoring(self):
+                return {'player_ptr': None, 'task_ptr': None, 'character': None}
+        app=self.app
+        mem=ImpactMemory()
+        mem.write(0x8015C5DC,(0xFFFFFFFF).to_bytes(4,'big'))
+        app.mem=mem
+        app.current=None
+        app.capture_state_probe('A')
+        self.assertIn('A captured',app.state_probe_status.get())
+        mem.write(0x800C7AA4,b'\x04')
+        app.capture_state_probe('B')
+        self.assertIn('B captured',app.state_probe_status.get())
+        app.compare_state_probes()
+        self.assertTrue(app.state_report)
+        self.assertTrue(any(row['address']=='0x800C7AA4'
+                            for row in app.state_report['candidates']))
 
     def test_state_discovery_does_not_write_guest(self):
         class ReadOnlyMemory(Memory):

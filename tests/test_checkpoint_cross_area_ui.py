@@ -43,6 +43,50 @@ class CrossAreaRestoreTests(unittest.TestCase):
         self.assertEqual(self.ram.read_guest(0x800C7CA0,2),b'\x00\x23')
         self.assertEqual(self.app.pending_restore['phase'],'warp')
 
+    def test_combined_selector_legacy_restores_only_xyz(self):
+        app=self.app
+        app.legacy_bookmarks=[dict(name='Old position',x=222.5,y=12.5,z=-77.5,
+                                   character=self.ram.snapshot()['character'],map_id=35)]
+        app.checkpoints_box.configure(values=app.checkpoint_labels())
+        app.checkpoints_box.current(1)
+        original_progress=self.ram.read_guest(0x8015C608,0x304)
+        original_hp=self.ram.u32(LIVE_ADDR+12)
+        original_rotation=self.ram.read_guest(0x801A0014,6)
+        with patch('tkinter.messagebox.askyesno',return_value=True) as confirm:
+            app.restore_full_checkpoint()
+        confirm.assert_called_once()
+        self.assertAlmostEqual(self.ram.snapshot()['x'],222.5)
+        self.assertEqual(self.ram.read_guest(0x8015C608,0x304),original_progress)
+        self.assertEqual(self.ram.u32(LIVE_ADDR+12),original_hp)
+        self.assertEqual(self.ram.read_guest(0x801A0014,6),original_rotation)
+        self.assertIn('XYZ only',app.status.get())
+
+    def test_legacy_with_no_map_does_not_write(self):
+        app=self.app
+        app.legacy_bookmarks=[dict(name='Old legacy',x=5,y=6,z=7,character=0)]
+        app.checkpoints_box.configure(values=app.checkpoint_labels())
+        app.checkpoints_box.current(1)
+        original=self.ram.read_guest(0x801A0008,12)
+        with patch('tkinter.messagebox.showerror') as err, \
+             patch('tkinter.messagebox.askyesno') as ask:
+            app.restore_full_checkpoint()
+        err.assert_called_once();ask.assert_not_called()
+        self.assertEqual(self.ram.read_guest(0x801A0008,12),original)
+
+    def test_legacy_rejects_cross_map_and_read_only(self):
+        app=self.app
+        app.legacy_bookmarks=[dict(name='Elsewhere',x=5,y=6,z=7,character=0,map_id=45)]
+        app.checkpoints_box.configure(values=app.checkpoint_labels())
+        app.checkpoints_box.current(1)
+        with patch('tkinter.messagebox.showerror') as err:
+            app.restore_full_checkpoint()
+        err.assert_called_once()
+        app.args.read_only=True
+        app.args.enable_teleport=False
+        with patch('tkinter.messagebox.askyesno') as ask:
+            app.restore_full_checkpoint()
+        ask.assert_not_called()
+
     def test_warp_waits_for_correct_map_then_restores_saved_xyz(self):
         self._begin()
         self.ram.write_guest(LIVE_ADDR+16,(777).to_bytes(4,'big'))

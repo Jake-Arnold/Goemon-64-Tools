@@ -1,8 +1,8 @@
 # Repeated persistent-event experiments
 
-The **Event sessions** tab captures only the 100 persistent event bytes at
-`0x8015C608..0x8015C66B`. It works independently of the wider State discovery
-A/B/C comparison. All session capture/analysis is read-only, even when the
+The **Event sessions → Event flag sessions** subtab captures only the 100 persistent event bytes at
+`0x8015C608..0x8015C66B`. The adjacent **Advanced RAM comparison** subtab retains the former State discovery
+A/B/C focused/wide comparison. All session capture/analysis is read-only, even when the
 toolkit's other unsafe controls are enabled. `--read-only` can be used for research.
 
 ## First experiment

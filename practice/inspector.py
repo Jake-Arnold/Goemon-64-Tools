@@ -11,9 +11,29 @@ import struct
 import math
 from practice import checkpoints as cp
 from practice.native_menu_categories import native_menu_category, NATIVE_MENU_CATEGORIES
-from practice.story_progress import read_story_state,story_rows
 
 CHARACTERS = ('Goemon', 'Ebisumaru', 'Sasuke', 'Yae')
+
+# User-observed gameplay labels only: not exclusive native enum meanings.
+VM_STATE_HINTS = {
+    0: "usually idle / no text",
+    1: "text rendering observed",
+    2: "interactive selection observed",
+    3: "A to continue observed",
+    4: "A to close observed",
+    5: "area-notice lead-in observed; unverified",
+    6: "observed briefly; meaning unknown",
+    7: "area notice or scripted dialogue observed",
+}
+GAMEPLAY_SUBMODE_HINTS = {
+    0: "dungeon areas observed",
+    1: "overworld areas observed",
+    2: "towns / villages observed",
+    3: "building interiors observed",
+    4: "Impact gameplay observed",
+    7: "Impact introduction observed",
+}
+
 
 # Each tuple (label, guest_address, width in bytes, accepted_max, meaning)
 # Entries explicitly verified by the user in live gameplay are marked confirmed.
@@ -101,7 +121,20 @@ def get_watches(ram, snapshot, scene_names=None):
         lambda v: f'{v} (reload=12; gameplay=13; debug menu=10)',lambda v:v<18)
     add('Phase', cp.PHASE_ADDR, 1, validator=lambda v:v<3)
     add('Loading flag', 0x8015C5D4, 4, validator=lambda v:v<=1)
-    add('Event/script VM lock', cp.SCRIPT_VM_ADDR, 4)
+    # ROM-backed VM globals from the pinned USA G64-021/027/030 traces.
+    # Addresses and access widths are observed; semantic names are inferred.
+    add('Script cursor (VM)', cp.SCRIPT_VM_ADDR, 4,
+        lambda v: 'Inactive (0)' if v == 0 else f'0x{v:08X} (nonzero)',
+        source='ROM-observed 32-bit cursor access; inferred script meaning, not a lock')
+    add('Script VM state', 0x801C77E0, 4,
+        lambda v: f'{v} — {VM_STATE_HINTS.get(v, "meaning unknown")}',
+        source='ROM-observed 32-bit VM state; labels are gameplay observations, not universal semantics')
+    add('Script resource ID', 0x801C78E8, 4,
+        lambda v: f'{v} / 0x{v:08X}',
+        source='ROM-observed current resource word; may be updated by VM setup')
+    add('Script VM pause byte', 0x801C78FC, 1,
+        lambda v: str(v if v < 128 else v - 256),
+        source='ROM-observed signed 8-bit access; pause meaning inferred')
     state=ram.u8(cp.STATE_ADDR)
     if state==10:
         add('Native menu category',cp.SUBMODE_ADDR,1,
@@ -109,7 +142,10 @@ def get_watches(ram, snapshot, scene_names=None):
             lambda v: v < len(NATIVE_MENU_CATEGORIES),
             source='user-observed native menu row order; 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP')
     else:
-        add('Gameplay submode',cp.SUBMODE_ADDR,1,source='same address as menu category; context dependent')
+        add('Gameplay submode',cp.SUBMODE_ADDR,1,
+            lambda v: (f'{v} — {GAMEPLAY_SUBMODE_HINTS.get(v, "unmapped")}' if state == 13
+                       else f'{v} — outside ordinary gameplay; meaning unverified'),
+            source='same address as menu category; user-observed mode associations, not a decoded enum')
     add('Stage offset',0x800C7AB4,2,source='verified menu stage index; also updates at scene load')
     add('Previous map',0x800C7ABC,2,source='observed door transition: previous map commits with current map')
     add('Pending destination',0x800C7CA0,2,source='observed door transition: updates before the next map loads')
@@ -123,9 +159,6 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Sasuke battery 2 cutscene finished (observed)',0x8015C609,1,
         lambda v: 'Yes (bit 0x40)' if v & 0x40 else 'No (bit 0x40)',
         source='observed: second battery cutscene ends with 0x20 -> 0x60; cutscene trigger separate')
-    for row in story_rows(read_story_state(ram)):
-        watches.append(Watch('Story: '+row['name'],row['address'],row['value'],row['raw'],row['status'],
-            row['bank']+'; mask '+row['mask']+'; '+row['source']))
     add('Map overlay state (observed)',0x8015C574,1,
         lambda v: f'{v} ({"visible" if v == 1 else "hidden" if v == 0 else "unusual"})',
         validator=lambda v: v in (0,1),
@@ -160,6 +193,10 @@ def get_watches(ram, snapshot, scene_names=None):
     add('Fortune Dolls obtained (annotated total)',0x8015C708,4,
         source='mn64rando word annotation; live value 2 alongside half icon; full reset/award rules not traced')
     for name,addr,width,maximum,hint in INVENTORY:
+        # Low-byte view of the full Fortune Doll progress word above, not
+        # an independent Live Memory field.
+        if addr == 0x8015C707:
+            continue
         if addr == 0x8015C609:
             add(name,addr,1,lambda v: 'Yes (bit 0x20)' if v & 0x20 else 'No (bit 0x20)',
                 source='confirmed by live pre-pickup flag write and subsequent stage progression')

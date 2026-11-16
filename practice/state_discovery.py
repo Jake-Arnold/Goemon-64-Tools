@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 import math
 import struct
 
+from autosplitter.memory import Rdram
+
 FOCUSED_RANGES = (
     ('system', 0x800C7800, 0x1000),
     ('game_data', 0x8015C500, 0x900),
@@ -49,12 +51,15 @@ def capture_state(ram, label: str, *, scope: str = 'focused', snapshot: dict | N
         raise ValueError('Scope must be focused or wide')
     if not label.strip():
         raise ValueError('Capture label is required')
-    snapshot = snapshot if snapshot is not None else ram.snapshot()
+    # A/B/C probes are read-only and must work during title/Impact modes,
+    # even when the normal player object is absent or contains a stale pointer.
+    # Strict snapshot() validation remains mandatory for player-dependent writes.
+    if snapshot is None:
+        monitor = getattr(ram, 'snapshot_for_monitoring', None)
+        snapshot = monitor() if monitor is not None else ram.snapshot()
     current_map = ram.u16(0x800C7AB2)
     character = ram.u32(0x8015C5DC)
     if character > 3:
-        if snapshot.get('player_ptr') or snapshot.get('task_ptr'):
-            raise ValueError('Invalid current character while player pointers are present')
         character = None
     regions=[]
     for name, addr, size in (FOCUSED_RANGES if scope == 'focused' else (WIDE_RANGE,)):
@@ -65,11 +70,15 @@ def capture_state(ram, label: str, *, scope: str = 'focused', snapshot: dict | N
     if scope == 'focused':
         for name, ptr_key, size in DYNAMIC_RANGES:
             address=snapshot.get(ptr_key)
-            if address:
-                data=ram.read_guest(address,size)
-                if len(data)!=size:
-                    raise OSError(f'Incomplete read for {name}')
-                regions.append(RegionData(name,address,data))
+            # Player-specific regions are optional: an invalid or changing
+            # actor pointer must never block a global RAM comparison.
+            if address and Rdram.is_ram_pointer(address, size):
+                try:
+                    data=ram.read_guest(address,size)
+                except (OSError,ValueError):
+                    continue
+                if len(data)==size:
+                    regions.append(RegionData(name,address,data))
     return ProbeCapture(label,datetime.now(timezone.utc).isoformat(),character,current_map,tuple(regions),scope)
 
 

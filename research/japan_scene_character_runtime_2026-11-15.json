@@ -1,0 +1,116 @@
+{
+  "schema": "goemon-japan0-runtime-observation-v1",
+  "observation_id": "2026-11-15-jp-character-and-oedo-north-bridge",
+  "region": "japan-0",
+  "capture_source": "User-supplied copy from real read-only Mupen64Plus toolkit RAM comparison",
+  "reported_process": {
+    "pid": 959604,
+    "host_rdram_base": "0x7AA843EC0000",
+    "endian": "wordswapped"
+  },
+  "observations": [
+    {
+      "id": "goemon-to-ebisumaru",
+      "kind": "character_switch",
+      "user_context": "Switched from Goemon to Ebisumaru",
+      "changes": [
+        {
+          "key": "total_time_raw",
+          "address": "0x8016205C",
+          "width": 4,
+          "before": "0000D5B7",
+          "after": "0000D5B9",
+          "raw_delta": 2
+        },
+        {
+          "key": "scene_character",
+          "address": "0x80161DCC",
+          "width": 4,
+          "before": "00000000",
+          "after": "00000001",
+          "meaning_before": "Goemon",
+          "meaning_after": "Ebisumaru"
+        }
+      ]
+    },
+    {
+      "id": "oedo-north-to-castle-bridge",
+      "kind": "scene_transition",
+      "user_context": "Going from Oedo Town North to the bridge leading to Oedo Castle; exact transition timing not sampled",
+      "changes": [
+        {
+          "key": "total_time_raw",
+          "address": "0x8016205C",
+          "width": 4,
+          "before": "0000D681",
+          "after": "0000D690",
+          "raw_delta": 15
+        },
+        {
+          "key": "scene_map",
+          "address": "0x800CD2A2",
+          "width": 2,
+          "before": "0160",
+          "after": "0162",
+          "decimal_before": 352,
+          "decimal_after": 354,
+          "scene_catalogue_before": "Oedo Town (North)",
+          "scene_catalogue_after": "Oedo - Bridge to Oedo Castle"
+        },
+        {
+          "key": "scene_previous",
+          "address": "0x800CD2AC",
+          "width": 2,
+          "before": "0161",
+          "after": "0160",
+          "decimal_before": 353,
+          "decimal_after": 352,
+          "warning": "Before = 353 (South) is older history and not the old current scene 352; after = 352 matches old current scene."
+        },
+        {
+          "key": "scene_pending",
+          "address": "0x800CD490",
+          "width": 2,
+          "before": "0160",
+          "after": "0162",
+          "decimal_before": 352,
+          "decimal_after": 354,
+          "warning": "Stable endpoint readings do not prove pre-load pending timing"
+        }
+      ]
+    },
+    {
+      "id": "ebisumaru-to-goemon",
+      "kind": "character_switch",
+      "user_context": "Switched from Ebisumaru back to Goemon",
+      "changes": [
+        {
+          "key": "total_time_raw",
+          "address": "0x8016205C",
+          "width": 4,
+          "before": "0000D6CF",
+          "after": "0000D6D1",
+          "raw_delta": 2
+        },
+        {
+          "key": "scene_character",
+          "address": "0x80161DCC",
+          "width": 4,
+          "before": "00000001",
+          "after": "00000000",
+          "meaning_before": "Ebisumaru",
+          "meaning_after": "Goemon"
+        }
+      ]
+    }
+  ],
+  "evidence_assessment": {
+    "scene_map": "Observed in two separate transitions (300→355 previously; 352→354 now). Regional scene catalogue matches user's Oedo context for this second capture.",
+    "scene_previous": "Observed in two separate transitions; after-value equals prior current scene. Initial value before second capture is 353, not 352, consistent with retained history.",
+    "scene_pending": "Observed in two separate before/after captures; changes to destination, but exact mid-load semantics unverified.",
+    "scene_submode": "Only one 1→2 transition recorded previously; not modified in second capture.",
+    "scene_character": "Both directions observed for values 0 Goemon and 1 Ebisumaru. 2 Sasuke / 3 Yae have not been tested.",
+    "total_time_raw": "Increasing counter; +2, +15 raw units for these captures, timebase unverified."
+  },
+  "safety": "Read-only observations, not permission for Japanese memory writes, warps or freeze features"
+}

@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from tests.test_checkpoint import TestCheckpoint
 from practice.scene_controls import (request_scene_warp, assess_scene_warp,
                                      open_native_debug_menu, PENDING_MAP_ADDR, EXIT_REQUEST_ADDR)
@@ -16,9 +17,11 @@ class TestWarp(unittest.TestCase):
     def test_direct_scene_request_is_disabled(self):
         ram=self.make()
         before=(ram.u16(PENDING_MAP_ADDR),ram.u8(EXIT_REQUEST_ADDR),ram.u16(MAP_ADDR))
-        for destination in (465,353,9999,-1):
-            with self.assertRaisesRegex(RuntimeError,'Direct warp disabled'):
-                request_scene_warp(ram,destination,{353:'Oedo',465:'House'})
+        with patch.object(ram, 'write_guest', wraps=ram.write_guest) as write_guest:
+            for destination in (465,353,9999,-1):
+                with self.assertRaisesRegex(RuntimeError,'Direct warp disabled'):
+                    request_scene_warp(ram,destination,{353:'Oedo',465:'House'})
+            write_guest.assert_not_called()
         self.assertEqual(before,(ram.u16(PENDING_MAP_ADDR),ram.u8(EXIT_REQUEST_ADDR),ram.u16(MAP_ADDR)))
 
     def test_normal_indoor_submode_3_can_enter_debug(self):

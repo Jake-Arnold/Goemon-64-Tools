@@ -5,12 +5,23 @@ import tkinter as tk
 from tkinter import ttk
 
 from practice.theme import PALETTE
-from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock, normalize_unlock_value
+from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock, normalize_unlock_value, unlock_all_known
 from practice.hex_edit import parse_hex
+from practice.region_unlocks import (
+    japan_unlock_lead, japan_unlock_all_targets,
+    japan_unlock_wire_value, japan_unlock_display_value,
+)
 
 class UnlocksMixin:
     def build_unlock_tabs(self, notebook) -> None:
         self.unlock_status = tk.StringVar(value='Connect to US Goemon in Recomp or Project64 to read and change flags.')
+        self.unlock_intro_text = tk.StringVar(value=
+            'Click any value to write it immediately to the original N64 RAM. '
+            'The game may not refresh its inventory until an area or menu reload.')
+        self.unlock_all_hint = tk.StringVar(value=
+            'One-time edit; does not set story completion flags.')
+        self.unlock_address_labels = {}
+        self.unlock_count_buttons = {}
         self.unlock_row_widgets = {}
         self.unlock_count_inputs = {}
         self.unlock_count_entries = {}
@@ -21,24 +32,27 @@ class UnlocksMixin:
         self.unlock_tab = tab
         intro = ttk.Frame(tab)
         intro.pack(fill='x', pady=(0, 8))
+        self.usa_unlock_intro = intro
         ttk.Label(intro, text='Unlocks, weapons and upgrades', font=('Segoe UI Semibold', 16),
                   foreground=PALETTE['gold']).pack(anchor='w')
-        ttk.Label(intro, text='Click any value to write it immediately to the original N64 RAM. '
-                  'The game may not refresh its inventory until an area or menu reload.',
-                  style='Muted.TLabel').pack(anchor='w', pady=(4, 0))
-        ttk.Label(tab, textvariable=self.unlock_status).pack(fill='x', pady=(0, 8))
-        self.sasuke_second_status = tk.StringVar(value='Sasuke battery 2: —')
-        self.ushiwaka_status = tk.StringVar(value='Ushiwaka: —')
-        # Read-only event bits; setting these is NOT equivalent to playing scripts.
-        progress=ttk.LabelFrame(tab,text=' Observed storyline progression (read-only) ',padding=(10,7))
-        progress.pack(fill='x',pady=(0,8))
-        ttk.Label(progress,textvariable=self.sasuke_second_status,font=('Consolas',10)).pack(anchor='w')
-        ttk.Label(progress,textvariable=self.ushiwaka_status,font=('Consolas',10)).pack(anchor='w')
-        ttk.Button(progress,text='Open story progress',command=lambda:notebook.select(self.story_progress_tab)).pack(anchor='w',pady=(4,0))
-        ttk.Label(progress,text='These bits record event completion; writes do not replay cutscenes.',style='Muted.TLabel').pack(anchor='w')
-
+        ttk.Label(intro, textvariable=self.unlock_intro_text,
+                  style='Muted.TLabel', wraplength=1050).pack(anchor='w', pady=(4, 0))
+        all_bar = ttk.Frame(tab)
+        all_bar.pack(fill='x', pady=(0, 8))
+        self.usa_unlock_all_bar = all_bar
+        self.unlock_all_button = ttk.Button(
+            all_bar, text='Unlock all mapped items, weapons and abilities',
+            command=self.unlock_all_items)
+        self.unlock_all_button.pack(side='left')
+        if not self.args.enable_hex_edit:
+            self.unlock_all_button.state(['disabled'])
+        ttk.Label(all_bar, textvariable=self.unlock_all_hint,
+                  style='Muted.TLabel').pack(side='left', padx=8)
+        self.unlock_status_label=ttk.Label(tab, textvariable=self.unlock_status)
+        self.unlock_status_label.pack(fill='x', pady=(0, 8))
         shell = ttk.Frame(tab)
         shell.pack(fill='both', expand=True)
+        self.usa_unlock_shell = shell
         canvas = tk.Canvas(shell, bg=PALETTE['background'], highlightthickness=0)
         scroll = ttk.Scrollbar(shell, orient='vertical', command=canvas.yview)
         canvas.configure(yscrollcommand=scroll.set)
@@ -57,8 +71,11 @@ class UnlocksMixin:
             for i, item in enumerate(x for x in UNLOCKS if x.group == group):
                 ttk.Label(card, text=item.label, style='Card.TLabel').grid(row=i, column=0,
                                sticky='w', pady=3)
-                ttk.Label(card, text=f'{item.address:08X}', style='CardMuted.TLabel',
-                          font=('Consolas', 9)).grid(row=i, column=1, sticky='w', padx=(12, 8))
+                address_label = ttk.Label(
+                    card, text=f'{item.address:08X}', style='CardMuted.TLabel',
+                    font=('Consolas', 9))
+                address_label.grid(row=i, column=1, sticky='w', padx=(12, 8))
+                self.unlock_address_labels[item.address] = address_label
                 state = ttk.Label(card, text='—', style='Card.TLabel', width=7, font=('Consolas', 10))
                 state.grid(row=i, column=2, sticky='w', padx=(4, 14))
                 buttons = ttk.Frame(card, style='Card.TFrame')
@@ -81,11 +98,207 @@ class UnlocksMixin:
                     if not self.args.enable_hex_edit:count_button.state(['disabled'])
                     self.unlock_count_inputs[item.address]=entry_var
                     self.unlock_count_entries[item.address]=entry
+                    self.unlock_count_buttons[item.address]=count_button
                 self.unlock_row_widgets[item.address] = (state, controls)
 
+        # Tk mouse-wheel events target the child under the pointer rather than
+        # the parent Canvas. Bind only Unlocks descendants, so scrolling other
+        # tabs and editable controls is not hijacked by a global binding.
+        self.unlock_canvas = canvas
+        def wheel(event):
+            if getattr(event, 'num', None) in (4, 5):
+                steps = -1 if event.num == 4 else 1
+            else:
+                delta = getattr(event, 'delta', 0)
+                if not delta:
+                    return 'break'
+                steps = -max(1, abs(delta) // 120) if delta > 0 else max(1, abs(delta) // 120)
+            canvas.yview_scroll(steps, 'units')
+            return 'break'
+        self._unlock_wheel = wheel
+
+        def bind_wheel(widget):
+            for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
+                widget.bind(sequence, wheel, add='+')
+            for child in widget.winfo_children():
+                bind_wheel(child)
+        bind_wheel(canvas)
+        bind_wheel(body)
+
+
+    def _japan_unlock_controls_ready(self):
+        """Source-backed Japanese fields write by default once RAM is attached."""
+        return bool(
+            self.active_version.key == 'japan'
+            and self.jp_rdram is not None
+            and getattr(self, 'game_pid', None) is not None
+            and getattr(self, 'jp_backend', None) in ('project64', 'mupen64plus')
+            and getattr(getattr(self, 'connection_target', None),
+                        'get', lambda: None)() == self.jp_backend
+            and not getattr(self, '_connecting', False)
+            and not getattr(self.args, 'read_only', False))
+
+    def configure_unlock_region(self):
+        """Retain the exact USA layout; swap address/read/write providers only."""
+        japan = self.active_version.key == 'japan'
+        usa_writable = bool(
+            not japan and getattr(self.args, 'enable_hex_edit', False)
+            and not getattr(self.args, 'read_only', False))
+        self.unlock_intro_text.set(
+            'Japan-0: 33/34 unlocks reported working in live gameplay. '
+            'Only Sasuke battery 1 remains unverified (marked ?). '
+            'Individual edits are immediate.'
+            if japan else
+            'Click any value to write it immediately to the original N64 RAM. '
+            'The game may not refresh its inventory until an area or menu reload.')
+        self.unlock_all_hint.set(
+            'Japan: Unlock All writes all 33 live-tested entries; '
+            'the unverified Sasuke battery byte is skipped.'
+            if japan else
+            'One-time edit; does not set story completion flags.')
+        self.unlock_all_button.configure(
+            text=(f'Unlock all mapped Japanese entries '
+                  f'({len(japan_unlock_all_targets())})'
+                  if japan else 'Unlock all mapped items, weapons and abilities'))
+        self.unlock_all_button.state(
+            ['!disabled'] if (self._japan_unlock_controls_ready()
+                              if japan else usa_writable) else ['disabled'])
+        for item in UNLOCKS:
+            lead = japan_unlock_lead(item) if japan else item
+            address = (
+                'unknown' if lead is None else
+                f'{lead.address:08X} ?' if japan and not lead.user_verified
+                else f'{lead.address:08X}'
+            )
+            self.unlock_address_labels[item.address].configure(text=address)
+            _state, controls = self.unlock_row_widgets[item.address]
+            for value, button in controls.items():
+                # Chain Pipe remains USA On [02] but is Japan On [01].
+                wire = japan_unlock_wire_value(item, value) if japan else value
+                label = item.levels[item.values.index(value)]
+                button.configure(text=f'{label} [{wire:02X}]')
+                button.state(['!disabled'] if usa_writable else ['disabled'])
+            if item.quantity:
+                self.unlock_count_buttons[item.address].state(
+                    ['!disabled'] if usa_writable else ['disabled'])
+                self.unlock_count_entries[item.address].configure(
+                    state='normal' if usa_writable or not japan else 'disabled')
+        self.unlock_last_poll = 0.0
+        self.unlock_status.set(
+            'Japan-0: 33 of 34 entries user-verified in gameplay; '
+            'Sasuke battery 1 remains an unverified writable research candidate.'
+            if japan else
+            'Connect to US Goemon in Recomp or Project64 to read and change flags.')
+        self.refresh_unlocks(force=True)
+
+    def refresh_japan_unlocks(self, *, force=False):
+        """Read Japanese leads only; never substitute USA guest addresses."""
+        if self.active_version.key != 'japan':
+            return
+        now = time.monotonic()
+        if not force and now - self.unlock_last_poll < 0.8:
+            return
+        self.unlock_last_poll = now
+        can_write = self._japan_unlock_controls_ready()
+        self.unlock_all_button.state(
+            ['!disabled'] if can_write else ['disabled'])
+        for item in UNLOCKS:
+            label, controls = self.unlock_row_widgets[item.address]
+            lead = japan_unlock_lead(item)
+            raw = None
+            if lead is not None and self.jp_rdram is not None:
+                try:
+                    guest = self.jp_rdram.read_guest(lead.address, lead.width)
+                    if len(guest) != lead.width:
+                        raise OSError('Short Japanese unlock field read')
+                    raw = int.from_bytes(guest, 'big')
+                except (OSError, ValueError, PermissionError, RuntimeError):
+                    pass
+            display = (
+                japan_unlock_display_value(item, raw) if raw is not None else None)
+            label.configure(
+                text=('unknown' if lead is None else
+                      '—' if raw is None else f'0x{raw:02X}'),
+                foreground=(PALETTE['teal'] if display is not None
+                            and (display in item.values or item.quantity)
+                            else PALETTE['warning']))
+            for value, button in controls.items():
+                button.state(
+                    ['!disabled'] if can_write and lead is not None
+                    else ['disabled'])
+                button.configure(
+                    style='Gold.TButton' if display is not None and display == value
+                    else 'TButton')
+            if item.quantity:
+                self.unlock_count_buttons[item.address].state(
+                    ['!disabled'] if can_write and lead is not None
+                    else ['disabled'])
+                self.unlock_count_entries[item.address].configure(
+                    state='normal' if can_write and lead is not None
+                    else 'disabled')
+                if raw is not None:
+                    try:
+                        focused_path = str(self.root.tk.call('focus'))
+                    except tk.TclError:
+                        focused_path = ''
+                    if focused_path != str(self.unlock_count_entries[item.address]):
+                        self.unlock_count_inputs[item.address].set(f'{raw:02X}')
+
+    def unlock_all_items(self):
+        if self.active_version.key == 'japan':
+            try:
+                changed, total = self.apply_japan_unlocks(japan_unlock_all_targets())
+                self.unlock_status.set(
+                    f'Japan-0: {changed} changed / {total} mapped entries. '
+                    'Only Sasuke battery 1 skipped (not live-verified).')
+                self.refresh_unlocks(force=True)
+            except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+                self.unlock_status.set(f'Japanese unlock-all failed: {exc}')
+            return
+        if self.mem is None:
+            self.unlock_status.set('Connect to a game before unlocking items.')
+            return
+        if getattr(self.args, 'read_only', False) or not self.args.enable_hex_edit:
+            self.unlock_status.set('Unlock all blocked in read-only mode.')
+            return
+        from practice.checkpoints import _ensure_capture_safe
+        try:
+            with self.value_freezes.guard:
+                _ensure_capture_safe(self.mem)
+                for lock in self.value_freezes.locks.values():
+                    if any(lock.address <= item.address < lock.address + len(lock.value)
+                           for item in UNLOCKS):
+                        raise ValueError('Stop overlapping freezes before unlocking items')
+                changed, total = unlock_all_known(self.mem)
+            self.unlock_status.set(f'Unlock all: {changed} changed / {total} entries checked. '
+                                   'Story flags untouched. Some changes require a scene refresh.')
+            self.last_inspect_at = 0.0
+            self.refresh_unlocks(force=True)
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self.unlock_status.set(f'Unlock all stopped: {exc}. Previous writes may remain.')
 
     def set_unlock(self, unlock: Unlock, value: int) -> None:
-        """One click = one measured byte write; never confirmation dialogs."""
+        """One click = regional single-byte write; never reuse another ROM address."""
+        if self.active_version.key == 'japan':
+            lead = japan_unlock_lead(unlock)
+            if lead is None:
+                self.unlock_status.set(
+                    f'{unlock.label}: Japanese address unknown; no write.')
+                return
+            try:
+                actual = normalize_unlock_value(unlock, value)
+                changed, _ = self.apply_japan_unlocks(((unlock, actual),))
+                self.unlock_status.set(
+                    f'Japan-0 {unlock.label}: '
+                    f'0x{japan_unlock_wire_value(unlock, actual):02X} '
+                    + ('[live-verified] ' if lead.user_verified else
+                       '[UNVERIFIED battery candidate] ')
+                    + ('(written)' if changed else '(unchanged)'))
+                self.refresh_unlocks(force=True)
+            except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+                self.unlock_status.set(
+                    f'Japan-0 {unlock.label}: write failed — {exc}')
+            return
         if not self.mem:
             self.unlock_status.set('Disconnected. Connect before editing unlocks.')
             return
@@ -117,19 +330,15 @@ class UnlocksMixin:
             self.unlock_status.set(f'{field.label}: invalid count — {exc}')
 
     def refresh_unlocks(self, *, force=False) -> None:
-        """Refresh from live RAM, including external edits and game changes."""
+        """Refresh region-specific values without reusing USA addresses."""
+        if self.active_version.key == 'japan':
+            self.refresh_japan_unlocks(force=force)
+            return
         now = time.monotonic()
         if not force and now - self.unlock_last_poll < 0.5:
             return
         self.unlock_last_poll = now
         values = {}
-        try:
-            second=self.mem.read_guest(0x8015C609,1)[0] if self.mem else None
-        except (OSError,ValueError):
-            second=None
-        self.sasuke_second_status.set('Sasuke battery 2 cutscene completed: ' +
-            ('—' if second is None else ('YES' if second & 0x40 else 'NO')) +
-            '  [0x8015C609 & 0x40]')
         self.refresh_story_progress()
         # Tk's 'focus' returns the widget path directly. root.focus_get() calls
         # _nametowidget() and raises KeyError('popdown') for some ttk dropdowns

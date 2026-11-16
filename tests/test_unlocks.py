@@ -1,7 +1,7 @@
 """Writable unlock values tested on fake N64 RAM, not a running game."""
 from __future__ import annotations
 import unittest
-from practice.unlocks import UNLOCKS, GROUPS, BY_ADDRESS, read_unlock, write_unlock, validate_unlocks
+from practice.unlocks import UNLOCKS, GROUPS, BY_ADDRESS, read_unlock, write_unlock, validate_unlocks, unlock_all_known
 
 
 class FakeRAM:
@@ -95,6 +95,31 @@ class TestUnlocks(unittest.TestCase):
         self.assertEqual(ram.bytes[addr],0x85)
         self.assertEqual(len(ram.writes),2)
         with self.assertRaises(ValueError):write_unlock(ram,field,0x20)
+
+    def test_unlock_all_known_one_shot_and_packed_flag_preserved(self):
+        from tests.test_checkpoint import TestCheckpoint
+        _, ram = TestCheckpoint().sample()
+        ram.write_guest(0x8015C609,b'\x85')
+        changed, total = unlock_all_known(ram)
+        self.assertEqual(total,len(UNLOCKS))
+        self.assertGreater(changed,0)
+        self.assertEqual(ram.u8(0x8015C609),0xA5)
+        self.assertEqual(ram.u8(0x8015C6AF),2)
+        self.assertEqual(ram.u8(0x8015C6BF),2)
+        self.assertEqual(ram.u8(0x8015C71B),8)
+        self.assertEqual(ram.u8(0x8015C723),3)
+        self.assertEqual(ram.u8(0x8015C71F),5)
+        self.assertEqual(unlock_all_known(ram),(0,total))
+
+    def test_unlock_all_refuses_non_gameplay_without_writes(self):
+        from tests.test_checkpoint import TestCheckpoint
+        _, ram = TestCheckpoint().sample()
+        ram.write_guest(0x800C7A94,b'\x04')
+        before = {field.address: ram.read_guest(field.address, 1) for field in UNLOCKS}
+        with self.assertRaises(ValueError):
+            unlock_all_known(ram)
+        after = {field.address: ram.read_guest(field.address, 1) for field in UNLOCKS}
+        self.assertEqual(after, before)
 
     def test_transition_blocks_flag_write(self):
         ram = FakeRAM()

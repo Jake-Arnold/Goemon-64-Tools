@@ -1,0 +1,77 @@
+# Japan-0 instant scene reload and original debug-menu fallback
+
+**Date:** 2026-11-15  
+**Live evidence:** The user confirmed that the Japan-0 Project64 toolkit can open the original debug menu (`0x800CD284 = 0x0A`) and teleport Goemon to known Oedo South XYZ. On a subsequent test, **double-click only opened the debug menu**, which is **not** the requested USA-equivalent instant warp. That incorrect dispatch has now been replaced in source. **The new direct `0x0C` area reload still awaits live confirmation.**
+
+## Correct implementation: identical reload mechanism, region-specific addresses
+
+The existing **Scene Browser** is the only scene picker in both USA and Japan. Double-click is an immediate memory request in the currently selected version. The original **Open debug menu** button remains an independent, optional manual operation.
+
+| Operation | USA retail | Japan-0 retail |
+| --- | --- | --- |
+| Pending destination (u16) | `0x800C7CA0` | `0x800CD490` |
+| Optional native entry mode / signed XYZ / heading (10 further bytes) | `0x800C7CA2..0x800C7CAB` | `0x800CD492..0x800CD49B` |
+| Engine state (u8) | `0x800C7A94` | `0x800CD284` |
+| Normal gameplay | `0x0D` | `0x0D` |
+| **Immediate area reload** | **`0x0C`** | **`0x0C`** |
+| Original debug menu — separate button | `0x0A` | `0x0A` |
+| Current map (read only) | `0x800C7AB2` | `0x800CD2A2` |
+| Exit / title flag — never changed | `0x800C7A9F` | `0x800CD28F` |
+
+USA's `stage_reload_trial` in `practice/experimental_controls.py` is the source for operation ordering. **Japan's new `stage_japan_direct_reload` in `practice/japan_direct_scene_reload.py` performs the corresponding operations:**
+
+1. Require stable ordinary Goemon/Ebisumaru gameplay, exact ROM/PID/guest-memory verification and write opt-in.
+2. Read the original pending destination. Choose the intended scene from the **same shared Scene Browser**; retain the current playable character.
+3. Stage a **12-byte native entry block** when an unambiguous, cached **USA-reference entrance** is available; the user has confirmed USA Oedo South XYZ work in Japan, **not** full entrance equivalence in every map. Otherwise stage only the 2-byte scene ID and do **not** invent coordinates. An unambiguous source-room entrance takes priority over the reference default.
+4. Verify that the pending bytes match the request and the source context has not changed.
+5. **Immediately write `0x0C` to `0x800CD284`, within the same double-click callback.** No debug state `0x0A` is requested. No menu cursor writes, no Project64 keyboard input, no manual confirmation in the original N64 menu.
+6. Monitor destination map, game state, loading, exit, character and finite XYZ for **three stable polls**. No retries after a mismatch or timeout. Report that stable gameplay has been observed, without claiming proof of collision or player controls.
+
+The original USA entrance atlas is optional for Japan until a native Japanese entrance atlas is extracted and verified. **A scene ID by itself may preserve stale coordinates and produce a poor spawn.** The toolkit states explicitly when only the destination was staged. Full safety equivalence to USA therefore remains **incomplete**; use a disposable Project64 savestate and validate actual footing in-game.
+
+## Windows Project64 procedure — instant Scene Browser request
+
+```powershell
+git pull --ff-only origin chatgptweb/japan-controlled-party-writes
+.\scripts\test_japan_party.ps1
+py -3 -m practice.toolkit --game-version japan --enable-japan-scene-writes
+```
+
+The previous `--enable-japan-debug-menu-writes` CLI flag is accepted as a backwards-compatible opt-in for the direct reload, but **`--enable-japan-scene-writes`** is the dedicated option. `--read-only` blocks all Japanese scene writes.
+
+Connect to the exact Japan-0 ROM in Project64, verify or automatically restore the previously checked ROM path, save the emulator state, open **Scene Browser**, then **double-click** a destination (e.g. Oedo Town South `0x161` to Goemon's House `0x1D1`). **The original debug menu should no longer appear on double-click.**
+
+If it does not load, the toolkit's Scene Browser status will report the immediate request or later timeout. An original debug menu appearance would indicate the `0x0C` sequence was overridden or old code is still running. Confirm the current branch was pulled and the toolkit process restarted.
+
+## Manual original debug-menu fallback
+
+The separate **Open original debug menu** control still writes only Japan's engine mode `0x800CD284: 0D→0A` after confirmation. This path was previously **live verified** by the user in Windows Project64. It does not select an area or participate in the new double-click reload. The manual menu uses USA-derived category/index **hints**, not directly written map IDs.
+
+The older unverified Japanese category-stage staging prototype (`practice/japan_native_scene_warp.py`) and keyboard-A adapter are **not used** by the current Scene Browser. They remain as research files, not required for instant warp.
+
+## Verified ROM memory across sessions
+
+On first verification, the toolkit stores the canonical Japan-0 ROM path and its expected SHA-1 under the user's config directory (`%LOCALAPPDATA%\GoemonSpeedrunTools\verified_rom_paths.json` on Windows). Future sessions automatically re-open and **reverify the actual ROM file** using the exact retail-revision verifier. If it is missing or edited, the user must reverify it. **Live Project64 PID, ROM code signatures, RAM mapping, 4/8 MiB size and byte order are still validated on every new connection and writable step.** The saved path does not store a process handle or grant write access.
+
+## Live acceptance: menu entry confirmed, full room warp pending
+
+- **User report (15 November 2026):** The new toolkit control opened the game's original Japanese debug menu in Project64; Goemon XYZ preset also successfully moved him to the desired Oedo South coordinates.
+- **Distinct validation boundaries:** Oedo South XYZ teleport is **within the same scene** and is not an inter-scene warp. Debug menu **opening** has been verified, but no gameplay report yet shows selecting a different room through it and receiving a controllable actor in the new scene.
+- **Automated scene selection remains unmapped:** The USA-derived category/index hints are still just hints. No direct map writes or speculative menu-cursor writes are enabled.
+- **Regression status:** A later Windows run of 107 backend tests passed, but the GUI stage reported 39 errors from a minimal Tk Host lacking new write callbacks and one dashboard savestate Combobox default selection failure. Corrective commits `ec35b9c` (inert test-host callbacks) and `7fc29bd` (explicit slot 0) are pushed; **full post-fix suite rerun pending**.
+
+## Acceptance and next evidence
+
+A valid instant scene-to-scene warp must show the destination `0x0C` reload, stable ordinary gameplay at the selected map, correct character and usable spawn/collision. **Only after the next Project64 test can this be called working for Japan.** The earlier visible original debug menu is evidence for the **manual fallback only**, not evidence of instant warping.
+
+Japanese scene-entrance extraction, same-scene reloads, special overlay scenes, and all playable characters still require separate validation. The original stage/category/A-button path is not used as a fallback from the new direct route.
+
+## Tests added
+
+- `tests.test_japan_direct_scene_reload`: exact state `0x0C`, pending-map byte order in big/wordswapped RAM, 12-byte spawn layout, rollback on staging failure, no current-map/exit writes and no debug menu.
+- `tests.test_japan_native_scene_controller`: double-click starts direct reload synchronously, never calls debug menu or N64 A input, and monitors stable destination.
+- `tests.test_region_views`: actual shared Scene Browser double-click dispatch calls warp, never the manual menu.
+- `tests.test_japanese_debug_warp`: exact engine address, category hints, one-byte state request in big-endian and word-swapped RAM, refusal during loading, unsupported submode or wrong character, read-only handle.
+- `tests.test_japan_debug_menu_controller`: declined confirmation, missing opt-in, invalid state, PID mismatch, fresh writable view, matching read-only view and one-mode-only operation.
+- `tests.test_japanese_debug_ui`: compact Scene warp tab, selector index hint, write button gating and read-only precedence.
+- These run under `scripts/test_japan_party.ps1` and `scripts/test_japan_party.sh`; user execution is **pending**.

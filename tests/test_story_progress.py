@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from practice.story_progress import FLAGS,CURATED_FLAGS,EXTERNAL_FLAGS,SAVED_BASE,BANK_A,BANK_B,read_story_state,story_rows,story_edit_options,write_story_value
+from practice.story_progress import FLAGS,CURATED_FLAGS,EXTERNAL_FLAGS,SAVED_BASE,BANK_A,BANK_B,read_story_state,story_rows,story_edit_options,write_story_value,STORY_SECTIONS,story_section_for_key,validate_story_catalog
 from tests.test_unlocks import FakeRAM
 
 
@@ -106,6 +106,26 @@ class StoryProgressTests(unittest.TestCase):
         self.assertTrue(all(f.evidence and SAVED_BASE<=f.address<SAVED_BASE+0x64 for f in FLAGS))
         self.assertEqual(len({f.key for f in FLAGS}),len(FLAGS))
 
+    def test_catalog_categories_and_unique_ids(self):
+        validate_story_catalog()
+        self.assertEqual(len({f.flag_id for f in FLAGS}),len(FLAGS))
+        self.assertIn('Fortune Dolls',STORY_SECTIONS)
+        for key in ('silver_doll_356','placed_gold_doll_0f2','turtle_rock_doll_reward',
+                    'fortune_doll_quarters','fortune_doll_total'):
+            self.assertEqual(story_section_for_key(key),'Fortune Dolls')
+        self.assertEqual(story_section_for_key('oedo_silver_key_1f'),'Keys & Locks')
+        self.assertEqual(story_section_for_key('training_passed'),'Ushiwaka & Training')
+        self.assertEqual(story_section_for_key('bank_a'),'Diagnostics')
+
+    def test_fortune_counters_are_read_only_story_rows(self):
+        ram=self.sample()
+        ram.write_guest(0x8015C704,(2).to_bytes(4,'big'))
+        ram.write_guest(0x8015C708,(12).to_bytes(4,'big'))
+        rows={row['key']:row for row in story_rows(read_story_state(ram))}
+        self.assertEqual(rows['fortune_doll_quarters']['value'],'2')
+        self.assertEqual(rows['fortune_doll_total']['raw'],'0x0000000C')
+        self.assertEqual(story_edit_options('fortune_doll_total'),())
+
     def test_partial_failures_are_unknown_without_false_inventory_advisory(self):
         ram=self.sample(mini=1,heel=1);read=ram.read_guest
         def partial(addr,size):return b'\x00'*(size-1) if addr==SAVED_BASE else read(addr,size)
@@ -126,7 +146,7 @@ class StoryProgressTests(unittest.TestCase):
             return read(addr,size)
         with patch.object(ram,'read_guest',side_effect=sampled),patch.object(ram,'write_guest',side_effect=AssertionError('Read-only')):
             state=read_story_state(ram);story_rows(state)
-        self.assertEqual(total,112)  # Full 100-byte events plus two banks and inventory words.
+        self.assertEqual(total,120)  # 100 event bytes, 4 bank bytes, 8 ownership bytes and 8 doll-counter bytes.
         self.assertIn('Five yellow',state['ushiwaka'])
         self.assertIn('bank_a',state['errors'])
 
