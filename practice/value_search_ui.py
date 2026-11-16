@@ -179,6 +179,7 @@ class ValueSearchMixin:
             auto=self.value_search_autorefresh,
             interval=self.value_search_refresh_ms,
             external_poll=True)
+        self.value_search_results.controls.pack_configure(before=startbox)
         # Scan/capture controls are method-specific. Candidate controls are shared.
         ttk.Label(tab, textvariable=self.value_search_status,
                   wraplength=1070).pack(fill='x', pady=(0, 7))
