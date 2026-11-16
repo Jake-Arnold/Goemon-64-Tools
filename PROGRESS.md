@@ -2,6 +2,17 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-16 — v0.11.21 native Japanese recomp write UI eligibility fix
+
+- **User report:** Japanese native Goemon64Recompiled attached successfully but all write tools appeared greyed out. Confirmed the root cause in repository source: UI eligibility checks in `practice/unlocks_ui.py`, `practice/japanese_fields_ui.py`, `practice/ui_extension.py`, and `practice/value_freezes_ui.py` recognized only Project64/Mupen64Plus, despite `recomp` being a verified Japanese connection backend.
+- **Fix:** All these Japanese-specific guards now accept `recomp`, while requiring a connected Japanese RDRAM, matching selected backend/PID, enabled relevant Japanese write flag, and no explicit `--read-only`. Mapped Unlocks, 17 verified inventory Story Progress edits, bounded XYZ, original debug-menu control, Live Memory right-click edit/freeze and 10 ms best-effort raw freeze worker can now be enabled on Japanese native recomp.
+- **Shared raw editor:** The old `Write raw hex` action was hardcoded USA-only. It now selects the active region, reads the original guest bytes from the active backend, and delegates Japanese edits through `write_japan_raw_bytes(..., expected=before)`, retaining native recomps' per-write exact-ROM/PID/RDRAM verification and readback. USA continues to use `checked_write`.
+- **Refresh:** Successful Japanese attachment now immediately refreshes Unlocks, Story Progress editability and Japanese field controls. The connection banner accurately distinguishes mapped Japanese writers from unavailable USA-only task-pointer tools.
+- **Intentionally not enabled:** USA-specific God Mode, max-health/task-pointer freeze and enemy-pass-through controls, Japanese unmapped event bits and native recomp full emulator savestates. No unsafe USA address reuse.
+- **Tests authored:** `tests/test_japan_recomp_write_ui.py` uses Tk with synthetic Japan RAM to assert that recomp unlock, XYZ, original debug-menu, raw writer and freeze worker controls enable; that raw edits call the Japanese writer not USA's; that mismatch/explicit read-only re-disable mapped controls; and that USA-only specialized freezes remain off. Registered in both Linux and Windows GUI regression scripts. These tests are authored but **not executed in the GitHub connector**; no in-game memory writes or local process attachment performed.
+- **Version:** Bumped centralized `practice/version.py` to **v0.11.21**, updated README and this progress log.
+- **Next:** Pull new branch, restart toolkit, reconnect native Japanese recomp, confirm mapped controls enable, test a single backed-up inventory write and a fixed-address raw edit, and run the Bash regression suite. A successful UI enable does not itself prove game memory write permissions or semantics.
+
 ## 2026-11-16 — v0.11.20 GNOME dock icon association correction
 
 - **User-reported regression:** The v0.11.19 per-user Ubuntu desktop launcher showed the toolkit logo in the app list, but the running Tk window still spawned a second generic settings cog icon on the GNOME Dock.
