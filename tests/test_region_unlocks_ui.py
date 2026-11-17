@@ -214,7 +214,9 @@ class RegionUnlockUITests(unittest.TestCase):
         self.root.geometry('1100x600')
         app.notebook.select(app.unlock_tab)
         app.unlock_sections.select(app.unlock_items_page)
-        self.root.update_idletasks()
+        # Run window-manager events too: a just-deiconified Tk window
+        # can have a geometry but still report its canvas as unmapped.
+        self.root.update()
         app.unlock_canvas.configure(
             scrollregion=app.unlock_canvas.bbox('all'))
         button = app.unlock_row_widgets[0x8015C6A7][1][1]
