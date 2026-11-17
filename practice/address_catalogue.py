@@ -7,6 +7,7 @@ No renderer should ever use this module to call a guest-memory writer.
 from __future__ import annotations
 
 from collections import Counter
+import ast
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -320,6 +321,44 @@ def build_catalogue():
                     source="research/usa_external_memory_leads.json",
                     confidence="external_unverified", evidence=lead.get("note", ""),
                     live=False), reconcile=False)
+    # A declaration audit for source modules not yet converted into typed
+    # manifests. These unclassified references remain searchable but cannot
+    # be polled or edited. A new hard-coded guest address in these modules
+    # creates a reproducible registry diff in --check.
+    source_root = Path(__file__).resolve().parents[1]
+    source_modules = (
+        "practice/checkpoints.py", "practice/inspector.py",
+        "practice/scene_controls.py", "practice/unlocks.py",
+        "practice/region_unlocks.py", "practice/story_progress.py",
+        "practice/japanese_fields.py", "practice/japanese_scene_probes.py",
+        "practice/region_memory_crosswalk.py", "practice/region_views.py",
+        "practice/custom_watches.py", "practice/native_debug_watch.py",
+    )
+    for source_module in source_modules:
+        source_path = source_root / source_module
+        parsed = ast.parse(source_path.read_text(encoding="utf-8"))
+        for node in ast.walk(parsed):
+            if not (isinstance(node, ast.Constant) and
+                    type(node.value) is int and
+                    0x80000000 <= node.value < 0x80800000):
+                continue
+            addr = hexaddr(node.value)
+            provenance = f"{source_module}:{node.lineno}"
+            same = [row for row in items if row["address"] == addr]
+            if same:
+                for row in same:
+                    if provenance not in row["sources"]:
+                        row["sources"].append(provenance)
+                continue
+            add(_entry(
+                f"source:unclassified:{addr}",
+                f"Unclassified source address {addr}", addr,
+                "unknown", "research_reference", None,
+                confidence="reference_only", source=provenance,
+                evidence=("Address-shaped literal in toolkit Python source; "
+                          "type/width/region not independently classified"),
+                context="Source-reference only; register detailed discovery manifest",
+                live=False, owner="Python declaration audit"), reconcile=False)
     mentions = _read_json(MENTIONS)
     if mentions.get("format") != "goemon-address-research-mentions-v1":
         raise ValueError("Research provenance format changed")
