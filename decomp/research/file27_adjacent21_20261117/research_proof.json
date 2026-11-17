@@ -1,0 +1,138 @@
+{
+  "format": "goemon-usa-adjacent-file25-file27-research-v1",
+  "date": "2026-11-17",
+  "region": "usa",
+  "status": "RESEARCH_ONLY",
+  "source_provenance": "user supplied authenticated original ROM + pinned upstream + original IDO",
+  "region_pins": {
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_32m_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "original_upstream_git_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "upstream_exact": {
+    "file27_count": 21,
+    "file27_original_instruction_bytes": 1316,
+    "full_rom_bytes": 33554432,
+    "original_elf_func_identities_preserved": 7376,
+    "original_file27_semantic_relocations_preserved": 876,
+    "rom_matches_original": true
+  },
+  "file25_isolated": {
+    "count": 1,
+    "original_instruction_bytes": 72,
+    "whole_rom_integration": "BLOCKED_NEW_SYMBOL_RELOCATION"
+  },
+  "native_unit_results": [
+    {
+      "source": "group490.c",
+      "vma": "0x08000490",
+      "rom": "0x6AF8A0",
+      "functions": 3,
+      "matched_original_instruction_bytes": 108,
+      "original_sha256": "bf1a14f3381fdd65f44d129235a12c073bb3c3fe07495a875a63d4b830f379f7",
+      "passed": true,
+      "git_blob_sha1": "670ba0875538fbc50ebe5261dd1752228f13d385",
+      "tier": "UPSTREAM_FULL_ROM_SCRATCH_EXACT"
+    },
+    {
+      "source": "group59c.c",
+      "vma": "0x0800059C",
+      "rom": "0x6AF9AC",
+      "functions": 3,
+      "matched_original_instruction_bytes": 172,
+      "original_sha256": "df873f5bc506dc5a127d36d84dc27aa7f3b4a0dc0d2df81336c74a03d7f8e0be",
+      "passed": true,
+      "git_blob_sha1": "9984ae6b7d17aa868ddae08cb0d76b82eae20a64",
+      "tier": "UPSTREAM_FULL_ROM_SCRATCH_EXACT"
+    },
+    {
+      "source": "group8c4.c",
+      "vma": "0x080008C4",
+      "rom": "0x6AFCD4",
+      "functions": 3,
+      "matched_original_instruction_bytes": 276,
+      "original_sha256": "a468f94a6770874cf47c540455e18ea9e26c45f33e4c89188aa6d42c32843509",
+      "passed": true,
+      "git_blob_sha1": "8dcfd701310d627851b569aefca9de41684b9393",
+      "tier": "UPSTREAM_FULL_ROM_SCRATCH_EXACT"
+    },
+    {
+      "source": "groupa7c.c",
+      "vma": "0x08000A7C",
+      "rom": "0x6AFE8C",
+      "functions": 5,
+      "matched_original_instruction_bytes": 380,
+      "original_sha256": "cfff5258ba31e659913043ecbbb3e60647b8b986584336a17ca5ffec562943a5",
+      "passed": true,
+      "git_blob_sha1": "f92e65d24de99849be40cffbe1552c91fb86149f",
+      "tier": "UPSTREAM_FULL_ROM_SCRATCH_EXACT"
+    },
+    {
+      "source": "group1380.c",
+      "vma": "0x08001380",
+      "rom": "0x6B0790",
+      "functions": 5,
+      "matched_original_instruction_bytes": 304,
+      "original_sha256": "7030517368317176afcf89c4de8ce61c44c87935d148aa79e8a4fca65187b897",
+      "passed": true,
+      "git_blob_sha1": "97cd1e724c44eb74634dd78a04b6d26059bff438",
+      "tier": "UPSTREAM_FULL_ROM_SCRATCH_EXACT"
+    },
+    {
+      "source": "wrapper172c_v1.c",
+      "vma": "0x0800172C",
+      "rom": "0x6B0B3C",
+      "functions": 1,
+      "matched_original_instruction_bytes": 64,
+      "original_sha256": "5279f00c5a8758be9bab298158e6fd9166f75788866a6a66cde54f8a56f4b99d",
+      "passed": true,
+      "git_blob_sha1": "64f2c80fccd5cfea953458ea9d2259037df44e76",
+      "tier": "UPSTREAM_FULL_ROM_SCRATCH_EXACT"
+    },
+    {
+      "source": "noop37ec_v1.c",
+      "vma": "0x080037EC",
+      "rom": "0x6B2BFC",
+      "functions": 1,
+      "matched_original_instruction_bytes": 12,
+      "original_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b",
+      "passed": true,
+      "git_blob_sha1": "ae6e65015d6776db9acd67070783b045f08a550a",
+      "tier": "UPSTREAM_FULL_ROM_SCRATCH_EXACT"
+    },
+    {
+      "source": "file25_last_v3.c",
+      "vma": "0x08001228",
+      "rom": "0x6AE5E8",
+      "functions": 1,
+      "matched_original_instruction_bytes": 72,
+      "original_sha256": "e8a7fcf53fd5b35f1affaae4426433142aff330751b6ca885986057d6f2d6ad2",
+      "passed": true,
+      "git_blob_sha1": "c1ae9637748f22a2883c36fbff3c9e47a2ffaa94",
+      "tier": "ISOLATED_EXACT_ONLY_EXTRA_RELOC"
+    }
+  ],
+  "host_test": {
+    "status": "PASS",
+    "compiler": "GCC",
+    "flags": "-fsanitize=address,undefined -fno-pie -no-pie",
+    "source": "test_adjacent27.c",
+    "git_blob_sha1": "8dfd31edcef049deca95688d76fa84dfc265ad1c",
+    "alignment_sanitizer_disabled": false
+  },
+  "live_branch_production_observed": {
+    "usa_accepted_C": 864,
+    "usa_C_bytes": 37904,
+    "japan_accepted_C": 39,
+    "japan_C_bytes": 2092
+  },
+  "canonical_production_gates": {
+    "complete_current_branch_checkout": "UNAVAILABLE_IN_NATIVE_CONTAINER",
+    "combined_864_plus21_verify": "NOT_RUN",
+    "strict_inventory": "NOT_RUN",
+    "production_elf_relocations": "NOT_RUN",
+    "full_decomp_local_ci": "NOT_RUN",
+    "promoted": 0
+  },
+  "remaining_native_hypothesis": "File26 +0x908 236-byte float initializer unmatched; file25 +0x1228 symbol relocation requires improvement"
+}
