@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — crosswalk belongs in shared memory/story pages, not Japan Live
+
+- **Design correction:** Implement the crosswalk as region-specific memory metadata behind the already-shared Live Memory, Unlocks and Story Progress pages. PR #35 removes the redundant Japan Live diagnostics tab; PR #43's added crosswalk panel is not retained.
+- **Changes on stacked toolkit branch:** Bring over the read-only address registry and reciprocal candidate CLI; resolve independently observed fixed JP globals into shared Live Memory when no existing Japanese row exists; show saved-event and Plasma candidate bits in the existing JP Story Progress table only, with mask, evidence, USA origin address and unverified/read-only status. The existing 34 verified unlock entries remain in shared Unlocks and are not duplicated.
+- **Safety:** No additional GUI tab, no guest-RAM writer, freeze, warp or ability to edit inferred story bits. The disputed pause bit stays outside Live Memory. Do not translate dynamic/menu pointers; the Snowflake exception remains explicit.
+- **Testing:** Added isolated backend/agent/shared-page regression tests to the standard Linux toolkit runner. Hosted CI and live emulator validation pending at the time of writing; do not represent those as passed.
+- **Integration:** Short-lived branch is stacked on `toolkit/unified-memory-discovery` (draft PR #35), not `main`, and should be reviewed after the diagnostics-removal refactor. The incompatible prototype UI in draft PR #43 remains unmerged.
+
+
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
 ## 2026-11-16 — v0.11.36 final hosted CI proof
