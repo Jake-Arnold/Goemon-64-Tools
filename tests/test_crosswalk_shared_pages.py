@@ -25,11 +25,11 @@ class FakeRdram:
 class CrosswalkSharedPagesTests(unittest.TestCase):
     def test_live_memory_shows_confirmed_static_fields_in_existing_page(self):
         rows = japan_live_watches(FakeRdram())
-        weapon = [r for r in rows if r.address == 0x80161DF7]
+        weapon = [r for r in rows if r.addr == 0x80161DF7]
         self.assertEqual(len(weapon), 1)
         self.assertIn("Equipped weapon", weapon[0].name)
         self.assertIn("USA 0x8015C607", weapon[0].source)
-        self.assertNotIn(0x800CD2D6, [r.address for r in rows])
+        self.assertNotIn(0x800CD2D6, [r.addr for r in rows])
 
     def test_story_progress_uses_explicit_japan_address_and_mask(self):
         addr = 0x80161DFC
