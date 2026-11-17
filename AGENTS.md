@@ -45,6 +45,41 @@ authoritative. If the branch scheme intentionally changes, update
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
 7. The current toolkit baseline is v0.11.27 on `main` as of 16 November 2026. Older v0.9.x instructions are historical. Scene-warp code and ROM-derived entrance data exist, but live USA/Japanese native gameplay tests must be distinguished from synthetic memory tests; do not claim unverified behaviour has passed.
 
+## Mandatory USA ↔ Japan memory-data crosswalk for all agents
+
+Whenever an agent discovers or changes a **fixed N64 guest-RAM global,
+inventory field or persistent story-event flag in either game**, crosswalk
+it **in the same task**; this is not an optional follow-up. Start with the
+[evidence and procedure](docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md).
+
+1. Record original **USA NG5E-0** or **Japan retail rev-0** ROM identity,
+   canonical guest address, actual type/width/endianness, packed bit mask,
+   scope (fixed/static versus dynamic), context and exact source evidence.
+2. Check existing explicit mappings, regional definitions, independent
+   observations and exceptions before calculating anything.
+3. For eligible **static globals or saved-game fields only**, propose
+   `JP = USA + 0x57F0` or `USA = JP - 0x57F0`. Label a new result
+   **unverified offset candidate**, even if the source is verified.
+4. Record both regional addresses, mask/width, status, conflicting evidence,
+   a concrete counterpart validation test and the discovery reference.
+   Validate the other ROM independently (read-only A/B/control gameplay
+   capture or original MIPS readers/writers). A similar value or a changing
+   byte does **not** independently prove identity.
+5. Explicitly exclude dynamic player/task pointers, loaded overlays, script
+   VM state, Impact allocations, original code VMAs, host process addresses
+   and ROM offsets from automatic arithmetic. If classification is unknown,
+   use function/structure correlation instead.
+6. Update the research mapping and `PROGRESS.md` on the correct feature
+   branch. Never auto-promote guessed addresses to confirmed game-memory
+   writes, freezes, warps or decomp symbol identities.
+
+Known exceptions: Japanese Miracle Snowflake `0x80162057` corresponds
+to USA `0x8015C866` (**+0x57F1**, not +0x57F0); proposed Japanese pause
+`0x800CD2D6` is **disputed**; Japanese Sasuke battery
+`0x80161DF9 & 0x20` remains **unverified**. Keep toolkit changes based
+on `main` and original-MIPS/decomp changes based on `chatgptweb/decomp`;
+never merge those unrelated histories.
+
 ## Decomp continuation
 
 For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
