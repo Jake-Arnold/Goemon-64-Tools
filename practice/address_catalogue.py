@@ -14,16 +14,6 @@ from pathlib import Path
 import re
 import struct
 
-from practice.inspector import INVENTORY
-from practice.unlocks import UNLOCKS
-from practice.story_progress import FLAGS
-from practice.japanese_fields import JAPAN_FIELDS
-from practice.japanese_scene_probes import JAPAN_SCENE_PROBES, RUNTIME_OBSERVATION_STATUS
-from practice.region_memory_crosswalk import CROSS_REGION_FIELDS
-from practice.region_unlocks import JAPAN_UNLOCK_LEADS
-from practice.native_debug_watch import FIELDS as DEBUG_FIELDS
-
-
 CATALOGUE_FORMAT = "goemon-address-catalogue-v1"
 DISCOVERY_FORMAT = "goemon-address-discoveries-v1"
 DATA_DIR = Path(__file__).with_name("data")
@@ -150,7 +140,21 @@ def _read_json(path, max_bytes=MAX_SERIALIZED):
 
 
 def build_catalogue():
-    """All structured toolkit declarations + reviewed research; no RAM reads."""
+    """Audit legacy declarations and reviewed manifests; no RAM reads.
+
+    Runtime consumers load the authoritative JSON snapshot, never these
+    source modules. Lazy imports avoid cycles when existing UI pages resolve
+    their addresses from the canonical registry.
+    """
+    from practice.inspector import INVENTORY
+    from practice.unlocks import UNLOCKS
+    from practice.story_progress import FLAGS
+    from practice.japanese_fields import JAPAN_FIELDS
+    from practice.japanese_scene_probes import (
+        JAPAN_SCENE_PROBES, RUNTIME_OBSERVATION_STATUS)
+    from practice.region_memory_crosswalk import CROSS_REGION_FIELDS
+    from practice.native_debug_watch import FIELDS as DEBUG_FIELDS
+
     items = []
     by_id = {}
     by_location = {}
