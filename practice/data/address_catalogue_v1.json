@@ -168,7 +168,8 @@
         "practice/japanese_scene_probes.py",
         "practice/japanese_scene_probes.py:51",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:129"
+        "practice/region_memory_crosswalk.py:129",
+        "practice/region_memory_crosswalk.py:142"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -494,7 +495,8 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:23@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:33@main",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:130"
+        "practice/region_memory_crosswalk.py:130",
+        "practice/region_memory_crosswalk.py:143"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -987,7 +989,8 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:21@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:31@main",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:128"
+        "practice/region_memory_crosswalk.py:128",
+        "practice/region_memory_crosswalk.py:141"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1000,7 +1003,7 @@
       "confidence_sources": [
         {
           "confidence": "candidate",
-          "evidence": "Fixed saved-data USA-to-Japan displacement +0x57F0; bit meaning not independently tested in Japanese gameplay",
+          "evidence": "USA external annotation and gameplay research; Japanese bit inferred from +0x57F0 only, not independently verified",
           "source_id": "crosswalk:japan:event:external_super_pass"
         }
       ],
@@ -1023,7 +1026,9 @@
       "signed": false,
       "source_revision": "c5b687f7fa3a0459a015569fa77f69245029c871",
       "sources": [
-        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md"
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:146"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1059,7 +1064,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:146"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1264,7 +1270,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:131"
+        "practice/region_memory_crosswalk.py:131",
+        "practice/region_memory_crosswalk.py:144"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1304,7 +1311,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:131"
+        "practice/region_memory_crosswalk.py:131",
+        "practice/region_memory_crosswalk.py:144"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1344,7 +1352,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:131"
+        "practice/region_memory_crosswalk.py:131",
+        "practice/region_memory_crosswalk.py:144"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1384,7 +1393,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:131"
+        "practice/region_memory_crosswalk.py:131",
+        "practice/region_memory_crosswalk.py:144"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -4569,7 +4579,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:81@main",
         "https://gamehacking.org/game/20438",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:134"
+        "practice/region_memory_crosswalk.py:134",
+        "practice/region_memory_crosswalk.py:150"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -9221,13 +9232,13 @@
         },
         {
           "confidence": "usa_source",
-          "evidence": "USA external Super Pass receipt bit annotated in practice/story_progress.py; JP candidate derived separately",
+          "evidence": "USA external annotation and gameplay research; Japanese bit inferred from +0x57F0 only, not independently verified",
           "source_id": "crosswalk:usa:event:external_super_pass"
         }
       ],
       "context": "",
       "control": "Unlocks / Story & event flags",
-      "counterpart": null,
+      "counterpart": "0x80161DF8",
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
@@ -9250,6 +9261,8 @@
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
         "practice/checkpoints.py:21",
         "practice/checkpoints.py:22",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:145",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -9291,6 +9304,7 @@
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
         "practice/checkpoints.py:21",
         "practice/checkpoints.py:22",
+        "practice/region_memory_crosswalk.py:145",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -9340,6 +9354,7 @@
         "practice/checkpoints.py:21",
         "practice/checkpoints.py:22",
         "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:145",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -9381,6 +9396,7 @@
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
         "practice/checkpoints.py:21",
         "practice/checkpoints.py:22",
+        "practice/region_memory_crosswalk.py:145",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -18920,6 +18936,13 @@
     "practice/region_memory_crosswalk.py:130",
     "practice/region_memory_crosswalk.py:131",
     "practice/region_memory_crosswalk.py:134",
+    "practice/region_memory_crosswalk.py:141",
+    "practice/region_memory_crosswalk.py:142",
+    "practice/region_memory_crosswalk.py:143",
+    "practice/region_memory_crosswalk.py:144",
+    "practice/region_memory_crosswalk.py:145",
+    "practice/region_memory_crosswalk.py:146",
+    "practice/region_memory_crosswalk.py:150",
     "practice/region_memory_crosswalk.py:32",
     "practice/region_memory_crosswalk.py:54",
     "practice/region_memory_crosswalk.py:55",
