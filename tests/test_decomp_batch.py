@@ -218,6 +218,16 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         # Current 720-C proof supersedes 346, while earlier reports remain archived.
         self.assertEqual(current['comparison']['matched_functions'],720)
         self.assertEqual(current['comparison']['matched_function_bytes'],31184)
+        # Preserve the exact canonical 346-C report from before the file12 promotion.
+        preserved346=json.loads((ROOT/'results/combined_346_20261117.json').read_text())
+        self.assertEqual(preserved346['status'],'matched')
+        self.assertTrue(preserved346['comparison']['full_rom_match'])
+        self.assertEqual(preserved346['comparison']['matched_functions'],346)
+        self.assertEqual(preserved346['comparison']['matched_function_bytes'],17720)
+        self.assertEqual(preserved346['verifier_source_sha256_lf'],
+                         '182f0596aeba9229ffef403473201bf79c91c03b9fc9697d59cb3194b2d29190')
+        previous_inventory=json.loads((ROOT/'results/inventory_346_20261117.json').read_text())
+        self.assertEqual(previous_inventory['summary']['newly_matching_c'],346)
         preserved342=json.loads((ROOT/'results/combined_342_20261117.json').read_text())
         self.assertEqual(preserved342['comparison']['matched_functions'],342)
         self.assertEqual(preserved342['comparison']['matched_function_bytes'],17568)
