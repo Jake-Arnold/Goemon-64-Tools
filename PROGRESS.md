@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Versioned memory-address research manifest for toolkit metadata synchronisation
+
+- **Change:** Added `decomp/address_discoveries_v1.json` with 13 researched script-VM memory fields plus 3 original MIPS instruction-VMAs, preserving known types and explicit unknown widths. Updated decomp AGENTS.md to require this metadata manifest in every future memory-address research task.
+- **Design:** The separate toolkit source-of-truth address registry consumes this through a reviewed metadata-only PR; no decomp source code is merged into `main`. VM/dynamic addresses are not assigned speculative Japanese offsets, and code VMAs are not treated as live writable variables.
+- **Tests:** Metadata parses as JSON and is restricted to data metadata (no binaries). The corresponding toolkit validation and Linux/Windows checks are executed on the toolkit PR; no matching-C promotion or native-ROM verification is claimed for this documentation-only update.
+- **Next:** Review/merge this source-research manifest into the decomp baseline independently from the toolkit PR. Address discoveries must include manifest updates as part of their original evidence.
+
+
 ### 2026-11-17 — Preserve superseded Japan/N64Recomp/overlay research before retiring draft PRs
 
 - **Change:** Selectively imported original Git blobs for the older 47-C cross-overlay native staging/evidence scripts, older 24-C Japanese proof, Japanese N64Recomp ROM input/overlay/symbol/loader research, dual-region ROM metadata comparison and unverified USA external-address research leads. Added `decomp/RESEARCH_IMPORTS.md` recording exact originating branch SHAs and limits.
