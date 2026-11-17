@@ -7,7 +7,9 @@ offset candidate. An edit is NOT evidence that an event meaning is proven.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+import json
+from pathlib import Path
 
 from practice.story_progress import (
     FLAGS, CURATED_FLAGS, PLASMA_FLAGS, EXTERNAL_FLAGS,
@@ -28,6 +30,7 @@ class UnlockFlag:
     source: str
     evidence: str
     editable: bool
+    subtype: str = 'Unsorted'
 
     def __post_init__(self):
         if not (0x80000000 <= self.address < 0x80800000):
@@ -77,12 +80,75 @@ assert len({f.key for f in JAPAN_FLAGS}) == len(JAPAN_FLAGS)
 assert all(f.editable for f in JAPAN_FLAGS)
 
 
+CATEGORY_FILE = Path(__file__).with_name('unlock_flag_categories.json')
+
+
+def load_flag_categories(path=None):
+    """Load edit-friendly type/subtype metadata without touching RAM mappings.
+
+    An invalid file raises a readable ValueError to the caller; standalone
+    catalogue validators can use this to identify a malformed user edit.
+    """
+    file = Path(path) if path is not None else CATEGORY_FILE
+    try:
+        data = json.loads(file.read_text(encoding='utf-8'))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise ValueError(f'Cannot read flag categories JSON: {exc}') from exc
+    if not isinstance(data, dict) or not isinstance(data.get('flags'), list):
+        raise ValueError('Flag categories must contain a "flags" array')
+    known = {flag.key for flag in USA_FLAGS}
+    result = {}
+    for entry in data['flags']:
+        if not isinstance(entry, dict) or not isinstance(entry.get('key'), str):
+            raise ValueError('Every flag category needs a string key')
+        key = entry['key']
+        if key not in known:
+            raise ValueError(f'Unknown flag category key: {key}')
+        if key in result:
+            raise ValueError(f'Duplicate flag category key: {key}')
+        fields = []
+        for field in ('type', 'subtype'):
+            value = entry.get(field)
+            if not isinstance(value, str) or not value.strip() or len(value) > 75:
+                raise ValueError(
+                    f'{key}: {field} must be a nonempty string, up to 75 characters')
+            fields.append(value.strip())
+        result[key] = tuple(fields)
+    if result.keys() != known:
+        missing = known - result.keys()
+        raise ValueError(
+            f'Flag categories missing {len(missing)} entries: '
+            + ', '.join(sorted(missing)[:5]))
+    return result
+
+
 def flags_for_region(region):
     if region == 'usa':
-        return USA_FLAGS
-    if region == 'japan':
-        return JAPAN_FLAGS
-    raise ValueError(f'Unsupported game region: {region}')
+        catalog = USA_FLAGS
+    elif region == 'japan':
+        catalog = JAPAN_FLAGS
+    else:
+        raise ValueError(f'Unsupported game region: {region}')
+    try:
+        categories = load_flag_categories()
+    except ValueError:
+        # Invalid user-edited JSON cannot prevent starting the toolkit or
+        # reading/writing existing game bits; use canonical story sections.
+        return catalog
+    organised = [
+        replace(flag, group=categories[flag.key][0],
+                subtype=categories[flag.key][1])
+        for flag in catalog
+    ]
+    # Group all rows of the same type/subtype together. Preserve the order
+    # of first appearance of each section and each key in the editable JSON.
+    order = {key: index for index, key in enumerate(categories)}
+    sections = {}
+    for flag in organised:
+        sections.setdefault((flag.group, flag.subtype), len(sections))
+    organised.sort(key=lambda flag: (
+        sections[(flag.group, flag.subtype)], order[flag.key]))
+    return tuple(organised)
 
 
 def read_flag_bytes(ram, region, flags=None):
@@ -121,7 +187,11 @@ def write_japan_crosswalk_flag(writer, flag, target, expected):
     Candidate evidence does not block experiments, but an unknown/unmapped
     address is not silently promoted into this catalogue.
     """
-    if flag not in JAPAN_FLAGS:
+    if not any(
+            entry.key == flag.key and
+            entry.address == flag.address and
+            entry.mask == flag.mask
+            for entry in JAPAN_FLAGS):
         raise ValueError('Address has no saved-event crosswalk entry')
     data = bytes((masked_flag_byte(flag, target, expected),))
     return writer(flag.address, data, expected=bytes((expected,)))
