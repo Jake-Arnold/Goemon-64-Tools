@@ -23,7 +23,7 @@ class UpdaterMixin:
         card = ttk.LabelFrame(parent, text=' Toolkit updates ', padding=10)
         card.pack(fill='x', pady=(0, 6))
         self.update_status = tk.StringVar(
-            value='Check for new toolkit code on the main GitHub branch.')
+            value='Check the current main or toolkit test branch for updates.')
         ttk.Label(card, textvariable=self.update_status, style='CardMuted.TLabel',
                   wraplength=410).pack(anchor='w', pady=(0, 7))
         self.update_button = ttk.Button(
@@ -44,7 +44,7 @@ class UpdaterMixin:
         self.update_button.state(['disabled'])
         self.update_status.set(
             'Installing checked update...' if installing else
-            'Checking canonical GitHub main for updates...')
+            'Checking this branch against canonical GitHub...')
         def work():
             try:
                 if installing:
