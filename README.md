@@ -1,4 +1,33 @@
-# Goemon Speedrun Tools v0.11.38 — simplified navigation and unrestricted memory comparison test
+# Goemon Speedrun Tools v0.11.39 — simplified navigation and unrestricted memory comparison test
+
+## v0.11.39 — Clearer Unlocks layout, automatic desktop sizing, editable flag subtypes
+
+The toolkit opens in a **monitor-sized window** rather than a fixed 1220×790 viewport (up to 1480×950, with screen margins). The scrollable Dashboard and Unlocks pages remain usable on smaller screens. Unlocks no longer repeats inventory-specific descriptions and connection status above the Story & event flags subpage. Flag rows are compact, full-width dark cards with high-contrast names, visible addresses and masks, clear live On/Off state, and separate, more legible Off and On buttons, even while disabled. Type/subtype headings organize the list.
+
+### Edit the flag organization as JSON
+
+The editable manifest is [practice/unlock_flag_categories.json](practice/unlock_flag_categories.json). It lists **all 142 named flag keys**, including the **58 currently mapped for Japan**, with these attributes:
+
+```json
+{
+  "key": "benkei_encounter",
+  "label": "Benkei encounter recorded",
+  "type": "Benkei & Kihachi",
+  "subtype": "Unsorted"
+}
+```
+
+Change **type** and **subtype** freely to create chapters, regions, bosses, quests or any custom grouping. Move entries in the JSON array to change display order. The UI's **Type** and **Subtype** dropdowns filter the named groups; text search also searches both labels and their full evidence. `Unsorted` is the initial placeholder until the organization is supplied. Changes take effect on toolkit restart.
+
+**Do not change or remove `key`**: it is the immutable identifier that binds metadata to a game flag. `label` is descriptive reference text; `type` and `subtype` alone affect the UI layout. Addresses, masks, read/write support and regional crosswalk evidence are defined in code, never in this JSON. Unverified Japanese crosswalk bits remain directly On/Off editable after reorganization.
+
+To validate an edited JSON file:
+
+```bash
+python3 -m unittest tests.test_unlock_flag_catalog -v
+```
+
+If the JSON file is missing or invalid, the toolkit starts with its original generic sections rather than suppressing live flag editing. The tests report schema errors. The JSON is tracked in Git: personal edits should be saved or submitted separately before an auto-update of the repository.
 
 ## v0.11.38 — Direct On / Off buttons for each story and event flag
 
