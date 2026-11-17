@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Four new USA file_11 native-matching C candidates beyond the 342-function canonical build (research-only)
+
+- Deduplicated the latest 179-function canonical file_11 C fixture against PR #23's 114 formerly outstanding original ROM offsets: **32 have entered production**, leaving **82 distinct, unpromoted PR #23 functions / 3,512 original instruction bytes**. All 104 earlier PR #24 functions are already accounted for in canonical 342.
+- Independently matched **four further, previously unresearched USA file_11 functions** at original ROM offsets `0x5A3D28` (40 bytes), `0x5A3E18` (40), `0x5AB904` (36) and `0x5AC4E0` (36). All use pure C, pinned IDO 5.3 original-VMA codegen and the authenticated 32 MiB original USA ROM. **4/4 functions and 152/152 instruction bytes match**; all original linked ELF function addresses and sizes were checked. Two are mode-range predicates adjoining the existing PR #23 actor-state region; two are related event-state predicates.
+- The original `file_11` targeted disassembly has 906 function boundaries. No new function overlaps the 179 promoted C functions or the prior research candidates. Other adjacent short probes remain nonmatching at 6/10, 6/12, 10/12 or 12/13 instructions and are not counted.
+- Evidence and source: `decomp/research/file11_wave6_four_sources.json`, `decomp/results/file11_wave6_four_native_proof_20261117.json`, `docs/USA_FILE11_WAVE6_FOUR_NATIVE_MATCHES_2026-11-17.md`; standalone source-only reproducibility archive `goemon-file11-wave6-adjacent-20261117.zip` in the project conversation.
+- **No central promotion:** canonical USA remains 342 matching C / 17,568 bytes; 346 / 17,720 bytes is only the four-function G2 target. No complete 32 MiB 346-function ROM/relocation/inventory build, Japanese proof or production manifest modification. The four are research candidates only.
+
 ### 2026-11-17 — Import fully verified Japanese rev-0 34-function C baseline into chatgptweb/decomp
 
 - **Scope and provenance:** Selective, source-only integration from `chatgptweb/japanese-decomp-port` commit `634da7d6e4100125d7b7fe9e1592bb68e1458146`, carrying the 34 matching-C functions from the already published 34-C promotion `ff040f7ed3b9a75b799ce4323badcd37782f81ff`. Added 30 Japanese C translation units, original-address region manifest, Japanese Splat/layout adapter, IDO/GNU MIPS build runner, strict verifier, relocation policy, focused unit tests, and documentation. No wholesale branch merge or USA source replacement.
