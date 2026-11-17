@@ -7,7 +7,8 @@ import unittest
 from unittest.mock import patch
 
 from practice.updater import (
-    UpdateError, VersionTarget, check_for_updates, install_update,\n    list_available_versions, detect_installed_target, _trusted_origin,
+    UpdateError, VersionTarget, check_for_updates, install_update,
+    list_available_versions, detect_installed_target, _trusted_origin,
 )
 
 
