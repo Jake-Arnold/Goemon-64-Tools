@@ -28,7 +28,7 @@ class AddressCatalogueUI:
         self.address_catalogue_page = parent
         self.catalogue_status = tk.StringVar(value="Loading bundled memory registry...")
         self.catalogue_query = tk.StringVar(value="")
-        self.catalogue_region = tk.StringVar(value="all")
+        self.catalogue_region = tk.StringVar(value=self.active_version.key)
         self.catalogue_evidence = tk.StringVar(value="all")
         self.catalogue_category = tk.StringVar(value="all")
         self.catalogue_type = tk.StringVar(value="all")
@@ -40,6 +40,12 @@ class AddressCatalogueUI:
         self.catalogue_loaded = False
         self.catalogue_rows = {}
         self.catalogue_payload = None
+        self.catalogue_audit = None
+        self.catalogue_filter_after = None
+        self.catalogue_live_after = None
+        self.catalogue_live_busy = False
+        self.catalogue_live_cache = {}
+        self.catalogue_live_generation = 0
 
         header = ttk.Frame(parent)
         header.pack(fill="x", pady=(0, 6))
@@ -62,8 +68,12 @@ class AddressCatalogueUI:
         filters = ttk.Frame(parent)
         filters.pack(fill="x", pady=(0, 8))
         self.catalogue_filters = {}
+        ttk.Label(filters, text="Active game:").pack(
+            side="left", padx=(0, 4))
+        ttk.Label(filters, textvariable=self.catalogue_region,
+                  style="Card.TLabel", width=8).pack(
+                      side="left", padx=(0, 14))
         for label, state, width in (
-                ("Region", self.catalogue_region, 12),
                 ("Evidence", self.catalogue_evidence, 21),
                 ("Category", self.catalogue_category, 22),
                 ("Type", self.catalogue_type, 12)):
@@ -77,7 +87,7 @@ class AddressCatalogueUI:
             self.catalogue_filters[label] = widget
         result_frame = ttk.Frame(parent)
         result_frame.pack(fill="both", expand=True)
-        names = ("address", "region", "category", "type", "evidence", "control")
+        names = ("address", "value", "region", "category", "type", "evidence", "control")
         table = ttk.Treeview(
             result_frame, columns=names, show="tree headings",
             selectmode="browse", height=15)
@@ -86,7 +96,8 @@ class AddressCatalogueUI:
         table.column("#0", width=275, stretch=True)
         for key, label, width in (
                 ("address", "Guest address", 115),
-                ("region", "Region", 67),
+                ("value", "Live value", 120),
+                ("region", "Region", 65),
                 ("category", "Category", 126),
                 ("type", "Decode", 76),
                 ("evidence", "Evidence", 150),
@@ -128,15 +139,119 @@ class AddressCatalogueUI:
         detail.pack(side="left", fill="both", expand=True)
         detail_scroll.pack(side="right", fill="y")
         self.catalogue_detail = detail
+        # Debounce text typing so a 300-row Treeview isn't rebuilt for each
+        # keypress while the user searches. Dropdown changes stay immediate.
+        self.catalogue_query.trace_add(
+            "write", lambda *_: self._queue_catalogue_filter())
         for var in (
-                self.catalogue_query, self.catalogue_region,
-                self.catalogue_category, self.catalogue_evidence,
-                self.catalogue_type):
-            var.trace_add("write", lambda *_:
-                          self.filter_address_catalogue())
+                self.catalogue_region, self.catalogue_category,
+                self.catalogue_evidence, self.catalogue_type):
+            var.trace_add(
+                "write", lambda *_: self.filter_address_catalogue())
+
+    def _catalogue_evidence_label(self, record):
+        sources = {source["confidence"] for source in
+                   record.get("confidence_sources", ())
+                   if isinstance(source, dict) and source.get("confidence")}
+        if "usa_source" in sources and len(sources) > 1:
+            return "ROM + research"
+        return str(record["confidence"]).replace("_", " ")
+
+    def _queue_catalogue_filter(self):
+        prior = self.catalogue_filter_after
+        if prior is not None:
+            try:
+                self.root.after_cancel(prior)
+            except tk.TclError:
+                pass
+        self.catalogue_filter_after = self.root.after(
+            140, self._apply_queued_catalogue_filter)
+
+    def _apply_queued_catalogue_filter(self):
+        self.catalogue_filter_after = None
+        self.filter_address_catalogue()
+
+    def sync_address_catalogue_region(self):
+        """The active ROM determines catalogue visibility, never a manual
+        region selector or a previous USA/JP session's cached values.
+        """
+        region = self.active_version.key
+        if self.catalogue_region.get() != region:
+            self.catalogue_live_generation += 1
+            self.catalogue_live_cache.clear()
+            self.catalogue_region.set(region)
+        if self.catalogue_loaded:
+            self.filter_address_catalogue()
+
+    def _schedule_catalogue_live_poll(self):
+        if self.catalogue_live_after is not None:
+            return
+        self.catalogue_live_after = self.root.after(
+            1100, self._catalogue_live_cycle)
+
+    def _catalogue_live_cycle(self, *, force=False):
+        """Poll only the visible decoded rows; never read 300 values on Tk."""
+        self.catalogue_live_after = None
+        try:
+            if not self.root.winfo_exists() or not self.catalogue_loaded:
+                return
+            if (not force and
+                    (self.notebook.select() != str(self.live_memory_tab) or
+                     self.live_memory_sections.select() !=
+                     str(self.address_catalogue_page))):
+                return
+            self.sync_address_catalogue_region()
+            reader = (self.mem if self.active_version.key == "usa"
+                      else self.jp_rdram)
+            if reader is None:
+                if self.catalogue_live_cache:
+                    self.catalogue_live_cache.clear()
+                    self.filter_address_catalogue()
+                return
+            if self.catalogue_live_busy:
+                return
+            ids = self.catalogue_tree.get_children()
+            # Treeview.bbox returns empty for off-screen rows, including
+            # rows scrolled out of view. A bounded fallback supports tests
+            # using hidden/withdrawn Tk roots.
+            visible = [
+                key for key in ids
+                if self.catalogue_tree.bbox(key)]
+            if not visible and force:
+                visible = ids[:24]
+            chosen = [
+                self.catalogue_rows[key] for key in visible[:32]
+                if self.catalogue_rows[key]["live_readable"]]
+            if not chosen:
+                return
+            region = self.active_version.key
+            generation = self.catalogue_live_generation
+            self.catalogue_live_busy = True
+            def work():
+                values = {}
+                for record in chosen:
+                    try:
+                        value, raw = decode_read(reader, record)
+                        values[record["id"]] = value
+                    except (OSError, ValueError, RuntimeError,
+                            PermissionError, TypeError):
+                        values[record["id"]] = "—"
+                self.catalogue_events.put(
+                    ("live", None,
+                     (region, generation, reader, values), None))
+            threading.Thread(
+                target=work, daemon=True,
+                name="GoemonCatalogueVisibleReads").start()
+            self.root.after(80, self._poll_catalogue_worker)
+        finally:
+            if not force:
+                self._schedule_catalogue_live_poll()
+
 
     def show_address_catalogue(self, _event=None):
         if self.catalogue_loaded:
+            self.sync_address_catalogue_region()
+            self._schedule_catalogue_live_poll()
             return
         try:
             local = load_registry()[0]
@@ -147,6 +262,7 @@ class AddressCatalogueUI:
                 self.catalogue_remote_info = dict(
                     load_catalogue_cache_info(), **changes)
             self.catalogue_payload = local
+            self.catalogue_audit = audit_catalogue(local)
             self.catalogue_rows = {row["id"]: row for row in local["entries"]}
             for name, key in (
                     ("Evidence", "confidence"),
@@ -155,10 +271,10 @@ class AddressCatalogueUI:
                 options = sorted(set(
                     str(r.get(key) or "unknown") for r in local["entries"]))
                 self.catalogue_filters[name].configure(values=("all", *options))
-            self.catalogue_filters["Region"].configure(
-                values=("all", "usa", "japan", "unknown"))
             self.catalogue_loaded = True
+            self.sync_address_catalogue_region()
             self.filter_address_catalogue()
+            self._schedule_catalogue_live_poll()
         except (OSError, ValueError, KeyError, TypeError) as exc:
             self.catalogue_status.set(f"Unable to open address registry: {exc}")
 
@@ -179,7 +295,8 @@ class AddressCatalogueUI:
             category=self.catalogue_category.get(),
             data_type=("all" if self.catalogue_type.get() == "all"
                        else None if self.catalogue_type.get() == "unknown"
-                       else self.catalogue_type.get()))
+                       else self.catalogue_type.get()),
+            already_validated=True)
         key, reversed_order = self.catalogue_sort
         def sorting(record):
             if key == "name":
@@ -201,12 +318,15 @@ class AddressCatalogueUI:
         for row in rows:
             table.insert(
                 "", "end", iid=row["id"], text=row["name"],
-                values=(row["address"], row["region"],
-                        row["category"], row.get("data_type") or "—",
-                        row["confidence"], row.get("control") or "—"))
+                values=(row["address"],
+                        self.catalogue_live_cache.get(row["id"], "—"),
+                        row["region"], row["category"],
+                        row.get("data_type") or "—",
+                        self._catalogue_evidence_label(row),
+                        row.get("control") or "—"))
         if selected and table.exists(selected[0]):
             table.selection_set(selected[0])
-        audit = audit_catalogue(self.catalogue_payload)
+        audit = self.catalogue_audit
         sync = self.catalogue_remote_info
         extra = (f"; last sync {sync['last_sync']}"
                  if sync.get("last_sync") else "; bundled/offline")
@@ -254,7 +374,9 @@ class AddressCatalogueUI:
             "data_type": row.get("data_type"), "width": row.get("width"),
             "mask": row.get("mask"), "endian": row.get("endian"),
             "counterpart": row.get("counterpart"),
-            "confidence": row["confidence"], "live_readable": row["live_readable"],
+            "confidence": row["confidence"],
+            "confidence_sources": row.get("confidence_sources", []),
+            "live_readable": row["live_readable"],
             "control": row.get("control"), "context": row.get("context"),
             "evidence": row.get("evidence"), "sources": row.get("sources"),
             "mips_refs": row.get("mips_refs"),
@@ -393,6 +515,19 @@ class AddressCatalogueUI:
             except tk.TclError:
                 pass
             return
+        if kind == "live":
+            self.catalogue_live_busy = False
+            region, generation, reader, values = outcome
+            expected_reader = (
+                self.mem if self.active_version.key == "usa"
+                else self.jp_rdram)
+            if (reader is expected_reader and region == self.active_version.key
+                    and generation == self.catalogue_live_generation):
+                self.catalogue_live_cache.update(values)
+                for key, value in values.items():
+                    if self.catalogue_tree.exists(key):
+                        self.catalogue_tree.set(key, "value", value)
+            return
         self.catalogue_busy = False
         if error:
             self.catalogue_selected.set(
@@ -400,6 +535,8 @@ class AddressCatalogueUI:
             return
         if kind == "refresh":
             self.catalogue_payload, self.catalogue_remote_info = outcome
+            self.catalogue_audit = audit_catalogue(self.catalogue_payload)
+            self.catalogue_live_cache.clear()
             self.catalogue_rows = {
                 r["id"]: r for r in self.catalogue_payload["entries"]}
             self.filter_address_catalogue()
