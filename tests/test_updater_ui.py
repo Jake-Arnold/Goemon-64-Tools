@@ -71,7 +71,7 @@ class UpdaterUITests(unittest.TestCase):
             tuple(app.update_version_box['values']),
             tuple(v.label for v in versions))
         self.assertEqual(app.update_target_choice.get(), 'Stable · main')
-        self.assertEqual(app.update_version_box.cget('state'), 'readonly')
+        self.assertEqual(str(app.update_version_box.cget('state')), 'readonly')
         app.update_target_choice.set(versions[1].label)
         app.on_update_target_selected()
         self.assertIn('toolkit/test-flags', app.update_status.get())
