@@ -6207,7 +6207,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/MEMORY_MAP.md:300@toolkit/unlocks-items-and-flags-20261117",
-        "practice/checkpoints.py:20"
+        "practice/checkpoints.py:20",
+        "practice/checkpoints.py:21"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -6795,7 +6796,8 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/checkpoints.py:22"
+        "practice/checkpoints.py:22",
+        "practice/checkpoints.py:23"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -6868,7 +6870,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/MEMORY_MAP.md:299@toolkit/unlocks-items-and-flags-20261117",
-        "practice/checkpoints.py:23"
+        "practice/checkpoints.py:23",
+        "practice/checkpoints.py:24"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -9192,6 +9195,7 @@
         "practice/MEMORY_MAP.md:253@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
         "practice/checkpoints.py:21",
+        "practice/checkpoints.py:22",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -9232,6 +9236,7 @@
         "practice/MEMORY_MAP.md:253@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
         "practice/checkpoints.py:21",
+        "practice/checkpoints.py:22",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -9279,6 +9284,7 @@
         "practice/MEMORY_MAP.md:253@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
         "practice/checkpoints.py:21",
+        "practice/checkpoints.py:22",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
@@ -9320,6 +9326,7 @@
         "practice/MEMORY_MAP.md:253@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
         "practice/checkpoints.py:21",
+        "practice/checkpoints.py:22",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
