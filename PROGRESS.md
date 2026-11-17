@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Japanese rev-0 static room actor extraction and dual-region browser
+
+- **Implementation:** Extended the static room actor browser with independent Japanese rev-0 SHA-1 validation, ROM table parsing, file_12 overlay base `0x80212090` and room pointer table offset `0x23F58` (guest `0x80235FE8`). Parser rejects unknown region and mismatched source ROMs, retains separate region-specific cache schemas, and treats USA-derived actor labels as unverified for Japan. The USA-only external names catalog is not used for Japan.
+- **UI:** Added **Load Japan actor ROM…** to Scene browser. This writes only `room-actors-japan-0.json` metadata cache; it does NOT alter USA entrance records, scene reload logic or N64 memory. The **Room actors…** window offers `usa` and `japan_0` region selections and follows the selected stage.
+- **Authenticated extraction:** Original Japanese .n64 adjacent-byte swapped SHA-1 `b6386455c0b8f573e315976bbb47548cbafcedb3`, normalised Japanese .z64 SHA-1 `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b`. The two input forms yielded identical reports: **333 mapped rooms, 3,884 placement records, 255 distinct actor IDs**, no structural parsing errors. USA remains **333/3,881/255**. The difference is confined to room IDs 49, 304, 305, 363, 463 and 464.
+- **Tests actually run:** Six focused synthetic Python parser/metadata tests PASS, including independent JP table/caching and invalid-region detection; one Linux/Xvfb Tk dialog test PASS including USA→Japan table switching. Original-USA and original-Japan full-ROM data extraction PASS. Full source repository tests, live emulator actor inspection, and a native decomp matching-C rebuild were **not run**; host clone DNS is unavailable. This changes no accepted decomp function counts.
+- **Limits and next:** These are static ROM placements, NOT active NPCs, and the English Japanese labels remain unverified until separate JP gameplay/source evidence exists. Runtime actor manager/allocator and spawn lifecycle discovery remain separate.
+
+
 ### 2026-11-17 — Read-only USA ROM room actor browser (feature branch)
 
 - **Change:** Add practice/room_actors.py to enumerate individual 20-byte actor placement records referenced by each room's 16-byte definitions and spatial grid groups. Reuse the existing SHA-1-verified USA retail/expanded ROM parser; reject out-of-bounds headers, broken group pointers, invalid definitions and inconsistent cache summaries. Merge only identical spatial-group references, not separate instances using the same actor ID. Include actor labels with code/room annotation, external/unverified or unknown provenance.
