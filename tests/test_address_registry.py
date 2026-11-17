@@ -67,6 +67,18 @@ class RegistryTests(unittest.TestCase):
         self.assertEqual(guest_bit("story:usa:benkei_encounter"),
                          (0x8015C60C, 0x20))
 
+    def test_native_debug_watches_use_registered_original_locations(self):
+        from practice.native_debug_watch import FIELDS
+        self.assertEqual(len(FIELDS), 10)
+        for field in FIELDS:
+            self.assertEqual(
+                field.address,
+                guest_address("native_debug:" + field.key,
+                              region="usa", width=field.width))
+        self.assertEqual(
+            guest_address("native_debug:state", region="usa", width=1),
+            0x800C7A94)
+
     def test_counterparts_and_snowflake_exception(self):
         for field in CROSS_REGION_FIELDS:
             self.assertEqual(field.usa, guest_address(
