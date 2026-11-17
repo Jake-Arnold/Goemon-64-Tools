@@ -575,7 +575,10 @@ class UnlocksMixin:
             return
         for widgets in self.unlock_flag_widgets.values():
             widgets['frame'].destroy()
+        for header in self.unlock_flag_sections.values():
+            header.destroy()
         self.unlock_flag_widgets = {}
+        self.unlock_flag_sections = {}
         self.unlock_flag_region = region
         self.unlock_flag_rows = {
             flag.key: flag for flag in flags_for_region(region)}
@@ -584,28 +587,67 @@ class UnlocksMixin:
         self.unlock_flag_feedback.set('')
         self.unlock_flag_detail.set(
             'Click a flag name for full mapping evidence.')
+        categories = tuple(dict.fromkeys(
+            flag.group for flag in self.unlock_flag_rows.values()))
+        self.unlock_flag_type_box.configure(
+            values=('All types',) + categories)
+        if self.unlock_flag_type.get() not in ('All types',) + categories:
+            self.unlock_flag_type.set('All types')
+        self._refresh_unlock_flag_subtypes()
         self._ensure_unlock_flag_widgets()
         self.filter_unlock_flags()
 
+    def _refresh_unlock_flag_subtypes(self):
+        """Only list subtypes within the selected type."""
+        selected_type = self.unlock_flag_type.get()
+        subtypes = tuple(dict.fromkeys(
+            flag.subtype for flag in self.unlock_flag_rows.values()
+            if selected_type == 'All types' or flag.group == selected_type))
+        values = ('All subtypes',) + subtypes
+        self.unlock_flag_subtype_box.configure(values=values)
+        if self.unlock_flag_subtype.get() not in values:
+            self.unlock_flag_subtype.set('All subtypes')
+
+    def on_unlock_flag_type_changed(self, _event=None):
+        self.unlock_flag_subtype.set('All subtypes')
+        self._refresh_unlock_flag_subtypes()
+        self.filter_unlock_flags()
+
     def filter_unlock_flags(self):
-        """Filter by name, address, group, source or detailed provenance."""
+        """Combine search and editable type/subtype classifications."""
         query = self.unlock_flag_query.get().strip().casefold()
+        selected_type = self.unlock_flag_type.get()
+        selected_subtype = self.unlock_flag_subtype.get()
         visible = 0
+        matched_sections = set()
         for flag in self.unlock_flag_rows.values():
             text = ' '.join((
-                flag.label, flag.group, flag.source, flag.evidence,
-                f'0x{flag.address:08X}', f'0x{flag.mask:02X}'))
-            match = query in text.casefold()
+                flag.label, flag.group, flag.subtype, flag.source,
+                flag.evidence, f'0x{flag.address:08X}',
+                f'0x{flag.mask:02X}'))
+            match = (query in text.casefold()
+                     and (selected_type == 'All types'
+                          or flag.group == selected_type)
+                     and (selected_subtype == 'All subtypes'
+                          or flag.subtype == selected_subtype))
             if match:
                 visible += 1
+                matched_sections.add((flag.group, flag.subtype))
             widgets = self.unlock_flag_widgets.get(flag.key)
             if widgets is not None:
                 if match:
                     widgets['frame'].grid()
                 else:
                     widgets['frame'].grid_remove()
+        for section, header in self.unlock_flag_sections.items():
+            if section in matched_sections:
+                header.grid()
+            else:
+                header.grid_remove()
         self.unlock_flag_counter.set(
             f'{visible} / {len(self.unlock_flag_rows)} named bits')
+        if self.unlock_flag_widgets:
+            self.unlock_flag_canvas.yview_moveto(0)
 
     def _can_write_unlock_flag(self, flag):
         if flag is None:
@@ -649,14 +691,20 @@ class UnlocksMixin:
                 '—' if raw is None else
                 'On' if raw & flag.mask else 'Off')
             widgets['state'].set(state)
+            widgets['state_label'].configure(
+                foreground=(PALETTE['teal'] if state == 'On'
+                            else PALETTE['warning'] if state == 'Off'
+                            else PALETTE['muted']))
             enabled = bool(
                 raw is not None and self._can_write_unlock_flag(flag))
             for target, button in (
                     ('Off', widgets['off']), ('On', widgets['on'])):
                 button.state(['!disabled'] if enabled else ['disabled'])
                 button.configure(
-                    style='Gold.TButton' if raw is not None and state == target
-                    else 'TButton')
+                    style=('FlagOn.TButton' if target == 'On'
+                           else 'FlagOff.TButton')
+                    if raw is not None and state == target
+                    else 'Flag.TButton')
 
     def set_unlock_flag(self, key, target):
         """One-click per-row On/Off; only the requested bit may change."""
