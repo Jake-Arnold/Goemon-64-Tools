@@ -17,8 +17,8 @@ from practice.address_catalogue import (
     audit_catalogue, decode_read, search_entries, validate_catalogue,
 )
 from practice.address_catalogue_remote import (
-    load_cached_discoveries, merge_remote_catalogue,
-    refresh_address_discoveries,
+    load_cached_catalogue, load_catalogue_cache_info,
+    merge_remote_metadata, refresh_canonical_catalogue,
 )
 from practice.custom_watches import FORMATS
 
@@ -141,10 +141,11 @@ class AddressCatalogueUI:
         try:
             local = load_registry()[0]
             validate_catalogue(local)
-            cached = load_cached_discoveries()
+            cached = load_cached_catalogue()
             if cached:
-                local, self.catalogue_remote_info = merge_remote_catalogue(
-                    local, cached)
+                local, changes = merge_remote_metadata(local, cached)
+                self.catalogue_remote_info = dict(
+                    load_catalogue_cache_info(), **changes)
             self.catalogue_payload = local
             self.catalogue_rows = {row["id"]: row for row in local["entries"]}
             for name, key in (
@@ -368,10 +369,11 @@ class AddressCatalogueUI:
         self.catalogue_selected.set("Checking official repository for metadata...")
         def job():
             try:
-                remote, info = refresh_address_discoveries(branch="main")
-                # Baseline metadata is canonical. Remote is descriptive only.
+                remote, info = refresh_canonical_catalogue(branch="main")
+                # Bundled control addresses and permissions remain immutable
+                # during a remote descriptive metadata-only refresh.
                 local = load_registry()[0]
-                merged, counts = merge_remote_catalogue(local, remote)
+                merged, counts = merge_remote_metadata(local, remote)
                 self.catalogue_events.put(
                     ("refresh", None, (merged, dict(info, **counts)), None))
             except (OSError, ValueError, RuntimeError) as exc:
