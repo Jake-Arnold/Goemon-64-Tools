@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Native revisit of two older USA nonmatching routines; no C promotion
+
+- **Retry scope:** Re-tested `func_80001DF4_29F4` (ROM 0x29F4, 92 bytes) with three new source layouts and `func_8003F6E8_402E8` (ROM 0x402E8, 48 bytes) with its original call-wrapper semantics. Original IDO 5.3 produced linked original-VMA native ELF functions using pinned flags and explicit SUBALIGN(4) linker scripts.
+- **Native result:** DF4 variants all emitted 96-byte symbols, first differing instruction at +0x20, +0x00, and +0x14 respectively; none improves the old +0x24 research mismatch. F6E8 emitted a 40-byte FUNC matching the first 40 original bytes exactly, but the original includes another eight-byte `jr $ra; nop` pair; linked padding is not acceptable C ownership. Both targets remain `FAILED_NATIVE`, with original ASM retained.
+- **Tests actually run:** Focused `decomp.test_vm_wrapper_extent` 6/6 PASS. Full `python -m decomp.local_ci` PASS (232 + 234 ROM-free Python tests and sanitizer host fixture). Full-ROM new-C G2, inventory and regional CI promotion gates NOT RUN because no candidate passed native full-function equality. Original USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494` authenticated.
+- **Research package:** `decomp/research/legacy_revisit_20261117/` contains four independently native-compiled C hypotheses and exact original-VMA linker scripts; sanitized measurements in `decomp/results/legacy_native_revisit_20261117.json`. Never commit the original ROM or generated binaries.
+- **Production unchanged:** USA 864 matching C / 37,904 bytes, Japan 39 matching C / 2,092 bytes. No manifest, canonical proof, inventory or registry changes. Next retry requires new control-flow/ABI or original unit-boundary evidence, not unbounded source permutations.
+
 ### 2026-11-17 — All 87 original-address pending C candidates pass native regional production gates
 
 - **USA:** Integrated all 82 previously pending original-address `file_11` research C functions, 3,512 original instruction bytes, into all prior 782 accepted USA C. Original IDO 5.3 compiler and MIPS assembler/linker produced **864/864 C, 37,904 exact instruction bytes**, full **33,554,432/33,554,432 byte-identical USA ROM** SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Exact 8,825 semantic `file_11` relocations, original 7,376 positive-sized ELF function identities and zero extra positive aliases. Strict `decomp.inventory` PASSED with 6,499 assembly entries remaining. Source adapter and 240 reviewed original-address source objects pinned in `file11_269_stage.py` and `file11_269_allpending_source_fixture.json`.

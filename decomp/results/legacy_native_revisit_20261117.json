@@ -1,0 +1,99 @@
+{
+  "format": "goemon-legacy-target-native-revisit-v1",
+  "date_utc": "2026-11-17",
+  "branch": "chatgptweb/decomp",
+  "baseline": {
+    "region": "usa",
+    "accepted_matching_c": 864,
+    "accepted_instruction_bytes": 37904,
+    "japan_matching_c": 39,
+    "original_usa_expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "tools": {
+    "ido": "Original IDO 5.3",
+    "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": "-c -G 0 -non_shared -Xfullwarn -Xcpluscomm -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -O2 -mips2",
+    "mips_linker": "mips-linux-gnu-ld, explicit .text VMA with SUBALIGN(4)"
+  },
+  "targets": [
+    {
+      "name": "func_80001DF4_29F4",
+      "region": "usa",
+      "segment": "main",
+      "rom_offset": "0x29F4",
+      "vma": "0x80001DF4",
+      "original_bytes": 92,
+      "original_sha256": "473fb38eff509e62825ece5edadc989c5a9f4ce861b35af8257cda91a2852d37",
+      "status": "FAILED_NATIVE",
+      "variants": [
+        {
+          "source": "decomp/research/legacy_revisit_20261117/file_table_df4_v1.c",
+          "source_git_blob_sha": "c084646d95698cd9a1fd398b7a21239f0045614c",
+          "native_symbol_bytes": 96,
+          "linked_text_sha256": "edf008e9cb3cfae03b2b0ff36c04be05825c94f662f0430bdc0b52226c493ac9",
+          "first_mismatch_offset": "0x20",
+          "same_position_matching_words": 10,
+          "compared_words": 23
+        },
+        {
+          "source": "decomp/research/legacy_revisit_20261117/file_table_df4_v2.c",
+          "source_git_blob_sha": "dd2413eda5dd55bba6437fd8c74878a0c48548d2",
+          "native_symbol_bytes": 96,
+          "linked_text_sha256": "87fbbf6025816c874e9989c8bd4c28fbb4b53559561f2d31551493455defcc7a",
+          "first_mismatch_offset": "0x0",
+          "same_position_matching_words": 2,
+          "compared_words": 23
+        },
+        {
+          "source": "decomp/research/legacy_revisit_20261117/file_table_df4_v3.c",
+          "source_git_blob_sha": "69ee7d9c516b7bb0abbd0d8273d001fd830635c9",
+          "native_symbol_bytes": 96,
+          "linked_text_sha256": "e7e79c3f7d6f76485a470b899f6fdadc071271bfce135520b1e57289a80b83f7",
+          "first_mismatch_offset": "0x14",
+          "same_position_matching_words": 8,
+          "compared_words": 23
+        }
+      ],
+      "conclusion": "No native-exact source. New source layouts do not improve the historical best first mismatch at +0x24. Original assembly remains in production."
+    },
+    {
+      "name": "func_8003F6E8_402E8",
+      "region": "usa",
+      "segment": "main",
+      "rom_offset": "0x402E8",
+      "vma": "0x8003F6E8",
+      "original_bytes": 48,
+      "original_sha256": "fd5b89364249c531ad5a2eaed23b97dccf062444ac92c1ddd250fb9f1ca097dd",
+      "status": "FAILED_NATIVE",
+      "variant": {
+        "source": "decomp/research/legacy_revisit_20261117/vm_wrapper_f6e8.c",
+        "source_git_blob_sha": "4d222be0b3861de560f75e26619288d92119db1a",
+        "native_symbol_bytes": 40,
+        "text_section_bytes": 48,
+        "linked_text_sha256": "44feff3a7c654f8c46bb7b19403b69cea31c086a3a452680fb487f41f3610755",
+        "identical_original_prefix_bytes": 40,
+        "first_mismatch_offset": "0x28"
+      },
+      "conclusion": "Native function matches the 40-byte executable prefix, but the original 48-byte FUNC includes another jr $ra/nop pair after the prefix. Extra compiler .text padding is not matching original code. Retain ASM; do not shorten original function extent."
+    }
+  ],
+  "tests": {
+    "targeted_unittest": "PASS: python -m unittest decomp.test_vm_wrapper_extent -q (6 tests)",
+    "full_local_ci": "PASS: python -m decomp.local_ci (232+234 Python tests, 1 skipped; ASan/UBSan graphics writer 1000 synthetic cases + edge cases)",
+    "regional_full_ROM_G2": "NOT_RUN: neither research candidate matched the full original native function",
+    "inventory": "NOT_RUN: no new accepted C candidate"
+  },
+  "production": {
+    "manifest_modified": false,
+    "combined_proof_modified": false,
+    "inventory_modified": false,
+    "matching_c_delta": 0,
+    "matching_bytes_delta": 0,
+    "classification": "RESEARCH_ONLY"
+  },
+  "notes": [
+    "Native C source files and linker scripts were verified at exact original addresses; previous toolchain and ROM provenance retained.",
+    "Do not promote a 40-byte prefix of a 48-byte original ELF function, or count a 96-byte IDO function as matching a 92-byte original.",
+    "Use the published historical G64-071/G64-038 source-recovery ledgers for additional original assembly details; no original ROM instructions or binaries are published here."
+  ]
+}
