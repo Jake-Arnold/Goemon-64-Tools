@@ -1,0 +1,79 @@
+{
+  "format": "goemon-graphics-five-new-native-recheck-v1",
+  "date_utc": "2026-11-17",
+  "region": "usa",
+  "status": "RESEARCH_ONLY",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "production_accepted_usa": 864,
+  "production_accepted_japan": 39,
+  "original_compiler": "IDO 5.3 -O2 -mips2 -G 0 -non_shared",
+  "native_original_address_results": [
+    {
+      "name": "func_8001965C_1A25C",
+      "rom_offset": "0x1a25c",
+      "vma": "0x8001965c",
+      "size": 72,
+      "matched": true,
+      "first_mismatch": null,
+      "original_sha256": "4c148d804fc6ea25df6fa3efe97d846383a00bf626f4eb2a1a4858abb918fd03",
+      "reproduced_sha256": "4c148d804fc6ea25df6fa3efe97d846383a00bf626f4eb2a1a4858abb918fd03"
+    },
+    {
+      "name": "func_8001B918_1C518",
+      "rom_offset": "0x1c518",
+      "vma": "0x8001b918",
+      "size": 56,
+      "matched": true,
+      "first_mismatch": null,
+      "original_sha256": "faae783382532816d946ad8d3209fc8360920796ef93c926950d3489f7d69063",
+      "reproduced_sha256": "faae783382532816d946ad8d3209fc8360920796ef93c926950d3489f7d69063"
+    },
+    {
+      "name": "func_8001C970_1D570",
+      "rom_offset": "0x1d570",
+      "vma": "0x8001c970",
+      "size": 76,
+      "matched": true,
+      "first_mismatch": null,
+      "original_sha256": "bb3eae822c7a98a04b2562b1c64529eb4af6c5f5adde3f0637cc1663e4e7c91b",
+      "reproduced_sha256": "bb3eae822c7a98a04b2562b1c64529eb4af6c5f5adde3f0637cc1663e4e7c91b"
+    },
+    {
+      "name": "func_8001C9BC_1D5BC",
+      "rom_offset": "0x1d5bc",
+      "vma": "0x8001c9bc",
+      "size": 28,
+      "matched": true,
+      "first_mismatch": null,
+      "original_sha256": "6d3c1a4234a9fcbb4c601b563221bdc463dbc7bd64e047958118989b908a458c",
+      "reproduced_sha256": "6d3c1a4234a9fcbb4c601b563221bdc463dbc7bd64e047958118989b908a458c"
+    },
+    {
+      "name": "func_8001C9D8_1D5D8",
+      "rom_offset": "0x1d5d8",
+      "vma": "0x8001c9d8",
+      "size": 52,
+      "matched": true,
+      "first_mismatch": null,
+      "original_sha256": "c66f0cbc8d034a90fc7540863d73e6b8c7302525f585575cbea8385d163f46a6",
+      "reproduced_sha256": "c66f0cbc8d034a90fc7540863d73e6b8c7302525f585575cbea8385d163f46a6"
+    }
+  ],
+  "matching_functions": 5,
+  "matching_instruction_bytes": 284,
+  "original_source_blob_sha1": {
+    "anim_matrix.c": "2f73e1d3a17c5a2e33e3d24c34dd31c9424c9113",
+    "gfx_wrapper.c": "167bf266292d3c38025617692272e48f9f7d659c",
+    "gfx_vectors.c": "6b4a15c80f210811af709f648eafc12b21b04038"
+  },
+  "full_864_plus_5_rom_gate": "NOT_RUN",
+  "full_canonical_inventory": "NOT_RUN",
+  "full_original_relocation_equality": "NOT_RUN",
+  "native_proof_tier": "ISOLATED_OR_COHERENT_GROUP_EXACT_NOT_PRODUCTION",
+  "source_provenance": "Original GitHub PR #63 graphics research blobs; verified unmodified",
+  "limitations": [
+    "Original-address scratch link used one explicit external target constant",
+    "No full 864-C production integration or canonical original ELF relocation proof",
+    "No source/ASM split staging; original production ASM must remain unchanged"
+  ]
+}

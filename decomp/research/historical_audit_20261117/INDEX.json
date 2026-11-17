@@ -1,0 +1,2786 @@
+{
+  "format": "goemon-historical-research-reconciliation-v1",
+  "as_of_utc": "2026-11-17",
+  "scope": "Audits checked-in local decomp history, not every ASM entry or every remote branch tip",
+  "canonical_tree_source": "authenticated local 864-USA/39-JP source aligned with live decomp manifests",
+  "canonical_production": {
+    "usa_matching_c": 864,
+    "usa_matching_bytes": 37904,
+    "usa_original_rom_exact": true,
+    "usa_original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "usa_asm_remaining": 6499,
+    "japan_matching_c": 39,
+    "current_unpromoted_registry": 0
+  },
+  "reconciliation": {
+    "old_registry_entries": 87,
+    "old_registry_now_accepted": 87,
+    "historic_task_records": 100,
+    "historical_execution_ledgers": 77,
+    "historical_execution_statuses": {
+      "DOC_ONLY": 2,
+      "PASSED_G2": 11,
+      "RESEARCH_ONLY": 60,
+      "UNSPECIFIED": 4
+    },
+    "research_result_files_indexed": 85,
+    "historical_branch_snapshot_entries": 45,
+    "historical_open_pr_snapshot_entries": 15,
+    "live_script_vm_asm_names": [
+      "func_8003D468_3E068",
+      "func_8003D68C_3E28C",
+      "func_8003DBEC_3E7EC",
+      "func_8003DE80_3EA80",
+      "func_8003DF98_3EB98",
+      "func_8003E234_3EE34",
+      "func_8003E6C0_3F2C0",
+      "func_8003EBAC_3F7AC",
+      "func_8003ED60_3F960",
+      "func_8003F038_3FC38",
+      "func_8003F37C_3FF7C",
+      "func_8003F480_40080",
+      "func_8003F6E8_402E8"
+    ],
+    "vm_residual_ledger_names": []
+  },
+  "task_catalog": [
+    {
+      "task_id": "G64-001",
+      "title": "Freeze live authority",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-002",
+      "title": "Validate claim ownership",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-003",
+      "title": "Specify proof tiers",
+      "historical_status": "SKIPPED_ALREADY_COMPLETE",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-004",
+      "title": "Review resource ABI",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-005",
+      "title": "Design resource ED4 replacement",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-006",
+      "title": "Design resource F20 replacement",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-007",
+      "title": "Gate resource promotion",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-008",
+      "title": "Review menu ABI model",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-009",
+      "title": "Design all three menu replacements",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-010",
+      "title": "Gate menu promotion",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-011",
+      "title": "Classify object mismatch",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-012",
+      "title": "Recover object ABI and liveness",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-013",
+      "title": "Bound IDO variants for object dispatch",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-014",
+      "title": "Gate object promotion",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-015",
+      "title": "Revisit engine reset",
+      "historical_status": "FAILED_NATIVE",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-016",
+      "title": "Revisit state writer",
+      "historical_status": "FAILED_NATIVE",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-017",
+      "title": "Revisit file-table second lookup",
+      "historical_status": "FAILED_NATIVE",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-018",
+      "title": "Revisit file-size reader",
+      "historical_status": "FAILED_NATIVE",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-019",
+      "title": "Integrate independently passing short functions",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-020",
+      "title": "Record hard-stop decisions",
+      "historical_status": "DOC_ONLY",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-021",
+      "title": "Map resource call graph",
+      "historical_status": "DOC_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-021-resource-callgraph.json"
+      ]
+    },
+    {
+      "task_id": "G64-022",
+      "title": "Define narrow VM resource types",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-022-resource-types.json"
+      ]
+    },
+    {
+      "task_id": "G64-023",
+      "title": "Reproduce lookup candidate baseline",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-023-f038-baseline.json"
+      ]
+    },
+    {
+      "task_id": "G64-024",
+      "title": "Refine lookup code generation",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-024-f038-refinement.json"
+      ]
+    },
+    {
+      "task_id": "G64-025",
+      "title": "Model loader entry-versus-current ID",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-025-loader-id-mutation.json"
+      ]
+    },
+    {
+      "task_id": "G64-026",
+      "title": "Resolve loader ABI and frame",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-026-loader-frame.json"
+      ]
+    },
+    {
+      "task_id": "G64-027",
+      "title": "Trace VM main-step 8003D68C",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-027-main-step-trace.json"
+      ]
+    },
+    {
+      "task_id": "G64-028",
+      "title": "Trace VM control decoder 8003DF98",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-028-control-decoder-trace.json"
+      ]
+    },
+    {
+      "task_id": "G64-029",
+      "title": "Guard already matching resource decoder",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-029-ddc4-mutation-guard.json"
+      ]
+    },
+    {
+      "task_id": "G64-030",
+      "title": "VM resource checkpoint",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-030-vm-resource-checkpoint.json"
+      ]
+    },
+    {
+      "task_id": "G64-031",
+      "title": "Construct text-loop control-flow graph",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-031-text-loop-cfg.json"
+      ]
+    },
+    {
+      "task_id": "G64-032",
+      "title": "Resolve text-loop 0x48 frame",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-032-text-loop-frame.json"
+      ]
+    },
+    {
+      "task_id": "G64-033",
+      "title": "Strengthen text-loop differential model",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-033-text-loop-differential.json"
+      ]
+    },
+    {
+      "task_id": "G64-034",
+      "title": "Recover command-walker CFG",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-034-command-walker-cfg.json"
+      ]
+    },
+    {
+      "task_id": "G64-035",
+      "title": "Fix command-walker delay slots",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-035-delay-slots.json"
+      ]
+    },
+    {
+      "task_id": "G64-036",
+      "title": "Prove command-walker semantics",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-036-command-walker-semantics.json"
+      ]
+    },
+    {
+      "task_id": "G64-037",
+      "title": "Characterize 8003ED60 handler",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-037-ed60-trace.json"
+      ]
+    },
+    {
+      "task_id": "G64-038",
+      "title": "Resolve 8003F6E8 extent",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-038-wrapper-extent.json"
+      ]
+    },
+    {
+      "task_id": "G64-039",
+      "title": "Build VM parser behavioral matrix",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-039-parser-matrix.json"
+      ]
+    },
+    {
+      "task_id": "G64-040",
+      "title": "VM parser production gate",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-040-parser-production-gate.json"
+      ]
+    },
+    {
+      "task_id": "G64-041",
+      "title": "Recover first display-list emitter",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-041-display-emitter-trace.json"
+      ]
+    },
+    {
+      "task_id": "G64-042",
+      "title": "Test first emitter memory model",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-042-display-memory-model.json"
+      ]
+    },
+    {
+      "task_id": "G64-043",
+      "title": "Recover second display-list emitter",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-043-display-emitter-trace.json"
+      ]
+    },
+    {
+      "task_id": "G64-044",
+      "title": "Compare first/second compiler layouts",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-044-compiler-layouts.json"
+      ]
+    },
+    {
+      "task_id": "G64-045",
+      "title": "Recover VM setup callback ABI",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-045-vm-setup-abi.json"
+      ]
+    },
+    {
+      "task_id": "G64-046",
+      "title": "Recover callback setup path",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-046-callback-setup.json"
+      ]
+    },
+    {
+      "task_id": "G64-047",
+      "title": "Resolve number formatter",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-047-number-formatter.json"
+      ]
+    },
+    {
+      "task_id": "G64-048",
+      "title": "Test VM graphics integration boundary",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-048-vm-graphics-boundaries.json"
+      ]
+    },
+    {
+      "task_id": "G64-049",
+      "title": "Stage qualifying VM graphics routines",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-049-vm-graphics-staging.json"
+      ]
+    },
+    {
+      "task_id": "G64-050",
+      "title": "Close VM candidate inventory",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-050-vm-residual-inventory.json"
+      ]
+    },
+    {
+      "task_id": "G64-051",
+      "title": "Specify overlay manifest schema",
+      "historical_status": "DOC_ONLY",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-052",
+      "title": "Promote file_43 reference guard to input contract",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-052-file43-reference-contract.json"
+      ]
+    },
+    {
+      "task_id": "G64-053",
+      "title": "Add overlay linked-ELF provenance",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-053-overlay-elf-provenance.json"
+      ]
+    },
+    {
+      "task_id": "G64-054",
+      "title": "Expand fail-closed overlay tests",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-054-overlay-negative-controls.json"
+      ]
+    },
+    {
+      "task_id": "G64-055",
+      "title": "Define overlay integration adapter",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-055-file43-key.json"
+      ]
+    },
+    {
+      "task_id": "G64-056",
+      "title": "Prepare key initializer replacement",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-056-file43-key.json"
+      ]
+    },
+    {
+      "task_id": "G64-057",
+      "title": "Prove key initializer semantics",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-057-key-semantics.json"
+      ]
+    },
+    {
+      "task_id": "G64-058",
+      "title": "Resolve Ghost Toys entrance spill",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-058-ghost-spill.json"
+      ]
+    },
+    {
+      "task_id": "G64-059",
+      "title": "Prove Ghost event logic",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-059-ghost-event-semantics.json"
+      ]
+    },
+    {
+      "task_id": "G64-060",
+      "title": "Gate overlay promotions",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-060-file12-dialogue-copy.json"
+      ]
+    },
+    {
+      "task_id": "G64-061",
+      "title": "Draw native transition state graph",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-061-transition-state-graph.json"
+      ]
+    },
+    {
+      "task_id": "G64-062",
+      "title": "Trace file/resource loading boundary",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-062-loader-boundary.json"
+      ]
+    },
+    {
+      "task_id": "G64-063",
+      "title": "Analyze middle transition dispatcher",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-063-middle-transition-dispatch.json"
+      ]
+    },
+    {
+      "task_id": "G64-064",
+      "title": "Analyze transition loop 8000394C",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-064-transition-loop-gate.json"
+      ]
+    },
+    {
+      "task_id": "G64-065",
+      "title": "Revisit engine state 80039F84",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-065-engine-pan-sweep.json"
+      ]
+    },
+    {
+      "task_id": "G64-066",
+      "title": "Revisit engine state 8003A060",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-066-fixed-pan-sweep.json"
+      ]
+    },
+    {
+      "task_id": "G64-067",
+      "title": "Revisit engine state 8003A138",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-067-engine-state-mode-map.json"
+      ]
+    },
+    {
+      "task_id": "G64-068",
+      "title": "Review default entrance 80020F10",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-068-default-entrance-review.json"
+      ]
+    },
+    {
+      "task_id": "G64-069",
+      "title": "Architect transition safety assertions",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-069-transition-safety-assertions.json"
+      ]
+    },
+    {
+      "task_id": "G64-070",
+      "title": "Gate transition slice",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-070-transition-slice-gate.json"
+      ]
+    },
+    {
+      "task_id": "G64-071",
+      "title": "Inspect file-table reader 80001DF4",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-071-file-table-reader.json"
+      ]
+    },
+    {
+      "task_id": "G64-072",
+      "title": "Inspect file-table reader 80001E50",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-072-file-table-helper.json"
+      ]
+    },
+    {
+      "task_id": "G64-073",
+      "title": "Inspect file-table reader 80001EB0",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-073-file-table-mapper.json"
+      ]
+    },
+    {
+      "task_id": "G64-074",
+      "title": "Characterize object dispatcher 80036308",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-074-object-flags.json"
+      ]
+    },
+    {
+      "task_id": "G64-075",
+      "title": "Characterize object list 80036388",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-075-object-list-move-to-front.json"
+      ]
+    },
+    {
+      "task_id": "G64-076",
+      "title": "Characterize object list 800363F4",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-076-object-list-move-to-front.json"
+      ]
+    },
+    {
+      "task_id": "G64-077",
+      "title": "Characterize object list 80036448",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-077-object-allocation-gate.json"
+      ]
+    },
+    {
+      "task_id": "G64-078",
+      "title": "Analyze scheduler 8000702C",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-078-scheduler-queue.json"
+      ]
+    },
+    {
+      "task_id": "G64-079",
+      "title": "Analyze scheduler 80007160",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-079-scheduler-queue-handler.json"
+      ]
+    },
+    {
+      "task_id": "G64-080",
+      "title": "Gate files/object/scheduler batch",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-080-files-object-scheduler-gate.json"
+      ]
+    },
+    {
+      "task_id": "G64-081",
+      "title": "Analyze math helper 8000E2D4",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-081-math-helper.json"
+      ]
+    },
+    {
+      "task_id": "G64-082",
+      "title": "Analyze math helper 8000E39C",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-082-math-helper.json"
+      ]
+    },
+    {
+      "task_id": "G64-083",
+      "title": "Analyze math helper 8000E4E4",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-083-math-helper.json"
+      ]
+    },
+    {
+      "task_id": "G64-084",
+      "title": "Analyze angle variant 8000EA74",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-084-angle-variant.json"
+      ]
+    },
+    {
+      "task_id": "G64-085",
+      "title": "Analyze angle variant 8000EB08",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-085-angle-variant.json"
+      ]
+    },
+    {
+      "task_id": "G64-086",
+      "title": "Analyze angle variant 8000EB50",
+      "historical_status": "PASSED_G2",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-086-angle-variant.json"
+      ]
+    },
+    {
+      "task_id": "G64-087",
+      "title": "Analyze dispatcher 8001F8B0",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-14-g64-087-state-dispatcher.json"
+      ]
+    },
+    {
+      "task_id": "G64-088",
+      "title": "Analyze 8001FA80 adjacent routine",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-089",
+      "title": "Select first float-state batch",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-13-g64-089-float-state.json"
+      ]
+    },
+    {
+      "task_id": "G64-090",
+      "title": "Audit misleading trivial-function names",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-090-return-zero-audit.json"
+      ]
+    },
+    {
+      "task_id": "G64-091",
+      "title": "Define candidate evidence ledger",
+      "historical_status": "RESEARCH_ONLY",
+      "evidence_sources": [
+        "decomp/plans/execution/2026-11-11-g64-091-attempt-ledger.json"
+      ]
+    },
+    {
+      "task_id": "G64-092",
+      "title": "Rank research by evidence not byte size",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-093",
+      "title": "Reuse typed C context safely",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-094",
+      "title": "Classify native codegen failures",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-095",
+      "title": "Harden automated proof regression",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-096",
+      "title": "Inventory upstream camera research",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-097",
+      "title": "Resolve camera initializer C mismatch",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-098",
+      "title": "Design camera subset promotion process",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-099",
+      "title": "Re-baseline architecture after each phase",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    },
+    {
+      "task_id": "G64-100",
+      "title": "Publish executor-ready next-wave contract",
+      "historical_status": "PLANNED",
+      "evidence_sources": []
+    }
+  ],
+  "execution_evidence": [
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-021-resource-callgraph.json",
+      "blob_sha1": "66429b996ed9a50f40ec608578e0c80825d1a960",
+      "task_id": "G64-021",
+      "date": null,
+      "historical_status": "DOC_ONLY",
+      "explicit_target_names": [
+        "func_8003D468_3E068",
+        "func_8003D68C_3E28C",
+        "func_8003DDC4_3E9C4",
+        "func_8003DF98_3EB98",
+        "func_8003F038_3FC38"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_8003DDC4_3E9C4"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003D468_3E068",
+        "func_8003D68C_3E28C",
+        "func_8003DF98_3EB98",
+        "func_8003F038_3FC38"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-022-resource-types.json",
+      "blob_sha1": "ad648c65bfd16d865d6c8b39f6c16051aaab7b41",
+      "task_id": "G64-022",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003D468_3E068"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003D468_3E068"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-023-f038-baseline.json",
+      "blob_sha1": "2e462c21aeb0ae20bbc00c67ff6d3efd52bf7a71",
+      "task_id": "G64-023",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003F038_3FC38"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003F038_3FC38"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-024-f038-refinement.json",
+      "blob_sha1": "1f9671c8001845f1b634e5029ec7beb7dc9de53d",
+      "task_id": "G64-024",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-025-loader-id-mutation.json",
+      "blob_sha1": "9f2ef5c7692906955d11f4bfefac7a5006412c63",
+      "task_id": "G64-025",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003D468_3E068"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003D468_3E068"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-026-loader-frame.json",
+      "blob_sha1": "6cd73c700b643e91dee03636421e5dc1544fc881",
+      "task_id": "G64-026",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003D468_3E068"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003D468_3E068"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-027-main-step-trace.json",
+      "blob_sha1": "cd3f3e582fee5e9cac107a66d33a7b5f7ba4b223",
+      "task_id": "G64-027",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003D68C_3E28C"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003D68C_3E28C"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-028-control-decoder-trace.json",
+      "blob_sha1": "b8c5f782db1d96885e5bfad6ee1637103077a073",
+      "task_id": "G64-028",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003DF98_3EB98"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003DF98_3EB98"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-029-ddc4-mutation-guard.json",
+      "blob_sha1": "9d26fd18902901726c090cb3094fa7e0068844e1",
+      "task_id": "G64-029",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003DDC4_3E9C4"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_8003DDC4_3E9C4"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-030-vm-resource-checkpoint.json",
+      "blob_sha1": "9b5882cde273b3ab4bb0a78d07d4d0cdea5d1465",
+      "task_id": "G64-030",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-031-text-loop-cfg.json",
+      "blob_sha1": "8f704d5f6cc7bb4e3fca18665891ffa98cd3f1ff",
+      "task_id": "G64-031",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003DBEC_3E7EC"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003DBEC_3E7EC"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-032-text-loop-frame.json",
+      "blob_sha1": "1b72f298a6eb4436aff2a4bf6cd11b580a78f823",
+      "task_id": "G64-032",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003DBEC_3E7EC"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003DBEC_3E7EC"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-033-text-loop-differential.json",
+      "blob_sha1": "7b5b1cd4376a3b72a83135b49b08fdaf8a759bcd",
+      "task_id": "G64-033",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003DBEC_3E7EC"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003DBEC_3E7EC"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-034-command-walker-cfg.json",
+      "blob_sha1": "dfeeccc12d91a5ee48dc324b6e7c9b78cf192f81",
+      "task_id": "G64-034",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003DE80_3EA80"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003DE80_3EA80"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-035-delay-slots.json",
+      "blob_sha1": "5afbe4aa06cb0b7df784a1484d4402bb9b99e554",
+      "task_id": "G64-035",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003DE80_3EA80"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003DE80_3EA80"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-036-command-walker-semantics.json",
+      "blob_sha1": "f7f82b5d3c5dedb92ef25891901c2bb512a7e50d",
+      "task_id": "G64-036",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003DE80_3EA80"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003DE80_3EA80"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-037-ed60-trace.json",
+      "blob_sha1": "37dd3c7c337cca13cf8abd9810df30a39133ebd4",
+      "task_id": "G64-037",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003ED60_3F960"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003ED60_3F960"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-038-wrapper-extent.json",
+      "blob_sha1": "f60f6dc52b5bff52bc877b56b322893a9d1915d3",
+      "task_id": "G64-038",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003F6E8_402E8"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003F6E8_402E8"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-039-parser-matrix.json",
+      "blob_sha1": "d1f7429c1b9d7114ee03380bed7f951fda0b4934",
+      "task_id": "G64-039",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-040-parser-production-gate.json",
+      "blob_sha1": "279df74674d1f541cce099b09d983a9ce9a8b1cf",
+      "task_id": "G64-040",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-071-file-table-reader.json",
+      "blob_sha1": "f766c0776cf7ee60512cd846e1f2421ccafc8bae",
+      "task_id": "G64-071",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_80001DF4_29F4"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_80001DF4_29F4"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-090-return-zero-audit.json",
+      "blob_sha1": "e6b87ef16c8fc5c0fa43497f479da32d21b6babc",
+      "task_id": "G64-090",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_80023394_23F94",
+        "func_80023410_24010",
+        "func_80023480_24080",
+        "func_800234D8_240D8",
+        "func_80023560_24160",
+        "func_80023610_24210",
+        "func_80023698_24298",
+        "func_80023788_24388",
+        "func_800237F0_243F0",
+        "func_80023840_24440",
+        "func_80023880_24480",
+        "func_800238D0_244D0",
+        "func_800239B8_245B8"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_80023394_23F94",
+        "func_80023410_24010",
+        "func_80023480_24080",
+        "func_800234D8_240D8",
+        "func_80023560_24160",
+        "func_80023610_24210",
+        "func_80023698_24298",
+        "func_80023788_24388",
+        "func_800237F0_243F0",
+        "func_80023840_24440",
+        "func_80023880_24480",
+        "func_800238D0_244D0",
+        "func_800239B8_245B8"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-g64-091-attempt-ledger.json",
+      "blob_sha1": "9c08b8a81c0d0afa87af64055f737b7d80802f35",
+      "task_id": "G64-091",
+      "date": "2026-11-11",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-phase-01-g2.json",
+      "blob_sha1": "102c386261d2944cbaf26af27bb854a462f83245",
+      "task_id": null,
+      "date": null,
+      "historical_status": "UNSPECIFIED",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-phase-01.json",
+      "blob_sha1": "099be8e473fcd12f833aae59bfbeea4fd67961f1",
+      "task_id": null,
+      "date": null,
+      "historical_status": "UNSPECIFIED",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-phase-02-g2.json",
+      "blob_sha1": "532391757260cce7e62b80e3741ed1f4ae258159",
+      "task_id": null,
+      "date": null,
+      "historical_status": "UNSPECIFIED",
+      "explicit_target_names": [
+        "func_80035094_35C94"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_80035094_35C94"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-phase-02-short-function-retries.json",
+      "blob_sha1": "ed7a28b0be78f0a9888b3614e98472ea40b5ea34",
+      "task_id": null,
+      "date": null,
+      "historical_status": "UNSPECIFIED",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-11-phase-06-schema.json",
+      "blob_sha1": "3dd6b1d46c6bda70becc4ac463babc00c35f98f6",
+      "task_id": null,
+      "date": null,
+      "historical_status": "DOC_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-041-display-emitter-trace.json",
+      "blob_sha1": "e063d1105a6a71ff07f384c1556b47d8d9258395",
+      "task_id": "G64-041",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003E234_3EE34"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003E234_3EE34"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-042-display-memory-model.json",
+      "blob_sha1": "192eccd957cb2a5a55e60c3d22373b4628912cdc",
+      "task_id": "G64-042",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003E234_3EE34"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003E234_3EE34"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-043-display-emitter-trace.json",
+      "blob_sha1": "65916a27bef1877513603ac176cd432938e9cb8e",
+      "task_id": "G64-043",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003EBAC_3F7AC"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003EBAC_3F7AC"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-044-compiler-layouts.json",
+      "blob_sha1": "4acd21aced54f1b108fc9fceb07e96b2e2c48aa4",
+      "task_id": "G64-044",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-045-vm-setup-abi.json",
+      "blob_sha1": "12151dc626c8b85c2f96eeb2727f10f8d9bf8ef7",
+      "task_id": "G64-045",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003F37C_3FF7C"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003F37C_3FF7C"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-046-callback-setup.json",
+      "blob_sha1": "3bb9066170570fcfcf361ec1ec0bee7c7342ebe2",
+      "task_id": "G64-046",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003E6C0_3F2C0"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003E6C0_3F2C0"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-047-number-formatter.json",
+      "blob_sha1": "31a386fb8905f21eafbaefabaff2150b0fa9a9e2",
+      "task_id": "G64-047",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8003F480_40080"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8003F480_40080"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-048-vm-graphics-boundaries.json",
+      "blob_sha1": "a2e634c076b98bc88a789d3d1e3c43161baba406",
+      "task_id": "G64-048",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-049-vm-graphics-staging.json",
+      "blob_sha1": "a7bf5e873f566d807ee60f8566745b96ec8a7a26",
+      "task_id": "G64-049",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-050-vm-residual-inventory.json",
+      "blob_sha1": "7d48ab2541e9642a4f5ac3e2fce6c26ccf56fac5",
+      "task_id": "G64-050",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-052-file43-reference-contract.json",
+      "blob_sha1": "9c925088e1a60407bbe9c7809ab54f2e5b6f0266",
+      "task_id": "G64-052",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-053-overlay-elf-provenance.json",
+      "blob_sha1": "342d0f97fa1d6e6efa6ee5c1943c640dfdb2306e",
+      "task_id": "G64-053",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-054-overlay-negative-controls.json",
+      "blob_sha1": "d962d66bfbab0d32357d3a09b668f9affdd03bbc",
+      "task_id": "G64-054",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-072-file-table-helper.json",
+      "blob_sha1": "35794075ad798669eb9f174633ae83e8d0f0f38e",
+      "task_id": "G64-072",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_80001E50_2A50"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_80001E50_2A50"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-073-file-table-mapper.json",
+      "blob_sha1": "cf8c9592bd79d6ce64e6440a892c867d536d9191",
+      "task_id": "G64-073",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_80001EB0_2AB0"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_80001EB0_2AB0"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-074-object-flags.json",
+      "blob_sha1": "7bfd3199eaf5dcf828c394665e88d75ebf0a1757",
+      "task_id": "G64-074",
+      "date": "2026-11-13",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [
+        "func_80036308_36F08"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_80036308_36F08"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-075-object-list-move-to-front.json",
+      "blob_sha1": "1809cf3da990306d63f1f90a1d4a3b11237b1f6e",
+      "task_id": "G64-075",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_80036388_36F88"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_80036388_36F88"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-076-object-list-move-to-front.json",
+      "blob_sha1": "ba88f364699e9db50f9a1efd8b116fa1fb73e6cb",
+      "task_id": "G64-076",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_800363F4_36FF4"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_800363F4_36FF4"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-077-object-allocation-gate.json",
+      "blob_sha1": "b016e628ebd7315c6f459100999f563714350290",
+      "task_id": "G64-077",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_80036448_37048"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_80036448_37048"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-078-scheduler-queue.json",
+      "blob_sha1": "79d98a086a604fd02f6d5c77efd28e65d949694e",
+      "task_id": "G64-078",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8000702C_7C2C"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8000702C_7C2C"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-079-scheduler-queue-handler.json",
+      "blob_sha1": "64d73b3a5ebb9cf29b981daccc3653b13841be59",
+      "task_id": "G64-079",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_80007160_7D60"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_80007160_7D60"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-080-files-object-scheduler-gate.json",
+      "blob_sha1": "1f7eb8ab66051421aaef5735d54ac8fe5eab50a2",
+      "task_id": "G64-080",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-081-math-helper.json",
+      "blob_sha1": "fcb1ec61266f07db7c206b3c4f646d2ea231c56c",
+      "task_id": "G64-081",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8000E2D4_EED4"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8000E2D4_EED4"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-082-math-helper.json",
+      "blob_sha1": "270929ef93a9b359a75e391a2d56e13743d900c9",
+      "task_id": "G64-082",
+      "date": "2026-11-13",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [
+        "func_8000E39C_EF9C"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_8000E39C_EF9C"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-083-math-helper.json",
+      "blob_sha1": "8dd7611dd94186c5c294ae27577e1043e7239a0c",
+      "task_id": "G64-083",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_8000E4E4_F0E4"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_8000E4E4_F0E4"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-084-angle-variant.json",
+      "blob_sha1": "5b293b59acb5f0ba970232c1c11c46de8efcacd9",
+      "task_id": "G64-084",
+      "date": "2026-11-13",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [
+        "func_8000EA74_F674"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_8000EA74_F674"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-085-angle-variant.json",
+      "blob_sha1": "70647c14cbdd9e76a6380a001f13bf075f6fcb2c",
+      "task_id": "G64-085",
+      "date": "2026-11-13",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [
+        "func_8000EB08_F708"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_8000EB08_F708"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-086-angle-variant.json",
+      "blob_sha1": "41df974748330cfb83a835b100c6d610aa5b3cb1",
+      "task_id": "G64-086",
+      "date": "2026-11-13",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [
+        "func_8000EB50_F750"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_8000EB50_F750"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-13-g64-089-float-state.json",
+      "blob_sha1": "839a0aab86dabdb1d15b7b07fcd027d0766fcb97",
+      "task_id": "G64-089",
+      "date": "2026-11-13",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_80006B44_7744"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_80006B44_7744"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-dialogue-helper-integration.json",
+      "blob_sha1": "3963c55d908f7142de12907491ed403e20e1f0c3",
+      "task_id": null,
+      "date": "2026-11-14",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-055-file43-key.json",
+      "blob_sha1": "51f407e97d8b15d88f8e3c047cd22ef209f7d60e",
+      "task_id": "G64-055",
+      "date": "2026-11-14",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-056-file43-key.json",
+      "blob_sha1": "7bafe682d534e7f292c9c7176197fe215830f601",
+      "task_id": "G64-056",
+      "date": "2026-11-14",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [
+        "func_080001BC_6F369C"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_080001BC_6F369C"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-057-key-semantics.json",
+      "blob_sha1": "a3ccb3cb06b95a700be712d7a005c809fbcabde0",
+      "task_id": "G64-057",
+      "date": "2026-11-14",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [
+        "func_080001BC_6F369C"
+      ],
+      "explicit_targets_currently_accepted_usa": [
+        "func_080001BC_6F369C"
+      ],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-058-ghost-spill.json",
+      "blob_sha1": "c0c365e10a45a64be38f4d86491be2e4e4c77330",
+      "task_id": "G64-058",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_08006490_6F9970"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_08006490_6F9970"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-059-ghost-event-semantics.json",
+      "blob_sha1": "68942aba6e90c9cd4baf603e63811f1febc78cd8",
+      "task_id": "G64-059",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [
+        "func_08006490_6F9970"
+      ],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [
+        "func_08006490_6F9970"
+      ],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-060-file12-dialogue-copy.json",
+      "blob_sha1": "de41b768d38456611deb97b2f97bc84017ca4d52",
+      "task_id": "G64-060",
+      "date": "2026-11-14",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-061-transition-state-graph.json",
+      "blob_sha1": "9705b75851577b118cdbb985e92a98d08c1de125",
+      "task_id": "G64-061",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-062-loader-boundary.json",
+      "blob_sha1": "397104a38188bcedb32b8efd1939dae5ce728b5a",
+      "task_id": "G64-062",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-063-middle-transition-dispatch.json",
+      "blob_sha1": "82c488dc2a2e8a6a45d3793d2ef748f3eb25baba",
+      "task_id": "G64-063",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-064-transition-loop-gate.json",
+      "blob_sha1": "3426e3968c9a9db60f847b62f6a8622c3a18dcd3",
+      "task_id": "G64-064",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-065-engine-pan-sweep.json",
+      "blob_sha1": "ccb978055773942b1bde30e8956410aa770ce2f6",
+      "task_id": "G64-065",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-066-fixed-pan-sweep.json",
+      "blob_sha1": "3582c2a0265850731037b6976753ebe7c53df4ef",
+      "task_id": "G64-066",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-067-engine-state-mode-map.json",
+      "blob_sha1": "e7ef10ec3d96a3fbb09014c149f27ef484fe0d23",
+      "task_id": "G64-067",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-068-default-entrance-review.json",
+      "blob_sha1": "dea40ef2cb82aebe1e06d8504be36d448bafb43b",
+      "task_id": "G64-068",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-069-transition-safety-assertions.json",
+      "blob_sha1": "8068442b8105289a3a11119f90376054b1107023",
+      "task_id": "G64-069",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-070-transition-slice-gate.json",
+      "blob_sha1": "a608b10c576920640ed4eb8609fccff602165a1d",
+      "task_id": "G64-070",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-g64-087-state-dispatcher.json",
+      "blob_sha1": "664d5149a927676e078f75487bcadd046258ddac",
+      "task_id": "G64-087",
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-vm-file12-dialogue-call.json",
+      "blob_sha1": "c818523a232c8b3bdfe745958f125f8641ff01aa",
+      "task_id": null,
+      "date": "2026-11-14",
+      "historical_status": "PASSED_G2",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    },
+    {
+      "source": "decomp/plans/execution/2026-11-14-vm-file12-ryo-clamp.json",
+      "blob_sha1": "5b1aff139c50b06ffefbee9b61b4dafe59f3fd93",
+      "task_id": null,
+      "date": "2026-11-14",
+      "historical_status": "RESEARCH_ONLY",
+      "explicit_target_names": [],
+      "explicit_targets_currently_accepted_usa": [],
+      "explicit_targets_currently_accepted_japan": [],
+      "explicit_targets_not_in_accepted_c": [],
+      "retest_status": "HISTORICAL_EVIDENCE_REVIEWED_NOT_RECOMPILED"
+    }
+  ],
+  "archived_research_reports": [
+    {
+      "path": "decomp/results/batch_autonomous_main_v1.json",
+      "blob_sha1": "06f0225e0ffc097185bfea82586b1f6895080cb9",
+      "format": "goemon-batch-report-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/batch_entrance_followup.json",
+      "blob_sha1": "caa2cc9a768d294577a7fbb2ed90ca78251f180d",
+      "format": "goemon-batch-report-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/batch_pilot.json",
+      "blob_sha1": "1e62587e625d0d0dcd6361e2006a4c3a4c9239d3",
+      "format": "goemon-batch-report-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/batch_search_pilot.json",
+      "blob_sha1": "3dcfd45cc9d04ef61ca32e00a0352e9e2821c067",
+      "format": "goemon-batch-report-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/batch_ui_followup.json",
+      "blob_sha1": "2c53552b06dc039285b2c344b60ae09b716e1bab",
+      "format": "goemon-batch-report-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/batch_validation.json",
+      "blob_sha1": "63450bec857438cb612fd26a549b0b798926ffb9",
+      "format": "goemon-batch-validation-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/camera_reset_file11_180_native_proof_20261117.json",
+      "blob_sha1": "84a89b7cf3dc86f76e7d6821c58810e55ca70366",
+      "format": "goemon-usa-file11-180-authentic-mixed-C-native-proof-v1",
+      "historical_status": "PASS_MIXED_FILE11_180_C_NOT_CENTRAL_343_C",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/castle_pickup_placements.json",
+      "blob_sha1": "4bfeada508e64699c9f1a2c160f8ef5859a0c2f6",
+      "format": "goemon-pickup-placements-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/character_switch_actor_native_proof_20261115.json",
+      "blob_sha1": "f5a9b4ddf3436596859e7b6313d6630cb3d58be0",
+      "format": "goemon-character-actor-wrappers-native-proof-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/character_switch_native_proof_20261115.json",
+      "blob_sha1": "ad4e8595d831c1accb68161eefb14e4319a71504",
+      "format": "goemon-isolated-character-switch-ido-proof-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-15"
+    },
+    {
+      "path": "decomp/results/collision_gate_candidate.json",
+      "blob_sha1": "630da692f5113a643ea044444ca67ee870004a01",
+      "format": "goemon-isolated-candidate-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/event_flags.json",
+      "blob_sha1": "b527ebbd53083145e35058d9a2aae2cbb131bdd5",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T13:22:37.065283+00:00"
+    },
+    {
+      "path": "decomp/results/file11_101_scratch_20261116.json",
+      "blob_sha1": "d19e2b3599111a6196d422054bfce3a4f2495c51",
+      "format": "goemon-file11-101-original-rom-scratch-research-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_104_scratch_20261116.json",
+      "blob_sha1": "1e48d7685505782ededc32bc5996fd7e59e9cdef",
+      "format": "goemon-file11-104-independent-full-rom-and-elf-v1",
+      "historical_status": "matched_scratch_not_central",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_143_consolidation_review_20261116.json",
+      "blob_sha1": "37152f703c6acd3ca25ba2c1a75b14e680a04847",
+      "format": "goemon-file11-143-integration-handoff-v1",
+      "historical_status": "RESEARCH_IMPORT_ONLY_NOT_PROMOTED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_143_original_rom_chunks_20261116.json",
+      "blob_sha1": "800a2516d5cc180e9c98c722e9b81b1789c4db18",
+      "format": "goemon-file11-143-source-original-rom-chunk-audit-v1",
+      "historical_status": "PASS_ORIGINAL_ROM_CHUNK_IDENTITIES_ONLY",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_143_production_promotion_20261116.json",
+      "blob_sha1": "4f0641b87f3699db642407d01d202fa5078f77ff",
+      "format": "goemon-usa-file11-143-production-promotion-v1",
+      "historical_status": "PRODUCTION_VERIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_144_native_full_g2_20261116.json",
+      "blob_sha1": "124283b9278641801c98f9a6e2a617406bfab67a",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-16T18:51:39.308051+00:00"
+    },
+    {
+      "path": "decomp/results/file11_144_native_inventory_20261116.json",
+      "blob_sha1": "3370d043ee79605dfd7471af0a3df15a18ecacf5",
+      "format": "goemon-function-inventory-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/file11_144_native_postbuild_20261116.json",
+      "blob_sha1": "7ae7a87cac8498f8946b7744fad34252ad1c6283",
+      "format": "goemon-native-307-postbuild-full-validation-v1",
+      "historical_status": "matched",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/file11_144_native_trial_20261116.json",
+      "blob_sha1": "e87bf5da538afc604d7bea23ed58920a411a44a4",
+      "format": "goemon-usa-307-native-trial-v1",
+      "historical_status": "FULL_NATIVE_G2_INVENTORY_AND_CI_PASS_RESEARCH_ONLY",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_144_production_promotion_20261116.json",
+      "blob_sha1": "def4e685226e8c44366f2f59302e421971532223",
+      "format": "goemon-usa-file11-144-production-promotion-v1",
+      "historical_status": "PRODUCTION_VERIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_152_production_promotion_20261116.json",
+      "blob_sha1": "f1c114bfeecac1dae5ad5163da9a7899a23e8dc0",
+      "format": "goemon-usa-crossbranch-production-promotion-v2",
+      "historical_status": "PRODUCTION_VERIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_179_central_promotion_20261116.json",
+      "blob_sha1": "f2b362331acbddda8dff5bacbeac264882889bb0",
+      "format": "goemon-file11-179-central-promotion-verified-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_179_dedup_preflight_20261116.json",
+      "blob_sha1": "e2a166ef8b6207811ce5557329b652f34726ba65",
+      "format": "goemon-file11-315-vs-104-dedup-preflight-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/file11_183_production_promotion_20261117.json",
+      "blob_sha1": "6ed7b30b1dc814183c8397c1d50dd0d161203951",
+      "format": "goemon-file11-183-native-production-promotion-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/file11_adjacent73_scratch_20261116.json",
+      "blob_sha1": "a9f432990f68e7ae98324ef9f7e1b2c9fa681e2e",
+      "format": "goemon-file11-adjacent73-independent-scratch-proof-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_adjacent_native_proof_20261116.json",
+      "blob_sha1": "adf073191f12261241a87d1a356d39813850e6e3",
+      "format": "goemon-file11-adjacent-native-research-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/file11_adjacent_wave2_native_proof_20261116.json",
+      "blob_sha1": "bfaf4d5562b69b367debb34058eff8351adf9086",
+      "format": "goemon-file11-adjacent-wave2-native-research-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/file11_adjacent_wave3_native_proof_20261116.json",
+      "blob_sha1": "63532d88c7cba12dcef299997517839596b4e468",
+      "format": "goemon-file11-adjacent-wave3-native-research-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/file11_adjacent_wave45_proof_20261116.json",
+      "blob_sha1": "d8a3c4bbeceeeb7b76445dc714bd87a19cbddc91",
+      "format": null,
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_central_promotion_20261116.json",
+      "blob_sha1": "9819dde2ccfa2e6d9fdd31adb64579268ac5ee42",
+      "format": "goemon-file11-central-promotion-review-v1",
+      "historical_status": "verified_and_promoted_to_canonical_manifest",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/file11_crossbranch_306_reconciliation_20261116.json",
+      "blob_sha1": "1bfde1cf8b19503178ff279a61b649145264208b",
+      "format": "goemon-usa-306-crossbranch-c-original-offset-audit-v1",
+      "historical_status": "RESEARCH_ONLY_NOT_PRODUCTION",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_crossbranch_overlap_20261116.json",
+      "blob_sha1": "57ebe029d754a5aec72b890371f1115c455722c6",
+      "format": "goemon-crossbranch-file11-overlap-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_crossbranch_overlap_v2_20261116.json",
+      "blob_sha1": "ce9746c95845be6e370c82fb7f44915bfa186476",
+      "format": "goemon-file11-two-pr-dedup-source-review-v2",
+      "historical_status": "PROVISIONAL_RANGE_BASED_OVERLAP_REVIEW_NOT_PROMOTION",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_expansion_native_20261116.json",
+      "blob_sha1": "99c0226127f8b39ec0369f9282651bad147ada04",
+      "format": "goemon-file11-expansion-native-ido-research-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/file11_noop_37_native_proof_20261115.json",
+      "blob_sha1": "52b7ba3a461254ecd106be6ab57cb0a5641e67c8",
+      "format": "goemon-file11-37-noop-original-rom-rebuild-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-15"
+    },
+    {
+      "path": "decomp/results/file11_noop_v2_clean_reproduction_20261115.json",
+      "blob_sha1": "8dff46f3b8400b7c3d751a2480945f06599a98ac",
+      "format": "goemon-file11-optin-v2-clean-repeat-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-15"
+    },
+    {
+      "path": "decomp/results/file11_optin_clean_proof_20261115.json",
+      "blob_sha1": "55cf0606dbd71e972d4c080a4baa5912a24cbcd1",
+      "format": "goemon-file11-optin-independent-rebuild-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-15"
+    },
+    {
+      "path": "decomp/results/file11_three_isolated_20261117.json",
+      "blob_sha1": "dd180a61b248b6646e266bbb008e8667dbfd7601",
+      "format": "goemon-file11-three-isolated-native-research-v1",
+      "historical_status": "RESEARCH_ONLY",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/file11_transition_52_scratch_proof_20261116.json",
+      "blob_sha1": "ed2a994883b4077dda474a3e2c0089ebf73bae6d",
+      "format": "goemon-file11-transition-52-scratch-proof-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/file11_wave6_346_native_review_20261117.json",
+      "blob_sha1": "3b19377cf593e4e9cd20a778fffa6f74e7e6e568",
+      "format": "goemon-file11-wave6-346-central-strict-native-review-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/file11_wave6_four_native_proof_20261117.json",
+      "blob_sha1": "9e0a0b78b59cfba13d0f19c3f8b7068eb7e5bf65",
+      "format": "goemon-file11-wave6-four-native-proof-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/file12_385_upstream_fullrom_proof_20261117.json",
+      "blob_sha1": "f72c891e826bffa846ed5d80e10c91d682f403d6",
+      "format": "goemon-file12-adjacent-385-original-upstream-proof-v1",
+      "historical_status": "pass",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/file12_387_original_upstream_coexistence_20261117.json",
+      "blob_sha1": "6ff0bb5491604938e804b059a8ecd151dde93e42",
+      "format": "goemon-file12-387-usa-coexistence-v1",
+      "historical_status": "verified_original_upstream_plus_387_file12_c",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/file12_upstream_3c_fullrom_proof_20261116.json",
+      "blob_sha1": "09adb316fb7ef6f9801b233b419a32a1649e803e",
+      "format": null,
+      "historical_status": "exact_original_usa_3_c_overlay_integrated_on_upstream",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/fortune_doll_catalog.json",
+      "blob_sha1": "84fb577ec26ffde6425a26b75fb0701ef8c71b28",
+      "format": "goemon-fortune-doll-catalog-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/fortune_doll_placements.json",
+      "blob_sha1": "39d14d2ebbd5eb803ccec370280f884275341fcf",
+      "format": "goemon-pickup-placements-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/ghost_entrance_candidate.json",
+      "blob_sha1": "984950884afeee987f88a2302218eddacd7f6fbe",
+      "format": "goemon-targeted-candidate-v1",
+      "historical_status": "mismatch",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/graphics_five_native_recheck_20261117.json",
+      "blob_sha1": "b6e4a568a8aeb2750e94e92aa9e31272a4dbafaa",
+      "format": "goemon-graphics-five-new-native-recheck-v1",
+      "historical_status": "RESEARCH_ONLY",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/impact_dialogue_306_promotion_20261116.json",
+      "blob_sha1": "030bbff1ad9bcfbaca1be50ff9cd80a9e183404a",
+      "format": "goemon-usa-crossbranch-production-promotion-v1",
+      "historical_status": "PRODUCTION_VERIFIED",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/independent_142_historical.json",
+      "blob_sha1": "1766adcde7ed7548909b72cf3e4852953797e237",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/japan_0_39_native_combined_20261117.json",
+      "blob_sha1": "c994fe664e272f674ff39e3494c49f5d713f4348",
+      "format": "goemon-japan-thirtynine-native-original-build-v2",
+      "historical_status": "PASS",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/japan_0_consolidation_native_20261116.json",
+      "blob_sha1": "986aee6156c7ce7ee7c99165d936d773653bd0c1",
+      "format": "goemon-japan-24c-consolidation-independent-reproduction-v1",
+      "historical_status": "PASS_INDEPENDENT_NATIVE_REPRODUCTION",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/japan_0_five_39_promotion_20261117.json",
+      "blob_sha1": "f6ef880893e056cfa686c06120ad4f08e8897b25",
+      "format": "goemon-japan-rev0-five-original-address-production-promotion-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/japan_0_thirtyfour_c_2026-11-16.json",
+      "blob_sha1": "de36e7a860552d377cde75cc0dd3e4c308b5d6d8",
+      "format": null,
+      "historical_status": "PASS",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/japan_next_five_2026-11-16.json",
+      "blob_sha1": "f67a8d724c43039a84fe33a4eaa65e9c6e2b667e",
+      "format": "goemon-japan-five-next-research-v1",
+      "historical_status": "RESEARCH_ONLY_ISOLATED_EXACT",
+      "historical_as_of": "2026-11-16"
+    },
+    {
+      "path": "decomp/results/key_spawn_gate_candidate.json",
+      "blob_sha1": "40af850d6096a29773ffb97f09cab9f97ecc19f0",
+      "format": "goemon-isolated-key-gate-v1",
+      "historical_status": "linked_match",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/next_five_execution_checkpoint.json",
+      "blob_sha1": "252fa934a0b4325846020f7f0471d5d4240e3095",
+      "format": "goemon-next-five-execution-checkpoint-v1",
+      "historical_status": "partial_execution_not_promotion",
+      "historical_as_of": "2026-11-09"
+    },
+    {
+      "path": "decomp/results/next_ten_main_wave1.json",
+      "blob_sha1": "845e4c85e606cbc666ba6ed08ebed5755511fadc",
+      "format": "goemon-next-ten-main-wave1-isolated-link-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-10"
+    },
+    {
+      "path": "decomp/results/next_ten_main_wave2.json",
+      "blob_sha1": "34705a4566e20e76de058ce18ca56e40f2269b31",
+      "format": "goemon-next-ten-main-wave2-menu-codegen-v1",
+      "historical_status": "three_more_isolated_exact_no_promotions",
+      "historical_as_of": "2026-11-10"
+    },
+    {
+      "path": "decomp/results/next_twenty_execution_20261110.json",
+      "blob_sha1": "a9aa8ebf0c18ba79d687a8bf328df2c82ed093ab",
+      "format": "goemon-next-twenty-execution-20261110-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-10"
+    },
+    {
+      "path": "decomp/results/save_resources_complete.json",
+      "blob_sha1": "12de7b53855b7cf1c9751aded454f538f34254b8",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T14:02:37.141701+00:00"
+    },
+    {
+      "path": "decomp/results/save_resources_partial.json",
+      "blob_sha1": "d3ba33623678333aead556742d9a07d4bf4be0f0",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T13:47:20.256205+00:00"
+    },
+    {
+      "path": "decomp/results/system_memory.json",
+      "blob_sha1": "e84ae861263ed69597f7e15b457f477a184a69a7",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T13:30:46.394700+00:00"
+    },
+    {
+      "path": "decomp/results/usa_camera_reset_136_promotion_20261117.json",
+      "blob_sha1": "c22fe229681301b97ceb426063fc15ba234b9683",
+      "format": "goemon-usa-camera-reset-136-native-promotion-v1",
+      "historical_status": "PASSED_G2",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/usa_crossregion47_779_promotion_20261117.json",
+      "blob_sha1": "44732e2adee465c5636aefdafb545f377f87d038",
+      "format": "goemon-usa-crossoverlay-47-canonical-promotion-v1",
+      "historical_status": "PASSED_G2",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/usa_file11_eighty_two_864_promotion_20261117.json",
+      "blob_sha1": "f938bd56c597db9d18ffab2d66639c103bec214c",
+      "format": "goemon-usa-file11-eighty-two-original-address-production-promotion-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/usa_file11_three_782_promotion_20261117.json",
+      "blob_sha1": "d909b45c2d3faeec7eb1eacaeacc322e9a925c36",
+      "format": "goemon-usa-file11-three-original-address-promotion-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-17"
+    },
+    {
+      "path": "decomp/results/usa_file12_spatial_11_promotion_20261117.json",
+      "blob_sha1": "b19377fb7204c561e99a6a19b041561a04cb5ca2",
+      "format": "goemon-usa-file12-spatial-11-native-promotion-v1",
+      "historical_status": "PASSED_G2",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/vm_assignment.json",
+      "blob_sha1": "9d2d1d37ffb6db73e4a3a56634f6634fedfe3358",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T15:46:22.199143+00:00"
+    },
+    {
+      "path": "decomp/results/vm_choices.json",
+      "blob_sha1": "d7ae83f9df5965de3b93df20999d3d8dad424af3",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T17:03:06.532261+00:00"
+    },
+    {
+      "path": "decomp/results/vm_command_walker_goto_probe.json",
+      "blob_sha1": "8b86ab445393c4d62819c147e1414f60dcd5db9c",
+      "format": "goemon-isolated-codegen-research-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/vm_comparator_unpromoted.json",
+      "blob_sha1": "d5d9b64b159ec674de17a5eba2f5936055a90174",
+      "format": "goemon-vm-comparator-unpromoted-v1",
+      "historical_status": "historical_isolated_probe_superseded_by_verified_full_142_image",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/vm_controls.json",
+      "blob_sha1": "3314ad14bca6fd0904417422eed6bca74562cd9e",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T16:24:10.127420+00:00"
+    },
+    {
+      "path": "decomp/results/vm_helpers.json",
+      "blob_sha1": "2207ccc480256a5c225019a500f51dd96d9a33f8",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T14:44:54.901182+00:00"
+    },
+    {
+      "path": "decomp/results/vm_next_ten_batch1.json",
+      "blob_sha1": "84b8582e645afcbbfc47099eb51edca5f13a0090",
+      "format": "goemon-next-ten-isolated-research-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/vm_next_ten_batch2.json",
+      "blob_sha1": "5786aef5070b2857133842e8c002ac8ed3155e00",
+      "format": "goemon-next-ten-isolated-research-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/vm_next_ten_batch3.json",
+      "blob_sha1": "5a68d2b0ef127f872d965d006261d462790b4c0f",
+      "format": "goemon-next-ten-isolated-research-v1",
+      "historical_status": "UNSPECIFIED",
+      "historical_as_of": "2026-11-09"
+    },
+    {
+      "path": "decomp/results/vm_next_ten_batch4.json",
+      "blob_sha1": "66d4a566ab2c61e593378465c944439d762d393b",
+      "format": "goemon-next-ten-batch4-ido-native-research-v1",
+      "historical_status": "four_targets_investigated_zero_promoted",
+      "historical_as_of": "2026-11-09"
+    },
+    {
+      "path": "decomp/results/vm_prompts.json",
+      "blob_sha1": "07de31b728a78b0af8d099595acdb4a6a59ac093",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T16:43:14.481112+00:00"
+    },
+    {
+      "path": "decomp/results/vm_residual_inventory.json",
+      "blob_sha1": "477d063385f8b5e338aa0c68ed148830fc9aacf5",
+      "format": "goemon-vm-residual-inventory-v1",
+      "historical_status": "RESEARCH_ONLY",
+      "historical_as_of": null
+    },
+    {
+      "path": "decomp/results/vm_resources.json",
+      "blob_sha1": "c67d7608ed8d237bbd328e543ac85d27cbb11073",
+      "format": "goemon-matching-build-result-v1",
+      "historical_status": "matched",
+      "historical_as_of": "2026-11-02T16:03:43.557167+00:00"
+    },
+    {
+      "path": "decomp/results/vm_text_loop_alias_probe.json",
+      "blob_sha1": "92b7673109a21359e1293f1e10a7e5d49407543a",
+      "format": "vm_text_loop_alias_codegen_probe_v1",
+      "historical_status": "research_only_unpromoted",
+      "historical_as_of": "2026-11-09"
+    },
+    {
+      "path": "decomp/results/vm_text_loop_native_codegen_probe.json",
+      "blob_sha1": "61471360ef4a10ee4de82d57827c87ec268532f9",
+      "format": "vm_text_loop_native_ido_codegen_v1",
+      "historical_status": "research_only_unpromoted",
+      "historical_as_of": "2026-11-09"
+    }
+  ],
+  "historic_branch_refs": [
+    {
+      "name": "chatgptweb/autonomous-decomp-skills-20261117",
+      "snapshot_head": "0de0effb1e9b26485c16a99c4a55e6a2621530ce"
+    },
+    {
+      "name": "chatgptweb/camera-mode-runtime-audit-20261116",
+      "snapshot_head": "73b822de4a159d3794b86f1bd53d0d3bf6805034"
+    },
+    {
+      "name": "chatgptweb/camera-reset-136-native-20261116",
+      "snapshot_head": "c95975b28533b114acd65eb0d92b28405ae1ac01"
+    },
+    {
+      "name": "chatgptweb/camera-reset-343-integration-20261117",
+      "snapshot_head": "66a7ad5516f3f0a8b3abc30d1cbf8a42c19b781e"
+    },
+    {
+      "name": "chatgptweb/camera-reset-343-scratch-20261117",
+      "snapshot_head": "c14f403b6c01ae295e9ff04313705871452468ab"
+    },
+    {
+      "name": "chatgptweb/decomp",
+      "snapshot_head": "bcbf4451f4d2ce2e83af3875d8dbe71b47813b56"
+    },
+    {
+      "name": "chatgptweb/decomp-consolidation-20261116",
+      "snapshot_head": "5543197de084667b575406a3f3eef1bc4f69b0f9"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-143-preflight-20261116",
+      "snapshot_head": "58ce18f0f0f68779903281cf4dbd1b6b808231a8"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-143-production-20261116",
+      "snapshot_head": "80f99660b3e7d3790c4a3824232edc74ce288953"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-144-production-20261116",
+      "snapshot_head": "8924b4f558750ec8f79772ef997c8eccf4498602"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-144-research-20261116",
+      "snapshot_head": "ac504523c581a861a1eaac907221a1993dc7a139"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-152-production-20261116",
+      "snapshot_head": "be3f89fb4f7ef851b35487698b7463e1ba5fc393"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-next8-scratch-20261116",
+      "snapshot_head": "5aded44a354c088e253d83521543391ad48322c9"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-research-handoff-20261116",
+      "snapshot_head": "f3a805d08110f30f04e9aa7aa816693b9b7ae8a5"
+    },
+    {
+      "name": "chatgptweb/decomp-impact-306-production-20261116",
+      "snapshot_head": "6c8c565bd3effbf8fb7c31ca48515077c5c1529f"
+    },
+    {
+      "name": "chatgptweb/dual-region-foundation",
+      "snapshot_head": "5a3eb6fb852fa2347ababeeec5b62680ef2cd1bc"
+    },
+    {
+      "name": "chatgptweb/file11-179-promotion-20261116",
+      "snapshot_head": "8473b8d89af22a7e8a27ef4576e4149755f51e41"
+    },
+    {
+      "name": "chatgptweb/file11-expansion-20261116",
+      "snapshot_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+    },
+    {
+      "name": "chatgptweb/file11-source-export-20261116",
+      "snapshot_head": "eb0c5394259267aae2a75f2d2a559563db2fa102"
+    },
+    {
+      "name": "chatgptweb/file11-transition-52-research",
+      "snapshot_head": "defbfb82f63fdb5124946d021b09260c342342c1"
+    },
+    {
+      "name": "chatgptweb/file11-wave6-build-export-20261117",
+      "snapshot_head": "f8ff25946968a0bacfb59149ce5fb3cb82a27985"
+    },
+    {
+      "name": "chatgptweb/file11-wave6-four-new-research-20261117",
+      "snapshot_head": "632283f24e9affeb404ae84381d30e3aee71a13f"
+    },
+    {
+      "name": "chatgptweb/impact-value-search",
+      "snapshot_head": "cc268b458eebbfdaf2e54c53dd8223c5514f618d"
+    },
+    {
+      "name": "chatgptweb/japan-mupen-ambiguity-fix",
+      "snapshot_head": "d99be91504490c29895cf0f14484122866eb09d2"
+    },
+    {
+      "name": "chatgptweb/japanese-decomp-port",
+      "snapshot_head": "634da7d6e4100125d7b7fe9e1592bb68e1458146"
+    },
+    {
+      "name": "chatgptweb/japanese-overlay-jal-audit",
+      "snapshot_head": "bfdf727f4d1603c203bf84a2440b9389aef96bd4"
+    },
+    {
+      "name": "chatgptweb/japanese-overlay-symbol-map",
+      "snapshot_head": "7f8486a25ba54f946ea2c2641afe74ca701d0fa2"
+    },
+    {
+      "name": "chatgptweb/japanese-recomp-input",
+      "snapshot_head": "ed45e14b8ee93115ceed087d90acc756b59d41de"
+    },
+    {
+      "name": "chatgptweb/japanese-region-loader",
+      "snapshot_head": "dd301ff5ae80c0f98a95c8911ba0a442d70fe274"
+    },
+    {
+      "name": "chatgptweb/japanese-symbol-reconciliation",
+      "snapshot_head": "a2f57bacbe67230af82b7767c1140878c422c8db"
+    },
+    {
+      "name": "chatgptweb/jp-recomp-cross-region-c-research-20261116",
+      "snapshot_head": "8d07137edccd3dde6b63dc6ad64bce90bb97a4a9"
+    },
+    {
+      "name": "chatgptweb/native-emulator-savestates",
+      "snapshot_head": "3d971e811d28a93e8611f7e300f9cba8debd0de0"
+    },
+    {
+      "name": "chatgptweb/promote-47-crossregion-to-389-20261117",
+      "snapshot_head": "67c71c934430a261d6fdfb0dad520634406c5920"
+    },
+    {
+      "name": "chatgptweb/usa-727-coexistence-source-preflight-20261117",
+      "snapshot_head": "4f5ae5654c5464c6c4b7323ac7278dd16beba37e"
+    },
+    {
+      "name": "chatgptweb/usa-external-memory-leads",
+      "snapshot_head": "b3493b909e0edb382712bc9dc5a5321c9b24c46b"
+    },
+    {
+      "name": "chatgptweb/usa-file12-adjacent-385-research-20261117",
+      "snapshot_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+    },
+    {
+      "name": "chatgptweb/usa-file12-spatial-lifecycle-20261116",
+      "snapshot_head": "66d76a9fae0fea3c4bcb5666b7ba259f0eb667ef"
+    },
+    {
+      "name": "codex/ebisumaru-mini-research",
+      "snapshot_head": "c94edb55880718b7de146014644b554bf520832f"
+    },
+    {
+      "name": "codex/goemon-impact-research",
+      "snapshot_head": "8af9e747320dfc5ff4319212b69ddca4b8c5c4a5"
+    },
+    {
+      "name": "codex/goemon-vm-overlay-followup",
+      "snapshot_head": "6b5d0d8958bd87fb850c05008acb29650579bf30"
+    },
+    {
+      "name": "decomp/bidirectional-crosswalk-agents-20261116",
+      "snapshot_head": "628f12e4c5ddc0bbbebb85dfeee884845bcab52c"
+    },
+    {
+      "name": "decomp/crosswalk-instructions-canonical-20261117",
+      "snapshot_head": "1961f1333e8a5007c3cf8df5dfa0d0ca5a0cea8b"
+    },
+    {
+      "name": "decomp/region-crosswalk-canonical-fresh-20261117",
+      "snapshot_head": "6d77d7011780bf72379c7278f9db37ab3d1e24cd"
+    },
+    {
+      "name": "main",
+      "snapshot_head": "34645d52bc45f8f9eeb9f43c1e24e99847c44093"
+    },
+    {
+      "name": "toolkit/unlocks-items-and-flags-20261117",
+      "snapshot_head": "69efde52b7f945189364cce761e0b63d729ab6ff"
+    }
+  ],
+  "historic_pr_snapshot": [
+    {
+      "number": null,
+      "title": "v0.11.38: Per-flag On/Off controls and selectable toolkit updates",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/53"
+    },
+    {
+      "number": null,
+      "title": "Draft: 393 exact USA C native ROM/ELF/reloc PASS; full verifier + CI pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/49"
+    },
+    {
+      "number": null,
+      "title": "Draft: USA file12 385 C plus canonical callbacks (387-C exact ROM); full 727 pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/47"
+    },
+    {
+      "number": null,
+      "title": "Draft: USA file12 three-C exact original-ROM preflight; central 315+3 pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/42"
+    },
+    {
+      "number": null,
+      "title": "Draft: USA 323-C combined native G2 + inventory pass; full current CI pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/41"
+    },
+    {
+      "number": null,
+      "title": "Draft: 389-C combined native ROM/ELF/reloc PASS; canonical 342+47 verifier and CI pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/40"
+    },
+    {
+      "number": null,
+      "title": "Draft: integrate Japanese 24-C and overlay research beside verified USA 307",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/26"
+    },
+    {
+      "number": null,
+      "title": "Draft research: 207 USA file11 native matches, 113 still outside canonical 307",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/23"
+    },
+    {
+      "number": null,
+      "title": "Record newly discovered USA GameShark and actor values with provenance",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/12"
+    },
+    {
+      "number": null,
+      "title": "Reconcile Japanese Impact function matches with original N64Recomp symbol bounds",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/8"
+    },
+    {
+      "number": null,
+      "title": "Scan 69 Japanese overlays and verify the audio patch counterpart",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/7"
+    },
+    {
+      "number": null,
+      "title": "Prepare region-aware ROM loader in isolated Goemon64Recomp checkout",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/6"
+    },
+    {
+      "number": null,
+      "title": "Map USA Goemon MIPS functions to Japanese main code and overlays",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/5"
+    },
+    {
+      "number": null,
+      "title": "Generate hash-verified Japanese/USA decompressed ROMs for N64Recomp",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/4"
+    },
+    {
+      "number": null,
+      "title": "[Foundation] Verify and map USA/Japanese Goemon 64 ROMs",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/1"
+    }
+  ],
+  "integration_boundaries": [
+    "The 87 old registry candidates are all accepted. Their old isolated statuses are obsolete.",
+    "Historical G64 PASSED_G2 labels do not independently establish current production ownership.",
+    "A mentioned function name is not necessarily the historical task target.",
+    "The task ledger describes investigations, not a verified exhaustive listing of 6,499 ASM entries.",
+    "The currently enumerated script-VM assembly functions remain unpromoted despite earlier semantic models.",
+    "Older branch and PR references are historical pointers, not authenticated current branch contents.",
+    "Recompiling the thousands of remaining ASM entries or all historic variants was not performed by this metadata audit."
+  ]
+}

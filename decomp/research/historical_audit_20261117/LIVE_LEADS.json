@@ -1,0 +1,100 @@
+{
+  "format": "goemon-reconciled-unpromoted-research-leads-v1",
+  "as_of_utc": "2026-11-17",
+  "canonical_accepted": {"usa": 864, "japan_0": 39},
+  "source": "Research-only reconciliation; no new C ownership. All source paths remain on chatgptweb/decomp after publication.",
+  "groups": [
+    {
+      "id": "graphics_main_five",
+      "region": "usa",
+      "segment": "main",
+      "source": "decomp/research/graphics_adjacent_20261117/README.md",
+      "evidence": "decomp/results/graphics_five_native_recheck_20261117.json",
+      "previous_scratch_evidence": "decomp/results/graphics_adjacent_scratch_proof_20261117.json",
+      "function_count": 5,
+      "matching_original_bytes": 284,
+      "fresh_proof": "ORIGINAL_ADDRESS_NATIVE_EXACT_5_OF_5",
+      "canonical_g2": "NOT_RUN",
+      "status": "RESEARCH_ONLY",
+      "next": "Build versioned main-code staging adapter with correct assembly ownership and verify with all 864 accepted USA C"
+    },
+    {
+      "id": "file27_21",
+      "region": "usa",
+      "segment": "file_27",
+      "source": "decomp/research/file27_adjacent21_20261117/README.md",
+      "evidence": "decomp/research/file27_adjacent21_20261117/research_proof.json",
+      "function_count": 21,
+      "matching_original_bytes": 1316,
+      "existing_proof": "NATIVE_UNIT_AND_UPSTREAM_FULL_ROM_SCRATCH_EXACT",
+      "canonical_g2": "NOT_RUN",
+      "status": "RESEARCH_ONLY",
+      "next": "Separate original-overlay adapter for 864+21 and original 876 relocation comparison"
+    },
+    {
+      "id": "file25_isolated_symbol_block",
+      "region": "usa",
+      "segment": "file_25",
+      "source": "decomp/research/file27_adjacent21_20261117/file25_last_v3.c",
+      "function_count": 1,
+      "matching_original_bytes": 72,
+      "existing_proof": "ISOLATED_NATIVE_EXACT_ONLY",
+      "full_source_unit": "BLOCKED_EXTRA_SYMBOL_RELOCATION",
+      "canonical_g2": "NOT_RUN",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "id": "file26_adjacent_12_new",
+      "region": "usa",
+      "segment": "file_26",
+      "evidence": "decomp/results/file26_adjacent15_upstream_scratch_20261117.json",
+      "function_count": 12,
+      "matching_original_bytes": 2196,
+      "existing_proof": "NATIVE_AND_UPSTREAM_FULL_ROM_SCRATCH_EXACT",
+      "canonical_g2": "NOT_RUN",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "id": "file26_236_byte_initializer",
+      "region": "usa",
+      "segment": "file_26",
+      "name": "func_08000908_6AF0E8",
+      "rom_offset": "0x6AF0E8",
+      "size": 236,
+      "evidence": "decomp/results/file26_adjacent15_upstream_scratch_20261117.json",
+      "first_mismatch": "0x98",
+      "status": "FAILED_NATIVE"
+    },
+    {
+      "id": "script_vm_residual_13",
+      "region": "usa",
+      "segment": "main",
+      "evidence": "decomp/results/vm_residual_inventory.json",
+      "function_count": 13,
+      "native_status": "MIXED_HISTORICAL_NONMATCHING_AND_UNTESTED",
+      "canonical_g2": "NOT_RUN_FOR_RESIDUALS",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "id": "graphics_near_misses_3",
+      "region": "usa",
+      "segment": "main",
+      "evidence": "decomp/results/graphics_adjacent_scratch_proof_20261117.json",
+      "functions": ["func_800196A4_1A2A4", "func_8001B6D4_1C2D4", "func_8001B6A4_1C2A4"],
+      "status": "FAILED_NATIVE"
+    },
+    {
+      "id": "legacy_df4_f6e8_revisit",
+      "region": "usa",
+      "segment": "main",
+      "evidence": "decomp/results/legacy_native_revisit_20261117.json",
+      "functions": ["func_80001DF4_29F4", "func_8003F6E8_402E8"],
+      "status": "FAILED_NATIVE"
+    }
+  ],
+  "not_claimed": [
+    "Groups may overlap historical task descriptions; counts must not be blindly summed",
+    "No combined accepted production count is changed by this ledger",
+    "No new original ROM or private object data is committed"
+  ]
+}
