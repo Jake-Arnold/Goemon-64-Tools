@@ -16,7 +16,7 @@ import urllib.request
 
 from practice.address_catalogue import (
     CATALOGUE_FORMAT, DISCOVERY_FORMAT, MAX_ENTRIES, MAX_SERIALIZED,
-    _entry, validate_entry, validate_catalogue, search_entries,
+    _entry, validate_entry, validate_catalogue, search_entries, consolidate_entries,
 )
 from practice.paths import practice_data_dir
 
@@ -107,8 +107,7 @@ def merge_remote_catalogue(local, remote):
             updated += 1
         records[row["id"]] = row
     merged = dict(local)
-    merged["entries"] = sorted(records.values(), key=lambda x: (
-        x["region"], x["address"], x["id"]))
+    merged["entries"] = consolidate_entries(records.values())
     validate_catalogue(merged)
     return merged, {"added": added, "updated": updated,
                     "disputed": sum(
