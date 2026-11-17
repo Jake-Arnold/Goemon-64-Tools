@@ -57,6 +57,7 @@ esac
   tests.test_region_unlocks \
   tests.test_unlock_flag_catalog \
   tests.test_address_registry \
+  tests.test_address_metadata_sync \
   tests.test_region_memory_crosswalk \
   tests.test_region_crosswalk_agent \
   tests.test_crosswalk_shared_pages \
