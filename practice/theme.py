@@ -52,6 +52,38 @@ def apply_theme(root) -> None:
     style.map('Accent.TButton', background=[('active', c['red_hover']), ('disabled', '#503535')])
     style.configure('Gold.TButton', background='#644522', foreground='#fff3d6', bordercolor='#9a703c')
     style.map('Gold.TButton', background=[('active', '#805c31')])
+    # Dense event-flag rows use unified card backgrounds instead of a
+    # Card.TLabel drawn on a plain dark frame (which made text look patched).
+    style.configure('FlagRow.TFrame', background=c['surface_alt'])
+    style.configure('FlagGroup.TFrame', background=c['surface'])
+    style.configure('FlagName.TLabel', background=c['surface_alt'],
+                    foreground='#ffffff', font=('Segoe UI Semibold', 10))
+    style.configure('FlagMeta.TLabel', background=c['surface_alt'],
+                    foreground='#cbd1d9', font=('Segoe UI', 9))
+    style.configure('FlagAddress.TLabel', background=c['surface_alt'],
+                    foreground='#d4c5aa', font=('Consolas', 10))
+    style.configure('FlagState.TLabel', background=c['surface_alt'],
+                    foreground='#d3dce4', font=('Segoe UI Semibold', 10))
+    style.configure('FlagGroup.TLabel', background=c['surface'],
+                    foreground=c['gold'], font=('Segoe UI Semibold', 11))
+    style.configure('Flag.TButton', background='#39424e', foreground='#f1f5fa',
+                    bordercolor='#586574', padding=(8, 5),
+                    font=('Segoe UI Semibold', 10), relief='flat')
+    style.map('Flag.TButton',
+              background=[('disabled', '#303741'), ('active', '#4b5968')],
+              foreground=[('disabled', '#b4becb')])
+    style.configure('FlagOn.TButton', background='#245b52',
+                    foreground='#f6fffb', bordercolor='#4caa96',
+                    padding=(8, 5), font=('Segoe UI Semibold', 10))
+    style.map('FlagOn.TButton',
+              background=[('disabled', '#314d48'), ('active', '#307567')],
+              foreground=[('disabled', '#d5e8e2')])
+    style.configure('FlagOff.TButton', background='#66502e',
+                    foreground='#fff8e8', bordercolor='#ba955e',
+                    padding=(8, 5), font=('Segoe UI Semibold', 10))
+    style.map('FlagOff.TButton',
+              background=[('disabled', '#4c4233'), ('active', '#80653b')],
+              foreground=[('disabled', '#f0ddbc')])
     style.configure('TEntry', fieldbackground=c['surface_alt'], foreground=c['foreground'],
                     insertcolor=c['foreground'], bordercolor=c['line'], lightcolor=c['gold'],
                     padding=(6, 5))
