@@ -205,9 +205,15 @@ class ModelResearchDialog:
         self.segment.set(hex(report['segment']))
         self.reset_view()
         if 'roots' in report:
+            records = report.get('skeleton_records') or {}
+            index = records.get('screenshot_index')
+            record_note = (f' Source file 0x123, exact live-skeleton record #{index + 1}/'
+                           f'{records["candidate_record_count"]} at 0x{records["screenshot_offset"]:X}.'
+                           if records.get('screenshot_match') else '')
             self.status.set(f'PROJECT64 TRACE — {self.region} player resource 0x120, 4 independent limb lists, '
                             f'{report["triangles"]} triangles; parts artificially coloured, unposed and '
-                            'overlapping. Textures and full model require RT64. NOT an NPC actor-ID mapping.')
+                            'overlapping.' + record_note +
+                            ' Textures and pose matrices require RT64. NOT an NPC actor-ID mapping.')
             return
         provenance = (f'Verified player resource table, slot {report["slot"]}; ' if 'slot' in report else 'Manual research range; ')
         self.status.set(f'RESEARCH ONLY — {provenance}{self.region} file 0x{report["file_id"]:03X} segment 0x{report["segment"]:02X}, {report["triangles"]} triangles, {report["commands"]} commands. Fragment only; NOT linked to selected NPC actor ID.')

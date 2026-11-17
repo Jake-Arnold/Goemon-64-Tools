@@ -9,7 +9,7 @@ from practice.model_research import (
     EXPECTED_GRAPHICS_IDS, PLAYER_TABLE_OFFSETS,
     PJ64_CAPTURED_LIMB_ROOTS_USA, PJ64_CAPTURED_LIMB_ROOTS_DELTA,
     PJ64_CAPTURED_LIMB_FACES, PJ64_CAPTURED_TEXTURE_REFS_USA,
-    extract_traced_player_limb_bundle,
+    extract_traced_player_limb_bundle, inspect_traced_skeleton_records,
 )
 
 
@@ -64,6 +64,15 @@ class TracedPlayerTests(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError,'prologue|texture pointer'):
                         extract_traced_player_limb_bundle(b'synthetic','usa')
 
+    def test_synthetic_file_without_screenshot_is_not_claimed_exact(self):
+        for region in ('usa','japan_0'):
+            with patch('practice.model_research.RomFiles' if region=='usa' else
+                       'practice.model_research.JapanRomFiles', return_value=synthetic_files(region)):
+                result=inspect_traced_skeleton_records(b'synthetic',region)
+            self.assertEqual(result['candidate_record_count'],0)
+            self.assertFalse(result['screenshot_match'])
+            self.assertIsNone(result['screenshot_index'])
+
     def test_real_original_roms(self):
         paths={
           'usa':os.environ.get('GOEMON_TEST_USA_ROM'),
@@ -78,6 +87,13 @@ class TracedPlayerTests(unittest.TestCase):
                 self.assertEqual(report['file_id'],0x120)
                 self.assertEqual(len(report['roots']),4)
                 self.assertEqual(mesh.bounds,((-17,-39,-21),(21,9,34)))
+                summary=report['skeleton_records']
+                self.assertTrue(summary['screenshot_match'])
+                self.assertEqual(summary['candidate_record_count'],122)
+                self.assertEqual(summary['screenshot_offset'],0x2A530)
+                self.assertEqual(summary['screenshot_index'],109)
+                self.assertEqual(summary['file_id'],0x123)
+                self.assertEqual(summary['candidate_offsets'][109],0x2A530)
 
 
 if __name__=='__main__':unittest.main()

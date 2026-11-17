@@ -98,3 +98,13 @@ python3 -m practice.model_research --region japan_0 --rom '/path/to/JP.n64' --tr
 ```
 
 The new and existing focused tests were run under Linux/Xvfb with both supplied original ROMs: **24/24 PASS**. Full repository CI, actual RT64 GPU replay, animated skeleton transforms, correct RDP textures and visual in-game 3D match have not been verified. No raw ROM data, extracted model binary, memory snapshots or game screenshots are committed.
+
+## Exact ROM source for the paused Project64 skeleton
+
+The 96-byte memory range `0x80304BB0–0x80304C0F` in the screenshot is **byte-for-byte present in original USA resource `0x123` at file-relative offset `0x2A530`**, not just a similar pointer. That 96-byte sequence occurs once in USA file `0x123`. The original Japanese rev-0 `0x123` has the same sequence at `0x2A530`, after the four segment-`0x09` display-list roots have been adjusted by `-0x60`; all other bytes agree. These authenticated original resource spans have SHA-256 `f57d986d224db7318a9342545677deb6fe675914c52f3d15f9882dd4f427302e` (USA) and `3377c9f389433d70ee907add714afbb61454d8a08971bd37da844582c0218857` (JP).
+
+A bounded scanner finds **122 groups** of four skeleton graphic pointers (24 bytes apart) in resource `0x123` in each region. The screenshot's matching group is at **zero-based index 109**, or the **110th** candidate. This strongly associates `0x123` with the player graphics geometry file `0x120` but **does not establish that all 122 are frames played sequentially**. The packed 16-bit values in the `Skeleton` records are not yet decoded into meaningful skeletal transforms; even the source names `scale`, `rotation`, and `translation` should not be applied to preview vertices without tracing the original decoder.
+
+`extract_traced_player_limb_bundle` now includes metadata-only `skeleton_records` with the candidate count, source offsets, exact-capture match, and capture index. The **Preview traced 4-part skeleton** GUI status displays this cross-reference after authentication. No need to paste the original object bytes again; no captured raw game bytes are stored or committed.
+
+The source-capture match is independently checked in both supplied regional original ROMs by the focused tests (**25/25 PASS** under Linux/Xvfb). No full-texture RT64 rendering or original animation-matrix decode is claimed.

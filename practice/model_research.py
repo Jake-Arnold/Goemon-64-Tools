@@ -50,6 +50,65 @@ PJ64_CAPTURED_PART_COLORS = ((208, 128, 103), (100, 184, 203),
                              (215, 181, 110), (153, 131, 212))
 
 
+# The screenshot's 0x60 bytes in live A0=0x80304BB0 correspond to one exact
+# source record in file 0x123 (at +0x2A530) in both retail regions. The file
+# holds many repeats of the four limb roots. They are only *candidate* states:
+# raw s16 words require interpretation by the original animation code before
+# they can be treated as meaningful rotations/translation/scale.
+PJ64_CAPTURED_SKELETON_FILE_ID = 0x123
+PJ64_CAPTURED_SKELETON_OFFSET = 0x2A530
+PJ64_CAPTURED_SKELETON_SHA256 = {
+    'usa': 'f57d986d224db7318a9342545677deb6fe675914c52f3d15f9882dd4f427302e',
+    'japan_0': '3377c9f389433d70ee907add714afbb61454d8a08971bd37da844582c0218857',
+}
+
+
+def inspect_traced_skeleton_records(rom, region):
+    """Locate Project64's exact four-skeleton byte capture in original ROM file 0x123.
+
+    Search produces metadata only: matching 0x18-byte-strided root offsets,
+    SHA-256 and a source-file offset. No original animation bytes are exported.
+    Not proof that every repeated root group is one in-game animation frame.
+    """
+    if region not in PJ64_CAPTURED_LIMB_ROOTS_DELTA:
+        raise ValueError('Captured skeleton research supports only USA/Japan rev-0')
+    files = RomFiles(rom) if region == 'usa' else JapanRomFiles(rom)
+    refs = player_graphics_resources(files, region)
+    if refs[0]['adjacent_file_id'] != PJ64_CAPTURED_SKELETON_FILE_ID:
+        raise ValueError('Adjacent player skeleton resource ID does not match source table')
+    data = files.file(PJ64_CAPTURED_SKELETON_FILE_ID)
+    delta = PJ64_CAPTURED_LIMB_ROOTS_DELTA[region]
+    roots = tuple((0x09 << 24) | (x + delta) for x in PJ64_CAPTURED_LIMB_ROOTS_USA)
+    target = struct.pack('>I', roots[0])
+    positions = []
+    at = 0
+    while True:
+        at = data.find(target, at)
+        if at < 0:
+            break
+        if at % 4 == 0 and at + 0x60 <= len(data) and all(
+                struct.unpack_from('>I', data, at + 0x18 * j)[0] == roots[j]
+                for j in range(4)):
+            positions.append(at)
+        at += 4
+    capture_at = PJ64_CAPTURED_SKELETON_OFFSET
+    screenshot_digest = (hashlib.sha256(data[capture_at:capture_at + 0x60]).hexdigest()
+                         if capture_at + 0x60 <= len(data) else None)
+    exact = (capture_at in positions and
+             screenshot_digest == PJ64_CAPTURED_SKELETON_SHA256[region])
+    return dict(region=region, file_id=PJ64_CAPTURED_SKELETON_FILE_ID,
+                resource_sha256=hashlib.sha256(data).hexdigest(),
+                candidate_record_count=len(positions),
+                candidate_offsets=positions,  # source offsets only, not asset bytes
+                screenshot_offset=capture_at,
+                screenshot_match=exact,
+                screenshot_index=(positions.index(capture_at) if exact else None),
+                screenshot_sha256=screenshot_digest,
+                meaning='Repeated skeleton-pointer groups; not verified time-ordered animation frames')
+
+
+
+
 def extract_traced_player_limb_bundle(rom, region):
     """Replay four observed USA skeleton Gfx roots in authenticated regional file 0x120.
 
@@ -102,10 +161,12 @@ def extract_traced_player_limb_bundle(rom, region):
                   'Texture pointers are outside file 0x120; segment loading/TMEM requires runtime verification'),
         ended=all(m.ended for m in meshes),
     )
+    records = inspect_traced_skeleton_records(rom, region)
     return dict(region=region, rom_sha1=files.sha1, file_id=0x120,
                 segment=9, source='Project64 USA Skeleton* capture + verified original regional ROM',
                 resource_sha256=hashlib.sha256(data).hexdigest(),
                 roots=[f'0x09{root:06X}' for root in roots], parts=parts,
+                skeleton_records=records,
                 **combined.summary()), combined
 
 
