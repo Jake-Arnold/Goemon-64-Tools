@@ -73,12 +73,28 @@ class GitUpdaterTests(unittest.TestCase):
             check_for_updates(self.main)
         self.assertEqual((self.main / 'hello.txt').read_text(), 'mine\n')
 
-    def test_development_branch_is_not_switched(self):
+    def test_toolkit_development_branch_updates_only_itself(self):
         self.run_git(self.main, 'checkout', '-b', 'toolkit/experiment')
-        with self.assertRaisesRegex(UpdateError, 'development branches'):
-            check_for_updates(self.main)
+        self.run_git(self.main, 'push', '-u', 'origin', 'toolkit/experiment')
+        self.run_git(self.other, 'fetch', 'origin', 'toolkit/experiment')
+        self.run_git(self.other, 'checkout', '-b', 'toolkit/experiment',
+                     'origin/toolkit/experiment')
+        self._push_change('feature improvement\n')
+        status = check_for_updates(self.main)
+        self.assertEqual(status.state, 'available')
+        self.assertEqual(status.branch, 'toolkit/experiment')
+        install_update(self.main, status)
         self.assertEqual(self.run_git(self.main, 'branch', '--show-current'),
                          'toolkit/experiment')
+        self.assertEqual((self.main / 'hello.txt').read_text(),
+                         'feature improvement\n')
+
+    def test_decomp_branch_is_not_switched_or_updated(self):
+        self.run_git(self.main, 'checkout', '-b', 'chatgptweb/decomp')
+        with self.assertRaisesRegex(UpdateError, 'other development branches'):
+            check_for_updates(self.main)
+        self.assertEqual(self.run_git(self.main, 'branch', '--show-current'),
+                         'chatgptweb/decomp')
 
     def test_divergent_commits_are_never_reset(self):
         self._push_change()
