@@ -1,7 +1,8 @@
 """Safe, explicit mainline updates for Git-cloned Goemon toolkit installs.
 
-Never reset, force-checkout, clean user files or switch development branches.
-Fetch the canonical GitHub origin and fast-forward *only* a clean main checkout.
+Never reset, force-checkout, clean user files or switch branches. Fetch
+the canonical GitHub origin and fast-forward the checked-out main or toolkit/*
+branch only. Other research and decompilation branches are left untouched.
 Git's merge protections also prevent overwriting conflicting untracked files.
 """
 from __future__ import annotations
@@ -28,12 +29,13 @@ class UpdateStatus:
     state: str  # current or available
     local_sha: str
     remote_sha: str
+    branch: str = BRANCH
 
     @property
     def message(self):
         if self.state == "current":
-            return f"Up to date with main ({self.local_sha[:9]})."
-        return (f"Update available: main {self.local_sha[:9]} "
+            return f"Up to date with {self.branch} ({self.local_sha[:9]})."
+        return (f"Update available on {self.branch}: {self.local_sha[:9]} "
                 f"→ {self.remote_sha[:9]}.")
 
 
@@ -76,17 +78,19 @@ def _validate_checkout(root: Path):
     if Path(top).resolve() != root:
         raise UpdateError("This toolkit folder is not the root of its Git checkout.")
     branch = _git(root, "branch", "--show-current").stdout.strip()
-    if branch != BRANCH:
+    if branch != BRANCH and not re.fullmatch(
+            r"toolkit/[a-zA-Z0-9][a-zA-Z0-9_./-]*", branch):
         raise UpdateError(
             f"Current branch is '{branch or 'detached HEAD'}'. "
-            "Auto-update only works on main; development branches are left untouched.")
+            "Auto-update supports main and toolkit/* only; "
+            "other development branches are untouched.")
     url = _git(root, "remote", "get-url", REMOTE).stdout.strip()
     if not _trusted_origin(url):
         raise UpdateError("Origin does not point to the canonical Goemon toolkit repository.")
     changes = _git(root, "status", "--porcelain", "--untracked-files=no").stdout.strip()
     if changes:
         raise UpdateError("Tracked files have local changes; commit or stash them before updating.")
-    return root
+    return root, branch
 
 
 def _head(root: Path, ref: str) -> str:
@@ -96,8 +100,8 @@ def _head(root: Path, ref: str) -> str:
     return sha
 
 
-def _fetch_remote_head(root: Path) -> str:
-    _git(root, "fetch", "--no-tags", REMOTE, f"refs/heads/{BRANCH}",
+def _fetch_remote_head(root: Path, branch: str) -> str:
+    _git(root, "fetch", "--no-tags", REMOTE, f"refs/heads/{branch}",
          timeout=45)
     return _head(root, "FETCH_HEAD")
 
@@ -112,16 +116,16 @@ def _is_ancestor(root: Path, before: str, after: str) -> bool:
 
 def check_for_updates(root: Path) -> UpdateStatus:
     """Fetch metadata/objects but never change working-tree files."""
-    root = _validate_checkout(root)
+    root, branch = _validate_checkout(root)
     local = _head(root, "HEAD")
-    remote = _fetch_remote_head(root)
+    remote = _fetch_remote_head(root, branch)
     if local == remote:
-        return UpdateStatus("current", local, remote)
+        return UpdateStatus("current", local, remote, branch)
     if not _is_ancestor(root, local, remote):
         raise UpdateError(
-            "Local main is ahead or diverged from upstream main. "
+            f"Local {branch} is ahead or diverged from upstream. "
             "Auto-update will not reset or overwrite local commits.")
-    return UpdateStatus("available", local, remote)
+    return UpdateStatus("available", local, remote, branch)
 
 
 def install_update(root: Path, checked: UpdateStatus) -> str:
@@ -132,14 +136,16 @@ def install_update(root: Path, checked: UpdateStatus) -> str:
     """
     if checked.state != "available":
         raise UpdateError("No checked update to install.")
-    root = _validate_checkout(root)
+    root, branch = _validate_checkout(root)
+    if branch != checked.branch:
+        raise UpdateError("Selected branch changed since the check; check again.")
     if _head(root, "HEAD") != checked.local_sha:
         raise UpdateError("Local HEAD changed after the update check; check again.")
-    remote = _fetch_remote_head(root)
+    remote = _fetch_remote_head(root, branch)
     if remote != checked.remote_sha:
         raise UpdateError("Upstream main changed since the check; check again.")
     if not _is_ancestor(root, checked.local_sha, remote):
-        raise UpdateError("Cannot fast-forward main; no files were reset.")
+        raise UpdateError("Cannot fast-forward checked branch; no files were reset.")
     _git(root, "merge", "--ff-only", remote, timeout=45)
     if _head(root, "HEAD") != remote:
         raise UpdateError("Update did not reach the expected commit.")
