@@ -22,14 +22,14 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 class UpdaterMixin:
     def build_update_controls(self, parent):
-        card = ttk.LabelFrame(parent, text=' Toolkit updates and versions ', padding=10)
+        card = ttk.LabelFrame(parent, text=' Toolkit updates and versions ', padding=6)
         card.pack(fill='x', pady=(0, 6))
         self.update_status = tk.StringVar(
             value='Choose a stable, test or tagged version. No automatic changes at startup.')
         ttk.Label(card, textvariable=self.update_status, style='CardMuted.TLabel',
-                  wraplength=410).pack(anchor='w', pady=(0, 7))
+                  wraplength=410).pack(anchor='w', pady=(0, 3))
         target_row = ttk.Frame(card)
-        target_row.pack(fill='x', pady=(0, 6))
+        target_row.pack(fill='x', pady=(0, 3))
         self.update_target_choice = tk.StringVar(value='Load available versions')
         self.update_version_box = ttk.Combobox(
             target_row, textvariable=self.update_target_choice, state='disabled',
