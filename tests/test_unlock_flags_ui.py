@@ -1,4 +1,4 @@
-"""Tk integration of the shared Items / Story Flags Unlocks views."""
+"""Tk integration for Unlocks items and per-flag On/Off controls."""
 import tkinter as tk
 import unittest
 from unittest.mock import patch
@@ -33,13 +33,19 @@ class UnlockFlagsUITests(unittest.TestCase):
         except tk.TclError:
             pass
 
+    def _open_flags(self):
+        app = self.app
+        app.unlock_sections.select(app.unlock_flags_page)
+        app.on_unlock_section_changed()
+        app.refresh_unlock_flags(force=True)
+
     def _select_japan(self):
         app = self.app
         app.game_version_choice.set(VERSIONS['japan'].label)
         app.on_game_version_changed()
         self.assertEqual(app.active_version.key, 'japan')
 
-    def test_two_pages_keep_all_old_item_controls(self):
+    def test_two_pages_keep_all_items_and_create_inline_buttons_lazily(self):
         app = self.app
         self.assertEqual([
             app.unlock_sections.tab(item, 'text')
@@ -48,48 +54,57 @@ class UnlockFlagsUITests(unittest.TestCase):
         self.assertEqual(app.usa_unlock_shell.winfo_manager(), 'pack')
         self.assertEqual(len(app.unlock_row_widgets), 34)
         self.assertGreater(len(app.unlock_flag_rows), 100)
-        self.assertTrue(app.unlock_flag_tree.exists('benkei_encounter'))
-        app.unlock_sections.select(app.unlock_flags_page)
+        self.assertEqual(app.unlock_flag_widgets, {})
         app.mem = FakeRAM()
-        app.refresh_unlock_flags(force=True)
-        app.unlock_flag_tree.selection_set('benkei_encounter')
-        app.select_unlock_flag()
-        self.assertNotIn('disabled', app.unlock_flag_set.state())
+        self._open_flags()
+        self.assertEqual(len(app.unlock_flag_widgets),
+                         len(app.unlock_flag_rows))
+        widgets = app.unlock_flag_widgets['benkei_encounter']
+        self.assertEqual(widgets['on'].cget('text'), 'On')
+        self.assertEqual(widgets['off'].cget('text'), 'Off')
+        self.assertEqual(widgets['state'].get(), 'Off')
+        self.assertNotIn('disabled', widgets['on'].state())
+        self.assertFalse(hasattr(app, 'unlock_flag_set'))
+        self.assertFalse(hasattr(app, 'unlock_flag_tree'))
 
-    def test_usa_flag_set_clear_preserves_other_bits(self):
+    def test_usa_each_flag_has_its_own_on_off_and_preserves_other_bits(self):
         app = self.app
         app.mem = FakeRAM()
         app.mem.bytes[0x8015C60C] = 0x81
-        app.unlock_sections.select(app.unlock_flags_page)
-        app.refresh_unlock_flags(force=True)
-        app.unlock_flag_tree.selection_set('benkei_encounter')
-        app.select_unlock_flag()
-        app.set_unlock_flag('Set')
+        self._open_flags()
+        widgets = app.unlock_flag_widgets['benkei_encounter']
+        self.assertEqual(widgets['state'].get(), 'Off')
+        widgets['on'].invoke()
         self.assertEqual(app.mem.bytes[0x8015C60C], 0xA1)
-        app.set_unlock_flag('Clear')
+        self.assertEqual(widgets['state'].get(), 'On')
+        self.assertEqual(widgets['on'].cget('style'), 'Gold.TButton')
+        widgets['off'].invoke()
         self.assertEqual(app.mem.bytes[0x8015C60C], 0x81)
-        self.assertEqual(app.mem.writes[0][0], 0x8015C60C)
-        self.assertEqual(app.mem.writes[1][0], 0x8015C60C)
+        self.assertEqual(widgets['state'].get(), 'Off')
+        self.assertEqual(widgets['off'].cget('style'), 'Gold.TButton')
+        self.assertEqual(
+            [w[0] for w in app.mem.writes], [0x8015C60C, 0x8015C60C])
 
-    def test_usa_stale_and_read_only_refuse_writes(self):
+    def test_usa_stale_and_read_only_refuse_writes_without_reverting_other_bits(self):
         app = self.app
         ram = FakeRAM()
         app.mem = ram
-        app.refresh_unlock_flags(force=True)
-        app.unlock_flag_tree.selection_set('benkei_encounter')
-        app.select_unlock_flag()
+        self._open_flags()
+        widgets = app.unlock_flag_widgets['benkei_encounter']
         ram.bytes[0x8015C60C] = 0x10
-        app.set_unlock_flag('Set')
+        widgets['on'].invoke()
         self.assertEqual(ram.writes, [])
         self.assertIn('blocked', app.unlock_status.get())
+        self.assertEqual(widgets['state'].get(), 'Off')
+        self.assertIn('changed', app.unlock_flag_feedback.get())
         app.args.read_only = True
         app.refresh_unlock_flags(force=True)
-        app.select_unlock_flag()
-        self.assertIn('disabled', app.unlock_flag_set.state())
-        app.set_unlock_flag('Set')
+        self.assertIn('disabled', widgets['on'].state())
+        self.assertIn('disabled', widgets['off'].state())
+        widgets['on'].invoke()
         self.assertEqual(ram.writes, [])
 
-    def test_japan_confirmed_and_candidate_bits_can_be_toggled(self):
+    def test_japan_confirmed_and_candidate_have_individual_on_off(self):
         app = self.app
         self._select_japan()
         ram = FakeRAM()
@@ -98,55 +113,68 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.game_pid = 1234
         app.jp_backend = 'project64'
         app.connection_target.set('project64')
-        app.unlock_sections.select(app.unlock_flags_page)
-        app.refresh_unlock_flags(force=True)
+        self._open_flags()
         benkei = app.unlock_flag_rows['benkei_encounter']
         self.assertEqual(benkei.address, 0x80161DFC)
-        self.assertTrue(benkei.editable)
-        app.unlock_flag_tree.selection_set('benkei_encounter')
-        app.select_unlock_flag()
-        self.assertNotIn('disabled', app.unlock_flag_set.state())
+        widgets = app.unlock_flag_widgets['benkei_encounter']
+        self.assertNotIn('disabled', widgets['on'].state())
         with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
-            app.set_unlock_flag('Set')
+            widgets['on'].invoke()
             writer.assert_called_once_with(
                 0x80161DFC, b'\xA1', expected=b'\x81')
         candidate = app.unlock_flag_rows['oedo_old_man_dialogue_cycle']
         self.assertTrue(candidate.editable)
         self.assertEqual(candidate.source, 'JP offset candidate')
-        app.unlock_flag_tree.selection_set(candidate.key)
-        app.select_unlock_flag()
-        self.assertNotIn('disabled', app.unlock_flag_set.state())
+        candidate_widgets = app.unlock_flag_widgets[candidate.key]
+        self.assertNotIn('disabled', candidate_widgets['on'].state())
+        self.assertNotIn('disabled', candidate_widgets['off'].state())
         with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
-            app.set_unlock_flag('Set')
+            candidate_widgets['on'].invoke()
             writer.assert_called_once_with(
                 candidate.address, bytes((candidate.mask,)),
                 expected=b'\x00')
-        # Read-only still blocks writes independently of provenance.
         app.args.read_only = True
-        app.select_unlock_flag()
-        self.assertIn('disabled', app.unlock_flag_set.state())
+        app.refresh_unlock_flags(force=True)
+        self.assertIn('disabled', candidate_widgets['on'].state())
+        self.assertIn('disabled', candidate_widgets['off'].state())
         with patch.object(app, 'write_japan_raw_bytes') as writer:
-            app.set_unlock_flag('Clear')
+            candidate_widgets['off'].invoke()
             writer.assert_not_called()
 
-    def test_flag_filter_and_region_switch_remove_stale_rows(self):
+    def test_filter_and_region_switch_replace_controls_and_no_old_address(self):
         app = self.app
-        app.unlock_flag_query.set('Benkei')
-        self.assertLess(len(app.unlock_flag_tree.get_children()),
+        self._open_flags()
+        app.unlock_flag_query.set('benkei')
+        self.assertLess(int(app.unlock_flag_counter.get().split(' / ')[0]),
                         len(app.unlock_flag_rows))
-        self.assertTrue(app.unlock_flag_tree.exists('benkei_encounter'))
+        self.assertEqual(
+            app.unlock_flag_widgets['benkei_encounter']['frame'].winfo_manager(),
+            'grid')
+        self.assertEqual(
+            app.unlock_flag_widgets['external_sasuke_recruited']['frame'].winfo_manager(),
+            '')
         self._select_japan()
-        self.assertNotIn('external_sasuke_recruited',
-                         app.unlock_flag_rows)
+        self.assertNotIn('external_sasuke_recruited', app.unlock_flag_widgets)
+        self.assertEqual(app.unlock_flag_rows['benkei_encounter'].address,
+                         0x80161DFC)
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
-        self.assertIn('external_sasuke_recruited',
-                      app.unlock_flag_rows)
+        self.assertIn('external_sasuke_recruited', app.unlock_flag_widgets)
         self.assertEqual(app.unlock_flag_rows['benkei_encounter'].address,
                          0x8015C60C)
         app.unlock_flag_query.set('')
-        self.assertEqual(len(app.unlock_flag_tree.get_children()),
-                         len(app.unlock_flag_rows))
+        self.assertEqual(
+            int(app.unlock_flag_counter.get().split(' / ')[0]),
+            len(app.unlock_flag_rows))
+
+    def test_disconnected_controls_do_not_write(self):
+        app = self.app
+        self._open_flags()
+        widgets = app.unlock_flag_widgets['benkei_encounter']
+        self.assertEqual(widgets['state'].get(), '—')
+        self.assertIn('disabled', widgets['on'].state())
+        self.assertIn('disabled', widgets['off'].state())
+        self.assertIn('Disconnected', app.unlock_flag_feedback.get())
 
 
 if __name__ == '__main__':
