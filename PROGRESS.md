@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — v0.11.37 Dashboard one-click Git updater (development branch)
+
+- **Request:** Make the toolkit check for updates through its interface and auto-install a detected update.
+- **GUI:** Add a Dashboard action, Check for updates. It fetches canonical `main` in a worker; an available fast-forward changes the same button to Install update and restart. UI is responsive and does not touch Tk from worker threads.
+- **Safety:** Confirm the checkout root and official GitHub origin, require clean tracked files on `main`, refuse feature branches, non-Git ZIP folders, and diverged histories. Revalidate local and remote SHAs before `git merge --ff-only`. Untracked reports/config files are not deleted, and Git refuses conflicting replacements.
+- **Restart:** After successful installation, normal mainloop teardown stops the freeze worker, closes process handles and Tk widgets, then launches the updated module with the original flags.
+- **Validation:** Add offline temporary-Git-repository tests for checks, new commits, fast-forward installs, diverged/modified/feature branches, changed remote targets and untracked files; Tk Dashboard tests for check/install/error/restart states. Linux/Windows CI pending; native GUI re-launch on a live game remains untested.
+- **Compatibility:** Accept the legacy `--route` option passed by the existing Windows launcher; release version incremented to v0.11.37.
+
 ## 2026-11-17 — v0.11.36 Unlocks subpages for items and flag experimentation
 
 - **Interface:** Preserve the existing 34 Item & equipment controls; add a second, searchable Story & event flags page under the existing Unlocks top-level tab. Never recreate the removed Japanese Live Diagnostics tab.
