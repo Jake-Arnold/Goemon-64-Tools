@@ -1,4 +1,25 @@
-# Goemon Speedrun Tools v0.11.43 — responsive flag folders
+# Goemon Speedrun Tools v0.11.44 — stable disconnected flag browsing
+
+## v0.11.44 — Avoid repeated offline flag-UI redraws
+
+When no game is connected, the toolkit previously forced a complete
+34-item/flag refresh on **every 170 ms UI tick**. That collided with
+incremental flag-folder rendering, needlessly reconfigured buttons and
+could cause visible instability. The same path also fired with a
+**connected Japanese game**, because it checked only the USA reader.
+
+The idle loop now tracks the active regional memory-reader identity:
+**one** forced refresh on initial disconnection, reader loss or region
+change; **no repeated refresh** while remaining disconnected. Existing
+connected USA/Japan polls retain their normal throttling. Offline
+flags remain searchable and viewable, showing unknown values with
+disabled On/Off controls; connecting restores live states and checked
+writes. Tests cover repeated idle ticks, large offline folders,
+disconnection transitions and the Japanese reader case.
+
+Actual Ubuntu visual behaviour still requires validation.
+
+
 
 ## v0.11.43 — Incremental flag-folder rendering
 

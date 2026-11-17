@@ -2008,6 +2008,24 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             'discovering the new verified process automatically.')
         self._connect_japan_emulator()
 
+    def _refresh_unlocks_on_reader_change(self):
+        """Update offline controls once after detaching, not every UI tick.
+
+        USA uses self.mem; Japan uses self.jp_rdram. Checking only self.mem
+        incorrectly treats a *connected Japanese game* as disconnected and
+        forces a full 34-item/flag redraw every 170 ms. Once detached, one
+        forced refresh clears stale On/Off states and disables write buttons.
+        """
+        region = self.active_version.key
+        reader = self.jp_rdram if region == 'japan' else self.mem
+        previous = getattr(self, '_unlock_refresh_reader_token', None)
+        if (previous is not None and previous[0] == region
+                and previous[1] is reader):
+            return
+        self._unlock_refresh_reader_token = (region, reader)
+        if reader is None:
+            self.refresh_unlocks(force=True)
+
     def tick(self):
         self._watch_japan_process_restart(time.monotonic())
         if self.jp_rdram is not None:
@@ -2115,8 +2133,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 self.status.set(f"Memory read failed: {e}")
                 self.cancel_pending_restore(quiet=True)
                 self.mem=None
-        if not self.mem:
-            self.refresh_unlocks(force=True)
+        self._refresh_unlocks_on_reader_change()
         self.root.after(170,self.tick)
 
     def checkpoint_choices(self):

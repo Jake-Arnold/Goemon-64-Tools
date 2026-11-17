@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — v0.11.44 disconnected Unlocks page stability
+
+- **Root cause:** The toolkit's 170 ms tick ended with `if not self.mem: self.refresh_unlocks(force=True)`. This forced all 34 item-control updates and flag polling on every tick while disconnected, defeating the throttling in `refresh_unlocks` and producing avoidable Tk churn while flag folders expand. It also ran continuously during valid Japanese attachments because Japan stores its reader in `self.jp_rdram`, not `self.mem`.
+- **Correction:** Track the active region and reader object across ticks. Call a forced refresh only on an initial detached state, reader loss or region switch; leave connected readers to their existing throttled updates. Once disconnected, the one forced refresh clears displayed game bytes and disables flag On/Off controls. No memory-map changes.
+- **Tests:** Add headless Tk checks for opening a 45-row folder offline, disabled On/Off controls, search while disconnected, one-time detachment refresh across 25 idle polls, and avoiding repeated false disconnections with a Japanese reader. Verify the main `tick` delegates through the transition helper instead of forcing offline refresh. Linux/Windows CI and registry sync to validate.
+- **Limitations:** Synthetic Tk and RAM tests, not a measured Linux desktop trace or in-game playback. Next: test opening and collapsing offline folders repeatedly on the installed Ubuntu toolkit.
+
+
 ## 2026-11-17 — v0.11.43 responsive Story & event flag folders
 
 - **Observed cause:** Expanding a 24–45-bit section in v0.11.42 synchronously created many Tk frames, labels, state variables and direct On/Off buttons. Every expansion then re-ran the filter and live-state refresh, with repeated geometry operations; that can block the Tk event loop.
