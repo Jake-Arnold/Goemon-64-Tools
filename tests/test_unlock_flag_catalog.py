@@ -1,10 +1,14 @@
 """ROM-free protection for Unlocks > Story & event flags."""
+import json
+from pathlib import Path
+import tempfile
+from unittest.mock import patch
 import unittest
 
 from practice.story_progress import FLAGS, CURATED_FLAGS, PLASMA_FLAGS, SAVED_BASE
 from practice.region_unlocks import REGION_DELTA
 from practice.unlock_flag_catalog import (
-    USA_FLAGS, JAPAN_FLAGS, flags_for_region,
+    USA_FLAGS, JAPAN_FLAGS, flags_for_region, load_flag_categories,
     read_flag_bytes, masked_flag_byte, write_japan_crosswalk_flag, UnlockFlag,
 )
 from tests.test_unlocks import FakeRAM
@@ -82,6 +86,59 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             write_japan_crosswalk_flag(writer, unmapped, 'Set', 0)
         self.assertEqual(len(writes), 4)
+
+    def test_editable_json_lists_all_keys_and_preserves_address_masks(self):
+        categories = load_flag_categories()
+        self.assertEqual(set(categories), {f.key for f in FLAGS})
+        self.assertEqual(categories['benkei_encounter'],
+                         ('Benkei & Kihachi', 'Unsorted'))
+        for region, original in (('usa', USA_FLAGS), ('japan', JAPAN_FLAGS)):
+            shown = flags_for_region(region)
+            self.assertEqual(
+                {f.key: (f.address, f.mask, f.source) for f in shown},
+                {f.key: (f.address, f.mask, f.source) for f in original})
+            self.assertTrue(all(f.subtype == 'Unsorted' for f in shown))
+        japanese = next(f for f in flags_for_region('japan')
+                        if f.key == 'oedo_old_man_dialogue_cycle')
+        written = []
+        self.assertTrue(write_japan_crosswalk_flag(
+            lambda address, data, *, expected: written.append(
+                (address, data, expected)) or True,
+            japanese, 'Set', 0))
+        self.assertEqual(written[0][0], japanese.address)
+
+    def test_json_can_reassign_type_subtype_and_reorder_rows(self):
+        from practice.unlock_flag_catalog import CATEGORY_FILE
+        original = json.loads(CATEGORY_FILE.read_text(encoding='utf-8'))
+        flags = original['flags']
+        benkei = next(row for row in flags if row['key'] == 'benkei_encounter')
+        benkei['type'] = 'Test area'
+        benkei['subtype'] = 'First chapter'
+        flags.insert(0, flags.pop(flags.index(benkei)))
+        with tempfile.TemporaryDirectory() as directory:
+            test_file = Path(directory) / 'types.json'
+            test_file.write_text(json.dumps(original), encoding='utf-8')
+            with patch('practice.unlock_flag_catalog.CATEGORY_FILE', test_file):
+                self.assertEqual(load_flag_categories()['benkei_encounter'],
+                                 ('Test area', 'First chapter'))
+                usa = flags_for_region('usa')
+                jp = flags_for_region('japan')
+                self.assertEqual(usa[0].key, 'benkei_encounter')
+                self.assertEqual(usa[0].group, 'Test area')
+                self.assertEqual(usa[0].subtype, 'First chapter')
+                self.assertEqual(jp[0].key, 'benkei_encounter')
+                self.assertEqual(jp[0].address, 0x80161DFC)
+                self.assertEqual(jp[0].mask, 0x20)
+
+    def test_malformed_category_json_does_not_block_game_controls(self):
+        with tempfile.TemporaryDirectory() as directory:
+            broken = Path(directory) / 'types.json'
+            broken.write_text('{not json', encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'Cannot read'):
+                load_flag_categories(broken)
+            with patch('practice.unlock_flag_catalog.CATEGORY_FILE', broken):
+                self.assertEqual(len(flags_for_region('usa')), len(FLAGS))
+                self.assertEqual(len(flags_for_region('japan')), len(JAPAN_FLAGS))
 
     def test_unavailable_and_short_reads_never_look_like_clear(self):
         class Short:
