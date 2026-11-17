@@ -476,11 +476,7 @@ class UnlocksMixin:
             self.refresh_unlock_flags(force=True)
 
     def _ensure_unlock_flag_widgets(self):
-        """Make a dedicated On and Off button for every mapped flag.
-
-        The 142 USA / 58 Japan rows are created only when the Flags page is
-        opened; tests and other tabs should not incur their startup cost.
-        """
+        """Render coherent, compact type/subtype sections with per-bit controls."""
         if (self.unlock_sections.select() != str(self.unlock_flags_page)
                 or self.unlock_flag_widgets):
             return
@@ -499,46 +495,71 @@ class UnlocksMixin:
             return 'break'
 
         self._unlock_flag_wheel = wheel
-        for position, flag in enumerate(self.unlock_flag_rows.values()):
-            frame = ttk.Frame(parent, padding=(4, 5))
-            frame.grid(row=position, column=0, sticky='ew', pady=(0, 2))
+        self.unlock_flag_sections = {}
+        index = 0
+        for flag in self.unlock_flag_rows.values():
+            section_key = (flag.group, flag.subtype)
+            if section_key not in self.unlock_flag_sections:
+                title_row = ttk.Frame(
+                    parent, style='FlagGroup.TFrame', padding=(8, 5))
+                title_row.grid(
+                    row=index, column=0, sticky='ew', pady=(4, 2))
+                title_row.columnconfigure(0, weight=1)
+                title = ttk.Label(
+                    title_row, text=f'{flag.group}  /  {flag.subtype}',
+                    style='FlagGroup.TLabel')
+                title.grid(row=0, column=0, sticky='w')
+                self.unlock_flag_sections[section_key] = title_row
+                for widget in (title_row, title):
+                    for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
+                        widget.bind(sequence, wheel, add='+')
+                index += 1
+            frame = ttk.Frame(
+                parent, style='FlagRow.TFrame', padding=(10, 5))
+            frame.grid(row=index, column=0, sticky='ew', pady=(0, 2))
             frame.columnconfigure(0, weight=1)
-            name = ttk.Label(frame, text=flag.label, style='Card.TLabel')
-            name.grid(row=0, column=0, sticky='w')
+            name = ttk.Label(
+                frame, text=flag.label, style='FlagName.TLabel',
+                wraplength=520)
+            name.grid(row=0, column=0, sticky='w', pady=(1, 0))
             address = ttk.Label(
-                frame, text=f'0x{flag.address:08X}  /  0x{flag.mask:02X}',
-                style='CardMuted.TLabel')
+                frame, text=f'{flag.address:08X} · {flag.mask:02X}',
+                style='FlagAddress.TLabel')
             address.grid(row=0, column=1, padx=(8, 10), sticky='w')
             value = tk.StringVar(value='—')
-            shown = ttk.Label(frame, textvariable=value, width=7)
-            shown.grid(row=0, column=2, padx=(0, 8), sticky='w')
-            controls = ttk.Frame(frame)
+            shown = ttk.Label(
+                frame, textvariable=value, style='FlagState.TLabel',
+                width=7)
+            shown.grid(row=0, column=2, padx=(0, 6), sticky='w')
+            controls = ttk.Frame(frame, style='FlagRow.TFrame')
             controls.grid(row=0, column=3, sticky='e')
             off = ttk.Button(
-                controls, text='Off', width=6,
+                controls, text='Off', width=5, style='Flag.TButton',
                 command=lambda key=flag.key: self.set_unlock_flag(key, 'Clear'))
             on = ttk.Button(
-                controls, text='On', width=6,
+                controls, text='On', width=5, style='Flag.TButton',
                 command=lambda key=flag.key: self.set_unlock_flag(key, 'Set'))
             off.pack(side='left')
             on.pack(side='left', padx=(5, 0))
             off.state(['disabled'])
             on.state(['disabled'])
             source = ttk.Label(
-                frame, text=f'{flag.group}  ·  {flag.source}',
-                style='CardMuted.TLabel')
-            source.grid(row=1, column=0, columnspan=4, sticky='w')
-            # Clicking the name/source reveals the full research note.
+                frame, text=f'{flag.source}  ·  {flag.group} / {flag.subtype}',
+                style='FlagMeta.TLabel')
+            source.grid(
+                row=1, column=0, columnspan=4, sticky='w', pady=(1, 0))
             for label in (name, source, address):
                 label.bind(
                     '<Button-1>',
                     lambda _event, key=flag.key: self.show_unlock_flag_detail(key))
             self.unlock_flag_widgets[flag.key] = {
-                'frame': frame, 'state': value, 'off': off, 'on': on}
+                'frame': frame, 'state': value, 'state_label': shown,
+                'off': off, 'on': on}
             for widget in (
                     frame, name, address, shown, controls, off, on, source):
                 for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
                     widget.bind(sequence, wheel, add='+')
+            index += 1
 
     def show_unlock_flag_detail(self, key):
         flag = self.unlock_flag_rows.get(key)
