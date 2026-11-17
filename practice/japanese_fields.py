@@ -27,6 +27,12 @@ class JapanField:
 
 def _field(key, label, address, width, group, kind="unsigned", maximum=None,
            source=JP_CHEATS):
+    # Reject malformed caller input before consulting the registry; schema
+    # tests must still detect invalid guest addresses for unknown field IDs.
+    if not 0x80000000 <= address < 0x80800000 or address + width > 0x80800000:
+        raise ValueError("JP field outside 8 MiB RDRAM")
+    if width not in (1, 2, 4):
+        raise ValueError("Unsupported JP read width")
     # All Japanese source-backed fields resolve their actual guest address
     # from the same authoritative catalogue as the shared Live Memory page.
     address = guest_address(
