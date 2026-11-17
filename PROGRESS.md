@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — v0.11.39 flag UI readability and editable type/subtype hierarchy
+
+- **Source screenshot:** User's Ubuntu 1290×917 view of the Japanese Unlocks flag page showed tiny low-contrast names/addresses over mismatched label backgrounds, large gaps between values and controls, duplicate item-only introduction/status occupying space, and a fixed startup window that needed manual resizing.
+- **Layout:** Use a monitor-aware initial 1480×950 maximum (screen margins), retaining page scrolling for smaller displays. Keep one compact Unlocks heading; move item instructions and their status into the Items & equipment subpage rather than showing them above the flag page.
+- **Flag card styling:** Dark contrasting full-width cards, stronger names and addresses, accessible disabled-button text, separate highlighted On and Off styles, clear live states, denser vertical spacing, section headers and preserved independent mouse-wheel scrolling.
+- **Editable data:** Add `practice/unlock_flag_categories.json` containing all 142 USA story flag keys and human-readable labels. Only `type`, `subtype` and manifest order control flag section organisation. The 58 mapped Japan flags automatically inherit those labels. All initially use `Unsorted` for user classification. Keep original RAM addresses, bit masks, provenance and candidate write access unchanged. Malformed JSON falls back to canonical groups without blocking the app.
+- **Interactive filtering:** Type and subtype comboboxes plus text search, dynamically hiding irrelevant sections while maintaining immediate On/Off controls for every mapped bit.
+- **Regression:** Extend ROM-free tests for source JSON completeness, arbitrary regrouping and ordering, metadata-independent JP writes, malformed JSON and display sizing. Extend Tk tests for filtering, section visibility, high-contrast row styles and isolated item status. CI pending; real screenshot/live-game validation outstanding.
+
 ## 2026-11-17 — v0.11.38 individual story/event On-Off controls
 
 - **Correction:** The earlier Story & event flags table required selecting a flag and then using shared bottom Set/Clear buttons. The requested design has an explicit **On** and **Off** control on **every flag row**, matching the direct interaction pattern used by Items & equipment.
