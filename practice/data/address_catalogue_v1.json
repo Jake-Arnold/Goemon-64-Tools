@@ -7517,6 +7517,11 @@
           "confidence": "research_observed",
           "evidence": "ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch",
           "source_id": "research:vm_command_pc"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch",
+          "source_id": "research:vm_command_pc"
         }
       ],
       "context": "Command stream pointer, not text cursor; validate target before dereference",
@@ -7525,7 +7530,7 @@
       "data_type": "u32",
       "discovered": "2026-11-13",
       "endian": "big",
-      "evidence": "ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch",
+      "evidence": "ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch",
       "id": "research:vm_command_pc",
       "id_aliases": [
         "watch:usa:script_cursor_vm"
@@ -7587,6 +7592,11 @@
           "confidence": "usa_source",
           "evidence": "observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu",
           "source_id": "crosswalk:usa:static:engine_state"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu",
+          "source_id": "crosswalk:usa:static:engine_state"
         }
       ],
       "context": "",
@@ -7595,7 +7605,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu",
+      "evidence": "observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu",
       "id": "crosswalk:usa:static:engine_state",
       "id_aliases": [
         "native_debug:state",
@@ -7659,6 +7669,11 @@
           "confidence": "usa_source",
           "evidence": "candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay",
           "source_id": "crosswalk:usa:static:scene_phase"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay",
+          "source_id": "crosswalk:usa:static:scene_phase"
         }
       ],
       "context": "",
@@ -7667,7 +7682,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay",
+      "evidence": "candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay",
       "id": "crosswalk:usa:static:scene_phase",
       "id_aliases": [
         "native_debug:phase",
@@ -7723,6 +7738,11 @@
           "confidence": "usa_source",
           "evidence": "Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag",
           "source_id": "crosswalk:usa:static:exit_request"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag",
+          "source_id": "crosswalk:usa:static:exit_request"
         }
       ],
       "context": "",
@@ -7731,7 +7751,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag",
+      "evidence": "Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag",
       "id": "crosswalk:usa:static:exit_request",
       "id_aliases": [
         "native_debug:exit_request",
@@ -7788,6 +7808,11 @@
           "confidence": "usa_source",
           "evidence": "user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed)",
           "source_id": "crosswalk:usa:static:gameplay_submode"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed)",
+          "source_id": "crosswalk:usa:static:gameplay_submode"
         }
       ],
       "context": "",
@@ -7796,7 +7821,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed)",
+      "evidence": "user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed)",
       "id": "crosswalk:usa:static:gameplay_submode",
       "id_aliases": [
         "native_debug:submode",
@@ -7896,6 +7921,11 @@
           "confidence": "usa_source",
           "evidence": "observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load",
           "source_id": "crosswalk:usa:static:current_scene"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load",
+          "source_id": "crosswalk:usa:static:current_scene"
         }
       ],
       "context": "",
@@ -7904,7 +7934,7 @@
       "data_type": "u16",
       "discovered": null,
       "endian": "big",
-      "evidence": "observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load",
+      "evidence": "observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load",
       "id": "crosswalk:usa:static:current_scene",
       "id_aliases": [
         "native_debug:live_map",
@@ -7965,6 +7995,11 @@
           "confidence": "usa_source",
           "evidence": "candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10",
           "source_id": "crosswalk:usa:static:scene_stage_offset"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10",
+          "source_id": "crosswalk:usa:static:scene_stage_offset"
         }
       ],
       "context": "",
@@ -7973,7 +8008,7 @@
       "data_type": "u16",
       "discovered": null,
       "endian": "big",
-      "evidence": "candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10",
+      "evidence": "candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10",
       "id": "crosswalk:usa:static:scene_stage_offset",
       "id_aliases": [
         "native_debug:scene_candidate",
@@ -8026,6 +8061,11 @@
           "confidence": "usa_source",
           "evidence": "observed; Existing Live Memory inspector watch; see original reader; observed; Existing Live Memory inspector watch; see original reader; observed",
           "source_id": "crosswalk:usa:static:previous_scene"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "observed; Existing Live Memory inspector watch; see original reader; observed; Existing Live Memory inspector watch; see original reader; observed; Existing Live Memory inspector watch; see original reader; observed",
+          "source_id": "crosswalk:usa:static:previous_scene"
         }
       ],
       "context": "",
@@ -8034,7 +8074,7 @@
       "data_type": "u16",
       "discovered": null,
       "endian": "big",
-      "evidence": "observed; Existing Live Memory inspector watch; see original reader; observed; Existing Live Memory inspector watch; see original reader; observed; Existing Live Memory inspector watch; see original reader; observed",
+      "evidence": "observed; Existing Live Memory inspector watch; see original reader; observed; Existing Live Memory inspector watch; see original reader; observed; Existing Live Memory inspector watch; see original reader; observed; Existing Live Memory inspector watch; see original reader; observed",
       "id": "crosswalk:usa:static:previous_scene",
       "id_aliases": [
         "watch:usa:previous_map"
@@ -8203,6 +8243,11 @@
           "confidence": "usa_source",
           "evidence": "observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover",
           "source_id": "crosswalk:usa:static:pending_scene"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover",
+          "source_id": "crosswalk:usa:static:pending_scene"
         }
       ],
       "context": "",
@@ -8211,7 +8256,7 @@
       "data_type": "u16",
       "discovered": null,
       "endian": "big",
-      "evidence": "observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover",
+      "evidence": "observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover",
       "id": "crosswalk:usa:static:pending_scene",
       "id_aliases": [
         "native_debug:pending_map",
@@ -8341,6 +8386,11 @@
           "confidence": "research_observed",
           "evidence": "During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY",
           "source_id": "native_debug:hover_pointer"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY",
+          "source_id": "native_debug:hover_pointer"
         }
       ],
       "context": "Native debug menu; hover pointer only valid while menu active",
@@ -8349,7 +8399,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY",
+      "evidence": "During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY",
       "id": "native_debug:hover_pointer",
       "id_aliases": [
         "watch:usa:native_menu_entry_pointer_state_10_only"
@@ -8549,6 +8599,11 @@
           "confidence": "usa_source",
           "evidence": "Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle",
           "source_id": "crosswalk:usa:static:map_overlay"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle",
+          "source_id": "crosswalk:usa:static:map_overlay"
         }
       ],
       "context": "",
@@ -8557,7 +8612,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle",
+      "evidence": "Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle",
       "id": "crosswalk:usa:static:map_overlay",
       "id_aliases": [
         "watch:usa:map_overlay_state_observed"
@@ -8611,6 +8666,11 @@
           "confidence": "usa_source",
           "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
           "source_id": "crosswalk:usa:static:loading_word"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
+          "source_id": "crosswalk:usa:static:loading_word"
         }
       ],
       "context": "",
@@ -8619,7 +8679,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
+      "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
       "id": "crosswalk:usa:static:loading_word",
       "id_aliases": [
         "watch:usa:loading_flag"
@@ -8672,6 +8732,11 @@
           "confidence": "usa_source",
           "evidence": "JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight",
           "source_id": "crosswalk:usa:static:character_index"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight",
+          "source_id": "crosswalk:usa:static:character_index"
         }
       ],
       "context": "",
@@ -8680,7 +8745,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight",
+      "evidence": "JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight",
       "id": "crosswalk:usa:static:character_index",
       "id_aliases": [
         "native_debug:live_character",
@@ -9266,6 +9331,11 @@
           "confidence": "usa_source",
           "evidence": "JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling",
           "source_id": "crosswalk:usa:static:weapon_index"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling",
+          "source_id": "crosswalk:usa:static:weapon_index"
         }
       ],
       "context": "",
@@ -9274,7 +9344,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling",
+      "evidence": "JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling",
       "id": "crosswalk:usa:static:weapon_index",
       "id_aliases": [
         "watch:usa:equipped_weapon_index"
@@ -16517,6 +16587,11 @@
           "confidence": "usa_source",
           "evidence": "Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified",
           "source_id": "crosswalk:usa:static:doll_quarters"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified",
+          "source_id": "crosswalk:usa:static:doll_quarters"
         }
       ],
       "context": "",
@@ -16525,7 +16600,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified",
+      "evidence": "Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified",
       "id": "crosswalk:usa:static:doll_quarters",
       "id_aliases": [
         "watch:usa:fortune_doll_progress_quarters"
@@ -16623,6 +16698,11 @@
           "confidence": "usa_source",
           "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
           "source_id": "crosswalk:usa:static:doll_total"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
+          "source_id": "crosswalk:usa:static:doll_total"
         }
       ],
       "context": "",
@@ -16631,7 +16711,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
+      "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
       "id": "crosswalk:usa:static:doll_total",
       "id_aliases": [
         "watch:usa:fortune_dolls_obtained_annotated_total"
@@ -17990,6 +18070,11 @@
           "confidence": "research_observed",
           "evidence": "ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7",
           "source_id": "research:vm_state"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7",
+          "source_id": "research:vm_state"
         }
       ],
       "context": "Active script VM",
@@ -17998,7 +18083,7 @@
       "data_type": "u32",
       "discovered": "2026-11-13",
       "endian": "big",
-      "evidence": "ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7",
+      "evidence": "ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7",
       "id": "research:vm_state",
       "id_aliases": [
         "watch:usa:script_vm_state"
@@ -18217,6 +18302,11 @@
           "confidence": "research_observed",
           "evidence": "ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID",
           "source_id": "research:vm_resource_id"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID",
+          "source_id": "research:vm_resource_id"
         }
       ],
       "context": "Active script VM",
@@ -18225,7 +18315,7 @@
       "data_type": "u32",
       "discovered": "2026-11-13",
       "endian": "big",
-      "evidence": "ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID",
+      "evidence": "ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID",
       "id": "research:vm_resource_id",
       "id_aliases": [
         "watch:usa:script_resource_id"
@@ -18357,6 +18447,11 @@
           "confidence": "research_observed",
           "evidence": "Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause)",
           "source_id": "research:vm_pause"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause)",
+          "source_id": "research:vm_pause"
         }
       ],
       "context": "Active script VM",
@@ -18365,7 +18460,7 @@
       "data_type": "u8",
       "discovered": "2026-11-13",
       "endian": "big",
-      "evidence": "Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause)",
+      "evidence": "Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause)",
       "id": "research:vm_pause",
       "id_aliases": [
         "watch:usa:script_vm_pause_byte"
