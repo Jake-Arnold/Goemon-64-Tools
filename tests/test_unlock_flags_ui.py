@@ -350,9 +350,8 @@ class UnlockFlagsUITests(unittest.TestCase):
         self.assertEqual(app._unlock_flag_jobs, {})
         self.assertNotIn('external_sasuke_recruited', app.unlock_flag_rows)
         self.root.update()
-        self.assertTrue(all(
-            flag.key in app.unlock_flag_rows for flag in
-            (row for row in app.unlock_flag_rows.values())))
+        # Region change must remove all previously materialised USA rows.
+        self.assertEqual(app.unlock_flag_widgets, {})
 
     def test_search_change_during_large_folder_batch_restricts_rows(self):
         app = self.app
