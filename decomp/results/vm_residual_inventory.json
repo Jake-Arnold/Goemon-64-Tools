@@ -25,23 +25,23 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "291d239c29f5a404cac932c9481397571074b85a50eb0e2aefee6fd190aeebb5",
+    "manifest_sha256": "43099db2fe971cb38e3554f6e5d2d46f3f14237fa4bd1d0d59a089df967da63c",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "512dcb943e7fbe3c5ecdaf715aff9e8b499fa4dbb96f4d94810833d112b7aa3e"
+    "verifier_sha256": "182f0596aeba9229ffef403473201bf79c91c03b9fc9697d59cb3194b2d29190"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "8cbcaedb9cedd33e9f0c8ce776cbfc15122d0b94512df054bc4566ded2b38962",
+    "report_sha256": "079b1c1ac68b5f2dfbb253272407d62084fa126b96c1bd6c5902aa65911082eb",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "20e7f59c89d5b0fcdce2010937ead2bc3df5356ffab8986d856f7158923e81dd",
-    "matching_c_functions": 342,
-    "matching_c_bytes": 17568,
-    "combined_c_entries": 355,
-    "asm_entries": 7021,
+    "combined_proof_sha256": "b368aebad3b0d6332fcc4fbea7afc8f25fe392001eb363630497bfb9c71a8dc3",
+    "matching_c_functions": 346,
+    "matching_c_bytes": 17720,
+    "combined_c_entries": 359,
+    "asm_entries": 7017,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Central USA 342/342 full original-ROM G2 verified; file11 expands 152 to 179 exact C functions with 27 novel original offsets. The 13 upstream unmarked functions remain distinct from VM residual GLOBAL_ASM functions.",
-    "reconciled_date": "2026-11-16"
+    "note": "Canonical USA 346/346 complete original-ROM G2; file11 179 to 183 by four original-address predicates (152 exact bytes), all 8,825 semantic relocations and original 7,376 positive-size function identities; Japanese 34-C verified independently.",
+    "reconciled_date": "2026-11-17"
   },
   "residual_functions": [
     {
@@ -364,20 +364,22 @@
       "result": "PASS; 5 tests, including private ROM slice verification in this workspace."
     },
     "local_ci": {
-      "command": "python3 -m decomp.local_ci",
+      "command": "env CC=gcc python3 -m decomp.local_ci",
       "exit_code": 0,
       "status": "PASS",
-      "decomp_python_tests": 167,
-      "verifier_ledger_tests": 92,
+      "decomp_python_tests": 230,
+      "decomp_skipped": 1,
+      "verifier_ledger_python_tests": 185,
+      "verifier_ledger_skipped": 4,
       "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
-      "display_emitter_sanitizer": "PASS"
+      "display_emitter_sanitizer": "PASS; 1000 synthetic cases and zero/owner-alias tests"
     },
     "task_evidence_validation": "PASS: python3 -m decomp.skill_context --validate returned CONSISTENT_STORED_REPORTS for 100 tasks.",
     "diff_check": "PASS: git diff --check",
     "full_unit_native": "NOT_RUN: no candidate was unit-exact.",
-    "full_rom_g2": "NOT_RUN: production source/manifest/verifier unchanged; no candidate staged.",
-    "inventory_rebuild": "NOT_RUN: the generated whole-project proof inventory is preserved unchanged.",
+    "full_rom_g2": "PASS: strict 346/346 native USA original-ROM proof; SHA-1 6ea0ed71032ce08fc2745f412d84936382197494; see decomp/results/combined.json",
+    "inventory_rebuild": "PASS: 7,376 original identities; 359 total C; 7,017 ASM; zero extra aliases; see decomp/results/inventory.json",
     "in_game": "NOT_RUN"
   },
-  "current_proof_date": "2026-11-16"
+  "current_proof_date": "2026-11-17"
 }

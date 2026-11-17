@@ -1,0 +1,61 @@
+{
+  "format": "goemon-file11-wave6-four-native-proof-v1",
+  "date": "2026-11-17",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "source_fixture": "decomp/research/file11_wave6_four_sources.json",
+  "source_base_commit": "1961f1333e8a5007c3cf8df5dfa0d0ca5a0cea8b",
+  "original_vma_mips_link": "SUBALIGN(4)",
+  "ido_flags": "-O2 -mips2 -G0 -non_shared",
+  "result": "PASS_ISOLATED_NATIVE_EXACT",
+  "functions": 4,
+  "bytes": 152,
+  "original_function_index_count": 906,
+  "known_original_offsets_deduplicated": 261,
+  "central_matching_C_baseline": 342,
+  "full_rom_central_g2": "NOT_RUN",
+  "relocation_multiset_g2": "NOT_RUN",
+  "production_promotion_count": 0,
+  "per_function": [
+    {
+      "name": "func_801E7E18_5A3D28",
+      "rom_offset": "0x5A3D28",
+      "vma": "0x801E7E18",
+      "size": 40,
+      "source_sha256": "097bda585887cd5546a2959896872cef38fdfa96dc8af9e1ef8909768d0871ab",
+      "original_instructions_sha256": "23d4df0630aa89a0aa22c3c028f318cc6606e6bb3e240fbef7e5406a7bf7faa7",
+      "linked_original_vma_and_size_exact": true,
+      "code_equal": true
+    },
+    {
+      "name": "func_801E7F08_5A3E18",
+      "rom_offset": "0x5A3E18",
+      "vma": "0x801E7F08",
+      "size": 40,
+      "source_sha256": "d40d0d19845ec534e8f4db30820ee2dfd34e1497a6bcc2ae94d05f6c9cf46c85",
+      "original_instructions_sha256": "796578d74b011ac769ffa10e1a1938633d1d4a6b88497c135df1da32327f3a7b",
+      "linked_original_vma_and_size_exact": true,
+      "code_equal": true
+    },
+    {
+      "name": "func_801EF9F4_5AB904",
+      "rom_offset": "0x5AB904",
+      "vma": "0x801EF9F4",
+      "size": 36,
+      "source_sha256": "2beee0b77a447500e7ec5fb2eb223abe35be3abba5eb4d4c140b8f16f7b79f46",
+      "original_instructions_sha256": "c8d16eec8a32878f0431e83ea45ea0c3150d84143f5bf7b7518bfb6b5ae75a66",
+      "linked_original_vma_and_size_exact": true,
+      "code_equal": true
+    },
+    {
+      "name": "func_801F05D0_5AC4E0",
+      "rom_offset": "0x5AC4E0",
+      "vma": "0x801F05D0",
+      "size": 36,
+      "source_sha256": "cb198cd82762f8e41f0bdca6366421492da9b98fafa3a59970bed4ee9480467f",
+      "original_instructions_sha256": "b0f835a1f466a227500e31ad6d22f50d320eb5ff621337a9b8b2d55768afa657",
+      "linked_original_vma_and_size_exact": true,
+      "code_equal": true
+    }
+  ],
+  "notes": "Code byte identity and original symbol VMAs/sizes were independently verified using the user's local original USA ROM and pinned IDO 5.3. Complete central 346 G2 is not claimed. The minimized 906-function Splat extraction differs from the full-configuration assembly hash."
+}

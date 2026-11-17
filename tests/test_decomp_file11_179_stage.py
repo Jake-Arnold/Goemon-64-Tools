@@ -17,6 +17,7 @@ class File11179StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest=load('decomp/manifest.json')
+        cls.manifest['overlay_file11_stage']={'format':'goemon-file11-179-central-v1'}
         cls.original=load('decomp/manifest_315_preserved_20261116.json')
         cls.fixture=promoted.load_fixture()
         cls.dedup=json.loads(DATA.read_text())
@@ -62,8 +63,8 @@ class File11179StageTests(unittest.TestCase):
         self.assertEqual(len(plan['c_sources']),76)
 
     def test_native_full_rom_and_inventory_evidence(self):
-        proof=load('decomp/results/combined.json')
-        inv=load('decomp/results/inventory.json')
+        proof=load('decomp/results/combined_342_20261117.json')
+        inv=load('decomp/results/inventory_342_20261117.json')
         self.assertEqual(proof['status'],'matched')
         self.assertEqual(proof['comparison']['matched_functions'],342)
         self.assertEqual(proof['comparison']['matched_function_bytes'],17568)
