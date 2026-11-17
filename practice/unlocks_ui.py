@@ -143,12 +143,13 @@ class UnlocksMixin:
         # controls can bypass a widget's own binding. Route them at root
         # level only when the pointer is inside this Items canvas.
         def route_items_wheel(event):
-            if (self.notebook.select() != str(self.unlock_tab) or
-                    self.unlock_sections.select() != str(self.unlock_items_page)):
+            # Checking the mapped canvas is more reliable than relying on
+            # synthetic Notebook selection events during Tk geometry updates.
+            if not canvas.winfo_ismapped():
                 return None
             widget = getattr(event, 'widget', None)
             while widget is not None:
-                if widget is canvas:
+                if str(widget) == str(canvas):
                     return wheel(event)
                 widget = getattr(widget, 'master', None)
             return None
