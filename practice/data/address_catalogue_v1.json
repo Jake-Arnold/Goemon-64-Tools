@@ -4368,6 +4368,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x80000000",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -4378,11 +4379,11 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
+        "practice/custom_watches.py:25",
         "practice/japanese_fields.py:32",
         "practice/japanese_fields.py:40",
         "practice/japanese_scene_probes.py:42",
-        "practice/region_memory_crosswalk.py:32",
-        "practice/custom_watches.py:25"
+        "practice/region_memory_crosswalk.py:32"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -4736,6 +4737,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8007BAD0",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -4746,10 +4748,10 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/inspector.py:170",
+        "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:169",
-        "practice/native_debug_watch.py:68",
-        "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117"
+        "practice/inspector.py:170",
+        "practice/native_debug_watch.py:68"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -4851,6 +4853,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8007BAF4",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -4861,8 +4864,8 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/inspector.py:170",
-        "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117"
+        "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:170"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5050,6 +5053,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8015C5D8",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5060,8 +5064,8 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/checkpoints.py:20",
-        "practice/MEMORY_MAP.md:300@toolkit/unlocks-items-and-flags-20261117"
+        "practice/MEMORY_MAP.md:300@toolkit/unlocks-items-and-flags-20261117",
+        "practice/checkpoints.py:20"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5108,6 +5112,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8015C5E0",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5118,9 +5123,9 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/inspector.py:131",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:84@main",
         "practice/MEMORY_MAP.md:287@toolkit/unlocks-items-and-flags-20261117",
-        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:84@main"
+        "practice/inspector.py:131"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5166,6 +5171,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8015C5E4",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5176,8 +5182,8 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/inspector.py:130",
-        "practice/MEMORY_MAP.md:288@toolkit/unlocks-items-and-flags-20261117"
+        "practice/MEMORY_MAP.md:288@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:130"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5223,6 +5229,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8015C5E8",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5233,8 +5240,8 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/inspector.py:132",
-        "practice/MEMORY_MAP.md:289@toolkit/unlocks-items-and-flags-20261117"
+        "practice/MEMORY_MAP.md:289@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:132"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5280,6 +5287,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8015C5EC",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5290,8 +5298,8 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/inspector.py:133",
-        "practice/MEMORY_MAP.md:290@toolkit/unlocks-items-and-flags-20261117"
+        "practice/MEMORY_MAP.md:290@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:133"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5393,6 +5401,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8015C6F0",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5403,10 +5412,10 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/story_progress.py:405",
+        "practice/MEMORY_MAP.md:56@toolkit/unlocks-items-and-flags-20261117",
         "practice/story_progress.py:321",
         "practice/story_progress.py:385",
-        "practice/MEMORY_MAP.md:56@toolkit/unlocks-items-and-flags-20261117"
+        "practice/story_progress.py:405"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5480,6 +5489,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8015C70C",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5490,10 +5500,10 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/story_progress.py:405",
+        "practice/MEMORY_MAP.md:58@toolkit/unlocks-items-and-flags-20261117",
         "practice/story_progress.py:321",
         "practice/story_progress.py:385",
-        "practice/MEMORY_MAP.md:58@toolkit/unlocks-items-and-flags-20261117"
+        "practice/story_progress.py:405"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5511,6 +5521,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8015C910",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5567,6 +5578,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x8015CC18",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5577,8 +5589,8 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/checkpoints.py:23",
-        "practice/MEMORY_MAP.md:299@toolkit/unlocks-items-and-flags-20261117"
+        "practice/MEMORY_MAP.md:299@toolkit/unlocks-items-and-flags-20261117",
+        "practice/checkpoints.py:23"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5680,6 +5692,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x80168E90",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
@@ -5708,6 +5721,7 @@
       "endian": null,
       "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
       "id": "source:unclassified:0x80168EF8",
+      "id_aliases": [],
       "live_readable": false,
       "mask": null,
       "mips_refs": [],
