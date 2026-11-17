@@ -31,7 +31,12 @@ def entries():
 
 def reviewed_plan(manifest:dict,original_rom:bytes|None=None):
     if manifest.get('overlay_file11_stage')!={'format':STAGE_FORMAT}:raise ValueError('Not a reviewed 184 stage manifest')
-    base_manifest=copy.deepcopy(manifest);base_manifest['overlay_file11_stage']={'format':file11_183_stage.STAGE_FORMAT}
+    base_manifest=copy.deepcopy(manifest)
+    if 'overlay_crossregion47_stage' in base_manifest:
+        from . import overlay_crossregion47 as cross
+        if base_manifest.pop('overlay_crossregion47_stage') != {'format':cross.STAGE_FORMAT}:
+            raise ValueError('Unreviewed cross-overlay stage in 184-C historical audit')
+    base_manifest['overlay_file11_stage']={'format':file11_183_stage.STAGE_FORMAT}
     previous=file11_183_stage.reviewed_plan(base_manifest,original_rom)
     old=file11_183_stage.load_fixture()['chunks'];new=load_fixture()['chunks'];d=load_fixture()
     if (len(old)!=134 or d['total_represented_functions']!=184 or d['all_C_text_bytes']!=5472 or

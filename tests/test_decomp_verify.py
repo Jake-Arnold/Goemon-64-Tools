@@ -21,13 +21,17 @@ from decomp.verify import (
     lower_file12_text_alignment, prepare_file12_stage_objects,
     verify_file12_ownership, verify_file12_stage_build,
     append_file12_function_comparison, require_file12_full_rom_match,
-    manifest_file13_stages,
+    manifest_file13_stages, crossregion47_stage,
     validate_file13_stage_definition,
     COLLISION_GATE_PATCH,
 )
 from decomp.test_overlay_file12 import relocatable_file12_callback
 
 ROOT=Path(__file__).resolve().parents[1]
+
+def cross_claim_count(manifest):
+    fixture = crossregion47_stage(manifest)
+    return len(fixture['functions']) if fixture else 0
 
 
 def file43_stage(*, source='candidates/key_spawn_gate.c', source_sha256='a'*64,
@@ -126,7 +130,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(disabled)),
                          len(main_claimed_functions(disabled))+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(disabled))+(file11_stage_mode(disabled) or 0)+
-                         len(manifest_file13_stages(disabled)))
+                         len(manifest_file13_stages(disabled)) + cross_claim_count(disabled))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
         staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
@@ -138,7 +142,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(len(claimed_functions(loaded)),
                              len(main_claimed_functions(loaded))+
                              1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(loaded))+(file11_stage_mode(loaded) or 0)+
-                             len(manifest_file13_stages(loaded)))
+                             len(manifest_file13_stages(loaded)) + cross_claim_count(loaded))
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
             path.write_text(json.dumps(bad))
@@ -174,7 +178,7 @@ class DecompVerificationTests(unittest.TestCase):
                          'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in stages)+
-                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)))
+                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)) + cross_claim_count(manifest))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             bad=copy.deepcopy(manifest)
@@ -215,7 +219,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages))
+                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages) + cross_claim_count(manifest))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             for field,value,pattern in (
@@ -496,7 +500,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(proof['file_12_size'],0x2e0d0)
             (checkout/'build/usa/mnsg.map').write_text(mapping.replace(
                 f' {c_name}(.text)\n',''))
-            with self.assertRaisesRegex(ValueError,'does not place expected'):
+            with self.assertRaisesRegex(ValueError,'Linked object not placed exactly once'):
                 verify_file12_ownership(checkout,stage)
 
     def test_file12_ownership_verifies_multiple_c_objects_and_original_gap(self):
@@ -598,7 +602,7 @@ class DecompVerificationTests(unittest.TestCase):
             wrong=map_path.read_text().replace(
                 '.text 0x80222048 0x120', '.text 0x8022204c 0x11c')
             map_path.write_text(wrong)
-            with self.assertRaisesRegex(ValueError,'assembly gap'):
+            with self.assertRaisesRegex(ValueError,'Changed original object guest VMA/extent'):
                 verify_file12_ownership(checkout,stages)
 
     def test_file12_claim_append_requires_exact_link_proof_and_full_rom(self):
@@ -864,7 +868,7 @@ class DecompVerificationTests(unittest.TestCase):
                          len(manifest.get('existing_source_patches',[]))+
                          (manifest.get('overlay_file43_stage') is not None)+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+
-                         len(manifest_file13_stages(manifest)))
+                         len(manifest_file13_stages(manifest)) + cross_claim_count(manifest))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
@@ -1158,6 +1162,10 @@ class DecompVerificationTests(unittest.TestCase):
                 if manifest['overlay_file11_stage'] == {'format': usa_file11_noop_groups.STAGE_FORMAT}:
                     sources.update('research/'+name+'.c' for _, _, name in usa_file11_noop_groups.GROUPS)
         sources.update(stage['source'] for stage in manifest_file13_stages(manifest))
+        cross = crossregion47_stage(manifest)
+        if cross:
+            sources.update('research/jp_recomp_to_c/src/'+entry['name']+'.c'
+                           for entry in cross['functions'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

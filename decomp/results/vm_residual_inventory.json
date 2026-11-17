@@ -25,22 +25,22 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "7be7045e2a167475d661a984a986db6132d710e43fc11326961c0d936b51054c",
+    "manifest_sha256": "7c9d12173749ce3cddc3ff15c4ef8c8b67e19c9955018450bf7522758d9078ab",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "25123a88069547f788b789d8c3c23bc89416141fec7adc31c3ecb4a93b29c3e7"
+    "verifier_sha256": "f72edcbbc8e7fd40b8f6c8d3c05ba22b95b09e5640ec95f07917ded8cdecd13f"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "170206bdea3b63a876d5764269d1c69d0d003e4fe3a46f390f54c718ea89cf86",
+    "report_sha256": "bb0901ebf36084d899c67fb0b9dd3cf76f13c14fe61d1d62193b75574eb6b6ea",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "646b5d27be1aa0d98fb7a0f52debd0abe3416d48b28b692902a1b3da9c6adfbd",
-    "matching_c_functions": 732,
-    "matching_c_bytes": 32068,
-    "combined_c_entries": 745,
-    "asm_entries": 6631,
+    "combined_proof_sha256": "52140ab6bd159386714af89bb348baa471a9a80420a950a257ee335da4f02f86",
+    "matching_c_functions": 779,
+    "matching_c_bytes": 34288,
+    "combined_c_entries": 792,
+    "asm_entries": 6584,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Canonical USA 732/732: 731 earlier C + original-address 136-byte file11 camera reset; byte-exact complete 32MiB ROM; 8825 unchanged file11 semantic relocations, 7051 unchanged file12 relocations; 7376 original positive-sized functions. Japan 34-C separately unchanged.",
+    "note": "Canonical USA 779/779: 732 previous C plus 47 cross-overlay C; complete 32MiB ROM byte-exact, original 7,376 function names/addresses preserved, unchanged seven-overlay relocation multisets. Japan 34-C separately unchanged.",
     "reconciled_date": "2026-11-17"
   },
   "residual_functions": [

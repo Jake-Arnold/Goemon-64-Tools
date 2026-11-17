@@ -20,7 +20,7 @@ class UsaCameraResetPromotionTests(unittest.TestCase):
         self.assertEqual(f['name'],'func_801F97D4_5B56E4')
         self.assertEqual((f['rom_offset'],f['vma'],f['size']),('0x5B56E4','0x801F97D4',136))
         claims={c['name']:c for c in claimed_functions(self.manifest)}
-        self.assertEqual(len(claims),732)
+        self.assertEqual(len(claims),779)
         self.assertEqual(claims[f['name']],{'name':f['name'],'rom_offset':0x5B56E4,'vma':0x801F97D4,'size':136})
         original=(ROOT/f['source']['path']).read_bytes()
         self.assertEqual(hashlib.sha1(b'blob '+str(len(original)).encode()+b'\0'+original).hexdigest(),f['source']['git_blob_sha'])
@@ -29,11 +29,11 @@ class UsaCameraResetPromotionTests(unittest.TestCase):
         self.assertEqual(f['native_status'],'PASSED_G2')
 
     def test_other_pending_claims_remain_research_only(self):
-        self.assertEqual(self.registry['accepted_baseline'],{'usa_functions':732,'japan_0_functions':34})
-        self.assertEqual(self.registry['expected_pending'],{'usa_functions':129,'usa_bytes':5732,'japan_0_functions':5,'japan_0_bytes':180})
-        self.assertEqual(len(self.registry['candidates']),134)
+        self.assertEqual(self.registry['accepted_baseline'],{'usa_functions':779,'japan_0_functions':34})
+        self.assertEqual(self.registry['expected_pending'],{'usa_functions':82,'usa_bytes':3512,'japan_0_functions':5,'japan_0_bytes':180})
+        self.assertEqual(len(self.registry['candidates']),87)
         self.assertFalse(any(x['name']=='func_801F97D4_5B56E4' and x['region']=='usa' for x in self.registry['candidates']))
-        self.assertEqual(validate(ROOT,self.registry,self.file_inventory)['functions'],{'usa':129,'japan_0':5})
+        self.assertEqual(validate(ROOT,self.registry,self.file_inventory)['functions'],{'usa':82,'japan_0':5})
 
     def test_independent_732_native_proof_and_historic_731(self):
         p=self.proof

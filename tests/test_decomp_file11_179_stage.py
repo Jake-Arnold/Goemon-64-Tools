@@ -18,6 +18,8 @@ class File11179StageTests(unittest.TestCase):
     def setUpClass(cls):
         cls.manifest=load('decomp/manifest.json')
         cls.manifest['overlay_file11_stage']={'format':'goemon-file11-179-central-v1'}
+        # Project the current manifest onto its historical 342-C baseline.
+        cls.manifest.pop('overlay_crossregion47_stage', None)
         # Explicit historical 342-C projection excludes the newer file12 block.
         cls.manifest['overlay_file12_stages']=[x for x in cls.manifest['overlay_file12_stages']
             if x['format']!='goemon-file12-registration-374-v1'

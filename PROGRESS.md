@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Native combined USA seven-overlay promotion, 732 → 779 original-address C functions
+
+- **Change:** Promoted 47 independently validated original-address C functions across USA `file_12`, `file_13`, `file_14`, `file_15`, `file_17`, `file_18` and `file_19`; preserved all 732 existing C functions and the 732 historical combined-ROM/ELF proof and inventory.
+- **Native verification:** A fresh combined original IDO 5.3 build passed 779/779 matching C functions and 34,288 exact original instruction bytes, preserving the complete 33,554,432-byte USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. All seven new overlay semantic relocation multisets and original `file_11` relocations matched. Two previously accepted symbol-size annotations are explicitly pinned, and no new original ELF symbol identity differences were introduced.
+- **Strict inventory:** 7,376 original positive-sized function identities, 6,584 remaining assembly entries and zero extra positive-sized aliases. Evidence: `decomp/results/combined.json`, `decomp/results/inventory.json`, `decomp/results/usa_crossregion47_779_promotion_20261117.json`.
+- **Candidate registry:** 82 USA `file_11` functions (3,512 bytes) and five Japan functions (180 bytes) remain research-only, pending their independent combined regional gates.
+
+
 ### 2026-11-17 — Native USA camera reset promotion, 731 → 732 original-address C functions
 
 - **Change:** Integrated `func_801F97D4_5B56E4` (`file_11`, 136 original instruction bytes, guest VMA `0x801F97D4`) into the previously accepted 731-function USA build. The reviewed 184-C `file_11` layout retains all 183 prior original C sources and splits precisely one original ASM span, with original code, source and native object SHA-256 checks. The historical 731 proof and inventory are preserved separately.

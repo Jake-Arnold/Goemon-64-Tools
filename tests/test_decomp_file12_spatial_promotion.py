@@ -17,7 +17,7 @@ class UsaFile12SpatialPromotionTests(unittest.TestCase):
         self.assertEqual(sum(row['size'] for row in rows),748)
         self.assertEqual(len({row['rom_offset'] for row in rows}),11)
         manifest_claims={fn['name']:fn for fn in claimed_functions(self.manifest)}
-        self.assertEqual(len(manifest_claims),732)
+        self.assertEqual(len(manifest_claims),779)
         for row in rows:
             with self.subTest(name=row['name']):
                 self.assertIn(row['name'],manifest_claims)
@@ -32,12 +32,12 @@ class UsaFile12SpatialPromotionTests(unittest.TestCase):
                 self.assertEqual(staged.read_bytes(),research.read_bytes())
                 self.assertEqual(hashlib.sha1(b'blob '+str(research.stat().st_size).encode()+b'\0'+research.read_bytes()).hexdigest(),row['source']['git_blob_sha'])
     def test_removed_promoted_candidates_but_others_stay_research_only(self):
-        self.assertEqual(len(self.registry['candidates']),134)
-        self.assertEqual(self.registry['accepted_baseline'],{'usa_functions':732,'japan_0_functions':34})
-        self.assertEqual(self.registry['expected_pending'],{'usa_functions':129,'usa_bytes':5732,'japan_0_functions':5,'japan_0_bytes':180})
+        self.assertEqual(len(self.registry['candidates']),87)
+        self.assertEqual(self.registry['accepted_baseline'],{'usa_functions':779,'japan_0_functions':34})
+        self.assertEqual(self.registry['expected_pending'],{'usa_functions':82,'usa_bytes':3512,'japan_0_functions':5,'japan_0_bytes':180})
         names={row['name'] for row in self.proof['functions']}
         self.assertFalse(any(row['name'] in names for row in self.registry['candidates']))
-        self.assertEqual(validate(ROOT,self.registry,self.inventory)['functions'],{'usa':129,'japan_0':5})
+        self.assertEqual(validate(ROOT,self.registry,self.inventory)['functions'],{'usa':82,'japan_0':5})
     def test_current_rom_and_inventory_proofs_bound_to_promotion(self):
         d=self.proof
         for path,sha in ((d['canonical_combined_proof'],d['canonical_combined_proof_sha256']),

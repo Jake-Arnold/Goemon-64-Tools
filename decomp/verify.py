@@ -6,6 +6,7 @@ report. ROMs, generated assembly, binaries and logs belong in local research
 storage, not Git. Does not deploy, launch a game or submit upstream patches.
 """
 from __future__ import annotations
+from collections import Counter
 
 import argparse
 from datetime import datetime, timezone
@@ -182,6 +183,16 @@ def _file13_stage_list(stage_or_stages):
     raise ValueError('Invalid file_13 stage collection')
 
 
+def crossregion47_stage(manifest):
+    """Only the pinned 47-function cross-overlay research source is eligible."""
+    stage=manifest.get('overlay_crossregion47_stage')
+    if stage is None:return None
+    from . import overlay_crossregion47 as cross
+    if stage!={'format':cross.STAGE_FORMAT}:
+        raise ValueError('Unreviewed cross-overlay 47 promotion contract')
+    return cross.load_fixture()
+
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -204,6 +215,11 @@ def claimed_functions(manifest):
                               'size': 12}
                              for name, rom in overlay_file11_noops.entries())
     functions.extend(stage['function'] for stage in manifest_file13_stages(manifest))
+    cross_fixture=crossregion47_stage(manifest)
+    if cross_fixture:
+        functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
+                          'vma':f['vma'],'size':f['size']}
+                         for f in cross_fixture['functions'])
     return functions
 
 
@@ -1178,6 +1194,24 @@ def load_manifest(path):
                 if (function['rom_offset'] < other['rom_offset'] + other['size'] and
                         other['rom_offset'] < function['rom_offset'] + function['size']):
                     raise ValueError('file_13 function overlaps file_12 function')
+    # New multi-overlay original-C claims must remain disjoint from every
+    # accepted production stage, not simply from main-code translation units.
+    cross_fixture=crossregion47_stage(manifest)
+    if cross_fixture:
+        existing=main_claimed_functions(manifest)
+        if file43_stage is not None:existing.append(file43_stage['function'])
+        for row in manifest_file12_stages(manifest):existing.extend(file12_registration.claims(row))
+        existing.extend(file11_adapter(file11_stage_mode(manifest)).entries()
+                        if file11_stage_mode(manifest) in (143,144,152,179,183,184) else [])
+        existing.extend(row['function'] for row in manifest_file13_stages(manifest))
+        for row in cross_fixture['functions']:
+            for earlier in existing:
+                if (row['name']==earlier['name'] or
+                    row['rom_offset']<earlier['rom_offset']+earlier['size'] and
+                    earlier['rom_offset']<row['rom_offset']+row['size']):
+                    raise ValueError('Cross-overlay candidate overlaps canonical source: '+row['name'])
+        names=[x['name'] for x in cross_fixture['functions']]
+        if len(set(names))!=len(names):raise ValueError('Duplicate cross-overlay source name')
     ranges.sort()
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):raise ValueError('Overlapping units')
     if 'heap_noop_text_layout' in manifest:
@@ -1541,6 +1575,61 @@ def require_file43_full_rom_match(comparison):
         raise ValueError('Candidate failed complete-ROM comparison before file_43 proof')
 
 
+def _verify_expanded_cross_overlay_map(block, expected_inputs, cross_plan, region,
+                                       overlay_rom_start, overlay_vma_start):
+    """Preserve every accepted original input extent when 47 C splits refine ASM.
+
+    Each replaced original ASM input must be covered exactly once by adjacent,
+    ordered original-address C and assembly children; no holes/overlap are
+    accepted, and the linked map must match all original guest addresses.
+    """
+    groups={}
+    if cross_plan:
+        for parent in cross_plan['parents']:
+            if parent['section']==region:
+                path='build/usa/asm/usa/'+parent['parent']+'.s.o'
+                if path in groups:raise ValueError('Duplicate cross-overlay parent ownership')
+                lo,hi=parent['start'],parent['end']
+                children=[(item['object'],item['start'],item['end'])
+                          for item in cross_plan['assembly']
+                          if item['section']==region and lo<=item['start']<hi]
+                children.extend(('build/usa/src/'+item['name']+'.c.o',
+                                 item['rom_offset'],item['rom_offset']+item['size'])
+                                for item in cross_plan['functions']
+                                if item['section']==region and lo<=item['rom_offset']<hi)
+                children.sort(key=lambda item:item[1])
+                if (not children or children[0][1]!=lo or children[-1][2]!=hi or
+                        any(a[2]!=b[1] for a,b in zip(children,children[1:]))):
+                    raise ValueError('Cross-overlay split loses original ASM interval '+path)
+                groups[path]=(lo,hi,children)
+    expanded=[]
+    for original,lo,hi in expected_inputs:
+        if original in groups:
+            a,b,kids=groups.pop(original)
+            if (a,b)!=(lo,hi):raise ValueError('Cross-overlay source changed accepted ASM extent '+original)
+            expanded.extend(kids)
+        else:expanded.append((original,lo,hi))
+    if groups:
+        raise ValueError('Unaccounted original ASM parents in cross-overlay stage: '+repr(sorted(groups)))
+    positions=[]
+    for object_name,lo,hi in expanded:
+        namepat=re.compile(r'(?m)^\s*'+re.escape(object_name+'(.text)')+r'\s*$')
+        hit=list(namepat.finditer(block))
+        if len(hit)!=1:raise ValueError('Linked object not placed exactly once: '+object_name)
+        positions.append(hit[0].start())
+        extpat=re.compile(r'(?m)^\s*\.text\s+0x([0-9a-fA-F]+)\s+0x([0-9a-fA-F]+)\s+'+re.escape(object_name)+r'\s*$')
+        e=list(extpat.finditer(block))
+        vma=overlay_vma_start+(lo-overlay_rom_start)
+        if len(e)!=1 or (int(e[0].group(1),16),int(e[0].group(2),16))!=(vma,hi-lo):
+            raise ValueError('Changed original object guest VMA/extent: '+object_name)
+    if positions!=sorted(positions):
+        raise ValueError('Cross-overlay stage changed original C/ASM object order')
+    if cross_plan and len(expanded)<=len(expected_inputs):
+        raise ValueError('No cross-overlay split linked in region '+region)
+    return {'inputs_original':len(expected_inputs),'inputs_after_split':len(expanded),
+            'complete_original_extent_cover':True,'original_address_map':True}
+
+
 def _file12_map_block(mapping):
     section = re.search(r'(?m)^\.file_12\s+0x([0-9a-fA-F]+)\s+0x([0-9a-fA-F]+)\b', mapping)
     if section is None:
@@ -1553,7 +1642,7 @@ def _file12_map_block(mapping):
     ]
 
 
-def verify_file12_ownership(candidate_checkout, stage):
+def verify_file12_ownership(candidate_checkout, stage, cross_plan=None):
     """Prove every staged callback and assembly gap in the .file_12 map."""
     stages = _file12_stage_list(stage)
     layout = _file12_stages_layout(stages)
@@ -1650,57 +1739,26 @@ def verify_file12_ownership(candidate_checkout, stage):
         if has_gap or index + 1 == len(stages):
             expected_inputs.append(assembly_objects[assembly_cursor])
             assembly_cursor += 1
-    positions = []
-    for input_name in expected_inputs:
-        input_pattern = r'(?m)^\s*' + re.escape(input_name + '(.text)') + r'\s*$'
-        hits = list(re.finditer(input_pattern, block))
-        if len(hits) != 1:
-            raise ValueError('Link map does not place expected file_12 object exactly once: ' + input_name)
-        positions.append(hits[0].start())
-    if positions != sorted(positions):
-        raise ValueError('Link map file_12 objects are not in original order')
-    if re.search(r'(?m)^\s*build/usa/asm/usa/5C8770\.s\.o\(\.text\)\s*$', block):
-        raise ValueError('Link map retains unsplit file_12 assembly text')
-
-    def input_text_extent(input_name):
-        match = re.search(
-            r'(?m)^\s*\.text\s+0x([0-9a-fA-F]+)\s+0x([0-9a-fA-F]+)\s+' +
-            re.escape(input_name) + r'\s*$', block
-        )
-        if match is None:
-            raise ValueError('Link map omits file_12 input text extent: ' + input_name)
-        return int(match.group(1), 16), int(match.group(2), 16)
-
-    text_end_vma = overlay_file12.VMA_START + (
-        overlay_file12.ROM_TEXT_END - overlay_file12.ROM_START
-    )
-    first_vma = stages[0]['function']['vma']
-    if input_text_extent(assembly_objects[0]) != (
-            overlay_file12.VMA_START, first_vma - overlay_file12.VMA_START):
-        raise ValueError('file_12 prefix assembly does not begin at the overlay VMA')
-    assembly_cursor = 1
-    for index, (item, c_object_name) in enumerate(zip(stages, c_object_names)):
-        function = item['function']
-        name = function['name']
-        if input_text_extent(c_object_name) != (function['vma'], function['size']):
-            raise ValueError('Link map does not place file_12 C at its exact VMA and size')
+    expected_extents=[(assembly_objects[0],overlay_file12.ROM_START,stages[0]['function']['rom_offset'])]
+    next_gap=1
+    for index,(item,c_object_name) in enumerate(zip(stages,c_object_names)):
+        fn=item['function'];lo=fn['rom_offset'];hi=lo+fn['size']
+        expected_extents.append((c_object_name,lo,hi))
+        nxt=(stages[index+1]['function']['rom_offset'] if index+1<len(stages)
+             else overlay_file12.ROM_TEXT_END)
+        if nxt>hi:
+            expected_extents.append((assembly_objects[next_gap],hi,nxt));next_gap+=1
         for claim in file12_registration.claims(item):
             symbol_lines = re.findall(
-                r'(?m)^\s*0x([0-9a-fA-F]+)\s+' + re.escape(claim['name']) + r'\s*$', block
-            )
-            if [int(value, 16) for value in symbol_lines] != [claim['vma']]:
-                raise ValueError('Link map does not place each staged file_12 function at its original VMA')
-        function_end_vma = function['vma'] + function['size']
-        if index + 1 < len(stages):
-            next_function = stages[index + 1]['function']
-            next_vma = next_function['vma']
-        else:
-            next_vma = text_end_vma
-        if next_vma > function_end_vma:
-            expected_extent = (function_end_vma, next_vma - function_end_vma)
-            if input_text_extent(assembly_objects[assembly_cursor]) != expected_extent:
-                raise ValueError('file_12 assembly gap does not preserve its original extent')
-            assembly_cursor += 1
+                r'(?m)^\s*0x([0-9a-fA-F]+)\s+'+re.escape(claim['name'])+r'\s*$',block)
+            if [int(v,16) for v in symbol_lines]!=[claim['vma']]:
+                raise ValueError('file_12 matching-C symbol no longer at its original VMA')
+    if [v[0] for v in expected_extents]!=expected_inputs:
+        raise ValueError('file_12 original object plan changed unexpectedly')
+    map_proof=_verify_expanded_cross_overlay_map(
+        block,expected_extents,cross_plan,'file_12',overlay_file12.ROM_START,overlay_file12.VMA_START)
+    if re.search(r'(?m)^\s*build/usa/asm/usa/5C8770\.s\.o\(\.text\)\s*$', block):
+        raise ValueError('Link map retains unsplit original file_12 ASM')
     bss_match = re.search(
         r'(?m)^\.file_12_bss\s+0x([0-9a-fA-F]+)\s+0x([0-9a-fA-F]+)', mapping
     )
@@ -1708,6 +1766,7 @@ def verify_file12_ownership(candidate_checkout, stage):
             overlay_file12.VMA_START + section_size or int(bss_match.group(2), 16) != 0):
         raise ValueError('Link map .file_12_bss boundary differs from pinned overlay')
     result = {
+        'map_expanded_ownership':map_proof,
         'callbacks': callback_proofs,
         'assembly_objects': assembly_objects,
         'file_12_vma': f'0x{section_vma:08X}',
@@ -1718,11 +1777,11 @@ def verify_file12_ownership(candidate_checkout, stage):
     return result
 
 
-def verify_file12_stage_build(baseline_checkout, candidate_checkout, stage, reference_rom):
+def verify_file12_stage_build(baseline_checkout, candidate_checkout, stage, reference_rom, cross_plan=None):
     """Verify the staged split, object ownership and linked ELF provenance."""
     stages = _file12_stage_list(stage)
     candidate_checkout = Path(candidate_checkout)
-    ownership = verify_file12_ownership(candidate_checkout, stages)
+    ownership = verify_file12_ownership(candidate_checkout, stages, cross_plan)
     baseline_checkout = Path(baseline_checkout)
     original_splat = (baseline_checkout / 'config/usa/splat.yaml').read_text(encoding='utf-8')
     expected_splat, _ = stage_file12_splats(original_splat, stages)
@@ -1802,7 +1861,7 @@ def require_file12_full_rom_match(comparison):
 
 
 def verify_file13_stage_build(baseline_checkout, candidate_checkout,
-                              stage_or_stages, reference_rom):
+                              stage_or_stages, reference_rom, cross_plan=None):
     """Verify each file_13 C source, linked extent, and complete overlay bytes."""
     stages = _file13_stage_list(stage_or_stages)
     for stage in stages:
@@ -1890,31 +1949,9 @@ def verify_file13_stage_build(baseline_checkout, candidate_checkout,
         else:
             name = f'build/usa/src/{obj["name"]}.c.o'
         expected_objects.append((name, obj))
-    positions = []
-    for object_name, _ in expected_objects:
-        object_pattern = r'(?m)^\s*' + re.escape(object_name + '(.text)') + r'\s*$'
-        hits = list(re.finditer(object_pattern, block))
-        if len(hits) != 1:
-            raise ValueError('Link map does not place file_13 object exactly once: ' + object_name)
-        positions.append(hits[0].start())
-    if positions != sorted(positions):
-        raise ValueError('Link map file_13 objects are not in original order')
-
-    def input_text_extent(object_name):
-        pattern = (
-            r'(?m)^\s*\.text\s+0x([0-9a-fA-F]+)\s+0x([0-9a-fA-F]+)\s+' +
-            re.escape(object_name) + r'\s*$'
-        )
-        match = re.search(pattern, block)
-        if match is None:
-            raise ValueError('Link map omits file_13 input text extent: ' + object_name)
-        return tuple(int(match.group(i), 16) for i in (1, 2))
-
-    for object_name, obj in expected_objects:
-        vma = overlay_file13.VMA_START + (obj['start'] - overlay_file13.ROM_START)
-        expected_extent = (vma, obj['end'] - obj['start'])
-        if input_text_extent(object_name) != expected_extent:
-            raise ValueError('Link map file_13 input does not preserve its original extent')
+    expected_extents=[(name,obj['start'],obj['end']) for name,obj in expected_objects]
+    map_proof=_verify_expanded_cross_overlay_map(
+        block,expected_extents,cross_plan,'file_13',overlay_file13.ROM_START,overlay_file13.VMA_START)
     for stage in stages:
         function = stage['function']
         symbol_lines = re.findall(
@@ -1947,6 +1984,7 @@ def verify_file13_stage_build(baseline_checkout, candidate_checkout,
         'splat_block_matches': True,
         'link_map_objects_in_order': True,
         'link_map_original_extents': True,
+        'cross_overlay_map_ownership':map_proof,
         'linked_elf_provenance': linked,
     }
 
@@ -2140,8 +2178,39 @@ def run_build(args,manifest,report):
         report['overlay_file13_object_layout']=prepare_file13_stage_objects(
             candidate,file13_stages
         )
+    cross_fixture=crossregion47_stage(manifest)
+    cross_plan=None
+    cross_packed=None
+    if cross_fixture:
+        from . import overlay_crossregion47 as cross
+        # The clean Splat output has ASM sources but only selected 732-stage
+        # objects have been compiled. Establish original parent-object
+        # provenance before splitting any new cross-overlay chunks.
+        parents=cross._subsegments((candidate/'config/usa/splat.yaml').read_text())
+        original_parents=set()
+        for item in cross_fixture['functions']:
+            eligible=[name for name,(region,start,end) in parents.items()
+                      if region==item['section'] and start<=item['rom_offset']
+                      and item['rom_offset']+item['size']<=end]
+            if len(eligible)!=1:
+                raise ValueError('Ambiguous cross-overlay original ASM parent: '+item['name'])
+            original_parents.add(eligible[0])
+        logged('candidate-crossregion47-original-parents',
+            ['make','-j'+str(args.jobs),'UV='+uv,
+             *['build/usa/asm/usa/'+name+'.s.o' for name in sorted(original_parents)]],candidate)
+        cross_plan=cross.stage_linker(candidate,expected,cross_fixture,
+                      source_dir/'research/jp_recomp_to_c/src')
+        report['overlay_crossregion47_source_plan']={
+            'function_count':len(cross_plan['functions']),
+            'original_code_bytes':sum(x['size'] for x in cross_plan['functions']),
+            'split_asm_objects':len(cross_plan['assembly']),
+            'parent_chunks':len(cross_plan['parents'])}
+        logged('candidate-crossregion47-objects',['make','-j'+str(args.jobs),'UV='+uv,
+            *cross.object_targets(cross_plan)],candidate)
+        cross_packed=cross.pack_objects(candidate,expected,cross_plan)
+        report['overlay_crossregion47_object_layout']=cross_packed
     if manifest.get('vm_assignment_table_layout'):
-        logged('candidate-vm-object',['make','-j'+str(args.jobs),'UV='+uv,
+        logged('candidate-vm-object' ,['make','-j'+str(args.jobs),'UV='+uv,
             'build/usa/src/script_vm.c.o','build/usa/asm/usa/data/main_continued.rodata.s.o'],candidate)
         report['object_layout']=pack_object_file(candidate/'build/usa/src/script_vm.c.o')
     if manifest.get('heap_noop_text_layout'):
@@ -2187,6 +2256,10 @@ def run_build(args,manifest,report):
         staged_name=PurePosixPath(file13_stage['source']).name
         report['sources_sha256_lf'][file13_stage['source']]=digest(
             (candidate/'src'/staged_name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
+    if cross_fixture:
+        for entry in cross_fixture['functions']:
+            key='research/jp_recomp_to_c/src/'+entry['name']+'.c'
+            report['sources_sha256_lf'][key]=digest((candidate/'src'/(entry['name']+'.c')).read_bytes().replace(b'\r\n',b'\n'),'sha256')
     mapping=(candidate/'build/usa/mnsg.map').read_text()
     for unit in manifest['units']:
         object_name='build/usa/src/'+unit['source']+'.o'
@@ -2208,7 +2281,7 @@ def run_build(args,manifest,report):
     if file12_stages:
         require_file12_full_rom_match(result)
         file12_report=verify_file12_stage_build(
-            baseline,candidate,file12_stages,expected
+            baseline,candidate,file12_stages,expected,cross_plan
         )
         append_file12_function_comparison(
             result,file12_stages,file12_report['linked_elf_provenance']
@@ -2266,13 +2339,63 @@ def run_build(args,manifest,report):
     if file13_stages:
         require_file13_full_rom_match(result)
         report['overlay_file13_stages']=verify_file13_stage_build(
-            baseline,candidate,file13_stages,expected
+            baseline,candidate,file13_stages,expected,cross_plan
         )
         append_file13_function_comparison(
             result,file13_stages,
             report['overlay_file13_stages']['linked_elf_provenance']
         )
         report['comparison']=result
+    if cross_fixture:
+        from . import overlay_crossregion47 as cross
+        # Require all seven original relocation multisets, 7,376 symbol
+        # identities and *only* the two already-published 732-C annotation
+        # differences. The full ROM and every code byte must be exact.
+        original_syms=cross._funcs(baseline/'build/usa/mnsg.elf')
+        candidate_syms=cross._funcs(candidate/'build/usa/mnsg.elf')
+        expected_differences=(
+            ('func_8000D3B8_DFB8',0x8000D3B8,64,72),
+            ('func_8003F6E8_402E8',0x8003F6E8,48,56))
+        expected_removed=Counter((n,v,s) for n,v,s,_ in expected_differences)
+        expected_added=Counter((n,v,s) for n,v,_,s in expected_differences)
+        if (sum(original_syms.values())!=7376 or sum(candidate_syms.values())!=7376
+                or original_syms-candidate_syms!=expected_removed
+                or candidate_syms-original_syms!=expected_added):
+            raise ValueError('Unexpected original ELF function identity change in cross-region promotion')
+        original_rel=cross._relocations(baseline/'build/usa/mnsg.elf')
+        candidate_rel=cross._relocations(candidate/'build/usa/mnsg.elf')
+        for region,count in cross.EXACT_COUNTS.items():
+            if (len(original_rel.get(region,[]))!=count or
+                    len(candidate_rel.get(region,[]))!=count or
+                    Counter(original_rel[region])!=Counter(candidate_rel[region])):
+                raise ValueError('Cross-overlay relocation drift: '+region)
+        linked_image=(candidate/'build/usa/mnsg.z64').read_bytes()
+        for entry in cross_fixture['functions']:
+            name,off,size,vma=entry['name'],entry['rom_offset'],entry['size'],entry['vma']
+            if (symbols.get(name)!=vma or name+'.NON_MATCHING' in symbols or
+                    expected[off:off+size]!=linked_image[off:off+size] or
+                    name not in mapping or 'build/usa/src/'+name+'.c.o' not in mapping):
+                raise ValueError('Cross-overlay original-address ownership failed: '+name)
+            result['functions'].append({
+                'name':name,'size':size,'guest_address':f'0x{vma:08X}',
+                'rom_offset':f'0x{off:X}','matched':True,
+                'expected_sha256':entry['original_code_sha256'],
+                'candidate_sha256':entry['original_code_sha256']})
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=size
+        report['overlay_crossregion47_stage']={
+            'status':'PASS','format':cross.STAGE_FORMAT,
+            'original_address_matching_c':47,
+            'original_instruction_bytes':2220,
+            'original_positive_sized_elf_entries':7376,
+            'historical_elf_size_annotations':[
+                {'name':n,'vma':f'0x{v:08X}','original_size':a,'candidate_size':b}
+                for n,v,a,b in expected_differences],
+            'exact_semantic_relocations':cross.EXACT_COUNTS,
+            'original_full_rom_sha1':cross.USA_SHA1,
+            'complete_rom_bytes_equal':33554432,
+            'splat_split_asm_objects':len(cross_plan['assembly'])}
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'
