@@ -1,5 +1,13 @@
 # Goemon Speedrun Tools v0.11.36 — simplified navigation and unrestricted memory comparison test
 
+## Unlocks: Items & equipment and Story & event flags (experimental branch)
+
+The existing **Unlocks** page now contains two internal sections: **Items & equipment** (all 34 original controls, including party members, upgrades, weapons, Start-menu items, fish counts and Miracle Items) and **Story & event flags** (searchable, live-read flag list with Set / On and Clear / Off actions). This is not a new top-level diagnostics tab.
+
+USA flags reuse the same packed-bit addresses, masks and checked writer as Story Progress. Japan shows all 58 currently crosswalked curated and Plasma flag entries. **Every one of these Japanese crosswalk event bits is editable for testing**, including offsets labelled **JP offset candidate**; provenance labels describe evidence, not permission. An observed bit or successful write does not prove the associated story event semantics.
+
+Each explicit click sets or clears only the selected bit, retains neighbouring bits, checks that the displayed byte is still current and routes the Japanese write through the active verified game connection. Bulk Unlock All affects items only; it never bulk-sets the story flags. Read-only mode, disconnection and stale-byte checks remain in place. This branch has not been validated on actual gameplay.
+
 ## Cross-region memory mapping in the existing tabs (merged: PRs #35 and #52)
 
 Japan and USA use the same Live Memory, Unlocks and Story Progress pages. The reciprocal memory-data crosswalk lives in `practice/region_memory_crosswalk.py`, not a new Japanese diagnostics panel. Source-verified and user-observed static fields absent from the original Japanese live table appear in shared Live Memory; the 34 regional Unlocks continue using their existing explicitly sourced `practice/region_unlocks.py` mappings. Japanese saved-event/Plasma candidate addresses appear only as clearly labelled **read-only bit observations** in the existing Story Progress table. Guessed bits are not identified as completed events or made editable.
