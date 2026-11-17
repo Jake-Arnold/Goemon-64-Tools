@@ -66,6 +66,12 @@ def synchronise(existing=None):
                 prior.get("aliases", ()) + row.get("aliases", ())))
             prior["id_aliases"] = list(dict.fromkeys(
                 [*prior.get("id_aliases", ()), *row.get("id_aliases", ())]))
+            history = {}
+            for record in (*prior.get("confidence_sources", ()),
+                           *row.get("confidence_sources", ())):
+                history[(record.get("source_id"),
+                         record.get("confidence"))] = record
+            prior["confidence_sources"] = list(history.values())
     out = dict(existing)
     # Migrate older manifests with duplicate evidence rows into one
     # authoritative physical field and keep their IDs as aliases.
