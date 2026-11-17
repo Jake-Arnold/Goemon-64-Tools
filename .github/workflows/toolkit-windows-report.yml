@@ -16,6 +16,14 @@ on:
       - "practice/updater_ui.py"
       - "tests/test_updater.py"
       - "tests/test_updater_ui.py"
+      - "practice/address_registry.py"
+      - "practice/address_catalogue.py"
+      - "practice/address_catalogue_ui.py"
+      - "practice/address_catalogue_remote.py"
+      - "practice/data/**"
+      - "scripts/sync_address_catalogue.py"
+      - "tests/test_address_registry.py"
+      - "tests/test_address_catalogue_ui.py"
       - ".github/workflows/toolkit-windows-report.yml"
 
 permissions:
@@ -33,4 +41,4 @@ jobs:
       - name: Compile Python practice modules
         run: python -m compileall -q practice
       - name: Verify Windows-compatible report and version functions
-        run: python -m unittest tests.test_reports tests.test_discovery_results tests.test_value_search tests.test_toolkit_version tests.test_unlock_flag_catalog tests.test_updater -v
+        run: python -m unittest tests.test_reports tests.test_discovery_results tests.test_value_search tests.test_toolkit_version tests.test_unlock_flag_catalog tests.test_address_registry tests.test_updater -v
