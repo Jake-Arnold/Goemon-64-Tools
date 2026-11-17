@@ -1,9 +1,9 @@
 """Region-qualified persistent flags for the shared Unlocks > Flags page.
 
 The USA entries reuse Story Progress's existing named bit catalogue and
-checked writer. Japanese entries are crosswalk observations, NOT automatic
-write permissions: only independently user-confirmed JP event bits may be
-toggled. A similar byte or +0x57F0 by itself never authorises a write.
+checked writer. All Japanese crosswalk entries have editable Set/Clear
+controls for direct gameplay testing, even when the address remains only an
+offset candidate. An edit is NOT evidence that an event meaning is proven.
 """
 from __future__ import annotations
 
@@ -53,10 +53,9 @@ USA_FLAGS = tuple(
     for flag in FLAGS
 )
 
-# Crosswalk catalogue currently records one independently confirmed JP saved
-# event: Benkei encounter. Other event/Plasma entries are research candidates
-# even when their USA reader is known. Never translate external/placement bits
-# as a blanket offset.
+# Every mapped JP event/Plasma crosswalk is editable for direct experiments.
+# Candidate labels identify evidence quality, not write access. External and
+# placement flags are not currently in the canonical reciprocal crosswalk.
 JAPAN_FLAGS = tuple(
     UnlockFlag(flag.key, flag.label, story_section_for_key(flag.key),
                CROSS_REGION_BY_KEY[
@@ -69,16 +68,13 @@ JAPAN_FLAGS = tuple(
                CROSS_REGION_BY_KEY[
                    ('plasma:' if flag in PLASMA_FLAGS else 'event:') + flag.key
                ].note,
-               CROSS_REGION_BY_KEY[
-                   ('plasma:' if flag in PLASMA_FLAGS else 'event:') + flag.key
-               ].evidence == 'user-confirmed')
+               True)
     for flag in CURATED_FLAGS + PLASMA_FLAGS
 )
 
 assert len({f.key for f in USA_FLAGS}) == len(USA_FLAGS)
 assert len({f.key for f in JAPAN_FLAGS}) == len(JAPAN_FLAGS)
-assert sum(f.editable for f in JAPAN_FLAGS) == 1
-assert next(f for f in JAPAN_FLAGS if f.editable).key == 'benkei_encounter'
+assert all(f.editable for f in JAPAN_FLAGS)
 
 
 def flags_for_region(region):
@@ -119,9 +115,13 @@ def masked_flag_byte(flag, target, expected):
     return (expected | flag.mask) if target == 'Set' else (expected & ~flag.mask)
 
 
-def write_confirmed_japan_flag(writer, flag, target, expected):
-    """Single allowlisted JP byte CAS via toolkit's verified raw writer."""
-    if flag not in JAPAN_FLAGS or not flag.editable:
-        raise PermissionError('Japanese event flag has not been independently confirmed')
+def write_japan_crosswalk_flag(writer, flag, target, expected):
+    """Single mapped JP bit CAS via toolkit's connected raw writer.
+
+    Candidate evidence does not block experiments, but an unknown/unmapped
+    address is not silently promoted into this catalogue.
+    """
+    if flag not in JAPAN_FLAGS:
+        raise ValueError('Address has no saved-event crosswalk entry')
     data = bytes((masked_flag_byte(flag, target, expected),))
     return writer(flag.address, data, expected=bytes((expected,)))
