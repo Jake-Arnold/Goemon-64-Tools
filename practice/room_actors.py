@@ -14,9 +14,48 @@ from pathlib import Path
 import struct
 
 from practice.entrances import (RomFiles, CODE_RAM, MAX_STAGE, ROOM_POINTERS,
-                                US_RETAIL_SHA1, US_DECOMPRESSED_SHA1)
+                                US_RETAIL_SHA1, US_DECOMPRESSED_SHA1,
+                                canonical_rom, decompress_block)
 
 SCHEMA = 'goemon-usa-room-actors-v1'
+JP_SCHEMA = 'goemon-japan-0-room-actors-v1'
+JP_RETAIL_SHA1 = '9843ee979b5f6c80f5eda85df0baed9ae7c4e73b'
+JP_DECOMPRESSED_SHA1 = '6f8745fecc3a5e7d4918c7a73353eb0726116ded'
+# Derive from original Japanese file_12 room pointer table (guest 0x80235FE8).
+JP_CODE_RAM = 0x212090
+JP_ROOM_POINTERS = 0x23F58
+REGION_TABLES = {'usa': (CODE_RAM, ROOM_POINTERS),
+                 'japan_0': (JP_CODE_RAM, JP_ROOM_POINTERS)}
+
+
+class JapanRomFiles:
+    """Authenticated Japanese rev-0 ROM; no guessed USA table offsets."""
+
+    def __init__(self, data):
+        self.data = canonical_rom(data)
+        self.sha1 = hashlib.sha1(self.data).hexdigest()
+        if self.sha1 not in (JP_RETAIL_SHA1, JP_DECOMPRESSED_SHA1):
+            raise ValueError('Japanese actor extraction requires verified Japan rev-0 ROM')
+        signature = b'Nisitenma-Ichigo'
+        start = self.data.find(signature)
+        if start < 0 or self.data.find(signature, start+1) >= 0:
+            raise ValueError('Ambiguous or missing Japanese ROM file table')
+        self.pointers = struct.unpack_from('>1312I', self.data, start+len(signature))
+        self.cache = {}
+
+    def file(self, index):
+        if type(index) is not int or not 1 <= index < len(self.pointers):
+            raise ValueError('Japanese file ID outside ROM table')
+        if index not in self.cache:
+            pointer = self.pointers[index-1]
+            start, end = pointer & 0x7FFFFFFF, self.pointers[index] & 0x7FFFFFFF
+            if not 0 < start < end <= len(self.data):
+                raise ValueError('Invalid Japanese ROM file span')
+            span = self.data[start:end]
+            self.cache[index] = decompress_block(span) if pointer & 0x80000000 else span
+        return self.cache[index]
+
+
 KNOWN_NAMES = {
     0x086: 'Mr. Elly Fant', 0x087: 'Mr. Arrow', 0x088: 'Silver Fortune Doll',
     0x089: 'Gold Fortune Doll', 0x08C: 'Exit', 0x193: 'Key',
@@ -28,9 +67,14 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
-def actor_names(catalog=None):
+def actor_names(catalog=None, *, region='usa'):
     """Return (name, provenance) by ID; optional external leads are NOT verified."""
-    names = {i: (name, 'code/room annotation') for i, name in KNOWN_NAMES.items()}
+    if region not in REGION_TABLES:
+        raise ValueError('Unsupported actor region')
+    provenance = 'code/room annotation' if region == 'usa' else 'USA ID label / Japan unverified'
+    names = {i: (name, provenance) for i, name in KNOWN_NAMES.items()}
+    if region == 'japan_0':
+        return names  # Do not apply USA-only external labels to Japan.
     if catalog is None:
         catalog = Path(__file__).resolve().parents[1] / 'research' / 'usa_external_memory_leads.json'
     try:
@@ -99,20 +143,23 @@ def parse_room(stage, file_id, room, instance, footer, ending, *, names=None):
     return placements
 
 
-def extract_actors(data, *, catalog=None):
-    files = RomFiles(data)  # Full USA retail/expanded image SHA-1 gate.
+def extract_actors(data, *, catalog=None, region='usa'):
+    if region not in REGION_TABLES:
+        raise ValueError('Unsupported actor region')
+    files = RomFiles(data) if region == 'usa' else JapanRomFiles(data)
     code = files.file(12)
-    names = actor_names(catalog)
+    names = actor_names(catalog, region=region)
+    code_ram, room_ptrs = REGION_TABLES[region]
     rooms = []
     placements = []
     for stage in range(MAX_STAGE+1):
-        table_offset = ROOM_POINTERS+4*stage
+        table_offset = room_ptrs+4*stage
         if table_offset+4 > len(code):
             raise ValueError('Truncated room metadata pointer table')
         pointer = struct.unpack_from('>I', code, table_offset)[0]
         if not pointer:
             continue
-        meta_offset = (pointer & 0x7FFFFFFF)-CODE_RAM
+        meta_offset = (pointer & 0x7FFFFFFF)-code_ram
         if not 0 <= meta_offset <= len(code)-28:
             raise ValueError('Room metadata pointer outside code file')
         meta = code[meta_offset:meta_offset+28]
@@ -127,7 +174,7 @@ def extract_actors(data, *, catalog=None):
         stage_rows = parse_room(stage, file_id, files.file(file_id), instance, footer, ending, names=names)
         rooms.append(dict(stage=stage, room_file=file_id, count=len(stage_rows)))
         placements.extend(stage_rows)
-    payload = dict(format=SCHEMA, region='usa', rom_sha1=files.sha1,
+    payload = dict(format=SCHEMA if region == 'usa' else JP_SCHEMA, region=region, rom_sha1=files.sha1,
                    evidence='Static ROM room placement references; NOT live spawned actors',
                    rooms=rooms, placements=placements)
     return dict(payload=payload, sha256=digest(payload))
@@ -137,7 +184,11 @@ def validate_actors(atlas):
     if not isinstance(atlas, dict) or not isinstance(atlas.get('payload'), dict):
         raise ValueError('Invalid actor atlas')
     p = atlas['payload']
-    if p.get('format') != SCHEMA or p.get('region') != 'usa' or p.get('rom_sha1') not in (US_RETAIL_SHA1, US_DECOMPRESSED_SHA1):
+    if p.get('region') not in REGION_TABLES:
+        raise ValueError('Unknown actor atlas region')
+    region = p['region']
+    required = (SCHEMA, (US_RETAIL_SHA1, US_DECOMPRESSED_SHA1)) if region == 'usa' else (JP_SCHEMA, (JP_RETAIL_SHA1, JP_DECOMPRESSED_SHA1))
+    if p.get('format') != required[0] or p.get('rom_sha1') not in required[1]:
         raise ValueError('Wrong actor atlas schema or region')
     if atlas.get('sha256') != digest(p):
         raise ValueError('Actor atlas checksum mismatch')
@@ -210,14 +261,15 @@ def load_actors(path):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--rom', type=Path, required=True, help='Original USA retail or verified expanded ROM')
+    parser.add_argument('--rom', type=Path, required=True, help='Verified original regional retail or expanded ROM')
+    parser.add_argument('--region', choices=tuple(REGION_TABLES), default='usa', help='Separate regional ROM layout (default: usa)')
     stages = parser.add_mutually_exclusive_group(required=True)
     stages.add_argument('--stage', type=int, help='Stage ID in decimal')
     stages.add_argument('--all', action='store_true', help='Show all mapped stages')
     parser.add_argument('--report', type=Path, help='Write a local metadata-only JSON atlas')
     args = parser.parse_args(argv)
     try:
-        atlas = extract_actors(args.rom.read_bytes())
+        atlas = extract_actors(args.rom.read_bytes(), region=args.region)
         if args.report:
             if args.report.resolve() == args.rom.resolve():
                 raise ValueError('Cannot overwrite the input ROM')
@@ -226,7 +278,7 @@ def main(argv=None):
             raise ValueError('Stage outside USA range')
         selected = (atlas['payload']['rooms'] if args.all else [r for r in atlas['payload']['rooms'] if r['stage'] == args.stage])
         for room in selected:
-            print(f'Stage {room["stage"]}: file 0x{room["room_file"]:03X}, {room["count"]} ROM placements (NOT live actors)')
+            print(f'[{args.region}] Stage {room["stage"]}: file 0x{room["room_file"]:03X}, {room["count"]} ROM placements (NOT live actors)')
             for p in actors_for_stage(atlas, room['stage']):
                 print(f'  0x{p["actor_id"]:03X} {p["name"]} [{p["name_source"]}] definition {p["definition"]} record 0x{p["record_offset"]:04X} cells {p["cells"]}')
     except (OSError, ValueError, KeyError, TypeError, struct.error) as exc:
