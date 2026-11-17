@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Portable stage test and standalone native 389-C inventory
+
+- Changed: removed developer-specific absolute ROM paths from `decomp/test_overlay_crossregion47.py`, using optional `GOEMON_USA_DECOMPRESSED_ROM` for private ROM-only checks while enforcing source SHA-256 for all 47 checked-in C files even on ROM-free CI. Added the actual standalone original-ELF/ASM-marker proof from the versioned 342+47 candidate at `decomp/results/native_389_standalone_inventory_20261117.json` (not the canonical `inventory.json`).
+- Tested: seven ROM-backed adapter tests passed with the original USA ROM; standalone inventory `389/389` unique native C identities, `7376/7376` original functions, no extra aliases, unchanged two historical size annotations, exact eight semantic relocation tables and whole 32 MiB original USA ROM all passed.
+- Limitations: the full current versioned `decomp.verify` and full current checkout `decomp.local_ci` are not yet recorded passing. This remains an unmerged, draft production candidate; official 342-C result JSONs are unchanged.
+- Next: execute full latest-source `decomp.verify`, `decomp.inventory`, `decomp.local_ci`, regenerate the authoritative reports and promote only after all pass.
+
+
 ### 2026-11-17 — Versioned original-USA 342+47 cross-region C integration (promotion candidate, pending full current CI)
 
 - Changed: added an opt-in, fail-closed 47-function original-USA mixed C/ASM linker adapter (`overlay_crossregion47.py`) and pinned source/ROM manifest in `decomp/research/jp_recomp_to_c/`, with 47 independently reverified exact C source blobs, unit tests and `overlay_crossregion47_stage` registration in the 342-C canonical manifest. The original 342 native verifier path remains fully available when the stage is omitted. This is a promotion *candidate* branch, not a silently altered canonical result.

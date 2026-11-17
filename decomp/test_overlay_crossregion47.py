@@ -2,6 +2,7 @@
 from __future__ import annotations
 import copy
 import hashlib
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -24,6 +25,18 @@ class OverlayCrossregion47Tests(unittest.TestCase):
         self.assertEqual(len({e['name'] for e in entries}),47)
         self.assertEqual({x['section'] for x in entries},set(stage.OVERLAYS))
 
+    @staticmethod
+    def _original_rom():
+        """Optional user-owned ROM; never assume a developer-local filesystem."""
+        supplied = os.environ.get('GOEMON_USA_DECOMPRESSED_ROM', '')
+        return Path(supplied) if supplied else None
+
+    def test_committed_source_hashes_match_manifest(self):
+        for entry in self.fixture['functions']:
+            raw = (stage.SOURCE_BASE / (entry['name'] + '.c')).read_bytes()
+            self.assertEqual(hashlib.sha256(raw).hexdigest(),
+                             entry['source_sha256'], entry['name'])
+
     def test_fail_closed_on_source_sha_change(self):
         with tempfile.TemporaryDirectory() as tmp:
             src=Path(tmp)
@@ -31,8 +44,9 @@ class OverlayCrossregion47Tests(unittest.TestCase):
                 (src/(e['name']+'.c')).write_bytes((stage.SOURCE_BASE/(e['name']+'.c')).read_bytes())
             name=self.fixture['functions'][0]['name']
             (src/(name+'.c')).write_bytes(b'void changed(void) {}\n')
-            original=Path('/tmp/goemon362/canonical342/config/usa/baserom.decompressed.z64')
-            if not original.is_file():self.skipTest('Pinned original ROM not available')
+            original=self._original_rom()
+            if original is None or not original.is_file():
+                self.skipTest('Original ROM not provided in GOEMON_USA_DECOMPRESSED_ROM')
             with self.assertRaisesRegex(ValueError,'Source SHA'):
                 stage.validate_sources(original.read_bytes(),self.fixture,src)
 
@@ -61,9 +75,9 @@ class OverlayCrossregion47Tests(unittest.TestCase):
                 stage.load_fixture()
 
     def test_source_and_original_code_sha256(self):
-        original=Path('/tmp/goemon362/canonical342/config/usa/baserom.decompressed.z64')
-        if not original.is_file():
-            self.skipTest('Pinned original ROM is local-only, never checked into Git')
+        original=self._original_rom()
+        if original is None or not original.is_file():
+            self.skipTest('Original ROM not provided in GOEMON_USA_DECOMPRESSED_ROM')
         stage.validate_sources(original.read_bytes(),self.fixture)
 
 

@@ -1,0 +1,82 @@
+{
+  "format": "goemon-us-389-native-original-address-c-plus-47-v1",
+  "status": "NATIVE_389_C_ROM_ELF_RELOC_ACCEPTANCE_PASS_CANONICAL_MANIFEST_AND_FULL_CI_PENDING",
+  "date": "2026-11-17",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_rom_bytes": 33554432,
+  "canonical_current_usa_c": 342,
+  "canonical_315_proven_native_c": 315,
+  "later_27_official_file11_c_verified_native_c": 27,
+  "new_47_cross_region_overlay_c_verified_native_c": 47,
+  "candidate_389_c_ownership_verified": 389,
+  "candidate_matching_c_instruction_bytes": 19788,
+  "candidate_elf_sha256": "949d6159726fec772c1c9d36d0dad68d4c842bae608c4a9ca5020a7395848b2f",
+  "canonical_315_elf_sha256": "eacf97cf7cfbd16c555b25e91b4ad6f23262ee9548033630660615ed1c2d4691",
+  "original_asm_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "original_and_candidate_full_rom_equal": true,
+  "original_and_candidate_positive_func_identity_count": 7376,
+  "official_original_inventory_logic": {
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 389,
+    "current_unmarked_entries": 402,
+    "remaining_assembly_entries": 6974,
+    "baseline_zero_sized_function_labels_ignored": 0,
+    "candidate_zero_sized_function_labels_ignored": 851,
+    "extra_positive_alias_entries": 0,
+    "upstream_unmarked_names": [
+      "func_8000A480_B080",
+      "func_80013940_14540",
+      "func_80013AC4_146C4",
+      "func_80013C0C_1480C",
+      "func_80013C70_14870",
+      "func_800141C4_14DC4",
+      "func_8001481C_1541C",
+      "func_80014840_15440",
+      "func_800148C0_154C0",
+      "func_80014C00_15800",
+      "func_80014C20_15820",
+      "func_80029E58_2AA58",
+      "func_8002A168_2AD68"
+    ],
+    "size_annotation_differences": [
+      {
+        "name": "func_8000D3B8_DFB8",
+        "baseline_size": 64,
+        "candidate_size": 72
+      },
+      {
+        "name": "func_8003F6E8_402E8",
+        "baseline_size": 48,
+        "candidate_size": 56
+      }
+    ],
+    "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  },
+  "current_file11_additional_27_c_orig_source_sha256_verified": true,
+  "current_file11_additional_27_exact_native_packed_obj_sha256_verified": true,
+  "semantic_relocations_original_vs_combined": {
+    "file_11": 8825,
+    "file_12": 7051,
+    "file_13": 9589,
+    "file_14": 3041,
+    "file_15": 1625,
+    "file_17": 1739,
+    "file_18": 3365,
+    "file_19": 1078
+  },
+  "all_relocations_equal": true,
+  "base_linker_stale_asm_object_refs": "proven empty .data/.bss/.rodata removed from file_12/13; file_11 old ASM owners also proven nontext empty",
+  "verified_original_code_per_new_batch": {
+    "new_27_file11": 908,
+    "new_47_overlays": 2220
+  },
+  "ci_gate": "PENDING",
+  "repository_updated": false,
+  "formal_production_promotion": false,
+  "remaining_gates": [
+    "Review and import 47 mixed-overlay source stage into the canonical current verifier+manifest",
+    "Run full current decomp.local_ci and pin results",
+    "Publish complete 389-C native decomp G2 and inventory in canonical branch"
+  ]
+}
