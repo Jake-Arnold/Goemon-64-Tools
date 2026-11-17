@@ -1,0 +1,161 @@
+{
+  "format": "goemon-original-usa-file26-adjacent15-native-research-v1",
+  "recorded_date": "2026-11-17",
+  "branch": "chatgptweb/decomp",
+  "status": "RESEARCH_ONLY",
+  "accepted_production_before": {
+    "usa_c": 782,
+    "usa_bytes": 34392,
+    "japan_c": 34
+  },
+  "accepted_production_after": {
+    "usa_c": 782,
+    "usa_bytes": 34392,
+    "japan_c": 34
+  },
+  "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_usa_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_usa_rom_size": 33554432,
+  "toolchain": "original IDO 5.3 (-O2 -mips2) + MIPS binutils",
+  "verified_units": [
+    {
+      "name": "resource26 contiguous initial 14",
+      "start_rom": "0x6AE7E0",
+      "end_rom_exclusive": "0x6AF0E8",
+      "c_functions": 14,
+      "bytes": 2312,
+      "original_sha256": "5c9745fe62c61885842a2996e8c7a883630fc350ea7d90e49bb2b77f47fa11e0"
+    },
+    {
+      "name": "resource26 final callback",
+      "start_rom": "0x6AF1D4",
+      "end_rom_exclusive": "0x6AF298",
+      "c_functions": 1,
+      "bytes": 196,
+      "original_sha256": "e6efd31b7016e31330b89613edc0361dc767813e152b7a54fa02e16e6b30ced0"
+    }
+  ],
+  "newly_exact": [
+    [
+      "func_08000000_6AE7E0",
+      "0x6AE7E0",
+      204
+    ],
+    [
+      "func_08000204_6AE9E4",
+      "0x6AE9E4",
+      204
+    ],
+    [
+      "func_080002D0_6AEAB0",
+      "0x6AEAB0",
+      168
+    ],
+    [
+      "func_08000378_6AEB58",
+      "0x6AEB58",
+      188
+    ],
+    [
+      "func_08000434_6AEC14",
+      "0x6AEC14",
+      120
+    ],
+    [
+      "func_080004AC_6AEC8C",
+      "0x6AEC8C",
+      104
+    ],
+    [
+      "func_08000514_6AECF4",
+      "0x6AECF4",
+      228
+    ],
+    [
+      "func_080005F8_6AEDD8",
+      "0x6AEDD8",
+      232
+    ],
+    [
+      "func_080006E0_6AEEC0",
+      "0x6AEEC0",
+      96
+    ],
+    [
+      "func_08000740_6AEF20",
+      "0x6AEF20",
+      252
+    ],
+    [
+      "func_0800083C_6AF01C",
+      "0x6AF01C",
+      204
+    ],
+    [
+      "func_080009F4_6AF1D4",
+      "0x6AF1D4",
+      196
+    ]
+  ],
+  "prior_exact": [
+    [
+      "func_080000CC_6AE8AC",
+      "0x6AE8AC",
+      168
+    ],
+    [
+      "func_08000174_6AE954",
+      "0x6AE954",
+      64
+    ],
+    [
+      "func_080001B4_6AE994",
+      "0x6AE994",
+      80
+    ]
+  ],
+  "total_exact_c_functions_in_resource26": 15,
+  "total_exact_original_bytes": 2508,
+  "new_exact_c_functions": 12,
+  "new_exact_original_bytes": 2196,
+  "one_remaining_original_assembly": {
+    "name": "func_08000908_6AF0E8",
+    "rom_offset": "0x6AF0E8",
+    "original_code_bytes": 236,
+    "status": "FAILED_NATIVE",
+    "bounded_variants": 6,
+    "best_first_mismatch_relative": "0x98",
+    "reason": "LWC1 and LW float temporary load scheduling reversed"
+  },
+  "full_upstream_scratch_rom": {
+    "status": "PASS",
+    "independent_fresh_upstream_stages": 2,
+    "exact_original_bytes": 33554432,
+    "original_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "original_elf_positive_size_function_identities": "7376/7376",
+    "original_file26_semantic_relocations": "207/207",
+    "verified_layout": "14 adjacent C functions + retained original ASM for +0x908 + one last C callback",
+    "production_782_branch_integrated": false
+  },
+  "host_regression": {
+    "status": "PASS",
+    "actual_candidate_source": true,
+    "flags": "-fsanitize=address,undefined -fno-sanitize=alignment -fno-pie -no-pie",
+    "note": "Alignment check disabled for host 64-bit pointer versus MIPS guest 32-bit pointer layout; all other AddressSanitizer and UBSan instrumentation active"
+  },
+  "verified_source_git_blob_shas": {
+    "first_14_c": "46b09743516a006317c067d4147edd9b947e519a",
+    "final_15th_c": "bdd2612bb8da53956ed0918944e7f0304b474f3e",
+    "host_test": "4f6e1e95b140d5e585972a1c98a2506720927974"
+  },
+  "branch_canonical_proof": "NOT_RUN",
+  "branch_combined_decomp_verify": "NOT_RUN",
+  "branch_combined_decomp_inventory": "NOT_RUN",
+  "branch_full_decomp_local_ci": "NOT_RUN",
+  "blockers": [
+    "Authenticated complete live 782-C branch checkout unavailable within native build container",
+    "Scratch upstream whole-ROM match is not canonical branch combined 782+12 match"
+  ],
+  "promoted": 0,
+  "next": "Materialize authenticated current decomp branch, stage 12 new C with accepted 782, run fresh combined whole-ROM plus relocation/ELF/inventory/CI before production promotion to 794"
+}
