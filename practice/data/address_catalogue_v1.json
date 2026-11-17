@@ -1000,6 +1000,42 @@
       "confidence_sources": [
         {
           "confidence": "candidate",
+          "evidence": "Fixed saved-data USA-to-Japan displacement +0x57F0; bit meaning not independently tested in Japanese gameplay",
+          "source_id": "crosswalk:japan:event:external_super_pass"
+        }
+      ],
+      "context": "Persistent-event candidate; separate from Japan Super Pass inventory byte 0x80161EF3; manually editable",
+      "control": "Unlocks / Story & event flags",
+      "counterpart": "0x8015C608",
+      "data_type": "u8",
+      "discovered": "2026-11-17",
+      "endian": "big",
+      "evidence": "Fixed saved-data USA-to-Japan displacement +0x57F0; bit meaning not independently tested in Japanese gameplay",
+      "id": "crosswalk:japan:event:external_super_pass",
+      "id_aliases": [],
+      "live_readable": true,
+      "mask": "0x1",
+      "mips_refs": [],
+      "name": "Super Pass receipt recorded",
+      "owner": "Persistent story flags",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "c5b687f7fa3a0459a015569fa77f69245029c871",
+      "sources": [
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md"
+      ],
+      "updated": "2026-11-17",
+      "width": 1
+    },
+    {
+      "address": "0x80161DF8",
+      "aliases": [],
+      "category": "saved_event_bit",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
           "evidence": "USA: User map 353 A/B/C: bit set then reverted while dialogue alternated; ROM file 96 has branch/set/clear patterns; exact causality not isolated; JP bit semantics still require independent checks",
           "source_id": "crosswalk:japan:event:oedo_old_man_dialogue_cycle"
         }
@@ -9182,6 +9218,11 @@
           "confidence": "external_unverified",
           "evidence": "External annotation: mn64rando; not locally gameplay-verified; user force-tested this bit as Plasma third-advice condition when the Chain Pipe bit is set",
           "source_id": "story:usa:external_super_pass"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "USA external Super Pass receipt bit annotated in practice/story_progress.py; JP candidate derived separately",
+          "source_id": "crosswalk:usa:event:external_super_pass"
         }
       ],
       "context": "",
@@ -9192,7 +9233,9 @@
       "endian": "big",
       "evidence": "External annotation: mn64rando; not locally gameplay-verified; user force-tested this bit as Plasma third-advice condition when the Chain Pipe bit is set",
       "id": "story:usa:external_super_pass",
-      "id_aliases": [],
+      "id_aliases": [
+        "crosswalk:usa:event:external_super_pass"
+      ],
       "live_readable": true,
       "mask": "0x1",
       "mips_refs": [],
@@ -18603,6 +18646,7 @@
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:81@main",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:87@main",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:99@main",
+    "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
     "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:103@main",
     "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
     "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:27@main",

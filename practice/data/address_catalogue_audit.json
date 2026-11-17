@@ -8,11 +8,11 @@
     "inventory": 72,
     "overlay_patch": 6,
     "research_reference": 60,
-    "saved_event_bit": 200,
+    "saved_event_bit": 201,
     "script_vm": 12
   },
   "by_confidence": {
-    "candidate": 69,
+    "candidate": 70,
     "conflict": 1,
     "disputed": 1,
     "experimental": 7,
@@ -27,16 +27,16 @@
     "user_observed": 33
   },
   "by_region": {
-    "japan": 138,
+    "japan": 139,
     "unknown": 60,
     "usa": 264
   },
   "disputed": 2,
-  "experimental_japan_flags": 58,
+  "experimental_japan_flags": 59,
   "format": "goemon-address-catalogue-audit-v1",
-  "live_readable": 358,
+  "live_readable": 359,
   "research_only": 104,
-  "total_records": 462,
+  "total_records": 463,
   "unique_region_address": 305,
   "unknown_width": 104
 }
