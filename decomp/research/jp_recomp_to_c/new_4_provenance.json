@@ -1,0 +1,49 @@
+{
+  "format": "jp-usa-isolated-ido-probe-source-provenance-v1",
+  "status": "RESEARCH_ONLY",
+  "count": 4,
+  "exact_code_bytes": 168,
+  "canonical_usa_baseline": 315,
+  "original_rom_sha1": {
+    "usa": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "japan": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+  },
+  "functions": [
+    {
+      "name": "func_80219E40_5D5310",
+      "segment": "file_12",
+      "usa_rom": "0x5d5310",
+      "japan_vram": "0x8021ebb0",
+      "size": 48,
+      "already_promoted_usa": false,
+      "source_sha256": "57b73e61c129bfe35be6ff556857354da624b3020ae10eeedc15e913125c75f3"
+    },
+    {
+      "name": "func_80219E08_5D52D8",
+      "segment": "file_12",
+      "usa_rom": "0x5d52d8",
+      "japan_vram": "0x8021eb78",
+      "size": 56,
+      "already_promoted_usa": false,
+      "source_sha256": "6fbd16783fbb3c117a6d6e9b790f4856ede3ae3134216683e9d586c6ad264af7"
+    },
+    {
+      "name": "func_801D2138_640F88",
+      "segment": "file_14",
+      "usa_rom": "0x640f88",
+      "japan_vram": "0x801d7868",
+      "size": 32,
+      "already_promoted_usa": false,
+      "source_sha256": "03da6a51885db87c8056f178ba90b997c93fc570e857915f52fcb3a274a9b419"
+    },
+    {
+      "name": "func_801D84E8_647338",
+      "segment": "file_14",
+      "usa_rom": "0x647338",
+      "japan_vram": "0x801ddc18",
+      "size": 32,
+      "already_promoted_usa": false,
+      "source_sha256": "96283e0ccc8465a9f3f0feeebfb54a6bf1e6ee29521da3ea7414a15df57c7675"
+    }
+  ]
+}

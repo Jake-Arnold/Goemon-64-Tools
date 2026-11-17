@@ -1,0 +1,654 @@
+{
+  "format": "goemon-usa-external-memory-leads-v1",
+  "region": "usa-ng5e-rev0",
+  "disclaimer": "Source-only records. Do not use as auto-writes, read validators, confirmed field widths or inferred Japanese addresses.",
+  "sources": {
+    "tcrf_notes": "https://tcrf.net/Notes:Mystical_Ninja_Starring_Goemon_(Nintendo_64)",
+    "tcrf_main": "https://tcrf.net/Mystical_Ninja_Starring_Goemon_(Nintendo_64)",
+    "gamehacking_usa": "https://gamehacking.org/game/20650"
+  },
+  "checked_against": [
+    "practice/inspector.py",
+    "practice/story_progress.py",
+    "practice/unlocks.py",
+    "practice/checkpoints.py",
+    "practice/scene_controls.py",
+    "practice/native_menu_categories.py",
+    "practice/scenes.py"
+  ],
+  "new_usa_address_leads": [
+    {
+      "address": "0x800C7D3B",
+      "label": "Debug L-button conditional input byte",
+      "kind": "input_condition",
+      "source": "tcrf_main",
+      "raw_codes": [
+        "D00C7D3B 0020",
+        "800C7A94 000A"
+      ],
+      "note": "USA debug state already known; input conditional new",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x800C7D3A",
+      "label": "Button mask conditional for size modifier",
+      "kind": "input_condition",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "D00C7D3A 0008",
+        "D00C7D3A 0004",
+        "D00C7D3A 0002",
+        "D00C7D3A 0001"
+      ],
+      "note": "Individual input bit meanings unverified",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x8015C8E0",
+      "label": "Gourmet Submarine Castle unused warp flag",
+      "kind": "progress_flag",
+      "source": "tcrf_main",
+      "raw_codes": [
+        "8015C8E0 0001"
+      ],
+      "note": "Unused warp entry; external cheat only",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x8015C8E4",
+      "label": "Folkypoke Village dragon warp flag",
+      "kind": "progress_flag",
+      "source": "tcrf_main",
+      "raw_codes": [
+        "8015C8E4 0001"
+      ],
+      "note": "Unused warp entry; external cheat only",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x8015C8E8",
+      "label": "Awaji Island unused warp flag",
+      "kind": "progress_flag",
+      "source": "tcrf_main",
+      "raw_codes": [
+        "8015C8E8 0001"
+      ],
+      "note": "Unused warp entry; external cheat only",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x8015C8B7",
+      "label": "All warp locations unlock repeat range",
+      "kind": "repeating_progress_flag",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "50000B04 0000",
+        "8015C8B7 0001"
+      ],
+      "note": "Eleven byte writes starting here spaced four bytes apart through 0x8015C8DF; destination IDs unknown",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x8015CC1B",
+      "label": "Unlock consecutive large-boss mode",
+      "kind": "menu_flag",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "8015CC1B 0001"
+      ],
+      "note": "Options menu; not verified live",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x8015CC1F",
+      "label": "Unlock I Am Impact in sound test",
+      "kind": "menu_flag",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "8015CC1F 0001"
+      ],
+      "note": "Sound test; not verified live",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x8015CC21",
+      "label": "Unlock Gorgeous My Stage in sound test",
+      "kind": "menu_flag",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "8015CC21 0001"
+      ],
+      "note": "Sound test; not verified live",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x80167FE9",
+      "label": "Skybox selector byte",
+      "kind": "scene_effect",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "D00C7D3B 0001",
+        "80167FE9 00??"
+      ],
+      "note": "Permitted values unverified",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x8014C334",
+      "label": "Three-component character size vector",
+      "kind": "dynamic_object_field",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "8114C334 ????",
+        "8114C336 ????",
+        "8114C338 ????",
+        "8114C33A ????",
+        "8114C33C ????",
+        "8114C33E ????"
+      ],
+      "note": "Three 32-bit components at 0x8014C334/338/33C; six conditional 16-bit writes; not necessarily stable player-object layout",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x8016A070",
+      "label": "Hyper character cheat target",
+      "kind": "unverified_cheat",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "8016A070 40CC"
+      ],
+      "note": "80-type code with wider-looking literal; keep verbatim, don't assume write width",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x801F4FB3",
+      "label": "Always Fire Ryo attack",
+      "kind": "code_or_state_patch",
+      "source": "tcrf_notes",
+      "raw_codes": [
+        "801F4FB3 0012"
+      ],
+      "note": "Unknown if persistent data or executable/overlay code",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x801D7967",
+      "label": "Unused Impact boss projectile",
+      "kind": "overlay_patch",
+      "source": "tcrf_main",
+      "raw_codes": [
+        "881D7967 0047"
+      ],
+      "note": "GS-button code, not ordinary byte watch",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x801E1AA8",
+      "label": "Z-button I Am Impact song patch block",
+      "kind": "overlay_patch",
+      "source": "tcrf_notes",
+      "raw_codes": [
+        "D11E1AB0 E604",
+        "811E1AA8 2404",
+        "811E1AAA 0011",
+        "811E1AAC 0C00",
+        "811E1AAE E2F2"
+      ],
+      "note": "Halfword patches; 0x0011 is cited song selector; not a stable data field",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x801E20BA",
+      "label": "Conditional Super Jump instruction patch",
+      "kind": "overlay_patch",
+      "source": "tcrf_notes",
+      "raw_codes": [
+        "D11E20BE 8021",
+        "811E20BA 4140"
+      ],
+      "note": "Code patch only",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x80204156",
+      "label": "Yae footstep SFX patch location",
+      "kind": "overlay_patch",
+      "source": "tcrf_notes",
+      "raw_codes": [
+        "D11E1AB0 E604",
+        "81204156 ????"
+      ],
+      "note": "Incomplete replacement value",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x801DECC3",
+      "label": "Conditional crawling animation selector patch",
+      "kind": "overlay_patch",
+      "source": "tcrf_main",
+      "raw_codes": [
+        "D11DECC0 2405",
+        "801DECC3 00??"
+      ],
+      "note": "Externally listed unused animation IDs; not runtime validated",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x80216EAC",
+      "label": "Festival Village warp screen patch",
+      "kind": "overlay_patch",
+      "source": "tcrf_main",
+      "raw_codes": [
+        "89216EAC 0C2F",
+        "88216EB3 0038"
+      ],
+      "note": "GS-button code types 89/88; do not directly enable",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x801F9ED0",
+      "label": "Disable background music cheat",
+      "kind": "unverified_cheat",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "801F9ED0 2400"
+      ],
+      "note": "Published 80-type code with two-byte-looking value; preserve literal",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x801E7E04",
+      "label": "Ebisumaru small form weapon override",
+      "kind": "unverified_cheat",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "801E7E04 2400"
+      ],
+      "note": "Published 80-type code with two-byte-looking value; preserve literal",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0xA0172972",
+      "label": "Voice echo Xplorer64 code",
+      "kind": "unverified_cheat",
+      "source": "gamehacking_usa",
+      "raw_codes": [
+        "A0172972 0001"
+      ],
+      "note": "Xplorer64 code format, not confirmed process-memory field",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x80218A98",
+      "label": "First map actor into T8 routine",
+      "kind": "code_address",
+      "source": "tcrf_notes",
+      "raw_codes": [],
+      "note": "USA code location; not global RAM data",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x80216CE0",
+      "label": "Load GFX routine",
+      "kind": "code_address",
+      "source": "tcrf_notes",
+      "raw_codes": [],
+      "note": "USA code location; not global RAM data",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "address": "0x80218AF4",
+      "label": "Map actor position loading into T6 routine",
+      "kind": "code_address",
+      "source": "tcrf_notes",
+      "raw_codes": [],
+      "note": "USA code location; not global RAM data",
+      "status": "EXTERNAL_UNVERIFIED"
+    }
+  ],
+  "external_actor_ids": [
+    {
+      "actor_id": "0x007F",
+      "label": "Fire",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0080",
+      "label": "Smoke Cloud",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0081",
+      "label": "Ryo (drops)",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0082",
+      "label": "Giant Ryo (unused)",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0083",
+      "label": "Giant Ryo (dropping; unused)",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0085",
+      "label": "Gold Dango",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0086",
+      "label": "Map dude",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0087",
+      "label": "Mrs. Arrow",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0088",
+      "label": "Silver Doll",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0089",
+      "label": "Gold Doll",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x008B",
+      "label": "Sign",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x008E",
+      "label": "Death plane (out of bounds)",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x008F",
+      "label": "Dango",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0091",
+      "label": "Life Up",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x00CB",
+      "label": "Ghost Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x00FA",
+      "label": "Robot Bee",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x00FB",
+      "label": "Small Pink Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x00FC",
+      "label": "Small Pink Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x00FE",
+      "label": "Green Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x00FF",
+      "label": "Big Swatting Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0100",
+      "label": "Jumping Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0103",
+      "label": "Scarecrow Bot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0108",
+      "label": "Jet Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x010A",
+      "label": "Big Swatting Robot Red",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0109",
+      "label": "Yellow Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x010B",
+      "label": "Shrinking Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x010C",
+      "label": "Sword Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0130",
+      "label": "Drum Robot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0134",
+      "label": "Dango Stick Wipers",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0141",
+      "label": "Ninja",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0149",
+      "label": "Dango Stick Wipers spawner",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0192",
+      "label": "Pot",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0193",
+      "label": "Key",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0196",
+      "label": "Star Block",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0197",
+      "label": "Falling Board With Chain",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0198",
+      "label": "Spike Chain",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x01F7",
+      "label": "Turtle Pad",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x01FC",
+      "label": "Oedo Elevator",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0287",
+      "label": "Water",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x02CD",
+      "label": "Gatekeeper with lantern",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0302",
+      "label": "Inn keeper",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0305",
+      "label": "Inn keeper",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0307",
+      "label": "Inn keeper",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0308",
+      "label": "Fixed camera actor",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x030F",
+      "label": "Dancin",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0322",
+      "label": "Ladder",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    },
+    {
+      "actor_id": "0x0323",
+      "label": "Congo",
+      "source": "tcrf_notes",
+      "status": "EXTERNAL_UNVERIFIED"
+    }
+  ],
+  "actor_record_patterns": [
+    {
+      "kind": "npc",
+      "raw": "aaaa???? ????bbbb ????xxxx ??????yy",
+      "note": "TCRF source labels actor ID, map ID-like field, message ID and hidden-NPC bit; offsets not established",
+      "source": "tcrf_notes"
+    },
+    {
+      "kind": "enemy",
+      "raw": "aaaa???? xxxxxxxx ???????? ????????",
+      "note": "Behaviour varies by actor",
+      "source": "tcrf_notes"
+    },
+    {
+      "kind": "key",
+      "raw": "aaaa???? xxyy???? ???????? ????????",
+      "note": "xx kill count; yy: 0 silver, 1 gold, 2 diamond",
+      "source": "tcrf_notes"
+    },
+    {
+      "kind": "pot",
+      "raw": "aaaa???? xxxx???? ??????yy ????????",
+      "note": "xxxx count of actors to spawn; yy actor ID",
+      "source": "tcrf_notes"
+    }
+  ],
+  "regional_debug_codes": [
+    {
+      "field": "debug_menu_state",
+      "usa": "0x800C7A94",
+      "japan": "0x800CD284",
+      "offset": "0x57F0",
+      "already_mapped_in_usa": true,
+      "raw_USA": "800C7A94 000A",
+      "raw_JAPAN": "800CD284 000A",
+      "source": "tcrf_main"
+    },
+    {
+      "field": "debug_L_input_condition",
+      "usa": "0x800C7D3B",
+      "japan": "0x800CD52B",
+      "offset": "0x57F0",
+      "already_mapped_in_usa": false,
+      "raw_USA": "D00C7D3B 0020",
+      "raw_JAPAN": "D00CD52B 0020",
+      "source": "tcrf_main"
+    }
+  ],
+  "previously_known_usa_excluded": [
+    "0x800C7A94",
+    "0x8015C6A7",
+    "0x8015C6AB",
+    "0x8015C6AF",
+    "0x8015C6B3",
+    "0x8015C6B7",
+    "0x8015C6BB",
+    "0x8015C85B",
+    "0x8015C85F",
+    "0x8015C863",
+    "0x8015C866"
+  ]
+}

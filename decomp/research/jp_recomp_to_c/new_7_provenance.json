@@ -1,0 +1,76 @@
+{
+  "format": "jp-usa-isolated-ido-probe-source-provenance-v1",
+  "status": "RESEARCH_ONLY",
+  "count": 7,
+  "exact_code_bytes": 296,
+  "canonical_usa_baseline": 315,
+  "original_rom_sha1": {
+    "usa": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "japan": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+  },
+  "functions": [
+    {
+      "name": "func_8021EE90_688870",
+      "segment": "file_18",
+      "usa_rom": "0x688870",
+      "japan_vram": "0x80223c70",
+      "size": 32,
+      "already_promoted_usa": false,
+      "source_sha256": "cd7baee4c3b5ece33c046a475134c54601f98f323b72c0aaeaff6834f1309474"
+    },
+    {
+      "name": "func_802143E4_69BDE4",
+      "segment": "file_19",
+      "usa_rom": "0x69bde4",
+      "japan_vram": "0x802191dc",
+      "size": 36,
+      "already_promoted_usa": false,
+      "source_sha256": "12112b3407e0b3c203b50602038b2a2d84147bb842deb1534106fc1fff26011f"
+    },
+    {
+      "name": "func_8021B270_684C50",
+      "segment": "file_18",
+      "usa_rom": "0x684c50",
+      "japan_vram": "0x80220050",
+      "size": 44,
+      "already_promoted_usa": false,
+      "source_sha256": "fc6b2f4f0cd65e4194711840b68480fa3442919421becb0daac3715ceb55a91a"
+    },
+    {
+      "name": "func_800166AC_172AC",
+      "segment": "main",
+      "usa_rom": "0x172ac",
+      "japan_vram": "0x8001623c",
+      "size": 52,
+      "already_promoted_usa": true,
+      "source_sha256": "70f26ca5d3179ed339a500956422d089ad569b5e165976876d3f96c05c31c1bf"
+    },
+    {
+      "name": "func_802143A0_69BDA0",
+      "segment": "file_19",
+      "usa_rom": "0x69bda0",
+      "japan_vram": "0x80219198",
+      "size": 48,
+      "already_promoted_usa": false,
+      "source_sha256": "bf8d090b341182a391fe258bbfefa29e0a11d0fabe5a2de8c135c43d476a0ffe"
+    },
+    {
+      "name": "func_80212C38_69A638",
+      "segment": "file_19",
+      "usa_rom": "0x69a638",
+      "japan_vram": "0x80217a30",
+      "size": 48,
+      "already_promoted_usa": false,
+      "source_sha256": "0f6748d11ca5745d66202f62927a58d5ec4045a81f6fb877452e2b583d1f1190"
+    },
+    {
+      "name": "func_802291F8_692BD8",
+      "segment": "file_18",
+      "usa_rom": "0x692bd8",
+      "japan_vram": "0x8022dfd8",
+      "size": 36,
+      "already_promoted_usa": false,
+      "source_sha256": "49429836d29d082f73497b9b25dda8dc05ded6b067bc7975878b4ed33ab55ed9"
+    }
+  ]
+}

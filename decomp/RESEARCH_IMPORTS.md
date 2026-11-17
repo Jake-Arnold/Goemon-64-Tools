@@ -1,0 +1,13 @@
+# Preserved historical research inputs (not production code)
+
+The 17 November 2026 branch-consolidation imports retain original Git blob identities, so old draft PRs can be retired without losing useful technical source. This is **source/provenance retention only**. No archived research is automatically accepted C, no toolkit runtime behaviour changes, and no shared-USA/Japan code-address mapping is implied.
+
+- **USA 47-function mixed-overlay proofs:** `decomp/research/jp_recomp_to_c/native_scratch/`, `native_scratch_47_evidence.json`, `native389_combined_proof.json`, and supplementary source-provenance records, from `chatgptweb/jp-recomp-cross-region-c-research-20261116` at `8d07137edccd3dde6b63dc6ad64bce90bb97a4a9`. These describe native preflights against an older canonical stage, not current 720-C G2.
+- **Japanese 24-C historical proof:** `decomp/results/japan_0_consolidation_native_20261116.json` from `chatgptweb/decomp-consolidation-20261116` at `5543197de084667b575406a3f3eef1bc4f69b0f9`. The accepted 34-C manifest supersedes the older 24-C candidate.
+- **Japanese N64Recomp cross-region research:** regional ROM-input, overlay, direct-JAL, symbol-reconciliation and loader tools from `chatgptweb/japanese-symbol-reconciliation` at `a2f57bacbe67230af82b7767c1140878c422c8db`, including original USA symbol *metadata* in TOML. These are separate from region-specific matching-C and are not PC runtime proofs.
+- **Dual-region comparison:** source-only `decomp/region_compare.py` and `docs/DUAL_REGION_SUPPORT.md` from `chatgptweb/dual-region-foundation` at `5a3eb6fb852fa2347ababeeec5b62680ef2cd1bc`. Historical research, not an invitation to translate original ROM code offsets using RAM crosswalk assumptions.
+- **USA external address leads:** `research/usa_external_memory_leads.json` and `docs/USA_EXTERNAL_CHEAT_ACTOR_LEADS.md` from `chatgptweb/usa-external-memory-leads` at `b3493b909e0edb382712bc9dc5a5321c9b24c46b`. These are explicitly **unverified** leads, not toolkit writable fields or Japanese confirmations.
+
+The full branch/PR source snapshot and candidate registry are at `decomp/data/branch_snapshot_20261117.json` and `decomp/data/candidate_registry.json`. All 146 candidates remain `RESEARCH_ONLY`. Closing a historical draft PR does not establish a native pass; complete regional G2, original ELF/relocation checks, and full local CI remain mandatory for any function promotion.
+
+This archival import does not alter `main`, `decomp/manifest.json`, `decomp/regions/japan_0.json`, `decomp/results/combined.json` or `decomp/results/inventory.json`. Source files from older research are retained for deliberate reuse, not automatically executed as tests or staged into production ROMs.

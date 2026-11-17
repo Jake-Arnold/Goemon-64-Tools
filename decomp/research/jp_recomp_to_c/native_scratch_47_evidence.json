@@ -1,0 +1,59 @@
+{
+  "format": "goemon-usa-47-native-linked-scratch-evidence-v1",
+  "status": "LINKED_SCRATCH_PASS_NOT_CANONICAL_G2",
+  "date": "2026-11-16",
+  "source_baseline": "pinned upstream original mnsg 100%-ASM, not canonical USA 315-C",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_rom_bytes": 33554432,
+  "complete_candidate_rom_bytes_equal": true,
+  "new_original_address_C": 47,
+  "new_C_instruction_bytes": 2220,
+  "compiler": "IDO 5.3 -O2 -mips2 -G0 -non_shared",
+  "zero_C_object_padding_bytes_removed": 212,
+  "zero_ASM_object_padding_bytes_removed": 316,
+  "positive_FUNC_identifiers": {
+    "reference": 7376,
+    "candidate": 7376,
+    "exact_name_vma_size_multiset": true,
+    "extra_aliases": 0
+  },
+  "linked_relocation_multisets": {
+    "file_12": 7051,
+    "file_13": 9589,
+    "file_14": 3041,
+    "file_15": 1625,
+    "file_17": 1739,
+    "file_18": 3365,
+    "file_19": 1078
+  },
+  "all_seven_relocation_multisets_equal": true,
+  "original_baseline_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "scratch_candidate_elf_sha256": "206d7ca0f79ad58bf37d42f5bb6130e53dc0a4405c4fa978ae9efd6c51c1a859",
+  "canonical_production_sha": "7255b2fa59b376c0e03346f434f82d4d02e639e0",
+  "canonical_usa_matching_C_remains": 315,
+  "hypothetical_315_plus_47": 362,
+  "source_allocation": {
+    "file_12": 5,
+    "file_13": 15,
+    "file_14": 8,
+    "file_15": 2,
+    "file_17": 1,
+    "file_18": 9,
+    "file_19": 7
+  },
+  "remaining_gates": [
+    "Combine with current canonical 315-C stage, not original ASM baseline",
+    "Run fresh decomp.verify G2 complete original USA ROM",
+    "Run original-ELF decomp.inventory and overlay relocations",
+    "Run full decomp.local_ci",
+    "Re-audit latest branch duplicates",
+    "Separate independent Japanese region acceptance"
+  ],
+  "proof_script_archive": "goemon_47_native_promotion_scratch_20261116.zip",
+  "forbidden_claims": [
+    "Not production-promoted",
+    "Not a 362-C combined G2",
+    "No native Japan full-ROM build here"
+  ]
+}

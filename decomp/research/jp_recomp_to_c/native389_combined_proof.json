@@ -1,0 +1,58 @@
+{
+  "format": "goemon-usa-389-native-pinned-original-rom-combined-proof-v1",
+  "date": "2026-11-17",
+  "status": "NATIVE_389_C_ROM_ELF_EIGHT_RELOCATION_MULTISETS_PASS_CANONICAL_PROMOTION_PENDING",
+  "original_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "complete_rom_bytes": 33554432,
+  "complete_original_rom_bytes_equal": true,
+  "production_branch_checked_commit": "1961f1333e8a5007c3cf8df5dfa0d0ca5a0cea8b",
+  "canonical_original_usa_c": 342,
+  "canonical_usa_c_bytes": 17568,
+  "new_cross_region_overlay_c": 47,
+  "new_cross_region_overlay_c_bytes": 2220,
+  "native_candidate_c_claims": 389,
+  "native_candidate_c_instruction_bytes": 19788,
+  "elf_positive_function_names_addresses_and_canonical_sizes_equal": true,
+  "elf_original_function_entries": 7376,
+  "new_c_claims_match_exactly_removed_nonmatching_markers": true,
+  "candidate_unmarked_c_entries": 402,
+  "original_unmarked_c_entries": 13,
+  "remaining_assembly_entries": 6974,
+  "extra_positive_func_aliases": 0,
+  "original_vs_canonical_size_annotations": {
+    "func_8000D3B8_DFB8": {
+      "original": 64,
+      "canonical_and_candidate": 72
+    },
+    "func_8003F6E8_402E8": {
+      "original": 48,
+      "canonical_and_candidate": 56
+    }
+  },
+  "relocations_original_vs_combined": {
+    "file_11": 8825,
+    "file_12": 7051,
+    "file_13": 9589,
+    "file_14": 3041,
+    "file_15": 1625,
+    "file_17": 1739,
+    "file_18": 3365,
+    "file_19": 1078
+  },
+  "all_eight_semantic_relocation_multisets_equal": true,
+  "native_candidate_elf_sha256": "c3f6ba01b4438ac7b08bdaa5b8d01d2a687512f01d86977f82a34e1f2b423c71",
+  "original_asm_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "current_japan_c_excluded": 34,
+  "current_file11_179_fixture_git_blob": "a36d7cde46eb7779d85ea168151f536e5b5a5157",
+  "replayed_27_latest_file11_source_hashes_match": true,
+  "replayed_27_latest_file11_trimmed_elf_object_hashes_match": true,
+  "additional_file11_functions_are_already_production": true,
+  "new_47_original_code_compiler_and_source_hashes_verified": true,
+  "host_display_emitter_asan_ubsan": "PASS: 1000 synthetic cases plus zero and owner-alias",
+  "full_current_production_local_ci": "NOT_EXECUTED: only an older 2026-11-14 Library ZIP source tree locally; old suite failed from stale source/test fingerprints",
+  "canonical_389_verifier_integration": "NOT_YET_IMPLEMENTED_OR_RUN",
+  "canonical_production_manifest_updated": false,
+  "formally_promoted": false,
+  "local_reproducer_archive": "goemon_389_native_integration_20261117.zip",
+  "reproducer_archive_sha256": "f916f45824a137884829a9ea451f1d2402f1184f60276c5604dbdd39f7a21bca"
+}

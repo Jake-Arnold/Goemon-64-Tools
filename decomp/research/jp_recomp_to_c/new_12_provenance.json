@@ -1,0 +1,134 @@
+{
+  "format": "goemon-jp-usa-isolated-exact-c-additional12-v1",
+  "status": "RESEARCH_ONLY",
+  "new_count": 12,
+  "new_original_bytes_per_region": 500,
+  "full_research_matches": 52,
+  "full_research_bytes_per_region": 2412,
+  "currently_promoted_usa": 315,
+  "already_promoted_overlaps": [
+    "func_80016660_17260",
+    "func_80016684_17284",
+    "func_800166AC_172AC"
+  ],
+  "new_unpromoted_total": 49,
+  "new_unpromoted_original_bytes": 2284,
+  "provenance": {
+    "usa_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "japan_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "canonical_prod_commit": "7255b2fa59b376c0e03346f434f82d4d02e639e0",
+    "canonical_combined_blob": "b6e509682d5b91b418e725b457bbaf7e96a9cebf",
+    "compiler": "IDO 5.3 -O2 -mips2 -G 0 -non_shared"
+  },
+  "functions": [
+    {
+      "name": "func_801CC148_63AF98",
+      "github_blob_sha": "6e1e8c8e239a9b6ce21755719145d45c511a6cc9",
+      "section": "file_14",
+      "japan_vram": "0x801D1878",
+      "size": 32,
+      "source_sha256": "80d39ab625a495eae2aa9239eeb1ca4be6259879284bde19b861d2f48e4ea385",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_801CC20C_65F0BC",
+      "github_blob_sha": "a6ec11d2ae27cee1ee69de6427798e6015a1c61a",
+      "section": "file_15",
+      "japan_vram": "0x801D191C",
+      "size": 32,
+      "source_sha256": "bc7d6fa8cdf1a45b4cc8e18b430affb63ece412fd42b4b82b4b57caf391513c0",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_801CC5A8_65F458",
+      "github_blob_sha": "352345159dc0b69e6c3244a2a5fad66247d82e35",
+      "section": "file_15",
+      "japan_vram": "0x801D1CB8",
+      "size": 32,
+      "source_sha256": "be746a2ba67a05876ef4a87645df7cb2c9782663ec1c3b0a577da07c60114bb5",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_801CC7E0_63B630",
+      "github_blob_sha": "e8a0db33c1e422157c670198be1589473dd2ad90",
+      "section": "file_14",
+      "japan_vram": "0x801D1F10",
+      "size": 52,
+      "source_sha256": "367927f092acd2357484e267737ed676f82ee629e5b984d6e29abe6d5937084f",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_801D0B80_63F9D0",
+      "github_blob_sha": "4c3469fb4b6c86d60c237d46b6bc3b5a58752b0a",
+      "section": "file_14",
+      "japan_vram": "0x801D62B0",
+      "size": 56,
+      "source_sha256": "dd513a96b90d982fd6890d4793f33748acaf597c248ae01103c147e9b27dd1a9",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_801D17C0_640610",
+      "github_blob_sha": "ffdcf28e81d80453d0e2ce66d34810c171424091",
+      "section": "file_14",
+      "japan_vram": "0x801D6EF0",
+      "size": 40,
+      "source_sha256": "bdc8d208fa84c6692a7550a7c416970175243e2c41599389be5cb3ed01a983ec",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_801D1918_640768",
+      "github_blob_sha": "c17237309bbba0286752670c18bff30344a4b370",
+      "section": "file_14",
+      "japan_vram": "0x801D7048",
+      "size": 40,
+      "source_sha256": "3353248b9ad37138316ce73084170855d9025b7f2dd89ec9fef737b33ca5c2c1",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_801D1940_640790",
+      "github_blob_sha": "ba70803097bdbbc6b164d2ba3e03f1324c093ba3",
+      "section": "file_14",
+      "japan_vram": "0x801D7070",
+      "size": 52,
+      "source_sha256": "2539bff68de049821cdd2599601592c102a8313fb8be18b8018ff066bfb4d569",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_8020E328_66D2D8",
+      "github_blob_sha": "97732a274b9b20e4150bfeb5b49817aa9ac6b301",
+      "section": "file_17",
+      "japan_vram": "0x80213118",
+      "size": 36,
+      "source_sha256": "97185016c0b71eb4657a9df7de2a60cae39c56f772a6ced719e027515371f041",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_80217114_5D25E4",
+      "github_blob_sha": "caa203a6cd7c96eca1e5fb3cfc9cb82c7e994e6c",
+      "section": "file_12",
+      "japan_vram": "0x8021BE84",
+      "size": 48,
+      "source_sha256": "0fff8b279ecfbd0567178c2cc07790b72c1028662f8aaff764a725f7f1d6e8c6",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_8021C628_5D7AF8",
+      "github_blob_sha": "9577e5667f705b3e017778fbc4290ce29003ade0",
+      "section": "file_12",
+      "japan_vram": "0x80221398",
+      "size": 44,
+      "source_sha256": "2d3c6f0d304f619b9b2ad9b1fac43bd66e0382bcdfbb2391aaf5e23c7cd62de6",
+      "already_promoted_usa": false
+    },
+    {
+      "name": "func_80222C10_5DE0E0",
+      "github_blob_sha": "658018fde376a65f4a351a8fccfb5a387a862e15",
+      "section": "file_12",
+      "japan_vram": "0x80227980",
+      "size": 36,
+      "source_sha256": "7141d76253d76f3e7ea3a71ce8a77a088f780153106d609b0acc51e668e34fe1",
+      "already_promoted_usa": false
+    }
+  ],
+  "limits": "Isolated symbol code equals original ROM. Not full linked-ROM / semantic relocation / production inventory proof."
+}

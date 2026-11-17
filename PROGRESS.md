@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Preserve superseded Japan/N64Recomp/overlay research before retiring draft PRs
+
+- **Change:** Selectively imported original Git blobs for the older 47-C cross-overlay native staging/evidence scripts, older 24-C Japanese proof, Japanese N64Recomp ROM input/overlay/symbol/loader research, dual-region ROM metadata comparison and unverified USA external-address research leads. Added `decomp/RESEARCH_IMPORTS.md` recording exact originating branch SHAs and limits.
+- **Why:** Consolidate reusable source and reproduction evidence into one regional decomp working branch rather than merging stale branches or leaving future work dependent on dozens of historical refs. Existing `decomp/data/branch_snapshot_20261117.json` preserves all 45 branch heads and 15 draft PR references.
+- **Tests:** Metadata/source import by exact immutable Git blob SHA. The earlier seven synthetic candidate-registry tests PASS; **no new native matching-C build, full local CI, new Japanese PC recompilation or in-game test was run for these archived research modules**.
+- **Limitations:** Research imports are not wired into production manifests or toolkit runtime. Original-USA accepted 720 C / 31,184 bytes and JP 34 C / 1,912 bytes remain unchanged. No candidate promoted. Do not use research addresses or unverified external codes as direct memory writers.
+- **Next:** Retire superseded draft PRs with links to the canonical registry/imports and use the single open integration tracker for the two regional promotion gates. Delete obsolete branch refs only with a supported branch-deletion operation and current HEAD verification.
+
+
 ### 2026-11-17 — Consolidated 146 pending matching-C candidates against 1,311-file regional inventory
 
 - **Change:** Added `decomp/data/candidate_registry.json` with 82 unpromoted USA file_11 functions (3,512 bytes), 11 file_12 helpers/lifecycle functions (748 bytes), 47 other USA overlay functions (2,220 bytes), 136-byte camera reset, and five Japanese main-code functions (180 bytes). The registry deduplicates previously accepted USA 183 file_11 C functions and 374 file_12 wrappers, pins original addresses/code SHA-256s, source blob Git SHAs and old research commit heads, and uses the bcbf445 1,311-file expanded-ROM inventory for region-specific bounds. A 45-branch/15-PR provenance snapshot and missing agent-authored C/proof inputs from historical branches are imported via exact Git blob IDs.
