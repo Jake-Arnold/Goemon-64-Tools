@@ -239,11 +239,11 @@ def integrate(upstream:Path, candidate:Path, sources:Path, jobs:int) -> dict:
     old_object='build/usa/asm/usa/5C8770.s.o'
     if script.count(old_object)!=3:
         raise ValueError('Unexpected original file12 data/rodata/bss linker ownership')
-    script=script.replace(old_object,'build/usa/asm/usa/file_12_before_5D434C.s.o')
+    script=script.replace(old_object, 'build/usa/asm/usa/'+LAYOUT[0][1]+'.s.o')
     linker.write_text(script)
     if script.count('.file_12 0x8020D2A0 : AT(file_12_ROM_START)\n')!=1:
         raise ValueError('Candidate linker section does not retain original input alignment')
-    print('Compiling six original-location actor lifecycle input objects',flush=True)
+    print('Compiling original-location file12 input objects',flush=True)
     targets=[f"build/usa/{'src/'+name+'.c.o' if kind=='c' else 'asm/usa/'+name+'.s.o'}"
              for kind,name,_,_ in LAYOUT]
     run_step(['make','-j'+str(jobs),'VERSION=usa',*targets],candidate)
