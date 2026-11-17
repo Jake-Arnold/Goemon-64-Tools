@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — 385-function USA file_12 adjacency reconstruction; full original-upstream ROM proof
+
+- Expanded user-observed NPC spatial-loading research to a contiguous original-USA registration block of **374** 36-byte wrappers (13,464 bytes) which reproduce original code as one original-address IDO 5.3 C translation unit, plus **eight** additional adjacent exact C helpers (328 bytes) and the **previous three** lifecycle C functions (420 bytes).
+- Independently re-extracted the authenticated USA retail ROM and rebuilt the original upstream baseline byte-exact. Two separate expanded C/ASM builds, including one which generated its 374-wrapper C source directly from Splat symbol declarations, both produced a full **33,554,432-byte** original ROM, SHA-1 **6ea0ed71032ce08fc2745f412d84936382197494**.
+- Complete file_12 semantic relocation multisets **7,051/7,051** and all original positive-sized ELF FUNC identities **7,376/7,376** match. Raw relocation *order* differs. Twelve C source objects and eight ASM input sections cover 385 original functions / 14,212 C instruction bytes. Six additional ROM-free guard tests passed.
+- Committed eight reviewed, exact C helper sources, technical report and sanitized proof record. Repetitive 374-wrapper original-address C is generated on demand from the user's original local assembly; no ROM, original game assembly, linked assets or emulator snapshots committed.
+- **No production promotion.** This is original upstream + 385 matching-C, not simultaneous central previously accepted 315 C + 385. Full central decomp.verify, decomp.inventory and local_ci gates remain outstanding; canonical production count stays 315.
+- Next: version and run the canonical 315+385 C coexistence gate; prioritize reconstructing the actual core actor loader/scanner/initializer/despawner at 0x8020D2A0, 0x8020D36C, 0x80218A54 and 0x8021A328, rather than accumulating only trivial wrappers.
+
+
 ### 2026-11-16 — USA file12 three-C exact full-ROM original-upstream integration (research preflight)
 
 - Built original pinned USA baseline, then a fresh separate mixed-C/ASM candidate incorporating three original-address C functions and surrounding original assembly.
