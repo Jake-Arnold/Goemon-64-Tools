@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 
 from practice.updater import (
-    UpdateError, check_for_updates, install_update, _trusted_origin,
+    UpdateError, VersionTarget, check_for_updates, install_update,\n    list_available_versions, detect_installed_target, _trusted_origin,
 )
 
 
@@ -49,11 +49,11 @@ class GitUpdaterTests(unittest.TestCase):
         self.run_git(folder, 'config', 'user.name', 'Local test')
         self.run_git(folder, 'config', 'user.email', 'local@test.invalid')
 
-    def _push_change(self, text='new version\n'):
+    def _push_change(self, text='new version\n', branch='main'):
         (self.other / 'hello.txt').write_text(text, encoding='utf-8')
         self.run_git(self.other, 'add', 'hello.txt')
         self.run_git(self.other, 'commit', '-m', 'advance upstream')
-        self.run_git(self.other, 'push', 'origin', 'main')
+        self.run_git(self.other, 'push', 'origin', branch)
 
     def test_check_and_auto_install_fast_forward_only(self):
         self.assertEqual(check_for_updates(self.main).state, 'current')
@@ -65,6 +65,85 @@ class GitUpdaterTests(unittest.TestCase):
         self.assertEqual(updated, status.remote_sha)
         self.assertEqual((self.main / 'hello.txt').read_text(), 'new version\n')
         self.assertEqual(check_for_updates(self.main).state, 'current')
+
+    def test_list_offers_stable_test_branches_and_release_tags(self):
+        self.run_git(self.other, 'tag', '-a', 'v0.11.0', '-m', 'release')
+        self.run_git(self.other, 'push', 'origin', 'v0.11.0')
+        self.run_git(self.other, 'checkout', '-b', 'toolkit/test-ui')
+        self._push_change('test version\n', branch='toolkit/test-ui')
+        versions = list_available_versions(self.main)
+        self.assertEqual(versions[0].label, 'Stable · main')
+        self.assertIn('Test · toolkit/test-ui',
+                      [target.label for target in versions])
+        tag = next(target for target in versions if target.kind == 'tag')
+        self.assertEqual(tag.label, 'Release tag · v0.11.0')
+        self.assertEqual(len(tag.sha), 40)
+        self.assertEqual(detect_installed_target(self.main, versions),
+                         versions[0])
+        self.assertFalse(any(t.name == 'chatgptweb/decomp' for t in versions))
+
+    def test_explicit_switch_main_to_test_and_back_preserves_main_branch(self):
+        old_main_sha = self.run_git(self.main, 'rev-parse', 'HEAD')
+        self.run_git(self.other, 'checkout', '-b', 'toolkit/test-ui')
+        self._push_change('test build\n', branch='toolkit/test-ui')
+        targets = list_available_versions(self.main)
+        test_target = next(t for t in targets if t.name == 'toolkit/test-ui')
+        status = check_for_updates(self.main, test_target)
+        self.assertEqual(status.state, 'switch')
+        self.assertEqual(status.branch, 'toolkit/test-ui')
+        installed = install_update(self.main, status)
+        self.assertEqual(installed, test_target.sha)
+        self.assertEqual(self.run_git(self.main, 'branch', '--show-current'),
+                         'toolkit/test-ui')
+        self.assertEqual((self.main / 'hello.txt').read_text(), 'test build\n')
+        self.assertEqual(self.run_git(self.main, 'rev-parse', 'refs/heads/main'),
+                         old_main_sha)
+        stable = next(t for t in targets if t.name == 'main')
+        return_status = check_for_updates(self.main, stable)
+        self.assertEqual(return_status.state, 'switch')
+        install_update(self.main, return_status)
+        self.assertEqual(self.run_git(self.main, 'branch', '--show-current'),
+                         'main')
+        self.assertEqual((self.main / 'hello.txt').read_text(), 'original\n')
+        self.assertEqual(self.run_git(self.main, 'rev-parse',
+                                      'refs/heads/toolkit/test-ui'), test_target.sha)
+
+    def test_release_checkout_is_detached_and_can_return_to_main(self):
+        self.run_git(self.other, 'tag', '-a', 'v0.11.0', '-m', 'known release')
+        self.run_git(self.other, 'push', 'origin', 'v0.11.0')
+        self._push_change('future code\n')
+        targets = list_available_versions(self.main)
+        release = next(t for t in targets if t.kind == 'tag')
+        status = check_for_updates(self.main, release)
+        self.assertEqual(status.state, 'switch')
+        install_update(self.main, status)
+        self.assertEqual(self.run_git(self.main, 'branch', '--show-current'), '')
+        self.assertEqual(self.run_git(self.main, 'rev-parse', 'HEAD'), release.sha)
+        self.assertEqual(detect_installed_target(self.main, targets), release)
+        stable = next(t for t in targets if t.name == 'main')
+        restore = check_for_updates(self.main, stable)
+        self.assertEqual(restore.state, 'switch')
+        install_update(self.main, restore)
+        self.assertEqual(self.run_git(self.main, 'branch', '--show-current'), 'main')
+        self.assertEqual(self.run_git(self.main, 'rev-parse', 'HEAD'), stable.sha)
+
+    def test_switch_protects_modified_worktree_and_divergent_target(self):
+        self.run_git(self.other, 'checkout', '-b', 'toolkit/test-ui')
+        self._push_change('test version\n', branch='toolkit/test-ui')
+        target = next(t for t in list_available_versions(self.main)
+                      if t.name == 'toolkit/test-ui')
+        (self.main / 'hello.txt').write_text('my modification\n', encoding='utf-8')
+        with self.assertRaisesRegex(UpdateError, 'local changes'):
+            check_for_updates(self.main, target)
+        self.assertEqual((self.main / 'hello.txt').read_text(),
+                         'my modification\n')
+        self.run_git(self.main, 'checkout', '--', 'hello.txt')
+        self.run_git(self.main, 'checkout', '-b', 'toolkit/test-ui')
+        (self.main / 'hello.txt').write_text('local feature\n', encoding='utf-8')
+        self.run_git(self.main, 'commit', '-am', 'local feature')
+        self.run_git(self.main, 'switch', 'main')
+        with self.assertRaisesRegex(UpdateError, 'branch history is protected'):
+            check_for_updates(self.main, target)
 
     def test_local_modified_tracked_file_blocks_update(self):
         self._push_change()
@@ -79,7 +158,7 @@ class GitUpdaterTests(unittest.TestCase):
         self.run_git(self.other, 'fetch', 'origin', 'toolkit/experiment')
         self.run_git(self.other, 'checkout', '-b', 'toolkit/experiment',
                      'origin/toolkit/experiment')
-        self._push_change('feature improvement\n')
+        self._push_change('feature improvement\n', branch='toolkit/experiment')
         status = check_for_updates(self.main)
         self.assertEqual(status.state, 'available')
         self.assertEqual(status.branch, 'toolkit/experiment')
@@ -91,7 +170,7 @@ class GitUpdaterTests(unittest.TestCase):
 
     def test_decomp_branch_is_not_switched_or_updated(self):
         self.run_git(self.main, 'checkout', '-b', 'chatgptweb/decomp')
-        with self.assertRaisesRegex(UpdateError, 'other development branches'):
+        with self.assertRaisesRegex(UpdateError, 'not a toolkit branch'):
             check_for_updates(self.main)
         self.assertEqual(self.run_git(self.main, 'branch', '--show-current'),
                          'chatgptweb/decomp')
@@ -101,7 +180,7 @@ class GitUpdaterTests(unittest.TestCase):
         (self.main / 'hello.txt').write_text('local commit\n', encoding='utf-8')
         self.run_git(self.main, 'commit', '-am', 'local fork')
         local = self.run_git(self.main, 'rev-parse', 'HEAD')
-        with self.assertRaisesRegex(UpdateError, 'ahead or diverged'):
+        with self.assertRaisesRegex(UpdateError, 'diverged'):
             check_for_updates(self.main)
         self.assertEqual(self.run_git(self.main, 'rev-parse', 'HEAD'), local)
 
