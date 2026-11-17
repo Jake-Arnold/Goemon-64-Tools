@@ -172,16 +172,12 @@ class AddressCatalogueUI:
         self.filter_address_catalogue()
 
     def sync_address_catalogue_region(self):
-        """The active ROM determines catalogue visibility, never a manual
-        region selector or a previous USA/JP session's cached values.
-        """
+        """The active ROM determines catalogue visibility and live-reader cache."""
         region = self.active_version.key
         if self.catalogue_region.get() != region:
             self.catalogue_live_generation += 1
             self.catalogue_live_cache.clear()
-            self.catalogue_region.set(region)
-        if self.catalogue_loaded:
-            self.filter_address_catalogue()
+            self.catalogue_region.set(region)  # Tk trace re-filters when loaded
 
     def _schedule_catalogue_live_poll(self):
         if self.catalogue_live_after is not None:
@@ -203,6 +199,10 @@ class AddressCatalogueUI:
             self.sync_address_catalogue_region()
             reader = (self.mem if self.active_version.key == "usa"
                       else self.jp_rdram)
+            if getattr(self, 'catalogue_live_reader', None) is not reader:
+                self.catalogue_live_generation += 1
+                self.catalogue_live_cache.clear()
+                self.catalogue_live_reader = reader
             if reader is None:
                 if self.catalogue_live_cache:
                     self.catalogue_live_cache.clear()
@@ -217,8 +217,9 @@ class AddressCatalogueUI:
             visible = [
                 key for key in ids
                 if self.catalogue_tree.bbox(key)]
-            if not visible and force:
-                visible = ids[:24]
+            if force:
+                visible = list(dict.fromkeys((
+                    *self.catalogue_tree.selection(), *visible, *ids[:24])))
             chosen = [
                 self.catalogue_rows[key] for key in visible[:32]
                 if self.catalogue_rows[key]["live_readable"]]
