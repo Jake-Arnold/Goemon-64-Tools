@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — v0.11.43 responsive Story & event flag folders
+
+- **Observed cause:** Expanding a 24–45-bit section in v0.11.42 synchronously created many Tk frames, labels, state variables and direct On/Off buttons. Every expansion then re-ran the filter and live-state refresh, with repeated geometry operations; that can block the Tk event loop.
+- **Fix:** Small sections still render eagerly. Larger sections create up to four rows per pass and schedule the remainder in short Tk timer callbacks, leaving time for repaints and input. Constructed rows inherit the most recent 100-byte bank snapshot without individual memory reads. Cached rows remain available on collapse/reopen, and unchanged state/permission snapshots skip redundant styling work.
+- **Cancellation:** Closing a folder, changing filters and changing USA/Japan region stop obsolete queued batches. Search only materialises matching records, and clearing a search can continue an expanded manual folder.
+- **Regression:** Deterministic Tk tests cover bounded first-pass construction, completed row controls, cancellation, query changes, region isolation and reuse; existing per-bit compare-before-write and read-only tests retained. Initial head `4646b338` passed [Linux CI](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44158394414): **383 non-GUI tests (1 skipped), 173 GUI tests**; [Windows CI](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44158394433): **79 tests**. Both synchronized 463 registry entries with 0 conflicts. Re-run on this final assertion-strengthening commit required. No measured interactive Ubuntu timing or live game interaction was performed.
+- **Next:** Verify practical folder responsiveness and scrolling in the installed Linux toolkit; measure representative 35- and 45-row sections on native Tk.
+
+
 ## 2026-11-17 — v0.11.42 Japanese Event Sessions and Super Pass receipt
 
 - **Final verification (commit `0c8843dec1626fb4a2f1b06d5b1f7b0dddd6b4aa`):** Linux `bash scripts/test_japan_party.sh` passed **383 non-GUI tests (1 skipped)** and **170 Tk GUI tests (0 failures)** via [Linux CI run](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44136167395). Windows report/updater/address-registry suite passed **79 tests** via [Windows CI run](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44136167353). Both platforms ran `python -m scripts.sync_address_catalogue --write` followed by `--check`: **463 records, 359 readable, 0 new, 0 conflicts**, exact sync succeeded. All synthetic, not live in-emulator gameplay verification. Direct local `git diff --check` and independent emulator operations were not run in this environment.

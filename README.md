@@ -1,4 +1,22 @@
-# Goemon Speedrun Tools v0.11.42 — Japanese event-bank default and Super Pass receipt
+# Goemon Speedrun Tools v0.11.43 — responsive flag folders
+
+## v0.11.43 — Incremental flag-folder rendering
+
+Opening large **Unlocks → Story & event flags** folders now creates four
+rows per Tk event-loop batch rather than constructing hundreds of labels and
+On/Off buttons during the click handler. Small folders remain immediately
+available; subsequent batches continue while the interface responds.
+Collapse, search changes and game-region switches cancel obsolete work;
+reopening a populated folder reuses the existing buttons. New controls read
+the latest cached flag-bank snapshot, preserving disabled states and checked
+single-bit writes without repeated memory reads. Filtering avoids redundant
+Tk geometry changes.
+
+Automated tests cover partial rendering, completion, collapse/reopen,
+search cancellation, regional invalidation and existing write controls.
+Real Ubuntu desktop and emulator latency remain to be measured.
+
+
 
 ## v0.11.42 — Event Sessions, Super Pass and unknown-origin research
 
