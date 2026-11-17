@@ -37,18 +37,22 @@ class UnlocksMixin:
         intro = ttk.Frame(tab)
         intro.pack(fill='x', pady=(0, 8))
         self.usa_unlock_intro = intro
-        ttk.Label(intro, text='Unlocks, weapons and upgrades', font=('Segoe UI Semibold', 16),
+        ttk.Label(intro, text='Unlocks', font=('Segoe UI Semibold', 16),
                   foreground=PALETTE['gold']).pack(anchor='w')
-        ttk.Label(intro, textvariable=self.unlock_intro_text,
-                  style='Muted.TLabel', wraplength=1050).pack(anchor='w', pady=(4, 0))
-        self.unlock_status_label = ttk.Label(tab, textvariable=self.unlock_status)
-        self.unlock_status_label.pack(fill='x', pady=(0, 8))
         self.unlock_sections = ttk.Notebook(tab)
         self.unlock_sections.pack(fill='both', expand=True)
         self.unlock_items_page = ttk.Frame(self.unlock_sections, padding=(0, 5))
         self.unlock_flags_page = ttk.Frame(self.unlock_sections, padding=(0, 5))
         self.unlock_sections.add(self.unlock_items_page, text='Items & equipment')
         self.unlock_sections.add(self.unlock_flags_page, text='Story & event flags')
+        ttk.Label(
+            self.unlock_items_page, textvariable=self.unlock_intro_text,
+            style='Muted.TLabel', wraplength=1050).pack(
+                anchor='w', pady=(1, 5))
+        self.unlock_status_label = ttk.Label(
+            self.unlock_items_page, textvariable=self.unlock_status,
+            style='Muted.TLabel', wraplength=1050)
+        self.unlock_status_label.pack(fill='x', pady=(0, 5))
         all_bar = ttk.Frame(self.unlock_items_page)
         all_bar.pack(fill='x', pady=(0, 8))
         self.usa_unlock_all_bar = all_bar
@@ -143,11 +147,10 @@ class UnlocksMixin:
                   foreground=PALETTE['gold']).pack(anchor='w')
         ttk.Label(
             flags_page,
-            text=('Use On or Off beside each flag. The selected bit changes '
-                  'without affecting adjacent bits or Start-menu items. '
-                  'Japanese candidate mappings are also editable for testing.'),
+            text=('On / Off edits only the selected bit. Japanese candidate '
+                  'addresses are editable for testing.'),
             style='Muted.TLabel', wraplength=1000).pack(
-                anchor='w', pady=(3, 8))
+                anchor='w', pady=(1, 6))
         search_bar = ttk.Frame(flags_page)
         search_bar.pack(fill='x', pady=(0, 6))
         ttk.Label(search_bar, text='Find flag:').pack(side='left')
@@ -157,6 +160,24 @@ class UnlocksMixin:
         self.unlock_flag_counter = tk.StringVar()
         ttk.Label(search_bar, textvariable=self.unlock_flag_counter,
                   style='Muted.TLabel').pack(side='left')
+        filters = ttk.Frame(flags_page)
+        filters.pack(fill='x', pady=(0, 6))
+        ttk.Label(filters, text='Type').pack(side='left', padx=(0, 5))
+        self.unlock_flag_type = tk.StringVar(value='All types')
+        self.unlock_flag_type_box = ttk.Combobox(
+            filters, textvariable=self.unlock_flag_type, state='readonly',
+            width=29, values=('All types',))
+        self.unlock_flag_type_box.pack(side='left', padx=(0, 14))
+        ttk.Label(filters, text='Subtype').pack(side='left', padx=(0, 5))
+        self.unlock_flag_subtype = tk.StringVar(value='All subtypes')
+        self.unlock_flag_subtype_box = ttk.Combobox(
+            filters, textvariable=self.unlock_flag_subtype, state='readonly',
+            width=29, values=('All subtypes',))
+        self.unlock_flag_subtype_box.pack(side='left')
+        self.unlock_flag_type_box.bind(
+            '<<ComboboxSelected>>', self.on_unlock_flag_type_changed)
+        self.unlock_flag_subtype_box.bind(
+            '<<ComboboxSelected>>', lambda _e: self.filter_unlock_flags())
 
         flag_shell = ttk.Frame(flags_page)
         flag_shell.pack(fill='both', expand=True)
@@ -179,9 +200,10 @@ class UnlocksMixin:
         self.unlock_flag_canvas = canvas
         self.unlock_flag_body = body
         self.unlock_flag_widgets = {}
+        self.unlock_flag_sections = {}
 
         self.unlock_flag_detail = tk.StringVar(
-            value='Each event has its own On/Off buttons.')
+            value='Click a flag name for full mapping evidence.')
         ttk.Label(
             flags_page, textvariable=self.unlock_flag_detail,
             style='Muted.TLabel', wraplength=1000).pack(
@@ -540,7 +562,7 @@ class UnlocksMixin:
         self.unlock_flag_last_poll = 0.0
         self.unlock_flag_feedback.set('')
         self.unlock_flag_detail.set(
-            'Each event has its own On/Off buttons. Click a name for evidence.')
+            'Click a flag name for full mapping evidence.')
         self._ensure_unlock_flag_widgets()
         self.filter_unlock_flags()
 
