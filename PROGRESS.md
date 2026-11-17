@@ -1,13 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
-## 2026-11-17 — v0.11.37 Dashboard one-click Git updater (development branch)
+## 2026-11-17 — v0.11.37 Dashboard stable / test / release selector (development branch)
 
-- **Request:** Make the toolkit check for updates through its interface and auto-install a detected update.
-- **GUI:** Add a Dashboard action, Check for updates. It fetches the current `main` or `toolkit/*` branch from canonical GitHub in a worker; an available fast-forward changes the same button to Install update and restart. UI is responsive and does not touch Tk from worker threads.
-- **Safety:** Confirm the checkout root and official GitHub origin, require clean tracked files on `main` or the current `toolkit/*` branch, refuse decomp/other branches, non-Git ZIP folders, and diverged histories. Revalidate the checked-out branch and local/remote SHAs before `git merge --ff-only`. Untracked reports/config files are not deleted, and Git refuses conflicting replacements.
-- **Restart:** After successful installation, normal mainloop teardown stops the freeze worker, closes process handles and Tk widgets, then launches the updated module with the original flags.
-- **Validation:** Add offline temporary-Git-repository tests for checks, new commits, fast-forward installs, diverged/modified/feature branches, changed remote targets and untracked files; Tk Dashboard tests for check/install/error/restart states. Linux/Windows CI pending; native GUI re-launch on a live game remains untested.
-- **Compatibility:** Accept the legacy `--route` option passed by the existing Windows launcher; release version incremented to v0.11.37.
+- **Version catalogue:** Use canonical GitHub origin `git ls-remote --heads --tags` to list stable `main`, active `toolkit/*` test branches and semantic version tags. Annotated tags resolve to peeled commit hashes. Do not display decompilation/research branches.
+- **Explicit workflow:** Refresh versions shows available choices, Check for updates fetches the selected ref, and a subsequent install action updates or switches to that specific commit. An initial Check populates the catalogue and checks the current installed branch. No background source updates occur on startup.
+- **Safe branch switching:** Fast-forward existing local branches without rewriting local commits; create local branches for previously uninstalled toolkit test builds; use detached HEAD for tagged releases. Selecting stable main later returns to main while preserving experimental branches. Recheck selected ref SHA before install.
+- **Safety:** Require clean tracked files and official repository origin. Refuse divergent destination histories, forbidden decomp branches, stale checked versions, non-Git ZIP folders and unsafe replacements. Never reset, clean or force checkout. Preserve untracked files; Git protects conflicting paths.
+- **UI and restart:** Run remote/version operations in background worker, keep Tk responsive, then close the running process after installation before relaunching with the original startup flags.
+- **Tests:** Expand offline temporary-Git tests to discover branches and annotated release tags, select test branches, return to stable, check detached releases and protect local changes/history. Tk smoke cases cover selecting refresh/check/install/switch without network at startup. CI evidence to follow; full gameplay/runtime relaunch remains untested.
 
 ## 2026-11-17 — v0.11.36 Unlocks subpages for items and flag experimentation
 
