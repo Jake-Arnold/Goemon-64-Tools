@@ -150,7 +150,7 @@ def pack_overlay_function_text(original, function_name, function_size,
     """
     from .probe import Elf32
 
-    if (type(padding_bytes) is not int or padding_bytes <= 0 or
+    if (type(padding_bytes) is not int or padding_bytes < 0 or
             type(function_size) is not int or function_size <= 0 or
             not isinstance(label, str) or not label or
             not isinstance(metadata_kind, str) or not metadata_kind):
@@ -212,7 +212,20 @@ def pack_overlay_function_text(original, function_name, function_size,
         shape = (item.symbol.kind, item.symbol.size)
         expected_shape = (expected_symbol_shapes.get(item.symbol.name)
                           if expected_symbol_shapes is not None else None)
-        if (item.symbol.section != 0 or item.symbol.binding != 1 or
+        # IDO emits internal references to the same source function as
+        # defined .text symbols rather than undefined external symbols.
+        # Require the symbol to be precisely this original-address function,
+        # with zero function-entry offset and original size; do not accept
+        # unrelated defined symbols or alter any relocation records.
+        local_self = (item.symbol.name == function_name and
+                      item.symbol.section == index and
+                      item.symbol.kind == 2 and
+                      item.symbol.size == function_size and
+                      item.symbol.value == 0 and
+                      item.symbol.binding == 1 and
+                      shape == expected_shape)
+        external = (item.symbol.section == 0 and item.symbol.binding == 1)
+        if (not (local_self or external) or
                 (shape != expected_shape if expected_symbol_shapes is not None else
                  not ((item.relocation_type in (5, 6) and
                        item.symbol.kind == 1 and item.symbol.size in (1, 2, 4)) or

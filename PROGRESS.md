@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Native combined USA file_12 spatial promotion, 720 → 731 C functions
+
+- **Change:** Integrated 11 original-address `file_12` spatial/lifecycle helpers (748 original instruction bytes) into the existing 374-wrapper overlay stage alongside all 720 accepted C functions. Added pinned original instruction, relocation and compiler/staged object metadata. Generalized zero-padding-only IDO .text handling for valid zero-padding and original function-local relocation symbols without modifying payload bytes. Kept historical 720 proof and inventory unchanged as dated archives.
+- **Native verification:** The authenticated original IDO 5.3 and MIPS binutils produced a 731-function complete-USA ROM of **33,554,432/33,554,432 exact original bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Original file_12 semantic relocations **7,051/7,051**, file_11 **8,825/8,825**, original 7,376 positive-sized function identities intact; 0 extra positive-sized aliases. Newly accepted USA **731 C / 31,932 bytes**, 6,632 ASM entries remain.
+- **Acceptance:** Fresh complete `python3 -m decomp.verify`, strict `python3 -m decomp.inventory`, and full `python3 -m decomp.local_ci` including ASan/UBSan host regression; all pass. Exact reproduction evidence in `decomp/results/combined.json`, `decomp/results/inventory.json`, `decomp/results/usa_file12_spatial_11_promotion_20261117.json`. No hidden original ROM, generated ASM, compiled ELF or proprietary binaries committed.
+- **Candidates:** Removed 11 promoted entries from the original-address pending registry; **130 USA (5,868 bytes) and five JP (180 bytes) remain `RESEARCH_ONLY`**, all still requiring region-specific combined production gates. Japan accepted baseline remains 34 C / 1,912 bytes.
+
 ### 2026-11-17 — Preserve superseded Japan/N64Recomp/overlay research before retiring draft PRs
 
 - **Change:** Selectively imported original Git blobs for the older 47-C cross-overlay native staging/evidence scripts, older 24-C Japanese proof, Japanese N64Recomp ROM input/overlay/symbol/loader research, dual-region ROM metadata comparison and unverified USA external-address research leads. Added `decomp/RESEARCH_IMPORTS.md` recording exact originating branch SHAs and limits.

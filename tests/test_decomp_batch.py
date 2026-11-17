@@ -215,9 +215,13 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # Current 720-C proof supersedes 346, while earlier reports remain archived.
-        self.assertEqual(current['comparison']['matched_functions'],720)
-        self.assertEqual(current['comparison']['matched_function_bytes'],31184)
+        # Current 731-C proof: 720 accepted baseline plus 11 exact file12 C functions.
+        self.assertEqual(current['comparison']['matched_functions'],731)
+        self.assertEqual(current['comparison']['matched_function_bytes'],31932)
+        # Historical canonical 720-C proof preserved intact, not rewritten.
+        preserved720=json.loads((ROOT/'results/combined_720_20261117.json').read_text())
+        self.assertEqual(preserved720['comparison']['matched_functions'],720)
+        self.assertEqual(preserved720['comparison']['matched_function_bytes'],31184)
         # Preserve the exact canonical 346-C report from before the file12 promotion.
         preserved346=json.loads((ROOT/'results/combined_346_20261117.json').read_text())
         self.assertEqual(preserved346['status'],'matched')
@@ -252,7 +256,7 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(historic303['verifier_source_sha256_lf'],
                          '0b4556a01128510da5a23ef36e6e55094339e69a7bb070b5b45c213128231769')
         self.assertEqual(current['verifier_source_sha256_lf'],
-                         '051395259266449c94c0ed00441dc21b8379b998c2108781f570762525d52760')
+                         hashlib.sha256((ROOT/'verify.py').read_bytes().replace(b'\r\n',b'\n')).hexdigest())
         self.assertEqual(preserved315['verifier_source_sha256_lf'],
                          '93e91fa551668a51fbc45e24ba39c73c2c60cc4e2a854d43040c4f0b209d7737')
         # The certified historical 210-C proof retains its original hash.

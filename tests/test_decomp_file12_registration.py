@@ -36,11 +36,11 @@ class RegistrationStageTests(unittest.TestCase):
 
     def test_stage_claims_374_real_functions_not_group_marker(self):
         staged = manifest_file12_stages(self.manifest)
-        self.assertEqual(len(staged), 3)
+        self.assertEqual(len(staged), 14)
         self.assertEqual(validate_file12_stage_definition(staged[0]), Path(reg.SOURCE_NAME))
         claims = claimed_functions(self.manifest)
-        self.assertEqual(len(claims), 720)
-        self.assertEqual(len({row['name'] for row in claims}), 720)
+        self.assertEqual(len(claims), 731)
+        self.assertEqual(len({row['name'] for row in claims}), 731)
         self.assertNotIn(reg.GROUP_NAME, {row['name'] for row in claims})
         expected = {row['name'] for row in reg.functions()}
         self.assertEqual(expected & {row['name'] for row in claims}, expected)
@@ -66,7 +66,7 @@ class RegistrationStageTests(unittest.TestCase):
         from decomp.verify import _file12_stages_layout
         layout = _file12_stages_layout(manifest_file12_stages(self.manifest))
         self.assertEqual(layout['assembly'][0], 'file_12_before_5C9310')
-        self.assertEqual(layout['assembly'][1], 'file_12_gap_5CC7A8_5DD504')
+        self.assertEqual(layout['assembly'][1], 'file_12_gap_5CC7A8_5D424C')
         self.assertEqual(layout['assembly'][-1], 'file_12_after_5DD65C')
         self.assertIn('    - [0x5C9310, c, file12_reg374]', layout['lines'])
 
@@ -80,9 +80,9 @@ class RegistrationStageTests(unittest.TestCase):
     def test_old_file12_callback_reference_hashes_unchanged(self):
         for name in overlay_file12.FUNCTIONS:
             self.assertNotIn(name, {r['name'] for r in reg.functions()})
-        self.assertEqual(set(overlay_file12.FUNCTIONS), {
-            'func_80222034_5DD504', 'func_80222168_5DD638'
-        })
+        self.assertEqual(len(overlay_file12.FUNCTIONS), 13)
+        self.assertTrue({'func_80222034_5DD504', 'func_80222168_5DD638'}
+                        <= set(overlay_file12.FUNCTIONS))
 
 
 if __name__ == '__main__':

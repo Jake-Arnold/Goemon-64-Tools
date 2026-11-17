@@ -25,6 +25,9 @@ class File11143PreflightTests(unittest.TestCase):
         cls.manifest['overlay_file12_stages'] = [
             x for x in cls.manifest['overlay_file12_stages']
             if x['format'] != 'goemon-file12-registration-374-v1'
+            and x['function']['name'] not in {
+                f['name'] for f in json.loads((mod.ROOT/'results/usa_file12_spatial_11_promotion_20261117.json').read_text())['functions']
+            }
         ]
         del cls.manifest['overlay_file13_stages']
         cls.manifest['support_headers'].remove('impact_controller.h')

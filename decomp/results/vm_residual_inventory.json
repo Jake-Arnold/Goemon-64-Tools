@@ -25,22 +25,22 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "ee6fb4201ae177078e307bd39b28db4fb4e0cb9e29f954ea63f9aade1234c125",
+    "manifest_sha256": "1d72e4aae0c46279a259baad6800b8efea37d2367805b083f8a3b2dd851e4219",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "051395259266449c94c0ed00441dc21b8379b998c2108781f570762525d52760"
+    "verifier_sha256": "a36a785f7d1aa1f5184570a306c4b4f35a5791caaf2ad596739505e27d39e480"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "e5585256d00c20000bff27ad03afdc749b75815dc631c3f4aca8f99ea794cb82",
+    "report_sha256": "1dbe835fb94fd48d71fd1f606edbe365c2fd3b05b19c309b5d3df62a3628eaa4",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "70733f3bd629bf0f67c78bcb91c7656c3131687c3f58280c2fffee135a54e747",
-    "matching_c_functions": 720,
-    "matching_c_bytes": 31184,
-    "combined_c_entries": 733,
-    "asm_entries": 6643,
+    "combined_proof_sha256": "354fce49a5cb95c40651434f6a3b0a78f02fcb6297886e3fcb6d5c0480066fb2",
+    "matching_c_functions": 731,
+    "matching_c_bytes": 31932,
+    "combined_c_entries": 744,
+    "asm_entries": 6632,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Canonical USA 720/720: existing 346 C plus 374 original-address file_12 registration wrappers; native G2 32MiB exact ROM; 7,051 semantic file_12 and 8,825 semantic file_11 relocations, 7,376 original positive-sized function identities. Original 0x5CC7A8 synthetic split FUNC label normalized without instruction changes; Japan 34-C remains independent.",
+    "note": "Canonical USA 731/731: 720 previous C + 11 original-address file12 spatial/lifecycle functions; byte-exact complete 32MiB ROM; 7051 unchanged file12 semantic relocations, 8825 unchanged file11 relocations; 7376 original positive-sized functions. Japan 34-C independently unchanged.",
     "reconciled_date": "2026-11-17"
   },
   "residual_functions": [

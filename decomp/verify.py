@@ -632,7 +632,11 @@ def patch_file12_tail_alias_sources(candidate_checkout, stage):
         # when the 374-wrapper run ends at 0x5CC7A8. The original full ELF
         # and assembly have only anonymous zero instructions here. Removing
         # the synthetic labels restores its 7,376 positive-sized FUNC entries.
-        pad_name = 'file_12_gap_5CC7A8_5DD504'
+        pad_candidates = [name for name in layout['assembly']
+                          if name.startswith('file_12_gap_5CC7A8_')]
+        if len(pad_candidates) != 1:
+            raise ValueError('No unique registration-tail ASM gap')
+        pad_name = pad_candidates[0]
         pad = f'asm/usa/{pad_name}.s'
         pad_path = checkout / pad
         if pad_path not in asm_paths:
@@ -937,10 +941,19 @@ def prepare_file12_stage_objects(candidate_checkout, stage):
             c_staged, pack_evidence = file12_registration.pack(c_original)
         else:
             expected_relocations = overlay_file12.FUNCTION_RELOCATIONS[function['name']]
-            c_staged, pack_evidence = pack_file12_callback_text(
-                c_original, function['name'], function['size'], expected_relocations,
-                overlay_file12.FUNCTION_RELOCATION_SYMBOLS[function['name']],
-            )
+            padding = (-function['size']) % 16
+            if padding == 12:
+                c_staged, pack_evidence = pack_file12_callback_text(
+                    c_original, function['name'], function['size'], expected_relocations,
+                    overlay_file12.FUNCTION_RELOCATION_SYMBOLS[function['name']],
+                )
+            else:
+                c_staged, pack_evidence = pack_overlay_function_text(
+                    c_original, function['name'], function['size'], padding,
+                    expected_relocations,
+                    overlay_file12.FUNCTION_RELOCATION_SYMBOLS[function['name']],
+                    'file_12 callback', 'file12_callback',
+                )
         c_staged_hash = digest(c_staged, 'sha256')
         if c_staged_hash != item['object_sha256']:
             raise ValueError('file_12 staged C object hash mismatch')

@@ -70,6 +70,24 @@ def reviewed_plan(manifest: dict, original_rom: bytes | None = None) -> dict:
         file12_registration.validate_stage(next(item for item in stages
             if file12_registration.is_group(item)))
         baseline['overlay_file12_stages'] = reviewed
+    # Reconstruct the historical 210-C manifest only for its old file11 audit.
+    # Eleven separately vetted file12 functions remain in the real manifest,
+    # and are fully checked by the native linked-ROM verification below.
+    spatial_names = frozenset(('param_xyz.c', 'param_bytes.c', 'constant_821.c',
+        'grid_reset.c', 'update_dispatch.c', 'state2_callback.c', 'task_noop.c',
+        'task_sentinels.c', 'release_noop.c', 'active_gate.c', 'vector_cross.c'))
+    spatial = [item for item in baseline.get('overlay_file12_stages', [])
+               if isinstance(item, dict) and Path(item.get('source', '')).name in spatial_names]
+    if spatial:
+        from .verify import validate_file12_stage_definition
+        if (len(spatial) != 11 or
+                {Path(item['source']).name for item in spatial} != spatial_names or
+                sum(item['function']['size'] for item in spatial) != 748):
+            raise ValueError('Unreviewed file12 research extension in file11 historical audit')
+        for item in spatial:
+            validate_file12_stage_definition(item)
+        baseline['overlay_file12_stages'] = [item for item in baseline['overlay_file12_stages']
+                                             if item not in spatial]
     baseline['overlay_file11_stage'] = {'format': ORIGINAL_STAGE_FORMAT}
     # The exact original 210-C preflight is an independent file_11 fixture
     # audit. For a subsequent, separately proven three-function Impact batch,

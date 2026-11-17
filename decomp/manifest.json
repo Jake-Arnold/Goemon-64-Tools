@@ -1310,6 +1310,149 @@
     },
     {
       "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/param_xyz.c",
+      "source_sha256": "0ab7ac707da850646f80b92c0b8538f0380478c4d269003a870a5c1cd9cda77c",
+      "compiler_object_sha256": "d2c3258e648df40e95d0a931594e0e799e56b3b114da726af8452f463e8113c5",
+      "object_sha256": "0759864032e27542c490b3d8a8a7313e8ce923648cef3bf17ebaee2c64ef3ba7",
+      "function": {
+        "name": "func_80218D7C_5D424C",
+        "rom_offset": 6111820,
+        "vma": 2149682556,
+        "size": 20
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/param_bytes.c",
+      "source_sha256": "8af0d184306b502633d5f510e41c414ac0bf5a29016a938212100a8b6ac3621b",
+      "compiler_object_sha256": "0e8d2011618d2333922db6810a93847383f52d34ed20adfc6b6e509666d008e1",
+      "object_sha256": "9c884ad293f16b3bc4b1d7931b4def1bdefe4977e0508b3d31ed8dc1cbce61e1",
+      "function": {
+        "name": "func_80218D90_5D4260",
+        "rom_offset": 6111840,
+        "vma": 2149682576,
+        "size": 24
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/constant_821.c",
+      "source_sha256": "4f1235bb7005e5e656f99fa394cbb78b0c4c2907d7720bfce98fb49cfba5c4f3",
+      "compiler_object_sha256": "6e2fa7f1f0cc5b5e48139faa1a9bf031cc74614a126a32508620e4ba82360db7",
+      "object_sha256": "876a4da31eb66c492e07af7d1966cfa6f1cd1d98da86bedba0f0bb707ecc0c56",
+      "function": {
+        "name": "func_80218DF8_5D42C8",
+        "rom_offset": 6111944,
+        "vma": 2149682680,
+        "size": 12
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/grid_reset.c",
+      "source_sha256": "4d14a4e7040db16899d4cb5703b04e06d00502188f11d386907ee8d8f72f2cb3",
+      "compiler_object_sha256": "5b0fac3626e1b2b391ee38864a3b20162f8998ac439438b0998f3f1e93bd7759",
+      "object_sha256": "9e94bbaf3246d7d961c168c11fafcf4f17860090bec8ca43a1bb61b010a2032d",
+      "function": {
+        "name": "func_80218E04_5D42D4",
+        "rom_offset": 6111956,
+        "vma": 2149682692,
+        "size": 120
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/update_dispatch.c",
+      "source_sha256": "c89c568ba7a1cd590526ea901f2673b0563cd95e081a639ef0f8a68b6529a533",
+      "compiler_object_sha256": "4abdb202dd8e7ca33baa906644165f287e55abbcfc78ee60f94393ccfe25bfb5",
+      "object_sha256": "bbdeaa5fc208a27cb7c53500587e01a8bbb2e1ba92db0f0280fd6558c5ca3ff9",
+      "function": {
+        "name": "func_80218E7C_5D434C",
+        "rom_offset": 6112076,
+        "vma": 2149682812,
+        "size": 180
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/state2_callback.c",
+      "source_sha256": "a5a18d9ff5bda797ac7b6645eaca77a89ffc422032199a4fed167ad81fcd719f",
+      "compiler_object_sha256": "b09061dc519a688a6d04882f90e67ba7fac712af691849a40dd614ad79380f89",
+      "object_sha256": "6d052bc879b2b643e6a165f8948a60031b1e588076572a27de51f17dafe24dac",
+      "function": {
+        "name": "func_80218F30_5D4400",
+        "rom_offset": 6112256,
+        "vma": 2149682992,
+        "size": 184
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/task_noop.c",
+      "source_sha256": "003d600cb9cb7a39cb530ed275f63f3746a45704c1ccc856393660549fd49b25",
+      "compiler_object_sha256": "619e4452d8f9554d83762504039a4148fc8d1c8ad7f03d947b4d86b720bc7094",
+      "object_sha256": "22e3d2c282e9026ae4c0833c3673401259ed67aa0284589b468e44b75ec72b28",
+      "function": {
+        "name": "func_8021A308_5D57D8",
+        "rom_offset": 6117336,
+        "vma": 2149688072,
+        "size": 8
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/task_sentinels.c",
+      "source_sha256": "688d5ee4a27432011fb8fe53cacb70b16c7872fa5416c4d44dff6bc950507283",
+      "compiler_object_sha256": "546a9a9baf05e25d3139887d00ef68e8b886d10b311944f67b41aaf93e4d611f",
+      "object_sha256": "551d42416311860326ce3d295b4fd8ae3dc5e0aed3596b8787adf7d27a73a57b",
+      "function": {
+        "name": "func_8021A310_5D57E0",
+        "rom_offset": 6117344,
+        "vma": 2149688080,
+        "size": 24
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/release_noop.c",
+      "source_sha256": "5fc4eced2053d32f716d31491d0408b862b25cc9929fd65101b4709c1e4295a4",
+      "compiler_object_sha256": "e007ba3bc7aa92686893ae92ad020d5c1a6761a4de338515f1fde01403d1721c",
+      "object_sha256": "95a695bdc1e02994a86dbc639f8998bbc53f0a4c768f65a75024d45977e60f25",
+      "function": {
+        "name": "func_8021A4DC_5D59AC",
+        "rom_offset": 6117804,
+        "vma": 2149688540,
+        "size": 8
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/active_gate.c",
+      "source_sha256": "6d8df03a1dccbae56a1b7f88b8d430e02023eb0e9e14b5381c317a6ff4dbd0ba",
+      "compiler_object_sha256": "ff7c0abb24660521b0155f27745c20ec1235af3e910836af32bc88953099b44b",
+      "object_sha256": "60f64874aa9ce63b0c9ff07f4e9276a263abde44199d0769441d968d5f1e1b33",
+      "function": {
+        "name": "func_8021A644_5D5B14",
+        "rom_offset": 6118164,
+        "vma": 2149688900,
+        "size": 56
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/vector_cross.c",
+      "source_sha256": "14aa6a995aeae17946b27a8cd5544a964f8e0ab707508d7d2bf764b7c9c3102e",
+      "compiler_object_sha256": "9eec03b1f7e78379c4725ae3b3d64fa9cc7bec6ab0811bf476a9e5505de475a7",
+      "object_sha256": "22fe576827ebc83b17f895d3a76354bb801a5eaa93fcc45e83a41d402a1bb4d7",
+      "function": {
+        "name": "func_8021A7E8_5D5CB8",
+        "rom_offset": 6118584,
+        "vma": 2149689320,
+        "size": 112
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
       "source": "candidates/file12_dialogue_copy.c",
       "source_sha256": "bce7049e5438f50b9cb5bd7cea430fb2101067dcfdab760003ecaef3c2527fd2",
       "compiler_object_sha256": "0d91354ac69cf05f78154675170f45faddf1d97665b83d1db7ced32db115afaf",

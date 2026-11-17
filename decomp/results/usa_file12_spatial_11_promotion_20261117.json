@@ -1,0 +1,314 @@
+{
+  "format": "goemon-usa-file12-spatial-11-native-promotion-v1",
+  "status": "PASSED_G2",
+  "region": "usa",
+  "verified_at_utc": "2026-11-17T17:12:42.006718+00:00",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "verified_full_rom_bytes": 33554432,
+  "verified_combined_functions": 731,
+  "verified_combined_function_bytes": 31932,
+  "verified_original_elf_function_entries": 7376,
+  "verified_remaining_assembly_entries": 6632,
+  "prior_verified_usa": {
+    "functions": 720,
+    "bytes": 31184
+  },
+  "new_functions": 11,
+  "new_original_instruction_bytes": 748,
+  "canonical_combined_proof": "decomp/results/combined.json",
+  "canonical_combined_proof_sha256": "354fce49a5cb95c40651434f6a3b0a78f02fcb6297886e3fcb6d5c0480066fb2",
+  "canonical_inventory": "decomp/results/inventory.json",
+  "canonical_inventory_sha256": "1dbe835fb94fd48d71fd1f606edbe365c2fd3b05b19c309b5d3df62a3628eaa4",
+  "historic_combined_proof": "decomp/results/combined_720_20261117.json",
+  "historic_inventory": "decomp/results/inventory_720_20261117.json",
+  "original_file12_relocations": 7051,
+  "candidate_file12_relocations": 7051,
+  "file12_semantic_relocations_equal": true,
+  "functions": [
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_80218D7C_5D424C",
+      "rom_offset": "0x5D424C",
+      "vma": "0x80218D7C",
+      "size": 20,
+      "original_code_sha256": "f688ef8084697424b0aa9e1763891f40f428a46512bcd86cced819aae4b51251",
+      "source": {
+        "path": "decomp/research/file12_spatial/adjacent/param_xyz.c",
+        "git_blob_sha": "81c8a58208c310ad4e1a780d4952d80e7fdafc7d",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/param_xyz.c",
+      "compiler_object_sha256": "d2c3258e648df40e95d0a931594e0e799e56b3b114da726af8452f463e8113c5",
+      "staged_object_sha256": "0759864032e27542c490b3d8a8a7313e8ce923648cef3bf17ebaee2c64ef3ba7",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_80218D90_5D4260",
+      "rom_offset": "0x5D4260",
+      "vma": "0x80218D90",
+      "size": 24,
+      "original_code_sha256": "7ba7aff9c3a6f5db578b0838579846ed5425f797e24b059d20b3525a0142ae2f",
+      "source": {
+        "path": "decomp/research/file12_spatial/adjacent/param_bytes.c",
+        "git_blob_sha": "07c283a48b098934ac5b5dbc62ff4102df910605",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/param_bytes.c",
+      "compiler_object_sha256": "0e8d2011618d2333922db6810a93847383f52d34ed20adfc6b6e509666d008e1",
+      "staged_object_sha256": "9c884ad293f16b3bc4b1d7931b4def1bdefe4977e0508b3d31ed8dc1cbce61e1",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_80218DF8_5D42C8",
+      "rom_offset": "0x5D42C8",
+      "vma": "0x80218DF8",
+      "size": 12,
+      "original_code_sha256": "81d39197757f21314026776a92540a90ac0a6f065753cfbad39f3984df2a7a5d",
+      "source": {
+        "path": "decomp/research/file12_spatial/adjacent/constant_821.c",
+        "git_blob_sha": "3337357260919d7dc639eaa0a331e1d0d414d805",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/constant_821.c",
+      "compiler_object_sha256": "6e2fa7f1f0cc5b5e48139faa1a9bf031cc74614a126a32508620e4ba82360db7",
+      "staged_object_sha256": "876a4da31eb66c492e07af7d1966cfa6f1cd1d98da86bedba0f0bb707ecc0c56",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_80218E04_5D42D4",
+      "rom_offset": "0x5D42D4",
+      "vma": "0x80218E04",
+      "size": 120,
+      "original_code_sha256": "234aec5873a29e0b81d7e35542140e9bd1b6439a4c2cd1d323287392175b8424",
+      "source": {
+        "path": "decomp/research/file12_spatial/adjacent/grid_reset.c",
+        "git_blob_sha": "fbe0d1a69e643515b92c8133949683b7b15ff322",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/grid_reset.c",
+      "compiler_object_sha256": "5b0fac3626e1b2b391ee38864a3b20162f8998ac439438b0998f3f1e93bd7759",
+      "staged_object_sha256": "9e94bbaf3246d7d961c168c11fafcf4f17860090bec8ca43a1bb61b010a2032d",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_80218E7C_5D434C",
+      "rom_offset": "0x5D434C",
+      "vma": "0x80218E7C",
+      "size": 180,
+      "original_code_sha256": "d2a256588b93edef53dd1d683d1e5b58d34929040bc091942ce99b1f2c71783d",
+      "source": {
+        "path": "decomp/research/file12_spatial/update_dispatch.c",
+        "git_blob_sha": "04ac5405c0e9b2daabe5a70f7730dc77ef963c9f",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/update_dispatch.c",
+      "compiler_object_sha256": "4abdb202dd8e7ca33baa906644165f287e55abbcfc78ee60f94393ccfe25bfb5",
+      "staged_object_sha256": "bbdeaa5fc208a27cb7c53500587e01a8bbb2e1ba92db0f0280fd6558c5ca3ff9",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_80218F30_5D4400",
+      "rom_offset": "0x5D4400",
+      "vma": "0x80218F30",
+      "size": 184,
+      "original_code_sha256": "5c7645393a7369851323ae63785154e7b546106bd4ca6fb4c2b8815c4db02b46",
+      "source": {
+        "path": "decomp/research/file12_spatial/state2_callback.c",
+        "git_blob_sha": "93ead07322836cc7032b5a25e4cca19109af2fde",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/state2_callback.c",
+      "compiler_object_sha256": "b09061dc519a688a6d04882f90e67ba7fac712af691849a40dd614ad79380f89",
+      "staged_object_sha256": "6d052bc879b2b643e6a165f8948a60031b1e588076572a27de51f17dafe24dac",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_8021A308_5D57D8",
+      "rom_offset": "0x5D57D8",
+      "vma": "0x8021A308",
+      "size": 8,
+      "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
+      "source": {
+        "path": "decomp/research/file12_spatial/adjacent/task_noop.c",
+        "git_blob_sha": "5360a17d7d6d2671f201f0389cf4e737e5daa408",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/task_noop.c",
+      "compiler_object_sha256": "619e4452d8f9554d83762504039a4148fc8d1c8ad7f03d947b4d86b720bc7094",
+      "staged_object_sha256": "22e3d2c282e9026ae4c0833c3673401259ed67aa0284589b468e44b75ec72b28",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_8021A310_5D57E0",
+      "rom_offset": "0x5D57E0",
+      "vma": "0x8021A310",
+      "size": 24,
+      "original_code_sha256": "b0f59b495081dfb672688b17bdb663d7866db5fa373600ecc642222821a0c193",
+      "source": {
+        "path": "decomp/research/file12_spatial/adjacent/task_sentinels.c",
+        "git_blob_sha": "7369bd59671420ecb998d59ef26d320a848e1dcd",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/task_sentinels.c",
+      "compiler_object_sha256": "546a9a9baf05e25d3139887d00ef68e8b886d10b311944f67b41aaf93e4d611f",
+      "staged_object_sha256": "551d42416311860326ce3d295b4fd8ae3dc5e0aed3596b8787adf7d27a73a57b",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_8021A4DC_5D59AC",
+      "rom_offset": "0x5D59AC",
+      "vma": "0x8021A4DC",
+      "size": 8,
+      "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378",
+      "source": {
+        "path": "decomp/research/file12_spatial/adjacent/release_noop.c",
+        "git_blob_sha": "a1c455ea78b714ffc10579c8b5808317fcef02a3",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/release_noop.c",
+      "compiler_object_sha256": "e007ba3bc7aa92686893ae92ad020d5c1a6761a4de338515f1fde01403d1721c",
+      "staged_object_sha256": "95a695bdc1e02994a86dbc639f8998bbc53f0a4c768f65a75024d45977e60f25",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_8021A644_5D5B14",
+      "rom_offset": "0x5D5B14",
+      "vma": "0x8021A644",
+      "size": 56,
+      "original_code_sha256": "c3b48a6ec00152d9c26c61c72833a94743e6b685ccce00ac2830011af95a865b",
+      "source": {
+        "path": "decomp/research/file12_spatial/active_gate.c",
+        "git_blob_sha": "65d6661514f8dde1402e4f11ddf916c9ac2ab712",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/active_gate.c",
+      "compiler_object_sha256": "ff7c0abb24660521b0155f27745c20ec1235af3e910836af32bc88953099b44b",
+      "staged_object_sha256": "60f64874aa9ce63b0c9ff07f4e9276a263abde44199d0769441d968d5f1e1b33",
+      "native_status": "PASSED_G2"
+    },
+    {
+      "region": "usa",
+      "segment": "file_12",
+      "name": "func_8021A7E8_5D5CB8",
+      "rom_offset": "0x5D5CB8",
+      "vma": "0x8021A7E8",
+      "size": 112,
+      "original_code_sha256": "7aeac228688e091b10fdff57b220846880cc8ab5b7744dbcadbd10da147e03a7",
+      "source": {
+        "path": "decomp/research/file12_spatial/adjacent/vector_cross.c",
+        "git_blob_sha": "3d018dcc5de2a349b4f07a86e836132bad2fbc6e",
+        "origin_head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+      },
+      "provenance": [
+        "PR #47",
+        "decomp/results/file12_385_upstream_fullrom_proof_20261117.json"
+      ],
+      "prior_native_evidence": "PREVIOUS_UPSTREAM_FULL_ROM",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "source_staged": "decomp/candidates/vector_cross.c",
+      "compiler_object_sha256": "9eec03b1f7e78379c4725ae3b3d64fa9cc7bec6ab0811bf476a9e5505de475a7",
+      "staged_object_sha256": "22fe576827ebc83b17f895d3a76354bb801a5eaa93fcc45e83a41d402a1bb4d7",
+      "native_status": "PASSED_G2"
+    }
+  ],
+  "verification_gates": {
+    "full_ROM": "PASSED",
+    "ELF_positive_function_entries": "PASSED",
+    "ROM_oracle_code_sha256": "PASSED",
+    "file12_semantic_relocations": "PASSED",
+    "inventory": "PASSED"
+  },
+  "note": "Only original source and pinned metadata. No ROM, extracted ASM, linked ELF or toolchain included."
+}

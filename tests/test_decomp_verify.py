@@ -158,17 +158,19 @@ class DecompVerificationTests(unittest.TestCase):
     def test_file12_stage_definition_is_explicit_and_fail_closed(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
         stages=manifest_file12_stages(manifest)
+        promoted=json.loads((ROOT/'decomp/results/usa_file12_spatial_11_promotion_20261117.json').read_text())['functions']
         self.assertEqual([stage['function']['name'] for stage in stages], [
-            'file12_registration_374', 'func_80222034_5DD504', 'func_80222168_5DD638',
+            'file12_registration_374', *(row['name'] for row in promoted),
+            'func_80222034_5DD504', 'func_80222168_5DD638',
         ])
         self.assertEqual(validate_file12_stage_definition(stages[0]).as_posix(),
                          'candidates/file12_reg374.c')
-        stage=stages[1]
+        stage=stages[-2]
         self.assertEqual(stage['function']['name'],'func_80222034_5DD504')
         self.assertIn(stage['function'],claimed_functions(manifest))
         self.assertEqual(validate_file12_stage_definition(stage).as_posix(),
                          'candidates/file12_dialogue_copy.c')
-        self.assertEqual(validate_file12_stage_definition(stages[2]).as_posix(),
+        self.assertEqual(validate_file12_stage_definition(stages[-1]).as_posix(),
                          'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in stages)+
@@ -1128,7 +1130,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertTrue(result['comparison']['full_rom_match'])
         verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
         self.assertEqual(result['verifier_source_sha256_lf'],
-                         '051395259266449c94c0ed00441dc21b8379b998c2108781f570762525d52760')
+                         hashlib.sha256(verifier).hexdigest())
         self.assertEqual(hashlib.sha256(verifier).hexdigest(),
                          json.loads((ROOT/'decomp/results/vm_residual_inventory.json').read_text())['current_sources']['verifier_sha256'])
         expected={f['name']:f for f in claimed_functions(manifest)}
