@@ -33,7 +33,7 @@ class CrosswalkSharedPagesTests(unittest.TestCase):
 
     def test_story_progress_uses_explicit_japan_address_and_mask(self):
         addr = 0x80161DFC
-        rows = japan_story_crosswalk_rows(FakeRdram({(addr, 1): b"\\x20"}))
+        rows = japan_story_crosswalk_rows(FakeRdram({(addr, 1): b"\x20"}))
         benkei = next(row for row in rows
                       if row["key"] == "jp_cross_event_benkei_encounter")
         self.assertEqual(benkei["address"], addr)
