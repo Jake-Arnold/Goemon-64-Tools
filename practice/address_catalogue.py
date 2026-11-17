@@ -300,6 +300,53 @@ def build_catalogue():
             "inventory", f"u{width * 8}", source="practice/inspector.py",
             confidence="mixed_evidence", evidence=note,
             control="Live memory", owner="Inventory"))
+    # Existing high-level Live Memory watches are also registry-backed.
+    # Discover the already reviewed add('name', constant-or-cp, width) rows
+    # from source without executing any reader or guessing dynamic pointers.
+    from practice import checkpoints as cp
+    inspector_tree = ast.parse(
+        (Path(__file__).resolve().parents[1] / "practice/inspector.py")
+        .read_text(encoding="utf-8"))
+    for node in ast.walk(inspector_tree):
+        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                and node.func.id == "add" and len(node.args) >= 3):
+            continue
+        label_ast, address_ast, width_ast = node.args[:3]
+        if not (isinstance(label_ast, ast.Constant) and
+                isinstance(label_ast.value, str) and
+                isinstance(width_ast, ast.Constant) and
+                type(width_ast.value) is int):
+            continue
+        label, width = label_ast.value, width_ast.value
+        if width not in (1, 2, 4):
+            continue
+        if isinstance(address_ast, ast.Constant):
+            address = address_ast.value
+        elif (isinstance(address_ast, ast.Attribute) and
+              isinstance(address_ast.value, ast.Name) and
+              address_ast.value.id == "cp"):
+            address = getattr(cp, address_ast.attr, None)
+        else:
+            continue
+        if not isinstance(address, int):
+            continue
+        mask = 0x40 if label.startswith(
+            "Sasuke battery 2 cutscene") else None
+        category = (
+            "saved_event_bit" if mask is not None else
+            "dynamic_field" if "pointer" in label.lower() else
+            "script_vm" if label.lower().startswith("script ") else
+            "fixed_global")
+        add(_entry(
+            "watch:usa:" + _slug(label), label, address, "usa",
+            category, f"u{width*8}", mask=mask,
+            source=f"practice/inspector.py:{node.lineno}",
+            confidence="research_observed",
+            evidence="Existing Live Memory inspector watch; see original reader",
+            context=("Pointer valid in native menu only" if
+                     "pointer" in label.lower() else ""),
+            control="Live memory", owner="Inspector watches"))
+
     for field in CROSS_REGION_FIELDS:
         for region, address, other in (
                 ("usa", field.usa, field.japan),
