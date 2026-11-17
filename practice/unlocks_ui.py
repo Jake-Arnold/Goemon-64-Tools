@@ -677,7 +677,11 @@ class UnlocksMixin:
             values = read_flag_bytes(
                 reader, region, self.unlock_flag_rows.values())
             if reader is None:
-                self.unlock_flag_feedback.set('Disconnected.')
+                self.unlock_flag_feedback.set(
+                    'Disconnected. Connect to the game to enable On/Off.')
+            elif self.unlock_flag_feedback.get().startswith(
+                    ('Disconnected', 'Flag bank unavailable')):
+                self.unlock_flag_feedback.set('Live event flags connected.')
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
             values = {}
             self.unlock_flag_feedback.set(f'Flag bank unavailable: {exc}')
