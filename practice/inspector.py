@@ -9,6 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 import struct
 import math
+import re
+from practice.address_registry import guest_address
 from practice import checkpoints as cp
 from practice.native_menu_categories import native_menu_category, NATIVE_MENU_CATEGORIES
 
@@ -78,6 +80,18 @@ INVENTORY = [
     ('Moon', 0x8015C85F, 1, 1, 'Miracle item: moon'),
     ('Flower', 0x8015C863, 1, 1, 'Miracle item: flower'),
     ('Snowflake', 0x8015C866, 1, 1, 'Miracle item: snowflake; address ends C866'),
+]
+
+# The original names and validation maxima describe reader behaviour.
+# Only the versioned registry owns the underlying guest addresses.
+INVENTORY = [
+    (label,
+     guest_address(
+         "inspector:usa:" +
+         re.sub(r"[^a-z0-9]+", "_", label.lower()).strip("_")[:76],
+         region="usa", width=width),
+     width, maximum, evidence)
+    for label, _legacy_addr, width, maximum, evidence in INVENTORY
 ]
 
 @dataclass(frozen=True)
