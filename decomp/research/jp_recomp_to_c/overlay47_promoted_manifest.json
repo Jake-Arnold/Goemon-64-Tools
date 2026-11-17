@@ -1,7 +1,6 @@
 {
-  "format": "goemon-usa-47-overlay-c-original-link-v1",
+  "format": "goemon-usa-47-overlay-c-original-link-v2",
   "original_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "canonical342_elf_sha256": "bbd86a77d315072fcf1112819e80c7807fbbe1288a68ef7c4b4b87b5fd4b7002",
   "functions": [
     {
       "name": "func_801D600C_6013EC",
@@ -426,5 +425,6 @@
       "source_sha256": "7141d76253d76f3e7ea3a71ce8a77a088f780153106d609b0acc51e668e34fe1",
       "original_code_sha256": "df30eb1b1957d2ebfc9da1ecd24f6222ddf45ce7f6aecf6e3199272de50e4477"
     }
-  ]
+  ],
+  "canonical346_elf_sha256": "02e355ab8765881608f27982e33e3b6895e6d042bba6c396837dde5ddd16bfdc"
 }

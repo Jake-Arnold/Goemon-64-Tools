@@ -1,4 +1,4 @@
-"""Fail-closed original-ROM 47-overlay C promotion atop a verified USA 342-C candidate.
+"""Fail-closed original-ROM 47-overlay C promotion atop a verified USA 346-C candidate.
 
 This is an opt-in, versioned native linker stage. It does not fetch ROMs or
 compiler assets and it does not modify the original upstream source checkout.
@@ -13,7 +13,7 @@ import re
 import struct
 import subprocess
 
-STAGE_FORMAT = 'goemon-usa-47-overlay-c-original-link-v1'
+STAGE_FORMAT = 'goemon-usa-47-overlay-c-original-link-v2'
 USA_SHA1 = '6ea0ed71032ce08fc2745f412d84936382197494'
 OVERLAYS = ('file_12', 'file_13', 'file_14', 'file_15', 'file_17', 'file_18', 'file_19')
 EXACT_COUNTS = {'file_12':7051,'file_13':9589,'file_14':3041,'file_15':1625,'file_17':1739,'file_18':3365,'file_19':1078}
@@ -28,7 +28,7 @@ def digest(data:bytes, algo='sha256')->str:
 def load_fixture() -> dict:
     p = json.loads(FIXTURE.read_text(encoding='utf8'))
     if (p.get('format')!=STAGE_FORMAT or p.get('original_usa_sha1')!=USA_SHA1
-            or p.get('canonical342_elf_sha256')!='bbd86a77d315072fcf1112819e80c7807fbbe1288a68ef7c4b4b87b5fd4b7002'):
+            or p.get('canonical346_elf_sha256')!='02e355ab8765881608f27982e33e3b6895e6d042bba6c396837dde5ddd16bfdc'):
         raise ValueError('Unreviewed cross-region 47 source fixture')
     entries = p.get('functions')
     if not isinstance(entries,list) or len(entries)!=47 or sum(e['size'] for e in entries)!=2220:
@@ -270,10 +270,10 @@ def verify_link(baseline:Path,candidate:Path,original_rom:bytes,plan:dict,packed
     baseline=Path(baseline);candidate=Path(candidate)
     built=(candidate/'build/usa/mnsg.z64').read_bytes()
     if len(built)!=33554432 or built!=original_rom or digest(built,'sha1')!=USA_SHA1:
-        raise ValueError('Combined original USA 342+47 ROM G2 failed')
+        raise ValueError('Combined original USA 346+47 ROM G2 failed')
     before=_funcs(baseline/'build/usa/mnsg.elf');after=_funcs(candidate/'build/usa/mnsg.elf')
     if sum(before.values())!=7376 or before!=after:
-        raise ValueError('Combined 389-C source introduced ELF function identity or size drift')
+        raise ValueError('Combined 393-C source introduced ELF function identity or size drift')
     oldrel=_relocations(baseline/'build/usa/mnsg.elf');newrel=_relocations(candidate/'build/usa/mnsg.elf')
     rels={}
     for section,count in EXACT_COUNTS.items():
@@ -283,7 +283,7 @@ def verify_link(baseline:Path,candidate:Path,original_rom:bytes,plan:dict,packed
         rels[section]=count
     # A native proof only; the official decomp inventory separately checks
     # the 342 canonical C claims plus exactly these 47 named conversions.
-    return {'status':'LINKED_342_PLUS_47_EXACT_NATIVE_G2_PASS', 'new_c':47,
+    return {'status':'LINKED_346_PLUS_47_EXACT_NATIVE_G2_PASS', 'new_c':47,
             'new_c_original_bytes':2220,'candidate_sha1':USA_SHA1,
             'candidate_elf_sha256':digest((candidate/'build/usa/mnsg.elf').read_bytes()),
             'original_elf_functions':7376,'relocations':rels,

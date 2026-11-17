@@ -1337,7 +1337,7 @@
   ],
   "heap_noop_text_layout": true,
   "overlay_file11_stage": {
-    "format": "goemon-file11-179-central-v1"
+    "format": "goemon-file11-183-central-v1"
   },
   "overlay_file13_stages": [
     {
@@ -1368,6 +1368,6 @@
     }
   ],
   "overlay_crossregion47_stage": {
-    "format": "goemon-usa-47-overlay-c-original-link-v1"
+    "format": "goemon-usa-47-overlay-c-original-link-v2"
   }
 }

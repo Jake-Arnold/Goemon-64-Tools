@@ -1,10 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-16T23:27:25.433511+00:00",
+  "started_utc": "2026-11-17T08:22:45.101198+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "512dcb943e7fbe3c5ecdaf715aff9e8b499fa4dbb96f4d94810833d112b7aa3e",
+  "verifier_source_sha256_lf": "182f0596aeba9229ffef403473201bf79c91c03b9fc9697d59cb3194b2d29190",
   "tool_versions": {
     "uv": "uv 0.10.0",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
@@ -55,7 +55,7 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "d19fc79c14d0c10f300106a8e032a44a5331643cd14018bea25d7dbb61eb2f52"
+    "linker_script_sha256": "75242cd8fc98a7cb46ba7aae3e3e97df8b219cac4fd4803b24f73dbf2f425b74"
   },
   "overlay_file12_tail_alias": {
     "rom_offset": "0x5E3C8C",
@@ -129,13 +129,13 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "d19fc79c14d0c10f300106a8e032a44a5331643cd14018bea25d7dbb61eb2f52"
+    "linker_script_sha256": "75242cd8fc98a7cb46ba7aae3e3e97df8b219cac4fd4803b24f73dbf2f425b74"
   },
   "overlay_file11_object_layout": {
-    "format": "goemon-file11-179-exact-object-layout-v1",
-    "objects_original_address_exact": 126,
-    "original_source_C_objects": 76,
-    "original_source_ASM_objects": 50,
+    "format": "goemon-file11-183-exact-object-layout-v1",
+    "objects_original_address_exact": 134,
+    "original_source_C_objects": 80,
+    "original_source_ASM_objects": 54,
     "unreviewed_object_hashes": []
   },
   "overlay_file13_object_layout": {
@@ -223,7 +223,7 @@
       }
     ],
     "preserved_prefix_text_alignment": 16,
-    "linker_script_sha256": "22d8242147887060766e5c0023e0814542a92ad9efca5b464cb7fd056b7a7dbb"
+    "linker_script_sha256": "69c27ab2f25f27c2ea5f63d1e731c4b20a66180d3ab66d7edf46b68c858b8c7f"
   },
   "object_layout": {
     "kind": "vm_assignment_rodata_metadata_v1",
@@ -260,9 +260,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 342,
-    "claimed_functions": 342,
-    "matched_function_bytes": 17568,
+    "matched_functions": 346,
+    "claimed_functions": 346,
+    "matched_function_bytes": 17720,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -2671,6 +2671,24 @@
         "candidate_sha256": "3869d364225c969e0d8bd7ec8ff1e591cf248c5bdf5d3c89c0659d372b7fbd30"
       },
       {
+        "name": "func_801E7E18_5A3D28",
+        "size": 40,
+        "guest_address": "0x801E7E18",
+        "rom_offset": "0x5A3D28",
+        "matched": true,
+        "expected_sha256": "23d4df0630aa89a0aa22c3c028f318cc6606e6bb3e240fbef7e5406a7bf7faa7",
+        "candidate_sha256": "23d4df0630aa89a0aa22c3c028f318cc6606e6bb3e240fbef7e5406a7bf7faa7"
+      },
+      {
+        "name": "func_801E7F08_5A3E18",
+        "size": 40,
+        "guest_address": "0x801E7F08",
+        "rom_offset": "0x5A3E18",
+        "matched": true,
+        "expected_sha256": "796578d74b011ac769ffa10e1a1938633d1d4a6b88497c135df1da32327f3a7b",
+        "candidate_sha256": "796578d74b011ac769ffa10e1a1938633d1d4a6b88497c135df1da32327f3a7b"
+      },
+      {
         "name": "func_801E8160_5A4070",
         "size": 24,
         "guest_address": "0x801E8160",
@@ -2842,6 +2860,15 @@
         "candidate_sha256": "1b948885620a897e75ee687a92830019232e7696591bbf5a7cd4960a69e32d4b"
       },
       {
+        "name": "func_801EF9F4_5AB904",
+        "size": 36,
+        "guest_address": "0x801EF9F4",
+        "rom_offset": "0x5AB904",
+        "matched": true,
+        "expected_sha256": "c8d16eec8a32878f0431e83ea45ea0c3150d84143f5bf7b7518bfb6b5ae75a66",
+        "candidate_sha256": "c8d16eec8a32878f0431e83ea45ea0c3150d84143f5bf7b7518bfb6b5ae75a66"
+      },
+      {
         "name": "func_801F0320_5AC230",
         "size": 32,
         "guest_address": "0x801F0320",
@@ -2849,6 +2876,15 @@
         "matched": true,
         "expected_sha256": "27df7b4c8e5894cf426c28393d044354e25961af7e7aa8c098a767ae2ba8e677",
         "candidate_sha256": "27df7b4c8e5894cf426c28393d044354e25961af7e7aa8c098a767ae2ba8e677"
+      },
+      {
+        "name": "func_801F05D0_5AC4E0",
+        "size": 36,
+        "guest_address": "0x801F05D0",
+        "rom_offset": "0x5AC4E0",
+        "matched": true,
+        "expected_sha256": "b0f835a1f466a227500e31ad6d22f50d320eb5ff621337a9b8b2d55768afa657",
+        "candidate_sha256": "b0f835a1f466a227500e31ad6d22f50d320eb5ff621337a9b8b2d55768afa657"
       },
       {
         "name": "func_801F2CB4_5AEBC4",
@@ -3514,6 +3550,8 @@
     "research/file11_143_candidate/wave5_59f044.c": "90242da42ae5cb3b6a003a35d2ebf2e7f34ecd8da24b53cb4d8b60396f33a08d",
     "research/file11_143_candidate/file11_wave1_5a0f94.c": "63c976cf1d6c5345b6dc3944ae8267bdb9e784cfd01205880e8d6ee1b45f0291",
     "research/file11_143_candidate/file11_extra_5a1630.c": "29713cbea1370623b338a7db2bd357c6dc843b51264fdc65a3999fb5558f56a7",
+    "research/file11_143_candidate/file11_wave6_5a3d28.c": "097bda585887cd5546a2959896872cef38fdfa96dc8af9e1ef8909768d0871ab",
+    "research/file11_143_candidate/file11_wave6_5a3e18.c": "d40d0d19845ec534e8f4db30820ee2dfd34e1497a6bcc2ae94d05f6c9cf46c85",
     "research/file11_143_candidate/file11_extra_5a4070.c": "20f3089ad86842a416ca628ece597d9dc657e80df7fcb48810906b3cb0faa683",
     "research/file11_143_candidate/file11_wave1_5a5fdc.c": "9cef8043fa8b17f6e8a1bb933051873d2c83fecae030be7465deb094ba139282",
     "research/file11_143_candidate/file11_wave1_5a63e0.c": "e6bde92622bd8390faf397b9265608bf50501d1e277e94c908a3ab7d6a2140d5",
@@ -3523,7 +3561,9 @@
     "research/file11_143_candidate/file11_extra_5aa30c.c": "971a9591c4d7f56bb4bedbfeecec61e669a7ac5f05c8e80f1105b98e92d04512",
     "research/file11_143_candidate/file11_extra_5aac94.c": "5cdab73424093afe81dc9994b221323d8e573fe09678a027d7956971def43ce7",
     "research/file11_143_candidate/file11_extra_5ab77c.c": "3257d071d67f67f954b618d0d5d007f18db7245dd1ad5e438924a71d9ab0fe09",
+    "research/file11_143_candidate/file11_wave6_5ab904.c": "d8441eeaca82a00032670ea8a24b5ccc89158504279dfb5e7569c0c9bc93907f",
     "research/file11_143_candidate/file11_wave1_5ac230.c": "be8174f776269fa6f34ada26f213d8c10a6246dc4b1443621473d73d03a6072d",
+    "research/file11_143_candidate/file11_wave6_5ac4e0.c": "93bdcbe88eb4bed2203f23af66fe1a61c92001607894ab8ff5cf65ae258598e4",
     "research/file11_143_candidate/file11_wave1_5aebc4.c": "e61acf0c55c048921e0340066fd4fbc0280d6e76a2f78226c00051777dc546bb",
     "research/file11_143_candidate/file11_wave1_5b1310.c": "cd3efcea3ea939e695a00bee73e209a16d47851165123f9ab91e62640a144d03",
     "research/file11_143_candidate/file11_wave1_5b144c.c": "06a7f9767e401e3ab4c5e8e7a4412b39be0f9c150a94465623a7ecec2593d8ed",
@@ -3579,7 +3619,7 @@
     "linked_elf_provenance": {
       "format": "goemon-file43-linked-elf-provenance-v1",
       "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
-      "candidate_elf_sha256": "54559e2ea1b2c73bf4cfc3fac4b5c614c6c21fd810ff50bf897989d99e3bd054",
+      "candidate_elf_sha256": "76e0a8eae54a2bfdc74bced27a14be3edad5bcd8733c11df40731a05ab1a858d",
       "reference_section": {
         "name": ".file_43",
         "vma_start": "0x08000000",
@@ -3729,7 +3769,7 @@
     "linked_elf_provenance": {
       "format": "goemon-file12-linked-elf-provenance-v1",
       "reference_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
-      "candidate_elf_sha256": "54559e2ea1b2c73bf4cfc3fac4b5c614c6c21fd810ff50bf897989d99e3bd054",
+      "candidate_elf_sha256": "76e0a8eae54a2bfdc74bced27a14be3edad5bcd8733c11df40731a05ab1a858d",
       "reference_section": {
         "name": ".file_12",
         "vma_start": "0x8020D2A0",
@@ -3850,7 +3890,7 @@
       "full_section_relocations_semantically_match": true,
       "raw_relocation_section_bytes_identical": false,
       "reference_raw_relocation_sha256": "48c95b35cdbd659707e557eead6b8e65d7fe389d3ff1bb2a9240719527087933",
-      "candidate_raw_relocation_sha256": "52ab6fe0088903266ca4716feaf6c1db0d6bc1151c1dd64fb7fafbf7d2f5955a",
+      "candidate_raw_relocation_sha256": "4fc58d723c8498ec3313578e6e15c25e04d50727421a552375abf5a99bc1ec6f",
       "relocation_symbol_metadata_normalizations": {
         "notype_to_object_data_symbols": 322,
         "absolute_to_overlay_tail_alias": 4,
@@ -3861,16 +3901,16 @@
     }
   },
   "overlay_file11_stage": {
-    "format": "goemon-file11-179-original-link-v1",
+    "format": "goemon-file11-183-original-link-v1",
     "status": "PASS",
-    "original_address_matching_c": 179,
-    "file11_C_instruction_bytes": 5184,
-    "original_native_object_provenance_checked": 126,
+    "original_address_matching_c": 183,
+    "file11_C_instruction_bytes": 5336,
+    "original_native_object_provenance_checked": 134,
     "original_semantic_file11_relocations": 8825,
     "candidate_semantic_file11_relocations": 8825,
     "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "complete_rom_bytes_equal": 33554432,
-    "stage": "goemon-file11-179-central-v1"
+    "stage": "goemon-file11-183-central-v1"
   },
   "overlay_file13_stages": {
     "stages": [
@@ -3946,5 +3986,5 @@
       ]
     }
   },
-  "ended_utc": "2026-11-16T23:28:06.146337+00:00"
+  "ended_utc": "2026-11-17T08:24:10.407122+00:00"
 }

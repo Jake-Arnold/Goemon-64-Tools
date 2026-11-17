@@ -1,0 +1,66 @@
+{
+  "format": "goemon-file11-wave6-four-unique-native-matches-v1",
+  "date": "2026-11-17",
+  "region": "usa",
+  "base_commit": "1961f1333e8a5007c3cf8df5dfa0d0ca5a0cea8b",
+  "base_usa_verified_functions": 342,
+  "base_file11_verified_functions": 179,
+  "base_verified_instruction_bytes": 17568,
+  "retail_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "new_native_exact_functions": 4,
+  "new_native_exact_bytes": 152,
+  "original_file11_function_boundaries": 906,
+  "pending_pr23_unique_unpromoted": 82,
+  "pending_pr23_original_bytes": 3512,
+  "original_offset_overlap": 0,
+  "stage": "ISOLATED_ORIGINAL_VMA_IDO_5_3_RESEARCH_ONLY",
+  "central_346_g2": "NOT_RUN",
+  "japan_native": "NOT_RUN",
+  "canonical_manifest_modified": false,
+  "functions": [
+    {
+      "name": "func_801E7E18_5A3D28",
+      "off": 5913896,
+      "vma": 2149482008,
+      "size": 40,
+      "source": "typedef unsigned char u8;typedef struct {char pad[0xCC];u8 mode;}Actor;int func_801E7E18_5A3D28(Actor*a){return ((a->mode>=29&&a->mode<40)||a->mode==184);}\n",
+      "source_sha256": "097bda585887cd5546a2959896872cef38fdfa96dc8af9e1ef8909768d0871ab",
+      "original_sha256": "23d4df0630aa89a0aa22c3c028f318cc6606e6bb3e240fbef7e5406a7bf7faa7",
+      "bindings": {}
+    },
+    {
+      "name": "func_801E7F08_5A3E18",
+      "off": 5914136,
+      "vma": 2149482248,
+      "size": 40,
+      "source": "typedef unsigned char u8;typedef struct {char pad[0xCC];u8 mode;}Actor;int func_801E7F08_5A3E18(Actor*a){return ((a->mode>=44&&a->mode<49)||a->mode==185);}\n",
+      "source_sha256": "d40d0d19845ec534e8f4db30820ee2dfd34e1497a6bcc2ae94d05f6c9cf46c85",
+      "original_sha256": "796578d74b011ac769ffa10e1a1938633d1d4a6b88497c135df1da32327f3a7b",
+      "bindings": {}
+    },
+    {
+      "name": "func_801EF9F4_5AB904",
+      "off": 5945604,
+      "vma": 2149513716,
+      "size": 36,
+      "source": "extern int h(void *,int); int func_801EF9F4_5AB904(void *a){return h(a,26)>=3;}\n",
+      "source_sha256": "2beee0b77a447500e7ec5fb2eb223abe35be3abba5eb4d4c140b8f16f7b79f46",
+      "original_sha256": "c8d16eec8a32878f0431e83ea45ea0c3150d84143f5bf7b7518bfb6b5ae75a66",
+      "bindings": {
+        "h": 2149485636
+      }
+    },
+    {
+      "name": "func_801F05D0_5AC4E0",
+      "off": 5948640,
+      "vma": 2149516752,
+      "size": 36,
+      "source": "extern int h(void *,int); int func_801F05D0_5AC4E0(void *a){return h(a,27)>=3;}\n",
+      "source_sha256": "cb198cd82762f8e41f0bdca6366421492da9b98fafa3a59970bed4ee9480467f",
+      "original_sha256": "b0f835a1f466a227500e31ad6d22f50d320eb5ff621337a9b8b2d55768afa657",
+      "bindings": {
+        "h": 2149485636
+      }
+    }
+  ]
+}
