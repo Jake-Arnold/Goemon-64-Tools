@@ -26,6 +26,21 @@ class CodexSkillTests(unittest.TestCase):
             descriptions.append(description)
         self.assertEqual(len(set(descriptions)), len(files))
 
+
+    def test_autonomous_coordinator_requires_all_promotion_gates(self):
+        source = (DIR / "goemon-autonomous-decomp" / "SKILL.md").read_text()
+        for requirement in ("chatgptweb/decomp", "decomp.verify", "decomp.inventory",
+                            "decomp.local_ci", "PROGRESS.md", "FAILED_ROM", "BLOCKED_INPUT"):
+            with self.subTest(requirement=requirement):
+                self.assertIn(requirement, source)
+
+    def test_connector_bridge_never_equates_api_to_local_checkout(self):
+        source = (DIR / "goemon-github-source-bridge" / "SKILL.md").read_text()
+        for requirement in ("Connector text replies", "Git blob SHA", "expected_sha",
+                            "BLOCKED_INPUT", "full-ROM verification"):
+            with self.subTest(requirement=requirement):
+                self.assertIn(requirement, source)
+
     def test_mandatory_skills(self):
         names = {p.parent.name for p in DIR.glob("*/SKILL.md")}
         self.assertTrue({"goemon-task-brief", "goemon-full-rom-proof",

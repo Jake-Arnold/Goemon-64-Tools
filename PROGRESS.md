@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Autonomous Goemon decomp session orchestration skills (ChatGPT/Codex)
+
+- **Change:** Add `.agents/skills/goemon-autonomous-decomp/SKILL.md` as the bounded ROM → candidate → original IDO exact-unit proof → full-ROM G2 → inventory/relocations → full local CI → verified promotion coordinator. Add `.agents/skills/goemon-github-source-bridge/SKILL.md` for public GitHub connector/shell DNS mismatch, checkout source materialization, Git blob verification and lease-protected connector publication. Extend `goemon-input-reproduce` for persistent ChatGPT Project ROM/runtime sources, register all 23 skills in the discovery README, and route autonomous tasks from `AGENTS.md`.
+- **Tests:** `python3 -m decomp.local_ci` PASS on a source reconstruction from the user-provided 720-promotion ZIP plus repository source: 232 decomp Python tests, 193 verifier/ledger tests, task/evidence validation, GCC ASan/UBSan display-emitter fixture. Four skill-specific metadata/guardrail tests PASS; two new tests assert the required gates and connector/local checkout separation.
+- **Scope/limitations:** Documentation and ROM-free tests only. No original-ROM recompilation, native MIPS promotion, function count or proof change. Repository-local skill files can be read by a ChatGPT session using GitHub but are not automatically installed as ChatGPT plugin skills; native execution still requires actual Project inputs, filesystem tools and GitHub access.
+- **Next:** Use the coordinator at the start of new Goemon decomp sessions, fetching fresh `chatgptweb/decomp` evidence before selecting a target.
+
+
 ### 2026-11-17 — Formal USA file_12 374-wrapper promotion: 346 to 720 matching-C
 
 - **Change:** Added versioned `goemon-file12-registration-374-v1` source and verifier/overlay adapter, claiming the 374 consecutive 36-byte `file_12` registration wrappers from ROM `0x5C9310` to `0x5CC7A8` (13,464 original code bytes), with original addresses and all 374 individual ELF FUNC identities pinned. The existing two file_12 C callbacks and all 346 accepted functions remain unchanged. The baseline C total is now **720** and **31,184** instruction bytes.

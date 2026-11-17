@@ -1,11 +1,13 @@
-# Goemon Codex skills
+# Goemon repository-local agent skills
 
-21 repository-local, task-specific skills are discoverable under `.agents/skills/<name>/SKILL.md`. Only skill metadata is loaded at discovery. Load the body of one relevant skill and an optional second specialist, not all 21.
+23 repository-local, task-specific skills are discoverable under `.agents/skills/<name>/SKILL.md`. Only skill metadata is loaded at discovery. Load the body of one relevant skill and an optional second specialist, not all 21.
 
 Use `python3 -m decomp.skill_context --status` and `python3 -m decomp.skill_context --task G64-031`; `--detail` loads a full task packet, `--phase 4` shows only a phase, and `--validate` checks stored-plan/report consistency without building a ROM.
 
 | Skill | Trigger |
 |---|---|
+| [goemon-autonomous-decomp](goemon-autonomous-decomp/SKILL.md) | Use to coordinate a complete original-ROM C discovery → native verification → formal promotion session in ChatGPT or Codex. |
+| [goemon-github-source-bridge](goemon-github-source-bridge/SKILL.md) | Use to recover source when GitHub connector access works but Linux cloning or filesystem transfer fails. |
 | [goemon-task-brief](goemon-task-brief/SKILL.md) | Use to start or resume a G64-001 to G64-100 task with minimal token cost and current evidence. |
 | [goemon-target-triage](goemon-target-triage/SKILL.md) | Use to choose or prioritize the next Goemon assembly function instead of wasting variants on exhausted candidates. |
 | [goemon-original-mips](goemon-original-mips/SKILL.md) | Use to reconstruct original Goemon MIPS control flow, callers, branch-likely delay slots, data references and return state. |
@@ -29,3 +31,5 @@ Use `python3 -m decomp.skill_context --status` and `python3 -m decomp.skill_cont
 | [goemon-input-reproduce](goemon-input-reproduce/SKILL.md) | Use to prepare or diagnose pinned Goemon ROM, IDO, upstream checkout, binutils, baseline cache and isolated build workdirs safely. |
 
 Run `python3 -m unittest decomp.test_skill_context decomp.test_codex_skills -v` in the actual repository. Core `AGENTS.md` and `decomp/plans/EXECUTOR_PROTOCOL.md` remain the source of authority. Never include private ROM/code bytes, huge objdump logs, or global Codex settings in skill packages.
+
+**ChatGPT usage:** These are GitHub-hosted repository instructions, not independently installed ChatGPT plugin skills. ChatGPT can read them using the connected GitHub tool or from a local checkout. For new Project chats, retain the Project source `GOEMON_AUTONOMOUS_DECOMP_SESSION_PROMPT.md` and its custom-instruction trigger. A Skill file does not grant network, filesystem, GitHub write or native compiler access.

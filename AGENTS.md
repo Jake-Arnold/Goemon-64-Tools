@@ -38,6 +38,8 @@ Keep `decomp/*` research separate from `main`-based toolkit PRs.
 
 ## Decomp continuation
 
+For autonomous end-to-end matching-C discovery and promotion in ChatGPT or Codex, begin with [goemon-autonomous-decomp](.agents/skills/goemon-autonomous-decomp/SKILL.md); for shell/GitHub connector access mismatches use [goemon-github-source-bridge](.agents/skills/goemon-github-source-bridge/SKILL.md). These coordinate existing narrow skills and never override native proof gates.
+
 For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
 It is the operational runbook; older checkpoints and result reports retain
 historical evidence and must not be treated as current instructions/counts.
