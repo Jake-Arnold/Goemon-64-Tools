@@ -1,5 +1,16 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — v0.11.41 flag folders, scrolling and catalogue live parity
+
+- **Bug root cause:** A Tk closure for Items & equipment wheel/resize later captured the reassigned flag canvas, preventing wheel scrolling of Items. Separate the canvas variables; route Linux X11 and touchpad events only to the mapped Items canvas and test actual scroll movement.
+- **Navigation and loading:** Type/subtype folders now start collapsed, creating only lightweight headers. Manual expansion builds one folder's flag buttons; keyword search creates only matching rows. Existing Japanese mapped flag On/Off controls remain fully usable without provenance-based write restrictions.
+- **Live catalogue:** Restrict listings to the active USA/Japan ROM. Show read-only decoded live values for only visible supported rows, refreshing in bounded background worker batches without blocking Tk. Drop cached values when the connection or game region changes; keep unavailable/unknown-width/code entries visible offline as research.
+- **No duplicate evidence rows:** Merge identical typed region/address/width/mask records into one canonical field, preserving stable aliases and separate evidence histories; leave different packed bits distinct. 462 field records / 305 region-address pairs, 358 readable descriptions and 104 research-only records in current audit. Counts reflect definitions, not proven semantics or distinct RAM bytes.
+- **Registry ownership:** Existing Unlocks, Story Progress, Japanese fields, scene probes, inspector inventory and reciprocal crosswalk obtain addresses/masks from `practice/address_registry.py`. Unknown dynamic references remain non-authoritative research entries. Alias-aware sync and isolated CI verification prevent silently missing new declarations.
+- **Tests/limits:** ROM-free registry, UI search/region/live worker and actual Tk wheel movement tests added or updated. Linux/Windows final-tip CI and manual gameplay still require verification.
+- **Next:** Review stacked PR #57 after its parent #53, test on native Ubuntu/Japanese game, then merge in dependency order.
+
+
 ## 2026-11-17 — v0.11.40 canonical guest-address registry and shared searchable Live Memory catalogue
 
 - **Source-of-truth correction:** Registry metadata is not just a derived watch list. `practice/data/address_catalogue_v1.json` is authoritative for the actual guest addresses and packed masks used by existing USA Unlocks, USA Story Progress, Japanese unlock items, Japanese scene probes and the shared reciprocal crosswalk. `practice/address_registry.py` is a cycle-free runtime loader; original Python records retain behavioural validation and provenance, not a second write-target authority.

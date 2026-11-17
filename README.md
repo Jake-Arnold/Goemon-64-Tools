@@ -1,10 +1,22 @@
-# Goemon Speedrun Tools v0.11.40 — simplified navigation and unrestricted memory comparison test
+# Goemon Speedrun Tools v0.11.41 — simplified navigation and unrestricted memory comparison test
+
+## v0.11.41 — Items scroll repair, collapsed flag folders and live catalogue values
+
+The **Items & equipment** mouse-wheel now controls its own scrollable canvas. Previously the handler captured a variable later reused by the Flags canvas; the code now keeps separate references and accepts X11 and touchpad events from nested controls.
+
+Under **Story & event flags**, type/subtype folders are collapsed at startup. Opening a folder constructs just its On/Off controls; text searching expands matches while constructing only matched rows. All 142 USA and 58 mapped Japanese flags retain their experimental On/Off editors, including Japanese offset candidates.
+
+The **Live Memory → Address catalogue** displays records for the active ROM region only. Its **Live value** column automatically reads supported on-screen rows in batches of up to 32 through the existing verified reader, off the Tk thread. Unsupported, disconnected, code-VMA and untyped entries remain unavailable. Switching the game disconnects and clears earlier region values.
+
+Duplicate evidence entries with the same region, address, width and mask are now one canonical row, with every source alias and separate ROM/decomp, gameplay and candidate provenance retained. `usa_source` is authoritative evidence for the mapped original-code location where established, but it does not establish every proposed story interpretation. The registry remains the authoritative source of addresses and masks for existing Unlocks, Story Progress, Japanese fields, inspector watches and region crosswalk; unknown dynamic pointers are never promoted automatically.
+
+All tests use simulated RAM and headless Tk; original-game behaviour remains to be verified.
 
 ## v0.11.40 — Canonical Memory Address Catalogue
 
 **One versioned registry now owns memory addresses used by Unlocks, Story Progress, the USA/Japan crosswalk, Japanese fields and Live Memory:** [practice/data/address_catalogue_v1.json](practice/data/address_catalogue_v1.json). The runtime resolves registered guest addresses and event bit masks through `practice/address_registry.py` instead of maintaining separate write targets. Existing manual experimental Japanese Story & event flag On/Off controls remain editable regardless of candidate confidence.
 
-**Live memory → Address catalogue** is available while disconnected. Search every indexed address, partial hex, flag ID, alias, source, category or note; filter by USA/Japan/unknown, evidence, type or category; sort columns; read complete provenance and overlap metadata; copy addresses and masks; add a supported field to existing Live watches; inspect selected guest bytes using the connected region-correct backend; or navigate to its existing control. The catalogue does not continuously poll all fields or create new automatic writers.
+**Live memory → Address catalogue** is available while disconnected. Search every indexed address, partial hex, flag ID, alias, source, category or note; automatically show the active USA/Japan region, filter by evidence, type or category; sort columns; read complete provenance and overlap metadata; copy addresses and masks; add a supported field to existing Live watches; inspect selected guest bytes using the connected region-correct backend; or navigate to its existing control. The catalogue does not continuously poll all fields or create new automatic writers.
 
 **462 records across 305 distinct region/address combinations** are currently indexed, including 358 supported live-readable field descriptions, 104 research-only or unsupported records, 58 experimental Japanese crosswalk story flags, the 25 external leads, 11 expanded repeat-code warp slots, script-VM pointers and Ebisumaru transformation observations. The checked-in [audit](practice/data/address_catalogue_audit.json) distinguishes aliases, bit overlap, disputed fields and unknown data widths. The totals are *field records*, not unique game-memory bytes.
 
