@@ -9,7 +9,7 @@ from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock,
 from practice.hex_edit import parse_hex
 from practice.story_progress import write_story_value
 from practice.unlock_flag_catalog import (
-    flags_for_region, read_flag_bytes, write_confirmed_japan_flag,
+    flags_for_region, read_flag_bytes, write_japan_crosswalk_flag,
 )
 from practice.region_unlocks import (
     japan_unlock_lead, japan_unlock_all_targets,
@@ -145,8 +145,8 @@ class UnlocksMixin:
             flags_page,
             text=('Each named saved event is one masked bit. Set/Clear edits '
                   'only that bit, not neighbouring flags or Start-menu items. '
-                  'Japan candidates are read-only until separately verified. '
-                  'Editing a flag does not replay the associated cutscene or reward.'),
+                  'Japanese crosswalk candidates can also be Set/Cleared for live '
+                  'testing. Editing a flag does not replay the cutscene or reward.'),
             style='Muted.TLabel', wraplength=1000).pack(anchor='w', pady=(3, 8))
         search_bar = ttk.Frame(flags_page)
         search_bar.pack(fill='x', pady=(0, 6))
@@ -525,11 +525,11 @@ class UnlocksMixin:
             self.unlock_flag_detail.set('Select a named bit to see its evidence.')
             return
         limitation = (
-            'Editable as a user-confirmed Japanese mapping.'
-            if self.active_version.key == 'japan' and flag.editable else
-            'JP offset is an unverified candidate; read-only.'
+            ('JP user-confirmed; Set/Clear available.'
+             if flag.source == 'JP user-confirmed' else
+             'JP offset candidate; Set/Clear available for testing. Verify the effect in-game.')
             if self.active_version.key == 'japan' else
-            'USA mapped bit. Setting it may change game progression.')
+            'USA mapped bit; Set/Clear available.')
         self.unlock_flag_detail.set(
             f'{flag.label} — {flag.evidence}. {limitation}')
 
@@ -557,13 +557,13 @@ class UnlocksMixin:
             raw = values.get(flag.key)
             state = ('—' if raw is None else
                      'Set' if raw & flag.mask else 'Clear')
-            if raw is not None and region == 'japan' and not flag.editable:
+            if raw is not None and region == 'japan' and flag.source == 'JP offset candidate':
                 state += ' (candidate)'
             self.unlock_flag_tree.set(flag.key, 'value', state)
         self.select_unlock_flag()
 
     def set_unlock_flag(self, target):
-        """Explicit per-bit action; never edit a candidate JP event address."""
+        """Explicit masked bit edit for mapped USA and JP event fields."""
         table = self.unlock_flag_tree
         selected = table.selection()
         flag = self.unlock_flag_rows.get(selected[0]) if len(selected) == 1 else None
@@ -571,12 +571,12 @@ class UnlocksMixin:
             if flag is None or flag.key not in table.get_children():
                 raise ValueError('Select one visible named flag first')
             if not self._can_write_unlock_flag(flag):
-                raise PermissionError('Flag not verified for this region, disconnected or read-only')
+                raise PermissionError('Connect with memory writes enabled; read-only mode blocks editing')
             expected = self.unlock_flag_snapshot.get(flag.key)
             if expected is None:
                 raise RuntimeError('Displayed flag byte unavailable; refresh first')
             if self.active_version.key == 'japan':
-                changed = write_confirmed_japan_flag(
+                changed = write_japan_crosswalk_flag(
                     self.write_japan_raw_bytes, flag, target, expected)
             else:
                 # Reuse the existing Story Progress masked CAS writer.
