@@ -46,7 +46,7 @@ MAX_SERIALIZED = 5_000_000
 
 
 def hexaddr(address):
-    return f"0x{address:08X}" if isinstance(address, int) else str(address).upper()
+    return f"0x{address:08X}" if isinstance(address, int) else "0x" + str(address).replace("0X", "0x").removeprefix("0x").upper()
 
 
 def _slug(text):
@@ -287,7 +287,7 @@ def build_catalogue():
                 + lead.get("source", "")), context="Original external code: "
             + "; ".join(lead.get("raw_codes", [])), live=False)
         # Xplorer64 commands are a distinct address space, never guest data.
-        if address.startswith("0XA"):
+        if address.startswith("0xA"):
             record["category"] = "cheat_format"
         add(record, reconcile=False)
         if lead["kind"] == "repeating_progress_flag":
