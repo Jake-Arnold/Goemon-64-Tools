@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Production native USA file_11 three-function promotion, 779 → 782 C
+
+- **Change:** Rebuilt the uploaded exact GitHub source ZIP (tree SHA `910d1b485558dc9a4b3e6bfd5bc10a0252f52bfe`) against the pinned original USA toolchain. Promoted `func_801E7D78_5A3C88` (0x5A3C88, 40 B), `func_801F23C8_5AE2D8` (0x5AE2D8, 32 B), and `func_801F3AD0_5AF9E0` (0x5AF9E0, 32 B) into versioned 187-C `file_11` C/ASM layout, preserving the existing 779 accepted functions.
+- **Native gate:** Original IDO 5.3 and MIPS binutils produced all **33,554,432/33,554,432 USA ROM bytes identical**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Fresh combined `decomp.verify` **782/782 C**, **34,392 original bytes**. Semantic `file_11` relocations 8,825/8,825; seven other cross-overlay original semantic relocation multisets preserved. Exact original 7,376 positive-size function identities, zero new aliases. Splat's extra NOP-only label at `0x5AE2F8` was removed without altering the original instruction bytes.
+- **Inventory:** Strict `decomp.inventory` passed, 6,581 assembly entries remaining. The immutable 779-C combined proof and inventory were preserved; canonical reports and VM ledger updated. Three new functions are not part of the prior 82-candidate registry, which remains research-only. Japan remains 34 C.
+- **Tests:** Full `decomp.local_ci` (including sanitizers), targeted 187-C stage regression and candidate registry checks passed. No in-game test or Japanese native rebuild claimed. Read the native proof report and `decomp/results/usa_file11_three_782_promotion_20261117.json` for independent counts.
+- **Next:** Integrate a bounded native-exact subset of the 82 remaining USA file_11 research candidates with all 782 accepted functions, only promoting under fresh whole-ROM and strict inventory gates.
+
+
 ### 2026-11-17 — Three new USA file_11 functions isolated-native exact (research only; +0 accepted)
 
 - **New original-address research:** `func_801F3AD0_5AF9E0` (0x5AF9E0, 32 B), `func_801F23C8_5AE2D8` (0x5AE2D8, 32 B), and `func_801E7D78_5A3C88` (0x5A3C88, 40 B) are not in the accepted 184-C file_11 fixture or canonical pending registry. Each compiled under original IDO 5.3 at pinned `-O2 -mips2` to exact original USA instruction bytes (104/104), with exact ELF FUNC sizes and zero source relocations. The combined object has eight trailing zero padding bytes not included in the 104 instruction-byte claims.

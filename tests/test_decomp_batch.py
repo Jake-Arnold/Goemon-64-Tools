@@ -215,9 +215,11 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # Current 779-C proof: prior 732 plus 47 cross-overlay exact functions.
-        self.assertEqual(current['comparison']['matched_functions'],779)
-        self.assertEqual(current['comparison']['matched_function_bytes'],34288)
+        # Current 782-C proof: 779 prior plus three file_11 original functions.
+        self.assertEqual(current['comparison']['matched_functions'],782)
+        self.assertEqual(current['comparison']['matched_function_bytes'],34392)
+        preserved779=json.loads((ROOT/'results/combined_779_20261117.json').read_text())
+        self.assertEqual((preserved779['comparison']['matched_functions'],preserved779['comparison']['matched_function_bytes']),(779,34288))
         preserved732=json.loads((ROOT/'results/combined_732_20261117.json').read_text())
         self.assertEqual((preserved732['comparison']['matched_functions'],preserved732['comparison']['matched_function_bytes']),(732,32068))
         preserved731=json.loads((ROOT/'results/combined_731_20261117.json').read_text())

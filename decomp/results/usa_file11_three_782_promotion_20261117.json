@@ -1,0 +1,76 @@
+{
+  "format": "goemon-usa-file11-three-original-address-promotion-v1",
+  "date": "2026-11-17",
+  "base_production_functions": 779,
+  "new_production_functions": 782,
+  "base_production_bytes": 34288,
+  "new_production_bytes": 34392,
+  "rom": {
+    "bytes": 33554432,
+    "original_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "candidate_exact": true
+  },
+  "original_ido": "5.3 original",
+  "upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "file11": {
+    "c_functions": 187,
+    "c_bytes": 5576,
+    "relocations_original": 8825,
+    "relocations_candidate": 8825,
+    "unchanged": true
+  },
+  "elf": {
+    "original_positive_sized_function_entries": 7376,
+    "candidate_positive_sized_function_entries": 7376,
+    "additional_aliases": 0,
+    "size_annotation_differences_unchanged": true
+  },
+  "remaining_assembly_entries": 6581,
+  "candidate_registry_pending": {
+    "usa": 82,
+    "japan_0": 5
+  },
+  "functions": [
+    {
+      "name": "func_801E7D78_5A3C88",
+      "rom_offset": "0x5A3C88",
+      "vma": "0x801E7D78",
+      "size": 40,
+      "original_code_sha256": "47d34fd849e6abe20f35d49739d2ec505bfe5feee3955520afe5c470ff0f6405",
+      "source_sha256": "bdce635a95228047a011dc12db855fb9bf32165f2b7b4be05e3e53c8950da5ac",
+      "trimmed_native_object_sha256": "a238728b17107c96f28826e1cab16860fc448826c21c7421f5cb11214df440e2",
+      "status": "PASSED_G2"
+    },
+    {
+      "name": "func_801F23C8_5AE2D8",
+      "rom_offset": "0x5AE2D8",
+      "vma": "0x801F23C8",
+      "size": 32,
+      "original_code_sha256": "7b68d8cd198ca2ead83e644d7b037bcf4d80ae32a693429d334481d52df2b06e",
+      "source_sha256": "95d6256440e761467419b3fca8f059c348d060690616d80df35bccc55fe5f64c",
+      "trimmed_native_object_sha256": "f8d4932add45291260c829a3a2a979bee69b5e630ae7fd1246d99461b1806032",
+      "status": "PASSED_G2"
+    },
+    {
+      "name": "func_801F3AD0_5AF9E0",
+      "rom_offset": "0x5AF9E0",
+      "vma": "0x801F3AD0",
+      "size": 32,
+      "original_code_sha256": "b0b50f6e45d2a53ac3ccd0ca619f8e8a83a22863ec4bf458426d1620c64661c4",
+      "source_sha256": "f983e3cc0d761cec090fc09bd7a82963465c88e34cf119e147db52d65f828656",
+      "trimmed_native_object_sha256": "cc39b5b36ebb1e17141d23b8593868d2c5215e2be9876eecf26d67a5fe506b5a",
+      "status": "PASSED_G2"
+    }
+  ],
+  "canonical_combined_proof": "decomp/results/combined.json",
+  "canonical_combined_proof_sha256": "3e9976343c3fe0743ffd4938645e1ff61b161a933a8f56093840ae47bf185981",
+  "canonical_inventory": "decomp/results/inventory.json",
+  "canonical_inventory_sha256": "1b975a21b28ba11c081646cb7de817037f196cfa5f2f20f0b7c2f118ebb1a216",
+  "historic_combined_proof": "decomp/results/combined_779_20261117.json",
+  "historic_combined_sha256": "52140ab6bd159386714af89bb348baa471a9a80420a950a257ee335da4f02f86",
+  "historic_inventory": "decomp/results/inventory_779_20261117.json",
+  "historic_inventory_sha256": "bb0901ebf36084d899c67fb0b9dd3cf76f13c14fe61d1d62193b75574eb6b6ea",
+  "original_asm_replaced_by_c": 104,
+  "native_status": "PASSED_G2",
+  "local_ci": "PASS: full python suites, task/ledger validation and ASan/UBSan C host test; targeted 187-C and candidate-registry suites PASS"
+}

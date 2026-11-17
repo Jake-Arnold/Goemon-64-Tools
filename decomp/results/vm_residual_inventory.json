@@ -25,22 +25,22 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "7c9d12173749ce3cddc3ff15c4ef8c8b67e19c9955018450bf7522758d9078ab",
+    "manifest_sha256": "a383f1d8730cefb67cae01cf9e333322d71d7744d702360cf574453361dacf31",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "f72edcbbc8e7fd40b8f6c8d3c05ba22b95b09e5640ec95f07917ded8cdecd13f"
+    "verifier_sha256": "9e9886e4249328ee35225f090cf1548c4db4c16371a2192b69394ba3027df384"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "bb0901ebf36084d899c67fb0b9dd3cf76f13c14fe61d1d62193b75574eb6b6ea",
+    "report_sha256": "1b975a21b28ba11c081646cb7de817037f196cfa5f2f20f0b7c2f118ebb1a216",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "52140ab6bd159386714af89bb348baa471a9a80420a950a257ee335da4f02f86",
-    "matching_c_functions": 779,
-    "matching_c_bytes": 34288,
-    "combined_c_entries": 792,
-    "asm_entries": 6584,
+    "combined_proof_sha256": "3e9976343c3fe0743ffd4938645e1ff61b161a933a8f56093840ae47bf185981",
+    "matching_c_functions": 782,
+    "matching_c_bytes": 34392,
+    "combined_c_entries": 795,
+    "asm_entries": 6581,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Canonical USA 779/779: 732 previous C plus 47 cross-overlay C; complete 32MiB ROM byte-exact, original 7,376 function names/addresses preserved, unchanged seven-overlay relocation multisets. Japan 34-C separately unchanged.",
+    "note": "Canonical USA 782/782: 779 prior C plus three original-address file_11 C functions; complete 32MiB ROM byte-exact, original 7,376 function names/addresses preserved, unchanged semantic relocation multisets and zero new aliases. Japan 34 C separately unchanged.",
     "reconciled_date": "2026-11-17"
   },
   "residual_functions": [

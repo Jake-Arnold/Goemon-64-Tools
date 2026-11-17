@@ -1151,10 +1151,10 @@ class DecompVerificationTests(unittest.TestCase):
             sources.add(manifest['overlay_file43_stage']['source'])
         sources.update(stage['source'] for stage in manifest_file12_stages(manifest))
         if manifest.get('overlay_file11_stage') is not None:
-            from decomp import overlay_file11, file11_143_stage, file11_144_stage, file11_152_stage, file11_179_stage, file11_183_stage, file11_184_stage
+            from decomp import overlay_file11, file11_143_stage, file11_144_stage, file11_152_stage, file11_179_stage, file11_183_stage, file11_184_stage, file11_187_stage
             from decomp.research import usa_file11_noop_groups
-            if file11_stage_mode(manifest) in (143,144,152,179,183,184):
-                adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage,179:file11_179_stage,183:file11_183_stage,184:file11_184_stage}[file11_stage_mode(manifest)]
+            if file11_stage_mode(manifest) in (143,144,152,179,183,184,187):
+                adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage,179:file11_179_stage,183:file11_183_stage,184:file11_184_stage,187:file11_187_stage}[file11_stage_mode(manifest)]
                 sources.update('research/file11_143_candidate/'+chunk['name']+'.c'
                                for chunk in adapter.load_fixture()['chunks'] if chunk['kind']=='c')
             else:
@@ -1174,7 +1174,7 @@ class DecompVerificationTests(unittest.TestCase):
             else:
                 if name.startswith('research/file11_143_candidate/'):
                     from decomp import file11_143_stage, file11_144_stage, file11_152_stage
-                    adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage,179:file11_179_stage,183:file11_183_stage,184:file11_184_stage}[file11_stage_mode(manifest)]
+                    adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage,179:file11_179_stage,183:file11_183_stage,184:file11_184_stage,187:file11_187_stage}[file11_stage_mode(manifest)]
                     stem=name.rsplit('/',1)[-1].removesuffix('.c')
                     data=next(chunk['source'].encode('utf-8') for chunk in adapter.load_fixture()['chunks'] if chunk.get('name')==stem)
                 else:

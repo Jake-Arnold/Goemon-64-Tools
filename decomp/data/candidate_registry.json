@@ -3,7 +3,7 @@
   "description": "Deduplicated original-address C research. NOT accepted production C. Offsets are expanded-ROM offsets.",
   "generated_from_head": "bcbf4451f4d2ce2e83af3875d8dbe71b47813b56",
   "accepted_baseline": {
-    "usa_functions": 779,
+    "usa_functions": 782,
     "japan_0_functions": 34
   },
   "expected_pending": {

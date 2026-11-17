@@ -9,7 +9,10 @@ from decomp import file11_183_stage as prior, file11_184_stage as stage
 
 class Camera184StageTests(unittest.TestCase):
     def manifest(self):
-        return json.loads((stage.ROOT/'manifest.json').read_text())
+        result = json.loads((stage.ROOT/'manifest.json').read_text())
+        # Historical camera fixture must remain independently reproducible.
+        result['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
+        return result
 
     def test_one_camera_original_identity_added_to_183(self):
         old={(x['name'],x['rom_offset'],x['vma'],x['size']) for x in prior.entries()}
