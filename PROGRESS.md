@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Native USA camera reset promotion, 731 → 732 original-address C functions
+
+- **Change:** Integrated `func_801F97D4_5B56E4` (`file_11`, 136 original instruction bytes, guest VMA `0x801F97D4`) into the previously accepted 731-function USA build. The reviewed 184-C `file_11` layout retains all 183 prior original C sources and splits precisely one original ASM span, with original code, source and native object SHA-256 checks. The historical 731 proof and inventory are preserved separately.
+- **Native verification:** The authenticated IDO 5.3 and MIPS toolchain produced a complete **33,554,432/33,554,432-byte exact USA ROM**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. File_11 semantic relocations **8,825/8,825 exact**. All 7,376 original positive-sized ELF function identities preserved; **zero extra aliases**. USA now **732 matching C / 32,068 bytes**, **6,631 ASM entries** remain.
+- **Gates:** Fresh full `python3 -m decomp.verify` and strict `python3 -m decomp.inventory` passed. Full `python3 -m decomp.local_ci` including sanitizer tests, camera-specific regression tests and 731-C history-preservation tests all passed before publication. Evidence: `decomp/results/combined.json`, `decomp/results/inventory.json`, `decomp/results/usa_camera_reset_136_promotion_20261117.json`.
+- **Backlog:** Camera candidate removed; **129 USA functions (5,732 original code bytes)** and **five Japan functions (180 bytes)** remain `RESEARCH_ONLY`. No ROM, generated ASM, linked ELF or proprietary compiler included.
+
 ### 2026-11-17 — Native combined USA file_12 spatial promotion, 720 → 731 C functions
 
 - **Change:** Integrated 11 original-address `file_12` spatial/lifecycle helpers (748 original instruction bytes) into the existing 374-wrapper overlay stage alongside all 720 accepted C functions. Added pinned original instruction, relocation and compiler/staged object metadata. Generalized zero-padding-only IDO .text handling for valid zero-padding and original function-local relocation symbols without modifying payload bytes. Kept historical 720 proof and inventory unchanged as dated archives.

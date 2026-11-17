@@ -25,22 +25,22 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "1d72e4aae0c46279a259baad6800b8efea37d2367805b083f8a3b2dd851e4219",
+    "manifest_sha256": "7be7045e2a167475d661a984a986db6132d710e43fc11326961c0d936b51054c",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "a36a785f7d1aa1f5184570a306c4b4f35a5791caaf2ad596739505e27d39e480"
+    "verifier_sha256": "25123a88069547f788b789d8c3c23bc89416141fec7adc31c3ecb4a93b29c3e7"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "1dbe835fb94fd48d71fd1f606edbe365c2fd3b05b19c309b5d3df62a3628eaa4",
+    "report_sha256": "170206bdea3b63a876d5764269d1c69d0d003e4fe3a46f390f54c718ea89cf86",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "354fce49a5cb95c40651434f6a3b0a78f02fcb6297886e3fcb6d5c0480066fb2",
-    "matching_c_functions": 731,
-    "matching_c_bytes": 31932,
-    "combined_c_entries": 744,
-    "asm_entries": 6632,
+    "combined_proof_sha256": "646b5d27be1aa0d98fb7a0f52debd0abe3416d48b28b692902a1b3da9c6adfbd",
+    "matching_c_functions": 732,
+    "matching_c_bytes": 32068,
+    "combined_c_entries": 745,
+    "asm_entries": 6631,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Canonical USA 731/731: 720 previous C + 11 original-address file12 spatial/lifecycle functions; byte-exact complete 32MiB ROM; 7051 unchanged file12 semantic relocations, 8825 unchanged file11 relocations; 7376 original positive-sized functions. Japan 34-C independently unchanged.",
+    "note": "Canonical USA 732/732: 731 earlier C + original-address 136-byte file11 camera reset; byte-exact complete 32MiB ROM; 8825 unchanged file11 semantic relocations, 7051 unchanged file12 relocations; 7376 original positive-sized functions. Japan 34-C separately unchanged.",
     "reconciled_date": "2026-11-17"
   },
   "residual_functions": [

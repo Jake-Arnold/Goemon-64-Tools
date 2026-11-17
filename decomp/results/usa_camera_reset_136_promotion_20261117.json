@@ -1,0 +1,63 @@
+{
+  "format": "goemon-usa-camera-reset-136-native-promotion-v1",
+  "status": "PASSED_G2",
+  "region": "usa",
+  "verified_at_utc": "2026-11-17T18:24:50.226970+00:00",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "verified_full_rom_bytes": 33554432,
+  "verified_combined_functions": 732,
+  "verified_combined_function_bytes": 32068,
+  "verified_original_elf_function_entries": 7376,
+  "verified_remaining_assembly_entries": 6631,
+  "prior_verified_usa": {
+    "functions": 731,
+    "bytes": 31932
+  },
+  "new_functions": 1,
+  "new_original_instruction_bytes": 136,
+  "canonical_combined_proof": "decomp/results/combined.json",
+  "canonical_combined_proof_sha256": "646b5d27be1aa0d98fb7a0f52debd0abe3416d48b28b692902a1b3da9c6adfbd",
+  "canonical_inventory": "decomp/results/inventory.json",
+  "canonical_inventory_sha256": "170206bdea3b63a876d5764269d1c69d0d003e4fe3a46f390f54c718ea89cf86",
+  "historic_combined_proof": "decomp/results/combined_731_20261117.json",
+  "historic_inventory": "decomp/results/inventory_731_20261117.json",
+  "original_file11_relocations": 8825,
+  "candidate_file11_relocations": 8825,
+  "file11_semantic_relocations_equal": true,
+  "function": {
+    "region": "usa",
+    "segment": "file_11",
+    "name": "func_801F97D4_5B56E4",
+    "rom_offset": "0x5B56E4",
+    "vma": "0x801F97D4",
+    "size": 136,
+    "original_code_sha256": "f6266809ac26ff75f44d5f23cab8c15ae338e6185b88b69ec85bd83dfb7c0b8a",
+    "source": {
+      "path": "decomp/research/camera_reset_usa_5b56e4.c",
+      "git_blob_sha": "5993add1843ed201c94f6f61c9495ea8ffe8fcc8",
+      "origin_head": "c95975b28533b114acd65eb0d92b28405ae1ac01"
+    },
+    "provenance": [
+      "decomp/results/camera_reset_file11_180_native_proof_20261117.json"
+    ],
+    "prior_native_evidence": "PREVIOUS_FILE11_ONLY_FULL_ROM",
+    "status": "RESEARCH_ONLY",
+    "canonical_g2": "NOT_RUN",
+    "verified_original_address": "0x801F97D4",
+    "verified_rom_offset": "0x5B56E4",
+    "matched_compiled_original_bytes": 136,
+    "native_trimmed_c_object_sha256": "747fffc97c1b665b8323967c248e34c1a61a3b190d2d9a260ab099fc6ffa935d",
+    "source_sha256": "9d47ba199dfd48f5707b7623f45eee5e0853110f725e08bcf4ad7c151f7450c4",
+    "native_status": "PASSED_G2"
+  },
+  "verification_gates": {
+    "full_ROM": "PASSED",
+    "ELF_positive_function_entries": "PASSED",
+    "ROM_oracle_code_sha256": "PASSED",
+    "file11_semantic_relocations": "PASSED",
+    "inventory": "PASSED"
+  },
+  "note": "Original C and pinned evidence only. No copyrighted ROM, generated ASM or linked binaries committed."
+}

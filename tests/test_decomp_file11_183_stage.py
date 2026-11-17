@@ -10,7 +10,10 @@ from decomp import file11_179_stage as prior
 
 def manifest():
     with open(stage.ROOT / 'manifest.json') as f:
-        return json.load(f)
+        m = json.load(f)
+    # Preserve the exact 183-C contract when testing the historical stage.
+    m['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
+    return m
 
 
 class File11Wave6StageTests(unittest.TestCase):

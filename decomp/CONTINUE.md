@@ -1,6 +1,6 @@
 # Decomp continuation runbook
 
-> **Verified 731-C USA promotion (17 Nov 2026):** Eleven USA `file_12` spatial/lifecycle functions (748 bytes) were proven with the existing 720 C functions in a fresh byte-identical 32 MiB native build. Exact original ELF function inventory and the 7,051 file_12 semantic relocations pass. Full local CI passes. USA accepted **731 / 31,932 bytes**; Japan accepted **34 / 1,912 bytes**. Remaining pending **130 USA / 5,868 bytes** and **5 JP / 180 bytes**, all research-only; see [CANDIDATE_PROMOTION.md](CANDIDATE_PROMOTION.md) and [the registry](data/candidate_registry.json).
+> **Verified 732-C USA checkpoint (17 Nov 2026):** One original-address `file_11` camera-reset function (136 bytes) joined all 731 previously accepted C functions in a fresh exact 32 MiB USA ROM rebuild. Original ELF identities, all 8,825 file_11 semantic relocations and strict inventory passed. USA accepted **732 C / 32,068 bytes**; Japan accepted **34 C / 1,912 bytes**. Remaining pending **129 USA / 5,732 bytes** and **5 JP / 180 bytes**, all research-only. The prior 731-C `file_12` proof remains in the dated historical reports. See [CANDIDATE_PROMOTION.md](CANDIDATE_PROMOTION.md) and [the registry](data/candidate_registry.json).
 
 
 For fast USA/Japan numbered-ROM file sizes and offsets, see [ROM_FILE_INVENTORY.md](ROM_FILE_INVENTORY.md), [the 1,311-file CSV](data/rom_file_inventory.csv), and [the partial semantic catalogue](data/rom_file_semantics.json). This is metadata research, not a new matching-C promotion.

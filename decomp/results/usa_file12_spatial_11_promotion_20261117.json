@@ -17,9 +17,9 @@
   },
   "new_functions": 11,
   "new_original_instruction_bytes": 748,
-  "canonical_combined_proof": "decomp/results/combined.json",
+  "canonical_combined_proof": "decomp/results/combined_731_20261117.json",
   "canonical_combined_proof_sha256": "354fce49a5cb95c40651434f6a3b0a78f02fcb6297886e3fcb6d5c0480066fb2",
-  "canonical_inventory": "decomp/results/inventory.json",
+  "canonical_inventory": "decomp/results/inventory_731_20261117.json",
   "canonical_inventory_sha256": "1dbe835fb94fd48d71fd1f606edbe365c2fd3b05b19c309b5d3df62a3628eaa4",
   "historic_combined_proof": "decomp/results/combined_720_20261117.json",
   "historic_inventory": "decomp/results/inventory_720_20261117.json",
@@ -310,5 +310,7 @@
     "file12_semantic_relocations": "PASSED",
     "inventory": "PASSED"
   },
-  "note": "Only original source and pinned metadata. No ROM, extracted ASM, linked ELF or toolchain included."
+  "note": "Only original source and pinned metadata. No ROM, extracted ASM, linked ELF or toolchain included.",
+  "archived_at_successor_usa_functions": 732,
+  "superseded_by": "decomp/results/usa_camera_reset_136_promotion_20261117.json"
 }

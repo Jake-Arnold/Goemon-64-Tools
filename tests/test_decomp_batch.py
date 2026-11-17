@@ -215,9 +215,12 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # Current 731-C proof: 720 accepted baseline plus 11 exact file12 C functions.
-        self.assertEqual(current['comparison']['matched_functions'],731)
-        self.assertEqual(current['comparison']['matched_function_bytes'],31932)
+        # Current 732-C proof: 731 accepted baseline plus 136-byte camera reset.
+        self.assertEqual(current['comparison']['matched_functions'],732)
+        self.assertEqual(current['comparison']['matched_function_bytes'],32068)
+        preserved731=json.loads((ROOT/'results/combined_731_20261117.json').read_text())
+        self.assertEqual(preserved731['comparison']['matched_functions'],731)
+        self.assertEqual(preserved731['comparison']['matched_function_bytes'],31932)
         # Historical canonical 720-C proof preserved intact, not rewritten.
         preserved720=json.loads((ROOT/'results/combined_720_20261117.json').read_text())
         self.assertEqual(preserved720['comparison']['matched_functions'],720)

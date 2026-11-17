@@ -3,12 +3,12 @@
   "description": "Deduplicated original-address C research. NOT accepted production C. Offsets are expanded-ROM offsets.",
   "generated_from_head": "bcbf4451f4d2ce2e83af3875d8dbe71b47813b56",
   "accepted_baseline": {
-    "usa_functions": 731,
+    "usa_functions": 732,
     "japan_0_functions": 34
   },
   "expected_pending": {
-    "usa_functions": 130,
-    "usa_bytes": 5868,
+    "usa_functions": 129,
+    "usa_bytes": 5732,
     "japan_0_functions": 5,
     "japan_0_bytes": 180
   },
@@ -1837,26 +1837,6 @@
         "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
       ],
       "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
-      "status": "RESEARCH_ONLY",
-      "canonical_g2": "NOT_RUN"
-    },
-    {
-      "region": "usa",
-      "segment": "file_11",
-      "name": "func_801F97D4_5B56E4",
-      "rom_offset": "0x5B56E4",
-      "vma": "0x801F97D4",
-      "size": 136,
-      "original_code_sha256": "f6266809ac26ff75f44d5f23cab8c15ae338e6185b88b69ec85bd83dfb7c0b8a",
-      "source": {
-        "path": "decomp/research/camera_reset_usa_5b56e4.c",
-        "git_blob_sha": "5993add1843ed201c94f6f61c9495ea8ffe8fcc8",
-        "origin_head": "c95975b28533b114acd65eb0d92b28405ae1ac01"
-      },
-      "provenance": [
-        "decomp/results/camera_reset_file11_180_native_proof_20261117.json"
-      ],
-      "prior_native_evidence": "PREVIOUS_FILE11_ONLY_FULL_ROM",
       "status": "RESEARCH_ONLY",
       "canonical_g2": "NOT_RUN"
     },

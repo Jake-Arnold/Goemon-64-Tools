@@ -129,6 +129,9 @@ def file11_adapter(mode):
     if mode == 183:
         from . import file11_183_stage
         return file11_183_stage
+    if mode == 184:
+        from . import file11_184_stage
+        return file11_184_stage
     raise ValueError('Unknown file_11 original-C ownership')
 
 
@@ -151,6 +154,8 @@ def file11_stage_mode(manifest):
         return 179
     if stage == {'format': 'goemon-file11-183-central-v1'}:
         return 183
+    if stage == {'format': 'goemon-file11-184-central-v1'}:
+        return 184
     raise ValueError('Unsupported file_11 matching-C stage contract')
 def manifest_file13_stages(manifest):
     """Return the ordered file_13 stages, retaining the legacy single-stage key."""
@@ -186,7 +191,7 @@ def claimed_functions(manifest):
     for stage in manifest_file12_stages(manifest):
         functions.extend(file12_registration.claims(stage))
     mode = file11_stage_mode(manifest)
-    if mode in (143,144,152,179,183):
+    if mode in (143,144,152,179,183,184):
         functions.extend(file11_adapter(mode).entries())
     elif mode is not None:
         functions.extend({'name': name, 'rom_offset': rom,
@@ -1119,7 +1124,7 @@ def load_manifest(path):
                 raise ValueError('file_12 function overlaps file_43 function')
     file11_mode = file11_stage_mode(manifest)
     if file11_mode is not None:
-        if file11_mode in (143,144,152,179,183):
+        if file11_mode in (143,144,152,179,183,184):
             file11_adapter(file11_mode).reviewed_plan(manifest)
             candidates = [(f['name'], f['rom_offset'], f['size'])
                           for f in file11_adapter(file11_mode).entries()]
@@ -1207,7 +1212,7 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
     if file11_mode is not None:
         if reference_rom is None:
             raise ValueError('file_11 staging requires authenticated USA decompressed ROM')
-        if file11_mode in (143,144,152,179,183):
+        if file11_mode in (143,144,152,179,183,184):
             adapter=file11_adapter(file11_mode)
             plan=adapter.reviewed_plan(manifest,reference_rom)
             file11_inline=adapter.source_payloads(checkout,plan)
@@ -2077,9 +2082,9 @@ def run_build(args,manifest,report):
     (candidate/'.venv').symlink_to(baseline/'.venv',target_is_directory=True)
     shutil.copyfile(args.retail_rom,candidate/'config/usa/baserom.z64')
     logged('candidate-setup',['make','setup','UV='+uv],candidate)
-    if file11_stage_mode(manifest) in (50,143,144,152,179,183):
+    if file11_stage_mode(manifest) in (50,143,144,152,179,183,184):
         report['overlay_file11_nop_aliases']=overlay_file11_noops.patch_synthetic_nop_aliases(candidate)
-        if file11_stage_mode(manifest) in (179,183):
+        if file11_stage_mode(manifest) in (179,183,184):
             report['overlay_file11_additional_nop_alias']=file11_adapter(file11_stage_mode(manifest)).normalize_added_nop_alias(candidate)
     file43_stage=manifest.get('overlay_file43_stage')
     file13_stages=manifest_file13_stages(manifest)
@@ -2109,7 +2114,7 @@ def run_build(args,manifest,report):
         )
     file11_mode=file11_stage_mode(manifest)
     if file11_mode is not None:
-        if file11_mode in (143,144,152,179,183):
+        if file11_mode in (143,144,152,179,183,184):
             file11_objects=file11_adapter(file11_mode).object_targets()
         elif file11_mode == 50:
             file11_objects=overlay_file11_noops.object_targets()
@@ -2117,7 +2122,7 @@ def run_build(args,manifest,report):
             file11_objects=overlay_file11.object_targets()
         logged('candidate-file11-objects',['make','-j'+str(args.jobs),'UV='+uv,
             *file11_objects],candidate)
-        if file11_mode in (143,144,152,179,183):
+        if file11_mode in (143,144,152,179,183,184):
             report['overlay_file11_object_layout']=file11_adapter(file11_mode).prepare_objects(candidate)
         elif file11_mode == 50:
             report['overlay_file11_object_layout']=overlay_file11_noops.trim(candidate)
@@ -2164,7 +2169,7 @@ def run_build(args,manifest,report):
         staged_name=PurePosixPath(file12_stage['source']).name
         report['sources_sha256_lf'][file12_stage['source']]=digest(
             (candidate/'src'/staged_name).read_bytes().replace(b'\r\n',b'\n'),'sha256')
-    if file11_mode in (143,144,152,179,183):
+    if file11_mode in (143,144,152,179,183,184):
         for chunk in file11_adapter(file11_mode).load_fixture()['chunks']:
             if chunk['kind'] == 'c':
                 name=chunk['name']
@@ -2211,7 +2216,7 @@ def run_build(args,manifest,report):
         report['overlay_file12_stages']=file12_report
         report['comparison']=result
     if file11_mode is not None:
-        if file11_mode in (143,144,152,179,183):
+        if file11_mode in (143,144,152,179,183,184):
             proof11=file11_adapter(file11_mode).verify_linked(
                 candidate,expected,baseline/'build/usa/mnsg.elf')
             proof11['stage']=file11_adapter(file11_mode).STAGE_FORMAT
