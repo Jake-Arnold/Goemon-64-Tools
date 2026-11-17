@@ -55,6 +55,7 @@ esac
   tests.test_native_checkpoints \
   tests.test_region_unlocks \
   tests.test_unlock_flag_catalog \
+  tests.test_address_registry \
   tests.test_region_memory_crosswalk \
   tests.test_region_crosswalk_agent \
   tests.test_crosswalk_shared_pages \
@@ -110,6 +111,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
     tests.test_unlock_flags_ui \
+    tests.test_address_catalogue_ui \
     tests.test_japan_story_progress_ui \
     tests.test_japan_named_checkpoint_ui \
     tests.test_japan_value_freezes_ui \
@@ -138,6 +140,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
     tests.test_unlock_flags_ui \
+    tests.test_address_catalogue_ui \
     tests.test_japan_story_progress_ui \
     tests.test_japan_named_checkpoint_ui \
     tests.test_japan_value_freezes_ui \
