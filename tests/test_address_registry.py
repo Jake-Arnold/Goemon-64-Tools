@@ -42,13 +42,13 @@ class RegistryTests(unittest.TestCase):
         payload, ids = load_registry()
         validate_catalogue(payload)
         self.assertEqual(payload["format"], "goemon-address-catalogue-v1")
-        self.assertGreaterEqual(len(payload["entries"]), 500)
+        self.assertGreaterEqual(len(payload["entries"]), 440)
         self.assertGreaterEqual(len(ids), len(payload["entries"]))
         self.assertEqual(len(registry_records()), len(payload["entries"]))
         stats = audit_catalogue(payload)
         self.assertEqual(stats["total_records"], len(payload["entries"]))
         self.assertGreaterEqual(stats["experimental_japan_flags"], 58)
-        self.assertGreaterEqual(stats["live_readable"], 400)
+        self.assertGreaterEqual(stats["live_readable"], 330)
         self.assertGreaterEqual(stats["research_only"], 75)
 
     def test_every_menu_item_resolves_only_registry_addresses(self):
@@ -132,6 +132,31 @@ class RegistryTests(unittest.TestCase):
         self.assertNotEqual(
             lookup("research:ebisumaru_active_timer")["address"],
             lookup("unlock:usa:mini_ebisumaru")["address"])
+
+    def test_duplicate_story_source_provenance_collapses_to_one_field(self):
+        matches = [
+            row for row in registry_records()
+            if row['region'] == 'usa' and
+            row['address'] == '0x8015C62D' and
+            row.get('mask') == '0x20'
+        ]
+        self.assertEqual(len(matches), 1)
+        row = matches[0]
+        self.assertEqual(row['id'], 'story:usa:lord_event_enabled')
+        alias = 'crosswalk:usa:event:lord_event_enabled'
+        self.assertIn(alias, row.get('id_aliases', []))
+        self.assertIs(lookup(alias), lookup(row['id']))
+        tags = {item['confidence'] for item in
+                row.get('confidence_sources', [])}
+        self.assertTrue({'usa_source', 'research_observed'} <= tags)
+        # Bits with distinct masks in a shared saved byte are not conflated.
+        same_byte = [
+            item for item in registry_records()
+            if item['region'] == 'usa' and
+            item['address'] == row['address'] and
+            item.get('mask') != row['mask']
+        ]
+        self.assertTrue(same_byte)
 
     def test_overlaps_are_not_lost(self):
         rows = registry_records()
