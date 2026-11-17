@@ -505,8 +505,9 @@ class UnlocksMixin:
         self.select_unlock_flag()
 
     def _can_write_unlock_flag(self, flag):
-        if flag is None or not flag.editable:
+        if flag is None:
             return False
+        # Evidence/provenance is never a write gate for mapped crosswalk bits.
         if self.active_version.key == 'japan':
             return self._japan_unlock_controls_ready()
         return bool(
