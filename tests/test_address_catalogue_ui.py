@@ -44,7 +44,7 @@ class AddressCatalogueUITests(unittest.TestCase):
         app.live_memory_sections.select(app.address_catalogue_page)
         app.show_address_catalogue()
         self.assertTrue(app.catalogue_loaded)
-        self.assertGreater(len(app.catalogue_rows), 490)
+        self.assertGreater(len(app.catalogue_rows), 400)
 
     def test_existing_live_watches_preserved_and_catalogue_offline(self):
         app = self.app
@@ -59,25 +59,38 @@ class AddressCatalogueUITests(unittest.TestCase):
         self.assertIn("Registry v", app.catalogue_status.get())
         self.assertIsNotNone(app.watch_tree)
 
-    def test_search_filters_and_sort_return_vm_and_disputed(self):
+    def test_search_filters_sort_and_active_region_exclusion(self):
         app = self.app
         self._open()
+        self.assertEqual(app.catalogue_region.get(), 'usa')
+        self.assertTrue(all(
+            app.catalogue_rows[row]['region'] == 'usa'
+            for row in app.catalogue_tree.get_children()))
         app.catalogue_query.set("1C77E8")
+        app._apply_queued_catalogue_filter()
         self.assertEqual(len(app.catalogue_tree.get_children()), 1)
         self.assertTrue(app.catalogue_tree.exists(
             "research:vm_text_stream_cursor"))
         app.catalogue_query.set("")
-        app.catalogue_region.set("japan")
-        app.catalogue_evidence.set("disputed")
-        self.assertGreaterEqual(len(app.catalogue_tree.get_children()), 1)
+        app._apply_queued_catalogue_filter()
         app.catalogue_category.set("saved_event_bit")
         app.catalogue_type.set("u8")
-        app.catalogue_region.set("usa")
-        app.catalogue_evidence.set("all")
         self.assertGreater(len(app.catalogue_tree.get_children()), 40)
         app.sort_address_catalogue("name")
         app.sort_address_catalogue("address")
         self.assertEqual(app.catalogue_sort[0], "address")
+        app.catalogue_category.set("all")
+        app.catalogue_type.set("all")
+        app.game_version_choice.set(VERSIONS['japan'].label)
+        app.on_game_version_changed()
+        self.assertEqual(app.catalogue_region.get(), 'japan')
+        self.assertTrue(all(
+            app.catalogue_rows[row]['region'] == 'japan'
+            for row in app.catalogue_tree.get_children()))
+        self.assertFalse(app.catalogue_tree.exists(
+            "story:usa:benkei_encounter"))
+        app.catalogue_evidence.set("disputed")
+        self.assertGreaterEqual(len(app.catalogue_tree.get_children()), 1)
 
     def test_selection_shows_full_evidence_related_fields_and_copy(self):
         app = self.app
@@ -133,20 +146,67 @@ class AddressCatalogueUITests(unittest.TestCase):
         self.assertIn("0x801C77E8", app.catalogue_selected.get())
         self.assertEqual(ram.writes, [])
 
-    def test_japan_backend_is_independent_and_research_leads_remain_visible(self):
+    def test_japan_backend_is_independent_and_region_limited(self):
         app = self.app
         self._open()
-        app.catalogue_tree.selection_set("crosswalk:japan:event:benkei_encounter")
-        app.inspect_catalogue_address()
-        self.assertIn("Region mismatch", app.catalogue_selected.get())
+        self.assertFalse(app.catalogue_tree.exists(
+            "crosswalk:japan:event:benkei_encounter"))
         app.game_version_choice.set(VERSIONS["japan"].label)
         app.on_game_version_changed()
-        app.catalogue_region.set("japan")
+        self.assertEqual(app.catalogue_region.get(), "japan")
         self.assertTrue(app.catalogue_tree.exists(
             "crosswalk:japan:event:benkei_encounter"))
-        app.catalogue_tree.selection_set("crosswalk:japan:event:benkei_encounter")
+        app.catalogue_tree.selection_set(
+            "crosswalk:japan:event:benkei_encounter")
         app.inspect_catalogue_address()
         self.assertIn("Disconnected", app.catalogue_selected.get())
+        app.game_version_choice.set(VERSIONS["usa"].label)
+        app.on_game_version_changed()
+        self.assertFalse(app.catalogue_tree.exists(
+            "crosswalk:japan:event:benkei_encounter"))
+
+    def test_live_values_poll_visible_rows_without_guest_writes(self):
+        app = self.app
+        self._open()
+        ram = FakeRAM()
+        ram.bytes[0x8015C60C] = 0xA1
+        app.mem = ram
+        selected = "story:usa:benkei_encounter"
+        app.catalogue_tree.selection_set(selected)
+        app._catalogue_live_cycle(force=True)
+        import time
+        deadline = time.monotonic() + 2
+        while app.catalogue_live_busy and time.monotonic() < deadline:
+            app._poll_catalogue_worker()
+            time.sleep(0.01)
+        self.assertEqual(
+            app.catalogue_tree.set(selected, "value"), "161  (bit On)")
+        self.assertEqual(ram.writes, [])
+        app.game_version_choice.set(VERSIONS["japan"].label)
+        app.on_game_version_changed()
+        self.assertEqual(app.catalogue_live_cache, {})
+        self.assertFalse(app.catalogue_tree.exists(selected))
+
+    def test_same_physical_flag_has_one_row_with_both_evidence_sources(self):
+        app = self.app
+        self._open()
+        rows = [
+            item for item in app.catalogue_rows.values()
+            if item['region'] == 'usa' and
+            item['address'] == '0x8015C62D' and
+            item.get('mask') == '0x20']
+        self.assertEqual(len(rows), 1)
+        row = rows[0]
+        self.assertEqual(row['id'], 'story:usa:lord_event_enabled')
+        self.assertIn(
+            'crosswalk:usa:event:lord_event_enabled',
+            row.get('id_aliases', []))
+        self.assertIn(
+            'usa_source',
+            [entry['confidence'] for entry in row['confidence_sources']])
+        self.assertIn(
+            'research_observed',
+            [entry['confidence'] for entry in row['confidence_sources']])
 
     def test_control_navigation_preserves_original_unlock_tabs(self):
         app = self.app
