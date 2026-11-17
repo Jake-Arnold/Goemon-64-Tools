@@ -53,7 +53,7 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         # but are explicitly labelled as research (not a saved-event bank).
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
                          'normal')
-        self.assertIn('NOT a verified saved-event bank',
+        self.assertIn('offset-derived persistent-event bank candidate',
                       app.event_region_note.get())
         self.assertEqual(app.discovery_tabs.tab(app.value_search_tab, 'state'), 'normal')
         self.assertEqual(app.notebook.tab(app.unlock_tab, 'state'), 'normal')
