@@ -11,6 +11,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-17 — Canonical agent-only USA/Japan reciprocal memory mapping protocol
+
+- **Reason:** Agents discovering a static guest RAM field in either original region must immediately investigate the other version; a repeated `±0x57F0` displacement warrants a systematic but explicitly qualified procedure.
+- **Change:** Added the persistent rule to root `AGENTS.md` and published `docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md` with reported matches, reverse calculations, widths/masks, the user-disputed pause candidate, Snowflake exception and a reusable evidence record.
+- **Scope:** Documentation and agent workflow only. No changes to `practice/`, toolkit version, runtime writes, freezes, warps or GUI. The separate 119-field crosswalk prototype remains on draft PR #43 and is NOT merged by this change.
+- **Verification:** Reviewed against the source branch report and existing region tables; documentation-only, no live game or Python/Tk test run required to establish a memory semantic match.
+- **Next:** When future USA/JP fields are identified, record the counterpart hypothesis and independently test it. Keep PR #43 gated by its own runtime verification.
+
 ## 2026-11-16 — v0.11.36 final hosted CI proof
 
 - **Linux:** [GitHub Actions 43948425965](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948425965) PASSED at code commit `aaa2b9ff5a71f7520cbff8d45c63b83d4f519dd0`: 313 non-GUI synthetic tests (312 passed, 1 skipped), 139 Xvfb Tk GUI tests, no reported Tk callback failures.
