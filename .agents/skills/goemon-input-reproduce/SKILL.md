@@ -6,3 +6,5 @@ description: "Use to prepare or diagnose pinned Goemon ROM, IDO, upstream checko
 # goemon-input-reproduce
 
 Read `decomp/INPUTS.md` and verifier help. Confirm upstream commit, retail SHA1 `df8083a54296b8c151917c5333e1c85f014a2a66`, decompressed 32 MiB SHA1 `6ea0ed71032ce08fc2745f412d84936382197494`, IDO and binutils. Keep proprietary files under ignored `practice/diagnostics/` or private directory. Use fresh reports and provenance-validated caches. No copyrighted ROM download or committed binary. Missing inputs are BLOCKED_INPUT, not failure of unrelated work.
+
+For ChatGPT Project sessions, find `GOEMON_BUILD_ENVIRONMENT.md`, the original region ROM, `mnsg-japan.zip`, `goemon-dependencies.tar.gz` and `goemon-runtime-additions.tar.gz` among mounted Project sources; paths and `/tmp` build products do not persist across sessions. Reconstruct portable Python 3.12, Splat, MIPS binutils libraries and original IDO as the Project guide specifies. Check guest ROM byte order and required hashes before native work. The public repository does **not** contain these private inputs. Never treat tool metadata or an earlier chat's build logs as proof of a fresh rebuild.
