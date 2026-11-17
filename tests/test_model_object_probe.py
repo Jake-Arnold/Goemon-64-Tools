@@ -63,4 +63,20 @@ class ObjectStructureTests(unittest.TestCase):
         finally:root.destroy()
 
 
+    def test_captured_empty_overlays_explain_next_step(self):
+        root=tk.Tk();root.withdraw()
+        try:
+            data=bytearray(OBJECT_HEADER_BYTES)
+            struct.pack_into('>I',data,GRAPHICS_1_OFFSET,0x790047F8)
+            dialog=ModelObjectProbeDialog(root)
+            dialog.raw.insert('1.0',bytes(data).hex())
+            dialog.decode()
+            output=dialog.result.get('1.0','end')
+            self.assertIn('MATCHED PJ64 CAPTURE:',output)
+            self.assertIn('0x090047F8',output)
+            self.assertIn('Preview traced 4-part skeleton',output)
+            dialog.window.destroy()
+        finally:root.destroy()
+
+
 if __name__ == '__main__':unittest.main()

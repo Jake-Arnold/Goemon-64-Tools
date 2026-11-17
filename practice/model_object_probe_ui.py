@@ -42,7 +42,15 @@ class ModelObjectProbeDialog:
             flag='ROM-table-range' if o['plausible_rom_file_id'] else 'unverified/outside known file-ID range'
             rows.append(f'  [{o["index"]}] file={o["file_id_hex"]}, VRAM={o["vram_addr"]}, '
                         f'unknown_2={o["unknown_2"]}; {flag}')
-        rows.append('Not a confirmed actor→model map. Verify this object against the paused rendering call and RT64 draw calls.')
+        if result['graphics_1'] == '0x790047F8' and all(o['file_id'] == 0 and
+                                                            o['vram_addr'] == '0x00000000' for o in result['overlays']):
+            rows.append('MATCHED PJ64 CAPTURE: graphics_1 & 0x8FFFFFFE = 0x090047F8, '
+                        'the first of four decoded display-list roots in player resource 0x120.')
+            rows.append('Six empty local overlays are not an error. Close this window and use '
+                        'Research geometry → Preview traced 4-part skeleton to inspect the ROM fragments.')
+        else:
+            rows.append('No actor→model mapping established. Correlate the paused rendering call, '
+                        'loaded resource IDs and RT64 draw calls.')
         self.result.configure(state='normal')
         self.result.delete('1.0','end')
         self.result.insert('1.0','\n'.join(rows))

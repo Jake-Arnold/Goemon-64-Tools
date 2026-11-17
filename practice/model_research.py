@@ -36,6 +36,81 @@ PLAYER_FRAGMENT_SPANS = {
 EXPECTED_GRAPHICS_IDS = (0x120, 0x124, 0x128, 0x12C, 0x123, 0x127, 0x12B, 0x12F)
 
 
+# Four original-USA skeleton display-list roots captured in Project64 with
+# a0=0x80304BB0, a1=0x8014B0B0 in func_80018CA0_198A0. The graphics_1
+# pointer (0x790047F8) resolves to segment-09 offset 0x47F8. The other three
+# roots are consecutive 0x18-byte Skeleton records in this particular capture.
+# Independently authenticated Japanese file-0x120 roots are 0x60 earlier.
+# Not a stable Object RAM address, NPC actor mapping, full skeleton or animation.
+PJ64_CAPTURED_LIMB_ROOTS_USA = (0x47F8, 0x4BB0, 0x4930, 0x4CD0)
+PJ64_CAPTURED_LIMB_ROOTS_DELTA = {'usa': 0, 'japan_0': -0x60}
+PJ64_CAPTURED_LIMB_FACES = (20, 20, 22, 22)
+PJ64_CAPTURED_TEXTURE_REFS_USA = (0x0900B950, 0x0900B950, 0x0900C950, 0x0900C950)
+PJ64_CAPTURED_PART_COLORS = ((208, 128, 103), (100, 184, 203),
+                             (215, 181, 110), (153, 131, 212))
+
+
+def extract_traced_player_limb_bundle(rom, region):
+    """Replay four observed USA skeleton Gfx roots in authenticated regional file 0x120.
+
+    A manual Project64 screenshot and the original ROMs prove these four
+    display-list addresses. The resulting pieces are untransformed and do NOT
+    reconstruct an actor's full mesh or verify an NPC actor type. No game RAM
+    is required or modified; return metadata and a *coloured research* mesh.
+    """
+    if region not in PJ64_CAPTURED_LIMB_ROOTS_DELTA:
+        raise ValueError('Captured skeleton is verified only for USA/Japan rev-0 ROM layout')
+    files = RomFiles(rom) if region == 'usa' else JapanRomFiles(rom)
+    player_refs = player_graphics_resources(files, region)
+    if player_refs[0]['file_id'] != 0x120:
+        raise ValueError('Captured skeleton source file differs from verified player resource table')
+    data = files.file(0x120)
+    delta = PJ64_CAPTURED_LIMB_ROOTS_DELTA[region]
+    roots = tuple(offset + delta for offset in PJ64_CAPTURED_LIMB_ROOTS_USA)
+    parts, meshes = [], []
+    for index, (root, faces_expected, texture_ref, color) in enumerate(zip(
+            roots, PJ64_CAPTURED_LIMB_FACES, PJ64_CAPTURED_TEXTURE_REFS_USA,
+            PJ64_CAPTURED_PART_COLORS)):
+        # Prove the display-list prologue and first texture reference instead
+        # of guessing where a list begins in each region's decompressed file.
+        if root < 0 or root + 16 > len(data):
+            raise ValueError('Captured limb root lies outside original ROM resource')
+        first, _zero, texture_opcode, texture_ptr = struct.unpack_from('>IIII', data, root)
+        if first != 0xE7000000 or texture_opcode >> 24 != 0xFD:
+            raise ValueError('Captured limb display-list prologue differs from verified ROM')
+        if texture_ptr != texture_ref + delta:
+            raise ValueError('Captured limb texture pointer differs from verified regional ROM')
+        mesh = decode_geometry(data, root, min(root + 0x300, len(data) & ~7), segment=9)
+        if not mesh.ended or mesh.triangle_count != faces_expected:
+            raise ValueError('Captured limb display list is incomplete or geometry has changed')
+        if any('not loaded' in message for message in mesh.warnings):
+            raise ValueError('Captured limb references unresolved vertices')
+        parts.append(dict(index=index, display_list=f'0x09{root:06X}',
+                          resource_offset=root, first_texture_address=f'0x{texture_ptr:08X}',
+                          triangles=mesh.triangle_count, commands=mesh.commands,
+                          bounds=mesh.bounds))
+        meshes.append(mesh)
+    combined = MeshProbe(
+        triangles=tuple(tri for mesh in meshes for tri in mesh.triangles),
+        rgb=tuple(PJ64_CAPTURED_PART_COLORS[i] for i, mesh in enumerate(meshes)
+                  for _ in mesh.triangles),
+        commands=sum(m.commands for m in meshes),
+        vertex_loads=sum(m.vertex_loads for m in meshes),
+        opcodes=tuple(sorted(sum((Counter(dict(m.opcodes)) for m in meshes), Counter()).items())),
+        warnings=('Four separate display lists combined without skeletal matrices; positions overlap',
+                  'Colors distinguish parts and are not original game materials',
+                  'Texture pointers are outside file 0x120; segment loading/TMEM requires runtime verification'),
+        ended=all(m.ended for m in meshes),
+    )
+    return dict(region=region, rom_sha1=files.sha1, file_id=0x120,
+                segment=9, source='Project64 USA Skeleton* capture + verified original regional ROM',
+                resource_sha256=hashlib.sha256(data).hexdigest(),
+                roots=[f'0x09{root:06X}' for root in roots], parts=parts,
+                **combined.summary()), combined
+
+
+
+
 def player_graphics_resources(files, region):
     """Inspect the original player graphics file-ID table, not actor IDs.
 
@@ -252,6 +327,7 @@ def main(argv=None):
     parser.add_argument('--region', choices=('usa', 'japan_0'), required=True)
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument('--player-slot', type=int, help='Verified player graphics resource slot 0..3 (research fragment only)')
+    source.add_argument('--traced-player', action='store_true', help='Replay the four 2026-11-17 USA Project64-captured limb roots (unposed geometry only)')
     source.add_argument('--file-id', type=int)
     parser.add_argument('--start', type=lambda s: int(s, 0))
     parser.add_argument('--end', type=lambda s: int(s, 0))
@@ -259,7 +335,11 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         rom = args.rom.read_bytes()
-        if args.player_slot is not None:
+        if args.traced_player:
+            if args.start is not None or args.end is not None or args.segment != SEGMENT:
+                raise ValueError('--traced-player uses authenticated regional roots; omit --start, --end and --segment')
+            report, _mesh = extract_traced_player_limb_bundle(rom, args.region)
+        elif args.player_slot is not None:
             if args.start is not None or args.end is not None or args.segment != SEGMENT:
                 raise ValueError('--player-slot uses verified fragment offsets/segment; omit --start, --end and --segment')
             report, _mesh = extract_player_fragment(rom, args.region, args.player_slot)

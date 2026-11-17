@@ -13,7 +13,7 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import ttk, filedialog
 
-from practice.model_research import extract_rom_probe, extract_player_fragment
+from practice.model_research import extract_rom_probe, extract_player_fragment, extract_traced_player_limb_bundle
 from practice.model_object_probe_ui import ModelObjectProbeDialog
 
 
@@ -78,6 +78,9 @@ class ModelResearchDialog:
         self.player_button = ttk.Button(presets, text='Preview player resource fragment',
                                         command=self.preview_player_fragment)
         self.player_button.pack(side='left')
+        self.trace_button = ttk.Button(presets, text='Preview traced 4-part skeleton',
+                                       command=self.preview_traced_skeleton)
+        self.trace_button.pack(side='left', padx=7)
         ttk.Label(presets, text='Not an NPC mapping; slot identity and complete model unverified.').pack(side='left', padx=10)
         self.status = tk.StringVar(value='Select your own ROM and an explicit resource command span. No guessed actor resources are supplied.')
         ttk.Label(body, textvariable=self.status, wraplength=860).pack(anchor='w', pady=(0, 6))
@@ -118,6 +121,7 @@ class ModelResearchDialog:
         self.loading = True
         self.decode_button.state(['disabled'])
         self.player_button.state(['disabled'])
+        self.trace_button.state(['disabled'])
         self.status.set('Decoding original ROM resource; no guest-memory writes…')
         def work():
             try:
@@ -141,10 +145,32 @@ class ModelResearchDialog:
         self.loading = True
         self.decode_button.state(['disabled'])
         self.player_button.state(['disabled'])
+        self.trace_button.state(['disabled'])
         self.status.set('Validating original player graphics table and decoding one segment-09 research fragment…')
         def work():
             try:
                 result = extract_player_fragment(self.rom_path.read_bytes(), self.region, slot)
+                self.result_queue.put(('ok', result))
+            except (OSError, ValueError) as exc:
+                self.result_queue.put(('error', str(exc)))
+        threading.Thread(target=work, daemon=True).start()
+        self.window.after(60, self.poll_result)
+
+    def preview_traced_skeleton(self):
+        """Read-only replay of four captured limb roots; no actor ID inference."""
+        if self.loading:
+            return
+        if self.rom_path is None:
+            self.status.set('Choose the original regional ROM first')
+            return
+        self.loading = True
+        self.decode_button.state(['disabled'])
+        self.player_button.state(['disabled'])
+        self.trace_button.state(['disabled'])
+        self.status.set('Verifying Project64-captured limb roots against your original regional ROM…')
+        def work():
+            try:
+                result = extract_traced_player_limb_bundle(self.rom_path.read_bytes(), self.region)
                 self.result_queue.put(('ok', result))
             except (OSError, ValueError) as exc:
                 self.result_queue.put(('error', str(exc)))
@@ -162,15 +188,27 @@ class ModelResearchDialog:
         self.loading = False
         self.decode_button.state(['!disabled'])
         self.player_button.state(['!disabled'])
+        self.trace_button.state(['!disabled'])
         if kind != 'ok':
             self.status.set(f'Resource probe failed: {result}')
             return
         report, self.mesh = result
         self.file_id.set(hex(report['file_id']))
-        self.start.set(hex(report['start']))
-        self.end.set(hex(report['end']))
+        if 'roots' in report:
+            # A bundle has four independent display lists, not one continuous
+            # command range to replay with the manual single-span decoder.
+            self.start.set('')
+            self.end.set('')
+        else:
+            self.start.set(hex(report['start']))
+            self.end.set(hex(report['end']))
         self.segment.set(hex(report['segment']))
         self.reset_view()
+        if 'roots' in report:
+            self.status.set(f'PROJECT64 TRACE — {self.region} player resource 0x120, 4 independent limb lists, '
+                            f'{report["triangles"]} triangles; parts artificially coloured, unposed and '
+                            'overlapping. Textures and full model require RT64. NOT an NPC actor-ID mapping.')
+            return
         provenance = (f'Verified player resource table, slot {report["slot"]}; ' if 'slot' in report else 'Manual research range; ')
         self.status.set(f'RESEARCH ONLY — {provenance}{self.region} file 0x{report["file_id"]:03X} segment 0x{report["segment"]:02X}, {report["triangles"]} triangles, {report["commands"]} commands. Fragment only; NOT linked to selected NPC actor ID.')
 

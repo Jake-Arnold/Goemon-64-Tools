@@ -55,4 +55,36 @@ class ResearchViewTests(unittest.TestCase):
         finally:
             root.destroy()
 
+    def test_traced_pj64_four_part_preview_without_actor_binding(self):
+        root=tk.Tk();root.withdraw()
+        try:
+            dialog=ModelResearchDialog(root,region='usa',stage=353,actor_id=0x82)
+            self.assertIn('4-part skeleton',dialog.trace_button.cget('text'))
+            with tempfile.TemporaryDirectory() as folder:
+                rom=Path(folder)/'rom.z64';rom.write_bytes(b'test')
+                dialog.rom_path=rom
+                mesh=MeshProbe(triangles=(((0,0,0),(10,0,0),(0,10,0)),),
+                               rgb=((190,80,120),),commands=12,vertex_loads=1,
+                               opcodes=(),warnings=('part transforms omitted',),ended=True)
+                report=dict(roots=['0x090047F8']*4,file_id=0x120,segment=9,
+                            triangles=84,commands=152,warnings=[])
+                with patch('practice.model_research_ui.extract_traced_player_limb_bundle',
+                           return_value=(report,mesh)) as mocked:
+                    dialog.preview_traced_skeleton()
+                    limit=time.monotonic()+2
+                    while dialog.loading and time.monotonic()<limit:
+                        root.update()
+                        time.sleep(0.01)
+                    self.assertFalse(dialog.loading)
+                    mocked.assert_called_once_with(b'test','usa')
+                    self.assertEqual(dialog.file_id.get(),'0x120')
+                    self.assertEqual(dialog.start.get(),'')
+                    self.assertEqual(dialog.end.get(),'')
+                    self.assertEqual(dialog.segment.get(),'0x9')
+                    self.assertIn('84 triangles',dialog.status.get())
+                    self.assertIn('NOT an NPC actor-ID mapping',dialog.status.get())
+            dialog.window.destroy()
+        finally:root.destroy()
+
+
 if __name__=='__main__':unittest.main()

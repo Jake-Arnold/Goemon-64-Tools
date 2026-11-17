@@ -72,3 +72,29 @@ xvfb-run -a python3 -m unittest tests.test_model_research tests.test_player_mode
 15 relevant focused tests pass with both original ROMs, including GUI, parser source-layout, invalid resource ID, segment-8 regression, segment-9 extraction, per-region original file_11 tables and all eight fragment counts. Full repository CI, live PJ64 source-offset capture, native RT64 engine build and complete textured model reconstruction **not run**. No game ROM, textures, assets, GLB or memory dumps are included.
 
 Reference implementations: [Goemon64Recomp variables.h](https://github.com/klorfmorf/Goemon64Recomp/blob/dev/patches/variables.h), [Goemon64Recomp types.h](https://github.com/klorfmorf/Goemon64Recomp/blob/dev/patches/types.h), [upstream mnsg wave_uty.c](https://github.com/klorfmorf/mnsg/blob/main/src/wave_uty.c), [RT64 Goemon fork F3DEX decoder](https://github.com/klorfmorf/rt64/blob/goemon-patches/src/gbi/rt64_gbi_f3dex.cpp).
+
+## Captured Project64 four-list skeleton geometry (17 November 2026)
+
+An original-USA Project64 execution breakpoint at `0x80018CA0` supplied `a0=0x80304BB0` (`Skeleton*`) and `a1=0x8014B0B0` (`Object*`). The supplied 104-byte Object header has `graphics_1=0x790047F8`, `graphics_2=0`, and all six `OverlayInfo` file IDs and local addresses zero. The decoder's pointer mask `graphics_1 & 0x8FFFFFFE` produces `0x090047F8`, matching the first captured skeleton display list. **The earlier all-zero object-overlay output is not an error.** It does not identify an actor ID or a texture source.
+
+The first four 0x18-byte-spaced original-USA `Skeleton` entries begin at `0x80304BB0`, `0x80304BC8`, `0x80304BE0` and `0x80304BF8`, with these graphics pointers:
+
+| Limb list | USA segment-09 root | Japan rev-0 root | USA/JP triangles |
+| --- | --- | --- | ---: |
+| 0 | `0x090047F8` | `0x09004798` | 20 |
+| 1 | `0x09004BB0` | `0x09004B50` | 20 |
+| 2 | `0x09004930` | `0x090048D0` | 22 |
+| 3 | `0x09004CD0` | `0x09004C70` | 22 |
+
+Each root decodes as an independent F3DEX display list in **original file ID `0x120`**, which matches the source-confirmed first player graphics slot. Both ROMs' original retail hashes and file_11 ID tables were independently verified. All four roots have expected RDP texture-source commands, terminate with `G_ENDDL`, and decode all triangle indices. In original USA the first texture references are `0x0900B950` for the first two lists and `0x0900C950` for the next two; Japan has `0x0900B8F0` and `0x0900C8F0`. These addresses extend beyond the single decompressed file-0x120 length (`0xB950` USA, `0xB8F0` Japan). They are **segmented graphics addresses**, and a contiguous runtime memory/resource loading trace is still required before assigning actual texture ownership.
+
+The app now has **Room actors → Research geometry… → Preview traced 4-part skeleton**. Select the original regional ROM, then click that button; no hex snapshot needs pasting. It combines the four lists into a **colour-coded, unposed research view with orbit/zoom**, totalling 84 triangles. The four distinct colours are artificial and the displayed parts overlap because skeletal matrices have not been applied. This is **not** a full Goemon model and **not** an automatically mapped NPC. The existing **PJ64 object trace…** panel recognizes this one captured `graphics_1` value and explains the next action without implying that nonzero overlay slots are required.
+
+CLI (metadata only, no model asset exports):
+
+```bash
+python3 -m practice.model_research --region usa --rom '/path/to/USA.z64' --traced-player
+python3 -m practice.model_research --region japan_0 --rom '/path/to/JP.n64' --traced-player
+```
+
+The new and existing focused tests were run under Linux/Xvfb with both supplied original ROMs: **24/24 PASS**. Full repository CI, actual RT64 GPU replay, animated skeleton transforms, correct RDP textures and visual in-game 3D match have not been verified. No raw ROM data, extracted model binary, memory snapshots or game screenshots are committed.
