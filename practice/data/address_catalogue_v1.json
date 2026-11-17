@@ -5806,7 +5806,8 @@
         "practice/inspector.py:170",
         "practice/inspector.py:181",
         "practice/inspector.py:182",
-        "practice/native_debug_watch.py:68"
+        "practice/native_debug_watch.py:68",
+        "practice/native_debug_watch.py:81"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -7602,6 +7603,7 @@
         "practice/inspector.py:146",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:20",
+        "practice/native_debug_watch.py:33",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:54",
         "practice/story_progress.py:425"
@@ -7657,6 +7659,7 @@
         "practice/japanese_scene_probes.py:50",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:26",
+        "practice/native_debug_watch.py:39",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:59",
         "practice/scene_controls.py:70"
@@ -7711,6 +7714,7 @@
         "practice/japanese_scene_probes.py:55",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:27",
+        "practice/native_debug_watch.py:40",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:61",
         "practice/scene_controls.py:45"
@@ -7773,6 +7777,7 @@
         "practice/japanese_scene_probes.py:51",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:23",
+        "practice/native_debug_watch.py:36",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:58"
       ],
@@ -7811,7 +7816,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/native_debug_watch.py",
-        "practice/native_debug_watch.py:22"
+        "practice/native_debug_watch.py:22",
+        "practice/native_debug_watch.py:35"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -7869,6 +7875,7 @@
         "practice/japanese_scene_probes.py:49",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:24",
+        "practice/native_debug_watch.py:37",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:55"
       ],
@@ -7921,6 +7928,7 @@
         "practice/inspector.py:175",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:21",
+        "practice/native_debug_watch.py:34",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:62"
       ],
@@ -8143,6 +8151,7 @@
         "practice/japanese_scene_probes.py:53",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:28",
+        "practice/native_debug_watch.py:41",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:56",
         "practice/scene_controls.py:44"
@@ -8267,7 +8276,8 @@
         "practice/inspector.py:167",
         "practice/inspector.py:179",
         "practice/native_debug_watch.py",
-        "practice/native_debug_watch.py:29"
+        "practice/native_debug_watch.py:29",
+        "practice/native_debug_watch.py:42"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -8576,6 +8586,7 @@
         "practice/japanese_scene_probes.py:57",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:25",
+        "practice/native_debug_watch.py:38",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:65",
         "practice/scene_controls.py:74"
@@ -18847,7 +18858,18 @@
     "practice/native_debug_watch.py:27",
     "practice/native_debug_watch.py:28",
     "practice/native_debug_watch.py:29",
+    "practice/native_debug_watch.py:33",
+    "practice/native_debug_watch.py:34",
+    "practice/native_debug_watch.py:35",
+    "practice/native_debug_watch.py:36",
+    "practice/native_debug_watch.py:37",
+    "practice/native_debug_watch.py:38",
+    "practice/native_debug_watch.py:39",
+    "practice/native_debug_watch.py:40",
+    "practice/native_debug_watch.py:41",
+    "practice/native_debug_watch.py:42",
     "practice/native_debug_watch.py:68",
+    "practice/native_debug_watch.py:81",
     "practice/region_memory_crosswalk.py",
     "practice/region_memory_crosswalk.py:128",
     "practice/region_memory_crosswalk.py:129",
