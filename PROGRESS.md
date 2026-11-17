@@ -2701,6 +2701,13 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - Limitations: 73 other named annotations still outside this selected catalog; unknown/question-mark entries and untested semantics are not promoted. Current top-level milestone summaries remain scoped to the traced Benkei/Ushiwaka conditions. No live Project64 catalog rerun, executable build or complete-flag-coverage claim. Original captures/custom watches preserved.
 - Next: review remaining source annotations and their concrete script/native access paths before expanding summaries or adding progression actions. Use existing research first; request gameplay only for specific unresolved behavior.
 
+### 2026-11-17 — Source-audited USA/JP event-flag banks and controller-pak save-editor crosswalk
+- Changed: Added research-only crosswalk document `decomp/docs/USA_JAPAN_SAVE_EDITOR_EVENT_FLAG_CROSSWALK_20261117.md` and 524-row third-party editor annotation CSV `decomp/data/editor_save_flag_crosswalk_20261117.csv` (USA RAM address and explicit JP confidence status). No production C/manifest/result/inventory change.
+- Why: Independently map all 12 already-accepted USA packed event-bank set/clear/test/reset routines to original JP instructions and reconcile externally annotated save-file offsets with the native 0x304-byte `SaveData` block. Report special A/B `+0x57E0` displacement; C `+0x57F0`. Identify editor vs toolkit Miracle Snow/Chain Pipe discrepancies without speculative writes.
+- Tested: User-supplied ROM SHA-1s and pinned native decompression reproduced; 12 USA/JP original MIPS spans compared, 876 bytes (219 words), only 15 changed address-immediate words. Third-party TypeScript parsed: 527 rows / 524 in save payload / 456 packed events / 0 duplicate pairs. Researched original USA adjacent 0x24980, 0x249C4, 0x24D60 disassembly. No fresh native IDO C proof, full `decomp.verify`, `decomp.inventory`, `decomp.local_ci`, editor Playwright suite or in-game write tests.
+- Limitations: Editor labels are unverified external annotations; JP non-bank-C saved bytes are offset-candidates. These 12 JP functions are original MIPS equivalents, **not** promoted JP C; accepted baseline USA 732 / JP 34 unchanged.
+- Next: Native-compile the contiguous JP 12-function unit against its own 34-C original-layout baseline, run regional full G2 before promotion; trace the USA original callers/scripts for each named flag and prioritize the adjacent 36-byte `func_80023DC4_249C4` original-address IDO probe.
+
 ## Mandatory change-log template
 
 ```markdown
