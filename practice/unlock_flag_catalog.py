@@ -144,8 +144,10 @@ def flags_for_region(region):
     # of first appearance of each section and each key in the editable JSON.
     order = {key: index for index, key in enumerate(categories)}
     sections = {}
-    for flag in organised:
-        sections.setdefault((flag.group, flag.subtype), len(sections))
+    regional_keys = {flag.key for flag in catalog}
+    for key, (group, subtype) in categories.items():
+        if key in regional_keys:
+            sections.setdefault((group, subtype), len(sections))
     organised.sort(key=lambda flag: (
         sections[(flag.group, flag.subtype)], order[flag.key]))
     return tuple(organised)
