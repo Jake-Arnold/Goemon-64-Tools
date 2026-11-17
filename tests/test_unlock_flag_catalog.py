@@ -90,6 +90,12 @@ class CatalogTests(unittest.TestCase):
     def test_editable_json_lists_all_keys_and_preserves_address_masks(self):
         categories = load_flag_categories()
         self.assertEqual(set(categories), {f.key for f in FLAGS})
+        from practice.unlock_flag_catalog import CATEGORY_FILE
+        rows = json.loads(CATEGORY_FILE.read_text(encoding='utf-8'))['flags']
+        self.assertEqual(sum('Japan' in row['regions'] for row in rows), 58)
+        self.assertEqual(
+            {row['key'] for row in rows if 'Japan' in row['regions']},
+            {flag.key for flag in JAPAN_FLAGS})
         self.assertEqual(categories['benkei_encounter'],
                          ('Benkei & Kihachi', 'Unsorted'))
         for region, original in (('usa', USA_FLAGS), ('japan', JAPAN_FLAGS)):
