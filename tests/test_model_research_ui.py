@@ -1,5 +1,9 @@
 import tkinter as tk
 import unittest
+import tempfile
+import time
+from pathlib import Path
+from unittest.mock import patch
 from practice.model_research import MeshProbe
 from practice.model_research_ui import ModelResearchDialog
 
@@ -28,6 +32,25 @@ class ResearchViewTests(unittest.TestCase):
             self.assertGreater(window.yaw,initial)
             window.zoom_by(1.1)
             self.assertGreater(window.zoom,1.0)
+            with tempfile.TemporaryDirectory() as folder:
+                rom=Path(folder)/'dummy.z64'
+                rom.write_bytes(b'fake')
+                window.rom_path=rom
+                window.player_choices.current(1)
+                report=dict(region='japan_0',slot=1,file_id=0x124,segment=9,
+                    start=0x2448,end=0x2610,triangles=1,commands=3,warnings=[])
+                with patch('practice.model_research_ui.extract_player_fragment',return_value=(report,window.mesh)) as mocked:
+                    window.preview_player_fragment()
+                    limit=time.monotonic()+2
+                    while window.loading and time.monotonic()<limit:
+                        root.update()
+                        time.sleep(0.01)
+                    self.assertFalse(window.loading)
+                    mocked.assert_called_once_with(b'fake','japan_0',1)
+                    self.assertEqual(window.file_id.get(),'0x124')
+                    self.assertEqual(window.segment.get(),'0x9')
+                    self.assertIn('Verified player resource table',window.status.get())
+                    self.assertIn('NOT linked to selected NPC actor',window.status.get())
             window.window.destroy()
         finally:
             root.destroy()

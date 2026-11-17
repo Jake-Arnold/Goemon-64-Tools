@@ -22,6 +22,57 @@ MAX_COMMANDS = 8192
 MAX_FACES = 16384
 MAX_DEPTH = 8
 SEGMENT = 0x08
+SUPPORTED_SEGMENTS = (0x08, 0x09)
+# Pinned by original USA and JP retail ROM file_11. First four u16 at USA
+# overlay VMA 0x80204020 are g_character_graphics_file_ids, as named in
+# Goemon64Recomp patches/variables.h. The adjacent four entries follow them.
+PLAYER_TABLE_OFFSETS = {'usa': 0x38BC0, 'japan_0': 0x38380}
+# These are confirmed small F3DEX *fragments*, not the root of a full actor.
+# Each pair is (start, byte past the first G_ENDDL), with vertex data in seg 09.
+PLAYER_FRAGMENT_SPANS = {
+    'usa': ((0x25A8, 0x28C0), (0x24A8, 0x2670), (0x2B38, 0x2BB0), (0x2778, 0x2860)),
+    'japan_0': ((0x2548, 0x2860), (0x2448, 0x2610), (0x2AD8, 0x2B50), (0x26F8, 0x27E0)),
+}
+EXPECTED_GRAPHICS_IDS = (0x120, 0x124, 0x128, 0x12C, 0x123, 0x127, 0x12B, 0x12F)
+
+
+def player_graphics_resources(files, region):
+    """Inspect the original player graphics file-ID table, not actor IDs.
+
+    Recomp variable naming is source evidence; there is no confirmed
+    individual NPC ID or character name resolved by this function.
+    """
+    if region not in PLAYER_TABLE_OFFSETS:
+        raise ValueError('Unsupported player graphics region')
+    data = files.file(11)
+    offset = PLAYER_TABLE_OFFSETS[region]
+    if offset + 16 > len(data):
+        raise ValueError('Player graphics file table exceeds the overlay')
+    values = struct.unpack_from('>8H', data, offset)
+    if values != EXPECTED_GRAPHICS_IDS:
+        raise ValueError('Original player graphics file-ID table does not match verified region layout')
+    result = []
+    for slot in range(4):
+        start, end = PLAYER_FRAGMENT_SPANS[region][slot]
+        result.append(dict(slot=slot, file_id=values[slot], adjacent_file_id=values[slot+4],
+                           segment=9, start=start, end=end, evidence='file_11 verified 8-entry table'))
+    return result
+
+
+def extract_player_fragment(rom, region, slot):
+    """Decode one bounded player-resource fragment, not a full actor model."""
+    if type(slot) is not int or not 0 <= slot < 4:
+        raise ValueError('Player resource slot must be 0..3')
+    files = RomFiles(rom) if region == 'usa' else JapanRomFiles(rom) if region == 'japan_0' else None
+    if files is None:
+        raise ValueError('Unsupported region')
+    ref = player_graphics_resources(files, region)[slot]
+    data = files.file(ref['file_id'])
+    mesh = decode_geometry(data, ref['start'], ref['end'], segment=ref['segment'])
+    report = dict(region=region, rom_sha1=files.sha1, **ref,
+                  resource_sha256=hashlib.sha256(data).hexdigest(), **mesh.summary())
+    report['limitations'] = 'Verified player resource ID, unverified full model/character identity; partial untextured segment-09 geometry.'
+    return report, mesh
 
 
 @dataclass(frozen=True)
@@ -54,7 +105,7 @@ class MeshProbe:
             opcodes={f'0x{k:02X}': v for k, v in self.opcodes},
             warnings=list(self.warnings), ended=self.ended,
             bounds=self.bounds,
-            limitations='Vertex colour only; matrices, lighting, texture/TMEM, animation and culling not emulated.',
+            limitations='Raw vertex RGB/normal bytes only; matrices, lighting, texture/TMEM, animation and culling not emulated.',
         )
 
 
@@ -67,16 +118,18 @@ def _validate_span(data, start, end):
         raise ValueError('Display-list command span exceeds bounded research budget')
 
 
-def decode_geometry(data, start, end, *, max_commands=MAX_COMMANDS,
+def decode_geometry(data, start, end, *, segment=SEGMENT, max_commands=MAX_COMMANDS,
                     max_faces=MAX_FACES, max_depth=MAX_DEPTH):
     """Decode G_VTX/G_TRI1/G_TRI2/G_DL and G_ENDDL using RT64 F3DEX fields.
 
     Caller specifies the *exact research span*; it can start mid-list. Nested
-    G_DL targets may be elsewhere in the same decompressed resource (segment 8).
+    G_DL targets must resolve inside the same decompressed file and the explicitly selected segment (8 or 9).
     Commands that affect transform/lighting/texture are NOT applied. A warning
     is retained instead of asserting that the resulting geometry is complete.
     """
     _validate_span(data, start, end)
+    if type(segment) is not int or segment not in SUPPORTED_SEGMENTS:
+        raise ValueError('Unsupported F3DEX vertex/display-list segment; expected 8 or 9')
     if type(max_commands) is not int or not 1 <= max_commands <= MAX_COMMANDS:
         raise ValueError('Invalid command budget')
     if type(max_faces) is not int or not 1 <= max_faces <= MAX_FACES:
@@ -93,11 +146,13 @@ def decode_geometry(data, start, end, *, max_commands=MAX_COMMANDS,
     vertex_loads = 0
     ended = False
 
+    segment_id = segment
+
     def address_to_offset(ptr, label, *, align):
-        segment = ptr >> 24
+        pointer_segment = ptr >> 24
         offset = ptr & 0x00FFFFFF
-        if segment != SEGMENT or offset % align or offset >= len(data):
-            raise ValueError(f'{label} must be an aligned segment-08 pointer into the resource')
+        if pointer_segment != segment_id or offset % align or offset >= len(data):
+            raise ValueError(f'{label} must be an aligned segment-{segment_id:02X} pointer into the resource')
         return offset
 
     def emit_tri(w):
@@ -169,7 +224,7 @@ def decode_geometry(data, start, end, *, max_commands=MAX_COMMANDS,
         warnings.add('Research command range ended without G_ENDDL; geometry may be incomplete')
     if not triangles:
         warnings.add('No complete triangles decoded from this command range')
-    warnings.add('Textures, material state and skeletal transforms require RT64; this is a vertex-colour geometry probe')
+    warnings.add('Raw vertex RGB bytes may encode normals; textures, lighting, materials and skeletal transforms require RT64')
     return MeshProbe(tuple(triangles), tuple(rgb), command_count, vertex_loads,
                      tuple(sorted(opcodes.items())), tuple(sorted(warnings)), ended)
 
@@ -188,20 +243,31 @@ def extract_rom_probe(rom, region, file_id, start, end, **limits):
     probe = decode_geometry(data, start, end, **limits)
     return dict(region=region, rom_sha1=files.sha1, file_id=file_id,
                 resource_sha256=hashlib.sha256(data).hexdigest(),
-                start=start, end=end, **probe.summary()), probe
+                start=start, end=end, segment=limits.get("segment", SEGMENT), **probe.summary()), probe
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--rom', type=Path, required=True)
     parser.add_argument('--region', choices=('usa', 'japan_0'), required=True)
-    parser.add_argument('--file-id', type=int, required=True)
-    parser.add_argument('--start', type=lambda s: int(s, 0), required=True)
-    parser.add_argument('--end', type=lambda s: int(s, 0), required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument('--player-slot', type=int, help='Verified player graphics resource slot 0..3 (research fragment only)')
+    source.add_argument('--file-id', type=int)
+    parser.add_argument('--start', type=lambda s: int(s, 0))
+    parser.add_argument('--end', type=lambda s: int(s, 0))
+    parser.add_argument('--segment', type=lambda s: int(s, 0), choices=SUPPORTED_SEGMENTS, default=8)
     args = parser.parse_args(argv)
     try:
-        report, _mesh = extract_rom_probe(args.rom.read_bytes(), args.region,
-                                          args.file_id, args.start, args.end)
+        rom = args.rom.read_bytes()
+        if args.player_slot is not None:
+            if args.start is not None or args.end is not None or args.segment != SEGMENT:
+                raise ValueError('--player-slot uses verified fragment offsets/segment; omit --start, --end and --segment')
+            report, _mesh = extract_player_fragment(rom, args.region, args.player_slot)
+        else:
+            if args.start is None or args.end is None:
+                raise ValueError('--file-id requires --start and --end')
+            report, _mesh = extract_rom_probe(rom, args.region,
+                                              args.file_id, args.start, args.end, segment=args.segment)
         print(json.dumps(report, indent=2, sort_keys=True))
     except (OSError, ValueError, struct.error) as exc:
         parser.exit(1, f'Error: {exc}\n')

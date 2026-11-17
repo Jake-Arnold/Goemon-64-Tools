@@ -68,3 +68,9 @@ xvfb-run -a python3 -m unittest tests.test_model_research_ui -v
 ```
 
 Six parser tests and one headless Linux/Tk UI test passed in an isolated local source fixture; verified USA and Japan original-ROM probes for files 141 and 263 returned 108 and 159 triangles respectively. Full source repository tests, a built RT64 replay/preview harness, and live actor identity correlation have **not** been run.
+
+## Verified player graphics family and manual PJ64 bridge (17 November 2026)
+
+The next milestone adds original-ROM-verified player graphics table support and segment-`0x09` F3DEX fragment previews in **Research geometry…**. The USA source `g_character_graphics_file_ids[4]` table contains `0x120,0x124,0x128,0x12C`, and the Japanese rev-0 file_11 contains the matching table at a different region-specific offset. These are *player resource slots*, not NPC actor IDs or complete meshes. Four small manually bounded fragment previews (90 / 52 / 12 / 25 faces) have been validated independently in each ROM.
+
+An original-USA **PJ64 object trace…** dialog decodes the 0x68 bytes of the observed `Object*` argument from a paused `func_80018CA0_198A0` call. It exposes source-defined graphics fields and six overlay file references, but never stores or writes memory. No live actor→resource identity has been captured. The complete data, cross-region limits, test commands and offsets are in [PLAYER_GRAPHICS_RESOURCE_TRACE.md](PLAYER_GRAPHICS_RESOURCE_TRACE.md).

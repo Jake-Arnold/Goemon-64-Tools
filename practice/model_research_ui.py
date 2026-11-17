@@ -13,7 +13,8 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import ttk, filedialog
 
-from practice.model_research import extract_rom_probe
+from practice.model_research import extract_rom_probe, extract_player_fragment
+from practice.model_object_probe_ui import ModelObjectProbeDialog
 
 
 class ModelResearchDialog:
@@ -44,6 +45,9 @@ class ModelResearchDialog:
         ttk.Button(toolbar, text='Select local ROM…', command=self.choose_rom).pack(side='left')
         self.rom_note = tk.StringVar(value=f'No {region} ROM selected. No file path is stored.')
         ttk.Label(toolbar, textvariable=self.rom_note).pack(side='left', padx=8)
+        if region == 'usa':
+            ttk.Button(toolbar, text='PJ64 object trace…',
+                       command=lambda: ModelObjectProbeDialog(self.window)).pack(side='right', padx=8)
         inputs = ttk.Frame(body)
         inputs.pack(fill='x', pady=(0, 7))
         ttk.Label(inputs, text='Resource file ID:').pack(side='left')
@@ -52,12 +56,29 @@ class ModelResearchDialog:
         ttk.Label(inputs, text='Start offset:').pack(side='left')
         self.start = tk.StringVar()
         ttk.Entry(inputs, width=12, textvariable=self.start).pack(side='left', padx=(4, 12))
+        ttk.Label(inputs, text='Segment:').pack(side='left')
+        self.segment = tk.StringVar(value='0x08')
+        ttk.Combobox(inputs, textvariable=self.segment, values=('0x08', '0x09'),
+                     state='readonly', width=5).pack(side='left', padx=(4, 12))
         ttk.Label(inputs, text='End offset:').pack(side='left')
         self.end = tk.StringVar()
         ttk.Entry(inputs, width=12, textvariable=self.end).pack(side='left', padx=(4, 12))
         self.decode_button = ttk.Button(inputs, text='Decode research mesh', command=self.decode)
         self.decode_button.pack(side='left', padx=4)
         ttk.Button(inputs, text='Reset view', command=self.reset_view).pack(side='left')
+        presets = ttk.Frame(body)
+        presets.pack(fill='x', pady=(0, 7))
+        ttk.Label(presets, text='Verified player graphics file family:').pack(side='left')
+        self.player_slot = tk.StringVar(value='Slot 0 — file 0x120')
+        self.player_choices = ttk.Combobox(presets, state='readonly', width=23,
+            values=('Slot 0 — file 0x120', 'Slot 1 — file 0x124',
+                    'Slot 2 — file 0x128', 'Slot 3 — file 0x12C'),
+            textvariable=self.player_slot)
+        self.player_choices.pack(side='left', padx=6)
+        self.player_button = ttk.Button(presets, text='Preview player resource fragment',
+                                        command=self.preview_player_fragment)
+        self.player_button.pack(side='left')
+        ttk.Label(presets, text='Not an NPC mapping; slot identity and complete model unverified.').pack(side='left', padx=10)
         self.status = tk.StringVar(value='Select your own ROM and an explicit resource command span. No guessed actor resources are supplied.')
         ttk.Label(body, textvariable=self.status, wraplength=860).pack(anchor='w', pady=(0, 6))
         self.canvas = tk.Canvas(body, background='#171a23', highlightthickness=0)
@@ -85,17 +106,45 @@ class ModelResearchDialog:
             file_id = int(self.file_id.get().strip(), 0)
             start = int(self.start.get().strip(), 0)
             end = int(self.end.get().strip(), 0)
+            segment = int(self.segment.get().strip(), 0)
             if not (1 <= file_id <= 1310):
                 raise ValueError('File ID must be 1..1310')
         except ValueError as exc:
             self.status.set(f'Research input error: {exc}')
             return
+        if segment not in (8,9):
+            self.status.set('Research input error: segment must be 8 or 9')
+            return
         self.loading = True
         self.decode_button.state(['disabled'])
+        self.player_button.state(['disabled'])
         self.status.set('Decoding original ROM resource; no guest-memory writes…')
         def work():
             try:
-                result = extract_rom_probe(self.rom_path.read_bytes(), self.region, file_id, start, end)
+                result = extract_rom_probe(self.rom_path.read_bytes(), self.region, file_id, start, end, segment=segment)
+                self.result_queue.put(('ok', result))
+            except (OSError, ValueError) as exc:
+                self.result_queue.put(('error', str(exc)))
+        threading.Thread(target=work, daemon=True).start()
+        self.window.after(60, self.poll_result)
+
+    def preview_player_fragment(self):
+        if self.loading:
+            return
+        if self.rom_path is None:
+            self.status.set('Choose the original regional ROM first')
+            return
+        slot = self.player_choices.current()
+        if not 0 <= slot < 4:
+            self.status.set('Choose player resource slot 0..3')
+            return
+        self.loading = True
+        self.decode_button.state(['disabled'])
+        self.player_button.state(['disabled'])
+        self.status.set('Validating original player graphics table and decoding one segment-09 research fragment…')
+        def work():
+            try:
+                result = extract_player_fragment(self.rom_path.read_bytes(), self.region, slot)
                 self.result_queue.put(('ok', result))
             except (OSError, ValueError) as exc:
                 self.result_queue.put(('error', str(exc)))
@@ -112,12 +161,18 @@ class ModelResearchDialog:
             return
         self.loading = False
         self.decode_button.state(['!disabled'])
+        self.player_button.state(['!disabled'])
         if kind != 'ok':
             self.status.set(f'Resource probe failed: {result}')
             return
         report, self.mesh = result
+        self.file_id.set(hex(report['file_id']))
+        self.start.set(hex(report['start']))
+        self.end.set(hex(report['end']))
+        self.segment.set(hex(report['segment']))
         self.reset_view()
-        self.status.set(f'RESEARCH ONLY — {self.region} file {report["file_id"]}, {report["triangles"]} triangles, {report["commands"]} commands, {len(report["warnings"])} limitations/warnings. Not linked to actor ID.')
+        provenance = (f'Verified player resource table, slot {report["slot"]}; ' if 'slot' in report else 'Manual research range; ')
+        self.status.set(f'RESEARCH ONLY — {provenance}{self.region} file 0x{report["file_id"]:03X} segment 0x{report["segment"]:02X}, {report["triangles"]} triangles, {report["commands"]} commands. Fragment only; NOT linked to selected NPC actor ID.')
 
     def reset_view(self):
         self.yaw, self.pitch, self.zoom = 0.68, -0.32, 1.0
