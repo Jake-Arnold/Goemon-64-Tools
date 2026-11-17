@@ -12,6 +12,10 @@ on:
       - "tests/test_toolkit_version.py"
       - "tests/test_unlock_flag_catalog.py"
       - "practice/unlock_flag_catalog.py"
+      - "practice/updater.py"
+      - "practice/updater_ui.py"
+      - "tests/test_updater.py"
+      - "tests/test_updater_ui.py"
       - ".github/workflows/toolkit-windows-report.yml"
 
 permissions:
@@ -29,4 +33,4 @@ jobs:
       - name: Compile Python practice modules
         run: python -m compileall -q practice
       - name: Verify Windows-compatible report and version functions
-        run: python -m unittest tests.test_reports tests.test_discovery_results tests.test_value_search tests.test_toolkit_version tests.test_unlock_flag_catalog -v
+        run: python -m unittest tests.test_reports tests.test_discovery_results tests.test_value_search tests.test_toolkit_version tests.test_unlock_flag_catalog tests.test_updater -v
