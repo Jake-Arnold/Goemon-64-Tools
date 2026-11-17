@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Read-only USA ROM room actor browser (feature branch)
+
+- **Change:** Add practice/room_actors.py to enumerate individual 20-byte actor placement records referenced by each room's 16-byte definitions and spatial grid groups. Reuse the existing SHA-1-verified USA retail/expanded ROM parser; reject out-of-bounds headers, broken group pointers, invalid definitions and inconsistent cache summaries. Merge only identical spatial-group references, not separate instances using the same actor ID. Include actor labels with code/room annotation, external/unverified or unknown provenance.
+- **UI:** Add searchable **Room actors…** window to Scene browser. Selecting a different stage updates the read-only table with actor IDs, local definition/record/group offsets and grid-cell references. Existing USA ROM load populates both the entrance atlas and a local checksum-validated actor metadata cache. No N64 RAM, event flags, emulator hooks, game scripts or spawn code modified.
+- **Real ROM verification:** Original USA 16 MiB .z64 SHA-1 df8083a54296b8c151917c5333e1c85f014a2a66; static parsing completed for **333 rooms, 3,881 individual placement records and 255 distinct actor IDs**. Stage 353 (Oedo Town South) contains 30 records; multiple records refer to actor 0x082.
+- **Tests actually run:** Five focused synthetic Python/Tk tests PASS locally, including Linux/Xvfb UI rendering, filtering, spatial-group deduplication, malformed instance references, cache checks and missing optional actor-label catalog. Full repository test suite and real running-emulator UI attach were **not run** because the container could not clone GitHub through DNS; local validation used a minimal copy of the repository's ROM reader plus original supplied ROM. No original-native matching-C / G2 / inventory claim; decomp accepted counts unchanged.
+- **Limitations:** Lists **ROM room placements**, not loaded/live actors. Conditional spawn, draw distance, despawn, entity state, NPC identity and runtime actor-creation routines remain unverified. Locally cached actor metadata contains offsets and IDs, never raw room bytes, ROM contents or N64 guest-memory snapshots. Japan ROM support is not claimed.
+- **Next:** Locate the live actor/task pool and runtime actor-registration/destruction callbacks before adding active actor enumeration or safe creation hooks.
+
+
 ### 2026-11-17 — Native combined USA seven-overlay promotion, 732 → 779 original-address C functions
 
 - **Change:** Promoted 47 independently validated original-address C functions across USA `file_12`, `file_13`, `file_14`, `file_15`, `file_17`, `file_18` and `file_19`; preserved all 732 existing C functions and the 732 historical combined-ROM/ELF proof and inventory.
