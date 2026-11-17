@@ -1,0 +1,2403 @@
+{
+  "format": "goemon-address-research-mentions-v1",
+  "description": "Extracted 0x8xxxxxxx guest-address and instruction-VMA mentions from reviewed cross-branch sources. A mention is not proof of memory semantics, live readability or writing safety. The sync generator reconciles against typed structured sources; otherwise remains reference-only.",
+  "sources": [
+    {
+      "path": "decomp/CONTINUE.md",
+      "branch": "chatgptweb/decomp",
+      "sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+    },
+    {
+      "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+      "branch": "chatgptweb/decomp",
+      "sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+    },
+    {
+      "path": "decomp/VM_ARCHITECTURE_RESEARCH.md",
+      "branch": "chatgptweb/decomp",
+      "sha": "e6f216edf536a2c05a8eeec812095d16a433e771"
+    },
+    {
+      "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+      "branch": "chatgptweb/decomp",
+      "sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+    },
+    {
+      "path": "practice/MEMORY_MAP.md",
+      "branch": "toolkit/unlocks-items-and-flags-20261117",
+      "sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+    },
+    {
+      "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+      "branch": "main",
+      "sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+    },
+    {
+      "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+      "branch": "main",
+      "sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+    }
+  ],
+  "mentions": [
+    {
+      "address": "0x80020F10",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 226,
+          "context": "G64-068 completed as RESEARCH_ONLY: 0x80020F10 is a 1,332-byte selection",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x80021444",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 228,
+          "context": "ID; the matched 0x80021444/214E4 chain performs the separate entrance-record",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x800240DC",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 24,
+          "context": "`0x72163C` (indirect call to `0x800240DC`, literal flag ID in the delay slot).",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8003D0B8",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 375,
+          "context": "both still differ at entry, with the first full-unit mismatch at `0x8003D0B8`",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x8003D468",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 32,
+          "context": "`func_8003D468` (VMA `0x8003D468`) receives the initial segmented address and resource ID. It stores the ID in `0x801C78E8`, looks it up with `func_800141C4`, and stores the returned resource data pointer in `0x801C77FC`",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x8003DE84",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 310,
+          "context": "reported 228-byte size; its first original-VMA mismatch is `0x8003DE84`.",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x8003DE88",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 312,
+          "context": "the best moved the first mismatch to `0x8003DE88`, while a 232-byte symbol had",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x8003E6CC",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 389,
+          "context": "The target first differs at `0x8003E6CC` in the saved-register spill; its extra",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x8003ED60",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 321,
+          "context": "traced the 592-byte `0x8003ED60` handler, confirmed its no-argument `void` ABI",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x8003ED68",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 323,
+          "context": "IDO probe. It remains `GLOBAL_ASM` after a first mismatch at `0x8003ED68`; no",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x8003F384",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 381,
+          "context": "differs at `0x8003F384` in float-register order inside the 10,112-byte unit.",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x80077858",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 48,
+          "context": "disambiguates `0x80077858` as the VM program cursor from the separate",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 4,
+          "context": "**Scope:** Resolve the meaning of `0x80077858`, connect the active resource ID to its loaded bytes, and distinguish script execution from text emission.",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 14,
+          "context": "The value stored at **`0x80077858` is the relocated VM program counter**: it points into the active resource's 32-bit command/operand stream. It is not the cursor that advances through text tokens or through visible char",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 16,
+          "context": "This explains the reported stable `0x80077858` while multiple characters appear: after the VM reaches a text command, the high-level program counter can sit at the next command while the independent text cursor and per-w",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 32,
+          "context": "`func_8003D468` (VMA `0x8003D468`) receives the initial segmented address and resource ID. It stores the ID in `0x801C78E8`, looks it up with `func_800141C4`, and stores the returned resource data pointer in `0x801C77FC`",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 54,
+          "context": "PC[0x80077858: 32-bit VM command stream] -->|0x8010 resolves operand| SP[0x801C77E8 word 0: signed-halfword stream cursor]",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 91,
+          "context": "- `0x80077858` (program PC);",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 97,
+          "context": "The `0x80077858` write watch should identify the instruction responsible for each PC jump. A `0x801C77E8` write watch and the per-context `+0x6C/+0x6E` values will separate VM control movement from token emission. This c",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x8007BAD0",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 247,
+          "context": "- Native character cursor while original debug menu state `0x0A`: `0x800C7E60` **u32 pointer** values Goemon `0x8007BAD0`, Ebisumaru `0x8007BADC`, Sasuke `0x8007BAE8`, Yae `0x8007BAF4`. Eight forward/reverse captures, ea",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8007BADC",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 247,
+          "context": "- Native character cursor while original debug menu state `0x0A`: `0x800C7E60` **u32 pointer** values Goemon `0x8007BAD0`, Ebisumaru `0x8007BADC`, Sasuke `0x8007BAE8`, Yae `0x8007BAF4`. Eight forward/reverse captures, ea",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8007BAE8",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 247,
+          "context": "- Native character cursor while original debug menu state `0x0A`: `0x800C7E60` **u32 pointer** values Goemon `0x8007BAD0`, Ebisumaru `0x8007BADC`, Sasuke `0x8007BAE8`, Yae `0x8007BAF4`. Eight forward/reverse captures, ea",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8007BAF4",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 247,
+          "context": "- Native character cursor while original debug menu state `0x0A`: `0x800C7E60` **u32 pointer** values Goemon `0x8007BAD0`, Ebisumaru `0x8007BADC`, Sasuke `0x8007BAE8`, Yae `0x8007BAF4`. Eight forward/reverse captures, ea",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x800C7A73",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 273,
+          "context": "- Selected weapon: `0x8015C607` (u8, 1–3) confirmed all characters; map visible state `0x8015C574` read 0/1 but manual writes are side-effectful; `0x800C7A73` not magic.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 337,
+          "context": "| Magic-active candidate rejected | `0x800C7A73` | oscillating u8 `00`/`01` | Oscillates when magic is not activated |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x800C7A94",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 18,
+          "context": "| Engine state | `0x800C7A94` | `0x800CD284` | Previously documented regional runtime |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 242,
+          "context": "- **Experimental initial character load:** user-selected `0x8015C5DC` (u32) is written before `0x800C7A94=0x0C`, to test whether the area-entry actor loader uses the staged character ID. Neither character-at-spawn nor mo",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 260,
+          "context": "- Stage the saved absolute map ID as u16 at `0x800C7CA0`, then write `0x0C` to the top-level game state byte `0x800C7A94`. This experimentally requests the game to load the destination. **Do not** directly overwrite curr",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 261,
+          "context": "- Wait for `0x800C7AB2 == saved_map`, `0x800C7A94 == 0x0D`, a stable player object and no active transition/script, then write captured exact XYZ floats (`player_ptr +0x08/+0x0C/+0x10`) and rotation (`player_ptr +0x14` l",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 271,
+          "context": "- Reload trial: `0x800C7CA0` (pending destination, u16), then `0x800C7A94 = 0x0C` (game state reload). User saw destination map load but incorrect entrance coordinates. Tool now explicitly offers this exact pair, not the",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 301,
+          "context": "| Original-game native debug menu state | `0x800C7A94 = 0x0A` | u8 | code patch shown by ROM randomizer; not yet tested in US PC recomp |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 319,
+          "context": "The screenshot continues with OBOMBER, an unclear label, DATMAP, OPENING, GOPENING, BOSS3D.OP, DIARY, another unclear label and GAMEOVER. Last entry is index `0D`. The two unclear spellings remain provisional in `practic",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 27,
+          "context": "| Engine state | `0x800C7A94` | `0x800CD284` | Previously traced regional game state |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x800C7AA4",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 25,
+          "context": "`0x800C7AA4` from VM state word `0x801C77E0`. They are separate fields; the",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 22,
+          "context": "| Gameplay submode | `0x800C7AA4` | `0x800CD294` | User confirmed, 16 Nov |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 309,
+          "context": "`0x800C7AA4` is a `u8` menu category when top-level state is `0x0A`; its gameplay meaning is context-dependent. **MAIN occupies index 0.** The first five categories are:",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 32,
+          "context": "| Gameplay submode | `0x800C7AA4` | `0x800CD294` | User-confirmed |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x800C7AB2",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 19,
+          "context": "| Map | `0x800C7AB2` | `0x800CD2A2` | Previously documented regional runtime |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 260,
+          "context": "- Stage the saved absolute map ID as u16 at `0x800C7CA0`, then write `0x0C` to the top-level game state byte `0x800C7A94`. This experimentally requests the game to load the destination. **Do not** directly overwrite curr",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 261,
+          "context": "- Wait for `0x800C7AB2 == saved_map`, `0x800C7A94 == 0x0D`, a stable player object and no active transition/script, then write captured exact XYZ floats (`player_ptr +0x08/+0x0C/+0x10`) and rotation (`player_ptr +0x14` l",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 286,
+          "context": "| Current map | `0x800C7AB2` | u16 | high (Android fork static RE notes) |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 28,
+          "context": "| Current scene | `0x800C7AB2` | `0x800CD2A2` | Previously traced regional scene |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x800C7AE6",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 30,
+          "context": "- JP proposed pause flag `0x800CD2D6` (USA `0x800C7AE6`) was reported **not to behave as the pause flag**; keep it disputed until a better trace.",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 82,
+          "context": "| `0x800C7AE6` | `0x800CD2D6` | Pause-field candidate **disputed** by user observation |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x800C7CA0",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 260,
+          "context": "- Stage the saved absolute map ID as u16 at `0x800C7CA0`, then write `0x0C` to the top-level game state byte `0x800C7A94`. This experimentally requests the game to load the destination. **Do not** directly overwrite curr",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 271,
+          "context": "- Reload trial: `0x800C7CA0` (pending destination, u16), then `0x800C7A94 = 0x0C` (game state reload). User saw destination map load but incorrect entrance coordinates. Tool now explicitly offers this exact pair, not the",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 29,
+          "context": "| Pending scene | `0x800C7CA0` | `0x800CD490` | Previously traced regional transition |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x800C7E60",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 241,
+          "context": "- **Original debug menu cursor pointer:** `0x800C7E60` repeated pointer sequence is valid during active character highlighting only; user's later 128 value demonstrates nonpersistent interpretation. No writing this point",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 247,
+          "context": "- Native character cursor while original debug menu state `0x0A`: `0x800C7E60` **u32 pointer** values Goemon `0x8007BAD0`, Ebisumaru `0x8007BADC`, Sasuke `0x8007BAE8`, Yae `0x8007BAF4`. Eight forward/reverse captures, ea",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x800CD284",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 18,
+          "context": "| Engine state | `0x800C7A94` | `0x800CD284` | Previously documented regional runtime |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 27,
+          "context": "| Engine state | `0x800C7A94` | `0x800CD284` | Previously traced regional game state |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x800CD294",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 22,
+          "context": "| Gameplay submode | `0x800C7AA4` | `0x800CD294` | User confirmed, 16 Nov |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 32,
+          "context": "| Gameplay submode | `0x800C7AA4` | `0x800CD294` | User-confirmed |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x800CD2A2",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 19,
+          "context": "| Map | `0x800C7AB2` | `0x800CD2A2` | Previously documented regional runtime |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 28,
+          "context": "| Current scene | `0x800C7AB2` | `0x800CD2A2` | Previously traced regional scene |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x800CD2D6",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 30,
+          "context": "- JP proposed pause flag `0x800CD2D6` (USA `0x800C7AE6`) was reported **not to behave as the pause flag**; keep it disputed until a better trace.",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 82,
+          "context": "| `0x800C7AE6` | `0x800CD2D6` | Pause-field candidate **disputed** by user observation |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x800CD490",
+      "mentions": [
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 29,
+          "context": "| Pending scene | `0x800C7CA0` | `0x800CD490` | Previously traced regional transition |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8014C334",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 38,
+          "context": "The remaining candidates shown around `0x8014C334`, `0x8014C338`, `0x8014C33C`, `0x8014C464`, `0x8014C46C`, `0x8019208D` and `0x8019208F` sometimes change during animation or motion but are less specifically associated w",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8014C338",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 38,
+          "context": "The remaining candidates shown around `0x8014C334`, `0x8014C338`, `0x8014C33C`, `0x8014C464`, `0x8014C46C`, `0x8019208D` and `0x8019208F` sometimes change during animation or motion but are less specifically associated w",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8014C33C",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 38,
+          "context": "The remaining candidates shown around `0x8014C334`, `0x8014C338`, `0x8014C33C`, `0x8014C464`, `0x8014C46C`, `0x8019208D` and `0x8019208F` sometimes change during animation or motion but are less specifically associated w",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8014C340",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 338,
+          "context": "| Selected-weapon candidate rejected | `0x8014C340` | u8 `40`/`41`, occasionally `00` | Oscillates outside weapon changes |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8014C464",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 38,
+          "context": "The remaining candidates shown around `0x8014C334`, `0x8014C338`, `0x8014C33C`, `0x8014C464`, `0x8014C46C`, `0x8019208D` and `0x8019208F` sometimes change during animation or motion but are less specifically associated w",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8014C46C",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 38,
+          "context": "The remaining candidates shown around `0x8014C334`, `0x8014C338`, `0x8014C33C`, `0x8014C464`, `0x8014C46C`, `0x8019208D` and `0x8019208F` sometimes change during animation or motion but are less specifically associated w",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x80151B10",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 33,
+          "context": "- Original USA player pointers, temporary character object data,  `0x801C77E0` VM state, overlay-specific static locations, Impact allocated `0x802F7000` sample controller, and JP `0x80151B10` XYZ are **not safely offset",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 88,
+          "context": "| JP `0x80151B10` player XYZ | No automatic USA mapping | Scene/player-position layout requires its own mapping |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C574",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 23,
+          "context": "| Map overlay observed byte | `0x8015C574` | `0x80161D64` | User confirmed, 16 Nov; NOT a safe toggle |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 273,
+          "context": "- Selected weapon: `0x8015C607` (u8, 1–3) confirmed all characters; map visible state `0x8015C574` read 0/1 but manual writes are side-effectful; `0x800C7A73` not magic.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 336,
+          "context": "| Map overlay read state | `0x8015C574` | u8: `00` hidden, `01` visible | User-confirmed read behaviour; **manual writes do not act as a close toggle** |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 33,
+          "context": "| Map overlay byte | `0x8015C574` | `0x80161D64` | User-confirmed; observation, NOT a safe toggle |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5D8",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 300,
+          "context": "| Live resource block | `0x8015C5D8` + `0x30` | bytes | high |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5DC",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 100,
+          "context": "The draft PR #20 (`chatgptweb/japan-character-switch-decomp`) has **13 separately exact USA/JP original-VMA IDO 5.3 C functions per region, 620 bytes per region**. A pinned upstream scratch USA `file_11` mixed-C/ASM reco",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        },
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 20,
+          "context": "| Character index | `0x8015C5DC` | `0x80161DCC` | JP switch 0/1 and original MIPS writer traced |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 242,
+          "context": "- **Experimental initial character load:** user-selected `0x8015C5DC` (u32) is written before `0x800C7A94=0x0C`, to test whether the area-entry actor loader uses the staged character ID. Neither character-at-spawn nor mo",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 285,
+          "context": "| Character | `0x8015C5DC` | u32, 0–3 | high (Goemon64Recomp `variables.h`) |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 30,
+          "context": "| Character index | `0x8015C5DC` | `0x80161DCC` | Japanese runtime and character-switch MIPS traces |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5E0",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 287,
+          "context": "| Max health | `0x8015C5E0` | s32 | high (Android fork static RE notes) |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 84,
+          "context": "| `0x8015C5E0` USA u32 max HP | `0x80161DD3` JP low-byte cheat | Compare low-byte accessor/width, not the whole 32-bit field as independently verified |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5E4",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 288,
+          "context": "| Current health | `0x8015C5E4` | s32 | high |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5E8",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 289,
+          "context": "| Ryo | `0x8015C5E8` | s32 | high |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5EC",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 290,
+          "context": "| Lives | `0x8015C5EC` | s32 | high |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5F3",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 291,
+          "context": "| Item code slot 1 | `0x8015C5F3` | u8 | confirmed by user in live game |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 323,
+          "context": "- Slot 1 code: `0x8015C5F3` (`u8`)",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5F7",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 292,
+          "context": "| Item code slot 2 | `0x8015C5F7` | u8 | confirmed by user in live game |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 324,
+          "context": "- Slot 2 code: `0x8015C5F7` (`u8`)",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5FB",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 294,
+          "context": "| Item 2 quantity | `0x8015C5FB` | u8 | confirmed by user in live game |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 325,
+          "context": "- Slot 2 quantity: `0x8015C5FB` (`u8`)",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C5FF",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 293,
+          "context": "| Item code slot 3 | `0x8015C5FF` | u8 | confirmed by user in live game |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 326,
+          "context": "- Slot 3 code: `0x8015C5FF` (`u8`)",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C603",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 295,
+          "context": "| Item 3 quantity | `0x8015C603` | u8 | confirmed by user in live game |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 327,
+          "context": "- Slot 3 quantity: `0x8015C603` (`u8`)",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C607",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 21,
+          "context": "| Weapon index | `0x8015C607` | `0x80161DF7` | User cycled weapons, 16 Nov |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 273,
+          "context": "- Selected weapon: `0x8015C607` (u8, 1–3) confirmed all characters; map visible state `0x8015C574` read 0/1 but manual writes are side-effectful; `0x800C7A73` not magic.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 303,
+          "context": "**Equipped weapon index is confirmed at `0x8015C607` (u8, values `01`/`02`/`03`).** Carried item slot codes/quantities are distinct from this current-weapon selection. The currently highlighted consumable inventory curso",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 335,
+          "context": "| Equipped weapon index | `0x8015C607` | u8: `01`, `02`, `03` normal | User-confirmed for **all four characters** |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 340,
+          "context": "`0x8015C607` values outside 1–3 cause unexpected neighbouring-character weapons: Goemon -> Ebisumaru hammer; Ebisumaru -> Sasuke kunai; Sasuke -> Yae sword; Yae -> user-reported `letter 1`. These values must remain inspe",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 31,
+          "context": "| Equipped weapon index | `0x8015C607` | `0x80161DF7` | User-confirmed cycling values 01/02/03 |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C608",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 253,
+          "context": "- Investigate quest/event flags in the persistent `gamedata` primary bitfield (`0x8015C608..0x8015C66B`). State discovery A/B exports `event_flag_changes` with XOR split into **bits_set / bits_cleared**. No C for irrever",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 298,
+          "context": "| Stage progress / flags | `0x8015C608` + `0x304` | bytes, incompletely decoded | byte layout known, semantics incomplete |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C609",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 31,
+          "context": "- USA Sasuke first-battery event `0x8015C609 & 0x20` is confirmed; JP `0x80161DF9 & 0x20` remains a hypothesis.",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 240,
+          "context": "- **Sasuke battery 2:** `0x8015C609`, bit `0x40`, becomes set at **end of** pickup cutscene. Never treat bit write as cutscene execution. Visible read-only in Unlocks and Live Memory.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 246,
+          "context": "- Later user experiment isolates **second Sasuke battery bit `0x40`**: confirmed first-battery bit `0x20`, then the second battery cutscene finishes and byte `0x8015C609` becomes `0x60`. This confirms post-cutscene compl",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 266,
+          "context": "- `0x8015C609 & 0x20` (`gamedata+0x01`): first battery collected/progression complete. Verified by writing it before pickup, then reloading; pickup disappeared and second battery became spawnable.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 83,
+          "context": "| `0x8015C609 & 0x20` | `0x80161DF9 & 0x20` | First Sasuke battery JP bit **unverified** |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C60C",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 24,
+          "context": "| Benkei encounter bit | `0x8015C60C & 0x20` | `0x80161DFC & 0x20` | User confirmed, 16 Nov |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 78,
+          "context": "python3 scripts/crosswalk_address.py --source usa --address 0x8015C60C --mask 0x20",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 19,
+          "context": "- **`0x8015C60C & 0x08` (flag `0x023`)**: heard about Kihachi from Benkei.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 34,
+          "context": "`0x8015C60C & 0x04` food quest active, `& 0x10` food identity learned;",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 75,
+          "context": "`0x8015C60C & 0x20` and Benkei's own first-dialogue completion at",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 152,
+          "context": "**`0x8015C60C & 0x20`: Benkei encounter recorded / Ushiwaka dialogue prerequisite.**",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 182,
+          "context": "- **`0x8015C60C`, observed mask `0x20`: Benkei encounter recorded at trigger entry.**",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 190,
+          "context": "`0x8015C60C` appears conditional on that path. This is an inference from the",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 209,
+          "context": "| `0x8015C60C & 0x20` | byte `00 → 20`, bit set | unchanged | unchanged, bit stays set |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 34,
+          "context": "| Benkei encounter event | `0x8015C60C & 0x20` | `0x80161DFC & 0x20` | User-confirmed |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 103,
+          "context": "guest_address: \"0x8015C60C\"",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C60D",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 51,
+          "context": "| `0x8015C60D & 0x80` | Mini-Ebisu training failure/retry-dialogue selector |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 59,
+          "context": "byte `0x8015C70F`) separately from setting `0x8015C60D & 0x02`. Benkei checks",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 71,
+          "context": "**`0x8015C60D & 0x20`: asked Ushiwaka “Who are you?” before.**",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 93,
+          "context": "- Setting `0x8015C60D` to **`3F`** removes Ushiwaka from the original location",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 238,
+          "context": "- **Ushiwaka minigame start:** `0x8015C60D`, bit `0x10`, observed `0x20 → 0x30`, same character/map 371. A/B only; **not write-confirmed**.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 239,
+          "context": "- **Blue-fish hand-in:** `0x8015C60D`, bit `0x08`, observed `0x30 → 0x38`, alongside blue fish `0x8015C723` 3 → 0. A/B only; **not write-confirmed**. Does not establish Achilles' Heel or final Benkei story gate.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C60E",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 16,
+          "context": "- **`0x8015C60E & 0x04` (flag `0x032`)**: Thaisamba-completed progression;",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 35,
+          "context": "`0x8015C60E & 0x80` Kihachi food-hint stage;",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 52,
+          "context": "| `0x8015C60E & 0x01` | Mini-Ebisu training declined |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 53,
+          "context": "| `0x8015C60E & 0x02` | Mini-Ebisu magic granted/recorded; distinct from passing training |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 57,
+          "context": "`0x8015C6F3`) before setting the granted flag at `0x8015C60E & 0x02`. The",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 61,
+          "context": "one NPC's state: clearing all of `0x8015C60E` also clears Mini-Ebisu dialogue/reward",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 76,
+          "context": "`0x8015C60E & 0x10`.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 139,
+          "context": "After the Benkei fight, the user observed **`0x8015C60E = 0x18`**, and Benkei says",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 163,
+          "context": "`0x8015C60E & 0x10`, which records Benkei's first-dialogue completion and controls",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 176,
+          "context": "- **`0x8015C60E`, observed mask `0x10`: first-dialogue completion/gating state.**",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 184,
+          "context": "the conversation finishes. Clearing it to `00` while `0x8015C60E` remains `10`,",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 189,
+          "context": "on the completion/gating state at `0x8015C60E`; the trigger-entry update at",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 210,
+          "context": "| `0x8015C60E & 0x10` | byte `00 → 10`, bit set | unchanged | unchanged, bit stays set |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C60F",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 36,
+          "context": "`0x8015C60F & 0x01` repeated hint already given. Their individual runtime",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C615",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 3,
+          "context": "Saved flag 111 decimal (`0x06F`), **`0x8015C615 & 0x80`**, is already labelled",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C617",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 54,
+          "context": "| `0x8015C617 & 0x20` | Initial/retry training request flag set by the dialogue script; standalone launch semantics unverified |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C66B",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 253,
+          "context": "- Investigate quest/event flags in the persistent `gamedata` primary bitfield (`0x8015C608..0x8015C66B`). State discovery A/B exports `event_flag_changes` with XOR split into **bits_set / bits_cleared**. No C for irrever",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C69C",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 100,
+          "context": "The draft PR #20 (`chatgptweb/japan-character-switch-decomp`) has **13 separately exact USA/JP original-VMA IDO 5.3 C functions per region, 620 bytes per region**. A pinned upstream scratch USA `file_11` mixed-C/ASM reco",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C69F",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 296,
+          "context": "| Party membership | `0x8015C69F`, `0x8015C6A3`, `0x8015C6A7`, `0x8015C6AB` | u8 | provisional |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C6A3",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 296,
+          "context": "| Party membership | `0x8015C69F`, `0x8015C6A3`, `0x8015C6A7`, `0x8015C6AB` | u8 | provisional |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C6A7",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 25,
+          "context": "| Sasuke party available | `0x8015C6A7` | `0x80161E97` | Previous JP runtime testing |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 296,
+          "context": "| Party membership | `0x8015C69F`, `0x8015C6A3`, `0x8015C6A7`, `0x8015C6AB` | u8 | provisional |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 35,
+          "context": "| Sasuke party | `0x8015C6A7` | `0x80161E97` | Previously tested JP unlock |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C6AB",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 296,
+          "context": "| Party membership | `0x8015C69F`, `0x8015C6A3`, `0x8015C6A7`, `0x8015C6AB` | u8 | provisional |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C6AF",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 297,
+          "context": "| Weapon upgrades | `0x8015C6AF`, `0x8015C6B3`, `0x8015C6B7`, `0x8015C6BB` | u8 | confirmed by user in live game |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C6B3",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 297,
+          "context": "| Weapon upgrades | `0x8015C6AF`, `0x8015C6B3`, `0x8015C6B7`, `0x8015C6BB` | u8 | confirmed by user in live game |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C6B7",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 297,
+          "context": "| Weapon upgrades | `0x8015C6AF`, `0x8015C6B3`, `0x8015C6B7`, `0x8015C6BB` | u8 | confirmed by user in live game |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C6BB",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 297,
+          "context": "| Weapon upgrades | `0x8015C6AF`, `0x8015C6B3`, `0x8015C6B7`, `0x8015C6BB` | u8 | confirmed by user in live game |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C6F0",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 56,
+          "context": "The success reward path writes ability-ownership word `0x8015C6F0 = 1` (low byte",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C6F3",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 57,
+          "context": "`0x8015C6F3`) before setting the granted flag at `0x8015C60E & 0x02`. The",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 42,
+          "context": "Existing unlock/ownership field `0x8015C6F3` means **Mini Ebisumaru ability acquired**, not **currently transformed**. It should normally remain acquired in both miniature and normal states. Do not replace that ownership",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 107,
+          "context": "- Where are per-character ability ownership and current visual transformation separated? The acquired-power field `0x8015C6F3` is not a substitute for active size state.",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 131,
+          "context": "**Original-code targets:** trace both readers and writers of `s16 0x8020C8E6`, find branches splitting miniature vs ordinary locomotion, inspect movement calculation and any distinct actor/model scale data, and identify ",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C70B",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 267,
+          "context": "- Packed event byte: unlock buttons preserve all other bits. Old guessed `0x8015C70B` removed from battery mapping. Second battery unknown.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C70C",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 58,
+          "context": "Achilles' Heel reward path likewise writes inventory word `0x8015C70C = 1` (low",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C70F",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 59,
+          "context": "byte `0x8015C70F`) separately from setting `0x8015C60D & 0x02`. Benkei checks",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C723",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 124,
+          "context": "`0x8015C723` fell `03→00`. That remains an observation at the blue-fish hand-in;",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 239,
+          "context": "- **Blue-fish hand-in:** `0x8015C60D`, bit `0x08`, observed `0x30 → 0x38`, alongside blue fish `0x8015C723` 3 → 0. A/B only; **not write-confirmed**. Does not establish Achilles' Heel or final Benkei story gate.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C85B",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 255,
+          "context": "- Miracle symbols in Live Memory and Unlocks: Star `0x8015C85B`, Moon `0x8015C85F`, Flower `0x8015C863`, Snowflake `0x8015C866`. User-supplied mapping; avoid claiming a disassembly-level proof.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C85F",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 255,
+          "context": "- Miracle symbols in Live Memory and Unlocks: Star `0x8015C85B`, Moon `0x8015C85F`, Flower `0x8015C863`, Snowflake `0x8015C866`. User-supplied mapping; avoid claiming a disassembly-level proof.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C863",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 255,
+          "context": "- Miracle symbols in Live Memory and Unlocks: Star `0x8015C85B`, Moon `0x8015C85F`, Flower `0x8015C863`, Snowflake `0x8015C866`. User-supplied mapping; avoid claiming a disassembly-level proof.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8015C866",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 29,
+          "context": "- JP Miracle Snowflake confirmed inventory byte `0x80162057`; USA `0x8015C866`. Difference **+0x57F1**, not naive `+0x57F0`. The Japanese array has a specific low-byte layout.",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 255,
+          "context": "- Miracle symbols in Live Memory and Unlocks: Star `0x8015C85B`, Moon `0x8015C85F`, Flower `0x8015C863`, Snowflake `0x8015C866`. User-supplied mapping; avoid claiming a disassembly-level proof.",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 81,
+          "context": "| `0x8015C866` | `0x80162057` | Miracle Snowflake verified location is **+0x57F1**, so prefer explicit mapping over naïve delta |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8015CC18",
+      "mentions": [
+        {
+          "path": "practice/MEMORY_MAP.md",
+          "branch": "toolkit/unlocks-items-and-flags-20261117",
+          "line": 299,
+          "context": "| Global unlock header | `0x8015CC18` + `0x0C` | bytes | static RE |",
+          "source_sha": "2356855d78a1b5363ff4bf71c45d495a7226f0fe"
+        }
+      ]
+    },
+    {
+      "address": "0x80161D64",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 23,
+          "context": "| Map overlay observed byte | `0x8015C574` | `0x80161D64` | User confirmed, 16 Nov; NOT a safe toggle |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 33,
+          "context": "| Map overlay byte | `0x8015C574` | `0x80161D64` | User-confirmed; observation, NOT a safe toggle |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x80161DCC",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 100,
+          "context": "The draft PR #20 (`chatgptweb/japan-character-switch-decomp`) has **13 separately exact USA/JP original-VMA IDO 5.3 C functions per region, 620 bytes per region**. A pinned upstream scratch USA `file_11` mixed-C/ASM reco",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        },
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 20,
+          "context": "| Character index | `0x8015C5DC` | `0x80161DCC` | JP switch 0/1 and original MIPS writer traced |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 30,
+          "context": "| Character index | `0x8015C5DC` | `0x80161DCC` | Japanese runtime and character-switch MIPS traces |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x80161DD3",
+      "mentions": [
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 84,
+          "context": "| `0x8015C5E0` USA u32 max HP | `0x80161DD3` JP low-byte cheat | Compare low-byte accessor/width, not the whole 32-bit field as independently verified |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x80161DF7",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 21,
+          "context": "| Weapon index | `0x8015C607` | `0x80161DF7` | User cycled weapons, 16 Nov |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 31,
+          "context": "| Equipped weapon index | `0x8015C607` | `0x80161DF7` | User-confirmed cycling values 01/02/03 |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x80161DF9",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 31,
+          "context": "- USA Sasuke first-battery event `0x8015C609 & 0x20` is confirmed; JP `0x80161DF9 & 0x20` remains a hypothesis.",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 83,
+          "context": "| `0x8015C609 & 0x20` | `0x80161DF9 & 0x20` | First Sasuke battery JP bit **unverified** |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x80161DFC",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 24,
+          "context": "| Benkei encounter bit | `0x8015C60C & 0x20` | `0x80161DFC & 0x20` | User confirmed, 16 Nov |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 34,
+          "context": "| Benkei encounter event | `0x8015C60C & 0x20` | `0x80161DFC & 0x20` | User-confirmed |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 113,
+          "context": "guest_address: \"0x80161DFC\"",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x80161E8C",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 100,
+          "context": "The draft PR #20 (`chatgptweb/japan-character-switch-decomp`) has **13 separately exact USA/JP original-VMA IDO 5.3 C functions per region, 620 bytes per region**. A pinned upstream scratch USA `file_11` mixed-C/ASM reco",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x80161E97",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 25,
+          "context": "| Sasuke party available | `0x8015C6A7` | `0x80161E97` | Previous JP runtime testing |",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 35,
+          "context": "| Sasuke party | `0x8015C6A7` | `0x80161E97` | Previously tested JP unlock |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x80161F67",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 80,
+          "context": "python3 scripts/crosswalk_address.py --source jp --address 0x80161F67 --kind saved-event --mask 0x08",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        }
+      ]
+    },
+    {
+      "address": "0x80162057",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 29,
+          "context": "- JP Miracle Snowflake confirmed inventory byte `0x80162057`; USA `0x8015C866`. Difference **+0x57F1**, not naive `+0x57F0`. The Japanese array has a specific low-byte layout.",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 79,
+          "context": "python3 scripts/crosswalk_address.py --source jp --address 0x80162057",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 81,
+          "context": "| `0x8015C866` | `0x80162057` | Miracle Snowflake verified location is **+0x57F1**, so prefer explicit mapping over naïve delta |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x801671A0",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 69,
+          "context": "The upper half of the `u32` word at `0x8020C8E4` changes during motion while its lower half is `0xFFFF` or `0x0000`. This is evidence **against** treating the entire 32-bit word as a single transformation timer; it suppo",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8019208D",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 38,
+          "context": "The remaining candidates shown around `0x8014C334`, `0x8014C338`, `0x8014C33C`, `0x8014C464`, `0x8014C46C`, `0x8019208D` and `0x8019208F` sometimes change during animation or motion but are less specifically associated w",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8019208F",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 38,
+          "context": "The remaining candidates shown around `0x8014C334`, `0x8014C338`, `0x8014C33C`, `0x8014C464`, `0x8014C46C`, `0x8019208D` and `0x8019208F` sometimes change during animation or motion but are less specifically associated w",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x801C1594",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 46,
+          "context": "1. Add **read-only** custom watches: `u16 0x8020C8E6`, `s16 0x8020C8E6`, `u32 0x8020C8E4`, `u8 0x801C159A`; retain `u8 0x8020C8E6` and `u8 0x8020C8E7`. Optionally add an `hex8` watch at `0x8020C8E0` and another at `0x801",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x801C159A",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 15,
+          "context": "| `0x801C159A` | `u8` | 28 / `0x1C` | 52 / `0x34` | Strong size-correlated candidate, not necessarily a boolean flag |",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 46,
+          "context": "1. Add **read-only** custom watches: `u16 0x8020C8E6`, `s16 0x8020C8E6`, `u32 0x8020C8E4`, `u8 0x801C159A`; retain `u8 0x8020C8E6` and `u8 0x8020C8E7`. Optionally add an `hex8` watch at `0x8020C8E0` and another at `0x801",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 60,
+          "context": "| Approx. video time | Visible state | `u8 0x8020C8E6` | `u8 0x8020C8E7` | `u16 0x8020C8E6` | `u8 0x801C159A` |",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 69,
+          "context": "The upper half of the `u32` word at `0x8020C8E4` changes during motion while its lower half is `0xFFFF` or `0x0000`. This is evidence **against** treating the entire 32-bit word as a single transformation timer; it suppo",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 81,
+          "context": "**Next original MIPS investigation:** trace reads/writes of halfword `0x8020C8E6` or a pointer-relative offset to it, especially `lh/lhu/sh`, decrement/borrow, comparisons to zero and -1, and the gating path for transfor",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 99,
+          "context": "5. `0x801C159A` remains a **distinct, size-correlated field** (observed 52 normal / 28 mini) that can change earlier than the E6 halfword. It is a high-value comparison during the reported mismatch, but has not been obse",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 105,
+          "context": "- What field controls the **rendered scale/size** independently of the halfword? Trace writes to `0x801C159A` and any actor/model scale fields, determining whether this byte is an output, state, animation parameter or in",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 111,
+          "context": "Use **read-only watches** for `s16 0x8020C8E6`, `u8 0x801C159A`, active character ID, and any independently verified actor scale fields during normal/small idle, button press, animation completion and character switch. C",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x801C7740",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 83,
+          "context": "| 7 | Area notifications and scripted Goemon/Yae dialogue under resource 97 | `F460` copies `0x801C7740` to `0x801C77F8` and writes 7; `E654` decrements `0x801C77F8` and clears state when it reaches zero | The caller/tri",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801C77A0",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 65,
+          "context": "3. `DE80` reads signed halfwords. For a nonnegative token it passes the token to `D060` and advances its local stream pointer by two bytes. `DF68` checks/decrements `0x801C77A0` to pace emissions. A negative token is sen",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801C77E0",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 25,
+          "context": "`0x800C7AA4` from VM state word `0x801C77E0`. They are separate fields; the",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 93,
+          "context": "- `0x801C77E0` (state), `0x801C78FC` (pause byte), `0x801C77F8` (state-7 countdown);",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 33,
+          "context": "- Original USA player pointers, temporary character object data,  `0x801C77E0` VM state, overlay-specific static locations, Impact allocated `0x802F7000` sample controller, and JP `0x80151B10` XYZ are **not safely offset",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        },
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 86,
+          "context": "| `0x801C77E0` USA VM state | No automatic JP mapping | VM/overlay context |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x801C77E8",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 49,
+          "context": "text-token cursor at `0x801C77E8`; it does not change the matching-C task queue",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 14,
+          "context": "The value stored at **`0x80077858` is the relocated VM program counter**: it points into the active resource's 32-bit command/operand stream. It is not the cursor that advances through text tokens or through visible char",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 36,
+          "context": "`func_8003D68C` then dereferences the PC as a 32-bit VM word and dispatches tokens `0x8004`–`0x8022`. Its common path advances the PC by four bytes in a branch delay slot before the command handler consumes operands. Oth",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 54,
+          "context": "PC[0x80077858: 32-bit VM command stream] -->|0x8010 resolves operand| SP[0x801C77E8 word 0: signed-halfword stream cursor]",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 63,
+          "context": "1. `D68C` handles token `0x8010`, relocates its operand with `DE48`, stores that result in `0x801C77E8`, then calls `DBEC`.",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 64,
+          "context": "2. `DBEC` loads the first word at `0x801C77E8`, calls `DE80`, and stores the returned pointer back to that word.",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 94,
+          "context": "- `0x801C77E8` word 0 (text stream cursor), plus a bounded 16–32 bytes at both the PC and text cursor;",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 97,
+          "context": "The `0x80077858` write watch should identify the instruction responsible for each PC jump. A `0x801C77E8` write watch and the per-context `+0x6C/+0x6E` values will separate VM control movement from token emission. This c",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801C77F8",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 83,
+          "context": "| 7 | Area notifications and scripted Goemon/Yae dialogue under resource 97 | `F460` copies `0x801C7740` to `0x801C77F8` and writes 7; `E654` decrements `0x801C77F8` and clears state when it reaches zero | The caller/tri",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 93,
+          "context": "- `0x801C77E0` (state), `0x801C78FC` (pause byte), `0x801C77F8` (state-7 countdown);",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801C77FC",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 32,
+          "context": "`func_8003D468` (VMA `0x8003D468`) receives the initial segmented address and resource ID. It stores the ID in `0x801C78E8`, looks it up with `func_800141C4`, and stores the returned resource data pointer in `0x801C77FC`",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 92,
+          "context": "- `0x801C78E8` (resource ID), `0x801C77FC` (loaded base), `0x801C78EC`/`0x801C78F0` (segment and relocation fields);",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801C7800",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 95,
+          "context": "- for state 2 only, `0x801C7800` and the selected record's `+0x10` branch target.",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801C78E8",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 32,
+          "context": "`func_8003D468` (VMA `0x8003D468`) receives the initial segmented address and resource ID. It stores the ID in `0x801C78E8`, looks it up with `func_800141C4`, and stores the returned resource data pointer in `0x801C77FC`",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 92,
+          "context": "- `0x801C78E8` (resource ID), `0x801C77FC` (loaded base), `0x801C78EC`/`0x801C78F0` (segment and relocation fields);",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801C78EC",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 92,
+          "context": "- `0x801C78E8` (resource ID), `0x801C77FC` (loaded base), `0x801C78EC`/`0x801C78F0` (segment and relocation fields);",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801C78F0",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 32,
+          "context": "`func_8003D468` (VMA `0x8003D468`) receives the initial segmented address and resource ID. It stores the ID in `0x801C78E8`, looks it up with `func_800141C4`, and stores the returned resource data pointer in `0x801C77FC`",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        },
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 92,
+          "context": "- `0x801C78E8` (resource ID), `0x801C77FC` (loaded base), `0x801C78EC`/`0x801C78F0` (segment and relocation fields);",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801C78FC",
+      "mentions": [
+        {
+          "path": "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+          "branch": "chatgptweb/decomp",
+          "line": 93,
+          "context": "- `0x801C77E0` (state), `0x801C78FC` (pause byte), `0x801C77F8` (state-7 countdown);",
+          "source_sha": "a6694e8fce815d3570eb241cb02bf423b2a2c3ec"
+        }
+      ]
+    },
+    {
+      "address": "0x801CB460",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 192,
+          "context": "`0x801CB460` overlay window, then zero-fills its `0x14CA0` BSS. Allocation is",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x801FC60C",
+      "mentions": [
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 85,
+          "context": "| `0x801FC60C` USA player pointer storage | No automatic JP mapping | Dynamic object/lifetime sensitive |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8020C8E0",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 46,
+          "context": "1. Add **read-only** custom watches: `u16 0x8020C8E6`, `s16 0x8020C8E6`, `u32 0x8020C8E4`, `u8 0x801C159A`; retain `u8 0x8020C8E6` and `u8 0x8020C8E7`. Optionally add an `hex8` watch at `0x8020C8E0` and another at `0x801",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8020C8E4",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 36,
+          "context": "**Structural hypothesis:** since the adjacent bytes `0x8020C8E6–E7` match in the sampled states, they might be the signed halfword `0xFFFF` (−1) for miniature and `0x0000` (0) for normal, or the low halfword of a 32-bit ",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 46,
+          "context": "1. Add **read-only** custom watches: `u16 0x8020C8E6`, `s16 0x8020C8E6`, `u32 0x8020C8E4`, `u8 0x801C159A`; retain `u8 0x8020C8E6` and `u8 0x8020C8E7`. Optionally add an `hex8` watch at `0x8020C8E0` and another at `0x801",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 69,
+          "context": "The upper half of the `u32` word at `0x8020C8E4` changes during motion while its lower half is `0xFFFF` or `0x0000`. This is evidence **against** treating the entire 32-bit word as a single transformation timer; it suppo",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8020C8E6",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 13,
+          "context": "| `0x8020C8E6` | `u8` | 255 / `0xFF` | 0 / `0x00` | Strong binary-like candidate |",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 36,
+          "context": "**Structural hypothesis:** since the adjacent bytes `0x8020C8E6–E7` match in the sampled states, they might be the signed halfword `0xFFFF` (−1) for miniature and `0x0000` (0) for normal, or the low halfword of a 32-bit ",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 46,
+          "context": "1. Add **read-only** custom watches: `u16 0x8020C8E6`, `s16 0x8020C8E6`, `u32 0x8020C8E4`, `u8 0x801C159A`; retain `u8 0x8020C8E6` and `u8 0x8020C8E7`. Optionally add an `hex8` watch at `0x8020C8E0` and another at `0x801",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 60,
+          "context": "| Approx. video time | Visible state | `u8 0x8020C8E6` | `u8 0x8020C8E7` | `u16 0x8020C8E6` | `u8 0x801C159A` |",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 69,
+          "context": "The upper half of the `u32` word at `0x8020C8E4` changes during motion while its lower half is `0xFFFF` or `0x0000`. This is evidence **against** treating the entire 32-bit word as a single transformation timer; it suppo",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 73,
+          "context": "The user reports that when Ebisumaru is normal (both bytes `00`), manually writing `255 / 0xFF` **only to byte `0x8020C8E6`** causes the byte to drop to 254 while `0x8020C8E7` jumps to 255, then the low byte counts down;",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 81,
+          "context": "**Next original MIPS investigation:** trace reads/writes of halfword `0x8020C8E6` or a pointer-relative offset to it, especially `lh/lhu/sh`, decrement/borrow, comparisons to zero and -1, and the gating path for transfor",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 87,
+          "context": "| Initial visible size | Manually forced `s16 0x8020C8E6` | Action | Visible result | Final observed halfword |",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 103,
+          "context": "- Which function reads/writes signed or unsigned halfword `0x8020C8E6`, including pointer-relative loads/stores rather than direct absolute-address references?",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 111,
+          "context": "Use **read-only watches** for `s16 0x8020C8E6`, `u8 0x801C159A`, active character ID, and any independently verified actor scale fields during normal/small idle, button press, animation completion and character switch. C",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 119,
+          "context": "| Visible size | Signed 16-bit word `0x8020C8E6` | Observed velocity magnitude maximum |",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 127,
+          "context": "**Interpretation (strong behavioral evidence):** the halfword at `0x8020C8E6` controls or selects a movement-speed path associated with miniature mode, independently of the displayed model size. This does **not** identif",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 131,
+          "context": "**Original-code targets:** trace both readers and writers of `s16 0x8020C8E6`, find branches splitting miniature vs ordinary locomotion, inspect movement calculation and any distinct actor/model scale data, and identify ",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 135,
+          "context": "The user clarified that with Mini Ebisumaru power active and `s16 0x8020C8E6 = -1`, the character **cannot switch to another character** and **cannot attack normally**. Walking, jumping, and interacting with NPCs/signs c",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 137,
+          "context": "| Miniature appearance | `s16 0x8020C8E6` | Walking / jumping | NPC/sign interaction | Normal attack | Character switch | Measured max movement magnitude |",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 143,
+          "context": "**Significance:** the halfword may select a broader **miniature gameplay-restriction mode**, not just a movement-speed path. Correlated movement and action changes make it especially valuable to trace MIPS code that chec",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x8020C8E7",
+      "mentions": [
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 14,
+          "context": "| `0x8020C8E7` | `u8` | 255 / `0xFF` | 0 / `0x00` | Changes identically to preceding byte |",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 46,
+          "context": "1. Add **read-only** custom watches: `u16 0x8020C8E6`, `s16 0x8020C8E6`, `u32 0x8020C8E4`, `u8 0x801C159A`; retain `u8 0x8020C8E6` and `u8 0x8020C8E7`. Optionally add an `hex8` watch at `0x8020C8E0` and another at `0x801",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 60,
+          "context": "| Approx. video time | Visible state | `u8 0x8020C8E6` | `u8 0x8020C8E7` | `u16 0x8020C8E6` | `u8 0x801C159A` |",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        },
+        {
+          "path": "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
+          "branch": "main",
+          "line": 73,
+          "context": "The user reports that when Ebisumaru is normal (both bytes `00`), manually writing `255 / 0xFF` **only to byte `0x8020C8E6`** causes the byte to drop to 254 while `0x8020C8E7` jumps to 255, then the low byte counts down;",
+          "source_sha": "7a55845259507504b8f4df3fe33ae6f12b9dc3fe"
+        }
+      ]
+    },
+    {
+      "address": "0x80222034",
+      "mentions": [
+        {
+          "path": "decomp/CONTINUE.md",
+          "branch": "chatgptweb/decomp",
+          "line": 157,
+          "context": "`func_80222034_5DD504` at VMA `0x80222034` / ROM `0x5DD504`; the full",
+          "source_sha": "be0a01889a071998cfddbf51010db5cfdb3bffff"
+        }
+      ]
+    },
+    {
+      "address": "0x802F7000",
+      "mentions": [
+        {
+          "path": "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md",
+          "branch": "chatgptweb/decomp",
+          "line": 33,
+          "context": "- Original USA player pointers, temporary character object data,  `0x801C77E0` VM state, overlay-specific static locations, Impact allocated `0x802F7000` sample controller, and JP `0x80151B10` XYZ are **not safely offset",
+          "source_sha": "936a5c08a9a35214173bce6630561b9c81a579d3"
+        }
+      ]
+    },
+    {
+      "address": "0x802F7060",
+      "mentions": [
+        {
+          "path": "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
+          "branch": "main",
+          "line": 87,
+          "context": "| `0x802F7060` USA Impact sample field | No automatic JP mapping | Runtime allocation, not fixed static data |",
+          "source_sha": "88a340fc3960a50f76e01dacd8b6a4716b1e64cc"
+        }
+      ]
+    },
+    {
+      "address": "0x8039F740",
+      "mentions": [
+        {
+          "path": "decomp/VM_ARCHITECTURE_RESEARCH.md",
+          "branch": "chatgptweb/decomp",
+          "line": 65,
+          "context": "| Castle title, resource 93 | Window-open next PC `+0x43B0` and wait next PC `+0x43D8` differ by `0x28`. Other resource-93 routines have the same spacing, but the two title records at `+0x1894/+0x18AC` identify the castl",
+          "source_sha": "e6f216edf536a2c05a8eeec812095d16a433e771"
+        }
+      ]
+    },
+    {
+      "address": "0x803A2880",
+      "mentions": [
+        {
+          "path": "decomp/VM_ARCHITECTURE_RESEARCH.md",
+          "branch": "chatgptweb/decomp",
+          "line": 64,
+          "context": "| Oedo old man, resource 96 | `+0x8C58` tests story bit 2 and branches to `+0x8CA0`. The branch paths set and clear bit 2 at `+0x8C8C/+0x8CC0`. The state-3 and state-4 resume PCs are `+0x8C74/+0x8C9C` and `+0x8CA8/+0x8CD",
+          "source_sha": "e6f216edf536a2c05a8eeec812095d16a433e771"
+        }
+      ]
+    },
+    {
+      "address": "0x803A5780",
+      "mentions": [
+        {
+          "path": "decomp/VM_ARCHITECTURE_RESEARCH.md",
+          "branch": "chatgptweb/decomp",
+          "line": 63,
+          "context": "| Zazen Gate, resource 97 | Command `+0x9608` (image `0x7633F8`) references `0x08000004`, giving text at `[0x759DF4,0x759E24)`, 23 tokens before sentinel. The first glyph token `57` is Y. The same cluster contains more Y",
+          "source_sha": "e6f216edf536a2c05a8eeec812095d16a433e771"
+        }
+      ]
+    }
+  ]
+}
