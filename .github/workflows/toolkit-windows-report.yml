@@ -40,5 +40,7 @@ jobs:
           python-version: "3.12"
       - name: Compile Python practice modules
         run: python -m compileall -q practice
+      - name: Validate committed address catalogue is complete
+        run: python -m scripts.sync_address_catalogue --check
       - name: Verify Windows-compatible report and version functions
         run: python -m unittest tests.test_reports tests.test_discovery_results tests.test_value_search tests.test_toolkit_version tests.test_unlock_flag_catalog tests.test_address_registry tests.test_updater -v
