@@ -1,0 +1,111 @@
+{
+  "format": "goemon-usa-graphics-adjacent-c-research-v1",
+  "date": "2026-11-17",
+  "status": "RESEARCH_ONLY",
+  "region": "usa",
+  "baseline": {
+    "branch": "chatgptweb/decomp",
+    "accepted_c": 782,
+    "accepted_bytes": 34392,
+    "remaining_asm": 6581,
+    "baseline_head_at_research": "b25e831d9536bb8824dcbd0a8d19dcda07404300"
+  },
+  "experimental": {
+    "functions": 5,
+    "instruction_bytes": 284,
+    "new_functions_this_batch": 4,
+    "new_bytes_this_batch": 212,
+    "full_rom_proof": "PASS_SCRATCH_ONLY",
+    "native_original_address": "EXACT_IN_SCRATCH",
+    "canonical_combined_787_g2": "NOT_RUN",
+    "canonical_inventory": "NOT_RUN",
+    "full_local_ci": "NOT_RUN",
+    "host_sanitizer": "PASS"
+  },
+  "original_retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "scratch_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "scratch_rom_bytes": 33554432,
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_elf_positive_func_count": 7376,
+  "scratch_elf_positive_func_count": 7376,
+  "elf_positive_function_identities_match": true,
+  "relocation_sections": 72,
+  "relocation_entries": 82216,
+  "relocation_sections_exact_multisets": true,
+  "main_relocation_entries": 15058,
+  "functions": [
+    {
+      "name": "func_8001965C_1A25C",
+      "vma": "0x8001965C",
+      "rom_offset": "0x1A25C",
+      "size": 72,
+      "sha256": "4c148d804fc6ea25df6fa3efe97d846383a00bf626f4eb2a1a4858abb918fd03",
+      "new_this_batch": false
+    },
+    {
+      "name": "func_8001B918_1C518",
+      "vma": "0x8001B918",
+      "rom_offset": "0x1C518",
+      "size": 56,
+      "sha256": "faae783382532816d946ad8d3209fc8360920796ef93c926950d3489f7d69063",
+      "new_this_batch": true
+    },
+    {
+      "name": "func_8001C970_1D570",
+      "vma": "0x8001C970",
+      "rom_offset": "0x1D570",
+      "size": 76,
+      "sha256": "bb3eae822c7a98a04b2562b1c64529eb4af6c5f5adde3f0637cc1663e4e7c91b",
+      "new_this_batch": true
+    },
+    {
+      "name": "func_8001C9BC_1D5BC",
+      "vma": "0x8001C9BC",
+      "rom_offset": "0x1D5BC",
+      "size": 28,
+      "sha256": "6d3c1a4234a9fcbb4c601b563221bdc463dbc7bd64e047958118989b908a458c",
+      "new_this_batch": true
+    },
+    {
+      "name": "func_8001C9D8_1D5D8",
+      "vma": "0x8001C9D8",
+      "rom_offset": "0x1D5D8",
+      "size": 52,
+      "sha256": "c66f0cbc8d034a90fc7540863d73e6b8c7302525f585575cbea8385d163f46a6",
+      "new_this_batch": true
+    }
+  ],
+  "nearby_failures": [
+    {
+      "name": "func_800196A4_1A2A4",
+      "size": 76,
+      "mismatch_offsets": [
+        "0x3C",
+        "0x40"
+      ],
+      "reason": "two store-order mismatches; stopped bounded variants"
+    },
+    {
+      "name": "func_8001B6D4_1C2D4",
+      "size": 108,
+      "mismatch_offsets": [
+        "0x48",
+        "0x4C"
+      ],
+      "reason": "two LUI schedule differences; stopped bounded variants"
+    },
+    {
+      "name": "func_8001B6A4_1C2A4",
+      "size": 48,
+      "mismatch_positions": 9,
+      "reason": "argument stack-home scheduling; stopped bounded variants"
+    }
+  ],
+  "source_blob_sha1": {
+    "anim_matrix.c": "2f73e1d3a17c5a2e33e3d24c34dd31c9424c9113",
+    "gfx_wrapper.c": "167bf266292d3c38025617692272e48f9f7d659c",
+    "gfx_vectors.c": "6b4a15c80f210811af709f648eafc12b21b04038",
+    "test_graphics_host.c": "359983d5d03ce6d86b66a9101b0c83b05c360515"
+  }
+}
