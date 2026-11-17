@@ -151,8 +151,17 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             load_remembered_rom('japan')
             if self.active_version.key == 'japan' else None)
         root.title(f"Goemon Practice Toolkit {DISPLAY_VERSION} · {self.active_version.label}")
-        root.geometry("1220x790")
-        root.minsize(960, 640)
+        # Fit the initial window to the usable desktop instead of forcing
+        # a 790px-tall viewport that hides the lower Dashboard controls.
+        # Every page still scrolls on smaller monitors.
+        screen_width = max(1, root.winfo_screenwidth())
+        screen_height = max(1, root.winfo_screenheight())
+        width = max(780, min(1480, screen_width - 80))
+        height = max(600, min(950, screen_height - 100))
+        left = max(0, (screen_width - width) // 2)
+        top = max(0, (screen_height - height) // 3)
+        root.geometry(f"{width}x{height}+{left}+{top}")
+        root.minsize(min(940, width), min(620, height))
         apply_theme(root)
         configure_window_branding(root)
         root.attributes("-topmost", False)
