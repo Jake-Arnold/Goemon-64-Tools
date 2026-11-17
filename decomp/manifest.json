@@ -1296,6 +1296,19 @@
   },
   "overlay_file12_stages": [
     {
+      "format": "goemon-file12-registration-374-v1",
+      "source": "candidates/file12_reg374.c",
+      "source_sha256": "046af7d8140efca107fd45b79ea7a08cd8562ad857b9dcbde9323754a6aa639a",
+      "compiler_object_sha256": "116ca84053a49004c17c0b5ebdcc527510f0f9d36a53e7b26c0d141a13ebe4dd",
+      "object_sha256": "73e8e7207e87531a32dfb5364147c83416cbf7b6ceaeb57459e7ae419454320d",
+      "function": {
+        "name": "file12_registration_374",
+        "rom_offset": 6066960,
+        "vma": 2149637696,
+        "size": 13464
+      }
+    },
+    {
       "format": "goemon-file12-c-stage-v1",
       "source": "candidates/file12_dialogue_copy.c",
       "source_sha256": "bce7049e5438f50b9cb5bd7cea430fb2101067dcfdab760003ecaef3c2527fd2",

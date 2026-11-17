@@ -125,7 +125,7 @@ class DecompVerificationTests(unittest.TestCase):
         disabled=copy.deepcopy(manifest);disabled['overlay_file43_stage']=None
         self.assertEqual(len(claimed_functions(disabled)),
                          len(main_claimed_functions(disabled))+
-                         len(manifest_file12_stages(disabled))+(file11_stage_mode(disabled) or 0)+
+                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(disabled))+(file11_stage_mode(disabled) or 0)+
                          len(manifest_file13_stages(disabled)))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
@@ -137,7 +137,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertIn(stage['function'],claimed_functions(loaded))
             self.assertEqual(len(claimed_functions(loaded)),
                              len(main_claimed_functions(loaded))+
-                             1+len(manifest_file12_stages(loaded))+(file11_stage_mode(loaded) or 0)+
+                             1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(loaded))+(file11_stage_mode(loaded) or 0)+
                              len(manifest_file13_stages(loaded)))
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
@@ -159,32 +159,34 @@ class DecompVerificationTests(unittest.TestCase):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
         stages=manifest_file12_stages(manifest)
         self.assertEqual([stage['function']['name'] for stage in stages], [
-            'func_80222034_5DD504', 'func_80222168_5DD638',
+            'file12_registration_374', 'func_80222034_5DD504', 'func_80222168_5DD638',
         ])
-        stage=stages[0]
+        self.assertEqual(validate_file12_stage_definition(stages[0]).as_posix(),
+                         'candidates/file12_reg374.c')
+        stage=stages[1]
         self.assertEqual(stage['function']['name'],'func_80222034_5DD504')
         self.assertIn(stage['function'],claimed_functions(manifest))
         self.assertEqual(validate_file12_stage_definition(stage).as_posix(),
                          'candidates/file12_dialogue_copy.c')
-        self.assertEqual(validate_file12_stage_definition(stages[1]).as_posix(),
+        self.assertEqual(validate_file12_stage_definition(stages[2]).as_posix(),
                          'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
-                         len(main_claimed_functions(manifest))+1+len(stages)+
+                         len(main_claimed_functions(manifest))+1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in stages)+
                          (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             bad=copy.deepcopy(manifest)
-            bad['overlay_file12_stages'][0]['function']['vma']+=4
+            bad['overlay_file12_stages'][1]['function']['vma']+=4
             path.write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError,'pinned extent'):
                 load_manifest(path)
             bad=copy.deepcopy(manifest)
-            bad['overlay_file12_stages'][0]['source']='../escape.c'
+            bad['overlay_file12_stages'][1]['source']='../escape.c'
             path.write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError,'source path'):
                 load_manifest(path)
             bad=copy.deepcopy(manifest)
-            bad['overlay_file12_stages'][0]['object_sha256']='not-a-hash'
+            bad['overlay_file12_stages'][1]['object_sha256']='not-a-hash'
             path.write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError,'object_sha256'):
                 load_manifest(path)
@@ -211,7 +213,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         len(manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages))
+                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             for field,value,pattern in (
@@ -859,7 +861,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claims),unit_functions+
                          len(manifest.get('existing_source_patches',[]))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         len(manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+
+                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+
                          len(manifest_file13_stages(manifest)))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
@@ -1126,7 +1128,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertTrue(result['comparison']['full_rom_match'])
         verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
         self.assertEqual(result['verifier_source_sha256_lf'],
-                         '182f0596aeba9229ffef403473201bf79c91c03b9fc9697d59cb3194b2d29190')
+                         '051395259266449c94c0ed00441dc21b8379b998c2108781f570762525d52760')
         self.assertEqual(hashlib.sha256(verifier).hexdigest(),
                          json.loads((ROOT/'decomp/results/vm_residual_inventory.json').read_text())['current_sources']['verifier_sha256'])
         expected={f['name']:f for f in claimed_functions(manifest)}

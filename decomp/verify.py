@@ -21,6 +21,7 @@ import subprocess
 try:
     from . import overlay_file43
     from . import overlay_file12
+    from . import file12_registration
     from . import overlay_file11
     from .research import usa_file11_noop_groups as overlay_file11_noops
     from . import overlay_file13
@@ -32,6 +33,7 @@ try:
 except ImportError:
     import overlay_file43
     import overlay_file12
+    from decomp import file12_registration
     import overlay_file11
     from decomp.research import usa_file11_noop_groups as overlay_file11_noops
     import overlay_file13
@@ -181,7 +183,8 @@ def claimed_functions(manifest):
     stage = manifest.get('overlay_file43_stage')
     if stage is not None:
         functions.append(stage['function'])
-    functions.extend(stage['function'] for stage in manifest_file12_stages(manifest))
+    for stage in manifest_file12_stages(manifest):
+        functions.extend(file12_registration.claims(stage))
     mode = file11_stage_mode(manifest)
     if mode in (143,144,152,179,183):
         functions.extend(file11_adapter(mode).entries())
@@ -256,7 +259,9 @@ def validate_file43_stage(stage, splat_yaml, reference_rom, source_dir=ROOT):
 
 
 def validate_file12_stage_definition(stage):
-    """Validate one opt-in file_12 callback claim outside main ROM mapping."""
+    """Validate a reviewed callback or contiguous registration group."""
+    if file12_registration.is_group(stage):
+        return file12_registration.validate_stage(stage)
     expected_keys = {'format', 'source', 'source_sha256',
                      'compiler_object_sha256', 'object_sha256', 'function'}
     if not isinstance(stage, dict) or set(stage) != expected_keys:
@@ -301,7 +306,7 @@ def validate_file12_stage(stage, splat_yaml, reference_rom, source_dir=ROOT):
     if b'GLOBAL_ASM' in source_bytes:
         raise ValueError('file_12 C source may not hide assembly ownership')
     overlay_file12.validate_reference_inputs(
-        splat_yaml, reference_rom, (stage['function']['name'],)
+        splat_yaml, reference_rom, tuple(fn['name'] for fn in file12_registration.claims(stage))
     )
     return source_path
 
@@ -585,20 +590,23 @@ def stage_file13_splat(text, stage_or_stages):
 
 
 def patch_file12_tail_alias_sources(candidate_checkout, stage):
-    """Restore Splat's original zero-size tail alias after splitting file_12."""
+    """Restore the original tail alias across every pre-tail file_12 ASM slice.
+
+    The canonical two-callback plan keeps the four references in the prefix.
+    The 374-wrapper split moves them into a later intervening ASM island.
+    Require the *same* four pinned reference occurrences in either case.
+    """
     stages = _file12_stage_list(stage)
     layout = _file12_stages_layout(stages)
     checkout = Path(candidate_checkout)
-    before, after = layout['assembly'][0], layout['assembly'][-1]
-    before_path = checkout / f'asm/usa/{before}.s'
-    after_path = checkout / f'asm/usa/{after}.s'
-    if not before_path.is_file() or not after_path.is_file():
+    asm_paths = [checkout / f'asm/usa/{name}.s' for name in layout['assembly']]
+    if not all(path.is_file() for path in asm_paths):
         raise ValueError('Missing generated file_12 assembly for tail alias correction')
-    before_text = before_path.read_text(encoding='utf-8')
-    after_text = after_path.read_text(encoding='utf-8')
+    texts = [path.read_text(encoding='utf-8') for path in asm_paths]
     rom_offset, vma, alias_name, generated_name, word = overlay_file12.TEXT_END_ALIAS
-    if before_text.count(generated_name) != 4 or before_text.count(alias_name):
-        raise ValueError('Unexpected file_12 prefix tail-alias references')
+    ref_counts = [text.count(generated_name) for text in texts[:-1]]
+    if sum(ref_counts) != 4 or any(alias_name in text for text in texts):
+        raise ValueError('Unexpected file_12 pre-tail references or pre-existing alias')
     old_block = (
         f'nonmatching {generated_name}, 0x4\n\n'
         f'glabel {generated_name}\n'
@@ -609,19 +617,48 @@ def patch_file12_tail_alias_sources(candidate_checkout, stage):
         f'  alabel {alias_name}\n'
         f'    /* {rom_offset:06X} {vma:08X} {word} */  nop\n'
     )
-    if (after_text.count(old_block) != 1 or
-            after_text.count(generated_name) != 3 or after_text.count(alias_name)):
+    tail = texts[-1]
+    if tail.count(old_block) != 1 or tail.count(generated_name) != 3:
         raise ValueError('Unexpected file_12 suffix tail-alias block')
-    staged_before = before_text.replace(generated_name, alias_name)
-    staged_after = after_text.replace(old_block, new_block)
-    if staged_before.count(alias_name) != 4 or generated_name in staged_before:
-        raise ValueError('file_12 prefix tail-alias correction did not apply exactly')
-    if staged_after.count(alias_name) != 1 or generated_name in staged_after:
-        raise ValueError('file_12 suffix tail-alias correction did not apply exactly')
-
-    before_path.write_text(staged_before, encoding='utf-8', newline='\n')
-    after_path.write_text(staged_after, encoding='utf-8', newline='\n')
+    staged = [text.replace(generated_name, alias_name) for text in texts[:-1]]
+    staged.append(tail.replace(old_block, new_block))
+    if (sum(text.count(alias_name) for text in staged[:-1]) != 4 or
+            any(generated_name in text for text in staged) or
+            staged[-1].count(alias_name) != 1):
+        raise ValueError('file_12 tail-alias correction did not apply exactly')
+    normalized_padding = None
+    if any(file12_registration.is_group(item) for item in stages):
+        # Splat invents a four-byte FUNC annotation for a pre-existing NOP
+        # when the 374-wrapper run ends at 0x5CC7A8. The original full ELF
+        # and assembly have only anonymous zero instructions here. Removing
+        # the synthetic labels restores its 7,376 positive-sized FUNC entries.
+        pad_name = 'file_12_gap_5CC7A8_5DD504'
+        pad = f'asm/usa/{pad_name}.s'
+        pad_path = checkout / pad
+        if pad_path not in asm_paths:
+            raise ValueError('Missing exact registration-tail padding slice')
+        i = asm_paths.index(pad_path)
+        synthetic = (
+            'nonmatching func_802112D8_5CC7A8, 0x4\n\n'
+            'glabel func_802112D8_5CC7A8\n'
+            '    /* 5CC7A8 802112D8 00000000 */  nop\n'
+            'endlabel func_802112D8_5CC7A8\n'
+        )
+        original_padding = '    /* 5CC7A8 802112D8 00000000 */  nop\n'
+        if staged[i].count(synthetic) != 1:
+            raise ValueError('Unreviewed registration-tail synthetic FUNC label')
+        staged[i] = staged[i].replace(synthetic, original_padding)
+        if 'func_802112D8_5CC7A8' in staged[i]:
+            raise ValueError('Synthetic registration NOP ownership persisted')
+        normalized_padding = {
+            'rom_offset': '0x5CC7A8', 'vma': '0x802112D8',
+            'bytes_preserved': 4, 'positive_sized_function_removed': True,
+            'source': pad, 'source_sha256_after': digest(staged[i].encode(), 'sha256'),
+        }
+    for path, new_text in zip(asm_paths, staged):
+        path.write_text(new_text, encoding='utf-8', newline='\n')
     return {
+        'registration_tail_padding_normalized': normalized_padding,
         'rom_offset': f'0x{rom_offset:X}',
         'vma': f'0x{vma:08X}',
         'generated_function_name': generated_name,
@@ -629,10 +666,11 @@ def patch_file12_tail_alias_sources(candidate_checkout, stage):
         'instruction_word': word,
         'prefix_reference_rewrites': 4,
         'suffix_zero_size_alias_restored': True,
-        'prefix_sha256_before': digest(before_text.encode('utf-8'), 'sha256'),
-        'prefix_sha256_after': digest(staged_before.encode('utf-8'), 'sha256'),
-        'suffix_sha256_before': digest(after_text.encode('utf-8'), 'sha256'),
-        'suffix_sha256_after': digest(staged_after.encode('utf-8'), 'sha256'),
+        'prefix_sha256_before': digest(texts[0].encode('utf-8'), 'sha256'),
+        'prefix_sha256_after': digest(staged[0].encode('utf-8'), 'sha256'),
+        'suffix_sha256_before': digest(texts[-1].encode('utf-8'), 'sha256'),
+        'suffix_sha256_after': digest(staged[-1].encode('utf-8'), 'sha256'),
+        'reference_rewrites_by_assembly_slice': dict(zip(layout['assembly'][:-1], ref_counts)),
         'instruction_bytes_changed': False,
     }
 
@@ -884,7 +922,8 @@ def prepare_file12_stage_objects(candidate_checkout, stage):
     layout = _file12_stages_layout(stages)
     checkout = Path(candidate_checkout)
     callback_layouts = []
-    staged_names = {item['function']['name'] for item in stages}
+    staged_names = {fn['name'] for item in stages
+                    for fn in file12_registration.claims(item)}
     for item in stages:
         source_name = PurePosixPath(item['source']).name
         function = item['function']
@@ -894,11 +933,14 @@ def prepare_file12_stage_objects(candidate_checkout, stage):
         c_original = c_path.read_bytes()
         if digest(c_original, 'sha256') != item['compiler_object_sha256']:
             raise ValueError('file_12 compiler object hash mismatch')
-        expected_relocations = overlay_file12.FUNCTION_RELOCATIONS[function['name']]
-        c_staged, pack_evidence = pack_file12_callback_text(
-            c_original, function['name'], function['size'], expected_relocations,
-            overlay_file12.FUNCTION_RELOCATION_SYMBOLS[function['name']],
-        )
+        if file12_registration.is_group(item):
+            c_staged, pack_evidence = file12_registration.pack(c_original)
+        else:
+            expected_relocations = overlay_file12.FUNCTION_RELOCATIONS[function['name']]
+            c_staged, pack_evidence = pack_file12_callback_text(
+                c_original, function['name'], function['size'], expected_relocations,
+                overlay_file12.FUNCTION_RELOCATION_SYMBOLS[function['name']],
+            )
         c_staged_hash = digest(c_staged, 'sha256')
         if c_staged_hash != item['object_sha256']:
             raise ValueError('file_12 staged C object hash mismatch')
@@ -1041,6 +1083,10 @@ def load_manifest(path):
             stage_source = validate_file12_stage_definition(stage)
             function = stage['function']
             function_name = function['name']
+            if (file12_registration.is_group(stage) and
+                    any(fn['name'] in seen or fn['name'] in assembly_seen
+                        for fn in file12_registration.claims(stage))):
+                raise ValueError('Registration wrapper overlaps already claimed function')
             if previous_end is not None and function['rom_offset'] < previous_end:
                 raise ValueError('Overlapping or unordered file_12 functions')
             previous_end = function['rom_offset'] + function['size']
@@ -1494,7 +1540,8 @@ def verify_file12_ownership(candidate_checkout, stage):
     stages = _file12_stage_list(stage)
     layout = _file12_stages_layout(stages)
     checkout = Path(candidate_checkout)
-    staged_names = {item['function']['name'] for item in stages}
+    staged_names = {fn['name'] for item in stages
+                    for fn in file12_registration.claims(item)}
     callback_proofs = []
     c_object_names = []
     for item in stages:
@@ -1514,28 +1561,32 @@ def verify_file12_ownership(candidate_checkout, stage):
         if (not c_object.is_file() or
                 digest(c_object.read_bytes(), 'sha256') != item['object_sha256']):
             raise ValueError('Staged file_12 C object hash mismatch')
-        c_elf = Elf32(c_object.read_bytes())
-        c_functions = [symbol for symbol in c_elf.symbols
-                       if symbol.kind == 2 and symbol.size > 0 and
-                       0 < symbol.section < len(c_elf.sections)]
-        if len(c_functions) != 1 or c_functions[0].name != name:
-            raise ValueError('file_12 C object must define only its staged function')
-        c_symbol = c_functions[0]
-        if (c_symbol.binding != 1 or c_symbol.value != 0 or
-                c_symbol.size != function['size'] or
-                not (c_elf.sections[c_symbol.section][2] & 0x4) or
-                c_elf.names[c_symbol.section] != '.text'):
-            raise ValueError('file_12 C object function binding, extent or section differs')
-        c_text = c_elf.sections[c_symbol.section]
-        if c_text[5] != function['size'] or c_text[8] != 4:
-            raise ValueError('file_12 C object .text size or alignment differs')
-        relocations = c_elf.relocations(c_symbol.section)
-        observed = tuple(sorted(
-            (item.offset, item.relocation_type, item.symbol.name)
-            for item in relocations
-        ))
-        if observed != overlay_file12.FUNCTION_RELOCATIONS[name]:
-            raise ValueError('file_12 C object relocation signature differs')
+        if file12_registration.is_group(item):
+            group_evidence = file12_registration.validate_object(
+                c_object.read_bytes(), staged=True)
+        else:
+            c_elf = Elf32(c_object.read_bytes())
+            c_functions = [symbol for symbol in c_elf.symbols
+                           if symbol.kind == 2 and symbol.size > 0 and
+                           0 < symbol.section < len(c_elf.sections)]
+            if len(c_functions) != 1 or c_functions[0].name != name:
+                raise ValueError('file_12 C object must define only its staged function')
+            c_symbol = c_functions[0]
+            if (c_symbol.binding != 1 or c_symbol.value != 0 or
+                    c_symbol.size != function['size'] or
+                    not (c_elf.sections[c_symbol.section][2] & 0x4) or
+                    c_elf.names[c_symbol.section] != '.text'):
+                raise ValueError('file_12 C object function binding, extent or section differs')
+            c_text = c_elf.sections[c_symbol.section]
+            if c_text[5] != function['size'] or c_text[8] != 4:
+                raise ValueError('file_12 C object .text size or alignment differs')
+            relocations = c_elf.relocations(c_symbol.section)
+            observed = tuple(sorted(
+                (item.offset, item.relocation_type, item.symbol.name)
+                for item in relocations
+            ))
+            if observed != overlay_file12.FUNCTION_RELOCATIONS[name]:
+                raise ValueError('file_12 C object relocation signature differs')
         callback_proofs.append({
             'source': item['source'],
             'source_sha256': item['source_sha256'],
@@ -1544,6 +1595,7 @@ def verify_file12_ownership(candidate_checkout, stage):
             'function': name,
             'function_vma': f'0x{function["vma"]:08X}',
             'function_size': function['size'],
+            'function_count': file12_registration.COUNT if file12_registration.is_group(item) else 1,
         })
 
     assembly_objects = []
@@ -1614,11 +1666,12 @@ def verify_file12_ownership(candidate_checkout, stage):
         name = function['name']
         if input_text_extent(c_object_name) != (function['vma'], function['size']):
             raise ValueError('Link map does not place file_12 C at its exact VMA and size')
-        symbol_lines = re.findall(
-            r'(?m)^\s*0x([0-9a-fA-F]+)\s+' + re.escape(name) + r'\s*$', block
-        )
-        if [int(value, 16) for value in symbol_lines] != [function['vma']]:
-            raise ValueError('Link map does not place the staged file_12 function at its original VMA')
+        for claim in file12_registration.claims(item):
+            symbol_lines = re.findall(
+                r'(?m)^\s*0x([0-9a-fA-F]+)\s+' + re.escape(claim['name']) + r'\s*$', block
+            )
+            if [int(value, 16) for value in symbol_lines] != [claim['vma']]:
+                raise ValueError('Link map does not place each staged file_12 function at its original VMA')
         function_end_vma = function['vma'] + function['size']
         if index + 1 < len(stages):
             next_function = stages[index + 1]['function']
@@ -1679,35 +1732,35 @@ def verify_file12_stage_build(baseline_checkout, candidate_checkout, stage, refe
     candidate_elf = (candidate_checkout / 'build/usa/mnsg.elf').read_bytes()
     candidate_symbols = Elf32(candidate_elf)
     if any(symbol.name in {
-            item['function']['name'] + '.NON_MATCHING' for item in stages
+            fn['name'] + '.NON_MATCHING' for item in stages
+            for fn in file12_registration.claims(item)
     }
            for symbol in candidate_symbols.symbols):
         raise ValueError('Staged file_12 function retains a NON_MATCHING marker')
     linked = overlay_file12.validate_linked_elf_provenance(
         original_splat, reference_rom, baseline_elf, candidate_elf,
-        tuple(item['function']['name'] for item in stages)
+        tuple(fn['name'] for item in stages
+              for fn in file12_registration.claims(item))
     )['linked_elf_provenance']
     return {'ownership': ownership, 'linked_elf_provenance': linked}
 
 
 def append_file12_function_comparison(comparison, stage, linked_provenance):
-    """Add the explicit file_12 function only after exact linked provenance."""
+    """Count each genuine original function, never the synthetic C group span."""
     stages = _file12_stage_list(stage)
+    claims = tuple(fn for item in stages for fn in file12_registration.claims(item))
     proof = linked_provenance['functions']
     proof_by_name = {row.get('name'): row for row in proof}
-    if len(proof_by_name) != len(proof) or set(proof_by_name) != {
-            item['function']['name'] for item in stages}:
+    if (len(proof_by_name) != len(proof) or
+            set(proof_by_name) != {fn['name'] for fn in claims}):
         raise ValueError('Linked file_12 proof does not cover all staged functions')
-    for stage_item in stages:
-        function = stage_item['function']
+    for function in claims:
         row = proof_by_name[function['name']]
-        expected = overlay_file12.FUNCTIONS[function['name']]
         if (row.get('section') != '.file_12' or
                 row.get('vma') != f'0x{function["vma"]:08X}' or
                 row.get('rom_offset') != f'0x{function["rom_offset"]:X}' or
                 row.get('bytes') != function['size'] or
-                row.get('original_sha256') != expected[3] or
-                row.get('candidate_sha256') != expected[3] or
+                row.get('candidate_sha256') != row.get('original_sha256') or
                 not row.get('candidate_code_matches_original') or
                 not row.get('candidate_relocations_match_reference')):
             raise ValueError('Staged file_12 function failed linked provenance')

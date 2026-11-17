@@ -58,6 +58,18 @@ def reviewed_plan(manifest: dict, original_rom: bytes | None = None) -> dict:
     # preflight to accept its own candidate count as already promoted.
     from .file11_143_preflight import validate
     baseline = copy.deepcopy(manifest)
+    # Preserve the historical pinned 210-function file_11 fixture audit.
+    # A separately reviewed file_12 374-wrapper extension is verified at
+    # the actual central candidate/linked-ROM gate, not in this legacy pin.
+    from . import file12_registration
+    stages = baseline.get('overlay_file12_stages', [])
+    if any(file12_registration.is_group(item) for item in stages):
+        reviewed = [item for item in stages if not file12_registration.is_group(item)]
+        if len(stages) - len(reviewed) != 1:
+            raise ValueError('Expected exactly one registration group stage')
+        file12_registration.validate_stage(next(item for item in stages
+            if file12_registration.is_group(item)))
+        baseline['overlay_file12_stages'] = reviewed
     baseline['overlay_file11_stage'] = {'format': ORIGINAL_STAGE_FORMAT}
     # The exact original 210-C preflight is an independent file_11 fixture
     # audit. For a subsequent, separately proven three-function Impact batch,

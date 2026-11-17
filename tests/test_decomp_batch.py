@@ -215,9 +215,9 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # Current 346-C proof supersedes 342, and both 342/315 reports remain archived.
-        self.assertEqual(current['comparison']['matched_functions'],346)
-        self.assertEqual(current['comparison']['matched_function_bytes'],17720)
+        # Current 720-C proof supersedes 346, while earlier reports remain archived.
+        self.assertEqual(current['comparison']['matched_functions'],720)
+        self.assertEqual(current['comparison']['matched_function_bytes'],31184)
         preserved342=json.loads((ROOT/'results/combined_342_20261117.json').read_text())
         self.assertEqual(preserved342['comparison']['matched_functions'],342)
         self.assertEqual(preserved342['comparison']['matched_function_bytes'],17568)
@@ -242,7 +242,7 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(historic303['verifier_source_sha256_lf'],
                          '0b4556a01128510da5a23ef36e6e55094339e69a7bb070b5b45c213128231769')
         self.assertEqual(current['verifier_source_sha256_lf'],
-                         '182f0596aeba9229ffef403473201bf79c91c03b9fc9697d59cb3194b2d29190')
+                         '051395259266449c94c0ed00441dc21b8379b998c2108781f570762525d52760')
         self.assertEqual(preserved315['verifier_source_sha256_lf'],
                          '93e91fa551668a51fbc45e24ba39c73c2c60cc4e2a854d43040c4f0b209d7737')
         # The certified historical 210-C proof retains its original hash.

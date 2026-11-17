@@ -11,8 +11,10 @@ import re
 
 try:
     from .probe import Elf32
+    from . import file12_registration
 except ImportError:
     from probe import Elf32
+    from decomp import file12_registration
 
 ROM_BYTES = 33_554_432
 ROM_SHA1 = "6ea0ed71032ce08fc2745f412d84936382197494"
@@ -78,6 +80,20 @@ EXPECTED_SEGMENT_LINES = (
 )
 
 
+REGISTRATION_FUNCTIONS = {row['name']: row for row in file12_registration.functions()}
+
+
+def expected_function(name, reference_rom):
+    """Pin registration bytes to a full-hash-authenticated retail ROM."""
+    if name in FUNCTIONS:
+        return FUNCTIONS[name]
+    item = REGISTRATION_FUNCTIONS.get(name)
+    if item is None:
+        raise ValueError('Unreviewed file_12 function name: ' + name)
+    start, size = item['rom_offset'], item['size']
+    return item['vma'], start, size, hashlib.sha256(reference_rom[start:start + size]).hexdigest()
+
+
 def validate_layout(splat_yaml: str) -> dict:
     """Accept only the pinned file_12 segment and file_13 end boundary."""
     if not re.search(r"(?m)^sha1: " + ROM_SHA1 + r"\s*$", splat_yaml):
@@ -123,9 +139,7 @@ def verify_reference(reference_rom: bytes, function_names: tuple[str, ...]) -> d
         raise ValueError("file_12 text/data reference hashes differ")
     validated = []
     for name in function_names:
-        if name not in FUNCTIONS:
-            raise ValueError("unreviewed file_12 function name")
-        vma, offset, size, expected_sha = FUNCTIONS[name]
+        vma, offset, size, expected_sha = expected_function(name, reference_rom)
         if not (ROM_START <= offset and offset + size <= ROM_TEXT_END):
             raise ValueError("file_12 function crosses the original text boundary")
         if offset != ROM_START + (vma - VMA_START):
@@ -162,7 +176,7 @@ def validate_reference_inputs(splat_yaml: str, reference_rom: bytes,
             "text_sha256": TEXT_SHA256,
             "data_sha256": DATA_SHA256,
             "function_instruction_sha256": {
-                name: FUNCTIONS[name][3] for name in function_names
+                name: expected_function(name, reference_rom)[3] for name in function_names
             },
         },
         "reference_validation": reference,
@@ -336,7 +350,7 @@ def validate_linked_elf_provenance(splat_yaml: str, reference_rom: bytes,
 
     function_results = []
     for name in function_names:
-        vma, rom_offset, size, expected_sha = FUNCTIONS[name]
+        vma, rom_offset, size, expected_sha = expected_function(name, reference_rom)
         label = re.fullmatch(r"func_([0-9A-F]{8})_([0-9A-F]+)", name)
         if (label is None or int(label.group(1), 16) != vma or
                 int(label.group(2), 16) != rom_offset):
@@ -373,12 +387,22 @@ def validate_linked_elf_provenance(splat_yaml: str, reference_rom: bytes,
         )
         if original_relocs != candidate_relocs:
             raise ValueError(f"candidate relocation target differs for {name}")
-        expected_relocations = FUNCTION_RELOCATIONS[name]
         observed_relocations = tuple(
             (item[0], item[1], item[2]) for item in candidate_relocs
         )
-        if observed_relocations != expected_relocations:
-            raise ValueError(f"candidate relocation signature differs for {name}")
+        if name in FUNCTION_RELOCATIONS:
+            if observed_relocations != FUNCTION_RELOCATIONS[name]:
+                raise ValueError(f"candidate relocation signature differs for {name}")
+        elif name in REGISTRATION_FUNCTIONS:
+            # All three relocations must also match the corresponding original
+            # linked ELF records, as checked above and across the full section.
+            # The object-level contract verifies each HI16/LO16/JAL descriptor.
+            if (len(observed_relocations) != 3 or
+                    [(r[0], r[1]) for r in observed_relocations] !=
+                    [(8, 5), (12, 4), (16, 6)] or
+                    observed_relocations[1][2] != 'func_80013AC4_146C4' or
+                    observed_relocations[0][2] != observed_relocations[2][2]):
+                raise ValueError(f"registration relocation signature differs for {name}")
         function_results.append({
             "name": name, "section": ".file_12",
             "vma": f"0x{vma:08X}", "rom_offset": f"0x{rom_offset:X}",

@@ -18,6 +18,9 @@ class File11179StageTests(unittest.TestCase):
     def setUpClass(cls):
         cls.manifest=load('decomp/manifest.json')
         cls.manifest['overlay_file11_stage']={'format':'goemon-file11-179-central-v1'}
+        # Explicit historical 342-C projection excludes the newer file12 block.
+        cls.manifest['overlay_file12_stages']=[x for x in cls.manifest['overlay_file12_stages']
+            if x['format']!='goemon-file12-registration-374-v1']
         cls.original=load('decomp/manifest_315_preserved_20261116.json')
         cls.fixture=promoted.load_fixture()
         cls.dedup=json.loads(DATA.read_text())
