@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Consolidated research files atop current 342-USA-C canonical source (727 preflight, not native promotion)
+
+- Branch created from canonical commit `1961f1333e8a5007c3cf8df5dfa0d0ca5a0cea8b`; imported exact original-tested C sources, generator/integration drivers, Python regression tests, and read-only research proof reports from PR #47 by immutable Git blob SHA. Canonical decomp manifest, original 342-C compiled proof, inventory, file_11 staging, and Japanese-0 34-C source are unchanged.
+- Native evidence already measured separately: pristine upstream plus 387 file_12 C (385 new + two existing canonical callbacks) rebuilds the full 33,554,432-byte USA ROM byte-exact; all 7,051 semantic file_12 relocations and 7,376 function identities match. Combined research 11/11 ROM-free tests PASS, and every new research interval is disjoint from the canonical 342 accepted functions.
+- **Not a combined 727 native run**: canonical 342-C project source is accessible through the GitHub connector, but the private repository checkout cannot be cloned into the current container (GitHub DNS unavailable). No simultaneous 342+385 central `decomp.verify`, `decomp.inventory` or `decomp.local_ci` acceptance has been claimed. Canonical production count remains **342**; this consolidation is source-only and deliberately does not adjust any production manifest or results.
+- Follow-up acceptance must preserve full `file_12` mixed source ownership while linking the rest of the canonical 342 C functions, compare entire original USA ROM, semantic ELF relocations and 7,376 original symbols, execute the central verifier and ROM-free CI, then promote only with evidence.
+
+
 ### 2026-11-17 — Import fully verified Japanese rev-0 34-function C baseline into chatgptweb/decomp
 
 - **Scope and provenance:** Selective, source-only integration from `chatgptweb/japanese-decomp-port` commit `634da7d6e4100125d7b7fe9e1592bb68e1458146`, carrying the 34 matching-C functions from the already published 34-C promotion `ff040f7ed3b9a75b799ce4323badcd37782f81ff`. Added 30 Japanese C translation units, original-address region manifest, Japanese Splat/layout adapter, IDO/GNU MIPS build runner, strict verifier, relocation policy, focused unit tests, and documentation. No wholesale branch merge or USA source replacement.

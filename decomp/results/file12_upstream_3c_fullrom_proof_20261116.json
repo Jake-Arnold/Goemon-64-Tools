@@ -1,0 +1,21 @@
+{
+  "status": "exact_original_usa_3_c_overlay_integrated_on_upstream",
+  "scope": "original pinned upstream ASM +3 C, not canonical 315+3 central G2",
+  "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_rom_bytes_exact": 33554432,
+  "file12_section": {
+    "vma": "0x8020D2A0",
+    "size": 188624,
+    "alignment": 16
+  },
+  "file12_relocations_original": 7051,
+  "file12_relocations_candidate": 7051,
+  "semantic_relocation_multiset_identical": true,
+  "raw_relocation_order_identical": false,
+  "ELF_function_identities": 7376,
+  "reconstructed_C_functions": 3,
+  "reconstructed_C_instruction_bytes": 420,
+  "locally_passed_synthetic_tests": 6,
+  "limitations": "No original canonical 315+3 combined decomp.verify/inventory/local_ci"
+}
