@@ -1,0 +1,858 @@
+{
+  "_about": "Editable display organization for Goemon Unlocks > Story & event flags. Change ONLY the type and subtype strings to regroup flags; keep key unchanged. Ordering follows array order within each type/subtype. This file does not change any RAM address, mask, writer or evidence. 'Unsorted' is intentional for user classification.",
+  "_schema_version": 1,
+  "flags": [
+    {
+      "key": "oedo_old_man_dialogue_cycle",
+      "label": "Oedo old man dialogue cycle (observed)",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "oedo_coffee_man_dialogue_cycle",
+      "label": "Oedo coffee-shop man dialogue cycle (observed)",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "benkei_encounter",
+      "label": "Benkei encounter recorded",
+      "type": "Benkei & Kihachi",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "benkei_intro",
+      "label": "Benkei first dialogue completed",
+      "type": "Benkei & Kihachi",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "benkei_defeated",
+      "label": "Benkei defeated / crossing permitted",
+      "type": "Benkei & Kihachi",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "thaisamba",
+      "label": "Thaisamba progression / later Benkei branch",
+      "type": "Benkei & Kihachi",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "kihachi_referral",
+      "label": "Kihachi referral / initialization gate",
+      "type": "Benkei & Kihachi",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "food_quest",
+      "label": "Kihachi food quest active",
+      "type": "Benkei & Kihachi",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "food_known",
+      "label": "Kihachi food identity learned",
+      "type": "Benkei & Kihachi",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "food_hint",
+      "label": "Kihachi food-hint stage",
+      "type": "Benkei & Kihachi",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "food_hint_given",
+      "label": "Kihachi repeated hint given",
+      "type": "Benkei & Kihachi",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "ushi_intro",
+      "label": "Ushiwaka introduction seen",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "blue_request",
+      "label": "Three blue fish requested",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "yellow_request",
+      "label": "Five yellow fish requested",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "red_request",
+      "label": "Eight red fish requested",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "heel_recorded",
+      "label": "Achilles' Heel reward recorded",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "temple",
+      "label": "Ushiwaka Golden Temple stage",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "training_passed",
+      "label": "Mini-Ebisu training passed",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "training_failed",
+      "label": "Mini-Ebisu training failed",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "training_declined",
+      "label": "Mini-Ebisu training declined",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "mini_recorded",
+      "label": "Mini-Ebisu grant recorded",
+      "type": "Ushiwaka & Training",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "snow_recorded",
+      "label": "Miracle Snow progression recorded",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "baron",
+      "label": "Met Baron in Iga",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "congo_moon_collected",
+      "label": "Congo Miracle Moon collected",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "lord_event_enabled",
+      "label": "Lord of Oedo appearance enabled",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "lord_event_completed",
+      "label": "Lord of Oedo respawn suppressed",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "ghost_torch_04",
+      "label": "Ghost Toys entrance right torch lit",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "ghost_torch_08",
+      "label": "Ghost Toys entrance left torch lit",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "ghost_entrance_unlocked",
+      "label": "Ghost Toys entrance unlocked",
+      "type": "Keys & Locks",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "oedo_elly_collected",
+      "label": "Oedo Castle Mr. Elly Fant collected (map)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "ghost_arrow_collected",
+      "label": "Ghost Toys Mr. Arrow collected (boss location)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "musical_arrow_collected",
+      "label": "Musical Castle Mr. Arrow collected (boss location)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "kegon_plasma_hint",
+      "label": "Plasma Waterfall of Kegon hint condition",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "oedo_silver_key_1f",
+      "label": "Oedo Castle 1F silver key collected",
+      "type": "Keys & Locks",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "oedo_silver_key_2f",
+      "label": "Oedo Castle 2F silver key collected",
+      "type": "Keys & Locks",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "gourmet_silver_key_129",
+      "label": "Gourmet Sub map 129 silver key collected",
+      "type": "Keys & Locks",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "oedo_silver_lock_1f",
+      "label": "Oedo Castle 1F silver lock opened (to map 9)",
+      "type": "Keys & Locks",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "oedo_silver_lock_2f",
+      "label": "Oedo Castle map 13 silver lock opened",
+      "type": "Keys & Locks",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "silver_doll_356",
+      "label": "Map 356 silver Fortune Doll collected",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "silver_doll_381",
+      "label": "Map 381 silver Fortune Doll collected",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "silver_doll_fuji",
+      "label": "Mt. Fuji main-map silver Fortune Doll collected",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "strength_gauge_condition",
+      "label": "Strength gauge increasing condition (annotated)",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "turtle_rock_doll_reward",
+      "label": "Turtle Rock silver Fortune Doll reward recorded",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "shishiodoshi_doll_reward",
+      "label": "Shishi-odoshi silver Fortune Doll collected",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "congo_state_candidate",
+      "label": "Congo encounter state? (candidate)",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_zazen_dwarf",
+      "label": "Plasma condition: Zazen dwarf information",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_sasuke_battery",
+      "label": "Plasma condition: Sasuke battery 1",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_cucumber",
+      "label": "Plasma condition: cucumber obtained",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_sudden_advice",
+      "label": "Plasma: Sudden Impact advice given",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_cracked_door",
+      "label": "Plasma condition: cracked door seen",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_battery_clue",
+      "label": "Plasma condition: Inaba battery clue heard",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_silver_heard",
+      "label": "Plasma: silver weapon advice heard",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_silver_condition",
+      "label": "Plasma: silver weapon advice condition",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_festival_advice",
+      "label": "Plasma: Festival Village advice given",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_benkei_advice",
+      "label": "Plasma: collector advice given",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_final_advice",
+      "label": "Plasma: final Ugo advice given",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_dragon_problem",
+      "label": "Plasma condition: dragon problem heard",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "plasma_sasuke_advice",
+      "label": "Plasma: Sasuke revival advice given",
+      "type": "Other story",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_super_pass",
+      "label": "Super Pass receipt recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_pass_gate",
+      "label": "Super Pass gate opened",
+      "type": "Keys & Locks",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_omitsu_ufo",
+      "label": "Omitsu UFO conversation recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_japan_map",
+      "label": "Japan map receipt recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_sasuke_recruited",
+      "label": "Sasuke recruitment recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_chain_pipe",
+      "label": "Chain Pipe receipt recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_mokubei_upgrades",
+      "label": "Mokubei upgrades available",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_silver_weapons",
+      "label": "Silver weapon upgrade recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_fire_ryo",
+      "label": "Fire Ryo receipt recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_koryuta_freed",
+      "label": "Koryuta freed",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_wise_man_ghost",
+      "label": "Wise Man ghost meeting recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_witch_unpaid",
+      "label": "Witch conversation before payment",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_kyushu_disappeared",
+      "label": "Kyushu disappearance (Muscle Gym unlock)",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_dharmanyo_defeated",
+      "label": "Dharmanyo defeat recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_gold_weapons",
+      "label": "Gold weapon upgrade recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_sudden_instructions",
+      "label": "Sudden Impact instructions viewed",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_sudden_granted",
+      "label": "Sudden Impact grant recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_mermaid_failed",
+      "label": "Mermaid training failure recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_mermaid_passed",
+      "label": "Mermaid training success recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_mermaid_granted",
+      "label": "Mermaid magic grant recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_super_jump_granted",
+      "label": "Super Jump grant recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_super_jump_instructions",
+      "label": "Super Jump instructions viewed",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_priest_declined",
+      "label": "Priest training offer declined",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_priest_key",
+      "label": "Priest training-key receipt recorded",
+      "type": "Keys & Locks",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_yae_recruited",
+      "label": "Yae recruitment recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_priest_son",
+      "label": "Priest son conversation recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_tsurami_defeated",
+      "label": "Tsurami defeat recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_sudden_passed",
+      "label": "Sudden Impact training success recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_sudden_failed",
+      "label": "Sudden Impact training failure recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_super_jump_passed",
+      "label": "Super Jump training success recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_super_jump_failed",
+      "label": "Super Jump training failure recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_outer_space",
+      "label": "Outer-space arrival recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_outer_space_departure",
+      "label": "Outer-space departure in progress",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_sudden_jump_start",
+      "label": "Sudden Impact / Super Jump start signal",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_benkei_mermaid_start",
+      "label": "Benkei / Mermaid minigame start signal",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_mini_start",
+      "label": "Mini-Ebisu minigame start signal",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "external_dragon_folkypoke",
+      "label": "Folkypoke dragon ride recorded",
+      "type": "External annotations",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "oedo_arrow_placement",
+      "label": "Oedo Castle Mr. Arrow collected (boss location)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "ghost_elly_placement",
+      "label": "Ghost Toys Mr. Elly Fant collected (map)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "festival_elly_placement",
+      "label": "Festival Temple Mr. Elly Fant collected (map)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "festival_arrow_placement",
+      "label": "Festival Temple Mr. Arrow collected (boss location)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "gourmet_elly_placement",
+      "label": "Gourmet Sub Mr. Elly Fant collected (map)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "gourmet_arrow_placement",
+      "label": "Gourmet Sub Mr. Arrow collected (boss location)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "musical_elly_placement",
+      "label": "Musical Castle Mr. Elly Fant collected (map)",
+      "type": "Collectibles & Miracles",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0ca",
+      "label": "Silver Fortune Doll - Oedo Castle 1F Turtle Pad Room [0x0CA]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0cb",
+      "label": "Silver Fortune Doll - Oedo Castle 2F Silver Cat Room [0x0CB]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0cc",
+      "label": "Silver Fortune Doll - Oedo Castle 2F Blocked Silver Cat Room [0x0CC]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0cd",
+      "label": "Silver Fortune Doll - Oedo Castle 2F-3F Elevator [0x0CD]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0ce",
+      "label": "Silver Fortune Doll - Ghost Toys 1F Elevator Shogi Room [0x0CE]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0cf",
+      "label": "Silver Fortune Doll - Ghost Toys 1F Crane Room [0x0CF]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d0",
+      "label": "Silver Fortune Doll - Ghost Toys 1F Cannon Room [0x0D0]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d1",
+      "label": "Silver Fortune Doll - Ghost Toys 2F Big Spinning Spike Chain Room [0x0D1]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d2",
+      "label": "Silver Fortune Doll - Festival Temple East Silver Cat Lock Fork [0x0D2]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d3",
+      "label": "Silver Fortune Doll - Festival Temple Central Ring Key Hallway [0x0D3]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d4",
+      "label": "Silver Fortune Doll - Festival Temple East Ice Kunai Room [0x0D4]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d5",
+      "label": "Silver Fortune Doll - Festival Temple North Fish Kite Waterfall Column [0x0D5]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d6",
+      "label": "Silver Fortune Doll - Musical Castle 1 Gold Lock Fan Room [0x0D6]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d7",
+      "label": "Silver Fortune Doll - Musical Castle 1 Multi-Lock Fork [0x0D7]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d8",
+      "label": "Silver Fortune Doll - Musical Castle 1 Big Aquarium Room [0x0D8]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0d9",
+      "label": "Silver Fortune Doll - Musical Castle 2 B1F Descent [0x0D9]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0da",
+      "label": "Silver Fortune Doll - Kai Highway [0x0DA]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0dc",
+      "label": "Silver Fortune Doll - Musashi [0x0DC]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0dd",
+      "label": "Silver Fortune Doll - Yamato Shrine [0x0DD]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0de",
+      "label": "Silver Fortune Doll - Yamato Shrine [0x0DE]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0df",
+      "label": "Silver Fortune Doll - Yamato - Underwater Cave [0x0DF]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0e1",
+      "label": "Silver Fortune Doll - Kii-Awaji Island [0x0E1]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0e2",
+      "label": "Silver Fortune Doll - Kii-Awaji - Husband and Wife Rocks [0x0E2]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0e3",
+      "label": "Silver Fortune Doll - Tosa - Vine Bridge [0x0E3]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0e4",
+      "label": "Silver Fortune Doll - Iyo - Hot Springs [0x0E4]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0e5",
+      "label": "Silver Fortune Doll - Bizen [0x0E5]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0e6",
+      "label": "Silver Fortune Doll - Aki - Nagato [0x0E6]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0e7",
+      "label": "Silver Fortune Doll - Aki - Nagato [0x0E7]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0e8",
+      "label": "Silver Fortune Doll - Inaba [0x0E8]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0e9",
+      "label": "Silver Fortune Doll - Japan Sea - Underwater [0x0E9]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0ea",
+      "label": "Silver Fortune Doll - Northeast Tunnel to Festival Village 2 [0x0EA]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0eb",
+      "label": "Silver Fortune Doll - Mutsu - Uzen Tunnel [0x0EB]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0ec",
+      "label": "Silver Fortune Doll - Oedo - Bridge to Musashi [0x0EC]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0ef",
+      "label": "Silver Fortune Doll - Zazen - Waterway [0x0EF]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_silver_doll_0f0",
+      "label": "Silver Fortune Doll - Folkypoke Village (East) [0x0F0]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_gold_doll_0f2",
+      "label": "Gold Fortune Doll - Ghost Toys 1F Shogi Cannon Gold Cat Room [0x0F2]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_gold_doll_0f3",
+      "label": "Gold Fortune Doll - Festival Temple West Gold Cat Dango Room [0x0F3]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_gold_doll_0f4",
+      "label": "Gold Fortune Doll - Musical Castle 2 Gold Cat Hallway [0x0F4]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_gold_doll_0f5",
+      "label": "Gold Fortune Doll - Bizen [0x0F5]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    },
+    {
+      "key": "placed_gold_doll_0f6",
+      "label": "Gold Fortune Doll - Waterfall of Kegon [0x0F6]",
+      "type": "Fortune Dolls",
+      "subtype": "Unsorted"
+    }
+  ]
+}
