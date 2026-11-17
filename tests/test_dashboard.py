@@ -66,6 +66,9 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
 
     def test_initial_window_is_monitor_sized_not_fixed_790_high(self):
+        # A withdrawn Tk root reports 1x1 until Tk/WM processes layout.
+        self.root.deiconify()
+        self.root.update()
         width, height = (
             int(value) for value in self.root.geometry().split('+')[0].split('x'))
         screen_width = self.root.winfo_screenwidth()
