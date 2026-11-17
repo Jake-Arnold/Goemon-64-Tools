@@ -1,0 +1,69 @@
+{
+  "format": "goemon-japan-five-next-research-v1",
+  "date": "2026-11-16",
+  "status": "RESEARCH_ONLY_ISOLATED_EXACT",
+  "parent_formal_verified_functions": 34,
+  "parent_formal_matching_bytes": 1912,
+  "matching_new_candidates": 5,
+  "new_isolated_bytes": 180,
+  "full_39c_rom_build": "NOT RUN",
+  "expanded_original_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "new_candidates": [
+    {
+      "name": "func_80039BAC_3A7AC",
+      "rom_offset": "0x3A7AC",
+      "original_vma": "0x80039BAC",
+      "size": 36,
+      "isolated_ido_gnu_link": "EXACT",
+      "zero_padding_bytes_trimmed": 12,
+      "source_sha256": "b6de0ed8316d783f75044722b2bff1151cd0df071e328cd0c07ce9452368c348",
+      "linked_instruction_sha256": "c0de50a4fd027393d27c3464d36cdef108d2d56b23855888e11e124678e42be5"
+    },
+    {
+      "name": "func_80039BD0_3A7D0",
+      "rom_offset": "0x3A7D0",
+      "original_vma": "0x80039BD0",
+      "size": 36,
+      "isolated_ido_gnu_link": "EXACT",
+      "zero_padding_bytes_trimmed": 12,
+      "source_sha256": "61b966543cd3be7270e94108dead755908a535470266c1f28e4134874fbdad8c",
+      "linked_instruction_sha256": "c5a3408825e846f6231d4ffc4e61df075cc5f23604eacb3bc97a9831d6a98c4d"
+    },
+    {
+      "name": "func_80039E34_3AA34",
+      "rom_offset": "0x3AA34",
+      "original_vma": "0x80039E34",
+      "size": 36,
+      "isolated_ido_gnu_link": "EXACT",
+      "zero_padding_bytes_trimmed": 12,
+      "source_sha256": "806f48dc9993bb096eec1857c3488115c3c298ef3703540efd4d736a83a19873",
+      "linked_instruction_sha256": "63d3148e827d423b63d0e8ce2eb4d04e05713713a21ed8f099bca6b50d0db043"
+    },
+    {
+      "name": "func_80039E74_3AA74",
+      "rom_offset": "0x3AA74",
+      "original_vma": "0x80039E74",
+      "size": 36,
+      "isolated_ido_gnu_link": "EXACT",
+      "zero_padding_bytes_trimmed": 12,
+      "source_sha256": "c9098dc5e74d004b55b836d113a851c567517fc65b6fd2968eeac9a9389a3cb6",
+      "linked_instruction_sha256": "77a2d587d482f5a5302b415b65fe88c213604f53a831bb8f9f82938da33f0395"
+    },
+    {
+      "name": "func_80039E98_3AA98",
+      "rom_offset": "0x3AA98",
+      "original_vma": "0x80039E98",
+      "size": 36,
+      "isolated_ido_gnu_link": "EXACT",
+      "zero_padding_bytes_trimmed": 12,
+      "source_sha256": "43e58f9dbed984cae9a381333b3d9255d2e4b6bfaf285c9879e5b3852e57e54a",
+      "linked_instruction_sha256": "cebb28970a376afea27ef6d9138e012a2cb537e8b45ac8a66f48fae118078409"
+    }
+  ],
+  "unmatched_neighbour": {
+    "name": "func_80039E58_3AA58",
+    "original_size": 28,
+    "mismatch": "Correct compiled size but incorrect instructions"
+  },
+  "source_bundle_sha256": "016ad4d9a636aec2d44f134bb8c502496924e13751c38bd90ab52d042633aaeb"
+}

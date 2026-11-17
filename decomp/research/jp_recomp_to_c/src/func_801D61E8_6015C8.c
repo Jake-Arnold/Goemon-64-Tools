@@ -1,0 +1,2 @@
+typedef struct {char pad[8];float x;char pad2[4];float z;} Node;
+void func_801D61E8_6015C8(Node *p,float x,float z){p->x+=x;p->z+=z;}

@@ -1,0 +1,267 @@
+{
+  "format": "goemon-consolidation-source-snapshot-v1",
+  "date": "2026-11-17",
+  "note": "Historical source refs only; no proof of promotion. Branches may move after this snapshot.",
+  "source_commit": "bcbf4451f4d2ce2e83af3875d8dbe71b47813b56",
+  "branch_count": 45,
+  "branches": [
+    {
+      "name": "chatgptweb/autonomous-decomp-skills-20261117",
+      "head": "0de0effb1e9b26485c16a99c4a55e6a2621530ce"
+    },
+    {
+      "name": "chatgptweb/camera-mode-runtime-audit-20261116",
+      "head": "73b822de4a159d3794b86f1bd53d0d3bf6805034"
+    },
+    {
+      "name": "chatgptweb/camera-reset-136-native-20261116",
+      "head": "c95975b28533b114acd65eb0d92b28405ae1ac01"
+    },
+    {
+      "name": "chatgptweb/camera-reset-343-integration-20261117",
+      "head": "66a7ad5516f3f0a8b3abc30d1cbf8a42c19b781e"
+    },
+    {
+      "name": "chatgptweb/camera-reset-343-scratch-20261117",
+      "head": "c14f403b6c01ae295e9ff04313705871452468ab"
+    },
+    {
+      "name": "chatgptweb/decomp",
+      "head": "bcbf4451f4d2ce2e83af3875d8dbe71b47813b56"
+    },
+    {
+      "name": "chatgptweb/decomp-consolidation-20261116",
+      "head": "5543197de084667b575406a3f3eef1bc4f69b0f9"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-143-preflight-20261116",
+      "head": "58ce18f0f0f68779903281cf4dbd1b6b808231a8"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-143-production-20261116",
+      "head": "80f99660b3e7d3790c4a3824232edc74ce288953"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-144-production-20261116",
+      "head": "8924b4f558750ec8f79772ef997c8eccf4498602"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-144-research-20261116",
+      "head": "ac504523c581a861a1eaac907221a1993dc7a139"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-152-production-20261116",
+      "head": "be3f89fb4f7ef851b35487698b7463e1ba5fc393"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-next8-scratch-20261116",
+      "head": "5aded44a354c088e253d83521543391ad48322c9"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-research-handoff-20261116",
+      "head": "f3a805d08110f30f04e9aa7aa816693b9b7ae8a5"
+    },
+    {
+      "name": "chatgptweb/decomp-impact-306-production-20261116",
+      "head": "6c8c565bd3effbf8fb7c31ca48515077c5c1529f"
+    },
+    {
+      "name": "chatgptweb/dual-region-foundation",
+      "head": "5a3eb6fb852fa2347ababeeec5b62680ef2cd1bc"
+    },
+    {
+      "name": "chatgptweb/file11-179-promotion-20261116",
+      "head": "8473b8d89af22a7e8a27ef4576e4149755f51e41"
+    },
+    {
+      "name": "chatgptweb/file11-expansion-20261116",
+      "head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+    },
+    {
+      "name": "chatgptweb/file11-source-export-20261116",
+      "head": "eb0c5394259267aae2a75f2d2a559563db2fa102"
+    },
+    {
+      "name": "chatgptweb/file11-transition-52-research",
+      "head": "defbfb82f63fdb5124946d021b09260c342342c1"
+    },
+    {
+      "name": "chatgptweb/file11-wave6-build-export-20261117",
+      "head": "f8ff25946968a0bacfb59149ce5fb3cb82a27985"
+    },
+    {
+      "name": "chatgptweb/file11-wave6-four-new-research-20261117",
+      "head": "632283f24e9affeb404ae84381d30e3aee71a13f"
+    },
+    {
+      "name": "chatgptweb/impact-value-search",
+      "head": "cc268b458eebbfdaf2e54c53dd8223c5514f618d"
+    },
+    {
+      "name": "chatgptweb/japan-mupen-ambiguity-fix",
+      "head": "d99be91504490c29895cf0f14484122866eb09d2"
+    },
+    {
+      "name": "chatgptweb/japanese-decomp-port",
+      "head": "634da7d6e4100125d7b7fe9e1592bb68e1458146"
+    },
+    {
+      "name": "chatgptweb/japanese-overlay-jal-audit",
+      "head": "bfdf727f4d1603c203bf84a2440b9389aef96bd4"
+    },
+    {
+      "name": "chatgptweb/japanese-overlay-symbol-map",
+      "head": "7f8486a25ba54f946ea2c2641afe74ca701d0fa2"
+    },
+    {
+      "name": "chatgptweb/japanese-recomp-input",
+      "head": "ed45e14b8ee93115ceed087d90acc756b59d41de"
+    },
+    {
+      "name": "chatgptweb/japanese-region-loader",
+      "head": "dd301ff5ae80c0f98a95c8911ba0a442d70fe274"
+    },
+    {
+      "name": "chatgptweb/japanese-symbol-reconciliation",
+      "head": "a2f57bacbe67230af82b7767c1140878c422c8db"
+    },
+    {
+      "name": "chatgptweb/jp-recomp-cross-region-c-research-20261116",
+      "head": "8d07137edccd3dde6b63dc6ad64bce90bb97a4a9"
+    },
+    {
+      "name": "chatgptweb/native-emulator-savestates",
+      "head": "3d971e811d28a93e8611f7e300f9cba8debd0de0"
+    },
+    {
+      "name": "chatgptweb/promote-47-crossregion-to-389-20261117",
+      "head": "67c71c934430a261d6fdfb0dad520634406c5920"
+    },
+    {
+      "name": "chatgptweb/usa-727-coexistence-source-preflight-20261117",
+      "head": "4f5ae5654c5464c6c4b7323ac7278dd16beba37e"
+    },
+    {
+      "name": "chatgptweb/usa-external-memory-leads",
+      "head": "b3493b909e0edb382712bc9dc5a5321c9b24c46b"
+    },
+    {
+      "name": "chatgptweb/usa-file12-adjacent-385-research-20261117",
+      "head": "8c0e43a7b5e5e474a0661128ce1795b267d1cc6b"
+    },
+    {
+      "name": "chatgptweb/usa-file12-spatial-lifecycle-20261116",
+      "head": "66d76a9fae0fea3c4bcb5666b7ba259f0eb667ef"
+    },
+    {
+      "name": "codex/ebisumaru-mini-research",
+      "head": "c94edb55880718b7de146014644b554bf520832f"
+    },
+    {
+      "name": "codex/goemon-impact-research",
+      "head": "8af9e747320dfc5ff4319212b69ddca4b8c5c4a5"
+    },
+    {
+      "name": "codex/goemon-vm-overlay-followup",
+      "head": "6b5d0d8958bd87fb850c05008acb29650579bf30"
+    },
+    {
+      "name": "decomp/bidirectional-crosswalk-agents-20261116",
+      "head": "628f12e4c5ddc0bbbebb85dfeee884845bcab52c"
+    },
+    {
+      "name": "decomp/crosswalk-instructions-canonical-20261117",
+      "head": "1961f1333e8a5007c3cf8df5dfa0d0ca5a0cea8b"
+    },
+    {
+      "name": "decomp/region-crosswalk-canonical-fresh-20261117",
+      "head": "6d77d7011780bf72379c7278f9db37ab3d1e24cd"
+    },
+    {
+      "name": "main",
+      "head": "34645d52bc45f8f9eeb9f43c1e24e99847c44093"
+    },
+    {
+      "name": "toolkit/unlocks-items-and-flags-20261117",
+      "head": "69efde52b7f945189364cce761e0b63d729ab6ff"
+    }
+  ],
+  "open_pr_count": 15,
+  "open_prs": [
+    {
+      "number": null,
+      "title": "v0.11.38: Per-flag On/Off controls and selectable toolkit updates",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/53"
+    },
+    {
+      "number": null,
+      "title": "Draft: 393 exact USA C native ROM/ELF/reloc PASS; full verifier + CI pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/49"
+    },
+    {
+      "number": null,
+      "title": "Draft: USA file12 385 C plus canonical callbacks (387-C exact ROM); full 727 pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/47"
+    },
+    {
+      "number": null,
+      "title": "Draft: USA file12 three-C exact original-ROM preflight; central 315+3 pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/42"
+    },
+    {
+      "number": null,
+      "title": "Draft: USA 323-C combined native G2 + inventory pass; full current CI pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/41"
+    },
+    {
+      "number": null,
+      "title": "Draft: 389-C combined native ROM/ELF/reloc PASS; canonical 342+47 verifier and CI pending",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/40"
+    },
+    {
+      "number": null,
+      "title": "Draft: integrate Japanese 24-C and overlay research beside verified USA 307",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/26"
+    },
+    {
+      "number": null,
+      "title": "Draft research: 207 USA file11 native matches, 113 still outside canonical 307",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/23"
+    },
+    {
+      "number": null,
+      "title": "Record newly discovered USA GameShark and actor values with provenance",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/12"
+    },
+    {
+      "number": null,
+      "title": "Reconcile Japanese Impact function matches with original N64Recomp symbol bounds",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/8"
+    },
+    {
+      "number": null,
+      "title": "Scan 69 Japanese overlays and verify the audio patch counterpart",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/7"
+    },
+    {
+      "number": null,
+      "title": "Prepare region-aware ROM loader in isolated Goemon64Recomp checkout",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/6"
+    },
+    {
+      "number": null,
+      "title": "Map USA Goemon MIPS functions to Japanese main code and overlays",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/5"
+    },
+    {
+      "number": null,
+      "title": "Generate hash-verified Japanese/USA decompressed ROMs for N64Recomp",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/4"
+    },
+    {
+      "number": null,
+      "title": "[Foundation] Verify and map USA/Japanese Goemon 64 ROMs",
+      "url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/1"
+    }
+  ]
+}

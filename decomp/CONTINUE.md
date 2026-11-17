@@ -1,5 +1,8 @@
 # Decomp continuation runbook
 
+> **Candidate consolidation (17 Nov 2026):** See [CANDIDATE_PROMOTION.md](CANDIDATE_PROMOTION.md) and [data/candidate_registry.json](data/candidate_registry.json). The 1,311-file [regional inventory](ROM_FILE_INVENTORY.md) bounds 146 distinct pending original-address functions (141 USA / 6,616 bytes; 5 JP / 180 bytes). All remain research-only; accepted counts remain **USA 720** and **JP 34**. Check provenance/source drift with `python3 -m decomp.candidate_registry`. Native current-canonical G2, inventory and full local CI are still required before promotion. Historical PRs/branch code cannot be merged as an alternative to these gates.
+
+
 For fast USA/Japan numbered-ROM file sizes and offsets, see [ROM_FILE_INVENTORY.md](ROM_FILE_INVENTORY.md), [the 1,311-file CSV](data/rom_file_inventory.csv), and [the partial semantic catalogue](data/rom_file_semantics.json). This is metadata research, not a new matching-C promotion.
 
 ## Current region-separated matching-C checkpoints (17 November 2026)
