@@ -481,9 +481,11 @@ def build_catalogue():
 
 
 def search_entries(payload, query="", *, region="all", evidence="all",
-                   category="all", data_type="all", limit=None):
+                   category="all", data_type="all", limit=None,
+                   already_validated=False):
     """Search names, addresses, masks, aliases, provenance and descriptions."""
-    validate_catalogue(payload)
+    if not already_validated:
+        validate_catalogue(payload)
     q = str(query).strip().casefold().replace("0x", "")
     matches = []
     for row in payload["entries"]:
