@@ -18,6 +18,7 @@ from practice.story_progress import (
 )
 from practice.region_memory_crosswalk import CROSS_REGION_BY_KEY
 from practice.region_unlocks import REGION_DELTA
+from practice.address_registry import guest_bit
 
 
 @dataclass(frozen=True)
@@ -64,7 +65,10 @@ JAPAN_FLAGS = tuple(
                CROSS_REGION_BY_KEY[
                    ('plasma:' if flag in PLASMA_FLAGS else 'event:') + flag.key
                ].japan,
-               flag.mask,
+               guest_bit(
+                   'crosswalk:japan:' +
+                   ('plasma:' if flag in PLASMA_FLAGS else 'event:') +
+                   flag.key, region='japan')[1],
                'JP user-confirmed' if CROSS_REGION_BY_KEY[
                    ('plasma:' if flag in PLASMA_FLAGS else 'event:') + flag.key
                ].evidence == 'user-confirmed' else 'JP offset candidate',
