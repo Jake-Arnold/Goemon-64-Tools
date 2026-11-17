@@ -57,7 +57,7 @@ def synchronise(existing=None):
             prior["aliases"] = list(dict.fromkeys(
                 prior.get("aliases", ()) + row.get("aliases", ())))
             prior["id_aliases"] = list(dict.fromkeys(
-                prior.get("id_aliases", ()) + row.get("id_aliases", ())))
+                [*prior.get("id_aliases", ()), *row.get("id_aliases", ())]))
     out = dict(existing)
     out["entries"] = sorted(current.values(), key=lambda r: (
         r["region"], int(r["address"], 16), r.get("mask") or "", r["id"]))
