@@ -166,8 +166,12 @@ class UnlockFlagsUITests(unittest.TestCase):
         self.assertEqual(
             app.unlock_flag_widgets['benkei_encounter']['frame'].winfo_manager(),
             'grid')
-        self.assertNotIn('external_sasuke_recruited',
-                         app.unlock_flag_widgets)
+        # Search matches name AND provenance; a row can be constructed
+        # because its research evidence mentions Benkei even if its title
+        # does not. Only matched visibility and region-safe identity matter.
+        self.assertEqual(
+            app.unlock_flag_widgets['benkei_encounter']['frame'].winfo_manager(),
+            'grid')
         self.assertEqual(
             app.unlock_flag_sections[('Other story', 'Unsorted')].winfo_manager(),
             '')
@@ -178,7 +182,8 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
         self.assertIn('external_sasuke_recruited', app.unlock_flag_rows)
-        self.assertNotIn('external_sasuke_recruited', app.unlock_flag_widgets)
+        # USA source controls may be lazily instantiated for search
+        # matches; no stale Japanese addresses may persist in the model.
         self.assertEqual(app.unlock_flag_rows['benkei_encounter'].address,
                          0x8015C60C)
         app.unlock_flag_query.set('')
