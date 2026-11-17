@@ -10,6 +10,32 @@ Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C 
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
 7. The initial v0.9.9 imported-baseline work did not establish direct warps. Later native-warp and story-flag work on `main` superseded that historical limitation (user confirmation 2026-11-08). The decomp-only branch must not revisit or modify those features without separate authorization.
 
+## Mandatory reciprocal USA ↔ Japan guest-memory discovery
+
+Whenever any decomp agent discovers, validates or changes an original USA
+or Japan-0 **fixed guest-RAM global, saved inventory field or packed event
+bit**, it MUST investigate and record the candidate for the **other ROM
+in the same task**. Read the
+[decomp crosswalk playbook](decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md)
+and [goemon-region-crosswalk skill](.agents/skills/goemon-region-crosswalk/SKILL.md).
+
+For eligible fixed data and saved-game fields only, propose
+`JP = USA + 0x57F0` or `USA = JP - 0x57F0`, **after** checking
+explicit pairings and exceptions. Treat the counterpart as an
+**unverified candidate** until independently tested. Preserve source
+region/revision, guest address, width, mask, endianness, memory lifetime,
+original-MIPS/gameplay evidence, the target candidate, and a concrete
+confirmation experiment. A raw changed byte does not prove identity.
+Never translate host process memory bases, ROM offsets, original code
+addresses, dynamic player pointers, VM globals, Impact allocations or
+loaded overlays using this rule.
+
+Explicit exceptions: JP Miracle Snowflake `0x80162057` is a
+`+0x57F1` mapping; JP pause `0x800CD2D6` is disputed; JP first
+Sasuke battery `0x80161DF9 & 0x20` is unverified. Do not automatically
+promote hypotheses into matching-C claims, RAM editors, freezes or warps.
+Keep `decomp/*` research separate from `main`-based toolkit PRs.
+
 ## Decomp continuation
 
 For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
