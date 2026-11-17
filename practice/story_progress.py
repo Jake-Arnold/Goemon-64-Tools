@@ -1,5 +1,6 @@
 """Curated US story observations and explicit, masked editing of known values."""
 from dataclasses import dataclass
+from practice.address_registry import guest_bit
 
 SAVED_BASE = 0x8015C608
 BANK_A = 0x80168E90
@@ -17,10 +18,14 @@ class StoryFlag:
     reference_example: str = ''
 
     @property
-    def address(self):return SAVED_BASE+(self.flag_id>>3)
+    def address(self):
+        # The canonical registry, not local flag-ID arithmetic, owns the
+        # actual guest byte used by Story Progress and its masked editor.
+        return guest_bit('story:usa:' + self.key, region='usa')[0]
 
     @property
-    def mask(self):return 1<<(self.flag_id&7)
+    def mask(self):
+        return guest_bit('story:usa:' + self.key, region='usa')[1]
 
 
 CURATED_FLAGS = (
