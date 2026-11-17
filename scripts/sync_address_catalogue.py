@@ -109,6 +109,13 @@ def write_or_check(*, check=False):
                              indent=2, sort_keys=True) + "\n").encode("utf-8")
     if check:
         if existing is None or SNAPSHOT.read_bytes() != registry_bytes:
+            import difflib
+            old = SNAPSHOT.read_text(encoding="utf-8").splitlines()
+            new = registry_bytes.decode("utf-8").splitlines()
+            changes = list(difflib.unified_diff(
+                old, new, fromfile="current", tofile="regenerated",
+                lineterm=""))
+            print("\n".join(changes[:65]), file=sys.stderr)
             raise ValueError("Address registry is outdated; run "
                              "python -m scripts.sync_address_catalogue --write")
         if not AUDIT.is_file() or AUDIT.read_bytes() != audit_bytes:
