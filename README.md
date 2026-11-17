@@ -1,4 +1,10 @@
-# Goemon Speedrun Tools v0.11.37 — simplified navigation and unrestricted memory comparison test
+# Goemon Speedrun Tools v0.11.38 — simplified navigation and unrestricted memory comparison test
+
+## v0.11.38 — Direct On / Off buttons for each story and event flag
+
+Under **Unlocks → Story & event flags**, every mapped flag now has **its own On and Off buttons on the same row** as its name, address, bit mask, live state and research source. There is no need to select a table row and use shared buttons below the list. Clicking a flag's name displays its full provenance. Search filters the displayed controls, with independent scrolling for the long list. Rows are created only when the flags page is opened to avoid slowing startup.
+
+The **USA named saved-event catalogue** and all **Japanese mapped curated / Plasma crosswalk flags**, including candidate offsets, have exactly the same On/Off interaction. Crosswalk evidence status does **not** block writes. The live state and highlighted button track the original game's current bit; disconnected entries display an unavailable state. Every click writes just the chosen masked bit, rechecks the currently displayed byte, and leaves adjacent bits untouched. The 34 separate menu-item controls remain unchanged on **Items & equipment**.
 
 ## Dashboard: version selection, update checks and one-click installs (v0.11.37)
 
