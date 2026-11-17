@@ -150,13 +150,16 @@ class RegistryTests(unittest.TestCase):
                 row.get('confidence_sources', [])}
         self.assertTrue({'usa_source', 'research_observed'} <= tags)
         # Bits with distinct masks in a shared saved byte are not conflated.
-        same_byte = [
+        # Use a genuinely multi-flag byte: the Lord event byte currently
+        # has only one named bit, whereas Benkei shares a packed story bank.
+        packed = [
             item for item in registry_records()
             if item['region'] == 'usa' and
-            item['address'] == row['address'] and
-            item.get('mask') != row['mask']
+            item['address'] == '0x8015C60C' and
+            item.get('mask') is not None
         ]
-        self.assertTrue(same_byte)
+        self.assertGreaterEqual(len({item['mask'] for item in packed}), 2)
+        self.assertIn('0x20', {item['mask'] for item in packed})
 
     def test_overlaps_are_not_lost(self):
         rows = registry_records()
