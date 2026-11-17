@@ -2,6 +2,14 @@
 
 This file is the running development log. **Update it with every code change, commit the notes alongside the code, and push that commit to GitHub.** Keep dated entries newest first. Record what changed, why, evidence/tests, remaining issues and next steps. Distinguish automated tests from results reproduced in-game.
 
+## 2026-11-17 — Canonical agent-only USA/Japan reciprocal memory mapping protocol
+
+- **Reason:** Agents discovering a static guest RAM field in either original region must immediately investigate the other version; a repeated `±0x57F0` displacement warrants a systematic but explicitly qualified procedure.
+- **Change:** Added the persistent rule to root `AGENTS.md` and published `docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md` with reported matches, reverse calculations, widths/masks, the user-disputed pause candidate, Snowflake exception and a reusable evidence record.
+- **Scope:** Documentation and agent workflow only. No changes to `practice/`, toolkit version, runtime writes, freezes, warps or GUI. The separate 119-field crosswalk prototype remains on draft PR #43 and is NOT merged by this change.
+- **Verification:** Reviewed against the source branch report and existing region tables; documentation-only, no live game or Python/Tk test run required to establish a memory semantic match.
+- **Next:** When future USA/JP fields are identified, record the counterpart hypothesis and independently test it. Keep PR #43 gated by its own runtime verification.
+
 ## 2026-11-16 — v0.11.31 Ubuntu synthetic/Tk CI green
 
 - **Verification:** GitHub Actions push run 43894609637 for commit 3048921014af6f364a59b2769d0b9f7d49e74fb0 completed successfully on Ubuntu 24.04. Non-GUI: **292 executed, 291 passed, 1 skipped**. Xvfb GUI: **116 passed**, including formerly stalled test_scene_request_blocks_overlapping_checkpoint_restore and the new entrance-selection regressions. No GUI deadlock and no runner argument error.
