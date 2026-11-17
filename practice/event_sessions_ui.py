@@ -155,9 +155,9 @@ class EventSessionsMixin:
             self.event_table.delete(*self.event_table.get_children())
             self.event_trial_summary.set('No trials for current ROM region')
         self.event_region_note.set(
-            'Japan-0: choose any 100-byte RAM region; this is NOT a '
-            'verified saved-event bank. No Japanese event-bit meanings '
-            'are assumed.' if japan
+            'Japan-0: default 0x80161DF8–0x80161E5B is the offset-derived '
+            'persistent-event bank candidate. Benkei bit independently '
+            'tested; other meanings unverified. Enter any 100-byte window.' if japan
             else 'USA: fixed saved-event block; native mapped semantics.')
         self.event_status.set(
             'Japanese RAM bit evidence sessions are read-only; choose a '

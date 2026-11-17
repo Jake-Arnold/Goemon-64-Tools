@@ -11,7 +11,7 @@ from dataclasses import dataclass, replace
 from practice.address_registry import guest_address
 
 from practice.region_unlocks import JAPAN_UNLOCK_LEADS, REGION_DELTA
-from practice.story_progress import CURATED_FLAGS, PLASMA_FLAGS
+from practice.story_progress import CURATED_FLAGS, PLASMA_FLAGS, EXTERNAL_FLAGS
 from practice.unlocks import UNLOCKS
 
 
@@ -80,6 +80,10 @@ _STATIC = (
 )
 
 
+# Only this reviewed external flag has a proposed Japanese counterpart.
+JAPAN_EXTRA_EVENT_KEYS = frozenset({'external_super_pass'})
+
+
 def _build_crosswalk():
     fields = []
     for key, group, label, usa, width, evidence, note in _STATIC:
@@ -104,6 +108,15 @@ def _build_crosswalk():
                   + "; JP bit semantics still require independent checks"
                   if evidence != "user-confirmed" else
                   "User confirmed JP 0x80161DFC, bit 0x20 on 2026-11-16")))
+    for flag in EXTERNAL_FLAGS:
+        if flag.key not in JAPAN_EXTRA_EVENT_KEYS:
+            continue
+        fields.append(CrossRegionField(
+            'event:' + flag.key, 'Persistent story flags', flag.label,
+            flag.address, flag.address + REGION_DELTA,
+            mask=flag.mask, evidence='candidate',
+            note='USA external annotation and gameplay research; Japanese '
+                 'bit inferred from +0x57F0 only, not independently verified'))
     for flag in PLASMA_FLAGS:
         fields.append(CrossRegionField(
             "plasma:" + flag.key, "Plasma advice flags", flag.label,
@@ -129,6 +142,9 @@ assert CROSS_REGION_BY_KEY["static:weapon_index"].japan == 0x80161DF7
 assert CROSS_REGION_BY_KEY["static:gameplay_submode"].japan == 0x800CD294
 assert CROSS_REGION_BY_KEY["static:map_overlay"].japan == 0x80161D64
 assert CROSS_REGION_BY_KEY["event:benkei_encounter"].japan == 0x80161DFC
+assert CROSS_REGION_BY_KEY["event:external_super_pass"].usa == 0x8015C608
+assert CROSS_REGION_BY_KEY["event:external_super_pass"].japan == 0x80161DF8
+assert CROSS_REGION_BY_KEY["event:external_super_pass"].mask == 0x01
 assert CROSS_REGION_BY_KEY["static:pause_byte"].evidence == "disputed"
 assert CROSS_REGION_BY_KEY["unlock:sasuke_battery_1_collected"].evidence == "candidate"
 assert CROSS_REGION_BY_KEY["unlock:snowflake"].japan == 0x80162057

@@ -94,10 +94,25 @@ class RegistryTests(unittest.TestCase):
                          0x57F1)
         self.assertEqual(lookup("crosswalk:japan:static:pause_byte")
                          ["confidence"], "disputed")
+        self.assertEqual(guest_bit('story:usa:external_super_pass',
+                                   region='usa'), (0x8015C608, 0x01))
+        self.assertEqual(guest_bit('crosswalk:japan:event:external_super_pass',
+                                   region='japan'), (0x80161DF8, 0x01))
+        receipt = lookup('crosswalk:japan:event:external_super_pass')
+        self.assertEqual((receipt['region'], receipt['revision'], receipt['width'],
+                          receipt['mask'], receipt['category'], receipt['data_type'],
+                          receipt['counterpart'], receipt['live_readable']),
+                         ('japan', 'NG5J-0', 1, '0x1', 'saved_event_bit',
+                          'u8', '0x8015C608', True))
+        self.assertNotEqual(receipt['confidence'], 'user-confirmed')
+        usa = lookup('story:usa:external_super_pass')
+        self.assertEqual(usa['counterpart'], '0x80161DF8')
+        self.assertIn('crosswalk:usa:event:external_super_pass',
+                      usa['id_aliases'])
 
     def test_every_japan_story_bit_stays_accessible_without_evidence_gate(self):
         from practice.unlock_flag_catalog import JAPAN_FLAGS, flags_for_region
-        self.assertEqual(len(JAPAN_FLAGS), 58)
+        self.assertEqual(len(JAPAN_FLAGS), 59)
         for flag in flags_for_region("japan"):
             self.assertEqual((flag.address, flag.mask), guest_bit(
                 "crosswalk:japan:" +

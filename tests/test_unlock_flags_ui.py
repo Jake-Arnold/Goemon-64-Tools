@@ -157,6 +157,42 @@ class UnlockFlagsUITests(unittest.TestCase):
             candidate_widgets['off'].invoke()
             writer.assert_not_called()
 
+    def test_japan_receipt_flag_independent_cas_and_region_switch(self):
+        app = self.app
+        self._select_japan()
+        ram = FakeRAM()
+        ram.bytes[0x80161DF8] = 0x04  # Adjacent Oedo story bit.
+        ram.bytes[0x80161EF3] = 0x01  # Separate inventory field.
+        app.jp_rdram = ram
+        app.game_pid = 1234
+        app.jp_backend = 'project64'
+        app.connection_target.set('project64')
+        self._open_flags()
+        self._expand('External annotations')
+        flag = app.unlock_flag_rows['external_super_pass']
+        self.assertEqual((flag.address, flag.mask), (0x80161DF8, 0x01))
+        controls = app.unlock_flag_widgets[flag.key]
+        self.assertNotIn('disabled', controls['on'].state())
+        self.assertNotIn('disabled', controls['off'].state())
+        with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
+            controls['on'].invoke()
+            writer.assert_called_once_with(
+                0x80161DF8, b'\x05', expected=b'\x04')
+        ram.bytes[0x80161DF8] = 0x05
+        app.refresh_unlock_flags(force=True)
+        with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
+            controls['off'].invoke()
+            writer.assert_called_once_with(
+                0x80161DF8, b'\x04', expected=b'\x05')
+        self.assertEqual(ram.bytes[0x80161EF3], 0x01)
+        app.args.read_only = True
+        app.refresh_unlock_flags(force=True)
+        self.assertIn('disabled', controls['on'].state())
+        self.assertIn('disabled', controls['off'].state())
+        app.game_version_choice.set(VERSIONS['usa'].label)
+        app.on_game_version_changed()
+        self.assertEqual(app.unlock_flag_rows[flag.key].address, 0x8015C608)
+
     def test_filter_and_region_switch_replace_controls_and_no_old_address(self):
         app = self.app
         self._open_flags()

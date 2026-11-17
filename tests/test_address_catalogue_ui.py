@@ -92,6 +92,25 @@ class AddressCatalogueUITests(unittest.TestCase):
         app.catalogue_evidence.set("disputed")
         self.assertGreaterEqual(len(app.catalogue_tree.get_children()), 1)
 
+    def test_show_unknown_only_adds_unclassified_references(self):
+        app = self.app
+        self._open()
+        self.assertFalse(app.catalogue_show_unknown.get())
+        app.catalogue_show_unknown.set(True)
+        app.filter_address_catalogue()
+        regions = {app.catalogue_rows[k]['region']
+                   for k in app.catalogue_tree.get_children()}
+        self.assertEqual(regions, {'usa', 'unknown'})
+        app.game_version_choice.set(VERSIONS['japan'].label)
+        app.on_game_version_changed()
+        regions = {app.catalogue_rows[k]['region']
+                   for k in app.catalogue_tree.get_children()}
+        self.assertEqual(regions, {'japan', 'unknown'})
+        app.catalogue_show_unknown.set(False)
+        app.filter_address_catalogue()
+        self.assertTrue(all(app.catalogue_rows[k]['region'] == 'japan'
+                            for k in app.catalogue_tree.get_children()))
+
     def test_selection_shows_full_evidence_related_fields_and_copy(self):
         app = self.app
         self._open()

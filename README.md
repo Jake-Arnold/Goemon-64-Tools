@@ -1,4 +1,25 @@
-# Goemon Speedrun Tools v0.11.41 — simplified navigation and unrestricted memory comparison test
+# Goemon Speedrun Tools v0.11.42 — Japanese event-bank default and Super Pass receipt
+
+## v0.11.42 — Event Sessions, Super Pass and unknown-origin research
+
+Japan Event Sessions defaults to the offset-derived candidate bank
+`0x80161DF8–0x80161E5B`, while USA remains at `0x8015C608`.
+Arbitrary Japanese capture windows, the separate Sasuke battery research
+preset and historical investigation addresses remain supported.
+
+Unlocks → Story & event flags now includes the independently editable
+Japanese **Super Pass receipt recorded** candidate `0x80161DF8 & 0x01`,
+resolved through the canonical address registry. This does not grant the
+inventory item (`0x80161EF3`), and Japanese event semantics are not yet
+gameplay-confirmed. Benkei remains independently verified.
+
+Memory Address Catalogue has a **Show unknown** option for unclassified
+research references alongside the active game's fields. These references
+cannot be live-read or edited, and the other ROM's entries remain hidden.
+
+See [Event Sessions](docs/EVENT_SESSIONS.md) and
+[Address Catalogue workflow](docs/ADDRESS_CATALOGUE_WORKFLOW.md).
+
 
 ## v0.11.41 — Items scroll repair, collapsed flag folders and live catalogue values
 

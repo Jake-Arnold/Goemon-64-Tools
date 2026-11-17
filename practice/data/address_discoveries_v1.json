@@ -570,7 +570,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "address": "0x8015C608",
-      "counterpart": null,
+      "counterpart": "0x80161DF8",
       "confidence": "usa_source",
       "evidence": "USA external Super Pass receipt bit annotated in practice/story_progress.py; JP candidate derived separately",
       "source": "practice/story_progress.py",

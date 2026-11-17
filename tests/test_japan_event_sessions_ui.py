@@ -77,7 +77,8 @@ class JapanEventSessionsUiTests(unittest.TestCase):
             app.event_sections.tab(app.event_sections.tabs()[0],'state'),
             'normal')
         self.assertNotIn('disabled',app.event_region_entry.state())
-        self.assertIn('NOT a verified saved-event bank',
+        self.assertEqual(app.event_region_start.get(), '0x80161DF8')
+        self.assertIn('offset-derived',
                       app.event_region_note.get())
         app.new_event_session()
         self.assertEqual(app.event_session['region'],'japan')
@@ -85,11 +86,11 @@ class JapanEventSessionsUiTests(unittest.TestCase):
         app.capture_event_stage('A')
         self.writer.set_guest(JAPAN_CANDIDATE_START,b'\x20')
         app.capture_event_stage('B')
-        self.assertIn('0x80161D80: 00->20',app.event_comparison.get())
+        self.assertIn('0x80161DF8: 00->20',app.event_comparison.get())
         app.record_event_trial()
         self._wait_ranking()
         self.assertEqual(len(app.event_session['trials']),1)
-        self.assertEqual(app.event_rows[0]['address'],'0x80161D80')
+        self.assertEqual(app.event_rows[0]['address'],'0x80161DF8')
         self.assertEqual(self.writer.writes,[])
 
     def test_sasuke_battery_preset_covers_unverified_bit_without_game_writes(self):
@@ -110,6 +111,16 @@ class JapanEventSessionsUiTests(unittest.TestCase):
         self.assertIn('0x80161DF9: 00->20', app.event_comparison.get())
         self.assertEqual(self.writer.writes, [])
 
+    def test_manual_japanese_window_and_new_investigation(self):
+        app = self.app
+        app.event_region_start.set('0x80161E00')
+        app.new_event_session()
+        self.assertEqual(app.event_session['event_start'], 0x80161E00)
+        self.writer.set_guest(0x80161E00, bytes(100))
+        app.capture_event_stage('A')
+        app.capture_event_stage('B')
+        self.assertEqual(self.writer.writes, [])
+
     def test_region_change_clears_event_session_without_cross_link(self):
         app=self.app
         app.new_event_session()
@@ -121,6 +132,9 @@ class JapanEventSessionsUiTests(unittest.TestCase):
         app.on_game_version_changed()
         self.assertIsNone(app.event_session)
         self.assertEqual(app.event_region_start.get(),'0x8015C608')
+        app.game_version_choice.set(VERSIONS['japan'].label)
+        app.on_game_version_changed()
+        self.assertEqual(app.event_region_start.get(),'0x80161DF8')
         self.assertIn('disabled',app.event_region_entry.state())
         self.assertIn('disabled',app.event_battery_preset_button.state())
         self.assertEqual(self.writer.writes,[])

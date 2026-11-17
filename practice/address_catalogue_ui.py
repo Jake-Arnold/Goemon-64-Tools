@@ -29,6 +29,7 @@ class AddressCatalogueUI:
         self.catalogue_status = tk.StringVar(value="Loading bundled memory registry...")
         self.catalogue_query = tk.StringVar(value="")
         self.catalogue_region = tk.StringVar(value=self.active_version.key)
+        self.catalogue_show_unknown = tk.BooleanVar(value=False)
         self.catalogue_evidence = tk.StringVar(value="all")
         self.catalogue_category = tk.StringVar(value="all")
         self.catalogue_type = tk.StringVar(value="all")
@@ -73,6 +74,11 @@ class AddressCatalogueUI:
         ttk.Label(filters, textvariable=self.catalogue_region,
                   style="Card.TLabel", width=8).pack(
                       side="left", padx=(0, 14))
+        ttk.Checkbutton(
+            filters, text="Show unknown",
+            variable=self.catalogue_show_unknown,
+            command=self.filter_address_catalogue).pack(
+                side="left", padx=(0, 14))
         for label, state, width in (
                 ("Evidence", self.catalogue_evidence, 21),
                 ("Category", self.catalogue_category, 22),
@@ -291,13 +297,19 @@ class AddressCatalogueUI:
         q = self.catalogue_query.get().strip()
         matches = search_entries(
             self.catalogue_payload, q,
-            region=self.catalogue_region.get(),
+            region=("all" if self.catalogue_show_unknown.get()
+                    else self.catalogue_region.get()),
             evidence=self.catalogue_evidence.get(),
             category=self.catalogue_category.get(),
             data_type=("all" if self.catalogue_type.get() == "all"
                        else None if self.catalogue_type.get() == "unknown"
                        else self.catalogue_type.get()),
             already_validated=True)
+        # Unknown-origin references are opt-in, never the other game's fields.
+        region = self.catalogue_region.get()
+        matches = [row for row in matches if row["region"] == region or
+                   (self.catalogue_show_unknown.get() and
+                    row["region"] == "unknown")]
         key, reversed_order = self.catalogue_sort
         def sorting(record):
             if key == "name":

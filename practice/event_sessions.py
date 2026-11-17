@@ -12,9 +12,8 @@ FORMAT = 'goemon-event-session-v1'
 EVENT_START = 0x8015C608
 EVENT_SIZE = 0x64
 MAX_TRIALS = 500
-JAPAN_CANDIDATE_START = 0x80161D80  # user-editable read-only probe; NOT a mapped event bank
-# A 100-byte window containing the unverified Japanese battery byte 0x80161DF9.
-# The generic Japanese 0x80161D80–0x80161DE3 window misses that candidate.
+JAPAN_CANDIDATE_START = 0x80161DF8  # offset-derived saved-event candidate; not gameplay-verified
+# Separate battery-research preset includes the unverified 0x80161DF9 & 0x20.
 JAPAN_BATTERY_RESEARCH_START = 0x80161DC0
 assert JAPAN_BATTERY_RESEARCH_START <= 0x80161DF9 < JAPAN_BATTERY_RESEARCH_START + EVENT_SIZE
 
@@ -78,7 +77,7 @@ def _japan_event_context(ram):
 
 
 def capture_japan_event(ram, *, event_start=JAPAN_CANDIDATE_START):
-    """Explicit Japanese 100-byte guest slice; no claim it is a saved bank."""
+    """Explicit Japanese 100-byte guest slice; default is an offset candidate."""
     if type(event_start) is not int or not (
             0x80000000 <= event_start and event_start + EVENT_SIZE <= 0x80800000):
         raise ValueError('Invalid Japanese candidate RAM range')

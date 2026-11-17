@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — v0.11.42 Japanese Event Sessions and Super Pass receipt
+
+- **Default window:** JP Event Sessions now starts at `0x80161DF8–0x80161E5B` (+`0x57F0` from USA); USA stays `0x8015C608–0x8015C66B`. The `0x80161DC0` Sasuke battery preset, arbitrary JP 100-byte overrides, historical `event_start` addresses and existing trial ranking remain unchanged.
+- **Super Pass crosswalk:** Explicit `event:external_super_pass` USA `0x8015C608 & 0x01` ↔ JP `0x80161DF8 & 0x01`, using the canonical registry and reviewed discovery metadata. Japanese bit semantics remain offset-derived and unconfirmed; Benkei retains its independent evidence.
+- **Independent controls:** The existing Japanese story-flag compare-before-write path preserves unrelated bits, including Oedo `0x04`. The Super Pass inventory field `0x80161EF3` remains separate and is never granted automatically.
+- **Catalogue:** Optional **Show unknown** exposes only unknown-region research alongside the active game, not other-region playable addresses or unsafe live reads.
+- **Tests:** Added Event Sessions default, historical session and GUI tests; crosswalk/registry consistency, mask safety, inventory independence, Unlocks GUI and unknown-region filtering regressions. GitHub Actions Linux and Windows suites and registry synchronisation are required before claiming a passing build.
+- **Limitations:** No real in-game Japanese Super Pass semantics or desktop visual test is claimed. Next: controlled gameplay A/B and control captures and manual UI verification.
+
+
 ## 2026-11-17 — v0.11.41 flag folders, scrolling and catalogue live parity
 
 - **Bug root cause:** A Tk closure for Items & equipment wheel/resize later captured the reassigned flag canvas, preventing wheel scrolling of Items. Separate the canvas variables; route Linux X11 and touchpad events only to the mapped Items canvas and test actual scroll movement.

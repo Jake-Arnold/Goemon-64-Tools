@@ -85,6 +85,17 @@ Open **Live memory → Address catalogue** from either game version. It loads th
 
 ## Audits and limitations
 
+The catalogue normally shows only the active game's addresses; **Show unknown**
+also shows unknown-origin research references, never the other game's fields.
+Unknown-origin entries remain read-disabled. The separate Japan Super Pass
+receipt candidate is `crosswalk:japan:event:external_super_pass`
+(`0x80161DF8 & 0x01`) with USA counterpart
+`story:usa:external_super_pass` (`0x8015C608 & 0x01`).
+The entries retain candidate/ROM provenance without authorising new writers.
+Their existing explicit Unlocks flag editor preserves neighbouring bits
+using compare-before-write; inventory uses its own control and address.
+
+
 `practice/data/address_catalogue_audit.json` reports counts by region/category/confidence, record count, distinct regional address locations, live-readable entries, unsupported research records and disputed entries. This **counts field records, not unique memory locations**: several bits at one address have separate IDs.
 
 Synthetic big-endian reads and Tk/Windows test coverage are not a substitute for live USA and Japanese emulator/gameplay verification. The current catalogue intentionally does not dereference dynamic pointers or auto-write proposed addresses. Old cheat instruction patches and code VMAs remain visible as research leads, not game state variables.

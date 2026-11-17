@@ -16,7 +16,7 @@ from practice.story_progress import (
     PLACEMENT_PICKUPS, DOLL_PLACEMENT_FLAGS, SAVED_BASE,
     story_section_for_key,
 )
-from practice.region_memory_crosswalk import CROSS_REGION_BY_KEY
+from practice.region_memory_crosswalk import CROSS_REGION_BY_KEY, JAPAN_EXTRA_EVENT_KEYS
 from practice.region_unlocks import REGION_DELTA
 from practice.address_registry import guest_bit
 
@@ -60,6 +60,9 @@ USA_FLAGS = tuple(
 # Every mapped JP event/Plasma crosswalk is editable for direct experiments.
 # Candidate labels identify evidence quality, not write access. External and
 # placement flags are not currently in the canonical reciprocal crosswalk.
+_JAPAN_EXTRA_EVENT_FLAGS = tuple(
+    flag for flag in EXTERNAL_FLAGS if flag.key in JAPAN_EXTRA_EVENT_KEYS
+)
 JAPAN_FLAGS = tuple(
     UnlockFlag(flag.key, flag.label, story_section_for_key(flag.key),
                CROSS_REGION_BY_KEY[
@@ -76,7 +79,7 @@ JAPAN_FLAGS = tuple(
                    ('plasma:' if flag in PLASMA_FLAGS else 'event:') + flag.key
                ].note,
                True)
-    for flag in CURATED_FLAGS + PLASMA_FLAGS
+    for flag in CURATED_FLAGS + PLASMA_FLAGS + _JAPAN_EXTRA_EVENT_FLAGS
 )
 
 assert len({f.key for f in USA_FLAGS}) == len(USA_FLAGS)
