@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from practice.room_actors import actors_for_stage
+from practice.model_research_ui import ModelResearchDialog
 from practice.scenes import SCENES, unidentified_scene_name
 
 
@@ -31,6 +32,7 @@ class RoomActorBrowser:
         self.query = tk.StringVar()
         ttk.Entry(row, textvariable=self.query, width=30).pack(side='left', padx=8)
         self.query.trace_add('write', lambda *_: self.redraw())
+        ttk.Button(row, text='Research geometry…', command=self.open_model_probe).pack(side='left', padx=(12, 0))
         columns = ('actor', 'name', 'confidence', 'definition', 'record', 'group', 'cells')
         frame = ttk.Frame(shell)
         frame.pack(fill='both', expand=True)
@@ -44,6 +46,7 @@ class RoomActorBrowser:
             self.table.heading(key, text=title)
             self.table.column(key, width=width, stretch=key in ('name', 'cells'))
         self.table.pack(side='left', fill='both', expand=True)
+        self.table.bind('<Double-1>', lambda _event: self.open_model_probe())
         yscroll = ttk.Scrollbar(frame, orient='vertical', command=self.table.yview)
         yscroll.pack(side='right', fill='y')
         self.table.configure(yscrollcommand=yscroll.set)
@@ -53,6 +56,16 @@ class RoomActorBrowser:
     def refresh(self, atlas, stage, japan_atlas=None):
         self.atlas, self.stage, self.japan_atlas = atlas, stage, japan_atlas
         self.redraw()
+
+    def open_model_probe(self):
+        """Research only: never claim a selected actor's model is identified."""
+        selected = self.table.selection()
+        values = self.table.item(selected[0], 'values') if selected else None
+        actor_id = int(values[0], 16) if values else None
+        label = values[1] if values else None
+        return ModelResearchDialog(self.window, region=self.region.get(),
+                                   stage=self.stage, actor_id=actor_id,
+                                   actor_name=label)
 
     def redraw(self):
         self.table.delete(*self.table.get_children())
