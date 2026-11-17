@@ -1,5 +1,10 @@
 # Decomp continuation runbook
 
+## 389-C original-USA promotion candidate — pending official current-source gates (17 November 2026)
+
+The independently verified versioned **342+47 = 389-C** native source-stage code resides on `chatgptweb/promote-47-crossregion-to-389-20261117`. Its source hash-pinned 47 original address functions compile to **2,220 exact bytes** and link on top of current canonical **342 C** to the exact original 33,554,432-byte USA ROM. Full 7,376-function native identity, seven new overlay relocation multisets, and six source-guard tests pass. **This is not yet the canonical 389-C proof:** the new manifest stage, current complete `decomp.verify`, full `decomp.inventory` and `decomp.local_ci` must pass together before replacing original current proof JSONs or merging. Existing Japan rev-0 34-C work remains distinct.
+
+
 ## Current region-separated matching-C checkpoints (17 November 2026)
 
 - **USA canonical:** 342 matching-C functions / 17,568 original code bytes in the existing `decomp.verify` and inventory proof (unmodified by the Japanese import). The 315-function checkpoint below is historical.

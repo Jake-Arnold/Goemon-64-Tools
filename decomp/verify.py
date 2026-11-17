@@ -24,6 +24,7 @@ try:
     from . import overlay_file11
     from .research import usa_file11_noop_groups as overlay_file11_noops
     from . import overlay_file13
+    from . import overlay_crossregion47
     from .elf_layout import pack_object_file, pack_heap_noop_file
     from .elf_layout import pack_file12_callback_text, pack_overlay_function_text
     from .collision_patch import prepare_collision_gate
@@ -35,6 +36,7 @@ except ImportError:
     import overlay_file11
     from decomp.research import usa_file11_noop_groups as overlay_file11_noops
     import overlay_file13
+    import overlay_crossregion47
     from elf_layout import pack_object_file, pack_heap_noop_file
     from elf_layout import pack_file12_callback_text, pack_overlay_function_text
     from collision_patch import prepare_collision_gate
@@ -191,6 +193,9 @@ def claimed_functions(manifest):
                               'size': 12}
                              for name, rom in overlay_file11_noops.entries())
     functions.extend(stage['function'] for stage in manifest_file13_stages(manifest))
+    if manifest.get('overlay_crossregion47_stage'):
+        functions.extend({key: row[key] for key in ('name','rom_offset','vma','size')}
+                         for row in overlay_crossregion47.load_fixture()['functions'])
     return functions
 
 
@@ -1129,6 +1134,23 @@ def load_manifest(path):
         if (manifest['upstream_commit']!='7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee' or len(vm)!=1 or
             not any(f==dict(name='func_8003DB0C_3E70C',rom_offset=0x3E70C,size=224) for f in vm[0]['functions'])):
             raise ValueError('VM table layout requires pinned assignment handler')
+    crossregion47=manifest.get('overlay_crossregion47_stage')
+    if crossregion47 is not None:
+        if crossregion47!={'format':overlay_crossregion47.STAGE_FORMAT}:
+            raise ValueError('Unsupported original-USA 47-overlay C stage version')
+        if file11_stage_mode(manifest)!=179:
+            raise ValueError('47 overlay C requires current pinned 179-file11 / 342-C baseline')
+        reviewed=overlay_crossregion47.load_fixture()['functions']
+        original=claimed_functions({k:v for k,v in manifest.items()
+                                   if k!='overlay_crossregion47_stage'})
+        names={f['name'] for f in original}
+        intervals=[(f['rom_offset'],f['rom_offset']+f['size']) for f in original]
+        if len(original)!=342 or len(names)!=342:
+            raise ValueError('47 overlay stage base must own exactly 342 canonical functions')
+        for row in reviewed:
+            if row['name'] in names or any(a<row['rom_offset']+row['size'] and row['rom_offset']<b
+                                          for a,b in intervals):
+                raise ValueError('Repeated native C ownership in reviewed 47-overlay batch')
     return manifest
 
 
@@ -2197,6 +2219,49 @@ def run_build(args,manifest,report):
             report['overlay_file13_stages']['linked_elf_provenance']
         )
         report['comparison']=result
+    if manifest.get('overlay_crossregion47_stage') is not None:
+        if (not result['full_rom_match'] or result['matched_functions']!=342
+                or result['claimed_functions']!=342):
+            raise ValueError('Cross-region 47 stage requires a complete native 342-C exact-ROM proof')
+        import shutil as _shutil
+        before=work/'pre_crossregion47'
+        if before.exists():raise ValueError('Crossregion47 snapshot already exists')
+        (before/'build/usa').mkdir(parents=True)
+        _shutil.copyfile(candidate/'build/usa/mnsg.elf', before/'build/usa/mnsg.elf')
+        fixture=overlay_crossregion47.load_fixture()
+        plan=overlay_crossregion47.stage_linker(
+            candidate,expected,fixture,source_dir/'research/jp_recomp_to_c/src')
+        logged('crossregion47-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*overlay_crossregion47.object_targets(plan)],
+               candidate)
+        packed=overlay_crossregion47.pack_objects(candidate,expected,plan)
+        if packed['functions']!=47 or packed['original_c_instruction_bytes']!=2220:
+            raise ValueError('Unexpected 47-overlay C compiler-object proof')
+        for name in ('mnsg.elf','mnsg.z64'):
+            (candidate/'build/usa'/name).unlink()
+        logged('crossregion47-link',['make','-j'+str(args.jobs),'UV='+uv,'build/usa/mnsg.z64'],candidate)
+        proof=overlay_crossregion47.verify_link(before,candidate,expected,plan,packed)
+        reported_names={f['name'] for f in result['functions']}
+        actual_symbols=parse_symbols(capture(['mips-linux-gnu-nm','-n','build/usa/mnsg.elf'],candidate))
+        for e in plan['functions']:
+            name=e['name']
+            if (name in reported_names or actual_symbols.get(name)!=e['vma']
+                    or name+'.NON_MATCHING' in actual_symbols):
+                raise ValueError('New 47-overlay C ELF ownership incorrect: '+name)
+            row={'name':name,'size':e['size'],'guest_address':f'0x{e["vma"]:08X}',
+                 'rom_offset':f'0x{e["rom_offset"]:X}','matched':True,
+                 'expected_sha256':e['original_code_sha256'],
+                 'candidate_sha256':e['original_code_sha256']}
+            result['functions'].append(row)
+            reported_names.add(name)
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=e['size']
+        report['overlay_crossregion47_stage']=proof
+        report['comparison']=result
+        if (result['matched_functions']!=389 or result['matched_function_bytes']!=19788
+                or result['claimed_functions']!=389):
+            raise ValueError('Unexpected canonical USA C total following 47-overlay stage')
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

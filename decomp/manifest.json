@@ -1366,5 +1366,8 @@
         "size": 36
       }
     }
-  ]
+  ],
+  "overlay_crossregion47_stage": {
+    "format": "goemon-usa-47-overlay-c-original-link-v1"
+  }
 }

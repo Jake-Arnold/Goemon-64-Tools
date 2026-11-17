@@ -1,0 +1,1 @@
+typedef unsigned char u8;typedef struct {char pad[0x90];float f;} O;void func_8021B270_684C50 (O*o,u8 x){o->f=(float)x;}
