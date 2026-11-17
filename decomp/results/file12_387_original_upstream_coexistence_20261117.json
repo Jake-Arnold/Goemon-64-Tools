@@ -1,0 +1,48 @@
+{
+  "format": "goemon-file12-387-usa-coexistence-v1",
+  "date": "2026-11-17",
+  "status": "verified_original_upstream_plus_387_file12_c",
+  "original_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "local_tests": {
+    "expanded_385": 6,
+    "coexistence_387": 5,
+    "all_passed": true
+  },
+  "file12_build": {
+    "reconstructed_research_functions": 385,
+    "existing_canonical_file12_functions": 2,
+    "linked_c_functions": 387,
+    "c_code_bytes": 14268,
+    "full_rom_bytes_matched": 33554432,
+    "file12_relocations_original": 7051,
+    "file12_relocations_candidate": 7051,
+    "semantic_relocation_multiset_identical": true,
+    "raw_relocation_record_order_identical": false,
+    "elf_original_function_identities": 7376,
+    "locally_repeated_twice": true
+  },
+  "canonical_prior": {
+    "branch_sha": "1961f1333e8a5007c3cf8df5dfa0d0ca5a0cea8b",
+    "manifest_blob_sha": "215f50b13bccbfb4237a5df96573dc776cc4e2f7",
+    "combined_proof_blob_sha": "0c678f6c791b9a742f7e3c0857f4d51e94d279d3",
+    "inventory_blob_sha": "fdf164f23ee93366c0618208b5a2ad2d2b053f27",
+    "prior_usa_matching_c": 342,
+    "prior_usa_c_code_bytes": 17568,
+    "candidate_overlaps": 0
+  },
+  "future_target": {
+    "functions": 727,
+    "c_code_bytes": 31780,
+    "complete_canonical_727_central_G2": "NOT_RUN",
+    "central_inventory": "NOT_RUN",
+    "complete_local_ci": "NOT_RUN"
+  },
+  "reproducer_git_blobs": {
+    "integrate_387": "c182c219d800307f7e3016fd1d56b7aed45c8fd2",
+    "test_file12_387_coexistence": "a691b0b54dfcc97bd95b606da3e0d276eca71ead"
+  },
+  "production_us_c_count_unchanged": 342,
+  "rom_or_assets_committed": false
+}

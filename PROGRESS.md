@@ -1,5 +1,21 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Formal USA file_12 374-wrapper promotion: 346 to 720 matching-C
+
+- **Change:** Added versioned `goemon-file12-registration-374-v1` source and verifier/overlay adapter, claiming the 374 consecutive 36-byte `file_12` registration wrappers from ROM `0x5C9310` to `0x5CC7A8` (13,464 original code bytes), with original addresses and all 374 individual ELF FUNC identities pinned. The existing two file_12 C callbacks and all 346 accepted functions remain unchanged. The baseline C total is now **720** and **31,184** instruction bytes.
+- **Native verification:** Original IDO 5.3 compiled the authenticated original-Splat-derived C source; all 374/374 MIPS functions and 1,122 relocations match the original machine code, with only eight compiler-added zero-pad bytes excluded from the staged section. The clean central `decomp.verify` passed **720/720**, a byte-exact original **33,554,432-byte USA ROM** with SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, whole-overlay **7,051 file_12** and **8,825 file_11** semantic relocations, and linked C/ASM ownership/provenance checks.
+- **Inventory:** Fresh `decomp.inventory` passed: original 7,376 function identities retained, 733 combined ELF C/upstream entries, 6,643 remaining assembly entries and zero extra positive-sized aliases. The two Splat-invented zero-padded labels were removed from ASM metadata without altering the original NOP instruction bytes.
+- **Published locally:** Replaced canonical `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, refreshed `decomp/results/vm_residual_inventory.json` pinned hashes; added `decomp/candidates/file12_reg374.c`, `decomp/file12_registration.py`, and six regression tests. The exact original canonical 346-function proof and inventory are archived as `decomp/results/combined_346_20261117.json` and `decomp/results/inventory_346_20261117.json`; historical 342/315 and earlier reports remain unchanged.
+- **Tests:** Full `python3 -m decomp.local_ci` PASS: 230 decomp tests, 193 verifier/ledger tests, task/evidence validation and GCC ASan/UBSan display-emitter fixture. Updated legacy test projection formulas to exclude the new file_12 stage when explicitly testing historical 210-C and 342-C baselines. Original USA build and native inventory already passed before report publication.
+- **Limits:** Only 374 of PR #48's 385 new research functions promoted. The remaining eleven candidates and separate Japanese matching-C research are not included. No ROM, extracted ASM, binaries, ELF or proprietary compiler committed.
+
+### 2026-11-17 — Reconcile draft file_12 source with current 346-C canonical baseline (PR #48)
+
+- **Scope:** Source-only merge of canonical `f4f1ba28aa0a317471598110f9c0bcebc7ea9b6f` (346 accepted USA C functions, including four latest file_11 promotions) with existing exact-Git-blob file_12 research from draft `38e0e0af1579d76f3bd70c14f73728ef013af799`. Keep all 385 new file_12 functions as research, disjoint from canonical file_11, while preserving the updated VM residual inventory and all current repository agent-skill fixtures. No canonical production manifest or accepted result changes.
+- **Evidence:** A prior manually linked 342+385 candidate reproduced the complete 32 MiB original USA ROM exactly and passed file_12 semantic relocations and function inventory; this does not establish central 346+385 G2. Revised target **731 C functions**, conditional on fresh central `decomp.verify`, full-ELF relocation reconciliation, `decomp.inventory`, and complete `decomp.local_ci` against this merged branch.
+- **Tests/limits:** This source-only merge is verified against the Git object trees and non-overlap of changed paths, not by a fresh native build or full local CI. Do not promote, change manifests/proofs, or mark PR ready for merge until every acceptance gate passes.
+- **Next:** Implement and run a versioned 731-C central stage using the complete source tree; resolve any ELF relocation differences and execute full CI.
+
 ### 2026-11-17 — Canonical decomp USA/Japan reciprocal memory crosswalk instructions
 
 - **Reason:** New fixed original-USA/JP guest-memory discoveries must always trigger a candidate lookup for the other region; the observed `±0x57F0` displacement strongly guides targeted testing.

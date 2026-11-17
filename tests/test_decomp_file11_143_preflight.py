@@ -22,6 +22,10 @@ class File11143PreflightTests(unittest.TestCase):
         # 143-C file_11 stage, the two Impact stages and the 36-byte dialogue C.
         cls.manifest = copy.deepcopy(cls.manifest)
         cls.manifest['overlay_file11_stage'] = {'format': 'goemon-file11-character-switch-50-v2'}
+        cls.manifest['overlay_file12_stages'] = [
+            x for x in cls.manifest['overlay_file12_stages']
+            if x['format'] != 'goemon-file12-registration-374-v1'
+        ]
         del cls.manifest['overlay_file13_stages']
         cls.manifest['support_headers'].remove('impact_controller.h')
         dialogue = next(u for u in cls.manifest['units'] if u['source']=='dialogue_window.c')

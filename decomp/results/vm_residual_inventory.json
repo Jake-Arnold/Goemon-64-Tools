@@ -25,22 +25,22 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "43099db2fe971cb38e3554f6e5d2d46f3f14237fa4bd1d0d59a089df967da63c",
+    "manifest_sha256": "ee6fb4201ae177078e307bd39b28db4fb4e0cb9e29f954ea63f9aade1234c125",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "182f0596aeba9229ffef403473201bf79c91c03b9fc9697d59cb3194b2d29190"
+    "verifier_sha256": "051395259266449c94c0ed00441dc21b8379b998c2108781f570762525d52760"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "079b1c1ac68b5f2dfbb253272407d62084fa126b96c1bd6c5902aa65911082eb",
+    "report_sha256": "e5585256d00c20000bff27ad03afdc749b75815dc631c3f4aca8f99ea794cb82",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "b368aebad3b0d6332fcc4fbea7afc8f25fe392001eb363630497bfb9c71a8dc3",
-    "matching_c_functions": 346,
-    "matching_c_bytes": 17720,
-    "combined_c_entries": 359,
-    "asm_entries": 7017,
+    "combined_proof_sha256": "70733f3bd629bf0f67c78bcb91c7656c3131687c3f58280c2fffee135a54e747",
+    "matching_c_functions": 720,
+    "matching_c_bytes": 31184,
+    "combined_c_entries": 733,
+    "asm_entries": 6643,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Canonical USA 346/346 complete original-ROM G2; file11 179 to 183 by four original-address predicates (152 exact bytes), all 8,825 semantic relocations and original 7,376 positive-size function identities; Japanese 34-C verified independently.",
+    "note": "Canonical USA 720/720: existing 346 C plus 374 original-address file_12 registration wrappers; native G2 32MiB exact ROM; 7,051 semantic file_12 and 8,825 semantic file_11 relocations, 7,376 original positive-sized function identities. Original 0x5CC7A8 synthetic split FUNC label normalized without instruction changes; Japan 34-C remains independent.",
     "reconciled_date": "2026-11-17"
   },
   "residual_functions": [

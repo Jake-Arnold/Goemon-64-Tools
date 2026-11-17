@@ -2,12 +2,22 @@
 
 ## Current region-separated matching-C checkpoints (17 November 2026)
 
-- **USA canonical:** 346 matching-C functions / 17,720 original code bytes; `file_11` contains 183 C functions (5,336 bytes). The full native 33,554,432-byte USA ROM, 8,825 semantic `file_11` relocations, 7,376 function identities and 7,017 remaining ASM entries are verified. The 342- and 315-function checkpoints below are historical; Japanese rev-0 results remain separately verified.
-- **USA remaining:** 82 PR #23 exact original-address research functions (3,512 bytes) remain unpromoted. Strict combined 346 proof covers only the four new wave-six functions.
+- **USA canonical:** 720 matching-C functions / 31,184 original code bytes; `file_11` contains 183 C functions (5,336 bytes). The full native 33,554,432-byte USA ROM, 8,825 semantic `file_11` relocations, 7,376 function identities and 6,643 remaining ASM entries are verified. The 346-, 342- and 315-function checkpoints below are historical; Japanese rev-0 results remain separately verified.
+- **USA remaining:** 82 PR #23 exact original-address research functions (3,512 bytes) remain unpromoted. Strict combined 720 proof includes all 346 earlier functions and 374 original-address file_12 registration wrappers. The remaining 11 candidates in PR #48 are research-only.
 - **Japan rev-0:** 34 matching-C functions / 1,912 original code bytes / 30 translation units. Selectively imported from `chatgptweb/japanese-decomp-port` into `chatgptweb/decomp`; the Japanese manifest lives at `decomp/regions/japan_0.json`, and the regional build runner is `decomp/build_japan_thirtyfour_c.sh`. Keep the two regional original-ROM hash gates and counts separate.
 - **Acceptance:** The supplied 34-C code package was independently rebuilt from pinned upstream original Japanese source and ROM on 2026-11-17: exact 32 MiB expanded and 16 MiB retail ROMs, strict 34-C ELF ownership/source/relocation verifier PASS; eight ROM-free guardrail tests PASS. All 30 checked-in Japanese C source blob SHAs equal the independently verified package. The imported branch's distinct build wrapper and full combined USA local CI were not rerun. No gameplay or native PC recompilation claim.
 - **Next research:** Five further Japanese 36-byte isolated candidates at `0x3A7AC`, `0x3A7D0`, `0x3AA34`, `0x3AA74`, `0x3AA98` remain excluded until a fresh 39-function complete Japanese ROM and strict ELF proof passes.
 
+
+
+## USA 720-function promotion (17 November 2026)
+
+The canonical production manifest has a versioned `0goemon-file12-registration-374-v1`0 stage replacing 374 complete 36-byte original registration wrappers at ROM 0x5C9310``0-0x5CC7A8. This stage preserves the two earlier file_12 dialogue callbacks and all 346 previously accepted functions, including 183 original-address file_11 functions. Stage C source and exact compiler/trimmed ELF object digests are pinned and validated; all 374 individual function symbols, 1,122 source relocations and 13,464 machine-code bytes were verified. The central `decomp.verify` full-USA-ROM proof passes 720/720, 31,184 C code bytes, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Semantic 7,051 file_12 and 8,825 file_11 relocations match the original; 7,376 original ELF function identities are preserved, zero extra positive-sized aliases, 6,643 assembly entries.
+
+- Current proof: `decomp/results/combined.json`; identity inventory: `decomp/results/inventory.json`; VM ledger updated to the current manifest/verifier fingerprints.
+- Stage implementation: `decomp/file12_registration.py`, `decomp/candidates/file12_reg374.c`, `decomp/overlay_file12.py`; fail-closed ROM-free tests in `tests/test_decomp_file12_registration.py`.
+- Full `python3 -m decomp.local_ci` passed after updating historical-checkpoint tests; all C sanitizer fixtures and task/evidence validation passed.
+- No unrelated file_12 or file_11 candidates promoted. Japanese rev-0 34-C is separate. No ROM, extracted assembly, ELF, proprietary toolchain or extracted game assets are tracked.
 
 ## Historical USA production checkpoint: 315 matching-C functions (16 November 2026)
 
