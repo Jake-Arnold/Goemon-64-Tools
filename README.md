@@ -13,11 +13,12 @@ The editable manifest is [practice/unlock_flag_categories.json](practice/unlock_
   "key": "benkei_encounter",
   "label": "Benkei encounter recorded",
   "type": "Benkei & Kihachi",
-  "subtype": "Unsorted"
+  "subtype": "Unsorted",
+  "regions": ["USA", "Japan"]
 }
 ```
 
-Change **type** and **subtype** freely to create chapters, regions, bosses, quests or any custom grouping. Move entries in the JSON array to change display order. The UI's **Type** and **Subtype** dropdowns filter the named groups; text search also searches both labels and their full evidence. `Unsorted` is the initial placeholder until the organization is supplied. Changes take effect on toolkit restart.
+Change **type** and **subtype** freely to create chapters, regions, bosses, quests or any custom grouping. The read-only reference field **regions** identifies which 58 of the 142 flags also appear in Japan. Move entries in the JSON array to change display order. The UI's **Type** and **Subtype** dropdowns filter the named groups; text search also searches both labels and their full evidence. `Unsorted` is the initial placeholder until the organization is supplied. Changes take effect on toolkit restart.
 
 **Do not change or remove `key`**: it is the immutable identifier that binds metadata to a game flag. `label` is descriptive reference text; `type` and `subtype` alone affect the UI layout. Addresses, masks, read/write support and regional crosswalk evidence are defined in code, never in this JSON. Unverified Japanese crosswalk bits remain directly On/Off editable after reorganization.
 
