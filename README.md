@@ -1,10 +1,12 @@
 # Goemon Speedrun Tools v0.11.37 — simplified navigation and unrestricted memory comparison test
 
-## Dashboard: Check for updates and install automatically (v0.11.37)
+## Dashboard: version selection, update checks and one-click installs (v0.11.37)
 
-A **Check for updates** button on the Dashboard compares the current Git checkout with its corresponding branch on the canonical GitHub repository (`main` or the current `toolkit/*` test branch). When a fast-forward update is available, the same button becomes **Install update and restart**. Checking does not alter toolkit source files; installation fast-forwards `main` and restarts the toolkit after normal game-handle, key-injection, freeze and Tk shutdown.
+The Dashboard updater offers a **Version** dropdown with **Stable · main**, **Test · toolkit/* branches** and available **Release tag · vX.Y.Z** entries. **Refresh versions** retrieves the current GitHub refs without changing any source files. **Check for updates** compares the selected version against the installed checkout. After checking, **Install update and restart** fast-forwards the current branch, or **Switch version and restart** switches explicitly to another chosen branch or release tag.
 
-This works with Git-cloned installs on **Ubuntu or Windows**. For safety, the updater verifies the canonical GitHub origin, requires the checkout to be on `main` or a `toolkit/*` branch, refuses modified tracked files or divergent local commits, and never resets, force-checks-out, switches development branches, or removes untracked files. ZIP-only installs display a clear unsupported message. The current branch is not silently replaced by a different branch; update source changes still depend on any new Python packages being available. Live updates are not attempted during a running game process without closing the toolkit first.
+This works with canonical Git-cloned installs on **Ubuntu or Windows**. Only the selected version is installed; decompilation and research branches are not listed. Existing local branch histories are preserved when switching versions, and releases use detached-HEAD checkouts rather than modifying a local branch. To return to stable, select **Stable · main**. The updater refuses dirty tracked files, diverged destination branches, unknown remotes and changed remote commits between checking and installation. It never force-resets Git, discards local commits, or removes untracked files. Git itself blocks switching if an untracked file would be overwritten. ZIP downloads are not auto-updatable.
+
+Git/network work takes place off the Tk UI thread. After installation the toolkit closes process handles, input injectors and freeze workers through normal shutdown before relaunching the selected code. Replaced code may depend on newer Python packages and release tags may contain older interfaces. Manual native-game testing is still required.
 
 ## Unlocks: Items & equipment and Story & event flags (experimental branch)
 
