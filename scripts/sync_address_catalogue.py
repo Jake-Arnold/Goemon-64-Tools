@@ -40,6 +40,14 @@ def synchronise(existing=None):
             added += 1
             continue
         prior = current[key]
+        # Recover explicitly reviewed reciprocal metadata when the initial
+        # bootstrap record lacked its counterpart. Never silently replace a
+        # non-null, conflicting address or counterpart.
+        if (prior.get("counterpart") is None
+                and row.get("counterpart") is not None
+                and any(s == "practice/region_memory_crosswalk.py"
+                        for s in row.get("sources", ()))):
+            prior["counterpart"] = row["counterpart"]
         diffs = [k for k in CANONICAL_FIELDS if prior.get(k) != row.get(k)]
         if diffs and not key.startswith(SOURCE_ONLY_TYPES):
             conflicts.append({"id": key, "fields": diffs,
