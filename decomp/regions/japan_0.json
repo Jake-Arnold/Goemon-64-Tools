@@ -11,7 +11,7 @@
     "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
   },
   "splat_original": "config/japan_0/splat.yaml",
-  "splat_candidate": "config/japan_0/splat_thirtyfour_c.local.yaml",
+  "splat_candidate": "config/japan_0/splat_thirtynine_c.local.yaml",
   "link_map": "build/japan_0/mnsg.map",
   "units": [
     {
@@ -577,6 +577,101 @@
           "size": 48
         }
       ]
+    },
+    {
+      "source": "japan_matching/jp_if_a7ac.c",
+      "staged_source": "src/jp_if_a7ac.c",
+      "source_sha256": "b6de0ed8316d783f75044722b2bff1151cd0df071e328cd0c07ce9452368c348",
+      "object": "build/japan_0/src/jp_if_a7ac.c.o",
+      "rom_offset": 239532,
+      "vram": 2147720108,
+      "section_size": 36,
+      "section_sha256": "b75d42052c111e0e8e6169d0ce8653f7ed4068dac2c9aada6ac8ce0a8c6ea3fe",
+      "functions": [
+        {
+          "name": "func_80039BAC_3A7AC",
+          "rom_offset": 239532,
+          "vram": 2147720108,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_if_a7d0.c",
+      "staged_source": "src/jp_if_a7d0.c",
+      "source_sha256": "61b966543cd3be7270e94108dead755908a535470266c1f28e4134874fbdad8c",
+      "object": "build/japan_0/src/jp_if_a7d0.c.o",
+      "rom_offset": 239568,
+      "vram": 2147720144,
+      "section_size": 36,
+      "section_sha256": "198c3516e1a32f859f470c40d567acfa6dae25a2cb3e12e71bb911b3522785e1",
+      "functions": [
+        {
+          "name": "func_80039BD0_3A7D0",
+          "rom_offset": 239568,
+          "vram": 2147720144,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_if_aa34.c",
+      "staged_source": "src/jp_if_aa34.c",
+      "source_sha256": "806f48dc9993bb096eec1857c3488115c3c298ef3703540efd4d736a83a19873",
+      "object": "build/japan_0/src/jp_if_aa34.c.o",
+      "rom_offset": 240180,
+      "vram": 2147720756,
+      "section_size": 36,
+      "section_sha256": "71690fe3b9fd834cc9a90719cc9cf23e40b50fe8b614705ccf7a1d53e0237aab",
+      "functions": [
+        {
+          "name": "func_80039E34_3AA34",
+          "rom_offset": 240180,
+          "vram": 2147720756,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_if_aa74.c",
+      "staged_source": "src/jp_if_aa74.c",
+      "source_sha256": "c9098dc5e74d004b55b836d113a851c567517fc65b6fd2968eeac9a9389a3cb6",
+      "object": "build/japan_0/src/jp_if_aa74.c.o",
+      "rom_offset": 240244,
+      "vram": 2147720820,
+      "section_size": 36,
+      "section_sha256": "db310f1e00a69a0a9793eca1457406edc9daccaa189c34300bf1c7eaf31fba3d",
+      "functions": [
+        {
+          "name": "func_80039E74_3AA74",
+          "rom_offset": 240244,
+          "vram": 2147720820,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_if_aa98.c",
+      "staged_source": "src/jp_if_aa98.c",
+      "source_sha256": "43e58f9dbed984cae9a381333b3d9255d2e4b6bfaf285c9879e5b3852e57e54a",
+      "object": "build/japan_0/src/jp_if_aa98.c.o",
+      "rom_offset": 240280,
+      "vram": 2147720856,
+      "section_size": 36,
+      "section_sha256": "198c3516e1a32f859f470c40d567acfa6dae25a2cb3e12e71bb911b3522785e1",
+      "functions": [
+        {
+          "name": "func_80039E98_3AA98",
+          "rom_offset": 240280,
+          "vram": 2147720856,
+          "size": 36
+        }
+      ]
     }
-  ]
+  ],
+  "historical_34_manifest": "regions/japan_0_34_preserved_20261117.json",
+  "proven_original_elf_function_identities_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
+  "proven_original_semantic_relocations_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "original_elf_positive_function_count": 7376,
+  "original_elf_relocation_count": 80747
 }

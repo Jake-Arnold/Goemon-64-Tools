@@ -4,12 +4,14 @@
 
 The canonical branch remains `chatgptweb/decomp`. The toolkit remains `main`. The two regions have **different** accepted manifests, linker layouts, addresses and full-ROM acceptance gates. Do not create permanent branches per overlay. Short-lived integration branches are acceptable only during a live native batch.
 
+**Superseding regional production update (17 November 2026):** All 82 USA `file_11` registry candidates passed full native 864-C combined ROM, strict inventory and original semantic relocation gates; all five Japanese main-code registry candidates passed full 39-C original native 32/16 MiB ROM, ELF and 80,747 relocation gates. The 87 candidates have been removed from the pending registry and their historical records preserved as `data/candidate_registry_782_pending_20261117.json`. Historical statements below documenting earlier `RESEARCH_ONLY` snapshots remain archival and no longer describe the live registry.
+
 ## Current claims, not production promotions
 
 | Region | Accepted C | Accepted code bytes | Pending original-address research | Pending bytes |
 |---|---:|---:|---:|---:|
-| USA | 782 | 34,392 | 82 | 3,512 |
-| Japan revision 0 | 34 | 1,912 | 5 | 180 |
+| USA | 864 | 37,904 | 0 | 0 |
+| Japan revision 0 | 39 | 2,092 | 0 | 0 |
 
 The three additional original-address USA file_11 routines (104 bytes) passed fresh 782-C complete-ROM, 8,825 file_11 relocation, strict ELF identity and inventory acceptance; they were not in the existing 82-item candidate registry and are now accepted. The 82 USA pending candidates are all in `file_11` (3,512 B). The separate 47-function cross-overlay batch (2,220 B) passed fresh native combined 779-C G2 and is no longer pending. The 136-byte file_11 camera reset has passed fresh combined 732-C USA G2 and is no longer pending. The 11 `file_12` spatial/lifecycle functions (748 B) passed fresh combined 731-C G2, ELF relocation, inventory and full Local CI and are no longer in the pending registry. The 374 `file_12` registration wrappers are already accepted and excluded. The five Japanese main-code functions were isolated-exact but not integrated with the 34-C baseline.
 
@@ -60,3 +62,5 @@ The 45-branch historical audit uses exact original branch HEADs. Candidate C, so
 **17 November 2026 cross-overlay production integration:** All 47 original-address USA functions across `file_12`, `file_13`, `file_14`, `file_15`, `file_17`, `file_18` and `file_19` have passed the fresh native combined 779-C verifier, full 32MiB ROM exactness, all seven overlay semantic relocation multisets and strict original 7,376-function inventory. The two historically documented main-code ELF size annotations are identical to the accepted 732-C stage, with zero new identities or aliases. The 732-C combined proof remains immutable as `results/combined_732_20261117.json` and inventory `results/inventory_732_20261117.json`; promotion evidence is `results/usa_crossregion47_779_promotion_20261117.json`. Remaining pending: USA file_11 82 / 3,512 bytes, Japan five / 180 bytes. Full Local CI including sanitizer must pass before publication.
 
 **17 November 2026 native file_11 three-function promotion:** A fresh 782-C native original USA ROM is 33,554,432 bytes identical (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`); strict 7,376-function identity, zero extra aliases, 8,825 file_11 relocations and original seven cross-overlay relocation sets preserved. See `results/usa_file11_three_782_promotion_20261117.json`; 779-C evidence preserved separately. Existing 82 USA and five Japanese research-only candidates remain unchanged.
+
+**17 November 2026 complete registry promotion:** USA 864/37,904 original machine-code bytes, JP 39/2,092 bytes. Region-specific complete ROM/ELF and full relocation evidence: `results/usa_file11_eighty_two_864_promotion_20261117.json`, `results/japan_0_five_39_promotion_20261117.json`. No research candidates remain in the canonical registry; separate prospective research must not be counted until native and inventory proof.

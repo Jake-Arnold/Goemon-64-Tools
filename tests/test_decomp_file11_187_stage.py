@@ -27,9 +27,12 @@ class ThreeExtra187StageTests(unittest.TestCase):
         })
 
     def test_explicit_version_and_complete_contiguous_layout(self):
-        self.assertEqual(verify.file11_stage_mode(self.manifest), 187)
-        self.assertEqual(len(verify.claimed_functions(self.manifest)), 782)
-        plan = stage.reviewed_plan(self.manifest)
+        self.assertEqual(verify.file11_stage_mode(self.manifest), 269)
+        self.assertEqual(len(verify.claimed_functions(self.manifest)), 864)
+        historical=dict(self.manifest)
+        historical['overlay_file11_stage']={'format':stage.STAGE_FORMAT}
+        self.assertEqual(verify.file11_stage_mode(historical),187)
+        plan = stage.reviewed_plan(historical)
         self.assertEqual((plan['file11_c_total'], plan['file11_c_instruction_bytes']), (187, 5576))
         self.assertEqual((plan['chunks'], plan['c_units'], plan['asm_slices']), (142, 84, 58))
         chunks = stage.load_fixture()['chunks']
@@ -56,7 +59,7 @@ class ThreeExtra187StageTests(unittest.TestCase):
         extra['source'] += '\n'
         with patch.object(stage, 'load_fixture', return_value=d):
             with self.assertRaises(ValueError):
-                stage.reviewed_plan(self.manifest)
+                stage.reviewed_plan(dict(self.manifest, overlay_file11_stage={'format':stage.STAGE_FORMAT}))
 
     def test_wrong_extent_is_rejected(self):
         d = stage.load_fixture()
@@ -64,7 +67,7 @@ class ThreeExtra187StageTests(unittest.TestCase):
         extra['rom_start'] -= 4
         with patch.object(stage, 'load_fixture', return_value=d):
             with self.assertRaises(ValueError):
-                stage.reviewed_plan(self.manifest)
+                stage.reviewed_plan(dict(self.manifest, overlay_file11_stage={'format':stage.STAGE_FORMAT}))
 
     def test_unknown_or_historical_version_not_silently_accepted(self):
         bad = dict(self.manifest)

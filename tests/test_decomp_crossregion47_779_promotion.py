@@ -17,14 +17,16 @@ class UsaCrossRegion47PromotionTests(unittest.TestCase):
   self.assertEqual(len(fixture['functions']),47)
   self.assertEqual(sum(f['size'] for f in fixture['functions']),2220)
   claims=claimed_functions(self.manifest)
-  self.assertEqual((len(claims),len({x['name'] for x in claims}),sum(x['size'] for x in claims)),(782,782,34392))
+  self.assertEqual((len(claims),len({x['name'] for x in claims}),sum(x['size'] for x in claims)),(864,864,37904))
   for f in fixture['functions']:
    path=ROOT/'decomp/research/jp_recomp_to_c/src'/(f['name']+'.c')
    self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),f['source_sha256'])
  def test_registry_and_independent_proofs(self):
-  self.assertEqual(self.registry['accepted_baseline'],{'usa_functions':782,'japan_0_functions':34})
-  self.assertEqual(self.registry['expected_pending'],{'usa_functions':82,'usa_bytes':3512,'japan_0_functions':5,'japan_0_bytes':180})
-  self.assertEqual(validate(ROOT,self.registry,self.inventory)['functions'],{'usa':82,'japan_0':5})
+  self.assertEqual(self.registry['accepted_baseline'],{'usa_functions':864,'japan_0_functions':39})
+  self.assertEqual(self.registry['expected_pending'],{'usa_functions':0,'usa_bytes':0,'japan_0_functions':0,'japan_0_bytes':0})
+  self.assertEqual(validate(ROOT,self.registry,self.inventory)['functions'],{})
+  history=json.loads((ROOT/'decomp/data/candidate_registry_782_pending_20261117.json').read_text())
+  self.assertEqual((len(history['candidates']),history['accepted_baseline']),(87,{'usa_functions':782,'japan_0_functions':34}))
   self.assertEqual(self.proof['status'],'PASSED_G2')
   # The published 779-C proof is immutable; use its dated archive, not the new 782-C canonical report.
   archives={'decomp/results/combined.json':'decomp/results/combined_779_20261117.json',

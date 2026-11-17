@@ -25,22 +25,24 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "a383f1d8730cefb67cae01cf9e333322d71d7744d702360cf574453361dacf31",
+    "manifest_sha256": "b89e10f407f147142e0325453085cb42d65ba802e762b98c88a5e99f6a1cf787",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "9e9886e4249328ee35225f090cf1548c4db4c16371a2192b69394ba3027df384"
+    "verifier_sha256": "68daf0850feb4c3075f70f64a450d0e047b5e4b6b2e190253a321248354c57ec",
+    "script_vm_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "verify_sha256": "68daf0850feb4c3075f70f64a450d0e047b5e4b6b2e190253a321248354c57ec"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "1b975a21b28ba11c081646cb7de817037f196cfa5f2f20f0b7c2f118ebb1a216",
+    "report_sha256": "afd3cdacb0ce639b7b36586cdd85293b9f67b89aee87b835ed97bc19ce3e75a4",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "3e9976343c3fe0743ffd4938645e1ff61b161a933a8f56093840ae47bf185981",
-    "matching_c_functions": 782,
-    "matching_c_bytes": 34392,
-    "combined_c_entries": 795,
-    "asm_entries": 6581,
+    "combined_proof_sha256": "34374d33281bb2e9dcdef414b4f76842f44ab890d0217a61e697b83e844fa77b",
+    "matching_c_functions": 864,
+    "matching_c_bytes": 37904,
+    "combined_c_entries": 877,
+    "asm_entries": 6499,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Canonical USA 782/782: 779 prior C plus three original-address file_11 C functions; complete 32MiB ROM byte-exact, original 7,376 function names/addresses preserved, unchanged semantic relocation multisets and zero new aliases. Japan 34 C separately unchanged.",
+    "note": "Canonical USA 864/864: 782 prior plus 82 original-address file_11 C functions. Exact 32MiB ROM, 8,825 file_11 relocations, 7,376 original ELF functions, zero positive aliases. JP 39 matching C independently exact 32/16 MiB original ROMs and 80,747 original relocation records.",
     "reconciled_date": "2026-11-17"
   },
   "residual_functions": [

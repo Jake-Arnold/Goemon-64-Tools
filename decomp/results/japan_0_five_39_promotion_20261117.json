@@ -1,0 +1,68 @@
+{
+  "format": "goemon-japan-rev0-five-original-address-production-promotion-v1",
+  "date_utc": "2026-11-17",
+  "branch": "chatgptweb/decomp",
+  "starting_production": 34,
+  "ending_production": 39,
+  "starting_instruction_bytes": 1912,
+  "ending_instruction_bytes": 2092,
+  "new_promoted": 5,
+  "new_promoted_bytes": 180,
+  "original_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "original_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_rom_bytes_exact": 16777216,
+  "expanded_rom_bytes_exact": 33554432,
+  "original_elf_positive_sized_symbols": 7376,
+  "original_elf_symbol_identity_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
+  "original_elf_semantic_relocations": 80747,
+  "semantic_relocation_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "verified_production_manifest": "decomp/regions/japan_0.json",
+  "historical_34_manifest": "decomp/regions/japan_0_34_preserved_20261117.json",
+  "combined_native_proof": "decomp/results/japan_0_39_native_combined_20261117.json",
+  "combined_native_proof_sha256": "a526639f8eeb87e050e59dea2e0833393e6453b53696839a5ba4f996c44c911a",
+  "functions": [
+    {
+      "name": "func_80039BAC_3A7AC",
+      "rom_offset": "0x3A7AC",
+      "vma": "0x80039BAC",
+      "size": 36,
+      "original_code_sha256": "c0de50a4fd027393d27c3464d36cdef108d2d56b23855888e11e124678e42be5",
+      "status": "PASSED_G2"
+    },
+    {
+      "name": "func_80039BD0_3A7D0",
+      "rom_offset": "0x3A7D0",
+      "vma": "0x80039BD0",
+      "size": 36,
+      "original_code_sha256": "c5a3408825e846f6231d4ffc4e61df075cc5f23604eacb3bc97a9831d6a98c4d",
+      "status": "PASSED_G2"
+    },
+    {
+      "name": "func_80039E34_3AA34",
+      "rom_offset": "0x3AA34",
+      "vma": "0x80039E34",
+      "size": 36,
+      "original_code_sha256": "63d3148e827d423b63d0e8ce2eb4d04e05713713a21ed8f099bca6b50d0db043",
+      "status": "PASSED_G2"
+    },
+    {
+      "name": "func_80039E74_3AA74",
+      "rom_offset": "0x3AA74",
+      "vma": "0x80039E74",
+      "size": 36,
+      "original_code_sha256": "77a2d587d482f5a5302b415b65fe88c213604f53a831bb8f9f82938da33f0395",
+      "status": "PASSED_G2"
+    },
+    {
+      "name": "func_80039E98_3AA98",
+      "rom_offset": "0x3AA98",
+      "vma": "0x80039E98",
+      "size": 36,
+      "original_code_sha256": "cebb28970a376afea27ef6d9138e012a2cb537e8b45ac8a66f48fae118078409",
+      "status": "PASSED_G2"
+    }
+  ],
+  "native_status": "PASSED_G2",
+  "full_local_ci": "PASS",
+  "emulator_gameplay": "NOT_RUN"
+}

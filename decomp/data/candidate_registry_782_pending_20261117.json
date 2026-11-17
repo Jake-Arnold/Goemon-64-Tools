@@ -1,0 +1,1844 @@
+{
+  "format": "goemon-candidate-registry-v1",
+  "description": "Deduplicated original-address C research. NOT accepted production C. Offsets are expanded-ROM offsets.",
+  "generated_from_head": "bcbf4451f4d2ce2e83af3875d8dbe71b47813b56",
+  "accepted_baseline": {
+    "usa_functions": 782,
+    "japan_0_functions": 34
+  },
+  "expected_pending": {
+    "usa_functions": 82,
+    "usa_bytes": 3512,
+    "japan_0_functions": 5,
+    "japan_0_bytes": 180
+  },
+  "candidates": [
+    {
+      "region": "japan_0",
+      "segment": "main",
+      "name": "func_80039BAC_3A7AC",
+      "rom_offset": "0x3A7AC",
+      "vma": "0x80039BAC",
+      "size": 36,
+      "original_code_sha256": "c0de50a4fd027393d27c3464d36cdef108d2d56b23855888e11e124678e42be5",
+      "source": {
+        "path": "decomp/japan_adjacent_research/jp_if_a7ac.c",
+        "git_blob_sha": "6be66d30e2a0803cc5c4b1b65d47663d31fe8174",
+        "origin_head": "634da7d6e4100125d7b7fe9e1592bb68e1458146"
+      },
+      "provenance": [
+        "decomp/results/japan_next_five_2026-11-16.json",
+        "docs/JAPAN_NEXT_FIVE_RESEARCH.md"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "japan_0",
+      "segment": "main",
+      "name": "func_80039BD0_3A7D0",
+      "rom_offset": "0x3A7D0",
+      "vma": "0x80039BD0",
+      "size": 36,
+      "original_code_sha256": "c5a3408825e846f6231d4ffc4e61df075cc5f23604eacb3bc97a9831d6a98c4d",
+      "source": {
+        "path": "decomp/japan_adjacent_research/jp_if_a7d0.c",
+        "git_blob_sha": "ce450f46779e84663135f698f57b6e668bba9471",
+        "origin_head": "634da7d6e4100125d7b7fe9e1592bb68e1458146"
+      },
+      "provenance": [
+        "decomp/results/japan_next_five_2026-11-16.json",
+        "docs/JAPAN_NEXT_FIVE_RESEARCH.md"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "japan_0",
+      "segment": "main",
+      "name": "func_80039E34_3AA34",
+      "rom_offset": "0x3AA34",
+      "vma": "0x80039E34",
+      "size": 36,
+      "original_code_sha256": "63d3148e827d423b63d0e8ce2eb4d04e05713713a21ed8f099bca6b50d0db043",
+      "source": {
+        "path": "decomp/japan_adjacent_research/jp_if_aa34.c",
+        "git_blob_sha": "956a5169d53ce61995d34797a7cd7d633e8cc35b",
+        "origin_head": "634da7d6e4100125d7b7fe9e1592bb68e1458146"
+      },
+      "provenance": [
+        "decomp/results/japan_next_five_2026-11-16.json",
+        "docs/JAPAN_NEXT_FIVE_RESEARCH.md"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "japan_0",
+      "segment": "main",
+      "name": "func_80039E74_3AA74",
+      "rom_offset": "0x3AA74",
+      "vma": "0x80039E74",
+      "size": 36,
+      "original_code_sha256": "77a2d587d482f5a5302b415b65fe88c213604f53a831bb8f9f82938da33f0395",
+      "source": {
+        "path": "decomp/japan_adjacent_research/jp_if_aa74.c",
+        "git_blob_sha": "e3093a09c92fafdbbf1256d959184f8e040e2985",
+        "origin_head": "634da7d6e4100125d7b7fe9e1592bb68e1458146"
+      },
+      "provenance": [
+        "decomp/results/japan_next_five_2026-11-16.json",
+        "docs/JAPAN_NEXT_FIVE_RESEARCH.md"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "japan_0",
+      "segment": "main",
+      "name": "func_80039E98_3AA98",
+      "rom_offset": "0x3AA98",
+      "vma": "0x80039E98",
+      "size": 36,
+      "original_code_sha256": "cebb28970a376afea27ef6d9138e012a2cb537e8b45ac8a66f48fae118078409",
+      "source": {
+        "path": "decomp/japan_adjacent_research/jp_if_aa98.c",
+        "git_blob_sha": "aa0a7eb1574175468a64d6a9168c2ce1a0925c4c",
+        "origin_head": "634da7d6e4100125d7b7fe9e1592bb68e1458146"
+      },
+      "provenance": [
+        "decomp/results/japan_next_five_2026-11-16.json",
+        "docs/JAPAN_NEXT_FIVE_RESEARCH.md"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801CB800_587710",
+      "rom_offset": "0x587710",
+      "vma": "0x801CB800",
+      "size": 36,
+      "original_code_sha256": "860562b7ab816cbb2f2c7e26cfa63d3533b1fa186b6b2aa1f3e8708dc23bea5d",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801DE1F4_59A104",
+      "rom_offset": "0x59A104",
+      "vma": "0x801DE1F4",
+      "size": 44,
+      "original_code_sha256": "7da3701aaf5ae6fa9334dfe274c4e18a948995599df489e190d4fb13486ad561",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801DE220_59A130",
+      "rom_offset": "0x59A130",
+      "vma": "0x801DE220",
+      "size": 44,
+      "original_code_sha256": "ba86bd8764927e6110ffc8c432775455e97094675a5b922d4f823fd5798da828",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801DE24C_59A15C",
+      "rom_offset": "0x59A15C",
+      "vma": "0x801DE24C",
+      "size": 36,
+      "original_code_sha256": "e80f3a5d7f1569b5274cacf1efe2f3f61502011f3d83802fc120c765382ce16c",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E0ED8_59CDE8",
+      "rom_offset": "0x59CDE8",
+      "vma": "0x801E0ED8",
+      "size": 40,
+      "original_code_sha256": "fbda3fc669a8f88284c765726f95bbb69cb0c74b7c6e36e61f2287844000b79a",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E0F00_59CE10",
+      "rom_offset": "0x59CE10",
+      "vma": "0x801E0F00",
+      "size": 40,
+      "original_code_sha256": "ff96fccc21e5768bcea91b51175f8e64d9d35366a6f5c1f89a5a8a469076fdbd",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E1458_59D368",
+      "rom_offset": "0x59D368",
+      "vma": "0x801E1458",
+      "size": 36,
+      "original_code_sha256": "40e431e80cd91e6968f820171e902f00222980315ad2f72c9680855646acc150",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E28B0_59E7C0",
+      "rom_offset": "0x59E7C0",
+      "vma": "0x801E28B0",
+      "size": 40,
+      "original_code_sha256": "ef0a33a36b9d0f588ac49129bdd54c4cb9cd0cda8279a0d17198fb958225cc5a",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E2D2C_59EC3C",
+      "rom_offset": "0x59EC3C",
+      "vma": "0x801E2D2C",
+      "size": 36,
+      "original_code_sha256": "6560429430f0c5b5f5667dc8f377d3c261aa12e74cb95a0aabf7ea08b955311a",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E2D50_59EC60",
+      "rom_offset": "0x59EC60",
+      "vma": "0x801E2D50",
+      "size": 36,
+      "original_code_sha256": "b5b6279233f9bf5f7f41af56954986d5b92db474f9cb81a7bd7b601500d48abd",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E2E30_59ED40",
+      "rom_offset": "0x59ED40",
+      "vma": "0x801E2E30",
+      "size": 48,
+      "original_code_sha256": "b8a29af03b7ff0e49565158cf15ad6b2ad408a95592a7b8f3d8c06c45627dce1",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E2E60_59ED70",
+      "rom_offset": "0x59ED70",
+      "vma": "0x801E2E60",
+      "size": 48,
+      "original_code_sha256": "2d1191f8a814f64a891bbbf6b059e187a6e3dfe368875c096280bc4a63b37ba8",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E2FA4_59EEB4",
+      "rom_offset": "0x59EEB4",
+      "vma": "0x801E2FA4",
+      "size": 60,
+      "original_code_sha256": "d6ff36832333dcb4183e15e3d2e2c1258f983276c8c9549d752234621bd43d47",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave3_sources.json",
+        "git_blob_sha": "e04b3e202af84bda280891cd5070c9b3b2d1b9b8",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave3_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E307C_59EF8C",
+      "rom_offset": "0x59EF8C",
+      "vma": "0x801E307C",
+      "size": 28,
+      "original_code_sha256": "f360ab13cdee12c99297b138219a3061c149bee6b527f989d555d085788fd749",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E5090_5A0FA0",
+      "rom_offset": "0x5A0FA0",
+      "vma": "0x801E5090",
+      "size": 48,
+      "original_code_sha256": "8d32c6328cfe62c255af1f6df9a82fc6e82424c9a4aa4979045630eb5f2e6620",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave3_sources.json",
+        "git_blob_sha": "e04b3e202af84bda280891cd5070c9b3b2d1b9b8",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave3_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E7DA0_5A3CB0",
+      "rom_offset": "0x5A3CB0",
+      "vma": "0x801E7DA0",
+      "size": 32,
+      "original_code_sha256": "414bc76e5d5ef605f0fb0f85f7097b23fc3a2e10bb255486f992d4d0aad26814",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E7DC0_5A3CD0",
+      "rom_offset": "0x5A3CD0",
+      "vma": "0x801E7DC0",
+      "size": 40,
+      "original_code_sha256": "acbbe85a6a3000f8dd465a339713796127c60a6f05f4701cc4d0be351c929438",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E7DE8_5A3CF8",
+      "rom_offset": "0x5A3CF8",
+      "vma": "0x801E7DE8",
+      "size": 48,
+      "original_code_sha256": "6b4d0e3c25761f0b41de46bc9639f125af7dbb006c0a6496a8d4640a7fe17f0b",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave3_sources.json",
+        "git_blob_sha": "e04b3e202af84bda280891cd5070c9b3b2d1b9b8",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave3_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E7F30_5A3E40",
+      "rom_offset": "0x5A3E40",
+      "vma": "0x801E7F30",
+      "size": 32,
+      "original_code_sha256": "089d4eff7b9ba660fed5fe1dbbf3f50d32dbdbd4c3832a61a3dd17063ce384bb",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801E8178_5A4088",
+      "rom_offset": "0x5A4088",
+      "vma": "0x801E8178",
+      "size": 28,
+      "original_code_sha256": "195e0a443c8a82401ecb58ebdefd9530f2cea7515059280bc262360dfdd2bc85",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB020_5A6F30",
+      "rom_offset": "0x5A6F30",
+      "vma": "0x801EB020",
+      "size": 44,
+      "original_code_sha256": "081dbc4a682c1ac4073354d144b76cd2683e8ac7d9c83afbabd74afc23d177fe",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB04C_5A6F5C",
+      "rom_offset": "0x5A6F5C",
+      "vma": "0x801EB04C",
+      "size": 44,
+      "original_code_sha256": "3b5d88b9278f0aef55fbea2a484fcc58a19bbda7747bfab94948bf9874b5d056",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB078_5A6F88",
+      "rom_offset": "0x5A6F88",
+      "vma": "0x801EB078",
+      "size": 44,
+      "original_code_sha256": "e4adf27457948a5e1c1730e01248661671f97e8fc209071210148b7b6355f39d",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB0A4_5A6FB4",
+      "rom_offset": "0x5A6FB4",
+      "vma": "0x801EB0A4",
+      "size": 44,
+      "original_code_sha256": "a17602310ba267a329a46d18afa30b35421b4dc125c7224d90032324ec004dc2",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB0D0_5A6FE0",
+      "rom_offset": "0x5A6FE0",
+      "vma": "0x801EB0D0",
+      "size": 44,
+      "original_code_sha256": "081dbc4a682c1ac4073354d144b76cd2683e8ac7d9c83afbabd74afc23d177fe",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB0FC_5A700C",
+      "rom_offset": "0x5A700C",
+      "vma": "0x801EB0FC",
+      "size": 44,
+      "original_code_sha256": "3b5d88b9278f0aef55fbea2a484fcc58a19bbda7747bfab94948bf9874b5d056",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB128_5A7038",
+      "rom_offset": "0x5A7038",
+      "vma": "0x801EB128",
+      "size": 44,
+      "original_code_sha256": "e4adf27457948a5e1c1730e01248661671f97e8fc209071210148b7b6355f39d",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB154_5A7064",
+      "rom_offset": "0x5A7064",
+      "vma": "0x801EB154",
+      "size": 44,
+      "original_code_sha256": "a17602310ba267a329a46d18afa30b35421b4dc125c7224d90032324ec004dc2",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB840_5A7750",
+      "rom_offset": "0x5A7750",
+      "vma": "0x801EB840",
+      "size": 44,
+      "original_code_sha256": "55113fc58b8900369904d025f6ef556b48fabea8480ac0babcc10fdf23ae25a0",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EB86C_5A777C",
+      "rom_offset": "0x5A777C",
+      "vma": "0x801EB86C",
+      "size": 44,
+      "original_code_sha256": "38a0e0b8c878cca874aa40454ffa10c92dcff71915fb5e8be889f897a5892577",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EBC64_5A7B74",
+      "rom_offset": "0x5A7B74",
+      "vma": "0x801EBC64",
+      "size": 44,
+      "original_code_sha256": "c7c66a585a9b7111b4d746b825767e46c25e30ac3f7f35acacf088f2fa5ee820",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EBC90_5A7BA0",
+      "rom_offset": "0x5A7BA0",
+      "vma": "0x801EBC90",
+      "size": 44,
+      "original_code_sha256": "c7c66a585a9b7111b4d746b825767e46c25e30ac3f7f35acacf088f2fa5ee820",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EBCBC_5A7BCC",
+      "rom_offset": "0x5A7BCC",
+      "vma": "0x801EBCBC",
+      "size": 44,
+      "original_code_sha256": "c7c66a585a9b7111b4d746b825767e46c25e30ac3f7f35acacf088f2fa5ee820",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801ED528_5A9438",
+      "rom_offset": "0x5A9438",
+      "vma": "0x801ED528",
+      "size": 44,
+      "original_code_sha256": "4fb8f943880c1a081041e808bb8c6e46aeea3212d39ef1f076c60290f5c36dd5",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801ED554_5A9464",
+      "rom_offset": "0x5A9464",
+      "vma": "0x801ED554",
+      "size": 44,
+      "original_code_sha256": "4bcd8b7802d4ecf9b374d7b98c58986e97d1a46954ea57bf3555a18c840d9f51",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE228_5AA138",
+      "rom_offset": "0x5AA138",
+      "vma": "0x801EE228",
+      "size": 52,
+      "original_code_sha256": "dfb4de48284478a1bac39d5cd558fd9a0af80f60a5c54367d525ad4995eeb5ac",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE25C_5AA16C",
+      "rom_offset": "0x5AA16C",
+      "vma": "0x801EE25C",
+      "size": 48,
+      "original_code_sha256": "6c00c614591efead7fceb9c2b97d05f3003c4a129663ec6db689e7731ff72966",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE28C_5AA19C",
+      "rom_offset": "0x5AA19C",
+      "vma": "0x801EE28C",
+      "size": 48,
+      "original_code_sha256": "407b9347214906ababaeefa6629fa90a80972cd8c79f52f58da92f75edec16aa",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE2BC_5AA1CC",
+      "rom_offset": "0x5AA1CC",
+      "vma": "0x801EE2BC",
+      "size": 48,
+      "original_code_sha256": "713dc9d5716e3acd18268c658dbb0eb6acd0863c8e90664b8db1f3326de50a40",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE2EC_5AA1FC",
+      "rom_offset": "0x5AA1FC",
+      "vma": "0x801EE2EC",
+      "size": 68,
+      "original_code_sha256": "c4a8ad4f20d9079a58fd7ff970959a9886e358cb643ac159b0eb264af8476243",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE330_5AA240",
+      "rom_offset": "0x5AA240",
+      "vma": "0x801EE330",
+      "size": 68,
+      "original_code_sha256": "ffc3459d54ec93118a90cd40ef42252639765e3cb1192980165a6abf8feb6f3e",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE374_5AA284",
+      "rom_offset": "0x5AA284",
+      "vma": "0x801EE374",
+      "size": 56,
+      "original_code_sha256": "27244e0f7d8d3690e0738bca694c9f191363e2dea1bc01e7f4845bc658067fac",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE3AC_5AA2BC",
+      "rom_offset": "0x5AA2BC",
+      "vma": "0x801EE3AC",
+      "size": 80,
+      "original_code_sha256": "d40425ba5011e1bb8fa36e5e07f1175676b09e8b07edb024db0eb58c04a560c9",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE7A0_5AA6B0",
+      "rom_offset": "0x5AA6B0",
+      "vma": "0x801EE7A0",
+      "size": 44,
+      "original_code_sha256": "774f6d45154c788dce21254eb274ce5b3aacf5000569cad511fc2e1338fa3292",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE7CC_5AA6DC",
+      "rom_offset": "0x5AA6DC",
+      "vma": "0x801EE7CC",
+      "size": 44,
+      "original_code_sha256": "41206969f2d74bc5925298ab94589bc41d491c2247ebfe0855f871a6202afba9",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EE7F8_5AA708",
+      "rom_offset": "0x5AA708",
+      "vma": "0x801EE7F8",
+      "size": 44,
+      "original_code_sha256": "f4fb9e3ed4b346645cad9762fac90c8b1cd97b57908bea63c4cc085ecb23b987",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EED8C_5AAC9C",
+      "rom_offset": "0x5AAC9C",
+      "vma": "0x801EED8C",
+      "size": 36,
+      "original_code_sha256": "8c895fb44e785432b24bf8e03d6b378ef973bf59fc038d31bd2750765015ade8",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EEDB0_5AACC0",
+      "rom_offset": "0x5AACC0",
+      "vma": "0x801EEDB0",
+      "size": 36,
+      "original_code_sha256": "8c895fb44e785432b24bf8e03d6b378ef973bf59fc038d31bd2750765015ade8",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EEDD4_5AACE4",
+      "rom_offset": "0x5AACE4",
+      "vma": "0x801EEDD4",
+      "size": 36,
+      "original_code_sha256": "8c895fb44e785432b24bf8e03d6b378ef973bf59fc038d31bd2750765015ade8",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801EFBB4_5ABAC4",
+      "rom_offset": "0x5ABAC4",
+      "vma": "0x801EFBB4",
+      "size": 40,
+      "original_code_sha256": "a49698eb68c0e675527d5f296e5a14178cec0f9eba0bcbc61ee9229bcf0eb0ec",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F0914_5AC824",
+      "rom_offset": "0x5AC824",
+      "vma": "0x801F0914",
+      "size": 40,
+      "original_code_sha256": "a49698eb68c0e675527d5f296e5a14178cec0f9eba0bcbc61ee9229bcf0eb0ec",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F0F00_5ACE10",
+      "rom_offset": "0x5ACE10",
+      "vma": "0x801F0F00",
+      "size": 44,
+      "original_code_sha256": "09e8ae64f86c2713f80c112b3e999a03d10d347c36ff8cbeba4cfb093171f21d",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F0F2C_5ACE3C",
+      "rom_offset": "0x5ACE3C",
+      "vma": "0x801F0F2C",
+      "size": 44,
+      "original_code_sha256": "b3400c14fbeb13661fb6d3e9aa6e79a588e433be7bbe33789c4e077830cce7ad",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F0F58_5ACE68",
+      "rom_offset": "0x5ACE68",
+      "vma": "0x801F0F58",
+      "size": 44,
+      "original_code_sha256": "2ab2b227499b2a545bfc3c12e1ceb71fe81844f1960dda1f194fc254d0dcfc25",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F10C4_5ACFD4",
+      "rom_offset": "0x5ACFD4",
+      "vma": "0x801F10C4",
+      "size": 36,
+      "original_code_sha256": "8b65bd226235d33752e07c37ea70ad1dfcb1eb28bb15ba0678a81d52e93bed2a",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F10E8_5ACFF8",
+      "rom_offset": "0x5ACFF8",
+      "vma": "0x801F10E8",
+      "size": 36,
+      "original_code_sha256": "8b65bd226235d33752e07c37ea70ad1dfcb1eb28bb15ba0678a81d52e93bed2a",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F110C_5AD01C",
+      "rom_offset": "0x5AD01C",
+      "vma": "0x801F110C",
+      "size": 36,
+      "original_code_sha256": "8b65bd226235d33752e07c37ea70ad1dfcb1eb28bb15ba0678a81d52e93bed2a",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F4528_5B0438",
+      "rom_offset": "0x5B0438",
+      "vma": "0x801F4528",
+      "size": 40,
+      "original_code_sha256": "aca80aec8c2a35ad0951869510d3c318e7bd3e790579776722dcb6df1a1309a6",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F4550_5B0460",
+      "rom_offset": "0x5B0460",
+      "vma": "0x801F4550",
+      "size": 40,
+      "original_code_sha256": "f80a658c1124870a94174cb7085a9e3b9d6e7c86b55bd8a5ab91b9e46f976251",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F4578_5B0488",
+      "rom_offset": "0x5B0488",
+      "vma": "0x801F4578",
+      "size": 36,
+      "original_code_sha256": "3164ab1d92afdd09f531cea686015a66ef359f5c3f3dd50b8e7f5e668cb3a8aa",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F459C_5B04AC",
+      "rom_offset": "0x5B04AC",
+      "vma": "0x801F459C",
+      "size": 36,
+      "original_code_sha256": "42e7df1e876caebb78cfbdb4891b73fdeae0208d498bf3f9be60a9157cff6fbd",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F45C0_5B04D0",
+      "rom_offset": "0x5B04D0",
+      "vma": "0x801F45C0",
+      "size": 36,
+      "original_code_sha256": "88fa210b02b59c8dfb1e827ce64a30fabae3d05f148e66ef2b9374018cb6226b",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F45E4_5B04F4",
+      "rom_offset": "0x5B04F4",
+      "vma": "0x801F45E4",
+      "size": 40,
+      "original_code_sha256": "dda089b38387dee3b9ca6ca83a854dbc117c09b41ab7906c738609a05e2a269d",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F460C_5B051C",
+      "rom_offset": "0x5B051C",
+      "vma": "0x801F460C",
+      "size": 40,
+      "original_code_sha256": "c45aa5f5544d9e235b78968b833df220e65a6c146c060e6f5479588e1d71c0b8",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F4634_5B0544",
+      "rom_offset": "0x5B0544",
+      "vma": "0x801F4634",
+      "size": 36,
+      "original_code_sha256": "568fa98203a749d5f3599fa88a844fc69bb4e842e462aed7d84c660bfe314c7f",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F4658_5B0568",
+      "rom_offset": "0x5B0568",
+      "vma": "0x801F4658",
+      "size": 48,
+      "original_code_sha256": "3e7ce81c68c88dbb5609759ad184bc4e21cfec7d94e60475277acf147de7f1f7",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave3_sources.json",
+        "git_blob_sha": "e04b3e202af84bda280891cd5070c9b3b2d1b9b8",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave3_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F4FA4_5B0EB4",
+      "rom_offset": "0x5B0EB4",
+      "vma": "0x801F4FA4",
+      "size": 44,
+      "original_code_sha256": "aff1ddd1b702a982a43d2493057b47a6dc9c8989eeab882e00446f2f7ccd46c5",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F4FD0_5B0EE0",
+      "rom_offset": "0x5B0EE0",
+      "vma": "0x801F4FD0",
+      "size": 44,
+      "original_code_sha256": "c00b7a5eb593c4c873809f595db6b442379a254aa59288a6ddb826fb534d81e7",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F4FFC_5B0F0C",
+      "rom_offset": "0x5B0F0C",
+      "vma": "0x801F4FFC",
+      "size": 40,
+      "original_code_sha256": "5f43f8ec22bad0b3fc9f1b6840cdb886e7a27bb49dfcc4d3d0e5bec808f8066c",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F5024_5B0F34",
+      "rom_offset": "0x5B0F34",
+      "vma": "0x801F5024",
+      "size": 44,
+      "original_code_sha256": "36f822fed75748e4fa46dd931fdda609477389c4ce01f3ebf13b5c1680cd55e8",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F5050_5B0F60",
+      "rom_offset": "0x5B0F60",
+      "vma": "0x801F5050",
+      "size": 44,
+      "original_code_sha256": "5162507d5963f08d1a6bd0e85ce355d165ddeb69b60906e7c45c31d21e539631",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F507C_5B0F8C",
+      "rom_offset": "0x5B0F8C",
+      "vma": "0x801F507C",
+      "size": 40,
+      "original_code_sha256": "aa4ec51faf7852fc8bcb53ac2cc29b072ba618ebd92340bb21e0a48d68387688",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F54C0_5B13D0",
+      "rom_offset": "0x5B13D0",
+      "vma": "0x801F54C0",
+      "size": 44,
+      "original_code_sha256": "497c761370ee606a24312c72d2625614878cfd85829143220294335022190c51",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F54EC_5B13FC",
+      "rom_offset": "0x5B13FC",
+      "vma": "0x801F54EC",
+      "size": 44,
+      "original_code_sha256": "5bf912aa8cbcd4049a013bb5149f271799893a27f5aa4860bc3751bf3197a2da",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F5518_5B1428",
+      "rom_offset": "0x5B1428",
+      "vma": "0x801F5518",
+      "size": 36,
+      "original_code_sha256": "a6f488715b6d24cc1a1e156fbe2d83162e791c1c0efaa53ffedb0c52649490c4",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F55DC_5B14EC",
+      "rom_offset": "0x5B14EC",
+      "vma": "0x801F55DC",
+      "size": 36,
+      "original_code_sha256": "fe2115fc214fd28f8449735cbcd41c25ab92690eff537ba0c34f986b2578ccb9",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F5600_5B1510",
+      "rom_offset": "0x5B1510",
+      "vma": "0x801F5600",
+      "size": 36,
+      "original_code_sha256": "9a1b0b09761619e4fd007b7f090bf56707988936acf21d92db9c26afb7f0ed60",
+      "source": {
+        "path": "decomp/research/file11_adjacent_sources.json",
+        "git_blob_sha": "870cac37908805361c98fbd000fc93e8d3c4aacf",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F5D70_5B1C80",
+      "rom_offset": "0x5B1C80",
+      "vma": "0x801F5D70",
+      "size": 44,
+      "original_code_sha256": "0b6ba4f41e5936b36aa2176facd76de09bd4ff59901bfa1a41c1a91f3d0fe29d",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F5D9C_5B1CAC",
+      "rom_offset": "0x5B1CAC",
+      "vma": "0x801F5D9C",
+      "size": 44,
+      "original_code_sha256": "023fd05ed60f4cec95fb3d1001ea30c41c18a7d5d50a88f99bc64d966be97219",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F5DC8_5B1CD8",
+      "rom_offset": "0x5B1CD8",
+      "vma": "0x801F5DC8",
+      "size": 44,
+      "original_code_sha256": "315b2a905468e0b993b50542b31252b77db0f6238728d6ffd35d50b0df782872",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F603C_5B1F4C",
+      "rom_offset": "0x5B1F4C",
+      "vma": "0x801F603C",
+      "size": 44,
+      "original_code_sha256": "cc00545561e177641f787ad462102fe2fe9601cfbb7046c77737f3934b9201f9",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    },
+    {
+      "region": "usa",
+      "segment": "file_11",
+      "name": "func_801F6068_5B1F78",
+      "rom_offset": "0x5B1F78",
+      "vma": "0x801F6068",
+      "size": 44,
+      "original_code_sha256": "68c50a3613de14c6254317d7f90176183d56a6c141017591b7c0a94de2f0f726",
+      "source": {
+        "path": "decomp/research/file11_adjacent_wave2_sources.json",
+        "git_blob_sha": "afb618417f0385cb655617f110f4fbedfee664a9",
+        "origin_head": "60a5d55f5453d2e4241597e2ee9365bec2b127a8"
+      },
+      "provenance": [
+        "PR #23",
+        "decomp/results/file11_adjacent_wave2_native_proof_20261116.json"
+      ],
+      "prior_native_evidence": "ISOLATED_NATIVE_EXACT",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN"
+    }
+  ]
+}
