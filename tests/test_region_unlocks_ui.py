@@ -224,6 +224,16 @@ class RegionUnlockUITests(unittest.TestCase):
         before = app.unlock_canvas.yview()
         self.assertLess(before[1] - before[0], 1,
                         'Items page must be taller than its viewport')
+        self.assertTrue(
+            app.unlock_canvas.winfo_ismapped(),
+            f'Canvas not mapped: main={app.notebook.select()} '
+            f'inner={app.unlock_sections.select()}')
+        chain = []
+        node = button
+        while node is not None:
+            chain.append(str(node))
+            node = getattr(node, 'master', None)
+        self.assertIn(str(app.unlock_canvas), chain)
         outcome = app._unlock_global_wheel(
             SimpleNamespace(widget=button, delta=-120, num=None))
         self.root.update_idletasks()
