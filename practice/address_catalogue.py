@@ -106,7 +106,8 @@ def validate_entry(record):
     if type(record["live_readable"]) is not bool:
         raise ValueError(f"{record['id']}: live_readable must be a boolean")
     if record["live_readable"]:
-        if (not 0x80000000 <= int(address, 16) < 0x80800000 or
+        if (width is None or
+                not 0x80000000 <= int(address, 16) < 0x80800000 or
                 int(address, 16) + width > 0x80800000 or
                 record.get("data_type") not in READ_KINDS or
                 record["category"] in BLOCKED_LIVE_CATEGORIES or
