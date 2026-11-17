@@ -20,8 +20,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 
-from practice.unlocks import UNLOCKS
-from practice.address_registry import guest_address, normalize_unlock_value
+from practice.unlocks import UNLOCKS, normalize_unlock_value
+from practice.address_registry import guest_address
 from practice.japanese_fields import JAPAN_FIELDS, JP_CHEATS
 
 REGION_DELTA = 0x57F0
