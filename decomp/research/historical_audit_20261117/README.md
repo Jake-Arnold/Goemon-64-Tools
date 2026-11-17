@@ -50,7 +50,7 @@ Run full ROM-free CI separately with `python3 -m decomp.local_ci`. A passing `lo
 ## Follow-up ordering without repeating failed hypotheses
 
 1. Stage **five** native-exact graphics helpers in original main-code Splat translation units, preserving ASM siblings and main linker padding; verify all **869** simultaneously with accepted USA C using G2/inventory/local CI before promoting any.
-2. Stage the **21** original file_27 exact native C and the **12** new file_26 helpers using separate, region/overlay-specific production adapters; do not treat their upstream scratch ROMs as combined proof.
+2. Stage the **21** original file_27 exact native C and all **15** file_26 helpers (original three plus twelve newly exact) using separate, region/overlay-specific production adapters; do not treat their upstream scratch ROMs as combined proof.
 3. Resolve the file_25 symbol-relocation discrepancy from genuine original symbols; no artificial source names.
 4. Revisit the **13** VM ASM functions according to established F038/DE80/ED60 original ABI and control-flow evidence. Stop on source budget; preserve ASM when native words differ.
 5. Address the recorded graphics near-matches and 236-byte file_26 initializer only with a falsifiable compiler-scheduling improvement.

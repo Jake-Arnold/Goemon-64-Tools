@@ -35,6 +35,9 @@ class HistoricalAuditTests(unittest.TestCase):
         self.assertTrue(leads['groups'])
         self.assertTrue(all(x['status'] in ('RESEARCH_ONLY','FAILED_NATIVE') for x in leads['groups']))
         self.assertNotIn('PASSED_G2', {x['status'] for x in leads['groups']})
+        file26=[x for x in leads['groups'] if x['id'] in ('file26_original_three','file26_adjacent_12_new')]
+        self.assertEqual(sum(x['function_count'] for x in file26),15)
+        self.assertEqual(sum(x['matching_original_bytes'] for x in file26),2508)
         self.assertEqual(sum(x[4] for x in recheck_graphics.FUNCTIONS),284)
         self.assertEqual(len(recheck_graphics.FUNCTIONS),5)
         self.assertTrue(all(len(x)==40 for x in recheck_graphics.SOURCE_SHA1.values()))

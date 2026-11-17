@@ -1,5 +1,11 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Historical candidate ledger completeness follow-up (no new C)
+
+- **Correction:** File_26 has **15** distinct scratch-ROM-native-exact research functions (2,508 original bytes), all still unpromoted: three original 312-byte callbacks `func_080000CC_6AE8AC`, `func_08000174_6AE954`, `func_080001B4_6AE994`, plus **12** newer 2,196-byte functions. The previous `LIVE_LEADS.json` enumerated only the 12 newly exact ones; a separate three-function entry now explicitly covers the original native 312-byte proof, avoiding loss or accidental double counting.
+- **Evidence:** `decomp/results/file26_native312_upstream_scratch_20261117.json`, `decomp/results/file26_adjacent15_upstream_scratch_20261117.json`, and `decomp/research/historical_audit_20261117/LIVE_LEADS.json`. Research only; canonical 864-USA/39-JP manifests/proofs unchanged.
+- **Tests:** Re-ran `python -m decomp.local_ci` full PASS: 232 decomp Python, 238 verifier/ledger Python, task validation, ASan/UBSan host fixture. Added assertion that file_26 evidence is 3+12 functions and 312+2,196 bytes. New native original-ROM/ELF G2 NOT RUN; existing ASM remains owned by ASM. **Next:** Full 864+15 USA file_26 integration gate, never count the old three as already promoted.
+
 ### 2026-11-17 — Historical decomp research reconciliation and independent graphics native recheck (research only)
 
 - **Scope/reason:** Cross-checked the live 864-USA/39-Japan production manifest/combined proof/inventory against 100 architect tasks, 77 historical execution ledgers, 85 research reports and 45 historical branch references. All 87 earlier pending registry functions are already production-accepted; no re-promotion or production count change. Machine-readable hash-linked archive: `decomp/research/historical_audit_20261117/INDEX.json`; deterministic reproduction: `audit.py`; four ROM-free negative/coverage tests added.

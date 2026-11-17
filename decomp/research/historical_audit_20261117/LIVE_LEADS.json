@@ -1,7 +1,10 @@
 {
   "format": "goemon-reconciled-unpromoted-research-leads-v1",
   "as_of_utc": "2026-11-17",
-  "canonical_accepted": {"usa": 864, "japan_0": 39},
+  "canonical_accepted": {
+    "usa": 864,
+    "japan_0": 39
+  },
   "source": "Research-only reconciliation; no new C ownership. All source paths remain on chatgptweb/decomp after publication.",
   "groups": [
     {
@@ -44,6 +47,23 @@
       "status": "RESEARCH_ONLY"
     },
     {
+      "id": "file26_original_three",
+      "region": "usa",
+      "segment": "file_26",
+      "evidence": "decomp/results/file26_native312_upstream_scratch_20261117.json",
+      "function_count": 3,
+      "matching_original_bytes": 312,
+      "function_names": [
+        "func_080000CC_6AE8AC",
+        "func_08000174_6AE954",
+        "func_080001B4_6AE994"
+      ],
+      "existing_proof": "NATIVE_AND_UPSTREAM_FULL_ROM_SCRATCH_EXACT",
+      "canonical_g2": "NOT_RUN",
+      "status": "RESEARCH_ONLY",
+      "note": "This is the earlier 3-function group; it is additional to, not included in, the 12 new scratch-exact candidates"
+    },
+    {
       "id": "file26_adjacent_12_new",
       "region": "usa",
       "segment": "file_26",
@@ -80,7 +100,11 @@
       "region": "usa",
       "segment": "main",
       "evidence": "decomp/results/graphics_adjacent_scratch_proof_20261117.json",
-      "functions": ["func_800196A4_1A2A4", "func_8001B6D4_1C2D4", "func_8001B6A4_1C2A4"],
+      "functions": [
+        "func_800196A4_1A2A4",
+        "func_8001B6D4_1C2D4",
+        "func_8001B6A4_1C2A4"
+      ],
       "status": "FAILED_NATIVE"
     },
     {
@@ -88,7 +112,10 @@
       "region": "usa",
       "segment": "main",
       "evidence": "decomp/results/legacy_native_revisit_20261117.json",
-      "functions": ["func_80001DF4_29F4", "func_8003F6E8_402E8"],
+      "functions": [
+        "func_80001DF4_29F4",
+        "func_8003F6E8_402E8"
+      ],
       "status": "FAILED_NATIVE"
     }
   ],
