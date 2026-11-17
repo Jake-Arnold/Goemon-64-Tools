@@ -5809,6 +5809,8 @@
         "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:169",
         "practice/inspector.py:170",
+        "practice/inspector.py:181",
+        "practice/inspector.py:182",
         "practice/native_debug_watch.py:68"
       ],
       "updated": "2026-11-17",
@@ -5954,7 +5956,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117",
-        "practice/inspector.py:170"
+        "practice/inspector.py:170",
+        "practice/inspector.py:182"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -7504,6 +7507,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch",
           "source_id": "watch:usa:script_cursor_vm"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch",
+          "source_id": "research:vm_command_pc"
         }
       ],
       "context": "Command stream pointer, not text cursor; validate target before dereference",
@@ -7512,7 +7520,7 @@
       "data_type": "u32",
       "discovered": "2026-11-13",
       "endian": "big",
-      "evidence": "ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch",
+      "evidence": "ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 initial PC and func_8003D68C dispatch",
       "id": "research:vm_command_pc",
       "id_aliases": [
         "watch:usa:script_cursor_vm"
@@ -7540,7 +7548,8 @@
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:91@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:97@chatgptweb/decomp",
         "practice/checkpoints.py:31",
-        "practice/inspector.py:140"
+        "practice/inspector.py:140",
+        "practice/inspector.py:152"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -7563,6 +7572,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu",
           "source_id": "watch:usa:top_level_game_state"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu",
+          "source_id": "crosswalk:usa:static:engine_state"
         }
       ],
       "context": "",
@@ -7571,7 +7585,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu",
+      "evidence": "observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu; Existing Live Memory inspector watch; see original reader; observed; Known: 10 = original debug menu",
       "id": "crosswalk:usa:static:engine_state",
       "id_aliases": [
         "native_debug:state",
@@ -7597,6 +7611,7 @@
         "practice/MEMORY_MAP.md:319@toolkit/unlocks-items-and-flags-20261117",
         "practice/checkpoints.py:25",
         "practice/inspector.py:134",
+        "practice/inspector.py:146",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:20",
         "practice/region_memory_crosswalk.py",
@@ -7624,6 +7639,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay",
           "source_id": "watch:usa:phase"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay",
+          "source_id": "crosswalk:usa:static:scene_phase"
         }
       ],
       "context": "",
@@ -7632,7 +7652,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay",
+      "evidence": "candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay; Existing Live Memory inspector watch; see original reader; candidate; Known: 1 during stable ordinary gameplay",
       "id": "crosswalk:usa:static:scene_phase",
       "id_aliases": [
         "native_debug:phase",
@@ -7650,6 +7670,7 @@
       "sources": [
         "practice/checkpoints.py:26",
         "practice/inspector.py:136",
+        "practice/inspector.py:148",
         "practice/japanese_scene_probes.py:50",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:26",
@@ -7677,6 +7698,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag",
           "source_id": "watch:usa:exit_request_not_warp"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag",
+          "source_id": "crosswalk:usa:static:exit_request"
         }
       ],
       "context": "",
@@ -7685,7 +7711,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag",
+      "evidence": "Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag; Existing Live Memory inspector watch; see original reader; Do not write as a warp; Known transition/exit flag",
       "id": "crosswalk:usa:static:exit_request",
       "id_aliases": [
         "native_debug:exit_request",
@@ -7703,6 +7729,7 @@
       "sources": [
         "practice/checkpoints.py:27",
         "practice/inspector.py:166",
+        "practice/inspector.py:178",
         "practice/japanese_scene_probes.py:55",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:27",
@@ -7731,6 +7758,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed)",
           "source_id": "watch:usa:native_menu_category"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed)",
+          "source_id": "crosswalk:usa:static:gameplay_submode"
         }
       ],
       "context": "",
@@ -7739,7 +7771,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed)",
+      "evidence": "user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed); Existing Live Memory inspector watch; see original reader; user-confirmed; When state 10: 0 MAIN, 1 SIRO, 2 DOUCHU, 3 MACHI, 4 SHOP, ... (user-observed)",
       "id": "crosswalk:usa:static:gameplay_submode",
       "id_aliases": [
         "native_debug:submode",
@@ -7763,6 +7795,8 @@
         "practice/checkpoints.py:32",
         "practice/inspector.py:154",
         "practice/inspector.py:159",
+        "practice/inspector.py:166",
+        "practice/inspector.py:171",
         "practice/japanese_scene_probes.py:51",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:23",
@@ -7827,6 +7861,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load",
           "source_id": "watch:usa:map_id"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load",
+          "source_id": "crosswalk:usa:static:current_scene"
         }
       ],
       "context": "",
@@ -7835,7 +7874,7 @@
       "data_type": "u16",
       "discovered": null,
       "endian": "big",
-      "evidence": "observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load",
+      "evidence": "observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load; Existing Live Memory inspector watch; see original reader; observed; Menu map ID = category base + stage offset; updates before load",
       "id": "crosswalk:usa:static:current_scene",
       "id_aliases": [
         "native_debug:live_map",
@@ -7858,6 +7897,7 @@
         "practice/MEMORY_MAP.md:286@toolkit/unlocks-items-and-flags-20261117",
         "practice/checkpoints.py:24",
         "practice/inspector.py:127",
+        "practice/inspector.py:139",
         "practice/japanese_scene_probes.py:49",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:24",
@@ -7885,6 +7925,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10",
           "source_id": "watch:usa:stage_offset"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10",
+          "source_id": "crosswalk:usa:static:scene_stage_offset"
         }
       ],
       "context": "",
@@ -7893,7 +7938,7 @@
       "data_type": "u16",
       "discovered": null,
       "endian": "big",
-      "evidence": "candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10",
+      "evidence": "candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10; Existing Live Memory inspector watch; see original reader; candidate; Verified native menu stage offset in state 10",
       "id": "crosswalk:usa:static:scene_stage_offset",
       "id_aliases": [
         "native_debug:scene_candidate",
@@ -7910,6 +7955,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py:163",
+        "practice/inspector.py:175",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:21",
         "practice/region_memory_crosswalk.py",
@@ -7935,6 +7981,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; observed",
           "source_id": "watch:usa:previous_map"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "observed; Existing Live Memory inspector watch; see original reader; observed",
+          "source_id": "crosswalk:usa:static:previous_scene"
         }
       ],
       "context": "",
@@ -7943,7 +7994,7 @@
       "data_type": "u16",
       "discovered": null,
       "endian": "big",
-      "evidence": "observed; Existing Live Memory inspector watch; see original reader; observed",
+      "evidence": "observed; Existing Live Memory inspector watch; see original reader; observed; Existing Live Memory inspector watch; see original reader; observed",
       "id": "crosswalk:usa:static:previous_scene",
       "id_aliases": [
         "watch:usa:previous_map"
@@ -7959,6 +8010,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py:164",
+        "practice/inspector.py:176",
         "practice/japanese_scene_probes.py:52",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:57"
@@ -8101,6 +8153,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover",
           "source_id": "watch:usa:pending_destination"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover",
+          "source_id": "crosswalk:usa:static:pending_scene"
         }
       ],
       "context": "",
@@ -8109,7 +8166,7 @@
       "data_type": "u16",
       "discovered": null,
       "endian": "big",
-      "evidence": "observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover",
+      "evidence": "observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover; Existing Live Memory inspector watch; see original reader; observed; Pending scene; does not identify the menu hover",
       "id": "crosswalk:usa:static:pending_scene",
       "id_aliases": [
         "native_debug:pending_map",
@@ -8129,6 +8186,7 @@
         "practice/MEMORY_MAP.md:260@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:271@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:165",
+        "practice/inspector.py:177",
         "practice/japanese_scene_probes.py:53",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:28",
@@ -8228,6 +8286,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY",
           "source_id": "watch:usa:native_menu_entry_pointer_state_10_only"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY",
+          "source_id": "native_debug:hover_pointer"
         }
       ],
       "context": "Native debug menu; hover pointer only valid while menu active",
@@ -8236,7 +8299,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY",
+      "evidence": "During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY; Existing Live Memory inspector watch; see original reader; During active native menu only: Goemon=0x8007BAD0, +12 per character; may become 0x80/stale after menu; READ ONLY",
       "id": "native_debug:hover_pointer",
       "id_aliases": [
         "watch:usa:native_menu_entry_pointer_state_10_only"
@@ -8254,6 +8317,7 @@
         "practice/MEMORY_MAP.md:241@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:167",
+        "practice/inspector.py:179",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:29"
       ],
@@ -8425,6 +8489,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle",
           "source_id": "watch:usa:map_overlay_state_observed"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle",
+          "source_id": "crosswalk:usa:static:map_overlay"
         }
       ],
       "context": "",
@@ -8433,7 +8502,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle",
+      "evidence": "Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle; Existing Live Memory inspector watch; see original reader; Not a safe on/off toggle",
       "id": "crosswalk:usa:static:map_overlay",
       "id_aliases": [
         "watch:usa:map_overlay_state_observed"
@@ -8453,6 +8522,7 @@
         "practice/MEMORY_MAP.md:273@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:336@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:176",
+        "practice/inspector.py:188",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:68"
       ],
@@ -8476,6 +8546,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; candidate",
           "source_id": "watch:usa:loading_flag"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate",
+          "source_id": "crosswalk:usa:static:loading_word"
         }
       ],
       "context": "",
@@ -8484,7 +8559,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate",
+      "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
       "id": "crosswalk:usa:static:loading_word",
       "id_aliases": [
         "watch:usa:loading_flag"
@@ -8500,6 +8575,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py:137",
+        "practice/inspector.py:149",
         "practice/japanese_scene_probes.py:58",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:66",
@@ -8526,6 +8602,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight",
           "source_id": "watch:usa:character"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight",
+          "source_id": "crosswalk:usa:static:character_index"
         }
       ],
       "context": "",
@@ -8534,7 +8615,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight",
+      "evidence": "JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight; Existing Live Memory inspector watch; see original reader; JP Goemon/Ebisumaru switching traced; Loaded character; may differ from menu highlight",
       "id": "crosswalk:usa:static:character_index",
       "id_aliases": [
         "native_debug:live_character",
@@ -8556,7 +8637,9 @@
         "practice/MEMORY_MAP.md:242@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:285@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:124",
+        "practice/inspector.py:136",
         "practice/inspector.py:240",
+        "practice/inspector.py:252",
         "practice/japanese_scene_probes.py:57",
         "practice/native_debug_watch.py",
         "practice/native_debug_watch.py:25",
@@ -8600,7 +8683,8 @@
       "sources": [
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:84@main",
         "practice/MEMORY_MAP.md:287@toolkit/unlocks-items-and-flags-20261117",
-        "practice/inspector.py:131"
+        "practice/inspector.py:131",
+        "practice/inspector.py:143"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -8674,7 +8758,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/MEMORY_MAP.md:288@toolkit/unlocks-items-and-flags-20261117",
-        "practice/inspector.py:130"
+        "practice/inspector.py:130",
+        "practice/inspector.py:142"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -8748,7 +8833,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/MEMORY_MAP.md:289@toolkit/unlocks-items-and-flags-20261117",
-        "practice/inspector.py:132"
+        "practice/inspector.py:132",
+        "practice/inspector.py:144"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -8822,7 +8908,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/MEMORY_MAP.md:290@toolkit/unlocks-items-and-flags-20261117",
-        "practice/inspector.py:133"
+        "practice/inspector.py:133",
+        "practice/inspector.py:145"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -9104,6 +9191,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling",
           "source_id": "watch:usa:equipped_weapon_index"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling",
+          "source_id": "crosswalk:usa:static:weapon_index"
         }
       ],
       "context": "",
@@ -9112,7 +9204,7 @@
       "data_type": "u8",
       "discovered": null,
       "endian": "big",
-      "evidence": "JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling",
+      "evidence": "JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling; Existing Live Memory inspector watch; see original reader; JP 01/02/03 tested across cycling",
       "id": "crosswalk:usa:static:weapon_index",
       "id_aliases": [
         "watch:usa:equipped_weapon_index"
@@ -9134,6 +9226,7 @@
         "practice/MEMORY_MAP.md:335@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:340@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:200",
+        "practice/inspector.py:212",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:67"
       ],
@@ -9351,7 +9444,9 @@
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
         "practice/inspector.py:173",
+        "practice/inspector.py:185",
         "practice/inspector.py:214",
+        "practice/inspector.py:226",
         "practice/inspector.py:72"
       ],
       "updated": "2026-11-17",
@@ -9406,7 +9501,9 @@
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:173",
+        "practice/inspector.py:185",
         "practice/inspector.py:214",
+        "practice/inspector.py:226",
         "practice/inspector.py:72",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py"
@@ -9451,7 +9548,9 @@
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:173",
+        "practice/inspector.py:185",
         "practice/inspector.py:214",
+        "practice/inspector.py:226",
         "practice/inspector.py:72",
         "practice/story_progress.py"
       ],
@@ -9521,7 +9620,9 @@
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:173",
+        "practice/inspector.py:185",
         "practice/inspector.py:214",
+        "practice/inspector.py:226",
         "practice/inspector.py:72",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py",
@@ -9579,7 +9680,9 @@
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:173",
+        "practice/inspector.py:185",
         "practice/inspector.py:214",
+        "practice/inspector.py:226",
         "practice/inspector.py:72",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py"
@@ -9628,7 +9731,9 @@
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:173",
+        "practice/inspector.py:185",
         "practice/inspector.py:214",
+        "practice/inspector.py:226",
         "practice/inspector.py:72",
         "practice/story_progress.py"
       ],
@@ -9684,7 +9789,9 @@
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py:173",
+        "practice/inspector.py:185",
         "practice/inspector.py:214",
+        "practice/inspector.py:226",
         "practice/inspector.py:72",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py"
@@ -16330,6 +16437,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified",
           "source_id": "watch:usa:fortune_doll_progress_quarters"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified",
+          "source_id": "crosswalk:usa:static:doll_quarters"
         }
       ],
       "context": "",
@@ -16338,7 +16450,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified",
+      "evidence": "Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified; Existing Live Memory inspector watch; see original reader; Only JP low-byte progress is separately verified",
       "id": "crosswalk:usa:static:doll_quarters",
       "id_aliases": [
         "watch:usa:fortune_doll_progress_quarters"
@@ -16354,6 +16466,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py:204",
+        "practice/inspector.py:216",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:78",
         "practice/story_progress.py:322",
@@ -16400,6 +16513,7 @@
       "sources": [
         "practice/inspector.py",
         "practice/inspector.py:212",
+        "practice/inspector.py:224",
         "practice/inspector.py:71",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
@@ -16424,6 +16538,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; candidate",
           "source_id": "watch:usa:fortune_dolls_obtained_annotated_total"
+        },
+        {
+          "confidence": "usa_source",
+          "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate",
+          "source_id": "crosswalk:usa:static:doll_total"
         }
       ],
       "context": "",
@@ -16432,7 +16551,7 @@
       "data_type": "u32",
       "discovered": null,
       "endian": "big",
-      "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate",
+      "evidence": "candidate; Existing Live Memory inspector watch; see original reader; candidate; Existing Live Memory inspector watch; see original reader; candidate",
       "id": "crosswalk:usa:static:doll_total",
       "id_aliases": [
         "watch:usa:fortune_dolls_obtained_annotated_total"
@@ -16448,6 +16567,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py:207",
+        "practice/inspector.py:219",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:79",
         "practice/story_progress.py:323",
@@ -17780,6 +17900,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7",
           "source_id": "watch:usa:script_vm_state"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7",
+          "source_id": "research:vm_state"
         }
       ],
       "context": "Active script VM",
@@ -17788,7 +17913,7 @@
       "data_type": "u32",
       "discovered": "2026-11-13",
       "endian": "big",
-      "evidence": "ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7",
+      "evidence": "ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7; Existing Live Memory inspector watch; see original reader; ROM and user-observed states 0/1/3/4/6/7",
       "id": "research:vm_state",
       "id_aliases": [
         "watch:usa:script_vm_state"
@@ -17808,7 +17933,8 @@
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:25@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:93@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:86@main",
-        "practice/inspector.py:143"
+        "practice/inspector.py:143",
+        "practice/inspector.py:155"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -17996,6 +18122,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID",
           "source_id": "watch:usa:script_resource_id"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID",
+          "source_id": "research:vm_resource_id"
         }
       ],
       "context": "Active script VM",
@@ -18004,7 +18135,7 @@
       "data_type": "u32",
       "discovered": "2026-11-13",
       "endian": "big",
-      "evidence": "ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID",
+      "evidence": "ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID; Existing Live Memory inspector watch; see original reader; ROM: func_8003D468 stores one-based resource ID",
       "id": "research:vm_resource_id",
       "id_aliases": [
         "watch:usa:script_resource_id"
@@ -18024,7 +18155,8 @@
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:92@chatgptweb/decomp",
-        "practice/inspector.py:146"
+        "practice/inspector.py:146",
+        "practice/inspector.py:158"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -18125,6 +18257,11 @@
           "confidence": "research_observed",
           "evidence": "Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause)",
           "source_id": "watch:usa:script_vm_pause_byte"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause)",
+          "source_id": "research:vm_pause"
         }
       ],
       "context": "Active script VM",
@@ -18133,7 +18270,7 @@
       "data_type": "u8",
       "discovered": "2026-11-13",
       "endian": "big",
-      "evidence": "Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause)",
+      "evidence": "Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause); Existing Live Memory inspector watch; see original reader; Existing USA inspector watch; script VM pause byte (not engine pause)",
       "id": "research:vm_pause",
       "id_aliases": [
         "watch:usa:script_vm_pause_byte"
@@ -18150,7 +18287,8 @@
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:93@chatgptweb/decomp",
-        "practice/inspector.py:149"
+        "practice/inspector.py:149",
+        "practice/inspector.py:161"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -18953,12 +19091,21 @@
     "practice/inspector.py:134",
     "practice/inspector.py:136",
     "practice/inspector.py:137",
+    "practice/inspector.py:139",
     "practice/inspector.py:140",
+    "practice/inspector.py:142",
     "practice/inspector.py:143",
+    "practice/inspector.py:144",
+    "practice/inspector.py:145",
     "practice/inspector.py:146",
+    "practice/inspector.py:148",
     "practice/inspector.py:149",
+    "practice/inspector.py:152",
     "practice/inspector.py:154",
+    "practice/inspector.py:155",
+    "practice/inspector.py:158",
     "practice/inspector.py:159",
+    "practice/inspector.py:161",
     "practice/inspector.py:163",
     "practice/inspector.py:164",
     "practice/inspector.py:165",
@@ -18966,14 +19113,28 @@
     "practice/inspector.py:167",
     "practice/inspector.py:169",
     "practice/inspector.py:170",
+    "practice/inspector.py:171",
     "practice/inspector.py:173",
+    "practice/inspector.py:175",
     "practice/inspector.py:176",
+    "practice/inspector.py:177",
+    "practice/inspector.py:178",
+    "practice/inspector.py:179",
+    "practice/inspector.py:181",
+    "practice/inspector.py:182",
+    "practice/inspector.py:185",
+    "practice/inspector.py:188",
     "practice/inspector.py:200",
     "practice/inspector.py:204",
     "practice/inspector.py:207",
     "practice/inspector.py:212",
     "practice/inspector.py:214",
+    "practice/inspector.py:216",
+    "practice/inspector.py:219",
+    "practice/inspector.py:224",
+    "practice/inspector.py:226",
     "practice/inspector.py:240",
+    "practice/inspector.py:252",
     "practice/inspector.py:44",
     "practice/inspector.py:45",
     "practice/inspector.py:46",
