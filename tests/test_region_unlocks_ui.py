@@ -208,6 +208,31 @@ class RegionUnlockUITests(unittest.TestCase):
         self._select_japan()
         self.assertTrue(button.bind('<MouseWheel>'))
 
+    def test_items_canvas_really_moves_when_wheel_targets_nested_button(self):
+        app = self.app
+        self.root.deiconify()
+        self.root.geometry('1100x600')
+        app.notebook.select(app.unlock_tab)
+        app.unlock_sections.select(app.unlock_items_page)
+        self.root.update_idletasks()
+        app.unlock_canvas.configure(
+            scrollregion=app.unlock_canvas.bbox('all'))
+        button = app.unlock_row_widgets[0x8015C6A7][1][1]
+        app.unlock_canvas.yview_moveto(0)
+        before = app.unlock_canvas.yview()
+        self.assertLess(before[1] - before[0], 1,
+                        'Items page must be taller than its viewport')
+        outcome = app._unlock_global_wheel(
+            SimpleNamespace(widget=button, delta=-120, num=None))
+        self.root.update_idletasks()
+        self.assertEqual(outcome, 'break')
+        self.assertGreater(app.unlock_canvas.yview()[0], before[0])
+        app.notebook.select(app.live_memory_tab)
+        parked = app.unlock_canvas.yview()
+        self.assertIsNone(app._unlock_global_wheel(
+            SimpleNamespace(widget=button, delta=-120, num=None)))
+        self.assertEqual(app.unlock_canvas.yview(), parked)
+
     def test_japanese_live_memory_context_menu_and_hex_edit(self):
         app = self.app
         self._select_japan()
