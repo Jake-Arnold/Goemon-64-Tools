@@ -7,6 +7,10 @@ from tkinter import ttk
 from practice.theme import PALETTE
 from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock, normalize_unlock_value, unlock_all_known
 from practice.hex_edit import parse_hex
+from practice.story_progress import write_story_value
+from practice.unlock_flag_catalog import (
+    flags_for_region, read_flag_bytes, write_japan_crosswalk_flag,
+)
 from practice.region_unlocks import (
     japan_unlock_lead, japan_unlock_all_targets,
     japan_unlock_wire_value, japan_unlock_display_value,
@@ -33,11 +37,23 @@ class UnlocksMixin:
         intro = ttk.Frame(tab)
         intro.pack(fill='x', pady=(0, 8))
         self.usa_unlock_intro = intro
-        ttk.Label(intro, text='Unlocks, weapons and upgrades', font=('Segoe UI Semibold', 16),
+        ttk.Label(intro, text='Unlocks', font=('Segoe UI Semibold', 16),
                   foreground=PALETTE['gold']).pack(anchor='w')
-        ttk.Label(intro, textvariable=self.unlock_intro_text,
-                  style='Muted.TLabel', wraplength=1050).pack(anchor='w', pady=(4, 0))
-        all_bar = ttk.Frame(tab)
+        self.unlock_sections = ttk.Notebook(tab)
+        self.unlock_sections.pack(fill='both', expand=True)
+        self.unlock_items_page = ttk.Frame(self.unlock_sections, padding=(0, 5))
+        self.unlock_flags_page = ttk.Frame(self.unlock_sections, padding=(0, 5))
+        self.unlock_sections.add(self.unlock_items_page, text='Items & equipment')
+        self.unlock_sections.add(self.unlock_flags_page, text='Story & event flags')
+        ttk.Label(
+            self.unlock_items_page, textvariable=self.unlock_intro_text,
+            style='Muted.TLabel', wraplength=1050).pack(
+                anchor='w', pady=(1, 5))
+        self.unlock_status_label = ttk.Label(
+            self.unlock_items_page, textvariable=self.unlock_status,
+            style='Muted.TLabel', wraplength=1050)
+        self.unlock_status_label.pack(fill='x', pady=(0, 5))
+        all_bar = ttk.Frame(self.unlock_items_page)
         all_bar.pack(fill='x', pady=(0, 8))
         self.usa_unlock_all_bar = all_bar
         self.unlock_all_button = ttk.Button(
@@ -48,9 +64,7 @@ class UnlocksMixin:
             self.unlock_all_button.state(['disabled'])
         ttk.Label(all_bar, textvariable=self.unlock_all_hint,
                   style='Muted.TLabel').pack(side='left', padx=8)
-        self.unlock_status_label=ttk.Label(tab, textvariable=self.unlock_status)
-        self.unlock_status_label.pack(fill='x', pady=(0, 8))
-        shell = ttk.Frame(tab)
+        shell = ttk.Frame(self.unlock_items_page)
         shell.pack(fill='both', expand=True)
         self.usa_unlock_shell = shell
         canvas = tk.Canvas(shell, bg=PALETTE['background'], highlightthickness=0)
@@ -125,6 +139,90 @@ class UnlocksMixin:
         bind_wheel(canvas)
         bind_wheel(body)
 
+        # Flag controls are individual on/off buttons beside every flag.
+        # Build rows lazily when this page opens to keep GUI startup fast.
+        flags_page = self.unlock_flags_page
+        ttk.Label(flags_page, text='Story and event flags',
+                  font=('Segoe UI Semibold', 14),
+                  foreground=PALETTE['gold']).pack(anchor='w')
+        ttk.Label(
+            flags_page,
+            text=('On / Off edits only the selected bit. Japanese candidate '
+                  'addresses are editable for testing.'),
+            style='Muted.TLabel', wraplength=1000).pack(
+                anchor='w', pady=(1, 6))
+        search_bar = ttk.Frame(flags_page)
+        search_bar.pack(fill='x', pady=(0, 6))
+        ttk.Label(search_bar, text='Find flag:').pack(side='left')
+        self.unlock_flag_query = tk.StringVar()
+        ttk.Entry(search_bar, textvariable=self.unlock_flag_query,
+                  width=42).pack(side='left', padx=(6, 10))
+        self.unlock_flag_counter = tk.StringVar()
+        ttk.Label(search_bar, textvariable=self.unlock_flag_counter,
+                  style='Muted.TLabel').pack(side='left')
+        filters = ttk.Frame(flags_page)
+        filters.pack(fill='x', pady=(0, 6))
+        ttk.Label(filters, text='Type').pack(side='left', padx=(0, 5))
+        self.unlock_flag_type = tk.StringVar(value='All types')
+        self.unlock_flag_type_box = ttk.Combobox(
+            filters, textvariable=self.unlock_flag_type, state='readonly',
+            width=29, values=('All types',))
+        self.unlock_flag_type_box.pack(side='left', padx=(0, 14))
+        ttk.Label(filters, text='Subtype').pack(side='left', padx=(0, 5))
+        self.unlock_flag_subtype = tk.StringVar(value='All subtypes')
+        self.unlock_flag_subtype_box = ttk.Combobox(
+            filters, textvariable=self.unlock_flag_subtype, state='readonly',
+            width=29, values=('All subtypes',))
+        self.unlock_flag_subtype_box.pack(side='left')
+        self.unlock_flag_type_box.bind(
+            '<<ComboboxSelected>>', self.on_unlock_flag_type_changed)
+        self.unlock_flag_subtype_box.bind(
+            '<<ComboboxSelected>>', lambda _e: self.filter_unlock_flags())
+
+        flag_shell = ttk.Frame(flags_page)
+        flag_shell.pack(fill='both', expand=True)
+        canvas = tk.Canvas(
+            flag_shell, bg=PALETTE['background'], highlightthickness=0)
+        scroll = ttk.Scrollbar(
+            flag_shell, orient='vertical', command=canvas.yview)
+        canvas.configure(yscrollcommand=scroll.set)
+        scroll.pack(side='right', fill='y')
+        canvas.pack(side='left', fill='both', expand=True)
+        body = ttk.Frame(canvas, padding=(2, 0, 6, 8))
+        window = canvas.create_window((0, 0), window=body, anchor='nw')
+        body.bind(
+            '<Configure>',
+            lambda _e: canvas.configure(scrollregion=canvas.bbox('all')))
+        canvas.bind(
+            '<Configure>',
+            lambda e: canvas.itemconfigure(window, width=e.width))
+        body.columnconfigure(0, weight=1)
+        self.unlock_flag_canvas = canvas
+        self.unlock_flag_body = body
+        self.unlock_flag_widgets = {}
+        self.unlock_flag_sections = {}
+
+        self.unlock_flag_detail = tk.StringVar(
+            value='Click a flag name for full mapping evidence.')
+        ttk.Label(
+            flags_page, textvariable=self.unlock_flag_detail,
+            style='Muted.TLabel', wraplength=1000).pack(
+                anchor='w', pady=(6, 2))
+        self.unlock_flag_feedback = tk.StringVar(value='')
+        ttk.Label(
+            flags_page, textvariable=self.unlock_flag_feedback,
+            style='Muted.TLabel', wraplength=1000).pack(
+                anchor='w', pady=(0, 3))
+        self.unlock_flag_rows = {}
+        self.unlock_flag_snapshot = {}
+        self.unlock_flag_last_poll = 0.0
+        self.unlock_flag_region = None
+        self.unlock_flag_query.trace_add(
+            'write', lambda *_: self.filter_unlock_flags())
+        self.unlock_sections.bind(
+            '<<NotebookTabChanged>>', self.on_unlock_section_changed)
+        self.configure_unlock_flag_region()
+
 
     def _japan_unlock_controls_ready(self):
         """Source-backed Japanese fields write by default once RAM is attached."""
@@ -184,6 +282,7 @@ class UnlocksMixin:
                 self.unlock_count_entries[item.address].configure(
                     state='normal' if usa_writable or not japan else 'disabled')
         self.unlock_last_poll = 0.0
+        self.configure_unlock_flag_region()
         self.unlock_status.set(
             ('Japan-0: 33 of 34 entries user-verified; Sasuke battery 1 '
              'remains unverified. Connect to verified Japanese RAM to edit; '
@@ -246,6 +345,7 @@ class UnlocksMixin:
                         focused_path = ''
                     if focused_path != str(self.unlock_count_entries[item.address]):
                         self.unlock_count_inputs[item.address].set(f'{raw:02X}')
+        self.refresh_unlock_flags(force=force)
 
     def unlock_all_items(self):
         if self.active_version.key == 'japan':
@@ -367,3 +467,288 @@ class UnlocksMixin:
                             foreground=PALETTE['teal'] if (raw in field.values or (field.quantity and raw is not None)) else PALETTE['warning'])
             for value, button in controls.items():
                 button.configure(style='Gold.TButton' if raw == value else 'TButton')
+        self.refresh_unlock_flags(force=force)
+
+    def on_unlock_section_changed(self, _event=None):
+        if self.unlock_sections.select() == str(self.unlock_flags_page):
+            self._ensure_unlock_flag_widgets()
+            self.filter_unlock_flags()
+            self.refresh_unlock_flags(force=True)
+
+    def _ensure_unlock_flag_widgets(self):
+        """Render coherent, compact type/subtype sections with per-bit controls."""
+        if (self.unlock_sections.select() != str(self.unlock_flags_page)
+                or self.unlock_flag_widgets):
+            return
+        parent = self.unlock_flag_body
+        canvas = self.unlock_flag_canvas
+
+        def wheel(event):
+            if getattr(event, 'num', None) in (4, 5):
+                delta = -1 if event.num == 4 else 1
+            else:
+                motion = getattr(event, 'delta', 0)
+                delta = (-max(1, abs(motion) // 120) if motion > 0 else
+                         max(1, abs(motion) // 120) if motion < 0 else 0)
+            if delta:
+                canvas.yview_scroll(delta, 'units')
+            return 'break'
+
+        self._unlock_flag_wheel = wheel
+        self.unlock_flag_sections = {}
+        index = 0
+        for flag in self.unlock_flag_rows.values():
+            section_key = (flag.group, flag.subtype)
+            if section_key not in self.unlock_flag_sections:
+                title_row = ttk.Frame(
+                    parent, style='FlagGroup.TFrame', padding=(8, 5))
+                title_row.grid(
+                    row=index, column=0, sticky='ew', pady=(4, 2))
+                title_row.columnconfigure(0, weight=1)
+                title = ttk.Label(
+                    title_row, text=f'{flag.group}  /  {flag.subtype}',
+                    style='FlagGroup.TLabel')
+                title.grid(row=0, column=0, sticky='w')
+                self.unlock_flag_sections[section_key] = title_row
+                for widget in (title_row, title):
+                    for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
+                        widget.bind(sequence, wheel, add='+')
+                index += 1
+            frame = ttk.Frame(
+                parent, style='FlagRow.TFrame', padding=(10, 5))
+            frame.grid(row=index, column=0, sticky='ew', pady=(0, 2))
+            frame.columnconfigure(0, weight=1)
+            name = ttk.Label(
+                frame, text=flag.label, style='FlagName.TLabel',
+                wraplength=520)
+            name.grid(row=0, column=0, sticky='w', pady=(1, 0))
+            address = ttk.Label(
+                frame, text=f'{flag.address:08X} · {flag.mask:02X}',
+                style='FlagAddress.TLabel')
+            address.grid(row=0, column=1, padx=(8, 10), sticky='w')
+            value = tk.StringVar(value='—')
+            shown = ttk.Label(
+                frame, textvariable=value, style='FlagState.TLabel',
+                width=7)
+            shown.grid(row=0, column=2, padx=(0, 6), sticky='w')
+            controls = ttk.Frame(frame, style='FlagRow.TFrame')
+            controls.grid(row=0, column=3, sticky='e')
+            off = ttk.Button(
+                controls, text='Off', width=5, style='Flag.TButton',
+                command=lambda key=flag.key: self.set_unlock_flag(key, 'Clear'))
+            on = ttk.Button(
+                controls, text='On', width=5, style='Flag.TButton',
+                command=lambda key=flag.key: self.set_unlock_flag(key, 'Set'))
+            off.pack(side='left')
+            on.pack(side='left', padx=(5, 0))
+            off.state(['disabled'])
+            on.state(['disabled'])
+            source = ttk.Label(
+                frame, text=f'{flag.source}  ·  {flag.group} / {flag.subtype}',
+                style='FlagMeta.TLabel')
+            source.grid(
+                row=1, column=0, columnspan=4, sticky='w', pady=(1, 0))
+            for label in (name, source, address):
+                label.bind(
+                    '<Button-1>',
+                    lambda _event, key=flag.key: self.show_unlock_flag_detail(key))
+            self.unlock_flag_widgets[flag.key] = {
+                'frame': frame, 'state': value, 'state_label': shown,
+                'off': off, 'on': on}
+            for widget in (
+                    frame, name, address, shown, controls, off, on, source):
+                for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
+                    widget.bind(sequence, wheel, add='+')
+            index += 1
+
+    def show_unlock_flag_detail(self, key):
+        flag = self.unlock_flag_rows.get(key)
+        if flag:
+            self.unlock_flag_detail.set(
+                f'{flag.label} — {flag.evidence}. '
+                'Use On/Off beside this flag to change its masked bit.')
+
+    def configure_unlock_flag_region(self):
+        """Rebuild per-flag controls with the correct regional addresses."""
+        region = self.active_version.key
+        if self.unlock_flag_region == region:
+            return
+        for widgets in self.unlock_flag_widgets.values():
+            widgets['frame'].destroy()
+        for header in self.unlock_flag_sections.values():
+            header.destroy()
+        self.unlock_flag_widgets = {}
+        self.unlock_flag_sections = {}
+        self.unlock_flag_region = region
+        self.unlock_flag_rows = {
+            flag.key: flag for flag in flags_for_region(region)}
+        self.unlock_flag_snapshot = {}
+        self.unlock_flag_last_poll = 0.0
+        self.unlock_flag_feedback.set('')
+        self.unlock_flag_detail.set(
+            'Click a flag name for full mapping evidence.')
+        categories = tuple(dict.fromkeys(
+            flag.group for flag in self.unlock_flag_rows.values()))
+        self.unlock_flag_type_box.configure(
+            values=('All types',) + categories)
+        if self.unlock_flag_type.get() not in ('All types',) + categories:
+            self.unlock_flag_type.set('All types')
+        self._refresh_unlock_flag_subtypes()
+        self._ensure_unlock_flag_widgets()
+        self.filter_unlock_flags()
+
+    def _refresh_unlock_flag_subtypes(self):
+        """Only list subtypes within the selected type."""
+        selected_type = self.unlock_flag_type.get()
+        subtypes = tuple(dict.fromkeys(
+            flag.subtype for flag in self.unlock_flag_rows.values()
+            if selected_type == 'All types' or flag.group == selected_type))
+        values = ('All subtypes',) + subtypes
+        self.unlock_flag_subtype_box.configure(values=values)
+        if self.unlock_flag_subtype.get() not in values:
+            self.unlock_flag_subtype.set('All subtypes')
+
+    def on_unlock_flag_type_changed(self, _event=None):
+        self.unlock_flag_subtype.set('All subtypes')
+        self._refresh_unlock_flag_subtypes()
+        self.filter_unlock_flags()
+
+    def filter_unlock_flags(self):
+        """Combine search and editable type/subtype classifications."""
+        query = self.unlock_flag_query.get().strip().casefold()
+        selected_type = self.unlock_flag_type.get()
+        selected_subtype = self.unlock_flag_subtype.get()
+        visible = 0
+        matched_sections = set()
+        for flag in self.unlock_flag_rows.values():
+            text = ' '.join((
+                flag.label, flag.group, flag.subtype, flag.source,
+                flag.evidence, f'0x{flag.address:08X}',
+                f'0x{flag.mask:02X}'))
+            match = (query in text.casefold()
+                     and (selected_type == 'All types'
+                          or flag.group == selected_type)
+                     and (selected_subtype == 'All subtypes'
+                          or flag.subtype == selected_subtype))
+            if match:
+                visible += 1
+                matched_sections.add((flag.group, flag.subtype))
+            widgets = self.unlock_flag_widgets.get(flag.key)
+            if widgets is not None:
+                if match:
+                    widgets['frame'].grid()
+                else:
+                    widgets['frame'].grid_remove()
+        for section, header in self.unlock_flag_sections.items():
+            if section in matched_sections:
+                header.grid()
+            else:
+                header.grid_remove()
+        self.unlock_flag_counter.set(
+            f'{visible} / {len(self.unlock_flag_rows)} named bits')
+        if self.unlock_flag_widgets:
+            self.unlock_flag_canvas.yview_moveto(0)
+
+    def _can_write_unlock_flag(self, flag):
+        if flag is None:
+            return False
+        # Evidence/provenance is never a write gate for mapped crosswalk bits.
+        if self.active_version.key == 'japan':
+            return self._japan_unlock_controls_ready()
+        return bool(
+            self.mem is not None and
+            getattr(self.args, 'enable_hex_edit', False) and
+            not getattr(self.args, 'read_only', False))
+
+    def refresh_unlock_flags(self, *, force=False):
+        """Read the one event bank and refresh every visible on/off control."""
+        if not force and self.unlock_sections.select() != str(self.unlock_flags_page):
+            return
+        now = time.monotonic()
+        if not force and now - self.unlock_flag_last_poll < 0.7:
+            return
+        self.unlock_flag_last_poll = now
+        region = self.active_version.key
+        if region != self.unlock_flag_region:
+            self.configure_unlock_flag_region()
+        self._ensure_unlock_flag_widgets()
+        reader = self.jp_rdram if region == 'japan' else self.mem
+        try:
+            values = read_flag_bytes(
+                reader, region, self.unlock_flag_rows.values())
+            if reader is None:
+                self.unlock_flag_feedback.set(
+                    'Disconnected. Connect to the game to enable On/Off.')
+            elif self.unlock_flag_feedback.get().startswith(
+                    ('Disconnected', 'Flag bank unavailable')):
+                self.unlock_flag_feedback.set('Live event flags connected.')
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            values = {}
+            self.unlock_flag_feedback.set(f'Flag bank unavailable: {exc}')
+        self.unlock_flag_snapshot = values
+        for flag in self.unlock_flag_rows.values():
+            widgets = self.unlock_flag_widgets.get(flag.key)
+            if widgets is None:
+                continue
+            raw = values.get(flag.key)
+            state = (
+                '—' if raw is None else
+                'On' if raw & flag.mask else 'Off')
+            widgets['state'].set(state)
+            widgets['state_label'].configure(
+                foreground=(PALETTE['teal'] if state == 'On'
+                            else PALETTE['warning'] if state == 'Off'
+                            else PALETTE['muted']))
+            enabled = bool(
+                raw is not None and self._can_write_unlock_flag(flag))
+            for target, button in (
+                    ('Off', widgets['off']), ('On', widgets['on'])):
+                button.state(['!disabled'] if enabled else ['disabled'])
+                button.configure(
+                    style=('FlagOn.TButton' if target == 'On'
+                           else 'FlagOff.TButton')
+                    if raw is not None and state == target
+                    else 'Flag.TButton')
+
+    def set_unlock_flag(self, key, target):
+        """One-click per-row On/Off; only the requested bit may change."""
+        flag = self.unlock_flag_rows.get(key)
+        try:
+            if flag is None:
+                raise ValueError('The selected flag is not mapped in this region')
+            if not self._can_write_unlock_flag(flag):
+                raise PermissionError(
+                    'Connect with memory writes enabled; read-only mode blocks editing')
+            expected = self.unlock_flag_snapshot.get(flag.key)
+            if expected is None:
+                raise RuntimeError('Displayed flag byte unavailable; refresh first')
+            if self.active_version.key == 'japan':
+                changed = write_japan_crosswalk_flag(
+                    self.write_japan_raw_bytes, flag, target, expected)
+            else:
+                # Reuse Story Progress masked CAS to preserve adjacent bits.
+                with self.value_freezes.guard:
+                    if any(lock.address <= flag.address < lock.address + len(lock.value)
+                           for lock in self.value_freezes.locks.values()):
+                        raise RuntimeError('Stop the overlapping freeze before editing')
+                    changed = write_story_value(
+                        self.mem, flag.key, target, bytes((expected,)))
+            state = 'On' if target == 'Set' else 'Off'
+            self.unlock_status.set(
+                f'{flag.label}: {state}' +
+                (' (written)' if changed else ' (unchanged)'))
+            self.unlock_flag_feedback.set(
+                f'{flag.label}: {state}' +
+                (' written' if changed else ' unchanged'))
+            if changed:
+                self.append_event(
+                    f'USER EVENT BIT {self.active_version.key.upper()} '
+                    f'0x{flag.address:08X} mask 0x{flag.mask:02X}: {target}')
+                self.last_inspect_at = 0.0
+            self.refresh_unlock_flags(force=True)
+            self.refresh_story_progress()
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            self.unlock_status.set(
+                f'{flag.label if flag else "Event flag"}: blocked — {exc}')
+            self.unlock_flag_feedback.set(str(exc))
+            self.refresh_unlock_flags(force=True)

@@ -43,6 +43,7 @@ esac
   tests.test_japan_pid_restart_watch \
   tests.test_gui_smoke_runner \
   tests.test_toolkit_version \
+  tests.test_updater \
   tests.test_linux_launcher \
   tests.test_launcher_preferences \
   tests.test_japan_project64 \
@@ -53,6 +54,7 @@ esac
   tests.test_japan_story_progress \
   tests.test_native_checkpoints \
   tests.test_region_unlocks \
+  tests.test_unlock_flag_catalog \
   tests.test_region_memory_crosswalk \
   tests.test_region_crosswalk_agent \
   tests.test_crosswalk_shared_pages \
@@ -107,12 +109,14 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_toolkit_redundancy_ui \
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
+    tests.test_unlock_flags_ui \
     tests.test_japan_story_progress_ui \
     tests.test_japan_named_checkpoint_ui \
     tests.test_japan_value_freezes_ui \
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_updater_ui \
     tests.test_entrance_ui \
     tests.test_japan_recomp_write_ui \
     -v
@@ -133,12 +137,14 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_toolkit_redundancy_ui \
     tests.test_state_discovery_ui \
     tests.test_region_unlocks_ui \
+    tests.test_unlock_flags_ui \
     tests.test_japan_story_progress_ui \
     tests.test_japan_named_checkpoint_ui \
     tests.test_japan_value_freezes_ui \
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_updater_ui \
     tests.test_entrance_ui \
     tests.test_japan_recomp_write_ui \
     -v

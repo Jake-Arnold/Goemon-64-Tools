@@ -1,4 +1,56 @@
-# Goemon Speedrun Tools v0.11.36 — simplified navigation and unrestricted memory comparison test
+# Goemon Speedrun Tools v0.11.39 — simplified navigation and unrestricted memory comparison test
+
+## v0.11.39 — Clearer Unlocks layout, automatic desktop sizing, editable flag subtypes
+
+The toolkit opens in a **monitor-sized window** rather than a fixed 1220×790 viewport (up to 1480×950, with screen margins). The scrollable Dashboard and Unlocks pages remain usable on smaller screens. Unlocks no longer repeats inventory-specific descriptions and connection status above the Story & event flags subpage. Flag rows are compact, full-width dark cards with high-contrast names, visible addresses and masks, clear live On/Off state, and separate, more legible Off and On buttons, even while disabled. Type/subtype headings organize the list.
+
+### Edit the flag organization as JSON
+
+The editable manifest is [practice/unlock_flag_categories.json](practice/unlock_flag_categories.json). It lists **all 142 named flag keys**, including the **58 currently mapped for Japan**, with these attributes:
+
+```json
+{
+  "key": "benkei_encounter",
+  "label": "Benkei encounter recorded",
+  "type": "Benkei & Kihachi",
+  "subtype": "Unsorted",
+  "regions": ["USA", "Japan"]
+}
+```
+
+Change **type** and **subtype** freely to create chapters, regions, bosses, quests or any custom grouping. The read-only reference field **regions** identifies which 58 of the 142 flags also appear in Japan. Move entries in the JSON array to change display order. The UI's **Type** and **Subtype** dropdowns filter the named groups; text search also searches both labels and their full evidence. `Unsorted` is the initial placeholder until the organization is supplied. Changes take effect on toolkit restart.
+
+**Do not change or remove `key`**: it is the immutable identifier that binds metadata to a game flag. `label` is descriptive reference text; `type` and `subtype` alone affect the UI layout. Addresses, masks, read/write support and regional crosswalk evidence are defined in code, never in this JSON. Unverified Japanese crosswalk bits remain directly On/Off editable after reorganization.
+
+To validate an edited JSON file:
+
+```bash
+python3 -m unittest tests.test_unlock_flag_catalog -v
+```
+
+If the JSON file is missing or invalid, the toolkit starts with its original generic sections rather than suppressing live flag editing. The tests report schema errors. The JSON is tracked in Git: personal edits should be saved or submitted separately before an auto-update of the repository.
+
+## v0.11.38 — Direct On / Off buttons for each story and event flag
+
+Under **Unlocks → Story & event flags**, every mapped flag now has **its own On and Off buttons on the same row** as its name, address, bit mask, live state and research source. There is no need to select a table row and use shared buttons below the list. Clicking a flag's name displays its full provenance. Search filters the displayed controls, with independent scrolling for the long list. Rows are created only when the flags page is opened to avoid slowing startup.
+
+The **USA named saved-event catalogue** and all **Japanese mapped curated / Plasma crosswalk flags**, including candidate offsets, have exactly the same On/Off interaction. Crosswalk evidence status does **not** block writes. The live state and highlighted button track the original game's current bit; disconnected entries display an unavailable state. Every click writes just the chosen masked bit, rechecks the currently displayed byte, and leaves adjacent bits untouched. The 34 separate menu-item controls remain unchanged on **Items & equipment**.
+
+## Dashboard: version selection, update checks and one-click installs (v0.11.37)
+
+The Dashboard updater offers a **Version** dropdown with **Stable · main**, **Test · toolkit/* branches** and available **Release tag · vX.Y.Z** entries. **Refresh versions** retrieves the current GitHub refs without changing any source files. **Check for updates** compares the selected version against the installed checkout. After checking, **Install update and restart** fast-forwards the current branch, or **Switch version and restart** switches explicitly to another chosen branch or release tag.
+
+This works with canonical Git-cloned installs on **Ubuntu or Windows**. Only the selected version is installed; decompilation and research branches are not listed. Existing local branch histories are preserved when switching versions, and releases use detached-HEAD checkouts rather than modifying a local branch. To return to stable, select **Stable · main**. The updater refuses dirty tracked files, diverged destination branches, unknown remotes and changed remote commits between checking and installation. It never force-resets Git, discards local commits, or removes untracked files. Git itself blocks switching if an untracked file would be overwritten. ZIP downloads are not auto-updatable.
+
+Git/network work takes place off the Tk UI thread. After installation the toolkit closes process handles, input injectors and freeze workers through normal shutdown before relaunching the selected code. Replaced code may depend on newer Python packages and release tags may contain older interfaces. Manual native-game testing is still required.
+
+## Unlocks: Items & equipment and Story & event flags (experimental branch)
+
+The existing **Unlocks** page now contains two internal sections: **Items & equipment** (all 34 original controls, including party members, upgrades, weapons, Start-menu items, fish counts and Miracle Items) and **Story & event flags** (searchable, live-read flag list with Set / On and Clear / Off actions). This is not a new top-level diagnostics tab.
+
+USA flags reuse the same packed-bit addresses, masks and checked writer as Story Progress. Japan shows all 58 currently crosswalked curated and Plasma flag entries. **Every one of these Japanese crosswalk event bits is editable for testing**, including offsets labelled **JP offset candidate**; provenance labels describe evidence, not permission. An observed bit or successful write does not prove the associated story event semantics.
+
+Each explicit click sets or clears only the selected bit, retains neighbouring bits, checks that the displayed byte is still current and routes the Japanese write through the active verified game connection. Bulk Unlock All affects items only; it never bulk-sets the story flags. Read-only mode, disconnection and stale-byte checks remain in place. This branch has not been validated on actual gameplay.
 
 ## Cross-region memory mapping in the existing tabs (merged: PRs #35 and #52)
 

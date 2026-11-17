@@ -1,5 +1,38 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — v0.11.39 flag UI readability and editable type/subtype hierarchy
+
+- **Source screenshot:** User's Ubuntu 1290×917 view of the Japanese Unlocks flag page showed tiny low-contrast names/addresses over mismatched label backgrounds, large gaps between values and controls, duplicate item-only introduction/status occupying space, and a fixed startup window that needed manual resizing.
+- **Layout:** Use a monitor-aware initial 1480×950 maximum (screen margins), retaining page scrolling for smaller displays. Keep one compact Unlocks heading; move item instructions and their status into the Items & equipment subpage rather than showing them above the flag page.
+- **Flag card styling:** Dark contrasting full-width cards, stronger names and addresses, accessible disabled-button text, separate highlighted On and Off styles, clear live states, denser vertical spacing, section headers and preserved independent mouse-wheel scrolling.
+- **Editable data:** Add `practice/unlock_flag_categories.json` containing all 142 USA story flag keys and human-readable labels. Only `type`, `subtype` and manifest order control flag section organisation. The 58 mapped Japan flags automatically inherit those labels. All initially use `Unsorted` for user classification. Keep original RAM addresses, bit masks, provenance and candidate write access unchanged. Malformed JSON falls back to canonical groups without blocking the app.
+- **Interactive filtering:** Type and subtype comboboxes plus text search, dynamically hiding irrelevant sections while maintaining immediate On/Off controls for every mapped bit.
+- **Regression:** [Linux CI 44121893646](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44121893646) passed 357 non-GUI tests (356 passed, 1 skipped) and 155 headless Tk GUI tests; [Windows CI 44121893750](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44121893750) passed 54 portable tests. Covers source JSON completeness, arbitrary regrouping and ordering, metadata-independent JP writes, malformed JSON, screen sizing, filters, section visibility, high-contrast row styles and isolated item status. Screenshot-based human review and live game testing remain outstanding.
+
+## 2026-11-17 — v0.11.38 individual story/event On-Off controls
+
+- **Correction:** The earlier Story & event flags table required selecting a flag and then using shared bottom Set/Clear buttons. The requested design has an explicit **On** and **Off** control on **every flag row**, matching the direct interaction pattern used by Items & equipment.
+- **Implementation:** Replace the selection-only table with a lazy-built, searchable, scrollable per-flag list showing name, address, mask, live On/Off state, source and direct two-button editor. Highlight the currently observed state, display full evidence on label click and disable buttons only if disconnected, read-only or the current byte is unavailable. No evidence-based restrictions for mapped Japanese candidates.
+- **Bit writes:** Keep the existing checked single-bit editor for USA and verified connected writer for JP, which preserves neighbouring bits, detects stale values and immediately refreshes the displayed state. Items & equipment's 34 existing controls stay unchanged.
+- **Tests:** Update Tk regression cases to invoke individual row buttons directly, covering USA set/clear, masked writes, stale state, Japanese confirmed/candidate parity, search, region switching, disconnected and read-only modes. CI / real-game testing status to be recorded separately.
+
+## 2026-11-17 — v0.11.37 Dashboard stable / test / release selector (development branch)
+
+- **Version catalogue:** Use canonical GitHub origin `git ls-remote --heads --tags` to list stable `main`, active `toolkit/*` test branches and semantic version tags. Annotated tags resolve to peeled commit hashes. Do not display decompilation/research branches.
+- **Explicit workflow:** Refresh versions shows available choices, Check for updates fetches the selected ref, and a subsequent install action updates or switches to that specific commit. An initial Check populates the catalogue and checks the current installed branch. No background source updates occur on startup.
+- **Safe branch switching:** Fast-forward existing local branches without rewriting local commits; create local branches for previously uninstalled toolkit test builds; use detached HEAD for tagged releases. Selecting stable main later returns to main while preserving experimental branches. Recheck selected ref SHA before install.
+- **Safety:** Require clean tracked files and official repository origin. Refuse divergent destination histories, forbidden decomp branches, stale checked versions, non-Git ZIP folders and unsafe replacements. Never reset, clean or force checkout. Preserve untracked files; Git protects conflicting paths.
+- **UI and restart:** Run remote/version operations in background worker, keep Tk responsive, then close the running process after installation before relaunching with the original startup flags.
+- **Tests:** Expand offline temporary-Git tests to discover branches and annotated release tags, select test branches, return to stable, check detached releases and protect local changes/history. Tk smoke cases cover selecting refresh/check/install/switch without network at startup. CI evidence to follow; full gameplay/runtime relaunch remains untested.
+
+## 2026-11-17 — v0.11.36 Unlocks subpages for items and flag experimentation
+
+- **Interface:** Preserve the existing 34 Item & equipment controls; add a second, searchable Story & event flags page under the existing Unlocks top-level tab. Never recreate the removed Japanese Live Diagnostics tab.
+- **USA:** Present all named saved-event bits already in Story Progress (curated, Plasma, external and placement entries), with a single-click masked Set/Clear action using the existing checked writer.
+- **Japan:** Present every explicitly catalogued Japan memory-crosswalk event/Plasma bit, including unverified offsets. Per user request, *all* mapped JP bits have live Set/Clear controls for research; do not add evidence-based write blocks. Preserve explicit candidate labels and source notes to track discoveries without claiming confirmation.
+- **Write limits:** Only the clicked bit changes, with current-byte compare/readback through the existing connected reader; no bulk story edits, implicit inventory grants or neighbouring-bit resets. Read-only/disconnected state still blocks memory access.
+- **Tests:** Added ROM-free mapping/bit tests and Tk tests for page switching, candidate write access, byte preservation, stale state and region isolation. CI is pending for this development branch.
+
 ## 2026-11-17 — v0.11.36 merged shared-toolkit UI and reciprocal memory crosswalk
 
 - **Design correction:** Implement the crosswalk as region-specific memory metadata behind the already-shared Live Memory, Unlocks and Story Progress pages. PR #35 removes the redundant Japan Live diagnostics tab; PR #43's added crosswalk panel is not retained.

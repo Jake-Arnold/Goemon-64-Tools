@@ -65,6 +65,21 @@ class DashboardSmokeTests(unittest.TestCase):
         app.open_live_memory_tab()
         self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
 
+    def test_initial_window_is_monitor_sized_not_fixed_790_high(self):
+        # A withdrawn Tk root reports 1x1 until Tk/WM processes layout.
+        self.root.deiconify()
+        self.root.update()
+        width, height = (
+            int(value) for value in self.root.geometry().split('+')[0].split('x'))
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        self.assertEqual(width, max(780, min(1480, screen_width - 80)))
+        self.assertEqual(height, max(600, min(950, screen_height - 100)))
+        self.assertGreaterEqual(height, 600)
+        self.assertLessEqual(height, 950)
+        if screen_height >= 900:
+            self.assertGreater(height, 790)
+
     def test_dashboard_uses_two_columns_at_opening_size(self):
         app = self.toolkit
         # The setUp root is withdrawn; expose it to measure real Tk geometry.
