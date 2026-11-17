@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+from practice.address_registry import guest_address
 
 GAME = "mnsg-usa"
 FORMAT = "goemon-logical-checkpoint-v1"
@@ -21,15 +22,15 @@ LIVE_ADDR, LIVE_LEN = 0x8015C5D8, 0x30
 GAMEDATA_ADDR, GAMEDATA_LEN = 0x8015C608, 0x304
 SHADOW_ADDR = 0x8015C910
 HEADER_ADDR, HEADER_LEN = 0x8015CC18, 0x0C
-MAP_ADDR = 0x800C7AB2
-STATE_ADDR = 0x800C7A94
-PHASE_ADDR = 0x800C7A9E
-EXIT_ADDR = 0x800C7A9F
-PAUSE_ADDR = 0x800C7AE6
-TRANSITION_ADDR = 0x800C7AD6
-SCRIPT_LOCK_ADDR = 0x800C7AE9
-SCRIPT_VM_ADDR = 0x80077858
-SUBMODE_ADDR = 0x800C7AA4
+MAP_ADDR = guest_address("crosswalk:usa:static:current_scene", region="usa", width=2)
+STATE_ADDR = guest_address("crosswalk:usa:static:engine_state", region="usa", width=1)
+PHASE_ADDR = guest_address("crosswalk:usa:static:scene_phase", region="usa", width=1)
+EXIT_ADDR = guest_address("crosswalk:usa:static:exit_request", region="usa", width=1)
+PAUSE_ADDR = guest_address("crosswalk:usa:static:pause_byte", region="usa", width=1)
+TRANSITION_ADDR = guest_address("crosswalk:usa:static:scene_transition", region="usa", width=1)
+SCRIPT_LOCK_ADDR = guest_address("crosswalk:usa:static:script_lock", region="usa", width=1)
+SCRIPT_VM_ADDR = guest_address("research:vm_command_pc", region="usa", width=4)
+SUBMODE_ADDR = guest_address("crosswalk:usa:static:gameplay_submode", region="usa", width=1)
 
 
 def _guest_bytes(ram, addr, length):

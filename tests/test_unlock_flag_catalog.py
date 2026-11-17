@@ -24,7 +24,7 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len({(f.address, f.mask) for f in USA_FLAGS}), len(FLAGS))
 
     def test_japan_all_crosswalk_flags_are_writable_with_evidence_preserved(self):
-        self.assertEqual(len(JAPAN_FLAGS), len(CURATED_FLAGS) + len(PLASMA_FLAGS))
+        self.assertEqual(len(JAPAN_FLAGS), len(CURATED_FLAGS) + len(PLASMA_FLAGS) + 1)
         self.assertTrue(all(f.editable for f in JAPAN_FLAGS))
         confirmed = next(f for f in JAPAN_FLAGS if f.key == 'benkei_encounter')
         self.assertEqual(confirmed.address, 0x80161DFC)
@@ -35,6 +35,11 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(candidate.source, 'JP offset candidate')
         self.assertNotIn('congo_state_candidate', [f.key for f in JAPAN_FLAGS if f.source == 'JP user-confirmed'])
         self.assertNotIn('external_sasuke_recruited', [f.key for f in JAPAN_FLAGS])
+        receipt = next(f for f in JAPAN_FLAGS if f.key == 'external_super_pass')
+        self.assertEqual((receipt.address, receipt.mask), (0x80161DF8, 0x01))
+        self.assertTrue(receipt.editable)
+        self.assertEqual(receipt.source, 'JP offset candidate')
+        self.assertEqual(sum(f.key == 'external_super_pass' for f in JAPAN_FLAGS), 1)
         with self.assertRaises(ValueError):
             flags_for_region('unknown')
 
@@ -87,17 +92,54 @@ class CatalogTests(unittest.TestCase):
             write_japan_crosswalk_flag(writer, unmapped, 'Set', 0)
         self.assertEqual(len(writes), 4)
 
+    def test_receipt_masked_writes_and_inventory_independence(self):
+        receipt = next(f for f in JAPAN_FLAGS if f.key == 'external_super_pass')
+        for initial, action, result in (
+                (0x00, 'Set', 0x01), (0x01, 'Clear', 0x00),
+                (0x04, 'Set', 0x05), (0x05, 'Clear', 0x04),
+                (0xA4, 'Set', 0xA5), (0xA5, 'Clear', 0xA4),
+                (0xFF, 'Clear', 0xFE), (0xFE, 'Set', 0xFF)):
+            writes = []
+            self.assertTrue(write_japan_crosswalk_flag(
+                lambda address, data, *, expected:
+                    writes.append((address, data, expected)) or True,
+                receipt, action, initial))
+            self.assertEqual(writes, [
+                (0x80161DF8, bytes((result,)), bytes((initial,)))])
+        ram = FakeRAM()
+        ram.bytes[0x80161DF8] = 0x04
+        ram.bytes[0x80161EF3] = 0x01
+        def write(address, data, *, expected):
+            self.assertEqual(ram.read_guest(address, 1), expected)
+            ram.write_guest(address, data)
+            return True
+        ram.write_guest(0x80161EF3, b'\x00')
+        self.assertEqual((ram.bytes[0x80161DF8], ram.bytes[0x80161EF3]),
+                         (0x04, 0x00))
+        write_japan_crosswalk_flag(write, receipt, 'Set', 0x04)
+        self.assertEqual((ram.bytes[0x80161DF8], ram.bytes[0x80161EF3]),
+                         (0x05, 0x00))
+        ram.write_guest(0x80161EF3, b'\x01')
+        self.assertEqual((ram.bytes[0x80161DF8], ram.bytes[0x80161EF3]),
+                         (0x05, 0x01))
+        write_japan_crosswalk_flag(write, receipt, 'Clear', 0x05)
+        self.assertEqual((ram.bytes[0x80161DF8], ram.bytes[0x80161EF3]),
+                         (0x04, 0x01))
+        self.assertEqual(read_flag_bytes(ram, 'japan')[receipt.key], 0x04)
+
     def test_editable_json_lists_all_keys_and_preserves_address_masks(self):
         categories = load_flag_categories()
         self.assertEqual(set(categories), {f.key for f in FLAGS})
         from practice.unlock_flag_catalog import CATEGORY_FILE
         rows = json.loads(CATEGORY_FILE.read_text(encoding='utf-8'))['flags']
-        self.assertEqual(sum('Japan' in row['regions'] for row in rows), 58)
+        self.assertEqual(sum('Japan' in row['regions'] for row in rows), 59)
         self.assertEqual(
             {row['key'] for row in rows if 'Japan' in row['regions']},
             {flag.key for flag in JAPAN_FLAGS})
         self.assertEqual(categories['benkei_encounter'],
                          ('Benkei & Kihachi', 'Unsorted'))
+        self.assertEqual(categories['external_super_pass'],
+                         ('External annotations', 'Unsorted'))
         for region, original in (('usa', USA_FLAGS), ('japan', JAPAN_FLAGS)):
             shown = flags_for_region(region)
             self.assertEqual(

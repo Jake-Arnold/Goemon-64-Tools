@@ -21,6 +21,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 
 from practice.unlocks import UNLOCKS, normalize_unlock_value
+from practice.address_registry import guest_address
 from practice.japanese_fields import JAPAN_FIELDS, JP_CHEATS
 
 REGION_DELTA = 0x57F0
@@ -124,6 +125,15 @@ for slug, evidence in _OFFSET.items():
 for slug, (address, evidence) in _GUESSES.items():
     JAPAN_UNLOCK_LEADS[slug] = JapanUnlockLead(
         address, 1, 'guess', evidence)
+
+# The canonical registry owns every Japanese item address. Historical
+# sources above retain evidence and slot labels, not location authority.
+for _slug, _lead in tuple(JAPAN_UNLOCK_LEADS.items()):
+    JAPAN_UNLOCK_LEADS[_slug] = replace(
+        _lead,
+        address=guest_address(
+            'crosswalk:japan:unlock:' + _slug,
+            region='japan', width=_lead.width))
 
 # 15 Nov 2026 live gameplay report: only Sasuke battery 1 remains unverified.
 # Assert the historical 34-row size: future new fields cannot inherit this

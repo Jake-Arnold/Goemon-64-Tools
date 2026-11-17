@@ -1,0 +1,69 @@
+name: Decomp address metadata-only pull request
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: goemon-address-metadata-sync
+  cancel-in-progress: false
+
+jobs:
+  synchronize-address-metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch decomp manifest without merging code
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin             chatgptweb/decomp:refs/remotes/origin/chatgptweb/decomp
+          if git cat-file -e origin/chatgptweb/decomp:decomp/address_discoveries_v1.json 2>/dev/null; then
+            git show origin/chatgptweb/decomp:decomp/address_discoveries_v1.json > "$RUNNER_TEMP/decomp-addresses.json"
+            git rev-parse origin/chatgptweb/decomp > "$RUNNER_TEMP/decomp-revision"
+          else
+            echo 'No decomp address manifest present; skip until a decomp agent publishes one.'
+            printf 'missing' > "$RUNNER_TEMP/decomp-revision"
+          fi
+      - name: Synchronise and validate metadata only
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$(cat "$RUNNER_TEMP/decomp-revision")" == "missing" ]]; then
+            exit 0
+          fi
+          python -m scripts.import_decomp_address_manifest             --upstream "$RUNNER_TEMP/decomp-addresses.json"             --revision "$(cat "$RUNNER_TEMP/decomp-revision")"
+          python -m scripts.sync_address_catalogue --write
+          python -m scripts.sync_address_catalogue --check
+          python -m unittest tests.test_address_registry -v
+      - name: Publish reviewable metadata-only PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$(cat "$RUNNER_TEMP/decomp-revision")" == "missing" ]]; then exit 0; fi
+          git add practice/data/address_discoveries_v1.json                   practice/data/address_catalogue_v1.json                   practice/data/address_catalogue_audit.json
+          if git diff --cached --quiet; then
+            echo 'Catalogue matches decomp metadata; no PR.'
+            exit 0
+          fi
+          if gh pr list --state open --base main --json headRefName              --jq '.[].headRefName' | grep -q '^toolkit/address-metadata-sync-'; then
+            echo 'A prior metadata PR is still under review; avoid duplicates.'
+            exit 0
+          fi
+          branch="toolkit/address-metadata-sync-${GITHUB_RUN_ID}"
+          git switch -c "$branch"
+          git -c user.name=goemon-address-bot             -c user.email=41898282+github-actions[bot]@users.noreply.github.com             commit -m "Import reviewed decomp address metadata without source merge"
+          git push origin "$branch"
+          gh pr create             --base main --head "$branch"             --title "Sync decomp address discoveries into shared toolkit catalogue"             --body "Automated metadata-only update from the separate decomp branch. No decomp source, RAM writers or game binaries are merged. CI must validate schema, stale declarations, conflicting candidates, Linux and Windows before review."

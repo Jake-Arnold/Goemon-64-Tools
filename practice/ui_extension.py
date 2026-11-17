@@ -9,6 +9,7 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from practice.inspector import get_watches, checkpoint_differences, Watch
+from practice.address_catalogue_ui import AddressCatalogueUI
 from practice.hex_edit import get_policy, parse_hex, checked_write
 from practice.scenes import SCENES, scene_label
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
@@ -35,7 +36,7 @@ DEBUG_PROFILE_PATH = practice_data_dir() / "native_debug_fields.json"
 CUSTOM_WATCHES_PATH = practice_data_dir() / "custom_watches.json"
 WATCH_NAMES_PATH = practice_data_dir() / "watch_names.json"
 
-class InspectorMixin(EntranceMixin):
+class InspectorMixin(EntranceMixin, AddressCatalogueUI):
     def build_inspector_tabs(self, notebook):
         self.init_entrances()
         self.watch_previous={}
@@ -84,9 +85,22 @@ class InspectorMixin(EntranceMixin):
         self.scene_status=tk.StringVar(value='Double-click an area to request an experimental entrance reload. Requires a connected game, a resolved ROM entrance and write access.')
         self.compare_status=tk.StringVar(value='Capture or select a logical checkpoint to compare.')
 
-        inspector=ttk.Frame(notebook,padding=10)
+        inspector=ttk.Frame(notebook,padding=8)
         notebook.add(inspector,text='Live memory')
         self.live_memory_tab=inspector
+        self.live_memory_sections = ttk.Notebook(inspector)
+        self.live_memory_sections.pack(fill='both', expand=True)
+        watches = ttk.Frame(self.live_memory_sections, padding=4)
+        catalogue = ttk.Frame(self.live_memory_sections, padding=4)
+        self.live_memory_sections.add(watches, text='Live watches')
+        self.live_memory_sections.add(catalogue, text='Address catalogue')
+        self.live_watches_page = watches
+        self.build_address_catalogue_page(catalogue)
+        self.live_memory_sections.bind(
+            '<<NotebookTabChanged>>',
+            lambda _event: self.show_address_catalogue()
+            if self.live_memory_sections.select() == str(catalogue) else None)
+        inspector = watches
         ttk.Label(inspector,textvariable=self.inspector_status,wraplength=900).pack(fill='x',pady=3)
         top=ttk.Frame(inspector);top.pack(fill='x',pady=3)
         ttk.Checkbutton(top,text='Log changed values',variable=self.log_changes).pack(side='left')

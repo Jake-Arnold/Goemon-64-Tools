@@ -1,9 +1,29 @@
 # Repeated persistent-event experiments
 
-The **Event sessions → Event flag sessions** subtab captures only the 100 persistent event bytes at
-`0x8015C608..0x8015C66B`. The adjacent **Advanced RAM comparison** subtab retains the former State discovery
+The **Event sessions → Event flag sessions** subtab reads a region-specific 100-byte window.
+USA always uses `0x8015C608..0x8015C66B`; Japan defaults to the offset-derived
+candidate `0x80161DF8..0x80161E5B` (+`0x57F0`). The adjacent **Advanced RAM comparison** subtab retains the former State discovery
 A/B/C focused/wide comparison. All session capture/analysis is read-only, even when the
 toolkit's other unsafe controls are enabled. `--read-only` can be used for research.
+
+## Japanese capture range and Super Pass bit
+
+Japan's default is a **candidate**, not a confirmed complete saved-event bank.
+The independently tested Benkei encounter bit is `0x80161DFC & 0x20`.
+The Super Pass receipt candidate is `0x80161DF8 & 0x01`: its address derives
+from the USA `0x8015C608 & 0x01` mapping, but its Japanese event meaning is
+not independently gameplay-verified. It is separately editable under
+**Unlocks → Story & event flags**. Super Pass inventory ownership is a
+different control (`0x80161EF3` in Japan, `0x8015C703` in USA): toggling the
+receipt bit does not grant inventory ownership, run an event, or save the game.
+
+Japan's 100-byte window remains user-editable; the Sasuke battery research
+preset stays at `0x80161DC0..0x80161E23`, covering the unverified
+`0x80161DF9 & 0x20`. New investigations use the new default or an explicit
+manual override. Opening a historical investigation restores the originally
+recorded `event_start` (including `0x80161D80`) and retains absolute
+ranked addresses. Repeat roles `event`, `idle` and `control` classify
+trials, not windows. Event Sessions itself remains read-only.
 
 ## First experiment
 

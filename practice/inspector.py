@@ -9,6 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 import struct
 import math
+import re
+from practice.address_registry import guest_address
 from practice import checkpoints as cp
 from practice.native_menu_categories import native_menu_category, NATIVE_MENU_CATEGORIES
 
@@ -80,6 +82,18 @@ INVENTORY = [
     ('Snowflake', 0x8015C866, 1, 1, 'Miracle item: snowflake; address ends C866'),
 ]
 
+# The original names and validation maxima describe reader behaviour.
+# Only the versioned registry owns the underlying guest addresses.
+INVENTORY = [
+    (label,
+     guest_address(
+         "inspector:usa:" +
+         re.sub(r"[^a-z0-9]+", "_", label.lower()).strip("_")[:76],
+         region="usa", width=width),
+     width, maximum, evidence)
+    for label, _legacy_addr, width, maximum, evidence in INVENTORY
+]
+
 @dataclass(frozen=True)
 class Watch:
     name: str
@@ -99,6 +113,18 @@ def get_watches(ram, snapshot, scene_names=None):
     scene_names = scene_names or {}
     watches = []
     def add(name, addr, width, decode=None, validator=None, source='reverse-engineered'):
+        # Every named fixed inspector watch resolves the registered guest
+        # address. Dynamic per-player object/task offsets below are not
+        # static globals and are intentionally handled separately.
+        key = "watch:usa:" + re.sub(
+            r"[^a-z0-9]+", "_", name.lower()).strip("_")[:76]
+        try:
+            addr = guest_address(key, region="usa", width=width)
+        except KeyError:
+            if not any(field[0] == name for field in INVENTORY):
+                raise
+            # Inventory entries have already been resolved from their own
+            # canonical inspector:usa:* keys before this reader is called.
         try:
             v = _read_int(ram, addr, width)
             valid = validator is None or validator(v)

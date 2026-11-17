@@ -6,6 +6,8 @@ Uses guest big-endian bytes, independent of Goemon64Recomp's host RDRAM order.
 from __future__ import annotations
 from dataclasses import dataclass
 
+from practice.address_registry import guest_address
+
 
 @dataclass(frozen=True)
 class WatchedField:
@@ -14,6 +16,17 @@ class WatchedField:
     address: int
     width: int
     confidence: str
+
+    def __post_init__(self):
+        # The versioned registry owns all known fixed debug watch locations.
+        # Unknown test/probe objects remain possible but never inherit an
+        # implicit canonical location or write permission.
+        try:
+            canonical = guest_address(
+                "native_debug:" + self.key, region="usa", width=self.width)
+        except KeyError:
+            return
+        object.__setattr__(self, "address", canonical)
 
 
 FIELDS = (

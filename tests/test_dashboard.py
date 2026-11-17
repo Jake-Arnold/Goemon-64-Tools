@@ -205,7 +205,7 @@ class DashboardSmokeTests(unittest.TestCase):
                          'normal')
         self.assertNotIn('disabled', app.event_region_entry.state())
         self.assertIn('Japan-0', app.event_region_note.get())
-        self.assertEqual(app.event_region_start.get(), '0x80161D80')
+        self.assertEqual(app.event_region_start.get(), '0x80161DF8')
         self.assertEqual(app.notebook.tab(app.jp_fields_tab, 'state'), 'hidden')
         self.assertNotEqual(app.jp_scene_position_frame.winfo_manager(), '')
         self.assertFalse(hasattr(app, 'verify_rom_button'))

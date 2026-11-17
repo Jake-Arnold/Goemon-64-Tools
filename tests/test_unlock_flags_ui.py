@@ -39,6 +39,14 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.on_unlock_section_changed()
         app.refresh_unlock_flags(force=True)
 
+    def _expand(self, type_name='Benkei & Kihachi', subtype='Unsorted'):
+        app = self.app
+        section = (type_name, subtype)
+        self.assertIn(section, app.unlock_flag_sections)
+        app._set_unlock_flag_section_expanded(section, True)
+        app.filter_unlock_flags()
+        app.refresh_unlock_flags(force=True)
+
     def _select_japan(self):
         app = self.app
         app.game_version_choice.set(VERSIONS['japan'].label)
@@ -57,8 +65,12 @@ class UnlockFlagsUITests(unittest.TestCase):
         self.assertEqual(app.unlock_flag_widgets, {})
         app.mem = FakeRAM()
         self._open_flags()
-        self.assertEqual(len(app.unlock_flag_widgets),
-                         len(app.unlock_flag_rows))
+        self.assertEqual(app.unlock_flag_widgets, {})
+        self.assertEqual(len(app.unlock_flag_sections), 7)
+        self.assertEqual(app.unlock_flag_expanded, set())
+        self._expand()
+        self.assertLess(len(app.unlock_flag_widgets),
+                        len(app.unlock_flag_rows))
         widgets = app.unlock_flag_widgets['benkei_encounter']
         self.assertEqual(widgets['on'].cget('text'), 'On')
         self.assertEqual(widgets['off'].cget('text'), 'Off')
@@ -72,6 +84,7 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.mem = FakeRAM()
         app.mem.bytes[0x8015C60C] = 0x81
         self._open_flags()
+        self._expand()
         widgets = app.unlock_flag_widgets['benkei_encounter']
         self.assertEqual(widgets['state'].get(), 'Off')
         widgets['on'].invoke()
@@ -90,6 +103,7 @@ class UnlockFlagsUITests(unittest.TestCase):
         ram = FakeRAM()
         app.mem = ram
         self._open_flags()
+        self._expand()
         widgets = app.unlock_flag_widgets['benkei_encounter']
         ram.bytes[0x8015C60C] = 0x10
         widgets['on'].invoke()
@@ -114,6 +128,7 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.jp_backend = 'project64'
         app.connection_target.set('project64')
         self._open_flags()
+        self._expand()
         benkei = app.unlock_flag_rows['benkei_encounter']
         self.assertEqual(benkei.address, 0x80161DFC)
         widgets = app.unlock_flag_widgets['benkei_encounter']
@@ -125,6 +140,7 @@ class UnlockFlagsUITests(unittest.TestCase):
         candidate = app.unlock_flag_rows['oedo_old_man_dialogue_cycle']
         self.assertTrue(candidate.editable)
         self.assertEqual(candidate.source, 'JP offset candidate')
+        self._expand('Other story')
         candidate_widgets = app.unlock_flag_widgets[candidate.key]
         self.assertNotIn('disabled', candidate_widgets['on'].state())
         self.assertNotIn('disabled', candidate_widgets['off'].state())
@@ -141,6 +157,42 @@ class UnlockFlagsUITests(unittest.TestCase):
             candidate_widgets['off'].invoke()
             writer.assert_not_called()
 
+    def test_japan_receipt_flag_independent_cas_and_region_switch(self):
+        app = self.app
+        self._select_japan()
+        ram = FakeRAM()
+        ram.bytes[0x80161DF8] = 0x04  # Adjacent Oedo story bit.
+        ram.bytes[0x80161EF3] = 0x01  # Separate inventory field.
+        app.jp_rdram = ram
+        app.game_pid = 1234
+        app.jp_backend = 'project64'
+        app.connection_target.set('project64')
+        self._open_flags()
+        self._expand('External annotations')
+        flag = app.unlock_flag_rows['external_super_pass']
+        self.assertEqual((flag.address, flag.mask), (0x80161DF8, 0x01))
+        controls = app.unlock_flag_widgets[flag.key]
+        self.assertNotIn('disabled', controls['on'].state())
+        self.assertNotIn('disabled', controls['off'].state())
+        with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
+            controls['on'].invoke()
+            writer.assert_called_once_with(
+                0x80161DF8, b'\x05', expected=b'\x04')
+        ram.bytes[0x80161DF8] = 0x05
+        app.refresh_unlock_flags(force=True)
+        with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
+            controls['off'].invoke()
+            writer.assert_called_once_with(
+                0x80161DF8, b'\x04', expected=b'\x05')
+        self.assertEqual(ram.bytes[0x80161EF3], 0x01)
+        app.args.read_only = True
+        app.refresh_unlock_flags(force=True)
+        self.assertIn('disabled', controls['on'].state())
+        self.assertIn('disabled', controls['off'].state())
+        app.game_version_choice.set(VERSIONS['usa'].label)
+        app.on_game_version_changed()
+        self.assertEqual(app.unlock_flag_rows[flag.key].address, 0x8015C608)
+
     def test_filter_and_region_switch_replace_controls_and_no_old_address(self):
         app = self.app
         self._open_flags()
@@ -150,8 +202,14 @@ class UnlockFlagsUITests(unittest.TestCase):
         self.assertEqual(
             app.unlock_flag_widgets['benkei_encounter']['frame'].winfo_manager(),
             'grid')
+        # Search matches name AND provenance; a row can be constructed
+        # because its research evidence mentions Benkei even if its title
+        # does not. Only matched visibility and region-safe identity matter.
         self.assertEqual(
-            app.unlock_flag_widgets['external_sasuke_recruited']['frame'].winfo_manager(),
+            app.unlock_flag_widgets['benkei_encounter']['frame'].winfo_manager(),
+            'grid')
+        self.assertEqual(
+            app.unlock_flag_sections[('Other story', 'Unsorted')].winfo_manager(),
             '')
         self._select_japan()
         self.assertNotIn('external_sasuke_recruited', app.unlock_flag_widgets)
@@ -159,7 +217,9 @@ class UnlockFlagsUITests(unittest.TestCase):
                          0x80161DFC)
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
-        self.assertIn('external_sasuke_recruited', app.unlock_flag_widgets)
+        self.assertIn('external_sasuke_recruited', app.unlock_flag_rows)
+        # USA source controls may be lazily instantiated for search
+        # matches; no stale Japanese addresses may persist in the model.
         self.assertEqual(app.unlock_flag_rows['benkei_encounter'].address,
                          0x8015C60C)
         app.unlock_flag_query.set('')
@@ -178,12 +238,13 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.on_unlock_flag_type_changed()
         self.assertEqual(app.unlock_flag_subtype.get(), 'All subtypes')
         self.assertIn('Unsorted', app.unlock_flag_subtype_box['values'])
+        self.assertNotIn('benkei_encounter', app.unlock_flag_widgets)
+        self._expand()
         self.assertEqual(
             app.unlock_flag_widgets['benkei_encounter']['frame'].winfo_manager(),
             'grid')
-        self.assertEqual(
-            app.unlock_flag_widgets['oedo_old_man_dialogue_cycle']['frame'].winfo_manager(),
-            '')
+        self.assertNotIn('oedo_old_man_dialogue_cycle',
+                         app.unlock_flag_widgets)
         self.assertEqual(
             app.unlock_flag_sections[('Benkei & Kihachi', 'Unsorted')].winfo_manager(),
             'grid')
@@ -203,6 +264,7 @@ class UnlockFlagsUITests(unittest.TestCase):
     def test_compact_flag_rows_have_consistent_contrasting_backgrounds(self):
         app = self.app
         self._open_flags()
+        self._expand()
         widgets = app.unlock_flag_widgets['benkei_encounter']
         self.assertEqual(widgets['frame'].cget('style'), 'FlagRow.TFrame')
         self.assertEqual(widgets['off'].cget('style'), 'Flag.TButton')
@@ -211,9 +273,28 @@ class UnlockFlagsUITests(unittest.TestCase):
             app.unlock_status_label.winfo_parent(), str(app.unlock_items_page))
         self.assertEqual(len(app.unlock_flag_sections), 7)
 
+    def test_folders_start_collapsed_and_preserve_buttons_when_reopened(self):
+        app = self.app
+        self._open_flags()
+        section = ('Benkei & Kihachi', 'Unsorted')
+        self.assertEqual(len(app.unlock_flag_widgets), 0)
+        self.assertEqual(app.unlock_flag_expanded, set())
+        self.assertIn('▸', app.unlock_flag_section_buttons[section].cget('text'))
+        self._expand()
+        widgets = app.unlock_flag_widgets['benkei_encounter']
+        self.assertIn('▾', app.unlock_flag_section_buttons[section].cget('text'))
+        app.toggle_unlock_flag_section(section)
+        self.assertNotIn(section, app.unlock_flag_expanded)
+        self.assertEqual(
+            app.unlock_flag_section_bodies[section].winfo_manager(), '')
+        app.toggle_unlock_flag_section(section)
+        self.assertIn(section, app.unlock_flag_expanded)
+        self.assertIs(app.unlock_flag_widgets['benkei_encounter'], widgets)
+
     def test_disconnected_controls_do_not_write(self):
         app = self.app
         self._open_flags()
+        self._expand()
         widgets = app.unlock_flag_widgets['benkei_encounter']
         self.assertEqual(widgets['state'].get(), '—')
         self.assertIn('disabled', widgets['on'].state())

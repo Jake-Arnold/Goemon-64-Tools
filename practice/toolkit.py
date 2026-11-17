@@ -568,6 +568,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         # The same visible scene browser and inspector follow the active ROM;
         # USA-only write controls stay individually gated.
         self.configure_scene_browser_region()
+        if hasattr(self, 'catalogue_loaded'):
+            self.sync_address_catalogue_region()
         if hasattr(self, 'jp_scene_position_frame'):
             if version.key == 'japan':
                 self.jp_scene_position_frame.pack(
