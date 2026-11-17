@@ -1,4 +1,18 @@
-# Goemon Speedrun Tools v0.11.39 — simplified navigation and unrestricted memory comparison test
+# Goemon Speedrun Tools v0.11.40 — simplified navigation and unrestricted memory comparison test
+
+## v0.11.40 — Canonical Memory Address Catalogue
+
+**One versioned registry now owns memory addresses used by Unlocks, Story Progress, the USA/Japan crosswalk, Japanese fields and Live Memory:** [practice/data/address_catalogue_v1.json](practice/data/address_catalogue_v1.json). The runtime resolves registered guest addresses and event bit masks through `practice/address_registry.py` instead of maintaining separate write targets. Existing manual experimental Japanese Story & event flag On/Off controls remain editable regardless of candidate confidence.
+
+**Live memory → Address catalogue** is available while disconnected. Search every indexed address, partial hex, flag ID, alias, source, category or note; filter by USA/Japan/unknown, evidence, type or category; sort columns; read complete provenance and overlap metadata; copy addresses and masks; add a supported field to existing Live watches; inspect selected guest bytes using the connected region-correct backend; or navigate to its existing control. The catalogue does not continuously poll all fields or create new automatic writers.
+
+**519 records across 301 distinct region/address combinations** are currently indexed, including 415 supported live-readable field descriptions, 104 research-only or unsupported records, 58 experimental Japanese crosswalk story flags, the 25 external leads, 11 expanded repeat-code warp slots, script-VM pointers and Ebisumaru transformation observations. The checked-in [audit](practice/data/address_catalogue_audit.json) distinguishes aliases, bit overlap, disputed fields and unknown data widths. The totals are *field records*, not unique game-memory bytes.
+
+**Refresh Address Catalogue** retrieves the full canonical registry JSON from the official repository via a bounded, schema-validated read-only worker, caches it offline with timestamp/upstream revision, and overlays descriptive updates. Remote records cannot change any built-in writer's target, permissions or bit mask. The running toolkit can discover newly imported descriptions without a Python software update.
+
+New discoveries are recorded in [practice/data/address_discoveries_v1.json](practice/data/address_discoveries_v1.json), or in the separate decomp [`decomp/address_discoveries_v1.json`](decomp/address_discoveries_v1.json) research branch. [Reproducible sync and schema documentation](docs/ADDRESS_CATALOGUE_WORKFLOW.md) explains how the scheduled GitHub workflow opens **metadata-only** import PRs rather than merging decomp code. Run `python3 -m scripts.sync_address_catalogue --check` to fail CI when sources/manifests are not reconciled.
+
+This is registry, synthetic memory and Tk testing. New candidates are not automatically promoted to gameplay-verified fields; code VMAs and dynamic pointer targets are never casually dereferenced or written.
 
 ## v0.11.39 — Clearer Unlocks layout, automatic desktop sizing, editable flag subtypes
 
