@@ -567,8 +567,14 @@ class UnlocksMixin:
         if expanded:
             if section not in self.unlock_flag_expanded:
                 content = self.unlock_flag_section_bodies[section]
-                if not any(flag.key in self.unlock_flag_widgets
-                           for flag in self.unlock_flag_section_rows[section]):
+                if automatic:
+                    matching = {
+                        flag.key for flag in self.unlock_flag_section_rows[section]
+                        if getattr(self, '_unlock_flag_match_cache', {}).get(
+                            flag.key, False)}
+                    self._build_unlock_flag_section_rows(
+                        section, only_keys=matching)
+                else:
                     self._build_unlock_flag_section_rows(section)
                 self.unlock_flag_expanded.add(section)
                 content.grid()
@@ -596,11 +602,14 @@ class UnlocksMixin:
         self.filter_unlock_flags()
         self.refresh_unlock_flags(force=True)
 
-    def _build_unlock_flag_section_rows(self, section):
-        """Create individual editing buttons for exactly one open folder."""
+    def _build_unlock_flag_section_rows(self, section, *, only_keys=None):
+        """Instantiate only matching search rows, or the whole manual folder."""
         parent = self.unlock_flag_section_bodies[section]
         wheel = self._unlock_flag_wheel
         for index, flag in enumerate(self.unlock_flag_section_rows[section]):
+            if (flag.key in self.unlock_flag_widgets or
+                    only_keys is not None and flag.key not in only_keys):
+                continue
             frame = ttk.Frame(
                 parent, style='FlagRow.TFrame', padding=(10, 5))
             frame.grid(row=index, column=0, sticky='ew', pady=(0, 2))
@@ -729,12 +738,19 @@ class UnlocksMixin:
             if match:
                 visible += 1
                 section_matches[(flag.group, flag.subtype)] = True
+        self._unlock_flag_match_cache = row_matches
         if query:
             for section in section_matches:
-                if (section in self.unlock_flag_sections and
-                        section not in self.unlock_flag_expanded):
-                    self._set_unlock_flag_section_expanded(
-                        section, True, automatic=True)
+                if section in self.unlock_flag_sections:
+                    if section not in self.unlock_flag_expanded:
+                        self._set_unlock_flag_section_expanded(
+                            section, True, automatic=True)
+                    else:
+                        self._build_unlock_flag_section_rows(
+                            section, only_keys={
+                                flag.key for flag in
+                                self.unlock_flag_section_rows[section]
+                                if row_matches[flag.key]})
         else:
             for section in tuple(self.unlock_flag_auto_expanded):
                 self._set_unlock_flag_section_expanded(section, False)
