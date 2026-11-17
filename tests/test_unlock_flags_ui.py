@@ -77,11 +77,11 @@ class UnlockFlagsUITests(unittest.TestCase):
         widgets['on'].invoke()
         self.assertEqual(app.mem.bytes[0x8015C60C], 0xA1)
         self.assertEqual(widgets['state'].get(), 'On')
-        self.assertEqual(widgets['on'].cget('style'), 'Gold.TButton')
+        self.assertEqual(widgets['on'].cget('style'), 'FlagOn.TButton')
         widgets['off'].invoke()
         self.assertEqual(app.mem.bytes[0x8015C60C], 0x81)
         self.assertEqual(widgets['state'].get(), 'Off')
-        self.assertEqual(widgets['off'].cget('style'), 'Gold.TButton')
+        self.assertEqual(widgets['off'].cget('style'), 'FlagOff.TButton')
         self.assertEqual(
             [w[0] for w in app.mem.writes], [0x8015C60C, 0x8015C60C])
 
@@ -166,6 +166,50 @@ class UnlockFlagsUITests(unittest.TestCase):
         self.assertEqual(
             int(app.unlock_flag_counter.get().split(' / ')[0]),
             len(app.unlock_flag_rows))
+
+    def test_type_and_subtype_filters_control_row_and_header_visibility(self):
+        app = self.app
+        self._open_flags()
+        self.assertIn('All types', app.unlock_flag_type_box['values'])
+        self.assertIn('Benkei & Kihachi', app.unlock_flag_type_box['values'])
+        self.assertEqual(app.unlock_flag_rows['benkei_encounter'].subtype,
+                         'Unsorted')
+        app.unlock_flag_type.set('Benkei & Kihachi')
+        app.on_unlock_flag_type_changed()
+        self.assertEqual(app.unlock_flag_subtype.get(), 'All subtypes')
+        self.assertIn('Unsorted', app.unlock_flag_subtype_box['values'])
+        self.assertEqual(
+            app.unlock_flag_widgets['benkei_encounter']['frame'].winfo_manager(),
+            'grid')
+        self.assertEqual(
+            app.unlock_flag_widgets['oedo_old_man_dialogue_cycle']['frame'].winfo_manager(),
+            '')
+        self.assertEqual(
+            app.unlock_flag_sections[('Benkei & Kihachi', 'Unsorted')].winfo_manager(),
+            'grid')
+        self.assertEqual(
+            app.unlock_flag_sections[('Other story', 'Unsorted')].winfo_manager(),
+            '')
+        app.unlock_flag_subtype.set('Unsorted')
+        app.filter_unlock_flags()
+        self.assertEqual(
+            int(app.unlock_flag_counter.get().split(' / ')[0]), 9)
+        app.unlock_flag_type.set('All types')
+        app.on_unlock_flag_type_changed()
+        self.assertEqual(
+            int(app.unlock_flag_counter.get().split(' / ')[0]),
+            len(app.unlock_flag_rows))
+
+    def test_compact_flag_rows_have_consistent_contrasting_backgrounds(self):
+        app = self.app
+        self._open_flags()
+        widgets = app.unlock_flag_widgets['benkei_encounter']
+        self.assertEqual(widgets['frame'].cget('style'), 'FlagRow.TFrame')
+        self.assertEqual(widgets['off'].cget('style'), 'Flag.TButton')
+        self.assertEqual(widgets['on'].cget('style'), 'Flag.TButton')
+        self.assertEqual(
+            app.unlock_status_label.winfo_parent(), str(app.unlock_items_page))
+        self.assertEqual(len(app.unlock_flag_sections), 7)
 
     def test_disconnected_controls_do_not_write(self):
         app = self.app
