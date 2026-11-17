@@ -17,6 +17,8 @@ from practice.address_catalogue import (
 from practice.address_catalogue_remote import (
     validate_discoveries, discovery_to_record, merge_remote_catalogue,
     refresh_address_discoveries, load_cached_discoveries,
+    refresh_canonical_catalogue, load_cached_catalogue,
+    load_catalogue_cache_info, merge_remote_metadata, canonical_url,
 )
 from practice.unlocks import UNLOCKS
 from practice.story_progress import FLAGS
@@ -203,6 +205,67 @@ class RefreshTests(unittest.TestCase):
         self.assertIsNone(merged["entries"][
             next(i for i, row in enumerate(merged["entries"])
                  if row["id"] == "research:vm_text_stream_cursor")].get("control"))
+
+    def test_full_canonical_refresh_preserves_original_editors(self):
+        base = load_registry()[0]
+        remote = json.loads(json.dumps(base))
+        item = next(r for r in remote["entries"]
+                    if r["id"] == "story:usa:benkei_encounter")
+        item["address"] = "0x80150010"
+        item["mask"] = "0x01"
+        item["confidence"] = "unverified_new_test"
+        extra = dict(lookup("research:vm_text_stream_cursor"))
+        extra["id"] = "remote:experimental_new_scalar"
+        extra["address"] = "0x801C7770"
+        extra["name"] = "New read-only runtime discovery"
+        extra["control"] = "Unlocks / Items & equipment"
+        remote["entries"].append(extra)
+        merged, counts = merge_remote_metadata(base, remote)
+        retained = next(r for r in merged["entries"]
+                        if r["id"] == "story:usa:benkei_encounter")
+        self.assertEqual(retained["address"], "0x8015C60C")
+        self.assertEqual(retained["mask"], "0x20")
+        self.assertEqual(retained["confidence"], "unverified_new_test")
+        added = next(r for r in merged["entries"]
+                     if r["id"] == "remote:experimental_new_scalar")
+        self.assertIsNone(added["control"])
+        self.assertTrue(added["live_readable"])
+        self.assertEqual(counts["added"], 1)
+
+    def test_full_registry_refresh_is_bounded_cached_and_offline(self):
+        payload = SNAPSHOT.read_bytes()
+        class Response:
+            def __init__(self, url, blob):
+                self.url, self.blob = url, blob
+            def geturl(self):
+                return self.url
+            def read(self, limit):
+                return self.blob[:limit]
+            def close(self):
+                pass
+        with tempfile.TemporaryDirectory() as folder:
+            cache = Path(folder) / "full.json"
+            meta = Path(folder) / "info.json"
+            url = canonical_url("main")
+            doc, info = refresh_canonical_catalogue(
+                cache_path=cache, info_path=meta,
+                opener=lambda *args, **kwargs: Response(url, payload))
+            self.assertEqual(doc["format"], "goemon-address-catalogue-v1")
+            self.assertEqual(load_cached_catalogue(cache), doc)
+            self.assertEqual(load_catalogue_cache_info(meta)["last_sync"],
+                             info["last_sync"])
+            self.assertTrue(info["upstream_revision"])
+            with self.assertRaises(ValueError):
+                refresh_canonical_catalogue(
+                    cache_path=cache, info_path=meta,
+                    opener=lambda *a, **kw: Response(
+                        "https://wrong.example/catalogue", payload))
+            self.assertEqual(cache.read_bytes(), payload)
+            with self.assertRaises(ValueError):
+                refresh_canonical_catalogue(
+                    cache_path=cache, info_path=meta,
+                    opener=lambda *a, **kw: Response(url, b"bad json"))
+            self.assertEqual(cache.read_bytes(), payload)
 
     def test_rejects_cheat_as_live_reader(self):
         manifest = json.loads(DISCOVERIES.read_text(encoding="utf-8"))
