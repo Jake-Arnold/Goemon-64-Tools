@@ -7,7 +7,8 @@ evidence. Nothing here is an editor, freeze target, or warp control.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+from practice.address_registry import guest_address
 
 from practice.region_unlocks import JAPAN_UNLOCK_LEADS, REGION_DELTA
 from practice.story_progress import CURATED_FLAGS, PLASMA_FLAGS
@@ -109,7 +110,16 @@ def _build_crosswalk():
             flag.address, flag.address + REGION_DELTA,
             mask=flag.mask, evidence="candidate",
             note="USA original script/annotation: " + flag.evidence))
-    return tuple(fields)
+    # Mapped locations are resolved from the same source-of-truth snapshot
+    # used by Unlocks, Story Progress and Live Memory. The declarations above
+    # are still useful for evidence and the original crosswalk procedure.
+    return tuple(replace(
+        field,
+        usa=guest_address('crosswalk:usa:' + field.key,
+                          region='usa', width=field.width),
+        japan=guest_address('crosswalk:japan:' + field.key,
+                            region='japan', width=field.width))
+        for field in fields)
 
 
 CROSS_REGION_FIELDS = _build_crosswalk()
