@@ -176,6 +176,10 @@ def build_catalogue():
                 matched["control"] = row["control"]
             if row.get("counterpart") and not matched.get("counterpart"):
                 matched["counterpart"] = row["counterpart"]
+            if row["id"] != matched["id"]:
+                aliases = matched.setdefault("id_aliases", [])
+                if row["id"] not in aliases:
+                    aliases.append(row["id"])
             by_id[row["id"]] = matched
             return matched
         items.append(row)
