@@ -3,6 +3,7 @@
 ## 2026-11-17 — v0.11.42 Japanese Event Sessions and Super Pass receipt
 
 - **CI correction:** The first Linux and Windows synthetic runs found one legacy remote-discovery alias duplication. The merge now recognises canonical registry aliases without duplicating the USA Super Pass row or granting write permissions. Regression recheck required.
+- **GUI test correction:** Region-switch test asserts disabled USA-only states before switching back to Japan and active JP controls afterward.
 
 - **Default window:** JP Event Sessions now starts at `0x80161DF8–0x80161E5B` (+`0x57F0` from USA); USA stays `0x8015C608–0x8015C66B`. The `0x80161DC0` Sasuke battery preset, arbitrary JP 100-byte overrides, historical `event_start` addresses and existing trial ranking remain unchanged.
 - **Super Pass crosswalk:** Explicit `event:external_super_pass` USA `0x8015C608 & 0x01` ↔ JP `0x80161DF8 & 0x01`, using the canonical registry and reviewed discovery metadata. Japanese bit semantics remain offset-derived and unconfirmed; Benkei retains its independent evidence.
