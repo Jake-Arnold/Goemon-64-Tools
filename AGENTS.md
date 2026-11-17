@@ -80,6 +80,44 @@ to USA `0x8015C866` (**+0x57F1**, not +0x57F0); proposed Japanese pause
 on `main` and original-MIPS/decomp changes based on `chatgptweb/decomp`;
 never merge those unrelated histories.
 
+## Mandatory canonical address-registry updates (toolkit and decomp agents)
+
+The **runtime source of truth** for Goemon N64 guest addresses, field widths,
+bit masks and regional counterparts is
+`practice/data/address_catalogue_v1.json`, accessed through
+`practice/address_registry.py`. It is not a supplementary watch-list or a
+crosswalk-only report. Existing Unlocks, Story Progress, Japanese fields and
+Live Memory must resolve mapped addresses from it. Do not introduce a second
+hard-coded address authority in a new UI panel.
+
+**In the same task as every newly discovered address:**
+
+1. Record a stable ID, original game region/revision, exact guest address
+   (or explicitly classify a ROM offset, code VMA, patch or host pointer),
+   known width/type/mask, original reader/writer evidence, scene/lifetime,
+   confidence, counterpart status, source revision and date in the appropriate
+   versioned discovery manifest. Use null for genuinely unknown metadata;
+   never invent an access width or semantic meaning.
+2. Toolkit work updates `practice/data/address_discoveries_v1.json`.
+   Matching-C/decomp research updates `decomp/address_discoveries_v1.json`
+   on `chatgptweb/decomp`, not the toolkit tree. The import workflow creates
+   a **metadata-only PR**; no decomp code is implicitly merged to `main`.
+3. Run `python3 -m scripts.sync_address_catalogue --write`, then
+   `python3 -m scripts.sync_address_catalogue --check`; add relevant ROM-free
+   tests and update `PROGRESS.md` in the same change. Review any generated
+   unknown, disputed or overlapping entries without erasing evidence.
+4. Existing manually triggered Japanese crosswalk Story & event flag On/Off
+   controls are intentionally **not evidence-gated**. Confidence labels
+   describe the mapping rather than controlling those current tests. Newly
+   downloaded registry metadata never authorizes an automatic memory write.
+5. The in-app **Refresh Address Catalogue** must remain schema-validated,
+   size-limited, offline-safe, nonblocking and metadata-only. Code and
+   addresses fetched over the network may not be executed or promoted to
+   new automatic write permissions.
+
+Detailed contract and correction procedure:
+[docs/ADDRESS_CATALOGUE_WORKFLOW.md](docs/ADDRESS_CATALOGUE_WORKFLOW.md).
+
 ## Decomp continuation
 
 For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
