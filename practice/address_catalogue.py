@@ -141,6 +141,93 @@ def _read_json(path, max_bytes=MAX_SERIALIZED):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+
+def consolidate_entries(records):
+    """One display/runtime record per actual typed guest location and bit.
+
+    Identical physical fields from the ROM crosswalk, Story Progress and
+    inspector are the *same field*, not separate evidence rows. Keep every
+    stable source ID as an alias so no existing control loses its lookup.
+    Differently masked bits in the same byte stay independent. Untyped and
+    non-game-memory research references do not merge speculatively.
+    """
+    def priority(row):
+        key = row["id"]
+        if key.startswith("story:usa:"):
+            return 0
+        if key.startswith("unlock:usa:"):
+            return 1
+        if key.startswith("crosswalk:japan:"):
+            return 2
+        if key.startswith("crosswalk:usa:"):
+            return 3
+        if key.startswith("inspector:usa:"):
+            return 4
+        return 5
+
+    def identity(row):
+        if (row.get("width") is None or row.get("data_type") is None or
+                row["region"] not in ("usa", "japan") or
+                row["category"] in BLOCKED_LIVE_CATEGORIES):
+            return ("unclassified", row["id"])
+        return (row["region"], row["address"],
+                row["width"], row.get("mask"))
+
+    groups = {}
+    for row in records:
+        groups.setdefault(identity(row), []).append(row)
+    results = []
+    for group in groups.values():
+        group.sort(key=lambda row: (priority(row), row["id"]))
+        primary = dict(group[0])
+        ids = []
+        names = []
+        sources = []
+        evidence = []
+        histories = []
+        refs = []
+        for row in group:
+            for alias in (row["id"], *row.get("id_aliases", ())):
+                if alias != primary["id"] and alias not in ids:
+                    ids.append(alias)
+            for name in (row["name"], *row.get("aliases", ())):
+                if name != primary["name"] and name not in names:
+                    names.append(name)
+            for source in row.get("sources", ()):
+                if source not in sources:
+                    sources.append(source)
+            if row.get("evidence") and row["evidence"] not in evidence:
+                evidence.append(row["evidence"])
+            for history in row.get("confidence_sources", ()):
+                if history not in histories:
+                    histories.append(history)
+            own = {
+                "confidence": row["confidence"],
+                "source_id": row["id"],
+                "evidence": row.get("evidence", ""),
+            }
+            if own not in histories:
+                histories.append(own)
+            for ref in row.get("mips_refs", ()):
+                if ref and ref not in refs:
+                    refs.append(ref)
+            if primary.get("counterpart") is None and row.get("counterpart"):
+                primary["counterpart"] = row["counterpart"]
+            if not primary.get("control") and row.get("control"):
+                primary["control"] = row["control"]
+        primary["id_aliases"] = sorted(ids)
+        primary["aliases"] = names
+        primary["sources"] = sorted(sources)
+        primary["evidence"] = "; ".join(evidence)
+        primary["confidence_sources"] = histories
+        primary["mips_refs"] = refs
+        results.append(primary)
+    results.sort(key=lambda r: (
+        r["region"], int(r["address"], 16),
+        r.get("mask") or "", r["id"]))
+    return results
+
+
 def build_catalogue():
     """Audit legacy declarations and reviewed manifests; no RAM reads.
 
@@ -381,8 +468,7 @@ def build_catalogue():
                     owner="Research mentions"), reconcile=False)
                 same = [items[-1]]
 
-    records = sorted(items, key=lambda r: (
-        r["region"], int(r["address"], 16), r.get("mask") or "", r["id"]))
+    records = consolidate_entries(items)
     payload = {
         "format": CATALOGUE_FORMAT,
         "version": 1,
@@ -412,7 +498,7 @@ def search_entries(payload, query="", *, region="all", evidence="all",
         text = " ".join(str(row.get(key) or "") for key in (
             "id", "name", "address", "mask", "category", "data_type",
             "confidence", "evidence", "sources", "aliases", "context",
-            "counterpart", "owner"))
+            "counterpart", "owner", "confidence_sources", "id_aliases"))
         if q and q not in text.casefold().replace("0x", ""):
             continue
         matches.append(row)
