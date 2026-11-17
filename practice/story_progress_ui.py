@@ -101,7 +101,7 @@ class StoryProgressMixin:
 
     def refresh_japan_story_progress(self):
         """Show confirmed Japanese inventory progress, not invented event bits."""
-        from practice.region_views import japan_story_fields
+        from practice.region_views import japan_story_fields, japan_story_crosswalk_rows
         from practice.japanese_fields import read_japan_field
         from practice.japan_story_progress import (
             JAPAN_PROGRESS_ITEMS, japan_progress_row)
@@ -159,6 +159,22 @@ class StoryProgressMixin:
                 else:
                     table.insert('','end',iid=key,text=field.label,values=row)
                 grouped[target].append(key)
+        # Crosswalk saved-event and Plasma flag addresses belong in the
+        # existing Story Progress table, not a Japan-only diagnostic panel.
+        # Selecting these research rows cannot enable the inventory editor.
+        for record in japan_story_crosswalk_rows(self.jp_rdram):
+            key = record['key']
+            row = (record['bank'], f'0x{record["address"]:08X}',
+                   record['mask'], record['value'], record['raw'],
+                   record['source'])
+            for target in ('All', record['section']):
+                table = self.story_tables[target]
+                if table.exists(key):
+                    table.item(key, text=record['name'], values=row)
+                else:
+                    table.insert('', 'end', iid=key,
+                                 text=record['name'], values=row)
+                grouped[target].append(key)
         self._story_row_ids=grouped['All']
         self._story_row_ids_by_section=grouped
         self.filter_story_progress()
@@ -167,8 +183,8 @@ class StoryProgressMixin:
         self.story_notes.set(
             f'{len(JAPAN_PROGRESS_ITEMS)} user-verified inventory/party progress '
             'rows plus Japanese map/bonus research fields. '
-            'Named progress rows can be edited. Unmapped saved-event bits '
-            'remain read-only and are not copied from USA.')
+            'Named progress rows can be edited. Cross-region story/Plasma '
+            'bit candidates are read-only research and not verified events.')
         return {'region':'japan', 'mapped_inventory_rows':len(JAPAN_PROGRESS_ITEMS),
                 'mapped_candidates':len(grouped['All'])}
 
