@@ -15,8 +15,8 @@ import urllib.error
 import urllib.request
 
 from practice.address_catalogue import (
-    DISCOVERY_FORMAT, MAX_ENTRIES, _entry, validate_entry,
-    validate_catalogue, search_entries,
+    CATALOGUE_FORMAT, DISCOVERY_FORMAT, MAX_ENTRIES, MAX_SERIALIZED,
+    _entry, validate_entry, validate_catalogue, search_entries,
 )
 from practice.paths import practice_data_dir
 
@@ -163,3 +163,129 @@ def refresh_address_discoveries(*, branch="main", opener=None,
         "upstream_revision": hashlib.sha256(blob).hexdigest()[:12],
         "source_branch": branch,
     }
+
+
+# Canonical full-registry refresh, independent of toolkit software updates.
+# Retain the older discovery-manifest reader for legacy caches/agent tools.
+CANONICAL_PATH = "practice/data/address_catalogue_v1.json"
+CATALOGUE_CACHE_FILE = practice_data_dir() / "address_catalogue_full_cache.json"
+CATALOGUE_CACHE_INFO = practice_data_dir() / "address_catalogue_sync_info.json"
+CANONICAL_MAX_BYTES = 5_000_000
+
+
+def canonical_url(branch="main"):
+    if not ALLOWED_BRANCH.fullmatch(branch):
+        raise ValueError("Invalid official registry branch")
+    return f"{OFFICIAL_HOST}/{branch}/{CANONICAL_PATH}"
+
+
+def load_cached_catalogue(path=CATALOGUE_CACHE_FILE):
+    try:
+        file = Path(path)
+        if file.stat().st_size > CANONICAL_MAX_BYTES:
+            raise ValueError("Oversized registry cache")
+        return validate_catalogue(json.loads(file.read_text(encoding="utf-8")))
+    except (OSError, ValueError, TypeError, UnicodeError, json.JSONDecodeError):
+        return None
+
+
+def load_catalogue_cache_info(path=CATALOGUE_CACHE_INFO):
+    try:
+        info = json.loads(Path(path).read_text(encoding="utf-8"))
+        if not isinstance(info, dict):
+            return {}
+        return {
+            k: info[k] for k in (
+                "version", "last_sync", "upstream_revision", "source_branch",
+                "added", "updated", "disputed")
+            if k in info and isinstance(info[k], (str, int))
+        }
+    except (OSError, ValueError, TypeError, UnicodeError):
+        return {}
+
+
+def merge_remote_metadata(local, remote):
+    """Catalogue contains reference data, not runtime address permissions.
+
+    Existing toolkit editor mappings are preserved from the *bundled* trusted
+    registry. Remote description/evidence may change; entirely new records are
+    visible and optionally readable if the validated decoder supports them.
+    """
+    validate_catalogue(local)
+    validate_catalogue(remote)
+    records = {r["id"]: dict(r) for r in local["entries"]}
+    added = updated = 0
+    IMMUTABLE = (
+        "address", "region", "revision", "width", "mask", "data_type",
+        "signed", "endian", "category", "control", "live_readable",
+        "counterpart")
+    for entry in remote["entries"]:
+        item = dict(entry)
+        current = records.get(item["id"])
+        if current is None:
+            # A remote entry can reference a *built-in* control name but must
+            # not acquire that binding. All user actions remain explicit.
+            item["control"] = None
+            records[item["id"]] = item
+            added += 1
+        else:
+            for key in IMMUTABLE:
+                item[key] = current.get(key)
+            if item != current:
+                updated += 1
+            records[item["id"]] = item
+    merged = dict(local)
+    merged["entries"] = sorted(
+        records.values(), key=lambda x: (
+            x["region"], x["address"], x.get("mask") or "", x["id"]))
+    merged["sources"] = sorted(set(
+        s for row in merged["entries"] for s in row["sources"]))
+    merged["version"] = max(
+        local.get("version", 1), remote.get("version", 1))
+    validate_catalogue(merged)
+    return merged, {
+        "added": added, "updated": updated,
+        "disputed": sum(
+            row["confidence"] in ("disputed", "conflict")
+            for row in merged["entries"])
+    }
+
+
+def refresh_canonical_catalogue(*, branch="main", opener=None,
+                                cache_path=CATALOGUE_CACHE_FILE,
+                                info_path=CATALOGUE_CACHE_INFO):
+    """Nonblocking caller contract; performs only one official, bounded GET."""
+    url = canonical_url(branch)
+    request = urllib.request.Request(
+        url, headers={"User-Agent": "Goemon-AddressRegistry-ReadOnly/1",
+                      "Accept": "application/json"})
+    if opener is None:
+        opener = urllib.request.urlopen
+    response = opener(request, timeout=15)
+    try:
+        if response.geturl() != url:
+            raise ValueError("Unexpected registry redirect")
+        blob = response.read(CANONICAL_MAX_BYTES + 1)
+    finally:
+        response.close()
+    if len(blob) > CANONICAL_MAX_BYTES:
+        raise ValueError("Remote registry exceeds metadata size limit")
+    remote = validate_catalogue(json.loads(blob.decode("utf-8")))
+    info = {
+        "version": remote.get("version", 1),
+        "last_sync": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "upstream_revision": hashlib.sha256(blob).hexdigest()[:12],
+        "source_branch": branch,
+    }
+    cache = Path(cache_path)
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    temporary = cache.with_name(cache.name + ".tmp")
+    temporary.write_bytes(blob)
+    temporary.replace(cache)
+    metadata = Path(info_path)
+    metadata.parent.mkdir(parents=True, exist_ok=True)
+    temporary_info = metadata.with_name(metadata.name + ".tmp")
+    temporary_info.write_text(
+        json.dumps(info, indent=2) + "\n", encoding="utf-8")
+    temporary_info.replace(metadata)
+    return remote, info
