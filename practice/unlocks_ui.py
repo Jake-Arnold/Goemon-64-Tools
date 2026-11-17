@@ -167,6 +167,9 @@ class UnlocksMixin:
             lambda: canvas.winfo_exists() and canvas.configure(
                 scrollregion=canvas.bbox('all')))
 
+        # Keep the Items canvas separate from the Flags canvas. Reassigning
+        # a local named "canvas" here causes Tk's earlier wheel/geometry
+        # closures to capture the *wrong* canvas (the original scroll bug).
         # Flag controls are individual on/off buttons beside every flag.
         # Build rows lazily when this page opens to keep GUI startup fast.
         flags_page = self.unlock_flags_page
@@ -209,23 +212,23 @@ class UnlocksMixin:
 
         flag_shell = ttk.Frame(flags_page)
         flag_shell.pack(fill='both', expand=True)
-        canvas = tk.Canvas(
+        flag_canvas = tk.Canvas(
             flag_shell, bg=PALETTE['background'], highlightthickness=0)
         scroll = ttk.Scrollbar(
-            flag_shell, orient='vertical', command=canvas.yview)
-        canvas.configure(yscrollcommand=scroll.set)
+            flag_shell, orient='vertical', command=flag_canvas.yview)
+        flag_canvas.configure(yscrollcommand=scroll.set)
         scroll.pack(side='right', fill='y')
-        canvas.pack(side='left', fill='both', expand=True)
-        body = ttk.Frame(canvas, padding=(2, 0, 6, 8))
-        window = canvas.create_window((0, 0), window=body, anchor='nw')
+        flag_canvas.pack(side='left', fill='both', expand=True)
+        body = ttk.Frame(flag_canvas, padding=(2, 0, 6, 8))
+        window = flag_canvas.create_window((0, 0), window=body, anchor='nw')
         body.bind(
             '<Configure>',
-            lambda _e: canvas.configure(scrollregion=canvas.bbox('all')))
-        canvas.bind(
+            lambda _e: flag_canvas.configure(scrollregion=flag_canvas.bbox('all')))
+        flag_canvas.bind(
             '<Configure>',
-            lambda e: canvas.itemconfigure(window, width=e.width))
+            lambda e: flag_canvas.itemconfigure(window, width=e.width))
         body.columnconfigure(0, weight=1)
-        self.unlock_flag_canvas = canvas
+        self.unlock_flag_canvas = flag_canvas
         self.unlock_flag_body = body
         self.unlock_flag_widgets = {}
         self.unlock_flag_sections = {}
