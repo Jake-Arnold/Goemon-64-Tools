@@ -10,6 +10,32 @@ Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C 
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
 7. The initial v0.9.9 imported-baseline work did not establish direct warps. Later native-warp and story-flag work on `main` superseded that historical limitation (user confirmation 2026-11-08). The decomp-only branch must not revisit or modify those features without separate authorization.
 
+## Mandatory metadata-only address manifest for decomp agents
+
+Every new or revised original-USA/Japan guest address, code VMA, ROM offset,
+overlay or external cheat lead **must be documented in the same research task**
+in `decomp/address_discoveries_v1.json` using the versioned
+`goemon-address-discoveries-v1` schema. Retain stable IDs, original region
+and ROM revision, address space category, actual reader/writer width and
+endianness where established, bit mask, evidence/confidence, original MIPS
+references, lifetime/overlay, counterpart (when known), discovery date and
+source revision. Unknown dimensions stay `null`; do not invent a data width.
+
+This manifest is the read-only bridge to the toolkit's authoritative
+`practice/data/address_catalogue_v1.json`. On the canonical toolkit
+`main` branch, the automated metadata synchroniser periodically retrieves
+**only the JSON manifest**, opens a reviewable metadata-only toolkit PR and
+does not merge decomp source, matching-C candidates or game assets. The
+toolkit's existing Unlocks, Story Progress and Live Memory resolve addresses
+from the canonical registry. The crosswalk rule and `+0x57F1` Snowflake
+exception still apply. Do **not** infer Japanese addresses for VM globals,
+dynamic tasks or code VMAs; recorded candidates remain unconfirmed until
+original-ROM evidence verifies them.
+
+This manifest does not modify matching-C proof status, accepted function
+counts, original ROM identity, automatic writes or decomp promotion. Continue
+to use the current `decomp/CONTINUE.md` acceptance gates independently.
+
 ## Mandatory reciprocal USA ↔ Japan guest-memory discovery
 
 Whenever any decomp agent discovers, validates or changes an original USA
