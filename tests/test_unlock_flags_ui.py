@@ -46,6 +46,17 @@ class UnlockFlagsUITests(unittest.TestCase):
         app._set_unlock_flag_section_expanded(section, True)
         app.filter_unlock_flags()
         app.refresh_unlock_flags(force=True)
+        self._drain_render()
+
+    def _drain_render(self):
+        # CI can deterministically flush deferred batches without sleeping
+        # or relying on the window manager's repaint schedule.
+        for _ in range(64):
+            if not self.app._unlock_flag_pending:
+                return
+            for section in tuple(self.app._unlock_flag_pending):
+                self.app._populate_unlock_flag_batch(section)
+        self.fail('Flag rendering did not drain')
 
     def _select_japan(self):
         app = self.app
@@ -197,6 +208,7 @@ class UnlockFlagsUITests(unittest.TestCase):
         app = self.app
         self._open_flags()
         app.unlock_flag_query.set('benkei')
+        self._drain_render()
         self.assertLess(int(app.unlock_flag_counter.get().split(' / ')[0]),
                         len(app.unlock_flag_rows))
         self.assertEqual(
@@ -290,6 +302,73 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.toggle_unlock_flag_section(section)
         self.assertIn(section, app.unlock_flag_expanded)
         self.assertIs(app.unlock_flag_widgets['benkei_encounter'], widgets)
+
+    def test_large_flag_folder_renders_in_batches_and_preserves_cached_buttons(self):
+        app = self.app
+        app.mem = FakeRAM()
+        self._open_flags()
+        section = ('Fortune Dolls', 'Unsorted')
+        rows = app.unlock_flag_section_rows[section]
+        self.assertGreaterEqual(len(rows), 30)
+        app.toggle_unlock_flag_section(section)
+        initially_rendered = [
+            flag.key for flag in rows if flag.key in app.unlock_flag_widgets]
+        self.assertGreater(len(initially_rendered), 0)
+        self.assertLessEqual(len(initially_rendered), 4)
+        self.assertIn(section, app._unlock_flag_pending)
+        self.assertIn(section, app._unlock_flag_jobs)
+        first = app.unlock_flag_widgets[initially_rendered[0]]
+        self.assertEqual(first['state'].get(), 'Off')
+        self.assertNotIn('disabled', first['on'].state())
+        self._drain_render()
+        self.assertNotIn(section, app._unlock_flag_pending)
+        self.assertNotIn(section, app._unlock_flag_jobs)
+        self.assertTrue(all(
+            flag.key in app.unlock_flag_widgets for flag in rows))
+        self.assertIs(app.unlock_flag_widgets[initially_rendered[0]], first)
+        app.toggle_unlock_flag_section(section)
+        app.toggle_unlock_flag_section(section)
+        self.assertIs(app.unlock_flag_widgets[initially_rendered[0]], first)
+        self.assertEqual(app._unlock_flag_pending, {})
+
+    def test_collapse_and_region_switch_cancel_pending_flag_batches(self):
+        app = self.app
+        self._open_flags()
+        section = ('External annotations', 'Unsorted')
+        app.toggle_unlock_flag_section(section)
+        self.assertIn(section, app._unlock_flag_pending)
+        count = len(app.unlock_flag_widgets)
+        app.toggle_unlock_flag_section(section)
+        self.assertNotIn(section, app._unlock_flag_pending)
+        self.assertNotIn(section, app._unlock_flag_jobs)
+        self.root.update()
+        self.assertEqual(len(app.unlock_flag_widgets), count)
+        app.toggle_unlock_flag_section(section)
+        self.assertIn(section, app._unlock_flag_pending)
+        self._select_japan()
+        self.assertEqual(app._unlock_flag_pending, {})
+        self.assertEqual(app._unlock_flag_jobs, {})
+        self.assertNotIn('external_sasuke_recruited', app.unlock_flag_rows)
+        self.root.update()
+        self.assertTrue(all(
+            flag.key in app.unlock_flag_rows for flag in
+            (row for row in app.unlock_flag_rows.values())))
+
+    def test_search_change_during_large_folder_batch_restricts_rows(self):
+        app = self.app
+        self._open_flags()
+        section = ('Fortune Dolls', 'Unsorted')
+        app.toggle_unlock_flag_section(section)
+        self.assertIn(section, app._unlock_flag_pending)
+        app.unlock_flag_query.set('never-matches-this-flag')
+        self.assertNotIn(section, app._unlock_flag_pending)
+        self.root.update()
+        app.unlock_flag_query.set('')
+        self.assertIn(section, app._unlock_flag_pending)
+        self._drain_render()
+        self.assertTrue(all(
+            flag.key in app.unlock_flag_widgets
+            for flag in app.unlock_flag_section_rows[section]))
 
     def test_disconnected_controls_do_not_write(self):
         app = self.app
