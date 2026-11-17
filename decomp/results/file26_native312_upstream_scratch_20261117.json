@@ -1,0 +1,85 @@
+{
+  "format": "goemon-file26-mr-arrow-native312-research-v1",
+  "date": "2026-11-17",
+  "status": "RESEARCH_ONLY",
+  "region": "usa",
+  "origin": "user Project64 register capture plus original USA ROM MIPS + upstream source-level G2 scratch",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "matched_range": {
+    "rom_start": "0x6AE8AC",
+    "rom_end_exclusive": "0x6AE9E4",
+    "total_original_instruction_bytes": 312,
+    "sha256": "28dc78f560e00863470a0034bd08e56873328d39a28bc1632b105024f1aabb17"
+  },
+  "functions": [
+    {
+      "name": "func_080000CC_6AE8AC",
+      "original_rom": "0x6AE8AC",
+      "vma": "0x080000CC",
+      "bytes": 168
+    },
+    {
+      "name": "func_08000174_6AE954",
+      "original_rom": "0x6AE954",
+      "vma": "0x08000174",
+      "bytes": 64
+    },
+    {
+      "name": "func_080001B4_6AE994",
+      "original_rom": "0x6AE994",
+      "vma": "0x080001B4",
+      "bytes": 80
+    }
+  ],
+  "exact_native_compiler": "IDO 5.3 pinned -O2 -mips2",
+  "source_blob_sha": "4e2e19a4189e6ccd177f411934fc46c86e7c916f",
+  "test_blob_sha": "f9465043e8072a90aa9b6387b78d74a92ea556d5",
+  "source_relocations": 26,
+  "upstream_scratch_whole_rom": {
+    "status": "PASS",
+    "original_rom_bytes": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "all_bytes_match": true,
+    "original_elf_positive_sized_func_identites_preserved": 7376,
+    "file26_original_semantic_relocations_preserved": 207,
+    "only_zero_padding_trimmed": true,
+    "production_manifest_integrated": false
+  },
+  "host_sanitizer_regression": {
+    "status": "PASS",
+    "address_sanitizer": true,
+    "undefined_behavior_sanitizer": true,
+    "tests": [
+      "actor state gate 0x200",
+      "saved flag 0x104",
+      "callback handoff",
+      "conditional completion branches"
+    ]
+  },
+  "ghost_torch_resource40_candidate": {
+    "status": "FAILED_NATIVE",
+    "native_variants": 5,
+    "mismatch_offsets": [
+      "0xA8",
+      "0xC0",
+      "0xD0",
+      "0xD4"
+    ],
+    "promoted": false
+  },
+  "branch_checkpoint_when_reviewed": {
+    "usa_accepted_c": 782,
+    "usa_c_instruction_bytes": 34392,
+    "japan_accepted_c": 34
+  },
+  "production_gates": {
+    "full_current_branch_checkout": false,
+    "combined_current_782_plus3_rom": "NOT_RUN",
+    "canonical_inventory": "NOT_RUN",
+    "all_elf_relocations": "NOT_RUN",
+    "local_ci": "NOT_RUN",
+    "promoted": 0
+  },
+  "next": "Integrate into authenticated complete live branch and run all production gates before 782->785"
+}
