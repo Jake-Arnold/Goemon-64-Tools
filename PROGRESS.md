@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Fresh 387-C USA file_12 coexistence proof against canonical two callbacks (research only)
+
+- Authenticated original 16 MiB USA ROM and pinned upstream 32 MiB baseline, then independently re-ran PR #47's 385-C original-upstream exact full-ROM gate.
+- Added the two current canonical file_12 C callback sources at original ROM/VMA positions to the 385-C overlay and rebuilt twice; full **33,554,432/33,554,432** USA ROM bytes identical, SHA-1 **6ea0ed71032ce08fc2745f412d84936382197494**; complete **7,051/7,051** semantic file_12 relocation multisets and **7,376/7,376** ELF function identities match (raw relocation order differs).
+- File_12 coexistence achieved: **387 C / 14,268 code bytes** over 14 C translation units. Pinned both current canonical source hashes and published a fail-closed source-only integration driver with 5 new unit tests; all **11/11** expanded/coexistence synthetic tests PASS.
+- Audited current canonical USA commit `1961f1333e8a5007c3cf8df5dfa0d0ca5a0cea8b`: verified **342 C / 17,568 bytes** in its existing matched `combined.json`; no overlap between those 342 and the new 385 original-function ranges. Hypothetical combined target is 727 C / 31,780 code bytes.
+- **Production not promoted:** The 387-C full-ROM candidate retained pristine original upstream assembly for all other 340 canonical C functions. Full **727-C** simultaneous central `decomp.verify`, `decomp.inventory` and `decomp.local_ci` have NOT run because the full private decomp source checkout is not locally mountable in this execution environment. Canonical count stays **342**, not 727.
+- Files: `decomp/research/file12_spatial/integrate_387.py`, `tests/test_file12_387_coexistence.py`, this report, summarized proof JSON and root `PROGRESS.md`. No ROMs/ELFs/asm generated/game assets committed.
+
+
 ### 2026-11-17 — 385-function USA file_12 adjacency reconstruction; full original-upstream ROM proof
 
 - Expanded user-observed NPC spatial-loading research to a contiguous original-USA registration block of **374** 36-byte wrappers (13,464 bytes) which reproduce original code as one original-address IDO 5.3 C translation unit, plus **eight** additional adjacent exact C helpers (328 bytes) and the **previous three** lifecycle C functions (420 bytes).
