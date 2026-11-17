@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — v0.11.38 individual story/event On-Off controls
+
+- **Correction:** The earlier Story & event flags table required selecting a flag and then using shared bottom Set/Clear buttons. The requested design has an explicit **On** and **Off** control on **every flag row**, matching the direct interaction pattern used by Items & equipment.
+- **Implementation:** Replace the selection-only table with a lazy-built, searchable, scrollable per-flag list showing name, address, mask, live On/Off state, source and direct two-button editor. Highlight the currently observed state, display full evidence on label click and disable buttons only if disconnected, read-only or the current byte is unavailable. No evidence-based restrictions for mapped Japanese candidates.
+- **Bit writes:** Keep the existing checked single-bit editor for USA and verified connected writer for JP, which preserves neighbouring bits, detects stale values and immediately refreshes the displayed state. Items & equipment's 34 existing controls stay unchanged.
+- **Tests:** Update Tk regression cases to invoke individual row buttons directly, covering USA set/clear, masked writes, stale state, Japanese confirmed/candidate parity, search, region switching, disconnected and read-only modes. CI / real-game testing status to be recorded separately.
+
 ## 2026-11-17 — v0.11.37 Dashboard stable / test / release selector (development branch)
 
 - **Version catalogue:** Use canonical GitHub origin `git ls-remote --heads --tags` to list stable `main`, active `toolkit/*` test branches and semantic version tags. Annotated tags resolve to peeled commit hashes. Do not display decompilation/research branches.
