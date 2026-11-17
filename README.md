@@ -1,4 +1,10 @@
-# Goemon Speedrun Tools v0.11.36 — simplified navigation and unrestricted memory comparison test
+# Goemon Speedrun Tools v0.11.37 — simplified navigation and unrestricted memory comparison test
+
+## Dashboard: Check for updates and install automatically (v0.11.37)
+
+A **Check for updates** button on the Dashboard compares the current Git checkout with the canonical GitHub `main` branch. When a fast-forward update is available, the same button becomes **Install update and restart**. Checking does not alter toolkit source files; installation fast-forwards `main` and restarts the toolkit after normal game-handle, key-injection, freeze and Tk shutdown.
+
+This works with Git-cloned installs on **Ubuntu or Windows**. For safety, the updater verifies the canonical GitHub origin, requires the current checkout to be on `main`, refuses modified tracked files or divergent local commits, and never resets, force-checks-out, switches development branches, or removes untracked files. ZIP-only installs display a clear unsupported message. The current branch is not silently replaced by a different branch; update source changes still depend on any new Python packages being available. Live updates are not attempted during a running game process without closing the toolkit first.
 
 ## Unlocks: Items & equipment and Story & event flags (experimental branch)
 
