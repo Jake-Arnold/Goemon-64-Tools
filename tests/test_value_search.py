@@ -125,6 +125,80 @@ class ValueSearchTests(unittest.TestCase):
         self.assertEqual(scanner.rows(limit=1)[0]['value'], '0')
         self.assertEqual(scanner.rows(limit=1, ram=ram)[0]['value'], '3')
 
+
+    def test_filter_can_compare_with_immutable_initial_snapshot(self):
+        ram = Memory()
+        ram.put(8, 'u16', 100)
+        scanner = ValueScanner(size=64, chunk=16)
+        scanner.start_unknown(ram, 'u16')
+        ram.put(8, 'u16', 90)
+        self.assertEqual(scanner.filter(ram, 'Decreased'), 1)
+        self.assertEqual(scanner.rows()[0]['initial'], '100')
+        self.assertEqual(scanner.rows()[0]['previous'], '90')
+        ram.put(8, 'u16', 95)
+        self.assertEqual(
+            scanner.filter(ram, 'Decreased', compare_to='Initial'), 1)
+        self.assertEqual(scanner.rows()[0]['value'], '95')
+        ram.put(8, 'u16', 96)
+        self.assertEqual(scanner.filter(ram, 'Decreased'), 0)
+
+    def test_exact_filter_uses_new_number_not_original_scan(self):
+        ram = Memory()
+        ram.put(8, 'u16', 950)
+        scanner = ValueScanner(size=64, chunk=16)
+        scanner.start_exact(ram, 'u16', '950')
+        ram.put(8, 'u16', 900)
+        self.assertEqual(scanner.filter(ram, 'Exact', '900'), 1)
+        self.assertEqual(scanner.rows()[0]['initial'], '950')
+
+    def test_f64_big_endian_search_and_live_read(self):
+        ram = Memory()
+        ram.data[16:24] = struct.pack('>d', 7.25)
+        scanner = ValueScanner(size=64, chunk=16)
+        self.assertEqual(scanner.start_exact(ram, 'f64', '7.25'), 1)
+        self.assertEqual(scanner.rows()[0]['value'], '7.25')
+        ram.data[16:24] = struct.pack('>d', 8.5)
+        self.assertEqual(scanner.filter(ram, 'Increased'), 1)
+        self.assertEqual(scanner.rows()[0]['initial'], '7.25')
+
+    def test_text_search_encodings_and_research_limitations(self):
+        ram = Memory(128)
+        ram.data[3:9] = b'GOEMON'
+        scanner = ValueScanner(size=128, chunk=16)
+        self.assertEqual(scanner.start_text(ram, 'GOEMON'), 1)
+        self.assertEqual(scanner.rows()[0]['address'], GUEST_BASE + 3)
+        self.assertEqual(scanner.rows()[0]['kind'], 'text/ASCII')
+        ram.data[3:9] = b'GOLMON'
+        self.assertEqual(scanner.filter(ram, 'Changed'), 1)
+        self.assertEqual(scanner.filter(ram, 'Exact', 'GOLMON'), 1)
+        with self.assertRaises(ValueError):
+            scanner.filter(ram, 'Increased')
+        with self.assertRaises(ValueError):
+            scanner.filter(ram, 'Exact', 'different length')
+        self.assertEqual(scanner.count, 1)  # Errors do not discard results.
+        raw_japanese = 'ゴエモン'.encode('shift_jis')
+        ram.data[20:20 + len(raw_japanese)] = raw_japanese
+        self.assertEqual(scanner.start_text(
+            ram, 'ゴエモン', encoding='Shift-JIS'), 1)
+        self.assertEqual(scanner.rows()[0]['value'], 'ゴエモン')
+        with self.assertRaises(ValueError):
+            scanner.start_text(ram, 'ゴエモン', encoding='ASCII')
+
+    def test_numeric_alignment_after_text_and_batched_live_reads(self):
+        ram = Memory(128)
+        ram.data[3:9] = b'GOEMON'
+        scanner = ValueScanner(size=128, chunk=16)
+        scanner.start_text(ram, 'GOEMON')
+        ram.put(16, 'u16', 950)
+        self.assertEqual(scanner.start_exact(ram, 'u16', '950'), 1)
+        self.assertEqual(scanner.rows()[0]['address'], GUEST_BASE + 16)
+        scanner.start_unknown(ram, 'u8')
+        before = ram.reads
+        rows = scanner.rows(limit=20, ram=ram)
+        self.assertEqual(len(rows), 20)
+        self.assertEqual(ram.reads, before + 1)
+        self.assertEqual(rows[0]['initial'], rows[0]['previous'])
+
     def test_chunk_validation(self):
         ram = Memory()
         self.assertEqual(read_ram(ram, size=64, chunk=16), bytes(64))

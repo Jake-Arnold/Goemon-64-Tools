@@ -25,7 +25,7 @@ class ProbeUITests(unittest.TestCase):
 
     def test_capture_compare_export_and_clear(self):
         app=self.app
-        self.assertEqual(app.event_sections.tab(app.state_discovery_tab,'text'),'Advanced RAM comparison')
+        self.assertEqual(app.event_sections.tab(app.state_discovery_tab,'text'),'Compare memory changes')
         self.assertNotIn('State discovery', [app.notebook.tab(t,'text') for t in app.notebook.tabs()])
         mem=Memory()
         app.mem=mem
@@ -37,11 +37,15 @@ class ProbeUITests(unittest.TestCase):
         report=app.state_report
         self.assertTrue(report)
         self.assertGreater(report['counts']['candidate_count'],0)
-        with TemporaryDirectory() as tmp,patch('practice.state_discovery_ui.diagnostics_dir',return_value=Path(tmp)):
+        with TemporaryDirectory() as tmp,patch(
+            'practice.reports.reports_root',return_value=Path(tmp)):
             app.export_state_probe()
-            files=list(Path(tmp).glob('*.json'))
-            self.assertEqual(len(files),1)
-            self.assertIn('Exported comparison',app.state_probe_status.get())
+            manifests=list(Path(tmp).glob('USA/*/*/manifest.json'))
+            self.assertEqual(len(manifests),1)
+            self.assertEqual(__import__('json').loads(
+                manifests[0].read_text())['kind'],'memory-comparison')
+            self.assertTrue((manifests[0].parent/'session.json').is_file())
+            self.assertIn('Saved',app.state_probe_status.get())
         app.reset_state_probes()
         self.assertIsNone(app.state_report)
         self.assertEqual(len(app.state_probe_table.get_children()),0)

@@ -21,7 +21,7 @@ class EventSessionUITests(unittest.TestCase):
         self.app.mem.write_guest(EVENT_START,bytes(EVENT_SIZE))
         self.app._event_connection=lambda: ((123,456),'project64')
         self.folder=tempfile.TemporaryDirectory()
-        self.storage=patch('practice.event_sessions_ui.diagnostics_dir',return_value=Path(self.folder.name))
+        self.storage=patch('practice.event_sessions_ui.working_investigations_dir',return_value=Path(self.folder.name))
         self.storage.start()
 
     def tearDown(self):
@@ -48,6 +48,29 @@ class EventSessionUITests(unittest.TestCase):
         with patch('practice.event_sessions_ui.filedialog.askopenfilename',return_value=str(path)):
             app.open_event_session();self.wait_rank()
         self.assertEqual(len(app.event_session['trials']),1);self.assertEqual(app.event_pending,{})
+
+    def test_flag_report_contains_full_trials_and_ranked_bits(self):
+        import json
+        app = self.app
+        app.new_event_session()
+        app.capture_event_stage('A')
+        app.mem.write_guest(EVENT_START, b'\x20')
+        app.capture_event_stage('B')
+        app.record_event_trial()
+        self.wait_rank()
+        with patch('practice.reports.reports_root',
+                   return_value=Path(self.folder.name) / 'reports'):
+            app.save_event_investigation_report()
+        found = list((Path(self.folder.name) / 'reports').glob(
+            'USA/*/*/manifest.json'))
+        self.assertEqual(len(found), 1)
+        session = json.loads((found[0].parent / 'session.json').read_text())
+        self.assertEqual(session['manifest']['kind'], 'flag-investigation')
+        self.assertEqual(len(session['evidence']['working_investigation']['trials']), 1)
+        self.assertEqual(session['evidence']['working_investigation']
+                         ['trials'][0]['captures']['B']['bytes_hex'][:2], '20')
+        self.assertTrue(session['candidates'])
+        self.assertIn('Saved', app.event_status.get())
 
     def test_disconnect_capture_failure_and_failed_save_leave_no_phantom_trial(self):
         app=self.app;app.new_event_session();app.capture_event_stage('A')
@@ -76,14 +99,46 @@ class EventSessionUITests(unittest.TestCase):
             release.set();self.root.update()
         self.assertEqual(app.event_rows,[])
 
+
+    def test_all_discovery_modes_share_candidate_columns_and_actions(self):
+        app = self.app
+        modes = (
+            (app.value_search_tree, app.value_search_results),
+            (app.state_probe_table, app.state_probe_results),
+            (app.event_table, app.event_results),
+            (app.damage_capture_tree, app.damage_results),
+        )
+        for tree, panel in modes:
+            with self.subTest(panel=panel.label):
+                self.assertEqual(tuple(tree['columns'])[:4],
+                                 ('address', 'type', 'live', 'raw'))
+                self.assertEqual(str(tree['selectmode']), 'extended')
+                self.assertEqual(panel.save_button.cget('text'), 'Save report')
+                self.assertTrue(panel.auto.get())
+                self.assertEqual(panel.interval.get(), '250 ms')
+                self.assertTrue(callable(panel.watch_selected))
+                self.assertTrue(callable(panel.refresh_now))
+                self.assertTrue(callable(panel.copy_address))
+                self.assertTrue(callable(panel.select_visible))
+
     def test_event_sessions_consolidates_advanced_memory_and_removes_shadow(self):
         app=self.app
         tabs={app.notebook.tab(tab,'text') for tab in app.notebook.tabs()}
-        self.assertIn('Event sessions',tabs)
+        self.assertIn('Memory discovery',tabs)
+        nested_discovery = {
+            app.discovery_tabs.tab(t, 'text')
+            for t in app.discovery_tabs.tabs()
+        }
+        self.assertEqual(nested_discovery, {
+            'Start here', 'Find a value', 'Compare memory changes',
+            'Investigate flags', 'Record damage'
+        })
         self.assertNotIn('Saved / shadow',tabs)
         self.assertNotIn('State discovery',tabs)
-        nested={app.event_sections.tab(t,'text') for t in app.event_sections.tabs()}
-        self.assertEqual(nested,{'Event flag sessions','Advanced RAM comparison'})
+        self.assertIs(app.event_sections, app.discovery_tabs)
+        self.assertEqual(
+            app.event_sections.tab(app.state_discovery_tab,'text'),
+            'Compare memory changes')
         self.assertFalse(hasattr(app,'save_buffers_tree'))
         self.assertFalse(hasattr(app,'save_buffers_tab'))
         app.refresh_checkpoint_options();app.refresh_checkpoint_diff(force=True)

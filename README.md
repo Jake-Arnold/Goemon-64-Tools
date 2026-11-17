@@ -1,4 +1,133 @@
-# Goemon Speedrun Tools v0.11.31 — Japanese connection and entrance-selection reliability
+# Goemon Speedrun Tools v0.11.36 — simplified navigation and unrestricted memory comparison test
+
+## v0.11.36 — Remove duplicate JP diagnostics and comparison presets (16 November 2026)
+
+**Final code verification:** [Linux CI 43948425965](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948425965) passed **313 synthetic non-GUI tests (312 passed, 1 skipped) and 139 Tk GUI tests**. [Windows CI 43948426011](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948426011) passed **33 portable tests**. Both tested code commit `aaa2b9ff5a71f7520cbff8d45c63b83d4f519dd0`; final documentation changes only. Real-game Linux and Windows Tk integration has not been exercised.
+
+**Draft test branch:** toolkit/unified-memory-discovery, not merged into main.
+
+### Reduced navigation and controls
+
+- The standalone **Japan Live (diagnostics)** top-level tab is no longer shown in either region. The old diagnostic widget/model is retained internally for compatibility with source-backed readings, guards and old saved Japanese custom watches. Continuous hidden-tab polling has been stopped. Use shared **Live Memory** for typed values, search-generated watches, renaming, freezes and live refresh.
+- The **manual Japan Goemon XYZ editor** (a genuinely unique feature of that tab) now appears in the shared **Scene Browser** in Japanese mode, using the same X/Y/Z variables and original scene/character/PID/RAM verification and write-confirmation routine. The Scene Browser already supplies native debug-menu and room-warp actions, so no extra Japanese scene controller tab is visible.
+- The separate **Verify ROM** button is removed from Dashboard. Clicking **Connect** in Japan mode now prompts for the original Japan-0 ROM only if no previously verified ROM is remembered. Correct 16 MiB retail-ROM SHA-1 validation, three independent 64-byte code-fingerprint probes and per-attachment RAM/backend verification are still mandatory. A cancelled or mismatched ROM never authorises a Japanese attachment. USA uses its existing process attach path.
+- **Compare memory changes** no longer offers misleading fixed **Test** presets. Any experiment name is entered once via the shared **Report name** control. The only capture-range setting is **focused** versus **wide**; the meaning is explained in the tab. A report name never changes captured addresses or boosts rankings. Removed unused dropdown presets and the previous 5/30-point USA prefix-based candidate ranking bonuses.
+- **Capture C: Optional** is now explicit: ordinary A/B/C comparison *filters to values that reverted to A*, therefore **skip C for irreversible/persistent state**; Japanese wide XYZ analysis instead requires C stationary at B, after moving from A to B.
+- The shared **Results · read-only** toolbar (report name, Save report, selected watches, refresh cadence) is now placed **before the method-specific capture controls** in all four research tabs, removing duplicate local report names.
+
+### Further source audit
+
+The full row-by-row [redundancy and safety audit](docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md) documents what was removed, moved and retained. Legacy raw JSON exports, specialised freezes, Story progress and Unlocks, and the quick raw-byte dashboard reader have possible overlap, but are not deleted without evidence of functional equivalence and compatibility. Old investigations and watch files are not modified.
+
+### Tests and limits
+
+The current Linux Tk smoke suite includes Japanese-hidden-tab/regional scene editor behaviour, automatic ROM picker safety, freeform comparison capture semantics, and existing USA/JP research/watch regressions. The Windows report workflow validates portable APIs. These checks use synthetic game memory; real native recomp gameplay on Linux/Windows and original guest MIPS read/write tracing remain unverified.
+
+Ubuntu test checkout:
+
+    cd ~/Desktop/Goemon-64-Tools-JP-Recomp
+    git fetch origin
+    git switch toolkit/unified-memory-discovery
+    git pull --ff-only
+    bash Run-Linux.sh
+
+## v0.11.35 — Consistent discovery results, watching and live updating (16 November 2026)
+
+**Final v0.11.35 branch-tip code verification:** [Linux 43943477576](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43943477576) passed 313 non-GUI tests (312 passed, 1 skipped) and 135 GUI tests. [Windows 43943477681](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43943477681) passed 33 portable tests. These verify synthetic RAM/Tk behaviours, not real USA/JP native-game memory tracing or Windows Tk gameplay.
+
+**Experimental branch-only build** on toolkit/unified-memory-discovery. This is the shared UI layer following the v0.11.34 four-method navigation and common reporting implementation. Main is unchanged.
+
+### Standard discovery results interface
+
+All four Memory discovery methods (**Find a value**, **Compare memory changes**, **Investigate flags**, **Record damage**) now use the same **Results · read-only** bar. Its actions appear in the same order on every page:
+
+- **Watch selected** — add multiple typed guest addresses directly into shared Live Memory, using the correct USA or Japan watch file; duplicates are skipped. If a Japanese XYZ triple is selected, add three individual float watches (X/Y/Z).
+- **Select all listed** — select all candidates currently listed in the table; at most 128 typed watches can be saved. **Copy address** copies the first selected address.
+- **Refresh now** — request an immediate read of displayed/selected candidate values. **Live update** and **Every (100/250/500/1000 ms)** continuously refresh while that method's tab is active, without overlapping workers.
+- **Report name** and **Save report** — use the common report manager to save Markdown, CSV and full available JSON evidence in the same four-file schema.
+
+All four tables start with **N64 address / Type / Live value / Live hex**. Remaining columns show only evidence specific to the method (previous values; captured A/B; mask and trial support; damage hit counts). Changing a value during gameplay updates the **Live** column without altering the original comparison evidence, trial rankings or saved snapshots.
+
+For the three non-scanner workflows, live values are read in background threads and grouped into bounded 4 KiB guest-RAM ranges; the active tab samples selected and currently viewed rows. The numeric scanner retains its established asynchronous live/continuous scan engine but exposes the same controls. Actual update rates depend on the native recomp/emulator's process-memory read throughput.
+
+### Compatibility and safety
+
+- Live reads are *external value polls*, not original game MIPS instruction reader/writer traces. No research action writes guest RAM.
+- Live Memory custom watches remain independently stored per region. Invalid/unknown-width text matches cannot be pinned to numeric Live Memory watches; candidate rows remain available in reports.
+- Candidate regions and original captured evidence are not reinterpreted when switching USA/JP; pending live updates and old damage/flag rows are invalidated.
+- Dedicated research evidence remains intact: A/B/C captures, repeated flag trials and automatic damage-event timelines continue to use the unified report format.
+- Specialist exhaustive Japanese XYZ export remains available as an advanced option. Unsupported original-MIPS read/write tracing has not been implemented.
+
+### Testing
+
+[Linux CI](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/workflows/toolkit-linux-regression.yml) now runs numeric live-preview, structured candidate consistency, all four Tk tabs, JP/USA batch watch isolation, XYZ triple expansion and GUI teardown tests. [Windows CI](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/workflows/toolkit-windows-report.yml) runs portable live-read, watch and report tests. Both test synthetic game memory only; real-game USA/JP and Windows GUI interaction remain to be validated.
+
+Run on Ubuntu:
+
+    cd ~/Desktop/Goemon-64-Tools-JP-Recomp
+    git fetch origin
+    git switch toolkit/unified-memory-discovery
+    git pull --ff-only
+    bash Run-Linux.sh
+
+## v0.11.34 — Guided Memory Discovery and unified reports (16 November 2026)
+
+**Hosted tests for v0.11.34:** [Linux run 43938746400](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43938746400) passed **307 non-GUI tests (306 passed, 1 skipped) and 131 Tk GUI tests**, with no Tk callback errors. [Windows run 43938746437](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43938746437) passed **27 portable reporting, scanning and version tests**. Actual live USA/JP recomp processes and Windows Tk GUI have not been exercised in CI.
+
+**Draft branch only.** Keep toolkit/unified-memory-discovery separate from main until user review and live game tests.
+
+### What changed
+- Memory discovery opens with a **Start here** page describing four direct methods: **Find a value**, **Compare memory changes**, **Investigate flags**, **Record damage**. No nested "Event sessions > Advanced RAM comparison". The existing underlying algorithms and saved investigation compatibility remain.
+- A small connected-game status line at the top shows the actual attached USA/JP reader, PID and backend; **Open connection** returns to Dashboard. If a Japanese flag investigation has attached RAM but missing identity metadata, the error now says exactly which part is missing.
+- All four methods have **Save report**, using one implementation and the same four files: summary.md, candidates.csv, session.json and manifest.json, grouped by region, readable investigation and timestamp. CSV stores all candidates supplied by each research engine; JSON preserves complete available trial/event/context evidence.
+- Value search now exports up to **20,000** surviving candidates, not just 200 visible rows. Larger result sets are honestly marked partial; snapshots are observations, not guest-MIPS access traces.
+- **Compare memory changes** saves derived candidates, context and captured-region lengths/SHA-256 provenance. The analyzer may limit ranked results; report counts disclose this. No raw 8 MiB guest RAM dumps are written.
+- **Investigate flags** keeps complete 100-byte A/B/C captures, repeat/trial IDs, notes, roles, gameplay contexts and ranked bit evidence. Work-in-progress investigations autosave in Reports/.working/[USA|JP], outside the published Reports index. Old diagnostics JSON can still be opened.
+- **Record damage** saves the full ranked candidate list produced by its recorder and available event metadata/timelines. Detailed timelines are capped to the strongest 300 candidate entries and the report discloses this limit.
+- **Japanese Unlocks fix:** treat backend selector **auto** as valid when the connected, detected backend is Project64, Mupen64Plus or native recomp. Existing verified RAM, PID, read-only and backend mismatch guards remain in place. All 33 previously tested JP entries and one unverified Sasuke battery candidate retain their existing verification labels; no new addresses are invented.
+- No native recomp original-MIPS-PC read/write tracing yet. No changes to decompilation branches or shipped game code.
+
+### Testing
+
+Synthetic unit, Linux Xvfb Tk and Windows portable checks are run on this branch. Results are recorded in PROGRESS.md. Neither host CI check establishes live-game compatibility.
+
+## v0.11.33 — Memory search usability, continuous filtering and readable reports (16 November 2026)
+
+**Automated test evidence for this build:** Ubuntu [run 43933889974](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43933889974) passed **305 non-GUI tests (304 passed, 1 skipped)** and **128 Xvfb Tk GUI tests** with no Tk callback errors. Windows [run 43933890711](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43933890711) passed **25 portable reporting, numeric/text scanner and version tests**. These are synthetic checks, not real USA/JP native recomp execution.
+
+**Review build on toolkit/unified-memory-discovery; not merged into main.**
+
+- **Starting value** is now separate from the **Filter value (Exact only)**, so an Exact filter never silently reuses the original number.
+- **Compare with Previous or Initial:** choose the last filter snapshot or the first scan snapshot. The value table now shows **Initial / Previous / Live** separately.
+- **Continuous filter:** under "Narrow current results", choose Exact, Unchanged, Increased, Decreased or Changed and a baseline, then click **Start continuous filter**. It repeats every 250/500/1000/2000 ms **after each completed pass**; no overlapping reads. Click **Stop continuous filter** at any time. It automatically stops at zero results, on error or when a game connection changes. Repeated passes *permanently narrow* candidates until a new scan begins. For stable values choose Unchanged against Initial; for an unchanged value relative to the previous pass choose Previous.
+- **Live refresh:** enabled by default, with 100/250/500/1000 ms target intervals, using grouped RAM reads for visible rows. Actual update rate may be slower on a busy recomp process or many scattered addresses; continuous filtering supersedes separate live refresh while active.
+- **Search types:** u8/s8/u16/s16/u32/s32, **f32, f64** and literal text patterns in **ASCII, Shift-JIS or UTF-8**. Text scanning searches encoded byte patterns, not language meaning or custom in-game text encodings. Variable-length text candidates cannot yet be added as fixed-width Live Memory watches.
+- **Batch watch:** Ctrl/Shift-select multiple numeric candidates, or use Select all visible (at most 200), then Watch selected addresses. Save them together, respecting region-specific watch files and existing watch-capacity limits.
+- **Readable report directory layout:** Reports/JP or USA/Experiment name/YYYY-MM-DD HH-MM-SS UTC/. Repeated trials group under the experiment name, with a numeric suffix only when a timestamp collides. The Reports table shows name, region, date, research type and candidate count instead of a long path. **Tidy folder name** migrates a selected older flat-format report only with an explicit confirmation; old files are not rewritten automatically. ZIP filenames now include the experiment name, and candidate reports include Initial/Previous.
+- **Still pending:** native recomp original MIPS instruction read/write tracing, full guided Discovery wizard, full JP Live consolidation and live gameplay verification on both operating systems. The project remains draft PR #35.
+
+Ubuntu: update the branch using git fetch / git switch toolkit/unified-memory-discovery / git pull --ff-only, then run bash Run-Linux.sh. The selected USA or JP region is retained.
+
+## v0.11.32 — Memory Discovery + Reports TEST PROTOTYPE (16 November 2026)
+
+**Prototype CI status:** [Ubuntu workflow](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43927149682) PASS (297 non-GUI tests: 296 pass, 1 skipped; 119 Tk GUI tests pass). [Windows portable workflow](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43927149804) PASS (8 report/version tests). No real native-game playthrough or Windows Tk integration has been verified.
+
+**Isolated feature branch: toolkit/unified-memory-discovery; main remains unchanged.**
+Read the [full plan](docs/UNIFIED_MEMORY_DISCOVERY_PLAN_2026-11-16.md)
+and [redundancy audit](docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md).
+
+A single **Memory discovery** top-level tab now contains the existing Value search, Automatic events and Event sessions (including the Advanced RAM comparison). No current discovery algorithm is removed. The new **Reports** tab indexes the new format and historical diagnostic JSON; it supports opening report/folder, copying the selected path and exporting ZIP. After a Value search, name and **Save candidate report**. New reports are stored outside the source checkout, in Documents/Goemon Practice Toolkit/Reports/USA or JP. Reports include summary.md, candidates.csv, session.json, manifest.json; any truncated result set is explicitly disclosed. Linux uses xdg-open and Windows uses its native file opener.
+
+**Not yet included:** original MIPS PC read/write tracing in native recomp; guided combined A/B/C sessions; full JP Live consolidation; live-game verification. This is a limited but functional research/reporting preview, not the complete roadmap.
+
+To run the preview on Ubuntu:
+
+    git fetch origin
+    git switch toolkit/unified-memory-discovery
+    git pull --ff-only
+    bash scripts/test_japan_party.sh
+    bash Run-Linux.sh
+
 
 ## v0.11.31 — Ubuntu regression suite passes (16 November 2026)
 

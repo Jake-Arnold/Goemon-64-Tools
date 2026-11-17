@@ -12,13 +12,14 @@ from tkinter import ttk
 from practice.damage_event_capture import (
     DamageRecorder, candidate_report, event_timeline, export_report,
 )
-from practice.paths import diagnostics_dir
+from practice.discovery_results import DiscoveryResultsPanel
+from practice.reports import create_discovery_report
 
 
 class DamageEventCaptureMixin:
     def build_damage_event_capture_tab(self, notebook):
         tab = ttk.Frame(notebook, padding=10)
-        notebook.add(tab, text="Automatic events")
+        notebook.add(tab, text="Record damage")
         self.damage_capture_tab = tab
         self.damage_recorder = None
         self.damage_capture_worker = None
@@ -27,6 +28,7 @@ class DamageEventCaptureMixin:
         self.damage_capture_generation = 0
         self.damage_capture_rows = []
         self.damage_capture_ranked_count = -1
+        self.damage_report_name = tk.StringVar(value="Damage and invulnerability research")
         self.damage_capture_status = tk.StringVar(
             value="Stopped. Connect to a running game and start recording.")
         self.damage_capture_timeline = tk.StringVar(
@@ -49,24 +51,29 @@ class DamageEventCaptureMixin:
                    command=self.stop_damage_capture).pack(side="left", padx=(0, 6))
         ttk.Button(bar, text="Clear",
                    command=self.clear_damage_capture).pack(side="left", padx=(0, 6))
-        ttk.Button(bar, text="Export JSON",
-                   command=self.export_damage_capture).pack(side="left", padx=(0, 6))
-        ttk.Button(bar, text="Watch selected",
-                   command=self.watch_damage_candidate).pack(side="left", padx=(0, 6))
         ttk.Label(tab, textvariable=self.damage_capture_status,
                   wraplength=1060).pack(anchor="w", pady=(0, 10))
 
-        columns = ("address", "type", "region", "hits", "returns", "score")
+        self.damage_results = DiscoveryResultsPanel(
+            self, tab, tree=lambda: self.damage_capture_tree,
+            status=self.damage_capture_status, report_name=self.damage_report_name,
+            save=self.export_damage_capture, label='Damage candidate')
+        self.damage_results.controls.pack_configure(before=bar)
+        columns = ("address", "type", "live", "raw",
+                   "region", "hits", "returns", "score")
         frame = ttk.Frame(tab)
         frame.pack(fill="both", expand=True)
         self.damage_capture_tree = ttk.Treeview(
-            frame, columns=columns, show="headings", height=17)
+            frame, columns=columns, show="headings",
+            selectmode="extended", height=17)
         for key, title, width in (
-            ("address", "N64 address", 165),
-            ("type", "Type", 75),
+            ("address", "N64 address", 145),
+            ("type", "Type", 95),
+            ("live", "Live value", 140),
+            ("raw", "Live hex", 145),
             ("region", "Memory region", 165),
             ("hits", "Events changed", 135),
-            ("returns", "Returned to baseline", 185),
+            ("returns", "Returned to baseline", 170),
             ("score", "Rank", 80),
         ):
             self.damage_capture_tree.heading(key, text=title)
@@ -184,10 +191,11 @@ class DamageEventCaptureMixin:
         self.damage_capture_tree.delete(*self.damage_capture_tree.get_children())
         for i, row in enumerate(rows):
             self.damage_capture_tree.insert("", "end", iid=str(i), values=(
-                row["address"], row["type"], row["region"],
+                row["address"], row["type"], "—", "—", row["region"],
                 row["hits"], row["returns"], row["score"]))
             if selected_key == (row["address"], row["type"]):
-                self.damage_capture_tree.selection_set(str(i))
+                self.damage_capture_tree.selection_add(str(i))
+        self.damage_results.refresh_now()
 
     def _show_damage_timeline(self, _event=None):
         selected = self.damage_capture_tree.selection()
@@ -230,35 +238,62 @@ class DamageEventCaptureMixin:
         self.damage_capture_rows = []
         self.damage_capture_ranked_count = -1
         self.damage_capture_tree.delete(*self.damage_capture_tree.get_children())
+        self.damage_results.invalidate()
         self.damage_capture_timeline.set("No candidate selected.")
         self.damage_capture_status.set("Cleared. Game memory was not modified.")
 
     def export_damage_capture(self):
         recorder = self.damage_recorder
         if recorder is None or not recorder.events:
-            self.damage_capture_status.set("No captured damage events to export.")
+            self.damage_capture_status.set("Record at least one damage event first.")
+            return
+        if self.damage_capture_worker and self.damage_capture_worker.is_alive():
+            self.damage_capture_status.set(
+                "Stop recording before saving a complete, stable report.")
             return
         try:
-            path = diagnostics_dir() / (
-                "damage_capture_" +
-                datetime.now().strftime("%Y%m%d_%H%M%S_%f") + ".json")
-            report=export_report(recorder)
-            report['game_version']=getattr(recorder,'region','usa')
-            report['hp_guest_address']=f"0x{getattr(recorder,'hp_address',0x8015C5E4):08X}"
-            path.write_text(json.dumps(report, indent=2) + "\n",
-                            encoding="utf-8")
-            self.damage_capture_status.set(f"Exported report to {path}")
-        except OSError as exc:
-            self.damage_capture_status.set(f"Export failed: {exc}")
+            from practice.damage_event_capture import candidate_report
+            # Keep the entire ranked candidate list in CSV/JSON. Full detailed
+            # timelines are bounded to the strongest 300 due to output size.
+            all_rows = candidate_report(recorder.events, limit=100000)
+            report = export_report(recorder, limit=min(300, len(all_rows)))
+            region = getattr(recorder, 'region', self.active_version.key)
+            report['game_version'] = region
+            report['hp_guest_address'] = (
+                f"0x{getattr(recorder, 'hp_address', 0x8015C5E4):08X}")
+            report['detailed_timeline_candidate_count'] = len(report['candidates'])
+            path = create_discovery_report(
+                region=region,
+                title=self.damage_report_name.get(),
+                kind='damage-events',
+                candidates=all_rows,
+                evidence={'source_report': report,
+                          'ranked_candidates': all_rows,
+                          'event_summaries': report.get('events', [])},
+                metadata={
+                    'backend': getattr(self, 'jp_backend', None) if region == 'japan' else 'usa-recomp-or-project64',
+                    'sample_count': recorder.samples,
+                    'recorded_events': len(recorder.events),
+                    'completed_events': sum(event.complete for event in recorder.events),
+                    'timelines_with_full_samples': len(report['candidates']),
+                    'health_address': report['hp_guest_address'],
+                    'recording_stopped': True,
+                },
+                notes=[
+                    'The full ranked candidate list is saved.',
+                    'Detailed time-series values are saved for up to the strongest 300 candidates. '
+                    'The source recorder does not preserve every raw RAM snapshot for export.',
+                    'Correlations around damage are not proven collision or invulnerability controls.',
+                ])
+            if hasattr(self, 'refresh_reports'):
+                self.refresh_reports(select_path=path)
+            self.damage_capture_status.set(
+                f"Saved {len(all_rows):,} candidates and {len(recorder.events)} "
+                "damage event(s). Open Reports to view the investigation.")
+        except (OSError, ValueError, TypeError) as exc:
+            self.damage_capture_status.set(f"Save report failed: {exc}")
 
     def watch_damage_candidate(self):
-        selected = self.damage_capture_tree.selection()
-        if not selected:
-            self.damage_capture_status.set("Select a candidate first.")
-            return
-        row = self.damage_capture_rows[int(selected[0])]
-        self.user_watch_name.set(f"Damage candidate {row['address']}")
-        self.user_watch_address.set(row["address"])
-        self.user_watch_type.set(row["type"])
-        self.add_custom_watch()
-        self.notebook.select(self.live_memory_tab)
+        """Legacy entrypoint: same atomic batch-watch action as other modes."""
+        self.damage_results.watch_selected()
+        self.damage_capture_status.set(self.damage_results.live_status.get())

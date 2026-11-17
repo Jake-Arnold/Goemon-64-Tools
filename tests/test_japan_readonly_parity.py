@@ -132,6 +132,22 @@ class JapanValueSearchUiTest(unittest.TestCase):
         self.assertIsNone(app.added_watch)
         self.assertFalse(hasattr(app.jp_rdram, 'write_guest'))
 
+    def test_jp_multi_select_promotes_all_and_does_not_use_usa_memory(self):
+        app = self.app
+        app.value_search_size = 64
+        app.mem.put(16, 950)  # Must not be included in Japanese results.
+        app.jp_rdram.put(8, 950)
+        app.jp_rdram.put(24, 950)
+        app._value_start('exact')
+        self.finish()
+        app.select_all_value_results()
+        app.watch_value_search_candidate()
+        self.assertEqual(
+            app.promoted,
+            [('0x80000008', 'u16'), ('0x80000018', 'u16')])
+        self.assertIsNone(app.added_watch)
+        self.assertFalse(hasattr(app.jp_rdram, 'write_guest'))
+
     def test_disconnect_discards_results_and_does_not_fall_back_to_usa(self):
         app = self.app
         app.value_search_size = 64

@@ -31,6 +31,7 @@ from practice.native_checkpoints import (
     make_named_checkpoint, upsert_named_checkpoint, label_named_checkpoint,
     japan_checkpoint_summary,
 )
+from practice.reports_ui import ReportsMixin
 from practice.value_freezes_ui import ValueFreezesMixin
 from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
@@ -138,7 +139,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -245,9 +246,6 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             values=tuple(version.label for version in VERSIONS.values()), width=23)
         self.version_selector.pack(side='left', fill='x', expand=True)
         self.version_selector.bind('<<ComboboxSelected>>', self.on_game_version_changed)
-        self.verify_rom_button = ttk.Button(
-            version_row, text='Verify ROM', command=self.verify_rom_for_version)
-        self.verify_rom_button.pack(side='left', padx=(7, 0))
         ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
                      values=('auto', 'recomp', 'project64', 'mupen64plus')).pack(fill='x', pady=(0, 7))
         pid_row=ttk.Frame(connection);pid_row.pack(fill='x',pady=(0,7))
@@ -362,7 +360,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.refresh_named_native_checkpoints()
 
         # Read-only diagnostics coexist with direct mapped Japanese unlock edits.
-        jp_card = ttk.LabelFrame(right, text=' Japan Project64 / Mupen64Plus RDRAM ', padding=10)
+        jp_card = ttk.LabelFrame(right, text=' Japanese guest RAM (recomp / emulators) ', padding=10)
         self.jp_card = jp_card
         jp_card.pack(fill='x', pady=(0, 6))
         ttk.Label(jp_card, text='Verify Japan-0 ROM; select recomp, project64 (Windows) or mupen64plus, '
@@ -422,18 +420,77 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._arrange_dashboard(1220)
         self.build_inspector_tabs(notebook)
         self.build_value_freezes_tab(notebook)
-        self.build_value_search_tab(notebook)
-        self.build_damage_event_capture_tab(notebook)
-        self.build_event_sessions_tab(notebook)
-        self.build_state_discovery_tab(self.event_sections)
+        # Shared research workspace: preserve all scanners and event algorithms
+        # while consolidating their formerly scattered top-level navigation.
+        discovery = ttk.Frame(notebook, padding=7)
+        notebook.add(discovery, text='Memory discovery')
+        self.discovery_tab = discovery
+        connection_bar = ttk.Frame(discovery)
+        connection_bar.pack(fill='x', pady=(0, 7))
+        self.discovery_connection_state = tk.StringVar(
+            value='Checking game connection...')
+        ttk.Label(connection_bar, textvariable=self.discovery_connection_state,
+                  wraplength=970).pack(side='left', fill='x', expand=True)
+        ttk.Button(connection_bar, text='Open connection',
+                   command=lambda: self.notebook.select(
+                       self.notebook.tabs()[0])).pack(side='right')
+        self.discovery_tabs = ttk.Notebook(discovery)
+        self.discovery_tabs.pack(fill='both', expand=True)
+        # A single entry point answers "which experiment should I use?".
+        # All four research modes are siblings, never nested in each other.
+        discovery_home = ttk.Frame(self.discovery_tabs, padding=14)
+        self.discovery_tabs.add(discovery_home, text="Start here")
+        ttk.Label(discovery_home, text="What are you trying to find?",
+                  font=("Segoe UI Semibold", 17)).pack(anchor="w", pady=(4, 7))
+        ttk.Label(discovery_home, text=(
+            "All methods work on the selected USA or Japanese game. "
+            "Every method has a Save report button and exports the same "
+            "four-file evidence package. None of these searches edits RAM."),
+            wraplength=900).pack(anchor="w", pady=(0, 14))
+        self.build_value_search_tab(self.discovery_tabs)
+        self.build_state_discovery_tab(self.discovery_tabs)
+        self.build_event_sessions_tab(self.discovery_tabs)
+        self.build_damage_event_capture_tab(self.discovery_tabs)
+        method_cards = (
+            ("Find a known or unknown value",
+             "Find health, Ryo, coordinates, floats, or text. Narrow matches "
+             "with Exact/Changed/Unchanged filters; optionally repeat.",
+             self.value_search_tab),
+            ("Compare memory before and after",
+             "Capture A before an action, B after, optionally C after reverting. "
+             "Best for temporary values, movement, menus and scene changes.",
+             self.state_discovery_tab),
+            ("Find event and unlock flags",
+             "Repeat an event with before/after and idle/control trials. "
+             "Best for persistent story and inventory bits in a chosen 100-byte region.",
+             self.event_sessions_tab),
+            ("Record damage automatically",
+             "Start a recording, take damage in-game, repeat the hit and "
+             "rank candidate changes around the damage event.",
+             self.damage_capture_tab),
+        )
+        for title, explanation, target in method_cards:
+            card = ttk.LabelFrame(discovery_home, text=title, padding=10)
+            card.pack(fill="x", pady=(0, 9))
+            ttk.Label(card, text=explanation, wraplength=720).pack(
+                side="left", fill="x", expand=True, padx=(0, 10))
+            ttk.Button(card, text="Open tool",
+                       command=lambda page=target:
+                       self.discovery_tabs.select(page)).pack(side="right")
         self.build_unlock_tabs(notebook)
         self.build_story_progress_tab(notebook)
         self.build_japanese_fields_tab(notebook)
+        self.build_reports_tab(notebook)
+        self.status.trace_add(
+            'write', lambda *_: self._refresh_discovery_connection_state())
+        self.connection_target.trace_add(
+            'write', lambda *_: self._refresh_discovery_connection_state())
         self._apply_game_version_ui()
+        self._refresh_discovery_connection_state()
         if self.verified_rom_path is not None:
             self.status.set(
                 f'Japan-0 ROM verified again from saved selection: '
-                f'{self.verified_rom_path}. Connect to Project64 or Mupen; '
+                f'{self.verified_rom_path}. Connect to native recomp, Project64 or Mupen; '
                 'live RAM signatures will still be checked.')
         # Toolkit-local F1; it does not register a system-wide/game hotkey.
         root.bind_all('<F1>', self._on_f1_open_memory, add='+')
@@ -453,6 +510,33 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                   style='HeaderSub.TLabel').pack(side='right')
         root.after(100,self.tick)
 
+    def _refresh_discovery_connection_state(self):
+        """Describe the actual attached memory reader, not an old UI hint."""
+        if not hasattr(self, 'discovery_connection_state'):
+            return
+        region = getattr(self.active_version, 'key', 'usa')
+        reader = (self.jp_rdram if region == 'japan'
+                  else self.mem)
+        pid = getattr(self, 'game_pid', None)
+        if reader is None:
+            state = ('No Japanese game memory attached.' if region == 'japan'
+                     else 'No USA game memory attached.')
+        elif not pid:
+            state = ('Game RAM is present but the process identity is missing. '
+                     'Reconnect from Dashboard before starting a session.')
+        else:
+            backend = getattr(self, 'jp_backend', None) if region == 'japan' else (
+                getattr(self, 'connection_target', None).get())
+            if region == 'japan' and backend not in (
+                    'project64', 'mupen64plus', 'recomp'):
+                state = ('Japanese RAM is attached but the detected game backend '
+                         'is missing. Reconnect on Dashboard.')
+            else:
+                state = (f"{'JP' if region == 'japan' else 'USA'} memory attached | PID {pid} | "
+                         f"Backend: {backend or 'connected'} | "
+                         "Research scans use this connection.")
+        self.discovery_connection_state.set(state)
+
     def _apply_game_version_ui(self):
         """Expose the selected version without implying a mapped Japanese RDRAM."""
         version = self.active_version
@@ -460,24 +544,31 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.version_heading.set(f"{DISPLAY_VERSION}  |  {version.label}")
         enabled = version.live_memory_supported
         region_active = version.key in ('usa', 'japan')
-        if (version.key != 'japan' and
-                self.notebook.select() == str(self.jp_fields_tab)):
-            self.notebook.select(self.notebook.tabs()[0])
+        if self.notebook.select() == str(self.jp_fields_tab):
+            self.notebook.select(self.live_memory_tab)
         for tab in self.notebook.tabs()[1:]:
-            japan_specific_tab = tab == str(self.jp_fields_tab)
-            tab_enabled = region_active and (
-                not japan_specific_tab or version.key == 'japan')
+            if tab == str(self.jp_fields_tab):
+                # Historical JP probes still supply model/backend state, but
+                # the second Live Memory page is no longer user-visible.
+                self.notebook.tab(tab, state='hidden')
+                continue
             self.notebook.tab(
-                tab, state='normal' if tab_enabled else 'disabled')
+                tab, state='normal' if region_active else 'disabled')
         # The same visible scene browser and inspector follow the active ROM;
         # USA-only write controls stay individually gated.
         self.configure_scene_browser_region()
+        if hasattr(self, 'jp_scene_position_frame'):
+            if version.key == 'japan':
+                self.jp_scene_position_frame.pack(
+                    fill='x', pady=(5, 7), after=self.scene_character_line)
+            else:
+                self.jp_scene_position_frame.pack_forget()
         self.configure_unlock_region()
         # Both ROMs use the same event sessions UI. Japanese sessions
         # compare an explicitly labelled 100-byte research slice (NOT a
         # validated saved-event bank); the existing Advanced A/B/C remains.
-        self.event_sections.tab(self.event_sections.tabs()[0], state='normal')
-        self.event_sections.tab(self.state_discovery_tab, state='normal')
+        self.discovery_tabs.tab(self.event_sessions_tab, state='normal')
+        self.discovery_tabs.tab(self.state_discovery_tab, state='normal')
         self.configure_event_region()
         self.configure_state_probe_region()
         if version.key == 'japan':
@@ -509,7 +600,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             button.state(['!disabled'] if usa_edit else ['disabled'])
         if version.key == 'japan':
             self.inspector_status.set(
-                'Japan Live Memory: right-click to edit or freeze fixed guest '
+                'Shared Live Memory: right-click to edit or freeze fixed guest '
                 'addresses; freeze pauses during transitions.')
             self.freeze_status.set(
                 'Japan-0 raw freezes available during stable gameplay; '
@@ -537,9 +628,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         if enabled:
             self.status.set('USA selected. Connect to the USA game in Recomp or Project64.')
         else:
-            self.status.set('Japan selected. Verify the Japan-0 ROM once, then '
-                            'click Connect for automatic PID/backend/RDRAM detection. '
-                            'USA-only memory features remain unavailable.')
+            self.status.set(
+                'Japan selected. Click Connect for automatic PID/backend/RDRAM '
+                'detection; the original retail ROM is requested only once '
+                'if no verified path is remembered.')
 
     def _clear_japan_base_choices(self):
         """Discard process-specific candidate bases when the region or ROM changes."""
@@ -551,7 +643,9 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
 
     def _disconnect_for_version_change(self):
         """Stop write workers and detach before switching region interpretations."""
-        self.stop_damage_capture(quiet=True)
+        # Region switching must not leave old damage candidates/live rows
+        # visible under the new game's address interpretation.
+        self.clear_damage_capture()
         with self.value_freezes.guard:
             self.stop_all_freezes()
             self.cancel_pending_restore(quiet=True)
@@ -1326,19 +1420,24 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 'Reconnect to read the restored Japanese RAM.')
 
     def verify_rom_for_version(self):
-        """Offline-only retail ROM verification; never attaches to a game process."""
+        """Pick and validate a retail ROM when first attaching Japanese RAM.
+
+        The public dashboard no longer has a separate preliminary Verify ROM
+        button. Connect invokes this picker only when no verified path exists.
+        """
         selected = filedialog.askopenfilename(
-            title=f'Verify {self.active_version.label} ROM',
+            title=f'Select your original {self.active_version.label} ROM (one time)',
             filetypes=(('Nintendo 64 ROMs', '*.z64 *.n64 *.v64'),
                        ('All files', '*.*')))
         if not selected:
-            return
+            self.status.set('ROM selection cancelled; no game was attached.')
+            return False
         try:
             version = verify_selected_rom(selected, self.active_version.key)
         except (OSError, ValueError) as exc:
             self.verified_rom_path = None
             self.status.set(f'ROM verification failed: {exc}')
-            return
+            return False
         self.verified_rom_path = Path(selected)
         remembered = False
         if version.key == 'japan':
@@ -1356,6 +1455,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             f'Verified {version.label} (revision 0). {capability}. '
             + ('ROM path remembered for future sessions; file checked again '
                'before each reuse.' if remembered else ''))
+        return True
 
     def _arrange_dashboard(self, width):
         """Place both cards above the fold at default size; stack on narrow screens."""
@@ -1504,7 +1604,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
                 self.status.set(f'Mupen64Plus connection failed: {exc}')
             return
         if not self.active_version.live_memory_supported:
-            self.status.set('Japanese live memory is not supported: verify the ROM offline instead.')
+            self.status.set('The selected game region does not support this connection backend.')
             return
         try:
             pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
@@ -1545,7 +1645,7 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self.root.after(50, self._poll_connect_results)
 
     def _connect_japan_emulator(self):
-        """Attach Japan-0 to verified Mupen or Windows Project64 guest RDRAM."""
+        """Attach Japan-0 to verified native recomp/Mupen/Project64 guest RDRAM."""
         target = self.connection_target.get()
         if target not in ('auto', 'mupen64plus', 'project64', 'recomp'):
             self.status.set('Select auto, recomp, mupen64plus or project64.')
@@ -1554,8 +1654,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
             self.status.set('Japanese Project64 attachment is supported on Windows only.')
             return
         if self.verified_rom_path is None:
-            self.status.set('Verify the exact Japan-0 ROM before attaching to the selected game.')
-            return
+            # ROM bytes are used to derive code fingerprints for RDRAM
+            # matching, so an unverified path cannot be bypassed.
+            if not self.verify_rom_for_version():
+                return
         try:
             pid_hint = int(self.pid_text.get().strip()) if self.pid_text.get().strip() else None
             if pid_hint is not None and pid_hint <= 0:
@@ -1897,7 +1999,10 @@ class Toolkit(JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, Stor
         self._watch_japan_process_restart(time.monotonic())
         if self.jp_rdram is not None:
             self.poll_japan_native_scene_warp(time.monotonic())
-            self.refresh_japan_fields()
+            # The old JP diagnostics table is hidden. Do not continuously
+            # reread 68+ old fields solely to update an invisible Treeview.
+            # Shared Live Memory already polls the regional watches.
+            self.refresh_japan_party_controls()
             self.refresh_inspector({})
             self.refresh_unlocks()
             # Story-like Japanese item/map values share source-backed reads

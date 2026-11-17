@@ -14,39 +14,44 @@ from practice.event_sessions import (
 )
 from practice.checkpoints import GAMEDATA_ADDR, STATE_ADDR
 from practice.paths import diagnostics_dir
+from practice.discovery_results import DiscoveryResultsPanel
+from practice.reports import create_discovery_report, working_investigations_dir
 
 
 class EventSessionsMixin:
     def build_event_sessions_tab(self,notebook):
+        # Event investigations and generic memory comparison are sibling
+        # research methods, not nested pages of an ambiguously named session.
         tab=ttk.Frame(notebook,padding=10)
-        notebook.add(tab,text='Event sessions')
+        notebook.add(tab,text='Investigate flags')
         self.event_sessions_tab=tab
-        self.event_sections=ttk.Notebook(tab)
-        self.event_sections.pack(fill='both',expand=True)
-        session=ttk.Frame(self.event_sections,padding=8)
-        self.event_sections.add(session,text='Event flag sessions')
-        tab=session
+        self.event_sections=notebook
         self.event_session=None;self.event_pending={};self.event_token=None;self.event_capture_started=None
         self.event_rows=[]
         self.event_generation=0
         self.event_monitor_started=time.monotonic()
         self.root.bind('<Destroy>',self._event_session_destroyed,add='+')
-        ttk.Label(tab,text='Repeated persistent-event experiments',font=('Segoe UI Semibold',16)).pack(anchor='w')
-        ttk.Label(tab,text='Read-only capture of 100 saved event bytes. Room/character changes between captures are allowed. '
-                  'Use idle/control pairs, then repeat the same event from your own pre-event save. '
-                  'For temporary flags, clocks and broader RAM changes, use Advanced RAM comparison beside this view. '
-                  'No automatic reset, input or memory writes.',wraplength=1080).pack(anchor='w',pady=6)
+        ttk.Label(tab,text='Find bits changed by repeatable game events',
+                  font=('Segoe UI Semibold',16)).pack(anchor='w')
+        ttk.Label(tab,text=(
+            'Use this for persistent inventory/story/unlock bits when you can repeat '
+            'an action. Each trial captures a 100-byte slice before (A), after (B), '
+            'and optionally reverted (C). Idle/control trials expose background '
+            'changes. For temporary values, movement and broad changes use '
+            'Compare memory changes instead. This method is read-only.'),
+            wraplength=1080).pack(anchor='w',pady=6)
         row=ttk.Frame(tab);row.pack(fill='x')
-        ttk.Label(row,text='Experiment:').pack(side='left')
-        self.event_label=tk.StringVar(value='Benkei first conversation')
-        ttk.Entry(row,textvariable=self.event_label,width=35).pack(side='left',padx=5)
+        self.event_setup_row = row
+        self.event_label=tk.StringVar(value='Flag investigation')
         ttk.Label(row,text='ROM SHA-1 (optional, unverified):').pack(side='left')
         self.event_rom=tk.StringVar()
         ttk.Entry(row,textvariable=self.event_rom,width=42).pack(side='left',padx=5)
-        ttk.Button(row,text='New session',command=self.new_event_session).pack(side='left')
-        ttk.Button(row,text='Open session',command=self.open_event_session).pack(side='left',padx=5)
+        ttk.Button(row,text='New investigation',
+                   command=self.new_event_session).pack(side='left')
+        ttk.Button(row,text='Open investigation',
+                   command=self.open_event_session).pack(side='left',padx=5)
         row=ttk.Frame(tab);row.pack(fill='x',pady=7)
-        ttk.Label(row,text='Trial:').pack(side='left',padx=(0,4))
+        ttk.Label(row,text='Repeat type:').pack(side='left',padx=(0,4))
         self.event_role=tk.StringVar(value='event')
         ttk.Combobox(row,textvariable=self.event_role,values=('event','idle','control'),state='readonly',width=10).pack(side='left')
         self.event_note=tk.StringVar()
@@ -54,9 +59,11 @@ class EventSessionsMixin:
         ttk.Entry(row,textvariable=self.event_note,width=40).pack(side='left',padx=5)
         for stage in ('A','B','C'):
             ttk.Button(row,text='Capture '+stage,command=lambda s=stage:self.capture_event_stage(s)).pack(side='left',padx=3)
-        ttk.Button(row,text='Record trial',command=self.record_event_trial).pack(side='left',padx=3)
+        ttk.Button(row,text='Finish trial',command=self.record_event_trial).pack(side='left',padx=3)
         ttk.Button(row,text='Discard captures',command=self.discard_event_captures).pack(side='left',padx=3)
-        self.event_status=tk.StringVar(value='Connect to a game, name the experiment, then create a session. A=before, B=after; C=optional reverted.')
+        self.event_status=tk.StringVar(
+            value='Name the investigation, then capture A=before, B=after, C=optional. '
+                  'Finish trial saves working data; Save report exports the findings.')
         region_row=ttk.Frame(tab)
         region_row.pack(fill='x', pady=(0, 4))
         ttk.Label(region_row, text='100-byte research window:').pack(side='left')
@@ -79,13 +86,31 @@ class EventSessionsMixin:
         ttk.Label(tab,textvariable=self.event_live,wraplength=1100).pack(anchor='w',pady=4)
         self.event_trial_summary=tk.StringVar(value='No trials')
         ttk.Label(tab,textvariable=self.event_trial_summary,wraplength=1100).pack(anchor='w')
-        columns=('address','mask','direction','support','opposite','absent','noise','reverted')
-        self.event_table=ttk.Treeview(tab,columns=columns,show='headings',height=12)
-        for name,title in zip(columns,('Address','Bit mask','Direction','Event support','Opposite','Unchanged','Idle/control overlap','C reverted')):
-            self.event_table.heading(name,text=title);self.event_table.column(name,width=125)
-        scroll=ttk.Scrollbar(tab,orient='vertical',command=self.event_table.yview)
-        scroll.pack(side='right',fill='y');self.event_table.configure(yscrollcommand=scroll.set)
-        self.event_table.pack(fill='both',expand=True)
+        self.event_results = DiscoveryResultsPanel(
+            self, tab, tree=lambda: self.event_table, status=self.event_status,
+            report_name=self.event_label, save=self.save_event_investigation_report,
+            label='Flag research')
+        self.event_results.controls.pack_configure(before=self.event_setup_row)
+        columns=('address','type','live','raw','mask','direction',
+                 'support','opposite','absent','noise','reverted')
+        result_frame=ttk.Frame(tab);result_frame.pack(fill='both',expand=True)
+        self.event_table=ttk.Treeview(
+            result_frame,columns=columns,show='headings',
+            selectmode='extended',height=12)
+        headers=(('address','N64 address',145),('type','Type',95),
+                 ('live','Live value',140),('raw','Live hex',145),
+                 ('mask','Bit mask',90),('direction','Direction',95),
+                 ('support','Event support',125),('opposite','Opposite',95),
+                 ('absent','Unchanged',95),('noise','Control overlap',135),
+                 ('reverted','C reverted',110))
+        for key,title,width in headers:
+            self.event_table.heading(key,text=title)
+            self.event_table.column(key,width=width,stretch=key in ('live','raw'))
+        scroll=ttk.Scrollbar(
+            result_frame,orient='vertical',command=self.event_table.yview)
+        scroll.pack(side='right',fill='y')
+        self.event_table.configure(yscrollcommand=scroll.set)
+        self.event_table.pack(side='left',fill='both',expand=True)
         self.event_table.bind('<<TreeviewSelect>>',self.show_event_evidence)
         self.event_evidence=tk.Text(tab,height=4,wrap='word',background='#1a1d23',
                                    foreground='#f3eee5',insertbackground='#edbf6b')
@@ -126,6 +151,7 @@ class EventSessionsMixin:
             self.event_region_start.set(
                 f'0x{JAPAN_CANDIDATE_START if japan else EVENT_START:08X}')
             self.event_rows=[]
+            self.event_results.invalidate()
             self.event_table.delete(*self.event_table.get_children())
             self.event_trial_summary.set('No trials for current ROM region')
         self.event_region_note.set(
@@ -187,11 +213,20 @@ class EventSessionsMixin:
     def _event_connection(self):
         if self.active_version.key == 'japan':
             ram=self.jp_rdram
-            if ram is None or not self.game_pid or not self.jp_backend:
-                raise ValueError('Connect to Japanese emulator RAM first')
+            if ram is None:
+                raise ValueError('No Japanese RAM reader attached. Connect from Dashboard.')
+            if not self.game_pid:
+                raise ValueError('Japanese RAM is attached but PID identity is missing. Reconnect from Dashboard.')
+            if not self.jp_backend:
+                raise ValueError('Japanese RAM is attached but its backend is unknown. Reconnect from Dashboard.')
+            if self.connection_target.get() not in ('auto', self.jp_backend):
+                raise ValueError('The selected backend differs from the attached Japanese game. Reconnect or choose auto.')
             return ((self.game_pid,'japan',id(ram),ram.base,ram.endian),
                     self.jp_backend)
-        if not self.mem or not self.game_pid:raise ValueError('Connect to a game first')
+        if not self.mem:
+            raise ValueError('No USA game memory attached. Connect from Dashboard.')
+        if not self.game_pid:
+            raise ValueError('USA game RAM is attached but PID identity is missing. Reconnect from Dashboard.')
         import psutil
         name=psutil.Process(self.game_pid).name().lower()
         backend='project64' if name=='project64.exe' else ('recomp' if 'goemon64recomp' in name else None)
@@ -206,7 +241,8 @@ class EventSessionsMixin:
                 self.root.after_cancel(callback)
 
     def _event_path(self,session):
-        return diagnostics_dir()/('event_session_'+session['id']+'.json')
+        return (working_investigations_dir(session.get('region', 'usa'))
+                / ('event_session_' + session['id'] + '.json'))
 
     def new_event_session(self):
         try:
@@ -220,11 +256,16 @@ class EventSessionsMixin:
             self.event_session=session;self.event_pending={};self.event_token=None;self.event_capture_started=None
             self.refresh_pending_event_comparison()
             self.refresh_event_session()
-            self.event_status.set('Session saved locally. Capture an idle A/B pair before performing the event.')
+            self.event_status.set(
+            'Investigation created and autosaved. Capture an idle A/B control first. '
+            'Use Save report to export its findings in the standard report format.')
         except (OSError,ValueError,RuntimeError) as exc:self.event_status.set(f'New session failed: {exc}')
 
     def open_event_session(self):
-        path=filedialog.askopenfilename(parent=self.root,title='Open local event session',filetypes=[('JSON','*.json')])
+        path=filedialog.askopenfilename(
+            parent=self.root, title='Open saved flag investigation',
+            initialdir=str(working_investigations_dir(self.active_version.key)),
+            filetypes=[('Investigation data', '*.json')])
         if not path:return
         try:
             session=load_session(path)
@@ -238,7 +279,9 @@ class EventSessionsMixin:
             self.event_label.set(session['label']);self.event_rom.set(session['rom_sha1'] or '')
             self.refresh_pending_event_comparison()
             self.refresh_event_session()
-            self.event_status.set('Session reopened. New trials save to the local diagnostics directory; capture a fresh A.')
+            self.event_status.set(
+            'Investigation reopened. New trials are autosaved internally; '
+            'Save report creates a new readable research report.')
         except (OSError,ValueError) as exc:self.event_status.set(f'Open failed; current session retained: {exc}')
 
     def capture_event_stage(self,stage):
@@ -279,8 +322,58 @@ class EventSessionsMixin:
             self.event_session=session;self.event_pending={};self.event_token=None;self.event_capture_started=None
             self.refresh_pending_event_comparison()
             self.refresh_event_session()
-            self.event_status.set('Trial saved locally. For a repeat, manually restore the same pre-event save, then capture a new A.')
+            self.event_status.set(
+            'Trial recorded and autosaved. For another trial, restore the same '
+            'pre-event game state and capture A again. Save report when ready.')
         except (OSError,ValueError,RuntimeError) as exc:self.event_status.set(f'Trial not recorded: {exc}')
+
+    def save_event_investigation_report(self):
+        session = self.event_session
+        if not session:
+            self.event_status.set("Create or open an investigation first.")
+            return
+        try:
+            ranked = rank_bits(session)
+            rows = ranked['candidates']
+            role_counts = {
+                role: sum(trial['role'] == role for trial in session['trials'])
+                for role in ('event', 'idle', 'control')
+            }
+            folder = create_discovery_report(
+                region=session.get('region', 'usa'),
+                title=session['label'],
+                kind='flag-investigation',
+                candidates=rows,
+                evidence={
+                    'working_investigation': session,
+                    'ranked_bit_analysis': ranked,
+                    'pending_captures_not_yet_recorded': dict(self.event_pending),
+                },
+                metadata={
+                    'backend': session['backend'],
+                    'event_region_start': f"0x{session['event_start']:08X}",
+                    'event_region_bytes': 100,
+                    'trial_counts': role_counts,
+                    'rom_sha1_user_supplied_unverified': session.get('rom_sha1'),
+                    'working_investigation_id': session['id'],
+                },
+                notes=[
+                    'Every saved trial includes original 100-byte A/B/C values '
+                    'and gameplay context in session.json.',
+                    'Pending A/B/C captures are included but not ranked until '
+                    'the trial is finished.',
+                    'Japanese candidate regions are not verified saved-event banks.'
+                    if session.get('region') == 'japan'
+                    else 'USA saved-event flag meanings require separate verification.',
+                    'A changed bit does not establish semantic meaning or write safety.',
+                ])
+            if hasattr(self, 'refresh_reports'):
+                self.refresh_reports(select_path=folder)
+            self.event_status.set(
+                f"Saved {len(rows)} bit candidates and {len(session['trials'])} "
+                "completed trial(s). Open Reports to view the investigation.")
+        except (OSError, ValueError, TypeError) as exc:
+            self.event_status.set(f"Save report failed: {exc}")
 
     def discard_event_captures(self):
         self.event_pending={};self.event_token=None;self.event_capture_started=None
@@ -290,6 +383,7 @@ class EventSessionsMixin:
     def refresh_event_session(self):
         session=self.event_session
         self.event_rows=[]
+        self.event_results.invalidate()
         self.event_generation+=1
         generation=self.event_generation
         counts={role:sum(t['role']==role for t in session['trials']) for role in ('event','idle','control')}
@@ -315,10 +409,13 @@ class EventSessionsMixin:
                 self.event_trial_summary.set(summary+' | Analysis failed: '+result);return
             self.event_rows=result
             for i,row in enumerate(result):
-                self.event_table.insert('','end',iid=str(i),values=(row['address'],row['mask'],row['direction'],
-                    f'{len(row["support"])}/{row["event_trials"]}',len(row['opposite']),len(row['absent']),
+                self.event_table.insert('','end',iid=str(i),values=(
+                    row['address'],'u8','—','—',row['mask'],row['direction'],
+                    f'{len(row["support"])}/{row["event_trials"]}',
+                    len(row['opposite']),len(row['absent']),
                     len(row['control_overlap']),len(row['reverted'])))
             self.event_trial_summary.set(summary+f' | {len(result)} bit candidates')
+            self.event_results.refresh_now()
         threading.Thread(target=worker,daemon=True,name='GoemonEventRanking').start()
         self.root.after(40,poll)
 

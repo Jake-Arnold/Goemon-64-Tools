@@ -10,6 +10,93 @@ This file is the running development log. **Update it with every code change, co
 - **Verification:** Reviewed against the source branch report and existing region tables; documentation-only, no live game or Python/Tk test run required to establish a memory semantic match.
 - **Next:** When future USA/JP fields are identified, record the counterpart hypothesis and independently test it. Keep PR #43 gated by its own runtime verification.
 
+## 2026-11-16 — v0.11.36 final hosted CI proof
+
+- **Linux:** [GitHub Actions 43948425965](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948425965) PASSED at code commit `aaa2b9ff5a71f7520cbff8d45c63b83d4f519dd0`: 313 non-GUI synthetic tests (312 passed, 1 skipped), 139 Xvfb Tk GUI tests, no reported Tk callback failures.
+- **Windows:** [GitHub Actions 43948426011](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948426011) PASSED at the same code commit: 33 portable tests.
+- **UI code wording clean-up:** New Japanese manual ROM pick/connection messages mention native recomp, Mupen64Plus and Project64 where relevant; the old emulator-only description is no longer displayed.
+- **Limitations:** These prove the synthetic APIs and GUI smoke tests, not attachment to an actual native USA or Japanese recomp game or Windows Tk end-to-end UI. The hidden old Japan diagnostics widget is retained internally as a compatibility measure, not exposed as a top-level user tab. Original MIPS instruction access tracing remains unimplemented. PR #35 stays draft.
+
+## 2026-11-16 — v0.11.36 redundancy, ROM connection UX and comparison preset cleanup
+
+- **Motivation:** Japan Live (diagnostics) duplicates the shared Live Memory page and Scene Browser. A separate Verify ROM button appears redundant despite the genuine safety need for an exact Japanese ROM to establish three independent 64-byte code probes. Fixed comparison "Test" labels look like restrictive algorithms while mostly serving as user instructions and occasionally secretly influencing rank.
+- **Change:** Hide old Japan Live tab in the main notebook for USA and Japan, retain its model and legacy widget implementation while existing callers/tests depend on it. Stop repeated hidden Japanese field polling in Toolkit.tick. Relocate unique manual Goemon XYZ read/preset/apply fields into Scene Browser, preserving original address/safety checks.
+- **Connection:** Remove separate Verify ROM dashboard button. Japanese Connect requests a ROM picker only if the remembered SHA-1-verified Japan-0 file is unavailable; button removal never weakens matching retail-ROM SHA1, remembered-path rehash or per-process guest-RAM code fingerprint validation. Cancel/invalid ROM fails closed. US connect remains unchanged.
+- **Comparison UI:** Replace seven USA/six JP canned Test choices with an unrestricted freeform report name (one field in shared Results bar). Keep focused/wide range as the actual search scope. Remove label-prefix scoring bonuses for Travel and Storyline/Item comparisons; names cannot bias the result. Standard Capture C explicitly indicates reversible-only filtering; JP XYZ separately needs C settled at B.
+- **Report toolbar:** Shared report/watch/live controls are placed consistently before experiment-specific controls on all four methods; no duplicate name field in flags or A/B comparison.
+- **Audit:** Updated docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md with every former USA/JP comparison preset, evidence, exact semantics, preserved unique functions and deferred cleanup candidates. No old watch/report/checkpoint files were deleted.
+- **Validation:** Added tests/test_toolkit_redundancy_ui.py (hidden tab, unique position in shared Scene Browser, automatic verified-ROM selection/cancellation), updated dashboard and memory comparison unit/UI regression tests; interim Linux CI reached 313 synthetic non-GUI tests (312 passed, 1 skipped) and 139 Tk GUI tests passed on code commit 565d3c65a40c15c9ebf430477641bbcb4d7a6d3e. Windows portable CI succeeded on same stage. Subsequent documentation/test runner changes require final branch-tip validation.
+- **Outstanding:** Real JP native recomp + USA client connection UX, desktop minimum-window screenshots, Windows GUI, original guest-MIPS instruction access tracing, legacy exporter migration. PR #35 stays draft; main and decomp branches unchanged.
+
+## 2026-11-16 — v0.11.35 final automated verification
+
+- **Linux:** [workflow 43943477576](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43943477576), code commit 39b7d9f94657dbbf40aee3cc9a6fdcdc6777be58: **313 non-GUI synthetic tests (312 pass, 1 skip)** and **135 Xvfb Tk tests** PASSED.
+- **Windows:** [workflow 43943477681](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43943477681), same commit: **33 portable tests** PASSED. This covers portable report/numeric/watch logic but does not launch the full Windows Tk toolkit.
+- **Limitations:** Neither workflow attaches to a real USA or Japanese native recomp process, measures sustained UI responsiveness at user screen resolutions, or instruments original MIPS instruction readers/writers. Keep PR #35 draft until live-game and design review.
+
+## 2026-11-16 — v0.11.35 unified discovery results/watch/live-preview redesign
+
+- **Root cause:** Each discovery method previously defined its own table columns, watch handler, selection mode and refresh strategy. Flags had no direct watch action, damage used a USA-specific watch path, and memory comparison only watched one address at a time. Underlying research methods are distinct but should share basic result interactions.
+- **Shared component:** practice/discovery_results.py defines one Results toolbar, canonical types, strict read-only guest RAM decoding, max-4 KiB grouped reads, 100/250/500/1000 ms best-effort active-tab polling and stale process/region generation checks. Live updates are asynchronous, prefer currently viewed/selected rows, and do not change A/B/C/flag/damage evidence.
+- **Common table columns:** N64 address, Type, Live value and Live hex are now first for all four tools; evidence-specific columns follow.
+- **Watch selected:** Uniform multi-select/Select all listed/Copy address actions. Typed f32/f64/u8-u32 source rows promote to the region-correct Live Memory watch store. XYZ triple candidates expand to X/Y/Z f32 watches. Address+type duplicates are skipped; invalid/unsupported selection or 128-watch overflow prevents partial persistence. Text-pattern results remain reportable but cannot be promoted as variable-length numeric watches.
+- **Consistency:** Report name and Save report are in the same shared action bar for all methods; each underlying evidence/analysis engine remains intact. Existing named report and legacy-work formats are retained.
+- **Safety:** Read-only externally polled Live values are explicitly not original MIPS instruction-access traces. No guest writes. On game region changes, event result workers and damage candidates are invalidated, and background reads are guarded against the attached process being closed.
+- **Tests:** Added tests/test_discovery_results.py and tests/test_discovery_results_ui.py, plus full Toolkit tab consistency assertions. Linux hosted CI reached **313 non-GUI tests (312 pass, 1 skip) and 135 GUI tests passing** on code commit e3c4e9e9b7e92fc5c543f7fbadb42bedd6837276. Windows hosted CI passed **33 portable tests** on the same commit. Later minor UI/read-lock changes require final branch-tip CI. Live native recomp and Windows GUI testing still remain unverified; PR #35 stays draft.
+- **Next technical milestone:** Original guest MIPS read/write tracing feasibility for native USA and JP recompiled builds, then comparison of actual user-facing UI screenshots at 960x640 and 1220x790.
+ 
+## 2026-11-16 — v0.11.34 final hosted CI verification
+
+- **Linux:** [GitHub Actions 43938746400](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43938746400) PASSED at code commit 5731553793a36ff278085e97dd4a5319140ffdc5: **307 non-GUI tests (306 pass, 1 skip)** and **131 Xvfb Tk tests**. No callback exceptions found in logs.
+- **Windows:** [GitHub Actions 43938746437](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43938746437) PASSED at same code commit: **27 portable report, value search and version tests**, plus compileall.
+- **Test-only regression corrected:** One GUI test had asserted the string JP while the actual new indicator printed JAPAN. The app now consistently prints JP; actual RAM connection checks had succeeded throughout.
+- **Live limitations:** Neither hosted environment launched native USA or Japanese recomp for memory attachment and real in-game report verification; Windows Tk usability is still untested. PR #35 remains draft.
+
+## 2026-11-16 — v0.11.34 unified discovery report workflows and JP unlock auto-detection
+
+- **Usability:** Memory discovery now has a start page explaining four *direct* tools, removing nested generic/event naming: Find a value, Compare memory changes, Investigate flags, Record damage.
+- **One export schema:** All four Save report actions use the same create_discovery_report writer, saving summary.md, candidates.csv, session.json and manifest.json into descriptive USA/JP investigation/run directories. Data includes available evidence, metadata, contexts and limitations; no raw RAM dump or original MIPS trace claim.
+- **Value search:** Expanded exported snapshot candidate limit from 200 visible rows to 20,000; warns of larger surviving candidate sets.
+- **Flag work:** Completed ranked-bit reports include all trial roles, trial IDs, full A/B/C 100-byte captures and context, plus pending captures as not-yet-ranked. Resumable investigation autosaves moved from diagnostics/ into hidden Reports/.working to avoid duplicating completed report cards; existing JSON remains readable.
+- **Memory comparison:** Saves ranked observed changes and region/hash context. The existing specialist exhaustive Japanese XYZ export remains available separately; unified report explicitly notes a capped ranked shortlist.
+- **Automatic damage:** Saves ranked addresses with available hit counts, pre/post event metadata and detailed time series for up to 300 candidate entries; omissions and heuristics documented.
+- **JP Unlocks:** Fixed readiness mismatch for automatic backend selection; verified JP memory attachment can enable mapped controls without changing writer validation. Added GUI regression for JP native recomp with auto; mismatch and read-only conditions still disable.
+- **Connection UX:** Unified Discovery header displays actual RAM+PID+backend status and links to dashboard; event flag errors distinguish no RAM from missing PID/backend, and support auto without a false disconnect error.
+- **Testing:** Added cross-kind reports, context preservation, flag report, damage UI report, Japanese auto/backend checks. Linux and Windows GitHub Actions are separate from unperformed live gameplay tests.
+- **Limitations:** Original guest-MIPS instruction read/write tracing, advanced function correlation, some historical report migration and live USA/JP end-to-end tests remain outstanding; main unaffected.
+
+## 2026-11-16 — v0.11.33 full hosted CI proof
+
+- **Ubuntu:** GitHub Actions [43933889974](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43933889974), code/metadata commit 5f81c8ef490b95fb279383a5f8e5e3aa258cc35d, PASSED: **305 Python synthetic tests (304 pass, 1 skip)** and **128 Xvfb Tk GUI tests pass** with zero recorded invalid-Tk-command/callback exceptions. Includes continuous filtering, baseline comparisons, report directory migration and multi-address USA/JP watch selection.
+- **Windows:** GitHub Actions [43933890711](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43933890711) PASSED: **25 portable tests**, including report storage, value search types and toolkit version; practice modules passed compileall.
+- **Limitations:** Both suites are synthetic. No native USA or Japanese recomp process/gameplay trace was exercised; Windows GUI remains unverified. PR #35 remains draft pending review; no change to guest game writes.
+
+## 2026-11-16 — v0.11.33 memory-scanner UX and continuous filtering
+
+- **User observations:** v0.11.32 report folder names appeared as long UTC-slug-random identifiers in GNOME Files; separate initial/next Exact value input was confusing, and numeric watches refreshed at a fixed slow cadence. Requested stable-value repeat-filter mode, baseline comparisons, multi-select, floats and text searching.
+- **Data model:** The first RAM scan now retains an immutable initial snapshot, alongside the previous filter snapshot. Filters can explicitly compare to Initial or Previous. Exact always uses its independent Filter value. Added f64, Shift-JIS/ASCII/UTF-8 encoded byte-pattern searches with limits, and initial/previous/live decoded rows. Dense visible refreshes are grouped into bounded process-memory reads.
+- **Continuous filtering:** Start/Stop buttons and 250/500/1000/2000 ms target intervals. One background filter scan at a time; next pass scheduled after completion, independent of whether the Discovery tab has focus. Stops on user request, zero results, scan error, reconnect/region change or GUI shutdown. Filter setting remains fixed for the run; every pass narrows candidates, never restores eliminated addresses.
+- **Watch handling:** Extended Treeview selection, Select all visible and atomic multi-watch persistence for USA and Japan, preserving region-specific files, validating capacities and skipping duplicates. Text matches remain research only; they are not inserted as numeric watches.
+- **Reports:** Human-readable region/experiment/run directory hierarchy, compact report list with candidate count rather than full paths, optional confirmation-gated Tidy folder name for existing flat reports, descriptive ZIP names, Initial/Previous columns in CSV/Markdown; old files stay indexed.
+- **Testing:** Added scanner, report, USA/JP multi-selection, continuous-filter and Tk shutdown synthetic tests. Windows workflow also runs portable scanner tests. Automated hosted CI checks and live native recomp acceptance are separate; the latter has not yet been performed.
+- **Safety:** Read-only scans do not mutate guest RAM; full RDRAM access is never equated with original MIPS reader/writer traces. No old folders are moved without explicit consent; main unchanged and draft PR #35 retained.
+
+## 2026-11-16 — v0.11.32 final prototype CI proof (both hosted platforms)
+
+- **Linux:** GitHub Actions run [43927149682](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43927149682) succeeded on code/CI commit 7e14c7ea4d7606ad2f046f2f9c5454af20cc102f: **297 non-GUI synthetic tests (296 passed, 1 skipped)** and **119 Xvfb GUI tests passed**. Includes the new report-browser tests and existing scene/recomp test fixtures.
+- **Windows:** GitHub Actions run [43927149804](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43927149804) succeeded on the same commit: **8 portable reporting/version tests passed**, with compileall for practice modules. Does not establish Windows Tk or live recomp/gameplay operation.
+- **Caveat:** UI and memory tests use synthetic RAM; no live original MIPS reader/writer traces were implemented. User review and real Linux/Windows game testing remain outstanding; PR #35 stays draft. This is a documentation-only verification update.
+
+## 2026-11-16 — v0.11.32 unified discovery/report TEST prototype
+
+- **Approved plan and audit:** docs/UNIFIED_MEMORY_DISCOVERY_PLAN_2026-11-16.md and docs/TOOLKIT_REDUNDANCY_AUDIT_2026-11-16.md.
+- **Design:** Memory discovery groups the existing Value search, Automatic events and Event sessions screens; Advanced RAM comparison stays nested under Event sessions. Existing region-correct scanning algorithms retained.
+- **Reporting:** New practice/reports.py and reports_ui.py support UTC descriptive USA/JP Documents-based report directories, Markdown/CSV/JSON/manifest, honest visible-row count and no-tracing provenance, selectable open/folder/copy/ZIP actions and read-only indexing of legacy diagnostics.
+- **Testing:** Added reports unit tests and updated synthetic GUI tab assertions. Hosted Ubuntu CI and real native-game smoke checks pending at commit time.
+- **Not done:** Native recomp instrumented MIPS-PC read/write tracing, guided experiment integration, consolidation of JP Live, native Windows/Ubuntu game validation.
+- **Safety:** No changes to any game writing, scene reload, freeze, unlock or checkpoint code; main and decomp branches unchanged.
+
+
 ## 2026-11-16 — v0.11.31 Ubuntu synthetic/Tk CI green
 
 - **Verification:** GitHub Actions push run 43894609637 for commit 3048921014af6f364a59b2769d0b9f7d49e74fb0 completed successfully on Ubuntu 24.04. Non-GUI: **292 executed, 291 passed, 1 skipped**. Xvfb GUI: **116 passed**, including formerly stalled test_scene_request_blocks_overlapping_checkpoint_restore and the new entrance-selection regressions. No GUI deadlock and no runner argument error.

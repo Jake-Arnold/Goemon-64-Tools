@@ -48,18 +48,19 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
 
     def test_jp_advanced_only_tab_and_candidate_watch(self):
         app = self.app
-        self.assertEqual(app.notebook.tab(app.event_sessions_tab, 'state'), 'normal')
+        self.assertEqual(app.discovery_tabs.tab(app.event_sessions_tab, 'state'), 'normal')
         # Japanese 100-byte Event flag sessions now share the USA UI,
         # but are explicitly labelled as research (not a saved-event bank).
         self.assertEqual(app.event_sections.tab(app.event_sections.tabs()[0], 'state'),
                          'normal')
         self.assertIn('NOT a verified saved-event bank',
                       app.event_region_note.get())
-        self.assertEqual(app.notebook.tab(app.value_search_tab, 'state'), 'normal')
+        self.assertEqual(app.discovery_tabs.tab(app.value_search_tab, 'state'), 'normal')
         self.assertEqual(app.notebook.tab(app.unlock_tab, 'state'), 'normal')
         app.event_sections.select(app.state_discovery_tab)
         self.assertEqual(app.event_sections.select(), str(app.state_discovery_tab))
-        self.assertEqual(app.state_probe_kind.get(), 'Scene transition')
+        self.assertEqual(app.state_probe_kind.get(), 'Memory comparison')
+        self.assertIsInstance(app.state_probe_selector, __import__('tkinter').ttk.Entry)
         app.state_probe_scope.set('focused')
 
         app.capture_state_probe('A')
@@ -78,7 +79,7 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         app.watch_state_probe_candidate()
         self.assertEqual(len(app.jp_custom_watches), 1)
         self.assertTrue(app.jp_custom_watches[0].name.startswith('JP A/B/C'))
-        self.assertEqual(app.notebook.select(), str(app.jp_fields_tab))
+        self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
 
         app._disconnect_for_version_change()
         self.assertFalse(app.state_captures)
@@ -94,7 +95,8 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         app.state_probe_kind.set('Player movement')
         app._set_state_probe_instruction()
         self.assertEqual(app.state_probe_capture_buttons['C'].cget('text'),
-                         'Capture C: Still at B')
+                         'Capture C: Optional')
+        self.assertIn('C still at B', app.state_probe_instruction.get())
         app.state_probe_scope.set('wide')
         put_xyz(app.jp_rdram, XYZ_ADDR, (100.0, 20.0, -50.0))
         app.capture_state_probe('A')
@@ -111,19 +113,30 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         self.assertEqual(app.state_probe_table.heading('returned', 'text'),
                          'C stable at B?')
         self.assertEqual(app.state_probe_export_button.cget('text'),
-                         'Export ALL XYZ candidates')
-        with patch('practice.state_discovery_ui.diagnostics_dir',
+                         'Save report')
+        with patch('practice.reports.reports_root',
                    return_value=Path(self.temp.name)):
             app.export_state_probe()
-            self._finish_capture()
-        exported_files = list(Path(self.temp.name).glob('japan_state_probe_*.json'))
-        self.assertEqual(len(exported_files), 1)
-        exported = json.loads(exported_files[0].read_text(encoding='utf-8'))
-        self.assertEqual(exported['export_policy'], 'all_matched_candidates')
-        self.assertEqual(exported['counts']['exported_candidates'],
+        manifests = list(Path(self.temp.name).glob('JP/*/*/manifest.json'))
+        self.assertEqual(len(manifests), 1)
+        manifest = json.loads(manifests[0].read_text(encoding='utf-8'))
+        self.assertEqual(manifest['kind'], 'memory-comparison')
+        self.assertEqual(manifest['candidate_total'],
                          app.state_report['counts']['candidate_count'])
-        self.assertEqual(len(exported['candidates']),
-                         exported['counts']['candidate_count'])
+        self.assertTrue((manifests[0].parent/'session.json').is_file())
+        self.assertIn('Saved XYZ report', app.state_probe_status.get())
+        self.assertNotEqual(
+            app.state_xyz_full_export_button.winfo_manager(), '')
+        with patch('practice.state_discovery_ui.diagnostics_dir',
+                   return_value=Path(self.temp.name)):
+            app.state_xyz_full_export_button.invoke()
+            self._finish_capture()
+        full = list(Path(self.temp.name).glob('japan_state_probe_*.json'))
+        self.assertEqual(len(full), 1)
+        full_data = json.loads(full[0].read_text(encoding='utf-8'))
+        self.assertEqual(full_data['export_policy'], 'all_matched_candidates')
+        self.assertEqual(full_data['counts']['exported_candidates'],
+                         app.state_report['counts']['candidate_count'])
         self.assertIn('Exported ALL', app.state_probe_status.get())
         iid = next(i for i in app.state_probe_table.get_children()
                    if app.state_probe_table.item(i, 'values')[0]
@@ -131,7 +144,9 @@ class JapanAdvancedComparisonUiTests(unittest.TestCase):
         app.state_probe_table.selection_set(iid)
         app.watch_state_probe_candidate()
         self.assertEqual(app.jp_custom_watches[-1].kind, 'f32')
-        self.assertEqual(app.jp_custom_watches[-1].address, XYZ_ADDR)
+        self.assertEqual(
+            {w.address for w in app.jp_custom_watches[-3:]},
+            {XYZ_ADDR, XYZ_ADDR + 4, XYZ_ADDR + 8})
         self.assertTrue(app.jp_custom_watches[-1].name.startswith('JP XYZ candidate'))
 
     def test_disallow_comparison_after_reconnect(self):

@@ -3,11 +3,15 @@ from __future__ import annotations
 
 import queue
 import threading
+import time
 import tkinter as tk
 from tkinter import ttk
 
+from practice.discovery_results import DiscoveryResultsPanel
+from practice.reports import create_value_search_report
 from practice.value_search import (
-    ValueScanner, FORMATS, FILTERS, RDRAM_SIZE, DISPLAY_LIMIT,
+    ValueScanner, FORMATS, FILTERS, TEXT_ENCODINGS, TEXT_KIND,
+    RDRAM_SIZE, DISPLAY_LIMIT,
 )
 
 
@@ -24,6 +28,7 @@ class ValueSearchMixin:
 
     def invalidate_value_search_connection(self):
         """Discard scan identity on ROM/PID/RDRAM changes and savestate loads."""
+        self.stop_continuous_value_filter(reason='Stopped: game connection changed.')
         self.value_scan_generation += 1
         self.value_scan_memory = None
         # A worker may still be using the previous scanner: let its stale
@@ -42,82 +47,272 @@ class ValueSearchMixin:
         self.value_scan_generation = 0
         self._value_search_auto_after = None
         self._value_search_poll_after = None
-        # Cancel recurring timers before Tk deletes their registered commands,
-        # otherwise the next test/app window reports "invalid command name".
+        self._value_search_next_refresh = 0.0
+        self._value_repeat_running = False
+        self._value_repeat_spec = None
+        self._value_repeat_scans = 0
+        self._value_repeat_due = 0.0
         self.root.bind('<Destroy>', self._value_search_on_destroy, add='+')
-        self.value_search_status = tk.StringVar(value='Read-only search. Connect to the game, then start an exact or unknown-value scan.')
+
+        self.value_search_status = tk.StringVar(
+            value='Connect to USA or Japan, then start a scan. Searches never write game RAM.')
         self.value_search_type = tk.StringVar(value='u16')
         self.value_search_value = tk.StringVar(value='950')
+        self.value_search_encoding = tk.StringVar(value='ASCII')
         self.value_search_filter = tk.StringVar(value='Decreased')
+        self.value_filter_value = tk.StringVar(value='')
+        self.value_search_compare = tk.StringVar(value='Previous')
         self.value_search_unaligned = tk.BooleanVar(value=False)
-        self.value_search_autorefresh = tk.BooleanVar(value=False)
+        self.value_search_autorefresh = tk.BooleanVar(value=True)
+        self.value_search_refresh_ms = tk.StringVar(value='250 ms')
+        self.value_repeat_interval = tk.StringVar(value='500 ms')
+        self.value_repeat_status = tk.StringVar(value='Continuous filtering is stopped.')
+        self.value_report_name = tk.StringVar(value='Memory value search')
 
         tab = ttk.Frame(notebook, padding=10)
-        notebook.add(tab, text='Value search')
+        notebook.add(tab, text='Find a value')
         self.value_search_tab = tab
-        ttk.Label(tab, text='Find oil, Ryo, boss HP, timers and other unknown values',
-                  font=('Segoe UI Semibold', 16)).pack(anchor='w', pady=(0, 7))
-        ttk.Label(tab, text="Scans the selected N64 ROM's guest RAM (4 or 8 MiB); no player object required. "
-                  'Reads only. Each filter compares a new snapshot with the previous one. '
-                  'Values are unverified candidates, not named game fields.',
-                  wraplength=1100).pack(anchor='w', pady=(0, 10))
+        ttk.Label(tab, text='Find addresses by value or game action',
+                  font=('Segoe UI Semibold', 16)).pack(anchor='w', pady=(0, 5))
+        ttk.Label(tab, text=(
+            'Start a scan, change something in-game, then filter the surviving '
+            'addresses. Initial = the first snapshot; Previous = the last filter '
+            'snapshot; Live = the latest displayed reading.'),
+            wraplength=1050).pack(anchor='w', pady=(0, 7))
 
-        row = ttk.Frame(tab)
-        row.pack(fill='x', pady=(0, 6))
-        ttk.Label(row, text='Type:').pack(side='left', padx=(0, 4))
-        ttk.Combobox(row, textvariable=self.value_search_type, values=tuple(FORMATS),
-                     state='readonly', width=7).pack(side='left', padx=(0, 12))
-        ttk.Label(row, text='Number:').pack(side='left', padx=(0, 4))
-        ttk.Entry(row, textvariable=self.value_search_value, width=17).pack(side='left', padx=(0, 12))
-        ttk.Button(row, text='New exact scan', command=lambda: self._value_start('exact'),
-                   style='Gold.TButton').pack(side='left', padx=(0, 7))
-        ttk.Button(row, text='Unknown initial value',
-                   command=lambda: self._value_start('unknown')).pack(side='left', padx=(0, 7))
-        ttk.Checkbutton(row, text='Include unaligned addresses (slower)',
+        startbox = ttk.LabelFrame(tab, text='1 · Start a new scan', padding=7)
+        startbox.pack(fill='x', pady=(0, 7))
+        row = ttk.Frame(startbox)
+        row.pack(fill='x')
+        ttk.Label(row, text='Data type').pack(side='left', padx=(0, 4))
+        typebox = ttk.Combobox(
+            row, textvariable=self.value_search_type,
+            values=(*FORMATS.keys(), 'Text'), state='readonly', width=9)
+        typebox.pack(side='left', padx=(0, 10))
+        typebox.bind('<<ComboboxSelected>>', lambda _event: self._value_search_kind_changed())
+        ttk.Label(row, text='Starting value / text').pack(side='left', padx=(0, 4))
+        ttk.Entry(row, textvariable=self.value_search_value, width=21).pack(
+            side='left', padx=(0, 10))
+        ttk.Label(row, text='Text encoding').pack(side='left', padx=(0, 4))
+        self.value_search_encoding_widget = ttk.Combobox(
+            row, textvariable=self.value_search_encoding,
+            values=tuple(TEXT_ENCODINGS), state='disabled', width=11)
+        self.value_search_encoding_widget.pack(side='left', padx=(0, 10))
+        ttk.Button(row, text='Start exact search',
+                   command=lambda: self._value_start('exact')).pack(
+                       side='left', padx=(0, 5))
+        self.value_unknown_button = ttk.Button(
+            row, text='Start unknown search',
+            command=lambda: self._value_start('unknown'))
+        self.value_unknown_button.pack(side='left')
+        options = ttk.Frame(startbox)
+        options.pack(fill='x', pady=(4, 0))
+        ttk.Checkbutton(options, text='Include unaligned addresses (slower)',
                         variable=self.value_search_unaligned).pack(side='left')
+        ttk.Label(options, text=(
+            'Text searches match literal bytes (ASCII, Shift-JIS or UTF-8); '
+            'custom in-game character encodings may not match.'),
+            wraplength=780).pack(side='left', padx=(14, 0))
 
-        row2 = ttk.Frame(tab)
-        row2.pack(fill='x', pady=(0, 7))
-        ttk.Label(row2, text='Next filter:').pack(side='left', padx=(0, 5))
-        ttk.Combobox(row2, textvariable=self.value_search_filter, values=FILTERS,
-                     state='readonly', width=13).pack(side='left', padx=(0, 10))
-        ttk.Button(row2, text='Filter surviving results',
-                   command=lambda: self._value_start('filter'),
-                   style='Gold.TButton').pack(side='left', padx=(0, 7))
-        ttk.Button(row2, text='Refresh visible values',
-                   command=lambda: self._value_start('refresh')).pack(side='left', padx=(0, 7))
-        ttk.Checkbutton(row2, text='Auto-refresh visible values',
-                        variable=self.value_search_autorefresh).pack(side='left', padx=(0, 11))
-        ttk.Button(row2, text='Watch selected address',
-                   command=self.watch_value_search_candidate).pack(side='left', padx=(0, 7))
-        ttk.Button(row2, text='Clear', command=self.clear_value_search).pack(side='left')
+        refine = ttk.LabelFrame(tab, text='2 · Narrow the current results', padding=7)
+        refine.pack(fill='x', pady=(0, 7))
+        row2 = ttk.Frame(refine)
+        row2.pack(fill='x')
+        ttk.Label(row2, text='Keep addresses where value is').pack(
+            side='left', padx=(0, 5))
+        filterbox = ttk.Combobox(
+            row2, textvariable=self.value_search_filter, values=FILTERS,
+            state='readonly', width=11)
+        filterbox.pack(side='left', padx=(0, 9))
+        self.value_filter_widget = filterbox
+        filterbox.bind('<<ComboboxSelected>>',
+                       lambda _event: self._value_search_filter_changed())
+        ttk.Label(row2, text='Compared with').pack(side='left', padx=(0, 5))
+        self.value_compare_widget = ttk.Combobox(
+            row2, textvariable=self.value_search_compare,
+            values=('Previous', 'Initial'), state='readonly', width=10)
+        self.value_compare_widget.pack(side='left', padx=(0, 9))
+        ttk.Label(row2, text='Filter value (Exact only)').pack(
+            side='left', padx=(0, 5))
+        self.value_filter_entry = ttk.Entry(
+            row2, textvariable=self.value_filter_value, width=16)
+        self.value_filter_entry.pack(side='left', padx=(0, 9))
+        ttk.Button(row2, text='Apply filter',
+                   command=lambda: self._value_start('filter')).pack(side='left')
+        ttk.Label(refine, text=(
+            'Exact uses the Filter value above, never the Starting value. '
+            'Increased/Decreased/Changed/Unchanged compare against Initial '
+            'or Previous. Filtering narrows results permanently until New scan.'),
+            wraplength=1050).pack(anchor='w', pady=(4, 0))
+        self._value_search_filter_changed()
+        repeat_bar = ttk.Frame(refine)
+        repeat_bar.pack(fill='x', pady=(7, 0))
+        self.value_repeat_button = ttk.Button(
+            repeat_bar, text='Start continuous filter',
+            command=self.toggle_continuous_value_filter)
+        self.value_repeat_button.pack(side='left', padx=(0, 9))
+        ttk.Label(repeat_bar, text='Repeat every').pack(side='left', padx=(0, 4))
+        self.value_repeat_interval_widget = ttk.Combobox(
+            repeat_bar, textvariable=self.value_repeat_interval,
+            values=('250 ms', '500 ms', '1000 ms', '2000 ms'),
+            state='readonly', width=9)
+        self.value_repeat_interval_widget.pack(side='left', padx=(0, 10))
+        ttk.Label(
+            repeat_bar, textvariable=self.value_repeat_status,
+            wraplength=490).pack(side='left')
+        ttk.Label(
+            refine,
+            text='Continuous filtering repeatedly NARROWS the same candidate set. '
+                 'Unchanged + Initial retains values matching the very first scan. '
+                 'Unchanged + Previous requires stability at every pass. '
+                 'It stops when you press Stop, disconnect or reach zero matches. '
+                 'Start a new scan to restore discarded candidates.',
+            wraplength=1060).pack(anchor='w', pady=(4, 0))
 
-        ttk.Label(tab, textvariable=self.value_search_status, wraplength=1090).pack(fill='x', pady=(0, 8))
+        self.value_search_results = DiscoveryResultsPanel(
+            self, tab, tree=lambda: self.value_search_tree,
+            status=self.value_search_status,
+            report_name=self.value_report_name,
+            label='Value Search',
+            save=self.export_value_search_report,
+            refresh=lambda: self._value_start('refresh'),
+            auto=self.value_search_autorefresh,
+            interval=self.value_search_refresh_ms,
+            external_poll=True)
+        self.value_search_results.controls.pack_configure(before=startbox)
+        # Scan/capture controls are method-specific. Candidate controls are shared.
+        ttk.Label(tab, textvariable=self.value_search_status,
+                  wraplength=1070).pack(fill='x', pady=(0, 7))
+
         frame = ttk.Frame(tab)
         frame.pack(fill='both', expand=True)
-        columns = ('address', 'type', 'value', 'hex')
-        self.value_search_tree = ttk.Treeview(frame, columns=columns, show='headings', height=18)
+        columns = ('address', 'type', 'live', 'raw', 'initial', 'previous')
+        self.value_search_tree = ttk.Treeview(
+            frame, columns=columns, show='headings',
+            selectmode='extended', height=16)
         for key, title, width in (
-            ('address', 'N64 guest address', 170), ('type', 'Type', 95),
-            ('value', 'Value', 160), ('hex', 'Raw big-endian hex', 190),
+            ('address', 'N64 address', 155),
+            ('type', 'Type', 105),
+            ('live', 'Live value', 145),
+            ('raw', 'Live hex', 170),
+            ('initial', 'Initial', 130),
+            ('previous', 'Previous', 130),
         ):
             self.value_search_tree.heading(key, text=title)
-            self.value_search_tree.column(key, width=width, anchor='w', stretch=(key == 'value'))
-        scrollbar = ttk.Scrollbar(frame, orient='vertical', command=self.value_search_tree.yview)
+            self.value_search_tree.column(
+                key, width=width, anchor='w', stretch=(key == 'live'))
+        scrollbar = ttk.Scrollbar(
+            frame, orient='vertical', command=self.value_search_tree.yview)
         self.value_search_tree.configure(yscrollcommand=scrollbar.set)
         self.value_search_tree.pack(side='left', fill='both', expand=True)
         scrollbar.pack(side='right', fill='y')
-        ttk.Label(tab, text='Only the first 200 surviving addresses are shown. Narrow the search before adding a watch. '
-                  'Integer scans use exact values; f32 matches IEEE-754 bytes. '
-                  'Unknown-value scans begin with every candidate address and may take longer.',
-                  wraplength=1080).pack(anchor='w', pady=(8, 0))
+        ttk.Label(tab, text=(
+            'Up to 200 candidates are shown at once. Live refresh samples '
+            'visible addresses only; full RAM is read when starting or '
+            'filtering. A value match is not proof of what the address does.'),
+            wraplength=1080).pack(anchor='w', pady=(7, 0))
+
         self._value_search_auto_after = self.root.after(
-            1800, self._value_search_auto_tick)
+            125, self._value_search_auto_tick)
+
+    def _value_search_kind_changed(self):
+        text_mode = self.value_search_type.get() == 'Text'
+        self.value_search_encoding_widget.configure(
+            state='readonly' if text_mode else 'disabled')
+        self.value_unknown_button.state(
+            ['disabled'] if text_mode else ['!disabled'])
+        self._value_search_filter_changed()
+
+    def _value_search_filter_changed(self):
+        exact = self.value_search_filter.get() == 'Exact'
+        self.value_filter_entry.configure(
+            state='normal' if exact and not self._value_repeat_running else 'disabled')
+
+
+    def toggle_continuous_value_filter(self):
+        if self._value_repeat_running:
+            self.stop_continuous_value_filter(
+                reason=f'Stopped after {self._value_repeat_scans} filter pass(es).')
+            return
+        if (self.value_scanner.previous is None or
+                self.value_scan_memory is not self._value_search_reader() or
+                self.value_scanner.count == 0):
+            self.value_repeat_status.set(
+                'Finish a scan with surviving candidates before starting.')
+            return
+        if self.value_scan_busy:
+            self.value_repeat_status.set('Current scan is still running.')
+            return
+        mode = self.value_search_filter.get()
+        basis = self.value_search_compare.get()
+        exact_value = self.value_filter_value.get()
+        if mode not in FILTERS or basis not in ('Previous', 'Initial'):
+            self.value_repeat_status.set('Choose a valid filter and comparison.')
+            return
+        if mode == 'Exact':
+            try:
+                if self.value_scanner.kind == TEXT_KIND:
+                    encoded = self.value_scanner.encode_text(
+                        exact_value, self.value_scanner.text_encoding)
+                    if len(encoded) != self.value_scanner.text_width:
+                        raise ValueError('Text must retain the original byte length')
+                else:
+                    from practice.value_search import encode_value
+                    encode_value(self.value_scanner.kind, exact_value)
+            except ValueError as exc:
+                self.value_repeat_status.set(f'Invalid Exact filter value: {exc}')
+                return
+        if (self.value_scanner.kind == TEXT_KIND and
+                mode in ('Increased', 'Decreased')):
+            self.value_repeat_status.set(
+                'Text patterns support Exact, Changed and Unchanged only.')
+            return
+        self._value_repeat_spec = (mode, exact_value, basis)
+        self._value_repeat_scans = 0
+        self._value_repeat_running = True
+        self._value_repeat_due = 0.0
+        self.value_repeat_button.configure(text='Stop continuous filter')
+        self.value_filter_widget.configure(state='disabled')
+        self.value_compare_widget.configure(state='disabled')
+        self.value_filter_entry.configure(state='disabled')
+        self.value_repeat_interval_widget.configure(state='disabled')
+        self.value_repeat_status.set(
+            f'Running {mode} vs {basis}; 0 passes. '
+            'The filter will repeat until stopped.')
+        # Start immediately. Afterwards schedule only from completed scans,
+        # with no piled-up workers even when a full 8 MiB pass is slow.
+        self._value_start('filter', repeated=True)
+
+    def stop_continuous_value_filter(self, *, reason=None, update_ui=True):
+        self._value_repeat_running = False
+        self._value_repeat_spec = None
+        self._value_repeat_due = 0.0
+        # <Destroy> fires after Tk has already removed child widget commands.
+        # Never reconfigure a destroyed button while tearing down the root.
+        if update_ui and hasattr(self, 'value_repeat_button'):
+            self.value_repeat_button.configure(text='Start continuous filter')
+            self.value_filter_widget.configure(state='readonly')
+            self.value_compare_widget.configure(state='readonly')
+            self.value_repeat_interval_widget.configure(state='readonly')
+            self._value_search_filter_changed()
+        if update_ui and hasattr(self, 'value_repeat_status'):
+            self.value_repeat_status.set(
+                reason or f'Stopped after {self._value_repeat_scans} pass(es).')
+
+    def select_all_value_results(self):
+        rows = self.value_search_tree.get_children()
+        if rows:
+            self.value_search_tree.selection_set(rows)
+            self.value_search_status.set(
+                f'{len(rows)} visible addresses selected. '
+                'Watch selected addresses adds numeric values to Live Memory.')
 
     def _value_search_on_destroy(self, event):
         """Stop callbacks owned by this Tk root, not by another test window."""
         if event.widget is not self.root:
             return
+        self.stop_continuous_value_filter(
+            reason='Stopped: toolkit closed.', update_ui=False)
         for attribute in ('_value_search_auto_after',
                           '_value_search_poll_after'):
             job = getattr(self, attribute, None)
@@ -128,12 +323,16 @@ class ValueSearchMixin:
                 except tk.TclError:
                     pass  # Tcl interpreter is already disposing of widgets.
 
-    def _value_start(self, action):
+    def _value_start(self, action, *, repeated=False):
+        if not repeated and action in ('exact', 'unknown', 'filter') and self._value_repeat_running:
+            self.stop_continuous_value_filter(
+                reason='Stopped: manual scan or filter requested.')
         if self.value_scan_busy:
             self.value_search_status.set('A RAM read is already running.')
             return
         mem = self._value_search_reader()
         if mem is None:
+            self.stop_continuous_value_filter(reason='Stopped: game disconnected.')
             self.value_search_status.set('Connect to a running game first.')
             return
         if action in ('filter', 'refresh') and (self.value_scanner.previous is None or
@@ -143,6 +342,13 @@ class ValueSearchMixin:
         kind = self.value_search_type.get()
         number = self.value_search_value.get()
         filter_mode = self.value_search_filter.get()
+        filter_value = self.value_filter_value.get()
+        comparison = self.value_search_compare.get()
+        if repeated:
+            if not self._value_repeat_running or self._value_repeat_spec is None:
+                return
+            filter_mode, filter_value, comparison = self._value_repeat_spec
+        encoding = self.value_search_encoding.get()
         include_unaligned = self.value_search_unaligned.get()
         # Project64 may expose only an unexpanded 4 MiB RDRAM mapping.
         # Keep USA and synthetic test scanner sizes unchanged.
@@ -150,7 +356,10 @@ class ValueSearchMixin:
                      if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan'
                      else self.value_search_size)
         self.value_scan_busy = True
-        self.value_search_status.set('Reading game RAM; UI remains responsive...')
+        self._value_search_next_refresh = time.monotonic() + (
+            int(self.value_search_refresh_ms.get().split()[0]) / 1000)
+        self.value_search_status.set(
+            'Reading guest RAM in the background; the interface remains responsive...')
         generation = self.value_scan_generation
 
         def worker():
@@ -159,21 +368,26 @@ class ValueSearchMixin:
                 if action in ('exact', 'unknown'):
                     scanner = ValueScanner(size=scan_size,
                                            aligned=not include_unaligned)
-                    if action == 'exact':
+                    if action == 'exact' and kind == 'Text':
+                        scanner.start_text(mem, number, encoding=encoding)
+                    elif action == 'exact':
                         scanner.start_exact(mem, kind, number)
+                    elif kind == 'Text':
+                        raise ValueError('Text patterns require an exact starting search')
                     else:
                         scanner.start_unknown(mem, kind)
                     rows = scanner.rows(DISPLAY_LIMIT)
                 elif action == 'filter':
-                    scanner.filter(mem, filter_mode, number)
+                    scanner.filter(mem, filter_mode, filter_value,
+                                   compare_to=comparison)
                     rows = scanner.rows(DISPLAY_LIMIT)
                 elif action == 'refresh':
                     rows = scanner.rows(DISPLAY_LIMIT, ram=mem)
                 else:
                     raise ValueError('Invalid value-search operation')
-                self.value_scan_queue.put((generation, mem, action, scanner, rows, None))
+                self.value_scan_queue.put((generation, mem, action, scanner, rows, None, repeated))
             except Exception as exc:  # Report worker failure instead of leaving UI permanently busy.
-                self.value_scan_queue.put((generation, mem, action, None, None, str(exc)))
+                self.value_scan_queue.put((generation, mem, action, None, None, str(exc), repeated))
 
         # The RDRAM reader can be slow; never scan 8 MiB on the Tk event loop.
         threading.Thread(target=worker, daemon=True, name='GoemonReadOnlyValueSearch').start()
@@ -188,46 +402,139 @@ class ValueSearchMixin:
             self._value_search_poll_after = self.root.after(
                 70, self._value_search_poll)
             return
-        generation, mem, action, scanner, rows, error = result
+        generation, mem, action, scanner, rows, error, repeated = result
         self.value_scan_busy = False
         if generation != self.value_scan_generation or mem is not self._value_search_reader():
+            self.stop_continuous_value_filter(reason='Stopped: game connection changed.')
             self.value_search_status.set('Game connection changed; start a new scan.')
             self.value_scanner.clear()
             self.value_scan_memory = None
             self.value_search_tree.delete(*self.value_search_tree.get_children())
             return
         if error is not None:
+            if repeated:
+                self.stop_continuous_value_filter(
+                    reason=f'Stopped: scan failed: {error}')
             self.value_search_status.set(f'Value search failed: {error}')
             return
         if action in ('exact', 'unknown'):
             self.value_scanner = scanner
             self.value_scan_memory = mem
-        selected = self.value_search_tree.selection()
-        selected_id = selected[0] if selected else None
-        self.value_search_tree.delete(*self.value_search_tree.get_children())
+        selected = tuple(self.value_search_tree.selection())
+        if action != 'refresh':
+            self.value_search_tree.delete(*self.value_search_tree.get_children())
         for row in rows:
             address = f'0x{row["address"]:08X}'
-            self.value_search_tree.insert('', 'end', iid=address,
-                values=(address, row['kind'], row['value'], row['hex']))
-        if selected_id and self.value_search_tree.exists(selected_id):
-            self.value_search_tree.selection_set(selected_id)
+            values = (address, row['kind'], row['value'], row['hex'],
+                      row['initial'], row['previous'])
+            if self.value_search_tree.exists(address):
+                self.value_search_tree.item(address, values=values)
+            else:
+                self.value_search_tree.insert('', 'end', iid=address, values=values)
+        if action != 'refresh':
+            surviving = tuple(x for x in selected
+                              if self.value_search_tree.exists(x))
+            if surviving:
+                self.value_search_tree.selection_set(surviving)
         label = 'Live preview' if action == 'refresh' else 'Search updated'
         self.value_search_status.set(
             f'{label}: {self.value_scanner.count:,} candidates; '
             f'showing {len(rows):,}. Type {self.value_scanner.kind}; '
             f'{self.value_scanner.samples} snapshot(s). '
             'No game memory was modified.')
+        self.value_search_results.live_status.set(
+            f'{len(rows):,} live/filtered rows; '
+            f'{self.value_scanner.count:,} candidates total')
+        if repeated and self._value_repeat_running:
+            self._value_repeat_scans += 1
+            if self.value_scanner.count == 0:
+                self.stop_continuous_value_filter(
+                    reason='Stopped automatically: zero candidates. '
+                           'Start a new scan to restore results.')
+            else:
+                mode, _text, basis = self._value_repeat_spec
+                interval = int(self.value_repeat_interval.get().split()[0]) / 1000
+                self._value_repeat_due = time.monotonic() + interval
+                self.value_repeat_status.set(
+                    f'Running {mode} vs {basis}: '
+                    f'{self._value_repeat_scans} pass(es), '
+                    f'{self.value_scanner.count:,} candidates left.')
+
+    def export_value_search_report(self):
+        """Save the current *displayed* snapshot; never claim a full trace."""
+        if self.value_scan_busy or self.value_scanner.previous is None:
+            self.value_search_status.set(
+                'Run a scan and let it finish before saving a report.')
+            return
+        try:
+            # Reports are not limited to the first 200 rows on screen.
+            # Bound heavy snapshots to keep one click from allocating
+            # millions of JSON objects on an unknown-value scan.
+            report_limit = min(self.value_scanner.count, 20000)
+            displayed = []
+            for row in self.value_scanner.rows(report_limit):
+                displayed.append({
+                    'address': f'0x{row["address"]:08X}',
+                    'kind': row['kind'],
+                    'initial': row['initial'],
+                    'previous': row['previous'],
+                    'value': row['value'], 'hex': row['hex'],
+                })
+            region = getattr(getattr(self, 'active_version', None),
+                             'key', 'usa')
+            folder = create_value_search_report(
+                region=region,
+                title=self.value_report_name.get() or 'Memory value search',
+                rows=displayed, total_count=self.value_scanner.count,
+                value_type=(
+                    'text/' + self.value_scanner.text_encoding
+                    if self.value_scanner.kind == TEXT_KIND else
+                    self.value_scanner.kind),
+                sample_count=self.value_scanner.samples)
+            self.value_search_status.set(
+                f'Saved {len(displayed):,}/{self.value_scanner.count:,} '
+                'candidate rows (up to 20,000 per report). '
+                'Open Reports to inspect the files.')
+            if hasattr(self, 'refresh_reports'):
+                self.refresh_reports(select_path=folder)
+        except (OSError, ValueError, TypeError) as exc:
+            self.value_search_status.set(f'Report export failed: {exc}')
+
+    def _value_search_tab_visible(self):
+        # Standalone scanner tests may attach the tab directly to the root.
+        if self.notebook.select() == str(self.value_search_tab):
+            return True
+        discovery = getattr(self, 'discovery_tab', None)
+        tabs = getattr(self, 'discovery_tabs', None)
+        return bool(discovery is not None and tabs is not None and
+                    self.notebook.select() == str(discovery) and
+                    tabs.select() == str(self.value_search_tab))
 
     def _value_search_auto_tick(self):
         self._value_search_auto_after = None
-        if (self.value_search_autorefresh.get() and not self.value_scan_busy and
-                self.value_scanner.previous is not None and self._value_search_reader() is self.value_scan_memory and
-                self.notebook.select() == str(self.value_search_tab)):
+        now = time.monotonic()
+        interval = int(self.value_search_refresh_ms.get().split()[0]) / 1000
+        if (self._value_repeat_running and not self.value_scan_busy and
+                self._value_repeat_due > 0 and
+                now >= self._value_repeat_due):
+            self._value_repeat_due = 0.0
+            self._value_start('filter', repeated=True)
+        if (not self._value_repeat_running and
+                self.value_search_autorefresh.get() and not self.value_scan_busy and
+                self.value_scanner.previous is not None and
+                self._value_search_reader() is self.value_scan_memory and
+                self._value_search_tab_visible() and
+                now >= self._value_search_next_refresh):
+            # Many spatially scattered process-memory reads can be expensive.
+            # The background worker drops refresh overlap, never queues it.
             self._value_start('refresh')
         self._value_search_auto_after = self.root.after(
-            1800, self._value_search_auto_tick)
+            100, self._value_search_auto_tick)
 
     def clear_value_search(self):
+        if self._value_repeat_running:
+            self.stop_continuous_value_filter(
+                reason='Stopped: scan cleared.')
         if self.value_scan_busy:
             self.value_search_status.set('Current scan must finish before clearing.')
             return
@@ -238,22 +545,6 @@ class ValueSearchMixin:
         self.value_search_status.set('Cleared candidate set; game memory unchanged.')
 
     def watch_value_search_candidate(self):
-        selected = self.value_search_tree.selection()
-        if not selected:
-            self.value_search_status.set('Select a surviving address first.')
-            return
-        addr = selected[0]
-        kind = self.value_scanner.kind
-        if kind is None:
-            return
-        if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan':
-            if self.add_japan_custom_watch_from_search(addr, kind):
-                self.notebook.select(self.jp_fields_tab)
-            else:
-                self.value_search_status.set(self.jp_custom_watch_status.get())
-            return
-        self.user_watch_name.set(f'Value Search {addr}')
-        self.user_watch_address.set(addr)
-        self.user_watch_type.set(kind)
-        self.add_custom_watch()
-        self.notebook.select(self.live_memory_tab)
+        """Compatibility entrypoint; same batch-watch action as every tool."""
+        self.value_search_results.watch_selected()
+        # Keep scan evidence/status unchanged; the shared bar shows watch outcomes.
