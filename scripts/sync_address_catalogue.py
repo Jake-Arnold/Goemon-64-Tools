@@ -14,7 +14,7 @@ import sys
 
 from practice.address_catalogue import (
     SNAPSHOT, DATA_DIR, audit_catalogue, build_catalogue, serialize,
-    validate_catalogue, _read_json,
+    validate_catalogue, _read_json, consolidate_entries,
 )
 
 AUDIT = DATA_DIR / "address_catalogue_audit.json"
@@ -59,8 +59,9 @@ def synchronise(existing=None):
             prior["id_aliases"] = list(dict.fromkeys(
                 [*prior.get("id_aliases", ()), *row.get("id_aliases", ())]))
     out = dict(existing)
-    out["entries"] = sorted(current.values(), key=lambda r: (
-        r["region"], int(r["address"], 16), r.get("mask") or "", r["id"]))
+    # Migrate older manifests with duplicate evidence rows into one
+    # authoritative physical field and keep their IDs as aliases.
+    out["entries"] = consolidate_entries(current.values())
     out["sources"] = sorted(set(s for r in out["entries"]
                                 for s in r["sources"]))
     validate_catalogue(out)
