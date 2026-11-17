@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Canonical decomp USA/Japan reciprocal memory crosswalk instructions
+
+- **Reason:** New fixed original-USA/JP guest-memory discoveries must always trigger a candidate lookup for the other region; the observed `±0x57F0` displacement strongly guides targeted testing.
+- **Changes:** The root `AGENTS.md` now mandates a same-task reciprocal lookup; added `decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md`, `.agents/skills/goemon-region-crosswalk/SKILL.md` and the indexed agent-skill entry.
+- **Evidence/limits:** USA/JP weapon, gameplay submode, map overlay and Benkei encounter were user-confirmed; JP Snowflake `+0x57F1` is an explicit exception, JP pause `0x800CD2D6` is disputed, and JP battery `0x80161DF9 & 0x20` is unverified. Dynamic/overlay/VM/Impact/code/host addresses must not use the offset. Candidates do not become write controls or matching-C proof.
+- **Validation:** Documentation and agent skill only; frontmatter inspected against existing Codex skills metadata rules. Full native ROM/decomp local CI and live gameplay tests were not run for this instruction-only change.
+- **Next:** Document both-region provenance and independently verify future candidates. The separately merged toolkit agent protocol is PR #50; draft runtime toolkit PR #43 is unaffected.
+
+
 ### 2026-11-17 — USA file11 strict four-function formal C promotion: 342 → 346
 
 - **Deduplication:** Preserved all 342 prior USA functions, including 179 in file_11. Added exactly four PR #46 original-address functions absent from production and the 82 pending PR #23 group: `0x5A3D28` (40 B), `0x5A3E18` (40 B), `0x5AB904` (36 B), `0x5AC4E0` (36 B). 152 matching bytes in total. Versioned adapter `decomp/file11_183_stage.py` and 134-chunk pinned fixture; no changes to previously promoted source bodies.
