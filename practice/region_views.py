@@ -36,7 +36,7 @@ def japan_live_watches(rdram, custom=()):
     # Existing shared Live Memory page: add independently observed static pairs
     # where the canonical JP field/probe tables have no entry yet. Speculative
     # and disputed offsets are intentionally not turned into editable rows.
-    seen_addresses = {row.address for row in results}
+    seen_addresses = {row.addr for row in results}
     for field in CROSS_REGION_FIELDS:
         if (not field.key.startswith('static:') or
                 field.evidence not in ('user-confirmed', 'observed') or
