@@ -38,6 +38,7 @@ from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.version import DISPLAY_VERSION
+from practice.updater_ui import UpdaterMixin
 from practice.launcher_preferences import load_last_region, save_last_region
 from practice.japan_auto_attach import (
     JapanProcessCandidate, list_japan_processes, connect_candidate_ram,
@@ -139,7 +140,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -293,6 +294,7 @@ class Toolkit(ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFree
         ttk.Label(connection, textvariable=self.speed_text, style='CardMuted.TLabel').pack(anchor='w')
         ttk.Label(connection, textvariable=self.misc_text, style='CardMuted.TLabel',
                   wraplength=420).pack(anchor='w')
+        self.build_update_controls(left)
 
         state_card = ttk.LabelFrame(right, text=' Full emulator savestates ', padding=10)
         state_card.pack(fill='x', pady=(0, 6))
@@ -2445,6 +2447,7 @@ def apply_access_mode(args):
 def parse_args(argv=None):
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid",type=int)
+    ap.add_argument("--route", default=None, help=argparse.SUPPRESS)  # Legacy Windows launcher option
     ap.add_argument("--base",help="RDRAM host base 0x...; Japan always validates three ROM code probes")
     ap.add_argument("--endian",choices=["auto","wordswapped","byteswapped","big"],default="auto")
     ap.add_argument("--game-version", choices=tuple(VERSIONS), default=None,
@@ -2482,5 +2485,17 @@ def main(argv=None):
         if getattr(app,'native_key_release',None):app._release_debug_key()
         if getattr(app,'jp_native_key_release',None):app._release_japan_native_key()
         if app.process: app.process.close()
+        if getattr(app, '_restart_after_update', False):
+            # Relaunch only after normal cleanup releases game handles,
+            # freezes, injected keys and Tk widgets.
+            try:
+                subprocess.Popen(
+                    [sys.executable, '-m', 'practice.toolkit', *sys.argv[1:]],
+                    cwd=str(Path(__file__).resolve().parents[1]),
+                    close_fds=True,
+                    start_new_session=(os.name != 'nt'))
+            except OSError as exc:
+                print(f'Toolkit updated but automatic restart failed: {exc}',
+                      file=sys.stderr)
 
 if __name__=="__main__": main()
