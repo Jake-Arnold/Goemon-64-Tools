@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Three new USA file_11 functions isolated-native exact (research only; +0 accepted)
+
+- **New original-address research:** `func_801F3AD0_5AF9E0` (0x5AF9E0, 32 B), `func_801F23C8_5AE2D8` (0x5AE2D8, 32 B), and `func_801E7D78_5A3C88` (0x5A3C88, 40 B) are not in the accepted 184-C file_11 fixture or canonical pending registry. Each compiled under original IDO 5.3 at pinned `-O2 -mips2` to exact original USA instruction bytes (104/104), with exact ELF FUNC sizes and zero source relocations. The combined object has eight trailing zero padding bytes not included in the 104 instruction-byte claims.
+- **Original baseline:** Recreated from the user-supplied ROM/toolchain on x86-64 Linux; decompression/Splat extraction and original 33,554,432/33,554,432 byte-for-byte USA rebuild passed, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
+- **Host tests:** GCC 14.2.0 targeted fixture with `-fsanitize=address,undefined` passed. Committed research-only C and harness; sanitized evidence in `decomp/results/file11_three_isolated_20261117.json`.
+- **Limit:** Complete `chatgptweb/decomp` checkout was not materialized into this native container (shell DNS blocks GitHub); canonical 782-C `decomp.verify`, `decomp.inventory` and full `decomp.local_ci` were **NOT RUN**. No production manifest/proof/registry changed. USA production remains **779 functions / 34,288 bytes**, Japan **34 / 1,912**. Existing 82 USA + 5 JP pending registry entries unchanged; the three new leads are separately research-only.
+- **Next:** Reconstruct an authenticated complete checkout and stage the three exact sources with all 779 accepted C. Only promote after complete-ROM, ELF ownership, relocation, inventory and full local CI gates.
+
+
 ### 2026-11-17 — Native combined USA seven-overlay promotion, 732 → 779 original-address C functions
 
 - **Change:** Promoted 47 independently validated original-address C functions across USA `file_12`, `file_13`, `file_14`, `file_15`, `file_17`, `file_18` and `file_19`; preserved all 732 existing C functions and the 732 historical combined-ROM/ELF proof and inventory.

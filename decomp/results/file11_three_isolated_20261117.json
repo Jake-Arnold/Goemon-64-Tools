@@ -1,0 +1,70 @@
+{
+  "format": "goemon-file11-three-isolated-native-research-v1",
+  "date_utc": "2026-11-17",
+  "branch": "chatgptweb/decomp",
+  "baseline_head": "30a02bc1aaeb8dd801bf34e7e865bc04831c85fe",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "region": "usa",
+  "segment": "file_11",
+  "accepted_usa_start": 779,
+  "accepted_usa_end": 779,
+  "canonical_manifest_modified": false,
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "exact_original_baseline_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "baseline_rebuild": {
+    "status": "PASS",
+    "bytes_compared": 33554432
+  },
+  "compiler": "Original IDO 5.3, -O2 -mips2 -G 0 -non_shared; pinned upstream C flags",
+  "probe_source_path": "decomp/research/file11_three_isolated_20261117.c",
+  "probe_source_sha256": "6f484b269a8faf6f7ac1ba366ff534ef16a8645436c7941ea95b81d2110ec182",
+  "isolated_object_sha256": "65701416710885be6fb4bb59d08e8222733190ceaaff51fa51a609b0688c4cbd",
+  "isolated_text_sha256": "cb6b470d444eff4e70641893e177bac70cf9fa7c91bfb5d6c4f0bda310f93589",
+  "exact_function_symbol_sizes": true,
+  "isolated_relocations": 0,
+  "trailing_ido_text_padding_bytes": 8,
+  "candidates": [
+    {
+      "name": "func_801F3AD0_5AF9E0",
+      "rom_offset": "0x5AF9E0",
+      "vma": "0x801F3AD0",
+      "size": 32,
+      "original_code_sha256": "b0b50f6e45d2a53ac3ccd0ca619f8e8a83a22863ec4bf458426d1620c64661c4",
+      "isolated_native_match": "PASS",
+      "first_byte_mismatch": null
+    },
+    {
+      "name": "func_801F23C8_5AE2D8",
+      "rom_offset": "0x5AE2D8",
+      "vma": "0x801F23C8",
+      "size": 32,
+      "original_code_sha256": "7b68d8cd198ca2ead83e644d7b037bcf4d80ae32a693429d334481d52df2b06e",
+      "isolated_native_match": "PASS",
+      "first_byte_mismatch": null
+    },
+    {
+      "name": "func_801E7D78_5A3C88",
+      "rom_offset": "0x5A3C88",
+      "vma": "0x801E7D78",
+      "size": 40,
+      "original_code_sha256": "47d34fd849e6abe20f35d49739d2ec505bfe5feee3955520afe5c470ff0f6405",
+      "isolated_native_match": "PASS",
+      "first_byte_mismatch": null
+    }
+  ],
+  "host_tests": {
+    "status": "PASS",
+    "compiler": "GCC 14.2.0",
+    "flags": "-O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Wall -Wextra",
+    "harness": "decomp/research/test_file11_three_isolated_20261117.c"
+  },
+  "checks_not_run": [
+    "canonical decomp.verify 782-C combined G2",
+    "decomp.inventory",
+    "full decomp.local_ci",
+    "file_11 translation-unit staged source/relocation build"
+  ],
+  "reason_not_run": "Shell environment has a byte-exact original mnsg baseline, but GitHub clone has blocked DNS; connected GitHub tools can read the tree but did not materialize a complete decomp checkout into the native host.",
+  "status": "RESEARCH_ONLY",
+  "note": "These are newly researched, unpromoted C functions; do not update accepted counts or official candidate registry without a validated combined stage."
+}
