@@ -369,6 +369,18 @@ class UnlockFlagsUITests(unittest.TestCase):
             flag.key in app.unlock_flag_widgets
             for flag in app.unlock_flag_section_rows[section]))
 
+    def test_idle_tick_uses_reader_transition_not_forced_offline_refresh(self):
+        app = self.app
+        self.assertIsNone(app.mem)
+        self.assertIsNone(app.jp_rdram)
+        with (patch.object(app, '_watch_japan_process_restart'),
+              patch.object(app, '_refresh_unlocks_on_reader_change') as poll,
+              patch.object(app, 'refresh_unlocks') as refresh,
+              patch.object(self.root, 'after')):
+            app.tick()
+            poll.assert_called_once_with()
+            refresh.assert_not_called()
+
     def test_disconnected_controls_do_not_write(self):
         app = self.app
         self._open_flags()
