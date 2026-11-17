@@ -5,6 +5,8 @@ from pathlib import Path
 from tkinter import ttk,filedialog
 
 from practice.entrances import extract_atlas,load_atlas,save_atlas,incoming,spawn_from_entry
+from practice.room_actors import extract_actors,load_actors,save_actors
+from practice.room_actor_ui import RoomActorBrowser
 from practice.paths import practice_data_dir
 from practice.scenes import SCENES,unidentified_scene_name
 
@@ -14,6 +16,9 @@ class EntranceMixin:
         self.entrance_atlas=None;self.entrance_load_error=None
         self.entrance_rows=[];self.entrance_destination=None
         self.entrance_loading=False;self.entrance_results=queue.Queue()
+        self.room_actor_atlas=None;self.room_actor_browser=None
+        try:self.room_actor_atlas=load_actors(practice_data_dir()/'room-actors.json')
+        except (OSError,ValueError,TypeError,KeyError):pass
         try:self.entrance_atlas=load_atlas(practice_data_dir()/'entrances.json')
         except (OSError,ValueError,TypeError,KeyError) as exc:self.entrance_load_error=str(exc)
 
@@ -29,6 +34,7 @@ class EntranceMixin:
         line=ttk.Frame(box);line.pack(fill='x')
         self.entrance_load_button=ttk.Button(line,text='Load original USA ROM…',command=self.load_entrance_rom)
         self.entrance_load_button.pack(side='left')
+        ttk.Button(line,text='Room actors…',command=self.show_room_actors).pack(side='left',padx=8)
         ttk.Button(line,text='Cancel scene request',command=self.cancel_scene_request).pack(side='right')
         self.entrance_note=tk.StringVar(value=self.entrance_summary())
         ttk.Label(box,textvariable=self.entrance_note,wraplength=900).pack(anchor='w',pady=3)
@@ -49,8 +55,12 @@ class EntranceMixin:
         self.entrance_note.set('Reading entrance data from the ROM…')
         def work():
             try:
-                atlas=extract_atlas(Path(path).read_bytes());save_atlas(practice_data_dir()/'entrances.json',atlas)
-                self.entrance_results.put(('ok',atlas))
+                rom=Path(path).read_bytes()
+                atlas=extract_atlas(rom)
+                actors=extract_actors(rom)
+                save_atlas(practice_data_dir()/'entrances.json',atlas)
+                save_actors(practice_data_dir()/'room-actors.json',actors)
+                self.entrance_results.put(('ok',(atlas,actors)))
             except (OSError,ValueError,TypeError,KeyError) as exc:self.entrance_results.put(('error',str(exc)))
         threading.Thread(target=work,daemon=True).start();self.root.after(60,self.poll_entrance_rom)
 
@@ -60,10 +70,21 @@ class EntranceMixin:
             self.root.after(60,self.poll_entrance_rom);return
         self.entrance_loading=False;self.entrance_load_button.state(['!disabled'])
         if kind=='ok':
-            self.entrance_atlas=value;self.entrance_load_error=None
+            if isinstance(value,tuple):self.entrance_atlas,self.room_actor_atlas=value
+            else:self.entrance_atlas=value
+            self.entrance_load_error=None
             self.draw_scene_list();self.refresh_entrance_choices()
             self.entrance_note.set(self.entrance_summary())
         else:self.entrance_note.set('Entrance ROM load failed: '+value)
+
+    def show_room_actors(self):
+        stage=getattr(self,'scene_selected',None)
+        browser=self.room_actor_browser
+        if browser is not None and browser.window.winfo_exists():
+            browser.refresh(self.room_actor_atlas,stage)
+            browser.window.lift()
+            return
+        self.room_actor_browser=RoomActorBrowser(self.root,self.room_actor_atlas,stage)
 
     def refresh_entrance_choices(self,destination=None):
         if not hasattr(self,'entrance_choice'):return
@@ -74,6 +95,9 @@ class EntranceMixin:
         index=self.entrance_choice.current()
         if self.entrance_destination==destination and 0<=index<len(self.entrance_rows):previous=self.entrance_rows[index]['id']
         self.entrance_destination=destination;self.entrance_rows=incoming(self.entrance_atlas,destination)
+        browser=self.room_actor_browser
+        if browser is not None and browser.window.winfo_exists():
+            browser.refresh(self.room_actor_atlas,destination)
         values=[]
         catalog=self.scene_catalog()
         for row in self.entrance_rows:
