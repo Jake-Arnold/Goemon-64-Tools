@@ -30,8 +30,15 @@ class Unlock:
     def __post_init__(self):
         # There is no address literal in the 34 UI definitions. The reviewed
         # registry owns addresses; the dataclass retains item-specific values.
-        canonical = guest_address(
-            'unlock:usa:' + self.slug, region='usa', width=1)
+        try:
+            canonical = guest_address(
+                'unlock:usa:' + self.slug, region='usa', width=1)
+        except KeyError:
+            if self.address is not None:
+                # Tool/test-created unknown fields are allowed as objects but
+                # never inherit a mapping or writer from the built-in table.
+                return
+            raise
         if self.address is not None and self.address != canonical:
             raise ValueError('Unlock address disagrees with canonical registry')
         object.__setattr__(self, 'address', canonical)
