@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Four wave-six file_11 functions passed strict central 346-C original-ROM G2 (research review only)
+
+- Reproduced original-VMA IDO native exact for 4 previously unpromoted USA functions (ROM `0x5A3D28`, `0x5A3E18`, `0x5AB904`, `0x5AC4E0`), 152 bytes; zero overlap with canonical 179-file11 fixture or the 82-function PR #23 backlog.
+- In separate complete native test build, the new opt-in **183-C file_11** adapter preserved all existing 179 and 134 original-order linked sections. **Strict central G2 passed 346/346 functions, 17,720 instruction bytes, exact 33,554,432-byte USA ROM**, all 8,825 semantic file11 relocations, 11 added object hashes pinned, zero unreviewed hashes. Original ELF 7,376 function identities and zero extra aliases; 7,017 ASM remaining.
+- The initial diagnostic G2 and a second strict pinned-object G2 both passed. ROM-free local CI in the temporary review checkout: **230 decomp tests** (one skipped), **185 ledger/verifier tests**, task/evidence and GCC ASan/UBSan fixture all passed; new fail-closed 183-stage tests 7/7. The temporary VM-ledger hash update follows the changed candidate verifier, not a change to the official ledger.
+- Source-only reproducibility archive (code, opt-in verifier patch, pinned fixture and full JSON proof): `goemon-file11-wave6-strict-346-verification-20261117.zip`, SHA-256 `e7a2a0a397d9f6c05be1286aad6d691c78ba405c467ffa30059ffbaa69b9bedb`. Details: `docs/USA_FILE11_WAVE6_346_NATIVE_G2_REVIEW_2026-11-17.md`, `decomp/results/file11_wave6_346_native_review_20261117.json`.
+- **Production remains 342 matching C**, not 346: opt-in source code and canonical proof promotion require separate integration. The 82 unpromoted PR #23 functions and Japanese full ROM were not verified in this combined gate.
+
 ### 2026-11-17 — Four new USA file_11 native-matching C candidates beyond the 342-function canonical build (research-only)
 
 - Deduplicated the latest 179-function canonical file_11 C fixture against PR #23's 114 formerly outstanding original ROM offsets: **32 have entered production**, leaving **82 distinct, unpromoted PR #23 functions / 3,512 original instruction bytes**. All 104 earlier PR #24 functions are already accounted for in canonical 342.
