@@ -31,6 +31,7 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:18@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:27@main",
         "https://tcrf.net/Mystical_Ninja_Starring_Goemon_(Nintendo_64)",
+        "practice/japanese_fields.py:93",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -65,6 +66,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/japanese_scene_probes.py",
+        "practice/japanese_scene_probes.py:50",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -99,6 +101,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/japanese_scene_probes.py",
+        "practice/japanese_scene_probes.py:55",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -135,7 +138,9 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:22@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:32@main",
         "practice/japanese_scene_probes.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/japanese_scene_probes.py:51",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:129"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -171,6 +176,7 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:19@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:28@main",
         "practice/japanese_scene_probes.py",
+        "practice/japanese_scene_probes.py:49",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -234,6 +240,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/japanese_scene_probes.py",
+        "practice/japanese_scene_probes.py:52",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -268,6 +275,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/japanese_scene_probes.py",
+        "practice/japanese_scene_probes.py:54",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -304,6 +312,7 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:30@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:82@main",
         "practice/japanese_scene_probes.py",
+        "practice/japanese_scene_probes.py:56",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -368,6 +377,7 @@
       "sources": [
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:29@main",
         "practice/japanese_scene_probes.py",
+        "practice/japanese_scene_probes.py:53",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -399,7 +409,8 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:23@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:33@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:130"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -433,6 +444,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/japanese_scene_probes.py",
+        "practice/japanese_scene_probes.py:58",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -470,6 +482,7 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:20@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:30@main",
         "practice/japanese_scene_probes.py",
+        "practice/japanese_scene_probes.py:57",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -505,6 +518,7 @@
       "sources": [
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:84@main",
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:48",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -539,6 +553,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:49",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -573,6 +588,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:50",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -607,6 +623,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:51",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -641,6 +658,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:52",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -675,6 +693,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:53",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -738,6 +757,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:54",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -798,7 +818,8 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:21@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:31@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:128"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -858,7 +879,8 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_unlocks.py:96"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -889,7 +911,8 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_unlocks.py:96"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -920,7 +943,8 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_unlocks.py:96"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -951,7 +975,8 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_unlocks.py:96"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -982,7 +1007,8 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_unlocks.py:96"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1014,7 +1040,8 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:131"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1046,7 +1073,8 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:131"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1078,7 +1106,8 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:131"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1110,7 +1139,8 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:131"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -2623,6 +2653,7 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:25@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:35@main",
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:55",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -2655,6 +2686,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:56",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -2689,6 +2721,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:62",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -2825,6 +2858,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:63",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -2961,6 +2995,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:64",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3029,7 +3064,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_unlocks.py:159"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -3063,7 +3099,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_unlocks.py:160"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -3097,6 +3134,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:65",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3231,6 +3269,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:72",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3265,6 +3304,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:73",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3386,6 +3426,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:74",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3449,6 +3490,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:75",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3483,6 +3525,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:76",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3517,6 +3560,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:77",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3551,6 +3595,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:78",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3585,6 +3630,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:83",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -3690,7 +3736,8 @@
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:79@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:81@main",
         "https://gamehacking.org/game/20438",
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:134"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -3719,7 +3766,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "https://gamehacking.org/game/20438"
+        "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:91"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -3748,7 +3796,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "https://gamehacking.org/game/20438"
+        "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:79"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -3777,7 +3826,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "https://gamehacking.org/game/20438"
+        "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:86"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -4241,7 +4291,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "https://gamehacking.org/game/20438"
+        "https://gamehacking.org/game/20438",
+        "practice/japanese_fields.py:89"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -4303,6 +4354,38 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80000000",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x80000000",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x80000000",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/japanese_fields.py:32",
+        "practice/japanese_fields.py:40",
+        "practice/japanese_scene_probes.py:42",
+        "practice/region_memory_crosswalk.py:32",
+        "practice/custom_watches.py:25"
+      ],
+      "updated": "2026-11-17",
+      "width": null
     },
     {
       "address": "0x80020F10",
@@ -4641,6 +4724,37 @@
       "width": null
     },
     {
+      "address": "0x8007BAD0",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8007BAD0",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8007BAD0",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/inspector.py:170",
+        "practice/inspector.py:169",
+        "practice/native_debug_watch.py:68",
+        "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
       "address": "0x8007BADC",
       "aliases": [],
       "category": "research_reference",
@@ -4719,6 +4833,35 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
+        "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
+      "address": "0x8007BAF4",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8007BAF4",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8007BAF4",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/inspector.py:170",
         "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117"
       ],
       "updated": "2026-11-17",
@@ -4895,6 +5038,35 @@
       "width": null
     },
     {
+      "address": "0x8015C5D8",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8015C5D8",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8015C5D8",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/checkpoints.py:20",
+        "practice/MEMORY_MAP.md:300@toolkit/unlocks-items-and-flags-20261117"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
       "address": "0x8015C5E0",
       "aliases": [],
       "category": "research_reference",
@@ -4917,6 +5089,36 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
+        "practice/MEMORY_MAP.md:287@toolkit/unlocks-items-and-flags-20261117",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:84@main"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
+      "address": "0x8015C5E0",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8015C5E0",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8015C5E0",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/inspector.py:131",
         "practice/MEMORY_MAP.md:287@toolkit/unlocks-items-and-flags-20261117",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:84@main"
       ],
@@ -4952,6 +5154,35 @@
       "width": null
     },
     {
+      "address": "0x8015C5E4",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8015C5E4",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8015C5E4",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/inspector.py:130",
+        "practice/MEMORY_MAP.md:288@toolkit/unlocks-items-and-flags-20261117"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
       "address": "0x8015C5E8",
       "aliases": [],
       "category": "research_reference",
@@ -4980,6 +5211,35 @@
       "width": null
     },
     {
+      "address": "0x8015C5E8",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8015C5E8",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8015C5E8",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/inspector.py:132",
+        "practice/MEMORY_MAP.md:289@toolkit/unlocks-items-and-flags-20261117"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
       "address": "0x8015C5EC",
       "aliases": [],
       "category": "research_reference",
@@ -5002,6 +5262,35 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
+        "practice/MEMORY_MAP.md:290@toolkit/unlocks-items-and-flags-20261117"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
+      "address": "0x8015C5EC",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8015C5EC",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8015C5EC",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/inspector.py:133",
         "practice/MEMORY_MAP.md:290@toolkit/unlocks-items-and-flags-20261117"
       ],
       "updated": "2026-11-17",
@@ -5092,6 +5381,37 @@
       "width": null
     },
     {
+      "address": "0x8015C6F0",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8015C6F0",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8015C6F0",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/story_progress.py:405",
+        "practice/story_progress.py:321",
+        "practice/story_progress.py:385",
+        "practice/MEMORY_MAP.md:56@toolkit/unlocks-items-and-flags-20261117"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
       "address": "0x8015C70B",
       "aliases": [],
       "category": "research_reference",
@@ -5148,6 +5468,65 @@
       "width": null
     },
     {
+      "address": "0x8015C70C",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8015C70C",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8015C70C",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/story_progress.py:405",
+        "practice/story_progress.py:321",
+        "practice/story_progress.py:385",
+        "practice/MEMORY_MAP.md:58@toolkit/unlocks-items-and-flags-20261117"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
+      "address": "0x8015C910",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8015C910",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8015C910",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/checkpoints.py:22"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
       "address": "0x8015CC18",
       "aliases": [],
       "category": "research_reference",
@@ -5170,6 +5549,35 @@
       "signed": null,
       "source_revision": "toolkit declarations",
       "sources": [
+        "practice/MEMORY_MAP.md:299@toolkit/unlocks-items-and-flags-20261117"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
+      "address": "0x8015CC18",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x8015CC18",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x8015CC18",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/checkpoints.py:23",
         "practice/MEMORY_MAP.md:299@toolkit/unlocks-items-and-flags-20261117"
       ],
       "updated": "2026-11-17",
@@ -5255,6 +5663,62 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:69@main"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
+      "address": "0x80168E90",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x80168E90",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x80168E90",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/story_progress.py:6"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
+      "address": "0x80168EF8",
+      "aliases": [],
+      "category": "research_reference",
+      "confidence": "reference_only",
+      "context": "Source-reference only; register detailed discovery manifest",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": null,
+      "endian": null,
+      "evidence": "Address-shaped literal in toolkit Python source; type/width/region not independently classified",
+      "id": "source:unclassified:0x80168EF8",
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Unclassified source address 0x80168EF8",
+      "owner": "Python declaration audit",
+      "region": "unknown",
+      "revision": "unknown",
+      "signed": null,
+      "source_revision": "toolkit declarations",
+      "sources": [
+        "practice/story_progress.py:7"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -5622,6 +6086,7 @@
       "source_revision": "chatgptweb/decomp research 2026-11-17",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+        "practice/checkpoints.py:31",
         "decomp/CONTINUE.md:48@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:4@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:14@chatgptweb/decomp",
@@ -5670,8 +6135,12 @@
         "practice/MEMORY_MAP.md:271@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:301@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:319@toolkit/unlocks-items-and-flags-20261117",
+        "practice/checkpoints.py:25",
         "practice/native_debug_watch.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/native_debug_watch.py:20",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:54",
+        "practice/story_progress.py:425"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -5704,8 +6173,13 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "practice/checkpoints.py:26",
+        "practice/japanese_scene_probes.py:50",
         "practice/native_debug_watch.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/native_debug_watch.py:26",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:59",
+        "practice/scene_controls.py:70"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -5736,8 +6210,14 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "practice/checkpoints.py:27",
+        "practice/inspector.py:166",
+        "practice/japanese_scene_probes.py:55",
         "practice/native_debug_watch.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/native_debug_watch.py:27",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:61",
+        "practice/scene_controls.py:45"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -5774,8 +6254,12 @@
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:25@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:32@main",
         "practice/MEMORY_MAP.md:309@toolkit/unlocks-items-and-flags-20261117",
+        "practice/checkpoints.py:32",
+        "practice/japanese_scene_probes.py:51",
         "practice/native_debug_watch.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/native_debug_watch.py:23",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:58"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -5804,7 +6288,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/native_debug_watch.py"
+        "practice/native_debug_watch.py",
+        "practice/native_debug_watch.py:22"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -5842,8 +6327,12 @@
         "practice/MEMORY_MAP.md:260@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:261@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:286@toolkit/unlocks-items-and-flags-20261117",
+        "practice/checkpoints.py:24",
+        "practice/japanese_scene_probes.py:49",
         "practice/native_debug_watch.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/native_debug_watch.py:24",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:55"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -5876,8 +6365,11 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "practice/inspector.py:163",
         "practice/native_debug_watch.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/native_debug_watch.py:21",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:62"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -5906,7 +6398,10 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:164",
+        "practice/japanese_scene_probes.py:52",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:57"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -5935,7 +6430,10 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/checkpoints.py:29",
+        "practice/japanese_scene_probes.py:54",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:60"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -5966,7 +6464,10 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:30@chatgptweb/decomp",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:82@main",
-        "practice/region_memory_crosswalk.py"
+        "practice/checkpoints.py:28",
+        "practice/japanese_scene_probes.py:56",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:63"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -5995,7 +6496,9 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/checkpoints.py:30",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:64"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6029,8 +6532,13 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:29@main",
         "practice/MEMORY_MAP.md:260@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:271@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:165",
+        "practice/japanese_scene_probes.py:53",
         "practice/native_debug_watch.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/native_debug_watch.py:28",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:56",
+        "practice/scene_controls.py:44"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -6117,7 +6625,9 @@
       "sources": [
         "practice/MEMORY_MAP.md:241@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:247@toolkit/unlocks-items-and-flags-20261117",
-        "practice/native_debug_watch.py"
+        "practice/inspector.py:167",
+        "practice/native_debug_watch.py",
+        "practice/native_debug_watch.py:29"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -6266,7 +6776,9 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:33@main",
         "practice/MEMORY_MAP.md:273@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:336@toolkit/unlocks-items-and-flags-20261117",
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:176",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:68"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6295,7 +6807,11 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:137",
+        "practice/japanese_scene_probes.py:58",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:66",
+        "practice/scene_controls.py:75"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -6333,8 +6849,14 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:30@main",
         "practice/MEMORY_MAP.md:242@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:285@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:124",
+        "practice/inspector.py:240",
+        "practice/japanese_scene_probes.py:57",
         "practice/native_debug_watch.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/native_debug_watch.py:25",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:65",
+        "practice/scene_controls.py:74"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -6363,7 +6885,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:69"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6392,7 +6915,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:70"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6421,7 +6945,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:71"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -6450,7 +6975,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:72"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6486,7 +7012,9 @@
         "practice/MEMORY_MAP.md:291@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:323@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:44",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:73"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6522,7 +7050,9 @@
         "practice/MEMORY_MAP.md:292@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:324@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:45",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:74"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6558,7 +7088,9 @@
         "practice/MEMORY_MAP.md:294@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:325@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:46",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:75"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6594,7 +7126,9 @@
         "practice/MEMORY_MAP.md:293@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:326@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:47",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:76"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6630,7 +7164,9 @@
         "practice/MEMORY_MAP.md:295@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:327@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:48",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:77"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6665,7 +7201,9 @@
         "practice/MEMORY_MAP.md:303@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:335@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:340@toolkit/unlocks-items-and-flags-20261117",
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:200",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:67"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6696,7 +7234,9 @@
       "sources": [
         "practice/MEMORY_MAP.md:253@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
-        "practice/story_progress.py"
+        "practice/checkpoints.py:21",
+        "practice/story_progress.py",
+        "practice/story_progress.py:5"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6727,7 +7267,9 @@
       "sources": [
         "practice/MEMORY_MAP.md:253@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
-        "practice/story_progress.py"
+        "practice/checkpoints.py:21",
+        "practice/story_progress.py",
+        "practice/story_progress.py:5"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6758,7 +7300,9 @@
       "sources": [
         "practice/MEMORY_MAP.md:253@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
-        "practice/region_memory_crosswalk.py"
+        "practice/checkpoints.py:21",
+        "practice/region_memory_crosswalk.py",
+        "practice/story_progress.py:5"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6789,7 +7333,9 @@
       "sources": [
         "practice/MEMORY_MAP.md:253@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
-        "practice/story_progress.py"
+        "practice/checkpoints.py:21",
+        "practice/story_progress.py",
+        "practice/story_progress.py:5"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6820,7 +7366,9 @@
       "sources": [
         "practice/MEMORY_MAP.md:253@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:298@toolkit/unlocks-items-and-flags-20261117",
-        "practice/story_progress.py"
+        "practice/checkpoints.py:21",
+        "practice/story_progress.py",
+        "practice/story_progress.py:5"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6854,7 +7402,10 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
-        "practice/inspector.py"
+        "practice/inspector.py",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -6888,6 +7439,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -6922,6 +7476,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/story_progress.py"
       ],
       "updated": "2026-11-17",
@@ -6956,6 +7513,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/story_progress.py"
       ],
       "updated": "2026-11-17",
@@ -6990,6 +7550,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -7024,6 +7587,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -7058,6 +7624,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/story_progress.py"
       ],
       "updated": "2026-11-17",
@@ -7092,6 +7661,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/unlocks.py"
       ],
       "updated": "2026-11-17",
@@ -7126,6 +7698,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -7160,6 +7735,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/story_progress.py"
       ],
       "updated": "2026-11-17",
@@ -7194,6 +7772,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/story_progress.py"
       ],
       "updated": "2026-11-17",
@@ -7228,6 +7809,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -7262,6 +7846,9 @@
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:266@toolkit/unlocks-items-and-flags-20261117",
+        "practice/inspector.py:173",
+        "practice/inspector.py:214",
+        "practice/inspector.py:72",
         "practice/story_progress.py"
       ],
       "updated": "2026-11-17",
@@ -13089,6 +13676,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:296@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:49",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13124,6 +13712,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:296@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:50",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13161,6 +13750,7 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:35@main",
         "practice/MEMORY_MAP.md:296@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:51",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13196,6 +13786,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:296@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:52",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13231,6 +13822,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:297@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:53",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13266,6 +13858,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:297@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:54",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13301,6 +13894,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:297@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:55",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13336,6 +13930,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:297@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:56",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13370,6 +13965,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:57",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13404,6 +14000,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:58",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13438,6 +14035,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:59",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13472,6 +14070,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:60",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13506,6 +14105,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:61",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13540,6 +14140,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:62",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13574,6 +14175,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:63",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13608,6 +14210,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:64",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13642,6 +14245,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:65",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13680,6 +14284,7 @@
         "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:42@main",
         "practice/MEMORY_MAP.md:57@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:66",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13714,6 +14319,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:67",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13748,6 +14354,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:68",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13782,6 +14389,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:69",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13818,6 +14426,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:70",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13848,7 +14457,11 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:204",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:78",
+        "practice/story_progress.py:322",
+        "practice/story_progress.py:392"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -13883,6 +14496,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:212",
+        "practice/inspector.py:71",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13913,7 +14528,11 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/inspector.py:207",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:79",
+        "practice/story_progress.py:323",
+        "practice/story_progress.py:393"
       ],
       "updated": "2026-11-17",
       "width": 4
@@ -13947,6 +14566,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:59@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:73",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -13981,6 +14601,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:74",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -14017,6 +14638,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:75",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -14051,6 +14673,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:76",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -14085,6 +14708,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/inspector.py",
+        "practice/inspector.py:77",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -14121,6 +14745,7 @@
         "practice/MEMORY_MAP.md:124@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:239@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:78",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -14156,6 +14781,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:255@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:79",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -14191,6 +14817,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:255@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:80",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -14226,6 +14853,7 @@
       "sources": [
         "practice/MEMORY_MAP.md:255@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:81",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -14263,6 +14891,7 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:81@main",
         "practice/MEMORY_MAP.md:255@toolkit/unlocks-items-and-flags-20261117",
         "practice/inspector.py",
+        "practice/inspector.py:82",
         "practice/region_memory_crosswalk.py",
         "practice/unlocks.py"
       ],
@@ -14979,6 +15608,7 @@
       "source_revision": "chatgptweb/decomp research 2026-11-17",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+        "practice/inspector.py:143",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:25@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:93@chatgptweb/decomp",
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:33@chatgptweb/decomp",
@@ -15149,6 +15779,7 @@
       "source_revision": "chatgptweb/decomp research 2026-11-17",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+        "practice/inspector.py:146",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:92@chatgptweb/decomp"
       ],
@@ -15244,6 +15875,7 @@
       "source_revision": "chatgptweb/decomp research 2026-11-17",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+        "practice/inspector.py:149",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:93@chatgptweb/decomp"
       ],
       "updated": "2026-11-17",
@@ -15895,11 +16527,189 @@
     "practice/MEMORY_MAP.md:75@toolkit/unlocks-items-and-flags-20261117",
     "practice/MEMORY_MAP.md:76@toolkit/unlocks-items-and-flags-20261117",
     "practice/MEMORY_MAP.md:93@toolkit/unlocks-items-and-flags-20261117",
+    "practice/checkpoints.py:20",
+    "practice/checkpoints.py:21",
+    "practice/checkpoints.py:22",
+    "practice/checkpoints.py:23",
+    "practice/checkpoints.py:24",
+    "practice/checkpoints.py:25",
+    "practice/checkpoints.py:26",
+    "practice/checkpoints.py:27",
+    "practice/checkpoints.py:28",
+    "practice/checkpoints.py:29",
+    "practice/checkpoints.py:30",
+    "practice/checkpoints.py:31",
+    "practice/checkpoints.py:32",
+    "practice/custom_watches.py:25",
     "practice/inspector.py",
+    "practice/inspector.py:124",
+    "practice/inspector.py:130",
+    "practice/inspector.py:131",
+    "practice/inspector.py:132",
+    "practice/inspector.py:133",
+    "practice/inspector.py:137",
+    "practice/inspector.py:143",
+    "practice/inspector.py:146",
+    "practice/inspector.py:149",
+    "practice/inspector.py:163",
+    "practice/inspector.py:164",
+    "practice/inspector.py:165",
+    "practice/inspector.py:166",
+    "practice/inspector.py:167",
+    "practice/inspector.py:169",
+    "practice/inspector.py:170",
+    "practice/inspector.py:173",
+    "practice/inspector.py:176",
+    "practice/inspector.py:200",
+    "practice/inspector.py:204",
+    "practice/inspector.py:207",
+    "practice/inspector.py:212",
+    "practice/inspector.py:214",
+    "practice/inspector.py:240",
+    "practice/inspector.py:44",
+    "practice/inspector.py:45",
+    "practice/inspector.py:46",
+    "practice/inspector.py:47",
+    "practice/inspector.py:48",
+    "practice/inspector.py:49",
+    "practice/inspector.py:50",
+    "practice/inspector.py:51",
+    "practice/inspector.py:52",
+    "practice/inspector.py:53",
+    "practice/inspector.py:54",
+    "practice/inspector.py:55",
+    "practice/inspector.py:56",
+    "practice/inspector.py:57",
+    "practice/inspector.py:58",
+    "practice/inspector.py:59",
+    "practice/inspector.py:60",
+    "practice/inspector.py:61",
+    "practice/inspector.py:62",
+    "practice/inspector.py:63",
+    "practice/inspector.py:64",
+    "practice/inspector.py:65",
+    "practice/inspector.py:66",
+    "practice/inspector.py:67",
+    "practice/inspector.py:68",
+    "practice/inspector.py:69",
+    "practice/inspector.py:70",
+    "practice/inspector.py:71",
+    "practice/inspector.py:72",
+    "practice/inspector.py:73",
+    "practice/inspector.py:74",
+    "practice/inspector.py:75",
+    "practice/inspector.py:76",
+    "practice/inspector.py:77",
+    "practice/inspector.py:78",
+    "practice/inspector.py:79",
+    "practice/inspector.py:80",
+    "practice/inspector.py:81",
+    "practice/inspector.py:82",
+    "practice/japanese_fields.py:32",
+    "practice/japanese_fields.py:40",
+    "practice/japanese_fields.py:48",
+    "practice/japanese_fields.py:49",
+    "practice/japanese_fields.py:50",
+    "practice/japanese_fields.py:51",
+    "practice/japanese_fields.py:52",
+    "practice/japanese_fields.py:53",
+    "practice/japanese_fields.py:54",
+    "practice/japanese_fields.py:55",
+    "practice/japanese_fields.py:56",
+    "practice/japanese_fields.py:62",
+    "practice/japanese_fields.py:63",
+    "practice/japanese_fields.py:64",
+    "practice/japanese_fields.py:65",
+    "practice/japanese_fields.py:72",
+    "practice/japanese_fields.py:73",
+    "practice/japanese_fields.py:74",
+    "practice/japanese_fields.py:75",
+    "practice/japanese_fields.py:76",
+    "practice/japanese_fields.py:77",
+    "practice/japanese_fields.py:78",
+    "practice/japanese_fields.py:79",
+    "practice/japanese_fields.py:83",
+    "practice/japanese_fields.py:86",
+    "practice/japanese_fields.py:89",
+    "practice/japanese_fields.py:91",
+    "practice/japanese_fields.py:93",
     "practice/japanese_scene_probes.py",
+    "practice/japanese_scene_probes.py:42",
+    "practice/japanese_scene_probes.py:49",
+    "practice/japanese_scene_probes.py:50",
+    "practice/japanese_scene_probes.py:51",
+    "practice/japanese_scene_probes.py:52",
+    "practice/japanese_scene_probes.py:53",
+    "practice/japanese_scene_probes.py:54",
+    "practice/japanese_scene_probes.py:55",
+    "practice/japanese_scene_probes.py:56",
+    "practice/japanese_scene_probes.py:57",
+    "practice/japanese_scene_probes.py:58",
     "practice/native_debug_watch.py",
+    "practice/native_debug_watch.py:20",
+    "practice/native_debug_watch.py:21",
+    "practice/native_debug_watch.py:22",
+    "practice/native_debug_watch.py:23",
+    "practice/native_debug_watch.py:24",
+    "practice/native_debug_watch.py:25",
+    "practice/native_debug_watch.py:26",
+    "practice/native_debug_watch.py:27",
+    "practice/native_debug_watch.py:28",
+    "practice/native_debug_watch.py:29",
+    "practice/native_debug_watch.py:68",
     "practice/region_memory_crosswalk.py",
+    "practice/region_memory_crosswalk.py:128",
+    "practice/region_memory_crosswalk.py:129",
+    "practice/region_memory_crosswalk.py:130",
+    "practice/region_memory_crosswalk.py:131",
+    "practice/region_memory_crosswalk.py:134",
+    "practice/region_memory_crosswalk.py:32",
+    "practice/region_memory_crosswalk.py:54",
+    "practice/region_memory_crosswalk.py:55",
+    "practice/region_memory_crosswalk.py:56",
+    "practice/region_memory_crosswalk.py:57",
+    "practice/region_memory_crosswalk.py:58",
+    "practice/region_memory_crosswalk.py:59",
+    "practice/region_memory_crosswalk.py:60",
+    "practice/region_memory_crosswalk.py:61",
+    "practice/region_memory_crosswalk.py:62",
+    "practice/region_memory_crosswalk.py:63",
+    "practice/region_memory_crosswalk.py:64",
+    "practice/region_memory_crosswalk.py:65",
+    "practice/region_memory_crosswalk.py:66",
+    "practice/region_memory_crosswalk.py:67",
+    "practice/region_memory_crosswalk.py:68",
+    "practice/region_memory_crosswalk.py:69",
+    "practice/region_memory_crosswalk.py:70",
+    "practice/region_memory_crosswalk.py:71",
+    "practice/region_memory_crosswalk.py:72",
+    "practice/region_memory_crosswalk.py:73",
+    "practice/region_memory_crosswalk.py:74",
+    "practice/region_memory_crosswalk.py:75",
+    "practice/region_memory_crosswalk.py:76",
+    "practice/region_memory_crosswalk.py:77",
+    "practice/region_memory_crosswalk.py:78",
+    "practice/region_memory_crosswalk.py:79",
+    "practice/region_unlocks.py:159",
+    "practice/region_unlocks.py:160",
+    "practice/region_unlocks.py:96",
+    "practice/scene_controls.py:44",
+    "practice/scene_controls.py:45",
+    "practice/scene_controls.py:70",
+    "practice/scene_controls.py:74",
+    "practice/scene_controls.py:75",
     "practice/story_progress.py",
+    "practice/story_progress.py:321",
+    "practice/story_progress.py:322",
+    "practice/story_progress.py:323",
+    "practice/story_progress.py:385",
+    "practice/story_progress.py:392",
+    "practice/story_progress.py:393",
+    "practice/story_progress.py:405",
+    "practice/story_progress.py:425",
+    "practice/story_progress.py:5",
+    "practice/story_progress.py:6",
+    "practice/story_progress.py:7",
     "practice/unlocks.py",
     "research/usa_external_memory_leads.json",
     "research/usa_external_memory_leads.json: gamehacking_usa",
