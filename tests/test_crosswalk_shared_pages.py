@@ -29,7 +29,11 @@ class CrosswalkSharedPagesTests(unittest.TestCase):
         self.assertEqual(len(weapon), 1)
         self.assertIn("Equipped weapon", weapon[0].name)
         self.assertIn("USA 0x8015C607", weapon[0].source)
-        self.assertNotIn(0x800CD2D6, [r.addr for r in rows])
+        # The existing scene-probe lead can still be shown, but the
+        # crosswalk must not create a second or confirmed pause entry.
+        disputed = [r for r in rows if r.addr == 0x800CD2D6]
+        self.assertLessEqual(len(disputed), 1)
+        self.assertTrue(all('user-confirmed' not in r.source for r in disputed))
 
     def test_story_progress_uses_explicit_japan_address_and_mask(self):
         addr = 0x80161DFC
