@@ -8,12 +8,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from practice.inspector import INVENTORY
 from practice.hex_edit import checked_write, get_policy
+from practice.address_registry import guest_address
 
 
 @dataclass(frozen=True)
 class Unlock:
     label: str
-    address: int
+    address: int | None
     group: str
     values: tuple[int, ...] = (0, 1)
     levels: tuple[str, ...] = ('Off', 'On')
@@ -26,42 +27,51 @@ class Unlock:
         import re
         return re.sub(r'[^a-z0-9]+', '_', self.label.lower()).strip('_')
 
+    def __post_init__(self):
+        # There is no address literal in the 34 UI definitions. The reviewed
+        # registry owns addresses; the dataclass retains item-specific values.
+        canonical = guest_address(
+            'unlock:usa:' + self.slug, region='usa', width=1)
+        if self.address is not None and self.address != canonical:
+            raise ValueError('Unlock address disagrees with canonical registry')
+        object.__setattr__(self, 'address', canonical)
+
 
 UNLOCKS = (
-    Unlock('Goemon in party', 0x8015C69F, 'Party'),
-    Unlock('Ebisumaru in party', 0x8015C6A3, 'Party'),
-    Unlock('Sasuke in party', 0x8015C6A7, 'Party'),
-    Unlock('Yae in party', 0x8015C6AB, 'Party'),
-    Unlock('Goemon pipe upgrade', 0x8015C6AF, 'Weapon upgrades', (0,1,2), ('Normal', 'Silver', 'Gold')),
-    Unlock('Ebisumaru hammer upgrade', 0x8015C6B3, 'Weapon upgrades', (0,1,2), ('Normal', 'Silver', 'Gold')),
-    Unlock('Sasuke kunai upgrade', 0x8015C6B7, 'Weapon upgrades', (0,1,2), ('Normal', 'Double', 'Gold')),
-    Unlock('Yae katana upgrade', 0x8015C6BB, 'Weapon upgrades', (0,1,2), ('Normal', 'Silver', 'Gold')),
-    Unlock('Chain Pipe', 0x8015C6BF, 'Weapons', (0,2), ('Off', 'On')),
-    Unlock('Meat Saw Hammer', 0x8015C6C3, 'Weapons'),
-    Unlock('Fire Cracker Bomb', 0x8015C6C7, 'Weapons'),
-    Unlock('Flute', 0x8015C6CB, 'Weapons'),
-    Unlock('Windup Camera', 0x8015C6D3, 'Weapons'),
-    Unlock('Ice Kunai', 0x8015C6D7, 'Weapons'),
-    Unlock('Bazooka', 0x8015C6DB, 'Weapons'),
-    Unlock('Medal of Flames', 0x8015C6DF, 'Abilities'),
-    Unlock('Sudden Impact', 0x8015C6EF, 'Abilities'),
-    Unlock('Mini Ebisumaru', 0x8015C6F3, 'Abilities'),
-    Unlock('Super Jump', 0x8015C6F7, 'Abilities'),
-    Unlock('Magic Mermaid', 0x8015C6FB, 'Abilities'),
-    Unlock('Triton Shell', 0x8015C6FF, 'Items and keys'),
-    Unlock('Gold Key', 0x8015C713, 'Items and keys'),
-    Unlock('Cucumber', 0x8015C717, 'Items and keys'),
-    Unlock("Lord's Pass", 0x8015C703, 'Items and keys'),
-    Unlock('Silver Fortune Doll progress', 0x8015C707, 'Items and keys', (0,1,2,3,4), ('0/4','1/4','1/2','3/4','4/4 (display)')),
-    Unlock('Sasuke battery 1 collected', 0x8015C609, 'Items and keys', bit_mask=0x20),
-    Unlock("Achilles' Heel", 0x8015C70F, 'Items and keys'),
-    Unlock('Red fish count', 0x8015C71B, 'Fish counts', quantity=True, max_value=8),
-    Unlock('Blue fish count', 0x8015C723, 'Fish counts', quantity=True, max_value=3),
-    Unlock('Yellow fish count', 0x8015C71F, 'Fish counts', quantity=True, max_value=5),
-    Unlock('Star', 0x8015C85B, 'Miracle items'),
-    Unlock('Moon', 0x8015C85F, 'Miracle items'),
-    Unlock('Flower', 0x8015C863, 'Miracle items'),
-    Unlock('Snowflake', 0x8015C866, 'Miracle items'),
+    Unlock('Goemon in party', None, 'Party'),
+    Unlock('Ebisumaru in party', None, 'Party'),
+    Unlock('Sasuke in party', None, 'Party'),
+    Unlock('Yae in party', None, 'Party'),
+    Unlock('Goemon pipe upgrade', None, 'Weapon upgrades', (0,1,2), ('Normal', 'Silver', 'Gold')),
+    Unlock('Ebisumaru hammer upgrade', None, 'Weapon upgrades', (0,1,2), ('Normal', 'Silver', 'Gold')),
+    Unlock('Sasuke kunai upgrade', None, 'Weapon upgrades', (0,1,2), ('Normal', 'Double', 'Gold')),
+    Unlock('Yae katana upgrade', None, 'Weapon upgrades', (0,1,2), ('Normal', 'Silver', 'Gold')),
+    Unlock('Chain Pipe', None, 'Weapons', (0,2), ('Off', 'On')),
+    Unlock('Meat Saw Hammer', None, 'Weapons'),
+    Unlock('Fire Cracker Bomb', None, 'Weapons'),
+    Unlock('Flute', None, 'Weapons'),
+    Unlock('Windup Camera', None, 'Weapons'),
+    Unlock('Ice Kunai', None, 'Weapons'),
+    Unlock('Bazooka', None, 'Weapons'),
+    Unlock('Medal of Flames', None, 'Abilities'),
+    Unlock('Sudden Impact', None, 'Abilities'),
+    Unlock('Mini Ebisumaru', None, 'Abilities'),
+    Unlock('Super Jump', None, 'Abilities'),
+    Unlock('Magic Mermaid', None, 'Abilities'),
+    Unlock('Triton Shell', None, 'Items and keys'),
+    Unlock('Gold Key', None, 'Items and keys'),
+    Unlock('Cucumber', None, 'Items and keys'),
+    Unlock("Lord's Pass", None, 'Items and keys'),
+    Unlock('Silver Fortune Doll progress', None, 'Items and keys', (0,1,2,3,4), ('0/4','1/4','1/2','3/4','4/4 (display)')),
+    Unlock('Sasuke battery 1 collected', None, 'Items and keys', bit_mask=0x20),
+    Unlock("Achilles' Heel", None, 'Items and keys'),
+    Unlock('Red fish count', None, 'Fish counts', quantity=True, max_value=8),
+    Unlock('Blue fish count', None, 'Fish counts', quantity=True, max_value=3),
+    Unlock('Yellow fish count', None, 'Fish counts', quantity=True, max_value=5),
+    Unlock('Star', None, 'Miracle items'),
+    Unlock('Moon', None, 'Miracle items'),
+    Unlock('Flower', None, 'Miracle items'),
+    Unlock('Snowflake', None, 'Miracle items'),
 )
 
 GROUPS = ('Party', 'Weapon upgrades', 'Weapons', 'Abilities', 'Items and keys', 'Fish counts', 'Miracle items')
