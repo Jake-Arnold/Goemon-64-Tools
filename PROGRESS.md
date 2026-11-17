@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — USA file11 strict four-function formal C promotion: 342 → 346
+
+- **Deduplication:** Preserved all 342 prior USA functions, including 179 in file_11. Added exactly four PR #46 original-address functions absent from production and the 82 pending PR #23 group: `0x5A3D28` (40 B), `0x5A3E18` (40 B), `0x5AB904` (36 B), `0x5AC4E0` (36 B). 152 matching bytes in total. Versioned adapter `decomp/file11_183_stage.py` and 134-chunk pinned fixture; no changes to previously promoted source bodies.
+- **Native G2:** Completed two full original-ROM verifier passes in the authenticated upstream/toolchain review checkout. Final strict run had 11 pinned new object hashes and zero diagnostic allowances: **346/346**, **17,720 exact MIPS code bytes**, identical 33,554,432-byte USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, all **8,825 semantic file_11 relocations** and **134 exact linked C/ASM extents**.
+- **ELF inventory:** Original 7,376 positive-size function identities unchanged, total 359 C (including 13 original upstream), 7,017 assembly entries and zero extra aliases. Raw ELF relocation record ordering is not claimed byte-identical; semantic relocations are identical.
+- **Published:** Canonical `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json` and reconciled VM residual proof ledger updated atomically with tests and this progress record. Preserved 342 exact reports as `combined_342_20261117.json` and `inventory_342_20261117.json`; PR #46 proof remains independently reviewable. Production proof: `file11_183_production_promotion_20261117.json`.
+- **Checks:** Seven fail-closed stage tests and complete ROM-free local CI (230 decomp Python tests / 185 verifier-ledger tests, task evidence, ASan/UBSan host fixture) passed in the strict review checkout. Final canonical promotion checkout passed local CI: 230 decomp tests, 185 verifier/ledger tests, task/evidence validation and GCC ASan/UBSan.
+- **Boundaries:** No extra 82 pending PR #23 candidates promoted. Japanese rev-0's independently verified 34-C result is unchanged. No gameplay warp/character toolkit behaviour changed. No ROM, build artifact, savestate or proprietary compiler committed.
+
 ### 2026-11-17 — Four wave-six file_11 functions passed strict central 346-C original-ROM G2 (research review only)
 
 - Reproduced original-VMA IDO native exact for 4 previously unpromoted USA functions (ROM `0x5A3D28`, `0x5A3E18`, `0x5AB904`, `0x5AC4E0`), 152 bytes; zero overlap with canonical 179-file11 fixture or the 82-function PR #23 backlog.

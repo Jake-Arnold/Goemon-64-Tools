@@ -2,7 +2,8 @@
 
 ## Current region-separated matching-C checkpoints (17 November 2026)
 
-- **USA canonical:** 342 matching-C functions / 17,568 original code bytes in the existing `decomp.verify` and inventory proof (unmodified by the Japanese import). The 315-function checkpoint below is historical.
+- **USA canonical:** 346 matching-C functions / 17,720 original code bytes; `file_11` contains 183 C functions (5,336 bytes). The full native 33,554,432-byte USA ROM, 8,825 semantic `file_11` relocations, 7,376 function identities and 7,017 remaining ASM entries are verified. The 342- and 315-function checkpoints below are historical; Japanese rev-0 results remain separately verified.
+- **USA remaining:** 82 PR #23 exact original-address research functions (3,512 bytes) remain unpromoted. Strict combined 346 proof covers only the four new wave-six functions.
 - **Japan rev-0:** 34 matching-C functions / 1,912 original code bytes / 30 translation units. Selectively imported from `chatgptweb/japanese-decomp-port` into `chatgptweb/decomp`; the Japanese manifest lives at `decomp/regions/japan_0.json`, and the regional build runner is `decomp/build_japan_thirtyfour_c.sh`. Keep the two regional original-ROM hash gates and counts separate.
 - **Acceptance:** The supplied 34-C code package was independently rebuilt from pinned upstream original Japanese source and ROM on 2026-11-17: exact 32 MiB expanded and 16 MiB retail ROMs, strict 34-C ELF ownership/source/relocation verifier PASS; eight ROM-free guardrail tests PASS. All 30 checked-in Japanese C source blob SHAs equal the independently verified package. The imported branch's distinct build wrapper and full combined USA local CI were not rerun. No gameplay or native PC recompilation claim.
 - **Next research:** Five further Japanese 36-byte isolated candidates at `0x3A7AC`, `0x3A7D0`, `0x3AA34`, `0x3AA74`, `0x3AA98` remain excluded until a fresh 39-function complete Japanese ROM and strict ELF proof passes.

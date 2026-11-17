@@ -215,9 +215,14 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # The canonical 342-C proof supersedes 315, while the old proof remains archived.
-        self.assertEqual(current['comparison']['matched_functions'],342)
-        self.assertEqual(current['comparison']['matched_function_bytes'],17568)
+        # Current 346-C proof supersedes 342, and both 342/315 reports remain archived.
+        self.assertEqual(current['comparison']['matched_functions'],346)
+        self.assertEqual(current['comparison']['matched_function_bytes'],17720)
+        preserved342=json.loads((ROOT/'results/combined_342_20261117.json').read_text())
+        self.assertEqual(preserved342['comparison']['matched_functions'],342)
+        self.assertEqual(preserved342['comparison']['matched_function_bytes'],17568)
+        self.assertEqual(preserved342['verifier_source_sha256_lf'],
+                         '512dcb943e7fbe3c5ecdaf715aff9e8b499fa4dbb96f4d94810833d112b7aa3e')
         preserved315=json.loads((ROOT/'results/combined_315_preserved_20261116.json').read_text())
         self.assertEqual(preserved315['comparison']['matched_functions'],315)
         self.assertEqual(preserved315['comparison']['matched_function_bytes'],16660)
@@ -237,7 +242,7 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(historic303['verifier_source_sha256_lf'],
                          '0b4556a01128510da5a23ef36e6e55094339e69a7bb070b5b45c213128231769')
         self.assertEqual(current['verifier_source_sha256_lf'],
-                         '512dcb943e7fbe3c5ecdaf715aff9e8b499fa4dbb96f4d94810833d112b7aa3e')
+                         '182f0596aeba9229ffef403473201bf79c91c03b9fc9697d59cb3194b2d29190')
         self.assertEqual(preserved315['verifier_source_sha256_lf'],
                          '93e91fa551668a51fbc45e24ba39c73c2c60cc4e2a854d43040c4f0b209d7737')
         # The certified historical 210-C proof retains its original hash.
