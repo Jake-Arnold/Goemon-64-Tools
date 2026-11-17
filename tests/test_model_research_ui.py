@@ -87,4 +87,45 @@ class ResearchViewTests(unittest.TestCase):
         finally:root.destroy()
 
 
+    def test_source_linked_rig_and_channel_table(self):
+        root=tk.Tk();root.withdraw()
+        try:
+            dialog=ModelResearchDialog(root,region='usa',stage=353,actor_id=0x82)
+            self.assertIn('Goemon weapon fragment',dialog.player_choices['values'][0])
+            with tempfile.TemporaryDirectory() as folder:
+                rom=Path(folder)/'rom.z64';rom.write_bytes(b'synthetic')
+                dialog.rom_path=rom
+                mesh=MeshProbe(triangles=(((0,0,0),(1,0,0),(0,1,0)),),
+                               rgb=((80,150,110),),commands=0,vertex_loads=0,
+                               opcodes=(),warnings=(),ended=True)
+                raw=dict(kind='animation_channel',offset=0x6c8)
+                immediate=dict(kind='immediate',value=1.0)
+                node=dict(index=0,source_offset=0x2a518,graphics_pointer='0x00000000',
+                          triangles=0,scale=[immediate]*3,rotation=[raw]*3,
+                          translation=[raw]*3,right=1,left=0)
+                report=dict(node_count=14,mesh_node_count=13,triangles=460,
+                            immediate_scale_count=42,unresolved_rotation_channels=39,
+                            unresolved_translation_channels=27,nodes=[node]*14)
+                with patch('practice.model_research_ui.reconstruct_traced_rig',return_value=(report,mesh)) as mocked:
+                    dialog.preview_linked_rig()
+                    deadline=time.monotonic()+3
+                    while dialog.loading and time.monotonic()<deadline:
+                        root.update()
+                        time.sleep(.01)
+                    self.assertFalse(dialog.loading)
+                    mocked.assert_called_once_with(b'synthetic','usa')
+                self.assertIn('460 triangles',dialog.status.get())
+                self.assertIn('39 rotation',dialog.status.get())
+                self.assertIn('no pose',dialog.status.get())
+                self.assertEqual(dialog.file_id.get(),'0x120')
+                self.assertEqual(dialog.segment.get(),'0x09')
+                child=dialog.inspect_rig_channels()
+                self.assertIsNotNone(child)
+                self.assertEqual(len(child.winfo_children()[0].winfo_children()[-1].get_children()),14)
+                child.destroy()
+            dialog.window.destroy()
+        finally:
+            root.destroy()
+
+
 if __name__=='__main__':unittest.main()

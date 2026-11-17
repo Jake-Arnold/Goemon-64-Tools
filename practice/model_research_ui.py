@@ -15,6 +15,7 @@ from tkinter import ttk, filedialog
 
 from practice.model_research import extract_rom_probe, extract_player_fragment, extract_traced_player_limb_bundle
 from practice.model_object_probe_ui import ModelObjectProbeDialog
+from practice.skeleton_rig import reconstruct_traced_rig
 
 
 class ModelResearchDialog:
@@ -24,6 +25,7 @@ class ModelResearchDialog:
         self.region, self.stage, self.actor_id = region, stage, actor_id
         self.rom_path = None
         self.mesh = None
+        self.rig_report = None
         self.result_queue = queue.SimpleQueue()
         self.loading = False
         self.yaw, self.pitch, self.zoom = 0.68, -0.32, 1.0
@@ -69,9 +71,9 @@ class ModelResearchDialog:
         presets = ttk.Frame(body)
         presets.pack(fill='x', pady=(0, 7))
         ttk.Label(presets, text='Verified player graphics file family:').pack(side='left')
-        self.player_slot = tk.StringVar(value='Slot 0 — file 0x120')
-        self.player_choices = ttk.Combobox(presets, state='readonly', width=23,
-            values=('Slot 0 — file 0x120', 'Slot 1 — file 0x124',
+        self.player_slot = tk.StringVar(value='Slot 0 — Goemon weapon fragment (0x120)')
+        self.player_choices = ttk.Combobox(presets, state='readonly', width=38,
+            values=('Slot 0 — Goemon weapon fragment (0x120)', 'Slot 1 — file 0x124',
                     'Slot 2 — file 0x128', 'Slot 3 — file 0x12C'),
             textvariable=self.player_slot)
         self.player_choices.pack(side='left', padx=6)
@@ -81,7 +83,15 @@ class ModelResearchDialog:
         self.trace_button = ttk.Button(presets, text='Preview traced 4-part skeleton',
                                        command=self.preview_traced_skeleton)
         self.trace_button.pack(side='left', padx=7)
-        ttk.Label(presets, text='Not an NPC mapping; slot identity and complete model unverified.').pack(side='left', padx=10)
+        ttk.Label(presets, text='Slot-0 fragment: visual identification by user; not the whole model.').pack(side='left', padx=10)
+        rigrow=ttk.Frame(body)
+        rigrow.pack(fill='x', pady=(0,7))
+        self.rig_button = ttk.Button(rigrow, text='Preview linked 14-node skeleton (460 triangles)', command=self.preview_linked_rig)
+        self.rig_button.pack(side='left')
+        self.rig_detail_button = ttk.Button(rigrow, text='Inspect rig channels…', command=self.inspect_rig_channels)
+        self.rig_detail_button.pack(side='left', padx=8)
+        self.rig_detail_button.state(['disabled'])
+        ttk.Label(rigrow, text='Unposed structure; 0xB100 scales decode to 1.0, stream channels not yet applied.').pack(side='left', padx=8)
         self.status = tk.StringVar(value='Select your own ROM and an explicit resource command span. No guessed actor resources are supplied.')
         ttk.Label(body, textvariable=self.status, wraplength=860).pack(anchor='w', pady=(0, 6))
         self.canvas = tk.Canvas(body, background='#171a23', highlightthickness=0)
@@ -122,6 +132,7 @@ class ModelResearchDialog:
         self.decode_button.state(['disabled'])
         self.player_button.state(['disabled'])
         self.trace_button.state(['disabled'])
+        self.rig_button.state(['disabled'])
         self.status.set('Decoding original ROM resource; no guest-memory writes…')
         def work():
             try:
@@ -146,6 +157,7 @@ class ModelResearchDialog:
         self.decode_button.state(['disabled'])
         self.player_button.state(['disabled'])
         self.trace_button.state(['disabled'])
+        self.rig_button.state(['disabled'])
         self.status.set('Validating original player graphics table and decoding one segment-09 research fragment…')
         def work():
             try:
@@ -167,6 +179,7 @@ class ModelResearchDialog:
         self.decode_button.state(['disabled'])
         self.player_button.state(['disabled'])
         self.trace_button.state(['disabled'])
+        self.rig_button.state(['disabled'])
         self.status.set('Verifying Project64-captured limb roots against your original regional ROM…')
         def work():
             try:
@@ -176,6 +189,60 @@ class ModelResearchDialog:
                 self.result_queue.put(('error', str(exc)))
         threading.Thread(target=work, daemon=True).start()
         self.window.after(60, self.poll_result)
+
+    def preview_linked_rig(self):
+        """Read-only ROM source hierarchy; no animation pose or NPC attribution."""
+        if self.loading:
+            return
+        if self.rom_path is None:
+            self.status.set('Choose the original regional ROM first')
+            return
+        self.loading = True
+        for button in (self.decode_button,self.player_button,self.trace_button,self.rig_button):
+            button.state(['disabled'])
+        self.status.set('Traversing verified 14-node player skeleton, resolving 13 segment-09 meshes…')
+        def work():
+            try:
+                result = reconstruct_traced_rig(self.rom_path.read_bytes(), self.region)
+                self.result_queue.put(('rig', result))
+            except (OSError, ValueError) as exc:
+                self.result_queue.put(('error', str(exc)))
+        threading.Thread(target=work, daemon=True).start()
+        self.window.after(60, self.poll_result)
+
+    def inspect_rig_channels(self):
+        report = self.rig_report
+        if not report:
+            self.status.set('Preview the linked source rig before inspecting its channels')
+            return
+        window = tk.Toplevel(self.window)
+        window.title(f'{self.region} source skeleton fields (not an animation pose)')
+        window.geometry('1150x470')
+        outer = ttk.Frame(window, padding=10)
+        outer.pack(fill='both', expand=True)
+        ttk.Label(outer, wraplength=1100, text=(
+            'Source file 0x123 contains 14 connected skeleton nodes. Scale 0xB100 is '
+            'source-decoded as 1.0. Values prefixed @ are animation-stream offsets, '
+            'NOT direct rotations or translations. Bone matrices are not applied.')).pack(anchor='w', pady=(0,8))
+        columns=('node','resource','gfx','faces','scale','rotation','translation','links')
+        table=ttk.Treeview(outer,columns=columns,show='headings')
+        for key,heading,width in (
+            ('node','Node',50),('resource','File offset',90),('gfx','Graphics list',120),
+            ('faces','Tris',50),('scale','Decoded scale',145),
+            ('rotation','Rotation channels',205),('translation','Translation channels',205),
+            ('links','Child links',115)):
+            table.heading(key,text=heading)
+            table.column(key,width=width,stretch=key in ('rotation','translation','scale'))
+        def fmt(field):
+            return ', '.join((f'{v["value"]:g}' if v['kind']=='immediate'
+                             else f'@0x{v["offset"]:X}') for v in field)
+        for node in report['nodes']:
+            table.insert('', 'end', values=(
+                node['index'], f'0x{node["source_offset"]:05X}', node['graphics_pointer'],
+                node['triangles'], fmt(node['scale']), fmt(node['rotation']),
+                fmt(node['translation']), f'R {node["right"]:+d}, L {node["left"]:+d}'))
+        table.pack(fill='both',expand=True)
+        return window
 
     def poll_result(self):
         if not self.window.winfo_exists():
@@ -189,10 +256,27 @@ class ModelResearchDialog:
         self.decode_button.state(['!disabled'])
         self.player_button.state(['!disabled'])
         self.trace_button.state(['!disabled'])
-        if kind != 'ok':
+        self.rig_button.state(['!disabled'])
+        if kind not in ('ok', 'rig'):
             self.status.set(f'Resource probe failed: {result}')
             return
         report, self.mesh = result
+        self.rig_report = report if kind == 'rig' else None
+        self.rig_detail_button.state(['!disabled'] if self.rig_report else ['disabled'])
+        if kind == 'rig':
+            self.file_id.set('0x120')
+            self.start.set('')
+            self.end.set('')
+            self.segment.set('0x09')
+            self.reset_view()
+            self.status.set(f'SOURCE RIG — {self.region}, {report["node_count"]} linked nodes, '
+                            f'{report["mesh_node_count"]} valid mesh lists, {report["triangles"]} triangles. '
+                            f'{report["immediate_scale_count"]} scale fields decode to 1.0; '
+                            f'{report["unresolved_rotation_channels"]} rotation and '
+                            f'{report["unresolved_translation_channels"]} translation stream channels '
+                            'are unresolved. Artificial colours, no pose or textures. '
+                            'Not a verified NPC actor-to-model mapping.')
+            return
         self.file_id.set(hex(report['file_id']))
         if 'roots' in report:
             # A bundle has four independent display lists, not one continuous
@@ -216,7 +300,10 @@ class ModelResearchDialog:
                             ' Textures and pose matrices require RT64. NOT an NPC actor-ID mapping.')
             return
         provenance = (f'Verified player resource table, slot {report["slot"]}; ' if 'slot' in report else 'Manual research range; ')
-        self.status.set(f'RESEARCH ONLY — {provenance}{self.region} file 0x{report["file_id"]:03X} segment 0x{report["segment"]:02X}, {report["triangles"]} triangles, {report["commands"]} commands. Fragment only; NOT linked to selected NPC actor ID.')
+        slot_label = (' Visually identified as Goemon weapon fragment (user observation);'
+                      if report.get('slot') == 0 else '')
+        self.status.set(f'RESEARCH ONLY — {provenance}{self.region} file 0x{report["file_id"]:03X} segment 0x{report["segment"]:02X}, {report["triangles"]} triangles, {report["commands"]} commands.' +
+                        slot_label + ' Fragment only; NOT linked to selected NPC actor ID.')
 
     def reset_view(self):
         self.yaw, self.pitch, self.zoom = 0.68, -0.32, 1.0

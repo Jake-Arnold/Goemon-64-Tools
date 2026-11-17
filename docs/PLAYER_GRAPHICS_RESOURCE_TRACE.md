@@ -108,3 +108,15 @@ A bounded scanner finds **122 groups** of four skeleton graphic pointers (24 byt
 `extract_traced_player_limb_bundle` now includes metadata-only `skeleton_records` with the candidate count, source offsets, exact-capture match, and capture index. The **Preview traced 4-part skeleton** GUI status displays this cross-reference after authentication. No need to paste the original object bytes again; no captured raw game bytes are stored or committed.
 
 The source-capture match is independently checked in both supplied regional original ROMs by the focused tests (**25/25 PASS** under Linux/Xvfb). No full-texture RT64 rendering or original animation-matrix decode is claimed.
+
+## Full source-linked skeleton rig and observed slot-0 weapon fragment
+
+The slot-0 90-triangle fragment (file `0x120`) was visually identified by the user as **Goemon's weapon**. This is visual feedback on that specific preview, not proof that the entire file `0x120` or all 14 linked bones form the weapon or a static NPC model.
+
+In the same authenticated USA/Japan rev-0 file `0x123`, an `AnimatedSkeleton` wrapper at `0x2A590` contains flags `0x80000125`, stream pointer `0x07029980`, and hierarchy root `0x0702A518`. Following signed 0x18-byte Skeleton child offsets finds **14 nodes / 13 F3DEX meshes / 460 triangles**. The 13 original-USA segment-09 display lists are all readable from file `0x120`; Japan rev-0 equivalents resolve identically with graphics offsets changed by `-0x60`.
+
+Disassembly of original MIPS animation helpers establishes immediate `0xB100` as unity scale: subtract `0xB000` to 256, then multiply by 1/256. All 42 scale components are 1.0. **39 rotation and 27 translation components** instead index compressed animation data. They must not be interpreted directly as degrees, coordinates, or 122 sequential animation frames.
+
+The toolkit now provides **Preview linked 14-node skeleton (460 triangles)** and **Inspect rig channels…** alongside the original player slot and four-part research previews. The meshes remain unposed, artificially coloured and untextured. A live emulator/RT64 transform correlation is required for accurate animation and full character identification.
+
+Full methodology, memory/ROM source offsets, usage and limits: [SKELETON_RIG.md](SKELETON_RIG.md). Local verification: 30/30 focused tests PASS across supplied authentic USA/Japan ROMs and Linux/Xvfb UI.
