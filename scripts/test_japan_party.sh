@@ -26,6 +26,7 @@ esac
 # Fail immediately with a clear syntax report for any practice module,
 # including GUI files that might otherwise be imported late in test discovery.
 "${PYTHON}" -m compileall -q practice
+"${PYTHON}" -m scripts.sync_address_catalogue --check
 
 "${PYTHON}" -m unittest \
   tests.test_japanese_fields \
