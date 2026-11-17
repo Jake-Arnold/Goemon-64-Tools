@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Goemon Nisitenma-Ichigo numbered ROM file inventory",
+  "description": "Each CSV row is one numbered file slot in USA and Japan rev-0. Original and expanded offsets refer to separate images. Both sizes are bytes. Empty slots occupy zero bytes. The file number is not a semantic filename.",
+  "type": "object",
+  "required": [
+    "File",
+    "Segment classification",
+    "USA stored bytes",
+    "USA expanded bytes",
+    "USA compression",
+    "USA ROM offset",
+    "USA expanded ROM offset",
+    "Japan stored bytes",
+    "Japan expanded bytes",
+    "Japan compression",
+    "Japan ROM offset",
+    "Japan expanded ROM offset",
+    "JP minus USA stored bytes",
+    "JP minus USA expanded bytes"
+  ],
+  "properties": {
+    "File": {
+      "type": "string",
+      "pattern": "^file_[1-9][0-9]*$"
+    },
+    "Segment classification": {
+      "type": "string",
+      "enum": [
+        "Opaque binary/data",
+        "Empty slot",
+        "Executable: static overlay",
+        "Executable: TLB overlay"
+      ]
+    },
+    "USA stored bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "USA expanded bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "USA compression": {
+      "type": "string",
+      "enum": [
+        "LZKN64",
+        "Uncompressed",
+        "Empty"
+      ]
+    },
+    "USA ROM offset": {
+      "$ref": "#/$defs/offset"
+    },
+    "USA expanded ROM offset": {
+      "$ref": "#/$defs/offset"
+    },
+    "Japan stored bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "Japan expanded bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "Japan compression": {
+      "type": "string",
+      "enum": [
+        "LZKN64",
+        "Uncompressed",
+        "Empty"
+      ]
+    },
+    "Japan ROM offset": {
+      "$ref": "#/$defs/offset"
+    },
+    "Japan expanded ROM offset": {
+      "$ref": "#/$defs/offset"
+    },
+    "JP minus USA stored bytes": {
+      "type": "integer"
+    },
+    "JP minus USA expanded bytes": {
+      "type": "integer"
+    }
+  },
+  "$defs": {
+    "offset": {
+      "type": "string",
+      "pattern": "^0x[0-9A-F]{8}$"
+    }
+  },
+  "additionalProperties": false
+}

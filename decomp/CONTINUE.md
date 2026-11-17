@@ -1,5 +1,7 @@
 # Decomp continuation runbook
 
+For fast USA/Japan numbered-ROM file sizes and offsets, see [ROM_FILE_INVENTORY.md](ROM_FILE_INVENTORY.md), [the 1,311-file CSV](data/rom_file_inventory.csv), and [the partial semantic catalogue](data/rom_file_semantics.json). This is metadata research, not a new matching-C promotion.
+
 ## Current region-separated matching-C checkpoints (17 November 2026)
 
 - **USA canonical:** 720 matching-C functions / 31,184 original code bytes; `file_11` contains 183 C functions (5,336 bytes). The full native 33,554,432-byte USA ROM, 8,825 semantic `file_11` relocations, 7,376 function identities and 6,643 remaining ASM entries are verified. The 346-, 342- and 315-function checkpoints below are historical; Japanese rev-0 results remain separately verified.

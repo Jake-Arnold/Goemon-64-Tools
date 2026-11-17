@@ -1,0 +1,80 @@
+{
+  "format": "goemon-rom-file-semantics-v1",
+  "scope": "Partial, evidence-backed descriptions of numbered Nisitenma-Ichigo files; omitted file IDs remain uncharacterized.",
+  "source_region": "USA",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "segments": {
+    "file_11": {
+      "status": "partially_understood",
+      "load_group": "static_overlay_1",
+      "usa_guest_vram": "0x801CB460",
+      "japan_guest_vram": "0x801D0B90",
+      "known_functions": [
+        "Character-selection and availability helpers",
+        "Character-switch-related callbacks and actor callback stubs",
+        "Camera functions (partly researched; many remain assembly)"
+      ],
+      "evidence": [
+        "decomp/CONTINUE.md",
+        "decomp/LOCAL_MNSG_REVIEW.md",
+        "docs/USA_FILE11_WAVE6_346_PRODUCTION_PROMOTION_2026-11-17.md"
+      ],
+      "limitations": "183 USA matching-C functions do not establish the meaning of all routines; not every actor callback has recovered gameplay semantics."
+    },
+    "file_12": {
+      "status": "partially_understood",
+      "load_group": "static_overlay_2",
+      "usa_guest_vram": "0x8020D2A0",
+      "japan_guest_vram": "0x80212090",
+      "known_functions": [
+        "Actor descriptor registration wrappers",
+        "Spatial grid actor placement activation and range-based deactivation",
+        "Actor initialization, update and task retirement paths",
+        "Some dialogue callbacks"
+      ],
+      "evidence": [
+        "docs/USA_FILE12_ENTITY_SPATIAL_LIFECYCLE_2026-11-16.md",
+        "docs/USA_FILE12_385C_ADJACENCY_2026-11-17.md",
+        "decomp/CONTINUE.md"
+      ],
+      "limitations": "374 exact descriptor wrappers are repetitive registrations, not the actor-spawning algorithm; major lifecycle routines remain assembly."
+    },
+    "file_13": {
+      "status": "partially_understood",
+      "load_group": "static_overlay_1",
+      "usa_guest_vram": "0x801CB460",
+      "japan_guest_vram": "0x801D0B90",
+      "known_functions": [
+        "Two Impact HP helpers"
+      ],
+      "evidence": [
+        "decomp/CONTINUE.md",
+        "decomp/README.md"
+      ],
+      "limitations": "A few identified functions do not establish the entire overlay's role."
+    },
+    "file_43": {
+      "status": "partially_understood",
+      "load_group": "tlb_overlay",
+      "known_functions": [
+        "Key/lock and key-spawn state logic"
+      ],
+      "evidence": [
+        "decomp/README.md",
+        "decomp/plans/EXECUTOR_PROTOCOL.md"
+      ],
+      "limitations": "The entire file is not characterized; key-spawn candidate acceptance differs by routine."
+    },
+    "file_53": {
+      "status": "research_lead",
+      "load_group": "tlb_overlay",
+      "known_functions": [
+        "Candidate Bank A cutscene event-bit tests and sets in scene-dependent code"
+      ],
+      "evidence": [
+        "docs/IGA_CUTSCENE_LEADS.md"
+      ],
+      "limitations": "Original disassembly shows relevant calls, not a complete file purpose or universal interpretation of Bank A event IDs."
+    }
+  }
+}

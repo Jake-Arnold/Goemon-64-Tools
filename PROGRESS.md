@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-17 — Reproducible USA/Japan numbered-ROM-file lookup
+
+- **Change:** Added `decomp/data/rom_file_inventory.csv` for all 1,311 file-table slots per ROM (1,084 populated and 227 empty), with original cartridge offsets/sizes, decompressed offsets/sizes, compression status, semantic-safe segment classification and per-region differences. Added the CSV schema, `decomp/rom_file_inventory.py` reproducibility tool, `decomp/ROM_FILE_INVENTORY.md` usage guide, and separate evidence-linked partial role catalogue `decomp/data/rom_file_semantics.json`. No ROM bytes or game assets are checked in.
+- **Source validation:** The generator authenticated the pinned retail USA SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66` and normalized Japan rev-0 SHA-1 `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b`, decoded the `Nisitenma-Ichigo` original file tables and LZKN64 file lengths, and reproduced the entire CSV byte-for-byte (1,311/1,311 rows per region). The Git blob identity was cross-checked against the input CSV.
+- **Tests:** Five ROM-free Python unit tests PASS (byte order, table validation, empty slots, classification and CSV diffs); full original-ROM inventory `--check` PASS using the uploaded USA/JP ROMs and supplied Python 3.12/LZKN64 environment. No original MIPS C/ROM rebuild or full `decomp.local_ci` was run for this documentation/metadata-only change.
+- **Limits:** File sizes/offsets are exact for the pinned ROMs; gameplay roles are partial and evidence-qualified. USA matching-C remains 720 functions / 31,184 bytes, Japan remains 34 functions / 1,912 bytes; manifests and proof reports are unchanged.
+- **Next:** Maintain the semantics catalogue from documented overlay/asset research without promoting guesses to confirmed file roles.
+
 ### 2026-11-17 — Autonomous Goemon decomp session orchestration skills (ChatGPT/Codex)
 
 - **Change:** Add `.agents/skills/goemon-autonomous-decomp/SKILL.md` as the bounded ROM → candidate → original IDO exact-unit proof → full-ROM G2 → inventory/relocations → full local CI → verified promotion coordinator. Add `.agents/skills/goemon-github-source-bridge/SKILL.md` for public GitHub connector/shell DNS mismatch, checkout source materialization, Git blob verification and lease-protected connector publication. Extend `goemon-input-reproduce` for persistent ChatGPT Project ROM/runtime sources, register all 23 skills in the discovery README, and route autonomous tasks from `AGENTS.md`.
