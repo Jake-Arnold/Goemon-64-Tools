@@ -2,6 +2,8 @@
 
 ## 2026-11-17 — v0.11.42 Japanese Event Sessions and Super Pass receipt
 
+- **Final verification (commit `0c8843dec1626fb4a2f1b06d5b1f7b0dddd6b4aa`):** Linux `bash scripts/test_japan_party.sh` passed **383 non-GUI tests (1 skipped)** and **170 Tk GUI tests (0 failures)** via [Linux CI run](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44136167395). Windows report/updater/address-registry suite passed **79 tests** via [Windows CI run](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44136167353). Both platforms ran `python -m scripts.sync_address_catalogue --write` followed by `--check`: **463 records, 359 readable, 0 new, 0 conflicts**, exact sync succeeded. All synthetic, not live in-emulator gameplay verification. Direct local `git diff --check` and independent emulator operations were not run in this environment.
+
 - **CI correction:** The first Linux and Windows synthetic runs found one legacy remote-discovery alias duplication. The merge now recognises canonical registry aliases without duplicating the USA Super Pass row or granting write permissions. Regression recheck required.
 - **GUI test correction:** Region-switch test asserts disabled USA-only states before switching back to Japan and active JP controls afterward.
 - **Baseline GUI expectations:** The State comparison and Dashboard smoke suites now assert the corrected Japanese default and candidate-label wording. The initial complete GUI run was 170 tests, 3 failures; these tests and region-switch sequencing were updated.
