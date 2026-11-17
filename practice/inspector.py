@@ -113,6 +113,18 @@ def get_watches(ram, snapshot, scene_names=None):
     scene_names = scene_names or {}
     watches = []
     def add(name, addr, width, decode=None, validator=None, source='reverse-engineered'):
+        # Every named fixed inspector watch resolves the registered guest
+        # address. Dynamic per-player object/task offsets below are not
+        # static globals and are intentionally handled separately.
+        key = "watch:usa:" + re.sub(
+            r"[^a-z0-9]+", "_", name.lower()).strip("_")[:76]
+        try:
+            addr = guest_address(key, region="usa", width=width)
+        except KeyError:
+            if not any(field[0] == name for field in INVENTORY):
+                raise
+            # Inventory entries have already been resolved from their own
+            # canonical inspector:usa:* keys before this reader is called.
         try:
             v = _read_int(ram, addr, width)
             valid = validator is None or validator(v)
