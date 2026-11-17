@@ -53,6 +53,9 @@ esac
   tests.test_japan_story_progress \
   tests.test_native_checkpoints \
   tests.test_region_unlocks \
+  tests.test_region_memory_crosswalk \
+  tests.test_region_crosswalk_agent \
+  tests.test_crosswalk_shared_pages \
   tests.test_rom_layout_audit \
   tests.test_rom_context_audit \
   tests.test_japan_live_memory_edit \

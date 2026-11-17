@@ -1,5 +1,12 @@
 # Goemon Speedrun Tools v0.11.36 — simplified navigation and unrestricted memory comparison test
 
+## Cross-region memory mapping in the existing tabs (draft stacked on PR #35)
+
+Japan and USA use the same Live Memory, Unlocks and Story Progress pages. The reciprocal memory-data crosswalk lives in `practice/region_memory_crosswalk.py`, not a new Japanese diagnostics panel. Source-verified and user-observed static fields absent from the original Japanese live table appear in shared Live Memory; the 34 regional Unlocks continue using their existing explicitly sourced `practice/region_unlocks.py` mappings. Japanese saved-event/Plasma candidate addresses appear only as clearly labelled **read-only bit observations** in the existing Story Progress table. Guessed bits are not identified as completed events or made editable.
+
+Agents can look up known mappings and scoped unknown candidates with `python3 scripts/crosswalk_address.py --source usa --address 0x8015C60C --mask 0x20`. This produces no gameplay-memory writes. The confirmed Snowflake +0x57F1 exception overrides arithmetic; suspected pause `0x800CD2D6` and Sasuke Battery 1 remain unverified. Dynamic player pointers, script VM and overlay/Impact addresses must not be inferred from +0x57F0. This draft is based on the Japanese diagnostics removal in PR #35 and supersedes the added crosswalk UI in draft PR #43.
+
+
 ## v0.11.36 — Remove duplicate JP diagnostics and comparison presets (16 November 2026)
 
 **Final code verification:** [Linux CI 43948425965](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948425965) passed **313 synthetic non-GUI tests (312 passed, 1 skipped) and 139 Tk GUI tests**. [Windows CI 43948426011](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/43948426011) passed **33 portable tests**. Both tested code commit `aaa2b9ff5a71f7520cbff8d45c63b83d4f519dd0`; final documentation changes only. Real-game Linux and Windows Tk integration has not been exercised.
