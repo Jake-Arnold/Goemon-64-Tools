@@ -43,6 +43,7 @@ esac
   tests.test_japan_pid_restart_watch \
   tests.test_gui_smoke_runner \
   tests.test_toolkit_version \
+  tests.test_updater \
   tests.test_linux_launcher \
   tests.test_launcher_preferences \
   tests.test_japan_project64 \
@@ -115,6 +116,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_updater_ui \
     tests.test_entrance_ui \
     tests.test_japan_recomp_write_ui \
     -v
@@ -142,6 +144,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_updater_ui \
     tests.test_entrance_ui \
     tests.test_japan_recomp_write_ui \
     -v
