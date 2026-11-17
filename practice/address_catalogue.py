@@ -198,16 +198,25 @@ def consolidate_entries(records):
                     sources.append(source)
             if row.get("evidence") and row["evidence"] not in evidence:
                 evidence.append(row["evidence"])
-            for history in row.get("confidence_sources", ()):
-                if history not in histories:
-                    histories.append(history)
-            own = {
-                "confidence": row["confidence"],
-                "source_id": row["id"],
-                "evidence": row.get("evidence", ""),
-            }
-            if own not in histories:
-                histories.append(own)
+            previous = row.get("confidence_sources", ())
+            # A previously consolidated row already contains its source
+            # evidence. Do NOT append its joined summary as fresh evidence on
+            # each sync, otherwise --write / --check is non-idempotent.
+            if previous:
+                for history in previous:
+                    identity = (history.get("source_id"),
+                                history.get("confidence"))
+                    if not any((item.get("source_id"), item.get("confidence"))
+                               == identity for item in histories):
+                        histories.append(history)
+            else:
+                own = {
+                    "confidence": row["confidence"],
+                    "source_id": row["id"],
+                    "evidence": row.get("evidence", ""),
+                }
+                if own not in histories:
+                    histories.append(own)
             for ref in row.get("mips_refs", ()):
                 if ref and ref not in refs:
                     refs.append(ref)
