@@ -16,6 +16,15 @@ class DialogTest(unittest.TestCase):
             self.assertEqual(len(dialog.table.get_children()),0)
             dialog.refresh(None, 353)
             self.assertIn('No actor atlas', dialog.status.get())
+            jp=atlas_fixture()
+            jp['payload']['region']='japan_0'
+            jp['payload']['format']='goemon-japan-0-room-actors-v1'
+            dialog.refresh(atlas_fixture(),353,jp)
+            dialog.region.set('japan_0')
+            dialog.query.set('')
+            dialog.redraw()
+            self.assertIn('japan_0 stage 353',dialog.status.get())
+            self.assertEqual(len(dialog.table.get_children()),4)
             dialog.window.destroy()
         finally:root.destroy()
 
