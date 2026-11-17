@@ -138,6 +138,31 @@ class UnlocksMixin:
                 bind_wheel(child)
         bind_wheel(canvas)
         bind_wheel(body)
+        # Linux/X11 sends Button-4/5 or touchpad wheel events to whichever
+        # descendant is under the pointer. Dynamic Tk children and themed
+        # controls can bypass a widget's own binding. Route them at root
+        # level only when the pointer is inside this Items canvas.
+        def route_items_wheel(event):
+            if (self.notebook.select() != str(self.unlock_tab) or
+                    self.unlock_sections.select() != str(self.unlock_items_page)):
+                return None
+            widget = getattr(event, 'widget', None)
+            while widget is not None:
+                if widget is canvas:
+                    return wheel(event)
+                widget = getattr(widget, 'master', None)
+            return None
+        self._unlock_global_wheel = route_items_wheel
+        for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
+            self.root.bind_all(sequence, route_items_wheel, add='+')
+        self.unlock_canvas.bind(
+            '<Configure>',
+            lambda event: (
+                canvas.itemconfigure(win, width=event.width),
+                canvas.configure(scrollregion=canvas.bbox('all'))))
+        self.root.after_idle(
+            lambda: canvas.winfo_exists() and canvas.configure(
+                scrollregion=canvas.bbox('all')))
 
         # Flag controls are individual on/off buttons beside every flag.
         # Build rows lazily when this page opens to keep GUI startup fast.
