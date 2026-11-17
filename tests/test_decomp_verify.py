@@ -1126,7 +1126,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertTrue(result['comparison']['full_rom_match'])
         verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
         self.assertEqual(result['verifier_source_sha256_lf'],
-                         '512dcb943e7fbe3c5ecdaf715aff9e8b499fa4dbb96f4d94810833d112b7aa3e')
+                         '182f0596aeba9229ffef403473201bf79c91c03b9fc9697d59cb3194b2d29190')
         self.assertEqual(hashlib.sha256(verifier).hexdigest(),
                          json.loads((ROOT/'decomp/results/vm_residual_inventory.json').read_text())['current_sources']['verifier_sha256'])
         expected={f['name']:f for f in claimed_functions(manifest)}
@@ -1143,10 +1143,10 @@ class DecompVerificationTests(unittest.TestCase):
             sources.add(manifest['overlay_file43_stage']['source'])
         sources.update(stage['source'] for stage in manifest_file12_stages(manifest))
         if manifest.get('overlay_file11_stage') is not None:
-            from decomp import overlay_file11, file11_143_stage, file11_144_stage, file11_152_stage, file11_179_stage
+            from decomp import overlay_file11, file11_143_stage, file11_144_stage, file11_152_stage, file11_179_stage, file11_183_stage
             from decomp.research import usa_file11_noop_groups
-            if file11_stage_mode(manifest) in (143,144,152,179):
-                adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage,179:file11_179_stage}[file11_stage_mode(manifest)]
+            if file11_stage_mode(manifest) in (143,144,152,179,183):
+                adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage,179:file11_179_stage,183:file11_183_stage}[file11_stage_mode(manifest)]
                 sources.update('research/file11_143_candidate/'+chunk['name']+'.c'
                                for chunk in adapter.load_fixture()['chunks'] if chunk['kind']=='c')
             else:
@@ -1162,7 +1162,7 @@ class DecompVerificationTests(unittest.TestCase):
             else:
                 if name.startswith('research/file11_143_candidate/'):
                     from decomp import file11_143_stage, file11_144_stage, file11_152_stage
-                    adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage,179:file11_179_stage}[file11_stage_mode(manifest)]
+                    adapter = {143:file11_143_stage,144:file11_144_stage,152:file11_152_stage,179:file11_179_stage,183:file11_183_stage}[file11_stage_mode(manifest)]
                     stem=name.rsplit('/',1)[-1].removesuffix('.c')
                     data=next(chunk['source'].encode('utf-8') for chunk in adapter.load_fixture()['chunks'] if chunk.get('name')==stem)
                 else:

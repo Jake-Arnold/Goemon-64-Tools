@@ -1,0 +1,17 @@
+# Four additional USA file_11 C functions: complete strict 346-function G2 review
+
+**Date:** 2026-11-17. **Review branch:** PR #46. **Official production remains 342**, unchanged by this evidence commit.
+
+The four functions at original USA ROM offsets `0x5A3D28`, `0x5A3E18`, `0x5AB904` and `0x5AC4E0` (40 + 40 + 36 + 36 = **152 bytes**) were first verified using pinned IDO 5.3 original-VMA compiler/linker tests and the complete 906-function overlay boundary index. They were not already present in the 179-function canonical file_11 fixture or the 82 outstanding PR #23 research candidates.
+
+A separate, opt-in **183-file11-function** stage preserved all 179 existing production functions and replaced only these four original assembly slices. A complete fresh USA central `decomp.verify` build passed **346/346 C functions, 17,720 matching instruction bytes and an exact 33,554,432-byte original USA ROM**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
+
+**Strict rerun:** after an exploratory matching build, **11** formerly unpinned generated object digests were pinned to their exact verified SHA-256s, the diagnostic exception removed, and a second complete native G2 was run using the authenticated pristine baseline cache. It again passed **346/346** with no unreviewed object hashes. `file_11` is **183 functions / 5,336 bytes**, with **134** original VMA/object extents and **8,825/8,825** identical semantic relocation records. Raw ELF relocation record ordering is not represented as byte-identical.
+
+**ELF inventory:** original **7,376** positive-size FUNC identities unchanged; **359** combined C including 13 pre-existing upstream, **7,017** assembly entries, **zero** extra positive-size aliases.
+
+**Regression:** 7/7 new fail-closed 183-stage tests (duplicate names, changed source, overlapping extents and unsupported stage), 3/3 prior research guards, and full `decomp.local_ci` in the temporary review checkout: **230** decomp tests (one skipped), **185** verifier/ledger tests, task/evidence validation, GCC ASan/UBSan host fixture. The historic VM ledger's verifier fingerprint was updated **only in that temporary checkout** to match the review verifier source; the canonical ledger was not changed.
+
+**Reproducibility:** local pinned user ROM and `mnsg` upstream commit `7e2029c5`; IDO 5.3, MIPS binutils, archived Python 3.12 dependencies; private `uv` wrapper reused the previously supplied archive without downloading. Download the source-only bundle `goemon-file11-wave6-strict-346-verification-20261117.zip` from the project conversation. It includes the 183-stage adapter and pinned fixture, a minimal verifier opt-in patch, exact 346 G2 and inventory JSON, local CI log, seven regression tests, and SHA-256 manifest. Bundle SHA-256: `e7a2a0a397d9f6c05be1286aad6d691c78ba405c467ffa30059ffbaa69b9bedb`. No ROM, ELF, objects, generated original assembly, compiler binaries, assets or savestates are included or committed.
+
+**Promotion restriction:** This is an independently successful **combined native review**, **not a canonical promotion**. The canonical manifest, `results/combined.json`, `results/inventory.json` and production count stay at **342**. A later production promotion must land the opt-in stage/fixture, reconcile the source-fingerprint ledger and atomically publish the canonical results on the base branch. The 82 other PR #23 candidates and Japanese whole-ROM proof are separate and were not included.
