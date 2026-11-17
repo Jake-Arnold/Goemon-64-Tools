@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import patch
 
 from practice.toolkit import Toolkit, parse_args
-from practice.updater import UpdateStatus
+from practice.updater import UpdateStatus, VersionTarget
 
 
 class UpdaterUITests(unittest.TestCase):
@@ -57,7 +57,66 @@ class UpdaterUITests(unittest.TestCase):
         app._handle_update_result(
             False, UpdateStatus('current', 'a' * 40, 'a' * 40), None)
         self.assertIsNone(app._update_ready)
-        self.assertIn('Up to date', app.update_status.get())
+        self.assertIn('Already running', app.update_status.get())
+
+    def test_refresh_catalogue_offers_main_test_and_tag(self):
+        app = self.app
+        versions = (
+            VersionTarget('branch', 'main', 'a' * 40),
+            VersionTarget('branch', 'toolkit/test-flags', 'b' * 40),
+            VersionTarget('tag', 'v0.11.36', 'c' * 40),
+        )
+        app._handle_catalog_result('list', (versions, versions[0]), None)
+        self.assertEqual(
+            tuple(app.update_version_box['values']),
+            tuple(v.label for v in versions))
+        self.assertEqual(app.update_target_choice.get(), 'Stable · main')
+        self.assertEqual(app.update_version_box.cget('state'), 'readonly')
+        app.update_target_choice.set(versions[1].label)
+        app.on_update_target_selected()
+        self.assertIn('toolkit/test-flags', app.update_status.get())
+        self.assertIsNone(app._update_ready)
+        self.assertEqual(app.update_button.cget('text'), 'Check for updates')
+
+    def test_switch_to_test_or_release_requires_explicit_install(self):
+        app = self.app
+        versions = (
+            VersionTarget('branch', 'main', 'a' * 40),
+            VersionTarget('branch', 'toolkit/test-flags', 'b' * 40),
+            VersionTarget('tag', 'v0.11.36', 'c' * 40),
+        )
+        app._handle_catalog_result('list', (versions, versions[0]), None)
+        app.update_target_choice.set(versions[1].label)
+        app.on_update_target_selected()
+        app._handle_update_result(
+            False, UpdateStatus('switch', 'a' * 40, 'b' * 40,
+                                'toolkit/test-flags', 'branch'), None)
+        self.assertEqual(app.update_button.cget('text'),
+                         'Switch version and restart')
+        self.assertIn('Switch to toolkit/test-flags', app.update_status.get())
+        app.update_target_choice.set(versions[2].label)
+        app.on_update_target_selected()
+        self.assertIsNone(app._update_ready)
+        app._handle_update_result(
+            False, UpdateStatus('switch', 'a' * 40, 'c' * 40,
+                                'v0.11.36', 'tag'), None)
+        self.assertEqual(app.update_button.cget('text'),
+                         'Switch version and restart')
+
+    def test_initial_check_discovers_current_installed_branch(self):
+        app = self.app
+        versions = (
+            VersionTarget('branch', 'main', 'a' * 40),
+            VersionTarget('branch', 'toolkit/test-flags', 'b' * 40),
+        )
+        status = UpdateStatus('available', 'c' * 40, 'b' * 40,
+                              'toolkit/test-flags', 'branch')
+        app._handle_catalog_result(
+            'catalog_check', (versions, versions[1], status), None)
+        self.assertEqual(app.update_target_choice.get(),
+                         'Test · toolkit/test-flags')
+        self.assertEqual(app.update_button.cget('text'),
+                         'Install update and restart')
 
     def test_success_schedules_close_for_cleanup_then_relaunch(self):
         app = self.app
