@@ -257,6 +257,13 @@ class RefreshTests(unittest.TestCase):
         merged, status = merge_remote_catalogue(load_registry()[0], manifest)
         self.assertEqual(status["added"], 0)
         self.assertEqual(len(merged["entries"]), len(registry_records()))
+        receipt_rows = [row for row in merged["entries"]
+                        if row["region"] == "usa"
+                        and row["address"] == "0x8015C608"
+                        and row["mask"] == "0x1"]
+        self.assertEqual(len(receipt_rows), 1)
+        self.assertIn("crosswalk:usa:event:external_super_pass",
+                      receipt_rows[0]["id_aliases"])
         self.assertIsNone(merged["entries"][
             next(i for i, row in enumerate(merged["entries"])
                  if row["id"] == "research:vm_text_stream_cursor")].get("control"))

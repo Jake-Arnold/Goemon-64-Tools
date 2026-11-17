@@ -97,9 +97,35 @@ def merge_remote_catalogue(local, remote):
     validate_catalogue(local)
     validate_discoveries(remote)
     records = {entry["id"]: dict(entry) for entry in local["entries"]}
+    # One canonical field may expose multiple stable source identities.
+    # A remote discovery bearing such an alias must not become another row.
+    aliases = {
+        alias: entry["id"]
+        for entry in local["entries"]
+        for alias in entry.get("id_aliases", ())
+    }
     added = updated = 0
     for item in remote["entries"]:
         row = discovery_to_record(item)
+        canonical_id = aliases.get(row["id"])
+        if canonical_id is not None:
+            canonical = records[canonical_id]
+            # Never let remotely supplied aliases change a trusted address,
+            # bit mask, type or local editor permission.
+            if all(canonical.get(key) == row.get(key) for key in (
+                    "address", "region", "width", "mask", "data_type")):
+                sources = sorted(set(canonical.get("sources", ()) +
+                                     row.get("sources", ())))
+                history = {"source_id": row["id"],
+                           "confidence": row["confidence"],
+                           "evidence": row.get("evidence", "")}
+                known = canonical.setdefault("confidence_sources", [])
+                if history not in known or sources != canonical["sources"]:
+                    updated += 1
+                if history not in known:
+                    known.append(history)
+                canonical["sources"] = sources
+            continue
         row["control"] = records.get(row["id"], {}).get("control")
         if row["id"] not in records:
             added += 1
