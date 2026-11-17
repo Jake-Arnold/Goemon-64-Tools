@@ -8,6 +8,7 @@ a live Japanese game before any scene/writing features are enabled.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from practice.address_registry import guest_address, lookup
 from practice.japanese_fields import JapanFieldReading
 from practice.scenes import SCENES
 
@@ -26,6 +27,14 @@ class JapanSceneProbe:
     source: str = TCRF
 
     def __post_init__(self):
+        canonical = lookup("japanese:scene:" + self.key)
+        object.__setattr__(
+            self, "address", guest_address(
+                "japanese:scene:" + self.key,
+                region="japan", width=self.width))
+        if canonical.get("counterpart") is not None:
+            object.__setattr__(
+                self, "usa_reference", int(canonical["counterpart"], 16))
         if self.address - self.usa_reference != 0x57F0:
             raise ValueError("Scene probe must retain its explicit USA-to-JP hypothesis")
         if self.width not in (1, 2, 4):
