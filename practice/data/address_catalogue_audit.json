@@ -4,7 +4,7 @@
     "code_vma": 3,
     "dynamic_field": 9,
     "external_cheat_lead": 26,
-    "fixed_global": 69,
+    "fixed_global": 73,
     "inventory": 72,
     "overlay_patch": 6,
     "research_reference": 60,
@@ -21,7 +21,7 @@
     "mixed_evidence": 6,
     "observed": 5,
     "reference_only": 60,
-    "research_observed": 120,
+    "research_observed": 124,
     "usa_source": 21,
     "user-confirmed": 37,
     "user_observed": 33
@@ -29,14 +29,14 @@
   "by_region": {
     "japan": 138,
     "unknown": 60,
-    "usa": 260
+    "usa": 264
   },
   "disputed": 2,
   "experimental_japan_flags": 58,
   "format": "goemon-address-catalogue-audit-v1",
-  "live_readable": 354,
+  "live_readable": 358,
   "research_only": 104,
-  "total_records": 458,
-  "unique_region_address": 301,
+  "total_records": 462,
+  "unique_region_address": 305,
   "unknown_width": 104
 }
