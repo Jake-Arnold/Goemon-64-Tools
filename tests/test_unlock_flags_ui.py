@@ -89,7 +89,7 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.set_unlock_flag('Set')
         self.assertEqual(ram.writes, [])
 
-    def test_japan_only_live_confirmed_benkei_can_be_toggled(self):
+    def test_japan_confirmed_and_candidate_bits_can_be_toggled(self):
         app = self.app
         self._select_japan()
         ram = FakeRAM()
@@ -111,12 +111,22 @@ class UnlockFlagsUITests(unittest.TestCase):
             writer.assert_called_once_with(
                 0x80161DFC, b'\xA1', expected=b'\x81')
         candidate = app.unlock_flag_rows['oedo_old_man_dialogue_cycle']
-        self.assertFalse(candidate.editable)
+        self.assertTrue(candidate.editable)
+        self.assertEqual(candidate.source, 'JP offset candidate')
         app.unlock_flag_tree.selection_set(candidate.key)
+        app.select_unlock_flag()
+        self.assertNotIn('disabled', app.unlock_flag_set.state())
+        with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
+            app.set_unlock_flag('Set')
+            writer.assert_called_once_with(
+                candidate.address, bytes((candidate.mask,)),
+                expected=b'\x00')
+        # Read-only still blocks writes independently of provenance.
+        app.args.read_only = True
         app.select_unlock_flag()
         self.assertIn('disabled', app.unlock_flag_set.state())
         with patch.object(app, 'write_japan_raw_bytes') as writer:
-            app.set_unlock_flag('Set')
+            app.set_unlock_flag('Clear')
             writer.assert_not_called()
 
     def test_flag_filter_and_region_switch_remove_stale_rows(self):
