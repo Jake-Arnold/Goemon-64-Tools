@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-16",
+  "status": "PASS",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "matching_c_functions": 34,
+  "matching_c_bytes": 1912,
+  "translation_units": 30,
+  "elf_positive_sized_entries": 7376,
+  "assembly_marked_entries": 7342,
+  "elf_sections": 73,
+  "unexpected_unmarked": 0,
+  "expanded_rom": {
+    "size": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "different_bytes": 0
+  },
+  "retail_rom": {
+    "size": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "different_bytes": 0
+  },
+  "fresh_pinned_builds_passed": 2,
+  "rom_free_tests_passed": 8,
+  "source_bundle_sha256": "7d0c80741ee7fdb5c3c780601c536fcca9e8dde51363b3267a9e6b1585fdcf96",
+  "emulator_gameplay": "NOT RUN",
+  "native_pc_runtime": "NOT RUN"
+}

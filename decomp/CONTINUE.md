@@ -1,6 +1,14 @@
 # Decomp continuation runbook
 
-## Current authoritative production: 315 USA matching-C functions (16 November 2026)
+## Current region-separated matching-C checkpoints (17 November 2026)
+
+- **USA canonical:** 342 matching-C functions / 17,568 original code bytes in the existing `decomp.verify` and inventory proof (unmodified by the Japanese import). The 315-function checkpoint below is historical.
+- **Japan rev-0:** 34 matching-C functions / 1,912 original code bytes / 30 translation units. Selectively imported from `chatgptweb/japanese-decomp-port` into `chatgptweb/decomp`; the Japanese manifest lives at `decomp/regions/japan_0.json`, and the regional build runner is `decomp/build_japan_thirtyfour_c.sh`. Keep the two regional original-ROM hash gates and counts separate.
+- **Acceptance:** The supplied 34-C code package was independently rebuilt from pinned upstream original Japanese source and ROM on 2026-11-17: exact 32 MiB expanded and 16 MiB retail ROMs, strict 34-C ELF ownership/source/relocation verifier PASS; eight ROM-free guardrail tests PASS. All 30 checked-in Japanese C source blob SHAs equal the independently verified package. The imported branch's distinct build wrapper and full combined USA local CI were not rerun. No gameplay or native PC recompilation claim.
+- **Next research:** Five further Japanese 36-byte isolated candidates at `0x3A7AC`, `0x3A7D0`, `0x3AA34`, `0x3AA74`, `0x3AA98` remain excluded until a fresh 39-function complete Japanese ROM and strict ELF proof passes.
+
+
+## Historical USA production checkpoint: 315 matching-C functions (16 November 2026)
 
 The canonical manifest and published proofs now record **315/315 verified C functions / 16,660 original instruction bytes**, including 152 original-address C in `file_11` (eight whole-slice research functions / 316 bytes newly promoted), the two `file_13` Impact HP helpers and one dialogue slot setter. The original 32 MiB USA ROM is byte exact, all 8,825 `file_11` semantic relocations match, the 7,376 original function identities are preserved, and 7,048 assembly entries remain. The previous 307-C, 306-C, 303-C and 210-C reports are separately archived and remain unchanged.
 
