@@ -464,11 +464,15 @@ class UnlocksMixin:
         region = self.active_version.key
         if self.unlock_flag_region == region:
             return
+        # Remove detached search results too; get_children() excludes them.
+        # Otherwise switching USA <-> Japan can reuse the same row IDs.
+        for key in tuple(self.unlock_flag_rows):
+            if self.unlock_flag_tree.exists(key):
+                self.unlock_flag_tree.delete(key)
         self.unlock_flag_region = region
         self.unlock_flag_rows = {flag.key: flag for flag in flags_for_region(region)}
         self.unlock_flag_snapshot = {}
         self.unlock_flag_last_poll = 0.0
-        self.unlock_flag_tree.delete(*self.unlock_flag_tree.get_children())
         for flag in self.unlock_flag_rows.values():
             self.unlock_flag_tree.insert(
                 '', 'end', iid=flag.key, text=flag.label,
