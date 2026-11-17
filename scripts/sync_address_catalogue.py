@@ -30,16 +30,31 @@ def synchronise(existing=None):
     if existing is None:
         return declarations, [], len(declarations["entries"])
     validate_catalogue(existing)
+    # Primary rows and their stable aliases are the same authoritative
+    # physical field. Index aliases for lookup, but keep each record only
+    # once in the set passed to the consolidation routine.
     current = {r["id"]: r for r in existing["entries"]}
+    indexed = {}
+    for record in existing["entries"]:
+        for alias in (record["id"], *record.get("id_aliases", ())):
+            if alias in indexed and indexed[alias] is not record:
+                raise ValueError(f"Conflicting registry ID alias: {alias}")
+            indexed[alias] = record
     generated = {r["id"]: r for r in declarations["entries"]}
     conflicts = []
     added = 0
     for key, row in generated.items():
-        if key not in current:
+        prior = indexed.get(key)
+        if prior is None:
             current[key] = row
+            for alias in (row["id"], *row.get("id_aliases", ())):
+                indexed[alias] = row
             added += 1
             continue
-        prior = current[key]
+        if key != prior["id"]:
+            aliases = prior.setdefault("id_aliases", [])
+            if key not in aliases:
+                aliases.append(key)
         # Recover explicitly reviewed reciprocal metadata when the initial
         # bootstrap record lacked its counterpart. Never silently replace a
         # non-null, conflicting address or counterpart.
