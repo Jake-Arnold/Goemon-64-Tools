@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-17 — v0.11.36 Unlocks subpages for items and flag experimentation
+
+- **Interface:** Preserve the existing 34 Item & equipment controls; add a second, searchable Story & event flags page under the existing Unlocks top-level tab. Never recreate the removed Japanese Live Diagnostics tab.
+- **USA:** Present all named saved-event bits already in Story Progress (curated, Plasma, external and placement entries), with a single-click masked Set/Clear action using the existing checked writer.
+- **Japan:** Present every explicitly catalogued Japan memory-crosswalk event/Plasma bit, including unverified offsets. Per user request, *all* mapped JP bits have live Set/Clear controls for research; do not add evidence-based write blocks. Preserve explicit candidate labels and source notes to track discoveries without claiming confirmation.
+- **Write limits:** Only the clicked bit changes, with current-byte compare/readback through the existing connected reader; no bulk story edits, implicit inventory grants or neighbouring-bit resets. Read-only/disconnected state still blocks memory access.
+- **Tests:** Added ROM-free mapping/bit tests and Tk tests for page switching, candidate write access, byte preservation, stale state and region isolation. CI is pending for this development branch.
+
 ## 2026-11-17 — v0.11.36 merged shared-toolkit UI and reciprocal memory crosswalk
 
 - **Design correction:** Implement the crosswalk as region-specific memory metadata behind the already-shared Live Memory, Unlocks and Story Progress pages. PR #35 removes the redundant Japan Live diagnostics tab; PR #43's added crosswalk panel is not retained.
