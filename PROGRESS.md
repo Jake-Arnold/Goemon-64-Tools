@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.53 shared virtual flag UI and selected-ROM session
+
+- **Problem:** The v0.11.52 draft restored a uniform per-flag Off/On layout but still created hundreds of ttk widgets, with a separate wheel handler bound to every widget. The core Toolkit was also allowing its tick loop to inspect both mem and jp_rdram independently, even though one region is selected.
+- **Implementation:** One VirtualFlagList recycles a bounded set of real Off/On button rows and type/subtype headers in the shared Unlocks → Story & event flags page. Scrolling and search update the logical list and row assignments instead of constructing all 142+ flag rows. The main flags page retains one scrollbar, with no Treeviews or per-flag wheel binding storm.
+- **Architecture:** Introduce a read-only RegionSession facade and route the shared flag editor, selected reader transition and Toolkit.tick through the active region, while leaving separate original-USA and Japanese attachment signatures, memory layouts, masked compare-before-write paths and gameplay feature gates intact. The shared GUI instances persist across USA ↔ Japan switches. Document verified unification and remaining runtime-specific debt in docs/UNIFIED_TOOLKIT_ARCHITECTURE_AUDIT.md.
+- **Tests performed:** Standalone Tk/Xvfb widget recycler tests (450 flags, filtering, real button writes, read-only and region rebinding) and read-only selected-region session tests: 6 passed. Separate isolated 2,000-row Xvfb benchmark: 16 pooled row/header controls, approximately 0.05 s initial setup and 0.26 s for 75 scroll positions on the execution host. These are isolated rather than end-to-end toolkit results.
+- **Still required:** Run full checked-out Tk integration suite (tests.test_virtual_flag_list, tests.test_region_session, tests.test_unlock_flags_ui, tests.test_toolkit_version, relevant backend regressions) under Xvfb and a real Ubuntu/Wine emulator. Live memory attachment and write behaviour have not been verified in this session; PR stays draft.
+- **Next step:** Measure in-app frame latency and refactor remaining region-specific connection and dashboard-snapshot logic behind a capability-aware interface without translating unproven address maps.
+
+
 ## 2026-11-18 — v0.11.52 consistent Story & event flag controls
 
 - **Problem:** v0.11.51 displayed small story flag folders with inline Off/On buttons but 13+-flag folders as scrollable Treeviews and selected-row actions.
