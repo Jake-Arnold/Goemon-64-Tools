@@ -1,5 +1,28 @@
 # Native Linux Goemon toolkit (experimental)
 
+## Project64 under Wine: memory controls
+
+Project64 running under Wine can be connected to Japanese RAM on Linux.
+The v0.11.47 connection panel no longer labels Project64 as Windows-only.
+After a verified Japanese attachment, the same checked memory-write path
+used by Windows is available for original debug-menu entry and the
+restricted Goemon/Oedo South XYZ editor. The experimental scene-writer
+also follows the existing explicit opt-in and revalidation requirements.
+A displayed address catalogue alone is offline metadata: it does not
+prove the toolkit has attached to a live Wine process.
+
+Linux external-PID access can be blocked by Yama `ptrace_scope`.
+The toolkit never silently modifies that security setting; the user
+must explicitly authorize any permission change. A Wine game process
+must also pass all original-ROM code signatures, live-RAM validation,
+emulator PID identity and byte readback checks.
+
+Native Project64 N64-A keyboard injection is still a Windows API path.
+Savestate hotkeys on Linux require a verified visible X11 emulator
+window, not Wayland, and can fail if a Wine window has a different
+owner PID. None of these are implied by the ability to read RAM.
+
+
 The Python/Tk toolkit can run directly on Linux and access native Goemon64Recompiled process memory, without Wine. The game binary is not supplied or built by the toolkit.
 
 ## Japan auto-connect and unrestricted original debug (v0.11.30)

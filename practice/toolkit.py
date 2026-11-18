@@ -374,7 +374,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         jp_card = ttk.LabelFrame(right, text=' Japanese guest RAM (recomp / emulators) ', padding=10)
         self.jp_card = jp_card
         jp_card.pack(fill='x', pady=(0, 6))
-        ttk.Label(jp_card, text='Verify Japan-0 ROM; select recomp, project64 (Windows) or mupen64plus, '
+        ttk.Label(jp_card, text='Verify Japan-0 ROM; select recomp, project64 (Windows or Wine/Linux) or mupen64plus, '
                   'then Connect. Only raw N64 bytes are exposed; USA pointers, '
                   'USA checkpoints and USA RAM editors remain disabled. '
                   'Mapped Japanese unlocks write directly in the shared Unlocks tab.',
@@ -888,8 +888,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             target = self.jp_backend
             if target not in ('project64', 'mupen64plus', 'recomp'):
                 raise RuntimeError('Japanese backend is not confirmed')
-            if target == 'project64' and sys.platform != 'win32':
-                raise RuntimeError('Project64 position writes require Windows')
+            if target == 'project64' and sys.platform not in ('win32', 'linux'):
+                raise RuntimeError('Project64 position writes require Windows or Linux/Wine')
             if self.connection_target.get() not in ('auto', target):
                 raise RuntimeError('Selected emulator changed; reconnect')
             check = (verified_japan_recomp_pid(pid) if target == 'recomp'
@@ -958,8 +958,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         try:
             if target not in ('project64', 'mupen64plus', 'recomp'):
                 raise RuntimeError('Japanese backend not verified')
-            if target == 'project64' and sys.platform != 'win32':
-                raise RuntimeError('Project64 debug entry requires Windows')
+            if target == 'project64' and sys.platform not in ('win32', 'linux'):
+                raise RuntimeError('Project64 debug entry requires Windows or Linux/Wine')
             if self.connection_target.get() not in ('auto', target):
                 raise RuntimeError('Connection backend changed; reconnect')
             check = (verified_japan_recomp_pid(pid) if target == 'recomp'
@@ -1011,7 +1011,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                         or getattr(self.args, 'enable_japan_debug_menu_writes', False))
                 or target not in ('project64', 'recomp')
                 or self.connection_target.get() not in ('auto', target)
-                or (target == 'project64' and sys.platform != 'win32')):
+                or (target == 'project64'
+                    and sys.platform not in ('win32', 'linux'))):
             raise RuntimeError(
                 'Instant warp requires verified Japanese Project64 or native recomp '
                 'and enabled Japan scene writes (without --read-only)')
