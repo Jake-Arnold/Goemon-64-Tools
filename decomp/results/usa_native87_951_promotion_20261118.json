@@ -1,7 +1,7 @@
 {
   "format": "goemon-original-usa-native87-951-promotion-v1",
   "date": "2026-11-18",
-  "result": "PASSED_G2_LOCAL_NOT_YET_PUSHED",
+  "result": "PASSED_G2_GITHUB_PUBLISHED",
   "reference_branch": "chatgptweb/decomp",
   "base_commit": "4a51009ce4bcfd318f860c69786f2ec4e6654528",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
@@ -726,5 +726,6 @@
     "display_emitter_asan_ubsan": "PASS",
     "all_87_actual_C_asan_ubsan": "PASS",
     "task_evidence_validation": "PASS"
-  }
+  },
+  "published_implementation_commit": "46767cc07e7e26d4ac2def2f5896b7b3c067ee7d"
 }
