@@ -1,4 +1,29 @@
-# Goemon Speedrun Tools v0.11.54 — Unified scene and debug controls
+# Goemon Speedrun Tools v0.11.55 — Impact-compatible scene reload
+
+## v0.11.55 — Pointer-independent 0x0C reload in USA and Japan
+
+The shared Scene Browser now supports an experimental double-click area
+reload from observed Impact battle submode 4, including when an ordinary
+player/task pointer is missing. Both games use the same fixed-global source
+check: engine state 0x0D, plausible current scene, loading and exit flags
+clear, known gameplay submode 0..4, and a valid current character or explicit
+Goemon/Ebisumaru/Sasuke/Yae target.
+
+Both engines stage the selected known 12-byte entrance/XYZ record before
+requesting the original 0x0C scene loader. Source actor pointers are not
+fabricated. USA reacquires a destination actor before any separately guarded
+post-load XYZ placement. Japan recomp still checks exact ROM/code signatures,
+verified process identity and RAM mapping for its short-lived writable view,
+without mistakenly requiring an ordinary game player during Impact.
+
+This is distinct from opening the original debug menu (0x0A). Double-click
+from active debug mode, title screens or other unverified engine states still
+refuses without writes. Unknown current characters require selecting an
+explicit target. No live Impact-to-room transition has yet been verified.
+
+Synthetic USA/JP and GUI regression tests were added, but could not be run
+in a complete repository checkout here. Use a disposable emulator savestate.
+
 
 ## v0.11.54 — USA/Japan scene/debug parity corrections
 

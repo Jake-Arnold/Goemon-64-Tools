@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.55 Impact/boss double-click scene reload (draft)
+
+- User regression: The original debug button worked from Impact without a player pointer, while Scene Browser double-click still refused. USA staging required a full ordinary player snapshot; JP staging rejected observed gameplay submode 4; Japanese native recomp writer also demanded a valid ordinary character.
+- Fix: A shared six-global source check in practice/scene_reload_source.py now permits stable engine 0x0D, known scene, no loading/exit, gameplay submode 0–4 and valid character (or explicit target) without player pointers. The regional actual guest-memory address maps and verified writable connections remain separate.
+- USA: The stage_reload_trial source snapshot is optional, with no fabricated actor pointer. Stages original verified entrance/character globals then engine 0x0C. Existing guarded SpawnPlacement reacquires an actual destination actor and applies XYZ only if that player becomes stable.
+- Japan: Direct 0x0C source validation and controller accept Impact submode4. Native recomp writer still revalidates ROM code signatures, PID and RAM mapping, but does not require the nonexistent ordinary Impact player.
+- Regression tests authored: tests/test_impact_scene_warp.py (six synthetic source/guard/placement tests), browser dispatch for USA and Japan; historical debug-mode source guard test updated.
+- Limitations: Synthetic tests not run in a full checkout; no actual emulator Impact warp verified. This remains experimental. Debug 0x0A, title/loading/exit and unverified submodes remain excluded from double-click reload. Missing normal player is not evidence of a playable destination.
+- Next: Run Windows Project64 and native Linux GUI regression suites and check actual Impact-to-room transitions on disposable savestates before merging.
+
 ## 2026-11-18 — v0.11.54 region-parity scene/debug corrections (draft)
 
 - **User regression:** USA debug menu could not be opened when the player/task pointer was absent (Impact fights), while Japan had unconditional verified debug-menu entry. The Scene Browser current-map value used different formatting and was refreshed from the Live Memory tab, and default warp character selection differed.

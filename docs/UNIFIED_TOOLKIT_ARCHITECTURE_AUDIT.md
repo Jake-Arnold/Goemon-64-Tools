@@ -65,6 +65,23 @@ has not been demonstrated.
 | Logical checkpoints & native states | USA logical RAM checkpoints versus emulator-owned full states available to both | **Intentional:** game and emulator contract differs; do not misrepresent one as the other |
 | Process attachment | Japan performs exact ROM/code-probe verification and backend-specific write revalidation; USA uses a distinct discovery path | **Intentional until refactored:** identical user-facing Connect command must not bypass separate executable verification |
 
+## v0.11.55 — Pointer-independent double-click reload
+
+A shared source-globals check now allows experimental 0x0C staged scene
+reloads from observed Impact battle submode 4 in USA and Japan without
+demanding ordinary gameplay player/task pointers. The selected region still
+provides its own explicitly mapped engine, scene, character, loading,
+submode, exit and pending-entrance addresses.
+
+USA recovers the destination actor after transition through the existing
+guarded one-shot SpawnPlacement instead of using any stale source pointer.
+Japan native recomp retains independent ROM/PID/RDRAM verification but
+accepts an absent ordinary player during Impact.
+
+This does not prove Impact teardown is compatible with an injected 0x0C
+request. Debug-menu 0x0A is separate and is never treated as a direct
+destination reload. No unsupported non-gameplay states are enabled.
+
 ## Remaining architectural debt
 
 - Toolkit remains a large class with separate USA and Japan connection
