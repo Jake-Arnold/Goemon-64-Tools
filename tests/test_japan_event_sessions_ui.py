@@ -93,6 +93,32 @@ class JapanEventSessionsUiTests(unittest.TestCase):
         self.assertEqual(app.event_rows[0]['address'],'0x80161DF8')
         self.assertEqual(self.writer.writes,[])
 
+    def test_capture_a_accepts_japanese_runtime_candidate_without_gameplay_gate(self):
+        app = self.app
+        app.connection_target.set('auto')
+        app.new_event_session()
+        self.writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((12,)))
+        self.writer.set_guest(JAPAN_DEBUG_LOADING, (0x100).to_bytes(4, 'big'))
+        self.writer.set_guest(JAPAN_DEBUG_CHARACTER,
+                              (0xFFFFFFFF).to_bytes(4, 'big'))
+        app.capture_event_stage('A')
+        self.assertIn('A captured', app.event_status.get())
+        self.assertEqual(app.event_pending['A']['runtime'],
+                         {'engine_mode': 12, 'loading_word': 0x100})
+        self.assertEqual(app.event_pending['A']['context']['character'],
+                         0xFFFFFFFF)
+        self.writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((13,)))
+        self.writer.set_guest(JAPAN_DEBUG_LOADING, bytes(4))
+        self.writer.set_guest(JAPAN_DEBUG_CHARACTER, bytes(4))
+        self.writer.set_guest(JAPAN_CANDIDATE_START, bytes((0x20,)))
+        app.capture_event_stage('B')
+        self.assertIn('B captured', app.event_status.get())
+        self.assertIn('0x80161DF8: 00->20', app.event_comparison.get())
+        app.record_event_trial()
+        self._wait_ranking()
+        self.assertEqual(len(app.event_session['trials']), 1)
+        self.assertEqual(self.writer.writes, [])
+
     def test_sasuke_battery_preset_covers_unverified_bit_without_game_writes(self):
         app=self.app
         self.assertNotIn('disabled', app.event_battery_preset_button.state())

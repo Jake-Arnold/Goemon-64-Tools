@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.48 Japan read-only Event Sessions capture regression
+
+- **Issue:** Japanese Memory Event Capture A was repeatedly rejected as “Japan event comparison needs stable gameplay” even when the RAM reader was connected. `practice/event_sessions.py` insisted on original game engine mode 13, loading word `0x80161DC4 == 0`, candidate scene 1..0x7FF and character 0..3. The Japanese loading word, scene and character address/mode semantics have not all been independently verified. This hard-coded gameplay predicate is unsuitable for a research snapshot and blocks intended dialogue/cutscene captures.
+- **Correction:** Japanese A/B/C now takes a bounded 100-byte snapshot and reads engine mode, loading, scene and character before/after. The capture is rejected only if the byte count is short or any of those context observations change during the read. Observed Japanese engine/loading values are preserved in optional `runtime` metadata; non-playable or candidate character values remain raw uint32 evidence. Historical v1 sessions without runtime remain compatible. USA's stable-player/idle-script capture rule is unchanged.
+- **UI/docs:** A successful Japanese A no longer instructs the user to finish dialogue before B; context descriptions expose observed runtime values. Update the read-only Event Sessions investigation documentation.
+- **Regression:** Added synthetic Japanese nonzero-loading/non-13-engine, unusual scene/character, mid-read context changes, short context/block, legacy-session load and full Tk A/B trials with switched engine modes. Source needs Windows/Linux CI and zero-conflict canonical registry sync; no live process sampled here.
+- **Safety:** No guest-memory writes or input are added. The capture token still binds backend/PID/RDRAM reader; an actual reconnect requires a new A.
+- **Next:** Validate A/B reads live under Japanese Wine Project64 and native recomp; compare observational runtime values with actual script transitions before treating loading-word hypotheses as verified.
+
+
 ## 2026-11-18 — v0.11.47 Linux/Wine Project64 memory-control parity
 
 - **Issue:** Japanese Project64 memory connection on Linux/Wine was restored in v0.11.46, but the dashboard still said `project64 (Windows)` and independent hard-coded Windows-only guards blocked XYZ editing, original Japanese debug menu and verified scene writer despite the common cross-platform Linux/Windows HostProcess, ROM signature and readback infrastructure.

@@ -1,4 +1,27 @@
-# Goemon Speedrun Tools v0.11.47 — Linux/Wine Project64 controls parity
+# Goemon Speedrun Tools v0.11.48 — Japanese event capture during dialogue
+
+## v0.11.48 — Unblock read-only Japanese Memory Event Capture A/B/C
+
+The Japanese Event Sessions recorder no longer requires the candidate
+loading word at `0x80161DC4` to equal zero, engine mode 13,
+a valid scene number or character 0–3 before a **read-only**
+100-byte snapshot. Those assumptions were incorrectly being used
+as proven gameplay readiness checks, although some are derived from
+unverified USA/Japan address offsets. Reading the evidence must not
+depend on guesses about which game states are permitted.
+
+New Japanese captures preserve the **observed engine mode and full
+candidate loading word** in optional runtime metadata. The recorder
+still rejects incomplete guest-RAM reads or a context change *during*
+the bounded capture. It continues to prevent mixing different emulator
+connections between A/B/C; captures during dialogue and cutscenes
+are allowed and can be contrasted with idle/control trials.
+
+Prior session JSON remains loadable. USA event capture's separate
+stable gameplay requirements remain unchanged. This feature reads
+game bytes only; it does not press N64 A or write event bits.
+
+
 
 ## v0.11.47 — Remove stale Project64 Windows-only notices and host guards
 
