@@ -124,6 +124,27 @@ class TestExperimentalGUI(unittest.TestCase):
         self.assertEqual(self.ram.u16(PENDING_MAP_ADDR),353)
         self.assertIsNotNone(self.app.pending_direct_warp)
 
+    def test_impact_no_player_doubleclick_stages_reload(self):
+        from practice.checkpoints import SUBMODE_ADDR
+        from autosplitter.memory import (
+            PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR)
+        self.ram.write_guest(SUBMODE_ADDR, bytes([4]))
+        self.ram.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))
+        self.ram.write_guest(PLAYER_TASK_PTR_ADDR, bytes(4))
+        self.app.scene_options = [(353, 'Destination')]
+        self.app.scene_list.insert('end', 'Destination')
+        self.app.scene_list.selection_set(0)
+        with patch('practice.ui_extension.messagebox.askyesno',
+                   side_effect=AssertionError('No modal on doubleclick')):
+            self.assertEqual(
+                self.app.activate_selected_scene(), 'break')
+        pending = self.app.pending_direct_warp
+        self.assertIsNotNone(pending, self.app.scene_status.get())
+        self.assertEqual(self.ram.u8(STATE_ADDR), 12)
+        self.assertEqual(self.ram.u16(PENDING_MAP_ADDR), 353)
+        self.assertIsNone(pending['placement'].source_player)
+        self.assertIsNone(pending['placement'].source_task)
+
     def test_enter_debug_menu_requires_no_destination_and_never_stages_warp(self):
         self.assertFalse(self.app.scene_list.curselection())
         from practice.checkpoints import MAP_ADDR
