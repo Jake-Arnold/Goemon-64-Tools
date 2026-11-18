@@ -1,4 +1,29 @@
-# Goemon Speedrun Tools v0.11.57 — Stable USA/Japan Dashboard toggle
+# Goemon Speedrun Tools v0.11.58 — Read-only USA/Japan actor and model research
+
+## v0.11.58 — Consolidated static ROM actor, geometry and skeleton research
+
+The unified Scene Browser can load independently authenticated USA and
+Japanese rev-0 actor placements, browse/search per-stage static ROM actor
+records, and open bounded original-ROM F3DEX geometry, four-limb and
+14-node/460-triangle unposed player skeleton research previews. A
+Japanese actor 0x00FB original-debugger trace correlator is included as
+read-only metadata analysis; it does **not** claim a verified actor-to-mesh
+mapping or RT64 renderer equivalence.
+
+This consolidates earlier stacked PRs #60, #62, #67 into a fresh
+`main`-based feature branch. Porting touches only the current entrance
+UI, preserving the full reviewed entrance atlas, v0.11.57 flag selector,
+shared scene controls and original debug/reload protections. Existing
+native game-memory writers, region mappings and matching-C decomp code
+are unchanged. Actor extraction failure never replaces a valid existing
+entrance atlas. Sources, tests and documentation retain exact tested
+original research Git blobs.
+
+Synthetic and Tk tests require full CI before production merge;
+real retail-ROM visual verification and gameplay actor provenance
+remain independent research tasks.
+
+
 
 ## v0.11.57 — Two flag controls, one fixed Dashboard
 

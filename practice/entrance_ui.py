@@ -5,6 +5,8 @@ from pathlib import Path
 from tkinter import ttk,filedialog
 
 from practice.entrances import extract_atlas,load_atlas,save_atlas,incoming,spawn_from_entry
+from practice.room_actors import extract_actors, load_actors, save_actors
+from practice.room_actor_ui import RoomActorBrowser
 from practice.known_entrances import known_entrances, known_entrance_count
 from practice.launcher_preferences import preferences_path
 from practice.paths import practice_data_dir, resource_root
@@ -33,6 +35,15 @@ class EntranceMixin:
         self._entrance_selection_context=None
         self._entrance_manual_selection=False
         self.entrance_loading=False;self.entrance_results=queue.Queue()
+        self.room_actor_atlas = None
+        self.japan_actor_atlas = None
+        self.room_actor_browser = None
+        for attr, filename in (('room_actor_atlas', 'room-actors.json'),
+                               ('japan_actor_atlas', 'room-actors-japan-0.json')):
+            try:
+                setattr(self, attr, load_actors(practice_data_dir() / filename))
+            except (OSError, ValueError, TypeError, KeyError):
+                pass
         bundled = repository_entrance_atlas_path()
         durable = stored_entrance_atlas_path()
         legacy = practice_data_dir() / 'entrances.json'
@@ -71,6 +82,12 @@ class EntranceMixin:
         line=ttk.Frame(box);line.pack(fill='x')
         self.entrance_load_button=ttk.Button(line,text='Load original USA ROM…',command=self.load_entrance_rom)
         self.entrance_load_button.pack(side='left')
+        self.japan_actor_load_button=ttk.Button(
+            line, text='Load Japan actor ROM…',
+            command=self.load_japan_actor_rom)
+        self.japan_actor_load_button.pack(side='left', padx=8)
+        ttk.Button(line, text='Room actors…',
+                   command=self.show_room_actors).pack(side='left', padx=8)
         ttk.Button(line,text='Cancel scene request',command=self.cancel_scene_request).pack(side='right')
         self.entrance_note=tk.StringVar(value=self.entrance_summary())
         ttk.Label(box,textvariable=self.entrance_note,wraplength=900).pack(anchor='w',pady=3)
@@ -102,26 +119,113 @@ class EntranceMixin:
         if self.entrance_loading:return
         path=filedialog.askopenfilename(title='Original USA Mystical Ninja ROM',filetypes=[('N64 ROM','*.z64 *.n64 *.v64'),('All files','*.*')])
         if not path:return
-        self.entrance_loading=True;self.entrance_load_button.state(['disabled'])
+        self.entrance_loading=True
+        self.entrance_load_button.state(['disabled'])
+        self.japan_actor_load_button.state(['disabled'])
         self.entrance_note.set('Reading entrance data from the ROM…')
         def work():
             try:
-                atlas=extract_atlas(Path(path).read_bytes());save_atlas(stored_entrance_atlas_path(),atlas)
-                self.entrance_results.put(('ok',atlas))
+                rom = Path(path).read_bytes()
+                # Preserve the current reviewed entrance atlas storage and
+                # game-warp semantics; actor metadata is an independent,
+                # read-only companion extraction.
+                atlas = extract_atlas(rom)
+                save_atlas(stored_entrance_atlas_path(), atlas)
+                actors = None
+                actor_warning = None
+                try:
+                    actors = extract_actors(rom)
+                    save_actors(practice_data_dir() / 'room-actors.json', actors)
+                except (OSError, ValueError, TypeError, KeyError) as error:
+                    # Actor-research failure cannot invalidate the proven
+                    # entrance coordinates needed by the native warp path.
+                    actor_warning = str(error)
+                self.entrance_results.put(('ok', (atlas, actors, actor_warning)))
             except (OSError,ValueError,TypeError,KeyError) as exc:self.entrance_results.put(('error',str(exc)))
         threading.Thread(target=work,daemon=True).start();self.root.after(60,self.poll_entrance_rom)
 
+    def load_japan_actor_rom(self):
+        """Read-only Japanese ROM actor extraction, no scene or RAM changes."""
+        if self.entrance_loading:
+            return
+        path=filedialog.askopenfilename(
+            title='Original Japan rev-0 Goemon ROM',
+            filetypes=[('N64 ROM','*.z64 *.n64 *.v64'),('All files','*.*')])
+        if not path:
+            return
+        self.entrance_loading=True
+        self.entrance_load_button.state(['disabled'])
+        self.japan_actor_load_button.state(['disabled'])
+        self.entrance_note.set(
+            'Reading original Japanese room actor metadata (no game writes)…')
+        def work():
+            try:
+                actors=extract_actors(Path(path).read_bytes(),region='japan_0')
+                save_actors(practice_data_dir() / 'room-actors-japan-0.json',actors)
+                self.entrance_results.put(('japan-ok',actors))
+            except (OSError, ValueError, TypeError, KeyError) as error:
+                self.entrance_results.put(
+                    ('error','Japanese actor extraction: '+str(error)))
+        threading.Thread(target=work,daemon=True).start()
+        self.root.after(60,self.poll_entrance_rom)
+
     def poll_entrance_rom(self):
-        try:kind,value=self.entrance_results.get_nowait()
+        try:
+            kind, value = self.entrance_results.get_nowait()
         except queue.Empty:
-            self.root.after(60,self.poll_entrance_rom);return
-        self.entrance_loading=False;self.entrance_load_button.state(['!disabled'])
-        if kind=='ok':
-            self.entrance_atlas=value;self.entrance_load_error=None
+            self.root.after(60,self.poll_entrance_rom)
+            return
+        self.entrance_loading=False
+        self.entrance_load_button.state(['!disabled'])
+        self.japan_actor_load_button.state(['!disabled'])
+        if kind=='japan-ok':
+            self.japan_actor_atlas=value
+            browser=self.room_actor_browser
+            if browser is not None and browser.window.winfo_exists():
+                browser.refresh(
+                    self.room_actor_atlas,
+                    getattr(self,'scene_selected',None),
+                    self.japan_actor_atlas)
+                browser.region.set('japan_0')
+                browser.redraw()
+            self.entrance_note.set(
+                'Japan-0 actor placements loaded from original ROM '
+                '(research only; USA entrance coordinates unchanged).')
+        elif kind=='ok':
+            warning=None
+            if isinstance(value,tuple):
+                self.entrance_atlas,self.room_actor_atlas,warning=value
+            else:
+                self.entrance_atlas=value
+            self.entrance_load_error=None
             self.entrance_atlas_source='persistent user cache (new extraction)'
-            self.draw_scene_list();self.refresh_entrance_choices()
-            self.entrance_note.set(self.entrance_summary())
-        else:self.entrance_note.set('Entrance ROM load failed: '+value)
+            self.draw_scene_list()
+            self.refresh_entrance_choices()
+            self.entrance_note.set(
+                self.entrance_summary() +
+                (f' Actor research unavailable: {warning}' if warning else ''))
+            browser=self.room_actor_browser
+            if browser is not None and browser.window.winfo_exists():
+                browser.refresh(
+                    self.room_actor_atlas,
+                    getattr(self,'scene_selected',None),self.japan_actor_atlas)
+        else:
+            self.entrance_note.set('Entrance ROM load failed: '+value)
+
+    def show_room_actors(self):
+        """Shared static actor research window, never a live actor pointer."""
+        stage=getattr(self,'scene_selected',None)
+        browser=self.room_actor_browser
+        if browser is not None and browser.window.winfo_exists():
+            browser.refresh(self.room_actor_atlas,stage,self.japan_actor_atlas)
+            browser.window.lift()
+            return
+        browser=RoomActorBrowser(
+            self.root,self.room_actor_atlas,stage,self.japan_actor_atlas)
+        browser.region.set(
+            'japan_0' if self.active_version.key=='japan' else 'usa')
+        browser.redraw()
+        self.room_actor_browser=browser
 
     def refresh_entrance_choices(self,destination=None):
         if not hasattr(self,'entrance_choice'):return
@@ -137,6 +241,10 @@ class EntranceMixin:
                 0<=index<len(self.entrance_rows)):
             previous=self.entrance_rows[index]['id']
         self.entrance_destination=destination
+        browser=getattr(self,'room_actor_browser',None)
+        if browser is not None and browser.window.winfo_exists():
+            browser.refresh(
+                self.room_actor_atlas,destination,self.japan_actor_atlas)
         self._entrance_selection_context=context
         self._entrance_manual_selection=False
         self.entrance_rows=incoming(self.entrance_atlas,destination)
