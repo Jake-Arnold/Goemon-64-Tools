@@ -72,6 +72,13 @@ esac
   tests.test_japan_native_scene_warp \
   tests.test_japan_direct_scene_reload \
   tests.test_impact_scene_warp \
+  tests.test_room_actors \
+  tests.test_room_actors_japan \
+  tests.test_model_research \
+  tests.test_player_model_resources \
+  tests.test_skeleton_rig \
+  tests.test_traced_player_limb_bundle \
+  tests.test_actor_model_trace \
   tests.test_experimental_controls \
   tests.test_scene_warp \
   tests.test_scene_placement \
@@ -131,6 +138,9 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_entrance_ui \
     tests.test_experimental_ui \
     tests.test_virtual_flag_list \
+    tests.test_actor_dialog \
+    tests.test_model_research_ui \
+    tests.test_model_object_probe \
     tests.test_japan_recomp_write_ui \
     -v
 elif [[ -n "${DISPLAY:-}" ]]; then
@@ -162,6 +172,9 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_entrance_ui \
     tests.test_experimental_ui \
     tests.test_virtual_flag_list \
+    tests.test_actor_dialog \
+    tests.test_model_research_ui \
+    tests.test_model_object_probe \
     tests.test_japan_recomp_write_ui \
     -v
 else

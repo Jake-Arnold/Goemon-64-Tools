@@ -1,0 +1,365 @@
+"""Explicit-ROM geometry research preview; not a verified actor model or RT64.
+
+Real model rendering remains in Goemon64Recomp/RT64. This window permits a
+bounded, read-only preview of vertex-colour geometry from user-chosen F3DEX
+resource spans, without treating those spans as a selected actor's model.
+"""
+from __future__ import annotations
+
+import math
+import queue
+import threading
+import tkinter as tk
+from pathlib import Path
+from tkinter import ttk, filedialog
+
+from practice.model_research import extract_rom_probe, extract_player_fragment, extract_traced_player_limb_bundle
+from practice.model_object_probe_ui import ModelObjectProbeDialog
+from practice.skeleton_rig import reconstruct_traced_rig
+
+
+class ModelResearchDialog:
+    def __init__(self, parent, *, region, stage=None, actor_id=None, actor_name=None):
+        if region not in ('usa', 'japan_0'):
+            raise ValueError('Unknown ROM region')
+        self.region, self.stage, self.actor_id = region, stage, actor_id
+        self.rom_path = None
+        self.mesh = None
+        self.rig_report = None
+        self.result_queue = queue.SimpleQueue()
+        self.loading = False
+        self.yaw, self.pitch, self.zoom = 0.68, -0.32, 1.0
+        self.drag_origin = None
+        self.window = tk.Toplevel(parent)
+        self.window.title(f'{region}: F3DEX geometry research (unverified)')
+        self.window.geometry('920x720')
+        self.window.minsize(640, 450)
+        body = ttk.Frame(self.window, padding=10)
+        body.pack(fill='both', expand=True)
+        if actor_id is None:
+            association = 'No actor selected.'
+        else:
+            association = f'Selected ROM placement: stage {stage}, actor 0x{actor_id:03X} ({actor_name or "unidentified"}).'
+        ttk.Label(body, text=association).pack(anchor='w')
+        ttk.Label(body, text='NO VERIFIED ACTOR → MODEL MAPPING. File/offset inputs below are manual research only; the geometry shown is not asserted to belong to the selected actor.', wraplength=850).pack(anchor='w', pady=(3, 8))
+        toolbar = ttk.Frame(body)
+        toolbar.pack(fill='x', pady=(0, 5))
+        ttk.Button(toolbar, text='Select local ROM…', command=self.choose_rom).pack(side='left')
+        self.rom_note = tk.StringVar(value=f'No {region} ROM selected. No file path is stored.')
+        ttk.Label(toolbar, textvariable=self.rom_note).pack(side='left', padx=8)
+        if region == 'usa':
+            ttk.Button(toolbar, text='PJ64 object trace…',
+                       command=lambda: ModelObjectProbeDialog(self.window)).pack(side='right', padx=8)
+        inputs = ttk.Frame(body)
+        inputs.pack(fill='x', pady=(0, 7))
+        ttk.Label(inputs, text='Resource file ID:').pack(side='left')
+        self.file_id = tk.StringVar()
+        ttk.Entry(inputs, width=8, textvariable=self.file_id).pack(side='left', padx=(4, 12))
+        ttk.Label(inputs, text='Start offset:').pack(side='left')
+        self.start = tk.StringVar()
+        ttk.Entry(inputs, width=12, textvariable=self.start).pack(side='left', padx=(4, 12))
+        ttk.Label(inputs, text='Segment:').pack(side='left')
+        self.segment = tk.StringVar(value='0x08')
+        ttk.Combobox(inputs, textvariable=self.segment, values=('0x08', '0x09'),
+                     state='readonly', width=5).pack(side='left', padx=(4, 12))
+        ttk.Label(inputs, text='End offset:').pack(side='left')
+        self.end = tk.StringVar()
+        ttk.Entry(inputs, width=12, textvariable=self.end).pack(side='left', padx=(4, 12))
+        self.decode_button = ttk.Button(inputs, text='Decode research mesh', command=self.decode)
+        self.decode_button.pack(side='left', padx=4)
+        ttk.Button(inputs, text='Reset view', command=self.reset_view).pack(side='left')
+        presets = ttk.Frame(body)
+        presets.pack(fill='x', pady=(0, 7))
+        ttk.Label(presets, text='Verified player graphics file family:').pack(side='left')
+        self.player_slot = tk.StringVar(value='Slot 0 — Goemon weapon fragment (0x120)')
+        self.player_choices = ttk.Combobox(presets, state='readonly', width=38,
+            values=('Slot 0 — Goemon weapon fragment (0x120)', 'Slot 1 — file 0x124',
+                    'Slot 2 — file 0x128', 'Slot 3 — file 0x12C'),
+            textvariable=self.player_slot)
+        self.player_choices.pack(side='left', padx=6)
+        self.player_button = ttk.Button(presets, text='Preview player resource fragment',
+                                        command=self.preview_player_fragment)
+        self.player_button.pack(side='left')
+        self.trace_button = ttk.Button(presets, text='Preview traced 4-part skeleton',
+                                       command=self.preview_traced_skeleton)
+        self.trace_button.pack(side='left', padx=7)
+        ttk.Label(presets, text='Slot-0 fragment: visual identification by user; not the whole model.').pack(side='left', padx=10)
+        rigrow=ttk.Frame(body)
+        rigrow.pack(fill='x', pady=(0,7))
+        self.rig_button = ttk.Button(rigrow, text='Preview linked 14-node skeleton (460 triangles)', command=self.preview_linked_rig)
+        self.rig_button.pack(side='left')
+        self.rig_detail_button = ttk.Button(rigrow, text='Inspect rig channels…', command=self.inspect_rig_channels)
+        self.rig_detail_button.pack(side='left', padx=8)
+        self.rig_detail_button.state(['disabled'])
+        ttk.Label(rigrow, text='Unposed structure; 0xB100 scales decode to 1.0, stream channels not yet applied.').pack(side='left', padx=8)
+        self.status = tk.StringVar(value='Select your own ROM and an explicit resource command span. No guessed actor resources are supplied.')
+        ttk.Label(body, textvariable=self.status, wraplength=860).pack(anchor='w', pady=(0, 6))
+        self.canvas = tk.Canvas(body, background='#171a23', highlightthickness=0)
+        self.canvas.pack(fill='both', expand=True)
+        self.canvas.bind('<Configure>', lambda _e: self.render())
+        self.canvas.bind('<ButtonPress-1>', self.begin_drag)
+        self.canvas.bind('<B1-Motion>', self.drag)
+        self.canvas.bind('<MouseWheel>', self.wheel)
+        self.canvas.bind('<Button-4>', lambda _e: self.zoom_by(1.13))
+        self.canvas.bind('<Button-5>', lambda _e: self.zoom_by(1/1.13))
+        ttk.Label(body, text='Drag to orbit. Mouse wheel to zoom. Geometry is untextured and ignores N64 matrices, animations and RDP materials. RT64 is the reference renderer.', wraplength=860).pack(anchor='w', pady=(6, 0))
+
+    def choose_rom(self):
+        name = filedialog.askopenfilename(parent=self.window, title='Choose your verified regional ROM', filetypes=[('N64 ROM', '*.z64 *.n64 *.v64'), ('All files', '*.*')])
+        if name:
+            self.rom_path = Path(name)
+            self.rom_note.set(f'Local ROM selected ({self.region}); path not cached')
+
+    def decode(self):
+        if self.loading:
+            return
+        try:
+            if self.rom_path is None:
+                raise ValueError('Choose the original ROM first')
+            file_id = int(self.file_id.get().strip(), 0)
+            start = int(self.start.get().strip(), 0)
+            end = int(self.end.get().strip(), 0)
+            segment = int(self.segment.get().strip(), 0)
+            if not (1 <= file_id <= 1310):
+                raise ValueError('File ID must be 1..1310')
+        except ValueError as exc:
+            self.status.set(f'Research input error: {exc}')
+            return
+        if segment not in (8,9):
+            self.status.set('Research input error: segment must be 8 or 9')
+            return
+        self.loading = True
+        self.decode_button.state(['disabled'])
+        self.player_button.state(['disabled'])
+        self.trace_button.state(['disabled'])
+        self.rig_button.state(['disabled'])
+        self.status.set('Decoding original ROM resource; no guest-memory writes…')
+        def work():
+            try:
+                result = extract_rom_probe(self.rom_path.read_bytes(), self.region, file_id, start, end, segment=segment)
+                self.result_queue.put(('ok', result))
+            except (OSError, ValueError) as exc:
+                self.result_queue.put(('error', str(exc)))
+        threading.Thread(target=work, daemon=True).start()
+        self.window.after(60, self.poll_result)
+
+    def preview_player_fragment(self):
+        if self.loading:
+            return
+        if self.rom_path is None:
+            self.status.set('Choose the original regional ROM first')
+            return
+        slot = self.player_choices.current()
+        if not 0 <= slot < 4:
+            self.status.set('Choose player resource slot 0..3')
+            return
+        self.loading = True
+        self.decode_button.state(['disabled'])
+        self.player_button.state(['disabled'])
+        self.trace_button.state(['disabled'])
+        self.rig_button.state(['disabled'])
+        self.status.set('Validating original player graphics table and decoding one segment-09 research fragment…')
+        def work():
+            try:
+                result = extract_player_fragment(self.rom_path.read_bytes(), self.region, slot)
+                self.result_queue.put(('ok', result))
+            except (OSError, ValueError) as exc:
+                self.result_queue.put(('error', str(exc)))
+        threading.Thread(target=work, daemon=True).start()
+        self.window.after(60, self.poll_result)
+
+    def preview_traced_skeleton(self):
+        """Read-only replay of four captured limb roots; no actor ID inference."""
+        if self.loading:
+            return
+        if self.rom_path is None:
+            self.status.set('Choose the original regional ROM first')
+            return
+        self.loading = True
+        self.decode_button.state(['disabled'])
+        self.player_button.state(['disabled'])
+        self.trace_button.state(['disabled'])
+        self.rig_button.state(['disabled'])
+        self.status.set('Verifying Project64-captured limb roots against your original regional ROM…')
+        def work():
+            try:
+                result = extract_traced_player_limb_bundle(self.rom_path.read_bytes(), self.region)
+                self.result_queue.put(('ok', result))
+            except (OSError, ValueError) as exc:
+                self.result_queue.put(('error', str(exc)))
+        threading.Thread(target=work, daemon=True).start()
+        self.window.after(60, self.poll_result)
+
+    def preview_linked_rig(self):
+        """Read-only ROM source hierarchy; no animation pose or NPC attribution."""
+        if self.loading:
+            return
+        if self.rom_path is None:
+            self.status.set('Choose the original regional ROM first')
+            return
+        self.loading = True
+        for button in (self.decode_button,self.player_button,self.trace_button,self.rig_button):
+            button.state(['disabled'])
+        self.status.set('Traversing verified 14-node player skeleton, resolving 13 segment-09 meshes…')
+        def work():
+            try:
+                result = reconstruct_traced_rig(self.rom_path.read_bytes(), self.region)
+                self.result_queue.put(('rig', result))
+            except (OSError, ValueError) as exc:
+                self.result_queue.put(('error', str(exc)))
+        threading.Thread(target=work, daemon=True).start()
+        self.window.after(60, self.poll_result)
+
+    def inspect_rig_channels(self):
+        report = self.rig_report
+        if not report:
+            self.status.set('Preview the linked source rig before inspecting its channels')
+            return
+        window = tk.Toplevel(self.window)
+        window.title(f'{self.region} source skeleton fields (not an animation pose)')
+        window.geometry('1150x470')
+        outer = ttk.Frame(window, padding=10)
+        outer.pack(fill='both', expand=True)
+        ttk.Label(outer, wraplength=1100, text=(
+            'Source file 0x123 contains 14 connected skeleton nodes. Scale 0xB100 is '
+            'source-decoded as 1.0. Values prefixed @ are animation-stream offsets, '
+            'NOT direct rotations or translations. Bone matrices are not applied.')).pack(anchor='w', pady=(0,8))
+        columns=('node','resource','gfx','faces','scale','rotation','translation','links')
+        table=ttk.Treeview(outer,columns=columns,show='headings')
+        for key,heading,width in (
+            ('node','Node',50),('resource','File offset',90),('gfx','Graphics list',120),
+            ('faces','Tris',50),('scale','Decoded scale',145),
+            ('rotation','Rotation channels',205),('translation','Translation channels',205),
+            ('links','Child links',115)):
+            table.heading(key,text=heading)
+            table.column(key,width=width,stretch=key in ('rotation','translation','scale'))
+        def fmt(field):
+            return ', '.join((f'{v["value"]:g}' if v['kind']=='immediate'
+                             else f'@0x{v["offset"]:X}') for v in field)
+        for node in report['nodes']:
+            table.insert('', 'end', values=(
+                node['index'], f'0x{node["source_offset"]:05X}', node['graphics_pointer'],
+                node['triangles'], fmt(node['scale']), fmt(node['rotation']),
+                fmt(node['translation']), f'R {node["right"]:+d}, L {node["left"]:+d}'))
+        table.pack(fill='both',expand=True)
+        return window
+
+    def poll_result(self):
+        if not self.window.winfo_exists():
+            return
+        try:
+            kind, result = self.result_queue.get_nowait()
+        except queue.Empty:
+            self.window.after(60, self.poll_result)
+            return
+        self.loading = False
+        self.decode_button.state(['!disabled'])
+        self.player_button.state(['!disabled'])
+        self.trace_button.state(['!disabled'])
+        self.rig_button.state(['!disabled'])
+        if kind not in ('ok', 'rig'):
+            self.status.set(f'Resource probe failed: {result}')
+            return
+        report, self.mesh = result
+        self.rig_report = report if kind == 'rig' else None
+        self.rig_detail_button.state(['!disabled'] if self.rig_report else ['disabled'])
+        if kind == 'rig':
+            self.file_id.set('0x120')
+            self.start.set('')
+            self.end.set('')
+            self.segment.set('0x09')
+            self.reset_view()
+            self.status.set(f'SOURCE RIG — {self.region}, {report["node_count"]} linked nodes, '
+                            f'{report["mesh_node_count"]} valid mesh lists, {report["triangles"]} triangles. '
+                            f'{report["immediate_scale_count"]} scale fields decode to 1.0; '
+                            f'{report["unresolved_rotation_channels"]} rotation and '
+                            f'{report["unresolved_translation_channels"]} translation stream channels '
+                            'are unresolved. Artificial colours, no pose or textures. '
+                            'Not a verified NPC actor-to-model mapping.')
+            return
+        self.file_id.set(hex(report['file_id']))
+        if 'roots' in report:
+            # A bundle has four independent display lists, not one continuous
+            # command range to replay with the manual single-span decoder.
+            self.start.set('')
+            self.end.set('')
+        else:
+            self.start.set(hex(report['start']))
+            self.end.set(hex(report['end']))
+        self.segment.set(hex(report['segment']))
+        self.reset_view()
+        if 'roots' in report:
+            records = report.get('skeleton_records') or {}
+            index = records.get('screenshot_index')
+            record_note = (f' Source file 0x123, exact live-skeleton record #{index + 1}/'
+                           f'{records["candidate_record_count"]} at 0x{records["screenshot_offset"]:X}.'
+                           if records.get('screenshot_match') else '')
+            self.status.set(f'PROJECT64 TRACE — {self.region} player resource 0x120, 4 independent limb lists, '
+                            f'{report["triangles"]} triangles; parts artificially coloured, unposed and '
+                            'overlapping.' + record_note +
+                            ' Textures and pose matrices require RT64. NOT an NPC actor-ID mapping.')
+            return
+        provenance = (f'Verified player resource table, slot {report["slot"]}; ' if 'slot' in report else 'Manual research range; ')
+        slot_label = (' Visually identified as Goemon weapon fragment (user observation);'
+                      if report.get('slot') == 0 else '')
+        self.status.set(f'RESEARCH ONLY — {provenance}{self.region} file 0x{report["file_id"]:03X} segment 0x{report["segment"]:02X}, {report["triangles"]} triangles, {report["commands"]} commands.' +
+                        slot_label + ' Fragment only; NOT linked to selected NPC actor ID.')
+
+    def reset_view(self):
+        self.yaw, self.pitch, self.zoom = 0.68, -0.32, 1.0
+        self.render()
+
+    def begin_drag(self, event):
+        self.drag_origin = (event.x, event.y)
+
+    def drag(self, event):
+        if self.drag_origin is None:
+            return
+        dx, dy = event.x - self.drag_origin[0], event.y - self.drag_origin[1]
+        self.drag_origin = (event.x, event.y)
+        self.yaw += dx * 0.009
+        self.pitch = max(-1.5, min(1.5, self.pitch + dy * 0.009))
+        self.render()
+
+    def wheel(self, event):
+        self.zoom_by(1.13 if event.delta > 0 else 1/1.13)
+
+    def zoom_by(self, factor):
+        self.zoom = max(0.25, min(8.0, self.zoom*factor))
+        self.render()
+
+    def render(self):
+        self.canvas.delete('all')
+        mesh = self.mesh
+        width = self.canvas.winfo_width()
+        height = self.canvas.winfo_height()
+        if mesh is None or not mesh.triangles or width < 10 or height < 10:
+            self.canvas.create_text(max(10,width//2),max(10,height//2), text='No F3DEX geometry loaded', fill='#aeb8c5')
+            return
+        bounds = mesh.bounds
+        center = tuple((a+b)*0.5 for a,b in zip(*bounds))
+        extent = max(b-a for a,b in zip(*bounds)) or 1.0
+        cy, sy = math.cos(self.yaw), math.sin(self.yaw)
+        cp, sp = math.cos(self.pitch), math.sin(self.pitch)
+        scale = min(width, height) * self.zoom * 0.72 / extent
+        faces = mesh.triangles
+        # Limit Tk canvas load without claiming this is an exhaustive render.
+        step = max(1, (len(faces)+3999)//4000)
+        order = []
+        for i in range(0, len(faces), step):
+            triangle = faces[i]
+            projected = []
+            z_values = []
+            for x,y,z in triangle:
+                x,y,z = x-center[0], y-center[1], z-center[2]
+                rx, rz = x*cy+z*sy, -x*sy+z*cy
+                ry, rz = y*cp-rz*sp, y*sp+rz*cp
+                # Orthographic visualization; matrices intentionally omitted.
+                projected.extend((width*0.5 + rx*scale, height*0.5 - ry*scale))
+                z_values.append(rz)
+            order.append((sum(z_values)/3, i, projected))
+        order.sort(key=lambda item: item[0])
+        for _z, index, xy in order:
+            rgb = mesh.rgb[index]
+            color = '#%02x%02x%02x' % rgb
+            self.canvas.create_polygon(*xy, fill=color, outline='#35404a', width=1)

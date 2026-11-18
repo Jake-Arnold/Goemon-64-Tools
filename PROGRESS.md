@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.58 unified static actor and model research (draft)
+
+- Consolidated distinct *read-only* actor/geometry/trace modules and original ROM provenance tests from stacked PRs #60, #62 and #67. The code now lives on a clean `main`-based toolkit feature branch; the 1,225-C canonical decomp baseline and main's original code are not merged together.
+- Ported actor-ROM load buttons and common Room actors browser into the current entrance tab while preserving region-independent v0.11.57 flag UI, reviewed full numeric entrance coordinate storage, known-entrance fallback, manually selected entrance context, and pointer-independent debug/warp contracts.
+- Kept independent USA/JP static actor metadata; no guesswork address conversion, actor-to-model identity assertion, game-RAM write, programmatic RT64 capture or automatic asset dumping.
+- An actor-decoder failure during original-USA ROM loading is isolated from the validated entrance atlas, which remains essential to native scene reloads.
+- Imported original source/tests/docs exact Git blobs; expanded CI to run deterministic actor/model tests and headless actor/model Tk dialogs. Full CI and live visual tests not yet run for this consolidated tree; remains draft until verified.
+
+
 ## 2026-11-18 — v0.11.57 single stable USA/Japan Dashboard
 
 - **User report:** Selecting USA/Japan visually reconstructed the front page, with a region dropdown, a Japanese raw-RAM duplicate card and region-dependent card/row repacking. The Scene Browser list and character selector were also reset by `configure_scene_browser_region`.
