@@ -15,9 +15,10 @@ from dataclasses import dataclass
 from practice.entrances import Spawn
 from practice.japanese_debug_warp import (
     JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE, JAPAN_DEBUG_CHARACTER,
-    JAPAN_ORDINARY_ENGINE_MODE, get_japan_debug_context, _normal_gameplay,
+    JAPAN_ORDINARY_ENGINE_MODE, get_japan_debug_context,
 )
 from practice.scenes import SCENES
+from practice.scene_reload_source import require_reload_source
 
 JAPAN_PENDING_MAP = 0x800CD490
 JAPAN_DIRECT_RELOAD_MODE = 0x0C
@@ -48,7 +49,8 @@ def stage_japan_direct_reload(rdram, destination: int, *,
         raise ValueError('Select a known scene in the shared Scene Browser')
     if not isinstance(expected_context, tuple) or len(expected_context) != 6:
         raise ValueError('Missing complete Japanese source-gameplay context')
-    _normal_gameplay(expected_context)
+    require_reload_source(
+        expected_context, region='Japan', explicit_character=target_character)
     if target_character is not None and (
             type(target_character) is not int or target_character not in range(4)):
         raise ValueError('Target character must be Goemon, Ebisumaru, Sasuke or Yae')
