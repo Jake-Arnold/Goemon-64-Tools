@@ -185,11 +185,17 @@ class DashboardSmokeTests(unittest.TestCase):
             app.dashboard_checkpoints_column.grid_info()['row'],
         )
         original_heading = app.version_heading.get()
-        self.assertIn('USA', app.region_usa_button.cget('text'))
-        self.assertIn('Japan', app.region_japan_button.cget('text'))
+        self.assertEqual(app.region_usa_button.cget('text'), '')
+        self.assertEqual(app.region_japan_button.cget('text'), '')
+        self.assertTrue(app.region_usa_button.cget('image'))
+        self.assertTrue(app.region_japan_button.cget('image'))
+        self.assertEqual(app.region_label.get(), 'USA')
+        self.assertFalse(app.connection_advanced_visible)
+        self.assertEqual(app.connection_advanced_frame.winfo_manager(), '')
+        self.assertEqual(app.named_native_frame.winfo_manager(), '')
         self.assertEqual(app.jp_card.winfo_manager(), '')
         self.assertEqual(app.jp_base_row.winfo_manager(), '')
-        self.assertEqual(app.named_native_frame.winfo_manager(), 'pack')
+        self.assertFalse(app.named_native_expanded)
         self.assertFalse(hasattr(app, 'version_selector'))
 
         app.scene_character.current(3)
@@ -217,7 +223,9 @@ class DashboardSmokeTests(unittest.TestCase):
                 original_layout,
                 (app.dashboard_connection_column.grid_info()['row'],
                  app.dashboard_checkpoints_column.grid_info()['row']))
-            self.assertEqual(app.named_native_frame.winfo_manager(), 'pack')
+            self.assertEqual(app.named_native_frame.winfo_manager(), '')
+            self.assertEqual(app.region_label.get(),
+                             'Japan' if expected == 'japan' else 'USA')
             self.assertEqual(app.jp_card.winfo_manager(), '')
             self.assertEqual(app.jp_base_row.winfo_manager(), '')
             self.assertEqual(app.version_heading.get(), original_heading)
@@ -225,6 +233,35 @@ class DashboardSmokeTests(unittest.TestCase):
             self.assertEqual(app.scene_list.get(0), selected_scene)
             self.assertIsNone(app.mem)
             self.assertIsNone(app.jp_rdram)
+
+    def test_collapsible_dashboard_sections_do_not_change_region(self):
+        app = self.toolkit
+        self.assertEqual(app.connection_advanced_frame.winfo_manager(), '')
+        self.assertEqual(app.named_native_frame.winfo_manager(), '')
+        app.connection_advanced_toggle.invoke()
+        self.assertEqual(app.connection_advanced_frame.winfo_manager(), 'pack')
+        self.assertTrue(app.connection_backend_selector.winfo_exists())
+        app.named_native_toggle.invoke()
+        self.assertEqual(app.named_native_frame.winfo_manager(), 'pack')
+        app.region_japan_button.invoke()
+        self.assertEqual(app.active_version.key, 'japan')
+        self.assertEqual(app.connection_advanced_frame.winfo_manager(), 'pack')
+        self.assertEqual(app.named_native_frame.winfo_manager(), 'pack')
+        app.connection_advanced_toggle.invoke()
+        app.named_native_toggle.invoke()
+        self.assertEqual(app.connection_advanced_frame.winfo_manager(), '')
+        self.assertEqual(app.named_native_frame.winfo_manager(), '')
+
+    def test_flags_are_platform_independent_raster_images(self):
+        app = self.toolkit
+        usa = app.region_flag_images['usa']
+        japan = app.region_flag_images['japan']
+        self.assertEqual((usa.width(), usa.height()), (48, 32))
+        self.assertEqual((japan.width(), japan.height()), (48, 32))
+        self.assertEqual(tuple(japan.get(24, 16)), (188, 0, 45))
+        self.assertEqual(tuple(japan.get(1, 1)), (255, 255, 255))
+        self.assertEqual(tuple(usa.get(1, 1)), (178, 34, 52))
+        self.assertEqual(tuple(usa.get(46, 31)), (178, 34, 52))
 
     def test_region_switch_locks_both_flag_buttons(self):
         app = self.toolkit
