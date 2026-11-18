@@ -11,7 +11,8 @@ from tkinter import ttk, messagebox, simpledialog
 from practice.inspector import get_watches, checkpoint_differences, Watch
 from practice.address_catalogue_ui import AddressCatalogueUI
 from practice.hex_edit import get_policy, parse_hex, checked_write
-from practice.scenes import SCENES, scene_label
+from practice.scenes import SCENES, scene_label, unidentified_scene_name
+from practice.region_session import active_session
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
 from practice.checkpoints import MAP_ADDR, STATE_ADDR
 from practice.experimental_controls import stage_reload_trial
@@ -185,7 +186,7 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         self.scene_character_line=character_line
         ttk.Label(character_line,text='Target character:').pack(side='left')
         self.scene_character=ttk.Combobox(character_line,state='readonly',width=30,
-               values=('0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
+               values=('Keep current character', 'Goemon', 'Ebisumaru', 'Sasuke', 'Yae'))
         self.scene_character.current(0)
         self.scene_character.pack(side='left',padx=8)
         self.scene_character_note = ttk.Label(
@@ -223,7 +224,7 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         self.jp_capture_spawn_btn.pack(fill='x', pady=(0, 4))
         self.jp_capture_spawn_btn.state(['disabled'])
         ttk.Label(scenes,textvariable=self.scene_status,wraplength=950).pack(anchor='w',pady=8)
-        self.native_debug_btn=ttk.Button(scenes,text='Instead OPEN original debug menu (manual selection)',command=self.enter_debug_menu)
+        self.native_debug_btn=ttk.Button(scenes,text='Open original debug menu (0x0A)',command=self.enter_debug_menu)
         self.native_debug_btn.pack(fill='x',pady=5)
         if not self.args.enable_debug_menu:self.native_debug_btn.state(['disabled'])
         self.scene_footer_note=ttk.Label(
@@ -262,7 +263,7 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             self.experimental_warp_btn.configure(
                 text='Warp Japan to selected USA entrance XYZ')
             self.native_debug_btn.configure(
-                text='Open ORIGINAL debug menu (manual only)')
+                text='Open original debug menu (0x0A)')
             enabled = bool(
                 (getattr(self.args, 'enable_japan_scene_writes', False)
                  or getattr(self.args, 'enable_japan_debug_menu_writes', False))
@@ -278,7 +279,8 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                 text='USA: single-click selects; double-click uses the '
                      'selected entrance reload. Manual debug menu is separate.')
             self.scene_character.configure(values=(
-                '0 - Goemon','1 - Ebisumaru','2 - Sasuke (inferred)','3 - Yae (inferred)'))
+                'Keep current character',
+                'Goemon', 'Ebisumaru', 'Sasuke', 'Yae'))
             self.scene_character.current(0)
             self.scene_character_line.pack(fill='x', pady=4,
                                            after=self.scene_instruction)
@@ -290,7 +292,7 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             self.experimental_warp_btn.configure(
                 text='Warp to selected USA entrance')
             self.native_debug_btn.configure(
-                text='Open original debug menu (manual only)')
+                text='Open original debug menu (0x0A)')
             enabled = bool(getattr(self.args, 'enable_hex_edit', False)
                            and getattr(self.args, 'enable_teleport', False)
                            and not getattr(self.args, 'read_only', False))
@@ -659,12 +661,36 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         self.event_text.insert('end','\n'.join(self.log_events[-35:]))
         self.event_text.see('end');self.event_text.configure(state='disabled')
 
+    def refresh_scene_banner(self, *, force=False):
+        """Same current-scene label for both ROMs, including Impact/no actor.
+
+        Reads the selected native global scene ID, never a player snapshot.
+        Scene Browser owns the cadence when visible; Live Memory can also
+        request an immediate refresh. No guest memory is ever written here.
+        """
+        now = __import__('time').monotonic()
+        if not force and now - getattr(self, '_scene_banner_last_poll', 0) < 0.35:
+            return
+        self._scene_banner_last_poll = now
+        session = active_session(self)
+        if not session.connected:
+            message = 'Current map: —'
+        else:
+            try:
+                scene = session.read_current_scene()
+                label = self.scene_catalog().get(scene, unidentified_scene_name(scene))
+                message = f'Current map: {scene} (0x{scene:03X}): {label}'
+            except (OSError, RuntimeError, ValueError, PermissionError) as exc:
+                message = f'Current map: unavailable ({exc})'
+        if self.scene_live.get() != message:
+            self.scene_live.set(message)
+
     def refresh_inspector(self, snapshot):
         if self.active_version.key == 'japan':
             if self.jp_rdram is None:
                 self.watch_rows=[]
                 self.draw_watches()
-                self.scene_live.set('Current map: —')
+                self.refresh_scene_banner(force=True)
                 self.inspector_status.set('Connect to Japan-0 RDRAM for shared Live Memory.')
                 return
             import time
@@ -682,11 +708,7 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                 self.watch_rows=rows
                 self.draw_watches()
                 self.watch_previous={row.name:row.raw for row in rows}
-                scene=int.from_bytes(
-                    self.jp_rdram.read_guest(0x800CD2A2, 2), 'big')
-                self.scene_live.set(
-                    f'Current map: 0x{scene:03X} '
-                    f'{self.scene_catalog().get(scene, "unmapped")}')
+                self.refresh_scene_banner(force=True)
                 self.inspector_status.set(
                     f'Japan-0: {len(rows)} source-backed/custom fields; '
                     f'{changed} changed; USA-only address policies disabled.')
@@ -699,8 +721,8 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         if now-self.last_inspect_at < 0.30:return
         self.last_inspect_at=now
         try:
-            live_map=self.mem.u16(MAP_ADDR)
-            self.scene_live.set('Current map: '+scene_label(live_map))
+            live_map=active_session(self).read_current_scene()
+            self.refresh_scene_banner(force=True)
             watches=get_watches(self.mem,snapshot,SCENES)
             watches.extend(read_watch(self.mem,spec) for spec in self.custom_watches)
             observed=getattr(self, 'observed_velocity', None)
@@ -1182,10 +1204,11 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             self.scene_status.set('Select a destination first.')
             return
         dest,name=self.scene_options[chosen[0]]
-        target_character=self.scene_character.current()
-        if target_character not in range(4):
-            self.scene_status.set('Choose a target character 0–3 first.')
+        selected_character=self.scene_character.current()
+        if selected_character not in range(5):
+            self.scene_status.set('Choose Keep current or a target character first.')
             return
+        target_character = None if selected_character == 0 else selected_character - 1
         if not self.mem:
             self.scene_status.set('Connect to Goemon64Recomp first.')
             return
@@ -1202,13 +1225,13 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             now=__import__('time').monotonic()
             self.pending_direct_warp={
                 'map_id':dest,'from_map':info['source_map'],'character':info['source_character'],
-                'selected_character':target_character, 'observed_character':None,
+                'selected_character':info['requested_character'], 'observed_character':None,
                 'phase':'loading', 'character_staged':info['character_staged'],
                 'source_position':info['source_position'], 'start_at':now, 'last_message_at':now,
                 'date_code':datetime.now().strftime('%Y%m%d_%H%M%S_%f'),
                 'events':[], 'status':'requested_0x0C','stable':0,
                 'entrance':dict(id=spawn.entrance_id,label=spawn.label,position=list(spawn.position),heading=spawn.heading,mode=spawn.mode),
-                'placement':SpawnPlacement(self.mem,spawn,target_character,info['source_map'],info['player_ptr'],info['task_ptr'],now,seen_transition=True),
+                'placement':SpawnPlacement(self.mem,spawn,info['requested_character'],info['source_map'],info['player_ptr'],info['task_ptr'],now,seen_transition=True),
             }
             self.scene_status.set(f'Experimental reload sent: {info["source_map"]} → {dest}. '
                 f'Entrance XYZ {tuple(spawn.position)} staged before reload; waiting to check the loaded player.')
@@ -1397,63 +1420,38 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         self.request_direct_scene(mid,name)
         return 'break'
 
-    def open_debug_for_selected_scene(self,event=None):
-        """Open manual native menu for active ROM; never invoke a warp."""
-        if self.active_version.key == 'japan':
-            self.open_japan_debug_for_selected_scene()
-            return
-        if getattr(self.args,'read_only',False):
-            self.scene_status.set('Read-only mode: debug-menu requests are disabled.')
-            return
-        chosen=self.scene_list.curselection()
-        if not chosen:return
-        mid,name=self.scene_options[chosen[0]]
-        character=self.scene_character.current()
-        if character<0:return
-        if not self.mem or not self.args.enable_debug_menu:
-            messagebox.showerror('Not connected','Connect via Run.bat first')
-            return
-        if not self.args.enable_teleport:
-            self.scene_status.set('Position restoration is disabled; scene request was not sent.');return
-        if self.pending_direct_warp or self.pending_restore or self.pending_native_warp:
-            self.scene_status.set('Another scene or checkpoint request is pending.');return
-        try:
-            spawn=self.selected_scene_spawn(mid)
-            source=self.mem.snapshot();source_map=self.mem.u16(MAP_ADDR)
-        except (OSError,ValueError) as exc:
-            self.scene_status.set(str(exc));return
-        ready=calibrated_for_direct_warp(self.debug_profile)
-        try:
-            result=open_native_debug_for_scene(self.mem,mid,self.scene_catalog())
-            from time import monotonic
-            now=monotonic();timeout=18 if ready else 90
-            self.pending_native_warp={'map_id':mid,'character':character,'start_at':now+0.85,
-                'deadline':now+timeout,'staged':False,'confirmed':False,'confirm_at':None,'manual':not ready,
-                'placement':SpawnPlacement(self.mem,spawn,character,source_map,source['player_ptr'],source['task_ptr'],now,timeout=timeout)}
-            if ready:self.scene_status.set(f'Opening native menu for stage {mid}; entrance placement is armed.')
-            else:self.scene_status.set(f'Native menu opened. Manually choose {result["label"]}, character {character}; selected entrance XYZ will apply only after that destination loads.')
-        except (OSError,ValueError,RuntimeError) as exc:
-            self.scene_status.set(f'Native debug entry blocked: {exc}')
-            messagebox.showerror('Native debug entry failed',str(exc))
+    def open_debug_for_selected_scene(self, event=None):
+        """Historical callback alias: debug entry never stages a destination."""
+        return self.enter_debug_menu()
 
     def enter_debug_menu(self):
-        """Explicit manual menu fallback only, never the double-click action."""
+        """Open original debug in either ROM: engine-mode byte 0x0A only.
+
+        Never require a selected destination, entrance, player pointer,
+        character, gameplay submode or successful snapshot. Region-specific
+        writable-RDRAM identity checks remain with the backend.
+        """
         if self.active_version.key == 'japan':
             self.open_japan_debug_for_selected_scene()
             return
-        if getattr(self.args, 'read_only', False):
+        if getattr(self.args, 'read_only', False) or not getattr(
+                self.args, 'enable_debug_menu', False):
             self.scene_status.set('Read-only mode: debug-menu entry disabled.')
             return
-        if self.mem is None or not self.args.enable_debug_menu:
+        session = active_session(self)
+        if not session.connected:
             self.scene_status.set('Connect to the game before opening the debug menu.')
-            return
-        if self.pending_direct_warp or self.pending_restore or self.pending_native_warp:
-            self.scene_status.set('Complete or cancel the pending scene request first.')
             return
         try:
             with self.value_freezes.guard:
-                open_native_debug_menu(self.mem)
-            self.scene_status.set('Original debug menu opened. Choose a destination in the game.')
+                open_native_debug_menu(session.reader)
+            # The native menu cancels any observer awaiting a previous scene
+            # request. This never performs additional game-memory writes.
+            self.pending_direct_warp = None
+            self.pending_native_warp = None
+            self.scene_status.set(
+                f'Original debug menu requested: wrote only 0x0A to '
+                f'0x{STATE_ADDR:08X}; no destination, actor or entrance edits.')
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
             self.scene_status.set('Native debug menu entry blocked: ' + str(exc))
 

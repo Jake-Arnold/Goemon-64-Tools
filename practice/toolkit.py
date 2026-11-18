@@ -997,7 +997,10 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                    '0x0A to 0x800CD284; no map, actor, entrance or input changes.')
         caption.set(message)
         self.status.set(message)
-        self.refresh_japan_fields(force=True)
+        if hasattr(self, 'scene_status'):
+            self.scene_status.set(message)
+        # Do not initiate a second editor/renderer pass inside a RAM command.
+        # Visible panels refresh on their ordinary cadence.
 
     def _japan_native_warp_writer(self):
         """Reverify exact Japan ROM, process identity and live RAM before each step.
@@ -2064,6 +2067,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 self.refresh_story_progress()
         elif panel == 'dashboard':
             self.refresh_checkpoint_diff(force=force)
+        elif panel == 'scene':
+            self.refresh_scene_banner(force=force)
         if (self.active_version.key == 'japan'
                 and panel in ('dashboard', 'scene')):
             self.refresh_japan_party_controls()
