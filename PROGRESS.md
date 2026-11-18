@@ -1,3 +1,10 @@
+## 2026-11-18 — Consolidated decomp address metadata PR (draft)
+
+- Metadata-only consolidation of draft PRs #56 and #69 onto current canonical `chatgptweb/decomp`; 16 script VM/reference-code discovery records, one read-only reader for toolkit-main canonical guest-memory catalogue and ROM-free validator tests. Addresses are evidence annotations, not new automatic writes.
+- No production C ownership, ROM bytes, matching-C manifest or accepted count changes. Verified USA remains 1,225 C / 52,028 bytes, JP 39 C.
+- Source metadata parsed and 16 stable IDs deduplicated; full canonical G2, strict inventory, full decomp.local_ci and ROM-free unittest not executed by this connector-only consolidation. Keep draft until verified with actual toolchain.
+- Old PRs #56 and #69 remain linked for source provenance; do not mix toolkit main and decomp histories.
+
 > **18 Nov 2026 — GitHub publication confirmed (`PASSED_G2_GITHUB_PUBLISHED`):** The locally verified 106-function wide109 promotion below was committed to canonical `chatgptweb/decomp` at [`fd37d519d647e6d35ee8d306de64afcb9ab765e5`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/fd37d519d647e6d35ee8d306de64afcb9ab765e5). GitHub re-fetch verified all 103 intended source/proof/test files by their exact Git blob SHAs; remote manifest and strict inventory confirm USA **1,225 matching C / 52,028 matching bytes / 6,138 ASM remaining**, JP **39 C** unchanged. Full original-ROM G2 and local CI were run for the published source in the preceding local acceptance, **not rerun by this documentation update**. The immutable proof JSON retains its truthful historical pre-publication status. The old research PR #74 must not be merged as an additional promotion.
 
 ## 18 November 2026 — USA wide109 deduplicated 106-C production integration (`PASSED_G2_LOCAL`, remote publication pending)
