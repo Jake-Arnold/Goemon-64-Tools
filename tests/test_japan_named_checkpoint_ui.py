@@ -58,6 +58,8 @@ class JapanNamedCheckpointUITests(unittest.TestCase):
 
     def test_save_named_slot_then_load_uses_native_emulator_input(self):
         app=self.app
+        self.assertEqual(app.named_native_frame.winfo_manager(),'')
+        app.toggle_named_native_slots(True)
         self.assertEqual(app.named_native_frame.winfo_manager(),'pack')
         app.named_native_name.set('Oedo checkpoint')
         app.savestate_slot.set('3')
@@ -100,6 +102,10 @@ class JapanNamedCheckpointUITests(unittest.TestCase):
         app=self.app
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
+        # The USA and Japan Dashboard both start compact, but the same
+        # named-state controls can be expanded in either region.
+        self.assertEqual(app.named_native_frame.winfo_manager(),'')
+        app.toggle_named_native_slots(True)
         self.assertEqual(app.named_native_frame.winfo_manager(),'pack')
         self.assertIn('disabled', app.named_native_save_btn.state())
         self.assertIn('disabled', app.named_native_load_btn.state())
