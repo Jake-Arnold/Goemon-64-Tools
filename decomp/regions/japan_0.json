@@ -692,5 +692,38 @@
     "proof": "decomp/results/japan_0_329_native_combined_20261118.json",
     "provenance": "USA-verified two-unused-pointer-parameter callback and zero-argument no-op C forms; selected against original JP ROM instruction signatures and original JP addresses; no gameplay logic reconstructed",
     "runtime": "NOT RUN"
+  },
+  "usa_derived_character_switch_4": {
+    "status": "PASSED_G2_LOCAL",
+    "previous_matching_c_functions": 329,
+    "new_matching_c_functions": 4,
+    "new_matching_c_bytes": 332,
+    "total_matching_c_functions": 333,
+    "total_matching_c_bytes": 5688,
+    "remaining_assembly_functions": 7043,
+    "overlay": "file_11",
+    "new_functions": [
+      {
+        "name": "func_801E2888_59E858",
+        "rom_offset": 5892184
+      },
+      {
+        "name": "func_801E28B0_59E880",
+        "rom_offset": 5892224
+      },
+      {
+        "name": "func_801E2970_59E940",
+        "rom_offset": 5892416
+      },
+      {
+        "name": "func_801E2A04_59E9D4",
+        "rom_offset": 5892564
+      }
+    ],
+    "source": "decomp/research/character_switch_native_candidates.c",
+    "native_stage": "decomp/japan_character_switch_four.py",
+    "full_build": "decomp/build_japan_switch_333.sh",
+    "proof": "decomp/results/japan_0_333_character_switch_20261118.json",
+    "emulator_gameplay": "NOT_RUN"
   }
 }
