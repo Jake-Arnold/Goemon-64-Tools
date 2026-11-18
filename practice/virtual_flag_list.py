@@ -192,7 +192,10 @@ class VirtualFlagList:
                     slot = self._flag_pool[fpos]
                     fpos += 1
                     flag = row[1]
-                    if slot['key'] != flag.key:
+                    identity = (flag.key, flag.address, flag.mask,
+                                flag.label, flag.source, flag.group, flag.subtype)
+                    if slot.get('identity') != identity:
+                        slot['identity'] = identity
                         slot['key'] = flag.key
                         slot['epoch'] += 1
                         slot['last_update'] = None

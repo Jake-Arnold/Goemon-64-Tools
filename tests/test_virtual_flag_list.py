@@ -65,6 +65,21 @@ class VirtualFlagListTests(unittest.TestCase):
         self.view.visible_flags['10']['off'].invoke()
         self.assertEqual(self.actions, [('10', 'Clear')])
 
+    def test_same_key_cross_region_repaint_updates_address_and_source(self):
+        self.assertTrue(self.view.scroll_to_key('120'))
+        self.root.update()
+        same_key = Flag('120', 'JP flag', 0x80161DFC, 0x40,
+                        'JP offset candidate', 'Dolls', 'Unsorted')
+        self.view.rebuild(
+            {self.section: [same_key]}, {self.section}, {},
+            reset_scroll=True)
+        self.view.set_values({'120': 0})
+        self.root.update()
+        row = self.view.visible_flags['120']
+        self.assertIn('80161DFC', row['address'].cget('text'))
+        self.assertEqual(row['name'].cget('text'), 'JP flag')
+        self.assertIn('JP offset', row['source'].cget('text'))
+
     def test_rebinding_discards_stale_key_and_region(self):
         self.assertTrue(self.view.scroll_to_key('120'))
         self.root.update()
