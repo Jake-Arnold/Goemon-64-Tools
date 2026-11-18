@@ -59,6 +59,6 @@ def read_usa_reload_source(ram):
     from practice.checkpoints import STATE_ADDR, MAP_ADDR, SUBMODE_ADDR, EXIT_ADDR
     return (
         ram.u8(STATE_ADDR), ram.u16(MAP_ADDR),
-        ram.u32(CHARACTER_ID_ADDR), ram.u32(LOADING_FLAG_ADDR),
+        ram.u32(CHARACTER_ID_ADDR), ram.u8(LOADING_FLAG_ADDR),
         ram.u8(SUBMODE_ADDR), ram.u8(EXIT_ADDR),
     )
