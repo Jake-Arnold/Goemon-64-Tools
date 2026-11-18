@@ -11,7 +11,8 @@ from dataclasses import dataclass, replace
 from practice.address_registry import guest_address
 
 from practice.region_unlocks import JAPAN_UNLOCK_LEADS, REGION_DELTA
-from practice.story_progress import CURATED_FLAGS, PLASMA_FLAGS, EXTERNAL_FLAGS
+from practice.story_progress import (CURATED_FLAGS, PLASMA_FLAGS, EXTERNAL_FLAGS,
+                                    PLACEMENT_PICKUPS, DOLL_PLACEMENT_FLAGS, FLAGS)
 from practice.unlocks import UNLOCKS
 
 
@@ -80,8 +81,11 @@ _STATIC = (
 )
 
 
-# Only this reviewed external flag has a proposed Japanese counterpart.
-JAPAN_EXTRA_EVENT_KEYS = frozenset({'external_super_pass'})
+# All known USA saved-event bits have a labelled Japanese counterpart
+# candidate. This is logical catalogue parity, not evidence of equivalent
+# Japanese gameplay; the 0x57F0 rule is restricted to fixed saved-data fields.
+JAPAN_EXTRA_EVENT_KEYS = frozenset(flag.key for flag in
+    EXTERNAL_FLAGS + PLACEMENT_PICKUPS + DOLL_PLACEMENT_FLAGS)
 
 
 def _build_crosswalk():
@@ -108,15 +112,14 @@ def _build_crosswalk():
                   + "; JP bit semantics still require independent checks"
                   if evidence != "user-confirmed" else
                   "User confirmed JP 0x80161DFC, bit 0x20 on 2026-11-16")))
-    for flag in EXTERNAL_FLAGS:
-        if flag.key not in JAPAN_EXTRA_EVENT_KEYS:
-            continue
+    for flag in EXTERNAL_FLAGS + PLACEMENT_PICKUPS + DOLL_PLACEMENT_FLAGS:
         fields.append(CrossRegionField(
             'event:' + flag.key, 'Persistent story flags', flag.label,
             flag.address, flag.address + REGION_DELTA,
             mask=flag.mask, evidence='candidate',
-            note='USA external annotation and gameplay research; Japanese '
-                 'bit inferred from +0x57F0 only, not independently verified'))
+            note='USA: ' + flag.evidence +
+                 '; Japanese event/placement bit proposed by +0x57F0; '
+                 'not independently verified in Japanese gameplay'))
     for flag in PLASMA_FLAGS:
         fields.append(CrossRegionField(
             "plasma:" + flag.key, "Plasma advice flags", flag.label,
@@ -138,6 +141,13 @@ def _build_crosswalk():
 CROSS_REGION_FIELDS = _build_crosswalk()
 CROSS_REGION_BY_KEY = {field.key: field for field in CROSS_REGION_FIELDS}
 assert len(CROSS_REGION_FIELDS) == len(CROSS_REGION_BY_KEY)
+assert {field.key for field in CROSS_REGION_FIELDS if
+        field.key.startswith(('event:', 'plasma:'))} == {
+            ('plasma:' if flag in PLASMA_FLAGS else 'event:') + flag.key
+            for flag in FLAGS}
+assert all(CROSS_REGION_BY_KEY[
+    ('plasma:' if flag in PLASMA_FLAGS else 'event:') + flag.key
+].mask == flag.mask for flag in FLAGS)
 assert CROSS_REGION_BY_KEY["static:weapon_index"].japan == 0x80161DF7
 assert CROSS_REGION_BY_KEY["static:gameplay_submode"].japan == 0x800CD294
 assert CROSS_REGION_BY_KEY["static:map_overlay"].japan == 0x80161D64

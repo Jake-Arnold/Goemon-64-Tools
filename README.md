@@ -1,4 +1,27 @@
-# Goemon Speedrun Tools v0.11.44 — stable disconnected flag browsing
+# Goemon Speedrun Tools v0.11.45 — bidirectional saved-event registry parity
+
+## v0.11.45 — Equal USA and Japan saved-event flag coverage
+
+Every one of the **142 named USA saved-event bits** now has a paired
+Japanese candidate address, with the same individual bit mask, resolved
+from the canonical address registry. The 83 previously omitted JP bits
+include 40 individual Fortune Dolls, 7 Mr. Arrow/Elly placements, and
+36 external story flags. The Japanese Unlocks / Story & event flags page
+now shows all 142 records, including all 45 Fortune Doll entries.
+
+The candidates use the scoped fixed saved-event bank displacement
+`JP = USA + 0x57F0`; they are **not** 83 new Japanese gameplay
+confirmations. The registry retains evidence grades and existing masked
+On/Off compare-before-write controls; no writes occur automatically.
+
+`scripts.sync_address_catalogue` now rejects orphaned saved-event
+mapping rows. The authoritative main-branch registry remains distinct
+from the decomp production matching-C manifest; decomp guest-data
+discoveries enter through the separate versioned metadata import flow.
+Dynamic/overlay/code references must never receive fabricated address
+translations. See `docs/ADDRESS_CATALOGUE_WORKFLOW.md`.
+
+
 
 ## v0.11.44 — Avoid repeated offline flag-UI redraws
 

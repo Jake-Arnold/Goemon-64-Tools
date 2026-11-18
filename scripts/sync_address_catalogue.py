@@ -25,9 +25,37 @@ DERIVED_PREFIXES = ("research:", "external:", "japanese:", "crosswalk:",
 SOURCE_ONLY_TYPES = ("research:", "external:")
 
 
+def check_saved_event_crosswalk(rows):
+    """Fail closed if a saved-event bit lacks its reciprocal region record.
+
+    Physical byte counts need not match: different named bits can occupy
+    one byte. Compare named logical (address, mask) fields in both directions.
+    An explicitly unresolved field must have crosswalk_status='unresolved';
+    no synthetic physical address may be fabricated for that case.
+    """
+    by_location = {
+        (row['region'], row['address'], row.get('mask'))
+        for row in rows if row.get('category') == 'saved_event_bit'
+    }
+    for row in rows:
+        if (row.get('category') != 'saved_event_bit' or
+                row['region'] not in ('usa', 'japan')):
+            continue
+        partner = row.get('counterpart')
+        if partner is None and row.get('crosswalk_status') == 'unresolved':
+            continue
+        region = 'japan' if row['region'] == 'usa' else 'usa'
+        if (not partner or
+                (region, partner, row.get('mask')) not in by_location):
+            raise ValueError(
+                'Missing reciprocal saved-event flag mapping for ' +
+                row['id'] + ': add candidate evidence or explicit unresolved status')
+
+
 def synchronise(existing=None):
     declarations = build_catalogue()
     if existing is None:
+        check_saved_event_crosswalk(declarations["entries"])
         return declarations, [], len(declarations["entries"])
     validate_catalogue(existing)
     # Primary rows and their stable aliases are the same authoritative
@@ -91,6 +119,7 @@ def synchronise(existing=None):
     # Migrate older manifests with duplicate evidence rows into one
     # authoritative physical field and keep their IDs as aliases.
     out["entries"] = consolidate_entries(current.values())
+    check_saved_event_crosswalk(out["entries"])
     out["sources"] = sorted(set(s for r in out["entries"]
                                 for s in r["sources"]))
     validate_catalogue(out)
