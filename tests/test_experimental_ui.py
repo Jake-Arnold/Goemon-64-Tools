@@ -39,7 +39,7 @@ class TestExperimentalGUI(unittest.TestCase):
     def test_character_staged_before_reload_no_c_down_and_verified_on_entry(self):
         from practice.checkpoints import MAP_ADDR
         from autosplitter.memory import CHARACTER_ID_ADDR
-        self.app.scene_character.current(2)
+        self.app.scene_character.current(3)  # Sasuke in shared Keep/0/1/2/3 selector
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
@@ -63,7 +63,7 @@ class TestExperimentalGUI(unittest.TestCase):
     def test_wrong_spawn_character_is_reported_without_postload_input(self):
         from practice.checkpoints import MAP_ADDR
         from autosplitter.memory import CHARACTER_ID_ADDR
-        self.app.scene_character.current(3)
+        self.app.scene_character.current(4)  # Yae in shared Keep/0/1/2/3 selector
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
@@ -82,6 +82,38 @@ class TestExperimentalGUI(unittest.TestCase):
         self.assertAlmostEqual(self.ram.snapshot()['x'],125.25)
         self.assertEqual(self.ram.u32(CHARACTER_ID_ADDR),0)
 
+    def test_scene_banner_is_same_for_both_regions_without_player_pointer(self):
+        from practice.game_versions import VERSIONS
+        from practice.checkpoints import MAP_ADDR
+        from autosplitter.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
+        from tests.test_unlocks import FakeRAM
+        self.ram.write_guest(MAP_ADDR, (0x161).to_bytes(2, 'big'))
+        self.ram.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))
+        self.ram.write_guest(PLAYER_TASK_PTR_ADDR, bytes(4))
+        self.app.refresh_scene_banner(force=True)
+        original = self.app.scene_live.get()
+        self.assertTrue(original.startswith('Current map: 353 (0x161): '))
+
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        japan = FakeRAM()
+        japan.bytes[0x800CD2A2] = 0x01
+        japan.bytes[0x800CD2A3] = 0x61
+        self.app.jp_rdram = japan
+        self.app.refresh_scene_banner(force=True)
+        self.assertEqual(self.app.scene_live.get(), original)
+
+    def test_both_regions_share_keep_current_character_option(self):
+        from practice.game_versions import VERSIONS
+        expected = ('Keep current character', 'Goemon', 'Ebisumaru',
+                    'Sasuke', 'Yae')
+        self.assertEqual(tuple(self.app.scene_character['values']), expected)
+        self.assertEqual(self.app.scene_character.current(), 0)
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        self.assertEqual(tuple(self.app.scene_character['values']), expected)
+        self.assertEqual(self.app.scene_character.current(), 0)
+
     def test_double_click_reloads_without_confirmation(self):
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
@@ -91,6 +123,27 @@ class TestExperimentalGUI(unittest.TestCase):
         self.assertEqual(self.ram.u8(STATE_ADDR),12)
         self.assertEqual(self.ram.u16(PENDING_MAP_ADDR),353)
         self.assertIsNotNone(self.app.pending_direct_warp)
+
+    def test_impact_no_player_doubleclick_stages_reload(self):
+        from practice.checkpoints import SUBMODE_ADDR
+        from autosplitter.memory import (
+            PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR)
+        self.ram.write_guest(SUBMODE_ADDR, bytes([4]))
+        self.ram.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))
+        self.ram.write_guest(PLAYER_TASK_PTR_ADDR, bytes(4))
+        self.app.scene_options = [(353, 'Destination')]
+        self.app.scene_list.insert('end', 'Destination')
+        self.app.scene_list.selection_set(0)
+        with patch('practice.ui_extension.messagebox.askyesno',
+                   side_effect=AssertionError('No modal on doubleclick')):
+            self.assertEqual(
+                self.app.activate_selected_scene(), 'break')
+        pending = self.app.pending_direct_warp
+        self.assertIsNotNone(pending, self.app.scene_status.get())
+        self.assertEqual(self.ram.u8(STATE_ADDR), 12)
+        self.assertEqual(self.ram.u16(PENDING_MAP_ADDR), 353)
+        self.assertIsNone(pending['placement'].source_player)
+        self.assertIsNone(pending['placement'].source_task)
 
     def test_enter_debug_menu_requires_no_destination_and_never_stages_warp(self):
         self.assertFalse(self.app.scene_list.curselection())
@@ -103,7 +156,7 @@ class TestExperimentalGUI(unittest.TestCase):
         self.assertEqual(self.ram.u16(MAP_ADDR),before)
         self.assertIsNone(self.app.pending_native_warp)
         self.assertIsNone(self.app.pending_direct_warp)
-        self.assertIn('opened',self.app.scene_status.get())
+        self.assertIn('0x0A', self.app.scene_status.get())
 
     def test_read_only_blocks_both_scene_routes(self):
         self.app.scene_options=[(353,'Test destination')]

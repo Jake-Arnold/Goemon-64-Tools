@@ -97,7 +97,7 @@ class SpawnPlacementTests(unittest.TestCase):
 
     def test_big_endian_host_stages_and_places_canonical_values(self):
         from autosplitter.memory import Rdram
-        from tests.test_tools import BASE
+        from tests.test_checkpoint import BASE
         ram=self.sample();memory=ram.process.mem;converted=bytearray(len(memory))
         for index in range(4):converted[index::4]=memory[3-index::4]
         ram.process.mem=converted;ram=Rdram(ram.process,BASE,'big')

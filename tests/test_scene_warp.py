@@ -31,11 +31,23 @@ class TestWarp(unittest.TestCase):
         self.assertEqual(ram.u8(0x800C7A94),10)
         self.assertEqual(ram.u16(MAP_ADDR),353)
 
-    def test_unsupported_submode_does_not_open_debug(self):
-        ram=self.make()
-        ram.write_guest(SUBMODE_ADDR,b'\x04')
-        with self.assertRaisesRegex(ValueError,'Unsupported gameplay submode 4'):
-            open_native_debug_menu(ram)
-        self.assertEqual(ram.u8(EXIT_REQUEST_ADDR),0)
+    def test_impact_submode_missing_player_and_non_gameplay_state_enter_debug(self):
+        from autosplitter.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
+        from practice.checkpoints import STATE_ADDR
+        proc, ram = TestCheckpoint().sample()
+        ram.write_guest(SUBMODE_ADDR, b'\x04')  # Impact battle
+        ram.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))
+        ram.write_guest(PLAYER_TASK_PTR_ADDR, bytes(4))
+        ram.write_guest(STATE_ADDR, b'\x06')
+        source_scene = ram.u16(MAP_ADDR)
+        with patch.object(proc, 'write', wraps=proc.write) as write:
+            self.assertEqual(open_native_debug_menu(ram), 10)
+            self.assertEqual(write.call_count, 1)
+            self.assertEqual(write.call_args.args[1], b'\x0a')
+            # Already in debug: absolutely no second write.
+            self.assertEqual(open_native_debug_menu(ram), 10)
+            self.assertEqual(write.call_count, 1)
+        self.assertEqual(ram.u16(MAP_ADDR), source_scene)
+        self.assertEqual(ram.u8(EXIT_REQUEST_ADDR), 0)
 
 if __name__=='__main__':unittest.main()

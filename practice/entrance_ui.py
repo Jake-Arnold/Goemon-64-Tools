@@ -9,6 +9,7 @@ from practice.known_entrances import known_entrances, known_entrance_count
 from practice.launcher_preferences import preferences_path
 from practice.paths import practice_data_dir, resource_root
 from practice.scenes import SCENES,unidentified_scene_name
+from practice.region_session import active_session
 
 
 def stored_entrance_atlas_path():
@@ -56,13 +57,11 @@ class EntranceMixin:
                 self.entrance_load_error=str(exc)
 
     def scene_catalog(self):
-        catalog=dict(SCENES)
-        # Keep regional scene names separate; the selected USA entrance
-        # coordinates are nevertheless shared by both native warp paths.
-        if getattr(getattr(self, 'active_version', None), 'key', 'usa') == 'japan':
-            return catalog
+        """One scene list for USA/JP; label confidence is separate from IDs."""
+        catalog = dict(SCENES)
         if self.entrance_atlas:
-            for stage in self.entrance_atlas['payload']['rooms']:catalog.setdefault(stage,unidentified_scene_name(stage))
+            for stage in self.entrance_atlas['payload']['rooms']:
+                catalog.setdefault(stage, unidentified_scene_name(stage))
         return catalog
 
     def build_entrance_controls(self,parent):
@@ -156,13 +155,8 @@ class EntranceMixin:
         chosen_index=next((i for i,e in enumerate(self.entrance_rows) if e['id']==previous),None)
         if chosen_index is None:
             try:
-                if getattr(self.active_version, 'key', 'usa') == 'japan':
-                    reader = getattr(self, 'jp_rdram', None)
-                    origin = (int.from_bytes(
-                        reader.read_guest(0x800CD2A2, 2), 'big')
-                        if reader is not None else None)
-                else:
-                    origin = self.mem.u16(0x800C7AB2) if self.mem else None
+                session = active_session(self)
+                origin = session.read_current_scene() if session.connected else None
             except (OSError, ValueError, RuntimeError, PermissionError):
                 origin = None
             candidates=[i for i,e in enumerate(self.entrance_rows) if e['source_map']==origin and e['kind']=='exit']

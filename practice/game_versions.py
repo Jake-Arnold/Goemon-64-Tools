@@ -21,7 +21,19 @@ class GameVersion:
     label: str
     game_code: bytes
     sha1: str
+    # Historical name: actually gates USA player-snapshot/logical checkpoints,
+    # not the cross-region guest-memory reader or Live Memory tab.
     live_memory_supported: bool
+
+    @property
+    def guest_memory_read_supported(self) -> bool:
+        """Both verified retail ROMs expose guest-RAM reads in shared tabs."""
+        return True
+
+    @property
+    def logical_checkpoint_supported(self) -> bool:
+        """USA-specific player/task checkpoint contract; not JP savestates."""
+        return self.live_memory_supported
 
 
 VERSIONS = {

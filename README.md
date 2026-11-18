@@ -1,4 +1,129 @@
-# Goemon Speedrun Tools v0.11.51 — Fast event-flag folders
+# Goemon Speedrun Tools v0.11.56 — Experimental submode-unrestricted scene reload
+
+## v0.11.56 — Remove submode allowlist from double-click scene reload
+
+The shared native 0x0C Scene Browser reload guard no longer restricts
+gameplay submode to 0–4. A verified USA or Japan session at engine mode 0x0D
+may **attempt** a destination reload from submode 5 (as reported during
+a Japanese Impact fight), or another u8 submode, without a valid ordinary
+player/task pointer. A selected entrance and character are handled exactly
+as in v0.11.55. The submode is diagnostic data, not an extra write permission.
+
+The fixed-global protections remain: normal engine mode 0x0D, plausible
+current scene, loading=0, exit=0 and known current character or explicitly
+selected target. Game/ROM/PID/guest-RAM writer validation, destination
+staging and delayed guarded post-load player placement remain unchanged.
+The original debug-menu 0x0A button is still independent.
+
+Synthetic USA and Japan regression cases now cover submode 5, including the
+reported Japanese current-scene ID 0x223. No live emulator warp has been
+verified and a forced Impact transition may hang or crash the game.
+Keep this draft test change unmerged until tried with a disposable savestate.
+
+
+
+## v0.11.55 — Pointer-independent 0x0C reload in USA and Japan
+
+The shared Scene Browser now supports an experimental double-click area
+reload from observed Impact battle submode 4, including when an ordinary
+player/task pointer is missing. Both games use the same fixed-global source
+check: engine state 0x0D, plausible current scene, loading and exit flags
+clear, known gameplay submode 0..4, and a valid current character or explicit
+Goemon/Ebisumaru/Sasuke/Yae target.
+
+Both engines stage the selected known 12-byte entrance/XYZ record before
+requesting the original 0x0C scene loader. Source actor pointers are not
+fabricated. USA reacquires a destination actor before any separately guarded
+post-load XYZ placement. Japan recomp still checks exact ROM/code signatures,
+verified process identity and RAM mapping for its short-lived writable view,
+without mistakenly requiring an ordinary game player during Impact.
+
+This is distinct from opening the original debug menu (0x0A). Double-click
+from active debug mode, title screens or other unverified engine states still
+refuses without writes. Unknown current characters require selecting an
+explicit target. No live Impact-to-room transition has yet been verified.
+
+Synthetic USA/JP and GUI regression tests were added, but could not be run
+in a complete repository checkout here. Use a disposable emulator savestate.
+
+
+## v0.11.54 — USA/Japan scene/debug parity corrections
+
+The original debug-menu command now does the **same one-byte action for
+either ROM**: if necessary, write exactly `0x0A` at the selected game's
+engine-mode address (USA `0x800C7A94`; Japan `0x800CD284`). An initialized
+player pointer, task pointer, ordinary gameplay mode, selected scene, entrance
+or character is not a prerequisite. In particular, the USA button no longer
+blocks the native menu during Impact battle modes. It remains write-disabled
+when the application is read-only or has no attached guest memory. Japanese
+ROM/PID/code-signature validation still applies to writable attachment.
+
+Both regions now use the same Scene Browser current-map display (decimal
+and hex), read from an independently verified region-qualified u16 global
+without consulting actor pointers. The scene value updates while the
+Scene Browser tab is visible, instead of only while Live Memory is open.
+The shared scene list and selector now expose the same room entries and
+"Keep current character" default; the USA reload path translates an
+explicit character selection only when requested. Legacy USA
+"open debug for selected scene" handlers no longer stage a destination
+or arm post-load player/XYZ writes.
+
+**Original debug menu (`0x0A`) and experimental instant entrance reload
+(`0x0C`) remain different operations.** Instant reloads still use
+region-specific staged entrance/memory contracts and may reject unstable
+combat states, including Impact. No unsupported memory overwrite was
+introduced to force an instant warp.
+
+See `docs/UNIFIED_TOOLKIT_ARCHITECTURE_AUDIT.md` for the remaining
+region-parity discrepancies: custom watches, Story Progress edit coverage,
+checkpoint semantics and player/task-based instant reloads. The debug
+and scene changes have synthetic regression tests, but no live ROM/PJ64
+session has been validated in this environment. This remains a draft PR.
+
+
+
+## v0.11.53 — Bounded flag UI and shared selected-ROM memory session
+
+The Unlocks → Story & event flags tab now uses one **virtualised scrolling
+view** for both USA and Japan. Real Off/On ttk buttons are recycled as the
+user scrolls, rather than building hundreds of GUI widgets and thousands of
+wheel bindings. Every flag keeps its individual state and regional guest
+address/mask; no inner scrollable table and no different control layout for
+large folders. Expandable groups, type/subtype filtering, search, disabled
+controls and the existing compare-before-write guards remain.
+
+A new read-only RegionSession selects only the active game's guest-RAM
+reader and backend. The common polling scheduler cannot accidentally run
+both regional memory loops when stale reader handles coexist. Region-specific
+ROM verification, attachment, inventory/scene semantics and checked writes
+remain intentionally separate, and the application retains one Tk root,
+notebook and flag view when switching USA/Japan. The detailed architecture
+audit is in docs/UNIFIED_TOOLKIT_ARCHITECTURE_AUDIT.md.
+
+Isolated Xvfb GUI tests passed for a 450-flag virtual list; a 2,000-row
+microbenchmark used 16 pooled controls. Full application Tk integration
+tests, live emulator confirmation and Ubuntu/Wine latency measurements
+remain outstanding. This feature remains in a draft PR.
+
+
+
+## v0.11.52 — One On / Off layout for all event flags
+
+The **Unlocks → Story & event flags** page uses individual Off / On buttons
+for every flag, including large Fortune Dolls, External annotations and
+Other story folders. The 13+-flag special Treeview, inner scrollbar and
+selected-row toolbar introduced in v0.11.51 are removed. Only the outer
+flags-page scrollbar remains.
+
+Small groups render immediately. Larger groups build four rows at a time,
+yielding to Tk between batches. Collapsing cancels unfinished batches;
+reopening reuses existing controls; filters reveal matching rows without
+duplicates; switching USA/Japan discards region-specific widgets.
+Address maps, stale-value checks, one-bit masked writes and write permissions
+are unchanged. Added GUI regressions for large-folder rendering, safety,
+search, collapse and region changes. Live Linux/Wine GUI performance has not
+been measured and must be verified before release.
+
 
 ## v0.11.51 — One lightweight table for large flag folders
 

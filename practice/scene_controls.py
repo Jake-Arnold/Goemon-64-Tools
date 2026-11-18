@@ -1,39 +1,32 @@
-"""Experimental original-game debug-menu entry; US region only.
+"""USA original-game debug-mode entry and separate scene experiments.
 
 Source: abyssonym/mn64rando tables/patch_debug_menu_en.txt: the ROM hack
 opens its native debug menu by storing 0x0A in 0x800C7A94 after L press.
 That does NOT mean simply writing the map ID performs a valid warp.
 """
-from practice.checkpoints import STATE_ADDR, MAP_ADDR, _ensure_capture_safe, SUBMODE_ADDR
+from practice.checkpoints import STATE_ADDR, MAP_ADDR
 DEBUG_MENU_STATE = 10
 
 
-def _ensure_scene_control_submode(ram):
-    """Scene/debug controls are not saves: submode 3 can be ordinary indoor play.
-
-    The upstream autosave save-transaction safety predicate excludes submode 3,
-    but it is not evidence of a cutscene or unsafe transition by itself.
-    All other stable-gameplay checks in _ensure_capture_safe still apply.
-    Submodes >=4 remain unverified and are rejected.
-    """
-    submode = ram.u8(SUBMODE_ADDR)
-    if submode >= 4:
-        raise ValueError(f'Unsupported gameplay submode {submode}; scene control blocked')
-    return submode
-
 def open_native_debug_menu(ram):
-    s=_ensure_capture_safe(ram)
-    _ensure_scene_control_submode(ram)
-    current=ram.u8(STATE_ADDR)
-    if current != 13 or s['loading'] or not s['player_ptr']:
-        raise ValueError('Enter stable ordinary gameplay first')
-    # Do not tamper with the map ID or loader. Let original game decide scene.
-    ram.write_guest(STATE_ADDR,bytes([DEBUG_MENU_STATE]))
-    observed=ram.u8(STATE_ADDR)
-    if observed not in (DEBUG_MENU_STATE,13):
-        raise RuntimeError(f'Scene/debug state changed unexpectedly: {observed}')
-    return observed
+    """Request the original USA debug menu with one exact 0x0A byte write.
 
+    No player/task pointer, submode, loading state, selected scene or entrance
+    is needed. This is not a destination warp; the game's native menu owns
+    destination selection and subsequent loading.
+
+    The provided reader must belong to an already verified, write-enabled USA
+    connection. Exact-byte writes avoid touching adjacent swapped host bytes.
+    """
+    current = ram.u8(STATE_ADDR)
+    if current != DEBUG_MENU_STATE:
+        ram.write_guest_byte_exact(STATE_ADDR, DEBUG_MENU_STATE)
+    observed = ram.u8(STATE_ADDR)
+    if observed != DEBUG_MENU_STATE:
+        raise RuntimeError(
+            f'USA debug-menu engine state 0x0A did not verify: '
+            f'0x{observed:02X}')
+    return observed
 
 # Guest RAM values established in Goemon64Recomp-Android reverse-engineering
 # notes. THIS IS AN EXPERIMENTAL HYPOTHESIS ABOUT HOW TO INITIATE A WARP.

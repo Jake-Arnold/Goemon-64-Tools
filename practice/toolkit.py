@@ -37,6 +37,7 @@ from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
+from practice.region_session import active_session
 from practice.version import DISPLAY_VERSION
 from practice.updater_ui import UpdaterMixin
 from practice.launcher_preferences import load_last_region, save_last_region
@@ -47,6 +48,7 @@ from practice.japan_auto_attach import (
 from practice.japan_native_recomp import (
     verified_japan_recomp_pid, find_japan_recomp_pid,
     discover_japan_recomp_rdram, validate_japan_recomp_writer,
+    validate_japan_recomp_context,
 )
 from practice.remembered_rom import remember_verified_rom, load_remembered_rom
 from practice.japan_native_scene_warp import (
@@ -557,8 +559,10 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         version = self.active_version
         self.root.title(f"Goemon Practice Toolkit {DISPLAY_VERSION} · {version.label}")
         self.version_heading.set(f"{DISPLAY_VERSION}  |  {version.label}")
-        enabled = version.live_memory_supported
-        region_active = version.key in ('usa', 'japan')
+        # The old live_memory_supported field describes USA logical
+        # player/task checkpoint support, NOT whether Japan can read RAM.
+        enabled = version.logical_checkpoint_supported
+        region_active = version.guest_memory_read_supported
         if self.notebook.select() == str(self.jp_fields_tab):
             self.notebook.select(self.live_memory_tab)
         for tab in self.notebook.tabs()[1:]:
@@ -572,6 +576,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         # The same visible scene browser and inspector follow the active ROM;
         # USA-only write controls stay individually gated.
         self.configure_scene_browser_region()
+        if hasattr(self, 'scene_live'):
+            self.refresh_scene_banner(force=True)
         if hasattr(self, 'catalogue_loaded'):
             self.sync_address_catalogue_region()
         if hasattr(self, 'jp_scene_position_frame'):
@@ -996,7 +1002,10 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                    '0x0A to 0x800CD284; no map, actor, entrance or input changes.')
         caption.set(message)
         self.status.set(message)
-        self.refresh_japan_fields(force=True)
+        if hasattr(self, 'scene_status'):
+            self.scene_status.set(message)
+        # Do not initiate a second editor/renderer pass inside a RAM command.
+        # Visible panels refresh on their ordinary cadence.
 
     def _japan_native_warp_writer(self):
         """Reverify exact Japan ROM, process identity and live RAM before each step.
@@ -1027,9 +1036,15 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         probes = verified_japan_probes(self.verified_rom_path)
         handle = HostProcess(pid, writable=True)
         try:
-            verified = (validate_japan_recomp_writer(handle, original, probes)
-                        if target == 'recomp' else validate_rdram_base(
-                            handle, original.base, original.endian, probes, allow_4mb=True))
+            # Exact ROM/code probes and process identity still authorize
+            # the writable view. Do not impose an ordinary player/character
+            # requirement on a scene reload during an Impact encounter.
+            verified = validate_rdram_base(
+                handle, original.base, original.endian, probes,
+                allow_4mb=(target == 'project64'))
+            if target == 'recomp':
+                validate_japan_recomp_context(
+                    verified, strict_character=False)
             if getattr(verified, 'rdram_size', 0x800000) != getattr(
                     original, 'rdram_size', 0x800000):
                 raise RuntimeError('Japan RAM mapping size changed; reconnect')
@@ -1122,11 +1137,12 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             if reader is None:
                 raise RuntimeError('Connect to verified Japan-0 RAM first')
             context = get_japan_debug_context(reader)
-            from practice.japanese_debug_warp import _normal_gameplay
-            _normal_gameplay(context)
             selector = getattr(self, 'scene_character', None)
             selected = selector.current() if selector is not None else 0
             target_character = selected - 1 if selected in (1, 2, 3, 4) else None
+            from practice.scene_reload_source import require_reload_source
+            require_reload_source(
+                context, region='Japan', explicit_character=target_character)
             spawn = self._japan_reference_entrance(
                 destination, context[1])
             handle, writable = self._japan_native_warp_writer()
@@ -1467,8 +1483,10 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 # a read-only disk or corrupt registry must not disable use.
                 self.status.set(f'ROM verified but preference could not be saved: {exc}')
         self._clear_japan_base_choices()
-        capability = ('USA live toolkit supported' if version.live_memory_supported
-                      else 'Japan-0 verified; select recomp, project64 or mupen64plus and Connect')
+        capability = ('Guest RAM supported; USA logical checkpoints available'
+                      if version.logical_checkpoint_supported else
+                      'Guest RAM supported; native emulator states available; '
+                      'USA-specific logical checkpoints unavailable')
         self.status.set(
             f'Verified {version.label} (revision 0). {capability}. '
             + ('ROM path remembered for future sessions; file checked again '
@@ -2063,6 +2081,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 self.refresh_story_progress()
         elif panel == 'dashboard':
             self.refresh_checkpoint_diff(force=force)
+        elif panel == 'scene':
+            self.refresh_scene_banner(force=force)
         if (self.active_version.key == 'japan'
                 and panel in ('dashboard', 'scene')):
             self.refresh_japan_party_controls()
@@ -2079,8 +2099,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         forces a full 34-item/flag redraw every 170 ms. Once detached, one
         forced refresh clears stale On/Off states and disables write buttons.
         """
-        region = self.active_version.key
-        reader = self.jp_rdram if region == 'japan' else self.mem
+        session = active_session(self)
+        region, reader = session.region, session.reader
         previous = getattr(self, '_unlock_refresh_reader_token', None)
         if (previous is not None and previous[0] == region
                 and previous[1] is reader):
@@ -2088,10 +2108,14 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self._unlock_refresh_reader_token = (region, reader)
         if reader is None:
             self.refresh_unlocks(force=True)
+            if hasattr(self, 'scene_live'):
+                self.refresh_scene_banner(force=True)
 
     def tick(self):
-        self._watch_japan_process_restart(time.monotonic())
-        if self.jp_rdram is not None:
+        session = active_session(self)
+        if session.region == 'japan':
+            self._watch_japan_process_restart(time.monotonic())
+        if session.region == 'japan' and session.connected:
             self.poll_japan_native_scene_warp(time.monotonic())
             self._poll_visible_panels()
             # Compact dashboard position display is polled only when shown.
@@ -2113,7 +2137,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                         'Japan: movement velocity / player task not mapped')
                 except (OSError, RuntimeError, ValueError, PermissionError):
                     self.pos_text.set('X: —    Y: —    Z: —')
-        if self.mem:
+        if session.region == 'usa' and session.connected:
             try:
                 now=time.monotonic()
                 # During scene reload (state 0x0C), debug menus, and other

@@ -1,5 +1,64 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.56 PR consolidation regression-gate expansion
+
+- Added synthetic USA/JP Impact submode 5 staging, source-pointer recovery, scene/region session tests and virtual flag recycler/experimental Scene Browser Tk tests to the Linux CI driver. Both Xvfb and DISPLAY fallback now run the new GUI modules. This verifies actual PR code rather than only compiling it.
+- No game memory addresses or runtime write semantics were changed. The existing user live Japanese Impact 0x223/submode 5 success report is retained. CI confirmation must precede merging the toolkit PR.
+- First expanded CI run exposed an obsolete test-only import from `tests.test_tools`, whose removed `autosplitter.bridge` dependency made the new suite fail before exercising big-endian placement. Updated the test to use the self-contained `tests.test_checkpoint.BASE` fixture; re-run required.
+
+
+## 2026-11-18 — v0.11.56 experimental removal of 0–4 scene reload submode allowlist
+
+- **User evidence:** Japanese Impact fight reported engine 0x0D, scene 0x223, loading=0, submode=5, exit=0. The v0.11.55 shared `require_reload_source` rejected submode 5 despite otherwise matching the required engine/loading/exit state.
+- **Change:** Remove the hard-coded gameplay submode allowlist from the shared USA/Japan 0x0C double-click scene-reload guard. Preserve valid u8 parsing for diagnostics but permit any observed u8 submode when all other guards pass. This affects only explicitly requested experimental reloads; original debug 0x0A behavior remains unchanged.
+- **Safety:** Continue refusing inactive game engine modes, active loading, exit requests, implausible scenes or unknown character without an explicit user choice. Existing verified ROM/process/writable RDRAM gates, entrance staging, and post-load actor/XYZ validation are unchanged.
+- **Tests authored:** Add synthetic USA submode 5, Japanese 0x223/submode 5 using big-endian and word-swapped RDRAM fixtures. The tests assert staged native entrance bytes, engine 0x0C, and no direct overwrite of the current scene. Existing refusal tests cover wrong engine/loading/exit.
+- **Tests executed:** Not executed in this connector-only environment; no live Impact-to-room warp observed. This branch remains draft.
+- **Next:** Run the local synthetic suite, then test one disposable Japanese Project64 savestate at scene 0x223/submode 5. Verify destination, engine progression, character and actor initialization before claiming successful warp.
+
+
+## 2026-11-18 — v0.11.55 Impact/boss double-click scene reload (draft)
+
+- User regression: The original debug button worked from Impact without a player pointer, while Scene Browser double-click still refused. USA staging required a full ordinary player snapshot; JP staging rejected observed gameplay submode 4; Japanese native recomp writer also demanded a valid ordinary character.
+- Fix: A shared six-global source check in practice/scene_reload_source.py now permits stable engine 0x0D, known scene, no loading/exit, gameplay submode 0–4 and valid character (or explicit target) without player pointers. The regional actual guest-memory address maps and verified writable connections remain separate.
+- USA: The stage_reload_trial source snapshot is optional, with no fabricated actor pointer. Stages original verified entrance/character globals then engine 0x0C. Existing guarded SpawnPlacement reacquires an actual destination actor and applies XYZ only if that player becomes stable.
+- Japan: Direct 0x0C source validation and controller accept Impact submode4. Native recomp writer still revalidates ROM code signatures, PID and RAM mapping, but does not require the nonexistent ordinary Impact player.
+- Regression tests authored: tests/test_impact_scene_warp.py (six synthetic source/guard/placement tests), browser dispatch for USA and Japan; historical debug-mode source guard test updated.
+- Limitations: Synthetic tests not run in a full checkout; no actual emulator Impact warp verified. This remains experimental. Debug 0x0A, title/loading/exit and unverified submodes remain excluded from double-click reload. Missing normal player is not evidence of a playable destination.
+- Next: Run Windows Project64 and native Linux GUI regression suites and check actual Impact-to-room transitions on disposable savestates before merging.
+
+## 2026-11-18 — v0.11.54 region-parity scene/debug corrections (draft)
+
+- **User regression:** USA debug menu could not be opened when the player/task pointer was absent (Impact fights), while Japan had unconditional verified debug-menu entry. The Scene Browser current-map value used different formatting and was refreshed from the Live Memory tab, and default warp character selection differed.
+- **Code:** `practice/scene_controls.py` now writes exactly one guest/host byte `0x0A` via `write_guest_byte_exact` when entering original USA debug, regardless of gameplay submode, actor pointer or loading. Already-open debug is idempotent. The Japan verified `0x800CD284` implementation remains unchanged. The UI's legacy destination-specific USA debug path now invokes only the manual engine-mode command, with no entrance/actor staging or pending warp observer.
+- **Common scene model:** `RegionSession.read_current_scene()` selects explicit USA/JP addresses (`0x800C7AB2` / `0x800CD2A2`) but exposes a single u16 API. The Scene Browser independently polls its own current-map banner and displays the same decimal/hex/room-label format in both ROMs, even when the game has no initialized player. The entrance-selection source scene also reads this API.
+- **Common scene controls:** Both regions now present the same scene catalogue, debug-button wording and five character choices (Keep current, Goemon, Ebisumaru, Sasuke, Yae). The USA path now treats Keep current as no character override; it resolves the active character from the actual staging result for placement. The Japan path already supported this.
+- **Capabilities:** Separate "guest RAM readable" (both ROMs) from "USA logical checkpoint" support. The historical `live_memory_supported` flag was misleading; it is now only used to preserve the existing checkpoint policy, not to imply that Japanese Live Memory is inaccessible.
+- **Tests authored:** USA debug single-byte write from Impact-like state without player/task pointers, idempotent second invocation, no selection/entrance writes, equal scene banner and selection list across regions, explicit scene-address session isolation, previous JP verified-byte tests retained. Existing expectations depending on restrictive USA debug guards or old selector indices updated.
+- **Still unverified:** Full checkout test suite and live emulator transitions. The existing `0x0C` instant reload remains intentionally distinct and still requires its established source-state invariants; no proof that Impact combat can safely trigger an arbitrary area reload without a valid actor.
+- **Further parity audit:** Region-dependent custom-watch storage/edit handling, Story Progress JP edit coverage versus Unlocks, and the USA actor-dependent experimental `0x0C` reload need separate, evidence-led refactoring. Do not equate candidate Japanese offsets with fully proven identical gameplay semantics.
+
+
+## 2026-11-18 — v0.11.53 shared virtual flag UI and selected-ROM session
+
+- **Problem:** The v0.11.52 draft restored a uniform per-flag Off/On layout but still created hundreds of ttk widgets, with a separate wheel handler bound to every widget. The core Toolkit was also allowing its tick loop to inspect both mem and jp_rdram independently, even though one region is selected.
+- **Cross-region identity correction:** A recycled slot now refreshes its label, address, bit mask and provenance whenever its full regional field identity changes, even if the stable flag key is unchanged; synthetic Xvfb cross-region same-key regression added (7 isolated tests now passing).
+- **Implementation:** One VirtualFlagList recycles a bounded set of real Off/On button rows and type/subtype headers in the shared Unlocks → Story & event flags page. Scrolling and search update the logical list and row assignments instead of constructing all 142+ flag rows. The main flags page retains one scrollbar, with no Treeviews or per-flag wheel binding storm.
+- **Architecture:** Introduce a read-only RegionSession facade and route the shared flag editor, selected reader transition and Toolkit.tick through the active region, while leaving separate original-USA and Japanese attachment signatures, memory layouts, masked compare-before-write paths and gameplay feature gates intact. The shared GUI instances persist across USA ↔ Japan switches. Document verified unification and remaining runtime-specific debt in docs/UNIFIED_TOOLKIT_ARCHITECTURE_AUDIT.md.
+- **Tests performed:** Standalone Tk/Xvfb widget recycler tests (450 flags, filtering, real button writes, read-only and region rebinding) and read-only selected-region session tests: 6 passed. Separate isolated 2,000-row Xvfb benchmark: 16 pooled row/header controls, approximately 0.05 s initial setup and 0.26 s for 75 scroll positions on the execution host. These are isolated rather than end-to-end toolkit results.
+- **Still required:** Run full checked-out Tk integration suite (tests.test_virtual_flag_list, tests.test_region_session, tests.test_unlock_flags_ui, tests.test_toolkit_version, relevant backend regressions) under Xvfb and a real Ubuntu/Wine emulator. Live memory attachment and write behaviour have not been verified in this session; PR stays draft.
+- **Next step:** Measure in-app frame latency and refactor remaining region-specific connection and dashboard-snapshot logic behind a capability-aware interface without translating unproven address maps.
+
+
+## 2026-11-18 — v0.11.52 consistent Story & event flag controls
+
+- **Problem:** v0.11.51 displayed small story flag folders with inline Off/On buttons but 13+-flag folders as scrollable Treeviews and selected-row actions.
+- **Fix:** Use identical inline Off/On controls in every folder; retain the page scrollbar, not nested tables. Large folders build four-row Tk batches instead of creating every widget synchronously. Preserve search, filter, collapse/reopen and regional reset.
+- **Safety:** No change to guest memory maps, confidence metadata, read-only checks, stale-value guards, bit masks or USA/Japan write paths.
+- **Tests:** Rewrite table-specific GUI tests to cover 45 Fortune Dolls, Japanese direct flag writes, read-only states, batch cancellation, cached reopening and filtering. Connector-side static consistency checks completed; Tk GUI tests and live game interaction were not run here. Run `python3 -m unittest tests.test_unlock_flags_ui tests.test_toolkit_version` under Tk/Xvfb before merge.
+- **Limitations:** Fully expanded large folders still create many Tk controls, but are deferred in batches. Measure actual Linux/Wine responsiveness and investigate virtualized uniform rows if needed.
+
+
 ## 2026-11-18 — v0.11.51 large event-flag folder rendering fix
 
 - **Regression:** The four-row incremental construction from v0.11.43 still creates ~8 Tk controls and ~24 event bindings per named flag in a group; 45 Fortune Dolls, 35 external annotations and 24 other story flags force repeated synchronous Tk/X11 geometry. v0.11.50 improved polling but not this foreground expansion.
