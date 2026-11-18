@@ -10,6 +10,7 @@ from practice.japan_direct_scene_reload import JAPAN_PENDING_MAP
 from practice.entrances import Spawn
 from practice.japanese_debug_warp import (
     JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE,
+    JAPAN_DEBUG_SUBMODE,
 )
 from practice.japanese_position import JAPAN_PLAYER_XYZ_START
 from tests.test_japan_debug_menu_controller import screen
@@ -34,6 +35,18 @@ def make_controller():
 
 
 class JapanFullNativeSceneControllerTests(unittest.TestCase):
+    def test_impact_submode_four_still_stages_selected_scene(self):
+        app, writer = make_controller()
+        writer.set_guest(JAPAN_DEBUG_SUBMODE, bytes([4]))
+        writer.writes.clear()
+        app.start_japan_native_scene_warp(destination=0x1D1)
+        self.assertIsNotNone(app.jp_auto_warp, app.scene_status.value)
+        self.assertEqual(writer.rdram().read_guest(
+            JAPAN_DEBUG_ENGINE_MODE, 1), bytes([12]))
+        self.assertEqual(writer.rdram().read_guest(
+            JAPAN_PENDING_MAP, 2), bytes.fromhex('01D1'))
+        self.assertEqual(writer.close_count, 1)
+
     def test_doubleclick_requests_immediate_0x0c_without_menu_or_a(self):
         app, writer = make_controller()
         with patch('practice.toolkit.enter_japan_native_debug_menu') as menu, \
