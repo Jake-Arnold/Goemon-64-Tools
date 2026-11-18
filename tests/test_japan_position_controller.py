@@ -108,6 +108,26 @@ class JapanPositionControllerTests(unittest.TestCase):
         self.assertIn('Goemon moved', screen.status.value)
         self.assertEqual(screen.jp_position_result.value, screen.status.value)
 
+    def test_linux_wine_project64_position_uses_verified_checked_writer(self):
+        writer = Writer()
+        screen = fake_controller(writer)
+        guest_writer = writer.rdram()
+        with patch('practice.toolkit.sys.platform', 'linux'), \
+             patch('practice.toolkit.messagebox.askyesno', return_value=True), \
+             patch('practice.toolkit.verified_emulator_pid',
+                   return_value=(959604, 'project64')), \
+             patch('practice.toolkit.verified_japan_probes',
+                   return_value=('verified',)), \
+             patch('practice.toolkit.HostProcess', return_value=writer) as host, \
+             patch('practice.toolkit.validate_rdram_base',
+                   return_value=guest_writer) as validated:
+            Toolkit.move_japan_oedo_xyz(screen)
+        host.assert_called_once_with(959604, writable=True)
+        self.assertTrue(validated.call_args.kwargs['allow_4mb'])
+        self.assertEqual(len(writer.writes), 1)
+        self.assertEqual(writer.close_count, 1)
+        self.assertIn('Goemon moved', screen.status.value)
+
     def test_pid_mismatch_rejects_prior_to_opening_writable_handle(self):
         writer = Writer()
         screen = fake_controller(writer)

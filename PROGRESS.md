@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.47 Linux/Wine Project64 memory-control parity
+
+- **Issue:** Japanese Project64 memory connection on Linux/Wine was restored in v0.11.46, but the dashboard still said `project64 (Windows)` and independent hard-coded Windows-only guards blocked XYZ editing, original Japanese debug menu and verified scene writer despite the common cross-platform Linux/Windows HostProcess, ROM signature and readback infrastructure.
+- **Fix:** Correct the dashboard label and make those three memory-based Project64 writer paths eligible on Windows and Linux/Wine. All existing backend/PID, original Japanese ROM triplicate fingerprint, 4/8 MiB map, read/write view, opt-in, exact-scene and byte-compare guards remain. Do not allow macOS or bypass the Windows-only native keyboard injector.
+- **Tests:** Add Linux/Wine mocked Project64 checked 12-byte XYZ write, one-byte original menu-state write, native scene writer validation and a Tk regression for the displayed label; retain Windows and existing negative tests. CI Linux/Windows and catalogue synchronization required before release.
+- **Limitations:** Synthetic RAM/PID and Tk testing only; no real Wine Project64 process was accessed in CI, and no claim of working input injection under Wine. Static address browsing does not itself prove a live process attachment.
+- **Next:** Verify actual runtime with Ubuntu/Wine Project64 and original Japanese ROM; report backend PID, three-code-probe pass and RAM endian/base. Input injection across Wine's X11 window identity is a separate task.
+
+
 ## 2026-11-18 — v0.11.46 Project64 under Wine on Linux
 
 - **Root cause:** The Japanese Project64 Connect handler returned “Japanese Project64 attachment is supported on Windows only” whenever `sys.platform != 'win32'`, despite `LinuxProcess` supporting cross-process RAM reads and the Japanese Project64/Mupen scanner being host-platform neutral. Japanese Auto also excluded `project64` PID candidates on Linux.

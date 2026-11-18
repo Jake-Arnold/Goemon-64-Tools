@@ -239,6 +239,30 @@ class JapanFullNativeSceneControllerTests(unittest.TestCase):
         self.assertEqual(writer.close_count,1)
         self.assertEqual(writer.writes,[])
 
+    def test_linux_wine_project64_scene_writer_requires_verified_readback(self):
+        app, writer = make_controller()
+        app.args.enable_japan_debug_menu_writes = False
+        app.args.enable_japan_scene_writes = True
+        del app._japan_native_warp_writer
+        with patch('practice.toolkit.sys.platform', 'linux'), \
+             patch('practice.toolkit.verified_emulator_pid',
+                   return_value=(959604, 'project64')) as identity, \
+             patch('practice.toolkit.verified_japan_probes',
+                   return_value=('verified',)), \
+             patch('practice.toolkit.HostProcess',
+                   return_value=writer) as host, \
+             patch('practice.toolkit.validate_rdram_base',
+                   return_value=writer.rdram()) as checked:
+            handle, rdram = Toolkit._japan_native_warp_writer(app)
+        identity.assert_called_once_with(959604, 'project64')
+        host.assert_called_once_with(959604, writable=True)
+        checked.assert_called_once()
+        self.assertTrue(checked.call_args.kwargs['allow_4mb'])
+        self.assertEqual(rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1),
+                         b'\x0d')
+        self.assertEqual(writer.writes, [])
+        handle.close()
+
     def test_new_scene_optin_refuses_readonly(self):
         app, writer = make_controller()
         app.args.enable_japan_scene_writes = True

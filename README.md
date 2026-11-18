@@ -1,4 +1,24 @@
-# Goemon Speedrun Tools v0.11.46 — Linux Wine Project64 attachment
+# Goemon Speedrun Tools v0.11.47 — Linux/Wine Project64 controls parity
+
+## v0.11.47 — Remove stale Project64 Windows-only notices and host guards
+
+The Japanese guest-RAM connection panel now labels Project64 as
+**Windows or Wine/Linux**, not Windows only. Project64's previously
+blocked Japanese XYZ edit, original debug-menu entry and verified
+native scene-writer path can use the existing Linux process-memory
+adapter when connected to a real Wine Project64 process.
+
+The same backend identity, ROM code-probe, 4/8 MiB RDRAM-layout,
+read/write consistency, scene/character restrictions, opt-in flags
+and compare-before-write logic remain mandatory. No automatic writes
+or unchecked GameShark/code changes are introduced. Windows-specific
+Project64 keyboard injection remains Windows-only; X11 savestate input
+continues to use its separate window/PID verification.
+
+Synthetic Windows/Linux RAM and GUI regression tests are used; actual
+Project64 under Wine is not covered by GitHub-hosted runtime tests.
+
+
 
 ## v0.11.46 — Japanese Project64 connection on Linux
 

@@ -39,9 +39,9 @@ def screen(writer, *, opt_in=True, read_only=False, backend='project64',
     )
 
 
-def click_menu(screen_obj, writer, *, pid=959604):
+def click_menu(screen_obj, writer, *, pid=959604, platform='win32'):
     """Run controller through its real region/PID/code/memory validations."""
-    with patch('practice.toolkit.sys.platform', 'win32'), \
+    with patch('practice.toolkit.sys.platform', platform), \
          patch('practice.toolkit.messagebox.askyesno') as dialog, \
          patch('practice.toolkit.verified_emulator_pid',
                return_value=(pid, screen_obj.jp_backend)) as verify_pid, \
@@ -101,6 +101,18 @@ class JapaneseDebugMenuControllerTests(unittest.TestCase):
                 self.assertIn('no RAM write' if state == 10 else 'only',
                               s.status.value)
                 self.assertEqual(writer.close_count, 1)
+
+    def test_linux_wine_project64_debug_uses_same_reverified_byte_writer(self):
+        writer = Writer()
+        s = screen(writer, state=13)
+        host, pid, probes, checked = click_menu(s, writer, platform='linux')
+        host.assert_called_once_with(959604, writable=True)
+        pid.assert_called_once_with(959604, 'project64')
+        self.assertTrue(checked.call_args.kwargs['allow_4mb'])
+        self.assertEqual(writer.rdram().read_guest(
+            JAPAN_DEBUG_ENGINE_MODE, 1), b'\x0a')
+        self.assertEqual(writer.writes, [(0xCD287, b'\x0a')])
+        self.assertEqual(writer.close_count, 1)
 
     def test_auto_backend_is_valid_for_an_already_verified_connection(self):
         writer = Writer()

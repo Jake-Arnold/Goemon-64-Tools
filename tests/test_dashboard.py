@@ -255,6 +255,23 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertNotIn('Windows only', app.status.get())
         self.assertIsNone(app.jp_rdram)
 
+    def test_linux_dashboard_does_not_label_project64_windows_only(self):
+        # Static text must describe the implemented Wine/Linux connection.
+        app = self.toolkit
+        labels = []
+        def inspect(widget):
+            try:
+                value = widget.cget('text')
+            except tk.TclError:
+                value = ''
+            if isinstance(value, str):
+                labels.append(value)
+            for child in widget.winfo_children():
+                inspect(child)
+        inspect(app.jp_card)
+        self.assertTrue(any('Wine/Linux' in s for s in labels))
+        self.assertFalse(any('project64 (Windows)' in s for s in labels))
+
     def test_japan_project64_windows_selection_and_wrong_backend_guard(self):
         app = self.toolkit
         app.game_version_choice.set(VERSIONS['japan'].label)
