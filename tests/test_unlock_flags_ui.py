@@ -1,5 +1,6 @@
 """Tk integration for Unlocks items and per-flag On/Off controls."""
 import tkinter as tk
+from tkinter import ttk
 import unittest
 from unittest.mock import patch
 
@@ -140,41 +141,34 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.connection_target.set('project64')
         self._open_flags()
         self._expand()
-        benkei = app.unlock_flag_rows['benkei_encounter']
-        self.assertEqual(benkei.address, 0x80161DFC)
-        widgets = app.unlock_flag_widgets['benkei_encounter']
-        self.assertNotIn('disabled', widgets['on'].state())
+        self.assertEqual(app.unlock_flag_rows['benkei_encounter'].address, 0x80161DFC)
+        benkei = app.unlock_flag_widgets['benkei_encounter']
         with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
-            widgets['on'].invoke()
-            writer.assert_called_once_with(
-                0x80161DFC, b'\xA1', expected=b'\x81')
-        candidate = app.unlock_flag_rows['oedo_old_man_dialogue_cycle']
-        self.assertTrue(candidate.editable)
-        self.assertEqual(candidate.source, 'JP offset candidate')
+            benkei['on'].invoke()
+            writer.assert_called_once_with(0x80161DFC, b'\xA1', expected=b'\x81')
+        flag = app.unlock_flag_rows['oedo_old_man_dialogue_cycle']
+        self.assertEqual(flag.source, 'JP offset candidate')
         self._expand('Other story')
-        section = ('Other story', 'Unsorted')
-        table = app._unlock_flag_treeviews[section]
-        self.assertEqual(table.set(candidate.key, 'on'), 'On')
-        self.assertEqual(table.set(candidate.key, 'off'), 'Off')
+        row = app.unlock_flag_widgets[flag.key]
+        self.assertEqual((row['off'].cget('text'), row['on'].cget('text')),
+                         ('Off', 'On'))
         with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
-            app._activate_unlock_flag_tree_cell(section, candidate.key, 'Set')
-            writer.assert_called_once_with(
-                candidate.address, bytes((candidate.mask,)),
-                expected=b'\x00')
+            row['on'].invoke()
+            writer.assert_called_once_with(flag.address, bytes((flag.mask,)),
+                                           expected=b'\x00')
         app.args.read_only = True
         app.refresh_unlock_flags(force=True)
-        self.assertEqual(table.set(candidate.key, 'on'), '—')
-        self.assertEqual(table.set(candidate.key, 'off'), '—')
+        self.assertIn('disabled', row['on'].state())
         with patch.object(app, 'write_japan_raw_bytes') as writer:
-            app._activate_unlock_flag_tree_cell(section, candidate.key, 'Clear')
+            row['off'].invoke()
             writer.assert_not_called()
 
     def test_japan_receipt_flag_independent_cas_and_region_switch(self):
         app = self.app
         self._select_japan()
         ram = FakeRAM()
-        ram.bytes[0x80161DF8] = 0x04  # Adjacent Oedo story bit.
-        ram.bytes[0x80161EF3] = 0x01  # Separate inventory field.
+        ram.bytes[0x80161DF8] = 0x04
+        ram.bytes[0x80161EF3] = 0x01
         app.jp_rdram = ram
         app.game_pid = 1234
         app.jp_backend = 'project64'
@@ -182,26 +176,21 @@ class UnlockFlagsUITests(unittest.TestCase):
         self._open_flags()
         self._expand('External annotations')
         flag = app.unlock_flag_rows['external_super_pass']
-        self.assertEqual((flag.address, flag.mask), (0x80161DF8, 0x01))
-        section = ('External annotations', 'Unsorted')
-        table = app._unlock_flag_treeviews[section]
-        self.assertEqual(table.set(flag.key, 'on'), 'On')
-        self.assertEqual(table.set(flag.key, 'off'), 'Off')
+        row = app.unlock_flag_widgets[flag.key]
         with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
-            app._activate_unlock_flag_tree_cell(section, flag.key, 'Set')
-            writer.assert_called_once_with(
-                0x80161DF8, b'\x05', expected=b'\x04')
+            row['on'].invoke()
+            writer.assert_called_once_with(0x80161DF8, b'\x05', expected=b'\x04')
         ram.bytes[0x80161DF8] = 0x05
         app.refresh_unlock_flags(force=True)
+        self.assertEqual(row['state'].get(), 'On')
         with patch.object(app, 'write_japan_raw_bytes', return_value=True) as writer:
-            app._activate_unlock_flag_tree_cell(section, flag.key, 'Clear')
-            writer.assert_called_once_with(
-                0x80161DF8, b'\x04', expected=b'\x05')
+            row['off'].invoke()
+            writer.assert_called_once_with(0x80161DF8, b'\x04', expected=b'\x05')
         self.assertEqual(ram.bytes[0x80161EF3], 0x01)
         app.args.read_only = True
         app.refresh_unlock_flags(force=True)
-        self.assertEqual(table.set(flag.key, 'on'), '—')
-        self.assertEqual(table.set(flag.key, 'off'), '—')
+        self.assertIn('disabled', row['on'].state())
+        self.assertIn('disabled', row['off'].state())
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
         self.assertEqual(app.unlock_flag_rows[flag.key].address, 0x8015C608)
@@ -305,102 +294,93 @@ class UnlockFlagsUITests(unittest.TestCase):
         self.assertIn(section, app.unlock_flag_expanded)
         self.assertIs(app.unlock_flag_widgets['benkei_encounter'], widgets)
 
-    def test_large_folder_uses_single_tree_with_direct_bit_actions_and_cached_rows(self):
+    def test_large_folder_renders_batched_on_off_buttons_without_nested_scroll(self):
         app = self.app
         app.mem = FakeRAM()
         self._open_flags()
         section = ('Fortune Dolls', 'Unsorted')
-        rows = app.unlock_flag_section_rows[section]
-        self.assertEqual(len(rows), 45)
-        with patch.object(app, '_create_unlock_flag_row') as native_row:
-            app.toggle_unlock_flag_section(section)
-            native_row.assert_not_called()
-        self.assertNotIn(section, app._unlock_flag_pending)
-        self.assertNotIn(section, app._unlock_flag_jobs)
-        table = app._unlock_flag_treeviews[section]
-        self.assertEqual(len(table.get_children()), len(rows))
-        self.assertFalse(any(flag.key in app.unlock_flag_widgets for flag in rows))
-        first = rows[0]
-        self.assertEqual(table.set(first.key, 'value'), 'Off')
-        self.assertEqual(table.set(first.key, 'on'), 'On')
-        self.assertEqual(table.set(first.key, 'off'), 'Off')
+        flags = app.unlock_flag_section_rows[section]
+        self.assertEqual(len(flags), 45)
+        app.toggle_unlock_flag_section(section)
+        self.assertLessEqual(len(app.unlock_flag_widgets), 4)
+        self.assertIn(section, app._unlock_flag_pending)
+        self._drain_render()
+        self.assertEqual(len(app.unlock_flag_widgets), 45)
+        def walk(widget):
+            for child in widget.winfo_children():
+                yield child
+                yield from walk(child)
+        body = app.unlock_flag_section_bodies[section]
+        self.assertFalse(any(isinstance(w, (ttk.Treeview, ttk.Scrollbar))
+                             for w in walk(body)))
+        first = flags[0]
+        row = app.unlock_flag_widgets[first.key]
+        self.assertEqual(row['state'].get(), 'Off')
         before = app.mem.bytes.get(first.address, 0)
-        app._activate_unlock_flag_tree_cell(section, first.key, 'Set')
+        row['on'].invoke()
         self.assertEqual(app.mem.bytes[first.address], before | first.mask)
-        self.assertEqual(table.set(first.key, 'value'), 'On')
-        app._activate_unlock_flag_tree_cell(section, first.key, 'Clear')
+        row['off'].invoke()
         self.assertEqual(app.mem.bytes[first.address], before & ~first.mask)
         app.toggle_unlock_flag_section(section)
-        self.assertNotIn(section, app.unlock_flag_expanded)
         app.toggle_unlock_flag_section(section)
-        self.assertIs(table, app._unlock_flag_treeviews[section])
-        self.assertEqual(len(table.get_children()), 45)
-        self.assertEqual(app._unlock_flag_pending, {})
+        self.assertIs(row, app.unlock_flag_widgets[first.key])
 
-    def test_large_folder_single_tk_table_is_bounded_and_readonly(self):
+    def test_large_folder_per_flag_buttons_respect_read_only(self):
         app = self.app
         app.mem = FakeRAM()
         self._open_flags()
         section = ('Fortune Dolls', 'Unsorted')
         app.toggle_unlock_flag_section(section)
-        table = app._unlock_flag_treeviews[section]
-        self.assertEqual(table.cget('height'), 14)
-        # One Treeview and scrollbar, not hundreds of per-row Tk widgets.
-        self.assertLess(len(table.winfo_children()), 5)
-        key = app.unlock_flag_section_rows[section][0].key
+        self._drain_render()
+        row = app.unlock_flag_widgets[app.unlock_flag_section_rows[section][0].key]
         app.args.read_only = True
         app.refresh_unlock_flags(force=True)
-        self.assertEqual(table.set(key, 'on'), '—')
+        self.assertIn('disabled', row['off'].state())
+        self.assertIn('disabled', row['on'].state())
         with patch.object(app, 'set_unlock_flag') as setter:
-            app._activate_unlock_flag_tree_cell(section, key, 'Set')
+            row['on'].invoke()
             setter.assert_not_called()
         app.args.read_only = False
         app.refresh_unlock_flags(force=True)
-        self.assertEqual(table.set(key, 'on'), 'On')
-        table.selection_set(key)
-        app._refresh_unlock_flag_tree_selection(section)
-        off, on = app._unlock_flag_tree_buttons[section]
-        self.assertNotIn('disabled', off.state())
-        self.assertNotIn('disabled', on.state())
+        self.assertNotIn('disabled', row['on'].state())
 
-    def test_collapse_and_region_switch_discard_large_folder_tree(self):
+    def test_collapse_cancels_batches_and_region_switch_discards_rows(self):
         app = self.app
         self._open_flags()
         section = ('External annotations', 'Unsorted')
         app.toggle_unlock_flag_section(section)
-        table = app._unlock_flag_treeviews[section]
+        self.assertIn(section, app._unlock_flag_pending)
+        app.toggle_unlock_flag_section(section)
         self.assertNotIn(section, app._unlock_flag_pending)
-        app.toggle_unlock_flag_section(section)
         self.assertNotIn(section, app._unlock_flag_jobs)
-        self.root.update()
-        self.assertTrue(table.winfo_exists())
         app.toggle_unlock_flag_section(section)
-        self.assertIs(table, app._unlock_flag_treeviews[section])
+        self._drain_render()
+        row = app.unlock_flag_widgets[app.unlock_flag_section_rows[section][0].key]
+        app.toggle_unlock_flag_section(section)
+        app.toggle_unlock_flag_section(section)
+        self.assertIs(row, app.unlock_flag_widgets[app.unlock_flag_section_rows[section][0].key])
         self._select_japan()
-        self.assertEqual(app._unlock_flag_treeviews, {})
-        self.assertEqual(app._unlock_flag_tree_by_key, {})
-        self.assertEqual(app._unlock_flag_tree_cache, {})
-        self.assertIn('external_sasuke_recruited', app.unlock_flag_rows)
         self.root.update()
-        self.assertFalse(table.winfo_exists())
+        self.assertFalse(row['frame'].winfo_exists())
+        self.assertEqual(app.unlock_flag_widgets, {})
 
-    def test_search_filters_big_folder_without_creating_native_rows(self):
+    def test_search_filters_large_folder_without_rebuilding_buttons(self):
         app = self.app
         self._open_flags()
         section = ('Fortune Dolls', 'Unsorted')
         app.toggle_unlock_flag_section(section)
-        table = app._unlock_flag_treeviews[section]
-        self.assertEqual(len(table.get_children()), 45)
-        with patch.object(app, '_create_unlock_flag_row') as native_row:
-            app.unlock_flag_query.set('never-matches-this-flag')
-            self.assertEqual(table.get_children(), ())
-            self.assertNotIn(section, app._unlock_flag_pending)
-            app.unlock_flag_query.set('fortune doll')
-            self.assertGreater(len(table.get_children()), 0)
-            app.unlock_flag_query.set('')
-            self.assertEqual(len(table.get_children()), 45)
-            native_row.assert_not_called()
-        self.assertIs(table, app._unlock_flag_treeviews[section])
+        self._drain_render()
+        rows = app.unlock_flag_section_rows[section]
+        original = {f.key: app.unlock_flag_widgets[f.key] for f in rows}
+        app.unlock_flag_query.set('never-matches-this-flag')
+        self.assertEqual(app.unlock_flag_sections[section].winfo_manager(), '')
+        app.unlock_flag_query.set('fortune doll')
+        self.assertTrue(any(original[key]['frame'].winfo_manager() == 'grid'
+                            for key in original))
+        app.unlock_flag_query.set('')
+        self.assertEqual(len(app.unlock_flag_widgets), 45)
+        for key, widgets in original.items():
+            self.assertIs(widgets, app.unlock_flag_widgets[key])
 
     def test_idle_tick_uses_reader_transition_not_forced_offline_refresh(self):
         app = self.app

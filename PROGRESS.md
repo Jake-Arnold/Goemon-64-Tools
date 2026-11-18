@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.52 consistent Story & event flag controls
+
+- **Problem:** v0.11.51 displayed small story flag folders with inline Off/On buttons but 13+-flag folders as scrollable Treeviews and selected-row actions.
+- **Fix:** Use identical inline Off/On controls in every folder; retain the page scrollbar, not nested tables. Large folders build four-row Tk batches instead of creating every widget synchronously. Preserve search, filter, collapse/reopen and regional reset.
+- **Safety:** No change to guest memory maps, confidence metadata, read-only checks, stale-value guards, bit masks or USA/Japan write paths.
+- **Tests:** Rewrite table-specific GUI tests to cover 45 Fortune Dolls, Japanese direct flag writes, read-only states, batch cancellation, cached reopening and filtering. Connector-side static consistency checks completed; Tk GUI tests and live game interaction were not run here. Run `python3 -m unittest tests.test_unlock_flags_ui tests.test_toolkit_version` under Tk/Xvfb before merge.
+- **Limitations:** Fully expanded large folders still create many Tk controls, but are deferred in batches. Measure actual Linux/Wine responsiveness and investigate virtualized uniform rows if needed.
+
+
 ## 2026-11-18 — v0.11.51 large event-flag folder rendering fix
 
 - **Regression:** The four-row incremental construction from v0.11.43 still creates ~8 Tk controls and ~24 event bindings per named flag in a group; 45 Fortune Dolls, 35 external annotations and 24 other story flags force repeated synchronous Tk/X11 geometry. v0.11.50 improved polling but not this foreground expansion.

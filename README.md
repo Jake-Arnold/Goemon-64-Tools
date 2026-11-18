@@ -1,4 +1,22 @@
-# Goemon Speedrun Tools v0.11.51 — Fast event-flag folders
+# Goemon Speedrun Tools v0.11.52 — Consistent story-flag controls
+
+## v0.11.52 — One On / Off layout for all event flags
+
+The **Unlocks → Story & event flags** page uses individual Off / On buttons
+for every flag, including large Fortune Dolls, External annotations and
+Other story folders. The 13+-flag special Treeview, inner scrollbar and
+selected-row toolbar introduced in v0.11.51 are removed. Only the outer
+flags-page scrollbar remains.
+
+Small groups render immediately. Larger groups build four rows at a time,
+yielding to Tk between batches. Collapsing cancels unfinished batches;
+reopening reuses existing controls; filters reveal matching rows without
+duplicates; switching USA/Japan discards region-specific widgets.
+Address maps, stale-value checks, one-bit masked writes and write permissions
+are unchanged. Added GUI regressions for large-folder rendering, safety,
+search, collapse and region changes. Live Linux/Wine GUI performance has not
+been measured and must be verified before release.
+
 
 ## v0.11.51 — One lightweight table for large flag folders
 
