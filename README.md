@@ -1,4 +1,31 @@
-# Goemon Speedrun Tools v0.11.58 — Read-only USA/Japan actor and model research
+# Goemon Speedrun Tools v0.11.59 — Compact Dashboard and picture-only region flags
+
+## v0.11.59 — Flag images and collapsed advanced controls
+
+The Game switch now uses **two actual 48 × 32 raster flag pictures** drawn
+using Tk PhotoImage, with no third-party dependencies or external images.
+Only the USA/Japan flag pictures select the region. The adjacent current
+region name is noninteractive, and the native selected radio state remains
+visible on Windows and Linux even without country-flag emoji fonts.
+
+The Dashboard starts with the game selector, Connect, live status/position,
+and the emulator savestate slot and Save/Load controls. Emulator/backend
+selection, optional PID, native Linux launcher, Linux ptrace permission
+controls and the special Japanese RAM-base picker are tucked into
+**Advanced connection**, closed by default. A Japanese RAM attachment that
+detects multiple candidate bases automatically opens this section.
+
+Emulator-owned named savestate slot controls remain available through
+**Named state slots**, also collapsed by default. Neither disclosure changes
+the selected game, deletes stored labels or recreates the Dashboard.
+Changing USA/Japan preserves disclosure state and retains all existing
+guest-memory safety, verified process/ROM handling and 0x0A/0x0C warp
+logic. This is a presentation-only change.
+
+Linux CI tests include the raster images, repeated flag switching,
+disclosure preservation and named native-slot dispatch.
+
+
 
 ## v0.11.58 — Consolidated static ROM actor, geometry and skeleton research
 
