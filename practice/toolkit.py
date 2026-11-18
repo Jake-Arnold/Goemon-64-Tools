@@ -366,10 +366,14 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             self.native_save_btn.state(['disabled'])
             self.native_load_btn.state(['disabled'])
 
-        # Japan-0 named checkpoints are references to emulator-owned full
-        # save slots, NOT USA logical RAM checkpoints.
+        # Optional emulator-owned slot metadata: no need for a permanent
+        # large form in either region's first-page layout.
+        self.named_native_expanded = False
+        self.named_native_toggle = ttk.Button(
+            state_card, text='Named state slots  ▸',
+            command=self.toggle_named_native_slots)
+        self.named_native_toggle.pack(fill='x', pady=(7, 0))
         named = ttk.Frame(state_card)
-        named.pack(fill='x', pady=(7, 0))
         self.named_native_frame = named
         ttk.Label(
             named, text='Named state slots (Japan emulator integration)',
@@ -592,6 +596,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         # or the application header and window geometry.
         self.root.title(f"Goemon Practice Toolkit {DISPLAY_VERSION}")
         self.version_heading.set(DISPLAY_VERSION)
+        self.region_label.set('USA' if version.key == 'usa' else 'Japan')
         # The old live_memory_supported field describes USA logical
         # player/task checkpoint support, NOT whether Japan can read RAM.
         enabled = version.logical_checkpoint_supported
@@ -680,6 +685,35 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 'Japan selected. Click Connect for automatic PID/backend/RDRAM '
                 'detection; the original retail ROM is requested only once '
                 'if no verified path is remembered.')
+
+    def toggle_connection_advanced(self, show=None):
+        """Reveal rarely needed connection controls without recreating cards."""
+        expanded = (not self.connection_advanced_visible
+                    if show is None else bool(show))
+        self.connection_advanced_visible = expanded
+        if expanded:
+            self.connection_advanced_frame.pack(
+                fill='x', pady=(0, 7),
+                after=self.connection_advanced_toggle)
+        else:
+            self.connection_advanced_frame.pack_forget()
+        self.connection_advanced_toggle.configure(
+            text='Advanced connection  ▾' if expanded else
+                 'Advanced connection  ▸')
+
+    def toggle_named_native_slots(self, show=None):
+        """Toggle optional state-slot labels without changing region/session."""
+        expanded = (not self.named_native_expanded
+                    if show is None else bool(show))
+        self.named_native_expanded = expanded
+        if expanded:
+            self.named_native_frame.pack(
+                fill='x', pady=(4, 0), after=self.named_native_toggle)
+        else:
+            self.named_native_frame.pack_forget()
+        self.named_native_toggle.configure(
+            text='Named state slots  ▾' if expanded else
+                 'Named state slots  ▸')
 
     def _set_region_switch_enabled(self, enabled: bool):
         """Keep both region flags in the same state during process attach."""
@@ -1963,8 +1997,9 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             self.jp_base_selector['values'] = (
                 'Auto (detect)', *self.jp_candidates.keys())
             self.jp_base_choice.set('Auto (detect)')
+            self.toggle_connection_advanced(True)
             self.jp_base_row.pack(
-                fill='x', before=self.connect_button, pady=(0, 7))
+                fill='x', pady=(0, 7), after=self.connection_backend_selector)
             self.jp_read_button.state(['disabled'])
             self.jp_capture_spawn_btn.state(['disabled'])
             self.jp_read_result.set(
