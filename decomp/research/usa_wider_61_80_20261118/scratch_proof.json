@@ -1,0 +1,42 @@
+{
+  "format": "original-USA-61-80-upstream-scratch-native52",
+  "date": "2026-11-18",
+  "status": "UPSTREAM_SCRATCH_FULL_ROM_EXACT",
+  "classification": "RESEARCH_ONLY",
+  "upstream_sha": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_exact_rom_bytes": 33554432,
+  "native_exact_functions": 52,
+  "original_instruction_bytes": 576,
+  "original_elf_positive_sized_functions": 7376,
+  "original_relocations_by_resource": {
+    "61": 161,
+    "62": 747,
+    "64": 176,
+    "66": 571,
+    "67": 254,
+    "69": 464,
+    "70": 298,
+    "71": 350,
+    "72": 412,
+    "73": 274,
+    "74": 822,
+    "75": 279,
+    "77": 304,
+    "78": 124,
+    "79": 180
+  },
+  "original_relocations_total": 5416,
+  "host_test": "GCC -Werror -fsanitize=address,undefined PASS (actual exact C source)",
+  "not_run": [
+    "current-branch combined decomp.verify",
+    "current-branch strict decomp.inventory",
+    "current-branch full decomp.local_ci",
+    "current-branch combined source/ELF ownership"
+  ],
+  "promoted_functions": 0,
+  "accepted_at_start": {
+    "usa": 864,
+    "japan": 39
+  }
+}

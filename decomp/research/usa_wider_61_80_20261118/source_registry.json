@@ -1,0 +1,478 @@
+{
+  "format": "original-usa-61-80-exact52-1",
+  "upstream_sha": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "status": "RESEARCH_ONLY",
+  "native_exact_count": 52,
+  "native_exact_bytes": 576,
+  "sources": [
+    {
+      "file": 61,
+      "function": "func_0800033C_720C0C",
+      "original_rom_offset": "0x720C0C",
+      "vma": "0x0800033C",
+      "size": 12,
+      "source_git_sha1": "c9d1df53f918ccba88d0123cf73210c2529e1189",
+      "path": "sources/file_61/func_0800033C_720C0C.c"
+    },
+    {
+      "file": 62,
+      "function": "func_080020CC_7236EC",
+      "original_rom_offset": "0x7236EC",
+      "vma": "0x080020CC",
+      "size": 12,
+      "source_git_sha1": "4205e1861e916b5fff9d60338bbd5ee3406e6ad9",
+      "path": "sources/file_62/func_080020CC_7236EC.c"
+    },
+    {
+      "file": 64,
+      "function": "func_08000C0C_72581C",
+      "original_rom_offset": "0x72581C",
+      "vma": "0x08000C0C",
+      "size": 12,
+      "source_git_sha1": "836c8b15f1295f7e0f7f1efbdc2e081f0663b0ac",
+      "path": "sources/file_64/func_08000C0C_72581C.c"
+    },
+    {
+      "file": 66,
+      "function": "func_0800234C_7287DC",
+      "original_rom_offset": "0x7287DC",
+      "vma": "0x0800234C",
+      "size": 12,
+      "source_git_sha1": "09b3f55748627a79b14e81f6fc4a41c031af2673",
+      "path": "sources/file_66/func_0800234C_7287DC.c"
+    },
+    {
+      "file": 66,
+      "function": "func_080024FC_72898C",
+      "original_rom_offset": "0x72898C",
+      "vma": "0x080024FC",
+      "size": 12,
+      "source_git_sha1": "1692e7024a81e72b04e5a4756d9ac8a82af41582",
+      "path": "sources/file_66/func_080024FC_72898C.c"
+    },
+    {
+      "file": 66,
+      "function": "func_08002610_728AA0",
+      "original_rom_offset": "0x728AA0",
+      "vma": "0x08002610",
+      "size": 12,
+      "source_git_sha1": "13ec7db880e5a9abf509ef8b385571a94a40f3a9",
+      "path": "sources/file_66/func_08002610_728AA0.c"
+    },
+    {
+      "file": 66,
+      "function": "func_08002C5C_7290EC",
+      "original_rom_offset": "0x7290EC",
+      "vma": "0x08002C5C",
+      "size": 12,
+      "source_git_sha1": "eca345697a735aa991327ebeecc36da94b1af7cf",
+      "path": "sources/file_66/func_08002C5C_7290EC.c"
+    },
+    {
+      "file": 67,
+      "function": "func_08000C88_72A228",
+      "original_rom_offset": "0x72A228",
+      "vma": "0x08000C88",
+      "size": 16,
+      "source_git_sha1": "579baf7c94eefefee8e520ac292685cd999af683",
+      "path": "sources/file_67/func_08000C88_72A228.c"
+    },
+    {
+      "file": 67,
+      "function": "func_08000C98_72A238",
+      "original_rom_offset": "0x72A238",
+      "vma": "0x08000C98",
+      "size": 8,
+      "source_git_sha1": "a63bdafbafdbc382dd696c4feaa488c3164cd33e",
+      "path": "sources/file_67/func_08000C98_72A238.c"
+    },
+    {
+      "file": 67,
+      "function": "func_08000CD8_72A278",
+      "original_rom_offset": "0x72A278",
+      "vma": "0x08000CD8",
+      "size": 8,
+      "source_git_sha1": "0ed45c7b6231da373107c36ac50cc3452126749e",
+      "path": "sources/file_67/func_08000CD8_72A278.c"
+    },
+    {
+      "file": 69,
+      "function": "func_0800058C_72BDDC",
+      "original_rom_offset": "0x72BDDC",
+      "vma": "0x0800058C",
+      "size": 20,
+      "source_git_sha1": "74b826547476dc656bf7b5d96a1a5ea7e5ae8f76",
+      "path": "sources/file_69/func_0800058C_72BDDC.c"
+    },
+    {
+      "file": 69,
+      "function": "func_080005A0_72BDF0",
+      "original_rom_offset": "0x72BDF0",
+      "vma": "0x080005A0",
+      "size": 8,
+      "source_git_sha1": "42d79948476fa5361b826b8dd47712500db21eb2",
+      "path": "sources/file_69/func_080005A0_72BDF0.c"
+    },
+    {
+      "file": 69,
+      "function": "func_080005A8_72BDF8",
+      "original_rom_offset": "0x72BDF8",
+      "vma": "0x080005A8",
+      "size": 24,
+      "source_git_sha1": "f09eeb6bd7622cc4ce46053e39ff0cb3c4178849",
+      "path": "sources/file_69/func_080005A8_72BDF8.c"
+    },
+    {
+      "file": 69,
+      "function": "func_08000AC0_72C310",
+      "original_rom_offset": "0x72C310",
+      "vma": "0x08000AC0",
+      "size": 8,
+      "source_git_sha1": "f2ad3a1d8490e6f16a0d6d2a24336c9ab718d711",
+      "path": "sources/file_69/func_08000AC0_72C310.c"
+    },
+    {
+      "file": 69,
+      "function": "func_080014D0_72CD20",
+      "original_rom_offset": "0x72CD20",
+      "vma": "0x080014D0",
+      "size": 12,
+      "source_git_sha1": "61be187cf4d0e04edf889c12c69ed7f702eb3965",
+      "path": "sources/file_69/func_080014D0_72CD20.c"
+    },
+    {
+      "file": 69,
+      "function": "func_080014DC_72CD2C",
+      "original_rom_offset": "0x72CD2C",
+      "vma": "0x080014DC",
+      "size": 12,
+      "source_git_sha1": "b1312ae8e5882b2134de02c029cef6376df12876",
+      "path": "sources/file_69/func_080014DC_72CD2C.c"
+    },
+    {
+      "file": 70,
+      "function": "func_0800131C_72F57C",
+      "original_rom_offset": "0x72F57C",
+      "vma": "0x0800131C",
+      "size": 8,
+      "source_git_sha1": "3093e56fff3bb7f863ee779c73ed903376fa6025",
+      "path": "sources/file_70/func_0800131C_72F57C.c"
+    },
+    {
+      "file": 71,
+      "function": "func_08000DC0_730650",
+      "original_rom_offset": "0x730650",
+      "vma": "0x08000DC0",
+      "size": 16,
+      "source_git_sha1": "1a6068fd320397857d5525a12f66ecb27450347b",
+      "path": "sources/file_71/func_08000DC0_730650.c"
+    },
+    {
+      "file": 71,
+      "function": "func_08000DD0_730660",
+      "original_rom_offset": "0x730660",
+      "vma": "0x08000DD0",
+      "size": 8,
+      "source_git_sha1": "9c2b4dc2fdaeaae6c4ce03c49aaff9785fccadb6",
+      "path": "sources/file_71/func_08000DD0_730660.c"
+    },
+    {
+      "file": 71,
+      "function": "func_08000DD8_730668",
+      "original_rom_offset": "0x730668",
+      "vma": "0x08000DD8",
+      "size": 8,
+      "source_git_sha1": "751f613c20d998f983c190e5d5157b4f1eaceb61",
+      "path": "sources/file_71/func_08000DD8_730668.c"
+    },
+    {
+      "file": 71,
+      "function": "func_08001084_730914",
+      "original_rom_offset": "0x730914",
+      "vma": "0x08001084",
+      "size": 12,
+      "source_git_sha1": "f5e1a536495aee35b6372bf131a8c965b02a693d",
+      "path": "sources/file_71/func_08001084_730914.c"
+    },
+    {
+      "file": 71,
+      "function": "func_08001858_7310E8",
+      "original_rom_offset": "0x7310E8",
+      "vma": "0x08001858",
+      "size": 8,
+      "source_git_sha1": "b078b433a6e48b175a63a122908d3dde004739f8",
+      "path": "sources/file_71/func_08001858_7310E8.c"
+    },
+    {
+      "file": 72,
+      "function": "func_080014E4_732794",
+      "original_rom_offset": "0x732794",
+      "vma": "0x080014E4",
+      "size": 12,
+      "source_git_sha1": "5e5ebf5cc5ab8d0879edb2d896f0f1d77d42401e",
+      "path": "sources/file_72/func_080014E4_732794.c"
+    },
+    {
+      "file": 72,
+      "function": "func_080015BC_73286C",
+      "original_rom_offset": "0x73286C",
+      "vma": "0x080015BC",
+      "size": 12,
+      "source_git_sha1": "5f037c02c242b918e63948338690c9632d5b746c",
+      "path": "sources/file_72/func_080015BC_73286C.c"
+    },
+    {
+      "file": 73,
+      "function": "func_08000CA8_733BD8",
+      "original_rom_offset": "0x733BD8",
+      "vma": "0x08000CA8",
+      "size": 16,
+      "source_git_sha1": "7fec2626eb6513c007c7913d2345f38d6794463d",
+      "path": "sources/file_73/func_08000CA8_733BD8.c"
+    },
+    {
+      "file": 73,
+      "function": "func_08000CB8_733BE8",
+      "original_rom_offset": "0x733BE8",
+      "vma": "0x08000CB8",
+      "size": 8,
+      "source_git_sha1": "c372335615d8a609e0bb982d67d82087ccd392a1",
+      "path": "sources/file_73/func_08000CB8_733BE8.c"
+    },
+    {
+      "file": 73,
+      "function": "func_08000DA8_733CD8",
+      "original_rom_offset": "0x733CD8",
+      "vma": "0x08000DA8",
+      "size": 16,
+      "source_git_sha1": "8a267bea92ee3d24295fd86fccf9503b2e2ca5dc",
+      "path": "sources/file_73/func_08000DA8_733CD8.c"
+    },
+    {
+      "file": 73,
+      "function": "func_08000FFC_733F2C",
+      "original_rom_offset": "0x733F2C",
+      "vma": "0x08000FFC",
+      "size": 12,
+      "source_git_sha1": "34680e9f9465485efc988740a12191fd469661c0",
+      "path": "sources/file_73/func_08000FFC_733F2C.c"
+    },
+    {
+      "file": 73,
+      "function": "func_080013D0_734300",
+      "original_rom_offset": "0x734300",
+      "vma": "0x080013D0",
+      "size": 8,
+      "source_git_sha1": "6d97badd74c0b34edee97a5e50342f85fb4d12fe",
+      "path": "sources/file_73/func_080013D0_734300.c"
+    },
+    {
+      "file": 73,
+      "function": "func_080015F0_734520",
+      "original_rom_offset": "0x734520",
+      "vma": "0x080015F0",
+      "size": 8,
+      "source_git_sha1": "cd47d14238a27b98c963b290128f33c34a2b3e13",
+      "path": "sources/file_73/func_080015F0_734520.c"
+    },
+    {
+      "file": 73,
+      "function": "func_0800162C_73455C",
+      "original_rom_offset": "0x73455C",
+      "vma": "0x0800162C",
+      "size": 8,
+      "source_git_sha1": "ce766b3032dc0b0a29682b9e3616d4e823bf04f2",
+      "path": "sources/file_73/func_0800162C_73455C.c"
+    },
+    {
+      "file": 74,
+      "function": "func_08002DF8_737588",
+      "original_rom_offset": "0x737588",
+      "vma": "0x08002DF8",
+      "size": 12,
+      "source_git_sha1": "09c0c29b57c2d261a6b16a4ac30279b8e1720aea",
+      "path": "sources/file_74/func_08002DF8_737588.c"
+    },
+    {
+      "file": 74,
+      "function": "func_08003020_7377B0",
+      "original_rom_offset": "0x7377B0",
+      "vma": "0x08003020",
+      "size": 8,
+      "source_git_sha1": "c2905cf1cdd84e716ab3a847541ebb0d79ffd1a2",
+      "path": "sources/file_74/func_08003020_7377B0.c"
+    },
+    {
+      "file": 74,
+      "function": "func_080030EC_73787C",
+      "original_rom_offset": "0x73787C",
+      "vma": "0x080030EC",
+      "size": 12,
+      "source_git_sha1": "bbf42900e2f66b2b65f8d9d2d49ae2982aafd50f",
+      "path": "sources/file_74/func_080030EC_73787C.c"
+    },
+    {
+      "file": 74,
+      "function": "func_080031BC_73794C",
+      "original_rom_offset": "0x73794C",
+      "vma": "0x080031BC",
+      "size": 12,
+      "source_git_sha1": "8987b0657eea2d97951131b4d405d09901b12ec9",
+      "path": "sources/file_74/func_080031BC_73794C.c"
+    },
+    {
+      "file": 74,
+      "function": "func_080032A4_737A34",
+      "original_rom_offset": "0x737A34",
+      "vma": "0x080032A4",
+      "size": 12,
+      "source_git_sha1": "1bfa287c4f2a2c5f31881f0948ea43a74af6ffd7",
+      "path": "sources/file_74/func_080032A4_737A34.c"
+    },
+    {
+      "file": 74,
+      "function": "func_0800338C_737B1C",
+      "original_rom_offset": "0x737B1C",
+      "vma": "0x0800338C",
+      "size": 12,
+      "source_git_sha1": "7cd53d7d1f4eeb2f59b766dd7f2d63b6b4169274",
+      "path": "sources/file_74/func_0800338C_737B1C.c"
+    },
+    {
+      "file": 74,
+      "function": "func_08003464_737BF4",
+      "original_rom_offset": "0x737BF4",
+      "vma": "0x08003464",
+      "size": 12,
+      "source_git_sha1": "85151728064fedd8bbe1637d428cc66c5030ef8d",
+      "path": "sources/file_74/func_08003464_737BF4.c"
+    },
+    {
+      "file": 74,
+      "function": "func_0800353C_737CCC",
+      "original_rom_offset": "0x737CCC",
+      "vma": "0x0800353C",
+      "size": 12,
+      "source_git_sha1": "0748e12a40855fa6764e176e685ba6f9e7633c4d",
+      "path": "sources/file_74/func_0800353C_737CCC.c"
+    },
+    {
+      "file": 74,
+      "function": "func_08003614_737DA4",
+      "original_rom_offset": "0x737DA4",
+      "vma": "0x08003614",
+      "size": 12,
+      "source_git_sha1": "70ca932f4914fb0bbd0b84f8c58492b5923531d6",
+      "path": "sources/file_74/func_08003614_737DA4.c"
+    },
+    {
+      "file": 74,
+      "function": "func_080036EC_737E7C",
+      "original_rom_offset": "0x737E7C",
+      "vma": "0x080036EC",
+      "size": 12,
+      "source_git_sha1": "03dc0e6aae1807e3f12fb9fccc0a080273c455c9",
+      "path": "sources/file_74/func_080036EC_737E7C.c"
+    },
+    {
+      "file": 74,
+      "function": "func_0800382C_737FBC",
+      "original_rom_offset": "0x737FBC",
+      "vma": "0x0800382C",
+      "size": 12,
+      "source_git_sha1": "a668eb5ae02c7ca2165cb3f3190cdcd23a936c17",
+      "path": "sources/file_74/func_0800382C_737FBC.c"
+    },
+    {
+      "file": 75,
+      "function": "func_08000AEC_7391BC",
+      "original_rom_offset": "0x7391BC",
+      "vma": "0x08000AEC",
+      "size": 16,
+      "source_git_sha1": "72e5acd424a842f97f97b6be6c0badee57f77978",
+      "path": "sources/file_75/func_08000AEC_7391BC.c"
+    },
+    {
+      "file": 75,
+      "function": "func_08000AFC_7391CC",
+      "original_rom_offset": "0x7391CC",
+      "vma": "0x08000AFC",
+      "size": 8,
+      "source_git_sha1": "12827a415d6ffebb42dd1b2effa16232b4e9384b",
+      "path": "sources/file_75/func_08000AFC_7391CC.c"
+    },
+    {
+      "file": 75,
+      "function": "func_08000B94_739264",
+      "original_rom_offset": "0x739264",
+      "vma": "0x08000B94",
+      "size": 8,
+      "source_git_sha1": "f44d1ed09e69699166e379a529e08c78b21d0cdb",
+      "path": "sources/file_75/func_08000B94_739264.c"
+    },
+    {
+      "file": 75,
+      "function": "func_08000EA8_739578",
+      "original_rom_offset": "0x739578",
+      "vma": "0x08000EA8",
+      "size": 8,
+      "source_git_sha1": "598f1de95bc3a808258e891c5d4c08de4bb8e993",
+      "path": "sources/file_75/func_08000EA8_739578.c"
+    },
+    {
+      "file": 75,
+      "function": "func_08001160_739830",
+      "original_rom_offset": "0x739830",
+      "vma": "0x08001160",
+      "size": 8,
+      "source_git_sha1": "61402fcace15ae13bb538dbbf3264475c90cf29f",
+      "path": "sources/file_75/func_08001160_739830.c"
+    },
+    {
+      "file": 75,
+      "function": "func_080015B0_739C80",
+      "original_rom_offset": "0x739C80",
+      "vma": "0x080015B0",
+      "size": 8,
+      "source_git_sha1": "57eb4573449eaaeb4938061a57123ae3a7181bf6",
+      "path": "sources/file_75/func_080015B0_739C80.c"
+    },
+    {
+      "file": 77,
+      "function": "func_08000374_73A214",
+      "original_rom_offset": "0x73A214",
+      "vma": "0x08000374",
+      "size": 8,
+      "source_git_sha1": "4b76149176b0a6ccb37110245406e5c54ea9064e",
+      "path": "sources/file_77/func_08000374_73A214.c"
+    },
+    {
+      "file": 78,
+      "function": "func_080007FC_73C3FC",
+      "original_rom_offset": "0x73C3FC",
+      "vma": "0x080007FC",
+      "size": 8,
+      "source_git_sha1": "1b9dc750aa8e3d33355501d89094cf68c5a5ce88",
+      "path": "sources/file_78/func_080007FC_73C3FC.c"
+    },
+    {
+      "file": 78,
+      "function": "func_080009A8_73C5A8",
+      "original_rom_offset": "0x73C5A8",
+      "vma": "0x080009A8",
+      "size": 8,
+      "source_git_sha1": "90b0a415db4779a2b76228b60544855ef7b14325",
+      "path": "sources/file_78/func_080009A8_73C5A8.c"
+    },
+    {
+      "file": 79,
+      "function": "func_080004A4_73CAB4",
+      "original_rom_offset": "0x73CAB4",
+      "vma": "0x080004A4",
+      "size": 8,
+      "source_git_sha1": "3cb9e42780c97376e19673616bbdd7c3e8d2278b",
+      "path": "sources/file_79/func_080004A4_73CAB4.c"
+    }
+  ]
+}
