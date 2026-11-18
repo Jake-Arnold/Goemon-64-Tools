@@ -6,6 +6,33 @@ The versioned **`practice/data/address_catalogue_v1.json`** is the authoritative
 
 Existing Python modules retain their UI labels, input validation, game-transition logic, editor enablement and experimental hypotheses; they must **not** redefine address authority. A future mapping correction is made in a reviewed discovery manifest, synchronised into the canonical registry and verified against affected controls. In particular, the existing experimental Japan Story & event flag On/Off controls remain editable, including offset candidates. Registry confidence does not gate those explicit manual actions.
 
+## Project-wide reciprocal identity contract
+
+The authoritative reviewed address registry on toolkit `main` describes
+**both original ROM regions and all confirmed or candidate field pairings**.
+It is not a toolkit-only implementation detail. The separate decompilation
+canon owns source/assembly identities and full-ROM acceptance separately,
+but discovered original-MIPS guest-data references must flow through
+`decomp/address_discoveries_v1.json` (metadata-only PR) into the canonical
+field registry. Both workflows share stable IDs, byte widths, masks,
+regions, source evidence and counterparty confidence.
+
+All **142 named saved-event flag IDs** now have a USA row and corresponding
+Japanese row; the entire 45-flag Fortune Doll category is included.
+The 83 newly included Japanese bits are `+0x57F0` offset **candidates**,
+not independently verified JP gameplay or JP ROM placement identities.
+`scripts.sync_address_catalogue` fails if a named saved-event bit has
+no reciprocal region/address/mask mapping; a truly unknown pair must be
+explicitly marked `crosswalk_status: "unresolved"` rather than assigned
+a fabricated physical address. Do not equate the number of distinct byte
+addresses with the number of named bit fields: several bits share a byte.
+
+This parity rule concerns eligible fixed persistent event data, not source
+symbols, C functions, ROM offsets, scene-specific actor pointers, script VM
+addresses or other fields without independently established physical
+counterparts. The `+0x57F0` candidate rule must never be used blindly for
+those. The already reviewed Snowflake offset exception remains +0x57F1.
+
 The machine-generated registry can list multiple masks for the same address, byte aliases within a word and conflicting research references. A complete word and one of its individual bits are distinct records. The `id_aliases` property preserves source-specific stable IDs where two named source declarations refer to the same field. The record `sources` lists the origin of reviewed mappings and every relevant textual mention. The catalogue carries no executable code, RDRAM writer handles or permission grants.
 
 ## Source manifests

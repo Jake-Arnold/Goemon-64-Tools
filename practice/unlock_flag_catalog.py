@@ -12,11 +12,10 @@ import json
 from pathlib import Path
 
 from practice.story_progress import (
-    FLAGS, CURATED_FLAGS, PLASMA_FLAGS, EXTERNAL_FLAGS,
-    PLACEMENT_PICKUPS, DOLL_PLACEMENT_FLAGS, SAVED_BASE,
+    FLAGS, PLASMA_FLAGS, SAVED_BASE,
     story_section_for_key,
 )
-from practice.region_memory_crosswalk import CROSS_REGION_BY_KEY, JAPAN_EXTRA_EVENT_KEYS
+from practice.region_memory_crosswalk import CROSS_REGION_BY_KEY
 from practice.region_unlocks import REGION_DELTA
 from practice.address_registry import guest_bit
 
@@ -57,12 +56,9 @@ USA_FLAGS = tuple(
     for flag in FLAGS
 )
 
-# Every mapped JP event/Plasma crosswalk is editable for direct experiments.
-# Candidate labels identify evidence quality, not write access. External and
-# placement flags are not currently in the canonical reciprocal crosswalk.
-_JAPAN_EXTRA_EVENT_FLAGS = tuple(
-    flag for flag in EXTERNAL_FLAGS if flag.key in JAPAN_EXTRA_EVENT_KEYS
-)
+# Every named USA event bit has a paired, region-qualified Japanese
+# address in the reviewed canonical registry. Most Japanese meanings remain
+# unverified offset candidates. Candidate is a label, not a write permission.
 JAPAN_FLAGS = tuple(
     UnlockFlag(flag.key, flag.label, story_section_for_key(flag.key),
                CROSS_REGION_BY_KEY[
@@ -79,11 +75,13 @@ JAPAN_FLAGS = tuple(
                    ('plasma:' if flag in PLASMA_FLAGS else 'event:') + flag.key
                ].note,
                True)
-    for flag in CURATED_FLAGS + PLASMA_FLAGS + _JAPAN_EXTRA_EVENT_FLAGS
+    for flag in FLAGS
 )
 
 assert len({f.key for f in USA_FLAGS}) == len(USA_FLAGS)
 assert len({f.key for f in JAPAN_FLAGS}) == len(JAPAN_FLAGS)
+assert len(JAPAN_FLAGS) == len(USA_FLAGS)
+assert {f.key for f in JAPAN_FLAGS} == {f.key for f in USA_FLAGS}
 assert all(f.editable for f in JAPAN_FLAGS)
 
 

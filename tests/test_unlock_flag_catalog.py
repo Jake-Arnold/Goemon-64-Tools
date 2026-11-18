@@ -24,7 +24,7 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len({(f.address, f.mask) for f in USA_FLAGS}), len(FLAGS))
 
     def test_japan_all_crosswalk_flags_are_writable_with_evidence_preserved(self):
-        self.assertEqual(len(JAPAN_FLAGS), len(CURATED_FLAGS) + len(PLASMA_FLAGS) + 1)
+        self.assertEqual(len(JAPAN_FLAGS), len(USA_FLAGS))
         self.assertTrue(all(f.editable for f in JAPAN_FLAGS))
         confirmed = next(f for f in JAPAN_FLAGS if f.key == 'benkei_encounter')
         self.assertEqual(confirmed.address, 0x80161DFC)
@@ -34,7 +34,7 @@ class CatalogTests(unittest.TestCase):
         self.assertTrue(candidate.editable)
         self.assertEqual(candidate.source, 'JP offset candidate')
         self.assertNotIn('congo_state_candidate', [f.key for f in JAPAN_FLAGS if f.source == 'JP user-confirmed'])
-        self.assertNotIn('external_sasuke_recruited', [f.key for f in JAPAN_FLAGS])
+        self.assertIn('external_sasuke_recruited', [f.key for f in JAPAN_FLAGS])
         receipt = next(f for f in JAPAN_FLAGS if f.key == 'external_super_pass')
         self.assertEqual((receipt.address, receipt.mask), (0x80161DF8, 0x01))
         self.assertTrue(receipt.editable)
@@ -42,6 +42,29 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(sum(f.key == 'external_super_pass' for f in JAPAN_FLAGS), 1)
         with self.assertRaises(ValueError):
             flags_for_region('unknown')
+
+    def test_every_usa_story_flag_has_a_japanese_candidate_with_same_mask(self):
+        from practice.address_registry import guest_bit, lookup
+        from practice.story_progress import FLAGS
+        self.assertEqual({x.key for x in USA_FLAGS},
+                         {x.key for x in JAPAN_FLAGS})
+        japanese = {x.key: x for x in JAPAN_FLAGS}
+        for source in FLAGS:
+            paired = japanese[source.key]
+            self.assertEqual(paired.address, source.address + REGION_DELTA)
+            self.assertEqual(paired.mask, source.mask)
+            self.assertEqual(guest_bit(
+                ('crosswalk:japan:plasma:' if source in PLASMA_FLAGS
+                 else 'crosswalk:japan:event:') + source.key,
+                region='japan'), (paired.address, paired.mask))
+            registry_row = lookup('story:usa:' + source.key)
+            self.assertEqual(registry_row['counterpart'],
+                             f'0x{paired.address:08X}')
+            self.assertEqual(paired.editable, True)
+        placement = japanese['placed_silver_doll_0ca']
+        self.assertEqual((placement.address, placement.mask),
+                         (0x80161E11, 0x04))
+        self.assertEqual(placement.source, 'JP offset candidate')
 
     def test_one_bank_read_and_bit_preservation_in_both_regions(self):
         for region in ('usa', 'japan'):
@@ -132,7 +155,7 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(set(categories), {f.key for f in FLAGS})
         from practice.unlock_flag_catalog import CATEGORY_FILE
         rows = json.loads(CATEGORY_FILE.read_text(encoding='utf-8'))['flags']
-        self.assertEqual(sum('Japan' in row['regions'] for row in rows), 59)
+        self.assertEqual(sum('Japan' in row['regions'] for row in rows), 142)
         self.assertEqual(
             {row['key'] for row in rows if 'Japan' in row['regions']},
             {flag.key for flag in JAPAN_FLAGS})

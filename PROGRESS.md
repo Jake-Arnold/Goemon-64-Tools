@@ -1,5 +1,16 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.45 reciprocal saved-event registry completeness
+
+- **Cause:** The canonical 463-record catalogue had 142 USA saved-event bits but only 59 Japanese crosswalk counterparts; omitted source groups were 40 Fortune Doll placements, 7 Mr. Arrow/Elly placement bits and 36 external annotation bits. UI regional entries were constructed from a manually restricted subset of declarations, despite the project-wide canonical registry policy.
+- **Correction:** The crosswalk source now includes every current `story_progress.FLAGS` event and Plasma bit and resolves both regional physical byte addresses/masks through the single canonical registry. The registry contains **142 USA and 142 JP saved-event bits**, 83 additional offset-candidate Japanese rows, and two-way counterparts for every named saved-event bit; total 546 metadata entries.
+- **Classification:** Newly paired Japanese bits carry `candidate` confidence, original USA evidence and a Japanese unverified-semantics note. No claim that JP ROM actor placements mirror USA, no dynamic/VM/code relocation, no automatic writes or additional write permission. The existing manual flag On/Off UI remains explicitly test-only and checked single-bit CAS.
+- **Continuous enforcement:** The generator and audit reject silent one-sided saved-event mappings; explicitly unresolved mappings remain possible without fabricating addresses. The Japanese Unlocks UI now shows all 45 Fortune Doll entries and all 142 flags; editable categorisation metadata uses consistent two-region entries.
+- **Decomp boundary:** The decomp matching-C production manifest retains independent original-ROM/ELF/relocation truth. Decomp guest-memory discoveries should update the versioned decomp metadata manifest and propagate through a metadata-only PR into toolkit canonical address catalogue. No full decomp history merged.
+- **Tests:** Expanded synthetic regional bit/UI/registry checks and bidirectional parity failure tests. Linux/Windows GitHub Actions and sync --write/--check to verify; no fresh live Japanese gameplay evidence or measured desktop latency in this environment.
+- **Next:** Validate representative Fortune Doll bit writes in the actual Japanese original ROM with controlled before/after capture; review decomp discovery-manifest PR #56 as the data submission source, without using matching-C proof as field semantics evidence.
+
+
 ## 2026-11-17 — v0.11.44 disconnected Unlocks page stability
 
 - **Root cause:** The toolkit's 170 ms tick ended with `if not self.mem: self.refresh_unlocks(force=True)`. This forced all 34 item-control updates and flag polling on every tick while disconnected, defeating the throttling in `refresh_unlocks` and producing avoidable Tk churn while flag folders expand. It also ran continuously during valid Japanese attachments because Japan stores its reader in `self.jp_rdram`, not `self.mem`.

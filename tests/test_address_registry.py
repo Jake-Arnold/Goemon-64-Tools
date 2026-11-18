@@ -112,13 +112,34 @@ class RegistryTests(unittest.TestCase):
 
     def test_every_japan_story_bit_stays_accessible_without_evidence_gate(self):
         from practice.unlock_flag_catalog import JAPAN_FLAGS, flags_for_region
-        self.assertEqual(len(JAPAN_FLAGS), 59)
+        self.assertEqual(len(JAPAN_FLAGS), 142)
         for flag in flags_for_region("japan"):
             self.assertEqual((flag.address, flag.mask), guest_bit(
                 "crosswalk:japan:" +
                 ("plasma:" if flag.key.startswith("plasma_") else "event:") +
                 flag.key, region="japan"))
             self.assertTrue(flag.editable)
+
+    def test_all_saved_event_flags_have_bidirectional_registry_pairs(self):
+        from practice.story_progress import PLASMA_FLAGS
+        from practice.unlock_flag_catalog import JAPAN_FLAGS
+        source = {f.key: f for f in FLAGS}
+        paired = {f.key: f for f in JAPAN_FLAGS}
+        self.assertEqual(len(source), len(paired))
+        for key, usa in source.items():
+            japan = paired[key]
+            self.assertEqual(
+                lookup('story:usa:' + key)['counterpart'],
+                f'0x{japan.address:08X}')
+            region_key = ('plasma:' if usa in PLASMA_FLAGS
+                          else 'event:') + key
+            row = lookup('crosswalk:japan:' + region_key)
+            self.assertEqual(row['counterpart'], f'0x{usa.address:08X}')
+            self.assertEqual(row['mask'], f'0x{usa.mask:X}')
+            self.assertEqual(row['region'], 'japan')
+        self.assertEqual(
+            lookup('crosswalk:japan:event:placed_silver_doll_0ca')
+            ['confidence'], 'candidate')
 
     def test_external_leads_repeat_and_code_category(self):
         catalogue = load_registry()[0]

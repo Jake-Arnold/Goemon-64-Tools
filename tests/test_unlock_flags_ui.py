@@ -230,7 +230,7 @@ class UnlockFlagsUITests(unittest.TestCase):
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
         self.assertIn('external_sasuke_recruited', app.unlock_flag_rows)
-        # USA source controls may be lazily instantiated for search
+        # Regional controls may be lazily instantiated for search
         # matches; no stale Japanese addresses may persist in the model.
         self.assertEqual(app.unlock_flag_rows['benkei_encounter'].address,
                          0x8015C60C)
@@ -348,7 +348,7 @@ class UnlockFlagsUITests(unittest.TestCase):
         self._select_japan()
         self.assertEqual(app._unlock_flag_pending, {})
         self.assertEqual(app._unlock_flag_jobs, {})
-        self.assertNotIn('external_sasuke_recruited', app.unlock_flag_rows)
+        self.assertIn('external_sasuke_recruited', app.unlock_flag_rows)
         self.root.update()
         # Region change must remove all previously materialised USA rows.
         self.assertEqual(app.unlock_flag_widgets, {})
