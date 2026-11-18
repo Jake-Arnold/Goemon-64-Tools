@@ -1,5 +1,11 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.56 PR consolidation regression-gate expansion
+
+- Added synthetic USA/JP Impact submode 5 staging, source-pointer recovery, scene/region session tests and virtual flag recycler/experimental Scene Browser Tk tests to the Linux CI driver. Both Xvfb and DISPLAY fallback now run the new GUI modules. This verifies actual PR code rather than only compiling it.
+- No game memory addresses or runtime write semantics were changed. The existing user live Japanese Impact 0x223/submode 5 success report is retained. CI confirmation must precede merging the toolkit PR.
+
+
 ## 2026-11-18 — v0.11.56 experimental removal of 0–4 scene reload submode allowlist
 
 - **User evidence:** Japanese Impact fight reported engine 0x0D, scene 0x223, loading=0, submode=5, exit=0. The v0.11.55 shared `require_reload_source` rejected submode 5 despite otherwise matching the required engine/loading/exit state.

@@ -71,6 +71,12 @@ esac
   tests.test_japan_damage_capture \
   tests.test_japan_native_scene_warp \
   tests.test_japan_direct_scene_reload \
+  tests.test_impact_scene_warp \
+  tests.test_experimental_controls \
+  tests.test_scene_warp \
+  tests.test_scene_placement \
+  tests.test_region_session \
+  tests.test_game_versions \
   tests.test_japan_warp_spawns \
   tests.test_japan_spawn_placement \
   tests.test_known_entrances \
@@ -123,6 +129,8 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_dashboard \
     tests.test_updater_ui \
     tests.test_entrance_ui \
+    tests.test_experimental_ui \
+    tests.test_virtual_flag_list \
     tests.test_japan_recomp_write_ui \
     -v
 elif [[ -n "${DISPLAY:-}" ]]; then
@@ -152,6 +160,8 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_dashboard \
     tests.test_updater_ui \
     tests.test_entrance_ui \
+    tests.test_experimental_ui \
+    tests.test_virtual_flag_list \
     tests.test_japan_recomp_write_ui \
     -v
 else
