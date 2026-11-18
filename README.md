@@ -1,6 +1,6 @@
-# Goemon Speedrun Tools v0.11.49 — unified connection and UI performance
+# Goemon Speedrun Tools v0.11.50 — unified connection and UI performance
 
-## v0.11.49 — Shared connection and visible-tab refresh pipeline
+## v0.11.50 — Shared connection and visible-tab refresh pipeline
 
 USA and Japan use the **same Tk visibility scheduler**: only the selected
 main tab is polled and its widgets updated; entering a tab requests a single

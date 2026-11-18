@@ -1,6 +1,6 @@
 # Native Linux Goemon toolkit (experimental)
 
-## Shared launcher performance (v0.11.49)
+## Shared launcher performance (v0.11.50)
 
 The launch entrypoint and graphical tabs are common to USA and Japan.
 Only region-specific source addresses, ROM verification and memory-decoding

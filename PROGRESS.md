@@ -1,6 +1,6 @@
 # Goemon 64 Tools — Development Progress
 
-## 2026-11-18 — v0.11.49 unified toolkit scheduler and connection performance
+## 2026-11-18 — v0.11.50 unified toolkit scheduler and connection performance
 
 - **Root causes:** Main-loop refreshes rebuilt hidden Story Progress and Live Memory tables; Live Memory deleted/reinserted all watch rows every 300ms, Story Progress touched hundreds of Treeview rows even with unchanged values, the USA unlock poll refreshed a hidden Story table, and Japanese explicit connection ignored the existing Auto ROM-bound verified layout hints.
 - **Architecture:** Both USA and Japan now share `Toolkit._visible_main_panel`, `Toolkit._poll_visible_panels` and `_on_main_tab_changed`. The single GUI scheduler processes only visible panel data, while region-aware readers retain their own guest addresses and original-ROM proof. No separate Japanese UI refresh timing or launcher paths required.
