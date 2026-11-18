@@ -203,6 +203,16 @@ def crossregion47_stage(manifest):
     return cross.load_fixture()
 
 
+def native87_stage(manifest):
+    """A fixed source/ROM-pinned promotion stage, not arbitrary manifest C."""
+    stage=manifest.get('overlay_native87_stage')
+    if stage is None:return None
+    from . import overlay_native87 as native
+    if stage != {'format':native.STAGE_FORMAT}:
+        raise ValueError('Unreviewed native87 production stage contract')
+    return native.load_fixture()
+
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -230,6 +240,11 @@ def claimed_functions(manifest):
         functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
                           'vma':f['vma'],'size':f['size']}
                          for f in cross_fixture['functions'])
+    native_fixture=native87_stage(manifest)
+    if native_fixture:
+        functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
+                          'vma':f['vma'],'size':f['size']}
+                         for f in native_fixture['functions'])
     return functions
 
 
@@ -1222,6 +1237,14 @@ def load_manifest(path):
                     raise ValueError('Cross-overlay candidate overlaps canonical source: '+row['name'])
         names=[x['name'] for x in cross_fixture['functions']]
         if len(set(names))!=len(names):raise ValueError('Duplicate cross-overlay source name')
+    native_fixture=native87_stage(manifest)
+    if native_fixture:
+        existing=claimed_functions({k:v for k,v in manifest.items() if k!='overlay_native87_stage'})
+        all_old=[(e['name'],e['rom_offset'],e['size']) for e in existing]
+        for row in native_fixture['functions']:
+            for name,off,size in all_old:
+                if row['name']==name or row['rom_offset']<off+size and off<row['rom_offset']+row['size']:
+                    raise ValueError('Native87 original function overlaps accepted C: '+row['name'])
     ranges.sort()
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):raise ValueError('Overlapping units')
     if 'heap_noop_text_layout' in manifest:
@@ -1586,7 +1609,7 @@ def require_file43_full_rom_match(comparison):
 
 
 def _verify_expanded_cross_overlay_map(block, expected_inputs, cross_plan, region,
-                                       overlay_rom_start, overlay_vma_start):
+                                       overlay_rom_start, overlay_vma_start, native_plan=None):
     """Preserve every accepted original input extent when 47 C splits refine ASM.
 
     Each replaced original ASM input must be covered exactly once by adjacent,
@@ -1621,6 +1644,25 @@ def _verify_expanded_cross_overlay_map(block, expected_inputs, cross_plan, regio
         else:expanded.append((original,lo,hi))
     if groups:
         raise ValueError('Unaccounted original ASM parents in cross-overlay stage: '+repr(sorted(groups)))
+    # A later original-address split can refine both legacy file_13 ASM
+    # inputs and the 47-C cross-overlay split children. Preserve exact
+    # coverage and object order rather than exempting them from map checks.
+    native_groups={}
+    if native_plan:
+        for parent in native_plan['parents']:
+            path='build/usa/asm/usa/'+parent['source']+'.s.o'
+            native_groups[path]=(parent['start'],parent['end'],parent['children'])
+        refined=[]
+        for object_name,lo,hi in expanded:
+            if object_name in native_groups:
+                a,b,kids=native_groups.pop(object_name)
+                if (a,b)!=(lo,hi) or not kids or kids[0][1]!=lo or kids[-1][2]!=hi or any(
+                        left[2]!=right[1] for left,right in zip(kids,kids[1:])):
+                    raise ValueError('Native87 changes accepted ASM extent '+object_name)
+                refined.extend(kids)
+            else:
+                refined.append((object_name,lo,hi))
+        expanded=refined
     positions=[]
     for object_name,lo,hi in expanded:
         namepat=re.compile(r'(?m)^\s*'+re.escape(object_name+'(.text)')+r'\s*$')
@@ -1652,7 +1694,7 @@ def _file12_map_block(mapping):
     ]
 
 
-def verify_file12_ownership(candidate_checkout, stage, cross_plan=None):
+def verify_file12_ownership(candidate_checkout, stage, cross_plan=None, native_plan=None):
     """Prove every staged callback and assembly gap in the .file_12 map."""
     stages = _file12_stage_list(stage)
     layout = _file12_stages_layout(stages)
@@ -1766,7 +1808,7 @@ def verify_file12_ownership(candidate_checkout, stage, cross_plan=None):
     if [v[0] for v in expected_extents]!=expected_inputs:
         raise ValueError('file_12 original object plan changed unexpectedly')
     map_proof=_verify_expanded_cross_overlay_map(
-        block,expected_extents,cross_plan,'file_12',overlay_file12.ROM_START,overlay_file12.VMA_START)
+        block,expected_extents,cross_plan,'file_12',overlay_file12.ROM_START,overlay_file12.VMA_START,native_plan)
     if re.search(r'(?m)^\s*build/usa/asm/usa/5C8770\.s\.o\(\.text\)\s*$', block):
         raise ValueError('Link map retains unsplit original file_12 ASM')
     bss_match = re.search(
@@ -1787,11 +1829,11 @@ def verify_file12_ownership(candidate_checkout, stage, cross_plan=None):
     return result
 
 
-def verify_file12_stage_build(baseline_checkout, candidate_checkout, stage, reference_rom, cross_plan=None):
+def verify_file12_stage_build(baseline_checkout, candidate_checkout, stage, reference_rom, cross_plan=None, native_plan=None):
     """Verify the staged split, object ownership and linked ELF provenance."""
     stages = _file12_stage_list(stage)
     candidate_checkout = Path(candidate_checkout)
-    ownership = verify_file12_ownership(candidate_checkout, stages, cross_plan)
+    ownership = verify_file12_ownership(candidate_checkout, stages, cross_plan, native_plan)
     baseline_checkout = Path(baseline_checkout)
     original_splat = (baseline_checkout / 'config/usa/splat.yaml').read_text(encoding='utf-8')
     expected_splat, _ = stage_file12_splats(original_splat, stages)
@@ -1871,7 +1913,7 @@ def require_file12_full_rom_match(comparison):
 
 
 def verify_file13_stage_build(baseline_checkout, candidate_checkout,
-                              stage_or_stages, reference_rom, cross_plan=None):
+                              stage_or_stages, reference_rom, cross_plan=None, native_plan=None):
     """Verify each file_13 C source, linked extent, and complete overlay bytes."""
     stages = _file13_stage_list(stage_or_stages)
     for stage in stages:
@@ -1961,7 +2003,7 @@ def verify_file13_stage_build(baseline_checkout, candidate_checkout,
         expected_objects.append((name, obj))
     expected_extents=[(name,obj['start'],obj['end']) for name,obj in expected_objects]
     map_proof=_verify_expanded_cross_overlay_map(
-        block,expected_extents,cross_plan,'file_13',overlay_file13.ROM_START,overlay_file13.VMA_START)
+        block,expected_extents,cross_plan,'file_13',overlay_file13.ROM_START,overlay_file13.VMA_START,native_plan)
     for stage in stages:
         function = stage['function']
         symbol_lines = re.findall(
@@ -2219,6 +2261,21 @@ def run_build(args,manifest,report):
             *cross.object_targets(cross_plan)],candidate)
         cross_packed=cross.pack_objects(candidate,expected,cross_plan)
         report['overlay_crossregion47_object_layout']=cross_packed
+    native_fixture=native87_stage(manifest)
+    native_plan=None
+    if native_fixture:
+        from . import overlay_native87 as native
+        native_owners=native.find_owners(candidate,native_fixture)
+        logged('candidate-native87-original-parents',
+               ['make','-j'+str(args.jobs),'UV='+uv,*native.parent_targets(native_owners)],candidate)
+        native_plan=native.stage_linker(candidate,expected,native_fixture,native_owners,
+                                        source_dir/'research/usa_main_overlay_87_20261118/sources')
+        report['overlay_native87_source_plan']={
+            'functions':len(native_plan['functions']),'instruction_bytes':sum(f['size'] for f in native_plan['functions']),
+            'retained_asm_fragments':len(native_plan['assembly'])}
+        logged('candidate-native87-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*native.object_targets(native_plan)],candidate)
+        report['overlay_native87_object_layout']=native.pack_objects(candidate,expected,native_plan)
     if manifest.get('vm_assignment_table_layout'):
         logged('candidate-vm-object' ,['make','-j'+str(args.jobs),'UV='+uv,
             'build/usa/src/script_vm.c.o','build/usa/asm/usa/data/main_continued.rodata.s.o'],candidate)
@@ -2270,6 +2327,10 @@ def run_build(args,manifest,report):
         for entry in cross_fixture['functions']:
             key='research/jp_recomp_to_c/src/'+entry['name']+'.c'
             report['sources_sha256_lf'][key]=digest((candidate/'src'/(entry['name']+'.c')).read_bytes().replace(b'\r\n',b'\n'),'sha256')
+    if native_fixture:
+        for entry in native_fixture['functions']:
+            key='research/usa_main_overlay_87_20261118/sources/'+entry['name']+'.c'
+            report['sources_sha256_lf'][key]=digest((candidate/'src'/(entry['name']+'.c')).read_bytes().replace(b'\r\n',b'\n'),'sha256')
     mapping=(candidate/'build/usa/mnsg.map').read_text()
     for unit in manifest['units']:
         object_name='build/usa/src/'+unit['source']+'.o'
@@ -2291,7 +2352,7 @@ def run_build(args,manifest,report):
     if file12_stages:
         require_file12_full_rom_match(result)
         file12_report=verify_file12_stage_build(
-            baseline,candidate,file12_stages,expected,cross_plan
+            baseline,candidate,file12_stages,expected,cross_plan,native_plan
         )
         append_file12_function_comparison(
             result,file12_stages,file12_report['linked_elf_provenance']
@@ -2349,7 +2410,7 @@ def run_build(args,manifest,report):
     if file13_stages:
         require_file13_full_rom_match(result)
         report['overlay_file13_stages']=verify_file13_stage_build(
-            baseline,candidate,file13_stages,expected,cross_plan
+            baseline,candidate,file13_stages,expected,cross_plan,native_plan
         )
         append_file13_function_comparison(
             result,file13_stages,
@@ -2406,6 +2467,20 @@ def run_build(args,manifest,report):
             'original_full_rom_sha1':cross.USA_SHA1,
             'complete_rom_bytes_equal':33554432,
             'splat_split_asm_objects':len(cross_plan['assembly'])}
+    if native_fixture:
+        from . import overlay_native87 as native
+        native_proof=native.verify_link(baseline,candidate,expected,native_plan,native_fixture)
+        for entry in native_fixture['functions']:
+            name,off,size,vma=entry['name'],entry['rom_offset'],entry['size'],entry['vma']
+            result['functions'].append({
+                'name':name,'size':size,'guest_address':f'0x{vma:08X}',
+                'rom_offset':f'0x{off:X}','matched':True,
+                'expected_sha256':entry['original_code_sha256'],
+                'candidate_sha256':entry['original_code_sha256']})
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=size
+        report['overlay_native87_stage']=native_proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

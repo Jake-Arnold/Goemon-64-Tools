@@ -25,25 +25,25 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "b89e10f407f147142e0325453085cb42d65ba802e762b98c88a5e99f6a1cf787",
+    "manifest_sha256": "4a14a81fdf0d72b613ffe6e31a913208dd6a7edd3be5514407351e15e4057c6e",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "68daf0850feb4c3075f70f64a450d0e047b5e4b6b2e190253a321248354c57ec",
+    "verifier_sha256": "d862d6f49716c0fc22b423596f0a5e5d47a2db131c083e46d698d4791c3b2a44",
     "script_vm_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
-    "verify_sha256": "68daf0850feb4c3075f70f64a450d0e047b5e4b6b2e190253a321248354c57ec"
+    "verify_sha256": "d862d6f49716c0fc22b423596f0a5e5d47a2db131c083e46d698d4791c3b2a44"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "afd3cdacb0ce639b7b36586cdd85293b9f67b89aee87b835ed97bc19ce3e75a4",
+    "report_sha256": "52749e773a380ba054510ad19dcad0ebd51f4ff591a53b8474b66d26b20a0463",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "34374d33281bb2e9dcdef414b4f76842f44ab890d0217a61e697b83e844fa77b",
-    "matching_c_functions": 864,
-    "matching_c_bytes": 37904,
-    "combined_c_entries": 877,
-    "asm_entries": 6499,
+    "combined_proof_sha256": "6211f280b9addf806609075ab7054641ee51f35c6a8b1e40745cb412b4b3ffc8",
+    "matching_c_functions": 951,
+    "matching_c_bytes": 38816,
+    "combined_c_entries": 964,
+    "asm_entries": 6412,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Canonical USA 864/864: 782 prior plus 82 original-address file_11 C functions. Exact 32MiB ROM, 8,825 file_11 relocations, 7,376 original ELF functions, zero positive aliases. JP 39 matching C independently exact 32/16 MiB original ROMs and 80,747 original relocation records.",
-    "reconciled_date": "2026-11-17"
+    "note": "Canonical USA 951/951: 864 prior plus 87 original-address main/overlays 13\u201320 native C functions. Exact 32MiB ROM, 7,376 original ELF functions, zero positive aliases, unchanged semantic relocation identities with the 14 previously proven file_11 overlay-symbol aliases. JP remains 39 exact native C independently.",
+    "reconciled_date": "2026-11-18"
   },
   "residual_functions": [
     {

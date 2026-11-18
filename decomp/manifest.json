@@ -1525,5 +1525,8 @@
   ],
   "overlay_crossregion47_stage": {
     "format": "goemon-usa-47-overlay-c-original-link-v2"
+  },
+  "overlay_native87_stage": {
+    "format": "goemon-usa-main-overlay-87-original-c-v1"
   }
 }

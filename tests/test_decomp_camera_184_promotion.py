@@ -20,7 +20,7 @@ class UsaCameraResetPromotionTests(unittest.TestCase):
         self.assertEqual(f['name'],'func_801F97D4_5B56E4')
         self.assertEqual((f['rom_offset'],f['vma'],f['size']),('0x5B56E4','0x801F97D4',136))
         claims={c['name']:c for c in claimed_functions(self.manifest)}
-        self.assertEqual(len(claims),864)
+        self.assertEqual(len(claims),951)
         self.assertEqual(claims[f['name']],{'name':f['name'],'rom_offset':0x5B56E4,'vma':0x801F97D4,'size':136})
         original=(ROOT/f['source']['path']).read_bytes()
         self.assertEqual(hashlib.sha1(b'blob '+str(len(original)).encode()+b'\0'+original).hexdigest(),f['source']['git_blob_sha'])

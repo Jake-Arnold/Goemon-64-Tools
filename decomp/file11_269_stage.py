@@ -32,6 +32,8 @@ def entries():
 def reviewed_plan(manifest:dict,original_rom:bytes|None=None):
     if manifest.get('overlay_file11_stage')!={'format':STAGE_FORMAT}:raise ValueError('Not a reviewed 269 stage manifest')
     base_manifest=copy.deepcopy(manifest)
+    # Later main/overlay stages must not contaminate the historical 210-C preflight.
+    base_manifest.pop("overlay_native87_stage", None)
     if 'overlay_crossregion47_stage' in base_manifest:
         from . import overlay_crossregion47 as cross
         if base_manifest.pop('overlay_crossregion47_stage') != {'format':cross.STAGE_FORMAT}:

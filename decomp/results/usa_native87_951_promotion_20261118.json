@@ -1,0 +1,730 @@
+{
+  "format": "goemon-original-usa-native87-951-promotion-v1",
+  "date": "2026-11-18",
+  "result": "PASSED_G2_LOCAL_NOT_YET_PUSHED",
+  "reference_branch": "chatgptweb/decomp",
+  "base_commit": "4a51009ce4bcfd318f860c69786f2ec4e6654528",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "region": "usa",
+  "previous_c_functions": 864,
+  "previous_c_bytes": 37904,
+  "added_c_functions": 87,
+  "added_c_bytes": 912,
+  "accepted_c_functions": 951,
+  "accepted_c_bytes": 38816,
+  "decompressed_rom_length": 33554432,
+  "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_elf_func_entries": 7376,
+  "combined_c_entries": 964,
+  "remaining_asm_entries": 6412,
+  "extra_positive_elf_aliases": 0,
+  "new_stage": "overlay_native87_stage",
+  "new_stage_result": {
+    "status": "PASS",
+    "original_address_matching_c": 87,
+    "original_instruction_bytes": 912,
+    "all_rom_bytes_equal": 33554432,
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "original_elf_function_entries": 7376,
+    "semantic_relocations": {
+      "entry": 6,
+      "main": 14953,
+      "file_11": 8825,
+      "file_12": 7051,
+      "file_13": 9589,
+      "file_14": 3041,
+      "file_15": 1625,
+      "file_16": 781,
+      "file_17": 1739,
+      "file_18": 3365,
+      "file_19": 1078,
+      "file_20": 68,
+      "file_21": 114,
+      "file_22": 294,
+      "file_23": 377,
+      "file_24": 160,
+      "file_25": 167,
+      "file_26": 207,
+      "file_27": 876,
+      "file_28": 35,
+      "file_29": 2536,
+      "file_30": 1826,
+      "file_31": 1371,
+      "file_32": 1068,
+      "file_33": 139,
+      "file_34": 317,
+      "file_35": 677,
+      "file_36": 1025,
+      "file_37": 1079,
+      "file_38": 761,
+      "file_39": 435,
+      "file_40": 892,
+      "file_41": 280,
+      "file_42": 555,
+      "file_43": 1593,
+      "file_44": 598,
+      "file_45": 545,
+      "file_46": 817,
+      "file_47": 275,
+      "file_48": 469,
+      "file_49": 602,
+      "file_50": 228,
+      "file_51": 143,
+      "file_52": 8,
+      "file_53": 534,
+      "file_54": 341,
+      "file_55": 390,
+      "file_56": 436,
+      "file_57": 708,
+      "file_58": 340,
+      "file_59": 508,
+      "file_60": 418,
+      "file_61": 161,
+      "file_62": 747,
+      "file_63": 94,
+      "file_64": 176,
+      "file_65": 86,
+      "file_66": 571,
+      "file_67": 254,
+      "file_68": 155,
+      "file_69": 464,
+      "file_70": 298,
+      "file_71": 350,
+      "file_72": 412,
+      "file_73": 274,
+      "file_74": 822,
+      "file_75": 279,
+      "file_76": 6,
+      "file_77": 304,
+      "file_78": 124,
+      "file_79": 180,
+      "file_80": 89
+    },
+    "main_original_relocations": 15058,
+    "main_accepted_before_native87": 14953,
+    "main_accepted_after_native87": 14953,
+    "linked_asm_fragments": 100
+  },
+  "all_87_original_functions": [
+    {
+      "name": "func_8000DBC0_E7C0",
+      "rom_offset": "0xe7c0",
+      "vma": "0x8000dbc0",
+      "bytes": 12,
+      "section": "main"
+    },
+    {
+      "name": "func_8000DBCC_E7CC",
+      "rom_offset": "0xe7cc",
+      "vma": "0x8000dbcc",
+      "bytes": 12,
+      "section": "main"
+    },
+    {
+      "name": "func_8000DBD8_E7D8",
+      "rom_offset": "0xe7d8",
+      "vma": "0x8000dbd8",
+      "bytes": 12,
+      "section": "main"
+    },
+    {
+      "name": "func_80010180_10D80",
+      "rom_offset": "0x10d80",
+      "vma": "0x80010180",
+      "bytes": 12,
+      "section": "main"
+    },
+    {
+      "name": "func_80012938_13538",
+      "rom_offset": "0x13538",
+      "vma": "0x80012938",
+      "bytes": 8,
+      "section": "main"
+    },
+    {
+      "name": "func_80020724_21324",
+      "rom_offset": "0x21324",
+      "vma": "0x80020724",
+      "bytes": 12,
+      "section": "main"
+    },
+    {
+      "name": "func_80035214_35E14",
+      "rom_offset": "0x35e14",
+      "vma": "0x80035214",
+      "bytes": 8,
+      "section": "main"
+    },
+    {
+      "name": "func_8003522C_35E2C",
+      "rom_offset": "0x35e2c",
+      "vma": "0x8003522c",
+      "bytes": 8,
+      "section": "main"
+    },
+    {
+      "name": "func_80035244_35E44",
+      "rom_offset": "0x35e44",
+      "vma": "0x80035244",
+      "bytes": 8,
+      "section": "main"
+    },
+    {
+      "name": "func_800353B4_35FB4",
+      "rom_offset": "0x35fb4",
+      "vma": "0x800353b4",
+      "bytes": 8,
+      "section": "main"
+    },
+    {
+      "name": "func_800354B4_360B4",
+      "rom_offset": "0x360b4",
+      "vma": "0x800354b4",
+      "bytes": 12,
+      "section": "main"
+    },
+    {
+      "name": "func_80036E2C_37A2C",
+      "rom_offset": "0x37a2c",
+      "vma": "0x80036e2c",
+      "bytes": 8,
+      "section": "main"
+    },
+    {
+      "name": "func_801CB69C_65E54C",
+      "rom_offset": "0x65e54c",
+      "vma": "0x801cb69c",
+      "bytes": 8,
+      "section": "file_15"
+    },
+    {
+      "name": "func_801CB6A4_65E554",
+      "rom_offset": "0x65e554",
+      "vma": "0x801cb6a4",
+      "bytes": 8,
+      "section": "file_15"
+    },
+    {
+      "name": "func_801CB814_69CF84",
+      "rom_offset": "0x69cf84",
+      "vma": "0x801cb814",
+      "bytes": 8,
+      "section": "file_20"
+    },
+    {
+      "name": "func_801CBA24_69D194",
+      "rom_offset": "0x69d194",
+      "vma": "0x801cba24",
+      "bytes": 12,
+      "section": "file_20"
+    },
+    {
+      "name": "func_801CBCA4_69D414",
+      "rom_offset": "0x69d414",
+      "vma": "0x801cbca4",
+      "bytes": 8,
+      "section": "file_20"
+    },
+    {
+      "name": "func_801CC06C_5F744C",
+      "rom_offset": "0x5f744c",
+      "vma": "0x801cc06c",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801CCB70_65FA20",
+      "rom_offset": "0x65fa20",
+      "vma": "0x801ccb70",
+      "bytes": 12,
+      "section": "file_15"
+    },
+    {
+      "name": "func_801CDAC0_660970",
+      "rom_offset": "0x660970",
+      "vma": "0x801cdac0",
+      "bytes": 12,
+      "section": "file_15"
+    },
+    {
+      "name": "func_801CDB98_660A48",
+      "rom_offset": "0x660a48",
+      "vma": "0x801cdb98",
+      "bytes": 12,
+      "section": "file_15"
+    },
+    {
+      "name": "func_801D016C_66301C",
+      "rom_offset": "0x66301c",
+      "vma": "0x801d016c",
+      "bytes": 8,
+      "section": "file_15"
+    },
+    {
+      "name": "func_801D08BC_5FBC9C",
+      "rom_offset": "0x5fbc9c",
+      "vma": "0x801d08bc",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801D0D3C_663BEC",
+      "rom_offset": "0x663bec",
+      "vma": "0x801d0d3c",
+      "bytes": 8,
+      "section": "file_15"
+    },
+    {
+      "name": "func_801D1310_5FC6F0",
+      "rom_offset": "0x5fc6f0",
+      "vma": "0x801d1310",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801D1664_6404B4",
+      "rom_offset": "0x6404b4",
+      "vma": "0x801d1664",
+      "bytes": 12,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801D1DE4_664C94",
+      "rom_offset": "0x664c94",
+      "vma": "0x801d1de4",
+      "bytes": 8,
+      "section": "file_15"
+    },
+    {
+      "name": "func_801D1F4C_5FD32C",
+      "rom_offset": "0x5fd32c",
+      "vma": "0x801d1f4c",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801D2064_664F14",
+      "rom_offset": "0x664f14",
+      "vma": "0x801d2064",
+      "bytes": 8,
+      "section": "file_15"
+    },
+    {
+      "name": "func_801D206C_640EBC",
+      "rom_offset": "0x640ebc",
+      "vma": "0x801d206c",
+      "bytes": 12,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801D6218_645068",
+      "rom_offset": "0x645068",
+      "vma": "0x801d6218",
+      "bytes": 12,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801D742C_60280C",
+      "rom_offset": "0x60280c",
+      "vma": "0x801d742c",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801D841C_64726C",
+      "rom_offset": "0x64726c",
+      "vma": "0x801d841c",
+      "bytes": 12,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DDFDC_64CE2C",
+      "rom_offset": "0x64ce2c",
+      "vma": "0x801ddfdc",
+      "bytes": 12,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DF5F0_64E440",
+      "rom_offset": "0x64e440",
+      "vma": "0x801df5f0",
+      "bytes": 12,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801E3410_652260",
+      "rom_offset": "0x652260",
+      "vma": "0x801e3410",
+      "bytes": 12,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801E52CC_6106AC",
+      "rom_offset": "0x6106ac",
+      "vma": "0x801e52cc",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801E59EC_610DCC",
+      "rom_offset": "0x610dcc",
+      "vma": "0x801e59ec",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801EC1D8_6175B8",
+      "rom_offset": "0x6175b8",
+      "vma": "0x801ec1d8",
+      "bytes": 8,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801EEB30_619F10",
+      "rom_offset": "0x619f10",
+      "vma": "0x801eeb30",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801F00B8_61B498",
+      "rom_offset": "0x61b498",
+      "vma": "0x801f00b8",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801F1AEC_61CECC",
+      "rom_offset": "0x61cecc",
+      "vma": "0x801f1aec",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801F7034_622414",
+      "rom_offset": "0x622414",
+      "vma": "0x801f7034",
+      "bytes": 8,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801F7054_622434",
+      "rom_offset": "0x622434",
+      "vma": "0x801f7054",
+      "bytes": 8,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FACBC_62609C",
+      "rom_offset": "0x62609c",
+      "vma": "0x801facbc",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FC454_627834",
+      "rom_offset": "0x627834",
+      "vma": "0x801fc454",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FE470_629850",
+      "rom_offset": "0x629850",
+      "vma": "0x801fe470",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FF728_62AB08",
+      "rom_offset": "0x62ab08",
+      "vma": "0x801ff728",
+      "bytes": 8,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FFE2C_62B20C",
+      "rom_offset": "0x62b20c",
+      "vma": "0x801ffe2c",
+      "bytes": 8,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FFE4C_62B22C",
+      "rom_offset": "0x62b22c",
+      "vma": "0x801ffe4c",
+      "bytes": 8,
+      "section": "file_13"
+    },
+    {
+      "name": "func_802006B0_62BA90",
+      "rom_offset": "0x62ba90",
+      "vma": "0x802006b0",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_80201ECC_62D2AC",
+      "rom_offset": "0x62d2ac",
+      "vma": "0x80201ecc",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_802045E8_62F9C8",
+      "rom_offset": "0x62f9c8",
+      "vma": "0x802045e8",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_802045F4_62F9D4",
+      "rom_offset": "0x62f9d4",
+      "vma": "0x802045f4",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_80204600_62F9E0",
+      "rom_offset": "0x62f9e0",
+      "vma": "0x80204600",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_8020460C_62F9EC",
+      "rom_offset": "0x62f9ec",
+      "vma": "0x8020460c",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_80204618_62F9F8",
+      "rom_offset": "0x62f9f8",
+      "vma": "0x80204618",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_80206984_631D64",
+      "rom_offset": "0x631d64",
+      "vma": "0x80206984",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_80208504_6338E4",
+      "rom_offset": "0x6338e4",
+      "vma": "0x80208504",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_802092E8_6346C8",
+      "rom_offset": "0x6346c8",
+      "vma": "0x802092e8",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_802096AC_634A8C",
+      "rom_offset": "0x634a8c",
+      "vma": "0x802096ac",
+      "bytes": 12,
+      "section": "file_13"
+    },
+    {
+      "name": "func_8020E2F8_66D2A8",
+      "rom_offset": "0x66d2a8",
+      "vma": "0x8020e2f8",
+      "bytes": 8,
+      "section": "file_17"
+    },
+    {
+      "name": "func_802108C4_6982C4",
+      "rom_offset": "0x6982c4",
+      "vma": "0x802108c4",
+      "bytes": 8,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80210F80_66FF30",
+      "rom_offset": "0x66ff30",
+      "vma": "0x80210f80",
+      "bytes": 8,
+      "section": "file_17"
+    },
+    {
+      "name": "func_80211018_698A18",
+      "rom_offset": "0x698a18",
+      "vma": "0x80211018",
+      "bytes": 8,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80211050_698A50",
+      "rom_offset": "0x698a50",
+      "vma": "0x80211050",
+      "bytes": 8,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80211214_6701C4",
+      "rom_offset": "0x6701c4",
+      "vma": "0x80211214",
+      "bytes": 8,
+      "section": "file_17"
+    },
+    {
+      "name": "func_802112CC_698CCC",
+      "rom_offset": "0x698ccc",
+      "vma": "0x802112cc",
+      "bytes": 8,
+      "section": "file_19"
+    },
+    {
+      "name": "func_802112D4_698CD4",
+      "rom_offset": "0x698cd4",
+      "vma": "0x802112d4",
+      "bytes": 12,
+      "section": "file_19"
+    },
+    {
+      "name": "func_802112E0_698CE0",
+      "rom_offset": "0x698ce0",
+      "vma": "0x802112e0",
+      "bytes": 8,
+      "section": "file_19"
+    },
+    {
+      "name": "func_802116E4_6990E4",
+      "rom_offset": "0x6990e4",
+      "vma": "0x802116e4",
+      "bytes": 8,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80212B28_69A528",
+      "rom_offset": "0x69a528",
+      "vma": "0x80212b28",
+      "bytes": 8,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80213580_69AF80",
+      "rom_offset": "0x69af80",
+      "vma": "0x80213580",
+      "bytes": 12,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80214398_69BD98",
+      "rom_offset": "0x69bd98",
+      "vma": "0x80214398",
+      "bytes": 8,
+      "section": "file_19"
+    },
+    {
+      "name": "func_802143D8_69BDD8",
+      "rom_offset": "0x69bdd8",
+      "vma": "0x802143d8",
+      "bytes": 12,
+      "section": "file_19"
+    },
+    {
+      "name": "func_8021467C_67E05C",
+      "rom_offset": "0x67e05c",
+      "vma": "0x8021467c",
+      "bytes": 12,
+      "section": "file_18"
+    },
+    {
+      "name": "func_802147A0_67E180",
+      "rom_offset": "0x67e180",
+      "vma": "0x802147a0",
+      "bytes": 12,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021BE08_6857E8",
+      "rom_offset": "0x6857e8",
+      "vma": "0x8021be08",
+      "bytes": 12,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021F35C_688D3C",
+      "rom_offset": "0x688d3c",
+      "vma": "0x8021f35c",
+      "bytes": 12,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021F908_6892E8",
+      "rom_offset": "0x6892e8",
+      "vma": "0x8021f908",
+      "bytes": 8,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021F998_689378",
+      "rom_offset": "0x689378",
+      "vma": "0x8021f998",
+      "bytes": 8,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80225CC4_68F6A4",
+      "rom_offset": "0x68f6a4",
+      "vma": "0x80225cc4",
+      "bytes": 12,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80225D78_68F758",
+      "rom_offset": "0x68f758",
+      "vma": "0x80225d78",
+      "bytes": 12,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80228854_692234",
+      "rom_offset": "0x692234",
+      "vma": "0x80228854",
+      "bytes": 12,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80228908_6922E8",
+      "rom_offset": "0x6922e8",
+      "vma": "0x80228908",
+      "bytes": 12,
+      "section": "file_18"
+    },
+    {
+      "name": "func_802289C0_6923A0",
+      "rom_offset": "0x6923a0",
+      "vma": "0x802289c0",
+      "bytes": 12,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80229CB8_693698",
+      "rom_offset": "0x693698",
+      "vma": "0x80229cb8",
+      "bytes": 12,
+      "section": "file_18"
+    }
+  ],
+  "all_relocations": "no new semantic differences relative to 864; original file11 14 alias-symbol changes retained; main 15058 original versus 14953 existing accepted, fingerprint pinned",
+  "japan_matching_c_unchanged": 39,
+  "note": "Does not establish in-game gameplay or Japanese native recompilation. No ROM/ELF/ASM bytes embedded.",
+  "full_local_ci": {
+    "status": "PASS",
+    "decomp_unittests": 237,
+    "verifier_ledger_unittests": 245,
+    "display_emitter_asan_ubsan": "PASS",
+    "all_87_actual_C_asan_ubsan": "PASS",
+    "task_evidence_validation": "PASS"
+  }
+}

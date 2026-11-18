@@ -31,7 +31,7 @@ def entries():
 
 def reviewed_plan(manifest:dict,original_rom:bytes|None=None):
     if manifest.get('overlay_file11_stage')!={'format':STAGE_FORMAT}:raise ValueError('Not a reviewed 179 stage manifest')
-    base_manifest=copy.deepcopy(manifest);base_manifest['overlay_file11_stage']={'format':file11_152_stage.STAGE_FORMAT}
+    base_manifest=copy.deepcopy(manifest);base_manifest.pop('overlay_native87_stage',None);base_manifest['overlay_file11_stage']={'format':file11_152_stage.STAGE_FORMAT}
     previous=file11_152_stage.reviewed_plan(base_manifest,original_rom)
     old=file11_152_stage.load_fixture()['chunks'];new=load_fixture()['chunks'];d=load_fixture()
     if (len(old)!=88 or d['total_represented_functions']!=179 or d['all_C_text_bytes']!=5184 or

@@ -55,7 +55,7 @@ def main(root: Path, out: Path):
     japan={f['name'] for u in jman['units'] for f in u['functions']}
     assert len(usa)>=864 and len(japan)>=39
     assert inventory['summary']['newly_matching_c']==len(usa)
-    assert registry['accepted_baseline']=={'usa_functions':len(usa),'japan_0_functions':len(japan)}
+    assert registry['accepted_baseline']['usa_functions']<=len(usa) and registry['accepted_baseline']['japan_0_functions']==len(japan)
     ledger_records=[]
     for p in sorted((d/'plans/execution').glob('*.json')):
         data=read_json(p)

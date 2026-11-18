@@ -28,7 +28,7 @@ class ThreeExtra187StageTests(unittest.TestCase):
 
     def test_explicit_version_and_complete_contiguous_layout(self):
         self.assertEqual(verify.file11_stage_mode(self.manifest), 269)
-        self.assertEqual(len(verify.claimed_functions(self.manifest)), 864)
+        self.assertEqual(len(verify.claimed_functions(self.manifest)), 951)
         historical=dict(self.manifest)
         historical['overlay_file11_stage']={'format':stage.STAGE_FORMAT}
         self.assertEqual(verify.file11_stage_mode(historical),187)

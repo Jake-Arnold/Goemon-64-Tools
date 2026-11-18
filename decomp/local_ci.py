@@ -32,6 +32,17 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 "decomp/test_vm_display_emitters.c", "-o", str(host_binary),
             ]),
             ("Display emitter host sanitizer test", [str(host_binary)]),
+            ("Native87 actual-source sanitizer build", compiler + [
+                "-std=c11", "-O1", "-g", "-Wall", "-Wextra", "-Werror",
+                "-Wno-unused-parameter", "-Wno-unused-function",
+                "-fsanitize=address,undefined", "-fno-sanitize-recover=all",
+                "-fno-omit-frame-pointer",
+                "decomp/research/usa_main_overlay_87_20261118/test_actual87.c",
+                *[str(path.relative_to(ROOT)) for path in sorted(
+                    (ROOT / "decomp/research/usa_main_overlay_87_20261118/sources").glob("*.c"))],
+                "-o", str(host_binary.with_name("native87-actual-host")),
+            ]),
+            ("Native87 actual-source sanitizer test", [str(host_binary.with_name("native87-actual-host"))]),
         ])
     return steps
 

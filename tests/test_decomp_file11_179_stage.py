@@ -45,7 +45,9 @@ class File11179StageTests(unittest.TestCase):
         self.assertEqual(self.dedup['candidate_count'],27)
 
     def test_canonical_342_claims_are_unique(self):
-        claims=verify.claimed_functions(self.manifest)
+        historical=dict(self.manifest)
+        historical.pop('overlay_native87_stage',None)
+        claims=verify.claimed_functions(historical)
         self.assertEqual(len(claims),342)
         self.assertEqual(len({(f['name'],f['rom_offset']) for f in claims}),342)
         self.assertEqual(len({f['rom_offset'] for f in claims}),342)

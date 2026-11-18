@@ -79,7 +79,18 @@ def validate(repo: Path, registry: dict, inventory: list[dict]) -> dict:
         raise RegistryError("invalid registry production baseline")
     actual = json.loads((repo / "decomp/results/inventory.json").read_text(encoding="utf-8"))
     if actual["summary"]["newly_matching_c"] != accepted["usa_functions"]:
-        raise RegistryError("USA canonical inventory changed; re-deduplicate before use")
+        historical = repo / "decomp/results/inventory_864_20261118.json"
+        historic_proof = repo / "decomp/results/combined_864_20261118.json"
+        if (accepted["usa_functions"] != 864 or
+                not historical.is_file() or not historic_proof.is_file() or
+                hashlib.sha256(historical.read_bytes()).hexdigest() != "afd3cdacb0ce639b7b36586cdd85293b9f67b89aee87b835ed97bc19ce3e75a4" or
+                hashlib.sha256(historic_proof.read_bytes()).hexdigest() != "34374d33281bb2e9dcdef414b4f76842f44ab890d0217a61e697b83e844fa77b" or
+                actual["summary"]["newly_matching_c"] < 864):
+            raise RegistryError("USA canonical inventory changed; re-deduplicate before use")
+        historic_names = {f['name'] for f in json.loads(historic_proof.read_text())['comparison']['functions']}
+        live_names = {f['name'] for f in json.loads((repo/'decomp/results/combined.json').read_text())['comparison']['functions']}
+        if len(historic_names) != 864 or not historic_names.issubset(live_names):
+            raise RegistryError("Historical accepted C were removed in new production proof")
     japan = json.loads((repo / "decomp/regions/japan_0.json").read_text(encoding="utf-8"))
     jp_total = sum(len(unit["functions"]) for unit in japan["units"])
     if jp_total != accepted["japan_0_functions"]:

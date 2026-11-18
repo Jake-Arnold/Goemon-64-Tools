@@ -23,6 +23,7 @@ class File11143PreflightTests(unittest.TestCase):
         cls.manifest = copy.deepcopy(cls.manifest)
         # Historical 210-C projection omits the separately reviewed 47-C stage.
         cls.manifest.pop('overlay_crossregion47_stage', None)
+        cls.manifest.pop('overlay_native87_stage', None)
         cls.manifest['overlay_file11_stage'] = {'format': 'goemon-file11-character-switch-50-v2'}
         cls.manifest['overlay_file12_stages'] = [
             x for x in cls.manifest['overlay_file12_stages']

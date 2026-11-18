@@ -3,8 +3,8 @@
   "created_utc_date": "2026-11-17",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 864,
-    "usa_instruction_bytes": 37904,
+    "usa_functions": 951,
+    "usa_instruction_bytes": 38816,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
