@@ -170,8 +170,8 @@ class TestInspector(unittest.TestCase):
         self.assertEqual(open_native_debug_menu(ram),10)
         self.assertEqual(ram.u8(0x800C7A94),10)
         self.assertEqual(ram.u16(MAP_ADDR),0x23) # map is never overwritten
-        with self.assertRaises(ValueError):
-            open_native_debug_menu(ram)
+        # Entering debug twice is idempotent, not an invalid gameplay state.
+        self.assertEqual(open_native_debug_menu(ram), 10)
 
     def test_scene_labels_are_grounded(self):
         self.assertEqual(SCENES[465],"South Oedo - Goemon's House")

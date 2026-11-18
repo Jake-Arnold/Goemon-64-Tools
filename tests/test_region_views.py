@@ -74,14 +74,16 @@ class RegionReadTests(unittest.TestCase):
         self.assertNotIn(0x8015C6A7, unlocks.values())
         self.assertNotIn(0x80168E90, story.values())
 
-    def test_japan_scene_catalog_ignores_usa_only_atlas_entries(self):
+    def test_scene_catalog_is_identical_for_usa_and_japan(self):
         host = SimpleNamespace(
             active_version=SimpleNamespace(key='japan'),
             entrance_atlas={'payload': {'rooms': [0x7F1]}})
-        catalog = EntranceMixin.scene_catalog(host)
-        self.assertEqual(catalog, SCENES)
+        japan = EntranceMixin.scene_catalog(host)
         host.active_version.key = 'usa'
-        self.assertIn(0x7F1, EntranceMixin.scene_catalog(host))
+        usa = EntranceMixin.scene_catalog(host)
+        self.assertEqual(japan, usa)
+        self.assertIn(0x7F1, usa)
+        self.assertEqual(usa[0x161], SCENES[0x161])
 
     def test_shared_scene_doubleclick_uses_native_japan_warp_not_manual_menu(self):
         commands = []

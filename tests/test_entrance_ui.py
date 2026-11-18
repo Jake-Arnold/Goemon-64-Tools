@@ -65,18 +65,18 @@ class EntranceUITests(unittest.TestCase):
         with patch.object(self.process,'write',side_effect=AssertionError('No writes')):self.app.try_reload_warp()
         self.assertIn('disabled',self.app.scene_status.get())
 
-    def test_native_manual_request_also_places_after_actual_load(self):
-        self.app.debug_shortcut_confirmed=True
-        with patch('practice.ui_extension.calibrated_for_direct_warp',return_value=False), \
-             patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):
-            self.app.open_debug_for_selected_scene()
-        self.assertEqual(self.app.mem.u8(STATE_ADDR),10)
-        pending=self.app.pending_native_warp;self.assertTrue(pending['manual'])
-        self.app.poll_native_warp_menu(pending['start_at'])
-        self.app.mem.write_guest(MAP_ADDR,b'\x00\x02');self.app.mem.write_guest(STATE_ADDR,b'\x0D')
-        self.app.poll_native_warp_menu(pending['start_at']+.2);self.app.poll_native_warp_menu(pending['start_at']+.4)
+    def test_legacy_debug_handler_is_menu_only_never_arms_spawn(self):
+        from practice.scene_controls import PENDING_MAP_ADDR
+        from autosplitter.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
+        before = self.app.mem.read_guest(PENDING_MAP_ADDR, 12)
+        self.app.scene_list.selection_clear(0, 'end')
+        self.app.mem.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))
+        self.app.mem.write_guest(PLAYER_TASK_PTR_ADDR, bytes(4))
+        self.app.open_debug_for_selected_scene()
+        self.assertEqual(self.app.mem.u8(STATE_ADDR), 10)
+        self.assertEqual(self.app.mem.read_guest(PENDING_MAP_ADDR, 12), before)
         self.assertIsNone(self.app.pending_native_warp)
-        self.assertEqual(self.app.mem.snapshot()['x'],-10)
+        self.assertIsNone(self.app.pending_direct_warp)
 
     def test_cancel_and_read_only_pending_requests_cannot_place(self):
         with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):self.app.try_reload_warp()

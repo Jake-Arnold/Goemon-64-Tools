@@ -573,6 +573,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         # The same visible scene browser and inspector follow the active ROM;
         # USA-only write controls stay individually gated.
         self.configure_scene_browser_region()
+        if hasattr(self, 'scene_live'):
+            self.refresh_scene_banner(force=True)
         if hasattr(self, 'catalogue_loaded'):
             self.sync_address_catalogue_region()
         if hasattr(self, 'jp_scene_position_frame'):
@@ -2094,6 +2096,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self._unlock_refresh_reader_token = (region, reader)
         if reader is None:
             self.refresh_unlocks(force=True)
+            if hasattr(self, 'scene_live'):
+                self.refresh_scene_banner(force=True)
 
     def tick(self):
         session = active_session(self)

@@ -39,7 +39,7 @@ class TestExperimentalGUI(unittest.TestCase):
     def test_character_staged_before_reload_no_c_down_and_verified_on_entry(self):
         from practice.checkpoints import MAP_ADDR
         from autosplitter.memory import CHARACTER_ID_ADDR
-        self.app.scene_character.current(2)
+        self.app.scene_character.current(3)  # Sasuke in shared Keep/0/1/2/3 selector
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
@@ -63,7 +63,7 @@ class TestExperimentalGUI(unittest.TestCase):
     def test_wrong_spawn_character_is_reported_without_postload_input(self):
         from practice.checkpoints import MAP_ADDR
         from autosplitter.memory import CHARACTER_ID_ADDR
-        self.app.scene_character.current(3)
+        self.app.scene_character.current(4)  # Yae in shared Keep/0/1/2/3 selector
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
         self.app.scene_list.selection_set(0)
@@ -81,6 +81,17 @@ class TestExperimentalGUI(unittest.TestCase):
         self.assertIn('timed out',self.app.scene_status.get())
         self.assertAlmostEqual(self.ram.snapshot()['x'],125.25)
         self.assertEqual(self.ram.u32(CHARACTER_ID_ADDR),0)
+
+    def test_both_regions_share_keep_current_character_option(self):
+        from practice.game_versions import VERSIONS
+        expected = ('Keep current character', 'Goemon', 'Ebisumaru',
+                    'Sasuke', 'Yae')
+        self.assertEqual(tuple(self.app.scene_character['values']), expected)
+        self.assertEqual(self.app.scene_character.current(), 0)
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        self.assertEqual(tuple(self.app.scene_character['values']), expected)
+        self.assertEqual(self.app.scene_character.current(), 0)
 
     def test_double_click_reloads_without_confirmation(self):
         self.app.scene_options=[(353,'Test destination')]
