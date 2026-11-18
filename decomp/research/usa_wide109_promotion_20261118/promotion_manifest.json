@@ -1,0 +1,1361 @@
+{
+  "format": "goemon-usa-wide109-after-canonical1119-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_sha": "0e3230a797176b5108db5a5febb116f8eec83a1d",
+  "units": [
+    {
+      "name": "b109_5CC7B0",
+      "rom_offset": 6080432,
+      "size": 12,
+      "section": "file_12",
+      "source_sha256": "def13f7b0e40bcce2b0d456146a2da87e6b0b89d6a00e8db2c842f0c6346d044",
+      "functions": [
+        {
+          "name": "func_802112E0_5CC7B0",
+          "rom_offset": 6080432,
+          "vma": 2149651168,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5CEEA4",
+      "rom_offset": 6090404,
+      "size": 12,
+      "section": "file_12",
+      "source_sha256": "0656e62545ee0aa63e8d7cf35d05beec51978b53d0d3e7a60f5e4e91702bba45",
+      "functions": [
+        {
+          "name": "func_802139D4_5CEEA4",
+          "rom_offset": 6090404,
+          "vma": 2149661140,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5CF114",
+      "rom_offset": 6091028,
+      "size": 24,
+      "section": "file_12",
+      "source_sha256": "702b429e46b9c2e89bd9832237f4c6bad3a6070dc3bf86b7694b805bee30ceea",
+      "functions": [
+        {
+          "name": "func_80213C44_5CF114",
+          "rom_offset": 6091028,
+          "vma": 2149661764,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80213C50_5CF120",
+          "rom_offset": 6091040,
+          "vma": 2149661776,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5CF3A0",
+      "rom_offset": 6091680,
+      "size": 24,
+      "section": "file_12",
+      "source_sha256": "27e9f13dfc24ae1de6c206aece6d324de0a6c0e1673749e3d0aed3f3472be273",
+      "functions": [
+        {
+          "name": "func_80213ED0_5CF3A0",
+          "rom_offset": 6091680,
+          "vma": 2149662416,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80213EDC_5CF3AC",
+          "rom_offset": 6091692,
+          "vma": 2149662428,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5CF3E4",
+      "rom_offset": 6091748,
+      "size": 12,
+      "section": "file_12",
+      "source_sha256": "e0fb6f83429e31f7a7f192ded432d033a2b334f5ebe45415487d7a055a32ba45",
+      "functions": [
+        {
+          "name": "func_80213F14_5CF3E4",
+          "rom_offset": 6091748,
+          "vma": 2149662484,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D0214",
+      "rom_offset": 6095380,
+      "size": 20,
+      "section": "file_12",
+      "source_sha256": "b2a23f79048454f8065ba33715fa76adcfb1e6f9ea5bb1b6f42c2e08c898cbed",
+      "functions": [
+        {
+          "name": "func_80214D44_5D0214",
+          "rom_offset": 6095380,
+          "vma": 2149666116,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80214D50_5D0220",
+          "rom_offset": 6095392,
+          "vma": 2149666128,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D03F0",
+      "rom_offset": 6095856,
+      "size": 36,
+      "section": "file_12",
+      "source_sha256": "372a189737beffa234b9d9f47c87b9c80b6360b0f84790072047158533a40c16",
+      "functions": [
+        {
+          "name": "func_80214F20_5D03F0",
+          "rom_offset": 6095856,
+          "vma": 2149666592,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80214F2C_5D03FC",
+          "rom_offset": 6095868,
+          "vma": 2149666604,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80214F38_5D0408",
+          "rom_offset": 6095880,
+          "vma": 2149666616,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D0424",
+      "rom_offset": 6095908,
+      "size": 12,
+      "section": "file_12",
+      "source_sha256": "065fab71721e5c00f2ae4b0802717f6169a55228ba4499a6194cc759007049f3",
+      "functions": [
+        {
+          "name": "func_80214F54_5D0424",
+          "rom_offset": 6095908,
+          "vma": 2149666644,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D0468",
+      "rom_offset": 6095976,
+      "size": 36,
+      "section": "file_12",
+      "source_sha256": "004421d8fb3cfe3a28e8a0740223846a34c69f5c02bca5167372818c4e7ffe06",
+      "functions": [
+        {
+          "name": "func_80214F98_5D0468",
+          "rom_offset": 6095976,
+          "vma": 2149666712,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80214FA4_5D0474",
+          "rom_offset": 6095988,
+          "vma": 2149666724,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80214FB0_5D0480",
+          "rom_offset": 6096000,
+          "vma": 2149666736,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D0490",
+      "rom_offset": 6096016,
+      "size": 12,
+      "section": "file_12",
+      "source_sha256": "e24da12c2a22ec543b7847f16d780d03fc0e090bf0430a802077a99aea7221cb",
+      "functions": [
+        {
+          "name": "func_80214FC0_5D0490",
+          "rom_offset": 6096016,
+          "vma": 2149666752,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D04A0",
+      "rom_offset": 6096032,
+      "size": 208,
+      "section": "file_12",
+      "source_sha256": "f8231c1d09c499483c15983011d9310301cd11a09c1f0616a5263ff0570f19ad",
+      "functions": [
+        {
+          "name": "func_80214FD0_5D04A0",
+          "rom_offset": 6096032,
+          "vma": 2149666768,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        },
+        {
+          "name": "func_80214FD8_5D04A8",
+          "rom_offset": 6096040,
+          "vma": 2149666776,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80214FE4_5D04B4",
+          "rom_offset": 6096052,
+          "vma": 2149666788,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        },
+        {
+          "name": "func_80214FEC_5D04BC",
+          "rom_offset": 6096060,
+          "vma": 2149666796,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80214FF8_5D04C8",
+          "rom_offset": 6096072,
+          "vma": 2149666808,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        },
+        {
+          "name": "func_80215000_5D04D0",
+          "rom_offset": 6096080,
+          "vma": 2149666816,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_8021500C_5D04DC",
+          "rom_offset": 6096092,
+          "vma": 2149666828,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        },
+        {
+          "name": "func_80215014_5D04E4",
+          "rom_offset": 6096100,
+          "vma": 2149666836,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80215020_5D04F0",
+          "rom_offset": 6096112,
+          "vma": 2149666848,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_8021502C_5D04FC",
+          "rom_offset": 6096124,
+          "vma": 2149666860,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80215038_5D0508",
+          "rom_offset": 6096136,
+          "vma": 2149666872,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80215044_5D0514",
+          "rom_offset": 6096148,
+          "vma": 2149666884,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80215050_5D0520",
+          "rom_offset": 6096160,
+          "vma": 2149666896,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_8021505C_5D052C",
+          "rom_offset": 6096172,
+          "vma": 2149666908,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80215068_5D0538",
+          "rom_offset": 6096184,
+          "vma": 2149666920,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80215074_5D0544",
+          "rom_offset": 6096196,
+          "vma": 2149666932,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_80215080_5D0550",
+          "rom_offset": 6096208,
+          "vma": 2149666944,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_8021508C_5D055C",
+          "rom_offset": 6096220,
+          "vma": 2149666956,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        },
+        {
+          "name": "func_80215094_5D0564",
+          "rom_offset": 6096228,
+          "vma": 2149666964,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D09C0",
+      "rom_offset": 6097344,
+      "size": 12,
+      "section": "file_12",
+      "source_sha256": "7d1866c838e17056ec5a0d13a8646331e0cd451608756f66da2b4d650399271e",
+      "functions": [
+        {
+          "name": "func_802154F0_5D09C0",
+          "rom_offset": 6097344,
+          "vma": 2149668080,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D1B10",
+      "rom_offset": 6101776,
+      "size": 12,
+      "section": "file_12",
+      "source_sha256": "d2086a5444efbd0292548c25fd45a09df0cee0526949da5ae5ad439be5ef1530",
+      "functions": [
+        {
+          "name": "func_80216640_5D1B10",
+          "rom_offset": 6101776,
+          "vma": 2149672512,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D476C",
+      "rom_offset": 6113132,
+      "size": 24,
+      "section": "file_12",
+      "source_sha256": "028949dee4edb1475357f1ede85cf5de765b7f13ed75f10aaf737abda1713e72",
+      "functions": [
+        {
+          "name": "func_8021929C_5D476C",
+          "rom_offset": 6113132,
+          "vma": 2149683868,
+          "size": 8,
+          "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054"
+        },
+        {
+          "name": "func_802192A4_5D4774",
+          "rom_offset": 6113140,
+          "vma": 2149683876,
+          "size": 8,
+          "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054"
+        },
+        {
+          "name": "func_802192AC_5D477C",
+          "rom_offset": 6113148,
+          "vma": 2149683884,
+          "size": 8,
+          "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D4BB4",
+      "rom_offset": 6114228,
+      "size": 24,
+      "section": "file_12",
+      "source_sha256": "ba3a744ddabad75ea95bc4b2f9ee27bdd45a30037be3f60f3f4635f27e8ed894",
+      "functions": [
+        {
+          "name": "func_802196E4_5D4BB4",
+          "rom_offset": 6114228,
+          "vma": 2149684964,
+          "size": 24,
+          "original_code_sha256": "6f2ee77876621a7e3ec1d0662b6bd0a8f20b5bfe07fe837cff0c0fc39febd523"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D5164",
+      "rom_offset": 6115684,
+      "size": 12,
+      "section": "file_12",
+      "source_sha256": "607ea8d9a96b67da0a8a31ccd6b11bd03db79cea92a3417d7fa4fa491dcad16c",
+      "functions": [
+        {
+          "name": "func_80219C94_5D5164",
+          "rom_offset": 6115684,
+          "vma": 2149686420,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_5D651C",
+      "rom_offset": 6120732,
+      "size": 24,
+      "section": "file_12",
+      "source_sha256": "96157d89c4a5afa10d13b453ebbe3f9a10cb975c0f4673207648cb60d9f489af",
+      "functions": [
+        {
+          "name": "func_8021B04C_5D651C",
+          "rom_offset": 6120732,
+          "vma": 2149691468,
+          "size": 24,
+          "original_code_sha256": "6f2ee77876621a7e3ec1d0662b6bd0a8f20b5bfe07fe837cff0c0fc39febd523"
+        }
+      ]
+    },
+    {
+      "name": "b109_5DFA28",
+      "rom_offset": 6158888,
+      "size": 8,
+      "section": "file_12",
+      "source_sha256": "d68996d2efffe389475a49c382c334fc95897afdb51497ab26786778080efba1",
+      "functions": [
+        {
+          "name": "func_80224558_5DFA28",
+          "rom_offset": 6158888,
+          "vma": 2149729624,
+          "size": 8,
+          "original_code_sha256": "f53a703752d62910b54202c03b442bedfa0f845cb72ff2bb0fb341bf6ebe3df2"
+        }
+      ]
+    },
+    {
+      "name": "b109_664A00",
+      "rom_offset": 6703616,
+      "size": 12,
+      "section": "file_15",
+      "source_sha256": "a7cea692884c53cca5a7d6a5c2ed34a3206aacb20297a6d031299cd8b5be64ef",
+      "functions": [
+        {
+          "name": "func_801D1B50_664A00",
+          "rom_offset": 6703616,
+          "vma": 2149391184,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        }
+      ]
+    },
+    {
+      "name": "b109_68DD60",
+      "rom_offset": 6872416,
+      "size": 8,
+      "section": "file_18",
+      "source_sha256": "52202d9f1e7feca2d772744fae72a63232c9d5e696bb153cf6f3bf20107e04a9",
+      "functions": [
+        {
+          "name": "func_80224380_68DD60",
+          "rom_offset": 6872416,
+          "vma": 2149729152,
+          "size": 8,
+          "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054"
+        }
+      ]
+    },
+    {
+      "name": "b109_697F14",
+      "rom_offset": 6913812,
+      "size": 12,
+      "section": "file_19",
+      "source_sha256": "62e112e6975f2e94264e60d8b277eba93acc6c5925871c33759c938d73bd0e1e",
+      "functions": [
+        {
+          "name": "func_80210514_697F14",
+          "rom_offset": 6913812,
+          "vma": 2149647636,
+          "size": 12,
+          "original_code_sha256": "55b16f9935fc6c1478579362f5b197b5adade2f8cf061621935e0057d5a950f3"
+        }
+      ]
+    },
+    {
+      "name": "b109_698018",
+      "rom_offset": 6914072,
+      "size": 12,
+      "section": "file_19",
+      "source_sha256": "8bf5539af41c62619a9182167e4e7dbbb123393f599aa734e61cab7078ae4423",
+      "functions": [
+        {
+          "name": "func_80210618_698018",
+          "rom_offset": 6914072,
+          "vma": 2149647896,
+          "size": 12,
+          "original_code_sha256": "4aada5d7aafc8f99334214ab90e243e9be9636c5183154e8075aec5125018f20"
+        }
+      ]
+    },
+    {
+      "name": "b109_698080",
+      "rom_offset": 6914176,
+      "size": 8,
+      "section": "file_19",
+      "source_sha256": "fb51e995af74a04da5a21d19bcf7765a3be51a239c7ddc75a91136946e95dab1",
+      "functions": [
+        {
+          "name": "func_80210680_698080",
+          "rom_offset": 6914176,
+          "vma": 2149648000,
+          "size": 8,
+          "original_code_sha256": "895d7ea395e66f348e2d9f46392f46d306fdfc69a98a3662f32d5eb5c7207da8"
+        }
+      ]
+    },
+    {
+      "name": "b109_698678",
+      "rom_offset": 6915704,
+      "size": 12,
+      "section": "file_19",
+      "source_sha256": "758369bb276db465494c6ce79a9020639de433361bd004fab429f185fad3906c",
+      "functions": [
+        {
+          "name": "func_80210C78_698678",
+          "rom_offset": 6915704,
+          "vma": 2149649528,
+          "size": 12,
+          "original_code_sha256": "f7c4d21d79ad884da43f11a18c0aaf133a3f56b28e6564ef3dd01c427fc187a7"
+        }
+      ]
+    },
+    {
+      "name": "b109_699094",
+      "rom_offset": 6918292,
+      "size": 12,
+      "section": "file_19",
+      "source_sha256": "9ce4eb6589ea4dbc936a3c67c91b474929737cfd9dbbf405e9dd6ffbe4795964",
+      "functions": [
+        {
+          "name": "func_80211694_699094",
+          "rom_offset": 6918292,
+          "vma": 2149652116,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "b109_6999B8",
+      "rom_offset": 6920632,
+      "size": 12,
+      "section": "file_19",
+      "source_sha256": "25b4130c456007fe8881b891dde8b70ad4360559bb3074371c905bb0cade32ee",
+      "functions": [
+        {
+          "name": "func_80211FB8_6999B8",
+          "rom_offset": 6920632,
+          "vma": 2149654456,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "b109_69BDD0",
+      "rom_offset": 6929872,
+      "size": 8,
+      "section": "file_19",
+      "source_sha256": "8270cc841db444f9a4081bc09b72ab6820b155abfa3ec8ee04253848b92c016a",
+      "functions": [
+        {
+          "name": "func_802143D0_69BDD0",
+          "rom_offset": 6929872,
+          "vma": 2149663696,
+          "size": 8,
+          "original_code_sha256": "86d6129681e7c22dceb0bcc94e838abdc8b7931edcabffa1ca0d192fe2ca7d4c"
+        }
+      ]
+    },
+    {
+      "name": "b109_6AC6DC",
+      "rom_offset": 6997724,
+      "size": 24,
+      "section": "file_24",
+      "source_sha256": "779123b4725feb374a1077cd12a654ff88cc96023fb6ac06e0cb8ced9e998d06",
+      "functions": [
+        {
+          "name": "func_0800018C_6AC6DC",
+          "rom_offset": 6997724,
+          "vma": 134218124,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_08000198_6AC6E8",
+          "rom_offset": 6997736,
+          "vma": 134218136,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6ACB20",
+      "rom_offset": 6998816,
+      "size": 12,
+      "section": "file_24",
+      "source_sha256": "d26769d0e7a28f676cf665e8991557a1e84c942dcdb86b707472eab665615959",
+      "functions": [
+        {
+          "name": "func_080005D0_6ACB20",
+          "rom_offset": 6998816,
+          "vma": 134219216,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6ACC0C",
+      "rom_offset": 6999052,
+      "size": 12,
+      "section": "file_24",
+      "source_sha256": "c64e81ea3cb11f850c632fd9342fe7fb63db12d0009b1e022bc2ee0d6185c6f8",
+      "functions": [
+        {
+          "name": "func_080006BC_6ACC0C",
+          "rom_offset": 6999052,
+          "vma": 134219452,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6ACD4C",
+      "rom_offset": 6999372,
+      "size": 12,
+      "section": "file_24",
+      "source_sha256": "a9e686749949a69dd9df91cd7685513cb6a736a1048283666810890de4109742",
+      "functions": [
+        {
+          "name": "func_080007FC_6ACD4C",
+          "rom_offset": 6999372,
+          "vma": 134219772,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6B270C",
+      "rom_offset": 7022348,
+      "size": 8,
+      "section": "file_27",
+      "source_sha256": "e62658e6871547fd167f464d88bf11ce7340331e1d11bd6b27041d85b6717fcc",
+      "functions": [
+        {
+          "name": "func_080032FC_6B270C",
+          "rom_offset": 7022348,
+          "vma": 134230780,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        }
+      ]
+    },
+    {
+      "name": "b109_6B32A0",
+      "rom_offset": 7025312,
+      "size": 12,
+      "section": "file_29",
+      "source_sha256": "e05510541473d5bfa3b7a632b177e045f702f6a4729a2b74e12fe5cbac59d75b",
+      "functions": [
+        {
+          "name": "func_08000000_6B32A0",
+          "rom_offset": 7025312,
+          "vma": 134217728,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6B6DA0",
+      "rom_offset": 7040416,
+      "size": 12,
+      "section": "file_29",
+      "source_sha256": "4bb6b94d0c668d2088dbd965db09bb5d55d1a8eb3a78ccda87bea45d0de8f472",
+      "functions": [
+        {
+          "name": "func_08003B00_6B6DA0",
+          "rom_offset": 7040416,
+          "vma": 134232832,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6B9020",
+      "rom_offset": 7049248,
+      "size": 24,
+      "section": "file_29",
+      "source_sha256": "302fa92bcbabcaca1141813d3d368c9c8537b14b09d8e127ebdcc6d5e7d4e4aa",
+      "functions": [
+        {
+          "name": "func_08005D80_6B9020",
+          "rom_offset": 7049248,
+          "vma": 134241664,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_08005D8C_6B902C",
+          "rom_offset": 7049260,
+          "vma": 134241676,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6B9158",
+      "rom_offset": 7049560,
+      "size": 12,
+      "section": "file_29",
+      "source_sha256": "090cfb5be461fb0f70e40969be3b8bc7bf37ecfc166bff97665b824c93babf59",
+      "functions": [
+        {
+          "name": "func_08005EB8_6B9158",
+          "rom_offset": 7049560,
+          "vma": 134241976,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6B9174",
+      "rom_offset": 7049588,
+      "size": 8,
+      "section": "file_29",
+      "source_sha256": "9080b85b22d1b612b26db5a2cd5d93856fedb9bd32f47f0e1a8b919a6fc08ec7",
+      "functions": [
+        {
+          "name": "func_08005ED4_6B9174",
+          "rom_offset": 7049588,
+          "vma": 134242004,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        }
+      ]
+    },
+    {
+      "name": "b109_6BB640",
+      "rom_offset": 7059008,
+      "size": 12,
+      "section": "file_29",
+      "source_sha256": "4dec5846eb09aa6969c302dbf328d2bfb09086a512731d8cd76b6d14ef5266ad",
+      "functions": [
+        {
+          "name": "func_080083A0_6BB640",
+          "rom_offset": 7059008,
+          "vma": 134251424,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6BF750",
+      "rom_offset": 7075664,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "668009e53ca0ac9b0b125540c1599ef0deaea872fb37cb22bfeeb6ccc38a8e5f",
+      "functions": [
+        {
+          "name": "func_08000000_6BF750",
+          "rom_offset": 7075664,
+          "vma": 134217728,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6BF9DC",
+      "rom_offset": 7076316,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "cc0f0e118e4d0f9b9834520c808d6f024360c869e60ca2ea51710b3bff969fa0",
+      "functions": [
+        {
+          "name": "func_0800028C_6BF9DC",
+          "rom_offset": 7076316,
+          "vma": 134218380,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C00C0",
+      "rom_offset": 7078080,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "b70fc7f85f359db532b225b4d5cd115e4b48345d257a2a5bf789aac56c788205",
+      "functions": [
+        {
+          "name": "func_08000970_6C00C0",
+          "rom_offset": 7078080,
+          "vma": 134220144,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C0210",
+      "rom_offset": 7078416,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "c70db0a615962ee46c3dd83fd9cfa6db62a53110a2d3075c18bce0bff2a14756",
+      "functions": [
+        {
+          "name": "func_08000AC0_6C0210",
+          "rom_offset": 7078416,
+          "vma": 134220480,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C153C",
+      "rom_offset": 7083324,
+      "size": 20,
+      "section": "file_30",
+      "source_sha256": "c65c09e1f6592f8e7cd6cf46bd24d100355cfc6519dacb9cf7b42c214820aabf",
+      "functions": [
+        {
+          "name": "func_08001DEC_6C153C",
+          "rom_offset": 7083324,
+          "vma": 134225388,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_08001DF8_6C1548",
+          "rom_offset": 7083336,
+          "vma": 134225400,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C17E0",
+      "rom_offset": 7084000,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "b11ff0d2e3a612ac14f771bcec8c0b60ad837dbdedaf32e09fa910656616280b",
+      "functions": [
+        {
+          "name": "func_08002090_6C17E0",
+          "rom_offset": 7084000,
+          "vma": 134226064,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C1BC4",
+      "rom_offset": 7084996,
+      "size": 56,
+      "section": "file_30",
+      "source_sha256": "86f308b181aad47e642dae5ece43ff3ec5d6d063ebabb65562eb7a1c8f40c92b",
+      "functions": [
+        {
+          "name": "func_08002474_6C1BC4",
+          "rom_offset": 7084996,
+          "vma": 134227060,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_08002480_6C1BD0",
+          "rom_offset": 7085008,
+          "vma": 134227072,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        },
+        {
+          "name": "func_08002488_6C1BD8",
+          "rom_offset": 7085016,
+          "vma": 134227080,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_08002494_6C1BE4",
+          "rom_offset": 7085028,
+          "vma": 134227092,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_080024A0_6C1BF0",
+          "rom_offset": 7085040,
+          "vma": 134227104,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C1C34",
+      "rom_offset": 7085108,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "67c6164abfcf39230fb13dd4727633af821bab3ef632be183246a29ee4cdb1fb",
+      "functions": [
+        {
+          "name": "func_080024E4_6C1C34",
+          "rom_offset": 7085108,
+          "vma": 134227172,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C40D0",
+      "rom_offset": 7094480,
+      "size": 36,
+      "section": "file_30",
+      "source_sha256": "50c534aa47b9998771c70129d0e39fcf728952ee4301159b868b0a2d1cc82e32",
+      "functions": [
+        {
+          "name": "func_08004980_6C40D0",
+          "rom_offset": 7094480,
+          "vma": 134236544,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_0800498C_6C40DC",
+          "rom_offset": 7094492,
+          "vma": 134236556,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_08004998_6C40E8",
+          "rom_offset": 7094504,
+          "vma": 134236568,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C41F0",
+      "rom_offset": 7094768,
+      "size": 20,
+      "section": "file_30",
+      "source_sha256": "868c3a5f62a01ef04551d3eb6074c81c0cd7cc3ff1c69ba8aa49d4018f1375a2",
+      "functions": [
+        {
+          "name": "func_08004AA0_6C41F0",
+          "rom_offset": 7094768,
+          "vma": 134236832,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        },
+        {
+          "name": "func_08004AAC_6C41FC",
+          "rom_offset": 7094780,
+          "vma": 134236844,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C4230",
+      "rom_offset": 7094832,
+      "size": 20,
+      "section": "file_30",
+      "source_sha256": "3cc438c83123c3868bcb397cf3799b4220731453ea1c0b9f4c16bb85eeee8c43",
+      "functions": [
+        {
+          "name": "func_08004AE0_6C4230",
+          "rom_offset": 7094832,
+          "vma": 134236896,
+          "size": 8,
+          "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378"
+        },
+        {
+          "name": "func_08004AE8_6C4238",
+          "rom_offset": 7094840,
+          "vma": 134236904,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C5760",
+      "rom_offset": 7100256,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "222cef505de1aa83f8284425d787b7f19635022f6c74f5c6c5dac106afccd397",
+      "functions": [
+        {
+          "name": "func_08006010_6C5760",
+          "rom_offset": 7100256,
+          "vma": 134242320,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C587C",
+      "rom_offset": 7100540,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "dda2dad87597c1237e7c21d86e5d155b6c8d1d017cc582cd417b43c214067dbc",
+      "functions": [
+        {
+          "name": "func_0800612C_6C587C",
+          "rom_offset": 7100540,
+          "vma": 134242604,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C5EBC",
+      "rom_offset": 7102140,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "61b3841f4dd2c55fb3123250e3d491c0a5935465aadd6037fa7a91dd3b5136d9",
+      "functions": [
+        {
+          "name": "func_0800676C_6C5EBC",
+          "rom_offset": 7102140,
+          "vma": 134244204,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6C6A14",
+      "rom_offset": 7105044,
+      "size": 12,
+      "section": "file_30",
+      "source_sha256": "b75467b3f8bcae80b338bc25b9179b47f370cd6a9991a96ff55d774d1410dab5",
+      "functions": [
+        {
+          "name": "func_080072C4_6C6A14",
+          "rom_offset": 7105044,
+          "vma": 134247108,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6CBA14",
+      "rom_offset": 7125524,
+      "size": 12,
+      "section": "file_31",
+      "source_sha256": "9dc95f1255ebfc7e3f43a12f0c3dc566ef410f465bb9ddccd1eca1d63e916af9",
+      "functions": [
+        {
+          "name": "func_08003804_6CBA14",
+          "rom_offset": 7125524,
+          "vma": 134232068,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6CC188",
+      "rom_offset": 7127432,
+      "size": 12,
+      "section": "file_31",
+      "source_sha256": "fbaab397027bce0c8f8e32ffa8f456cd8799ce8a06ca37ab84f388d882ac2c0c",
+      "functions": [
+        {
+          "name": "func_08003F78_6CC188",
+          "rom_offset": 7127432,
+          "vma": 134233976,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6CE8F0",
+      "rom_offset": 7137520,
+      "size": 12,
+      "section": "file_31",
+      "source_sha256": "815e214bc1a1790306844074a5cbff18a65f3805aceb039efc426aeb43f7bd0f",
+      "functions": [
+        {
+          "name": "func_080066E0_6CE8F0",
+          "rom_offset": 7137520,
+          "vma": 134244064,
+          "size": 12,
+          "original_code_sha256": "691e766163b1b8288cf1e76b4dc9eb7dde764cde7f749bf5aef916d919300f2b"
+        }
+      ]
+    },
+    {
+      "name": "b109_6F71A0",
+      "rom_offset": 7303584,
+      "size": 8,
+      "section": "file_43",
+      "source_sha256": "e43e71a21301b6f5355553fc84b8e3480cf4719590e1f0f78d98dd1769f0eda7",
+      "functions": [
+        {
+          "name": "func_08003CC0_6F71A0",
+          "rom_offset": 7303584,
+          "vma": 134233280,
+          "size": 8,
+          "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054"
+        }
+      ]
+    },
+    {
+      "name": "b109_707ED0",
+      "rom_offset": 7372496,
+      "size": 12,
+      "section": "file_48",
+      "source_sha256": "9ad111f867e7c559d2e404f17eeb04bc23d84fe3dcc20e2f498296d1343a2ea6",
+      "functions": [
+        {
+          "name": "func_08000490_707ED0",
+          "rom_offset": 7372496,
+          "vma": 134218896,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "b109_7089E0",
+      "rom_offset": 7375328,
+      "size": 8,
+      "section": "file_48",
+      "source_sha256": "a6e08eece57271cbad5a188b5459d035447156def7e19562449e216d734117cb",
+      "functions": [
+        {
+          "name": "func_08000FA0_7089E0",
+          "rom_offset": 7375328,
+          "vma": 134221728,
+          "size": 8,
+          "original_code_sha256": "f364e1642b626bd3a50480ed1fe1dbb57d0213d3e9fc4eb45782ca66715c6027"
+        }
+      ]
+    },
+    {
+      "name": "b109_709294",
+      "rom_offset": 7377556,
+      "size": 8,
+      "section": "file_48",
+      "source_sha256": "de4eaa3b259d4ec3ec2a65721c4d0fa12ecef9525c3bd766e4b41d52b8a74b2f",
+      "functions": [
+        {
+          "name": "func_08001854_709294",
+          "rom_offset": 7377556,
+          "vma": 134223956,
+          "size": 8,
+          "original_code_sha256": "f364e1642b626bd3a50480ed1fe1dbb57d0213d3e9fc4eb45782ca66715c6027"
+        }
+      ]
+    },
+    {
+      "name": "b109_70AA1C",
+      "rom_offset": 7383580,
+      "size": 8,
+      "section": "file_49",
+      "source_sha256": "2ba574d6fae9bf273eac2b283206407862d473e57c48a97acbad4415c1d33be8",
+      "functions": [
+        {
+          "name": "func_080009DC_70AA1C",
+          "rom_offset": 7383580,
+          "vma": 134220252,
+          "size": 8,
+          "original_code_sha256": "f364e1642b626bd3a50480ed1fe1dbb57d0213d3e9fc4eb45782ca66715c6027"
+        }
+      ]
+    },
+    {
+      "name": "b109_70B49C",
+      "rom_offset": 7386268,
+      "size": 8,
+      "section": "file_49",
+      "source_sha256": "00f488c66cc1e63fa6884ed695bfe0186e80207cbc1fa29ed9746773de5a601d",
+      "functions": [
+        {
+          "name": "func_0800145C_70B49C",
+          "rom_offset": 7386268,
+          "vma": 134222940,
+          "size": 8,
+          "original_code_sha256": "3a552ed6b5174e4bad808b96fa9560d7129e963b5ac1cc69809b21ea07fc462e"
+        }
+      ]
+    },
+    {
+      "name": "b109_71DE00",
+      "rom_offset": 7462400,
+      "size": 12,
+      "section": "file_60",
+      "source_sha256": "3e913a454856fe120c896421ddf4c55e7e7b4c1e759c112313e473f3538c4bf2",
+      "functions": [
+        {
+          "name": "func_08000630_71DE00",
+          "rom_offset": 7462400,
+          "vma": 134219312,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "b109_71E8C4",
+      "rom_offset": 7465156,
+      "size": 12,
+      "section": "file_60",
+      "source_sha256": "a3c80065e3e0730ee815c5f64604ea693b5b2a75d1ca1e8a32fef3dd712f3af7",
+      "functions": [
+        {
+          "name": "func_080010F4_71E8C4",
+          "rom_offset": 7465156,
+          "vma": 134222068,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "b109_71ECA0",
+      "rom_offset": 7466144,
+      "size": 12,
+      "section": "file_60",
+      "source_sha256": "93803e0757c290255f2c9aa7a61cbea702c95cbe2ede321249fa1867ca8a2672",
+      "functions": [
+        {
+          "name": "func_080014D0_71ECA0",
+          "rom_offset": 7466144,
+          "vma": 134223056,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        }
+      ]
+    },
+    {
+      "name": "b109_71F1A0",
+      "rom_offset": 7467424,
+      "size": 12,
+      "section": "file_60",
+      "source_sha256": "d143b6cb896f752f1268665b516199328bf8aa8cf322915c25187a7dfa0dabea",
+      "functions": [
+        {
+          "name": "func_080019D0_71F1A0",
+          "rom_offset": 7467424,
+          "vma": 134224336,
+          "size": 12,
+          "original_code_sha256": "ad391693c1cfb615b9a67c91c673d48ab05c0b5b8c65f9b5991aeec0dc34d442"
+        }
+      ]
+    },
+    {
+      "name": "b109_72A510",
+      "rom_offset": 7513360,
+      "size": 12,
+      "section": "file_67",
+      "source_sha256": "77d3a1870ef6c6a24ea0161a94136e49632a44c76085473061851c036f424e6f",
+      "functions": [
+        {
+          "name": "func_08000F70_72A510",
+          "rom_offset": 7513360,
+          "vma": 134221680,
+          "size": 12,
+          "original_code_sha256": "0a51b32fc921230f74ff8cd8b84f0b6f6cf0cc515df289d5e5377ff2060bbc29"
+        }
+      ]
+    },
+    {
+      "name": "b109_72C304",
+      "rom_offset": 7521028,
+      "size": 12,
+      "section": "file_69",
+      "source_sha256": "0cbf0327e713d4a5a656270678fa2d2664b2fc5214a19c02c3bcecc23efc036d",
+      "functions": [
+        {
+          "name": "func_08000AB4_72C304",
+          "rom_offset": 7521028,
+          "vma": 134220468,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    }
+  ]
+}

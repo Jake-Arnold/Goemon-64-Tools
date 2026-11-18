@@ -1537,5 +1537,8 @@
   },
   "overlay_wide132_stage": {
     "format": "goemon-usa-verified132-after-canonical987-v1"
+  },
+  "overlay_wide109_stage": {
+    "format": "goemon-usa-wide109-after-canonical1119-v1"
   }
 }

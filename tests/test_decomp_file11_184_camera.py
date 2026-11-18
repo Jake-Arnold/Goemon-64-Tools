@@ -13,6 +13,7 @@ class Camera184StageTests(unittest.TestCase):
         # Historical camera fixture must remain independently reproducible.
         result['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
         result.pop('overlay_wide132_stage', None)
+        result.pop('overlay_wide109_stage', None)
         return result
 
     def test_one_camera_original_identity_added_to_183(self):

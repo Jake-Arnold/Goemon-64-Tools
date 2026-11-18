@@ -10,6 +10,7 @@ class UsaFile12SpatialPromotionTests(unittest.TestCase):
     def setUpClass(cls):
         cls.manifest=load_manifest(ROOT/'decomp/manifest.json')
         cls.manifest.pop('overlay_wide132_stage', None)
+        cls.manifest.pop('overlay_wide109_stage', None)
         cls.registry,cls.inventory=load_files(ROOT)
         cls.proof=json.loads((ROOT/'decomp/results/usa_file12_spatial_11_promotion_20261117.json').read_text())
     def test_exact_original_address_and_source_record(self):

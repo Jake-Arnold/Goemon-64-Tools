@@ -37,7 +37,7 @@ class Wide132ContractTest(unittest.TestCase):
     def test_current_claims_total_and_non_overlap(self):
         path=Path(__file__).with_name('manifest.json')
         doc=load_manifest(path)
-        functions=claimed_functions(doc)
+        functions=claimed_functions({k:v for k,v in doc.items() if k!='overlay_wide109_stage'})
         self.assertEqual(len(functions),1119)
         self.assertEqual(sum(e['size'] for e in functions),50828)
         self.assertEqual(len({f['name'] for f in functions}),1119)

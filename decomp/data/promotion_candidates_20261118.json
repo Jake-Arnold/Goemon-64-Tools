@@ -3,13 +3,13 @@
   "created_utc_date": "2026-11-18",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 1119,
-    "usa_instruction_bytes": 50828,
+    "usa_functions": 1225,
+    "usa_instruction_bytes": 52028,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "Research-only five main graphics candidates remain after canonical USA 1119-C promotion; all remain ASM-owned and not accepted. Historic 987/41-candidate queue preserved separately.",
+  "purpose": "Research-only five main graphics candidates remain after canonical USA 1225-C promotion; all remain ASM-owned and not accepted. Historic 987/1119 evidence retained separately.",
   "ready_for_combined_g2": {
     "functions": 5,
     "bytes": 284,

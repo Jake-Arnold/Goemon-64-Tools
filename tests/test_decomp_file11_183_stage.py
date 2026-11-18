@@ -15,6 +15,7 @@ def manifest():
     m['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
     m.pop('overlay_crossregion47_stage', None)
     m.pop('overlay_wide132_stage', None)
+    m.pop('overlay_wide109_stage', None)
     return m
 
 

@@ -17,6 +17,7 @@ class AllPendingFile11PromotionTests(unittest.TestCase):
     def setUpClass(cls):
         cls.manifest = load_manifest(ROOT / 'decomp/manifest.json')
         cls.manifest.pop('overlay_wide132_stage', None)
+        cls.manifest.pop('overlay_wide109_stage', None)
 
     def test_all_82_are_exact_and_nondeduplicated(self):
         past = {(x['name'],x['rom_offset'],x['vma'],x['size']) for x in historical.entries()}

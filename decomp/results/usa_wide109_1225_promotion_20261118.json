@@ -1,0 +1,700 @@
+{
+  "format": "goemon-usa-1225-wide109-central-production-local-proof-v1",
+  "date": "2026-11-18",
+  "status": "PASSED_G2_LOCAL__REMOTE_NOT_PUBLISHED",
+  "base_branch": "chatgptweb/decomp",
+  "starting_remote_head": "0e3230a797176b5108db5a5febb116f8eec83a1d",
+  "origin": "chatgptweb/usa-wide-109-native-research-20261118 (PR #74)",
+  "prior_original_research_functions": 109,
+  "original_research_bytes": 1228,
+  "already_accepted_overlaps": [
+    {
+      "name": "func_80218DF8_5D42C8",
+      "rom_offset": "0x5D42C8",
+      "bytes": 12
+    },
+    {
+      "name": "func_8021A308_5D57D8",
+      "rom_offset": "0x5D57D8",
+      "bytes": 8
+    },
+    {
+      "name": "func_8021A4DC_5D59AC",
+      "rom_offset": "0x5D59AC",
+      "bytes": 8
+    }
+  ],
+  "new_unique_function_count": 106,
+  "new_unique_instruction_bytes": 1200,
+  "new_unique_translation_units": 68,
+  "prior_accepted_usa_matching_c": 1119,
+  "prior_accepted_bytes": 50828,
+  "after_accepted_usa_matching_c": 1225,
+  "after_accepted_bytes": 52028,
+  "remaining_asm": 6138,
+  "japan_rev0_matching_c_unmodified": 39,
+  "japan_rev0_matching_bytes_unmodified": 2092,
+  "original_usa_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_original_rom_length": 33554432,
+  "fresh_native_full_g2_status": "PASS",
+  "fresh_native_full_g2_started": "2026-11-18T15:40:06.620651+00:00",
+  "fresh_native_full_g2_finished": "2026-11-18T15:42:11.434667+00:00",
+  "fresh_full_rom_byte_for_byte_identical": true,
+  "full_g2_sha256": "c22597a6467b1ece3a3057096a8278fdc5abb2d2d07887050e0ab0523be3c48a",
+  "reported_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "linked_original_positive_size_FUNC_identical": 7376,
+  "accepted_baseline_semantic_relocations_identical": true,
+  "accepted_baseline_semantic_relocation_overlay_sections": 70,
+  "new_extra_positive_sized_aliases": 0,
+  "strict_inventory": "PASS",
+  "strict_inventory_sha256": "b84b700f293a2c4711f7ebd24e55ce7128eadd445b2bc00254d0f413207341de",
+  "full_local_ci": "PASS",
+  "decomp_python_tests": "256 tests passed, one skipped",
+  "verifier_ledger_tests": "245 tests passed",
+  "host_ASAN_UBSAN": "PASS: original display fixture, actual native87, file27, wide132, and all 68 wide109 original C source units; wide109 host 1000 iterations",
+  "emulator_gameplay": "NOT_RUN",
+  "production_source_manifest": "decomp/research/usa_wide109_promotion_20261118/promotion_manifest.json",
+  "compiled_stage_source": "decomp/overlay_wide109.py",
+  "new_functions": [
+    {
+      "name": "func_802112E0_5CC7B0",
+      "rom_offset": "0x5CC7B0",
+      "vma": "0x802112E0",
+      "bytes": 12
+    },
+    {
+      "name": "func_802139D4_5CEEA4",
+      "rom_offset": "0x5CEEA4",
+      "vma": "0x802139D4",
+      "bytes": 12
+    },
+    {
+      "name": "func_80213C44_5CF114",
+      "rom_offset": "0x5CF114",
+      "vma": "0x80213C44",
+      "bytes": 12
+    },
+    {
+      "name": "func_80213C50_5CF120",
+      "rom_offset": "0x5CF120",
+      "vma": "0x80213C50",
+      "bytes": 12
+    },
+    {
+      "name": "func_80213ED0_5CF3A0",
+      "rom_offset": "0x5CF3A0",
+      "vma": "0x80213ED0",
+      "bytes": 12
+    },
+    {
+      "name": "func_80213EDC_5CF3AC",
+      "rom_offset": "0x5CF3AC",
+      "vma": "0x80213EDC",
+      "bytes": 12
+    },
+    {
+      "name": "func_80213F14_5CF3E4",
+      "rom_offset": "0x5CF3E4",
+      "vma": "0x80213F14",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214D44_5D0214",
+      "rom_offset": "0x5D0214",
+      "vma": "0x80214D44",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214D50_5D0220",
+      "rom_offset": "0x5D0220",
+      "vma": "0x80214D50",
+      "bytes": 8
+    },
+    {
+      "name": "func_80214F20_5D03F0",
+      "rom_offset": "0x5D03F0",
+      "vma": "0x80214F20",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214F2C_5D03FC",
+      "rom_offset": "0x5D03FC",
+      "vma": "0x80214F2C",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214F38_5D0408",
+      "rom_offset": "0x5D0408",
+      "vma": "0x80214F38",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214F54_5D0424",
+      "rom_offset": "0x5D0424",
+      "vma": "0x80214F54",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214F98_5D0468",
+      "rom_offset": "0x5D0468",
+      "vma": "0x80214F98",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214FA4_5D0474",
+      "rom_offset": "0x5D0474",
+      "vma": "0x80214FA4",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214FB0_5D0480",
+      "rom_offset": "0x5D0480",
+      "vma": "0x80214FB0",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214FC0_5D0490",
+      "rom_offset": "0x5D0490",
+      "vma": "0x80214FC0",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214FD0_5D04A0",
+      "rom_offset": "0x5D04A0",
+      "vma": "0x80214FD0",
+      "bytes": 8
+    },
+    {
+      "name": "func_80214FD8_5D04A8",
+      "rom_offset": "0x5D04A8",
+      "vma": "0x80214FD8",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214FE4_5D04B4",
+      "rom_offset": "0x5D04B4",
+      "vma": "0x80214FE4",
+      "bytes": 8
+    },
+    {
+      "name": "func_80214FEC_5D04BC",
+      "rom_offset": "0x5D04BC",
+      "vma": "0x80214FEC",
+      "bytes": 12
+    },
+    {
+      "name": "func_80214FF8_5D04C8",
+      "rom_offset": "0x5D04C8",
+      "vma": "0x80214FF8",
+      "bytes": 8
+    },
+    {
+      "name": "func_80215000_5D04D0",
+      "rom_offset": "0x5D04D0",
+      "vma": "0x80215000",
+      "bytes": 12
+    },
+    {
+      "name": "func_8021500C_5D04DC",
+      "rom_offset": "0x5D04DC",
+      "vma": "0x8021500C",
+      "bytes": 8
+    },
+    {
+      "name": "func_80215014_5D04E4",
+      "rom_offset": "0x5D04E4",
+      "vma": "0x80215014",
+      "bytes": 12
+    },
+    {
+      "name": "func_80215020_5D04F0",
+      "rom_offset": "0x5D04F0",
+      "vma": "0x80215020",
+      "bytes": 12
+    },
+    {
+      "name": "func_8021502C_5D04FC",
+      "rom_offset": "0x5D04FC",
+      "vma": "0x8021502C",
+      "bytes": 12
+    },
+    {
+      "name": "func_80215038_5D0508",
+      "rom_offset": "0x5D0508",
+      "vma": "0x80215038",
+      "bytes": 12
+    },
+    {
+      "name": "func_80215044_5D0514",
+      "rom_offset": "0x5D0514",
+      "vma": "0x80215044",
+      "bytes": 12
+    },
+    {
+      "name": "func_80215050_5D0520",
+      "rom_offset": "0x5D0520",
+      "vma": "0x80215050",
+      "bytes": 12
+    },
+    {
+      "name": "func_8021505C_5D052C",
+      "rom_offset": "0x5D052C",
+      "vma": "0x8021505C",
+      "bytes": 12
+    },
+    {
+      "name": "func_80215068_5D0538",
+      "rom_offset": "0x5D0538",
+      "vma": "0x80215068",
+      "bytes": 12
+    },
+    {
+      "name": "func_80215074_5D0544",
+      "rom_offset": "0x5D0544",
+      "vma": "0x80215074",
+      "bytes": 12
+    },
+    {
+      "name": "func_80215080_5D0550",
+      "rom_offset": "0x5D0550",
+      "vma": "0x80215080",
+      "bytes": 12
+    },
+    {
+      "name": "func_8021508C_5D055C",
+      "rom_offset": "0x5D055C",
+      "vma": "0x8021508C",
+      "bytes": 8
+    },
+    {
+      "name": "func_80215094_5D0564",
+      "rom_offset": "0x5D0564",
+      "vma": "0x80215094",
+      "bytes": 12
+    },
+    {
+      "name": "func_802154F0_5D09C0",
+      "rom_offset": "0x5D09C0",
+      "vma": "0x802154F0",
+      "bytes": 12
+    },
+    {
+      "name": "func_80216640_5D1B10",
+      "rom_offset": "0x5D1B10",
+      "vma": "0x80216640",
+      "bytes": 12
+    },
+    {
+      "name": "func_8021929C_5D476C",
+      "rom_offset": "0x5D476C",
+      "vma": "0x8021929C",
+      "bytes": 8
+    },
+    {
+      "name": "func_802192A4_5D4774",
+      "rom_offset": "0x5D4774",
+      "vma": "0x802192A4",
+      "bytes": 8
+    },
+    {
+      "name": "func_802192AC_5D477C",
+      "rom_offset": "0x5D477C",
+      "vma": "0x802192AC",
+      "bytes": 8
+    },
+    {
+      "name": "func_802196E4_5D4BB4",
+      "rom_offset": "0x5D4BB4",
+      "vma": "0x802196E4",
+      "bytes": 24
+    },
+    {
+      "name": "func_80219C94_5D5164",
+      "rom_offset": "0x5D5164",
+      "vma": "0x80219C94",
+      "bytes": 12
+    },
+    {
+      "name": "func_8021B04C_5D651C",
+      "rom_offset": "0x5D651C",
+      "vma": "0x8021B04C",
+      "bytes": 24
+    },
+    {
+      "name": "func_80224558_5DFA28",
+      "rom_offset": "0x5DFA28",
+      "vma": "0x80224558",
+      "bytes": 8
+    },
+    {
+      "name": "func_801D1B50_664A00",
+      "rom_offset": "0x664A00",
+      "vma": "0x801D1B50",
+      "bytes": 12
+    },
+    {
+      "name": "func_80224380_68DD60",
+      "rom_offset": "0x68DD60",
+      "vma": "0x80224380",
+      "bytes": 8
+    },
+    {
+      "name": "func_80210514_697F14",
+      "rom_offset": "0x697F14",
+      "vma": "0x80210514",
+      "bytes": 12
+    },
+    {
+      "name": "func_80210618_698018",
+      "rom_offset": "0x698018",
+      "vma": "0x80210618",
+      "bytes": 12
+    },
+    {
+      "name": "func_80210680_698080",
+      "rom_offset": "0x698080",
+      "vma": "0x80210680",
+      "bytes": 8
+    },
+    {
+      "name": "func_80210C78_698678",
+      "rom_offset": "0x698678",
+      "vma": "0x80210C78",
+      "bytes": 12
+    },
+    {
+      "name": "func_80211694_699094",
+      "rom_offset": "0x699094",
+      "vma": "0x80211694",
+      "bytes": 12
+    },
+    {
+      "name": "func_80211FB8_6999B8",
+      "rom_offset": "0x6999B8",
+      "vma": "0x80211FB8",
+      "bytes": 12
+    },
+    {
+      "name": "func_802143D0_69BDD0",
+      "rom_offset": "0x69BDD0",
+      "vma": "0x802143D0",
+      "bytes": 8
+    },
+    {
+      "name": "func_0800018C_6AC6DC",
+      "rom_offset": "0x6AC6DC",
+      "vma": "0x800018C",
+      "bytes": 12
+    },
+    {
+      "name": "func_08000198_6AC6E8",
+      "rom_offset": "0x6AC6E8",
+      "vma": "0x8000198",
+      "bytes": 12
+    },
+    {
+      "name": "func_080005D0_6ACB20",
+      "rom_offset": "0x6ACB20",
+      "vma": "0x80005D0",
+      "bytes": 12
+    },
+    {
+      "name": "func_080006BC_6ACC0C",
+      "rom_offset": "0x6ACC0C",
+      "vma": "0x80006BC",
+      "bytes": 12
+    },
+    {
+      "name": "func_080007FC_6ACD4C",
+      "rom_offset": "0x6ACD4C",
+      "vma": "0x80007FC",
+      "bytes": 12
+    },
+    {
+      "name": "func_080032FC_6B270C",
+      "rom_offset": "0x6B270C",
+      "vma": "0x80032FC",
+      "bytes": 8
+    },
+    {
+      "name": "func_08000000_6B32A0",
+      "rom_offset": "0x6B32A0",
+      "vma": "0x8000000",
+      "bytes": 12
+    },
+    {
+      "name": "func_08003B00_6B6DA0",
+      "rom_offset": "0x6B6DA0",
+      "vma": "0x8003B00",
+      "bytes": 12
+    },
+    {
+      "name": "func_08005D80_6B9020",
+      "rom_offset": "0x6B9020",
+      "vma": "0x8005D80",
+      "bytes": 12
+    },
+    {
+      "name": "func_08005D8C_6B902C",
+      "rom_offset": "0x6B902C",
+      "vma": "0x8005D8C",
+      "bytes": 12
+    },
+    {
+      "name": "func_08005EB8_6B9158",
+      "rom_offset": "0x6B9158",
+      "vma": "0x8005EB8",
+      "bytes": 12
+    },
+    {
+      "name": "func_08005ED4_6B9174",
+      "rom_offset": "0x6B9174",
+      "vma": "0x8005ED4",
+      "bytes": 8
+    },
+    {
+      "name": "func_080083A0_6BB640",
+      "rom_offset": "0x6BB640",
+      "vma": "0x80083A0",
+      "bytes": 12
+    },
+    {
+      "name": "func_08000000_6BF750",
+      "rom_offset": "0x6BF750",
+      "vma": "0x8000000",
+      "bytes": 12
+    },
+    {
+      "name": "func_0800028C_6BF9DC",
+      "rom_offset": "0x6BF9DC",
+      "vma": "0x800028C",
+      "bytes": 12
+    },
+    {
+      "name": "func_08000970_6C00C0",
+      "rom_offset": "0x6C00C0",
+      "vma": "0x8000970",
+      "bytes": 12
+    },
+    {
+      "name": "func_08000AC0_6C0210",
+      "rom_offset": "0x6C0210",
+      "vma": "0x8000AC0",
+      "bytes": 12
+    },
+    {
+      "name": "func_08001DEC_6C153C",
+      "rom_offset": "0x6C153C",
+      "vma": "0x8001DEC",
+      "bytes": 12
+    },
+    {
+      "name": "func_08001DF8_6C1548",
+      "rom_offset": "0x6C1548",
+      "vma": "0x8001DF8",
+      "bytes": 8
+    },
+    {
+      "name": "func_08002090_6C17E0",
+      "rom_offset": "0x6C17E0",
+      "vma": "0x8002090",
+      "bytes": 12
+    },
+    {
+      "name": "func_08002474_6C1BC4",
+      "rom_offset": "0x6C1BC4",
+      "vma": "0x8002474",
+      "bytes": 12
+    },
+    {
+      "name": "func_08002480_6C1BD0",
+      "rom_offset": "0x6C1BD0",
+      "vma": "0x8002480",
+      "bytes": 8
+    },
+    {
+      "name": "func_08002488_6C1BD8",
+      "rom_offset": "0x6C1BD8",
+      "vma": "0x8002488",
+      "bytes": 12
+    },
+    {
+      "name": "func_08002494_6C1BE4",
+      "rom_offset": "0x6C1BE4",
+      "vma": "0x8002494",
+      "bytes": 12
+    },
+    {
+      "name": "func_080024A0_6C1BF0",
+      "rom_offset": "0x6C1BF0",
+      "vma": "0x80024A0",
+      "bytes": 12
+    },
+    {
+      "name": "func_080024E4_6C1C34",
+      "rom_offset": "0x6C1C34",
+      "vma": "0x80024E4",
+      "bytes": 12
+    },
+    {
+      "name": "func_08004980_6C40D0",
+      "rom_offset": "0x6C40D0",
+      "vma": "0x8004980",
+      "bytes": 12
+    },
+    {
+      "name": "func_0800498C_6C40DC",
+      "rom_offset": "0x6C40DC",
+      "vma": "0x800498C",
+      "bytes": 12
+    },
+    {
+      "name": "func_08004998_6C40E8",
+      "rom_offset": "0x6C40E8",
+      "vma": "0x8004998",
+      "bytes": 12
+    },
+    {
+      "name": "func_08004AA0_6C41F0",
+      "rom_offset": "0x6C41F0",
+      "vma": "0x8004AA0",
+      "bytes": 12
+    },
+    {
+      "name": "func_08004AAC_6C41FC",
+      "rom_offset": "0x6C41FC",
+      "vma": "0x8004AAC",
+      "bytes": 8
+    },
+    {
+      "name": "func_08004AE0_6C4230",
+      "rom_offset": "0x6C4230",
+      "vma": "0x8004AE0",
+      "bytes": 8
+    },
+    {
+      "name": "func_08004AE8_6C4238",
+      "rom_offset": "0x6C4238",
+      "vma": "0x8004AE8",
+      "bytes": 12
+    },
+    {
+      "name": "func_08006010_6C5760",
+      "rom_offset": "0x6C5760",
+      "vma": "0x8006010",
+      "bytes": 12
+    },
+    {
+      "name": "func_0800612C_6C587C",
+      "rom_offset": "0x6C587C",
+      "vma": "0x800612C",
+      "bytes": 12
+    },
+    {
+      "name": "func_0800676C_6C5EBC",
+      "rom_offset": "0x6C5EBC",
+      "vma": "0x800676C",
+      "bytes": 12
+    },
+    {
+      "name": "func_080072C4_6C6A14",
+      "rom_offset": "0x6C6A14",
+      "vma": "0x80072C4",
+      "bytes": 12
+    },
+    {
+      "name": "func_08003804_6CBA14",
+      "rom_offset": "0x6CBA14",
+      "vma": "0x8003804",
+      "bytes": 12
+    },
+    {
+      "name": "func_08003F78_6CC188",
+      "rom_offset": "0x6CC188",
+      "vma": "0x8003F78",
+      "bytes": 12
+    },
+    {
+      "name": "func_080066E0_6CE8F0",
+      "rom_offset": "0x6CE8F0",
+      "vma": "0x80066E0",
+      "bytes": 12
+    },
+    {
+      "name": "func_08003CC0_6F71A0",
+      "rom_offset": "0x6F71A0",
+      "vma": "0x8003CC0",
+      "bytes": 8
+    },
+    {
+      "name": "func_08000490_707ED0",
+      "rom_offset": "0x707ED0",
+      "vma": "0x8000490",
+      "bytes": 12
+    },
+    {
+      "name": "func_08000FA0_7089E0",
+      "rom_offset": "0x7089E0",
+      "vma": "0x8000FA0",
+      "bytes": 8
+    },
+    {
+      "name": "func_08001854_709294",
+      "rom_offset": "0x709294",
+      "vma": "0x8001854",
+      "bytes": 8
+    },
+    {
+      "name": "func_080009DC_70AA1C",
+      "rom_offset": "0x70AA1C",
+      "vma": "0x80009DC",
+      "bytes": 8
+    },
+    {
+      "name": "func_0800145C_70B49C",
+      "rom_offset": "0x70B49C",
+      "vma": "0x800145C",
+      "bytes": 8
+    },
+    {
+      "name": "func_08000630_71DE00",
+      "rom_offset": "0x71DE00",
+      "vma": "0x8000630",
+      "bytes": 12
+    },
+    {
+      "name": "func_080010F4_71E8C4",
+      "rom_offset": "0x71E8C4",
+      "vma": "0x80010F4",
+      "bytes": 12
+    },
+    {
+      "name": "func_080014D0_71ECA0",
+      "rom_offset": "0x71ECA0",
+      "vma": "0x80014D0",
+      "bytes": 12
+    },
+    {
+      "name": "func_080019D0_71F1A0",
+      "rom_offset": "0x71F1A0",
+      "vma": "0x80019D0",
+      "bytes": 12
+    },
+    {
+      "name": "func_08000F70_72A510",
+      "rom_offset": "0x72A510",
+      "vma": "0x8000F70",
+      "bytes": 12
+    },
+    {
+      "name": "func_08000AB4_72C304",
+      "rom_offset": "0x72C304",
+      "vma": "0x8000AB4",
+      "bytes": 12
+    }
+  ],
+  "publishing": {
+    "status": "LOCAL_SOURCE_ONLY_NOT_PUSHED",
+    "reason": "Native host network cannot resolve GitHub; connector cannot directly ingest local tested file tree. GitHub remote not modified."
+  }
+}

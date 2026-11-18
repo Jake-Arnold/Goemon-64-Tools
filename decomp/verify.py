@@ -243,6 +243,15 @@ def wide132_stage(manifest):
     return wide.load_fixture()
 
 
+def wide109_stage(manifest):
+    stage=manifest.get('overlay_wide109_stage')
+    if stage is None:return None
+    from . import overlay_wide109 as wide109
+    if stage != {'format':wide109.STAGE_FORMAT}:
+        raise ValueError('Unreviewed wide109 production stage contract')
+    return wide109.load_fixture()
+
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -290,6 +299,12 @@ def claimed_functions(manifest):
         functions.extend({'name':e['name'],'rom_offset':e['rom_offset'],
                           'vma':e['vma'],'size':e['size']}
                          for e in wide_fixture['functions'])
+    w109=wide109_stage(manifest)
+    if w109:
+        from . import overlay_wide109 as wide109
+        functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
+                          'vma':f['vma'],'size':f['size']}
+                         for f in wide109.functions(w109))
     return functions
 
 
@@ -1210,7 +1225,7 @@ def load_manifest(path):
     file11_mode = file11_stage_mode(manifest)
     if file11_mode is not None:
         if file11_mode in (143,144,152,179,183,184,187,269):
-            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k!='overlay_wide132_stage'})
+            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage')})
             candidates = [(f['name'], f['rom_offset'], f['size'])
                           for f in file11_adapter(file11_mode).entries()]
         else:
@@ -1327,13 +1342,23 @@ def load_manifest(path):
             raise ValueError('VM table layout requires pinned assignment handler')
     wide_fixture=wide132_stage(manifest)
     if wide_fixture:
-        existing=claimed_functions({k:v for k,v in manifest.items() if k!='overlay_wide132_stage'})
+        existing=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage')})
         existing_names={row['name'] for row in existing}
         existing_bounds=[(row['rom_offset'],row['rom_offset']+row['size']) for row in existing]
         for row in wide_fixture['functions']:
             off,end=row['rom_offset'],row['rom_offset']+row['size']
             if row['name'] in existing_names or any(off<last and first<end for first,last in existing_bounds):
                 raise ValueError('Wide132 candidate already accepted/overlaps manifest: '+row['name'])
+    w109=wide109_stage(manifest)
+    if w109:
+        from . import overlay_wide109 as wide109
+        prior=claimed_functions({k:v for k,v in manifest.items() if k!='overlay_wide109_stage'})
+        seen_names={f['name'] for f in prior}
+        intervals=[(f['rom_offset'],f['rom_offset']+f['size']) for f in prior]
+        for f in wide109.functions(w109):
+            off,end=f['rom_offset'],f['rom_offset']+f['size']
+            if f['name'] in seen_names or any(off<e and s<end for s,e in intervals):
+                raise ValueError('Wide109 overlaps previously accepted canonical C: '+f['name'])
     return manifest
 
 
@@ -1350,7 +1375,7 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
             raise ValueError('file_11 staging requires authenticated USA decompressed ROM')
         if file11_mode in (143,144,152,179,183,184,187,269):
             adapter=file11_adapter(file11_mode)
-            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k!='overlay_wide132_stage'},reference_rom)
+            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage')},reference_rom)
             file11_inline=adapter.source_payloads(checkout,plan)
             text=adapter.stage_splat(text,plan)
         else:
@@ -2378,6 +2403,7 @@ def run_build(args,manifest,report):
                ['make','-j'+str(args.jobs),'UV='+uv,*file27.object_targets(file27_plan)],candidate)
         report['overlay_file27_object_layout']=file27.pack_objects(candidate,expected,file27_plan)
     wide_fixture=wide132_stage(manifest)
+    wide109_fixture=wide109_stage(manifest)
     wide_plan=None
     if manifest.get('vm_assignment_table_layout'):
         logged('candidate-vm-object'  ,['make','-j'+str(args.jobs),'UV='+uv,
@@ -2389,7 +2415,8 @@ def run_build(args,manifest,report):
         report['heap_noop_layout']=pack_heap_noop_file(candidate/'build/usa/src/heap_noop.c.o')
     logged('candidate-build',['make','-j'+str(args.jobs),'UV='+uv],candidate)
     symbols=parse_symbols(capture(['mips-linux-gnu-nm','-n','build/usa/mnsg.elf'],candidate))
-    result=compare_images(expected,(candidate/'build/usa/mnsg.z64').read_bytes(),manifest,symbols)
+    result=compare_images(expected,(candidate/'build/usa/mnsg.z64').read_bytes(),
+                          {k:v for k,v in manifest.items() if k!='overlay_wide109_stage'},symbols)
     if manifest.get('vm_assignment_table_layout'):
         image=(candidate/'build/usa/mnsg.z64').read_bytes()
         report['assignment_table']=dict(rom_start='0x7DC2C',size=60,
@@ -2652,6 +2679,47 @@ def run_build(args,manifest,report):
             result['matched_functions']+=1
             result['matched_function_bytes']+=entry['size']
         report['overlay_wide132_stage']=proof
+    if wide109_fixture:
+        from . import overlay_wide109 as wide109
+        if not result['full_rom_match'] or result['matched_functions']!=1119:
+            raise ValueError('Authenticated 1119-function canonical gate must pass before wide109 staging')
+        wide109.validate_sources(expected,wide109_fixture,source_dir/'research/usa_wide109_promotion_20261118/sources')
+        # Pin the successfully verified 1119-C ELF for semantic relocation and
+        # original-symbol comparisons against the additive 109-C link.
+        accepted_elf=work/'accepted1119.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',accepted_elf)
+        owners=wide109.find_owners(candidate,wide109_fixture)
+        logged('candidate-wide109-original-parents',
+               ['make','-j'+str(args.jobs),'UV='+uv,*wide109.parent_targets(owners)],candidate)
+        plan=wide109.stage_linker(candidate,expected,wide109_fixture,owners,
+               source_dir/'research/usa_wide109_promotion_20261118/sources')
+        report['overlay_wide109_source_plan']={
+            'functions':len(plan['functions']),'C_units':len(plan['units']),
+            'instruction_bytes':sum(x['size'] for x in plan['functions']),
+            'retained_asm_fragments':len(plan['assembly'])}
+        logged('candidate-wide109-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*wide109.object_targets(plan)],candidate)
+        report['overlay_wide109_object_layout']=wide109.pack_objects(candidate,expected,plan)
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-wide109-combined-final-build',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=wide109.verify_link(baseline,accepted_elf,candidate,expected,plan,wide109_fixture)
+        for u in wide109_fixture['units']:
+            key='research/usa_wide109_promotion_20261118/sources/'+u['name']+'.c'
+            report['sources_sha256_lf'][key]=digest((candidate/'src'/(u['name']+'.c')).read_bytes(),'sha256')
+            for f in u['functions']:
+                result['functions'].append({
+                    'name':f['name'],'size':f['size'],
+                    'guest_address':f'0x{f["vma"]:08X}',
+                    'rom_offset':f'0x{f["rom_offset"]:X}',
+                    'matched':True,
+                    'expected_sha256':f['original_code_sha256'],
+                    'candidate_sha256':f['original_code_sha256']})
+                result['claimed_functions']+=1
+                result['matched_functions']+=1
+                result['matched_function_bytes']+=f['size']
+        report['overlay_wide109_stage']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

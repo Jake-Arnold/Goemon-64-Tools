@@ -138,6 +138,13 @@ def wide132_claim_count(manifest):
     return len(fixture['functions']) if fixture else 0
 
 
+def wide109_claim_count(manifest):
+    from decomp.verify import wide109_stage
+    from decomp import overlay_wide109
+    fixture=wide109_stage(manifest)
+    return len(overlay_wide109.functions(fixture)) if fixture else 0
+
+
 def native_claim_count(manifest):
     from decomp.overlay_native87 import load_fixture
     return len(load_fixture()['functions']) if manifest.get('overlay_native87_stage') is not None else 0
@@ -153,7 +160,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(disabled)),
                          len(main_claimed_functions(disabled))+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(disabled))+(file11_stage_mode(disabled) or 0)+
-                         len(manifest_file13_stages(disabled)) + cross_claim_count(disabled) + native_claim_count(disabled) + highbyte26_claim_count(disabled) + file27_claim_count(disabled) + wide132_claim_count(disabled))
+                         len(manifest_file13_stages(disabled)) + cross_claim_count(disabled) + native_claim_count(disabled) + highbyte26_claim_count(disabled) + file27_claim_count(disabled) + wide132_claim_count(disabled) + wide109_claim_count(disabled))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
         staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
@@ -165,7 +172,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(len(claimed_functions(loaded)),
                              len(main_claimed_functions(loaded))+
                              1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(loaded))+(file11_stage_mode(loaded) or 0)+
-                             len(manifest_file13_stages(loaded)) + cross_claim_count(loaded) + native_claim_count(loaded) + highbyte26_claim_count(loaded) + file27_claim_count(loaded) + wide132_claim_count(loaded))
+                             len(manifest_file13_stages(loaded)) + cross_claim_count(loaded) + native_claim_count(loaded) + highbyte26_claim_count(loaded) + file27_claim_count(loaded) + wide132_claim_count(loaded) + wide109_claim_count(loaded))
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
             path.write_text(json.dumps(bad))
@@ -201,7 +208,7 @@ class DecompVerificationTests(unittest.TestCase):
                          'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in stages)+
-                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest))
+                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             bad=copy.deepcopy(manifest)
@@ -242,7 +249,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest))
+                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             for field,value,pattern in (
@@ -891,7 +898,7 @@ class DecompVerificationTests(unittest.TestCase):
                          len(manifest.get('existing_source_patches',[]))+
                          (manifest.get('overlay_file43_stage') is not None)+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+
-                         len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest))
+                         len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
@@ -1197,6 +1204,10 @@ class DecompVerificationTests(unittest.TestCase):
             from decomp.verify import wide132_stage
             sources.update('research/usa_wide132_promotion_20261118/sources/' + row['name'] + '.c'
                            for row in wide132_stage(manifest)['functions'])
+        if manifest.get('overlay_wide109_stage') is not None:
+            from decomp.verify import wide109_stage
+            sources.update('research/usa_wide109_promotion_20261118/sources/'+u['name']+'.c'
+                           for u in wide109_stage(manifest)['units'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

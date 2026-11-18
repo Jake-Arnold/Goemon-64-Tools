@@ -72,6 +72,24 @@ def build_steps(host_binary: Path, *, quick: bool = False):
             ('Wide132 actual-source sanitizer test',
              [str(host_binary.with_name('wide132-actual-host'))]),
         ])
+    if not quick:
+        w109 = ROOT / 'decomp/research/usa_wide109_promotion_20261118'
+        sources = sorted((w109/'sources').glob('*.c'))
+        if len(sources) != 68:
+            raise ValueError('Missing original-source wide109 68 C translation units')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('wide109-actual-host')
+        steps.extend([
+            ('Wide109 actual-source sanitizer build', compiler + [
+                '-std=c11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-Wno-unused-parameter','-Wno-unused-function',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((w109/'test_actual109.c').relative_to(ROOT)),
+                *[str(f.relative_to(ROOT)) for f in sources],
+                '-o',str(binary)]),
+            ('Wide109 actual-source sanitizer test',[str(binary)]),
+        ])
     return steps
 
 

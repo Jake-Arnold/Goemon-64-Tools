@@ -27,6 +27,7 @@ class File11143PreflightTests(unittest.TestCase):
         cls.manifest.pop('overlay_file27_stage', None)
         cls.manifest.pop('overlay_highbyte26_stage', None)
         cls.manifest.pop('overlay_wide132_stage', None)
+        cls.manifest.pop('overlay_wide109_stage', None)
         cls.manifest['overlay_file11_stage'] = {'format': 'goemon-file11-character-switch-50-v2'}
         cls.manifest['overlay_file12_stages'] = [
             x for x in cls.manifest['overlay_file12_stages']
