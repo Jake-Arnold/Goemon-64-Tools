@@ -12,7 +12,8 @@ import json
 from pathlib import Path
 
 from practice.story_progress import (
-    FLAGS, PLASMA_FLAGS, SAVED_BASE,
+    FLAGS, PLASMA_FLAGS, EXTERNAL_FLAGS, PLACEMENT_PICKUPS,
+    DOLL_PLACEMENT_FLAGS, SAVED_BASE,
     story_section_for_key,
 )
 from practice.region_memory_crosswalk import CROSS_REGION_BY_KEY
