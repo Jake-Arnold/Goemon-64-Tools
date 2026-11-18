@@ -21,6 +21,12 @@ class GameVersionsTests(unittest.TestCase):
     def test_default_capability_is_usa_only(self):
         self.assertTrue(selected_version("usa").live_memory_supported)
         self.assertFalse(selected_version("japan").live_memory_supported)
+        # Japan's old False flag must not imply that the verified reader,
+        # shared Live Memory page or Scene Browser is disabled.
+        for release in ("usa", "japan"):
+            self.assertTrue(selected_version(release).guest_memory_read_supported)
+        self.assertTrue(selected_version("usa").logical_checkpoint_supported)
+        self.assertFalse(selected_version("japan").logical_checkpoint_supported)
         with self.assertRaises(ValueError):
             selected_version("other")
 

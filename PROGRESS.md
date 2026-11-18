@@ -1,5 +1,17 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.54 region-parity scene/debug corrections (draft)
+
+- **User regression:** USA debug menu could not be opened when the player/task pointer was absent (Impact fights), while Japan had unconditional verified debug-menu entry. The Scene Browser current-map value used different formatting and was refreshed from the Live Memory tab, and default warp character selection differed.
+- **Code:** `practice/scene_controls.py` now writes exactly one guest/host byte `0x0A` via `write_guest_byte_exact` when entering original USA debug, regardless of gameplay submode, actor pointer or loading. Already-open debug is idempotent. The Japan verified `0x800CD284` implementation remains unchanged. The UI's legacy destination-specific USA debug path now invokes only the manual engine-mode command, with no entrance/actor staging or pending warp observer.
+- **Common scene model:** `RegionSession.read_current_scene()` selects explicit USA/JP addresses (`0x800C7AB2` / `0x800CD2A2`) but exposes a single u16 API. The Scene Browser independently polls its own current-map banner and displays the same decimal/hex/room-label format in both ROMs, even when the game has no initialized player. The entrance-selection source scene also reads this API.
+- **Common scene controls:** Both regions now present the same scene catalogue, debug-button wording and five character choices (Keep current, Goemon, Ebisumaru, Sasuke, Yae). The USA path now treats Keep current as no character override; it resolves the active character from the actual staging result for placement. The Japan path already supported this.
+- **Capabilities:** Separate "guest RAM readable" (both ROMs) from "USA logical checkpoint" support. The historical `live_memory_supported` flag was misleading; it is now only used to preserve the existing checkpoint policy, not to imply that Japanese Live Memory is inaccessible.
+- **Tests authored:** USA debug single-byte write from Impact-like state without player/task pointers, idempotent second invocation, no selection/entrance writes, equal scene banner and selection list across regions, explicit scene-address session isolation, previous JP verified-byte tests retained. Existing expectations depending on restrictive USA debug guards or old selector indices updated.
+- **Still unverified:** Full checkout test suite and live emulator transitions. The existing `0x0C` instant reload remains intentionally distinct and still requires its established source-state invariants; no proof that Impact combat can safely trigger an arbitrary area reload without a valid actor.
+- **Further parity audit:** Region-dependent custom-watch storage/edit handling, Story Progress JP edit coverage versus Unlocks, and the USA actor-dependent experimental `0x0C` reload need separate, evidence-led refactoring. Do not equate candidate Japanese offsets with fully proven identical gameplay semantics.
+
+
 ## 2026-11-18 — v0.11.53 shared virtual flag UI and selected-ROM session
 
 - **Problem:** The v0.11.52 draft restored a uniform per-flag Off/On layout but still created hundreds of ttk widgets, with a separate wheel handler bound to every widget. The core Toolkit was also allowing its tick loop to inspect both mem and jp_rdram independently, even though one region is selected.

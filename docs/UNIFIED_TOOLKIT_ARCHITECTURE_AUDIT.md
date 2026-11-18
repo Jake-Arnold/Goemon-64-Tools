@@ -49,6 +49,22 @@ has not been demonstrated.
 5. **No new game-memory writes.** Checked masked-bit writers, original
    evidence labels and permissions are unchanged.
 
+## v0.11.54 follow-up: user-visible parity audit
+
+| Feature | Divergence found | v0.11.54 decision |
+| --- | --- | --- |
+| Open debug menu | USA checked normal gameplay/player pointer; Japan accepted every state | **Fixed:** both only request exact byte 0x0A at verified region-specific engine address; no selected scene or automatic warp |
+| Native current-scene display | JP rendered 0xHHH/label from its Live Memory refresh; USA rendered decimal/hex/label only from its Live Memory refresh | **Fixed:** shared RegionSession read, same label and visible-Scene-Browser polling; no player snapshot |
+| Scene list | JP excluded local original-USA atlas-only rooms while USA included them | **Unified list**, but a label in an atlas is not proof that an experimental JP reload can safely enter it |
+| Character selector | JP defaulted to Keep current; USA defaulted to Goemon and forced a character change | **Fixed:** same five options/default, explicit optional character override in the USA backend |
+| Legacy USA debug selection | A second entry point staged post-load entrance placement while claiming merely to open the debug menu | **Fixed:** aliases the same manual 0x0A command; no pending warp object |
+| ROM capability flag | JP had live_memory_supported=False despite functioning guest-RAM Live Memory | **Clarified:** both support verified guest-RAM reads; legacy boolean describes USA logical checkpoint semantics |
+| Custom watches | USA/JP store custom records differently and certain rename paths reference only USA watches | **Outstanding:** migrate persistence and edit actions to one region-aware custom-watch repository |
+| Story Progress edit | USA directly edits flags, JP marks many research rows read-only even though Unlocks explicitly exposes guarded candidate toggles | **Outstanding:** unify UI policy only after mapping identical row identities; retain provenance and bit-write guards |
+| Scene instant reload | USA requires actor snapshots for entrance/spawn staging; JP reads global state but also rejects non-normal gameplay | **Outstanding:** no safe proof for starting 0x0C in Impact, so do not bypass the guards |
+| Logical checkpoints & native states | USA logical RAM checkpoints versus emulator-owned full states available to both | **Intentional:** game and emulator contract differs; do not misrepresent one as the other |
+| Process attachment | Japan performs exact ROM/code-probe verification and backend-specific write revalidation; USA uses a distinct discovery path | **Intentional until refactored:** identical user-facing Connect command must not bypass separate executable verification |
+
 ## Remaining architectural debt
 
 - Toolkit remains a large class with separate USA and Japan connection

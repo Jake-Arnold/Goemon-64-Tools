@@ -1,4 +1,39 @@
-# Goemon Speedrun Tools v0.11.53 — Virtualised shared story-flag editor
+# Goemon Speedrun Tools v0.11.54 — Unified scene and debug controls
+
+## v0.11.54 — USA/Japan scene/debug parity corrections
+
+The original debug-menu command now does the **same one-byte action for
+either ROM**: if necessary, write exactly `0x0A` at the selected game's
+engine-mode address (USA `0x800C7A94`; Japan `0x800CD284`). An initialized
+player pointer, task pointer, ordinary gameplay mode, selected scene, entrance
+or character is not a prerequisite. In particular, the USA button no longer
+blocks the native menu during Impact battle modes. It remains write-disabled
+when the application is read-only or has no attached guest memory. Japanese
+ROM/PID/code-signature validation still applies to writable attachment.
+
+Both regions now use the same Scene Browser current-map display (decimal
+and hex), read from an independently verified region-qualified u16 global
+without consulting actor pointers. The scene value updates while the
+Scene Browser tab is visible, instead of only while Live Memory is open.
+The shared scene list and selector now expose the same room entries and
+"Keep current character" default; the USA reload path translates an
+explicit character selection only when requested. Legacy USA
+"open debug for selected scene" handlers no longer stage a destination
+or arm post-load player/XYZ writes.
+
+**Original debug menu (`0x0A`) and experimental instant entrance reload
+(`0x0C`) remain different operations.** Instant reloads still use
+region-specific staged entrance/memory contracts and may reject unstable
+combat states, including Impact. No unsupported memory overwrite was
+introduced to force an instant warp.
+
+See `docs/UNIFIED_TOOLKIT_ARCHITECTURE_AUDIT.md` for the remaining
+region-parity discrepancies: custom watches, Story Progress edit coverage,
+checkpoint semantics and player/task-based instant reloads. The debug
+and scene changes have synthetic regression tests, but no live ROM/PJ64
+session has been validated in this environment. This remains a draft PR.
+
+
 
 ## v0.11.53 — Bounded flag UI and shared selected-ROM memory session
 

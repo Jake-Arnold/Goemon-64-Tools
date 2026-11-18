@@ -558,8 +558,10 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         version = self.active_version
         self.root.title(f"Goemon Practice Toolkit {DISPLAY_VERSION} · {version.label}")
         self.version_heading.set(f"{DISPLAY_VERSION}  |  {version.label}")
-        enabled = version.live_memory_supported
-        region_active = version.key in ('usa', 'japan')
+        # The old live_memory_supported field describes USA logical
+        # player/task checkpoint support, NOT whether Japan can read RAM.
+        enabled = version.logical_checkpoint_supported
+        region_active = version.guest_memory_read_supported
         if self.notebook.select() == str(self.jp_fields_tab):
             self.notebook.select(self.live_memory_tab)
         for tab in self.notebook.tabs()[1:]:
@@ -1473,8 +1475,10 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 # a read-only disk or corrupt registry must not disable use.
                 self.status.set(f'ROM verified but preference could not be saved: {exc}')
         self._clear_japan_base_choices()
-        capability = ('USA live toolkit supported' if version.live_memory_supported
-                      else 'Japan-0 verified; select recomp, project64 or mupen64plus and Connect')
+        capability = ('Guest RAM supported; USA logical checkpoints available'
+                      if version.logical_checkpoint_supported else
+                      'Guest RAM supported; native emulator states available; '
+                      'USA-specific logical checkpoints unavailable')
         self.status.set(
             f'Verified {version.label} (revision 0). {capability}. '
             + ('ROM path remembered for future sessions; file checked again '

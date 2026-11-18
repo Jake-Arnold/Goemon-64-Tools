@@ -82,6 +82,27 @@ class TestExperimentalGUI(unittest.TestCase):
         self.assertAlmostEqual(self.ram.snapshot()['x'],125.25)
         self.assertEqual(self.ram.u32(CHARACTER_ID_ADDR),0)
 
+    def test_scene_banner_is_same_for_both_regions_without_player_pointer(self):
+        from practice.game_versions import VERSIONS
+        from practice.checkpoints import MAP_ADDR
+        from autosplitter.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
+        from tests.test_unlocks import FakeRAM
+        self.ram.write_guest(MAP_ADDR, (0x161).to_bytes(2, 'big'))
+        self.ram.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))
+        self.ram.write_guest(PLAYER_TASK_PTR_ADDR, bytes(4))
+        self.app.refresh_scene_banner(force=True)
+        original = self.app.scene_live.get()
+        self.assertTrue(original.startswith('Current map: 353 (0x161): '))
+
+        self.app.game_version_choice.set(VERSIONS['japan'].label)
+        self.app.on_game_version_changed()
+        japan = FakeRAM()
+        japan.bytes[0x800CD2A2] = 0x01
+        japan.bytes[0x800CD2A3] = 0x61
+        self.app.jp_rdram = japan
+        self.app.refresh_scene_banner(force=True)
+        self.assertEqual(self.app.scene_live.get(), original)
+
     def test_both_regions_share_keep_current_character_option(self):
         from practice.game_versions import VERSIONS
         expected = ('Keep current character', 'Goemon', 'Ebisumaru',
