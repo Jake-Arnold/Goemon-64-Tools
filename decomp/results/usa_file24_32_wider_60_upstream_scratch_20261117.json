@@ -1,0 +1,48 @@
+{
+  "format": "goemon-wider-usa-adjacent-native-v1",
+  "date": "2026-11-17",
+  "status": "UPSTREAM_SCRATCH_FULL_ROM_EXACT",
+  "branch_production_promotions": 0,
+  "target_files": [
+    24,
+    28,
+    29,
+    30,
+    31,
+    32
+  ],
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "exact_rom_bytes": 33554432,
+  "exact_original_func_identities": 7376,
+  "target_relocation_counts": {
+    "24": 160,
+    "28": 35,
+    "29": 2536,
+    "30": 1826,
+    "31": 1371,
+    "32": 1068
+  },
+  "total_native_exact_c_functions": 60,
+  "total_new_original_code_bytes": 1612,
+  "source_gate": "original IDO 5.3 -O2 -mips2 exact linked address, zero-only tail padding trimmed, full upstream USA 32MiB SHA1 match",
+  "not_run": [
+    "current production decomp.verify",
+    "current production decomp.inventory",
+    "full current production decomp.local_ci",
+    "Japanese native decomp"
+  ],
+  "retained_original_asm": true,
+  "host_test": {
+    "status": "PASS",
+    "compiler": "gcc",
+    "flags": "-std=gnu11 -O1 -g -Wall -Wextra -Wno-unused-parameter -fno-omit-frame-pointer -fsanitize=address,undefined -fno-pie -no-pie",
+    "actual_source_count": 60,
+    "alignment_sanitizer_disabled": false
+  },
+  "canonical_usa_accepted_at_research_time": 864,
+  "japan_accepted_at_research_time": 39,
+  "production_promoted": 0,
+  "unique_source_code_sha256": "869cd411f6acb86dddb0d27c46dad7a8c0b02e75ae84f895f5e24ee81a0c1146",
+  "stage_28_mips_elf": 35,
+  "combined_6_resources_elf_relocation_source": "original readelf -r for unmodified pinned upstream vs scratch linked original ELF"
+}
