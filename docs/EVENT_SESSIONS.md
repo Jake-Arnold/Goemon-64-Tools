@@ -39,8 +39,12 @@ trials, not windows. Event Sessions itself remains read-only.
    event, capture **B**, then **Record trial**. Add a short note if useful.
 5. Set role to **event**. From the pre-event state capture **A**, perform only the
    chosen action, wait until dialogue/cutscene finishes, capture **B**, then
-   **Record trial**. Room/character/pointer changes between A and B are allowed;
-   wait for stable gameplay at each capture, even if the NPC moves you elsewhere.
+   **Record trial**. Room/character/pointer changes between A and B are allowed.
+   USA captures require an initialized player and idle gameplay; **Japan Event
+   Sessions is read-only and permits captures during dialogue and cutscenes**,
+   including when Japanese candidate loading fields read nonzero. Do not capture
+   while the ROM or backend is changing; a context change within one snapshot
+   is rejected. The scene and engine/loading values are recorded as evidence.
 6. Restore the same pre-event state yourself and repeat step 5. A fresh A is
    required for each trial. Two independent event trials plus idle evidence are
    the first useful minimum, not a confirmation threshold.
@@ -54,13 +58,22 @@ Reversion is assessed per bit, including partial reversions within one byte.
 Capturing A starts a new pending pair; recapturing B clears an old C. Discard
 captures cancels the pending trial without deleting recorded trials.
 
-The recorder rejects active loading/scripts, incomplete reads and context changes
-*during one capture*. It now allows different maps, characters and player/task
-pointers *between* A/B/C captures and between trials because the captured data is
-the fixed, global saved-event bank. Reconnecting still requires a fresh A.
+**USA Event Sessions** continues rejecting active loading/scripts and missing
+player/task pointers. **Japanese Event Sessions** accepts readable engine modes,
+dialogue, cutscenes and nonzero values in offset-candidate fields; these have not
+been independently verified as a reliable loading predicate. The Japanese
+engine mode and complete candidate loading word are recorded alongside every
+new capture, with no invented player/task pointers. Old sessions without this
+optional runtime metadata remain valid.
+
+Both regions reject incomplete snapshots and changes in captured context
+*during one capture*. Different maps, characters and engine/loading states
+*between* A/B/C captures and trials are retained as evidence instead of
+silently filtering the fixed event bytes. Reconnecting still requires a fresh A.
 
 A/B feedback shows the source/destination map, character and pointers; the session
-summary counts context-changing trials. Selecting a ranked row shows exact context
+summary counts context-changing trials. New Japanese captures additionally expose
+the observed engine mode and loading candidate. Selecting a ranked row shows exact context
 for its associated captures. These changes are provenance, not extra ranked flags.
 A room transition can change unrelated saved flags, so repeat the same event and
 use a comparable transition-only control where possible. Keep separate events in

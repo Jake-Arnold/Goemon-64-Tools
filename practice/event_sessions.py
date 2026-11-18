@@ -61,34 +61,55 @@ def _context(ram):
 
 
 def _japan_event_context(ram):
-    """Strict gameplay identity without inventing JP player/task pointers."""
+    """Observe Japan runtime fields without imposing speculative gameplay rules.
+
+    Engine mode is known, but the Japanese loading/character/scene offsets
+    include candidate mappings. A read-only research snapshot must not be
+    rejected simply because a candidate word is nonzero or a dialogue/script
+    has changed the engine mode. Preserve exact raw values and check that the
+    complete context is unchanged across the bounded 100-byte capture.
+    """
     from practice.japanese_debug_warp import (
         JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE,
         JAPAN_DEBUG_CHARACTER, JAPAN_DEBUG_LOADING,
     )
-    engine=ram.read_guest(JAPAN_DEBUG_ENGINE_MODE,1)[0]
-    loading=int.from_bytes(ram.read_guest(JAPAN_DEBUG_LOADING,4),'big')
-    scene=int.from_bytes(ram.read_guest(JAPAN_DEBUG_SCENE,2),'big')
-    character=int.from_bytes(ram.read_guest(JAPAN_DEBUG_CHARACTER,4),'big')
-    if (engine != 13 or loading or not 0 < scene < 0x800
-            or character not in (0,1,2,3)):
-        raise ValueError('Japan event comparison needs stable gameplay')
-    return dict(map_id=scene,character=character,player_ptr=0,task_ptr=0)
+
+    def read_uint(address, width):
+        raw = ram.read_guest(address, width)
+        if len(raw) != width:
+            raise OSError(f'Incomplete Japanese context read at 0x{address:08X}')
+        return int.from_bytes(raw, 'big')
+
+    engine = read_uint(JAPAN_DEBUG_ENGINE_MODE, 1)
+    loading = read_uint(JAPAN_DEBUG_LOADING, 4)
+    scene = read_uint(JAPAN_DEBUG_SCENE, 2)
+    character = read_uint(JAPAN_DEBUG_CHARACTER, 4)
+    context = dict(map_id=scene, character=character,
+                   player_ptr=0, task_ptr=0)
+    runtime = dict(engine_mode=engine, loading_word=loading)
+    return context, runtime
 
 
 def capture_japan_event(ram, *, event_start=JAPAN_CANDIDATE_START):
-    """Explicit Japanese 100-byte guest slice; default is an offset candidate."""
+    """Observe exactly 100 Japanese bytes with unchanged runtime context.
+
+    Any readable game state can be captured as evidence, including dialogue
+    or cutscenes. No guest write or assumption of a loaded player occurs.
+    """
     if type(event_start) is not int or not (
             0x80000000 <= event_start and event_start + EVENT_SIZE <= 0x80800000):
         raise ValueError('Invalid Japanese candidate RAM range')
-    started=utc_now()
-    before=_japan_event_context(ram)
-    data=ram.read_guest(event_start,EVENT_SIZE)
-    after=_japan_event_context(ram)
-    if len(data)!=EVENT_SIZE or before != after:
-        raise ValueError('Japanese context changed or short RAM capture')
-    return dict(started_utc=started,ended_utc=utc_now(),
-                context=before,bytes_hex=data.hex())
+    started = utc_now()
+    before, runtime_before = _japan_event_context(ram)
+    data = ram.read_guest(event_start, EVENT_SIZE)
+    after, runtime_after = _japan_event_context(ram)
+    if len(data) != EVENT_SIZE:
+        raise OSError('Incomplete Japanese 100-byte event block; capture discarded')
+    if before != after or runtime_before != runtime_after:
+        raise ValueError(
+            'Japanese scene/character/engine/loading changed during capture; recapture')
+    return dict(started_utc=started, ended_utc=utc_now(),
+                context=before, runtime=runtime_before, bytes_hex=data.hex())
 
 
 def capture_event(ram):
@@ -112,12 +133,21 @@ def _validate_capture(capture, *, region='usa'):
     ctx=capture['context']
     if not isinstance(ctx,dict) or set(ctx)!={'map_id','character','player_ptr','task_ptr'}:
         raise ValueError('Invalid capture context')
-    for key,low,high in (('map_id',0,65535),('character',0,3),
+    for key,low,high in (('map_id',0,65535),('character',0 if region != 'japan' else 0,
+                         3 if region != 'japan' else 0xFFFFFFFF),
                          ('player_ptr',0 if region == 'japan' else 0x80000000,
                           0 if region == 'japan' else 0x807FFFFF),
                          ('task_ptr',0 if region == 'japan' else 0x80000000,
                           0 if region == 'japan' else 0x807FFFFF)):
         if type(ctx[key]) is not int or not low<=ctx[key]<=high:raise ValueError('Invalid '+key)
+    runtime = capture.get('runtime')
+    if runtime is not None:
+        if (region != 'japan' or not isinstance(runtime, dict)
+                or set(runtime) != {'engine_mode', 'loading_word'}):
+            raise ValueError('Invalid Japanese runtime context')
+        for key, maximum in (('engine_mode', 0xFF), ('loading_word', 0xFFFFFFFF)):
+            if type(runtime[key]) is not int or not 0 <= runtime[key] <= maximum:
+                raise ValueError('Invalid Japanese '+key)
     raw=capture['bytes_hex']
     if not isinstance(raw,str) or not re.fullmatch('[0-9a-fA-F]{200}',raw):
         raise ValueError('Invalid event block length/encoding')
@@ -170,8 +200,13 @@ def describe_contexts(captures):
     for stage in ('A','B','C'):
         if stage not in captures:continue
         ctx=captures[stage]['context']
-        parts.append(f'{stage}: map {ctx["map_id"]}, character {ctx["character"]}, '
-                     f'player 0x{ctx["player_ptr"]:08X}, task 0x{ctx["task_ptr"]:08X}')
+        details = (f'{stage}: map {ctx["map_id"]}, character {ctx["character"]}, '
+                   f'player 0x{ctx["player_ptr"]:08X}, task 0x{ctx["task_ptr"]:08X}')
+        runtime = captures[stage].get('runtime')
+        if runtime is not None:
+            details += (f', JP engine {runtime["engine_mode"]}, '
+                        f'loading candidate 0x{runtime["loading_word"]:08X}')
+        parts.append(details)
     return '; '.join(parts)
 
 
@@ -245,6 +280,8 @@ def rank_bits(session):
                                  if changed_context_fields(t['captures'])},
                 notes='Observations only. ROM hash is user-supplied, not verified against the running game. '
                       'Captures are not atomic; matching context cannot detect all in-frame transitions. '
+                      'Japanese engine/loading fields are recorded as observed context, not prerequisites '
+                      'or independently verified gameplay-status decoders. '
                       'Room/character/pointer changes between captures are retained as context, not filtered. '
                       'Room transitions may change unrelated global flags. '
                       'A changed bit is not a proven event trigger or write-safe flag.')

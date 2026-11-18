@@ -306,7 +306,12 @@ class EventSessionsMixin:
             if stage=='B':self.event_pending.pop('C',None)
             self.event_pending[stage]=capture
             self.refresh_pending_event_comparison()
-            self.event_status.set(f'{stage} captured. Pending {", ".join(self.event_pending)}. Finish dialogue before B; record trial when ready.')
+            next_step = ('Capture the after-state B when the event has changed; '
+                         if self.active_version.key == 'japan' and stage == 'A'
+                         else 'Record trial when ready. ')
+            self.event_status.set(
+                f'{stage} captured. Pending {", ".join(self.event_pending)}. '
+                + next_step)
         except (OSError,ValueError,RuntimeError) as exc:
             self.event_pending={};self.event_token=None;self.event_capture_started=None
             self.refresh_pending_event_comparison()

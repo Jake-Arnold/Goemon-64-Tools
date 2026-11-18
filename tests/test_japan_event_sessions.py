@@ -82,6 +82,68 @@ class JapanEventSessionsTests(unittest.TestCase):
                          '0x80161D80')
         self.assertEqual(self.writer.writes, [])
 
+    def test_japan_capture_preserves_unknown_loading_and_cutscene_mode(self):
+        # The loading word is an unverified +0x57F0 offset. Event research
+        # must not misclassify an otherwise readable 100-byte snapshot.
+        self.writer.set_guest(JAPAN_DEBUG_ENGINE_MODE, bytes((12,)))
+        self.writer.set_guest(JAPAN_DEBUG_LOADING,
+                              (0x12340001).to_bytes(4, 'big'))
+        self.writer.set_guest(JAPAN_DEBUG_CHARACTER,
+                              (0xFFFFFFFF).to_bytes(4, 'big'))
+        self.writer.set_guest(JAPAN_DEBUG_SCENE, bytes(2))
+        capture = capture_japan_event(self.writer.rdram())
+        self.assertEqual(capture['runtime'],
+                         {'engine_mode': 12, 'loading_word': 0x12340001})
+        self.assertEqual(capture['context']['character'], 0xFFFFFFFF)
+        self.assertEqual(capture['context']['map_id'], 0)
+        after = capture_japan_event(self.writer.rdram())
+        session = with_trial(
+            new_session('Cutscene bits', 'project64', region='japan'),
+            'event', 'Read-only control while dialogue is active',
+            {'A': capture, 'B': after})
+        self.assertEqual(session['trials'][0]['captures']['A'], capture)
+        self.assertEqual(self.writer.writes, [])
+
+    def test_japan_capture_rejects_mid_snapshot_context_change(self):
+        writer = self.writer
+        base = writer.rdram()
+        class ChangesLoading:
+            def read_guest(self, address, size):
+                data = base.read_guest(address, size)
+                if address == JAPAN_CANDIDATE_START and size == 100:
+                    writer.set_guest(JAPAN_DEBUG_LOADING, (1).to_bytes(4, 'big'))
+                return data
+        with self.assertRaisesRegex(ValueError, 'changed during capture'):
+            capture_japan_event(ChangesLoading())
+        self.assertEqual(self.writer.writes, [])
+
+    def test_japan_capture_rejects_short_context_or_event_block(self):
+        base = self.writer.rdram()
+        class ShortRead:
+            def __init__(self, broken):
+                self.broken = broken
+            def read_guest(self, address, size):
+                data = base.read_guest(address, size)
+                return data[:-1] if address == self.broken else data
+        with self.assertRaisesRegex(OSError, 'Incomplete Japanese context'):
+            capture_japan_event(ShortRead(JAPAN_DEBUG_LOADING))
+        with self.assertRaisesRegex(OSError, 'Incomplete Japanese 100-byte'):
+            capture_japan_event(ShortRead(JAPAN_CANDIDATE_START))
+
+    def test_historical_japan_capture_without_runtime_still_loads(self):
+        capture = capture_japan_event(self.writer.rdram())
+        legacy = dict(capture)
+        legacy.pop('runtime')
+        later = dict(capture_japan_event(self.writer.rdram()))
+        later.pop('runtime')
+        session = with_trial(
+            new_session('Old saves', 'project64', region='japan'),
+            'idle', 'Original schema', {'A': legacy, 'B': later})
+        with TemporaryDirectory() as folder:
+            file = Path(folder) / 'historical.json'
+            save_session(file, session)
+            self.assertEqual(load_session(file), session)
+
     def test_region_cannot_reinterpret_us_bank_or_cross_read(self):
         with self.assertRaisesRegex(ValueError,'fixed'):
             new_session('USA', 'project64', region='usa',
@@ -91,10 +153,10 @@ class JapanEventSessionsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Invalid'):
             capture_japan_event(self.writer.rdram(),
                                 event_start=0x807FFFE0)
-        self.writer.set_guest(JAPAN_DEBUG_LOADING,b'\x00\x00\x00\x01')
-        with self.assertRaisesRegex(ValueError,'stable gameplay'):
-            capture_japan_event(self.writer.rdram())
-        self.assertEqual(self.writer.writes,[])
+        self.writer.set_guest(JAPAN_DEBUG_LOADING, bytes((0, 0, 0, 1)))
+        capture = capture_japan_event(self.writer.rdram())
+        self.assertEqual(capture['runtime']['loading_word'], 1)
+        self.assertEqual(self.writer.writes, [])
 
 
 if __name__=='__main__':
