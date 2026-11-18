@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-18 — Decomp read-only canonical memory registry consumer (metadata only)
+
+- **Why:** The toolkit previously mirrored only 59/142 USA saved-event bits in Japan. Toolkit PR #68 established 142 logical saved-event pairs in the single reviewed `main:practice/data/address_catalogue_v1.json`; the decomp branch must not maintain a competing register of these guest-data addresses.
+- **Implementation:** Add a metadata-only, offline `decomp.memory_registry` reader for the main-branch canonical catalogue passed as an explicit local file. Validates schema, IDs/aliases, two-way saved-event bit/address/mask pairing and explicit `crosswalk_status=unresolved` for unknown counterparts. Code/overlay/VM references are never guessed or translated. No live game reader/writer.
+- **Workflow:** New original MIPS fixed-data discoveries should be published to `decomp/address_discoveries_v1.json` (separate pending PR #56) and imported by reviewed metadata-only PR to toolkit main. Accepted-C manifest, symbols, full-ROM verified counts and evidence are independent and unchanged.
+- **Tests:** New ROM-free `tests/test_decomp_memory_registry.py` validates fields, alias identity, missing reverse pairs, and unknown/code safety. Not executed in this GitHub-connector-only environment; full `decomp.local_ci` and native ROM build NOT RUN. No matching-C promotion or claim of gameplay verification.
+- **Next:** Complete decomp metadata PR #56 and test the consumer with a locally extracted exact main snapshot, then run full `decomp.local_ci` before merging this decomp-only PR.
+
+
 ### 2026-11-18 — Original-USA resource 61–80 adjacency sweep: 52 native-exact C, upstream scratch full ROM, research only
 
 - **Scope/derivation:** Extended the original-USA retail-ROM matching-C adjacency scan to every remaining numbered code resource **61–80**. From 59 bounded first-pass small-function hypotheses plus no-op ABI corrections, identified **52 distinct original-address C matches / 576 original instruction bytes** across **15 changed resource overlays**. These are **31 no-op callbacks** with original distinct ELF identities and **21 actual field/mask/arithmetic functions**, including signed divide and unsigned multiply by 30. Seven nested-pointer accessors failed native register/extent matching; original ASM retained. Larger original functions were not exhaustively attempted.

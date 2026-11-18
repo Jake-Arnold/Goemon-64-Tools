@@ -10,6 +10,20 @@ Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C 
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
 7. The initial v0.9.9 imported-baseline work did not establish direct warps. Later native-warp and story-flag work on `main` superseded that historical limitation (user confirmation 2026-11-08). The decomp-only branch must not revisit or modify those features without separate authorization.
 
+## One canonical memory-address authority across decomp and toolkit
+
+The reviewed source of truth for original USA/Japanese *guest-data*
+addresses, masks, widths and reciprocal candidates is the `main` branch
+`practice/data/address_catalogue_v1.json`, **not** a second decomp list.
+Use `python3 -m decomp.memory_registry <local-main-catalogue.json>` for
+offline, read-only lookup by canonical stable ID. See
+`decomp/MEMORY_ADDRESS_AUTHORITY.md`. Decomp source discoveries belong in
+`decomp/address_discoveries_v1.json` (PR #56) and are imported to
+the main registry through reviewed metadata-only PRs. Never merge decomp
+matching-C changes to main as a side effect of this data exchange.
+Original code ROM/VMA/ELF and matching-C acceptance remain decomp-only
+authorities; no RAM crosswalk is proof of matching C.
+
 ## Mandatory reciprocal USA ↔ Japan guest-memory discovery
 
 Whenever any decomp agent discovers, validates or changes an original USA
