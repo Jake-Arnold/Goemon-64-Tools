@@ -84,6 +84,12 @@ def apply_theme(root) -> None:
     style.map('FlagOff.TButton',
               background=[('disabled', '#4c4233'), ('active', '#80653b')],
               foreground=[('disabled', '#f0ddbc')])
+    style.configure('RegionFlag.TRadiobutton',
+                    background=c['surface'], bordercolor=c['line'],
+                    padding=(7, 5))
+    style.map('RegionFlag.TRadiobutton',
+              background=[('selected', '#344f5b'), ('active', '#303b45')],
+              foreground=[('disabled', c['muted'])])
     style.configure('TEntry', fieldbackground=c['surface_alt'], foreground=c['foreground'],
                     insertcolor=c['foreground'], bordercolor=c['line'], lightcolor=c['gold'],
                     padding=(6, 5))
