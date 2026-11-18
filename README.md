@@ -1,4 +1,29 @@
-# Goemon Speedrun Tools v0.11.52 — Consistent story-flag controls
+# Goemon Speedrun Tools v0.11.53 — Virtualised shared story-flag editor
+
+## v0.11.53 — Bounded flag UI and shared selected-ROM memory session
+
+The Unlocks → Story & event flags tab now uses one **virtualised scrolling
+view** for both USA and Japan. Real Off/On ttk buttons are recycled as the
+user scrolls, rather than building hundreds of GUI widgets and thousands of
+wheel bindings. Every flag keeps its individual state and regional guest
+address/mask; no inner scrollable table and no different control layout for
+large folders. Expandable groups, type/subtype filtering, search, disabled
+controls and the existing compare-before-write guards remain.
+
+A new read-only RegionSession selects only the active game's guest-RAM
+reader and backend. The common polling scheduler cannot accidentally run
+both regional memory loops when stale reader handles coexist. Region-specific
+ROM verification, attachment, inventory/scene semantics and checked writes
+remain intentionally separate, and the application retains one Tk root,
+notebook and flag view when switching USA/Japan. The detailed architecture
+audit is in docs/UNIFIED_TOOLKIT_ARCHITECTURE_AUDIT.md.
+
+Isolated Xvfb GUI tests passed for a 450-flag virtual list; a 2,000-row
+microbenchmark used 16 pooled controls. Full application Tk integration
+tests, live emulator confirmation and Ubuntu/Wine latency measurements
+remain outstanding. This feature remains in a draft PR.
+
+
 
 ## v0.11.52 — One On / Off layout for all event flags
 
