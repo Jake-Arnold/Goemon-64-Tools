@@ -25,7 +25,9 @@ class ToolkitVersionTests(unittest.TestCase):
         source = (ROOT / 'practice' / 'toolkit.py').read_text(encoding='utf-8')
         self.assertIn('from practice.version import DISPLAY_VERSION', source)
         self.assertIn('Goemon Practice Toolkit {DISPLAY_VERSION}', source)
-        self.assertIn('{DISPLAY_VERSION}  |', source)
+        # The header intentionally has no region-dependent suffix, so
+        # switching between USA and Japan cannot resize the top bar.
+        self.assertIn('self.version_heading = tk.StringVar(value=DISPLAY_VERSION)', source)
         launcher = (ROOT / 'Run.bat').read_text(encoding='utf-8')
         self.assertIn('GOEMON_VERSION', launcher)
         self.assertIn('from practice.version import DISPLAY_VERSION', launcher)

@@ -96,11 +96,13 @@ class JapanNamedCheckpointUITests(unittest.TestCase):
         command.assert_not_called()
         self.assertIn('Connect to the matching Japan-0 emulator',app.status.get())
 
-    def test_usa_switch_hides_japanese_names_and_preserves_native_buttons(self):
+    def test_usa_switch_preserves_named_slot_layout_but_disables_actions(self):
         app=self.app
         app.game_version_choice.set(VERSIONS['usa'].label)
         app.on_game_version_changed()
-        self.assertEqual(app.named_native_frame.winfo_manager(),'')
+        self.assertEqual(app.named_native_frame.winfo_manager(),'pack')
+        self.assertIn('disabled', app.named_native_save_btn.state())
+        self.assertIn('disabled', app.named_native_load_btn.state())
         self.assertTrue(app.native_save_btn.winfo_exists())
         self.assertTrue(app.native_load_btn.winfo_exists())
 
