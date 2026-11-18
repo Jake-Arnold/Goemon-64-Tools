@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.51 large event-flag folder rendering fix
+
+- **Regression:** The four-row incremental construction from v0.11.43 still creates ~8 Tk controls and ~24 event bindings per named flag in a group; 45 Fortune Dolls, 35 external annotations and 24 other story flags force repeated synchronous Tk/X11 geometry. v0.11.50 improved polling but not this foreground expansion.
+- **Correction:** Large folders now have a single `ttk.Treeview` with per-row direct Off/On action cells and two accessible selected-row buttons; same region-qualified bit addresses and `set_unlock_flag` compare-before-write path. Small folders retain all inline On/Off buttons. A filtered row is detached rather than rebuilt. Collapsing reuses the table and region changes fully destroy it.
+- **Safety:** No mapping, evidence, write permission or backend changes. Only a visible, selected/exact-clicked, readable and write-enabled flag can be edited. Offline/read-only action cells display unavailable and buttons disable.
+- **Verification:** Targeted Tk tests for 45-row folder rendering without native row widgets, per-bit USA/Japan writes, stale/read-only checks, cached folder reopen, search reuse, and region switch. Complete Linux/Windows CI and canonical address registry sync required before merge. Actual Wine/X11 wallclock latency not measured.
+
+
 ## 2026-11-18 — v0.11.50 unified toolkit scheduler and connection performance
 
 - **Root causes:** Main-loop refreshes rebuilt hidden Story Progress and Live Memory tables; Live Memory deleted/reinserted all watch rows every 300ms, Story Progress touched hundreds of Treeview rows even with unchanged values, the USA unlock poll refreshed a hidden Story table, and Japanese explicit connection ignored the existing Auto ROM-bound verified layout hints.
