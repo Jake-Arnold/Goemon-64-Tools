@@ -75,7 +75,7 @@ class TestExperiments(unittest.TestCase):
 
     def test_reloading_outside_gameplay_not_allowed(self):
         r=self.make();r.write_guest(STATE_ADDR,b'\x0a')
-        with self.assertRaisesRegex(ValueError,'normal gameplay'):stage_reload_trial(r,353,SCENES)
+        with self.assertRaisesRegex(RuntimeError,'engine=0x0A'):stage_reload_trial(r,353,SCENES)
         self.assertEqual(r.read_guest(PENDING_MAP_ADDR,2),(35).to_bytes(2,'big'))
 
     def test_pulse_one_float_only(self):
