@@ -1531,5 +1531,8 @@
   },
   "overlay_highbyte26_stage": {
     "format": "goemon-usa-file26-highbyte15-original-c-v1"
+  },
+  "overlay_file27_stage": {
+    "format": "goemon-usa-file27-adjacent21-original-c-v1"
   }
 }

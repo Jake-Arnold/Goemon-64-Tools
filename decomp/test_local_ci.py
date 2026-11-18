@@ -13,7 +13,7 @@ class LocalCITests(unittest.TestCase):
     def test_default_runs_python_validation_then_host_sanitizers(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host")
-        self.assertEqual(len(steps), 7)
+        self.assertEqual(len(steps), 9)
         self.assertIn("test_*.py", steps[0][1])
         self.assertIn("test_decomp_*.py", steps[1][1])
         self.assertEqual(steps[2][1][-1], "--validate")
@@ -21,6 +21,9 @@ class LocalCITests(unittest.TestCase):
         self.assertEqual(len(steps[4][1]), 1)
         self.assertTrue(any(path.endswith("test_actual87.c") for path in steps[5][1]))
         self.assertEqual(len(steps[6][1]), 1)
+        self.assertTrue(any(path.endswith("file27_adjacent21_20261117/test_adjacent27.c") for path in steps[7][1]))
+        self.assertEqual(sum(path.endswith(".c") and "file27_promotion_20261118/sources" in path for path in steps[7][1]), 21)
+        self.assertEqual(len(steps[8][1]), 1)
 
     def test_quick_runs_all_python_gates_without_native_compile(self):
         with tempfile.TemporaryDirectory() as directory:

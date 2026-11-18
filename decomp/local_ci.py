@@ -43,6 +43,17 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 "-o", str(host_binary.with_name("native87-actual-host")),
             ]),
             ("Native87 actual-source sanitizer test", [str(host_binary.with_name("native87-actual-host"))]),
+            ("File27 promoted C host sanitizer build", compiler + [
+                "-std=gnu11", "-O1", "-g", "-Wall", "-Wextra", "-Werror",
+                "-Wno-unused-parameter", "-Wno-unused-function",
+                "-fsanitize=address,undefined", "-fno-sanitize-recover=all",
+                "-fno-omit-frame-pointer",
+                "decomp/research/file27_adjacent21_20261117/test_adjacent27.c",
+                *[str(f.relative_to(ROOT)) for f in sorted(
+                    (ROOT / "decomp/research/file27_promotion_20261118/sources").glob("*.c"))],
+                "-o", str(host_binary.with_name("file27-promoted-host")),
+            ]),
+            ("File27 promoted C host sanitizer test", [str(host_binary.with_name("file27-promoted-host"))]),
         ])
     return steps
 

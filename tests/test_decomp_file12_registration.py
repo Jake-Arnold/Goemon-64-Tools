@@ -39,8 +39,8 @@ class RegistrationStageTests(unittest.TestCase):
         self.assertEqual(len(staged), 14)
         self.assertEqual(validate_file12_stage_definition(staged[0]), Path(reg.SOURCE_NAME))
         claims = claimed_functions(self.manifest)
-        self.assertEqual(len(claims), 966)
-        self.assertEqual(len({row['name'] for row in claims}), 966)
+        self.assertEqual(len(claims), 987)
+        self.assertEqual(len({row['name'] for row in claims}), 987)
         self.assertNotIn(reg.GROUP_NAME, {row['name'] for row in claims})
         expected = {row['name'] for row in reg.functions()}
         self.assertEqual(expected & {row['name'] for row in claims}, expected)

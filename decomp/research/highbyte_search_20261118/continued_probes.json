@@ -1,0 +1,92 @@
+{
+  "format": "goemon-usa-large-native-repair-research-v1",
+  "date": "2026-11-18",
+  "status": "RESEARCH_ONLY",
+  "compiler": "original IDO 5.3 -O2 -mips2",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "large_m2c_type_repaired": [
+    {
+      "name": "func_801CFCF0_662BA0",
+      "original_size": 536,
+      "output_size": 448,
+      "status": "FAILED_NATIVE",
+      "first_mismatch": 69,
+      "source_sha256": "679cd6ff3ec1af74e72fe9ede3a7b736d911034dc64debf3c260c27b85d24ce0"
+    },
+    {
+      "name": "func_802145F4_6735A4",
+      "original_size": 536,
+      "output_size": 448,
+      "status": "FAILED_NATIVE",
+      "first_mismatch": 69,
+      "source_sha256": "b97418bab57bd61b1575d12397663b838c3ffbf0822e077641a9e8435e73abb0"
+    },
+    {
+      "name": "func_80010C6C_1186C",
+      "original_size": 560,
+      "output_size": 464,
+      "status": "FAILED_NATIVE",
+      "first_mismatch": 0,
+      "source_sha256": "e416aa6e416f9b9d2128c218aacb8c9ec487141d63245d8af22649d872db1246"
+    },
+    {
+      "name": "func_801CFF30_662DE0",
+      "original_size": 572,
+      "output_size": 464,
+      "status": "FAILED_NATIVE",
+      "first_mismatch": 0,
+      "source_sha256": "9f9c8a36acf0d66fafce8ceac3b90e306d5333467ddc5b6e02246266aa40267f"
+    }
+  ],
+  "main_graphics_isolated_exact_research_only": [
+    {
+      "name": "func_8001965C_1A25C",
+      "status": "EXACT",
+      "size": 72,
+      "output_size": 80,
+      "first_mismatch": null,
+      "source_sha256": "95bd7a7c9435c307478b02234f3e7befdd6358383cafa951e06a9d33db3ad16d",
+      "original_sha256": "4c148d804fc6ea25df6fa3efe97d846383a00bf626f4eb2a1a4858abb918fd03"
+    },
+    {
+      "name": "func_8001B918_1C518",
+      "status": "EXACT",
+      "size": 56,
+      "output_size": 64,
+      "first_mismatch": null,
+      "source_sha256": "d1ec8b30aa1ebd828583c766e3063129947e97565b006eafe3b0d8a39e15426b",
+      "original_sha256": "faae783382532816d946ad8d3209fc8360920796ef93c926950d3489f7d69063"
+    },
+    {
+      "name": "func_8001C970_1D570",
+      "status": "EXACT",
+      "size": 76,
+      "output_size": 80,
+      "first_mismatch": null,
+      "source_sha256": "0be9f7088348a6a425c4732395d2e40308e3db228431895518ab56ec6e693d2c",
+      "original_sha256": "bb3eae822c7a98a04b2562b1c64529eb4af6c5f5adde3f0637cc1663e4e7c91b"
+    },
+    {
+      "name": "func_8001C9BC_1D5BC",
+      "status": "EXACT",
+      "size": 28,
+      "output_size": 32,
+      "first_mismatch": null,
+      "source_sha256": "e80fd5527905ec779b56cea88cba2e396a42daf1bdd22df2f26d32634612a54e",
+      "original_sha256": "6d3c1a4234a9fcbb4c601b563221bdc463dbc7bd64e047958118989b908a458c"
+    },
+    {
+      "name": "func_8001C9D8_1D5D8",
+      "status": "EXACT",
+      "size": 52,
+      "output_size": 64,
+      "first_mismatch": null,
+      "source_sha256": "92f5f285b099e403e74606c2af002fccd695585d562d03919364e63d0673bea7",
+      "original_sha256": "c66f0cbc8d034a90fc7540863d73e6b8c7302525f585575cbea8385d163f46a6"
+    }
+  ],
+  "high_byte_acceptance": "NONE",
+  "known_remaining_large_unconverted_over_512_bytes": 696,
+  "accepted_c_independent_of_these_probes": 987,
+  "warning": "Compilable C is not a matching function; no generated m2c sources or machine-code bytes committed. None of the >512-byte attempts passed native matching."
+}

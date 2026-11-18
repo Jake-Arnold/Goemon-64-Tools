@@ -23,8 +23,9 @@ class File26HighbyteTests(unittest.TestCase):
                 self.assertEqual(x['rom_offset'],int(x['name'].split('_')[2],16))
 
     def test_manifest_canonical_increment_without_double_claim(self):
-        original={k:v for k,v in self.manifest.items() if k!='overlay_highbyte26_stage'}
-        old=claimed_functions(original);new=claimed_functions(self.manifest)
+        original={k:v for k,v in self.manifest.items() if k not in ('overlay_highbyte26_stage','overlay_file27_stage')}
+        existing={k:v for k,v in self.manifest.items() if k!='overlay_file27_stage'}
+        old=claimed_functions(original);new=claimed_functions(existing)
         self.assertEqual((len(old),sum(x['size'] for x in old)),(951,38816))
         self.assertEqual((len(new),sum(x['size'] for x in new)),(966,41324))
         self.assertEqual(len({x['name'] for x in new}),966)

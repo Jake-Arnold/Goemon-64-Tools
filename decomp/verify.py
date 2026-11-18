@@ -223,6 +223,16 @@ def highbyte26_stage(manifest):
     return high.load_fixture()
 
 
+
+def file27_stage(manifest):
+    """Fixed 21-function original-USA file27 C source/ROM promotion stage."""
+    stage=manifest.get('overlay_file27_stage')
+    if stage is None:return None
+    from . import overlay_file27 as file27
+    if stage != {'format':file27.STAGE_FORMAT}:
+        raise ValueError('Unreviewed file27 production stage contract')
+    return file27.load_fixture()
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -260,6 +270,11 @@ def claimed_functions(manifest):
         functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
                           'vma':f['vma'],'size':f['size']}
                          for f in high_fixture['functions'])
+    f27_fixture=file27_stage(manifest)
+    if f27_fixture:
+        functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
+                          'vma':f['vma'],'size':f['size']}
+                         for f in f27_fixture['functions'])
     return functions
 
 
@@ -1268,6 +1283,14 @@ def load_manifest(path):
                    row['rom_offset']<e['rom_offset']+e['size'] and
                    e['rom_offset']<row['rom_offset']+row['size'] for e in previous):
                 raise ValueError('Highbyte26 function overlaps accepted C: '+row['name'])
+    f27_fixture=file27_stage(manifest)
+    if f27_fixture:
+        previous=claimed_functions({k:v for k,v in manifest.items() if k!='overlay_file27_stage'})
+        for row in f27_fixture['functions']:
+            if any(row['name']==e['name'] or
+                   row['rom_offset']<e['rom_offset']+e['size'] and
+                   e['rom_offset']<row['rom_offset']+row['size'] for e in previous):
+                raise ValueError('File27 function overlaps accepted C: '+row['name'])
     ranges.sort()
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):raise ValueError('Overlapping units')
     if 'heap_noop_text_layout' in manifest:
@@ -2315,6 +2338,22 @@ def run_build(args,manifest,report):
         logged('candidate-highbyte26-objects',
                ['make','-j'+str(args.jobs),'UV='+uv,*high.object_targets(high_plan)],candidate)
         report['overlay_highbyte26_object_layout']=high.pack_objects(candidate,expected,high_plan)
+    file27_fixture=file27_stage(manifest)
+    file27_plan=None
+    if file27_fixture:
+        from . import overlay_file27 as file27
+        owners=file27.find_owners(candidate,file27_fixture)
+        logged('candidate-file27-original-parents',
+               ['make','-j'+str(args.jobs),'UV='+uv,*file27.parent_targets(owners)],candidate)
+        file27_plan=file27.stage_linker(candidate,expected,file27_fixture,owners,
+                                       source_dir/'research/file27_promotion_20261118/sources')
+        report['overlay_file27_source_plan']={
+            'functions':len(file27_plan['functions']),
+            'instruction_bytes':sum(f['size'] for f in file27_plan['functions']),
+            'retained_asm_fragments':len(file27_plan['assembly'])}
+        logged('candidate-file27-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*file27.object_targets(file27_plan)],candidate)
+        report['overlay_file27_object_layout']=file27.pack_objects(candidate,expected,file27_plan)
     if manifest.get('vm_assignment_table_layout'):
         logged('candidate-vm-object' ,['make','-j'+str(args.jobs),'UV='+uv,
             'build/usa/src/script_vm.c.o','build/usa/asm/usa/data/main_continued.rodata.s.o'],candidate)
@@ -2534,6 +2573,20 @@ def run_build(args,manifest,report):
             result['matched_functions']+=1
             result['matched_function_bytes']+=size
         report['overlay_highbyte26_stage']=proof
+    if file27_fixture:
+        from . import overlay_file27 as file27
+        proof=file27.verify_link(baseline,candidate,expected,file27_plan,file27_fixture)
+        for entry in file27_fixture['functions']:
+            name,off,size,vma=entry['name'],entry['rom_offset'],entry['size'],entry['vma']
+            result['functions'].append({
+                'name':name,'size':size,'guest_address':f'0x{vma:08X}',
+                'rom_offset':f'0x{off:X}','matched':True,
+                'expected_sha256':entry['original_code_sha256'],
+                'candidate_sha256':entry['original_code_sha256']})
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=size
+        report['overlay_file27_stage']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'
