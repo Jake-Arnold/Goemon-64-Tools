@@ -260,7 +260,7 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual((japan.width(), japan.height()), (48, 32))
         self.assertEqual(tuple(japan.get(24, 16)), (188, 0, 45))
         self.assertEqual(tuple(japan.get(1, 1)), (255, 255, 255))
-        self.assertEqual(tuple(usa.get(1, 1)), (178, 34, 52))
+        self.assertEqual(tuple(usa.get(1, 1)), (60, 59, 110))
         self.assertEqual(tuple(usa.get(46, 31)), (178, 34, 52))
 
     def test_region_switch_locks_both_flag_buttons(self):
