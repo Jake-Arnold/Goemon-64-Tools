@@ -8,6 +8,8 @@ from practice.theme import PALETTE
 from practice.unlocks import UNLOCKS, GROUPS, Unlock, read_unlock, write_unlock, normalize_unlock_value, unlock_all_known
 from practice.hex_edit import parse_hex
 from practice.story_progress import write_story_value
+from practice.region_session import active_session
+from practice.virtual_flag_list import VirtualFlagList
 from practice.unlock_flag_catalog import (
     flags_for_region, read_flag_bytes, write_japan_crosswalk_flag,
 )
@@ -16,10 +18,8 @@ from practice.region_unlocks import (
     japan_unlock_wire_value, japan_unlock_display_value,
 )
 
-# Small folders retain individual ttk buttons. Large groups use a single
-# Treeview with clickable per-flag Off/On cells instead of hundreds of widgets.
-_FLAG_FOLDER_EAGER_LIMIT = 12
-_FLAG_FOLDER_BATCH_SIZE = 4
+# The virtual flag view recycles visible direct Off/On button rows.
+# Total Tk widget count is bounded by viewport size, not catalogue size.
 
 class UnlocksMixin:
     def build_unlock_tabs(self, notebook) -> None:
@@ -175,7 +175,7 @@ class UnlocksMixin:
         # Keep the Items canvas separate from the Flags canvas. Reassigning
         # a local named "canvas" here causes Tk's earlier wheel/geometry
         # closures to capture the *wrong* canvas (the original scroll bug).
-        # Flag controls are individual on/off buttons beside every flag.
+        # The shared canvas scrolls the same button rows in every folder.
         # Build rows lazily when this page opens to keep GUI startup fast.
         flags_page = self.unlock_flags_page
         ttk.Label(flags_page, text='Story and event flags',
@@ -217,32 +217,32 @@ class UnlocksMixin:
 
         flag_shell = ttk.Frame(flags_page)
         flag_shell.pack(fill='both', expand=True)
-        flag_canvas = tk.Canvas(
-            flag_shell, bg=PALETTE['background'], highlightthickness=0)
-        scroll = ttk.Scrollbar(
-            flag_shell, orient='vertical', command=flag_canvas.yview)
-        flag_canvas.configure(yscrollcommand=scroll.set)
-        scroll.pack(side='right', fill='y')
-        flag_canvas.pack(side='left', fill='both', expand=True)
-        body = ttk.Frame(flag_canvas, padding=(2, 0, 6, 8))
-        window = flag_canvas.create_window((0, 0), window=body, anchor='nw')
-        body.bind(
-            '<Configure>',
-            lambda _e: flag_canvas.configure(scrollregion=flag_canvas.bbox('all')))
-        flag_canvas.bind(
-            '<Configure>',
-            lambda e: flag_canvas.itemconfigure(window, width=e.width))
-        body.columnconfigure(0, weight=1)
-        self.unlock_flag_canvas = flag_canvas
-        self.unlock_flag_body = body
-        self.unlock_flag_widgets = {}
+        self.unlock_flag_shell = flag_shell
+        self.unlock_flag_view = VirtualFlagList(
+            flag_shell, on_toggle=self.toggle_unlock_flag_section,
+            on_write=self.set_unlock_flag,
+            on_detail=self.show_unlock_flag_detail,
+            can_write=self._can_write_unlock_flag)
+        self.unlock_flag_canvas = self.unlock_flag_view.canvas
+        # This contains only the currently rendered (recycled) viewport rows.
+        self.unlock_flag_widgets = self.unlock_flag_view.visible_flags
         self.unlock_flag_sections = {}
-        self._unlock_flag_pending = {}
-        self._unlock_flag_jobs = {}
-        self._unlock_flag_treeviews = {}
-        self._unlock_flag_tree_by_key = {}
-        self._unlock_flag_tree_cache = {}
-        self._unlock_flag_tree_buttons = {}
+        self.unlock_flag_expanded = set()
+        self.unlock_flag_auto_expanded = set()
+
+        def route_flags_wheel(event):
+            if (self.notebook.select() != str(self.unlock_tab) or
+                    self.unlock_sections.select() != str(self.unlock_flags_page)):
+                return None
+            widget = getattr(event, 'widget', None)
+            while widget is not None:
+                if str(widget) == str(flag_shell):
+                    return self.unlock_flag_view.handle_wheel(event)
+                widget = getattr(widget, 'master', None)
+            return None
+        self._unlock_flag_global_wheel = route_flags_wheel
+        for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
+            self.root.bind_all(sequence, route_flags_wheel, add='+')
 
         self.unlock_flag_detail = tk.StringVar(
             value='Click a flag name for full mapping evidence.')
@@ -516,389 +516,28 @@ class UnlocksMixin:
 
     def on_unlock_section_changed(self, _event=None):
         if self.unlock_sections.select() == str(self.unlock_flags_page):
-            self._ensure_unlock_flag_widgets()
             self.filter_unlock_flags()
             self.refresh_unlock_flags(force=True)
 
-    def _ensure_unlock_flag_widgets(self):
-        """Build inexpensive, initially collapsed type/subtype folders only.
-
-        Hundreds of nested ttk controls are expensive to create. A folder's
-        individual On/Off rows are built on its first explicit expansion.
-        """
-        if (self.unlock_sections.select() != str(self.unlock_flags_page)
-                or self.unlock_flag_sections):
-            return
-        parent = self.unlock_flag_body
-        canvas = self.unlock_flag_canvas
-        self.unlock_flag_section_rows = {}
-        for flag in self.unlock_flag_rows.values():
-            self.unlock_flag_section_rows.setdefault(
-                (flag.group, flag.subtype), []).append(flag)
-        self.unlock_flag_section_bodies = {}
-        self.unlock_flag_section_buttons = {}
-        self.unlock_flag_expanded = set()
-        self.unlock_flag_auto_expanded = set()
-
-        def wheel(event):
-            if getattr(event, 'num', None) in (4, 5):
-                delta = -1 if event.num == 4 else 1
-            else:
-                motion = getattr(event, 'delta', 0)
-                delta = (-max(1, abs(motion) // 120) if motion > 0 else
-                         max(1, abs(motion) // 120) if motion < 0 else 0)
-            if delta:
-                canvas.yview_scroll(delta, 'units')
-            return 'break'
-
-        self._unlock_flag_wheel = wheel
-        def bind_wheel(widget):
-            for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
-                widget.bind(sequence, wheel, add='+')
-
-        for index, (section, flags) in enumerate(
-                self.unlock_flag_section_rows.items()):
-            header = ttk.Frame(
-                parent, style='FlagGroup.TFrame', padding=(7, 3))
-            header.grid(row=index * 2, column=0, sticky='ew', pady=(3, 1))
-            header.columnconfigure(0, weight=1)
-            button = ttk.Button(
-                header,
-                text=f'▸ {section[0]} / {section[1]}  ({len(flags)})',
-                command=lambda key=section:
-                    self.toggle_unlock_flag_section(key))
-            button.grid(row=0, column=0, sticky='ew')
-            content = ttk.Frame(parent, style='FlagGroup.TFrame')
-            content.grid(row=index * 2 + 1, column=0, sticky='ew')
-            content.columnconfigure(0, weight=1)
-            content.grid_remove()
-            self.unlock_flag_sections[section] = header
-            self.unlock_flag_section_bodies[section] = content
-            self.unlock_flag_section_buttons[section] = button
-            bind_wheel(header)
-            bind_wheel(button)
-            bind_wheel(content)
-
     def _set_unlock_flag_section_expanded(
             self, section, expanded, *, automatic=False):
-        """Open/close a folder without populating any other folder."""
-        if section not in self.unlock_flag_sections:
+        """Only change the logical folder model; never construct per-flag rows."""
+        if section not in self.unlock_flag_section_rows:
             return
         if expanded:
-            if section not in self.unlock_flag_expanded:
-                content = self.unlock_flag_section_bodies[section]
-                self.unlock_flag_expanded.add(section)
-                content.grid()
-                if automatic:
-                    matching = {
-                        flag.key for flag in self.unlock_flag_section_rows[section]
-                        if getattr(self, '_unlock_flag_match_cache', {}).get(
-                            flag.key, False)}
-                    self._build_unlock_flag_section_rows(
-                        section, only_keys=matching)
-                else:
-                    self._build_unlock_flag_section_rows(section)
+            self.unlock_flag_expanded.add(section)
             if automatic:
                 self.unlock_flag_auto_expanded.add(section)
             else:
                 self.unlock_flag_auto_expanded.discard(section)
         else:
-            self._cancel_unlock_flag_batch(section)
             self.unlock_flag_expanded.discard(section)
             self.unlock_flag_auto_expanded.discard(section)
-            self.unlock_flag_section_bodies[section].grid_remove()
-        button = self.unlock_flag_section_buttons[section]
-        flags = self.unlock_flag_section_rows[section]
-        button.configure(
-            text=(('▾ ' if expanded else '▸ ') + section[0] + ' / ' +
-                  section[1] + f'  ({len(flags)})'))
-        self.unlock_flag_canvas.configure(
-            scrollregion=self.unlock_flag_canvas.bbox('all'))
+        self.filter_unlock_flags()
 
     def toggle_unlock_flag_section(self, section):
-        if section not in self.unlock_flag_sections:
-            return
         self._set_unlock_flag_section_expanded(
             section, section not in self.unlock_flag_expanded)
-        self.filter_unlock_flags()
-        self.refresh_unlock_flags(force=True)
-
-    def _cancel_unlock_flag_batch(self, section):
-        """Stop deferred row construction for a closed or invalidated folder."""
-        self._unlock_flag_pending.pop(section, None)
-        job = self._unlock_flag_jobs.pop(section, None)
-        if job is not None:
-            try:
-                self.root.after_cancel(job)
-            except tk.TclError:
-                pass
-
-    def _build_unlock_flag_section_rows(self, section, *, only_keys=None):
-        """Keep small-folder buttons; use one Treeview for large folders.
-
-        Rendering hundreds of labels, frames and buttons synchronously blocks
-        Tk's event loop. The first four rows of a large folder are available
-        immediately; subsequent batches yield to paint and input events.
-        """
-        if section not in self.unlock_flag_expanded:
-            return
-        if len(self.unlock_flag_section_rows[section]) > _FLAG_FOLDER_EAGER_LIMIT:
-            self._ensure_unlock_flag_tree(section)
-            return
-        missing = [
-            (index, flag)
-            for index, flag in enumerate(self.unlock_flag_section_rows[section])
-            if (flag.key not in self.unlock_flag_widgets and
-                (only_keys is None or flag.key in only_keys))
-        ]
-        if self._unlock_flag_pending.get(section) == missing:
-            return
-        self._cancel_unlock_flag_batch(section)
-        if not missing:
-            return
-        if (len(self.unlock_flag_section_rows[section]) <= _FLAG_FOLDER_EAGER_LIMIT
-                or only_keys is not None and len(missing) <= _FLAG_FOLDER_EAGER_LIMIT):
-            for index, flag in missing:
-                self._create_unlock_flag_row(section, index, flag)
-        else:
-            self._unlock_flag_pending[section] = missing
-            self._populate_unlock_flag_batch(section)
-
-    def _populate_unlock_flag_batch(self, section):
-        """Consume at most one small batch, then give Tk time to draw."""
-        job = self._unlock_flag_jobs.pop(section, None)
-        if job is not None:
-            try:
-                self.root.after_cancel(job)
-            except tk.TclError:
-                pass
-        pending = self._unlock_flag_pending.get(section)
-        if not pending or section not in self.unlock_flag_expanded:
-            self._unlock_flag_pending.pop(section, None)
-            return
-        batch = pending[:_FLAG_FOLDER_BATCH_SIZE]
-        del pending[:_FLAG_FOLDER_BATCH_SIZE]
-        for index, flag in batch:
-            self._create_unlock_flag_row(section, index, flag)
-        if pending:
-            self._unlock_flag_jobs[section] = self.root.after(
-                1, lambda key=section: self._populate_unlock_flag_batch(key))
-        else:
-            self._unlock_flag_pending.pop(section, None)
-
-    def _ensure_unlock_flag_tree(self, section):
-        """Build one bounded Treeview for a large folder, not 8+ Tk widgets/bit.
-
-        Every flag remains directly addressable through its own Off/On cells.
-        Only the exact clicked cell can request a single-bit checked write.
-        No per-row frames, buttons, geometry recalculations or wheel binds.
-        """
-        if section in self._unlock_flag_treeviews:
-            return
-        flags = self.unlock_flag_section_rows[section]
-        body = self.unlock_flag_section_bodies[section]
-        holder = ttk.Frame(body, style='FlagRow.TFrame', padding=5)
-        holder.grid(row=0, column=0, sticky='ew')
-        holder.columnconfigure(0, weight=1)
-        ttk.Label(
-            holder,
-            text='Select a flag or click its Off / On cell to edit that bit. '
-                 'Candidate mappings are not verified gameplay events.',
-            style='FlagMeta.TLabel').grid(row=0, column=0, sticky='w')
-        columns = ('flag', 'address', 'value', 'off', 'on')
-        table = ttk.Treeview(
-            holder, columns=columns, show='headings', selectmode='browse',
-            height=min(14, len(flags)))
-        for key, title, width, stretch in (
-                ('flag', 'Named flag', 315, True),
-                ('address', 'Address · mask', 155, False),
-                ('value', 'State', 65, False),
-                ('off', 'Off', 55, False),
-                ('on', 'On', 55, False)):
-            table.heading(key, text=title)
-            table.column(key, width=width, minwidth=width,
-                         stretch=stretch, anchor='w' if key == 'flag' else 'center')
-        scrollbar = ttk.Scrollbar(holder, orient='vertical',
-                                  command=table.yview)
-        table.configure(yscrollcommand=scrollbar.set)
-        table.grid(row=1, column=0, sticky='nsew')
-        scrollbar.grid(row=1, column=1, sticky='ns')
-        toolbar = ttk.Frame(holder, style='FlagRow.TFrame')
-        toolbar.grid(row=2, column=0, sticky='w', pady=(4, 0))
-        off = ttk.Button(toolbar, text='Off selected',
-                         command=lambda key=section:
-                             self._activate_unlock_flag_tree_selection(key, 'Clear'))
-        on = ttk.Button(toolbar, text='On selected',
-                        command=lambda key=section:
-                            self._activate_unlock_flag_tree_selection(key, 'Set'))
-        off.pack(side='left')
-        on.pack(side='left', padx=(6, 0))
-        off.state(['disabled'])
-        on.state(['disabled'])
-        self._unlock_flag_treeviews[section] = table
-        self._unlock_flag_tree_buttons[section] = (off, on)
-        for flag in flags:
-            self._unlock_flag_tree_by_key[flag.key] = table
-            table.insert('', 'end', iid=flag.key,
-                         values=(flag.label,
-                                 f'0x{flag.address:08X} · 0x{flag.mask:02X}',
-                                 '—', '—', '—'))
-            self._update_unlock_flag_tree_row(flag, self.unlock_flag_snapshot)
-
-        def clicked(event):
-            if table.identify_region(event.x, event.y) != 'cell':
-                return
-            key = table.identify_row(event.y)
-            column = table.identify_column(event.x)
-            if not key:
-                return
-            if column in ('#4', '#5'):
-                self._activate_unlock_flag_tree_cell(
-                    section, key, 'Clear' if column == '#4' else 'Set')
-            else:
-                self.show_unlock_flag_detail(key)
-
-        def selected(_event=None):
-            item = table.selection()
-            if item:
-                self.show_unlock_flag_detail(item[0])
-            self._refresh_unlock_flag_tree_selection(section)
-
-        table.bind('<ButtonRelease-1>', clicked, add='+')
-        table.bind('<<TreeviewSelect>>', selected, add='+')
-        self._sync_unlock_flag_tree_filter(
-            section, getattr(self, '_unlock_flag_match_cache', {}))
-        self._refresh_unlock_flag_tree_selection(section)
-
-    def _sync_unlock_flag_tree_filter(self, section, matches):
-        """Detach filtered rows; keep their records and widget cached."""
-        tree = self._unlock_flag_treeviews.get(section)
-        if tree is None:
-            return
-        wanted = [
-            flag.key for flag in self.unlock_flag_section_rows[section]
-            if matches.get(flag.key, True)]
-        if tuple(tree.get_children()) == tuple(wanted):
-            return
-        allowed = set(wanted)
-        for key in tuple(tree.get_children()):
-            if key not in allowed:
-                tree.detach(key)
-        for index, key in enumerate(wanted):
-            # move also reattaches a detached item, without rebuilding it.
-            tree.move(key, '', index)
-
-    def _activate_unlock_flag_tree_selection(self, section, action):
-        tree = self._unlock_flag_treeviews.get(section)
-        if tree is None:
-            return
-        chosen = tree.selection()
-        if chosen:
-            self._activate_unlock_flag_tree_cell(section, chosen[0], action)
-
-    def _activate_unlock_flag_tree_cell(self, section, key, action):
-        """Apply a click only to an existing, visible, writable flag row."""
-        tree = self._unlock_flag_treeviews.get(section)
-        flag = self.unlock_flag_rows.get(key)
-        if (tree is None or flag is None or
-                section not in self.unlock_flag_expanded or
-                (flag.group, flag.subtype) != section or
-                key not in tree.get_children() or
-                action not in ('Set', 'Clear')):
-            return
-        if (self.unlock_flag_snapshot.get(key) is None or
-                not self._can_write_unlock_flag(flag)):
-            self.unlock_flag_feedback.set(
-                'Flag write blocked: connect a writable game memory reader.')
-            return
-        self.set_unlock_flag(key, action)
-
-    def _update_unlock_flag_tree_row(self, flag, values):
-        table = self._unlock_flag_tree_by_key.get(flag.key)
-        if table is None:
-            return
-        raw = values.get(flag.key)
-        state = ('—' if raw is None else
-                 'On' if raw & flag.mask else 'Off')
-        writable = bool(raw is not None and self._can_write_unlock_flag(flag))
-        stamp = (state, writable)
-        if self._unlock_flag_tree_cache.get(flag.key) == stamp:
-            return
-        self._unlock_flag_tree_cache[flag.key] = stamp
-        table.item(
-            flag.key, values=(
-                flag.label,
-                f'0x{flag.address:08X} · 0x{flag.mask:02X}',
-                state,
-                'Off' if writable else '—',
-                'On' if writable else '—'))
-
-    def _refresh_unlock_flag_tree_selection(self, section):
-        table = self._unlock_flag_treeviews.get(section)
-        if table is None:
-            return
-        chosen = table.selection()
-        key = chosen[0] if chosen else None
-        flag = self.unlock_flag_rows.get(key)
-        enabled = bool(
-            flag is not None and
-            self.unlock_flag_snapshot.get(key) is not None and
-            self._can_write_unlock_flag(flag) and
-            key in table.get_children())
-        for button in self._unlock_flag_tree_buttons[section]:
-            button.state(['!disabled'] if enabled else ['disabled'])
-
-    def _create_unlock_flag_row(self, section, index, flag):
-        """One row; use the most recent cached event bank without re-reading it."""
-        parent = self.unlock_flag_section_bodies[section]
-        wheel = self._unlock_flag_wheel
-        frame = ttk.Frame(
-            parent, style='FlagRow.TFrame', padding=(10, 5))
-        frame.grid(row=index, column=0, sticky='ew', pady=(0, 2))
-        frame.columnconfigure(0, weight=1)
-        name = ttk.Label(
-            frame, text=flag.label, style='FlagName.TLabel',
-            wraplength=520)
-        name.grid(row=0, column=0, sticky='w', pady=(1, 0))
-        address = ttk.Label(
-            frame, text=f'{flag.address:08X} · {flag.mask:02X}',
-            style='FlagAddress.TLabel')
-        address.grid(row=0, column=1, padx=(8, 10), sticky='w')
-        value = tk.StringVar(value='—')
-        shown = ttk.Label(
-            frame, textvariable=value, style='FlagState.TLabel',
-            width=7)
-        shown.grid(row=0, column=2, padx=(0, 6), sticky='w')
-        controls = ttk.Frame(frame, style='FlagRow.TFrame')
-        controls.grid(row=0, column=3, sticky='e')
-        off = ttk.Button(
-            controls, text='Off', width=5, style='Flag.TButton',
-            command=lambda key=flag.key: self.set_unlock_flag(key, 'Clear'))
-        on = ttk.Button(
-            controls, text='On', width=5, style='Flag.TButton',
-            command=lambda key=flag.key: self.set_unlock_flag(key, 'Set'))
-        off.pack(side='left')
-        on.pack(side='left', padx=(5, 0))
-        off.state(['disabled'])
-        on.state(['disabled'])
-        source = ttk.Label(
-            frame, text=f'{flag.source} · {flag.group} / {flag.subtype}',
-            style='FlagMeta.TLabel')
-        source.grid(row=1, column=0, columnspan=4,
-                    sticky='w', pady=(1, 0))
-        for label in (name, source, address):
-            label.bind(
-                '<Button-1>',
-                lambda _event, key=flag.key:
-                    self.show_unlock_flag_detail(key))
-        self.unlock_flag_widgets[flag.key] = {
-            'frame': frame, 'state': value,
-            'state_label': shown, 'off': off, 'on': on}
-        for widget in (
-                frame, name, address, shown, controls, off, on, source):
-            for sequence in ('<MouseWheel>', '<Button-4>', '<Button-5>'):
-                widget.bind(sequence, wheel, add='+')
-        self._update_unlock_flag_row(flag, self.unlock_flag_snapshot)
 
     def show_unlock_flag_detail(self, key):
         flag = self.unlock_flag_rows.get(key)
@@ -908,37 +547,25 @@ class UnlocksMixin:
                 'Use On/Off beside this flag to change its masked bit.')
 
     def configure_unlock_flag_region(self):
-        """Rebuild per-flag controls with the correct regional addresses."""
-        region = self.active_version.key
+        """Swap data providers without replacing the shared flag editor."""
+        region = active_session(self).region
         if self.unlock_flag_region == region:
             return
-        for section in tuple(self._unlock_flag_pending):
-            self._cancel_unlock_flag_batch(section)
-        for widgets in self.unlock_flag_widgets.values():
-            widgets['frame'].destroy()
-        for header in self.unlock_flag_sections.values():
-            header.destroy()
-        for body in getattr(self, 'unlock_flag_section_bodies', {}).values():
-            body.destroy()
-        self.unlock_flag_widgets = {}
-        self.unlock_flag_sections = {}
-        self._unlock_flag_treeviews = {}
-        self._unlock_flag_tree_by_key = {}
-        self._unlock_flag_tree_cache = {}
-        self._unlock_flag_tree_buttons = {}
-        self.unlock_flag_section_rows = {}
-        self.unlock_flag_section_bodies = {}
-        self.unlock_flag_section_buttons = {}
-        self.unlock_flag_expanded = set()
-        self.unlock_flag_auto_expanded = set()
         self.unlock_flag_region = region
         self.unlock_flag_rows = {
             flag.key: flag for flag in flags_for_region(region)}
+        sections = {}
+        for flag in self.unlock_flag_rows.values():
+            sections.setdefault((flag.group, flag.subtype), []).append(flag)
+        self.unlock_flag_section_rows = sections
+        self.unlock_flag_sections = sections
+        self.unlock_flag_expanded.clear()
+        self.unlock_flag_auto_expanded.clear()
         self.unlock_flag_snapshot = {}
         self.unlock_flag_last_poll = 0.0
+        self.unlock_flag_view.set_values({})
         self.unlock_flag_feedback.set('')
-        self.unlock_flag_detail.set(
-            'Click a flag name for full mapping evidence.')
+        self.unlock_flag_detail.set('Click a flag name for full mapping evidence.')
         categories = tuple(dict.fromkeys(
             flag.group for flag in self.unlock_flag_rows.values()))
         self.unlock_flag_type_box.configure(
@@ -946,8 +573,7 @@ class UnlocksMixin:
         if self.unlock_flag_type.get() not in ('All types',) + categories:
             self.unlock_flag_type.set('All types')
         self._refresh_unlock_flag_subtypes()
-        self._ensure_unlock_flag_widgets()
-        self.filter_unlock_flags()
+        self.filter_unlock_flags(reset_scroll=True)
 
     def _refresh_unlock_flag_subtypes(self):
         """Only list subtypes within the selected type."""
@@ -965,112 +591,72 @@ class UnlocksMixin:
         self._refresh_unlock_flag_subtypes()
         self.filter_unlock_flags()
 
-    def filter_unlock_flags(self):
-        """Filter collapsed folders; text searches reveal matching rows."""
+    def filter_unlock_flags(self, *, reset_scroll=False):
+        """Cheap logical filtering with a bounded viewport widget pool."""
         query = self.unlock_flag_query.get().strip().casefold()
         selected_type = self.unlock_flag_type.get()
         selected_subtype = self.unlock_flag_subtype.get()
+        matches = {}
+        found_sections = set()
         visible = 0
-        section_matches = {}
-        row_matches = {}
         for flag in self.unlock_flag_rows.values():
-            text = ' '.join((
+            searchable = ' '.join((
                 flag.label, flag.group, flag.subtype, flag.source,
                 flag.evidence, f'0x{flag.address:08X}',
                 f'0x{flag.mask:02X}'))
-            match = (query in text.casefold()
-                     and (selected_type == 'All types'
-                          or flag.group == selected_type)
-                     and (selected_subtype == 'All subtypes'
-                          or flag.subtype == selected_subtype))
-            row_matches[flag.key] = match
-            if match:
+            matched = (query in searchable.casefold()
+                       and (selected_type == 'All types'
+                            or flag.group == selected_type)
+                       and (selected_subtype == 'All subtypes'
+                            or flag.subtype == selected_subtype))
+            matches[flag.key] = matched
+            if matched:
                 visible += 1
-                section_matches[(flag.group, flag.subtype)] = True
-        self._unlock_flag_match_cache = row_matches
+                found_sections.add((flag.group, flag.subtype))
         if query:
-            for section in section_matches:
-                if section in self.unlock_flag_sections:
-                    if section not in self.unlock_flag_expanded:
-                        self._set_unlock_flag_section_expanded(
-                            section, True, automatic=True)
-                    else:
-                        self._build_unlock_flag_section_rows(
-                            section, only_keys={
-                                flag.key for flag in
-                                self.unlock_flag_section_rows[section]
-                                if row_matches[flag.key]})
+            for section in found_sections:
+                if section not in self.unlock_flag_expanded:
+                    self.unlock_flag_expanded.add(section)
+                    self.unlock_flag_auto_expanded.add(section)
         else:
-            for section in tuple(self.unlock_flag_auto_expanded):
-                self._set_unlock_flag_section_expanded(section, False)
-            # A manually expanded folder may have been only partly built
-            # while a search or type filter was active.
-            for section in section_matches:
-                if section in self.unlock_flag_expanded:
-                    self._build_unlock_flag_section_rows(section)
-        for section in tuple(self._unlock_flag_pending):
-            if section not in section_matches:
-                self._cancel_unlock_flag_batch(section)
-        for section in tuple(self._unlock_flag_treeviews):
-            self._sync_unlock_flag_tree_filter(section, row_matches)
-            self._refresh_unlock_flag_tree_selection(section)
-        for flag in self.unlock_flag_rows.values():
-            widgets = self.unlock_flag_widgets.get(flag.key)
-            if widgets is not None:
-                if row_matches[flag.key]:
-                    if widgets['frame'].winfo_manager() != 'grid':
-                        widgets['frame'].grid()
-                elif widgets['frame'].winfo_manager() == 'grid':
-                    widgets['frame'].grid_remove()
-        for section, header in self.unlock_flag_sections.items():
-            body = self.unlock_flag_section_bodies[section]
-            if section_matches.get(section):
-                if header.winfo_manager() != 'grid':
-                    header.grid()
-                if section in self.unlock_flag_expanded:
-                    if body.winfo_manager() != 'grid':
-                        body.grid()
-                elif body.winfo_manager() == 'grid':
-                    body.grid_remove()
-            else:
-                if header.winfo_manager() == 'grid':
-                    header.grid_remove()
-                if body.winfo_manager() == 'grid':
-                    body.grid_remove()
+            self.unlock_flag_expanded.difference_update(
+                self.unlock_flag_auto_expanded)
+            self.unlock_flag_auto_expanded.clear()
+        self._unlock_flag_match_cache = matches
         self.unlock_flag_counter.set(
             f'{visible} / {len(self.unlock_flag_rows)} named bits')
-        if self.unlock_flag_sections:
-            self.unlock_flag_canvas.configure(
-                scrollregion=self.unlock_flag_canvas.bbox('all'))
+        self.unlock_flag_view.rebuild(
+            self.unlock_flag_section_rows,
+            self.unlock_flag_expanded, matches,
+            reset_scroll=reset_scroll or bool(query))
 
     def _can_write_unlock_flag(self, flag):
-        if flag is None:
+        if flag is None or not flag.editable:
             return False
-        # Evidence/provenance is never a write gate for mapped crosswalk bits.
-        if self.active_version.key == 'japan':
+        session = active_session(self)
+        if not session.connected:
+            return False
+        # Candidate evidence is a label, never a new write permission.
+        if session.region == 'japan':
             return self._japan_unlock_controls_ready()
-        return bool(
-            self.mem is not None and
-            getattr(self.args, 'enable_hex_edit', False) and
-            not getattr(self.args, 'read_only', False))
+        return bool(getattr(self.args, 'enable_hex_edit', False)
+                    and not getattr(self.args, 'read_only', False))
 
     def refresh_unlock_flags(self, *, force=False):
-        """Read the one event bank and refresh every visible on/off control."""
+        """Read one regional saved-event bank; repaint only viewport controls."""
         if not force and self.unlock_sections.select() != str(self.unlock_flags_page):
             return
         now = time.monotonic()
         if not force and now - self.unlock_flag_last_poll < 0.7:
             return
         self.unlock_flag_last_poll = now
-        region = self.active_version.key
-        if region != self.unlock_flag_region:
+        session = active_session(self)
+        if session.region != self.unlock_flag_region:
             self.configure_unlock_flag_region()
-        self._ensure_unlock_flag_widgets()
-        reader = self.jp_rdram if region == 'japan' else self.mem
         try:
             values = read_flag_bytes(
-                reader, region, self.unlock_flag_rows.values())
-            if reader is None:
+                session.reader, session.region, self.unlock_flag_rows.values())
+            if not session.connected:
                 self.unlock_flag_feedback.set(
                     'Disconnected. Connect to the game to enable On/Off.')
             elif self.unlock_flag_feedback.get().startswith(
@@ -1080,38 +666,7 @@ class UnlocksMixin:
             values = {}
             self.unlock_flag_feedback.set(f'Flag bank unavailable: {exc}')
         self.unlock_flag_snapshot = values
-        for flag in self.unlock_flag_rows.values():
-            self._update_unlock_flag_row(flag, values)
-        for section in self._unlock_flag_treeviews:
-            self._refresh_unlock_flag_tree_selection(section)
-
-    def _update_unlock_flag_row(self, flag, values):
-        """Update a constructed row only when its effective state changes."""
-        widgets = self.unlock_flag_widgets.get(flag.key)
-        if widgets is None:
-            self._update_unlock_flag_tree_row(flag, values)
-            return
-        raw = values.get(flag.key)
-        state = ('—' if raw is None else
-                 'On' if raw & flag.mask else 'Off')
-        enabled = bool(raw is not None and self._can_write_unlock_flag(flag))
-        stamp = (state, enabled)
-        if widgets.get('last_update') == stamp:
-            return
-        widgets['last_update'] = stamp
-        widgets['state'].set(state)
-        widgets['state_label'].configure(
-            foreground=(PALETTE['teal'] if state == 'On'
-                        else PALETTE['warning'] if state == 'Off'
-                        else PALETTE['muted']))
-        for target, button in (
-                ('Off', widgets['off']), ('On', widgets['on'])):
-            button.state(['!disabled'] if enabled else ['disabled'])
-            button.configure(
-                style=('FlagOn.TButton' if target == 'On'
-                       else 'FlagOff.TButton')
-                if raw is not None and state == target
-                else 'Flag.TButton')
+        self.unlock_flag_view.set_values(values)
 
     def set_unlock_flag(self, key, target):
         """One-click per-row On/Off; only the requested bit may change."""
@@ -1149,7 +704,8 @@ class UnlocksMixin:
                     f'0x{flag.address:08X} mask 0x{flag.mask:02X}: {target}')
                 self.last_inspect_at = 0.0
             self.refresh_unlock_flags(force=True)
-            self.refresh_story_progress()
+            # The shared Story Progress page refreshes when selected.
+            # Avoid repainting its hidden tables during every flag click.
         except (OSError, ValueError, RuntimeError, PermissionError) as exc:
             self.unlock_status.set(
                 f'{flag.label if flag else "Event flag"}: blocked — {exc}')

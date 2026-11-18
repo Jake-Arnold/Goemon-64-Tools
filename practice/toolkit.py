@@ -37,6 +37,7 @@ from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
+from practice.region_session import active_session
 from practice.version import DISPLAY_VERSION
 from practice.updater_ui import UpdaterMixin
 from practice.launcher_preferences import load_last_region, save_last_region
@@ -2079,8 +2080,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         forces a full 34-item/flag redraw every 170 ms. Once detached, one
         forced refresh clears stale On/Off states and disables write buttons.
         """
-        region = self.active_version.key
-        reader = self.jp_rdram if region == 'japan' else self.mem
+        session = active_session(self)
+        region, reader = session.region, session.reader
         previous = getattr(self, '_unlock_refresh_reader_token', None)
         if (previous is not None and previous[0] == region
                 and previous[1] is reader):
@@ -2090,8 +2091,10 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             self.refresh_unlocks(force=True)
 
     def tick(self):
-        self._watch_japan_process_restart(time.monotonic())
-        if self.jp_rdram is not None:
+        session = active_session(self)
+        if session.region == 'japan':
+            self._watch_japan_process_restart(time.monotonic())
+        if session.region == 'japan' and session.connected:
             self.poll_japan_native_scene_warp(time.monotonic())
             self._poll_visible_panels()
             # Compact dashboard position display is polled only when shown.
@@ -2113,7 +2116,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                         'Japan: movement velocity / player task not mapped')
                 except (OSError, RuntimeError, ValueError, PermissionError):
                     self.pos_text.set('X: —    Y: —    Z: —')
-        if self.mem:
+        if session.region == 'usa' and session.connected:
             try:
                 now=time.monotonic()
                 # During scene reload (state 0x0C), debug menus, and other
