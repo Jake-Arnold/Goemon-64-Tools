@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.59 smaller Dashboard with picture-only regional controls
+
+- **Reason:** User requested removal of persistent advanced setup clutter and flags used as the actual clickable pictures, instead of country emoji with words. Keep the same single Dashboard for both game revisions.
+- **Flag implementation:** `practice/region_flags.py` constructs USA/Japan 48×32 Tk PhotoImage pixel graphics without external image files, fonts or runtime dependencies. The existing two radio controls use these images instead of clickable words. A passive current-region label and selected radio state preserve clarity and keyboard operability.
+- **Connection simplification:** Backend selection, optional PID and native Linux launch/ptrace controls remain functional but are placed in the default-collapsed Advanced connection section. The Japanese ambiguous RAM-base recovery row appears only when required, and automatically unfolds that section.
+- **Savestates:** Native save slot and Save/Load remain visible. Japanese named slot labels/save/load live behind a separate collapsed disclosure; all existing checks and metadata persist. Toggling regions preserves both disclosures and the same Tk card identities.
+- **Safety:** No RDRAM address, read/write path, PID verification, native debug 0x0A, direct scene reload 0x0C, savestate backend dispatch or decomp source changed.
+- **Tests:** Updated Dashboard and named-state GUI tests to assert actual raster pixels, flag-only click targets, disclosure behavior and correct native save/load. Full Linux/Windows CI required before merge.
+
+
 ## 2026-11-18 — v0.11.58 unified static actor and model research (draft)
 
 - Consolidated distinct *read-only* actor/geometry/trace modules and original ROM provenance tests from stacked PRs #60, #62 and #67. The code now lives on a clean `main`-based toolkit feature branch; the 1,225-C canonical decomp baseline and main's original code are not merged together.
