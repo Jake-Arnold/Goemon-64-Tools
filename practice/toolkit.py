@@ -2091,8 +2091,9 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             self.refresh_unlocks(force=True)
 
     def tick(self):
-        self._watch_japan_process_restart(time.monotonic())
         session = active_session(self)
+        if session.region == 'japan':
+            self._watch_japan_process_restart(time.monotonic())
         if session.region == 'japan' and session.connected:
             self.poll_japan_native_scene_warp(time.monotonic())
             self._poll_visible_panels()
