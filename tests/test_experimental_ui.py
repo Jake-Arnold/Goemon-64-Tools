@@ -135,7 +135,7 @@ class TestExperimentalGUI(unittest.TestCase):
         self.assertEqual(self.ram.u16(MAP_ADDR),before)
         self.assertIsNone(self.app.pending_native_warp)
         self.assertIsNone(self.app.pending_direct_warp)
-        self.assertIn('opened',self.app.scene_status.get())
+        self.assertIn('0x0A', self.app.scene_status.get())
 
     def test_read_only_blocks_both_scene_routes(self):
         self.app.scene_options=[(353,'Test destination')]
