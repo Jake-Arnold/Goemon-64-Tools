@@ -1,0 +1,330 @@
+{
+  "format": "goemon-branch-retirement-audit-v1",
+  "date_utc": "2026-11-17",
+  "branch_snapshot_head": "1c570d168cc150f6487a6d0e30f04bd1a48cdcd1",
+  "scope": "Current branch refs and open-PR dependencies; six historical source-tree blob-coverage spot checks",
+  "branch_count": 34,
+  "open_pr_count": 5,
+  "protected_permanent": [
+    "main",
+    "chatgptweb/decomp"
+  ],
+  "open_prs": [
+    {
+      "number": 64,
+      "head": "chatgptweb/graphics-pose-actor-research",
+      "base": "chatgptweb/decomp",
+      "title": "Research: 3 native-exact USA actor/pose C functions (404B, exact scratch ROM)",
+      "state": "open",
+      "draft": true
+    },
+    {
+      "number": 63,
+      "head": "chatgptweb/graphics-adjacent-c-research",
+      "base": "chatgptweb/decomp",
+      "title": "Research: five native-exact USA graphics C helpers (284 bytes, scratch full-ROM proof)",
+      "state": "open",
+      "draft": true
+    },
+    {
+      "number": 62,
+      "head": "chatgptweb/rt64-model-probes",
+      "base": "chatgptweb/room-actor-browser",
+      "title": "Recover USA/JP player skeletal model hierarchy (14 nodes, 460 triangles) and encoded channel research UI",
+      "state": "open",
+      "draft": false
+    },
+    {
+      "number": 60,
+      "head": "chatgptweb/room-actor-browser",
+      "base": "chatgptweb/decomp",
+      "title": "Add verified USA and Japan rev-0 static room actor browsers",
+      "state": "open",
+      "draft": false
+    },
+    {
+      "number": 56,
+      "head": "decomp/address-manifest-contract-20261117",
+      "base": "chatgptweb/decomp",
+      "title": "Publish decomp script-VM address manifest for shared toolkit registry",
+      "state": "open",
+      "draft": true
+    }
+  ],
+  "branches": [
+    {
+      "name": "chatgptweb/camera-mode-runtime-audit-20261116",
+      "head_sha": "73b822de4a159d3794b86f1bd53d0d3bf6805034",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/camera-reset-136-native-20261116",
+      "head_sha": "c95975b28533b114acd65eb0d92b28405ae1ac01",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/camera-reset-343-integration-20261117",
+      "head_sha": "66a7ad5516f3f0a8b3abc30d1cbf8a42c19b781e",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/camera-reset-343-scratch-20261117",
+      "head_sha": "c14f403b6c01ae295e9ff04313705871452468ab",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/decomp",
+      "head_sha": "1c570d168cc150f6487a6d0e30f04bd1a48cdcd1",
+      "active_pr_ref": true,
+      "disposition": "PROTECT_PERMANENT"
+    },
+    {
+      "name": "chatgptweb/decomp-consolidation-20261116",
+      "head_sha": "5543197de084667b575406a3f3eef1bc4f69b0f9",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-next8-scratch-20261116",
+      "head_sha": "5aded44a354c088e253d83521543391ad48322c9",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/dual-region-foundation",
+      "head_sha": "5a3eb6fb852fa2347ababeeec5b62680ef2cd1bc",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/file11-expansion-20261116",
+      "head_sha": "60a5d55f5453d2e4241597e2ee9365bec2b127a8",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/file11-transition-52-research",
+      "head_sha": "defbfb82f63fdb5124946d021b09260c342342c1",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/graphics-adjacent-c-research",
+      "head_sha": "0215bb815fbeaa07a4fa16c3d411a98bd8bff8ba",
+      "active_pr_ref": true,
+      "disposition": "PROTECT_OPEN_PR"
+    },
+    {
+      "name": "chatgptweb/graphics-pose-actor-research",
+      "head_sha": "236ae7856c4196c937f2169a5dc58f4db865d697",
+      "active_pr_ref": true,
+      "disposition": "PROTECT_OPEN_PR"
+    },
+    {
+      "name": "chatgptweb/impact-value-search",
+      "head_sha": "cc268b458eebbfdaf2e54c53dd8223c5514f618d",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/japan-mupen-ambiguity-fix",
+      "head_sha": "d99be91504490c29895cf0f14484122866eb09d2",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/japanese-decomp-port",
+      "head_sha": "634da7d6e4100125d7b7fe9e1592bb68e1458146",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/japanese-overlay-jal-audit",
+      "head_sha": "bfdf727f4d1603c203bf84a2440b9389aef96bd4",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/japanese-overlay-symbol-map",
+      "head_sha": "7f8486a25ba54f946ea2c2641afe74ca701d0fa2",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/japanese-recomp-input",
+      "head_sha": "ed45e14b8ee93115ceed087d90acc756b59d41de",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/japanese-region-loader",
+      "head_sha": "dd301ff5ae80c0f98a95c8911ba0a442d70fe274",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/japanese-symbol-reconciliation",
+      "head_sha": "a2f57bacbe67230af82b7767c1140878c422c8db",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/jp-recomp-cross-region-c-research-20261116",
+      "head_sha": "8d07137edccd3dde6b63dc6ad64bce90bb97a4a9",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/native-emulator-savestates",
+      "head_sha": "3d971e811d28a93e8611f7e300f9cba8debd0de0",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/promote-47-crossregion-to-389-20261117",
+      "head_sha": "67c71c934430a261d6fdfb0dad520634406c5920",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "chatgptweb/room-actor-browser",
+      "head_sha": "aa1cfa872797a96c359ed99efbce91983d7d135c",
+      "active_pr_ref": true,
+      "disposition": "PROTECT_OPEN_PR"
+    },
+    {
+      "name": "chatgptweb/rt64-model-probes",
+      "head_sha": "c6543cddd377d64afbde9ad17c31107ec59fbce6",
+      "active_pr_ref": true,
+      "disposition": "PROTECT_OPEN_PR"
+    },
+    {
+      "name": "chatgptweb/usa-external-memory-leads",
+      "head_sha": "b3493b909e0edb382712bc9dc5a5321c9b24c46b",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "codex/ebisumaru-mini-research",
+      "head_sha": "c94edb55880718b7de146014644b554bf520832f",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "codex/goemon-impact-research",
+      "head_sha": "8af9e747320dfc5ff4319212b69ddca4b8c5c4a5",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "codex/goemon-vm-overlay-followup",
+      "head_sha": "6b5d0d8958bd87fb850c05008acb29650579bf30",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "decomp/address-manifest-contract-20261117",
+      "head_sha": "bb06b5689b495890bf57dd5965167564655c1e58",
+      "active_pr_ref": true,
+      "disposition": "PROTECT_OPEN_PR"
+    },
+    {
+      "name": "decomp/bidirectional-crosswalk-agents-20261116",
+      "head_sha": "628f12e4c5ddc0bbbebb85dfeee884845bcab52c",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "decomp/region-crosswalk-canonical-fresh-20261117",
+      "head_sha": "6d77d7011780bf72379c7278f9db37ab3d1e24cd",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    },
+    {
+      "name": "main",
+      "head_sha": "a30801ba3423336dd621a696b110ce9bbfa22073",
+      "active_pr_ref": false,
+      "disposition": "PROTECT_PERMANENT"
+    },
+    {
+      "name": "toolkit/rt64-model-probes",
+      "head_sha": "c6543cddd377d64afbde9ad17c31107ec59fbce6",
+      "active_pr_ref": false,
+      "disposition": "REVIEW_BEFORE_DELETION"
+    }
+  ],
+  "archival_source_check_samples": [
+    {
+      "name": "chatgptweb/camera-reset-136-native-20261116",
+      "unique_blobs_outside_canonical_and_main": 25,
+      "conclusion": "NOT_VERIFIED_FULLY_PRESERVED",
+      "comparison": "Current branch tree SHA object set versus current canonical decomp+main recursive trees; unique blobs include historical source/docs/metadata that may be superseded but are not byte-identical"
+    },
+    {
+      "name": "chatgptweb/camera-reset-343-integration-20261117",
+      "unique_blobs_outside_canonical_and_main": 20,
+      "conclusion": "NOT_VERIFIED_FULLY_PRESERVED",
+      "comparison": "Current branch tree SHA object set versus current canonical decomp+main recursive trees; unique blobs include historical source/docs/metadata that may be superseded but are not byte-identical"
+    },
+    {
+      "name": "chatgptweb/decomp-file11-next8-scratch-20261116",
+      "unique_blobs_outside_canonical_and_main": 31,
+      "conclusion": "NOT_VERIFIED_FULLY_PRESERVED",
+      "comparison": "Current branch tree SHA object set versus current canonical decomp+main recursive trees; unique blobs include historical source/docs/metadata that may be superseded but are not byte-identical"
+    },
+    {
+      "name": "chatgptweb/promote-47-crossregion-to-389-20261117",
+      "unique_blobs_outside_canonical_and_main": 21,
+      "conclusion": "NOT_VERIFIED_FULLY_PRESERVED",
+      "comparison": "Current branch tree SHA object set versus current canonical decomp+main recursive trees; unique blobs include historical source/docs/metadata that may be superseded but are not byte-identical"
+    },
+    {
+      "name": "chatgptweb/jp-recomp-cross-region-c-research-20261116",
+      "unique_blobs_outside_canonical_and_main": 25,
+      "conclusion": "NOT_VERIFIED_FULLY_PRESERVED",
+      "comparison": "Current branch tree SHA object set versus current canonical decomp+main recursive trees; unique blobs include historical source/docs/metadata that may be superseded but are not byte-identical"
+    },
+    {
+      "name": "chatgptweb/file11-transition-52-research",
+      "unique_blobs_outside_canonical_and_main": 21,
+      "conclusion": "NOT_VERIFIED_FULLY_PRESERVED",
+      "comparison": "Current branch tree SHA object set versus current canonical decomp+main recursive trees; unique blobs include historical source/docs/metadata that may be superseded but are not byte-identical"
+    }
+  ],
+  "notable_ref_checks": [
+    {
+      "name": "chatgptweb/graphics-pose-actor-research",
+      "head_sha": "236ae7856c4196c937f2169a5dc58f4db865d697",
+      "same_as_canonical_decomp": false,
+      "other_ref_same_sha": [],
+      "note": "Do not delete automatically: branch may be in active use and HEAD can move"
+    },
+    {
+      "name": "toolkit/rt64-model-probes",
+      "head_sha": "c6543cddd377d64afbde9ad17c31107ec59fbce6",
+      "same_as_canonical_decomp": false,
+      "other_ref_same_sha": [
+        "chatgptweb/rt64-model-probes"
+      ],
+      "note": "Do not delete automatically: branch may be in active use and HEAD can move"
+    }
+  ],
+  "deletion_capability": "BLOCKED_TOOL: GitHub connector has no delete_ref action; local git cannot resolve github.com",
+  "deletions_executed": 0,
+  "notes": [
+    "Closed PR is not sufficient evidence of source preservation",
+    "No branch deletion authorized via a currently available tool",
+    "At minimum require fresh protected refs, no open PR reference, branch tip re-fetch and complete unique-source audit before deletion",
+    "Some historical branches have divergent commits despite their function candidates already being promoted; source bytes may still be distinct"
+  ],
+  "next_actions": [
+    "Audit branch-exclusive blobs and PR provenance on the six sampled branches before deletion",
+    "Protect four open PR refs",
+    "Use GitHub web branch deletion UI or authenticated git once safe and available",
+    "Re-fetch branch tip immediately before any removal"
+  ]
+}

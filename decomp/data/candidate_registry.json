@@ -1,6 +1,6 @@
 {
   "format": "goemon-candidate-registry-v1",
-  "description": "No remaining deduplicated candidate research after native regional promotion. Historical complete 87-candidate registry preserved in candidate_registry_782_pending_20261117.json.",
+  "description": "The original 87-candidate backlog was promoted. The 41 newer original-address native-exact C research functions awaiting combined G2 are tracked separately in decomp/data/promotion_candidates_20261117.json; a further isolated-exact function is blocked by additional relocations. Do not infer an empty research backlog from this historic registry.",
   "generated_from_head": "bcbf4451f4d2ce2e83af3875d8dbe71b47813b56",
   "accepted_baseline": {
     "usa_functions": 864,
@@ -12,5 +12,6 @@
     "japan_0_functions": 0,
     "japan_0_bytes": 0
   },
-  "candidates": []
+  "candidates": [],
+  "active_promotion_review_queue": "decomp/data/promotion_candidates_20261117.json"
 }
