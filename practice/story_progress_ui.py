@@ -84,6 +84,85 @@ class StoryProgressMixin:
             values=(row['bank'],f'0x{row["address"]:08X}',row['mask'],
                     row['value'],row['raw'],row['source'])
             for target in ('All',section):
+                table=self.story_tables[target]
+                if table.exists(key):table.item(key,text=row['name'],values=values)
+                else:table.insert('','end',iid=key,text=row['name'],values=values)
+                grouped[target].append(key)
+        self._story_row_ids=[row['key'] for row in rows]
+        self._story_row_ids_by_section=grouped
+        self.filter_story_progress()
+        if self.mem is None:notes='Disconnected. Current story values are unavailable.'
+        else:
+            messages=list(state['advisories'])
+            if state['errors']:messages.append('Some reads are unavailable: '+', '.join(state['errors']))
+            notes=' '.join(messages) if messages else 'No tracked flag/inventory discrepancy observed in this sample.'
+        self.story_notes.set(notes)
+        if self.mem is None and self._story_edit_key is not None:self.select_story_edit()
+        return state
+
+    def _update_japan_story_row(self, target, key, name, values):
+        """Skip unchanged Treeview work in the Japanese flag catalogue."""
+        stamp = (name, tuple(values))
+        token = (target, key)
+        if self._story_render_cache.get(token) == stamp:
+            return
+        table = self.story_tables[target]
+        if table.exists(key):
+            table.item(key, text=name, values=values)
+        else:
+            table.insert('', 'end', iid=key, text=name, values=values)
+        self._story_render_cache[token] = stamp
+
+    def refresh_japan_story_progress(self):
+        """Show confirmed Japanese inventory progress, not invented event bits."""
+        from practice.region_views import japan_story_fields, japan_story_crosswalk_rows
+        from practice.japanese_fields import read_japan_field
+        from practice.japan_story_progress import (
+            JAPAN_PROGRESS_ITEMS, japan_progress_row)
+        from practice.region_unlocks import japan_unlock_lead
+        region_switched = self._story_display_region != 'japan'
+        if region_switched:
+            for table in self.story_tables.values():
+                table.delete(*table.get_children())
+            self._story_render_cache.clear()
+            self._story_display_region = 'japan'
+            self._story_edit_key = None
+        self.benkei_story.set('Benkei: Japanese story flag not mapped')
+        self.ushiwaka_story.set('Ushiwaka: Japanese story flag not mapped')
+        grouped={section:[] for section in STORY_SECTIONS}
+        for item in JAPAN_PROGRESS_ITEMS.values():
+            record = japan_progress_row(item, self.jp_rdram)
+            key = record['key']
+            values = (record['bank'], f'0x{record["address"]:08X}',
+                      record['mask'], record['value'],
+                      record['raw'], record['source'])
+            for target in ('All', record['section']):
+                self._update_japan_story_row(target, key, record['name'], values)
+                grouped[target].append(key)
+        # Older raw Japan field cards are still useful for map and bonus
+        # research, but skip duplicates already present as live-verified
+        # named rows above.
+        seen_addresses = {
+            japan_unlock_lead(item).address
+            for item in JAPAN_PROGRESS_ITEMS.values()
+        }
+        for field in japan_story_fields():
+            if field.address in seen_addresses:
+                continue
+            key='jp_'+field.key
+            if self.jp_rdram is not None:
+                result=read_japan_field(self.jp_rdram,field)
+                value,raw,status=result.value,result.raw,result.status
+            else:
+                value,raw,status='—','—','Disconnected'
+            section=('Collectibles & Miracles'
+                     if field.group=='Items' else
+                     'Other story' if field.group=='World map'
+                     else 'Diagnostics')
+            row=(field.group, f'0x{field.address:08X}', '—',
+                 value, '0x'+raw if raw!='—' else '—',
+                 f'Japan-0 {field.key}; {status}; NOT USA story bit')
+            for target in ('All',section):
                 self._update_japan_story_row(target, key, field.label, row)
                 grouped[target].append(key)
         # Crosswalk saved-event and Plasma flag addresses belong in the
