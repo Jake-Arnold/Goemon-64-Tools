@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.49 Linux/Wine toolkit performance regression
+
+- **Symptoms:** Japanese backend Connect took excessive time, and navigating tabs stalled. Source trace found explicit Japan Project64/Mupen attaches always rescanned up to 2 GiB of host memory even after a successful attachment; Japanese `tick()` invoked offscreen Live Watches (each poll deleted/recreated every Treeview row), Unlocks and 142-bit Story Progress every ~170/300/800 ms regardless of visible tab. Story Progress read identical physical guest flag bytes repeatedly for separate bit names and repeatedly updated unchanged Tk cells.
+- **Fix:** Explicit emulator connections now load and save the already existing executable+ROM-code-signature-bound host-base/endian hints. Each reuse passes exact three-code-probe, cartridge-copy, 4/8 MiB size and plausible live-context checks; stale hints run the full scan. First scans use 4 MiB rather than 1 MiB process read chunks without changing the 2 GiB scan cap, ROM proof or ambiguity guards.
+- **Tk responsiveness:** Only the visible Japanese panel is polled; tab-change callbacks refresh newly displayed data. `draw_watches()` applies incremental Treeview changes and preserves selection. Japanese story rows memoize unchanged rendered text/values, empty search avoids full per-row text extraction, and per-physical-address flag sampling avoids 142 duplicate syscalls.
+- **No scope change:** Native scene warp progress/auto reconnect still polled on every tick; saved ROM/PID evidence remains required, Linux Yama permissions unchanged and all write controls retain previous verification.
+- **Tests:** Added explicit emulator hint reuse and stale-invalid fallback, hidden-panel polling, unchanged/changed Live Watches, story repaint and shared-byte memoization regressions. Run Linux+Tk, Windows CI, registry sync --write/--check before merge. No measured native Ubuntu/Wine performance, nor code/ROM modification.
+- **Potential follow-up:** Profile first-time 2 GiB discovery on actual Wine process and consider safe mapping prioritization only if needed, without silently accepting ambiguous ROM copies.
+
+
 ## 2026-11-18 — v0.11.48 Japan read-only Event Sessions capture regression
 
 - **Issue:** Japanese Memory Event Capture A was repeatedly rejected as “Japan event comparison needs stable gameplay” even when the RAM reader was connected. `practice/event_sessions.py` insisted on original game engine mode 13, loading word `0x80161DC4 == 0`, candidate scene 1..0x7FF and character 0..3. The Japanese loading word, scene and character address/mode semantics have not all been independently verified. This hard-coded gameplay predicate is unsuitable for a research snapshot and blocks intended dialogue/cutscene captures.

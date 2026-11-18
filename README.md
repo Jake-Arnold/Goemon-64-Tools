@@ -1,4 +1,31 @@
-# Goemon Speedrun Tools v0.11.48 — Japanese event capture during dialogue
+# Goemon Speedrun Tools v0.11.49 — Responsive Linux/Wine memory polling
+
+## v0.11.49 — Faster reconnects and responsive tab navigation
+
+**Explicit Japanese Project64/Mupen attachment** now saves and reuses the
+same original-Japan-ROM/executable-bound RDRAM base+endian hint already used
+by Auto discovery. A hint is only a shortcut to another full three-probe,
+RDRAM-size/cartridge-copy and live-scene plausibility validation; an invalid
+hint falls back to the complete scan. First-time discovery still scans
+process memory to find the actual mapped RDRAM. The scan's host-read batch
+grows from 1 MiB to 4 MiB to reduce Linux/Wine syscall round trips while
+retaining the scan budget and ambiguous-copy rejection.
+
+**Japanese Tk polling** only refreshes the currently visible Unlocks, Story
+Progress or Live Watches panel instead of updating all three while navigating
+elsewhere. Switching to a page fetches fresh data. Live Watches now updates
+only changed Treeview rows rather than deleting and recreating every row
+every 300 ms. Story Progress avoids repainting unchanged rows, omits costly
+per-row filtering work for an empty search, and reads shared Japanese saved-
+event bytes once per unique address instead of once per named bit. Native
+warp monitoring and PID/restart verification continue regardless of tab.
+
+ROM/game memory is never modified by these performance changes. Synthetic
+Linux/Tk tests verify idle polling, incremental updates, cached connection
+validation and stale-hint fallback. Real Ubuntu/Wine attachment and measured
+interactive latency remain to be confirmed in a live desktop environment.
+
+
 
 ## v0.11.48 — Unblock read-only Japanese Memory Event Capture A/B/C
 

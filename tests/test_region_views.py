@@ -43,6 +43,27 @@ class RegionReadTests(unittest.TestCase):
         self.assertNotIn((0x8015C5DC, 4), ram.reads)
         self.assertNotIn((0x8015C6A7, 1), ram.reads)
 
+    def test_crosswalk_bit_view_reads_each_shared_japan_byte_only_once(self):
+        from practice.region_views import japan_story_crosswalk_rows
+        from practice.region_memory_crosswalk import CROSS_REGION_FIELDS
+        class CountingReader:
+            def __init__(self):
+                self.calls = []
+            def read_guest(self, address, width):
+                self.calls.append((address, width))
+                return bytes(width)
+        reader = CountingReader()
+        result = japan_story_crosswalk_rows(reader)
+        fields = [x for x in CROSS_REGION_FIELDS
+                  if x.key.startswith(('event:', 'plasma:'))]
+        unique = {(x.japan, x.width) for x in fields}
+        self.assertEqual(len(result), 142)
+        self.assertEqual(set(reader.calls), unique)
+        self.assertEqual(len(reader.calls), len(unique))
+        self.assertLess(len(unique), len(fields))
+        self.assertTrue(all(row['value'].startswith('Bit clear') or
+                            row['value'] == 'Clear' for row in result))
+
     def test_unlock_and_story_use_japan_field_catalogue(self):
         unlocks = {r.key: r.address for r in japan_unlock_fields()}
         story = {r.key: r.address for r in japan_story_fields()}

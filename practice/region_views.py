@@ -90,10 +90,17 @@ def japan_story_crosswalk_rows(rdram):
     or semantic claims are created for these hypotheses.
     """
     rows = []
+    # Several individual event bits share one byte. One bounded RAM read per
+    # unique byte, not one process_vm_readv syscall per named bit.
+    samples = {}
     for field in CROSS_REGION_FIELDS:
         if not field.key.startswith(('event:', 'plasma:')):
             continue
-        reading = read_cross_region_field(rdram, field) if rdram is not None else None
+        location = (field.japan, field.width)
+        if location not in samples:
+            samples[location] = (read_cross_region_field(rdram, field)
+                                 if rdram is not None else None)
+        reading = samples[location]
         raw = '0x' + reading.raw if reading and not reading.error else '—'
         if reading and not reading.error and field.mask is not None:
             bit_set = bool(int(reading.raw, 16) & field.mask)

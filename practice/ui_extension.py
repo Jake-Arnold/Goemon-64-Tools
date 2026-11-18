@@ -608,20 +608,48 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                                  parent=self.root)
 
     def draw_watches(self):
+        """Apply only changed Treeview rows; never rebuild every 300 ms.
+
+        Recreating 60+ Treeview items repeatedly makes X11 redraw/layout
+        synchronous and stalls navigation. Preserve selection and ordering.
+        """
         filt=self.filter_text.get().lower().strip()
-        chosen=self.watch_tree.selection()
-        self.watch_tree.delete(*self.watch_tree.get_children())
+        rows=[]
         for w in self.watch_rows:
             display=self.display_watch_name(w.name)
             if filt and filt not in (' '.join((w.name,display,w.value,w.raw,w.source,
                                    f'0x{w.addr:08X}' if w.addr is not None else ''))).lower():
                 continue
-            mark=(w.name,w.raw)
-            tag = 'invalid' if w.status in ('CHECK','ERROR') else ('changed' if w.name in self.watch_previous and self.watch_previous[w.name]!=w.raw else '')
-            self.watch_tree.insert('', 'end',iid=w.name,text=display,
-                    values=(f'0x{w.addr:08X}' if w.addr is not None else '—',w.value,w.raw,w.status,w.source),tags=(tag,))
-        for iid in chosen:
-            if self.watch_tree.exists(iid):self.watch_tree.selection_add(iid)
+            tag = ('invalid' if w.status in ('CHECK','ERROR') else
+                   'changed' if w.name in self.watch_previous
+                   and self.watch_previous[w.name] != w.raw else '')
+            values=(f'0x{w.addr:08X}' if w.addr is not None else '—',
+                    w.value,w.raw,w.status,w.source)
+            rows.append((w.name,display,values,(tag,)))
+        tree=self.watch_tree
+        desired=tuple(row[0] for row in rows)
+        existing=tuple(tree.get_children())
+        if existing == desired and not rows:
+            return
+        cached=getattr(self,'_watch_draw_cache',{})
+        wanted=set(desired)
+        for iid in existing:
+            if iid not in wanted:
+                tree.delete(iid)
+                cached.pop(iid,None)
+        existing_set=set(existing)
+        for iid,display,values,tags in rows:
+            stamp=(display,values,tags)
+            if iid not in existing_set:
+                tree.insert('', 'end',iid=iid,text=display,
+                            values=values,tags=tags)
+            elif cached.get(iid) != stamp:
+                tree.item(iid,text=display,values=values,tags=tags)
+            cached[iid]=stamp
+        if tuple(tree.get_children()) != desired:
+            for pos,iid in enumerate(desired):
+                tree.move(iid,'',pos)
+        self._watch_draw_cache=cached
 
     def append_event(self,line):
         self.log_events.append(line)

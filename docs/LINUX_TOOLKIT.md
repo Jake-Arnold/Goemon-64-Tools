@@ -1,5 +1,27 @@
 # Native Linux Goemon toolkit (experimental)
 
+## Performance: Japanese emulator attachment and UI polling (v0.11.49)
+
+On explicit Japanese Project64 under Wine or Mupen64Plus, the first
+successful connection discovers and records the verified guest RDRAM
+mapping. Later Connect operations can reuse the stored executable/ROM-bound
+base and endian after checking all original-ROM code signatures, actual
+RDRAM size and live context. Recomp/Auto already had their own hint path.
+The fallback scan remains bounded to 2 GiB, uses 4 MiB host-read chunks,
+and does **not** accept ambiguous or copied ROM mappings. Executable
+updates, changed ROM signatures and stale ASLR bases require a new scan.
+
+The 170 ms toolkit scheduler now samples Japanese watch/unlock/story
+data only for the currently visible tab. New tab selection refreshes
+that panel; hidden tabs keep their last display until reselected.
+Incremental Treeview updates avoid recreation of unchanged rows. The
+saved-event view reuses one physical byte read for multiple bit names.
+
+These changes were checked with ROM-free synthetic process/Tk tests,
+not a live benchmark of the user's Project64 Wine installation.
+No `ptrace_scope` setting or write permission is changed.
+
+
 ## Project64 under Wine: memory controls
 
 Project64 running under Wine can be connected to Japanese RAM on Linux.
