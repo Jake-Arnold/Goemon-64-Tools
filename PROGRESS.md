@@ -6,6 +6,7 @@
 - **Fix:** Replace the game dropdown with two readable radio flag controls (USA and Japan) using the existing region selection event. One Tk root, Dashboard Canvas, notebook, cards and scene widgets persist across transitions. Header and window title stay stable. The old Japanese raw-RAM card is permanently hidden because the shared Live Memory tab is the single RAM viewer.
 - **Stable layout:** Keep the named emulator slot label panel in one place but disable unsupported USA operations; only show Japan's advanced RAM-base picker when the adapter detects ambiguous candidates. Do not repaint scene list or reset character/entrance selection on region switch. Retain background memory-session detach and stale-write cancellation.
 - **Verification:** New tests inspect stable widget IDs, both flag buttons, selected region, persistent Dashboard card placement, and memory disconnection. CI must execute before merge.
+- **CI correction:** Existing toolkit version test required a region-dependent header separator. Updated it to require a canonical stable version-only heading, consistent with the new UI. Initial expanded 445-case synthetic suite had one assertion failure at this obsolete expectation; rerun required.
 - **Scope:** UI only; no ROM addresses, native 0x0A/0x0C loader, guest-memory read/write implementation, or decomp history changed.
 
 
