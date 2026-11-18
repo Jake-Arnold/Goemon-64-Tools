@@ -6,6 +6,12 @@ This facade deliberately never guesses memory offsets or grants write access.
 from __future__ import annotations
 from dataclasses import dataclass
 
+from practice.checkpoints import MAP_ADDR
+from practice.japanese_debug_warp import JAPAN_DEBUG_SCENE
+
+# These two source-backed addresses are NOT an automatic regional offset.
+SCENE_ADDRESSES = {'usa': MAP_ADDR, 'japan': JAPAN_DEBUG_SCENE}
+
 
 @dataclass(frozen=True)
 class RegionSession:
@@ -22,6 +28,20 @@ class RegionSession:
         if not self.connected:
             raise RuntimeError('No game memory attached')
         return self.reader.read_guest(address, length)
+
+    @property
+    def scene_address(self) -> int:
+        try:
+            return SCENE_ADDRESSES[self.region]
+        except KeyError as exc:
+            raise ValueError(f'Unsupported scene region: {self.region}') from exc
+
+    def read_current_scene(self) -> int:
+        """Read one u16 native scene ID, independent of any player/task pointer."""
+        raw = self.read_guest(self.scene_address, 2)
+        if len(raw) != 2:
+            raise OSError('Incomplete native scene ID read')
+        return int.from_bytes(raw, 'big')
 
 
 def active_session(app) -> RegionSession:
