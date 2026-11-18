@@ -1534,5 +1534,8 @@
   },
   "overlay_file27_stage": {
     "format": "goemon-usa-file27-adjacent21-original-c-v1"
+  },
+  "overlay_wide132_stage": {
+    "format": "goemon-usa-verified132-after-canonical987-v1"
   }
 }

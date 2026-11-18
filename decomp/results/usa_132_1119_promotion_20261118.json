@@ -1,0 +1,841 @@
+{
+  "format": "goemon-usa-1119-promoted-132-native-c-v1",
+  "date": "2026-11-18",
+  "branch": "chatgptweb/decomp",
+  "source": "user-uploaded ZIP matching live canonical Git blobs at base head 097789c8b0d79b991d5874f9e07aa0bc128c129f",
+  "prior_accepted_usa_c": 987,
+  "prior_accepted_usa_code_bytes": 42640,
+  "research_archive_total": 506,
+  "research_archive_prior_accepted_duplicates": 374,
+  "new_accepted_native_c": 132,
+  "new_accepted_code_bytes": 8188,
+  "production_accepted_usa_c": 1119,
+  "production_accepted_usa_code_bytes": 50828,
+  "remaining_usa_asm_entries": 6244,
+  "japan_0_accepted_c": 39,
+  "japan_0_code_bytes": 2092,
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "rom_total_bytes": 33554432,
+  "canonical_verify_status": "PASSED_G2",
+  "canonical_entire_rom_exact": true,
+  "original_positive_size_func_identities": 7376,
+  "main_semantic_relocations": 14953,
+  "entry_semantic_relocations": 6,
+  "overlay_relocation_sections_exact": 70,
+  "preexisting_main_relocation_delta": 105,
+  "preexisting_file11_name_aliases": 14,
+  "canonical_inventory_status": "PASS",
+  "canonical_full_local_ci": "PASS",
+  "decomp_python_tests": "251 pass with 1 skipped",
+  "verifier_ledger_tests": "245 pass with 4 skipped",
+  "host_ASAN_UBSAN": [
+    "display emitter",
+    "native87 original-source",
+    "file27 actual-source",
+    "wide132 nine original-source"
+  ],
+  "new_source_archive_sha256": "6f17c9a3ea24834cb3de4831f3e69d80c81cc46bbd1ba2751fa7f9e08a8b8677",
+  "promotion_manifest_sha256": "d5c6410dc1f1ca6f4eae23d57a6e26320f465b07534199e12974764b9123092b",
+  "canonical_combined_proof_sha256": "2a4d012ae92383fc9221e1d3c63d66efec97aef83ffcf291969a9486b72a1f87",
+  "canonical_inventory_sha256": "03ab289c205f197b99d0eaec71e2debfe5c367696f6e72bd4411807e1b99af61",
+  "manifest_sha256": "adc6c4e8b3e682b55fcc2587a9982be806a761de8f895730152c233c7639df73",
+  "verifier_sha256": "9fd581ea6cafcc427a9c43eab6b8e47e94f3d6f62c918eb22cdd0c52a9115cc3",
+  "combined_proof_run": "/tmp/goemon-promote-20261118/canonical1119-v2.log",
+  "full_ci_run": "/tmp/goemon-promote-20261118/localci1119-v3.log",
+  "emulator_gameplay": "NOT_RUN",
+  "remote_publication": "PENDING_REMOTE_COMMIT",
+  "function_inventory": [
+    {
+      "name": "func_80002A98_3698",
+      "rom_offset": 13976,
+      "size": 32,
+      "section": "main"
+    },
+    {
+      "name": "func_80005FDC_6BDC",
+      "rom_offset": 27612,
+      "size": 32,
+      "section": "main"
+    },
+    {
+      "name": "func_8000AB10_B710",
+      "rom_offset": 46864,
+      "size": 32,
+      "section": "main"
+    },
+    {
+      "name": "func_8001E3E4_1EFE4",
+      "rom_offset": 126948,
+      "size": 96,
+      "section": "main"
+    },
+    {
+      "name": "func_80035204_35E04",
+      "rom_offset": 220676,
+      "size": 16,
+      "section": "main"
+    },
+    {
+      "name": "func_8003521C_35E1C",
+      "rom_offset": 220700,
+      "size": 16,
+      "section": "main"
+    },
+    {
+      "name": "func_80035234_35E34",
+      "rom_offset": 220724,
+      "size": 16,
+      "section": "main"
+    },
+    {
+      "name": "func_800353A4_35FA4",
+      "rom_offset": 221092,
+      "size": 16,
+      "section": "main"
+    },
+    {
+      "name": "func_80036840_37440",
+      "rom_offset": 226368,
+      "size": 32,
+      "section": "main"
+    },
+    {
+      "name": "func_80036908_37508",
+      "rom_offset": 226568,
+      "size": 32,
+      "section": "main"
+    },
+    {
+      "name": "func_80036D0C_3790C",
+      "rom_offset": 227596,
+      "size": 32,
+      "section": "main"
+    },
+    {
+      "name": "func_80214C0C_5D00DC",
+      "rom_offset": 6095068,
+      "size": 32,
+      "section": "file_12"
+    },
+    {
+      "name": "func_80217144_5D2614",
+      "rom_offset": 6104596,
+      "size": 100,
+      "section": "file_12"
+    },
+    {
+      "name": "func_8021925C_5D472C",
+      "rom_offset": 6113068,
+      "size": 32,
+      "section": "file_12"
+    },
+    {
+      "name": "func_8021927C_5D474C",
+      "rom_offset": 6113100,
+      "size": 16,
+      "section": "file_12"
+    },
+    {
+      "name": "func_8021928C_5D475C",
+      "rom_offset": 6113116,
+      "size": 16,
+      "section": "file_12"
+    },
+    {
+      "name": "func_8021B5C0_5D6A90",
+      "rom_offset": 6122128,
+      "size": 60,
+      "section": "file_12"
+    },
+    {
+      "name": "func_8021B5FC_5D6ACC",
+      "rom_offset": 6122188,
+      "size": 20,
+      "section": "file_12"
+    },
+    {
+      "name": "func_8021EC1C_5DA0EC",
+      "rom_offset": 6136044,
+      "size": 84,
+      "section": "file_12"
+    },
+    {
+      "name": "func_80220148_5DB618",
+      "rom_offset": 6141464,
+      "size": 32,
+      "section": "file_12"
+    },
+    {
+      "name": "func_802201F0_5DB6C0",
+      "rom_offset": 6141632,
+      "size": 32,
+      "section": "file_12"
+    },
+    {
+      "name": "func_80226704_5E1BD4",
+      "rom_offset": 6167508,
+      "size": 32,
+      "section": "file_12"
+    },
+    {
+      "name": "func_801EF268_61A648",
+      "rom_offset": 6399560,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801EF280_61A660",
+      "rom_offset": 6399584,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801EF298_61A678",
+      "rom_offset": 6399608,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801EF2B0_61A690",
+      "rom_offset": 6399632,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801EF2C8_61A6A8",
+      "rom_offset": 6399656,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801F2418_61D7F8",
+      "rom_offset": 6412280,
+      "size": 32,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801F7004_6223E4",
+      "rom_offset": 6431716,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801F701C_6223FC",
+      "rom_offset": 6431740,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801F703C_62241C",
+      "rom_offset": 6431772,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801F705C_62243C",
+      "rom_offset": 6431804,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FFDFC_62B1DC",
+      "rom_offset": 6468060,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FFE14_62B1F4",
+      "rom_offset": 6468084,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FFE34_62B214",
+      "rom_offset": 6468116,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801FFE54_62B234",
+      "rom_offset": 6468148,
+      "size": 24,
+      "section": "file_13"
+    },
+    {
+      "name": "func_801CC814_63B664",
+      "rom_offset": 6534756,
+      "size": 52,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801CC848_63B698",
+      "rom_offset": 6534808,
+      "size": 52,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801CCA28_63B878",
+      "rom_offset": 6535288,
+      "size": 52,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801CCA94_63B8E4",
+      "rom_offset": 6535396,
+      "size": 52,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801CCAC8_63B918",
+      "rom_offset": 6535448,
+      "size": 52,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801CCB34_63B984",
+      "rom_offset": 6535556,
+      "size": 52,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801D8D90_647BE0",
+      "rom_offset": 6585312,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801D9120_647F70",
+      "rom_offset": 6586224,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801D98D0_648720",
+      "rom_offset": 6588192,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DA008_648E58",
+      "rom_offset": 6590040,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DA3C8_649218",
+      "rom_offset": 6591000,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DAB98_6499E8",
+      "rom_offset": 6593000,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DAED8_649D28",
+      "rom_offset": 6593832,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DB230_64A080",
+      "rom_offset": 6594688,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DB5C0_64A410",
+      "rom_offset": 6595600,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DB950_64A7A0",
+      "rom_offset": 6596512,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DBFF4_64AE44",
+      "rom_offset": 6598212,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DC704_64B554",
+      "rom_offset": 6600020,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DCFF4_64BE44",
+      "rom_offset": 6602308,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DD714_64C564",
+      "rom_offset": 6604132,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_801DEE44_64DC94",
+      "rom_offset": 6610068,
+      "size": 136,
+      "section": "file_14"
+    },
+    {
+      "name": "func_8020F118_66E0C8",
+      "rom_offset": 6742216,
+      "size": 36,
+      "section": "file_17"
+    },
+    {
+      "name": "func_8020FE40_66EDF0",
+      "rom_offset": 6745584,
+      "size": 32,
+      "section": "file_17"
+    },
+    {
+      "name": "func_8021498C_67393C",
+      "rom_offset": 6764860,
+      "size": 32,
+      "section": "file_17"
+    },
+    {
+      "name": "func_8020D84C_67722C",
+      "rom_offset": 6779436,
+      "size": 36,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8020D8E4_6772C4",
+      "rom_offset": 6779588,
+      "size": 36,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8020D908_6772E8",
+      "rom_offset": 6779624,
+      "size": 36,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80211D5C_67B73C",
+      "rom_offset": 6797116,
+      "size": 32,
+      "section": "file_18"
+    },
+    {
+      "name": "func_802123F4_67BDD4",
+      "rom_offset": 6798804,
+      "size": 76,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80214A3C_67E41C",
+      "rom_offset": 6808604,
+      "size": 80,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021526C_67EC4C",
+      "rom_offset": 6810700,
+      "size": 80,
+      "section": "file_18"
+    },
+    {
+      "name": "func_802168A8_680288",
+      "rom_offset": 6816392,
+      "size": 80,
+      "section": "file_18"
+    },
+    {
+      "name": "func_802171F8_680BD8",
+      "rom_offset": 6818776,
+      "size": 80,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80217320_680D00",
+      "rom_offset": 6819072,
+      "size": 116,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021A3A8_683D88",
+      "rom_offset": 6831496,
+      "size": 32,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021B01C_6849FC",
+      "rom_offset": 6834684,
+      "size": 76,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021B1FC_684BDC",
+      "rom_offset": 6835164,
+      "size": 116,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021C73C_68611C",
+      "rom_offset": 6840604,
+      "size": 80,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021C7A4_686184",
+      "rom_offset": 6840708,
+      "size": 116,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021D148_686B28",
+      "rom_offset": 6843176,
+      "size": 80,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021D1B0_686B90",
+      "rom_offset": 6843280,
+      "size": 116,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021D9C4_6873A4",
+      "rom_offset": 6845348,
+      "size": 116,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021DE84_687864",
+      "rom_offset": 6846564,
+      "size": 76,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8021EFB4_688994",
+      "rom_offset": 6850964,
+      "size": 76,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80223B64_68D544",
+      "rom_offset": 6870340,
+      "size": 32,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80224750_68E130",
+      "rom_offset": 6873392,
+      "size": 116,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80224B30_68E510",
+      "rom_offset": 6874384,
+      "size": 116,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80224EF8_68E8D8",
+      "rom_offset": 6875352,
+      "size": 116,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8022598C_68F36C",
+      "rom_offset": 6878060,
+      "size": 80,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8022652C_68FF0C",
+      "rom_offset": 6881036,
+      "size": 116,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80227360_690D40",
+      "rom_offset": 6884672,
+      "size": 76,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80227994_691374",
+      "rom_offset": 6886260,
+      "size": 76,
+      "section": "file_18"
+    },
+    {
+      "name": "func_80228130_691B10",
+      "rom_offset": 6888208,
+      "size": 76,
+      "section": "file_18"
+    },
+    {
+      "name": "func_8020FE7C_69787C",
+      "rom_offset": 6912124,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80210828_698228",
+      "rom_offset": 6914600,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80210A50_698450",
+      "rom_offset": 6915152,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80210C34_698634",
+      "rom_offset": 6915636,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80210F5C_69895C",
+      "rom_offset": 6916444,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80211420_698E20",
+      "rom_offset": 6917664,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80211800_699200",
+      "rom_offset": 6918656,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80211C0C_69960C",
+      "rom_offset": 6919692,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80211FC4_6999C4",
+      "rom_offset": 6920644,
+      "size": 116,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80212108_699B08",
+      "rom_offset": 6920968,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_80213DF0_69B7F0",
+      "rom_offset": 6928368,
+      "size": 36,
+      "section": "file_19"
+    },
+    {
+      "name": "func_801CB7F0_69CF60",
+      "rom_offset": 6934368,
+      "size": 36,
+      "section": "file_20"
+    },
+    {
+      "name": "func_08002D6C_6B600C",
+      "rom_offset": 7036940,
+      "size": 60,
+      "section": "file_29"
+    },
+    {
+      "name": "func_08003814_6B6AB4",
+      "rom_offset": 7039668,
+      "size": 60,
+      "section": "file_29"
+    },
+    {
+      "name": "func_080066B0_6B9950",
+      "rom_offset": 7051600,
+      "size": 68,
+      "section": "file_29"
+    },
+    {
+      "name": "func_080068B8_6B9B58",
+      "rom_offset": 7052120,
+      "size": 68,
+      "section": "file_29"
+    },
+    {
+      "name": "func_08006AC0_6B9D60",
+      "rom_offset": 7052640,
+      "size": 68,
+      "section": "file_29"
+    },
+    {
+      "name": "func_08006CC8_6B9F68",
+      "rom_offset": 7053160,
+      "size": 68,
+      "section": "file_29"
+    },
+    {
+      "name": "func_08006ED0_6BA170",
+      "rom_offset": 7053680,
+      "size": 68,
+      "section": "file_29"
+    },
+    {
+      "name": "func_080070D8_6BA378",
+      "rom_offset": 7054200,
+      "size": 68,
+      "section": "file_29"
+    },
+    {
+      "name": "func_08001228_6C0978",
+      "rom_offset": 7080312,
+      "size": 64,
+      "section": "file_30"
+    },
+    {
+      "name": "func_080007EC_6CF8CC",
+      "rom_offset": 7141580,
+      "size": 60,
+      "section": "file_32"
+    },
+    {
+      "name": "func_0800191C_6D09FC",
+      "rom_offset": 7145980,
+      "size": 60,
+      "section": "file_32"
+    },
+    {
+      "name": "func_08002304_6D13E4",
+      "rom_offset": 7148516,
+      "size": 64,
+      "section": "file_32"
+    },
+    {
+      "name": "func_08002A8C_6D1B6C",
+      "rom_offset": 7150444,
+      "size": 64,
+      "section": "file_32"
+    },
+    {
+      "name": "func_08000B20_6DFCC0",
+      "rom_offset": 7208128,
+      "size": 64,
+      "section": "file_37"
+    },
+    {
+      "name": "func_08000F20_6E00C0",
+      "rom_offset": 7209152,
+      "size": 60,
+      "section": "file_37"
+    },
+    {
+      "name": "func_08001A6C_6E0C0C",
+      "rom_offset": 7212044,
+      "size": 64,
+      "section": "file_37"
+    },
+    {
+      "name": "func_08002A18_6E1BB8",
+      "rom_offset": 7216056,
+      "size": 64,
+      "section": "file_37"
+    },
+    {
+      "name": "func_08003378_6E2518",
+      "rom_offset": 7218456,
+      "size": 64,
+      "section": "file_37"
+    },
+    {
+      "name": "func_080047F8_6E3998",
+      "rom_offset": 7223704,
+      "size": 64,
+      "section": "file_37"
+    },
+    {
+      "name": "func_08001850_6E5830",
+      "rom_offset": 7231536,
+      "size": 64,
+      "section": "file_38"
+    },
+    {
+      "name": "func_08000424_6E7734",
+      "rom_offset": 7239476,
+      "size": 68,
+      "section": "file_39"
+    },
+    {
+      "name": "func_080004C0_6E77D0",
+      "rom_offset": 7239632,
+      "size": 68,
+      "section": "file_39"
+    },
+    {
+      "name": "func_08000A88_6E7D98",
+      "rom_offset": 7241112,
+      "size": 64,
+      "section": "file_39"
+    },
+    {
+      "name": "func_08001B90_6F5070",
+      "rom_offset": 7295088,
+      "size": 60,
+      "section": "file_43"
+    },
+    {
+      "name": "func_0800329C_6FE49C",
+      "rom_offset": 7333020,
+      "size": 32,
+      "section": "file_44"
+    },
+    {
+      "name": "func_080011FC_7022FC",
+      "rom_offset": 7348988,
+      "size": 96,
+      "section": "file_46"
+    },
+    {
+      "name": "func_0800139C_730C2C",
+      "rom_offset": 7539756,
+      "size": 12,
+      "section": "file_71"
+    },
+    {
+      "name": "func_080013A8_730C38",
+      "rom_offset": 7539768,
+      "size": 12,
+      "section": "file_71"
+    },
+    {
+      "name": "func_08001318_734248",
+      "rom_offset": 7553608,
+      "size": 12,
+      "section": "file_73"
+    },
+    {
+      "name": "func_08001324_734254",
+      "rom_offset": 7553620,
+      "size": 12,
+      "section": "file_73"
+    },
+    {
+      "name": "func_08000EB0_739580",
+      "rom_offset": 7574912,
+      "size": 12,
+      "section": "file_75"
+    }
+  ]
+}

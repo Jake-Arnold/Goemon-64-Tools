@@ -55,6 +55,23 @@ def build_steps(host_binary: Path, *, quick: bool = False):
             ]),
             ("File27 promoted C host sanitizer test", [str(host_binary.with_name("file27-promoted-host"))]),
         ])
+    if not quick:
+        wide_host = ROOT / 'decomp/research/usa_wide132_promotion_20261118'
+        wide_sources = sorted((wide_host/'host_sources').glob('*.c'))
+        if len(wide_sources)!=9:
+            raise ValueError('Missing nine original-source wide132 host fixtures')
+        compiler = shlex.split(os.environ.get('CC', 'cc'))
+        steps.extend([
+            ('Wide132 actual-source sanitizer build', compiler + [
+                '-std=c11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((wide_host/'test_host132.c').relative_to(ROOT)),
+                *[str(f.relative_to(ROOT)) for f in wide_sources],
+                '-o',str(host_binary.with_name('wide132-actual-host'))]),
+            ('Wide132 actual-source sanitizer test',
+             [str(host_binary.with_name('wide132-actual-host'))]),
+        ])
     return steps
 
 

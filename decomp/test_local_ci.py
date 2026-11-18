@@ -13,7 +13,10 @@ class LocalCITests(unittest.TestCase):
     def test_default_runs_python_validation_then_host_sanitizers(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host")
-        self.assertEqual(len(steps), 9)
+        self.assertEqual(len(steps), 11)
+        self.assertTrue(any(path.endswith("test_host132.c") for path in steps[9][1]))
+        self.assertEqual(sum(path.endswith(".c") and "usa_wide132_promotion_20261118/host_sources" in path for path in steps[9][1]), 9)
+        self.assertEqual(len(steps[10][1]), 1)
         self.assertIn("test_*.py", steps[0][1])
         self.assertIn("test_decomp_*.py", steps[1][1])
         self.assertEqual(steps[2][1][-1], "--validate")

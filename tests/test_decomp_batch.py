@@ -215,9 +215,11 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # Current 864-C proof: accepted 782 plus all 82 original file_11 candidates.
-        self.assertEqual(current['comparison']['matched_functions'],987)
-        self.assertEqual(current['comparison']['matched_function_bytes'],42640)
+        # Live canonical checkpoint, including 132 additional exact original C.
+        self.assertEqual(current['comparison']['matched_functions'],1119)
+        self.assertEqual(current['comparison']['matched_function_bytes'],50828)
+        previous=json.loads((ROOT/'results/combined_987_before_wide132_20261118.json').read_text())
+        self.assertEqual((previous['comparison']['matched_functions'],previous['comparison']['matched_function_bytes']),(987,42640))
         preserved782=json.loads((ROOT/'results/combined_782_20261117.json').read_text())
         self.assertEqual((preserved782['comparison']['matched_functions'],preserved782['comparison']['matched_function_bytes']),(782,34392))
         preserved779=json.loads((ROOT/'results/combined_779_20261117.json').read_text())

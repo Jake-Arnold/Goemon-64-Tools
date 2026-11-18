@@ -3,13 +3,13 @@
   "created_utc_date": "2026-11-18",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 987,
-    "usa_instruction_bytes": 42640,
+    "usa_functions": 1119,
+    "usa_instruction_bytes": 50828,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "Research-only remaining after native 987 C combined ROM gate: file27 21 exact C (1316 bytes) promoted; five independent USA main graphics candidates remain research-only. Retain historical 26-item registry as immutable checkpoint.",
+  "purpose": "Research-only five main graphics candidates remain after canonical USA 1119-C promotion; all remain ASM-owned and not accepted. Historic 987/41-candidate queue preserved separately.",
   "ready_for_combined_g2": {
     "functions": 5,
     "bytes": 284,
