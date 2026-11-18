@@ -50,6 +50,17 @@ class ImpactSceneReloadTests(unittest.TestCase):
         self.assertEqual(ram.u16(MAP_ADDR), original_scene)
         self.assertEqual(ram.read_guest(EXIT_REQUEST_ADDR, 1), exit_byte)
 
+    def test_usa_submode_5_stages_selected_entrance(self):
+        ram = self.usa()
+        ram.write_guest(SUBMODE_ADDR, bytes([5]))
+        spawn = Spawn(353, (95, 0, -350), 0x300, 0x10)
+        result = stage_reload_trial(
+            ram, 353, {353: 'Destination'}, spawn=spawn)
+        self.assertTrue(result['source_player_unavailable'])
+        self.assertEqual(ram.read_guest(PENDING_MAP_ADDR, 12),
+                         spawn.pending_bytes())
+        self.assertEqual(ram.u8(STATE_ADDR), 12)
+
     def test_usa_impact_reacquires_destination_player_for_placement(self):
         ram = self.usa()
         spawn = Spawn(353, (95, 0, -350), 0x300, 0x10)
@@ -118,6 +129,26 @@ class ImpactSceneReloadTests(unittest.TestCase):
                                  bytes([12]))
                 self.assertEqual(rdram.read_guest(JAPAN_DEBUG_SCENE, 2),
                                  original_scene)
+
+    def test_japan_submode_5_scene_0x223_stages_selected_entrance(self):
+        for endian in ('wordswapped', 'big'):
+            with self.subTest(endian=endian):
+                # Matches the reported 0x0D/0x223/submode=5 scenario.
+                game = debugger(
+                    endian, state=13, scene=0x223, character=1, submode=5)
+                rdram = game.rdram()
+                spawn = Spawn(0x1D1, (95, 0, -350), 0x300, 0x10)
+                result = stage_japan_direct_reload(
+                    rdram, 0x1D1,
+                    expected_context=get_japan_debug_context(rdram),
+                    spawn=spawn)
+                self.assertEqual(result.source_scene, 0x223)
+                self.assertEqual(rdram.read_guest(JAPAN_PENDING_MAP, 12),
+                                 spawn.pending_bytes())
+                self.assertEqual(rdram.read_guest(JAPAN_DEBUG_ENGINE_MODE, 1),
+                                 bytes([12]))
+                self.assertEqual(rdram.read_guest(JAPAN_DEBUG_SCENE, 2),
+                                 bytes.fromhex('0223'))
 
     def test_japan_unknown_character_requires_explicit_target(self):
         game = debugger(state=13, scene=0x161,

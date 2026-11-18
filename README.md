@@ -1,4 +1,26 @@
-# Goemon Speedrun Tools v0.11.55 — Impact-compatible scene reload
+# Goemon Speedrun Tools v0.11.56 — Experimental submode-unrestricted scene reload
+
+## v0.11.56 — Remove submode allowlist from double-click scene reload
+
+The shared native 0x0C Scene Browser reload guard no longer restricts
+gameplay submode to 0–4. A verified USA or Japan session at engine mode 0x0D
+may **attempt** a destination reload from submode 5 (as reported during
+a Japanese Impact fight), or another u8 submode, without a valid ordinary
+player/task pointer. A selected entrance and character are handled exactly
+as in v0.11.55. The submode is diagnostic data, not an extra write permission.
+
+The fixed-global protections remain: normal engine mode 0x0D, plausible
+current scene, loading=0, exit=0 and known current character or explicitly
+selected target. Game/ROM/PID/guest-RAM writer validation, destination
+staging and delayed guarded post-load player placement remain unchanged.
+The original debug-menu 0x0A button is still independent.
+
+Synthetic USA and Japan regression cases now cover submode 5, including the
+reported Japanese current-scene ID 0x223. No live emulator warp has been
+verified and a forced Impact transition may hang or crash the game.
+Keep this draft test change unmerged until tried with a disposable savestate.
+
+
 
 ## v0.11.55 — Pointer-independent 0x0C reload in USA and Japan
 

@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.56 experimental removal of 0–4 scene reload submode allowlist
+
+- **User evidence:** Japanese Impact fight reported engine 0x0D, scene 0x223, loading=0, submode=5, exit=0. The v0.11.55 shared `require_reload_source` rejected submode 5 despite otherwise matching the required engine/loading/exit state.
+- **Change:** Remove the hard-coded gameplay submode allowlist from the shared USA/Japan 0x0C double-click scene-reload guard. Preserve valid u8 parsing for diagnostics but permit any observed u8 submode when all other guards pass. This affects only explicitly requested experimental reloads; original debug 0x0A behavior remains unchanged.
+- **Safety:** Continue refusing inactive game engine modes, active loading, exit requests, implausible scenes or unknown character without an explicit user choice. Existing verified ROM/process/writable RDRAM gates, entrance staging, and post-load actor/XYZ validation are unchanged.
+- **Tests authored:** Add synthetic USA submode 5, Japanese 0x223/submode 5 using big-endian and word-swapped RDRAM fixtures. The tests assert staged native entrance bytes, engine 0x0C, and no direct overwrite of the current scene. Existing refusal tests cover wrong engine/loading/exit.
+- **Tests executed:** Not executed in this connector-only environment; no live Impact-to-room warp observed. This branch remains draft.
+- **Next:** Run the local synthetic suite, then test one disposable Japanese Project64 savestate at scene 0x223/submode 5. Verify destination, engine progression, character and actor initialization before claiming successful warp.
+
+
 ## 2026-11-18 — v0.11.55 Impact/boss double-click scene reload (draft)
 
 - User regression: The original debug button worked from Impact without a player pointer, while Scene Browser double-click still refused. USA staging required a full ordinary player snapshot; JP staging rejected observed gameplay submode 4; Japanese native recomp writer also demanded a valid ordinary character.

@@ -82,6 +82,19 @@ This does not prove Impact teardown is compatible with an injected 0x0C
 request. Debug-menu 0x0A is separate and is never treated as a direct
 destination reload. No unsupported non-gameplay states are enabled.
 
+## v0.11.56 — User-requested submode 5 trial
+
+Japanese Impact screenshot showed `engine=0x0D, scene=0x223,
+loading=0, submode=5, exit=0`. The shared `0x0C` double-click
+reload's former submode 0–4 allowlist was an avoidable behaviour
+restriction, not an established memory-layout difference. The
+shared source guard now accepts an arbitrary u8 submode on
+both versions, but still requires engine 0x0D, plausible scene,
+loading=0, exit=0 and a resolved character. The change does not
+alter debug-menu `0x0A`, ROM/PID/write validation or guarded
+post-load placement. Native success is not established by
+synthetic tests and forcing a boss-fight reload remains experimental.
+
 ## Remaining architectural debt
 
 - Toolkit remains a large class with separate USA and Japan connection

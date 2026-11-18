@@ -5,16 +5,16 @@ does NOT assert that their address layouts are interchangeable: the verified
 regional readers supply their respective values.
 
 A missing player/task is not by itself evidence of loading. In particular,
-Impact combat is observed at gameplay submode 4, which has no normal actor.
-Only engine 0x0D, a plausible scene, no loader or exit request, and submodes
-0..4 may request the existing staged 0x0C path. This remains experimental.
+Impact fights can expose a submode other than previously documented 4.
+Submode is observational only for this explicitly requested experimental
+warp; it is NOT an authorisation gate. Stable engine 0x0D, plausible scene,
+no active loading/exit and character identity still remain required.
 """
 from __future__ import annotations
 
 
 ENGINE_GAMEPLAY = 0x0D
 ENGINE_RELOAD = 0x0C
-SCENE_SUBMODES = frozenset((0, 1, 2, 3, 4))
 
 
 def require_reload_source(context, *, region, explicit_character=None):
@@ -34,15 +34,15 @@ def require_reload_source(context, *, region, explicit_character=None):
     if (type(state) is not int or state != ENGINE_GAMEPLAY
             or type(scene) is not int or not 0 <= scene < 0x800
             or type(loading) is not int or loading != 0
-            or type(submode) is not int or submode not in SCENE_SUBMODES
+            or type(submode) is not int or not 0 <= submode <= 0xFF
             or type(exit_flag) is not int or exit_flag != 0):
         raise RuntimeError(
             f'{region} scene reload refused: engine=0x{state:02X}, '
             f'scene=0x{scene:03X}, loading={loading}, '
             f'submode={submode}, exit={exit_flag}. '
-            'Expected stable engine 0x0D, no active loading/exit, '
-            'and observed gameplay submode 0–4 (including Impact battle). '
-            'Original debug mode 0x0A is a separate manual action.')
+            'Expected stable engine 0x0D, no active loading/exit; '
+            'submode is recorded for diagnostics but does not gate this '
+            'experimental reload. Debug menu 0x0A is a separate action.')
     if type(character) is not int:
         raise ValueError('Character global must be an integer')
     if character not in range(4) and explicit_character is None:
