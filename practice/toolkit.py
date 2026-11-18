@@ -1663,8 +1663,13 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         if target not in ('auto', 'mupen64plus', 'project64', 'recomp'):
             self.status.set('Select auto, recomp, mupen64plus or project64.')
             return
-        if target == 'project64' and sys.platform != 'win32':
-            self.status.set('Japanese Project64 attachment is supported on Windows only.')
+        # Project64 running under Wine has a native Linux PID and mapped
+        # RDRAM, which the LinuxProcess adapter can read. Both Wine/Linux
+        # and native Windows must pass the same process identity, original-ROM
+        # code signatures and live-memory plausibility checks.
+        if target == 'project64' and sys.platform not in ('win32', 'linux'):
+            self.status.set(
+                'Japanese Project64 attachment requires Windows or Linux/Wine.')
             return
         if self.verified_rom_path is None:
             # ROM bytes are used to derive code fingerprints for RDRAM
@@ -1718,7 +1723,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 pid_hint = selected_pid
             candidates = list_japan_processes(
                 pid_hint=pid_hint, target='auto',
-                allow_project64=(sys.platform == 'win32'))
+                allow_project64=(sys.platform in ('win32', 'linux')))
             base = (int(base_hint, 0) if isinstance(base_hint, str)
                     else int(base_hint) if base_hint is not None else None)
             for choice in candidates:

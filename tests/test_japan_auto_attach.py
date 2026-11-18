@@ -65,6 +65,56 @@ class AutoJapaneseAttachTests(unittest.TestCase):
             [(x.pid, x.backend) for x in out],
             [(101, 'recomp'), (102, 'mupen64plus')])
 
+    def test_linux_auto_discovery_includes_project64_wine_candidate(self):
+        process = NativeWithClose('big')
+        choice = JapanProcessCandidate(4242, 'project64',
+                                       '/usr/bin/wine64-preloader')
+        fake_reader = SimpleNamespace(rdram_size=0x400000)
+        app = SimpleNamespace(_connect_queue=queue.SimpleQueue())
+        with patch('practice.toolkit.sys.platform', 'linux'), \
+             patch('practice.toolkit.list_japan_processes',
+                   return_value=(choice,)) as scan, \
+             patch('practice.toolkit.verified_japan_probes',
+                   return_value=PROBES), \
+             patch('practice.toolkit.verified_emulator_pid',
+                   return_value=(4242, 'project64')) as identity, \
+             patch('practice.toolkit.HostProcess',
+                   return_value=process), \
+             patch('practice.toolkit.connect_candidate_ram',
+                   return_value=(fake_reader, HOST_BASE, 'big')) as ram, \
+             patch('practice.toolkit.remember_verified_connection'):
+            Toolkit._connect_japan_auto_worker(
+                app, (None, 'japan-rom', None, 'auto', None, 'auto'))
+        scan.assert_called_once_with(
+            pid_hint=None, target='auto', allow_project64=True)
+        identity.assert_called_once_with(4242, 'project64')
+        self.assertEqual(ram.call_count, 1)
+        result = app._connect_queue.get_nowait()
+        self.assertEqual(result[:3], ('japan-ok', 4242, 'project64'))
+        self.assertFalse(process.closed)
+
+    def test_linux_explicit_project64_reuses_checked_4mb_scanner(self):
+        process = NativeWithClose('big')
+        fake_reader = SimpleNamespace(rdram_size=0x400000)
+        app = SimpleNamespace(_connect_queue=queue.SimpleQueue())
+        with patch('practice.toolkit.sys.platform', 'linux'), \
+             patch('practice.toolkit.find_emulator_pid',
+                   return_value=(4242, 'project64')) as find, \
+             patch('practice.toolkit.verified_japan_probes',
+                   return_value=PROBES), \
+             patch('practice.toolkit.HostProcess',
+                   return_value=process), \
+             patch('practice.toolkit.discover_japanese_mupen_rdram',
+                   return_value=(fake_reader, HOST_BASE, 'big')) as scan:
+            Toolkit._connect_japan_worker(
+                app, (None, 'japan-rom', None, 'auto', None, 'project64'))
+        find.assert_called_once_with('project64')
+        scan.assert_called_once()
+        self.assertTrue(scan.call_args.kwargs['allow_4mb'])
+        self.assertEqual(app._connect_queue.get_nowait()[:3],
+                         ('japan-ok', 4242, 'project64'))
+        self.assertFalse(process.closed)
+
     def test_16bit_byte_swap_detection_does_not_depend_on_user_selection(self):
         process = MupenProcess('byteswapped')
         candidate = JapanProcessCandidate(102, 'mupen64plus', '/usr/bin/mupen64plus')

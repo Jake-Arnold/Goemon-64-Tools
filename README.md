@@ -1,4 +1,24 @@
-# Goemon Speedrun Tools v0.11.45 — bidirectional saved-event registry parity
+# Goemon Speedrun Tools v0.11.46 — Linux Wine Project64 attachment
+
+## v0.11.46 — Japanese Project64 connection on Linux
+
+The Japanese **Project64** connection target no longer rejects Linux
+before attempting attachment. Project64 running under **Wine** is an
+ordinary Linux PID for the toolkit's Linux process-memory adapter.
+Both manually selected Project64 PIDs and Japan **Auto** discovery now
+use the existing three original-Japanese-ROM code probes, verified
+RDRAM layouts (including 4 MiB), and plausibility checks on Linux as
+well as Windows. Wrong ROMs, ambiguous copies and inaccessible
+processes remain rejected.
+
+Native Windows-specific keyboard injection and experimental scene-write
+features are **not** automatically enabled for Wine by this change.
+Linux X11 savestate hotkeys remain separately guarded by visible
+window/PID verification. An existing Wine process may require the
+toolkit's Linux PID permission workflow; actual interactive Wine
+attachment has not yet been independently reproduced by CI.
+
+
 
 ## v0.11.45 — Equal USA and Japan saved-event flag coverage
 
