@@ -82,6 +82,7 @@ from practice.japanese_debug_warp import (
     enter_japan_native_debug_menu,
 )
 from practice.theme import apply_theme, PALETTE
+from practice.region_flags import make_region_flag_images
 from practice.unlocks_ui import UnlocksMixin
 from practice.state_discovery_ui import StateDiscoveryMixin
 from practice.value_search_ui import ValueSearchMixin
@@ -253,24 +254,39 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         version_row = ttk.Frame(connection)
         version_row.pack(fill='x', pady=(0, 7))
         ttk.Label(version_row, text='Game').pack(side='left', padx=(0, 8))
-        # Keep the existing label-valued variable for preference and test
-        # compatibility. Country names remain legible when colour flag
-        # glyphs are unavailable in the installed Tk/system fonts.
+        # Render picture-only flag controls with Tk-native raster pixels.
+        self.region_flag_images = make_region_flag_images(root)
         self.region_usa_button = ttk.Radiobutton(
-            version_row, text='🇺🇸 USA', variable=self.game_version_choice,
+            version_row, image=self.region_flag_images['usa'], text='',
+            style='RegionFlag.TRadiobutton', variable=self.game_version_choice,
             value=VERSIONS['usa'].label, command=self.on_game_version_changed)
         self.region_japan_button = ttk.Radiobutton(
-            version_row, text='🇯🇵 Japan', variable=self.game_version_choice,
+            version_row, image=self.region_flag_images['japan'], text='',
+            style='RegionFlag.TRadiobutton', variable=self.game_version_choice,
             value=VERSIONS['japan'].label, command=self.on_game_version_changed)
         self.region_usa_button.pack(side='left', padx=(0, 10))
         self.region_japan_button.pack(side='left')
         self.region_buttons = (self.region_usa_button, self.region_japan_button)
-        ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
-                     values=('auto', 'recomp', 'project64', 'mupen64plus')).pack(fill='x', pady=(0, 7))
-        pid_row=ttk.Frame(connection);pid_row.pack(fill='x',pady=(0,7))
-        ttk.Label(pid_row,text='PID (optional)').pack(side='left')
-        ttk.Entry(pid_row,textvariable=self.pid_text,width=14).pack(side='left',padx=6)
-        self.jp_base_row = ttk.Frame(connection)
+        self.region_label = tk.StringVar(
+            value='USA' if self.active_version.key == 'usa' else 'Japan')
+        ttk.Label(version_row, textvariable=self.region_label,
+                  style='CardMuted.TLabel').pack(side='left', padx=(10, 0))
+        # Keep advanced attachment widgets alive but collapsed until requested.
+        self.connection_advanced_visible = False
+        self.connection_advanced_frame = ttk.Frame(connection)
+        ttk.Label(self.connection_advanced_frame, text='Emulator/backend',
+                  style='CardMuted.TLabel').pack(anchor='w')
+        self.connection_backend_selector = ttk.Combobox(
+            self.connection_advanced_frame,
+            textvariable=self.connection_target, state='readonly',
+            values=('auto', 'recomp', 'project64', 'mupen64plus'))
+        self.connection_backend_selector.pack(fill='x', pady=(3, 7))
+        pid_row = ttk.Frame(self.connection_advanced_frame)
+        pid_row.pack(fill='x', pady=(0, 7))
+        ttk.Label(pid_row, text='PID (optional)').pack(side='left')
+        ttk.Entry(pid_row, textvariable=self.pid_text, width=14).pack(
+            side='left', padx=6)
+        self.jp_base_row = ttk.Frame(self.connection_advanced_frame)
         ttk.Label(self.jp_base_row, text='Japanese RAM base').pack(side='left')
         self.jp_base_choice = tk.StringVar(value='Auto (detect)')
         self.jp_base_selector = ttk.Combobox(
@@ -290,12 +306,16 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self.connect_button = ttk.Button(connection, text='Connect to game',
                    style='Accent.TButton', command=self.connect)
         self.connect_button.pack(fill='x', pady=(0, 7))
+        self.connection_advanced_toggle = ttk.Button(
+            connection, text='Advanced connection  ▸',
+            command=self.toggle_connection_advanced)
+        self.connection_advanced_toggle.pack(fill='x', pady=(0, 7))
         if sys.platform == 'linux':
             self.launch_recomp_button = ttk.Button(
-                connection, text='Launch native Linux recomp',
-                command=self.launch_linux_recomp)
+                self.connection_advanced_frame,
+                text='Launch native Linux recomp', command=self.launch_linux_recomp)
             self.launch_recomp_button.pack(fill='x', pady=(0, 7))
-            linux_access=ttk.Frame(connection)
+            linux_access=ttk.Frame(self.connection_advanced_frame)
             linux_access.pack(fill='x',pady=(0,7))
             self.linux_attach_btn=ttk.Button(
                 linux_access,text='Permit existing Linux PID',
@@ -306,7 +326,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 command=self.restore_linux_pid_protection)
             self.linux_restore_btn.pack(side='left',padx=7)
             self.linux_restore_btn.state(['disabled'])
-            ttk.Label(connection,text='Existing Linux game processes may require an OS '
+            ttk.Label(self.connection_advanced_frame,
+                      text='Existing Linux game processes may require an OS '
                       'ptrace permission change. This affects other processes until restored.',
                       style='CardMuted.TLabel',wraplength=420).pack(anchor='w',pady=(0,7))
         ttk.Label(connection, textvariable=self.pos_text, style='AccentValue.TLabel').pack(anchor='w')
