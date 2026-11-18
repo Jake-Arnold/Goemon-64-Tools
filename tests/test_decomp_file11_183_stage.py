@@ -14,6 +14,7 @@ def manifest():
     # Preserve the exact 183-C contract when testing the historical stage.
     m['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
     m.pop('overlay_crossregion47_stage', None)
+    m.pop('overlay_wide132_stage', None)
     return m
 
 

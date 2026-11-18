@@ -9,6 +9,7 @@ class UsaCrossRegion47PromotionTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
   cls.manifest=load_manifest(ROOT/'decomp/manifest.json')
+  cls.manifest.pop('overlay_wide132_stage', None)
   cls.proof=json.loads((ROOT/'decomp/results/usa_crossregion47_779_promotion_20261117.json').read_text())
   cls.registry,cls.inventory=load_files(ROOT)
  def test_manifest_extends_historical_779_and_preserves_fixture_boundaries(self):

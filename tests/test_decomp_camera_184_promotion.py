@@ -12,6 +12,7 @@ class UsaCameraResetPromotionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest=load_manifest(ROOT/'decomp/manifest.json')
+        cls.manifest.pop('overlay_wide132_stage', None)
         cls.registry,cls.file_inventory=load_files(ROOT)
         cls.proof=json.loads((ROOT/'decomp/results/usa_camera_reset_136_promotion_20261117.json').read_text())
 

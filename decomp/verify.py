@@ -233,6 +233,16 @@ def file27_stage(manifest):
         raise ValueError('Unreviewed file27 production stage contract')
     return file27.load_fixture()
 
+def wide132_stage(manifest):
+    """Reviewed 132-function original-ROM-pinned additive C promotion stage."""
+    stage=manifest.get('overlay_wide132_stage')
+    if stage is None:return None
+    from . import overlay_wide132 as wide
+    if stage != {'format':wide.STAGE_FORMAT}:
+        raise ValueError('Unreviewed wide132 promotion contract')
+    return wide.load_fixture()
+
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -275,8 +285,12 @@ def claimed_functions(manifest):
         functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
                           'vma':f['vma'],'size':f['size']}
                          for f in f27_fixture['functions'])
+    wide_fixture=wide132_stage(manifest)
+    if wide_fixture:
+        functions.extend({'name':e['name'],'rom_offset':e['rom_offset'],
+                          'vma':e['vma'],'size':e['size']}
+                         for e in wide_fixture['functions'])
     return functions
-
 
 
 def digest(data,algorithm='sha1'):
@@ -1196,7 +1210,7 @@ def load_manifest(path):
     file11_mode = file11_stage_mode(manifest)
     if file11_mode is not None:
         if file11_mode in (143,144,152,179,183,184,187,269):
-            file11_adapter(file11_mode).reviewed_plan(manifest)
+            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k!='overlay_wide132_stage'})
             candidates = [(f['name'], f['rom_offset'], f['size'])
                           for f in file11_adapter(file11_mode).entries()]
         else:
@@ -1311,6 +1325,15 @@ def load_manifest(path):
         if (manifest['upstream_commit']!='7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee' or len(vm)!=1 or
             not any(f==dict(name='func_8003DB0C_3E70C',rom_offset=0x3E70C,size=224) for f in vm[0]['functions'])):
             raise ValueError('VM table layout requires pinned assignment handler')
+    wide_fixture=wide132_stage(manifest)
+    if wide_fixture:
+        existing=claimed_functions({k:v for k,v in manifest.items() if k!='overlay_wide132_stage'})
+        existing_names={row['name'] for row in existing}
+        existing_bounds=[(row['rom_offset'],row['rom_offset']+row['size']) for row in existing]
+        for row in wide_fixture['functions']:
+            off,end=row['rom_offset'],row['rom_offset']+row['size']
+            if row['name'] in existing_names or any(off<last and first<end for first,last in existing_bounds):
+                raise ValueError('Wide132 candidate already accepted/overlaps manifest: '+row['name'])
     return manifest
 
 
@@ -1327,7 +1350,7 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
             raise ValueError('file_11 staging requires authenticated USA decompressed ROM')
         if file11_mode in (143,144,152,179,183,184,187,269):
             adapter=file11_adapter(file11_mode)
-            plan=adapter.reviewed_plan(manifest,reference_rom)
+            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k!='overlay_wide132_stage'},reference_rom)
             file11_inline=adapter.source_payloads(checkout,plan)
             text=adapter.stage_splat(text,plan)
         else:
@@ -2354,8 +2377,10 @@ def run_build(args,manifest,report):
         logged('candidate-file27-objects',
                ['make','-j'+str(args.jobs),'UV='+uv,*file27.object_targets(file27_plan)],candidate)
         report['overlay_file27_object_layout']=file27.pack_objects(candidate,expected,file27_plan)
+    wide_fixture=wide132_stage(manifest)
+    wide_plan=None
     if manifest.get('vm_assignment_table_layout'):
-        logged('candidate-vm-object' ,['make','-j'+str(args.jobs),'UV='+uv,
+        logged('candidate-vm-object'  ,['make','-j'+str(args.jobs),'UV='+uv,
             'build/usa/src/script_vm.c.o','build/usa/asm/usa/data/main_continued.rodata.s.o'],candidate)
         report['object_layout']=pack_object_file(candidate/'build/usa/src/script_vm.c.o')
     if manifest.get('heap_noop_text_layout'):
@@ -2587,6 +2612,46 @@ def run_build(args,manifest,report):
             result['matched_functions']+=1
             result['matched_function_bytes']+=size
         report['overlay_file27_stage']=proof
+    if wide_fixture:
+        from . import overlay_wide132 as wide
+        source_cache=wide.prepare_sources(candidate,expected,wide_fixture,source_dir)
+        wide_owners=wide.find_owners(candidate,wide_fixture)
+        logged('candidate-wide132-original-parents',
+            ['make','-j'+str(args.jobs),'UV='+uv,*wide.parent_targets(wide_owners)],candidate)
+        wide_plan=wide.stage_linker(candidate,expected,wide_fixture,wide_owners,source_cache)
+        report['overlay_wide132_source_plan']={
+            'functions':len(wide_plan['functions']),
+            'instruction_bytes':sum(e['size'] for e in wide_plan['functions']),
+            'retained_asm_fragments':len(wide_plan['assembly'])}
+        logged('candidate-wide132-objects',
+            ['make','-j'+str(args.jobs),'UV='+uv,*wide.object_targets(wide_plan)],candidate)
+        report['overlay_wide132_object_layout']=wide.pack_objects(candidate,expected,wide_plan)
+        if not result['full_rom_match'] or result['matched_functions']!=987:
+            raise ValueError('Historical accepted 987-C gate must pass before final wide132 stage')
+        # Force one real final link with all 987 previously validated units and
+        # all 132 new original-address C objects simultaneously.
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-wide132-combined-final-build',
+            ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        for entry in wide_fixture['functions']:
+            key='research/usa_wide132_promotion_20261118/sources/'+entry['name']+'.c'
+            report['sources_sha256_lf'][key]=digest((candidate/'src'/(entry['name']+'.c')).read_bytes().replace(b'\r\n',b'\n'),'sha256')
+        report['wide132_order']='prior 987 original-ROM + all historical validators PASS, then 132 additive C final build/ROM/ELF/relocation proof'
+    if wide_fixture:
+        from . import overlay_wide132 as wide
+        proof=wide.verify_link(baseline,candidate,expected,wide_plan,wide_fixture)
+        for entry in wide_fixture['functions']:
+            result['functions'].append({
+                'name':entry['name'],'size':entry['size'],
+                'guest_address':f'0x{entry["vma"]:08X}',
+                'rom_offset':f'0x{entry["rom_offset"]:X}','matched':True,
+                'expected_sha256':entry['original_code_sha256'],
+                'candidate_sha256':entry['original_code_sha256']})
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=entry['size']
+        report['overlay_wide132_stage']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

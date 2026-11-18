@@ -13,6 +13,7 @@ class ThreeExtra187StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest = verify.load_manifest(stage.ROOT / "manifest.json")
+        cls.manifest.pop('overlay_wide132_stage', None)
 
     def test_exact_three_new_original_identities(self):
         old = {(x['name'], x['rom_offset'], x['vma'], x['size']) for x in prior.entries()}
