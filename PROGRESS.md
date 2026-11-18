@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.46 Project64 under Wine on Linux
+
+- **Root cause:** The Japanese Project64 Connect handler returned “Japanese Project64 attachment is supported on Windows only” whenever `sys.platform != 'win32'`, despite `LinuxProcess` supporting cross-process RAM reads and the Japanese Project64/Mupen scanner being host-platform neutral. Japanese Auto also excluded `project64` PID candidates on Linux.
+- **Fix:** Accept explicit Project64 target on Linux and include it in Japan Auto candidates; preserve process-name verification, three ROM-code fingerprints, RAM-endian/base/4 MiB vs 8 MiB validation and live Japanese context checks. Do not enable unsupported Mac attachment. No unconditional acceptance of an emulator process or broad permission changes.
+- **Regression:** Tk Dashboard test ensures Linux Project64 target reaches Japanese ROM verification rather than showing Windows-only error; worker tests cover Linux Auto Wine PID discovery and explicit project64 using 4 MiB-aware scanner. Existing wrong-PID/ambiguous-layout/ROM/permissions safeguards remain unchanged.
+- **Limitations:** Synthetic PID and RAM tests only. Windows native A-button injection and certain experimental scene-writing paths remain Windows-only; Linux X11 savestate shortcut path remains separately verified. No live Wine memory attachment reproduced in CI.
+- **Next:** Confirm with a real Wine Project64 process on Ubuntu and record exact PID, ROM fingerprints, selected RAM base and endian; adjust Wine window input independently only if needed.
+
+
 ## 2026-11-18 — v0.11.45 reciprocal saved-event registry completeness
 
 - **Cause:** The canonical 463-record catalogue had 142 USA saved-event bits but only 59 Japanese crosswalk counterparts; omitted source groups were 40 Fortune Doll placements, 7 Mr. Arrow/Elly placement bits and 36 external annotation bits. UI regional entries were constructed from a manually restricted subset of declarations, despite the project-wide canonical registry policy.

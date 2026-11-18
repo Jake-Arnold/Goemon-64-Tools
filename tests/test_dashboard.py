@@ -240,6 +240,21 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertIn('disabled', app.event_region_entry.state())
         self.assertEqual(app.event_region_start.get(), '0x8015C608')
 
+    def test_japan_project64_linux_wine_selection_reaches_rom_verification(self):
+        app = self.toolkit
+        app.game_version_choice.set(VERSIONS['japan'].label)
+        app.on_game_version_changed()
+        app.connection_target.set('project64')
+        app.verified_rom_path = None
+        with patch('practice.toolkit.sys.platform', 'linux'), patch(
+                'practice.toolkit.filedialog.askopenfilename',
+                return_value='') as pick_rom:
+            app.connect()
+        pick_rom.assert_called_once()
+        self.assertIn('ROM selection cancelled', app.status.get())
+        self.assertNotIn('Windows only', app.status.get())
+        self.assertIsNone(app.jp_rdram)
+
     def test_japan_project64_windows_selection_and_wrong_backend_guard(self):
         app = self.toolkit
         app.game_version_choice.set(VERSIONS['japan'].label)
