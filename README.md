@@ -1,4 +1,30 @@
-# Goemon Speedrun Tools v0.11.50 — unified connection and UI performance
+# Goemon Speedrun Tools v0.11.51 — Fast event-flag folders
+
+## v0.11.51 — One lightweight table for large flag folders
+
+**Unlocks → Story & event flags** folders with more than 12 named
+flags (Fortune Dolls: 45, External annotations: 35, Other story: 24)
+now render as **one cached Treeview per folder**, rather than hundreds
+of Tk frames, labels, inline buttons and mouse-wheel bindings. A large
+folder no longer schedules dozens of synchronous geometry updates.
+A bounded 14-row viewport scrolls within the expanded folder and keeps
+the flag name, canonical regional address/mask and live On/Off state
+visible. Click the **Off** or **On** cell on a named row to make the same
+one-bit, stale-value-checked write as before. **Off selected** and
+**On selected** buttons apply the identical action to the chosen flag.
+Read-only and disconnected states show unavailable actions. Clicking
+a name exposes the full mapping evidence.
+
+Search filters reuse cached Treeview rows without rebuilding widgets;
+collapsing and reopening retains the table; changing region removes it.
+Smaller folders (12 bits or fewer) retain individual On/Off buttons.
+No ROM crosswalk, bit evidence, writable permission, or emulator
+attachment policy changes. v0.11.50's visible-tab connection/polling
+optimisations are preserved. Synthetic GUI tests cover USA/Japan edits,
+read-only guards, filters, folder reuse and region reset. Actual Ubuntu
+desktop latency remains unmeasured.
+
+
 
 ## v0.11.50 — Shared connection and visible-tab refresh pipeline
 
