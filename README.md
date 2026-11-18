@@ -1,29 +1,32 @@
-# Goemon Speedrun Tools v0.11.49 — Responsive Linux/Wine memory polling
+# Goemon Speedrun Tools v0.11.49 — unified connection and UI performance
 
-## v0.11.49 — Faster reconnects and responsive tab navigation
+## v0.11.49 — Shared connection and visible-tab refresh pipeline
 
-**Explicit Japanese Project64/Mupen attachment** now saves and reuses the
-same original-Japan-ROM/executable-bound RDRAM base+endian hint already used
-by Auto discovery. A hint is only a shortcut to another full three-probe,
-RDRAM-size/cartridge-copy and live-scene plausibility validation; an invalid
-hint falls back to the complete scan. First-time discovery still scans
-process memory to find the actual mapped RDRAM. The scan's host-read batch
-grows from 1 MiB to 4 MiB to reduce Linux/Wine syscall round trips while
-retaining the scan budget and ambiguous-copy rejection.
+USA and Japan use the **same Tk visibility scheduler**: only the selected
+main tab is polled and its widgets updated; entering a tab requests a single
+fresh sample. The active Live Memory page now **reuses Treeview rows**,
+preserves selection, and only changes cells whose underlying observations
+changed. Story Progress uses the same shared cached row-update policy,
+avoiding repeated item reconstruction for all 142 logical flag names per
+region. The Japan event-crosswalk reader also reads each distinct event
+byte once per sample rather than issuing one Linux process-memory syscall
+for each named bit. USA Unlocks no longer continuously rebuilds the hidden
+Story Progress tab as a side effect of routine polling.
 
-**Japanese Tk polling** only refreshes the currently visible Unlocks, Story
-Progress or Live Watches panel instead of updating all three while navigating
-elsewhere. Switching to a page fetches fresh data. Live Watches now updates
-only changed Treeview rows rather than deleting and recreating every row
-every 300 ms. Story Progress avoids repainting unchanged rows, omits costly
-per-row filtering work for an empty search, and reads shared Japanese saved-
-event bytes once per unique address instead of once per named bit. Native
-warp monitoring and PID/restart verification continue regardless of tab.
+Japanese Auto and explicitly selected emulator backends now use the same
+`connect_candidate_ram` path and **per-executable ROM-bound verified RAM
+base/endian cache**. Cache hits still revalidate the independent original
+ROM code probes, the live game context, RDRAM size, and cartridge-copy
+exclusion; a changed or stale base triggers full discovery. The cache
+optimizes repeat attachment, not first-time scanning, and does not bypass
+any original ROM identity checks.
 
-ROM/game memory is never modified by these performance changes. Synthetic
-Linux/Tk tests verify idle polling, incremental updates, cached connection
-validation and stale-hint fallback. Real Ubuntu/Wine attachment and measured
-interactive latency remain to be confirmed in a live desktop environment.
+These optimizations apply to both regions' UI; regional memory layouts,
+source evidence and backend verification remain deliberately separate
+adapters. Tests enforce hidden-tab nonrefresh for USA and Japan, unchanged
+Treeview and Story Progress rows, and shared Auto/manual attach behaviour.
+No emulator frame-rate benchmark or real Wine/Ubuntu latency measurement
+has been performed in GitHub Actions.
 
 
 
