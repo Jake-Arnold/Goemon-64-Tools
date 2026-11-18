@@ -74,6 +74,7 @@ class ModelBindingTests(unittest.TestCase):
                 with self.assertRaises(ValueError):analyze(data)
         bads=[]
         e=actor_event();e['pc']='0x8021DE00';bads.append(e)
+        e=actor_event();e['pc']='0x8021DE70';bads.append(e)
         e=actor_event();e['actor_ptr']='0x80150001';bads.append(e)
         e=actor_event();e['header_hex']=e['header_hex'][:-2];bads.append(e)
         e=actor_event();e['header_hex']='GG'*(0x60);bads.append(e)

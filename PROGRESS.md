@@ -1,5 +1,10 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-18 — Correct Japanese actor initializer address and retire unsafe Wine/PJ64 guidance
+
+- **Corrected verified JP entry:** Original JP file_12 Splat maps ROM `0x5CD620` to VMA `0x80212090`; original loader at file offset `+0xB734` is ROM `0x5D8D54` / guest `0x8021D7C4` (NOT prior `0x8021DE00`). Original MIPS `sh t8,+0x5C(s0)` at `0x8021D814`, `sh t1,+0x5E(s0)` at `0x8021D830`, next instruction `0x8021D834`. The previous debugger at `0x8021DE70` did not sample initialized model IDs. USA `0x80218A54` remains verified. JP 32 MiB decompressed SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded` verified. Corrected this branch's read-only trace schema PC and documentation; added explicit rejection of the obsolete PC in unit tests.
+- **Runtime method:** Project64 JavaScript hooks under Wine caused native PJ64 exception and are retired. Native JP source-only read-only trace proposed in Goemon64Recomp draft PR #35; its seven host/synthetic tests PASS. Live Linux JP rebuild/runtime capture and original exact-ROM combined decomp G2 NOT RUN; no matching-C promotion or actor mesh mapping. Previous 2026-11-18 entry below is superseded *only* where it mentions the wrong JP loader PC.
+
 ### 2026-11-18 — Japan actor-to-model read-only capture correlator (research only)
 
 - **ROM-backed finding:** Independently located the Japanese revision-0 object graphics dispatcher candidate at guest `0x800167D4` / original retail ROM `0x173D4`; the first 32 instruction bytes exactly match the original USA dispatcher at guest `0x80016C44` / ROM `0x17844`, unique in the 16-MiB Japan ROM. Shared code includes original `Object +0x64` flag read and `+0x2C` graphics pointer load. The Japanese generic actor loader `0x8021DE00` writes `actor_id +0x5C` and `model_id +0x5E`; immediately after the second store is `0x8021DE70`. These are original-ROM observations, not a confirmed actor-to-model file mapping.

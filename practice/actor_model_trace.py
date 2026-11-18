@@ -16,7 +16,7 @@ import re
 import struct
 
 SCHEMA = 'goemon-japan-0-actor-model-trace-v1'
-INIT_AFTER_PC = 0x8021DE70  # JP generic loader's store to model_id is at +0x6C.
+INIT_AFTER_PC = 0x8021D834  # Following sh t1,+0x5E(s0) at genuine JP initializer +0x6C.
 DRAW_ENTRY_PC = 0x800167D4  # JP counterpart candidate of USA object graphics dispatcher.
 MAX_CAPTURE_BYTES = 256 * 1024
 MAX_EVENTS = 256
@@ -58,7 +58,7 @@ def _parse_event(row):
     if kind == 'actor':
         pc = _pointer(row.get('pc'), 'actor pc')
         if pc not in (INIT_AFTER_PC, DRAW_ENTRY_PC):
-            raise ValueError('actor sample pc must be the JP initializer +0x70 or JP draw entry')
+            raise ValueError('actor sample pc must be the JP initializer +0x70 (0x8021D834) or JP draw entry')
         ptr = _pointer(row.get('actor_ptr'), 'actor_ptr')
         blob = _snapshot(row.get('header_hex'), ACTOR_BYTES, 'actor header_hex')
         heap, = struct.unpack_from('>I', blob, 0x18)
