@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import tkinter as tk
+import time
 import unittest
 from argparse import Namespace
 from types import SimpleNamespace
@@ -305,6 +306,80 @@ class DashboardSmokeTests(unittest.TestCase):
         verify.assert_called_once_with('test.n64', 'japan')
         self.assertIn('Verified Japan', app.status.get())
         self.assertIsNone(app.mem)
+
+    def test_japanese_idle_tick_skips_all_hidden_expensive_tables(self):
+        app = self.toolkit
+        app.active_version = VERSIONS['japan']
+        app.jp_rdram = object()
+        app._jp_position_last_poll = time.monotonic()
+        app._jp_story_last_poll = 0.0
+        app.notebook.select(app.dashboard_canvas.master)
+        with patch.object(app, '_watch_japan_process_restart'), \
+             patch.object(app, 'poll_japan_native_scene_warp'), \
+             patch.object(app, 'refresh_japan_party_controls') as party, \
+             patch.object(app, 'refresh_inspector') as inspector, \
+             patch.object(app, 'refresh_unlocks') as unlocks, \
+             patch.object(app, 'refresh_story_progress') as story, \
+             patch.object(app, '_refresh_unlocks_on_reader_change'), \
+             patch.object(app.root, 'after'):
+            app.tick()
+        party.assert_called_once()
+        inspector.assert_not_called()
+        unlocks.assert_not_called()
+        story.assert_not_called()
+
+    def test_japanese_live_watch_tab_only_polls_its_own_visible_table(self):
+        app = self.toolkit
+        app.active_version = VERSIONS['japan']
+        app.jp_rdram = object()
+        app._jp_position_last_poll = time.monotonic()
+        app.notebook.select(app.live_memory_tab)
+        app.live_memory_sections.select(app.live_watches_page)
+        with patch.object(app, '_watch_japan_process_restart'), \
+             patch.object(app, 'poll_japan_native_scene_warp'), \
+             patch.object(app, 'refresh_japan_party_controls') as party, \
+             patch.object(app, 'refresh_inspector') as inspector, \
+             patch.object(app, 'refresh_unlocks') as unlocks, \
+             patch.object(app, 'refresh_story_progress') as story, \
+             patch.object(app, '_refresh_unlocks_on_reader_change'), \
+             patch.object(app.root, 'after'):
+            app.tick()
+        inspector.assert_called_once_with({})
+        party.assert_not_called()
+        unlocks.assert_not_called()
+        story.assert_not_called()
+
+    def test_repainting_identical_live_watches_does_not_rebuild_tree(self):
+        app = self.toolkit
+        app.watch_previous = {}
+        app.watch_rows = [
+            Watch('Counter A', 0x80010000, '1', '01', 'OBSERVED', 'source'),
+            Watch('Counter B', 0x80010001, '2', '02', 'OBSERVED', 'source'),
+        ]
+        app.draw_watches()
+        tree = app.watch_tree
+        tree.selection_set('Counter A')
+        with patch.object(tree, 'delete', wraps=tree.delete) as delete, \
+             patch.object(tree, 'insert', wraps=tree.insert) as insert, \
+             patch.object(tree, 'item', wraps=tree.item) as item, \
+             patch.object(tree, 'move', wraps=tree.move) as move:
+            app.draw_watches()
+            delete.assert_not_called()
+            insert.assert_not_called()
+            item.assert_not_called()
+            move.assert_not_called()
+        self.assertEqual(tree.selection(), ('Counter A',))
+        app.watch_rows[1] = Watch(
+            'Counter B', 0x80010001, '3', '03', 'OBSERVED', 'source')
+        with patch.object(tree, 'delete', wraps=tree.delete) as delete, \
+             patch.object(tree, 'insert', wraps=tree.insert) as insert, \
+             patch.object(tree, 'item', wraps=tree.item) as item:
+            app.draw_watches()
+            delete.assert_not_called()
+            insert.assert_not_called()
+            item.assert_called_once()
+        self.assertEqual(tree.set('Counter B', 'raw'), '03')
+        self.assertEqual(tree.selection(), ('Counter A',))
 
     def test_dark_theme_and_no_unsafe_warp_activation(self):
         self.assertEqual(self.root.cget('background'), PALETTE['background'])

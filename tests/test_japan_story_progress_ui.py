@@ -64,6 +64,17 @@ class JapanStoryProgressUITests(unittest.TestCase):
             'jp_unlock_sasuke_battery_1_collected'))
         self.assertIn('user-verified',app.story_notes.get())
 
+    def test_unchanged_japanese_story_rows_do_not_repaint_tree(self):
+        # A 142-row bit catalogue previously updated both Treeviews on
+        # every poll even when no RAM values had changed.
+        app = self.app
+        tree = app.story_tables['All']
+        with patch.object(tree, 'item', wraps=tree.item) as item, \
+             patch.object(tree, 'insert', wraps=tree.insert) as insert:
+            app.refresh_story_progress()
+            item.assert_not_called()
+            insert.assert_not_called()
+
     def test_select_and_edit_japan_story_progress_routes_mapped_write(self):
         app=self.app
         app.story_sections.select(0)

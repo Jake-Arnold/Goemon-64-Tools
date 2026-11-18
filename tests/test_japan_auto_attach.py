@@ -115,6 +115,66 @@ class AutoJapaneseAttachTests(unittest.TestCase):
                          ('japan-ok', 4242, 'project64'))
         self.assertFalse(process.closed)
 
+    def test_explicit_wine_connection_reuses_reverified_rom_bound_hint(self):
+        process = NativeWithClose('big')
+        reader = SimpleNamespace(rdram_size=0x400000)
+        app = SimpleNamespace(_connect_queue=queue.SimpleQueue())
+        with patch('practice.toolkit.find_emulator_pid',
+                   return_value=(4242, 'project64')), \
+             patch('psutil.Process') as pid_process, \
+             patch('practice.toolkit.verified_japan_probes',
+                   return_value=PROBES), \
+             patch('practice.toolkit.HostProcess', return_value=process), \
+             patch('practice.japan_connection_hints.load_hint',
+                   return_value=(HOST_BASE, 'big')) as hint, \
+             patch('practice.toolkit.validate_rdram_base',
+                   return_value=reader) as verified, \
+             patch('practice.japan_native_recomp.validate_japan_recomp_context'
+                   ) as context, \
+             patch('practice.toolkit.discover_japanese_mupen_rdram'
+                   ) as full_scan, \
+             patch('practice.toolkit.remember_verified_connection') as saved:
+            pid_process.return_value.exe.return_value = '/tmp/wine64-preloader'
+            Toolkit._connect_japan_worker(
+                app, (None, 'japan-rom', None, 'auto', None, 'project64'))
+        hint.assert_called_once_with(
+            '/tmp/wine64-preloader', 'project64', PROBES)
+        verified.assert_called_once_with(
+            process, HOST_BASE, 'big', PROBES, allow_4mb=True)
+        context.assert_called_once_with(reader, strict_character=False)
+        full_scan.assert_not_called()
+        saved.assert_called_once()
+        self.assertEqual(app._connect_queue.get_nowait()[:3],
+                         ('japan-ok', 4242, 'project64'))
+        self.assertFalse(process.closed)
+
+    def test_stale_explicit_hint_falls_back_to_full_rom_scan(self):
+        process = NativeWithClose('big')
+        reader = SimpleNamespace(rdram_size=0x400000)
+        app = SimpleNamespace(_connect_queue=queue.SimpleQueue())
+        with patch('practice.toolkit.find_emulator_pid',
+                   return_value=(4242, 'project64')), \
+             patch('psutil.Process') as pid_process, \
+             patch('practice.toolkit.verified_japan_probes',
+                   return_value=PROBES), \
+             patch('practice.toolkit.HostProcess', return_value=process), \
+             patch('practice.japan_connection_hints.load_hint',
+                   return_value=(HOST_BASE + 16, 'big')), \
+             patch('practice.toolkit.validate_rdram_base',
+                   side_effect=ValueError('Wrong executable code')), \
+             patch('practice.toolkit.discover_japanese_mupen_rdram',
+                   return_value=(reader, HOST_BASE, 'big')) as scanner, \
+             patch('practice.toolkit.remember_verified_connection') as saved:
+            pid_process.return_value.exe.return_value = '/tmp/wine64-preloader'
+            Toolkit._connect_japan_worker(
+                app, (None, 'japan-rom', None, 'auto', None, 'project64'))
+        scanner.assert_called_once()
+        self.assertTrue(scanner.call_args.kwargs['allow_4mb'])
+        saved.assert_called_once()
+        self.assertEqual(app._connect_queue.get_nowait()[:3],
+                         ('japan-ok', 4242, 'project64'))
+        self.assertFalse(process.closed)
+
     def test_16bit_byte_swap_detection_does_not_depend_on_user_selection(self):
         process = MupenProcess('byteswapped')
         candidate = JapanProcessCandidate(102, 'mupen64plus', '/usr/bin/mupen64plus')

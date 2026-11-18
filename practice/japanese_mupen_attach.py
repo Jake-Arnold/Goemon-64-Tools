@@ -17,7 +17,7 @@ from autosplitter.memory import RDRAM_SIZE, Rdram, readable_spans
 ROM_TO_GUEST = 0xC00
 PROBE_ROM_OFFSETS = (0x1050, 0x1200, 0x3000)
 PROBE_BYTES = 64
-SCAN_CHUNK = 1 << 20
+SCAN_CHUNK = 4 << 20  # Fewer Linux/Wine process_vm_readv round trips; same 2 GiB safety budget
 MIN_RDRAM_SIZE = 0x400000  # Project64 supports unexpanded 4 MiB guest RDRAM.
 
 

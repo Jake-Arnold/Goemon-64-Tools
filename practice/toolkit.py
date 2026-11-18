@@ -519,6 +519,10 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                          else 'USA memory writes enabled  •  Experimental entrance reload')))
         ttk.Label(statusbar, textvariable=self.access_footer,
                   style='HeaderSub.TLabel').pack(side='right')
+        # Refresh the newly visible panel once, rather than continuously
+        # polling every hidden tab while the game is running.
+        self.notebook.bind('<<NotebookTabChanged>>', self._on_main_tab_changed,
+                           add='+')
         root.after(100,self.tick)
 
     def _refresh_discovery_connection_state(self):
@@ -1814,9 +1818,42 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 reader, address, mode = discover_japan_recomp_rdram(
                     process, probes, base_hint=base, mode=endian)
             else:
-                reader, address, mode = discover_japanese_mupen_rdram(
-                    process, probes, base_hint=base, mode=endian,
-                    allow_4mb=(target == 'project64'))
+                # Explicit Project64/Mupen attachments previously rescanned up
+                # to 2 GiB on every Connect. Reuse a per-executable ROM-bound
+                # base/endian hint, but recheck all three code signatures,
+                # cartridge-copy rejection and live context on every connect.
+                # Failed hints always fall back to normal full discovery.
+                executable = ''
+                try:
+                    import psutil
+                    executable = psutil.Process(pid).exe() or ''
+                except Exception:
+                    # Optional executable hint lookup must not break the
+                    # already verified PID path (including synthetic PIDs).
+                    pass
+                choice = JapanProcessCandidate(pid, target, executable)
+                reader = None
+                if base is None and endian == 'auto' and executable:
+                    from practice.japan_connection_hints import load_hint
+                    hint = load_hint(executable, target, probes)
+                    if hint is not None:
+                        hint_base, hint_mode = hint
+                        try:
+                            cached = validate_rdram_base(
+                                process, hint_base, hint_mode, probes,
+                                allow_4mb=(target == 'project64'))
+                            from practice.japan_native_recomp import (
+                                validate_japan_recomp_context)
+                            validate_japan_recomp_context(
+                                cached, strict_character=False)
+                            reader, address, mode = cached, hint_base, hint_mode
+                        except (OSError, ValueError, RuntimeError):
+                            pass
+                if reader is None:
+                    reader, address, mode = discover_japanese_mupen_rdram(
+                        process, probes, base_hint=base, mode=endian,
+                        allow_4mb=(target == 'project64'))
+                remember_verified_connection(choice, probes, address, mode)
             self._connect_queue.put(('japan-ok', pid, target, process, reader,
                                      address, mode))
 
@@ -2014,6 +2051,22 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             'discovering the new verified process automatically.')
         self._connect_japan_emulator()
 
+    def _on_main_tab_changed(self, _event=None):
+        """Queue a fresh visible-panel sample after Tk has switched pages."""
+        if self.active_version.key != 'japan' or self.jp_rdram is None:
+            return
+        current = self.notebook.select()
+        if current == str(self.live_memory_tab):
+            if self.live_memory_sections.select() == str(self.live_watches_page):
+                self.last_inspect_at = 0.0
+                self.root.after_idle(lambda: self.refresh_inspector({}))
+        elif current == str(self.unlock_tab):
+            self.unlock_last_poll = 0.0
+            self.root.after_idle(lambda: self.refresh_unlocks(force=True))
+        elif current == str(self.story_progress_tab):
+            self._jp_story_last_poll = time.monotonic()
+            self.root.after_idle(self.refresh_story_progress)
+
     def _refresh_unlocks_on_reader_change(self):
         """Update offline controls once after detaching, not every UI tick.
 
@@ -2036,18 +2089,27 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self._watch_japan_process_restart(time.monotonic())
         if self.jp_rdram is not None:
             self.poll_japan_native_scene_warp(time.monotonic())
-            # The old JP diagnostics table is hidden. Do not continuously
-            # reread 68+ old fields solely to update an invisible Treeview.
-            # Shared Live Memory already polls the regional watches.
-            self.refresh_japan_party_controls()
-            self.refresh_inspector({})
-            self.refresh_unlocks()
-            # Story-like Japanese item/map values share source-backed reads
-            # with the unlock view; avoid flooding Tk on every frame.
+            # These Tk grids are expensive and were rebuilt off-screen at
+            # every poll. Read only the actively visible live panel; the tab
+            # switch callback refreshes a panel immediately on first view.
+            visible = self.notebook.select()
+            if visible in (str(self.dashboard_canvas.master),
+                           str(self.scene_tab)):
+                self.refresh_japan_party_controls()
+            if (visible == str(self.live_memory_tab)
+                    and self.live_memory_sections.select()
+                    == str(self.live_watches_page)):
+                self.refresh_inspector({})
+            if visible == str(self.unlock_tab):
+                self.refresh_unlocks()
             now_jp=time.monotonic()
-            if now_jp-getattr(self, '_jp_story_last_poll', 0) > 0.8:
+            if (visible == str(self.story_progress_tab)
+                    and now_jp-getattr(self, '_jp_story_last_poll', 0) > 0.8):
                 self._jp_story_last_poll=now_jp
                 self.refresh_story_progress()
+            # Compact dashboard position read, independent of hidden grids.
+            if now_jp-getattr(self, '_jp_position_last_poll', 0) > 0.8:
+                self._jp_position_last_poll=now_jp
                 try:
                     from practice.japanese_position import read_japan_position
                     from practice.japanese_debug_warp import JAPAN_DEBUG_CHARACTER
