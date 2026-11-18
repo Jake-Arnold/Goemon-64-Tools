@@ -479,7 +479,10 @@ class UnlocksMixin:
             return
         self.unlock_last_poll = now
         values = {}
-        self.refresh_story_progress()
+        # Keep existing explicit one-shot force refresh behaviour for callers,
+        # but never rebuild hidden Story Progress during normal 0.5s polling.
+        if force:
+            self.refresh_story_progress()
         # Tk's 'focus' returns the widget path directly. root.focus_get() calls
         # _nametowidget() and raises KeyError('popdown') for some ttk dropdowns
         # (observed on Python 3.14 / Windows).

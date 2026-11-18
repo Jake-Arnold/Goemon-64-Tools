@@ -23,9 +23,9 @@ class StoryProgressMixin:
         ttk.Label(filter_row,text='Filter “external” for the added source annotations.',style='Muted.TLabel').pack(side='left')
         self._story_row_ids=[]
         self._story_display_region = None
-        self._story_render_cache = {}
         self._story_row_ids_by_section={section:[] for section in STORY_SECTIONS}
         self._story_edit_key=None
+        self._story_render_cache={}
         self.story_filter.trace_add('write',lambda *_:self.filter_story_progress())
         self.story_sections=ttk.Notebook(tab)
         self.story_sections.pack(fill='both',expand=True)
@@ -66,6 +66,21 @@ class StoryProgressMixin:
         ttk.Label(tab,text='Diagnostics contains raw Bank A/B samples, not interpreted permanent story meanings. Saved flags and inventory words are separate. '
                   'Advisories are observations; no repair is performed.',style='Muted.TLabel',wraplength=1100).pack(anchor='w')
 
+    def _update_story_row(self, section, key, name, values):
+        """Shared cached Treeview updater for both ROM regions."""
+        table = self.story_tables[section]
+        stamp = (name, tuple(values))
+        slot = (section, key)
+        if not table.exists(key):
+            table.insert('', 'end', iid=key, text=name, values=values)
+            self._story_render_cache[slot] = stamp
+            return True
+        if self._story_render_cache.get(slot) != stamp:
+            table.item(key, text=name, values=values)
+            self._story_render_cache[slot] = stamp
+            return True
+        return False
+
     def refresh_story_progress(self):
         if self.active_version.key == 'japan':
             return self.refresh_japan_story_progress()
@@ -73,24 +88,25 @@ class StoryProgressMixin:
             for table in self.story_tables.values():
                 table.delete(*table.get_children())
             self._story_display_region = 'usa'
+            self._story_render_cache.clear()
         state=read_story_state(self.mem)
         self.benkei_story.set('Benkei: '+state['benkei'])
         self.ushiwaka_story.set('Ushiwaka: '+state['ushiwaka'])
         rows=story_rows(state)
         grouped={section:[] for section in STORY_SECTIONS}
+        changed = False
         for row in rows:
             key=row['key']
             section=story_section_for_key(key)
             values=(row['bank'],f'0x{row["address"]:08X}',row['mask'],
                     row['value'],row['raw'],row['source'])
             for target in ('All',section):
-                table=self.story_tables[target]
-                if table.exists(key):table.item(key,text=row['name'],values=values)
-                else:table.insert('','end',iid=key,text=row['name'],values=values)
+                changed = self._update_story_row(target,key,row['name'],values) or changed
                 grouped[target].append(key)
         self._story_row_ids=[row['key'] for row in rows]
         self._story_row_ids_by_section=grouped
-        self.filter_story_progress()
+        if changed:
+            self.filter_story_progress()
         if self.mem is None:notes='Disconnected. Current story values are unavailable.'
         else:
             messages=list(state['advisories'])
@@ -99,19 +115,6 @@ class StoryProgressMixin:
         self.story_notes.set(notes)
         if self.mem is None and self._story_edit_key is not None:self.select_story_edit()
         return state
-
-    def _update_japan_story_row(self, target, key, name, values):
-        """Skip unchanged Treeview work in the Japanese flag catalogue."""
-        stamp = (name, tuple(values))
-        token = (target, key)
-        if self._story_render_cache.get(token) == stamp:
-            return
-        table = self.story_tables[target]
-        if table.exists(key):
-            table.item(key, text=name, values=values)
-        else:
-            table.insert('', 'end', iid=key, text=name, values=values)
-        self._story_render_cache[token] = stamp
 
     def refresh_japan_story_progress(self):
         """Show confirmed Japanese inventory progress, not invented event bits."""
@@ -124,12 +127,13 @@ class StoryProgressMixin:
         if region_switched:
             for table in self.story_tables.values():
                 table.delete(*table.get_children())
-            self._story_render_cache.clear()
             self._story_display_region = 'japan'
             self._story_edit_key = None
+            self._story_render_cache.clear()
         self.benkei_story.set('Benkei: Japanese story flag not mapped')
         self.ushiwaka_story.set('Ushiwaka: Japanese story flag not mapped')
         grouped={section:[] for section in STORY_SECTIONS}
+        changed = False
         for item in JAPAN_PROGRESS_ITEMS.values():
             record = japan_progress_row(item, self.jp_rdram)
             key = record['key']
@@ -137,7 +141,7 @@ class StoryProgressMixin:
                       record['mask'], record['value'],
                       record['raw'], record['source'])
             for target in ('All', record['section']):
-                self._update_japan_story_row(target, key, record['name'], values)
+                changed = self._update_story_row(target,key,record['name'],values) or changed
                 grouped[target].append(key)
         # Older raw Japan field cards are still useful for map and bonus
         # research, but skip duplicates already present as live-verified
@@ -163,7 +167,7 @@ class StoryProgressMixin:
                  value, '0x'+raw if raw!='—' else '—',
                  f'Japan-0 {field.key}; {status}; NOT USA story bit')
             for target in ('All',section):
-                self._update_japan_story_row(target, key, field.label, row)
+                changed = self._update_story_row(target,key,field.label,row) or changed
                 grouped[target].append(key)
         # Crosswalk saved-event and Plasma flag addresses belong in the
         # existing Story Progress table, not a Japan-only diagnostic panel.
@@ -174,11 +178,12 @@ class StoryProgressMixin:
                    record['mask'], record['value'], record['raw'],
                    record['source'])
             for target in ('All', record['section']):
-                self._update_japan_story_row(target, key, record['name'], row)
+                changed = self._update_story_row(target,key,record['name'],row) or changed
                 grouped[target].append(key)
         self._story_row_ids=grouped['All']
         self._story_row_ids_by_section=grouped
-        self.filter_story_progress()
+        if changed or region_switched:
+            self.filter_story_progress()
         if region_switched:
             self.select_story_edit()
         self.story_notes.set(
@@ -196,15 +201,11 @@ class StoryProgressMixin:
     def filter_story_progress(self):
         query=self.story_filter.get().strip().casefold()
         for section,table in self.story_tables.items():
-            if query:
-                desired=[]
-                for key in self._story_row_ids_by_section[section]:
-                    row=table.item(key)
-                    if query in (row['text']+' '+' '.join(
-                            str(v) for v in row['values'])).casefold():
-                        desired.append(key)
-            else:
-                desired=list(self._story_row_ids_by_section[section])
+            desired=[]
+            for key in self._story_row_ids_by_section[section]:
+                row=table.item(key)
+                if query in (row['text']+' '+' '.join(str(v) for v in row['values'])).casefold():
+                    desired.append(key)
             current=list(table.get_children())
             if current==desired:continue
             wanted=set(desired)
