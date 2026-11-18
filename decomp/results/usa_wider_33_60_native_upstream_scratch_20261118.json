@@ -1,0 +1,295 @@
+{
+  "format": "goemon-usa-files33-60-wider69-upstream-native-original-v1",
+  "date": "2026-11-18",
+  "status": "RESEARCH_ONLY_UPSTREAM_SCRATCH_FULL_ROM_EXACT",
+  "repo_expected_branch": "chatgptweb/decomp",
+  "original_pin": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_usa_rom_size": 33554432,
+  "rom_compared_original_bytes": 33554432,
+  "native_toolchain": "original IDO 5.3 -O2 -mips2, pinned MIPS GNU ld/as/objcopy",
+  "target_scanned_files": [
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60
+  ],
+  "exact_changed_files": [
+    36,
+    37,
+    38,
+    40,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    59
+  ],
+  "native_exact_functions": 69,
+  "native_exact_original_code_bytes": 852,
+  "source_function_types": {
+    "empty0": 8,
+    "empty2": 51,
+    "multiply": 3,
+    "divide": 3,
+    "store_arg1": 3,
+    "short_decrement": 1
+  },
+  "per_resource": {
+    "36": {
+      "count": 1,
+      "original_code_bytes": 8,
+      "semantic_relocations_preserved": 1025
+    },
+    "37": {
+      "count": 1,
+      "original_code_bytes": 12,
+      "semantic_relocations_preserved": 1079
+    },
+    "38": {
+      "count": 2,
+      "original_code_bytes": 24,
+      "semantic_relocations_preserved": 761
+    },
+    "40": {
+      "count": 6,
+      "original_code_bytes": 72,
+      "semantic_relocations_preserved": 892
+    },
+    "42": {
+      "count": 5,
+      "original_code_bytes": 68,
+      "semantic_relocations_preserved": 555
+    },
+    "43": {
+      "count": 17,
+      "original_code_bytes": 200,
+      "semantic_relocations_preserved": 1593
+    },
+    "44": {
+      "count": 5,
+      "original_code_bytes": 68,
+      "semantic_relocations_preserved": 598
+    },
+    "45": {
+      "count": 1,
+      "original_code_bytes": 12,
+      "semantic_relocations_preserved": 545
+    },
+    "46": {
+      "count": 5,
+      "original_code_bytes": 60,
+      "semantic_relocations_preserved": 817
+    },
+    "47": {
+      "count": 2,
+      "original_code_bytes": 32,
+      "semantic_relocations_preserved": 275
+    },
+    "48": {
+      "count": 2,
+      "original_code_bytes": 28,
+      "semantic_relocations_preserved": 469
+    },
+    "49": {
+      "count": 4,
+      "original_code_bytes": 64,
+      "semantic_relocations_preserved": 602
+    },
+    "50": {
+      "count": 3,
+      "original_code_bytes": 36,
+      "semantic_relocations_preserved": 228
+    },
+    "51": {
+      "count": 1,
+      "original_code_bytes": 12,
+      "semantic_relocations_preserved": 143
+    },
+    "52": {
+      "count": 1,
+      "original_code_bytes": 12,
+      "semantic_relocations_preserved": 8
+    },
+    "53": {
+      "count": 1,
+      "original_code_bytes": 12,
+      "semantic_relocations_preserved": 534
+    },
+    "54": {
+      "count": 2,
+      "original_code_bytes": 24,
+      "semantic_relocations_preserved": 341
+    },
+    "55": {
+      "count": 2,
+      "original_code_bytes": 20,
+      "semantic_relocations_preserved": 390
+    },
+    "56": {
+      "count": 5,
+      "original_code_bytes": 56,
+      "semantic_relocations_preserved": 436
+    },
+    "57": {
+      "count": 2,
+      "original_code_bytes": 20,
+      "semantic_relocations_preserved": 708
+    },
+    "59": {
+      "count": 1,
+      "original_code_bytes": 12,
+      "semantic_relocations_preserved": 508
+    }
+  },
+  "original_ELF_positive_sized_function_identities": 7376,
+  "original_resource_semantic_relocations_preserved": 12507,
+  "host_sanitizer": "PASS actual 69 sources gcc ASan + UBSan -Werror no sanitizer disabled",
+  "failed_candidate_count": 11,
+  "failed_bounded_callbacks": 7,
+  "failed_float_argument_store": 4,
+  "failures": [
+    {
+      "file": 36,
+      "name": "func_08002CA4_6DCB74",
+      "kind": "callback_reg",
+      "size": 52,
+      "first_diff": 12,
+      "wanted": "afbf0014",
+      "actual": "2739521c"
+    },
+    {
+      "file": 36,
+      "name": "func_080036C8_6DD598",
+      "kind": "callback_reg",
+      "size": 52,
+      "first_diff": 12,
+      "wanted": "afbf0014",
+      "actual": "2739521c"
+    },
+    {
+      "file": 38,
+      "name": "func_08001BBC_6E5B9C",
+      "kind": "callback_reg",
+      "size": 52,
+      "first_diff": 12,
+      "wanted": "afbf0014",
+      "actual": "2739521c"
+    },
+    {
+      "file": 39,
+      "name": "func_08000120_6E7430",
+      "kind": "callback_reg",
+      "size": 52,
+      "first_diff": 12,
+      "wanted": "afbf0014",
+      "actual": "2739521c"
+    },
+    {
+      "file": 40,
+      "name": "func_08000950_6E9AA0",
+      "kind": "callback_reg",
+      "size": 52,
+      "first_diff": 12,
+      "wanted": "afbf0014",
+      "actual": "2739521c"
+    },
+    {
+      "file": 43,
+      "name": "func_08002B2C_6F600C",
+      "kind": "callback_reg",
+      "size": 52,
+      "first_diff": 12,
+      "wanted": "afbf0014",
+      "actual": "2739521c"
+    },
+    {
+      "file": 46,
+      "name": "func_08002F58_704058",
+      "kind": "callback_reg",
+      "size": 52,
+      "first_diff": 12,
+      "wanted": "afbf0014",
+      "actual": "2739521c"
+    },
+    {
+      "file": 48,
+      "name": "func_08000490_707ED0",
+      "kind": "float_bit_store",
+      "size": 12,
+      "first_diff": 0,
+      "wanted": "44856000",
+      "actual": "03e00008"
+    },
+    {
+      "file": 60,
+      "name": "func_08000630_71DE00",
+      "kind": "float_bit_store",
+      "size": 12,
+      "first_diff": 0,
+      "wanted": "44856000",
+      "actual": "03e00008"
+    },
+    {
+      "file": 60,
+      "name": "func_080010F4_71E8C4",
+      "kind": "float_bit_store",
+      "size": 12,
+      "first_diff": 0,
+      "wanted": "44856000",
+      "actual": "03e00008"
+    },
+    {
+      "file": 60,
+      "name": "func_080014D0_71ECA0",
+      "kind": "float_bit_store",
+      "size": 12,
+      "first_diff": 0,
+      "wanted": "44856000",
+      "actual": "03e00008"
+    }
+  ],
+  "canonical_full_live_branch_build": "NOT_RUN",
+  "canonical_inventory": "NOT_RUN",
+  "canonical_local_ci": "NOT_RUN",
+  "production_delta": 0,
+  "production_blocker": "Current authenticated full GitHub production checkout not materialized in native build container; upstream-only build not a canonical 864+69 integration",
+  "romanized_original_mips_assets_committed": false,
+  "native_replay_69_sources": "PASS_2026_11_18"
+}
