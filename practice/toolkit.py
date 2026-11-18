@@ -152,7 +152,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self.verified_rom_path = (
             load_remembered_rom('japan')
             if self.active_version.key == 'japan' else None)
-        root.title(f"Goemon Practice Toolkit {DISPLAY_VERSION} · {self.active_version.label}")
+        root.title(f"Goemon Practice Toolkit {DISPLAY_VERSION}")
         # Fit the initial window to the usable desktop instead of forcing
         # a 790px-tall viewport that hides the lower Dashboard controls.
         # Every page still scrolls on smaller monitors.
@@ -214,7 +214,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         ttk.Label(brand, text='Goemon Speedrun Tools', style='Header.TLabel').pack(anchor='w')
         ttk.Label(brand, text='PRACTICE TOOLKIT  /  SCENE BROWSER  /  LIVE MEMORY',
                   style='HeaderSub.TLabel').pack(anchor='w', pady=(4, 0))
-        self.version_heading = tk.StringVar(value=f'{DISPLAY_VERSION}  |  {self.active_version.label}')
+        self.version_heading = tk.StringVar(value=DISPLAY_VERSION)
         ttk.Label(header, textvariable=self.version_heading,
                   style='HeaderSub.TLabel').pack(side='right', padx=8)
 
@@ -252,12 +252,19 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                   wraplength=410).pack(anchor='w', pady=(0, 7))
         version_row = ttk.Frame(connection)
         version_row.pack(fill='x', pady=(0, 7))
-        ttk.Label(version_row, text='Game version').pack(side='left', padx=(0, 8))
-        self.version_selector = ttk.Combobox(
-            version_row, textvariable=self.game_version_choice, state='readonly',
-            values=tuple(version.label for version in VERSIONS.values()), width=23)
-        self.version_selector.pack(side='left', fill='x', expand=True)
-        self.version_selector.bind('<<ComboboxSelected>>', self.on_game_version_changed)
+        ttk.Label(version_row, text='Game').pack(side='left', padx=(0, 8))
+        # Keep the existing label-valued variable for preference and test
+        # compatibility. Country names remain legible when colour flag
+        # glyphs are unavailable in the installed Tk/system fonts.
+        self.region_usa_button = ttk.Radiobutton(
+            version_row, text='🇺🇸 USA', variable=self.game_version_choice,
+            value=VERSIONS['usa'].label, command=self.on_game_version_changed)
+        self.region_japan_button = ttk.Radiobutton(
+            version_row, text='🇯🇵 Japan', variable=self.game_version_choice,
+            value=VERSIONS['japan'].label, command=self.on_game_version_changed)
+        self.region_usa_button.pack(side='left', padx=(0, 10))
+        self.region_japan_button.pack(side='left')
+        self.region_buttons = (self.region_usa_button, self.region_japan_button)
         ttk.Combobox(connection, textvariable=self.connection_target, state='readonly',
                      values=('auto', 'recomp', 'project64', 'mupen64plus')).pack(fill='x', pady=(0, 7))
         pid_row=ttk.Frame(connection);pid_row.pack(fill='x',pady=(0,7))
@@ -270,7 +277,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             self.jp_base_row, textvariable=self.jp_base_choice, state='readonly',
             values=('Auto (detect)',), width=31)
         self.jp_base_selector.pack(side='left', fill='x', expand=True, padx=(7, 0))
-        self.jp_base_row.pack(fill='x', pady=(0, 7))
+        # The RAM-base picker is an ambiguous-attachment recovery control,
+        # not a Japan-only dashboard card: it stays hidden until needed.
         self.jp_candidates = {}
         self.jp_candidates_pid = None
         self.jp_candidates_backend = None
@@ -343,7 +351,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         named.pack(fill='x', pady=(7, 0))
         self.named_native_frame = named
         ttk.Label(
-            named, text='Named Japanese state slots (emulator owns the saves)',
+            named, text='Named state slots (Japan emulator integration)',
             style='CardMuted.TLabel').pack(anchor='w')
         name_row = ttk.Frame(named)
         name_row.pack(fill='x', pady=(3, 3))
@@ -368,14 +376,16 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self._named_native_visible = []
         self.connection_target.trace_add(
             'write', lambda *_: self.refresh_named_native_checkpoints())
-        if self.active_version.key != 'japan':
-            named.pack_forget()
+        # The named-slot panel occupies the same position in both regions.
+        # Only verified Japanese native-save operations are enabled.
         self.refresh_named_native_checkpoints()
 
         # Read-only diagnostics coexist with direct mapped Japanese unlock edits.
         jp_card = ttk.LabelFrame(right, text=' Japanese guest RAM (recomp / emulators) ', padding=10)
         self.jp_card = jp_card
-        jp_card.pack(fill='x', pady=(0, 6))
+        # Retired Dashboard duplicate: fixed-address RAM inspection and
+        # editing live in the shared USA/Japan Live Memory tab. Keep its
+        # backing widgets alive to avoid changing runtime attachment code.
         ttk.Label(jp_card, text='Verify Japan-0 ROM; select recomp, project64 (Windows or Wine/Linux) or mupen64plus, '
                   'then Connect. Only raw N64 bytes are exposed; USA pointers, '
                   'USA checkpoints and USA RAM editors remain disabled. '
@@ -557,8 +567,10 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
     def _apply_game_version_ui(self):
         """Expose the selected version without implying a mapped Japanese RDRAM."""
         version = self.active_version
-        self.root.title(f"Goemon Practice Toolkit {DISPLAY_VERSION} · {version.label}")
-        self.version_heading.set(f"{DISPLAY_VERSION}  |  {version.label}")
+        # The region switch changes data/permissions, not Dashboard layout
+        # or the application header and window geometry.
+        self.root.title(f"Goemon Practice Toolkit {DISPLAY_VERSION}")
+        self.version_heading.set(DISPLAY_VERSION)
         # The old live_memory_supported field describes USA logical
         # player/task checkpoint support, NOT whether Japan can read RAM.
         enabled = version.logical_checkpoint_supported
@@ -594,15 +606,9 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self.discovery_tabs.tab(self.state_discovery_tab, state='normal')
         self.configure_event_region()
         self.configure_state_probe_region()
-        if version.key == 'japan':
-            self.jp_card.pack(fill='x', pady=(0, 6))
-        else:
-            self.jp_card.pack_forget()
+        # Never detach or repack Dashboard cards on a ROM switch. The old
+        # Japan-only raw-RAM card has been retired in favour of Live Memory.
         self.refresh_japan_party_controls()
-        if version.key == 'japan':
-            self.named_native_frame.pack(fill='x', pady=(7, 0))
-        else:
-            self.named_native_frame.pack_forget()
         self.refresh_named_native_checkpoints()
         # Japan permits fixed-address raw freezes; USA-only task-pointer /
         # health / God Mode controls remain disabled. No USA guest offsets are
@@ -637,10 +643,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 else ('READ ONLY' if getattr(self.args, 'read_only', False)
                       else 'USA memory writes enabled  •  Experimental entrance reload'))
         # Japan raw-memory mode has no USA-specific field interpretation.
-        if version.key == 'japan':
-            self.jp_base_row.pack(fill='x', before=self.connect_button, pady=(0, 7))
-        else:
-            self.jp_base_row.pack_forget()
+        # Ambiguous RAM-base choices are shown only by attachment results,
+        # regardless of the currently selected game.
         self.connect_button.state(['!disabled'])
         if hasattr(self, 'launch_recomp_button'):
             self.launch_recomp_button.state(['!disabled'] if version.key in ('usa', 'japan') else ['disabled'])
@@ -656,6 +660,11 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
                 'detection; the original retail ROM is requested only once '
                 'if no verified path is remembered.')
 
+    def _set_region_switch_enabled(self, enabled: bool):
+        """Keep both region flags in the same state during process attach."""
+        for button in self.region_buttons:
+            button.state(['!disabled'] if enabled else ['disabled'])
+
     def _clear_japan_base_choices(self):
         """Discard process-specific candidate bases when the region or ROM changes."""
         self.jp_candidates = {}
@@ -663,6 +672,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self.jp_candidates_backend = None
         self.jp_base_selector['values'] = ('Auto (detect)',)
         self.jp_base_choice.set('Auto (detect)')
+        self.jp_base_row.pack_forget()
 
     def _disconnect_for_version_change(self):
         """Stop write workers and detach before switching region interpretations."""
@@ -1657,7 +1667,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             self.pending_native_warp = None
             self._connecting = True
             self.connect_button.state(['disabled'])
-            self.version_selector.state(['disabled'])
+            self._set_region_switch_enabled(False)
             self.status.set('Connecting to '+(f'PID {pid_hint}' if pid_hint else 'detected game')+
                             ': discovering Goemon RAM...')
             self.mem = None
@@ -1718,7 +1728,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self._disconnect_for_version_change()
         self._connecting = True
         self.connect_button.state(['disabled'])
-        self.version_selector.state(['disabled'])
+        self._set_region_switch_enabled(False)
         self.status.set(f'Checking Japanese {target} memory signatures '
                         '(three independent code probes; auto RAM layout)...')
         opts = (pid_hint, self.verified_rom_path, base_hint, endian,
@@ -1919,7 +1929,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             self.root.after(50, self._poll_connect_results)
             return
         self._connecting = False
-        self.version_selector.state(['!disabled', 'readonly'])
+        self._set_region_switch_enabled(True)
         self.connect_button.state(['!disabled'])
         if result[0] == 'japan-ambiguous':
             _, pid, target, choices = result
@@ -1932,6 +1942,8 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             self.jp_base_selector['values'] = (
                 'Auto (detect)', *self.jp_candidates.keys())
             self.jp_base_choice.set('Auto (detect)')
+            self.jp_base_row.pack(
+                fill='x', before=self.connect_button, pady=(0, 7))
             self.jp_read_button.state(['disabled'])
             self.jp_capture_spawn_btn.state(['disabled'])
             self.jp_read_result.set(

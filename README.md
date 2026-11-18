@@ -1,4 +1,33 @@
-# Goemon Speedrun Tools v0.11.56 — Experimental submode-unrestricted scene reload
+# Goemon Speedrun Tools v0.11.57 — Stable USA/Japan Dashboard toggle
+
+## v0.11.57 — Two flag controls, one fixed Dashboard
+
+The game-version dropdown is replaced by a compact, accessible **USA /
+Japan flag toggle**. Both controls update the same single Toolkit and
+selected-ROM session. Switching safely disconnects old memory handles and
+stops write workers, but retains the same Dashboard cards, GUI tree,
+scroll position, window geometry and Scene Browser selection rather than
+unpacking/repacking panels or rebuilding the scene list.
+
+The old duplicate "Japanese guest RAM" Dashboard card is removed from the
+visible page. The unified Live Memory tab exposes the correct fixed guest
+address reader, per-region writes and freezes. The named Japanese emulator
+state label controls occupy a fixed Dashboard position in both regions; their
+actions remain disabled when USA is selected. The advanced Japanese RAM-base
+picker appears **only** when process attachment reports multiple verified
+candidates and needs manual disambiguation.
+
+The main header stays the same on both ROMs. The Scene Browser has identical
+instructions, character selector, entrance controls and original-debug
+button labels; regional read/write validation still uses separate verified
+addresses and permissions. Tk flag glyphs retain USA/Japan text fallbacks.
+
+GUI regressions cover repeated USA↔Japan toggles, persistent Dashboard
+widget identities/layout, disconnection guards and preserved scene selection.
+No ROM/game-memory semantics were changed. Real emulator tests are distinct
+from headless GUI validation.
+
+
 
 ## v0.11.56 — Remove submode allowlist from double-click scene reload
 

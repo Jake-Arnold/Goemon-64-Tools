@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-18 — v0.11.57 single stable USA/Japan Dashboard
+
+- **User report:** Selecting USA/Japan visually reconstructed the front page, with a region dropdown, a Japanese raw-RAM duplicate card and region-dependent card/row repacking. The Scene Browser list and character selector were also reset by `configure_scene_browser_region`.
+- **Fix:** Replace the game dropdown with two readable radio flag controls (USA and Japan) using the existing region selection event. One Tk root, Dashboard Canvas, notebook, cards and scene widgets persist across transitions. Header and window title stay stable. The old Japanese raw-RAM card is permanently hidden because the shared Live Memory tab is the single RAM viewer.
+- **Stable layout:** Keep the named emulator slot label panel in one place but disable unsupported USA operations; only show Japan's advanced RAM-base picker when the adapter detects ambiguous candidates. Do not repaint scene list or reset character/entrance selection on region switch. Retain background memory-session detach and stale-write cancellation.
+- **Verification:** New tests inspect stable widget IDs, both flag buttons, selected region, persistent Dashboard card placement, and memory disconnection. CI must execute before merge.
+- **Scope:** UI only; no ROM addresses, native 0x0A/0x0C loader, guest-memory read/write implementation, or decomp history changed.
+
+
 ## 2026-11-18 — v0.11.56 PR consolidation regression-gate expansion
 
 - Added synthetic USA/JP Impact submode 5 staging, source-pointer recovery, scene/region session tests and virtual flag recycler/experimental Scene Browser Tk tests to the Linux CI driver. Both Xvfb and DISPLAY fallback now run the new GUI modules. This verifies actual PR code rather than only compiling it.

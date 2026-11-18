@@ -234,85 +234,47 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         self.scene_footer_note.pack(anchor='w')
 
     def configure_scene_browser_region(self):
-        """One browser with two explicit, separately validated warp backends."""
+        """Stable Scene Browser UI for either original ROM.
+
+        The backend selects regional addresses and verified writers;
+        changing the selected ROM never clears the scene list, resets the
+        chosen target character, or repacks the scene/entrance controls.
+        """
         japan = self.active_version.key == 'japan'
-        if japan:
-            self.jp_capture_spawn_btn.pack_forget()  # Shared USA entrance selector supersedes separate JP capture
-            self.jp_capture_spawn_btn.state(
-                ['!disabled'] if self.jp_rdram is not None
-                and not self._connecting else ['disabled'])
-            self.scene_instruction.configure(
-                text='JAPAN: single-click selects; double-click immediately '
-                     'requests the selected room using the same 0x0C area '
-                     'reload mechanism as USA. No debug menu is opened.')
-            self.scene_character.configure(values=(
-                'Keep current character',
-                'Goemon', 'Ebisumaru', 'Sasuke', 'Yae'))
-            self.scene_character.current(0)
-            self.scene_character_line.pack(fill='x', pady=4,
-                                           after=self.scene_instruction)
-            # The same USA entrance dropdown, selected row and coordinates
-            # are required for both native regional scene-reload backends.
-            self.entrance_box.pack(
-                fill='x', pady=4, after=self.scene_character_line)
-            self.scene_transition_note.configure(
-                text='USA and Japan use the SAME selected original-USA ROM '
-                     'entrance XYZ, heading and mode. Japan stages the 12-byte '
-                     'entry before 0x0C and verifies/places Goemon XYZ after '
-                     'the destination finishes loading.')
-            self.experimental_warp_btn.configure(
-                text='Warp Japan to selected USA entrance XYZ')
-            self.native_debug_btn.configure(
-                text='Open original debug menu (0x0A)')
-            enabled = bool(
+        self.jp_capture_spawn_btn.pack_forget()
+        self.scene_instruction.configure(
+            text='Single-click selects a room; double-click requests the '
+                 'selected entrance through the game-native 0x0C loader. '
+                 'Open original debug menu (0x0A) is separate.')
+        self.scene_transition_note.configure(
+            text='USA/Japan: the same selected entrance coordinates, '
+                 'heading and mode are staged using region-specific '
+                 'verified guest memory addresses.')
+        self.experimental_warp_btn.configure(
+            text='Warp to selected entrance')
+        self.native_debug_btn.configure(
+            text='Open original debug menu (0x0A)')
+        self.scene_footer_note.configure(
+            text='Original ROM data supplies the destination entrance. '
+                 'Unknown or ambiguous entrances never trigger a blind '
+                 'scene-only write.')
+        enabled = bool(
+            not getattr(self.args, 'read_only', False) and (
                 (getattr(self.args, 'enable_japan_scene_writes', False)
                  or getattr(self.args, 'enable_japan_debug_menu_writes', False))
-                and not getattr(self.args, 'read_only', False))
-            self.scene_footer_note.configure(
-                text='Japan/USA: choose the same destination and entrance '
-                     'in the shared dropdown. Original USA entrance data '
-                     'must be loaded; unknown/ambiguous entrance selections '
-                     'block the warp instead of sending scene-only writes.')
-        else:
-            self.jp_capture_spawn_btn.pack_forget()
-            self.scene_instruction.configure(
-                text='USA: single-click selects; double-click uses the '
-                     'selected entrance reload. Manual debug menu is separate.')
-            self.scene_character.configure(values=(
-                'Keep current character',
-                'Goemon', 'Ebisumaru', 'Sasuke', 'Yae'))
-            self.scene_character.current(0)
-            self.scene_character_line.pack(fill='x', pady=4,
-                                           after=self.scene_instruction)
-            self.entrance_box.pack(fill='x', pady=4,
-                                   after=self.scene_character_line)
-            self.scene_transition_note.configure(
-                text='USA experimental native entrance reload with verified '
-                     'spawn and character checks.')
-            self.experimental_warp_btn.configure(
-                text='Warp to selected USA entrance')
-            self.native_debug_btn.configure(
-                text='Open original debug menu (0x0A)')
-            enabled = bool(getattr(self.args, 'enable_hex_edit', False)
-                           and getattr(self.args, 'enable_teleport', False)
-                           and not getattr(self.args, 'read_only', False))
-            self.scene_footer_note.configure(
-                text='USA and Japan both use native 0x0C area reloads, '
-                     'with independent region-specific addresses.')
+                if japan else (
+                    getattr(self.args, 'enable_hex_edit', False)
+                    and getattr(self.args, 'enable_teleport', False))))
         self.experimental_warp_btn.state(
             ['!disabled'] if enabled else ['disabled'])
         manual = bool(
+            not getattr(self.args, 'read_only', False) and
             (getattr(self.args, 'enable_japan_debug_menu_writes', False)
-             if japan else getattr(self.args, 'enable_debug_menu', False))
-            and not getattr(self.args, 'read_only', False))
+             if japan else getattr(self.args, 'enable_debug_menu', False)))
         self.native_debug_btn.state(
             ['!disabled'] if manual else ['disabled'])
-        self.draw_scene_list()
-        self.scene_status.set(
-            'Japan-0: select a room and original-USA entrance; double-click '
-            'for the same coordinates as the USA native warp.'
-            if japan else 'USA: select a room and double-click for '
-                          'the experimental entrance reload.')
+        # The selection, listbox, filter and entrance row are retained.
+        # ROM-switch disconnection invalidates active reads independently.
 
     def refresh_checkpoint_options(self):
         if not hasattr(self,'diff_cp'):return

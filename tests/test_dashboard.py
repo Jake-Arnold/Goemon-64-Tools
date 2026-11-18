@@ -167,6 +167,74 @@ class DashboardSmokeTests(unittest.TestCase):
         command.assert_not_called()
         self.assertIn('cannot create complete savestates', app.status.get())
 
+    def test_flag_switch_preserves_single_dashboard_and_scene_widgets(self):
+        app = self.toolkit
+        self.root.deiconify()
+        self.root.update_idletasks()
+        original_widgets = (
+            str(app.dashboard_canvas),
+            str(app.dashboard_connection_column),
+            str(app.dashboard_checkpoints_column),
+            str(app.named_native_frame),
+            str(app.scene_list),
+            str(app.scene_character),
+            str(app.notebook),
+        )
+        original_layout = (
+            app.dashboard_connection_column.grid_info()['row'],
+            app.dashboard_checkpoints_column.grid_info()['row'],
+        )
+        original_heading = app.version_heading.get()
+        self.assertIn('USA', app.region_usa_button.cget('text'))
+        self.assertIn('Japan', app.region_japan_button.cget('text'))
+        self.assertEqual(app.jp_card.winfo_manager(), '')
+        self.assertEqual(app.jp_base_row.winfo_manager(), '')
+        self.assertEqual(app.named_native_frame.winfo_manager(), 'pack')
+        self.assertFalse(hasattr(app, 'version_selector'))
+
+        app.scene_character.current(3)
+        app.scene_list.selection_set(0)
+        selected_scene = app.scene_list.get(0)
+        for button, expected in (
+            (app.region_japan_button, 'japan'),
+            (app.region_usa_button, 'usa'),
+            (app.region_japan_button, 'japan'),
+            (app.region_usa_button, 'usa'),
+        ):
+            button.invoke()
+            self.root.update_idletasks()
+            self.assertEqual(app.active_version.key, expected)
+            self.assertEqual(
+                original_widgets,
+                (str(app.dashboard_canvas),
+                 str(app.dashboard_connection_column),
+                 str(app.dashboard_checkpoints_column),
+                 str(app.named_native_frame),
+                 str(app.scene_list),
+                 str(app.scene_character),
+                 str(app.notebook)))
+            self.assertEqual(
+                original_layout,
+                (app.dashboard_connection_column.grid_info()['row'],
+                 app.dashboard_checkpoints_column.grid_info()['row']))
+            self.assertEqual(app.named_native_frame.winfo_manager(), 'pack')
+            self.assertEqual(app.jp_card.winfo_manager(), '')
+            self.assertEqual(app.jp_base_row.winfo_manager(), '')
+            self.assertEqual(app.version_heading.get(), original_heading)
+            self.assertEqual(app.scene_character.current(), 3)
+            self.assertEqual(app.scene_list.get(0), selected_scene)
+            self.assertIsNone(app.mem)
+            self.assertIsNone(app.jp_rdram)
+
+    def test_region_switch_locks_both_flag_buttons(self):
+        app = self.toolkit
+        app._set_region_switch_enabled(False)
+        self.assertTrue(all('disabled' in b.state()
+                            for b in app.region_buttons))
+        app._set_region_switch_enabled(True)
+        self.assertTrue(all('disabled' not in b.state()
+                            for b in app.region_buttons))
+
     def test_game_version_selector_gates_usa_writers_but_exposes_japan_reads(self):
         app = self.toolkit
         self.assertEqual(app.active_version.key, 'usa')
@@ -186,7 +254,7 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertEqual(app.scene_character.get(), 'Keep current character')
         self.assertNotEqual(app.entrance_box.winfo_manager(), '')
         self.assertIn('Load original USA ROM', app.entrance_load_button.cget('text'))
-        self.assertIn('JAPAN:', app.scene_instruction.cget('text'))
+        self.assertIn('0x0C', app.scene_instruction.cget('text'))
         # Japanese raw memory editing is available in the UI; real writes
         # still require independently verified ROM/PID/RDRAM and permissions.
         self.assertNotIn('disabled', app.raw_write_btn.state())
