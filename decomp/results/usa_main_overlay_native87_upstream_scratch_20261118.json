@@ -1,0 +1,90 @@
+{
+  "format": "goemon-usa-main-overlay-native87-research-v1",
+  "date": "2026-11-18",
+  "status": "RESEARCH_ONLY",
+  "region": "usa",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_rom_bytes": 33554432,
+  "original_rom_source": "user-supplied USA retail ROM decompressed against pinned klorfmorf/mnsg",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "native_compiler": "original IDO 5.3 -O2 -mips2",
+  "native_original_address_compared": {
+    "functions_exact": 87,
+    "original_instruction_bytes_exact": 912
+  },
+  "candidate_types": {
+    "no_op_callbacks": 62,
+    "read_u32_field": 4,
+    "write_u32_field": 13,
+    "write_constant": 8
+  },
+  "preexisting_production_excluded": [
+    "func_80035D84_36984",
+    "func_80037DB0_389B0",
+    "func_8003EA0C_3F60C",
+    "func_8003EBA4_3F7A4"
+  ],
+  "new_functions_by_source_asm": {
+    "12760": 1,
+    "35280": 5,
+    "37440": 1,
+    "10D80": 1,
+    "204B0": 1,
+    "5F6840": 30,
+    "63A2B0": 7,
+    "65E310": 9,
+    "66C250": 3,
+    "676C80": 12,
+    "694CA0": 11,
+    "69CBD0": 3,
+    "E000": 3
+  },
+  "upstream_scratch_build": {
+    "status": "FULL_ROM_EXACT",
+    "full_rom_bytes_compared": 33554432,
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "original_elf_positive_sized_function_identites": {
+      "expected": 7376,
+      "observed": 7376,
+      "exact": true
+    },
+    "original_main_semantic_relocations": {
+      "expected": 15058,
+      "exact": true
+    },
+    "original_overlay_semantic_relocations": {
+      "file_13": 9589,
+      "file_14": 3041,
+      "file_15": 1625,
+      "file_17": 1739,
+      "file_18": 3365,
+      "file_19": 1078,
+      "file_20": 68
+    },
+    "original_overlay_relocations_exact": true,
+    "original_rom_instruction_patches": 0,
+    "zero_padding_only_alignment_trim": true
+  },
+  "actual_source_host_regression": {
+    "status": "PASS",
+    "compiler": "GCC -std=gnu11 -O1 -fsanitize=address,undefined",
+    "address_sanitizer": "PASS",
+    "undefined_behavior_sanitizer": "PASS",
+    "no_alignment_exception": true,
+    "source_file_git_blob_sha": "7309f9a016b13830674819627b75ef97e01d6609",
+    "tests": 87
+  },
+  "current_branch_production": {
+    "usa_matching_C": 864,
+    "usa_verified_instruction_bytes": 37904,
+    "usa_assembly_remaining": 6499,
+    "japan_0_matching_C": 39
+  },
+  "production_combined_g2": "NOT_RUN",
+  "production_full_ELF_and_relocations": "NOT_RUN",
+  "production_strict_inventory": "NOT_RUN",
+  "production_full_local_ci": "NOT_RUN",
+  "promoted_C": 0,
+  "next": "Use complete authenticated chatgptweb/decomp checkout to stage these 87 candidates alongside all 864 accepted USA C; run fresh combined G2, full 32 MiB ROM, semantic relocations, 7376 ELF identity, inventory and full local CI. No promotion unless all pass.",
+  "private_inputs_committed": false
+}
