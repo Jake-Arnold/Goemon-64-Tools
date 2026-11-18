@@ -34,6 +34,7 @@ def reviewed_plan(manifest:dict,original_rom:bytes|None=None):
     base_manifest=copy.deepcopy(manifest)
     # Later main/overlay stages must not contaminate the historical 210-C preflight.
     base_manifest.pop("overlay_native87_stage", None)
+    base_manifest.pop("overlay_highbyte26_stage", None)
     if 'overlay_crossregion47_stage' in base_manifest:
         from . import overlay_crossregion47 as cross
         if base_manifest.pop('overlay_crossregion47_stage') != {'format':cross.STAGE_FORMAT}:

@@ -17,7 +17,7 @@ class UsaCrossRegion47PromotionTests(unittest.TestCase):
   self.assertEqual(len(fixture['functions']),47)
   self.assertEqual(sum(f['size'] for f in fixture['functions']),2220)
   claims=claimed_functions(self.manifest)
-  self.assertEqual((len(claims),len({x['name'] for x in claims}),sum(x['size'] for x in claims)),(951,951,38816))
+  self.assertEqual((len(claims),len({x['name'] for x in claims}),sum(x['size'] for x in claims)),(966,966,41324))
   for f in fixture['functions']:
    path=ROOT/'decomp/research/jp_recomp_to_c/src'/(f['name']+'.c')
    self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),f['source_sha256'])

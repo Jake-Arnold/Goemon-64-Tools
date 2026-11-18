@@ -17,7 +17,7 @@ class UsaFile12SpatialPromotionTests(unittest.TestCase):
         self.assertEqual(sum(row['size'] for row in rows),748)
         self.assertEqual(len({row['rom_offset'] for row in rows}),11)
         manifest_claims={fn['name']:fn for fn in claimed_functions(self.manifest)}
-        self.assertEqual(len(manifest_claims),951)
+        self.assertEqual(len(manifest_claims),966)
         for row in rows:
             with self.subTest(name=row['name']):
                 self.assertIn(row['name'],manifest_claims)

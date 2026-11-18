@@ -15,11 +15,10 @@ class PromotionReviewQueueTests(unittest.TestCase):
 
     def test_queue_is_research_only_and_no_candidate_was_previously_accepted(self):
         result = review.validate(self.queue, ROOT)
-        self.assertEqual(result['review_candidates'], 41)
-        self.assertEqual(result['review_instruction_bytes'], 4108)
+        self.assertEqual(result['review_candidates'], 26)
+        self.assertEqual(result['review_instruction_bytes'], 1600)
         self.assertEqual(result['blocked_not_ready'], 1)
         self.assertEqual(result['by_segment'], {'main': {'functions': 5, 'bytes': 284},
-             'file_26': {'functions': 15, 'bytes': 2508},
              'file_27': {'functions': 21, 'bytes': 1316}})
 
     def test_duplicate_rejected(self):

@@ -1,6 +1,8 @@
+**Current USA 966 original-address matching C / 41,324 bytes** (15 new file_26 functions; native 32MiB original-ROM G2, ELF/relocations/inventory/full CI PASS; GitHub publication pending), Japan 39. See `results/usa_file26_highbyte15_966_promotion_20261118.json` and `research/highbyte_search_20261118/README.md` for the >512-byte search.
+
 # Matching C reconstruction track
 
-**Current locally verified USA production (18 November 2026): 951 matching-C functions / 38,816 original instruction bytes; 6,412 ASM entries and 7,376 original ELF FUNC identities.** This includes all accepted 864 plus 87 original-address main/overlay C functions. Original 32 MiB USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494` is exact. Japan remains separately 39 matching-C functions / 2,092 bytes. Canonical local proof and inventory are under `results/`; source manifest and stage under `research/usa_main_overlay_87_20261118/promotion_manifest.json` and `overlay_native87.py`. This locally verified implementation was published to `chatgptweb/decomp` at GitHub commit `46767cc07e7e26d4ac2def2f5896b7b3c067ee7d`.
+**Current locally verified USA production (18 November 2026): 951 matching-C functions / 38,816 original instruction bytes; 6,412 ASM entries and 7,376 original ELF FUNC identities.** This includes all accepted 864 plus 87 original-address main/overlay C functions. Original 32 MiB USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494` is exact. Japan remains separately 39 matching-C functions / 2,092 bytes. Canonical local proof and inventory are under `results/`; source manifest and stage under `research/usa_main_overlay_87_20261118/promotion_manifest.json` and `overlay_native87.py`. This checkout is **not remotely pushed** until a subsequent GitHub commit is verified.
 
 **Continuing work? Start with [CONTINUE.md](CONTINUE.md)** for current paths,
 next targets, verification commands and publishing steps. Historical counts below

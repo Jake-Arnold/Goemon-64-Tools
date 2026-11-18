@@ -29,7 +29,7 @@ class AllPendingFile11PromotionTests(unittest.TestCase):
         self.assertTrue(past.issubset(now))
         self.assertEqual(now-past,research)
         self.assertEqual(sum(x[-1] for x in research),3512)
-        self.assertEqual(len(claimed_functions(self.manifest)),951)
+        self.assertEqual(len(claimed_functions(self.manifest)),966)
 
     def test_layout_sources_and_original_objects_pinned(self):
         plan = current.reviewed_plan(self.manifest)

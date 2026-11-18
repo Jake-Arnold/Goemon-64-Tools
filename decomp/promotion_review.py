@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 import re
 
-QUEUE_PATH = Path(__file__).parent / 'data/promotion_candidates_20261117.json'
+QUEUE_PATH = Path(__file__).parent / 'data/promotion_candidates_20261118.json'
 ROM_SHA1 = '6ea0ed71032ce08fc2745f412d84936382197494'
 SYM = re.compile(r'^func_([0-9A-Fa-f]{8})_([0-9A-Fa-f]+)$')
 HEX64 = re.compile(r'^[0-9a-f]{64}$')
@@ -31,7 +31,7 @@ def validate(queue: dict, root: Path, *, strict_sources=False, rom: bytes | None
     if queue.get('format') != 'goemon-promotion-review-queue-v1':
         raise ReviewError('unknown review queue format')
     base = queue.get('production_accepted_baseline', {})
-    if base != {'usa_functions': 951, 'usa_instruction_bytes': 38816,
+    if base != {'usa_functions': 966, 'usa_instruction_bytes': 41324,
                 'japan_0_functions': 39, 'japan_0_instruction_bytes': 2092}:
         raise ReviewError('stale or unrecognised accepted production checkpoint')
     inv = json.loads((root / 'decomp/results/inventory.json').read_text())
@@ -122,11 +122,11 @@ def validate(queue: dict, root: Path, *, strict_sources=False, rom: bytes | None
             if a[1] > b[0]:
                 raise ReviewError(f'overlapping {segment} candidate extents: {a[2]} / {b[2]}')
     summary = queue.get('ready_for_combined_g2', {})
-    if (len(ready), sum(x['size'] for x in ready), len(blocked)) != (41, 4108, 1):
-        raise ReviewError('expected independent 41 native-exact / one blocked lead not present')
-    if summary != {'functions': 41, 'bytes': 4108, 'by_segment': counts}:
+    if (len(ready), sum(x['size'] for x in ready), len(blocked)) != (26, 1600, 1):
+        raise ReviewError('expected 26 remaining native-exact / one blocked lead not present')
+    if summary != {'functions': 26, 'bytes': 1600, 'by_segment': counts}:
         raise ReviewError('review queue rollup changed')
-    return {'review_candidates': len(ready), 'review_instruction_bytes': 4108,
+    return {'review_candidates': len(ready), 'review_instruction_bytes': 1600,
             'blocked_not_ready': len(blocked), 'by_segment': counts,
             'original_rom_check': 'PASS' if rom is not None else 'NOT_RUN',
             'source_blobs_checked': len(source_verified), 'status': 'RESEARCH_ONLY'}

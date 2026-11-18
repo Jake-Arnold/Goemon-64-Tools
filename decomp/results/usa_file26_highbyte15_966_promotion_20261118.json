@@ -1,0 +1,250 @@
+{
+  "format": "goemon-usa-file26-highbyte15-promotion-v1",
+  "date": "2026-11-18",
+  "region": "usa",
+  "status": "PASSED_G2_LOCAL_PENDING_GITHUB",
+  "production_before": {
+    "functions": 951,
+    "bytes": 38816
+  },
+  "newly_accepted": {
+    "functions": 15,
+    "bytes": 2508
+  },
+  "production_after": {
+    "functions": 966,
+    "bytes": 41324
+  },
+  "original_rom": {
+    "length": 33554432,
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "original_elf": {
+    "positive_size_func_identities": 7376,
+    "additional_aliases": 0,
+    "remaining_assembly": 6397,
+    "candidate_elf_sha256": "95934212dad32ac40f59ff495f23919b1ac9af7d6f2b4abb16d08d45631c2d5a"
+  },
+  "relocations": {
+    "entry": 6,
+    "main": 14953,
+    "file_11": 8825,
+    "file_12": 7051,
+    "file_13": 9589,
+    "file_14": 3041,
+    "file_15": 1625,
+    "file_16": 781,
+    "file_17": 1739,
+    "file_18": 3365,
+    "file_19": 1078,
+    "file_20": 68,
+    "file_21": 114,
+    "file_22": 294,
+    "file_23": 377,
+    "file_24": 160,
+    "file_25": 167,
+    "file_26": 207,
+    "file_27": 876,
+    "file_28": 35,
+    "file_29": 2536,
+    "file_30": 1826,
+    "file_31": 1371,
+    "file_32": 1068,
+    "file_33": 139,
+    "file_34": 317,
+    "file_35": 677,
+    "file_36": 1025,
+    "file_37": 1079,
+    "file_38": 761,
+    "file_39": 435,
+    "file_40": 892,
+    "file_41": 280,
+    "file_42": 555,
+    "file_43": 1593,
+    "file_44": 598,
+    "file_45": 545,
+    "file_46": 817,
+    "file_47": 275,
+    "file_48": 469,
+    "file_49": 602,
+    "file_50": 228,
+    "file_51": 143,
+    "file_52": 8,
+    "file_53": 534,
+    "file_54": 341,
+    "file_55": 390,
+    "file_56": 436,
+    "file_57": 708,
+    "file_58": 340,
+    "file_59": 508,
+    "file_60": 418,
+    "file_61": 161,
+    "file_62": 747,
+    "file_63": 94,
+    "file_64": 176,
+    "file_65": 86,
+    "file_66": 571,
+    "file_67": 254,
+    "file_68": 155,
+    "file_69": 464,
+    "file_70": 298,
+    "file_71": 350,
+    "file_72": 412,
+    "file_73": 274,
+    "file_74": 822,
+    "file_75": 279,
+    "file_76": 6,
+    "file_77": 304,
+    "file_78": 124,
+    "file_79": 180,
+    "file_80": 89
+  },
+  "source_fixture": "decomp/research/highbyte_file26_20261118/promotion_manifest.json",
+  "source_fixture_sha256": "2473da29dbf8fa6d29cd7b483ecb85108fa75136c06a84ef60bbc3b41677d098",
+  "functions": [
+    {
+      "name": "func_08000000_6AE7E0",
+      "rom_offset": "0x6AE7E0",
+      "vma": "0x08000000",
+      "size": 204,
+      "source_sha256": "96b6ae56415fc29669c6df9f87f709b7f4695193a3358feb443d9586d17bcb7c",
+      "original_code_sha256": "c66aee1bfb570e2330a71e35238ef3f918e0f431fbe20b40f4e3161d3f78e9b6"
+    },
+    {
+      "name": "func_080000CC_6AE8AC",
+      "rom_offset": "0x6AE8AC",
+      "vma": "0x080000CC",
+      "size": 168,
+      "source_sha256": "62c9f30e2b4a715e94e5f89483de526318ff3b495e1a6c37a025da1e05ebd196",
+      "original_code_sha256": "b50201cb028a5b73a93487c38273e71a80e943f86c790b81cdcdaead175b76ed"
+    },
+    {
+      "name": "func_08000174_6AE954",
+      "rom_offset": "0x6AE954",
+      "vma": "0x08000174",
+      "size": 64,
+      "source_sha256": "0014f74d9e30e2eec17bf0c4b867097030a3148f482a3abc13ef893815163006",
+      "original_code_sha256": "730025f755bf7a095091aa0eb80acec3ab8ca868fd2f775cabf869909bbd96eb"
+    },
+    {
+      "name": "func_080001B4_6AE994",
+      "rom_offset": "0x6AE994",
+      "vma": "0x080001B4",
+      "size": 80,
+      "source_sha256": "cae600133ff714d6731ada1c73bc510814843aa8741d515bfef1f979064168ce",
+      "original_code_sha256": "e1e0c78b47f332c0ec14bc02437dd867c8cc85e6f0ea599ea300103afeba48f1"
+    },
+    {
+      "name": "func_08000204_6AE9E4",
+      "rom_offset": "0x6AE9E4",
+      "vma": "0x08000204",
+      "size": 204,
+      "source_sha256": "0be469ec6ac91b681eed8c70d35a049d573a4ce2752f6599e6a8b2838a2e2bbe",
+      "original_code_sha256": "3839c13f8f81acea114f6360b0b7ba81220218cb175776db77b26e284ff1f203"
+    },
+    {
+      "name": "func_080002D0_6AEAB0",
+      "rom_offset": "0x6AEAB0",
+      "vma": "0x080002D0",
+      "size": 168,
+      "source_sha256": "a925dd825abc5a4c0b162ea61c9f3042181819917ccc25bff442d9d75dc21f8d",
+      "original_code_sha256": "6b467a7b5ddbe0405d783d7d99488e637b31519cfa75c9480317f25e3654cdb3"
+    },
+    {
+      "name": "func_08000378_6AEB58",
+      "rom_offset": "0x6AEB58",
+      "vma": "0x08000378",
+      "size": 188,
+      "source_sha256": "cdf4c052a1c20e80587ec022162e0c758715f4a6faeedc4a044dac941b6f0013",
+      "original_code_sha256": "e9a869cca87119596b8480d1895ae0619095d395819858c9cfce7b2b194567a2"
+    },
+    {
+      "name": "func_08000434_6AEC14",
+      "rom_offset": "0x6AEC14",
+      "vma": "0x08000434",
+      "size": 120,
+      "source_sha256": "e7cbec4f4969744c177c7fc4b52024447b3ff09cae1cffe528df256029ad5931",
+      "original_code_sha256": "5352807c03649912a660ce86eb709ac59e29398eafe5c3bb3aa9f0452fc650bc"
+    },
+    {
+      "name": "func_080004AC_6AEC8C",
+      "rom_offset": "0x6AEC8C",
+      "vma": "0x080004AC",
+      "size": 104,
+      "source_sha256": "bfdfbd90efb6a36b16713ede7cf597743567524fec29f3668a56eb76bf4c09a5",
+      "original_code_sha256": "ee9d90998e26e74a435c56d417fdb5721cca1d58bf80c280bda3a2d1f3c24820"
+    },
+    {
+      "name": "func_08000514_6AECF4",
+      "rom_offset": "0x6AECF4",
+      "vma": "0x08000514",
+      "size": 228,
+      "source_sha256": "9c6f48fa31839bb906cbe081a4345709c05c4f8d632c04734e4079ff1c73cd7f",
+      "original_code_sha256": "d67a1e3a85c675adb579ff762de480f90beef9d367b67a4132e7f92afd98e2d7"
+    },
+    {
+      "name": "func_080005F8_6AEDD8",
+      "rom_offset": "0x6AEDD8",
+      "vma": "0x080005F8",
+      "size": 232,
+      "source_sha256": "302bd3d2e22bc87d3eb00b030e7b541cedf64a72ff4e82555e144c6c3515d70e",
+      "original_code_sha256": "3f0f3cb7962b96d1706c18c49f544b4c2caf9138e241cbae0214af041099bbbb"
+    },
+    {
+      "name": "func_080006E0_6AEEC0",
+      "rom_offset": "0x6AEEC0",
+      "vma": "0x080006E0",
+      "size": 96,
+      "source_sha256": "f15858138cf658e5d7023e956a683e9fa96ec9a426d343a22d20360e7c24d262",
+      "original_code_sha256": "d15d626cb066f2aecf25c2bd7c4a29046cc3006e9ddd1db562d71c37ad2b05ae"
+    },
+    {
+      "name": "func_08000740_6AEF20",
+      "rom_offset": "0x6AEF20",
+      "vma": "0x08000740",
+      "size": 252,
+      "source_sha256": "c8818fff15e7c2b2f61455d744f9422adfefb4c8287c2274abbb61dba5b4e43e",
+      "original_code_sha256": "4c5a2befb10a1716bc4d73cd50bb4a99cb454db2d532e6dbf2d4ed9590ec5e60"
+    },
+    {
+      "name": "func_0800083C_6AF01C",
+      "rom_offset": "0x6AF01C",
+      "vma": "0x0800083C",
+      "size": 204,
+      "source_sha256": "f18cc47db471bafefdfbbb2e66dc4aa0e7d7c2b070375d4ce5e607d2f9eccdce",
+      "original_code_sha256": "4602f3981941f8c85a3066ee6b1797bc45d9264e1ffba85c422812cad87ff6c2"
+    },
+    {
+      "name": "func_080009F4_6AF1D4",
+      "rom_offset": "0x6AF1D4",
+      "vma": "0x080009F4",
+      "size": 196,
+      "source_sha256": "46053ff81b2c11dfc998dee01bffd52a1ea72c5cea066d5e88984f98328990d6",
+      "original_code_sha256": "e6efd31b7016e31330b89613edc0361dc767813e152b7a54fa02e16e6b30ced0"
+    }
+  ],
+  "checks": {
+    "fresh_IDO_5_3_and_pinned_upstream": "PASS",
+    "isolated_original_bytecode": "15/15",
+    "combined_original_rom": "PASS",
+    "original_linked_ELF": "PASS",
+    "all_section_semantic_relocations": "PASS",
+    "strict_inventory": "PASS",
+    "full_local_ci": {
+      "decomp_tests": 242,
+      "verifier_tests": 245,
+      "host_display_sanitizer": "PASS",
+      "native87_source_sanitizer": "PASS",
+      "evidence": "PASS"
+    }
+  },
+  "research_larger_than_512_bytes": {
+    "identified_asm_funcs": 696,
+    "bytes": 793572,
+    "native_promotions": 0,
+    "research_report": "decomp/research/highbyte_search_20261118/README.md"
+  },
+  "baseline_commit": "1246ac1173bf00ca79536f95d742757dd4f9370a",
+  "verified_build_report": "decomp/results/combined.json",
+  "verified_inventory": "decomp/results/inventory.json"
+}

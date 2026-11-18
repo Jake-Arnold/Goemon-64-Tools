@@ -47,6 +47,7 @@ class File11179StageTests(unittest.TestCase):
     def test_canonical_342_claims_are_unique(self):
         historical=dict(self.manifest)
         historical.pop('overlay_native87_stage',None)
+        historical.pop('overlay_highbyte26_stage',None)
         claims=verify.claimed_functions(historical)
         self.assertEqual(len(claims),342)
         self.assertEqual(len({(f['name'],f['rom_offset']) for f in claims}),342)

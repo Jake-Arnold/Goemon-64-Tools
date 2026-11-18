@@ -216,8 +216,8 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
         # Current 864-C proof: accepted 782 plus all 82 original file_11 candidates.
-        self.assertEqual(current['comparison']['matched_functions'],951)
-        self.assertEqual(current['comparison']['matched_function_bytes'],38816)
+        self.assertEqual(current['comparison']['matched_functions'],966)
+        self.assertEqual(current['comparison']['matched_function_bytes'],41324)
         preserved782=json.loads((ROOT/'results/combined_782_20261117.json').read_text())
         self.assertEqual((preserved782['comparison']['matched_functions'],preserved782['comparison']['matched_function_bytes']),(782,34392))
         preserved779=json.loads((ROOT/'results/combined_779_20261117.json').read_text())

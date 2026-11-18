@@ -58,6 +58,7 @@ def reviewed_plan(manifest: dict, original_rom: bytes | None = None) -> dict:
     # preflight to accept its own candidate count as already promoted.
     from .file11_143_preflight import validate
     baseline = copy.deepcopy(manifest)
+    baseline.pop('overlay_highbyte26_stage', None)  # omit future layer in historical 210-C audit
     # Preserve the historical pinned 210-function file_11 fixture audit.
     # A separately reviewed file_12 374-wrapper extension is verified at
     # the actual central candidate/linked-ROM gate, not in this legacy pin.

@@ -1,4 +1,6 @@
-**18 Nov 2026 GitHub-published 951-C promotion proof (`46767cc`):** 87 additional original-address USA main/overlay C / 912 instruction bytes passed canonical combined 864+87 native G2, strict inventory, ELF/relocation identity, and local CI. USA = 951 / 38,816 bytes, Japan remains 39. See `results/usa_native87_951_promotion_20261118.json` and `CONTINUE.md`. The 41 separate main graphics / file26 / file27 candidates remain unpromoted and were rebased against 951.
+**18 Nov 2026 verified local USA file_26 promotion (awaiting remote publication):** 15 C (2,508 bytes) integrated with 951 prior, now 966 USA C / 41,324 original bytes, exact full original 32MiB USA ROM, 7,376 ELF entries, relocations and strict inventory, full local CI PASS. Research queue now has 26 ready candidates (1,600 bytes), unchanged historical 41-queue preserved. Larger-than-512-byte ASM inventory and nonmatching compiler probes are documented in `research/highbyte_search_20261118/`.
+
+**18 Nov 2026 local 951-C promotion proof, pending GitHub publication:** 87 additional original-address USA main/overlay C / 912 instruction bytes passed canonical combined 864+87 native G2, strict inventory, ELF/relocation identity, and local CI. USA = 951 / 38,816 bytes, Japan remains 39. See `results/usa_native87_951_promotion_20261118.json` and `CONTINUE.md`. The 41 separate main graphics / file26 / file27 candidates remain unpromoted and were rebased against 951.
 
 # Consolidated original-address C candidate registry
 

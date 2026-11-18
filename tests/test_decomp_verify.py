@@ -120,6 +120,12 @@ def relocatable_function_object(functions=(), *, text_alignment=4):
     return bytes(content)
 
 
+def highbyte26_claim_count(manifest):
+    from decomp.verify import highbyte26_stage
+    fixture=highbyte26_stage(manifest)
+    return len(fixture['functions']) if fixture else 0
+
+
 def native_claim_count(manifest):
     from decomp.overlay_native87 import load_fixture
     return len(load_fixture()['functions']) if manifest.get('overlay_native87_stage') is not None else 0
@@ -135,7 +141,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(disabled)),
                          len(main_claimed_functions(disabled))+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(disabled))+(file11_stage_mode(disabled) or 0)+
-                         len(manifest_file13_stages(disabled)) + cross_claim_count(disabled) + native_claim_count(disabled))
+                         len(manifest_file13_stages(disabled)) + cross_claim_count(disabled) + native_claim_count(disabled) + highbyte26_claim_count(disabled))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
         staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
@@ -147,7 +153,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(len(claimed_functions(loaded)),
                              len(main_claimed_functions(loaded))+
                              1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(loaded))+(file11_stage_mode(loaded) or 0)+
-                             len(manifest_file13_stages(loaded)) + cross_claim_count(loaded) + native_claim_count(loaded))
+                             len(manifest_file13_stages(loaded)) + cross_claim_count(loaded) + native_claim_count(loaded) + highbyte26_claim_count(loaded))
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
             path.write_text(json.dumps(bad))
@@ -183,7 +189,7 @@ class DecompVerificationTests(unittest.TestCase):
                          'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in stages)+
-                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest))
+                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             bad=copy.deepcopy(manifest)
@@ -224,7 +230,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages) + cross_claim_count(manifest) + native_claim_count(manifest))
+                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             for field,value,pattern in (
@@ -873,7 +879,7 @@ class DecompVerificationTests(unittest.TestCase):
                          len(manifest.get('existing_source_patches',[]))+
                          (manifest.get('overlay_file43_stage') is not None)+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+
-                         len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest))
+                         len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
