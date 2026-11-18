@@ -2,7 +2,7 @@
   "format": "goemon-usa-file27-adjacent21-canonical-promotion-v1",
   "date": "2026-11-18",
   "region": "usa",
-  "status": "PASSED_G2_LOCAL_PENDING_GITHUB",
+  "status": "PASSED_G2_GITHUB_PUBLISHED",
   "reference_branch": "chatgptweb/decomp",
   "starting_remote_sha": "e44c621b4759dd344ac5790c0b76c29361595add",
   "pinned_original_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
@@ -222,5 +222,7 @@
     "in_game_execution": "NOT_RUN",
     "japan_0_full_ROM": "NOT_RUN"
   },
-  "publishing": "Commit and re-fetch authenticated branch head only after complete CI."
+  "publishing": "Committed to chatgptweb/decomp as ab76a397957b5e21df1d6d29dfffaf4c695378fa; remote HEAD, manifest and strict inventory re-fetched and confirmed.",
+  "implementation_commit": "ab76a397957b5e21df1d6d29dfffaf4c695378fa",
+  "publication_branch": "chatgptweb/decomp"
 }
