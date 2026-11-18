@@ -673,5 +673,24 @@
   "proven_original_elf_function_identities_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
   "proven_original_semantic_relocations_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
   "original_elf_positive_function_count": 7376,
-  "original_elf_relocation_count": 80747
+  "original_elf_relocation_count": 80747,
+  "usa_derived_noop_port": {
+    "format": "goemon-japan-accepted-regional-c-port-v1",
+    "status": "PASSED_G2",
+    "region": "japan_0",
+    "baseline_matching_c_functions": 39,
+    "baseline_matching_c_bytes": 2092,
+    "additional_functions": 290,
+    "additional_bytes": 3264,
+    "matching_c_functions": 329,
+    "matching_c_bytes": 5356,
+    "remaining_assembly_functions": 7047,
+    "original_positive_elf_functions": 7376,
+    "manifest": "decomp/regions/japan_0_noop_port_290.json",
+    "build": "decomp/build_japan_noop_port_329.sh",
+    "verifier": "decomp/japan_noop_port.py",
+    "proof": "decomp/results/japan_0_329_native_combined_20261118.json",
+    "provenance": "USA-verified two-unused-pointer-parameter callback and zero-argument no-op C forms; selected against original JP ROM instruction signatures and original JP addresses; no gameplay logic reconstructed",
+    "runtime": "NOT RUN"
+  }
 }
