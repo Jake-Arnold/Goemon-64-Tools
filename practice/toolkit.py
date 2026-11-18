@@ -48,6 +48,7 @@ from practice.japan_auto_attach import (
 from practice.japan_native_recomp import (
     verified_japan_recomp_pid, find_japan_recomp_pid,
     discover_japan_recomp_rdram, validate_japan_recomp_writer,
+    validate_japan_recomp_context,
 )
 from practice.remembered_rom import remember_verified_rom, load_remembered_rom
 from practice.japan_native_scene_warp import (
@@ -1035,9 +1036,15 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         probes = verified_japan_probes(self.verified_rom_path)
         handle = HostProcess(pid, writable=True)
         try:
-            verified = (validate_japan_recomp_writer(handle, original, probes)
-                        if target == 'recomp' else validate_rdram_base(
-                            handle, original.base, original.endian, probes, allow_4mb=True))
+            # Exact ROM/code probes and process identity still authorize
+            # the writable view. Do not impose an ordinary player/character
+            # requirement on a scene reload during an Impact encounter.
+            verified = validate_rdram_base(
+                handle, original.base, original.endian, probes,
+                allow_4mb=(target == 'project64'))
+            if target == 'recomp':
+                validate_japan_recomp_context(
+                    verified, strict_character=False)
             if getattr(verified, 'rdram_size', 0x800000) != getattr(
                     original, 'rdram_size', 0x800000):
                 raise RuntimeError('Japan RAM mapping size changed; reconnect')
@@ -1130,11 +1137,12 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
             if reader is None:
                 raise RuntimeError('Connect to verified Japan-0 RAM first')
             context = get_japan_debug_context(reader)
-            from practice.japanese_debug_warp import _normal_gameplay
-            _normal_gameplay(context)
             selector = getattr(self, 'scene_character', None)
             selected = selector.current() if selector is not None else 0
             target_character = selected - 1 if selected in (1, 2, 3, 4) else None
+            from practice.scene_reload_source import require_reload_source
+            require_reload_source(
+                context, region='Japan', explicit_character=target_character)
             spawn = self._japan_reference_entrance(
                 destination, context[1])
             handle, writable = self._japan_native_warp_writer()
