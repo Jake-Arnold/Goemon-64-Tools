@@ -324,7 +324,7 @@ class UnlockFlagsUITests(unittest.TestCase):
         self.assertEqual(table.set(first.key, 'value'), 'Off')
         self.assertEqual(table.set(first.key, 'on'), 'On')
         self.assertEqual(table.set(first.key, 'off'), 'Off')
-        before = app.mem.bytes[first.address]
+        before = app.mem.bytes.get(first.address, 0)
         app._activate_unlock_flag_tree_cell(section, first.key, 'Set')
         self.assertEqual(app.mem.bytes[first.address], before | first.mask)
         self.assertEqual(table.set(first.key, 'value'), 'On')
