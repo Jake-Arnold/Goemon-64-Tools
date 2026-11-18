@@ -4,6 +4,7 @@
 
 - Added synthetic USA/JP Impact submode 5 staging, source-pointer recovery, scene/region session tests and virtual flag recycler/experimental Scene Browser Tk tests to the Linux CI driver. Both Xvfb and DISPLAY fallback now run the new GUI modules. This verifies actual PR code rather than only compiling it.
 - No game memory addresses or runtime write semantics were changed. The existing user live Japanese Impact 0x223/submode 5 success report is retained. CI confirmation must precede merging the toolkit PR.
+- First expanded CI run exposed an obsolete test-only import from `tests.test_tools`, whose removed `autosplitter.bridge` dependency made the new suite fail before exercising big-endian placement. Updated the test to use the self-contained `tests.test_checkpoint.BASE` fixture; re-run required.
 
 
 ## 2026-11-18 — v0.11.56 experimental removal of 0–4 scene reload submode allowlist
