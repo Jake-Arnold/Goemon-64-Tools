@@ -1,0 +1,134 @@
+{
+  "format": "goemon-dracam-eight-upstream-scratch-v1",
+  "date": "2026-11-18",
+  "status": "RESEARCH_ONLY",
+  "baseline": {
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "expanded_size": 33554432,
+    "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "native_toolchain": "IDO 5.3 -O2 -mips2; MIPS binutils 2.45.90.20260125",
+  "functions": [
+    {
+      "name": "func_800125D0_131D0",
+      "rom_offset": "0x131D0",
+      "vma": "0x800125D0",
+      "size": 32,
+      "original_sha256": "7abe3e7fff0963bfcb4e6b333fa738d03ddb1d3147b3ca02f8573f4f34fbdf55",
+      "source": "dracam_controls.c",
+      "native_original_address": "PASS",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "name": "func_800125F0_131F0",
+      "rom_offset": "0x131F0",
+      "vma": "0x800125F0",
+      "size": 56,
+      "original_sha256": "ac878d351b008d3cceab74f04549b02c1bf66807463ae88fff3930d20b3877bc",
+      "source": "dracam_controls.c",
+      "native_original_address": "PASS",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "name": "func_80012878_13478",
+      "rom_offset": "0x13478",
+      "vma": "0x80012878",
+      "size": 136,
+      "original_sha256": "e0b15f25722e152961d45bb72ae751004c01b0552a70413872f9f09a78d60c0b",
+      "source": "dracam_three.c",
+      "native_original_address": "PASS",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "name": "func_80012900_13500",
+      "rom_offset": "0x13500",
+      "vma": "0x80012900",
+      "size": 56,
+      "original_sha256": "8b39c71444408f6bd8f7b20011c6daf3d4ca5ba155c050d15865a4bcf3707026",
+      "source": "dracam_three.c",
+      "native_original_address": "PASS",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "name": "func_80012938_13538",
+      "rom_offset": "0x13538",
+      "vma": "0x80012938",
+      "size": 8,
+      "original_sha256": "9da6c79208c17fe1f1a131bde1f22ad091012ee963b41f9f1b5b73d51ee9322c",
+      "source": "dracam_three.c",
+      "native_original_address": "PASS",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "name": "func_800133D4_13FD4",
+      "rom_offset": "0x13FD4",
+      "vma": "0x800133D4",
+      "size": 12,
+      "original_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "source": "dracam_floats.c",
+      "native_original_address": "PASS",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "name": "func_800133E0_13FE0",
+      "rom_offset": "0x13FE0",
+      "vma": "0x800133E0",
+      "size": 32,
+      "original_sha256": "5ac8c04bfd5044d48649fa29217ef11385d853508fcff5445d9376620cec3ca5",
+      "source": "dracam_floats.c",
+      "native_original_address": "PASS",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "name": "func_80013508_14108",
+      "rom_offset": "0x14108",
+      "vma": "0x80013508",
+      "size": 20,
+      "original_sha256": "ee48a3d93e5ceb8995eb80cddfce7cc0884f4e9c34dc8546c18d5ecb121a05f2",
+      "source": "dracam_flag.c",
+      "native_original_address": "PASS",
+      "status": "RESEARCH_ONLY"
+    }
+  ],
+  "source_blob_sha1": {
+    "dracam_controls.c": "54bef0b439e2497539e360e92a34db2ca12d689c",
+    "dracam_three.c": "1fc70ba3888130d779cfbca15ae438f758685d6a",
+    "dracam_floats.c": "669fb82e1b64e2a987e2984928b4ce17e2590d77",
+    "dracam_flag.c": "dcc0a123d2e2076b24d488d1d30c7953d3e4ac35",
+    "test_eight.c": "0f8bd4caaa1305c4e7dc326b825b1a03bb5bbc8f",
+    "verify_rom_anchors.py": "91c6b241aea5306bb86b4c10c9a1d4e17cbdf039"
+  },
+  "local_scratch": {
+    "original_baseline_rom_exact": true,
+    "candidate_8_c_rom_exact": true,
+    "rom_equal_bytes": 33554432,
+    "rom_total_bytes": 33554432,
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "relocation_sections_exact": 72,
+    "semantic_relocations_exact": 82216,
+    "positive_size_func_identities_exact": 7376,
+    "new_positive_aliases": 0,
+    "trimmed_zero_trailing_alignment_bytes": {
+      "dracam_controls.c": 8,
+      "dracam_three.c": 8,
+      "dracam_floats.c": 4,
+      "dracam_flag.c": 12
+    },
+    "source_instruction_payload_modified": false
+  },
+  "host_semantics": {
+    "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+    "flags": "-std=c11 -Wall -Wextra -Werror -O1 -fno-omit-frame-pointer -fsanitize=address,undefined",
+    "result": "PASS"
+  },
+  "production": {
+    "current_accepted_usa_c": 864,
+    "current_accepted_usa_bytes": 37904,
+    "current_accepted_japan_c": 39,
+    "fresh_full_canonical_verify": "NOT_RUN",
+    "fresh_canonical_inventory": "NOT_RUN",
+    "full_local_ci": "NOT_RUN",
+    "reason": "Complete current 864-C canonical checkout unavailable to the Linux native toolchain environment (shell GitHub DNS failure)."
+  }
+}

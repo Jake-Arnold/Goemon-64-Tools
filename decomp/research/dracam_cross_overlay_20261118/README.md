@@ -2,6 +2,8 @@
 
 **RESEARCH_ONLY / no accepted-C promotion.** This is a new read-only examination of the authentic USA expanded ROM's Splat-generated original assembly, deliberately widened beyond the nine functions in draft PR #65. It does not alter the canonical 864-C manifest or assert a new native-exact C function.
 
+> **Native follow-up (18 Nov 2026):** All three original targets below, plus five additional dracam neighbours (eight distinct USA C / 352 bytes), now pass pinned IDO original-address compilation, a combined full original-upstream 32 MiB ROM scratch build, all 82,216 semantic relocations and all 7,376 ELF FUNC identities. Host ASan/UBSan regression passes. **RESEARCH_ONLY:** canonical 864+8 production verification, inventory and full local CI remain NOT RUN; USA accepted 864 C unchanged. See [NATIVE_PROOF.md](NATIVE_PROOF.md) and [sanitized proof](../../results/dracam_eight_native_upstream_scratch_20261118.json). Previous unexecuted-gate/next-target language below describes the *initial* research-only scan and is superseded by this update.
+
 ## Reproducible source
 
 Original retail USA ROM SHA-1: `df8083a54296b8c151917c5333e1c85f014a2a66`. Pinned `mnsg` upstream: `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. Decompression and Splat extraction both completed successfully in a fresh isolated Linux workspace using the project-supplied runtime. Read-only source: `asm/usa/12760.s` and all `asm/usa/*.s` files from that extraction. Counts below are **static assembly references**, not measured runtime calls or unique caller functions. A `%hi(symbol)` count is one address-load high-half occurrence, not necessarily a unique pointer or dispatch table slot.
@@ -35,6 +37,6 @@ The two three-float groups (+0x80/+0x84/+0x88 and +0x8C/+0x90/+0x94), paired res
 
 **Actually performed:** USA retail SHA-1 check, pinned upstream commit check, original ROM decompression, Splat extraction, read-only original MIPS instruction inspection, cross-overlay static reference counting.
 
-**Not performed:** fresh IDO compilation of the three new targets, full original-ROM replacement proof, canonical 864-plus-C verification, inventory, sanitizer CI, or runtime gameplay traces. No new C counts are claimed. The repo's canonical 864-C checkout was not materialized in the native workspace because direct shell GitHub DNS failed; the connected GitHub interface is used only for this research publication.
+**At initial scan, not performed; subsequently completed for this batch:** fresh IDO compilation of all eight functions, original-upstream replacement ROM scratch proof and sanitizer host CI. **Still NOT RUN:** canonical 864-plus-C verification, canonical inventory, and full production local CI. No new C counts are claimed. The repo's canonical 864-C checkout was not materialized in the native workspace because direct shell GitHub DNS failed; the connected GitHub interface is used only for this research publication.
 
 No ROM, generated ASM, binary or extracted asset is included.
