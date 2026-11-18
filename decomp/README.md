@@ -1,4 +1,4 @@
-**Current USA 966 original-address matching C / 41,324 bytes** (15 new file_26 functions; native 32MiB original-ROM G2, ELF/relocations/inventory/full CI PASS; GitHub publication pending), Japan 39. See `results/usa_file26_highbyte15_966_promotion_20261118.json` and `research/highbyte_search_20261118/README.md` for the >512-byte search.
+**Current USA 966 original-address matching C / 41,324 bytes** (15 new file_26 functions; native 32MiB original-ROM G2, ELF/relocations/inventory/full CI PASS; GitHub-published at `ec07c8c`), Japan 39. See `results/usa_file26_highbyte15_966_promotion_20261118.json` and `research/highbyte_search_20261118/README.md` for the >512-byte search.
 
 # Matching C reconstruction track
 

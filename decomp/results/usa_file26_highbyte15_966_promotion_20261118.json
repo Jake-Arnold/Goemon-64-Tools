@@ -2,7 +2,7 @@
   "format": "goemon-usa-file26-highbyte15-promotion-v1",
   "date": "2026-11-18",
   "region": "usa",
-  "status": "PASSED_G2_LOCAL_PENDING_GITHUB",
+  "status": "PASSED_G2_GITHUB_PUBLISHED",
   "production_before": {
     "functions": 951,
     "bytes": 38816
@@ -246,5 +246,7 @@
   },
   "baseline_commit": "1246ac1173bf00ca79536f95d742757dd4f9370a",
   "verified_build_report": "decomp/results/combined.json",
-  "verified_inventory": "decomp/results/inventory.json"
+  "verified_inventory": "decomp/results/inventory.json",
+  "implementation_commit": "ec07c8cd1c0922ec228b760660519d138a76ba95",
+  "publication_branch": "chatgptweb/decomp"
 }
