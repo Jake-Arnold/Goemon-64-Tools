@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+### 2026-11-18 — Japan actor-to-model read-only capture correlator (research only)
+
+- **ROM-backed finding:** Independently located the Japanese revision-0 object graphics dispatcher candidate at guest `0x800167D4` / original retail ROM `0x173D4`; the first 32 instruction bytes exactly match the original USA dispatcher at guest `0x80016C44` / ROM `0x17844`, unique in the 16-MiB Japan ROM. Shared code includes original `Object +0x64` flag read and `+0x2C` graphics pointer load. The Japanese generic actor loader `0x8021DE00` writes `actor_id +0x5C` and `model_id +0x5E`; immediately after the second store is `0x8021DE70`. These are original-ROM observations, not a confirmed actor-to-model file mapping.
+- **Implementation:** Added `practice/actor_model_trace.py` with strictly bounded Japan-0 map-3 actor-init, draw-pause and Object-graphics header snapshots; it requires a prior initializer anchor, a unique same-frame actor header, and exact equality between observed `Task.heap_element` and the render call's `Object*`. Rejects malformed/ambiguous captures without pointer dereferences and tracks model-ID changes. Optional paired GOOD/BAD digest analysis distinguishes guest command changes from possible RT64/uncaptured state. Report contains metadata only; never stores raw snapshots, extracts meshes or writes guest RAM.
+- **Procedure and tests:** `docs/JAPAN_ACTOR_MODEL_TRACE.md` specifies the two original-JP debugger breakpoints and private JSON schema. Nine ROM-free synthetic Python tests PASS in a local isolated source fixture. Original retail USA and normalized Japan-0 SHA-1s and the 32-byte unique cross-region dispatcher anchor checked locally. Full toolkit test suite, live Japanese actor/object pointer pairing, RT64 render captures, decomp matching-C G2/inventory and Japan native rebuild **NOT RUN**; original verified matching-C counts unchanged.
+- **Next:** Capture actual JP actor `0x00FB` at loader `0x8021DE70` and a matching frame at draw entry `0x800167D4`. Independently validate the remaining JP Object fields, then trace its segmented display-list root and two adjacent GOOD/BAD face frames. Do not assert a model-file ID or apply actor-specific visual workarounds until verified.
+
+
 ### 2026-11-17 — Full captured player-source rig traversal, 460 triangle geometry and encoded channel classification
 
 - **User visual finding:** The 90-triangle **slot-0** resource fragment preview is visually identifiable as **Goemon's weapon**. New UI label explicitly attributes that identification to the user's visual inspection; it does **not** assert that all of file `0x120` or the entire rig is Goemon's weapon, body, or a static NPC actor.
