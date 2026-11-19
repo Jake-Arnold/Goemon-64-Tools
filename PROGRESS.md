@@ -1,3 +1,14 @@
+## 2026-11-19 — Research PR #88 reconciled after Japanese 432-C promotion
+
+- Research-only documentation merge parent brought PR #88's 16 USA address discoveries, read-only memory registry and eight registry tests forward onto canonical 1,500 USA C / 432 JP C. Earlier PR #88 progress entry remains as a historical 39-JP snapshot. No production C, regional manifest, native proof or toolkit `main` modified; full canonical decomp.local_ci and ROM G2 not rerun for metadata-only PR.
+
+## 2026-11-19 — PR #88 research-preservation refresh on 1,500-C decomp (draft, unmerged)
+
+- **Purpose and provenance:** Retain the 18 November #88 16-entry original USA address-discovery manifest (script VM, dynamic state and original code VMAs) and the read-only adapter for the toolkit `main` guest-data catalogue. Historical #56/#69 work is consolidated here; this refresh retains the previous PR head as a merge parent. The research remains observational, with uncertain JP counterparts explicitly null.
+- **Conflict resolution:** Rebases the proposed file contents onto live `chatgptweb/decomp` without overwriting intervening promotions, Oedo crosswalk, AGENTS guidance, PROGRESS history or the continuation log. No manifest, production C, ELF/relocation evidence, ROM files, assets, toolkit `main` or emulator-memory write paths are modified. Canonical at refresh: **USA 1,500 matching C / 57,592 instruction bytes / 5,863 remaining ASM; Japan 39 C**.
+- **Reader hardening:** `decomp/memory_registry.py` rejects saved-event duplicates by region/address/mask and refuses one-way pointer pairs even if both addressed records exist. Original six ROM-free unit tests plus two new negative tests **8/8 PASS**, executed in an isolated, byte-authenticated copy of the two source/test modules with Python 3.11. The live `main` JSON catalogue was parsed independently: **546 entries, 142 saved-event bits per region, no duplicate address/mask records and no missing or nonreciprocal saved-event pointers**.
+- **Gate boundary:** Full repository `python3 -m decomp.local_ci`, current-production combined `decomp.verify`, strict inventory and original-ROM rebuild **NOT RUN** for this metadata-only draft, because a complete checked-out canonical source tree was unavailable in the execution container. No matching-C promotion and no in-game test is claimed. Leave PR #88 draft/unmerged until owner authorizes a merge.
+
 ## 2026-11-19 — JP 432-C verified promotion on latest USA 1,500-C branch (PR #93 reconciliation)
 
 - **Merge intent:** Preserve all 1,500 currently accepted USA C functions and the complete historical USA native/CI evidence, while integrating exactly the 393 already native-verified Japanese C additions from PR #93. Japan rises from 39 C / 2,092 instruction bytes to 432 C / 10,408 bytes, with 6,944 original assembly functions remaining.

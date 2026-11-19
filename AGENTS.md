@@ -10,6 +10,24 @@ Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C 
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
 7. The initial v0.9.9 imported-baseline work did not establish direct warps. Later native-warp and story-flag work on `main` superseded that historical limitation (user confirmation 2026-11-08). The decomp-only branch must not revisit or modify those features without separate authorization.
 
+## Decomp address discoveries are research metadata, not toolkit writes
+
+When establishing a new USA/Japan fixed guest global, saved-event bit, script
+VM field, original-code VMA or ROM offset, record its **observed** source,
+revision, address space, width/endianness where known, evidence and confidence
+in `decomp/address_discoveries_v1.json` in the same research task. Preserve
+unknown widths and cross-region counterparts as null rather than inferring
+a value. Do not translate script VM, overlay VMAs, host pointers or code
+addresses with the saved-game `+0x57F0` heuristic.
+
+The toolkit's reviewed `main:practice/data/address_catalogue_v1.json` is the
+only authoritative guest-data address source for actual UI reads/writes.
+`decomp/memory_registry.py` only consumes a local snapshot of it; it cannot
+patch that file or initiate game-memory writes. Synchronisation of research
+metadata into the toolkit is **not automated by this change** and always
+requires a separate reviewed metadata-only toolkit PR. Decomp acceptance,
+original-ROM G2, and full local CI remain independent.
+
 ## Mandatory reciprocal USA ↔ Japan guest-memory discovery
 
 Whenever any decomp agent discovers, validates or changes an original USA
