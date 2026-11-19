@@ -1,0 +1,51 @@
+{
+  "status": "PASSED_G2",
+  "region": "japan_0",
+  "baseline_c": 423,
+  "added_c": 4,
+  "added_instruction_bytes": 216,
+  "matching_c_functions": 427,
+  "matching_c_bytes": 9892,
+  "remaining_assembly_entries": 6949,
+  "original_elf_function_count": 7376,
+  "original_elf_identity_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
+  "semantic_relocations_count": 80747,
+  "semantic_relocations_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "expanded_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "original_functions": [
+    {
+      "name": "func_801ECEA0_5A8E70",
+      "rom_offset": "0x5A8E70",
+      "size": 40
+    },
+    {
+      "name": "func_801F73D4_5B33A4",
+      "rom_offset": "0x5B33A4",
+      "size": 32
+    },
+    {
+      "name": "func_801F8AE0_5B4AB0",
+      "rom_offset": "0x5B4AB0",
+      "size": 32
+    },
+    {
+      "name": "func_8021F558_5DAAE8",
+      "rom_offset": "0x5DAAE8",
+      "size": 112
+    }
+  ],
+  "emulator_gameplay": "NOT_RUN",
+  "format": "goemon-japan-usa-grouped4-g2-20261119",
+  "source_manifest": "decomp/regions/japan_0_grouped4.json",
+  "integration": "decomp/japan_usa_grouped_four.py",
+  "fresh_full_build_script": "decomp/build_japan_usa_grouped_427.sh",
+  "two_independent_checkout_proofs_sha256": "da8dff17b6bb0cff221b89d43c2323d6c03cdb3fcde8014ca93c2ac44dd94979",
+  "independent_replay": "PASSED_G2",
+  "task_specific_rom_free_tests": "11 PASS",
+  "original_grouped_c_host_sanitizer": "PASS: 1000 actual-C cases under GCC ASan+UBSan",
+  "full_local_ci": "PASS",
+  "usa_c_functions_unchanged": 1225,
+  "publication": "LOCAL VERIFIED, PR publication pending",
+  "caveat": "This source proves selected original ROM functions; it does not decompile the remaining JP assembly."
+}

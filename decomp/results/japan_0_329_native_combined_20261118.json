@@ -1,0 +1,45 @@
+{
+  "format": "goemon-japan-329-native-original-c-v1",
+  "status": "PASSED_G2",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "baseline_c_functions": 39,
+  "new_c_functions": 290,
+  "new_c_bytes": 3264,
+  "matching_c_functions": 329,
+  "matching_c_bytes": 5356,
+  "remaining_assembly_functions": 7047,
+  "c_translation_units": 325,
+  "original_elf_function_count": 7376,
+  "original_elf_function_identity_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
+  "original_semantic_relocations_count": 80747,
+  "semantic_relocations_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "elf_sections": 73,
+  "expanded_rom": {
+    "size": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "different_bytes": 0
+  },
+  "retail_rom": {
+    "size": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "different_bytes": 0
+  },
+  "native_pc_runtime": "NOT RUN",
+  "emulator_gameplay": "NOT RUN: this execution environment has no N64 emulator and network package retrieval failed; see decomp/emulator_japan_smoke.sh for a separate host-run smoke test",
+  "region_manifest": "decomp/regions/japan_0_noop_port_290.json",
+  "build_script": "decomp/build_japan_noop_port_329.sh",
+  "toolchain": "original IDO 5.3; MIPS binutils 2.45.90; offline Python 3.12",
+  "full_local_ci": "PASS",
+  "task_specific_rom_free_tests": "9 PASS",
+  "fresh_replay": "PASSED_G2 independently from a fresh git clone of pinned mnsg commit 7e2029c5; from clean Splat, compile, full source-linked build and both ROM checks; all 7376 ELF functions and 80747 semantic relocations preserved; exit 0",
+  "source_completeness": "290 reviewed original JP funcs via private pinned ROM; no region offset assumption",
+  "all_function_rom_offsets_and_forms": "decomp/regions/japan_0_noop_port_290.json",
+  "usa_production_preserved": {
+    "functions": 1225,
+    "verified_in_this_session": false
+  },
+  "uncommitted_artifacts": false,
+  "fresh_replay_proof_sha256": "ec536219bde76196635f1848e21e29d56e5678382e11d0ba3e9a36332a46e321",
+  "fresh_replay_exit_code": 0
+}
