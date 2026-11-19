@@ -17,8 +17,9 @@ class Menu2PromotionTests(unittest.TestCase):
 
     def test_canonical_claims_are_unique(self):
         manifest=load_manifest(overlay_menu2.ROOT/'manifest.json')
-        functions=claimed_functions(manifest)
+        functions=claimed_functions({k:v for k,v in manifest.items() if k!='overlay_statecopy1_stage'})
         self.assertEqual(len(functions),1500)
+        self.assertEqual(len(claimed_functions(manifest)),1501)
         names=[f['name'] for f in functions]
         self.assertEqual(len(names),len(set(names)))
         for func in overlay_menu2.functions(overlay_menu2.load_fixture()):

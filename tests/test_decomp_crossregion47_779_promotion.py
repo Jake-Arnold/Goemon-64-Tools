@@ -21,6 +21,7 @@ class UsaCrossRegion47PromotionTests(unittest.TestCase):
   cls.manifest.pop('overlay_micro15_stage', None)
   cls.manifest.pop('overlay_micro20_stage', None)
   cls.manifest.pop('overlay_menu2_stage', None)
+  cls.manifest.pop('overlay_statecopy1_stage', None)
   cls.proof=json.loads((ROOT/'decomp/results/usa_crossregion47_779_promotion_20261117.json').read_text())
   cls.registry,cls.inventory=load_files(ROOT)
  def test_manifest_extends_historical_779_and_preserves_fixture_boundaries(self):

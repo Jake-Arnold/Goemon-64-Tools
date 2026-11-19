@@ -1,0 +1,23 @@
+{
+  "format": "goemon-usa-statecopy1-after-1500-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_count": 1500,
+  "units": [
+    {
+      "name": "statecopy1_000",
+      "section": "main",
+      "rom_offset": 221080,
+      "size": 12,
+      "source_sha256": "3ced2b2376efd457c5f6ddcc3c088109e000ffd9db215387959e8625548a2a1b",
+      "functions": [
+        {
+          "name": "func_80035398_35F98",
+          "rom_offset": 221080,
+          "vma": 2147701656,
+          "size": 12,
+          "original_code_sha256": "2bde60ad28d9c7e327e3543580b3692be866a2f37c5c387d66cc2b05064e4071"
+        }
+      ]
+    }
+  ]
+}

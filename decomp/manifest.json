@@ -1570,5 +1570,8 @@
   },
   "overlay_menu2_stage": {
     "format": "goemon-usa-menu2-after-1498-v1"
+  },
+  "overlay_statecopy1_stage": {
+    "format": "goemon-usa-statecopy1-after-1500-v1"
   }
 }
