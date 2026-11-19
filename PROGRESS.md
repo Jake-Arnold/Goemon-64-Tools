@@ -1,3 +1,7 @@
+## 2026-11-19 — Draft PR #107: USA wide109/isolated506 historic source catalogues
+
+- Preserved nine original missing research blobs including three versioned compressed source/test catalogues (unaltered original Git blobs), plus README. Their 109/506 isolated candidate totals are not new accepted C; canon already contains independently verified deduplicated promotions. No production C/manifest/inventory changes; no fresh ROM/ELF/native G2 or full CI or gameplay tests. Deletion of historical source refs is gated on merged PR plus SHA-pinned source/archive re-verification.
+
 ## 2026-11-19 — Preserve original file12 VM dialogue callback research (PR #99)
 
 - **Research preservation:** Added the original dated isolated IDO/ELF research report for `func_80222034_5DD504` (20 bytes) and `func_80222168_5DD638` (36 bytes), the original 13 November callback investigation note and a cross-reference from `decomp/VM_CONVERSATION_TARGETS.md`. The research JSON is copied unchanged (Git blob `69ada279bcbcdb212a2a4de699623d961ad48565`), and explicitly records the **historical RESEARCH_ONLY status** when collected.
