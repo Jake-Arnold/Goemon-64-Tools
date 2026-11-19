@@ -22,6 +22,11 @@ RESOURCE_TABLE = 0x57FD8
 VIRTUAL_TABLE = 0x556CC
 RESOURCE_COUNT = 1311
 MAX_TOKENS = 4096
+# Bound relocated text growth so scripts cannot consume unbounded VM memory.
+MAX_RESOURCE_GROWTH = 0x4000
+# 1312 real file-table entries (the last is an empty file), then a zero terminator.
+FILE_TABLE_ENTRIES = 1312
+ORIGINAL_LAST_FILE_END = 0x14D05C0
 TEXT_COMMAND = b'\x00\x00\x80\x10'
 
 # Glyph IDs recovered from the original USA font atlas. Other IDs must remain
@@ -199,41 +204,184 @@ def validate_replacement(original: DialogueRecord, replacement: str) -> tuple[in
     return tuple(proposed)
 
 
-def patch_image(image: bytes, records: list[DialogueRecord], replacements: dict[str, str]) -> bytes:
-    """Only touches exact original character halfwords; no relocation/repacker."""
+def validate_flexible_replacement(original: DialogueRecord, replacement: str) -> tuple[int, ...]:
+    """Allow any glyph count, preserving the exact ordered negative controls.
+
+    The controls include unknown formatting IDs: moving them may change visual
+    formatting, but removing/replacing/adding one is prohibited. No separate
+    glyph-width/page-layout guarantee is inferred from a token-count check.
+    """
+    proposed = list(encode_text(replacement))
+    old = original.tokens
+    if len(proposed) > MAX_TOKENS - 1:
+        raise ValueError('Replacement exceeds maximum text record length')
+    old_controls = tuple(t for t in old if t < 0)
+    new_controls = tuple(t for t in proposed if t < 0)
+    if old_controls != new_controls:
+        raise ValueError('Control tokens must retain their exact order and values')
+    if len(old) == len(proposed):
+        # Preserve the original choice of character ID for visually identical
+        # glyphs when no position moved. This makes an unchanged edit a no-op.
+        for i, (before, after) in enumerate(zip(old, proposed)):
+            if before >= 0 and after >= 0 and GLYPHS.get(before) == GLYPHS.get(after):
+                proposed[i] = before
+    return tuple(proposed)
+
+
+def _record_bytes(tokens: tuple[int, ...]) -> bytes:
+    return struct.pack(f'>{len(tokens) + 1}h', *tokens, -1)
+
+
+def _source_layout(image: bytes) -> None:
+    """Fail closed on a changed source image/table layout."""
     if len(image) != ROM_SIZE or hashlib.sha1(image).hexdigest() != USA_DECOMPRESSED_SHA1:
-        raise ValueError('Refusing to edit an unverified or already modified ROM')
+        raise ValueError('Refusing to edit an unverified or already modified USA ROM')
+    if struct.unpack_from('>I', image, RESOURCE_TABLE)[0] != 0x576E00:
+        raise ValueError('Unexpected USA resource table layout')
+    if struct.unpack_from('>I', image, RESOURCE_TABLE + 4 * (FILE_TABLE_ENTRIES - 1))[0] != ORIGINAL_LAST_FILE_END:
+        raise ValueError('Unexpected final resource end')
+    if struct.unpack_from('>I', image, RESOURCE_TABLE + 4 * FILE_TABLE_ENTRIES)[0] != 0:
+        raise ValueError('Expected the file table terminator')
+
+
+def patch_image(image: bytes, records: list[DialogueRecord], replacements: dict[str, str]) -> bytes:
+    """Patch original-USA text in-place or relocate longer/shorter records.
+
+    Relocations append a new text record to its own resource, patch all
+    discovered same-resource 0x8010 operands, increase that resource's virtual
+    length, and shift following file-table offsets. Original records stay
+    intact for untraced references. Input and output are 32 MiB decompressed
+    images; retail repacking is a separate independently verified operation.
+    """
+    _source_layout(image)
     indexed = {r.key: r for r in records}
     if len(indexed) != len(records):
         raise ValueError('Duplicate dialogue record keys')
     if not replacements:
         raise ValueError('No edits provided')
-    edits: list[tuple[int, bytes]] = []
+
+    by_resource: dict[int, list[tuple[DialogueRecord, tuple[int, ...]]]] = {}
     for key, replacement in replacements.items():
-        if key not in indexed:
+        record = indexed.get(key)
+        if record is None:
             raise ValueError(f'Unknown record {key}')
-        record = indexed[key]
         item = _resource(image, record.resource_id)
         if item is None:
             raise ValueError(f'Resource disappeared for {key}')
-        start, _, buf = item
-        if record.image_offset != start + record.text_offset or _read_record(buf, record.text_offset) != record.tokens:
+        start, virtual, raw = item
+        if (record.image_offset != start + record.text_offset or
+                _read_record(raw, record.text_offset) != record.tokens):
             raise ValueError(f'Stale or corrupted index entry {key}')
-        new = validate_replacement(record, replacement)
-        # All known resource data are past the IPL checksum window; refuse any
-        # early write rather than silently emitting an invalid N64 header CRC.
-        if record.image_offset < 0x101000:
-            raise ValueError('Refusing checksum-region edit')
-        payload = struct.pack(f'>{len(new)}h', *new) if new else b''
-        edits.append((record.image_offset, payload))
-    edits.sort()
-    for (offset, data), (next_offset, _) in zip(edits, edits[1:]):
-        if offset + len(data) > next_offset:
-            raise ValueError('Overlapping dialogue edits are unsafe')
-    patched = bytearray(image)
-    for offset, payload in edits:
-        patched[offset:offset + len(payload)] = payload
-    return bytes(patched)
+        if virtual != 0x08000000:
+            raise ValueError(f'Unsupported resource segment for {key}')
+        proposed = validate_flexible_replacement(record, replacement)
+        if proposed != record.tokens:
+            by_resource.setdefault(record.resource_id, []).append((record, proposed))
+
+    if not by_resource:
+        return image
+
+    # Construct each changed resource from the pinned original; offsets in a
+    # resource remain fixed until its original end, and appended text offsets
+    # are relative to its original virtual base.
+    staged: dict[int, tuple[bytes, int]] = {}
+    for rid, edits in sorted(by_resource.items()):
+        start, virtual, old_buf = _resource(image, rid)
+        block = bytearray(old_buf)
+        original_length = len(block)
+        old_virtual_end = struct.unpack_from('>I', image, VIRTUAL_TABLE + 8 * (rid - 1) + 4)[0]
+        if original_length % 4 or old_virtual_end != virtual + original_length:
+            raise ValueError(f'Unsupported unaligned/bad virtual resource {rid}')
+        references_written: set[int] = set()
+        inplace_ranges: list[tuple[int, int]] = []
+        appended = bytearray()
+
+        for record, proposed in sorted(edits, key=lambda p: p[0].text_offset):
+            if len(proposed) == len(record.tokens) and all(
+                (a < 0) == (b < 0) for a, b in zip(record.tokens, proposed)
+            ):
+                # Same-size replacement doesn't move negative controls and
+                # cannot change another record or script's data.
+                lo = record.text_offset
+                hi = lo + len(record.tokens) * 2
+                if lo < 2 or start + lo < 0x101000:
+                    raise ValueError('Refusing checksum-region or header edit')
+                inplace_ranges.append((lo, hi))
+                block[lo:hi] = struct.pack(f'>{len(proposed)}h', *proposed)
+                continue
+
+            if not record.references:
+                raise ValueError(f'No verified same-resource text references for {record.key}')
+            # Every referenced command must occur beyond the known dialogue
+            # data region, protecting text records from scan false positives.
+            text_data_end = max(
+                r.text_offset + (len(r.tokens) + 1) * 2
+                for r in records if r.resource_id == rid
+            )
+            offset = original_length + len(appended)
+            if offset % 4:
+                raise ValueError('New text offset is not word-aligned')
+            operand = virtual + offset
+            if operand >= 0x09000000:
+                raise ValueError('Text relocation exceeded resource segment')
+            for command_offset in record.references:
+                if (command_offset < text_data_end or command_offset % 4 or
+                        command_offset + 8 > original_length):
+                    raise ValueError(f'Unverified or overlapping text command at {command_offset:#x}')
+                if command_offset in references_written:
+                    raise ValueError('Multiple records share one text-command address')
+                if struct.unpack_from('>II', block, command_offset) != (
+                    0x8010, virtual + record.text_offset
+                ):
+                    raise ValueError(f'Stale text-command reference at {command_offset:#x}')
+                references_written.add(command_offset)
+                struct.pack_into('>I', block, command_offset + 4, operand)
+            appended.extend(_record_bytes(proposed))
+            while len(appended) % 4:
+                appended.append(0)
+
+        for i, (lo, hi) in enumerate(sorted(inplace_ranges)):
+            if i and lo < sorted(inplace_ranges)[i-1][1]:
+                raise ValueError('Overlapping in-place edits')
+            if any(lo < ref + 8 and hi > ref for ref in references_written):
+                raise ValueError('Text edit overlaps a relocated script reference')
+        while len(appended) % 16:
+            appended.append(0)
+        if len(appended) > MAX_RESOURCE_GROWTH:
+            raise ValueError(f'Expanded resource {rid} exceeds {MAX_RESOURCE_GROWTH} byte budget')
+        staged[rid] = (bytes(block + appended), len(appended))
+
+    total_growth = sum(growth for _, growth in staged.values())
+    if (ORIGINAL_LAST_FILE_END + total_growth > ROM_SIZE or
+            image[ROM_SIZE - total_growth:] != b'\0' * total_growth):
+        raise ValueError('Not enough verifiable trailing padding for appended text')
+
+    result = bytearray(image)
+    shifted = 0
+    for rid in sorted(staged):
+        block, growth = staged[rid]
+        start, _, original = _resource(image, rid)
+        current_start = start + shifted
+        current_end = current_start + len(original)
+        result[current_start:current_end] = block
+        if growth:
+            # Only file starts AFTER the edited resource shift. The last
+            # real entry is a zero-size file, and the terminator stays zero.
+            for index in range(rid, FILE_TABLE_ENTRIES):
+                off = RESOURCE_TABLE + 4 * index
+                value = struct.unpack_from('>I', result, off)[0]
+                if not (0 < value < ROM_SIZE):
+                    raise ValueError('Corrupt original resource file table')
+                struct.pack_into('>I', result, off, value + growth)
+            end_word = VIRTUAL_TABLE + 8 * (rid - 1) + 4
+            virtual_end = struct.unpack_from('>I', result, end_word)[0]
+            struct.pack_into('>I', result, end_word, virtual_end + growth)
+            shifted += growth
+
+    del result[ROM_SIZE:]
+    if len(result) != ROM_SIZE:
+        raise ValueError('Patched image did not retain 32 MiB decompressed size')
+    return bytes(result)
 
 
 def save_patched_image(source: str | Path, destination: str | Path,
@@ -242,6 +390,13 @@ def save_patched_image(source: str | Path, destination: str | Path,
     if source.resolve() == destination.resolve():
         raise ValueError('Output path must differ from the original ROM')
     patched = patch_image(load_usa_image(source), records, replacements)
+    # Expanding a resource changes the file table inside the N64 checksum
+    # window. Recalculate CIC-6102 header CRCs for an emulator-ready image.
+    if struct.unpack_from('>I', patched, RESOURCE_TABLE + 4 * (FILE_TABLE_ENTRIES-1))[0] != ORIGINAL_LAST_FILE_END:
+        from practice.dialogue_repack import _update_usa_crc
+        rebuilt_header = bytearray(patched)
+        _update_usa_crc(rebuilt_header)
+        patched = bytes(rebuilt_header)
     destination.parent.mkdir(parents=True, exist_ok=True)
     temp_name = None
     try:

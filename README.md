@@ -1,4 +1,17 @@
-# Goemon Speedrun Tools v0.11.60 — Offline USA Dialogue Explorer
+# Goemon Speedrun Tools v0.11.61 — Variable-Length Dialogue Editing and Retail ROM Builds
+
+## v0.11.61 — Relocate dialogue and build a 16 MiB USA cartridge
+
+The existing **Dialogue** tab now accepts longer and shorter USA text records. When necessary, it appends replacement text at the end of the original script resource, rewrites detected `0x8010` script operands, enlarges that resource's virtual extent, shifts subsequent decompressed file-table offsets and preserves the original record as a fallback. The editor requires the negative control tokens to remain in their original order; it cannot automatically guarantee rendered line width, text wrapping or complete script-reference reachability.
+
+To build a ROM: open the unchanged SHA-1-pinned **32 MiB decompressed USA .z64**, select the unchanged **16 MiB retail USA .z64**, stage one or more text edits, and choose **Build retail .z64**. This creates a separate 16 MiB compressed cartridge using the original file's compression flags and recalculates CIC-6102 header checksums. The operation runs in a worker thread, keeping the Toolkit responsive. **Build decompressed** remains available with corrected header CRCs when resource offsets change.
+
+Retail rebuilding requires the optional Python dependency `lzkn64==0.2.0` (`python3 -m pip install lzkn64==0.2.0`). The base toolkit does not bundle this compiled extension.
+
+**Verification (19 November 2026):** The unmodified USA retail image rebuilt byte-for-byte with SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`. A longer-text retail cartridge was recompressed and decompressed again: resource content, moved script pointers and updated resource tables matched the modified image exactly (apart from recalculated header CRC bytes). Twenty dialogue/ROM/headless-Tk tests passed on the supplied pinned USA images. Live gameplay with length-changing edits was **not** tested.
+
+**Limitations:** USA only, statically identified same-resource references only, 16 KiB maximum appended data per resource, no automatic dialogue wrapping, no guaranteed runtime reachability, no Japanese repacking or source ROM overwrite. No ROMs or extracted assets are committed.
+
 
 ## v0.11.60 — Dialogue browser and experimental in-place text editing
 

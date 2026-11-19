@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-19 — v0.11.61 variable-length USA dialogue edits and retail repacker
+
+- **Why:** Following successful user-confirmed same-length in-game text replacement, extend the existing Dialogue tab to handle longer/shorter text, script pointer relocation and direct retail-ROM rebuilding.
+- **Implemented:** The Dialogue tab can verify an original 16 MiB retail ROM, stage arbitrary-length glyph edits while preserving all negative control tokens, append moved records to the same resource, update all indexed `0x8010` operands, virtual resource extents and downstream file offsets. Original text records are retained for untracked consumers; total resource growth is bounded to 16 KiB. Decompressed output recomputes CRCs when metadata changes. New `practice/dialogue_repack.py` compresses from the modified 32 MiB image using the original retail compression decisions, validates USA SHA-1/bootcode and writes a new 16 MiB CIC-6102-checksummed `.z64`. The GUI uses a worker thread and poller to avoid blocking while rebuilding.
+- **Files:** `practice/dialogue_rom.py`, `practice/dialogue_ui.py`, `practice/dialogue_repack.py`, `tests/test_dialogue_variable.py`, `tests/test_dialogue_ui.py`; release `practice/version.py` bumped to 0.11.61.
+- **Verification actually run:** Linux portable Python 3.12.16, pinned USA decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, original USA retail SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`, and `lzkn64` 0.2.0. The unmodified original retail ROM was reproduced byte-for-byte. A modified longer-text 16 MiB image successfully re-decompressed with Rommy; all 32 MiB decompressed bytes except the 8 N64 header CRC bytes matched the expected modified resource image. Twenty focused dialogue, repacker, safety, and Xvfb headless Tk tests passed. Full toolkit regression suites and live variable-length rendering were not run.
+- **Restrictions:** Native gameplay not yet verified; candidate `0x8010` references are static signatures, not an exhaustive script graph. Old records remain intact for unknown references. Negative controls are preserved but glyph width, pagination, and visual layout are not auto-managed. Repacking requires optional `lzkn64==0.2.0`; no compiled dependency, ROM or extracted original dialogue is committed. Original USA/JP RAM mapping and decomp branches untouched.
+- **Next:** Validate longer dialogue in Project64 or Mupen64Plus, run the full Linux/Windows Toolkit regression suites, investigate actual font layout and consider guarded script graph traversal.
+
+
 ## 2026-11-19 — v0.11.60 offline USA dialogue browser and safe in-place editor
 
 - **Changed:** Added `practice/dialogue_rom.py`, `practice/dialogue_ui.py`, a standalone Dialogue tab and `tests/test_dialogue_rom.py`. Search statically referenced dialogue, inspect resource/text/image offsets and script references, export JSON/CSV, stage equal-length glyph edits and write a separate decompressed image.

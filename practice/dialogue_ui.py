@@ -2,13 +2,16 @@
 from __future__ import annotations
 
 from pathlib import Path
+import queue
+import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
 from practice.dialogue_rom import (
     export_index, extract_dialogue, load_usa_image, save_patched_image,
-    validate_replacement,
+    validate_flexible_replacement,
 )
+from practice.dialogue_repack import load_usa_retail, save_retail_rom
 
 
 class DialogueMixin:
@@ -17,6 +20,9 @@ class DialogueMixin:
         notebook.add(tab, text='Dialogue')
         self.dialogue_tab = tab
         self.dialogue_path = None
+        self.dialogue_retail_path = None
+        self.dialogue_build_queue = queue.SimpleQueue()
+        self.dialogue_build_running = False
         self.dialogue_records = []
         self.dialogue_by_key = {}
         self.dialogue_staged = {}
@@ -30,10 +36,15 @@ class DialogueMixin:
         top.pack(fill='x', pady=(0, 7))
         ttk.Button(top, text='Open decompressed USA ROM',
                    command=self._dialogue_open).pack(side='left', padx=(0, 8))
+        ttk.Button(top, text='Select original retail USA ROM',
+                   command=self._dialogue_open_retail).pack(side='left', padx=(0, 8))
         ttk.Button(top, text='Export index (JSON/CSV)',
                    command=self._dialogue_export).pack(side='left', padx=(0, 8))
-        ttk.Button(top, text='Build edited ROM',
-                   command=self._dialogue_build).pack(side='left')
+        ttk.Button(top, text='Build decompressed',
+                   command=self._dialogue_build).pack(side='left', padx=(0, 8))
+        self.dialogue_retail_build_button = ttk.Button(
+            top, text='Build retail .z64', command=self._dialogue_build_retail)
+        self.dialogue_retail_build_button.pack(side='left')
         ttk.Label(tab, textvariable=self.dialogue_status, wraplength=1050).pack(
             anchor='w', fill='x', pady=(0, 7))
         search = ttk.Frame(tab)
@@ -63,7 +74,7 @@ class DialogueMixin:
         scroll.pack(side='right', fill='y')
         tree.bind('<<TreeviewSelect>>', self._dialogue_select)
 
-        editor = ttk.LabelFrame(splitter, text=' Selected record — same-length text edits only ', padding=8)
+        editor = ttk.LabelFrame(splitter, text=' Selected record — length-changing text edits ', padding=8)
         splitter.add(editor, weight=2)
         self.dialogue_record_info = tk.StringVar(value='Select a record to inspect it.')
         ttk.Label(editor, textvariable=self.dialogue_record_info).pack(anchor='w')
@@ -81,8 +92,11 @@ class DialogueMixin:
             side='left', padx=7)
         ttk.Label(editor, text=(
             'Static script references are candidates, not proven reachable conversations. '
-            'Keep control tokens and character count unchanged. '
-            'Output is an experimental decompressed ROM, not a repacked 16 MiB retail ROM.'),
+            'Preserve the exact ordered control tokens; character count may change. '
+            'Longer/shorter records are relocated within their original resource, '
+            'with script operands and resource tables updated. Retail output needs '
+            'the original USA cartridge and the optional lzkn64 Python package. '
+            'Control-code placement can change visible formatting; test in emulator.'),
             wraplength=1000).pack(fill='x', anchor='w', pady=(7, 0))
 
     def _dialogue_open(self) -> None:
@@ -107,6 +121,20 @@ class DialogueMixin:
         self.dialogue_status.set(
             f'{len(records)} unique statically referenced records indexed from '
             f'{len({r.resource_id for r in records})} resources. No edits staged.')
+
+    def _dialogue_open_retail(self) -> None:
+        path = filedialog.askopenfilename(
+            title='Select original USA retail ROM (16 MiB)',
+            filetypes=[('Nintendo 64 ROM', '*.z64 *.n64'), ('All files', '*.*')])
+        if not path:
+            return
+        try:
+            load_usa_retail(path)
+        except (OSError, ValueError) as exc:
+            messagebox.showerror('Retail ROM rejected', str(exc), parent=self.dialogue_tab)
+            return
+        self.dialogue_retail_path = Path(path)
+        self.dialogue_status.set('Original 16 MiB USA cartridge verified for retail rebuilding.')
 
     def _dialogue_filter(self) -> None:
         if not hasattr(self, 'dialogue_tree'):
@@ -155,7 +183,7 @@ class DialogueMixin:
         # Tk Text always appends a final newline; end-1c excludes only that.
         replacement = self.dialogue_editor.get('1.0', 'end-1c')
         try:
-            tokens = validate_replacement(record, replacement)
+            tokens = validate_flexible_replacement(record, replacement)
         except ValueError as exc:
             messagebox.showerror('Invalid text edit', str(exc), parent=self.dialogue_tab)
             return
@@ -208,4 +236,59 @@ class DialogueMixin:
             return
         self.dialogue_status.set(
             f'Wrote patched 32 MiB decompressed image: {path} (SHA-1 {digest}). '
-            'Emulator boot and dialogue display have not been verified.')
+            'Boot/display of this particular text change has not been verified.')
+
+    def _dialogue_build_retail(self) -> None:
+        if self.dialogue_build_running:
+            return
+        if self.dialogue_path is None or not self.dialogue_staged:
+            messagebox.showinfo('Nothing to build', 'Load the decompressed USA ROM and stage an edit.',
+                                parent=self.dialogue_tab)
+            return
+        if self.dialogue_retail_path is None:
+            messagebox.showinfo('Retail ROM required',
+                                'First select the unmodified USA 16 MiB retail ROM.',
+                                parent=self.dialogue_tab)
+            return
+        path = filedialog.asksaveasfilename(
+            title='Build patched 16 MiB retail USA ROM', defaultextension='.z64',
+            filetypes=[('Nintendo 64 ROM', '*.z64')],
+            initialfile='goemon-usa-dialogue-hack.z64')
+        if not path:
+            return
+        self.dialogue_build_running = True
+        self.dialogue_retail_build_button.state(['disabled'])
+        self.dialogue_status.set('Compressing 1,312 resources and rebuilding the retail ROM...')
+        self.root.after(100, self._dialogue_poll_retail_build)
+        worker = threading.Thread(
+            target=self._dialogue_retail_worker,
+            args=(self.dialogue_path, self.dialogue_retail_path, Path(path),
+                  list(self.dialogue_records), dict(self.dialogue_staged)),
+            daemon=True)
+        worker.start()
+
+    def _dialogue_retail_worker(self, source, retail, destination, records, staged) -> None:
+        try:
+            sha1 = save_retail_rom(source, retail, destination, records, staged)
+            self.dialogue_build_queue.put((True, str(destination), sha1))
+        except Exception as exc:
+            self.dialogue_build_queue.put((False, str(exc), ''))
+
+    def _dialogue_poll_retail_build(self) -> None:
+        if not self.dialogue_build_running:
+            return
+        try:
+            success, detail, sha1 = self.dialogue_build_queue.get_nowait()
+        except queue.Empty:
+            self.root.after(100, self._dialogue_poll_retail_build)
+            return
+        self.dialogue_build_running = False
+        self.dialogue_retail_build_button.state(['!disabled'])
+        if success:
+            self.dialogue_status.set(
+                f'Built 16 MiB retail .z64: {detail} | SHA-1 {sha1}. '
+                'Test modified dialogue in Project64/Mupen64Plus.')
+        else:
+            self.dialogue_status.set('Retail ROM build rejected; source files were not modified.')
+            messagebox.showerror('Retail ROM build failed', detail,
+                                 parent=self.dialogue_tab)
