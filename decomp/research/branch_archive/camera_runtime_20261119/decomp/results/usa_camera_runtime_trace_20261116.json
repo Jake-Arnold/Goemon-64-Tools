@@ -1,0 +1,133 @@
+{
+  "format": "goemon-usa-camera-runtime-trace-v1",
+  "region": "usa",
+  "source": {
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "upstream_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "canonical_baseline": "315 matching-C functions, 152 in USA file_11 (2026-11-16)",
+    "file11_rom_start": "0x587370",
+    "file11_vma_start": "0x801CB460"
+  },
+  "runtime": {
+    "global_default_mode": "0x800C7B00",
+    "global_default_mode_width": 16,
+    "camera_task_pointer_at": "0x801FC624",
+    "camera_task_pointer_width": 32,
+    "camera_task_pointer_observed": "0x8016A090",
+    "task_mode_offset": "0x98",
+    "task_current_mode_offset": "0xD1",
+    "task_pending_mode_offset": "0x73",
+    "task_scripted_mode_offset": "0xD2",
+    "observations": [
+      {
+        "context": "outdoor town",
+        "value": 2,
+        "evidence": "user-observed Project64"
+      },
+      {
+        "context": "indoor gameplay",
+        "value": 0,
+        "evidence": "user-observed Project64"
+      },
+      {
+        "context": "scene loading transition",
+        "value": 0,
+        "evidence": "user-observed Project64"
+      },
+      {
+        "context": "return outdoors",
+        "value": 2,
+        "evidence": "user-observed Project64"
+      },
+      {
+        "context": "manual alternative values",
+        "value": null,
+        "evidence": "user-recorded visual camera changes; enum semantics not established"
+      }
+    ]
+  },
+  "instructions": [
+    {
+      "pc": "0x801F97E8",
+      "rom_offset": "0x5B56F8",
+      "operation": "SH zero,0x2E41(at)",
+      "effect": "clear 16-bit global default camera mode"
+    },
+    {
+      "pc": "0x801F999C",
+      "rom_offset": "0x5B58AC",
+      "operation": "LHU t6,0x2E41(t6)",
+      "effect": "read 16-bit global default camera mode"
+    },
+    {
+      "pc": "0x801F99AC",
+      "rom_offset": "0x5B58BC",
+      "operation": "SB t6,0x98(t7)",
+      "effect": "copy low eight bits to active task mode_id"
+    },
+    {
+      "pc": "0x801F9B20",
+      "rom_offset": "0x5B5A30",
+      "operation": "SB t9,0x98(t1)",
+      "effect": "conditionally override active task mode_id from region table"
+    }
+  ],
+  "original_functions": [
+    {
+      "name": "func_801F97D4_5B56E4",
+      "vma_start": "0x801F97D4",
+      "rom_start": "0x5B56E4",
+      "rom_end_exclusive": "0x5B576C",
+      "size": 136,
+      "sha256": "f6266809ac26ff75f44d5f23cab8c15ae338e6185b88b69ec85bd83dfb7c0b8a",
+      "ownership": "assembly in canonical 152-C file11 stage"
+    },
+    {
+      "name": "func_801F9988_5B5898",
+      "vma_start": "0x801F9988",
+      "rom_start": "0x5B5898",
+      "rom_end_exclusive": "0x5B5AB8",
+      "size": 544,
+      "sha256": "e46bafeb74679758d09c3b199ae65f11dad8033e7cfa5ee3916593274fe3b8a2",
+      "ownership": "assembly in canonical 152-C file11 stage"
+    }
+  ],
+  "region_table": {
+    "base": "0x800C7B10",
+    "entry_stride": 40,
+    "entry_count_scanned": 10,
+    "entry_mode_offset": "0x00",
+    "bounds_i32_offsets": [
+      "0x04",
+      "0x08",
+      "0x0C",
+      "0x10",
+      "0x14",
+      "0x18"
+    ],
+    "position_override_i32_offsets": [
+      "0x1C",
+      "0x20",
+      "0x24"
+    ],
+    "effective_mode_mask": "0x7F",
+    "global_position_source_i32": [
+      "0x800C7B04",
+      "0x800C7B08",
+      "0x800C7B0C"
+    ],
+    "task_position_destination_f32_offsets": [
+      "0xC0",
+      "0xC4",
+      "0xC8"
+    ],
+    "note": "Instruction-backed table layout; exact gameplay meaning of each entry and bounds remains provisional"
+  },
+  "deduplication": {
+    "upstream_camera_draft": "klorfmorf/mnsg camera branch, ~4657 lines, distinct earlier camera segment",
+    "canonical_stage": "both target original functions lie inside ASM chunk [0x5B43A4,0x5B65D4)",
+    "pending_review": "PR #23 research fixtures, PR #24 separate scene/transition candidates, PR #41 eight 0x5A6F30-0x5A7090 callbacks checked; no identified overlap with these two functions"
+  },
+  "verification_scope": "SHA-1 decompressed image and two original ROM slice SHA-256 checks passed locally; no IDO matching-C or combined verifier/inventory claimed"
+}

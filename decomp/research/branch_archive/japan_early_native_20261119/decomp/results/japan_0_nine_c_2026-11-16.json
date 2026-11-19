@@ -1,0 +1,118 @@
+{
+  "format": "goemon-japan-0-native-ido-nine-matching-c-v1",
+  "date": "2026-11-16",
+  "source": {
+    "repository": "klorfmorf/mnsg",
+    "commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "region": "japan_0"
+  },
+  "before": {
+    "functions": 6,
+    "original_function_bytes": 200,
+    "translation_units": 4
+  },
+  "promotions": [
+    {
+      "name": "func_80036CD0_378D0",
+      "rom_offset": 227536,
+      "vma": 2147708112,
+      "size": 16,
+      "mode": 2
+    },
+    {
+      "name": "func_80036CE0_378E0",
+      "rom_offset": 227552,
+      "vma": 2147708128,
+      "size": 16,
+      "mode": 1
+    },
+    {
+      "name": "func_80036CF0_378F0",
+      "rom_offset": 227568,
+      "vma": 2147708144,
+      "size": 16,
+      "mode": 3
+    }
+  ],
+  "after": {
+    "functions": 9,
+    "original_function_bytes": 248,
+    "translation_units": 5
+  },
+  "mode_object": {
+    "source_sha256": "72eed7b6756517d2c1a91e0c2442dc0e5ac94ac9744c4c57c2d48e6933cecee8",
+    "text_size": 48,
+    "prelinked_text_sha256": "952f9004206e8f3ab29fe84f8c8fcc536e5d237d742c76e4522234368f2c50c8",
+    "relocations": [
+      [
+        4,
+        "HI16",
+        "g_system"
+      ],
+      [
+        12,
+        "LO16",
+        "g_system"
+      ],
+      [
+        20,
+        "HI16",
+        "g_system"
+      ],
+      [
+        28,
+        "LO16",
+        "g_system"
+      ],
+      [
+        36,
+        "HI16",
+        "g_system"
+      ],
+      [
+        44,
+        "LO16",
+        "g_system"
+      ]
+    ],
+    "linked_original_bytes_match": true
+  },
+  "expanded": {
+    "size": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "retail": {
+    "size": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "elf_inventory": {
+    "positive_sized_entries": 7376,
+    "assembly_marked": 7367,
+    "reviewed_c": 9,
+    "unreviewed_unmarked": 0,
+    "section_count": 73,
+    "identity_sha256": "fbeb182fb215fbca82615c0f47a5b1ddb0154899db92a582c759b78da3d2fdae",
+    "status": "PASS"
+  },
+  "checks": {
+    "native_splat_split": "PASS",
+    "native_ido_5_3": "PASS",
+    "linked_original_rom": "PASS",
+    "recompressed_original_retail": "PASS",
+    "local_reloc_and_elf_symbols": "PASS",
+    "new_unit_suite": "NOT RUN",
+    "new_unattended_build_wrapper": "NOT RUN",
+    "usa_latest_G2": "NOT RUN",
+    "emulator": "NOT RUN",
+    "native_PC": "NOT RUN"
+  },
+  "notes": [
+    "Six-C baseline was developed concurrently and preserved in the nine-C build.",
+    "Default reviewed manifest corrects the previously stale jp_bit_array.c source SHA-256.",
+    "No ROMs, game assets, extracted assembly or compiler binaries committed."
+  ]
+}

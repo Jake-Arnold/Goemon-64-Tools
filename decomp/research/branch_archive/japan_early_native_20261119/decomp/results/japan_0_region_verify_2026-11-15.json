@@ -1,0 +1,59 @@
+{
+  "format": "goemon-region-exact-build-result-v1",
+  "region": "japan_0",
+  "status": "matched",
+  "date": "2026-11-15",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "expanded": {
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "bytes": 33554432,
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "retail": {
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "bytes": 16777216,
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "claims": {
+    "functions": 4,
+    "function_bytes": 136,
+    "translation_units": 2,
+    "note": "Reviewed Japanese C claims, not the whole game's assembly inventory"
+  },
+  "units": [
+    {
+      "source": "japan_matching/jp_bit_array.c",
+      "source_sha256": "eea4e6db2777e892429984e0f9fa4cdf2be95b891ac8ec0dedb6030651f38011",
+      "object": "build/japan_0/src/jp_bit_array.c.o",
+      "text_sha256": "585a234af53888f922034d8f0c4f7c9c157dc35c12d26b3d35b1a9ff7419cc70",
+      "original_vram": "0x800161F0",
+      "original_rom": "0x16DF0",
+      "section_bytes": 128,
+      "function_count": 3,
+      "text_relocations": 0,
+      "status": "PASS"
+    },
+    {
+      "source": "japan_matching/jp_main_38620.c",
+      "source_sha256": "b5dcce37328f69fdbd4a1d07e5a43bdd373dee22061e951e7f6672daaa430da2",
+      "object": "build/japan_0/src/jp_main_38620.c.o",
+      "text_sha256": "2415714719d85e4a789acee079f28e4e4c4c2b693ab00b843e8d8d91c8c3882c",
+      "original_vram": "0x80037A20",
+      "original_rom": "0x38620",
+      "section_bytes": 16,
+      "function_count": 1,
+      "text_relocations": 0,
+      "status": "PASS"
+    }
+  ],
+  "tests": {
+    "focused_rom_free": "21/21 PASS",
+    "japan_existing_native_build": "PASS",
+    "usa_native_G2": "NOT RUN",
+    "japan_emulator": "NOT RUN",
+    "japan_native_PC": "NOT RUN"
+  },
+  "copyright": "Hash-only proof, no ROM bytes or game assets"
+}

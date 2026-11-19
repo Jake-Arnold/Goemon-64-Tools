@@ -1,0 +1,28 @@
+{
+  "format": "goemon-japan-thirtyone-native-original-build-v1",
+  "date": "2026-11-16",
+  "status": "PASS",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "functions": 31,
+  "matching_c_bytes": 1784,
+  "translation_units": 27,
+  "elf_positive_sized_entries": 7376,
+  "assembly_marked_elf_entries": 7345,
+  "elf_sections": 73,
+  "unexpected_unmarked": 0,
+  "expanded_rom": {
+    "bytes": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "different_bytes": 0
+  },
+  "retail_rom": {
+    "bytes": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "different_bytes": 0
+  },
+  "independent_pinned_source_builds_passed": 2,
+  "rom_free_guards_passed": 8,
+  "emulator_gameplay": "NOT RUN",
+  "native_pc_runtime": "NOT RUN"
+}

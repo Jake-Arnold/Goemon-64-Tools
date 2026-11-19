@@ -1,0 +1,94 @@
+{
+  "format": "goemon-usa-file11-next8-scratch-v1",
+  "date": "2026-11-16",
+  "region": "USA",
+  "status": "NATIVE_SCRATCH_VERIFIED_NOT_CENTRAL",
+  "production_baseline_matching_c": 315,
+  "production_baseline_file11_c": 152,
+  "prospective_usa_matching_c_after_full_gates": 323,
+  "prospective_file11_c_after_full_gates": 160,
+  "prospective_matching_instruction_bytes": 17012,
+  "candidate_new_instruction_bytes": 352,
+  "source_sha256": "7919d61ac0453f342629d51186b1ddf16f3716f527b411c93716815941122d60",
+  "original_group_sha256": "b1fbaa8f74fec1f63e9f3cf2d0647daf26fd008a135cba0f767e5958113dcff1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "baseline_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "baseline_asm_sha256": "e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b",
+  "source": "User-supplied authenticated USA ROM plus pinned pristine upstream and portable native Linux toolchain",
+  "scratch_changes": "Replace 0x5A6F30–0x5A7090 with one C unit and retain assembly on both sides in otherwise pristine upstream",
+  "scratch_native_build": {
+    "original_baseline_exact_rom": true,
+    "candidate_complete_rom_bytes": 33554432,
+    "candidate_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "complete_rom_byte_equal": true,
+    "original_file11_relocations": 8825,
+    "candidate_file11_relocations": 8825,
+    "site_type_symbol_relocation_multisets_equal": true,
+    "original_named_positive_func_symbols": 7098,
+    "candidate_named_positive_func_symbols": 7098,
+    "named_positive_func_symbols_and_addresses_equal": true,
+    "introduced_or_removed_named_positive_func_symbols": 0,
+    "eight_original_vma_and_size_matches": 8,
+    "original_eight_contiguous_bytes_sha256": "b1fbaa8f74fec1f63e9f3cf2d0647daf26fd008a135cba0f767e5958113dcff1"
+  },
+  "original_function_entries_from_production_inventory": 7376,
+  "candidate_functions": [
+    {
+      "name": "func_801EB020_5A6F30",
+      "rom_offset": 5926704,
+      "vma": 2149494816,
+      "size": 44
+    },
+    {
+      "name": "func_801EB04C_5A6F5C",
+      "rom_offset": 5926748,
+      "vma": 2149494860,
+      "size": 44
+    },
+    {
+      "name": "func_801EB078_5A6F88",
+      "rom_offset": 5926792,
+      "vma": 2149494904,
+      "size": 44
+    },
+    {
+      "name": "func_801EB0A4_5A6FB4",
+      "rom_offset": 5926836,
+      "vma": 2149494948,
+      "size": 44
+    },
+    {
+      "name": "func_801EB0D0_5A6FE0",
+      "rom_offset": 5926880,
+      "vma": 2149494992,
+      "size": 44
+    },
+    {
+      "name": "func_801EB0FC_5A700C",
+      "rom_offset": 5926924,
+      "vma": 2149495036,
+      "size": 44
+    },
+    {
+      "name": "func_801EB128_5A7038",
+      "rom_offset": 5926968,
+      "vma": 2149495080,
+      "size": 44
+    },
+    {
+      "name": "func_801EB154_5A7064",
+      "rom_offset": 5927012,
+      "vma": 2149495124,
+      "size": 44
+    }
+  ],
+  "remaining_pr23_candidates_if_promoted": 97,
+  "limitations": [
+    "This is an independent pristine-upstream scratch build, not a combined 323-C central decomp.verify run.",
+    "The original 7,376-entry central inventory was not rerun; the 7,098 comparison covers only name-pattern FUNC symbols observed by readelf.",
+    "No production manifest, central combined.json or inventory.json changes.",
+    "The four separate PR #24 provisional candidates and Japanese 24-C integration remain separate."
+  ],
+  "next_gate": "Build reviewed 160-file11 C/ASM adapter on top of production 152-file11 C, run combined 323-C native decomp.verify, compare entire original ROM, all 8,825 file11 semantic relocations, 7,376-entry original inventory, and full local CI before promotion."
+}
