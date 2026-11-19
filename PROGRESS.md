@@ -1,3 +1,12 @@
+## 2026-11-19 — PR #107 refreshed after file11 historical research merger
+
+- USA wide109/isolated506 historical native source catalogue archive subtree `ac2b96486f600a60f7b2eb93048793d421a41651` remains unchanged. Original accepted matching C 1,500 USA/432 Japan, native source and ROM proof unaffected; no new IDO/G2, full local CI or gameplay tests run.
+
+## 2026-11-19 — Draft PR #107: USA wide109/isolated506 historic source catalogues
+
+- Preserved nine original missing research blobs including three versioned compressed source/test catalogues (unaltered original Git blobs), plus README. Their 109/506 isolated candidate totals are not new accepted C; canon already contains independently verified deduplicated promotions. No production C/manifest/inventory changes; no fresh ROM/ELF/native G2 or full CI or gameplay tests. Deletion of historical source refs is gated on merged PR plus SHA-pinned source/archive re-verification.
+
+
 ## 2026-11-19 — PR #106 refreshed after file16/file18 native archives
 
 - Historical file11 scratch proof and regression archive remains at immutable subtree SHA `47e76ff3f8fe4a919397519668aac293015b1c08`. All original research files retained; production C and current native verification unchanged. No native ROM build, full CI or emulator run performed for this archival refresh.
