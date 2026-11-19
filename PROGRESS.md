@@ -1,3 +1,8 @@
+## 2026-11-19 — Merge-triggered historical research branch retirement mechanism
+
+- A `pull_request.closed` GitHub Actions workflow on `chatgptweb/decomp` is scoped to archival PRs #102–#108, with 19 **pinned source branch HEADs** and seven immutable Git archive subtree hashes. Only after a verified PR merge, it checks the original head/base, original Git tree, changed file scope, canonical merge ancestry and no other open PR references. Deletions use atomic Git `--force-with-lease` and a remote post-deletion check. This does not touch `main`, production matching-C, ROM, build manifests or current verification reports.
+- Before workflow installation, no source refs are deleted. New process not yet tested in GitHub Actions; token `contents: write` and Actions enablement are required. Full native IDO/ROM-G2 and decomp local CI are not relevant to this operations-only change and were not rerun.
+
 ## 2026-11-19 — Preserve original file12 VM dialogue callback research (PR #99)
 
 - **Research preservation:** Added the original dated isolated IDO/ELF research report for `func_80222034_5DD504` (20 bytes) and `func_80222168_5DD638` (36 bytes), the original 13 November callback investigation note and a cross-reference from `decomp/VM_CONVERSATION_TARGETS.md`. The research JSON is copied unchanged (Git blob `69ada279bcbcdb212a2a4de699623d961ad48565`), and explicitly records the **historical RESEARCH_ONLY status** when collected.
