@@ -1,4 +1,39 @@
-# Goemon Speedrun Tools v0.11.72 — Complete Uppercase English Alphabet Verified
+# Goemon Speedrun Tools v0.11.73 — Complete 160-Position Japanese Kana Mapping
+
+## v0.11.73 — Complete original Japanese kana block decoded and editable
+
+All **160 contiguous Japanese kana glyph IDs (14–173)** are now decoded and
+directly editable as Unicode, preserving original token IDs and VM controls.
+This extends the previous 76 individually screenshot-confirmed kana with
+84 systematically inferred positions. This was not blind extrapolation:
+an original-Japan-ROM audit found **44,077 kana occurrences** across 5,039
+static dialogue records, including **157/160 different kana positions**
+in real source text. The remaining three positions (138=ヲ, 155=ヂ,
+171=ゥ) are not used by the static text index and remain explicitly
+pattern-derived rather than raster-verified. The +80 hiragana/katakana
+parallel blocks and all **76 original screenshot anchors** agree.
+
+The original 131 screenshot-confirmed character IDs remain a separate
+provenance dictionary. The practical Japanese encoder now supports
+**215 unique glyph IDs** in total, comprising 160 structurally decoded
+kana plus other screenshot-backed kanji, punctuation and A–Z. An
+unmapped kanji, unsupported small glyph, lowercase letter or unproved
+digit remains `<token:N>`; no font art or ROM asset has changed.
+
+New canonical map: `practice/dialogue_kana_table.py`. Source evidence
+and corpus method: `docs/JAPAN_ALL_160_KANA_SOURCE_ORDER_20261119.md`.
+`tests/test_dialogue_full_kana.py` adds token-identity tests for all
+160 kana and an original-ROM-optional full 5,039-record round-trip gate.
+The separate experimental panel still exposes provenance and optional
+romaji/digit previews; the actual Japanese editor now displays and
+accepts all kana even when the optional preview is OFF.
+
+**Important:** 84 characters are structural inferences rather than
+individually verified screenshots; source coherence is not glyph
+raster validation. Japanese window geometry and automatic wrapping
+remain unverified. This does not decode all kanji or every symbol.
+
+
 
 ## v0.11.72 — A–Z now directly editable, and Japan newlines proven in-game
 

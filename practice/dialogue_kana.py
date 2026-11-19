@@ -1,44 +1,20 @@
-"""Unverified Japan-0 kana ordering hypothesis for read-only inspection.
+"""Original Japan font-order kana provenance and romaji/digit preview.
 
-EVIDENCE: Screenshot-verified pairs 15=い/95=イ and 19=か/99=カ,
-plus 16=う. Both script pairs are exactly 80 token IDs apart.
-
-CONJECTURE: Six sequential base/small/voiced/small-vowel kana blocks starting at 14 and 94. No other character
-in these ranges is treated as verified for ROM writing. This is intentionally
-separate from JP_CONFIRMED_GLYPHS and encode_japan_text.
+All 160 source-order kana are now directly editable. Their 84 not
+individually screenshot-confirmed positions retain inferred provenance.
+Other unverified glyphs, including most digits, remain numeric.
 """
 from __future__ import annotations
 
 from practice.dialogue_japan import JP_CONFIRMED_GLYPHS
 from practice.dialogue_rom import CONTROLS
 
-HIRAGANA = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん'
-KATAKANA = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'
-HIRAGANA_START = 14
-KATAKANA_START = 94
-KANA_OFFSET = KATAKANA_START - HIRAGANA_START
+from practice.dialogue_kana_table import (
+    HIRAGANA, KATAKANA, HIRAGANA_START, KATAKANA_START, KANA_OFFSET,
+    HIRA_SMALL, KATA_SMALL, HIRA_VOICED, KATA_VOICED,
+    HIRA_SMALL_VOWELS, KATA_SMALL_VOWELS, JP_KANA_HYPOTHESIS,
+)
 
-# Screen-verified tokens live in JP_CONFIRMED_GLYPHS. These contiguous
-# *proposed* blocks are for reading/searching only; the Japanese ROM encoder
-# must NOT accept speculative characters based on this table.
-HIRA_SMALL = 'っゃゅょ'
-KATA_SMALL = 'ッャュョ'
-HIRA_VOICED = 'がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ'
-KATA_VOICED = 'ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ'
-HIRA_SMALL_VOWELS = 'ぁぃぅぇぉ'
-KATA_SMALL_VOWELS = 'ァィゥェォ'
-assert len(HIRA_VOICED) == len(KATA_VOICED) == 25
-
-JP_KANA_HYPOTHESIS = {
-    **{14+i: c for i,c in enumerate(HIRAGANA)},
-    **{60+i: c for i,c in enumerate(HIRA_SMALL)},
-    **{64+i: c for i,c in enumerate(HIRA_VOICED)},
-    **{89+i: c for i,c in enumerate(HIRA_SMALL_VOWELS)},
-    **{94+i: c for i,c in enumerate(KATAKANA)},
-    **{140+i: c for i,c in enumerate(KATA_SMALL)},
-    **{144+i: c for i,c in enumerate(KATA_VOICED)},
-    **{169+i: c for i,c in enumerate(KATA_SMALL_VOWELS)},
-}
 # Two further contiguous blocks are suggested by the screenshot-proven UFO
 # (206=U,191=F,200=O), together with the ROM's literal START button context
 # (204,205,186,203,205) and the prior screenshot-proven 176=０,177=１.
@@ -58,7 +34,7 @@ for _id, _character in JP_CONFIRMED_GLYPHS.items():
         raise AssertionError(f'Kana hypothesis contradicts verified token {_id}')
 
 def decode_japan_kana_preview(tokens: tuple[int, ...]) -> str:
-    """Human-readable *hypothesis*, never intended for direct ROM encoding."""
+    """Readable kana with additional optional digit/font-order guesses."""
     return ''.join(
         ' ' if value == 13 else
         JP_CONFIRMED_GLYPHS.get(value, JP_GLYPH_HYPOTHESIS.get(
@@ -74,13 +50,12 @@ def inferred_kana_count(tokens: tuple[int, ...]) -> int:
 
 
 def inferred_glyph_count(tokens: tuple[int, ...]) -> int:
-    """All guessed kana, digits and Latin positions (not source-proven glyphs)."""
+    """Source-order glyphs lacking individual gameplay screenshot proof."""
     return sum(t in JP_GLYPH_HYPOTHESIS and t not in JP_CONFIRMED_GLYPHS
                for t in tokens)
 
 
-# Search-only romanization for the proposed gojuon and voiced blocks.
-# Mixed-case or user queries never introduce newly inferred Unicode into ROMs.
+# Search-only romanization of the source-order gojuon and voiced kana.
 GOJUON_ROMAJI = (
     'a i u e o ka ki ku ke ko sa shi su se so ta chi tsu te to '
     'na ni nu ne no ha hi fu he ho ma mi mu me mo ya yu yo '

@@ -173,9 +173,11 @@ class OedoScreenshotAlignmentTests(unittest.TestCase):
     def test_new_latin_letters_and_unknowns(self):
         self.assertEqual(encode_japan_text('UFO'),(206,191,200))
         self.assertEqual(encode_japan_text('「UFOだって？'),(295,206,191,200,74,60,32,224))
-        for value in ('B','C','A','お','ぬ','ギ'):
+        for value in ('b','漢','２','ヵ'):
             with self.subTest(value=value),self.assertRaises(ValueError):
                 encode_japan_text(value)
+        self.assertEqual(encode_japan_text('ABC'),(186,187,188))
+        self.assertEqual(encode_japan_text('おぬギ'),(18,36,145))
 
     def test_every_new_id_is_present_at_a_screen_aligned_position(self):
         aligned={}

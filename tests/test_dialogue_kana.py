@@ -35,14 +35,13 @@ class KanaHypothesisTests(unittest.TestCase):
                          'あきアキど<token:250>')
         self.assertEqual(inferred_kana_count((14,20,94,100,78,250)),3)
 
-    def test_unverified_preview_is_not_accepted_by_encoder(self):
+    def test_pattern_derived_kana_are_now_directly_editable(self):
         raw=(17,20,94,100)
-        self.assertEqual(decode_japan_tokens(raw),
-                         '<token:17><token:20><token:94><token:100>')
+        self.assertEqual(decode_japan_tokens(raw),'えきアキ')
+        self.assertEqual(encode_japan_text('えきアキ'),raw)
+        self.assertEqual(encode_japan_text(decode_japan_kana_preview(raw)),raw)
         with self.assertRaises(ValueError):
-            encode_japan_text(decode_japan_kana_preview(raw))
-        # Exact original bytes remain round-trip safe in the actual editor.
-        self.assertEqual(encode_japan_text(decode_japan_tokens(raw)),raw)
+            encode_japan_text('漢')
 
     def test_uppercase_and_digits_hypotheses_remain_readonly(self):
         from practice.dialogue_kana import (JP_LATIN_HYPOTHESIS,
@@ -90,9 +89,10 @@ class RomajiSearchTests(unittest.TestCase):
             '  <token:-56><token:-50>プ ラ ズ マ ぁ ！ ！<token:-51><token:-57>\n')
         self.assertEqual(encode_japan_text(decode_japan_kana_preview(sample)),sample)
 
-    def test_guesses_never_enter_rom_encoder(self):
-        # Only screenshot-aligned characters are promoted, not the gojuon hypothesis.
-        for glyph in ('え','キ','ぬ'):
+    def test_kana_source_order_encoder_and_unmapped_kanji_barrier(self):
+        for glyph,token in [('え',17),('キ',100),('ぬ',36)]:
+            self.assertEqual(encode_japan_text(glyph),(token,))
+        for glyph in ('漢','ヵ','２'):
             with self.assertRaises(ValueError):
                 encode_japan_text(glyph)
         self.assertEqual(encode_japan_text('プラズマぁ！！'),(166,132,151,124,89,212,212))
@@ -170,10 +170,12 @@ class PlasmaScreenshotSequenceTests(unittest.TestCase):
         for r in self.records.values():
             self.assertEqual(encode_japan_text(r.text),r.tokens)
 
-    def test_unverified_hypothesis_still_cannot_be_staged(self):
-        # User-verified glyph IDs were promoted, but inferred symbols are not.
+    def test_pattern_derived_kana_can_be_staged(self):
+        from practice.dialogue_kana_table import JP_KANA_HYPOTHESIS
         for symbol in ('ぎ','ゅ','ギ','ぽ'):
-            with self.assertRaises(ValueError):
-                encode_japan_text(symbol)
+            token=next(k for k,v in JP_KANA_HYPOTHESIS.items() if v==symbol)
+            self.assertEqual(encode_japan_text(symbol),(token,))
+        with self.assertRaises(ValueError):
+            encode_japan_text('漢')
         self.assertEqual(encode_japan_text('「ぷぷっ・・・」'),
                          (295,86,86,60,232,232,232,297))

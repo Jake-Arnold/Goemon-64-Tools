@@ -121,6 +121,7 @@ class RegionUIIntegration(unittest.TestCase):
         self.assertFalse(self.app.dialogue_kana_hypothesis_enabled.get())
         self.assertIn('131 screenshot-confirmed glyph IDs',self.app.dialogue_kana_note.get())
         self.assertIn('76/160 kana positions verified',self.app.dialogue_kana_note.get())
+        self.assertIn('All 160 kana are editable',self.app.dialogue_kana_note.get())
         self.app.dialogue_kana_hypothesis_enabled.set(True)
         self.app._dialogue_toggle_kana_hypothesis()
         self.assertEqual(self.app.dialogue_kana_text.get('1.0','end-1c'),'あかいどう')
@@ -146,7 +147,7 @@ class RegionUIIntegration(unittest.TestCase):
         self.app._dialogue_toggle_kana_hypothesis()
         self.assertEqual(self.app.dialogue_tree.get_children(),(rec.key,))
         self.assertIn('しません',str(self.app.dialogue_tree.item(rec.key,'values')))
-        self.assertIn('HYPOTHETICAL',self.app.dialogue_status.get())
+        self.assertIn('PATTERN-DERIVED',self.app.dialogue_status.get())
 
     def test_open_build_directory(self):
         with patch('practice.dialogue_region_ui.open_directory') as opener, patch('practice.dialogue_region_ui.build_directory',return_value=Path('/tmp/builds')):

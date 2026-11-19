@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-19 — v0.11.73 full source-order Japanese kana map
+
+- **Audit of the supplied original Japanese decompressed ROM:** SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`. An independent signed-16-bit 0x8010-text record scanner indexed **5,039 source records**, found **44,077** kana token occurrences across IDs 14..173, and identified **157 of 160** distinct positions actually used. Unused: 138=ヲ, 155=ヂ, 171=ゥ. The previously established **76 screenshot-confirmed kana tokens** have zero conflicts with the original contiguous font-order table. Coherent long Japanese substrings decoded from different original resources provide additional linguistic corroboration.
+- **Implementation:** Factor the 160-token canonical gojūon/small/voiced/small-vowel mapping into `practice/dialogue_kana_table.py`, imported by both `dialogue_japan.py` and `dialogue_kana.py` without cyclic imports. `JP_CONFIRMED_GLYPHS` continues to represent the original **131** screenshot-backed IDs; `JP_EDITABLE_GLYPHS` adds **84** pattern-derived kana for **215** usable Unicode glyph IDs overall. Exact original unsigned/negative control preservation, `-60` newlines and ROM patcher are unchanged. The JP region UI now clearly labels the 84 as *pattern-derived*, not screenshot-proven; kana can be typed/searchable without enabling the optional preview. Unmapped kanji/digits remain numeric.
+- **Source and tests:** `docs/JAPAN_ALL_160_KANA_SOURCE_ORDER_20261119.md`, `tests/test_dialogue_full_kana.py`. Add all-glyph bijective encode/decode, no-contradiction anchors, explicit three-unobserved IDs, unknown Kanji rejection, and optional full-original-ROM corpus & 5,039-record byte-identical token roundtrip tests. Existing tests updated to reflect practical kana editability; do not quietly count pattern-derived positions as screenshot-confirmed. GitHub CI results must be read before claiming green.
+- **Unresolved:** Actual raster proof for three unused kana, other unobserved inferred kana, unknown kanji/punctuation, lowercase Latin, JP native font width and style windows, full script VM reachability. No copyrighted game ROMs/assets/screenshots committed; source decomp branch untouched.
+
+
 ## 2026-11-19 — v0.11.72 A–Z verified and Japanese Enter newlines visible in Project64
 
 - **Gameplay screenshot:** The user's second Project64 Japanese ROM capture shows exactly four lines of Roman text `ABCDEFG`, `HIJKLMN`, `OPQRSTU`, `VWXYZ` from the ordered token IDs 186..211, separated by manual Enter controls -60. The last five letters previously clipped (`207..211=V..Z`) are now fully readable, promoting 5 more IDs; 131 JP glyphs are individually verified. Existing A..U were proven in the previous screenshot.

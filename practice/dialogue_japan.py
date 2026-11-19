@@ -19,6 +19,7 @@ import tempfile
 from practice.dialogue_rom import (ROM_SIZE, MAX_TOKENS, RESOURCE_COUNT,
     TEXT_COMMAND, _read_record,
     DialogueRecord, CONTROLS, CONTROL_TO_TOKEN)
+from practice.dialogue_kana_table import JP_KANA_HYPOTHESIS
 
 JP_DECOMPRESSED_SHA1 = '6f8745fecc3a5e7d4918c7a73353eb0726116ded'
 JP_RETAIL_SHA1 = '9843ee979b5f6c80f5eda85df0baed9ae7c4e73b'
@@ -83,17 +84,24 @@ JP_CONFIRMED_GLYPHS = {
     # In the Kai banner, extra lines draw below the fixed-height window.
     **{186 + index: chr(ord('A') + index) for index in range(26)},
 }
+# Keep screenshot proof separate from the font-order extrapolation.
+for _id, _character in JP_CONFIRMED_GLYPHS.items():
+    if _id in JP_KANA_HYPOTHESIS and JP_KANA_HYPOTHESIS[_id] != _character:
+        raise AssertionError(f'Kana order conflicts with screenshot token {_id}')
+JP_EDITABLE_GLYPHS = {**JP_KANA_HYPOTHESIS, **JP_CONFIRMED_GLYPHS}
 JP_CONFIRMED_GLYPH_TO_TOKEN = {character: token for token, character in JP_CONFIRMED_GLYPHS.items()}
+JP_EDITABLE_GLYPH_TO_TOKEN = {character: token for token, character in JP_EDITABLE_GLYPHS.items()}
+assert len(JP_EDITABLE_GLYPHS) == len(JP_EDITABLE_GLYPH_TO_TOKEN) == 215
 
 
 def decode_japan_tokens(tokens: tuple[int, ...]) -> str:
     return ''.join(' ' if token == 13 else
-                   JP_CONFIRMED_GLYPHS.get(token, CONTROLS.get(token, f'<token:{token}>'))
+                   JP_EDITABLE_GLYPHS.get(token, CONTROLS.get(token, f'<token:{token}>'))
                    for token in tokens)
 
 
 def encode_japan_text(value: str) -> tuple[int, ...]:
-    """Encode verified glyphs, JP spaces/newlines, and explicit signed token IDs."""
+    """Encode screenshot-confirmed glyphs and structurally decoded kana."""
     out = []
     position = 0
     while position < len(value):
@@ -108,8 +116,8 @@ def encode_japan_text(value: str) -> tuple[int, ...]:
                 raise ValueError(f'Unverified JP token ID {token}')
             out.append(token)
             position = match.end()
-        elif ch in JP_CONFIRMED_GLYPH_TO_TOKEN:
-            out.append(JP_CONFIRMED_GLYPH_TO_TOKEN[ch])
+        elif ch in JP_EDITABLE_GLYPH_TO_TOKEN:
+            out.append(JP_EDITABLE_GLYPH_TO_TOKEN[ch])
             position += 1
         elif ch == ' ':
             out.append(13)
@@ -118,7 +126,7 @@ def encode_japan_text(value: str) -> tuple[int, ...]:
             out.append(-60)
             position += 1
         else:
-            raise ValueError(f'Japanese glyph {ch!r} has no verified ROM token mapping; use <token:N>')
+            raise ValueError(f'Japanese glyph {ch!r} has no mapped ROM glyph; use <token:N>')
     return tuple(out)
 
 
@@ -412,7 +420,7 @@ def export_japan_index(records, destination):
     items=[r.as_dict() for r in records]
     if destination.suffix.lower()=='.json':
         document={'format':'goemon-japan-0-token-candidates-v1', 'input_sha1':JP_DECOMPRESSED_SHA1,
-                  'glyph_mapping':'unresolved; numeric token IDs are not Japanese Unicode',
+                  'glyph_mapping':'160 structurally mapped kana; 131 screenshot-confirmed glyph IDs; other tokens numeric',
                   'completeness':'static aligned same-resource references only','records':items}
         destination.write_text(json.dumps(document,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     elif destination.suffix.lower()=='.csv':
