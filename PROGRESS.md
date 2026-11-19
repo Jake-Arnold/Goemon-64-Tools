@@ -1,3 +1,7 @@
+## 2026-11-19 — Draft PR #104: graphics, pose, dracam native evidence archive
+
+- Preserved 25 original missing-source files (plus archive README) from four research branch tips in a non-executable research directory, with original SHA provenance. Earlier native scratch successes remain historical **RESEARCH_ONLY** where no separate current acceptance is recorded; no new function promotion is claimed. Current accepted USA 1,500 / Japan 432 C unchanged; no production C/manifests, fresh full-ROM G2, host sanitizer or gameplay tests performed by this archive. No source refs deleted pending PR merge plus file/SHA recheck.
+
 ## 2026-11-19 — Preserve original file12 VM dialogue callback research (PR #99)
 
 - **Research preservation:** Added the original dated isolated IDO/ELF research report for `func_80222034_5DD504` (20 bytes) and `func_80222168_5DD638` (36 bytes), the original 13 November callback investigation note and a cross-reference from `decomp/VM_CONVERSATION_TARGETS.md`. The research JSON is copied unchanged (Git blob `69ada279bcbcdb212a2a4de699623d961ad48565`), and explicitly records the **historical RESEARCH_ONLY status** when collected.
