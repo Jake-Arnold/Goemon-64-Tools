@@ -162,8 +162,8 @@ class OedoScreenshotAlignmentTests(unittest.TestCase):
 
     def test_63_newly_confirmed_ids_have_unique_inverse_and_compatible_kana(self):
         self.assertEqual(len(NEW_SCREENSHOT_GLYPHS),63)
-        self.assertEqual(len(JP_CONFIRMED_GLYPHS),108)
-        self.assertEqual(len(set(JP_CONFIRMED_GLYPHS.values())),108)
+        self.assertEqual(len(JP_CONFIRMED_GLYPHS),126)
+        self.assertEqual(len(set(JP_CONFIRMED_GLYPHS.values())),126)
         for token,character in NEW_SCREENSHOT_GLYPHS.items():
             self.assertEqual(JP_CONFIRMED_GLYPHS[token],character)
             self.assertEqual(encode_japan_text(character),(token,))

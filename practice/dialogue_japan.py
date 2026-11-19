@@ -76,6 +76,11 @@ JP_CONFIRMED_GLYPHS = {
     141: 'ャ', 146: 'グ', 158: 'ド', 164: 'パ', 165: 'ピ', 175: 'ー',
     191: 'F', 200: 'O', 206: 'U', 224: '？', 276: '町', 302: '行',
     318: '時', 324: '来', 337: '聞',
+    # Project64 screenshot: 2026-11-19 Kai Highway replacement prints
+    # 'ABCDEFGHIJKLMNOPQRSTU' clearly. The V at the right edge is clipped;
+    # V..Z remain inferred-only until separately observed on screen.
+    # Preserve the earlier independently proven F/O/U values unchanged.
+    **{186 + index: chr(ord('A') + index) for index in range(21)},
 }
 JP_CONFIRMED_GLYPH_TO_TOKEN = {character: token for token, character in JP_CONFIRMED_GLYPHS.items()}
 
@@ -207,8 +212,16 @@ def validate_japan_replacement(record: JapanDialogueRecord, replacement: str) ->
     proposed = encode_japan_text(replacement)
     if len(proposed) > MAX_TOKENS - 1:
         raise ValueError('Japanese text replacement exceeds maximum record length')
-    if tuple(t for t in proposed if t < 0) != tuple(t for t in record.tokens if t < 0):
-        raise ValueError('Japan-0 control tokens must retain their ordered values; automatic wrapping is not verified')
+    # Enter is encoded as -60 in both regional dialogue token streams.
+    # Allow explicit ADDITIONAL line breaks, but never let a replacement delete
+    # original ones or reorder/strip non-newline VM controls. This is *not*
+    # automatic wrapping or evidence that a window can fit more rendered lines.
+    original_controls = tuple(t for t in record.tokens if t < 0 and t != -60)
+    edited_controls = tuple(t for t in proposed if t < 0 and t != -60)
+    if edited_controls != original_controls:
+        raise ValueError('Japan-0 non-newline VM controls must retain their ordered values')
+    if proposed.count(-60) < record.tokens.count(-60):
+        raise ValueError('Original Japan-0 -60 line breaks cannot be removed')
     return proposed
 
 

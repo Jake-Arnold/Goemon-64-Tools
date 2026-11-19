@@ -1,4 +1,14 @@
-# Goemon Speedrun Tools v0.11.70 — Oedo Screenshot-Verified Japanese Font Expansion
+# Goemon Speedrun Tools v0.11.71 — Japanese Uppercase Editing and Manual Newlines
+
+## v0.11.71 — Native uppercase A–U proven in modified Japanese gameplay
+
+The user's **Project64 Japanese ROM screenshot** displays ordered letters **A–U** using the inferred numeric glyph sequence 186–206 in the original Kai Highway banner. This verifies **18 additional Latin ID assignments** beyond previously proven F/O/U, bringing the Japan screenshot-confirmed glyph table to **126**; all A–U can now be entered directly in the Japanese editor. V–Z remain inferred numeric IDs until visible in gameplay. The screenshot also shows that the 26-letter sequence extends past the right edge of the Kai window: native Japanese font width metrics and automatic wrapping are still unverified.
+
+**Enter/manual JP line breaks now stage:** The editor encodes each inserted newline as `-60`; Japan validation permits *additional* manual -60 tokens while preserving the entire original sequence of other negative VM controls and retaining at least the original number of line breaks. This is manual editing only: `Window profile` and automatic wrapping remain disabled for Japan. Additional lines may not fit the original fixed-height artwork, particularly the two-line Kai heading/area-name box. The GUI explicitly warns when extra newlines are staged.
+
+Source notes: `docs/JAPAN_KAI_ALPHABET_AND_NEWLINES_20261119.md`. Existing source ROMs, USA layout, user data storage and Japanese retail repacking remain unchanged. Tests added for direct English A–U, unsupported V–Z, manual line breaks, VM-control preservation and Japan UI staging; no new runtime dependencies. A modified Japanese ROM with *newly inserted manual line breaks* still requires in-game verification.
+
+
 
 ## v0.11.70 — Align 13 additional screenshots and expose experimental Latin font ordering
 

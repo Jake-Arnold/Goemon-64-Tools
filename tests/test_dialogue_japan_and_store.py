@@ -32,7 +32,23 @@ class EncodingTests(unittest.TestCase):
         self.assertEqual(validate_japan_replacement(r,' <token:-33><token:21><token:-32>\n'),
                          (13,-33,21,-32,-60))
         with self.assertRaises(ValueError):validate_japan_replacement(r,' <token:21>\n')
-        with self.assertRaises(ValueError):validate_japan_replacement(r,' <token:-33><token:21><token:-32>\n\n')
+        self.assertEqual(validate_japan_replacement(r,' <token:-33><token:21><token:-32>\n\n'),
+                         (13,-33,21,-32,-60,-60))
+        with self.assertRaises(ValueError):
+            validate_japan_replacement(r,' <token:-33><token:21><token:-32>')
+
+    def test_screenshot_verified_uppercase_and_manual_line_breaks(self):
+        from practice.dialogue_japan import JapanDialogueRecord
+        self.assertEqual(encode_japan_text('ABCDEFGHIJKLMNOPQRSTU'),
+                         tuple(range(186,207)))
+        self.assertEqual(decode_japan_tokens(tuple(range(186,207))),
+                         'ABCDEFGHIJKLMNOPQRSTU')
+        # The following five letters were outside or clipped by the screenshot.
+        with self.assertRaises(ValueError):encode_japan_text('VWXYZ')
+        road=JapanDialogueRecord(82,0x18,0x742358,(13,19,15,78,16),(8,))
+        proposed=validate_japan_replacement(road,' かい\nどう')
+        self.assertEqual(proposed,(13,19,15,-60,78,16))
+        self.assertEqual(encode_japan_text(decode_japan_tokens(proposed)),proposed)
 
     def test_drop_paths_with_braces(self):
         class MockTcl:

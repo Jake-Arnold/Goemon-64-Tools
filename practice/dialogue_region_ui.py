@@ -68,7 +68,7 @@ class DialogueRegionMixin:
         self.dialogue_kana_panel=ttk.LabelFrame(self.dialogue_tab,
             text='Experimental Japanese kana ordering — screenshot comparison ONLY',padding=5)
         ttk.Checkbutton(self.dialogue_kana_panel,
-            text='Show inferred kana, A–Z and digits (unverified) in search/preview',
+            text='Show inferred kana, remaining A–Z and digits in search/preview',
             variable=self.dialogue_kana_hypothesis_enabled,
             command=self._dialogue_toggle_kana_hypothesis).pack(anchor='w')
         self.dialogue_kana_note=tk.StringVar(value=(
@@ -148,7 +148,8 @@ class DialogueRegionMixin:
         self._dialogue_mode_changed()
         self._dialogue_filter()
         note=(f'{len(JP_CONFIRMED_GLYPHS)} screenshot-verified Japanese glyph IDs available as Unicode; '
-              'unknown IDs remain <token:N>. Japanese font widths and automatic wrapping are unverified. '
+              'unknown IDs remain <token:N>. Enter can add manual -60 line breaks; '
+              'Japanese font widths and automatic wrapping are unverified. '
               if region=='japan' else '')
         self.dialogue_status.set(f'{region.upper()}: {len(records)} candidate records indexed from persistent verified ROM. '
                                  f'Retail source: {"stored" if self.dialogue_retail_path else "not yet imported"}. {note}')
@@ -334,8 +335,10 @@ class DialogueRegionMixin:
             self.dialogue_layout_summary.set(
                 f'Japan-0 token mode: {sum(x>=0 for x in tokens)} glyph IDs, '
                 f'{controls.count(-60)+1} explicit lines, {len(controls)} controls. '
-                'Glyph widths and automatic wrapping not yet verified for Japanese script. '
-                'Retain original control order; type only verified Unicode or numeric <token:N> IDs.')
+                'Enter adds explicit -60 line breaks (no automatic wrapping); '
+                'additional lines may clip in the original fixed-size window. '
+                'Original breaks and other VM control order are protected. '
+                'Type only verified Unicode or numeric <token:N> IDs.')
         except ValueError as exc:
             self.dialogue_layout_summary.set(f'Japanese token encoding invalid: {exc}')
         self._dialogue_refresh_kana_preview()
@@ -362,6 +365,11 @@ class DialogueRegionMixin:
         else:self.dialogue_staged[key]=replacement
         self._dialogue_filter()
         self._dialogue_analyze()
+        added_lines=tokens.count(-60)-record.tokens.count(-60)
+        if added_lines>0:
+            self.dialogue_status.set(
+                f'JP: {added_lines} additional manual line break(s) staged. '
+                'The original window height is fixed: text may clip.')
 
     def _dialogue_export(self):
         if not self.dialogue_records:return

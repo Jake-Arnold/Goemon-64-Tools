@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-19 — v0.11.71 Project64 alphabet proof and manual -60 newline support
+
+- **Evidence:** User-supplied Project64 screenshot shows original Japanese Kai heading and readable `ABCDEFGHIJKLMNOPQRSTU` extending to the right of its art. In the preceding turn, the supplied patch payload enumerated `<token:186>` through `<token:211>` in order. This independently validates IDs 186..206=A..U, 18 new assignments beyond F/O/U, now 126 screenshot-backed glyphs in the Japanese Unicode editor. Do not promote V–Z from clipped/offscreen pixels; they remain speculative.
+- **Fix:** Japan `validate_japan_replacement` keeps all non-`-60` controls in sequence, protects existing `-60` counts, permits additional manual Enter newlines, and keeps the maximum token guard. Japanese UI stages explicit extra breaks and warns that native box height may clip; automatic wrap and Window profile remain disabled due to missing JP width geometry.
+- **Tests authored:** Direct full A-U token roundtrip, rejection of V-Z Unicode, old non-newline VM control preservation and original-break deletion, manual newline staging in Tk, revised screen evidence count. Source alignment: `docs/JAPAN_KAI_ALPHABET_AND_NEWLINES_20261119.md`.
+- **Limitations:** User screenshot confirms font rendering but demonstrates overflow on a short area-name banner. No claimed in-game proof of added line-break effect, native resize, automatic wrapping or full English font beyond U. No ROMs/fonts or screenshots committed. Prior original-only repack and source index remain unchanged.
+
+
 ## 2026-11-19 — v0.11.70 Oedo 13-frame glyph verification and Latin/digit hypothesis
 
 - **Source evidence:** User supplied 13 Japanese gameplay screenshots from Hagure Town/Oedo. Pin the original Japan 32 MiB decompressed ROM SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`. Exactly **29 original text records** across **resource 93** (area title at +0xC84/+0xC94) and **resource 96** (NPCs at +0x1A78..+0x1B34, +0x278C..+0x280C, +0x2BFC..+0x2E00, +0x4DDC..+0x4E28) align character by character, maintaining original control IDs. Details and all offsets in `docs/JAPAN_OEDO_THIRTEEN_SCREEN_ALIGNMENT_20261119.md`; screenshot #3's second laughter line has **10 ハ**, not 9.

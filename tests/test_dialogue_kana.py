@@ -54,9 +54,11 @@ class KanaHypothesisTests(unittest.TestCase):
         self.assertEqual(JP_LATIN_HYPOTHESIS[206],'U')
         self.assertEqual(decode_japan_kana_preview((204,205,186,203,205)),'START')
         self.assertEqual(decode_japan_kana_preview((176,177,178,185)),'０１２９')
-        self.assertEqual(inferred_glyph_count((191,200,206,204,205,186,203,205)),5)
+        self.assertEqual(inferred_glyph_count((191,200,206,204,205,186,203,205)),0)
         self.assertEqual(encode_japan_text('UFO'),(206,191,200))
-        with self.assertRaises(ValueError):encode_japan_text('START')
+        self.assertEqual(encode_japan_text('START'),(204,205,186,203,205))
+        self.assertEqual(inferred_glyph_count((207,208,209,210,211)),5)
+        with self.assertRaises(ValueError):encode_japan_text('VWXYZ')
         with self.assertRaises(ValueError):encode_japan_text('２')
 
     def test_original_jp_record_preview_is_reproducible(self):

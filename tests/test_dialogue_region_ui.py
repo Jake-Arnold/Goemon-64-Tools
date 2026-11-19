@@ -95,6 +95,20 @@ class RegionUIIntegration(unittest.TestCase):
         self.assertIn('disabled',self.app.dialogue_wrap_button.state())
         self.assertEqual(self.app.dialogue_layout_mode.get(),'Measure only')
 
+    def test_japan_manual_enter_can_be_staged(self):
+        from practice.dialogue_japan import JapanDialogueRecord
+        rec=JapanDialogueRecord(82,0x18,0x742358,(13,19,15,78,16),(0x64,))
+        self.app.dialogue_region_choice.set('japan')
+        self.app._dialogue_region_changed()
+        self.app.dialogue_records=[rec]
+        self.app.dialogue_by_key={rec.key:rec}
+        self.app.dialogue_selected_key=rec.key
+        self.app.dialogue_editor.delete('1.0','end')
+        self.app.dialogue_editor.insert('1.0',' かい\nどう')
+        self.app._dialogue_stage()
+        self.assertEqual(self.app.dialogue_staged[rec.key],' かい\nどう')
+        self.assertIn('additional manual line break',self.app.dialogue_status.get())
+
     def test_hypothesis_preview_stays_readonly_and_japan_only(self):
         from practice.dialogue_japan import JapanDialogueRecord
         record=JapanDialogueRecord(82,0x18,0x742358,(14,19,15,78,16),(0x64,))
@@ -105,7 +119,7 @@ class RegionUIIntegration(unittest.TestCase):
         self.app.dialogue_selected_key=record.key
         self.app.dialogue_editor.insert('1.0',record.text)
         self.assertFalse(self.app.dialogue_kana_hypothesis_enabled.get())
-        self.assertIn('108 screenshot-confirmed glyph IDs',self.app.dialogue_kana_note.get())
+        self.assertIn('126 screenshot-confirmed glyph IDs',self.app.dialogue_kana_note.get())
         self.assertIn('76/160 kana positions verified',self.app.dialogue_kana_note.get())
         self.app.dialogue_kana_hypothesis_enabled.set(True)
         self.app._dialogue_toggle_kana_hypothesis()
