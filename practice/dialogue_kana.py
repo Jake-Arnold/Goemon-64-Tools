@@ -39,17 +39,26 @@ JP_KANA_HYPOTHESIS = {
     **{144+i: c for i,c in enumerate(KATA_VOICED)},
     **{169+i: c for i,c in enumerate(KATA_SMALL_VOWELS)},
 }
+# Two further contiguous blocks are suggested by the screenshot-proven UFO
+# (206=U,191=F,200=O), together with the ROM's literal START button context
+# (204,205,186,203,205) and the prior screenshot-proven 176=０,177=１.
+# ALL OTHER uppercase and digit IDs remain an UNVERIFIED preview only.
+JP_LATIN_HYPOTHESIS = {186+i: chr(ord('A')+i) for i in range(26)}
+JP_DIGIT_HYPOTHESIS = {176+i: chr(ord('０')+i) for i in range(10)}
+JP_GLYPH_HYPOTHESIS = {**JP_KANA_HYPOTHESIS, **JP_LATIN_HYPOTHESIS,
+                       **JP_DIGIT_HYPOTHESIS}
+
 # Half-width/native typography outside the sequential kana range is intentionally
 # not inferred from a single sample.
 for _id, _character in JP_CONFIRMED_GLYPHS.items():
-    if _id in JP_KANA_HYPOTHESIS and JP_KANA_HYPOTHESIS[_id] != _character:
+    if _id in JP_GLYPH_HYPOTHESIS and JP_GLYPH_HYPOTHESIS[_id] != _character:
         raise AssertionError(f'Kana hypothesis contradicts verified token {_id}')
 
 def decode_japan_kana_preview(tokens: tuple[int, ...]) -> str:
     """Human-readable *hypothesis*, never intended for direct ROM encoding."""
     return ''.join(
         ' ' if value == 13 else
-        JP_CONFIRMED_GLYPHS.get(value, JP_KANA_HYPOTHESIS.get(
+        JP_CONFIRMED_GLYPHS.get(value, JP_GLYPH_HYPOTHESIS.get(
             value, CONTROLS.get(value, f'<token:{value}>')))
         for value in tokens
     )
@@ -59,6 +68,12 @@ def inferred_kana_count(tokens: tuple[int, ...]) -> int:
     """Count guessed characters as distinct from screenshot-confirmed ones."""
     return sum(value in JP_KANA_HYPOTHESIS and value not in JP_CONFIRMED_GLYPHS
                for value in tokens)
+
+
+def inferred_glyph_count(tokens: tuple[int, ...]) -> int:
+    """All guessed kana, digits and Latin positions (not source-proven glyphs)."""
+    return sum(t in JP_GLYPH_HYPOTHESIS and t not in JP_CONFIRMED_GLYPHS
+               for t in tokens)
 
 
 # Search-only romanization for the proposed gojuon and voiced blocks.

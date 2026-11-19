@@ -33,16 +33,31 @@ class KanaHypothesisTests(unittest.TestCase):
         self.assertEqual(inferred_kana_count(road),0)
         self.assertEqual(decode_japan_kana_preview((14,20,94,100,78,250)),
                          'あきアキど<token:250>')
-        self.assertEqual(inferred_kana_count((14,20,94,100,78,250)),4)
+        self.assertEqual(inferred_kana_count((14,20,94,100,78,250)),3)
 
     def test_unverified_preview_is_not_accepted_by_encoder(self):
-        raw=(14,20,94,100)
+        raw=(17,20,94,100)
         self.assertEqual(decode_japan_tokens(raw),
-                         '<token:14><token:20><token:94><token:100>')
+                         '<token:17><token:20><token:94><token:100>')
         with self.assertRaises(ValueError):
             encode_japan_text(decode_japan_kana_preview(raw))
         # Exact original bytes remain round-trip safe in the actual editor.
         self.assertEqual(encode_japan_text(decode_japan_tokens(raw)),raw)
+
+    def test_uppercase_and_digits_hypotheses_remain_readonly(self):
+        from practice.dialogue_kana import (JP_LATIN_HYPOTHESIS,
+            JP_DIGIT_HYPOTHESIS, inferred_glyph_count)
+        self.assertEqual(len(JP_LATIN_HYPOTHESIS),26)
+        self.assertEqual(len(JP_DIGIT_HYPOTHESIS),10)
+        self.assertEqual(JP_LATIN_HYPOTHESIS[191],'F')
+        self.assertEqual(JP_LATIN_HYPOTHESIS[200],'O')
+        self.assertEqual(JP_LATIN_HYPOTHESIS[206],'U')
+        self.assertEqual(decode_japan_kana_preview((204,205,186,203,205)),'START')
+        self.assertEqual(decode_japan_kana_preview((176,177,178,185)),'０１２９')
+        self.assertEqual(inferred_glyph_count((191,200,206,204,205,186,203,205)),5)
+        self.assertEqual(encode_japan_text('UFO'),(206,191,200))
+        with self.assertRaises(ValueError):encode_japan_text('START')
+        with self.assertRaises(ValueError):encode_japan_text('２')
 
     def test_original_jp_record_preview_is_reproducible(self):
         source=os.environ.get('GOEMON_JP_DECOMPRESSED_ROM')
@@ -75,7 +90,7 @@ class RomajiSearchTests(unittest.TestCase):
 
     def test_guesses_never_enter_rom_encoder(self):
         # Only screenshot-aligned characters are promoted, not the gojuon hypothesis.
-        for glyph in ('あ','キ','ぬ'):
+        for glyph in ('え','キ','ぬ'):
             with self.assertRaises(ValueError):
                 encode_japan_text(glyph)
         self.assertEqual(encode_japan_text('プラズマぁ！！'),(166,132,151,124,89,212,212))

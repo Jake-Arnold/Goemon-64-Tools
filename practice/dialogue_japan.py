@@ -44,8 +44,8 @@ TOKEN_RE = re.compile(r'<token:([+-]?\d+)>|<(close-window|open-window|clear-glyp
 #   166,13,132,13,151,13,124,13,89,13,212,13,212
 #     プ      ラ      ズ      マ      ぁ      ！      ！
 # The 13 separators are spacing glyphs; -56/-50/-51/-57 are controls.
-# No OTHER characters are inferred from this sample. In particular neither
-# the other voiced-kana range nor the rest of the small-kana range is proved.
+# The above Plasma callout alone establishes no additional character IDs.
+# Further confirmed IDs below come from separately aligned gameplay screenshots.
 JP_CONFIRMED_GLYPHS = {
     292: '【', 293: '】', 99: 'カ', 95: 'イ',
     19: 'か', 15: 'い', 78: 'ど', 16: 'う',
@@ -60,6 +60,22 @@ JP_CONFIRMED_GLYPHS = {
     291: '大', 273: '江', 274: '戸', 275: '城',
     258: '（', 259: '）', 304: '入', 79: 'ば',
     341: '屋', 74: 'だ', 334: '出', 305: '口', 278: '山',
+    # Thirteen additional user gameplay screenshots: Oedo/Hagure title and
+    # Oedo NPC speech, pinned Japan-0 resources 93 and 96.
+    # Each ID was aligned by character position across 29 original 16-bit
+    # records (including the entire text segment, not just a fuzzy substring).
+    # Provenance: docs/JAPAN_OEDO_THIRTEEN_SCREEN_ALIGNMENT_20261119.md
+    14: 'あ', 21: 'く', 22: 'け', 23: 'こ', 25: 'し', 28: 'そ',
+    29: 'た', 30: 'ち', 31: 'つ', 32: 'て', 33: 'と', 34: 'な',
+    35: 'に', 37: 'ね', 38: 'の', 39: 'は', 41: 'ふ', 42: 'へ',
+    44: 'ま', 45: 'み', 48: 'も', 49: 'や', 51: 'よ', 52: 'ら',
+    53: 'り', 54: 'る', 55: 'れ', 56: 'ろ', 57: 'わ', 58: 'を',
+    59: 'ん', 66: 'ぐ', 83: 'ぼ', 91: 'ぅ', 93: 'ぉ', 103: 'コ',
+    105: 'シ', 106: 'ス', 108: 'ソ', 109: 'タ', 110: 'チ', 116: 'ヌ',
+    119: 'ハ', 127: 'メ', 133: 'リ', 137: 'ワ', 139: 'ン', 140: 'ッ',
+    141: 'ャ', 146: 'グ', 158: 'ド', 164: 'パ', 165: 'ピ', 175: 'ー',
+    191: 'F', 200: 'O', 206: 'U', 224: '？', 276: '町', 302: '行',
+    318: '時', 324: '来', 337: '聞',
 }
 JP_CONFIRMED_GLYPH_TO_TOKEN = {character: token for token, character in JP_CONFIRMED_GLYPHS.items()}
 

@@ -1,4 +1,17 @@
-# Goemon Speedrun Tools v0.11.69 — Plasma Dialogue Screenshot Mapping and Full Record Lists
+# Goemon Speedrun Tools v0.11.70 — Oedo Screenshot-Verified Japanese Font Expansion
+
+## v0.11.70 — Align 13 additional screenshots and expose experimental Latin font ordering
+
+**13/13 user Japanese gameplay screenshots automatically aligned to the original pinned Japanese ROM** using original static text records: **29 distinct source records**, chiefly **resource 96** for Oedo town NPC dialogue and **resource 93** for the two-line 大江戸・はぐれ町 area banner. These include `UFOだって？`, Chappy's dog dialogue and laughter, a fortune-teller's recommendation, `にしへ行けば、ふじ山あり！`, and the directions involving `うらない屋`. Every glyph position matches the source; no fuzzy Unicode replacements or arbitrary unknown kanji assignments were necessary. Full per-screenshot offsets and transcriptions: `docs/JAPAN_OEDO_THIRTEEN_SCREEN_ALIGNMENT_20261119.md`.
+
+**63 additional screenshot-backed token IDs** are now safely Unicode-editable in `practice/dialogue_japan.py`, bringing the original-ROM/screenshot-confirmed table to **108 unique glyph IDs**. These include many basic kana, katakana, small kana, `ー`, kanji `町/行/時/来/聞`, full-width question mark `？`, and **three Latin uppercase letters U/F/O**. All 29 source records preserve the identical complete signed-16-bit token stream (including original VM negative formatting/state commands) through encode/decode. The source input ROM, USA editor and ROM relocation/compression code are unchanged.
+
+**A second systematic font-ordering hypothesis is supported:** `191=F`, `200=O`, `206=U` correspond to uppercase `A–Z` at token **186–211**. An original Japan ROM button instruction contains the same proposed pattern for `START` (`204,205,186,203,205`). The screenshot-proven digits `176=０`, `177=１` similarly suggest fullwidth `０–９` at **176–185**. The **unverified** remaining Latin/digit IDs are added only to the separate read-only experimental Japanese preview and search; the actual ROM encoder refuses them until independently verified. The earlier **160-position kana hypothesis** remains, now **76 screenshot-confirmed / 84 still unverified**; none of the 84 is automatically promoted.
+
+**Validation 19 November 2026:** **59 focused original-ROM / Linux Xvfb Tk tests passed, zero skipped**, under portable Python 3.12.16, LZKN64 and the supplied pinned USA/Japan decompressed and 16 MiB retail ROMs. Includes all 29 screenshot/ROM record alignments, the 63 new mappings, original JP retail byte-for-byte unchanged repack, native token/control round trips and USA/Japan UI integration. No new Python dependencies are introduced. Full application Windows/Linux regressions, packaged TkDND distribution and modified Japanese retail ROM display in Project64 remain unverified.
+
+The active PR #94 is draft against `main`; `chatgptweb/decomp` and any old branch cleanup state remain untouched. No original ROM bytes, screenshots, font images or licensed assets were committed.
+
 
 ## v0.11.69 — All candidate records visible, expanded screenshot-verified Japanese glyph map
 

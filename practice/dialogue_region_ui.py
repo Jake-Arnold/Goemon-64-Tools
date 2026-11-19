@@ -16,13 +16,13 @@ from practice.dialogue_rom import (load_usa_image, extract_dialogue,
     validate_flexible_replacement, export_index, save_patched_image)
 from practice.dialogue_repack import save_retail_rom
 from practice.dialogue_layout import font_widths_from_rom
-from practice.dialogue_japan import (load_japan_image, extract_japan_dialogue,
+from practice.dialogue_japan import (JP_CONFIRMED_GLYPHS, load_japan_image, extract_japan_dialogue,
     validate_japan_replacement, encode_japan_text, export_japan_index,
     save_japan_patched, save_japan_retail_rom)
 from practice.dialogue_store import (import_rom, verify_stored,
     build_directory, open_directory, drop_paths)
 from practice.dialogue_kana import (
-    decode_japan_kana_preview, inferred_kana_count, japanese_query_matches,
+    JP_KANA_HYPOTHESIS, decode_japan_kana_preview, inferred_glyph_count, japanese_query_matches,
 )
 
 
@@ -68,16 +68,18 @@ class DialogueRegionMixin:
         self.dialogue_kana_panel=ttk.LabelFrame(self.dialogue_tab,
             text='Experimental Japanese kana ordering — screenshot comparison ONLY',padding=5)
         ttk.Checkbutton(self.dialogue_kana_panel,
-            text='Show inferred kana (unverified) in record list and preview',
+            text='Show inferred kana, A–Z and digits (unverified) in search/preview',
             variable=self.dialogue_kana_hypothesis_enabled,
             command=self._dialogue_toggle_kana_hypothesis).pack(anchor='w')
         self.dialogue_kana_note=tk.StringVar(value=(
-            'Hypothesis: hiragana tokens 14–59, katakana tokens 94–139 (+80). '
-            'Only screenshot-confirmed glyphs are editable as Unicode.'))
+            f'{len(JP_CONFIRMED_GLYPHS)} screenshot-confirmed glyph IDs; '
+            f'{len(JP_KANA_HYPOTHESIS.keys() & JP_CONFIRMED_GLYPHS.keys())}/'
+            f'{len(JP_KANA_HYPOTHESIS)} kana positions verified. '
+            'Unverified predicted characters remain read-only.'))
         ttk.Label(self.dialogue_kana_panel,text=(
-            'When enabled, search Japanese kana or romaji (pu, pura, purazuma). '
+            'When enabled, search guessed kana, romaji or uppercase words (START/UFO). '
             'Use resource:112 to inspect a whole dialogue resource; '
-            'resource:112 pu searches within it. Unverified glyphs are not searchable as romaji.'),
+            'resource:112 pu searches within it. Unknown glyphs remain hard romaji barriers.'),
             wraplength=1040).pack(fill='x',anchor='w')
         ttk.Label(self.dialogue_kana_panel,textvariable=self.dialogue_kana_note,
                   wraplength=1040).pack(fill='x',anchor='w')
@@ -145,8 +147,8 @@ class DialogueRegionMixin:
             self.dialogue_layout_mode.set('Native (auto when traced)')
         self._dialogue_mode_changed()
         self._dialogue_filter()
-        note=('Some screenshot-verified Japanese glyphs display as Unicode; unknown IDs remain <token:N>. '
-              'Japanese font widths and automatic wrapping are still unverified. '
+        note=(f'{len(JP_CONFIRMED_GLYPHS)} screenshot-verified Japanese glyph IDs available as Unicode; '
+              'unknown IDs remain <token:N>. Japanese font widths and automatic wrapping are unverified. '
               if region=='japan' else '')
         self.dialogue_status.set(f'{region.upper()}: {len(records)} candidate records indexed from persistent verified ROM. '
                                  f'Retail source: {"stored" if self.dialogue_retail_path else "not yet imported"}. {note}')
@@ -284,14 +286,16 @@ class DialogueRegionMixin:
                 if self.dialogue_kana_hypothesis_enabled.get():
                     content=decode_japan_kana_preview(tokens)
                     self.dialogue_kana_note.set(
-                        f'UNVERIFIED gojuon-order guesses: {inferred_kana_count(tokens)} of '
-                        f'{sum(t>=0 for t in tokens)} glyph tokens. Screenshot-verified IDs '
-                        'remain separate. Copy/compare this preview; do not paste guesses into the editor.')
+                        f'UNVERIFIED kana/Latin/digit guesses: {inferred_glyph_count(tokens)} of '
+                        f'{sum(t>=0 for t in tokens)} glyph tokens. '
+                        f'{len(JP_CONFIRMED_GLYPHS)} original-ROM/screenshot-confirmed IDs are '
+                        'editable; all other inferred glyphs remain read-only.')
                 else:
                     content='Enable inferred kana to compare this record against your screenshot.'
                     self.dialogue_kana_note.set(
-                        'Hypothesis OFF. Basic hiragana 14–59 and katakana 94–139 (+80) '
-                        'are not yet validated against gameplay.')
+                        f'Hypothesis OFF. {len(JP_CONFIRMED_GLYPHS)} glyph IDs are '
+                        'screenshot-verified. Kana-order positions that are not '
+                        'individually verified stay out of the ROM editor.')
             except ValueError as exc:
                 content=f'Preview unavailable: {exc}'
         self.dialogue_kana_text.configure(state='normal')
