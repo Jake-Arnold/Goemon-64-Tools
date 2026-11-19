@@ -1,3 +1,7 @@
+## 2026-11-19 — Draft PR #102: preserve original Japanese native proof chronology
+
+- Research only. Exact original historical blobs from `chatgptweb/japanese-decomp-port` and `chatgptweb/decomp-consolidation-20261116` archived under `decomp/research/branch_archive/japan_early_native_20261119`, including two alternate early 24-C helper revisions. Existing canonical USA 1,500/Japan 432 matching-C functions and active source unchanged; full native ROM/G2, CI and gameplay **NOT RUN** for this archive. No source branches deleted; deletion gated on PR merge and SHA/provenance checks.
+
 ## 2026-11-19 — Preserve original file12 VM dialogue callback research (PR #99)
 
 - **Research preservation:** Added the original dated isolated IDO/ELF research report for `func_80222034_5DD504` (20 bytes) and `func_80222168_5DD638` (36 bytes), the original 13 November callback investigation note and a cross-reference from `decomp/VM_CONVERSATION_TARGETS.md`. The research JSON is copied unchanged (Git blob `69ada279bcbcdb212a2a4de699623d961ad48565`), and explicitly records the **historical RESEARCH_ONLY status** when collected.
