@@ -3,13 +3,13 @@
   "created_utc_date": "2026-11-18",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 1478,
-    "usa_instruction_bytes": 57140,
+    "usa_functions": 1498,
+    "usa_instruction_bytes": 57508,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "After 9 more original-ROM-exact 8-byte setters were promoted, no production-ready candidates remain in this queue. File25 72-byte relocation lead remains blocked; file13 five larger native-scratch C sources are unavailable. Historical 1452 checkpoint retained separately.",
+  "purpose": "After the latest 20 IDO-exact functions passed canonical native G2, zero promotion-ready candidates remain in this review queue. One file25 72-byte relocation candidate remains blocked; five larger file13 research leads lack complete C source. Historical 1478 checkpoint is preserved in the immutable report.",
   "ready_for_combined_g2": {
     "functions": 0,
     "bytes": 0,

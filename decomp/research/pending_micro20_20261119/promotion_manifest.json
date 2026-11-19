@@ -1,0 +1,327 @@
+{
+  "format": "goemon-usa-micro20-after-1478-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_count": 1478,
+  "units": [
+    {
+      "name": "micro20_000",
+      "section": "file_12",
+      "rom_offset": 6120708,
+      "size": 24,
+      "source_sha256": "dc46651b9ba5cb2ee6320fc8e0e962beee7bfc93fe2dc10a188442b10cafe798",
+      "functions": [
+        {
+          "name": "func_8021B034_5D6504",
+          "rom_offset": 6120708,
+          "vma": 2149691444,
+          "size": 24,
+          "original_code_sha256": "20fc41a85c747badb74b352b248d8067d4935e4eca287baeed7bb9ec5c92a9a3"
+        }
+      ]
+    },
+    {
+      "name": "micro20_001",
+      "section": "file_13",
+      "rom_offset": 6296700,
+      "size": 24,
+      "source_sha256": "5487e6eee2270041a82971dd42b5771af345a9ae35f676a93d4a35e9666ecf70",
+      "functions": [
+        {
+          "name": "func_801D609C_60147C",
+          "rom_offset": 6296700,
+          "vma": 2149408924,
+          "size": 24,
+          "original_code_sha256": "267e988b007174f59a755348f5c2416c615f48d664c976ed39a95ed11944d717"
+        }
+      ]
+    },
+    {
+      "name": "micro20_002",
+      "section": "file_13",
+      "rom_offset": 6296724,
+      "size": 24,
+      "source_sha256": "e56757cb4c7caa2ebe4097291d399bcb6b873689deabd60f7d96a726412a19ab",
+      "functions": [
+        {
+          "name": "func_801D60B4_601494",
+          "rom_offset": 6296724,
+          "vma": 2149408948,
+          "size": 24,
+          "original_code_sha256": "546ddcf4852c1c357ad2a865d3c0ac1786b0d80450b460e6dfd4fe7733f0786d"
+        }
+      ]
+    },
+    {
+      "name": "micro20_003",
+      "section": "file_13",
+      "rom_offset": 6296748,
+      "size": 24,
+      "source_sha256": "02e7c0004314ddcb54af99f6f740be7f23d11430754f00a9215c9213379ba606",
+      "functions": [
+        {
+          "name": "func_801D60CC_6014AC",
+          "rom_offset": 6296748,
+          "vma": 2149408972,
+          "size": 24,
+          "original_code_sha256": "dfeb0121890316ac0db1faeaeb9777ef73a2e8928e783f399cebf5b14f876129"
+        }
+      ]
+    },
+    {
+      "name": "micro20_004",
+      "section": "file_13",
+      "rom_offset": 6351328,
+      "size": 20,
+      "source_sha256": "37cb91860e1ddce6ac7d687516eeb6470c6c63ba0e9bcb89dede58dc7a5676ff",
+      "functions": [
+        {
+          "name": "func_801E3600_60E9E0",
+          "rom_offset": 6351328,
+          "vma": 2149463552,
+          "size": 20,
+          "original_code_sha256": "30d55fc1b82d1a2d9eb1cd85556a803e8e76f33a3036ce6d57246b65145e6214"
+        }
+      ]
+    },
+    {
+      "name": "micro20_005",
+      "section": "file_17",
+      "rom_offset": 6766152,
+      "size": 16,
+      "source_sha256": "4a7fc7c63327a87521834a1e7d7af1ce65acecf5a1bf81583a36cd78d1acb06b",
+      "functions": [
+        {
+          "name": "func_80214E98_673E48",
+          "rom_offset": 6766152,
+          "vma": 2149666456,
+          "size": 16,
+          "original_code_sha256": "0422f2ef76e2ae413e42a1544c9092a4c7fef29aa6645a5563ddae42b0e2882c"
+        }
+      ]
+    },
+    {
+      "name": "micro20_006",
+      "section": "file_17",
+      "rom_offset": 6766168,
+      "size": 16,
+      "source_sha256": "269979f98f0d13d93645f106b3b46b6d6f10f0c444982b04d5c15904a231156e",
+      "functions": [
+        {
+          "name": "func_80214EA8_673E58",
+          "rom_offset": 6766168,
+          "vma": 2149666472,
+          "size": 16,
+          "original_code_sha256": "f41631f3be668442c845d41cc19ebd198ecbdcec9dc864d7b71846e0e9c4e0a3"
+        }
+      ]
+    },
+    {
+      "name": "micro20_007",
+      "section": "file_18",
+      "rom_offset": 6834944,
+      "size": 20,
+      "source_sha256": "e60acfef801da3dd4351727ccfeaf645a32bca1da02e09307d4ccbd010959e2e",
+      "functions": [
+        {
+          "name": "func_8021B120_684B00",
+          "rom_offset": 6834944,
+          "vma": 2149691680,
+          "size": 20,
+          "original_code_sha256": "fd28497cb05c71e3a74fe754ae97667553512a7c5273f6406bb06813418af74f"
+        }
+      ]
+    },
+    {
+      "name": "micro20_008",
+      "section": "file_18",
+      "rom_offset": 6840868,
+      "size": 12,
+      "source_sha256": "313953ef5fc8af73bcbaf8c04dd88483dfe856a54727e24f62ff0d635fcba8d9",
+      "functions": [
+        {
+          "name": "func_8021C844_686224",
+          "rom_offset": 6840868,
+          "vma": 2149697604,
+          "size": 12,
+          "original_code_sha256": "a500d5223fd4a32f134b9db0efe0b0b841b086d2733fcb1cbcd91bd465f33425"
+        }
+      ]
+    },
+    {
+      "name": "micro20_009",
+      "section": "file_18",
+      "rom_offset": 6872568,
+      "size": 24,
+      "source_sha256": "acc3a02288c77b6c6f2475486f86e03961fc4a2d6121810b84359535a6e71fcc",
+      "functions": [
+        {
+          "name": "func_80224418_68DDF8",
+          "rom_offset": 6872568,
+          "vma": 2149729304,
+          "size": 24,
+          "original_code_sha256": "2930e14af474b7ead5ad05e9a833dda206729b17e32be65a316d8d9921be8c92"
+        }
+      ]
+    },
+    {
+      "name": "micro20_010",
+      "section": "file_18",
+      "rom_offset": 6873356,
+      "size": 24,
+      "source_sha256": "54bea41330a0143b9fb7beabe5498b166c3d67dbc55842935dd2ab27513cddd1",
+      "functions": [
+        {
+          "name": "func_8022472C_68E10C",
+          "rom_offset": 6873356,
+          "vma": 2149730092,
+          "size": 24,
+          "original_code_sha256": "2930e14af474b7ead5ad05e9a833dda206729b17e32be65a316d8d9921be8c92"
+        }
+      ]
+    },
+    {
+      "name": "micro20_011",
+      "section": "file_18",
+      "rom_offset": 6881012,
+      "size": 12,
+      "source_sha256": "b33f4f8901040a73e91877dee86a37690ad13d843b8e987ec5e0a613b5b47908",
+      "functions": [
+        {
+          "name": "func_80226514_68FEF4",
+          "rom_offset": 6881012,
+          "vma": 2149737748,
+          "size": 12,
+          "original_code_sha256": "2cfce24a5a10a5e42c381a1c18ff1c668432a5d2d59f948eceb63e6d6d924046"
+        }
+      ]
+    },
+    {
+      "name": "micro20_012",
+      "section": "file_19",
+      "rom_offset": 6914104,
+      "size": 16,
+      "source_sha256": "ba95ccc744787352449ac81db49be3cc49ec79b2f01cc15086b0959e7e1df960",
+      "functions": [
+        {
+          "name": "func_80210638_698038",
+          "rom_offset": 6914104,
+          "vma": 2149647928,
+          "size": 16,
+          "original_code_sha256": "c12e98d6ee4576e6bac8a68764373d617cb6a770af5558bbe864383859c3798d"
+        }
+      ]
+    },
+    {
+      "name": "micro20_013",
+      "section": "file_19",
+      "rom_offset": 6914796,
+      "size": 16,
+      "source_sha256": "75f907bc83ab93ba431cf1138b127ef9e1000bf5339eb9812475800aa178ba6f",
+      "functions": [
+        {
+          "name": "func_802108EC_6982EC",
+          "rom_offset": 6914796,
+          "vma": 2149648620,
+          "size": 16,
+          "original_code_sha256": "c12e98d6ee4576e6bac8a68764373d617cb6a770af5558bbe864383859c3798d"
+        }
+      ]
+    },
+    {
+      "name": "micro20_014",
+      "section": "file_19",
+      "rom_offset": 6923568,
+      "size": 16,
+      "source_sha256": "1b95be66de9f062c6d6f86243f1c8da7450107fdf9b4118a484426e8b88b18a7",
+      "functions": [
+        {
+          "name": "func_80212B30_69A530",
+          "rom_offset": 6923568,
+          "vma": 2149657392,
+          "size": 16,
+          "original_code_sha256": "cfa68e41a78d38a7756e53398ad64f626dee1ebefe7c24eaa1486445f10e60a2"
+        }
+      ]
+    },
+    {
+      "name": "micro20_015",
+      "section": "file_19",
+      "rom_offset": 6924908,
+      "size": 12,
+      "source_sha256": "373f45d0525d0741d77c8115327652e460153da2163d507f5ee6c52e25922451",
+      "functions": [
+        {
+          "name": "func_8021306C_69AA6C",
+          "rom_offset": 6924908,
+          "vma": 2149658732,
+          "size": 12,
+          "original_code_sha256": "d03d616eb99f88c79f84ed138428e365635acf1f3a179f4f9427e1898a5e1d7d"
+        }
+      ]
+    },
+    {
+      "name": "micro20_016",
+      "section": "file_19",
+      "rom_offset": 6930204,
+      "size": 20,
+      "source_sha256": "186258e101f92166bf3c1adffa9919e36ff0b14d8620dd962e3f0338750bba36",
+      "functions": [
+        {
+          "name": "func_8021451C_69BF1C",
+          "rom_offset": 6930204,
+          "vma": 2149664028,
+          "size": 20,
+          "original_code_sha256": "31fb9c2cd59b971804bf89f31b2a8db936ce868ab51a1286182753e583b6a7af"
+        }
+      ]
+    },
+    {
+      "name": "micro20_017",
+      "section": "file_30",
+      "rom_offset": 7090628,
+      "size": 24,
+      "source_sha256": "ee7cd6e7ba2dbd0eafbf121b411b3e5fe6e462479407e5ef32ec61f23e0b898d",
+      "functions": [
+        {
+          "name": "func_08003A74_6C31C4",
+          "rom_offset": 7090628,
+          "vma": 134232692,
+          "size": 24,
+          "original_code_sha256": "2b03899530a3d9a33269e5a455dc75203ccefa778b36cc932892ed79643d6d9b"
+        }
+      ]
+    },
+    {
+      "name": "micro20_018",
+      "section": "file_71",
+      "rom_offset": 7539728,
+      "size": 12,
+      "source_sha256": "5d8377730459f66e5192273e38d307487890a3231af4aa7dcc615feb287ace86",
+      "functions": [
+        {
+          "name": "func_08001380_730C10",
+          "rom_offset": 7539728,
+          "vma": 134222720,
+          "size": 12,
+          "original_code_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50"
+        }
+      ]
+    },
+    {
+      "name": "micro20_019",
+      "section": "file_73",
+      "rom_offset": 7553580,
+      "size": 12,
+      "source_sha256": "dd98fc36658481ddfbcf3588f14a7b0611d1065d7038a7b5f0e488e7f561fcc3",
+      "functions": [
+        {
+          "name": "func_080012FC_73422C",
+          "rom_offset": 7553580,
+          "vma": 134222588,
+          "size": 12,
+          "original_code_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50"
+        }
+      ]
+    }
+  ]
+}

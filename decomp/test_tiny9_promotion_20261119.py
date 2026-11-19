@@ -25,8 +25,8 @@ class Tiny9NativePromotionTests(unittest.TestCase):
                 self.assertEqual(f['size'],8)
 
     def test_disjoint_previous_1452_claims(self):
-        before=claimed_functions({k:v for k,v in self.manifest.items() if k not in ('overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage')})
-        after=claimed_functions({k:v for k,v in self.manifest.items() if k not in ('overlay_micro2_stage','overlay_micro15_stage')})
+        before=claimed_functions({k:v for k,v in self.manifest.items() if k not in ('overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage')})
+        after=claimed_functions({k:v for k,v in self.manifest.items() if k not in ('overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage')})
         self.assertEqual((len(before),sum(f['size'] for f in before)),(1452,56744))
         self.assertEqual((len(after),sum(f['size'] for f in after)),(1461,56816))
         self.assertEqual(len(set(f['name'] for f in after)),1461)

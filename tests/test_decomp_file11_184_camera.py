@@ -22,6 +22,7 @@ class Camera184StageTests(unittest.TestCase):
         result.pop('overlay_tiny9_stage', None)
         result.pop('overlay_micro2_stage', None)
         result.pop('overlay_micro15_stage', None)
+        result.pop('overlay_micro20_stage', None)
         return result
 
     def test_one_camera_original_identity_added_to_183(self):

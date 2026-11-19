@@ -1,10 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-19T15:09:16.746550+00:00",
+  "started_utc": "2026-11-19T15:42:54.521071+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "54b9927e9f6ac779852ab76ad9a6da0f78fd9ff7b3ed23b3fbee45417991707e",
+  "verifier_source_sha256_lf": "162eb15e19648a8c48c8a265d26c7019adfd552e4f7138b4b94692cbf8736646",
   "tool_versions": {
     "uv": "uv 0.10.0 (offline-vendored environment adapter)",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
@@ -2974,9 +2974,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 1478,
-    "claimed_functions": 1478,
-    "matched_function_bytes": 57140,
+    "matched_functions": 1498,
+    "claimed_functions": 1498,
+    "matched_function_bytes": 57508,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -16671,6 +16671,186 @@
         "matched": true,
         "expected_sha256": "df4f136fcc1a5b99198cf688136e9ce0fdef1938613d4fe6a82bd35bf070bc60",
         "candidate_sha256": "df4f136fcc1a5b99198cf688136e9ce0fdef1938613d4fe6a82bd35bf070bc60"
+      },
+      {
+        "name": "func_8021B034_5D6504",
+        "size": 24,
+        "guest_address": "0x8021B034",
+        "rom_offset": "0x5D6504",
+        "matched": true,
+        "expected_sha256": "20fc41a85c747badb74b352b248d8067d4935e4eca287baeed7bb9ec5c92a9a3",
+        "candidate_sha256": "20fc41a85c747badb74b352b248d8067d4935e4eca287baeed7bb9ec5c92a9a3"
+      },
+      {
+        "name": "func_801D609C_60147C",
+        "size": 24,
+        "guest_address": "0x801D609C",
+        "rom_offset": "0x60147C",
+        "matched": true,
+        "expected_sha256": "267e988b007174f59a755348f5c2416c615f48d664c976ed39a95ed11944d717",
+        "candidate_sha256": "267e988b007174f59a755348f5c2416c615f48d664c976ed39a95ed11944d717"
+      },
+      {
+        "name": "func_801D60B4_601494",
+        "size": 24,
+        "guest_address": "0x801D60B4",
+        "rom_offset": "0x601494",
+        "matched": true,
+        "expected_sha256": "546ddcf4852c1c357ad2a865d3c0ac1786b0d80450b460e6dfd4fe7733f0786d",
+        "candidate_sha256": "546ddcf4852c1c357ad2a865d3c0ac1786b0d80450b460e6dfd4fe7733f0786d"
+      },
+      {
+        "name": "func_801D60CC_6014AC",
+        "size": 24,
+        "guest_address": "0x801D60CC",
+        "rom_offset": "0x6014AC",
+        "matched": true,
+        "expected_sha256": "dfeb0121890316ac0db1faeaeb9777ef73a2e8928e783f399cebf5b14f876129",
+        "candidate_sha256": "dfeb0121890316ac0db1faeaeb9777ef73a2e8928e783f399cebf5b14f876129"
+      },
+      {
+        "name": "func_801E3600_60E9E0",
+        "size": 20,
+        "guest_address": "0x801E3600",
+        "rom_offset": "0x60E9E0",
+        "matched": true,
+        "expected_sha256": "30d55fc1b82d1a2d9eb1cd85556a803e8e76f33a3036ce6d57246b65145e6214",
+        "candidate_sha256": "30d55fc1b82d1a2d9eb1cd85556a803e8e76f33a3036ce6d57246b65145e6214"
+      },
+      {
+        "name": "func_80214E98_673E48",
+        "size": 16,
+        "guest_address": "0x80214E98",
+        "rom_offset": "0x673E48",
+        "matched": true,
+        "expected_sha256": "0422f2ef76e2ae413e42a1544c9092a4c7fef29aa6645a5563ddae42b0e2882c",
+        "candidate_sha256": "0422f2ef76e2ae413e42a1544c9092a4c7fef29aa6645a5563ddae42b0e2882c"
+      },
+      {
+        "name": "func_80214EA8_673E58",
+        "size": 16,
+        "guest_address": "0x80214EA8",
+        "rom_offset": "0x673E58",
+        "matched": true,
+        "expected_sha256": "f41631f3be668442c845d41cc19ebd198ecbdcec9dc864d7b71846e0e9c4e0a3",
+        "candidate_sha256": "f41631f3be668442c845d41cc19ebd198ecbdcec9dc864d7b71846e0e9c4e0a3"
+      },
+      {
+        "name": "func_8021B120_684B00",
+        "size": 20,
+        "guest_address": "0x8021B120",
+        "rom_offset": "0x684B00",
+        "matched": true,
+        "expected_sha256": "fd28497cb05c71e3a74fe754ae97667553512a7c5273f6406bb06813418af74f",
+        "candidate_sha256": "fd28497cb05c71e3a74fe754ae97667553512a7c5273f6406bb06813418af74f"
+      },
+      {
+        "name": "func_8021C844_686224",
+        "size": 12,
+        "guest_address": "0x8021C844",
+        "rom_offset": "0x686224",
+        "matched": true,
+        "expected_sha256": "a500d5223fd4a32f134b9db0efe0b0b841b086d2733fcb1cbcd91bd465f33425",
+        "candidate_sha256": "a500d5223fd4a32f134b9db0efe0b0b841b086d2733fcb1cbcd91bd465f33425"
+      },
+      {
+        "name": "func_80224418_68DDF8",
+        "size": 24,
+        "guest_address": "0x80224418",
+        "rom_offset": "0x68DDF8",
+        "matched": true,
+        "expected_sha256": "2930e14af474b7ead5ad05e9a833dda206729b17e32be65a316d8d9921be8c92",
+        "candidate_sha256": "2930e14af474b7ead5ad05e9a833dda206729b17e32be65a316d8d9921be8c92"
+      },
+      {
+        "name": "func_8022472C_68E10C",
+        "size": 24,
+        "guest_address": "0x8022472C",
+        "rom_offset": "0x68E10C",
+        "matched": true,
+        "expected_sha256": "2930e14af474b7ead5ad05e9a833dda206729b17e32be65a316d8d9921be8c92",
+        "candidate_sha256": "2930e14af474b7ead5ad05e9a833dda206729b17e32be65a316d8d9921be8c92"
+      },
+      {
+        "name": "func_80226514_68FEF4",
+        "size": 12,
+        "guest_address": "0x80226514",
+        "rom_offset": "0x68FEF4",
+        "matched": true,
+        "expected_sha256": "2cfce24a5a10a5e42c381a1c18ff1c668432a5d2d59f948eceb63e6d6d924046",
+        "candidate_sha256": "2cfce24a5a10a5e42c381a1c18ff1c668432a5d2d59f948eceb63e6d6d924046"
+      },
+      {
+        "name": "func_80210638_698038",
+        "size": 16,
+        "guest_address": "0x80210638",
+        "rom_offset": "0x698038",
+        "matched": true,
+        "expected_sha256": "c12e98d6ee4576e6bac8a68764373d617cb6a770af5558bbe864383859c3798d",
+        "candidate_sha256": "c12e98d6ee4576e6bac8a68764373d617cb6a770af5558bbe864383859c3798d"
+      },
+      {
+        "name": "func_802108EC_6982EC",
+        "size": 16,
+        "guest_address": "0x802108EC",
+        "rom_offset": "0x6982EC",
+        "matched": true,
+        "expected_sha256": "c12e98d6ee4576e6bac8a68764373d617cb6a770af5558bbe864383859c3798d",
+        "candidate_sha256": "c12e98d6ee4576e6bac8a68764373d617cb6a770af5558bbe864383859c3798d"
+      },
+      {
+        "name": "func_80212B30_69A530",
+        "size": 16,
+        "guest_address": "0x80212B30",
+        "rom_offset": "0x69A530",
+        "matched": true,
+        "expected_sha256": "cfa68e41a78d38a7756e53398ad64f626dee1ebefe7c24eaa1486445f10e60a2",
+        "candidate_sha256": "cfa68e41a78d38a7756e53398ad64f626dee1ebefe7c24eaa1486445f10e60a2"
+      },
+      {
+        "name": "func_8021306C_69AA6C",
+        "size": 12,
+        "guest_address": "0x8021306C",
+        "rom_offset": "0x69AA6C",
+        "matched": true,
+        "expected_sha256": "d03d616eb99f88c79f84ed138428e365635acf1f3a179f4f9427e1898a5e1d7d",
+        "candidate_sha256": "d03d616eb99f88c79f84ed138428e365635acf1f3a179f4f9427e1898a5e1d7d"
+      },
+      {
+        "name": "func_8021451C_69BF1C",
+        "size": 20,
+        "guest_address": "0x8021451C",
+        "rom_offset": "0x69BF1C",
+        "matched": true,
+        "expected_sha256": "31fb9c2cd59b971804bf89f31b2a8db936ce868ab51a1286182753e583b6a7af",
+        "candidate_sha256": "31fb9c2cd59b971804bf89f31b2a8db936ce868ab51a1286182753e583b6a7af"
+      },
+      {
+        "name": "func_08003A74_6C31C4",
+        "size": 24,
+        "guest_address": "0x08003A74",
+        "rom_offset": "0x6C31C4",
+        "matched": true,
+        "expected_sha256": "2b03899530a3d9a33269e5a455dc75203ccefa778b36cc932892ed79643d6d9b",
+        "candidate_sha256": "2b03899530a3d9a33269e5a455dc75203ccefa778b36cc932892ed79643d6d9b"
+      },
+      {
+        "name": "func_08001380_730C10",
+        "size": 12,
+        "guest_address": "0x08001380",
+        "rom_offset": "0x730C10",
+        "matched": true,
+        "expected_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50",
+        "candidate_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50"
+      },
+      {
+        "name": "func_080012FC_73422C",
+        "size": 12,
+        "guest_address": "0x080012FC",
+        "rom_offset": "0x73422C",
+        "matched": true,
+        "expected_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50",
+        "candidate_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50"
       }
     ]
   },
@@ -17547,7 +17727,27 @@
     "research/pending_micro15_20261119/sources/micro15_011.c": "48d9da70f396a2ecb71eeb0163772d67eeb4880b25230f547a358f79b23fff58",
     "research/pending_micro15_20261119/sources/micro15_012.c": "bd357c6bc13cd107f3ffe75440c510ced6f830628a69d935a8613d6776805c87",
     "research/pending_micro15_20261119/sources/micro15_013.c": "87e96a105a856e39b94a0a2f2029287ae869ad3d8f18d4cb7869e28ed525989e",
-    "research/pending_micro15_20261119/sources/micro15_014.c": "9ee1fb9f4fb8ef92212d959b8654b9abfc452f179501e1632ffd74699c1a8b74"
+    "research/pending_micro15_20261119/sources/micro15_014.c": "9ee1fb9f4fb8ef92212d959b8654b9abfc452f179501e1632ffd74699c1a8b74",
+    "research/pending_micro20_20261119/sources/micro20_000.c": "dc46651b9ba5cb2ee6320fc8e0e962beee7bfc93fe2dc10a188442b10cafe798",
+    "research/pending_micro20_20261119/sources/micro20_001.c": "5487e6eee2270041a82971dd42b5771af345a9ae35f676a93d4a35e9666ecf70",
+    "research/pending_micro20_20261119/sources/micro20_002.c": "e56757cb4c7caa2ebe4097291d399bcb6b873689deabd60f7d96a726412a19ab",
+    "research/pending_micro20_20261119/sources/micro20_003.c": "02e7c0004314ddcb54af99f6f740be7f23d11430754f00a9215c9213379ba606",
+    "research/pending_micro20_20261119/sources/micro20_004.c": "37cb91860e1ddce6ac7d687516eeb6470c6c63ba0e9bcb89dede58dc7a5676ff",
+    "research/pending_micro20_20261119/sources/micro20_005.c": "4a7fc7c63327a87521834a1e7d7af1ce65acecf5a1bf81583a36cd78d1acb06b",
+    "research/pending_micro20_20261119/sources/micro20_006.c": "269979f98f0d13d93645f106b3b46b6d6f10f0c444982b04d5c15904a231156e",
+    "research/pending_micro20_20261119/sources/micro20_007.c": "e60acfef801da3dd4351727ccfeaf645a32bca1da02e09307d4ccbd010959e2e",
+    "research/pending_micro20_20261119/sources/micro20_008.c": "313953ef5fc8af73bcbaf8c04dd88483dfe856a54727e24f62ff0d635fcba8d9",
+    "research/pending_micro20_20261119/sources/micro20_009.c": "acc3a02288c77b6c6f2475486f86e03961fc4a2d6121810b84359535a6e71fcc",
+    "research/pending_micro20_20261119/sources/micro20_010.c": "54bea41330a0143b9fb7beabe5498b166c3d67dbc55842935dd2ab27513cddd1",
+    "research/pending_micro20_20261119/sources/micro20_011.c": "b33f4f8901040a73e91877dee86a37690ad13d843b8e987ec5e0a613b5b47908",
+    "research/pending_micro20_20261119/sources/micro20_012.c": "ba95ccc744787352449ac81db49be3cc49ec79b2f01cc15086b0959e7e1df960",
+    "research/pending_micro20_20261119/sources/micro20_013.c": "75f907bc83ab93ba431cf1138b127ef9e1000bf5339eb9812475800aa178ba6f",
+    "research/pending_micro20_20261119/sources/micro20_014.c": "1b95be66de9f062c6d6f86243f1c8da7450107fdf9b4118a484426e8b88b18a7",
+    "research/pending_micro20_20261119/sources/micro20_015.c": "373f45d0525d0741d77c8115327652e460153da2163d507f5ee6c52e25922451",
+    "research/pending_micro20_20261119/sources/micro20_016.c": "186258e101f92166bf3c1adffa9919e36ff0b14d8620dd962e3f0338750bba36",
+    "research/pending_micro20_20261119/sources/micro20_017.c": "ee7cd6e7ba2dbd0eafbf121b411b3e5fe6e462479407e5ef32ec61f23e0b898d",
+    "research/pending_micro20_20261119/sources/micro20_018.c": "5d8377730459f66e5192273e38d307487890a3231af4aa7dcc615feb287ace86",
+    "research/pending_micro20_20261119/sources/micro20_019.c": "dd98fc36658481ddfbcf3588f14a7b0611d1065d7038a7b5f0e488e7f561fcc3"
   },
   "overlay_file43_stage": {
     "ownership": {
@@ -43136,5 +43336,430 @@
     "C_translation_units": 15,
     "retained_ASM_fragments": 16
   },
-  "ended_utc": "2026-11-19T15:11:23.240052+00:00"
+  "overlay_micro20_stage_source_plan": {
+    "functions": 20,
+    "instruction_bytes": 368,
+    "C_units": 20,
+    "retained_asm_fragments": 24
+  },
+  "overlay_micro20_stage_object_layout": {
+    "functions": 20,
+    "units": 20,
+    "instruction_bytes": 368,
+    "c": [
+      {
+        "source": "micro20_000",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 24,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "0472301c75690979c3c23afd245353769937d179268a98dbbb2d3b4473883dae"
+      },
+      {
+        "source": "micro20_001",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 24,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "cf5602ff25a4c86870d31417133578895e51da3f565c51faf56fab67a66dd905"
+      },
+      {
+        "source": "micro20_002",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 24,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "6f9d42b402918f164027dba61dcabb992f15fec84aab9188191f0ea9766dc391"
+      },
+      {
+        "source": "micro20_003",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 24,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "cef60839c726127f225d09ad0ee4cf283fbbc63028652208c04403f1b9adbdfb"
+      },
+      {
+        "source": "micro20_004",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 20,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "eaafef369257734d52c2383e641360d836ec14afb743eab5a3b94a4b7d008ab6"
+      },
+      {
+        "source": "micro20_005",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 16,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "65ac550ec68a537d3d9b128b097cd6c2f53aaddb0d3ed393b7ff69853c5f7ea2"
+      },
+      {
+        "source": "micro20_006",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 16,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "019efeab0770e494d82f387fdb140dfabaa7d806190084e594d12a4c4ffa3310"
+      },
+      {
+        "source": "micro20_007",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 20,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "cf0d948d236cd1dd15231a1ff5f4dc5afde4b08d711d17c110c8f630d45d2aa4"
+      },
+      {
+        "source": "micro20_008",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 12,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "d7e057c5eaa873345d2d03166b9f6abca2471e24805e7e4d69b4ef31e266681c"
+      },
+      {
+        "source": "micro20_009",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 24,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "2e0b78e7b98567e620b77dbb5a4ff08fb74cfaae532c4200ff695de87cdfab2b"
+      },
+      {
+        "source": "micro20_010",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 24,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "44e24c0557c4ef313497c4012a2fbf9a89712118107e1836c1f1ac0102307797"
+      },
+      {
+        "source": "micro20_011",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 12,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "80f0436203bcad576ef09d92a5c8ef19d4a7c221fcdcf667bdb05531865b8113"
+      },
+      {
+        "source": "micro20_012",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 16,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "c5b47fb04e21173b7df157477b4331841a1a7b5a8a61290bbda9fbd54c75da7c"
+      },
+      {
+        "source": "micro20_013",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 16,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "a394d5d41b6fbcc37b236ee108481c23f572fa681f97c85bf843e26c6792b3c0"
+      },
+      {
+        "source": "micro20_014",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 16,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "86a97324cedb5111d812be2db71c3519dd302c6821d52e395430d4fc88cede0d"
+      },
+      {
+        "source": "micro20_015",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 12,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "e50e1709c16ad77405545c4a646cb287fcd03f73d2af07a9b935192c91143ebb"
+      },
+      {
+        "source": "micro20_016",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 20,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "bf8f592766ce4a6371fbd1d4fad3e63034fa50a22d762286410cb7a30b0a505a"
+      },
+      {
+        "source": "micro20_017",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 24,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "a6dcf859e52d0c8f2267cbd9348ff4413d06d6c78dab428a15f038aaaf969006"
+      },
+      {
+        "source": "micro20_018",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 12,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "f6fc3b4765f3128c05017c4c0ac3c4b5f3959bf0cbbea818b695325ccd948211"
+      },
+      {
+        "source": "micro20_019",
+        "has_prelink_relocations": false,
+        "original_text_bytes": 12,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "7e5a518bf117f88ea0aaf6a34019f8495a333f0bf45a4de9f1130ea419c650d8"
+      }
+    ],
+    "asm": [
+      {
+        "object": "build/usa/asm/usa/66C250_cross47_01_n87_02_w132_01_wtn9_00_wm20_00.s.o",
+        "original_text_bytes": 1260,
+        "compiler_section_bytes": 1264,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "c196a626eb73657b8f7395b414d434963dbc378d6d069d94d697f029a9877580"
+      },
+      {
+        "object": "build/usa/asm/usa/66C250_cross47_01_n87_02_w132_01_wtn9_00_wm20_02.s.o",
+        "original_text_bytes": 1636,
+        "compiler_section_bytes": 1648,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "98b7da54ec4e7555a5627f8b6baff22fc9e3f7734e34e2505ba7a026521d2042"
+      },
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_01_n87_02_w132_07_w53_00_wm20_00.s.o",
+        "original_text_bytes": 184,
+        "compiler_section_bytes": 192,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "5d3f44eee15280f6e8c123b61fb44293dae44d8a6669e8ec8ea8ddd3d2bf53ae"
+      },
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_04_w132_02_w53_00_wm20_00.s.o",
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "cc5ffd86cebb04991bfdca222738efbc8b8c10834672461e712d7cf3a6a44186"
+      },
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_04_w132_02_w53_00_wm20_01.s.o",
+        "original_text_bytes": 2284,
+        "compiler_section_bytes": 2288,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "4ac0414deda92b73b720b4102637342004ec43cda1ad187beecedf301ae6c2b7"
+      },
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_05_n87_03_w132_01_w109_01_w53_01_wm20_00.s.o",
+        "original_text_bytes": 132,
+        "compiler_section_bytes": 144,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "70f57525baafacd06de47ae1442ba8787ba8d760072750b0f2bcee5d70b41d9f"
+      },
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_05_n87_03_w132_01_w109_01_w53_01_wm20_01.s.o",
+        "original_text_bytes": 764,
+        "compiler_section_bytes": 768,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "fb9c427967fc46eb03962d1c1d808dc78c213b57caf603aa588896f2d0cb8548"
+      },
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_07_n87_00_w132_00_w53_00_wm20_00.s.o",
+        "original_text_bytes": 1904,
+        "compiler_section_bytes": 1904,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "062a994d55cf0e2bf134c9e19c7df467c6aa5e5ac433787088bd763c21e1e55e"
+      },
+      {
+        "object": "build/usa/asm/usa/694CA0_cross47_01_n87_00_w132_00_w109_01_wm15_01_wm20_01.s.o",
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "0641f32ae3528f384862ea51b4a8bf81f75c25b926e241e3da00b0f56a8af6dc"
+      },
+      {
+        "object": "build/usa/asm/usa/694CA0_cross47_01_n87_01_w132_00_wm20_00.s.o",
+        "original_text_bytes": 32,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "eab88eaf8389b1c91ef6c74cdf404d6f4ba37d31d97287cc8e4b663968d55812"
+      },
+      {
+        "object": "build/usa/asm/usa/694CA0_cross47_01_n87_01_w132_00_wm20_01.s.o",
+        "original_text_bytes": 340,
+        "compiler_section_bytes": 352,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "d37cc7ec8f0783abdee7e192ffe7e811ebb78eb19628e5401ece7d8933b881c8"
+      },
+      {
+        "object": "build/usa/asm/usa/694CA0_cross47_04_n87_07_wm20_01.s.o",
+        "original_text_bytes": 248,
+        "compiler_section_bytes": 256,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "b923b550846b4dda84704689b045d6baf9f9d161ba6b51d50b88997187f6d738"
+      },
+      {
+        "object": "build/usa/asm/usa/694CA0_cross47_05_n87_00_wm15_02_wm20_01.s.o",
+        "original_text_bytes": 28,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "8b392ef1b70bdd761d436e24dc7952fd16962988cf6c71d19199e2c1d03fa697"
+      },
+      {
+        "object": "build/usa/asm/usa/694CA0_cross47_07_wm20_00.s.o",
+        "original_text_bytes": 276,
+        "compiler_section_bytes": 288,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "4be09b6f89323f948f1be1dcb7a16b5e79f43d1dc822bd13b37ef5cc9f6d9dcc"
+      },
+      {
+        "object": "build/usa/asm/usa/694CA0_cross47_07_wm20_01.s.o",
+        "original_text_bytes": 208,
+        "compiler_section_bytes": 208,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "35f50bab461a1d3d944b81c98acbfddfab196a182d24fb5ea029906e1d47bcab"
+      },
+      {
+        "object": "build/usa/asm/usa/file_12_gap_5D5D28_5DD504_cross47_00_w132_00_w109_00_wm20_00.s.o",
+        "original_text_bytes": 2012,
+        "compiler_section_bytes": 2016,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "7bcf8ef07021135ecd4f4f103626d76ae8cd7270eadce87ee4810b7729e15f58"
+      },
+      {
+        "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_12_n87_00_wm15_01_wm20_00.s.o",
+        "original_text_bytes": 39000,
+        "compiler_section_bytes": 39008,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "ccb717d818e27205b6884e76af86cd7c9267d7b2e1fa4ed386a835f9740ab509"
+      },
+      {
+        "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_12_n87_00_wm15_01_wm20_01.s.o",
+        "original_text_bytes": 7352,
+        "compiler_section_bytes": 7360,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "6aab2c3ef2b91b6db81f52f85d3f656f42f5e7674a2293a5c6dcc507e5b6c6cd"
+      },
+      {
+        "object": "build/usa/asm/usa/file_30_w132_01_w109_04_wm20_00.s.o",
+        "original_text_bytes": 5508,
+        "compiler_section_bytes": 5520,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "cabb224a768d31936215ea4ecd540b9c1f6e2a80c2d517bd687cbdc0f389a4a5"
+      },
+      {
+        "object": "build/usa/asm/usa/file_30_w132_01_w109_04_wm20_01.s.o",
+        "original_text_bytes": 3828,
+        "compiler_section_bytes": 3840,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "d97bac26fc112f8fe51b1f1bd78b472253273a64b1e090c0f7294587b5207e85"
+      },
+      {
+        "object": "build/usa/asm/usa/file_71_w132_00_wr140_04_wm20_00.s.o",
+        "original_text_bytes": 752,
+        "compiler_section_bytes": 752,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "2a611c381617ca92cfb0cd24015ac7a817586292c043c09944fd81ceca3b2325"
+      },
+      {
+        "object": "build/usa/asm/usa/file_71_w132_00_wr140_04_wm20_01.s.o",
+        "original_text_bytes": 16,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "e7489ae537d232f4d0716ff27fde3aed1b52d070eacc12d4c2a81679f481b8d7"
+      },
+      {
+        "object": "build/usa/asm/usa/file_73_w132_00_wr140_04_wm20_00.s.o",
+        "original_text_bytes": 756,
+        "compiler_section_bytes": 768,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "f91525bd5b19de490ba183d4f797643ee745696d4291b10a13918fd8192c9aa0"
+      },
+      {
+        "object": "build/usa/asm/usa/file_73_w132_00_wr140_04_wm20_01.s.o",
+        "original_text_bytes": 16,
+        "compiler_section_bytes": 16,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "fc2bb350f1fb8383f1d4104c376bf4b3932878fdfc8c14a2511573ec19ce2cda"
+      }
+    ]
+  },
+  "overlay_micro20_stage": {
+    "status": "PASS",
+    "count": 20,
+    "original_instruction_bytes": 368,
+    "original_ROM_SHA1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_ROM_bytes": 33554432,
+    "identical_accepted_ELF_FUNC_identities": 7376,
+    "identical_accepted_semantic_relocations": {
+      "file_11": 8825,
+      "file_12": 7051,
+      "file_13": 9589,
+      "file_14": 3041,
+      "file_15": 1625,
+      "file_16": 781,
+      "file_17": 1739,
+      "file_18": 3365,
+      "file_19": 1078,
+      "file_20": 68,
+      "file_21": 114,
+      "file_22": 294,
+      "file_23": 377,
+      "file_24": 160,
+      "file_25": 167,
+      "file_26": 207,
+      "file_27": 876,
+      "file_28": 35,
+      "file_29": 2536,
+      "file_30": 1826,
+      "file_31": 1371,
+      "file_32": 1068,
+      "file_33": 139,
+      "file_34": 317,
+      "file_35": 677,
+      "file_36": 1025,
+      "file_37": 1079,
+      "file_38": 761,
+      "file_39": 435,
+      "file_40": 892,
+      "file_41": 280,
+      "file_42": 555,
+      "file_43": 1593,
+      "file_44": 598,
+      "file_45": 545,
+      "file_46": 817,
+      "file_47": 275,
+      "file_48": 469,
+      "file_49": 602,
+      "file_50": 228,
+      "file_51": 143,
+      "file_52": 8,
+      "file_53": 534,
+      "file_54": 341,
+      "file_55": 390,
+      "file_56": 436,
+      "file_57": 708,
+      "file_58": 340,
+      "file_59": 508,
+      "file_60": 418,
+      "file_61": 161,
+      "file_62": 747,
+      "file_63": 94,
+      "file_64": 176,
+      "file_65": 86,
+      "file_66": 571,
+      "file_67": 254,
+      "file_68": 155,
+      "file_69": 464,
+      "file_70": 298,
+      "file_71": 350,
+      "file_72": 412,
+      "file_73": 274,
+      "file_74": 822,
+      "file_75": 279,
+      "file_76": 6,
+      "file_77": 304,
+      "file_78": 124,
+      "file_79": 180,
+      "file_80": 89
+    },
+    "C_translation_units": 20,
+    "retained_ASM_fragments": 24
+  },
+  "ended_utc": "2026-11-19T15:44:56.794221+00:00"
 }

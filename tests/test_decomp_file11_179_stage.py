@@ -30,6 +30,7 @@ class File11179StageTests(unittest.TestCase):
         cls.manifest.pop('overlay_tiny9_stage', None)
         cls.manifest.pop('overlay_micro2_stage', None)
         cls.manifest.pop('overlay_micro15_stage', None)
+        cls.manifest.pop('overlay_micro20_stage', None)
         # Explicit historical 342-C projection excludes the newer file12 block.
         cls.manifest['overlay_file12_stages']=[x for x in cls.manifest['overlay_file12_stages']
             if x['format']!='goemon-file12-registration-374-v1'
