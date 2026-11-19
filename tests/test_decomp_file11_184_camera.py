@@ -14,6 +14,11 @@ class Camera184StageTests(unittest.TestCase):
         result['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
         result.pop('overlay_wide132_stage', None)
         result.pop('overlay_wide109_stage', None)
+        result.pop('overlay_resource140_stage', None)
+        result.pop('overlay_graphics5_stage', None)
+        result.pop('overlay_file18_53_stage', None)
+        result.pop('overlay_callbacks10_stage', None)
+        result.pop('overlay_main19_stage', None)
         return result
 
     def test_one_camera_original_identity_added_to_183(self):

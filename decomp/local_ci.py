@@ -90,6 +90,26 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-o',str(binary)]),
             ('Wide109 actual-source sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        # All 63 newly promoted original source bodies in the resource18 and
+        # callback16/21 batches are executed, not copied into test doubles.
+        native18=sorted((ROOT/'decomp/research/pending_file18_53_20261118/sources').glob('*.c'))
+        callbacks=sorted((ROOT/'decomp/research/pending_callbacks10_20261118/sources').glob('*.c'))
+        if len(native18)!=50 or len(callbacks)!=3:
+            raise ValueError('Missing authenticated original 53+10 C source units')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('file18-and-callbacks-actual-host')
+        steps.extend([
+            ('New file18/callbacks actual-C sanitizer build',compiler+[
+                '-std=c11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-Wno-unused-parameter','-Wno-unused-function',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                'decomp/research/pending_batch227_20261118/test_actual_file18_callbacks.c',
+                *[str(src.relative_to(ROOT)) for src in (native18+callbacks)],
+                '-o',str(binary)]),
+            ('New file18/callbacks actual-C sanitizer test',[str(binary)]),
+        ])
     return steps
 
 

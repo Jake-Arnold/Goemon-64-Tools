@@ -252,6 +252,50 @@ def wide109_stage(manifest):
     return wide109.load_fixture()
 
 
+
+def resource140_stage(manifest):
+    stage=manifest.get('overlay_resource140_stage')
+    if stage is None:return None
+    from . import overlay_resource140 as research
+    if stage != {'format':research.STAGE_FORMAT}:
+        raise ValueError('Unreviewed resource140 production stage contract')
+    return research.load_fixture()
+
+
+def graphics5_stage(manifest):
+    stage=manifest.get('overlay_graphics5_stage')
+    if stage is None:return None
+    from . import overlay_graphics5 as graphics
+    if stage != {'format':graphics.STAGE_FORMAT}:
+        raise ValueError('Unreviewed graphics5 production stage contract')
+    return graphics.load_fixture()
+
+
+def file18_53_stage(manifest):
+    stage=manifest.get('overlay_file18_53_stage')
+    if stage is None:return None
+    from . import overlay_file18_53 as native
+    if stage != {'format':native.STAGE_FORMAT}:
+        raise ValueError('Unreviewed file18_53 production stage contract')
+    return native.load_fixture()
+
+
+def callbacks10_stage(manifest):
+    stage=manifest.get('overlay_callbacks10_stage')
+    if stage is None:return None
+    from . import overlay_callbacks10 as native
+    if stage != {'format':native.STAGE_FORMAT}:
+        raise ValueError('Unreviewed callbacks10 production stage contract')
+    return native.load_fixture()
+
+def main19_stage(manifest):
+    stage=manifest.get('overlay_main19_stage')
+    if stage is None:return None
+    from . import overlay_main19 as native
+    if stage != {'format':native.STAGE_FORMAT}:
+        raise ValueError('Unreviewed main19 production stage contract')
+    return native.load_fixture()
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -305,6 +349,26 @@ def claimed_functions(manifest):
         functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
                           'vma':f['vma'],'size':f['size']}
                          for f in wide109.functions(w109))
+    resource_fixture=resource140_stage(manifest)
+    if resource_fixture:
+        functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
+                          'vma':f['vma'],'size':f['size']}
+                         for f in resource_fixture['functions'])
+    gfx=graphics5_stage(manifest)
+    if gfx:
+        from . import overlay_graphics5 as graphics
+        functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
+                          'vma':f['vma'],'size':f['size']}
+                         for f in graphics.functions(gfx))
+    for fixture,modname in ((file18_53_stage(manifest),'overlay_file18_53'),
+                            (callbacks10_stage(manifest),'overlay_callbacks10'),
+                            (main19_stage(manifest),'overlay_main19')):
+        if fixture:
+            from importlib import import_module
+            mod=import_module('.'+modname,package='decomp')
+            functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
+                              'vma':f['vma'],'size':f['size']}
+                             for f in mod.functions(fixture))
     return functions
 
 
@@ -1225,7 +1289,7 @@ def load_manifest(path):
     file11_mode = file11_stage_mode(manifest)
     if file11_mode is not None:
         if file11_mode in (143,144,152,179,183,184,187,269):
-            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage')})
+            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage')})
             candidates = [(f['name'], f['rom_offset'], f['size'])
                           for f in file11_adapter(file11_mode).entries()]
         else:
@@ -1342,7 +1406,7 @@ def load_manifest(path):
             raise ValueError('VM table layout requires pinned assignment handler')
     wide_fixture=wide132_stage(manifest)
     if wide_fixture:
-        existing=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage')})
+        existing=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage')})
         existing_names={row['name'] for row in existing}
         existing_bounds=[(row['rom_offset'],row['rom_offset']+row['size']) for row in existing]
         for row in wide_fixture['functions']:
@@ -1359,6 +1423,41 @@ def load_manifest(path):
             off,end=f['rom_offset'],f['rom_offset']+f['size']
             if f['name'] in seen_names or any(off<e and s<end for s,e in intervals):
                 raise ValueError('Wide109 overlaps previously accepted canonical C: '+f['name'])
+    resources=resource140_stage(manifest)
+    if resources:
+        previous=claimed_functions({k:v for k,v in manifest.items() if k!='overlay_resource140_stage'})
+        names={f['name'] for f in previous}
+        intervals=[(f['rom_offset'],f['rom_offset']+f['size']) for f in previous]
+        for f in resources['functions']:
+            off,end=f['rom_offset'],f['rom_offset']+f['size']
+            if f['name'] in names or any(off<e and st<end for st,e in intervals):
+                raise ValueError('Resource140 overlaps previously accepted C: '+f['name'])
+    gfx=graphics5_stage(manifest)
+    if gfx:
+        from . import overlay_graphics5 as graphics
+        previous=claimed_functions({k:v for k,v in manifest.items() if k!='overlay_graphics5_stage'})
+        names={f['name'] for f in previous}
+        intervals=[(f['rom_offset'],f['rom_offset']+f['size']) for f in previous]
+        for f in graphics.functions(gfx):
+            off,end=f['rom_offset'],f['rom_offset']+f['size']
+            if f['name'] in names or any(off<e and st<end for st,e in intervals):
+                raise ValueError('Graphics5 overlaps previously accepted C: '+f['name'])
+    for key,loader,modname in (
+        ('overlay_file18_53_stage',file18_53_stage,'overlay_file18_53'),
+        ('overlay_callbacks10_stage',callbacks10_stage,'overlay_callbacks10'),
+        ('overlay_main19_stage',main19_stage,'overlay_main19')):
+        fixture=loader(manifest)
+        if fixture:
+            from importlib import import_module
+            native=import_module('.'+modname,package='decomp')
+            previous=claimed_functions({k:v for k,v in manifest.items() if k not in (
+                key, 'overlay_callbacks10_stage' if key=='overlay_file18_53_stage' else key, 'overlay_main19_stage')})
+            names={f['name'] for f in previous}
+            intervals=[(f['rom_offset'],f['rom_offset']+f['size']) for f in previous]
+            for f in native.functions(fixture):
+                off,end=f['rom_offset'],f['rom_offset']+f['size']
+                if f['name'] in names or any(off<e and st<end for st,e in intervals):
+                    raise ValueError('New original C overlaps accepted production: '+f['name'])
     return manifest
 
 
@@ -1375,7 +1474,7 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
             raise ValueError('file_11 staging requires authenticated USA decompressed ROM')
         if file11_mode in (143,144,152,179,183,184,187,269):
             adapter=file11_adapter(file11_mode)
-            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage')},reference_rom)
+            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage')},reference_rom)
             file11_inline=adapter.source_payloads(checkout,plan)
             text=adapter.stage_splat(text,plan)
         else:
@@ -2416,7 +2515,7 @@ def run_build(args,manifest,report):
     logged('candidate-build',['make','-j'+str(args.jobs),'UV='+uv],candidate)
     symbols=parse_symbols(capture(['mips-linux-gnu-nm','-n','build/usa/mnsg.elf'],candidate))
     result=compare_images(expected,(candidate/'build/usa/mnsg.z64').read_bytes(),
-                          {k:v for k,v in manifest.items() if k!='overlay_wide109_stage'},symbols)
+                          {k:v for k,v in manifest.items() if k not in ('overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage')},symbols)
     if manifest.get('vm_assignment_table_layout'):
         image=(candidate/'build/usa/mnsg.z64').read_bytes()
         report['assignment_table']=dict(rom_start='0x7DC2C',size=60,
@@ -2720,6 +2819,120 @@ def run_build(args,manifest,report):
                 result['matched_functions']+=1
                 result['matched_function_bytes']+=f['size']
         report['overlay_wide109_stage']=proof
+    resource_fixture=resource140_stage(manifest)
+    if resource_fixture:
+        from . import overlay_resource140 as research
+        if not result['full_rom_match'] or result['matched_functions']!=1225:
+            raise ValueError('Authenticated 1225-function canonical gate must pass before resource140 staging')
+        src=source_dir/'research/pending_resource140_20261118/sources'
+        research.validate_sources(expected,resource_fixture,src)
+        owners=research.find_owners(candidate,resource_fixture)
+        logged('candidate-resource140-original-parents',
+               ['make','-j'+str(args.jobs),'UV='+uv,*research.parent_targets(owners)],candidate)
+        plan=research.stage_linker(candidate,expected,resource_fixture,owners,src)
+        report['resource140_source_plan']={'functions':len(plan['functions']),
+            'instruction_bytes':sum(f['size'] for f in plan['functions']),
+            'retained_asm_fragments':len(plan['assembly'])}
+        logged('candidate-resource140-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*research.object_targets(plan)],candidate)
+        report['resource140_object_layout']=research.pack_objects(candidate,expected,plan)
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-resource140-combined-final-build',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=research.verify_link(baseline,candidate,expected,plan,resource_fixture)
+        for f in resource_fixture['functions']:
+            key='research/pending_resource140_20261118/sources/'+f['name']+'.c'
+            report['sources_sha256_lf'][key]=digest((candidate/'src'/(f['name']+'.c')).read_bytes(),'sha256')
+            result['functions'].append({'name':f['name'],'size':f['size'],
+                'guest_address':f'0x{f["vma"]:08X}', 'rom_offset':f'0x{f["rom_offset"]:X}',
+                'matched':True, 'expected_sha256':f['original_code_sha256'],
+                'candidate_sha256':f['original_code_sha256']})
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=f['size']
+        report['overlay_resource140_stage']=proof
+    graphics_fixture=graphics5_stage(manifest)
+    if graphics_fixture:
+        from . import overlay_graphics5 as graphics
+        if not result['full_rom_match'] or result['matched_functions']!=1365:
+            raise ValueError('Authenticated 1365-function production gate must pass before graphics5')
+        src=source_dir/'research/pending_graphics5_20261118/sources'
+        graphics.validate_sources(expected,graphics_fixture,src)
+        accepted_elf=work/'accepted1365.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',accepted_elf)
+        owners=graphics.find_owners(candidate,graphics_fixture)
+        logged('candidate-graphics5-original-parents',
+               ['make','-j'+str(args.jobs),'UV='+uv,*graphics.parent_targets(owners)],candidate)
+        plan=graphics.stage_linker(candidate,expected,graphics_fixture,owners,src)
+        report['graphics5_source_plan']={'functions':len(plan['functions']),
+            'instruction_bytes':sum(f['size'] for f in plan['functions']),
+            'C_units':len(plan['units']),'retained_asm_fragments':len(plan['assembly'])}
+        logged('candidate-graphics5-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*graphics.object_targets(plan)],candidate)
+        report['graphics5_object_layout']=graphics.pack_objects(candidate,expected,plan)
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-graphics5-combined-final-build',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=graphics.verify_link(baseline,accepted_elf,candidate,expected,plan,graphics_fixture)
+        for unit in graphics_fixture['units']:
+            key='research/pending_graphics5_20261118/sources/'+unit['name']+'.c'
+            report['sources_sha256_lf'][key]=digest((candidate/'src'/(unit['name']+'.c')).read_bytes(),'sha256')
+            for f in unit['functions']:
+                result['functions'].append({'name':f['name'],'size':f['size'],
+                    'guest_address':f'0x{f["vma"]:08X}', 'rom_offset':f'0x{f["rom_offset"]:X}',
+                    'matched':True, 'expected_sha256':f['original_code_sha256'],
+                    'candidate_sha256':f['original_code_sha256']})
+                result['claimed_functions']+=1
+                result['matched_functions']+=1
+                result['matched_function_bytes']+=f['size']
+        report['overlay_graphics5_stage']=proof
+    for fixture, native, stage_key, count, srcpath in (
+            (file18_53_stage(manifest),
+             __import__('decomp.overlay_file18_53',fromlist=['x']),
+             'overlay_file18_53_stage',1370,'research/pending_file18_53_20261118/sources'),
+            (callbacks10_stage(manifest),
+             __import__('decomp.overlay_callbacks10',fromlist=['x']),
+             'overlay_callbacks10_stage',1423,'research/pending_callbacks10_20261118/sources'),
+            (main19_stage(manifest),
+             __import__('decomp.overlay_main19',fromlist=['x']),
+             'overlay_main19_stage',1433,'research/pending_main19_20261118/sources')):
+        if fixture is None:continue
+        if not result['full_rom_match'] or result['matched_functions']!=count:
+            raise ValueError('Authenticated '+str(count)+'-function combined gate required for '+stage_key)
+        src=source_dir/srcpath
+        native.validate_sources(expected,fixture,src)
+        accepted_elf=work/('accepted'+str(count)+'.elf')
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',accepted_elf)
+        owners=native.find_owners(candidate,fixture)
+        label='candidate-'+stage_key.removeprefix('overlay_')
+        logged(label+'-original-parents',
+               ['make','-j'+str(args.jobs),'UV='+uv,*native.parent_targets(owners)],candidate)
+        plan=native.stage_linker(candidate,expected,fixture,owners,src)
+        report[stage_key+'_source_plan']={'functions':len(plan['functions']),
+            'instruction_bytes':sum(f['size'] for f in plan['functions']),
+            'C_units':len(plan['units']),'retained_asm_fragments':len(plan['assembly'])}
+        logged(label+'-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*native.object_targets(plan)],candidate)
+        report[stage_key+'_object_layout']=native.pack_objects(candidate,expected,plan)
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged(label+'-combined-final-build',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=native.verify_link(baseline,accepted_elf,candidate,expected,plan,fixture)
+        for unit in fixture['units']:
+            key=srcpath+'/'+unit['name']+'.c'
+            report['sources_sha256_lf'][key]=digest((candidate/'src'/(unit['name']+'.c')).read_bytes(),'sha256')
+            for f in unit['functions']:
+                result['functions'].append({'name':f['name'],'size':f['size'],
+                    'guest_address':f'0x{f["vma"]:08X}', 'rom_offset':f'0x{f["rom_offset"]:X}',
+                    'matched':True, 'expected_sha256':f['original_code_sha256'],
+                    'candidate_sha256':f['original_code_sha256']})
+                result['claimed_functions']+=1
+                result['matched_functions']+=1
+                result['matched_function_bytes']+=f['size']
+        report[stage_key]=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

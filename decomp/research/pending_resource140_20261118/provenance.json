@@ -1,0 +1,702 @@
+[
+  {
+    "name": "func_080005DC_6ACB2C",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_24/func_080005DC_6ACB2C.c"
+  },
+  {
+    "name": "func_0800074C_6ACC9C",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_24/func_0800074C_6ACC9C.c"
+  },
+  {
+    "name": "func_0800056C_6B380C",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_0800056C_6B380C.c"
+  },
+  {
+    "name": "func_08005EC4_6B9164",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_08005EC4_6B9164.c"
+  },
+  {
+    "name": "func_080073D0_6BA670",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_080073D0_6BA670.c"
+  },
+  {
+    "name": "func_080003EC_6CF4CC",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_32/func_080003EC_6CF4CC.c"
+  },
+  {
+    "name": "func_08001488_6C0BD8",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_30/func_08001488_6C0BD8.c"
+  },
+  {
+    "name": "func_08001DB0_6B5050",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_08001DB0_6B5050.c"
+  },
+  {
+    "name": "func_08001F28_6B51C8",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_08001F28_6B51C8.c"
+  },
+  {
+    "name": "func_08001FE8_6B5288",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_08001FE8_6B5288.c"
+  },
+  {
+    "name": "func_08002460_6B5700",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_08002460_6B5700.c"
+  },
+  {
+    "name": "func_08002864_6B5B04",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_08002864_6B5B04.c"
+  },
+  {
+    "name": "func_08002D2C_6B5FCC",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_08002D2C_6B5FCC.c"
+  },
+  {
+    "name": "func_080003C0_6AC910",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_24/func_080003C0_6AC910.c"
+  },
+  {
+    "name": "func_08000370_6AC8C0",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_24/func_08000370_6AC8C0.c"
+  },
+  {
+    "name": "func_08000490_6AC9E0",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_24/func_08000490_6AC9E0.c"
+  },
+  {
+    "name": "func_080000C4_6B3064",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_28/func_080000C4_6B3064.c"
+  },
+  {
+    "name": "func_0800011C_6B30BC",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_28/func_0800011C_6B30BC.c"
+  },
+  {
+    "name": "func_08000268_6B3208",
+    "source_group": "file24_32",
+    "original_source": "decomp/research/usa_wider_24_32_20261117/sources/file_28/func_08000268_6B3208.c"
+  },
+  {
+    "name": "func_08003230_6DD100",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_36/func_08003230_6DD100.c"
+  },
+  {
+    "name": "func_08000F14_6E00B4",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_37/func_08000F14_6E00B4.c"
+  },
+  {
+    "name": "func_080012E0_6E52C0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_38/func_080012E0_6E52C0.c"
+  },
+  {
+    "name": "func_08002284_6E6264",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_38/func_08002284_6E6264.c"
+  },
+  {
+    "name": "func_08000000_6E9150",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_40/func_08000000_6E9150.c"
+  },
+  {
+    "name": "func_08000210_6E9360",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_40/func_08000210_6E9360.c"
+  },
+  {
+    "name": "func_080010FC_6EA24C",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_40/func_080010FC_6EA24C.c"
+  },
+  {
+    "name": "func_08001108_6EA258",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_40/func_08001108_6EA258.c"
+  },
+  {
+    "name": "func_080012F8_6EA448",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_40/func_080012F8_6EA448.c"
+  },
+  {
+    "name": "func_08001EC0_6EB010",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_40/func_08001EC0_6EB010.c"
+  },
+  {
+    "name": "func_08000000_6F0210",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_42/func_08000000_6F0210.c"
+  },
+  {
+    "name": "func_080008B8_6F0AC8",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_42/func_080008B8_6F0AC8.c"
+  },
+  {
+    "name": "func_080008CC_6F0ADC",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_42/func_080008CC_6F0ADC.c"
+  },
+  {
+    "name": "func_080008E4_6F0AF4",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_42/func_080008E4_6F0AF4.c"
+  },
+  {
+    "name": "func_080008EC_6F0AFC",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_42/func_080008EC_6F0AFC.c"
+  },
+  {
+    "name": "func_08000000_6F34E0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08000000_6F34E0.c"
+  },
+  {
+    "name": "func_08000A9C_6F3F7C",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08000A9C_6F3F7C.c"
+  },
+  {
+    "name": "func_080022F0_6F57D0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_080022F0_6F57D0.c"
+  },
+  {
+    "name": "func_080022FC_6F57DC",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_080022FC_6F57DC.c"
+  },
+  {
+    "name": "func_080023E0_6F58C0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_080023E0_6F58C0.c"
+  },
+  {
+    "name": "func_08003404_6F68E4",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08003404_6F68E4.c"
+  },
+  {
+    "name": "func_08003894_6F6D74",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08003894_6F6D74.c"
+  },
+  {
+    "name": "func_080038A0_6F6D80",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_080038A0_6F6D80.c"
+  },
+  {
+    "name": "func_08004348_6F7828",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08004348_6F7828.c"
+  },
+  {
+    "name": "func_08004364_6F7844",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08004364_6F7844.c"
+  },
+  {
+    "name": "func_08004370_6F7850",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08004370_6F7850.c"
+  },
+  {
+    "name": "func_08004D20_6F8200",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08004D20_6F8200.c"
+  },
+  {
+    "name": "func_08004F74_6F8454",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08004F74_6F8454.c"
+  },
+  {
+    "name": "func_08004F80_6F8460",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_08004F80_6F8460.c"
+  },
+  {
+    "name": "func_080063B4_6F9894",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_080063B4_6F9894.c"
+  },
+  {
+    "name": "func_080067DC_6F9CBC",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_080067DC_6F9CBC.c"
+  },
+  {
+    "name": "func_080067E8_6F9CC8",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_43/func_080067E8_6F9CC8.c"
+  },
+  {
+    "name": "func_080003A0_6FB5A0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_44/func_080003A0_6FB5A0.c"
+  },
+  {
+    "name": "func_080012C8_6FC4C8",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_44/func_080012C8_6FC4C8.c"
+  },
+  {
+    "name": "func_08001F2C_6FD12C",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_44/func_08001F2C_6FD12C.c"
+  },
+  {
+    "name": "func_08001F38_6FD138",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_44/func_08001F38_6FD138.c"
+  },
+  {
+    "name": "func_08002388_6FD588",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_44/func_08002388_6FD588.c"
+  },
+  {
+    "name": "func_0800235C_700D8C",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_45/func_0800235C_700D8C.c"
+  },
+  {
+    "name": "func_08000450_701550",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_46/func_08000450_701550.c"
+  },
+  {
+    "name": "func_080011F0_7022F0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_46/func_080011F0_7022F0.c"
+  },
+  {
+    "name": "func_080046F4_7057F4",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_46/func_080046F4_7057F4.c"
+  },
+  {
+    "name": "func_080049C0_705AC0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_46/func_080049C0_705AC0.c"
+  },
+  {
+    "name": "func_080049CC_705ACC",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_46/func_080049CC_705ACC.c"
+  },
+  {
+    "name": "func_08000434_706224",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_47/func_08000434_706224.c"
+  },
+  {
+    "name": "func_08000ACC_7068BC",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_47/func_08000ACC_7068BC.c"
+  },
+  {
+    "name": "func_0800049C_707EDC",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_48/func_0800049C_707EDC.c"
+  },
+  {
+    "name": "func_08000790_7081D0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_48/func_08000790_7081D0.c"
+  },
+  {
+    "name": "func_080003E4_70A424",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_49/func_080003E4_70A424.c"
+  },
+  {
+    "name": "func_080003F8_70A438",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_49/func_080003F8_70A438.c"
+  },
+  {
+    "name": "func_08000410_70A450",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_49/func_08000410_70A450.c"
+  },
+  {
+    "name": "func_0800083C_70A87C",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_49/func_0800083C_70A87C.c"
+  },
+  {
+    "name": "func_080003AC_70CBCC",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_50/func_080003AC_70CBCC.c"
+  },
+  {
+    "name": "func_08000A80_70D2A0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_50/func_08000A80_70D2A0.c"
+  },
+  {
+    "name": "func_08000CF8_70D518",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_50/func_08000CF8_70D518.c"
+  },
+  {
+    "name": "func_08000428_70DB68",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_51/func_08000428_70DB68.c"
+  },
+  {
+    "name": "func_08000000_70DFF0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_52/func_08000000_70DFF0.c"
+  },
+  {
+    "name": "func_08002200_7102B0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_53/func_08002200_7102B0.c"
+  },
+  {
+    "name": "func_08000C0C_71126C",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_54/func_08000C0C_71126C.c"
+  },
+  {
+    "name": "func_08001100_711760",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_54/func_08001100_711760.c"
+  },
+  {
+    "name": "func_08000000_711AF0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_55/func_08000000_711AF0.c"
+  },
+  {
+    "name": "func_080012C8_712DB8",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_55/func_080012C8_712DB8.c"
+  },
+  {
+    "name": "func_08001FD4_714F44",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_56/func_08001FD4_714F44.c"
+  },
+  {
+    "name": "func_08002C44_715BB4",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_56/func_08002C44_715BB4.c"
+  },
+  {
+    "name": "func_08003770_7166E0",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_56/func_08003770_7166E0.c"
+  },
+  {
+    "name": "func_080039E4_716954",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_56/func_080039E4_716954.c"
+  },
+  {
+    "name": "func_080039F0_716960",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_56/func_080039F0_716960.c"
+  },
+  {
+    "name": "func_0800124C_7180EC",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_57/func_0800124C_7180EC.c"
+  },
+  {
+    "name": "func_08002D60_719C00",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_57/func_08002D60_719C00.c"
+  },
+  {
+    "name": "func_08001C38_71D6B8",
+    "source_group": "file33_60",
+    "original_source": "decomp/research/usa_wider_33_60_20261118/sources/file_59/func_08001C38_71D6B8.c"
+  },
+  {
+    "name": "func_0800033C_720C0C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_61/func_0800033C_720C0C.c"
+  },
+  {
+    "name": "func_080020CC_7236EC",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_62/func_080020CC_7236EC.c"
+  },
+  {
+    "name": "func_08000C0C_72581C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_64/func_08000C0C_72581C.c"
+  },
+  {
+    "name": "func_0800234C_7287DC",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_66/func_0800234C_7287DC.c"
+  },
+  {
+    "name": "func_080024FC_72898C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_66/func_080024FC_72898C.c"
+  },
+  {
+    "name": "func_08002610_728AA0",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_66/func_08002610_728AA0.c"
+  },
+  {
+    "name": "func_08002C5C_7290EC",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_66/func_08002C5C_7290EC.c"
+  },
+  {
+    "name": "func_08000C88_72A228",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_67/func_08000C88_72A228.c"
+  },
+  {
+    "name": "func_08000C98_72A238",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_67/func_08000C98_72A238.c"
+  },
+  {
+    "name": "func_08000CD8_72A278",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_67/func_08000CD8_72A278.c"
+  },
+  {
+    "name": "func_0800058C_72BDDC",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_69/func_0800058C_72BDDC.c"
+  },
+  {
+    "name": "func_080005A0_72BDF0",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_69/func_080005A0_72BDF0.c"
+  },
+  {
+    "name": "func_080005A8_72BDF8",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_69/func_080005A8_72BDF8.c"
+  },
+  {
+    "name": "func_08000AC0_72C310",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_69/func_08000AC0_72C310.c"
+  },
+  {
+    "name": "func_080014D0_72CD20",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_69/func_080014D0_72CD20.c"
+  },
+  {
+    "name": "func_080014DC_72CD2C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_69/func_080014DC_72CD2C.c"
+  },
+  {
+    "name": "func_0800131C_72F57C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_70/func_0800131C_72F57C.c"
+  },
+  {
+    "name": "func_08000DC0_730650",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_71/func_08000DC0_730650.c"
+  },
+  {
+    "name": "func_08000DD0_730660",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_71/func_08000DD0_730660.c"
+  },
+  {
+    "name": "func_08000DD8_730668",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_71/func_08000DD8_730668.c"
+  },
+  {
+    "name": "func_08001084_730914",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_71/func_08001084_730914.c"
+  },
+  {
+    "name": "func_08001858_7310E8",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_71/func_08001858_7310E8.c"
+  },
+  {
+    "name": "func_080014E4_732794",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_72/func_080014E4_732794.c"
+  },
+  {
+    "name": "func_080015BC_73286C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_72/func_080015BC_73286C.c"
+  },
+  {
+    "name": "func_08000CA8_733BD8",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_73/func_08000CA8_733BD8.c"
+  },
+  {
+    "name": "func_08000CB8_733BE8",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_73/func_08000CB8_733BE8.c"
+  },
+  {
+    "name": "func_08000DA8_733CD8",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_73/func_08000DA8_733CD8.c"
+  },
+  {
+    "name": "func_08000FFC_733F2C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_73/func_08000FFC_733F2C.c"
+  },
+  {
+    "name": "func_080013D0_734300",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_73/func_080013D0_734300.c"
+  },
+  {
+    "name": "func_080015F0_734520",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_73/func_080015F0_734520.c"
+  },
+  {
+    "name": "func_0800162C_73455C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_73/func_0800162C_73455C.c"
+  },
+  {
+    "name": "func_08002DF8_737588",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_08002DF8_737588.c"
+  },
+  {
+    "name": "func_08003020_7377B0",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_08003020_7377B0.c"
+  },
+  {
+    "name": "func_080030EC_73787C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_080030EC_73787C.c"
+  },
+  {
+    "name": "func_080031BC_73794C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_080031BC_73794C.c"
+  },
+  {
+    "name": "func_080032A4_737A34",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_080032A4_737A34.c"
+  },
+  {
+    "name": "func_0800338C_737B1C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_0800338C_737B1C.c"
+  },
+  {
+    "name": "func_08003464_737BF4",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_08003464_737BF4.c"
+  },
+  {
+    "name": "func_0800353C_737CCC",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_0800353C_737CCC.c"
+  },
+  {
+    "name": "func_08003614_737DA4",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_08003614_737DA4.c"
+  },
+  {
+    "name": "func_080036EC_737E7C",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_080036EC_737E7C.c"
+  },
+  {
+    "name": "func_0800382C_737FBC",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_74/func_0800382C_737FBC.c"
+  },
+  {
+    "name": "func_08000AEC_7391BC",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_75/func_08000AEC_7391BC.c"
+  },
+  {
+    "name": "func_08000AFC_7391CC",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_75/func_08000AFC_7391CC.c"
+  },
+  {
+    "name": "func_08000B94_739264",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_75/func_08000B94_739264.c"
+  },
+  {
+    "name": "func_08000EA8_739578",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_75/func_08000EA8_739578.c"
+  },
+  {
+    "name": "func_08001160_739830",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_75/func_08001160_739830.c"
+  },
+  {
+    "name": "func_080015B0_739C80",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_75/func_080015B0_739C80.c"
+  },
+  {
+    "name": "func_08000374_73A214",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_77/func_08000374_73A214.c"
+  },
+  {
+    "name": "func_080007FC_73C3FC",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_78/func_080007FC_73C3FC.c"
+  },
+  {
+    "name": "func_080009A8_73C5A8",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_78/func_080009A8_73C5A8.c"
+  },
+  {
+    "name": "func_080004A4_73CAB4",
+    "source_group": "file61_80",
+    "original_source": "decomp/research/usa_wider_61_80_20261118/sources/file_79/func_080004A4_73CAB4.c"
+  }
+]

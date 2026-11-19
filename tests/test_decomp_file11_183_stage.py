@@ -16,6 +16,11 @@ def manifest():
     m.pop('overlay_crossregion47_stage', None)
     m.pop('overlay_wide132_stage', None)
     m.pop('overlay_wide109_stage', None)
+    m.pop('overlay_resource140_stage', None)
+    m.pop('overlay_graphics5_stage', None)
+    m.pop('overlay_file18_53_stage', None)
+    m.pop('overlay_callbacks10_stage', None)
+    m.pop('overlay_main19_stage', None)
     return m
 
 
