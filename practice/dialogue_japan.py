@@ -1,8 +1,8 @@
 """Pinned Japan-0 dialogue token extractor and conservative ROM patch/repack.
 
-JP glyph IDs are NOT ASCII or Shift-JIS. Until the original Japanese glyph
-atlas is mapped, a positive glyph is displayed and edited as <token:N>.
-Do not infer a Unicode character from its numeric token ID.
+Japanese glyph IDs are not ASCII or Shift-JIS. Decode only characters whose
+token identity has been cross-checked against an original-ROM text record
+and a matching gameplay screenshot. Preserve all other glyphs as <token:N>.
 """
 from __future__ import annotations
 
@@ -33,15 +33,28 @@ ORIGINAL_LAST_FILE_END = 0x14B3C40
 MAX_JP_GLYPH = 395  # Highest found in original resource references; not a full font atlas proof.
 TOKEN_RE = re.compile(r'<token:([+-]?\d+)>|<(close-window|open-window|clear-glyphs|state-4|state-3)>')
 
+# Confirmed against the *original* Japanese decompressed ROM resource 82 and
+# the user's matching in-game screenshot of the Kai Highway location banner:
+#   +0x04: 13,13,292,-33,99,95,-32,293,-60 -> 【カイ】 + newline
+#   +0x18: 13,13,13,13,13,19,15,78,16 -> かいどう
+# -33/-32 are title formatting control tokens (orange / reset), NOT glyphs.
+# 13 is the separately established Japanese spacing/indent glyph.
+# Do NOT infer Unicode mapping for any other token from this small sample.
+JP_CONFIRMED_GLYPHS = {
+    292: '【', 293: '】', 99: 'カ', 95: 'イ',
+    19: 'か', 15: 'い', 78: 'ど', 16: 'う',
+}
+JP_CONFIRMED_GLYPH_TO_TOKEN = {character: token for token, character in JP_CONFIRMED_GLYPHS.items()}
+
 
 def decode_japan_tokens(tokens: tuple[int, ...]) -> str:
     return ''.join(' ' if token == 13 else
-                   CONTROLS.get(token, f'<token:{token}>')
+                   JP_CONFIRMED_GLYPHS.get(token, CONTROLS.get(token, f'<token:{token}>'))
                    for token in tokens)
 
 
 def encode_japan_text(value: str) -> tuple[int, ...]:
-    """Encode only proven JP space/newline and explicit signed token IDs."""
+    """Encode verified glyphs, JP spaces/newlines, and explicit signed token IDs."""
     out = []
     position = 0
     while position < len(value):
@@ -56,6 +69,9 @@ def encode_japan_text(value: str) -> tuple[int, ...]:
                 raise ValueError(f'Unverified JP token ID {token}')
             out.append(token)
             position = match.end()
+        elif ch in JP_CONFIRMED_GLYPH_TO_TOKEN:
+            out.append(JP_CONFIRMED_GLYPH_TO_TOKEN[ch])
+            position += 1
         elif ch == ' ':
             out.append(13)
             position += 1
@@ -77,7 +93,7 @@ class JapanDialogueRecord(DialogueRecord):
         entry = super().as_dict()
         entry['text'] = self.text
         entry['region'] = 'japan_0'
-        entry['encoding'] = 'numeric_glyph_ids_unmapped'
+        entry['encoding'] = 'jp_partially_verified_unicode_with_numeric_fallback'
         return entry
 
 

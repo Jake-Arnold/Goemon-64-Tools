@@ -91,7 +91,7 @@ class RegionUIIntegration(unittest.TestCase):
             self.app._dialogue_region_changed()
         self.assertEqual(len(self.app.dialogue_records),5039)
         self.assertIsNone(self.app.dialogue_font_widths)
-        self.assertIn('numeric',self.app.dialogue_status.get())
+        self.assertIn('Unicode',self.app.dialogue_status.get())
         self.assertIn('disabled',self.app.dialogue_wrap_button.state())
         self.assertEqual(self.app.dialogue_layout_mode.get(),'Measure only')
 

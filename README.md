@@ -1,4 +1,15 @@
-# Goemon Speedrun Tools v0.11.65 — USA/Japan Dialogue ROM Library and Token Editor
+# Goemon Speedrun Tools v0.11.66 — First Screenshot-Verified Japanese Glyphs
+
+## v0.11.66 — Japanese Kai Highway glyph mapping
+
+A user-supplied Japanese Project64 screenshot was matched against two adjacent original Japan-0 ROM records in resource **82**, at offsets **+0x04** (header) and **+0x18** (subtitle). The verified ROM's signed halfwords now decode to readable **`【カイ】`** and **`かいどう`**, including indentation, orange title presentation via unchanged `-33/-32` controls and an original trailing `-60` newline. Eight screenshot-aligned token IDs are mapped for safe direct Unicode typing: `292=【`, `293=】`, `99=カ`, `95=イ`, `19=か`, `15=い`, `78=ど`, `16=う`. Existing token `13` remains a space/indent. All other Japanese glyphs stay as exact `<token:N>` placeholders.
+
+The Japanese Unicode editor **only** accepts confirmed glyphs; unknown Unicode raises an error rather than guessing an SJIS or atlas order. All original negative control values retain their order. The two records round-trip to **byte-identical 16-bit token sequences** when unchanged. The extra glyphs are not an exhaustive character table, and Japanese layout/auto-wrap remain disabled until font widths and native window geometry are verified. No ROM bytes, font graphics or original script assets are committed.
+
+**Verification on 19 November 2026:** 20 focused Japanese ROM and Tk UI tests passed under portable Python 3.12.16, Xvfb and LZKN64 0.2.0; this includes exact 82+0x04/+0x18 token-to-Unicode examples, edit validation, unchanged compressed JP retail repack, verified persistence and Japanese/USA tab controls. The mapping was confirmed against the original in-game screenshot; no modified Japanese Unicode replacement has yet been displayed in Project64.
+
+The source-alignment evidence is in `docs/JAPAN_KAI_GLYPH_MAPPING_20261119.md`. This incremental update does **not** claim a complete Japanese font atlas or bundled TkDND native packages.
+
 
 ## v0.11.65 — Japan-0 original ROM support, one-time import, native file drop, built-ROM folder
 

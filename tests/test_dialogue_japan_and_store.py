@@ -22,7 +22,7 @@ class EncodingTests(unittest.TestCase):
         raw=(13,13,123,-33,395,-32,-60,23,-61)
         s=decode_japan_tokens(raw)
         self.assertEqual(encode_japan_text(s),raw)
-        with self.assertRaises(ValueError):encode_japan_text('かんじ')
+        with self.assertRaises(ValueError):encode_japan_text('未確認')
         with self.assertRaises(ValueError):encode_japan_text('<token:999>')
         with self.assertRaises(ValueError):encode_japan_text('<token:-1>')
 
@@ -107,13 +107,35 @@ class OriginalSourceTests(unittest.TestCase):
 
     def test_japan_index_no_usa_glyph_assumption(self):
         r=next(r for r in self.records if r.resource_id==82 and r.text_offset==0x18)
-        self.assertIn('<token:19>',r.text)
+        self.assertIn('かいどう',r.text)
         self.assertEqual(encode_japan_text(r.text),r.tokens)
         self.assertEqual(r.as_dict()['region'],'japan_0')
 
+
+    def test_kai_screenshot_matches_original_rom_and_roundtrips(self):
+        # The screenshot aligns both *adjacent* JP resource-82 records.
+        title=next(r for r in self.records if r.resource_id==82 and r.text_offset==0x4)
+        road=next(r for r in self.records if r.resource_id==82 and r.text_offset==0x18)
+        self.assertEqual(title.tokens, (13,13,292,-33,99,95,-32,293,-60))
+        self.assertEqual(road.tokens, (13,13,13,13,13,19,15,78,16))
+        self.assertEqual(title.text, '  【<token:-33>カイ<token:-32>】\n')
+        self.assertEqual(road.text, '     かいどう')
+        self.assertEqual(encode_japan_text(title.text),title.tokens)
+        self.assertEqual(encode_japan_text(road.text),road.tokens)
+
+    def test_known_character_edit_preserves_controls(self):
+        title=next(r for r in self.records if r.resource_id==82 and r.text_offset==0x4)
+        # It is now possible to type confirmed Unicode glyphs directly.
+        changed=title.text.replace('カイ','イカ')
+        edited=validate_japan_replacement(title,changed)
+        self.assertEqual(edited,(13,13,292,-33,95,99,-32,293,-60))
+        self.assertEqual(encode_japan_text(decode_japan_tokens(edited)),edited)
+        with self.assertRaises(ValueError):
+            validate_japan_replacement(title,changed.replace('<token:-32>',''))
+
     def test_japan_same_length_patch_and_header(self):
         r=next(r for r in self.records if r.resource_id==82 and r.text_offset==0x18)
-        edited=r.text.replace('<token:19>','<token:29>',1)
+        edited=r.text.replace('か','<token:29>',1)
         out=patch_japan_image(self.jp,self.records,{r.key:edited})
         self.assertNotEqual(out,self.jp)
         self.assertEqual(struct.unpack_from('>h',out,r.image_offset+5*2)[0],29)

@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-19 — v0.11.66 first screenshot-to-ROM verified Japanese glyph mappings
+
+- **Observation:** User confirmed original Japanese Project64 Kai area-name screenshot corresponds to the first two records for resource 82. Original JP decompressed ROM SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`. Record +0x04 (image 0x742344) holds `13,13,292,-33,99,95,-32,293,-60`, rendered as indented `【カイ】` plus native newline, with `-33/-32` applying/restoring orange title presentation. Record +0x18 (image 0x742358) holds five `13` indentation tokens and `19,15,78,16` rendered `かいどう`. Eight positive glyph IDs are now screenshot-aligned to Unicode; space 13 remains supported.
+- **Code:** `practice/dialogue_japan.py` records `JP_CONFIRMED_GLYPHS` and its reversible inverse, enabling readable Unicode for verified characters and exact `<token:N>` fallback for all others. The Japanese encoder accepts these characters directly and continues to reject unsupported Unicode. Update JP region tab status/diagnostics to describe partial Unicode rather than numeric-only editing. Add specific regression checks on both pinned original records, encoded reversibility, control preservation, and known-glyph swaps.
+- **Tests actually run:** 20 focused Python/Xvfb tests passed, 0 skipped, using the supplied original USA and JP decompressed/retail SHA-1-pinned ROMs, portable Python 3.12.16, LZKN64 0.2.0. Includes re-compressing untouched JP ROM byte-for-byte.
+- **Boundaries:** This is partial Japanese glyph mapping, not full kana/kanji encoding. The user screenshot confirms **original** JP characters, not in-game display of newly edited JP ROM. Native TkDND dependency availability and full Windows/Linux application regression remain unverified. USA mapping unchanged; matching-C decomp branch untouched; no original ROM bytes/assets committed.
+- **Next:** Collect matching original JP dialogue samples with repeated kana/kanji to expand the glyph table; recover original JP font atlas ordering/widths from MIPS; test a modified Japanese ROM in Project64; validate native TkDND dependency packaging on Linux/Windows.
+
+
 ## 2026-11-19 — v0.11.65 Japanese original-ROM token editor, persistent library, drag-and-drop and build directory
 
 - **Reason:** User requested Japan-region Dialogue support, drag-and-drop original ROM import, automatically persistent/reusable verified ROMs, and a one-click button to open the directory containing built ROMs.

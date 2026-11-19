@@ -108,7 +108,8 @@ class DialogueRegionMixin:
             self.dialogue_layout_mode.set('Native (auto when traced)')
         self._dialogue_mode_changed()
         self._dialogue_filter()
-        note=('Glyph IDs are numeric <token:N>; kana/kanji Unicode encoding and JP font widths remain unmapped. '
+        note=('Some screenshot-verified Japanese glyphs display as Unicode; unknown IDs remain <token:N>. '
+              'Japanese font widths and automatic wrapping are still unverified. '
               if region=='japan' else '')
         self.dialogue_status.set(f'{region.upper()}: {len(records)} candidate records indexed from persistent verified ROM. '
                                  f'Retail source: {"stored" if self.dialogue_retail_path else "not yet imported"}. {note}')
@@ -173,7 +174,7 @@ class DialogueRegionMixin:
                 f'Japan-0 token mode: {sum(x>=0 for x in tokens)} glyph IDs, '
                 f'{controls.count(-60)+1} explicit lines, {len(controls)} controls. '
                 'Glyph widths and automatic wrapping not yet verified for Japanese script. '
-                'Retain original control order; edit numeric <token:N> IDs only.')
+                'Retain original control order; type only verified Unicode or numeric <token:N> IDs.')
         except ValueError as exc:
             self.dialogue_layout_summary.set(f'Japanese token encoding invalid: {exc}')
 
