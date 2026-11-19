@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-16",
+  "region": "japan_0",
+  "status": "RESEARCH_ONLY_ISOLATED_EXACT",
+  "original_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "function_count": 6,
+  "matching_bytes": 848,
+  "relocations": 28,
+  "checked_native_IDO_GNU_MIPS": true,
+  "checked_full_ROM_32MiB": false,
+  "checked_Rommy_16MiB": false,
+  "verified_production_baseline": {
+    "functions": 18,
+    "bytes": 756
+  },
+  "candidates": [
+    [
+      "func_80036D58_37958",
+      "0x37958",
+      204,
+      4,
+      7
+    ],
+    [
+      "func_80036E24_37A24",
+      "0x37A24",
+      208,
+      0,
+      7
+    ],
+    [
+      "func_80036EF4_37AF4",
+      "0x37AF4",
+      100,
+      12,
+      2
+    ],
+    [
+      "func_80036F8C_37B8C",
+      "0x37B8C",
+      192,
+      0,
+      5
+    ],
+    [
+      "func_8003715C_37D5C",
+      "0x37D5C",
+      92,
+      4,
+      5
+    ],
+    [
+      "func_800372EC_37EEC",
+      "0x37EEC",
+      52,
+      12,
+      2
+    ]
+  ]
+}

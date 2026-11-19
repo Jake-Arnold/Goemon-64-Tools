@@ -1,3 +1,7 @@
+## 2026-11-19 — Draft PR #102: preserve original Japanese native proof chronology
+
+- Research only. Exact original historical blobs from `chatgptweb/japanese-decomp-port` and `chatgptweb/decomp-consolidation-20261116` archived under `decomp/research/branch_archive/japan_early_native_20261119`, including two alternate early 24-C helper revisions. Existing canonical USA 1,500/Japan 432 matching-C functions and active source unchanged; full native ROM/G2, CI and gameplay **NOT RUN** for this archive. No source branches deleted; deletion gated on PR merge and SHA/provenance checks.
+
 ## 2026-11-19 — Merge-triggered historical research branch retirement mechanism
 
 - A `pull_request.closed` GitHub Actions workflow on `chatgptweb/decomp` is scoped to archival PRs #102–#108, with 19 **pinned source branch HEADs** and seven immutable Git archive subtree hashes. Only after a verified PR merge, it checks the original head/base, original Git tree, changed file scope, canonical merge ancestry and no other open PR references. Deletions use atomic Git `--force-with-lease` and a remote post-deletion check. This does not touch `main`, production matching-C, ROM, build manifests or current verification reports.

@@ -1,0 +1,463 @@
+{
+  "format": "goemon-japan-elf-function-inventory-v1",
+  "region": "japan_0",
+  "identified_positive_size_elf_entries": 7376,
+  "assembly_marked_entries": 7366,
+  "reviewed_matching_c_entries": 10,
+  "unmarked_unreviewed_entries": 0,
+  "reviewed_matching_c_bytes": 280,
+  "section_count": 73,
+  "same_section_address_size_aliases": 0,
+  "nonfunction_NON_MATCHING_markers_excluded": 9065,
+  "symbol_identity_sha256": "76ccc699501bf829e5f05f8ab38f4903cd80d84e10391a06bac51189bde962db",
+  "sections": {
+    ".entry": {
+      "function_entries": 1,
+      "assembly_marked": 1,
+      "matching_c": 0,
+      "total_symbol_bytes": 56
+    },
+    ".file_11": {
+      "function_entries": 902,
+      "assembly_marked": 902,
+      "matching_c": 0,
+      "total_symbol_bytes": 198828
+    },
+    ".file_12": {
+      "function_entries": 813,
+      "assembly_marked": 813,
+      "matching_c": 0,
+      "total_symbol_bytes": 111696
+    },
+    ".file_13": {
+      "function_entries": 1000,
+      "assembly_marked": 1000,
+      "matching_c": 0,
+      "total_symbol_bytes": 255408
+    },
+    ".file_14": {
+      "function_entries": 392,
+      "assembly_marked": 392,
+      "matching_c": 0,
+      "total_symbol_bytes": 119540
+    },
+    ".file_15": {
+      "function_entries": 122,
+      "assembly_marked": 122,
+      "matching_c": 0,
+      "total_symbol_bytes": 32252
+    },
+    ".file_16": {
+      "function_entries": 22,
+      "assembly_marked": 22,
+      "matching_c": 0,
+      "total_symbol_bytes": 16848
+    },
+    ".file_17": {
+      "function_entries": 120,
+      "assembly_marked": 120,
+      "matching_c": 0,
+      "total_symbol_bytes": 38644
+    },
+    ".file_18": {
+      "function_entries": 387,
+      "assembly_marked": 387,
+      "matching_c": 0,
+      "total_symbol_bytes": 117412
+    },
+    ".file_19": {
+      "function_entries": 121,
+      "assembly_marked": 121,
+      "matching_c": 0,
+      "total_symbol_bytes": 29536
+    },
+    ".file_20": {
+      "function_entries": 13,
+      "assembly_marked": 13,
+      "matching_c": 0,
+      "total_symbol_bytes": 2124
+    },
+    ".file_21": {
+      "function_entries": 10,
+      "assembly_marked": 10,
+      "matching_c": 0,
+      "total_symbol_bytes": 1376
+    },
+    ".file_22": {
+      "function_entries": 12,
+      "assembly_marked": 12,
+      "matching_c": 0,
+      "total_symbol_bytes": 4980
+    },
+    ".file_23": {
+      "function_entries": 21,
+      "assembly_marked": 21,
+      "matching_c": 0,
+      "total_symbol_bytes": 11212
+    },
+    ".file_24": {
+      "function_entries": 24,
+      "assembly_marked": 24,
+      "matching_c": 0,
+      "total_symbol_bytes": 3332
+    },
+    ".file_25": {
+      "function_entries": 16,
+      "assembly_marked": 16,
+      "matching_c": 0,
+      "total_symbol_bytes": 4720
+    },
+    ".file_26": {
+      "function_entries": 16,
+      "assembly_marked": 16,
+      "matching_c": 0,
+      "total_symbol_bytes": 2608
+    },
+    ".file_27": {
+      "function_entries": 89,
+      "assembly_marked": 89,
+      "matching_c": 0,
+      "total_symbol_bytes": 14408
+    },
+    ".file_28": {
+      "function_entries": 5,
+      "assembly_marked": 5,
+      "matching_c": 0,
+      "total_symbol_bytes": 680
+    },
+    ".file_29": {
+      "function_entries": 188,
+      "assembly_marked": 188,
+      "matching_c": 0,
+      "total_symbol_bytes": 47444
+    },
+    ".file_30": {
+      "function_entries": 194,
+      "assembly_marked": 194,
+      "matching_c": 0,
+      "total_symbol_bytes": 31792
+    },
+    ".file_31": {
+      "function_entries": 83,
+      "assembly_marked": 83,
+      "matching_c": 0,
+      "total_symbol_bytes": 26272
+    },
+    ".file_32": {
+      "function_entries": 102,
+      "assembly_marked": 102,
+      "matching_c": 0,
+      "total_symbol_bytes": 18032
+    },
+    ".file_33": {
+      "function_entries": 13,
+      "assembly_marked": 13,
+      "matching_c": 0,
+      "total_symbol_bytes": 2132
+    },
+    ".file_34": {
+      "function_entries": 17,
+      "assembly_marked": 17,
+      "matching_c": 0,
+      "total_symbol_bytes": 6776
+    },
+    ".file_35": {
+      "function_entries": 66,
+      "assembly_marked": 66,
+      "matching_c": 0,
+      "total_symbol_bytes": 15556
+    },
+    ".file_36": {
+      "function_entries": 97,
+      "assembly_marked": 97,
+      "matching_c": 0,
+      "total_symbol_bytes": 19896
+    },
+    ".file_37": {
+      "function_entries": 107,
+      "assembly_marked": 107,
+      "matching_c": 0,
+      "total_symbol_bytes": 19284
+    },
+    ".file_38": {
+      "function_entries": 80,
+      "assembly_marked": 80,
+      "matching_c": 0,
+      "total_symbol_bytes": 12436
+    },
+    ".file_39": {
+      "function_entries": 42,
+      "assembly_marked": 42,
+      "matching_c": 0,
+      "total_symbol_bytes": 7296
+    },
+    ".file_40": {
+      "function_entries": 76,
+      "assembly_marked": 76,
+      "matching_c": 0,
+      "total_symbol_bytes": 19684
+    },
+    ".file_41": {
+      "function_entries": 28,
+      "assembly_marked": 28,
+      "matching_c": 0,
+      "total_symbol_bytes": 5780
+    },
+    ".file_42": {
+      "function_entries": 29,
+      "assembly_marked": 29,
+      "matching_c": 0,
+      "total_symbol_bytes": 11820
+    },
+    ".file_43": {
+      "function_entries": 133,
+      "assembly_marked": 133,
+      "matching_c": 0,
+      "total_symbol_bytes": 26392
+    },
+    ".file_44": {
+      "function_entries": 66,
+      "assembly_marked": 66,
+      "matching_c": 0,
+      "total_symbol_bytes": 12988
+    },
+    ".file_45": {
+      "function_entries": 16,
+      "assembly_marked": 16,
+      "matching_c": 0,
+      "total_symbol_bytes": 9020
+    },
+    ".file_46": {
+      "function_entries": 59,
+      "assembly_marked": 59,
+      "matching_c": 0,
+      "total_symbol_bytes": 19036
+    },
+    ".file_47": {
+      "function_entries": 15,
+      "assembly_marked": 15,
+      "matching_c": 0,
+      "total_symbol_bytes": 6740
+    },
+    ".file_48": {
+      "function_entries": 30,
+      "assembly_marked": 30,
+      "matching_c": 0,
+      "total_symbol_bytes": 9216
+    },
+    ".file_49": {
+      "function_entries": 27,
+      "assembly_marked": 27,
+      "matching_c": 0,
+      "total_symbol_bytes": 9728
+    },
+    ".file_50": {
+      "function_entries": 24,
+      "assembly_marked": 24,
+      "matching_c": 0,
+      "total_symbol_bytes": 3332
+    },
+    ".file_51": {
+      "function_entries": 12,
+      "assembly_marked": 12,
+      "matching_c": 0,
+      "total_symbol_bytes": 1948
+    },
+    ".file_52": {
+      "function_entries": 2,
+      "assembly_marked": 2,
+      "matching_c": 0,
+      "total_symbol_bytes": 120
+    },
+    ".file_53": {
+      "function_entries": 15,
+      "assembly_marked": 15,
+      "matching_c": 0,
+      "total_symbol_bytes": 8920
+    },
+    ".file_54": {
+      "function_entries": 20,
+      "assembly_marked": 20,
+      "matching_c": 0,
+      "total_symbol_bytes": 4516
+    },
+    ".file_55": {
+      "function_entries": 7,
+      "assembly_marked": 7,
+      "matching_c": 0,
+      "total_symbol_bytes": 4820
+    },
+    ".file_56": {
+      "function_entries": 53,
+      "assembly_marked": 53,
+      "matching_c": 0,
+      "total_symbol_bytes": 14820
+    },
+    ".file_57": {
+      "function_entries": 42,
+      "assembly_marked": 42,
+      "matching_c": 0,
+      "total_symbol_bytes": 12628
+    },
+    ".file_58": {
+      "function_entries": 6,
+      "assembly_marked": 6,
+      "matching_c": 0,
+      "total_symbol_bytes": 4572
+    },
+    ".file_59": {
+      "function_entries": 50,
+      "assembly_marked": 50,
+      "matching_c": 0,
+      "total_symbol_bytes": 7228
+    },
+    ".file_60": {
+      "function_entries": 28,
+      "assembly_marked": 28,
+      "matching_c": 0,
+      "total_symbol_bytes": 10072
+    },
+    ".file_61": {
+      "function_entries": 11,
+      "assembly_marked": 11,
+      "matching_c": 0,
+      "total_symbol_bytes": 3396
+    },
+    ".file_62": {
+      "function_entries": 26,
+      "assembly_marked": 26,
+      "matching_c": 0,
+      "total_symbol_bytes": 10952
+    },
+    ".file_63": {
+      "function_entries": 6,
+      "assembly_marked": 6,
+      "matching_c": 0,
+      "total_symbol_bytes": 1572
+    },
+    ".file_64": {
+      "function_entries": 10,
+      "assembly_marked": 10,
+      "matching_c": 0,
+      "total_symbol_bytes": 3836
+    },
+    ".file_65": {
+      "function_entries": 5,
+      "assembly_marked": 5,
+      "matching_c": 0,
+      "total_symbol_bytes": 2032
+    },
+    ".file_66": {
+      "function_entries": 30,
+      "assembly_marked": 30,
+      "matching_c": 0,
+      "total_symbol_bytes": 11368
+    },
+    ".file_67": {
+      "function_entries": 21,
+      "assembly_marked": 21,
+      "matching_c": 0,
+      "total_symbol_bytes": 4916
+    },
+    ".file_68": {
+      "function_entries": 6,
+      "assembly_marked": 6,
+      "matching_c": 0,
+      "total_symbol_bytes": 2904
+    },
+    ".file_69": {
+      "function_entries": 26,
+      "assembly_marked": 26,
+      "matching_c": 0,
+      "total_symbol_bytes": 9672
+    },
+    ".file_70": {
+      "function_entries": 5,
+      "assembly_marked": 5,
+      "matching_c": 0,
+      "total_symbol_bytes": 4892
+    },
+    ".file_71": {
+      "function_entries": 29,
+      "assembly_marked": 29,
+      "matching_c": 0,
+      "total_symbol_bytes": 6280
+    },
+    ".file_72": {
+      "function_entries": 11,
+      "assembly_marked": 11,
+      "matching_c": 0,
+      "total_symbol_bytes": 6960
+    },
+    ".file_73": {
+      "function_entries": 32,
+      "assembly_marked": 32,
+      "matching_c": 0,
+      "total_symbol_bytes": 5940
+    },
+    ".file_74": {
+      "function_entries": 34,
+      "assembly_marked": 34,
+      "matching_c": 0,
+      "total_symbol_bytes": 14740
+    },
+    ".file_75": {
+      "function_entries": 27,
+      "assembly_marked": 27,
+      "matching_c": 0,
+      "total_symbol_bytes": 5384
+    },
+    ".file_76": {
+      "function_entries": 1,
+      "assembly_marked": 1,
+      "matching_c": 0,
+      "total_symbol_bytes": 76
+    },
+    ".file_77": {
+      "function_entries": 21,
+      "assembly_marked": 21,
+      "matching_c": 0,
+      "total_symbol_bytes": 7032
+    },
+    ".file_78": {
+      "function_entries": 14,
+      "assembly_marked": 14,
+      "matching_c": 0,
+      "total_symbol_bytes": 2480
+    },
+    ".file_79": {
+      "function_entries": 10,
+      "assembly_marked": 10,
+      "matching_c": 0,
+      "total_symbol_bytes": 3328
+    },
+    ".file_80": {
+      "function_entries": 6,
+      "assembly_marked": 6,
+      "matching_c": 0,
+      "total_symbol_bytes": 2276
+    },
+    ".ipl3": {
+      "function_entries": 1,
+      "assembly_marked": 1,
+      "matching_c": 0,
+      "total_symbol_bytes": 4032
+    },
+    ".main": {
+      "function_entries": 1231,
+      "assembly_marked": 1221,
+      "matching_c": 10,
+      "total_symbol_bytes": 335584
+    }
+  },
+  "notes": [
+    "Includes .entry and .ipl3 F symbols; not necessarily game functions",
+    "Overlays may reuse VMAs; counted by section plus symbol",
+    "Remaining ASM entries based on explicit NON_MATCHING markers",
+    "Four C claims accepted only after exact 32/16 MiB region verification"
+  ],
+  "source_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "linked_expanded_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "recompressed_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "matching_c_gate": "Local original-address linker/relocation and whole-ROM proof PASS; updated formal runner/tests NOT RUN"
+}
