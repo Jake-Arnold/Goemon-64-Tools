@@ -1,3 +1,15 @@
+## 2026-11-19 — Preserve original Mini Ebisumaru MIPS research (PR #97)
+
+- **Scope:** Added 21,742 novel characters of original-MIPS transformation/movement/stop/timer/action restriction analysis to `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md`, retaining canonical 17,102-character prefix intact. Research-only; source sketches and inferred visible scale are not matching-C or gameplay confirmation. Canonical baseline at integration is USA 1,500 accepted C and Japanese 432 accepted C.
+- **Verification:** Full source-document prefix equality and original research Git blob SHA `6154401b4d5ceffea9bb1df5bc6166a19c98c8e8` verified. No new original-ROM G2, strict inventory, full CI or emulator session is claimed for this documentation change.
+
+## 2026-11-19 — Preserve three Codex research branches in separate decomp PRs (documentation-only)
+
+- **Scope:** Review the `codex/ebisumaru-mini-research`, `codex/goemon-impact-research` and `codex/goemon-vm-overlay-followup` histories against canonical `chatgptweb/decomp` @ `5554e346e9115b7855f78476a4bbd458ce9e6a20`. Stage only non-incorporated original-MIPS research, controller/HUD trace, historical original-ROM proof ledgers, and the isolated `file_12` callback preflight record in three separate unmerged draft PRs.
+- **Evidence:** Mini Ebisumaru original MIPS trace appends 21,742 characters to the unchanged prior observations; Impact's original controller/HUD document is absent from canon, as are three historic C acceptance ledgers; the VM architecture/cursor reports, callback source and host tests already exist, while the original research proof is absent. Historical `RESEARCH_ONLY` statuses remain historical; their two callbacks and three Impact/dialogue helpers are now accepted in canon.
+- **Tests:** Authenticated source and canonical blob comparison, function-name and original-ROM offset deduplication, per-PR tree/diff/remote blob integrity review. Documentation-only; no new native IDO build, gameplay run or matching-C promotion.
+- **Limits/next:** No changes to original ROMs, functional C, verifier, manifests or acceptance totals (USA 1,500 C; Japan 39 C). Review all three draft PRs; wait for explicit owner approval before merging.
+
 ## 2026-11-19 — Research PR #88 reconciled after Japanese 432-C promotion
 
 - Research-only documentation merge parent brought PR #88's 16 USA address discoveries, read-only memory registry and eight registry tests forward onto canonical 1,500 USA C / 432 JP C. Earlier PR #88 progress entry remains as a historical 39-JP snapshot. No production C, regional manifest, native proof or toolkit `main` modified; full canonical decomp.local_ci and ROM G2 not rerun for metadata-only PR.
