@@ -215,9 +215,9 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         current=json.loads((ROOT/'results/combined.json').read_text())
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
-        # Live canonical 1225+227 original-address matching-C functions.
-        self.assertEqual(current['comparison']['matched_functions'],1452)
-        self.assertEqual(current['comparison']['matched_function_bytes'],56744)
+        # Live canonical 1452+9 original-address matching-C functions.
+        self.assertEqual(current['comparison']['matched_functions'],1461)
+        self.assertEqual(current['comparison']['matched_function_bytes'],56816)
         prior1225=json.loads((ROOT/'results/combined_1225_before_227_expansion_20261118.json').read_text())
         self.assertEqual((prior1225['comparison']['matched_functions'],prior1225['comparison']['matched_function_bytes']),(1225,52028))
         accepted1119=json.loads((ROOT/'results/combined_1119_before_wide109_20261118.json').read_text())

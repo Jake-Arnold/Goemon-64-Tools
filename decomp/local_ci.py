@@ -110,6 +110,23 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-o',str(binary)]),
             ('New file18/callbacks actual-C sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        tiny = ROOT / 'decomp/research/pending_tiny9_20261119'
+        sources=sorted((tiny/'sources').glob('*.c'))
+        if len(sources)!=7:
+            raise ValueError('Missing seven original-source tiny9 translation units')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('tiny9-actual-host')
+        steps.extend([
+            ('Tiny9 actual-source sanitizer build',compiler+[
+                '-std=c11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((tiny/'test_actual_tiny9.c').relative_to(ROOT)),
+                *[str(src.relative_to(ROOT)) for src in sources],
+                '-o',str(binary)]),
+            ('Tiny9 actual-source sanitizer test',[str(binary)]),
+        ])
     return steps
 
 

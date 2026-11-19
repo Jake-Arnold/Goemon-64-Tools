@@ -13,7 +13,7 @@ class LocalCITests(unittest.TestCase):
     def test_default_runs_python_validation_then_host_sanitizers(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host")
-        self.assertEqual(len(steps), 15)
+        self.assertEqual(len(steps), 17)
         self.assertTrue(any(path.endswith("test_actual109.c") for path in steps[11][1]))
         self.assertEqual(sum(path.endswith(".c") and "usa_wide109_promotion_20261118/sources" in path for path in steps[11][1]), 68)
         self.assertEqual(len(steps[12][1]), 1)
@@ -21,6 +21,9 @@ class LocalCITests(unittest.TestCase):
         self.assertEqual(sum(path.endswith('.c') and 'pending_file18_53_20261118/sources' in path for path in steps[13][1]), 50)
         self.assertEqual(sum(path.endswith('.c') and 'pending_callbacks10_20261118/sources' in path for path in steps[13][1]), 3)
         self.assertEqual(len(steps[14][1]), 1)
+        self.assertTrue(any(path.endswith("test_actual_tiny9.c") for path in steps[15][1]))
+        self.assertEqual(sum(path.endswith(".c") and "pending_tiny9_20261119/sources" in path for path in steps[15][1]), 7)
+        self.assertEqual(len(steps[16][1]), 1)
         self.assertTrue(any(path.endswith("test_host132.c") for path in steps[9][1]))
         self.assertEqual(sum(path.endswith(".c") and "usa_wide132_promotion_20261118/host_sources" in path for path in steps[9][1]), 9)
         self.assertEqual(len(steps[10][1]), 1)

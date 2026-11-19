@@ -25,25 +25,25 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "b28ab734bb832f3f8b0317a081e99577dfbcc617d95f0b340e93b10ef6372936",
+    "manifest_sha256": "b9c8e350ef891e78f1d1a7a759f695d1fce137fe2e70096c72f1c8b1e91225e3",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "ef402ddcf4be8b360193e25d8b20407722a28000f34c7c7b5b9a1d54482a0b2d",
+    "verifier_sha256": "69aac654da4b5a90dd72fd2b7ec13b1f6ab0c329ffb9476f3c03e11b427e188c",
     "script_vm_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
-    "verify_sha256": "ef402ddcf4be8b360193e25d8b20407722a28000f34c7c7b5b9a1d54482a0b2d"
+    "verify_sha256": "69aac654da4b5a90dd72fd2b7ec13b1f6ab0c329ffb9476f3c03e11b427e188c"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "03336f83eeec72d341ac3d6ab70419291c6a39cdc9bac742e8e98dc5f5540915",
+    "report_sha256": "6b3100436aa09cdf03a565e0afc50db77c370b72faa722d72a6d8611bbbd632d",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "3823f68afc15dfd8de6ab8813c1d8403183e2ea236584693b62aed27f1e71ec3",
-    "matching_c_functions": 1452,
-    "matching_c_bytes": 56744,
-    "combined_c_entries": 1465,
-    "asm_entries": 5911,
+    "combined_proof_sha256": "d8b42ce33d98cb3f41aba02cb1005149cfe02a8652f1f32927a6b18b60dd96a1",
+    "matching_c_functions": 1461,
+    "matching_c_bytes": 56816,
+    "combined_c_entries": 1474,
+    "asm_entries": 5902,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Original USA 1452 matching C: canonical 1225 plus 227 distinct native-exact source functions, 4716 original MIPS instruction bytes, through five fail-closed stages. Full 32 MiB USA ROM byte-identical; all 7376 ELF FUNC entries, semantic relocation multisets and no positive-sized extra aliases. Japan remains 39 C. Verified in separate original-toolchain execution; no emulator gameplay proof.",
-    "reconciled_date": "2026-11-18"
+    "note": "Original USA 1461 matching C: accepted 1452 plus nine original-address 8-byte C setters, 72 original MIPS instruction bytes in file13/17/18/48/49; complete 32MiB USA ROM exact; 7376 original ELF FUNC identities; all overlay semantic relocation records unchanged, zero positive aliases. Japan baseline separate 39 C. Native test was executed locally; gameplay emulator not run.",
+    "reconciled_date": "2026-11-19"
   },
   "residual_functions": [
     {

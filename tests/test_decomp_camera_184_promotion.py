@@ -19,6 +19,7 @@ class UsaCameraResetPromotionTests(unittest.TestCase):
         cls.manifest.pop('overlay_file18_53_stage', None)
         cls.manifest.pop('overlay_callbacks10_stage', None)
         cls.manifest.pop('overlay_main19_stage', None)
+        cls.manifest.pop('overlay_tiny9_stage', None)
         cls.registry,cls.file_inventory=load_files(ROOT)
         cls.proof=json.loads((ROOT/'decomp/results/usa_camera_reset_136_promotion_20261117.json').read_text())
 

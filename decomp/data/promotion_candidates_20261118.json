@@ -3,13 +3,13 @@
   "created_utc_date": "2026-11-18",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 1452,
-    "usa_instruction_bytes": 56744,
+    "usa_functions": 1461,
+    "usa_instruction_bytes": 56816,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "No currently ready native research candidates remain in this official queue after all five graphics candidates were promoted in the 1452-C original-ROM gate. The five have immutable historical provenance in promotion_candidates_1225_before_graphics5_20261118.json. The isolated file_25 relocation mismatch stays blocked; unrelated five file13 sources are not in this queue.",
+  "purpose": "After 9 more original-ROM-exact 8-byte setters were promoted, no production-ready candidates remain in this queue. File25 72-byte relocation lead remains blocked; file13 five larger native-scratch C sources are unavailable. Historical 1452 checkpoint retained separately.",
   "ready_for_combined_g2": {
     "functions": 0,
     "bytes": 0,

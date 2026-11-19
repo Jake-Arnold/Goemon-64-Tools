@@ -1555,5 +1555,8 @@
   },
   "overlay_main19_stage": {
     "format": "goemon-usa-main19-after-callbacks10-v1"
+  },
+  "overlay_tiny9_stage": {
+    "format": "goemon-usa-tiny9-after-1452-v1"
   }
 }
