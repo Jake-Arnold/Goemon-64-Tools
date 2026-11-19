@@ -119,14 +119,16 @@ def repack_usa_retail(patched_image: bytes, original_retail: bytes) -> bytes:
 
 def save_retail_rom(decompressed_source: str | Path, retail_source: str | Path,
                     destination: str | Path, records: list[DialogueRecord],
-                    replacements: dict[str, str]) -> str:
+                    replacements: dict[str, str], *,
+                    allow_line_breaks_for: frozenset[str] = frozenset()) -> str:
     """Build output atomically without altering either original ROM."""
     source = Path(decompressed_source)
     retail = Path(retail_source)
     destination = Path(destination)
     if destination.resolve() in {source.resolve(), retail.resolve()}:
         raise ValueError('Output path must not replace either source ROM')
-    patched = patch_image(load_usa_image(source), records, replacements)
+    patched = patch_image(load_usa_image(source), records, replacements,
+                          allow_line_breaks_for=allow_line_breaks_for)
     output = repack_usa_retail(patched, load_usa_retail(retail))
     destination.parent.mkdir(parents=True, exist_ok=True)
     staged_name = None

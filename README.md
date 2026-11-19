@@ -1,4 +1,19 @@
-# Goemon Speedrun Tools v0.11.61 — Variable-Length Dialogue Editing and Retail ROM Builds
+# Goemon Speedrun Tools v0.11.62 — ROM-Backed Dialogue Layout Diagnostics
+
+## v0.11.62 — Exact glyph advances, layout warnings and guarded wrapping
+
+The existing **Dialogue** tab reads the verified USA ROM glyph-width table at decompressed offset `0x5C710`. The original renderer advances the horizontal cursor by the token's width byte plus one; the editor now shows the original and edited maximum line widths, line count, peak renderer glyph-entry usage, and control-code summaries. It warns about unknown-width token IDs, opaque layout controls, more than 120 retained glyph entries between clears, and exceeding a manually supplied width/line limit.
+
+The original 40-entry signed-control dispatch (`-71..-32`) is catalogued. Known actions (e.g. `-60` newline, `-63` clear, `-61/-62` state transitions) are distinguished from helper calls whose semantics remain unconfirmed. The diagnostic does **not** assume every control command's effects on window layout.
+
+Window dimensions are *not* yet verified for each style. The editor therefore offers three profiles: **Measure only** (default); **Single-line (manual cap)** for overflow warnings; and **Multi-line (manual cap)**. Only the explicit multi-line profile with user-entered width and line limits enables **Wrap to manual limits**. The wrapper replaces separator spaces with `-60` when necessary, preserves original negative controls and an optional trailing `-61/-62`, refuses complex inline formatting, missing glyph widths, unsupported spacing and unbreakable words, and cannot exceed the user limit. This is an *opt-in* transform, not automatic in-game wrapping. The patcher remains fail-closed about added control tokens unless the record has been explicitly wrapped; the permission is carried through decompressed and retail builders.
+
+ROM-verified width examples: `Kai Highway` is **79 font advance units**; `Monster Monster Monster` is **165**. These values are not claimed textbox dimensions. No window width is hardcoded.
+
+**Verified 19 November 2026:** 34 focused tests passed with the SHA-1-pinned USA decompressed and original retail cartridges, portable Python 3.12 and LZKN64. This includes Xvfb GUI tests and a modified compressed-resource round trip after adding a `-60` line break. No skips. Full toolkit Linux/Windows regressions and live Project64 rendering of newly inserted wrapping were not tested.
+
+Limitations: USA only; manual bounds, no source-backed style dimensions or clipping model yet. The existing static `0x8010` candidate scan is not a complete execution/indirect-pointer graph. Japan remains independently scoped. No ROM or original assets are committed.
+
 
 ## v0.11.61 — Relocate dialogue and build a 16 MiB USA cartridge
 

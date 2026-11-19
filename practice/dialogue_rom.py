@@ -204,7 +204,8 @@ def validate_replacement(original: DialogueRecord, replacement: str) -> tuple[in
     return tuple(proposed)
 
 
-def validate_flexible_replacement(original: DialogueRecord, replacement: str) -> tuple[int, ...]:
+def validate_flexible_replacement(original: DialogueRecord, replacement: str, *,
+                                  allow_added_line_breaks: bool = False) -> tuple[int, ...]:
     """Allow any glyph count, preserving the exact ordered negative controls.
 
     The controls include unknown formatting IDs: moving them may change visual
@@ -217,7 +218,18 @@ def validate_flexible_replacement(original: DialogueRecord, replacement: str) ->
         raise ValueError('Replacement exceeds maximum text record length')
     old_controls = tuple(t for t in old if t < 0)
     new_controls = tuple(t for t in proposed if t < 0)
-    if old_controls != new_controls:
+    if allow_added_line_breaks:
+        # A deliberate manual-cap wrapping operation may replace spaces with
+        # extra -60 tokens; all original negative tokens must remain in order.
+        original_iter = iter(new_controls)
+        if any(not any(candidate == token for candidate in original_iter)
+               for token in old_controls):
+            raise ValueError('Original control tokens must retain their exact order')
+        if (sum(t == -60 for t in new_controls) < sum(t == -60 for t in old_controls)
+                or tuple(t for t in new_controls if t != -60) !=
+                tuple(t for t in old_controls if t != -60)):
+            raise ValueError('Only additional -60 line breaks may be introduced')
+    elif old_controls != new_controls:
         raise ValueError('Control tokens must retain their exact order and values')
     if len(old) == len(proposed):
         # Preserve the original choice of character ID for visually identical
@@ -244,7 +256,8 @@ def _source_layout(image: bytes) -> None:
         raise ValueError('Expected the file table terminator')
 
 
-def patch_image(image: bytes, records: list[DialogueRecord], replacements: dict[str, str]) -> bytes:
+def patch_image(image: bytes, records: list[DialogueRecord], replacements: dict[str, str], *,
+                allow_line_breaks_for: frozenset[str] = frozenset()) -> bytes:
     """Patch original-USA text in-place or relocate longer/shorter records.
 
     Relocations append a new text record to its own resource, patch all
@@ -274,7 +287,8 @@ def patch_image(image: bytes, records: list[DialogueRecord], replacements: dict[
             raise ValueError(f'Stale or corrupted index entry {key}')
         if virtual != 0x08000000:
             raise ValueError(f'Unsupported resource segment for {key}')
-        proposed = validate_flexible_replacement(record, replacement)
+        proposed = validate_flexible_replacement(
+            record, replacement, allow_added_line_breaks=key in allow_line_breaks_for)
         if proposed != record.tokens:
             by_resource.setdefault(record.resource_id, []).append((record, proposed))
 
@@ -385,11 +399,13 @@ def patch_image(image: bytes, records: list[DialogueRecord], replacements: dict[
 
 
 def save_patched_image(source: str | Path, destination: str | Path,
-                       records: list[DialogueRecord], replacements: dict[str, str]) -> str:
+                       records: list[DialogueRecord], replacements: dict[str, str], *,
+                       allow_line_breaks_for: frozenset[str] = frozenset()) -> str:
     source, destination = Path(source), Path(destination)
     if source.resolve() == destination.resolve():
         raise ValueError('Output path must differ from the original ROM')
-    patched = patch_image(load_usa_image(source), records, replacements)
+    patched = patch_image(load_usa_image(source), records, replacements,
+                          allow_line_breaks_for=allow_line_breaks_for)
     # Expanding a resource changes the file table inside the N64 checksum
     # window. Recalculate CIC-6102 header CRCs for an emulator-ready image.
     if struct.unpack_from('>I', patched, RESOURCE_TABLE + 4 * (FILE_TABLE_ENTRIES-1))[0] != ORIGINAL_LAST_FILE_END:

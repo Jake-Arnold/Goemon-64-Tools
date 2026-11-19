@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-19 — v0.11.62 ROM-backed USA dialogue layout and guarded wraps
+
+- **Reason:** User confirmed that variable-length edited USA dialogue renders in Project64, and requested progress on line wrapping, overflow, complex controls and reference coverage.
+- **Implementation:** Added `practice/dialogue_layout.py` for 96-byte font width table at image `0x5C710`; uses original `width[token] + 1` advance to report line widths, maximum glyph slots between clears, unknown glyph widths and signed control-code metadata. The -71..-32 native dispatch table is classified, with unverified helper effects explicitly labelled unknown. The Dialogue tab has read-only original/edited measurements, manually configured single/multi-line caps, overflow and 120-entry risk warnings, and opt-in space-boundary word wrapping with -60. Wrapping refuses complex controls and unbreakable words; only per-record explicit approved insertions pass the conservative ROM patcher and compressed retail builder. Original ROM source, regional RAM and matching-C code were untouched.
+- **Tests actually run:** 34 focused tests passed, 0 skipped, under Xvfb with supplied portable Python 3.12 + LZKN64. SHA-1-pinned decompressed USA image `6ea0ed71032ce08fc2745f412d84936382197494` and retail USA image `df8083a54296b8c151917c5333e1c85f014a2a66`. Tests cover glyph advances (Kai Highway 79 units, Monster Monster Monster 165), control dispatch partition, unknown controls, overflow alerts, wrapping permission, dialog UI, and compression/decompression of the modified resource with an added newline. Source compilation passed.
+- **Limits:** User caps are not original verified window dimensions; glyph-slot count is a risk warning, not a proven universal per-dialogue limit. No new live Project64 auto-wrap test was performed. Some negative control helpers, true clipping/window geometries and dynamically computed/indirect text references remain unresolved. Main full Linux/Windows regression suite not run; no ROMs/assets committed.
+- **Next:** Correlate specific window styles with original renderer geometry and runtime screen captures, validate line-break behavior in-game, then implement sourced per-style profiles and bounded script reachability audit.
+
+
 ## 2026-11-19 — v0.11.61 variable-length USA dialogue edits and retail repacker
 
 - **Why:** Following successful user-confirmed same-length in-game text replacement, extend the existing Dialogue tab to handle longer/shorter text, script pointer relocation and direct retail-ROM rebuilding.

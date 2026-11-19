@@ -9,9 +9,12 @@ from tkinter import filedialog, messagebox, ttk
 
 from practice.dialogue_rom import (
     export_index, extract_dialogue, load_usa_image, save_patched_image,
-    validate_flexible_replacement,
+    validate_flexible_replacement, encode_text, decode_tokens,
 )
 from practice.dialogue_repack import load_usa_retail, save_retail_rom
+from practice.dialogue_layout import (
+    font_widths_from_rom, inspect_layout, wrap_plain_dialogue, CONTROL_NOTES, NOOP_TOKENS,
+)
 
 
 class DialogueMixin:
@@ -31,6 +34,13 @@ class DialogueMixin:
             'Select the original, decompressed USA 32 MiB ROM. No game connection required.'))
         self.dialogue_query = tk.StringVar()
         self.dialogue_selected_key = None
+        self.dialogue_font_widths = None
+        self.dialogue_line_break_approved = set()
+        self.dialogue_layout_mode = tk.StringVar(value='Measure only')
+        self.dialogue_width_limit = tk.StringVar(value='')
+        self.dialogue_line_limit = tk.StringVar(value='')
+        self.dialogue_layout_summary = tk.StringVar(value=(
+            'Font widths are loaded from the verified USA ROM; window bounds are not yet known.'))
 
         top = ttk.Frame(tab)
         top.pack(fill='x', pady=(0, 7))
@@ -85,6 +95,32 @@ class DialogueMixin:
         self.dialogue_editor.configure(yscrollcommand=text_scroll.set)
         self.dialogue_editor.pack(side='left', fill='both', expand=True)
         text_scroll.pack(side='right', fill='y')
+        self.dialogue_editor.bind('<KeyRelease>', lambda _event: self._dialogue_analyze(), add='+')
+
+        layout = ttk.LabelFrame(editor, text=' Font width / layout diagnostics ', padding=6)
+        layout.pack(fill='x', pady=(0, 5))
+        layout_row = ttk.Frame(layout)
+        layout_row.pack(fill='x')
+        ttk.Label(layout_row, text='Window profile').pack(side='left', padx=(0, 5))
+        self.dialogue_mode_selector = ttk.Combobox(
+            layout_row, textvariable=self.dialogue_layout_mode,
+            values=('Measure only', 'Single-line (manual cap)', 'Multi-line (manual cap)'),
+            state='readonly', width=28)
+        self.dialogue_mode_selector.pack(side='left', padx=(0, 12))
+        ttk.Label(layout_row, text='Max glyph width (units)').pack(side='left')
+        ttk.Entry(layout_row, textvariable=self.dialogue_width_limit, width=7).pack(
+            side='left', padx=(5, 12))
+        ttk.Label(layout_row, text='Max lines').pack(side='left')
+        ttk.Entry(layout_row, textvariable=self.dialogue_line_limit, width=5).pack(
+            side='left', padx=(5, 8))
+        self.dialogue_wrap_button = ttk.Button(layout_row, text='Wrap to manual limits',
+                                               command=self._dialogue_wrap)
+        self.dialogue_wrap_button.pack(side='left', padx=(4, 0))
+        ttk.Label(layout, textvariable=self.dialogue_layout_summary,
+                  wraplength=1050).pack(anchor='w', fill='x', pady=(5, 0))
+        for var in (self.dialogue_layout_mode, self.dialogue_width_limit,
+                    self.dialogue_line_limit):
+            var.trace_add('write', lambda *_: self._dialogue_analyze())
         actions = ttk.Frame(editor)
         actions.pack(fill='x')
         ttk.Button(actions, text='Stage edited record', command=self._dialogue_stage).pack(side='left')
@@ -92,7 +128,8 @@ class DialogueMixin:
             side='left', padx=7)
         ttk.Label(editor, text=(
             'Static script references are candidates, not proven reachable conversations. '
-            'Preserve the exact ordered control tokens; character count may change. '
+            'Original controls must remain ordered. Only the explicit multi-line Wrap action '
+            'can approve added -60 line breaks. Caps are user-supplied, not known game bounds. '
             'Longer/shorter records are relocated within their original resource, '
             'with script operands and resource tables updated. Retail output needs '
             'the original USA cartridge and the optional lzkn64 Python package. '
@@ -108,10 +145,13 @@ class DialogueMixin:
         try:
             image = load_usa_image(path)
             records = extract_dialogue(image)
+            widths = font_widths_from_rom(image)
         except (OSError, ValueError) as exc:
             messagebox.showerror('Dialogue ROM rejected', str(exc), parent=self.dialogue_tab)
             return
         self.dialogue_path = Path(path)
+        self.dialogue_font_widths = widths
+        self.dialogue_line_break_approved.clear()
         self.dialogue_records = records
         self.dialogue_by_key = {record.key: record for record in records}
         self.dialogue_staged.clear()
@@ -174,6 +214,92 @@ class DialogueMixin:
             f'{len(record.tokens)} tokens')
         self.dialogue_editor.delete('1.0', 'end')
         self.dialogue_editor.insert('1.0', self.dialogue_staged.get(key, record.text))
+        self._dialogue_analyze()
+
+    def _dialogue_limits(self):
+        mode = self.dialogue_layout_mode.get()
+        if mode == 'Measure only':
+            return None, None
+        width_text = self.dialogue_width_limit.get().strip()
+        line_text = self.dialogue_line_limit.get().strip()
+        if not width_text:
+            return None, 1 if mode.startswith('Single-line') else None
+        width = int(width_text)
+        if mode.startswith('Single-line'):
+            return width, 1
+        return width, int(line_text) if line_text else None
+
+    def _dialogue_analyze(self) -> None:
+        key = getattr(self, 'dialogue_selected_key', None)
+        widths = getattr(self, 'dialogue_font_widths', None)
+        if not key or key not in self.dialogue_by_key or widths is None:
+            self.dialogue_layout_summary.set(
+                'Select a record in the verified USA ROM to inspect its glyph widths.')
+            return
+        try:
+            before = inspect_layout(self.dialogue_by_key[key].tokens, widths)
+            tokens = encode_text(self.dialogue_editor.get('1.0', 'end-1c'))
+            maximum, line_count = self._dialogue_limits()
+            after = inspect_layout(tokens, widths, max_width=maximum,
+                                   max_lines=line_count)
+            controls = tuple(dict.fromkeys(t for t in tokens if t < 0))
+            control_info = '; '.join(
+                f'{code}: {CONTROL_NOTES.get(code, "unmapped/no-op" if code in NOOP_TOKENS else "unknown")}'
+                for code in controls[:5])
+            if len(controls) > 5:
+                control_info += f'; +{len(controls) - 5} more'
+            summary = (f'Original peak {before.longest_line} units; '
+                       f'edited peak {after.longest_line} units; '
+                       f'edited lines {len(after.line_widths)}; '
+                       f'peak glyph entries {after.glyphs_since_clear_max}/120.')
+            if after.messages:
+                summary += '  WARNING: ' + '; '.join(after.messages)
+            elif maximum is None:
+                summary += '  No user window-width cap set; overflow cannot be excluded.'
+            else:
+                summary += '  Within user cap only; real window bounds unverified.'
+            if control_info:
+                summary += '  Controls: ' + control_info
+            self.dialogue_layout_summary.set(summary)
+        except ValueError as exc:
+            self.dialogue_layout_summary.set(f'Width analysis unavailable: {exc}')
+
+    def _dialogue_wrap(self) -> None:
+        key = self.dialogue_selected_key
+        if key not in self.dialogue_by_key:
+            return
+        if self.dialogue_layout_mode.get() != 'Multi-line (manual cap)':
+            messagebox.showerror('Multi-line profile required',
+                                 'Choose Multi-line (manual cap); one-line area names must not be wrapped automatically.',
+                                 parent=self.dialogue_tab)
+            return
+        if self.dialogue_font_widths is None:
+            messagebox.showerror('No verified font table',
+                                 'Open the original USA decompressed ROM first.',
+                                 parent=self.dialogue_tab)
+            return
+        record = self.dialogue_by_key[key]
+        original = self.dialogue_editor.get('1.0', 'end-1c')
+        try:
+            maximum, lines = self._dialogue_limits()
+            if maximum is None or lines is None:
+                raise ValueError('Enter both the manually chosen width and maximum lines')
+            source_tokens = validate_flexible_replacement(
+                record, original,
+                allow_added_line_breaks=key in self.dialogue_line_break_approved)
+            wrapped = wrap_plain_dialogue(source_tokens, self.dialogue_font_widths,
+                                          max_width=maximum, max_lines=lines)
+            text = decode_tokens(wrapped)
+            validate_flexible_replacement(record, text, allow_added_line_breaks=True)
+        except ValueError as exc:
+            messagebox.showerror('Cannot auto-wrap this record', str(exc),
+                                 parent=self.dialogue_tab)
+            return
+        if wrapped != source_tokens:
+            self.dialogue_line_break_approved.add(key)
+        self.dialogue_editor.delete('1.0', 'end')
+        self.dialogue_editor.insert('1.0', text)
+        self._dialogue_analyze()
 
     def _dialogue_stage(self) -> None:
         key = self.dialogue_selected_key
@@ -183,7 +309,9 @@ class DialogueMixin:
         # Tk Text always appends a final newline; end-1c excludes only that.
         replacement = self.dialogue_editor.get('1.0', 'end-1c')
         try:
-            tokens = validate_flexible_replacement(record, replacement)
+            tokens = validate_flexible_replacement(
+                record, replacement,
+                allow_added_line_breaks=key in self.dialogue_line_break_approved)
         except ValueError as exc:
             messagebox.showerror('Invalid text edit', str(exc), parent=self.dialogue_tab)
             return
@@ -192,15 +320,18 @@ class DialogueMixin:
         else:
             self.dialogue_staged[key] = replacement
         self._dialogue_filter()
+        self._dialogue_analyze()
 
     def _dialogue_revert(self) -> None:
         key = self.dialogue_selected_key
         if key is None or key not in self.dialogue_by_key:
             return
         self.dialogue_staged.pop(key, None)
+        self.dialogue_line_break_approved.discard(key)
         self.dialogue_editor.delete('1.0', 'end')
         self.dialogue_editor.insert('1.0', self.dialogue_by_key[key].text)
         self._dialogue_filter()
+        self._dialogue_analyze()
 
     def _dialogue_export(self) -> None:
         if not self.dialogue_records:
@@ -229,8 +360,9 @@ class DialogueMixin:
         if not path:
             return
         try:
-            digest = save_patched_image(self.dialogue_path, path,
-                                       self.dialogue_records, self.dialogue_staged)
+            digest = save_patched_image(
+                self.dialogue_path, path, self.dialogue_records, self.dialogue_staged,
+                allow_line_breaks_for=frozenset(self.dialogue_line_break_approved))
         except (OSError, ValueError) as exc:
             messagebox.showerror('ROM build rejected', str(exc), parent=self.dialogue_tab)
             return
@@ -263,13 +395,16 @@ class DialogueMixin:
         worker = threading.Thread(
             target=self._dialogue_retail_worker,
             args=(self.dialogue_path, self.dialogue_retail_path, Path(path),
-                  list(self.dialogue_records), dict(self.dialogue_staged)),
+                  list(self.dialogue_records), dict(self.dialogue_staged),
+                  frozenset(self.dialogue_line_break_approved)),
             daemon=True)
         worker.start()
 
-    def _dialogue_retail_worker(self, source, retail, destination, records, staged) -> None:
+    def _dialogue_retail_worker(self, source, retail, destination, records, staged,
+                                allowed_breaks=frozenset()) -> None:
         try:
-            sha1 = save_retail_rom(source, retail, destination, records, staged)
+            sha1 = save_retail_rom(source, retail, destination, records, staged,
+                                   allow_line_breaks_for=allowed_breaks)
             self.dialogue_build_queue.put((True, str(destination), sha1))
         except Exception as exc:
             self.dialogue_build_queue.put((False, str(exc), ''))
