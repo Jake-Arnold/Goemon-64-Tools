@@ -1,0 +1,38 @@
+{
+  "format": "goemon-usa-micro2-github-publication-20261119-v1",
+  "status": "PASSED_G2_GITHUB_PUBLISHED",
+  "branch": "chatgptweb/decomp",
+  "source_commit": "120868ff7ff6533ddaddd1ae8c13c225a9ac66c2",
+  "source_commit_url": "https://github.com/Jake-Arnold/Goemon-64-Tools/commit/120868ff7ff6533ddaddd1ae8c13c225a9ac66c2",
+  "base_commit": "10704d05fc7f8489fbcf5f484600a4387e43ba70",
+  "source_tree_sha": "72c0a60d6fa441fd4a3f0e9468a560ee894a6779",
+  "verified_source_paths": 33,
+  "verified_source_blob_sha_matches": 33,
+  "unexpected_changed_paths": 0,
+  "unexpected_deletions": 0,
+  "remote_inventory": {
+    "USA_matching_C": 1463,
+    "USA_matching_instruction_bytes": 56844,
+    "USA_remaining_ASM": 5900,
+    "Japan_matching_C": 39,
+    "positive_ELF_aliases": 0
+  },
+  "new_functions": [
+    {
+      "name": "func_801D068C_66353C",
+      "rom_offset": "0x66353C",
+      "bytes": 12
+    },
+    {
+      "name": "func_0800126C_708CAC",
+      "rom_offset": "0x708CAC",
+      "bytes": 16
+    }
+  ],
+  "original_USA_expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_USA_expanded_rom_bytes": 33554432,
+  "previous_local_evidence": "decomp/results/usa_micro2_1463_promotion_20261119.json",
+  "native_G2_and_CI": "PASSED_LOCALLY_BEFORE_PUBLICATION",
+  "rerun_after_publication": false,
+  "emulator_gameplay": "NOT_RUN"
+}
