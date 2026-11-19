@@ -1,4 +1,19 @@
-# Goemon Speedrun Tools v0.11.62 — ROM-Backed Dialogue Layout Diagnostics
+# Goemon Speedrun Tools v0.11.63 — Native Dialogue Window Geometry
+
+## v0.11.63 — Source-backed line capacity and improved control-code metadata
+
+The Dialogue tab now recognises original USA window-style metadata from the native 12-entry style table at decompressed offset `0x633F0`. For direct script sequences it traces the last unbranched assignment to `0x801C7768`, verifies the following `0x8010` text commands and calculates which line of the window the selected record starts on. Using the original 12-pixel glyphs, 16-unit line spacing, 7-unit initial y inset and style backgrounds of 40/56/72 units, it reports a conservative native **2/3/4 complete-line capacity**. The reported capacity is for the original unscaled background geometry, not an exhaustive window-animation/clipping model.
+
+**Kai Highway:** USA resource 82 writes window style 5 (40 units high) at script `+0x40`, prints the `[Kai]` heading with a native linebreak at `+0x58`, and prints the area name at `+0x60`. Consequently the area name begins on **line 2 of 2**, with **one complete line left**. The Toolkit warns when edits exceed this limit even if the manually entered `Max lines` is 20; explicit wrapping cannot add more lines than the native remaining capacity. The original area-name record starts with eight actual spaces consuming 72 native font units. Removing them shifts the text left, as confirmed by user screenshots.
+
+**Horizontal max glyph width remains manual.** The source table's 256-unit field is a texture-related stride and is not verified as the maximum glyph text width; the renderer's coordinate conversion and inset must be traced before the Toolkit can choose the real box width. The editor makes this distinction explicit rather than silently filling a false width.
+
+The control decoder also now documents original MIPS effects of `-57..-50`: setting/clearing window flags, a float32 window field and a halfword parameter. Their *visual* consequences remain unverified and the wrapper continues rejecting these opaque controls. A source-evidence report is in `docs/USA_DIALOGUE_WINDOW_GEOMETRY_20261119.md`.
+
+On the verified USA ROM, bounded straight-line style inference resolves **963 of 5,186 statically indexed text records**; this is not a complete reachability analysis or indirect-pointer proof.
+
+**Tests:** 42 focused Python/ROM/Xvfb-Tk tests passed (0 skips) using the pinned 32 MiB decompressed USA SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, original retail USA SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`, portable Python 3.12 and LZKN64. Full Toolkit Linux/Windows regressions and actual in-game auto-wrapping against multiple window styles remain outstanding.
+
 
 ## v0.11.62 — Exact glyph advances, layout warnings and guarded wrapping
 

@@ -15,6 +15,7 @@ from practice.dialogue_repack import load_usa_retail, save_retail_rom
 from practice.dialogue_layout import (
     font_widths_from_rom, inspect_layout, wrap_plain_dialogue, CONTROL_NOTES, NOOP_TOKENS,
 )
+from practice.dialogue_window import window_context_for_record
 
 
 class DialogueMixin:
@@ -35,6 +36,8 @@ class DialogueMixin:
         self.dialogue_query = tk.StringVar()
         self.dialogue_selected_key = None
         self.dialogue_font_widths = None
+        self.dialogue_original_image = None
+        self.dialogue_window_context = None
         self.dialogue_line_break_approved = set()
         self.dialogue_layout_mode = tk.StringVar(value='Measure only')
         self.dialogue_width_limit = tk.StringVar(value='')
@@ -151,6 +154,8 @@ class DialogueMixin:
             return
         self.dialogue_path = Path(path)
         self.dialogue_font_widths = widths
+        self.dialogue_original_image = image
+        self.dialogue_window_context = None
         self.dialogue_line_break_approved.clear()
         self.dialogue_records = records
         self.dialogue_by_key = {record.key: record for record in records}
@@ -206,6 +211,9 @@ class DialogueMixin:
         if record is None:
             return
         self.dialogue_selected_key = key
+        image = getattr(self, 'dialogue_original_image', None)
+        self.dialogue_window_context = (
+            window_context_for_record(image, record) if image is not None else None)
         self.dialogue_record_info.set(
             f'ID {record.resource_id} | text +0x{record.text_offset:X} | '
             f'ROM +0x{record.image_offset:X} | '
@@ -240,6 +248,14 @@ class DialogueMixin:
             before = inspect_layout(self.dialogue_by_key[key].tokens, widths)
             tokens = encode_text(self.dialogue_editor.get('1.0', 'end-1c'))
             maximum, line_count = self._dialogue_limits()
+            context = getattr(self, 'dialogue_window_context', None)
+            # Original MIPS establishes the vertical space for certain
+            # straight-line scripts. Do not permit a manual line count to
+            # override the proven per-record remainder.
+            if context is not None:
+                remaining = context.remaining_lines
+                if remaining:
+                    line_count = min(line_count, remaining) if line_count else remaining
             after = inspect_layout(tokens, widths, max_width=maximum,
                                    max_lines=line_count)
             controls = tuple(dict.fromkeys(t for t in tokens if t < 0))
@@ -252,6 +268,13 @@ class DialogueMixin:
                        f'edited peak {after.longest_line} units; '
                        f'edited lines {len(after.line_widths)}; '
                        f'peak glyph entries {after.glyphs_since_clear_max}/120.')
+            if context is not None:
+                style = context.style
+                summary += (f'  Native style {style.index}: {style.background_height} high, '
+                            f'{style.max_full_lines} full lines; starts on line '
+                            f'{context.starting_line + 1}, '
+                            f'{context.remaining_lines} remaining. '
+                            'Native horizontal cap is not yet verified.')
             if after.messages:
                 summary += '  WARNING: ' + '; '.join(after.messages)
             elif maximum is None:
@@ -284,6 +307,11 @@ class DialogueMixin:
             maximum, lines = self._dialogue_limits()
             if maximum is None or lines is None:
                 raise ValueError('Enter both the manually chosen width and maximum lines')
+            context = getattr(self, 'dialogue_window_context', None)
+            if context is not None:
+                if context.remaining_lines < 1:
+                    raise ValueError('No lines remain in the original window')
+                lines = min(lines, context.remaining_lines)
             source_tokens = validate_flexible_replacement(
                 record, original,
                 allow_added_line_breaks=key in self.dialogue_line_break_approved)
