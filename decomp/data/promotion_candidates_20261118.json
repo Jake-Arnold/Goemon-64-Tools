@@ -3,115 +3,19 @@
   "created_utc_date": "2026-11-18",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 1225,
-    "usa_instruction_bytes": 52028,
+    "usa_functions": 1500,
+    "usa_instruction_bytes": 57592,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "Research-only five main graphics candidates remain after canonical USA 1225-C promotion; all remain ASM-owned and not accepted. Historic 987/1119 evidence retained separately.",
+  "purpose": "After native exact canonical promotion of two menu-resource helpers, zero promotion-ready candidates remain in this queue. One file25 72-byte relocation candidate remains blocked, and five larger file13 research leads lack complete C sources. Historical 1498 checkpoint preserved in immutable proof.",
   "ready_for_combined_g2": {
-    "functions": 5,
-    "bytes": 284,
-    "by_segment": {
-      "main": {
-        "functions": 5,
-        "bytes": 284
-      }
-    }
+    "functions": 0,
+    "bytes": 0,
+    "by_segment": {}
   },
-  "candidates": [
-    {
-      "region": "usa",
-      "segment": "main",
-      "name": "func_8001965C_1A25C",
-      "rom_offset": "0x1A25C",
-      "vma": "0x8001965C",
-      "size": 72,
-      "original_code_sha256": "4c148d804fc6ea25df6fa3efe97d846383a00bf626f4eb2a1a4858abb918fd03",
-      "source": {
-        "path": "decomp/research/graphics_adjacent_20261117/anim_matrix.c",
-        "git_blob_sha": "2f73e1d3a17c5a2e33e3d24c34dd31c9424c9113"
-      },
-      "historical_native_tier": "FRESH_ORIGINAL_ADDRESS_NATIVE_EXACT",
-      "evidence": "decomp/results/graphics_five_native_recheck_20261117.json",
-      "review_state": "PROMOTION_CANDIDATE",
-      "status": "RESEARCH_ONLY",
-      "canonical_g2": "NOT_RUN"
-    },
-    {
-      "region": "usa",
-      "segment": "main",
-      "name": "func_8001B918_1C518",
-      "rom_offset": "0x1C518",
-      "vma": "0x8001B918",
-      "size": 56,
-      "original_code_sha256": "faae783382532816d946ad8d3209fc8360920796ef93c926950d3489f7d69063",
-      "source": {
-        "path": "decomp/research/graphics_adjacent_20261117/gfx_wrapper.c",
-        "git_blob_sha": "167bf266292d3c38025617692272e48f9f7d659c"
-      },
-      "historical_native_tier": "FRESH_ORIGINAL_ADDRESS_NATIVE_EXACT",
-      "evidence": "decomp/results/graphics_five_native_recheck_20261117.json",
-      "review_state": "PROMOTION_CANDIDATE",
-      "status": "RESEARCH_ONLY",
-      "canonical_g2": "NOT_RUN"
-    },
-    {
-      "region": "usa",
-      "segment": "main",
-      "name": "func_8001C970_1D570",
-      "rom_offset": "0x1D570",
-      "vma": "0x8001C970",
-      "size": 76,
-      "original_code_sha256": "bb3eae822c7a98a04b2562b1c64529eb4af6c5f5adde3f0637cc1663e4e7c91b",
-      "source": {
-        "path": "decomp/research/graphics_adjacent_20261117/gfx_vectors.c",
-        "git_blob_sha": "6b4a15c80f210811af709f648eafc12b21b04038"
-      },
-      "historical_native_tier": "FRESH_ORIGINAL_ADDRESS_NATIVE_EXACT",
-      "evidence": "decomp/results/graphics_five_native_recheck_20261117.json",
-      "review_state": "PROMOTION_CANDIDATE",
-      "status": "RESEARCH_ONLY",
-      "canonical_g2": "NOT_RUN"
-    },
-    {
-      "region": "usa",
-      "segment": "main",
-      "name": "func_8001C9BC_1D5BC",
-      "rom_offset": "0x1D5BC",
-      "vma": "0x8001C9BC",
-      "size": 28,
-      "original_code_sha256": "6d3c1a4234a9fcbb4c601b563221bdc463dbc7bd64e047958118989b908a458c",
-      "source": {
-        "path": "decomp/research/graphics_adjacent_20261117/gfx_vectors.c",
-        "git_blob_sha": "6b4a15c80f210811af709f648eafc12b21b04038"
-      },
-      "historical_native_tier": "FRESH_ORIGINAL_ADDRESS_NATIVE_EXACT",
-      "evidence": "decomp/results/graphics_five_native_recheck_20261117.json",
-      "review_state": "PROMOTION_CANDIDATE",
-      "status": "RESEARCH_ONLY",
-      "canonical_g2": "NOT_RUN"
-    },
-    {
-      "region": "usa",
-      "segment": "main",
-      "name": "func_8001C9D8_1D5D8",
-      "rom_offset": "0x1D5D8",
-      "vma": "0x8001C9D8",
-      "size": 52,
-      "original_code_sha256": "c66f0cbc8d034a90fc7540863d73e6b8c7302525f585575cbea8385d163f46a6",
-      "source": {
-        "path": "decomp/research/graphics_adjacent_20261117/gfx_vectors.c",
-        "git_blob_sha": "6b4a15c80f210811af709f648eafc12b21b04038"
-      },
-      "historical_native_tier": "FRESH_ORIGINAL_ADDRESS_NATIVE_EXACT",
-      "evidence": "decomp/results/graphics_five_native_recheck_20261117.json",
-      "review_state": "PROMOTION_CANDIDATE",
-      "status": "RESEARCH_ONLY",
-      "canonical_g2": "NOT_RUN"
-    }
-  ],
+  "candidates": [],
   "blocked_not_promotion_ready": [
     {
       "region": "usa",
@@ -138,7 +42,7 @@
   "acceptance_requirements": [
     "native original-address instruction match",
     "exact source unit/symbol size/relocations",
-    "all 864 USA accepted C coexist",
+    "all currently accepted USA C coexist",
     "33,554,432 byte exact USA ROM",
     "7,376 original ELF FUNC identities",
     "all original semantic relocation multisets",

@@ -1,0 +1,828 @@
+{
+  "format": "goemon-usa-file18-53-after-graphics5-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_sha": "fd37d519d647e6d35ee8d306de64afcb9ab765e5",
+  "units": [
+    {
+      "name": "batch53_000",
+      "rom_offset": 6778520,
+      "size": 24,
+      "section": "file_18",
+      "source_sha256": "e11633fc1d3acb2a274fe02fa76eb62a358a8a3510c5b7b434dfb2fb8bc21346",
+      "functions": [
+        {
+          "name": "func_8020D4B8_676E98",
+          "rom_offset": 6778520,
+          "vma": 2149635256,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        },
+        {
+          "name": "func_8020D4C4_676EA4",
+          "rom_offset": 6778532,
+          "vma": 2149635268,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_001",
+      "rom_offset": 6798468,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "f59192fa236f87eaa482e684556e4b57ff8db3319255a7030af2274225fe4625",
+      "functions": [
+        {
+          "name": "func_802122A4_67BC84",
+          "rom_offset": 6798468,
+          "vma": 2149655204,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_002",
+      "rom_offset": 6798576,
+      "size": 20,
+      "section": "file_18",
+      "source_sha256": "59fb176883d6591b5f591fd4d7299c8b3f70f2422d4719a7b4ff7df2ec1706b6",
+      "functions": [
+        {
+          "name": "func_80212310_67BCF0",
+          "rom_offset": 6798576,
+          "vma": 2149655312,
+          "size": 20,
+          "original_code_sha256": "bdcd58b2554478815462e0959be6e5bd25d068771d73a4c8bce9450f7540ce8e"
+        }
+      ]
+    },
+    {
+      "name": "batch53_003",
+      "rom_offset": 6800780,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "52c52a118b70e94e558fe8c5a64eaeddd20ce85ca6e1a3dda3ca1d8050601a8c",
+      "functions": [
+        {
+          "name": "func_80212BAC_67C58C",
+          "rom_offset": 6800780,
+          "vma": 2149657516,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_004",
+      "rom_offset": 6800852,
+      "size": 20,
+      "section": "file_18",
+      "source_sha256": "8fba33474568068da28d57e15637cd1c4e7ffbc7941ebf630d9422b45f7c2a7f",
+      "functions": [
+        {
+          "name": "func_80212BF4_67C5D4",
+          "rom_offset": 6800852,
+          "vma": 2149657588,
+          "size": 20,
+          "original_code_sha256": "bdcd58b2554478815462e0959be6e5bd25d068771d73a4c8bce9450f7540ce8e"
+        }
+      ]
+    },
+    {
+      "name": "batch53_005",
+      "rom_offset": 6805092,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "6418b5b4e07258b17ed81fa1abc8adae175588d7cb60baddbdcb0bf7c70e0345",
+      "functions": [
+        {
+          "name": "func_80213C84_67D664",
+          "rom_offset": 6805092,
+          "vma": 2149661828,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_006",
+      "rom_offset": 6806732,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "da54ae1bb5cd2eafab222942e8fe0dbaac3f801d6eceaa8a0906255c5828f681",
+      "functions": [
+        {
+          "name": "func_802142EC_67DCCC",
+          "rom_offset": 6806732,
+          "vma": 2149663468,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        }
+      ]
+    },
+    {
+      "name": "batch53_007",
+      "rom_offset": 6806884,
+      "size": 24,
+      "section": "file_18",
+      "source_sha256": "fa9b629cdcd424a9b1be5e534e8f8213907da745ee8c09a7cfa8a589fad8ec50",
+      "functions": [
+        {
+          "name": "func_80214384_67DD64",
+          "rom_offset": 6806884,
+          "vma": 2149663620,
+          "size": 24,
+          "original_code_sha256": "98532ec4cf30a2690e7895489e14b6838879cf469e927fcd0dd229943743d1ef"
+        }
+      ]
+    },
+    {
+      "name": "batch53_008",
+      "rom_offset": 6808424,
+      "size": 36,
+      "section": "file_18",
+      "source_sha256": "a643e8fd87db351924a488351c983498664d34598834ec8e94d5e9806d2c2f9d",
+      "functions": [
+        {
+          "name": "func_80214988_67E368",
+          "rom_offset": 6808424,
+          "vma": 2149665160,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        },
+        {
+          "name": "func_80214994_67E374",
+          "rom_offset": 6808436,
+          "vma": 2149665172,
+          "size": 24,
+          "original_code_sha256": "f60967887e6c37a7466d4b520d53bb845f09961e94363dfcf008ba90ab4459aa"
+        }
+      ]
+    },
+    {
+      "name": "batch53_009",
+      "rom_offset": 6810688,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "544a1873b3773b318aafca3cbb8eb3d1d9aa27ebb8d56b9b239ab69a83c28301",
+      "functions": [
+        {
+          "name": "func_80215260_67EC40",
+          "rom_offset": 6810688,
+          "vma": 2149667424,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_010",
+      "rom_offset": 6813492,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "665407c75f0bdb22d93ccf640c4766c5b61a3387b00420712af7d8331893e818",
+      "functions": [
+        {
+          "name": "func_80215D54_67F734",
+          "rom_offset": 6813492,
+          "vma": 2149670228,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_011",
+      "rom_offset": 6816380,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "92796bf038e10d982d1ddef004751bc0c794ee453b1a5887f865636d6d71a166",
+      "functions": [
+        {
+          "name": "func_8021689C_68027C",
+          "rom_offset": 6816380,
+          "vma": 2149673116,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_012",
+      "rom_offset": 6818764,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "49a3e819af7581324ea97e464bfd35cd0de7d9f003b1b6c6d345232b92eae2b1",
+      "functions": [
+        {
+          "name": "func_802171EC_680BCC",
+          "rom_offset": 6818764,
+          "vma": 2149675500,
+          "size": 12,
+          "original_code_sha256": "4bc442b98e48ee90ddb9c6a489d60738d6733f933f56039ce6d984b7aabc46cf"
+        }
+      ]
+    },
+    {
+      "name": "batch53_013",
+      "rom_offset": 6821248,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "0086aef773a26642bbe308d8854f19159dcf5183a6b522f3c29b035ef2a27090",
+      "functions": [
+        {
+          "name": "func_80217BA0_681580",
+          "rom_offset": 6821248,
+          "vma": 2149677984,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_014",
+      "rom_offset": 6834964,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "6ff9c372977554535eef7b205ad95e98305c4d9b19ccb4e302790ff16e33da8e",
+      "functions": [
+        {
+          "name": "func_8021B134_684B14",
+          "rom_offset": 6834964,
+          "vma": 2149691700,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_015",
+      "rom_offset": 6836920,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "6f1e23b069fb76439bf680af485662dd61a5e43f92222b9f2a5b2c6d0e3b6d69",
+      "functions": [
+        {
+          "name": "func_8021B8D8_6852B8",
+          "rom_offset": 6836920,
+          "vma": 2149693656,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_016",
+      "rom_offset": 6839364,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "b7812b76e0edca17080183b62d92541183f8adf9c70a53f29ce32a34c5e4c849",
+      "functions": [
+        {
+          "name": "func_8021C264_685C44",
+          "rom_offset": 6839364,
+          "vma": 2149696100,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_017",
+      "rom_offset": 6840592,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "644e8c55ddaf9fa1048dc5b7a2415de791d9640549af58f4abf5626c903e8917",
+      "functions": [
+        {
+          "name": "func_8021C730_686110",
+          "rom_offset": 6840592,
+          "vma": 2149697328,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        }
+      ]
+    },
+    {
+      "name": "batch53_018",
+      "rom_offset": 6840684,
+      "size": 24,
+      "section": "file_18",
+      "source_sha256": "4202cb13e1a118a343dd85d797787edff925392b61e22d2dbde209cbd861cc67",
+      "functions": [
+        {
+          "name": "func_8021C78C_68616C",
+          "rom_offset": 6840684,
+          "vma": 2149697420,
+          "size": 24,
+          "original_code_sha256": "f60967887e6c37a7466d4b520d53bb845f09961e94363dfcf008ba90ab4459aa"
+        }
+      ]
+    },
+    {
+      "name": "batch53_019",
+      "rom_offset": 6843164,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "bf2729a5d26932ce5a25095ce6571e7d97681b11abfe06b855c9309e1f057263",
+      "functions": [
+        {
+          "name": "func_8021D13C_686B1C",
+          "rom_offset": 6843164,
+          "vma": 2149699900,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        }
+      ]
+    },
+    {
+      "name": "batch53_020",
+      "rom_offset": 6843256,
+      "size": 24,
+      "section": "file_18",
+      "source_sha256": "6fad81a2cf1f729820adb653f86ff2a06301fb34153f6ede259f703592c33bd4",
+      "functions": [
+        {
+          "name": "func_8021D198_686B78",
+          "rom_offset": 6843256,
+          "vma": 2149699992,
+          "size": 24,
+          "original_code_sha256": "f60967887e6c37a7466d4b520d53bb845f09961e94363dfcf008ba90ab4459aa"
+        }
+      ]
+    },
+    {
+      "name": "batch53_021",
+      "rom_offset": 6845336,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "1ac12acae1ea5ed9f7ae8c164167c6c265a5bbc06d19f9f4efecb7d8e8fd7a24",
+      "functions": [
+        {
+          "name": "func_8021D9B8_687398",
+          "rom_offset": 6845336,
+          "vma": 2149702072,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_022",
+      "rom_offset": 6846552,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "df5f441c964a1dfea2eef6392c972526ec96a8b5b5462ab4502349e23888db23",
+      "functions": [
+        {
+          "name": "func_8021DE78_687858",
+          "rom_offset": 6846552,
+          "vma": 2149703288,
+          "size": 12,
+          "original_code_sha256": "69dc55772fbd615af4eae40db59e281b9720b1594be9fa96559c96062fdc3892"
+        }
+      ]
+    },
+    {
+      "name": "batch53_023",
+      "rom_offset": 6846824,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "e7ff34112d0b2a126566550c9240c4d9b971f155cc9eb7c76c7cffa7f212cb69",
+      "functions": [
+        {
+          "name": "func_8021DF88_687968",
+          "rom_offset": 6846824,
+          "vma": 2149703560,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_024",
+      "rom_offset": 6847636,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "29b49eb7b74373ae98aad6337dbd7a804a068a8d0d367b8d3bdae9df19bf3a53",
+      "functions": [
+        {
+          "name": "func_8021E2B4_687C94",
+          "rom_offset": 6847636,
+          "vma": 2149704372,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_025",
+      "rom_offset": 6850660,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "cba18e4475ada162705d313d2271af56ecba2e7ba8f6b0895ee2e5819e317b63",
+      "functions": [
+        {
+          "name": "func_8021EE84_688864",
+          "rom_offset": 6850660,
+          "vma": 2149707396,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_026",
+      "rom_offset": 6850764,
+      "size": 20,
+      "section": "file_18",
+      "source_sha256": "ffaee2a45225086812d3a9d3574a21bffe431bb288d86f1f831b80d6793b5d62",
+      "functions": [
+        {
+          "name": "func_8021EEEC_6888CC",
+          "rom_offset": 6850764,
+          "vma": 2149707500,
+          "size": 20,
+          "original_code_sha256": "bdcd58b2554478815462e0959be6e5bd25d068771d73a4c8bce9450f7540ce8e"
+        }
+      ]
+    },
+    {
+      "name": "batch53_027",
+      "rom_offset": 6871584,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "5fa3193af42e2ed55d9e401671d6c3f2255213e5c84e799d6b2a8fbd28c85862",
+      "functions": [
+        {
+          "name": "func_80224040_68DA20",
+          "rom_offset": 6871584,
+          "vma": 2149728320,
+          "size": 12,
+          "original_code_sha256": "d523395045aae360d2a1c8ffc284758155282e656c2c9a1f0064b65479c40ff1"
+        }
+      ]
+    },
+    {
+      "name": "batch53_028",
+      "rom_offset": 6871656,
+      "size": 40,
+      "section": "file_18",
+      "source_sha256": "e4c515d984515ba33bdc6d75e96ec3c082bf5fedb5aa871efdd2155871faa6f9",
+      "functions": [
+        {
+          "name": "func_80224088_68DA68",
+          "rom_offset": 6871656,
+          "vma": 2149728392,
+          "size": 24,
+          "original_code_sha256": "edfb68cc6781332fedd33467e2f6e3e3eadd28ef649b0a1e57a42c69a2279e33"
+        },
+        {
+          "name": "func_802240A0_68DA80",
+          "rom_offset": 6871680,
+          "vma": 2149728416,
+          "size": 16,
+          "original_code_sha256": "f9e77de3221db6174e0d87d3101de46b81de1684d1061988be35c3c3951e8a9b"
+        }
+      ]
+    },
+    {
+      "name": "batch53_029",
+      "rom_offset": 6872424,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "5c8ec0e7e5842a2b004191d528bc01adf7fbca410c4616f53f5dd0759d2072d7",
+      "functions": [
+        {
+          "name": "func_80224388_68DD68",
+          "rom_offset": 6872424,
+          "vma": 2149729160,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        }
+      ]
+    },
+    {
+      "name": "batch53_030",
+      "rom_offset": 6873380,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "ade160a5602571b7fe69107bc4eeb04b64283ad24bc1038e938729fa4b382234",
+      "functions": [
+        {
+          "name": "func_80224744_68E124",
+          "rom_offset": 6873380,
+          "vma": 2149730116,
+          "size": 12,
+          "original_code_sha256": "122ded41f6b955a0eae41f7cd16293d7fad4e38d9ded8735fbbf657f0d6fa106"
+        }
+      ]
+    },
+    {
+      "name": "batch53_031",
+      "rom_offset": 6874372,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "90237fa0e10ba29beee16a995f05a3218823d8d87018b514fabc60191c5c0b16",
+      "functions": [
+        {
+          "name": "func_80224B24_68E504",
+          "rom_offset": 6874372,
+          "vma": 2149731108,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_032",
+      "rom_offset": 6875340,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "1d1e8f0f557e12d93a45dd227f485820c6ab810f3fbab60f24295dd8680de05f",
+      "functions": [
+        {
+          "name": "func_80224EEC_68E8CC",
+          "rom_offset": 6875340,
+          "vma": 2149732076,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_033",
+      "rom_offset": 6878048,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "cb2752c2607407966370ce4c2ba3c178561ca9385770da559761d41397255e7b",
+      "functions": [
+        {
+          "name": "func_80225980_68F360",
+          "rom_offset": 6878048,
+          "vma": 2149734784,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_034",
+      "rom_offset": 6878492,
+      "size": 24,
+      "section": "file_18",
+      "source_sha256": "cda9d1d7e4a3ead63bd69442b59599ff0d2ea7b4f6e7adf8d6d238d054a9af3c",
+      "functions": [
+        {
+          "name": "func_80225B3C_68F51C",
+          "rom_offset": 6878492,
+          "vma": 2149735228,
+          "size": 24,
+          "original_code_sha256": "f60967887e6c37a7466d4b520d53bb845f09961e94363dfcf008ba90ab4459aa"
+        }
+      ]
+    },
+    {
+      "name": "batch53_035",
+      "rom_offset": 6881024,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "3cdb8261fc41a6863cff3758d0345a7771f77e87d472193298786bbec0bcdd1a",
+      "functions": [
+        {
+          "name": "func_80226520_68FF00",
+          "rom_offset": 6881024,
+          "vma": 2149737760,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_036",
+      "rom_offset": 6883072,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "a7d8d47d118995b82c258562820848e5eccd220d0dd054d6c32459eb3f7f9083",
+      "functions": [
+        {
+          "name": "func_80226D20_690700",
+          "rom_offset": 6883072,
+          "vma": 2149739808,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        }
+      ]
+    },
+    {
+      "name": "batch53_037",
+      "rom_offset": 6884400,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "4ed29b338c890bc526ac2b76d6efbb60639016965d3117d81a1e38903405c097",
+      "functions": [
+        {
+          "name": "func_80227250_690C30",
+          "rom_offset": 6884400,
+          "vma": 2149741136,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_038",
+      "rom_offset": 6884472,
+      "size": 20,
+      "section": "file_18",
+      "source_sha256": "207eca62025656a409760b1277dd1e193a497ffafeb2d05f215090d085763da3",
+      "functions": [
+        {
+          "name": "func_80227298_690C78",
+          "rom_offset": 6884472,
+          "vma": 2149741208,
+          "size": 20,
+          "original_code_sha256": "bdcd58b2554478815462e0959be6e5bd25d068771d73a4c8bce9450f7540ce8e"
+        }
+      ]
+    },
+    {
+      "name": "batch53_039",
+      "rom_offset": 6886248,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "4f3428241fdcac9a8d8e72e47b71e75131a64b70e0e6f2ece9bda470931e451c",
+      "functions": [
+        {
+          "name": "func_80227988_691368",
+          "rom_offset": 6886248,
+          "vma": 2149742984,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_040",
+      "rom_offset": 6886396,
+      "size": 20,
+      "section": "file_18",
+      "source_sha256": "798e81dbda7b18447852fdf4f61b4a7c8dbe43dfb6bb4fd81e0d146a55eb4340",
+      "functions": [
+        {
+          "name": "func_80227A1C_6913FC",
+          "rom_offset": 6886396,
+          "vma": 2149743132,
+          "size": 20,
+          "original_code_sha256": "bdcd58b2554478815462e0959be6e5bd25d068771d73a4c8bce9450f7540ce8e"
+        }
+      ]
+    },
+    {
+      "name": "batch53_041",
+      "rom_offset": 6888196,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "2a5a78a42b1ddaf2d94fab47907651b4772fec2effedadb478023c87a159cd72",
+      "functions": [
+        {
+          "name": "func_80228124_691B04",
+          "rom_offset": 6888196,
+          "vma": 2149744932,
+          "size": 12,
+          "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526"
+        }
+      ]
+    },
+    {
+      "name": "batch53_042",
+      "rom_offset": 6888344,
+      "size": 20,
+      "section": "file_18",
+      "source_sha256": "e8e16e9aaf48d96fc500a41c2217368f1f7ae3411c64122e5123346da5da06e2",
+      "functions": [
+        {
+          "name": "func_802281B8_691B98",
+          "rom_offset": 6888344,
+          "vma": 2149745080,
+          "size": 20,
+          "original_code_sha256": "bdcd58b2554478815462e0959be6e5bd25d068771d73a4c8bce9450f7540ce8e"
+        }
+      ]
+    },
+    {
+      "name": "batch53_043",
+      "rom_offset": 6889592,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "af58664fd02d4de1014d81cd162687084e1263dcd6d3af4531e4ebfa2b6fc676",
+      "functions": [
+        {
+          "name": "func_80228698_692078",
+          "rom_offset": 6889592,
+          "vma": 2149746328,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        }
+      ]
+    },
+    {
+      "name": "batch53_044",
+      "rom_offset": 6891048,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "af7de03c599977fdeca4a27f4959290305e6c86e611ff5a237c141e710bce7d7",
+      "functions": [
+        {
+          "name": "func_80228C48_692628",
+          "rom_offset": 6891048,
+          "vma": 2149747784,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        }
+      ]
+    },
+    {
+      "name": "batch53_045",
+      "rom_offset": 6891200,
+      "size": 24,
+      "section": "file_18",
+      "source_sha256": "b3580d02729e51d72dd3ee5c07b73d6e324c368c17f1ae8d0f0550f3b5a8716a",
+      "functions": [
+        {
+          "name": "func_80228CE0_6926C0",
+          "rom_offset": 6891200,
+          "vma": 2149747936,
+          "size": 24,
+          "original_code_sha256": "98532ec4cf30a2690e7895489e14b6838879cf469e927fcd0dd229943743d1ef"
+        }
+      ]
+    },
+    {
+      "name": "batch53_046",
+      "rom_offset": 6892492,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "003da738957df719bb1dcf1577132b34fc1c951b4f8ed7fc13e8d5d72fba0626",
+      "functions": [
+        {
+          "name": "func_802291EC_692BCC",
+          "rom_offset": 6892492,
+          "vma": 2149749228,
+          "size": 12,
+          "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89"
+        }
+      ]
+    },
+    {
+      "name": "batch53_047",
+      "rom_offset": 6892608,
+      "size": 24,
+      "section": "file_18",
+      "source_sha256": "127d59a310b5bde70abdf1a05fe8970a178b106e3ec61e7b1f7f8c57f3e59691",
+      "functions": [
+        {
+          "name": "func_80229260_692C40",
+          "rom_offset": 6892608,
+          "vma": 2149749344,
+          "size": 24,
+          "original_code_sha256": "98532ec4cf30a2690e7895489e14b6838879cf469e927fcd0dd229943743d1ef"
+        }
+      ]
+    },
+    {
+      "name": "batch53_048",
+      "rom_offset": 6894364,
+      "size": 12,
+      "section": "file_18",
+      "source_sha256": "20e0693f6908d93c3de53a7a42ba9423faf3d4aea82579141f638624e538d22a",
+      "functions": [
+        {
+          "name": "func_8022993C_69331C",
+          "rom_offset": 6894364,
+          "vma": 2149751100,
+          "size": 12,
+          "original_code_sha256": "6be19bdce21ae764301a53a675c0c0d17e67875da080d170137aa5ad590c67f6"
+        }
+      ]
+    },
+    {
+      "name": "batch53_049",
+      "rom_offset": 6894436,
+      "size": 24,
+      "section": "file_18",
+      "source_sha256": "427739a64138a10ca67cb1758c1a17c2b3b5bcceaf44923ca10ea5ae2ce7e26a",
+      "functions": [
+        {
+          "name": "func_80229984_693364",
+          "rom_offset": 6894436,
+          "vma": 2149751172,
+          "size": 24,
+          "original_code_sha256": "3a6d07a20c0ec3fe739dce23ff497ac0cc36b0b21c2a8e16196faa8a3624ab0e"
+        }
+      ]
+    }
+  ]
+}

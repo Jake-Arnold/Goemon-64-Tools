@@ -90,6 +90,60 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-o',str(binary)]),
             ('Wide109 actual-source sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        # All 63 newly promoted original source bodies in the resource18 and
+        # callback16/21 batches are executed, not copied into test doubles.
+        native18=sorted((ROOT/'decomp/research/pending_file18_53_20261118/sources').glob('*.c'))
+        callbacks=sorted((ROOT/'decomp/research/pending_callbacks10_20261118/sources').glob('*.c'))
+        if len(native18)!=50 or len(callbacks)!=3:
+            raise ValueError('Missing authenticated original 53+10 C source units')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('file18-and-callbacks-actual-host')
+        steps.extend([
+            ('New file18/callbacks actual-C sanitizer build',compiler+[
+                '-std=c11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-Wno-unused-parameter','-Wno-unused-function',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                'decomp/research/pending_batch227_20261118/test_actual_file18_callbacks.c',
+                *[str(src.relative_to(ROOT)) for src in (native18+callbacks)],
+                '-o',str(binary)]),
+            ('New file18/callbacks actual-C sanitizer test',[str(binary)]),
+        ])
+    if not quick:
+        tiny = ROOT / 'decomp/research/pending_tiny9_20261119'
+        sources=sorted((tiny/'sources').glob('*.c'))
+        if len(sources)!=7:
+            raise ValueError('Missing seven original-source tiny9 translation units')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('tiny9-actual-host')
+        steps.extend([
+            ('Tiny9 actual-source sanitizer build',compiler+[
+                '-std=c11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((tiny/'test_actual_tiny9.c').relative_to(ROOT)),
+                *[str(src.relative_to(ROOT)) for src in sources],
+                '-o',str(binary)]),
+            ('Tiny9 actual-source sanitizer test',[str(binary)]),
+        ])
+    if not quick:
+        menu = ROOT / 'decomp/research/pending_menu2_20261119'
+        sources = sorted((menu/'sources').glob('*.c'))
+        if len(sources)!=2:
+            raise ValueError('Missing two authenticated original menu-resource C sources')
+        compiler = shlex.split(os.environ.get('CC','cc'))
+        binary = host_binary.with_name('menu2-actual-host')
+        steps.extend([
+            ('Menu2 actual-source sanitizer build',compiler+[
+                '-std=gnu11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((menu/'test_actual_menu2.c').relative_to(ROOT)),
+                *[str(src.relative_to(ROOT)) for src in sources],
+                '-o',str(binary)]),
+            ('Menu2 actual-source sanitizer test',[str(binary)]),
+        ])
     return steps
 
 

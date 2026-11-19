@@ -1,0 +1,1 @@
+void func_801CB684_65E534(char *p,unsigned int a,unsigned int b,unsigned int c,unsigned int d) {*(unsigned int *)(p+0x7C)=a; *(unsigned int *)(p+0x80)=b; *(unsigned int *)(p+0x84)=c; *(unsigned int *)(p+0x88)=d;}

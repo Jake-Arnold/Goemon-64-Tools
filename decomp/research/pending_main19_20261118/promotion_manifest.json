@@ -1,0 +1,230 @@
+{
+  "format": "goemon-usa-main19-after-callbacks10-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_sha": "fd37d519d647e6d35ee8d306de64afcb9ab765e5",
+  "units": [
+    {
+      "name": "pose_actor",
+      "rom_offset": 105824,
+      "size": 108,
+      "section": "main",
+      "source_sha256": "d73936b7fe2831d15eb1a68ba76fd8ad4410dff26ed24b51f239b47a0b7a15c9",
+      "functions": [
+        {
+          "name": "func_80019160_19D60",
+          "rom_offset": 105824,
+          "vma": 2147586400,
+          "size": 108,
+          "original_code_sha256": "9de12852d3db1d6254a898ec8d3130f26de26eecc4da9da0eb4a062c4cf3b0b8"
+        }
+      ]
+    },
+    {
+      "name": "pose_wrappers",
+      "rom_offset": 126652,
+      "size": 296,
+      "section": "main",
+      "source_sha256": "a5ababb69eab719524975297b8bf4f1f31837534a985b13f8f366e68c759e927",
+      "functions": [
+        {
+          "name": "func_8001E2BC_1EEBC",
+          "rom_offset": 126652,
+          "vma": 2147607228,
+          "size": 196,
+          "original_code_sha256": "04f8e30635d170d59c6541e6cc4b91f9f2b0285b830ea6c3c6b16eefb0082ad0"
+        },
+        {
+          "name": "func_8001E380_1EF80",
+          "rom_offset": 126848,
+          "vma": 2147607424,
+          "size": 100,
+          "original_code_sha256": "d8b6f95d1f6e1baf976d2cd8b630afcad968584e77f7b3e9ecb6e1afe8f78dd4"
+        }
+      ]
+    },
+    {
+      "name": "wide_floatset",
+      "rom_offset": 77984,
+      "size": 12,
+      "section": "main",
+      "source_sha256": "074fae7354e9573df6031904be92da4393ce25b2629485ad8df816eeaec1d785",
+      "functions": [
+        {
+          "name": "func_800124A0_130A0",
+          "rom_offset": 77984,
+          "vma": 2147558560,
+          "size": 12,
+          "original_code_sha256": "122ded41f6b955a0eae41f7cd16293d7fad4e38d9ded8735fbbf657f0d6fa106"
+        }
+      ]
+    },
+    {
+      "name": "wide_intfloat",
+      "rom_offset": 78080,
+      "size": 24,
+      "section": "main",
+      "source_sha256": "5337894d4c805b0904d51a4880971c2109b013fc6269a14cc50b8f118066ffaf",
+      "functions": [
+        {
+          "name": "func_80012500_13100",
+          "rom_offset": 78080,
+          "vma": 2147558656,
+          "size": 24,
+          "original_code_sha256": "a3e48ab8383ee90e5cf6011fcd180361bfd050df6839c36ad6c0f528f321c47e"
+        }
+      ]
+    },
+    {
+      "name": "wide_objlink",
+      "rom_offset": 74256,
+      "size": 36,
+      "section": "main",
+      "source_sha256": "5bc4d74c9f9d40d886058f749f3f614868557e650addaf7544514bab1dcf2f8b",
+      "functions": [
+        {
+          "name": "func_80011610_12210",
+          "rom_offset": 74256,
+          "vma": 2147554832,
+          "size": 36,
+          "original_code_sha256": "3710d62b2c4dae001b7703483c4cc39b97f3aaab36eb88deae537dc8f9ff5434"
+        }
+      ]
+    },
+    {
+      "name": "wide_vectors",
+      "rom_offset": 78776,
+      "size": 192,
+      "section": "main",
+      "source_sha256": "25265352418a7a772f2d1a0338244f689027d98234930ca9c53e1b851c70f245",
+      "functions": [
+        {
+          "name": "func_800127B8_133B8",
+          "rom_offset": 78776,
+          "vma": 2147559352,
+          "size": 48,
+          "original_code_sha256": "11229bb836a4ea8cfc9542b6ccfe7bdf84039631f63c343712be8b505a515d31"
+        },
+        {
+          "name": "func_800127E8_133E8",
+          "rom_offset": 78824,
+          "vma": 2147559400,
+          "size": 20,
+          "original_code_sha256": "6cbe01ddb844308ccd8f2894c0268a652cb4ad452a09f5cf582a72c0b9a74747"
+        },
+        {
+          "name": "func_800127FC_133FC",
+          "rom_offset": 78844,
+          "vma": 2147559420,
+          "size": 28,
+          "original_code_sha256": "7675051da7c384a3110b4a9e598b51523bfa5b35923ef551021b87781f24208b"
+        },
+        {
+          "name": "func_80012818_13418",
+          "rom_offset": 78872,
+          "vma": 2147559448,
+          "size": 48,
+          "original_code_sha256": "28908f1630030c3f5847c3a0eb82b58f405c07044f213e8234e34418c7e65ea1"
+        },
+        {
+          "name": "func_80012848_13448",
+          "rom_offset": 78920,
+          "vma": 2147559496,
+          "size": 20,
+          "original_code_sha256": "8c18ebaa4b8aab5f97c0ede00016753e5a48b647eb589d905c5fa3459c692dbb"
+        },
+        {
+          "name": "func_8001285C_1345C",
+          "rom_offset": 78940,
+          "vma": 2147559516,
+          "size": 28,
+          "original_code_sha256": "b3b3d2f53ac8fb239cb55eb930d2326ffd410862b34f5c2cea895e385cf58366"
+        }
+      ]
+    },
+    {
+      "name": "dracam_controls",
+      "rom_offset": 78288,
+      "size": 88,
+      "section": "main",
+      "source_sha256": "6b5f193d7846e83624b76b82782d94bb61126c84a4084f622bb603e584271d51",
+      "functions": [
+        {
+          "name": "func_800125D0_131D0",
+          "rom_offset": 78288,
+          "vma": 2147558864,
+          "size": 32,
+          "original_code_sha256": "7abe3e7fff0963bfcb4e6b333fa738d03ddb1d3147b3ca02f8573f4f34fbdf55"
+        },
+        {
+          "name": "func_800125F0_131F0",
+          "rom_offset": 78320,
+          "vma": 2147558896,
+          "size": 56,
+          "original_code_sha256": "ac878d351b008d3cceab74f04549b02c1bf66807463ae88fff3930d20b3877bc"
+        }
+      ]
+    },
+    {
+      "name": "dracam_flag",
+      "rom_offset": 82184,
+      "size": 20,
+      "section": "main",
+      "source_sha256": "e4bad3e1c1aadd38a74a0de8657dd922ea94a10f26c7f90d34cb2a612b349bee",
+      "functions": [
+        {
+          "name": "func_80013508_14108",
+          "rom_offset": 82184,
+          "vma": 2147562760,
+          "size": 20,
+          "original_code_sha256": "ee48a3d93e5ceb8995eb80cddfce7cc0884f4e9c34dc8546c18d5ecb121a05f2"
+        }
+      ]
+    },
+    {
+      "name": "dracam_floats",
+      "rom_offset": 81876,
+      "size": 44,
+      "section": "main",
+      "source_sha256": "ebce137346242344d8510f2753ab950856bf20cb373730d684137140b4055fe4",
+      "functions": [
+        {
+          "name": "func_800133D4_13FD4",
+          "rom_offset": 81876,
+          "vma": 2147562452,
+          "size": 12,
+          "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a"
+        },
+        {
+          "name": "func_800133E0_13FE0",
+          "rom_offset": 81888,
+          "vma": 2147562464,
+          "size": 32,
+          "original_code_sha256": "5ac8c04bfd5044d48649fa29217ef11385d853508fcff5445d9376620cec3ca5"
+        }
+      ]
+    },
+    {
+      "name": "dracam_three_trim",
+      "rom_offset": 78968,
+      "size": 192,
+      "section": "main",
+      "source_sha256": "ce946be1c37359108640401735e9269eb80089525db55666156b720f473642f4",
+      "functions": [
+        {
+          "name": "func_80012878_13478",
+          "rom_offset": 78968,
+          "vma": 2147559544,
+          "size": 136,
+          "original_code_sha256": "e0b15f25722e152961d45bb72ae751004c01b0552a70413872f9f09a78d60c0b"
+        },
+        {
+          "name": "func_80012900_13500",
+          "rom_offset": 79104,
+          "vma": 2147559680,
+          "size": 56,
+          "original_code_sha256": "8b39c71444408f6bd8f7b20011c6daf3d4ca5ba155c050d15865a4bcf3707026"
+        }
+      ]
+    }
+  ]
+}

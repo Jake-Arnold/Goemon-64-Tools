@@ -1,0 +1,69 @@
+{
+  "format": "goemon-usa-graphics5-after-resource140-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_sha": "fd37d519d647e6d35ee8d306de64afcb9ab765e5",
+  "units": [
+    {
+      "name": "gfx_matrix",
+      "rom_offset": 107100,
+      "size": 72,
+      "section": "main",
+      "source_sha256": "95bd7a7c9435c307478b02234f3e7befdd6358383cafa951e06a9d33db3ad16d",
+      "functions": [
+        {
+          "name": "func_8001965C_1A25C",
+          "rom_offset": 107100,
+          "vma": 2147587676,
+          "size": 72,
+          "original_code_sha256": "4c148d804fc6ea25df6fa3efe97d846383a00bf626f4eb2a1a4858abb918fd03"
+        }
+      ]
+    },
+    {
+      "name": "gfx_wrapper",
+      "rom_offset": 115992,
+      "size": 56,
+      "section": "main",
+      "source_sha256": "d1ec8b30aa1ebd828583c766e3063129947e97565b006eafe3b0d8a39e15426b",
+      "functions": [
+        {
+          "name": "func_8001B918_1C518",
+          "rom_offset": 115992,
+          "vma": 2147596568,
+          "size": 56,
+          "original_code_sha256": "faae783382532816d946ad8d3209fc8360920796ef93c926950d3489f7d69063"
+        }
+      ]
+    },
+    {
+      "name": "gfx_vectors",
+      "rom_offset": 120176,
+      "size": 156,
+      "section": "main",
+      "source_sha256": "ef4edb3f217cc931e2e12dbe42afedc88cca580382d4403b549b8b89d65c0d77",
+      "functions": [
+        {
+          "name": "func_8001C970_1D570",
+          "rom_offset": 120176,
+          "vma": 2147600752,
+          "size": 76,
+          "original_code_sha256": "bb3eae822c7a98a04b2562b1c64529eb4af6c5f5adde3f0637cc1663e4e7c91b"
+        },
+        {
+          "name": "func_8001C9BC_1D5BC",
+          "rom_offset": 120252,
+          "vma": 2147600828,
+          "size": 28,
+          "original_code_sha256": "6d3c1a4234a9fcbb4c601b563221bdc463dbc7bd64e047958118989b908a458c"
+        },
+        {
+          "name": "func_8001C9D8_1D5D8",
+          "rom_offset": 120280,
+          "vma": 2147600856,
+          "size": 52,
+          "original_code_sha256": "c66f0cbc8d034a90fc7540863d73e6b8c7302525f585575cbea8385d163f46a6"
+        }
+      ]
+    }
+  ]
+}

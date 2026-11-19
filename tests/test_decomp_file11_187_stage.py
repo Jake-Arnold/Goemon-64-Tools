@@ -15,6 +15,16 @@ class ThreeExtra187StageTests(unittest.TestCase):
         cls.manifest = verify.load_manifest(stage.ROOT / "manifest.json")
         cls.manifest.pop('overlay_wide132_stage', None)
         cls.manifest.pop('overlay_wide109_stage', None)
+        cls.manifest.pop('overlay_resource140_stage', None)
+        cls.manifest.pop('overlay_graphics5_stage', None)
+        cls.manifest.pop('overlay_file18_53_stage', None)
+        cls.manifest.pop('overlay_callbacks10_stage', None)
+        cls.manifest.pop('overlay_main19_stage', None)
+        cls.manifest.pop('overlay_tiny9_stage', None)
+        cls.manifest.pop('overlay_micro2_stage', None)
+        cls.manifest.pop('overlay_micro15_stage', None)
+        cls.manifest.pop('overlay_micro20_stage', None)
+        cls.manifest.pop('overlay_menu2_stage', None)
 
     def test_exact_three_new_original_identities(self):
         old = {(x['name'], x['rom_offset'], x['vma'], x['size']) for x in prior.entries()}

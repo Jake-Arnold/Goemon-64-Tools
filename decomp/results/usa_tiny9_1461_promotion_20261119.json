@@ -1,0 +1,135 @@
+{
+  "format": "goemon-usa-native-tiny9-promotion-20261119-v1",
+  "status": "PASSED_G2_LOCAL",
+  "publication": "NOT_YET_PUBLISHED",
+  "base_commit": "c409408cccb284746619db98ecb36bfe7dadceac",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "compiler": "original IDO 5.3 -O2 -mips2 -G0",
+  "prior_production": {
+    "matching_C": 1452,
+    "matching_bytes": 56744,
+    "remaining_ASM": 5911,
+    "Japan_matching_C": 39
+  },
+  "verified_local": {
+    "matching_C": 1461,
+    "matching_bytes": 56816,
+    "remaining_ASM": 5902,
+    "Japan_matching_C": 39
+  },
+  "new_functions": 9,
+  "new_matching_bytes": 72,
+  "units": 7,
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_ROM_exact_bytes": 33554432,
+  "original_ELF_positive_FUNC_identical": 7376,
+  "semantic_relocations_identical": true,
+  "additional_positive_aliases": 0,
+  "source_fingerprints_pass": true,
+  "full_native_decomp_verify": "PASS",
+  "strict_inventory": "PASS",
+  "full_local_ci": "PASS: 265 decomp tests (one skipped), 245 verifier/ledger tests (four skipped), task evidence validation, ASan/UBSan actual source including nine new C bodies (9,000 host calls)",
+  "emulator_gameplay": "NOT_RUN",
+  "combined_proof_sha256": "d8b42ce33d98cb3f41aba02cb1005149cfe02a8652f1f32927a6b18b60dd96a1",
+  "inventory_sha256": "6b3100436aa09cdf03a565e0afc50db77c370b72faa722d72a6d8611bbbd632d",
+  "functions": [
+    {
+      "name": "func_801D36BC_5FEA9C",
+      "rom_offset": 6285980,
+      "vma": 2149398204,
+      "size": 8,
+      "original_code_sha256": "5c15a2abc56307dfd16a97275b29928b178c82276bb724c8eb2a810bacb1b06e",
+      "section": "file_13",
+      "translation_unit": "tiny13_field34.c",
+      "source_sha256": "ae564097b2a5761d618911c7b2d04a4afa7f714abddf308e2f61f37743e83295"
+    },
+    {
+      "name": "func_801D36C4_5FEAA4",
+      "rom_offset": 6285988,
+      "vma": 2149398212,
+      "size": 8,
+      "original_code_sha256": "5c15a2abc56307dfd16a97275b29928b178c82276bb724c8eb2a810bacb1b06e",
+      "section": "file_13",
+      "translation_unit": "tiny13_field34.c",
+      "source_sha256": "ae564097b2a5761d618911c7b2d04a4afa7f714abddf308e2f61f37743e83295"
+    },
+    {
+      "name": "func_801D3894_5FEC74",
+      "rom_offset": 6286452,
+      "vma": 2149398676,
+      "size": 8,
+      "original_code_sha256": "39bae8b76d9c09aaf753c5e79ddc5a4ae3c47a84673c38494d299463b43ed524",
+      "section": "file_13",
+      "translation_unit": "tiny13_field38.c",
+      "source_sha256": "9fcba908a4e083be130f636bd123b2faed2f270a0d96817247dc20c8d312f9c9"
+    },
+    {
+      "name": "func_801D389C_5FEC7C",
+      "rom_offset": 6286460,
+      "vma": 2149398684,
+      "size": 8,
+      "original_code_sha256": "39bae8b76d9c09aaf753c5e79ddc5a4ae3c47a84673c38494d299463b43ed524",
+      "section": "file_13",
+      "translation_unit": "tiny13_field38.c",
+      "source_sha256": "9fcba908a4e083be130f636bd123b2faed2f270a0d96817247dc20c8d312f9c9"
+    },
+    {
+      "name": "func_8021551C_6744CC",
+      "rom_offset": 6767820,
+      "vma": 2149668124,
+      "size": 8,
+      "original_code_sha256": "4955e05a039b24625573220b99a97d5fa3b2f888dd6b6ecb0c8b2d4ca0901604",
+      "section": "file_17",
+      "translation_unit": "tiny17_bytea0.c",
+      "source_sha256": "f6b8fb7371cc35505046c373f28e1a1379926be2422038f06a24c93c9fee8e6f"
+    },
+    {
+      "name": "func_802122CC_67BCAC",
+      "rom_offset": 6798508,
+      "vma": 2149655244,
+      "size": 8,
+      "original_code_sha256": "6ae5b19ca643417d9c558388ff7cf5c6908338898a02b9c4d3108048afdb3c49",
+      "section": "file_18",
+      "translation_unit": "tiny18_byte98.c",
+      "source_sha256": "2cc35a0ef7b540477c6e55ecfb41a8c6e2f4c0412c0c1b3f4fe7becb1232de08"
+    },
+    {
+      "name": "func_0800185C_70929C",
+      "rom_offset": 7377564,
+      "vma": 134223964,
+      "size": 8,
+      "original_code_sha256": "9796e84ab46d10cc7cf7dc690163db449952d4f12cc0a198871ba079aeb4c4d3",
+      "section": "file_48",
+      "translation_unit": "tiny48_byted1.c",
+      "source_sha256": "692d4a17cfa63aee15229e711682dbd8f66ef6fe08b3aebbf067a2592ffe43f2"
+    },
+    {
+      "name": "func_0800142C_70B46C",
+      "rom_offset": 7386220,
+      "vma": 134222892,
+      "size": 8,
+      "original_code_sha256": "3ddab19ddaa9cb01d3bff8ce40b461bf44ecaea8ea86cdec4094d5c3123d35c1",
+      "section": "file_49",
+      "translation_unit": "tiny49_byted0.c",
+      "source_sha256": "573a029911b96458a3a2b3744d43d56ad759d26e8dbc791f3c08c744ca989b89"
+    },
+    {
+      "name": "func_08001454_70B494",
+      "rom_offset": 7386260,
+      "vma": 134222932,
+      "size": 8,
+      "original_code_sha256": "b4b059d710f3a85d1feb7d854121414d56fb817a69e03335706fd2592179a4e3",
+      "section": "file_49",
+      "translation_unit": "tiny49_byted2.c",
+      "source_sha256": "c0169448e9b7894899ea12d65bdb74fc764fa96e7922b128dcb8ba118d4ea25d"
+    }
+  ],
+  "blockers": [
+    "Five independently original-upstream-native-exact file13 larger C bodies have no complete bundled sources and cannot be canonically promoted",
+    "file25 72B candidate blocked by original relocation semantics",
+    "Three menu graphics functions blocked by PC16/jump-label relocation semantics",
+    "Larger >512 byte nonmatching candidates stay research-only"
+  ],
+  "verification_notes": "This is a pre-publication, immutable, locally performed G2 report. Linker sections, ASM/C ownership and exact relocations are checked by overlay_tiny9.py and full decomp.verify, with prior 1452 functions integrated unchanged."
+}

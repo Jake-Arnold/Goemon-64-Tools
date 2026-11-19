@@ -25,25 +25,25 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "879a63507178ee5574bf666d26b4633a93143bf7971080e6b2d64af0f1e196c4",
+    "manifest_sha256": "d903c16696bf0dd0c5420d2cd73da005abfbb7342bc8c65c8bc4f883224fb40d",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "0bcd5121de28a2815cab2d110a49c2730db1b701e9b511bfd7eff1c8b2be4922",
+    "verifier_sha256": "51d147c762a7ecf6e8cc01222cdac6b8b65bf6f9f4e087f67db863233b396a68",
     "script_vm_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
-    "verify_sha256": "9fd581ea6cafcc427a9c43eab6b8e47e94f3d6f62c918eb22cdd0c52a9115cc3"
+    "verify_sha256": "51d147c762a7ecf6e8cc01222cdac6b8b65bf6f9f4e087f67db863233b396a68"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "b84b700f293a2c4711f7ebd24e55ce7128eadd445b2bc00254d0f413207341de",
+    "report_sha256": "991806c3f1453747c36d40d2aff9cb2f4db172458badf8686724e087b7730368",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "c22597a6467b1ece3a3057096a8278fdc5abb2d2d07887050e0ab0523be3c48a",
-    "matching_c_functions": 1225,
-    "matching_c_bytes": 52028,
-    "combined_c_entries": 1238,
-    "asm_entries": 6138,
+    "combined_proof_sha256": "172bb41f6b402e04dc9ef28225fbee9c08ad259642bd00eea074ded8a08e49be",
+    "matching_c_functions": 1500,
+    "matching_c_bytes": 57592,
+    "combined_c_entries": 1513,
+    "asm_entries": 5863,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Original USA 1225 matching-C: 1119 accepted plus 106 unique wide109 source functions / 1200 original bytes; three already accepted offsets excluded. Full canonical 32MiB exact, 7376 original ELF identities and unchanged accepted semantic relocations. Japan independently 39 C.",
-    "reconciled_date": "2026-11-18"
+    "note": "Original USA 1500 matching C, 57592 instruction bytes: two independently IDO exact menu-resource helpers promoted after verified 1498 C. Full 33554432 byte original expanded ROM byte-for-byte exact, 7376 ELF positive FUNC identities and accepted semantic relocation multisets retained; Japanese accepted C stays 39. Native verifier and strict inventory passed. No emulator gameplay test.",
+    "reconciled_date": "2026-11-19"
   },
   "residual_functions": [
     {

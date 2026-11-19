@@ -18,6 +18,16 @@ class RegistrationStageTests(unittest.TestCase):
         cls.manifest = load_manifest(ROOT / 'decomp/manifest.json')
         cls.manifest.pop('overlay_wide132_stage', None)
         cls.manifest.pop('overlay_wide109_stage', None)
+        cls.manifest.pop('overlay_resource140_stage', None)
+        cls.manifest.pop('overlay_graphics5_stage', None)
+        cls.manifest.pop('overlay_file18_53_stage', None)
+        cls.manifest.pop('overlay_callbacks10_stage', None)
+        cls.manifest.pop('overlay_main19_stage', None)
+        cls.manifest.pop('overlay_tiny9_stage', None)
+        cls.manifest.pop('overlay_micro2_stage', None)
+        cls.manifest.pop('overlay_micro15_stage', None)
+        cls.manifest.pop('overlay_micro20_stage', None)
+        cls.manifest.pop('overlay_menu2_stage', None)
         cls.group = manifest_file12_stages(cls.manifest)[0]
 
     def test_pinned_source_has_all_374_original_function_identities(self):

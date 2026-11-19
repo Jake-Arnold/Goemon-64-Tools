@@ -1540,5 +1540,35 @@
   },
   "overlay_wide109_stage": {
     "format": "goemon-usa-wide109-after-canonical1119-v1"
+  },
+  "overlay_resource140_stage": {
+    "format": "goemon-usa-pending-resource140-original-c-v1"
+  },
+  "overlay_graphics5_stage": {
+    "format": "goemon-usa-graphics5-after-resource140-v1"
+  },
+  "overlay_file18_53_stage": {
+    "format": "goemon-usa-file18-53-after-graphics5-v1"
+  },
+  "overlay_callbacks10_stage": {
+    "format": "goemon-usa-callback10-after-file18-53-v1"
+  },
+  "overlay_main19_stage": {
+    "format": "goemon-usa-main19-after-callbacks10-v1"
+  },
+  "overlay_tiny9_stage": {
+    "format": "goemon-usa-tiny9-after-1452-v1"
+  },
+  "overlay_micro2_stage": {
+    "format": "goemon-usa-micro2-after-1461-v1"
+  },
+  "overlay_micro15_stage": {
+    "format": "goemon-usa-micro15-after-1463-v1"
+  },
+  "overlay_micro20_stage": {
+    "format": "goemon-usa-micro20-after-1478-v1"
+  },
+  "overlay_menu2_stage": {
+    "format": "goemon-usa-menu2-after-1498-v1"
   }
 }
