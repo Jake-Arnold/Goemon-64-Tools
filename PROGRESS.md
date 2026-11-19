@@ -1,3 +1,9 @@
+## 2026-11-19 — Legacy branch audit and guarded archival retirement PR
+
+- Reviewed 25 stale remote branch heads. Thirteen topic-specific research documents are exact blob matches in `main` or `chatgptweb/decomp`; twelve have prior merged preservation evidence #93, #97–#99, #102–#109. Unmerged historical code/tests remain retrievable by proposed SHA-pinned archive tags.
+- Added a dedicated PR-merge-triggered, fail-closed batch. It tags all 25 heads plus its own branch before any deletion; verifies repo/PR ancestry, allowed files, source blob and PR evidence, no open PRs, and SHA-leased deletes. Excludes main, canonical decomp, active toolkit PR #94 and separately created toolkit address-sync branch.
+- Verified remote GitHub branches, tree/blob SHAs and prior PRs. Full decomp CI, native ROM G2, gameplay, actual GitHub Actions workflow: NOT RUN. No changes to matching-C counts. Next: review/merge operations PR and check branch/tag state.
+
 ## 2026-11-19 — PR #108 reconciled after wide native catalogue import
 
 - Immutable historical cross-region 47-function research archive subtree `ae2976f1b2d5da8df6dd622c54d48c8e6022ba87` retained exactly. Original 315+47 and 389-stage MIPS scratch records remain historical research-only, not newly promoted accepted C or fresh combined native G2. Canonical USA 1,500/Japan 432 function identities and evidence unchanged; full CI and gameplay not rerun for this documentation import.

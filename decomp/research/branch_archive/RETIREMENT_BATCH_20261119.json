@@ -1,0 +1,121 @@
+{
+  "format": "goemon-legacy-retirement-v1",
+  "repo": "Jake-Arnold/Goemon-64-Tools",
+  "base": "chatgptweb/decomp",
+  "trigger": "ops/retire-legacy-branches-20261119",
+  "tag_prefix": "archive/goemon-20261119/",
+  "branches": {
+    "chatgptweb/dual-region-foundation": "5a3eb6fb852fa2347ababeeec5b62680ef2cd1bc",
+    "chatgptweb/impact-value-search": "cc268b458eebbfdaf2e54c53dd8223c5514f618d",
+    "chatgptweb/japan-actor-model-trace": "b4f74b87da098284c0a2b5a6fc52d56b2056ebc9",
+    "chatgptweb/japan-mupen-ambiguity-fix": "d99be91504490c29895cf0f14484122866eb09d2",
+    "chatgptweb/japanese-overlay-jal-audit": "bfdf727f4d1603c203bf84a2440b9389aef96bd4",
+    "chatgptweb/japanese-overlay-symbol-map": "7f8486a25ba54f946ea2c2641afe74ca701d0fa2",
+    "chatgptweb/japanese-recomp-input": "ed45e14b8ee93115ceed087d90acc756b59d41de",
+    "chatgptweb/japanese-region-loader": "dd301ff5ae80c0f98a95c8911ba0a442d70fe274",
+    "chatgptweb/japanese-symbol-reconciliation": "a2f57bacbe67230af82b7767c1140878c422c8db",
+    "chatgptweb/native-emulator-savestates": "3d971e811d28a93e8611f7e300f9cba8debd0de0",
+    "chatgptweb/room-actor-browser": "aa1cfa872797a96c359ed99efbce91983d7d135c",
+    "chatgptweb/rt64-model-probes": "c6543cddd377d64afbde9ad17c31107ec59fbce6",
+    "chatgptweb/usa-external-memory-leads": "b3493b909e0edb382712bc9dc5a5321c9b24c46b",
+    "chatgptweb/japan-329-c-native-port": "5e4731926e2309d62a6cf4b02edf99a9c7b7a79f",
+    "codex/ebisumaru-mini-research": "c94edb55880718b7de146014644b554bf520832f",
+    "codex/goemon-impact-research": "8af9e747320dfc5ff4319212b69ddca4b8c5c4a5",
+    "codex/goemon-vm-overlay-followup": "6b5d0d8958bd87fb850c05008acb29650579bf30",
+    "ops/research-retirement-on-merge-20261119": "04fa1301c25f92ac07ccc784946e9367485748fc",
+    "research/archive-japan-early-native-20261119": "9721f335053eefeab455940d94338826cf4bf06f",
+    "research/archive-camera-reset-evidence-20261119": "1d3c3462e7d7cd1b98db6b3dbaba11e692a3d153",
+    "research/archive-graphics-pose-dracam-20261119": "56be2c3f54232b76fe47fe68e8e0a1bf02d32e0b",
+    "research/archive-callback-file18-native-20261119": "7cbb162c8ef357505f9a4170362e50bc80bebc95",
+    "research/archive-file11-historical-tests-20261119": "16a5d2c63bc8ad10c1977d1ad5e2d9facf76e36c",
+    "research/archive-usa-wide-native-catalogues-20261119": "20f55e464444f3b300d67c193d62ec07b3232330",
+    "research/archive-cross-region-47-history-20261119": "e5d08e74f7e61236927a11d53aff6738231bcfb1"
+  },
+  "anchors": {
+    "chatgptweb/dual-region-foundation": {
+      "target": "chatgptweb/decomp",
+      "path": "docs/DUAL_REGION_SUPPORT.md",
+      "sha": "44e9bca629a9ed74bef6e6ba8bb4b61d8d991e16"
+    },
+    "chatgptweb/impact-value-search": {
+      "target": "main",
+      "path": "docs/VALUE_SEARCH.md",
+      "sha": "754a91378372ef0488a0629fa8308e51d41ac729"
+    },
+    "chatgptweb/japan-actor-model-trace": {
+      "target": "main",
+      "path": "docs/JAPAN_ACTOR_MODEL_TRACE.md",
+      "sha": "83566b94ab1d0c89e282f32aab11cf67cda1f544"
+    },
+    "chatgptweb/japan-mupen-ambiguity-fix": {
+      "target": "main",
+      "path": "docs/JAPAN_MUPEN_AMBIGUITY.md",
+      "sha": "51b4c87583316183f0b0ba4adc4e595d3a77a300"
+    },
+    "chatgptweb/japanese-overlay-jal-audit": {
+      "target": "chatgptweb/decomp",
+      "path": "docs/JAPAN_OVERLAY_JAL_SCAN.md",
+      "sha": "27b79076d283c58992330feffbba33ab7d7a3616"
+    },
+    "chatgptweb/japanese-overlay-symbol-map": {
+      "target": "chatgptweb/decomp",
+      "path": "docs/JAPAN_FUNCTION_MAPPING.md",
+      "sha": "ae5db2c9d66a714d802f5a5a4ebe9219f0677373"
+    },
+    "chatgptweb/japanese-recomp-input": {
+      "target": "main",
+      "path": "docs/JAPAN_RECOMP_INPUT.md",
+      "sha": "e0bebc654394e37b27d847aaea4a4aca9fd5e489"
+    },
+    "chatgptweb/japanese-region-loader": {
+      "target": "main",
+      "path": "docs/JAPAN_RECOMP_LOADER.md",
+      "sha": "7d989e2219e9c10c31eaffa2f2c7f195a9d5c5d9"
+    },
+    "chatgptweb/japanese-symbol-reconciliation": {
+      "target": "chatgptweb/decomp",
+      "path": "docs/JAPAN_SYMBOL_RECONCILIATION.md",
+      "sha": "5e7ef1b07c53592d8dceb092d0e8236abdfe54d6"
+    },
+    "chatgptweb/native-emulator-savestates": {
+      "target": "main",
+      "path": "docs/NATIVE_SAVESTATES.md",
+      "sha": "803548042741f140fbe65c8e71c79b3719df3f46"
+    },
+    "chatgptweb/room-actor-browser": {
+      "target": "main",
+      "path": "docs/ROOM_ACTORS.md",
+      "sha": "3cb5ccdeacda656ee0a467c7d89ea828f3195292"
+    },
+    "chatgptweb/rt64-model-probes": {
+      "target": "main",
+      "path": "docs/RT64_MODEL_RESEARCH.md",
+      "sha": "0169409a1359ee967d438cdfe4deef0b8c61dab2"
+    },
+    "chatgptweb/usa-external-memory-leads": {
+      "target": "chatgptweb/decomp",
+      "path": "docs/USA_EXTERNAL_CHEAT_ACTOR_LEADS.md",
+      "sha": "c4f6c03c59086aa7847d8744f8697d874b1eff73"
+    }
+  },
+  "merged_prs": {
+    "chatgptweb/japan-329-c-native-port": 93,
+    "codex/ebisumaru-mini-research": 97,
+    "codex/goemon-impact-research": 98,
+    "codex/goemon-vm-overlay-followup": 99,
+    "ops/research-retirement-on-merge-20261119": 109,
+    "research/archive-japan-early-native-20261119": 102,
+    "research/archive-camera-reset-evidence-20261119": 103,
+    "research/archive-graphics-pose-dracam-20261119": 104,
+    "research/archive-callback-file18-native-20261119": 105,
+    "research/archive-file11-historical-tests-20261119": 106,
+    "research/archive-usa-wide-native-catalogues-20261119": 107,
+    "research/archive-cross-region-47-history-20261119": 108
+  },
+  "excluded": [
+    "main",
+    "chatgptweb/decomp",
+    "toolkit/dialogue-explorer-20261119",
+    "toolkit/address-metadata-sync-44612747112"
+  ]
+}
