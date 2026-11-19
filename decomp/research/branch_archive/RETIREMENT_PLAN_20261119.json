@@ -1,0 +1,73 @@
+{
+  "format": "goemon-retire-archived-branches-v1",
+  "prs": {
+    "102": {
+      "head": "research/archive-japan-early-native-20261119",
+      "archive": "japan_early_native_20261119",
+      "tree": "5ecacd4c19c94d547542ecbc782ce1d00bdd8022",
+      "branches": {
+        "chatgptweb/japanese-decomp-port": "634da7d6e4100125d7b7fe9e1592bb68e1458146",
+        "chatgptweb/decomp-consolidation-20261116": "5543197de084667b575406a3f3eef1bc4f69b0f9"
+      }
+    },
+    "103": {
+      "head": "research/archive-camera-reset-evidence-20261119",
+      "archive": "camera_runtime_20261119",
+      "tree": "7c0328e94ad0f543238827175941d5e940a392a0",
+      "branches": {
+        "chatgptweb/camera-mode-runtime-audit-20261116": "73b822de4a159d3794b86f1bd53d0d3bf6805034",
+        "chatgptweb/camera-reset-136-native-20261116": "c95975b28533b114acd65eb0d92b28405ae1ac01",
+        "chatgptweb/camera-reset-343-scratch-20261117": "c14f403b6c01ae295e9ff04313705871452468ab",
+        "chatgptweb/camera-reset-343-integration-20261117": "66a7ad5516f3f0a8b3abc30d1cbf8a42c19b781e"
+      }
+    },
+    "104": {
+      "head": "research/archive-graphics-pose-dracam-20261119",
+      "archive": "graphics_pose_dracam_20261119",
+      "tree": "ec74e9d91e2399b3ad55e2c8520ec5afb091cfee",
+      "branches": {
+        "chatgptweb/graphics-adjacent-c-research": "0215bb815fbeaa07a4fa16c3d411a98bd8bff8ba",
+        "chatgptweb/graphics-pose-actor-research": "236ae7856c4196c937f2169a5dc58f4db865d697",
+        "chatgptweb/graphics-wide-actor-camera-research": "a4b7e5ed019ffe9d53ecac906ea775cad03e8e06",
+        "chatgptweb/dracam-cross-overlay-research-20261118": "6637451049de1ec1d4b501c9474276445e209ea6"
+      }
+    },
+    "105": {
+      "head": "research/archive-callback-file18-native-20261119",
+      "archive": "usa_file16_21_file18_20261119",
+      "tree": "9daabc18e4e74b5289599df87d0046ce4a5f5c80",
+      "branches": {
+        "chatgptweb/file16-file21-callback-native-20261118": "c190599ddf22a6e18baaf80d664a0477d59bb24a",
+        "chatgptweb/file18-53-native-wide-research-20261118": "7160b3d1ce33921f97dc5b96531f67a36d2999f5"
+      }
+    },
+    "106": {
+      "head": "research/archive-file11-historical-tests-20261119",
+      "archive": "file11_historical_20261119",
+      "tree": "47e76ff3f8fe4a919397519668aac293015b1c08",
+      "branches": {
+        "chatgptweb/file11-expansion-20261116": "60a5d55f5453d2e4241597e2ee9365bec2b127a8",
+        "chatgptweb/file11-transition-52-research": "defbfb82f63fdb5124946d021b09260c342342c1",
+        "chatgptweb/decomp-file11-next8-scratch-20261116": "5aded44a354c088e253d83521543391ad48322c9"
+      }
+    },
+    "107": {
+      "head": "research/archive-usa-wide-native-catalogues-20261119",
+      "archive": "usa_wide109_506_20261119",
+      "tree": "ac2b96486f600a60f7b2eb93048793d421a41651",
+      "branches": {
+        "chatgptweb/usa-wide-109-native-research-20261118": "b71620f020d77eaf4d14905d7950937c4b4f0a73",
+        "chatgptweb/usa-506-isolated-native-research-20261118": "2033c8f53ae2aa613d8899e64eec63d0a6339542"
+      }
+    },
+    "108": {
+      "head": "research/archive-cross-region-47-history-20261119",
+      "archive": "usa_japan_47_history_20261119",
+      "tree": "ae2976f1b2d5da8df6dd622c54d48c8e6022ba87",
+      "branches": {
+        "chatgptweb/jp-recomp-cross-region-c-research-20261116": "8d07137edccd3dde6b63dc6ad64bce90bb97a4a9",
+        "chatgptweb/promote-47-crossregion-to-389-20261117": "67c71c934430a261d6fdfb0dad520634406c5920"
+      }
+    }
+  }
+}
