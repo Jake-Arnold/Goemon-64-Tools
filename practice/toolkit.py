@@ -32,6 +32,7 @@ from practice.native_checkpoints import (
     japan_checkpoint_summary,
 )
 from practice.reports_ui import ReportsMixin
+from practice.dialogue_ui import DialogueMixin
 from practice.value_freezes_ui import ValueFreezesMixin
 from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
@@ -143,7 +144,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(DialogueMixin, UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -529,6 +530,7 @@ class Toolkit(UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMi
         self.build_story_progress_tab(notebook)
         self.build_japanese_fields_tab(notebook)
         self.build_reports_tab(notebook)
+        self.build_dialogue_tab(notebook)
         self.status.trace_add(
             'write', lambda *_: self._refresh_discovery_connection_state())
         self.connection_target.trace_add(

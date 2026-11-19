@@ -1,4 +1,13 @@
-# Goemon Speedrun Tools v0.11.59 — Compact Dashboard and picture-only region flags
+# Goemon Speedrun Tools v0.11.60 — Offline USA Dialogue Explorer
+
+## v0.11.60 — Dialogue browser and experimental in-place text editing
+
+The new **Dialogue** tab in the existing Tkinter toolkit opens a SHA-1-verified, 32 MiB decompressed USA ROM without connecting to a running game. It indexes aligned same-resource script text commands (`0x8010`), decodes known USA glyphs and control tokens, and provides filtering, record references, JSON/CSV export, and conservative text replacement. No copyrighted ROM or extracted dialogue is included.
+
+Edits must preserve token count, control-token placement and original source files; the editor validates and stages changes before writing a separate *decompressed* experimental 32 MiB image. It does **not** repack the retail 16 MiB ROM, support arbitrary-length edits, establish full event reachability or prove in-game rendering. The source must match the original USA decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
+
+Tests run against the verified source image on 19 November 2026: 11 dialogue/installer tests passed locally; 9 source dialogue tests are included in the repository. Emulator gameplay and retail-ROM recompression remain unverified.
+
 
 ## v0.11.59 — Flag images and collapsed advanced controls
 

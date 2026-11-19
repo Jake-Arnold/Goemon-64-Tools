@@ -1,0 +1,211 @@
+"""Offline USA dialogue browser/editor embedded in the existing toolkit."""
+from __future__ import annotations
+
+from pathlib import Path
+import tkinter as tk
+from tkinter import filedialog, messagebox, ttk
+
+from practice.dialogue_rom import (
+    export_index, extract_dialogue, load_usa_image, save_patched_image,
+    validate_replacement,
+)
+
+
+class DialogueMixin:
+    def build_dialogue_tab(self, notebook: ttk.Notebook) -> None:
+        tab = ttk.Frame(notebook, padding=10)
+        notebook.add(tab, text='Dialogue')
+        self.dialogue_tab = tab
+        self.dialogue_path = None
+        self.dialogue_records = []
+        self.dialogue_by_key = {}
+        self.dialogue_staged = {}
+        self.dialogue_filtered = []
+        self.dialogue_status = tk.StringVar(value=(
+            'Select the original, decompressed USA 32 MiB ROM. No game connection required.'))
+        self.dialogue_query = tk.StringVar()
+        self.dialogue_selected_key = None
+
+        top = ttk.Frame(tab)
+        top.pack(fill='x', pady=(0, 7))
+        ttk.Button(top, text='Open decompressed USA ROM',
+                   command=self._dialogue_open).pack(side='left', padx=(0, 8))
+        ttk.Button(top, text='Export index (JSON/CSV)',
+                   command=self._dialogue_export).pack(side='left', padx=(0, 8))
+        ttk.Button(top, text='Build edited ROM',
+                   command=self._dialogue_build).pack(side='left')
+        ttk.Label(tab, textvariable=self.dialogue_status, wraplength=1050).pack(
+            anchor='w', fill='x', pady=(0, 7))
+        search = ttk.Frame(tab)
+        search.pack(fill='x', pady=(0, 6))
+        ttk.Label(search, text='Search text / resource ID').pack(side='left', padx=(0, 8))
+        ttk.Entry(search, textvariable=self.dialogue_query).pack(side='left', fill='x', expand=True)
+        self.dialogue_query.trace_add('write', lambda *_: self._dialogue_filter())
+
+        splitter = ttk.Panedwindow(tab, orient='vertical')
+        splitter.pack(fill='both', expand=True)
+        listing = ttk.Frame(splitter)
+        splitter.add(listing, weight=3)
+        cols = ('resource', 'offset', 'references', 'text')
+        tree = ttk.Treeview(listing, columns=cols, show='headings', selectmode='browse', height=13)
+        self.dialogue_tree = tree
+        for col, title, width, stretch in (
+            ('resource', 'Resource', 90, False),
+            ('offset', 'Offset', 105, False),
+            ('references', 'Refs', 65, False),
+            ('text', 'Decoded text (candidate)', 740, True),
+        ):
+            tree.heading(col, text=title)
+            tree.column(col, width=width, stretch=stretch)
+        scroll = ttk.Scrollbar(listing, orient='vertical', command=tree.yview)
+        tree.configure(yscrollcommand=scroll.set)
+        tree.pack(side='left', fill='both', expand=True)
+        scroll.pack(side='right', fill='y')
+        tree.bind('<<TreeviewSelect>>', self._dialogue_select)
+
+        editor = ttk.LabelFrame(splitter, text=' Selected record — same-length text edits only ', padding=8)
+        splitter.add(editor, weight=2)
+        self.dialogue_record_info = tk.StringVar(value='Select a record to inspect it.')
+        ttk.Label(editor, textvariable=self.dialogue_record_info).pack(anchor='w')
+        text_row = ttk.Frame(editor)
+        text_row.pack(fill='both', expand=True, pady=(5, 5))
+        self.dialogue_editor = tk.Text(text_row, wrap='word', height=6, undo=True)
+        text_scroll = ttk.Scrollbar(text_row, orient='vertical', command=self.dialogue_editor.yview)
+        self.dialogue_editor.configure(yscrollcommand=text_scroll.set)
+        self.dialogue_editor.pack(side='left', fill='both', expand=True)
+        text_scroll.pack(side='right', fill='y')
+        actions = ttk.Frame(editor)
+        actions.pack(fill='x')
+        ttk.Button(actions, text='Stage edited record', command=self._dialogue_stage).pack(side='left')
+        ttk.Button(actions, text='Revert selected', command=self._dialogue_revert).pack(
+            side='left', padx=7)
+        ttk.Label(editor, text=(
+            'Static script references are candidates, not proven reachable conversations. '
+            'Keep control tokens and character count unchanged. '
+            'Output is an experimental decompressed ROM, not a repacked 16 MiB retail ROM.'),
+            wraplength=1000).pack(fill='x', anchor='w', pady=(7, 0))
+
+    def _dialogue_open(self) -> None:
+        path = filedialog.askopenfilename(
+            title='Select decompressed USA ROM (32 MiB)',
+            filetypes=[('Nintendo 64 ROM', '*.z64 *.n64'), ('All files', '*.*')])
+        if not path:
+            return
+        try:
+            image = load_usa_image(path)
+            records = extract_dialogue(image)
+        except (OSError, ValueError) as exc:
+            messagebox.showerror('Dialogue ROM rejected', str(exc), parent=self.dialogue_tab)
+            return
+        self.dialogue_path = Path(path)
+        self.dialogue_records = records
+        self.dialogue_by_key = {record.key: record for record in records}
+        self.dialogue_staged.clear()
+        self.dialogue_selected_key = None
+        self.dialogue_query.set('')
+        self._dialogue_filter()
+        self.dialogue_status.set(
+            f'{len(records)} unique statically referenced records indexed from '
+            f'{len({r.resource_id for r in records})} resources. No edits staged.')
+
+    def _dialogue_filter(self) -> None:
+        if not hasattr(self, 'dialogue_tree'):
+            return
+        query = self.dialogue_query.get().strip().casefold()
+        tree = self.dialogue_tree
+        for item in tree.get_children():
+            tree.delete(item)
+        filtered = [r for r in self.dialogue_records
+                    if not query or query in r.text.casefold() or query in str(r.resource_id)
+                    or query in f'0x{r.text_offset:x}']
+        self.dialogue_filtered = filtered
+        for record in filtered[:800]:
+            preview = self.dialogue_staged.get(record.key, record.text)
+            tree.insert('', 'end', iid=record.key, values=(
+                record.resource_id, f'0x{record.text_offset:X}',
+                len(record.references), preview.replace('\n', ' / ')[:200]))
+        if self.dialogue_records:
+            self.dialogue_status.set(
+                f'{len(filtered)} matching records (first {min(800, len(filtered))} shown); '
+                f'{len(self.dialogue_staged)} staged edits. Select a row to inspect/edit.')
+
+    def _dialogue_select(self, _event=None) -> None:
+        chosen = self.dialogue_tree.selection()
+        if not chosen:
+            return
+        key = chosen[0]
+        record = self.dialogue_by_key.get(key)
+        if record is None:
+            return
+        self.dialogue_selected_key = key
+        self.dialogue_record_info.set(
+            f'ID {record.resource_id} | text +0x{record.text_offset:X} | '
+            f'ROM +0x{record.image_offset:X} | '
+            f'commands: {", ".join(f"+0x{x:X}" for x in record.references[:12])}'
+            f'{" ..." if len(record.references) > 12 else ""} | '
+            f'{len(record.tokens)} tokens')
+        self.dialogue_editor.delete('1.0', 'end')
+        self.dialogue_editor.insert('1.0', self.dialogue_staged.get(key, record.text))
+
+    def _dialogue_stage(self) -> None:
+        key = self.dialogue_selected_key
+        if key is None or key not in self.dialogue_by_key:
+            return
+        record = self.dialogue_by_key[key]
+        # Tk Text always appends a final newline; end-1c excludes only that.
+        replacement = self.dialogue_editor.get('1.0', 'end-1c')
+        try:
+            tokens = validate_replacement(record, replacement)
+        except ValueError as exc:
+            messagebox.showerror('Invalid text edit', str(exc), parent=self.dialogue_tab)
+            return
+        if tokens == record.tokens:
+            self.dialogue_staged.pop(key, None)
+        else:
+            self.dialogue_staged[key] = replacement
+        self._dialogue_filter()
+
+    def _dialogue_revert(self) -> None:
+        key = self.dialogue_selected_key
+        if key is None or key not in self.dialogue_by_key:
+            return
+        self.dialogue_staged.pop(key, None)
+        self.dialogue_editor.delete('1.0', 'end')
+        self.dialogue_editor.insert('1.0', self.dialogue_by_key[key].text)
+        self._dialogue_filter()
+
+    def _dialogue_export(self) -> None:
+        if not self.dialogue_records:
+            return
+        path = filedialog.asksaveasfilename(
+            title='Export indexed dialogue', defaultextension='.json',
+            filetypes=[('JSON index', '*.json'), ('CSV table', '*.csv')])
+        if not path:
+            return
+        try:
+            export_index(self.dialogue_records, path)
+        except (OSError, ValueError) as exc:
+            messagebox.showerror('Export failed', str(exc), parent=self.dialogue_tab)
+            return
+        self.dialogue_status.set(f'Exported {len(self.dialogue_records)} records to {path}')
+
+    def _dialogue_build(self) -> None:
+        if self.dialogue_path is None or not self.dialogue_staged:
+            messagebox.showinfo('Nothing to build', 'Load a ROM and stage at least one edit.',
+                                parent=self.dialogue_tab)
+            return
+        path = filedialog.asksaveasfilename(
+            title='Write patched decompressed USA ROM', defaultextension='.z64',
+            filetypes=[('Nintendo 64 ROM', '*.z64')],
+            initialfile='goemon-usa-dialogue-patched.decompressed.z64')
+        if not path:
+            return
+        try:
+            digest = save_patched_image(self.dialogue_path, path,
+                                       self.dialogue_records, self.dialogue_staged)
+        except (OSError, ValueError) as exc:
+            messagebox.showerror('ROM build rejected', str(exc), parent=self.dialogue_tab)
+            return
+        self.dialogue_status.set(
+            f'Wrote patched 32 MiB decompressed image: {path} (SHA-1 {digest}). '
+            'Emulator boot and dialogue display have not been verified.')

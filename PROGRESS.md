@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-19 — v0.11.60 offline USA dialogue browser and safe in-place editor
+
+- **Changed:** Added `practice/dialogue_rom.py`, `practice/dialogue_ui.py`, a standalone Dialogue tab and `tests/test_dialogue_rom.py`. Search statically referenced dialogue, inspect resource/text/image offsets and script references, export JSON/CSV, stage equal-length glyph edits and write a separate decompressed image.
+- **Reason:** Integrate the existing source-researched USA dialogue VM decoder into the canonical toolkit without altering running-game RAM or importing the entire decomp branch.
+- **Tests actually run:** `GOEMON_USA_DECOMPRESSED_ROM=/tmp/goemon-dialogue-rom-tests/mnsg-japan/config/usa/baserom.decompressed.z64 PYTHONPATH=. python -m unittest discover -s tests -p 'test_dialogue*.py' -v` in the local packaged implementation: 11 passed, including two installer tests not committed here. Original USA retail ROM decompressed via pinned Rommy to the expected SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Main toolkit full regression suite and live emulation not run.
+- **Limits:** USA only; aligned same-resource references are not proof of every reachable conversation. Unknown glyphs stay numeric. Replacement must preserve length and negative controls, cannot edit checksum window, and does not recompress the 16 MiB retail ROM. Output is not yet boot-verified. No copyrighted game bytes committed.
+- **Next:** Run integrated Linux/Windows toolkit UI regression, validate emulator output, then develop a checked resource repacker and length-changing text relocation separately.
+
+
 ## 2026-11-18 — v0.11.59 smaller Dashboard with picture-only regional controls
 
 - **Reason:** User requested removal of persistent advanced setup clutter and flags used as the actual clickable pictures, instead of country emoji with words. Keep the same single Dashboard for both game revisions.
