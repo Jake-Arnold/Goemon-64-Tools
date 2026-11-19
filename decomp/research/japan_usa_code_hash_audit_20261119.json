@@ -2,11 +2,11 @@
   "format": "goemon-japan-usa-original-code-hash-audit-v1",
   "status": "RESEARCH_ONLY",
   "baseline_jp_accepted_before_batch": 423,
-  "jp_accepted_after_native_batch": 429,
+  "jp_accepted_after_native_batch": 432,
   "original_usa_verified_c_functions": 1225,
   "jp_original_asm_indexed": 7076,
-  "unaccepted_unique_jp_exact_instruction_matches": 158,
-  "matching_bytes": 4252,
+  "unaccepted_unique_jp_exact_instruction_matches": 155,
+  "matching_bytes": 3824,
   "by_size": {
     "8": 43,
     "12": 63,
@@ -14,33 +14,22 @@
     "20": 6,
     "24": 4,
     "28": 1,
-    "32": 6,
+    "32": 5,
     "36": 2,
     "40": 3,
     "44": 1,
     "48": 5,
     "52": 2,
-    "56": 2,
+    "56": 1,
     "60": 1,
     "68": 2,
     "80": 5,
     "84": 1,
     "96": 2,
     "100": 1,
-    "116": 6,
-    "340": 1
+    "116": 6
   },
   "records": [
-    {
-      "jp_name": "func_8003D628_3E228",
-      "jp_rom_offset": "0x3E228",
-      "bytes": 340,
-      "original_code_sha256": "bfa8ec5494880607e6b7d822dc952b22da49d7617ab50d59c6e920cbc45983a0",
-      "original_asm_owner": "asm/japan_0/nonmatchings/main_3D810/func_8003D628_3E228.s",
-      "verified_usa_source_candidates": [
-        "func_8003D9B8_3E5B8"
-      ]
-    },
     {
       "jp_name": "func_80216DBC_69E4BC",
       "jp_rom_offset": "0x69E4BC",
@@ -232,16 +221,6 @@
       ]
     },
     {
-      "jp_name": "func_8001F53C_2013C",
-      "jp_rom_offset": "0x2013C",
-      "bytes": 56,
-      "original_code_sha256": "0340c73abc01e154f93a5dd550b73594a000c588f361751713376b59714b2ca6",
-      "original_asm_owner": "asm/japan_0/nonmatchings/main_1D100/func_8001F53C_2013C.s",
-      "verified_usa_source_candidates": [
-        "func_8001F878_20478"
-      ]
-    },
-    {
       "jp_name": "func_801F3390_5AF360",
       "jp_rom_offset": "0x5AF360",
       "bytes": 56,
@@ -389,16 +368,6 @@
       "original_asm_owner": "asm/japan_0/6FF7D0.s",
       "verified_usa_source_candidates": [
         "func_0800329C_6FE49C"
-      ]
-    },
-    {
-      "jp_name": "func_8000FF4C_10B4C",
-      "jp_rom_offset": "0x10B4C",
-      "bytes": 32,
-      "original_code_sha256": "ab5308302557648ef39f94f7e32d8743087658e0b435912bcfadcc6548ede7fd",
-      "original_asm_owner": "asm/japan_0/nonmatchings/main_10B40/func_8000FF4C_10B4C.s",
-      "verified_usa_source_candidates": [
-        "func_8001018C_10D8C"
       ]
     },
     {
@@ -1861,6 +1830,7 @@
     "Complete original instruction-byte equality is only a candidate mapping. Each function still requires original JP source-unit ownership, native IDO output, complete ROM proof and ELF/relocations.",
     "7,076 original JP assembly disassembly entries were indexed; original ELF contains 7,376 positive functions. The difference should not be assumed to be missing decompilable C.",
     "Different functions can share short machine-code signatures. Repeated low-byte signatures have ambiguous semantics and are not proofs.",
-    "Two exact main-executable byte-clear and byte-copy functions were promoted to JP C at original addresses; see decomp/regions/japan_0_main2.json."
+    "Two exact main-executable byte-clear and byte-copy functions were promoted to JP C at original addresses; see decomp/regions/japan_0_main2.json.",
+    "Three additional original C-equivalent JP main functions were verified: 340-byte script comparator, 56-byte angle helper and 32-byte fixed-loop helper; see decomp/regions/japan_0_main3.json."
   ]
 }
