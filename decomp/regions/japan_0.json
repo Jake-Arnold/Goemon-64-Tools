@@ -823,5 +823,26 @@
     "proof": "decomp/results/japan_0_380_usa_equiv36_20261119.json",
     "clean_replay_metadata_sha256": "f1cf0cb998d26630eea639121b6aa4d21425545b1abf656e556a92407b295722",
     "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_4_37_additional_41": {
+    "status": "PASSED_G2_LOCAL",
+    "baseline_matching_c": 380,
+    "new_functions": 41,
+    "new_matching_bytes": 1700,
+    "matching_c_functions": 421,
+    "matching_c_bytes": 9608,
+    "remaining_assembly_functions": 6955,
+    "source_manifests": [
+      "decomp/regions/japan_0_equiv4_more.json",
+      "decomp/regions/japan_0_equiv37_more.json"
+    ],
+    "stagers": [
+      "decomp/japan_usa_equivalent_four_more.py",
+      "decomp/japan_usa_equivalent_thirtyseven_more.py"
+    ],
+    "build": "decomp/build_japan_usa_equiv_421.sh",
+    "proof": "decomp/results/japan_0_421_usa_equiv41_20261119.json",
+    "independent_replay_proof_sha256": "bbc517f46495b1e38fdba3c8787ad047de0ce0b29aacb934f1e3fd5100ed6f75",
+    "emulator_gameplay": "NOT_RUN"
   }
 }
