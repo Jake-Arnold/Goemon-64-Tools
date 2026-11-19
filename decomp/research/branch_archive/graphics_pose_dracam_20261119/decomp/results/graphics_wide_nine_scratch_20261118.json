@@ -1,0 +1,260 @@
+{
+  "format": "goemon-graphics-wide-maincode-scratch-v1",
+  "date_utc": "2026-11-18",
+  "branch": "chatgptweb/graphics-wide-actor-camera-research",
+  "status": "RESEARCH_ONLY",
+  "canonical_at_discovery": {
+    "branch": "chatgptweb/decomp",
+    "head_sha": "4a3b9ebc7281bebc50d8840684fcc63aeffcccad",
+    "accepted_usa_c": 864,
+    "accepted_usa_bytes": 37904,
+    "accepted_japan_0_c": 39,
+    "remaining_usa_assembly": 6499
+  },
+  "region": "usa",
+  "original_retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "compiler": "IDO 5.3 original -O2 -mips2",
+  "new_functions": 9,
+  "new_instruction_bytes": 264,
+  "units": [
+    {
+      "source": "wide_objlink.c",
+      "start": "0x12210",
+      "end": "0x12234",
+      "bytes": 36,
+      "segment": "main / Menu Graphics"
+    },
+    {
+      "source": "wide_floatset.c",
+      "start": "0x130A0",
+      "end": "0x130AC",
+      "bytes": 12,
+      "segment": "main / dracam"
+    },
+    {
+      "source": "wide_intfloat.c",
+      "start": "0x13100",
+      "end": "0x13118",
+      "bytes": 24,
+      "segment": "main / dracam"
+    },
+    {
+      "source": "wide_vectors.c",
+      "start": "0x133B8",
+      "end": "0x13478",
+      "bytes": 192,
+      "segment": "main / dracam",
+      "functions": 6,
+      "contiguous": true
+    }
+  ],
+  "function_anchors": [
+    {
+      "name": "func_80011610_12210",
+      "rom_offset": "0x12210",
+      "guest_vma": "0x80011610",
+      "bytes": 36,
+      "original_sha256": "3710d62b2c4dae001b7703483c4cc39b97f3aaab36eb88deae537dc8f9ff5434",
+      "native": "EXACT_SCRATCH",
+      "canonical": "NOT_RUN"
+    },
+    {
+      "name": "func_800124A0_130A0",
+      "rom_offset": "0x130A0",
+      "guest_vma": "0x800124A0",
+      "bytes": 12,
+      "original_sha256": "122ded41f6b955a0eae41f7cd16293d7fad4e38d9ded8735fbbf657f0d6fa106",
+      "native": "EXACT_SCRATCH",
+      "canonical": "NOT_RUN"
+    },
+    {
+      "name": "func_80012500_13100",
+      "rom_offset": "0x13100",
+      "guest_vma": "0x80012500",
+      "bytes": 24,
+      "original_sha256": "a3e48ab8383ee90e5cf6011fcd180361bfd050df6839c36ad6c0f528f321c47e",
+      "native": "EXACT_SCRATCH",
+      "canonical": "NOT_RUN"
+    },
+    {
+      "name": "func_800127B8_133B8",
+      "rom_offset": "0x133B8",
+      "guest_vma": "0x800127B8",
+      "bytes": 48,
+      "original_sha256": "11229bb836a4ea8cfc9542b6ccfe7bdf84039631f63c343712be8b505a515d31",
+      "native": "EXACT_SCRATCH",
+      "canonical": "NOT_RUN"
+    },
+    {
+      "name": "func_800127E8_133E8",
+      "rom_offset": "0x133E8",
+      "guest_vma": "0x800127E8",
+      "bytes": 20,
+      "original_sha256": "6cbe01ddb844308ccd8f2894c0268a652cb4ad452a09f5cf582a72c0b9a74747",
+      "native": "EXACT_SCRATCH",
+      "canonical": "NOT_RUN"
+    },
+    {
+      "name": "func_800127FC_133FC",
+      "rom_offset": "0x133FC",
+      "guest_vma": "0x800127FC",
+      "bytes": 28,
+      "original_sha256": "7675051da7c384a3110b4a9e598b51523bfa5b35923ef551021b87781f24208b",
+      "native": "EXACT_SCRATCH",
+      "canonical": "NOT_RUN"
+    },
+    {
+      "name": "func_80012818_13418",
+      "rom_offset": "0x13418",
+      "guest_vma": "0x80012818",
+      "bytes": 48,
+      "original_sha256": "28908f1630030c3f5847c3a0eb82b58f405c07044f213e8234e34418c7e65ea1",
+      "native": "EXACT_SCRATCH",
+      "canonical": "NOT_RUN"
+    },
+    {
+      "name": "func_80012848_13448",
+      "rom_offset": "0x13448",
+      "guest_vma": "0x80012848",
+      "bytes": 20,
+      "original_sha256": "8c18ebaa4b8aab5f97c0ede00016753e5a48b647eb589d905c5fa3459c692dbb",
+      "native": "EXACT_SCRATCH",
+      "canonical": "NOT_RUN"
+    },
+    {
+      "name": "func_8001285C_1345C",
+      "rom_offset": "0x1345C",
+      "guest_vma": "0x8001285C",
+      "bytes": 28,
+      "original_sha256": "b3b3d2f53ac8fb239cb55eb930d2326ffd410862b34f5c2cea895e385cf58366",
+      "native": "EXACT_SCRATCH",
+      "canonical": "NOT_RUN"
+    }
+  ],
+  "native_scratch": {
+    "baseline_original_build": "EXACT",
+    "replaced_candidate_functions": 9,
+    "build_result": "PASS",
+    "rom_bytes": 33554432,
+    "full_byte_identical": true,
+    "rebuilt_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "elf_relocation_sections": 72,
+    "elf_relocation_entries": 82216,
+    "elf_relocation_semantic_multisets_equal": true,
+    "elf_original_positive_func_identity_count": 7376,
+    "elf_positive_func_identities_equal": true,
+    "no_new_symbol_aliases": true,
+    "main_linker_subalign": 4,
+    "splitting_offsets": [
+      "0x12210",
+      "0x12234",
+      "0x130A0",
+      "0x130AC",
+      "0x13100",
+      "0x13118",
+      "0x133B8",
+      "0x13478"
+    ],
+    "compiler_object_section_header_padding_trim": [
+      {
+        "source": "wide_objlink.c",
+        "from": 48,
+        "to": 36
+      },
+      {
+        "source": "wide_floatset.c",
+        "from": 16,
+        "to": 12
+      },
+      {
+        "source": "wide_intfloat.c",
+        "from": 32,
+        "to": 24
+      }
+    ],
+    "source_instructions_changed_by_padding_fix": false,
+    "original_relocations_changed_by_padding_fix": false
+  },
+  "tests": {
+    "individual_original_IDO": "9 exact prefixes and original-size instruction regions",
+    "combined_six_adjacent_IDO": "192/192 exact",
+    "host_GCC_ASAN_UBSAN": "PASS",
+    "host_bad_64bit_alignment_case": "fixed test fixture; no C production change",
+    "rom_anchor_real_original_usa": "PASS",
+    "rom_anchor_wrong_inputs_rejected": 2,
+    "canonical_873_g2": "NOT_RUN",
+    "canonical_inventory": "NOT_RUN",
+    "full_decomp_local_ci": "NOT_RUN",
+    "japan_native": "NOT_RUN"
+  },
+  "nearby_research_only": [
+    {
+      "target": "func_800115B8_121B8",
+      "original_bytes": 40,
+      "best_mismatches": 5,
+      "reason": "compiler elides intermediary +0x5C base"
+    },
+    {
+      "target": "func_800115E0_121E0",
+      "original_bytes": 24,
+      "best_mismatches": 3,
+      "reason": "compiler collapses subobject pointer"
+    },
+    {
+      "target": "func_800115F8_121F8",
+      "original_bytes": 24,
+      "best_mismatches": 3,
+      "reason": "compiler collapses subobject pointer"
+    },
+    {
+      "target": "func_80012470_13070",
+      "original_bytes": 48,
+      "best_mismatches": 2,
+      "reason": "local halfword register allocation differs"
+    },
+    {
+      "target": "func_80020308_20F08",
+      "original_bytes": 92,
+      "best_mismatches": 9,
+      "reason": "global addressing and loop branch schedule"
+    },
+    {
+      "target": "func_800206D4_212D4",
+      "original_bytes": 40,
+      "best_mismatches": 8,
+      "reason": "large-offset address calculation"
+    },
+    {
+      "target": "func_800206FC_212FC",
+      "original_bytes": 40,
+      "best_mismatches": 8,
+      "reason": "large-offset address calculation"
+    },
+    {
+      "target": "func_8001E7C4_1F3C4",
+      "original_bytes": 164,
+      "reason": "stack allocation and argument/register scheduling; 5 bounded variants failed"
+    },
+    {
+      "target": "func_8001E868_1F468",
+      "original_bytes": 164,
+      "reason": "same family; 3 bounded variants failed"
+    },
+    {
+      "target": "func_8001E90C_1F50C",
+      "original_bytes": 164,
+      "reason": "same family; 3 bounded variants failed"
+    }
+  ],
+  "source_blobs": {
+    "wide_objlink.c": "fd104b44ac6b2c4407a760dc17fbfec87305760d",
+    "wide_floatset.c": "529b70c41ed4466fca6afe35d7bb0a7241b72efb",
+    "wide_intfloat.c": "fc188352167321d378267505a864c835fe50b0fc",
+    "wide_vectors.c": "1906ed782262ed8e8bcb5db766a4307bdbffd27b",
+    "test_wider_actor_fields.c": "61e1467eca232fa1bfa5b53bb183c8b5c251018f",
+    "verify_rom_anchors.py": "f881f0d5e9a2b11abdf12967084602e2ef10b4fb"
+  },
+  "restrictions": "No ROM bytes, proprietary toolchain, original ASM, game assets or live RAM dumps committed. Production 864-C count and original ASM ownership unchanged."
+}

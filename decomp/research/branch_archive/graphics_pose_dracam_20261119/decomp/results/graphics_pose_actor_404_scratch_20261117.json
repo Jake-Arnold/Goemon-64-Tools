@@ -1,0 +1,137 @@
+{
+  "format": "goemon-usa-graphics-pose-actor-scratch-v1",
+  "region": "usa",
+  "date": "2026-11-17",
+  "status": "RESEARCH_ONLY",
+  "canonical_baseline": {
+    "branch": "chatgptweb/decomp",
+    "head_at_discovery": "1c570d168cc150f6487a6d0e30f04bd1a48cdcd1",
+    "accepted_c": 864,
+    "accepted_bytes": 37904,
+    "remaining_assembly": 6499,
+    "source_checkout_available_in_native_host": false
+  },
+  "pinned_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "retail_usa_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "scratch_expanded_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "scratch_rom_bytes": 33554432,
+  "scratch_rom_byte_for_byte_exact": true,
+  "functions_new": [
+    {
+      "name": "func_80019160_19D60",
+      "vma": "0x80019160",
+      "original_rom_offset": "0x19D60",
+      "bytes": 108,
+      "original_sha256": "9de12852d3db1d6254a898ec8d3130f26de26eecc4da9da0eb4a062c4cf3b0b8",
+      "source": "actor_graphics_traverse.c",
+      "native_original_address": "EXACT_SCRATCH"
+    },
+    {
+      "name": "func_8001E2BC_1EEBC",
+      "vma": "0x8001E2BC",
+      "original_rom_offset": "0x1EEBC",
+      "bytes": 196,
+      "original_sha256": "04f8e30635d170d59c6541e6cc4b91f9f2b0285b830ea6c3c6b16eefb0082ad0",
+      "source": "pose_wrappers.c",
+      "native_original_address": "EXACT_SCRATCH"
+    },
+    {
+      "name": "func_8001E380_1EF80",
+      "vma": "0x8001E380",
+      "original_rom_offset": "0x1EF80",
+      "bytes": 100,
+      "original_sha256": "d8b6f95d1f6e1baf976d2cd8b630afcad968584e77f7b3e9ecb6e1afe8f78dd4",
+      "source": "pose_wrappers.c",
+      "native_original_address": "EXACT_SCRATCH"
+    }
+  ],
+  "new_functions": 3,
+  "new_instruction_bytes": 404,
+  "pose_two_functions_contiguous_original": {
+    "start": "0x1EEBC",
+    "end": "0x1EFE4",
+    "bytes": 296,
+    "both_native_exact_same_translation_unit": true
+  },
+  "accepted_function_reincluded_in_scratch_not_new": "func_8001F878_20478",
+  "accepted_rotation_56_original_sha256": "0340c73abc01e154f93a5dd550b73594a000c588f361751713376b59714b2ca6",
+  "scratch_function_count": 4,
+  "scratch_function_bytes": 460,
+  "elf_relocations": {
+    "sections_baseline": 72,
+    "sections_scratch": 72,
+    "entries_baseline": 82216,
+    "entries_scratch": 82216,
+    "all_section_semantic_multisets_equal": true
+  },
+  "elf_original_positive_func_identity": {
+    "baseline_count": 7376,
+    "scratch_count": 7376,
+    "positive_name_vma_size_equal": true
+  },
+  "section_padding_treatment": "Only ELF32 .text sh_size metadata changed for IDO and generated ASM tail padding; no instruction payload or relocations changed",
+  "host_semantic_tests": {
+    "pose_wrappers": "PASS_ASAN_UBSAN",
+    "actor_hierarchy": "PASS_ASAN_UBSAN",
+    "callback_mutation_case": true
+  },
+  "japan_parallel": {
+    "expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "counterpart_usa": "func_8001E2BC_1EEBC",
+    "counterpart_jp_rom_offset": "0x1EB80",
+    "counterpart_jp_vma": "0x8001DF80",
+    "length": 196,
+    "original_changed_instruction_words": 7,
+    "global_width_bytes": 2,
+    "usa_globs": [
+      "0x801689F0",
+      "0x801689F2",
+      "0x801689F4"
+    ],
+    "jp_globs": [
+      "0x8016E1D0",
+      "0x8016E1D2",
+      "0x8016E1D4"
+    ],
+    "offset_exception": "+0x57E0",
+    "original_code_counterpart": "PASS",
+    "japan_native_c": "NOT_RUN",
+    "japan_full_rom": "NOT_RUN",
+    "japan_live_gameplay": "NOT_RUN"
+  },
+  "rejected_or_blocked": [
+    {
+      "name": "func_8001E3E4_1EFE4",
+      "size": 96,
+      "reason": "two independent FP instructions swapped at +0x14/+0x18"
+    },
+    {
+      "name": "func_8001E444_1F044",
+      "size": 96,
+      "reason": "FPU register/constant assignment or store order differs"
+    },
+    {
+      "name": "func_80019160_19D60",
+      "variant": "v1",
+      "reason": "different traversal struct scheduling"
+    },
+    {
+      "name": "func_80019160_19D60",
+      "variant": "v3",
+      "reason": "control-flow/delay-slot mismatch"
+    }
+  ],
+  "source_git_blobs": {
+    "pose_wrappers.c": "e49d141ff838841f2b92a4602c8544be09e0cd92",
+    "actor_graphics_traverse.c": "bd77deb37b70bea9d586479b30342a99b7701bcc",
+    "test_pose_wrappers_host.c": "b62b6e7ef22d4518612a47fbd1b2ad1fcb733d3c",
+    "test_actor_traverse_host.c": "9432518fd546ba58a77ae7806692df0303ac4ba6",
+    "verify_rom_anchors.py": "59883515119b32af42d9352ee2edfd542ee17797"
+  },
+  "canonical_combined_867_g2": "NOT_RUN",
+  "canonical_inventory": "NOT_RUN",
+  "full_decomp_local_ci": "NOT_RUN",
+  "production_manifests_changed": false,
+  "promoted_count_delta": 0
+}
