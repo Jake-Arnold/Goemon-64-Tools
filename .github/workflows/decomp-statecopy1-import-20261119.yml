@@ -6,7 +6,6 @@ permissions:
   contents: write
 jobs:
   source-import:
-    if: github.event.head_commit.message == 'chore(decomp): stage audited 1501-C source payload'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
