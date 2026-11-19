@@ -76,11 +76,12 @@ JP_CONFIRMED_GLYPHS = {
     141: 'ャ', 146: 'グ', 158: 'ド', 164: 'パ', 165: 'ピ', 175: 'ー',
     191: 'F', 200: 'O', 206: 'U', 224: '？', 276: '町', 302: '行',
     318: '時', 324: '来', 337: '聞',
-    # Project64 screenshot: 2026-11-19 Kai Highway replacement prints
-    # 'ABCDEFGHIJKLMNOPQRSTU' clearly. The V at the right edge is clipped;
-    # V..Z remain inferred-only until separately observed on screen.
-    # Preserve the earlier independently proven F/O/U values unchanged.
-    **{186 + index: chr(ord('A') + index) for index in range(21)},
+    # Two user Project64 screenshots with the exact sequential 186..211 payload:
+    # the first proves A..U, the second shows ABCDEFG / HIJKLMN /
+    # OPQRSTU / VWXYZ in four manually split lines (V..Z now legible).
+    # All A..Z are verified on-screen in a modified original-Japan ROM.
+    # In the Kai banner, extra lines draw below the fixed-height window.
+    **{186 + index: chr(ord('A') + index) for index in range(26)},
 }
 JP_CONFIRMED_GLYPH_TO_TOKEN = {character: token for token, character in JP_CONFIRMED_GLYPHS.items()}
 

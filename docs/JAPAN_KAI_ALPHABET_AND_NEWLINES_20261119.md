@@ -21,3 +21,18 @@ This change does not auto-wrap, resize UI windows, or establish whether addition
 
 ## Test scope
 Added source-only tests for A–U encoding round trip, V–Z safety, explicit -60 insertion and non-newline control preservation, plus headless Japanese UI staging. Full modified-Japan in-emulator manual-newline rendering remains to be tested.
+
+## Second Project64 screenshot: all A–Z and manual break rendering
+
+The user subsequently supplied a second screenshot of a modified Japanese Kai Highway area name. This image clearly renders four manually separated lines under the original 【カイ】 header:
+
+```
+ABCDEFG
+HIJKLMN
+OPQRSTU
+VWXYZ
+```
+
+The original user-entered alphabet token series was 186–211 in order. The previously occluded tail V–Z therefore confirms **207=V, 208=W, 209=X, 210=Y, 211=Z** visually. Alongside the previous A–U screenshot, **all 26 uppercase IDs** are now confirmed and directly editable. The new confidence level is based on actual emulator output, not solely on extrapolation from UFO/START. Lowercase remains unmapped.
+
+The screenshot confirms engine handling of manually inserted **-60** controls: it begins a new line each time. It also demonstrates that these lines do **not** enlarge the original Kai title artwork. Lines two, three and four are plainly rendered below the green window background and can overlap the 3D scene. No claim of safe wrapping/vertical capacity in other window profiles follows from this experiment.

@@ -119,7 +119,7 @@ class RegionUIIntegration(unittest.TestCase):
         self.app.dialogue_selected_key=record.key
         self.app.dialogue_editor.insert('1.0',record.text)
         self.assertFalse(self.app.dialogue_kana_hypothesis_enabled.get())
-        self.assertIn('126 screenshot-confirmed glyph IDs',self.app.dialogue_kana_note.get())
+        self.assertIn('131 screenshot-confirmed glyph IDs',self.app.dialogue_kana_note.get())
         self.assertIn('76/160 kana positions verified',self.app.dialogue_kana_note.get())
         self.app.dialogue_kana_hypothesis_enabled.set(True)
         self.app._dialogue_toggle_kana_hypothesis()

@@ -39,16 +39,20 @@ class EncodingTests(unittest.TestCase):
 
     def test_screenshot_verified_uppercase_and_manual_line_breaks(self):
         from practice.dialogue_japan import JapanDialogueRecord
-        self.assertEqual(encode_japan_text('ABCDEFGHIJKLMNOPQRSTU'),
-                         tuple(range(186,207)))
-        self.assertEqual(decode_japan_tokens(tuple(range(186,207))),
-                         'ABCDEFGHIJKLMNOPQRSTU')
-        # The following five letters were outside or clipped by the screenshot.
-        with self.assertRaises(ValueError):encode_japan_text('VWXYZ')
+        alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        self.assertEqual(encode_japan_text(alphabet),tuple(range(186,212)))
+        self.assertEqual(decode_japan_tokens(tuple(range(186,212))),alphabet)
+        # Project64 shows these four lines below the fixed Kai title.
+        grouped='ABCDEFG\nHIJKLMN\nOPQRSTU\nVWXYZ'
+        grouped_tokens=(tuple(range(186,193))+(-60,)+tuple(range(193,200))+
+                        (-60,)+tuple(range(200,207))+(-60,)+tuple(range(207,212)))
+        self.assertEqual(encode_japan_text(grouped),grouped_tokens)
+        self.assertEqual(decode_japan_tokens(grouped_tokens),grouped)
         road=JapanDialogueRecord(82,0x18,0x742358,(13,19,15,78,16),(8,))
         proposed=validate_japan_replacement(road,' かい\nどう')
         self.assertEqual(proposed,(13,19,15,-60,78,16))
         self.assertEqual(encode_japan_text(decode_japan_tokens(proposed)),proposed)
+        self.assertEqual(validate_japan_replacement(road,grouped),grouped_tokens)
 
     def test_drop_paths_with_braces(self):
         class MockTcl:

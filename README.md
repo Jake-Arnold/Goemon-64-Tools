@@ -1,4 +1,14 @@
-# Goemon Speedrun Tools v0.11.71 — Japanese Uppercase Editing and Manual Newlines
+# Goemon Speedrun Tools v0.11.72 — Complete Uppercase English Alphabet Verified
+
+## v0.11.72 — A–Z now directly editable, and Japan newlines proven in-game
+
+The user's **second Project64 screenshot** of a modified Japan ROM displays all **26 English uppercase letters** across four manually inserted lines: `ABCDEFG`, `HIJKLMN`, `OPQRSTU`, `VWXYZ`. The second screenshot independently verifies the previously clipped **V–Z** numeric IDs (207–211); all **186–211=A–Z** are now confirmed and can be typed as ordinary uppercase English into Japanese Dialogue records. The verified glyph table increases from 126 to **131** IDs. Lowercase English characters remain unmapped.
+
+The visible line breaks demonstrate that manual **Enter → -60** insertion from v0.11.71 works in Project64. However, the Kai area-name window has a fixed original height; extra rows visibly appear **below** the painted dialogue panel. This is evidence of clipping/overflow, *not* automatic window growth. Japan's Window profile dropdown and auto-wrap remain disabled until its native font advances and per-style geometry are verified. The inferred 160-kana map is still **76 individually verified / 84 provisional**; digits ２–９ are still provisional.
+
+Tests for the exact A–Z encode/decode and four-line tokens were extended; no ROM assets, screenshot image bytes, third-party dependencies, ROM repacker or original USA code changed. Source evidence: `docs/JAPAN_KAI_ALPHABET_AND_NEWLINES_20261119.md`.
+
+
 
 ## v0.11.71 — Native uppercase A–U proven in modified Japanese gameplay
 

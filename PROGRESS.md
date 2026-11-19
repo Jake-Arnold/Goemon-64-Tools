@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-19 — v0.11.72 A–Z verified and Japanese Enter newlines visible in Project64
+
+- **Gameplay screenshot:** The user's second Project64 Japanese ROM capture shows exactly four lines of Roman text `ABCDEFG`, `HIJKLMN`, `OPQRSTU`, `VWXYZ` from the ordered token IDs 186..211, separated by manual Enter controls -60. The last five letters previously clipped (`207..211=V..Z`) are now fully readable, promoting 5 more IDs; 131 JP glyphs are individually verified. Existing A..U were proven in the previous screenshot.
+- **Behaviour:** Japanese uppercase A–Z can now be typed directly in the Unicode editor and round-trip to the original numbered tokens. Enter newline staging from v0.11.71 renders in-game; native Kai art remains short and subsequent lines visibly draw outside the window. No automatic wrapping, geometry inference, dynamic box resizing, or verification of longer dialogue windows is claimed.
+- **Coverage:** 76/160 inferred kana screenshot-confirmed (84 provisional). 26/26 uppercase Latin confirmed. Japanese full-width digits ０ and １ confirmed, ２–９ unverified. Overall confirmed glyph ID table increased 126→131, including other kanji, formatting glyphs and punctuation.
+- **Code/tests:** Expand direct Unicode map 186..211, update provisional-description UI for kana/digits, update screenshot-backed count expectations and test full A–Z glyph identity and staged manual newline-separated 4-line input. Evidence: `docs/JAPAN_KAI_ALPHABET_AND_NEWLINES_20261119.md`. The original Japanese ROM source, USA editor, retail repacker and other branch histories are not changed. New GitHub CI status must be checked before claiming green.
+
+
 ## 2026-11-19 — v0.11.71 Project64 alphabet proof and manual -60 newline support
 
 - **Evidence:** User-supplied Project64 screenshot shows original Japanese Kai heading and readable `ABCDEFGHIJKLMNOPQRSTU` extending to the right of its art. In the preceding turn, the supplied patch payload enumerated `<token:186>` through `<token:211>` in order. This independently validates IDs 186..206=A..U, 18 new assignments beyond F/O/U, now 126 screenshot-backed glyphs in the Japanese Unicode editor. Do not promote V–Z from clipped/offscreen pixels; they remain speculative.

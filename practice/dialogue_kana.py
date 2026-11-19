@@ -42,7 +42,10 @@ JP_KANA_HYPOTHESIS = {
 # Two further contiguous blocks are suggested by the screenshot-proven UFO
 # (206=U,191=F,200=O), together with the ROM's literal START button context
 # (204,205,186,203,205) and the prior screenshot-proven 176=０,177=１.
-# ALL OTHER uppercase and digit IDs remain an UNVERIFIED preview only.
+# Screenshot #2 now verifies the entire A-Z sequence. Only the remaining
+# *digits* ２–９ are still unverified predictions. Kana conjectures are
+# unchanged. A-Z in this hypothesis dictionary are overridden by the same
+# verified entries in JP_CONFIRMED_GLYPHS.
 JP_LATIN_HYPOTHESIS = {186+i: chr(ord('A')+i) for i in range(26)}
 JP_DIGIT_HYPOTHESIS = {176+i: chr(ord('０')+i) for i in range(10)}
 JP_GLYPH_HYPOTHESIS = {**JP_KANA_HYPOTHESIS, **JP_LATIN_HYPOTHESIS,

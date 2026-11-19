@@ -68,7 +68,7 @@ class DialogueRegionMixin:
         self.dialogue_kana_panel=ttk.LabelFrame(self.dialogue_tab,
             text='Experimental Japanese kana ordering — screenshot comparison ONLY',padding=5)
         ttk.Checkbutton(self.dialogue_kana_panel,
-            text='Show inferred kana, remaining A–Z and digits in search/preview',
+            text='Show inferred kana and digits (unverified) in search/preview',
             variable=self.dialogue_kana_hypothesis_enabled,
             command=self._dialogue_toggle_kana_hypothesis).pack(anchor='w')
         self.dialogue_kana_note=tk.StringVar(value=(
@@ -77,7 +77,7 @@ class DialogueRegionMixin:
             f'{len(JP_KANA_HYPOTHESIS)} kana positions verified. '
             'Unverified predicted characters remain read-only.'))
         ttk.Label(self.dialogue_kana_panel,text=(
-            'When enabled, search guessed kana, romaji or uppercase words (START/UFO). '
+            'When enabled, search guessed kana, romaji or verified uppercase words (START/UFO). '
             'Use resource:112 to inspect a whole dialogue resource; '
             'resource:112 pu searches within it. Unknown glyphs remain hard romaji barriers.'),
             wraplength=1040).pack(fill='x',anchor='w')
@@ -287,7 +287,7 @@ class DialogueRegionMixin:
                 if self.dialogue_kana_hypothesis_enabled.get():
                     content=decode_japan_kana_preview(tokens)
                     self.dialogue_kana_note.set(
-                        f'UNVERIFIED kana/Latin/digit guesses: {inferred_glyph_count(tokens)} of '
+                        f'UNVERIFIED kana/digit guesses: {inferred_glyph_count(tokens)} of '
                         f'{sum(t>=0 for t in tokens)} glyph tokens. '
                         f'{len(JP_CONFIRMED_GLYPHS)} original-ROM/screenshot-confirmed IDs are '
                         'editable; all other inferred glyphs remain read-only.')
