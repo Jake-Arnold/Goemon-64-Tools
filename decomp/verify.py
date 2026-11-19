@@ -336,6 +336,14 @@ def menu2_stage(manifest):
         raise ValueError('Unreviewed menu2 production stage contract')
     return native.load_fixture()
 
+def statecopy1_stage(manifest):
+    stage=manifest.get('overlay_statecopy1_stage')
+    if stage is None:return None
+    from . import overlay_statecopy1 as native
+    if stage != {'format':native.STAGE_FORMAT}:
+        raise ValueError('Unreviewed statecopy1 production stage contract')
+    return native.load_fixture()
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -407,7 +415,8 @@ def claimed_functions(manifest):
                             (micro2_stage(manifest),'overlay_micro2'),
                             (micro15_stage(manifest),'overlay_micro15'),
                             (micro20_stage(manifest),'overlay_micro20'),
-                            (menu2_stage(manifest),'overlay_menu2')):
+                            (menu2_stage(manifest),'overlay_menu2'),
+                            (statecopy1_stage(manifest),'overlay_statecopy1')):
         if fixture:
             from importlib import import_module
             mod=import_module('.'+modname,package='decomp')
@@ -1334,7 +1343,7 @@ def load_manifest(path):
     file11_mode = file11_stage_mode(manifest)
     if file11_mode is not None:
         if file11_mode in (143,144,152,179,183,184,187,269):
-            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage')})
+            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage')})
             candidates = [(f['name'], f['rom_offset'], f['size'])
                           for f in file11_adapter(file11_mode).entries()]
         else:
@@ -1451,7 +1460,7 @@ def load_manifest(path):
             raise ValueError('VM table layout requires pinned assignment handler')
     wide_fixture=wide132_stage(manifest)
     if wide_fixture:
-        existing=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage')})
+        existing=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage')})
         existing_names={row['name'] for row in existing}
         existing_bounds=[(row['rom_offset'],row['rom_offset']+row['size']) for row in existing]
         for row in wide_fixture['functions']:
@@ -1495,13 +1504,14 @@ def load_manifest(path):
         ('overlay_micro2_stage',micro2_stage,'overlay_micro2'),
         ('overlay_micro15_stage',micro15_stage,'overlay_micro15'),
         ('overlay_micro20_stage',micro20_stage,'overlay_micro20'),
-        ('overlay_menu2_stage',menu2_stage,'overlay_menu2')):
+        ('overlay_menu2_stage',menu2_stage,'overlay_menu2'),
+        ('overlay_statecopy1_stage',statecopy1_stage,'overlay_statecopy1')):
         fixture=loader(manifest)
         if fixture:
             from importlib import import_module
             native=import_module('.'+modname,package='decomp')
             previous=claimed_functions({k:v for k,v in manifest.items() if k not in (
-                key, 'overlay_callbacks10_stage' if key=='overlay_file18_53_stage' else key, 'overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage')})
+                key, 'overlay_callbacks10_stage' if key=='overlay_file18_53_stage' else key, 'overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage')})
             names={f['name'] for f in previous}
             intervals=[(f['rom_offset'],f['rom_offset']+f['size']) for f in previous]
             for f in native.functions(fixture):
@@ -1524,7 +1534,7 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
             raise ValueError('file_11 staging requires authenticated USA decompressed ROM')
         if file11_mode in (143,144,152,179,183,184,187,269):
             adapter=file11_adapter(file11_mode)
-            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage')},reference_rom)
+            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage')},reference_rom)
             file11_inline=adapter.source_payloads(checkout,plan)
             text=adapter.stage_splat(text,plan)
         else:
@@ -2565,7 +2575,7 @@ def run_build(args,manifest,report):
     logged('candidate-build',['make','-j'+str(args.jobs),'UV='+uv],candidate)
     symbols=parse_symbols(capture(['mips-linux-gnu-nm','-n','build/usa/mnsg.elf'],candidate))
     result=compare_images(expected,(candidate/'build/usa/mnsg.z64').read_bytes(),
-                          {k:v for k,v in manifest.items() if k not in ('overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage')},symbols)
+                          {k:v for k,v in manifest.items() if k not in ('overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage')},symbols)
     if manifest.get('vm_assignment_table_layout'):
         image=(candidate/'build/usa/mnsg.z64').read_bytes()
         report['assignment_table']=dict(rom_start='0x7DC2C',size=60,
@@ -2962,7 +2972,10 @@ def run_build(args,manifest,report):
              'overlay_micro20_stage',1478,'research/pending_micro20_20261119/sources'),
             (menu2_stage(manifest),
              __import__('decomp.overlay_menu2',fromlist=['x']),
-             'overlay_menu2_stage',1498,'research/pending_menu2_20261119/sources')):
+             'overlay_menu2_stage',1498,'research/pending_menu2_20261119/sources'),
+            (statecopy1_stage(manifest),
+             __import__('decomp.overlay_statecopy1',fromlist=['x']),
+             'overlay_statecopy1_stage',1500,'research/pending_statecopy1_20261119/sources')):
         if fixture is None:continue
         if not result['full_rom_match'] or result['matched_functions']!=count:
             raise ValueError('Authenticated '+str(count)+'-function combined gate required for '+stage_key)
