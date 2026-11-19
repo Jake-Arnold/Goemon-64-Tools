@@ -1,0 +1,40 @@
+{
+  "status": "PASSED_G2",
+  "region": "japan_0",
+  "previous_c": 427,
+  "new_matching_c": 2,
+  "new_bytes": 88,
+  "matching_c_functions": 429,
+  "matching_c_bytes": 9980,
+  "remaining_assembly_entries": 6947,
+  "original_elf_function_count": 7376,
+  "original_elf_identity_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
+  "semantic_relocations_count": 80747,
+  "semantic_relocations_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "expanded_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "new_functions": [
+    {
+      "name": "func_80004110_4D10",
+      "rom_offset": "0x4D10",
+      "size": 40
+    },
+    {
+      "name": "func_80004138_4D38",
+      "rom_offset": "0x4D38",
+      "size": 48
+    }
+  ],
+  "emulator_gameplay": "NOT_RUN",
+  "format": "goemon-japan-usa-main2-g2-20261119",
+  "manifest": "decomp/regions/japan_0_main2.json",
+  "stage": "decomp/japan_usa_main_two.py",
+  "full_replay_builder": "decomp/build_japan_usa_main_429.sh",
+  "independent_replays": 2,
+  "independent_proof_sha256": "64c93455a2495a9295f440bede0874816572f7f9ccbe7cad260282ff1be6059e",
+  "task_specific_tests": "11 PASS",
+  "host_actual_c_sanitizer": "PASS: 1000 actual transferred C cases, GCC ASan/UBSan",
+  "full_local_ci": "PASS",
+  "usa_matching_c_unchanged": 1225,
+  "status_publication": "PASSED_G2_LOCAL_PR_PENDING"
+}

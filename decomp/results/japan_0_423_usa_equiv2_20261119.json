@@ -1,0 +1,59 @@
+{
+  "format": "goemon-japan-423-native-equivalent-v1",
+  "status": "PASSED_G2",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "region": "japan_0",
+  "baseline_c": 421,
+  "new_c": 2,
+  "new_c_bytes": 68,
+  "matching_c_functions": 423,
+  "matching_c_bytes": 9676,
+  "remaining_assembly_functions": 6953,
+  "original_expanded_rom": {
+    "size": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "changed_bytes": 0
+  },
+  "original_retail_rom": {
+    "size": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "changed_bytes": 0
+  },
+  "original_elf_positive_func_count": 7376,
+  "original_elf_identity_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
+  "semantic_relocation_count": 80747,
+  "original_semantic_relocation_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "exact_original_address_functions": [
+    {
+      "jp": "func_0800B308_6C3088",
+      "rom_offset": "0x6C3088",
+      "vma": "0x800B308",
+      "size": 32,
+      "original_source_sha256": "efcdef3784302f042f5b484f99f5f04f95f9959eb34519c028430397c8e42898",
+      "original_instruction_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5"
+    },
+    {
+      "jp": "func_0800B328_6C30A8",
+      "rom_offset": "0x6C30A8",
+      "vma": "0x800B328",
+      "size": 36,
+      "original_source_sha256": "6bdd39e0d08801e72e9bcbc49b111e4e73c40bbfb87df81c1639ac4eea5c3fed",
+      "original_instruction_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700"
+    }
+  ],
+  "native_build": "original IDO 5.3",
+  "independent_original_rom_replays": 3,
+  "independent_replay_proof_sha256": "cb332aa2fb04fb4745594f35f49592e5b37c3094d9fc98378b66640966e3a2aa",
+  "replay_checkouts": "two prepared pinned upstream workspaces plus one original clean full 421-C chained workspace, extended with 2-C",
+  "task_specific_tests": "10 PASS",
+  "full_local_ci": "PASS",
+  "emulator_gameplay": "NOT_RUN",
+  "original_source_manifest": "decomp/regions/japan_0_equiv2_remaining.json",
+  "full_local_ci_tests": {
+    "decomp": 256,
+    "decomp_skipped": 1,
+    "verifier_ledger": 296,
+    "verifier_ledger_skipped": 4,
+    "asan_ubsan": "PASS"
+  }
+}

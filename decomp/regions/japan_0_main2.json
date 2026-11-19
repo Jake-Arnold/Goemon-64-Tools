@@ -1,0 +1,41 @@
+{
+  "format": "goemon-japan-usa-main-2-v1",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "previous_c": 427,
+  "previous_bytes": 9892,
+  "added_c": 2,
+  "added_bytes": 88,
+  "total_c": 429,
+  "total_bytes": 9980,
+  "original_jp_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "original_jp_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "candidates": [
+    {
+      "usa": "func_800041E0_4DE0",
+      "jp": "func_80004110_4D10",
+      "usa_rom": 19936,
+      "jp_rom": 19728,
+      "sz": 40,
+      "vma": 2147500304,
+      "section": "main",
+      "original_parent": "asm/japan_0/main_44F0.s",
+      "source_path": "decomp/system_memory.c",
+      "source_sha256": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
+      "code_sha256": "b8668f9c588a0b46a8502493019814be377ceb43a3e67c6f17302942235f21a4"
+    },
+    {
+      "usa": "func_80004208_4E08",
+      "jp": "func_80004138_4D38",
+      "usa_rom": 19976,
+      "jp_rom": 19768,
+      "sz": 48,
+      "vma": 2147500344,
+      "section": "main",
+      "original_parent": "asm/japan_0/main_44F0.s",
+      "source_path": "decomp/system_memory.c",
+      "source_sha256": "56cb59bbcedd8127053146bbff52dacf2756b7296edefc9110882e1a3ef9344f",
+      "code_sha256": "df747ebdd00d4d4d398d7222fee964e20be88af1bf38029e77ab91718527a949"
+    }
+  ]
+}
