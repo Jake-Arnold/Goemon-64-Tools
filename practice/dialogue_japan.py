@@ -50,6 +50,16 @@ JP_CONFIRMED_GLYPHS = {
     292: '【', 293: '】', 99: 'カ', 95: 'イ',
     19: 'か', 15: 'い', 78: 'ど', 16: 'う',
     166: 'プ', 132: 'ラ', 151: 'ズ', 124: 'マ', 89: 'ぁ', 212: '！',
+    # Screen-verified Plasma fortune-teller sequence, resource 112.
+    # Screenshot line matching is recorded in docs/JAPAN_PLASMA_SCREENSHOT_ALIGNMENT_20261119.md.
+    # These are character tokens, NOT script controls: preserve all negative IDs.
+    75: 'ぢ', 295: '「', 85: 'ぴ', 63: 'ょ', 303: '〜',
+    296: '、', 70: 'じ', 61: 'ゃ', 297: '」',
+    177: '１', 176: '０', 236: '両', 77: 'で',
+    64: 'が', 232: '・', 60: 'っ', 72: 'ぜ', 86: 'ぷ',
+    291: '大', 273: '江', 274: '戸', 275: '城',
+    258: '（', 259: '）', 304: '入', 79: 'ば',
+    341: '屋', 74: 'だ', 334: '出', 305: '口', 278: '山',
 }
 JP_CONFIRMED_GLYPH_TO_TOKEN = {character: token for token, character in JP_CONFIRMED_GLYPHS.items()}
 

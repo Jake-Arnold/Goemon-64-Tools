@@ -179,3 +179,38 @@ class RomajiUIIntegration(RegionUIIntegration):
         self.assertEqual(self.app.dialogue_query.get(),'resource:112')
         self.assertEqual(set(self.app.dialogue_tree.get_children()),{target.key,neighbor.key})
         self.assertEqual(tuple(self.app.dialogue_tree.selection()),(target.key,))
+
+
+class FullDialogueListUI(RegionUIIntegration):
+    def test_inferred_japan_list_shows_all_805_rows(self):
+        from practice.dialogue_japan import JapanDialogueRecord
+        self.app.dialogue_region_choice.set('japan')
+        self.app._dialogue_region_changed()
+        records=[JapanDialogueRecord(112,n*4,0x730000+n*4,(14,25,20),(n*8,))
+                 for n in range(805)]
+        self.app.dialogue_records=records
+        self.app.dialogue_by_key={r.key:r for r in records}
+        self.app.dialogue_tree=ttk.Treeview(self.app.dialogue_tab,
+            columns=('resource','offset','references','text'),show='headings')
+        self.app.dialogue_kana_hypothesis_enabled.set(True)
+        self.app._dialogue_toggle_kana_hypothesis()
+        self.assertEqual(len(self.app.dialogue_tree.get_children()),805)
+        self.assertTrue(self.app.dialogue_tree.exists(records[-1].key))
+        self.assertIn('all 805 displayed',self.app.dialogue_status.get())
+
+    def test_plain_filter_can_extend_legacy_800_results(self):
+        from practice.dialogue_japan import JapanDialogueRecord
+        records=[JapanDialogueRecord(112,n*4,0x730000+n*4,(14,25,20),(n*8,))
+                 for n in range(805)]
+        self.app.dialogue_region_choice.set('usa')
+        self.app.dialogue_records=records
+        self.app.dialogue_filtered=records
+        self.app.dialogue_tree=ttk.Treeview(self.app.dialogue_tab,
+            columns=('resource','offset','references','text'),show='headings')
+        for r in records[:800]:
+            self.app.dialogue_tree.insert('','end',iid=r.key,values=(r.resource_id,
+                    f'0x{r.text_offset:X}',1,r.text))
+        self.app.dialogue_status.set('805 matching records (first 800 shown); 0 staged')
+        self.app._dialogue_complete_base_results()
+        self.assertEqual(len(self.app.dialogue_tree.get_children()),805)
+        self.assertIn('all 805 shown',self.app.dialogue_status.get())

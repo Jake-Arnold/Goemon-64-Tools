@@ -1,4 +1,17 @@
-# Goemon Speedrun Tools v0.11.68 — Japanese Romaji Search and Plasma Glyph Verification
+# Goemon Speedrun Tools v0.11.69 — Plasma Dialogue Screenshot Mapping and Full Record Lists
+
+## v0.11.69 — All candidate records visible, expanded screenshot-verified Japanese glyph map
+
+**List cap removed:** Both USA and Japan Dialogue record lists now render **every** indexed matching record, not just the first 800. The region-aware GUI fills the remaining original USA rows after the base Dialogue view; when Japanese inferred-kana search is enabled, its table inserts all matches. Search and exact `resource:112` filters remain available. The original verified JP image contains **5,039** statically indexed candidate records; USA contains **5,186**. An actual Tk 8.6 Xvfb list of all 5,039 JP records rendered successfully (measured 0.07 s on the test host). Displaying all candidates does **not** establish VM reachability.
+
+**Seven Plasma screenshots matched:** The user's seven consecutive Japanese Project64 screenshots align with **18 original records of resource 112**, offsets `+0x60` through `+0x328`. These cover `プラズマおやぢ`, `どぴょぴょ〜ん`, the `１０両` offer and choices, `うらなってしんぜよう`, repeated `ぷ`, the `プラズマぁ〜！` callout, `大江戸城` and directions using `出入口` / `ふじ山`. The correspondence is checked using original ROM token sequences, not guessed prose. The `docs/JAPAN_PLASMA_SEVEN_SCREEN_FONT_EVIDENCE_20261119.md` report records every paired resource offset and the **31 additional** user-screenshot-backed token IDs, yielding **45 verified Unicode glyph IDs**. Original font and text assets are not committed.
+
+**Japanese font ordering strengthened:** The existing proposed 14–59 hiragana and 94–139 katakana blocks are supplemented with **60–63 small hiragana, 64–88 voiced/semi-voiced hiragana, 89–93 small vowels, 140–143 small katakana, 144–168 voiced/semi-voiced katakana, and 169–173 small vowels**. This yields **160 provisional kana positions**: new screenshot anchors include `64=が`, `70=じ`, `75=ぢ`, `77=で`, `85=ぴ`, `86=ぷ`, `151=ズ` and `166=プ`. Only screenshot-proven glyphs enter the editable Unicode table. Every other predicted character remains in the **read-only** kana/romaji preview, not ROM-writing code. The inferred positions cover 44,077 out of 64,217 nonnegative glyph occurrences across the static index; this is frequency coverage, not decoding accuracy.
+
+**Verification (19 November 2026):** 54 focused Japanese ROM, persistence and Tk UI tests passed, **zero skips**, under Linux/Xvfb using the supplied original Japan and USA SHA-1-pinned ROMs and portable Python 3.12/LZKN64. Tests include source matching for all seven screenshots, full encode/decode round trips over resource 112, unverified-Unicode rejection, lists beyond 800 rows for both UI modes, and original Japanese compressed-ROM rebuild. A real 5,039-row Tk population was also timed independently. Full Windows/Linux application tests and live *modified* Japanese gameplay are still outstanding.
+
+**Branch cleanup audit:** Five obsolete `toolkit/*` heads are safely classifiable from merged PRs or exact duplicate refs, while `toolkit/uniform-story-flag-buttons` still has a closed-unmerged PR and must not be discarded without explicit review. The connected GitHub toolset has **no remote branch-delete action**; therefore no branch was deleted automatically. The user's local cleanup shell script is external to this PR and is intentionally not included in app source.
+
 
 ## v0.11.68 — Search JP dialogue using romaji, and inspect a whole resource
 

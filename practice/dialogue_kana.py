@@ -3,7 +3,7 @@
 EVIDENCE: Screenshot-verified pairs 15=い/95=イ and 19=か/99=カ,
 plus 16=う. Both script pairs are exactly 80 token IDs apart.
 
-CONJECTURE: Simple gojuon order starting at 14 and 94. No other character
+CONJECTURE: Six sequential base/small/voiced/small-vowel kana blocks starting at 14 and 94. No other character
 in these ranges is treated as verified for ROM writing. This is intentionally
 separate from JP_CONFIRMED_GLYPHS and encode_japan_text.
 """
@@ -18,17 +18,32 @@ HIRAGANA_START = 14
 KATAKANA_START = 94
 KANA_OFFSET = KATAKANA_START - HIRAGANA_START
 
-# Explicitly hypothetical: these 92 candidates do NOT extend the encoder.
-JP_KANA_HYPOTHESIS = {
-    **{HIRAGANA_START + i: c for i, c in enumerate(HIRAGANA)},
-    **{KATAKANA_START + i: c for i, c in enumerate(KATAKANA)},
-}
+# Screen-verified tokens live in JP_CONFIRMED_GLYPHS. These contiguous
+# *proposed* blocks are for reading/searching only; the Japanese ROM encoder
+# must NOT accept speculative characters based on this table.
+HIRA_SMALL = 'っゃゅょ'
+KATA_SMALL = 'ッャュョ'
+HIRA_VOICED = 'がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ'
+KATA_VOICED = 'ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ'
+HIRA_SMALL_VOWELS = 'ぁぃぅぇぉ'
+KATA_SMALL_VOWELS = 'ァィゥェォ'
+assert len(HIRA_VOICED) == len(KATA_VOICED) == 25
 
-# Verify our hypotheses don't contradict the small set of screenshot proofs.
+JP_KANA_HYPOTHESIS = {
+    **{14+i: c for i,c in enumerate(HIRAGANA)},
+    **{60+i: c for i,c in enumerate(HIRA_SMALL)},
+    **{64+i: c for i,c in enumerate(HIRA_VOICED)},
+    **{89+i: c for i,c in enumerate(HIRA_SMALL_VOWELS)},
+    **{94+i: c for i,c in enumerate(KATAKANA)},
+    **{140+i: c for i,c in enumerate(KATA_SMALL)},
+    **{144+i: c for i,c in enumerate(KATA_VOICED)},
+    **{169+i: c for i,c in enumerate(KATA_SMALL_VOWELS)},
+}
+# Half-width/native typography outside the sequential kana range is intentionally
+# not inferred from a single sample.
 for _id, _character in JP_CONFIRMED_GLYPHS.items():
     if _id in JP_KANA_HYPOTHESIS and JP_KANA_HYPOTHESIS[_id] != _character:
         raise AssertionError(f'Kana hypothesis contradicts verified token {_id}')
-
 
 def decode_japan_kana_preview(tokens: tuple[int, ...]) -> str:
     """Human-readable *hypothesis*, never intended for direct ROM encoding."""
@@ -46,21 +61,28 @@ def inferred_kana_count(tokens: tuple[int, ...]) -> int:
                for value in tokens)
 
 
-# Canonical IME-style romanization of the *proposed* basic gojuon series.
-# These readings are only for searches, never passed to the ROM encoder.
+# Search-only romanization for the proposed gojuon and voiced blocks.
+# Mixed-case or user queries never introduce newly inferred Unicode into ROMs.
 GOJUON_ROMAJI = (
     'a i u e o ka ki ku ke ko sa shi su se so ta chi tsu te to '
     'na ni nu ne no ha hi fu he ho ma mi mu me mo ya yu yo '
     'ra ri ru re ro wa wo n'
 ).split()
-assert len(GOJUON_ROMAJI) == len(HIRAGANA) == len(KATAKANA)
+VOICED_ROMAJI = (
+    'ga gi gu ge go za ji zu ze zo da di du de do '
+    'ba bi bu be bo pa pi pu pe po'
+).split()
+assert len(GOJUON_ROMAJI)==46 and len(VOICED_ROMAJI)==25
 ROMAJI_BY_TOKEN = {
-    **{HIRAGANA_START+i: reading for i, reading in enumerate(GOJUON_ROMAJI)},
-    **{KATAKANA_START+i: reading for i, reading in enumerate(GOJUON_ROMAJI)},
-    # Screenshot-backed glyphs outside the conjectured 46+46 core.
-    78: 'do', 89: 'a', 151: 'zu', 166: 'pu',
+    **{14+i: value for i,value in enumerate(GOJUON_ROMAJI)},
+    **{94+i: value for i,value in enumerate(GOJUON_ROMAJI)},
+    **{60+i: value for i,value in enumerate(('xtsu','ya','yu','yo'))},
+    **{140+i: value for i,value in enumerate(('xtsu','ya','yu','yo'))},
+    **{64+i: value for i,value in enumerate(VOICED_ROMAJI)},
+    **{144+i: value for i,value in enumerate(VOICED_ROMAJI)},
+    **{89+i: value for i,value in enumerate(('a','i','u','e','o'))},
+    **{169+i: value for i,value in enumerate(('a','i','u','e','o'))},
 }
-
 
 def romanized_japan_search(tokens: tuple[int, ...], *, compact_spaces: bool = False) -> str:
     """Hypothetical romaji search key, with unknown glyphs as hard barriers.

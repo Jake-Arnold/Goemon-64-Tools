@@ -16,7 +16,7 @@ class KanaHypothesisTests(unittest.TestCase):
     def test_predicted_gojuon_ranges_and_offset(self):
         self.assertEqual(len(HIRAGANA),46)
         self.assertEqual(len(KATAKANA),46)
-        self.assertEqual(len(JP_KANA_HYPOTHESIS),92)
+        self.assertEqual(len(JP_KANA_HYPOTHESIS),160)
         self.assertEqual(JP_KANA_HYPOTHESIS[14],'あ')
         self.assertEqual(JP_KANA_HYPOTHESIS[15],'い')
         self.assertEqual(JP_KANA_HYPOTHESIS[19],'か')
@@ -96,3 +96,67 @@ class RomajiSearchTests(unittest.TestCase):
             (13,13,-56,-50,166,13,132,13,151,13,124,13,89,13,212,13,212,-51,-57,-60))
         self.assertTrue(japanese_query_matches(match.tokens,'purazuma'))
         self.assertEqual(encode_japan_text(match.text),match.tokens)
+
+
+class PlasmaScreenshotSequenceTests(unittest.TestCase):
+    """All seven user screens, exact original JP text-record boundaries.
+
+    The user supplied gameplay screenshots; the expected words below come
+    from those images, not an independent automated Japanese transcription.
+    """
+    @classmethod
+    def setUpClass(cls):
+        import re
+        cls.re=re
+        source=os.environ.get('GOEMON_JP_DECOMPRESSED_ROM')
+        if not source:raise unittest.SkipTest('Set GOEMON_JP_DECOMPRESSED_ROM')
+        cls.records={r.text_offset:r for r in extract_japan_dialogue(load_japan_image(source))
+                     if r.resource_id==112}
+
+    def display(self,offset):
+        text=decode_japan_kana_preview(self.records[offset].tokens)
+        return self.re.sub(r'<[^>]*>', '', text).strip()
+
+    def test_greeting_screenshot_1(self):
+        self.assertEqual(self.display(0x60),'プラズマおやぢ')
+        self.assertEqual(self.display(0x74),'「どぴょぴょ〜ん！')
+        self.assertEqual(self.display(0x8c),'プラズマうらないへ、ようこそじゃ」')
+
+    def test_fee_and_choices_screenshot_2(self):
+        self.assertEqual(self.display(0xb8),'「おぬしのなやみを、１０両で')
+        self.assertEqual(self.display(0xdc),'かいけつしてプラズマ〜！」')
+        self.assertEqual(self.display(0xfc),'お、おねがいします')
+        self.assertEqual(self.display(0x118),'い・・・いいや')
+
+    def test_divination_screenshot_3(self):
+        self.assertEqual(self.display(0x134),'「うむ、')
+        self.assertEqual(self.display(0x144),'では、うらなってしんぜよう！！」')
+
+    def test_repeated_pu_screenshot_4(self):
+        self.assertEqual(self.display(0x16c),'「'+'ぷ'*16)
+        self.assertEqual(self.display(0x194),'ぷ'*16)
+        self.assertEqual(self.display(0x1bc),'ぷ'*12+'っ・・・」')
+
+    def test_plasma_screenshot_5(self):
+        self.assertEqual(''.join(self.display(0x1e4).split()),'プラズマぁ〜！')
+
+    def test_oedo_screenshot_6(self):
+        self.assertEqual(self.display(0x290),'「大江戸城（おおえどじょう）に')
+        self.assertEqual(self.display(0x2b8),'入りたければ・・・')
+
+    def test_directions_screenshot_7(self):
+        self.assertEqual(self.display(0x2d0),'このうらない屋からむかってひだりの')
+        self.assertEqual(self.display(0x300),'出入口から、【カイのかいどう】に出て')
+        self.assertEqual(self.display(0x328),'「ふじ山」へ、むかうプラズマ！')
+
+    def test_records_reencode_identically_after_mapping_expansion(self):
+        for r in self.records.values():
+            self.assertEqual(encode_japan_text(r.text),r.tokens)
+
+    def test_unverified_hypothesis_still_cannot_be_staged(self):
+        # User-verified glyph IDs were promoted, but inferred symbols are not.
+        for symbol in ('ぎ','ゅ','ギ','ぽ'):
+            with self.assertRaises(ValueError):
+                encode_japan_text(symbol)
+        self.assertEqual(encode_japan_text('「ぷぷっ・・・」'),
+                         (295,86,86,60,232,232,232,297))

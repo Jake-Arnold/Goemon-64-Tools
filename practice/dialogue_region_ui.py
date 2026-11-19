@@ -194,7 +194,9 @@ class DialogueRegionMixin:
             not self.dialogue_kana_hypothesis_enabled.get() or
             self.dialogue_region_choice.get()!='japan' or
             not hasattr(self,'dialogue_tree')):
-            return super()._dialogue_filter()
+            super()._dialogue_filter()
+            self._dialogue_complete_base_results()
+            return
         query=self.dialogue_query.get().strip().casefold()
         # Exact resource filters avoid accidentally matching 1112 when the
         # user wants resource 112. An optional second term is also supported.
@@ -222,15 +224,38 @@ class DialogueRegionMixin:
                  (query in str(record.resource_id) or query in f'0x{record.text_offset:x}'))):
                 filtered.append((record,preview))
         self.dialogue_filtered=[record for record,_ in filtered]
-        for record,preview in filtered[:800]:
+        for record,preview in filtered:
             tree.insert('','end',iid=record.key,values=(
                 record.resource_id,f'0x{record.text_offset:X}',
                 len(record.references),preview.replace('\n',' / ')[:200]))
         if self.dialogue_records:
             self.dialogue_status.set(
-                f'{len(filtered)} candidate matches (first {min(800,len(filtered))} displayed); '
+                f'{len(filtered)} candidate matches (all {len(filtered)} displayed); '
                 f'{len(self.dialogue_staged)} staged. Kana/romaji search includes '
                 'HYPOTHETICAL readings; not a verified translation.')
+
+    def _dialogue_complete_base_results(self):
+        """Extend the legacy USA/plain-JP filter beyond its first 800 rows.
+
+        The existing base DialogueMixin stores every matched record in
+        dialogue_filtered, but only draws the first 800. The region-aware
+        subclass finishes those rows without changing the existing USA editor.
+        """
+        tree=getattr(self,'dialogue_tree',None)
+        if tree is None:return
+        records=getattr(self,'dialogue_filtered',[])
+        # In isolated test fakes the base filter may be a no-op.
+        if not records:return
+        for record in records[800:]:
+            if tree.exists(record.key):continue
+            preview=self.dialogue_staged.get(record.key,record.text)
+            tree.insert('','end',iid=record.key,values=(
+                record.resource_id,f'0x{record.text_offset:X}',
+                len(record.references),preview.replace('\n',' / ')[:200]))
+        if len(records)>800:
+            status=self.dialogue_status.get()
+            status=status.replace(f'first 800 shown',f'all {len(records)} shown')
+            self.dialogue_status.set(status)
 
     def _dialogue_show_selected_resource(self):
         key=getattr(self,'dialogue_selected_key',None)
