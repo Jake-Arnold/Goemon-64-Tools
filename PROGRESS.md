@@ -1,3 +1,12 @@
+## 2026-11-19 — PR #108 reconciled after wide native catalogue import
+
+- Immutable historical cross-region 47-function research archive subtree `ae2976f1b2d5da8df6dd622c54d48c8e6022ba87` retained exactly. Original 315+47 and 389-stage MIPS scratch records remain historical research-only, not newly promoted accepted C or fresh combined native G2. Canonical USA 1,500/Japan 432 function identities and evidence unchanged; full CI and gameplay not rerun for this documentation import.
+
+## 2026-11-19 — Draft PR #108: historical cross-region 47-function proof archive
+
+- Archived 10 original missing 315+47 and 389-stage historical source/proof/test files plus README, maintaining original version/source hashes in isolated archive. Earlier native scratch reports are historic and not a new 1,500-USA / 432-JP full-ROM verification. No manifest/production C changes, no new matching C, no full CI/native G2/gameplay runs. Original branch retention persists until archive PR merge and exact source/head SHA checks.
+
+
 ## 2026-11-19 — PR #107 refreshed after file11 historical research merger
 
 - USA wide109/isolated506 historical native source catalogue archive subtree `ac2b96486f600a60f7b2eb93048793d421a41651` remains unchanged. Original accepted matching C 1,500 USA/432 Japan, native source and ROM proof unaffected; no new IDO/G2, full local CI or gameplay tests run.

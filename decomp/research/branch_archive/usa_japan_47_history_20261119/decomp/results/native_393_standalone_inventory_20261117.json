@@ -1,0 +1,763 @@
+{
+  "format": "goemon-us-393-native-346-plus-47-original-id0-link-evidence-v1",
+  "date": "2026-11-17",
+  "status": "ORIGINAL_ROM_ELF_RELOC_INVENTORY_PASS_OFFICIAL_VERIFIER_CI_PENDING",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_rom_bytes": 33554432,
+  "canonical346_matching_c": 346,
+  "canonical346_original_bytes": 17720,
+  "new_crossregion_c": 47,
+  "new_crossregion_original_bytes": 2220,
+  "candidate_matching_c": 393,
+  "candidate_original_bytes": 19940,
+  "original_function_count": 7376,
+  "remaining_asm_functions": 6970,
+  "positive_elf_function_identity_unchanged": true,
+  "two_preexisting_size_annotations_unchanged": [
+    {
+      "name": "func_8000D3B8_DFB8",
+      "baseline_size": 64,
+      "candidate_size": 72
+    },
+    {
+      "name": "func_8003F6E8_402E8",
+      "baseline_size": 48,
+      "candidate_size": 56
+    }
+  ],
+  "semantic_relocation_counts_exact": {
+    "file_11": 8825,
+    "file_12": 7051,
+    "file_13": 9589,
+    "file_14": 3041,
+    "file_15": 1625,
+    "file_17": 1739,
+    "file_18": 3365,
+    "file_19": 1078
+  },
+  "baseline_346_elf_sha256": "02e355ab8765881608f27982e33e3b6895e6d042bba6c396837dde5ddd16bfdc",
+  "candidate_393_elf_sha256": "57bd38215d722154a1d62621093616f81dc222d6520d4646d5c15c83eba86f8e",
+  "source_manifest_format": "goemon-usa-47-overlay-c-original-link-v2",
+  "source_manifest_sha256": "e81a95fe7d9e84ba712e6691b663f0e0fa5d76b550efbccb61887f4245ae9af2",
+  "native_source_stage_proof": {
+    "status": "LINKED_346_PLUS_47_EXACT_NATIVE_G2_PASS",
+    "new_c": 47,
+    "new_c_original_bytes": 2220,
+    "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "candidate_elf_sha256": "57bd38215d722154a1d62621093616f81dc222d6520d4646d5c15c83eba86f8e",
+    "original_elf_functions": 7376,
+    "relocations": {
+      "file_12": 7051,
+      "file_13": 9589,
+      "file_14": 3041,
+      "file_15": 1625,
+      "file_17": 1739,
+      "file_18": 3365,
+      "file_19": 1078
+    },
+    "packer": {
+      "c_packed": [
+        {
+          "name": "func_801D600C_6013EC",
+          "original_text_bytes": 48,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "3456371792694c39e7b94ae28a7741630ad19f783cdb377400a832f21bbba05f"
+        },
+        {
+          "name": "func_801D603C_60141C",
+          "original_text_bytes": 48,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "84a6809d3bae99a7f6bfc693854bb1eb7650d44ffe64c74a60caecc295cc3f28"
+        },
+        {
+          "name": "func_801D606C_60144C",
+          "original_text_bytes": 48,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "c9ffa482198c6fcfccaace754958ff96191831be0d1898dd26fc503acec73d1a"
+        },
+        {
+          "name": "func_801D60E4_6014C4",
+          "original_text_bytes": 64,
+          "compiler_section_bytes": 64,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "2de745625cf0ef810ebd71d2029f7bcf9b98e91b758e3bf0fbc28acdeab602cb"
+        },
+        {
+          "name": "func_801D6124_601504",
+          "original_text_bytes": 40,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "a16d11b52b8c1327a668784f82de8b52242d2856f1d5b02a8d215a82dddc277c"
+        },
+        {
+          "name": "func_801D614C_60152C",
+          "original_text_bytes": 80,
+          "compiler_section_bytes": 80,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "45afb9dc129825526d99018722d38b7a97f009d4e7ee90e09a3a6750ac3f2e5c"
+        },
+        {
+          "name": "func_801D619C_60157C",
+          "original_text_bytes": 56,
+          "compiler_section_bytes": 64,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "c0cfbdc27d41fe89f5f7c946c6368caa69d3cfaac29da6b5696a5f1ecb784fa3"
+        },
+        {
+          "name": "func_801D61E8_6015C8",
+          "original_text_bytes": 36,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "3810aedff7ef90824ea4c2386a3353837513911dcaab81ec517d7b8842c7c53b"
+        },
+        {
+          "name": "func_801D6CB0_602090",
+          "original_text_bytes": 144,
+          "compiler_section_bytes": 144,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "8f4c4e540389bcdc9cc4540a4ccb280ba5b832c758d7c77d7c44ce6fa4ab517c"
+        },
+        {
+          "name": "func_801D721C_6025FC",
+          "original_text_bytes": 64,
+          "compiler_section_bytes": 64,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "1dc2ece9d14a20be0aef53a766f5439a3c0f147609a4635b15cbbccfcf3761e9"
+        },
+        {
+          "name": "func_801D725C_60263C",
+          "original_text_bytes": 100,
+          "compiler_section_bytes": 112,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "7091ab8879b87e5bb5599728e3ab0f611a52e01967dc3cb7c18050c639fe6e9e"
+        },
+        {
+          "name": "func_801D825C_60363C",
+          "original_text_bytes": 52,
+          "compiler_section_bytes": 64,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "a9b2f98ab0053af422da503aba65f911680ba0de7250c5787d86d0ae8f205a66"
+        },
+        {
+          "name": "func_80202A54_62DE34",
+          "original_text_bytes": 72,
+          "compiler_section_bytes": 80,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "0a3deb4b1012e5ca6eb67e4b4d3419e7a91c8f180f39250eb9eef22548db63c4"
+        },
+        {
+          "name": "func_80202D34_62E114",
+          "original_text_bytes": 72,
+          "compiler_section_bytes": 80,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "4dc7d538c3f48d6371ad4d3bd59d17c6d99870e4eff1d7c03a6f661eaf1370b4"
+        },
+        {
+          "name": "func_80203F5C_62F33C",
+          "original_text_bytes": 44,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "02d17345f446ab819690aea6bde768fd63937422ff57168e60877c7c10cc9145"
+        },
+        {
+          "name": "func_802138C0_67D2A0",
+          "original_text_bytes": 40,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "aed4fabf7dfddab4d96b9b090567ba12b24b1f75ea6573284a1fffbd55766ab2"
+        },
+        {
+          "name": "func_8021B270_684C50",
+          "original_text_bytes": 44,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "6399248a658e3d68f7023b6790ec53c7f2f95c1b56bbc2f101e48154e9b66877"
+        },
+        {
+          "name": "func_8021BE14_6857F4",
+          "original_text_bytes": 36,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "5558293b7ed1ed688c6f062b8390e41a6ecf14fc5dae17b7efd5d572a77ae3f2"
+        },
+        {
+          "name": "func_8021C2B4_685C94",
+          "original_text_bytes": 40,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "39391c3a01f290b52580013a2d701ea847da9a7d6e7495ecaa21036e2e61e3c1"
+        },
+        {
+          "name": "func_8021EE90_688870",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "7d25b36c634d03ff44f2f74404071247b6dbb04cb005c98ada4c62dd48ace090"
+        },
+        {
+          "name": "func_80225B00_68F4E0",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "e5400f92c547aa733006c52cab7fd8b54715877ea86230e19dac86f52836c653"
+        },
+        {
+          "name": "func_80225D84_68F764",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "85c1d5b19a15c73afa725af5db58865246e8fec74468fea21b622bb9de41bbd3"
+        },
+        {
+          "name": "func_802291F8_692BD8",
+          "original_text_bytes": 36,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "f8123144c351e7d3f47ea5e711cc0400a4660c45f91fbb6069ba1447677eaf0f"
+        },
+        {
+          "name": "func_80229948_693328",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "feffca85ffca4a7f89a3d9ad7e6dbf034984775d3a8d5529314b3dc5d2f874b7"
+        },
+        {
+          "name": "func_80210520_697F20",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "0c68f409fd5ac02076c4cfbf2434688b22beb07efc89099613cbf3a9b72479d8"
+        },
+        {
+          "name": "func_80210A94_698494",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "035737f88817a9b1fa749bbca67c4efd6296849c88675dc14176c379cbe7f059"
+        },
+        {
+          "name": "func_80210F80_698980",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "755577ccdd4a9ab43993838fc6bc1b5b46326806366fd55c31a4767dbf266278"
+        },
+        {
+          "name": "func_80210FA0_6989A0",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "6f02784aaf4036842a2d40ae185fb823a8bab317edd2baf9a89dc13db07d7d87"
+        },
+        {
+          "name": "func_80212C38_69A638",
+          "original_text_bytes": 48,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "3eb1d68934a139e24cf1ad92927041891d909c321c49c3b0adfa69fcdd39592f"
+        },
+        {
+          "name": "func_802143A0_69BDA0",
+          "original_text_bytes": 48,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "7ecae5416d05ac0cd5d17c689f0b8305d091fda8f8fbee0ec849af5353c1aea4"
+        },
+        {
+          "name": "func_802143E4_69BDE4",
+          "original_text_bytes": 36,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "de8cc5634ffeb0290b68b7f98ad3d0c3d15811d0fe247d4473cc5ea1b01083e9"
+        },
+        {
+          "name": "func_80217114_5D25E4",
+          "original_text_bytes": 48,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "081fb2943dbd713e644c282fa38ee2ac5f71a6e448d58f32a9299ce401ef56ee"
+        },
+        {
+          "name": "func_80219E08_5D52D8",
+          "original_text_bytes": 56,
+          "compiler_section_bytes": 64,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "640e3c1ddc9f9041797d83f184a8c8b149bbc5a6b76629847741546f5e348be7"
+        },
+        {
+          "name": "func_80219E40_5D5310",
+          "original_text_bytes": 48,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "f1a28d9bc04966d92d2798439c370b2502e3e7b6441f11a1bc9175bf99e1795a"
+        },
+        {
+          "name": "func_8021C628_5D7AF8",
+          "original_text_bytes": 44,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "c96409c143e5ac392aeb9aea48a63ee96fdb63a8b62cbfe6649184976c36aa2a"
+        },
+        {
+          "name": "func_801CC148_63AF98",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "6290dfd628bd9d6cc02d212190d42cd19a729140d24eb37db91a1e098626dc60"
+        },
+        {
+          "name": "func_801CC7E0_63B630",
+          "original_text_bytes": 52,
+          "compiler_section_bytes": 64,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "783dc3c032cb809c12474d60ff02f156f0a456b354706a1d43cf17bd05b1d8a2"
+        },
+        {
+          "name": "func_801D0B80_63F9D0",
+          "original_text_bytes": 56,
+          "compiler_section_bytes": 64,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "1cdeb58c0d62610e408e2a1b1e5d4574f660f41d28b1c0024312a2ab77718054"
+        },
+        {
+          "name": "func_801D17C0_640610",
+          "original_text_bytes": 40,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "5161088c30daacd0c3d1da183b31e96e36af556414883f243911eb6b10f7170f"
+        },
+        {
+          "name": "func_801D1918_640768",
+          "original_text_bytes": 40,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "24e623b42fd45db1751af92deb17dc181c5a572c7114f923a93097580ee17b7e"
+        },
+        {
+          "name": "func_801D1940_640790",
+          "original_text_bytes": 52,
+          "compiler_section_bytes": 64,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "b815286a811b65c1b41bf7b68ec9623ad364f20040beb0c9481c8812ef5d0987"
+        },
+        {
+          "name": "func_801D2138_640F88",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "658bd3dea8f476fdfc8e051059d7caf9e7d8d2ec889b47f52637a892b2422916"
+        },
+        {
+          "name": "func_801D84E8_647338",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "48599d35af9ed72721fe60090a8109c330325532ada97ed2965ade411bacd02c"
+        },
+        {
+          "name": "func_801CC20C_65F0BC",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "fe8f48a71956e98f67717c070aecb79edda99adf765df7346f29d703067dcf8b"
+        },
+        {
+          "name": "func_801CC5A8_65F458",
+          "original_text_bytes": 32,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "128590a3cffb8fb71670bb05b15b5714d9f70f16e7f39af24ce271079e909369"
+        },
+        {
+          "name": "func_8020E328_66D2D8",
+          "original_text_bytes": 36,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "fa25524abcfbd3b75740b8858d14478805a2890799c8edc1cbaa1ac18d4579fe"
+        },
+        {
+          "name": "func_80222C10_5DE0E0",
+          "original_text_bytes": 36,
+          "compiler_section_bytes": 48,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "ea135f7a3edf6ed2c2c2713a34c6319d21503b75835a63a74c2df0eaa4c165a7"
+        }
+      ],
+      "asm_packed": [
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_00.s.o",
+          "original_text_bytes": 9636,
+          "compiler_section_bytes": 9648,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "506f244f6c2df160fbc28f60f67ba2f160d85575347b95473ae4c3ba051ad63c"
+        },
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_03.s.o",
+          "original_text_bytes": 72,
+          "compiler_section_bytes": 80,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "65e3b845517b8f8cc79c00abc12715d388d82007a00e24e24030d152930c4011"
+        },
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_07.s.o",
+          "original_text_bytes": 20,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "2a84bea157f9041fcb8818b56f4f3ca1f5264e7622e408b395e98d12a1602ee7"
+        },
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_08.s.o",
+          "original_text_bytes": 2724,
+          "compiler_section_bytes": 2736,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "3f85383e91dddeb0d104a657e56ec54b153cf08c5c95a1d214c511cccb645e32"
+        },
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_09.s.o",
+          "original_text_bytes": 1244,
+          "compiler_section_bytes": 1248,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "c4331f872c832f7a98d8b6d6117c70c080a1b705e958191e1742fcc40b92f431"
+        },
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_11.s.o",
+          "original_text_bytes": 3996,
+          "compiler_section_bytes": 4000,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "b06fc50c76b64a7a3313b8c77da19e5b29cedc00d5361d75af1aef1bf83f2b30"
+        },
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_12.s.o",
+          "original_text_bytes": 174020,
+          "compiler_section_bytes": 174032,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "71c1e2ad36ff09d5f9fc6d5faba58b215f5d951f04482dca3e43d80635d895fc"
+        },
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_13.s.o",
+          "original_text_bytes": 664,
+          "compiler_section_bytes": 672,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "657712c31b9bc278992bc891c33ee3ea8b0444213c6964423d7df3381aec4763"
+        },
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_14.s.o",
+          "original_text_bytes": 4576,
+          "compiler_section_bytes": 4576,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "1ca57db89d29df253b6c7a2df9be0964f83bfcb7f0d9e8a0795901cf27b692a7"
+        },
+        {
+          "object": "build/usa/asm/usa/file_13_after_5FEE48_cross47_15.s.o",
+          "original_text_bytes": 23240,
+          "compiler_section_bytes": 23248,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "2690a2acb6dec223bedb5a2e7ad587c4c7458ae35259e457d5d82ce1731cce6d"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_00.s.o",
+          "original_text_bytes": 26144,
+          "compiler_section_bytes": 26144,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "49026966357fb514c25ec14191173b8ccc1518d6411cde39168ee0b6fdfaeaa9"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_01.s.o",
+          "original_text_bytes": 31112,
+          "compiler_section_bytes": 31120,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "c3533288aa930a766a4351004dcb2340e7bb6558458b8a570b1ac80f25f38589"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_02.s.o",
+          "original_text_bytes": 2936,
+          "compiler_section_bytes": 2944,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "3e1933a00fff1cbe8404ba2135f127024e44676a8b96b292dde326207ea5b53a"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_03.s.o",
+          "original_text_bytes": 1148,
+          "compiler_section_bytes": 1152,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "3200c59a13928734156c077e0798e89d347188d7eed0787bc585eab1a3fa107a"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_04.s.o",
+          "original_text_bytes": 11188,
+          "compiler_section_bytes": 11200,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "f4d405c2ffce2fb6f3ece591842c60359dbefe9a213102e63c645cbc44940e2d"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_05.s.o",
+          "original_text_bytes": 27728,
+          "compiler_section_bytes": 27728,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "2be1b80895c11f3da4b379703eab11404edd19e43e626438b56a188a37608002"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_06.s.o",
+          "original_text_bytes": 612,
+          "compiler_section_bytes": 624,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "bd97044e02d59d85710d787fe061b44ec4accbb577f0e530179b2fa94780d0ed"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_07.s.o",
+          "original_text_bytes": 13396,
+          "compiler_section_bytes": 13408,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "fa293605801ee17e3d3412aa8ce769bc4473b5969627307d9d4f1f53ca0efb1b"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_08.s.o",
+          "original_text_bytes": 1836,
+          "compiler_section_bytes": 1840,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "e9164111081fcd574bc63b6623aede1aec71b777b79b324bbb77949ddbf3b5e3"
+        },
+        {
+          "object": "build/usa/asm/usa/676C80_cross47_09.s.o",
+          "original_text_bytes": 1064,
+          "compiler_section_bytes": 1072,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "024a2e57494c4e6a5f8361fa9b5a478f35a157a1bd09a1c2019590cff1ae4d9c"
+        },
+        {
+          "object": "build/usa/asm/usa/694CA0_cross47_00.s.o",
+          "original_text_bytes": 12928,
+          "compiler_section_bytes": 12928,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "a0f3e5471c9d424f1c97efadc2b4a338c2876af687845eb390ff47b8c9ac8aed"
+        },
+        {
+          "object": "build/usa/asm/usa/694CA0_cross47_01.s.o",
+          "original_text_bytes": 1364,
+          "compiler_section_bytes": 1376,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "b1266e657f47b9a736be502fc851abe1284962564fa658c65f01c8904d7abbfa"
+        },
+        {
+          "object": "build/usa/asm/usa/694CA0_cross47_02.s.o",
+          "original_text_bytes": 1228,
+          "compiler_section_bytes": 1232,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "885564202ca0279a90fb006f6091b7cefb88b25cfdd493b275588a487fe5d601"
+        },
+        {
+          "object": "build/usa/asm/usa/694CA0_cross47_04.s.o",
+          "original_text_bytes": 7288,
+          "compiler_section_bytes": 7296,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "c409b65608245366af05becc2615eef3f76944b5a12701b9d920f6a49c783c14"
+        },
+        {
+          "object": "build/usa/asm/usa/694CA0_cross47_05.s.o",
+          "original_text_bytes": 5944,
+          "compiler_section_bytes": 5952,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "8b5c8723bc07a8f26fd07f7d32f89d4e26620c57e7e9dedb8e6905bfcbf9ab2e"
+        },
+        {
+          "object": "build/usa/asm/usa/694CA0_cross47_06.s.o",
+          "original_text_bytes": 20,
+          "compiler_section_bytes": 32,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "46f3541fbf2e8336cb6ca2f259c91355571362d839d82eaea7fe00dd43fa0f8d"
+        },
+        {
+          "object": "build/usa/asm/usa/694CA0_cross47_07.s.o",
+          "original_text_bytes": 504,
+          "compiler_section_bytes": 512,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "415f17a6f42beee73dcea0f99ee80a04ca6bd7627897914f8e037f38bbc94052"
+        },
+        {
+          "object": "build/usa/asm/usa/file_12_before_5DD504_cross47_00.s.o",
+          "original_text_bytes": 40564,
+          "compiler_section_bytes": 40576,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "57b1911a7d58d506f3d0859bb439fc6c97df7eed167017241de843b22a0c9b38"
+        },
+        {
+          "object": "build/usa/asm/usa/file_12_before_5DD504_cross47_01.s.o",
+          "original_text_bytes": 11460,
+          "compiler_section_bytes": 11472,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "4a468caabc5da7a207217d962539549bec77a79dd5cb9dac747245021610dd31"
+        },
+        {
+          "object": "build/usa/asm/usa/file_12_before_5DD504_cross47_03.s.o",
+          "original_text_bytes": 10168,
+          "compiler_section_bytes": 10176,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "9354ae3ec24b4034f58b0cb04fc683adf152ee71ef11a5645fdfb6e9e1ab8b09"
+        },
+        {
+          "object": "build/usa/asm/usa/file_12_before_5DD504_cross47_04.s.o",
+          "original_text_bytes": 23008,
+          "compiler_section_bytes": 23008,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "35e424bfe8a4cfb734b03bfce2f9aaed6d96aea5da06aa924a514499f69e5778"
+        },
+        {
+          "object": "build/usa/asm/usa/63A2B0_cross47_00.s.o",
+          "original_text_bytes": 3304,
+          "compiler_section_bytes": 3312,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "9b25821649d6d86e698db2da1f1cbac23daadff221ea29cfcd123ef57a2cd8eb"
+        },
+        {
+          "object": "build/usa/asm/usa/63A2B0_cross47_01.s.o",
+          "original_text_bytes": 1656,
+          "compiler_section_bytes": 1664,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "2ee520e2c99ade02ae093731288937406e559af004486cf9e3bfadd11ecc5de9"
+        },
+        {
+          "object": "build/usa/asm/usa/63A2B0_cross47_02.s.o",
+          "original_text_bytes": 17260,
+          "compiler_section_bytes": 17264,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "8b499d78517b1466d76caf210beaa534f001efffaa98e38b45131a9e56a39f8c"
+        },
+        {
+          "object": "build/usa/asm/usa/63A2B0_cross47_03.s.o",
+          "original_text_bytes": 3080,
+          "compiler_section_bytes": 3088,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "631a5c031842d6991ee39a15963e83a12a5144bdb6ca2f3a46731766a5a1cbcd"
+        },
+        {
+          "object": "build/usa/asm/usa/63A2B0_cross47_04.s.o",
+          "original_text_bytes": 304,
+          "compiler_section_bytes": 304,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "e553fef4fcbba52e89e39fb2f5bee04b245e55ce73628e79323c8da8af7625ff"
+        },
+        {
+          "object": "build/usa/asm/usa/63A2B0_cross47_06.s.o",
+          "original_text_bytes": 1988,
+          "compiler_section_bytes": 2000,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "4c5e44453fd7e116c561d3219a8be929d352f890a2b489d95757d7dcf8a849ea"
+        },
+        {
+          "object": "build/usa/asm/usa/63A2B0_cross47_07.s.o",
+          "original_text_bytes": 25488,
+          "compiler_section_bytes": 25488,
+          "zero_padding_removed": 0,
+          "trimmed_object_sha256": "4ff4662da5eb3c25b13e4c6c0cd6055710590581a3ea74c4fb3118daca513009"
+        },
+        {
+          "object": "build/usa/asm/usa/63A2B0_cross47_08.s.o",
+          "original_text_bytes": 66440,
+          "compiler_section_bytes": 66448,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "586a692d1300522d64a6688784b67ce5598c17c02862f0f9cdad34ca8c82627d"
+        },
+        {
+          "object": "build/usa/asm/usa/65E310_cross47_00.s.o",
+          "original_text_bytes": 3500,
+          "compiler_section_bytes": 3504,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "6cdf406e203ba49619577958021c694e9441dfee4baa3d4e589e288e33a3046e"
+        },
+        {
+          "object": "build/usa/asm/usa/65E310_cross47_01.s.o",
+          "original_text_bytes": 892,
+          "compiler_section_bytes": 896,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "bb76e3e1bf82ed850840b183d49c24b236ff5b89c7e029352bd6f960be6508ea"
+        },
+        {
+          "object": "build/usa/asm/usa/65E310_cross47_02.s.o",
+          "original_text_bytes": 27848,
+          "compiler_section_bytes": 27856,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "3f6cb40c4400a3e18889e5bb52bec1a842d85ef5e7728da8b73b71662a8e1869"
+        },
+        {
+          "object": "build/usa/asm/usa/66C250_cross47_00.s.o",
+          "original_text_bytes": 4232,
+          "compiler_section_bytes": 4240,
+          "zero_padding_removed": 8,
+          "trimmed_object_sha256": "273f16f3209ec12970a9605edc3812935ea44f780ff5c4e3b0b1e196158c043b"
+        },
+        {
+          "object": "build/usa/asm/usa/66C250_cross47_01.s.o",
+          "original_text_bytes": 34516,
+          "compiler_section_bytes": 34528,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "c855bdaaa054241915226dcac44725ba7cae615f4da697fcd537af8e2112301d"
+        },
+        {
+          "object": "build/usa/asm/usa/file_12_after_5DD65C_cross47_00.s.o",
+          "original_text_bytes": 2692,
+          "compiler_section_bytes": 2704,
+          "zero_padding_removed": 12,
+          "trimmed_object_sha256": "ed18f19e5b24d5897481572c07055c514f058067e1eccb61a417ca61b81cb14d"
+        },
+        {
+          "object": "build/usa/asm/usa/file_12_after_5DD65C_cross47_01.s.o",
+          "original_text_bytes": 23436,
+          "compiler_section_bytes": 23440,
+          "zero_padding_removed": 4,
+          "trimmed_object_sha256": "c8de9be7ada17b230e3bb86d63a65fc41dbfde4c34ed7d8bac7566267ce15755"
+        }
+      ],
+      "functions": 47,
+      "original_c_instruction_bytes": 2220
+    },
+    "original_linker_sha256": "2902e77d58c1f8eb1fa08005606ea3087ccc045cb06a997357c0100c74d5906d"
+  },
+  "inventory": {
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 393,
+    "current_unmarked_entries": 406,
+    "remaining_assembly_entries": 6970,
+    "baseline_zero_sized_function_labels_ignored": 0,
+    "candidate_zero_sized_function_labels_ignored": 851,
+    "extra_positive_alias_entries": 0,
+    "upstream_unmarked_names": [
+      "func_8000A480_B080",
+      "func_80013940_14540",
+      "func_80013AC4_146C4",
+      "func_80013C0C_1480C",
+      "func_80013C70_14870",
+      "func_800141C4_14DC4",
+      "func_8001481C_1541C",
+      "func_80014840_15440",
+      "func_800148C0_154C0",
+      "func_80014C00_15800",
+      "func_80014C20_15820",
+      "func_80029E58_2AA58",
+      "func_8002A168_2AD68"
+    ],
+    "size_annotation_differences": [
+      {
+        "name": "func_8000D3B8_DFB8",
+        "baseline_size": 64,
+        "candidate_size": 72
+      },
+      {
+        "name": "func_8003F6E8_402E8",
+        "baseline_size": 48,
+        "candidate_size": 56
+      }
+    ],
+    "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  },
+  "remaining": [
+    "fresh current decomp.verify combined official G2",
+    "full current decomp.local_ci",
+    "publish canonical combined.json and inventory.json from same verified run"
+  ],
+  "formally_promoted": false
+}
