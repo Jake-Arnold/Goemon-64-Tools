@@ -1,0 +1,41 @@
+{
+  "format": "goemon-camera-reset-136-original-rom-scratch-v1",
+  "status": "PASS_SCRATCH_NOT_CENTRAL_G2",
+  "date": "2026-11-17",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "decompressed_usa_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "original_overlay_asm_sha256": "e936f86295b8d8795369fd6db6a42da5b13184b9856058878066b9448e4a5f8b",
+  "function": {
+    "name": "func_801F97D4_5B56E4",
+    "vma": "0x801F97D4",
+    "rom_start": "0x5B56E4",
+    "rom_end": "0x5B576C",
+    "size": 136,
+    "source_sha256": "9d47ba199dfd48f5707b7623f45eee5e0853110f725e08bcf4ad7c151f7450c4",
+    "original_and_compiled_bytes_sha256": "f6266809ac26ff75f44d5f23cab8c15ae338e6185b88b69ec85bd83dfb7c0b8a"
+  },
+  "full_rom_bytes_equal": 33554432,
+  "file11_original_relocations": 8825,
+  "file11_candidate_relocations": 8825,
+  "relocation_multiset_equal": true,
+  "original_function_entries": 7376,
+  "candidate_function_entries": 7376,
+  "all_original_function_names_vmas_sizes_preserved": true,
+  "scratch_objects_original_sizes": {
+    "build/usa/asm/usa/587370.s.o": 189300,
+    "build/usa/src/camera_reset_usa_5b56e4.c.o": 136,
+    "build/usa/asm/usa/5B576C.s.o": 11668
+  },
+  "scratch_objects_trimmed_sha256": {
+    "build/usa/asm/usa/587370.s.o": "24c0f0b88130dc28f370866ec27cf6d70bd0806fb584627e8193f0717e94a3ad",
+    "build/usa/src/camera_reset_usa_5b56e4.c.o": "1e404dc0f374ffa2d7b1e2f21e8d468014af9ab132f044e90e9a49a99d728c81",
+    "build/usa/asm/usa/5B576C.s.o": "a7031d785487b097277edfddc770bfc3780c81f52f15f8720c003afea1a5c77b"
+  },
+  "production_baseline_verified_C": 342,
+  "canonical_343_candidate_g2": "NOT_RUN",
+  "region": "usa",
+  "scope": "Separate clean-source scratch rebuild; original 342-C production verifier and combined local CI not run here",
+  "tooling": "Authentic IDO 5.3, big-endian MIPS GNU binutils, SHA1-pinned USA original ROM and upstream git checkout",
+  "artifact": "goemon_camera_reset_136_scratch_repro.zip available in ChatGPT project conversation (not uploaded to git; contains only source and script)"
+}
