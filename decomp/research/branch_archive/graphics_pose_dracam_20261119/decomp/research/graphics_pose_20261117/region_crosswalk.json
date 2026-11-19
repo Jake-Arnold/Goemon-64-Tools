@@ -1,0 +1,35 @@
+{
+  "format": "goemon-static-global-crosswalk-research-v1",
+  "source_region": "usa",
+  "target_region": "japan_0",
+  "source_function": "func_8001E2BC_1EEBC",
+  "counterpart_function": "func_8001DF80_1EB80",
+  "original_source_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_target_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "width_bytes": 2,
+  "endian": "big",
+  "mask": null,
+  "owner": "fixed-global",
+  "evidence": "Original USA/JP 196-byte function has only six halfword-store immediate changes plus one JAL target; direct independent ROM comparison and JP .bss symbols",
+  "records": [
+    {
+      "usa_guest": "0x801689F0",
+      "jp_guest": "0x8016E1D0"
+    },
+    {
+      "usa_guest": "0x801689F2",
+      "jp_guest": "0x8016E1D2"
+    },
+    {
+      "usa_guest": "0x801689F4",
+      "jp_guest": "0x8016E1D4"
+    }
+  ],
+  "displacement": "+0x57E0",
+  "standard_heuristic_plus_0x57F0_valid": false,
+  "validation": "ORIGINAL_MIPS_INSTRUCTION_TRACED_BOTH_REGIONS",
+  "gameplay_confirmation": "NOT_RUN",
+  "original_jp_native_C": "NOT_RUN",
+  "may_auto_write": false,
+  "next_test": "Observe three Japanese rotation halfword globals under controlled animation changes; compare stable-state snapshots and exact caller semantics, with no guest-memory writes"
+}

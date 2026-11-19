@@ -1,0 +1,36 @@
+{
+  "format": "goemon-usa-reference-regression-v1",
+  "date": "2026-11-15",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "scope": "Fresh pinned upstream USA source rebuild; NOT current private branch matching-C G2",
+  "input": {
+    "region": "usa",
+    "retail_bytes": 16777216,
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66"
+  },
+  "pipeline": {
+    "rommy_reference_decompression": "PASS",
+    "splat_split": "PASS",
+    "gnu_mips_assembly_link": "PASS",
+    "rommy_retail_recompression": "PASS"
+  },
+  "expanded": {
+    "bytes": 33554432,
+    "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "rebuilt_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "retail": {
+    "bytes": 16777216,
+    "expected_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "rebuilt_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "not_run": [
+    "Full USA decomp.verify integration with current private manifest",
+    "Native emulator gameplay"
+  ],
+  "copyright": "Hash-only report; no ROM, source binary or extracted assets"
+}

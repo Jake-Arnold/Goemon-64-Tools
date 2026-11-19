@@ -1,6 +1,33 @@
+## 2026-11-19 — PR #105 refreshed after graphics and camera archives
+
+- Reconciled history with current canon, retaining original file16/file21/file18 native proof archive subtree `9daabc18e4e74b5289599df87d0046ce4a5f5c80` byte-identically. No accepted C, manifest, native full-ROM G2 or local CI changes.
+
 ## 2026-11-19 — Draft PR #105: file16/file21 and file18 native source proof preservation
 
 - Preserved 13 historical source catalogue/test/native proof Git blobs, plus README, from the accepted-C-overlapped file16/file21 callback and file18 53-function research branches. Historical source and ROM verification statements remain dated and must not be treated as current combined acceptance. No production source/manifest, accepted USA 1,500 / JP 432 function count or native verification claims changed. No new local CI, G2 or gameplay tests run for this research-only archive. Source deletion gated on merger and independent exact-blob check.
+
+
+## 2026-11-19 — PR #104 refreshed against latest canonical decomp
+
+- Original graphics/pose/dracam research archive subtree SHA `ec74e9d91e2399b3ad55e2c8520ec5afb091cfee` unchanged. Historical source, proof and test blobs retained verbatim; accepted 1,500 USA / 432 Japanese C unchanged, no new ROM G2 or full CI run for archival refresh.
+
+## 2026-11-19 — Draft PR #104: graphics, pose, dracam native evidence archive
+
+- Preserved 25 original missing-source files (plus archive README) from four research branch tips in a non-executable research directory, with original SHA provenance. Earlier native scratch successes remain historical **RESEARCH_ONLY** where no separate current acceptance is recorded; no new function promotion is claimed. Current accepted USA 1,500 / Japan 432 C unchanged; no production C/manifests, fresh full-ROM G2, host sanitizer or gameplay tests performed by this archive. No source refs deleted pending PR merge plus file/SHA recheck.
+
+
+## 2026-11-19 — PR #103 reconciled after canonical Japanese research archive
+
+- Retained exactly the original camera runtime/reset archival subtree SHA `7c0328e94ad0f543238827175941d5e940a392a0`, with no source, accepted C or historical proof replacement. Previous PR #103 status remains a dated preservation note; native G2/full CI were not rerun for the archival-only refresh.
+
+## 2026-11-19 — Draft PR #103: original camera/reset evidence preserved for retirement
+
+- Archived 14 exact original absent-canon source/proof/test files from four original camera runtime/reset branches in `decomp/research/branch_archive/camera_runtime_20261119`. The historic 136-byte native isolated proof and 343-C stage are recorded as dated research, **not** fresh current acceptance. Zero production C, accepted manifest or original-ROM verification changes; no full local CI, native G2 or emulator tests run for this documentation-only archive. Original branch deletion waits for PR merge, blob SHA validation and stable head refs.
+
+
+## 2026-11-19 — Draft PR #102: preserve original Japanese native proof chronology
+
+- Research only. Exact original historical blobs from `chatgptweb/japanese-decomp-port` and `chatgptweb/decomp-consolidation-20261116` archived under `decomp/research/branch_archive/japan_early_native_20261119`, including two alternate early 24-C helper revisions. Existing canonical USA 1,500/Japan 432 matching-C functions and active source unchanged; full native ROM/G2, CI and gameplay **NOT RUN** for this archive. No source branches deleted; deletion gated on PR merge and SHA/provenance checks.
 
 ## 2026-11-19 — Merge-triggered historical research branch retirement mechanism
 
