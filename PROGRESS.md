@@ -1,3 +1,12 @@
+## 2026-11-19 — PR #105 refreshed after graphics and camera archives
+
+- Reconciled history with current canon, retaining original file16/file21/file18 native proof archive subtree `9daabc18e4e74b5289599df87d0046ce4a5f5c80` byte-identically. No accepted C, manifest, native full-ROM G2 or local CI changes.
+
+## 2026-11-19 — Draft PR #105: file16/file21 and file18 native source proof preservation
+
+- Preserved 13 historical source catalogue/test/native proof Git blobs, plus README, from the accepted-C-overlapped file16/file21 callback and file18 53-function research branches. Historical source and ROM verification statements remain dated and must not be treated as current combined acceptance. No production source/manifest, accepted USA 1,500 / JP 432 function count or native verification claims changed. No new local CI, G2 or gameplay tests run for this research-only archive. Source deletion gated on merger and independent exact-blob check.
+
+
 ## 2026-11-19 — PR #104 refreshed against latest canonical decomp
 
 - Original graphics/pose/dracam research archive subtree SHA `ec74e9d91e2399b3ad55e2c8520ec5afb091cfee` unchanged. Historical source, proof and test blobs retained verbatim; accepted 1,500 USA / 432 Japanese C unchanged, no new ROM G2 or full CI run for archival refresh.

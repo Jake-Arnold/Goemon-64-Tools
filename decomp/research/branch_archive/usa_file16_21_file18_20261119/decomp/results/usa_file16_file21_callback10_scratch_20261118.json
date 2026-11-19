@@ -1,0 +1,93 @@
+{
+  "format": "goemon-usa-file16-file21-original-scratch-v1",
+  "date": "2026-11-18",
+  "status": "RESEARCH_ONLY",
+  "accepted_baseline": {
+    "USA_C": 951,
+    "USA_C_bytes": 38816,
+    "Japan_0_C": 39,
+    "Japan_0_C_bytes": 2092
+  },
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "usa_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "usa_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "candidate_count": 10,
+  "candidate_bytes": 152,
+  "candidate_manifest": "research/usa_file16_file21_callback10_20261118/candidate_manifest.json",
+  "native": {
+    "compiler": "IDO 5.3 -O2 -mips2",
+    "pinned_mips_binutils": "2.45.90.20260125",
+    "c_units": 3,
+    "exact_original_function_bodies": 10,
+    "splat_subalign_overrides": [
+      "file_16=4",
+      "file_21=4"
+    ],
+    "asm_source_object_padding": "-no-pad-sections for split original assembly",
+    "only_elf_section_header_trim": {
+      "object": "file21_status_five.c.o",
+      "from": 80,
+      "to": 72,
+      "validated_zero_bytes": 8
+    },
+    "original_instruction_payload_changed": false
+  },
+  "original_upstream_scratch": {
+    "pristine_original_ROM_exact": true,
+    "candidate_ROM_exact": true,
+    "ROM_equal_bytes": 33554432,
+    "ROM_total_bytes": 33554432,
+    "ROM_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "relocation_sections_original": 72,
+    "relocation_sections_candidate": 72,
+    "semantic_relocation_entries_original": 82216,
+    "semantic_relocation_entries_candidate": 82216,
+    "semantic_differences": 0,
+    "positive_size_FUNC_entries_original": 7376,
+    "positive_size_FUNC_entries_candidate": 7376,
+    "original_FUNC_identity_differences": 0,
+    "scratch_elf_sha256": "075ca38e781e774fc1ad891e8d4231bda8aaf0764ec5186efdc48d831167b19b"
+  },
+  "tested_source_git_blob_sha1": {
+    "file16_status_single.c": "78ee279aad3b079f641b15b77206180b856c737f",
+    "file16_status_four.c": "663fe6325680f0488eeee4cd5a1c5a439c04428c",
+    "file21_status_five.c": "6e6704c0ca031d11f26c1cf4012e0d5370e00bb7",
+    "test_ten.c": "bc7b28df8088e6f0115897f67cae873a6b257a76",
+    "verify_rom_anchors.py": "ee1710cc327fc0776490a2907a55a527e2804599",
+    "candidate_manifest.json": "4be862255ebb91f3b02923168b9aec62c5991977"
+  },
+  "host_regression": {
+    "status": "PASS",
+    "compiler": "gcc",
+    "flags": "-std=c11 -Wall -Wextra -Werror -Wno-unused-parameter -O1 -fno-omit-frame-pointer -fsanitize=address,undefined",
+    "test_cases": 10,
+    "invocations": 120,
+    "all_adjacent_bytes_unchanged": true
+  },
+  "ROM_anchor_checks": {
+    "status": "PASS",
+    "checks": 10,
+    "reject_invalid_16MiB_retail": true
+  },
+  "failed_native": [
+    {
+      "name": "func_8020D7E0_69DA20",
+      "rom_offset": "0x69DA20",
+      "expected_bytes": 40,
+      "actual_bytes": 28,
+      "variants": 5,
+      "status": "FAILED_NATIVE",
+      "reason": "Original register/relocation load scheduling and function length not reproduced"
+    }
+  ],
+  "canonical_gate": {
+    "combined_verify": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "full_local_ci": "NOT_RUN",
+    "reason": "Complete authenticated live 951-C canonical source checkout unavailable to original-native execution host (shell GitHub DNS failure)."
+  },
+  "accepted_change": {
+    "USA_newly_promoted": 0,
+    "Japan_0_newly_promoted": 0
+  }
+}

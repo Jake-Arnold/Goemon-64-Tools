@@ -1,0 +1,176 @@
+[
+  {
+    "name": "func_801CBE68_668598",
+    "rom_offset": "0x668598",
+    "vma": "0x801CBE68",
+    "size": 16,
+    "overlay": "file_16",
+    "source": "file16_status_single.c",
+    "byte_offset": 5,
+    "stored_value": 7,
+    "original_bytes_sha256": "7f3a5be5603b87a473d96b8d4340f6119c8652ee0b2d495ac01b194f36d9e8ac",
+    "assembly_static_refs": [
+      {
+        "source": "667B90.s",
+        "direct_calls": 0,
+        "hi_pointer_loads": 1
+      }
+    ]
+  },
+  {
+    "name": "func_801CC1FC_66892C",
+    "rom_offset": "0x66892C",
+    "vma": "0x801CC1FC",
+    "size": 16,
+    "overlay": "file_16",
+    "source": "file16_status_four.c",
+    "byte_offset": 5,
+    "stored_value": 8,
+    "original_bytes_sha256": "176132f6af5950631eebed161b80cf0b313e39f34eea2d30b53a502d9ae4cf45",
+    "assembly_static_refs": [
+      {
+        "source": "667B90.s",
+        "direct_calls": 0,
+        "hi_pointer_loads": 1
+      }
+    ]
+  },
+  {
+    "name": "func_801CC20C_66893C",
+    "rom_offset": "0x66893C",
+    "vma": "0x801CC20C",
+    "size": 16,
+    "overlay": "file_16",
+    "source": "file16_status_four.c",
+    "byte_offset": 5,
+    "stored_value": 2,
+    "original_bytes_sha256": "025c37dd3863be994cfb88c9f984e4c5af453ccfb6fb37b2c6045d11636b9dd6",
+    "assembly_static_refs": [
+      {
+        "source": "667B90.s",
+        "direct_calls": 0,
+        "hi_pointer_loads": 1
+      }
+    ]
+  },
+  {
+    "name": "func_801CC21C_66894C",
+    "rom_offset": "0x66894C",
+    "vma": "0x801CC21C",
+    "size": 16,
+    "overlay": "file_16",
+    "source": "file16_status_four.c",
+    "byte_offset": 5,
+    "stored_value": 8,
+    "original_bytes_sha256": "176132f6af5950631eebed161b80cf0b313e39f34eea2d30b53a502d9ae4cf45",
+    "assembly_static_refs": [
+      {
+        "source": "667B90.s",
+        "direct_calls": 0,
+        "hi_pointer_loads": 1
+      }
+    ]
+  },
+  {
+    "name": "func_801CC22C_66895C",
+    "rom_offset": "0x66895C",
+    "vma": "0x801CC22C",
+    "size": 16,
+    "overlay": "file_16",
+    "source": "file16_status_four.c",
+    "byte_offset": 5,
+    "stored_value": 2,
+    "original_bytes_sha256": "025c37dd3863be994cfb88c9f984e4c5af453ccfb6fb37b2c6045d11636b9dd6",
+    "assembly_static_refs": [
+      {
+        "source": "667B90.s",
+        "direct_calls": 0,
+        "hi_pointer_loads": 1
+      }
+    ]
+  },
+  {
+    "name": "func_8020D734_69D974",
+    "rom_offset": "0x69D974",
+    "vma": "0x8020D734",
+    "size": 16,
+    "overlay": "file_21",
+    "source": "file21_status_five.c",
+    "byte_offset": 5,
+    "stored_value": 6,
+    "original_bytes_sha256": "aa6bcfe3e9b09e68c6a5a24a344be759ed9ea0e32f055a25bd95042b00e6f7dc",
+    "assembly_static_refs": [
+      {
+        "source": "69D4E0.s",
+        "direct_calls": 0,
+        "hi_pointer_loads": 1
+      }
+    ]
+  },
+  {
+    "name": "func_8020D744_69D984",
+    "rom_offset": "0x69D984",
+    "vma": "0x8020D744",
+    "size": 16,
+    "overlay": "file_21",
+    "source": "file21_status_five.c",
+    "byte_offset": 5,
+    "stored_value": 1,
+    "original_bytes_sha256": "3d2d623c1e29b01a16ce3d1042b05a83b6f47aaeb62f28c4f21227a4dfc4bdc4",
+    "assembly_static_refs": [
+      {
+        "source": "69D4E0.s",
+        "direct_calls": 0,
+        "hi_pointer_loads": 1
+      }
+    ]
+  },
+  {
+    "name": "func_8020D754_69D994",
+    "rom_offset": "0x69D994",
+    "vma": "0x8020D754",
+    "size": 16,
+    "overlay": "file_21",
+    "source": "file21_status_five.c",
+    "byte_offset": 5,
+    "stored_value": 7,
+    "original_bytes_sha256": "7f3a5be5603b87a473d96b8d4340f6119c8652ee0b2d495ac01b194f36d9e8ac",
+    "assembly_static_refs": []
+  },
+  {
+    "name": "func_8020D764_69D9A4",
+    "rom_offset": "0x69D9A4",
+    "vma": "0x8020D764",
+    "size": 12,
+    "overlay": "file_21",
+    "source": "file21_status_five.c",
+    "byte_offset": 5,
+    "stored_value": 0,
+    "original_bytes_sha256": "395c7a01d09d2bf458d2524611d84990e353a5df0fc145a1c96e9d6097b6c4fb",
+    "assembly_static_refs": [
+      {
+        "source": "69D4E0.s",
+        "direct_calls": 0,
+        "hi_pointer_loads": 1
+      }
+    ]
+  },
+  {
+    "name": "func_8020D770_69D9B0",
+    "rom_offset": "0x69D9B0",
+    "vma": "0x8020D770",
+    "size": 12,
+    "overlay": "file_21",
+    "source": "file21_status_five.c",
+    "byte_offset": 5,
+    "stored_value": 0,
+    "original_bytes_sha256": "395c7a01d09d2bf458d2524611d84990e353a5df0fc145a1c96e9d6097b6c4fb",
+    "assembly_static_refs": [
+      {
+        "source": "69D4E0.s",
+        "direct_calls": 0,
+        "hi_pointer_loads": 1
+      }
+    ]
+  }
+]
