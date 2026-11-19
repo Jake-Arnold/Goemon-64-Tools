@@ -1,4 +1,17 @@
-# Goemon Speedrun Tools v0.11.64 — Source-Backed Horizontal Dialogue Bounds
+# Goemon Speedrun Tools v0.11.65 — USA/Japan Dialogue ROM Library and Token Editor
+
+## v0.11.65 — Japan-0 original ROM support, one-time import, native file drop, built-ROM folder
+
+The existing **Dialogue** tab now has a separate **USA / Japan** selector. It can import either the original 16 MiB retail image (including the byte-swapped Japan `.n64`) or a verified original 32 MiB decompressed image. On retail import it normalises Japan byte order, automatically decompresses the original files using the optional `lzkn64==0.2.0` runtime, verifies the exact decompressed SHA-1, and copies the retail and decompressed originals to a **persistent per-user ROM library** outside the repository. Saved images are re-hashed before reuse and load automatically on subsequent launches. Source ROMs are not modified; no original assets are committed.
+
+**Persistent directory:** Linux `$XDG_DATA_HOME/GoemonSpeedrunTools/dialogue-roms` (default `~/.local/share/GoemonSpeedrunTools/dialogue-roms`), Windows `%LOCALAPPDATA%\GoemonSpeedrunTools\dialogue-roms`, macOS `~/Library/Application Support/GoemonSpeedrunTools/dialogue-roms`. The **Open built ROM directory** button opens the last successfully built output folder, or the default persistent `dialogue-roms/built/` folder. Builds default to that folder. Importing an unchanged original once is enough; original full-ROM hashes are still checked on every reload.
+
+The Toolkit root uses the `tkinterdnd2` package for native file drag-and-drop on supported Linux/Windows/macOS Tk installations. A plain file-picker **Import original ROM** fallback always remains available. Install from `requirements.txt` (including `tkinterdnd2>=0.4.3`) to enable real drop handling. Dropping a ROM only imports while the Dialogue tab is active. Multiple dropped files are rejected rather than partially processed.
+
+**Japan extraction:** The original Japan-0 file table at decompressed offset `0x58258` and its original `0x8010` same-resource script operands yield **5,039 candidate text records across 42 resources**, with 5,694 direct script references. Japan text is signed 16-bit tokens, not USA ASCII. **Japanese Unicode glyph mapping is not decoded yet**: the editor shows and edits safe numeric `<token:N>` IDs, preserves original negative controls and rejects unsupported Unicode to prevent corrupting the ROM. JP font-width auto-wrap and USA-native window sizing are intentionally disabled for Japanese dialogue. Same-size replacement and bounded variable-length record relocation are supported with verified source pointers, followed by 16 MiB big-endian Japanese retail `.z64` rebuilding. The untouched Japanese retail image repacks **byte-for-byte** to SHA-1 `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b`; the original `.n64` bytes require adjacent-byte swapping before comparison. A modified Japanese record was repacked successfully, **not tested in Project64 gameplay**.
+
+**Test evidence:** 18 focused new Python and Xvfb Tk tests passed on 19 November 2026, no skips, using both supplied original regional ROMs, portable Python 3.12 and LZKN64 0.2.0. These cover both automatic-decompression paths, persistent image validation, mixed byte order, JP token roundtrips and rejection, in-place and longer JP patches, original retail byte equality, file-manager dispatch and root fallback when TkDND is absent. Existing full Toolkit regressions and actual TkDND drops on an installed TkDND binary were not exercised. Source research: `docs/JAPAN_DIALOGUE_ROM_EDITOR_RESEARCH_20261119.md`.
+
 
 ## v0.11.64 — Native artwork width and conservative auto wrapping
 

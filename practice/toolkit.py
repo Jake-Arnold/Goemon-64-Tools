@@ -33,6 +33,8 @@ from practice.native_checkpoints import (
 )
 from practice.reports_ui import ReportsMixin
 from practice.dialogue_ui import DialogueMixin
+from practice.dialogue_region_ui import DialogueRegionMixin
+from practice.dialogue_dnd import make_toolkit_root
 from practice.value_freezes_ui import ValueFreezesMixin
 from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
@@ -144,7 +146,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(DialogueMixin, UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -2649,7 +2651,7 @@ def parse_args(argv=None):
 def main(argv=None):
     args=parse_args(argv)
     # Tk normalizes WM_CLASS capitalization. The instance matches the\n    # lowercase desktop filename on real Tk 8.6 / X11.
-    root=tk.Tk(className='goemon-practice-toolkit'); app=Toolkit(root,args)
+    root=make_toolkit_root(class_name='goemon-practice-toolkit'); app=Toolkit(root,args)
     try:
         root.mainloop()
     finally:
