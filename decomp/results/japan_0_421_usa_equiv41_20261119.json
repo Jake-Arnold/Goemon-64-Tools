@@ -1,0 +1,63 @@
+{
+  "format": "goemon-japan-421-original-C-native-replay-v1",
+  "status": "PASSED_G2",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "baseline_c": 380,
+  "added_c": 41,
+  "added_instruction_bytes": 1700,
+  "matching_c_functions": 421,
+  "matching_c_bytes": 9608,
+  "remaining_assembly_entries": 6955,
+  "original_elf_function_count": 7376,
+  "original_elf_identity_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
+  "semantic_relocations_count": 80747,
+  "semantic_relocations_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "expanded_rom": {
+    "size": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "changed_bytes": 0
+  },
+  "retail_rom": {
+    "size": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "changed_bytes": 0
+  },
+  "source_manifests": [
+    "decomp/regions/japan_0_equiv4_more.json",
+    "decomp/regions/japan_0_equiv37_more.json"
+  ],
+  "native_replays": [
+    {
+      "checkout": "two independent prepared pinned-upstream regional checkouts",
+      "status": "PASS",
+      "proof_sha256": "bbc517f46495b1e38fdba3c8787ad047de0ce0b29aacb934f1e3fd5100ed6f75"
+    },
+    {
+      "checkout": "second independent pinned-upstream regional checkout",
+      "status": "PASS",
+      "proof_sha256": "bbc517f46495b1e38fdba3c8787ad047de0ce0b29aacb934f1e3fd5100ed6f75"
+    },
+    {
+      "checkout": "brand-new extracted pinned upstream source, fresh ROM decompression and Splat, full 39+290+4+11+36+4+37 stage chain",
+      "status": "PASS",
+      "proof_sha256": "bbc517f46495b1e38fdba3c8787ad047de0ce0b29aacb934f1e3fd5100ed6f75",
+      "runner": "decomp/build_japan_usa_equiv_421.sh"
+    }
+  ],
+  "native_compiler": "original IDO 5.3",
+  "native_original_4_c_exact": 4,
+  "native_original_37_c_exact": 37,
+  "emulator_gameplay": "NOT_RUN",
+  "full_local_ci": "PASS",
+  "full_local_ci_tests": {
+    "decomp_python": 256,
+    "decomp_skipped": 1,
+    "verifier_ledger_python": 286,
+    "verifier_ledger_skipped": 4,
+    "actual_source_host_asan_ubsan": "PASS",
+    "new_rom_free_tests": 11,
+    "four_state_source_semantic_asan_ubsan": "PASS"
+  },
+  "fresh_full_chain_from_clean_checkout": "PASS"
+}

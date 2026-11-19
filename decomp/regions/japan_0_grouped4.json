@@ -1,0 +1,67 @@
+{
+  "format": "goemon-japan-usa-grouped-c-port4-v1",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "baseline_c": 423,
+  "baseline_bytes": 9676,
+  "added_c": 4,
+  "added_bytes": 216,
+  "total_c": 427,
+  "total_bytes": 9892,
+  "original_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "original_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "candidates": [
+    {
+      "usa": "func_801E7D78_5A3C88",
+      "jp": "func_801ECEA0_5A8E70",
+      "usa_rom": 5913736,
+      "jp_rom": 5934704,
+      "vma": 2149502624,
+      "sz": 40,
+      "original_parent": "asm/japan_0/5A65E0.s",
+      "section": "file_11",
+      "source_path": "decomp/research/file11_three_isolated_20261117.c",
+      "source_sha256": "6f484b269a8faf6f7ac1ba366ff534ef16a8645436c7941ea95b81d2110ec182",
+      "code_sha256": "47d34fd849e6abe20f35d49739d2ec505bfe5feee3955520afe5c470ff0f6405"
+    },
+    {
+      "usa": "func_801F23C8_5AE2D8",
+      "jp": "func_801F73D4_5B33A4",
+      "usa_rom": 5956312,
+      "jp_rom": 5976996,
+      "vma": 2149544916,
+      "sz": 32,
+      "original_parent": "asm/japan_0/jpport_5AF790_002.s",
+      "section": "file_11",
+      "source_path": "decomp/research/file11_three_isolated_20261117.c",
+      "source_sha256": "6f484b269a8faf6f7ac1ba366ff534ef16a8645436c7941ea95b81d2110ec182",
+      "code_sha256": "7b68d8cd198ca2ead83e644d7b037bcf4d80ae32a693429d334481d52df2b06e"
+    },
+    {
+      "usa": "func_801F3AD0_5AF9E0",
+      "jp": "func_801F8AE0_5B4AB0",
+      "usa_rom": 5962208,
+      "jp_rom": 5982896,
+      "vma": 2149550816,
+      "sz": 32,
+      "original_parent": "asm/japan_0/5B3CB0.s",
+      "section": "file_11",
+      "source_path": "decomp/research/file11_three_isolated_20261117.c",
+      "source_sha256": "6f484b269a8faf6f7ac1ba366ff534ef16a8645436c7941ea95b81d2110ec182",
+      "code_sha256": "b0b50f6e45d2a53ac3ccd0ca619f8e8a83a22863ec4bf458426d1620c64661c4"
+    },
+    {
+      "usa": "func_8021A7E8_5D5CB8",
+      "jp": "func_8021F558_5DAAE8",
+      "usa_rom": 6118584,
+      "jp_rom": 6138600,
+      "vma": 2149709144,
+      "sz": 112,
+      "original_parent": "asm/japan_0/jpport_5D6940_005.s",
+      "section": "file_12",
+      "source_path": "decomp/candidates/vector_cross.c",
+      "source_sha256": "14aa6a995aeae17946b27a8cd5544a964f8e0ab707508d7d2bf764b7c9c3102e",
+      "code_sha256": "7aeac228688e091b10fdff57b220846880cc8ab5b7744dbcadbd10da147e03a7"
+    }
+  ]
+}
