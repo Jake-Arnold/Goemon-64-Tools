@@ -1,0 +1,24 @@
+{
+  "format": "goemon-usa-1452-github-publication-v1",
+  "status": "PASSED_G2_GITHUB_PUBLISHED",
+  "published_utc_date": "2026-11-19",
+  "branch": "chatgptweb/decomp",
+  "source_commit": "b7c2e370cf23989e16de67adf8e2be5a5c7082a0",
+  "parent_commit": "ac39a8337541c2f42d2b5baf8147450841b20c73",
+  "source_tree_sha": "cfbefddd89c8b231063a76b5a96c525970403dd1",
+  "changed_files": 254,
+  "remote_source_hashes_verified": 254,
+  "unintended_files_modified": 0,
+  "canonical": {
+    "usa_matching_c": 1452,
+    "usa_matching_bytes": 56744,
+    "usa_assembly_remaining": 5911,
+    "japan_matching_c": 39
+  },
+  "original_usa_32m_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "native_gate": "PASSED_G2_LOCAL_BEFORE_PUBLICATION",
+  "full_ci": "PASSED_LOCAL_BEFORE_PUBLICATION",
+  "post_publication_ci": "NOT_RERUN",
+  "native_proof": "decomp/results/usa_227_1452_promotion_20261118.json",
+  "notes": "Documentation-only publication evidence. Historical proof retains remote_git_published=false because it was generated before the verified GitHub publication."
+}
