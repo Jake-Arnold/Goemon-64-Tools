@@ -1,0 +1,107 @@
+{
+  "format": "goemon-dialogue-window-slot-setter-promotion-v1",
+  "date": "2026-11-14",
+  "status": "PASSED_G2",
+  "scope": "Independent 36-byte main-segment C promotion in the existing dialogue_window.c unit; no G64 task status changed.",
+  "starting_state": {
+    "worktree_branch": "codex/goemon-impact-research",
+    "worktree_path": "/home/REDACTED_USER/.codex/worktrees/goemon-impact-research/Goemon-64-Tools",
+    "task_start_head": "3179cbcb7f32e3d46e3460d9677e9ab4273df938",
+    "initial_worktree": "clean",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "candidate_selection": {
+    "partial_c_units_with_assembly_gaps": 15,
+    "selected": "func_8000C430_D030",
+    "reason": "36-byte leaf in a unit with four already-matching C functions; caller ABI and destination offset are visible, and the existing DialogueWindow declaration covers the field.",
+    "screened_but_retained_assembly": {
+      "func_8000C560_D160": "Two volatile-parameter IDO source forms emitted 20-byte bodies instead of the 8-byte original; no direct call site was found in pinned assembly.",
+      "func_8000C568_D168": "Two volatile-parameter forms emitted 20-byte bodies and an empty-float form emitted 12 bytes, all differing from the 8-byte original. Stopped at the <=128-byte three-variant budget."
+    }
+  },
+  "original_mips": {
+    "function": "func_8000C430_D030",
+    "unit": "dialogue_window.c",
+    "vma": "0x8000C430",
+    "decompressed_reference_rom_offset": "0xD030",
+    "size_bytes": 36,
+    "instruction_sha256": "439b2ab187d935f02dc7f2d26e66c116ba4807868f076f0d08841509ce3c5d28",
+    "verified_contract": "Uses the signed word argument as an index into D_80167C48_168848. If the selected DialogueWindow pointer is non-null, stores the low halfword of the second word argument at window +0x70, then returns.",
+    "caller": {
+      "function": "func_8003DF98_3EB98",
+      "call_sites": [
+        "0x8003E0F8",
+        "0x8003E110"
+      ],
+      "arguments": "Both sites pass the current D_801C7754 value as the slot and immediate 9 as the stored value."
+    }
+  },
+  "candidate": {
+    "source": "decomp/dialogue_window.c",
+    "source_sha256": "e631f386b8b6f0500e8e80c4b0f900cdb628eaa8c8f2ea39b41c5dfe120f82c0",
+    "compiler_object_sha256": "491c4f5c6b8c4e16d18815fac6d9e7828a6f2adbdd639187064392783b3aa4bb",
+    "linked_function_sha256": "439b2ab187d935f02dc7f2d26e66c116ba4807868f076f0d08841509ce3c5d28",
+    "native_shape": "s32 slot index and s32 value; selected DialogueWindow.s16 pad70 receives the value.",
+    "native_trials": [
+      "V1 declared the value as s16 and emitted a 44-byte symbol; the first word differed in the slot-scaling register and the candidate added an argument-home spill.",
+      "V2 declared the value as s32 and emitted the exact 36-byte function shape with the original D_80167C48_168848 relocations."
+    ],
+    "existing_unit_claims_preserved": [
+      "func_8000C314_CF14",
+      "func_8000C3A0_CFA0",
+      "func_8000C3EC_CFEC",
+      "func_8000C53C_D13C"
+    ]
+  },
+  "full_rom_g2": {
+    "command": "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --workdir /tmp/goemon-impact-hp-dialogue-g2-run1-20261114 --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --baseline-cache /tmp/goemon-impact-hp-g2-20261114/baseline --report practice/diagnostics/impact/dialogue-window-c430-verify-run1.json --uv /home/REDACTED_USER/.local/bin/uv --jobs 2",
+    "result": "PASS; exit 0; complete 32 MiB candidate image matches the pinned USA image.",
+    "started_utc": "2026-11-14T12:33:56.823157+00:00",
+    "ended_utc": "2026-11-14T12:34:40.562577+00:00",
+    "report_sha256": "9d06154ca4539d680ca181cfd0e3d105c34d2b98276024a1908f4348cd00d27e",
+    "verifier_source_sha256": "40f6acd42070ae6717c17d431c8260ac44730fa0c65de147a5c7d88533b9bb05",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_functions": 162,
+    "claimed_functions": 162,
+    "matched_function_bytes": 12348,
+    "baseline_cache_used": true,
+    "superseded_current_report_note": "This 162-function result was the checked-in combined proof at the time of this promotion; the current 163-function report is recorded in 2026-11-14-impact-hp-floor-return-promotion.json."
+  },
+  "inventory": {
+    "command": "python3 -m decomp.inventory --baseline /tmp/goemon-impact-hp-g2-20261114/baseline --candidate /tmp/goemon-impact-hp-dialogue-g2-run1-20261114/candidate --report practice/diagnostics/impact/dialogue-window-c430-inventory-run1.json",
+    "result": "PASS; exit 0.",
+    "report_sha256": "d74086974ea75ba39be4fbec0f6c18861788d338965c4ca9fc08fd7acfb6e23d",
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 162,
+    "combined_c_entries": 175,
+    "remaining_assembly_entries": 7201,
+    "identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
+    "superseded_current_report_note": "This 162-function inventory was current at the time of this promotion; the current 163-function inventory is recorded in 2026-11-14-impact-hp-floor-return-promotion.json."
+  },
+  "tests": {
+    "dialogue_window_host": {
+      "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unknown-pragmas -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_headers/dialogue -Idecomp decomp/test_dialogue_window.c -o /tmp/dialogue-window-host-final-20261114 && /tmp/dialogue-window-host-final-20261114",
+      "result": "PASS; ASan/UBSan fixture retains the existing 65,536-phase/reset-state tests and covers valid slot writes, null slots, signed values, and preservation of all non-target bytes."
+    },
+    "focused_verifier_and_overlay_tests": {
+      "command": "python3 -m unittest tests.test_decomp_verify decomp.test_overlay_file13 decomp.test_overlay_file12 -q",
+      "result": "PASS; 53 tests."
+    },
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "result": "PASS; exit 0; 212 decomp tests, 117 verifier/ledger tests, 100-task evidence validation, and display-emitter ASan/UBSan host fixture."
+    }
+  },
+  "decision": "Promote only func_8000C430_D030 in the existing dialogue_window.c production unit. Its exact 36-byte linked instructions pass with the five C-owned functions in that unit and the complete ROM; prior C claims remain exact.",
+  "limitations": [
+    "No live-game test was performed; host coverage uses a synthetic dialogue-window record and pointer table.",
+    "The +0x70 field remains named pad70; the candidate does not assign it a higher-level semantic label.",
+    "The original index has no bounds check. Host tests use valid table indices only."
+  ],
+  "next": "G64-088 remains the first PLANNED task in the 100-task queue; this independent slot-setter promotion does not change its task status."
+}

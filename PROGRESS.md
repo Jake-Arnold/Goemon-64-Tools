@@ -1,3 +1,8 @@
+## 2026-11-19 — Preserve original Impact controller/HUD and historical native proof records (PR #98)
+
+- **Research preservation:** Imported the unchanged original MIPS tracing report `docs/IMPACT_BATTLE_MEMORY_TRACE.md` (384 lines; source Git blob `b69c8cba0d036763871272e85c353f6a9bf5d065`), covering the Impact controller, HUD pointer/model pool, state, camera, camera-vector math and teardown. Added three historical native proof ledger JSON records and clarifications to existing VM/gameplay notes without touching accepted C functions. Private home directories in ledgers are redacted.
+- **Proof boundary:** The three accepted code identities predate this PR; no functions are promoted. Canonical checkpoint at integration: 1,500 USA C / 432 Japan C. Native IDO/ROM G2, full local CI, strict inventory and emulator gameplay testing were **not rerun** for this documentary import.
+
 ## 2026-11-19 — Preserve original Mini Ebisumaru MIPS research (PR #97)
 
 - **Scope:** Added 21,742 novel characters of original-MIPS transformation/movement/stop/timer/action restriction analysis to `docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md`, retaining canonical 17,102-character prefix intact. Research-only; source sketches and inferred visible scale are not matching-C or gameplay confirmation. Canonical baseline at integration is USA 1,500 accepted C and Japanese 432 accepted C.

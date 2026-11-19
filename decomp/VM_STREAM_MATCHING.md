@@ -196,7 +196,7 @@ map, not an assignment of game meaning based on command names.
 | `-56 (FFC8)` | `E158` | Call `C5E4` with `D_801C7754` and `0x40000000`; reload `D_801C7754` after that call, then call `C60C`. |
 | `-55 (FFC9)` | `E144` | Call `C5A4` with `D_801C7754` loaded before the call. |
 | `-54 (FFCA)` | `E120` | Call `C570` with `D_801C7754`; reload `D_801C7754` after that call, then call `C568` with `0x40400000`. |
-| `-53..-52 (FFCB..FFCC)` | `E108`, `E0F0` | Each calls `C430` with the current `D_801C7754` and immediate 9. |
+| `-53..-52 (FFCB..FFCC)` | `E108`, `E0F0` | Each calls promoted C helper `C430` with the current `D_801C7754` and immediate 9. If the selected window pointer is non-null, it stores the low halfword at window `+0x70`; see [promotion evidence](plans/execution/2026-11-14-dialogue-window-c430-promotion.json). |
 | `-51 (FFCD)` | `E0DC` | Call `C488` with `D_801C7754` loaded before the call. |
 | `-50 (FFCE)` | `E0C8` | Call `C454` with `D_801C7754` loaded before the call. |
 | `-49..-38 (FFCF..FFDA)` | `E190` | Unmapped table entries; advance one halfword. |

@@ -1,0 +1,135 @@
+{
+  "format": "goemon-impact-overlay-promotion-v1",
+  "date": "2026-11-14",
+  "status": "PASSED_G2",
+  "scope": "Impact battle file_13 follow-up. Added a second noncontiguous C stage; no 100-task status changed.",
+  "starting_state": {
+    "worktree_branch": "codex/goemon-impact-research",
+    "worktree_path": "/home/REDACTED_USER/.codex/worktrees/goemon-impact-research/Goemon-64-Tools",
+    "task_start_head": "2b5d685266f82fb987ae3f3f580d44dd50f01460",
+    "initial_worktree": "clean",
+    "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "decompressed_reference_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "candidate_selection": {
+    "unit": "file_13",
+    "selected": "func_801D3A44_5FEE24",
+    "reason": "36-byte HP floor-and-return helper called directly from the Impact overlay; its field and global pointer match the recently promoted HP subtract helper.",
+    "screened_but_retained_assembly": {
+      "func_801D3A18_5FEDF8": "44-byte zero-HP predicate with a clear original contract, but three bounded IDO shapes emitted 44/40/40 bytes and none matched its register and branch schedule. Stop at the <=128-byte variant budget and retain ASM."
+    }
+  },
+  "original_mips": {
+    "function": "func_801D3A44_5FEE24",
+    "section": ".file_13",
+    "vma": "0x801D3A44",
+    "decompressed_reference_rom_offset": "0x5FEE24",
+    "size_bytes": 36,
+    "instruction_sha256": "b25fc487c5084143936a71e2fedcb1f53d5a497030af1fd2de25a196517fac7b",
+    "verified_contract": "Loads the Impact controller pointer and reads the signed HP word at +0x60. Positive HP is returned unchanged; nonpositive HP is stored as zero and zero is returned.",
+    "reference_relocations": 2,
+    "reference_relocations": [
+      {"section_offset": "0x0", "type": "R_MIPS_HI16", "symbol": "D_8020EED0_63A2B0", "resolved_vma": "0x8020EED0"},
+      {"section_offset": "0x4", "type": "R_MIPS_LO16", "symbol": "D_8020EED0_63A2B0", "resolved_vma": "0x8020EED0"}
+    ],
+    "direct_caller_site": "0x801F099C"
+  },
+  "candidate": {
+    "source": "decomp/impact_hp_floor_return.c",
+    "source_sha256": "e4f833d487976620505e83c3408f2e0e0ea1485f682cfc9c95280e6375fb8068",
+    "abi_header": "decomp/impact_controller.h",
+    "abi_header_sha256": "d3b7d77da6ccea6a102015d57a670770964a1dc5b63a81aa8e2905b03a32a712",
+    "compiler_object_sha256": "e4ee3aaaea220673b10618c7353bb445e3f2b4a8985362a0aa2ac9799fd469fb",
+    "staged_object_sha256": "f2b00e708dec6dc63e1f08c17e1a9ce968dbf60b59a2a78c04f5490a1be60f47",
+    "linked_function_sha256": "b25fc487c5084143936a71e2fedcb1f53d5a497030af1fd2de25a196517fac7b",
+    "object_layout": {
+      "compiler_text_bytes": 48,
+      "function_bytes": 36,
+      "zero_padding_bytes_removed": 12,
+      "payload_bytes_changed": 0,
+      "relocations_retained": 2
+    },
+    "native_trials": [
+      "V1 used an early-return form and emitted 44 bytes with different register/branch scheduling.",
+      "V2 kept the HP value in a local result, emitted the original 36-byte instruction shape, and retained the two D_8020EED0 relocations."
+    ]
+  },
+  "overlay_proof": {
+    "section": ".file_13",
+    "vma_start": "0x801CB460",
+    "decompressed_reference_rom_range": ["0x5F6840", "0x63A2B0"],
+    "section_bytes": 277104,
+    "reference_and_candidate_section_sha256": "f3116027c76aad9c68dac460bfb58f4af059d0e9c6f6aff8a7e6091f19c6bd85",
+    "section_bytes_match_original": true,
+    "relocation_count": 9589,
+    "relocation_sites_and_targets_unchanged": true,
+    "raw_relocation_metadata_identical": false,
+    "symbol_kind_upgrades": {
+      "D_8015C5C8_15D1C8_NOTYPE_TO_OBJECT": 268,
+      "D_8020EED0_63A2B0_NOTYPE_TO_OBJECT": 1068,
+      "D_8015C5D8_15D1D8_NOTYPE_TO_OBJECT": 6,
+      "D_8015C608_15D208_NOTYPE_TO_OBJECT": 18,
+      ".L0800AD60_6BE000_NOTYPE_TO_FUNC": 2
+    }
+  },
+  "previous_file13_stage_preserved": {
+    "function": "func_801D3954_5FED34",
+    "size_bytes": 40,
+    "exact_function_sha256": "0088a46b77319aabd425930cbf8b5e2b4a3c408fc4db73f46b0fdee0414f5fcf",
+    "section_and_relocations_still_match": true
+  },
+  "full_rom_g2": {
+    "command": "python3 -m decomp.verify --upstream practice/diagnostics/decomp-100-inputs/mnsg-pinned --workdir /tmp/goemon-impact-file13-floor-g2-run2-20261114 --retail-rom practice/diagnostics/decomp-100-inputs/usa-retail.z64 --baseline-cache /tmp/goemon-impact-hp-g2-20261114/baseline --report practice/diagnostics/impact/file13-hp-floor-verify-run2.json --uv /home/REDACTED_USER/.local/bin/uv --jobs 2",
+    "result": "PASS; exit 0; complete candidate ROM matches the pinned USA image.",
+    "started_utc": "2026-11-14T13:06:29.801929+00:00",
+    "ended_utc": "2026-11-14T13:07:13.175195+00:00",
+    "report_sha256": "6146f2e2a2c0ed2422d0069439f6db838a8d7fbe93423244eb3a2351ea5c8e60",
+    "verifier_source_sha256": "7574eca4b11311057c9ed907cedc623eacd035a1bfa6ccbd581ab401de69a498",
+    "full_rom_match": true,
+    "rom_size": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_functions": 163,
+    "claimed_functions": 163,
+    "matched_function_bytes": 12384,
+    "baseline_cache_used": true,
+    "checked_in_report": "decomp/results/combined.json"
+  },
+  "inventory": {
+    "command": "python3 -m decomp.inventory --baseline /tmp/goemon-impact-hp-g2-20261114/baseline --candidate /tmp/goemon-impact-file13-floor-g2-run2-20261114/candidate --report practice/diagnostics/impact/file13-hp-floor-inventory-run2.json",
+    "result": "PASS; exit 0.",
+    "report_sha256": "a7e891fa655e40251c7d0bbf8542b399f6558e2ce9eaa4475d2834559ee95748",
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 163,
+    "combined_c_entries": 176,
+    "remaining_assembly_entries": 7200,
+    "identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
+    "checked_in_report": "decomp/results/inventory.json"
+  },
+  "tests": {
+    "impact_hp_host": {
+      "command": "cc -std=c11 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=all -Idecomp/test_headers/impact -Idecomp decomp/impact_hp_clamp.c decomp/impact_hp_floor_return.c decomp/test_impact_hp_clamp.c -o /tmp/impact-hp-host-two-functions-final-20261114 && /tmp/impact-hp-host-two-functions-final-20261114",
+      "result": "PASS; ASan/UBSan tests cover subtract/clamp/increase and floor-return behavior for positive, zero, and negative HP."
+    },
+    "focused_verifier_and_overlay_tests": {
+      "command": "python3 -m unittest tests.test_decomp_verify decomp.test_overlay_file13 decomp.test_overlay_file12 -q",
+      "result": "PASS; 54 tests."
+    },
+    "repository_local_ci": {
+      "command": "python3 -m decomp.local_ci",
+      "result": "PASS; exit 0; 213 decomp tests, 117 verifier/ledger tests, 100-task evidence validation, and display-emitter ASan/UBSan host fixture."
+    }
+  },
+  "verification_history": [
+    "The initial G2 stopped before candidate build because the reviewed function hash was mistakenly taken from adjacent func_801D3A18_5FEDF8; corrected it to the pinned 36-byte func_801D3A44_5FEE24 hash.",
+    "The final fresh full-ROM G2 and inventory passed with the corrected function boundary and two-stage file_13 adapter."
+  ],
+  "decision": "Promote only func_801D3A44_5FEE24 as the second noncontiguous C stage in file_13. The HP subtract/clamp stage at 801D3954 remains exact, the full 277,104-byte overlay and all 9,589 relocation sites/targets match, and G2/inventory pass.",
+  "limitations": [
+    "No live-game test was performed; host cases use a synthetic ImpactController.",
+    "The helper's direct caller is visible in original MIPS, but the source does not add a higher-level encounter or game-state label.",
+    "The file_13 adapter explicitly permits five symbol-kind upgrades; all relocation sites, target names/addresses, relocation types and addends remain unchanged."
+  ],
+  "next": "Continue the Impact file_13 HP/resource helper sweep; review the 64-byte oil clamp helper func_801D39A0_5FED80 before the 60-byte charge adjustment func_801D3A68_5FEE48."
+}

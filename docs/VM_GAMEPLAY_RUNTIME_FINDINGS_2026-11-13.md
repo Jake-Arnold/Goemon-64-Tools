@@ -85,6 +85,10 @@ The integration branch uses `snapshot_for_monitoring()` for read-only state capt
 
 ## Impact boss resource-value observations (14 Nov 2026)
 
+The [original MIPS trace](IMPACT_BATTLE_MEMORY_TRACE.md) now identifies the
+shared arena allocation, cockpit HUD models, original counter access widths
+and camera fields. The observations below record the runtime discovery.
+
 The user reports verifying the following values during an Impact boss encounter with the toolkit's read-only custom watches:
 
 | Displayed resource | Guest address | Read width | Live examples | Evidence confidence |
