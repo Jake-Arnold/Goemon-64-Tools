@@ -876,5 +876,19 @@
     "proof": "decomp/results/japan_0_427_grouped4_20261119.json",
     "independent_native_checkouts": 2,
     "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_main_2": {
+    "status": "PASSED_G2_LOCAL",
+    "previous_matching_c_functions": 427,
+    "added_functions": 2,
+    "added_bytes": 88,
+    "matching_c_functions": 429,
+    "matching_c_bytes": 9980,
+    "remaining_assembly_functions": 6947,
+    "manifest": "decomp/regions/japan_0_main2.json",
+    "stage": "decomp/japan_usa_main_two.py",
+    "full_builder": "decomp/build_japan_usa_main_429.sh",
+    "proof": "decomp/results/japan_0_429_main2_20261119.json",
+    "emulator_gameplay": "NOT_RUN"
   }
 }
