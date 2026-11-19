@@ -1,0 +1,54 @@
+{
+  "format": "goemon-japan-usa-main-3-v1",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "prior_c": 429,
+  "prior_bytes": 9980,
+  "new_c": 3,
+  "new_bytes": 428,
+  "total_c": 432,
+  "total_bytes": 10408,
+  "original_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "original_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "functions": [
+    {
+      "usa": "func_8003D9B8_3E5B8",
+      "jp": "func_8003D628_3E228",
+      "usa_rom": 255416,
+      "jp_rom": 254504,
+      "vma": 2147735080,
+      "sz": 340,
+      "section": "main",
+      "current_asm_owner": "asm/japan_0/jpport_main_3D810_000.s",
+      "source_path": "decomp/candidates/vm_comparator_exact.c",
+      "source_sha256": "4fbac8b9091796efdce8ba34abaf2aad2aeae189d1e360e35b6fd75584669010",
+      "code_sha256": "bfa8ec5494880607e6b7d822dc952b22da49d7617ab50d59c6e920cbc45983a0"
+    },
+    {
+      "usa": "func_8001F878_20478",
+      "jp": "func_8001F53C_2013C",
+      "usa_rom": 132216,
+      "jp_rom": 131388,
+      "vma": 2147611964,
+      "sz": 56,
+      "section": "main",
+      "current_asm_owner": "asm/japan_0/main_1D100.s",
+      "source_path": "decomp/rotation_angles.c",
+      "source_sha256": "80357db43c81ae9d794f95da4e2e836dd9f729f083b3204c5e46d8d641fb947e",
+      "code_sha256": "0340c73abc01e154f93a5dd550b73594a000c588f361751713376b59714b2ca6"
+    },
+    {
+      "usa": "func_8001018C_10D8C",
+      "jp": "func_8000FF4C_10B4C",
+      "usa_rom": 69004,
+      "jp_rom": 68428,
+      "vma": 2147549004,
+      "sz": 32,
+      "section": "main",
+      "current_asm_owner": "asm/japan_0/jpport_main_10B40_001.s",
+      "source_path": "decomp/fixed_loop.c",
+      "source_sha256": "9aeeb1b637539acd60bc557550f760f489bd63ba5c03652ded9232f4ed28c0a8",
+      "code_sha256": "ab5308302557648ef39f94f7e32d8743087658e0b435912bcfadcc6548ede7fd"
+    }
+  ]
+}

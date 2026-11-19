@@ -1,0 +1,47 @@
+{
+  "format": "goemon-japan-usa-exact-source-overlay2-v1",
+  "region": "japan_0",
+  "base_functions": 421,
+  "base_bytes": 9608,
+  "added_functions": 2,
+  "added_bytes": 68,
+  "total_functions": 423,
+  "total_bytes": 9676,
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_jp_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "original_jp_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "candidates": [
+    {
+      "jp": "func_0800B308_6C3088",
+      "jp_rom": 7090312,
+      "vma": 134263560,
+      "sz": 32,
+      "usa": "func_80225D84_68F764",
+      "usa_rom": 6879076,
+      "code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5",
+      "source_sha256": "efcdef3784302f042f5b484f99f5f04f95f9959eb34519c028430397c8e42898",
+      "source_path": "decomp/research/jp_recomp_to_c/src/func_80225D84_68F764.c",
+      "section": "file_29",
+      "original_parent": "6B7D80.s",
+      "current_owner": "asm/japan_0/jpport_6B7D80_012.s",
+      "owner_start": 7078088,
+      "owner_end": 7091936
+    },
+    {
+      "jp": "func_0800B328_6C30A8",
+      "jp_rom": 7090344,
+      "vma": 134263592,
+      "sz": 36,
+      "usa": "func_8021BE14_6857F4",
+      "usa_rom": 6838260,
+      "code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "source_sha256": "6bdd39e0d08801e72e9bcbc49b111e4e73c40bbfb87df81c1639ac4eea5c3fed",
+      "source_path": "decomp/research/jp_recomp_to_c/src/func_8021BE14_6857F4.c",
+      "section": "file_29",
+      "original_parent": "6B7D80.s",
+      "current_owner": "asm/japan_0/jpport_6B7D80_012.s",
+      "owner_start": 7078088,
+      "owner_end": 7091936
+    }
+  ]
+}

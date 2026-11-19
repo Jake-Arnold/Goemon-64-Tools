@@ -1,0 +1,67 @@
+{
+  "format": "goemon-japan-usa-exact-source-mini4-v1",
+  "region": "japan_0",
+  "base_functions": 380,
+  "base_bytes": 7908,
+  "added_functions": 4,
+  "added_bytes": 80,
+  "total_functions": 384,
+  "total_bytes": 7988,
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_jp_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "original_jp_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "candidates": [
+    {
+      "jp": "func_0800074C_6B181C",
+      "jp_rom": 7018524,
+      "vma": 134219596,
+      "sz": 20,
+      "usa": "func_0800074C_6ACC9C",
+      "usa_rom": 6999196,
+      "code_sha256": "4e9cd72248ff1b2e50c7ace8ec6d6ce0314f964a0be166c6292d64ca6070f3ed",
+      "source_sha256": "d2c2e512c11fddeb25acb96987ac663f8560a7f7052a727bf8e6f8cc8f50c238",
+      "source_path": "decomp/research/usa_wider_24_32_20261117/sources/file_24/func_0800074C_6ACC9C.c",
+      "section": "file_24",
+      "original_parent": "6B10D0.s"
+    },
+    {
+      "jp": "func_080005DC_6B16AC",
+      "jp_rom": 7018156,
+      "vma": 134219228,
+      "sz": 20,
+      "usa": "func_080005DC_6ACB2C",
+      "usa_rom": 6998828,
+      "code_sha256": "82bdc1faa18160f82e92d7144c52eb24f5fa095477205aa8aa26e65265586d4e",
+      "source_sha256": "bab440d472eb57d524ee4c0c2569a9e25bbdb7399a2c250f91a4d5bbfed73a27",
+      "source_path": "decomp/research/usa_wider_24_32_20261117/sources/file_24/func_080005DC_6ACB2C.c",
+      "section": "file_24",
+      "original_parent": "6B10D0.s"
+    },
+    {
+      "jp": "func_08005E60_6BDBE0",
+      "jp_rom": 7068640,
+      "vma": 134241888,
+      "sz": 16,
+      "usa": "func_08005EC4_6B9164",
+      "usa_rom": 7049572,
+      "code_sha256": "13b2356307f14c70e9f6328b10062161378461116efd2a4ecb44ae42787af9b2",
+      "source_sha256": "79f7af98dece33bded02ace4a29630d6cc943786a33a60450b43ea82b74b23d4",
+      "source_path": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_08005EC4_6B9164.c",
+      "section": "file_29",
+      "original_parent": "6B7D80.s"
+    },
+    {
+      "jp": "func_08000508_6B8288",
+      "jp_rom": 7045768,
+      "vma": 134219016,
+      "sz": 24,
+      "usa": "func_0800056C_6B380C",
+      "usa_rom": 7026700,
+      "code_sha256": "ec70ec8fed969146d2413fdf01db10a86e6698fd312ec45f8bf94aa3c1772a94",
+      "source_sha256": "d0824449de087be870051a31551762812e9b6d62eece4779a82b5c23eeb032bf",
+      "source_path": "decomp/research/usa_wider_24_32_20261117/sources/file_29/func_0800056C_6B380C.c",
+      "section": "file_29",
+      "original_parent": "6B7D80.s"
+    }
+  ]
+}
