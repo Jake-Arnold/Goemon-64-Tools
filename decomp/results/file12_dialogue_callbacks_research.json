@@ -1,0 +1,58 @@
+{
+  "task_id": "VM-CONVERSATION-FILE12",
+  "date": "2026-11-13",
+  "branch": "codex/goemon-vm-overlay-followup",
+  "base_sha": "0ee5a1cb89f40963067c8c8f4771ca0225371cb5",
+  "status": "RESEARCH_ONLY",
+  "pinned_upstream_sha": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "overlay": {
+    "name": "file_12",
+    "rom_start": "0x5C8770",
+    "rom_text_end": "0x5E3C90",
+    "rom_end": "0x5F6840",
+    "vma_start": "0x8020D2A0",
+    "exclusive_ram_id": "static_overlay_2",
+    "text_sha256": "50365292dbd8cdf7a407114cb88c1807c39bf024e0f5fd4807d192357aad3131",
+    "data_sha256": "7780f27b76e25d4cd777eb8c35e870e242dcb33675a1214349518d7326397fc4"
+  },
+  "functions": [
+    {
+      "name": "func_80222034_5DD504",
+      "rom_offset": "0x5DD504",
+      "vma": "0x80222034",
+      "bytes": 20,
+      "source": "decomp/candidates/file12_dialogue_copy.c",
+      "source_sha256": "e5f37ded334267f6d7434935154c2cffaecf0e18959dabb35595d1e68375aa16",
+      "original_sha256": "5ccb72181f417c5c752ed603f23e956d5824dbb8d53935fe46132f2c4dd7d9db",
+      "isolated_linked_symbol_and_bytes": "PASS",
+      "first_function_mismatch": null,
+      "trailing_zero_alignment_bytes": 12
+    },
+    {
+      "name": "func_80222168_5DD638",
+      "rom_offset": "0x5DD638",
+      "vma": "0x80222168",
+      "bytes": 36,
+      "source": "decomp/candidates/file12_dialogue_call.c",
+      "source_sha256": "2fff2f49dbeb427200ef469596a8a229c9763db6f70bee93e662a1b1016ef6d1",
+      "original_sha256": "2fc27981dfd6f3b7bec3855adf32d1969e5efe4a62e235c6abda6c1cfdd38c98",
+      "isolated_linked_symbol_and_bytes": "PASS",
+      "first_function_mismatch": null,
+      "trailing_zero_alignment_bytes": 12
+    }
+  ],
+  "tests": {
+    "private_original_vma_probe": "PASS: both function symbols and all 56 function bytes exact",
+    "synthetic_layout_negative_tests": "PASS: 5 tests",
+    "rom_free_local_ci": "PASS: 172 decomp tests, 92 verifier/ledger tests, task ledger and sanitizer fixture",
+    "in_game": "NOT_RUN"
+  },
+  "whole_original_unit_proof": "NOT_RUN",
+  "fresh_full_rom_g2": "NOT_RUN",
+  "symbol_inventory": "NOT_RUN",
+  "new_matching_c_functions": 0,
+  "new_matching_c_bytes": 0,
+  "blocker": "file_12 overlay provenance and production staging are absent; the current manifest enforces main-segment ROM/VMA mapping. No real-unit symbol/section/relocation or full-ROM proof exists for these candidates.",
+  "next": "Implement fail-closed file_12 original-unit/linked-ELF overlay support, stage one callback, then require whole-unit equality and fresh full-ROM/inventory proof before promotion."
+}
