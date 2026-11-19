@@ -1,3 +1,7 @@
+## 2026-11-19 — Draft PR #105: file16/file21 and file18 native source proof preservation
+
+- Preserved 13 historical source catalogue/test/native proof Git blobs, plus README, from the accepted-C-overlapped file16/file21 callback and file18 53-function research branches. Historical source and ROM verification statements remain dated and must not be treated as current combined acceptance. No production source/manifest, accepted USA 1,500 / JP 432 function count or native verification claims changed. No new local CI, G2 or gameplay tests run for this research-only archive. Source deletion gated on merger and independent exact-blob check.
+
 ## 2026-11-19 — Preserve original file12 VM dialogue callback research (PR #99)
 
 - **Research preservation:** Added the original dated isolated IDO/ELF research report for `func_80222034_5DD504` (20 bytes) and `func_80222168_5DD638` (36 bytes), the original 13 November callback investigation note and a cross-reference from `decomp/VM_CONVERSATION_TARGETS.md`. The research JSON is copied unchanged (Git blob `69ada279bcbcdb212a2a4de699623d961ad48565`), and explicitly records the **historical RESEARCH_ONLY status** when collected.
