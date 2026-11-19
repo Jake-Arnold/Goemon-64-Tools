@@ -65,9 +65,23 @@ class LinuxLauncherTests(unittest.TestCase):
                 install(repo_root=root, data_home=root / "xdg")
 
     def test_native_tk_class_matches_desktop_launcher(self):
-        source = (Path(__file__).resolve().parents[1] /
-                  "practice" / "toolkit.py").read_text(encoding="utf-8")
-        self.assertIn(f"tk.Tk(className='{APP_ID}')", source)
+        # Root creation now lives in the optional TkDND factory: checking
+        # for a direct tk.Tk call in toolkit.py is obsolete.
+        root_dir = Path(__file__).resolve().parents[1] / "practice"
+        source = (root_dir / "toolkit.py").read_text(encoding="utf-8")
+        dnd_source = (root_dir / "dialogue_dnd.py").read_text(encoding="utf-8")
+        self.assertIn(f"make_toolkit_root(class_name='{APP_ID}')", source)
+        self.assertIn("return tk.Tk(className=class_name)", dnd_source)
+        self.assertIn("TkinterDnD.Tk(className=class_name)", dnd_source)
+
+        # Assert the actual fallback factory forwards our desktop class.
+        from unittest.mock import patch
+        from practice.dialogue_dnd import make_toolkit_root
+        with patch.dict(sys.modules, {'tkinterdnd2': None}):
+            with patch('practice.dialogue_dnd.tk.Tk') as root_factory:
+                self.assertIs(make_toolkit_root(class_name=APP_ID),
+                              root_factory.return_value)
+                root_factory.assert_called_once_with(className=APP_ID)
  
     def test_tk_class_accepts_numbered_instances_but_not_window_manager_frame(self):
         self.assertTrue(matches_toolkit_wm_class(
