@@ -1,0 +1,68 @@
+{
+  "format": "goemon-usa-native-micro2-promotion-20261119-v1",
+  "status": "PASSED_G2_LOCAL",
+  "publication": "NOT_YET_PUBLISHED",
+  "base_remote_commit": "10704d05fc7f8489fbcf5f484600a4387e43ba70",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "compiler": "original IDO 5.3 -O2 -mips2 -G0",
+  "prior_production": {
+    "matching_C": 1461,
+    "matching_bytes": 56816,
+    "remaining_ASM": 5902,
+    "Japan_matching_C": 39
+  },
+  "verified_local": {
+    "matching_C": 1463,
+    "matching_bytes": 56844,
+    "remaining_ASM": 5900,
+    "Japan_matching_C": 39
+  },
+  "new_functions": 2,
+  "new_matching_bytes": 28,
+  "units": 2,
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_ROM_exact_bytes": 33554432,
+  "original_ELF_positive_FUNC_identical": 7376,
+  "semantic_relocations_identical": true,
+  "additional_positive_aliases": 0,
+  "source_fingerprints_pass": true,
+  "full_native_decomp_verify": "PASS",
+  "strict_inventory": "PASS",
+  "full_local_ci": "PASS: 267 decomp tests (1 skipped), 245 verifier/ledger tests (4 skipped), task validation and ASan/UBSan including 2000 new actual-source host calls",
+  "emulator_gameplay": "NOT_RUN",
+  "offline_dependencies": {
+    "verified_portable_python": "3.12.16",
+    "offline_adapter_sha256": "4d7f54157eb070a0598ac237057de87e63613aaff8322bf20c203e6710d0a933",
+    "note": "No network package install; original unmodified native IDO compilation, full ROM gate and existing verification code paths executed; build wrapper only provided archived Python runtime."
+  },
+  "combined_proof_sha256": "369a964242fe1fd5a7753e365469fa90a6554754a9a7822e1fedbcc86e0e49f6",
+  "inventory_sha256": "525d3d5dbf5424e5ff0bde04c41202fdd31e51818ebab6cacb4da07d87a4fad1",
+  "functions": [
+    {
+      "name": "func_801D068C_66353C",
+      "rom_offset": 6698300,
+      "vma": 2149385868,
+      "size": 12,
+      "original_code_sha256": "fa5a2a1e8e8eb2e02f3a49d3e4e67ee25966f33174b11161eb09e6fa784a822f",
+      "section": "file_15",
+      "translation_unit": "micro15_fields.c",
+      "source_sha256": "33809ae2b8bd06423e22067331f5a7fd2f4c686c669633fad63be70cef966e07"
+    },
+    {
+      "name": "func_0800126C_708CAC",
+      "rom_offset": 7376044,
+      "vma": 134222444,
+      "size": 16,
+      "original_code_sha256": "c78b753a6ee8f4ab9ffdcfca31b91a151737f054e47610ad736c0739a0fc8073",
+      "section": "file_48",
+      "translation_unit": "micro48_increment.c",
+      "source_sha256": "78ec6b838c75e2bbd5a72cb9ada6d60b2e52c5ee54328bc05561a9061d8432e6"
+    }
+  ],
+  "blocked": [
+    "Five file13 larger candidate C bodies are missing; relocation-blocked file25/menu source remains ASM",
+    "Rejected IDO microprobe register-allocation/order mismatches remain ASM"
+  ],
+  "verification_notes": "Historical tests were updated to exclude only this future stage from earlier checkpoint projections. No promotion inferred from isolated IDO or host tests alone; 1463 combined source stages passed original ROM/ELF/relocation gate and full local CI. Published status requires remote commit re-fetch."
+}

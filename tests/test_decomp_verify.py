@@ -146,18 +146,20 @@ def wide109_claim_count(manifest):
 
 
 def expanded_claim_count(manifest):
-    from decomp.verify import resource140_stage, graphics5_stage, file18_53_stage, callbacks10_stage, main19_stage, tiny9_stage
+    from decomp.verify import resource140_stage, graphics5_stage, file18_53_stage, callbacks10_stage, main19_stage, tiny9_stage, micro2_stage
     from decomp.overlay_graphics5 import functions as gfx_fs
     from decomp.overlay_file18_53 import functions as f18_fs
     from decomp.overlay_callbacks10 import functions as cb_fs
     from decomp.overlay_main19 import functions as main_fs
     from decomp.overlay_tiny9 import functions as tiny_fs
+    from decomp.overlay_micro2 import functions as micro_fs
     return (len(resource140_stage(manifest)['functions']) if resource140_stage(manifest) else 0) + \
            (len(gfx_fs(graphics5_stage(manifest))) if graphics5_stage(manifest) else 0) + \
            (len(f18_fs(file18_53_stage(manifest))) if file18_53_stage(manifest) else 0) + \
            (len(cb_fs(callbacks10_stage(manifest))) if callbacks10_stage(manifest) else 0) + \
            (len(main_fs(main19_stage(manifest))) if main19_stage(manifest) else 0) + \
-           (len(tiny_fs(tiny9_stage(manifest))) if tiny9_stage(manifest) else 0)
+           (len(tiny_fs(tiny9_stage(manifest))) if tiny9_stage(manifest) else 0) + \
+           (len(micro_fs(micro2_stage(manifest))) if micro2_stage(manifest) else 0)
 
 def native_claim_count(manifest):
     from decomp.overlay_native87 import load_fixture
@@ -1231,7 +1233,8 @@ class DecompVerificationTests(unittest.TestCase):
             ('overlay_file18_53_stage','pending_file18_53_20261118','overlay_file18_53'),
             ('overlay_callbacks10_stage','pending_callbacks10_20261118','overlay_callbacks10'),
             ('overlay_main19_stage','pending_main19_20261118','overlay_main19'),
-            ('overlay_tiny9_stage','pending_tiny9_20261119','overlay_tiny9')):
+            ('overlay_tiny9_stage','pending_tiny9_20261119','overlay_tiny9'),
+            ('overlay_micro2_stage','pending_micro2_20261119','overlay_micro2')):
             if manifest.get(key) is not None:
                 from importlib import import_module
                 native=import_module('decomp.'+reader)

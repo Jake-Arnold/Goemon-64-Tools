@@ -1558,5 +1558,8 @@
   },
   "overlay_tiny9_stage": {
     "format": "goemon-usa-tiny9-after-1452-v1"
+  },
+  "overlay_micro2_stage": {
+    "format": "goemon-usa-micro2-after-1461-v1"
   }
 }
