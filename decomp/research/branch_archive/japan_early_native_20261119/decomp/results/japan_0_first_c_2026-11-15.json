@@ -1,0 +1,48 @@
+{
+  "format": "goemon-japan-0-matching-c-promotion-v1",
+  "date": "2026-11-15",
+  "source": {
+    "repository": "klorfmorf/mnsg",
+    "commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "region": "japan_0"
+  },
+  "function": {
+    "name": "func_80037A20_38620",
+    "vram": "0x80037A20",
+    "rom_offset": "0x38620",
+    "function_size": 8,
+    "object_text_size": 16,
+    "compiled_object_text_sha256": "2415714719d85e4a789acee079f28e4e4c4c2b693ab00b843e8d8d91c8c3882c",
+    "original_compiled_hex": "03e00008000000000000000000000000",
+    "text_relocation_entries": 0,
+    "native_compiler": "IDO 5.3 -O2 -mips2",
+    "status": "PASS"
+  },
+  "pipeline": {
+    "splat_one_c_segment": "PASS",
+    "original_address_c_translation_unit": "PASS",
+    "source_link": "PASS",
+    "upstream_rommy_recompression": "PASS"
+  },
+  "expanded": {
+    "size": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "retail": {
+    "size": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "new_japanese_c_functions": 1,
+  "new_japanese_c_function_bytes": 8,
+  "rom_free_tests": "6/6 PASS",
+  "limitations": [
+    "Trivial no-op function proves pipeline only",
+    "One-command runner syntax-checked, individual stages independently run",
+    "USA native full-ROM, Japanese emulator and Japanese PC native gameplay NOT RUN",
+    "No copyrighted ROM or generated assets in this metadata file"
+  ]
+}

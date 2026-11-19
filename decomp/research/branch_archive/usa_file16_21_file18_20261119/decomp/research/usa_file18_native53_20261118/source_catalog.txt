@@ -1,0 +1,50 @@
+batch53_000 void func_8020D4B8_676E98(u8 *o,float v){*(float*)(o+0x60)=v;}|void func_8020D4C4_676EA4(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_001 void func_802122A4_67BC84(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_002 void func_80212310_67BCF0(u8 *o){*(float*)(o+0x70)=0.0f;*(float*)(o+0x88)=0.0f;}|
+batch53_003 void func_80212BAC_67C58C(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_004 void func_80212BF4_67C5D4(u8 *o){*(float*)(o+0x70)=0.0f;*(float*)(o+0x88)=0.0f;}|
+batch53_005 void func_80213C84_67D664(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_006 void func_802142EC_67DCCC(u8 *o,float v){*(float*)(o+0x60)=v;}|
+batch53_007 void func_80214384_67DD64(u8 *o){*(float*)(o+0x6C)=0.0f;*(float*)(o+0x78)=0.0f;*(float*)(o+0x84)=0.0f;}|
+batch53_008 void func_80214988_67E368(u8 *o,float v){*(float*)(o+0x5C)=v;}|void func_80214994_67E374(u8 *o,float v){u8 *p=*(u8**)(o+0x18);*(float*)(p+0x24)=v;*(float*)(p+0x20)=v;*(float*)(p+0x1C)=v;}|
+batch53_009 void func_80215260_67EC40(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_010 void func_80215D54_67F734(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_011 void func_8021689C_68027C(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_012 void func_802171EC_680BCC(u8 *o,float v){*(float*)(o+0x8C)=v;}|
+batch53_013 void func_80217BA0_681580(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_014 void func_8021B134_684B14(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_015 void func_8021B8D8_6852B8(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_016 void func_8021C264_685C44(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_017 void func_8021C730_686110(u8 *o,float v){*(float*)(o+0x60)=v;}|
+batch53_018 void func_8021C78C_68616C(u8 *o,float v){u8 *p=*(u8**)(o+0x18);*(float*)(p+0x24)=v;*(float*)(p+0x20)=v;*(float*)(p+0x1C)=v;}|
+batch53_019 void func_8021D13C_686B1C(u8 *o,float v){*(float*)(o+0x60)=v;}|
+batch53_020 void func_8021D198_686B78(u8 *o,float v){u8 *p=*(u8**)(o+0x18);*(float*)(p+0x24)=v;*(float*)(p+0x20)=v;*(float*)(p+0x1C)=v;}|
+batch53_021 void func_8021D9B8_687398(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_022 void func_8021DE78_687858(u8 *o,u32 v){*(u16*)(o+0x60)=v & 0x3FF;}|
+batch53_023 void func_8021DF88_687968(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_024 void func_8021E2B4_687C94(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_025 void func_8021EE84_688864(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_026 void func_8021EEEC_6888CC(u8 *o){*(float*)(o+0x70)=0.0f;*(float*)(o+0x88)=0.0f;}|
+batch53_027 void func_80224040_68DA20(u8 *o,float v){*(float*)(o+0x94)=v;}|
+batch53_028 void func_80224088_68DA68(u8 *o){*(float*)(o+0x9C)=0.0f;*(float*)(o+0xA4)=0.0f;*(float*)(o+0xAC)=0.0f;}|void func_802240A0_68DA80(void *a,void *b,void *c){(void)a;(void)b;(void)c;}|
+batch53_029 void func_80224388_68DD68(u8 *o,float v){*(float*)(o+0x60)=v;}|
+batch53_030 void func_80224744_68E124(u8 *o,float v){*(float*)(o+0x70)=v;}|
+batch53_031 void func_80224B24_68E504(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_032 void func_80224EEC_68E8CC(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_033 void func_80225980_68F360(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_034 void func_80225B3C_68F51C(u8 *o,float v){u8 *p=*(u8**)(o+0x18);*(float*)(p+0x24)=v;*(float*)(p+0x20)=v;*(float*)(p+0x1C)=v;}|
+batch53_035 void func_80226520_68FF00(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_036 void func_80226D20_690700(u8 *o,float v){*(float*)(o+0x5C)=v;}|
+batch53_037 void func_80227250_690C30(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_038 void func_80227298_690C78(u8 *o){*(float*)(o+0x70)=0.0f;*(float*)(o+0x88)=0.0f;}|
+batch53_039 void func_80227988_691368(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_040 void func_80227A1C_6913FC(u8 *o){*(float*)(o+0x70)=0.0f;*(float*)(o+0x88)=0.0f;}|
+batch53_041 void func_80228124_691B04(u8 *o,float v){*(float*)(o+0x64)=v;}|
+batch53_042 void func_802281B8_691B98(u8 *o){*(float*)(o+0x70)=0.0f;*(float*)(o+0x88)=0.0f;}|
+batch53_043 void func_80228698_692078(u8 *o,float v){*(float*)(o+0x60)=v;}|
+batch53_044 void func_80228C48_692628(u8 *o,float v){*(float*)(o+0x60)=v;}|
+batch53_045 void func_80228CE0_6926C0(u8 *o){*(float*)(o+0x6C)=0.0f;*(float*)(o+0x78)=0.0f;*(float*)(o+0x84)=0.0f;}|
+batch53_046 void func_802291EC_692BCC(u8 *o,float v){*(float*)(o+0x60)=v;}|
+batch53_047 void func_80229260_692C40(u8 *o){*(float*)(o+0x6C)=0.0f;*(float*)(o+0x78)=0.0f;*(float*)(o+0x84)=0.0f;}|
+batch53_048 void func_8022993C_69331C(u8 *o,float v){*(float*)(o+0x90)=v;}|
+batch53_049 void func_80229984_693364(u8 *o){*(float*)(o+0x9C)=0.0f;*(float*)(o+0xA8)=0.0f;*(float*)(o+0xB4)=0.0f;}|

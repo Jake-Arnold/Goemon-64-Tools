@@ -1,0 +1,79 @@
+{
+  "format": "goemon-japan-0-matching-c-promotion-v2",
+  "date": "2026-11-15",
+  "repo": "Jake-Arnold/Goemon-64-Tools",
+  "branch": "chatgptweb/japanese-decomp-port",
+  "source": {
+    "upstream_repo": "klorfmorf/mnsg",
+    "pinned_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "region": "japan_0"
+  },
+  "previous": {
+    "functions": 1,
+    "function_bytes": 8
+  },
+  "promotions": [
+    {
+      "name": "func_800161F0_16DF0",
+      "japan_rom": "0x16DF0",
+      "japan_vram": "0x800161F0",
+      "bytes": 36,
+      "meaning": "set bit"
+    },
+    {
+      "name": "func_80016214_16E14",
+      "japan_rom": "0x16E14",
+      "japan_vram": "0x80016214",
+      "bytes": 40,
+      "meaning": "clear bit"
+    },
+    {
+      "name": "func_8001623C_16E3C",
+      "japan_rom": "0x16E3C",
+      "japan_vram": "0x8001623C",
+      "bytes": 52,
+      "meaning": "test bit"
+    }
+  ],
+  "totals": {
+    "functions": 4,
+    "function_bytes": 136,
+    "matching_c_translation_units": 2
+  },
+  "native_proof": {
+    "ido_version": "5.3",
+    "optimization": "-O2",
+    "isa": "-mips2",
+    "bit_array_object_section_bytes": 128,
+    "bit_array_section_exact_bytes": 128,
+    "bit_array_object_sha256": "585a234af53888f922034d8f0c4f7c9c157dc35c12d26b3d35b1a9ff7419cc70",
+    "bit_array_text_relocations": 0,
+    "local_original_address_link": "PASS"
+  },
+  "rom_proof": {
+    "expanded": {
+      "bytes": 33554432,
+      "reference_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "rebuilt_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "different_bytes": 0,
+      "status": "PASS"
+    },
+    "retail": {
+      "bytes": 16777216,
+      "reference_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+      "rebuilt_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+      "different_bytes": 0,
+      "status": "PASS"
+    }
+  },
+  "tests": {
+    "rom_free_unittest": "10/10 PASS",
+    "shell_syntax": "PASS",
+    "one_command_wrapper": "Full rerun interrupted at make, then resumed generated build and recompression passed",
+    "full_rom": "PASS",
+    "usa_native_G2": "NOT RUN",
+    "emulator_gameplay": "NOT RUN",
+    "japanese_PC_runtime": "NOT RUN"
+  },
+  "copyright": "No original retail ROMs, decompressed games, extracted assembly, assets, proprietary compilers or raw binary code stored."
+}

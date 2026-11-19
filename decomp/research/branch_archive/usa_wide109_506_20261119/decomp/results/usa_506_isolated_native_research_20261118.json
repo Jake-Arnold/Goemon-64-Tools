@@ -1,0 +1,51 @@
+{
+  "format": "goemon-usa-506-original-ido-isolated-native-research-v1",
+  "date": "2026-11-18",
+  "status": "RESEARCH_ONLY",
+  "code_proof_tier": "ISOLATED_NATIVE_EXACT",
+  "new_research_functions": 506,
+  "original_instruction_bytes": 21652,
+  "source_assembly_units": 25,
+  "original_retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "expanded_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "expanded_usa_rom_bytes": 33554432,
+  "pristine_original_ROM_rebuild": "PASS 33554432/33554432",
+  "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_native_compiler": "IDO 5.3 -O2 -mips2",
+  "independent_C_source_replay": "PASS 506/506 native-exact original ROM instruction sequences / 21652 B",
+  "host_ASAN_UBSAN": "PASS 9 representative actual reconstructed C source functions",
+  "excluded_known_accepted_overlaps": [
+    "func_80219E08_5D52D8",
+    "func_80219E40_5D5310",
+    "func_8021C628_5D7AF8"
+  ],
+  "excluded_prior_research_batches": [
+    202,
+    109,
+    53
+  ],
+  "source_archive": "goemon_usa_500_native_research.zip",
+  "source_archive_sha256": "471669dbefab4860978dd06a9f44340536205163236834567455c74df34be54e",
+  "source_archive_delivery": "ChatGPT conversation attachment, not embedded in this GitHub PR",
+  "source_archive_in_research_PR": false,
+  "source_archive_contains": [
+    "506 exact C source files",
+    "manifest with 506 original names/VMAs/ROM offsets/code SHA-256 and C SHA-256",
+    "IDO recompile/relink original-ROM verification script",
+    "9-function GCC sanitizer regression",
+    "documentation"
+  ],
+  "canonical_USA_accepted_functions": 987,
+  "canonical_USA_accepted_original_code_bytes": 42640,
+  "canonical_Japan_0_accepted_functions": 39,
+  "conditional_USA_total_if_promoted": 1493,
+  "integrated_pristine_upstream_506_C_full_ROM": "NOT_RUN",
+  "canonical_987_plus_506_full_ROM": "NOT_RUN",
+  "canonical_987_plus_506_elf_relocations": "NOT_RUN",
+  "canonical_987_plus_506_original_func_identities": "NOT_RUN",
+  "canonical_verify": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "canonical_accepted_delta": 0,
+  "reason": "No complete authenticated live 987-C checkout available to original-native compiler environment; isolated original MIPS instruction match cannot authorize formal promotion."
+}

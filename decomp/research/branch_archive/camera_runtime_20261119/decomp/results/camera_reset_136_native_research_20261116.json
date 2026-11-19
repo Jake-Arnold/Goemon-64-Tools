@@ -1,0 +1,68 @@
+{
+  "format": "goemon-usa-camera-reset-136-native-research-v1",
+  "region": "usa",
+  "original_function": "func_801F97D4_5B56E4",
+  "original_vma": "0x801F97D4",
+  "rom_range": [
+    "0x5B56E4",
+    "0x5B576C"
+  ],
+  "size": 136,
+  "instructions": 34,
+  "source_sha256": "9d47ba199dfd48f5707b7623f45eee5e0853110f725e08bcf4ad7c151f7450c4",
+  "original_and_candidate_code_sha256": "f6266809ac26ff75f44d5f23cab8c15ae338e6185b88b69ec85bd83dfb7c0b8a",
+  "original_usa_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_usa_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "compiler": "IDO 5.3 cc -O2 -mips2 -G0 -non_shared -Wab,-r4300_mul",
+  "linker": "MIPS GNU ld at exact original VMA, SUBALIGN(4)",
+  "candidate_relocations": [
+    {
+      "offset": "0x00",
+      "kind": "R_MIPS_HI16",
+      "symbol": "D_800BCCC0_BD8C0"
+    },
+    {
+      "offset": "0x04",
+      "kind": "R_MIPS_LO16",
+      "symbol": "D_800BCCC0_BD8C0"
+    },
+    {
+      "offset": "0x10",
+      "kind": "R_MIPS_HI16",
+      "symbol": "D_8008CCC0_8D8C0"
+    },
+    {
+      "offset": "0x24",
+      "kind": "R_MIPS_LO16",
+      "symbol": "D_8008CCC0_8D8C0"
+    }
+  ],
+  "source_fixture": "decomp/research/camera_reset_usa_5b56e4.c",
+  "native_probe": "decomp/research/camera_reset_136_probe.py",
+  "regression_test": "tests/test_decomp_camera_reset_136.py",
+  "checks": {
+    "rom_free": "2 passed, 1 skipped (native toolchain/ROM optional)",
+    "with_authenticated_rom": "3 passed",
+    "standalone_native_original_address": "136/136 instruction bytes equal; 34/34 words equal",
+    "isolated_elf_function_symbol_size": 136,
+    "relocation_count_in_candidate_object": 4
+  },
+  "duplication": {
+    "canonical": "315 original-address matching C, 152 in file11; this function ASM-owned within [0x5B43A4,0x5B65D4)",
+    "reviewed": [
+      "upstream camera.c draft",
+      "PR #23 file11 research sources",
+      "PR #24 transition research sources",
+      "PR #41 next-eight research"
+    ]
+  },
+  "production_status": "research_only",
+  "blocked_gates": [
+    "combined 316-C production original-ROM build",
+    "file11 8,825 semantic relocation comparison",
+    "complete 7,376-function inventory",
+    "full decomp.local_ci"
+  ],
+  "notes": "The global default mode is 0x800C7B00. The loop clears ten 0x28-byte camera region records. Candidate was compiled and linked without embedding or editing original ROM data."
+}

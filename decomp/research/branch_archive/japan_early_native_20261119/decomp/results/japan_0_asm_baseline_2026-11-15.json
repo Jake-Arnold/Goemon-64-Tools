@@ -1,0 +1,53 @@
+{
+  "format": "goemon-japan-0-assembly-only-baseline-proof-v1",
+  "date": "2026-11-15",
+  "source": {
+    "repository": "klorfmorf/mnsg",
+    "commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "config": "config/japan_0/splat_asm_only.local.yaml"
+  },
+  "input": {
+    "region": "japan_0",
+    "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+  },
+  "toolchain": {
+    "python": "3.12.16",
+    "splat64": "0.36.3",
+    "spimdisasm": "1.39.0",
+    "lzkn64": "0.2.0",
+    "mips_binutils": "2.45.90.20260125",
+    "ido_5_3": "available, not used for assembly-only baseline"
+  },
+  "stages": {
+    "original_japanese_splat_extraction": "PASS",
+    "asm_only_splat_split": "PASS",
+    "former_c_subsegments_replaced": 189,
+    "cross_object_labels_exported": 22,
+    "bss_aliases_renamed": 2,
+    "full_assembly_link": "PASS",
+    "retail_recompression": "PASS",
+    "clean_second_rebuild": "PASS"
+  },
+  "expanded": {
+    "size": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "retail": {
+    "size": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "different_bytes": 0,
+    "status": "PASS"
+  },
+  "rom_free_unit_tests": "3/3 PASS",
+  "wrapper": "syntax checked; individual pipeline stages and clean second rebuild executed; wrapper not independently run end-to-end",
+  "not_run": [
+    "Japanese matching-C functions",
+    "USA native full-ROM G2 regression",
+    "Japanese emulator gameplay",
+    "Japanese Goemon64Recomp PC-native runtime"
+  ],
+  "copyright": "Only hashes and metadata; no ROMs, game assets, generated assembly or proprietary tools"
+}

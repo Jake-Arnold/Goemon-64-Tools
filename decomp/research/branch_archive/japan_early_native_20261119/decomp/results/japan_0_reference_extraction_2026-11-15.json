@@ -1,0 +1,51 @@
+{
+  "format": "goemon-japan-0-private-reference-expansion-proof-v1",
+  "date": "2026-11-15",
+  "reference_input": {
+    "region": "japan_0",
+    "retail_rom_size": 16777216,
+    "canonical_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "uploaded_header_hex": "37804012"
+  },
+  "source": {
+    "upstream": "klorfmorf/mnsg",
+    "commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+    "splat_config": "config/japan_0/splat.yaml"
+  },
+  "reference_expansion": {
+    "method": "Nisitenma-Ichigo file-table expansion using project's documented pure-Python LZKN64 decoding and CIC-6102 CRC",
+    "expected_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "actual_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "size": 33554432,
+    "file_table_offset": "0x58258",
+    "populated_files": 1084,
+    "compressed_files": 1041,
+    "uncompressed_files": 43,
+    "last_expanded_file_end": "0x14B3C40",
+    "status": "PASS"
+  },
+  "splat_config_inventory": {
+    "total_code_typed_segments": 1086,
+    "executable_sections": 72,
+    "data_bin_sections": 1014,
+    "extraction_status": "NOT RUN"
+  },
+  "compiler": {
+    "ido_5_3_native_linux_present": true,
+    "ido_5_3_mips_ii_assembly_smoke": "PASS",
+    "gnu_mips_cross_binutils": "MISSING"
+  },
+  "checks": {
+    "rom_canonicalization_unit_tests": "4/4 PASS",
+    "decompressed_reference_hash": "PASS",
+    "splat_split": "NOT RUN",
+    "japanese_full_rom_link": "NOT RUN",
+    "japanese_recompressed_retail_match": "NOT RUN",
+    "emulator_boot": "NOT RUN"
+  },
+  "limitations": [
+    "No proprietary game data or extracted assets included in this report.",
+    "Reference decompression is not a byte-identical source-code or linked ROM build.",
+    "No network/DNS access for toolchain and Splat dependencies in the local build container."
+  ]
+}
