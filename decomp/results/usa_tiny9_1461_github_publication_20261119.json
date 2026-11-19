@@ -1,0 +1,24 @@
+{
+  "format": "goemon-usa-native-tiny9-github-publication-v1",
+  "status": "PASSED_G2_GITHUB_PUBLISHED",
+  "date": "2026-11-19",
+  "branch": "chatgptweb/decomp",
+  "source_commit": "9f70c27d2c8f55f3fcdad7e5bc746cf92e76a8fc",
+  "source_tree_sha": "bb3eb912f5fcd6b6bd177399ef7130a0bd6beede",
+  "source_parent": "c409408cccb284746619db98ecb36bfe7dadceac",
+  "source_files_changed": 41,
+  "verified_remote_blob_shas": 41,
+  "unrelated_files_changed": 0,
+  "verified_remote": {
+    "USA_C": 1461,
+    "USA_matching_bytes": 56816,
+    "USA_assembly_remaining": 5902,
+    "Japan_C": 39,
+    "ELF_original_FUNC": 7376,
+    "extra_positive_aliases": 0
+  },
+  "full_native_G2": "PASSED_LOCALLY_PRIOR_TO_PUBLICATION",
+  "full_local_CI": "PASSED_LOCALLY_PRIOR_TO_PUBLICATION",
+  "after_publication_native_rerun": "NOT_RUN",
+  "historical_native_proof": "decomp/results/usa_tiny9_1461_promotion_20261119.json"
+}
