@@ -809,5 +809,19 @@
     "full_build": "decomp/build_japan_usa_equiv_344.sh",
     "proof": "decomp/results/japan_0_344_usa_equiv11_20261118.json",
     "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_original_equivalent_36": {
+    "status": "PASSED_G2_LOCAL",
+    "matching_c_functions": 380,
+    "matching_c_bytes": 7908,
+    "added_to_344": 36,
+    "new_instruction_bytes": 1492,
+    "remaining_assembly_entries": 6996,
+    "source_manifest": "decomp/regions/japan_0_equiv36.json",
+    "source_stager": "decomp/japan_usa_equivalent_36.py",
+    "clean_build": "decomp/build_japan_usa_equiv_380.sh",
+    "proof": "decomp/results/japan_0_380_usa_equiv36_20261119.json",
+    "clean_replay_metadata_sha256": "f1cf0cb998d26630eea639121b6aa4d21425545b1abf656e556a92407b295722",
+    "emulator_gameplay": "NOT_RUN"
   }
 }
