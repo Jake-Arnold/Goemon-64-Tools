@@ -1,3 +1,12 @@
+## 2026-11-19 — PR #106 refreshed after file16/file18 native archives
+
+- Historical file11 scratch proof and regression archive remains at immutable subtree SHA `47e76ff3f8fe4a919397519668aac293015b1c08`. All original research files retained; production C and current native verification unchanged. No native ROM build, full CI or emulator run performed for this archival refresh.
+
+## 2026-11-19 — Draft PR #106: file11 scratch/native and regression provenance
+
+- Archived 18 missing original file_11 source-fixture, test and dated native scratch records, plus original-path/sha README. Historical 323-C reconstructed G2 and similar preflights are NOT proofs of the current 1,500 USA C combined source. No obsolete stage registered, accepted production C/manifest, current ROM proof or source count changed; no full CI/native build/gameplay tests run for this archival change. Original research branch refs retained until merged/verified.
+
+
 ## 2026-11-19 — PR #105 refreshed after graphics and camera archives
 
 - Reconciled history with current canon, retaining original file16/file21/file18 native proof archive subtree `9daabc18e4e74b5289599df87d0046ce4a5f5c80` byte-identically. No accepted C, manifest, native full-ROM G2 or local CI changes.
