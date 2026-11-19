@@ -1,0 +1,49 @@
+name: Temporary 1501-C source import and ROM-free CI
+on:
+  push:
+    branches: [decomp/statecopy1-1501-20261119]
+permissions:
+  contents: write
+jobs:
+  source-import:
+    if: github.event.head_commit.message == 'chore(decomp): stage audited 1501-C source payload'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Import source-only tarball pinned to original local native proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          git cat-file blob 2d9ea861ebc81780f23002544aeb4a78272088e3 > "$RUNNER_TEMP/source.tar.gz"
+          printf '%s  %s\n' '173b3f1957cfdc1050b9430772c2c025e7475a366127367c0904afe83d93a76f' "$RUNNER_TEMP/source.tar.gz" | sha256sum --check -
+          python3 - "$RUNNER_TEMP/source.tar.gz" <<'PY'
+          import pathlib,tarfile,sys
+          archive=pathlib.Path(sys.argv[1])
+          with tarfile.open(archive,'r:gz') as tar:
+              members=tar.getmembers()
+              assert len(members)==36,len(members)
+              for m in members:
+                  path=pathlib.PurePosixPath(m.name)
+                  assert m.isfile() and not path.is_absolute() and '..' not in path.parts,m.name
+                  assert path.parts[0] in {'decomp','tests'} or m.name=='PROGRESS.md',m.name
+                  assert path.suffix not in {'.z64','.n64','.v64','.o','.elf','.bin','.s','.gz','.zip'},m.name
+              tar.extractall(path='.',filter='data')
+          PY
+      - name: Full ROM-free decomp local CI, including sanitizer tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m decomp.local_ci
+      - name: Commit exact locally G2-verified source and evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Goemon verified source import"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A -- PROGRESS.md decomp tests
+          git diff --cached --quiet && { echo "No staged changes"; exit 1; }
+          git commit -m "feat(decomp): promote USA original-address state copy to 1501 exact C"
+          git push origin HEAD:refs/heads/decomp/statecopy1-1501-20261119
