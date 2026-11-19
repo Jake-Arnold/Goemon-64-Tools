@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-19 — v0.11.68 Japanese romaji query and Plasma screenshot alignment
+
+- **Issue:** The optional Japan inferred-kana search only accepted literal Unicode; typing romanized `pu` could not find the game's original `プラズマぁ！！` dialogue. The screenshot-proven voiced and small kana were also outside the 46+46 base gojuon hypothesis.
+- **ROM correlation:** Japan SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`; resource 112 text +0x0C exactly matches the screenshot glyph order `166=プ,132=ラ,151=ズ,124=マ,89=ぁ,212=！`, with original token 13 spaces and -56/-50/-51/-57 formatting controls. The same word skeleton occurs in 62 indexed candidates across resources 96 and 112; these are not runtime reachability proofs.
+- **Code:** Add six verified mappings to `practice/dialogue_japan.py`. `practice/dialogue_kana.py` now provides basic 46-glyph gojuon romanization plus exact screenshot-backed voiced/small extras; unmapped tokens prevent false joins, while an optional compact-space key handles theatrical character separation. Region-aware `_dialogue_filter` accepts romaji and kana when the existing hypothesis checkbox is ON; exact `resource:N` or `resource:N query` filters; **Show selected resource** button reveals adjacent candidates for direct screenshot-to-chain comparison. The actual editor remains conservative, only six new screenshot-verified characters become editable; other inferred kana stay unverified previews.
+- **Tests actually run:** 37 tests (zero skips), Python compileall, original 32 MiB Japan/USA decompressed SHA-pinned data, original 16 MiB retail ROM paths, LZKN64 0.2.0 and Linux Xvfb Tk. The exact screenshot phrase round-trips unchanged including control tags; `pu/pura/purazuma/purazumaa` search is verified against real extracted records. Search hits on original JAPAN: 103 `pu`, 65 `purazuma`, 3 `purazumaa`. UI checks verify case-insensitive romaji, exact resource-only and compound filters, and selected-resource navigation. Existing JP byte-exact unchanged retail repacking tests passed.
+- **Boundaries:** This is an aid for *statically indexed candidates*, not a full dialogue VM graph. Romaji is basic and only covers speculative core kana plus screenshot-verified extras. Unmapped glyphs are not guessed. No new in-game modified Japanese ROM check, full Linux/Windows Toolkit regression or native packaged TkDND verification performed. No ROM bytes/assets/screenshots committed; matching-C decomp branch unchanged.
+- **Next:** Validate JP resource 112 text ordering and visuals in-game across multiple pages; continue kanji/voiced-kana screenshot mapping and full bundle dependency audit.
+
+
 ## 2026-11-19 — v0.11.67 Japanese kana hypothesis preview (read-only)
 
 - **Request:** Expose the proposed +80 hiragana-to-katakana correspondence in the Toolkit so user screenshots can validate or falsify the mapping across different Japanese dialogue records.

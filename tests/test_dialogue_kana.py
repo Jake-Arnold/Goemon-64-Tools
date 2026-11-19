@@ -57,3 +57,42 @@ class KanaHypothesisTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class RomajiSearchTests(unittest.TestCase):
+    def test_romanized_kana_and_voiced_plasma(self):
+        from practice.dialogue_kana import romanized_japan_search, japanese_query_matches
+        # Original game dramatically spaces the Plasma callout across glyphs.
+        sample=(13,13,-56,-50,166,13,132,13,151,13,124,13,89,13,212,13,212,-51,-57,-60)
+        self.assertEqual(romanized_japan_search(sample,compact_spaces=True), 'purazumaa!!\n')
+        for query in ('pu','PU','pura','purazuma','purazumaa'):
+            self.assertTrue(japanese_query_matches(sample,query),query)
+        self.assertFalse(japanese_query_matches(sample,'kana'))
+        self.assertFalse(japanese_query_matches(sample,'plasma'))
+        self.assertEqual(decode_japan_kana_preview(sample),
+            '  <token:-56><token:-50>プ ラ ズ マ ぁ ！ ！<token:-51><token:-57>\n')
+        self.assertEqual(encode_japan_text(decode_japan_kana_preview(sample)),sample)
+
+    def test_guesses_never_enter_rom_encoder(self):
+        # Only screenshot-aligned characters are promoted, not the gojuon hypothesis.
+        for glyph in ('あ','キ','ぬ'):
+            with self.assertRaises(ValueError):
+                encode_japan_text(glyph)
+        self.assertEqual(encode_japan_text('プラズマぁ！！'),(166,132,151,124,89,212,212))
+
+    def test_unknown_tokens_block_romanized_false_positives(self):
+        from practice.dialogue_kana import japanese_query_matches
+        self.assertFalse(japanese_query_matches((166,250,132),'pura'))
+        self.assertTrue(japanese_query_matches((166,250,132),'pu'))
+        self.assertTrue(japanese_query_matches((166,250,132),'ra'))
+
+    def test_original_plasma_dialogue_match(self):
+        from practice.dialogue_kana import japanese_query_matches
+        source=os.environ.get('GOEMON_JP_DECOMPRESSED_ROM')
+        if not source:self.skipTest('Set GOEMON_JP_DECOMPRESSED_ROM')
+        records=extract_japan_dialogue(load_japan_image(source))
+        match=next(r for r in records if r.resource_id==112 and r.text_offset==0x0c)
+        self.assertEqual(match.tokens,
+            (13,13,-56,-50,166,13,132,13,151,13,124,13,89,13,212,13,212,-51,-57,-60))
+        self.assertTrue(japanese_query_matches(match.tokens,'purazuma'))
+        self.assertEqual(encode_japan_text(match.text),match.tokens)

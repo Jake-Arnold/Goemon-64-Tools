@@ -150,3 +150,32 @@ class OptionalDnDTests(unittest.TestCase):
         try:
             self.assertTrue(root.winfo_exists())
         finally:root.destroy()
+
+
+class RomajiUIIntegration(RegionUIIntegration):
+    def test_romanized_search_and_exact_resource_filter(self):
+        from practice.dialogue_japan import JapanDialogueRecord
+        target=JapanDialogueRecord(112,0xC,0x777000,(166,13,132,13,151,13,124,89,212,212),(0x70,))
+        neighbor=JapanDialogueRecord(112,0x60,0x777100,(14,25),(0x90,))
+        unrelated=JapanDialogueRecord(1112,0x10,0x788000,(166,132),(0x20,))
+        self.app.dialogue_region_choice.set('japan')
+        self.app._dialogue_region_changed()
+        self.app.dialogue_records=[target,neighbor,unrelated]
+        self.app.dialogue_by_key={r.key:r for r in self.app.dialogue_records}
+        self.app.dialogue_tree=ttk.Treeview(self.app.dialogue_tab,
+            columns=('resource','offset','references','text'),show='headings')
+        self.app.dialogue_kana_hypothesis_enabled.set(True)
+        self.app.dialogue_query.set('PU')
+        self.app._dialogue_filter()
+        self.assertEqual(len(self.app.dialogue_tree.get_children()),2)
+        self.app.dialogue_query.set('purazuma')
+        self.app._dialogue_filter()
+        self.assertEqual(self.app.dialogue_tree.get_children(),(target.key,))
+        self.app.dialogue_query.set('resource:112 pu')
+        self.app._dialogue_filter()
+        self.assertEqual(self.app.dialogue_tree.get_children(),(target.key,))
+        self.app.dialogue_selected_key=target.key
+        self.app._dialogue_show_selected_resource()
+        self.assertEqual(self.app.dialogue_query.get(),'resource:112')
+        self.assertEqual(set(self.app.dialogue_tree.get_children()),{target.key,neighbor.key})
+        self.assertEqual(tuple(self.app.dialogue_tree.selection()),(target.key,))

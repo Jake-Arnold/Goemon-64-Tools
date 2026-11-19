@@ -1,4 +1,15 @@
-# Goemon Speedrun Tools v0.11.67 — Experimental Japanese Kana Preview
+# Goemon Speedrun Tools v0.11.68 — Japanese Romaji Search and Plasma Glyph Verification
+
+## v0.11.68 — Search JP dialogue using romaji, and inspect a whole resource
+
+The Japanese Dialogue tab's **Show inferred kana (unverified)** checkbox now enables phonetic **romaji search** alongside kana and raw token ID matching. Search `pu`, `pura`, `purazuma`, or `purazumaa` to find Japanese Plasma records even though the game inserts display spaces between each character. Search `resource:112` to view the **whole** statically indexed Plasma resource, or `resource:112 pu` to narrow within it. A new **Show selected resource** button fills the exact resource filter. Search is case-insensitive; unverified glyphs are treated as barriers rather than invented phonetic readings. All inferred kana and romaji search remain read-only and opt-in; the patcher still encodes only screenshot-confirmed characters or explicit `<token:N>`.
+
+**New screenshot-backed mapping:** The user's original Japanese Project64 screenshot shows **`プラズマぁ！！`**. Source resource **112 +0x0C** contains `166,132,151,124,89,212,212` interleaved with original spacing token `13` and negative style controls. This confirms `166=プ`, `132=ラ`, `151=ズ`, `124=マ`, `89=ぁ`, `212=！`; these six glyph IDs are now accepted as readable/editable Unicode. Other kana, kanji and Latin mappings remain unverified.
+
+Scanning the pinned Japanese original yields **103** static candidate records containing `pu`, **65** containing `purazuma`, and **3** containing `purazumaa` under this limited search model. Most Plasma-name hits belong to resource **112**; these are candidate record matches, not proof of a fully executed dialogue chain. Source/ROM details: `docs/JAPAN_PLASMA_ROMAJI_SEARCH_20261119.md`.
+
+**Verification 19 November 2026:** 37 focused dialogue-related tests passed, zero skips, under portable Python 3.12.16 with source-pinned Japan/USA decompressed and retail ROM paths, Xvfb and LZKN64. These include matching the exact original 112+0x0C token stream, unchanged encode/decode round trips with formatting controls, guarded Unicode, real-ROM romaji search, mixed-case search, resource filters, Xvfb Tk selection and original Japanese retail repacking. Python compileall passed. Full application regressions, live patched JP gameplay, and native standalone TkDND dependency packaging were not run. No copyrighted ROM data committed.
+
 
 ## v0.11.67 — Gojuon-order preview for Japanese dialogue verification
 

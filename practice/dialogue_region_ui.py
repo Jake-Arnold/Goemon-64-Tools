@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import queue
+import re
 import threading
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
@@ -20,7 +21,9 @@ from practice.dialogue_japan import (load_japan_image, extract_japan_dialogue,
     save_japan_patched, save_japan_retail_rom)
 from practice.dialogue_store import (import_rom, verify_stored,
     build_directory, open_directory, drop_paths)
-from practice.dialogue_kana import decode_japan_kana_preview, inferred_kana_count
+from practice.dialogue_kana import (
+    decode_japan_kana_preview, inferred_kana_count, japanese_query_matches,
+)
 
 
 class DialogueRegionMixin:
@@ -71,13 +74,22 @@ class DialogueRegionMixin:
         self.dialogue_kana_note=tk.StringVar(value=(
             'Hypothesis: hiragana tokens 14–59, katakana tokens 94–139 (+80). '
             'Only screenshot-confirmed glyphs are editable as Unicode.'))
+        ttk.Label(self.dialogue_kana_panel,text=(
+            'When enabled, search Japanese kana or romaji (pu, pura, purazuma). '
+            'Use resource:112 to inspect a whole dialogue resource; '
+            'resource:112 pu searches within it. Unverified glyphs are not searchable as romaji.'),
+            wraplength=1040).pack(fill='x',anchor='w')
         ttk.Label(self.dialogue_kana_panel,textvariable=self.dialogue_kana_note,
                   wraplength=1040).pack(fill='x',anchor='w')
         self.dialogue_kana_text=tk.Text(self.dialogue_kana_panel,height=3,wrap='word',
                                        state='disabled',undo=False)
         self.dialogue_kana_text.pack(fill='x',expand=False)
-        ttk.Button(self.dialogue_kana_panel,text='Copy hypothesis preview',
-                   command=self._dialogue_copy_kana_preview).pack(anchor='e')
+        kana_buttons=ttk.Frame(self.dialogue_kana_panel)
+        kana_buttons.pack(fill='x')
+        ttk.Button(kana_buttons,text='Show selected resource',
+                   command=self._dialogue_show_selected_resource).pack(side='left')
+        ttk.Button(kana_buttons,text='Copy hypothesis preview',
+                   command=self._dialogue_copy_kana_preview).pack(side='right')
         self.dialogue_region_box.bind('<<ComboboxSelected>>',lambda _event:self._dialogue_region_changed())
         self.root.after_idle(self._dialogue_region_changed)
 
@@ -184,18 +196,30 @@ class DialogueRegionMixin:
             not hasattr(self,'dialogue_tree')):
             return super()._dialogue_filter()
         query=self.dialogue_query.get().strip().casefold()
+        # Exact resource filters avoid accidentally matching 1112 when the
+        # user wants resource 112. An optional second term is also supported.
+        resource_filter=None
+        resource_match=re.fullmatch(r'resource:(\d+)(?:\s+(.+))?',query)
+        if resource_match:
+            resource_filter=int(resource_match.group(1))
+            query=(resource_match.group(2) or '').strip()
         tree=self.dialogue_tree
         for item in tree.get_children():tree.delete(item)
         filtered=[]
         for record in self.dialogue_records:
+            if resource_filter is not None and record.resource_id!=resource_filter:
+                continue
             staged=self.dialogue_staged.get(record.key)
             try:
                 tokens=encode_japan_text(staged) if staged is not None else record.tokens
                 preview=decode_japan_kana_preview(tokens)
             except ValueError:
+                tokens=record.tokens
                 preview=record.text
             if (not query or query in preview.casefold() or query in record.text.casefold()
-                or query in str(record.resource_id) or query in f'0x{record.text_offset:x}'):
+                or japanese_query_matches(tokens,query) or
+                (resource_filter is None and
+                 (query in str(record.resource_id) or query in f'0x{record.text_offset:x}'))):
                 filtered.append((record,preview))
         self.dialogue_filtered=[record for record,_ in filtered]
         for record,preview in filtered[:800]:
@@ -205,7 +229,19 @@ class DialogueRegionMixin:
         if self.dialogue_records:
             self.dialogue_status.set(
                 f'{len(filtered)} candidate matches (first {min(800,len(filtered))} displayed); '
-                f'{len(self.dialogue_staged)} staged. Kana list is HYPOTHETICAL, not verified.')
+                f'{len(self.dialogue_staged)} staged. Kana/romaji search includes '
+                'HYPOTHETICAL readings; not a verified translation.')
+
+    def _dialogue_show_selected_resource(self):
+        key=getattr(self,'dialogue_selected_key',None)
+        if key not in self.dialogue_by_key:
+            return
+        record=self.dialogue_by_key[key]
+        self.dialogue_query.set(f'resource:{record.resource_id}')
+        self._dialogue_filter()
+        if record.key in self.dialogue_tree.get_children():
+            self.dialogue_tree.selection_set(record.key)
+            self.dialogue_tree.see(record.key)
 
     def _dialogue_toggle_kana_hypothesis(self):
         self._dialogue_filter()

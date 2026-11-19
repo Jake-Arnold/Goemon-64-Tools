@@ -39,10 +39,17 @@ TOKEN_RE = re.compile(r'<token:([+-]?\d+)>|<(close-window|open-window|clear-glyp
 #   +0x18: 13,13,13,13,13,19,15,78,16 -> かいどう
 # -33/-32 are title formatting control tokens (orange / reset), NOT glyphs.
 # 13 is the separately established Japanese spacing/indent glyph.
-# Do NOT infer Unicode mapping for any other token from this small sample.
+# The user's second in-game screenshot (Plasma fortune teller) matches
+# resource 112+0x0C (and +0x1E4) in the exact original Japan-0 ROM:
+#   166,13,132,13,151,13,124,13,89,13,212,13,212
+#     プ      ラ      ズ      マ      ぁ      ！      ！
+# The 13 separators are spacing glyphs; -56/-50/-51/-57 are controls.
+# No OTHER characters are inferred from this sample. In particular neither
+# the other voiced-kana range nor the rest of the small-kana range is proved.
 JP_CONFIRMED_GLYPHS = {
     292: '【', 293: '】', 99: 'カ', 95: 'イ',
     19: 'か', 15: 'い', 78: 'ど', 16: 'う',
+    166: 'プ', 132: 'ラ', 151: 'ズ', 124: 'マ', 89: 'ぁ', 212: '！',
 }
 JP_CONFIRMED_GLYPH_TO_TOKEN = {character: token for token, character in JP_CONFIRMED_GLYPHS.items()}
 

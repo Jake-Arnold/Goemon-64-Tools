@@ -44,3 +44,61 @@ def inferred_kana_count(tokens: tuple[int, ...]) -> int:
     """Count guessed characters as distinct from screenshot-confirmed ones."""
     return sum(value in JP_KANA_HYPOTHESIS and value not in JP_CONFIRMED_GLYPHS
                for value in tokens)
+
+
+# Canonical IME-style romanization of the *proposed* basic gojuon series.
+# These readings are only for searches, never passed to the ROM encoder.
+GOJUON_ROMAJI = (
+    'a i u e o ka ki ku ke ko sa shi su se so ta chi tsu te to '
+    'na ni nu ne no ha hi fu he ho ma mi mu me mo ya yu yo '
+    'ra ri ru re ro wa wo n'
+).split()
+assert len(GOJUON_ROMAJI) == len(HIRAGANA) == len(KATAKANA)
+ROMAJI_BY_TOKEN = {
+    **{HIRAGANA_START+i: reading for i, reading in enumerate(GOJUON_ROMAJI)},
+    **{KATAKANA_START+i: reading for i, reading in enumerate(GOJUON_ROMAJI)},
+    # Screenshot-backed glyphs outside the conjectured 46+46 core.
+    78: 'do', 89: 'a', 151: 'zu', 166: 'pu',
+}
+
+
+def romanized_japan_search(tokens: tuple[int, ...], *, compact_spaces: bool = False) -> str:
+    """Hypothetical romaji search key, with unknown glyphs as hard barriers.
+
+    Ignore native display-colour/spacing commands, but do not accidentally
+    join across an unmapped glyph, a record terminator or a line break.
+    For oversized dramatic text, optional compact_spaces matches words whose
+    source intentionally places a space between *every* character.
+    """
+    result = []
+    for token in tokens:
+        if token == 13:
+            if not compact_spaces:
+                result.append(' ')
+        elif token in ROMAJI_BY_TOKEN:
+            result.append(ROMAJI_BY_TOKEN[token])
+        elif token == -60:
+            result.append('\n')
+        elif token == -1:
+            break
+        elif token < 0:
+            # Original control tokens affect style/state, not glyph meaning.
+            # Keep line-break and terminator barriers above.
+            continue
+        elif JP_CONFIRMED_GLYPHS.get(token) == '！':
+            result.append('!')
+        elif token in JP_CONFIRMED_GLYPHS:
+            # Other proven punctuation/brackets must not make false romaji.
+            result.append('|')
+        else:
+            result.append('|')
+    return ''.join(result)
+
+
+def japanese_query_matches(tokens: tuple[int, ...], query: str) -> bool:
+    """Match a romanized query without treating unsupported glyphs as known."""
+    query = query.strip().casefold()
+    if not query or not query.isascii() or not any('a' <= c <= 'z' for c in query):
+        return False
+    return (query in romanized_japan_search(tokens).casefold() or
+            query in romanized_japan_search(tokens, compact_spaces=True).casefold())
