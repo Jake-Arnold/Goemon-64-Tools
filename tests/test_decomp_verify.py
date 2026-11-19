@@ -145,6 +145,26 @@ def wide109_claim_count(manifest):
     return len(overlay_wide109.functions(fixture)) if fixture else 0
 
 
+def expanded_claim_count(manifest):
+    from decomp.verify import resource140_stage, graphics5_stage, file18_53_stage, callbacks10_stage, main19_stage, tiny9_stage, micro2_stage, micro15_stage, micro20_stage
+    from decomp.overlay_graphics5 import functions as gfx_fs
+    from decomp.overlay_file18_53 import functions as f18_fs
+    from decomp.overlay_callbacks10 import functions as cb_fs
+    from decomp.overlay_main19 import functions as main_fs
+    from decomp.overlay_tiny9 import functions as tiny_fs
+    from decomp.overlay_micro2 import functions as micro_fs
+    from decomp.overlay_micro15 import functions as micro15_fs
+    from decomp.overlay_micro20 import functions as micro20_fs
+    return (len(resource140_stage(manifest)['functions']) if resource140_stage(manifest) else 0) + \
+           (len(gfx_fs(graphics5_stage(manifest))) if graphics5_stage(manifest) else 0) + \
+           (len(f18_fs(file18_53_stage(manifest))) if file18_53_stage(manifest) else 0) + \
+           (len(cb_fs(callbacks10_stage(manifest))) if callbacks10_stage(manifest) else 0) + \
+           (len(main_fs(main19_stage(manifest))) if main19_stage(manifest) else 0) + \
+           (len(tiny_fs(tiny9_stage(manifest))) if tiny9_stage(manifest) else 0) + \
+           (len(micro_fs(micro2_stage(manifest))) if micro2_stage(manifest) else 0) + \
+           (len(micro15_fs(micro15_stage(manifest))) if micro15_stage(manifest) else 0) + \
+           (len(micro20_fs(micro20_stage(manifest))) if micro20_stage(manifest) else 0)
+
 def native_claim_count(manifest):
     from decomp.overlay_native87 import load_fixture
     return len(load_fixture()['functions']) if manifest.get('overlay_native87_stage') is not None else 0
@@ -160,7 +180,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(disabled)),
                          len(main_claimed_functions(disabled))+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(disabled))+(file11_stage_mode(disabled) or 0)+
-                         len(manifest_file13_stages(disabled)) + cross_claim_count(disabled) + native_claim_count(disabled) + highbyte26_claim_count(disabled) + file27_claim_count(disabled) + wide132_claim_count(disabled) + wide109_claim_count(disabled))
+                         len(manifest_file13_stages(disabled)) + cross_claim_count(disabled) + native_claim_count(disabled) + highbyte26_claim_count(disabled) + file27_claim_count(disabled) + wide132_claim_count(disabled) + wide109_claim_count(disabled) + expanded_claim_count(disabled) + (2 if disabled.get('overlay_menu2_stage') else 0))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
         staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
@@ -172,7 +192,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(len(claimed_functions(loaded)),
                              len(main_claimed_functions(loaded))+
                              1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(loaded))+(file11_stage_mode(loaded) or 0)+
-                             len(manifest_file13_stages(loaded)) + cross_claim_count(loaded) + native_claim_count(loaded) + highbyte26_claim_count(loaded) + file27_claim_count(loaded) + wide132_claim_count(loaded) + wide109_claim_count(loaded))
+                             len(manifest_file13_stages(loaded)) + cross_claim_count(loaded) + native_claim_count(loaded) + highbyte26_claim_count(loaded) + file27_claim_count(loaded) + wide132_claim_count(loaded) + wide109_claim_count(loaded) + expanded_claim_count(loaded) + (2 if loaded.get('overlay_menu2_stage') else 0))
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
             path.write_text(json.dumps(bad))
@@ -208,7 +228,7 @@ class DecompVerificationTests(unittest.TestCase):
                          'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in stages)+
-                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest))
+                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest) + (2 if manifest.get('overlay_menu2_stage') else 0))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             bad=copy.deepcopy(manifest)
@@ -249,7 +269,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest))
+                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest) + (2 if manifest.get('overlay_menu2_stage') else 0))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             for field,value,pattern in (
@@ -898,7 +918,7 @@ class DecompVerificationTests(unittest.TestCase):
                          len(manifest.get('existing_source_patches',[]))+
                          (manifest.get('overlay_file43_stage') is not None)+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+
-                         len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest))
+                         len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest) + (2 if manifest.get('overlay_menu2_stage') else 0))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
@@ -1208,6 +1228,25 @@ class DecompVerificationTests(unittest.TestCase):
             from decomp.verify import wide109_stage
             sources.update('research/usa_wide109_promotion_20261118/sources/'+u['name']+'.c'
                            for u in wide109_stage(manifest)['units'])
+        if manifest.get('overlay_resource140_stage') is not None:
+            from decomp.verify import resource140_stage
+            sources.update('research/pending_resource140_20261118/sources/'+f['name']+'.c'
+                           for f in resource140_stage(manifest)['functions'])
+        for key,relative,reader in (
+            ('overlay_graphics5_stage','pending_graphics5_20261118','overlay_graphics5'),
+            ('overlay_file18_53_stage','pending_file18_53_20261118','overlay_file18_53'),
+            ('overlay_callbacks10_stage','pending_callbacks10_20261118','overlay_callbacks10'),
+            ('overlay_main19_stage','pending_main19_20261118','overlay_main19'),
+            ('overlay_tiny9_stage','pending_tiny9_20261119','overlay_tiny9'),
+            ('overlay_micro2_stage','pending_micro2_20261119','overlay_micro2'),
+            ('overlay_micro15_stage','pending_micro15_20261119','overlay_micro15'),
+            ('overlay_micro20_stage','pending_micro20_20261119','overlay_micro20'),
+            ('overlay_menu2_stage','pending_menu2_20261119','overlay_menu2')):
+            if manifest.get(key) is not None:
+                from importlib import import_module
+                native=import_module('decomp.'+reader)
+                sources.update('research/'+relative+'/sources/'+u['name']+'.c'
+                               for u in native.load_fixture()['units'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

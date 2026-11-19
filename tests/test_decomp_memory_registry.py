@@ -49,6 +49,21 @@ class CanonicalMemoryRegistryTests(unittest.TestCase):
                     ValueError, "missing reciprocal"):
                 self._load(bad)
 
+    def test_rejects_nonreciprocal_pointer_when_both_addresses_exist(self):
+        extra_usa = dict(self.usa, id="story:usa:extra",
+                         address="0x8015C622", id_aliases=[])
+        reversed_japan = dict(self.japan, counterpart="0x8015C622")
+        # All referenced address/mask tuples exist, but only extra_usa
+        # is truly paired back to the Japan entry.
+        with self.assertRaisesRegex(ValueError, "missing reciprocal"):
+            self._load([self.usa, extra_usa, reversed_japan])
+
+    def test_rejects_duplicate_saved_event_address_and_mask(self):
+        duplicate = dict(self.usa, id="story:usa:duplicate",
+                         id_aliases=[])
+        with self.assertRaisesRegex(ValueError, "duplicate saved-event"):
+            self._load([self.usa, self.japan, duplicate])
+
     def test_explicit_unknown_is_not_assigned_fake_address(self):
         unknown = dict(self.usa, counterpart=None,
                        crosswalk_status="unresolved")

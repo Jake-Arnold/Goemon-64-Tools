@@ -1,0 +1,39 @@
+{
+  "format": "goemon-usa-menu2-after-1498-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "units": [
+    {
+      "name": "menu2_000",
+      "section": "main",
+      "rom_offset": 69344,
+      "size": 56,
+      "source_sha256": "e79a329abf4a38977522cd11ea411c1ad902d5b0c9873cb5d45dca7d8ae8d855",
+      "functions": [
+        {
+          "name": "func_800102E0_10EE0",
+          "rom_offset": 69344,
+          "vma": 2147549920,
+          "size": 56,
+          "original_code_sha256": "704a7ff11c026f17ba244ed1d9d618cab65b870ebffab22adf69f3a5739aadfc"
+        }
+      ]
+    },
+    {
+      "name": "menu2_001",
+      "section": "main",
+      "rom_offset": 69464,
+      "size": 28,
+      "source_sha256": "af9b8449ecd7ec44d953a9ab938cbc99658b51e6ffe9e8c21e2b8375bf0e7cbf",
+      "functions": [
+        {
+          "name": "func_80010358_10F58",
+          "rom_offset": 69464,
+          "vma": 2147550040,
+          "size": 28,
+          "original_code_sha256": "28c2698b8bdebc76a83d71e88c13e4a644bee16df45342989ae08412a1a3ac5d"
+        }
+      ]
+    }
+  ],
+  "original_canonical_count": 1498
+}

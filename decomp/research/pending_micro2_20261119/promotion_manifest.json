@@ -1,0 +1,39 @@
+{
+  "format": "goemon-usa-micro2-after-1461-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_count": 1461,
+  "units": [
+    {
+      "name": "micro15_fields",
+      "section": "file_15",
+      "rom_offset": 6698300,
+      "size": 12,
+      "source_sha256": "33809ae2b8bd06423e22067331f5a7fd2f4c686c669633fad63be70cef966e07",
+      "functions": [
+        {
+          "name": "func_801D068C_66353C",
+          "rom_offset": 6698300,
+          "vma": 2149385868,
+          "size": 12,
+          "original_code_sha256": "fa5a2a1e8e8eb2e02f3a49d3e4e67ee25966f33174b11161eb09e6fa784a822f"
+        }
+      ]
+    },
+    {
+      "name": "micro48_increment",
+      "section": "file_48",
+      "rom_offset": 7376044,
+      "size": 16,
+      "source_sha256": "78ec6b838c75e2bbd5a72cb9ada6d60b2e52c5ee54328bc05561a9061d8432e6",
+      "functions": [
+        {
+          "name": "func_0800126C_708CAC",
+          "rom_offset": 7376044,
+          "vma": 134222444,
+          "size": 16,
+          "original_code_sha256": "c78b753a6ee8f4ab9ffdcfca31b91a151737f054e47610ad736c0739a0fc8073"
+        }
+      ]
+    }
+  ]
+}

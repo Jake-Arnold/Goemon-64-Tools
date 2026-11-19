@@ -33,10 +33,14 @@ class RegistryView:
 
 def validate_bidirectional_flags(entries) -> None:
     """Reject incomplete declared bit pairs; never invent a ROM counterpart."""
-    by_location = {
-        (row["region"], row["address"], row.get("mask"))
-        for row in entries if row["category"] == "saved_event_bit"
-    }
+    by_location = {}
+    for row in entries:
+        if row["category"] != "saved_event_bit":
+            continue
+        key = (row["region"], row["address"], row.get("mask"))
+        if key in by_location:
+            raise ValueError(f"{row['id']}: duplicate saved-event address/mask")
+        by_location[key] = row
     for row in entries:
         if (row["category"] != "saved_event_bit"
                 or row["region"] not in ("usa", "japan")):
@@ -45,7 +49,8 @@ def validate_bidirectional_flags(entries) -> None:
         if other is None and row.get("crosswalk_status") == "unresolved":
             continue
         paired_region = "japan" if row["region"] == "usa" else "usa"
-        if not other or (paired_region, other, row.get("mask")) not in by_location:
+        paired = by_location.get((paired_region, other, row.get("mask")))
+        if not paired or paired.get("counterpart") != row["address"]:
             raise ValueError(f"{row['id']}: missing reciprocal saved-event pair")
 
 

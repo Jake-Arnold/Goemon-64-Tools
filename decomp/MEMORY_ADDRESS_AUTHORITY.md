@@ -34,8 +34,8 @@ by the static saved-data `+0x57F0` rule.
 ## Discovery writeback (decomp → canonical registry)
 
 New guest-data findings on `chatgptweb/decomp` belong in the versioned
-`decomp/address_discoveries_v1.json` discovery manifest once PR #56 is
-landed. Record original address, region/revision, type/width, precise mask,
+`decomp/address_discoveries_v1.json` discovery manifest (the initial 16
+research entries are carried by draft PR #88). Record original address, region/revision, type/width, precise mask,
 read/write MIPS site, confidence, lifetime and reciprocal proposed candidate
 or explicit unresolved status. Review a **metadata-only PR targeting
 toolkit `main`** to import these findings, regenerate the main canonical

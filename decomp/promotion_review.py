@@ -31,7 +31,7 @@ def validate(queue: dict, root: Path, *, strict_sources=False, rom: bytes | None
     if queue.get('format') != 'goemon-promotion-review-queue-v1':
         raise ReviewError('unknown review queue format')
     base = queue.get('production_accepted_baseline', {})
-    if base != {'usa_functions': 1225, 'usa_instruction_bytes': 52028,
+    if base != {'usa_functions': 1500, 'usa_instruction_bytes': 57592,
                 'japan_0_functions': 39, 'japan_0_instruction_bytes': 2092}:
         raise ReviewError('stale or unrecognised accepted production checkpoint')
     inv = json.loads((root / 'decomp/results/inventory.json').read_text())
@@ -122,11 +122,11 @@ def validate(queue: dict, root: Path, *, strict_sources=False, rom: bytes | None
             if a[1] > b[0]:
                 raise ReviewError(f'overlapping {segment} candidate extents: {a[2]} / {b[2]}')
     summary = queue.get('ready_for_combined_g2', {})
-    if (len(ready), sum(x['size'] for x in ready), len(blocked)) != (5, 284, 1):
-        raise ReviewError('expected 5 remaining native-exact / one blocked lead not present')
-    if summary != {'functions': 5, 'bytes': 284, 'by_segment': counts}:
+    if (len(ready), sum(x['size'] for x in ready), len(blocked)) != (0, 0, 1):
+        raise ReviewError('expected zero review-ready candidates / one blocked relocation lead')
+    if summary != {'functions': 0, 'bytes': 0, 'by_segment': counts}:
         raise ReviewError('review queue rollup changed')
-    return {'review_candidates': len(ready), 'review_instruction_bytes': 284,
+    return {'review_candidates': len(ready), 'review_instruction_bytes': 0,
             'blocked_not_ready': len(blocked), 'by_segment': counts,
             'original_rom_check': 'PASS' if rom is not None else 'NOT_RUN',
             'source_blobs_checked': len(source_verified), 'status': 'RESEARCH_ONLY'}

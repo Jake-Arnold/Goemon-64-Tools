@@ -1,0 +1,133 @@
+{
+  "format": "goemon-usa-tiny9-after-1452-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_sha": "c409408cccb284746619db98ecb36bfe7dadceac",
+  "units": [
+    {
+      "name": "tiny13_field34",
+      "rom_offset": 6285980,
+      "size": 16,
+      "section": "file_13",
+      "source_sha256": "ae564097b2a5761d618911c7b2d04a4afa7f714abddf308e2f61f37743e83295",
+      "functions": [
+        {
+          "name": "func_801D36BC_5FEA9C",
+          "rom_offset": 6285980,
+          "vma": 2149398204,
+          "size": 8,
+          "original_code_sha256": "5c15a2abc56307dfd16a97275b29928b178c82276bb724c8eb2a810bacb1b06e"
+        },
+        {
+          "name": "func_801D36C4_5FEAA4",
+          "rom_offset": 6285988,
+          "vma": 2149398212,
+          "size": 8,
+          "original_code_sha256": "5c15a2abc56307dfd16a97275b29928b178c82276bb724c8eb2a810bacb1b06e"
+        }
+      ]
+    },
+    {
+      "name": "tiny13_field38",
+      "rom_offset": 6286452,
+      "size": 16,
+      "section": "file_13",
+      "source_sha256": "9fcba908a4e083be130f636bd123b2faed2f270a0d96817247dc20c8d312f9c9",
+      "functions": [
+        {
+          "name": "func_801D3894_5FEC74",
+          "rom_offset": 6286452,
+          "vma": 2149398676,
+          "size": 8,
+          "original_code_sha256": "39bae8b76d9c09aaf753c5e79ddc5a4ae3c47a84673c38494d299463b43ed524"
+        },
+        {
+          "name": "func_801D389C_5FEC7C",
+          "rom_offset": 6286460,
+          "vma": 2149398684,
+          "size": 8,
+          "original_code_sha256": "39bae8b76d9c09aaf753c5e79ddc5a4ae3c47a84673c38494d299463b43ed524"
+        }
+      ]
+    },
+    {
+      "name": "tiny17_bytea0",
+      "rom_offset": 6767820,
+      "size": 8,
+      "section": "file_17",
+      "source_sha256": "f6b8fb7371cc35505046c373f28e1a1379926be2422038f06a24c93c9fee8e6f",
+      "functions": [
+        {
+          "name": "func_8021551C_6744CC",
+          "rom_offset": 6767820,
+          "vma": 2149668124,
+          "size": 8,
+          "original_code_sha256": "4955e05a039b24625573220b99a97d5fa3b2f888dd6b6ecb0c8b2d4ca0901604"
+        }
+      ]
+    },
+    {
+      "name": "tiny18_byte98",
+      "rom_offset": 6798508,
+      "size": 8,
+      "section": "file_18",
+      "source_sha256": "2cc35a0ef7b540477c6e55ecfb41a8c6e2f4c0412c0c1b3f4fe7becb1232de08",
+      "functions": [
+        {
+          "name": "func_802122CC_67BCAC",
+          "rom_offset": 6798508,
+          "vma": 2149655244,
+          "size": 8,
+          "original_code_sha256": "6ae5b19ca643417d9c558388ff7cf5c6908338898a02b9c4d3108048afdb3c49"
+        }
+      ]
+    },
+    {
+      "name": "tiny48_byted1",
+      "rom_offset": 7377564,
+      "size": 8,
+      "section": "file_48",
+      "source_sha256": "692d4a17cfa63aee15229e711682dbd8f66ef6fe08b3aebbf067a2592ffe43f2",
+      "functions": [
+        {
+          "name": "func_0800185C_70929C",
+          "rom_offset": 7377564,
+          "vma": 134223964,
+          "size": 8,
+          "original_code_sha256": "9796e84ab46d10cc7cf7dc690163db449952d4f12cc0a198871ba079aeb4c4d3"
+        }
+      ]
+    },
+    {
+      "name": "tiny49_byted0",
+      "rom_offset": 7386220,
+      "size": 8,
+      "section": "file_49",
+      "source_sha256": "573a029911b96458a3a2b3744d43d56ad759d26e8dbc791f3c08c744ca989b89",
+      "functions": [
+        {
+          "name": "func_0800142C_70B46C",
+          "rom_offset": 7386220,
+          "vma": 134222892,
+          "size": 8,
+          "original_code_sha256": "3ddab19ddaa9cb01d3bff8ce40b461bf44ecaea8ea86cdec4094d5c3123d35c1"
+        }
+      ]
+    },
+    {
+      "name": "tiny49_byted2",
+      "rom_offset": 7386260,
+      "size": 8,
+      "section": "file_49",
+      "source_sha256": "c0169448e9b7894899ea12d65bdb74fc764fa96e7922b128dcb8ba118d4ea25d",
+      "functions": [
+        {
+          "name": "func_08001454_70B494",
+          "rom_offset": 7386260,
+          "vma": 134222932,
+          "size": 8,
+          "original_code_sha256": "b4b059d710f3a85d1feb7d854121414d56fb817a69e03335706fd2592179a4e3"
+        }
+      ]
+    }
+  ]
+}
