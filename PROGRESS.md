@@ -1,3 +1,12 @@
+## 2026-11-19 — PR #104 refreshed against latest canonical decomp
+
+- Original graphics/pose/dracam research archive subtree SHA `ec74e9d91e2399b3ad55e2c8520ec5afb091cfee` unchanged. Historical source, proof and test blobs retained verbatim; accepted 1,500 USA / 432 Japanese C unchanged, no new ROM G2 or full CI run for archival refresh.
+
+## 2026-11-19 — Draft PR #104: graphics, pose, dracam native evidence archive
+
+- Preserved 25 original missing-source files (plus archive README) from four research branch tips in a non-executable research directory, with original SHA provenance. Earlier native scratch successes remain historical **RESEARCH_ONLY** where no separate current acceptance is recorded; no new function promotion is claimed. Current accepted USA 1,500 / Japan 432 C unchanged; no production C/manifests, fresh full-ROM G2, host sanitizer or gameplay tests performed by this archive. No source refs deleted pending PR merge plus file/SHA recheck.
+
+
 ## 2026-11-19 — PR #103 reconciled after canonical Japanese research archive
 
 - Retained exactly the original camera runtime/reset archival subtree SHA `7c0328e94ad0f543238827175941d5e940a392a0`, with no source, accepted C or historical proof replacement. Previous PR #103 status remains a dated preservation note; native G2/full CI were not rerun for the archival-only refresh.
