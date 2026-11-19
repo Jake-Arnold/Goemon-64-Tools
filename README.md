@@ -1,4 +1,17 @@
-# Goemon Speedrun Tools v0.11.63 — Native Dialogue Window Geometry
+# Goemon Speedrun Tools v0.11.64 — Source-Backed Horizontal Dialogue Bounds
+
+## v0.11.64 — Native artwork width and conservative auto wrapping
+
+The Dialogue tab now derives **horizontal bounds** from the original USA window CI4 textures and RGBA16 palettes, rather than treating each texture's **256-pixel stride** as its actual painted width. All twelve styles have source-backed visible artwork bounds: styles **2–5** paint **160 pixels**, while styles **0–1 and 6–11** paint **256 pixels**. Native text placement is **14 units** from the window origin (10-unit +0x50 inset and a 4-unit glyph-entry offset); glyph drawing rectangles are 10 units across. A 4-pixel decorative right border is reserved, along with the narrowest original font advance (3 units), yielding **conservative total-advance limits** of **135 units** for styles 2–5 and **231 units** for other styles.
+
+The editor now defaults to **Native (auto when traced)** and reports the artwork width, conservative advance limit, actual line start and remaining complete native lines for statically identified style contexts. The manual entries are disabled in this mode, and no automatic width is inferred for untraced scripts. Manual limits remain available but **cannot override a known native conservative limit**. The Wrap action can use the conservative native limit for compatible multi-line records when at least two actual lines remain; single-line area names and unsupported control-code records are rejected. Existing ROM generation still requires an explicit Stage/Build action.
+
+**Kai Highway, resource 82:** style 5 uses 160-pixel painted artwork with a 135-unit conservative advance cap. Its original indented area-name line measures **122 units**; the edited `Monster Monster Monster` measures **165**, exceeding the conservative cap. The heading consumes line one and only **one** complete native line remains for the area name. These findings are consistent with the user's Project64 screenshots, but do not establish all animated clipping and screen-scale cases.
+
+The evidence, original MIPS addresses, texture/palette pointers, validation checks and known limits are documented in `docs/USA_DIALOGUE_HORIZONTAL_GEOMETRY_20261119.md`.
+
+**Tests run 19 November 2026:** 51 focused dialogue/ROM/Tk GUI tests passed (0 skips) under portable Python 3.12.16 + Xvfb and LZKN64 0.2.0, with the original pinned USA decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494` and retail SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`. Retail compression tests still pass. Full application Linux/Windows regressions, JP support and live testing of the new native auto-wrap profile remain out of scope.
+
 
 ## v0.11.63 — Source-backed line capacity and improved control-code metadata
 

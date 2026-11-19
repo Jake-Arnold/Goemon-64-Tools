@@ -98,7 +98,7 @@ class NativeWindowUiTests(unittest.TestCase):
         self.assertIn('Native style 5:', msg)
         self.assertIn('starts on line 2, 1 remaining', msg)
         self.assertIn('exceeds user limit 1', msg)
-        self.assertIn('Native horizontal cap is not yet verified', msg)
+        self.assertIn('conservative advance cap 135 units', msg)
 
     def test_wrap_cannot_create_more_native_lines(self):
         from unittest.mock import patch

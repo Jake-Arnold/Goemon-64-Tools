@@ -39,11 +39,11 @@ class DialogueMixin:
         self.dialogue_original_image = None
         self.dialogue_window_context = None
         self.dialogue_line_break_approved = set()
-        self.dialogue_layout_mode = tk.StringVar(value='Measure only')
+        self.dialogue_layout_mode = tk.StringVar(value='Native (auto when traced)')
         self.dialogue_width_limit = tk.StringVar(value='')
         self.dialogue_line_limit = tk.StringVar(value='')
         self.dialogue_layout_summary = tk.StringVar(value=(
-            'Font widths are loaded from the verified USA ROM; window bounds are not yet known.'))
+            'Native artwork widths are inferred when the original script context is traceable.'))
 
         top = ttk.Frame(tab)
         top.pack(fill='x', pady=(0, 7))
@@ -107,15 +107,18 @@ class DialogueMixin:
         ttk.Label(layout_row, text='Window profile').pack(side='left', padx=(0, 5))
         self.dialogue_mode_selector = ttk.Combobox(
             layout_row, textvariable=self.dialogue_layout_mode,
-            values=('Measure only', 'Single-line (manual cap)', 'Multi-line (manual cap)'),
+            values=('Native (auto when traced)', 'Measure only',
+                    'Single-line (manual cap)', 'Multi-line (manual cap)'),
             state='readonly', width=28)
         self.dialogue_mode_selector.pack(side='left', padx=(0, 12))
-        ttk.Label(layout_row, text='Max glyph width (units)').pack(side='left')
-        ttk.Entry(layout_row, textvariable=self.dialogue_width_limit, width=7).pack(
-            side='left', padx=(5, 12))
-        ttk.Label(layout_row, text='Max lines').pack(side='left')
-        ttk.Entry(layout_row, textvariable=self.dialogue_line_limit, width=5).pack(
-            side='left', padx=(5, 8))
+        ttk.Label(layout_row, text='Manual width (units)').pack(side='left')
+        self.dialogue_width_entry = ttk.Entry(
+            layout_row, textvariable=self.dialogue_width_limit, width=7)
+        self.dialogue_width_entry.pack(side='left', padx=(5, 12))
+        ttk.Label(layout_row, text='Manual lines').pack(side='left')
+        self.dialogue_line_entry = ttk.Entry(
+            layout_row, textvariable=self.dialogue_line_limit, width=5)
+        self.dialogue_line_entry.pack(side='left', padx=(5, 8))
         self.dialogue_wrap_button = ttk.Button(layout_row, text='Wrap to manual limits',
                                                command=self._dialogue_wrap)
         self.dialogue_wrap_button.pack(side='left', padx=(4, 0))
@@ -124,6 +127,8 @@ class DialogueMixin:
         for var in (self.dialogue_layout_mode, self.dialogue_width_limit,
                     self.dialogue_line_limit):
             var.trace_add('write', lambda *_: self._dialogue_analyze())
+        self.dialogue_layout_mode.trace_add('write', lambda *_: self._dialogue_mode_changed())
+        self._dialogue_mode_changed()
         actions = ttk.Frame(editor)
         actions.pack(fill='x')
         ttk.Button(actions, text='Stage edited record', command=self._dialogue_stage).pack(side='left')
@@ -132,7 +137,8 @@ class DialogueMixin:
         ttk.Label(editor, text=(
             'Static script references are candidates, not proven reachable conversations. '
             'Original controls must remain ordered. Only the explicit multi-line Wrap action '
-            'can approve added -60 line breaks. Caps are user-supplied, not known game bounds. '
+            'can approve added -60 line breaks. Native bounds are conservative and '
+            'only available for traced script contexts; manual caps are optional. '
             'Longer/shorter records are relocated within their original resource, '
             'with script operands and resource tables updated. Retail output needs '
             'the original USA cartridge and the optional lzkn64 Python package. '
@@ -224,9 +230,15 @@ class DialogueMixin:
         self.dialogue_editor.insert('1.0', self.dialogue_staged.get(key, record.text))
         self._dialogue_analyze()
 
+    def _dialogue_mode_changed(self) -> None:
+        """Keep manual inputs visibly separate from source-inferred bounds."""
+        native = self.dialogue_layout_mode.get() == 'Native (auto when traced)'
+        for entry in (self.dialogue_width_entry, self.dialogue_line_entry):
+            entry.state(['disabled'] if native else ['!disabled'])
+
     def _dialogue_limits(self):
         mode = self.dialogue_layout_mode.get()
-        if mode == 'Measure only':
+        if mode in ('Measure only', 'Native (auto when traced)'):
             return None, None
         width_text = self.dialogue_width_limit.get().strip()
         line_text = self.dialogue_line_limit.get().strip()
@@ -249,15 +261,20 @@ class DialogueMixin:
             tokens = encode_text(self.dialogue_editor.get('1.0', 'end-1c'))
             maximum, line_count = self._dialogue_limits()
             context = getattr(self, 'dialogue_window_context', None)
-            # Original MIPS establishes the vertical space for certain
-            # straight-line scripts. Do not permit a manual line count to
-            # override the proven per-record remainder.
+            # Native artwork alpha plus original glyph-render positioning
+            # yield a conservative horizontal cap. A manual cap may tighten,
+            # but not enlarge, a known original window bound.
+            bound_type = 'user'
             if context is not None:
+                safe_width = context.style.safe_advance_limit
+                if maximum is None or safe_width < maximum:
+                    maximum = safe_width
+                    bound_type = 'native safe'
                 remaining = context.remaining_lines
                 if remaining:
                     line_count = min(line_count, remaining) if line_count else remaining
             after = inspect_layout(tokens, widths, max_width=maximum,
-                                   max_lines=line_count)
+                                   max_lines=line_count, width_source=bound_type)
             controls = tuple(dict.fromkeys(t for t in tokens if t < 0))
             control_info = '; '.join(
                 f'{code}: {CONTROL_NOTES.get(code, "unmapped/no-op" if code in NOOP_TOKENS else "unknown")}'
@@ -270,17 +287,21 @@ class DialogueMixin:
                        f'peak glyph entries {after.glyphs_since_clear_max}/120.')
             if context is not None:
                 style = context.style
-                summary += (f'  Native style {style.index}: {style.background_height} high, '
+                summary += (f'  Native style {style.index}: painted artwork '
+                            f'{style.artwork_width} wide × {style.background_height} high; '
+                            f'conservative advance cap {style.safe_advance_limit} units '
+                            f'(text inset {style.text_x_inset}, 4-pixel right border); '
                             f'{style.max_full_lines} full lines; starts on line '
                             f'{context.starting_line + 1}, '
-                            f'{context.remaining_lines} remaining. '
-                            'Native horizontal cap is not yet verified.')
+                            f'{context.remaining_lines} remaining.')
             if after.messages:
                 summary += '  WARNING: ' + '; '.join(after.messages)
             elif maximum is None:
-                summary += '  No user window-width cap set; overflow cannot be excluded.'
+                summary += '  Native window width not traced; no manual width cap set.'
             else:
-                summary += '  Within user cap only; real window bounds unverified.'
+                summary += ('  Within conservative native art limit, not a clipping guarantee.'
+                            if context is not None else
+                            '  Within user cap only; actual box bounds unverified.')
             if control_info:
                 summary += '  Controls: ' + control_info
             self.dialogue_layout_summary.set(summary)
@@ -291,9 +312,11 @@ class DialogueMixin:
         key = self.dialogue_selected_key
         if key not in self.dialogue_by_key:
             return
-        if self.dialogue_layout_mode.get() != 'Multi-line (manual cap)':
+        mode = self.dialogue_layout_mode.get()
+        if mode not in ('Multi-line (manual cap)', 'Native (auto when traced)'):
             messagebox.showerror('Multi-line profile required',
-                                 'Choose Multi-line (manual cap); one-line area names must not be wrapped automatically.',
+                                 'Choose Native (auto when traced) with at least two remaining lines, '
+                                 'or Multi-line (manual cap). One-line area names cannot be wrapped.',
                                  parent=self.dialogue_tab)
             return
         if self.dialogue_font_widths is None:
@@ -305,13 +328,19 @@ class DialogueMixin:
         original = self.dialogue_editor.get('1.0', 'end-1c')
         try:
             maximum, lines = self._dialogue_limits()
-            if maximum is None or lines is None:
-                raise ValueError('Enter both the manually chosen width and maximum lines')
             context = getattr(self, 'dialogue_window_context', None)
+            if mode == 'Native (auto when traced)' and context is None:
+                raise ValueError('No source-backed window geometry for this record; use explicit manual caps')
             if context is not None:
                 if context.remaining_lines < 1:
                     raise ValueError('No lines remain in the original window')
-                lines = min(lines, context.remaining_lines)
+                maximum = (min(maximum, context.style.safe_advance_limit)
+                           if maximum else context.style.safe_advance_limit)
+                lines = min(lines, context.remaining_lines) if lines else context.remaining_lines
+                if lines < 2:
+                    raise ValueError('Only one native text line remains: wrapping cannot add a line')
+            if maximum is None or lines is None:
+                raise ValueError('Enter both manual width and maximum lines for an untraced window')
             source_tokens = validate_flexible_replacement(
                 record, original,
                 allow_added_line_breaks=key in self.dialogue_line_break_approved)

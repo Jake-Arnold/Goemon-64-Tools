@@ -74,7 +74,8 @@ def glyph_advance(token: int, widths: tuple[int, ...]) -> int | None:
 
 def inspect_layout(tokens: tuple[int, ...], widths: tuple[int, ...], *,
                    max_width: int | None = None,
-                   max_lines: int | None = None) -> LayoutReport:
+                   max_lines: int | None = None,
+                   width_source: str = 'user') -> LayoutReport:
     """Predict advances from glyph widths; do not claim clipping/layout semantics."""
     if max_width is not None and not 1 <= max_width <= 4096:
         raise ValueError('User width limit must be 1..4096')
@@ -111,7 +112,7 @@ def inspect_layout(tokens: tuple[int, ...], widths: tuple[int, ...], *,
     if max_width is not None:
         exceeded = [(i + 1, w) for i, w in enumerate(line_widths) if w > max_width]
         if exceeded:
-            messages.append('Width exceeds user limit: ' + ', '.join(
+            messages.append(f'Width exceeds {width_source} limit: ' + ', '.join(
                 f'line {line} ({width}/{max_width})' for line, width in exceeded[:5]))
     if max_lines is not None and max_page_lines > max_lines:
         messages.append(f'{max_page_lines} lines between clears exceeds user limit {max_lines}')
