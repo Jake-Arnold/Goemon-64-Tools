@@ -1,4 +1,17 @@
-# Goemon Speedrun Tools v0.11.66 — First Screenshot-Verified Japanese Glyphs
+# Goemon Speedrun Tools v0.11.67 — Experimental Japanese Kana Preview
+
+## v0.11.67 — Gojuon-order preview for Japanese dialogue verification
+
+After the user's screenshot validated original Japanese script tokens `15=い` / `95=イ` and `19=か` / `99=カ`, the Toolkit now has a **read-only hypothesis preview** for the *Japan* Dialogue tab. The proposed standard 46-character hiragana sequence occupies token IDs `14..59` and katakana occupies `94..139` (+80). **Only the eight pre-existing screenshot-confirmed glyph IDs remain verified and editable as Unicode.** The new proposed characters are **not** added to the encoder or ROM patcher.
+
+Choose the **Japan** region and enable **Show inferred kana (unverified) in record list and preview**. The list becomes searchable by tentative Japanese words and a separate read-only panel shows the selected record in the proposed text. It counts guessed characters and offers **Copy hypothesis preview** for direct comparison against gameplay screenshots. The actual editable record retains exact `<token:N>` IDs for all unverified glyphs, and its existing safety validation is unchanged. The toggle defaults OFF, and the panel hides when returning to USA.
+
+**Plausibility from the pinned original Japanese ROM:** Source candidate resource 81 contains inferred fragments `しません` and `たいほする`, and resource 84 yields `ムサシ`. These agree with plausible Japanese text in context; **none is an independent in-game verification** of the predicted ordering. Among 5,039 original static candidate records, 4,935 contain at least one predicted-but-unconfirmed kana token. This is coverage, not accuracy.
+
+**Tests 19 November 2026:** 26 Japanese ROM/Tk-focused tests passed, zero skipped, with pinned 32 MiB Japanese/USA decompressed and 16 MiB retail sources under portable Python 3.12/LZKN64/Xvfb. Tests verify the offset-80 pattern, exact original Kai records, safety separation of inferred preview from encoder, noneditable GUI preview, opt-in Japanese search and existing retail repack/storage behavior. No new third-party dependencies. **Full application Linux/Windows regressions, real native TkDND packaging and screenshot checks of unverified kana remain pending.**
+
+Source notes: `docs/JAPAN_GOJUON_PREVIEW_RESEARCH_20261119.md`. The original ROMs and copyrighted assets are not committed.
+
 
 ## v0.11.66 — Japanese Kai Highway glyph mapping
 

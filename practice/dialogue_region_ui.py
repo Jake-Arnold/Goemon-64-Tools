@@ -20,6 +20,7 @@ from practice.dialogue_japan import (load_japan_image, extract_japan_dialogue,
     save_japan_patched, save_japan_retail_rom)
 from practice.dialogue_store import (import_rom, verify_stored,
     build_directory, open_directory, drop_paths)
+from practice.dialogue_kana import decode_japan_kana_preview, inferred_kana_count
 
 
 class DialogueRegionMixin:
@@ -45,6 +46,7 @@ class DialogueRegionMixin:
         self.dialogue_retail_build_button.pack(side='left',padx=(0,6))
         ttk.Button(header,text='Open built ROM directory',command=self._dialogue_open_built_dir).pack(side='left')
         dropbar=ttk.Frame(self.dialogue_tab)
+        self.dialogue_dropbar=dropbar
         dropbar.pack(fill='x',pady=(0,5),after=header)
         self.dialogue_drop_text=tk.StringVar(value='Drop a verified USA / Japanese ROM onto this window, or click Import original ROM.')
         ttk.Label(dropbar,textvariable=self.dialogue_drop_text).pack(anchor='w')
@@ -57,6 +59,25 @@ class DialogueRegionMixin:
                 self.dialogue_drop_text.set('Drag-and-drop unavailable: ' + str(exc) + '. Use Import original ROM.')
         else:
             self.dialogue_drop_text.set('Drag-and-drop requires tkinterdnd2. Use Import original ROM.')
+        # Keep speculative Unicode in a separate read-only preview; never send
+        # it to the Japanese encoder or ROM patcher.
+        self.dialogue_kana_hypothesis_enabled=tk.BooleanVar(value=False)
+        self.dialogue_kana_panel=ttk.LabelFrame(self.dialogue_tab,
+            text='Experimental Japanese kana ordering — screenshot comparison ONLY',padding=5)
+        ttk.Checkbutton(self.dialogue_kana_panel,
+            text='Show inferred kana (unverified) in record list and preview',
+            variable=self.dialogue_kana_hypothesis_enabled,
+            command=self._dialogue_toggle_kana_hypothesis).pack(anchor='w')
+        self.dialogue_kana_note=tk.StringVar(value=(
+            'Hypothesis: hiragana tokens 14–59, katakana tokens 94–139 (+80). '
+            'Only screenshot-confirmed glyphs are editable as Unicode.'))
+        ttk.Label(self.dialogue_kana_panel,textvariable=self.dialogue_kana_note,
+                  wraplength=1040).pack(fill='x',anchor='w')
+        self.dialogue_kana_text=tk.Text(self.dialogue_kana_panel,height=3,wrap='word',
+                                       state='disabled',undo=False)
+        self.dialogue_kana_text.pack(fill='x',expand=False)
+        ttk.Button(self.dialogue_kana_panel,text='Copy hypothesis preview',
+                   command=self._dialogue_copy_kana_preview).pack(anchor='e')
         self.dialogue_region_box.bind('<<ComboboxSelected>>',lambda _event:self._dialogue_region_changed())
         self.root.after_idle(self._dialogue_region_changed)
 
@@ -68,6 +89,10 @@ class DialogueRegionMixin:
                 self.dialogue_region_choice.set(self.dialogue_build_region)
             return
         region=self.dialogue_region_choice.get()
+        if region=='japan':
+            self.dialogue_kana_panel.pack(fill='x',pady=(0,5),after=self.dialogue_dropbar)
+        else:
+            self.dialogue_kana_panel.pack_forget()
         self.dialogue_path=None
         self.dialogue_retail_path=verify_stored(region,'retail')
         self.dialogue_records=[]
@@ -151,13 +176,84 @@ class DialogueRegionMixin:
             return
         self._dialogue_import_file(file)
 
+    def _dialogue_filter(self):
+        """Optionally make the table searchable via *unverified* kana guesses."""
+        if (not hasattr(self,'dialogue_kana_hypothesis_enabled') or
+            not self.dialogue_kana_hypothesis_enabled.get() or
+            self.dialogue_region_choice.get()!='japan' or
+            not hasattr(self,'dialogue_tree')):
+            return super()._dialogue_filter()
+        query=self.dialogue_query.get().strip().casefold()
+        tree=self.dialogue_tree
+        for item in tree.get_children():tree.delete(item)
+        filtered=[]
+        for record in self.dialogue_records:
+            staged=self.dialogue_staged.get(record.key)
+            try:
+                tokens=encode_japan_text(staged) if staged is not None else record.tokens
+                preview=decode_japan_kana_preview(tokens)
+            except ValueError:
+                preview=record.text
+            if (not query or query in preview.casefold() or query in record.text.casefold()
+                or query in str(record.resource_id) or query in f'0x{record.text_offset:x}'):
+                filtered.append((record,preview))
+        self.dialogue_filtered=[record for record,_ in filtered]
+        for record,preview in filtered[:800]:
+            tree.insert('','end',iid=record.key,values=(
+                record.resource_id,f'0x{record.text_offset:X}',
+                len(record.references),preview.replace('\n',' / ')[:200]))
+        if self.dialogue_records:
+            self.dialogue_status.set(
+                f'{len(filtered)} candidate matches (first {min(800,len(filtered))} displayed); '
+                f'{len(self.dialogue_staged)} staged. Kana list is HYPOTHETICAL, not verified.')
+
+    def _dialogue_toggle_kana_hypothesis(self):
+        self._dialogue_filter()
+        self._dialogue_refresh_kana_preview()
+
+    def _dialogue_refresh_kana_preview(self):
+        if not hasattr(self,'dialogue_kana_text'):
+            return
+        key=getattr(self,'dialogue_selected_key',None)
+        content=''
+        if self.dialogue_region_choice.get()=='japan' and key in self.dialogue_by_key:
+            record=self.dialogue_by_key[key]
+            try:
+                tokens=encode_japan_text(self.dialogue_editor.get('1.0','end-1c'))
+                if self.dialogue_kana_hypothesis_enabled.get():
+                    content=decode_japan_kana_preview(tokens)
+                    self.dialogue_kana_note.set(
+                        f'UNVERIFIED gojuon-order guesses: {inferred_kana_count(tokens)} of '
+                        f'{sum(t>=0 for t in tokens)} glyph tokens. Screenshot-verified IDs '
+                        'remain separate. Copy/compare this preview; do not paste guesses into the editor.')
+                else:
+                    content='Enable inferred kana to compare this record against your screenshot.'
+                    self.dialogue_kana_note.set(
+                        'Hypothesis OFF. Basic hiragana 14–59 and katakana 94–139 (+80) '
+                        'are not yet validated against gameplay.')
+            except ValueError as exc:
+                content=f'Preview unavailable: {exc}'
+        self.dialogue_kana_text.configure(state='normal')
+        self.dialogue_kana_text.delete('1.0','end')
+        self.dialogue_kana_text.insert('1.0',content)
+        self.dialogue_kana_text.configure(state='disabled')
+
+    def _dialogue_copy_kana_preview(self):
+        if not self.dialogue_kana_hypothesis_enabled.get():return
+        text=self.dialogue_kana_text.get('1.0','end-1c')
+        if text:
+            self.root.clipboard_clear()
+            self.root.clipboard_append(text)
+
     def _dialogue_select(self,event=None):
         # The original USA window-style analyser is not applicable to JP.
         if self.dialogue_region_choice.get()=='japan':
             original=self.dialogue_original_image
             self.dialogue_original_image=None
             try:return super()._dialogue_select(event)
-            finally:self.dialogue_original_image=original
+            finally:
+                self.dialogue_original_image=original
+                self._dialogue_refresh_kana_preview()
         return super()._dialogue_select(event)
 
     def _dialogue_analyze(self):
@@ -177,6 +273,7 @@ class DialogueRegionMixin:
                 'Retain original control order; type only verified Unicode or numeric <token:N> IDs.')
         except ValueError as exc:
             self.dialogue_layout_summary.set(f'Japanese token encoding invalid: {exc}')
+        self._dialogue_refresh_kana_preview()
 
     def _dialogue_wrap(self):
         if self.dialogue_region_choice.get()=='japan':

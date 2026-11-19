@@ -95,6 +95,43 @@ class RegionUIIntegration(unittest.TestCase):
         self.assertIn('disabled',self.app.dialogue_wrap_button.state())
         self.assertEqual(self.app.dialogue_layout_mode.get(),'Measure only')
 
+    def test_hypothesis_preview_stays_readonly_and_japan_only(self):
+        from practice.dialogue_japan import JapanDialogueRecord
+        record=JapanDialogueRecord(82,0x18,0x742358,(14,19,15,78,16),(0x64,))
+        self.app.dialogue_region_choice.set('japan')
+        self.app._dialogue_region_changed()
+        self.app.dialogue_records=[record]
+        self.app.dialogue_by_key={record.key:record}
+        self.app.dialogue_selected_key=record.key
+        self.app.dialogue_editor.insert('1.0',record.text)
+        self.assertFalse(self.app.dialogue_kana_hypothesis_enabled.get())
+        self.app.dialogue_kana_hypothesis_enabled.set(True)
+        self.app._dialogue_toggle_kana_hypothesis()
+        self.assertEqual(self.app.dialogue_kana_text.get('1.0','end-1c'),'あかいどう')
+        self.assertEqual(self.app.dialogue_kana_text.cget('state'),'disabled')
+        self.assertEqual(self.app.dialogue_editor.get('1.0','end-1c'),record.text)
+        self.app.dialogue_region_choice.set('usa')
+        self.app._dialogue_region_changed()
+        self.assertFalse(self.app.dialogue_kana_panel.winfo_manager())
+
+    def test_hypothesis_search_and_list_are_explicitly_opt_in(self):
+        from practice.dialogue_japan import JapanDialogueRecord
+        rec=JapanDialogueRecord(81,0,0x742000,(25,44,27,59),(0x30,))
+        self.app.dialogue_region_choice.set('japan')
+        self.app._dialogue_region_changed()
+        self.app.dialogue_records=[rec]
+        self.app.dialogue_by_key={rec.key:rec}
+        self.app.dialogue_tree=ttk.Treeview(self.app.dialogue_tab,
+            columns=('resource','offset','references','text'),show='headings')
+        self.app.dialogue_query.set('しません')
+        self.app._dialogue_filter()
+        self.assertEqual(self.app.dialogue_tree.get_children(),())
+        self.app.dialogue_kana_hypothesis_enabled.set(True)
+        self.app._dialogue_toggle_kana_hypothesis()
+        self.assertEqual(self.app.dialogue_tree.get_children(),(rec.key,))
+        self.assertIn('しません',str(self.app.dialogue_tree.item(rec.key,'values')))
+        self.assertIn('HYPOTHETICAL',self.app.dialogue_status.get())
+
     def test_open_build_directory(self):
         with patch('practice.dialogue_region_ui.open_directory') as opener, patch('practice.dialogue_region_ui.build_directory',return_value=Path('/tmp/builds')):
             self.app._dialogue_open_built_dir()

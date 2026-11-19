@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-19 — v0.11.67 Japanese kana hypothesis preview (read-only)
+
+- **Request:** Expose the proposed +80 hiragana-to-katakana correspondence in the Toolkit so user screenshots can validate or falsify the mapping across different Japanese dialogue records.
+- **Evidence and caution:** Screenshot-proven pairs 15/95=い/イ and 19/99=か/カ, plus 16=う, establish a possible base-gojuon sequence 14..59 and parallel katakana 94..139; the other 88 predicted Unicode values are hypotheses, NOT verified mappings. Original Japanese ROM candidate previews include 81+0x00 `しません`, 81+0x48 `たいほする` and 84+0x04 `ムサシ`, which are plausible but not independently screenshot-proven. 4,935 / 5,039 statically identified records contain at least one speculative kana token. See `docs/JAPAN_GOJUON_PREVIEW_RESEARCH_20261119.md`.
+- **Implementation:** Add `practice/dialogue_kana.py` with a *read-only* pair of base-gojuon tables, screenshot-confirmed override and count of conjectured glyph IDs. The Japan Dialogue tab adds an OFF-by-default experimental checkbox to show and search tentative Japanese in the record list and a separate read-only selected-record preview with guess count and Copy button. USA is unaffected. `practice.dialogue_japan.encode_japan_text`, original Unicode verification, negative control preservation, JP relocation and ROM writing are explicitly unchanged: unconfirmed Unicode cannot be staged.
+- **Tests:** 26 passed / 0 skipped: portable Python 3.12.16, pinned JP and USA source retail + decompressed inputs, LZKN64 and Xvfb. Includes no-guess encoder acceptance, original resource-82 exact sequence, speculative token mapping and +80 arithmetic, read-only Tk panel, opt-in kana search, JP original retail byte-exact repack and persistent storage. Full cross-platform app suite and new in-game screenshot alignment untested.
+- **Dependencies:** No new packages needed by this preview. Prior tkinterdnd2 support remains optional and proper bundled binary distribution is not yet verified; do not claim that packaging is complete.
+- **Next:** Gather screenshot matches for multiple adjacent resource IDs and counterexamples; promote only proved glyphs to the editable map; identify voiced/small kana, kanji and Latin glyphs separately.
+
+
 ## 2026-11-19 — v0.11.66 first screenshot-to-ROM verified Japanese glyph mappings
 
 - **Observation:** User confirmed original Japanese Project64 Kai area-name screenshot corresponds to the first two records for resource 82. Original JP decompressed ROM SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`. Record +0x04 (image 0x742344) holds `13,13,292,-33,99,95,-32,293,-60`, rendered as indented `【カイ】` plus native newline, with `-33/-32` applying/restoring orange title presentation. Record +0x18 (image 0x742358) holds five `13` indentation tokens and `19,15,78,16` rendered `かいどう`. Eight positive glyph IDs are now screenshot-aligned to Unicode; space 13 remains supported.
