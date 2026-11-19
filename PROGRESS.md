@@ -1,3 +1,7 @@
+## 2026-11-19 — Draft PR #108: historical cross-region 47-function proof archive
+
+- Archived 10 original missing 315+47 and 389-stage historical source/proof/test files plus README, maintaining original version/source hashes in isolated archive. Earlier native scratch reports are historic and not a new 1,500-USA / 432-JP full-ROM verification. No manifest/production C changes, no new matching C, no full CI/native G2/gameplay runs. Original branch retention persists until archive PR merge and exact source/head SHA checks.
+
 ## 2026-11-19 — Preserve original file12 VM dialogue callback research (PR #99)
 
 - **Research preservation:** Added the original dated isolated IDO/ELF research report for `func_80222034_5DD504` (20 bytes) and `func_80222168_5DD638` (36 bytes), the original 13 November callback investigation note and a cross-reference from `decomp/VM_CONVERSATION_TARGETS.md`. The research JSON is copied unchanged (Git blob `69ada279bcbcdb212a2a4de699623d961ad48565`), and explicitly records the **historical RESEARCH_ONLY status** when collected.
