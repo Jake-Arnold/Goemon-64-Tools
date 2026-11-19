@@ -1,10 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-19T15:42:54.521071+00:00",
+  "started_utc": "2026-11-19T17:06:21.045434+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "162eb15e19648a8c48c8a265d26c7019adfd552e4f7138b4b94692cbf8736646",
+  "verifier_source_sha256_lf": "51d147c762a7ecf6e8cc01222cdac6b8b65bf6f9f4e087f67db863233b396a68",
   "tool_versions": {
     "uv": "uv 0.10.0 (offline-vendored environment adapter)",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
@@ -2974,9 +2974,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 1498,
-    "claimed_functions": 1498,
-    "matched_function_bytes": 57508,
+    "matched_functions": 1500,
+    "claimed_functions": 1500,
+    "matched_function_bytes": 57592,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -16851,6 +16851,24 @@
         "matched": true,
         "expected_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50",
         "candidate_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50"
+      },
+      {
+        "name": "func_800102E0_10EE0",
+        "size": 56,
+        "guest_address": "0x800102E0",
+        "rom_offset": "0x10EE0",
+        "matched": true,
+        "expected_sha256": "704a7ff11c026f17ba244ed1d9d618cab65b870ebffab22adf69f3a5739aadfc",
+        "candidate_sha256": "704a7ff11c026f17ba244ed1d9d618cab65b870ebffab22adf69f3a5739aadfc"
+      },
+      {
+        "name": "func_80010358_10F58",
+        "size": 28,
+        "guest_address": "0x80010358",
+        "rom_offset": "0x10F58",
+        "matched": true,
+        "expected_sha256": "28c2698b8bdebc76a83d71e88c13e4a644bee16df45342989ae08412a1a3ac5d",
+        "candidate_sha256": "28c2698b8bdebc76a83d71e88c13e4a644bee16df45342989ae08412a1a3ac5d"
       }
     ]
   },
@@ -17747,7 +17765,9 @@
     "research/pending_micro20_20261119/sources/micro20_016.c": "186258e101f92166bf3c1adffa9919e36ff0b14d8620dd962e3f0338750bba36",
     "research/pending_micro20_20261119/sources/micro20_017.c": "ee7cd6e7ba2dbd0eafbf121b411b3e5fe6e462479407e5ef32ec61f23e0b898d",
     "research/pending_micro20_20261119/sources/micro20_018.c": "5d8377730459f66e5192273e38d307487890a3231af4aa7dcc615feb287ace86",
-    "research/pending_micro20_20261119/sources/micro20_019.c": "dd98fc36658481ddfbcf3588f14a7b0611d1065d7038a7b5f0e488e7f561fcc3"
+    "research/pending_micro20_20261119/sources/micro20_019.c": "dd98fc36658481ddfbcf3588f14a7b0611d1065d7038a7b5f0e488e7f561fcc3",
+    "research/pending_menu2_20261119/sources/menu2_000.c": "e79a329abf4a38977522cd11ea411c1ad902d5b0c9873cb5d45dca7d8ae8d855",
+    "research/pending_menu2_20261119/sources/menu2_001.c": "af9b8449ecd7ec44d953a9ab938cbc99658b51e6ffe9e8c21e2b8375bf0e7cbf"
   },
   "overlay_file43_stage": {
     "ownership": {
@@ -43761,5 +43781,139 @@
     "C_translation_units": 20,
     "retained_ASM_fragments": 24
   },
-  "ended_utc": "2026-11-19T15:44:56.794221+00:00"
+  "overlay_menu2_stage_source_plan": {
+    "functions": 2,
+    "instruction_bytes": 84,
+    "C_units": 2,
+    "retained_asm_fragments": 3
+  },
+  "overlay_menu2_stage_object_layout": {
+    "functions": 2,
+    "units": 2,
+    "instruction_bytes": 84,
+    "c": [
+      {
+        "source": "menu2_000",
+        "has_prelink_relocations": true,
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "5bb3e900c017baa4b133138ef4da1a83ed64609844e5ac60bde0b12ca84a0c0b"
+      },
+      {
+        "source": "menu2_001",
+        "has_prelink_relocations": true,
+        "original_text_bytes": 28,
+        "compiler_section_bytes": 32,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "7008d68f778725e00abd1afa530e832bd2c706d1ce7ca1ca8196fba810215e68"
+      }
+    ],
+    "asm": [
+      {
+        "object": "build/usa/asm/usa/10DAC_wm2_00.s.o",
+        "original_text_bytes": 308,
+        "compiler_section_bytes": 320,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "14cf8f7848000800b2adb06db206f4e36f06ae40a1498276b85df462a49ce33a"
+      },
+      {
+        "object": "build/usa/asm/usa/10DAC_wm2_01.s.o",
+        "original_text_bytes": 64,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "18109553c7c4ad348d9b59d48092ac608f5ee7305ac13dcdaa8ff7d63b73b22c"
+      },
+      {
+        "object": "build/usa/asm/usa/10DAC_wm2_02.s.o",
+        "original_text_bytes": 1548,
+        "compiler_section_bytes": 1552,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "65c1be8b82acf6b920ad9e6a8b77b1078c15b13a55bf5108bfebc34c7d0202b6"
+      }
+    ]
+  },
+  "overlay_menu2_stage": {
+    "status": "PASS",
+    "count": 2,
+    "original_instruction_bytes": 84,
+    "original_ROM_SHA1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_ROM_bytes": 33554432,
+    "identical_accepted_ELF_FUNC_identities": 7376,
+    "identical_accepted_semantic_relocations": {
+      "file_11": 8825,
+      "file_12": 7051,
+      "file_13": 9589,
+      "file_14": 3041,
+      "file_15": 1625,
+      "file_16": 781,
+      "file_17": 1739,
+      "file_18": 3365,
+      "file_19": 1078,
+      "file_20": 68,
+      "file_21": 114,
+      "file_22": 294,
+      "file_23": 377,
+      "file_24": 160,
+      "file_25": 167,
+      "file_26": 207,
+      "file_27": 876,
+      "file_28": 35,
+      "file_29": 2536,
+      "file_30": 1826,
+      "file_31": 1371,
+      "file_32": 1068,
+      "file_33": 139,
+      "file_34": 317,
+      "file_35": 677,
+      "file_36": 1025,
+      "file_37": 1079,
+      "file_38": 761,
+      "file_39": 435,
+      "file_40": 892,
+      "file_41": 280,
+      "file_42": 555,
+      "file_43": 1593,
+      "file_44": 598,
+      "file_45": 545,
+      "file_46": 817,
+      "file_47": 275,
+      "file_48": 469,
+      "file_49": 602,
+      "file_50": 228,
+      "file_51": 143,
+      "file_52": 8,
+      "file_53": 534,
+      "file_54": 341,
+      "file_55": 390,
+      "file_56": 436,
+      "file_57": 708,
+      "file_58": 340,
+      "file_59": 508,
+      "file_60": 418,
+      "file_61": 161,
+      "file_62": 747,
+      "file_63": 94,
+      "file_64": 176,
+      "file_65": 86,
+      "file_66": 571,
+      "file_67": 254,
+      "file_68": 155,
+      "file_69": 464,
+      "file_70": 298,
+      "file_71": 350,
+      "file_72": 412,
+      "file_73": 274,
+      "file_74": 822,
+      "file_75": 279,
+      "file_76": 6,
+      "file_77": 304,
+      "file_78": 124,
+      "file_79": 180,
+      "file_80": 89
+    },
+    "C_translation_units": 2,
+    "retained_ASM_fragments": 3
+  },
+  "ended_utc": "2026-11-19T17:08:18.567589+00:00"
 }

@@ -180,7 +180,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(disabled)),
                          len(main_claimed_functions(disabled))+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(disabled))+(file11_stage_mode(disabled) or 0)+
-                         len(manifest_file13_stages(disabled)) + cross_claim_count(disabled) + native_claim_count(disabled) + highbyte26_claim_count(disabled) + file27_claim_count(disabled) + wide132_claim_count(disabled) + wide109_claim_count(disabled) + expanded_claim_count(disabled))
+                         len(manifest_file13_stages(disabled)) + cross_claim_count(disabled) + native_claim_count(disabled) + highbyte26_claim_count(disabled) + file27_claim_count(disabled) + wide132_claim_count(disabled) + wide109_claim_count(disabled) + expanded_claim_count(disabled) + (2 if disabled.get('overlay_menu2_stage') else 0))
         self.assertEqual(validate_file43_stage_definition(stage).as_posix(),
                          'candidates/key_spawn_gate.c')
         staged=copy.deepcopy(manifest);staged['overlay_file43_stage']=stage
@@ -192,7 +192,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual(len(claimed_functions(loaded)),
                              len(main_claimed_functions(loaded))+
                              1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(loaded))+(file11_stage_mode(loaded) or 0)+
-                             len(manifest_file13_stages(loaded)) + cross_claim_count(loaded) + native_claim_count(loaded) + highbyte26_claim_count(loaded) + file27_claim_count(loaded) + wide132_claim_count(loaded) + wide109_claim_count(loaded) + expanded_claim_count(loaded))
+                             len(manifest_file13_stages(loaded)) + cross_claim_count(loaded) + native_claim_count(loaded) + highbyte26_claim_count(loaded) + file27_claim_count(loaded) + wide132_claim_count(loaded) + wide109_claim_count(loaded) + expanded_claim_count(loaded) + (2 if loaded.get('overlay_menu2_stage') else 0))
             bad=copy.deepcopy(staged)
             bad['overlay_file43_stage']['function']['vma']+=4
             path.write_text(json.dumps(bad))
@@ -228,7 +228,7 @@ class DecompVerificationTests(unittest.TestCase):
                          'candidates/file12_dialogue_call.c')
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+1+sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in stages)+
-                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest))
+                         (file11_stage_mode(manifest) or 0)+len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest) + (2 if manifest.get('overlay_menu2_stage') else 0))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             bad=copy.deepcopy(manifest)
@@ -269,7 +269,7 @@ class DecompVerificationTests(unittest.TestCase):
         self.assertEqual(len(claimed_functions(manifest)),
                          len(main_claimed_functions(manifest))+
                          (manifest.get('overlay_file43_stage') is not None)+
-                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest))
+                         sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+len(stages) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest) + (2 if manifest.get('overlay_menu2_stage') else 0))
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'manifest.json'
             for field,value,pattern in (
@@ -918,7 +918,7 @@ class DecompVerificationTests(unittest.TestCase):
                          len(manifest.get('existing_source_patches',[]))+
                          (manifest.get('overlay_file43_stage') is not None)+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+
-                         len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest))
+                         len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest) + (2 if manifest.get('overlay_menu2_stage') else 0))
         proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
         inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
@@ -1240,7 +1240,8 @@ class DecompVerificationTests(unittest.TestCase):
             ('overlay_tiny9_stage','pending_tiny9_20261119','overlay_tiny9'),
             ('overlay_micro2_stage','pending_micro2_20261119','overlay_micro2'),
             ('overlay_micro15_stage','pending_micro15_20261119','overlay_micro15'),
-            ('overlay_micro20_stage','pending_micro20_20261119','overlay_micro20')):
+            ('overlay_micro20_stage','pending_micro20_20261119','overlay_micro20'),
+            ('overlay_menu2_stage','pending_menu2_20261119','overlay_menu2')):
             if manifest.get(key) is not None:
                 from importlib import import_module
                 native=import_module('decomp.'+reader)

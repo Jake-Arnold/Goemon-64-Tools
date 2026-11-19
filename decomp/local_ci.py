@@ -127,6 +127,23 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-o',str(binary)]),
             ('Tiny9 actual-source sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        menu = ROOT / 'decomp/research/pending_menu2_20261119'
+        sources = sorted((menu/'sources').glob('*.c'))
+        if len(sources)!=2:
+            raise ValueError('Missing two authenticated original menu-resource C sources')
+        compiler = shlex.split(os.environ.get('CC','cc'))
+        binary = host_binary.with_name('menu2-actual-host')
+        steps.extend([
+            ('Menu2 actual-source sanitizer build',compiler+[
+                '-std=gnu11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((menu/'test_actual_menu2.c').relative_to(ROOT)),
+                *[str(src.relative_to(ROOT)) for src in sources],
+                '-o',str(binary)]),
+            ('Menu2 actual-source sanitizer test',[str(binary)]),
+        ])
     return steps
 
 

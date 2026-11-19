@@ -27,6 +27,7 @@ class RegistrationStageTests(unittest.TestCase):
         cls.manifest.pop('overlay_micro2_stage', None)
         cls.manifest.pop('overlay_micro15_stage', None)
         cls.manifest.pop('overlay_micro20_stage', None)
+        cls.manifest.pop('overlay_menu2_stage', None)
         cls.group = manifest_file12_stages(cls.manifest)[0]
 
     def test_pinned_source_has_all_374_original_function_identities(self):

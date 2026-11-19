@@ -25,6 +25,7 @@ def manifest():
     m.pop('overlay_micro2_stage', None)
     m.pop('overlay_micro15_stage', None)
     m.pop('overlay_micro20_stage', None)
+    m.pop('overlay_menu2_stage', None)
     return m
 
 

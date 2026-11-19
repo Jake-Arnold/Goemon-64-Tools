@@ -24,6 +24,7 @@ class ThreeExtra187StageTests(unittest.TestCase):
         cls.manifest.pop('overlay_micro2_stage', None)
         cls.manifest.pop('overlay_micro15_stage', None)
         cls.manifest.pop('overlay_micro20_stage', None)
+        cls.manifest.pop('overlay_menu2_stage', None)
 
     def test_exact_three_new_original_identities(self):
         old = {(x['name'], x['rom_offset'], x['vma'], x['size']) for x in prior.entries()}
