@@ -1,0 +1,1885 @@
+{
+  "format": "goemon-japan-usa-original-code-hash-audit-v1",
+  "status": "RESEARCH_ONLY",
+  "baseline_jp_accepted_before_batch": 423,
+  "jp_accepted_after_native_batch": 427,
+  "original_usa_verified_c_functions": 1225,
+  "jp_original_asm_indexed": 7076,
+  "unaccepted_unique_jp_exact_instruction_matches": 160,
+  "matching_bytes": 4340,
+  "by_size": {
+    "8": 43,
+    "12": 63,
+    "16": 1,
+    "20": 6,
+    "24": 4,
+    "28": 1,
+    "32": 6,
+    "36": 2,
+    "40": 4,
+    "44": 1,
+    "48": 6,
+    "52": 2,
+    "56": 2,
+    "60": 1,
+    "68": 2,
+    "80": 5,
+    "84": 1,
+    "96": 2,
+    "100": 1,
+    "116": 6,
+    "340": 1
+  },
+  "records": [
+    {
+      "jp_name": "func_8003D628_3E228",
+      "jp_rom_offset": "0x3E228",
+      "bytes": 340,
+      "original_code_sha256": "bfa8ec5494880607e6b7d822dc952b22da49d7617ab50d59c6e920cbc45983a0",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_3D810/func_8003D628_3E228.s",
+      "verified_usa_source_candidates": [
+        "func_8003D9B8_3E5B8"
+      ]
+    },
+    {
+      "jp_name": "func_80216DBC_69E4BC",
+      "jp_rom_offset": "0x69E4BC",
+      "bytes": 116,
+      "original_code_sha256": "8f25247f068c9b88a357794065c97cfa68f6f0033f907cff55c69a173e1c1e3e",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_80211FC4_6999C4",
+        "func_8021D9C4_6873A4"
+      ]
+    },
+    {
+      "jp_name": "func_802227A4_68BE94",
+      "jp_rom_offset": "0x68BE94",
+      "bytes": 116,
+      "original_code_sha256": "8f25247f068c9b88a357794065c97cfa68f6f0033f907cff55c69a173e1c1e3e",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_80211FC4_6999C4",
+        "func_8021D9C4_6873A4"
+      ]
+    },
+    {
+      "jp_name": "func_80229530_692C20",
+      "jp_rom_offset": "0x692C20",
+      "bytes": 116,
+      "original_code_sha256": "a42d44f696dcc7568779a049612c9ad7915ebd287d0a48bf347b36c76ba5539c",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_80224750_68E130"
+      ]
+    },
+    {
+      "jp_name": "func_80229910_693000",
+      "jp_rom_offset": "0x693000",
+      "bytes": 116,
+      "original_code_sha256": "c73d2ec9ed6be22e013889d4093c94eac1c067c4830df11807542dc659c789c4",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_80224B30_68E510",
+        "func_80224EF8_68E8D8",
+        "func_8022652C_68FF0C"
+      ]
+    },
+    {
+      "jp_name": "func_80229CD8_6933C8",
+      "jp_rom_offset": "0x6933C8",
+      "bytes": 116,
+      "original_code_sha256": "c73d2ec9ed6be22e013889d4093c94eac1c067c4830df11807542dc659c789c4",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_80224B30_68E510",
+        "func_80224EF8_68E8D8",
+        "func_8022652C_68FF0C"
+      ]
+    },
+    {
+      "jp_name": "func_8022B30C_6949FC",
+      "jp_rom_offset": "0x6949FC",
+      "bytes": 116,
+      "original_code_sha256": "c73d2ec9ed6be22e013889d4093c94eac1c067c4830df11807542dc659c789c4",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_80224B30_68E510",
+        "func_80224EF8_68E8D8",
+        "func_8022652C_68FF0C"
+      ]
+    },
+    {
+      "jp_name": "func_8021BEB4_5D7444",
+      "jp_rom_offset": "0x5D7444",
+      "bytes": 100,
+      "original_code_sha256": "dccec1bde6e9334cf3011f6514783b3a0ae5c2fb2e01cd98a8a3c789e7abe944",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_80217144_5D2614"
+      ]
+    },
+    {
+      "jp_name": "func_080011FC_70689C",
+      "jp_rom_offset": "0x70689C",
+      "bytes": 96,
+      "original_code_sha256": "a48baf56c33646fe54ef1355c20a1d08969f2cb25474019add9dd2ae176113c7",
+      "original_asm_owner": "asm/japan_0/7056A0.s",
+      "verified_usa_source_candidates": [
+        "func_080011FC_7022FC"
+      ]
+    },
+    {
+      "jp_name": "func_8001E0A8_1ECA8",
+      "jp_rom_offset": "0x1ECA8",
+      "bytes": 96,
+      "original_code_sha256": "3ea3c2349760a86ca8042bf864a36161d0d60ee4241bf2301e62d309ba60b425",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_1D100/func_8001E0A8_1ECA8.s",
+      "verified_usa_source_candidates": [
+        "func_8001E3E4_1EFE4"
+      ]
+    },
+    {
+      "jp_name": "func_8022398C_5DEF1C",
+      "jp_rom_offset": "0x5DEF1C",
+      "bytes": 84,
+      "original_code_sha256": "2f32edd4a132cb0425e41c57e5850204e3fd3ba9e973e8e80c357c35a7c975e8",
+      "original_asm_owner": "asm/japan_0/5DB0D0.s",
+      "verified_usa_source_candidates": [
+        "func_8021EC1C_5DA0EC"
+      ]
+    },
+    {
+      "jp_name": "func_801F33C8_5AF398",
+      "jp_rom_offset": "0x5AF398",
+      "bytes": 80,
+      "original_code_sha256": "d40425ba5011e1bb8fa36e5e07f1175676b09e8b07edb024db0eb58c04a560c9",
+      "original_asm_owner": "asm/japan_0/5A98B0.s",
+      "verified_usa_source_candidates": [
+        "func_801EE3AC_5AA2BC"
+      ]
+    },
+    {
+      "jp_name": "func_8021BFD8_6856C8",
+      "jp_rom_offset": "0x6856C8",
+      "bytes": 80,
+      "original_code_sha256": "f5796ebe4dc3cc3b473f07245ce53d390340941c023e74493fed5739210ad94a",
+      "original_asm_owner": "asm/japan_0/682300.s",
+      "verified_usa_source_candidates": [
+        "func_802171F8_680BD8"
+      ]
+    },
+    {
+      "jp_name": "func_8022151C_68AC0C",
+      "jp_rom_offset": "0x68AC0C",
+      "bytes": 80,
+      "original_code_sha256": "92e15cc8abbf89f99a78aeef1d7b074af4fde8a2e3df1e9257989c7913ad047e",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_8021C73C_68611C",
+        "func_8021D148_686B28"
+      ]
+    },
+    {
+      "jp_name": "func_80221F28_68B618",
+      "jp_rom_offset": "0x68B618",
+      "bytes": 80,
+      "original_code_sha256": "92e15cc8abbf89f99a78aeef1d7b074af4fde8a2e3df1e9257989c7913ad047e",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_8021C73C_68611C",
+        "func_8021D148_686B28"
+      ]
+    },
+    {
+      "jp_name": "func_8022A76C_693E5C",
+      "jp_rom_offset": "0x693E5C",
+      "bytes": 80,
+      "original_code_sha256": "d35548c8e772491218c39e7a86686f4fa62f383fca78f8fbb6793f608c540797",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_8022598C_68F36C"
+      ]
+    },
+    {
+      "jp_name": "func_801F3308_5AF2D8",
+      "jp_rom_offset": "0x5AF2D8",
+      "bytes": 68,
+      "original_code_sha256": "c4a8ad4f20d9079a58fd7ff970959a9886e358cb643ac159b0eb264af8476243",
+      "original_asm_owner": "asm/japan_0/5A98B0.s",
+      "verified_usa_source_candidates": [
+        "func_801EE2EC_5AA1FC"
+      ]
+    },
+    {
+      "jp_name": "func_801F334C_5AF31C",
+      "jp_rom_offset": "0x5AF31C",
+      "bytes": 68,
+      "original_code_sha256": "ffc3459d54ec93118a90cd40ef42252639765e3cb1192980165a6abf8feb6f3e",
+      "original_asm_owner": "asm/japan_0/5A98B0.s",
+      "verified_usa_source_candidates": [
+        "func_801EE330_5AA240"
+      ]
+    },
+    {
+      "jp_name": "func_80220330_5DB8C0",
+      "jp_rom_offset": "0x5DB8C0",
+      "bytes": 60,
+      "original_code_sha256": "946eb9a4d1eddc5a6505b1979f75e504c135d19849b3bea9b38408e9367709c7",
+      "original_asm_owner": "asm/japan_0/5DB0D0.s",
+      "verified_usa_source_candidates": [
+        "func_8021B5C0_5D6A90"
+      ]
+    },
+    {
+      "jp_name": "func_8001F53C_2013C",
+      "jp_rom_offset": "0x2013C",
+      "bytes": 56,
+      "original_code_sha256": "0340c73abc01e154f93a5dd550b73594a000c588f361751713376b59714b2ca6",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_1D100/func_8001F53C_2013C.s",
+      "verified_usa_source_candidates": [
+        "func_8001F878_20478"
+      ]
+    },
+    {
+      "jp_name": "func_801F3390_5AF360",
+      "jp_rom_offset": "0x5AF360",
+      "bytes": 56,
+      "original_code_sha256": "27244e0f7d8d3690e0738bca694c9f191363e2dea1bc01e7f4845bc658067fac",
+      "original_asm_owner": "asm/japan_0/5A98B0.s",
+      "verified_usa_source_candidates": [
+        "func_801EE374_5AA284"
+      ]
+    },
+    {
+      "jp_name": "func_801E8250_5A4220",
+      "jp_rom_offset": "0x5A4220",
+      "bytes": 52,
+      "original_code_sha256": "01a2ee6edebc172353056fea6431c94c82500d681115481434ececce2f575cc8",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E3008_59EF18"
+      ]
+    },
+    {
+      "jp_name": "func_801F3244_5AF214",
+      "jp_rom_offset": "0x5AF214",
+      "bytes": 52,
+      "original_code_sha256": "dfb4de48284478a1bac39d5cd558fd9a0af80f60a5c54367d525ad4995eeb5ac",
+      "original_asm_owner": "asm/japan_0/5A98B0.s",
+      "verified_usa_source_candidates": [
+        "func_801EE228_5AA138"
+      ]
+    },
+    {
+      "jp_name": "func_80004138_4D38",
+      "jp_rom_offset": "0x4D38",
+      "bytes": 48,
+      "original_code_sha256": "df747ebdd00d4d4d398d7222fee964e20be88af1bf38029e77ab91718527a949",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_44F0/func_80004138_4D38.s",
+      "verified_usa_source_candidates": [
+        "func_80004208_4E08"
+      ]
+    },
+    {
+      "jp_name": "func_801EA30C_5A62DC",
+      "jp_rom_offset": "0x5A62DC",
+      "bytes": 48,
+      "original_code_sha256": "8d32c6328cfe62c255af1f6df9a82fc6e82424c9a4aa4979045630eb5f2e6620",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E5090_5A0FA0"
+      ]
+    },
+    {
+      "jp_name": "func_801ECF10_5A8EE0",
+      "jp_rom_offset": "0x5A8EE0",
+      "bytes": 48,
+      "original_code_sha256": "6b4d0e3c25761f0b41de46bc9639f125af7dbb006c0a6496a8d4640a7fe17f0b",
+      "original_asm_owner": "asm/japan_0/5A65E0.s",
+      "verified_usa_source_candidates": [
+        "func_801E7DE8_5A3CF8"
+      ]
+    },
+    {
+      "jp_name": "func_801F3278_5AF248",
+      "jp_rom_offset": "0x5AF248",
+      "bytes": 48,
+      "original_code_sha256": "6c00c614591efead7fceb9c2b97d05f3003c4a129663ec6db689e7731ff72966",
+      "original_asm_owner": "asm/japan_0/5A98B0.s",
+      "verified_usa_source_candidates": [
+        "func_801EE25C_5AA16C"
+      ]
+    },
+    {
+      "jp_name": "func_801F32A8_5AF278",
+      "jp_rom_offset": "0x5AF278",
+      "bytes": 48,
+      "original_code_sha256": "407b9347214906ababaeefa6629fa90a80972cd8c79f52f58da92f75edec16aa",
+      "original_asm_owner": "asm/japan_0/5A98B0.s",
+      "verified_usa_source_candidates": [
+        "func_801EE28C_5AA19C"
+      ]
+    },
+    {
+      "jp_name": "func_801F32D8_5AF2A8",
+      "jp_rom_offset": "0x5AF2A8",
+      "bytes": 48,
+      "original_code_sha256": "713dc9d5716e3acd18268c658dbb0eb6acd0863c8e90664b8db1f3326de50a40",
+      "original_asm_owner": "asm/japan_0/5A98B0.s",
+      "verified_usa_source_candidates": [
+        "func_801EE2BC_5AA1CC"
+      ]
+    },
+    {
+      "jp_name": "func_80035F4C_36B4C",
+      "jp_rom_offset": "0x36B4C",
+      "bytes": 44,
+      "original_code_sha256": "07839208eb20f88a0b3095eadc691356f2d329b7075ca5b9ba001916dc0d409c",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_363C0/func_80035F4C_36B4C.s",
+      "verified_usa_source_candidates": [
+        "func_800362DC_36EDC"
+      ]
+    },
+    {
+      "jp_name": "func_80004110_4D10",
+      "jp_rom_offset": "0x4D10",
+      "bytes": 40,
+      "original_code_sha256": "b8668f9c588a0b46a8502493019814be377ceb43a3e67c6f17302942235f21a4",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_44F0/func_80004110_4D10.s",
+      "verified_usa_source_candidates": [
+        "func_800041E0_4DE0"
+      ]
+    },
+    {
+      "jp_name": "func_801ECEE8_5A8EB8",
+      "jp_rom_offset": "0x5A8EB8",
+      "bytes": 40,
+      "original_code_sha256": "acbbe85a6a3000f8dd465a339713796127c60a6f05f4701cc4d0be351c929438",
+      "original_asm_owner": "asm/japan_0/5A65E0.s",
+      "verified_usa_source_candidates": [
+        "func_801E7DC0_5A3CD0"
+      ]
+    },
+    {
+      "jp_name": "func_801ECF40_5A8F10",
+      "jp_rom_offset": "0x5A8F10",
+      "bytes": 40,
+      "original_code_sha256": "23d4df0630aa89a0aa22c3c028f318cc6606e6bb3e240fbef7e5406a7bf7faa7",
+      "original_asm_owner": "asm/japan_0/5A65E0.s",
+      "verified_usa_source_candidates": [
+        "func_801E7E18_5A3D28"
+      ]
+    },
+    {
+      "jp_name": "func_801ED030_5A9000",
+      "jp_rom_offset": "0x5A9000",
+      "bytes": 40,
+      "original_code_sha256": "796578d74b011ac769ffa10e1a1938633d1d4a6b88497c135df1da32327f3a7b",
+      "original_asm_owner": "asm/japan_0/5A65E0.s",
+      "verified_usa_source_candidates": [
+        "func_801E7F08_5A3E18"
+      ]
+    },
+    {
+      "jp_name": "func_801E8138_5A4108",
+      "jp_rom_offset": "0x5A4108",
+      "bytes": 36,
+      "original_code_sha256": "7ee80c6c34241df416af372e711a2c37f204ca26ff1c8a214e8f9940f6db2ac7",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E2EF0_59EE00"
+      ]
+    },
+    {
+      "jp_name": "func_801E815C_5A412C",
+      "jp_rom_offset": "0x5A412C",
+      "bytes": 36,
+      "original_code_sha256": "fff5e54aed2fc6c2bbcb0ee8eda107a758ed91ed72bf6d1956f95910b9e7ada1",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E2F14_59EE24"
+      ]
+    },
+    {
+      "jp_name": "func_0800329C_702A6C",
+      "jp_rom_offset": "0x702A6C",
+      "bytes": 32,
+      "original_code_sha256": "930f1b190fcf5879316ac4c0bd6e1e132acecacaae4d9634e08dd2d16466e066",
+      "original_asm_owner": "asm/japan_0/6FF7D0.s",
+      "verified_usa_source_candidates": [
+        "func_0800329C_6FE49C"
+      ]
+    },
+    {
+      "jp_name": "func_8000FF4C_10B4C",
+      "jp_rom_offset": "0x10B4C",
+      "bytes": 32,
+      "original_code_sha256": "ab5308302557648ef39f94f7e32d8743087658e0b435912bcfadcc6548ede7fd",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_10B40/func_8000FF4C_10B4C.s",
+      "verified_usa_source_candidates": [
+        "func_8001018C_10D8C"
+      ]
+    },
+    {
+      "jp_name": "func_801E83A0_5A4370",
+      "jp_rom_offset": "0x5A4370",
+      "bytes": 32,
+      "original_code_sha256": "16f5cfeb301fd977c0c7bed92817024d9a3238fc8808951474e582aa89b7aeba",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E3158_59F068"
+      ]
+    },
+    {
+      "jp_name": "func_801ECEC8_5A8E98",
+      "jp_rom_offset": "0x5A8E98",
+      "bytes": 32,
+      "original_code_sha256": "414bc76e5d5ef605f0fb0f85f7097b23fc3a2e10bb255486f992d4d0aad26814",
+      "original_asm_owner": "asm/japan_0/5A65E0.s",
+      "verified_usa_source_candidates": [
+        "func_801E7DA0_5A3CB0"
+      ]
+    },
+    {
+      "jp_name": "func_802156C4_69CDC4",
+      "jp_rom_offset": "0x69CDC4",
+      "bytes": 32,
+      "original_code_sha256": "b0b50f6e45d2a53ac3ccd0ca619f8e8a83a22863ec4bf458426d1620c64661c4",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_801F3AD0_5AF9E0"
+      ]
+    },
+    {
+      "jp_name": "func_80215DB8_69D4B8",
+      "jp_rom_offset": "0x69D4B8",
+      "bytes": 32,
+      "original_code_sha256": "b0b50f6e45d2a53ac3ccd0ca619f8e8a83a22863ec4bf458426d1620c64661c4",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_801F3AD0_5AF9E0"
+      ]
+    },
+    {
+      "jp_name": "func_801E82C4_5A4294",
+      "jp_rom_offset": "0x5A4294",
+      "bytes": 28,
+      "original_code_sha256": "f360ab13cdee12c99297b138219a3061c149bee6b527f989d555d085788fd749",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E307C_59EF8C"
+      ]
+    },
+    {
+      "jp_name": "func_8021DB00_5D9090",
+      "jp_rom_offset": "0x5D9090",
+      "bytes": 24,
+      "original_code_sha256": "7ba7aff9c3a6f5db578b0838579846ed5425f797e24b059d20b3525a0142ae2f",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_80218D90_5D4260"
+      ]
+    },
+    {
+      "jp_name": "func_8021E454_5D99E4",
+      "jp_rom_offset": "0x5D99E4",
+      "bytes": 24,
+      "original_code_sha256": "6f2ee77876621a7e3ec1d0662b6bd0a8f20b5bfe07fe837cff0c0fc39febd523",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_802196E4_5D4BB4",
+        "func_8021B04C_5D651C"
+      ]
+    },
+    {
+      "jp_name": "func_8021F080_5DA610",
+      "jp_rom_offset": "0x5DA610",
+      "bytes": 24,
+      "original_code_sha256": "b0f59b495081dfb672688b17bdb663d7866db5fa373600ecc642222821a0c193",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_8021A310_5D57E0"
+      ]
+    },
+    {
+      "jp_name": "func_8021FDBC_5DB34C",
+      "jp_rom_offset": "0x5DB34C",
+      "bytes": 24,
+      "original_code_sha256": "6f2ee77876621a7e3ec1d0662b6bd0a8f20b5bfe07fe837cff0c0fc39febd523",
+      "original_asm_owner": "asm/japan_0/5DB0D0.s",
+      "verified_usa_source_candidates": [
+        "func_802196E4_5D4BB4",
+        "func_8021B04C_5D651C"
+      ]
+    },
+    {
+      "jp_name": "func_801E8228_5A41F8",
+      "jp_rom_offset": "0x5A41F8",
+      "bytes": 20,
+      "original_code_sha256": "23f6be3f2c37e1eded6ccd47cb38fd65358dda6866c54e1367d114aa3d827110",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E2FE0_59EEF0",
+        "func_801E2FF4_59EF04"
+      ]
+    },
+    {
+      "jp_name": "func_801E823C_5A420C",
+      "jp_rom_offset": "0x5A420C",
+      "bytes": 20,
+      "original_code_sha256": "23f6be3f2c37e1eded6ccd47cb38fd65358dda6866c54e1367d114aa3d827110",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E2FE0_59EEF0",
+        "func_801E2FF4_59EF04"
+      ]
+    },
+    {
+      "jp_name": "func_801F3418_5AF3E8",
+      "jp_rom_offset": "0x5AF3E8",
+      "bytes": 20,
+      "original_code_sha256": "7008cedc7bc7666823ccb635b2fcb91203276ea030284707c9e8f52db2ea3448",
+      "original_asm_owner": "asm/japan_0/5A98B0.s",
+      "verified_usa_source_candidates": [
+        "func_801EE3FC_5AA30C"
+      ]
+    },
+    {
+      "jp_name": "func_8021DAEC_5D907C",
+      "jp_rom_offset": "0x5D907C",
+      "bytes": 20,
+      "original_code_sha256": "f688ef8084697424b0aa9e1763891f40f428a46512bcd86cced819aae4b51251",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_80218D7C_5D424C"
+      ]
+    },
+    {
+      "jp_name": "func_8022036C_5DB8FC",
+      "jp_rom_offset": "0x5DB8FC",
+      "bytes": 20,
+      "original_code_sha256": "7d0c45c3b01d56371395af5fb516499f3c87b6665a027e04a3913fe4a06a7e18",
+      "original_asm_owner": "asm/japan_0/5DB0D0.s",
+      "verified_usa_source_candidates": [
+        "func_8021B5FC_5D6ACC"
+      ]
+    },
+    {
+      "jp_name": "func_802272B8_5E2848",
+      "jp_rom_offset": "0x5E2848",
+      "bytes": 20,
+      "original_code_sha256": "7008cedc7bc7666823ccb635b2fcb91203276ea030284707c9e8f52db2ea3448",
+      "original_asm_owner": "asm/japan_0/5E1270.s",
+      "verified_usa_source_candidates": [
+        "func_801EE3FC_5AA30C"
+      ]
+    },
+    {
+      "jp_name": "func_801F488C_5B085C",
+      "jp_rom_offset": "0x5B085C",
+      "bytes": 16,
+      "original_code_sha256": "1b948885620a897e75ee687a92830019232e7696591bbf5a7cd4960a69e32d4b",
+      "original_asm_owner": "asm/japan_0/5AF790.s",
+      "verified_usa_source_candidates": [
+        "func_801EF86C_5AB77C"
+      ]
+    },
+    {
+      "jp_name": "func_08000490_70C420",
+      "jp_rom_offset": "0x70C420",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/70BF90.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_0800061C_7222AC",
+      "jp_rom_offset": "0x7222AC",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/721C90.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_08000AB4_7305F4",
+      "jp_rom_offset": "0x7305F4",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/72FB40.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_08000DD8_73D858",
+      "jp_rom_offset": "0x73D858",
+      "bytes": 12,
+      "original_code_sha256": "0abf97fc44d2369591af1b82dbfe136bc446c088789d4c4d085b4b2e629abf15",
+      "original_asm_owner": "asm/japan_0/73CA80.s",
+      "verified_usa_source_candidates": [
+        "func_08000EB0_739580",
+        "func_08001324_734254",
+        "func_080013A8_730C38"
+      ]
+    },
+    {
+      "jp_name": "func_08000F2C_72E8EC",
+      "jp_rom_offset": "0x72E8EC",
+      "bytes": 12,
+      "original_code_sha256": "0a51b32fc921230f74ff8cd8b84f0b6f6cf0cc515df289d5e5377ff2060bbc29",
+      "original_asm_owner": "asm/japan_0/72D9C0.s",
+      "verified_usa_source_candidates": [
+        "func_08000F70_72A510"
+      ]
+    },
+    {
+      "jp_name": "func_080010E0_722D70",
+      "jp_rom_offset": "0x722D70",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/721C90.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_08001318_7385F8",
+      "jp_rom_offset": "0x7385F8",
+      "bytes": 12,
+      "original_code_sha256": "8b460ece3c2569668b2bdf0c3101fe018ca553c2d475108598f32e5a2f6b4979",
+      "original_asm_owner": "asm/japan_0/7372E0.s",
+      "verified_usa_source_candidates": [
+        "func_08001318_734248",
+        "func_0800139C_730C2C"
+      ]
+    },
+    {
+      "jp_name": "func_08001324_738604",
+      "jp_rom_offset": "0x738604",
+      "bytes": 12,
+      "original_code_sha256": "0abf97fc44d2369591af1b82dbfe136bc446c088789d4c4d085b4b2e629abf15",
+      "original_asm_owner": "asm/japan_0/7372E0.s",
+      "verified_usa_source_candidates": [
+        "func_08000EB0_739580",
+        "func_08001324_734254",
+        "func_080013A8_730C38"
+      ]
+    },
+    {
+      "jp_name": "func_0800139C_734E1C",
+      "jp_rom_offset": "0x734E1C",
+      "bytes": 12,
+      "original_code_sha256": "8b460ece3c2569668b2bdf0c3101fe018ca553c2d475108598f32e5a2f6b4979",
+      "original_asm_owner": "asm/japan_0/733A80.s",
+      "verified_usa_source_candidates": [
+        "func_08001318_734248",
+        "func_0800139C_730C2C"
+      ]
+    },
+    {
+      "jp_name": "func_080013A8_734E28",
+      "jp_rom_offset": "0x734E28",
+      "bytes": 12,
+      "original_code_sha256": "0abf97fc44d2369591af1b82dbfe136bc446c088789d4c4d085b4b2e629abf15",
+      "original_asm_owner": "asm/japan_0/733A80.s",
+      "verified_usa_source_candidates": [
+        "func_08000EB0_739580",
+        "func_08001324_734254",
+        "func_080013A8_730C38"
+      ]
+    },
+    {
+      "jp_name": "func_080014BC_72314C",
+      "jp_rom_offset": "0x72314C",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/721C90.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_08001990_723620",
+      "jp_rom_offset": "0x723620",
+      "bytes": 12,
+      "original_code_sha256": "ad391693c1cfb615b9a67c91c673d48ab05c0b5b8c65f9b5991aeec0dc34d442",
+      "original_asm_owner": "asm/japan_0/721C90.s",
+      "verified_usa_source_candidates": [
+        "func_080019D0_71F1A0"
+      ]
+    },
+    {
+      "jp_name": "func_80012F64_13B64",
+      "jp_rom_offset": "0x13B64",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_122F0/func_80012F64_13B64.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_801D72C0_669810",
+      "jp_rom_offset": "0x669810",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/669690.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_801E7694_5A3664",
+      "jp_rom_offset": "0x5A3664",
+      "bytes": 12,
+      "original_code_sha256": "ade804364e8f37442c95266896916bcaa26d150242d327f0d36f61d569dd0e2b",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E244C_59E35C"
+      ]
+    },
+    {
+      "jp_name": "func_801E8180_5A4150",
+      "jp_rom_offset": "0x5A4150",
+      "bytes": 12,
+      "original_code_sha256": "b53f1ecd2b85cd2d8ddddfd30a47499eb6ea24502f70edfd5dc3c9e15f8a3d94",
+      "original_asm_owner": "asm/japan_0/5A27C0.s",
+      "verified_usa_source_candidates": [
+        "func_801E2F38_59EE48"
+      ]
+    },
+    {
+      "jp_name": "func_801EA950_5A6920",
+      "jp_rom_offset": "0x5A6920",
+      "bytes": 12,
+      "original_code_sha256": "3869d364225c969e0d8bd7ec8ff1e591cf248c5bdf5d3c89c0659d372b7fbd30",
+      "original_asm_owner": "asm/japan_0/5A65E0.s",
+      "verified_usa_source_candidates": [
+        "func_801E5720_5A1630"
+      ]
+    },
+    {
+      "jp_name": "func_80209D18_634798",
+      "jp_rom_offset": "0x634798",
+      "bytes": 12,
+      "original_code_sha256": "b3d23efdc2a055c618591dc9341d12477909477823264a183544740593e22345",
+      "original_asm_owner": "asm/japan_0/6303B0.s",
+      "verified_usa_source_candidates": [
+        "func_802045E8_62F9C8"
+      ]
+    },
+    {
+      "jp_name": "func_80209D24_6347A4",
+      "jp_rom_offset": "0x6347A4",
+      "bytes": 12,
+      "original_code_sha256": "ee983a8e68618e1678351b55adc3d0b12717ffb5d6ee9f10f826a2e017fc740b",
+      "original_asm_owner": "asm/japan_0/6303B0.s",
+      "verified_usa_source_candidates": [
+        "func_802045F4_62F9D4"
+      ]
+    },
+    {
+      "jp_name": "func_80209D30_6347B0",
+      "jp_rom_offset": "0x6347B0",
+      "bytes": 12,
+      "original_code_sha256": "c9dc8ff82e0cde5f031095a17107c1af1d807fa3f8d5f3affeb360322423e38e",
+      "original_asm_owner": "asm/japan_0/6303B0.s",
+      "verified_usa_source_candidates": [
+        "func_80204600_62F9E0"
+      ]
+    },
+    {
+      "jp_name": "func_80209D3C_6347BC",
+      "jp_rom_offset": "0x6347BC",
+      "bytes": 12,
+      "original_code_sha256": "06b98668d57acb9408844190cfc426d0496af2de367ce0983c4d349185912150",
+      "original_asm_owner": "asm/japan_0/6303B0.s",
+      "verified_usa_source_candidates": [
+        "func_8020460C_62F9EC"
+      ]
+    },
+    {
+      "jp_name": "func_80209D48_6347C8",
+      "jp_rom_offset": "0x6347C8",
+      "bytes": 12,
+      "original_code_sha256": "1c52482629c853229eccec01240acbadfd53553231cdcb803670281ec1f0aa65",
+      "original_asm_owner": "asm/japan_0/6303B0.s",
+      "verified_usa_source_candidates": [
+        "func_80204618_62F9F8"
+      ]
+    },
+    {
+      "jp_name": "func_802122A8_67B998",
+      "jp_rom_offset": "0x67B998",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/67B780.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_802122B4_67B9A4",
+      "jp_rom_offset": "0x67B9A4",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/67B780.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_8021530C_69CA0C",
+      "jp_rom_offset": "0x69CA0C",
+      "bytes": 12,
+      "original_code_sha256": "55b16f9935fc6c1478579362f5b197b5adade2f8cf061621935e0057d5a950f3",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_80210514_697F14"
+      ]
+    },
+    {
+      "jp_name": "func_80215410_69CB10",
+      "jp_rom_offset": "0x69CB10",
+      "bytes": 12,
+      "original_code_sha256": "4aada5d7aafc8f99334214ab90e243e9be9636c5183154e8075aec5125018f20",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_80210618_698018"
+      ]
+    },
+    {
+      "jp_name": "func_80215A70_69D170",
+      "jp_rom_offset": "0x69D170",
+      "bytes": 12,
+      "original_code_sha256": "f7c4d21d79ad884da43f11a18c0aaf133a3f56b28e6564ef3dd01c427fc187a7",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_80210C78_698678"
+      ]
+    },
+    {
+      "jp_name": "func_8021648C_69DB8C",
+      "jp_rom_offset": "0x69DB8C",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_80216DB0_69E4B0",
+      "jp_rom_offset": "0x69E4B0",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_80217084_680774",
+      "jp_rom_offset": "0x680774",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/680430.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_8021798C_68107C",
+      "jp_rom_offset": "0x68107C",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/680430.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_80218378_69FA78",
+      "jp_rom_offset": "0x69FA78",
+      "bytes": 12,
+      "original_code_sha256": "d8e9ea8abfbfd20bccb8e16dc293c2affb35ecc58227adffe7353af69219bb48",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_80213580_69AF80"
+      ]
+    },
+    {
+      "jp_name": "func_80218A64_682154",
+      "jp_rom_offset": "0x682154",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/680430.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_802190CC_6827BC",
+      "jp_rom_offset": "0x6827BC",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/682300.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_802191D0_6A08D0",
+      "jp_rom_offset": "0x6A08D0",
+      "bytes": 12,
+      "original_code_sha256": "5a71afd9995e27310f67ed67850748ae1fc6c56d9ef38272b6c75b97b393c2ac",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_802143D8_69BDD8"
+      ]
+    },
+    {
+      "jp_name": "func_80219768_682E58",
+      "jp_rom_offset": "0x682E58",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/682300.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_8021A040_683730",
+      "jp_rom_offset": "0x683730",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/682300.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_8021AB34_684224",
+      "jp_rom_offset": "0x684224",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/682300.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_8021B67C_684D6C",
+      "jp_rom_offset": "0x684D6C",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/682300.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_8021C980_686070",
+      "jp_rom_offset": "0x686070",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/685A30.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_8021DB68_5D90F8",
+      "jp_rom_offset": "0x5D90F8",
+      "bytes": 12,
+      "original_code_sha256": "81d39197757f21314026776a92540a90ac0a6f065753cfbad39f3984df2a7a5d",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_80218DF8_5D42C8"
+      ]
+    },
+    {
+      "jp_name": "func_8021FF14_689604",
+      "jp_rom_offset": "0x689604",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_802206B8_689DA8",
+      "jp_rom_offset": "0x689DA8",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_80221044_68A734",
+      "jp_rom_offset": "0x68A734",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_80221510_68AC00",
+      "jp_rom_offset": "0x68AC00",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_80221F1C_68B60C",
+      "jp_rom_offset": "0x68B60C",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_80222798_68BE88",
+      "jp_rom_offset": "0x68BE88",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_80222D68_68C458",
+      "jp_rom_offset": "0x68C458",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_80223094_68C784",
+      "jp_rom_offset": "0x68C784",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_80223C64_68D354",
+      "jp_rom_offset": "0x68D354",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/686770.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_80229168_692858",
+      "jp_rom_offset": "0x692858",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_80229904_692FF4",
+      "jp_rom_offset": "0x692FF4",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_80229CCC_6933BC",
+      "jp_rom_offset": "0x6933BC",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_8022A760_693E50",
+      "jp_rom_offset": "0x693E50",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_8022B300_6949F0",
+      "jp_rom_offset": "0x6949F0",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_8022BB00_6951F0",
+      "jp_rom_offset": "0x6951F0",
+      "bytes": 12,
+      "original_code_sha256": "3e09d863e4735eab26aa2dc3321f40f0e54ca61228fa275a3924d256bf05484a",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_08000630_71DE00",
+        "func_080010F4_71E8C4",
+        "func_80211694_699094",
+        "func_80211FB8_6999B8"
+      ]
+    },
+    {
+      "jp_name": "func_8022C030_695720",
+      "jp_rom_offset": "0x695720",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/695310.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_8022C768_695E58",
+      "jp_rom_offset": "0x695E58",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/695310.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_8022CF04_6965F4",
+      "jp_rom_offset": "0x6965F4",
+      "bytes": 12,
+      "original_code_sha256": "0d7144d30564591c2b38b6d6a366b4651a5caf40696b0146ab06a8c91725d526",
+      "original_asm_owner": "asm/japan_0/695310.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_707ED0",
+        "func_08000AB4_72C304"
+      ]
+    },
+    {
+      "jp_name": "func_8022D478_696B68",
+      "jp_rom_offset": "0x696B68",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/695310.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_8022DA28_697118",
+      "jp_rom_offset": "0x697118",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/695310.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_8022DFCC_6976BC",
+      "jp_rom_offset": "0x6976BC",
+      "bytes": 12,
+      "original_code_sha256": "d4938194b384a4a8434f641ecb26f416744ca413d26423b72e04a654d3268a89",
+      "original_asm_owner": "asm/japan_0/695310.s",
+      "verified_usa_source_candidates": [
+        "func_080014D0_71ECA0",
+        "func_801D1B50_664A00"
+      ]
+    },
+    {
+      "jp_name": "func_8022EA98_698188",
+      "jp_rom_offset": "0x698188",
+      "bytes": 12,
+      "original_code_sha256": "c0106c206e7d4c40f8388369968fe9b1f08c880843a4878895b8ab752139210d",
+      "original_asm_owner": "asm/japan_0/695310.s",
+      "verified_usa_source_candidates": [
+        "func_80229CB8_693698"
+      ]
+    },
+    {
+      "jp_name": "func_08000374_73E4E4",
+      "jp_rom_offset": "0x73E4E4",
+      "bytes": 8,
+      "original_code_sha256": "57f881c616f42447d3a765f9fcf4eb021557a7ab9c63cfb1f1ef7033efbb1b45",
+      "original_asm_owner": "asm/japan_0/73E170.s",
+      "verified_usa_source_candidates": [
+        "func_80036E2C_37A2C"
+      ]
+    },
+    {
+      "jp_name": "func_0800047C_6B437C",
+      "jp_rom_offset": "0x6B437C",
+      "bytes": 8,
+      "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
+      "original_asm_owner": "asm/japan_0/6B3F00.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_6AF8A0",
+        "func_08003CC0_6F71A0",
+        "func_80011B58_12758",
+        "func_8021929C_5D476C",
+        "func_802192A4_5D4774",
+        "func_802192AC_5D477C",
+        "func_8021A308_5D57D8",
+        "func_80224380_68DD60"
+      ]
+    },
+    {
+      "jp_name": "func_080009DC_70EF4C",
+      "jp_rom_offset": "0x70EF4C",
+      "bytes": 8,
+      "original_code_sha256": "f364e1642b626bd3a50480ed1fe1dbb57d0213d3e9fc4eb45782ca66715c6027",
+      "original_asm_owner": "asm/japan_0/70E570.s",
+      "verified_usa_source_candidates": [
+        "func_080009DC_70AA1C",
+        "func_08000FA0_7089E0",
+        "func_08001854_709294"
+      ]
+    },
+    {
+      "jp_name": "func_08000CB8_737F98",
+      "jp_rom_offset": "0x737F98",
+      "bytes": 8,
+      "original_code_sha256": "051cbe37842254135d709c8d0bbe6f70bc1ae847282cc8b2ccb7a1a2c37dd953",
+      "original_asm_owner": "asm/japan_0/7372E0.s",
+      "verified_usa_source_candidates": [
+        "func_80211214_6701C4"
+      ]
+    },
+    {
+      "jp_name": "func_08000DD0_734850",
+      "jp_rom_offset": "0x734850",
+      "bytes": 8,
+      "original_code_sha256": "051cbe37842254135d709c8d0bbe6f70bc1ae847282cc8b2ccb7a1a2c37dd953",
+      "original_asm_owner": "asm/japan_0/733A80.s",
+      "verified_usa_source_candidates": [
+        "func_80211214_6701C4"
+      ]
+    },
+    {
+      "jp_name": "func_08000FA0_70CF30",
+      "jp_rom_offset": "0x70CF30",
+      "bytes": 8,
+      "original_code_sha256": "f364e1642b626bd3a50480ed1fe1dbb57d0213d3e9fc4eb45782ca66715c6027",
+      "original_asm_owner": "asm/japan_0/70BF90.s",
+      "verified_usa_source_candidates": [
+        "func_080009DC_70AA1C",
+        "func_08000FA0_7089E0",
+        "func_08001854_709294"
+      ]
+    },
+    {
+      "jp_name": "func_0800145C_70F9CC",
+      "jp_rom_offset": "0x70F9CC",
+      "bytes": 8,
+      "original_code_sha256": "3a552ed6b5174e4bad808b96fa9560d7129e963b5ac1cc69809b21ea07fc462e",
+      "original_asm_owner": "asm/japan_0/70E570.s",
+      "verified_usa_source_candidates": [
+        "func_0800145C_70B49C"
+      ]
+    },
+    {
+      "jp_name": "func_080014D8_73DF58",
+      "jp_rom_offset": "0x73DF58",
+      "bytes": 8,
+      "original_code_sha256": "57f881c616f42447d3a765f9fcf4eb021557a7ab9c63cfb1f1ef7033efbb1b45",
+      "original_asm_owner": "asm/japan_0/73CA80.s",
+      "verified_usa_source_candidates": [
+        "func_80036E2C_37A2C"
+      ]
+    },
+    {
+      "jp_name": "func_08001854_70D7E4",
+      "jp_rom_offset": "0x70D7E4",
+      "bytes": 8,
+      "original_code_sha256": "f364e1642b626bd3a50480ed1fe1dbb57d0213d3e9fc4eb45782ca66715c6027",
+      "original_asm_owner": "asm/japan_0/70BF90.s",
+      "verified_usa_source_candidates": [
+        "func_080009DC_70AA1C",
+        "func_08000FA0_7089E0",
+        "func_08001854_709294"
+      ]
+    },
+    {
+      "jp_name": "func_08003CB4_6FB844",
+      "jp_rom_offset": "0x6FB844",
+      "bytes": 8,
+      "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
+      "original_asm_owner": "asm/japan_0/6F7B90.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_6AF8A0",
+        "func_08003CC0_6F71A0",
+        "func_80011B58_12758",
+        "func_8021929C_5D476C",
+        "func_802192A4_5D4774",
+        "func_802192AC_5D477C",
+        "func_8021A308_5D57D8",
+        "func_80224380_68DD60"
+      ]
+    },
+    {
+      "jp_name": "func_80006EC4_7AC4",
+      "jp_rom_offset": "0x7AC4",
+      "bytes": 8,
+      "original_code_sha256": "d82c49368eef6b8ec668ea667cb0a950e97a442870973cd6baf8b3e57bcda040",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_78A0/func_80006EC4_7AC4.s",
+      "verified_usa_source_candidates": [
+        "func_80007014_7C14"
+      ]
+    },
+    {
+      "jp_name": "func_80006ECC_7ACC",
+      "jp_rom_offset": "0x7ACC",
+      "bytes": 8,
+      "original_code_sha256": "ad91db42a1330a1195b62caea28da35e9d8b2534680d6005f6976c1fbf9c52f8",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_78A0/func_80006ECC_7ACC.s",
+      "verified_usa_source_candidates": [
+        "func_8000701C_7C1C"
+      ]
+    },
+    {
+      "jp_name": "func_80006ED4_7AD4",
+      "jp_rom_offset": "0x7AD4",
+      "bytes": 8,
+      "original_code_sha256": "7f6b66cee6742d91fcff04bbbed4ed0df0f907e0419b675bf74976aeeaf58e68",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_78A0/func_80006ED4_7AD4.s",
+      "verified_usa_source_candidates": [
+        "func_80007024_7C24"
+      ]
+    },
+    {
+      "jp_name": "func_800116E4_122E4",
+      "jp_rom_offset": "0x122E4",
+      "bytes": 8,
+      "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_10B40/func_800116E4_122E4.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_6AF8A0",
+        "func_08003CC0_6F71A0",
+        "func_80011B58_12758",
+        "func_8021929C_5D476C",
+        "func_802192A4_5D4774",
+        "func_802192AC_5D477C",
+        "func_8021A308_5D57D8",
+        "func_80224380_68DD60"
+      ]
+    },
+    {
+      "jp_name": "func_800124C8_130C8",
+      "jp_rom_offset": "0x130C8",
+      "bytes": 8,
+      "original_code_sha256": "9da6c79208c17fe1f1a131bde1f22ad091012ee963b41f9f1b5b73d51ee9322c",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_122F0/func_800124C8_130C8.s",
+      "verified_usa_source_candidates": [
+        "func_80012938_13538"
+      ]
+    },
+    {
+      "jp_name": "func_80023060_23C60",
+      "jp_rom_offset": "0x23C60",
+      "bytes": 8,
+      "original_code_sha256": "87506497337c503078b658b916ef9eb4961eb62b06349fd8ecf2dbe4e451e4e7",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_23AB0/func_80023060_23C60.s",
+      "verified_usa_source_candidates": [
+        "func_8002338C_23F8C"
+      ]
+    },
+    {
+      "jp_name": "func_80034E84_35A84",
+      "jp_rom_offset": "0x35A84",
+      "bytes": 8,
+      "original_code_sha256": "c4a148d7f739c21b361d33352afcf9ec8f7fc91c8c2e4cfdcff0bc85b49e1839",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_34EF0/func_80034E84_35A84.s",
+      "verified_usa_source_candidates": [
+        "func_80035214_35E14"
+      ]
+    },
+    {
+      "jp_name": "func_80034E9C_35A9C",
+      "jp_rom_offset": "0x35A9C",
+      "bytes": 8,
+      "original_code_sha256": "8e1fa306919ac1f25a2e3a1a7e2253cc42a8b2cb20b7325afa27f7e5ec9a16c0",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_34EF0/func_80034E9C_35A9C.s",
+      "verified_usa_source_candidates": [
+        "func_8003522C_35E2C"
+      ]
+    },
+    {
+      "jp_name": "func_80034EB4_35AB4",
+      "jp_rom_offset": "0x35AB4",
+      "bytes": 8,
+      "original_code_sha256": "8090edef6bfc280c2c49239a0db5c9d4a83e2f946383114992f26187a9744ff3",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_34EF0/func_80034EB4_35AB4.s",
+      "verified_usa_source_candidates": [
+        "func_80035244_35E44"
+      ]
+    },
+    {
+      "jp_name": "func_80035024_35C24",
+      "jp_rom_offset": "0x35C24",
+      "bytes": 8,
+      "original_code_sha256": "8d9c671451fb74567ea47d105249cce71105cc58a296769bcc745e38ce3ef036",
+      "original_asm_owner": "asm/japan_0/nonmatchings/main_34EF0/func_80035024_35C24.s",
+      "verified_usa_source_candidates": [
+        "func_800353B4_35FB4"
+      ]
+    },
+    {
+      "jp_name": "func_80047E60_48A60",
+      "jp_rom_offset": "0x48A60",
+      "bytes": 8,
+      "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378",
+      "original_asm_owner": "asm/japan_0/nonmatchings/libultra/audio/synthesizer/func_80047E60_48A60.s",
+      "verified_usa_source_candidates": [
+        "func_08001DF8_6C1548",
+        "func_08002480_6C1BD0",
+        "func_080032FC_6B270C",
+        "func_08004AAC_6C41FC",
+        "func_08004AE0_6C4230",
+        "func_08005ED4_6B9174",
+        "func_80035D84_36984",
+        "func_80037DB0_389B0",
+        "func_8003EA0C_3F60C",
+        "func_8003EBA4_3F7A4",
+        "func_801CBCA4_69D414",
+        "func_801D016C_66301C",
+        "func_801EC1D8_6175B8",
+        "func_801EED84_5AAC94",
+        "func_801F7034_622414",
+        "func_801F7054_622434",
+        "func_801F7138_5B3048",
+        "func_801FF728_62AB08",
+        "func_801FFE2C_62B20C",
+        "func_801FFE4C_62B22C",
+        "func_802108C4_6982C4",
+        "func_80211050_698A50",
+        "func_802112CC_698CCC",
+        "func_802112E0_698CE0",
+        "func_802116E4_6990E4",
+        "func_80212B28_69A528",
+        "func_80214D50_5D0220",
+        "func_80214FD0_5D04A0",
+        "func_80214FE4_5D04B4",
+        "func_80214FF8_5D04C8",
+        "func_8021500C_5D04DC",
+        "func_8021508C_5D055C",
+        "func_8021A4DC_5D59AC",
+        "func_8021F908_6892E8",
+        "func_8021F998_689378"
+      ]
+    },
+    {
+      "jp_name": "func_80047FA0_48BA0",
+      "jp_rom_offset": "0x48BA0",
+      "bytes": 8,
+      "original_code_sha256": "78aa5094d5ec7291c79f799c009d04f06c2f20187988e3dcc8d35ee5efdbb378",
+      "original_asm_owner": "asm/japan_0/nonmatchings/libultra/audio/synthesizer/func_80047FA0_48BA0.s",
+      "verified_usa_source_candidates": [
+        "func_08001DF8_6C1548",
+        "func_08002480_6C1BD0",
+        "func_080032FC_6B270C",
+        "func_08004AAC_6C41FC",
+        "func_08004AE0_6C4230",
+        "func_08005ED4_6B9174",
+        "func_80035D84_36984",
+        "func_80037DB0_389B0",
+        "func_8003EA0C_3F60C",
+        "func_8003EBA4_3F7A4",
+        "func_801CBCA4_69D414",
+        "func_801D016C_66301C",
+        "func_801EC1D8_6175B8",
+        "func_801EED84_5AAC94",
+        "func_801F7034_622414",
+        "func_801F7054_622434",
+        "func_801F7138_5B3048",
+        "func_801FF728_62AB08",
+        "func_801FFE2C_62B20C",
+        "func_801FFE4C_62B22C",
+        "func_802108C4_6982C4",
+        "func_80211050_698A50",
+        "func_802112CC_698CCC",
+        "func_802112E0_698CE0",
+        "func_802116E4_6990E4",
+        "func_80212B28_69A528",
+        "func_80214D50_5D0220",
+        "func_80214FD0_5D04A0",
+        "func_80214FE4_5D04B4",
+        "func_80214FF8_5D04C8",
+        "func_8021500C_5D04DC",
+        "func_8021508C_5D055C",
+        "func_8021A4DC_5D59AC",
+        "func_8021F908_6892E8",
+        "func_8021F998_689378"
+      ]
+    },
+    {
+      "jp_name": "func_801D0DCC_66331C",
+      "jp_rom_offset": "0x66331C",
+      "bytes": 8,
+      "original_code_sha256": "3fda87d58beba8f965c70335def5a7e4b4c358de2b7e319295ac76a8cfd5e929",
+      "original_asm_owner": "asm/japan_0/6630E0.s",
+      "verified_usa_source_candidates": [
+        "func_801CB69C_65E54C",
+        "func_8020E2F8_66D2A8"
+      ]
+    },
+    {
+      "jp_name": "func_801D0DD4_663324",
+      "jp_rom_offset": "0x663324",
+      "bytes": 8,
+      "original_code_sha256": "a3423cfd37543c38516be47cfadfe100bedbcf82bb54fb4cbb5f384249b28cfc",
+      "original_asm_owner": "asm/japan_0/6630E0.s",
+      "verified_usa_source_candidates": [
+        "func_801CB6A4_65E554",
+        "func_801D0D3C_663BEC",
+        "func_801D1DE4_664C94",
+        "func_801D2064_664F14"
+      ]
+    },
+    {
+      "jp_name": "func_801D0F44_6A1A74",
+      "jp_rom_offset": "0x6A1A74",
+      "bytes": 8,
+      "original_code_sha256": "f32880b524e1cdfac8a78dc52bf4fb92ae6c2d246d7fb6af2c7b836e92a01a0e",
+      "original_asm_owner": "asm/japan_0/6A16C0.s",
+      "verified_usa_source_candidates": [
+        "func_801CB814_69CF84"
+      ]
+    },
+    {
+      "jp_name": "func_801D6580_668AD0",
+      "jp_rom_offset": "0x668AD0",
+      "bytes": 8,
+      "original_code_sha256": "a3423cfd37543c38516be47cfadfe100bedbcf82bb54fb4cbb5f384249b28cfc",
+      "original_asm_owner": "asm/japan_0/667990.s",
+      "verified_usa_source_candidates": [
+        "func_801CB6A4_65E554",
+        "func_801D0D3C_663BEC",
+        "func_801D1DE4_664C94",
+        "func_801D2064_664F14"
+      ]
+    },
+    {
+      "jp_name": "func_801D7550_669AA0",
+      "jp_rom_offset": "0x669AA0",
+      "bytes": 8,
+      "original_code_sha256": "a3423cfd37543c38516be47cfadfe100bedbcf82bb54fb4cbb5f384249b28cfc",
+      "original_asm_owner": "asm/japan_0/669690.s",
+      "verified_usa_source_candidates": [
+        "func_801CB6A4_65E554",
+        "func_801D0D3C_663BEC",
+        "func_801D1DE4_664C94",
+        "func_801D2064_664F14"
+      ]
+    },
+    {
+      "jp_name": "func_801D77C4_669D14",
+      "jp_rom_offset": "0x669D14",
+      "bytes": 8,
+      "original_code_sha256": "a3423cfd37543c38516be47cfadfe100bedbcf82bb54fb4cbb5f384249b28cfc",
+      "original_asm_owner": "asm/japan_0/669690.s",
+      "verified_usa_source_candidates": [
+        "func_801CB6A4_65E554",
+        "func_801D0D3C_663BEC",
+        "func_801D1DE4_664C94",
+        "func_801D2064_664F14"
+      ]
+    },
+    {
+      "jp_name": "func_801D79F0_5939C0",
+      "jp_rom_offset": "0x5939C0",
+      "bytes": 8,
+      "original_code_sha256": "bbbf33821a8cbe2fe32929e4da6174baa61777a1756b2be546c84cb6361fa5fb",
+      "original_asm_owner": "asm/japan_0/58DB90.s",
+      "verified_usa_source_candidates": [
+        "func_801D23C0_58E2D0"
+      ]
+    },
+    {
+      "jp_name": "func_801FC014_5B7FE4",
+      "jp_rom_offset": "0x5B7FE4",
+      "bytes": 8,
+      "original_code_sha256": "db44c08484ed624a9879ff9ed8faa1943f40a0dd6e469a8cd493d92510896dbd",
+      "original_asm_owner": "asm/japan_0/5B7160.s",
+      "verified_usa_source_candidates": [
+        "func_801F7130_5B3040"
+      ]
+    },
+    {
+      "jp_name": "func_802130E8_671F58",
+      "jp_rom_offset": "0x671F58",
+      "bytes": 8,
+      "original_code_sha256": "3fda87d58beba8f965c70335def5a7e4b4c358de2b7e319295ac76a8cfd5e929",
+      "original_asm_owner": "asm/japan_0/670F00.s",
+      "verified_usa_source_candidates": [
+        "func_801CB69C_65E54C",
+        "func_8020E2F8_66D2A8"
+      ]
+    },
+    {
+      "jp_name": "func_80215478_69CB78",
+      "jp_rom_offset": "0x69CB78",
+      "bytes": 8,
+      "original_code_sha256": "895d7ea395e66f348e2d9f46392f46d306fdfc69a98a3662f32d5eb5c7207da8",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_80210680_698080"
+      ]
+    },
+    {
+      "jp_name": "func_80215DA0_674C10",
+      "jp_rom_offset": "0x674C10",
+      "bytes": 8,
+      "original_code_sha256": "2c6184450d031c6ffa8574b1a1061b9f3ea3b300a77e3bbd457089488dd89751",
+      "original_asm_owner": "asm/japan_0/673720.s",
+      "verified_usa_source_candidates": [
+        "func_80210F80_66FF30"
+      ]
+    },
+    {
+      "jp_name": "func_80215E10_69D510",
+      "jp_rom_offset": "0x69D510",
+      "bytes": 8,
+      "original_code_sha256": "bb2702bc713aae620dfd8d1666558219ceb1fb103edee4cb3c1f583525e8b566",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_80211018_698A18",
+        "func_80214398_69BD98"
+      ]
+    },
+    {
+      "jp_name": "func_80216034_674EA4",
+      "jp_rom_offset": "0x674EA4",
+      "bytes": 8,
+      "original_code_sha256": "051cbe37842254135d709c8d0bbe6f70bc1ae847282cc8b2ccb7a1a2c37dd953",
+      "original_asm_owner": "asm/japan_0/673720.s",
+      "verified_usa_source_candidates": [
+        "func_80211214_6701C4"
+      ]
+    },
+    {
+      "jp_name": "func_80219190_6A0890",
+      "jp_rom_offset": "0x6A0890",
+      "bytes": 8,
+      "original_code_sha256": "bb2702bc713aae620dfd8d1666558219ceb1fb103edee4cb3c1f583525e8b566",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_80211018_698A18",
+        "func_80214398_69BD98"
+      ]
+    },
+    {
+      "jp_name": "func_802191C8_6A08C8",
+      "jp_rom_offset": "0x6A08C8",
+      "bytes": 8,
+      "original_code_sha256": "86d6129681e7c22dceb0bcc94e838abdc8b7931edcabffa1ca0d192fe2ca7d4c",
+      "original_asm_owner": "asm/japan_0/699790.s",
+      "verified_usa_source_candidates": [
+        "func_802143D0_69BDD0"
+      ]
+    },
+    {
+      "jp_name": "func_8021E00C_5D959C",
+      "jp_rom_offset": "0x5D959C",
+      "bytes": 8,
+      "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_6AF8A0",
+        "func_08003CC0_6F71A0",
+        "func_80011B58_12758",
+        "func_8021929C_5D476C",
+        "func_802192A4_5D4774",
+        "func_802192AC_5D477C",
+        "func_8021A308_5D57D8",
+        "func_80224380_68DD60"
+      ]
+    },
+    {
+      "jp_name": "func_8021E014_5D95A4",
+      "jp_rom_offset": "0x5D95A4",
+      "bytes": 8,
+      "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_6AF8A0",
+        "func_08003CC0_6F71A0",
+        "func_80011B58_12758",
+        "func_8021929C_5D476C",
+        "func_802192A4_5D4774",
+        "func_802192AC_5D477C",
+        "func_8021A308_5D57D8",
+        "func_80224380_68DD60"
+      ]
+    },
+    {
+      "jp_name": "func_8021E01C_5D95AC",
+      "jp_rom_offset": "0x5D95AC",
+      "bytes": 8,
+      "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_6AF8A0",
+        "func_08003CC0_6F71A0",
+        "func_80011B58_12758",
+        "func_8021929C_5D476C",
+        "func_802192A4_5D4774",
+        "func_802192AC_5D477C",
+        "func_8021A308_5D57D8",
+        "func_80224380_68DD60"
+      ]
+    },
+    {
+      "jp_name": "func_8021F078_5DA608",
+      "jp_rom_offset": "0x5DA608",
+      "bytes": 8,
+      "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
+      "original_asm_owner": "asm/japan_0/5D6940.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_6AF8A0",
+        "func_08003CC0_6F71A0",
+        "func_80011B58_12758",
+        "func_8021929C_5D476C",
+        "func_802192A4_5D4774",
+        "func_802192AC_5D477C",
+        "func_8021A308_5D57D8",
+        "func_80224380_68DD60"
+      ]
+    },
+    {
+      "jp_name": "func_80229160_692850",
+      "jp_rom_offset": "0x692850",
+      "bytes": 8,
+      "original_code_sha256": "aab9a3b4a314f107dee9217d6d10144c96feaf7d3f083e0f94c1ee0811c96054",
+      "original_asm_owner": "asm/japan_0/6921E0.s",
+      "verified_usa_source_candidates": [
+        "func_08000490_6AF8A0",
+        "func_08003CC0_6F71A0",
+        "func_80011B58_12758",
+        "func_8021929C_5D476C",
+        "func_802192A4_5D4774",
+        "func_802192AC_5D477C",
+        "func_8021A308_5D57D8",
+        "func_80224380_68DD60"
+      ]
+    },
+    {
+      "jp_name": "func_802292C8_5E4858",
+      "jp_rom_offset": "0x5E4858",
+      "bytes": 8,
+      "original_code_sha256": "f53a703752d62910b54202c03b442bedfa0f845cb72ff2bb0fb341bf6ebe3df2",
+      "original_asm_owner": "asm/japan_0/5E3FE0.s",
+      "verified_usa_source_candidates": [
+        "func_80224558_5DFA28"
+      ]
+    }
+  ],
+  "notes": [
+    "Complete original instruction-byte equality is only a candidate mapping. Each function still requires original JP source-unit ownership, native IDO output, complete ROM proof and ELF/relocations.",
+    "7,076 original JP assembly disassembly entries were indexed; original ELF contains 7,376 positive functions. The difference should not be assumed to be missing decompilable C.",
+    "Different functions can share short machine-code signatures. Repeated low-byte signatures have ambiguous semantics and are not proofs."
+  ]
+}

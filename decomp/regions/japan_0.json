@@ -861,5 +861,20 @@
     "original_semantic_relocation_count": 80747,
     "independent_replay_proof_sha256": "cb332aa2fb04fb4745594f35f49592e5b37c3094d9fc98378b66640966e3a2aa",
     "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_grouped_source_4": {
+    "status": "PASSED_G2_LOCAL",
+    "previous_matching_c_functions": 423,
+    "added_functions": 4,
+    "added_bytes": 216,
+    "matching_c_functions": 427,
+    "matching_c_bytes": 9892,
+    "remaining_assembly_functions": 6949,
+    "manifest": "decomp/regions/japan_0_grouped4.json",
+    "native_stage": "decomp/japan_usa_grouped_four.py",
+    "clean_builder": "decomp/build_japan_usa_grouped_427.sh",
+    "proof": "decomp/results/japan_0_427_grouped4_20261119.json",
+    "independent_native_checkouts": 2,
+    "emulator_gameplay": "NOT_RUN"
   }
 }
