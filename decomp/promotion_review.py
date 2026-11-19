@@ -31,7 +31,7 @@ def validate(queue: dict, root: Path, *, strict_sources=False, rom: bytes | None
     if queue.get('format') != 'goemon-promotion-review-queue-v1':
         raise ReviewError('unknown review queue format')
     base = queue.get('production_accepted_baseline', {})
-    if base != {'usa_functions': 1463, 'usa_instruction_bytes': 56844,
+    if base != {'usa_functions': 1478, 'usa_instruction_bytes': 57140,
                 'japan_0_functions': 39, 'japan_0_instruction_bytes': 2092}:
         raise ReviewError('stale or unrecognised accepted production checkpoint')
     inv = json.loads((root / 'decomp/results/inventory.json').read_text())

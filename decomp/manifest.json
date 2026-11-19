@@ -1561,5 +1561,8 @@
   },
   "overlay_micro2_stage": {
     "format": "goemon-usa-micro2-after-1461-v1"
+  },
+  "overlay_micro15_stage": {
+    "format": "goemon-usa-micro15-after-1463-v1"
   }
 }
