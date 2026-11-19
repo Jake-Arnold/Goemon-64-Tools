@@ -1,0 +1,136 @@
+{
+  "format": "goemon-japan-original-equivalent-11-v1",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_parent": "602FA0.s",
+  "already_staged_parent_fragment": "asm/japan_0/jpport_602FA0_000.s",
+  "baseline_matching_c": 333,
+  "baseline_matching_bytes": 5688,
+  "added_matching_c": 11,
+  "added_instruction_bytes": 728,
+  "expected_matching_c": 344,
+  "expected_matching_bytes": 6416,
+  "candidates": [
+    {
+      "jp": "func_801DB72C_6061AC",
+      "jp_rom": 6316460,
+      "sz": 48,
+      "usa": "func_801D600C_6013EC",
+      "usa_rom": 6296556,
+      "hash": "993e3d9a3d9bd13ca9267d28cbce470d49b9337af75400784f83887f9bc942fb",
+      "asm": "602FA0.s",
+      "source_sha256": "d2d6c3007b8ced4462b5321de28d4273ce3348fcd6156642b12e78f49caa554d",
+      "original_jp_instruction_sha256": "993e3d9a3d9bd13ca9267d28cbce470d49b9337af75400784f83887f9bc942fb"
+    },
+    {
+      "jp": "func_801DB75C_6061DC",
+      "jp_rom": 6316508,
+      "sz": 48,
+      "usa": "func_801D603C_60141C",
+      "usa_rom": 6296604,
+      "hash": "b1223dc38a334b1b5dba0d478d614d46e69b12f6b84dd73ccd301347a145d3ae",
+      "asm": "602FA0.s",
+      "source_sha256": "56f669da5027efc4b40490024eab7bbd327241e7e23b0a25fec1e1ab85719c9b",
+      "original_jp_instruction_sha256": "b1223dc38a334b1b5dba0d478d614d46e69b12f6b84dd73ccd301347a145d3ae"
+    },
+    {
+      "jp": "func_801DB78C_60620C",
+      "jp_rom": 6316556,
+      "sz": 48,
+      "usa": "func_801D606C_60144C",
+      "usa_rom": 6296652,
+      "hash": "b2e8bafbe4902465d65bbe52caec9bb45779413233db6d2eccd5c715d542957a",
+      "asm": "602FA0.s",
+      "source_sha256": "3c96b3541cde415d65ad240935925dbf18a0de3e92cd4e051402a0f474a538c8",
+      "original_jp_instruction_sha256": "b2e8bafbe4902465d65bbe52caec9bb45779413233db6d2eccd5c715d542957a"
+    },
+    {
+      "jp": "func_801DB804_606284",
+      "jp_rom": 6316676,
+      "sz": 64,
+      "usa": "func_801D60E4_6014C4",
+      "usa_rom": 6296772,
+      "hash": "dd3583f9576ea3928b1411a21997e50ca44e46def3b28120594142a447d5dc78",
+      "asm": "602FA0.s",
+      "source_sha256": "0a3dfa20bec4db9433863691f3c116f7dfd6b2e4c99e47459ae7b5534d3e7c0e",
+      "original_jp_instruction_sha256": "dd3583f9576ea3928b1411a21997e50ca44e46def3b28120594142a447d5dc78"
+    },
+    {
+      "jp": "func_801DB844_6062C4",
+      "jp_rom": 6316740,
+      "sz": 40,
+      "usa": "func_801D6124_601504",
+      "usa_rom": 6296836,
+      "hash": "712baa58bdf7c5afc19aa138daa12ffb2c57d64382d3f443f3e028ebe79bb82e",
+      "asm": "602FA0.s",
+      "source_sha256": "c77f45f132119ca5c617a56f252f82c900209707f01db53cedf1e534006091de",
+      "original_jp_instruction_sha256": "712baa58bdf7c5afc19aa138daa12ffb2c57d64382d3f443f3e028ebe79bb82e"
+    },
+    {
+      "jp": "func_801DB86C_6062EC",
+      "jp_rom": 6316780,
+      "sz": 80,
+      "usa": "func_801D614C_60152C",
+      "usa_rom": 6296876,
+      "hash": "ed672a2338e0100d28b4aec1d12ef14c37dcb5528f46756a001e00154fba17dd",
+      "asm": "602FA0.s",
+      "source_sha256": "5870643fac9fd717ed1cc0fc15afa137b7bb9765888af732da72170faa3076cf",
+      "original_jp_instruction_sha256": "ed672a2338e0100d28b4aec1d12ef14c37dcb5528f46756a001e00154fba17dd"
+    },
+    {
+      "jp": "func_801DB8BC_60633C",
+      "jp_rom": 6316860,
+      "sz": 56,
+      "usa": "func_801D619C_60157C",
+      "usa_rom": 6296956,
+      "hash": "a057b4e228e4e07afdf82baee5dbd53ecfdb8843192279d3e1d6d3267a5f2b16",
+      "asm": "602FA0.s",
+      "source_sha256": "2cd2d2440b333cff78bed6846b4b2b4fa2a04f198c2da8c83b9748c8fe074ffc",
+      "original_jp_instruction_sha256": "a057b4e228e4e07afdf82baee5dbd53ecfdb8843192279d3e1d6d3267a5f2b16"
+    },
+    {
+      "jp": "func_801DB908_606388",
+      "jp_rom": 6316936,
+      "sz": 36,
+      "usa": "func_801D61E8_6015C8",
+      "usa_rom": 6297032,
+      "hash": "6dc466a4616bff10cc1b45ec815c59d1b26d7cce0bd72b4f466df2606830dde8",
+      "asm": "602FA0.s",
+      "source_sha256": "b1e5e528cdcaa4fb91c3d242442e6c6f9ce0f76a085fe494cc46fc6d6455f071",
+      "original_jp_instruction_sha256": "6dc466a4616bff10cc1b45ec815c59d1b26d7cce0bd72b4f466df2606830dde8"
+    },
+    {
+      "jp": "func_801DC3D0_606E50",
+      "jp_rom": 6319696,
+      "sz": 144,
+      "usa": "func_801D6CB0_602090",
+      "usa_rom": 6299792,
+      "hash": "fd65ca17a36906e7bf3b9d43a37187f2220bac999e4700fbfa6e26a3fa03f069",
+      "asm": "602FA0.s",
+      "source_sha256": "77aeff3250104519baf80b40d73ab60f3d04b226f61bd9de4be19d4cd3f6f1b3",
+      "original_jp_instruction_sha256": "fd65ca17a36906e7bf3b9d43a37187f2220bac999e4700fbfa6e26a3fa03f069"
+    },
+    {
+      "jp": "func_801DC93C_6073BC",
+      "jp_rom": 6321084,
+      "sz": 64,
+      "usa": "func_801D721C_6025FC",
+      "usa_rom": 6301180,
+      "hash": "22ca2e277b2292837e77c1b7c5617c43637aa91182a0b47f8d33bab3bb112bca",
+      "asm": "602FA0.s",
+      "source_sha256": "33e28677d5f0644473cae2e10a142a8246aeeb4bf8a4b3ba62b64dccd4c3f1b2",
+      "original_jp_instruction_sha256": "22ca2e277b2292837e77c1b7c5617c43637aa91182a0b47f8d33bab3bb112bca"
+    },
+    {
+      "jp": "func_801DC97C_6073FC",
+      "jp_rom": 6321148,
+      "sz": 100,
+      "usa": "func_801D725C_60263C",
+      "usa_rom": 6301244,
+      "hash": "8c7fac8fc6520155e9dd8bf1e1d7f3a6221848dfbba238cd927604cac51ea86e",
+      "asm": "602FA0.s",
+      "source_sha256": "9decf6a02ad9f3c9a9b11da5c9e7920e5d9d0a32dd7b26c01bef16d7310fa136",
+      "original_jp_instruction_sha256": "8c7fac8fc6520155e9dd8bf1e1d7f3a6221848dfbba238cd927604cac51ea86e"
+    }
+  ]
+}
