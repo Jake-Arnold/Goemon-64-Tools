@@ -1,0 +1,36 @@
+{
+  "format": "goemon-japan-n64recomp-preparation-v1",
+  "date": "2026-11-15",
+  "region": "japan_0",
+  "status": "PREPARED_NOT_EXECUTED",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "reference_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "linked_japanese_rom_identity": "PASS",
+  "generator": "decomp/japan_recomp_codegen.py",
+  "section_count": 72,
+  "function_symbol_count_excluding_ipl3": 7375,
+  "overlay_section_count": 57,
+  "entrypoint": "0x80000400",
+  "output_sha256": {
+    "mnsg.japan_0.syms.toml": "2aa804bd2c2718314ac7ab103eeb85855299e196794655e1c8a2f3369fefd0da",
+    "mnsg.japan_0.overlays.txt": "f126e87e068a1994afad623c63859627bcaac65c8644953137c1ae84f4a90a04",
+    "mnsg.japan_0.toml": "49fc6239a3bc50f535cf9cd37eda58cf5ce6a14f3f92d94ce68915eed93459a0"
+  },
+  "checks": {
+    "native_ELF_objdump": "PASS",
+    "source_rebuild_sha1": "PASS",
+    "candidate_sym_TOML_parse": "PASS",
+    "candidate_config_TOML_parse": "PASS",
+    "rom_free_unit_tests": "6/6 PASS",
+    "real_N64Recomp_codegen": "NOT RUN",
+    "japanese_PC_executable": "NOT RUN",
+    "japanese_emulator_boot": "NOT RUN - executable missing"
+  },
+  "blocking_requirements": [
+    "N64Recomp and Goemon64Recomp native source/toolchain not locally present",
+    "Japanese RSP and engine hook mapping unproven",
+    "GameEntry and patch adaptation require generated Japanese executable functions",
+    "No N64 emulator binary available for gameplay test"
+  ],
+  "safety": "No copyrighted game ROM, extracted assets, original assembly or compiler binaries committed"
+}

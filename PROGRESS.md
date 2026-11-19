@@ -1,6 +1,15 @@
+## 2026-11-19 — PR #103 reconciled after canonical Japanese research archive
+
+- Retained exactly the original camera runtime/reset archival subtree SHA `7c0328e94ad0f543238827175941d5e940a392a0`, with no source, accepted C or historical proof replacement. Previous PR #103 status remains a dated preservation note; native G2/full CI were not rerun for the archival-only refresh.
+
 ## 2026-11-19 — Draft PR #103: original camera/reset evidence preserved for retirement
 
 - Archived 14 exact original absent-canon source/proof/test files from four original camera runtime/reset branches in `decomp/research/branch_archive/camera_runtime_20261119`. The historic 136-byte native isolated proof and 343-C stage are recorded as dated research, **not** fresh current acceptance. Zero production C, accepted manifest or original-ROM verification changes; no full local CI, native G2 or emulator tests run for this documentation-only archive. Original branch deletion waits for PR merge, blob SHA validation and stable head refs.
+
+
+## 2026-11-19 — Draft PR #102: preserve original Japanese native proof chronology
+
+- Research only. Exact original historical blobs from `chatgptweb/japanese-decomp-port` and `chatgptweb/decomp-consolidation-20261116` archived under `decomp/research/branch_archive/japan_early_native_20261119`, including two alternate early 24-C helper revisions. Existing canonical USA 1,500/Japan 432 matching-C functions and active source unchanged; full native ROM/G2, CI and gameplay **NOT RUN** for this archive. No source branches deleted; deletion gated on PR merge and SHA/provenance checks.
 
 ## 2026-11-19 — Merge-triggered historical research branch retirement mechanism
 

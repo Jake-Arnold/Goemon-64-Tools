@@ -1,0 +1,47 @@
+{
+  "format": "goemon-offline-dependency-audit-v1",
+  "date": "2026-11-15",
+  "archive": "goemon-dependencies.tar.gz",
+  "extracted": {
+    "gnu_mips_executables": [
+      "mips-linux-gnu-as",
+      "mips-linux-gnu-ld",
+      "mips-linux-gnu-objcopy",
+      "mips-linux-gnu-objdump"
+    ],
+    "python_site_packages": "Python 3.12 virtual environment with splat64 0.36.3, spimdisasm 1.39.0, lzkn64 0.2.0, PyYAML 6.0.3",
+    "original_venv_python": "Absolute symlink to an external uv-managed CPython 3.12 base interpreter; not included",
+    "missing_elf_libraries": [
+      "libopcodes-2.45.90-mips.20260125.so",
+      "libbfd-2.45.90-mips.20260125.so",
+      "libctf-mips.so.0",
+      "libsframe.so.3"
+    ]
+  },
+  "attempts": [
+    {
+      "command": "mips-linux-gnu-as --version",
+      "status": "FAIL",
+      "reason": "missing libopcodes-2.45.90-mips.20260125.so"
+    },
+    {
+      "command": "make setup VERSION=japan_0 PYTHON=python3 SPLAT='python3 -m splat'",
+      "status": "FAIL",
+      "reason": "CPython 3.13 cannot import CPython 3.12 native lzkn64 module"
+    },
+    {
+      "command": "upstream tools/rommy.py decompress on Japan rev-0 baserom.z64 with isolated validated Python decoder fallback",
+      "status": "PASS",
+      "artifact": "private 32 MiB decompressed image and upstream rommy.yaml compression manifest",
+      "expected_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "actual_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+    }
+  ],
+  "remaining": [
+    "CPython 3.12 base executable plus standard library",
+    "Four exact binutils shared-library SONAMEs",
+    "Splat extraction, native ASM/link/build, compressed retail equality and gameplay are NOT RUN"
+  ],
+  "followup_script": "decomp/package_japan_offline_runtime.sh",
+  "notes": "No ROMs, extracted assets, full compression manifests or binaries are committed; source tool used only locally."
+}

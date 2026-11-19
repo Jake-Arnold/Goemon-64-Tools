@@ -1,0 +1,37 @@
+{
+  "format": "goemon-japan-adjacent-research-v1",
+  "date": "2026-11-16",
+  "region": "japan_0",
+  "status": "RESEARCH_ONLY_ISOLATED_EXACT",
+  "new_candidates": [
+    {
+      "name": "func_80038984_39584",
+      "rom_offset": 234884,
+      "size": 40,
+      "relocations": 1
+    },
+    {
+      "name": "func_800389AC_395AC",
+      "rom_offset": 234924,
+      "size": 40,
+      "relocations": 1
+    },
+    {
+      "name": "func_800389D4_395D4",
+      "rom_offset": 234964,
+      "size": 48,
+      "relocations": 6
+    }
+  ],
+  "function_count": 3,
+  "matching_code_bytes": 128,
+  "full_original_rom_build": "NOT RUN WITH THESE THREE",
+  "formal_matching_total_unaffected": 31,
+  "unmatched_neighbours": [
+    "func_80038034_38C34",
+    "func_800381F8_38DF8",
+    "func_80038808_39408",
+    "func_80038838_39438",
+    "func_80038868_39468"
+  ]
+}
