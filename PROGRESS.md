@@ -1,3 +1,8 @@
+## 2026-11-19 — Preserve original file12 VM dialogue callback research (PR #99)
+
+- **Research preservation:** Added the original dated isolated IDO/ELF research report for `func_80222034_5DD504` (20 bytes) and `func_80222168_5DD638` (36 bytes), the original 13 November callback investigation note and a cross-reference from `decomp/VM_CONVERSATION_TARGETS.md`. The research JSON is copied unchanged (Git blob `69ada279bcbcdb212a2a4de699623d961ad48565`), and explicitly records the **historical RESEARCH_ONLY status** when collected.
+- **Proof boundary:** Both functions were already promoted into accepted USA matching C before this research archive. This preservation adds no new production C, original-ROM code, matching function count, ROM-G2 verification or gameplay claim. Canonical baseline remains USA 1,500 accepted C and Japanese 432 accepted C; full CI/G2 not rerun for this documentation change.
+
 ## 2026-11-19 — Preserve original Impact controller/HUD and historical native proof records (PR #98)
 
 - **Research preservation:** Imported the unchanged original MIPS tracing report `docs/IMPACT_BATTLE_MEMORY_TRACE.md` (384 lines; source Git blob `b69c8cba0d036763871272e85c353f6a9bf5d065`), covering the Impact controller, HUD pointer/model pool, state, camera, camera-vector math and teardown. Added three historical native proof ledger JSON records and clarifications to existing VM/gameplay notes without touching accepted C functions. Private home directories in ledgers are redacted.

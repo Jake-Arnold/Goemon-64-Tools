@@ -143,3 +143,7 @@ two more save-dialogue references. Its indirect reachability and dialogue
 association remain unverified. Its larger call graph, temporary allocation,
 copy and comparison make it a lower-priority native candidate; no IDO variant
 has been run for it.
+
+## Archived original `file_12` callback probe evidence (13 November 2026)
+
+The original 20-byte `func_80222034_5DD504` and 36-byte `func_80222168_5DD638` isolated IDO/ELF probe results are preserved in [`results/file12_dialogue_callbacks_research.json`](results/file12_dialogue_callbacks_research.json), with the [full historical callback note](research/codex_vm_overlay_20261113/HISTORICAL_FILE12_CALLBACK_PROBE.md). Both helpers were subsequently promoted into the canonical matching-C manifest; the earlier `RESEARCH_ONLY` label and `NOT_RUN` full-ROM flag describe the isolated original research only, not the later accepted canonical stage.
