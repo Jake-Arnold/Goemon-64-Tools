@@ -43,13 +43,13 @@ def symbols(path):
     return result
 
 
-def relocations(path):
+def relocations(path, section=".rel.text"):
     text = False
     result = []
     expected_count = 0
     for line in run("mips-linux-gnu-readelf", "-Wr", path).splitlines():
         if line.startswith("Relocation section "):
-            text = line.startswith("Relocation section '.rel.text' ")
+            text = line.startswith(f"Relocation section '{section}' ")
             if text:
                 expected_count = int(line.split()[-2])
         if text:
@@ -58,7 +58,7 @@ def relocations(path):
                 offset, kind, symbol = row.groups()
                 result.append((int(offset, 16), kind, symbol))
     if len(result) != expected_count:
-        raise ValueError(f"{path}: could not read every .rel.text relocation")
+        raise ValueError(f"{path}: could not read every {section} relocation")
     return result
 
 
@@ -67,9 +67,14 @@ def region_relocations(rows, start, size):
                    if start <= offset < start + size)
 
 
-def extract_text(obj, dest):
-    run("mips-linux-gnu-objcopy", "--dump-section", f".text={dest}", obj, dest.with_suffix(".copy.o"))
+def read_section(obj, section, dest):
+    run("mips-linux-gnu-objcopy", "--dump-section", f"{section}={dest}", obj,
+        dest.with_name(dest.name + ".copy.o"))
     return dest.read_bytes()
+
+
+def extract_text(obj, dest):
+    return read_section(obj, ".text", dest)
 
 
 def verify(upstream, scratch):

@@ -63,10 +63,60 @@ Keep the helper as ASM (**FAILED_NATIVE**). Any next probe should account for
 the two distinct destination address registers and the register allocation in
 the enclosing source unit.
 
-The issue's checkpoint 6 reports 3,058 of 4,337 same-position raw object words
-and 671 of 685 exact relocation tuples for the 17,348-byte
-`func_8020D998_677378`. Its source bundle is referenced in the issue as a
-conversation attachment. It was unavailable in the checkout and local build
-inputs, so this run did not compile or modify the controller. Recover that
-source before spending another native experiment on the controller. Combined
-G2, strict inventory and gameplay were not run for these research sources.
+The attached checkpoint 6 source reproduced its reported 17,348-byte
+instruction extent, 128-byte stack frame, 551 direct calls in order, and
+3,058/4,337 same-position raw object words. All 34 switch state entries
+match their original offsets. The first raw word difference is at
+`+0x5C`, where the state 0 branch delay slot reloads the context pointer
+into `t5` instead of the original `t1` for the shared timer increment.
+
+### Controller data matches after restoring the inline literals
+
+Checkpoint 6 declares the controller's floating constants as external
+symbols. Original IDO emits the constants and three jump tables in
+source order when those constants are expressed as literals. Replaced
+22 declarations with round-trip literals read locally from the verified
+original ROM. A fresh original-address link at text VMA `0x8020D998`
+and pool VMA `0x8022A6C8` produced the following.
+
+| Result | Checkpoint 6 | Restored literals |
+| --- | ---: | ---: |
+| Linked switch table and constant pool bytes | 160/336 | **336/336** |
+| Table entries exact at original offsets | 40/48 | **48/48** |
+| Linked instruction words at original offsets | 3,059/4,337 | 3,059/4,337 |
+| Linked instruction bytes at original offsets | 15,823/17,348 | 15,824/17,348 |
+| Original state entry offsets | 34/34 | 34/34 |
+
+The data region spans USA expanded ROM `0x6940A8..0x6941F8` (exclusive).
+The compiler produced the third jump table at the original relative pool
+offset `0xD4` after recovering the first 11 literals. Restoring just the
+last seven constants in addition left a gap after the third table. Restoring
+all 22 recovered the whole region, including alignment. The full
+pool source SHA-256 is
+`8afc9ebf06ff742922daabab754b056850cfbcf72c8b27553871c338b470232c`.
+
+After the literal rewrite, raw text relocation tuples changed from
+671/685 to 629/685 matching exact offset, type and symbol because IDO
+references section-relative literals. The linked comparisons above apply
+those relocations at the original addresses. Neither result proves
+whole-unit relocation equivalence. The separate state 33 volatile base
+reload probe retained all 34 state entries but grew the function by 8 B
+and reduced the number of same-position raw words from 3,058 to 2,947.
+The first executable mismatch remains the state 0 delay slot. Tighten
+the epilogue and its incoming control flow next while preserving the exact
+pool and state entry offsets.
+
+Replay both variants from the user-supplied source-only ZIP. Keep the
+output and local inputs outside Git.
+
+```sh
+python3 decomp/research/issue128_opening/replay_controller_pool.py \
+  /path/to/pinned/mnsg /path/to/checkpoint6.zip /path/to/new/private/output
+```
+
+The replay links and compares both standalone objects, saves the candidate C,
+and writes a JSON report with all 34 per-state extents and matching word counts.
+State bounds are measured between adjacent case entries, so the last range
+also contains the epilogue. Full ROM-free `python3 -m decomp.local_ci` and
+the six-wrapper verifier passed. The controller remains **FAILED_NATIVE /
+RESEARCH_ONLY**. Combined G2, strict inventory and gameplay were not run.

@@ -1,3 +1,9 @@
+## 20 November 2026 — Issue #128 opening controller switch tables and constant pool (RESEARCH_ONLY)
+
+- Recompiled the attached checkpoint 6 source and confirmed the original 17,348-byte extent, 128-byte stack, and 34 state entry offsets. The first raw instruction mismatch was a register choice in the state 0 branch delay slot at controller offset `+0x5C`.
+- Restored 22 inline literals to let native IDO emit the original three jump tables and constant layout. Isolated original-address links verified 336/336 original read-only data bytes, up from 160/336, including all 48 table entries. Linked executable text still matched 3,059/4,337 words. The separate volatile base reload probe added 8 bytes and reduced the raw word match.
+- Full `python3 -m decomp.local_ci`, independent native replay, and the six-wrapper verifier passed. G2, strict inventory and gameplay were not run for this controller. Next, resolve epilogue register allocation and its incoming branches before checking the entire function and unit. [Research notes and replay](decomp/research/issue128_opening/README.md).
+
 ## 20 November 2026 — Issue #128 opening scene wrappers (RESEARCH_ONLY)
 
 - Reconstructed the six USA `file_18` opening scene setup wrappers still owned by ASM at baseline `a412f96`. Four other setup wrappers and all six object helpers from the issue are already accepted.
