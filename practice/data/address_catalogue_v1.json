@@ -169,7 +169,8 @@
         "practice/japanese_scene_probes.py:51",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:129",
-        "practice/region_memory_crosswalk.py:142"
+        "practice/region_memory_crosswalk.py:142",
+        "practice/region_memory_crosswalk.py:152"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -496,7 +497,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:33@main",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:130",
-        "practice/region_memory_crosswalk.py:143"
+        "practice/region_memory_crosswalk.py:143",
+        "practice/region_memory_crosswalk.py:153"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -990,7 +992,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:31@main",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:128",
-        "practice/region_memory_crosswalk.py:141"
+        "practice/region_memory_crosswalk.py:141",
+        "practice/region_memory_crosswalk.py:151"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1003,7 +1006,7 @@
       "confidence_sources": [
         {
           "confidence": "candidate",
-          "evidence": "USA external annotation and gameplay research; Japanese bit inferred from +0x57F0 only, not independently verified",
+          "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; user force-tested this bit as Plasma third-advice condition when the Chain Pipe bit is set; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:japan:event:external_super_pass"
         }
       ],
@@ -1028,7 +1031,8 @@
       "sources": [
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:146"
+        "practice/region_memory_crosswalk.py:146",
+        "practice/region_memory_crosswalk.py:156"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1064,7 +1068,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:156"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1101,7 +1106,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:146"
+        "practice/region_memory_crosswalk.py:146",
+        "practice/region_memory_crosswalk.py:156"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1137,7 +1143,8 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:156"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1212,7 +1219,10 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_unlocks.py:96"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1335,7 +1345,10 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_unlocks.py:96"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1950,7 +1963,11 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:154"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -1991,7 +2008,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:131",
-        "practice/region_memory_crosswalk.py:144"
+        "practice/region_memory_crosswalk.py:144",
+        "practice/region_memory_crosswalk.py:154"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -2027,7 +2045,11 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:154"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -2068,7 +2090,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:131",
-        "practice/region_memory_crosswalk.py:144"
+        "practice/region_memory_crosswalk.py:144",
+        "practice/region_memory_crosswalk.py:154"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -2109,7 +2132,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:131",
-        "practice/region_memory_crosswalk.py:144"
+        "practice/region_memory_crosswalk.py:144",
+        "practice/region_memory_crosswalk.py:154"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -2145,7 +2169,11 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:154"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -2186,7 +2214,8 @@
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:131",
-        "practice/region_memory_crosswalk.py:144"
+        "practice/region_memory_crosswalk.py:144",
+        "practice/region_memory_crosswalk.py:154"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -2222,7 +2251,11 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
-        "practice/region_memory_crosswalk.py"
+        "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
+        "practice/region_memory_crosswalk.py",
+        "practice/region_memory_crosswalk.py:154"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -7568,7 +7601,8 @@
         "https://gamehacking.org/game/20438",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:134",
-        "practice/region_memory_crosswalk.py:150"
+        "practice/region_memory_crosswalk.py:150",
+        "practice/region_memory_crosswalk.py:160"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -8368,7 +8402,8 @@
         "practice/japanese_fields.py:32",
         "practice/japanese_fields.py:40",
         "practice/japanese_scene_probes.py:42",
-        "practice/region_memory_crosswalk.py:32"
+        "practice/region_memory_crosswalk.py:32",
+        "practice/region_memory_crosswalk.py:33"
       ],
       "updated": "2026-11-17",
       "width": null
@@ -10525,6 +10560,121 @@
       "width": null
     },
     {
+      "address": "0x8003D468",
+      "aliases": [],
+      "category": "code_vma",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original MIPS code VMA func_8003D468; not a guest-data variable",
+          "source_id": "decomp:vm_loader"
+        }
+      ],
+      "context": "Code VMA: no generic game-state read or write",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": "2026-11-13",
+      "endian": null,
+      "evidence": "Original MIPS code VMA func_8003D468; not a guest-data variable",
+      "id": "decomp:vm_loader",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "vm_loader"
+      ],
+      "name": "VM script resource setup",
+      "owner": "script VM",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": null,
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "sources": [
+        "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+        "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
+      "address": "0x8003D68C",
+      "aliases": [],
+      "category": "code_vma",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original MIPS code VMA func_8003D68C; not a guest-data variable",
+          "source_id": "decomp:vm_dispatch"
+        }
+      ],
+      "context": "Code VMA: no generic game-state read or write",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": "2026-11-13",
+      "endian": null,
+      "evidence": "Original MIPS code VMA func_8003D68C; not a guest-data variable",
+      "id": "decomp:vm_dispatch",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "vm_dispatch"
+      ],
+      "name": "VM script command dispatcher",
+      "owner": "script VM",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": null,
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "sources": [
+        "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
+      "address": "0x8003DE80",
+      "aliases": [],
+      "category": "code_vma",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original MIPS code VMA func_8003DE80; not a guest-data variable",
+          "source_id": "decomp:vm_text_emit"
+        }
+      ],
+      "context": "Code VMA: no generic game-state read or write",
+      "control": null,
+      "counterpart": null,
+      "data_type": null,
+      "discovered": "2026-11-13",
+      "endian": null,
+      "evidence": "Original MIPS code VMA func_8003DE80; not a guest-data variable",
+      "id": "decomp:vm_text_emit",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "vm_text_emit"
+      ],
+      "name": "VM halfword stream walker",
+      "owner": "script VM",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": null,
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "sources": [
+        "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md"
+      ],
+      "updated": "2026-11-17",
+      "width": null
+    },
+    {
       "address": "0x80077858",
       "aliases": [
         "Script cursor (VM)"
@@ -10641,6 +10791,7 @@
         "practice/native_debug_watch.py:33",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:54",
+        "practice/region_memory_crosswalk.py:55",
         "practice/story_progress.py:425"
       ],
       "updated": "2026-11-17",
@@ -10697,6 +10848,8 @@
         "practice/native_debug_watch.py:39",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:59",
+        "practice/region_memory_crosswalk.py:60",
+        "practice/scene_controls.py:63",
         "practice/scene_controls.py:70"
       ],
       "updated": "2026-11-17",
@@ -10752,6 +10905,8 @@
         "practice/native_debug_watch.py:40",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:61",
+        "practice/region_memory_crosswalk.py:62",
+        "practice/scene_controls.py:38",
         "practice/scene_controls.py:45"
       ],
       "updated": "2026-11-17",
@@ -10814,7 +10969,8 @@
         "practice/native_debug_watch.py:23",
         "practice/native_debug_watch.py:36",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:58"
+        "practice/region_memory_crosswalk.py:58",
+        "practice/region_memory_crosswalk.py:59"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -10912,7 +11068,8 @@
         "practice/native_debug_watch.py:24",
         "practice/native_debug_watch.py:37",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:55"
+        "practice/region_memory_crosswalk.py:55",
+        "practice/region_memory_crosswalk.py:56"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -10965,7 +11122,8 @@
         "practice/native_debug_watch.py:21",
         "practice/native_debug_watch.py:34",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:62"
+        "practice/region_memory_crosswalk.py:62",
+        "practice/region_memory_crosswalk.py:63"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -11014,7 +11172,8 @@
         "practice/inspector.py:176",
         "practice/japanese_scene_probes.py:52",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:57"
+        "practice/region_memory_crosswalk.py:57",
+        "practice/region_memory_crosswalk.py:58"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -11053,7 +11212,8 @@
         "practice/checkpoints.py:29",
         "practice/japanese_scene_probes.py:54",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:60"
+        "practice/region_memory_crosswalk.py:60",
+        "practice/region_memory_crosswalk.py:61"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -11094,7 +11254,8 @@
         "practice/checkpoints.py:28",
         "practice/japanese_scene_probes.py:56",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:63"
+        "practice/region_memory_crosswalk.py:63",
+        "practice/region_memory_crosswalk.py:64"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -11132,7 +11293,8 @@
       "sources": [
         "practice/checkpoints.py:30",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:64"
+        "practice/region_memory_crosswalk.py:64",
+        "practice/region_memory_crosswalk.py:65"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -11189,6 +11351,8 @@
         "practice/native_debug_watch.py:41",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:56",
+        "practice/region_memory_crosswalk.py:57",
+        "practice/scene_controls.py:37",
         "practice/scene_controls.py:44"
       ],
       "updated": "2026-11-17",
@@ -11512,7 +11676,8 @@
         "practice/inspector.py:176",
         "practice/inspector.py:188",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:68"
+        "practice/region_memory_crosswalk.py:68",
+        "practice/region_memory_crosswalk.py:69"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -11562,6 +11727,8 @@
         "practice/japanese_scene_probes.py:58",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:66",
+        "practice/region_memory_crosswalk.py:67",
+        "practice/scene_controls.py:68",
         "practice/scene_controls.py:75"
       ],
       "updated": "2026-11-17",
@@ -11624,6 +11791,8 @@
         "practice/native_debug_watch.py:38",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:65",
+        "practice/region_memory_crosswalk.py:66",
+        "practice/scene_controls.py:67",
         "practice/scene_controls.py:74"
       ],
       "updated": "2026-11-17",
@@ -11700,7 +11869,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:69"
+        "practice/region_memory_crosswalk.py:69",
+        "practice/region_memory_crosswalk.py:70"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -11775,7 +11945,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:70"
+        "practice/region_memory_crosswalk.py:70",
+        "practice/region_memory_crosswalk.py:71"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -11850,7 +12021,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:71"
+        "practice/region_memory_crosswalk.py:71",
+        "practice/region_memory_crosswalk.py:72"
       ],
       "updated": "2026-11-17",
       "width": 2
@@ -11925,7 +12097,8 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:72"
+        "practice/region_memory_crosswalk.py:72",
+        "practice/region_memory_crosswalk.py:73"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -11970,7 +12143,8 @@
         "practice/inspector.py",
         "practice/inspector.py:44",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:73"
+        "practice/region_memory_crosswalk.py:73",
+        "practice/region_memory_crosswalk.py:74"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -12015,7 +12189,8 @@
         "practice/inspector.py",
         "practice/inspector.py:45",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:74"
+        "practice/region_memory_crosswalk.py:74",
+        "practice/region_memory_crosswalk.py:75"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -12060,7 +12235,8 @@
         "practice/inspector.py",
         "practice/inspector.py:46",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:75"
+        "practice/region_memory_crosswalk.py:75",
+        "practice/region_memory_crosswalk.py:76"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -12105,7 +12281,8 @@
         "practice/inspector.py",
         "practice/inspector.py:47",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:76"
+        "practice/region_memory_crosswalk.py:76",
+        "practice/region_memory_crosswalk.py:77"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -12150,7 +12327,8 @@
         "practice/inspector.py",
         "practice/inspector.py:48",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:77"
+        "practice/region_memory_crosswalk.py:77",
+        "practice/region_memory_crosswalk.py:78"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -12202,7 +12380,8 @@
         "practice/inspector.py:200",
         "practice/inspector.py:212",
         "practice/region_memory_crosswalk.py",
-        "practice/region_memory_crosswalk.py:67"
+        "practice/region_memory_crosswalk.py:67",
+        "practice/region_memory_crosswalk.py:68"
       ],
       "updated": "2026-11-17",
       "width": 1
@@ -12220,7 +12399,7 @@
         },
         {
           "confidence": "usa_source",
-          "evidence": "USA external annotation and gameplay research; Japanese bit inferred from +0x57F0 only, not independently verified",
+          "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; user force-tested this bit as Plasma third-advice condition when the Chain Pipe bit is set; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:usa:event:external_super_pass"
         }
       ],
@@ -12251,6 +12430,7 @@
         "practice/checkpoints.py:22",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:145",
+        "practice/region_memory_crosswalk.py:155",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -12301,6 +12481,7 @@
         "practice/checkpoints.py:22",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:145",
+        "practice/region_memory_crosswalk.py:155",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -12351,6 +12532,7 @@
         "practice/checkpoints.py:22",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:145",
+        "practice/region_memory_crosswalk.py:155",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -12401,6 +12583,7 @@
         "practice/checkpoints.py:22",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:145",
+        "practice/region_memory_crosswalk.py:155",
         "practice/story_progress.py",
         "practice/story_progress.py:5"
       ],
@@ -19832,6 +20015,7 @@
         "practice/inspector.py:216",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:78",
+        "practice/region_memory_crosswalk.py:79",
         "practice/story_progress.py:322",
         "practice/story_progress.py:392"
       ],
@@ -19928,6 +20112,7 @@
         "practice/inspector.py:219",
         "practice/region_memory_crosswalk.py",
         "practice/region_memory_crosswalk.py:79",
+        "practice/region_memory_crosswalk.py:80",
         "practice/story_progress.py:323",
         "practice/story_progress.py:393"
       ],
@@ -21042,7 +21227,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "chatgptweb/decomp research 2026-11-17",
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md"
       ],
@@ -21196,7 +21381,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "chatgptweb/decomp research 2026-11-17",
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:83@chatgptweb/decomp"
@@ -21235,7 +21420,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "chatgptweb/decomp research 2026-11-17",
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:65@chatgptweb/decomp"
@@ -21324,7 +21509,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "chatgptweb/decomp research 2026-11-17",
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
       "sources": [
         "decomp/CONTINUE.md:49@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
@@ -21371,7 +21556,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "chatgptweb/decomp research 2026-11-17",
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:83@chatgptweb/decomp",
@@ -21412,7 +21597,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "chatgptweb/decomp research 2026-11-17",
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
@@ -21452,7 +21637,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "chatgptweb/decomp research 2026-11-17",
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:95@chatgptweb/decomp"
@@ -21541,7 +21726,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "chatgptweb/decomp research 2026-11-17",
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:92@chatgptweb/decomp"
@@ -21581,7 +21766,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "chatgptweb/decomp research 2026-11-17",
+      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
@@ -22594,7 +22779,15 @@
     "practice/region_memory_crosswalk.py:145",
     "practice/region_memory_crosswalk.py:146",
     "practice/region_memory_crosswalk.py:150",
+    "practice/region_memory_crosswalk.py:151",
+    "practice/region_memory_crosswalk.py:152",
+    "practice/region_memory_crosswalk.py:153",
+    "practice/region_memory_crosswalk.py:154",
+    "practice/region_memory_crosswalk.py:155",
+    "practice/region_memory_crosswalk.py:156",
+    "practice/region_memory_crosswalk.py:160",
     "practice/region_memory_crosswalk.py:32",
+    "practice/region_memory_crosswalk.py:33",
     "practice/region_memory_crosswalk.py:54",
     "practice/region_memory_crosswalk.py:55",
     "practice/region_memory_crosswalk.py:56",
@@ -22621,11 +22814,17 @@
     "practice/region_memory_crosswalk.py:77",
     "practice/region_memory_crosswalk.py:78",
     "practice/region_memory_crosswalk.py:79",
+    "practice/region_memory_crosswalk.py:80",
     "practice/region_unlocks.py:159",
     "practice/region_unlocks.py:160",
     "practice/region_unlocks.py:96",
+    "practice/scene_controls.py:37",
+    "practice/scene_controls.py:38",
     "practice/scene_controls.py:44",
     "practice/scene_controls.py:45",
+    "practice/scene_controls.py:63",
+    "practice/scene_controls.py:67",
+    "practice/scene_controls.py:68",
     "practice/scene_controls.py:70",
     "practice/scene_controls.py:74",
     "practice/scene_controls.py:75",

@@ -1,3 +1,11 @@
+# Goemon Speedrun Tools v0.11.79 — Consolidated Address Catalogue
+
+## v0.11.79 — reviewed cross-project address metadata, no decomp source merge
+
+The toolkit address catalogue now includes the separately reviewed address metadata import from the newer 20 November branch. Its three JSON data files contain **549 catalogue entries** and **25 supplementary discoveries** (previous catalogue: 546 entries), with separate research-only metadata and source revision references. This does **not** promote provisional decomp code into the toolkit, change the original USA/Japan ROM images, or enable new unsafe memory writes. Toolkit v0.11.78's always-on Japanese dialogue search and character preview remain unchanged.
+
+The historical metadata-sync branches are superseded by this consolidated update. The long-lived `chatgptweb/decomp` baseline remains independent from `main`.
+
 # Goemon Speedrun Tools v0.11.78 — Japanese Dialogue Always Readable
 
 ## v0.11.78 — Japanese kana and romaji display is permanent
