@@ -1,0 +1,840 @@
+{
+  "format": "goemon-usa-native49-after-1623-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_count": 1623,
+  "units": [
+    {
+      "name": "native49_000",
+      "section": "main",
+      "rom_offset": 75112,
+      "size": 36,
+      "source_sha256": "c654c38ddbdd2e186140f914151860749c8f8c936088925d574c6e88714fa69d",
+      "original_asm_parent": "10D80",
+      "functions": [
+        {
+          "name": "func_80011968_12568",
+          "rom_offset": 75112,
+          "vma": 2147555688,
+          "size": 36,
+          "original_code_sha256": "3710d62b2c4dae001b7703483c4cc39b97f3aaab36eb88deae537dc8f9ff5434"
+        }
+      ]
+    },
+    {
+      "name": "native49_001",
+      "section": "main",
+      "rom_offset": 201352,
+      "size": 164,
+      "source_sha256": "55537e6b02c3b3334b37b551a3678004bf59c348fb8d271fe8b8df88f0455d44",
+      "original_asm_parent": "2F710",
+      "functions": [
+        {
+          "name": "func_80030688_31288",
+          "rom_offset": 201352,
+          "vma": 2147681928,
+          "size": 164,
+          "original_code_sha256": "aea7c50055db3ffce2b568087b217d3fdbf3e32347a6d3ef1fff7a5becb56836"
+        }
+      ]
+    },
+    {
+      "name": "native49_002",
+      "section": "file_11",
+      "rom_offset": 5881960,
+      "size": 72,
+      "source_sha256": "27a71922f421feb46e8742c03f21ee33db05361b11e2f7234e5c403e35c6eed4",
+      "original_asm_parent": "587370",
+      "functions": [
+        {
+          "name": "func_801E0158_59C068",
+          "rom_offset": 5881960,
+          "vma": 2149450072,
+          "size": 72,
+          "original_code_sha256": "0bd623c16d43ecb27ec34c97363d6ea4912bd98242a59f4644c43102f1c843a3"
+        }
+      ]
+    },
+    {
+      "name": "native49_003",
+      "section": "file_11",
+      "rom_offset": 5894628,
+      "size": 80,
+      "source_sha256": "08421a59c3bbce8defc6c315fce09c110b9c5a04e6e24d6c659d432535f8eb79",
+      "original_asm_parent": "587370",
+      "functions": [
+        {
+          "name": "func_801E32D4_59F1E4",
+          "rom_offset": 5894628,
+          "vma": 2149462740,
+          "size": 80,
+          "original_code_sha256": "7c94a3914a65e8cd2ef61938bf03922f23177924a1c39d90872cb1268f3116ad"
+        }
+      ]
+    },
+    {
+      "name": "native49_004",
+      "section": "file_11",
+      "rom_offset": 5903288,
+      "size": 56,
+      "source_sha256": "e1a42f1aa4d8a46b7da3d81c416b2f662d85b95060d5bcae362315a0da142332",
+      "original_asm_parent": "587370",
+      "functions": [
+        {
+          "name": "func_801E54A8_5A13B8",
+          "rom_offset": 5903288,
+          "vma": 2149471400,
+          "size": 56,
+          "original_code_sha256": "f22b5aecb59a120a3d05013afb06a73e3c126e667b4cc5431fba4aaa1c64e8b4"
+        }
+      ]
+    },
+    {
+      "name": "native49_005",
+      "section": "file_11",
+      "rom_offset": 5903536,
+      "size": 52,
+      "source_sha256": "2a600fbd7d82112b3a99ba3a977bcb7cc21d45c573daba530f5def6e9b5369d0",
+      "original_asm_parent": "587370",
+      "functions": [
+        {
+          "name": "func_801E55A0_5A14B0",
+          "rom_offset": 5903536,
+          "vma": 2149471648,
+          "size": 52,
+          "original_code_sha256": "01a0a682184834642202a6aace487cbf00cf20fd51327339ad6e72b8329650b9"
+        }
+      ]
+    },
+    {
+      "name": "native49_006",
+      "section": "file_11",
+      "rom_offset": 5906912,
+      "size": 60,
+      "source_sha256": "f4dd5c8a4a80e8c9a9059923c1ff58a60bea34c69a31ef2bb811eded8afd5892",
+      "original_asm_parent": "587370",
+      "functions": [
+        {
+          "name": "func_801E62D0_5A21E0",
+          "rom_offset": 5906912,
+          "vma": 2149475024,
+          "size": 60,
+          "original_code_sha256": "d6fdbe62dc7fb242d2a19197a00faea2d8d0d65e4228c9ca7b8d4952cc5f8ad7"
+        }
+      ]
+    },
+    {
+      "name": "native49_007",
+      "section": "file_11",
+      "rom_offset": 5918108,
+      "size": 56,
+      "source_sha256": "72b05524372512beed697b70fa9afcce7b7a1ad55a3177bd51bcd9cbd063a4a2",
+      "original_asm_parent": "587370",
+      "functions": [
+        {
+          "name": "func_801E8E8C_5A4D9C",
+          "rom_offset": 5918108,
+          "vma": 2149486220,
+          "size": 56,
+          "original_code_sha256": "3e7d4bdbc32e4be741035547abfb6a9d839884de037cf37ed7d91608e0c5b066"
+        }
+      ]
+    },
+    {
+      "name": "native49_008",
+      "section": "file_11",
+      "rom_offset": 5962240,
+      "size": 60,
+      "source_sha256": "c632af9bf2531be7aaac04748aa0f5a82558feb13ea359b10110b89ee9eb57be",
+      "original_asm_parent": "587370",
+      "functions": [
+        {
+          "name": "func_801F3AF0_5AFA00",
+          "rom_offset": 5962240,
+          "vma": 2149530352,
+          "size": 60,
+          "original_code_sha256": "efae63ee039643aa3809b935840a58cac8cb6421631651050bd23907e87ae467"
+        }
+      ]
+    },
+    {
+      "name": "native49_009",
+      "section": "file_13",
+      "rom_offset": 6285852,
+      "size": 32,
+      "source_sha256": "b0275f6aa5f68c00b36f96f0fc47a0b340ea45d8d055a93785fa11826d570131",
+      "original_asm_parent": "5F6840",
+      "functions": [
+        {
+          "name": "func_801D363C_5FEA1C",
+          "rom_offset": 6285852,
+          "vma": 2149398076,
+          "size": 32,
+          "original_code_sha256": "d77c69403a1a7ac8c6f6e25f5034f5e63dedb462a20ef30a10e1d2a29a3facbd"
+        }
+      ]
+    },
+    {
+      "name": "native49_010",
+      "section": "file_13",
+      "rom_offset": 6285884,
+      "size": 32,
+      "source_sha256": "aed27ffb1c02d99d286430d5c0fa4529d407c9b203e9dbdec78ff728da9da16c",
+      "original_asm_parent": "5F6840",
+      "functions": [
+        {
+          "name": "func_801D365C_5FEA3C",
+          "rom_offset": 6285884,
+          "vma": 2149398108,
+          "size": 32,
+          "original_code_sha256": "d77c69403a1a7ac8c6f6e25f5034f5e63dedb462a20ef30a10e1d2a29a3facbd"
+        }
+      ]
+    },
+    {
+      "name": "native49_011",
+      "section": "file_13",
+      "rom_offset": 6285916,
+      "size": 32,
+      "source_sha256": "ef8496b55ec306bf26c30d8e871bbb2da86de73fec613ab577833dbb64cf039a",
+      "original_asm_parent": "5F6840",
+      "functions": [
+        {
+          "name": "func_801D367C_5FEA5C",
+          "rom_offset": 6285916,
+          "vma": 2149398140,
+          "size": 32,
+          "original_code_sha256": "2fff440dab1dc2ae75cb0ec6db69e078e4695e434bd2545578ba80b243754220"
+        }
+      ]
+    },
+    {
+      "name": "native49_012",
+      "section": "file_13",
+      "rom_offset": 6285948,
+      "size": 32,
+      "source_sha256": "2d0dd3c33c5e90756d7d149f48d143ec269fcd613b1b6be96422c00cd4d54415",
+      "original_asm_parent": "5F6840",
+      "functions": [
+        {
+          "name": "func_801D369C_5FEA7C",
+          "rom_offset": 6285948,
+          "vma": 2149398172,
+          "size": 32,
+          "original_code_sha256": "2fff440dab1dc2ae75cb0ec6db69e078e4695e434bd2545578ba80b243754220"
+        }
+      ]
+    },
+    {
+      "name": "native49_013",
+      "section": "file_13",
+      "rom_offset": 6286388,
+      "size": 32,
+      "source_sha256": "60776990e235a0ebab3fb7f7df6678e66fd0bac5b91e5bae00ddd434ccec68ff",
+      "original_asm_parent": "5F6840",
+      "functions": [
+        {
+          "name": "func_801D3854_5FEC34",
+          "rom_offset": 6286388,
+          "vma": 2149398612,
+          "size": 32,
+          "original_code_sha256": "820a245936dd4b571d3753ae79f1ee9504365518c81476da1394e01860eaa290"
+        }
+      ]
+    },
+    {
+      "name": "native49_014",
+      "section": "file_13",
+      "rom_offset": 6286420,
+      "size": 32,
+      "source_sha256": "74217f51d09c4833a317aa597f202096ca19157a72b15395ffb7e11c62aaadfb",
+      "original_asm_parent": "5F6840",
+      "functions": [
+        {
+          "name": "func_801D3874_5FEC54",
+          "rom_offset": 6286420,
+          "vma": 2149398644,
+          "size": 32,
+          "original_code_sha256": "820a245936dd4b571d3753ae79f1ee9504365518c81476da1394e01860eaa290"
+        }
+      ]
+    },
+    {
+      "name": "native49_015",
+      "section": "file_17",
+      "rom_offset": 6766848,
+      "size": 72,
+      "source_sha256": "6e7f191b30281c3065978619447a82e491f1959c9b6ab5a8dc3ddb2867177b10",
+      "original_asm_parent": "66C250",
+      "functions": [
+        {
+          "name": "func_80215150_674100",
+          "rom_offset": 6766848,
+          "vma": 2149667152,
+          "size": 72,
+          "original_code_sha256": "ae544cf2580a434fecbbd0ba14a797f164e0906e500cf1a08aeef5dd0d9c0a0b"
+        }
+      ]
+    },
+    {
+      "name": "native49_016",
+      "section": "file_18",
+      "rom_offset": 6778544,
+      "size": 28,
+      "source_sha256": "d4aa2b18d1ee0e479ddac2307fb7534e117bd267bff12e3f380641ee348b56d4",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_8020D4D0_676EB0",
+          "rom_offset": 6778544,
+          "vma": 2149635280,
+          "size": 28,
+          "original_code_sha256": "afc38a656f2441b9e7df7e9047df7d4e652446280e8f162cab346eba0512cd15"
+        }
+      ]
+    },
+    {
+      "name": "native49_017",
+      "section": "file_18",
+      "rom_offset": 6798516,
+      "size": 32,
+      "source_sha256": "4b7b6fa303113c8cbc07d5d99641066b2ea92c36c012459a310a6a8082a4871d",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_802122D4_67BCB4",
+          "rom_offset": 6798516,
+          "vma": 2149655252,
+          "size": 32,
+          "original_code_sha256": "f691556f3607570bb7ffb92e5d7584bb97dee8c72d745ea6ba3f477544da264b"
+        }
+      ]
+    },
+    {
+      "name": "native49_018",
+      "section": "file_18",
+      "rom_offset": 6800792,
+      "size": 32,
+      "source_sha256": "a3cad298ad4a2bcb0ff7f95d136f55fd1dbcdb4554e71f179dceb16bbcc980be",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_80212BB8_67C598",
+          "rom_offset": 6800792,
+          "vma": 2149657528,
+          "size": 32,
+          "original_code_sha256": "f691556f3607570bb7ffb92e5d7584bb97dee8c72d745ea6ba3f477544da264b"
+        }
+      ]
+    },
+    {
+      "name": "native49_019",
+      "section": "file_18",
+      "rom_offset": 6818856,
+      "size": 32,
+      "source_sha256": "c096633b413bea2ce72be862ae4ca8d032572ef0144c6f523a2f73c9f453db51",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_80217248_680C28",
+          "rom_offset": 6818856,
+          "vma": 2149675592,
+          "size": 32,
+          "original_code_sha256": "c5e736f2e8da9a0b92c1e676d81a0e65fffdae3442a98c00b9216429a20620b1"
+        }
+      ]
+    },
+    {
+      "name": "native49_020",
+      "section": "file_18",
+      "rom_offset": 6831856,
+      "size": 104,
+      "source_sha256": "eea2dbd117357882b3a776fea904a4aa771a80ab9f343ebd84be09e7cb90d7f4",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_8021A510_683EF0",
+          "rom_offset": 6831856,
+          "vma": 2149688592,
+          "size": 104,
+          "original_code_sha256": "a3de398b6d02127f5b12eb2e5979e5f0441f1268bc13d1897a67043b58726ee9"
+        }
+      ]
+    },
+    {
+      "name": "native49_021",
+      "section": "file_18",
+      "rom_offset": 6850704,
+      "size": 32,
+      "source_sha256": "c273c28601024108ecc7bef04338aae65435fc5d8934c9a2885c2b901c137860",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_8021EEB0_688890",
+          "rom_offset": 6850704,
+          "vma": 2149707440,
+          "size": 32,
+          "original_code_sha256": "f691556f3607570bb7ffb92e5d7584bb97dee8c72d745ea6ba3f477544da264b"
+        }
+      ]
+    },
+    {
+      "name": "native49_022",
+      "section": "file_18",
+      "rom_offset": 6871596,
+      "size": 32,
+      "source_sha256": "d6c24ed2cb1211d27ab8a515391247ee8dec154cd3bda6a8e4c67d51c9ec7995",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_8022404C_68DA2C",
+          "rom_offset": 6871596,
+          "vma": 2149728332,
+          "size": 32,
+          "original_code_sha256": "c5e736f2e8da9a0b92c1e676d81a0e65fffdae3442a98c00b9216429a20620b1"
+        }
+      ]
+    },
+    {
+      "name": "native49_023",
+      "section": "file_18",
+      "rom_offset": 6884412,
+      "size": 32,
+      "source_sha256": "5f2703e5d33bc6579697f5920295fcaca54481dc054411235dbf1a0aa90c3462",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_8022725C_690C3C",
+          "rom_offset": 6884412,
+          "vma": 2149741148,
+          "size": 32,
+          "original_code_sha256": "f691556f3607570bb7ffb92e5d7584bb97dee8c72d745ea6ba3f477544da264b"
+        }
+      ]
+    },
+    {
+      "name": "native49_024",
+      "section": "file_18",
+      "rom_offset": 6886336,
+      "size": 32,
+      "source_sha256": "520adbf670d49b868f913504ef4cb7eb14acaadbb403681986b1fd02cecdea52",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_802279E0_6913C0",
+          "rom_offset": 6886336,
+          "vma": 2149743072,
+          "size": 32,
+          "original_code_sha256": "f691556f3607570bb7ffb92e5d7584bb97dee8c72d745ea6ba3f477544da264b"
+        }
+      ]
+    },
+    {
+      "name": "native49_025",
+      "section": "file_18",
+      "rom_offset": 6888284,
+      "size": 32,
+      "source_sha256": "2493b7e142d278e56be56a6966484b0a197e5c07b91aee84d17304f624ecc508",
+      "original_asm_parent": "676C80",
+      "functions": [
+        {
+          "name": "func_8022817C_691B5C",
+          "rom_offset": 6888284,
+          "vma": 2149745020,
+          "size": 32,
+          "original_code_sha256": "f691556f3607570bb7ffb92e5d7584bb97dee8c72d745ea6ba3f477544da264b"
+        }
+      ]
+    },
+    {
+      "name": "native49_026",
+      "section": "file_19",
+      "rom_offset": 6914184,
+      "size": 28,
+      "source_sha256": "31f34b355900e70ef8affe2609ad7ded6bc183d0f026a925bc82b963857b7a01",
+      "original_asm_parent": "694CA0",
+      "functions": [
+        {
+          "name": "func_80210688_698088",
+          "rom_offset": 6914184,
+          "vma": 2149648008,
+          "size": 28,
+          "original_code_sha256": "5b1c132ac586a0e70f5c4f4696dd1fdf37ce8901513c914238882a88e24cb304"
+        }
+      ]
+    },
+    {
+      "name": "native49_027",
+      "section": "file_19",
+      "rom_offset": 6914764,
+      "size": 32,
+      "source_sha256": "cc8f251423b255920427d4a2e557127abc87fb30a6416581c8c64c75d2a1ba63",
+      "original_asm_parent": "694CA0",
+      "functions": [
+        {
+          "name": "func_802108CC_6982CC",
+          "rom_offset": 6914764,
+          "vma": 2149648588,
+          "size": 32,
+          "original_code_sha256": "b0b50f6e45d2a53ac3ccd0ca619f8e8a83a22863ec4bf458426d1620c64661c4"
+        }
+      ]
+    },
+    {
+      "name": "native49_028",
+      "section": "file_19",
+      "rom_offset": 6915188,
+      "size": 32,
+      "source_sha256": "9ac16a0eb989027568240d2b9e4abffc1047e380b6dd4441a5874f47cb483e84",
+      "original_asm_parent": "694CA0",
+      "functions": [
+        {
+          "name": "func_80210A74_698474",
+          "rom_offset": 6915188,
+          "vma": 2149649012,
+          "size": 32,
+          "original_code_sha256": "ba4ed77162b8d5997eb2933e96619ed48304811136c1d7bd213968d0ef73e154"
+        }
+      ]
+    },
+    {
+      "name": "native49_029",
+      "section": "file_19",
+      "rom_offset": 6915672,
+      "size": 32,
+      "source_sha256": "1641aade2098eaea4b9a12e714f0e726d6ada75fe1ce942aa8f9b3fda2d3eaa2",
+      "original_asm_parent": "694CA0",
+      "functions": [
+        {
+          "name": "func_80210C58_698658",
+          "rom_offset": 6915672,
+          "vma": 2149649496,
+          "size": 32,
+          "original_code_sha256": "ba4ed77162b8d5997eb2933e96619ed48304811136c1d7bd213968d0ef73e154"
+        }
+      ]
+    },
+    {
+      "name": "native49_030",
+      "section": "file_19",
+      "rom_offset": 6916544,
+      "size": 32,
+      "source_sha256": "410ea245d8e4e99c36e7e94e9173d64d336342d8faf246dac4e5d84809981fe7",
+      "original_asm_parent": "694CA0",
+      "functions": [
+        {
+          "name": "func_80210FC0_6989C0",
+          "rom_offset": 6916544,
+          "vma": 2149650368,
+          "size": 32,
+          "original_code_sha256": "b0b50f6e45d2a53ac3ccd0ca619f8e8a83a22863ec4bf458426d1620c64661c4"
+        }
+      ]
+    },
+    {
+      "name": "native49_031",
+      "section": "file_19",
+      "rom_offset": 6923388,
+      "size": 172,
+      "source_sha256": "81edd362404394aa02f28d67b245117d29868f456b1094b90ada6985a2289791",
+      "original_asm_parent": "694CA0",
+      "functions": [
+        {
+          "name": "func_80212A7C_69A47C",
+          "rom_offset": 6923388,
+          "vma": 2149657212,
+          "size": 172,
+          "original_code_sha256": "e2d3b091ac32ec638fdfe9e03356ed2c7daf5eeab2f41927073f7819a6116a8e"
+        }
+      ]
+    },
+    {
+      "name": "native49_032",
+      "section": "file_19",
+      "rom_offset": 6923584,
+      "size": 76,
+      "source_sha256": "35cffae29f180423ed1e3c96bbb7929ec75471b8185573322f34859a483ae4bd",
+      "original_asm_parent": "694CA0",
+      "functions": [
+        {
+          "name": "func_80212B40_69A540",
+          "rom_offset": 6923584,
+          "vma": 2149657408,
+          "size": 76,
+          "original_code_sha256": "a4dc395d9c5cf847fecb72a648ab35e11a5ada7df4c8982f65e02b07f2f372c6"
+        }
+      ]
+    },
+    {
+      "name": "native49_033",
+      "section": "file_19",
+      "rom_offset": 6930172,
+      "size": 32,
+      "source_sha256": "07fb6f5127fd831d9440c1b24a0a4aa9387135668e4f0942b7314cd8d20fa7df",
+      "original_asm_parent": "694CA0",
+      "functions": [
+        {
+          "name": "func_802144FC_69BEFC",
+          "rom_offset": 6930172,
+          "vma": 2149663996,
+          "size": 32,
+          "original_code_sha256": "ba4ed77162b8d5997eb2933e96619ed48304811136c1d7bd213968d0ef73e154"
+        }
+      ]
+    },
+    {
+      "name": "native49_034",
+      "section": "file_27",
+      "rom_offset": 7015976,
+      "size": 60,
+      "source_sha256": "d6d8b6990dca5790200eeec1510594623deb69d07b92a1ee9aff4f69397504e8",
+      "original_asm_parent": "file_27",
+      "functions": [
+        {
+          "name": "func_08001A18_6B0E28",
+          "rom_offset": 7015976,
+          "vma": 134224408,
+          "size": 60,
+          "original_code_sha256": "85d454ee0ecd8c839b79729bfbc02601b90febe3839f333e7c02dcebf70009f5"
+        }
+      ]
+    },
+    {
+      "name": "native49_035",
+      "section": "file_29",
+      "rom_offset": 7071244,
+      "size": 32,
+      "source_sha256": "8f242e0d3297f54235897333bf574cb4a0c120e80ea46e9da84606bd75f9554e",
+      "original_asm_parent": "file_29",
+      "functions": [
+        {
+          "name": "func_0800B36C_6BE60C",
+          "rom_offset": 7071244,
+          "vma": 134263660,
+          "size": 32,
+          "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5"
+        }
+      ]
+    },
+    {
+      "name": "native49_036",
+      "section": "file_30",
+      "rom_offset": 7076608,
+      "size": 100,
+      "source_sha256": "d3c7b5221fba4315caaa8a26f4438772f00e763c75505baa74e5ae981b4fcce0",
+      "original_asm_parent": "file_30",
+      "functions": [
+        {
+          "name": "func_080003B0_6BFB00",
+          "rom_offset": 7076608,
+          "vma": 134218672,
+          "size": 100,
+          "original_code_sha256": "2381ef85485812a0e9e78a381cd643baa91d1e975cb4aafcb0eaff74a687065e"
+        }
+      ]
+    },
+    {
+      "name": "native49_037",
+      "section": "file_30",
+      "rom_offset": 7096108,
+      "size": 60,
+      "source_sha256": "25778d1201f158d016354493ac6fd165026f5e419ed1e12704cfc0abc019aca8",
+      "original_asm_parent": "file_30",
+      "functions": [
+        {
+          "name": "func_08004FDC_6C472C",
+          "rom_offset": 7096108,
+          "vma": 134238172,
+          "size": 60,
+          "original_code_sha256": "f33aef476f0f0156b6bd94497d0bc47ad5fd97e9a6e6beff05a75aad4c6d6122"
+        }
+      ]
+    },
+    {
+      "name": "native49_038",
+      "section": "file_46",
+      "rom_offset": 7349448,
+      "size": 68,
+      "source_sha256": "1de03ffa0e5a902cd231f891bc3d2691bac57e881bae6875683d573402b2c930",
+      "original_asm_parent": "file_46",
+      "functions": [
+        {
+          "name": "func_080013C8_7024C8",
+          "rom_offset": 7349448,
+          "vma": 134222792,
+          "size": 68,
+          "original_code_sha256": "0c194a1cfe9b73dc0ec1b80ab7ee4195e604aa54a4b2b8384d7322c0cdf2db03"
+        }
+      ]
+    },
+    {
+      "name": "native49_039",
+      "section": "file_49",
+      "rom_offset": 7386228,
+      "size": 32,
+      "source_sha256": "5fc44c7ffd56d28b743100affc97385729ab68ce8aacf7c7a69bf23b6cf1e614",
+      "original_asm_parent": "file_49",
+      "functions": [
+        {
+          "name": "func_08001434_70B474",
+          "rom_offset": 7386228,
+          "vma": 134222900,
+          "size": 32,
+          "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5"
+        }
+      ]
+    },
+    {
+      "name": "native49_040",
+      "section": "file_53",
+      "rom_offset": 7404608,
+      "size": 64,
+      "source_sha256": "d2c2d41a9f4a899245d70f8ae7c35308b80c2ce00fbeabedcbb03e4b79517e7e",
+      "original_asm_parent": "file_53",
+      "functions": [
+        {
+          "name": "func_08001B90_70FC40",
+          "rom_offset": 7404608,
+          "vma": 134224784,
+          "size": 64,
+          "original_code_sha256": "1d93f8f6459e19bee8789cd03cd8a56aab732eaae883e729a0160e4e205229a9"
+        }
+      ]
+    },
+    {
+      "name": "native49_041",
+      "section": "file_61",
+      "rom_offset": 7475536,
+      "size": 60,
+      "source_sha256": "8b5bc69a458af5195a310c3eab70946dc21a5b196b7f67ebbb6bbefc4807e606",
+      "original_asm_parent": "file_61",
+      "functions": [
+        {
+          "name": "func_08000880_721150",
+          "rom_offset": 7475536,
+          "vma": 134219904,
+          "size": 60,
+          "original_code_sha256": "2e5abcdebb643b1075667a73314de6562cc6af14fb19372f82f84020def43f21"
+        }
+      ]
+    },
+    {
+      "name": "native49_042",
+      "section": "file_65",
+      "rom_offset": 7495740,
+      "size": 32,
+      "source_sha256": "dbb7cec5cbceea5bb421cca95766646cb6c72a83d903bf7e9bc4bdaebdf1055e",
+      "original_asm_parent": "file_65",
+      "functions": [
+        {
+          "name": "func_0800040C_72603C",
+          "rom_offset": 7495740,
+          "vma": 134218764,
+          "size": 32,
+          "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5"
+        }
+      ]
+    },
+    {
+      "name": "native49_043",
+      "section": "file_67",
+      "rom_offset": 7513328,
+      "size": 32,
+      "source_sha256": "f87d33359af5bc525d48781438ff814feb494c1aff99fc3311bf6617d943567e",
+      "original_asm_parent": "file_67",
+      "functions": [
+        {
+          "name": "func_08000F50_72A4F0",
+          "rom_offset": 7513328,
+          "vma": 134221648,
+          "size": 32,
+          "original_code_sha256": "f7018315fc345937ad6a18b8d1a38eb4011a3565be4dec94f6d359c61e573f25"
+        }
+      ]
+    },
+    {
+      "name": "native49_044",
+      "section": "file_69",
+      "rom_offset": 7523584,
+      "size": 32,
+      "source_sha256": "ff006b580db9144f89ddc2015190e0974819ca592551b6e8eeec949fd4d9f2e7",
+      "original_asm_parent": "file_69",
+      "functions": [
+        {
+          "name": "func_080014B0_72CD00",
+          "rom_offset": 7523584,
+          "vma": 134223024,
+          "size": 32,
+          "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5"
+        }
+      ]
+    },
+    {
+      "name": "native49_045",
+      "section": "file_75",
+      "rom_offset": 7575568,
+      "size": 32,
+      "source_sha256": "dd4102ebc2c5cb0d8d10efd09cfb16c7407808ca0da4ece67d138ba83f910632",
+      "original_asm_parent": "file_75",
+      "functions": [
+        {
+          "name": "func_08001140_739810",
+          "rom_offset": 7575568,
+          "vma": 134222144,
+          "size": 32,
+          "original_code_sha256": "0d3c551735669d427cf8ac42e4acd9e2bb3519be893b7aab3510c17fad6b3fab"
+        }
+      ]
+    },
+    {
+      "name": "native49_046",
+      "section": "file_78",
+      "rom_offset": 7586820,
+      "size": 32,
+      "source_sha256": "ac1b33a4fb61f0d326c2dfb4391148107924a3cce448483e27aa3816a8895e08",
+      "original_asm_parent": "file_78",
+      "functions": [
+        {
+          "name": "func_08000804_73C404",
+          "rom_offset": 7586820,
+          "vma": 134219780,
+          "size": 32,
+          "original_code_sha256": "6ad64eb559a7230edbfb2c7814d102853a73f61fda4f6e14011acee1f5fedd6a"
+        }
+      ]
+    },
+    {
+      "name": "native49_047",
+      "section": "file_78",
+      "rom_offset": 7587184,
+      "size": 28,
+      "source_sha256": "353befe62a4b4111f0392fafb475bdd759a66faeeab1d18d609cd8ffebbc5c50",
+      "original_asm_parent": "file_78",
+      "functions": [
+        {
+          "name": "func_08000970_73C570",
+          "rom_offset": 7587184,
+          "vma": 134220144,
+          "size": 28,
+          "original_code_sha256": "20d036ed76c5b1ba18c678e6a3eb8297ccfb005dc258e918673111c148fcac6b"
+        }
+      ]
+    },
+    {
+      "name": "native49_048",
+      "section": "file_78",
+      "rom_offset": 7587212,
+      "size": 28,
+      "source_sha256": "1e8ff5459a1579564798be10a646febc6346e93fef550bb2394f6905f8213e0e",
+      "original_asm_parent": "file_78",
+      "functions": [
+        {
+          "name": "func_0800098C_73C58C",
+          "rom_offset": 7587212,
+          "vma": 134220172,
+          "size": 28,
+          "original_code_sha256": "7a050cb4e013f5c14aa5ed85b5faed8a2a552caa16d6684d659bfb544df51258"
+        }
+      ]
+    }
+  ]
+}

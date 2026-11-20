@@ -3,13 +3,13 @@
   "created_utc_date": "2026-11-19",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 1623,
-    "usa_instruction_bytes": 62504,
+    "usa_functions": 1723,
+    "usa_instruction_bytes": 69344,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "USA 1,623 original-address matching C, including five independent newly rediscovered 24/24/28/28/28-byte functions proven by fresh G2. Original archived 116 fully accepted; historical 341 nominal remainder has no preserved source identities, remains RESEARCH_ONLY. File25 relocation-blocked candidate remains unpromoted. Japan regional 432 C unchanged (core manifest records 39).",
+  "purpose": "USA 1,623 original-address matching C, including five independent newly rediscovered 24/24/28/28/28-byte functions proven by fresh G2. Original archived 116 fully accepted; historical 341 nominal remainder has no preserved source identities, remains RESEARCH_ONLY. File25 relocation-blocked candidate remains unpromoted. Japan regional 432 C unchanged (core manifest records 39). Reconciled with the 2026-11-20 USA 100-function native G2 acceptance; still one independent historical file25 relocation blocker.",
   "ready_for_combined_g2": {
     "functions": 0,
     "bytes": 0,

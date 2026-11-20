@@ -235,6 +235,25 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-o', str(binary)]),
             ('Rediscovery5 original-C 5000-case sanitizer test', [str(binary)]),
         ])
+    if not quick:
+        # Authentic original C source, not an ABI/model stub: ASan/UBSan host
+        # coverage of a safe field-update function over 1,000 input cases.
+        root=ROOT/'decomp/research/pending_native100_20261120'
+        source=ROOT/'decomp/research/pending_native49_20261120/sources/native49_000.c'
+        if not source.is_file():
+            raise ValueError('Missing original native100 C source')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('native100-original-host')
+        steps.extend([
+          ('Native100 original-C host sanitizer build',compiler+[
+              '-std=gnu11','-O1','-g','-Wall','-Wextra','-Werror',
+              '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+              '-fno-omit-frame-pointer',
+              str((root/'test_host_native100.c').relative_to(ROOT)),
+              str(source.relative_to(ROOT)),
+              '-o',str(binary)]),
+          ('Native100 original-C 1000-case host sanitizer test',[str(binary)])
+        ])
     return steps
 
 

@@ -40,7 +40,7 @@ class Archive33Acceptance(unittest.TestCase):
         self.assertTrue(self.current['comparison']['full_rom_match'])
         self.assertEqual(self.current['comparison']['candidate_sha1'],'6ea0ed71032ce08fc2745f412d84936382197494')
         self.assertEqual({f['name'] for f in self.current['comparison']['functions']},oldnames|newnames)
-        m=load_manifest(ROOT/'decomp/manifest.json');accepted=claimed_functions({k:v for k,v in m.items() if k not in ('overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage')})
+        m=load_manifest(ROOT/'decomp/manifest.json');accepted=claimed_functions({k:v for k,v in m.items() if k not in ('overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage')})
         self.assertEqual((len(accepted),sum(f['size'] for f in accepted)),(1556,59552))
         self.assertEqual(len({f['rom_offset'] for f in accepted}),1556)
 

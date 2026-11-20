@@ -1588,5 +1588,11 @@
   },
   "overlay_rediscovery5_stage": {
     "format": "goemon-usa-rediscovery5-after-1618-v1"
+  },
+  "overlay_native49_stage": {
+    "format": "goemon-usa-native49-after-1623-v1"
+  },
+  "overlay_native51_stage": {
+    "format": "goemon-usa-native51-after-1672-v1"
   }
 }

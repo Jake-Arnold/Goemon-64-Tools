@@ -389,6 +389,24 @@ def rediscovery5_stage(manifest):
     return native.load_fixture()
 
 
+def native49_stage(manifest):
+    stage=manifest.get('overlay_native49_stage')
+    if stage is None:return None
+    from . import overlay_native49 as native
+    if stage != {'format':native.STAGE_FORMAT}:
+        raise ValueError('Unreviewed native49 production stage contract')
+    return native.load_fixture()
+
+
+def native51_stage(manifest):
+    stage=manifest.get('overlay_native51_stage')
+    if stage is None:return None
+    from . import overlay_native51 as native
+    if stage != {'format':native.STAGE_FORMAT}:
+        raise ValueError('Unreviewed native51 production stage contract')
+    return native.load_fixture()
+
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -466,7 +484,9 @@ def claimed_functions(manifest):
                             (archive33_stage(manifest),'overlay_archive33'),
                             (archive61_stage(manifest),'overlay_archive61'),
                             (checkpoint500_stage(manifest),'overlay_checkpoint500'),
-                            (rediscovery5_stage(manifest),'overlay_rediscovery5')):
+                            (rediscovery5_stage(manifest),'overlay_rediscovery5'),
+                            (native49_stage(manifest),'overlay_native49'),
+                            (native51_stage(manifest),'overlay_native51')):
         if fixture:
             from importlib import import_module
             mod=import_module('.'+modname,package='decomp')
@@ -1393,7 +1413,7 @@ def load_manifest(path):
     file11_mode = file11_stage_mode(manifest)
     if file11_mode is not None:
         if file11_mode in (143,144,152,179,183,184,187,269):
-            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage')})
+            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage')})
             candidates = [(f['name'], f['rom_offset'], f['size'])
                           for f in file11_adapter(file11_mode).entries()]
         else:
@@ -1510,7 +1530,7 @@ def load_manifest(path):
             raise ValueError('VM table layout requires pinned assignment handler')
     wide_fixture=wide132_stage(manifest)
     if wide_fixture:
-        existing=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage')})
+        existing=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage')})
         existing_names={row['name'] for row in existing}
         existing_bounds=[(row['rom_offset'],row['rom_offset']+row['size']) for row in existing]
         for row in wide_fixture['functions']:
@@ -1572,6 +1592,24 @@ def load_manifest(path):
                 off,end=f['rom_offset'],f['rom_offset']+f['size']
                 if f['name'] in names or any(off<e and st<end for st,e in intervals):
                     raise ValueError('New original C overlaps accepted production: '+f['name'])
+    fixture=native49_stage(manifest)
+    if fixture:
+        previous=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_native49_stage',)+(('overlay_native51_stage',) if 'native49'=='native49' else ())})
+        names={f['name'] for f in previous}
+        spans=[(f['rom_offset'],f['rom_offset']+f['size']) for f in previous]
+        for f in __import__('decomp.overlay_native49',fromlist=['functions']).functions(fixture):
+            off,end=f['rom_offset'],f['rom_offset']+f['size']
+            if f['name'] in names or any(off<e and start<end for start,e in spans):
+                raise ValueError('New native49 overlaps accepted C '+f['name'])
+    fixture=native51_stage(manifest)
+    if fixture:
+        previous=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_native51_stage',)+(('overlay_native51_stage',) if 'native51'=='native49' else ())})
+        names={f['name'] for f in previous}
+        spans=[(f['rom_offset'],f['rom_offset']+f['size']) for f in previous]
+        for f in __import__('decomp.overlay_native51',fromlist=['functions']).functions(fixture):
+            off,end=f['rom_offset'],f['rom_offset']+f['size']
+            if f['name'] in names or any(off<e and start<end for start,e in spans):
+                raise ValueError('New native51 overlaps accepted C '+f['name'])
     return manifest
 
 
@@ -1588,7 +1626,7 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
             raise ValueError('file_11 staging requires authenticated USA decompressed ROM')
         if file11_mode in (143,144,152,179,183,184,187,269):
             adapter=file11_adapter(file11_mode)
-            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage')},reference_rom)
+            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage')},reference_rom)
             file11_inline=adapter.source_payloads(checkout,plan)
             text=adapter.stage_splat(text,plan)
         else:
@@ -2629,7 +2667,7 @@ def run_build(args,manifest,report):
     logged('candidate-build',['make','-j'+str(args.jobs),'UV='+uv],candidate)
     symbols=parse_symbols(capture(['mips-linux-gnu-nm','-n','build/usa/mnsg.elf'],candidate))
     result=compare_images(expected,(candidate/'build/usa/mnsg.z64').read_bytes(),
-                          {k:v for k,v in manifest.items() if k not in ('overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage')},symbols)
+                          {k:v for k,v in manifest.items() if k not in ('overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage')},symbols)
     if manifest.get('vm_assignment_table_layout'):
         image=(candidate/'build/usa/mnsg.z64').read_bytes()
         report['assignment_table']=dict(rom_start='0x7DC2C',size=60,
@@ -3080,6 +3118,78 @@ def run_build(args,manifest,report):
                 result['matched_functions']+=1
                 result['matched_function_bytes']+=f['size']
         report[stage_key]=proof
+    native_fixture=native49_stage(manifest)
+    if native_fixture:
+        from . import overlay_native49 as native
+        if not result['full_rom_match'] or result['matched_functions']!=1623:
+            raise ValueError('Authenticated 1623 prior C required for native49')
+        src=source_dir/'research/pending_native49_20261120/sources'
+        native.validate_sources(expected,native_fixture,src)
+        accepted_elf=work/'accepted1623.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',accepted_elf)
+        owners=native.find_owners(candidate,native_fixture)
+        logged('candidate-native49-original-parents',
+            ['make','-j'+str(args.jobs),'UV='+uv,*native.parent_targets(owners)],candidate)
+        plan=native.stage_linker(candidate,expected,native_fixture,owners,src)
+        report['overlay_native49_source_plan']={'functions':len(plan['functions']),
+            'instruction_bytes':sum(f['size'] for f in plan['functions']),
+            'C_units':len(plan['units']),'retained_ASM_fragments':len(plan['assembly'])}
+        logged('candidate-native49-objects',
+            ['make','-j'+str(args.jobs),'UV='+uv,*native.object_targets(plan)],candidate)
+        report['overlay_native49_object_layout']=native.pack_objects(candidate,expected,plan)
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-native49-combined-final-build',
+            ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=native.verify_link(baseline,accepted_elf,candidate,expected,plan,native_fixture)
+        for unit in native_fixture['units']:
+            key='research/pending_native49_20261120/sources/'+unit['name']+'.c'
+            report['sources_sha256_lf'][key]=digest((candidate/'src'/(unit['name']+'.c')).read_bytes(),'sha256')
+            for f in unit['functions']:
+                result['functions'].append({'name':f['name'],'size':f['size'],
+                    'guest_address':f'0x{f["vma"]:08X}', 'rom_offset':f'0x{f["rom_offset"]:X}',
+                    'matched':True,'expected_sha256':f['original_code_sha256'],
+                    'candidate_sha256':f['original_code_sha256']})
+                result['claimed_functions']+=1
+                result['matched_functions']+=1
+                result['matched_function_bytes']+=f['size']
+        report['overlay_native49_stage']=proof
+    native_fixture=native51_stage(manifest)
+    if native_fixture:
+        from . import overlay_native51 as native
+        if not result['full_rom_match'] or result['matched_functions']!=1672:
+            raise ValueError('Authenticated 1672 prior C required for native51')
+        src=source_dir/'research/pending_native51_20261120/sources'
+        native.validate_sources(expected,native_fixture,src)
+        accepted_elf=work/'accepted1672.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',accepted_elf)
+        owners=native.find_owners(candidate,native_fixture)
+        logged('candidate-native51-original-parents',
+            ['make','-j'+str(args.jobs),'UV='+uv,*native.parent_targets(owners)],candidate)
+        plan=native.stage_linker(candidate,expected,native_fixture,owners,src)
+        report['overlay_native51_source_plan']={'functions':len(plan['functions']),
+            'instruction_bytes':sum(f['size'] for f in plan['functions']),
+            'C_units':len(plan['units']),'retained_ASM_fragments':len(plan['assembly'])}
+        logged('candidate-native51-objects',
+            ['make','-j'+str(args.jobs),'UV='+uv,*native.object_targets(plan)],candidate)
+        report['overlay_native51_object_layout']=native.pack_objects(candidate,expected,plan)
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-native51-combined-final-build',
+            ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=native.verify_link(baseline,accepted_elf,candidate,expected,plan,native_fixture)
+        for unit in native_fixture['units']:
+            key='research/pending_native51_20261120/sources/'+unit['name']+'.c'
+            report['sources_sha256_lf'][key]=digest((candidate/'src'/(unit['name']+'.c')).read_bytes(),'sha256')
+            for f in unit['functions']:
+                result['functions'].append({'name':f['name'],'size':f['size'],
+                    'guest_address':f'0x{f["vma"]:08X}', 'rom_offset':f'0x{f["rom_offset"]:X}',
+                    'matched':True,'expected_sha256':f['original_code_sha256'],
+                    'candidate_sha256':f['original_code_sha256']})
+                result['claimed_functions']+=1
+                result['matched_functions']+=1
+                result['matched_function_bytes']+=f['size']
+        report['overlay_native51_stage']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'
