@@ -19,19 +19,20 @@ class Project64PageOneGlyphTests(unittest.TestCase):
                     self.assertEqual(JP_CONFIRMED_GLYPHS[token],glyph)
                     self.assertEqual(decode_japan_tokens((token,)),glyph)
                     self.assertEqual(encode_japan_text(glyph),(token,))
-        self.assertEqual(len(JP_CONFIRMED_GLYPHS),159)
-        self.assertEqual(len(JP_EDITABLE_GLYPHS),243)
+        self.assertEqual(len(JP_CONFIRMED_GLYPHS),242)
+        self.assertEqual(len(JP_EDITABLE_GLYPHS),326)
 
     def test_digits_7_remains_unproved(self):
         with self.assertRaises(ValueError):
             encode_japan_text('７')
         self.assertEqual(encode_japan_text('２３４５６８９'),(178,179,180,181,182,184,185))
 
-    def test_original_index_unknown_count_after_page_one(self):
+    def test_original_index_unknown_count_after_all_pages(self):
         source=os.environ.get('GOEMON_JP_DECOMPRESSED_ROM')
         if not source:self.skipTest('Pinned original Japanese ROM not supplied')
         records=extract_japan_dialogue(load_japan_image(source))
         remaining=unknown_token_counts(records)
-        self.assertEqual(len(remaining),84)
+        self.assertEqual(remaining.get(11),1)
+        self.assertEqual(len(remaining),1)
         self.assertNotIn(226,remaining)
         self.assertIn(11,remaining)
