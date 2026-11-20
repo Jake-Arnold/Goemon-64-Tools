@@ -1,0 +1,50 @@
+{
+  "format": "goemon-selector-epilogue-offset-audit-v1",
+  "date": "2026-11-20",
+  "function": "func_801E1C90_59DBA0",
+  "region": "USA",
+  "original_vma": "0x801E1C90",
+  "original_rom_offset": "0x59DBA0",
+  "original_instruction_bytes": 384,
+  "original_instruction_words": 96,
+  "candidate_elf_func_bytes": 380,
+  "candidate_text_section_bytes": 384,
+  "nonrelocation_differing_words": 12,
+  "first_difference_guest_pc": "0x801E1CEC",
+  "original_jump_table_guest_address": "0x8020B2E0",
+  "jump_table_target_offsets": [
+    "0x14C",
+    "0x154",
+    "0x15C",
+    "0x164",
+    "0x164",
+    "0x164",
+    "0x164",
+    "0x164"
+  ],
+  "jump_table_target_offsets_equal": true,
+  "candidate_text_relocation_offsets": [
+    "0xC",
+    "0x24",
+    "0x28",
+    "0x4C",
+    "0x64",
+    "0x84",
+    "0xA4",
+    "0x138",
+    "0x140"
+  ],
+  "candidate_rodata_relocations": 8,
+  "remaining_blockers": [
+    "Original default epilogue three instructions; IDO emits two",
+    "Two zero-argument encodings mismatch",
+    "Original jump table file_11 data ownership/linking unproved"
+  ],
+  "status": "FAILED_NATIVE",
+  "combined_decomp_verify": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "usa_c_before": 1723,
+  "usa_c_after": 1723
+}

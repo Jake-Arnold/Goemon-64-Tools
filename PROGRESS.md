@@ -1,3 +1,9 @@
+## 20 November 2026 — Mini Ebisumaru selector jump-table/epilogue audit (FAILED_NATIVE, research only)
+
+- Reproduced func_801E1C90_59DBA0 at original VMA 0x801E1C90, ROM 0x59DBA0: best IDO 5.3 compiler function symbol 380 B plus 4 B alignment, 12 non-relocation instruction-word mismatches. Targeted return/default and parameter-type tests did not yield an exact 384-byte function.
+- New structural PASS: original file_11 eight-entry table at 0x8020B2E0 and candidate object .rodata yield identical relative destinations 0x14C/0x154/0x15C/0x164 (last repeated five times). Nine candidate text relocation sites/eight table relocations inventoried. Retail table ownership/integration remains unproved.
+- Root issue: original default uses a separate temporary plus unconditional branch/copy; IDO optimizes to shorter direct-load return. Two argument-zero encodings remain different. Evidence in decomp/research/mini_ebisumaru_speed_20261120/SELECTOR_EPILOGUE_AUDIT_20261120.md and selector_epilogue_audit_20261120.json.
+- No production stage/manifest/results changes, no combined G2, inventory, full local CI or gameplay. USA stays 1,723 matching C and 5,640 remaining ASM.
 ## 20 November 2026 — Focused Mini Ebisumaru speed selector native replay (FAILED_NATIVE; no promotion)
 
 - Replayed USA `func_801E1C90_59DBA0` (ROM `0x59DBA0`, 384 bytes) with original IDO 5.3, authentic pinned-USA baseline. Prior best source remains **12 non-relocation MIPS word mismatches**; first PC `0x801E1CEC`: original `0x45010044`, generated `0x45010043`. Candidate ELF function is 380 bytes plus four bytes of trailing `.text` padding, **not** a matching 384-byte function.
