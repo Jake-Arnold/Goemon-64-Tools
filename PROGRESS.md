@@ -1,3 +1,9 @@
+## 20 November 2026 — Issue #128 controller state 30 timer scheduling (FAILED_NATIVE)
+
+- Recovered the original branch and 32-bit timer spill schedule in state 30 with a bounded C source change. IDO now matches all state 30 mnemonics at their original positions and 189/285 full words, up from 183. The full linked controller improves to 3,065/4,337 matching words and 15,855/17,348 matching bytes. Preserved all 34 state entry offsets, original 128-byte frame and exact 336-byte constant pool.
+- Full `python3 -m decomp.local_ci`, the native replay and the six-wrapper verifier passed. The controller is still ASM-owned. No full-ROM G2 or inventory run with the nonmatching candidate.
+- The first mismatch remains the state 0 delay-slot register at `+0x5C`. Next, resolve the state 2 load/store order at `+0xC4` or the state 10 cleanup loop while keeping switch offsets and stack slots fixed. [Source replay and remaining mismatch analysis](decomp/research/issue128_opening/README.md).
+
 ## 20 November 2026 — Issue #128 opening controller switch tables and constant pool (RESEARCH_ONLY)
 
 - Recompiled the attached checkpoint 6 source and confirmed the original 17,348-byte extent, 128-byte stack, and 34 state entry offsets. The first raw instruction mismatch was a register choice in the state 0 branch delay slot at controller offset `+0x5C`.

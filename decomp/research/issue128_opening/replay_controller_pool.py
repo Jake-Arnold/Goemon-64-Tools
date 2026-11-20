@@ -48,6 +48,27 @@ def restore_literals(source, rom):
     return source
 
 
+def restore_state30_timer(source):
+    state30_start = source.index("    case 30:")
+    state31_start = source.index("    case 31:", state30_start)
+    state30 = source[state30_start:state31_start]
+    timer = "M2C_FIELD(sp7C, s16 *, 2)"
+    before = (
+        f"        temp_t3_3 = {timer};\n"
+        "        if ((temp_t3_3 > 0) && (temp_t3_3 < 0x1A4)) {\n\n"
+    )
+    after = (
+        f"        if (({timer} > 0) && ({timer} < 0x1A4)) {{\n"
+        f"            sp74 = {timer};\n"
+    )
+    if state30.count(before) != 1 or state30.count("(f32) temp_t3_3") != 1:
+        raise ValueError("Unexpected state 30 timer source")
+    state30 = state30.replace(before, after).replace("(f32) temp_t3_3", "(f32) sp74")
+    # Even unused, the original-width declaration preserves IDO's stack
+    # placement for the interpolation output beginning at sp+0x4C.
+    return source[:state30_start] + state30 + source[state31_start:]
+
+
 def linked_comparison(obj, original_elf, original_symbols, rom, output):
     script = output / "link.ld"
     script.write_text(
@@ -104,8 +125,10 @@ def main():
     (output / "m2c_macros.h").write_bytes(header)
     original_elf = upstream / "build/usa/mnsg.elf"
     original_symbols = symbols(original_elf)
-    for name, code in (("checkpoint6", source.decode()),
-                       ("full-pool", restore_literals(source.decode(), rom))):
+    baseline = source.decode()
+    full_pool = restore_literals(baseline, rom)
+    for name, code in (("checkpoint6", baseline), ("full-pool", full_pool),
+                       ("state30-timer", restore_state30_timer(full_pool))):
         work = output / name
         work.mkdir()
         c_file = work / "controller.c"

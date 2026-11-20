@@ -106,7 +106,7 @@ The first executable mismatch remains the state 0 delay slot. Tighten
 the epilogue and its incoming control flow next while preserving the exact
 pool and state entry offsets.
 
-Replay both variants from the user-supplied source-only ZIP. Keep the
+Replay checkpoint 6, the restored pool and the state 30 probe from the source-only ZIP. Keep the
 output and local inputs outside Git.
 
 ```sh
@@ -114,9 +114,53 @@ python3 decomp/research/issue128_opening/replay_controller_pool.py \
   /path/to/pinned/mnsg /path/to/checkpoint6.zip /path/to/new/private/output
 ```
 
-The replay links and compares both standalone objects, saves the candidate C,
+The replay links and compares the standalone objects, saves the candidate C,
 and writes a JSON report with all 34 per-state extents and matching word counts.
 State bounds are measured between adjacent case entries, so the last range
 also contains the epilogue. Full ROM-free `python3 -m decomp.local_ci` and
 the six-wrapper verifier passed. The controller remains **FAILED_NATIVE /
 RESEARCH_ONLY**. Combined G2, strict inventory and gameplay were not run.
+
+### State 30 timer recovery
+
+The original tests the signed timer in a register and writes the 32-bit
+value to `sp+0x74` only on the interpolation path. Checkpoint 6 spills a
+16-bit temporary to `sp+0x72` before the upper-bound check and omits the
+32-bit store. The replay's `state30-timer` variant reads the timer field in
+the guard and assigns the widened value inside the guarded block. IDO
+combines the field reads as in the original. Keeping the unused halfword
+declaration preserves the original interpolation output at `sp+0x4C`.
+
+| Linked result | Restored literals | State 30 timer |
+| --- | ---: | ---: |
+| Instruction words at original positions | 3,059/4,337 | **3,065/4,337** |
+| Instruction bytes at original positions | 15,824/17,348 | **15,855/17,348** |
+| State 30 words at original positions | 183/285 | **189/285** |
+| State 30 opcode mismatches at original positions | 9 | **0** |
+| Constant pool bytes | 336/336 | 336/336 |
+| State entry offsets | 34/34 | 34/34 |
+
+The variant has SHA-256
+`a161e059220229140b3d9ee031e9e80da225cc243304648e197460bb3c1f1238`.
+A volatile state 2 pointer load grew its block by four bytes. Adding
+the state 30 word store with the old temporary still live also grew
+the function by four bytes. Removing the temporary declaration moved
+the interpolation output to `sp+0x50` and lost matches. Those three
+variants were discarded.
+
+A position-by-position comparison of the original `.file_18` disassembly
+and the linked state 30 variant found 1,250 differing words with the same
+mnemonic and operands apart from register spelling, 16 with different
+mnemonics, and six with other operand differences. This classification
+measures text similarity and does not establish equivalent register use.
+The remaining opcode differences are in states 2, 10, 12, 26, 28 and 33.
+State 2 is the first such difference, at `+0xC4`: the original commits
+the result store before loading the next pointer. The first raw word
+difference remains `+0x5C`, in the shared timer branch's delay slot.
+The next bounded probe should preserve the instruction count while
+recovering the state 2 load ordering or the state 10 cleanup loop.
+
+Fresh native replay, full ROM-free local CI and the separate wrapper
+verifier passed. **FAILED_NATIVE** for the controller. G2 still needs an
+exact controller and unit integration with original semantic relocations,
+followed by the full-ROM comparison and strict inventory.
