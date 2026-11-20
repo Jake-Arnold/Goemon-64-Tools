@@ -1,3 +1,10 @@
+## 20 November 2026 — Issue #128 opening scene wrappers (RESEARCH_ONLY)
+
+- Reconstructed the six USA `file_18` opening scene setup wrappers still owned by ASM at baseline `a412f96`. Four other setup wrappers and all six object helpers from the issue are already accepted.
+- Verified 6/6 IDO 5.3 functions against original relocatable text, all 14 text relocation tuples, and all 232 linked instruction bytes at their original VMAs in the authenticated USA ROM. The verifier rejected a changed resource ID. Full `python3 -m decomp.local_ci` passed.
+- The shared context helper compiled to 60 of 64 bytes in its closest probe and remains ASM. The checkpoint 6 controller source bundle was unavailable locally. Combined G2, strict inventory and gameplay were not run for this work. The live USA count remains 1,723 accepted functions.
+- Next, stage the six wrappers around their accepted siblings and run combined G2 and strict inventory. Resume the controller from the checkpoint 6 source when available. Source, procedure and results are in [issue128_opening](decomp/research/issue128_opening/README.md).
+
 ## 20 November 2026 — USA 100 original-address native C functions, 1,723 total (PASSED_G2; published to chatgptweb/decomp)
 
 - After independently retaining 31 + 69 newly native-exact research functions, promoted exactly **100 unique original-address C implementations** from original assembly at precise USA section/ROM offsets. **49 zero-relocation sources (2,416 original bytes)** plus **51 original-address linked relocatable sources (4,424 original bytes)**, all compiled with the native IDO 5.3 toolchain and verified with original ELF function extent and source instruction hashes. No function already in original 1,623 was counted again.
