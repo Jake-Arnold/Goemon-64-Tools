@@ -1,0 +1,48 @@
+name: Temporary verified checkpoint500 source import and ROM-free CI
+on:
+  push:
+    branches: [decomp/provisional342-recovery-20261120]
+permissions:
+  contents: write
+jobs:
+  import-and-verify:
+    if: ${{ startsWith(github.event.head_commit.message, 'stage ') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Verify source-only archive and paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          git cat-file blob cea1afc93ec312c1791961c3dae11fed1178792e > "$RUNNER_TEMP/source.tar.gz"
+          printf '%s  %s\n' '94a406724b116d647062f8d6bc00608fb59dd27857dd836b52e01228968fd693' "$RUNNER_TEMP/source.tar.gz" | sha256sum --check -
+          python3 - "$RUNNER_TEMP/source.tar.gz" <<'PY'
+          import pathlib,sys,tarfile
+          with tarfile.open(sys.argv[1],'r:gz') as tar:
+              ms=tar.getmembers()
+              assert len(ms)==43,len(ms)
+              for m in ms:
+                  p=pathlib.PurePosixPath(m.name)
+                  assert m.isfile() and not p.is_absolute() and '..' not in p.parts,m.name
+                  assert (p.parts[0] in ('decomp','tests') or m.name=='PROGRESS.md'),m.name
+                  assert p.suffix in ('.c','.py','.md','.json'),m.name
+              tar.extractall(path='.',filter='data')
+          PY
+      - name: Full ROM-free local CI including original-C sanitizer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m decomp.local_ci
+      - name: Commit recovered original-address C and exact proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Goemon original native proof import"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -- PROGRESS.md decomp tests
+          git diff --cached --quiet && { echo "No source changes"; exit 1; }
+          git commit -m "feat(decomp): promote recovered checkpoint500 48-byte C to 1618 USA"
+          git push origin HEAD:refs/heads/decomp/provisional342-recovery-20261120
