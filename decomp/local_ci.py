@@ -144,6 +144,24 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-o',str(binary)]),
             ('Menu2 actual-source sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        archive = ROOT / 'decomp/research/pending_archive22_20261119'
+        sources = sorted((archive/'sources').glob('*.c'))
+        if len(sources)!=22:
+            raise ValueError('Missing 22 original archived exact C source units')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('archive22-actual-host')
+        steps.extend([
+            ('Archive22 actual-source sanitizer build', compiler+[
+                '-std=c11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-Wno-unused-parameter','-Wno-unused-function',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((archive/'test_actual_archive22.c').relative_to(ROOT)),
+                *[str(f.relative_to(ROOT)) for f in sources],
+                '-lm','-o',str(binary)]),
+            ('Archive22 actual-source sanitizer test',[str(binary)]),
+        ])
     return steps
 
 

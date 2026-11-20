@@ -1573,5 +1573,8 @@
   },
   "overlay_statecopy1_stage": {
     "format": "goemon-usa-statecopy1-after-1500-v1"
+  },
+  "overlay_archive22_stage": {
+    "format": "goemon-usa-archive22-after-1501-v1"
   }
 }

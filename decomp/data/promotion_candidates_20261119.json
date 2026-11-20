@@ -3,13 +3,13 @@
   "created_utc_date": "2026-11-19",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 1501,
-    "usa_instruction_bytes": 57604,
+    "usa_functions": 1523,
+    "usa_instruction_bytes": 58292,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "After native verified USA 1501-C statecopy1 stage: no ready research leads, one file25 relocation candidate blocked. The 20261118 1500-C queue is preserved as an immutable historical checkpoint. Japan 39 C here denotes the manifest core, not the subsequent 432-C staged regional count.",
+  "purpose": "USA 1523 original-address matching C; 22 of 116 archived isolated exact functions now passed combined G2; 94 remain isolated/research-only. Only original USA full-ROM verified candidates may be promoted. File25 relocation remains blocked. Japan 39 here is manifest-core only (432 regional accepted).",
   "ready_for_combined_g2": {
     "functions": 0,
     "bytes": 0,
@@ -37,7 +37,7 @@
       "blocker": "Isolated code matches, but the C source introduces D_0A00C980 relocations absent from the original ELF; upstream full-ROM gate failed."
     }
   ],
-  "other_unresolved_research": "decomp/research/historical_audit_20261117/LIVE_LEADS.json",
+  "other_unresolved_research": "decomp/data/archive116_remaining_20261119.json",
   "historical_87_promoted_provenance": "decomp/data/candidate_registry_782_pending_20261117.json",
   "acceptance_requirements": [
     "native original-address instruction match",

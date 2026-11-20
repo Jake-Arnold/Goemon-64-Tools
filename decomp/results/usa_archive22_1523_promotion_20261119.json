@@ -1,0 +1,265 @@
+{
+  "format": "goemon-usa-archive22-1523-original-g2-v1",
+  "date": "2026-11-19",
+  "region": "usa",
+  "status": "PASSED_G2",
+  "publication": "PENDING_GITHUB_MERGE",
+  "original_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "rom_bytes": 33554432,
+  "rom_bytewise_exact": true,
+  "before": {
+    "usa_c": 1501,
+    "usa_bytes": 57604,
+    "asm": 5862
+  },
+  "after": {
+    "usa_c": 1523,
+    "usa_bytes": 58292,
+    "asm": 5840
+  },
+  "added_count": 22,
+  "added_bytes": 688,
+  "added_functions": [
+    {
+      "name": "func_802122F4_67BCD4",
+      "rom_offset": "0x67BCD4",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_000.c"
+    },
+    {
+      "name": "func_80212BD8_67C5B8",
+      "rom_offset": "0x67C5B8",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_001.c"
+    },
+    {
+      "name": "func_80214340_67DD20",
+      "rom_offset": "0x67DD20",
+      "size": 40,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_002.c"
+    },
+    {
+      "name": "func_80214368_67DD48",
+      "rom_offset": "0x67DD48",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_003.c"
+    },
+    {
+      "name": "func_8021B140_684B20",
+      "rom_offset": "0x684B20",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_004.c"
+    },
+    {
+      "name": "func_8021EED0_6888B0",
+      "rom_offset": "0x6888B0",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_005.c"
+    },
+    {
+      "name": "func_8022406C_68DA4C",
+      "rom_offset": "0x68DA4C",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_006.c"
+    },
+    {
+      "name": "func_80224110_68DAF0",
+      "rom_offset": "0x68DAF0",
+      "size": 44,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_007.c"
+    },
+    {
+      "name": "func_80225B20_68F500",
+      "rom_offset": "0x68F500",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_008.c"
+    },
+    {
+      "name": "func_8022727C_690C5C",
+      "rom_offset": "0x690C5C",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_009.c"
+    },
+    {
+      "name": "func_80227A00_6913E0",
+      "rom_offset": "0x6913E0",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_010.c"
+    },
+    {
+      "name": "func_8022819C_691B7C",
+      "rom_offset": "0x691B7C",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_011.c"
+    },
+    {
+      "name": "func_80228C9C_69267C",
+      "rom_offset": "0x69267C",
+      "size": 40,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_012.c"
+    },
+    {
+      "name": "func_80228CC4_6926A4",
+      "rom_offset": "0x6926A4",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_013.c"
+    },
+    {
+      "name": "func_8022921C_692BFC",
+      "rom_offset": "0x692BFC",
+      "size": 40,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_014.c"
+    },
+    {
+      "name": "func_80229244_692C24",
+      "rom_offset": "0x692C24",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_015.c"
+    },
+    {
+      "name": "func_80229968_693348",
+      "rom_offset": "0x693348",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_016.c"
+    },
+    {
+      "name": "func_80210540_697F40",
+      "rom_offset": "0x697F40",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_017.c"
+    },
+    {
+      "name": "func_80210AEC_6984EC",
+      "rom_offset": "0x6984EC",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_018.c"
+    },
+    {
+      "name": "func_80210C84_698684",
+      "rom_offset": "0x698684",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_019.c"
+    },
+    {
+      "name": "func_80211020_698A20",
+      "rom_offset": "0x698A20",
+      "size": 48,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_020.c"
+    },
+    {
+      "name": "func_80213078_69AA78",
+      "rom_offset": "0x69AA78",
+      "size": 28,
+      "source": "decomp/research/pending_archive22_20261119/sources/archive22_021.c"
+    }
+  ],
+  "native_ido_isolated_exact": 22,
+  "native_object_relocations": 0,
+  "combined_native_verifier": "PASS",
+  "inventory": "PASS",
+  "positive_ELF_func_identites": 7376,
+  "positive_ELF_aliases": 0,
+  "semantic_relocations": "identical_original_multisets",
+  "full_local_ci": "PASS",
+  "emulator_gameplay": "NOT_RUN",
+  "archive_116_other_research_only": 94,
+  "checkpoint_458_provisional_other_unrecovered": 342,
+  "historical_prev_proofs": [
+    "decomp/results/combined_1501_20261119.json",
+    "decomp/results/inventory_1501_20261119.json"
+  ],
+  "local_ci_actual_source_ASAN_UBSAN": "22 archived original-C source files; 1000 indexed semantic iterations PASS",
+  "local_ci_test_counts": {
+    "decomp_tests": 274,
+    "verifier_ledger_tests": 344,
+    "decomp_skipped": 1,
+    "verifier_ledger_skipped": 4
+  },
+  "ELF_and_relocation_gate": {
+    "status": "PASS",
+    "count": 22,
+    "original_instruction_bytes": 688,
+    "original_ROM_SHA1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_ROM_bytes": 33554432,
+    "identical_accepted_ELF_FUNC_identities": 7376,
+    "identical_accepted_semantic_relocations": {
+      "file_11": 8825,
+      "file_12": 7051,
+      "file_13": 9589,
+      "file_14": 3041,
+      "file_15": 1625,
+      "file_16": 781,
+      "file_17": 1739,
+      "file_18": 3365,
+      "file_19": 1078,
+      "file_20": 68,
+      "file_21": 114,
+      "file_22": 294,
+      "file_23": 377,
+      "file_24": 160,
+      "file_25": 167,
+      "file_26": 207,
+      "file_27": 876,
+      "file_28": 35,
+      "file_29": 2536,
+      "file_30": 1826,
+      "file_31": 1371,
+      "file_32": 1068,
+      "file_33": 139,
+      "file_34": 317,
+      "file_35": 677,
+      "file_36": 1025,
+      "file_37": 1079,
+      "file_38": 761,
+      "file_39": 435,
+      "file_40": 892,
+      "file_41": 280,
+      "file_42": 555,
+      "file_43": 1593,
+      "file_44": 598,
+      "file_45": 545,
+      "file_46": 817,
+      "file_47": 275,
+      "file_48": 469,
+      "file_49": 602,
+      "file_50": 228,
+      "file_51": 143,
+      "file_52": 8,
+      "file_53": 534,
+      "file_54": 341,
+      "file_55": 390,
+      "file_56": 436,
+      "file_57": 708,
+      "file_58": 340,
+      "file_59": 508,
+      "file_60": 418,
+      "file_61": 161,
+      "file_62": 747,
+      "file_63": 94,
+      "file_64": 176,
+      "file_65": 86,
+      "file_66": 571,
+      "file_67": 254,
+      "file_68": 155,
+      "file_69": 464,
+      "file_70": 298,
+      "file_71": 350,
+      "file_72": 412,
+      "file_73": 274,
+      "file_74": 822,
+      "file_75": 279,
+      "file_76": 6,
+      "file_77": 304,
+      "file_78": 124,
+      "file_79": 180,
+      "file_80": 89
+    },
+    "C_translation_units": 22,
+    "retained_ASM_fragments": 16
+  },
+  "new_stage_source_manifest": "decomp/research/pending_archive22_20261119/promotion_manifest.json",
+  "remainder_research_ledger": "decomp/data/archive116_remaining_20261119.json",
+  "checkpoint_notes": "Historical 458 candidates were provisional: 116 sources were preserved; one other 48-byte source in separate checkpoint and remaining sweeps unavailable. No formal native-combined/CI evidence for other research candidates."
+}
