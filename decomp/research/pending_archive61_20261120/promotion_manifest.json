@@ -1,0 +1,1107 @@
+{
+  "format": "goemon-usa-archive61-after-1556-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_count": 1556,
+  "archive_sha256": "ea698abc386e488ea6e6f1e4b51ced38bb75c6d19b6bdc196787e8666bca7d04",
+  "archive_verified_native_relocations": 163,
+  "units": [
+    {
+      "name": "archive61_000",
+      "section": "main",
+      "rom_offset": 35328,
+      "size": 40,
+      "source_sha256": "3fa8939b00181cb6d6f8aad7cbd46fd104ef1f42749bc94fe8273fce81c7219a",
+      "original_asm_parent": "8570.s",
+      "functions": [
+        {
+          "name": "func_80007E00_8A00",
+          "rom_offset": 35328,
+          "vma": 2147515904,
+          "size": 40,
+          "original_code_sha256": "e37aced8c899846d696a0bc56a7d51d2caa0c081cea1cedacc334eaa60dd3b24",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_001",
+      "section": "main",
+      "rom_offset": 35368,
+      "size": 52,
+      "source_sha256": "4ce48696b99a74489ff24876ab14eda62e0ab01cb95c3d1b6437b4a4a4dec105",
+      "original_asm_parent": "8570.s",
+      "functions": [
+        {
+          "name": "func_80007E28_8A28",
+          "rom_offset": 35368,
+          "vma": 2147515944,
+          "size": 52,
+          "original_code_sha256": "0480e3c895c2533fce27da312d728852a1d5d5bcf2841bc4ce79291258ef50ac",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_002",
+      "section": "main",
+      "rom_offset": 67496,
+      "size": 56,
+      "source_sha256": "66f973e4f5dbad4e78a5bc934912d81e63521bdfefd0c00208f72fd1106ac851",
+      "original_asm_parent": "FE40.s",
+      "functions": [
+        {
+          "name": "func_8000FBA8_107A8",
+          "rom_offset": 67496,
+          "vma": 2147548072,
+          "size": 56,
+          "original_code_sha256": "34b311c3c9ab0f4107c4f2d94c411cd833db856146ff4fb90eb9864246c43215",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_003",
+      "section": "main",
+      "rom_offset": 74548,
+      "size": 44,
+      "source_sha256": "48a0e83855a12de63214e56ef77001e1ef686a358058af12f847ccf6cf0cd006",
+      "original_asm_parent": "10D80.s",
+      "functions": [
+        {
+          "name": "func_80011734_12334",
+          "rom_offset": 74548,
+          "vma": 2147555124,
+          "size": 44,
+          "original_code_sha256": "fbd4e597a55596aa26d98ff4bffdcddc9afc50359fd29deedc51311435040174",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_004",
+      "section": "main",
+      "rom_offset": 115364,
+      "size": 48,
+      "source_sha256": "144acc73fa60a0bc3b8d664423382a1dfb7ee6840764e475e5cbfbafc5a0a0d2",
+      "original_asm_parent": "17550.s",
+      "functions": [
+        {
+          "name": "func_8001B6A4_1C2A4",
+          "rom_offset": 115364,
+          "vma": 2147595940,
+          "size": 48,
+          "original_code_sha256": "0dd2173775627cbbc6b4bacebe543a1c487d9caf47eaa64c63acdc1359f47eca",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_005",
+      "section": "main",
+      "rom_offset": 149956,
+      "size": 36,
+      "source_sha256": "a270f6af781bff77145fe8ecc71144fed5bf999af0d8802fdf2def47af669f2e",
+      "original_asm_parent": "23DE0.s",
+      "functions": [
+        {
+          "name": "func_80023DC4_249C4",
+          "rom_offset": 149956,
+          "vma": 2147630532,
+          "size": 36,
+          "original_code_sha256": "fc4b38911c9305f14be5211ac18738a35c114bf29a7626c9239c4c01f89f630b",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_006",
+      "section": "main",
+      "rom_offset": 217872,
+      "size": 36,
+      "source_sha256": "b66b44242b8abc573aad289bde1f7ec9c74dc8c57004ad9fd11893c9b125ba51",
+      "original_asm_parent": "35280.s",
+      "functions": [
+        {
+          "name": "func_80034710_35310",
+          "rom_offset": 217872,
+          "vma": 2147698448,
+          "size": 36,
+          "original_code_sha256": "704cb3df3f0e8cf87e82102c031ae5f8563004d0f64c19f500ca37f6da890c47",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_007",
+      "section": "main",
+      "rom_offset": 220192,
+      "size": 36,
+      "source_sha256": "d5a19c68d206d408db9fa1eb4af5498761a7b9a47e5e43d1a20e4f7bf7aafe3a",
+      "original_asm_parent": "35280.s",
+      "functions": [
+        {
+          "name": "func_80035020_35C20",
+          "rom_offset": 220192,
+          "vma": 2147700768,
+          "size": 36,
+          "original_code_sha256": "b95c73197960a6eb656f6f790d54ea2e7767877f0749622b87e9d8e350d92d0f",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_008",
+      "section": "main",
+      "rom_offset": 220908,
+      "size": 40,
+      "source_sha256": "dadd10c1107dd3891e36566f392d0118788cff02104f00e7fd0a8598eb62a77e",
+      "original_asm_parent": "35280.s",
+      "functions": [
+        {
+          "name": "func_800352EC_35EEC",
+          "rom_offset": 220908,
+          "vma": 2147701484,
+          "size": 40,
+          "original_code_sha256": "216e3a85d6c79b5c8eda2a573a397a91a650eb80614127de4e8f4993feb2488e",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_009",
+      "section": "main",
+      "rom_offset": 221292,
+      "size": 36,
+      "source_sha256": "196eca33bc2d1a28009c3b2e954955f554c8228fce51947878f695db95358a14",
+      "original_asm_parent": "35280.s",
+      "functions": [
+        {
+          "name": "func_8003546C_3606C",
+          "rom_offset": 221292,
+          "vma": 2147701868,
+          "size": 36,
+          "original_code_sha256": "d45117ee53177a11addf0ff2f90f9bf410c1dcded4bd9eff272dcde7325b0191",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_010",
+      "section": "main",
+      "rom_offset": 229448,
+      "size": 40,
+      "source_sha256": "eb7ea22e7bff2053b706e5b30844cc30fd4d2026e5824515ac7d3773c1359ffe",
+      "original_asm_parent": "37C00.s",
+      "functions": [
+        {
+          "name": "func_80037448_38048",
+          "rom_offset": 229448,
+          "vma": 2147710024,
+          "size": 40,
+          "original_code_sha256": "5ee73eebfb96050515bd23013173f78474dd2e9a3e0e684657abc90ecd82b021",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_011",
+      "section": "main",
+      "rom_offset": 235796,
+      "size": 40,
+      "source_sha256": "6729c1808534aae1b6f7ad3ee1cfee4ba0908aacd4c23b13c37361a32601925c",
+      "original_asm_parent": "392E0.s",
+      "functions": [
+        {
+          "name": "func_80038D14_39914",
+          "rom_offset": 235796,
+          "vma": 2147716372,
+          "size": 40,
+          "original_code_sha256": "0fc952f289f598d5952e0315fc9f0d8fb4c291b62006dab845fa6032e7b69f93",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_012",
+      "section": "main",
+      "rom_offset": 235836,
+      "size": 40,
+      "source_sha256": "8a0f9fad92c39d66e161130c534101b9e7b0b32686450e110b418bb56feecd1e",
+      "original_asm_parent": "392E0.s",
+      "functions": [
+        {
+          "name": "func_80038D3C_3993C",
+          "rom_offset": 235836,
+          "vma": 2147716412,
+          "size": 40,
+          "original_code_sha256": "736882e5167328e8832732bc06650daa1b4e90bcbefeff6cf39805b804ab3336",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_013",
+      "section": "main",
+      "rom_offset": 246756,
+      "size": 40,
+      "source_sha256": "abd577c709d529c956763dd40ab985cd63d9747b9a1c4aa9667dbf33aa3b0dce",
+      "original_asm_parent": "3C010.s",
+      "functions": [
+        {
+          "name": "func_8003B7E4_3C3E4",
+          "rom_offset": 246756,
+          "vma": 2147727332,
+          "size": 40,
+          "original_code_sha256": "98615edc6b84182e5695fc438a1f5c743576e1305bf5e12058e75fd17ac23488",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_014",
+      "section": "main",
+      "rom_offset": 337088,
+      "size": 28,
+      "source_sha256": "73caa502b617f4822bbe74e0a242a878a44b0959953299c2bdeb5ed7f2dc674b",
+      "original_asm_parent": "libultra.s",
+      "functions": [
+        {
+          "name": "alFilterNew",
+          "rom_offset": 337088,
+          "vma": 2147817664,
+          "size": 28,
+          "original_code_sha256": "7bc05ef24d98f9373735f36ad04e48633a87987e983bd41003b23313df18ef37",
+          "expected_original_relocations": 0
+        }
+      ]
+    },
+    {
+      "name": "archive61_015",
+      "section": "file_13",
+      "rom_offset": 6259492,
+      "size": 48,
+      "source_sha256": "44ea9d07ab805ab41f776d5bacbb737467ba349fc326b18b2641f91f7bee4f75",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801CCF44_5F8324",
+          "rom_offset": 6259492,
+          "vma": 2149371716,
+          "size": 48,
+          "original_code_sha256": "6e160adc2f91ee87dac04c94169e45ad6a3392d1b68f6fdb823d68dd8db497ee",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_016",
+      "section": "file_13",
+      "rom_offset": 6260376,
+      "size": 48,
+      "source_sha256": "ac881d61f7261f5a33c34ccdf070f57eb486aaa9d5e0e1ab1a4356e2d2a7cd5a",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801CD2B8_5F8698",
+          "rom_offset": 6260376,
+          "vma": 2149372600,
+          "size": 48,
+          "original_code_sha256": "5c4f9e6ca8a370d5694c672f729f052f84606ddd39543e55942f9726aafde48d",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_017",
+      "section": "file_13",
+      "rom_offset": 6283216,
+      "size": 52,
+      "source_sha256": "7462cca4656b725c7a5381745605492b7662cd4fc1a5511561ad6974182628e1",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801D2BF0_5FDFD0",
+          "rom_offset": 6283216,
+          "vma": 2149395440,
+          "size": 52,
+          "original_code_sha256": "da3b48e7358ffb55f129537ae46771832223cc5adc4b25dda31cce4c5499a87e",
+          "expected_original_relocations": 6
+        }
+      ]
+    },
+    {
+      "name": "archive61_018",
+      "section": "file_13",
+      "rom_offset": 6283924,
+      "size": 48,
+      "source_sha256": "987f1dc8f2477f57d9c67b1c5bdfb1342682dfec9a6692b3243ce62fb0b9b0ba",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801D2EB4_5FE294",
+          "rom_offset": 6283924,
+          "vma": 2149396148,
+          "size": 48,
+          "original_code_sha256": "72aee83e7f0be874b97d6e112a898bd8ff609c70a01c5c2df3f5a0eb411b065f",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_019",
+      "section": "file_13",
+      "rom_offset": 6286684,
+      "size": 36,
+      "source_sha256": "d4b46cf4f0b22b42f1fc9f75c40764374a5f2894434377a7e7de7a8a15a4237a",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801D397C_5FED5C",
+          "rom_offset": 6286684,
+          "vma": 2149398908,
+          "size": 36,
+          "original_code_sha256": "b25fc487c5084143936a71e2fedcb1f53d5a497030af1fd2de25a196517fac7b",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_020",
+      "section": "file_13",
+      "rom_offset": 6286840,
+      "size": 44,
+      "source_sha256": "27158cd950030b14573094f2e7cf9ce2cd13bcbc88f63f2f5c30d571df6b9870",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801D3A18_5FEDF8",
+          "rom_offset": 6286840,
+          "vma": 2149399064,
+          "size": 44,
+          "original_code_sha256": "0522dcd38e26938adde1c8f224316435b1cff1ecd75d02c1a0e412456dbf001a",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_021",
+      "section": "file_13",
+      "rom_offset": 6287060,
+      "size": 36,
+      "source_sha256": "f9430f75d3d2b7e2f5b7bd7058304374c4e1a75d97f035fa06b553bff1dc322d",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801D3AF4_5FEED4",
+          "rom_offset": 6287060,
+          "vma": 2149399284,
+          "size": 36,
+          "original_code_sha256": "a1166acffaf921d61e07d9f09b9e20eecb510ec0e71b928fc34084a42f5698c3",
+          "expected_original_relocations": 4
+        }
+      ]
+    },
+    {
+      "name": "archive61_022",
+      "section": "file_13",
+      "rom_offset": 6297832,
+      "size": 44,
+      "source_sha256": "710478404070cfc72a8482860acf874867cadea38706d43df42a5d006709ad3f",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801D6508_6018E8",
+          "rom_offset": 6297832,
+          "vma": 2149410056,
+          "size": 44,
+          "original_code_sha256": "20dc0a4dffb6f2f1044b269d592451da62c3e6a4d08c68f4e6afaa44ea42fb72",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_023",
+      "section": "file_13",
+      "rom_offset": 6313432,
+      "size": 48,
+      "source_sha256": "31aefc22ef0ed870d76fbd71170aa0680f811160dbc145fc67b5d4dd05422178",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801DA1F8_6055D8",
+          "rom_offset": 6313432,
+          "vma": 2149425656,
+          "size": 48,
+          "original_code_sha256": "850e9621448c41e6a2224478a1a5c10159ac111bbc4a99382e301edd98955c07",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_024",
+      "section": "file_13",
+      "rom_offset": 6318480,
+      "size": 48,
+      "source_sha256": "ca530855da9653e9815238071987c21822eb4b45f52d50bd57a970e89b10883a",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801DB5B0_606990",
+          "rom_offset": 6318480,
+          "vma": 2149430704,
+          "size": 48,
+          "original_code_sha256": "8669d0a62a8cb7138e235eff302681d8a5ab01e54538e6866c3cb33f32c7ccaa",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_025",
+      "section": "file_13",
+      "rom_offset": 6318528,
+      "size": 36,
+      "source_sha256": "56ababd344dc4f17faa6820b8289c30e70b771292d732c518dd0fb7243ec1b44",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801DB5E0_6069C0",
+          "rom_offset": 6318528,
+          "vma": 2149430752,
+          "size": 36,
+          "original_code_sha256": "a64d4f92621aa36b0093b618bd3293ded9904bdcb5978287011e4ca9e2d19f1c",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_026",
+      "section": "file_13",
+      "rom_offset": 6318820,
+      "size": 48,
+      "source_sha256": "20f345e62059b035b69aff8ba8d8685262115a1892c13d80fc389f010278e094",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801DB704_606AE4",
+          "rom_offset": 6318820,
+          "vma": 2149431044,
+          "size": 48,
+          "original_code_sha256": "ce5c8a4c4ef3646c94b1c43a1f93bd4e13d784a07882d4ae8a83b770fa1ecee0",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_027",
+      "section": "file_13",
+      "rom_offset": 6323312,
+      "size": 36,
+      "source_sha256": "9f4f57ddc2eea7bd310499b7f748490b4817d68287a22dfeb69683e14b8dea64",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801DC890_607C70",
+          "rom_offset": 6323312,
+          "vma": 2149435536,
+          "size": 36,
+          "original_code_sha256": "a64d4f92621aa36b0093b618bd3293ded9904bdcb5978287011e4ca9e2d19f1c",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_028",
+      "section": "file_13",
+      "rom_offset": 6355676,
+      "size": 52,
+      "source_sha256": "064be5bedfdd002fdd2deb5623331e39861eb2731da6f1170b70063a629e8a90",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801E46FC_60FADC",
+          "rom_offset": 6355676,
+          "vma": 2149467900,
+          "size": 52,
+          "original_code_sha256": "9a20b1c815328319d99994f0bf56ea901dd35d48184942dbeca35f24880d6ed2",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_029",
+      "section": "file_13",
+      "rom_offset": 6432364,
+      "size": 40,
+      "source_sha256": "48c6b12205da4b229f79712f8dd339bb8827e4222c31ef3ad6f56bca9de7235c",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801F728C_62266C",
+          "rom_offset": 6432364,
+          "vma": 2149544588,
+          "size": 40,
+          "original_code_sha256": "657d21d371b9a7920e8ec1880ebb4fe6618a34fb4c91da7a33db182663d3d91f",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_030",
+      "section": "file_13",
+      "rom_offset": 6451492,
+      "size": 40,
+      "source_sha256": "46b91de47a0c83a9fb98158abe65d20be0b8c1a31697e4a5159e4d74074aed96",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_801FBD44_627124",
+          "rom_offset": 6451492,
+          "vma": 2149563716,
+          "size": 40,
+          "original_code_sha256": "402a00a20cbc0e63c158970f3dc50c64c82cfbfb25c08e4b24c7b77a4892c1a1",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_031",
+      "section": "file_13",
+      "rom_offset": 6476472,
+      "size": 52,
+      "source_sha256": "f86d3eb94d87b974718208d7c197cf0da623b429cbbf7796fac63f121ad2fe44",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_80201ED8_62D2B8",
+          "rom_offset": 6476472,
+          "vma": 2149588696,
+          "size": 52,
+          "original_code_sha256": "d1ba31e7bc4b47eddf9aa01432b021b2085243d3b6454b28da6256c19d051814",
+          "expected_original_relocations": 4
+        }
+      ]
+    },
+    {
+      "name": "archive61_032",
+      "section": "file_13",
+      "rom_offset": 6477068,
+      "size": 44,
+      "source_sha256": "f3cf9d35dacae84d89d5544bd40ad7ea303dd2026d7bbaa1f15198624abf418d",
+      "original_asm_parent": "5F6840.s",
+      "functions": [
+        {
+          "name": "func_8020212C_62D50C",
+          "rom_offset": 6477068,
+          "vma": 2149589292,
+          "size": 44,
+          "original_code_sha256": "8846ba96c3fc4283e761ca63eadab27c53691822f645b9f82f268831dd9add51",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_033",
+      "section": "file_14",
+      "rom_offset": 6535232,
+      "size": 56,
+      "source_sha256": "d6542b25910136683ae51ca8919a4c8fec57397630f9dae38770bfbef3632221",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801CC9F0_63B840",
+          "rom_offset": 6535232,
+          "vma": 2149370352,
+          "size": 56,
+          "original_code_sha256": "444953bbbdf3afc95ebb3f2b03084f1ed8d8837c5c07a9c052fb3b477fc868df",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_034",
+      "section": "file_14",
+      "rom_offset": 6535340,
+      "size": 56,
+      "source_sha256": "158fc037ea1eff0da17286bcfd519a3e823a7ceb47ebc2532755ab4ae192f7cb",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801CCA5C_63B8AC",
+          "rom_offset": 6535340,
+          "vma": 2149370460,
+          "size": 56,
+          "original_code_sha256": "468a44f5f26832ccc17c9f83debed65cf12a309bdab264466a09026216f8b634",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_035",
+      "section": "file_14",
+      "rom_offset": 6535500,
+      "size": 56,
+      "source_sha256": "5b25295b64db1fffe16384e1b0e0105460aee5f8f333e3bb552ac60f5216cd27",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801CCAFC_63B94C",
+          "rom_offset": 6535500,
+          "vma": 2149370620,
+          "size": 56,
+          "original_code_sha256": "0f8552bae72f27982ace7145cfdd373601a6d386121051e11c43e9a6aaf093a2",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_036",
+      "section": "file_14",
+      "rom_offset": 6537024,
+      "size": 52,
+      "source_sha256": "8d8bb65625706a56e701dde5bf58f0210bae700ef7dc0cb1699c3fe6956e4bd7",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801CD0F0_63BF40",
+          "rom_offset": 6537024,
+          "vma": 2149372144,
+          "size": 52,
+          "original_code_sha256": "13908a3264cfcc843a344fa3f74b3df4a4667f6222817df938935ecf58f1e8f4",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_037",
+      "section": "file_14",
+      "rom_offset": 6557328,
+      "size": 44,
+      "source_sha256": "bb79807028a4b82cfafa5a3fe457c6156cd51eff46b26d2de35f42e2e1857185",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801D2040_640E90",
+          "rom_offset": 6557328,
+          "vma": 2149392448,
+          "size": 44,
+          "original_code_sha256": "8818151ea51a539f62ec6f02389aad9ad23792b3b83c6a7b023b1185431860b8",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_038",
+      "section": "file_14",
+      "rom_offset": 6582848,
+      "size": 44,
+      "source_sha256": "180a61c457e91a05e93d25fb1b63d7b711a2a6104f8a91a1c276a27f406e5bc7",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801D83F0_647240",
+          "rom_offset": 6582848,
+          "vma": 2149417968,
+          "size": 44,
+          "original_code_sha256": "9ff08b7a45198186ee4fa8d6df022b7e5e0b35a05c80e2adf8cb16c2768b307c",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_039",
+      "section": "file_14",
+      "rom_offset": 6612048,
+      "size": 48,
+      "source_sha256": "9c3e469890bf6c52338ecf643d991ec6b3ebc9d964485e14c56131c23951be0d",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801DF600_64E450",
+          "rom_offset": 6612048,
+          "vma": 2149447168,
+          "size": 48,
+          "original_code_sha256": "cc76e4b962fca3a21477889d3157f6c51bc95aa8f4f4f673bc73b3fa33abe41a",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_040",
+      "section": "file_14",
+      "rom_offset": 6614240,
+      "size": 48,
+      "source_sha256": "7457775f2ad882acbf5bd132dfbb21adffbe37b4af5b079ff26ad29954882859",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801DFE90_64ECE0",
+          "rom_offset": 6614240,
+          "vma": 2149449360,
+          "size": 48,
+          "original_code_sha256": "810214873826ec85bdd7bd44157f8be45fc9030ff2248f9929e23b642cef87dc",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_041",
+      "section": "file_14",
+      "rom_offset": 6616496,
+      "size": 44,
+      "source_sha256": "2fb61f368f70228bc5a6f9c79609b3a1aca931923be224da1d2f4a9358c02731",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801E0760_64F5B0",
+          "rom_offset": 6616496,
+          "vma": 2149451616,
+          "size": 44,
+          "original_code_sha256": "f6c08e60bc70349aef82da64bebbcd8f28204ed6df407e18ed9054b84ab7188f",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_042",
+      "section": "file_14",
+      "rom_offset": 6619184,
+      "size": 48,
+      "source_sha256": "829d01efbbb5def71a83f94f872df4bd1dde319bba7473cfce57ba556b81e7c2",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801E11E0_650030",
+          "rom_offset": 6619184,
+          "vma": 2149454304,
+          "size": 48,
+          "original_code_sha256": "c717fe64b322c38063ea41f7ee4ff226a879e55442f7a6cd1893ec76cb157001",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_043",
+      "section": "file_14",
+      "rom_offset": 6638232,
+      "size": 44,
+      "source_sha256": "f6840780bd2ce0b8d79567352873b7a5238f3a6fb3340ab8aa1c71a8dad1f992",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801E5C48_654A98",
+          "rom_offset": 6638232,
+          "vma": 2149473352,
+          "size": 44,
+          "original_code_sha256": "13f8d9677d9fa218f07f20fc0e5031680b53e21d008e3f639e374e2f45e1fac4",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_044",
+      "section": "file_14",
+      "rom_offset": 6646584,
+      "size": 44,
+      "source_sha256": "1e261449c07eb44b9db55ba85590a013d2a23d3d1aa614eb100e48d17c4e1d51",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801E7CE8_656B38",
+          "rom_offset": 6646584,
+          "vma": 2149481704,
+          "size": 44,
+          "original_code_sha256": "7f7865b91144d0998fac51e6eae941da2becdbc7167a7dac5360c6be7881036f",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_045",
+      "section": "file_14",
+      "rom_offset": 6646720,
+      "size": 44,
+      "source_sha256": "485edc9a371556e2c08dd415ea73962dc8f00e161bb3d139dbf6513a673e2a88",
+      "original_asm_parent": "63A2B0.s",
+      "functions": [
+        {
+          "name": "func_801E7D70_656BC0",
+          "rom_offset": 6646720,
+          "vma": 2149481840,
+          "size": 44,
+          "original_code_sha256": "ee137de802d752c108b112bcf16834cfb9e719373aaa9a982bfd78e9c1e448bf",
+          "expected_original_relocations": 1
+        }
+      ]
+    },
+    {
+      "name": "archive61_046",
+      "section": "file_15",
+      "rom_offset": 6686528,
+      "size": 48,
+      "source_sha256": "ca3204204f7b538bf6c57ab11685b6c9b0a4ec07550c47e530f977dd6d3e0152",
+      "original_asm_parent": "65E310.s",
+      "functions": [
+        {
+          "name": "func_801CD890_660740",
+          "rom_offset": 6686528,
+          "vma": 2149374096,
+          "size": 48,
+          "original_code_sha256": "bae7ad5a1538bae348784ae663527631af5cfd764cc392787ab76dad9cab7ef2",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_047",
+      "section": "file_17",
+      "rom_offset": 6765632,
+      "size": 44,
+      "source_sha256": "3bc1e56902d2cac11c1820717582b12be2a7cf802a1fbd7686badb6ec913702e",
+      "original_asm_parent": "66C250.s",
+      "functions": [
+        {
+          "name": "func_80214C90_673C40",
+          "rom_offset": 6765632,
+          "vma": 2149665936,
+          "size": 44,
+          "original_code_sha256": "ba523fa7c323e01e10daebc47e385ef99e9689af1310adf16fc4f0c6a92345c0",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_048",
+      "section": "file_17",
+      "rom_offset": 6765676,
+      "size": 52,
+      "source_sha256": "2dc89539929da319de1deafafead2920c60e20fe28ec7efe94b4d93fa77028e8",
+      "original_asm_parent": "66C250.s",
+      "functions": [
+        {
+          "name": "func_80214CBC_673C6C",
+          "rom_offset": 6765676,
+          "vma": 2149665980,
+          "size": 52,
+          "original_code_sha256": "a49499f2a370bf62766f86dcf680c24fb93b38006f4c51f64b91127e5a494132",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_049",
+      "section": "file_17",
+      "rom_offset": 6766056,
+      "size": 48,
+      "source_sha256": "a93528e3c1721707c936d49220a2b40f858cac0a5238196f1235c4aea734aa23",
+      "original_asm_parent": "66C250.s",
+      "functions": [
+        {
+          "name": "func_80214E38_673DE8",
+          "rom_offset": 6766056,
+          "vma": 2149666360,
+          "size": 48,
+          "original_code_sha256": "fd6c6322a64a3f0b393fbdd5f7ff2cf26ad02cd8a7a534c997c3ba584f307619",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_050",
+      "section": "file_17",
+      "rom_offset": 6766104,
+      "size": 48,
+      "source_sha256": "bc2d5d31f5acfba707b168e18a6ddfb98416f6af98b1a8a82d752d64f091a5bf",
+      "original_asm_parent": "66C250.s",
+      "functions": [
+        {
+          "name": "func_80214E68_673E18",
+          "rom_offset": 6766104,
+          "vma": 2149666408,
+          "size": 48,
+          "original_code_sha256": "2cb391ee043552ba83c455a2d9b0f58f354a178b3b47310535e6bb626aff331b",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_051",
+      "section": "file_18",
+      "rom_offset": 6779692,
+      "size": 44,
+      "source_sha256": "e38f38516a26c608b108c5c166d37a0041bdece52c7f12db508ae9330c5e463c",
+      "original_asm_parent": "676C80.s",
+      "functions": [
+        {
+          "name": "func_8020D94C_67732C",
+          "rom_offset": 6779692,
+          "vma": 2149636428,
+          "size": 44,
+          "original_code_sha256": "1ac4f9bc8f8e88ff0fd7868d73d154ff1052809c9bf4b78b79d249de94212b5a",
+          "expected_original_relocations": 4
+        }
+      ]
+    },
+    {
+      "name": "archive61_052",
+      "section": "file_18",
+      "rom_offset": 6799392,
+      "size": 36,
+      "source_sha256": "c837c8ee6691a36e6b185c1c94b7048fd90e30b2f22679da4745f1a3882ac206",
+      "original_asm_parent": "676C80.s",
+      "functions": [
+        {
+          "name": "func_80212640_67C020",
+          "rom_offset": 6799392,
+          "vma": 2149656128,
+          "size": 36,
+          "original_code_sha256": "bedda04650c535e641650adf1e275760f03603acbb5ada18acf5d0b2e48b3ea3",
+          "expected_original_relocations": 4
+        }
+      ]
+    },
+    {
+      "name": "archive61_053",
+      "section": "file_18",
+      "rom_offset": 6853248,
+      "size": 52,
+      "source_sha256": "3fb3770447818ca1fd899fe5ea7a7880dca16d94627bf7801f47e3a058493cf7",
+      "original_asm_parent": "676C80.s",
+      "functions": [
+        {
+          "name": "func_8021F8A0_689280",
+          "rom_offset": 6853248,
+          "vma": 2149709984,
+          "size": 52,
+          "original_code_sha256": "a6be2f89b53b906c572c24dbe6cbe838f278f07add80df8d70feeb7ec42a21d5",
+          "expected_original_relocations": 7
+        }
+      ]
+    },
+    {
+      "name": "archive61_054",
+      "section": "file_18",
+      "rom_offset": 6853300,
+      "size": 52,
+      "source_sha256": "c387756d2111c9e492da49bef7b9b78a1b569dcefb55c1a09caef22826025170",
+      "original_asm_parent": "676C80.s",
+      "functions": [
+        {
+          "name": "func_8021F8D4_6892B4",
+          "rom_offset": 6853300,
+          "vma": 2149710036,
+          "size": 52,
+          "original_code_sha256": "6e8e061c16f4958421bb937c5be7439ada7621b3923b91927fabdb37287ab529",
+          "expected_original_relocations": 7
+        }
+      ]
+    },
+    {
+      "name": "archive61_055",
+      "section": "file_18",
+      "rom_offset": 6853360,
+      "size": 52,
+      "source_sha256": "bd66e276a39b75f07ffafcfb2dc4e2b84bfaa620ce19d5f9ae06288da25e40d3",
+      "original_asm_parent": "676C80.s",
+      "functions": [
+        {
+          "name": "func_8021F910_6892F0",
+          "rom_offset": 6853360,
+          "vma": 2149710096,
+          "size": 52,
+          "original_code_sha256": "557e4465f6d345b5bf15443d70f1cecbd004b8457287402d76e79a90ae771f96",
+          "expected_original_relocations": 7
+        }
+      ]
+    },
+    {
+      "name": "archive61_056",
+      "section": "file_18",
+      "rom_offset": 6853444,
+      "size": 52,
+      "source_sha256": "635803ad6e25082d54a48502fe5e54bb1e8d299978ab580f4eb6a233bdf7d2e4",
+      "original_asm_parent": "676C80.s",
+      "functions": [
+        {
+          "name": "func_8021F964_689344",
+          "rom_offset": 6853444,
+          "vma": 2149710180,
+          "size": 52,
+          "original_code_sha256": "ae2969b55d0f81d204b2301e0efae1c0ef5debc2bf88c8b652483df425926ee3",
+          "expected_original_relocations": 7
+        }
+      ]
+    },
+    {
+      "name": "archive61_057",
+      "section": "file_23",
+      "rom_offset": 6987016,
+      "size": 40,
+      "source_sha256": "c6a06d147e3af50eebe303cc08af3e7564d40dbf3298dd30a0c16d3987f3e166",
+      "original_asm_parent": "6A9920.s",
+      "functions": [
+        {
+          "name": "func_801CB848_6A9D08",
+          "rom_offset": 6987016,
+          "vma": 2149365832,
+          "size": 40,
+          "original_code_sha256": "93a75f65ad0999ea6258c63d709a8dcedc7b7e5658e25e492b38fb827d4f790f",
+          "expected_original_relocations": 3
+        }
+      ]
+    },
+    {
+      "name": "archive61_058",
+      "section": "file_42",
+      "rom_offset": 7281076,
+      "size": 52,
+      "source_sha256": "82db2a79fb6181fc7c2c7311c128e9eb1ce52ae269ead41a70bd546ff0db8979",
+      "original_asm_parent": "file_42.s",
+      "functions": [
+        {
+          "name": "func_080017A4_6F19B4",
+          "rom_offset": 7281076,
+          "vma": 134223780,
+          "size": 52,
+          "original_code_sha256": "7a3d160060d1aeae326520f196aeb9a744a942ad2ef94dd5f610bb0d88a18b44",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_059",
+      "section": "file_67",
+      "rom_offset": 7512640,
+      "size": 56,
+      "source_sha256": "6206d7d5cf82b883692f826297a444a96834e260f7e5f59cc3b87d22a48a4193",
+      "original_asm_parent": "file_67.s",
+      "functions": [
+        {
+          "name": "func_08000CA0_72A240",
+          "rom_offset": 7512640,
+          "vma": 134220960,
+          "size": 56,
+          "original_code_sha256": "87cbbdb1ebdc265d50fff82dbfea7e9e2c3aa2e04ef5908fb4ffa7a479242ebd",
+          "expected_original_relocations": 2
+        }
+      ]
+    },
+    {
+      "name": "archive61_060",
+      "section": "file_73",
+      "rom_offset": 7551984,
+      "size": 56,
+      "source_sha256": "86b180bb4f293c7c704b30eecff142f856e798ebbe8078023cea9e77ca9fcb44",
+      "original_asm_parent": "file_73.s",
+      "functions": [
+        {
+          "name": "func_08000CC0_733BF0",
+          "rom_offset": 7551984,
+          "vma": 134220992,
+          "size": 56,
+          "original_code_sha256": "87cbbdb1ebdc265d50fff82dbfea7e9e2c3aa2e04ef5908fb4ffa7a479242ebd",
+          "expected_original_relocations": 2
+        }
+      ]
+    }
+  ]
+}

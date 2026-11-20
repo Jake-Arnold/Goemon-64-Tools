@@ -3,13 +3,13 @@
   "created_utc_date": "2026-11-19",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 1556,
-    "usa_instruction_bytes": 59552,
+    "usa_functions": 1617,
+    "usa_instruction_bytes": 62324,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "USA 1556 original-address matching C; 55 of 116 archived isolated exact functions passed combined G2; 61 remain isolated/research-only. Only original USA full-ROM verified candidates may be promoted. File25 relocation blocked. Japan 39 here is manifest-core only (432 regional accepted).",
+  "purpose": "USA 1617 original-address matching C. All 116 archived isolated native-exact sources have passed full combined G2 across waves 22+33+61; the additional historical provisional sweep without preserved sources remains RESEARCH_ONLY. One separate file25 relocated function remains blocked. Japan 39 is manifest-core only (432 regional accepted).",
   "ready_for_combined_g2": {
     "functions": 0,
     "bytes": 0,
@@ -37,7 +37,7 @@
       "blocker": "Isolated code matches, but the C source introduces D_0A00C980 relocations absent from the original ELF; upstream full-ROM gate failed."
     }
   ],
-  "other_unresolved_research": "decomp/data/archive116_second33_stage_20261120.json",
+  "other_unresolved_research": "decomp/data/archive116_all_promoted_20261120.json",
   "historical_87_promoted_provenance": "decomp/data/candidate_registry_782_pending_20261117.json",
   "acceptance_requirements": [
     "native original-address instruction match",

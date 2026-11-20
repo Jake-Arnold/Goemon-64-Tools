@@ -183,6 +183,14 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-lm','-o',str(binary)]),
             ('Archive33 actual-source sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        # Compile all 61 original native-verified C translation units with
+        # ASan/UBSan, then execute ten independently safe original bodies.
+        sources=sorted((ROOT/'decomp/research/pending_archive61_20261120/sources').glob('archive61_*.c'))
+        if len(sources)!=61:
+            raise ValueError('Missing the original 61 archive native source files')
+        steps.append(('Archive61 actual-original-source sanitizer compile and host cases',[
+            sys.executable,'-m','decomp.research.pending_archive61_20261120.test_actual_sources']))
     return steps
 
 
