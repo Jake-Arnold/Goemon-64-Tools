@@ -1,0 +1,50 @@
+{
+  "format": "goemon-original-usa-bounded-probes-v1",
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "date": "2026-11-20",
+  "source_repo_head": "3c96868b164727bf5c34635e01aef384431c1b7a",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "not_accepted": [
+    {
+      "name": "func_80212D90_67C770",
+      "rom_offset": "0x67c770",
+      "size": 20,
+      "original_instruction_sha256": "1090b81d10302ffb76bbda7f09e10e4f5dd58c5315722e2afada1c416edde197",
+      "variants_tried": 1,
+      "first_mismatch": "original lw $v0 at entry; first native variant used $t6, first differing machine-code byte +1",
+      "status": "FAILED_NATIVE",
+      "next_action": "Reconstruct ABI/register-liveness from original callers and the adjacent original assembly before one more bounded native variant."
+    },
+    {
+      "name": "func_8021F218_688BF8",
+      "rom_offset": "0x688bf8",
+      "size": 20,
+      "original_instruction_sha256": "cee18647526615b01d10586f53b6016ef9f9d440e5ed37c953fb28fba92c4a84",
+      "variants_tried": 1,
+      "first_mismatch": "original lw $v0 at entry; first native variant used $t6, first differing machine-code byte +1",
+      "status": "FAILED_NATIVE",
+      "next_action": "Reconstruct ABI/register-liveness from original callers and the adjacent original assembly before one more bounded native variant."
+    },
+    {
+      "name": "func_80212D78_67C758",
+      "rom_offset": "0x67c758",
+      "size": 24,
+      "original_instruction_sha256": "dc579ac0be3d9d1ff7e5a6296143d4ec32c572e26550c85fc5aa08dab9492ae0",
+      "variants_tried": 1,
+      "first_mismatch": "original lw $v0 at entry; first native variant used $t6, first differing machine-code byte +1",
+      "status": "FAILED_NATIVE",
+      "next_action": "Reconstruct ABI/register-liveness from original callers and the adjacent original assembly before one more bounded native variant."
+    },
+    {
+      "name": "func_800086A8_92A8",
+      "rom_offset": "0x92a8",
+      "size": 28,
+      "original_instruction_sha256": "93b349c87d8d8ed762ec8bce048afd0b97fcc22e37e8dfa0db16bc97050d9e0c",
+      "variants_tried": 1,
+      "first_mismatch": "original first andi chose $t6; native variant chose $t7; following scalar-index SSA allocation also differed",
+      "status": "FAILED_NATIVE",
+      "next_action": "Reconstruct ABI/register-liveness from original callers and the adjacent original assembly before one more bounded native variant."
+    }
+  ],
+  "limits": "Each independently probed function has 1 of 3 allowed original C source variants used (size <= 128 B). Preserve ASM until actual exact native match and whole-ROM G2."
+}

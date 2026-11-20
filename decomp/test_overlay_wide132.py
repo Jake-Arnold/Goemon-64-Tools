@@ -37,7 +37,7 @@ class Wide132ContractTest(unittest.TestCase):
     def test_current_claims_total_and_non_overlap(self):
         path=Path(__file__).with_name('manifest.json')
         doc=load_manifest(path)
-        functions=claimed_functions({k:v for k,v in doc.items() if k not in ('overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage')})
+        functions=claimed_functions({k:v for k,v in doc.items() if k not in ('overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage')})
         self.assertEqual(len(functions),1119)
         self.assertEqual(sum(e['size'] for e in functions),50828)
         self.assertEqual(len({f['name'] for f in functions}),1119)

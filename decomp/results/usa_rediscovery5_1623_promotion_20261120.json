@@ -1,0 +1,90 @@
+{
+  "format": "goemon-native-usa-rediscovery5-promotion-v1",
+  "date": "2026-11-20",
+  "status": "PASSED_G2",
+  "source_baseline_commit": "3c96868b164727bf5c34635e01aef384431c1b7a",
+  "new_original_functions": [
+    {
+      "name": "func_800115E0_121E0",
+      "rom_offset": 74208,
+      "vma": 2147554784,
+      "size": 24,
+      "original_code_sha256": "8cba4a6fdc972523fa76f8da3f25eee8f9d0adcea4567a696e57f978f24907fc"
+    },
+    {
+      "name": "func_800115F8_121F8",
+      "rom_offset": 74232,
+      "vma": 2147554808,
+      "size": 24,
+      "original_code_sha256": "d2fe8753a87dd53f78f26091cb7579f7f9f86bef245cc599be137796118a9abc"
+    },
+    {
+      "name": "func_801DFE68_64ECB8",
+      "rom_offset": 6614200,
+      "vma": 2149449320,
+      "size": 28,
+      "original_code_sha256": "52e726acebc8a887accf1167330b8734b11eb39ed90de4cfdd364d579b77fbef"
+    },
+    {
+      "name": "func_801E0740_64F590",
+      "rom_offset": 6616464,
+      "vma": 2149451584,
+      "size": 28,
+      "original_code_sha256": "52e726acebc8a887accf1167330b8734b11eb39ed90de4cfdd364d579b77fbef"
+    },
+    {
+      "name": "func_801E11BC_65000C",
+      "rom_offset": 6619148,
+      "vma": 2149454268,
+      "size": 28,
+      "original_code_sha256": "52e726acebc8a887accf1167330b8734b11eb39ed90de4cfdd364d579b77fbef"
+    }
+  ],
+  "source_sha256s": {
+    "rediscovery5_000.c": "2600c7db8cd6f5089de3ea41f0412bd38059e4336921d367dcc555ae5cf51a14",
+    "rediscovery5_001.c": "925ad072ca55e9c726d438a17ad2b6562c5ef510ec9ba002339c55f23eb32ae4",
+    "rediscovery5_002.c": "a1ea7466bc055ec1a9d80c449b5633d6dda8ef1dca4543df9a2a407804fd2b89",
+    "rediscovery5_003.c": "da0328f979127e5f62d621d937da1466d72468e05025f7c1a06e01146f6e1f37",
+    "rediscovery5_004.c": "b419e939cffd558e6e36c5d9ed104a228165a5c383b4cf2218cc8f0c49af4346"
+  },
+  "starting_accepted_c": 1618,
+  "ending_accepted_c": 1623,
+  "new_original_instruction_bytes": 132,
+  "starting_original_instruction_bytes": 62372,
+  "ending_original_instruction_bytes": 62504,
+  "starting_remaining_asm": 5745,
+  "ending_remaining_asm": 5740,
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "combined_original_rom_exact_bytes": 33554432,
+  "combined_original_elf_identities": 7376,
+  "combined_original_semantic_relocations_identical": true,
+  "native_IDO_5_3_isolated_exact": 5,
+  "native_IDO_expected_relocations": 0,
+  "original_linked_sections": [
+    "main",
+    "file_14"
+  ],
+  "full_rom_gate": "PASS",
+  "strict_inventory": "PASS",
+  "local_ci": "PASS",
+  "gameplay": "NOT_RUN",
+  "historical_341_source_mapping": "MISSING_RESEARCH_ONLY",
+  "baseline_proof_archived": "decomp/results/combined_1618_20261120.json",
+  "baseline_inventory_archived": "decomp/results/inventory_1618_20261120.json",
+  "limitations": [
+    "The 341 historical provisional source bodies/identities were not preserved. These five are newly reconstructed independently, not demonstrated to have belonged to that lost set.",
+    "Original-USA ROM/ELF full gate is independent of host ASan/UBSan regression."
+  ],
+  "local_ci_decomp_tests": {
+    "run": 283,
+    "skipped": 1
+  },
+  "local_ci_verifier_ledger_tests": {
+    "run": 349,
+    "skipped": 4
+  },
+  "task_evidence_validation": "PASS",
+  "original_C_ASan_UBSan_cases": 5000,
+  "local_ci_log": "PASS: full python3 -m decomp.local_ci, full GCC actual-source sanitizer jobs, 2026-11-20; original-ROM verifier separately ran with pinned IDO 5.3"
+}

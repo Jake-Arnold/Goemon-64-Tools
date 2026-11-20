@@ -35,13 +35,13 @@ class Archive61PromotionTests(unittest.TestCase):
 
     def test_complete_production_claims_no_duplicate(self):
         m=load_manifest(native.ROOT/'manifest.json')
-        functions=claimed_functions({k:v for k,v in m.items() if k!='overlay_checkpoint500_stage'})
+        functions=claimed_functions({k:v for k,v in m.items() if k not in ('overlay_checkpoint500_stage','overlay_rediscovery5_stage')})
         self.assertEqual(len(functions),1617)
         names=[f['name'] for f in functions]
         self.assertEqual(len(names),len(set(names)))
         self.assertEqual({f['name'] for f in self.functions} & set(names),
                          {f['name'] for f in self.functions})
-        older=claimed_functions({k:v for k,v in m.items() if k not in ('overlay_archive61_stage','overlay_checkpoint500_stage')})
+        older=claimed_functions({k:v for k,v in m.items() if k not in ('overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage')})
         self.assertEqual(len(older),1556)
         self.assertTrue(set(names)-{f['name'] for f in older}=={f['name'] for f in self.functions})
 
