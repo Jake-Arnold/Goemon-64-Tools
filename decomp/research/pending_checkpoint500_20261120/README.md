@@ -1,0 +1,9 @@
+# Checkpoint500 independently recoverable function (20 Nov 2026)
+
+The historical 19 Nov checkpoint was **not** a preserved 342-function source catalogue. It counted 458 provisional isolated matches with the 116 already archived; the final 342 sources and match reports were lost. This is a specific blocking input, not proof of 342 accepted functions.
+
+One C file survived and is copied byte-identically from the existing repo research archive: `func_80033D10_34910.c`, main ROM offset `0x34910`, VMA `0x80033D10`, length 48 bytes. This source zeroes three `float` entries pointed to by the object field at offset `0x54`. Correct `float*` stride (one 4-byte element) preserves original codegen.
+
+With original IDO 5.3 flags, this produced **48/48 exact original machine instruction bytes**, correct 48-byte ELF FUNC extent and zero relocations. The fail-closed staged full combined verifier produced **1,618 matching C / 62,372 bytes**, exact **33,554,432-byte USA original ROM** (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`), original 7,376 positive ELF identities and full semantic relocation equivalence. Strict inventory has 5,745 ASM entries and zero extra positive aliases.
+
+Native original toolchain, private ROM and extracted ASM are local only. Preserve original checkpoint source hash and original bytes hash. The other **341 hypothetical remainder** are not identified by the checkpoint and cannot be promoted from this archive. Full local CI PASS: 281 decomp tests, 349 verifier/ledger tests, full configured sanitizer suite, 1,000 real-source host cases. GCC host UBSan alignment check alone is disabled for this test because the original 32-bit MIPS struct pointer at +0x54 has incompatible 64-bit base/field alignment; no production native flags, comparison rules, or other sanitizer checks changed. No emulator gameplay claim.

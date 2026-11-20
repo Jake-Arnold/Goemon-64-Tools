@@ -25,7 +25,7 @@ class UsaCameraResetPromotionTests(unittest.TestCase):
         cls.manifest.pop('overlay_micro20_stage', None)
         cls.manifest.pop('overlay_menu2_stage', None)
         cls.manifest.pop('overlay_statecopy1_stage', None)
-        cls.manifest.pop('overlay_archive22_stage', None); cls.manifest.pop('overlay_archive33_stage', None); cls.manifest.pop('overlay_archive61_stage', None); cls.manifest.pop('overlay_archive61_stage', None)
+        cls.manifest.pop('overlay_archive22_stage', None); cls.manifest.pop('overlay_archive33_stage', None); cls.manifest.pop('overlay_archive61_stage', None); cls.manifest.pop('overlay_checkpoint500_stage', None)
         cls.registry,cls.file_inventory=load_files(ROOT)
         cls.proof=json.loads((ROOT/'decomp/results/usa_camera_reset_136_promotion_20261117.json').read_text())
 
