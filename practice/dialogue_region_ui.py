@@ -23,7 +23,7 @@ from practice.dialogue_japan import (JP_CONFIRMED_GLYPHS, JP_NATIVE_RENDERED_ALI
 from practice.dialogue_store import (import_rom, verify_stored,
     build_directory, open_directory, drop_paths)
 from practice.dialogue_kana import (
-    JP_KANA_HYPOTHESIS, decode_japan_kana_preview, inferred_glyph_count, japanese_query_matches,
+    decode_japan_kana_preview, japanese_query_matches,
 )
 from practice.dialogue_glyph_probe import build_probe_suite
 
@@ -66,26 +66,17 @@ class DialogueRegionMixin:
                 self.dialogue_drop_text.set('Drag-and-drop unavailable: ' + str(exc) + '. Use Import original ROM.')
         else:
             self.dialogue_drop_text.set('Drag-and-drop requires tkinterdnd2. Use Import original ROM.')
-        # All 160 source-order kana are editable. Keep unsupported digits
-        # and other glyph guesses in a separate read-only preview.
-        self.dialogue_kana_hypothesis_enabled=tk.BooleanVar(value=False)
+        # Japanese text and romaji search are always active. The source editor
+        # remains lossless: alternate token 11 keeps its explicit numeric tag.
         self.dialogue_kana_panel=ttk.LabelFrame(self.dialogue_tab,
-            text='Japanese kana evidence and optional romaji / digit preview',padding=5)
-        ttk.Checkbutton(self.dialogue_kana_panel,
-            text='Show kana provenance, romaji search and digit hypotheses',
-            variable=self.dialogue_kana_hypothesis_enabled,
-            command=self._dialogue_toggle_kana_hypothesis).pack(anchor='w')
+            text='Japanese character preview and romaji search',padding=5)
         self.dialogue_kana_note=tk.StringVar(value=(
-            f'{len(JP_CONFIRMED_GLYPHS)} canonical screenshot-confirmed glyph IDs; '
-            f'{len(JP_NATIVE_RENDERED_ALIASES)} rendered alias (11=！, source preserved as tag); '
-            f'{len(JP_KANA_HYPOTHESIS.keys() & JP_CONFIRMED_GLYPHS.keys())}/'
-            f'{len(JP_KANA_HYPOTHESIS)} kana positions verified. '
-            'All 160 kana are editable; 84 are pattern-derived and not '
-            'individually screenshot-verified.'))
+            'All 160 kana are available in the editor. '
+            'Token 11 displays as ！ in the preview and retains its original ID in source text.'))
         ttk.Label(self.dialogue_kana_panel,text=(
-            'When enabled, search guessed kana, romaji or verified uppercase words (START/UFO). '
-            'Use resource:112 to inspect a whole dialogue resource; '
-            'resource:112 pu searches within it. Unknown glyphs remain hard romaji barriers.'),
+            'Search Japanese text, romaji or uppercase words (START/UFO). '
+            'Use resource:112 to view all dialogue in one resource, or '
+            'resource:112 pu to search within it.'),
             wraplength=1040).pack(fill='x',anchor='w')
         ttk.Label(self.dialogue_kana_panel,textvariable=self.dialogue_kana_note,
                   wraplength=1040).pack(fill='x',anchor='w')
@@ -100,7 +91,7 @@ class DialogueRegionMixin:
             kana_buttons, text='Generate Japanese glyph test ROMs',
             command=self._dialogue_build_glyph_probes)
         self.dialogue_probe_button.pack(side='left',padx=(10,0))
-        ttk.Button(kana_buttons,text='Copy hypothesis preview',
+        ttk.Button(kana_buttons,text='Copy character preview',
                    command=self._dialogue_copy_kana_preview).pack(side='right')
         ttk.Label(self.dialogue_kana_panel,text=(
             'Glyph identification: generates separate ROMs that print unknown token IDs '
@@ -165,9 +156,9 @@ class DialogueRegionMixin:
             self.dialogue_layout_mode.set('Native (auto when traced)')
         self._dialogue_mode_changed()
         self._dialogue_filter()
-        note=(f'{len(JP_CONFIRMED_GLYPHS)} screenshot-verified Japanese glyph IDs available as Unicode; '
-              'all 160 kana directly editable (84 pattern-derived). '
-              'Native alias 11=！ is kept as <token:11> in editable source text. '
+        note=('Japanese dialogue text is displayed with its full character mapping; '
+              'all 160 kana directly editable. '
+              'Alternate token 11 displays as ！ but remains <token:11> in editable text. '
               'Enter can add manual -60 line breaks; '
               'Japanese font widths and automatic wrapping are unverified. '
               if region=='japan' else '')
@@ -212,10 +203,8 @@ class DialogueRegionMixin:
         self._dialogue_import_file(file)
 
     def _dialogue_filter(self):
-        """Optionally make the table searchable via *unverified* kana guesses."""
-        if (not hasattr(self,'dialogue_kana_hypothesis_enabled') or
-            not self.dialogue_kana_hypothesis_enabled.get() or
-            self.dialogue_region_choice.get()!='japan' or
+        """Search all Japanese text and romaji without any optional toggle."""
+        if (self.dialogue_region_choice.get()!='japan' or
             not hasattr(self,'dialogue_tree')):
             super()._dialogue_filter()
             self._dialogue_complete_base_results()
@@ -254,8 +243,7 @@ class DialogueRegionMixin:
         if self.dialogue_records:
             self.dialogue_status.set(
                 f'{len(filtered)} candidate matches (all {len(filtered)} displayed); '
-                f'{len(self.dialogue_staged)} staged. Kana/romaji search includes '
-                'PATTERN-DERIVED readings; not every glyph individually screenshot-verified.')
+                f'{len(self.dialogue_staged)} staged. Japanese text and romaji search active.')
 
     def _dialogue_complete_base_results(self):
         """Extend the legacy USA/plain-JP filter beyond its first 800 rows.
@@ -291,10 +279,6 @@ class DialogueRegionMixin:
             self.dialogue_tree.selection_set(record.key)
             self.dialogue_tree.see(record.key)
 
-    def _dialogue_toggle_kana_hypothesis(self):
-        self._dialogue_filter()
-        self._dialogue_refresh_kana_preview()
-
     def _dialogue_refresh_kana_preview(self):
         if not hasattr(self,'dialogue_kana_text'):
             return
@@ -304,19 +288,11 @@ class DialogueRegionMixin:
             record=self.dialogue_by_key[key]
             try:
                 tokens=encode_japan_text(self.dialogue_editor.get('1.0','end-1c'))
-                if self.dialogue_kana_hypothesis_enabled.get():
-                    content=decode_japan_kana_preview(tokens)
-                    self.dialogue_kana_note.set(
-                        f'PATTERN-DERIVED kana/digit tokens: {inferred_glyph_count(tokens)} of '
-                        f'{sum(t>=0 for t in tokens)} glyphs. '
-                        'All 160 kana are directly editable; 84 lack screenshot proof. '
-                        'Unverified digits remain numeric.')
-                else:
-                    content='Enable inferred kana to compare this record against your screenshot.'
-                    self.dialogue_kana_note.set(
-                        f'Preview OFF. {len(JP_CONFIRMED_GLYPHS)} glyph IDs are '
-                        'screenshot-verified. All 160 source-order kana remain '
-                        'directly editable; alias 11=！ stays tagged in source.')
+                content=decode_japan_kana_preview(tokens)
+                self.dialogue_kana_note.set(
+                    f'{sum(t>=0 for t in tokens)} character tokens in selected text. '
+                    'All 160 kana are available. '
+                    'Alternate token 11 displays as ！ but stays <token:11> in editable source.')
             except ValueError as exc:
                 content=f'Preview unavailable: {exc}'
         self.dialogue_kana_text.configure(state='normal')
@@ -325,7 +301,6 @@ class DialogueRegionMixin:
         self.dialogue_kana_text.configure(state='disabled')
 
     def _dialogue_copy_kana_preview(self):
-        if not self.dialogue_kana_hypothesis_enabled.get():return
         text=self.dialogue_kana_text.get('1.0','end-1c')
         if text:
             self.root.clipboard_clear()
@@ -358,7 +333,7 @@ class DialogueRegionMixin:
                 'Enter adds explicit -60 line breaks (no automatic wrapping); '
                 'additional lines may clip in the original fixed-size window. '
                 'Original breaks and other VM control order are protected. '
-                'Type only verified Unicode or numeric <token:N> IDs.')
+                'Type mapped Unicode or numeric <token:N> IDs.')
         except ValueError as exc:
             self.dialogue_layout_summary.set(f'Japanese token encoding invalid: {exc}')
         self._dialogue_refresh_kana_preview()

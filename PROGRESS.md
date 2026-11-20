@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-20 — v0.11.78 always-on Japanese kana and romaji, toolkit integration ready
+
+- **User-facing simplification:** The Japanese Dialogue view always displays decoded kana, supports Japanese text and romaji search, and shows a permanent read-only character preview. Removed the “Show kana provenance, romaji search and digit hypotheses” checkbox, optional-state gating, “PATTERN-DERIVED” status warnings, 84-kana verification caveats in live GUI, “Copy hypothesis preview” label, and enabling instructions. The editor exposes all 160 kana in the canonical Japanese mapping by default. USA Dialogue behaviour is unchanged.
+- **Safety:** Keep separate Unicode mappings for the duplicate exclamation glyph: original token `11` remains explicitly tagged in source, while the preview displays `！`, avoiding unintentional remapping to token `212`. Unknown reserved ranges, negative script controls, source-ROM SHA-1 gating, resource data and ROM repacking remain unchanged. Japanese auto-wrap still requires separately measured font widths; it is not silently enabled.
+- **Tests:** Update region-aware Tk tests for always-on preview/search, absence of the obsolete checkbox, copy functionality and all-record filtering, while preserving the existing token11 native-alias and original-ROM regression gates. Bump Toolkit version to 0.11.78. Source observation provenance remains in dated research reports; the GUI no longer presents it as an obstacle to use.
+- **Merge plan:** Validate Linux/Windows GitHub CI on the final branch head, then merge the current toolkit PR into `main` and retire its short-lived feature branch. Retain `chatgptweb/decomp` as a separate long-lived baseline per `docs/TOOLKIT_BRANCH_POLICY.md`.
+
+
 ## 2026-11-20 — v0.11.77: Japanese token 11 is native-rendered ！ alias
 
 - **Native gameplay evidence:** Two user screenshots of the independently prepared Kai Highway A/B ROMs, one visibly titled `jp-kai-token11-probe.z64`, both show `かい！う`. In that token-11 ROM the only game-script text difference from original decompressed Japan-0 is original glyph `78=ど` replaced with `11`. This verifies `11` renders the same visible fullwidth exclamation mark `！` as canonical `212`; the original resource 97 +`0x2B60` `16,303,59,11,-60` can now be visually transcribed `う〜ん！` plus newline.

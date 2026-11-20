@@ -137,7 +137,7 @@ class RegionUIIntegration(unittest.TestCase):
         self.assertEqual(self.app.dialogue_staged[rec.key],' かい\nどう')
         self.assertIn('additional manual line break',self.app.dialogue_status.get())
 
-    def test_hypothesis_preview_stays_readonly_and_japan_only(self):
+    def test_japanese_preview_is_always_visible_readonly_and_japan_only(self):
         from practice.dialogue_japan import JapanDialogueRecord
         record=JapanDialogueRecord(82,0x18,0x742358,(14,19,15,78,16),(0x64,))
         self.app.dialogue_region_choice.set('japan')
@@ -146,13 +146,10 @@ class RegionUIIntegration(unittest.TestCase):
         self.app.dialogue_by_key={record.key:record}
         self.app.dialogue_selected_key=record.key
         self.app.dialogue_editor.insert('1.0',record.text)
-        self.assertFalse(self.app.dialogue_kana_hypothesis_enabled.get())
-        self.assertIn('242 canonical screenshot-confirmed glyph IDs',self.app.dialogue_kana_note.get())
-        self.assertIn('1 rendered alias (11=！',self.app.dialogue_kana_note.get())
-        self.assertIn('76/160 kana positions verified',self.app.dialogue_kana_note.get())
-        self.assertIn('All 160 kana are editable',self.app.dialogue_kana_note.get())
-        self.app.dialogue_kana_hypothesis_enabled.set(True)
-        self.app._dialogue_toggle_kana_hypothesis()
+        self.assertFalse(hasattr(self.app,'dialogue_kana_hypothesis_enabled'))
+        self.assertIn('All 160 kana',self.app.dialogue_kana_note.get())
+        self.assertFalse(any(isinstance(widget,ttk.Checkbutton) for widget in self.app.dialogue_kana_panel.winfo_children()))
+        self.app._dialogue_refresh_kana_preview()
         self.assertEqual(self.app.dialogue_kana_text.get('1.0','end-1c'),'あかいどう')
         self.assertEqual(self.app.dialogue_kana_text.cget('state'),'disabled')
         self.assertEqual(self.app.dialogue_editor.get('1.0','end-1c'),record.text)
@@ -160,7 +157,7 @@ class RegionUIIntegration(unittest.TestCase):
         self.app._dialogue_region_changed()
         self.assertFalse(self.app.dialogue_kana_panel.winfo_manager())
 
-    def test_hypothesis_search_and_list_are_explicitly_opt_in(self):
+    def test_kana_search_and_list_are_enabled_without_toggling(self):
         from practice.dialogue_japan import JapanDialogueRecord
         rec=JapanDialogueRecord(81,0,0x742000,(25,44,27,59),(0x30,))
         self.app.dialogue_region_choice.set('japan')
@@ -171,12 +168,9 @@ class RegionUIIntegration(unittest.TestCase):
             columns=('resource','offset','references','text'),show='headings')
         self.app.dialogue_query.set('しません')
         self.app._dialogue_filter()
-        self.assertEqual(self.app.dialogue_tree.get_children(),())
-        self.app.dialogue_kana_hypothesis_enabled.set(True)
-        self.app._dialogue_toggle_kana_hypothesis()
         self.assertEqual(self.app.dialogue_tree.get_children(),(rec.key,))
         self.assertIn('しません',str(self.app.dialogue_tree.item(rec.key,'values')))
-        self.assertIn('PATTERN-DERIVED',self.app.dialogue_status.get())
+        self.assertIn('romaji search active',self.app.dialogue_status.get())
 
     def test_open_build_directory(self):
         with patch('practice.dialogue_region_ui.open_directory') as opener, patch('practice.dialogue_region_ui.build_directory',return_value=Path('/tmp/builds')):
@@ -210,7 +204,6 @@ class RomajiUIIntegration(RegionUIIntegration):
         self.app.dialogue_by_key={r.key:r for r in self.app.dialogue_records}
         self.app.dialogue_tree=ttk.Treeview(self.app.dialogue_tab,
             columns=('resource','offset','references','text'),show='headings')
-        self.app.dialogue_kana_hypothesis_enabled.set(True)
         self.app.dialogue_query.set('PU')
         self.app._dialogue_filter()
         self.assertEqual(len(self.app.dialogue_tree.get_children()),2)
@@ -228,7 +221,7 @@ class RomajiUIIntegration(RegionUIIntegration):
 
 
 class FullDialogueListUI(RegionUIIntegration):
-    def test_inferred_japan_list_shows_all_805_rows(self):
+    def test_japan_list_shows_all_805_rows(self):
         from practice.dialogue_japan import JapanDialogueRecord
         self.app.dialogue_region_choice.set('japan')
         self.app._dialogue_region_changed()
@@ -238,8 +231,7 @@ class FullDialogueListUI(RegionUIIntegration):
         self.app.dialogue_by_key={r.key:r for r in records}
         self.app.dialogue_tree=ttk.Treeview(self.app.dialogue_tab,
             columns=('resource','offset','references','text'),show='headings')
-        self.app.dialogue_kana_hypothesis_enabled.set(True)
-        self.app._dialogue_toggle_kana_hypothesis()
+        self.app._dialogue_filter()
         self.assertEqual(len(self.app.dialogue_tree.get_children()),805)
         self.assertTrue(self.app.dialogue_tree.exists(records[-1].key))
         self.assertIn('all 805 displayed',self.app.dialogue_status.get())
