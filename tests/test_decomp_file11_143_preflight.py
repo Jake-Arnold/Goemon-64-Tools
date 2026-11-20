@@ -39,6 +39,7 @@ class File11143PreflightTests(unittest.TestCase):
         cls.manifest.pop('overlay_micro20_stage', None)
         cls.manifest.pop('overlay_menu2_stage', None)
         cls.manifest.pop('overlay_statecopy1_stage', None)
+        cls.manifest.pop('overlay_archive22_stage', None)
         cls.manifest['overlay_file11_stage'] = {'format': 'goemon-file11-character-switch-50-v2'}
         cls.manifest['overlay_file12_stages'] = [
             x for x in cls.manifest['overlay_file12_stages']

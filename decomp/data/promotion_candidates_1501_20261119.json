@@ -1,0 +1,53 @@
+{
+  "format": "goemon-promotion-review-queue-v1",
+  "created_utc_date": "2026-11-19",
+  "canonical_branch": "chatgptweb/decomp",
+  "production_accepted_baseline": {
+    "usa_functions": 1501,
+    "usa_instruction_bytes": 57604,
+    "japan_0_functions": 39,
+    "japan_0_instruction_bytes": 2092
+  },
+  "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "purpose": "After native verified USA 1501-C statecopy1 stage: no ready research leads, one file25 relocation candidate blocked. The 20261118 1500-C queue is preserved as an immutable historical checkpoint. Japan 39 C here denotes the manifest core, not the subsequent 432-C staged regional count.",
+  "ready_for_combined_g2": {
+    "functions": 0,
+    "bytes": 0,
+    "by_segment": {}
+  },
+  "candidates": [],
+  "blocked_not_promotion_ready": [
+    {
+      "region": "usa",
+      "segment": "file_25",
+      "name": "func_08001228_6AE5E8",
+      "rom_offset": "0x6AE5E8",
+      "vma": "0x08001228",
+      "size": 72,
+      "original_code_sha256": "e8a7fcf53fd5b35f1affaae4426433142aff330751b6ca885986057d6f2d6ad2",
+      "source": {
+        "path": "decomp/research/file27_adjacent21_20261117/file25_last_v3.c",
+        "git_blob_sha": "c1ae9637748f22a2883c36fbff3c9e47a2ffaa94"
+      },
+      "historical_native_tier": "ISOLATED_NATIVE_EXACT_ONLY",
+      "evidence": "decomp/research/file27_adjacent21_20261117/research_proof.json",
+      "review_state": "BLOCKED_RELOCATION",
+      "status": "RESEARCH_ONLY",
+      "canonical_g2": "NOT_RUN",
+      "blocker": "Isolated code matches, but the C source introduces D_0A00C980 relocations absent from the original ELF; upstream full-ROM gate failed."
+    }
+  ],
+  "other_unresolved_research": "decomp/research/historical_audit_20261117/LIVE_LEADS.json",
+  "historical_87_promoted_provenance": "decomp/data/candidate_registry_782_pending_20261117.json",
+  "acceptance_requirements": [
+    "native original-address instruction match",
+    "exact source unit/symbol size/relocations",
+    "all currently accepted USA C coexist",
+    "33,554,432 byte exact USA ROM",
+    "7,376 original ELF FUNC identities",
+    "all original semantic relocation multisets",
+    "strict decomp.inventory",
+    "full decomp.local_ci"
+  ],
+  "no_promotion_claimed": true
+}
