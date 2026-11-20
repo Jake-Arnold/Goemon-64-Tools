@@ -1,4 +1,245 @@
-# Goemon Speedrun Tools v0.11.59 — Compact Dashboard and picture-only region flags
+# Goemon Speedrun Tools v0.11.78 — Japanese Dialogue Always Readable
+
+## v0.11.78 — Japanese kana and romaji display is permanent
+
+The Japanese Dialogue tab now **always** displays the complete kana mapping and provides Japanese-text and romaji search. The previous “Show kana hypothesis” checkbox has been removed. Source-order kana appear directly in the dialogue list and readable preview without requiring a toggle. The read-only character preview is visible whenever a Japanese record is selected, with **Copy character preview** available. All 160 kana remain directly editable as standard Unicode.
+
+The original Japanese text index contains **5,039 source-referenced records and zero unidentified positive tokens**. The editor preserves byte-exact original IDs, including fullwidth exclamation aliases: token `11` stays `<token:11>` in editable source and visually displays as `！` in the preview, while ordinary typed `！` encodes to canonical token `212`. Control tokens, ROM identity checks, retail repacking restrictions and Japanese/USA separation are unchanged. The existing Japanese auto-wrap limitation remains separate from character decoding.
+
+These updates replace the older opt-in / provisional preview behaviour described in dated historical release notes below.
+
+# Goemon Speedrun Tools v0.11.77 — Japanese Token 11 Native Alias Proven
+
+## v0.11.77 — original Japanese token 11 renders as fullwidth ！
+
+The user supplied two Kai Highway Project64/native gameplay screenshots, including one explicitly labelled `jp-kai-token11-probe.z64`. Both one-character experimental ROMs visibly show `かい！う`. The isolated original-Japan ROM patches previously proved that `11` and canonical `212` are distinct original token IDs; **both render as the same visible fullwidth exclamation mark**. The previously unexplained original dialogue token sequence `16,303,59,11,-60` can be visually read `う〜ん！`, newline.
+
+**Lossless handling:** `JP_NATIVE_RENDERED_ALIASES={11:'！'}` is separate from the bijective 242-entry canonical screenshot-backed map. Source/editor text keeps the raw alternate `<token:11>` so no-op saves reproduce original bytes; normal typed Unicode `！` still encodes to `212`. The read-only character preview displays the visibly equivalent `！`. No proprietary ROM data, probe ROMs or screenshots committed. The pinned 5,039-record original JP text index now has **0 unidentified positive IDs**. There are **243 screenshot-verified numeric token IDs** (242 unique canonical entries plus one noncanonical duplicate), **326 directly Unicode-editable glyph IDs** (including 84 source-order-inferred kana), and unobserved `183=７` remains a hypothesis. Visual equivalence does not prove identical font texture storage or semantics in every runtime context.
+
+Full report: `docs/JAPAN_TOKEN_11_INVESTIGATION_20261120.md`. Regression tests include original record offset/bytes, native-alias preview, source roundtrip, canonical Unicode encoding, and empty original-index unknown set. Observe CI on the new commit before claiming passing tests.
+
+# Goemon Speedrun Tools v0.11.76 — All Four Japanese Glyph Probe Pages Decoded
+
+## v0.11.76 — 83 additional Project64-rendered Japanese glyphs
+
+Three newly accessible Project64 screenshots show glyph probe pages 2–4, matched row-by-row to the original four-page token order reconstructed from the SHA-1-pinned original Japanese 32 MiB ROM. All **111 emitted test IDs** are now mapped, including kanji, `♪`, `卍`, `○`, and ten lowercase Latin letters. Visual and source-context checks distinguish `317=目` from `230=日`, `382=g` from a 号-like shape (original text **Going Now**), `372=艦` in 大戦艦, `368=桜` in 桜島, and `395=犯` in 現行犯.
+
+**Confirmed glyphs: 159→242; editable glyph IDs: 243→326; unknown glyph IDs in the original 5,039-record static index: 84→1.** The sole remaining indexed unknown is suspicious ID `11` (one occurrence), deliberately excluded from the glyph probe; `183=７` also remains unobserved rather than directly writable. The **84 pattern-derived kana** retain their inferential status. Original ROM bytes, renderer, text controls, and repacking restrictions are unchanged. See `docs/JAPAN_GLYPH_PROBE_PAGES2_4_20261120.md` and `tests/test_dialogue_glyph_probe_pages234.py`. CI status must be checked on the new head commit.
+
+# Goemon Speedrun Tools v0.11.75 — First Project64 Glyph Probe Page Decoded
+
+## v0.11.75 — 28 glyphs read directly from native Japanese renderer
+
+User-supplied screenshot of **JP glyph probe ROM page 1/4** at Kai Highway establishes 28 previously unknown positive token IDs, based on exact row/column positions from the original v0.11.74 JSON manifest. The newly readable/editable IDs are: digits `178–182,184–185` (２３４５６８９), punctuation `226=。`, `300/301=［］`, and 18 distinct kanji including `239=数`, `294=前`, `230=日`, `245=見`, `286=東`, `307=海`. **Verified ID count 131→159**, canonical editable ID count 215→243. The current original static dialogue index now has **84** unknown positive IDs remaining, including reserved suspect `11`. Unobserved fullwidth `７` at 183 remains an unverified hypothesis, not a directly accepted Unicode character.
+
+The tool retains its source-original-only safeguards; all negative VM controls are preserved, and visual probe pages 2–4 are not yet counted as verified. Original Japanese text/ROMs/graphics are not committed. See `docs/JAPAN_GLYPH_PROBE_PAGE1_20261120.md` and `tests/test_dialogue_glyph_probe_page1.py`.
+
+
+
+## v0.11.74 — Project64-rendered atlas probes for unknown Japanese character IDs
+
+The Japanese Dialogue tab now provides **Generate Japanese glyph test ROMs**. The tool scans every verified-original Japanese dialogue candidate, counts all positive glyph IDs outside the **215 mapped Unicode glyphs**, and builds **independent 16 MiB retail probe ROMs** using the *game's real text renderer* at Kai Highway, **resource 82 +0x18**. Original negative VM controls, existing user edits, the original images and normal runtime code are untouched. Each probe shows seven numbered-position glyphs per row and four rows per screen; token identification is provided by a paired HTML position guide and machine-readable JSON manifest, not by putting potentially unsafe numeric labels inside the native dialogue window.
+
+The 20 November user index audit identified **112 unresolved IDs / 1,632 occurrences**, not all independently uncertain. By default **token 11 is excluded** as an unusual low-value potential non-glyph control; **111 remaining IDs produce four .z64 ROMs** (7 columns × 4 rows, sorted token order). The actual number is recalculated against the imported SHA-1-pinned original ROM and current editor mappings at build time. The manifest includes page/line/column-to-token IDs, frequency counts, source hashes and individual output SHA-1s. Output filenames cannot overwrite any pre-existing file; builds stage in a temporary directory and refuse to write alongside originals.
+
+**This is a native-rendered atlas probe, not a false offline font bitmap extraction.** The original JP texture atlas, palette, pixel format and token lookup have **not** been established. Project64 is needed to display the glyph images. The original two-line Kai Highway window does not grow: user gameplay tests show additional lines printed outside the painted box. Seven separated glyphs per row reduce overflow, but native presentation may still depend on the scene/background. The output is intended for screenshot-to-ID verification, not an English-translation production ROM.
+
+No new third-party dependencies; retail output uses the existing pinned `lzkn64` dependency. The UI uses a background worker, reports build progress, and integrates with **Open built ROM directory**. The source-only planner, no-overwrite and mocked builder tests are in `tests/test_dialogue_glyph_probe.py`; research and workflow in `docs/JAPAN_ROM_GLYPH_PROBE_20261120.md`. CI results for this commit must be checked separately.
+
+
+## v0.11.73 — Complete original Japanese kana block decoded and editable
+
+All **160 contiguous Japanese kana glyph IDs (14–173)** are now decoded and
+directly editable as Unicode, preserving original token IDs and VM controls.
+This extends the previous 76 individually screenshot-confirmed kana with
+84 systematically inferred positions. This was not blind extrapolation:
+an original-Japan-ROM audit found **44,077 kana occurrences** across 5,039
+static dialogue records, including **157/160 different kana positions**
+in real source text. The remaining three positions (138=ヲ, 155=ヂ,
+171=ゥ) are not used by the static text index and remain explicitly
+pattern-derived rather than raster-verified. The +80 hiragana/katakana
+parallel blocks and all **76 original screenshot anchors** agree.
+
+The original 131 screenshot-confirmed character IDs remain a separate
+provenance dictionary. The practical Japanese encoder now supports
+**215 unique glyph IDs** in total, comprising 160 structurally decoded
+kana plus other screenshot-backed kanji, punctuation and A–Z. An
+unmapped kanji, unsupported small glyph, lowercase letter or unproved
+digit remains `<token:N>`; no font art or ROM asset has changed.
+
+New canonical map: `practice/dialogue_kana_table.py`. Source evidence
+and corpus method: `docs/JAPAN_ALL_160_KANA_SOURCE_ORDER_20261119.md`.
+`tests/test_dialogue_full_kana.py` adds token-identity tests for all
+160 kana and an original-ROM-optional full 5,039-record round-trip gate.
+The separate experimental panel still exposes provenance and optional
+romaji/digit previews; the actual Japanese editor now displays and
+accepts all kana even when the optional preview is OFF.
+
+**Important:** 84 characters are structural inferences rather than
+individually verified screenshots; source coherence is not glyph
+raster validation. Japanese window geometry and automatic wrapping
+remain unverified. This does not decode all kanji or every symbol.
+
+
+
+## v0.11.72 — A–Z now directly editable, and Japan newlines proven in-game
+
+The user's **second Project64 screenshot** of a modified Japan ROM displays all **26 English uppercase letters** across four manually inserted lines: `ABCDEFG`, `HIJKLMN`, `OPQRSTU`, `VWXYZ`. The second screenshot independently verifies the previously clipped **V–Z** numeric IDs (207–211); all **186–211=A–Z** are now confirmed and can be typed as ordinary uppercase English into Japanese Dialogue records. The verified glyph table increases from 126 to **131** IDs. Lowercase English characters remain unmapped.
+
+The visible line breaks demonstrate that manual **Enter → -60** insertion from v0.11.71 works in Project64. However, the Kai area-name window has a fixed original height; extra rows visibly appear **below** the painted dialogue panel. This is evidence of clipping/overflow, *not* automatic window growth. Japan's Window profile dropdown and auto-wrap remain disabled until its native font advances and per-style geometry are verified. The inferred 160-kana map is still **76 individually verified / 84 provisional**; digits ２–９ are still provisional.
+
+Tests for the exact A–Z encode/decode and four-line tokens were extended; no ROM assets, screenshot image bytes, third-party dependencies, ROM repacker or original USA code changed. Source evidence: `docs/JAPAN_KAI_ALPHABET_AND_NEWLINES_20261119.md`.
+
+
+
+## v0.11.71 — Native uppercase A–U proven in modified Japanese gameplay
+
+The user's **Project64 Japanese ROM screenshot** displays ordered letters **A–U** using the inferred numeric glyph sequence 186–206 in the original Kai Highway banner. This verifies **18 additional Latin ID assignments** beyond previously proven F/O/U, bringing the Japan screenshot-confirmed glyph table to **126**; all A–U can now be entered directly in the Japanese editor. V–Z remain inferred numeric IDs until visible in gameplay. The screenshot also shows that the 26-letter sequence extends past the right edge of the Kai window: native Japanese font width metrics and automatic wrapping are still unverified.
+
+**Enter/manual JP line breaks now stage:** The editor encodes each inserted newline as `-60`; Japan validation permits *additional* manual -60 tokens while preserving the entire original sequence of other negative VM controls and retaining at least the original number of line breaks. This is manual editing only: `Window profile` and automatic wrapping remain disabled for Japan. Additional lines may not fit the original fixed-height artwork, particularly the two-line Kai heading/area-name box. The GUI explicitly warns when extra newlines are staged.
+
+Source notes: `docs/JAPAN_KAI_ALPHABET_AND_NEWLINES_20261119.md`. Existing source ROMs, USA layout, user data storage and Japanese retail repacking remain unchanged. Tests added for direct English A–U, unsupported V–Z, manual line breaks, VM-control preservation and Japan UI staging; no new runtime dependencies. A modified Japanese ROM with *newly inserted manual line breaks* still requires in-game verification.
+
+
+
+## v0.11.70 — Align 13 additional screenshots and expose experimental Latin font ordering
+
+**13/13 user Japanese gameplay screenshots automatically aligned to the original pinned Japanese ROM** using original static text records: **29 distinct source records**, chiefly **resource 96** for Oedo town NPC dialogue and **resource 93** for the two-line 大江戸・はぐれ町 area banner. These include `UFOだって？`, Chappy's dog dialogue and laughter, a fortune-teller's recommendation, `にしへ行けば、ふじ山あり！`, and the directions involving `うらない屋`. Every glyph position matches the source; no fuzzy Unicode replacements or arbitrary unknown kanji assignments were necessary. Full per-screenshot offsets and transcriptions: `docs/JAPAN_OEDO_THIRTEEN_SCREEN_ALIGNMENT_20261119.md`.
+
+**63 additional screenshot-backed token IDs** are now safely Unicode-editable in `practice/dialogue_japan.py`, bringing the original-ROM/screenshot-confirmed table to **108 unique glyph IDs**. These include many basic kana, katakana, small kana, `ー`, kanji `町/行/時/来/聞`, full-width question mark `？`, and **three Latin uppercase letters U/F/O**. All 29 source records preserve the identical complete signed-16-bit token stream (including original VM negative formatting/state commands) through encode/decode. The source input ROM, USA editor and ROM relocation/compression code are unchanged.
+
+**A second systematic font-ordering hypothesis is supported:** `191=F`, `200=O`, `206=U` correspond to uppercase `A–Z` at token **186–211**. An original Japan ROM button instruction contains the same proposed pattern for `START` (`204,205,186,203,205`). The screenshot-proven digits `176=０`, `177=１` similarly suggest fullwidth `０–９` at **176–185**. The **unverified** remaining Latin/digit IDs are added only to the separate read-only experimental Japanese preview and search; the actual ROM encoder refuses them until independently verified. The earlier **160-position kana hypothesis** remains, now **76 screenshot-confirmed / 84 still unverified**; none of the 84 is automatically promoted.
+
+**Validation 19 November 2026:** **59 focused original-ROM / Linux Xvfb Tk tests passed, zero skipped**, under portable Python 3.12.16, LZKN64 and the supplied pinned USA/Japan decompressed and 16 MiB retail ROMs. Includes all 29 screenshot/ROM record alignments, the 63 new mappings, original JP retail byte-for-byte unchanged repack, native token/control round trips and USA/Japan UI integration. No new Python dependencies are introduced. Full application Windows/Linux regressions, packaged TkDND distribution and modified Japanese retail ROM display in Project64 remain unverified.
+
+The active PR #94 is draft against `main`; `chatgptweb/decomp` and any old branch cleanup state remain untouched. No original ROM bytes, screenshots, font images or licensed assets were committed.
+
+
+## v0.11.69 — All candidate records visible, expanded screenshot-verified Japanese glyph map
+
+**List cap removed:** Both USA and Japan Dialogue record lists now render **every** indexed matching record, not just the first 800. The region-aware GUI fills the remaining original USA rows after the base Dialogue view; in Japanese search mode, its table inserts all matches. Search and exact `resource:112` filters remain available. The original verified JP image contains **5,039** statically indexed candidate records; USA contains **5,186**. An actual Tk 8.6 Xvfb list of all 5,039 JP records rendered successfully (measured 0.07 s on the test host). Displaying all candidates does **not** establish VM reachability.
+
+**Seven Plasma screenshots matched:** The user's seven consecutive Japanese Project64 screenshots align with **18 original records of resource 112**, offsets `+0x60` through `+0x328`. These cover `プラズマおやぢ`, `どぴょぴょ〜ん`, the `１０両` offer and choices, `うらなってしんぜよう`, repeated `ぷ`, the `プラズマぁ〜！` callout, `大江戸城` and directions using `出入口` / `ふじ山`. The correspondence is checked using original ROM token sequences, not guessed prose. The `docs/JAPAN_PLASMA_SEVEN_SCREEN_FONT_EVIDENCE_20261119.md` report records every paired resource offset and the **31 additional** user-screenshot-backed token IDs, yielding **45 verified Unicode glyph IDs**. Original font and text assets are not committed.
+
+**Japanese font ordering strengthened:** The existing proposed 14–59 hiragana and 94–139 katakana blocks are supplemented with **60–63 small hiragana, 64–88 voiced/semi-voiced hiragana, 89–93 small vowels, 140–143 small katakana, 144–168 voiced/semi-voiced katakana, and 169–173 small vowels**. This yields **160 provisional kana positions**: new screenshot anchors include `64=が`, `70=じ`, `75=ぢ`, `77=で`, `85=ぴ`, `86=ぷ`, `151=ズ` and `166=プ`. Only screenshot-proven glyphs enter the editable Unicode table. Every other predicted character remains in the **read-only** kana/romaji preview, not ROM-writing code. The inferred positions cover 44,077 out of 64,217 nonnegative glyph occurrences across the static index; this is frequency coverage, not decoding accuracy.
+
+**Verification (19 November 2026):** 54 focused Japanese ROM, persistence and Tk UI tests passed, **zero skips**, under Linux/Xvfb using the supplied original Japan and USA SHA-1-pinned ROMs and portable Python 3.12/LZKN64. Tests include source matching for all seven screenshots, full encode/decode round trips over resource 112, unverified-Unicode rejection, lists beyond 800 rows for both UI modes, and original Japanese compressed-ROM rebuild. A real 5,039-row Tk population was also timed independently. Full Windows/Linux application tests and live *modified* Japanese gameplay are still outstanding.
+
+**Branch cleanup audit:** Five obsolete `toolkit/*` heads are safely classifiable from merged PRs or exact duplicate refs, while `toolkit/uniform-story-flag-buttons` still has a closed-unmerged PR and must not be discarded without explicit review. The connected GitHub toolset has **no remote branch-delete action**; therefore no branch was deleted automatically. The user's local cleanup shell script is external to this PR and is intentionally not included in app source.
+
+
+## v0.11.68 — Search JP dialogue using romaji, and inspect a whole resource
+
+The Japanese Dialogue tab's always-enabled kana and romaji search provides phonetic **romaji search** alongside kana and raw token ID matching. Search `pu`, `pura`, `purazuma`, or `purazumaa` to find Japanese Plasma records even though the game inserts display spaces between each character. Search `resource:112` to view the **whole** statically indexed Plasma resource, or `resource:112 pu` to narrow within it. A new **Show selected resource** button fills the exact resource filter. Search is case-insensitive; unverified glyphs are treated as barriers rather than invented phonetic readings. All inferred kana and romaji search remain read-only and opt-in; the patcher still encodes only screenshot-confirmed characters or explicit `<token:N>`.
+
+**New screenshot-backed mapping:** The user's original Japanese Project64 screenshot shows **`プラズマぁ！！`**. Source resource **112 +0x0C** contains `166,132,151,124,89,212,212` interleaved with original spacing token `13` and negative style controls. This confirms `166=プ`, `132=ラ`, `151=ズ`, `124=マ`, `89=ぁ`, `212=！`; these six glyph IDs are now accepted as readable/editable Unicode. Other kana, kanji and Latin mappings remain unverified.
+
+Scanning the pinned Japanese original yields **103** static candidate records containing `pu`, **65** containing `purazuma`, and **3** containing `purazumaa` under this limited search model. Most Plasma-name hits belong to resource **112**; these are candidate record matches, not proof of a fully executed dialogue chain. Source/ROM details: `docs/JAPAN_PLASMA_ROMAJI_SEARCH_20261119.md`.
+
+**Verification 19 November 2026:** 37 focused dialogue-related tests passed, zero skips, under portable Python 3.12.16 with source-pinned Japan/USA decompressed and retail ROM paths, Xvfb and LZKN64. These include matching the exact original 112+0x0C token stream, unchanged encode/decode round trips with formatting controls, guarded Unicode, real-ROM romaji search, mixed-case search, resource filters, Xvfb Tk selection and original Japanese retail repacking. Python compileall passed. Full application regressions, live patched JP gameplay, and native standalone TkDND dependency packaging were not run. No copyrighted ROM data committed.
+
+
+## v0.11.67 — Gojuon-order preview for Japanese dialogue verification
+
+After the user's screenshot validated original Japanese script tokens `15=い` / `95=イ` and `19=か` / `99=カ`, the Toolkit now has a **read-only hypothesis preview** for the *Japan* Dialogue tab. The proposed standard 46-character hiragana sequence occupies token IDs `14..59` and katakana occupies `94..139` (+80). **Only the eight pre-existing screenshot-confirmed glyph IDs remain verified and editable as Unicode.** The new proposed characters are **not** added to the encoder or ROM patcher.
+
+Choose the **Japan** region; the character preview and romaji search are automatically enabled. The list becomes searchable by tentative Japanese words and a separate read-only panel shows the selected record in the proposed text. It counts guessed characters and offers **Copy character preview** for direct comparison against gameplay screenshots. The actual editable record retains exact `<token:N>` IDs for all unverified glyphs, and its existing safety validation is unchanged. The toggle defaults OFF, and the panel hides when returning to USA.
+
+**Plausibility from the pinned original Japanese ROM:** Source candidate resource 81 contains inferred fragments `しません` and `たいほする`, and resource 84 yields `ムサシ`. These agree with plausible Japanese text in context; **none is an independent in-game verification** of the predicted ordering. Among 5,039 original static candidate records, 4,935 contain at least one predicted-but-unconfirmed kana token. This is coverage, not accuracy.
+
+**Tests 19 November 2026:** 26 Japanese ROM/Tk-focused tests passed, zero skipped, with pinned 32 MiB Japanese/USA decompressed and 16 MiB retail sources under portable Python 3.12/LZKN64/Xvfb. Tests verify the offset-80 pattern, exact original Kai records, safety separation of inferred preview from encoder, noneditable GUI preview, opt-in Japanese search and existing retail repack/storage behavior. No new third-party dependencies. **Full application Linux/Windows regressions, real native TkDND packaging and screenshot checks of unverified kana remain pending.**
+
+Source notes: `docs/JAPAN_GOJUON_PREVIEW_RESEARCH_20261119.md`. The original ROMs and copyrighted assets are not committed.
+
+
+## v0.11.66 — Japanese Kai Highway glyph mapping
+
+A user-supplied Japanese Project64 screenshot was matched against two adjacent original Japan-0 ROM records in resource **82**, at offsets **+0x04** (header) and **+0x18** (subtitle). The verified ROM's signed halfwords now decode to readable **`【カイ】`** and **`かいどう`**, including indentation, orange title presentation via unchanged `-33/-32` controls and an original trailing `-60` newline. Eight screenshot-aligned token IDs are mapped for safe direct Unicode typing: `292=【`, `293=】`, `99=カ`, `95=イ`, `19=か`, `15=い`, `78=ど`, `16=う`. Existing token `13` remains a space/indent. All other Japanese glyphs stay as exact `<token:N>` placeholders.
+
+The Japanese Unicode editor **only** accepts confirmed glyphs; unknown Unicode raises an error rather than guessing an SJIS or atlas order. All original negative control values retain their order. The two records round-trip to **byte-identical 16-bit token sequences** when unchanged. The extra glyphs are not an exhaustive character table, and Japanese layout/auto-wrap remain disabled until font widths and native window geometry are verified. No ROM bytes, font graphics or original script assets are committed.
+
+**Verification on 19 November 2026:** 20 focused Japanese ROM and Tk UI tests passed under portable Python 3.12.16, Xvfb and LZKN64 0.2.0; this includes exact 82+0x04/+0x18 token-to-Unicode examples, edit validation, unchanged compressed JP retail repack, verified persistence and Japanese/USA tab controls. The mapping was confirmed against the original in-game screenshot; no modified Japanese Unicode replacement has yet been displayed in Project64.
+
+The source-alignment evidence is in `docs/JAPAN_KAI_GLYPH_MAPPING_20261119.md`. This incremental update does **not** claim a complete Japanese font atlas or bundled TkDND native packages.
+
+
+## v0.11.65 — Japan-0 original ROM support, one-time import, native file drop, built-ROM folder
+
+The existing **Dialogue** tab now has a separate **USA / Japan** selector. It can import either the original 16 MiB retail image (including the byte-swapped Japan `.n64`) or a verified original 32 MiB decompressed image. On retail import it normalises Japan byte order, automatically decompresses the original files using the optional `lzkn64==0.2.0` runtime, verifies the exact decompressed SHA-1, and copies the retail and decompressed originals to a **persistent per-user ROM library** outside the repository. Saved images are re-hashed before reuse and load automatically on subsequent launches. Source ROMs are not modified; no original assets are committed.
+
+**Persistent directory:** Linux `$XDG_DATA_HOME/GoemonSpeedrunTools/dialogue-roms` (default `~/.local/share/GoemonSpeedrunTools/dialogue-roms`), Windows `%LOCALAPPDATA%\GoemonSpeedrunTools\dialogue-roms`, macOS `~/Library/Application Support/GoemonSpeedrunTools/dialogue-roms`. The **Open built ROM directory** button opens the last successfully built output folder, or the default persistent `dialogue-roms/built/` folder. Builds default to that folder. Importing an unchanged original once is enough; original full-ROM hashes are still checked on every reload.
+
+The Toolkit root uses the `tkinterdnd2` package for native file drag-and-drop on supported Linux/Windows/macOS Tk installations. A plain file-picker **Import original ROM** fallback always remains available. Install from `requirements.txt` (including `tkinterdnd2>=0.4.3`) to enable real drop handling. Dropping a ROM only imports while the Dialogue tab is active. Multiple dropped files are rejected rather than partially processed.
+
+**Japan extraction:** The original Japan-0 file table at decompressed offset `0x58258` and its original `0x8010` same-resource script operands yield **5,039 candidate text records across 42 resources**, with 5,694 direct script references. Japan text is signed 16-bit tokens, not USA ASCII. **Japanese Unicode glyph mapping is not decoded yet**: the editor shows and edits safe numeric `<token:N>` IDs, preserves original negative controls and rejects unsupported Unicode to prevent corrupting the ROM. JP font-width auto-wrap and USA-native window sizing are intentionally disabled for Japanese dialogue. Same-size replacement and bounded variable-length record relocation are supported with verified source pointers, followed by 16 MiB big-endian Japanese retail `.z64` rebuilding. The untouched Japanese retail image repacks **byte-for-byte** to SHA-1 `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b`; the original `.n64` bytes require adjacent-byte swapping before comparison. A modified Japanese record was repacked successfully, **not tested in Project64 gameplay**.
+
+**Test evidence:** 18 focused new Python and Xvfb Tk tests passed on 19 November 2026, no skips, using both supplied original regional ROMs, portable Python 3.12 and LZKN64 0.2.0. These cover both automatic-decompression paths, persistent image validation, mixed byte order, JP token roundtrips and rejection, in-place and longer JP patches, original retail byte equality, file-manager dispatch and root fallback when TkDND is absent. Existing full Toolkit regressions and actual TkDND drops on an installed TkDND binary were not exercised. Source research: `docs/JAPAN_DIALOGUE_ROM_EDITOR_RESEARCH_20261119.md`.
+
+
+## v0.11.64 — Native artwork width and conservative auto wrapping
+
+The Dialogue tab now derives **horizontal bounds** from the original USA window CI4 textures and RGBA16 palettes, rather than treating each texture's **256-pixel stride** as its actual painted width. All twelve styles have source-backed visible artwork bounds: styles **2–5** paint **160 pixels**, while styles **0–1 and 6–11** paint **256 pixels**. Native text placement is **14 units** from the window origin (10-unit +0x50 inset and a 4-unit glyph-entry offset); glyph drawing rectangles are 10 units across. A 4-pixel decorative right border is reserved, along with the narrowest original font advance (3 units), yielding **conservative total-advance limits** of **135 units** for styles 2–5 and **231 units** for other styles.
+
+The editor now defaults to **Native (auto when traced)** and reports the artwork width, conservative advance limit, actual line start and remaining complete native lines for statically identified style contexts. The manual entries are disabled in this mode, and no automatic width is inferred for untraced scripts. Manual limits remain available but **cannot override a known native conservative limit**. The Wrap action can use the conservative native limit for compatible multi-line records when at least two actual lines remain; single-line area names and unsupported control-code records are rejected. Existing ROM generation still requires an explicit Stage/Build action.
+
+**Kai Highway, resource 82:** style 5 uses 160-pixel painted artwork with a 135-unit conservative advance cap. Its original indented area-name line measures **122 units**; the edited `Monster Monster Monster` measures **165**, exceeding the conservative cap. The heading consumes line one and only **one** complete native line remains for the area name. These findings are consistent with the user's Project64 screenshots, but do not establish all animated clipping and screen-scale cases.
+
+The evidence, original MIPS addresses, texture/palette pointers, validation checks and known limits are documented in `docs/USA_DIALOGUE_HORIZONTAL_GEOMETRY_20261119.md`.
+
+**Tests run 19 November 2026:** 51 focused dialogue/ROM/Tk GUI tests passed (0 skips) under portable Python 3.12.16 + Xvfb and LZKN64 0.2.0, with the original pinned USA decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494` and retail SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`. Retail compression tests still pass. Full application Linux/Windows regressions, JP support and live testing of the new native auto-wrap profile remain out of scope.
+
+
+## v0.11.63 — Source-backed line capacity and improved control-code metadata
+
+The Dialogue tab now recognises original USA window-style metadata from the native 12-entry style table at decompressed offset `0x633F0`. For direct script sequences it traces the last unbranched assignment to `0x801C7768`, verifies the following `0x8010` text commands and calculates which line of the window the selected record starts on. Using the original 12-pixel glyphs, 16-unit line spacing, 7-unit initial y inset and style backgrounds of 40/56/72 units, it reports a conservative native **2/3/4 complete-line capacity**. The reported capacity is for the original unscaled background geometry, not an exhaustive window-animation/clipping model.
+
+**Kai Highway:** USA resource 82 writes window style 5 (40 units high) at script `+0x40`, prints the `[Kai]` heading with a native linebreak at `+0x58`, and prints the area name at `+0x60`. Consequently the area name begins on **line 2 of 2**, with **one complete line left**. The Toolkit warns when edits exceed this limit even if the manually entered `Max lines` is 20; explicit wrapping cannot add more lines than the native remaining capacity. The original area-name record starts with eight actual spaces consuming 72 native font units. Removing them shifts the text left, as confirmed by user screenshots.
+
+**Horizontal max glyph width remains manual.** The source table's 256-unit field is a texture-related stride and is not verified as the maximum glyph text width; the renderer's coordinate conversion and inset must be traced before the Toolkit can choose the real box width. The editor makes this distinction explicit rather than silently filling a false width.
+
+The control decoder also now documents original MIPS effects of `-57..-50`: setting/clearing window flags, a float32 window field and a halfword parameter. Their *visual* consequences remain unverified and the wrapper continues rejecting these opaque controls. A source-evidence report is in `docs/USA_DIALOGUE_WINDOW_GEOMETRY_20261119.md`.
+
+On the verified USA ROM, bounded straight-line style inference resolves **963 of 5,186 statically indexed text records**; this is not a complete reachability analysis or indirect-pointer proof.
+
+**Tests:** 42 focused Python/ROM/Xvfb-Tk tests passed (0 skips) using the pinned 32 MiB decompressed USA SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, original retail USA SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`, portable Python 3.12 and LZKN64. Full Toolkit Linux/Windows regressions and actual in-game auto-wrapping against multiple window styles remain outstanding.
+
+
+## v0.11.62 — Exact glyph advances, layout warnings and guarded wrapping
+
+The existing **Dialogue** tab reads the verified USA ROM glyph-width table at decompressed offset `0x5C710`. The original renderer advances the horizontal cursor by the token's width byte plus one; the editor now shows the original and edited maximum line widths, line count, peak renderer glyph-entry usage, and control-code summaries. It warns about unknown-width token IDs, opaque layout controls, more than 120 retained glyph entries between clears, and exceeding a manually supplied width/line limit.
+
+The original 40-entry signed-control dispatch (`-71..-32`) is catalogued. Known actions (e.g. `-60` newline, `-63` clear, `-61/-62` state transitions) are distinguished from helper calls whose semantics remain unconfirmed. The diagnostic does **not** assume every control command's effects on window layout.
+
+Window dimensions are *not* yet verified for each style. The editor therefore offers three profiles: **Measure only** (default); **Single-line (manual cap)** for overflow warnings; and **Multi-line (manual cap)**. Only the explicit multi-line profile with user-entered width and line limits enables **Wrap to manual limits**. The wrapper replaces separator spaces with `-60` when necessary, preserves original negative controls and an optional trailing `-61/-62`, refuses complex inline formatting, missing glyph widths, unsupported spacing and unbreakable words, and cannot exceed the user limit. This is an *opt-in* transform, not automatic in-game wrapping. The patcher remains fail-closed about added control tokens unless the record has been explicitly wrapped; the permission is carried through decompressed and retail builders.
+
+ROM-verified width examples: `Kai Highway` is **79 font advance units**; `Monster Monster Monster` is **165**. These values are not claimed textbox dimensions. No window width is hardcoded.
+
+**Verified 19 November 2026:** 34 focused tests passed with the SHA-1-pinned USA decompressed and original retail cartridges, portable Python 3.12 and LZKN64. This includes Xvfb GUI tests and a modified compressed-resource round trip after adding a `-60` line break. No skips. Full toolkit Linux/Windows regressions and live Project64 rendering of newly inserted wrapping were not tested.
+
+Limitations: USA only; manual bounds, no source-backed style dimensions or clipping model yet. The existing static `0x8010` candidate scan is not a complete execution/indirect-pointer graph. Japan remains independently scoped. No ROM or original assets are committed.
+
+
+## v0.11.61 — Relocate dialogue and build a 16 MiB USA cartridge
+
+The existing **Dialogue** tab now accepts longer and shorter USA text records. When necessary, it appends replacement text at the end of the original script resource, rewrites detected `0x8010` script operands, enlarges that resource's virtual extent, shifts subsequent decompressed file-table offsets and preserves the original record as a fallback. The editor requires the negative control tokens to remain in their original order; it cannot automatically guarantee rendered line width, text wrapping or complete script-reference reachability.
+
+To build a ROM: open the unchanged SHA-1-pinned **32 MiB decompressed USA .z64**, select the unchanged **16 MiB retail USA .z64**, stage one or more text edits, and choose **Build retail .z64**. This creates a separate 16 MiB compressed cartridge using the original file's compression flags and recalculates CIC-6102 header checksums. The operation runs in a worker thread, keeping the Toolkit responsive. **Build decompressed** remains available with corrected header CRCs when resource offsets change.
+
+Retail rebuilding requires the optional Python dependency `lzkn64==0.2.0` (`python3 -m pip install lzkn64==0.2.0`). The base toolkit does not bundle this compiled extension.
+
+**Verification (19 November 2026):** The unmodified USA retail image rebuilt byte-for-byte with SHA-1 `df8083a54296b8c151917c5333e1c85f014a2a66`. A longer-text retail cartridge was recompressed and decompressed again: resource content, moved script pointers and updated resource tables matched the modified image exactly (apart from recalculated header CRC bytes). Twenty dialogue/ROM/headless-Tk tests passed on the supplied pinned USA images. Live gameplay with length-changing edits was **not** tested.
+
+**Limitations:** USA only, statically identified same-resource references only, 16 KiB maximum appended data per resource, no automatic dialogue wrapping, no guaranteed runtime reachability, no Japanese repacking or source ROM overwrite. No ROMs or extracted assets are committed.
+
+
+## v0.11.60 — Dialogue browser and experimental in-place text editing
+
+The new **Dialogue** tab in the existing Tkinter toolkit opens a SHA-1-verified, 32 MiB decompressed USA ROM without connecting to a running game. It indexes aligned same-resource script text commands (`0x8010`), decodes known USA glyphs and control tokens, and provides filtering, record references, JSON/CSV export, and conservative text replacement. No copyrighted ROM or extracted dialogue is included.
+
+Edits must preserve token count, control-token placement and original source files; the editor validates and stages changes before writing a separate *decompressed* experimental 32 MiB image. It does **not** repack the retail 16 MiB ROM, support arbitrary-length edits, establish full event reachability or prove in-game rendering. The source must match the original USA decompressed SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
+
+Tests run against the verified source image on 19 November 2026: 11 dialogue/installer tests passed locally; 9 source dialogue tests are included in the repository. Emulator gameplay and retail-ROM recompression remain unverified.
+
 
 ## v0.11.59 — Flag images and collapsed advanced controls
 
