@@ -2,7 +2,7 @@
   "format": "goemon-usa-native100-1723-promotion-v1",
   "date": "2026-11-20",
   "status": "PASSED_G2",
-  "publication": "LOCAL_VERIFIED_NOT_YET_PUSHED",
+  "publication": "PUBLISHED",
   "original_accepted_c": 1623,
   "new_native_exact_c": 100,
   "matching_c_after": 1723,
@@ -1222,5 +1222,8 @@
       "native_original_match": true
     }
   ],
-  "local_ci_summary": "Full python3 -m decomp.local_ci: 289 decomp tests, 1 skipped; 349 verifier/ledger tests, 4 skipped; task/evidence validation; 30 configured steps including GCC ASan/UBSan actual-source host regressions and new 1,000-case field update regression."
+  "local_ci_summary": "Full python3 -m decomp.local_ci: 289 decomp tests, 1 skipped; 349 verifier/ledger tests, 4 skipped; task/evidence validation; 30 configured steps including GCC ASan/UBSan actual-source host regressions and new 1,000-case field update regression.",
+  "published_initial_commit": "56ac21ff0e37e113fcd0a6c9d38876027be82248",
+  "published_branch": "chatgptweb/decomp",
+  "published_verified_at": "2026-11-20"
 }
