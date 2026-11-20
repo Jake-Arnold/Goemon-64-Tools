@@ -81,7 +81,7 @@
       "owner": "script VM",
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde"
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330"
     },
     {
       "id": "decomp:vm_loader",
@@ -108,7 +108,7 @@
       "owner": "script VM",
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde"
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330"
     },
     {
       "id": "decomp:vm_text_emit",
@@ -135,7 +135,7 @@
       "owner": "script VM",
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde"
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330"
     },
     {
       "id": "research:ebisumaru_active_timer",
@@ -344,7 +344,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -372,7 +372,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -401,7 +401,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -429,7 +429,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -455,7 +455,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -484,7 +484,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -510,7 +510,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -539,7 +539,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -567,7 +567,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -596,7 +596,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -622,7 +622,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -650,7 +650,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     },
@@ -679,7 +679,7 @@
       "control": null,
       "discovered": "2026-11-13",
       "updated": "2026-11-17",
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "a412f9646405866a70115c0da77e6848eba40330",
       "aliases": [],
       "owner": "script VM"
     }
