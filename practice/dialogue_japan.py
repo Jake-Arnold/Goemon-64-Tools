@@ -95,6 +95,25 @@ JP_CONFIRMED_GLYPHS = {
     257: '体', 265: '場', 277: '村', 284: '北', 286: '東', 287: '寺', 289: '戦',
     # Probe row 4:
     294: '前', 298: '下', 299: '止', 300: '［', 301: '］', 306: '水', 307: '海',
+    # Project64 native glyph probe pages 2–4 (20 November 2026).
+    # Exact source-token order reconstructed from the original Japan-0
+    # 5,039-record index and the 111-ID v0.11.74 probe manifest.
+    # Four-line Kai banner screenshots; see evidence report for contexts.
+    # Probe page 2:
+    308: '人', 309: '銀', 310: '力', 311: '金', 312: '千', 313: '花', 314: '星',
+    315: '火', 316: '丸', 317: '目', 319: '間', 320: '茶', 321: '店', 322: '方',
+    323: '思', 325: '外', 326: '子', 327: '男', 328: '♪', 329: '国', 330: '地',
+    331: '九', 332: '州', 333: '女', 335: '社', 336: '員', 338: '語', 339: '卍',
+    # Probe page 3:
+    340: '長', 342: '話', 343: '家', 344: '四', 345: '文', 346: '字', 347: '川',
+    348: '小', 349: '池', 350: '竹', 351: '上', 352: '流', 353: '回', 354: '落',
+    355: '石', 356: '○', 357: '氷', 358: '犬', 359: '神', 360: '名', 361: '警',
+    362: '告', 363: '発', 364: '生', 365: '島', 366: '木', 367: '客', 368: '桜',
+    # Probe page 4:
+    369: '先', 370: '向', 371: '調', 372: '艦', 373: '愛', 374: '夢', 375: '仁',
+    376: '王', 377: '良', 378: '早', 379: 'o', 380: 'i', 381: 'n', 382: 'g',
+    383: 'w', 384: 'a', 385: 'k', 386: 'e', 387: 'h', 388: 'c', 389: '野',
+    390: '表', 391: '示', 392: '破', 393: '損', 394: '現', 395: '犯',
 }
 # Keep screenshot proof separate from the font-order extrapolation.
 for _id, _character in JP_CONFIRMED_GLYPHS.items():
@@ -103,7 +122,7 @@ for _id, _character in JP_CONFIRMED_GLYPHS.items():
 JP_EDITABLE_GLYPHS = {**JP_KANA_HYPOTHESIS, **JP_CONFIRMED_GLYPHS}
 JP_CONFIRMED_GLYPH_TO_TOKEN = {character: token for token, character in JP_CONFIRMED_GLYPHS.items()}
 JP_EDITABLE_GLYPH_TO_TOKEN = {character: token for token, character in JP_EDITABLE_GLYPHS.items()}
-assert len(JP_EDITABLE_GLYPHS) == len(JP_EDITABLE_GLYPH_TO_TOKEN) == 243
+assert len(JP_EDITABLE_GLYPHS) == len(JP_EDITABLE_GLYPH_TO_TOKEN) == 326
 
 
 def decode_japan_tokens(tokens: tuple[int, ...]) -> str:
