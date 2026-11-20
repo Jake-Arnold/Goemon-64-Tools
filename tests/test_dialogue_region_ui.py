@@ -95,6 +95,34 @@ class RegionUIIntegration(unittest.TestCase):
         self.assertIn('disabled',self.app.dialogue_wrap_button.state())
         self.assertEqual(self.app.dialogue_layout_mode.get(),'Measure only')
 
+    def test_japan_glyph_probe_button_input_safety(self):
+        self.assertTrue(self.app.dialogue_probe_button.winfo_exists())
+        self.assertFalse(self.app.dialogue_probe_running)
+        self.app.dialogue_region_choice.set('japan')
+        self.app._dialogue_region_changed()
+        with patch('practice.dialogue_region_ui.messagebox.showerror') as error:
+            self.app._dialogue_build_glyph_probes()
+            error.assert_called_once()
+        self.assertFalse(self.app.dialogue_probe_running)
+
+    def test_glyph_probe_completion_tracks_output_without_changing_edits(self):
+        from tempfile import TemporaryDirectory
+        with TemporaryDirectory() as folder:
+            self.app.dialogue_region_choice.set('japan')
+            self.app._dialogue_region_changed()
+            self.app.dialogue_staged={'82:0x18':'SOME EDIT'}
+            self.app.dialogue_probe_running=True
+            self.app.dialogue_probe_button.state(['disabled'])
+            self.app.dialogue_region_box.state(['disabled'])
+            self.app.dialogue_probe_queue.put((
+                'complete',folder,{'pages':[{},{}],'emitted_probe_ids':40}))
+            self.app._dialogue_poll_glyph_probe()
+            self.assertFalse(self.app.dialogue_probe_running)
+            self.assertEqual(self.app.dialogue_staged,{'82:0x18':'SOME EDIT'})
+            self.assertEqual(self.app.dialogue_last_build_dir,Path(folder))
+            self.assertIn('2 Japanese glyph test ROMs',self.app.dialogue_status.get())
+            self.assertNotIn('disabled',self.app.dialogue_probe_button.state())
+
     def test_japan_manual_enter_can_be_staged(self):
         from practice.dialogue_japan import JapanDialogueRecord
         rec=JapanDialogueRecord(82,0x18,0x742358,(13,19,15,78,16),(0x64,))

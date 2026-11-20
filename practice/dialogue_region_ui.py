@@ -24,6 +24,7 @@ from practice.dialogue_store import (import_rom, verify_stored,
 from practice.dialogue_kana import (
     JP_KANA_HYPOTHESIS, decode_japan_kana_preview, inferred_glyph_count, japanese_query_matches,
 )
+from practice.dialogue_glyph_probe import build_probe_suite
 
 
 class DialogueRegionMixin:
@@ -31,6 +32,8 @@ class DialogueRegionMixin:
         self.dialogue_region_choice = tk.StringVar(value=(
             'japan' if getattr(getattr(self,'active_version',None),'key','usa')=='japan' else 'usa'))
         self.dialogue_last_build_dir = None
+        self.dialogue_probe_running = False
+        self.dialogue_probe_queue = queue.SimpleQueue()
         super().build_dialogue_tab(notebook)
         old_top = self.dialogue_tab.winfo_children()[0]
         old_top.pack_forget()
@@ -91,13 +94,25 @@ class DialogueRegionMixin:
         kana_buttons.pack(fill='x')
         ttk.Button(kana_buttons,text='Show selected resource',
                    command=self._dialogue_show_selected_resource).pack(side='left')
+        self.dialogue_probe_button = ttk.Button(
+            kana_buttons, text='Generate Japanese glyph test ROMs',
+            command=self._dialogue_build_glyph_probes)
+        self.dialogue_probe_button.pack(side='left',padx=(10,0))
         ttk.Button(kana_buttons,text='Copy hypothesis preview',
                    command=self._dialogue_copy_kana_preview).pack(side='right')
+        ttk.Label(self.dialogue_kana_panel,text=(
+            'Glyph identification: generates separate ROMs that print unknown token IDs '
+            'through Project64 at Kai Highway. The manifest maps each screen position '
+            'to its token ID. Additional lines may render below the painted window.'),
+            wraplength=1040).pack(anchor='w')
         self.dialogue_region_box.bind('<<ComboboxSelected>>',lambda _event:self._dialogue_region_changed())
         self.root.after_idle(self._dialogue_region_changed)
 
     def _dialogue_region_changed(self):
         """Re-verify stored originals on every selection, discard cross-region edits."""
+        if getattr(self,'dialogue_probe_running',False):
+            self.dialogue_region_choice.set('japan')
+            return
         if getattr(self,'dialogue_build_running',False):
             # Prevent switching displayed regions while the worker builds.
             if hasattr(self,'dialogue_build_region'):
@@ -413,7 +428,7 @@ class DialogueRegionMixin:
         self.dialogue_status.set(f'Built decompressed ROM: {path} SHA-1 {digest}; test in emulator.')
 
     def _dialogue_build_retail(self):
-        if self.dialogue_build_running:return
+        if self.dialogue_build_running or self.dialogue_probe_running:return
         if self.dialogue_path is None or not self.dialogue_staged:
             messagebox.showinfo('Nothing to build','Load and stage a dialogue edit first.',parent=self.dialogue_tab)
             return
@@ -460,6 +475,70 @@ class DialogueRegionMixin:
         else:
             self.dialogue_status.set('Retail ROM build failed; inputs remain unmodified.')
             messagebox.showerror('Build failed',detail,parent=self.dialogue_tab)
+
+    def _dialogue_build_glyph_probes(self):
+        """Build actual renderer test pages without disturbing staged edits."""
+        if self.dialogue_region_choice.get()!='japan':
+            return
+        if self.dialogue_build_running or self.dialogue_probe_running:
+            return
+        if self.dialogue_path is None or self.dialogue_retail_path is None:
+            messagebox.showerror('Original Japanese ROM required',
+                'Import the original Japanese retail ROM first. '
+                'Glyph probes must be built from verified original images.',
+                parent=self.dialogue_tab)
+            return
+        folder=filedialog.askdirectory(
+            title='Choose a separate output folder for Japanese glyph probe ROMs',
+            initialdir=str(build_directory()))
+        if not folder:return
+        self.dialogue_probe_running=True
+        self.dialogue_probe_button.state(['disabled'])
+        self.dialogue_region_box.state(['disabled'])
+        self.dialogue_status.set('Building Japanese glyph identification ROMs from verified originals...')
+        threading.Thread(
+            target=self._dialogue_glyph_probe_worker,
+            args=(Path(self.dialogue_path),Path(self.dialogue_retail_path),Path(folder)),
+            daemon=True).start()
+        self.root.after(100,self._dialogue_poll_glyph_probe)
+
+    def _dialogue_glyph_probe_worker(self,source,retail,directory):
+        try:
+            def on_progress(done,total):
+                self.dialogue_probe_queue.put(('progress',done,total))
+            result=build_probe_suite(source,retail,directory,progress=on_progress)
+            self.dialogue_probe_queue.put(('complete',str(directory),result))
+        except Exception as exc:
+            self.dialogue_probe_queue.put(('error',str(exc),None))
+
+    def _dialogue_poll_glyph_probe(self):
+        if not self.dialogue_probe_running:return
+        finished=False
+        while True:
+            try:kind,a,b=self.dialogue_probe_queue.get_nowait()
+            except queue.Empty:break
+            if kind=='progress':
+                self.dialogue_status.set(
+                    f'Japanese glyph probes: built page {a} of {b}...')
+            elif kind=='complete':
+                self.dialogue_last_build_dir=Path(a)
+                self.dialogue_status.set(
+                    f'Built {len(b["pages"])} Japanese glyph test ROMs '
+                    f'for {b["emitted_probe_ids"]} IDs in {a}. '
+                    'Open the folder and read jp-glyph-probe-guide.html; '
+                    'load each .z64 in Project64 at Kai Highway. '
+                    'The original ROM and staged edits are unchanged.')
+                finished=True
+            elif kind=='error':
+                self.dialogue_status.set('Japanese glyph probe build failed; originals unchanged.')
+                messagebox.showerror('Glyph probe failed',a,parent=self.dialogue_tab)
+                finished=True
+        if finished:
+            self.dialogue_probe_running=False
+            self.dialogue_probe_button.state(['!disabled'])
+            self.dialogue_region_box.state(['!disabled','readonly'])
+        else:
+            self.root.after(100,self._dialogue_poll_glyph_probe)
 
     def _dialogue_open_built_dir(self):
         try:open_directory(self.dialogue_last_build_dir or build_directory())

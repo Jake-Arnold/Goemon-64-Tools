@@ -1,4 +1,15 @@
-# Goemon Speedrun Tools v0.11.73 — Complete 160-Position Japanese Kana Mapping
+# Goemon Speedrun Tools v0.11.74 — Japanese ROM-Rendered Glyph Identification Atlas
+
+## v0.11.74 — Project64-rendered atlas probes for unknown Japanese character IDs
+
+The Japanese Dialogue tab now provides **Generate Japanese glyph test ROMs**. The tool scans every verified-original Japanese dialogue candidate, counts all positive glyph IDs outside the **215 mapped Unicode glyphs**, and builds **independent 16 MiB retail probe ROMs** using the *game's real text renderer* at Kai Highway, **resource 82 +0x18**. Original negative VM controls, existing user edits, the original images and normal runtime code are untouched. Each probe shows seven numbered-position glyphs per row and four rows per screen; token identification is provided by a paired HTML position guide and machine-readable JSON manifest, not by putting potentially unsafe numeric labels inside the native dialogue window.
+
+The 20 November user index audit identified **112 unresolved IDs / 1,632 occurrences**, not all independently uncertain. By default **token 11 is excluded** as an unusual low-value potential non-glyph control; **111 remaining IDs produce four .z64 ROMs** (7 columns × 4 rows, sorted token order). The actual number is recalculated against the imported SHA-1-pinned original ROM and current editor mappings at build time. The manifest includes page/line/column-to-token IDs, frequency counts, source hashes and individual output SHA-1s. Output filenames cannot overwrite any pre-existing file; builds stage in a temporary directory and refuse to write alongside originals.
+
+**This is a native-rendered atlas probe, not a false offline font bitmap extraction.** The original JP texture atlas, palette, pixel format and token lookup have **not** been established. Project64 is needed to display the glyph images. The original two-line Kai Highway window does not grow: user gameplay tests show additional lines printed outside the painted box. Seven separated glyphs per row reduce overflow, but native presentation may still depend on the scene/background. The output is intended for screenshot-to-ID verification, not an English-translation production ROM.
+
+No new third-party dependencies; retail output uses the existing pinned `lzkn64` dependency. The UI uses a background worker, reports build progress, and integrates with **Open built ROM directory**. The source-only planner, no-overwrite and mocked builder tests are in `tests/test_dialogue_glyph_probe.py`; research and workflow in `docs/JAPAN_ROM_GLYPH_PROBE_20261120.md`. CI results for this commit must be checked separately.
+
 
 ## v0.11.73 — Complete original Japanese kana block decoded and editable
 
