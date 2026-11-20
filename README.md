@@ -1,3 +1,11 @@
+# Goemon Speedrun Tools v0.11.76 — All Four Japanese Glyph Probe Pages Decoded
+
+## v0.11.76 — 83 additional Project64-rendered Japanese glyphs
+
+Three newly accessible Project64 screenshots show glyph probe pages 2–4, matched row-by-row to the original four-page token order reconstructed from the SHA-1-pinned original Japanese 32 MiB ROM. All **111 emitted test IDs** are now mapped, including kanji, `♪`, `卍`, `○`, and ten lowercase Latin letters. Visual and source-context checks distinguish `317=目` from `230=日`, `382=g` from a 号-like shape (original text **Going Now**), `372=艦` in 大戦艦, `368=桜` in 桜島, and `395=犯` in 現行犯.
+
+**Confirmed glyphs: 159→242; editable glyph IDs: 243→326; unknown glyph IDs in the original 5,039-record static index: 84→1.** The sole remaining indexed unknown is suspicious ID `11` (one occurrence), deliberately excluded from the glyph probe; `183=７` also remains unobserved rather than directly writable. The **84 pattern-derived kana** retain their inferential status. Original ROM bytes, renderer, text controls, and repacking restrictions are unchanged. See `docs/JAPAN_GLYPH_PROBE_PAGES2_4_20261120.md` and `tests/test_dialogue_glyph_probe_pages234.py`. CI status must be checked on the new head commit.
+
 # Goemon Speedrun Tools v0.11.75 — First Project64 Glyph Probe Page Decoded
 
 ## v0.11.75 — 28 glyphs read directly from native Japanese renderer
