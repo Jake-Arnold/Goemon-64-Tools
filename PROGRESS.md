@@ -1,3 +1,9 @@
+## 20 November 2026 — Mini Ebisumaru speed selector and clamp follow-up (FAILED_NATIVE / RESEARCH_ONLY)
+
+- Original USA selector func_801E1C90_59DBA0 (ROM 0x59DBA0, 384 B): eight native IDO 5.3 source variants. Best C structural candidate has 12 non-relocation instruction-word mismatches (first VMA 0x801E1CEC: 0x45010044 expected vs 0x45010043 generated). No exact native match.
+- Original USA clamp func_801CD310_589220 (ROM 0x589220, 4320 B): resolved m2c crash from numeric 18-entry/five-target jump table by emitting symbolic labels only into temporary copies. m2c now produces a 565-line C-like draft, but the generated source fails C source-check on inferred callback signatures and invalid float/pointer conversions. No exact code verified.
+- Draft PR research additions: decomp/research/mini_ebisumaru_speed_20261120/ with fail-closed reproduction script, source near-match and detailed limitations. Original game ASM/ROM unchanged and excluded. No combined decomp.verify, inventory, full local_ci or emulator gameplay run. Canonical USA 1723 matching C, 5640 ASM remains unchanged; the previous two original-USA exact speed probes are still research-only.
+
 ## 20 November 2026 — Mini Ebisumaru speed matching-C research (RESEARCH_ONLY; pristine USA exact)
 
 - Native IDO 5.3 original-address C reproduces `func_801E276C_59E67C` (148 B, ROM `0x59E67C`) and `func_801E3DE0_59FCF0` (220 B, ROM `0x59FCF0`), total 368 original instruction bytes. Two/three bounded source variants respectively; local original-ROM baseline verified.
