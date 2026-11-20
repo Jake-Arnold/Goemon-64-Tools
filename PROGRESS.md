@@ -1,5 +1,12 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-20 — Original Japanese singleton token 11, independently verified (research only)
+
+- **ROM evidence:** Independent source-only 0x8010 scanner on original decompressed Japanese SHA-1 6f8745fecc3a5e7d4918c7a73353eb0726116ded recovered 5,039 indexed dialogue records and 5,694 references. The sole original record containing 11 is resource 97 +0x2B60 (absolute 0x75A140), text 16,303,59,11,-60 = う〜ん<token:11>, referenced at resource +0x73FC (absolute 0x75E9DC). All low IDs 0–12 except 11 are absent from indexed text.
+- **A/B ROMs:** Generated two private 16 MiB JP retail probes at Kai Highway resource 82 +0x18: original glyph 78 replaced with 11 or known 212=！. Recompressed with original manifest and decompressed both retail outputs byte-for-byte to intended 32 MiB image. Each differs from the original decompressed ROM by one byte at 0x742367. Probe files remain local conversation outputs, never Git-tracked. **No emulator image produced**: token 11 remains unmapped.
+- **Tests and source:** tests/test_dialogue_token11_research.py verifies the original-only singleton, script operand, terminator and synthetic safe substitution; docs/JAPAN_TOKEN_11_INVESTIGATION_20261120.md records the evidence, file hashes, test method and limitations.
+
+
 ## 2026-11-20 — v0.11.76 Japanese Project64 glyph probe pages 2–4 (83 additional IDs)
 
 - **Evidence:** All three new user Project64 screenshots are accessible: pages 2, 3, and 4. Independently re-scanned the pinned decompressed Japan-0 ROM (`6f8745fecc3a5e7d4918c7a73353eb0726116ded`), recovering 5,039 indexed records and exactly the original 111 testable token order (including the 28 previously documented page-one IDs). See `docs/JAPAN_GLYPH_PROBE_PAGES2_4_20261120.md` for full positions/characters and original-source context corroboration.
