@@ -57,13 +57,13 @@ class Project64RemainingGlyphTests(unittest.TestCase):
         self.assertEqual(encode_japan_text('♪卍'),(328,339))
         with self.assertRaises(ValueError):encode_japan_text('７')
 
-    def test_only_excluded_suspect_11_remains_in_original_index(self):
+    def test_every_original_index_positive_token_is_classified(self):
         source=os.environ.get('GOEMON_JP_DECOMPRESSED_ROM')
         if not source:self.skipTest('Pinned original JP ROM not supplied')
         records=extract_japan_dialogue(load_japan_image(source))
         self.assertEqual(len(records),5039)
         remaining=unknown_token_counts(records)
-        self.assertEqual(dict(remaining),{11:1})
+        self.assertEqual(dict(remaining),{})
 
 
 if __name__=='__main__':unittest.main()

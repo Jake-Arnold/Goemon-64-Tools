@@ -17,7 +17,7 @@ from pathlib import Path
 import tempfile
 
 from practice.dialogue_japan import (
-    JP_EDITABLE_GLYPHS, JP_DECOMPRESSED_SHA1, JP_RETAIL_SHA1,
+    JP_EDITABLE_GLYPHS, JP_NATIVE_RENDERED_ALIASES, JP_DECOMPRESSED_SHA1, JP_RETAIL_SHA1,
     extract_japan_dialogue, load_japan_image, load_japan_retail,
     save_japan_retail_rom, validate_japan_replacement,
 )
@@ -29,8 +29,8 @@ PROBE_OFFSET = 0x18
 COLUMNS = 7
 ROWS = 4
 PER_PAGE = COLUMNS * ROWS
-# Token 11 is below the observed standard glyph table; avoid injecting it
-# without independently establishing whether it is an executable marker.
+# Legacy exclusion retained for the v1 probe format and mocked tests.
+# Actual original-token discovery now excludes 11 as a proven rendered alias.
 SUSPECT_NON_GLYPHS = frozenset((11,))
 FORMAT = 'goemon-japan-glyph-probe-v1'
 
@@ -48,6 +48,7 @@ def unknown_token_counts(records) -> Counter:
     return Counter(
         token for record in records for token in record.tokens
         if token >= 0 and token != 13 and token not in JP_EDITABLE_GLYPHS
+        and token not in JP_NATIVE_RENDERED_ALIASES
     )
 
 

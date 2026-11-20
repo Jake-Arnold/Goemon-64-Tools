@@ -115,6 +115,11 @@ JP_CONFIRMED_GLYPHS = {
     383: 'w', 384: 'a', 385: 'k', 386: 'e', 387: 'h', 388: 'c', 389: '野',
     390: '表', 391: '示', 392: '破', 393: '損', 394: '現', 395: '犯',
 }
+# Two 20 Nov 2026 screenshots (token-11 native ROM and token-212 control)
+# show the same visible exclamation mark. An alias is not a new Unicode
+# editor character: preserve source token 11 as <token:11> and encode ！ to 212.
+JP_NATIVE_RENDERED_ALIASES = {11: '！'}
+JP_SCREENSHOT_CONFIRMED_TOKEN_COUNT = len(JP_CONFIRMED_GLYPHS) + len(JP_NATIVE_RENDERED_ALIASES)
 # Keep screenshot proof separate from the font-order extrapolation.
 for _id, _character in JP_CONFIRMED_GLYPHS.items():
     if _id in JP_KANA_HYPOTHESIS and JP_KANA_HYPOTHESIS[_id] != _character:
@@ -125,9 +130,16 @@ JP_EDITABLE_GLYPH_TO_TOKEN = {character: token for token, character in JP_EDITAB
 assert len(JP_EDITABLE_GLYPHS) == len(JP_EDITABLE_GLYPH_TO_TOKEN) == 326
 
 
-def decode_japan_tokens(tokens: tuple[int, ...]) -> str:
+def decode_japan_tokens(tokens: tuple[int, ...], *, visual_aliases: bool = False) -> str:
+    """Preserve token IDs in editor text; resolve duplicates in visual preview only.
+
+    Token 11 and canonical 212 both render ！, but Unicode ！ encodes to 212.
+    Decoding source 11 as plain ！ would silently alter an unchanged record.
+    """
     return ''.join(' ' if token == 13 else
-                   JP_EDITABLE_GLYPHS.get(token, CONTROLS.get(token, f'<token:{token}>'))
+                   (JP_NATIVE_RENDERED_ALIASES[token]
+                    if visual_aliases and token in JP_NATIVE_RENDERED_ALIASES else
+                    JP_EDITABLE_GLYPHS.get(token, CONTROLS.get(token, f'<token:{token}>')))
                    for token in tokens)
 
 

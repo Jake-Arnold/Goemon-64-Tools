@@ -6,7 +6,7 @@ Other unverified glyphs, including most digits, remain numeric.
 """
 from __future__ import annotations
 
-from practice.dialogue_japan import JP_CONFIRMED_GLYPHS
+from practice.dialogue_japan import JP_CONFIRMED_GLYPHS, JP_NATIVE_RENDERED_ALIASES
 from practice.dialogue_rom import CONTROLS
 
 from practice.dialogue_kana_table import (
@@ -37,8 +37,9 @@ def decode_japan_kana_preview(tokens: tuple[int, ...]) -> str:
     """Readable kana with additional optional digit/font-order guesses."""
     return ''.join(
         ' ' if value == 13 else
-        JP_CONFIRMED_GLYPHS.get(value, JP_GLYPH_HYPOTHESIS.get(
-            value, CONTROLS.get(value, f'<token:{value}>')))
+        JP_CONFIRMED_GLYPHS.get(value, JP_NATIVE_RENDERED_ALIASES.get(
+            value, JP_GLYPH_HYPOTHESIS.get(
+            value, CONTROLS.get(value, f'<token:{value}>'))))
         for value in tokens
     )
 

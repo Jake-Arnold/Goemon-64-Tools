@@ -1,3 +1,13 @@
+# Goemon Speedrun Tools v0.11.77 — Japanese Token 11 Native Alias Proven
+
+## v0.11.77 — original Japanese token 11 renders as fullwidth ！
+
+The user supplied two Kai Highway Project64/native gameplay screenshots, including one explicitly labelled `jp-kai-token11-probe.z64`. Both one-character experimental ROMs visibly show `かい！う`. The isolated original-Japan ROM patches previously proved that `11` and canonical `212` are distinct original token IDs; **both render as the same visible fullwidth exclamation mark**. The previously unexplained original dialogue token sequence `16,303,59,11,-60` can be visually read `う〜ん！`, newline.
+
+**Lossless handling:** `JP_NATIVE_RENDERED_ALIASES={11:'！'}` is separate from the bijective 242-entry canonical screenshot-backed map. Source/editor text keeps the raw alternate `<token:11>` so no-op saves reproduce original bytes; normal typed Unicode `！` still encodes to `212`. The optional read-only kana preview displays the visibly equivalent `！`. No proprietary ROM data, probe ROMs or screenshots committed. The pinned 5,039-record original JP text index now has **0 unidentified positive IDs**. There are **243 screenshot-verified numeric token IDs** (242 unique canonical entries plus one noncanonical duplicate), **326 directly Unicode-editable glyph IDs** (including 84 source-order-inferred kana), and unobserved `183=７` remains a hypothesis. Visual equivalence does not prove identical font texture storage or semantics in every runtime context.
+
+Full report: `docs/JAPAN_TOKEN_11_INVESTIGATION_20261120.md`. Regression tests include original record offset/bytes, native-alias preview, source roundtrip, canonical Unicode encoding, and empty original-index unknown set. Observe CI on the new commit before claiming passing tests.
+
 # Goemon Speedrun Tools v0.11.76 — All Four Japanese Glyph Probe Pages Decoded
 
 ## v0.11.76 — 83 additional Project64-rendered Japanese glyphs

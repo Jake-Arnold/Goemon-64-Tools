@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-20 — v0.11.77: Japanese token 11 is native-rendered ！ alias
+
+- **Native gameplay evidence:** Two user screenshots of the independently prepared Kai Highway A/B ROMs, one visibly titled `jp-kai-token11-probe.z64`, both show `かい！う`. In that token-11 ROM the only game-script text difference from original decompressed Japan-0 is original glyph `78=ど` replaced with `11`. This verifies `11` renders the same visible fullwidth exclamation mark `！` as canonical `212`; the original resource 97 +`0x2B60` `16,303,59,11,-60` can now be visually transcribed `う〜ん！` plus newline.
+- **Safe mapping:** Add `JP_NATIVE_RENDERED_ALIASES={11:'！'}` outside the existing bijective Unicode-editable mapping. **243 screenshot-confirmed numeric IDs = 242 distinct canonical mappings + 1 alternate alias**. Unicode-editable IDs remain 326. The source editor preserves `<token:11>`, so encoding a decoded original record never silently changes it to `212`; typed `！` encodes canonically to `212`. Read-only preview displays `！`. Unmapped positive numeric IDs in the pinned 5,039-record original JP static index are now **zero**. The ROM writer, original images, negative VM controls and Japanese/USA separation are unchanged.
+- **Tests/report:** Added native screenshot evidence and alias/roundtrip safeguards to `docs/JAPAN_TOKEN_11_INVESTIGATION_20261120.md`; updated original-only corpus tests, GTK/Tk note smoke test, and old probe-unknown counts. CI results need checking after this commit. No screenshots, modified/original ROMs or extracted assets in Git.
+- **Limits:** The same visible glyph does not prove the same original texture memory address or implementation for the two token IDs. Source-order inference remains for 84 kana and unobserved fullwidth digit `183=７`; the entire ROM font atlas remains unextracted.
+
+
 ## 2026-11-20 — Original Japanese singleton token 11, independently verified (research only)
 
 - **ROM evidence:** Independent source-only 0x8010 scanner on original decompressed Japanese SHA-1 6f8745fecc3a5e7d4918c7a73353eb0726116ded recovered 5,039 indexed dialogue records and 5,694 references. The sole original record containing 11 is resource 97 +0x2B60 (absolute 0x75A140), text 16,303,59,11,-60 = う〜ん<token:11>, referenced at resource +0x73FC (absolute 0x75E9DC). All low IDs 0–12 except 11 are absent from indexed text.

@@ -16,7 +16,8 @@ from practice.dialogue_rom import (load_usa_image, extract_dialogue,
     validate_flexible_replacement, export_index, save_patched_image)
 from practice.dialogue_repack import save_retail_rom
 from practice.dialogue_layout import font_widths_from_rom
-from practice.dialogue_japan import (JP_CONFIRMED_GLYPHS, load_japan_image, extract_japan_dialogue,
+from practice.dialogue_japan import (JP_CONFIRMED_GLYPHS, JP_NATIVE_RENDERED_ALIASES,
+    load_japan_image, extract_japan_dialogue,
     validate_japan_replacement, encode_japan_text, export_japan_index,
     save_japan_patched, save_japan_retail_rom)
 from practice.dialogue_store import (import_rom, verify_stored,
@@ -75,7 +76,8 @@ class DialogueRegionMixin:
             variable=self.dialogue_kana_hypothesis_enabled,
             command=self._dialogue_toggle_kana_hypothesis).pack(anchor='w')
         self.dialogue_kana_note=tk.StringVar(value=(
-            f'{len(JP_CONFIRMED_GLYPHS)} screenshot-confirmed glyph IDs; '
+            f'{len(JP_CONFIRMED_GLYPHS)} canonical screenshot-confirmed glyph IDs; '
+            f'{len(JP_NATIVE_RENDERED_ALIASES)} rendered alias (11=！, source preserved as tag); '
             f'{len(JP_KANA_HYPOTHESIS.keys() & JP_CONFIRMED_GLYPHS.keys())}/'
             f'{len(JP_KANA_HYPOTHESIS)} kana positions verified. '
             'All 160 kana are editable; 84 are pattern-derived and not '
@@ -164,7 +166,8 @@ class DialogueRegionMixin:
         self._dialogue_mode_changed()
         self._dialogue_filter()
         note=(f'{len(JP_CONFIRMED_GLYPHS)} screenshot-verified Japanese glyph IDs available as Unicode; '
-              'all 160 kana directly editable (84 pattern-derived); other unknown IDs remain <token:N>. '
+              'all 160 kana directly editable (84 pattern-derived). '
+              'Native alias 11=！ is kept as <token:11> in editable source text. '
               'Enter can add manual -60 line breaks; '
               'Japanese font widths and automatic wrapping are unverified. '
               if region=='japan' else '')
@@ -313,7 +316,7 @@ class DialogueRegionMixin:
                     self.dialogue_kana_note.set(
                         f'Preview OFF. {len(JP_CONFIRMED_GLYPHS)} glyph IDs are '
                         'screenshot-verified. All 160 source-order kana remain '
-                        'directly editable; unmapped kanji stay numeric.')
+                        'directly editable; alias 11=！ stays tagged in source.')
             except ValueError as exc:
                 content=f'Preview unavailable: {exc}'
         self.dialogue_kana_text.configure(state='normal')
