@@ -1,3 +1,9 @@
+## 20 November 2026 — Focused Mini Ebisumaru speed selector native replay (FAILED_NATIVE; no promotion)
+
+- Replayed USA `func_801E1C90_59DBA0` (ROM `0x59DBA0`, 384 bytes) with original IDO 5.3, authentic pinned-USA baseline. Prior best source remains **12 non-relocation MIPS word mismatches**; first PC `0x801E1CEC`: original `0x45010044`, generated `0x45010043`. Candidate ELF function is 380 bytes plus four bytes of trailing `.text` padding, **not** a matching 384-byte function.
+- Five additional bounded switch/return C variants produce the same nonmatch; float-typed third argument changes ABI scheduling and worsens to 64 non-relocated mismatches. Original jump table is file_11 data; candidate emits it in C `.rodata`, requiring separate data-owner proof if text eventually matches.
+- Original private upstream rebuilt 32 MiB ROM again compared exactly with expanded original; research compiler checks performed. Combined G2/inventory/full local CI and emulator gameplay **NOT RUN**. No formal C promotion; USA still **1,723 verified C / 5,640 ASM**. Findings: `decomp/research/mini_ebisumaru_speed_20261120/SELECTOR_FOCUS_20261120.md` and companion private reproducibility ZIP.
+
 ## 20 November 2026 — Mini Ebisumaru speed selector and clamp follow-up (FAILED_NATIVE / RESEARCH_ONLY)
 
 - Original USA selector func_801E1C90_59DBA0 (ROM 0x59DBA0, 384 B): eight native IDO 5.3 source variants. Best C structural candidate has 12 non-relocation instruction-word mismatches (first VMA 0x801E1CEC: 0x45010044 expected vs 0x45010043 generated). No exact native match.
