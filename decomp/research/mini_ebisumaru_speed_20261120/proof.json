@@ -1,0 +1,55 @@
+{
+  "format": "goemon-mini-ebisumaru-native-exact-research-v1",
+  "date": "2026-11-20",
+  "status": "RESEARCH_ONLY",
+  "branch": "chatgptweb/mini-ebisumaru-speed-native-probe-20261120",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "retail_usa_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "expanded_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "functions": [
+    {
+      "name": "func_801E276C_59E67C",
+      "rom_offset": "0x59E67C",
+      "vma": "0x801E276C",
+      "size": 148,
+      "source": "mini_reset.c",
+      "source_sha256": "244fc913ca83782601594d0456977cf9a0fd2e04e62ba3ff4690ee8c331b0e7f",
+      "original_instructions_sha256": "c6ea77fedef3d5590ff05235f3268235d1ac05242902253647ae946fa20b8f7e",
+      "original_address_native": "PASS"
+    },
+    {
+      "name": "func_801E3DE0_59FCF0",
+      "rom_offset": "0x59FCF0",
+      "vma": "0x801E3DE0",
+      "size": 220,
+      "source": "speed_ease.c",
+      "source_sha256": "7716e89aeabcbeccd7e1a83a4f16a0cc16b5155ca14c457782278e36008e285d",
+      "original_instructions_sha256": "fce71664b02ee64c355b11c77f350c5dde827ded5e795fc1a4a36c96c6f7c510",
+      "original_address_native": "PASS"
+    }
+  ],
+  "pristine_upstream_usa": {
+    "both_c_replaced_same_build": true,
+    "rom_bytes": 33554432,
+    "byte_identical": true,
+    "positive_elf_function_identities_exact": 7376,
+    "semantic_relocations_exact": 82216,
+    "relocation_sections": 72,
+    "file11_semantic_relocations_exact": 8825
+  },
+  "canonical_decomp": {
+    "accepted_before": 1723,
+    "accepted_after": 1723,
+    "combined_verify": "NOT_RUN_BLOCKED_INPUT",
+    "inventory": "NOT_RUN",
+    "local_ci": "NOT_RUN"
+  },
+  "remaining_clamp": {
+    "function": "func_801CD310_589220",
+    "rom_offset": "0x589220",
+    "size": 4320,
+    "status": "RESEARCH_ONLY",
+    "m2c_failure": "AssertionError: jtbl list must not be empty"
+  },
+  "in_game_test": "NOT_RUN"
+}
