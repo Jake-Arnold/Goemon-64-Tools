@@ -25,25 +25,25 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "3c0e6fc7c4e2c480e669e4c4280405633d5e68e8a2867eb71a165f8dcb139717",
+    "manifest_sha256": "0afe75058b9a6cba130eafc86990caa43ae107ef0e9439f64ede3d78f9221fc7",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "0e3dcd76968b8b35e04e28614f2851c3955e520bb7509a1273f6f6071940994d",
+    "verifier_sha256": "5d936f50e1c89ddc67a52df05c8dd2849828c54479b7bb4a8e230d4203758f10",
     "script_vm_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
-    "verify_sha256": "0e3dcd76968b8b35e04e28614f2851c3955e520bb7509a1273f6f6071940994d"
+    "verify_sha256": "5d936f50e1c89ddc67a52df05c8dd2849828c54479b7bb4a8e230d4203758f10"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "5b67fd04103b12a933f31648ff84b801138658d5fe3633021dc0c5e5545a442e",
+    "report_sha256": "377932d12fe48ca152b0707581f6a643bc8977b903d9806c79e8e61061126285",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "c63da536ea5d07e41aeb720e58042aa6b14adf0b1884c75b2ae8192305b93afa",
-    "matching_c_functions": 1523,
-    "matching_c_bytes": 58292,
-    "combined_c_entries": 1536,
-    "asm_entries": 5840,
+    "combined_proof_sha256": "21f4260e3285c5d5c35339a816e3b72abddbdcfbbb05657670de8aff2e408b46",
+    "matching_c_functions": 1556,
+    "matching_c_bytes": 59552,
+    "combined_c_entries": 1569,
+    "asm_entries": 5807,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "Original USA 1523 matching C / 58292 instruction bytes, 22 newly verified C from historical 116-source research archive; original exact 33554432-byte ROM, 7376 ELF FUNC identities and all semantic relocations unchanged. Japan remains independently 432 C. Emulator gameplay not tested.",
-    "reconciled_date": "2026-11-19"
+    "note": "USA 1556 matching C / 59552 exact instruction bytes after 33 new native-verified original-address C sources; original 33554432-byte ROM, 7376 ELF identities and semantic relocations unchanged. Japan independently 432 C. Emulator gameplay not tested.",
+    "reconciled_date": "2026-11-20"
   },
   "residual_functions": [
     {
@@ -383,5 +383,5 @@
     "inventory_rebuild": "PASS: 7,376 original identities; 359 total C; 7,017 ASM; zero extra aliases; see decomp/results/inventory.json",
     "in_game": "NOT_RUN"
   },
-  "current_proof_date": "2026-11-17"
+  "current_proof_date": "2026-11-20"
 }

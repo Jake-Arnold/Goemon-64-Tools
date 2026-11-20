@@ -1576,5 +1576,8 @@
   },
   "overlay_archive22_stage": {
     "format": "goemon-usa-archive22-after-1501-v1"
+  },
+  "overlay_archive33_stage": {
+    "format": "goemon-usa-archive33-after-1523-v1"
   }
 }
