@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-20 — v0.11.76 Japanese Project64 glyph probe pages 2–4 (83 additional IDs)
+
+- **Evidence:** All three new user Project64 screenshots are accessible: pages 2, 3, and 4. Independently re-scanned the pinned decompressed Japan-0 ROM (`6f8745fecc3a5e7d4918c7a73353eb0726116ded`), recovering 5,039 indexed records and exactly the original 111 testable token order (including the 28 previously documented page-one IDs). See `docs/JAPAN_GLYPH_PROBE_PAGES2_4_20261120.md` for full positions/characters and original-source context corroboration.
+- **Mapping:** 28 + 28 + 27 = **83** new screenshot-backed characters, including `317=目`, `328=♪`, `339=卍`, `356=○`, `368=桜`, `372=艦`, lowercase `379–388` (including `382=g`), and `395=犯`. Native screenshot-backed count **159→242**; canonical editable glyph IDs **243→326**. Unknown original-index IDs **84→1**, the excluded `11` (one occurrence). **183=７ remains unobserved**, and 84 other kana remain source-order inferences, not visual proofs.
+- **Code:** Only glyph decoding/encoding table, version and test/report count expectations are changed. Existing Japan retail repacker, source ROM, VM controls and region boundaries unchanged. Regression coverage for exact manifest order, reversibility, source contexts, 5,039-record scan and suspect token `11`: `tests/test_dialogue_glyph_probe_pages234.py`. Existing page1/kana/Oedo/UI tests updated. See hosted CI for actual pass/fail after this update.
+- **Limit:** This maps 111 printed glyphs from the user-generated probe pages, not the full original N64 font data or texture format. Images and game assets were not committed.
+
+
 ## 2026-11-20 — v0.11.75 Project64 probe page one (28 new glyphs)
 
 - **Evidence:** User screenshot of `jp-glyph-probe-01-of-04.z64`, generated previously by the original-only JP font renderer probe. The exact manifest lists 7 columns × 4 rows and the screenshot reproduces those 28 glyph positions without shifted columns. Row 1: ２３４５６８９; row 2: 。旅日数中見本; row 3: 体場村北東寺戦; row 4: 前下止［］水海. Confirmed tokens and source cross-checks: `docs/JAPAN_GLYPH_PROBE_PAGE1_20261120.md`.
