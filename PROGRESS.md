@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-20 — v0.11.80 Japanese recomp quick attachment (toolkit PR)
+
+- **Problem:** The Japanese native recomp attachment repeatedly scanned large process mappings and could re-prompt for word-swapped RAM after Linux ASLR invalidated a cached absolute address. Multiple code-bearing allocations were reported as ambiguities without eliminating impossible live game state.
+- **Change:** Cache the selected verified memory address relative to its containing host mapping as well as its byte order, executable identity and ROM signature; try all matching-size rebased allocations and reject more than one independently valid match. Preserve compatibility with older cache entries. Read three tiny original-Japan code probes at the start of exact-size RDRAM allocations before the 2 GiB signature fallback. Filter ambiguous code-matching buffers by existing Japanese engine/scene plausibility; retain manual selection when more than one plausible target survives. Fall back to process name if exe() is unavailable, but continue enforcing independent ROM/RDRAM verification.
+- **Safety:** No bypass of original Japanese ROM fingerprinting, cartridge-copy rejection, 8 MiB/4 MiB memory-size requirements or process permissions. Connection hints remain advisory. No new writes, new guest addresses or USA memory changes. Wrong or stale cache details force a safe rescan.
+- **Verification:** Added synthetic mapping/ASLR/copy/identity tests; live Japanese recomp timing and Windows tests are not yet established. Run the dedicated Japanese attachment tests and full toolkit regression suite before merging.
+- **Next:** Benchmark cold/warm Japanese recomp launches under real Linux process mappings and test persistent preference storage through actual process restarts; examine persistent ambiguity only if multiple independently plausible RAM buffers remain.
+
+
 ## 2026-11-20 — v0.11.79 toolkit address metadata consolidation
 
 - **Source selection:** Compared the two independent `toolkit/address-metadata-sync-*` branches. Both contain the same 549 audited address records and 25 supplementary discoveries; their JSON contents differ only in source-revision references on twelve catalogue and sixteen discoveries entries. Selected the newer branch (`6371c7f37bc455a174c20d83032a79cf2756cfc5`, 20 Nov 07:31Z) rather than merging both divergent imports into main.
