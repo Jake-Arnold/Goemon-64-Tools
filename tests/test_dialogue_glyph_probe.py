@@ -17,7 +17,7 @@ class ProbePlannerTests(unittest.TestCase):
         record = JapanDialogueRecord(82,0x18,0x1000,
             (13,-60,-33,14,186,226,295,11,390,395), (8,))
         result=unknown_token_counts([record,record])
-        self.assertEqual(result,Counter({226:2,11:2,390:2,395:2}))
+        self.assertEqual(result,Counter({11:2,390:2,395:2}))
         self.assertIn(11,SUSPECT_NON_GLYPHS)
 
     def test_111_unknown_ids_fit_in_four_labelled_pages(self):

@@ -83,6 +83,18 @@ JP_CONFIRMED_GLYPHS = {
     # All A..Z are verified on-screen in a modified original-Japan ROM.
     # In the Kai banner, extra lines draw below the fixed-height window.
     **{186 + index: chr(ord('A') + index) for index in range(26)},
+    # Project64 page-1 native glyph probe, 20 Nov 2026: original Japan
+    # resource 82 +0x18 test ROM, 7 columns x 4 rows in manifest order.
+    # White punctuation at ID 226 is a small Japanese sentence stop.
+    # ID 300/301 display square opening/closing bracket strokes.
+    # Probe row 1:
+    178: '２', 179: '３', 180: '４', 181: '５', 182: '６', 184: '８', 185: '９',
+    # Probe row 2:
+    226: '。', 229: '旅', 230: '日', 239: '数', 242: '中', 245: '見', 256: '本',
+    # Probe row 3:
+    257: '体', 265: '場', 277: '村', 284: '北', 286: '東', 287: '寺', 289: '戦',
+    # Probe row 4:
+    294: '前', 298: '下', 299: '止', 300: '［', 301: '］', 306: '水', 307: '海',
 }
 # Keep screenshot proof separate from the font-order extrapolation.
 for _id, _character in JP_CONFIRMED_GLYPHS.items():
@@ -91,7 +103,7 @@ for _id, _character in JP_CONFIRMED_GLYPHS.items():
 JP_EDITABLE_GLYPHS = {**JP_KANA_HYPOTHESIS, **JP_CONFIRMED_GLYPHS}
 JP_CONFIRMED_GLYPH_TO_TOKEN = {character: token for token, character in JP_CONFIRMED_GLYPHS.items()}
 JP_EDITABLE_GLYPH_TO_TOKEN = {character: token for token, character in JP_EDITABLE_GLYPHS.items()}
-assert len(JP_EDITABLE_GLYPHS) == len(JP_EDITABLE_GLYPH_TO_TOKEN) == 215
+assert len(JP_EDITABLE_GLYPHS) == len(JP_EDITABLE_GLYPH_TO_TOKEN) == 243
 
 
 def decode_japan_tokens(tokens: tuple[int, ...]) -> str:
@@ -420,7 +432,7 @@ def export_japan_index(records, destination):
     items=[r.as_dict() for r in records]
     if destination.suffix.lower()=='.json':
         document={'format':'goemon-japan-0-token-candidates-v1', 'input_sha1':JP_DECOMPRESSED_SHA1,
-                  'glyph_mapping':'160 structurally mapped kana; 131 screenshot-confirmed glyph IDs; other tokens numeric',
+                  'glyph_mapping':'160 structurally mapped kana; 159 screenshot-confirmed glyph IDs; other tokens numeric',
                   'completeness':'static aligned same-resource references only','records':items}
         destination.write_text(json.dumps(document,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     elif destination.suffix.lower()=='.csv':

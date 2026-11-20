@@ -58,7 +58,8 @@ class KanaHypothesisTests(unittest.TestCase):
         self.assertEqual(encode_japan_text('START'),(204,205,186,203,205))
         self.assertEqual(inferred_glyph_count((207,208,209,210,211)),0)
         self.assertEqual(encode_japan_text('VWXYZ'),(207,208,209,210,211))
-        with self.assertRaises(ValueError):encode_japan_text('２')
+        self.assertEqual(encode_japan_text('２'),(178,))
+        with self.assertRaises(ValueError):encode_japan_text('７')
 
     def test_original_jp_record_preview_is_reproducible(self):
         source=os.environ.get('GOEMON_JP_DECOMPRESSED_ROM')
@@ -92,7 +93,7 @@ class RomajiSearchTests(unittest.TestCase):
     def test_kana_source_order_encoder_and_unmapped_kanji_barrier(self):
         for glyph,token in [('え',17),('キ',100),('ぬ',36)]:
             self.assertEqual(encode_japan_text(glyph),(token,))
-        for glyph in ('漢','ヵ','２'):
+        for glyph in ('漢','ヵ','７'):
             with self.assertRaises(ValueError):
                 encode_japan_text(glyph)
         self.assertEqual(encode_japan_text('プラズマぁ！！'),(166,132,151,124,89,212,212))

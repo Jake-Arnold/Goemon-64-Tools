@@ -162,8 +162,8 @@ class OedoScreenshotAlignmentTests(unittest.TestCase):
 
     def test_63_newly_confirmed_ids_have_unique_inverse_and_compatible_kana(self):
         self.assertEqual(len(NEW_SCREENSHOT_GLYPHS),63)
-        self.assertEqual(len(JP_CONFIRMED_GLYPHS),131)
-        self.assertEqual(len(set(JP_CONFIRMED_GLYPHS.values())),131)
+        self.assertEqual(len(JP_CONFIRMED_GLYPHS),159)
+        self.assertEqual(len(set(JP_CONFIRMED_GLYPHS.values())),159)
         for token,character in NEW_SCREENSHOT_GLYPHS.items():
             self.assertEqual(JP_CONFIRMED_GLYPHS[token],character)
             self.assertEqual(encode_japan_text(character),(token,))
@@ -173,7 +173,7 @@ class OedoScreenshotAlignmentTests(unittest.TestCase):
     def test_new_latin_letters_and_unknowns(self):
         self.assertEqual(encode_japan_text('UFO'),(206,191,200))
         self.assertEqual(encode_japan_text('「UFOだって？'),(295,206,191,200,74,60,32,224))
-        for value in ('b','漢','２','ヵ'):
+        for value in ('b','漢','７','ヵ'):
             with self.subTest(value=value),self.assertRaises(ValueError):
                 encode_japan_text(value)
         self.assertEqual(encode_japan_text('ABC'),(186,187,188))

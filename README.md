@@ -1,4 +1,12 @@
-# Goemon Speedrun Tools v0.11.74 — Japanese ROM-Rendered Glyph Identification Atlas
+# Goemon Speedrun Tools v0.11.75 — First Project64 Glyph Probe Page Decoded
+
+## v0.11.75 — 28 glyphs read directly from native Japanese renderer
+
+User-supplied screenshot of **JP glyph probe ROM page 1/4** at Kai Highway establishes 28 previously unknown positive token IDs, based on exact row/column positions from the original v0.11.74 JSON manifest. The newly readable/editable IDs are: digits `178–182,184–185` (２３４５６８９), punctuation `226=。`, `300/301=［］`, and 18 distinct kanji including `239=数`, `294=前`, `230=日`, `245=見`, `286=東`, `307=海`. **Verified ID count 131→159**, canonical editable ID count 215→243. The current original static dialogue index now has **84** unknown positive IDs remaining, including reserved suspect `11`. Unobserved fullwidth `７` at 183 remains an unverified hypothesis, not a directly accepted Unicode character.
+
+The tool retains its source-original-only safeguards; all negative VM controls are preserved, and visual probe pages 2–4 are not yet counted as verified. Original Japanese text/ROMs/graphics are not committed. See `docs/JAPAN_GLYPH_PROBE_PAGE1_20261120.md` and `tests/test_dialogue_glyph_probe_page1.py`.
+
+
 
 ## v0.11.74 — Project64-rendered atlas probes for unknown Japanese character IDs
 

@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-20 — v0.11.75 Project64 probe page one (28 new glyphs)
+
+- **Evidence:** User screenshot of `jp-glyph-probe-01-of-04.z64`, generated previously by the original-only JP font renderer probe. The exact manifest lists 7 columns × 4 rows and the screenshot reproduces those 28 glyph positions without shifted columns. Row 1: ２３４５６８９; row 2: 。旅日数中見本; row 3: 体場村北東寺戦; row 4: 前下止［］水海. Confirmed tokens and source cross-checks: `docs/JAPAN_GLYPH_PROBE_PAGE1_20261120.md`.
+- **Mapping:** 7 fullwidth digits + 18 kanji + 3 punctuation = 28 unique new IDs, increasing screenshot-confirmed glyphs 131→159 and editable glyphs 215→243 (including 160 structurally decoded kana). The current 5,039-record index's formerly 112 unknown positive tokens now has 84; token 11 remains suspect, and 183=７ is inferred only because it is absent from the index and screenshot. Text and source negative controls/ROM repack logic are unchanged.
+- **Tests:** New `tests/test_dialogue_glyph_probe_page1.py` verifies all exact IDs, reversibility and (when pinned original JP ROM path is provided) remaining unknown index count. Earlier count assertions and digit guards updated. CI must be checked before claiming green.
+- **Boundary:** Three other probe pages have not been safely decoded from accessible screenshot pixels in this pass. Do not promote their IDs or claim a full offline texture atlas.
+
+
 ## 2026-11-20 — v0.11.74 Japanese original-renderer glyph atlas probes
 
 - **Objective:** Resolve 112 still-numeric source-indexed Japan font IDs without requiring users to find arbitrary NPC dialogue for every glyph. Current 5,039-record export has 1,632 unresolved-token occurrences. The backing texture atlas remains unverified: raw ROM texture-like byte regions were examined but no token/format/palette proof found. Do **not** label guessed raw imagery as a true extracted Japanese glyph atlas.

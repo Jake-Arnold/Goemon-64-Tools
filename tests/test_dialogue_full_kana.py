@@ -30,13 +30,13 @@ class StructuralKanaTests(unittest.TestCase):
             self.assertEqual(JP_KANA_HYPOTHESIS[94+i],KATAKANA[i])
 
     def test_all_76_screen_anchors_agree_and_84_other_positions_are_attributed(self):
-        self.assertEqual(len(JP_CONFIRMED_GLYPHS),131)
+        self.assertEqual(len(JP_CONFIRMED_GLYPHS),159)
         overlap=set(JP_CONFIRMED_GLYPHS)&set(JP_KANA_HYPOTHESIS)
         self.assertEqual(len(overlap),76)
         self.assertEqual(len(JP_KANA_HYPOTHESIS)-len(overlap),84)
         for token in overlap:
             self.assertEqual(JP_CONFIRMED_GLYPHS[token],JP_KANA_HYPOTHESIS[token])
-        self.assertEqual(len(JP_EDITABLE_GLYPHS),215)
+        self.assertEqual(len(JP_EDITABLE_GLYPHS),243)
 
     def test_all_160_kana_round_trip_without_token_changes(self):
         tokens=tuple(range(14,174))
@@ -56,7 +56,7 @@ class StructuralKanaTests(unittest.TestCase):
             self.assertNotIn(token,JP_CONFIRMED_GLYPHS)
 
     def test_native_controls_and_unmapped_kanji_remain_guarded(self):
-        for glyph in ('漢','字','ヵ','ゔ','２','z'):
+        for glyph in ('漢','字','ヵ','ゔ','７','z'):
             with self.subTest(glyph=glyph),self.assertRaises(ValueError):
                 encode_japan_text(glyph)
         self.assertEqual(encode_japan_text('<token:395>'),(395,))
