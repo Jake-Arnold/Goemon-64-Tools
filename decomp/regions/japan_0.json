@@ -905,5 +905,27 @@
     "proof": "decomp/results/japan_0_432_main3_20261119.json",
     "native_independent_checkouts": 2,
     "emulator_gameplay": "NOT_RUN"
+  },
+  "jp1686_native_promotion": {
+    "format": "goemon-jp-original-address-1686-C-v1",
+    "status": "PASSED_G2_LOCAL",
+    "prior_matching_c": 432,
+    "new_matching_c": 1686,
+    "matching_c_functions": 2118,
+    "new_matching_bytes": 101448,
+    "matching_c_bytes": 111856,
+    "assembly_functions_remaining": 5258,
+    "manifest": "decomp/research/jp1686_promotion/candidates.csv",
+    "stager": "decomp/japan_1686_promotion.py",
+    "clean_build": "decomp/build_japan_1686_promotion.sh",
+    "original_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "original_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "proof": "decomp/results/japan_0_2118_promotion_20261120.json",
+    "inventory": "decomp/results/japan_0_2118_inventory_20261120.json",
+    "exceptions_in_original_asm": [
+      "func_08001228_6B3168",
+      "func_080012AC_6B51AC"
+    ],
+    "published": false
   }
 }

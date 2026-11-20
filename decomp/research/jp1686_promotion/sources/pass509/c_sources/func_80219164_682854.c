@@ -1,0 +1,6 @@
+#include "m2c_types.h"
+void func_80219164_682854(void *arg0) {
+    M2C_FIELD(arg0, f32 *, 0x6C) = 0.0f;
+    M2C_FIELD(arg0, f32 *, 0x78) = 0.0f;
+    M2C_FIELD(arg0, f32 *, 0x84) = 0.0f;
+}

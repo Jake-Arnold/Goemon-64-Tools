@@ -1,0 +1,18 @@
+{
+  "all_elf_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
+  "assembly_functions_remaining": 5258,
+  "format": "goemon-japan-region-function-inventory-v1",
+  "matched_c_functions": 2118,
+  "matching_instruction_bytes": 111856,
+  "new_matching_bytes": 101448,
+  "new_matching_c": 1686,
+  "no_new_aliases": true,
+  "original_rom_bytes": 33554432,
+  "positive_elf_functions": 7376,
+  "region": "japan_0",
+  "relocations_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "semantic_relocations": 80747,
+  "status": "PASSED_G2_LOCAL",
+  "usa_manifest_unchanged": true
+}

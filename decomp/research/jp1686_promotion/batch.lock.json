@@ -1,0 +1,20 @@
+{
+  "format": "goemon-japan-unified-research-lock-v1",
+  "region": "japan_0",
+  "frozen_canonical_head": "0e42cb3fbd2147eefa3ab469d8c22ff19b869831",
+  "frozen_japan_canon_accepted": 432,
+  "current_promotion_tier": "ISOLATED_EXACT",
+  "candidate_count": 1688,
+  "new_original_instruction_bytes": 101712,
+  "expected_if_full_rom_passed_count": 2120,
+  "combined_rom_gate": "NOT_RUN",
+  "complete_semantic_relocation_audit": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "sha256": {
+    "candidates_csv": "88b49166cc82539e7db2c55795c9a9f0afa1a33b596092422909e8cc4f77cd23",
+    "asm_owner_plan": "12de7f8d26b5779162391c238d70c378a04cc4ce5f26c76a4fe0492ccb299e47",
+    "canonical_jp432_offsets": "f9b5131a995c00a483b53c747eed91bff678beee1a2f17bad9439a2e602e0ad6"
+  },
+  "no_bytes_from_rom_in_archive": true
+}

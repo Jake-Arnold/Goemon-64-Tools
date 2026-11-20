@@ -1,0 +1,1 @@
+void func_800123EC_12FEC(void *p,float *a,float *b,float *c){ *(float*)((char*)a+0) = *(float*)((char*)p+140); *(float*)((char*)b+0) = *(float*)((char*)p+144); *(float*)((char*)c+0) = *(float*)((char*)p+148); }

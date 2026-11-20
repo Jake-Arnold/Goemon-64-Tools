@@ -1,0 +1,8 @@
+#include "../m2c_types.h"
+extern M2C_UNK D_80161DF8_1629F8;
+extern void *D_80214600_63F080;
+
+void func_801D9214_603C94(void) {
+    M2C_FIELD(&D_80161DF8_1629F8, s32 *, 0x29C) = (s32) M2C_FIELD(D_80214600_63F080, s32 *, 0x68);
+    M2C_FIELD(&D_80161DF8_1629F8, s32 *, 0x2A0) = (s32) M2C_FIELD(D_80214600_63F080, s32 *, 0x64);
+}
