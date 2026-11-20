@@ -1,0 +1,409 @@
+{
+  "format": "goemon-usa-archive33-1556-promotion-v1",
+  "date": "2026-11-20",
+  "status": "PASSED_G2",
+  "publication": "PENDING_GITHUB_MERGE",
+  "region": "usa",
+  "target_branch": "chatgptweb/decomp",
+  "pinned_original_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_original_rom_identical_bytes": 33554432,
+  "original_elf_func_identities": 7376,
+  "all_accepted_semantic_relocations_unchanged": true,
+  "native_compiler": "IDO 5.3 original native executable with original -O2 -mips2 -G 0 -non_shared",
+  "baseline_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "after_1523_accepted": {
+    "functions": 1523,
+    "bytes": 58292,
+    "remaining_assembly": 5840
+  },
+  "after_1556_accepted": {
+    "functions": 1556,
+    "bytes": 59552,
+    "remaining_assembly": 5807
+  },
+  "new_functions": 33,
+  "new_instruction_bytes": 1260,
+  "new_native_translation_units": 33,
+  "new_zero_relocation_original_functions": 33,
+  "native_isolated_recheck": {
+    "passed": 33,
+    "total": 33,
+    "source": "authenticated archive original C files; original IDO 5.3 original offsets / symbols and words"
+  },
+  "new_stage_native": {
+    "status": "PASS",
+    "count": 33,
+    "original_instruction_bytes": 1260,
+    "original_ROM_SHA1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "matched_ROM_bytes": 33554432,
+    "identical_accepted_ELF_FUNC_identities": 7376,
+    "identical_accepted_semantic_relocations": {
+      "file_11": 8825,
+      "file_12": 7051,
+      "file_13": 9589,
+      "file_14": 3041,
+      "file_15": 1625,
+      "file_16": 781,
+      "file_17": 1739,
+      "file_18": 3365,
+      "file_19": 1078,
+      "file_20": 68,
+      "file_21": 114,
+      "file_22": 294,
+      "file_23": 377,
+      "file_24": 160,
+      "file_25": 167,
+      "file_26": 207,
+      "file_27": 876,
+      "file_28": 35,
+      "file_29": 2536,
+      "file_30": 1826,
+      "file_31": 1371,
+      "file_32": 1068,
+      "file_33": 139,
+      "file_34": 317,
+      "file_35": 677,
+      "file_36": 1025,
+      "file_37": 1079,
+      "file_38": 761,
+      "file_39": 435,
+      "file_40": 892,
+      "file_41": 280,
+      "file_42": 555,
+      "file_43": 1593,
+      "file_44": 598,
+      "file_45": 545,
+      "file_46": 817,
+      "file_47": 275,
+      "file_48": 469,
+      "file_49": 602,
+      "file_50": 228,
+      "file_51": 143,
+      "file_52": 8,
+      "file_53": 534,
+      "file_54": 341,
+      "file_55": 390,
+      "file_56": 436,
+      "file_57": 708,
+      "file_58": 340,
+      "file_59": 508,
+      "file_60": 418,
+      "file_61": 161,
+      "file_62": 747,
+      "file_63": 94,
+      "file_64": 176,
+      "file_65": 86,
+      "file_66": 571,
+      "file_67": 254,
+      "file_68": 155,
+      "file_69": 464,
+      "file_70": 298,
+      "file_71": 350,
+      "file_72": 412,
+      "file_73": 274,
+      "file_74": 822,
+      "file_75": 279,
+      "file_76": 6,
+      "file_77": 304,
+      "file_78": 124,
+      "file_79": 180,
+      "file_80": 89
+    },
+    "C_translation_units": 33,
+    "retained_ASM_fragments": 43
+  },
+  "original_archive_sha256": "ea698abc386e488ea6e6f1e4b51ced38bb75c6d19b6bdc196787e8666bca7d04",
+  "candidate_manifest_sha256": "aee6d6d5a1345d02b742b4700f7669452bbd8420d3094030b4c9779e423dc078",
+  "previous_combined_proof_sha256": "c63da536ea5d07e41aeb720e58042aa6b14adf0b1884c75b2ae8192305b93afa",
+  "combined_proof_sha256": "21f4260e3285c5d5c35339a816e3b72abddbdcfbbb05657670de8aff2e408b46",
+  "strict_inventory": {
+    "status": "PASS",
+    "original_identified": 7376,
+    "accepted_c": 1556,
+    "asm_remaining": 5807,
+    "new_positive_aliases": 0,
+    "original_size_annotation_differences_preserved": true
+  },
+  "complete_local_ci": "PASS",
+  "new_sources": [
+    {
+      "name": "func_80012470_13070",
+      "rom_offset": "0x13070",
+      "size": 48,
+      "vma": "0x80012470",
+      "section": "main",
+      "source_sha256": "3b0365b4d1f0452f815157b84facc675d96f8ae76ddd77e972a156c6c13e3f5f"
+    },
+    {
+      "name": "func_80047850_48450",
+      "rom_offset": "0x48450",
+      "size": 8,
+      "vma": "0x80047850",
+      "section": "main",
+      "source_sha256": "dc5afe29ad6c34019a9cf45a96e5108c149ea4222cdeefed5b17432329809235"
+    },
+    {
+      "name": "func_80047990_48590",
+      "rom_offset": "0x48590",
+      "size": 8,
+      "vma": "0x80047990",
+      "section": "main",
+      "source_sha256": "14345ad9f164fd2655676b07a1b54e0441f0a6004aef553be762ad55d360737e"
+    },
+    {
+      "name": "func_80222548_5DDA18",
+      "rom_offset": "0x5DDA18",
+      "size": 20,
+      "vma": "0x80222548",
+      "section": "file_12",
+      "source_sha256": "480ebf8e0a6a268ec91eea42dce31521d64e7951e5d0f7f37695314a66725021"
+    },
+    {
+      "name": "func_801D620C_6015EC",
+      "rom_offset": "0x6015EC",
+      "size": 56,
+      "vma": "0x801D620C",
+      "section": "file_13",
+      "source_sha256": "2200d06df811a145e929356b2c119e22de72b7df1ab425ae140009d590c0216d"
+    },
+    {
+      "name": "func_801CE61C_63D46C",
+      "rom_offset": "0x63D46C",
+      "size": 28,
+      "vma": "0x801CE61C",
+      "section": "file_14",
+      "source_sha256": "245ae8356dba5c74e6388f29a5172564adb4791592c5b3b4fdb06a906933e554"
+    },
+    {
+      "name": "func_801D1630_640480",
+      "rom_offset": "0x640480",
+      "size": 52,
+      "vma": "0x801D1630",
+      "section": "file_14",
+      "source_sha256": "f4d4e8c1a98c88aad9b6400e2febc63c783e9783ff750c7893632d5becb2d6a9"
+    },
+    {
+      "name": "func_801D1790_6405E0",
+      "rom_offset": "0x6405E0",
+      "size": 48,
+      "vma": "0x801D1790",
+      "section": "file_14",
+      "source_sha256": "975b703ff81ef1f7d2c27dc7d4b4fc7d2c94beed9ac54f1f30336c8e76aa78ba"
+    },
+    {
+      "name": "func_801D3BE0_642A30",
+      "rom_offset": "0x642A30",
+      "size": 16,
+      "vma": "0x801D3BE0",
+      "section": "file_14",
+      "source_sha256": "70172964026f38c951e2fa464ecdfe8a61a77ea9087716e3f8acb17e113b9aa5"
+    },
+    {
+      "name": "func_801D3BF0_642A40",
+      "rom_offset": "0x642A40",
+      "size": 20,
+      "vma": "0x801D3BF0",
+      "section": "file_14",
+      "source_sha256": "2deb670f355e94e5276486fbeb42ac318edb3a84d888248365217ef9babaec5b"
+    },
+    {
+      "name": "func_801D4400_643250",
+      "rom_offset": "0x643250",
+      "size": 24,
+      "vma": "0x801D4400",
+      "section": "file_14",
+      "source_sha256": "5c39e7f0ed38fb3e47e907a80f7db77e2162d1c01002f41fbf491b18ee79082a"
+    },
+    {
+      "name": "func_80214304_6732B4",
+      "rom_offset": "0x6732B4",
+      "size": 56,
+      "vma": "0x80214304",
+      "section": "file_17",
+      "source_sha256": "3ca0c46375572f22ebb09434e495a3b1abc50dd95499660716ae9119554ec363"
+    },
+    {
+      "name": "func_801CBC80_69D3F0",
+      "rom_offset": "0x69D3F0",
+      "size": 36,
+      "vma": "0x801CBC80",
+      "section": "file_20",
+      "source_sha256": "62e081be922c7a81a47bc687f60f96fefa58028a4c804661e5c720b4863b3030"
+    },
+    {
+      "name": "func_0800B38C_6BE62C",
+      "rom_offset": "0x6BE62C",
+      "size": 36,
+      "vma": "0x0800B38C",
+      "section": "file_29",
+      "source_sha256": "129491b5e5d53689e114f2509454a998856cf9311535088698503e8e25248727"
+    },
+    {
+      "name": "func_08000298_6BF9E8",
+      "rom_offset": "0x6BF9E8",
+      "size": 48,
+      "vma": "0x08000298",
+      "section": "file_30",
+      "source_sha256": "104a937064af405526c5e051f71818329d721641f3664d8bbad0cc1e18fc64ce"
+    },
+    {
+      "name": "func_08001CC4_6EAE14",
+      "rom_offset": "0x6EAE14",
+      "size": 56,
+      "vma": "0x08001CC4",
+      "section": "file_40",
+      "source_sha256": "d1fbbfd129e8584229384771255fdb6412004909782c340834fab05c24b7c8e0"
+    },
+    {
+      "name": "func_0800606C_6F954C",
+      "rom_offset": "0x6F954C",
+      "size": 52,
+      "vma": "0x0800606C",
+      "section": "file_43",
+      "source_sha256": "7d951d943beffd349dd4eb95ded99a00e0372d94dbbc53c191136b1066f1a697"
+    },
+    {
+      "name": "func_08000FA8_7089E8",
+      "rom_offset": "0x7089E8",
+      "size": 36,
+      "vma": "0x08000FA8",
+      "section": "file_48",
+      "source_sha256": "41e374bfcb14cc59261bd9044139ab1fed6face717e5276431848984c582d268"
+    },
+    {
+      "name": "func_080009E4_70AA24",
+      "rom_offset": "0x70AA24",
+      "size": 36,
+      "vma": "0x080009E4",
+      "section": "file_49",
+      "source_sha256": "ae379c117ea7f0d2771614ecd45f7bd6e348060d3b64c6fac6153067d35120b5"
+    },
+    {
+      "name": "func_08000D18_7215E8",
+      "rom_offset": "0x7215E8",
+      "size": 44,
+      "vma": "0x08000D18",
+      "section": "file_61",
+      "source_sha256": "cdae9b79226faa4393504950288c4653b4aa3f2f6bcb07d9c7bfe92b2488f393"
+    },
+    {
+      "name": "func_08000F2C_72A4CC",
+      "rom_offset": "0x72A4CC",
+      "size": 36,
+      "vma": "0x08000F2C",
+      "section": "file_67",
+      "source_sha256": "88979211cb378fa85e90db6dbfd99654db5e7ec12f91069db51ff8334d262281"
+    },
+    {
+      "name": "func_08001058_72C8A8",
+      "rom_offset": "0x72C8A8",
+      "size": 36,
+      "vma": "0x08001058",
+      "section": "file_69",
+      "source_sha256": "8c1400949737f5a670e18ad2a6b98115e3ece111af86ba654cdb3a139e9dd33c"
+    },
+    {
+      "name": "func_0800148C_72CCDC",
+      "rom_offset": "0x72CCDC",
+      "size": 36,
+      "vma": "0x0800148C",
+      "section": "file_69",
+      "source_sha256": "b155b7ad8045be49909177e94b1668772fdc66586e5313f5400733d83d203094"
+    },
+    {
+      "name": "func_0800105C_7308EC",
+      "rom_offset": "0x7308EC",
+      "size": 40,
+      "vma": "0x0800105C",
+      "section": "file_71",
+      "source_sha256": "32bf0003f214285660b2001850259503c7052204112416685963e24584d6a0da"
+    },
+    {
+      "name": "func_08001328_730BB8",
+      "rom_offset": "0x730BB8",
+      "size": 36,
+      "vma": "0x08001328",
+      "section": "file_71",
+      "source_sha256": "d308917b5cc1d487ff26cd781dee8bd83324ed7272624b77c6465f8f8ce9a722"
+    },
+    {
+      "name": "func_0800134C_730BDC",
+      "rom_offset": "0x730BDC",
+      "size": 52,
+      "vma": "0x0800134C",
+      "section": "file_71",
+      "source_sha256": "959b064b4b7c7af7d358fd9706e60a9486cc1d07bea75def807002fbf61d5e20"
+    },
+    {
+      "name": "func_08001860_7310F0",
+      "rom_offset": "0x7310F0",
+      "size": 40,
+      "vma": "0x08001860",
+      "section": "file_71",
+      "source_sha256": "77a7439a199129355dc6ee2981171ca61e9e7df89b48f5fa3b46a94ca3fefb87"
+    },
+    {
+      "name": "func_080012A4_7341D4",
+      "rom_offset": "0x7341D4",
+      "size": 36,
+      "vma": "0x080012A4",
+      "section": "file_73",
+      "source_sha256": "173adeb4064c2507aaf881625bbcd3101d001ff13e0816b7f0ea1e596cc3848f"
+    },
+    {
+      "name": "func_080012C8_7341F8",
+      "rom_offset": "0x7341F8",
+      "size": 52,
+      "vma": "0x080012C8",
+      "section": "file_73",
+      "source_sha256": "11db9cb4937a226cf63cf6240d31de4ef69f007100928fe45e208270ee6af048"
+    },
+    {
+      "name": "func_08001634_734564",
+      "rom_offset": "0x734564",
+      "size": 40,
+      "vma": "0x08001634",
+      "section": "file_73",
+      "source_sha256": "d6cb3a46b826adde9df76515341aa45d86351a0b63285b8dd3521ec5f1b077bb"
+    },
+    {
+      "name": "func_08000DDC_7394AC",
+      "rom_offset": "0x7394AC",
+      "size": 44,
+      "vma": "0x08000DDC",
+      "section": "file_75",
+      "source_sha256": "5b4f5125d6db546af0eaff5f8d9d6ab52d6da9f9ba5a36379416df463b57f199"
+    },
+    {
+      "name": "func_080007A8_73C3A8",
+      "rom_offset": "0x73C3A8",
+      "size": 36,
+      "vma": "0x080007A8",
+      "section": "file_78",
+      "source_sha256": "48f197915c05f6e68f2ff7eaee71db80a1fd64dd64c74dc4d6c0166a891ea52e"
+    },
+    {
+      "name": "func_08000460_73CA70",
+      "rom_offset": "0x73CA70",
+      "size": 48,
+      "vma": "0x08000460",
+      "section": "file_79",
+      "source_sha256": "0b0d6dfc167cd6065d00dc293c8a34c66ae0df8662cc9a4579ea4734dd5818f1"
+    }
+  ],
+  "remaining_archive_116_research_only": 61,
+  "sdk_owned_zero_relocation_excluded": "alFilterNew",
+  "emulator_gameplay": "NOT_RUN",
+  "japanese_matching_c_unchanged": 432,
+  "full_local_ci_checks": {
+    "decomp_python_tests": 274,
+    "decomp_python_tests_skipped": 1,
+    "verifier_ledger_python_tests": 349,
+    "verifier_ledger_python_tests_skipped": 4,
+    "task_and_evidence_validation": "PASS",
+    "all_configured_actual_c_asan_ubsan_jobs": "PASS",
+    "new_original_33_c_asan_ubsan_1000_cases": "PASS"
+  }
+}

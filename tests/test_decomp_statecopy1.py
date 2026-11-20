@@ -18,8 +18,8 @@ class Statecopy1Tests(unittest.TestCase):
         self.assertNotIn(function['name'],{f['name'] for f in prior['comparison']['functions']})
         current=load_manifest(adapter.ROOT/'manifest.json')
         names=[x['name'] for x in claimed_functions(current)]
-        self.assertEqual(len(names),1523)
-        self.assertEqual(len(claimed_functions({k:v for k,v in current.items() if k!='overlay_archive22_stage'})),1501)
+        self.assertEqual(len(names),1556)
+        self.assertEqual(len(claimed_functions({k:v for k,v in current.items() if k not in ('overlay_archive22_stage','overlay_archive33_stage')})),1501)
         self.assertEqual(names.count(function['name']),1)
     def test_wrong_image_fails_closed(self):
         with self.assertRaisesRegex(ValueError,'Invalid USA original ROM'):

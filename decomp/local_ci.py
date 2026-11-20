@@ -162,6 +162,27 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-lm','-o',str(binary)]),
             ('Archive22 actual-source sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        # Authenticated 33 original USA C sources are run through ASan/UBSan;
+        # the native exact original-MIPS match is a separate required gate.
+        archive=ROOT/'decomp/research/pending_archive33_20261120'
+        sources=sorted((archive/'sources').glob('*.c'))
+        if len(sources)!=33:
+            raise ValueError('Missing 33 original archive33 native source translation units')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('archive33-actual-host')
+        steps.extend([
+            ('Archive33 actual-source sanitizer build',compiler+[
+                '-std=gnu11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-Wno-unused-parameter','-Wno-unused-function',
+                '-Wno-int-conversion','-Wno-int-to-pointer-cast','-Wno-pointer-to-int-cast',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((archive/'test_actual_archive33.c').relative_to(ROOT)),
+                *[str(f.relative_to(ROOT)) for f in sources],
+                '-lm','-o',str(binary)]),
+            ('Archive33 actual-source sanitizer test',[str(binary)]),
+        ])
     return steps
 
 
