@@ -1,0 +1,12 @@
+typedef signed int s32;typedef unsigned int u32;typedef unsigned char u8;typedef signed char s8;typedef signed short s16;typedef unsigned short u16;typedef float f32;typedef double f64;typedef signed int M2C_UNK;
+#define NULL ((void*)0)
+#define M2C_FIELD(p,t,o) (*(t)((u8*)(p)+(o)))
+#define M2C_PTR(p,t,o) ((t)((u8*)(p)+(o)))
+M2C_UNK func_8003521C_35E1C(M2C_UNK (*)());         /* extern */
+M2C_UNK func_801DB5E0_6069C0();                     /* static */
+
+void func_801DB5B0_606990(void *arg0, void *arg1) {
+    M2C_FIELD(arg0, s8 *, 0x30) = 0;
+    M2C_FIELD(arg1, s8 *, 0x64) = 1;
+    func_8003521C_35E1C(func_801DB5E0_6069C0);
+}

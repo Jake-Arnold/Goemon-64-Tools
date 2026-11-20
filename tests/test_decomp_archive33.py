@@ -11,8 +11,8 @@ class Archive33Acceptance(unittest.TestCase):
         cls.fixture=archive33.load_fixture()
         cls.functions=archive33.functions(cls.fixture)
         cls.previous=json.loads((ROOT/'decomp/results/combined_1523_20261120.json').read_text())
-        cls.current=json.loads((ROOT/'decomp/results/combined.json').read_text())
-        cls.inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
+        cls.current=json.loads((ROOT/'decomp/results/combined_1556_20261120.json').read_text())
+        cls.inventory=json.loads((ROOT/'decomp/results/inventory_1556_20261120.json').read_text())
         cls.proof=json.loads((ROOT/'decomp/results/usa_archive33_1556_promotion_20261120.json').read_text())
 
     def test_original_address_extent_zero_relocation_and_sha256_pinned(self):
@@ -40,7 +40,7 @@ class Archive33Acceptance(unittest.TestCase):
         self.assertTrue(self.current['comparison']['full_rom_match'])
         self.assertEqual(self.current['comparison']['candidate_sha1'],'6ea0ed71032ce08fc2745f412d84936382197494')
         self.assertEqual({f['name'] for f in self.current['comparison']['functions']},oldnames|newnames)
-        m=load_manifest(ROOT/'decomp/manifest.json');accepted=claimed_functions(m)
+        m=load_manifest(ROOT/'decomp/manifest.json');accepted=claimed_functions({k:v for k,v in m.items() if k!='overlay_archive61_stage'})
         self.assertEqual((len(accepted),sum(f['size'] for f in accepted)),(1556,59552))
         self.assertEqual(len({f['rom_offset'] for f in accepted}),1556)
 

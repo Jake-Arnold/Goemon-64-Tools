@@ -1,0 +1,222 @@
+"""Original-address, fail-closed 61-unit / 61-C native-exact micro stage after accepted 1556-C USA production.
+
+Builds native IDO objects from the Git-fingerprinted research sources, slices
+only still-ASM-owned ranges, and requires exact whole-ROM/ELF/relocation proof.
+"""
+from __future__ import annotations
+from collections import Counter,defaultdict
+import hashlib,json,re,subprocess
+from pathlib import Path
+from . import overlay_wide132 as wide
+from . import overlay_crossregion47 as cross
+
+ROOT=Path(__file__).resolve().parent
+SOURCE_BASE=ROOT/'research/pending_archive61_20261120/sources'
+FIXTURE=ROOT/'research/pending_archive61_20261120/promotion_manifest.json'
+STAGE_FORMAT='goemon-usa-archive61-after-1556-v1'
+SHA1='6ea0ed71032ce08fc2745f412d84936382197494'
+SECTIONS={'file_17', 'file_67', 'file_14', 'main', 'file_15', 'file_18', 'file_23', 'file_73', 'file_42', 'file_13'}
+
+def sha256(b):return hashlib.sha256(b).hexdigest()
+def functions(fixture):return [f for u in fixture['units'] for f in u['functions']]
+def load_fixture():
+    j=json.loads(FIXTURE.read_text())
+    if j['format']!=STAGE_FORMAT or j['original_rom_sha1']!=SHA1 or j['original_canonical_count']!=1556:raise ValueError('Unreviewed archive61 fixture')
+    if len(j['units'])!=61 or len(functions(j))!=61 or sum(x['size'] for x in functions(j))!=2772 or sum(f['expected_original_relocations'] for f in functions(j))!=163:raise ValueError('Archive61 changed count/bytes')
+    names,offsets,units=set(),set(),set()
+    for u in j['units']:
+        if u['section'] not in SECTIONS or not re.fullmatch(r'archive61_[0-9]{3}',u['name']) or u['name'] in units:raise ValueError('Unexpected archive61 unit')
+        units.add(u['name']);cur=u['rom_offset']
+        for f in u['functions']:
+            if (f['rom_offset']!=cur or f['name'] in names or f['rom_offset'] in offsets or
+                not (re.fullmatch(r'func_([0-9A-F]{8})_([0-9A-Fa-f]+)',f['name']) or f['name']=='alFilterNew')):raise ValueError('Archive61 function ownership mismatch '+f['name'])
+            m=re.fullmatch(r'func_([0-9A-F]{8})_([0-9A-Fa-f]+)',f['name'])
+            if (m is not None and (int(m[1],16)!=f['vma'] or int(m[2],16)!=f['rom_offset'])) or f['size']%4 or f['size']<8:raise ValueError('Archive61 VMA/size mismatch')
+            names.add(f['name']);offsets.add(f['rom_offset']);cur+=f['size']
+        if cur-u['rom_offset']!=u['size']:raise ValueError('Archive61 non-contiguous source '+u['name'])
+    return j
+
+def validate_sources(rom,fixture,source_root=SOURCE_BASE):
+    if len(rom)!=33554432 or hashlib.sha1(rom).hexdigest()!=SHA1:raise ValueError('Invalid USA original ROM')
+    for u in fixture['units']:
+        raw=(source_root/(u['name']+'.c')).read_bytes()
+        if sha256(raw)!=u['source_sha256']:raise ValueError('Archive61 native source hash mismatch: '+u['name'])
+        for f in u['functions']:
+            off,size=f['rom_offset'],f['size']
+            if sha256(rom[off:off+size])!=f['original_code_sha256']:raise ValueError('Archive61 original anchor mismatch: '+f['name'])
+
+FUNCTION_MARKER=re.compile(r'(?m)^nonmatching (func_[0-9A-F]{8}_[0-9A-F]+|alFilterNew), 0x([0-9A-Fa-f]+)$')
+
+def find_owners(checkout,fixture):
+    checkout=Path(checkout)
+    linker=(checkout/'.splat/usa/mnsg.ld').read_text()
+    active=set(wide.LINKED_ASM.findall(linker))
+    if not active:raise ValueError('No active original ASM owners')
+    target={f['name'] for f in functions(fixture)};owners={}
+    for parent in sorted(active):
+        source=checkout/'asm/usa'/(parent+'.s')
+        if not source.is_file():raise ValueError('Missing linked ASM '+parent)
+        for name,length in FUNCTION_MARKER.findall(source.read_text()):
+            if name in target:
+                if name in owners:raise ValueError('Duplicate ASM owner '+name)
+                owners[name]=(parent,int(length,16))
+    if set(owners)!=target:raise ValueError('No unique ASM owner for '+str(sorted(target-set(owners))))
+    return owners
+
+def parent_targets(owners):return wide.parent_targets(owners)
+
+def stage_linker(checkout,rom,fixture,owners,source_root=SOURCE_BASE):
+    validate_sources(rom,fixture,source_root)
+    checkout=Path(checkout);ld=checkout/'.splat/usa/mnsg.ld';text=ld.read_text()
+    by_parent=defaultdict(list)
+    for u in fixture['units']:
+        parents=set()
+        for f in u['functions']:
+            p,sz=owners[f['name']]
+            if sz!=f['size']:raise ValueError('Original ASM extent changed '+f['name'])
+            parents.add(p)
+        if len(parents)!=1:raise ValueError('Archive61 source unit spans multiple active ASM objects '+u['name'])
+        by_parent[parents.pop()].append(u)
+    assembly=[];parents=[]
+    for parent,entries in sorted(by_parent.items()):
+        entries.sort(key=lambda u:u['rom_offset'])
+        full=(checkout/'asm/usa'/(parent+'.s')).read_text()
+        spl=full.find('/* Generated by')
+        if spl<0:
+            # A prior split ASM fragment can begin with a named SDK function,
+            # e.g. alAudioFrame.  Its label is source body, not shared header.
+            # Copying it as header into two further children creates duplicate
+            # ELF FUNC symbols even if all underlying instructions are exact.
+            first=re.search(r'(?m)^nonmatching [A-Za-z_][A-Za-z0-9_]*, 0x[0-9A-Fa-f]+$',full)
+            word=wide.TEXT_WORD.search(full)
+            if first is None or word is None:raise ValueError('Unrecognised ASM provenance '+parent)
+            spl=min(first.start(),word.start())
+        header,body=full[:spl],full[spl:];begin,end=wide._span(body)
+        cross._object_nontext_empty(checkout/f'build/usa/asm/usa/{parent}.s.o')
+        replacements=[];cursor=0;position=begin
+        for i,u in enumerate(entries):
+            fs=u['functions'];first,last=fs[0]['name'],fs[-1]['name'];off=u['rom_offset'];end_c=off+u['size']
+            m=re.search(r'(?m)^nonmatching '+re.escape(first)+r', 0x([0-9A-Fa-f]+)$',body)
+            if m is None or int(m[1],16)!=fs[0]['size'] or off<position or end_c>end or m.start()<cursor:raise ValueError('Archive61 lost ASM start '+first)
+            leading=body[cursor:m.start()]
+            if position<off:
+                if wide._span(leading)!=(position,off):raise ValueError('Archive61 lost intervening original ASM')
+                asm=f'{parent}_wa61_{i:02}';(checkout/'asm/usa'/(asm+'.s')).write_text(header+leading)
+                obj=f'build/usa/asm/usa/{asm}.s.o';replacements.append(obj);assembly.append({'object':obj,'start':position,'end':off})
+            elif wide.TEXT_WORD.search(leading):raise ValueError('Unexpected ASM before archive61 C')
+            stop=body.find('endlabel '+last,m.end())
+            if stop<0:raise ValueError('Missing last original endlabel '+last)
+            stop+=len('endlabel '+last);block=body[m.start():stop]
+            if wide._span(block)!=(off,end_c) or len(FUNCTION_MARKER.findall(block))!=len(fs):raise ValueError('Archive61 contiguous C unit extent differs '+u['name'])
+            got=[(n,int(s,16)) for n,s in FUNCTION_MARKER.findall(block)]
+            if got != [(f['name'],f['size']) for f in fs]:raise ValueError('Archive61 C unit symbol order/extent differs')
+            output=checkout/'src'/(u['name']+'.c')
+            if output.exists():raise ValueError('Archive61 C file collision '+u['name'])
+            output.write_bytes((source_root/(u['name']+'.c')).read_bytes())
+            replacements.append(f'build/usa/src/{u["name"]}.c.o')
+            cursor=stop;position=end_c
+        if position<end:
+            tail=body[cursor:]
+            if wide._span(tail)!=(position,end):raise ValueError('Archive61 trailing ASM changed '+parent)
+            asm=f'{parent}_wa61_{len(entries):02}'
+            last_source=header+tail
+            if parent=='libultra_wa33_02':
+                # GNU MIPS as rounds the default .text input section up to a
+                # 16-byte end boundary.  After splitting alFilterNew this
+                # would append 12 *new* bytes to the final SDK ASM fragment,
+                # shift the full main executable by 16, and break the ROM.
+                # A private, executable input section with 4-byte alignment
+                # preserves the original 0xCD4-byte tail, including original
+                # NOPs; the output is still the original .main section.
+                original='.section .text, "ax"'
+                if last_source.count(original)!=1 or asm!='libultra_wa33_02_wa61_01':
+                    raise ValueError('Unexpected SDK parent boundary/assembly source')
+                last_source=last_source.replace(original,'.section .text.archive61, "ax", @progbits\n.align 2')
+            (checkout/'asm/usa'/(asm+'.s')).write_text(last_source)
+            obj=f'build/usa/asm/usa/{asm}.s.o';replacements.append(obj);assembly.append({'object':obj,'start':position,'end':end})
+        old=f'build/usa/asm/usa/{parent}.s.o(.text);'
+        if text.count(old)!=1:raise ValueError('Archive61 ASM ownership not unique '+parent)
+        text=text.replace(old,'\n'.join(p+('(.text.archive61);' if p.endswith('/libultra_wa33_02_wa61_01.s.o') else '(.text);') for p in replacements),1)
+        for section in ('.data','.rodata','.bss'):
+            old=f'build/usa/asm/usa/{parent}.s.o({section});'
+            if text.count(old)>1:raise ValueError('Archive61 extra nontext owner '+parent)
+            text=text.replace(old,'')
+        children=[(a['object'],a['start'],a['end']) for a in assembly if a['object'].startswith(f'build/usa/asm/usa/{parent}_wa61_')]
+        children += [(f'build/usa/src/{u["name"]}.c.o',u['rom_offset'],u['rom_offset']+u['size']) for u in entries]
+        children.sort(key=lambda x:x[1])
+        if children[0][1]!=begin or children[-1][2]!=end or any(a[2]!=b[1] for a,b in zip(children,children[1:])):raise ValueError('Archive61 partition changed original ASM')
+        parents.append({'name':parent,'start':begin,'end':end,'children':children})
+    oldtext=ld.read_text();found=set();region=None
+    for line in oldtext.splitlines():
+        section=re.match(r'^\s*\.(main|file_\d+)\s+0x[0-9A-Fa-f]+\s*:\s*AT\(',line)
+        if section:region=section.group(1)
+        for parent in by_parent:
+            if f'build/usa/asm/usa/{parent}.s.o(.text);' in line:
+                if region not in SECTIONS:raise ValueError('Archive61 original linked overlay differs '+str(region))
+                found.add(parent)
+    if found!=set(by_parent):raise ValueError('Archive61 output section ownership missing')
+    for section in {u['section'] for u in fixture['units']}:
+        pattern=r'(?m)^(\s*\.'+re.escape(section)+r'\s+0x[0-9A-Fa-f]+\s*:\s*AT\([^)]+\)) SUBALIGN\(16\)'
+        text,n=re.subn(pattern,r'\1 SUBALIGN(4)',text)
+        if n>1:raise ValueError('Ambiguous archive61 section subalignment '+section)
+    ld.write_text(text)
+    return {'units':fixture['units'],'functions':functions(fixture),'assembly':assembly,'parents':parents,'linker_sha256':sha256(text.encode())}
+
+def object_targets(plan):return [f'build/usa/src/{u["name"]}.c.o' for u in plan['units']]+[a['object'] for a in plan['assembly']]
+
+def pack_objects(checkout,rom,plan):
+    checkout=Path(checkout);c=[];asm=[]
+    for u in plan['units']:
+        path=checkout/f'build/usa/src/{u["name"]}.c.o'
+        symbols=subprocess.check_output(['readelf','-Ws',str(path)],text=True)
+        got={}
+        for line in symbols.splitlines():
+            parts=line.split()
+            if len(parts)>=8 and parts[3]=='FUNC' and parts[6] not in ('UND','ABS') and (parts[7].startswith('func_') or parts[7]=='alFilterNew'):
+                got[parts[7]]=(int(parts[1],16),int(parts[2]))
+        expected={f['name']:(f['rom_offset']-u['rom_offset'],f['size']) for f in u['functions']}
+        if got!=expected:raise ValueError('Archive61 C unit changed original function offsets/sizes: '+u['name']+' '+str(got))
+        unresolved='R_MIPS_' in subprocess.check_output(['readelf','-Wr',str(path)],text=True)
+        rel=subprocess.check_output(['readelf','-Wr',str(path)],text=True)
+        expected_reloc=sum(f['expected_original_relocations'] for f in u['functions'])
+        got_reloc=sum(1 for line in rel.splitlines() if re.search(r'\bR_MIPS_\w+',line))
+        if got_reloc!=expected_reloc:raise ValueError('Archive61 native C object relocation count changed '+u['name']+f' {got_reloc} != {expected_reloc}')
+        c.append({'source':u['name'],'has_prelink_relocations':unresolved,'original_relocations':expected_reloc,**cross._trim_object(path,u['size'],rom[u['rom_offset']:u['rom_offset']+u['size']],name=None)})
+    for a in plan['assembly']:
+        obj=checkout/a['object'];actual=a['end']-a['start']
+        if a['object'].endswith('/libultra_wa33_02_wa61_01.s.o'):
+            section_table=subprocess.check_output(['readelf','-SW',str(obj)],text=True)
+            detail=re.search(r'(?m)^\s*\[\s*\d+\]\s+\.text\.archive61\s+\w+\s+\w+\s+\w+\s+([0-9a-fA-F]+)\s+\S+\s+AX\s+\d+\s+\d+\s+(\d+)\s*$',section_table)
+            if detail is None or (int(detail[1],16),int(detail[2]))!=(actual,4):
+                raise ValueError('Original SDK trailing ASM input section gained padding or incorrect alignment')
+            if actual!=0xCD4 or '(.text.archive61);' not in (checkout/'.splat/usa/mnsg.ld').read_text():
+                raise ValueError('Original SDK text is not at its authenticated linker boundary')
+            asm.append({'object':a['object'],'original_text_bytes':actual,'compiler_section_bytes':actual,
+                        'zero_padding_removed':0,'trimmed_object_sha256':sha256(obj.read_bytes()),'aligned_input_section':'.text.archive61'})
+        else:
+            asm.append({'object':a['object'],**cross._trim_object(obj,actual,rom[a['start']:a['end']])})
+    return {'functions':len(plan['functions']),'units':len(c),'instruction_bytes':sum(x['size'] for x in plan['functions']),'c':c,'asm':asm}
+
+def verify_link(baseline,accepted_elf,candidate,rom,plan,fixture):
+    baseline=Path(baseline);candidate=Path(candidate);accepted_elf=Path(accepted_elf)
+    image=(candidate/'build/usa/mnsg.z64').read_bytes()
+    if len(image)!=33554432 or image!=rom or hashlib.sha1(image).hexdigest()!=SHA1:raise ValueError('Archive61 whole-ROM 32MiB mismatch')
+    old=baseline/'build/usa/mnsg.elf';new=candidate/'build/usa/mnsg.elf'
+    oldsyms=cross._funcs(old);prevsyms=cross._funcs(accepted_elf);newsyms=cross._funcs(new)
+    if sum(oldsyms.values())!=7376 or prevsyms!=newsyms:raise ValueError('Archive61 changed accepted ELF positive FUNC identity')
+    from .overlay_wide132 import _main_entry_relocations
+    before=_main_entry_relocations(accepted_elf);after=_main_entry_relocations(new)
+    # REL record ordering can change when adjacent ASM becomes C. Compare the
+    # complete site/type/symbol/addend multiset, not the display order of readelf.
+    if set(before)!=set(after) or any(Counter(before[section])!=Counter(after[section]) for section in before):
+        raise ValueError('Archive61 main/entry semantic relocations changed')
+    all_before=cross._relocations(accepted_elf);all_after=cross._relocations(new)
+    if set(all_before)!=set(all_after) or any(Counter(all_before[s])!=Counter(all_after[s]) for s in all_before):raise ValueError('Archive61 accepted-baseline overlay semantic relocations changed')
+    maptext=(candidate/'build/usa/mnsg.map').read_text();funcs=set(newsyms.elements())
+    for u in fixture['units']:
+        obj=f'build/usa/src/{u["name"]}.c.o'
+        if obj not in maptext:raise ValueError('Archive61 native C unit absent from ELF map: '+u['name'])
+        for f in u['functions']:
+            if ((f['name'],f['vma'],f['size']) not in funcs or f['name']+'.NON_MATCHING' in maptext or
+                rom[f['rom_offset']:f['rom_offset']+f['size']]!=image[f['rom_offset']:f['rom_offset']+f['size']]):raise ValueError('Archive61 original linked function identity mismatch: '+f['name'])
+    return {'status':'PASS','count':61,'original_instruction_bytes':2772,'original_ROM_SHA1':SHA1,'matched_ROM_bytes':len(image),'identical_accepted_ELF_FUNC_identities':7376,'identical_accepted_semantic_relocations':{s:len(v) for s,v in all_after.items()},'C_translation_units':len(fixture['units']),'retained_ASM_fragments':len(plan['assembly'])}

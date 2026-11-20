@@ -50,10 +50,10 @@ class ExpandedNativePromotionTests(unittest.TestCase):
                     self.assertEqual(int(f['name'].split('_')[1],16),f['vma'])
 
     def test_five_stage_counts_and_no_overlapping_original_ranges(self):
-        old={k:v for k,v in self.doc.items() if k not in ([x[0] for x in STAGES]+['overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage'])}
+        old={k:v for k,v in self.doc.items() if k not in ([x[0] for x in STAGES]+['overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage'])}
         baseline=claimed_functions(old)
         self.assertEqual((len(baseline),sum(f['size'] for f in baseline)),(1225,52028))
-        current=claimed_functions({k:v for k,v in self.doc.items() if k not in ('overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage')})
+        current=claimed_functions({k:v for k,v in self.doc.items() if k not in ('overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage')})
         self.assertEqual((len(current),sum(f['size'] for f in current)),(1452,56744))
         self.assertEqual(len({f['name'] for f in current}),1452)
         spans=sorted((f['rom_offset'],f['rom_offset']+f['size']) for f in current)

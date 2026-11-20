@@ -27,7 +27,7 @@ def manifest():
     m.pop('overlay_micro20_stage', None)
     m.pop('overlay_menu2_stage', None)
     m.pop('overlay_statecopy1_stage', None)
-    m.pop('overlay_archive22_stage', None); m.pop('overlay_archive33_stage', None)
+    m.pop('overlay_archive22_stage', None); m.pop('overlay_archive33_stage', None); m.pop('overlay_archive61_stage', None)
     return m
 
 
