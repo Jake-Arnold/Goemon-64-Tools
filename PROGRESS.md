@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-20 — v0.11.79 toolkit address metadata consolidation
+
+- **Source selection:** Compared the two independent `toolkit/address-metadata-sync-*` branches. Both contain the same 549 audited address records and 25 supplementary discoveries; their JSON contents differ only in source-revision references on twelve catalogue and sixteen discoveries entries. Selected the newer branch (`6371c7f37bc455a174c20d83032a79cf2756cfc5`, 20 Nov 07:31Z) rather than merging both divergent imports into main.
+- **Implementation:** Import only `practice/data/address_catalogue_audit.json`, `practice/data/address_catalogue_v1.json`, and `practice/data/address_discoveries_v1.json` as committed reviewed source metadata. No decomp source, ROM data, assembly, gameplay assets, memory writes, or automatic address crosswalk extrapolations merged. Preserve read-only/research-only confidence status in the data.
+- **Tests:** Add `tests/test_address_catalogue_metadata_consolidation.py` to validate JSON consistency, record count, source metadata distinctions and provenance schema. Run Linux/Windows toolkit CI on this exact candidate before merging. Toolkit version set to 0.11.79.
+- **Branch policy:** Consolidate into `main` only. Keep `chatgptweb/decomp` and unmerged decomp research separate, per `docs/TOOLKIT_BRANCH_POLICY.md`.
+
+
 ## 2026-11-20 — v0.11.78 always-on Japanese kana and romaji, toolkit integration ready
 
 - **User-facing simplification:** The Japanese Dialogue view always displays decoded kana, supports Japanese text and romaji search, and shows a permanent read-only character preview. Removed the “Show kana provenance, romaji search and digit hypotheses” checkbox, optional-state gating, “PATTERN-DERIVED” status warnings, 84-kana verification caveats in live GUI, “Copy hypothesis preview” label, and enabling instructions. The editor exposes all 160 kana in the canonical Japanese mapping by default. USA Dialogue behaviour is unchanged.
