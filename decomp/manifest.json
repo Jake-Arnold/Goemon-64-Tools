@@ -1582,5 +1582,8 @@
   },
   "overlay_archive61_stage": {
     "format": "goemon-usa-archive61-after-1556-v1"
+  },
+  "overlay_checkpoint500_stage": {
+    "format": "goemon-usa-checkpoint500-after-1617-v1"
   }
 }

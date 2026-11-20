@@ -1,0 +1,24 @@
+{
+  "format": "goemon-usa-checkpoint500-after-1617-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_count": 1617,
+  "original_checkpoint_archive_sha256": "e1450ff17c8798f381f299cbc77465bd5fb961d03de79f38919e4f4dd631e4e6",
+  "units": [
+    {
+      "name": "checkpoint500_000",
+      "section": "main",
+      "rom_offset": 215312,
+      "size": 48,
+      "source_sha256": "716477d3835cc6ad9838384fc533a954e6ad69857187730a61e30bb3f20dcb26",
+      "functions": [
+        {
+          "name": "func_80033D10_34910",
+          "rom_offset": 215312,
+          "vma": 2147695888,
+          "size": 48,
+          "original_code_sha256": "3f5afc9ba35e0818ba9fb6348efd8849a0acc256aa7b268b4c47af90f308d121"
+        }
+      ]
+    }
+  ]
+}

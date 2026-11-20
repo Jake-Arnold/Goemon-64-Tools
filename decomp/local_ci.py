@@ -191,6 +191,30 @@ def build_steps(host_binary: Path, *, quick: bool = False):
             raise ValueError('Missing the original 61 archive native source files')
         steps.append(('Archive61 actual-original-source sanitizer compile and host cases',[
             sys.executable,'-m','decomp.research.pending_archive61_20261120.test_actual_sources']))
+    if not quick:
+        # Exercise the one actually surviving checkpoint500 original C source.
+        archive=ROOT/'decomp/research/pending_checkpoint500_20261120'
+        source=archive/'sources/checkpoint500_000.c'
+        if not source.is_file():
+            raise ValueError('Missing authenticated checkpoint500 C source')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('checkpoint500-original-host')
+        steps.extend([
+            ('Checkpoint500 actual-original-source sanitizer build', compiler+[
+                '-std=gnu11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-Wno-unused-parameter','-Wno-unused-function',
+                # Original MIPS ABI has 32-bit pointers. The archived C uses a
+                # 0x54 pointer field and GCC/64-bit host UBSan incorrectly
+                # asserts 8-byte alignment of the base AND field. Keep
+                # address/UB sanitizers, but omit host-only alignment check.
+                '-fsanitize=address,undefined','-fno-sanitize=alignment',
+                '-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((archive/'test_actual_checkpoint500.c').relative_to(ROOT)),
+                str(source.relative_to(ROOT)),
+                '-o',str(binary)]),
+            ('Checkpoint500 original-source 1000-case host sanitizer test',[str(binary)]),
+        ])
     return steps
 
 
