@@ -1,3 +1,11 @@
+# Goemon Speedrun Tools v0.11.80 — Faster Japanese Recomp Attachment
+
+## v0.11.80 — cached ASLR-safe Japanese RAM attachment
+
+Japanese native recomp, Mupen64Plus and Project64 attachment now revalidate the remembered ROM-specific RAM mapping using its relative position inside a host allocation after Linux ASLR changes the absolute address. Explicit 8 MiB (or 4 MiB Project64) RDRAM allocations are checked by small original-ROM fingerprints before the slower whole-process scan. Ambiguous code matches are filtered by Japanese engine/scene plausibility, but multiple plausible live buffers still require explicit selection. Process-name cache fallback works if executable paths are inaccessible. Every accepted connection still checks all three independent Japanese code signatures, RDRAM size and live context; stale cache entries never authorize writes.
+
+This is a synthetic/test-oriented performance and usability improvement, **not** a verified live-game attachment result. It does not change the ROM, byte-order semantics, or USA memory discovery. On systems where game RAM is embedded in a larger memory allocation and no valid cached mapping exists, the full scan may still be necessary.
+
 # Goemon Speedrun Tools v0.11.79 — Consolidated Address Catalogue
 
 ## v0.11.79 — reviewed cross-project address metadata, no decomp source merge

@@ -61,13 +61,23 @@ def _rows(path: Path) -> list[dict]:
                     and item["base"] > 0 and item["base"] % 16 == 0
                     and item.get("endian") in VALID_ENDIAN):
                 continue
+            # Old entries contain absolute addresses only. Mapping metadata
+            # is optional and must never bypass executable/ROM validation.
+            size = item.get("mapping_size")
+            offset = item.get("mapping_offset")
+            if not (type(size) is int and size >= 0x400000
+                    and type(offset) is int and 0 <= offset < size
+                    and offset % 16 == 0):
+                item = {k: v for k, v in item.items()
+                        if k not in ("mapping_size", "mapping_offset")}
             good.append(item)
         return good
     except (OSError, ValueError, TypeError):
         return []
 
 
-def load_hint(executable: str, backend: str, probes, *, store=None):
+def load_hint_record(executable: str, backend: str, probes, *, store=None):
+    """Return a verified-identity cache record; the RAM is NOT verified yet."""
     if not executable or backend not in VALID_BACKENDS:
         return None
     source = Path(store) if store is not None else hints_path()
@@ -76,20 +86,48 @@ def load_hint(executable: str, backend: str, probes, *, store=None):
         if (entry["executable"] == executable and
                 entry["backend"] == backend and
                 entry["rom_signature"] == signature):
-            return entry["base"], entry["endian"]
+            return dict(entry)
+    return None
+
+
+def load_hint(executable: str, backend: str, probes, *, store=None):
+    """Retain the original two-value API for existing callers."""
+    hint = load_hint_record(executable, backend, probes, store=store)
+    return (hint["base"], hint["endian"]) if hint else None
+
+
+def mapping_coordinates(process, base: int):
+    """Find a host mapping-relative address, suitable for ASLR rebasing."""
+    try:
+        for start, length in process.regions():
+            if start <= base < start + length:
+                return length, base - start
+    except (OSError, ValueError, AttributeError):
+        pass
     return None
 
 
 def save_hint(executable: str, backend: str, probes,
-              base: int, endian: str, *, store=None) -> None:
+              base: int, endian: str, *, store=None,
+              mapping_size=None, mapping_offset=None) -> None:
     if (not isinstance(executable, str) or not 0 < len(executable) <= 1024
             or backend not in VALID_BACKENDS or type(base) is not int
             or base <= 0 or base % 16 or endian not in VALID_ENDIAN):
         raise ValueError("Invalid Japan connection hint")
+    if (mapping_size is None) != (mapping_offset is None):
+        raise ValueError("Incomplete RAM mapping hint")
+    if mapping_size is not None and not (
+            type(mapping_size) is int and mapping_size >= 0x400000
+            and type(mapping_offset) is int
+            and 0 <= mapping_offset < mapping_size
+            and mapping_offset % 16 == 0):
+        raise ValueError("Invalid RAM mapping hint")
     target = Path(store) if store is not None else hints_path()
     signature = rom_probe_identity(probes)
     entry = dict(executable=executable, backend=backend,
                  rom_signature=signature, base=base, endian=endian)
+    if mapping_size is not None:
+        entry.update(mapping_size=mapping_size, mapping_offset=mapping_offset)
     rows = [e for e in _rows(target) if
             (e["executable"], e["backend"], e["rom_signature"]) !=
             (executable, backend, signature)]
