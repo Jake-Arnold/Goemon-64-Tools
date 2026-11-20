@@ -1,0 +1,28 @@
+name: Temporary decomp canonical source export 20261120
+on:
+  push:
+    branches: [decomp/session-source-export-20261120]
+permissions:
+  contents: read
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Archive tracked source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git archive --format=tar HEAD | gzip -9 > "$RUNNER_TEMP/goemon-decomp-1523-source.tar.gz"
+          sha256sum "$RUNNER_TEMP/goemon-decomp-1523-source.tar.gz" | sed "s#${{ runner.temp }}/##" > "$RUNNER_TEMP/SHA256SUMS"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: goemon-canonical-decomp-1523-source-20261120
+          path: |
+            ${{ runner.temp }}/goemon-decomp-1523-source.tar.gz
+            ${{ runner.temp }}/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 1
