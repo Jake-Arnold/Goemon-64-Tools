@@ -1,0 +1,47 @@
+name: Temporary Goemon archived22 source import and full ROM-free CI
+on:
+  push:
+    branches: [decomp/archive22-1523-20261120]
+permissions:
+  contents: write
+jobs:
+  import-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Import pinned non-binary promotion records
+        shell: bash
+        run: |
+          set -euo pipefail
+          git cat-file blob 16cd5c7c6bfc1a9be2e3271e0abe1456e9eb0958 > "$RUNNER_TEMP/source.tar.gz"
+          printf '%s  %s\n' '9fe18ecbb9289ffe06fd0242cb05d08a724c1918e9deef08e9f81b6a9d02057c' "$RUNNER_TEMP/source.tar.gz" | sha256sum --check -
+          python3 - "$RUNNER_TEMP/source.tar.gz" <<'PY'
+          import pathlib,sys,tarfile
+          with tarfile.open(sys.argv[1], 'r:gz') as tar:
+              members=tar.getmembers()
+              assert len(members)==162,len(members)
+              for m in members:
+                  p=pathlib.PurePosixPath(m.name)
+                  assert m.isfile() and not p.is_absolute() and '..' not in p.parts,m.name
+                  assert p.parts[0] in {'decomp','tests'} or m.name=='PROGRESS.md',m.name
+                  assert p.suffix in {'.c','.py','.md','.json'},m.name
+              tar.extractall(path='.',filter='data')
+          PY
+      - name: Full ROM-free decomp CI with actual C sanitizer tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m decomp.local_ci
+      - name: Publish exact verified original-address sources and append-only evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Goemon Native C Verified Import"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -- PROGRESS.md decomp tests
+          git diff --cached --quiet && { echo "No actual source modifications"; exit 1; }
+          git commit -m "feat(decomp): promote 22 archived C functions to 1523 exact USA"
+          git push origin HEAD:refs/heads/decomp/archive22-1523-20261120
