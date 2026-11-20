@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;typedef double f64;
+extern s32 func_801D5B70_600F50();extern void func_80034ED4_35AD4();void func_80205380_630760(s32 arg0,s32 arg1){if (func_801D5B70_600F50(arg0)) func_80034ED4_35AD4();}

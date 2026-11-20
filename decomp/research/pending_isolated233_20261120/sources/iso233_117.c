@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+extern s32 D_8015C5F4;extern u8 D_801C7743;extern s32 D_801C7750_1C8350;void func_80222048_5DD518(void){s32 x=D_8015C5F4;s32 y=D_801C7743;if(x<y){D_801C7750_1C8350=0;}else if(x==y){D_801C7750_1C8350=1;}else{D_801C7750_1C8350=2;}}

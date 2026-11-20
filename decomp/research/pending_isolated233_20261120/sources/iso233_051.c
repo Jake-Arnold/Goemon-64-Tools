@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;
+extern u32 osSetIntMask(u32);void alSynAddPlayer(u32*arg0,u32*arg1){u32 old=osSetIntMask(1);((u32*)arg1)[4]=((u32*)arg0)[8];((u32*)arg1)[0]=((u32*)arg0)[0];((u32*)arg0)[0]=(u32)arg1;osSetIntMask(old);}

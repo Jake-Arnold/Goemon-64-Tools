@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 import re
 
-QUEUE_PATH = Path(__file__).parent / 'data/promotion_candidates_20261119.json'
+QUEUE_PATH = Path(__file__).parent / 'data/promotion_candidates_20261120_post233.json'
 ROM_SHA1 = '6ea0ed71032ce08fc2745f412d84936382197494'
 SYM = re.compile(r'^func_([0-9A-Fa-f]{8})_([0-9A-Fa-f]+)$')
 HEX64 = re.compile(r'^[0-9a-f]{64}$')
@@ -31,7 +31,7 @@ def validate(queue: dict, root: Path, *, strict_sources=False, rom: bytes | None
     if queue.get('format') != 'goemon-promotion-review-queue-v1':
         raise ReviewError('unknown review queue format')
     base = queue.get('production_accepted_baseline', {})
-    if base != {'usa_functions': 1723, 'usa_instruction_bytes': 69344,
+    if base != {'usa_functions': 1956, 'usa_instruction_bytes': 83940,
                 'japan_0_functions': 39, 'japan_0_instruction_bytes': 2092}:
         raise ReviewError('stale or unrecognised accepted production checkpoint')
     inv = json.loads((root / 'decomp/results/inventory.json').read_text())

@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+extern u8 D_801CA258_1CAE58;extern s32 osSendMesg();void __osSiRelAccess(void){osSendMesg(&D_801CA258_1CAE58,0,0);}

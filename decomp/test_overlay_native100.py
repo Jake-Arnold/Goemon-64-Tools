@@ -13,6 +13,8 @@ class Native100ExactC(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest=load_manifest(ROOT/'manifest.json')
+        # Retain the frozen 1623 -> 1723 proof projection.
+        cls.manifest.pop('overlay_isolated233_stage',None)
         cls.a=stage49.load_fixture()
         cls.b=stage51.load_fixture()
 

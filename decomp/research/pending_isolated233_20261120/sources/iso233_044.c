@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+extern u32 D_8007A230_7AE30;extern void alSynDelete();void alClose(void){if(D_8007A230_7AE30!=0){alSynDelete();D_8007A230_7AE30=0;}}

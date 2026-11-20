@@ -407,6 +407,16 @@ def native51_stage(manifest):
     return native.load_fixture()
 
 
+def isolated233_stage(manifest):
+    stage = manifest.get('overlay_isolated233_stage')
+    if stage is None:
+        return None
+    from . import overlay_isolated233 as isolated
+    if stage != {'format': isolated.FORMAT}:
+        raise ValueError('Unreviewed 233-C native production stage contract')
+    return isolated.load_fixture()
+
+
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
     functions = main_claimed_functions(manifest)
@@ -493,6 +503,11 @@ def claimed_functions(manifest):
             functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
                               'vma':f['vma'],'size':f['size']}
                              for f in mod.functions(fixture))
+    fixture = isolated233_stage(manifest)
+    if fixture:
+        functions.extend({'name': f['name'], 'rom_offset': f['rom_offset'],
+                          'vma': f['vma'], 'size': f['size']}
+                         for f in fixture['functions'])
     return functions
 
 
@@ -1313,6 +1328,10 @@ def prepare_file12_stage_objects(candidate_checkout, stage):
 def load_manifest(path):
     manifest=json.loads(Path(path).read_text(encoding='utf-8'))
     if manifest.get('format')!='goemon-matching-decomp-v1':raise ValueError('Unsupported manifest format')
+    # Historical stages validate their frozen G2 claim counts against the
+    # precise old manifest. Validate the additive 233-C stage separately
+    # against every earlier accepted claim after all legacy guards pass.
+    isolated_stage_value = manifest.pop('overlay_isolated233_stage', None)
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):
         if not re.fullmatch('[0-9a-f]{'+str(length)+'}',manifest.get(key,'')):raise ValueError('Invalid '+key)
     seen=set();assembly_seen=set();ranges=[]
@@ -1413,7 +1432,7 @@ def load_manifest(path):
     file11_mode = file11_stage_mode(manifest)
     if file11_mode is not None:
         if file11_mode in (143,144,152,179,183,184,187,269):
-            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage')})
+            file11_adapter(file11_mode).reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage','overlay_isolated233_stage')})
             candidates = [(f['name'], f['rom_offset'], f['size'])
                           for f in file11_adapter(file11_mode).entries()]
         else:
@@ -1530,7 +1549,7 @@ def load_manifest(path):
             raise ValueError('VM table layout requires pinned assignment handler')
     wide_fixture=wide132_stage(manifest)
     if wide_fixture:
-        existing=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage')})
+        existing=claimed_functions({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage','overlay_isolated233_stage')})
         existing_names={row['name'] for row in existing}
         existing_bounds=[(row['rom_offset'],row['rom_offset']+row['size']) for row in existing]
         for row in wide_fixture['functions']:
@@ -1610,6 +1629,21 @@ def load_manifest(path):
             off,end=f['rom_offset'],f['rom_offset']+f['size']
             if f['name'] in names or any(off<e and start<end for start,e in spans):
                 raise ValueError('New native51 overlaps accepted C '+f['name'])
+    if isolated_stage_value is not None:
+        manifest['overlay_isolated233_stage'] = isolated_stage_value
+    isolated_fixture = isolated233_stage(manifest)
+    if isolated_fixture:
+        # Enforce unique original-address ownership against every previously
+        # accepted C function. A duplicate name, overlapping byte span or
+        # original offset is rejected before staging any source.
+        previous = claimed_functions({k:v for k,v in manifest.items()
+                                      if k != 'overlay_isolated233_stage'})
+        names = {f['name'] for f in previous}
+        spans = sorted((f['rom_offset'], f['rom_offset'] + f['size']) for f in previous)
+        for f in isolated_fixture['functions']:
+            start, end = f['rom_offset'], f['rom_offset']+f['size']
+            if f['name'] in names or any(start < hi and lo < end for lo,hi in spans):
+                raise ValueError('Isolated233 duplicates accepted original C: '+f['name'])
     return manifest
 
 
@@ -1626,7 +1660,7 @@ def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
             raise ValueError('file_11 staging requires authenticated USA decompressed ROM')
         if file11_mode in (143,144,152,179,183,184,187,269):
             adapter=file11_adapter(file11_mode)
-            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage')},reference_rom)
+            plan=adapter.reviewed_plan({k:v for k,v in manifest.items() if k not in ('overlay_wide132_stage','overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage','overlay_isolated233_stage')},reference_rom)
             file11_inline=adapter.source_payloads(checkout,plan)
             text=adapter.stage_splat(text,plan)
         else:
@@ -2667,7 +2701,7 @@ def run_build(args,manifest,report):
     logged('candidate-build',['make','-j'+str(args.jobs),'UV='+uv],candidate)
     symbols=parse_symbols(capture(['mips-linux-gnu-nm','-n','build/usa/mnsg.elf'],candidate))
     result=compare_images(expected,(candidate/'build/usa/mnsg.z64').read_bytes(),
-                          {k:v for k,v in manifest.items() if k not in ('overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage')},symbols)
+                          {k:v for k,v in manifest.items() if k not in ('overlay_wide109_stage','overlay_resource140_stage','overlay_graphics5_stage','overlay_file18_53_stage','overlay_callbacks10_stage','overlay_main19_stage','overlay_tiny9_stage','overlay_micro2_stage','overlay_micro15_stage','overlay_micro20_stage','overlay_menu2_stage','overlay_statecopy1_stage','overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage','overlay_isolated233_stage')},symbols)
     if manifest.get('vm_assignment_table_layout'):
         image=(candidate/'build/usa/mnsg.z64').read_bytes()
         report['assignment_table']=dict(rom_start='0x7DC2C',size=60,
@@ -3190,6 +3224,44 @@ def run_build(args,manifest,report):
                 result['matched_functions']+=1
                 result['matched_function_bytes']+=f['size']
         report['overlay_native51_stage']=proof
+    isolated_fixture = isolated233_stage(manifest)
+    if isolated_fixture:
+        from . import overlay_isolated233 as isolated
+        if not result['full_rom_match'] or result['matched_functions'] != 1723:
+            raise ValueError('Authenticated 1723 prior matching C required for isolated233')
+        src = source_dir/'research/pending_isolated233_20261120/sources'
+        isolated.validate_sources(expected, isolated_fixture, src)
+        accepted_elf = work/'accepted1723.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf', accepted_elf)
+        owners = isolated.find_owners(candidate, isolated_fixture)
+        logged('candidate-isolated233-original-parents',
+               ['make','-j'+str(args.jobs),'UV='+uv,*isolated.parent_targets(owners)],candidate)
+        plan = isolated.stage_linker(candidate,expected,isolated_fixture,owners,src)
+        report['overlay_isolated233_source_plan'] = {
+            'functions':len(plan['functions']),
+            'instruction_bytes':sum(f['size'] for f in plan['functions']),
+            'embedded_C_functions':len(isolated.EMBEDDED),
+            'retained_ASM_fragments':len(plan['assembly'])}
+        logged('candidate-isolated233-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*isolated.object_targets(plan)],candidate)
+        report['overlay_isolated233_object_layout'] = isolated.pack_objects(candidate,expected,plan)
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-isolated233-combined-final-build',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof = isolated.verify_link(baseline,accepted_elf,candidate,expected,plan)
+        for f in isolated_fixture['functions']:
+            name=f['source']+'.c'
+            key='research/pending_isolated233_20261120/sources/'+name
+            report['sources_sha256_lf'][key] = f['source_sha256']
+            result['functions'].append({'name':f['name'],'size':f['size'],
+                'guest_address':f'0x{f["vma"]:08X}', 'rom_offset':f'0x{f["rom_offset"]:X}',
+                'matched':True,'expected_sha256':f['original_code_sha256'],
+                'candidate_sha256':f['original_code_sha256']})
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=f['size']
+        report['overlay_isolated233_stage']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

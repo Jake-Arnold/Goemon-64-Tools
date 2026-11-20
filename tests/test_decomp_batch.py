@@ -216,8 +216,11 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
         # Live canonical original-address matching C, including the 100 newest verified C.
-        self.assertEqual(current['comparison']['matched_functions'],1723)
-        self.assertEqual(current['comparison']['matched_function_bytes'],69344)
+        self.assertEqual(current['comparison']['matched_functions'],1956)
+        self.assertEqual(current['comparison']['matched_function_bytes'],83940)
+        preserved1723=json.loads((ROOT/'results/combined_1723_pre_isolated233_20261120.json').read_text())
+        self.assertEqual((preserved1723['comparison']['matched_functions'],
+                          preserved1723['comparison']['matched_function_bytes']), (1723,69344))
         prior1225=json.loads((ROOT/'results/combined_1225_before_227_expansion_20261118.json').read_text())
         self.assertEqual((prior1225['comparison']['matched_functions'],prior1225['comparison']['matched_function_bytes']),(1225,52028))
         accepted1119=json.loads((ROOT/'results/combined_1119_before_wide109_20261118.json').read_text())

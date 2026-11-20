@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+extern void func_80037C20_38820();void func_80037B54_38754(s32 arg0){func_80037C20_38820(arg0,3,0);}

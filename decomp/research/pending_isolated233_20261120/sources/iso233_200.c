@@ -1,0 +1,2 @@
+typedef int s32; extern s32 D_802171C8_676178[];extern s32 D_802171D0_676180[];
+void func_8021671C_6756CC(s32 *arg0){if(arg0){s32 i=0;do{arg0[i]=D_802171C8_676178[i];i++;}while(D_802171D0_676180 != &D_802171C8_676178[i]);}}

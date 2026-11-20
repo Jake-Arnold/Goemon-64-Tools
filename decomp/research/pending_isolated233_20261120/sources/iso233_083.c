@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+void func_801E7398_5A32A8(u8 *arg0,u8 arg1){if(arg0[0xD0]<arg1)arg0[0xD0]=arg1;}

@@ -33,7 +33,7 @@ class File11179StageTests(unittest.TestCase):
         cls.manifest.pop('overlay_micro20_stage', None)
         cls.manifest.pop('overlay_menu2_stage', None)
         cls.manifest.pop('overlay_statecopy1_stage', None)
-        cls.manifest.pop('overlay_archive22_stage', None); cls.manifest.pop('overlay_archive33_stage', None); cls.manifest.pop('overlay_archive61_stage', None); cls.manifest.pop('overlay_checkpoint500_stage', None); cls.manifest.pop('overlay_rediscovery5_stage', None); cls.manifest.pop('overlay_native49_stage', None); cls.manifest.pop('overlay_native51_stage', None)
+        cls.manifest.pop('overlay_archive22_stage', None); cls.manifest.pop('overlay_archive33_stage', None); cls.manifest.pop('overlay_archive61_stage', None); cls.manifest.pop('overlay_checkpoint500_stage', None); cls.manifest.pop('overlay_rediscovery5_stage', None); cls.manifest.pop('overlay_native49_stage', None); cls.manifest.pop('overlay_native51_stage', None); cls.manifest.pop('overlay_isolated233_stage', None)
         # Explicit historical 342-C projection excludes the newer file12 block.
         cls.manifest['overlay_file12_stages']=[x for x in cls.manifest['overlay_file12_stages']
             if x['format']!='goemon-file12-registration-374-v1'

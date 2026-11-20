@@ -17,6 +17,8 @@ def load_manifest(*args, **kwargs):
     manifest = _historical_load_manifest(*args, **kwargs)
     manifest.pop('overlay_native49_stage', None)
     manifest.pop('overlay_native51_stage', None)
+    # The 233-C batch is newer than this frozen historical checkpoint.
+    manifest.pop('overlay_isolated233_stage', None)
     return manifest
 
 
