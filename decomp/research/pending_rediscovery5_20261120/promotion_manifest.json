@@ -1,0 +1,92 @@
+{
+  "format": "goemon-usa-rediscovery5-after-1618-v1",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_canonical_count": 1618,
+  "units": [
+    {
+      "name": "rediscovery5_000",
+      "section": "main",
+      "rom_offset": 74208,
+      "size": 24,
+      "source_sha256": "2600c7db8cd6f5089de3ea41f0412bd38059e4336921d367dcc555ae5cf51a14",
+      "original_asm_parent": "11760_wm19_00",
+      "functions": [
+        {
+          "name": "func_800115E0_121E0",
+          "rom_offset": 74208,
+          "vma": 2147554784,
+          "size": 24,
+          "original_code_sha256": "8cba4a6fdc972523fa76f8da3f25eee8f9d0adcea4567a696e57f978f24907fc"
+        }
+      ]
+    },
+    {
+      "name": "rediscovery5_001",
+      "section": "main",
+      "rom_offset": 74232,
+      "size": 24,
+      "source_sha256": "925ad072ca55e9c726d438a17ad2b6562c5ef510ec9ba002339c55f23eb32ae4",
+      "original_asm_parent": "11760_wm19_00",
+      "functions": [
+        {
+          "name": "func_800115F8_121F8",
+          "rom_offset": 74232,
+          "vma": 2147554808,
+          "size": 24,
+          "original_code_sha256": "d2fe8753a87dd53f78f26091cb7579f7f9f86bef245cc599be137796118a9abc"
+        }
+      ]
+    },
+    {
+      "name": "rediscovery5_002",
+      "section": "file_14",
+      "rom_offset": 6614200,
+      "size": 28,
+      "source_sha256": "a1ea7466bc055ec1a9d80c449b5633d6dda8ef1dca4543df9a2a407804fd2b89",
+      "original_asm_parent": "63A2B0_cross47_08_n87_02_wa61_01",
+      "functions": [
+        {
+          "name": "func_801DFE68_64ECB8",
+          "rom_offset": 6614200,
+          "vma": 2149449320,
+          "size": 28,
+          "original_code_sha256": "52e726acebc8a887accf1167330b8734b11eb39ed90de4cfdd364d579b77fbef"
+        }
+      ]
+    },
+    {
+      "name": "rediscovery5_003",
+      "section": "file_14",
+      "rom_offset": 6616464,
+      "size": 28,
+      "source_sha256": "da0328f979127e5f62d621d937da1466d72468e05025f7c1a06e01146f6e1f37",
+      "original_asm_parent": "63A2B0_cross47_08_n87_02_wa61_02",
+      "functions": [
+        {
+          "name": "func_801E0740_64F590",
+          "rom_offset": 6616464,
+          "vma": 2149451584,
+          "size": 28,
+          "original_code_sha256": "52e726acebc8a887accf1167330b8734b11eb39ed90de4cfdd364d579b77fbef"
+        }
+      ]
+    },
+    {
+      "name": "rediscovery5_004",
+      "section": "file_14",
+      "rom_offset": 6619148,
+      "size": 28,
+      "source_sha256": "b419e939cffd558e6e36c5d9ed104a228165a5c383b4cf2218cc8f0c49af4346",
+      "original_asm_parent": "63A2B0_cross47_08_n87_02_wa61_03",
+      "functions": [
+        {
+          "name": "func_801E11BC_65000C",
+          "rom_offset": 6619148,
+          "vma": 2149454268,
+          "size": 28,
+          "original_code_sha256": "52e726acebc8a887accf1167330b8734b11eb39ed90de4cfdd364d579b77fbef"
+        }
+      ]
+    }
+  ]
+}

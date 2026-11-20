@@ -215,6 +215,26 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-o',str(binary)]),
             ('Checkpoint500 original-source 1000-case host sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        # All five re-discovered, native-matching C implementations execute as
+        # authentic compiled source, not host test doubles.
+        rediscovery = ROOT / 'decomp/research/pending_rediscovery5_20261120'
+        sources = sorted((rediscovery / 'sources').glob('rediscovery5_*.c'))
+        if len(sources) != 5:
+            raise ValueError('Missing five reviewed rediscovery5 original C units')
+        compiler = shlex.split(os.environ.get('CC', 'cc'))
+        binary = host_binary.with_name('rediscovery5-original-host')
+        steps.extend([
+            ('Rediscovery5 authentic original-C sanitizer build', compiler + [
+                '-std=gnu11', '-O1', '-g', '-Wall', '-Wextra', '-Werror',
+                '-Wno-unused-parameter', '-Wno-unused-function',
+                '-fsanitize=address,undefined', '-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str((rediscovery / 'test_actual_rediscovery5.c').relative_to(ROOT)),
+                *[str(src.relative_to(ROOT)) for src in sources],
+                '-o', str(binary)]),
+            ('Rediscovery5 original-C 5000-case sanitizer test', [str(binary)]),
+        ])
     return steps
 
 

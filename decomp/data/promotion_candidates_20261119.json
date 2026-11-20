@@ -3,13 +3,13 @@
   "created_utc_date": "2026-11-19",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 1618,
-    "usa_instruction_bytes": 62372,
+    "usa_functions": 1623,
+    "usa_instruction_bytes": 62504,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "USA 1617 original-address matching C. All 116 archived isolated native-exact sources have passed full combined G2 across waves 22+33+61; the additional historical provisional sweep without preserved sources remains RESEARCH_ONLY. One separate file25 relocated function remains blocked. Japan 39 is manifest-core only (432 regional accepted).",
+  "purpose": "USA 1,623 original-address matching C, including five independent newly rediscovered 24/24/28/28/28-byte functions proven by fresh G2. Original archived 116 fully accepted; historical 341 nominal remainder has no preserved source identities, remains RESEARCH_ONLY. File25 relocation-blocked candidate remains unpromoted. Japan regional 432 C unchanged (core manifest records 39).",
   "ready_for_combined_g2": {
     "functions": 0,
     "bytes": 0,
@@ -49,5 +49,6 @@
     "strict decomp.inventory",
     "full decomp.local_ci"
   ],
-  "no_promotion_claimed": true
+  "no_promotion_claimed": true,
+  "recent_rediscovery_20261120": "decomp/results/usa_rediscovery5_1623_promotion_20261120.json"
 }
