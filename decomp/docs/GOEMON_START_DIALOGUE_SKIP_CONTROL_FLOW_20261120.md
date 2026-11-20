@@ -94,3 +94,8 @@ The program is now sufficiently understood in original assembly that matching C 
 - **PASS:** Japanese and USA expanded ROM 32 MiB hash, 18 exact static instruction assertions per region, JAL targets for VM-busy query, pause-phase handler, reset wrapper and reset manager, and branch target checks; `python -m py_compile`.
 - **NOT RUN:** successful gameplay skip, emulator event/watchpoint capture, Controller Pak reload, complete native codegen/matching-C integration, original full-ROM build, relocation/inventory gates, `decomp.local_ci`.
 - **No conclusion** that all dialogue/item grant contexts are vulnerable, nor that VM cursor must always clear whenever Start is pressed. This report repairs an overstrong previous Start-handler assumption.
+
+
+## Isolated original-address matching-C confirmation (20 November 2026)
+
+[Complete original IDO research and deduplicated status](GOEMON_START_VM_NATIVE_MATCH_20261120.md): JP gameplay Start `func_8001F610_20210` 252/252 bytes and busy `func_8003EE44_3FA44` 36/36 bytes; USA gameplay Start `func_8001F940_20540` 252/252 bytes; USA VM-busy function already accepted, 36/36 bytes reverified. These native-exact C implementations confirm the source-level Start gating described above, with no real gameplay frame trace. Three new isolated sources are **not** promoted until the combined G2 gates pass.
