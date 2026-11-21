@@ -6,15 +6,15 @@ This document explains the stored USA ELF inventory and the later 21 November 20
 
 | Measure | Stored USA inventory | Published USA G2 | Latest Japan-0 published G2 |
 | --- | ---: | ---: | ---: |
-| Newly matching original-address C | **1,956** | **1,958** | **2,123** |
-| Original instruction bytes from reconstructed C | 83,940 | **84,292** | **112,336** |
-| Remaining original assembly entries | 5,407 | **5,405** | **5,253** |
+| Newly matching original-address C | **1,956** | **1,965** | **2,123** |
+| Original instruction bytes from reconstructed C | 83,940 | **84,648** | **112,336** |
+| Remaining original assembly entries | 5,407 | **5,398** | **5,253** |
 | Original positive-sized ELF function entries | 7,376 | 7,376 | 7,376 |
 | Expanded ROM bytes matched | 33,554,432 | 33,554,432 | 33,554,432 |
 
 **Stored canonical USA inventory:** [results/inventory.json](results/inventory.json) and [results/combined.json](results/combined.json), from the 20 November 1,956-function batch. The inventory also records **13 pre-existing upstream unmarked C functions**, meaning `1,956 + 13 = 1,969` total unmarked positive-size ELF entries and `1,969 + 5,407 = 7,376`.
 
-**Later USA G2:** [five-function regional ledger](results/glitch_start5_2121jp_1958usa_g2_20261121.json) accepts **two new USA original-address C functions** (100 and 252 bytes), giving `1,958 + 13 = 1,971` unmarked entries and `1,971 + 5,405 = 7,376`. The five-function report also accepts **three additional Japan-0** functions. Its local proof was subsequently published and remotely re-verified, as recorded in [PROGRESS.md](../PROGRESS.md). A later [Japan script-VM two-function original-ROM G2 report](results/japan_0_2123_vm_g2_20261121.json) adds **two more** functions (92 bytes), resulting in **2,123** matching C and **5,253** ASM. **This last increment is `PASSED_G2`, remotely published and re-verified**; do not conflate its status with the previous 2,121 published stage. The old stored `inventory.json` is **not manually rewritten**, because it represents an earlier authentic native build.
+**Later USA G2:** [five-function regional ledger](results/glitch_start5_2121jp_1958usa_g2_20261121.json) accepts **two new USA original-address C functions** (100 and 252 bytes), giving `1,958 + 13 = 1,971` unmarked entries at that historical checkpoint; the subsequently published scheduler/insertion batch accepts **seven more unique functions**, producing **1,965 new original C**, **1,978 total unmarked C** (including 13 upstream), and **5,398 remaining ASM**, so `1,978 + 5,398 = 7,376`. The scheduler native-G2 ledgers are [1962](results/usa_scheduler4_1962_g2_20261121.json), [1963](results/usa_scheduler5_1963_g2_20261121.json) and [1965](results/usa_scheduler6_1965_g2_20261121.json); the final report records `PASSED_G2_LOCAL` as the native replay status while GitHub source publication is established separately. The five-function report also accepts **three additional Japan-0** functions. Its local proof was subsequently published and remotely re-verified, as recorded in [PROGRESS.md](../PROGRESS.md). A later [Japan script-VM two-function original-ROM G2 report](results/japan_0_2123_vm_g2_20261121.json) adds **two more** functions (92 bytes), resulting in **2,123** matching C and **5,253** ASM. **This last increment is `PASSED_G2`, remotely published and re-verified**; do not conflate its status with the previous 2,121 published stage. The old stored `inventory.json` is **not manually rewritten**, because it represents an earlier authentic native build.
 
 **Region SHA-1:** expanded original USA `6ea0ed71032ce08fc2745f412d84936382197494`; expanded original Japan-0 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`. The pinned upstream revision is `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.
 

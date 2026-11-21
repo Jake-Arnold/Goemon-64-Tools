@@ -1,0 +1,20 @@
+{
+  "format": "goemon-usa-scheduler5-after-1962-v1",
+  "region": "usa",
+  "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "accepted_prior_count": 1962,
+  "accepted_prior_bytes": 84484,
+  "original_owner": "asm/usa/35280_sched4_00.s",
+  "functions": [
+    {
+      "name": "func_80034B24_35724",
+      "rom_offset": 218916,
+      "vma": 2147699492,
+      "size": 52,
+      "source": "scheduler_insert52.c",
+      "source_sha256": "3ecc5af1590250bee6eae4eb0743dfc6f823884308f7f36bc1092e19a7486cee",
+      "original_code_sha256": "0eab8ac0d64b399e5bbb84096877a33a3347d5f7542bf22c8828f60e2319a1a3"
+    }
+  ]
+}

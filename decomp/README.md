@@ -4,18 +4,18 @@
 
 ## Latest verified results — 21 November 2026 (live update)
 
-The latest authentic full original-ROM G2 proofs record the following region-specific totals. **USA 1,958 and Japan 2,123 are remotely published and verified at full G2.**
+The latest authentic full original-ROM G2 proofs record the following region-specific totals. **USA 1,965 and Japan 2,123 are present in the published decomp source.** USA 1,965 was independently verified by full original-ROM local G2, with source publication separately confirmed; Japan 2,123 is recorded as `PASSED_G2` and remotely re-verified.
 
 | Region | Newly matching C functions | Original instruction bytes recovered | ASM functions remaining |
 | --- | ---: | ---: | ---: |
-| USA | **1,958** | **84,292** | **5,405** |
+| USA | **1,965** | **84,648** | **5,398** |
 | Japan rev-0 (published G2) | **2,123** | **112,336** | **5,253** |
 
 Each region has **7,376 original positive-sized ELF function entries**. These figures are region-specific; do not add USA and Japan counts or count original upstream-C functions as new reconstructions.
 
-The prior five-function batch is [documented here](docs/GOEMON_START5_G2_PROMOTION_20261121.md) and remotely re-verified in [PROGRESS.md](../PROGRESS.md). The latest two Japan-only VM functions are [documented separately](docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md) as **published and remotely verified G2**. Both rebuilt expanded 32 MiB ROMs match **33,554,432 / 33,554,432 original bytes**, preserving original ELF function identities and all semantic relocations. The native G2 tier proves code/layout equivalence, **not** emulator gameplay or Bomb Text Skip success.
+The prior five-function batch is [documented here](docs/GOEMON_START5_G2_PROMOTION_20261121.md) and remotely re-verified in [PROGRESS.md](../PROGRESS.md). Seven subsequent USA scheduler/insertion wrapper functions (192 + 164 original bytes) were independently full-G2 verified and published; see [scheduler lifecycle](docs/USA_TASK_SCHEDULER_LIFECYCLE_20261121.md), [four-wrapper proof](results/usa_scheduler4_1962_g2_20261121.json), [one-wrapper proof](results/usa_scheduler5_1963_g2_20261121.json) and [two-wrapper proof](results/usa_scheduler6_1965_g2_20261121.json). The latest two Japan-only VM functions are [documented separately](docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md) as **published and remotely verified G2**. Both rebuilt expanded 32 MiB ROMs match **33,554,432 / 33,554,432 original bytes**, preserving original ELF function identities and all semantic relocations. The native G2 tier proves code/layout equivalence, **not** emulator gameplay or Bomb Text Skip success.
 
-**Snapshot caveat:** The checked-in canonical USA [combined proof](results/combined.json) and [inventory](results/inventory.json) still represent the earlier **1,956-function** stage. The later **1,958-function** published USA G2 acceptance is separately recorded in [the five-function ledger](results/glitch_start5_2121jp_1958usa_g2_20261121.json); the additional **2,123 Japan published G2** proof is [here](results/japan_0_2123_vm_g2_20261121.json). Do not edit a proof JSON or inventory count without a fresh authentic rebuild. See [INVENTORY.md](INVENTORY.md) for the arithmetic and provenance boundaries.
+**Snapshot caveat:** The checked-in canonical USA [combined proof](results/combined.json) and [inventory](results/inventory.json) still represent the earlier **1,956-function** stage. The later **1,958-function** USA G2 acceptance is [here](results/glitch_start5_2121jp_1958usa_g2_20261121.json); subsequent scheduler G2 ledgers reach **1,965** with preserved ROM/ELF/relocation identity. The **2,123 Japan published G2** proof is [here](results/japan_0_2123_vm_g2_20261121.json). Do not edit a proof JSON or inventory count without a fresh authentic rebuild. See [INVENTORY.md](INVENTORY.md) for the arithmetic and provenance boundaries.
 
 ## How work is selected
 

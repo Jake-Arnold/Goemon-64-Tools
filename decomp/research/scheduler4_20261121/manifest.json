@@ -1,0 +1,45 @@
+{
+  "format": "goemon-usa-scheduler4-after-1958-v1",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "accepted_prior_count": 1958,
+  "accepted_prior_instruction_bytes": 84292,
+  "owner": "asm/usa/35280_wa61_01.s",
+  "functions": [
+    {
+      "name": "func_80034DD8_359D8",
+      "rom_offset": 219608,
+      "size": 48,
+      "source": "goemon_sched4_00.c",
+      "source_sha256": "1e81faf11b58fbf5e301b69568823136de51a32453ab36fc716a29d94746c022",
+      "original_code_sha256": "186808855c886da1da5f073f5111133c9a0289cc563a27532841afa6f0203538",
+      "vma": 2147700184
+    },
+    {
+      "name": "func_80034E08_35A08",
+      "rom_offset": 219656,
+      "size": 48,
+      "source": "goemon_sched4_01.c",
+      "source_sha256": "e99bf0bf516e41928d748346667cbe0bbddeb449d6671fffbf38d56778e486c7",
+      "original_code_sha256": "427378c575884def46996eab3f6df400b47f00e3f71a44d0c71f4144efecc5e7",
+      "vma": 2147700232
+    },
+    {
+      "name": "func_80034E38_35A38",
+      "rom_offset": 219704,
+      "size": 48,
+      "source": "goemon_sched4_02.c",
+      "source_sha256": "edacad22f2ae776021563e80a3cc58e6bddc1d79db15cceb4b70626d008394f8",
+      "original_code_sha256": "b54ca707baaf606b649c230a8e905bb28a6e00bfea2620cc0ab176b0ee32b030",
+      "vma": 2147700280
+    },
+    {
+      "name": "func_80034E68_35A68",
+      "rom_offset": 219752,
+      "size": 48,
+      "source": "goemon_sched4_03.c",
+      "source_sha256": "2a75e16c0d39b4d851cd58239a5636999cfa4ced86a955131490e65900e678b3",
+      "original_code_sha256": "a997f575262c451220dbb636fe0e22b9080ce0db062a96b03cae833b173168f9",
+      "vma": 2147700328
+    }
+  ]
+}
