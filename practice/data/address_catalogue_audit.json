@@ -3,13 +3,16 @@
     "cheat_format": 1,
     "code_vma": 6,
     "dynamic_field": 9,
+    "engine_input": 2,
+    "engine_state": 4,
     "external_cheat_lead": 26,
     "fixed_global": 73,
     "inventory": 72,
     "overlay_patch": 6,
     "research_reference": 60,
+    "saved_data": 50,
     "saved_event_bit": 284,
-    "script_vm": 12
+    "script_vm": 16
   },
   "by_confidence": {
     "candidate": 153,
@@ -21,22 +24,22 @@
     "mixed_evidence": 6,
     "observed": 5,
     "reference_only": 60,
-    "research_observed": 127,
+    "research_observed": 187,
     "usa_source": 21,
     "user-confirmed": 37,
     "user_observed": 33
   },
   "by_region": {
-    "japan": 222,
+    "japan": 254,
     "unknown": 60,
-    "usa": 267
+    "usa": 295
   },
   "disputed": 2,
   "experimental_japan_flags": 142,
   "format": "goemon-address-catalogue-audit-v1",
   "live_readable": 442,
-  "research_only": 107,
-  "total_records": 549,
-  "unique_region_address": 314,
+  "research_only": 167,
+  "total_records": 609,
+  "unique_region_address": 371,
   "unknown_width": 107
 }
