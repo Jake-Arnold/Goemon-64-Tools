@@ -49,7 +49,7 @@ def main(root: Path, out: Path):
     inventory=read_json(d/'results/inventory.json')
     registry=read_json(d/'data/candidate_registry.json')
     jman=read_json(d/'regions/japan_0.json')
-    tasks=read_json(d/'plans/TASKS_100.json')['tasks']
+    tasks=read_json(d/'history/TASKS_100.json')['tasks']
     branches=read_json(d/'data/branch_snapshot_20261117.json')
     usa={x['name'] for x in combined['comparison']['functions'] if x['matched']}
     japan={f['name'] for u in jman['units'] for f in u['functions']}
