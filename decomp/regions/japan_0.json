@@ -1090,5 +1090,27 @@
     "gameplay": "NOT_RUN",
     "published_commit": "ea758300aab5de1d344d4025a56314de72022bbc",
     "publication_record": "results/japan_0_2307_retry10_publication_20261121.json"
+  },
+  "expand7_native_promotion": {
+    "format": "goemon-japan-expand7-promotion-v1",
+    "status": "PASSED_G2_LOCAL",
+    "published": false,
+    "original_c_before": 2307,
+    "new_matching_c": 7,
+    "new_original_instruction_bytes": 284,
+    "matching_c_functions": 2314,
+    "matching_c_bytes": 123236,
+    "asm_remaining": 5062,
+    "source_root": "research/jp_expand7_20261121",
+    "manifest": "research/jp_expand7_20261121/manifest.json",
+    "stager": "japan_expand7_promotion.py",
+    "proof": "results/japan_0_2314_expand7_g2_20261121.json",
+    "inventory": "results/japan_0_2314_expand7_inventory_20261121.json",
+    "expanded_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "elf_identities": 7376,
+    "semantic_relocations": 80747,
+    "full_local_ci": "PASS",
+    "gameplay": "NOT_RUN"
   }
 }

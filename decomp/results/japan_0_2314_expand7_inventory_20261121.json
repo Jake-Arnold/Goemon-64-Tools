@@ -1,0 +1,127 @@
+{
+  "format": "goemon-japan-expand7-strict-inventory-v1",
+  "region": "japan_0",
+  "status": "PASSED_G2_LOCAL",
+  "original_before_c": 2307,
+  "new_matching_c": 7,
+  "final_original_c": 2314,
+  "original_before_c_instruction_bytes": 122952,
+  "new_original_instruction_bytes": 284,
+  "final_original_c_instruction_bytes": 123236,
+  "original_before_asm": 5069,
+  "final_original_asm": 5062,
+  "elf_positive_func_identities": 7376,
+  "semantic_original_relocations": 80747,
+  "stage_count": 7,
+  "owner_count": 3,
+  "skipped": [],
+  "sources": {
+    "func_801E7F74_5A3F44": "eb0bfa96c06459c118f1e2cf8996fbf060581b2c8de2400ef4e7c7d77ffa6bc3",
+    "func_801E7F98_5A3F68": "b4d642551a9e671fb15fe935d3dfca95b3d9e38773f2514ff43270763027655f",
+    "func_801E83F0_5A43C0": "593f6e8c48d6150ac71578c24006d5f544b6f92c59b844ef53af5d508fb76c4c",
+    "func_801E8424_5A43F4": "574b3cf84fa81e354d2079ce275a08ca18d5c650378326780f7d802b72b302e5",
+    "func_801E8458_5A4428": "ba25e8dceb14f6b58baa602c621cbd07d60a9302f44c19b09095331ddfdc7b23",
+    "func_8021B434_67A2A4": "5bdc1394f8a8834433773f3c56534d4ef728d57647e5b42c257bc6463404f1e5",
+    "func_8021B450_67A2C0": "f751930d8d9300063b5157f7ee97cbb9ab08d9d715525111d770c9cf9e71a2ad"
+  },
+  "names": [
+    "func_801E7F74_5A3F44",
+    "func_801E7F98_5A3F68",
+    "func_801E83F0_5A43C0",
+    "func_801E8424_5A43F4",
+    "func_801E8458_5A4428",
+    "func_8021B434_67A2A4",
+    "func_8021B450_67A2C0"
+  ],
+  "original_source_relocations": {
+    "func_801E7F74_5A3F44": [
+      {
+        "offset": 12,
+        "type": "R_MIPS_26",
+        "symbol": "func_801E7FBC_5A3F8C"
+      }
+    ],
+    "func_801E7F98_5A3F68": [
+      {
+        "offset": 12,
+        "type": "R_MIPS_26",
+        "symbol": "func_801E7FBC_5A3F8C"
+      }
+    ],
+    "func_801E83F0_5A43C0": [
+      {
+        "offset": 0,
+        "type": "R_MIPS_HI16",
+        "symbol": "D_802101C0_5CC190"
+      },
+      {
+        "offset": 4,
+        "type": "R_MIPS_LO16",
+        "symbol": "D_802101C0_5CC190"
+      },
+      {
+        "offset": 28,
+        "type": "R_MIPS_26",
+        "symbol": "func_801E84E8_5A44B8"
+      }
+    ],
+    "func_801E8424_5A43F4": [
+      {
+        "offset": 0,
+        "type": "R_MIPS_HI16",
+        "symbol": "D_802101C4_5CC194"
+      },
+      {
+        "offset": 4,
+        "type": "R_MIPS_LO16",
+        "symbol": "D_802101C4_5CC194"
+      },
+      {
+        "offset": 28,
+        "type": "R_MIPS_26",
+        "symbol": "func_801E84E8_5A44B8"
+      }
+    ],
+    "func_801E8458_5A4428": [
+      {
+        "offset": 0,
+        "type": "R_MIPS_HI16",
+        "symbol": "D_802101C8_5CC198"
+      },
+      {
+        "offset": 4,
+        "type": "R_MIPS_LO16",
+        "symbol": "D_802101C8_5CC198"
+      },
+      {
+        "offset": 28,
+        "type": "R_MIPS_26",
+        "symbol": "func_801E84E8_5A44B8"
+      }
+    ],
+    "func_8021B434_67A2A4": [
+      {
+        "offset": 12,
+        "type": "R_MIPS_HI16",
+        "symbol": "D_8021BEB6_67AD26"
+      },
+      {
+        "offset": 24,
+        "type": "R_MIPS_LO16",
+        "symbol": "D_8021BEB6_67AD26"
+      }
+    ],
+    "func_8021B450_67A2C0": [
+      {
+        "offset": 12,
+        "type": "R_MIPS_HI16",
+        "symbol": "D_8021BEB7_67AD27"
+      },
+      {
+        "offset": 24,
+        "type": "R_MIPS_LO16",
+        "symbol": "D_8021BEB7_67AD27"
+      }
+    ]
+  }
+}

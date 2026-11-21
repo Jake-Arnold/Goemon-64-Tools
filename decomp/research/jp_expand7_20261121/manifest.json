@@ -1,0 +1,148 @@
+{
+  "format": "goemon-japan-expand7-source-v1",
+  "region": "japan_0",
+  "status": "ISOLATED_NATIVE_EXACT",
+  "count": 7,
+  "baseline_c": 2307,
+  "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "functions": [
+    {
+      "name": "func_801E7F74_5A3F44",
+      "rom_offset": "0x5a3f44",
+      "size": 36,
+      "original_sha256": "e284437600d812acd933a09e3750d4a947cd0c363fffdedb5d2adf719b2e1324",
+      "source_sha256": "eb0bfa96c06459c118f1e2cf8996fbf060581b2c8de2400ef4e7c7d77ffa6bc3",
+      "relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E7FBC_5A3F8C"
+        }
+      ]
+    },
+    {
+      "name": "func_801E7F98_5A3F68",
+      "rom_offset": "0x5a3f68",
+      "size": 36,
+      "original_sha256": "67e2257b5cb5005d39a7e87c09ec60a3feee8d72fb592491410a0bd96b3367b7",
+      "source_sha256": "b4d642551a9e671fb15fe935d3dfca95b3d9e38773f2514ff43270763027655f",
+      "relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E7FBC_5A3F8C"
+        }
+      ]
+    },
+    {
+      "name": "func_801E83F0_5A43C0",
+      "rom_offset": "0x5a43c0",
+      "size": 52,
+      "original_sha256": "923a99203f04acc3c1f86dd92d0d412a1921f9b3733900b975e62741010c16bf",
+      "source_sha256": "593f6e8c48d6150ac71578c24006d5f544b6f92c59b844ef53af5d508fb76c4c",
+      "relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_802101C0_5CC190"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_802101C0_5CC190"
+        },
+        {
+          "offset": 28,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E84E8_5A44B8"
+        }
+      ]
+    },
+    {
+      "name": "func_801E8424_5A43F4",
+      "rom_offset": "0x5a43f4",
+      "size": 52,
+      "original_sha256": "4c20a447ea3e1dc8c835128335f2bdce5c719fc856295aab237eb31653c0d8cd",
+      "source_sha256": "574b3cf84fa81e354d2079ce275a08ca18d5c650378326780f7d802b72b302e5",
+      "relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_802101C4_5CC194"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_802101C4_5CC194"
+        },
+        {
+          "offset": 28,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E84E8_5A44B8"
+        }
+      ]
+    },
+    {
+      "name": "func_801E8458_5A4428",
+      "rom_offset": "0x5a4428",
+      "size": 52,
+      "original_sha256": "60ee84b73b43fdfae43b7077e8af30a39501b30da5f8082fa3d991946b412357",
+      "source_sha256": "ba25e8dceb14f6b58baa602c621cbd07d60a9302f44c19b09095331ddfdc7b23",
+      "relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_802101C8_5CC198"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_802101C8_5CC198"
+        },
+        {
+          "offset": 28,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E84E8_5A44B8"
+        }
+      ]
+    },
+    {
+      "name": "func_8021B434_67A2A4",
+      "rom_offset": "0x67a2a4",
+      "size": 28,
+      "original_sha256": "99cf05744d7cbda7e321718951368d24d356df6cfd3823df1b9e19edb739d606",
+      "source_sha256": "5bdc1394f8a8834433773f3c56534d4ef728d57647e5b42c257bc6463404f1e5",
+      "relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8021BEB6_67AD26"
+        },
+        {
+          "offset": 24,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8021BEB6_67AD26"
+        }
+      ]
+    },
+    {
+      "name": "func_8021B450_67A2C0",
+      "rom_offset": "0x67a2c0",
+      "size": 28,
+      "original_sha256": "a60b9533174b09e2102c4a8c3dafb9261142477a29f0c7aaef15bb259bf4ff61",
+      "source_sha256": "f751930d8d9300063b5157f7ee97cbb9ab08d9d715525111d770c9cf9e71a2ad",
+      "relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8021BEB7_67AD27"
+        },
+        {
+          "offset": 24,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8021BEB7_67AD27"
+        }
+      ]
+    }
+  ]
+}

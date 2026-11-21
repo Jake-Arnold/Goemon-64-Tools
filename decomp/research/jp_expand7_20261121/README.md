@@ -1,0 +1,3 @@
+# Japanese JP2307 expansion from original C/MIPS family reconstruction
+
+Seven original-address native IDO 5.3 instruction matches: two indexed signed-byte getters over 120-byte records, two fixed-argument wrappers, three single-constant float forwarding wrappers. Data symbols and calls retain their original symbolic relocation identities. The record declaration only describes observed 120-byte stride, not all unknown fields. This research bundle is not official matching C until full original ROM, ELF, relocation, original C/ASM inventory, retail ROM and full local CI pass. No proprietary ROMs, binary game assets or tools here.

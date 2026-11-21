@@ -1,0 +1,17 @@
+{
+  "format": "goemon-japan-expand7-structural-negative-probes-v1",
+  "region": "japan_0",
+  "status": "FAILED_NATIVE",
+  "source": "original JP2307 assembly group/relocation search",
+  "compiler": "SGI IDO 5.3 -O2 -mips2 -G 0",
+  "probes_on_three_original_48byte_clear_loops": 78,
+  "names": [
+    "func_80023BA4_247A4",
+    "func_80023CC8_248C8",
+    "func_80023DEC_249EC"
+  ],
+  "reason": "Original loops contain an unusual four-byte per-iteration store schedule with first increment before four original sb instructions; 13 loop forms with char/volatile variants did not reproduce exact instruction sequence. No full-ROM integration attempted for these names.",
+  "decision": "RETAIN_ORIGINAL_ASM",
+  "other_original_asm_remainder": "5062 additional ASM functions in accepted JP2314, not all actively probed in this pass",
+  "gameplay_test": "NOT_RUN"
+}

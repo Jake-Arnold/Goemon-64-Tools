@@ -1,5 +1,8 @@
 # Goemon 64 matching-C — active continuation
 
+**21 November 2026 Japanese JP2314 structural-family G2 (local):** Seven truly new C functions / 284 original MIPS instruction bytes across 120-byte indexed signed-byte record readers, two fixed-argument wrappers and three float forwarding wrappers. From published JP2307, local **Japan 2,314 C / 123,236 original bytes / 5,062 ASM**, with full exact 32 MiB Japanese expanded and 16 MiB retail ROM, all 7,376 original ELF identities, 80,747 semantic relocations, strict inventory and full local CI (363+349 tests and sanitizers). [Original-ROM proof](results/japan_0_2314_expand7_g2_20261121.json) and [source/replay bundle](research/jp_expand7_20261121/README.md). **Not yet remotely published.** Three attempted byte-zeroing loops remain ASM.
+
+
 **21 November 2026 Japan JP2307 alternate-type C published:** Four new original C functions / 160 original bytes are **PUBLISHED_REMOTE_VERIFIED** in [commit `ea758300aab5`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/ea758300aab5de1d344d4025a56314de72022bbc). Japan **2,307 C / 122,952 bytes / 5,069 ASM**, exact 32 MiB expanded and 16 MiB retail ROM, 7,376 ELF identities, 80,747 original semantic relocations, strict inventory and 358+349 local CI. The original predicate `func_08001410_70F980` has a deliberately incomplete false-path return in C because the actual MIPS leaves `v0` unchanged there; this is C undefined behaviour, documented rather than presented as portable Boolean logic. [Native G2](results/japan_0_2307_retry10_g2_20261121.json), [publication ledger](results/japan_0_2307_retry10_publication_20261121.json), [six remaining ASM failures](research/jp_retry10_20261121/failed_native.json).
 
 
