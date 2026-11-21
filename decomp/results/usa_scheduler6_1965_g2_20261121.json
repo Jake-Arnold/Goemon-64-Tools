@@ -1,0 +1,72 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "region": "usa",
+  "accepted_before": 1963,
+  "accepted_after": 1965,
+  "new_C_functions": 2,
+  "new_original_instruction_bytes": 112,
+  "total_original_C_instruction_bytes": 84648,
+  "remaining_asm": 5398,
+  "rom_bytes": 33554432,
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "elf_function_identities": 7376,
+  "semantic_relocations": 82103,
+  "functions": [
+    {
+      "name": "func_80034C4C_3584C",
+      "rom_offset": 219212,
+      "vma": 2147699788,
+      "size": 56,
+      "source": "sched_insert56_mode1.c",
+      "source_sha256": "a27ebc2acd580f41ccfd9eea0bd1cbdff8a64f52b48d448f13193a6d0f9d61d8",
+      "original_code_sha256": "1ea88b69f4cd0d14420c45148a37bd40e0efa5efd680b6863f1a899af91b5158"
+    },
+    {
+      "name": "func_80034C84_35884",
+      "rom_offset": 219268,
+      "vma": 2147699844,
+      "size": 56,
+      "source": "sched_insert56_mode2.c",
+      "source_sha256": "706695948ee782423aefb0fa33d0180daddcbcd11ee61827e986888332a41c3f",
+      "original_code_sha256": "3a2c654282ba4ab46bdb1962a09407801916dd0b17961b7e5a1226a7c58f6a39"
+    }
+  ],
+  "inventory": {
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 1965,
+    "current_unmarked_entries": 1978,
+    "remaining_assembly_entries": 5398,
+    "baseline_zero_sized_function_labels_ignored": 0,
+    "candidate_zero_sized_function_labels_ignored": 851,
+    "extra_positive_alias_entries": 0,
+    "upstream_unmarked_names": [
+      "func_8000A480_B080",
+      "func_80013940_14540",
+      "func_80013AC4_146C4",
+      "func_80013C0C_1480C",
+      "func_80013C70_14870",
+      "func_800141C4_14DC4",
+      "func_8001481C_1541C",
+      "func_80014840_15440",
+      "func_800148C0_154C0",
+      "func_80014C00_15800",
+      "func_80014C20_15820",
+      "func_80029E58_2AA58",
+      "func_8002A168_2AD68"
+    ],
+    "size_annotation_differences": [
+      {
+        "name": "func_8000D3B8_DFB8",
+        "baseline_size": 64,
+        "candidate_size": 72
+      },
+      {
+        "name": "func_8003F6E8_402E8",
+        "baseline_size": 48,
+        "candidate_size": 56
+      }
+    ],
+    "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  }
+}
