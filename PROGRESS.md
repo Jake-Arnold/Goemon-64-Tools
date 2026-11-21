@@ -1,3 +1,10 @@
+## 21 November 2026 — Japanese short145 original-ROM G2 published and remotely verified
+
+- **Implementation published:** [`1fa94856a8a52ec069107fceaa7c828149e9b96a`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/1fa94856a8a52ec069107fceaa7c828149e9b96a) on `chatgptweb/decomp`, independently re-fetched with all 163 changed Git blobs preserving the exact original patch blob SHA-1s. The prior local-only section immediately below is historical.
+- **Published Japanese C:** **2,123 → 2,268** original-address matching functions, **112,336 → 121,288** original instruction bytes, **5,253 → 5,108** remaining ASM. USA and `main` unchanged. Full original expanded-ROM/retail ROM SHA-1, all 7,376 ELF identities and 80,747 semantic relocation proofs were established locally before publication.
+- **Fresh publication-attempt tests:** original 163-file patch applied to the uploaded checkout; all 4 new source/hash/negative tests PASS; full `python3 -m decomp.local_ci` PASS (335 decomp tests, 349 verifier/ledger tests, task checks and host sanitizer fixtures). This was a fresh ROM-free CI rerun, not a newly executed original-ROM G2 build.
+- **Status:** `PUBLISHED_REMOTE_VERIFIED`. See [publication ledger](decomp/results/japan_0_2268_publication_20261121.json), [original native G2 proof](decomp/results/japan_0_2268_short145_g2_20261121.json) and [original C sources](decomp/research/jp_short145_20261121/). No emulator gameplay tests.
+
 ## 21 November 2026 — Japanese short/repeated 145-function original-ROM G2 promotion (PASSED_G2_LOCAL; publication pending)
 
 - **Why:** Promote 101 + 44 newly recovered original-address Japanese matching-C sources from isolated research, without accepting byte-only proofs or modifying USA/`main`. All **145 deduplicated** against the original Japanese **2,123 C / 112,336 bytes** remote-verified baseline and native ownership.

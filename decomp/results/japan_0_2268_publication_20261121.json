@@ -1,0 +1,31 @@
+{
+  "format": "goemon-japan-short145-publication-v1",
+  "region": "japan_0",
+  "branch": "chatgptweb/decomp",
+  "publication_status": "PUBLISHED_REMOTE_VERIFIED",
+  "implementation_commit": "1fa94856a8a52ec069107fceaa7c828149e9b96a",
+  "prepromotion_head": "6639a16c222616ae1104e10e1094e82b35df236b",
+  "published_changed_files": 163,
+  "github_verified_paths": {
+    "decomp/japan_short145_promotion.py": "0478fc346be6a1a9258966d2ebaee51475052478",
+    "decomp/research/jp_short145_20261121/batch101/manifest.json": "94a1df8c13249c30a05680068581b38f4bf56d11",
+    "decomp/results/japan_0_2268_short145_g2_20261121.json": "f95542b22ec7091d182e090246ff7f840cb57517",
+    "decomp/results/japan_0_2268_inventory_20261121.json": "68e9c110d124843fbe11d5c96d69dd7b51eb333d"
+  },
+  "prior_japanese_c": 2123,
+  "added_c": 145,
+  "published_japanese_c": 2268,
+  "published_instruction_bytes": 121288,
+  "remaining_assembly": 5108,
+  "native_original_rom_status": "PASSED_G2_LOCAL before publication; see immutable proof",
+  "expanded_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "original_elf_func_identities": 7376,
+  "original_semantic_relocations": 80747,
+  "source_native_proof": "decomp/results/japan_0_2268_short145_g2_20261121.json",
+  "inventory": "decomp/results/japan_0_2268_inventory_20261121.json",
+  "fresh_publication_ci": "PASS: 335 decomp tests; 349 verifier/ledger tests; source sanitizers; 4 task-specific tests",
+  "fresh_native_g2_in_publication_attempt": "NOT_RUN; previous local proof retained",
+  "emulator_gameplay": "NOT_RUN",
+  "source_patch_sha256": "303a465180fdeb8c1a992786fefe35668e19f15d3e03fceb208c322cbd2c52c7"
+}

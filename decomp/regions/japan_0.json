@@ -965,7 +965,7 @@
     "implementation_commit": "74f940e7c0fb6b0ef7286bca1018780450ae4993"
   },
   "short145_native_promotion": {
-    "status": "PASSED_G2_LOCAL",
+    "status": "PUBLISHED_REMOTE_VERIFIED",
     "new_matching_c_functions": 145,
     "new_original_instruction_bytes": 8952,
     "matching_c_functions": 2268,
@@ -975,8 +975,10 @@
     "inventory": "results/japan_0_2268_inventory_20261121.json",
     "source_root": "research/jp_short145_20261121",
     "stager": "japan_short145_promotion.py",
-    "published": false,
+    "published": true,
     "full_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
-    "full_relocations": 80747
+    "full_relocations": 80747,
+    "published_commit": "1fa94856a8a52ec069107fceaa7c828149e9b96a",
+    "publication_record": "results/japan_0_2268_publication_20261121.json"
   }
 }
