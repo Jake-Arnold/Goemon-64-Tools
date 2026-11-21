@@ -1,0 +1,46 @@
+{
+  "format": "goemon-clamp-abi-stack-relocation-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE",
+  "original_name": "func_801CD310_589220",
+  "rom_offset": "0x589220",
+  "vma": "0x801CD310",
+  "original_length": 4320,
+  "original_stack_frame": 232,
+  "original_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "source_variants": [
+    {
+      "name": "size_exact",
+      "elf_func_size": 4320,
+      "stack_frame": 440,
+      "save_f20": false,
+      "prototype_correct": false,
+      "jtbl_relative_delta": 0
+    },
+    {
+      "name": "correct_abi",
+      "elf_func_size": 4316,
+      "stack_frame": 440,
+      "save_f20": false,
+      "prototype_correct": true,
+      "jtbl_relative_delta": 4
+    }
+  ],
+  "original_relocations": 101,
+  "candidate_relocations": 101,
+  "original_call_order_equal": true,
+  "inline_sqrt_s_count": 9,
+  "jumptable_entries": 18,
+  "relocation_type_and_symbol_order_exact": 99,
+  "remaining_reloc_target": "jtbl_8020A85C_5C676C vs generated .rodata",
+  "native_match": false,
+  "baseline_rom_recheck": "PASS",
+  "research_native_builds": "PASS",
+  "research_audit": "PASS",
+  "combined_G2": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "usa_accepted_c_before": 1956,
+  "usa_accepted_c_after": 1956
+}
