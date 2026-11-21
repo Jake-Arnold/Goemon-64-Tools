@@ -46,3 +46,23 @@ A source-only original-ROM verifier, both research-only failing candidates, and 
 ## Next
 
 For promotion, integrate *only the three new* sources against a fresh canonical `chatgptweb/decomp` checkout, preserving all accepted JP and USA code, pass the strict per-region full-ROM/ELF/semantic-relocation/inventory/full-CI gates, then commit same-gate evidence and updated `PROGRESS.md`. Keep the 548/2184-byte targets in assembly until native equality is achieved. The Start→pause→VM-reset path remains a static mechanism, not a demonstrated successful Bomb Text Skip.
+
+
+## Stronger combined Japanese proof: all four consecutive functions match in one translation unit
+
+**NEW on 21 November 2026.** The *four contiguous Japanese functions* in original file section `0x20180..0x2034F` were reconstructed together in **one C translation unit** at their original VMA `0x8001F580`:
+
+| Original function | Code extent | Role | Discovery status |
+|---|---:|---|---|
+| `func_8001F580_20180` | 100 B | callback dispatch | newly matched this session |
+| `func_8001F5E4_201E4` | 44 B | initialization | already included in Japan2118 local G2 research |
+| `func_8001F610_20210` | 252 B | gameplay Start update | already isolated exact in previous research |
+| `func_8001F70C_2030C` | 68 B | teardown | newly matched this session |
+
+With pinned original **IDO 5.3**, original-address MIPS linker, and full original 32 MiB Japanese ROM SHA-1 authentication, a fresh **single-source combined-unit** test passed **464/464 bytes, 116/116 original MIPS instructions, zero mismatches and exact 464-byte code extent**. Original contiguous code SHA-256 `95030527ce8cf70a35cd44ebf1d7f7c85b8267b277765557ac02b62c671c0062`. Combined C source SHA-256 `247eca4fede42bd8b8ee0b840f1ee8e711ab92262cfb62d450e9587c4373610e`.
+
+The Git blobs for the exact *locally tested bytes* were independently checked before publication:
+- `jp_gameplay_callback_four_combined.c` git blob SHA-1 `cec3a40a22261488825972498e12d31bf9f69766`
+- `verify_combined_japan.py` git blob SHA-1 `a1811d91743debe5cd2f9f9506b4c3daa712ddf8`
+
+These are a higher-confidence combined *code-section* equality test, **not** the full Japanese canonical ROM/ELF/relocation/CI promotion. **Newly discovered function count remains JP +2 and USA +1**, since two of the four Japanese functions were already exact in earlier research. **Zero production G2 promotions.** The independently executable source/verifier is committed in `decomp/research/glitch_start_callbacks_20261121/`. Complete research archive v2: `goemon_glitch_native_followup_v2_2026-11-21.zip` SHA-256 `9cb7b39c3a9980ba9e8c5399975fc8a771126fd969a0a205a6488b7575088131`.
