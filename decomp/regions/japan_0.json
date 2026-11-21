@@ -1043,5 +1043,26 @@
     "gameplay": "NOT_RUN",
     "published_commit": "f7a7f3565540b552904ebc21a0cf2ebe3ea8118a",
     "publication_record": "results/japan_0_2289_tiny7_publication_20261121.json"
+  },
+  "retry29_native_promotion": {
+    "format": "goemon-japan-retry29-promotion-v1",
+    "status": "PASSED_G2_LOCAL",
+    "published": false,
+    "original_c_before": 2289,
+    "new_matching_c": 14,
+    "new_original_instruction_bytes": 512,
+    "matching_c_functions": 2303,
+    "matching_c_bytes": 122792,
+    "asm_remaining": 5073,
+    "proof": "results/japan_0_2303_retry29_g2_20261121.json",
+    "inventory": "results/japan_0_2303_retry29_inventory_20261121.json",
+    "manifest": "research/jp_retry29_20261121/manifest.json",
+    "stager": "japan_retry29_promotion.py",
+    "full_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "original_elf_identities": 7376,
+    "semantic_relocations": 80747,
+    "full_local_ci": "PASS",
+    "gameplay": "NOT_RUN"
   }
 }

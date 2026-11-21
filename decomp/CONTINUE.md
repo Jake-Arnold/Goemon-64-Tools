@@ -1,5 +1,7 @@
 # Goemon 64 matching-C — active continuation
 
+**21 November 2026 Japan retry29 local original-ROM G2:** The original 29 unique failed candidates were revisited: 5 previously accepted, 14 newly matching C (512 original instruction bytes), 10 remaining ASM. Locally Japan 2,303 C / 122,792 bytes / 5,073 ASM passed exact 32 MiB expanded and 16 MiB retail ROM checks, all 7,376 ELF identities, all 80,747 relocations, strict inventory and full 353+349 local CI with host sanitizers. Proof: [JP2303](results/japan_0_2303_retry29_g2_20261121.json); [replay and failures](research/jp_retry29_20261121/README.md). Publication is pending, so the canonical published count below remains JP2289.
+
 **21 November 2026 Japanese JP2289 G2 publication:** Seven new original-address C functions / 156 bytes, **PUBLISHED_REMOTE_VERIFIED** in [implementation commit `f7a7f3565540`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/f7a7f3565540b552904ebc21a0cf2ebe3ea8118a). Japanese **2,289 C / 122,280 original machine-code bytes / 5,087 ASM**. The original 32 MiB expanded ROM and 16 MiB retail ROM, all 7,376 ELF identities and all 80,747 semantic relocations are exact; full 348+349 local CI PASS. [Native original-ROM proof](results/japan_0_2289_tiny7_g2_20261121.json), [publication record](results/japan_0_2289_tiny7_publication_20261121.json), [source/replay guide](research/jp_tiny7_20261121/README.md). Three exact isolated matches were excluded as already accepted JP2268 functions.
 
 

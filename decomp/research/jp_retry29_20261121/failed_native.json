@@ -1,0 +1,153 @@
+{
+  "format": "goemon-jp-retry29-failed-v1",
+  "region": "japan_0",
+  "status": "RESEARCH_ONLY",
+  "original_failed_unique": 29,
+  "already_accepted_before_retry": [
+    "func_8021DAEC_5D907C",
+    "func_8021DB00_5D9090",
+    "func_8021FDA4_5DB334",
+    "func_802291F8_6928E8",
+    "func_8022950C_692BFC"
+  ],
+  "new_full_G2_promotions": [
+    "func_080012FC_7385DC",
+    "func_08001380_734E00",
+    "func_08001778_6C5938",
+    "func_8001067C_1127C",
+    "func_801D54D8_667A28",
+    "func_801D5718_667C68",
+    "func_801E4ED0_6533C0",
+    "func_801E5760_653C50",
+    "func_801E60D4_6545C4",
+    "func_80217E64_69F564",
+    "func_802193AC_67821C",
+    "func_8021FF00_6895F0",
+    "func_80221624_68AD14",
+    "func_8022B2F4_6949E4"
+  ],
+  "remaining_failed_unique": 10,
+  "unpromoted": [
+    {
+      "name": "func_08001410_70F980",
+      "rom_offset": "0x70F980",
+      "original_size": 28,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 1,
+      "new_variants_tested": 9,
+      "latest_first_byte_mismatch": 0,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    },
+    {
+      "name": "func_08001454_734ED4",
+      "rom_offset": "0x734ED4",
+      "original_size": 20,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 1,
+      "new_variants_tested": 13,
+      "latest_first_byte_mismatch": 4,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    },
+    {
+      "name": "func_800012A0_1EA0",
+      "rom_offset": "0x1ea0",
+      "original_size": 44,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 1,
+      "new_variants_tested": 6,
+      "latest_first_byte_mismatch": 1,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    },
+    {
+      "name": "func_800015B8_21B8",
+      "rom_offset": "0x21b8",
+      "original_size": 44,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 1,
+      "new_variants_tested": 6,
+      "latest_first_byte_mismatch": 1,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    },
+    {
+      "name": "func_80008648_9248",
+      "rom_offset": "0x9248",
+      "original_size": 44,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 1,
+      "new_variants_tested": 6,
+      "latest_first_byte_mismatch": 1,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    },
+    {
+      "name": "func_801D3FD4_6424C4",
+      "rom_offset": "0x6424C4",
+      "original_size": 40,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 1,
+      "new_variants_tested": 19,
+      "latest_first_byte_mismatch": 0,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    },
+    {
+      "name": "func_801E019C_59C16C",
+      "rom_offset": "0x59C16C",
+      "original_size": 44,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 2,
+      "new_variants_tested": 0,
+      "latest_first_byte_mismatch": null,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    },
+    {
+      "name": "func_80219328_6A0A28",
+      "rom_offset": "0x6A0A28",
+      "original_size": 28,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 1,
+      "new_variants_tested": 22,
+      "latest_first_byte_mismatch": 0,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    },
+    {
+      "name": "func_8021DB18_5D90A8",
+      "rom_offset": "0x5D90A8",
+      "original_size": 36,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 1,
+      "new_variants_tested": 16,
+      "latest_first_byte_mismatch": 8,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    },
+    {
+      "name": "func_80222F18_68C608",
+      "rom_offset": "0x68C608",
+      "original_size": 28,
+      "status": "FAILED_NATIVE",
+      "historical_variants": 1,
+      "new_variants_tested": 22,
+      "latest_first_byte_mismatch": 0,
+      "native_compiler_matches": 0,
+      "full_original_rom_gate": "NOT_RUN",
+      "decision": "RETAIN original ASM"
+    }
+  ],
+  "notes": "All unresolved originals remain ASM. Source trials are not native promotions. Preserve original relocations and original ROM layout. No original ASM/ROM bytes published."
+}

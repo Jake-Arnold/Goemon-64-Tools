@@ -1,0 +1,199 @@
+{
+  "format": "goemon-jp-retry29-native-c-v1",
+  "region": "japan_0",
+  "research_tier": "ISOLATED_EXACT",
+  "original_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "start_published_c": 2289,
+  "count": 14,
+  "functions": [
+    {
+      "name": "func_8001067C_1127C",
+      "rom_offset": "0x1127c",
+      "size": 40,
+      "original_sha256": "74b95fa3296994f7210863f2754419714df74c52fd426ad000884e5d3d36522a",
+      "source_sha256": "506c6abf88ddafcb67cbefdfb6389fd55d4eb4bf4ce0458fd85861b62fd23597",
+      "relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80069300_69F00"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80069300_69F00"
+        }
+      ]
+    },
+    {
+      "name": "func_801E4ED0_6533C0",
+      "rom_offset": "0x6533c0",
+      "size": 84,
+      "original_sha256": "c46b6cc57ac116cee1a90a2425b2a9638c90a185441833b755c3269fa1778f99",
+      "source_sha256": "9385a37f0cc8f5aeb09543010767503ef46ce6c7be9f5dda6c3d768ec449ed9b",
+      "relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801F4AA0_662F90"
+        },
+        {
+          "offset": 8,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801F4AA0_662F90"
+        }
+      ]
+    },
+    {
+      "name": "func_801E5760_653C50",
+      "rom_offset": "0x653c50",
+      "size": 84,
+      "original_sha256": "1d8031c50796c981df45001fe0d2f1e9fc0dcc5d83d849a3e730b4232a792f85",
+      "source_sha256": "b82cab8daff2d48c08d287274f398d341261d772aa0af739cb003ec1562e0f3f",
+      "relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801F4AC0_662FB0"
+        },
+        {
+          "offset": 8,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801F4AC0_662FB0"
+        }
+      ]
+    },
+    {
+      "name": "func_801E60D4_6545C4",
+      "rom_offset": "0x6545c4",
+      "size": 84,
+      "original_sha256": "dc2125ae8a005363cc1a6e8520227b2337bf4c6a03f1e48e960a46496fc7111e",
+      "source_sha256": "1d4881bceb7e46c15de4ae9949556ade0af2720ac0dc7c9a7612a6cf1381d5bb",
+      "relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801F4AE0_662FD0"
+        },
+        {
+          "offset": 8,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801F4AE0_662FD0"
+        }
+      ]
+    },
+    {
+      "name": "func_801D54D8_667A28",
+      "rom_offset": "0x667a28",
+      "size": 40,
+      "original_sha256": "f9afe5661b7db192f927f4b54f202af20288fb9a9515663755259b07f8c4abcb",
+      "source_sha256": "7eb474a373a30da9d388bfd7e7e0cabcc3afc488e35ba518b43e56e0210010cc",
+      "relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801D8FC0_66B510"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801D8FC0_66B510"
+        }
+      ]
+    },
+    {
+      "name": "func_801D5718_667C68",
+      "rom_offset": "0x667c68",
+      "size": 40,
+      "original_sha256": "f9afe5661b7db192f927f4b54f202af20288fb9a9515663755259b07f8c4abcb",
+      "source_sha256": "0e3177621d2cb770ae63b85ac7672a7f26c4eae395278bea90d0fa9dba5b52b2",
+      "relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801D8FC0_66B510"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801D8FC0_66B510"
+        }
+      ]
+    },
+    {
+      "name": "func_802193AC_67821C",
+      "rom_offset": "0x67821c",
+      "size": 40,
+      "original_sha256": "2fef37e489179cc0dfe17904fc61e8e0b8652310e62b7716cbcb02712cc12055",
+      "source_sha256": "6d9382c26bf82c7be8f89dfeaf4cb12ef73e807931c91e9b4daa92ab49647519",
+      "relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8021BDE8_67AC58"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8021BDE8_67AC58"
+        }
+      ]
+    },
+    {
+      "name": "func_8021FF00_6895F0",
+      "rom_offset": "0x6895f0",
+      "size": 20,
+      "original_sha256": "fd28497cb05c71e3a74fe754ae97667553512a7c5273f6406bb06813418af74f",
+      "source_sha256": "3bc9d4cc22f354cbb1b525fc392746e3cee81ffc847ea6cd02e11e72e508287f",
+      "relocations": []
+    },
+    {
+      "name": "func_80221624_68AD14",
+      "rom_offset": "0x68ad14",
+      "size": 12,
+      "original_sha256": "a500d5223fd4a32f134b9db0efe0b0b841b086d2733fcb1cbcd91bd465f33425",
+      "source_sha256": "5464428530a224cb88e843475d1c925c633d390170d5515fd5a17a05785af022",
+      "relocations": []
+    },
+    {
+      "name": "func_8022B2F4_6949E4",
+      "rom_offset": "0x6949e4",
+      "size": 12,
+      "original_sha256": "2cfce24a5a10a5e42c381a1c18ff1c668432a5d2d59f948eceb63e6d6d924046",
+      "source_sha256": "c0d0b0c3aaf351257f37a9bbc32b84abdcc28fe5e705c03c8e6f37201f2c352d",
+      "relocations": []
+    },
+    {
+      "name": "func_80217E64_69F564",
+      "rom_offset": "0x69f564",
+      "size": 12,
+      "original_sha256": "d03d616eb99f88c79f84ed138428e365635acf1f3a179f4f9427e1898a5e1d7d",
+      "source_sha256": "e77a8478066175820a6860354c951b5d8db6e02a419a2a6ac3322a13a503943a",
+      "relocations": []
+    },
+    {
+      "name": "func_08001778_6C5938",
+      "rom_offset": "0x6c5938",
+      "size": 20,
+      "original_sha256": "9f5a80336a3c8ab26d7da60c9643fd8871b6a7960c62851b4b3ce636fe409528",
+      "source_sha256": "34bc2007689282a11315e48c3b398f25fcc81c8e7d0fcb205d0efcf8bc07b9c3",
+      "relocations": []
+    },
+    {
+      "name": "func_08001380_734E00",
+      "rom_offset": "0x734e00",
+      "size": 12,
+      "original_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50",
+      "source_sha256": "d3287cb57b3e5427cff0f05007dd52f1d7f3ac7644477efd8291ebaca8748e54",
+      "relocations": []
+    },
+    {
+      "name": "func_080012FC_7385DC",
+      "rom_offset": "0x7385dc",
+      "size": 12,
+      "original_sha256": "e6573885d577794d86935242568e12a5c4e29a0322113ee5290184f693c80d50",
+      "source_sha256": "c2a2818777f9729b45445db424f62f90632038d4663e4e238e407c814e88287b",
+      "relocations": []
+    }
+  ]
+}
