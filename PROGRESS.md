@@ -1,3 +1,9 @@
+## 21 November 2026 — original USA file22 startup gradient identified; no dialogue text-token source (RESEARCH_ONLY)
+
+- Authenticated file22 descriptor `0x6A7F8C` independently mapped to five original CI4-style 32x32 tiles (512 bytes each), 10x8 u16 tilemap with uniform row IDs `[0,0,0,0,4,3,2,1]` and 16-entry RGBA5551 colour lookup at original guest `0x801D4D28`. The reconstructed 320x240 source background is **black to dark blue gradient**, not glyph artwork. Its use at startup outer state 3 (~0.329–2.412 s) is consistent with a startup/intro backdrop; exact named screen remains unconfirmed.
+- File22 static source `[0x69E080,0x6A9920)` contains **zero** aligned USA VM `0x00008010` dialogue text-record commands; 1,808-byte `func_801CC0C4_69ECE4` reads texture tile indices and emits F3D display lists, not the 16-bit script glyph/token stream. Japanese 326-token editable table is not a USA overlay texture decoder. No text was falsely decoded.
+- Pinned-ROM read-only source kit delivered in chat: `goemon-file22-background-attribution-source-20261121.zip` SHA-256 `cfbd3eca8a5f89db06310753cc5ccb3053ca2cbf2e07f8cc07a958ebdd08fb07`. Original large function **still FAILED_NATIVE**, no additional IDO trial/complete ROM G2/full CI, no accepted-C change. Documentation-only addition to draft research PR #161; main and native runtime repos untouched.
+
 ## 21 November 2026 — file22 large-function stack/ABI follow-up (RESEARCH_ONLY)
 
 - Independently traced specific original MIPS stack slots `0x138` row loop, `0x100` last tile cache, `0xE4/0xE0` descriptor page/tile pointers, `0x34` row pixels, `0xF8/0xF0/0xE8` clipping and texture offsets. Long-lived `$fp=0x07054150` and saved/reused `$ra=0xE6000000` matter to exact IDO register allocation; original stack frame `0x140` vs first draft `0xF0`. Caller does not use a return result, but original C prototype remains unproved.

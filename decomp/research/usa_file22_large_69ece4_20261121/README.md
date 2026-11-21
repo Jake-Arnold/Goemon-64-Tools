@@ -82,6 +82,62 @@ Format 0 emits `FD10/F510/E6/F3/E7/F510/F2`; formats 1 and 2 use `FD50/F550/E6/F
 - Both bounded source variants for a >512-byte target were tried, per the existing executor budget. No exact match: **full source-unit linking, USA1,965 accepted-stage G2, strict inventory, and full decomp.local_ci NOT_RUN**. Do not promote.
 - This is new *direct* large-function analysis. Separate 60-byte helper [PR #160](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/160) remains scratch exact, not canonical; runtime file22 evidence is in [decomp PR #156](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/156).
 
+
+## Source-image attribution and text-token exclusion (21 November 2026)
+
+This additional experiment was run against the SHA-1-pinned user-owned
+33,554,432-byte original USA decompressed ROM, **not** a fabricated texture
+or an inferred screenshot. Original file/resource 22 is
+ROM `[0x69E080,0x6A9920)`, virtual `[0x801CB460,0x801D7060)`.
+
+The default descriptor source `D_801D536C_6A7F8C` at ROM
+`0x6A7F8C` has mode 2 and a 1x1 page grid of 320x256 source pixels.
+Its guest pointers and reconstructed source meanings are:
+- `+0x04 = 0x801D4C30`, one-byte page map (page index zero);
+- `+0x08 = 0x801D4B90`, 80-entry u16 tile map (10 columns, 8 rows);
+- `+0x0C = 0x801D4CD8`, per-tile u16 descriptor lookup;
+- `+0x10 = 0x801D4190`, texture-byte base;
+- `+0x14 = 0x801D4D28`, pointer to 16 consecutive 16-bit RGBA5551
+  palette entries; **this pointer is not read in the large function itself**.
+  The palette's use by the surrounding display-list setup must be traced
+  separately before claiming every rendering side effect.
+
+The eight original tilemap rows are uniform and use tile IDs
+`[0,0,0,0,4,3,2,1]`, with ten repeated copies across each row.
+Five original CI4-style 32x32 indexed tiles, 512 bytes each, combine
+with the source palette to reconstruct a **320x240 black-to-dark-blue
+vertical gradient** (black at the top, muted blue at the bottom).
+The locally reconstructed PNG is a **background-only source-data preview**,
+not a captured guest frame and not a complete screenshot with title/logo.
+
+**Text-token test:** the original file22 resource contains **zero**
+aligned instances of the script opcode `0x00008010`, the static text
+record command used by the USA dialogue index in
+`Goemon-64-Tools/main:practice/dialogue_rom.py`.
+The large target's original instructions contain no call to the
+dialogue glyph parser and no signed-halfword text-token stream walk:
+its u16 values are **tile IDs and per-tile descriptors**, not glyph
+codes. The Japanese `practice/dialogue_japan.py` mapping (including the
+160-kana block) is region-specific and cannot be used to interpret the
+USA texture bytes. Accordingly, **there is no direct embedded text for
+our token table to decode in this renderer**. This does not exclude
+other startup overlays drawing text above this background.
+
+The previous actual USA run entered the routine in startup outer state 3
+around t=0.612 s; file22 was replaced by file20 around t=2.412 s.
+This strongly supports a **startup/intro presentation backdrop**, rather
+than the recurring stage dialogue-box background (which is handled by
+separate main-segment text/window paths). The **specific named startup
+screen remains unconfirmed** without a time-synchronised game screenshot.
+
+Read-only source-only reconstruction kit delivered in the ChatGPT
+conversation: `goemon-file22-background-attribution-source-20261121.zip`
+SHA-256 `cfbd3eca8a5f89db06310753cc5ccb3053ca2cbf2e07f8cc07a958ebdd08fb07`,
+containing a pinned-ROM decoder, metadata report and reproduction guide.
+No ROM bytes, raw extracted ASM, private game asset or generated preview
+is included in this PR. The original 1,808-byte C candidate remains
+FAILED_NATIVE; no fresh IDO pass or accepted-count increase is claimed.
+
 ## Reproduction and source kit
 
 The exact **source-only** package was handed to the user in ChatGPT as `goemon-usa-file22-large-cfg-ido-research-20261121.zip`, SHA-256 **`eac49d831bc7792be72eb787a8d6d45236da57956e833e0e352aa9f9e29e3b84`**. It includes:

@@ -1,0 +1,38 @@
+{
+  "format": "goemon-usa-file22-background-attribution-v1",
+  "status": "ORIGINAL_ROM_ASSET_IDENTIFIED_NO_TEXT_COMMAND",
+  "original_usa_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "region": "usa",
+  "resource_id": 22,
+  "resource_rom": "0x69E080..0x6A9920",
+  "target_function": "func_801CC0C4_69ECE4",
+  "static_descriptor_rom": "0x6A7F8C",
+  "descriptor_guest_pointers": {
+    "page_map": "0x801D4C30",
+    "tile_map": "0x801D4B90",
+    "tile_descriptor": "0x801D4CD8",
+    "texture_base": "0x801D4190",
+    "palette": "0x801D4D28"
+  },
+  "rows_uniform_tile_ids": [
+    0,
+    0,
+    0,
+    0,
+    4,
+    3,
+    2,
+    1
+  ],
+  "tile_columns": 10,
+  "tile_rows": 8,
+  "unique_tiles": 5,
+  "tile_format": "4-bit colour index 32x32 with separate 16-entry RGBA5551 palette",
+  "reconstructed_background": "black at top, dark blue gradient at bottom; 320x240",
+  "usa_dialogue_command_0x8010_aligned_occurrences_in_resource": 0,
+  "active_startup_outer_state": 3,
+  "exact_visible_screen": "UNVERIFIED",
+  "no_new_matching_c": true,
+  "large_function_original_ido_status": "FAILED_NATIVE",
+  "kit_sha256": "cfbd3eca8a5f89db06310753cc5ccb3053ca2cbf2e07f8cc07a958ebdd08fb07"
+}
