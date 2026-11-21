@@ -3267,3 +3267,11 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 ```
 
 **Commit rule:** Every functional/documentation change must update this file in the same commit. Push the commit to `main` (or push a feature branch and merge it) as part of completing the change; never claim a push succeeded without checking GitHub.
+
+## 21 November 2026 — Decomp documentation authority cleanup (standalone draft PR)
+
+- Fetched and verified live `chatgptweb/decomp` commit `7c7468601929b2dc45272b4583592526a639c3cc` after PR #148 had merged. This change is a documentation-only follow-up independent of draft PR #149.
+- Replaced the outdated leading `decomp/README.md` 18 November promotion feed with current verified USA 1,958 and Japan 2,121 G2 figures, branch/region boundaries and an explicit warning that canonical `combined.json`/`inventory.json` still contain the earlier 1,956 USA checkpoint. Archived the previous complete README body in `decomp/history/README_20261118.md` with relative Markdown links adjusted.
+- Updated `decomp/INVENTORY.md` from its obsolete 210-function snapshot, documenting canonical-vs-later G2 arithmetic, original 13 upstream C entries, 851 zero-sized linker symbols, size-annotation exceptions and strict relocation requirements.
+- Clearly marked six old five/ten/twenty-step plans, work queue and old `main` handoff as historical while preserving their source paths, original research findings and native mismatch evidence. No decompiled source, accepted ownership, ROM inputs, proof JSON or test script changed.
+- Validation: remote GitHub source/ref and proposed tree/diff cross-check only. **Native compilation, original-ROM G2 and full local CI NOT RUN** in this connector-only authoring environment. Next: review documentation and merge after PR #149's separate validation as appropriate.

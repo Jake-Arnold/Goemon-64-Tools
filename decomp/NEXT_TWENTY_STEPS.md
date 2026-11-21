@@ -1,3 +1,7 @@
+**HISTORICAL / CLOSED EXECUTION SEQUENCE (10–11 November 2026).** The 20-step plan and 148-function checkpoint are superseded. This document remains for recorded function-level investigation, not scheduling. Use [CONTINUE.md](CONTINUE.md) and [current README](README.md).
+
+---
+
 # Next 20 steps — verified matching-C integration and remaining four functions
 
 **Status reconciled 2026-11-11:** the resource, menu and object actions passed
