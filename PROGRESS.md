@@ -1,3 +1,7 @@
+## 21 November 2026 — Correct merged-maintenance links in task-registry handoff
+
+- Updated `decomp/tasks/README.md` so it no longer describes PRs #149/#150 as drafts after their actual GitHub merges, and references merged #153. Clarified active/completed registry counts and the newly integrated CI task/comparator checks. No game code, accepted manifests, proof snapshots or `main` changes. Tests: content/provenance verified by GitHub connector; new full local CI NOT RUN because the complete GitHub source checkout is unavailable in this shell.
+
 ## 21 November 2026 — Reconcile resumable registry with merged cleanup and extend local CI (draft #154)
 
 - **Changed:** Rebased draft #154 onto the accepted documentation-only decomp head after merged PRs #149, #150 and #153. Kept the new 8 KB operational CONTINUE handoff and its full historical archive, and integrated only the active-queue pointers rather than restoring the superseded 170 KB runbook. Preserved the closed G64 plan removal and existing updated agent/skills instructions.

@@ -36,7 +36,7 @@ When the user says **"which tasks are pending?"**, **"continue the Goemon backlo
 - `conflicts_with` denotes **potential shared original functions, source owners or publication artifacts**, not a permanent dependency preventing independent research. Two independently native-exact batches can each work, but must not simultaneously publish replacements for the same original ASM owner or shared `combined.json` / inventories.
 - Before every promotion, compare original **region + ROM offset + actual source/overlay owner** against current accepted functions and every open pending batch/PR. A candidate in `ISOLATED_EXACT`, `FAILED_NATIVE`, `FAILED_ROM`, `RESEARCH_ONLY`, `PASSED_G2_LOCAL`, or an old issue is not a new accepted function. Only complete native G2 + ELF/relocation + strict inventory + full local CI + remote publication permits `done`/accepted increment.
 - Prefer a topic branch and PR for task registry and queued changes. Rebase onto the latest `chatgptweb/decomp` after other merges. If a conflict changes a C owner's original byte/relocation input, **invalidate and rerun the relevant native proofs**; do not combine stale `PASSED_G2_LOCAL` reports arithmetically.
-- Draft [PR #149](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/149) retires historical G64 task machinery; draft [PR #150](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/150) cleans historical docs. Neither is this queue. Keep the queue independent of the retired plan and preserve discoverability links through later PR reviews.
+- [PR #149](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/149) (retired G64-001–100 task machinery), [PR #150](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/150) (historical docs), and [PR #153](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/153) (short operational continuation and proof retention audit) are **merged** into `chatgptweb/decomp`. Their original contents and provenance remain archived; they are not pending tasks. The registry has **11 active + 2 completed maintenance** records as of 21 November 2026. Keep this queue independent of the retired plan and preserve discoverability links.
 
 ## C-Right live instrumentation
 
@@ -48,4 +48,4 @@ The CLI and registry are ROM-free. Their test entrypoint is:
 python3 -m unittest decomp.test_task_registry -v
 ```
 
-The repository's full `python3 -m decomp.local_ci` remains a separate required gate when implementation/decomp inputs change; neither `validate` nor these task tests prove native C match or gameplay.
+Both `python3 -m decomp.local_ci` and `--quick` now include registry validation and the C-Right comparator cases; the full command additionally runs the configured original-C host sanitizers. No ROM-free CI run proves native original-ROM matching or gameplay.
