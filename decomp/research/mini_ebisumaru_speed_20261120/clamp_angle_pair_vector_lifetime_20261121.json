@@ -1,0 +1,105 @@
+{
+  "format": "goemon-usa-clamp-angle-pair-storage-research-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "region": "usa",
+  "function": "func_801CD310_589220",
+  "original_rom_offset": "0x589220",
+  "original_vma": "0x801CD310",
+  "original_size": 4320,
+  "original_frame": 232,
+  "original_usa_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_usa_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pristine_rom_compared_bytes": 33554432,
+  "native_compiler": "SGI IDO 5.3 -O2 -mips2 -G 0 -non_shared",
+  "source_variant_native_compiles": 13,
+  "original_first_trig_call_offset": "0x19c",
+  "original_second_trig_call_offset": "0x1a4",
+  "original_second_angle_stack_offset": "0x6c",
+  "original_first_angle_stack_offset": "0x6e",
+  "original_float_return_stack_offset": "0x64",
+  "candidates": [
+    {
+      "name": "previous_pooled_s32",
+      "size": 4312,
+      "frame": 232,
+      "nonreloc_equal": 29,
+      "nonreloc_comparable": 898,
+      "exact_relocation_triples": 6,
+      "trig_call_drift_bytes": [
+        4,
+        8
+      ]
+    },
+    {
+      "name": "u16_angle_pair",
+      "size": 4312,
+      "frame": 240,
+      "nonreloc_equal": 22,
+      "nonreloc_comparable": 900,
+      "exact_relocation_triples": 8,
+      "trig_call_drift_bytes": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "union_angle_vecA",
+      "source_sha256": "e6120d8d74ae3e6040c6b5a310f2b3fe1437b583e168e7da557e7806f1fd1d97",
+      "size": 4316,
+      "frame": 232,
+      "nonreloc_equal": 26,
+      "nonreloc_comparable": 907,
+      "exact_relocation_triples": 10,
+      "trig_call_drift_bytes": [
+        0,
+        0
+      ],
+      "second_return_store": {
+        "offset": "0x1b4",
+        "stack": "0xd4"
+      }
+    },
+    {
+      "name": "second_union_vecA",
+      "source_sha256": "d33c25712111c404e3f786ba42acfbd507171ce59ad8bfb9ce8b06e86a4e84d0",
+      "size": 4328,
+      "frame": 232,
+      "nonreloc_equal": 40,
+      "nonreloc_comparable": 910,
+      "exact_relocation_triples": 24,
+      "trig_call_drift_bytes": [
+        20,
+        20
+      ],
+      "second_return_store": {
+        "offset": "0x1c4",
+        "stack": "0xd4"
+      }
+    }
+  ],
+  "preserved": {
+    "calls": 33,
+    "sqrt_s": 9,
+    "text_relocations": 101,
+    "jump_entries": 18
+  },
+  "tests": {
+    "fresh_rom_baseline": "PASS_33554432_EXACT",
+    "native_compiles": 13,
+    "isolated_exact_c": 0,
+    "trig_stack_signature": "PASS",
+    "clean_zip_replay": "PASS_EXPECTED_FAILED_NATIVE",
+    "gcc_asan_ubsan_cases": 65536,
+    "clang_asan_ubsan_cases": 65536,
+    "canonical_combined_verify": "NOT_RUN",
+    "strict_inventory": "NOT_RUN",
+    "full_local_ci": "NOT_RUN",
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "source_zip_sha256": "4be45638fccd1505937294100f8edb6953494d4deae04f4ee8b3a9b8e6255f2d",
+  "accepted_usa_before": 1965,
+  "accepted_usa_after": 1965,
+  "accepted_original_c_instruction_bytes": 84648,
+  "remaining_original_asm": 5398
+}
