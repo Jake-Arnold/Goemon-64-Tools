@@ -1,0 +1,32 @@
+{
+  "format": "goemon-japan-donor10-publication-v1",
+  "region": "japan_0",
+  "branch": "chatgptweb/decomp",
+  "publication_status": "PUBLISHED_REMOTE_VERIFIED",
+  "implementation_commit": "56c01ff13bfc0de545261057a51da9d7cbba11ee",
+  "implementation_files": 21,
+  "prior_head": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+  "original_rom_g2_proof": "decomp/results/japan_0_2278_donor10_g2_20261121.json",
+  "original_rom_native_replay": "PASSED_G2_LOCAL prior to commit",
+  "expanded_rom_bytes": 33554432,
+  "expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_rom_bytes": 16777216,
+  "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "original_elf_identities": 7376,
+  "semantic_relocations": 80747,
+  "semantic_relocation_digest": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "previous_accepted_c": 2268,
+  "new_matching_c": 10,
+  "published_matching_c": 2278,
+  "accepted_original_code_bytes": 122004,
+  "remaining_assembly": 5098,
+  "full_local_ci": "PASS 340 decomp Python, 349 verifier/ledger, sanitizers",
+  "host_source_tests": "PASS 5 cases including 3*1000 actual C wrappers",
+  "emulator_gameplay": "NOT_RUN",
+  "github_verified_git_blobs": {
+    "decomp/japan_donor10_promotion.py": "453e0981952fd7912661869e5e123bc81355c4d4",
+    "decomp/research/jp_donor10_20261121/manifest.json": "ff0b03d542ffadb1892ec9dbcd4b0299604e9673",
+    "decomp/results/japan_0_2278_donor10_g2_20261121.json": "ca48f5089037d659d59057a8dafd41f71436f877",
+    "decomp/test_japan_donor10_promotion.py": "0dbfbaebd5a8983037be3f0dc60a062e58d9d5c5"
+  }
+}

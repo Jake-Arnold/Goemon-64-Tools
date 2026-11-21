@@ -1,3 +1,10 @@
+## 21 November 2026 — Japanese donor-template JP2,278 published and remotely verified
+
+- **Published implementation:** [`56c01ff13bfc0de545261057a51da9d7cbba11ee`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/56c01ff13bfc0de545261057a51da9d7cbba11ee) on `chatgptweb/decomp`; source C, fail-closed staging, regional proof/inventory, source-integrity and actual-C ASan/UBSan tests were re-fetched from GitHub with exact expected blob hashes. The original local-only entry immediately below is historical.
+- **Accepted Japanese C:** **2,278 original-address C / 122,004 original instruction bytes / 5,098 ASM**. Ten new C functions (716 bytes) from donor-pattern reconstruction. The original expanded and retail SHA-1, all 7,376 ELF FUNC identities and all 80,747 semantic relocations passed local native G2 before remote publication.
+- **Full CI:** 340 decomp Python tests (3 skipped), 349 verifier/ledger tests (4 skipped), full configured host sanitizer and task suites PASS; additional five donor-specific tests PASS including 1,000 original-C host iterations for each of three wrappers. Gameplay emulator NOT RUN. USA and `main` unchanged.
+- **Publication:** `PUBLISHED_REMOTE_VERIFIED`; immutable [G2 proof](decomp/results/japan_0_2278_donor10_g2_20261121.json), [publication ledger](decomp/results/japan_0_2278_donor10_publication_20261121.json).
+
 ## 21 November 2026 — Japanese donor-template ten-function native promotion (PASSED_G2_LOCAL; publication pending)
 
 - **New original C:** 10 unique original Japanese ASM functions reconstructed from accepted Japanese C donor patterns, **716 original instruction bytes**. Complete Japanese original C **2,268 → 2,278**, matched bytes **121,288 → 122,004**, remaining ASM **5,108 → 5,098**.
