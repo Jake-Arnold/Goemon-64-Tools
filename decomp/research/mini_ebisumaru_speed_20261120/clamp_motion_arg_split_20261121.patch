@@ -1,0 +1,20 @@
+--- a/clamp_whole_native_nonmatching.c
++++ b/clamp_motion_arg_split_nonmatching.c
+@@ -88,15 +88,14 @@
+     M2C_FIELD(arg0, f32 *, 0x78) = 0.0f;
+     M2C_FIELD(arg0, f32 *, 0x7C) = 0.0f;
+     M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), s16 *, 8) = 0x400;
+-    pool_fp_0 = arg2;
+     if (M2C_FIELD(arg0, u8 *, 0x61) != 0) {
+         return func_801CEAD4_58A9E4(arg0, arg0 + 0x68);
+     }
+     if (M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), u8 *, 0x18) & 1) {
+-        pool_fp_0 = M2C_FIELD(D_8020CA2C_5C893C, f32 *, 0xC);
++        arg2 = M2C_FIELD(D_8020CA2C_5C893C, f32 *, 0xC);
+         arg1 = 4.0f;
+     }
+-    pool_u16_0 = func_801CE3F0_58A300(arg0, pool_fp_0);
++    pool_u16_0 = func_801CE3F0_58A300(arg0, arg2);
+     switch (M2C_FIELD(arg0, u16 *, 0x98)) {
+     case 0x95:
+     case 0x9A:
