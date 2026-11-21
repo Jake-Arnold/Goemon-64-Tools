@@ -155,6 +155,107 @@ python3 verify_file22_large_research.py \
 
 This reproduces the IDO mismatch and host-only model tests without modifying the upstream checkout. `dot -Tsvg cfg.dot -o cfg.svg` renders the 75-block CFG.
 
+## 2026-11-21 original-MIPS-to-C **graphics output equivalence** (new, source-grounded)
+
+**Evidence status: RESEARCH_ONLY / BEHAVIOURALLY_EQUIVALENT_FOR_20_CONTROLLED_CASES / FAILED_NATIVE_IDO.**
+This is direct progress on the **1,808-byte function itself** rather than on another helper.
+
+A self-contained original-MIPS integer interpreter was written against the
+user's actual authenticated USA 32 MiB decompressed ROM (SHA-1
+`6ea0ed71032ce08fc2745f412d84936382197494`). It authenticates the
+original 1,808-byte function slice (SHA-256
+`eaccca6679247d56785806a92a2efe4c1adb73368f723b76d4b6aab5040ef3a9`),
+maps the original file22 overlay and 36-byte static descriptor into
+synthetic big-endian guest address space, seeds an empty Gfx output buffer
+and executes **the genuine original MIPS integer instructions** until
+the original `jr $ra` return. It implements branch-delay execution
+(including annulled branch-likely), 32-bit signed division with original
+compiler-emitted guards, HI/LO multiply, signed/unsigned loads, and guest
+stores. It does **not** use a real emulated N64 game frame.
+
+The independently host-compiled research C model
+`file22_tile_display_model.c` was then run against the **same 20 input
+sets**, and both outputs compared **every 64-bit Gfx record**, not just
+counts or hashes:
+
+| Parameter | Cases | Result |
+|---|---|---|
+| Modes | 0,1,2 and unsupported selector 3 | 4 |
+| Input geometry/map | Original, reordered tile rows, all-zero rows, synthetic 2x2 pages of 160x128 px, synthetic 5x4 pages of 64x64 px | 5 |
+| All pairs | **20 / 20 exact output comparisons**, **5,304 / 5,304 Gfx entries**, **0 word differences** | **PASS** |
+
+The authentic original mode-2 descriptor produces **12,568 original MIPS
+instruction executions**, 80 rectangles, five changes of tile texture,
+**275 64-bit commands** (2,200 bytes). Full command-stream SHA-256:
+`686ed1d46bc0029443baaf867759f648861f43ff21f35acf24f4b12788833091`.
+Mode 3 emits just the 80×3 rectangle commands (240) and no texture setup.
+
+The compiler-generated original `break 7` division guards were reached
+at the exact expected PCs for four deliberately invalid synthetic
+dimensions: source width=0 at `0x801CC270`, source height=0 at
+`0x801CC2CC`, page columns=0 at `0x801CC294`, and page rows=0 at
+`0x801CC2F4`. All **four guarded exception paths PASS**.
+
+Across formats 0–3 and the positive default geometry, **409 of 452**
+unique original instruction addresses are executed (90.5%). The four
+invalid-input guards extend that observed set to **413 of 452** unique PCs;
+the remainder primarily includes signed-coordinate/exception branches
+outside the tested input domain. **PC coverage is of this isolated
+synthetic interpreter, NOT a real guest PC sample.**
+
+### Exact eleven-phase partition and native-matching priorities
+
+| Stage | Original guest instruction range (end exclusive) | Static instructions |
+| --- | --- | ---: |
+| Initial 0x140 frame, source setup and globals | `0x801CC0C4..0x801CC128` | 25 |
+| Outer Y scan and vertical clipping | `0x801CC128..0x801CC1AC` | 33 |
+| Inner X scan and horizontal clipping | `0x801CC1AC..0x801CC234` | 34 |
+| Signed division, page and tile resolution | `0x801CC234..0x801CC414` | 120 |
+| Last-tile cache and format selection | `0x801CC414..0x801CC444` | 12 |
+| Format-0 seven-command setup | `0x801CC444..0x801CC528` | 57 |
+| Format-1 seven-command setup | `0x801CC528..0x801CC620` | 62 |
+| Format-2 seven-command setup | `0x801CC620..0x801CC70C` | 59 |
+| Three rectangle / S-T / slope commands | `0x801CC70C..0x801CC780` | 29 |
+| Inner-loop tail | `0x801CC780..0x801CC790` | 4 |
+| Outer-loop tail and saved-register return | `0x801CC790..0x801CC7D4` | 17 |
+
+These boundaries account for **all 452 original instruction positions**,
+including delay slots. The **tile/page index region alone executed 7,035
+instructions** on original format-2 input, more than half the function's
+dynamic work. This suggests a bounded, focused IDO matching strategy:
+retain the behaviourally verified C equations, recover register
+live ranges/stack slots for the entry and division/lookup region, and
+compare original/native output block-by-block rather than guessing the
+entire routine again. In particular the original saves `$s0..$s7` and
+`$ra/$fp`, uses stack `0x140`, and carries long-lived
+`$fp=0x07054150` and `$ra=0xE6000000` constants. The first two
+original IDO C hypotheses still generate **1,760 and 1,744 bytes**,
+not original **1,808**. **No new IDO exactness or full-ROM G2 is claimed.**
+
+### Reproducibility and limitations
+
+A tested **source-only ZIP** (no ROM, original assembly/code dump, game
+asset, game memory trace or proprietary compiler) was delivered in ChatGPT:
+`goemon-usa-file22-mips-c-semantic-proof-20261121.zip`, SHA-256
+`27d2345b2b27694fc3b57133300dd38af990ddb8a7756bdd4b87a3ff32dc652d`.
+It contains `trace_original_file22_mips.py`, `compare_model.py`,
+`phase_report.py`, `test_original_traps.py`, model C source,
+metadata-only evidence and a reproduction README. After independently
+extracting the final ZIP, all 20/20 commands tests, 409-PC coverage and
+4/4 break guard checks were rerun and PASS. It requires the user's own
+SHA-1-pinned original USA 32 MiB decompressed ROM, Python 3 and a host C
+compiler; it writes reports to locally chosen paths.
+
+The interpreter itself is research code, **not** a separately validated
+production MIPS emulator; exact output for 20 synthetic experiments does
+not prove universal signed-range behaviour or original source syntax.
+This does not prove a sampled real-game PC, frequency of live redraw,
+file22 ownership for the entire ~4-second on-screen gradient, native
+compiler instruction equality, or production C acceptance. A completed
+frame may persist after its original overlay code is overwritten.
+The prior full-ROM/ELF/relocation G2 gates were not run on this
+**still-nonmatching 1,808-byte function**. USA accepted C remains 1,965.
+
 ## Repository boundary and next technical hypothesis
 
 The executable hook integration legitimately lives in [native recompilation PR #1](https://github.com/Jake-Arnold/Goemon64Recomp-JP/pull/1), because it instruments `Goemon64Recomp-JP` runtime. **Matching C, semantics, data layout and proof are owned by this `Goemon-64-Tools` decomp research**, not the native launcher. The two need links, not duplicated runtime patch code.
