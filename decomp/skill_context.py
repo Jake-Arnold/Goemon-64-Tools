@@ -1,187 +1,91 @@
-"""Compact Goemon task packets from stored plan/proof. Does not run the verifier."""
+"""Compact canonical Goemon decomp proof/inventory context; no ROM build.
+
+The obsolete G64-001..100 plan was retired. This module deliberately does not
+load or schedule historical G64 tasks. Latest local/published G2 batches may be
+newer than the stored canonical USA combined/inventory checkpoint.
+"""
 from __future__ import annotations
+
 import argparse
-from collections import Counter
 import json
 from pathlib import Path
-import re
 
 ROOT = Path(__file__).resolve().parent
-TASK_RE = re.compile(r"G64-(\d{3})\Z")
-TASK_STATUSES = {
-    "PLANNED", "RESEARCH_ONLY", "FAILED_NATIVE", "PASSED_G2",
-    "DOC_ONLY", "SKIPPED_ALREADY_COMPLETE",
-}
 
 
 def load(root=ROOT):
-    read = lambda p: json.loads(p.read_text(encoding="utf-8"))
-    tasks = read(root / "plans" / "TASKS_100.json")["tasks"]
+    """Load published canonical proof metadata, not historical task packets."""
+    root = Path(root)
+    read = lambda path: json.loads(path.read_text(encoding="utf-8"))
     result = read(root / "results" / "combined.json")
-    summary = read(root / "results" / "inventory.json")["summary"]
-    c = result["comparison"]
-    execution_records = []
-    for path in sorted((root / "plans" / "execution").glob("*.json")):
-        record = read(path)
-        if isinstance(record, dict) and "task_id" in record:
-            execution_records.append({
-                "task_id": record["task_id"],
-                "status": record.get("status"),
-                "path": str(path.relative_to(root)),
-            })
-    return {"tasks": tasks, "proof": {
-        "status": result.get("status"), "full_rom_match": c.get("full_rom_match"),
-        "matched": c.get("matched_functions"), "claimed": c.get("claimed_functions"),
-        "bytes": c.get("matched_function_bytes"), "rom_size": c.get("rom_size"),
-        "sha1": c.get("candidate_sha1"), "c_total": summary.get("current_unmarked_entries"),
+    inventory = read(root / "results" / "inventory.json")
+    comparison = result["comparison"]
+    summary = inventory["summary"]
+    return {"proof": {
+        "status": result.get("status"),
+        "full_rom_match": comparison.get("full_rom_match"),
+        "matched": comparison.get("matched_functions"),
+        "claimed": comparison.get("claimed_functions"),
+        "bytes": comparison.get("matched_function_bytes"),
+        "rom_size": comparison.get("rom_size"),
+        "sha1": comparison.get("candidate_sha1"),
+        "inventory_sha1": inventory.get("decompressed_sha1"),
+        "c_total": summary.get("current_unmarked_entries"),
         "asm_total": summary.get("remaining_assembly_entries"),
         "identified": summary.get("identified_function_entries"),
         "new_c": summary.get("newly_matching_c"),
-    }, "execution_records": execution_records}
+        "baseline_c": summary.get("upstream_unmarked_entries"),
+    }}
 
 
 def validate(data):
-    tasks = data["tasks"]
-    ids = [t.get("id") for t in tasks]
-    errors = []
-    if ids != [f"G64-{i:03}" for i in range(1, 101)]:
-        errors.append("Task IDs must be exactly G64-001..G64-100")
-    for i, task in enumerate(tasks, 1):
-        if task.get("ordinal") != i:
-            errors.append("Task ordinal does not match its position: " + str(task.get("id")))
-        status = task.get("status")
-        if not isinstance(status, str) or status not in TASK_STATUSES:
-            errors.append("Invalid task status for " + str(task.get("id")))
-        requirements = task.get("evidence_requirements")
-        if (not isinstance(requirements, list) or not requirements
-                or any(not isinstance(item, str) or not item.strip() for item in requirements)):
-            errors.append("Missing or malformed evidence requirements for " + str(task.get("id")))
-        dependencies = task.get("depends_on", [])
-        if (not isinstance(dependencies, list)
-                or any(not isinstance(dep, str) for dep in dependencies)):
-            errors.append("Malformed or duplicate dependencies for " + str(task.get("id")))
-            continue
-        if len(dependencies) != len(set(dependencies)):
-            errors.append("Malformed or duplicate dependencies for " + str(task.get("id")))
-            continue
-        for dep in dependencies:
-            match = TASK_RE.fullmatch(dep)
-            if dep not in ids or not match or int(match.group(1)) >= i:
-                errors.append("Invalid dependency " + str(dep))
-    by_id = {task.get("id"): task for task in tasks
-             if isinstance(task.get("id"), str)}
-    execution_records = data.get("execution_records", [])
-    if not isinstance(execution_records, list):
-        errors.append("Execution evidence records must be a list")
-        execution_records = []
-    reports_by_task = {}
-    for record in execution_records:
-        if not isinstance(record, dict):
-            errors.append("Malformed execution evidence record")
-            continue
-        task_id = record.get("task_id")
-        task = by_id.get(task_id)
-        if task is None:
-            errors.append("Execution evidence references unknown task " + str(task_id))
-            continue
-        status = record.get("status")
-        if not isinstance(status, str) or status not in TASK_STATUSES:
-            errors.append("Invalid execution evidence status for " + str(task_id))
-        else:
-            reports_by_task.setdefault(task_id, []).append(status)
-    for task_id, statuses in reports_by_task.items():
-        if by_id[task_id].get("status") not in statuses:
-            errors.append("Execution evidence has no report for current task status " + task_id)
+    """Fail closed on inconsistent stored proof/inventory; not a new G2 run."""
     p = data["proof"]
+    errors = []
     if p["status"] != "matched" or p["full_rom_match"] is not True:
-        errors.append("Recorded ROM proof is not matched")
+        errors.append("Recorded whole-ROM proof is not matched")
+    for field in ("matched", "claimed", "bytes", "rom_size", "c_total",
+                  "asm_total", "identified", "new_c", "baseline_c"):
+        if type(p.get(field)) is not int or p[field] < 0:
+            errors.append("Malformed or negative numeric proof field: " + field)
+    if errors:
+        return errors
     if p["matched"] != p["claimed"] or p["claimed"] != p["new_c"]:
         errors.append("Proof/inventory claim counts disagree")
+    if p["c_total"] != p["new_c"] + p["baseline_c"]:
+        errors.append("Published baseline/claimed-C partition disagrees")
     if p["c_total"] + p["asm_total"] != p["identified"]:
         errors.append("Inventory C/ASM totals disagree")
     if p["rom_size"] != 33554432:
-        errors.append("Original-ROM size differs")
+        errors.append("Expected expanded original-ROM size is 33,554,432 bytes")
+    if not isinstance(p.get("sha1"), str) or len(p["sha1"]) != 40:
+        errors.append("Missing candidate ROM SHA-1")
+    if p["sha1"] != p.get("inventory_sha1"):
+        errors.append("Proof/inventory candidate ROM SHA-1 differs")
     return errors
-
-
-def task_brief(data, task_id, detail=False):
-    entries = {t["id"]: t for t in data["tasks"]}
-    if task_id not in entries:
-        raise ValueError("Unknown task: " + task_id)
-    t = entries[task_id]
-    payload = {"task": task_id, "status": t.get("status"),
-               "title": t.get("title"), "phase": t.get("phase"),
-               "dependencies": [{"id": d, "status": entries[d].get("status")}
-                                for d in t.get("depends_on", []) if d in entries],
-               "focus_files": t.get("focus_files", []),
-               "intent": t.get("architecture_design"),
-               "acceptance": t.get("explicit_acceptance"),
-               "phase_file": f"decomp/plans/phases/PHASE_{t['phase']:02}.md",
-               "stored_proof": data["proof"],
-               "strategy": "decomp/plans/EXECUTION_STRATEGY_V2.md",
-               "architect_override_v2": t.get("architect_override_v2")}
-    if detail:
-        payload.update(steps=t.get("implementation_sequence", []),
-                       tests=t.get("focused_testing"),
-                       negative=t.get("negative_control"),
-                       stop=t.get("stop_or_recovery"),
-                       evidence=t.get("evidence_requirements", []),
-                       optional_rea=t.get("optional_reverse_engineering_assist"))
-    return payload
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--task")
-    mode.add_argument("--phase", type=int, choices=range(1, 11))
-    mode.add_argument("--status", action="store_true")
-    mode.add_argument("--validate", action="store_true")
-    parser.add_argument("--detail", action="store_true")
+    mode.add_argument("--status", action="store_true", help="Show stored canonical USA proof/inventory")
+    mode.add_argument("--validate", action="store_true", help="Validate stored proof/inventory consistency")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
     data = load()
     errors = validate(data)
     if errors:
         parser.error("; ".join(errors))
-    if args.task:
-        result = task_brief(data, args.task, args.detail)
-    elif args.phase:
-        result = {"phase": args.phase, "tasks": [
-            {"task": t["id"], "status": t.get("status"), "title": t.get("title")}
-            for t in data["tasks"] if t.get("phase") == args.phase]}
-    elif args.status:
-        result = {"stored_proof": data["proof"],
-                  "statuses": dict(sorted(Counter(t.get("status", "UNKNOWN") for t in data["tasks"]).items())),
-                  "first_planned": next((t["id"] for t in data["tasks"] if t.get("status") == "PLANNED"), None),
-                  "notice": "Stored reports; no fresh original-ROM build performed"}
+    if args.validate:
+        result = {"status": "CONSISTENT_STORED_REPORTS",
+                  "notice": "No fresh original-ROM verification performed"}
     else:
-        result = {"status": "CONSISTENT_STORED_REPORTS", "task_count": len(data["tasks"]),
-                  "notice": "No new verifier run"}
-    if args.json:
+        result = {"published_canonical_proof": data["proof"],
+                  "notice": "Stored USA checkpoint only; read CONTINUE.md and latest G2 reports for newer batches"}
+    if args.json or args.status:
         print(json.dumps(result, indent=2, ensure_ascii=False))
-    elif args.task:
-        print(f"{result['task']} [{result['status']}] {result['title']}")
-        print(f"Phase: {result['phase_file']}")
-        if result["dependencies"]:
-            print("Deps: " + ", ".join(f"{r['id']}={r['status']}" for r in result["dependencies"]))
-        print("Files: " + ", ".join(result["focus_files"]))
-        print("Do: " + str(result["intent"]))
-        print("Accept: " + str(result["acceptance"]))
-        if result.get("architect_override_v2"):
-            note = result["architect_override_v2"]
-            print("Architect v2 wave:", note["wave"])
-            print("Directive:", note["directive"])
-            print("Stop:", note["stop_rule"])
-        p = result["stored_proof"]
-        print(f"STORED proof: {p['matched']}/{p['claimed']} C, {p['bytes']} bytes; C/ASM={p['c_total']}/{p['asm_total']}")
-        if args.detail:
-            for i, step in enumerate(result["steps"], 1):
-                print(f"{i}. {step}")
-            print("Tests:", result["tests"])
-            print("Stop:", result["stop"])
     else:
-        print(json.dumps(result, indent=2, ensure_ascii=False))
+        print(result["status"] + ": " + result["notice"])
     return 0
 
 
