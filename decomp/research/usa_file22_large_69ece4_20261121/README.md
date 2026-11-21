@@ -269,6 +269,56 @@ The prior full-ROM/ELF/relocation G2 gates were not run on this
 - **Status:** `RESEARCH_ONLY / FAILED_NATIVE`. These diagnostic probes exhaust the bounded additional original IDO variants for this attempted source shape; no native original-address full match, no new G2, strict inventory or full local CI. Published USA matching C remains **1965 / 84648 bytes**.
 
 
+## 21 Nov 2026: original-IDO C pointer correction and **native-compiled MIPS** behavioural crosscheck
+
+This experiment supersedes the **semantic** evidence of the earlier failed
+m2c/IDO draft, not the original MIPS or the accepted-implementation manifest.
+See [compiled_native_semantics_20261121/README.md](compiled_native_semantics_20261121/README.md)
+for exact runnable code, source hashes, per-case compiler evidence, and a
+source-only reproducible suite.
+
+**Confirmed bug:** the earlier draft declared the tile-ID map as `u16 *`
+but applied each of its three byte-offset terms' `*2` *before* C's own
+halfword pointer scaling, effectively multiplying the tile index by four.
+This caused genuine original-IDO compiled MIPS to emit 429 Gfx commands rather
+than the original 275 in default mode-2; in the 20-case test it passed 8 and
+failed **12** cases. The **corrected unpadded C source** removes those three
+redundant factors and keeps the correct C pointer type.
+
+**New stronger experiment:** source and negative control compiled by
+authentic IDO 5.3 with original flags, required exactly **2 source HI16/LO16
+relocations**, then were executed as original MIPS instructions in the same
+synthetic guest RAM as the unmodified 1,808-byte USA ROM function.
+The corrected **actual IDO machine code**, not merely a host C model,
+reproduced **20/20 complete command streams and all 5,304/5,304 64-bit
+graphics commands** (4 texture modes x 5 map/page layouts). The original and
+compiled functions both reached the four invalid-geometry division traps,
+although their break PCs differ because code generation differs. Existing
+independent original-MIPS/host C 20/20 command checks and 1,600/1,600
+intermediate tile/page lookup oracle were rerun.
+
+**Compiler diagnostic:** unpadded corrected source remains 1,744 bytes,
+frame 0xF0 (original 1,808 / frame 0x140). Unused, obviously artificial
+stack-local storage can reproduce frame 0x140, all **eight** original
+functional stack offsets (`0x34,0xE0,0xE4,0xE8,0xF0,0xF8,0x100,0x138`)
+and the first **13** identical original machine words, while retaining
+20/20 graphics equivalence. That is a debugging probe, **not** authentic
+source reconstruction. Original `0xF300` and `0xE700` each have **three**
+case-local LUI operations; candidate hoists each to **one**. A pointer alias
+candidate reached 1,792 bytes but increased global relocs from 2 to 78
+and was rejected. Changing source switch/if and using typed Gfx stores did
+not remove the hoisting. A forced `register` hint did not change native
+output. No fabricated ASM, macro patch or linker manipulation was used.
+
+**Status: RESEARCH_ONLY / SEMANTIC_20_OF_20 / FAILED_NATIVE.** Original
+function still remains nonmatching ASM. No native original-address exact
+C, current-USA1965 whole-ROM G2, 7,376 ELF identities/82,103 relocs,
+strict inventory or full `decomp.local_ci` for this candidate.
+USA published count remains **1,965 C / 84,648 bytes**.
+Source-only tested ZIP `goemon-usa-file22-ido-semantic-correction-source-20261121.zip`
+SHA-256 `ac1364d5a0daad5effc5b058273542c21c28cffd24b8a02a244bf93ba8291a2f`
+was freshly unpacked and rerun with all source and original-MIPS comparisons PASS.
+
 ## Repository boundary and next technical hypothesis
 
 The executable hook integration legitimately lives in [native recompilation PR #1](https://github.com/Jake-Arnold/Goemon64Recomp-JP/pull/1), because it instruments `Goemon64Recomp-JP` runtime. **Matching C, semantics, data layout and proof are owned by this `Goemon-64-Tools` decomp research**, not the native launcher. The two need links, not duplicated runtime patch code.
