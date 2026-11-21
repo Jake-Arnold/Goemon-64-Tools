@@ -1,3 +1,7 @@
+**HISTORICAL / SUPERSEDED PLAN (10–11 November 2026).** Do not follow the embedded next-step or G64 ordering as current instructions. Research details remain preserved at the original path for source links. See [CONTINUE.md](CONTINUE.md) and [current README](README.md).
+
+---
+
 # Next ten new main-segment matching-C targets — 2026-11-10
 
 **Historical research report, reconciled 2026-11-11:** the six resource, menu,

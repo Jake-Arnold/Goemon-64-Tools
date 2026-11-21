@@ -1,3 +1,7 @@
+**HISTORICAL / CLOSED PLAN (9 November 2026).** This five-action batch is not an active work queue. Its original 142-function figures and pending-G2 statements are preserved only as dated research evidence. Use [CONTINUE.md](CONTINUE.md), [current README](README.md) and live region-specific proof before selecting new functions.
+
+---
+
 # Next five decomp work packages — 2026-11-09
 
 This is a **five-step technical work plan, not five pre-verified C promotions**.

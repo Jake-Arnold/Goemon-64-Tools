@@ -43,7 +43,7 @@ class CodexSkillTests(unittest.TestCase):
 
     def test_mandatory_skills(self):
         names = {p.parent.name for p in DIR.glob("*/SKILL.md")}
-        self.assertTrue({"goemon-task-brief", "goemon-full-rom-proof",
+        self.assertTrue({"goemon-full-rom-proof",
                          "goemon-ido-codegen", "goemon-vm-stream",
                          "goemon-rea-evidence", "goemon-overlay-analysis",
                          "goemon-evidence-publish"} <= names)

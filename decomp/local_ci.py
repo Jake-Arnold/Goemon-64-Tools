@@ -18,7 +18,7 @@ def build_steps(host_binary: Path, *, quick: bool = False):
     steps = [
         ("Decomp Python tests", [sys.executable, "-m", "unittest", "discover", "-s", "decomp", "-p", "test_*.py", "-q"]),
         ("Verifier / ledger Python tests", [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_decomp_*.py", "-q"]),
-        ("Task and evidence validation", [sys.executable, "-m", "decomp.skill_context", "--validate"]),
+        ("Canonical proof/inventory validation", [sys.executable, "-m", "decomp.skill_context", "--validate"]),
     ]
     if not quick:
         compiler = shlex.split(os.environ.get("CC", "cc"))
