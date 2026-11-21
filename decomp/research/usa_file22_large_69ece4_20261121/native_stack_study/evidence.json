@@ -1,0 +1,53 @@
+{
+  "format": "goemon-usa-file22-native-stack-and-lookup-research-v1",
+  "region": "usa",
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "target": "func_801CC0C4_69ECE4",
+  "original_rom_offset": "0x69ECE4",
+  "original_guest_vma": "0x801CC0C4",
+  "original_bytes": 1808,
+  "authentic_ROM_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "authentic_original_code_sha256": "eaccca6679247d56785806a92a2efe4c1adb73368f723b76d4b6aab5040ef3a9",
+  "native_ido_probes": {
+    "existing_m2c_baseline": {
+      "candidate_prologue_frame_bytes": 240,
+      "first_consecutive_original_instruction_words_equal": 0,
+      "raw_original_words_equal": 21,
+      "raw_original_positions_compared": 436,
+      "candidate_object_text_bytes": 1744,
+      "first_raw_mismatch_original_rom": "0x0069ECE4",
+      "C_source_sha256": "1b790e329e996589e03a0133de8e1018a12b08b668ab988af156d12376e99479"
+    },
+    "unused_storage_20_ints": {
+      "candidate_prologue_frame_bytes": 320,
+      "first_consecutive_original_instruction_words_equal": 12,
+      "raw_original_words_equal": 22,
+      "raw_original_positions_compared": 436,
+      "candidate_object_text_bytes": 1744,
+      "first_raw_mismatch_original_rom": "0x0069ED14",
+      "C_source_sha256": "6f5eb2aac5296dfd5947bf59716ed1e20373434c8a40fe866f228cb9bb71f48e"
+    },
+    "observed_gap_distribution_13_3_2_1": {
+      "candidate_prologue_frame_bytes": 320,
+      "first_consecutive_original_instruction_words_equal": 12,
+      "raw_original_words_equal": 22,
+      "raw_original_positions_compared": 436,
+      "candidate_object_text_bytes": 1744,
+      "first_raw_mismatch_original_rom": "0x0069ED14",
+      "C_source_sha256": "ce5373384523355a4439310a401bee6ec585976b86979caa3c55a87d82216ee2"
+    }
+  },
+  "native_machine_code_exact": false,
+  "intermediate_original_mips_page_and_tile_checks": 1600,
+  "intermediate_scenarios": 20,
+  "intermediate_mismatch_count": 0,
+  "full_command_stream_scenarios": 20,
+  "full_command_stream_records": 5304,
+  "full_command_stream_mismatches": 0,
+  "divide_break_guard_checks": 4,
+  "divide_break_guard_mismatches": 0,
+  "full_ROM_G2": "NOT_RUN",
+  "full_local_CI": "NOT_RUN",
+  "accepted_C_function_delta": 0,
+  "notes": "Stack pad probes are compiler-layout diagnostics only, not reconstructed original source."
+}

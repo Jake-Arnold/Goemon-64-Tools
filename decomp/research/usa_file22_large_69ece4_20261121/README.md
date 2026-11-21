@@ -256,6 +256,19 @@ frame may persist after its original overlay code is overwritten.
 The prior full-ROM/ELF/relocation G2 gates were not run on this
 **still-nonmatching 1,808-byte function**. USA accepted C remains 1,965.
 
+## New original-USA native-stack and lookup-equation study (21 November 2026)
+
+**New source-owned, independently rerun experiment:** [native_stack_study/README.md](native_stack_study/README.md) contains the tested exact original stack map, original $s0..s7/$fp/$ra lifetimes, six signed-division order, small IDO C probe harness, and executable original-MIPS intermediate-load oracle. All nine source files are committed in [native_stack_study/](native_stack_study/) without any ROM, extracted ASM, object, toolchain or runtime memory dump.
+
+- Original IDO 5.3 compiler compiled the existing corrected draft: `1744 B` object, `0xF0` stack, **21/436** raw positional machine words (unresolved relocations), first mismatch at original ROM `0x69ECE4`.
+- A **source-diagnostic only** unused-volatiles probe reproduces the original `0x140` stack and first **12 consecutive identical MIPS instruction words**, moving the first mismatch to original ROM `0x69ED14` (guest `0x801CC0F4`). It still emits `1744 B` versus original `1808 B`, with **22/436** raw same-word positions. A layout-aware 13/3/2/1 reserve distribution also produces `0x140` and **12 exact initial words**, but still places original local slots four bytes off. **Never claim these speculative arrays are actual Konami source.**
+- Original register evidence: `$s0` descriptor; `$s4` inner X column; `$s1/$s2/$s3` clipped X/texture origin; `$s5/$s6/$s7` Y coordinates and T origin; `$fp=0x07054150`; and saved/restored `$ra` reused as `0xE6000000` while no calls occur. The current draft hoists more texture constants into different saved registers, explaining why frame-size matching alone is insufficient.
+- The independent address-level MIPS lookup tracer verifies **1,600/1,600** page+tile intermediate lookups across the 20 input cases, matching guest **page-map pointer, page ID, tile-map pointer and tile ID** using the six recovered original signed divisions. No intermediate differences.
+- Existing full display-list oracle was re-run from a **fresh extracted package**: **20/20** identical command streams, **5,304/5,304** 64-bit commands. Original MIPS divide-guard tests: **4/4 exact break PCs**.
+- Full source-only ZIP in the ChatGPT handoff `goemon-usa-file22-native-ido-stack-lookup-study-20261121.zip`, SHA-256 `01ec23e186fc0be59512d8c2c174b6169bc1b7a6b2f2ad84997ce65dc550f6ff`. Verified every ZIP source Git blob SHA against the generated local source. Direct commands are documented in `native_stack_study/README.md`.
+- **Status:** `RESEARCH_ONLY / FAILED_NATIVE`. These diagnostic probes exhaust the bounded additional original IDO variants for this attempted source shape; no native original-address full match, no new G2, strict inventory or full local CI. Published USA matching C remains **1965 / 84648 bytes**.
+
+
 ## Repository boundary and next technical hypothesis
 
 The executable hook integration legitimately lives in [native recompilation PR #1](https://github.com/Jake-Arnold/Goemon64Recomp-JP/pull/1), because it instruments `Goemon64Recomp-JP` runtime. **Matching C, semantics, data layout and proof are owned by this `Goemon-64-Tools` decomp research**, not the native launcher. The two need links, not duplicated runtime patch code.
