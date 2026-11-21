@@ -1,5 +1,8 @@
 # Goemon 64 matching-C — active continuation
 
+**21 November 2026 Japanese tiny7 local G2:** **7 new original Japanese C / 156 instruction bytes**, source/relocation/ROM-verified on the *published* JP2,282 baseline. Local **Japan 2,289 C / 122,280 bytes / 5,087 ASM**, complete 32 MiB expanded and 16 MiB retail ROM identity, original 7,376 ELF identities, all 80,747 original semantic relocations and full 348+349 CI suites PASS. Source/proof: [native G2](results/japan_0_2289_tiny7_g2_20261121.json) and [replay](research/jp_tiny7_20261121/README.md). **This is local-only pending GitHub publication.** Three exact isolated matches already accepted in JP2,268 were excluded from the seven-function count.
+
+
 **21 November 2026 JP2,282 published and remotely verified:** Four new Japanese original C functions / 120 original instruction bytes, [implementation commit `0d4380410965`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/0d438041096567c85b315eb284ea9b548b9f8491). Japanese **2,282 original-address C / 122,124 bytes / 5,094 ASM**. Exact 32 MiB expanded and 16 MiB retail ROM, 7,376 original ELF functions, 80,747 original relocations, strict inventory and full local CI passed. [G2 evidence](results/japan_0_2282_donor4_g2_20261121.json); [publication record](results/japan_0_2282_donor4_publication_20261121.json).
 
 

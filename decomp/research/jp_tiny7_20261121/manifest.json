@@ -1,0 +1,64 @@
+{
+  "region": "japan_0",
+  "research_tier": "ISOLATED_EXACT",
+  "expected_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "count": 7,
+  "functions": [
+    {
+      "name": "func_801D7854_645D44",
+      "rom_offset": "0x645D44",
+      "size": 20,
+      "original_sha256": "9ce397f785e317102e1adda295b0a015bba2feca09c550caa62a5d0269f6c429",
+      "source_sha256": "d528d9c833325904095fb411d3e8797a1f050420f719f304da589ae0c56b5229",
+      "relocations": []
+    },
+    {
+      "name": "func_801DDC04_64C0F4",
+      "rom_offset": "0x64C0F4",
+      "size": 20,
+      "original_sha256": "57223ed0a81e8e508645fe7dfce233e4257a031d41d4c3450c43b1f580f0ab53",
+      "source_sha256": "8ae79f5763c292a844c9fd403c650573f925772116b32008f747a5b3f7716dca",
+      "relocations": []
+    },
+    {
+      "name": "func_802291F8_6928E8",
+      "rom_offset": "0x6928e8",
+      "size": 24,
+      "original_sha256": "2930e14af474b7ead5ad05e9a833dda206729b17e32be65a316d8d9921be8c92",
+      "source_sha256": "09ed89ed31c4c3ec2f2e59c4092c08344beae201bf0f82aa149b21e184e22ff4",
+      "relocations": []
+    },
+    {
+      "name": "func_8022950C_692BFC",
+      "rom_offset": "0x692bfc",
+      "size": 24,
+      "original_sha256": "2930e14af474b7ead5ad05e9a833dda206729b17e32be65a316d8d9921be8c92",
+      "source_sha256": "79a13f2e24cd635677383d4d27c4aa4a6a579abc4b812e4c71c33a5d401e5173",
+      "relocations": []
+    },
+    {
+      "name": "func_8021DAEC_5D907C",
+      "rom_offset": "0x5d907c",
+      "size": 20,
+      "original_sha256": "f688ef8084697424b0aa9e1763891f40f428a46512bcd86cced819aae4b51251",
+      "source_sha256": "73faf0be21b4a8ef0087cf1b641afe3a9ef63be803f37cd6180aefbcf090048f",
+      "relocations": []
+    },
+    {
+      "name": "func_8021DB00_5D9090",
+      "rom_offset": "0x5d9090",
+      "size": 24,
+      "original_sha256": "7ba7aff9c3a6f5db578b0838579846ed5425f797e24b059d20b3525a0142ae2f",
+      "source_sha256": "8edec7a4bedd5c8511ebb0bb7f0a248ff96224ba2225f81e134e93f0cfde4ed7",
+      "relocations": []
+    },
+    {
+      "name": "func_8021FDA4_5DB334",
+      "rom_offset": "0x5db334",
+      "size": 24,
+      "original_sha256": "20fc41a85c747badb74b352b248d8067d4935e4eca287baeed7bb9ec5c92a9a3",
+      "source_sha256": "2692d34ea2d32f89504c1bfd93ec30b1b132aa2bb8b5aa82c73603404bb3a322",
+      "relocations": []
+    }
+  ]
+}
