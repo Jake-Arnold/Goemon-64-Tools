@@ -13,6 +13,10 @@ python3 -m decomp.task_registry validate
 
 When the user says **"which tasks are pending?"**, **"continue the Goemon backlog"**, or **"resume GQ-..."**, use this registry before consulting the historical 100-task plan. Do not silently hide `blocked_external`, `blocked_input`, `blocked_rebase`, or `blocked_verification` tasks; the user needs to know what cannot be executed remotely. Output the priority, status, blocker, conflicts and next actionable step. For a named ID, show its actual handoff and execute only within the available tool and evidence limits; do not claim mock tests are gameplay, or native isolated exactness is full ROM verification.
 
+## Script artifact upload requirement
+
+For every task that references a runnable script, Project64 hook, verifier, comparator or script kit, **upload its actual source-only files or ZIP to the user in the same task handoff**, with a verified downloadable artifact link, complete dependencies and a run command. Filename-only mentions, checksums and attachments from older chats are insufficient; do not describe a script as available solely because a previous conversation once contained it. Safe repository-hosted source may also be checked in for persistence, but does not replace delivery of the requested artifact. Never include ROM/game-asset bytes, proprietary compilers, savestates or personal memory dumps. If the artifact is unavailable, mark the missing script as a `blocked_input` blocker rather than implying the task is executable. This policy applies to future deliveries, including continuations of existing GQ tasks.
+
 ## End-of-session pause / checkpoint protocol
 
 1. Re-fetch `chatgptweb/decomp` HEAD, current issues/PRs, all accepted original-ROM offset sets, and the task's references. Historical task `last_reviewed` and `reconciled_head` are **snapshots**, never automatic claims that a later promotion has not happened. Reconcile and remove/supersede completed work rather than duplicate it.

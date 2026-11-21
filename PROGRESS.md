@@ -1,3 +1,10 @@
+## 21 November 2026 — Require uploaded scripts for every Goemon task handoff (DOCUMENTATION ONLY)
+
+- User requirement: whenever a task references a runnable script or script kit, upload the actual source-only script(s)/ZIP as a directly downloadable artifact **with that task delivery**; filenames, hashes, old-chat attachments and prose references are insufficient. Include dependencies/run commands and verify artifact accessibility.
+- Recorded this policy in `AGENTS.md` and `decomp/tasks/README.md`. Safe Git-hosted sources can supplement the upload. If the script cannot be provided safely or is missing, explicitly mark `blocked_input`; never claim the handoff is ready. Keep ROMs, copyrighted assets, savestates, proprietary toolchains, credentials and raw traces private.
+- Checks: verified both new policy blocks are present in the generated file contents and existing headings retained. Documentation only; no native C, repository script sources, manifests, task execution or CI changed. This update does not retroactively restore the earlier Project64 kit; future handoffs must supply it anew.
+- Next: enforce the upload check whenever a GQ task with scripts is delivered or resumed.
+
 ## 21 November 2026 — Project64 first-bomb live-debug kit registered as GQ-VM-001 (RESEARCH_ONLY / MANUAL_INPUT_PENDING)
 
 - Refreshed original `chatgptweb/decomp` task-registry skill and live head; updated **existing** `GQ-VM-001` rather than duplicating Bomb Text Skip work. Status `blocked_external` P1, awaiting actual local Windows Project64 3.x manual normal/one-frame-Start trials from one authentic first Gourmet Sub bomb pre-dialogue savestate. No gameplay execution was claimed.

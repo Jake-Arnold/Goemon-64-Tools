@@ -2,6 +2,10 @@
 
 Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C core).
 
+## Required delivery of task-referenced scripts
+
+When a Goemon task, issue, handoff or response references a runnable script, recorder, verifier or script kit, **upload the actual source-only script(s) or ZIP as a downloadable artifact in that same task delivery/conversation**, and link the uploaded artifact directly. A filename, hash, old conversation attachment or description alone is not delivery. Where safe and permitted, also commit the reusable source to the appropriate decomp research/task directory so a later agent can retrieve it; a GitHub link is supplemental, not a substitute for the requested upload. Include all dependencies and a minimal run command, and verify the artifact exists and can be accessed before marking the handoff ready. Never upload ROMs, copyrighted asset dumps, proprietary tools, saves, credentials or raw memory traces. If the script is unavailable or cannot safely be uploaded, explicitly flag the task as missing its script / blocked_input; do not imply the script is attached or retrievable.
+
 ## Active resumable Goemon task queue
 
 When asked to list pending Goemon work, resume a queued task or checkpoint
