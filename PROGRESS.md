@@ -3296,3 +3296,11 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 ```
 
 **Commit rule:** Every functional/documentation change must update this file in the same commit. Push the commit to `main` (or push a feature branch and merge it) as part of completing the change; never claim a push succeeded without checking GitHub.
+
+### 2026-11-21 — Guard draft task registry against malformed JSON value types
+
+- **Changed:** On draft PR #154, make `decomp.task_registry.validate` report schema errors for non-object roots/tasks and non-string/unhashable SHA, ID, enum and conflict values. Add ROM-free malformed-input regression cases and verify the CLI returns an error instead of a Python traceback.
+- **Why:** A malformed hand-edited registry could previously raise `TypeError` or `AttributeError` during validation rather than fail closed, even though the registry is meant to be a safe resumable task entry point.
+- **Tested:** Reviewed the exact remote source and added deterministic unittest coverage. **Tests not executed in this session**: the full authenticated GitHub source checkout is unavailable through the local shell (GitHub DNS resolution fails); the draft remains pending full `python3 -m decomp.local_ci` on a complete checkout. No original-ROM/native G2/gameplay testing claimed.
+- **Remaining:** Review and run full ROM-free CI with the combined current checkout before merging #154. Native C ownership and accepted manifests are unchanged.
+- **Next:** Rebase #154 against merged #149/#150/#153 as needed and repeat the full local CI gate.

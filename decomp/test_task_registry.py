@@ -50,6 +50,31 @@ class TaskRegistryTests(unittest.TestCase):
         d["tasks"][0]["status"] = "done"
         self.assertTrue(any("completion_proof" in e for e in r.validate(d)))
 
+    def test_malformed_json_returns_schema_errors_not_tracebacks(self):
+        """Invalid JSON value types must fail closed, including through the CLI."""
+        malformed = [None, [], 23]
+        for label, mutate in (
+            ("head_type", lambda d: d.update(reconciled_head=[])),
+            ("non_object_task", lambda d: d["tasks"].append(None)),
+            ("id_type", lambda d: d["tasks"][0].update(id=[])),
+            ("status_type", lambda d: d["tasks"][0].update(status=[])),
+            ("workstream_type", lambda d: d["tasks"][0].update(workstream={})),
+            ("conflict_type", lambda d: d["tasks"][0].update(conflicts_with=[[]])),
+        ):
+            d = copy.deepcopy(self.data)
+            mutate(d)
+            malformed.append(d)
+        for bad in malformed:
+            with self.subTest(value=repr(bad)[:100]):
+                self.assertTrue(r.validate(bad))
+        with tempfile.TemporaryDirectory() as work:
+            target = Path(work) / "bad_registry.json"
+            target.write_text(json.dumps({"format": "goemon-task-registry-v1",
+                                          "tasks": [None]}), encoding="utf-8")
+            with contextlib.redirect_stderr(io.StringIO()) as stream:
+                self.assertEqual(r.main(["--registry", str(target), "validate"]), 2)
+            self.assertIn("INVALID:", stream.getvalue())
+
     def test_checkpoint_sha_and_history(self):
         with tempfile.TemporaryDirectory() as work:
             target = Path(work) / "registry.json"

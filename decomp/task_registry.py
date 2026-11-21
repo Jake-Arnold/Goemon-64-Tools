@@ -32,11 +32,14 @@ def digest(path: Path = REGISTRY) -> str:
 
 def validate(data: dict) -> list[str]:
     errors: list[str] = []
+    if not isinstance(data, dict):
+        return ["registry root must be an object"]
     if data.get("format") != "goemon-task-registry-v1":
         errors.append("format must be goemon-task-registry-v1")
     if data.get("branch") != "chatgptweb/decomp":
         errors.append("branch must remain chatgptweb/decomp")
-    if not SHA_PATTERN.fullmatch(data.get("reconciled_head", "")):
+    head = data.get("reconciled_head", "")
+    if not isinstance(head, str) or not SHA_PATTERN.fullmatch(head):
         errors.append("reconciled_head must be a 40-character SHA")
     tasks = data.get("tasks")
     if not isinstance(tasks, list):
@@ -48,16 +51,18 @@ def validate(data: dict) -> list[str]:
         if not isinstance(t, dict):
             errors.append(f"{prefix}: task must be an object")
             continue
-        if not ID_PATTERN.fullmatch(ident):
+        if not isinstance(ident, str) or not ID_PATTERN.fullmatch(ident):
             errors.append(f"{prefix}: invalid ID")
-        if ident in seen:
-            errors.append(f"{prefix}: duplicate ID")
-        seen.add(ident)
+        if isinstance(ident, str):
+            if ident in seen:
+                errors.append(f"{prefix}: duplicate ID")
+            seen.add(ident)
         for key in ("title", "summary", "proof_tier", "next_step", "acceptance", "last_reviewed"):
             if not isinstance(t.get(key), str) or not t[key].strip():
                 errors.append(f"{prefix}: missing {key}")
         for key, valid in (("status", STATUSES), ("workstream", WORKSTREAMS), ("region", REGIONS)):
-            if t.get(key) not in valid:
+            value = t.get(key)
+            if not isinstance(value, str) or value not in valid:
                 errors.append(f"{prefix}: invalid {key}")
         if type(t.get("priority")) is not int or t["priority"] not in (1, 2, 3):
             errors.append(f"{prefix}: priority must be 1, 2 or 3")
@@ -73,8 +78,10 @@ def validate(data: dict) -> list[str]:
             if not isinstance(c, dict) or not all(k in c for k in ("at", "status", "note")):
                 errors.append(f"{prefix}: invalid history checkpoint")
     for t in tasks:
+        if not isinstance(t, dict):
+            continue
         for c in t.get("conflicts_with", []) if isinstance(t.get("conflicts_with"), list) else []:
-            if c not in seen or c == t.get("id"):
+            if not isinstance(c, str) or c not in seen or c == t.get("id"):
                 errors.append(f"{t.get('id')}: invalid conflict {c!r}")
     return errors
 
