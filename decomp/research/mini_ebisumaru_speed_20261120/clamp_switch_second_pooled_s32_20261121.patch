@@ -1,0 +1,43 @@
+--- a/baseline.c
++++ b/switch_second_pooled_s32.c
+@@ -101,34 +101,34 @@
+     case 0x95:
+     case 0x9A:
+         pool_u16_1 = 0x100;
+-        pool_u16_2 = 0x50;
++        pool_s32_0 = 0x50;
+         pool_fp_0 = (f32) (f64) D_8020A8A4_5C67B4;
+         break;
+     case 0x99:
+         pool_u16_1 = 0x60;
+-        pool_u16_2 = 0x50;
++        pool_s32_0 = 0x50;
+         pool_fp_0 = (f32) ((f64) D_8020A8A8_5C67B8 * D_8020A8B0_5C67C0);
+         break;
+     case 0x94:
+         pool_u16_1 = 0x90;
+-        pool_u16_2 = 0x50;
++        pool_s32_0 = 0x50;
+         pool_fp_0 = (f32) ((f64) D_8020A8B8_5C67C8 * D_8020A8C0_5C67D0);
+         break;
+     case 0x8E:
+         pool_u16_1 = 0x40;
+-        pool_u16_2 = 0x30;
++        pool_s32_0 = 0x30;
+         pool_fp_0 = (f32) ((f64) D_8020A8C8_5C67D8 * 0.5);
+         break;
+     case 0x9F:
+     default:
+         pool_u16_1 = 0x70;
+-        pool_u16_2 = 0x50;
++        pool_s32_0 = 0x50;
+         pool_fp_0 = (f32) (f64) D_8020A8CC_5C67DC;
+         break;
+     }
+-    pool_u16_3 = pool_u16_2;
++
+     func_80003EA0_4AA0(pool_u16_1);
+-    pool_fp_1 = func_80003EA0_4AA0(pool_u16_3);
++    pool_fp_1 = func_80003EA0_4AA0(pool_s32_0);
+     temp_v1 = M2C_FIELD(arg0, void **, 0x5C);
+     pool_u8_0 = M2C_FIELD(temp_v1, u8 *, 0x59);

@@ -1,0 +1,83 @@
+{
+  "format": "goemon-usa-clamp-trig-abi-stack-research-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "rom_offset": "0x589220",
+  "vma": "0x801CD310",
+  "original_length": 4320,
+  "original_frame": 232,
+  "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pristine_baseline_match_bytes": 33554432,
+  "baseline": {
+    "source_sha256": "53f11a64313715e20c9c7e3faf2c2257d945833f9f9854700e6b5fd2b04d510b",
+    "length": 4324,
+    "frame": 232,
+    "nonreloc_equal": 24,
+    "nonreloc_comparable": 902,
+    "exact_relocations": 10,
+    "first_trig_drift": 20,
+    "second_trig_drift": 20,
+    "context_anchor_drift": 16,
+    "jump_table_drifts": [
+      4,
+      8,
+      12,
+      16,
+      20
+    ]
+  },
+  "pooled_s32": {
+    "source_sha256": "e8a90fad66111e52aedca1bf347867456f60606a73a8b32af25767628d9b22ea",
+    "length": 4312,
+    "frame": 232,
+    "nonreloc_equal": 29,
+    "nonreloc_comparable": 898,
+    "exact_relocations": 6,
+    "first_trig_drift": 4,
+    "second_trig_drift": 8,
+    "context_anchor_drift": 4,
+    "jump_table_drifts": [
+      4
+    ],
+    "native_exact": false
+  },
+  "original_abi": {
+    "first_trig_call": "0x19c",
+    "second_trig_call": "0x1a4",
+    "second_angle_spill_at": "0x198",
+    "second_angle_stack_slot": "0x6c",
+    "first_angle_stack_slot": "0x6e",
+    "switch_scalar_stack_slot": "0x5c",
+    "trig_output_f0_store_at": "0x1b0",
+    "trig_output_stack_slot": "0x64",
+    "first_trig_output_reload": "0x39c"
+  },
+  "source_original_calls": 33,
+  "source_original_native_sqrts": 9,
+  "source_original_text_relocations": 101,
+  "ordered_type_symbol_pairs_equal": 99,
+  "context_block_native_words_baseline": 0,
+  "context_block_native_words_revised": 8,
+  "context_shape_equal_reg_agnostic": 34,
+  "tests": {
+    "authentic_pristine_usa_rom": "PASS_33554432_BYTES",
+    "native_compiles": 8,
+    "exact_native_matches": 0,
+    "original_ROM_call_stack_audit": "PASS",
+    "synthetic_decoder": "PASS_4",
+    "gcc_asan_ubsan_switch_cases": "PASS_65536",
+    "clang_asan_ubsan_switch_cases": "PASS_65536",
+    "clean_zip_replay": "PASS_EXPECTED_FAILED_NATIVE",
+    "candidate_rom": "NOT_RUN",
+    "combined_g2": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "full_local_ci": "NOT_RUN",
+    "gameplay": "NOT_RUN"
+  },
+  "source_zip_sha256": "52234c08b7ec24639ef99baa7ff24d9c89e10af3f6bbce274587a81e87f2be68",
+  "accepted_usa_before": 1965,
+  "accepted_usa_after": 1965,
+  "original_C_bytes": 84648,
+  "remaining_asm": 5398
+}
