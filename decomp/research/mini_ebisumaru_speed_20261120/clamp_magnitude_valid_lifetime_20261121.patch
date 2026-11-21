@@ -1,0 +1,37 @@
+--- a/clamp_motion_arg_split_nonmatching.c
++++ b/clamp_guarded_before_call.c
+@@ -53,6 +53,7 @@
+     f32 pool_fp_0;
+     f32 pool_fp_1;
+     f32 pool_fp_2;
++    u8 magnitude_valid;
+     f32 pool_fp_3;
+     f32 pool_fp_4;
+     f32 pool_fp_5;
+@@ -137,7 +138,7 @@
+         M2C_FIELD(arg0, f32 *, 0x68) = 0.0f;
+         pool_u8_0 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), u8 *, 0x59);
+     }
+-    pool_fp_2 = 0.0f;
++    magnitude_valid = 0;
+     pool_u16_2 = 0;
+     if (((pool_u8_0 == 0) && (M2C_FIELD(arg0, u16 *, 0x98) != 0) && (M2C_FIELD(arg0, f32 *, 0xA4) <= 0.0f)) || (M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), u16 *, 0) & 2)) {
+         if ((f64) M2C_FIELD(arg0, f32 *, 0x88) < D_8020A8D0_5C67E0) {
+@@ -204,6 +205,7 @@
+             pool_fp_4 = M2C_FIELD(arg0, f32 *, 0x7C);
+             pool_u16_2 = pool_u16_0;
+             pool_fp_2 = sqrtf((pool_fp_4 * pool_fp_4) + ((pool_fp_1 * pool_fp_1) + (pool_fp_3 * pool_fp_3)));
++            magnitude_valid = 1;
+             M2C_FIELD(arg0, f32 *, 0x74) = 0.0f;
+             M2C_FIELD(arg0, f32 *, 0x78) = 0.0f;
+             M2C_FIELD(arg0, f32 *, 0x7C) = 0.0f;
+@@ -470,6 +472,9 @@
+             pool_u16_3 = pool_u16_1;
+             pool_u16_4 = pool_u16_2 - pool_u16_1;
+             pool_u16_2 = pool_u16_4;
++            if (!magnitude_valid) {
++                pool_fp_2 = 0.0f;
++            }
+             pool_fp_2 *= func_80003E10_4A10(pool_u16_4 & 0xFFFF);
+             pool_u16_1 = pool_u16_3 + (s32) (32.0f * pool_fp_2);
+             pool_u16_3 = pool_u16_1;
