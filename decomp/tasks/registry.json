@@ -1,0 +1,323 @@
+{
+  "format": "goemon-task-registry-v1",
+  "branch": "chatgptweb/decomp",
+  "reconciled_head": "553bc85e4f6e3a9be08b8e85c01768a82ad646be",
+  "last_reviewed": "2026-11-21",
+  "policy": "Curated actionable handoff list; GitHub issues, live manifests and verified native G2 reports supersede stale task details. Tasks are NOT proof of accepted C or authorization for unsafe gameplay writes.",
+  "tasks": [
+    {
+      "id": "GQ-CRIGHT-001",
+      "title": "Capture paired normal/held C-Right Project64 live traces",
+      "status": "blocked_external",
+      "priority": 1,
+      "workstream": "japan-glitch",
+      "region": "japan_0",
+      "proof_tier": "INSTRUMENTED_MOCK_TESTED / LIVE_INPUT_PENDING",
+      "summary": "JP held gate at 0x802125A0 aliases eight stage task slots. Synthetic stage->resolver->wrapper shows categories 1/2/5/7/11 forward the stage task to allocator; live execution not observed. Trace kit has 22 onexec hooks and a comparator; 7/7 host comparator tests passed. No live Project64 evidence.",
+      "requires": [
+        "Windows Project64 3.x script debugger + interpreter",
+        "same real Japanese pre-transition savestate",
+        "normal and held/release JSONL captures"
+      ],
+      "next_step": "Record two read-only savestate-matched passes. At 0x802125A0 capture held bit; at 0x8021BF44 resolver call; at 0x8021BFBC actual allocator $a0; check stage +0x90/+0x94 and task callback. Run compare_cright_traces.py and preserve minimal sanitized traces, then classify REAL_ALIAS_CALL, NO_ALIAS_CALL, or INCONCLUSIVE. The script kit was delivered in the 20-Nov conversation as Goemon-Japan-CRight-Project64-LiveTrace-Kit-20261120.zip (SHA-256 68cb525a941faa7407a95d62c4c1ede84f2a21195e6c09f35465fbdf5b6494aa). Its raw bytes are NOT in Git.",
+      "acceptance": "Both authentic trace files and overlay opcode signatures verified; independently confirm allocator call, argument and stage-pointer state; distinguish absent event from proof of absence.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/95#issuecomment-7051814616",
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/95#issuecomment-7051410257"
+      ],
+      "conflicts_with": [],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-CRIGHT-002",
+      "title": "Recover exact JP 99-instruction stage-initializer C",
+      "status": "pending",
+      "priority": 2,
+      "workstream": "japan-decomp",
+      "region": "japan_0",
+      "proof_tier": "FAILED_NATIVE 69/99",
+      "summary": "JP func_80212514_5CDAA4 (ROM 0x5CDAA4, 396 B) gates on held C-Right. The prior IDO candidate has correct extent but only 69/99 exact instructions. USA analog differs and is not source-equivalent.",
+      "requires": [
+        "pinned native IDO 5.3",
+        "current Japanese overlay source/owner and regional G2 staging"
+      ],
+      "next_step": "Recheck function not promoted at latest HEAD; use original instruction order and saved-register/memory access variants with finite budget. Stop on measured mismatch; keep original ASM unless 99/99 plus full G2.",
+      "acceptance": "Original-address 396/396 C bytes + symbol/relocation ownership match; combined JP 32 MiB original ROM, ELF function identities, semantic relocations, strict inventory, full CI pass before publication.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/95"
+      ],
+      "conflicts_with": [],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-CRIGHT-003",
+      "title": "Trace real allocator child/parent mutations after aliased call",
+      "status": "blocked_external",
+      "priority": 1,
+      "workstream": "japan-glitch",
+      "region": "japan_0",
+      "proof_tier": "ORIGINAL_MIPS_CONDITIONAL",
+      "summary": "Original func_8021BF18_5D74A8 forwards the category resolver return as task-creation first argument at 0x8021BFBC. 14 synthetic MIPS call-boundary chains pass, but no real allocation/parenting has been observed.",
+      "requires": [
+        "GQ-CRIGHT-001 authentic allocator-event capture, or equivalent independently verified live trace"
+      ],
+      "next_step": "If a real held-state aliased allocator call occurs, step through 0x80035558, 0x8003542C and 0x8003492C. Record returned task, parent, next/previous links, callbacks, failure/recovery. Contrast normal transition from same savestate; never alter RAM.",
+      "acceptance": "At least one verified real task-tree mutation or confirmed no-op at the original allocator call, with PC sequence and before/after evidence; do not label a visual-glitch cause without live correlation.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/95#issuecomment-7051410257",
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/95#issuecomment-7051814616"
+      ],
+      "conflicts_with": [],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-USA-001",
+      "title": "Integrate remaining four USA task-callback C functions",
+      "status": "pending",
+      "priority": 1,
+      "workstream": "usa-decomp",
+      "region": "usa",
+      "proof_tier": "ISOLATED_EXACT (historical); G2 pending",
+      "summary": "Four original ASM entries still unaccepted from 15-function task callback research: 0x35E4C, 0x35EAC, 0x35F14, 0x35F44. All 15 Japanese equivalents already accepted; do not re-promote them.",
+      "requires": [
+        "fresh USA 1,965+ published accepted-function union",
+        "original-C research source, owner and relocations"
+      ],
+      "next_step": "Reconcile source vs latest accepted manifest and any pending scheduler PR. Stage only four still-ASM USA spans and prove together with all already accepted C. Do not count historical seven USA again.",
+      "acceptance": "Native original-address bytes + all original unit/ELF/semantic relocations + exact 32 MiB USA ROM + strict inventory + full local_ci; source/proof/PROGRESS in one commit.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/101"
+      ],
+      "conflicts_with": [
+        "GQ-USA-002",
+        "GQ-USA-004",
+        "GQ-USA-005"
+      ],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-USA-002",
+      "title": "Integrate two remaining USA task-lifecycle wrappers",
+      "status": "pending",
+      "priority": 1,
+      "workstream": "usa-decomp",
+      "region": "usa",
+      "proof_tier": "ISOLATED_EXACT (historical); G2 pending",
+      "summary": "From original 17-task cross-region batch, all JP17 accepted and USA15/17 accepted. Remaining USA func_800351B4_35DB4 and func_800353F8_35FF8. Insertion wrappers 0x3584C/0x35884 already promoted in USA1,965.",
+      "requires": [
+        "fresh USA accepted union through latest promotion",
+        "source provenance + full native toolchain"
+      ],
+      "next_step": "Deduplicate both offsets against current accepted C, stage only still-unaccepted wrappers, rerun full G2 and original relocation inventory. Record any relocation/scheduling failures without promotion.",
+      "acceptance": "Two original-address functions exactly integrated with all accepted C and complete USA ROM, relocation/inventory/full CI gates; published remote SHA verified.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/110",
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/138"
+      ],
+      "conflicts_with": [
+        "GQ-USA-001",
+        "GQ-USA-004",
+        "GQ-USA-005"
+      ],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-USA-003",
+      "title": "Resolve 344-byte USA scheduler executor IDO mismatch",
+      "status": "pending",
+      "priority": 2,
+      "workstream": "usa-decomp",
+      "region": "usa",
+      "proof_tier": "FAILED_NATIVE",
+      "summary": "USA func_80034734_35334 (0x35334, 344 B) remains ASM after multiple 328-byte candidates. Original register-save and stack frame differ. 0x35724 and other insertion wrappers now accepted; do not reattempt them.",
+      "requires": [
+        "pinned original IDO and source ABI research"
+      ],
+      "next_step": "Investigate saved-register lifetime, frame shape and compiler scheduling with bounded variants. Use decomp/docs/USA_TASK_SCHEDULER_LIFECYCLE_20261121.md and issue #138; abort if no measured improvement.",
+      "acceptance": "Exact original instructions, layout and relocations; only then combined full ROM/inventory/full CI; otherwise research-only.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/138",
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/blob/chatgptweb/decomp/decomp/docs/USA_TASK_SCHEDULER_LIFECYCLE_20261121.md"
+      ],
+      "conflicts_with": [
+        "GQ-USA-001",
+        "GQ-USA-002"
+      ],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-USA-004",
+      "title": "Rebase Mini Ebisumaru exact functions from draft PR #144",
+      "status": "blocked_rebase",
+      "priority": 2,
+      "workstream": "usa-decomp",
+      "region": "usa",
+      "proof_tier": "ISOLATED_EXACT / pristine-USA G2 only",
+      "summary": "Two source candidates at USA 0x59E67C (148 B) and 0x59FCF0 (220 B) passed isolated original IDO and pristine ROM G2; NOT combined with newer accepted decomp C. Draft PR #144 targets old USA1,723 baseline.",
+      "requires": [
+        "refresh/merge draft PR #144 atop current USA 1,965+ source",
+        "dedupe original offsets and conflict with other pending USA promotions"
+      ],
+      "next_step": "Reconcile PR #144 against live HEAD and identify exact owners; run fail-closed combined G2 with all accepted C, ELF/reloc audit, strict inventory and full local_ci. Do not merge pristine-only proof as accepted.",
+      "acceptance": "Fresh combined USA exact ROM and complete accepted function/relocation inventory; publish source+proof+PROGRESS only after all gates.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/144"
+      ],
+      "conflicts_with": [
+        "GQ-USA-001",
+        "GQ-USA-002",
+        "GQ-USA-005"
+      ],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-USA-005",
+      "title": "Reconcile original-USA 233 isolated-exact research portfolio",
+      "status": "blocked_input",
+      "priority": 3,
+      "workstream": "usa-decomp",
+      "region": "usa",
+      "proof_tier": "RESEARCH_ONLY (historical 233 standalone exact)",
+      "summary": "Historic issue #145 claims 233 native-exact research candidates on old USA1,723 baseline; subsequent USA promotions may overlap. User source-only ZIP not in repository. Never add 233 to accepted count on historical evidence.",
+      "requires": [
+        "materialized source-only 233-candidate research archive or complete committed sources",
+        "latest source/accepted offsets and owner map"
+      ],
+      "next_step": "Recover authentic source hashes, dedupe against newest accepted ROM offset set and all open promotion PRs; partition into bounded owner batches. Publish refreshed candidate ledger before any whole-ROM integration.",
+      "acceptance": "Unique original-offset/owner ledger and a gated, native/ELF/relocation/inventory/full CI proof per promoted group. Missing archive = remain blocked, not invented.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/145"
+      ],
+      "conflicts_with": [
+        "GQ-USA-001",
+        "GQ-USA-002",
+        "GQ-USA-004"
+      ],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-JP-001",
+      "title": "Solve two Japan C relocation-sensitive functions",
+      "status": "pending",
+      "priority": 2,
+      "workstream": "japan-decomp",
+      "region": "japan_0",
+      "proof_tier": "FAILED_ROM_RELOCATIONS",
+      "summary": "JP func_08001228_6B3168 (72 B) and func_080012AC_6B51AC (192 B) were excluded from the accepted 1,686 batch because C removed five R_MIPS_PC16 relocations. 507/509 other batch functions already accepted.",
+      "requires": [
+        "current Japanese2,123+ proof and original relocation owner"
+      ],
+      "next_step": "Find source/ASM ownership strategy that preserves all five original semantic relocations, not merely exact code bytes. Do not defeat relocation verifier or modify raw instructions.",
+      "acceptance": "Complete original function bytes AND original relocation multiset, all JP 32 MiB bytes, all ELF identities, strict inventory, full local_ci; only then accept.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/117"
+      ],
+      "conflicts_with": [
+        "GQ-JP-002"
+      ],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-JP-002",
+      "title": "Reconcile Japanese stage-reset 120-byte native-C candidate",
+      "status": "blocked_input",
+      "priority": 2,
+      "workstream": "japan-decomp",
+      "region": "japan_0",
+      "proof_tier": "ISOLATED_EXACT / not verified in combined JP",
+      "summary": "Prior C-Right research independently reported 30/30 original JP IDO instructions for func_8021DB74_5D9104. USA equivalent 0x5D42D4 is ALREADY accepted; verify JP membership in current live manifests before claiming new work.",
+      "requires": [
+        "complete prior source-only research kit from conversation or fresh source reconstruction",
+        "live Japan accepted C membership / overlay owner"
+      ],
+      "next_step": "Recheck JP function not accepted; recover original-C source hash and original relocations; if still eligible, run entire JP native G2 with all accepted C, not just standalone byte match.",
+      "acceptance": "Fresh exact 120 original JP bytes, original relocations and full JP ROM/ELF/inventory/full CI; never count USA function again.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/95#issuecomment-7051410257"
+      ],
+      "conflicts_with": [
+        "GQ-JP-001"
+      ],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-VM-001",
+      "title": "Bomb Text Skip real timing trace and pause-reset native research",
+      "status": "pending",
+      "priority": 2,
+      "workstream": "japan-glitch",
+      "region": "both",
+      "proof_tier": "STATIC_ROM_VERIFIED / FAILED_NATIVE / RESEARCH_ONLY",
+      "summary": "JP/USA pause/reset structural cross-region research: 721/721 upper-16 MIPS encoding matches, but reset/pause C variants remain nonmatching. No gameplay timing trace. Original research explicitly forbids promotion during this phase.",
+      "requires": [
+        "read-only live Start->pause->VM reset->checkpoint trace for gameplay claim",
+        "separate native C research if resumed"
+      ],
+      "next_step": "Preserve no-promotion constraint from issue #151. Capture real sequencing only when emulator is available; otherwise continue bounded static native mismatch analysis without changing accepted counts.",
+      "acceptance": "Verifiable live PC ordering for glitch claim; standalone IDO exact alone is insufficient for future promotion, which requires new authorization and full gates.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/151",
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/139"
+      ],
+      "conflicts_with": [],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-MAINT-001",
+      "title": "Review retired G64-001..100 task-ledger PR #149",
+      "status": "pending",
+      "priority": 2,
+      "workstream": "maintenance",
+      "region": "none",
+      "proof_tier": "DRAFT_PR / LOCAL_CI_REPORTED",
+      "summary": "Draft #149 moves closed G64-001..100 source plan to history and decouples CLI/CI from obsolete plan. It modifies agent/plan docs and PROGRESS, potentially overlapping task-registry instructions.",
+      "requires": [
+        "review current PR #149 base/head and changed-file diff against current chatgptweb/decomp"
+      ],
+      "next_step": "Review and rebase PR #149 after task-registry PR integration, preserve task registry and discoverability references. Keep old plan archived, not active; never merge into main.",
+      "acceptance": "No obsolete-task dependency; no erased evidence; changed paths reviewed; full relevant ROM-free CI for actual combined code.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/149"
+      ],
+      "conflicts_with": [
+        "GQ-MAINT-002"
+      ],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    },
+    {
+      "id": "GQ-MAINT-002",
+      "title": "Review current-documentation cleanup PR #150",
+      "status": "pending",
+      "priority": 2,
+      "workstream": "maintenance",
+      "region": "none",
+      "proof_tier": "DRAFT_PR / LOCAL_CI_REPORTED",
+      "summary": "Draft #150 fixes misleading historical README and inventory headlines; touches docs and PROGRESS with a future merge overlap. Not a game-code promotion.",
+      "requires": [
+        "review #150 target and diff; compare most recent published counts"
+      ],
+      "next_step": "Rebase/merge independently of #149 and this new task-registry PR; retain registry links in decomp/CONTINUE.md, do not replace authoritative newer native proof counts with stale snapshots.",
+      "acceptance": "Current status/count provenance preserved; links from AGENTS and CONTINUE intact; no unverified G2 claims.",
+      "evidence": [
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/150"
+      ],
+      "conflicts_with": [
+        "GQ-MAINT-001"
+      ],
+      "history": [],
+      "last_reviewed": "2026-11-21"
+    }
+  ]
+}

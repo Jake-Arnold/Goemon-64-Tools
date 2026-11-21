@@ -1,11 +1,14 @@
 # Goemon repository-local agent skills
 
-23 repository-local, task-specific skills are discoverable under `.agents/skills/<name>/SKILL.md`. Only skill metadata is loaded at discovery. Load the body of one relevant skill and an optional second specialist, not all 21.
+Repository-local, task-specific skills are discoverable under `.agents/skills/<name>/SKILL.md`. Only skill metadata is loaded at discovery. Load the body of one relevant skill and an optional second specialist, not all 21.
+
+For active pending work use `python3 -m decomp.task_registry list` and `resume GQ-...`. The historical G64-001–100 task context is not the current queue.
 
 Use `python3 -m decomp.skill_context --status` and `python3 -m decomp.skill_context --task G64-031`; `--detail` loads a full task packet, `--phase 4` shows only a phase, and `--validate` checks stored-plan/report consistency without building a ROM.
 
 | Skill | Trigger |
 |---|---|
+| [goemon-task-registry](goemon-task-registry/SKILL.md) | **Primary intake** for pending task lists, cross-chat checkpoints, blocked gameplay testing and conflicting native-C promotion batches. |
 | [goemon-autonomous-decomp](goemon-autonomous-decomp/SKILL.md) | Use to coordinate a complete original-ROM C discovery → native verification → formal promotion session in ChatGPT or Codex. |
 | [goemon-github-source-bridge](goemon-github-source-bridge/SKILL.md) | Use to recover source when GitHub connector access works but Linux cloning or filesystem transfer fails. |
 | [goemon-task-brief](goemon-task-brief/SKILL.md) | Use to start or resume a G64-001 to G64-100 task with minimal token cost and current evidence. |

@@ -1,3 +1,13 @@
+> **Resumable task queue (21 Nov 2026):** For "which tasks are pending?",
+> "resume GQ-..." or "checkpoint this research", start at
+> [decomp/tasks/README.md](tasks/README.md),
+> [the curated registry](tasks/registry.json), and
+> [the agent skill](../.agents/skills/goemon-task-registry/SKILL.md).
+> Run `python3 -m decomp.task_registry list` / `resume <ID>`. Include blocked tasks.
+> Reconcile with live HEAD and fresh accepted offsets; older G64-001..100 plans
+> and historical candidate counts are NOT this active task queue. No new C is
+> accepted simply because it appears in the registry.
+
 ## 21 November 2026 — USA task insertion wrappers: +3 original native C / +164 bytes to 1,965 (PASSED_G2; publication separately verified)
 
 - **New original-address C:** one 52-byte current-task insertion wrapper `func_80034B24_35724` (USA ROM `0x35724`) and two 56-byte insertion-mode wrappers `func_80034C4C_3584C` (`0x3584C`) and `func_80034C84_35884` (`0x35884`). Newly integrated after the four accepted scheduler wrappers at USA 1,962. All three had previously been `FAILED_NATIVE` due two original instruction-order differences; source-line layout variants with pinned IDO 5.3 produce byte-exact code **without raw ASM, instruction or ROM patching**.

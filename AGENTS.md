@@ -2,6 +2,21 @@
 
 Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C core).
 
+## Active resumable Goemon task queue (mandatory on task-list/resume requests)
+
+When the user asks **which Goemon tasks are pending**, requests a task list,
+selects a queued task by ID, or asks to pause/checkpoint work for another chat,
+read [decomp/tasks/README.md](decomp/tasks/README.md),
+[decomp/tasks/registry.json](decomp/tasks/registry.json), and
+[goemon-task-registry](.agents/skills/goemon-task-registry/SKILL.md)
+**before** the historical G64-001–100 plan or dated issue descriptions.
+Run `python3 -m decomp.task_registry list` and
+`python3 -m decomp.task_registry resume GQ-...` when a complete checkout exists.
+Include blocked gameplay, rebase and input tasks in pending results. Re-fetch live
+`chatgptweb/decomp` and current issues/PRs; dedupe accepted original function
+identities before selecting/promoting a C batch. A registry status is planning
+metadata, not native G2 proof. Keep `PROGRESS.md` in each task edit commit.
+
 1. For **every change**, update root `PROGRESS.md` with date, summary, reason, tests, limitations and next step. Include `PROGRESS.md` in the same Git commit as implementation changes.
 2. Push each completed commit to the connected GitHub repository `Jake-Arnold/Goemon-64-Tools`; check the remote commit SHA and report truthfully. If credentials/network/repository access are unavailable, provide the local commit or patch and explicitly say that the push did not occur. Do not simulate a push.
 3. Maintain or expand Python and portable C tests. Execute appropriate tests before commits; distinguish mock-RAM tests from in-game verification.
