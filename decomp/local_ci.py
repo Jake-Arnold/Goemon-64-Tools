@@ -254,6 +254,24 @@ def build_steps(host_binary: Path, *, quick: bool = False):
               '-o',str(binary)]),
           ('Native100 original-C 1000-case host sanitizer test',[str(binary)])
         ])
+    if not quick:
+        # Original native-matched USA state dispatcher, all 18 valid states.
+        dispatcher = ROOT / 'decomp/research/usa_dispatcher_2c40_20261121'
+        source = dispatcher / 'sources/usa_state_dispatch.c'
+        host_test = dispatcher / 'tests/test_dispatch.c'
+        if not source.is_file() or not host_test.is_file():
+            raise ValueError('Missing reviewed USA 2C40 original C and host tests')
+        compiler = shlex.split(os.environ.get('CC', 'cc'))
+        binary = host_binary.with_name('usa-2c40-original-dispatcher-host')
+        steps.extend([
+            ('USA game-state dispatcher actual-source ASan/UBSan build', compiler + [
+                '-std=gnu90', '-O1', '-g', '-Wall', '-Wextra', '-Werror',
+                '-Wno-unused-variable', '-fsanitize=address,undefined',
+                '-fno-sanitize-recover=all', '-fno-omit-frame-pointer',
+                str(source.relative_to(ROOT)), str(host_test.relative_to(ROOT)),
+                '-o', str(binary)]),
+            ('USA game-state dispatcher 54-case original-source sanitizer test', [str(binary)]),
+        ])
     return steps
 
 

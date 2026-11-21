@@ -1,0 +1,21 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "branch_head_verified": "553bc85e4f6e3a9be08b8e85c01768a82ad646be",
+  "live_head_ci_executed": false,
+  "ci_source": "user uploaded ZIP (17) + locally added dispatcher source, native stage, host tests",
+  "native_full_rom_exact": true,
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "elf_identities_equal": 7376,
+  "semantic_relocations_equal": 82103,
+  "strict_inventory_c": 1966,
+  "remaining_asm": 5397,
+  "host_asan_ubsan_cases": 54,
+  "test_usa_dispatcher_stage_pass": 4,
+  "full_local_ci_pass": true,
+  "decomp_python_tests": 330,
+  "decomp_python_skipped": 3,
+  "verifier_tests": 349,
+  "verifier_skipped": 4,
+  "gameplay_emulation": "NOT_RUN",
+  "promotion_to_live_branch": "NOT_MERGED"
+}

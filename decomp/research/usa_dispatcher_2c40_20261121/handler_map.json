@@ -1,0 +1,115 @@
+{
+  "format": "usa-dispatcher-18-entry-map-v1",
+  "source": "read-only original-USA decompressed ROM 0x59508; identical accepted1966 ELF symbol identities",
+  "region": "usa",
+  "records": [
+    {
+      "index": 0,
+      "guest_function_address": "0x800020B8",
+      "function": "func_800020B8_2CB8",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 1,
+      "guest_function_address": "0x80002138",
+      "function": "func_80002138_2D38",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 2,
+      "guest_function_address": "0x8000236C",
+      "function": "func_8000236C_2F6C",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 3,
+      "guest_function_address": "0x80002454",
+      "function": "func_80002454_3054",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 4,
+      "guest_function_address": "0x80002518",
+      "function": "func_80002518_3118",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 5,
+      "guest_function_address": "0x80002718",
+      "function": "func_80002718_3318",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 6,
+      "guest_function_address": "0x80002938",
+      "function": "func_80002938_3538",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 7,
+      "guest_function_address": "0x80002A98",
+      "function": "func_80002A98_3698",
+      "current_owner": "C"
+    },
+    {
+      "index": 8,
+      "guest_function_address": "0x80002AB8",
+      "function": "func_80002AB8_36B8",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 9,
+      "guest_function_address": "0x80002C7C",
+      "function": "func_80002C7C_387C",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 10,
+      "guest_function_address": "0x80002D94",
+      "function": "func_80002D94_3994",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 11,
+      "guest_function_address": "0x80002DE4",
+      "function": "func_80002DE4_39E4",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 12,
+      "guest_function_address": "0x80002E70",
+      "function": "func_80002E70_3A70",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 13,
+      "guest_function_address": "0x80002EFC",
+      "function": "func_80002EFC_3AFC",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 14,
+      "guest_function_address": "0x80002F54",
+      "function": "func_80002F54_3B54",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 15,
+      "guest_function_address": "0x800030F0",
+      "function": "func_800030F0_3CF0",
+      "current_owner": "ASM"
+    },
+    {
+      "index": 16,
+      "guest_function_address": "0x80003328",
+      "function": "func_80003328_3F28",
+      "current_owner": "C"
+    },
+    {
+      "index": 17,
+      "guest_function_address": "0x80003358",
+      "function": "func_80003358_3F58",
+      "current_owner": "C"
+    }
+  ]
+}
