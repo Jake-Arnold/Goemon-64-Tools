@@ -1,0 +1,20 @@
+{
+  "format": "goemon-usa-dispatcher-2c40-after-1965-v1",
+  "region": "usa",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "accepted_prior_count": 1965,
+  "accepted_prior_original_C_bytes": 84648,
+  "owner": "asm/usa/2C40_w132_00.s",
+  "function": {
+    "name": "func_80002040_2C40",
+    "rom_offset": 11328,
+    "vma": 2147491904,
+    "size": 120,
+    "source": "usa_state_dispatch.c",
+    "source_sha256": "e9c541f5dec63f7cc37d3662a6f33a3f9496de522a01bd68e8e1a5f7edfdba54",
+    "original_code_sha256": "04bf9e09cf0a54953375c4c060064db5611525a0f90aba98193a771a9d31db44"
+  },
+  "expected_rom_bytes": 33554432,
+  "expected_elf_functions": 7376,
+  "expected_relocations": 82103
+}
