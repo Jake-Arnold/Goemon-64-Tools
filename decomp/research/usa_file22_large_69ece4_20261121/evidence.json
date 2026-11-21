@@ -1,0 +1,50 @@
+{
+  "format": "goemon-usa-file22-large-cfg-ido-research-v1",
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "region": "usa",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "function": "func_801CC0C4_69ECE4",
+  "rom_offset": "0x69ECE4",
+  "guest_vma": "0x801CC0C4",
+  "size_bytes": 1808,
+  "original_code_sha256": "eaccca6679247d56785806a92a2efe4c1adb73368f723b76d4b6aab5040ef3a9",
+  "stack_frame_bytes": 320,
+  "instructions": 452,
+  "basic_blocks": 75,
+  "back_edges": 2,
+  "conditional_branches": 46,
+  "outgoing_calls": 0,
+  "caller_vma": "0x801CC08C",
+  "input_descriptor_size": 36,
+  "global_display_list_cursor": "D_801D701C_6A9C3C",
+  "default_source": {
+    "format": 2,
+    "grid_columns": 1,
+    "grid_rows": 1,
+    "pixel_width": 320,
+    "pixel_height": 256
+  },
+  "first_ido_trial": {
+    "status": "FAILED_NATIVE",
+    "text_bytes": 1760,
+    "raw_word_matches": 14,
+    "compared_words": 440,
+    "first_mismatch": "0x69ECE4"
+  },
+  "second_ido_trial": {
+    "status": "FAILED_NATIVE",
+    "text_bytes": 1744,
+    "raw_word_matches": 21,
+    "compared_words": 436,
+    "first_mismatch": "0x69ECE4",
+    "source_sha256": "1b790e329e996589e03a0133de8e1018a12b08b668ab988af156d12376e99479"
+  },
+  "host_model_gcc_asan_ubsan": "PASS",
+  "host_model_clang_asan_ubsan": "PASS",
+  "native_exact": false,
+  "full_rom_g2": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "accepted_usa_function_delta": 0,
+  "source_zip_sha256": "eac49d831bc7792be72eb787a8d6d45236da57956e833e0e352aa9f9e29e3b84"
+}
