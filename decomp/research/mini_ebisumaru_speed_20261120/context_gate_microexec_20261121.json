@@ -1,0 +1,42 @@
+{
+  "format": "goemon-usa-mini-clamp-context-gate-microexec-v1",
+  "date": "2026-11-21",
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "function": "func_801CD310_589220",
+  "rom_offset": "0x589220",
+  "vma": "0x801CD310",
+  "function_bytes": 4320,
+  "window_start": "0x1b4",
+  "window_end_exclusive": "0x258",
+  "original_expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pristine_rom_rebuild": "PASS_33554432_BYTES",
+  "mips_window_microexecution": "PASS",
+  "cases": 3000,
+  "reset_cases": 1672,
+  "exit_0x258": 1849,
+  "exit_0xb30": 1151,
+  "script_sha256": "208e58baa43c4b29f4bb5fab81c65b3af25deb68a1c393bf571852f533122c2a",
+  "branch_likely_offsets": [
+    "0x1f0",
+    "0x228",
+    "0x23c",
+    "0x24c"
+  ],
+  "tested_properties": [
+    "motion_reset_order",
+    "context_flag_reload",
+    "zero_stack_writes",
+    "branch_likely_taken_only_delay_loads",
+    "target_path",
+    "cop1_unordered_comparisons"
+  ],
+  "complete_clamp_ido": "NOT_RUN",
+  "native_exact": "FAIL_PREEXISTING",
+  "full_combined_g2": "NOT_RUN",
+  "inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "canonical_usa_accepted_c": 1965,
+  "canonical_usa_instruction_bytes": 84648,
+  "remaining_asm": 5398
+}
