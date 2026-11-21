@@ -19,3 +19,7 @@ A subsequent *native runtime* change would need a versioned debugger IPC protoco
 ## Verification
 
 ROM-free synthetic tests live in `tests/test_pj64_debugger.py`: address bounds, endian-order displays, MIPS instruction rendering, scans across chunks, read-only and stale-write rejection, change-watch events and UI smoke. These do **not** establish verified behaviour against a running native game. Tests can be run with `python3 -m unittest tests.test_pj64_debugger` (use an X11 session or `xvfb-run` for the GUI smoke).
+
+## Scripted trace recording
+
+**Debugger → Scripted tracer** now supports declarative JSON trace scripts with guest-memory watches, edge-triggered conditions, pre/post event capture, markers, script load/save, and JSON/JSONL export. See [SCRIPTED_TRACING.md](SCRIPTED_TRACING.md). Scripts are strictly observational; function-call and CPU execution instrumentation remain unavailable in the unmodified native runtime.

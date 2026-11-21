@@ -16,9 +16,10 @@ from tkinter import filedialog, messagebox, ttk
 from practice.pj64_debugger import (DebuggerSession, disassembly, guest_address,
                                     hex_bytes, memory_rows, search_guest)
 from practice.theme import PALETTE
+from practice.scripted_trace_ui import ScriptedTraceUiMixin
 
 
-class PJ64DebuggerMixin:
+class PJ64DebuggerMixin(ScriptedTraceUiMixin):
     def build_pj64_debugger_tab(self, notebook):
         self.debug_session = DebuggerSession()
         self.debug_last_refresh = 0.0
@@ -36,6 +37,7 @@ class PJ64DebuggerMixin:
         self._build_debug_memory_page(pages)
         self._build_debug_disasm_page(pages)
         self._build_debug_watch_page(pages)
+        self._build_scripted_trace_page(pages)
         self._build_debug_cpu_page(pages)
 
     def _build_debug_memory_page(self, pages):
@@ -164,6 +166,7 @@ class PJ64DebuggerMixin:
                        'This tab deliberately does not provide fake controls.',wraplength=880).pack(anchor='w',pady=20)
 
     def reset_debugger_session(self):
+        self.scripted_trace_reset_on_connect()
         if not hasattr(self,'debug_session'):return
         self.debug_session.attach(None)
         self.debug_selected_read=None
@@ -342,6 +345,7 @@ class PJ64DebuggerMixin:
 
     def poll_pj64_debugger(self, now: float):
         """Called from existing Tk tick: no CPU state guesses or background UI access."""
+        self.poll_scripted_trace(now)
         if not hasattr(self,'debug_session'):return
         if self.debug_session.ram is not self.mem:
             self.debug_session.attach(self.mem)
