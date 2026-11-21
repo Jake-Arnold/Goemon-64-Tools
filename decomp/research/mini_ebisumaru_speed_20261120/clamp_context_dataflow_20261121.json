@@ -1,0 +1,80 @@
+{
+  "format": "goemon-clamp-context-block-original-offset-20261121",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "name": "func_801CD310_589220",
+  "rom": "0x589220",
+  "vma": "0x801CD310",
+  "original_bytes": 4320,
+  "candidate_bytes": 4328,
+  "frame_bytes": 232,
+  "source_sha256": "40238eed389af30a70ff4a10f1c8f10d2d2453405af7e13a058337fc5f32f2e2",
+  "global_original_offset_comparison": {
+    "previous": [
+      93,
+      912
+    ],
+    "current": [
+      137,
+      920
+    ]
+  },
+  "next_context_block": {
+    "original_start": "0x1B4",
+    "original_end_exclusive": "0x260",
+    "previous": [
+      0,
+      38
+    ],
+    "current": [
+      17,
+      39
+    ]
+  },
+  "original_windows": [
+    {
+      "range": "0x0..0x3B",
+      "match": 15,
+      "compared": 15
+    },
+    {
+      "range": "0x50..0x8F",
+      "match": 13,
+      "compared": 13
+    },
+    {
+      "range": "0x90..0x1B3",
+      "match": 55,
+      "compared": 55
+    }
+  ],
+  "relocation_count": 101,
+  "relocation_original_offset_symbol_match_before": 20,
+  "relocation_original_offset_symbol_match_after": 33,
+  "relocation_type_symbol_sequence_match": 99,
+  "call_count": 33,
+  "call_order_exact": true,
+  "inline_sqrt_count": 9,
+  "original_18_jump_table_offsets_equal": true,
+  "vector_3d_sqrt": {
+    "original": "0x9A8",
+    "candidate": "0x9B8"
+  },
+  "vector_2d_sqrt": {
+    "original": "0xDDC",
+    "candidate": "0xDF4"
+  },
+  "native_compiler": "IDO5.3",
+  "native_compiles": "PASS",
+  "successful_trial_variants": 163,
+  "analytic_host_fixture": "GCC_ASAN_UBSAN_PASS_5000_PAIRED",
+  "original_pristine_rebuild": "PASS_33554432_BYTES_SHA1_6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_function_machine_match": "FAIL",
+  "candidate_integrated_ROM": "NOT_RUN",
+  "canonical_G2": "NOT_RUN",
+  "canonical_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "accepted_C_before": 1956,
+  "accepted_C_after": 1956,
+  "asm_remaining": 5407
+}
