@@ -1,3 +1,10 @@
+## 21 November 2026 — PJ64-style live guest debugger tab (ROM-free synthetic verification)
+
+- Added the **Debugger** toolkit tab with 8 MiB N64 KSEG0/KSEG1 hex/ASCII memory viewing, guarded 1/2/4/8-byte compare-before-write edits, exact hex/ASCII scanning, static MIPS III disassembly and capped session-only RAM-change watches with event JSON export. Uses the existing validated RDRAM adapter for native Linux recomp and compatible Project64 targets; never guesses a host pointer or guest CPU state.
+- CPU / breakpoints panel deliberately says execution PC/registers, instruction tracing, breakpoints and step controls are unavailable in a stock statically recompiled host. Genuine PJ64-style CPU debugging requires separate versioned native runtime instrumentation; memory polling is not a CPU hardware watchpoint.
+- Validation performed in a local isolated module tree: `python3 -m py_compile` on the three new Python files (PASS), `xvfb-run -a python3 -m unittest discover -s tests -p test_pj64_debugger.py -v` (9 tests PASS). Test scope: mock RDRAM, guarded writes, search overlap, instruction decoder, UI smoke. The complete GitHub checkout was unavailable to the local execution host because shell GitHub DNS failed; full toolkit regression suite and live-game/native execution testing were **not run**. Native ROM matching-C manifests/verified counts untouched.
+- Next: validate the integrated GUI with a running native Linux recomp and implement explicit guest CPU instrumentation/protocol before advertising real instruction breakpoints, registers or stepping. No game data, ROM bytes or memory dumps committed.
+
 ## 21 November 2026 — Project64 first-bomb live-debug kit registered as GQ-VM-001 (RESEARCH_ONLY / MANUAL_INPUT_PENDING)
 
 - Refreshed original `chatgptweb/decomp` task-registry skill and live head; updated **existing** `GQ-VM-001` rather than duplicating Bomb Text Skip work. Status `blocked_external` P1, awaiting actual local Windows Project64 3.x manual normal/one-frame-Start trials from one authentic first Gourmet Sub bomb pre-dialogue savestate. No gameplay execution was claimed.
