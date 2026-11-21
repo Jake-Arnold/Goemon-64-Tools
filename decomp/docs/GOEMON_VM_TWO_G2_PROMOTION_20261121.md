@@ -1,6 +1,6 @@
 # Original-ROM native G2: two Japanese script-VM functions
 
-**21 November 2026.** **Original-ROM/ELF/all-relocation/strict-inventory CI verified locally; publication must be confirmed separately.** The original game was **not** executed in an emulator. No North America/USA matching-C implementation changed. No ROM, extracted assembly, object, ELF, save or proprietary compiler is published.
+**21 November 2026.** **PASSED_G2 / PUBLISHED_REMOTE_VERIFIED.** Native implementation commit [`74f940e7`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/74f940e7c0fb6b0ef7286bca1018780450ae4993) is published on `chatgptweb/decomp`, the remote code and evidence have been independently re-fetched, and the recorded full-ROM/ELF/relocation/CI checks passed. The original game was **not** executed in an emulator. No North America/USA matching-C implementation changed. No ROM, extracted assembly, object, ELF, save or proprietary compiler is published.
 
 ## Genuine new code, deduplicated
 

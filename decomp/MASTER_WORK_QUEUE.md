@@ -1,4 +1,4 @@
-**HISTORICAL WORK QUEUE — NOT ACTIVE.** The original 142-function queue and 158-function reconciliation predate the 1,958-USA published / 2,121-Japan published G2 report (with a later Japan 2,123 local-G2 update). Do not derive current blockers or outstanding function counts from the entries below. Research evidence remains available; use [CONTINUE.md](CONTINUE.md), [current README](README.md) and verified per-region inventories.
+**HISTORICAL WORK QUEUE — NOT ACTIVE.** The original 142-function queue and 158-function reconciliation predate the 1,958-USA published / 2,121-Japan published G2 report (with a later Japan 2,123 published-G2 update). Do not derive current blockers or outstanding function counts from the entries below. Research evidence remains available; use [CONTINUE.md](CONTINUE.md), [current README](README.md) and verified per-region inventories.
 
 ---
 
