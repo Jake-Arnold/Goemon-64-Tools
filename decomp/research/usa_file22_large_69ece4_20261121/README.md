@@ -27,6 +27,25 @@ The input is a **36-byte struct**, inferred from load offsets and independently 
 | +0x1C/+0x1E | signed `lh` | page grid width / height |
 | +0x20/+0x22 | signed `lh` | page pixel width / height |
 
+## Stack/data-liveness observations for next IDO hypothesis
+
+All offsets below are direct, source-verified original MIPS stack accesses, **not inferred C member offsets**:
+
+| Original stack offset | Data role / original reads and writes |
+|---|---|
+| `sp+0x138` | outer 0..8 row counter; initialized at `0x801CC114`, read at outer-loop header `0x801CC128` and incremented in outer loop tail |
+| `sp+0x100` | previous tile ID cache; initialized to `0xFFFF`, compared at `0x801CC408`, updated at `0x801CC414` |
+| `sp+0xE4` | pointer loaded from descriptor `+0x04` (byte page map), saved at `0x801CC0FC` |
+| `sp+0xE0` | pointer loaded from descriptor `+0x08` (u16 tile ID array), saved at `0x801CC124` |
+| `sp+0x34` | outer row pixel coordinate `row * 32`, stored at `0x801CC14C` |
+| `sp+0xF8` | clipped top coordinate subsequently shifted by two for 10.2 rectangle command |
+| `sp+0xF0` | clipped bottom coordinate shifted by two for 10.2 rectangle command |
+| `sp+0xE8` | vertical clipping/texture origin compensation, shifted by five |
+
+Register lifetime clues: `$s0` preserves the input descriptor pointer and `$s4` is the inner loop column counter. `$fp` holds the texture tile-setup word `0x07054150`; `$ra` is saved in the prologue and **reused internally as constant `0xE6000000`** because this function executes no outgoing calls, then restored before return. This is important for reproducing exact IDO scheduling; omitting these long-lived constants in C explains some register allocation differences but does not, by itself, prove a matching source.
+
+**Return value:** the only exit is the original `jr $ra` epilogue. The caller does not consume a specific return value. An intended `void` return is a supported source hypothesis, but no independent C type declaration has been recovered; do not claim a proven original prototype.
+
 ## Recoverable algorithm (hypothesis, not matching C)
 
 Nine outer iterations traverse Y cells of 32 pixels; eleven inner iterations traverse X cells of 32 pixels. Bounds clipped to screen **320×240** yield **80 drawn cells** on the default 1×1 page descriptor (10 columns, 8 rows).

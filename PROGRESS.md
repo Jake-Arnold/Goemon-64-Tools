@@ -1,3 +1,8 @@
+## 21 November 2026 — file22 large-function stack/ABI follow-up (RESEARCH_ONLY)
+
+- Independently traced specific original MIPS stack slots `0x138` row loop, `0x100` last tile cache, `0xE4/0xE0` descriptor page/tile pointers, `0x34` row pixels, `0xF8/0xF0/0xE8` clipping and texture offsets. Long-lived `$fp=0x07054150` and saved/reused `$ra=0xE6000000` matter to exact IDO register allocation; original stack frame `0x140` vs first draft `0xF0`. Caller does not use a return result, but original C prototype remains unproved.
+- Documentation-only refinement to draft large file22 PR; no new compiler result, full-ROM G2, local CI or accepted-function promotion. USA accepted remains 1,965.
+
 ## 21 November 2026 — USA file22 large original graphics function directly analysed; 2 bounded IDO candidates FAILED_NATIVE (RESEARCH_ONLY)
 
 - Target `func_801CC0C4_69ECE4` (file22 static overlay ROM `0x69ECE4`, VMA `0x801CC0C4`, **1,808 bytes / 452 MIPS instructions**) authenticated against original USA ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; exact code SHA-256 `eaccca6679247d56785806a92a2efe4c1adb73368f723b76d4b6aab5040ef3a9`.
