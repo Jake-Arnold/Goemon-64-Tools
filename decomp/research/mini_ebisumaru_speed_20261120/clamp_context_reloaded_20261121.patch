@@ -1,0 +1,12 @@
+--- a/clamp_baseline.c
++++ b/clamp_context_reloaded.c
+@@ -136,7 +136,8 @@
+         M2C_FIELD(arg0, f32 *, 0x74) = 0.0f;
+         M2C_FIELD(arg0, f32 *, 0x70) = 0.0f;
+         M2C_FIELD(arg0, f32 *, 0x68) = 0.0f;
+-        pool_u8_0 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), u8 *, 0x59);
++        temp_v1 = M2C_FIELD(arg0, void **, 0x5C);
++        pool_u8_0 = M2C_FIELD(temp_v1, u8 *, 0x59);
+     }
+     magnitude_valid = 0;
+     pool_u16_2 = 0;

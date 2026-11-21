@@ -1,0 +1,95 @@
+{
+  "format": "goemon-usa-context-alias-fpr-lifetime-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "promotion": false,
+  "function": "func_801CD310_589220",
+  "rom_offset": "0x589220",
+  "vma": "0x801CD310",
+  "original_bytes": 4320,
+  "original_frame_bytes": 232,
+  "original_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "baseline_bytes_identical": 33554432,
+  "native_compiler": "IDO 5.3 -O2 -mips2 -G 0 -non_shared",
+  "variants": [
+    {
+      "name": "baseline",
+      "size": 4320,
+      "frame": 232,
+      "matches": 19,
+      "compared": 895,
+      "relocation_triples": 4
+    },
+    {
+      "name": "context_reload",
+      "size": 4324,
+      "frame": 232,
+      "matches": 24,
+      "compared": 902,
+      "relocation_triples": 10,
+      "source_sha256": "53f11a64313715e20c9c7e3faf2c2257d945833f9f9854700e6b5fd2b04d510b"
+    },
+    {
+      "name": "reload_and_status",
+      "size": 4324,
+      "frame": 232,
+      "matches": 23,
+      "compared": 902,
+      "relocation_triples": 10
+    },
+    {
+      "name": "status_only",
+      "size": 4324,
+      "frame": 232,
+      "matches": 23,
+      "compared": 902,
+      "relocation_triples": 10
+    }
+  ],
+  "calls": 33,
+  "native_sqrt": 9,
+  "text_relocations": 101,
+  "ordered_type_symbol_matches": 99,
+  "original_jump_entries": 18,
+  "original_zero_fpr_definitions": 58,
+  "candidate_zero_fpr_definitions": 10,
+  "original_early_zero": {
+    "register": "f0",
+    "offset": "0x04",
+    "stores_before_call": 3,
+    "calls_crossed": 0
+  },
+  "candidate_early_zero": {
+    "register": "f20",
+    "offset": "0x08",
+    "conservative_register_reads": 66,
+    "calls_crossed": 29
+  },
+  "original_context_window": {
+    "start": "0x1b4",
+    "end_exclusive": "0x260",
+    "instructions": 43,
+    "zero_definitions": 4
+  },
+  "candidate_context_window": {
+    "start": "0x1c4",
+    "end_exclusive": "0x270",
+    "instructions": 43,
+    "zero_definitions": 0
+  },
+  "context_shape_equal_ordered": 34,
+  "context_anchor_shift_bytes": 16,
+  "unit_tests_passed": 7,
+  "original_context_gate_microexec_cases_passed": 3000,
+  "clean_archive_replay": "PASS_EXPECTED_FAILED_NATIVE",
+  "canonical_g2": "NOT_RUN",
+  "inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "emulator": "NOT_RUN",
+  "accepted_usa_start": 1965,
+  "accepted_usa_end": 1965,
+  "accepted_instruction_bytes": 84648,
+  "remaining_asm": 5398,
+  "analyzer_sha256": "bba5f2edab68b22ab203eff9b1ec76c2d943285614cb1843d34ae87b37624e3f",
+  "package_sha256": "b13cd5719f454557927cc36e70e1d7161a78be5a15a87366a98d570af55eb532"
+}
