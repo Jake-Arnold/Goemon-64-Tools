@@ -1,3 +1,10 @@
+## 21 November 2026 — GQ-VM-001 Project64 ROM identity preflight repair (RESEARCH_ONLY / LIVE_NOT_RUN)
+
+- User reported two `observed=none` aborts with the first-bomb JS kit. Reopened the uploaded original ZIP and identified fail-closed dependence on `pj64.romInfo`, which can be null. The user's original Japanese ROM has the expected rev-0 header CRC pair; the abort alone did not indicate wrong-region ROM.
+- Uploaded an updated self-contained source-only ZIP `Goemon_Bomb_Text_Skip_Project64_Trace_Kit_ROM_Guard_Fix_2026-11-21.zip` (SHA-256 `ebe11821bfc4b7d374d207e3eb4985ad2ee2e1a0e2d1fdc72f7e7d8b1439579a`) containing both revised read-only recorders. The scripts verify original JP CRCs from `pj64.romInfo` or original cartridge header; inconsistent/no evidence continues to abort. The source remains a delivered conversation artifact, not committed copyrighted script signatures.
+- Executed Node JS syntax checks and nine synthetic recorder mode/identity checks PASS, comparator Python tests 9/9 PASS, Python compilation PASS, ZIP integrity PASS. Actual live Project64 run, task/VM trace, native G2, full CI and game/save behavior NOT RUN. No C promotions or original game ROM changes.
+- Updated the GQ-VM-001 read-only handoff with corrected artifact SHA, detailed diagnostic and next capture procedure. Status remains `blocked_external` until authentic paired gameplay traces are obtained.
+
 ## 21 November 2026 — Require uploaded scripts for every Goemon task handoff (DOCUMENTATION ONLY)
 
 - User requirement: whenever a task references a runnable script or script kit, upload the actual source-only script(s)/ZIP as a directly downloadable artifact **with that task delivery**; filenames, hashes, old-chat attachments and prose references are insufficient. Include dependencies/run commands and verify artifact accessibility.

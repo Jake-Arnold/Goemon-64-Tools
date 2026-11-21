@@ -15,6 +15,16 @@ Prepared **source-only** kit for Windows Project64 3.x, delivered as a conversat
 - Contains `Goemon_Bomb_JP_normal.js`, `Goemon_Bomb_JP_start.js`, `compare_bomb_traces.py`, `test_pj64_mock.js`, `test_comparator.py`, `README.md` and `MANUAL_CHECKLIST.md`.
 - No original ROM, original ASM dumps, proprietary compilers, savestates or real captured RAM data. Recorder scripts are **not** checked into Git because they contain original resource-script opcode/operand signatures; they remain available as the user's kit attachment.
 
+## ROM identity API failure and corrected recorder kit (21 November 2026)
+
+User ran both original JS recorders and received `ABORT: wrong/unverifiable ROM ... observed=none`. Inspection of the **actual original supplied ZIP** (SHA-256 `0de4a714b96cbf6158596e236ac72b4033e50653f95180a58ffc6a87e7f3e933`) confirms it aborts whenever `pj64.romInfo` is null, *without checking loaded cartridge memory*. This is not evidence that the user's original ROM is wrong. The original uploaded Japanese retail ROM header was independently confirmed to have expected CRC1 `832C168B`, CRC2 `56A2CDAE` after byte-order normalisation.
+
+**Replacement script artifact uploaded in the user's current ChatGPT conversation:** `Goemon_Bomb_Text_Skip_Project64_Trace_Kit_ROM_Guard_Fix_2026-11-21.zip`, SHA-256 `ebe11821bfc4b7d374d207e3eb4985ad2ee2e1a0e2d1fdc72f7e7d8b1439579a`. Contains both full corrected `.js` scripts, comparator, manual checklist, README, and tests. The two recorders now require matching ROM CRCs via either `pj64.romInfo` or verified original cartridge header at `0xB0000000/10/14` (read-only `mem.u32`). If both sources return conflicting identities, or neither is available, they still abort with additional diagnostics. The trace begin row records the verification source. **No ROM check was disabled.**
+
+Actual local tests: original two-mode mock path PASS; corrected ROM fallback both modes PASS; wrong-ROM, missing header and contradictory metadata/header rejection PASS; Node JS syntax PASS; comparator 9/9 Python unit tests PASS; Python compilation PASS; replacement ZIP integrity PASS. **NOT RUN:** actual Project64 runtime, real Gourmet Sub input, save/reload warp, native C/G2, full decomp CI. No original ROM, save, ASM or trace bytes are in the ZIP.
+
+**Operational next:** load the original Japanese game and restore the same pre-bomb savestate **before** starting either recorder. Only run one at a time. Look for `Verified original JP ROM using pj64.romInfo` or `... cartridge_header`. If neither prints, collect the new exact abort text to distinguish missing ROM, unsupported cartridge mapping and real CRC mismatch. Keep task `blocked_external` until real traces exist.
+
 ## Manual session, in order
 
 1. Install/run the original **Japan revision-0** ROM (header CRC1 `832C168B`, CRC2 `56A2CDAE`); configure Project64 3.x advanced debugger and **Always use interpreter core**. This kit **must not** be used for USA or native recompilation.
