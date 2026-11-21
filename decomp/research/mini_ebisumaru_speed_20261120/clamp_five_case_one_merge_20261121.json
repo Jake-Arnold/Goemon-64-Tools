@@ -1,0 +1,95 @@
+{
+  "format": "goemon-usa-clamp-switch-case-merge-research-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "region": "usa",
+  "function": "func_801CD310_589220",
+  "rom_offset": "0x589220",
+  "vma": "0x801cd310",
+  "original_usa_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_pristine_rom_bytes_equal": 33554432,
+  "compiler": "original SGI IDO 5.3 -O2 -mips2 -G 0 -non_shared",
+  "source_sha256": "612bc4baa9c81b0c2397fa1b9b0853da6f0d4738b2c65c7842a77a4d35546d90",
+  "compressed_source_sha256": "937715d1456cc014b2a18235a865e85a934c9d23a2298d4b3358ff7ee80bc7b5",
+  "git_source_blob_sha": "22751204909ec52f7ccd305b03310192f29df2e0",
+  "source_package_sha256": "94d7cf1826ac9023a3efbf02ad1260c5c24ed56eb49e3e1bb09ab3ba3cef5145",
+  "original": {
+    "function_bytes": 4320,
+    "frame": 232,
+    "first_angle_case_offsets": [
+      "0xc8",
+      "0xfc",
+      "0x12c",
+      "0x160",
+      "0x180"
+    ],
+    "first_angle_stack": "0x6e",
+    "second_angle_merge_offset": "0x198",
+    "second_angle_merge_register": "a1",
+    "second_angle_stack": "0x6c",
+    "trig_call_offsets": [
+      "0x19c",
+      "0x1a4"
+    ],
+    "trig_return_store_offset": "0x1b0",
+    "trig_result_stack": "0x64"
+  },
+  "case_first_scalar_second": {
+    "function_bytes": 4292,
+    "frame": 232,
+    "matching_nonreloc_instructions": 9,
+    "comparable_nonreloc_instructions": 888,
+    "exact_relocation_triples": 1,
+    "relocations_total": 101,
+    "calls": 33,
+    "native_sqrt": 9,
+    "first_angle_case_offsets": [
+      "0xcc",
+      "0x100",
+      "0x130",
+      "0x164",
+      "0x184"
+    ],
+    "first_angle_stack": "0x6e",
+    "second_angle_merge_offset": "0x198",
+    "second_angle_merge_register": "v0",
+    "second_angle_stack": "0x6c",
+    "trig_call_offsets": [
+      "0x1a0",
+      "0x1a8"
+    ],
+    "trig_return_store_offset": "0x1b4",
+    "trig_result_stack": "0x64",
+    "first_nonreloc_mismatch": "0x04",
+    "fully_matching": false
+  },
+  "prior_exact_calls": {
+    "function_bytes": 4288,
+    "frame": 232,
+    "matching_nonreloc_instructions": 10,
+    "comparable_nonreloc_instructions": 889,
+    "exact_relocation_triples": 4,
+    "trig_call_offsets": [
+      "0x19c",
+      "0x1a4"
+    ],
+    "trig_return_store_offset": "0x1b0",
+    "first_angle_case_store_count": 1,
+    "second_angle_case_store_count": 5,
+    "fully_matching": false
+  },
+  "variant_compilations": 108,
+  "case_values_host_gcc_asan_ubsan": 65536,
+  "case_values_host_clang_asan_ubsan": 65536,
+  "clean_replay": "PASS_EXPECTED_FAILED_NATIVE",
+  "canonical_combined_verify": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "candidate_integrated_rom": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "promoted": false,
+  "usa_accepted_before": 1965,
+  "usa_accepted_after": 1965,
+  "usa_accepted_instruction_bytes": 84648,
+  "usa_asm_remaining": 5398
+}
