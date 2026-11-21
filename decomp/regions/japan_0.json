@@ -963,5 +963,20 @@
     "clean_replays": 2,
     "gameplay": "NOT_RUN",
     "implementation_commit": "74f940e7c0fb6b0ef7286bca1018780450ae4993"
+  },
+  "short145_native_promotion": {
+    "status": "PASSED_G2_LOCAL",
+    "new_matching_c_functions": 145,
+    "new_original_instruction_bytes": 8952,
+    "matching_c_functions": 2268,
+    "matching_c_bytes": 121288,
+    "asm_remaining": 5108,
+    "proof": "results/japan_0_2268_short145_g2_20261121.json",
+    "inventory": "results/japan_0_2268_inventory_20261121.json",
+    "source_root": "research/jp_short145_20261121",
+    "stager": "japan_short145_promotion.py",
+    "published": false,
+    "full_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "full_relocations": 80747
   }
 }

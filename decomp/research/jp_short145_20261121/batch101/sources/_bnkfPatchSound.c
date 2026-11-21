@@ -1,0 +1,1 @@
+void _bnkfPatchSound(void) {}

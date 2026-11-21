@@ -1,0 +1,1 @@
+typedef float f32;extern void *D_8016D430_16E030[];void func_8000C270_CE70(int index,f32 val){char *p=D_8016D430_16E030[index];if(p)*(f32*)(p+0x84)=val;}

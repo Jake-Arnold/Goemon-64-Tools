@@ -1,0 +1,1 @@
+typedef unsigned char u8;void func_8022C980_696070(void *p){u8 *a=*(u8**)((char*)p+0x18);u8 val=1;a[0x64]=val;(*(u8**)((char*)p+0x94))[0x64]=val;}

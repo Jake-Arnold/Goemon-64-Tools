@@ -1,0 +1,1018 @@
+{
+  "title": "Goemon Japanese ROM second-pass alternative structural matching C",
+  "date": "2026-11-20",
+  "region": "japan_0",
+  "method": "immediate-masked register/opcode signature clustering; original-MIPS family source reconstruction; original IDO 5.3 -O2 -mips2 exact comparison",
+  "baseline_jp_C_local_G2": 2118,
+  "baseline_jp_ASM_remaining": 5258,
+  "prior_101_isolated_functions": 101,
+  "prior_101_isolated_bytes": 6832,
+  "new_isolated_functions": 44,
+  "new_isolated_bytes": 2120,
+  "new_with_relocations": 40,
+  "method_groups": {
+    "new_wrapper_families": 21,
+    "ABI_float_arg_recovery": 11,
+    "parameterized_field_offsets": 4,
+    "volatile_float_store_order": 8
+  },
+  "total_unique_isolated_101_plus_second": 145,
+  "original_japanese_expanded_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "original_rom_bytes": 33554432,
+  "proof_tier": "ISOLATED_RELOC_EXACT_RESEARCH_ONLY",
+  "complete_ROM_G2": "NOT_RUN",
+  "ELF_identity_and_semantic_relocations": "NOT_RUN",
+  "full_CI": "NOT_RUN",
+  "github_promotion": "NOT_RUN",
+  "source_overlap_with_prior_101": 0,
+  "functions": [
+    {
+      "name": "func_8000C248_CE48",
+      "size_bytes": 40,
+      "rom_offset": "0xCE48",
+      "original_sha256": "6893e123b7ffad48ccb5cf90f6722a4936c3a12ed807178055b8d04c555a211a",
+      "candidate_source_sha256": "172f1da7ee90cec980cdd8a84ace2dc58a97ff3d8d2289c58853e6445cca778c",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030",
+          "offset": 12
+        }
+      ],
+      "disassembly_file": "nonmatchings/main_C320/func_8000C248_CE48.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_8000C248_CE48.c"
+    },
+    {
+      "name": "func_8000C270_CE70",
+      "size_bytes": 40,
+      "rom_offset": "0xCE70",
+      "original_sha256": "21aee3bb7906244f204ce3f2d6978a2256d70e53fd621b427aba5b1beecce5f0",
+      "candidate_source_sha256": "a86ca88969d2f82de6a6286b510f7eaa1afbf47da5ccea15802a94292385e3f9",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030",
+          "offset": 12
+        }
+      ],
+      "disassembly_file": "nonmatchings/main_C320/func_8000C270_CE70.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_8000C270_CE70.c"
+    },
+    {
+      "name": "func_8000C30C_CF0C",
+      "size_bytes": 40,
+      "rom_offset": "0xCF0C",
+      "original_sha256": "31d74d201a3c7884208cc09244f062965864b6b9ad37842293797517ed8cb0d1",
+      "candidate_source_sha256": "5921344166f40b577430a8b70ad9718453aa89c879d383097a885be2eb11506e",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030",
+          "offset": 12
+        }
+      ],
+      "disassembly_file": "nonmatchings/main_C320/func_8000C30C_CF0C.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_8000C30C_CF0C.c"
+    },
+    {
+      "name": "func_8000C3A8_CFA8",
+      "size_bytes": 40,
+      "rom_offset": "0xCFA8",
+      "original_sha256": "36eb8f70e3b81ba667be51c70b415f4a51717e1669b56b293d2a911aae1b516f",
+      "candidate_source_sha256": "969c384b1c4e1f5c1d5d7b77ed52a94e6a387f0c32887f30cc5e0ca09521c23f",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030",
+          "offset": 12
+        }
+      ],
+      "disassembly_file": "nonmatchings/main_C320/func_8000C3A8_CFA8.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_8000C3A8_CFA8.c"
+    },
+    {
+      "name": "func_801F00D0_5AC0A0",
+      "size_bytes": 44,
+      "rom_offset": "0x5AC0A0",
+      "original_sha256": "06176adf4c5fe0bc58e0f8dade74b9e40767c04b75b576029a1046cadebd798a",
+      "candidate_source_sha256": "3337be07bcb5aa7eec1ef01fa48b9dfb746d264bf8f460f76e7052b98a9584ac",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801F0230_5AC200",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5A98B0.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F00D0_5AC0A0.c"
+    },
+    {
+      "name": "func_801F0180_5AC150",
+      "size_bytes": 44,
+      "rom_offset": "0x5AC150",
+      "original_sha256": "06176adf4c5fe0bc58e0f8dade74b9e40767c04b75b576029a1046cadebd798a",
+      "candidate_source_sha256": "f4a98a51781b5098d2ebc6c698832b4b132469807497bb4e0f73c8d9e7880078",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801F0230_5AC200",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5A98B0.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F0180_5AC150.c"
+    },
+    {
+      "name": "func_801F08D0_5AC8A0",
+      "size_bytes": 44,
+      "rom_offset": "0x5AC8A0",
+      "original_sha256": "468c39a4c4d0e6cd788bc8ebe70ac0b4dd8786da6071295fa0930004ce7fa3cb",
+      "candidate_source_sha256": "bdc089d621258b213562ef4d75678d8551465c8dbeeb655617ca46e127624b3e",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801F0928_5AC8F8",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5A98B0.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F08D0_5AC8A0.c"
+    },
+    {
+      "name": "func_801F0CCC_5ACC9C",
+      "size_bytes": 44,
+      "rom_offset": "0x5ACC9C",
+      "original_sha256": "7dc191821f4a749b1f7473724afde43fbad2fddffe6146bf40ebe46c864187e7",
+      "candidate_source_sha256": "7fc651de743354386882ceff36f62bc68a22ae981d5052973f1188e49d7708e9",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801F0D50_5ACD20",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5A98B0.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F0CCC_5ACC9C.c"
+    },
+    {
+      "name": "func_801F0CF8_5ACCC8",
+      "size_bytes": 44,
+      "rom_offset": "0x5ACCC8",
+      "original_sha256": "7dc191821f4a749b1f7473724afde43fbad2fddffe6146bf40ebe46c864187e7",
+      "candidate_source_sha256": "ac0f95543f2577d076c36b2fb92dd9ef714826995372bad8003d10f6d885b0a1",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801F0D50_5ACD20",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5A98B0.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F0CF8_5ACCC8.c"
+    },
+    {
+      "name": "func_801F0D24_5ACCF4",
+      "size_bytes": 44,
+      "rom_offset": "0x5ACCF4",
+      "original_sha256": "7dc191821f4a749b1f7473724afde43fbad2fddffe6146bf40ebe46c864187e7",
+      "candidate_source_sha256": "271fa503a94970c29b0e7573284c5b5f160f2577a92de734984421ec9187357e",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801F0D50_5ACD20",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5A98B0.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F0D24_5ACCF4.c"
+    },
+    {
+      "name": "func_801F25AC_5AE57C",
+      "size_bytes": 44,
+      "rom_offset": "0x5AE57C",
+      "original_sha256": "fc38af4003267904a44c3179ed853d0572fe85c5185181c28426b6e1ce7d0fad",
+      "candidate_source_sha256": "5f8fbffb195a5dadd60605124f331780640c6a9fad06d61856a76cfbb68ebb7d",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801F25D8_5AE5A8",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5A98B0.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F25AC_5AE57C.c"
+    },
+    {
+      "name": "func_801F37C0_5AF790",
+      "size_bytes": 44,
+      "rom_offset": "0x5AF790",
+      "original_sha256": "b0eac5e8d42872ce7a174b79566891ab96721d111335533f1e4a0d621b467d5c",
+      "candidate_source_sha256": "e60f3eca9dd21d644141892bcee44ca260c13d1a617eba0d8fecc264bb046865",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801F3844_5AF814",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5AF790.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F37C0_5AF790.c"
+    },
+    {
+      "name": "func_801F5F0C_5B1EDC",
+      "size_bytes": 44,
+      "rom_offset": "0x5B1EDC",
+      "original_sha256": "c96202411c96ae6f8fb22aed2483bee14d3deaca48817062fdeb89570053fd0a",
+      "candidate_source_sha256": "15500c6251163942639a585eb87ed66d3d6dada771a3a61625cd8d250aff623a",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801F5F90_5B1F60",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5AF790.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F5F0C_5B1EDC.c"
+    },
+    {
+      "name": "func_801F9FDC_5B5FAC",
+      "size_bytes": 44,
+      "rom_offset": "0x5B5FAC",
+      "original_sha256": "ab6a10a00c7720e1413a7e67c5eac54d7e3291b465389496f90eee49686e18d3",
+      "candidate_source_sha256": "3529d521ca7e99c885317c45e55974bdae2f375cea605febc007a2ef5da13869",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA0B0_5B6080",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B54C0.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801F9FDC_5B5FAC.c"
+    },
+    {
+      "name": "func_801FA008_5B5FD8",
+      "size_bytes": 40,
+      "rom_offset": "0x5B5FD8",
+      "original_sha256": "caafe9e3da6c48d87f5a725a9883e8ee40e658175dca8ec8b425532d2835f91b",
+      "candidate_source_sha256": "46d2422d7beb6326c305f3dd880e59653d69f8a5d2118e158286b75c55913c5d",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA1A8_5B6178",
+          "offset": 16
+        }
+      ],
+      "disassembly_file": "5B54C0.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FA008_5B5FD8.c"
+    },
+    {
+      "name": "func_801FA05C_5B602C",
+      "size_bytes": 44,
+      "rom_offset": "0x5B602C",
+      "original_sha256": "b1d9c8e99498c273080a1e029047118a1330f5965841389e0773d495d075d9da",
+      "candidate_source_sha256": "5e7793525c2dfa1d5bd690cae0d2e1831867303ab971f9727b23b5e76be33001",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA0B0_5B6080",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B54C0.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FA05C_5B602C.c"
+    },
+    {
+      "name": "func_801FA088_5B6058",
+      "size_bytes": 40,
+      "rom_offset": "0x5B6058",
+      "original_sha256": "6c9288a8b48b31d5000625f526fd2111d42db14329fa66f1518d0944bc40e0f0",
+      "candidate_source_sha256": "ac9a871b6356dff660372ec0e2703228def87428926aa9bc00a9594c3b10e720",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA1A8_5B6178",
+          "offset": 16
+        }
+      ],
+      "disassembly_file": "5B54C0.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FA088_5B6058.c"
+    },
+    {
+      "name": "func_801FAD60_5B6D30",
+      "size_bytes": 44,
+      "rom_offset": "0x5B6D30",
+      "original_sha256": "c45206e072731d86302a87eaeac78f09bcbe41957b213119da0bc830b7d04cb8",
+      "candidate_source_sha256": "a24301a98853127f9d798831d62c66da174241784e78c194b600b657834e0d8b",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FADE4_5B6DB4",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B6880.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FAD60_5B6D30.c"
+    },
+    {
+      "name": "func_801FAD8C_5B6D5C",
+      "size_bytes": 44,
+      "rom_offset": "0x5B6D5C",
+      "original_sha256": "2e7736857f4ee496a5550d5248e662b8f4b11990a4bcbced823e7cff19f2e9a1",
+      "candidate_source_sha256": "9a98f5ee80056a8fe2476974b4e614ad3502e6234fc12d2709f6611fd853a96f",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FADE4_5B6DB4",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B6880.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FAD8C_5B6D5C.c"
+    },
+    {
+      "name": "func_801FADB8_5B6D88",
+      "size_bytes": 44,
+      "rom_offset": "0x5B6D88",
+      "original_sha256": "9f8658f07160d7ed14fa06a6e49129eb6e983c259540e667909e903033f26e63",
+      "candidate_source_sha256": "2637361ee3f02f2bdd791381fe334abee95ff4a63ab8077d756c0133c931addd",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FADE4_5B6DB4",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B6880.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FADB8_5B6D88.c"
+    },
+    {
+      "name": "func_801FB024_5B6FF4",
+      "size_bytes": 44,
+      "rom_offset": "0x5B6FF4",
+      "original_sha256": "723badcd7c7bb52d909823df8122244af85745f65a15efd22de70e40afd58fd9",
+      "candidate_source_sha256": "47ac3cbedd10b9bf11c9775a0fdf59ac7f2402917af97641e024600df4846a33",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA0B0_5B6080",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B6880.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB024_5B6FF4.c"
+    },
+    {
+      "name": "func_801FB050_5B7020",
+      "size_bytes": 44,
+      "rom_offset": "0x5B7020",
+      "original_sha256": "f83f1efef64c1584c0aa4f4e2f9277c12342c414673d8e781ddadd1df930b30f",
+      "candidate_source_sha256": "810556c5e323a68ff7526988865471df9f25417c8dddb7ab64243edc4d96609c",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA0B0_5B6080",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B6880.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB050_5B7020.c"
+    },
+    {
+      "name": "func_801FB0DC_5B70AC",
+      "size_bytes": 40,
+      "rom_offset": "0x5B70AC",
+      "original_sha256": "1dadcf3833e6694330de975234d0d3428ea4c10ccaa7c675202e16176a7bdf45",
+      "candidate_source_sha256": "960440880b8af6404159dfd199c363ab5d4cb8d98087960e2874abeb0a130546",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA1A8_5B6178",
+          "offset": 16
+        }
+      ],
+      "disassembly_file": "5B6880.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB0DC_5B70AC.c"
+    },
+    {
+      "name": "func_801FB104_5B70D4",
+      "size_bytes": 40,
+      "rom_offset": "0x5B70D4",
+      "original_sha256": "403a5783e322c8485b3396dfb99011366bd4f46f75289a16b41acddc4dc73bf4",
+      "candidate_source_sha256": "6004214bd687f11a4cd08df776664c144c818aad853db2f98659100cab01da66",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA1A8_5B6178",
+          "offset": 16
+        }
+      ],
+      "disassembly_file": "5B6880.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB104_5B70D4.c"
+    },
+    {
+      "name": "func_801FB12C_5B70FC",
+      "size_bytes": 44,
+      "rom_offset": "0x5B70FC",
+      "original_sha256": "dd91df00772af4ece4b63de5e4caef11045cac353c24881710c5275b9736af77",
+      "candidate_source_sha256": "be858602e4fce441dd39215101cd5cf2cf9e0a5a527837f5f7b7191664046b30",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA0B0_5B6080",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B6880.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB12C_5B70FC.c"
+    },
+    {
+      "name": "func_801FB158_5B7128",
+      "size_bytes": 44,
+      "rom_offset": "0x5B7128",
+      "original_sha256": "30937a69c13a1c9b17e1e3f6398f61f127b8d8abc57905449efcedd8b2182ebb",
+      "candidate_source_sha256": "3dce084a138e44606c67f97c2016cb150b81e7b69dc2b9a46d0cbdfd011d0c49",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FA0B0_5B6080",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B6880.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB158_5B7128.c"
+    },
+    {
+      "name": "func_801FB54C_5B751C",
+      "size_bytes": 44,
+      "rom_offset": "0x5B751C",
+      "original_sha256": "5aba605cb2c16f7e96cd1f28b74ed7c31c791f4c8ac89ff6c57f0c6d05c4d794",
+      "candidate_source_sha256": "47fc8cc73a6cb6a2dabab8577d1219e86d3b8935c18f16d2ecc9e04ed6b028c0",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FB654_5B7624",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B7160.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB54C_5B751C.c"
+    },
+    {
+      "name": "func_801FB578_5B7548",
+      "size_bytes": 44,
+      "rom_offset": "0x5B7548",
+      "original_sha256": "a41b63cee87068971b4e5e20004acd987780a54b921333c4771bf95e93475382",
+      "candidate_source_sha256": "4b7801a6216c69470be4e9a07c5efcb79fe3405a9a44e4107c617e0e550c3476",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FB654_5B7624",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B7160.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB578_5B7548.c"
+    },
+    {
+      "name": "func_801FB5A4_5B7574",
+      "size_bytes": 44,
+      "rom_offset": "0x5B7574",
+      "original_sha256": "4f5e8804ec988e8233812fee4072337b0ba74870b825ac4737c9e6587544e911",
+      "candidate_source_sha256": "e9d2aea48ef622064a00acb10848edef9baf9a3db9e0a1e9e00b83081ebec616",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FB654_5B7624",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B7160.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB5A4_5B7574.c"
+    },
+    {
+      "name": "func_801FB5D0_5B75A0",
+      "size_bytes": 44,
+      "rom_offset": "0x5B75A0",
+      "original_sha256": "f2a2801297a1757a818d0d6e8187c1f4d345a81806fc3c594780df9a119dfd0f",
+      "candidate_source_sha256": "7e4a633af7a7ab8e58e526a04c5a649c5ba2306ef42678dad138034775840251",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FB654_5B7624",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B7160.s",
+      "category": "new_wrapper_families",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB5D0_5B75A0.c"
+    },
+    {
+      "name": "func_801FB5FC_5B75CC",
+      "size_bytes": 44,
+      "rom_offset": "0x5B75CC",
+      "original_sha256": "b9c8925116c01f7e7b944beec149377897bd05334d953bcac731120d44938b79",
+      "candidate_source_sha256": "c9e08e3332e72cbf922d4be825dcd8888ad8848baebce521decbab905d910878",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FB654_5B7624",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B7160.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB5FC_5B75CC.c"
+    },
+    {
+      "name": "func_801FB628_5B75F8",
+      "size_bytes": 44,
+      "rom_offset": "0x5B75F8",
+      "original_sha256": "4d5fcbae70c1e1fd88314208ceaf555c39df8ea2f30458bec19bdb81d03d90a1",
+      "candidate_source_sha256": "5fbb560ccb7a8d4266640f0884b87b35a439a7f95a52bca41d46ea622f267732",
+      "relocations": [
+        {
+          "type": "R_MIPS_26",
+          "symbol": "func_801FB654_5B7624",
+          "offset": 20
+        }
+      ],
+      "disassembly_file": "5B7160.s",
+      "category": "ABI_float_arg_recovery",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_801FB628_5B75F8.c"
+    },
+    {
+      "name": "func_8021BFD8_6856C8",
+      "size_bytes": 80,
+      "rom_offset": "0x6856C8",
+      "original_sha256": "f5796ebe4dc3cc3b473f07245ce53d390340941c023e74493fed5739210ad94a",
+      "candidate_source_sha256": "128456267f2698041a6033cccb5ad79b1f75ccacfd9111f5e02918a1b4b86afe",
+      "relocations": [],
+      "disassembly_file": "682300.s",
+      "category": "parameterized_field_offsets",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_8021BFD8_6856C8.c"
+    },
+    {
+      "name": "func_80223FE0_68D6D0",
+      "size_bytes": 24,
+      "rom_offset": "0x68D6D0",
+      "original_sha256": "5fa4de2cfef46eb936fb51ab008244d715dd9a5df4a6ace95cf703a598434134",
+      "candidate_source_sha256": "2affe8584d5966f4eec1d8ed2b9a67dd4a29868936bf8b0e0c305a7aca667fef",
+      "relocations": [],
+      "disassembly_file": "686770.s",
+      "category": "parameterized_field_offsets",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_80223FE0_68D6D0.c"
+    },
+    {
+      "name": "func_8022A76C_693E5C",
+      "size_bytes": 80,
+      "rom_offset": "0x693E5C",
+      "original_sha256": "d35548c8e772491218c39e7a86686f4fa62f383fca78f8fbb6793f608c540797",
+      "candidate_source_sha256": "88f7c05214648b16fc0b6a7e398e1d8974ef56242667c13c42b00a330a396de2",
+      "relocations": [],
+      "disassembly_file": "6921E0.s",
+      "category": "parameterized_field_offsets",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_8022A76C_693E5C.c"
+    },
+    {
+      "name": "func_80217928_69F028",
+      "size_bytes": 16,
+      "rom_offset": "0x69F028",
+      "original_sha256": "cfa68e41a78d38a7756e53398ad64f626dee1ebefe7c24eaa1486445f10e60a2",
+      "candidate_source_sha256": "76bce21ad5147f49e0643c781a75cc77f1887ecfb4a47f0b1f58ebf0ca7f46ff",
+      "relocations": [],
+      "disassembly_file": "699790.s",
+      "category": "parameterized_field_offsets",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_80217928_69F028.c"
+    },
+    {
+      "name": "func_0800664C_6BE3CC",
+      "size_bytes": 68,
+      "rom_offset": "0x6BE3CC",
+      "original_sha256": "4d0662dcbb033848cdc819d6a25f9d4b3b62104fb92a5ec8afcfe9dc60cb3370",
+      "candidate_source_sha256": "6685845811f355a65ebb48e847aa098ed145105287fce0e28d1f776eca726621",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_0800C384_6C4104",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_0800C384_6C4104",
+          "offset": 8
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08006690_6BE410",
+          "offset": 28
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08006690_6BE410",
+          "offset": 32
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 20
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 24
+        }
+      ],
+      "disassembly_file": "6B7D80.s",
+      "category": "volatile_float_store_order",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_0800664C_6BE3CC.c"
+    },
+    {
+      "name": "func_08006854_6BE5D4",
+      "size_bytes": 68,
+      "rom_offset": "0x6BE5D4",
+      "original_sha256": "0ec5b20a236114e11509ad5b27f99520447f306bd9934dc0a4d1226d3ef150a0",
+      "candidate_source_sha256": "584a14c30675c1ff136ec24c964360f290370b48374f6bf58049a834777949f0",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_0800C388_6C4108",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_0800C388_6C4108",
+          "offset": 8
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08006898_6BE618",
+          "offset": 28
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08006898_6BE618",
+          "offset": 32
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 20
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 24
+        }
+      ],
+      "disassembly_file": "6B7D80.s",
+      "category": "volatile_float_store_order",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_08006854_6BE5D4.c"
+    },
+    {
+      "name": "func_08006A5C_6BE7DC",
+      "size_bytes": 68,
+      "rom_offset": "0x6BE7DC",
+      "original_sha256": "8357d05b302239522ee7efa890168610ba2ce93031eab9f068175db243e47fff",
+      "candidate_source_sha256": "d29a15ca8890423ca1ee220862b665a461f7419e132d3cfe32e8efe510263687",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_0800C38C_6C410C",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_0800C38C_6C410C",
+          "offset": 8
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08006AA0_6BE820",
+          "offset": 28
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08006AA0_6BE820",
+          "offset": 32
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 20
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 24
+        }
+      ],
+      "disassembly_file": "6B7D80.s",
+      "category": "volatile_float_store_order",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_08006A5C_6BE7DC.c"
+    },
+    {
+      "name": "func_08006C64_6BE9E4",
+      "size_bytes": 68,
+      "rom_offset": "0x6BE9E4",
+      "original_sha256": "dbcca6efae8fee5562c6cccd4fa69b2cabbd57717ac7e1fb9ab60dfdf02645f3",
+      "candidate_source_sha256": "1c22c531bbbc4e95cf84711556b7927a82f10845627db407c3c12e0cfe428015",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_0800C390_6C4110",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_0800C390_6C4110",
+          "offset": 8
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08006CA8_6BEA28",
+          "offset": 28
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08006CA8_6BEA28",
+          "offset": 32
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 20
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 24
+        }
+      ],
+      "disassembly_file": "6B7D80.s",
+      "category": "volatile_float_store_order",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_08006C64_6BE9E4.c"
+    },
+    {
+      "name": "func_08006E6C_6BEBEC",
+      "size_bytes": 68,
+      "rom_offset": "0x6BEBEC",
+      "original_sha256": "04361375619064c4ca4ff327ab45d7c19a8a1fe5309afac15be0f3005aa51bf0",
+      "candidate_source_sha256": "19656bebf5c573b081e2ced257035486b2f366f08e817f817e70f5167f869893",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_0800C394_6C4114",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_0800C394_6C4114",
+          "offset": 8
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08006EB0_6BEC30",
+          "offset": 28
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08006EB0_6BEC30",
+          "offset": 32
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 20
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 24
+        }
+      ],
+      "disassembly_file": "6B7D80.s",
+      "category": "volatile_float_store_order",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_08006E6C_6BEBEC.c"
+    },
+    {
+      "name": "func_08007074_6BEDF4",
+      "size_bytes": 68,
+      "rom_offset": "0x6BEDF4",
+      "original_sha256": "c61bec227c9a1d6e7af40e84aea292e33c0c0321fd84b92be945dd80e46be45c",
+      "candidate_source_sha256": "e17ca0132a4a36e0bfabde91b01af2216e4b4d4e952e9046953dd0e5a3a761f9",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_0800C398_6C4118",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_0800C398_6C4118",
+          "offset": 8
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_080070B8_6BEE38",
+          "offset": 28
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_080070B8_6BEE38",
+          "offset": 32
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 20
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 24
+        }
+      ],
+      "disassembly_file": "6B7D80.s",
+      "category": "volatile_float_store_order",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_08007074_6BEDF4.c"
+    },
+    {
+      "name": "func_08000424_6EBE54",
+      "size_bytes": 68,
+      "rom_offset": "0x6EBE54",
+      "original_sha256": "bacf46ca3305ef7df7d90db09a052d0885af3a59ead9654c7cc1c787fdb2bf81",
+      "candidate_source_sha256": "59f0af8892b51ac9558101852e57e0b852f2f1dd809c31ea7fe6fb145c09a026",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_08001DD0_6ED800",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_08001DD0_6ED800",
+          "offset": 8
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08000468_6EBE98",
+          "offset": 28
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08000468_6EBE98",
+          "offset": 32
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 20
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 24
+        }
+      ],
+      "disassembly_file": "6EBA30.s",
+      "category": "volatile_float_store_order",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_08000424_6EBE54.c"
+    },
+    {
+      "name": "func_080004C0_6EBEF0",
+      "size_bytes": 68,
+      "rom_offset": "0x6EBEF0",
+      "original_sha256": "1d58a7473177ac9f771dd1772ee0cd31ed6472467c5a4c44e61d015af51a8b3e",
+      "candidate_source_sha256": "ecdc8262d6ffa84b3d11e9830817d14bb293de5fb50716688b2f90f632f37de8",
+      "relocations": [
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "D_08001DD4_6ED804",
+          "offset": 4
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "D_08001DD4_6ED804",
+          "offset": 8
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08000504_6EBF34",
+          "offset": 28
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08000504_6EBF34",
+          "offset": 32
+        },
+        {
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 20
+        },
+        {
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034E8C_35A8C",
+          "offset": 24
+        }
+      ],
+      "disassembly_file": "6EBA30.s",
+      "category": "volatile_float_store_order",
+      "status": "ISOLATED_RELOC_EXACT",
+      "source_path": "sources/func_080004C0_6EBEF0.c"
+    }
+  ]
+}

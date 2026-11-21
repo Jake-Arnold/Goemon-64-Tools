@@ -1,0 +1,1 @@
+typedef unsigned short u16; struct Obj{char padding[0x8A];u16 count;}; extern int func_80034B44_35744; void func_08005744_6FD2D4(struct Obj *p, volatile int arg1){int old=p->count;p->count=old-1;if(old==0)((void (*)(void*))&func_80034B44_35744)(p);}

@@ -1,0 +1,1 @@
+typedef float f32;void func_80217928_69F028(void *p, f32 v){f32 *q=*(f32**)((char*)p+0x5C);q[2]=v;}
