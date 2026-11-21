@@ -1,6 +1,6 @@
 # Original-ROM native C promotion: gameplay Start + VM busy (21 November 2026)
 
-**Status: PASSED_G2_LOCAL** until both the implementation commit and its remote branch SHA have been verified. No game runtime test of Bomb Text Skip is claimed.
+**Status: PASSED_G2 — PUBLISHED_REMOTE_VERIFIED.** Implementation commit [`13a3a08a`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/13a3a08a124e3ba9883d0a30d46b33995e9137d8) is present on `chatgptweb/decomp` and its files and branch SHA were re-fetched. The same local original-ROM/ELF/relocation gates and full local CI were rechecked on 21 November 2026. No game runtime test of Bomb Text Skip is claimed.
 
 ## Newly accepted original-address C (deduplicated)
 

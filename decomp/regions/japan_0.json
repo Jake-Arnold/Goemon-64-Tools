@@ -929,7 +929,9 @@
     "published": false
   },
   "glitch_start_three_20261121": {
-    "status": "PASSED_G2_LOCAL",
+    "status": "PASSED_G2",
+    "github_publication": "PUBLISHED_REMOTE_VERIFIED",
+    "implementation_commit": "13a3a08a124e3ba9883d0a30d46b33995e9137d8",
     "baseline": 2118,
     "new_c": 3,
     "new_instruction_bytes": 388,

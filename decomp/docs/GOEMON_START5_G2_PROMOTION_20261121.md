@@ -57,4 +57,4 @@ Authoritative staging/rebuild/verification tool: `decomp/glitch_g2_promotion.py`
 
 ## Publication boundary
 
-These are native original-code **PASSED_G2_LOCAL** results until the implementation/proof/`PROGRESS.md` source is published and the remote SHA has been fetched. Do not claim a full-ROM result based only on isolated IDO function matches. No game ROMs, original assembly dumps, object/ELF files, saves, personal diagnostics or proprietary toolchain are committed.
+These five functions have reached **PASSED_G2 — PUBLISHED_REMOTE_VERIFIED**. Implementation commit [`13a3a08a`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/13a3a08a124e3ba9883d0a30d46b33995e9137d8) is present on `chatgptweb/decomp`; original-ROM, ELF and full relocation checks were repeated from the published source, and full local CI passed. Do not claim a full-ROM result based only on isolated IDO function matches. No game ROMs, original assembly dumps, object/ELF files, saves, personal diagnostics or proprietary toolchain are committed.

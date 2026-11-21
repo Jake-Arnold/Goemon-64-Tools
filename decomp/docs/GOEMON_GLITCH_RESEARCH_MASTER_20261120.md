@@ -197,3 +197,8 @@ The newly reconstructed dispatcher and teardown now compile in **one C unit alon
 ## 21 November 2026 — Native G2 promotion: JP 2121 and USA 1958
 
 Five original-address C functions passed strict native full-ROM, ELF identities, complete original main+overlay relocations, C/ASM identity and local CI. Full technical evidence: [GOEMON_START5_G2_PROMOTION_20261121.md](GOEMON_START5_G2_PROMOTION_20261121.md). Japan teardown remains ASM due original-relocation mismatch. Actual Bomb Text Skip in-game is still NOT RUN.
+
+
+## 21 November 2026 — Five Start-path C functions promoted and remotely verified
+
+The original-ROM-exact Japanese gameplay callback dispatcher, gameplay Start handler and script-active query, plus the USA dispatcher and Start handler, are now **PASSED_G2** in [`13a3a08a`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/13a3a08a124e3ba9883d0a30d46b33995e9137d8) on `chatgptweb/decomp`. Full 32 MiB original ROM identity, 7,376 ELF identities and all original semantic relocations (JP 80,747 / USA 82,103) were independently rechecked against the published sources. Full local CI passed. Totals: Japan **2,121** and USA **1,958** accepted original-address C. The Japanese 68-byte teardown is intentionally retained as ASM because its C alters original relocations. The actual Start-driven Gourmet Sub Bomb Text Skip timing still requires runtime verification. [Complete promotion evidence](GOEMON_START5_G2_PROMOTION_20261121.md).

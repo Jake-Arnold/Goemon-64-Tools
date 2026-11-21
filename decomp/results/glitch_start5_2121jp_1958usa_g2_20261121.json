@@ -1,7 +1,9 @@
 {
   "format": "goemon-glitch-start-five-native-g2-v1",
   "date": "2026-11-21",
-  "acceptance_tier": "PASSED_G2_LOCAL",
+  "acceptance_tier": "PASSED_G2",
+  "github_publication": "PUBLISHED_REMOTE_VERIFIED",
+  "implementation_commit": "13a3a08a124e3ba9883d0a30d46b33995e9137d8",
   "branch": "chatgptweb/decomp",
   "pin": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "regions": {
