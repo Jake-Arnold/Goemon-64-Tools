@@ -1,3 +1,9 @@
+## 21 November 2026 — Read-only USA state/overlay runtime capture interface (RESEARCH, no live game evidence)
+
+- New `decomp.state_runtime_trace`: can attach read-only to a **USA** Linux game PID using the existing host process-RDRAM adapter, with bounded stable double reads and SHA-256-only original-ROM code fingerprint checks for all eight `0x801CB460` overlay images (11,13,14,15,16,20,22,23). A match establishes bytes present, not active residency or executed code. Polls are marked `host_poll_non_atomic`; `guest_frame`/`guest_pc` remain null.
+- For **real** same-frame tracing, call `capture_halted_frame` only inside a genuine emulator guest-halted frame callback supplying the observed frame number/PC. Correlate the original loaded overlay *image* with PC, and attach confirmed loader ID only after a successful instrumented loader return. No emulator/game was available to capture a true callback. All 12 local fake-RAM tests, original-ROM fingerprint 8/8, synthetic Linux process_vm_readv and full ZIP17 local CI passed; live CI HEAD still separately unverified for any PR.
+- See `decomp/research/usa_runtime_state_trace_20261121/README.md` for exact guest field widths and command lines. Historical state-13/gameplay and state-10/debug labels do not substitute for new gameplay evidence. No decomp accepted C counts changed.
+
 # Goemon 64 matching-C — active continuation
 
 **Verified native G2 snapshot:** USA 1,965 / Japan 2,123 from original-ROM proof at `553bc85e4f6e3a9be08b8e85c01768a82ad646be`; latest reviewed documentation-only canonical HEAD `5c34335de6d450f0f196b4aa05c39bfc2e9b2aaa`, 21 November 2026. **Always fetch the live remote HEAD and latest regional proof before starting.** The numbers below are a dated snapshot, not a fixed acceptance target. Work on `chatgptweb/decomp`, never `main`.

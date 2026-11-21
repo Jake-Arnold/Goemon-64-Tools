@@ -1,0 +1,144 @@
+{
+  "format": "goemon-usa-overlay-text-fingerprints-v1",
+  "identity_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "origin": "SHA1 authenticated decompressed USA ROM and pinned splat file start/data boundaries",
+  "scope": "static_overlay_1 only; fingerprints identify image bytes present at 0x801CB460, NOT a proven active loaded resource or an instruction-executing overlay",
+  "records": [
+    {
+      "file_id": 11,
+      "rom_start": "0x587370",
+      "rom_code_end": "0x5B8500",
+      "guest_vma": "0x801CB460",
+      "window_offsets": [
+        0,
+        64,
+        128
+      ],
+      "window_length": 16,
+      "window_sha256": [
+        "e872b608da5815e8cacb1101e124652d3cd57e8ddca119ac5fbcaf1fc0a1089b",
+        "5183d82abc9f3990bca514d58b703d382fdbfcda679ed3a61fd07cc3f58d25a9",
+        "264da0dba23ebfeb2a7d4efda300bd799b2681cc241c5b35fefe3b04d4fdb92e"
+      ]
+    },
+    {
+      "file_id": 13,
+      "rom_start": "0x5F6840",
+      "rom_code_end": "0x634E30",
+      "guest_vma": "0x801CB460",
+      "window_offsets": [
+        0,
+        64,
+        128
+      ],
+      "window_length": 16,
+      "window_sha256": [
+        "1db303ce3a6682bc316c558100e21f9675b9dda41a5e3aafb7c76b29780f7b78",
+        "5183d82abc9f3990bca514d58b703d382fdbfcda679ed3a61fd07cc3f58d25a9",
+        "e8c359dcf2b88966858fed8808396479c503cd8bdcd26c94a3cba154f56acd2a"
+      ]
+    },
+    {
+      "file_id": 14,
+      "rom_start": "0x63A2B0",
+      "rom_code_end": "0x6576E0",
+      "guest_vma": "0x801CB460",
+      "window_offsets": [
+        0,
+        64,
+        128
+      ],
+      "window_length": 16,
+      "window_sha256": [
+        "ab62a8b2b6cf70b2ffde3e3c66f8a55227e428c975f822c9b792f03fef9198c9",
+        "8383d8f7a1568f24d95ec327ffd0ea345f342a2ac558ffba11adaf0da7662a1a",
+        "d311e81b54a88c35d7e0291bb5e85a257677329a33ba20f5cce3c39df1878fd0"
+      ]
+    },
+    {
+      "file_id": 15,
+      "rom_start": "0x65E310",
+      "rom_code_end": "0x666140",
+      "guest_vma": "0x801CB460",
+      "window_offsets": [
+        0,
+        64,
+        128
+      ],
+      "window_length": 16,
+      "window_sha256": [
+        "17612a194affc91dd13aee80b1d9dec7c9b38c17e9a153775e1329d90ba1a821",
+        "b7301982fa9c6b848579a861973bc966c6c98609cd5f99a8303d609bd488136b",
+        "d0576093a49a5e8ab04b3145f8289177ddae5ff1c0f2364a573a9ce18d436b71"
+      ]
+    },
+    {
+      "file_id": 16,
+      "rom_start": "0x667B90",
+      "rom_code_end": "0x66BD60",
+      "guest_vma": "0x801CB460",
+      "window_offsets": [
+        0,
+        64,
+        128
+      ],
+      "window_length": 16,
+      "window_sha256": [
+        "0c894de7061629000de10c9e36c26ec39c9069379d142c48cf3a2ca05e49def8",
+        "bc7ea3cda462ed1ebbc2cb041882c7c48d99df4342ea0e4fe596c186a2dec046",
+        "42545d3b7f5b409912795e50eb10da2991103a21853f5a1437288031ae99cc15"
+      ]
+    },
+    {
+      "file_id": 20,
+      "rom_start": "0x69CBD0",
+      "rom_code_end": "0x69D420",
+      "guest_vma": "0x801CB460",
+      "window_offsets": [
+        0,
+        64,
+        128
+      ],
+      "window_length": 16,
+      "window_sha256": [
+        "12153d316777539397e89627f7bfce87ace3181bcfac875787e89e9923b5989f",
+        "9a0fc260a2582c28dd93cf1b370811ededaf4505bdeeba5aa8a66100a7e1c50c",
+        "df280ef489d795524a3564ad25631c171f9ec180120411f29925c31d96f4eebc"
+      ]
+    },
+    {
+      "file_id": 22,
+      "rom_start": "0x69E080",
+      "rom_code_end": "0x69F400",
+      "guest_vma": "0x801CB460",
+      "window_offsets": [
+        0,
+        64,
+        128
+      ],
+      "window_length": 16,
+      "window_sha256": [
+        "8b6a9915ab93f6d5dd449045bd5f77345a243090babe3ac5c4c695bacc133016",
+        "f56d7c27440c8b7bf459e0a4bd06c9bbd3c143f451f7d70d2446b2b54504b556",
+        "32ebbd963bcbacd44e1ae850992186865ab2c266abaf9c5cb3a228fb4b93eb56"
+      ]
+    },
+    {
+      "file_id": 23,
+      "rom_start": "0x6A9920",
+      "rom_code_end": "0x6AC460",
+      "guest_vma": "0x801CB460",
+      "window_offsets": [
+        0,
+        64,
+        128
+      ],
+      "window_length": 16,
+      "window_sha256": [
+        "8d78657db26bcec3fae01ba3b59e2a2077528537e0f8fcfa44b4bcb8ee5d009d",
+        "cdd1847eaa17308c481253c6bbd265c2bbcc5d66a7afb82d2543f7d6f81a98a2",
+        "d19f79de9f036cadf1dc2be0f67c16bbe941ff1c4d3ac70a5c67196626072c70"
+      ]
+    }
+  ]
+}
