@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Reconstruct exact research C from the prior source-only gzip."""
+"""Reconstruct the exact research C candidate from the prior source-only gzip.
+No compiler, original ROM, game asset or assembly is embedded or downloaded.
+"""
 import gzip, hashlib, re, sys
 from pathlib import Path
 

@@ -1,3 +1,7 @@
+## 21 November 2026 — Match research reconstructor to tested source
+
+- **Corrected research-only source utility:** GitHub RECONSTRUCT_TYPED_ZERO_EARLY_20261121.py now exactly matches the previously tested standalone ZIP file, SHA-256 8f59ddb254fec57e55166542c102de2d4d3503d84a6d80c61813e264bab06e1f (Git blob eac5dc9ddab4e127a52578b2274a6bed7d269322). Only its documentation string changed; native C measurements, accepted functions and original ROM are unchanged.
+
 ## 21 November 2026 — Typed float-zero original f0 prologue and exact Mini trig/angle stack layout (FAILED_NATIVE / RESEARCH_ONLY)
 
 - **Source breakthrough:** eleven type-correct positive-zero task float stores written as (f32)0 rather than 0.0f eliminate the unwanted saved f20 and restore original mtc1 zero,f0 at +0x04 while retaining swc1 float-store opcodes. Ten such changes do not. Expanding an otherwise only-three-used f32 array to 4 entries and moving an already-live scalar declaration restores the original 232-byte frame and sp+0x64 / +0x6C / +0x6E original cosine return / second / first angle locations. All five first-angle case sh stores, original lhu a0 at +0x194, original two cosine calls at +0x19C,+0x1A4, second delay-slot lhu and return swc1 at +0x1B0, and zero jump-table destination drift all now coexist in one original-ID0 generated C source. At +0x198 the original sh a1 remains candidate sh v0.
