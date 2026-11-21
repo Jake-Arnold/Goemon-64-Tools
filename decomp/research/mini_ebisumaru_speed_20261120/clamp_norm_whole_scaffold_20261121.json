@@ -1,0 +1,75 @@
+{
+  "format": "goemon-usa-clamp-whole-source-and-norm-microexec-research-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "promotion": false,
+  "region": "usa",
+  "function": "func_801CD310_589220",
+  "original_rom_offset": "0x589220",
+  "original_vma": "0x801cd310",
+  "original_size": 4320,
+  "original_frame": 232,
+  "original_usa_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pristine_usa_rom_equality_bytes": 33554432,
+  "compiler": "original SGI IDO 5.3 -O2 -mips2 -G 0 -non_shared",
+  "regenerated_scaffold_source_sha256": "e26d242f2ea4ac46b0c3ee303a2107f12009cef20af1764a45192a5f1c1bad82",
+  "regenerated_candidate": {
+    "size": 4288,
+    "frame": 232,
+    "native_compiles": true,
+    "typing_warnings": 7,
+    "matching_original_offset_nonreloc_words": 9,
+    "comparable_nonreloc_words": 882,
+    "first_nonreloc_mismatch": "+0x04",
+    "calls_original": 33,
+    "calls_candidate": 33,
+    "native_sqrt_original": 9,
+    "native_sqrt_candidate": 9,
+    "text_relocations_original": 101,
+    "text_relocations_candidate": 101,
+    "original_type_symbol_reloc_order_matches": 99,
+    "generator_owned_rodata_relocation_pair": 2,
+    "jump_entries": 18,
+    "jump_grouping_exact": true,
+    "jump_destination_drift_bytes": [
+      4,
+      8,
+      12,
+      16,
+      20
+    ],
+    "matching_relocation_offset_type_symbol": 0,
+    "native_exact": false
+  },
+  "original_mips_microexec": {
+    "status": "PASS",
+    "three_d": {
+      "start": "+0x988",
+      "end_exclusive": "+0x9EC",
+      "cases": 5000,
+      "clamped": 4051,
+      "not_clamped": 949
+    },
+    "horizontal_two_d": {
+      "start": "+0xDC0",
+      "end_exclusive": "+0xE18",
+      "cases": 5000,
+      "clamped": 3636,
+      "not_clamped": 1364
+    },
+    "context_gate_replay": {
+      "cases": 3000,
+      "status": "PASS"
+    }
+  },
+  "clean_archive_replay": "PASS_EXPECTED_FAILED_NATIVE",
+  "canonical_combined_verify": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "emulator_gameplay": "NOT_RUN",
+  "accepted_usa_start": 1965,
+  "accepted_usa_end": 1965,
+  "accepted_usa_instruction_bytes": 84648,
+  "remaining_asm": 5398,
+  "archive": "GOEMON_WHOLE_CLAMP_BLOCK_RECON_20261121.zip"
+}
