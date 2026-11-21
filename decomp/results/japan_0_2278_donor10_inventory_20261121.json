@@ -1,0 +1,31 @@
+{
+  "format": "goemon-japan-donor10-function-inventory-v1",
+  "region": "japan_0",
+  "status": "PASSED_G2_LOCAL",
+  "source_manifest": "decomp/research/jp_donor10_20261121/manifest.json",
+  "matching_c_functions_before": 2268,
+  "new_matching_c": 10,
+  "matching_c_functions_after": 2278,
+  "matching_original_instruction_bytes_before": 121288,
+  "new_matching_bytes": 716,
+  "matching_original_instruction_bytes_after": 122004,
+  "remaining_asm_functions": 5098,
+  "original_positive_elf_function_count": 7376,
+  "complete_semantic_relocations": 80747,
+  "semantic_relocation_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "original_accepted_subset_preserved": true,
+  "original_assembly_removed_only_for_new_functions": true,
+  "source_hashes": {
+    "func_80013800_14400": "48253b4b36ce777478d81bfbd0622b660f322ee1b46bcd719226e3d677b84770",
+    "osSpTaskYield": "e7528acd8a3fdd708b0a43a97ad73882347029128a2f81d24a2744f7431d652b",
+    "func_801E7AF8_5A3AC8": "fad7269da9fb4a715055adb895a3cc571487c18396d6f6872d0c7124d5b529ae",
+    "func_80218350_69FA50": "12b7b4a28d354bcb85dba29072b14a1109e0951c189d6488d637a19532893ecc",
+    "func_80219500_5D4A90": "986ba6d5fbccc832c3c4d081e14783fd2d99f093eb7f96bb15c038b3725b175b",
+    "func_801D0B90_58CB60": "8dd918bd3798929aec1187e586948ace7d6fc3f93d2c6cf41bf0635ef65c3bbc",
+    "func_801D0B90_5FB610": "8a2a1176d0bd2a20a82a751f1629bba43291d9450204b775acb805116a6e5a17",
+    "func_08000340_720290": "fdf5859a8af7a3266124ef586d65688ffc90e27f2e60c14a68cf6e6410228aca",
+    "func_080003FC_72034C": "859fc21922a9c7a18bc6d50fc5a03d0c62b2f7eaa708e33ef01a60d908e0e963",
+    "func_08001844_721794": "805664cd9b2c70c8e994c00a122cb37df625f3d21853d5850e3188babd4351f5"
+  }
+}

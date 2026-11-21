@@ -1,0 +1,11 @@
+{
+  "status": "FAILED_NATIVE",
+  "name": "func_801E019C_59C16C",
+  "original_rom_offset": "0x59C16C",
+  "size": 44,
+  "blocker": "IDO emits or a2,zero,zero in branch delay slot while original uses addiu a2,zero,0; instruction semantics equivalent but byte-identity fails",
+  "first_mismatch_function_relative_offset": 24,
+  "variants_attempted": 1,
+  "full_original_rom_gate": "NOT_RUN",
+  "promotion": "NO \u2014 retains original assembly"
+}

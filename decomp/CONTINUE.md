@@ -1,5 +1,8 @@
 # Goemon 64 matching-C — active continuation
 
+**21 November 2026 new Japan-0 donor-template G2 (local):** Ten new Japanese C functions / 716 original instruction bytes now have a **PASSED_G2_LOCAL** full native ROM, 7,376 ELF and 80,747 semantic relocation proof, strict inventory and full local CI. **Locally verified JP2,278 / 122,004 bytes / 5,098 ASM**; source [donor10 G2](results/japan_0_2278_donor10_g2_20261121.json) and [replay](research/jp_donor10_20261121/README.md). This is **not yet** a published count: the published canonical GitHub baseline below remains JP2,268 until the publication step is remote-verified.
+
+
 **21 November 2026 Japan JP2268 publication:** **145 new original-address Japanese C functions / 8,952 bytes**, preserved in [implementation commit `1fa94856a8a5`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/1fa94856a8a52ec069107fceaa7c828149e9b96a). **Published and remotely verified: Japan 2,268 C / 121,288 original code bytes / 5,108 ASM**. Original native complete-ROM/ELF/all-relocation G2 and full local CI passed; see [original G2 evidence](results/japan_0_2268_short145_g2_20261121.json), [remote publication ledger](results/japan_0_2268_publication_20261121.json) and [source/replay guide](research/jp_short145_20261121/README.md). USA unchanged; no emulator gameplay test.
 
 **Verified native G2 snapshot:** USA **1,965** from its earlier original-ROM proof; Japan **2,268** from the newer full original-ROM proof and remotely verified publication commit `1fa94856a8a5`, 21 November 2026. **Always fetch the live branch and latest proof before starting.** Work on `chatgptweb/decomp`, never `main`.

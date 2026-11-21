@@ -1,3 +1,11 @@
+## 21 November 2026 — Japanese donor-template ten-function native promotion (PASSED_G2_LOCAL; publication pending)
+
+- **New original C:** 10 unique original Japanese ASM functions reconstructed from accepted Japanese C donor patterns, **716 original instruction bytes**. Complete Japanese original C **2,268 → 2,278**, matched bytes **121,288 → 122,004**, remaining ASM **5,108 → 5,098**.
+- **Native proof:** SGI IDO 5.3 `-O2 -mips2`; 33,554,432-byte expanded Japanese ROM and 16,777,216-byte retail ROM exact (SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded` and `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b`); all **7,376 original ELF identities**, **80,747 semantic relocations** and strict original ASM/C ownership preserved. Original **JP2268** remains fully intact.
+- **Tests run:** five new fail-closed/source/offset tests PASS, including three actual original C wrappers exercised through 1,000 deterministic GCC ASan/UBSan host cases each; full `python3 -m decomp.local_ci` PASS (340 decomp Python tests, 349 verifier/ledger tests, configured host sanitizers and task checks). The separate isolated first-pass search had ten matches and one 44-byte `FAILED_NATIVE` IDO argument-materialisation mismatch. The failed function retains ASM.
+- **Source/proof:** `decomp/research/jp_donor10_20261121/`, `decomp/japan_donor10_promotion.py`, `decomp/build_japan_donor10_promotion.sh`, `decomp/results/japan_0_2278_donor10_g2_20261121.json` and strict inventory. Emulator gameplay NOT RUN; USA and `main` unchanged.
+- **Publication boundary:** local ROM/ELF/relocation/CI proofs passed; remote publication is a separate gate. Do not count this as published until the implementation commit is pushed and its remote SHA re-fetched.
+
 ## 21 November 2026 — Japanese short145 original-ROM G2 published and remotely verified
 
 - **Implementation published:** [`1fa94856a8a52ec069107fceaa7c828149e9b96a`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/1fa94856a8a52ec069107fceaa7c828149e9b96a) on `chatgptweb/decomp`, independently re-fetched with all 163 changed Git blobs preserving the exact original patch blob SHA-1s. The prior local-only section immediately below is historical.
