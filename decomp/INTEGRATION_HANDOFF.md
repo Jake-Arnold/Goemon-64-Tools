@@ -1,3 +1,7 @@
+**HISTORICAL REVIEW ONLY — DO NOT MERGE DECOMP INTO `main`.** This November 2026 handoff describes a former 142-function snapshot and is not current merge authorization. Active C reconstruction remains on `chatgptweb/decomp`; preserve the independent toolkit `main` branch. See [CONTINUE.md](CONTINUE.md) and [current README](README.md).
+
+---
+
 # Integration handoff: chatgptweb/decomp into main
 
 Reviewed branch head: `877312c991cdcf1d43db3a7403ceeaf04be9fb51`; main at review: `12e7699a42948fa7816b2049eaca60d2ed3f518c`. Fetch both heads again and reassess any new commits before integrating. This document and its test fixes are on a separate handoff branch; preserve concurrent work and do not force-push.

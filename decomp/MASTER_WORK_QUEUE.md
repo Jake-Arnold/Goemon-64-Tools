@@ -1,3 +1,7 @@
+**HISTORICAL WORK QUEUE — NOT ACTIVE.** The original 142-function queue and 158-function reconciliation predate the earlier 1,958-USA / 2,121-Japan published G2 checkpoint (superseded by USA 1,965 / Japan 2,123). Do not derive current blockers or outstanding function counts from the entries below. Research evidence remains available; use [CONTINUE.md](CONTINUE.md), [current README](README.md) and verified per-region inventories.
+
+---
+
 # Consolidated Goemon work queue (2026-11-08)
 
 **Reconciled on 2026-11-14:** The old 142-function checkpoint and ten-function

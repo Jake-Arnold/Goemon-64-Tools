@@ -1,3 +1,7 @@
+**HISTORICAL / COMPLETED INVESTIGATION (9 November 2026).** All ten original targets were examined. This is not a live function queue or current matching-C count; retain the compiler failure details as research. Use [CONTINUE.md](CONTINUE.md) and [current README](README.md) for live work.
+
+---
+
 # Next ten matching-C functions — evidence-ranked execution plan
 
 Authoritative starting checkpoint (2026-11-09): **142 newly matching C / 10,652 exact MIPS bytes; 13 upstream C; 155 combined C; 7,221 ASM** of 7,376 identified. The latest live proof is an independently recreated 2,331-object, 33,554,432-byte exact decompressed ROM build (SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`). **Uninterrupted `decomp.verify` remains pending (`formal_verifier_run_completed=false`).** Verify current branch HEAD, `AGENTS.md`, `CONTINUE.md`, `MASTER_WORK_QUEUE.md`, `manifest.json`, `results/combined.json` and `results/inventory.json` on *each run*; replace these dated totals with newer repository proof when it exists.
