@@ -1,0 +1,13 @@
+--- a/case_first_scalar_second.c
++++ b/first_read_then_write.c
+@@ -127,8 +127,9 @@
+         break;
+     }
+ 
++    pool_u16_1 = angles_and_vecC.t.first_angle;
+     angles_and_vecC.t.switch_angles[0] = pool_s32_0;
+-    func_80003EA0_4AA0(angles_and_vecC.t.first_angle);
++    func_80003EA0_4AA0(pool_u16_1);
+     angles_and_vecC.t.trig_result = func_80003EA0_4AA0(angles_and_vecC.t.switch_angles[0]);
+     temp_v1 = M2C_FIELD(arg0, void **, 0x5C);
+     pool_u8_0 = M2C_FIELD(temp_v1, u8 *, 0x59);

@@ -1,0 +1,105 @@
+{
+  "format": "goemon-usa-clamp-original-abi-fp20-causal-research-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "original_target": "func_801CD310_589220",
+  "original_rom_offset": "0x589220",
+  "original_vma": "0x801CD310",
+  "original_bytes": 4320,
+  "original_frame_bytes": 232,
+  "original_usa_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pristine_rom_bytes_equal": 33554432,
+  "native_compiler": "original SGI IDO 5.3",
+  "valid_first_load_before_merge": {
+    "source_sha256": "2157e871647a5b8c079b52f207a76ce1dc8ab8ca06408d4d6887c0b71fe04106",
+    "function_bytes": 4292,
+    "frame_bytes": 232,
+    "same_offset_words": 9,
+    "comparable_words": 888,
+    "exact_relocation_triples": 1,
+    "shifted_0x50_0x90": "13/13",
+    "shifted_0x90_0x1b4": "44/55",
+    "original_offset_match": false,
+    "first_angle_cases": 5,
+    "second_angle_merge": 1
+  },
+  "baseline": {
+    "function_bytes": 4292,
+    "frame_bytes": 232,
+    "same_offset_words": 9,
+    "comparable_words": 888,
+    "exact_relocation_triples": 1,
+    "shifted_0x50_0x90": "13/13",
+    "shifted_0x90_0x1b4": "43/55"
+  },
+  "float_zero_allocator_diagnostic": {
+    "ten_integer_zero_rewrites": {
+      "saved_f20": true,
+      "original_f0_plus4": false,
+      "bytes": 4292,
+      "frame": 232
+    },
+    "eleven_integer_zero_rewrites": {
+      "saved_f20": false,
+      "original_f0_plus4": true,
+      "bytes": 4456,
+      "frame": 224,
+      "matching_words": 62,
+      "relocation_triples": 20
+    },
+    "thirty_integer_zero_rewrites": {
+      "saved_f20": false,
+      "original_f0_plus4": true,
+      "bytes": 4400,
+      "frame": 224,
+      "matching_words": 62,
+      "relocation_triples": 21
+    },
+    "tested_11_to_10_single_deletion_cases": 11,
+    "not_acceptable_matching_c": true
+  },
+  "original_cosine_helper": {
+    "rom_offset": "0x4aa0",
+    "vma": "0x80003ea0",
+    "bytes": 144,
+    "input_used": "a0",
+    "a1_read": false,
+    "angle_mask": "0x3ff",
+    "case_checks": 12,
+    "maximum_cosine_error": 4.9e-8
+  },
+  "original_caller": {
+    "rom_jal": "0x5886f4",
+    "argument_a2_from_caller_sp": "0x90",
+    "argument_a1_from_caller_sp_delay": "0x8c"
+  },
+  "original_helper": {
+    "function": "func_801CE3F0_58A300",
+    "f14_zero_relative": "0x4",
+    "float_zero_task_offsets": [
+      "0x74",
+      "0x78",
+      "0x7c"
+    ]
+  },
+  "tests": {
+    "pristine_original_rom_exact": "PASS_33554432_BYTES",
+    "native_compiles_in_portable_replay": 8,
+    "authentic_original_abi": "PASS",
+    "abi_unit_tests": "PASS_4",
+    "compiler_threshold_replay": "PASS_10_vs_11",
+    "host_gcc_asan_ubsan_cases": 65536,
+    "host_clang_asan_ubsan_cases": 65536,
+    "source_zip_fresh_extract_replay": "PASS",
+    "native_function_match": "FAIL",
+    "canonical_g2": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "local_ci": "NOT_RUN",
+    "gameplay": "NOT_RUN"
+  },
+  "artifact_sha256": "afc7ec7c2e3bd3842beba2a10eb7f8b99bb841de970e39e86c27be6326b486ed",
+  "accepted_usa_before": 1965,
+  "accepted_usa_after": 1965,
+  "accepted_instruction_bytes": 84648,
+  "remaining_asm": 5398
+}
