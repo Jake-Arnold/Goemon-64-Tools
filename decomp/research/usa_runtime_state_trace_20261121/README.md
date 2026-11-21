@@ -13,7 +13,7 @@ The pinned Splat `static_overlay_1` group has **eight interchangeable file image
 - USA dynamic `SYS_W` pointer `0x8015C5C8`, required to equal authenticated `0x8008CCC0`.
 - Outer state `SYS_W+0x3ADD4` / `0x800C7A94` (u8); completion/end byte `+0x3ADD5` (u8); secondary selector `+0x3ADD6` (u8); tertiary byte `+0x3ADD7` (u8).
 - VM nested selector `+0x3ADDE` (u8) and nested end `+0x3ADDF` (u8).
-- Map ID `0x800C7AB2` (u16), scheduler mode `0x800C7AB4` (u16).
+- Map ID `0x800C7AB2` (u16), group-local room selection `0x800C7AB4` (u16). The previous `scheduler_mode` key was a misnomer; see `decomp/DEFAULT_ENTRANCE_TRACE.md`.
 - Original file-22-only condition halfword `SYS_W+0x3B07C` / `0x800C7D3C` (u16); file22 counter `0x801D7008` (u32) **only interpreted when code image 22 is verified**.
 - Global gate `D_800548D8` (u32) and fingerprint of 0x801CB460 code window.
 
@@ -32,6 +32,18 @@ python3 -m decomp.state_runtime_trace --pid 12345 --seconds 40 \
 Use the actual USA emulator/native recomp process PID. The process is opened **with `writable=False`** and only `read_guest` is used. An explicit verified memory base can be supplied as `--base 0x...`. This module never relaxes kernel ptrace permissions or injects input. A Japanese-only native recomp is **not compatible** with this USA address and signature catalogue. It will reject a mismatched system pointer or yield unknown image signatures; do not treat that as a Japanese crosswalk discovery.
 
 The collector checks that the state block, overlay signature region and system pointer are unchanged across two reads, dropping torn observations. **This does not make polling frame-atomic.** The output always marks such observations `host_poll_non_atomic`, with `guest_frame: null` and `guest_pc: null`. A change between polls is an *observed value difference*, not proof of the exact MIPS writer, frame number or elapsed game frame count. Overwritten overlay code may remain readable after a transition.
+
+## Room-transition reporting and schema correction (21 November 2026)
+
+The original-USA field at `0x800C7AB4` is the **group-local room selection**, not a scheduler mode. A separate, user-reported live host capture (no raw RAM included) showed a constant outer state while multiple `map_id` values changed, consistently with original room-group base arithmetic. This finding corrects the previous `scheduler_mode` label. New traces use JSON format `goemon-usa-state-overlay-observations-v2`, field `room_group_selection`, and append `room_map_changed` records to `observed_transitions` even when the outer state stays constant. Older v1 files still use `scheduler_mode` and do not automatically contain room transition events. Their original samples should be reinterpreted, not overwritten.
+
+The new `room_map_changed` event includes old/new map IDs, old/new group-local room selections, original outer state on both sides, overlay fingerprint identities, and poll elapsed time where available. These are sampled value differences, not proof of the guest instruction that caused the room change. Short-lived intermediate rooms can be missed.
+
+For a new v2 capture, review room-map events using:
+
+```bash
+jq -r '.observed_transitions[] | select(.event == "room_map_changed") | "\(.elapsed_ms // 0) ms: map \(.from_map_id) → \(.to_map_id); selector \(.from_room_group_selection) → \(.to_room_group_selection); outer \(.outer_state_after)"' /tmp/usa-state-trace-v2.json
+```
 
 ## Requirements for genuinely same-frame evidence
 

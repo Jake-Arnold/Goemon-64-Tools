@@ -79,7 +79,8 @@ class RuntimeStateTraceTests(unittest.TestCase):
         self.assertEqual(frame['values']['vm_substate'],2)
         self.assertEqual(frame['values']['stepw_end'],1)
         self.assertEqual(frame['values']['map_id'],0xAB)
-        self.assertEqual(frame['values']['scheduler_mode'],4)
+        self.assertEqual(frame['values']['room_group_selection'],4)
+        self.assertNotIn('scheduler_mode',frame['values'])
         self.assertEqual(frame['values']['flag_9000_word'],0x9000)
         self.assertEqual(frame['values']['file22_counter'],3)
         self.assertEqual(frame['values']['overlay']['image_file_id'],22)
@@ -136,6 +137,38 @@ class RuntimeStateTraceTests(unittest.TestCase):
         self.assertEqual(data['observed_transitions'][0]['static_consistency'],
                          'consistent_with_file22_overlay_state3_to4_path')
         self.assertEqual(data['observed_transitions'][0]['causal_attribution'],'NOT_PROVEN_NO_EXECUTED_PC_PROOF')
+
+    def test_room_map_transitions_are_reported_without_outer_state_change(self):
+        ram=FakeRam(image_file=11,outer=13,sub=0)
+        a=t.capture_poll(ram,ram.fingerprints,elapsed_ms=0)
+        # Existing region group: local rooms 3 -> 1; outer mode stays 13.
+        offset=0x3ADF2-0x3ADD4
+        selection=0x3ADF4-0x3ADD4
+        block=bytearray(ram.read_guest(t.STATE_BASE,t.STATE_READ_LEN))
+        block[offset:offset+2]=(353).to_bytes(2,'big')
+        block[selection:selection+2]=(3).to_bytes(2,'big')
+        ram.set(t.STATE_BASE,bytes(block))
+        b=t.capture_poll(ram,ram.fingerprints,elapsed_ms=105)
+        block[offset:offset+2]=(351).to_bytes(2,'big')
+        block[selection:selection+2]=(1).to_bytes(2,'big')
+        ram.set(t.STATE_BASE,bytes(block))
+        c=t.capture_poll(ram,ram.fingerprints,elapsed_ms=243)
+        summary=t.summarize([a,b,c])
+        changes=[x for x in summary['observed_transitions'] if x.get('event')=='room_map_changed']
+        self.assertEqual(summary['format'],'goemon-usa-state-overlay-observations-v2')
+        self.assertEqual(len(changes),2)
+        self.assertEqual((changes[1]['from_map_id'],changes[1]['to_map_id']),(353,351))
+        self.assertEqual((changes[1]['from_room_group_selection'],changes[1]['to_room_group_selection']),(3,1))
+        self.assertEqual((changes[1]['outer_state_before'],changes[1]['outer_state_after']),(13,13))
+        self.assertEqual(changes[1]['elapsed_ms'],243)
+        self.assertEqual(changes[1]['later_overlay_image_file_id'],11)
+        self.assertNotIn('causal_attribution',changes[1])
+
+    def test_stable_room_does_not_generate_false_room_transition(self):
+        ram=FakeRam(image_file=11,outer=13,sub=0)
+        a=t.capture_poll(ram,ram.fingerprints,elapsed_ms=0)
+        b=t.capture_poll(ram,ram.fingerprints,elapsed_ms=20)
+        self.assertFalse(t.summarize([a,b])['observed_transitions'])
 
     def test_frame_order_validation(self):
         ram=FakeRam()

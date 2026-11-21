@@ -1,3 +1,8 @@
+## 21 November 2026 — USA read-only state observer v2, correcting room-map field (RESEARCH_ONLY)
+
+- Observer PR #156 now emits `room_group_selection` for USA guest `0x800C7AB4`, not `scheduler_mode`; canonical room `map_id` is guest `0x800C7AB2`. It records explicit `room_map_changed` events even while outer state 13 and overlay fingerprint are unchanged. In previous v1 recordings, `scheduler_mode` is the **old misnamed same field**, not a flag; no original data change. v2 schema is not backward compatible by key; do not overwrite v1 JSON.
+- Tests: 14 focused host mock tests and full ZIP17-based `decomp.local_ci` PASS. No actual same-frame debugger capture. Next probe: startup state changes and overlay22 in original-USA native recomp; if 20 ms polling skips a state, obtain native frame-boundary event capture rather than increasing confidence in polls.
+
 ## 21 November 2026 — Read-only USA state/overlay runtime capture interface (RESEARCH, no live game evidence)
 
 - New `decomp.state_runtime_trace`: can attach read-only to a **USA** Linux game PID using the existing host process-RDRAM adapter, with bounded stable double reads and SHA-256-only original-ROM code fingerprint checks for all eight `0x801CB460` overlay images (11,13,14,15,16,20,22,23). A match establishes bytes present, not active residency or executed code. Polls are marked `host_poll_non_atomic`; `guest_frame`/`guest_pc` remain null.

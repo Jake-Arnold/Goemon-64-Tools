@@ -19,7 +19,7 @@ from pathlib import Path
 import time
 from typing import Any
 
-FORMAT = 'goemon-usa-state-overlay-observations-v1'
+FORMAT = 'goemon-usa-state-overlay-observations-v2'
 FINGERPRINTS = Path(__file__).resolve().parent / 'research/usa_runtime_state_trace_20261121/overlay_fingerprints.json'
 OVERLAY_VMA = 0x801CB460
 OVERLAY_READ_LEN = 0x90
@@ -99,7 +99,7 @@ def _raw_snapshot(ram: Any, fingerprints: dict) -> dict:
     return {'outer_state': before[0], 'stepw_end': before[1], 'secondary_state': before[2],
             'tertiary_state': before[3], 'vm_substate': before[0x3ADDE-0x3ADD4],
             'end_byte': before[0x3ADDF-0x3ADD4], 'map_id': _u(before, 0x3ADF2-0x3ADD4, 2),
-            'scheduler_mode': _u(before, 0x3ADF4-0x3ADD4, 2),
+            'room_group_selection': _u(before, 0x3ADF4-0x3ADD4, 2),
             'flag_9000_word': window_9000, 'file22_counter': counter,
             'gate_800548D8': gate, 'overlay': image}
 
@@ -177,6 +177,19 @@ def summarize(samples: list[dict], *, origin: str = 'read_only') -> dict:
                 transition['observation_index']=i
                 transition['sample_kind']=sample['capture_kind']
                 events.append(transition)
+            if previous['values']['map_id'] != sample['values']['map_id']:
+                events.append({'observation_index': i,
+                    'event': 'room_map_changed',
+                    'elapsed_ms': sample.get('elapsed_ms'),
+                    'from_map_id': previous['values']['map_id'],
+                    'to_map_id': sample['values']['map_id'],
+                    'from_room_group_selection': previous['values']['room_group_selection'],
+                    'to_room_group_selection': sample['values']['room_group_selection'],
+                    'outer_state_before': previous['values']['outer_state'],
+                    'outer_state_after': sample['values']['outer_state'],
+                    'earlier_overlay_image_file_id': previous['values']['overlay']['image_file_id'],
+                    'later_overlay_image_file_id': sample['values']['overlay']['image_file_id'],
+                    'limitation': 'Host polling may skip intermediate rooms or brief states; does not prove the writer.'})
             if previous['values']['overlay']['image_file_id'] != sample['values']['overlay']['image_file_id']:
                 events.append({'observation_index':i,'event':'overlay_image_fingerprint_changed',
                     'from':previous['values']['overlay']['image_file_id'],
