@@ -1,0 +1,397 @@
+{
+  "format": "goemon-original-usa-outer-state-atlas-v1",
+  "status": "STATIC_ROM_VERIFIED_RESEARCH_ONLY",
+  "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "state_field": "SYS_W + 0x3ADD4 (u8)",
+  "outer_dispatch": {
+    "function": "func_80002040_2C40",
+    "table_rom_offset": "0x59508",
+    "count": 18,
+    "bounds_check": false
+  },
+  "state15_dispatch": {
+    "function": "func_800030F0_3CF0",
+    "substate_field": "SYS_W +0x3ADD6 (u8)",
+    "table_rom_offset": "0x7B48C",
+    "count": 5,
+    "bounds_check": true,
+    "entry_vmas": [
+      "0x80003128",
+      "0x80003144",
+      "0x800031AC",
+      "0x800031DC",
+      "0x80003228"
+    ]
+  },
+  "file22_dispatch": {
+    "file_id": 22,
+    "overlay_rom_start": "0x69E080",
+    "guest_vma": "0x801CB460",
+    "function": "func_801CB460_69E080",
+    "table_rom_offset": "0x6A9850",
+    "selector": "SYS_W +0x3ADD6 (u8)",
+    "entries": [
+      "func_801CB4BC_69E0DC",
+      "func_801CB53C_69E15C"
+    ],
+    "bounds_check": false
+  },
+  "overlay_direct_write": {
+    "function": "func_801CB53C_69E15C",
+    "store_rom_offset": "0x69E1D8",
+    "outer_state": 4,
+    "secondary_reset_rom_offset": "0x69E1E8",
+    "secondary_state": 0,
+    "condition": "(SYS_W+0x3B07C & 0x9000) != 0 AND D_801D7008 >= 2; call func_80038BC8(1) precedes stores",
+    "helper_reset_not_called": true
+  },
+  "state15_substates": [
+    {
+      "substate": 0,
+      "entry_rom_offset": "0x3D28",
+      "effect": "set scheduler halfword=1, reset stepw_end=0, increment secondary state"
+    },
+    {
+      "substate": 1,
+      "entry_rom_offset": "0x3D44",
+      "effect": "if D_800548D8 != 0 return; else func_8000383C then file_15 request at 0x801CB460, countdown, increment secondary state"
+    },
+    {
+      "substate": 2,
+      "entry_rom_offset": "0x3DAC",
+      "effect": "set scheduler halfword=0, increment secondary state"
+    },
+    {
+      "substate": 3,
+      "entry_rom_offset": "0x3DDC",
+      "effect": "set SYS_W+0x3ADF4 halfword=3; call func_8003488C(0x801CCB7C); increment secondary state"
+    },
+    {
+      "substate": 4,
+      "entry_rom_offset": "0x3E28",
+      "effect": "branch on stepw_end=0..3 (0 run task executor; 1/2 reset scheduler with SYS_W+0x3ADF4=3/1; 3 set outer state=5 via canonical setter)"
+    }
+  ],
+  "states": [
+    {
+      "state": 0,
+      "handler": "func_800020B8_2CB8",
+      "handler_vma": "0x800020B8",
+      "direct_setter_calls": [],
+      "increment_helper_calls": [
+        "0x2D20"
+      ],
+      "loader_requests": [],
+      "notes": ""
+    },
+    {
+      "state": 1,
+      "handler": "func_80002138_2D38",
+      "handler_vma": "0x80002138",
+      "direct_setter_calls": [],
+      "increment_helper_calls": [
+        "0x2E14",
+        "0x2E34",
+        "0x2F54"
+      ],
+      "loader_requests": [
+        {
+          "call_rom_offset": "0x2D7C",
+          "file_id": 23
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "state": 2,
+      "handler": "func_8000236C_2F6C",
+      "handler_vma": "0x8000236C",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x303C",
+          "arg_instruction_offset": "0x3040",
+          "target_state": 3
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [
+        {
+          "call_rom_offset": "0x2FB8",
+          "file_id": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "state": 3,
+      "handler": "func_80002454_3054",
+      "handler_vma": "0x80002454",
+      "direct_setter_calls": [],
+      "increment_helper_calls": [],
+      "loader_requests": [
+        {
+          "call_rom_offset": "0x3080",
+          "file_id": 22
+        }
+      ],
+      "notes": "Invokes file_22 overlay two-entry dispatcher; its secondary-state-1 routine can write outer state=4 directly"
+    },
+    {
+      "state": 4,
+      "handler": "func_80002518_3118",
+      "handler_vma": "0x80002518",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x32F0",
+          "arg_instruction_offset": "0x32F4",
+          "target_state": 6
+        },
+        {
+          "call_rom_offset": "0x3300",
+          "arg_instruction_offset": "0x3304",
+          "target_state": 5
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [
+        {
+          "call_rom_offset": "0x3170",
+          "file_id": 20
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "state": 5,
+      "handler": "func_80002718_3318",
+      "handler_vma": "0x80002718",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x34D4",
+          "arg_instruction_offset": "0x34D8",
+          "target_state": 6
+        },
+        {
+          "call_rom_offset": "0x34E8",
+          "arg_instruction_offset": "0x34C4",
+          "target_state": 7
+        },
+        {
+          "call_rom_offset": "0x3504",
+          "arg_instruction_offset": "0x3508",
+          "target_state": 8
+        },
+        {
+          "call_rom_offset": "0x3520",
+          "arg_instruction_offset": "0x3524",
+          "target_state": 15
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": ""
+    },
+    {
+      "state": 6,
+      "handler": "func_80002938_3538",
+      "handler_vma": "0x80002938",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x3680",
+          "arg_instruction_offset": "0x3678",
+          "target_state": 5
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": ""
+    },
+    {
+      "state": 7,
+      "handler": "func_80002A98_3698",
+      "handler_vma": "0x80002A98",
+      "direct_setter_calls": [],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": "Wrapper calls func_80005B90_6790 which contains state setter calls to 3 or 5"
+    },
+    {
+      "state": 8,
+      "handler": "func_80002AB8_36B8",
+      "handler_vma": "0x80002AB8",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x3828",
+          "arg_instruction_offset": "0x3820",
+          "target_state": 5
+        },
+        {
+          "call_rom_offset": "0x3854",
+          "arg_instruction_offset": "0x3858",
+          "target_state": 9
+        },
+        {
+          "call_rom_offset": "0x3864",
+          "arg_instruction_offset": "0x3868",
+          "target_state": 11
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [
+        {
+          "call_rom_offset": "0x3710",
+          "file_id": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "state": 9,
+      "handler": "func_80002C7C_387C",
+      "handler_vma": "0x80002C7C",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x397C",
+          "arg_instruction_offset": "0x3980",
+          "target_state": 11
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": ""
+    },
+    {
+      "state": 10,
+      "handler": "func_80002D94_3994",
+      "handler_vma": "0x80002D94",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x39CC",
+          "arg_instruction_offset": "0x39BC",
+          "target_state": 3
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": ""
+    },
+    {
+      "state": 11,
+      "handler": "func_80002DE4_39E4",
+      "handler_vma": "0x80002DE4",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x3A58",
+          "arg_instruction_offset": "0x3A5C",
+          "target_state": 13
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": ""
+    },
+    {
+      "state": 12,
+      "handler": "func_80002E70_3A70",
+      "handler_vma": "0x80002E70",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x3AE4",
+          "arg_instruction_offset": "0x3AE8",
+          "target_state": 13
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": ""
+    },
+    {
+      "state": 13,
+      "handler": "func_80002EFC_3AFC",
+      "handler_vma": "0x80002EFC",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x3B3C",
+          "arg_instruction_offset": "0x3B2C",
+          "target_state": 3
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": ""
+    },
+    {
+      "state": 14,
+      "handler": "func_80002F54_3B54",
+      "handler_vma": "0x80002F54",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x3CC8",
+          "arg_instruction_offset": "0x3CC0",
+          "target_state": 11
+        },
+        {
+          "call_rom_offset": "0x3CD8",
+          "arg_instruction_offset": "0x3CDC",
+          "target_state": 3
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": ""
+    },
+    {
+      "state": 15,
+      "handler": "func_800030F0_3CF0",
+      "handler_vma": "0x800030F0",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x3F10",
+          "arg_instruction_offset": "0x3F14",
+          "target_state": 5
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [
+        {
+          "call_rom_offset": "0x3D64",
+          "file_id": 15
+        }
+      ],
+      "notes": "Five-entry secondary jump table, guarded for index <5; outcome 5 via stepw_end=3 in substate 4"
+    },
+    {
+      "state": 16,
+      "handler": "func_80003328_3F28",
+      "handler_vma": "0x80003328",
+      "direct_setter_calls": [
+        {
+          "call_rom_offset": "0x3F40",
+          "arg_instruction_offset": "0x3F44",
+          "target_state": 17
+        }
+      ],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": "Calls state setter with argument 17"
+    },
+    {
+      "state": 17,
+      "handler": "func_80003358_3F58",
+      "handler_vma": "0x80003358",
+      "direct_setter_calls": [],
+      "increment_helper_calls": [],
+      "loader_requests": [],
+      "notes": "Runs three-way VM dispatcher then task executor"
+    }
+  ],
+  "interpretation_limits": [
+    "A direct setter call proves a possible edge, not that the path always executes",
+    "Calling an overlay entry at a shared VMA does not prove which overlay is resident except under the documented file-load branch",
+    "Indirect or transitive changes not in this table are not excluded",
+    "Runtime transitions, game-scene labels, and a safe warp mechanism are not established",
+    "The known 1966-C dispatcher remains a draft PR pending complete up-to-date full CI"
+  ]
+}

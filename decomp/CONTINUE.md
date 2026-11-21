@@ -1,3 +1,9 @@
+## 21 November 2026 — Read-only original-USA outer-state graph, 20 direct setter edges and file-22 bridge
+
+- Research module: `decomp/research/usa_state_transition_atlas_20261121/`. Its 18-state table, 20 exact original direct setter callsites, four increment-helper callsites, six selected file-loader requests, five-way state-15 subtable and two-way file-22 subtable passed 68 SHA-1-gated original-ROM property checks against the 32 MiB USA original. See `STATE_TRANSITION_ATLAS.md` and sanitized `proof.json`. A local full `decomp.local_ci` on supplied ZIP17 + new tests passed (335 decomp / 349 ledger tests, configured sanitizer suites), but latest live source checkout full CI has NOT been run.
+- File22 loaded from state3 into VMA `0x801CB460` can directly store outer state=4 and reset only nested `+0x3ADD6` via overlay substate1 when its event-mask/counter gate is met. Unlike canonical `func_80003728_4328`, this visible path omits the normal helper's additional resets. It is a static path, not a gameplay trace, and that VMA is overlay-reused.
+- No matching-C promotion, no new fixed cross-region guest-global claims, no ROM/ELF/manifest alteration. USA accepted baseline 1,965; original 120-byte dispatcher PR #152 remains draft and unmerged.
+
 # Goemon 64 matching-C — active continuation
 
 **Verified snapshot:** `chatgptweb/decomp` commit `553bc85e4f6e3a9be08b8e85c01768a82ad646be`, 21 November 2026. **Always fetch the live remote HEAD and latest regional proof before starting.** The numbers below are a dated snapshot, not a fixed acceptance target. Work on `chatgptweb/decomp`, never `main`.
