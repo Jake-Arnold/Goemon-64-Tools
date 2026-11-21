@@ -1,7 +1,7 @@
 {
   "format": "goemon-task-registry-v1",
   "branch": "chatgptweb/decomp",
-  "reconciled_head": "5c34335de6d450f0f196b4aa05c39bfc2e9b2aaa",
+  "reconciled_head": "2ba2af13bf44c6260b543122a7a3bffe490412c7",
   "last_reviewed": "2026-11-21",
   "policy": "Curated actionable handoff list; GitHub issues, live manifests and verified native G2 reports supersede stale task details. Tasks are NOT proof of accepted C or authorization for unsafe gameplay writes.",
   "tasks": [
@@ -252,25 +252,38 @@
     },
     {
       "id": "GQ-VM-001",
-      "title": "Bomb Text Skip real timing trace and pause-reset native research",
-      "status": "pending",
-      "priority": 2,
+      "title": "Capture authentic Japanese first-bomb Start/normal Project64 traces",
+      "status": "blocked_external",
+      "priority": 1,
       "workstream": "japan-glitch",
-      "region": "both",
-      "proof_tier": "STATIC_ROM_VERIFIED / FAILED_NATIVE / RESEARCH_ONLY",
-      "summary": "JP/USA pause/reset structural cross-region research: 721/721 upper-16 MIPS encoding matches, but reset/pause C variants remain nonmatching. No gameplay timing trace. Original research explicitly forbids promotion during this phase.",
+      "region": "japan_0",
+      "proof_tier": "ORIGINAL_JP_MIPS_SYNTHETIC_MICROTRACE_VERIFIED / PJ64_INTERPRETER_CAPTURE_PENDING / NO_NATIVE_C_PROMOTION",
+      "summary": "Original-MIPS controlled first-bomb microtrace supports a conditional Start→pause scheduler mask→17 fade checks→VM cursor reset→checkpoint-13 suppression, but its bomb actor and renderer were synthetic. A prepared read-only Project64 3.x Japanese v0 kit records genuine normal/Start traces; Node mock recorder tests and nine Python comparator tests passed, but no real PJ64 execution or savewarp was observed.",
       "requires": [
-        "read-only live Start->pause->VM reset->checkpoint trace for gameplay claim",
-        "separate native C research if resumed"
+        "Windows Project64 3.x debugger with Always use interpreter core and original Japan revision-0 ROM (header CRC1 832C168B / CRC2 56A2CDAE)",
+        "one genuine first Gourmet Sub bomb pre-dialogue savestate with checkpoint not 13; exact same savestate for normal and one-frame Start trial",
+        "manual user Start input when physically available, plus actual observed save/reload warp outcome",
+        "source-only local kit Goemon_Bomb_Text_Skip_Project64_Trace_Kit_2026-11-21.zip (SHA-256 0de4a714b96cbf6158596e236ac72b4033e50653f95180a58ffc6a87e7f3e933); scripts are NOT committed because of original-game script command signatures"
       ],
-      "next_step": "Preserve no-promotion constraint from issue #151. Capture real sequencing only when emulator is available; otherwise continue bounded static native mismatch analysis without changing accepted counts.",
-      "acceptance": "Verifiable live PC ordering for glitch claim; standalone IDO exact alone is insufficient for future promotion, which requires new authorization and full gates.",
+      "next_step": "When local Windows/PJ64 access returns, load the genuine first-bomb savestate before starting each read-only recorder. Capture normal Goemon_Bomb_JP_normal.jsonl (no Start) and Start trial Goemon_Bomb_JP_start.jsonl (manual one-update Start) from the exact same state. Stop via GOEMON_BOMB_STOP() to record end. Run compare_bomb_traces.py --normal ... --start ... --report ... --markdown ...; capture actual VM task +0x22 flags, g_system+0x3AE24, cursor, fade queries 1–17, checkpoint-13 store/write and eventual saved warp. Preserve raw traces/savestate locally; publish only sanitized report and hashes. Instructions: decomp/tasks/bomb_text_skip_live_trace/README.md.",
+      "acceptance": "Two authentic, complete, same-savestate original-JP Project64 interpreter JSONL captures; verified ROM header; original checkpoint13 command reached in normal and Start cases; actual scheduler mask +0x22 captured; complete PC-ordered Start, pending command, fade, cursor reset and checkpoint writes; real observed warp outcome separately documented. Comparator must return a justified outcome or INCONCLUSIVE/REFUTED. Synthetic traces and lack of write alone are never proof.",
       "evidence": [
         "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/151",
-        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/139"
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/139",
+        "decomp/tasks/bomb_text_skip_live_trace/README.md"
       ],
       "conflicts_with": [],
-      "history": [],
+      "history": [
+        {
+          "at": "2026-11-21T11:55:28Z",
+          "status": "blocked_external",
+          "note": "Prepared two read-only JP Project64 recorder files, strict paired comparator, manual checklist and bounded synthetic tests (Node recorder mock 3 cases; Python comparator 9 cases PASS). Original-MIPS synthetic first-bomb microtrace is NOT actual gameplay. Kept native matching-C promotions untouched. Kit SHA-256 0de4a714b96cbf6158596e236ac72b4033e50653f95180a58ffc6a87e7f3e933.",
+          "evidence": [
+            "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/139",
+            "https://github.com/Jake-Arnold/Goemon-64-Tools/issues/151"
+          ]
+        }
+      ],
       "last_reviewed": "2026-11-21"
     },
     {

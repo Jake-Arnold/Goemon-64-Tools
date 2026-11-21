@@ -49,3 +49,6 @@ python3 -m unittest decomp.test_task_registry -v
 ```
 
 Both `python3 -m decomp.local_ci` and `--quick` now include registry validation and the C-Right comparator cases; the full command additionally runs the configured original-C host sanitizers. No ROM-free CI run proves native original-ROM matching or gameplay.
+## Bomb Text Skip first-bomb Project64 live trace — GQ-VM-001
+
+[Dedicated read-only handoff](bomb_text_skip_live_trace/README.md) records the authentic Japanese first-bomb normal-vs-one-frame-Start procedure. The task is `blocked_external` until the user can manually operate Windows Project64 3.x. The full self-contained source-only recorder/comparator ZIP is delivered in the user's Project conversation as `Goemon_Bomb_Text_Skip_Project64_Trace_Kit_2026-11-21.zip` (SHA-256 `0de4a714b96cbf6158596e236ac72b4033e50653f95180a58ffc6a87e7f3e933`); do not commit its region-specific script instruction signatures or any real JSONL, ROM or savestate. The kit contains two read-only JSONL recorders, a fail-closed paired comparator, manual checklist and synthetic Node/Python tests. Real first-bomb actor/input/VM timing is **not yet observed**; no new matching-C promotions.
