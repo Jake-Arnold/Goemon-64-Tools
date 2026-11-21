@@ -1,5 +1,7 @@
 # Script VM runtime cursor and text path
 
+**Story-location cross-reference (21 November 2026):** The read-only regional glyph catalogue and original-ROM static text-command index are documented in [DIALOGUE_STORY_ANCHORS.md](DIALOGUE_STORY_ANCHORS.md). Use a same-frame resource/base/text-cursor/script-PC snapshot to correlate an execution trace with a candidate story location; static dialogue references alone do not prove function execution.
+
 **Research snapshot:** 2026-11-13
 **Scope:** Resolve the meaning of `0x80077858`, connect the active resource ID to its loaded bytes, and distinguish script execution from text emission.
 **Evidence basis:** Pinned USA disassembly/source at `mnsg` commit `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`; local decompressed ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; runtime observations in the consolidated handoff supplied 2026-11-13.

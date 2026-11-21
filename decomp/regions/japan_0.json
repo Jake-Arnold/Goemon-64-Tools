@@ -944,5 +944,24 @@
     "full_original_semantic_relocations": 80747,
     "original_function_identities": 7376,
     "teardown_68_bytes": "RETAIN_ASM_ORIGINAL_RELOCATIONS"
+  },
+  "vm_two_20261121": {
+    "status": "PASSED_G2",
+    "github_publication": "PUBLISHED_REMOTE_VERIFIED",
+    "baseline": 2121,
+    "new_c": 2,
+    "new_instruction_bytes": 92,
+    "accepted_jp_c": 2123,
+    "accepted_instruction_bytes": 112336,
+    "assembly_remaining": 5253,
+    "manifest": "decomp/research/vm_g2_20261121/manifest.json",
+    "stage_adapter": "decomp/vm_g2_promotion.py",
+    "result": "decomp/results/japan_0_2123_vm_g2_20261121.json",
+    "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "original_function_identities": 7376,
+    "semantic_relocations": 80747,
+    "clean_replays": 2,
+    "gameplay": "NOT_RUN",
+    "implementation_commit": "74f940e7c0fb6b0ef7286bca1018780450ae4993"
   }
 }

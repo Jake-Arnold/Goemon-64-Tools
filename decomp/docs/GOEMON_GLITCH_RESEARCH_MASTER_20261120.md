@@ -202,3 +202,13 @@ Five original-address C functions passed strict native full-ROM, ELF identities,
 ## 21 November 2026 — Five Start-path C functions promoted and remotely verified
 
 The original-ROM-exact Japanese gameplay callback dispatcher, gameplay Start handler and script-active query, plus the USA dispatcher and Start handler, are now **PASSED_G2** in [`13a3a08a`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/13a3a08a124e3ba9883d0a30d46b33995e9137d8) on `chatgptweb/decomp`. Full 32 MiB original ROM identity, 7,376 ELF identities and all original semantic relocations (JP 80,747 / USA 82,103) were independently rechecked against the published sources. Full local CI passed. Totals: Japan **2,121** and USA **1,958** accepted original-address C. The Japanese 68-byte teardown is intentionally retained as ASM because its C alters original relocations. The actual Start-driven Gourmet Sub Bomb Text Skip timing still requires runtime verification. [Complete promotion evidence](GOEMON_START5_G2_PROMOTION_20261121.md).
+
+
+## 21 November 2026 — Native-exact Japanese VM resource lookup and countdown
+
+[Full original-ROM G2 report](GOEMON_VM_TWO_G2_PROMOTION_20261121.md). Two new original-address Japanese functions: `func_8003CC10_3D810` (48 bytes) and `func_8003E2C4_3EEC4` (44 bytes). Two independent original-ROM builds preserved all 33,554,432 bytes, 7,376 original ELF identities and 80,747 original semantic relocations, with exact C inventory increase 2,121→2,123. Both algorithms correspond to existing accepted USA C. The countdown JP `0x801CCF28` ↔ USA `0x801C77F8` and lookup bases are proven via original regional code, not a generic address shift. Tests: original IDO, full CI (303/349 Python test counts), GCC host ASan/UBSan PASS. Bomb Text Skip gameplay causality **NOT RUN**; teardown and large reset/pause code remain ASM.
+
+
+## 21 November 2026 — VM two-function promotion published and verified
+
+Japanese `func_8003CC10_3D810` (48 bytes) and `func_8003E2C4_3EEC4` (44 bytes) have been **PASSED_G2** promoted on `chatgptweb/decomp` in [`74f940e7`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/74f940e7c0fb6b0ef7286bca1018780450ae4993). Remote sources and manifest re-fetched; clean full Japanese 32 MiB ROM G2, 7,376 ELF function identities, 80,747 original semantic relocations, strict partition and full local CI passed. Accepted Japanese C **2,123**, USA C **1,958** unchanged. The prior teardown `func_8001F70C_2030C`, reset-manager and pause handler remain ASM; real Bomb Text Skip timing still not observed.
