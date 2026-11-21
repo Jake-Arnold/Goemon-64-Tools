@@ -1,0 +1,23 @@
+--- a/clamp_context_direct_4328.c
++++ b/clamp_vector_restore_4320.c
+@@ -51,6 +51,7 @@
+     u16 u16_4;
+     u8 u8_0;
+ 
++    f32 vecC[3];
+     f32 pool_2;
+     f32 pool_3;
+     f32 pool_4;
+@@ -63,7 +64,6 @@
+ 
+     f32 vecA[3];
+     f32 vecB[3];
+-    f32 vecC[3];
+     f32 vecD[3];
+@@ -446,7 +446,7 @@
+             u16_0 = func_801CE3F0_58A300(arg0, arg2);
+             M2C_FIELD(arg0, f32 *, 0x84) = pool_1;
+             M2C_FIELD(arg0, f32 *, 0x88) = pool_7;
+-            M2C_FIELD(arg0, f32 *, 0x8C) = pool_8;
++            M2C_FIELD(arg0, f32 *, 0x8C) = vecD[2];
+         }
