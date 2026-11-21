@@ -1,0 +1,100 @@
+{
+  "format": "goemon-glitch-start-five-native-g2-v1",
+  "date": "2026-11-21",
+  "acceptance_tier": "PASSED_G2",
+  "github_publication": "PUBLISHED_REMOTE_VERIFIED",
+  "implementation_commit": "13a3a08a124e3ba9883d0a30d46b33995e9137d8",
+  "branch": "chatgptweb/decomp",
+  "pin": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "regions": {
+    "japan_0": {
+      "original_rom_bytes": 33554432,
+      "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "original_elf_function_identities": 7376,
+      "all_semantic_relocation_count": 80747,
+      "all_semantic_relocation_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+      "prior_matched_c_functions": 2118,
+      "new_matched_c_functions": 3,
+      "matched_c_functions": 2121,
+      "matched_c_instruction_bytes": 112244,
+      "assembly_remaining": 5255,
+      "functions": [
+        {
+          "name": "func_8001F580_20180",
+          "rom_offset": 131456,
+          "vma": 2147612032,
+          "size": 100,
+          "source": "src/glitch_g2/jp_gameplay_dispatch.c",
+          "source_sha256": "435cf6387d345f2e5b57f798b4d93c29afba4f1a639c75404b3fac4374b45039",
+          "original_code_sha256": "e786bf75d6768439d6b594cdb37b3793b20c5819c39bfcfff78900166e97fc22",
+          "owner": "jp1686_263_000.s"
+        },
+        {
+          "name": "func_8001F610_20210",
+          "rom_offset": 131600,
+          "vma": 2147612176,
+          "size": 252,
+          "source": "src/glitch_g2/jp_gameplay_start.c",
+          "source_sha256": "7f2ab1ff0897d43f0c20a49caa6df1618a5a8316fb36a986da323de8605bc06e",
+          "original_code_sha256": "13bc993823cd242c3233f7a7c2294f1996f83bc629420cf3d9b7072da914c4ac",
+          "owner": "jp1686_263_002.s"
+        },
+        {
+          "name": "func_8003EE44_3FA44",
+          "rom_offset": 260676,
+          "vma": 2147741252,
+          "size": 36,
+          "source": "src/glitch_g2/jp_vm_busy.c",
+          "source_sha256": "8454de1bc4394850bbbb2f20447d7239c7fe60c9c39836ded8ba2cfb187a10cf",
+          "original_code_sha256": "4cf777613f43631f9300d2b1d2c1d3137f2ddf1cbcff01473c7d2cdc0356281f",
+          "owner": "jp1686_268_003.s"
+        }
+      ]
+    },
+    "usa": {
+      "original_rom_bytes": 33554432,
+      "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "original_elf_function_identities": 7376,
+      "all_semantic_relocation_count": 82103,
+      "all_semantic_relocation_sha256": "f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97",
+      "prior_matched_c_functions": 1956,
+      "new_matched_c_functions": 2,
+      "matched_c_functions": 1958,
+      "matched_c_instruction_bytes": 84292,
+      "assembly_remaining": 5405,
+      "functions": [
+        {
+          "name": "func_8001F8B0_204B0",
+          "rom_offset": 132272,
+          "vma": 2147612848,
+          "size": 100,
+          "source": "src/rotation_angles.c",
+          "source_sha256": "72742e59bf097de609062aac468e8dd3a11473939e67134f7853bc6c19050710",
+          "original_code_sha256": "ae5cfb9862bed41b69be6c133a0473858409b317f0aed7f7075006a7346e542d",
+          "owner": "rotation_angles.c"
+        },
+        {
+          "name": "func_8001F940_20540",
+          "rom_offset": 132416,
+          "vma": 2147612992,
+          "size": 252,
+          "source": "src/rotation_angles.c",
+          "source_sha256": "72742e59bf097de609062aac468e8dd3a11473939e67134f7853bc6c19050710",
+          "original_code_sha256": "025dd045f4347ed791523672b3779a1d7e9e78d093ee2e33e846cfa78b12a497",
+          "owner": "rotation_angles.c"
+        }
+      ]
+    }
+  },
+  "checks": {
+    "japan_0": "second clean staged original-ROM and original full main+overlay relocations PASS",
+    "usa": "second clean staged original-ROM and original full main+overlay relocations PASS",
+    "host_ci": "PASS: 300 decomp Python tests (1 skipped), 349 verifier/ledger cases (4 skipped), all task/evidence validation, all configured GCC ASan/UBSan host fixtures",
+    "gameplay": "NOT_RUN",
+    "elf_identity": "7376/7376 original named functions and original extents in BOTH regions",
+    "unpromoted": "Japan func_8001F70C_2030C 68 bytes retained original ASM because C did not preserve original D_3ADDF HI16/LO16 relocations"
+  },
+  "promotion_script": "decomp/glitch_g2_promotion.py",
+  "source_directory": "decomp/research/glitch_g2_20261121/sources",
+  "source_integrity": "full SHA-256 per entry; USA existing owner source SHA-256 pinned"
+}

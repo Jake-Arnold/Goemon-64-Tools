@@ -927,5 +927,22 @@
       "func_080012AC_6B51AC"
     ],
     "published": false
+  },
+  "glitch_start_three_20261121": {
+    "status": "PASSED_G2",
+    "github_publication": "PUBLISHED_REMOTE_VERIFIED",
+    "implementation_commit": "13a3a08a124e3ba9883d0a30d46b33995e9137d8",
+    "baseline": 2118,
+    "new_c": 3,
+    "new_instruction_bytes": 388,
+    "accepted_jp_c": 2121,
+    "accepted_instruction_bytes": 112244,
+    "assembly_remaining": 5255,
+    "manifest": "decomp/research/glitch_g2_20261121/manifest.json",
+    "stage_adapter": "decomp/glitch_g2_promotion.py",
+    "full_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "full_original_semantic_relocations": 80747,
+    "original_function_identities": 7376,
+    "teardown_68_bytes": "RETAIN_ASM_ORIGINAL_RELOCATIONS"
   }
 }
