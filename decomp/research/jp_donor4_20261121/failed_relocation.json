@@ -1,0 +1,20 @@
+{
+  "region": "japan_0",
+  "status": "FAILED_RELOC",
+  "name": "__osSpSetStatus",
+  "rom_offset": "0x4D010",
+  "size": 12,
+  "isolated_native_numeric_C": "byte-identical but two symbolic original R_MIPS_HI16/LO16 records lost",
+  "attempted_5_function_g2_relocations": 80745,
+  "required_5_function_g2_relocations": 80747,
+  "symbolic_C_variant": "FAILED_NATIVE: extra address-adjust instruction, first difference at offset 4",
+  "decision": "RETAIN original ASM; not included in four-function promotion",
+  "full_g2_with_original_asm_retained": "PASS",
+  "other_native_failure_candidates": [
+    "func_80217E64_69F564",
+    "func_080012FC_7385DC",
+    "func_08001380_734E00",
+    "func_8022B2F4_6949E4",
+    "func_8021FF00_6895F0"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "region": "japan_0",
+  "research_tier": "ISOLATED_EXACT",
+  "expected_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "count": 4,
+  "functions": [
+    {
+      "name": "alSynDelete",
+      "rom_offset": "0x4f340",
+      "size": 8,
+      "original_sha256": "f39bb13dbb0f4e24cd4f313a4df7d836d2382cf2265b7177f11735d31e0526b9",
+      "source_sha256": "d9b50f48ddd41f825a91ba6b9b1ff851a5617d4a19514e0231f19e52d593b5e6",
+      "relocations": []
+    },
+    {
+      "name": "func_800079EC_85EC",
+      "rom_offset": "0x85ec",
+      "size": 32,
+      "original_sha256": "333ba07d6b686986f7669093b7561a5d735760a57911e42e32ef5dda3f211d29",
+      "source_sha256": "2920111cc7fec723a139b89905e3131ceb6ab7695d65cc28c5a16858dbc33fb9",
+      "relocations": [
+        {
+          "offset": 8,
+          "type": "R_MIPS_26",
+          "symbol": "func_80007870_8470"
+        }
+      ]
+    },
+    {
+      "name": "func_801D6CE0_6451D0",
+      "rom_offset": "0x6451d0",
+      "size": 36,
+      "original_sha256": "f8d25fc05a54aa9f78e672c2e2abddaae79cbc10cdbee1f6085e8e2ddec1768b",
+      "source_sha256": "097d6dba7207d4cface70eec7653c439422ca87941c9fb5627b0ba8602f7de3a",
+      "relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_26",
+          "symbol": "func_801D2594_640A84"
+        }
+      ]
+    },
+    {
+      "name": "func_801FF4B8_5BB488",
+      "rom_offset": "0x5bb488",
+      "size": 44,
+      "original_sha256": "f23aed0d2f732d7f8378a8123e4cddad4480caafb6cbc23e5d2fc783f33255db",
+      "source_sha256": "3e5bae9444d85ad9a7a371ebb60d328abe41ff455a4173f615224efabf6375ae",
+      "relocations": [
+        {
+          "offset": 20,
+          "type": "R_MIPS_26",
+          "symbol": "func_801FF4E4_5BB4B4"
+        }
+      ]
+    }
+  ]
+}

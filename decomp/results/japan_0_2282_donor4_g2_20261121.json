@@ -1,0 +1,89 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "matched_c_before": 2278,
+  "matched_c_after": 2282,
+  "new_matching_c": 4,
+  "new_original_code_bytes": 120,
+  "matching_c_bytes": 122124,
+  "assembly_remaining": 5094,
+  "rom_bytes": 33554432,
+  "rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "elf_identities": 7376,
+  "semantic_relocations": 80747,
+  "semantic_relocation_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "names": [
+    "alSynDelete",
+    "func_800079EC_85EC",
+    "func_801D6CE0_6451D0",
+    "func_801FF4B8_5BB488"
+  ],
+  "skipped": [],
+  "publication": "PASSED_G2_LOCAL",
+  "format": "goemon-japan-2282-donor4-native-g2-local-v1",
+  "parent_git_head": "076a284c1a66aae82a0a0d6c571bd11239f756cc",
+  "region": "japan_0",
+  "native_compiler": "pinned original SGI IDO 5.3 -O2 -mips2",
+  "original_expanded_rom_match": "PASS 33554432/33554432",
+  "original_retail_rom_match": "PASS 16777216/16777216",
+  "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "original_ELF_IDENTITY": "PASS 7376/7376",
+  "original_semantic_relocations": "PASS 80747/80747",
+  "source_manifest": "decomp/research/jp_donor4_20261121/manifest.json",
+  "source_integrity": "PASS 4/4 SHA-256 locked source bodies",
+  "targeted_tests": "PASS 4/4, actual C ASan/UBSan 1000 deterministic cases each",
+  "full_ci": "PASS 344 decomp Python tests (3 skipped), 349 verifier/ledger Python tests (4 skipped), configured sanitizers",
+  "symbolic_relocation_exclusion": "__osSpSetStatus stays original ASM; two original R_MIPS relocations lost in numeric constant C variant",
+  "gameplay": "NOT_RUN",
+  "functions": [
+    {
+      "name": "alSynDelete",
+      "rom_offset": "0x4f340",
+      "size": 8,
+      "original_sha256": "f39bb13dbb0f4e24cd4f313a4df7d836d2382cf2265b7177f11735d31e0526b9",
+      "source_sha256": "d9b50f48ddd41f825a91ba6b9b1ff851a5617d4a19514e0231f19e52d593b5e6",
+      "relocations": []
+    },
+    {
+      "name": "func_800079EC_85EC",
+      "rom_offset": "0x85ec",
+      "size": 32,
+      "original_sha256": "333ba07d6b686986f7669093b7561a5d735760a57911e42e32ef5dda3f211d29",
+      "source_sha256": "2920111cc7fec723a139b89905e3131ceb6ab7695d65cc28c5a16858dbc33fb9",
+      "relocations": [
+        {
+          "offset": 8,
+          "type": "R_MIPS_26",
+          "symbol": "func_80007870_8470"
+        }
+      ]
+    },
+    {
+      "name": "func_801D6CE0_6451D0",
+      "rom_offset": "0x6451d0",
+      "size": 36,
+      "original_sha256": "f8d25fc05a54aa9f78e672c2e2abddaae79cbc10cdbee1f6085e8e2ddec1768b",
+      "source_sha256": "097d6dba7207d4cface70eec7653c439422ca87941c9fb5627b0ba8602f7de3a",
+      "relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_26",
+          "symbol": "func_801D2594_640A84"
+        }
+      ]
+    },
+    {
+      "name": "func_801FF4B8_5BB488",
+      "rom_offset": "0x5bb488",
+      "size": 44,
+      "original_sha256": "f23aed0d2f732d7f8378a8123e4cddad4480caafb6cbc23e5d2fc783f33255db",
+      "source_sha256": "3e5bae9444d85ad9a7a371ebb60d328abe41ff455a4173f615224efabf6375ae",
+      "relocations": [
+        {
+          "offset": 20,
+          "type": "R_MIPS_26",
+          "symbol": "func_801FF4E4_5BB4B4"
+        }
+      ]
+    }
+  ]
+}

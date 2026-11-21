@@ -1,5 +1,8 @@
 # Goemon 64 matching-C — active continuation
 
+**21 November 2026 additional Japanese local original-ROM G2:** Four more donor-template original C functions, 120 instruction bytes, now pass exact 32 MiB expanded and 16 MiB retail Japanese ROM, all 7,376 ELF functions, all 80,747 semantic relocations, strict inventory and full CI. **Locally 2,282 C / 122,124 original code bytes / 5,094 ASM**, evidence [G2](results/japan_0_2282_donor4_g2_20261121.json). Publication is not complete until remotely verified; canonical published JP2278 remains below.
+
+
 **21 November 2026 Japan donor-template JP2278 publication:** Ten new original-address Japanese C functions / 716 instruction bytes from accepted donor algorithms, [implementation commit `56c01ff13bfc`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/56c01ff13bfc0de545261057a51da9d7cbba11ee). **PUBLISHED_REMOTE_VERIFIED: Japan 2,278 C / 122,004 original instruction bytes / 5,098 ASM**. Original native expanded/retail ROM matches, all 7,376 ELF identities and 80,747 semantic relocations, strict inventory and full CI PASS. [Native G2](results/japan_0_2278_donor10_g2_20261121.json), [publication record](results/japan_0_2278_donor10_publication_20261121.json), [replay guide](research/jp_donor10_20261121/README.md). USA and `main` unchanged.
 
 

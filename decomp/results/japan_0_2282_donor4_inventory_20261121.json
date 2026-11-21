@@ -1,0 +1,29 @@
+{
+  "format": "goemon-japan-2282-donor4-inventory-v1",
+  "region": "japan_0",
+  "status": "PASSED_G2_LOCAL",
+  "matching_c_before": 2278,
+  "new_matching_c": 4,
+  "matching_c_after": 2282,
+  "matching_bytes_before": 122004,
+  "new_original_code_bytes": 120,
+  "matching_bytes_after": 122124,
+  "remaining_assembly": 5094,
+  "original_positive_elf_functions": 7376,
+  "semantic_relocations": 80747,
+  "relocation_digest": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "prior_accepted_preserved": true,
+  "new_matching_names": [
+    "alSynDelete",
+    "func_800079EC_85EC",
+    "func_801D6CE0_6451D0",
+    "func_801FF4B8_5BB488"
+  ],
+  "source_sha256": {
+    "alSynDelete": "d9b50f48ddd41f825a91ba6b9b1ff851a5617d4a19514e0231f19e52d593b5e6",
+    "func_800079EC_85EC": "2920111cc7fec723a139b89905e3131ceb6ab7695d65cc28c5a16858dbc33fb9",
+    "func_801D6CE0_6451D0": "097d6dba7207d4cface70eec7653c439422ca87941c9fb5627b0ba8602f7de3a",
+    "func_801FF4B8_5BB488": "3e5bae9444d85ad9a7a371ebb60d328abe41ff455a4173f615224efabf6375ae"
+  }
+}

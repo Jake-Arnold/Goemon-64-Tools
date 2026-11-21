@@ -1,3 +1,11 @@
+## 21 November 2026 — Japanese donor-template second native wave, 4 original C (PASSED_G2_LOCAL; publication pending)
+
+- **New exact matching C:** `alSynDelete`, `func_800079EC_85EC`, `func_801D6CE0_6451D0`, `func_801FF4B8_5BB488`; **4 functions / 120 original code bytes**. Japanese original-address C **2,278 → 2,282**, accepted original instruction bytes **122,004 → 122,124**, remaining original ASM **5,098 → 5,094**.
+- **Native proof:** pinned IDO 5.3 `-O2 -mips2`; complete expanded Japanese **33,554,432/33,554,432** and retail **16,777,216/16,777,216** ROM bytes identical (SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`, `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b`), original **7,376/7,376** ELF FUNC identities and **80,747/80,747** semantic relocations preserved; strict original C/ASM inventory PASS.
+- **Failures properly retained:** `__osSpSetStatus` originally reproduced machine bytes with a numeric MMIO address but lost **two original symbolic relocations**, so five-function G2 was **FAILED_RELOC** and original ASM was restored. Symbolic C alternative had an instruction mismatch. Five other short variants failed native. No claim of promotion for these.
+- **Tests actually executed:** new 4/4 source/hash/negative + actual C GCC ASan/UBSan 1000-case each wrapper test PASS; full `python3 -m decomp.local_ci` PASS (344 decomp tests, 349 verifier/ledger tests and configured host sanitizers). No emulator gameplay tests, USA changes or `main` changes.
+- **Evidence:** [native G2](decomp/results/japan_0_2282_donor4_g2_20261121.json), [strict inventory](decomp/results/japan_0_2282_donor4_inventory_20261121.json), [sources and failures](decomp/research/jp_donor4_20261121/), reproducible [stage/build](decomp/build_japan_donor4_promotion.sh). Publication status remains local until remote commit and SHA confirmation.
+
 ## 21 November 2026 — Japanese donor-template JP2,278 published and remotely verified
 
 - **Published implementation:** [`56c01ff13bfc0de545261057a51da9d7cbba11ee`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/56c01ff13bfc0de545261057a51da9d7cbba11ee) on `chatgptweb/decomp`; source C, fail-closed staging, regional proof/inventory, source-integrity and actual-C ASan/UBSan tests were re-fetched from GitHub with exact expected blob hashes. The original local-only entry immediately below is historical.
