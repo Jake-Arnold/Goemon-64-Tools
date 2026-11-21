@@ -1,6 +1,123 @@
 {
   "entries": [
     {
+      "address": "0x8007D030",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP func_8003CC10 indexed original pointer table and accepted USA func_8003CFA0 indexed D_80077550",
+          "source_id": "research:jp_vm_lookup_table_native_20261121"
+        }
+      ],
+      "context": "Original code-grounded VM counterpart, not arithmetic saved-data address mapping. Read-only research; live scene/VM lifetime and safe writes are unverified.",
+      "control": null,
+      "counterpart": "0x80077550",
+      "data_type": "u32",
+      "discovered": "2026-11-21",
+      "endian": "big",
+      "evidence": "JP func_8003CC10 indexed original pointer table and accepted USA func_8003CFA0 indexed D_80077550",
+      "id": "research:jp_vm_lookup_table_native_20261121",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003CC10_3D810",
+        "func_8003E2C4_3EEC4"
+      ],
+      "name": "Script resource pointer table base",
+      "owner": "Script resource lookup",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
+      ],
+      "updated": "2026-11-21",
+      "width": 4
+    },
+    {
+      "address": "0x8007D288",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP func_8003D2FC advances cursor after 0x8010; func_8003D0D8 zeroes it on script reset",
+          "source_id": "research:jp_vm_command_cursor_glitch"
+        }
+      ],
+      "context": "Original MIPS-proven cross-region VM role, not the save +0x57F0 offset heuristic. This is a live runtime pointer; validate bounds before dereference.",
+      "control": null,
+      "counterpart": "0x80077858",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original JP func_8003D2FC advances cursor after 0x8010; func_8003D0D8 zeroes it on script reset",
+      "id": "research:jp_vm_command_cursor_glitch",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D2FC_3DEFC",
+        "func_8003D0D8_3DCD8"
+      ],
+      "name": "Japanese script VM command cursor",
+      "owner": "script VM",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
+      "address": "0x80082478",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original fallback D_80082478; already accepted USA fallback D_8007CCA4",
+          "source_id": "research:jp_vm_fallback_native_20261121"
+        }
+      ],
+      "context": "Original code-grounded VM counterpart, not arithmetic saved-data address mapping. Read-only research; live scene/VM lifetime and safe writes are unverified.",
+      "control": null,
+      "counterpart": "0x8007CCA4",
+      "data_type": null,
+      "discovered": "2026-11-21",
+      "endian": null,
+      "evidence": "JP original fallback D_80082478; already accepted USA fallback D_8007CCA4",
+      "id": "research:jp_vm_fallback_native_20261121",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003CC10_3D810",
+        "func_8003E2C4_3EEC4"
+      ],
+      "name": "Default script resource fallback data",
+      "owner": "Script resource lookup",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": null,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
+      ],
+      "updated": "2026-11-21",
+      "width": null
+    },
+    {
       "address": "0x800CD284",
       "aliases": [
         "Engine mode (debug = 10)"
@@ -126,6 +243,45 @@
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
+      "width": 1
+    },
+    {
+      "address": "0x800CD290",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP 0x8001F6E0 and USA 0x8001FA10 clear phase; respective phase handlers dispatch on this state and call VM reset after conditional transition completion",
+          "source_id": "research:glitch_pause_phase_byte_jp"
+        }
+      ],
+      "context": "Original source code-level relation, no live gameplay or safe writable-field claim.",
+      "control": null,
+      "counterpart": "0x800C7AA0",
+      "data_type": "u8",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP 0x8001F6E0 and USA 0x8001FA10 clear phase; respective phase handlers dispatch on this state and call VM reset after conditional transition completion",
+      "id": "research:glitch_pause_phase_byte_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8001F610_20210",
+        "func_8001F750_20350"
+      ],
+      "name": "Gameplay pause transition phase byte",
+      "owner": "gameplay pause transition",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
+      ],
+      "updated": "2026-11-20",
       "width": 1
     },
     {
@@ -384,6 +540,48 @@
       "width": 1
     },
     {
+      "address": "0x800CD2D6",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP 0x8001F6DC and USA 0x8001FA0C store 1 to this halfword; subsequent update branches to pause handler",
+          "source_id": "research:glitch_start_pause_transition_latch_jp"
+        }
+      ],
+      "context": "Not the general VM pause byte; earlier runtime doubts about its semantics are superseded only for this original-MIPS local transition path, not all gameplay modes.",
+      "control": null,
+      "counterpart": "0x800C7AE6",
+      "data_type": "u16",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP 0x8001F6DC and USA 0x8001FA0C store 1 to this halfword; subsequent update branches to pause handler",
+      "id": "research:glitch_start_pause_transition_latch_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8001F610_20210",
+        "func_8001F750_20350"
+      ],
+      "name": "Gameplay Start-triggered pause transition latch",
+      "owner": "gameplay pause transition",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:30@chatgptweb/decomp",
+        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:82@main",
+        "practice/japanese_scene_probes.py:56"
+      ],
+      "updated": "2026-11-20",
+      "width": 2
+    },
+    {
       "address": "0x800CD2D9",
       "aliases": [],
       "category": "fixed_global",
@@ -460,6 +658,45 @@
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
+      "width": 2
+    },
+    {
+      "address": "0x800CD52C",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start)",
+          "source_id": "research:glitch_start_input_halfword_jp"
+        }
+      ],
+      "context": "Read-only research; input sampling timing relative to VI needs runtime proof. Do not equate with Controller Pak menu Start handler.",
+      "control": null,
+      "counterpart": "0x800C7D3C",
+      "data_type": "u16",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start)",
+      "id": "research:glitch_start_input_halfword_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8001F610_20210",
+        "func_8001F750_20350"
+      ],
+      "name": "Sampled gameplay input halfword",
+      "owner": "gameplay pause transition",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
+      ],
+      "updated": "2026-11-20",
       "width": 2
     },
     {
@@ -1190,7 +1427,9 @@
     },
     {
       "address": "0x80161DF9",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x9 (script relation: map_of_japan)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -1198,6 +1437,11 @@
           "confidence": "candidate",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:japan:event:external_japan_map"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x9 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_9_jp"
         }
       ],
       "context": "",
@@ -1208,7 +1452,9 @@
       "endian": "big",
       "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "crosswalk:japan:event:external_japan_map",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_9_jp"
+      ],
       "live_readable": true,
       "mask": "0x2",
       "mips_refs": [],
@@ -1220,6 +1466,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
         "practice/region_memory_crosswalk.py",
         "practice/region_unlocks.py:96"
@@ -1355,7 +1602,9 @@
     },
     {
       "address": "0x80161DF9",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0xF (script relation: quality_cucumber)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -1363,6 +1612,11 @@
           "confidence": "candidate",
           "evidence": "USA original script/annotation: Plasma event check; mn64rando annotation; acquisition not independently tested here",
           "source_id": "crosswalk:japan:plasma:plasma_cucumber"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0xF in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_f_jp"
         }
       ],
       "context": "",
@@ -1373,7 +1627,9 @@
       "endian": "big",
       "evidence": "USA original script/annotation: Plasma event check; mn64rando annotation; acquisition not independently tested here",
       "id": "crosswalk:japan:plasma:plasma_cucumber",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_f_jp"
+      ],
       "live_readable": true,
       "mask": "0x80",
       "mips_refs": [],
@@ -1385,6 +1641,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
         "practice/region_memory_crosswalk.py",
         "practice/region_unlocks.py:96"
@@ -1394,7 +1651,9 @@
     },
     {
       "address": "0x80161DFA",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x10 (script relation: chain_pipe_earlier)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -1402,6 +1661,11 @@
           "confidence": "candidate",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; user force-tested this bit as the first-priority Plasma advice condition; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:japan:event:external_chain_pipe"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x10 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_10_jp"
         }
       ],
       "context": "",
@@ -1412,7 +1676,9 @@
       "endian": "big",
       "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; user force-tested this bit as the first-priority Plasma advice condition; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "crosswalk:japan:event:external_chain_pipe",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_10_jp"
+      ],
       "live_readable": true,
       "mask": "0x1",
       "mips_refs": [],
@@ -1423,6 +1689,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -1646,7 +1913,9 @@
     },
     {
       "address": "0x80161DFA",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x17 (script relation: fortune_teller_dialogue)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -1654,6 +1923,11 @@
           "confidence": "candidate",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; user reports this enables Muscle Gym appearance in Oedo Town; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:japan:event:external_kyushu_disappeared"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x17 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_17_jp"
         }
       ],
       "context": "",
@@ -1664,7 +1938,9 @@
       "endian": "big",
       "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; user reports this enables Muscle Gym appearance in Oedo Town; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "crosswalk:japan:event:external_kyushu_disappeared",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_17_jp"
+      ],
       "live_readable": true,
       "mask": "0x80",
       "mips_refs": [],
@@ -1675,6 +1951,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -1682,7 +1959,9 @@
     },
     {
       "address": "0x80161DFB",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x18 (script relation: chugoku_warning_dialogue)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -1690,6 +1969,11 @@
           "confidence": "candidate",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:japan:event:external_dharmanyo_defeated"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x18 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_18_jp"
         }
       ],
       "context": "",
@@ -1700,7 +1984,9 @@
       "endian": "big",
       "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "crosswalk:japan:event:external_dharmanyo_defeated",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_18_jp"
+      ],
       "live_readable": true,
       "mask": "0x1",
       "mips_refs": [],
@@ -1711,6 +1997,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -1718,7 +2005,9 @@
     },
     {
       "address": "0x80161DFB",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x1C (script relation: sudden_impact)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -1726,6 +2015,11 @@
           "confidence": "candidate",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:japan:event:external_sudden_granted"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x1C in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_1c_jp"
         }
       ],
       "context": "",
@@ -1736,7 +2030,9 @@
       "endian": "big",
       "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "crosswalk:japan:event:external_sudden_granted",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_1c_jp"
+      ],
       "live_readable": true,
       "mask": "0x10",
       "mips_refs": [],
@@ -1747,6 +2043,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -1898,7 +2195,9 @@
     },
     {
       "address": "0x80161DFB",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x1F (script relation: mermaid)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -1906,6 +2205,11 @@
           "confidence": "candidate",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:japan:event:external_mermaid_granted"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x1F in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_1f_jp"
         }
       ],
       "context": "",
@@ -1916,7 +2220,9 @@
       "endian": "big",
       "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "crosswalk:japan:event:external_mermaid_granted",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_1f_jp"
+      ],
       "live_readable": true,
       "mask": "0x80",
       "mips_refs": [],
@@ -1927,6 +2233,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -1934,7 +2241,9 @@
     },
     {
       "address": "0x80161DFC",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x20 (script relation: flying)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -1942,6 +2251,11 @@
           "confidence": "candidate",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:japan:event:external_super_jump_granted"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x20 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_20_jp"
         }
       ],
       "context": "",
@@ -1952,7 +2266,9 @@
       "endian": "big",
       "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "crosswalk:japan:event:external_super_jump_granted",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_20_jp"
+      ],
       "live_readable": true,
       "mask": "0x1",
       "mips_refs": [],
@@ -1964,6 +2280,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
@@ -2222,7 +2539,9 @@
     },
     {
       "address": "0x80161DFC",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x27 (script relation: key_training)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -2230,6 +2549,11 @@
           "confidence": "candidate",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:japan:event:external_priest_key"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x27 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_27_jp"
         }
       ],
       "context": "",
@@ -2240,7 +2564,9 @@
       "endian": "big",
       "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "crosswalk:japan:event:external_priest_key",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_27_jp"
+      ],
       "live_readable": true,
       "mask": "0x80",
       "mips_refs": [],
@@ -2252,6 +2578,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/region_memory_crosswalk.py",
@@ -2334,7 +2661,9 @@
     },
     {
       "address": "0x80161DFD",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x29 (script relation: achilles_heel)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -2342,6 +2671,11 @@
           "confidence": "candidate",
           "evidence": "USA: ROM reward script + user report; JP bit semantics still require independent checks",
           "source_id": "crosswalk:japan:event:heel_recorded"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x29 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_29_jp"
         }
       ],
       "context": "",
@@ -2352,7 +2686,9 @@
       "endian": "big",
       "evidence": "USA: ROM reward script + user report; JP bit semantics still require independent checks",
       "id": "crosswalk:japan:event:heel_recorded",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_29_jp"
+      ],
       "live_readable": true,
       "mask": "0x2",
       "mips_refs": [],
@@ -2363,6 +2699,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -2622,7 +2959,9 @@
     },
     {
       "address": "0x80161DFE",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x31 (script relation: mini_ebisu)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -2630,6 +2969,11 @@
           "confidence": "candidate",
           "evidence": "USA: ROM reward reader/writer; JP bit semantics still require independent checks",
           "source_id": "crosswalk:japan:event:mini_recorded"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x31 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_31_jp"
         }
       ],
       "context": "",
@@ -2640,7 +2984,9 @@
       "endian": "big",
       "evidence": "USA: ROM reward reader/writer; JP bit semantics still require independent checks",
       "id": "crosswalk:japan:event:mini_recorded",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_31_jp"
+      ],
       "live_readable": true,
       "mask": "0x2",
       "mips_refs": [],
@@ -2651,6 +2997,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -2658,7 +3005,9 @@
     },
     {
       "address": "0x80161DFE",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x35 (script relation: miracle_snow)"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -2666,6 +3015,11 @@
           "confidence": "candidate",
           "evidence": "USA: ROM reward reader/writer; JP bit semantics still require independent checks",
           "source_id": "crosswalk:japan:event:snow_recorded"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP 0x8020 scripted setter for bit 0x35 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_35_jp"
         }
       ],
       "context": "",
@@ -2676,7 +3030,9 @@
       "endian": "big",
       "evidence": "USA: ROM reward reader/writer; JP bit semantics still require independent checks",
       "id": "crosswalk:japan:event:snow_recorded",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:dialogue_grant_flag_35_jp"
+      ],
       "live_readable": true,
       "mask": "0x20",
       "mips_refs": [],
@@ -2687,6 +3043,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -2694,7 +3051,9 @@
     },
     {
       "address": "0x80161DFE",
-      "aliases": [],
+      "aliases": [
+        "Story/event bit 0x32"
+      ],
       "category": "saved_event_bit",
       "confidence": "candidate",
       "confidence_sources": [
@@ -2702,6 +3061,11 @@
           "confidence": "candidate",
           "evidence": "USA: ROM script + existing annotation; JP bit semantics still require independent checks",
           "source_id": "crosswalk:japan:event:thaisamba"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original resource 95 script 0x8020 sets flag 0x32; original resource 102 duplicates set; native flag-bank handlers independently traced in both regions",
+          "source_id": "research:glitch_story_flag32_japan"
         }
       ],
       "context": "",
@@ -2712,7 +3076,9 @@
       "endian": "big",
       "evidence": "USA: ROM script + existing annotation; JP bit semantics still require independent checks",
       "id": "crosswalk:japan:event:thaisamba",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:glitch_story_flag32_japan"
+      ],
       "live_readable": true,
       "mask": "0x4",
       "mips_refs": [],
@@ -2723,6 +3089,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md",
         "practice/region_memory_crosswalk.py"
       ],
       "updated": "2026-11-17",
@@ -6504,6 +6871,44 @@
       "width": 1
     },
     {
+      "address": "0x80161EAC",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 102 +0x405C; original 0x8004 / 0x8009 writes 1 to saved +0xB4",
+          "source_id": "research:dialogue_grant_chain_pipe_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6BC",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 102 +0x405C; original 0x8004 / 0x8009 writes 1 to saved +0xB4",
+      "id": "research:dialogue_grant_chain_pipe_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Chain Pipe",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80161EAF",
       "aliases": [
         "Super weapon slot 1"
@@ -6544,6 +6949,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80161EB0",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 93 +0x31D4; original 0x8004 / 0x8009 writes 1 to saved +0xB8",
+          "source_id": "research:dialogue_grant_meat_saw_hammer_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6C0",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 93 +0x31D4; original 0x8004 / 0x8009 writes 1 to saved +0xB8",
+      "id": "research:dialogue_grant_meat_saw_hammer_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Meat Saw-Hammer",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x80161EB3",
@@ -6587,6 +7030,44 @@
       "width": 1
     },
     {
+      "address": "0x80161EB4",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 102 +0x579C; original 0x8004 / 0x8009 writes 1 to saved +0xBC",
+          "source_id": "research:dialogue_grant_firecracker_bomb_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6C4",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 102 +0x579C; original 0x8004 / 0x8009 writes 1 to saved +0xBC",
+      "id": "research:dialogue_grant_firecracker_bomb_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Firecracker Bomb",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80161EB7",
       "aliases": [
         "Super weapon slot 3"
@@ -6628,6 +7109,44 @@
       "width": 1
     },
     {
+      "address": "0x80161EB8",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 102 +0x4F98; original 0x8004 / 0x8009 writes 1 to saved +0xC0",
+          "source_id": "research:dialogue_grant_koryuta_flute_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6C8",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 102 +0x4F98; original 0x8004 / 0x8009 writes 1 to saved +0xC0",
+      "id": "research:dialogue_grant_koryuta_flute_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Koryuta's Flute",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80161EBB",
       "aliases": [
         "Super weapon slot 4"
@@ -6667,6 +7186,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80161EC0",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 93 +0x2E40; original 0x8004 / 0x8009 writes 1 to saved +0xC8",
+          "source_id": "research:dialogue_grant_windup_camera_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6D0",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 93 +0x2E40; original 0x8004 / 0x8009 writes 1 to saved +0xC8",
+      "id": "research:dialogue_grant_windup_camera_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Windup Camera",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x80161EC3",
@@ -6711,6 +7268,44 @@
       "width": 1
     },
     {
+      "address": "0x80161EC4",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 93 +0x2F9C; original 0x8004 / 0x8009 writes 1 to saved +0xCC",
+          "source_id": "research:dialogue_grant_cold_kunai_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6D4",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 93 +0x2F9C; original 0x8004 / 0x8009 writes 1 to saved +0xCC",
+      "id": "research:dialogue_grant_cold_kunai_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Kunai of Severe Cold",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80161EC7",
       "aliases": [
         "Sub-weapon slot 2"
@@ -6750,6 +7345,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80161EC8",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 93 +0x30D8; original 0x8004 / 0x8009 writes 1 to saved +0xD0",
+          "source_id": "research:dialogue_grant_yae_bazooka_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6D8",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 93 +0x30D8; original 0x8004 / 0x8009 writes 1 to saved +0xD0",
+      "id": "research:dialogue_grant_yae_bazooka_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Yae Bazooka",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x80161ECB",
@@ -6794,6 +7427,44 @@
       "width": 1
     },
     {
+      "address": "0x80161ECC",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 93 +0x2D14; original 0x8004 / 0x8009 writes 1 to saved +0xD4",
+          "source_id": "research:dialogue_grant_flaming_medal_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6DC",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 93 +0x2D14; original 0x8004 / 0x8009 writes 1 to saved +0xD4",
+      "id": "research:dialogue_grant_flaming_medal_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Flaming Medal",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80161ECF",
       "aliases": [
         "Sub-weapon slot 4"
@@ -6834,6 +7505,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80161EDC",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 98 +0x1B20; original 0x8004 / 0x8009 writes 1 to saved +0xE4",
+          "source_id": "research:dialogue_grant_sudden_impact_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6EC",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 98 +0x1B20; original 0x8004 / 0x8009 writes 1 to saved +0xE4",
+      "id": "research:dialogue_grant_sudden_impact_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Sudden Impact",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x80161EDF",
@@ -6878,6 +7587,44 @@
       "width": 1
     },
     {
+      "address": "0x80161EE0",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 97 +0x8EE4; original 0x8004 / 0x8009 writes 1 to saved +0xE8",
+          "source_id": "research:dialogue_grant_mini_ebisu_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6F0",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 97 +0x8EE4; original 0x8004 / 0x8009 writes 1 to saved +0xE8",
+      "id": "research:dialogue_grant_mini_ebisu_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Mini-Ebisu",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80161EE3",
       "aliases": [
         "Jutsu skill slot 2"
@@ -6917,6 +7664,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80161EE4",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 98 +0x2884; original 0x8004 / 0x8009 writes 1 to saved +0xEC",
+          "source_id": "research:dialogue_grant_flying_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6F4",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 98 +0x2884; original 0x8004 / 0x8009 writes 1 to saved +0xEC",
+      "id": "research:dialogue_grant_flying_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Flying",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x80161EE7",
@@ -6960,6 +7745,44 @@
       "width": 1
     },
     {
+      "address": "0x80161EE8",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 98 +0x224C; original 0x8004 / 0x8009 writes 1 to saved +0xF0",
+          "source_id": "research:dialogue_grant_mermaid_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6F8",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 98 +0x224C; original 0x8004 / 0x8009 writes 1 to saved +0xF0",
+      "id": "research:dialogue_grant_mermaid_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Mermaid",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80161EEB",
       "aliases": [
         "Jutsu skill slot 4"
@@ -6999,6 +7822,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80161EEC",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 101 +0x0F50/+0x0FCC; original 0x8004 / 0x8009 writes 1 to saved +0xF4",
+          "source_id": "research:dialogue_grant_triton_shell_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C6FC",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 101 +0x0F50/+0x0FCC; original 0x8004 / 0x8009 writes 1 to saved +0xF4",
+      "id": "research:dialogue_grant_triton_shell_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Triton Shell",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x80161EEF",
@@ -7191,6 +8052,44 @@
       "width": 4
     },
     {
+      "address": "0x80161EFC",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 97 +0x8980; original 0x8004 / 0x8009 writes 1 to saved +0x104",
+          "source_id": "research:dialogue_grant_achilles_heel_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C70C",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 97 +0x8980; original 0x8004 / 0x8009 writes 1 to saved +0x104",
+      "id": "research:dialogue_grant_achilles_heel_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Achilles' Heel",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80161EFF",
       "aliases": [
         "Benkei's weakness"
@@ -7233,6 +8132,44 @@
       "width": 1
     },
     {
+      "address": "0x80161F00",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 97 +0x70DC; original 0x8004 / 0x8009 writes 1 to saved +0x108",
+          "source_id": "research:dialogue_grant_key_training_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C710",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 97 +0x70DC; original 0x8004 / 0x8009 writes 1 to saved +0x108",
+      "id": "research:dialogue_grant_key_training_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Key to Training",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80161F03",
       "aliases": [],
       "category": "inventory",
@@ -7267,6 +8204,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80161F04",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 97 +0x7DC0; original 0x8004 / 0x8009 writes 1 to saved +0x10C",
+          "source_id": "research:dialogue_grant_quality_cucumber_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C714",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 97 +0x7DC0; original 0x8004 / 0x8009 writes 1 to saved +0x10C",
+      "id": "research:dialogue_grant_quality_cucumber_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Quality Cucumber",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x80161F07",
@@ -7437,6 +8412,159 @@
       "width": 1
     },
     {
+      "address": "0x80161FF8",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original japan resource 95/93 0x8004 immediate assignment and regional save-structure +0x200 crosswalk",
+          "source_id": "research:glitch_checkpoint_index_japan"
+        }
+      ],
+      "context": "First bomb script sets 13; second bomb sets 17; native checkpoint restore reads +0x200; direct paired script writes; 32-bit big-endian. No authorized toolkit write; not every native reader/writer has been closed.",
+      "control": null,
+      "counterpart": "0x8015C808",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original japan resource 95/93 0x8004 immediate assignment and regional save-structure +0x200 crosswalk",
+      "id": "research:glitch_checkpoint_index_japan",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8000B588_C188 (Japan)",
+        "func_8003D77C_3E37C (Japan)"
+      ],
+      "name": "Live checkpoint/spawn-record index",
+      "owner": "saved state",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
+      "address": "0x80162018",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original japan resource 95/93 0x8004 immediate assignment and regional save-structure +0x220 crosswalk",
+          "source_id": "research:glitch_bomb_state_220_japan"
+        }
+      ],
+      "context": "First bomb script assigns 1 to +0x220; meaning not established; 32-bit big-endian. No authorized toolkit write; not every native reader/writer has been closed.",
+      "control": null,
+      "counterpart": "0x8015C828",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original japan resource 95/93 0x8004 immediate assignment and regional save-structure +0x220 crosswalk",
+      "id": "research:glitch_bomb_state_220_japan",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C (Japan)"
+      ],
+      "name": "First-bomb saved word +0x220 (meaning unknown)",
+      "owner": "saved state",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
+      "address": "0x8016201C",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original japan resource 95/93 0x8004 immediate assignment and regional save-structure +0x224 crosswalk",
+          "source_id": "research:glitch_bomb_state_224_japan"
+        }
+      ],
+      "context": "Second bomb script assigns 1 to +0x224; meaning not established; 32-bit big-endian. No authorized toolkit write; not every native reader/writer has been closed.",
+      "control": null,
+      "counterpart": "0x8015C82C",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original japan resource 95/93 0x8004 immediate assignment and regional save-structure +0x224 crosswalk",
+      "id": "research:glitch_bomb_state_224_japan",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C (Japan)"
+      ],
+      "name": "Second-bomb saved word +0x224 (meaning unknown)",
+      "owner": "saved state",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
+      "address": "0x80162048",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 93 +0x22C4; original 0x8004 / 0x8009 writes 1 to saved +0x250",
+          "source_id": "research:dialogue_grant_miracle_star_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C858",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 93 +0x22C4; original 0x8004 / 0x8009 writes 1 to saved +0x250",
+      "id": "research:dialogue_grant_miracle_star_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Miracle Star",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8016204B",
       "aliases": [
         "Treasure slot 1"
@@ -7477,6 +8605,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8016204C",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 93 +0x2184; original 0x8004 / 0x8009 writes 1 to saved +0x254",
+          "source_id": "research:dialogue_grant_miracle_moon_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C85C",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 93 +0x2184; original 0x8004 / 0x8009 writes 1 to saved +0x254",
+      "id": "research:dialogue_grant_miracle_moon_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Miracle Moon",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8016204F",
@@ -7520,6 +8686,44 @@
       "width": 1
     },
     {
+      "address": "0x80162050",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 93 +0x2218; original 0x8004 / 0x8009 writes 1 to saved +0x258",
+          "source_id": "research:dialogue_grant_miracle_flower_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C860",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 93 +0x2218; original 0x8004 / 0x8009 writes 1 to saved +0x258",
+      "id": "research:dialogue_grant_miracle_flower_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Miracle Flower",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x80162053",
       "aliases": [
         "Treasure slot 3"
@@ -7559,6 +8763,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80162054",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 97 +0x98D4; original 0x8004 / 0x8009 writes 1 to saved +0x25C",
+          "source_id": "research:dialogue_grant_miracle_snow_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C864",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 97 +0x98D4; original 0x8004 / 0x8009 writes 1 to saved +0x25C",
+      "id": "research:dialogue_grant_miracle_snow_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Miracle Snow",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x80162057",
@@ -7642,6 +8884,44 @@
         "practice/japanese_fields.py:91"
       ],
       "updated": "2026-11-17",
+      "width": 4
+    },
+    {
+      "address": "0x80162060",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original resource 102 +0x5154; 106 +0x1A3C; original 0x8004 / 0x8009 writes 1 to saved +0x268",
+          "source_id": "research:dialogue_grant_map_of_japan_jp"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8015C870",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original resource 102 +0x5154; 106 +0x1A3C; original 0x8004 / 0x8009 writes 1 to saved +0x268",
+      "id": "research:dialogue_grant_map_of_japan_jp",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C"
+      ],
+      "name": "Scripted grant word: Map of Japan",
+      "owner": "Live saved-data record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
       "width": 4
     },
     {
@@ -8151,6 +9431,44 @@
       "width": 1
     },
     {
+      "address": "0x801620D0",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original japan resource 95/93 0x8004 immediate assignment and regional save-structure +0x2D8 crosswalk",
+          "source_id": "research:glitch_gourmet_visited_japan"
+        }
+      ],
+      "context": "Original area-name script sets 1; first bomb script clears to 0; external save-editor label corroborates, consumers unresolved; 32-bit big-endian. No authorized toolkit write; not every native reader/writer has been closed.",
+      "control": null,
+      "counterpart": "0x8015C8E0",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original japan resource 95/93 0x8004 immediate assignment and regional save-structure +0x2D8 crosswalk",
+      "id": "research:glitch_gourmet_visited_japan",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C (Japan)"
+      ],
+      "name": "Gourmet Submarine Castle visited-location word",
+      "owner": "saved state",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x801620D3",
       "aliases": [],
       "category": "fixed_global",
@@ -8365,6 +9683,162 @@
         "https://gamehacking.org/game/20438"
       ],
       "updated": "2026-11-17",
+      "width": 1
+    },
+    {
+      "address": "0x801CCF10",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP dispatcher state jump table; state 3/4 calls distinct input handlers",
+          "source_id": "research:jp_vm_state_glitch"
+        }
+      ],
+      "context": "32-bit state; loaded VM lifecycle; do not write as a debug shortcut.",
+      "control": null,
+      "counterpart": "0x801C77E0",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original JP dispatcher state jump table; state 3/4 calls distinct input handlers",
+      "id": "research:jp_vm_state_glitch",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D2FC_3DEFC"
+      ],
+      "name": "Japanese script VM state",
+      "owner": "script VM",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
+      "address": "0x801CCF28",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP func_8003E2C4 reads/updates D_801CCF18+0x10, accepted USA func_8003E654 reads/updates VmWork.countdown at 0x801C77E8+0x10",
+          "source_id": "research:jp_vm_countdown_native_20261121"
+        }
+      ],
+      "context": "Original code-grounded VM counterpart, not arithmetic saved-data address mapping. Read-only research; live scene/VM lifetime and safe writes are unverified.",
+      "control": null,
+      "counterpart": "0x801C77F8",
+      "data_type": "s32",
+      "discovered": "2026-11-21",
+      "endian": "big",
+      "evidence": "JP func_8003E2C4 reads/updates D_801CCF18+0x10, accepted USA func_8003E654 reads/updates VmWork.countdown at 0x801C77E8+0x10",
+      "id": "research:jp_vm_countdown_native_20261121",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003CC10_3D810",
+        "func_8003E2C4_3EEC4"
+      ],
+      "name": "Script VM countdown word",
+      "owner": "Script VM",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": true,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
+      ],
+      "updated": "2026-11-21",
+      "width": 4
+    },
+    {
+      "address": "0x801CD03C",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP func_8003E05C and func_8003E130 test 0x8000 and 0x4000; no direct Start branch in inspected bodies",
+          "source_id": "research:jp_vm_dialogue_buttons_glitch"
+        }
+      ],
+      "context": "A/B input reader; main engine Start input tracked separately as g_system_ptr+0x3B07A.",
+      "control": null,
+      "counterpart": null,
+      "data_type": "u16",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original JP func_8003E05C and func_8003E130 test 0x8000 and 0x4000; no direct Start branch in inspected bodies",
+      "id": "research:jp_vm_dialogue_buttons_glitch",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003E05C_3EC5C",
+        "func_8003E130_3ED30"
+      ],
+      "name": "Japanese VM dialogue A/B input halfword",
+      "owner": "script VM",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 2
+    },
+    {
+      "address": "0x801CD060",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original JP func_8003CC8C sets 5; func_8003CC40 decrements on callback invocation; func_8003E2F0 sets 3",
+          "source_id": "research:jp_vm_task_gate_glitch"
+        }
+      ],
+      "context": "Counts task invocations, NOT proven VI frames; avoid overlay/region-offset mapping.",
+      "control": null,
+      "counterpart": null,
+      "data_type": "u8",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original JP func_8003CC8C sets 5; func_8003CC40 decrements on callback invocation; func_8003E2F0 sets 3",
+      "id": "research:jp_vm_task_gate_glitch",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003CC8C_3D88C",
+        "func_8003CC40_3D840",
+        "func_8003E2F0_3EEF0"
+      ],
+      "name": "Japanese script callback gating counter",
+      "owner": "script VM",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
       "width": 1
     },
     {
@@ -10675,6 +12149,45 @@
       "width": null
     },
     {
+      "address": "0x80077550",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP func_8003CC10 indexed original pointer table and accepted USA func_8003CFA0 indexed D_80077550",
+          "source_id": "research:usa_vm_lookup_table_native_20261121"
+        }
+      ],
+      "context": "Original code-grounded VM counterpart, not arithmetic saved-data address mapping. Read-only research; live scene/VM lifetime and safe writes are unverified.",
+      "control": null,
+      "counterpart": "0x8007D030",
+      "data_type": "u32",
+      "discovered": "2026-11-21",
+      "endian": "big",
+      "evidence": "JP func_8003CC10 indexed original pointer table and accepted USA func_8003CFA0 indexed D_80077550",
+      "id": "research:usa_vm_lookup_table_native_20261121",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003CFA0_3DBA0",
+        "func_8003E654_3F254"
+      ],
+      "name": "Script resource pointer table base",
+      "owner": "Script resource lookup",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
+      ],
+      "updated": "2026-11-21",
+      "width": 4
+    },
+    {
       "address": "0x80077858",
       "aliases": [
         "Script cursor (VM)"
@@ -10732,6 +12245,45 @@
       ],
       "updated": "2026-11-17",
       "width": 4
+    },
+    {
+      "address": "0x8007CCA4",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original fallback D_80082478; already accepted USA fallback D_8007CCA4",
+          "source_id": "research:usa_vm_fallback_native_20261121"
+        }
+      ],
+      "context": "Original code-grounded VM counterpart, not arithmetic saved-data address mapping. Read-only research; live scene/VM lifetime and safe writes are unverified.",
+      "control": null,
+      "counterpart": "0x80082478",
+      "data_type": null,
+      "discovered": "2026-11-21",
+      "endian": null,
+      "evidence": "JP original fallback D_80082478; already accepted USA fallback D_8007CCA4",
+      "id": "research:usa_vm_fallback_native_20261121",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003CFA0_3DBA0",
+        "func_8003E654_3F254"
+      ],
+      "name": "Default script resource fallback data",
+      "owner": "Script resource lookup",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": null,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
+      ],
+      "updated": "2026-11-21",
+      "width": null
     },
     {
       "address": "0x800C7A94",
@@ -10910,6 +12462,45 @@
         "practice/scene_controls.py:45"
       ],
       "updated": "2026-11-17",
+      "width": 1
+    },
+    {
+      "address": "0x800C7AA0",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP 0x8001F6E0 and USA 0x8001FA10 clear phase; respective phase handlers dispatch on this state and call VM reset after conditional transition completion",
+          "source_id": "research:glitch_pause_phase_byte_us"
+        }
+      ],
+      "context": "Original source code-level relation, no live gameplay or safe writable-field claim.",
+      "control": null,
+      "counterpart": "0x800CD290",
+      "data_type": "u8",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP 0x8001F6E0 and USA 0x8001FA10 clear phase; respective phase handlers dispatch on this state and call VM reset after conditional transition completion",
+      "id": "research:glitch_pause_phase_byte_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8001F940_20540",
+        "func_8001FA80_20680"
+      ],
+      "name": "Gameplay pause transition phase byte",
+      "owner": "gameplay pause transition",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
+      ],
+      "updated": "2026-11-20",
       "width": 1
     },
     {
@@ -11261,6 +12852,49 @@
       "width": 1
     },
     {
+      "address": "0x800C7AE6",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP 0x8001F6DC and USA 0x8001FA0C store 1 to this halfword; subsequent update branches to pause handler",
+          "source_id": "research:glitch_start_pause_transition_latch_us"
+        }
+      ],
+      "context": "Not the general VM pause byte; earlier runtime doubts about its semantics are superseded only for this original-MIPS local transition path, not all gameplay modes.",
+      "control": null,
+      "counterpart": "0x800CD2D6",
+      "data_type": "u16",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP 0x8001F6DC and USA 0x8001FA0C store 1 to this halfword; subsequent update branches to pause handler",
+      "id": "research:glitch_start_pause_transition_latch_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8001F940_20540",
+        "func_8001FA80_20680"
+      ],
+      "name": "Gameplay Start-triggered pause transition latch",
+      "owner": "gameplay pause transition",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:30@chatgptweb/decomp",
+        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
+        "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:82@main",
+        "practice/japanese_scene_probes.py:56",
+        "practice/region_memory_crosswalk.py:64"
+      ],
+      "updated": "2026-11-20",
+      "width": 2
+    },
+    {
       "address": "0x800C7AE9",
       "aliases": [],
       "category": "fixed_global",
@@ -11429,6 +13063,45 @@
       ],
       "updated": "2026-11-17",
       "width": null
+    },
+    {
+      "address": "0x800C7D3C",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start)",
+          "source_id": "research:glitch_start_input_halfword_us"
+        }
+      ],
+      "context": "Read-only research; input sampling timing relative to VI needs runtime proof. Do not equate with Controller Pak menu Start handler.",
+      "control": null,
+      "counterpart": "0x800CD52C",
+      "data_type": "u16",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start)",
+      "id": "research:glitch_start_input_halfword_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8001F940_20540",
+        "func_8001FA80_20680"
+      ],
+      "name": "Sampled gameplay input halfword",
+      "owner": "gameplay pause transition",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 2
     },
     {
       "address": "0x800C7E60",
@@ -12692,7 +14365,9 @@
     },
     {
       "address": "0x8015C609",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x9 (script relation: map_of_japan)"
+      ],
       "category": "saved_event_bit",
       "confidence": "external_unverified",
       "confidence_sources": [
@@ -12705,6 +14380,11 @@
           "confidence": "usa_source",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:usa:event:external_japan_map"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x9 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_9_us"
         }
       ],
       "context": "",
@@ -12716,7 +14396,8 @@
       "evidence": "External annotation: mn64rando; not locally gameplay-verified; USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "story:usa:external_japan_map",
       "id_aliases": [
-        "crosswalk:usa:event:external_japan_map"
+        "crosswalk:usa:event:external_japan_map",
+        "research:dialogue_grant_flag_9_us"
       ],
       "live_readable": true,
       "mask": "0x2",
@@ -12729,6 +14410,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
@@ -12931,7 +14613,9 @@
     },
     {
       "address": "0x8015C609",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0xF (script relation: quality_cucumber)"
+      ],
       "category": "saved_event_bit",
       "confidence": "research_observed",
       "confidence_sources": [
@@ -12944,6 +14628,11 @@
           "confidence": "usa_source",
           "evidence": "USA original script/annotation: Plasma event check; mn64rando annotation; acquisition not independently tested here",
           "source_id": "crosswalk:usa:plasma:plasma_cucumber"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0xF in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_f_us"
         }
       ],
       "context": "",
@@ -12955,7 +14644,8 @@
       "evidence": "Plasma event check; mn64rando annotation; acquisition not independently tested here; USA original script/annotation: Plasma event check; mn64rando annotation; acquisition not independently tested here",
       "id": "story:usa:plasma_cucumber",
       "id_aliases": [
-        "crosswalk:usa:plasma:plasma_cucumber"
+        "crosswalk:usa:plasma:plasma_cucumber",
+        "research:dialogue_grant_flag_f_us"
       ],
       "live_readable": true,
       "mask": "0x80",
@@ -12968,6 +14658,7 @@
       "source_revision": "toolkit declarations",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:31@chatgptweb/decomp",
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:83@main",
         "practice/MEMORY_MAP.md:240@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:246@toolkit/unlocks-items-and-flags-20261117",
@@ -12985,7 +14676,9 @@
     },
     {
       "address": "0x8015C60A",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x10 (script relation: chain_pipe_earlier)"
+      ],
       "category": "saved_event_bit",
       "confidence": "external_unverified",
       "confidence_sources": [
@@ -12998,6 +14691,11 @@
           "confidence": "usa_source",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; user force-tested this bit as the first-priority Plasma advice condition; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:usa:event:external_chain_pipe"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x10 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_10_us"
         }
       ],
       "context": "",
@@ -13009,7 +14707,8 @@
       "evidence": "External annotation: mn64rando; not locally gameplay-verified; user force-tested this bit as the first-priority Plasma advice condition; USA: External annotation: mn64rando; not locally gameplay-verified; user force-tested this bit as the first-priority Plasma advice condition; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "story:usa:external_chain_pipe",
       "id_aliases": [
-        "crosswalk:usa:event:external_chain_pipe"
+        "crosswalk:usa:event:external_chain_pipe",
+        "research:dialogue_grant_flag_10_us"
       ],
       "live_readable": true,
       "mask": "0x1",
@@ -13021,6 +14720,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py"
       ],
@@ -13293,7 +14993,9 @@
     },
     {
       "address": "0x8015C60A",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x17 (script relation: fortune_teller_dialogue)"
+      ],
       "category": "saved_event_bit",
       "confidence": "external_unverified",
       "confidence_sources": [
@@ -13306,6 +15008,11 @@
           "confidence": "usa_source",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; user reports this enables Muscle Gym appearance in Oedo Town; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:usa:event:external_kyushu_disappeared"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x17 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_17_us"
         }
       ],
       "context": "",
@@ -13317,7 +15024,8 @@
       "evidence": "External annotation: mn64rando; not locally gameplay-verified; user reports this enables Muscle Gym appearance in Oedo Town; USA: External annotation: mn64rando; not locally gameplay-verified; user reports this enables Muscle Gym appearance in Oedo Town; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "story:usa:external_kyushu_disappeared",
       "id_aliases": [
-        "crosswalk:usa:event:external_kyushu_disappeared"
+        "crosswalk:usa:event:external_kyushu_disappeared",
+        "research:dialogue_grant_flag_17_us"
       ],
       "live_readable": true,
       "mask": "0x80",
@@ -13329,6 +15037,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py"
       ],
@@ -13337,7 +15046,9 @@
     },
     {
       "address": "0x8015C60B",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x18 (script relation: chugoku_warning_dialogue)"
+      ],
       "category": "saved_event_bit",
       "confidence": "external_unverified",
       "confidence_sources": [
@@ -13350,6 +15061,11 @@
           "confidence": "usa_source",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:usa:event:external_dharmanyo_defeated"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x18 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_18_us"
         }
       ],
       "context": "",
@@ -13361,7 +15077,8 @@
       "evidence": "External annotation: mn64rando; not locally gameplay-verified; USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "story:usa:external_dharmanyo_defeated",
       "id_aliases": [
-        "crosswalk:usa:event:external_dharmanyo_defeated"
+        "crosswalk:usa:event:external_dharmanyo_defeated",
+        "research:dialogue_grant_flag_18_us"
       ],
       "live_readable": true,
       "mask": "0x1",
@@ -13373,6 +15090,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py"
       ],
@@ -13381,7 +15099,9 @@
     },
     {
       "address": "0x8015C60B",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x1C (script relation: sudden_impact)"
+      ],
       "category": "saved_event_bit",
       "confidence": "external_unverified",
       "confidence_sources": [
@@ -13394,6 +15114,11 @@
           "confidence": "usa_source",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:usa:event:external_sudden_granted"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x1C in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_1c_us"
         }
       ],
       "context": "",
@@ -13405,7 +15130,8 @@
       "evidence": "External annotation: mn64rando; not locally gameplay-verified; USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "story:usa:external_sudden_granted",
       "id_aliases": [
-        "crosswalk:usa:event:external_sudden_granted"
+        "crosswalk:usa:event:external_sudden_granted",
+        "research:dialogue_grant_flag_1c_us"
       ],
       "live_readable": true,
       "mask": "0x10",
@@ -13417,6 +15143,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py"
       ],
@@ -13601,7 +15328,9 @@
     },
     {
       "address": "0x8015C60B",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x1F (script relation: mermaid)"
+      ],
       "category": "saved_event_bit",
       "confidence": "external_unverified",
       "confidence_sources": [
@@ -13614,6 +15343,11 @@
           "confidence": "usa_source",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:usa:event:external_mermaid_granted"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x1F in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_1f_us"
         }
       ],
       "context": "",
@@ -13625,7 +15359,8 @@
       "evidence": "External annotation: mn64rando; not locally gameplay-verified; USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "story:usa:external_mermaid_granted",
       "id_aliases": [
-        "crosswalk:usa:event:external_mermaid_granted"
+        "crosswalk:usa:event:external_mermaid_granted",
+        "research:dialogue_grant_flag_1f_us"
       ],
       "live_readable": true,
       "mask": "0x80",
@@ -13637,6 +15372,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/region_memory_crosswalk.py",
         "practice/story_progress.py"
       ],
@@ -13645,7 +15381,9 @@
     },
     {
       "address": "0x8015C60C",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x20 (script relation: flying)"
+      ],
       "category": "saved_event_bit",
       "confidence": "external_unverified",
       "confidence_sources": [
@@ -13658,6 +15396,11 @@
           "confidence": "usa_source",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:usa:event:external_super_jump_granted"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x20 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_20_us"
         }
       ],
       "context": "",
@@ -13669,7 +15412,8 @@
       "evidence": "External annotation: mn64rando; not locally gameplay-verified; USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "story:usa:external_super_jump_granted",
       "id_aliases": [
-        "crosswalk:usa:event:external_super_jump_granted"
+        "crosswalk:usa:event:external_super_jump_granted",
+        "research:dialogue_grant_flag_20_us"
       ],
       "live_readable": true,
       "mask": "0x1",
@@ -13683,6 +15427,7 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:78@chatgptweb/decomp",
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:103@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/MEMORY_MAP.md:152@toolkit/unlocks-items-and-flags-20261117",
@@ -14030,7 +15775,9 @@
     },
     {
       "address": "0x8015C60C",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x27 (script relation: key_training)"
+      ],
       "category": "saved_event_bit",
       "confidence": "external_unverified",
       "confidence_sources": [
@@ -14043,6 +15790,11 @@
           "confidence": "usa_source",
           "evidence": "USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
           "source_id": "crosswalk:usa:event:external_priest_key"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x27 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_27_us"
         }
       ],
       "context": "",
@@ -14054,7 +15806,8 @@
       "evidence": "External annotation: mn64rando; not locally gameplay-verified; USA: External annotation: mn64rando; not locally gameplay-verified; Japanese event/placement bit proposed by +0x57F0; not independently verified in Japanese gameplay",
       "id": "story:usa:external_priest_key",
       "id_aliases": [
-        "crosswalk:usa:event:external_priest_key"
+        "crosswalk:usa:event:external_priest_key",
+        "research:dialogue_grant_flag_27_us"
       ],
       "live_readable": true,
       "mask": "0x80",
@@ -14068,6 +15821,7 @@
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:24@chatgptweb/decomp",
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:78@chatgptweb/decomp",
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:103@main",
         "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:34@main",
         "practice/MEMORY_MAP.md:152@toolkit/unlocks-items-and-flags-20261117",
@@ -14185,7 +15939,9 @@
     },
     {
       "address": "0x8015C60D",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x29 (script relation: achilles_heel)"
+      ],
       "category": "saved_event_bit",
       "confidence": "research_observed",
       "confidence_sources": [
@@ -14198,6 +15954,11 @@
           "confidence": "usa_source",
           "evidence": "USA: ROM reward script + user report; JP bit semantics still require independent checks",
           "source_id": "crosswalk:usa:event:heel_recorded"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x29 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_29_us"
         }
       ],
       "context": "",
@@ -14209,7 +15970,8 @@
       "evidence": "ROM reward script + user report; USA: ROM reward script + user report; JP bit semantics still require independent checks",
       "id": "story:usa:heel_recorded",
       "id_aliases": [
-        "crosswalk:usa:event:heel_recorded"
+        "crosswalk:usa:event:heel_recorded",
+        "research:dialogue_grant_flag_29_us"
       ],
       "live_readable": true,
       "mask": "0x2",
@@ -14221,6 +15983,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/MEMORY_MAP.md:238@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:239@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:51@toolkit/unlocks-items-and-flags-20261117",
@@ -14599,7 +16362,9 @@
     },
     {
       "address": "0x8015C60E",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x31 (script relation: mini_ebisu)"
+      ],
       "category": "saved_event_bit",
       "confidence": "research_observed",
       "confidence_sources": [
@@ -14612,6 +16377,11 @@
           "confidence": "usa_source",
           "evidence": "USA: ROM reward reader/writer; JP bit semantics still require independent checks",
           "source_id": "crosswalk:usa:event:mini_recorded"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x31 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_31_us"
         }
       ],
       "context": "",
@@ -14623,7 +16393,8 @@
       "evidence": "ROM reward reader/writer; USA: ROM reward reader/writer; JP bit semantics still require independent checks",
       "id": "story:usa:mini_recorded",
       "id_aliases": [
-        "crosswalk:usa:event:mini_recorded"
+        "crosswalk:usa:event:mini_recorded",
+        "research:dialogue_grant_flag_31_us"
       ],
       "live_readable": true,
       "mask": "0x2",
@@ -14635,6 +16406,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/MEMORY_MAP.md:139@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:163@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:16@toolkit/unlocks-items-and-flags-20261117",
@@ -14656,7 +16428,9 @@
     },
     {
       "address": "0x8015C60E",
-      "aliases": [],
+      "aliases": [
+        "Event bit 0x35 (script relation: miracle_snow)"
+      ],
       "category": "saved_event_bit",
       "confidence": "research_observed",
       "confidence_sources": [
@@ -14669,6 +16443,11 @@
           "confidence": "usa_source",
           "evidence": "USA: ROM reward reader/writer; JP bit semantics still require independent checks",
           "source_id": "crosswalk:usa:event:snow_recorded"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA 0x8020 scripted setter for bit 0x35 in region-specific event bank C. Source report records associated grant/dialogue ordering.",
+          "source_id": "research:dialogue_grant_flag_35_us"
         }
       ],
       "context": "",
@@ -14680,7 +16459,8 @@
       "evidence": "ROM reward reader/writer; USA: ROM reward reader/writer; JP bit semantics still require independent checks",
       "id": "story:usa:snow_recorded",
       "id_aliases": [
-        "crosswalk:usa:event:snow_recorded"
+        "crosswalk:usa:event:snow_recorded",
+        "research:dialogue_grant_flag_35_us"
       ],
       "live_readable": true,
       "mask": "0x20",
@@ -14692,6 +16472,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/MEMORY_MAP.md:139@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:163@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:16@toolkit/unlocks-items-and-flags-20261117",
@@ -14713,7 +16494,9 @@
     },
     {
       "address": "0x8015C60E",
-      "aliases": [],
+      "aliases": [
+        "Story/event bit 0x32"
+      ],
       "category": "saved_event_bit",
       "confidence": "research_observed",
       "confidence_sources": [
@@ -14726,6 +16509,11 @@
           "confidence": "usa_source",
           "evidence": "USA: ROM script + existing annotation; JP bit semantics still require independent checks",
           "source_id": "crosswalk:usa:event:thaisamba"
+        },
+        {
+          "confidence": "research_observed",
+          "evidence": "Original resource 95 script 0x8020 sets flag 0x32; original resource 102 duplicates set; native flag-bank handlers independently traced in both regions",
+          "source_id": "research:glitch_story_flag32_usa"
         }
       ],
       "context": "",
@@ -14737,7 +16525,8 @@
       "evidence": "ROM script + existing annotation; USA: ROM script + existing annotation; JP bit semantics still require independent checks",
       "id": "story:usa:thaisamba",
       "id_aliases": [
-        "crosswalk:usa:event:thaisamba"
+        "crosswalk:usa:event:thaisamba",
+        "research:glitch_story_flag32_usa"
       ],
       "live_readable": true,
       "mask": "0x4",
@@ -14749,6 +16538,7 @@
       "signed": false,
       "source_revision": "toolkit declarations",
       "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md",
         "practice/MEMORY_MAP.md:139@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:163@toolkit/unlocks-items-and-flags-20261117",
         "practice/MEMORY_MAP.md:16@toolkit/unlocks-items-and-flags-20261117",
@@ -19378,6 +21168,44 @@
       "width": 1
     },
     {
+      "address": "0x8015C6BC",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 102 +0x6670; original 0x8004 / 0x8009 writes 1 to saved +0xB4",
+          "source_id": "research:dialogue_grant_chain_pipe_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EAC",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 102 +0x6670; original 0x8004 / 0x8009 writes 1 to saved +0xB4",
+      "id": "research:dialogue_grant_chain_pipe_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Chain Pipe",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C6BF",
       "aliases": [],
       "category": "inventory",
@@ -19418,6 +21246,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C6C0",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 93 +0x3CF0; original 0x8004 / 0x8009 writes 1 to saved +0xB8",
+          "source_id": "research:dialogue_grant_meat_saw_hammer_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EB0",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 93 +0x3CF0; original 0x8004 / 0x8009 writes 1 to saved +0xB8",
+      "id": "research:dialogue_grant_meat_saw_hammer_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Meat Saw-Hammer",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C6C3",
@@ -19462,6 +21328,44 @@
       "width": 1
     },
     {
+      "address": "0x8015C6C4",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 102 +0x7E10; original 0x8004 / 0x8009 writes 1 to saved +0xBC",
+          "source_id": "research:dialogue_grant_firecracker_bomb_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EB4",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 102 +0x7E10; original 0x8004 / 0x8009 writes 1 to saved +0xBC",
+      "id": "research:dialogue_grant_firecracker_bomb_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Firecracker Bomb",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C6C7",
       "aliases": [],
       "category": "inventory",
@@ -19502,6 +21406,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C6C8",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 102 +0x75EC; original 0x8004 / 0x8009 writes 1 to saved +0xC0",
+          "source_id": "research:dialogue_grant_koryuta_flute_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EB8",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 102 +0x75EC; original 0x8004 / 0x8009 writes 1 to saved +0xC0",
+      "id": "research:dialogue_grant_koryuta_flute_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Koryuta's Flute",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C6CB",
@@ -19546,6 +21488,44 @@
       "width": 1
     },
     {
+      "address": "0x8015C6D0",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 93 +0x394C; original 0x8004 / 0x8009 writes 1 to saved +0xC8",
+          "source_id": "research:dialogue_grant_windup_camera_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EC0",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 93 +0x394C; original 0x8004 / 0x8009 writes 1 to saved +0xC8",
+      "id": "research:dialogue_grant_windup_camera_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Windup Camera",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C6D3",
       "aliases": [],
       "category": "inventory",
@@ -19586,6 +21566,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C6D4",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 93 +0x3AA8; original 0x8004 / 0x8009 writes 1 to saved +0xCC",
+          "source_id": "research:dialogue_grant_cold_kunai_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EC4",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 93 +0x3AA8; original 0x8004 / 0x8009 writes 1 to saved +0xCC",
+      "id": "research:dialogue_grant_cold_kunai_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Kunai of Severe Cold",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C6D7",
@@ -19630,6 +21648,44 @@
       "width": 1
     },
     {
+      "address": "0x8015C6D8",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 93 +0x3BEC; original 0x8004 / 0x8009 writes 1 to saved +0xD0",
+          "source_id": "research:dialogue_grant_yae_bazooka_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EC8",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 93 +0x3BEC; original 0x8004 / 0x8009 writes 1 to saved +0xD0",
+      "id": "research:dialogue_grant_yae_bazooka_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Yae Bazooka",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C6DB",
       "aliases": [],
       "category": "inventory",
@@ -19670,6 +21726,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C6DC",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 93 +0x3818; original 0x8004 / 0x8009 writes 1 to saved +0xD4",
+          "source_id": "research:dialogue_grant_flaming_medal_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161ECC",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 93 +0x3818; original 0x8004 / 0x8009 writes 1 to saved +0xD4",
+      "id": "research:dialogue_grant_flaming_medal_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Flaming Medal",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C6DF",
@@ -19714,6 +21808,44 @@
       "width": 1
     },
     {
+      "address": "0x8015C6EC",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 98 +0x2A54; original 0x8004 / 0x8009 writes 1 to saved +0xE4",
+          "source_id": "research:dialogue_grant_sudden_impact_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EDC",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 98 +0x2A54; original 0x8004 / 0x8009 writes 1 to saved +0xE4",
+      "id": "research:dialogue_grant_sudden_impact_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Sudden Impact",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C6EF",
       "aliases": [],
       "category": "inventory",
@@ -19754,6 +21886,48 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C6F0",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 97 +0xCBC8; original 0x8004 / 0x8009 writes 1 to saved +0xE8",
+          "source_id": "research:dialogue_grant_mini_ebisu_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EE0",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 97 +0xCBC8; original 0x8004 / 0x8009 writes 1 to saved +0xE8",
+      "id": "research:dialogue_grant_mini_ebisu_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Mini-Ebisu",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
+        "practice/MEMORY_MAP.md:56@toolkit/unlocks-items-and-flags-20261117",
+        "practice/story_progress.py:321",
+        "practice/story_progress.py:385",
+        "practice/story_progress.py:405"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C6F3",
@@ -19802,6 +21976,44 @@
       "width": 1
     },
     {
+      "address": "0x8015C6F4",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 98 +0x37C0; original 0x8004 / 0x8009 writes 1 to saved +0xEC",
+          "source_id": "research:dialogue_grant_flying_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EE4",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 98 +0x37C0; original 0x8004 / 0x8009 writes 1 to saved +0xEC",
+      "id": "research:dialogue_grant_flying_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Flying",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C6F7",
       "aliases": [],
       "category": "inventory",
@@ -19844,6 +22056,44 @@
       "width": 1
     },
     {
+      "address": "0x8015C6F8",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 98 +0x31C8; original 0x8004 / 0x8009 writes 1 to saved +0xF0",
+          "source_id": "research:dialogue_grant_mermaid_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EE8",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 98 +0x31C8; original 0x8004 / 0x8009 writes 1 to saved +0xF0",
+      "id": "research:dialogue_grant_mermaid_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Mermaid",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C6FB",
       "aliases": [],
       "category": "inventory",
@@ -19884,6 +22134,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C6FC",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 101 +0x1904/+0x19A0; original 0x8004 / 0x8009 writes 1 to saved +0xF4",
+          "source_id": "research:dialogue_grant_triton_shell_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EEC",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 101 +0x1904/+0x19A0; original 0x8004 / 0x8009 writes 1 to saved +0xF4",
+      "id": "research:dialogue_grant_triton_shell_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Triton Shell",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C6FF",
@@ -20120,6 +22408,48 @@
       "width": 4
     },
     {
+      "address": "0x8015C70C",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 97 +0xC654; original 0x8004 / 0x8009 writes 1 to saved +0x104",
+          "source_id": "research:dialogue_grant_achilles_heel_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161EFC",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 97 +0xC654; original 0x8004 / 0x8009 writes 1 to saved +0x104",
+      "id": "research:dialogue_grant_achilles_heel_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Achilles' Heel",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
+        "practice/MEMORY_MAP.md:58@toolkit/unlocks-items-and-flags-20261117",
+        "practice/story_progress.py:321",
+        "practice/story_progress.py:385",
+        "practice/story_progress.py:405"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C70F",
       "aliases": [],
       "category": "inventory",
@@ -20163,6 +22493,44 @@
       "width": 1
     },
     {
+      "address": "0x8015C710",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 97 +0xADF0; original 0x8004 / 0x8009 writes 1 to saved +0x108",
+          "source_id": "research:dialogue_grant_key_training_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161F00",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 97 +0xADF0; original 0x8004 / 0x8009 writes 1 to saved +0x108",
+      "id": "research:dialogue_grant_key_training_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Key to Training",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C713",
       "aliases": [],
       "category": "inventory",
@@ -20203,6 +22571,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C714",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 97 +0xBABC; original 0x8004 / 0x8009 writes 1 to saved +0x10C",
+          "source_id": "research:dialogue_grant_quality_cucumber_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80161F04",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 97 +0xBABC; original 0x8004 / 0x8009 writes 1 to saved +0x10C",
+      "id": "research:dialogue_grant_quality_cucumber_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Quality Cucumber",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C717",
@@ -20377,6 +22783,159 @@
       "width": 1
     },
     {
+      "address": "0x8015C808",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original usa resource 95/93 0x8004 immediate assignment and regional save-structure +0x200 crosswalk",
+          "source_id": "research:glitch_checkpoint_index_usa"
+        }
+      ],
+      "context": "First bomb script sets 13; second bomb sets 17; native checkpoint restore reads +0x200; direct paired script writes; 32-bit big-endian. No authorized toolkit write; not every native reader/writer has been closed.",
+      "control": null,
+      "counterpart": "0x80161FF8",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original usa resource 95/93 0x8004 immediate assignment and regional save-structure +0x200 crosswalk",
+      "id": "research:glitch_checkpoint_index_usa",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8000B588_C188 (Japan)",
+        "func_8003D77C_3E37C (Japan)"
+      ],
+      "name": "Live checkpoint/spawn-record index",
+      "owner": "saved state",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
+      "address": "0x8015C828",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original usa resource 95/93 0x8004 immediate assignment and regional save-structure +0x220 crosswalk",
+          "source_id": "research:glitch_bomb_state_220_usa"
+        }
+      ],
+      "context": "First bomb script assigns 1 to +0x220; meaning not established; 32-bit big-endian. No authorized toolkit write; not every native reader/writer has been closed.",
+      "control": null,
+      "counterpart": "0x80162018",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original usa resource 95/93 0x8004 immediate assignment and regional save-structure +0x220 crosswalk",
+      "id": "research:glitch_bomb_state_220_usa",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C (Japan)"
+      ],
+      "name": "First-bomb saved word +0x220 (meaning unknown)",
+      "owner": "saved state",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
+      "address": "0x8015C82C",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original usa resource 95/93 0x8004 immediate assignment and regional save-structure +0x224 crosswalk",
+          "source_id": "research:glitch_bomb_state_224_usa"
+        }
+      ],
+      "context": "Second bomb script assigns 1 to +0x224; meaning not established; 32-bit big-endian. No authorized toolkit write; not every native reader/writer has been closed.",
+      "control": null,
+      "counterpart": "0x8016201C",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original usa resource 95/93 0x8004 immediate assignment and regional save-structure +0x224 crosswalk",
+      "id": "research:glitch_bomb_state_224_usa",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C (Japan)"
+      ],
+      "name": "Second-bomb saved word +0x224 (meaning unknown)",
+      "owner": "saved state",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
+      "address": "0x8015C858",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 93 +0x2E00; original 0x8004 / 0x8009 writes 1 to saved +0x250",
+          "source_id": "research:dialogue_grant_miracle_star_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80162048",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 93 +0x2E00; original 0x8004 / 0x8009 writes 1 to saved +0x250",
+      "id": "research:dialogue_grant_miracle_star_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Miracle Star",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C85B",
       "aliases": [],
       "category": "inventory",
@@ -20418,6 +22977,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C85C",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 93 +0x2CC0; original 0x8004 / 0x8009 writes 1 to saved +0x254",
+          "source_id": "research:dialogue_grant_miracle_moon_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x8016204C",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 93 +0x2CC0; original 0x8004 / 0x8009 writes 1 to saved +0x254",
+      "id": "research:dialogue_grant_miracle_moon_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Miracle Moon",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C85F",
@@ -20463,6 +23060,44 @@
       "width": 1
     },
     {
+      "address": "0x8015C860",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 93 +0x2D54; original 0x8004 / 0x8009 writes 1 to saved +0x258",
+          "source_id": "research:dialogue_grant_miracle_flower_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80162050",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 93 +0x2D54; original 0x8004 / 0x8009 writes 1 to saved +0x258",
+      "id": "research:dialogue_grant_miracle_flower_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Miracle Flower",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C863",
       "aliases": [],
       "category": "inventory",
@@ -20504,6 +23139,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C864",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 97 +0xD5C0; original 0x8004 / 0x8009 writes 1 to saved +0x25C",
+          "source_id": "research:dialogue_grant_miracle_snow_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80162054",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 97 +0xD5C0; original 0x8004 / 0x8009 writes 1 to saved +0x25C",
+      "id": "research:dialogue_grant_miracle_snow_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Miracle Snow",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C866",
@@ -20549,6 +23222,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C870",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "USA original resource 102 +0x77C0; 106 +0x2918; original 0x8004 / 0x8009 writes 1 to saved +0x268",
+          "source_id": "research:dialogue_grant_map_of_japan_us"
+        }
+      ],
+      "context": "Original script immediate-value store (=1). Displayed item name comes from external save-editor; original game dialogue corroborates some names. Native consumers and alternative computed writes not exhaustively traced. Not a toolkit-safe write.",
+      "control": null,
+      "counterpart": "0x80162060",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "USA original resource 102 +0x77C0; 106 +0x2918; original 0x8004 / 0x8009 writes 1 to saved +0x268",
+      "id": "research:dialogue_grant_map_of_japan_us",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "Original USA script assignment opcode 0x8004/0x8009"
+      ],
+      "name": "Scripted grant word: Map of Japan",
+      "owner": "Live saved-data record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
     },
     {
       "address": "0x8015C8B7",
@@ -21019,6 +23730,44 @@
       "width": null
     },
     {
+      "address": "0x8015C8E0",
+      "aliases": [],
+      "category": "saved_data",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original usa resource 95/93 0x8004 immediate assignment and regional save-structure +0x2D8 crosswalk",
+          "source_id": "research:glitch_gourmet_visited_usa"
+        }
+      ],
+      "context": "Original area-name script sets 1; first bomb script clears to 0; external save-editor label corroborates, consumers unresolved; 32-bit big-endian. No authorized toolkit write; not every native reader/writer has been closed.",
+      "control": null,
+      "counterpart": "0x801620D0",
+      "data_type": "u32",
+      "discovered": "2026-11-20",
+      "endian": "big",
+      "evidence": "Original usa resource 95/93 0x8004 immediate assignment and regional save-structure +0x2D8 crosswalk",
+      "id": "research:glitch_gourmet_visited_usa",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003D77C_3E37C (Japan)"
+      ],
+      "name": "Gourmet Submarine Castle visited-location word",
+      "owner": "saved state",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
+      ],
+      "updated": "2026-11-20",
+      "width": 4
+    },
+    {
       "address": "0x8015C8E4",
       "aliases": [],
       "category": "external_cheat_lead",
@@ -21227,7 +23976,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md"
       ],
@@ -21381,7 +24130,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:83@chatgptweb/decomp"
@@ -21420,7 +24169,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:65@chatgptweb/decomp"
@@ -21509,7 +24258,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
       "sources": [
         "decomp/CONTINUE.md:49@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
@@ -21522,6 +24271,47 @@
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:97@chatgptweb/decomp"
       ],
       "updated": "2026-11-17",
+      "width": 4
+    },
+    {
+      "address": "0x801C77F8",
+      "aliases": [],
+      "category": "script_vm",
+      "confidence": "disputed",
+      "confidence_sources": [
+        {
+          "confidence": "disputed",
+          "evidence": "Conflicts with canonical research:vm_active_countdown at 0x801C77F8. ROM: func_8003F460 copies countdown input and func_8003E654 decrements state 7; original JP func_8003E2C4_3EEC4 is native-G2 identical and corresponds to accepted USA func_8003E654_3F254",
+          "source_id": "decomp:conflict:research:vm_active_countdown:11d2c185205b:801c77f8"
+        }
+      ],
+      "context": "State 7; access width not yet specified in this manifest",
+      "control": null,
+      "counterpart": "0x801CCF28",
+      "data_type": "s32",
+      "discovered": "2026-11-13",
+      "endian": "big",
+      "evidence": "Conflicts with canonical research:vm_active_countdown at 0x801C77F8. ROM: func_8003F460 copies countdown input and func_8003E654 decrements state 7; original JP func_8003E2C4_3EEC4 is native-G2 identical and corresponds to accepted USA func_8003E654_3F254",
+      "id": "decomp:conflict:research:vm_active_countdown:11d2c185205b:801c77f8",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8003F460",
+        "func_8003E654"
+      ],
+      "name": "Active script countdown",
+      "owner": "script VM",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": true,
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
+      "sources": [
+        "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
+        "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:83@chatgptweb/decomp",
+        "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:93@chatgptweb/decomp"
+      ],
+      "updated": "2026-11-21",
       "width": 4
     },
     {
@@ -21597,7 +24387,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
@@ -21637,7 +24427,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:95@chatgptweb/decomp"
@@ -21726,7 +24516,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:92@chatgptweb/decomp"
@@ -21766,7 +24556,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "12d0d1cb2124093db37649d7676582f8394ddcde",
+      "source_revision": "11d2c185205b74abf2d8f09d8758717c190f97ce",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
@@ -22474,6 +25264,10 @@
     "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:94@chatgptweb/decomp",
     "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:95@chatgptweb/decomp",
     "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:97@chatgptweb/decomp",
+    "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
+    "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md",
+    "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
+    "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:103@main",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:105@main",
