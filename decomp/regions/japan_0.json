@@ -1023,8 +1023,8 @@
   },
   "tiny7_native_promotion": {
     "format": "goemon-japan-tiny7-promotion-v1",
-    "status": "PASSED_G2_LOCAL",
-    "published": false,
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published": true,
     "original_c_before": 2282,
     "new_matching_c": 7,
     "new_original_instruction_bytes": 156,
@@ -1040,6 +1040,8 @@
     "elf_identities": 7376,
     "semantic_relocations": 80747,
     "full_local_ci": "PASS",
-    "gameplay": "NOT_RUN"
+    "gameplay": "NOT_RUN",
+    "published_commit": "f7a7f3565540b552904ebc21a0cf2ebe3ea8118a",
+    "publication_record": "results/japan_0_2289_tiny7_publication_20261121.json"
   }
 }

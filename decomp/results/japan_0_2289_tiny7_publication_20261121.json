@@ -1,0 +1,41 @@
+{
+  "format": "goemon-japan-tiny7-publication-v1",
+  "region": "japan_0",
+  "branch": "chatgptweb/decomp",
+  "publication_status": "PUBLISHED_REMOTE_VERIFIED",
+  "implementation_commit": "f7a7f3565540b552904ebc21a0cf2ebe3ea8118a",
+  "previous_head": "560b214a6dab6f1b9871575baf5ca706f40061b2",
+  "implementation_changed_files": 18,
+  "source_files_added": 15,
+  "previous_matching_c": 2282,
+  "new_matching_c": 7,
+  "matching_c_functions": 2289,
+  "new_instruction_bytes": 156,
+  "matching_instruction_bytes": 122280,
+  "assembly_remaining": 5087,
+  "native_g2": "PASSED_G2_LOCAL prior to publication; immutable proof retained",
+  "proof": "decomp/results/japan_0_2289_tiny7_g2_20261121.json",
+  "inventory": "decomp/results/japan_0_2289_tiny7_inventory_20261121.json",
+  "original_expanded_rom_bytes": 33554432,
+  "expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "original_retail_rom_bytes": 16777216,
+  "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "original_elf_identities": 7376,
+  "original_semantic_relocations": 80747,
+  "original_relocation_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "full_local_ci": "PASS: 348 decomp Python tests (3 skipped), 349 verifier tests (4 skipped), host sanitizer fixtures",
+  "new_source_tests": "PASS: 4/4 tests, 1000 deterministic original-C host iterations",
+  "gameplay_emulator": "NOT_RUN",
+  "duplicate_research_excluded": [
+    "func_80215430_69CB30",
+    "func_802156E4_69CDE4",
+    "func_80217928_69F028"
+  ],
+  "verified_remote_git_blobs": {
+    "decomp/japan_tiny7_promotion.py": "88fd40505bf58ad4be208a541f68bb5de41f86e9",
+    "decomp/research/jp_tiny7_20261121/manifest.json": "fff46ec97c6cb5c40fe536921787e8973950269f",
+    "decomp/results/japan_0_2289_tiny7_g2_20261121.json": "2b41bb5c7f90b4b268575b0dddd9cfc57b8e6872",
+    "decomp/results/japan_0_2289_tiny7_inventory_20261121.json": "cd3eb39d927005f73da464292c2d97ec76f92f6b",
+    "decomp/test_japan_tiny7_promotion.py": "8b63ae0ae0fd289728c55a93217c52d853236103"
+  }
+}
