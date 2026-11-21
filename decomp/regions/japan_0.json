@@ -1046,8 +1046,8 @@
   },
   "retry29_native_promotion": {
     "format": "goemon-japan-retry29-promotion-v1",
-    "status": "PASSED_G2_LOCAL",
-    "published": false,
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published": true,
     "original_c_before": 2289,
     "new_matching_c": 14,
     "new_original_instruction_bytes": 512,
@@ -1063,6 +1063,8 @@
     "original_elf_identities": 7376,
     "semantic_relocations": 80747,
     "full_local_ci": "PASS",
-    "gameplay": "NOT_RUN"
+    "gameplay": "NOT_RUN",
+    "published_commit": "ca77fe2b4d5b47b106b723a23a60da5b34b0d4b7",
+    "publication_record": "results/japan_0_2303_retry29_publication_20261121.json"
   }
 }
