@@ -1,0 +1,86 @@
+{
+  "format": "goemon-usa-clamp-f14-f16-cfg-research-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "function": "func_801CD310_589220",
+  "rom_offset": "0x589220",
+  "vma": "0x801CD310",
+  "original_bytes": 4320,
+  "original_frame_bytes": 232,
+  "original_usa_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pristine_usa_rom_build_bytes_equal": 33554432,
+  "original_cfg": {
+    "start": "0x1b4",
+    "end_exclusive": "0x280",
+    "branch_signatures_checked": 8,
+    "reachable_states": 65,
+    "f14": {
+      "zero_definition": "0x1b4",
+      "uses": [
+        "0x218",
+        "0x234"
+      ]
+    },
+    "f16": {
+      "conditional_zero_definitions": [
+        "0x1f4",
+        "0x1f8",
+        "0x214"
+      ],
+      "reset_4_store_source": "0x1f8",
+      "later_3_store_possible_sources": [
+        "0x1f4",
+        "0x214"
+      ],
+      "later_3_store_offsets": [
+        "0x274",
+        "0x278",
+        "0x27c"
+      ]
+    }
+  },
+  "isolated_ido_fixture": {
+    "status": "PASS_DIAGNOSTIC_ONLY",
+    "register": "f2",
+    "zero_definition_offsets": [
+      "0x74",
+      "0x78",
+      "0x94"
+    ],
+    "matching_original_register": false
+  },
+  "whole_clamp_trials": {
+    "native_compiles": 9,
+    "new_variants": 8,
+    "best_function_bytes": 4324,
+    "frame_bytes": 232,
+    "matching_nonreloc_words": 24,
+    "compared_words": 902,
+    "matching_exact_relocation_triples": 10,
+    "text_relocation_count": 101,
+    "calls": 33,
+    "sqrt_s": 9,
+    "first_nonreloc_mismatch": "+0x04",
+    "candidate_context_f14_f16_zero_definitions": 0,
+    "fully_matching": false
+  },
+  "tests": {
+    "unit_tests": "PASS_8",
+    "original_cfg": "PASS_65_STATES",
+    "native_fixture": "PASS",
+    "original_gate_microexec": "PASS_3000",
+    "full_native_replay": "PASS_EXPECTED_FAILED_NATIVE_9_TRIALS",
+    "fresh_zip_replay": "PASS",
+    "candidate_rom": "NOT_RUN",
+    "canonical_combined_verify": "NOT_RUN",
+    "inventory": "NOT_RUN",
+    "full_local_ci": "NOT_RUN",
+    "gameplay": "NOT_RUN"
+  },
+  "source_only_zip": "GOEMON_F14_F16_CFG_RECON_20261121.zip",
+  "source_only_zip_sha256": "883cf9708312e233624978fdb25d77df2f5c7db1a742f3f675b7a95037b26736",
+  "accepted_usa_start": 1965,
+  "accepted_usa_end": 1965,
+  "accepted_usa_bytes": 84648,
+  "remaining_assembly": 5398
+}
