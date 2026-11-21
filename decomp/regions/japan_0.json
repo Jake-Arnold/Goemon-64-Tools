@@ -1069,8 +1069,8 @@
   },
   "retry10_native_promotion": {
     "format": "goemon-japan-retry10-alternate-promotion-v1",
-    "status": "PASSED_G2_LOCAL",
-    "published": false,
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published": true,
     "original_c_before": 2303,
     "new_matching_c": 4,
     "new_original_instruction_bytes": 160,
@@ -1087,6 +1087,8 @@
     "semantic_relocations": 80747,
     "full_local_ci": "PASS",
     "false_path_undefined_C": "func_08001410_70F980",
-    "gameplay": "NOT_RUN"
+    "gameplay": "NOT_RUN",
+    "published_commit": "ea758300aab5de1d344d4025a56314de72022bbc",
+    "publication_record": "results/japan_0_2307_retry10_publication_20261121.json"
   }
 }
