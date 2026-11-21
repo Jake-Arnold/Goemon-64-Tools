@@ -1,0 +1,60 @@
+{
+  "format": "goemon-usa-clamp-first-block-native-research-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE",
+  "function": "func_801CD310_589220",
+  "rom_offset": "0x589220",
+  "vma": "0x801CD310",
+  "original_function_bytes": 4320,
+  "earlier_candidate_bytes": 4060,
+  "new_candidate_bytes": 4124,
+  "shortfall_bytes": 196,
+  "source_sha256": "f9b375832a38f153cad37b446aaf8d37a1aa57751b2e2892cffea68b33ea1a73",
+  "original_stack_frame_bytes": 232,
+  "candidate_stack_frame_bytes": 440,
+  "original_calls": 33,
+  "candidate_calls": 33,
+  "call_sequence_exact": true,
+  "original_sqrt_s": 9,
+  "candidate_sqrt_s": 9,
+  "original_relocation_types": {
+    "R_MIPS_26": 33,
+    "R_MIPS_HI16": 34,
+    "R_MIPS_LO16": 34
+  },
+  "candidate_text_relocation_types": {
+    "R_MIPS_26": 33,
+    "R_MIPS_HI16": 33,
+    "R_MIPS_LO16": 33
+  },
+  "original_table_entries": 18,
+  "candidate_table_entries": 18,
+  "case_target_groups_match": true,
+  "candidate_destination_delta_from_original_bytes": 4,
+  "contiguous_matching_chunks": [
+    {
+      "original_offset": "0x3A8",
+      "candidate_offset": "0x384",
+      "bytes": 24
+    },
+    {
+      "original_offset": "0xBBC",
+      "candidate_offset": "0xB50",
+      "bytes": 24
+    },
+    {
+      "original_offset": "0x54",
+      "candidate_offset": "0x5C",
+      "bytes": 20
+    }
+  ],
+  "baseline_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "baseline_complete_byte_comparison": "PASS",
+  "ido_5_3_compile": "PASS_WITH_POINTER_WARNINGS",
+  "combined_verify": "NOT_RUN",
+  "inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "production_c_before": 1956,
+  "production_c_after": 1956
+}
