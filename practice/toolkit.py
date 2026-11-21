@@ -29,7 +29,6 @@ from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
 from practice.value_freezes_ui import ValueFreezesMixin
 from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
-from practice.pj64_debugger_ui import PJ64DebuggerMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.theme import apply_theme, PALETTE
 from practice.unlocks_ui import UnlocksMixin
@@ -91,7 +90,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, PJ64DebuggerMixin, InspectorMixin):
+class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -234,7 +233,6 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
         # The dedicated tabs are visible directly above; no duplicate footer is needed.
         self._arrange_dashboard(1220)
         self.build_inspector_tabs(notebook)
-        self.build_pj64_debugger_tab(notebook)
         self.build_value_freezes_tab(notebook)
         self.build_value_search_tab(notebook)
         self.build_damage_event_capture_tab(notebook)
@@ -387,7 +385,6 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.status.set('Enter a valid positive PID, or leave it blank for automatic selection.')
             return
         self.stop_damage_capture(quiet=True)
-        self.reset_debugger_session()
         # Complete all old-session freeze writes before closing the RAM handle.
         with self.value_freezes.guard:
             self.stop_all_freezes()
@@ -487,7 +484,6 @@ class Toolkit(DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, Ev
             self.status.set(f'Connection failed: {result[1]}')
 
     def tick(self):
-        self.poll_pj64_debugger(time.monotonic())
         if self.mem:
             try:
                 now=time.monotonic()
