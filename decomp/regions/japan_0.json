@@ -946,8 +946,8 @@
     "teardown_68_bytes": "RETAIN_ASM_ORIGINAL_RELOCATIONS"
   },
   "vm_two_20261121": {
-    "status": "PASSED_G2_LOCAL",
-    "github_publication": "PENDING_REMOTE_VERIFICATION",
+    "status": "PASSED_G2",
+    "github_publication": "PUBLISHED_REMOTE_VERIFIED",
     "baseline": 2121,
     "new_c": 2,
     "new_instruction_bytes": 92,
@@ -961,6 +961,7 @@
     "original_function_identities": 7376,
     "semantic_relocations": 80747,
     "clean_replays": 2,
-    "gameplay": "NOT_RUN"
+    "gameplay": "NOT_RUN",
+    "implementation_commit": "74f940e7c0fb6b0ef7286bca1018780450ae4993"
   }
 }

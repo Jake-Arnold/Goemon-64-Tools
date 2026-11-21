@@ -1,6 +1,6 @@
 # Original-address Japanese script-VM C promotion — 21 November 2026
 
-**Acceptance:** `PASSED_G2_LOCAL` until the exact GitHub implementation commit is remotely re-fetched. No game ROM, proprietary compiler, extracted original assembly, ELF/object files or saves are stored in this directory.
+**Acceptance: `PASSED_G2 / PUBLISHED_REMOTE_VERIFIED`.** Implementation commit [`74f940e7`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/74f940e7c0fb6b0ef7286bca1018780450ae4993) is present on `chatgptweb/decomp` and the exact sources, original-ROM G2 results and publication branch were independently re-fetched. No game ROM, proprietary compiler, extracted original assembly, ELF/object files or saves are stored in this directory.
 
 **Targets:** `func_8003CC10_3D810` (48 bytes, resource fallback lookup) and `func_8003E2C4_3EEC4` (44 bytes, VM countdown expiry). Original USA functional counterparts already exist in `decomp/script_vm.c` as `func_8003CFA0_3DBA0` and `func_8003E654_3F254`; USA matching-C totals are **unchanged**.
 

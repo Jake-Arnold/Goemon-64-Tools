@@ -1,12 +1,12 @@
 {
-  "acceptance_tier": "PASSED_G2_LOCAL",
+  "acceptance_tier": "PASSED_G2",
   "assembly_remaining": 5253,
   "ci": "PASS (303 decomp Python tests, 349 verifier/ledger tests, ASan/UBSan host fixtures)",
   "evidence": "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md",
   "format": "goemon-jp-vm-two-full-original-g2-v1",
   "full_original_rom_bytes": 33554432,
   "gameplay": "NOT_RUN",
-  "github_publication": "PENDING_REMOTE_VERIFICATION",
+  "github_publication": "PUBLISHED_REMOTE_VERIFIED",
   "matching_c_functions": 2123,
   "matching_c_instruction_bytes": 112336,
   "method": "ORIGINAL_IDO_5_3_FULL_ROM_ALL_RELOCATIONS_ELF_INVENTORY",
@@ -45,5 +45,6 @@
   "semantic_relocations": 80747,
   "source_host_test": "PASS 4 lookup + 5 countdown cases under GCC ASan/UBSan",
   "staging_adapter": "decomp/vm_g2_promotion.py",
-  "status": "PASSED_G2_LOCAL"
+  "status": "PASSED_G2",
+  "implementation_commit": "74f940e7c0fb6b0ef7286bca1018780450ae4993"
 }
