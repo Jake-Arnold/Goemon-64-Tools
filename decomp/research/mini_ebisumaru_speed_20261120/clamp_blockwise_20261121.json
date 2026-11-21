@@ -1,0 +1,90 @@
+{
+  "format": "goemon-usa-clamp-blockwise-original-native-v1",
+  "date": "2026-11-21",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "original_function": "func_801CD310_589220",
+  "original_rom_offset": "0x589220",
+  "original_vma": "0x801CD310",
+  "original_func_bytes": 4320,
+  "original_frame_bytes": 232,
+  "native_elf_func_bytes": 4332,
+  "native_frame_bytes": 232,
+  "native_source_sha256": "f9cb237b685b4177f1dcba787392bf74476ca6274092f145756bc77bfa65d2f1",
+  "blocks": [
+    {
+      "start": "0x0",
+      "end_exclusive": "0x3c",
+      "nonreloc_equal": 15,
+      "nonreloc_compared": 15,
+      "reloc_sites": 0
+    },
+    {
+      "start": "0x50",
+      "end_exclusive": "0x90",
+      "nonreloc_equal": 13,
+      "nonreloc_compared": 13,
+      "reloc_sites": 3,
+      "matching_offset_symbol_relocs": 3
+    },
+    {
+      "start": "0x90",
+      "end_exclusive": "0x1b4",
+      "nonreloc_equal": 55,
+      "nonreloc_compared": 55,
+      "reloc_sites": 18,
+      "matching_offset_symbol_relocs": 16
+    }
+  ],
+  "switch": {
+    "start": "0x90",
+    "end_exclusive": "0x194",
+    "entries": 18,
+    "destinations_relative_exact": 18,
+    "case_mips_nonreloc_equal": 40,
+    "case_mips_nonreloc_compared": 40
+  },
+  "global_nonreloc_before": {
+    "same": 66,
+    "comparable": 912
+  },
+  "global_nonreloc_after": {
+    "same": 93,
+    "comparable": 912
+  },
+  "relocations": {
+    "original_count": 101,
+    "native_count": 101,
+    "type_symbol_in_order_equal": 99,
+    "type_symbol_offset_equal": 20,
+    "missing_original_jtbl_pair": "jtbl_8020A85C_5C676C"
+  },
+  "sqrt_paths": {
+    "sqrt_count_original": 9,
+    "sqrt_count_native": 9,
+    "vector_3d": {
+      "original_rel": "0x9a8",
+      "candidate_rel": "0x9bc",
+      "drift_bytes": 20
+    },
+    "horizontal_2d": {
+      "original_rel": "0xddc",
+      "candidate_rel": "0xdf8",
+      "drift_bytes": 28
+    }
+  },
+  "next_mismatch_nonreloc": "0x1b4",
+  "next_block_tested_variants": 15,
+  "next_block_exhaustive": false,
+  "host_analytic_clamp_test": "PASS_5000_PAIRS_ASAN_UBSAN",
+  "zip_replay": "PASS",
+  "pristine_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pristine_rebuild_bytes_equal": 33554432,
+  "research_clamp_rom_integration": "NOT_RUN",
+  "canonical_decomp_verify": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "production_accepted_before": 1956,
+  "production_accepted_after": 1956,
+  "remaining_asm": 5407
+}

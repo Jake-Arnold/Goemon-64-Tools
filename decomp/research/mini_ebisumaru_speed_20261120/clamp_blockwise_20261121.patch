@@ -1,0 +1,52 @@
+--- a/clamp_frame232_switch_4332.c
++++ b/clamp_blockwise_4332.c
+@@ -42,19 +42,15 @@
+ extern f64 D_8020A968_5C6878;
+ 
+ u16 func_801CD310_589220(u8 *arg0, f32 arg1, f32 arg2) {
++    u16 u16_0;
+     f32 *pointer_f32_0;
+     f32 *pointer_f32_1;
+     f32 *pointer_f32_2;
+     f32 *pointer_f32_3;
+-    u16 u16_0;
+-    u16 u16_1;
+-    u16 u16_2;
+     u16 u16_3;
+     u16 u16_4;
+     u8 u8_0;
+ 
+-    f32 pool_0;
+-    f32 pool_1;
+     f32 pool_2;
+     f32 pool_3;
+     f32 pool_4;
+@@ -137,6 +133,8 @@
+ 
+     s32 temp_t0;
+     s32 temp_t3_2;
++    u16 u16_1;
++    u16 u16_2;
+     s32 var_v0_2;
+ 
+ 
+@@ -152,7 +150,9 @@
+ 
+ 
+ 
++    f32 pool_1;
+     void *temp_v0_7;
++    f32 pool_0;
+     void *temp_v1;
+     void *temp_v1_2;
+     void *temp_v1_3;
+@@ -177,8 +177,7 @@
+         arg1 = 4.0f;
+     }
+     u16_0 = func_801CE3F0_58A300(arg0, arg2);
+-    u16_1 = M2C_FIELD(arg0, u16 *, 0x98);
+-    switch (u16_1) {
++    switch (M2C_FIELD(arg0, u16 *, 0x98)) {
+     case 0x95:
+     case 0x9A:
+         u16_1 = 0x100;
