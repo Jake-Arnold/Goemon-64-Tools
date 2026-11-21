@@ -192,3 +192,8 @@ See [the 45-write cross-region inventory](GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLI
 ### 21 November 2026 — Four consecutive Japanese gameplay functions reproduced together
 
 The newly reconstructed dispatcher and teardown now compile in **one C unit alongside the existing Japanese init and Start handlers**: original ROM range `0x20180..0x2034F`, **464/464 bytes and 116/116 instructions exactly**. See [same-translation-unit proof and original SHA hashes](GOEMON_GLITCH_CALLBACK_NATIVE_MATCH_20261121.md). This is original-address source **code** equality only: **canonical complete 32 MiB ROM and relocation acceptance unperformed**. The Bomb Text Skip pause/reset scheduling hypothesis remains **not gameplay verified**.
+
+
+## 21 November 2026 — Native G2 promotion: JP 2121 and USA 1958
+
+Five original-address C functions passed strict native full-ROM, ELF identities, complete original main+overlay relocations, C/ASM identity and local CI. Full technical evidence: [GOEMON_START5_G2_PROMOTION_20261121.md](GOEMON_START5_G2_PROMOTION_20261121.md). Japan teardown remains ASM due original-relocation mismatch. Actual Bomb Text Skip in-game is still NOT RUN.
