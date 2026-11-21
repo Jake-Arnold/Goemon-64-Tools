@@ -319,6 +319,18 @@ Source-only tested ZIP `goemon-usa-file22-ido-semantic-correction-source-2026112
 SHA-256 `ac1364d5a0daad5effc5b058273542c21c28cffd24b8a02a244bf93ba8291a2f`
 was freshly unpacked and rerun with all source and original-MIPS comparisons PASS.
 
+## 21 November 2026 — bounded original IDO F300/E700 constant-lifetime diagnosis (research only)
+
+A new source-only [register lifetime compiler probe](register_lifetime_study_20261121/README.md) authenticates original-USA original bytes, compiles ten bounded source shapes with pinned IDO 5.3 and checks instruction extent, prologue, `F300/E700` LUI positions, and complete source-symbol relocation counts. Original **three F300 + three E700 branch-local** `lui` sites and original `$fp=0x07054150` / saved-and-reused `$ra=0xE6000000` were verified from the exact ROM.
+
+- **IDO -O2:** changing store volatility, pointer volatility, switch to C goto branches, typed descriptor fields, case-local volatile literal expressions and precomputed clipping variables all left **one F300 and one E700 LUI** hoisted. Correct diagnostic: 1744-byte object, frame 0x140, first 13 instructions match, two original HI16/LO16 symbol relocations; **not exact**.
+- **IDO -O1:** original-like **three F300 and three E700 LUI** sites, but base C emits **2256 bytes / 78 symbol relocations**. An explicit local Gfx cursor pointer restores **two original symbol relocations** but still emits **2240 bytes** with a different entry/prologue. It passed **20/20 original-MIPS-vs-ID0 MIPS graphics cases and 5304/5304 Gfx commands**, so a semantic outcome is independently established; **still not native-exact**.
+- **Misleading exact byte count:** explicit local cursor with -O2 emits **1808 bytes**, but **78** rather than **two** relocations, only 13 matching entry instruction words, and still 1/1 hoisted F300/E700. Do not confuse equal object size with a match.
+- The source-only kit was unpacked in a new scratch directory and replayed end-to-end: **10/10 compilers PASS**, **0 exact native candidates**, baseline diagnostic 20/20 and -O1 cursor diagnostic 20/20; all matching-C promotion gates remain blocked.
+- Source-only handoff ZIP `goemon-usa-file22-register-lifetime-ido-study-20261121.zip` SHA-256 `a4fccabf8a072320c8fba4db7a42c653da0808c59430f659478ae3d7293eef69` includes the ten-variant generator `probe_register_lifetime.py`, authenticated original-MIPS interpreter with SB/SH support, native compiler + semantics comparator, prior corrected C, test results and evidence. No ROM, ASM dump, binary, generated object or proprietary compiler included. Research-only source and metadata are kept separate from accepted-C files.
+
+**Inference** (not original-source evidence): the remaining mismatch is not a single wrong instruction or constant value. It reflects an original IDO optimisation/aliasing/variable-lifetime layout that requires a different full C source structure. Since straightforward type, volatility, switch/branch, loop-value lifetime and optimisation-level changes all fail native equality, do not force registers with inline ASM or invent a fake verified C function. Accepted USA **1965 / 84648 bytes** unchanged.
+
 ## Repository boundary and next technical hypothesis
 
 The executable hook integration legitimately lives in [native recompilation PR #1](https://github.com/Jake-Arnold/Goemon64Recomp-JP/pull/1), because it instruments `Goemon64Recomp-JP` runtime. **Matching C, semantics, data layout and proof are owned by this `Goemon-64-Tools` decomp research**, not the native launcher. The two need links, not duplicated runtime patch code.
