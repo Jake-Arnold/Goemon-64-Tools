@@ -52,6 +52,15 @@ every direct script-command offset referencing that record.
     python3 -m decomp.story_dialogue --region japan_0 --rom /path/to/japan.decompressed.z64
     python3 -m decomp.story_dialogue --region japan_0 --rom /path/to/japan.decompressed.z64 --query う〜ん！
 
+Independent original-image extraction in this session (both SHA-1s authenticated)
+reproduced **USA 5,186 indexed records / 6,006 direct 0x8010 references**
+and **Japan-0 5,039 records / 5,694 references**. These were produced
+with a separate standalone scanner following the same source-table rules;
+the exact PR module and its tests were not executed in that environment.
+Optional original-ROM regressions are enabled by GOEMON_USA_DECOMPRESSED
+and GOEMON_JAPAN_DECOMPRESSED environment paths. The checked-in suite
+otherwise uses synthetic resource bytes and does not require a ROM.
+
 The result is a bounded JSON summary by default. A query includes a short
 display-only preview for each match; it never commits or persists extracted
 dialogue. Anchors identify region, resource ID, relative text offset,

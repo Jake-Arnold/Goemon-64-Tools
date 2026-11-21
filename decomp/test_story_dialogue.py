@@ -1,6 +1,7 @@
 """ROM-free regressions for regional token decoding and dialogue story anchors."""
 from __future__ import annotations
 
+import os
 import struct
 import unittest
 
@@ -129,6 +130,33 @@ class StoryAnchorTests(unittest.TestCase):
             story.scan_resource('japan', 97, 0, 0x08000000, b'')
         with self.assertRaises(ValueError):
             story.index_image(b'\x80\x37\x12\x40', 'usa')
+
+
+class OriginalRomIntegrationTests(unittest.TestCase):
+    """Opt-in exact source images; never add source ROMs to the repository."""
+
+    def test_original_usa_static_index(self):
+        path = os.environ.get('GOEMON_USA_DECOMPRESSED')
+        if not path:
+            self.skipTest('Set GOEMON_USA_DECOMPRESSED to the original 32 MiB image')
+        image = story.load_verified_image(path, 'usa')
+        records = story.index_image(image, 'usa')
+        self.assertEqual(len(records), 5186)
+        self.assertEqual(sum(len(r.references) for r in records), 6006)
+
+    def test_original_japan_static_index_and_token_11(self):
+        path = os.environ.get('GOEMON_JAPAN_DECOMPRESSED')
+        if not path:
+            self.skipTest('Set GOEMON_JAPAN_DECOMPRESSED to original 32 MiB image')
+        image = story.load_verified_image(path, 'japan_0')
+        records = story.index_image(image, 'japan_0')
+        self.assertEqual(len(records), 5039)
+        self.assertEqual(sum(len(r.references) for r in records), 5694)
+        target = next(a for a in records if a.resource_id == 97 and
+                      a.text_offset == 0x2B60)
+        self.assertEqual(target.tokens, (16, 303, 59, 11, -60))
+        self.assertEqual(target.references, (0x73FC,))
+        self.assertEqual(target.decompressed_text_offset, 0x75A140)
 
 
 if __name__ == '__main__':

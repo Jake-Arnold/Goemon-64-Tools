@@ -53,7 +53,8 @@ JP_KANA_HYPOTHESIS = {
 }
 JP_UNOBSERVED_KANA_IDS = frozenset((138, 155, 171))
 assert len(JP_KANA_HYPOTHESIS) == 160
-assert sorted(JP_KANA_HYPOTHESIS) == list(range(14, 174))assert len(set(JP_KANA_HYPOTHESIS.values())) == 160
+assert sorted(JP_KANA_HYPOTHESIS) == list(range(14, 174))
+assert len(set(JP_KANA_HYPOTHESIS.values())) == 160
 
 JP_CONFIRMED_GLYPHS = {
     292: '【', 293: '】', 99: 'カ', 95: 'イ',
