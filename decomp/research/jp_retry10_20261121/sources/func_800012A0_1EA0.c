@@ -1,0 +1,1 @@
+extern char D_80072FC0_73BC0[];typedef struct{unsigned int w0,w1;} Gfx;extern Gfx* g_display_list_head_ptr;void func_800012A0_1EA0(void){Gfx*p=g_display_list_head_ptr++;p->w0=0x06000000;p->w1=(unsigned)D_80072FC0_73BC0;}

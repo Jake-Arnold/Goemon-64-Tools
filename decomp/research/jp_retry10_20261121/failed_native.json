@@ -1,0 +1,38 @@
+{
+  "status": "FAILED_NATIVE / RESEARCH_ONLY",
+  "remaining_original_asm_count": 6,
+  "unpromoted": [
+    {
+      "name": "func_08001454_734ED4",
+      "new_variant_attempts": 268,
+      "reason": "Boolean getter register scheduling, compiler sltu direct into v0 instead of original t6 + or v0 delay slot"
+    },
+    {
+      "name": "func_801D3FD4_6424C4",
+      "new_variant_attempts": 96,
+      "reason": "Two independent literal-one registers and signed flag load/store scheduling, no exact codegen from typed and volatile variants"
+    },
+    {
+      "name": "func_801E019C_59C16C",
+      "new_variant_attempts": 258,
+      "reason": "Only call-delay-slot opcode remains different: or a2,zero,zero vs addiu a2,zero,0"
+    },
+    {
+      "name": "func_80219328_6A0A28",
+      "new_variant_attempts": 180,
+      "reason": "Two observable halfword stores and temporaries t6/t8/t9 not recovered"
+    },
+    {
+      "name": "func_8021DB18_5D90A8",
+      "new_variant_attempts": 48,
+      "reason": "Independent load-immediate -1 scheduled after mflo instead of between div and mflo"
+    },
+    {
+      "name": "func_80222F18_68C608",
+      "new_variant_attempts": 180,
+      "reason": "Same two-observable-halfword-store allocation as +2 sibling"
+    }
+  ],
+  "warning": "Native isolated compiler/source tests do not grant C promotion; original ASM retained for all six.",
+  "blockers_separate": "__osSpSetStatus loses two HI16/LO16 relocations; not included in the ten historical retry targets."
+}

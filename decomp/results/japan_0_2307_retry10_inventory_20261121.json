@@ -1,0 +1,27 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "baseline_c": 2303,
+  "final_c": 2307,
+  "new_matching_c": 4,
+  "new_original_bytes": 160,
+  "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "elf_identities": 7376,
+  "semantic_relocations": 80747,
+  "remaining_original_asm": 5069,
+  "failed_asm_left": [
+    "func_08001454_734ED4",
+    "func_801D3FD4_6424C4",
+    "func_801E019C_59C16C",
+    "func_80219328_6A0A28",
+    "func_8021DB18_5D90A8",
+    "func_80222F18_68C608"
+  ],
+  "original_accepted_C_relocations": 12,
+  "new_sources_sha256": {
+    "func_800012A0_1EA0": "b5e04f23a732418f5526e2c8d3bfe8149cd0ad8a3c04a6a1ea4f26ebe2522248",
+    "func_800015B8_21B8": "7ec753520dcb664947aa0d80dc77209e2da339df06f031b450facece37d95110",
+    "func_80008648_9248": "a2645365d80ebb7ecb8ec0aa241c01913600ca8255d51f0a9aa0a2e8be88c4b2",
+    "func_08001410_70F980": "62349b3e5601497e62502289117fb9f012b44187fcbc2fbebb5769d15dc45718"
+  }
+}
