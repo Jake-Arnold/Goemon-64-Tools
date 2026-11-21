@@ -1,8 +1,18 @@
 # Goemon 64 matching-C — active continuation
 
-**Verified snapshot:** `chatgptweb/decomp` commit `553bc85e4f6e3a9be08b8e85c01768a82ad646be`, 21 November 2026. **Always fetch the live remote HEAD and latest regional proof before starting.** The numbers below are a dated snapshot, not a fixed acceptance target. Work on `chatgptweb/decomp`, never `main`.
+**Verified native G2 snapshot:** USA 1,965 / Japan 2,123 from original-ROM proof at `553bc85e4f6e3a9be08b8e85c01768a82ad646be`; latest reviewed documentation-only canonical HEAD `5c34335de6d450f0f196b4aa05c39bfc2e9b2aaa`, 21 November 2026. **Always fetch the live remote HEAD and latest regional proof before starting.** The numbers below are a dated snapshot, not a fixed acceptance target. Work on `chatgptweb/decomp`, never `main`.
 
 The **entire preceding 170,260-byte runbook, including every dated promotion, native mismatch, original VM observation, local diagnostic command and historical compiler experiment, is preserved unchanged** in [CONTINUE_HISTORY_20261121.md](CONTINUE_HISTORY_20261121.md) (SHA-256 `8e171ea8f9b8466b0bc525a59928c16f92d9c5fbc0e89b04502ddc291e13d2e5`). This file contains only current operational instructions. The root [PROGRESS.md](../PROGRESS.md) and individual proof/research ledgers retain the rest of the audit trail.
+
+## Active task registry and cross-chat resumption
+
+Use [the active curated task registry](tasks/README.md), [task records](tasks/registry.json) and
+[goemon-task-registry skill](../.agents/skills/goemon-task-registry/SKILL.md)
+for `list`, `resume GQ-...` and `checkpoint` requests. The registry
+holds pending and externally blocked work, plus completed maintenance
+proofs. The closed 100-task G64 roadmap is historical. Before acting,
+re-fetch the live decomp branch, pending PRs and original-address function
+ownership. Registry entries are planning metadata, not G2 acceptance.
 
 ## Latest complete original-ROM G2 results
 

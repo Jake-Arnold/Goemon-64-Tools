@@ -1,3 +1,28 @@
+## 21 November 2026 — Repair clean-checkout C-Right comparator fixtures before task-registry merge
+
+- Discovered that the seven ROM-free comparator tests referenced `mock_normal.jsonl` and `mock_held.jsonl`, but neither file was committed and the `.gitignore` excluded both. This made PR #154's newly appended local CI comparator step fail in a clean clone.
+- Added two small, **explicitly synthetic** (header `test_only_mock: true`) deterministic JSONL test fixtures with normal and held C-Right gate/resolver/allocator events. No ROM, original disassembly, opcode signatures, savestates, memory dumps or authentic gameplay data are included. Whitelisted only those two named fixtures in `.gitignore`; the normal comparator still rejects them unless `allow_mock=True`.
+- Test path and fixture schema reviewed against exact GitHub comparator implementation; full checkout `python3 -m decomp.local_ci` **not run** because a current authenticated checkout cannot be materialized in this container (GitHub DNS unavailable). The draft remains gated on that complete test.
+
+## 21 November 2026 — Correct merged-maintenance links in task-registry handoff
+
+- Updated `decomp/tasks/README.md` so it no longer describes PRs #149/#150 as drafts after their actual GitHub merges, and references merged #153. Clarified active/completed registry counts and the newly integrated CI task/comparator checks. No game code, accepted manifests, proof snapshots or `main` changes. Tests: content/provenance verified by GitHub connector; new full local CI NOT RUN because the complete GitHub source checkout is unavailable in this shell.
+
+## 21 November 2026 — Reconcile resumable registry with merged cleanup and extend local CI (draft #154)
+
+- **Changed:** Rebased draft #154 onto the accepted documentation-only decomp head after merged PRs #149, #150 and #153. Kept the new 8 KB operational CONTINUE handoff and its full historical archive, and integrated only the active-queue pointers rather than restoring the superseded 170 KB runbook. Preserved the closed G64 plan removal and existing updated agent/skills instructions.
+- **Queue:** Updated the 13-task registry to reflect 11 active tasks and two completed maintenance items (#149/#150), including exact merge-commit proof URLs; no false C promotion. Current verified native count remains USA 1,965 C / 84,648 bytes, Japan 2,123 C / 112,336 bytes.
+- **CI:** Added mandatory registry schema validation and ROM-independent C-Right comparator tests to *both* quick/full local CI plans, appending the checks so earlier host-sanitizer fixture positions remain intact. Extended the local CI orchestration tests for 5 quick and 32 full steps.
+- **Tests executed here:** Isolated copy of the live PR #154 JSON validation function passed 2/2 unittest methods including malformed ID/SHA/enum/conflict test cases. This is **not** a full branch test. Existing PR #154 earlier separately reported 7 task-registry and 7 comparator unit cases passing. Fresh combined `python3 -m decomp.local_ci`, native original-ROM, ELF, semantic relocation and gameplay tests **not run** in this session, because the complete current GitHub checkout cannot be materialized in the shell (DNS unavailable).
+- **Next:** Keep #154 draft until its actual latest-checkout full local CI passes; only then merge into `chatgptweb/decomp`. No `main` changes or source/ROM/proof deletion.
+
+## 21 November 2026 — resumable cross-chat task queue and safe C-Right trace handoff (PR; no C promotion)
+
+- Added a **curated 13-task, branch-specific** `decomp/tasks/registry.json` snapshot against `chatgptweb/decomp` HEAD `553bc85e4f6e3a9be08b8e85c01768a82ad646be`. It includes Japanese C-Right real Project64 trace blocked on savestate access, normal-vs-held task allocator research, the 69/99 Japanese stage initializer, the four and two residual USA task-function groups, the 344-byte scheduler executor, two Japan relocation-sensitive C candidates, old Mini Ebisumaru/233-USA research needing dedupe and rebase, Bomb Text Skip, and draft cleanup PRs #149/#150. Historical accepted JP scheduler15/scheduler17 and USA insertion wrappers are explicitly excluded from the pending candidates.
+- Added `decomp.task_registry` ROM-free `list`, `show`, `resume`, `validate`, `fingerprint` and guarded `checkpoint` commands; unit-tested ID/conflict/schema validation, blocker presentation, stale SHA refusal, immutable-ish checkpoint history and prohibition on CLI auto-marking tasks completed. `AGENTS.md`, `decomp/CONTINUE.md` and new `goemon-task-registry` repository skill make pending-task discovery the default entry point. Each task carries acceptance evidence, blockers and collision warnings; agent must re-fetch live HEAD and accepted source owners before any promotion.
+- Preserved a sanitized read-only Project64 C-Right live experiment protocol and ROM-independent comparator/tests in `decomp/tasks/cright_live_trace/`. The original user-supplied recorder scripts carry literal Japanese opcode signatures and are **not published in Git**. No real emulator capture or game-memory writes were performed. Original 20 Nov live-tracer kit SHA-256 is recorded by reference in the task handoff; no private ROM, ASM, game memory or savestate is committed.
+- **Tests actually run locally on the new files:** `python3 -m unittest decomp.test_task_registry -v` **7/7 PASS**, and `python3 -m unittest discover -s decomp/tasks/cright_live_trace -p test_comparator.py -v` **7/7 PASS**; original full trace kit Node/Python mock suite also passed in this session prior to sanitizing this Git subset. These are ROM-free/local source tests only. A complete current canonical repository checkout was unavailable to the local shell (GitHub DNS failed), so full `python3 -m decomp.local_ci` and any native original-ROM G2/ELF/relocation/emulator checks were **NOT RUN** for this PR. No matching-C manifests, accepted counts, verifier outputs or `main` files changed. Publish via topic branch and draft PR; merge only after review.
+
 ## 21 November 2026 — Retention-safe decomp continuation and proof/branch audit (documentation only; draft PR)
 
 - Live canonical baseline authenticated against the uploaded `chatgptweb/decomp` checkout at `553bc85e4f6e3a9be08b8e85c01768a82ad646be`, USA **1,965 C / 84,648 bytes / 5,398 ASM** and Japan **2,123 C / 112,336 bytes / 5,253 ASM**; no new function acceptance claims.
@@ -3313,3 +3338,11 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 ```
 
 **Commit rule:** Every functional/documentation change must update this file in the same commit. Push the commit to `main` (or push a feature branch and merge it) as part of completing the change; never claim a push succeeded without checking GitHub.
+
+### 2026-11-21 — Guard draft task registry against malformed JSON value types
+
+- **Changed:** On draft PR #154, make `decomp.task_registry.validate` report schema errors for non-object roots/tasks and non-string/unhashable SHA, ID, enum and conflict values. Add ROM-free malformed-input regression cases and verify the CLI returns an error instead of a Python traceback.
+- **Why:** A malformed hand-edited registry could previously raise `TypeError` or `AttributeError` during validation rather than fail closed, even though the registry is meant to be a safe resumable task entry point.
+- **Tested:** Reviewed the exact remote source and added deterministic unittest coverage. **Tests not executed in this session**: the full authenticated GitHub source checkout is unavailable through the local shell (GitHub DNS resolution fails); the draft remains pending full `python3 -m decomp.local_ci` on a complete checkout. No original-ROM/native G2/gameplay testing claimed.
+- **Remaining:** Review and run full ROM-free CI with the combined current checkout before merging #154. Native C ownership and accepted manifests are unchanged.
+- **Next:** Rebase #154 against merged #149/#150/#153 as needed and repeat the full local CI gate.

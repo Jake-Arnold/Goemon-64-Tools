@@ -1,0 +1,7 @@
+__pycache__/
+mock_*.jsonl
+!mock_normal.jsonl
+!mock_held.jsonl
+mock_report.*
+Goemon_CRight_*.jsonl
+Goemon_CRight_live_comparison.*
