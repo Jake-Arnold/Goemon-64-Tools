@@ -38,6 +38,7 @@ from practice.dialogue_dnd import make_toolkit_root
 from practice.value_freezes_ui import ValueFreezesMixin
 from practice.damage_event_capture_ui import DamageEventCaptureMixin
 from practice.ui_extension import InspectorMixin
+from practice.pj64_debugger_ui import PJ64DebuggerMixin
 from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.region_session import active_session
@@ -146,7 +147,7 @@ def configure_window_branding(root: tk.Tk) -> None:
         pass
 
 
-class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, InspectorMixin):
+class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, JapaneseFieldsUi, DamageEventCaptureMixin, ValueFreezesMixin, StoryProgressMixin, EventSessionsMixin, ValueSearchMixin, StateDiscoveryMixin, UnlocksMixin, PJ64DebuggerMixin, InspectorMixin):
     def __init__(self, root, args):
         args = apply_access_mode(args)
         self.root, self.args = root, args
@@ -471,6 +472,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         self._arrange_dashboard(1220)
         self.build_inspector_tabs(notebook)
         self.build_value_freezes_tab(notebook)
+        self.build_pj64_debugger_tab(notebook)
         # Shared research workspace: preserve all scanners and event algorithms
         # while consolidating their formerly scattered top-level navigation.
         discovery = ttk.Frame(notebook, padding=7)
@@ -2185,6 +2187,9 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
 
     def tick(self):
         session = active_session(self)
+        # Poll guest RAM independently of gameplay player/task availability.
+        # The debugger uses the selected USA/Japan region session, never a stale reader.
+        self.poll_pj64_debugger(time.monotonic())
         if session.region == 'japan':
             self._watch_japan_process_restart(time.monotonic())
         if session.region == 'japan' and session.connected:

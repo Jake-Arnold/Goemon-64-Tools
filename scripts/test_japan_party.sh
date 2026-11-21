@@ -44,6 +44,8 @@ esac
   tests.test_japan_auto_attach \
   tests.test_japan_pid_restart_watch \
   tests.test_gui_smoke_runner \
+  tests.test_pj64_debugger \
+  tests.test_scripted_trace \
   tests.test_toolkit_version \
   tests.test_updater \
   tests.test_linux_launcher \
@@ -142,6 +144,8 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_model_research_ui \
     tests.test_model_object_probe \
     tests.test_japan_recomp_write_ui \
+    tests.test_pj64_debugger \
+    tests.test_scripted_trace \
     -v
 elif [[ -n "${DISPLAY:-}" ]]; then
   timeout --signal=TERM --kill-after=5s "${GUI_TIMEOUT_SECONDS}s" "${PYTHON}" -m tests.gui_smoke_runner \
@@ -176,6 +180,8 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_model_research_ui \
     tests.test_model_object_probe \
     tests.test_japan_recomp_write_ui \
+    tests.test_pj64_debugger \
+    tests.test_scripted_trace \
     -v
 else
   echo 'ERROR: Tk smoke tests need xvfb-run (sudo apt install xvfb xauth)' >&2

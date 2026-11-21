@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-21 — v0.11.80: PJ64-style debugger and scripted RAM tracing on toolkit main
+
+- **Correct baseline:** Reconstructed `toolkit/pj64-debugger` from toolkit `main` (`1a58d3c`, v0.11.79) instead of merging or cherry-picking the divergent decomp branch. The old feature tip (`88760ff`) is preserved as `archive/pj64-debugger-decomp-base-20261121`. This branch contains only reviewed debugger/tracing modules, tests, docs, main toolkit integration and release metadata; no decomp source changes or ROMs.
+- **Implementation:** New Debugger top-level tab: validated RDRAM viewer, big-endian hex/ASCII pages, static MIPS decoder, bounded exact byte search, guarded compare-before-write/readback, change watches, and read-only scriptable trace sessions with typed watches, edge-triggered comparisons, bit transitions, before/after capture, event marking and JSON/JSONL export. No CPU stepping, genuine breakpoints, native C function hooks or auto-gameplay are claimed.
+- **USA/Japan separation:** Uses canonical `practice.region_session.active_session` and invalidates watches/recording on region/PID/reader change. USA-only presets resolve stable IDs through `practice.address_registry` and fail closed on Japanese sessions. No inferred USA↔Japan address translation or new writable mapping is introduced. Existing toolkit features and `Run-Linux.sh` are preserved.
+- **Tests actually run:** `python3 -m py_compile` on ported Python files PASS; `xvfb-run -a python3 -m unittest tests.test_pj64_debugger tests.test_scripted_trace -q` **24/24 PASS** in an isolated source overlay with minimal fixtures for the existing theme, registry and region-session modules. Includes region/PID isolation, USA preset rejection on Japan, synthetic memory read/write and UI smoke. Integrated main checkout, full regression suite, and live native game not run locally because GitHub remote is only reachable through the connected connector; added these tests to `scripts/test_japan_party.sh` for Linux CI. Confirm remote CI separately before claiming its results.
+- **Next:** Verify actual USA/Japan game attachment, trace timing and performance; CPU-level native function hooks require separately instrumenting the native game runtime.
+
 ## 2026-11-20 — v0.11.79 toolkit address metadata consolidation
 
 - **Source selection:** Compared the two independent `toolkit/address-metadata-sync-*` branches. Both contain the same 549 audited address records and 25 supplementary discoveries; their JSON contents differ only in source-revision references on twelve catalogue and sixteen discoveries entries. Selected the newer branch (`6371c7f37bc455a174c20d83032a79cf2756cfc5`, 20 Nov 07:31Z) rather than merging both divergent imports into main.

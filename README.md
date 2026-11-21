@@ -1,3 +1,13 @@
+# Goemon Speedrun Tools v0.11.80 — PJ64 Memory Debugger and Scripted Tracer
+
+## v0.11.80 — debugger and conditional trace sessions on canonical toolkit main
+
+The experimental **Debugger** tab now combines a PJ64-style N64 guest-RAM hex/ASCII viewer, exact byte search, static MIPS disassembly, guarded read/compare/write and polling change watches with a declarative JSON **Scripted tracer**. Tracing supports typed 1–8-byte watches, change/condition/bit triggers, bounded before/after observation windows, manual annotations, and JSON/JSONL evidence export. Scripts never execute Python, run host commands, alter game memory or claim CPU-register/breakpoint support.
+
+This feature is based on canonical toolkit `main`, not on the independent decomp baseline. It uses the selected `active_session` reader (USA `mem` / Japan `jp_rdram`) and resets observations when the region, PID or memory reader changes. Built-in dialogue and scene presets resolve original-USA addresses from the canonical registry and cannot be started while Japan is selected; custom regional scripts remain possible. The existing `Run-Linux.sh` launcher and toolkit updater are preserved from `main`.
+
+**Verification:** 24 isolated synthetic/Tk debugger-tracer tests passed under Xvfb. Full merged toolkit regression and real-game sampling have not yet been verified. See `docs/PJ64_DEBUGGER.md` and `docs/SCRIPTED_TRACING.md`.
+
 # Goemon Speedrun Tools v0.11.79 — Consolidated Address Catalogue
 
 ## v0.11.79 — reviewed cross-project address metadata, no decomp source merge
