@@ -1,3 +1,9 @@
+## 21 November 2026 — Repair clean-checkout C-Right comparator fixtures before task-registry merge
+
+- Discovered that the seven ROM-free comparator tests referenced `mock_normal.jsonl` and `mock_held.jsonl`, but neither file was committed and the `.gitignore` excluded both. This made PR #154's newly appended local CI comparator step fail in a clean clone.
+- Added two small, **explicitly synthetic** (header `test_only_mock: true`) deterministic JSONL test fixtures with normal and held C-Right gate/resolver/allocator events. No ROM, original disassembly, opcode signatures, savestates, memory dumps or authentic gameplay data are included. Whitelisted only those two named fixtures in `.gitignore`; the normal comparator still rejects them unless `allow_mock=True`.
+- Test path and fixture schema reviewed against exact GitHub comparator implementation; full checkout `python3 -m decomp.local_ci` **not run** because a current authenticated checkout cannot be materialized in this container (GitHub DNS unavailable). The draft remains gated on that complete test.
+
 ## 21 November 2026 — Correct merged-maintenance links in task-registry handoff
 
 - Updated `decomp/tasks/README.md` so it no longer describes PRs #149/#150 as drafts after their actual GitHub merges, and references merged #153. Clarified active/completed registry counts and the newly integrated CI task/comparator checks. No game code, accepted manifests, proof snapshots or `main` changes. Tests: content/provenance verified by GitHub connector; new full local CI NOT RUN because the complete GitHub source checkout is unavailable in this shell.

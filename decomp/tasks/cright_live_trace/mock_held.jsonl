@@ -1,0 +1,7 @@
+{"schema":"goemon-cright-live-trace-v1","run":"held","seq":0,"kind":"header","test_only_mock":true,"expected_original_expanded_rom_sha1":"6f8745fecc3a5e7d4918c7a73353eb0726116ded","main_signature_at_script_start":"SYNTHETIC_NO_ROM"}
+{"schema":"goemon-cright-live-trace-v1","run":"held","seq":1,"kind":"exec","event":"stage_init_entry"}
+{"schema":"goemon-cright-live-trace-v1","run":"held","seq":2,"kind":"exec","event":"cright_gate","regs":{"t2":"0x00000001"}}
+{"schema":"goemon-cright-live-trace-v1","run":"held","seq":3,"kind":"exec","event":"resolver_call","regs":{"sp":"0x80402000","a0":"0x80300200","a1":"0x00000001"}}
+{"schema":"goemon-cright-live-trace-v1","run":"held","seq":4,"kind":"exec","event":"resolver_result","regs":{"sp":"0x80402000","v0":"0x80301000"}}
+{"schema":"goemon-cright-live-trace-v1","run":"held","seq":5,"kind":"exec","event":"allocator_call","regs":{"sp":"0x80402000","a0":"0x80301000"},"stage":{"p90":"0x80301000","p94":"0x80301000","p98":"0x80301000","p9c":"0x80301000","pa0":"0x80301000","pa4":"0x80301000","pa8":"0x80301000","pac":"0x80301000","buttons":"0x00000001"}}
+{"schema":"goemon-cright-live-trace-v1","run":"held","seq":6,"kind":"footer"}
