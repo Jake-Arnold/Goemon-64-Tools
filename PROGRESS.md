@@ -1,3 +1,10 @@
+## 21 November 2026 — Japanese donor4 JP2,282 published and remotely verified
+
+- **Implementation published:** [`0d438041096567c85b315eb284ea9b548b9f8491`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/0d438041096567c85b315eb284ea9b548b9f8491) on `chatgptweb/decomp`; the 12 new source/proof/test files and three project metadata files were published together, and source/proof Git blob identities remotely re-fetched. The immediately following local-only G2 report is historical.
+- **Verified Japanese C now 2,282 functions**, **122,124 original instruction bytes**, **5,094 ASM remaining**, an increase of four C functions / 120 bytes over JP2,278. Expanded/retail original Japanese ROMs, all 7,376 ELF identities and all 80,747 semantic relocations passed local native G2 before the source publication.
+- **Full CI:** 344 decomp tests (3 skipped), 349 verifier/ledger tests (4 skipped) and configured host sanitizer suites PASS. Four donor4 source/hash/negative tests PASS, with actual-C GCC ASan/UBSan 1,000-case host fixtures. Emulator gameplay NOT RUN. The failing hardware SDK setter remains original ASM due to missing relocations.
+- **Status:** `PUBLISHED_REMOTE_VERIFIED`; see [original native G2 evidence](decomp/results/japan_0_2282_donor4_g2_20261121.json) and [publication ledger](decomp/results/japan_0_2282_donor4_publication_20261121.json). No USA or `main` changes.
+
 ## 21 November 2026 — Japanese donor-template second native wave, 4 original C (PASSED_G2_LOCAL; publication pending)
 
 - **New exact matching C:** `alSynDelete`, `func_800079EC_85EC`, `func_801D6CE0_6451D0`, `func_801FF4B8_5BB488`; **4 functions / 120 original code bytes**. Japanese original-address C **2,278 → 2,282**, accepted original instruction bytes **122,004 → 122,124**, remaining original ASM **5,098 → 5,094**.
