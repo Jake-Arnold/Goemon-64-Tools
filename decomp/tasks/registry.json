@@ -1,7 +1,7 @@
 {
   "format": "goemon-task-registry-v1",
   "branch": "chatgptweb/decomp",
-  "reconciled_head": "553bc85e4f6e3a9be08b8e85c01768a82ad646be",
+  "reconciled_head": "5c34335de6d450f0f196b4aa05c39bfc2e9b2aaa",
   "last_reviewed": "2026-11-21",
   "policy": "Curated actionable handoff list; GitHub issues, live manifests and verified native G2 reports supersede stale task details. Tasks are NOT proof of accepted C or authorization for unsafe gameplay writes.",
   "tasks": [
@@ -276,16 +276,16 @@
     {
       "id": "GQ-MAINT-001",
       "title": "Review retired G64-001..100 task-ledger PR #149",
-      "status": "pending",
+      "status": "done",
       "priority": 2,
       "workstream": "maintenance",
       "region": "none",
-      "proof_tier": "DRAFT_PR / LOCAL_CI_REPORTED",
-      "summary": "Draft #149 moves closed G64-001..100 source plan to history and decouples CLI/CI from obsolete plan. It modifies agent/plan docs and PROGRESS, potentially overlapping task-registry instructions.",
+      "proof_tier": "MERGED_DOCS_OR_ROMFREE_INFRA (not native G2)",
+      "summary": "Review complete: PR #149 merged into chatgptweb/decomp on 21 November 2026. Historical work preserved; no new native C acceptance.",
       "requires": [
         "review current PR #149 base/head and changed-file diff against current chatgptweb/decomp"
       ],
-      "next_step": "Review and rebase PR #149 after task-registry PR integration, preserve task registry and discoverability references. Keep old plan archived, not active; never merge into main.",
+      "next_step": "Completed; open a new task if follow-up verification or maintenance is needed.",
       "acceptance": "No obsolete-task dependency; no erased evidence; changed paths reviewed; full relevant ROM-free CI for actual combined code.",
       "evidence": [
         "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/149"
@@ -293,22 +293,32 @@
       "conflicts_with": [
         "GQ-MAINT-002"
       ],
-      "history": [],
-      "last_reviewed": "2026-11-21"
+      "history": [
+        {
+          "at": "2026-11-21",
+          "status": "done",
+          "note": "PR #149 merged to chatgptweb/decomp; documentation/ROM-free changes only",
+          "evidence": [
+            "https://github.com/Jake-Arnold/Goemon-64-Tools/commit/fbbeff5bf4d01e745e701d0af570f8c9a759b070"
+          ]
+        }
+      ],
+      "last_reviewed": "2026-11-21",
+      "completion_proof": "https://github.com/Jake-Arnold/Goemon-64-Tools/commit/fbbeff5bf4d01e745e701d0af570f8c9a759b070"
     },
     {
       "id": "GQ-MAINT-002",
       "title": "Review current-documentation cleanup PR #150",
-      "status": "pending",
+      "status": "done",
       "priority": 2,
       "workstream": "maintenance",
       "region": "none",
-      "proof_tier": "DRAFT_PR / LOCAL_CI_REPORTED",
-      "summary": "Draft #150 fixes misleading historical README and inventory headlines; touches docs and PROGRESS with a future merge overlap. Not a game-code promotion.",
+      "proof_tier": "MERGED_DOCS_OR_ROMFREE_INFRA (not native G2)",
+      "summary": "Review complete: PR #150 merged into chatgptweb/decomp on 21 November 2026. Historical work preserved; no new native C acceptance.",
       "requires": [
         "review #150 target and diff; compare most recent published counts"
       ],
-      "next_step": "Rebase/merge independently of #149 and this new task-registry PR; retain registry links in decomp/CONTINUE.md, do not replace authoritative newer native proof counts with stale snapshots.",
+      "next_step": "Completed; open a new task if follow-up verification or maintenance is needed.",
       "acceptance": "Current status/count provenance preserved; links from AGENTS and CONTINUE intact; no unverified G2 claims.",
       "evidence": [
         "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/150"
@@ -316,8 +326,18 @@
       "conflicts_with": [
         "GQ-MAINT-001"
       ],
-      "history": [],
-      "last_reviewed": "2026-11-21"
+      "history": [
+        {
+          "at": "2026-11-21",
+          "status": "done",
+          "note": "PR #150 merged to chatgptweb/decomp; documentation/ROM-free changes only",
+          "evidence": [
+            "https://github.com/Jake-Arnold/Goemon-64-Tools/commit/605ce2ccc6742e09ca2b5b016834940bfcd88450"
+          ]
+        }
+      ],
+      "last_reviewed": "2026-11-21",
+      "completion_proof": "https://github.com/Jake-Arnold/Goemon-64-Tools/commit/605ce2ccc6742e09ca2b5b016834940bfcd88450"
     }
   ]
 }

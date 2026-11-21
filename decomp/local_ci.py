@@ -18,7 +18,7 @@ def build_steps(host_binary: Path, *, quick: bool = False):
     steps = [
         ("Decomp Python tests", [sys.executable, "-m", "unittest", "discover", "-s", "decomp", "-p", "test_*.py", "-q"]),
         ("Verifier / ledger Python tests", [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_decomp_*.py", "-q"]),
-        ("Task and evidence validation", [sys.executable, "-m", "decomp.skill_context", "--validate"]),
+        ("Canonical proof/inventory validation", [sys.executable, "-m", "decomp.skill_context", "--validate"]),
     ]
     if not quick:
         compiler = shlex.split(os.environ.get("CC", "cc"))
@@ -254,6 +254,14 @@ def build_steps(host_binary: Path, *, quick: bool = False):
               '-o',str(binary)]),
           ('Native100 original-C 1000-case host sanitizer test',[str(binary)])
         ])
+    # The resumable queue and read-only C-Right comparator belong to the
+    # same ROM-free acceptance gate as the existing Python/ledger checks.
+    # Append them, preserving existing native-host fixture ordering.
+    steps.extend([
+        ("Resumable task registry validation", [sys.executable, "-m", "decomp.task_registry", "validate"]),
+        ("C-Right live-trace comparator tests", [sys.executable, "-m", "unittest", "discover",
+         "-s", "decomp/tasks/cright_live_trace", "-p", "test_comparator.py", "-q"]),
+    ])
     return steps
 
 

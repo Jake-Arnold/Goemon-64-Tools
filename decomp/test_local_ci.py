@@ -13,8 +13,13 @@ class LocalCITests(unittest.TestCase):
     def test_default_runs_python_validation_then_host_sanitizers(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host")
-        self.assertEqual(len(steps), 30)
+        self.assertEqual(len(steps), 32)
         self.assertIn("Native100 original-C 1000-case host sanitizer test", [name for name, _ in steps])
+        self.assertEqual(steps[30][0], "Resumable task registry validation")
+        self.assertEqual(steps[30][1][-2:], ["decomp.task_registry", "validate"])
+        self.assertEqual(steps[31][0], "C-Right live-trace comparator tests")
+        self.assertIn("decomp/tasks/cright_live_trace", steps[31][1])
+
         self.assertTrue(any(path.endswith("test_actual109.c") for path in steps[11][1]))
         self.assertEqual(sum(path.endswith(".c") and "usa_wide109_promotion_20261118/sources" in path for path in steps[11][1]), 68)
         self.assertEqual(len(steps[12][1]), 1)
@@ -61,7 +66,7 @@ class LocalCITests(unittest.TestCase):
     def test_quick_runs_all_python_gates_without_native_compile(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host", quick=True)
-        self.assertEqual(len(steps), 3)
+        self.assertEqual(len(steps), 5)
         self.assertTrue(all("cc" not in step[0].lower() for step in steps))
 
     @patch.object(local_ci.subprocess, "run")
@@ -74,7 +79,7 @@ class LocalCITests(unittest.TestCase):
     def test_success_is_not_stealth_full_rom_proof(self, run):
         run.return_value = subprocess.CompletedProcess([], 0)
         self.assertEqual(local_ci.main(["--quick"]), 0)
-        self.assertEqual(run.call_count, 3)
+        self.assertEqual(run.call_count, 5)
 
     @patch.object(local_ci.subprocess, "run", side_effect=FileNotFoundError("compiler missing"))
     def test_missing_executable_fails(self, run):

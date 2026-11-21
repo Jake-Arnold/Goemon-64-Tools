@@ -2,20 +2,22 @@
 
 Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C core).
 
-## Active resumable Goemon task queue (mandatory on task-list/resume requests)
+## Active resumable Goemon task queue
 
-When the user asks **which Goemon tasks are pending**, requests a task list,
-selects a queued task by ID, or asks to pause/checkpoint work for another chat,
-read [decomp/tasks/README.md](decomp/tasks/README.md),
-[decomp/tasks/registry.json](decomp/tasks/registry.json), and
-[goemon-task-registry](.agents/skills/goemon-task-registry/SKILL.md)
-**before** the historical G64-001–100 plan or dated issue descriptions.
-Run `python3 -m decomp.task_registry list` and
-`python3 -m decomp.task_registry resume GQ-...` when a complete checkout exists.
-Include blocked gameplay, rebase and input tasks in pending results. Re-fetch live
-`chatgptweb/decomp` and current issues/PRs; dedupe accepted original function
-identities before selecting/promoting a C batch. A registry status is planning
-metadata, not native G2 proof. Keep `PROGRESS.md` in each task edit commit.
+When asked to list pending Goemon work, resume a queued task or checkpoint
+research for another chat, consult [decomp/tasks/README.md](decomp/tasks/README.md),
+[decomp/tasks/registry.json](decomp/tasks/registry.json) and the
+[goemon-task-registry skill](.agents/skills/goemon-task-registry/SKILL.md)
+before any historical G64-001–100 plans. Run
+`python3 -m decomp.task_registry list` or
+`python3 -m decomp.task_registry resume GQ-...` in a complete checkout.
+The registry includes externally blocked, missing-source and rebase tasks;
+completed tasks are excluded from the default active listing. Re-fetch live
+`chatgptweb/decomp`, current issues/PRs and original-address ownership
+before decomp work. Registry metadata is never native G2 proof; all function
+promotions still require original-ROM, ELF, relocations, strict inventory and
+full CI. Update `PROGRESS.md` in the same commit.
+
 
 1. For **every change**, update root `PROGRESS.md` with date, summary, reason, tests, limitations and next step. Include `PROGRESS.md` in the same Git commit as implementation changes.
 2. Push each completed commit to the connected GitHub repository `Jake-Arnold/Goemon-64-Tools`; check the remote commit SHA and report truthfully. If credentials/network/repository access are unavailable, provide the local commit or patch and explicitly say that the push did not occur. Do not simulate a push.
@@ -79,12 +81,12 @@ historical evidence and must not be treated as current instructions/counts.
 
 ## Codex project skills
 
-Use narrow repo-local skills in [.agents/skills/](.agents/skills/README.md). Start a G64 task with `python3 -m decomp.skill_context --task G64-NNN`, or check `--status`; request `--detail` only when needed. The helper reads checked-in results but never builds a ROM.
+Use narrow repo-local skills in [.agents/skills/](.agents/skills/README.md). Use `python3 -m decomp.skill_context --status` for the published canonical proof/inventory snapshot; it does not build a ROM. Historical G64 execution records remain research evidence, not an active 100-task scheduler.
 
 ## Local decomp CI (no GitHub Actions)
 
-Use `python3 -m decomp.local_ci` from any directory in the checkout for the ROM-free local decomp regression gate. It runs both decomp Python suites, validates the task/evidence ledger, and runs a GCC/Clang-compatible ASan/UBSan display-emitter host regression. `python3 -m decomp.local_ci --quick` skips the C sanitizer fixture when diagnosing Python-only failures; it is not the full local gate. These commands require no `.github/workflows`, Docker, GitHub Actions, or proprietary ROM. **Do not use a workflow-based Local CI runner for this repository.** Run additional task-specific host/sanitizer checks as necessary and record actual outcomes. This local gate is **not** original-address native IDO equality or a fresh full-ROM G2; those remain mandatory and separate for production C promotions.
+Use `python3 -m decomp.local_ci` from any directory in the checkout for the ROM-free local decomp regression gate. It runs both decomp Python suites, cross-validates canonical proof and inventory, and runs a GCC/Clang-compatible ASan/UBSan display-emitter host regression. `python3 -m decomp.local_ci --quick` skips the C sanitizer fixture when diagnosing Python-only failures; it is not the full local gate. These commands require no `.github/workflows`, Docker, GitHub Actions, or proprietary ROM. **Do not use a workflow-based Local CI runner for this repository.** Run additional task-specific host/sanitizer checks as necessary and record actual outcomes. This local gate is **not** original-address native IDO equality or a fresh full-ROM G2; those remain mandatory and separate for production C promotions.
 
-## Decomp architect v2 (current)
+## Decomp target selection (current)
 
-Use [decomp/plans/EXECUTION_STRATEGY_V2.md](decomp/plans/EXECUTION_STRATEGY_V2.md) and each pending G64 task's `architect_override_v2` for priority, finite codegen budgets and task-specific stop rules. Do not restart the plan, repeat completed promotions, or relax any full-ROM verification. Task briefs include the new override.
+The G64-001–100 execution plan was closed on 14 November 2026 and is retired from active scheduling. Choose work from the current remaining-assembly inventory, live `decomp/CONTINUE.md`, unpromoted native evidence and verified source ownership. Follow [decomp/plans/EXECUTOR_PROTOCOL.md](decomp/plans/EXECUTOR_PROTOCOL.md) for bounded attempts and mandatory full-ROM G2 acceptance. Historical G64 research ledgers remain available in `decomp/plans/execution/`; do not infer current blockers or matching-C counts from those old task statuses.

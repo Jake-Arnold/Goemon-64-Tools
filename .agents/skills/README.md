@@ -1,17 +1,16 @@
 # Goemon repository-local agent skills
 
-Repository-local, task-specific skills are discoverable under `.agents/skills/<name>/SKILL.md`. Only skill metadata is loaded at discovery. Load the body of one relevant skill and an optional second specialist, not all 21.
+22 repository-local, task-specific skills are discoverable under `.agents/skills/<name>/SKILL.md`. Only skill metadata is loaded at discovery. Load the body of one relevant skill and an optional second specialist, not all 23.
 
-For active pending work use `python3 -m decomp.task_registry list` and `resume GQ-...`. The historical G64-001–100 task context is not the current queue.
+For active pending work use `python3 -m decomp.task_registry list` or `resume GQ-...`; `checkpoint` records resumable work without claiming G2. The closed G64-001–100 plan is historical, and `skill_context --status` remains a ROM-free snapshot view.
 
-Use `python3 -m decomp.skill_context --status` and `python3 -m decomp.skill_context --task G64-031`; `--detail` loads a full task packet, `--phase 4` shows only a phase, and `--validate` checks stored-plan/report consistency without building a ROM.
+Use `python3 -m decomp.skill_context --status` for the published canonical proof/inventory snapshot. `--validate` checks those two reports without building a ROM. The retired G64-001–100 plan no longer supplies live task packets.
 
 | Skill | Trigger |
 |---|---|
-| [goemon-task-registry](goemon-task-registry/SKILL.md) | **Primary intake** for pending task lists, cross-chat checkpoints, blocked gameplay testing and conflicting native-C promotion batches. |
+| [goemon-task-registry](goemon-task-registry/SKILL.md) | **Primary intake** for pending task lists, cross-chat checkpoints, blocked gameplay and conflicting native-C batches. |
 | [goemon-autonomous-decomp](goemon-autonomous-decomp/SKILL.md) | Use to coordinate a complete original-ROM C discovery → native verification → formal promotion session in ChatGPT or Codex. |
 | [goemon-github-source-bridge](goemon-github-source-bridge/SKILL.md) | Use to recover source when GitHub connector access works but Linux cloning or filesystem transfer fails. |
-| [goemon-task-brief](goemon-task-brief/SKILL.md) | Use to start or resume a G64-001 to G64-100 task with minimal token cost and current evidence. |
 | [goemon-target-triage](goemon-target-triage/SKILL.md) | Use to choose or prioritize the next Goemon assembly function instead of wasting variants on exhausted candidates. |
 | [goemon-original-mips](goemon-original-mips/SKILL.md) | Use to reconstruct original Goemon MIPS control flow, callers, branch-likely delay slots, data references and return state. |
 | [goemon-abi-layout](goemon-abi-layout/SKILL.md) | Use to recover Goemon o32 ABI, original struct offsets, signedness, endian widths, aliasing and callback-mutated pointers. |

@@ -1,69 +1,50 @@
 # Whole-build function inventory
 
-**Current proof snapshot: 2026-11-16.** Pinned upstream revision:
-`7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. Baseline and candidate
-reproduce the same decompressed 33,554,432-byte USA ROM, SHA-1
-`6ea0ed71032ce08fc2745f412d84936382197494`. Full native verification
-passed **210/210** exact C function claims and **13,336 instruction bytes**.
-The [current metadata report](results/inventory.json) records ELF fingerprints,
-source tool identity, and the immutable original function-entry map.
+This document explains the stored USA ELF inventory and the later 21 November 2026 full-G2 promotions, including the latest Japan-only **published** result at 2,123 matching C. **This is not a replacement for fresh native proof.** Read [CONTINUE.md](CONTINUE.md) and [the latest acceptance report](docs/GOEMON_START5_G2_PROMOTION_20261121.md) before using any figures.
 
-| Inventory | Entries |
-| --- | ---: |
-| Identified function entries across the configured USA ROM | 7,376 |
-| Matching C already in pinned upstream | 13 |
-| Newly matching C in this toolkit's decomp track | 210 |
-| Matching C combined | **223** |
-| Still marked as assembly | **7,153** |
+## Versioned counts
 
-The 50 newly promoted `file_11` functions comprise 13 native
-character-switch routines and 37 empty actor callbacks. Two split-generated
-four-byte `nop` labels were explicitly restored to their original
-non-function symbol status before the inventory was accepted. The 180-byte
-character selector is still owned by assembly.
+| Measure | Stored USA inventory | Published USA G2 | Latest Japan-0 published G2 |
+| --- | ---: | ---: | ---: |
+| Newly matching original-address C | **1,956** | **1,965** | **2,123** |
+| Original instruction bytes from reconstructed C | 83,940 | **84,648** | **112,336** |
+| Remaining original assembly entries | 5,407 | **5,398** | **5,253** |
+| Original positive-sized ELF function entries | 7,376 | 7,376 | 7,376 |
+| Expanded ROM bytes matched | 33,554,432 | 33,554,432 | 33,554,432 |
 
-## What is counted
+**Stored canonical USA inventory:** [results/inventory.json](results/inventory.json) and [results/combined.json](results/combined.json), from the 20 November 1,956-function batch. The inventory also records **13 pre-existing upstream unmarked C functions**, meaning `1,956 + 13 = 1,969` total unmarked positive-size ELF entries and `1,969 + 5,407 = 7,376`.
 
-`inventory.py` reads the pinned baseline and candidate ELF symbol tables using
-MIPS readelf. It counts defined, positive-sized `STT_FUNC` entries. Their original
-names and entry addresses must agree between builds, and newly unmarked names
-must agree exactly with the matching manifest. It checks both complete ROM
-identities before producing a report. Objects, undefined/absolute symbols and
-data-only `.NON_MATCHING` markers do not become functions.
+**Later USA G2:** [five-function regional ledger](results/glitch_start5_2121jp_1958usa_g2_20261121.json) accepts **two new USA original-address C functions** (100 and 252 bytes), giving `1,958 + 13 = 1,971` unmarked entries at that historical checkpoint; the subsequently published scheduler/insertion batch accepts **seven more unique functions**, producing **1,965 new original C**, **1,978 total unmarked C** (including 13 upstream), and **5,398 remaining ASM**, so `1,978 + 5,398 = 7,376`. The scheduler native-G2 ledgers are [1962](results/usa_scheduler4_1962_g2_20261121.json), [1963](results/usa_scheduler5_1963_g2_20261121.json) and [1965](results/usa_scheduler6_1965_g2_20261121.json); the final report records `PASSED_G2_LOCAL` as the native replay status while GitHub source publication is established separately. The five-function report also accepts **three additional Japan-0** functions. Its local proof was subsequently published and remotely re-verified, as recorded in [PROGRESS.md](../PROGRESS.md). A later [Japan script-VM two-function original-ROM G2 report](results/japan_0_2123_vm_g2_20261121.json) adds **two more** functions (92 bytes), resulting in **2,123** matching C and **5,253** ASM. **This last increment is `PASSED_G2`, remotely published and re-verified**; do not conflate its status with the previous 2,121 published stage. The old stored `inventory.json` is **not manually rewritten**, because it represents an earlier authentic native build.
 
-The candidate exports **851 zero-sized switch labels** as function symbols for
-mixed C/assembly linking. They are excluded; a raw `FUNC` count would incorrectly
-report 8,227 entries. Overlay functions sharing a guest address remain separate
-entries, and positive-sized aliases are reported rather than silently merged.
-No positive-sized alias duplicates were found in this pinned inventory.
+**Region SHA-1:** expanded original USA `6ea0ed71032ce08fc2745f412d84936382197494`; expanded original Japan-0 `6f8745fecc3a5e7d4918c7a73353eb0726116ded`. The pinned upstream revision is `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`.
 
-Two retained routines have different ELF size metadata: `func_8003F6E8_402E8`
-is 48 bytes in baseline and 56 in the mixed build, and `func_8000D3B8_DFB8`
-is 64 bytes in baseline and 72 in the mixed build. The extra extent covers its
-existing alignment tail; entry addresses and all ROM bytes are unchanged. This
-is recorded as a size-annotation difference, not a newly recovered function or
-extra code. The baseline entry map remains the identity reference.
+## Inventory semantics and edge cases
 
-This is an inventory of **currently identified native function entries**, not
-proof that every logical function boundary is known. It includes SDK/runtime
-assembly; some low-level assembly may appropriately remain assembly. Script
-commands, data formats, assets and runtime integration are separate work, so
-function count is not an estimate of time remaining or a full-decomp percentage.
+`decomp.inventory` reads original/candidate ELF symbol tables using MIPS `readelf`. It counts defined positive-sized `STT_FUNC` entries, requires original entry identity, and checks C/ASM ownership against the matching manifest. It does not turn a research candidate, object file, undefined symbol or data-only marker into a decompiled function.
 
-## Reproduce after a matching checkpoint
+- The candidate linker exports **851 zero-sized switch labels** as function symbols for mixed C/ASM. They are excluded. Raw `FUNC` counts are misleading.
+- The baseline function-entry map is authoritative when overlays reuse the same guest VMA; overlay functions must remain distinct by section/ROM ownership.
+- Two historical size-annotation differences remain tracked: `func_8003F6E8_402E8` (48 original vs 56 candidate metadata bytes) and `func_8000D3B8_DFB8` (64 original vs 72 candidate). These are not additional recovered functions, and the original ROM still matches.
+- Strict original ELF identities **and all semantic relocation records** must remain the same. An exact 32 MiB byte stream can still be rejected when original relocation symbols differ.
+- Function count measures identified original ELF entries, not percentage of code bytes or total project completion. Some SDK/runtime assembly may legitimately remain ASM.
 
-From the toolkit repository inside the build environment:
+## Reproduce a new canonical inventory after an actual native G2 run
+
+From a suitable Linux checkout with the verified original private ROM and pinned native toolchain:
 
 ```bash
-python -m decomp.inventory \
-  --baseline /path/to/fresh-verifier-run/baseline \
-  --candidate /path/to/fresh-verifier-run/candidate \
-  --report practice/diagnostics/inventory-next.json
+python3 -m decomp.verify \
+  --upstream "$GOEMON_UPSTREAM" \
+  --workdir /tmp/goemon-fresh-verify \
+  --retail-rom "$GOEMON_ROM" \
+  --report practice/diagnostics/goemon-verify.json \
+  --uv "$(command -v uv)" --jobs 2
+
+# Only after decomp.verify succeeds:
+python3 -m decomp.inventory \
+  --baseline /tmp/goemon-fresh-verify/baseline \
+  --candidate /tmp/goemon-fresh-verify/candidate \
+  --report practice/diagnostics/goemon-inventory.json
 ```
 
-The command reads builds and writes only a new metadata report; it never
-modifies a build/game or replaces an existing report. Review and refresh the
-checked-in metadata after each matching checkpoint. Tests require it to agree
-with the current manifest and inventory tool. Synthetic tests also cover zero
-labels, data markers, overlapping guest addresses, unsupported promotions,
-regressions, moved entries, ambiguous symbols and size annotations.
+Verify the region's latest staged sources, complete relocations and original ELF identities as well as the ROM hash. Run the full `python3 -m decomp.local_ci`. **Do not** overwrite authentic older result JSON with manually changed totals or infer a completed regional build from a document.
