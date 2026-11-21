@@ -1,0 +1,80 @@
+{
+  "format": "goemon-japan-expand7-publication-v1",
+  "region": "japan_0",
+  "branch": "chatgptweb/decomp",
+  "publication_status": "PUBLISHED_REMOTE_VERIFIED",
+  "implementation_commit": "921b024be4efd068e98f30853c62401ecae55f92",
+  "prepublication_head": "f872a45f3ba76ddc097ad62b8bf79bd2be835180",
+  "implementation_changed_files": 18,
+  "remote_verified_new_source_proof_files": 15,
+  "source_files_exact_content_rechecked": true,
+  "previous_matching_c": 2307,
+  "new_matching_c": 7,
+  "new_instruction_bytes": 284,
+  "published_matching_c": 2314,
+  "original_c_instruction_bytes": 123236,
+  "remaining_assembly": 5062,
+  "native_acceptance": "PASSED_G2_LOCAL before publication; immutable original proof retained",
+  "native_proof": "decomp/results/japan_0_2314_expand7_g2_20261121.json",
+  "inventory": "decomp/results/japan_0_2314_expand7_inventory_20261121.json",
+  "expanded_rom_bytes": 33554432,
+  "expanded_original_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_rom_bytes": 16777216,
+  "retail_original_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "elf_original_positive_functions": 7376,
+  "semantic_relocations": 80747,
+  "original_relocation_digest": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "new_original_symbolic_relocations": 15,
+  "full_local_ci": "PASS 363 decomp tests (3 skipped); 349 verifier/ledger (4 skipped); all C sanitizers",
+  "source_specific_tests": "5/5 PASS, 1000 host iterations across actual seven C sources",
+  "gameplay_emulator": "NOT_RUN",
+  "excluded_original_asm": [
+    "func_80023BA4_247A4",
+    "func_80023CC8_248C8",
+    "func_80023DEC_249EC"
+  ],
+  "newly_accepted_sources": [
+    {
+      "name": "func_801E7F74_5A3F44",
+      "rom_offset": "0x5a3f44",
+      "size": 36,
+      "sha256": "eb0bfa96c06459c118f1e2cf8996fbf060581b2c8de2400ef4e7c7d77ffa6bc3"
+    },
+    {
+      "name": "func_801E7F98_5A3F68",
+      "rom_offset": "0x5a3f68",
+      "size": 36,
+      "sha256": "b4d642551a9e671fb15fe935d3dfca95b3d9e38773f2514ff43270763027655f"
+    },
+    {
+      "name": "func_801E83F0_5A43C0",
+      "rom_offset": "0x5a43c0",
+      "size": 52,
+      "sha256": "593f6e8c48d6150ac71578c24006d5f544b6f92c59b844ef53af5d508fb76c4c"
+    },
+    {
+      "name": "func_801E8424_5A43F4",
+      "rom_offset": "0x5a43f4",
+      "size": 52,
+      "sha256": "574b3cf84fa81e354d2079ce275a08ca18d5c650378326780f7d802b72b302e5"
+    },
+    {
+      "name": "func_801E8458_5A4428",
+      "rom_offset": "0x5a4428",
+      "size": 52,
+      "sha256": "ba25e8dceb14f6b58baa602c621cbd07d60a9302f44c19b09095331ddfdc7b23"
+    },
+    {
+      "name": "func_8021B434_67A2A4",
+      "rom_offset": "0x67a2a4",
+      "size": 28,
+      "sha256": "5bdc1394f8a8834433773f3c56534d4ef728d57647e5b42c257bc6463404f1e5"
+    },
+    {
+      "name": "func_8021B450_67A2C0",
+      "rom_offset": "0x67a2c0",
+      "size": 28,
+      "sha256": "f751930d8d9300063b5157f7ee97cbb9ab08d9d715525111d770c9cf9e71a2ad"
+    }
+  ]
+}
