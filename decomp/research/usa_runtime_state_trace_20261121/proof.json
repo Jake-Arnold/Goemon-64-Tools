@@ -1,0 +1,28 @@
+{
+  "format": "goemon-usa-overlay-fingerprint-proof-v1",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "rom_bytes": 33554432,
+  "verified_image_ids": [
+    11,
+    13,
+    14,
+    15,
+    16,
+    20,
+    22,
+    23
+  ],
+  "verified_images": 8,
+  "no_runtime_capture_performed": true,
+  "status": "ORIGINAL_ROM_FINGERPRINT_PASS__RUNTIME_TRACE_NOT_CAPTURED",
+  "focused_unittest_pass": 12,
+  "linux_synthetic_process_vm_readv": "PASS real Linux kernel read, synthetic child; no game process",
+  "full_local_ci_on": "uploaded ZIP17 plus local observer files, not current live branch checkout",
+  "full_local_ci_status": "PASS",
+  "full_local_ci_decomp_tests": 347,
+  "full_local_ci_verifier_tests": 349,
+  "sampled_real_game_frames": 0,
+  "actual_emulator_guest_pc_captures": 0,
+  "proven_live_overlay_loader_completions": 0,
+  "comparison": "No new ROM/ELF/C matching promotion claimed"
+}
