@@ -1,0 +1,49 @@
+{
+  "acceptance_tier": "PASSED_G2_LOCAL",
+  "assembly_remaining": 5253,
+  "ci": "PASS (303 decomp Python tests, 349 verifier/ledger tests, ASan/UBSan host fixtures)",
+  "evidence": "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md",
+  "format": "goemon-jp-vm-two-full-original-g2-v1",
+  "full_original_rom_bytes": 33554432,
+  "gameplay": "NOT_RUN",
+  "github_publication": "PENDING_REMOTE_VERIFICATION",
+  "matching_c_functions": 2123,
+  "matching_c_instruction_bytes": 112336,
+  "method": "ORIGINAL_IDO_5_3_FULL_ROM_ALL_RELOCATIONS_ELF_INVENTORY",
+  "new_c_bytes": 92,
+  "new_functions": [
+    {
+      "name": "func_8003CC10_3D810",
+      "original_code_sha256": "911d6fbdc6b9d123514051c49c714bee1ca02d33de8d688f0dbdb98889ac360d",
+      "owner": "jp1686_044_000.s",
+      "rom_offset": 251920,
+      "size": 48,
+      "source": "src/vm_g2/jp_vm_resource_lookup.c",
+      "source_sha256": "d8d2b77d788b7c450d9f78da5fba0f199bd725d70a2e3315025e81fe95c24960",
+      "vma": 2147732496
+    },
+    {
+      "name": "func_8003E2C4_3EEC4",
+      "original_code_sha256": "9152e34ebf1d4fac577d6f6c8120f6dee74e7c8615030573cc22014cbe5f584a",
+      "owner": "jp1686_045_009.s",
+      "rom_offset": 257732,
+      "size": 44,
+      "source": "src/vm_g2/jp_vm_countdown.c",
+      "source_sha256": "99569d89988f6db380aea636c466e17ffe61ce6d2556348dcf187501bef5ff24",
+      "vma": 2147738308
+    }
+  ],
+  "new_matching_c_functions": 2,
+  "original_elf_function_identities": 7376,
+  "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "prior_matching_c_bytes": 112244,
+  "prior_matching_c_functions": 2121,
+  "region": "japan_0",
+  "retail_byte_match": "not separately rerun: expanded exact plus retail re-compression outside this task",
+  "second_clean_replay": "PASSED_G2_LOCAL",
+  "semantic_relocation_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "semantic_relocations": 80747,
+  "source_host_test": "PASS 4 lookup + 5 countdown cases under GCC ASan/UBSan",
+  "staging_adapter": "decomp/vm_g2_promotion.py",
+  "status": "PASSED_G2_LOCAL"
+}
