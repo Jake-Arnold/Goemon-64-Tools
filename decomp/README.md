@@ -2,20 +2,20 @@
 
 **Operational entrypoint:** [CONTINUE.md](CONTINUE.md) and the live `chatgptweb/decomp` branch. This track is separate from the toolkit on `main`. Do not merge decomp-only changes into `main`.
 
-## Latest verified results — 21 November 2026
+## Latest verified results — 21 November 2026 (live update)
 
-The most recent **published, full original-ROM G2** report records:
+The latest authentic full original-ROM G2 proofs record the following region-specific totals. **USA 1,958 and Japan 2,121 are remotely published; the extra two Japan functions are `PASSED_G2_LOCAL` pending remote publication confirmation.**
 
 | Region | Newly matching C functions | Original instruction bytes recovered | ASM functions remaining |
 | --- | ---: | ---: | ---: |
 | USA | **1,958** | **84,292** | **5,405** |
-| Japan rev-0 | **2,121** | **112,244** | **5,255** |
+| Japan rev-0 (latest local G2) | **2,123** | **112,336** | **5,253** |
 
 Each region has **7,376 original positive-sized ELF function entries**. These figures are region-specific; do not add USA and Japan counts or count original upstream-C functions as new reconstructions.
 
-The latest five-function batch is [documented here](docs/GOEMON_START5_G2_PROMOTION_20261121.md) and [published with independent remote re-verification](../PROGRESS.md). Both rebuilt expanded 32 MiB ROMs match **33,554,432 / 33,554,432 original bytes**, preserving original ELF function identities and all semantic relocations. The native G2 tier proves code/layout equivalence, **not** emulator gameplay or Bomb Text Skip success.
+The prior five-function batch is [documented here](docs/GOEMON_START5_G2_PROMOTION_20261121.md) and remotely re-verified in [PROGRESS.md](../PROGRESS.md). The latest two Japan-only VM functions are [documented separately](docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md) as **local G2, publication pending**. Both rebuilt expanded 32 MiB ROMs match **33,554,432 / 33,554,432 original bytes**, preserving original ELF function identities and all semantic relocations. The native G2 tier proves code/layout equivalence, **not** emulator gameplay or Bomb Text Skip success.
 
-**Snapshot caveat:** The checked-in canonical USA [combined proof](results/combined.json) and [inventory](results/inventory.json) still represent the earlier **1,956-function** stage. The later **1,958-function** published G2 acceptance is separately recorded in [the five-function ledger](results/glitch_start5_2121jp_1958usa_g2_20261121.json). Do not edit a proof JSON or inventory count without a fresh authentic rebuild. See [INVENTORY.md](INVENTORY.md) for the arithmetic and provenance boundaries.
+**Snapshot caveat:** The checked-in canonical USA [combined proof](results/combined.json) and [inventory](results/inventory.json) still represent the earlier **1,956-function** stage. The later **1,958-function** published USA G2 acceptance is separately recorded in [the five-function ledger](results/glitch_start5_2121jp_1958usa_g2_20261121.json); the additional **2,123 Japan local G2** proof is [here](results/japan_0_2123_vm_g2_20261121.json). Do not edit a proof JSON or inventory count without a fresh authentic rebuild. See [INVENTORY.md](INVENTORY.md) for the arithmetic and provenance boundaries.
 
 ## How work is selected
 
