@@ -1,0 +1,54 @@
+{
+  "format": "goemon-usa-mini-speed-A-E-research-v1",
+  "date": "2026-11-21",
+  "status": "RESEARCH_ONLY",
+  "original_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "baseline_rom_exact_bytes": 33554432,
+  "clamp": {
+    "name": "func_801CD310_589220",
+    "rom_offset": "0x589220",
+    "original_bytes": 4320,
+    "compiled_native_bytes": 4060,
+    "original_relocs_file11": 101,
+    "compiled_relocs": 106,
+    "status": "FAILED_NATIVE"
+  },
+  "profile": {
+    "rom_offset": "0x5B882C",
+    "stride": 40,
+    "records": 17,
+    "floats_verified": 51,
+    "task_index": "+0x98",
+    "task_mode": "+0x70",
+    "task_output": "+0x74"
+  },
+  "transient_1f0": {
+    "name": "func_801DA84C_59675C",
+    "writes_pc": [
+      "0x801DA87C",
+      "0x801DA880",
+      "0x801DA884"
+    ],
+    "gameplay_event": "UNVERIFIED"
+  },
+  "mini_countdown": {
+    "name": "func_801E78DC_5A37EC",
+    "size": 112,
+    "candidate_size": 112,
+    "differing_words": 6,
+    "status": "FAILED_NATIVE"
+  },
+  "original_rom_opcode_assertions": 13,
+  "tests": {
+    "full_original_ROM": "PASS",
+    "read_only_opcodes": "PASS",
+    "IDO_compilation": "PASS",
+    "native_match": "FAIL",
+    "combined_G2": "NOT_RUN",
+    "strict_inventory": "NOT_RUN",
+    "full_CI": "NOT_RUN",
+    "gameplay": "NOT_RUN"
+  },
+  "accepted_before": 1956,
+  "accepted_after": 1956
+}
