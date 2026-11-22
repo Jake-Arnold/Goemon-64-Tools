@@ -39,6 +39,15 @@
 
 ## Separate staged USA 49-function G2 result (not part of the canonical manifest)
 
+## Separate staged USA 27-function G2 report (not part of the canonical manifest)
+
+- Independently reconstructed 27 missing original-USA C bodies from published JP55 C donors plus original USA ASM/symbol relocations. Original 51-source ZIP is not accessible; no source was falsely recovered from that ZIP. Excluded all previously published names.
+- Authentic IDO 5.3 original-address matching: **1,904/1,904** original MIPS instruction bytes and **77/77** symbolic relocations. Ten replacements are in existing dialogue C's original inline ASM pragmas; 17 in separate ASM owner objects.
+- **G2 PASS:** 33,554,432 original USA ROM bytes SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; 7,376 ELF entries preserved with documented repair of pre-existing 72-to-original-64-byte symbol-size annotation, all 82,103 semantic relocations unchanged; strict inventory **2,041 C / 89,804 original C bytes / 5,322 ASM**. Full ROM-free `decomp.local_ci` PASS, dedicated guard tests PASS. Source and stage-specific proof under `decomp/research/usa_crossregion51_recovered27_20261122/` and `decomp/results/usa_recovered27_2041_g2_20261122.json`.
+- **Limitations:** no in-game replay; remaining 24 separate crossregion51 research candidates are not promoted or counted. Next: recover their exact native C from legitimate source donors, rerun complete gates and separately publish on success.
+
+- This is a separate original-ROM/ELF/relocation G2 stage; it did not update the canonical accepted manifest. The current six-function canonical promotion remains **1,962 C**. These 27 names are reconciled by the merged-branch G2 guard tests and are not double-counted here.
+
 - **Region/branch:** USA Rev.00, `chatgptweb/decomp`; pinned upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. Authenticated source branch HEAD for this batch: `c738164ff1fed1c1258faf74f45cada8189f8f5e`.
 - **New exact C:** `func_801E20A0_59DFB0` (Mini Ebisumaru movement-state callback; 224 bytes, 12 original relocations) plus 48 already archived cross-region candidates (3,028 bytes, 130 relocations), after deduplication against every accepted source stage. New combined 49 functions / 3,252 original instructions bytes.
 - **Complete build:** 2014 USA matching C, 87,900 original instruction bytes; 5,349 remaining ASM. Original 33,554,432-byte ROM byte-identical, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`; 7,376 ELF function identities, all 82,103 semantic relocations preserved. Strict `summarize_inventory` reports 2014 C and zero extra positive aliases; full `python3 -m decomp.local_ci` PASS, plus new fixture tests and real-source host ASan/UBSan. These are real local G2 results, not an inference from isolated compilation.
