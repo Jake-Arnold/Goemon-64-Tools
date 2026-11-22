@@ -1,0 +1,56 @@
+{
+  "status": "RESEARCH_ONLY_ORIGINAL_UPSTREAM_G2_EXACT_NOT_CANONICAL_DECOMP_G2",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "candidate_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_rom_size": 33554432,
+  "full_upstream_original_rom_exact": true,
+  "source_unit": "src/92F0.c",
+  "elf_original_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "elf_candidate_sha256": "f9f15561d8d2e97fdee47ae1f3c4b9337910d0365355704a5f8e0039c4e95e45",
+  "positive_size_elf_function_entries": [
+    7376,
+    7376
+  ],
+  "elf_function_identity_multiset_exact": true,
+  "original_upstream_elf_relocation_entries": [
+    82216,
+    82216
+  ],
+  "original_relocation_multiset_exact": true,
+  "functions": [
+    {
+      "name": "func_80008798_9398",
+      "rom_offset": "0x9398",
+      "vma": "0x80008798",
+      "size": 44,
+      "original_function_sha256": "27f93c1513ad93f7fb6228b512d6eb178efe9971de423f89ebbcd9a8838826ce"
+    },
+    {
+      "name": "func_8000A0F0_ACF0",
+      "rom_offset": "0xACF0",
+      "vma": "0x8000A0F0",
+      "size": 64,
+      "original_function_sha256": "f1ebbd24fec5ed12a5193bc3ff26d1abebe594df4f4c1064eb6b9c2d59d9375b"
+    },
+    {
+      "name": "func_8000A18C_AD8C",
+      "rom_offset": "0xAD8C",
+      "vma": "0x8000A18C",
+      "size": 48,
+      "original_function_sha256": "a494dc6ba7f3ed16e1aa8232fd8e54d8948e40a7f8d2b22b80df3f6a3686a385"
+    }
+  ],
+  "host_test": {
+    "gcc_14_asan_ubsan": "PASS",
+    "clang_17_asan_ubsan": "PASS",
+    "trials_each_function": 4096
+  },
+  "canonical_decomp_verify": "NOT_RUN",
+  "canonical_decomp_inventory": "NOT_RUN",
+  "canonical_local_ci": "NOT_RUN",
+  "accepted_function_delta": 0,
+  "accepted_original_bytes_delta": 0,
+  "source_only_zip_sha256": "a25f909b3183d8110171b1fe9f888cd7c206a6b1df7c795a8865fc076d9db322"
+}
