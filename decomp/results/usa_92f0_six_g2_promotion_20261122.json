@@ -2,7 +2,7 @@
   "format": "goemon-usa-native-g2-promotion-v1",
   "status": "PASSED_G2_LOCAL",
   "region": "USA",
-  "branch_base_commit": "c738164ff1fed1c1258faf74f45cada8189f8f5e",
+  "branch_base_commit": "41dc7404e23ae680a1b400357f59c729799f0710",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
   "expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
@@ -204,7 +204,7 @@
     "command": "python3 -m decomp.local_ci",
     "status": "PASS",
     "quick": false,
-    "decomp_python_tests": "367 passed, 3 skipped",
+    "decomp_python_tests": "372 passed, 3 skipped",
     "verifier_ledger_python_tests": "349 passed",
     "c_right_comparator_tests": "7 passed",
     "actual_source_sanitizers": "all configured full-suite host sanitizer builds and fixtures passed, including 4,096 cases per each of the six promoted USA C sources"
