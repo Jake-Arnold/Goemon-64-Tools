@@ -1,0 +1,22 @@
+--- clamp_gate_control_107.c
++++ clamp_f16_exact_reset.c
+@@ -131,14 +131,14 @@
+     temp_v1 = M2C_FIELD(arg0, void **, 0x5C);
+     pool_u8_0 = M2C_FIELD(temp_v1, u8 *, 0x59);
+     if ((pool_u8_0 != 0) && (!(pool_u8_0 & 0x80) || ((M2C_FIELD(D_801FC60C_5B851C, f32 *, 0x20) * 40.0f) < M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), f32 *, 0x54)))) {
+-        M2C_FIELD(arg0, f32 *, 0x7C) = 0.0f;
+-        M2C_FIELD(arg0, f32 *, 0x74) = 0.0f;
+-        M2C_FIELD(arg0, f32 *, 0x70) = 0.0f;
+-        M2C_FIELD(arg0, f32 *, 0x68) = 0.0f;
++        M2C_FIELD(arg0, f32 *, 0x7C) = (f32)0;
++        M2C_FIELD(arg0, f32 *, 0x74) = (f32)0;
++        M2C_FIELD(arg0, f32 *, 0x70) = (f32)0;
++        M2C_FIELD(arg0, f32 *, 0x68) = (f32)0;
+         temp_v1 = M2C_FIELD(arg0, void **, 0x5C);
+         pool_u8_0 = M2C_FIELD(temp_v1, u8 *, 0x59);
+     }
+-    pool_fp_2 = 0.0f;
++    pool_fp_2 = (f32)0;
+     pool_u16_2 = 0;
+     if (((pool_u8_0 == 0) && (M2C_FIELD(arg0, u16 *, 0x98) != 0) && (M2C_FIELD(arg0, f32 *, 0xA4) <= 0.0f)) || (M2C_FIELD(M2C_FIELD(arg0, void **, 0x5C), u16 *, 0) & 2)) {
+         if ((f64) M2C_FIELD(arg0, f32 *, 0x88) < D_8020A8D0_5C67E0) {
