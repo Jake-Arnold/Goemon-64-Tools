@@ -32,7 +32,12 @@ jobs:
       - name: Test packaging and version contracts
         run: python -m unittest tests.test_packaging tests.test_toolkit_version tests.test_new_address_research tests.test_pj64_debugger tests.test_scripted_trace -v
       - name: Verify canonical address metadata sync
-        run: python -m scripts.sync_address_catalogue --check
+        run: |
+          # Windows checkout can normalize JSON line endings to CRLF; rewrite
+          # canonical LF bytes before byte-for-byte schema verification.
+          python -m scripts.sync_address_catalogue --write
+          python -m scripts.sync_address_catalogue --check
+          git diff --exit-code -- practice/data/address_catalogue_v1.json practice/data/address_catalogue_audit.json
       - name: Build standalone one-file executable
         shell: pwsh
         run: |
