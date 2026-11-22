@@ -1,0 +1,138 @@
+{
+  "status": "PASSED_ISOLATED_NATIVE / RESEARCH_ONLY",
+  "region": "japan_0",
+  "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "original_rom_bytes": 33554432,
+  "native_compiler": "SGI IDO 5.3 -O2 -mips2 -G 0",
+  "matched_original_code_bytes": 416,
+  "matched_unique_functions": 12,
+  "original_object_relocations": 16,
+  "full_rom_G2": "NOT_RUN",
+  "all_original_ELF_functions": "NOT_RUN",
+  "all_semantic_relocations": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "accepted_C_delta": 0,
+  "records": [
+    {
+      "function": "func_801EF790_61A210",
+      "rom_offset": "0x61A210",
+      "exact_bytes": 20,
+      "original_vma": "0x801EF790",
+      "relocations": 2,
+      "compiled_text_bytes": 32,
+      "trailing_zero_padding_bytes": 12,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_801E818C_5A415C",
+      "rom_offset": "0x5A415C",
+      "exact_bytes": 32,
+      "original_vma": "0x801E818C",
+      "relocations": 1,
+      "compiled_text_bytes": 32,
+      "trailing_zero_padding_bytes": 0,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_801E83A0_5A4370",
+      "rom_offset": "0x5A4370",
+      "exact_bytes": 32,
+      "original_vma": "0x801E83A0",
+      "relocations": 0,
+      "compiled_text_bytes": 32,
+      "trailing_zero_padding_bytes": 0,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_8021B3F8_67A268",
+      "rom_offset": "0x67A268",
+      "exact_bytes": 32,
+      "original_vma": "0x8021B3F8",
+      "relocations": 2,
+      "compiled_text_bytes": 32,
+      "trailing_zero_padding_bytes": 0,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_8021251C_67BC0C",
+      "rom_offset": "0x67BC0C",
+      "exact_bytes": 32,
+      "original_vma": "0x8021251C",
+      "relocations": 4,
+      "compiled_text_bytes": 32,
+      "trailing_zero_padding_bytes": 0,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_8021BB68_5D70F8",
+      "rom_offset": "0x5D70F8",
+      "exact_bytes": 36,
+      "original_vma": "0x8021BB68",
+      "relocations": 1,
+      "compiled_text_bytes": 48,
+      "trailing_zero_padding_bytes": 12,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_801EC4E8_5A84B8",
+      "rom_offset": "0x5A84B8",
+      "exact_bytes": 36,
+      "original_vma": "0x801EC4E8",
+      "relocations": 0,
+      "compiled_text_bytes": 48,
+      "trailing_zero_padding_bytes": 12,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_80200DAC_62B82C",
+      "rom_offset": "0x62B82C",
+      "exact_bytes": 36,
+      "original_vma": "0x80200DAC",
+      "relocations": 1,
+      "compiled_text_bytes": 48,
+      "trailing_zero_padding_bytes": 12,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_801F9560_5B5530",
+      "rom_offset": "0x5B5530",
+      "exact_bytes": 40,
+      "original_vma": "0x801F9560",
+      "relocations": 1,
+      "compiled_text_bytes": 48,
+      "trailing_zero_padding_bytes": 8,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_801E60F0_5A20C0",
+      "rom_offset": "0x5A20C0",
+      "exact_bytes": 40,
+      "original_vma": "0x801E60F0",
+      "relocations": 1,
+      "compiled_text_bytes": 48,
+      "trailing_zero_padding_bytes": 8,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_801E6118_5A20E8",
+      "rom_offset": "0x5A20E8",
+      "exact_bytes": 40,
+      "original_vma": "0x801E6118",
+      "relocations": 1,
+      "compiled_text_bytes": 48,
+      "trailing_zero_padding_bytes": 8,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    },
+    {
+      "function": "func_8021B3D0_67A240",
+      "rom_offset": "0x67A240",
+      "exact_bytes": 40,
+      "original_vma": "0x8021B3D0",
+      "relocations": 2,
+      "compiled_text_bytes": 48,
+      "trailing_zero_padding_bytes": 8,
+      "outcome": "ISOLATED_NATIVE_EXACT"
+    }
+  ]
+}
