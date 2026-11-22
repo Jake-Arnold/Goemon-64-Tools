@@ -1,3 +1,11 @@
+# Goemon Speedrun Tools v0.11.81 — PJ64-style Debugger and Research Metadata
+
+## v0.11.81 — guest-RAM debugger, scripted tracing and reviewed metadata sync
+
+The toolkit adds a **Debugger** tab with a 16-byte-row hex/ASCII guest-RAM viewer, guarded compare-before-write raw edits, static MIPS instruction decoding, bounded byte search and change watches. The **Scripted tracer** records read-only watched fields with conditional triggers, before/after samples and JSON/JSONL exports. It follows the canonical USA/Japan active connection and rejects USA-only presets on Japan; it cannot pause or single-step native execution or identify the instruction that performed a write. See [debugger](docs/PJ64_DEBUGGER.md) and [scripted tracing](docs/SCRIPTED_TRACING.md).
+
+Imported 22 November address metadata expands the canonical catalogue to **615 entries** and supplementary discoveries to **117**, retaining original evidence, confidence and disputed classifications. Newly imported research does not grant memory-write permissions. No decomp source or game ROM is merged. The Windows executable is unsigned and memory edits remain experimental; use `--read-only` to disable edits and a disposable save for writable sessions. Synthetic/CI tests do not establish real-game native runtime attachment, CPU breakpoint support or frame-accurate tracing.
+
 # Goemon Speedrun Tools v0.11.80 — Faster Japanese Recomp Attachment
 
 ## v0.11.80 — cached ASLR-safe Japanese RAM attachment

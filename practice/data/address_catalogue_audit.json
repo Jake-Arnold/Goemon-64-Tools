@@ -3,40 +3,43 @@
     "cheat_format": 1,
     "code_vma": 6,
     "dynamic_field": 9,
+    "engine_input": 2,
+    "engine_state": 4,
     "external_cheat_lead": 26,
     "fixed_global": 73,
     "inventory": 72,
     "overlay_patch": 6,
     "research_reference": 60,
+    "saved_data": 50,
     "saved_event_bit": 284,
-    "script_vm": 12
+    "script_vm": 22
   },
   "by_confidence": {
     "candidate": 153,
     "conflict": 1,
-    "disputed": 1,
+    "disputed": 2,
     "experimental": 7,
     "external-jp": 4,
     "external_unverified": 94,
     "mixed_evidence": 6,
     "observed": 5,
     "reference_only": 60,
-    "research_observed": 127,
+    "research_observed": 192,
     "usa_source": 21,
     "user-confirmed": 37,
     "user_observed": 33
   },
   "by_region": {
-    "japan": 222,
+    "japan": 257,
     "unknown": 60,
-    "usa": 267
+    "usa": 298
   },
-  "disputed": 2,
+  "disputed": 3,
   "experimental_japan_flags": 142,
   "format": "goemon-address-catalogue-audit-v1",
   "live_readable": 442,
-  "research_only": 107,
-  "total_records": 549,
-  "unique_region_address": 314,
-  "unknown_width": 107
+  "research_only": 173,
+  "total_records": 615,
+  "unique_region_address": 376,
+  "unknown_width": 109
 }
