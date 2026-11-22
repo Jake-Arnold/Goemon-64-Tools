@@ -31,6 +31,8 @@ try {
         --add-data "${Icon};assets" `
         --add-data "${Png};assets" `
         --add-data "${SmallPng};assets" `
+        --collect-data practice `
+        --collect-all tkinterdnd2 `
         --distpath $Dist --workpath $Work `
         --specpath $Work `
         $Entry

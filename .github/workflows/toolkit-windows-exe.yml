@@ -1,0 +1,97 @@
+name: Build and publish Windows toolkit EXE
+
+on:
+  push:
+    branches:
+      - main
+      - toolkit/windows-exe-release-v01180
+    paths:
+      - .github/workflows/toolkit-windows-exe.yml
+      - build/Build-Windows.ps1
+      - tests/test_packaging.py
+  pull_request:
+    paths:
+      - .github/workflows/toolkit-windows-exe.yml
+      - build/Build-Windows.ps1
+      - tests/test_packaging.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-exe:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          architecture: x64
+      - name: Test packaging and version contracts
+        run: python -m unittest tests.test_packaging tests.test_toolkit_version -v
+      - name: Build standalone one-file executable
+        shell: pwsh
+        run: |
+          & .\build\Build-Windows.ps1
+      - name: Verify bundled data and executable startup
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $exe = Join-Path $env:GITHUB_WORKSPACE 'dist\GoemonSpeedrunTools.exe'
+          if (-not (Test-Path $exe)) { throw 'Missing Windows executable' }
+          if ((Get-Item $exe).Length -lt 1000000) { throw 'Unexpectedly small Windows executable' }
+          & .\.build-venv\Scripts\python.exe -c 'import sys; from PyInstaller.archive.readers import CArchiveReader; files = {s.replace("\\", "/") for s in CArchiveReader(sys.argv[1]).toc}; required = {"practice/data/address_catalogue_v1.json", "practice/data/entrance-coordinates.json", "practice/unlock_flag_categories.json"}; missing = required - files; print("Bundled resources:", sorted(required - missing)); assert not missing, f"Missing bundled resources: {missing}"' $exe
+          if ($LASTEXITCODE -ne 0) { throw 'PyInstaller resource verification failed' }
+          $process = Start-Process -FilePath $exe -ArgumentList '--help' -PassThru -Wait
+          if ($process.ExitCode -ne 0) { throw 'Packaged command-line startup failed' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GoemonSpeedrunTools-v0.11.80-windows-x64
+          path: dist/GoemonSpeedrunTools.exe
+          if-no-files-found: error
+          retention-days: 30
+
+  publish-release:
+    needs: windows-exe
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: GoemonSpeedrunTools-v0.11.80-windows-x64
+          path: release
+      - name: Publish tested executable to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -s release/GoemonSpeedrunTools.exe
+          VERSION=$(python3 -c 'from practice.version import VERSION; print(VERSION)')
+          if [[ "$VERSION" != "0.11.80" ]]; then
+            echo "Unexpected toolkit version: $VERSION"
+            exit 1
+          fi
+          TAG="v$VERSION"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; refusing to overwrite"
+            exit 1
+          fi
+          cat > "$RUNNER_TEMP/goemon-release-notes.md" <<'NOTES'
+          Windows x64 standalone executable for Goemon Practice Toolkit v0.11.80.
+
+          - Includes the reviewed USA and Japan toolkit functionality, canonical memory-address catalogue and numeric entrance atlas.
+          - Japanese recomp faster attachment has synthetic regression coverage; live Japanese recomp attachment is not yet verified.
+          - Experimental game-memory writes are on by default. Use a disposable save and pass --read-only to disable writes.
+          - No original game ROM, emulator or proprietary game assets are distributed.
+          - This executable is unsigned and Windows SmartScreen may display a warning.
+          NOTES
+          sha256sum release/GoemonSpeedrunTools.exe
+          gh release create "$TAG" "release/GoemonSpeedrunTools.exe#GoemonSpeedrunTools.exe" \
+            --target "$GITHUB_SHA" \
+            --title "Goemon Practice Toolkit $TAG (Windows x64)" \
+            --notes-file "$RUNNER_TEMP/goemon-release-notes.md"

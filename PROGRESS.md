@@ -1,5 +1,13 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-22 — Standalone Windows v0.11.80 EXE release pipeline
+
+- **Change:** Add a Windows x64 PyInstaller build-and-release workflow with a direct .exe artifact. Bundle the repository's reviewed practice JSON files and TkDND runtime alongside existing icons; verify embedded canonical address catalogue, entrance coordinates and unlock flag categories in the one-file archive. Exercise the executable's --help exit, existing packaging/version tests, and publish the tested binary as a GitHub Release only after a successful main-branch build.
+- **Reason:** The previous local-only Build-Windows.ps1 bundled logos but did not explicitly package essential non-Python JSON metadata. A runnable release must include these resources without bundling an original ROM, emulator, saves or original-game assets.
+- **Tests:** Extended tests/test_packaging.py for required PyInstaller data collection options. Windows GitHub Actions build, archive inspection and smoke verification are required before release; do not claim success until their actual results are observed.
+- **Limitations:** Binary is unsigned; Windows SmartScreen may warn. Japanese native recomp attachment improvements have synthetic tests but not live-game validation. Game-memory writes remain experimental and default enabled; use disposable saves. The source launcher and decomp pipeline remain unchanged.
+- **Next:** Confirm source-branch Windows build, merge packaging PR into main, then verify the main-branch release asset and SHA-256.
+
 ## 2026-11-22 — Add canonical toolkit setup instructions to README
 
 - **Change:** Ported the Windows/Linux toolkit setup section added by the latest decomp README commit onto the current `main` README, preserving its newer v0.11.79 release notes. No decomp implementation or research files were copied.
